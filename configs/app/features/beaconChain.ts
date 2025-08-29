@@ -1,5 +1,6 @@
 import type { Feature } from './types';
 
+import chain from '../chain';
 import { getEnvValue } from '../utils';
 
 const title = 'Beacon chain';
@@ -11,8 +12,7 @@ const config: Feature<{ currency: { symbol: string } }> = (() => {
       isEnabled: true,
       currency: {
         symbol:
-          getEnvValue('NEXT_PUBLIC_BEACON_CHAIN_CURRENCY_SYMBOL') ||
-          getEnvValue('NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL') ||
+          chain.currency.symbol ||
           '', // maybe we need some other default value here
       },
     });

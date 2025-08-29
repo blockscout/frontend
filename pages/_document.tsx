@@ -3,6 +3,7 @@ import type { DocumentContext } from 'next/document';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 import React from 'react';
 
+import generateCspPolicy from 'nextjs/csp/generateCspPolicy';
 import logRequestFromBot from 'nextjs/utils/logRequestFromBot';
 import * as serverTiming from 'nextjs/utils/serverTiming';
 
@@ -26,6 +27,12 @@ class MyDocument extends Document {
     await logRequestFromBot(ctx.req, ctx.res, ctx.pathname);
 
     const initialProps = await Document.getInitialProps(ctx);
+
+    // Add CSP header
+    const cspPolicy = generateCspPolicy();
+    if (ctx.res) {
+      ctx.res.setHeader('Content-Security-Policy', cspPolicy);
+    }
 
     return initialProps;
   }

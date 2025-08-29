@@ -584,9 +584,10 @@ const schema = yup
     NEXT_PUBLIC_APP_INSTANCE: yup.string(),
 
     // 2. Blockchain parameters
-    NEXT_PUBLIC_NETWORK_NAME: yup.string().required(),
+    NEXT_PUBLIC_CHAIN: yup.string().required(),
+    NEXT_PUBLIC_NETWORK_NAME: yup.string(),
     NEXT_PUBLIC_NETWORK_SHORT_NAME: yup.string(),
-    NEXT_PUBLIC_NETWORK_ID: yup.number().positive().integer().required(),
+    NEXT_PUBLIC_NETWORK_ID: yup.number().positive().integer(),
     NEXT_PUBLIC_NETWORK_RPC_URL: yup
     .mixed()
     .test(
@@ -624,7 +625,7 @@ const schema = yup
 
     // 3. API configuration
     NEXT_PUBLIC_API_PROTOCOL: yup.string().oneOf(protocols),
-    NEXT_PUBLIC_API_HOST: yup.string().required(),
+    NEXT_PUBLIC_API_HOST: yup.string(),
     NEXT_PUBLIC_API_PORT: yup.number().integer().positive(),
     NEXT_PUBLIC_API_BASE_PATH: yup.string(),
     NEXT_PUBLIC_API_WEBSOCKET_PROTOCOL: yup.string().oneOf([ 'ws', 'wss' ]),
@@ -796,9 +797,9 @@ const schema = yup
 
         return isNoneSchema.isValidSync(data) || isUrlStringSchema.isValidSync(data);
       }),
-    NEXT_PUBLIC_STATS_API_HOST: yup.string().test(urlTest),
+    NEXT_PUBLIC_STATS_API_HOST: yup.string(),
     NEXT_PUBLIC_STATS_API_BASE_PATH: yup.string(),
-    NEXT_PUBLIC_VISUALIZE_API_HOST: yup.string().test(urlTest),
+    NEXT_PUBLIC_VISUALIZE_API_HOST: yup.string(),
     NEXT_PUBLIC_VISUALIZE_API_BASE_PATH: yup.string(),
     NEXT_PUBLIC_CONTRACT_INFO_API_HOST: yup.string().test(urlTest),
     NEXT_PUBLIC_NAME_SERVICE_API_HOST: yup.string().test(urlTest),

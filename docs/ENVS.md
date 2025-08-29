@@ -105,6 +105,7 @@ Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will
 | NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE | `validation` \| `mining` | Verification type in the network. Irrelevant for Arbitrum (verification type is always `posting`) and ZkEvm (verification type is always `sequencing`) L2s | - | `mining` | `validation` | v1.0.x+ |
 | NEXT_PUBLIC_NETWORK_TOKEN_STANDARD_NAME | `string` | Name of the standard for creating tokens | - | `ERC` | `BEP` | v1.31.0+ |
 | NEXT_PUBLIC_IS_TESTNET | `boolean`| Set to true if network is testnet | - | `false` | `true` | v1.0.x+ |
+| NEXT_PUBLIC_CHAIN | `string`| fluent network | - | `testnet` | `devnet` | v1.0.x+ |
 
 &nbsp;
 

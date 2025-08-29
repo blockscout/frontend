@@ -13,9 +13,6 @@ function copyPlaceholderImage() {
 
 if (process.env.NEXT_PUBLIC_OG_IMAGE_URL) {
   console.log('⏩ NEXT_PUBLIC_OG_IMAGE_URL is set. Skipping OG image generation...');
-} else if (!process.env.NEXT_PUBLIC_NETWORK_NAME) {
-  console.log('⏩ NEXT_PUBLIC_NETWORK_NAME is not set. Copying placeholder image...');
-  copyPlaceholderImage();
 } else if (!process.env.NEXT_PUBLIC_NETWORK_LOGO && !process.env.NEXT_PUBLIC_HOMEPAGE_HERO_BANNER_CONFIG) {
   console.log('⏩ Neither NEXT_PUBLIC_NETWORK_LOGO nor NEXT_PUBLIC_HOMEPAGE_HERO_BANNER_CONFIG is set. Copying placeholder image...');
   copyPlaceholderImage();
@@ -23,7 +20,7 @@ if (process.env.NEXT_PUBLIC_OG_IMAGE_URL) {
   try {
     const bannerConfig = JSON.parse(process.env.NEXT_PUBLIC_HOMEPAGE_HERO_BANNER_CONFIG?.replaceAll('\'', '"') || '{}');
     const data = {
-      title: `${ process.env.NEXT_PUBLIC_NETWORK_NAME } explorer`,
+      title: `Fluent explorer`,
       logo_url: process.env.NEXT_PUBLIC_NETWORK_LOGO_DARK ?? process.env.NEXT_PUBLIC_NETWORK_LOGO,
       background: bannerConfig.background?.[0],
       title_color: bannerConfig.text_color?.[0],

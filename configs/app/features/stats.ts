@@ -2,9 +2,9 @@ import type { Feature } from './types';
 
 import stripTrailingSlash from 'lib/stripTrailingSlash';
 
-import { getEnvValue } from '../utils';
+import { getEnvValue, getStatsApiHost } from '../utils';
 
-const apiEndpoint = getEnvValue('NEXT_PUBLIC_STATS_API_HOST');
+const apiEndpoint = getStatsApiHost();
 
 const title = 'Blockchain statistics';
 

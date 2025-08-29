@@ -12,6 +12,7 @@
 		"../../../types/**/*.ts", 
 		"../../../configs/app/**/*.ts", 
 		"../../../global.d.ts", 
+		"../../../decs.d.ts", 
 		"./index.ts", 
 		"./schema.ts" 
 	],

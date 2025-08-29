@@ -1,8 +1,8 @@
 import stripTrailingSlash from 'lib/stripTrailingSlash';
 
-import { getEnvValue } from './utils';
+import { getApiHost, getEnvValue } from './utils';
 
-const apiHost = getEnvValue('NEXT_PUBLIC_API_HOST');
+const apiHost = getApiHost();
 const apiSchema = getEnvValue('NEXT_PUBLIC_API_PROTOCOL') || 'https';
 const apiPort = getEnvValue('NEXT_PUBLIC_API_PORT');
 const apiEndpoint = [

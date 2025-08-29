@@ -70,7 +70,7 @@ function updateFileContent(envsEntries: Array<[ string, string ]>, presetId: key
     .map(([ key, value ]) => `${ key }=${ value }`)
     .join('\n');
 
-  const chainName = envsEntries.find(([ key ]) => key === 'NEXT_PUBLIC_NETWORK_NAME')?.[1] ?? 'Unknown';
+  const chainName = 'Fluent';
 
   const explorerUrl = PRESETS[presetId];
 

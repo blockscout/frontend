@@ -7,6 +7,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "next-sitemap": "4.2.3"
+    "next-sitemap": "4.2.3",
+    "@fluent.xyz/sdk-core": "0.2.9"
   }
 }

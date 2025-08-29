@@ -46,6 +46,7 @@
     "@cloudnouns/kit": "1.1.6",
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
+    "@fluent.xyz/sdk-core": "0.2.9",
     "@growthbook/growthbook-react": "0.21.0",
     "@helia/verified-fetch": "2.0.1",
     "@hypelab/sdk-react": "^1.0.0",

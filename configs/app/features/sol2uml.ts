@@ -2,9 +2,9 @@ import type { Feature } from './types';
 
 import stripTrailingSlash from 'lib/stripTrailingSlash';
 
-import { getEnvValue } from '../utils';
+import { getEnvValue, getVisualizeApiHost } from '../utils';
 
-const apiEndpoint = getEnvValue('NEXT_PUBLIC_VISUALIZE_API_HOST');
+const apiEndpoint = getVisualizeApiHost();
 
 const title = 'Solidity to UML diagrams';
 

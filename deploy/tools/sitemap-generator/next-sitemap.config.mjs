@@ -1,6 +1,8 @@
-/* eslint-disable no-console */
-const path = require('path');
+import path from 'node:path';
+import { DEVNET_EXPLORER_HOST } from '@fluent.xyz/sdk-core/dist/config/devnet-config.js';
+import { TESTNET_EXPLORER_HOST } from '@fluent.xyz/sdk-core/dist/config/testnet-config.js';
 
+/* eslint-disable no-console */
 const stripTrailingSlash = (str) => str[str.length - 1] === '/' ? str.slice(0, -1) : str;
 
 const fetchResource = async(url, formatter) => {
@@ -17,6 +19,13 @@ const fetchResource = async(url, formatter) => {
   }
 };
 
+const getApiHost = () => {
+  const env = process.env.NEXT_PUBLIC_CHAIN;
+  const value = env === 'devnet' ? DEVNET_EXPLORER_HOST : TESTNET_EXPLORER_HOST;
+
+  return value;
+};
+
 const siteUrl = [
   process.env.NEXT_PUBLIC_APP_PROTOCOL || 'https',
   '://',
@@ -28,7 +37,7 @@ const apiUrl = (() => {
   const baseUrl = [
     process.env.NEXT_PUBLIC_API_PROTOCOL || 'https',
     '://',
-    process.env.NEXT_PUBLIC_API_HOST,
+    getApiHost(),
     process.env.NEXT_PUBLIC_API_PORT && ':' + process.env.NEXT_PUBLIC_API_PORT,
   ].filter(Boolean).join('');
 
@@ -38,7 +47,7 @@ const apiUrl = (() => {
 })();
 
 /** @type {import('next-sitemap').IConfig} */
-module.exports = {
+const config = {
   siteUrl,
   generateIndexSitemap: false,
   generateRobotsTxt: true,
@@ -123,11 +132,6 @@ module.exports = {
           return null;
         }
         break;
-      case '/stats':
-        if (!process.env.NEXT_PUBLIC_STATS_API_HOST) {
-          return null;
-        }
-        break;
       case '/validators':
         if (!process.env.NEXT_PUBLIC_VALIDATORS_CHAIN_TYPE) {
           return null;
@@ -174,3 +178,5 @@ module.exports = {
     ].map(path => config.transform(config, path)));
   },
 };
+
+export default config; 

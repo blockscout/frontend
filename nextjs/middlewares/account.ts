@@ -1,12 +1,14 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
-import config from 'configs/app';
 import * as cookies from 'lib/cookies';
 
 export function account(req: NextRequest) {
-  const feature = config.features.account;
-  if (!feature.isEnabled) {
+  const isAccountSupported = process.env.NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED === 'true';
+  const hasRecaptchaKey = Boolean(process.env.NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY);
+  const isEnabled = isAccountSupported && hasRecaptchaKey;
+
+  if (!isEnabled) {
     return;
   }
 
@@ -22,7 +24,7 @@ export function account(req: NextRequest) {
     const isProfileRoute = req.nextUrl.pathname.includes('/auth/profile');
 
     if ((isAccountRoute || isProfileRoute)) {
-      return NextResponse.redirect(config.app.baseUrl);
+      return NextResponse.redirect(new URL('/', req.url));
     }
   }
 }
