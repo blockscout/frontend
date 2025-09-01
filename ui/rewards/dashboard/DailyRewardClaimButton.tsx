@@ -1,4 +1,5 @@
 import { Flex } from '@chakra-ui/react';
+import { useQueryClient } from '@tanstack/react-query';
 import React, { useCallback, useEffect, useMemo } from 'react';
 
 import { useRewardsContext } from 'lib/contexts/rewards';
@@ -7,6 +8,7 @@ import { SECOND } from 'toolkit/utils/consts';
 import splitSecondsInPeriods from 'ui/blockCountdown/splitSecondsInPeriods';
 
 const DailyRewardClaimButton = () => {
+  const queryClient = useQueryClient();
   const { balancesQuery, dailyRewardQuery, claim } = useRewardsContext();
   const [ isClaiming, setIsClaiming ] = React.useState(false);
   const [ timeLeft, setTimeLeft ] = React.useState<string>('');
@@ -25,9 +27,10 @@ const DailyRewardClaimButton = () => {
         balancesQuery.refetch(),
         dailyRewardQuery.refetch(),
       ]);
+      queryClient.invalidateQueries({ queryKey: [ 'rewards:user_badges' ] });
     } catch (error) {}
     setIsClaiming(false);
-  }, [ claim, setIsClaiming, balancesQuery, dailyRewardQuery ]);
+  }, [ claim, setIsClaiming, balancesQuery, dailyRewardQuery, queryClient ]);
 
   useEffect(() => {
     if (!dailyRewardQuery.data?.reset_at) {

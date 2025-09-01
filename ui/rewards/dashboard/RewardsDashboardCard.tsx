@@ -44,6 +44,7 @@ const RewardsDashboardCard = ({
         pb={ contentDirection === 'column-reverse' ? { base: 1.5, md: 3 } : 0 }
         pt={ contentDirection === 'column-reverse' ? 0 : { base: 1.5, md: 3 } }
         w={{ base: 'full', md: contentDirection === 'row' ? '340px' : 'full' }}
+        flex={ 1 }
       >
         { label && <Badge loading={ isLoading }>{ label }</Badge> }
         { title && (
@@ -56,7 +57,9 @@ const RewardsDashboardCard = ({
         <Text as="div" fontSize="sm">
           { description }
         </Text>
-        { contentAfter }
+        <Flex flexDirection="column" mt={ contentDirection === 'column-reverse' ? 'auto' : 0 }>
+          { contentAfter }
+        </Flex>
       </Flex>
       <Flex
         alignItems="center"
