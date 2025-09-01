@@ -315,3 +315,11 @@ export const notOpSuperchain: Guard = () => async() => {
     };
   }
 };
+
+export const megaEth: Guard = () => async() => {
+  if (!config.features.megaEth.isEnabled) {
+    return {
+      notFound: true,
+    };
+  }
+};

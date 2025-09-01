@@ -24,6 +24,7 @@ export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/clusters/[name]': 'Cluster details',
   '/stats': 'Stats',
   '/stats/[id]': 'Stats chart',
+  '/uptime': 'Uptime',
   '/api-docs': 'REST API',
   '/search-results': 'Search results',
   '/auth/profile': 'Profile',

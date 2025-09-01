@@ -25,6 +25,7 @@ export const login = factory([ guards.login ]);
 export const dev = factory([ guards.dev ]);
 export const publicTagsSubmit = factory([ guards.publicTagsSubmit ]);
 export const pools = factory([ guards.pools ]);
+export const megaEth = factory([ guards.megaEth ]);
 export const zetaChainCCTX = factory([ guards.zetaChainCCTX ]);
 
 // ROLLUPS

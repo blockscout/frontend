@@ -9,6 +9,7 @@ export { googleReCaptcha } from './googleReCaptcha';
 export { growthBook } from './growthBook';
 export { helia } from './helia';
 export { marketplace } from './marketplace';
+export { megaEth } from './megaEth';
 export { mixpanel } from './mixpanel';
 export { monaco } from './monaco';
 export { multichain } from './multichain';
