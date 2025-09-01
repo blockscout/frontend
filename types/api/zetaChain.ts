@@ -131,7 +131,7 @@ export type ZetaChainCCTXOutboundParams = {
   gas_limit: string;
   gas_price: string;
   gas_priority_fee: string;
-  hash: string;
+  hash: string | null;
   ballot_index: string;
   observed_external_height: string;
   gas_used: string;

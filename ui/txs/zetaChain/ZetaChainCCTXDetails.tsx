@@ -162,7 +162,7 @@ const ZetaChainCCTXDetails = ({ data, isLoading }: Props) => {
           <ZetaChainCCTXStatusTag status={ data.cctx_status.status } isLoading={ isLoading }/>
         </Flex>
         { data.cctx_status.error_message && (
-          <CollapsibleDetails ml={ 2 }>
+          <CollapsibleDetails ml={ 2 } variant="secondary">
             <RawDataSnippet data={ data.cctx_status.error_message } minW="100%"/>
           </CollapsibleDetails>
         ) }
@@ -212,7 +212,7 @@ const ZetaChainCCTXDetails = ({ data, isLoading }: Props) => {
       >
         Lifecycle
       </DetailedInfo.ItemLabel>
-      <DetailedInfo.ItemValue position="relative" mb={ 7 } pl={ 0 } mt={{ base: 2, lg: 0 }}>
+      <DetailedInfo.ItemValue position="relative" mb={ 7 } pl={ 0 } mt={{ base: 2, lg: 1 }}>
         <Box position="absolute" top="4px" left="9px" width="2px" height="100%" bg="border.divider"/>
         <Grid templateColumns="20px 1fr" rowGap={ 6 } columnGap={ 2 } w="100%">
           { transactionsBefore.length > 0 && (
@@ -286,6 +286,7 @@ const ZetaChainCCTXDetails = ({ data, isLoading }: Props) => {
               w="100%"
               bg={{ _light: 'blackAlpha.50', _dark: 'whiteAlpha.50' }}
               borderRadius="md"
+              fontSize="sm"
             >
               <Text fontWeight="medium" color="text.secondary">Abort address</Text>
               <AddressEntityZetaChain
@@ -304,7 +305,7 @@ const ZetaChainCCTXDetails = ({ data, isLoading }: Props) => {
               { data.revert_options.revert_message && (
                 <>
                   <Text fontWeight="medium" color="text.secondary">Message</Text>
-                  <Skeleton loading={ isLoading }>
+                  <Skeleton loading={ isLoading } display="flex" justifyContent="space-between">
                     <Text
                       wordBreak="break-all"
                       overflowWrap="break-word"
@@ -313,6 +314,7 @@ const ZetaChainCCTXDetails = ({ data, isLoading }: Props) => {
                     >
                       { base64ToHex(data.revert_options.revert_message) }
                     </Text>
+                    <CopyToClipboard text={ base64ToHex(data.revert_options.revert_message) } isLoading={ isLoading }/>
                   </Skeleton>
                 </>
               ) }

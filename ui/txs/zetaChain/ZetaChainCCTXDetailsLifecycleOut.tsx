@@ -41,28 +41,35 @@ const ZetaChainCCTXDetailsLifecycleOut = ({ outboundParam, tx, isLoading, isLast
   let text: string = '';
   let color: string = '';
 
-  const isCCTX = tx.related_cctxs.some((cctx) => cctx.index === outboundParam.hash);
-
-  const transactionOrCCTX = isCCTX ? (
-    <>
-      <Text color="text.secondary" fontWeight="medium">CCTX</Text>
-      <CCTxEntityZetaChain
-        hash={ outboundParam.hash }
-        isLoading={ isLoading }
-        noIcon
-        noCopy={ false }
-      />
-    </>
-  ) : (
-    <>
-      <Text color="text.secondary" fontWeight="medium">Transaction</Text>
-      { chainToId !== config.chain.id ? (
-        <TxEntityZetaChainExternal chainId={ chainToId } hash={ outboundParam.hash } noIcon noCopy={ false }/>
-      ) : (
-        <TxEntity hash={ outboundParam.hash } noIcon noCopy={ false }/>
-      ) }
-    </>
-  );
+  const transactionOrCCTX = (() => {
+    if (!outboundParam.hash) {
+      return null;
+    }
+    const isCCTX = tx.related_cctxs.some((cctx) => cctx.index === outboundParam.hash);
+    if (isCCTX) {
+      return (
+        <>
+          <Text color="text.secondary" fontWeight="medium">CCTX</Text>
+          <CCTxEntityZetaChain
+            hash={ outboundParam.hash }
+            isLoading={ isLoading }
+            noIcon
+            noCopy={ false }
+          />
+        </>
+      );
+    }
+    return (
+      <>
+        <Text color="text.secondary" fontWeight="medium">Transaction</Text>
+        { chainToId !== config.chain.id ? (
+          <TxEntityZetaChainExternal chainId={ chainToId } hash={ outboundParam.hash } noIcon noCopy={ false }/>
+        ) : (
+          <TxEntity hash={ outboundParam.hash } noIcon noCopy={ false }/>
+        ) }
+      </>
+    );
+  })();
 
   if (tx.cctx_status.status === 'OUTBOUND_MINED') {
     content = (
@@ -215,11 +222,18 @@ const ZetaChainCCTXDetailsLifecycleOut = ({ outboundParam, tx, isLoading, isLast
         <IconSvg name="verification-steps/finalized" boxSize={ 5 } bg={ bgColor } zIndex={ 1 } color={ color }/>
       </Flex>
       <Skeleton loading={ isLoading } w="100%">
-        { /* color is incorrect, idk where to get the right one */ }
         <Flex color={ color } maxH="20px" alignItems="center" mb={ 2.5 }>
           { text }
         </Flex>
-        <Grid templateColumns="100px 1fr" rowGap={ 4 } columnGap={ 3 } bg="alert.bg.info" py={ 3 } px={ 4 } borderBottomRadius="md">
+        <Grid
+          templateColumns="100px 1fr"
+          gap={ 3 }
+          bg="alert.bg.info"
+          py={ 3 }
+          px={ 4 }
+          borderBottomRadius="md"
+          fontSize="sm"
+        >
           { content }
         </Grid>
       </Skeleton>

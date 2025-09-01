@@ -931,16 +931,14 @@ This feature allows users to view [Flashblocks](https://docs.base.org/base-chain
 
 &nbsp;
 
-### ZetaChain
+#### Address 3rd party widget
 
-This feature enables cross-chain transactions pages and views on zetaChain instances
+This feature allows to display widgets on the address page with data from 3rd party services.
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST | `string` | ZetaChain cross-chain transactions service API endpoint url | - | - | `https://zetachain-cctx.services.blockscout.com` | v2.3.0+ |
-| NEXT_PUBLIC_ZETACHAIN_SERVICE_CHAINS_CONFIG_URL | `string` | URL of configuration file (`.json` format only) which contains chains info for the supported chains. | - | - | `https://example.com/zetachain_chains_config.json` | v2.3.0+ |
-| NEXT_PUBLIC_ZETACHAIN_COSMOS_TX_URL_TEMPLATE | `string` | URL template to redirect cosmos tx search. | - | - | `https://example.com/cosmos/tx/{hash}` | v2.3.0+ |
-| NEXT_PUBLIC_ZETACHAIN_COSMOS_ADDRESS_URL_TEMPLATE | `string` URL template to redirect cosmos address search. | - | - | `https://example.com/cosmos/address/{hash}` | v2.3.0+ |
+| NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS | `Array<string>` | Array of widget ids to be displayed | - | - | `['widget-1', 'widget-2']` | v2.2.0+ |
+| NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS_CONFIG_URL | `string` | URL of configuration file (`.json` format only) which contains mapping of widget names to their configuration. See [below](#address-3rd-party-widget-configuration-properties) list of available properties for a widget. | - | - | `https://example.com/address_3rd_party_widgets_config.json` | v2.2.0+ |
 
 #### Address 3rd party widget configuration properties
 
@@ -957,14 +955,18 @@ This feature enables cross-chain transactions pages and views on zetaChain insta
 
 &nbsp;
 
+
 ### ZetaChain cross-chain transactions
 
-This feature allows to display widgets on the address page with data from 3rd party services.
+This feature enables cross-chain transactions pages and views on zetaChain instances
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS | `Array<string>` | Array of widget ids to be displayed | - | - | `['widget-1', 'widget-2']` | v2.2.0+ |
-| NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS_CONFIG_URL | `string` | URL of configuration file (`.json` format only) which contains mapping of widget names to their configuration. See [below](#address-3rd-party-widget-configuration-properties) list of available properties for a widget. | - | - | `https://example.com/address_3rd_party_widgets_config.json` | v2.2.0+ |
+| NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST | `string` | ZetaChain cross-chain transactions service API endpoint url | - | - | `https://zetachain-cctx.services.blockscout.com` | v2.3.0+ |
+| NEXT_PUBLIC_ZETACHAIN_SERVICE_CHAINS_CONFIG_URL | `string` | URL of configuration file (`.json` format only) which contains chains info for the supported chains. | - | - | `https://example.com/zetachain_chains_config.json` | v2.3.0+ |
+| NEXT_PUBLIC_ZETACHAIN_COSMOS_TX_URL_TEMPLATE | `string` | URL template to redirect cosmos tx search. | - | - | `https://example.com/cosmos/tx/{hash}` | v2.3.0+ |
+| NEXT_PUBLIC_ZETACHAIN_COSMOS_ADDRESS_URL_TEMPLATE | `string` URL template to redirect cosmos address search. | - | - | `https://example.com/cosmos/address/{hash}` | v2.3.0+ |
+
 
 #### ZetaChain supported cain configuration properties
 
