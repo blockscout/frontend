@@ -38,9 +38,14 @@ export interface AxisConfig {
   ticks?: number;
   nice?: boolean;
   noLabel?: boolean;
+  scale?: {
+    min?: number;
+  };
 }
 
 export interface AxesConfig {
   x?: AxisConfig;
   y?: AxisConfig;
 }
+
+export type AxesConfigFn = (props: { isEnlarged?: boolean; isMobile?: boolean }) => AxesConfig;

@@ -3,7 +3,7 @@ import { maxBy, uniq } from 'es-toolkit';
 
 import type { AxesConfig, AxisConfig, TimeChartData } from '../types';
 
-import { MONTH, YEAR } from 'toolkit/utils/consts';
+import { DAY, MONTH, YEAR } from 'toolkit/utils/consts';
 
 export const DEFAULT_MAXIMUM_SIGNIFICANT_DIGITS = 2;
 export const DEFAULT_MAXIMUM_FRACTION_DIGITS = 3;
@@ -51,8 +51,10 @@ const tickFormatterX = (axis: d3.Axis<d3.NumberValue>) => (d: d3.AxisDomain) => 
     format = d3.timeFormat('%Y');
   } else if (span > 4 * MONTH) {
     format = d3.timeFormat('%b \'%y');
-  } else {
+  } else if (span > 2 * DAY) {
     format = d3.timeFormat('%d %b');
+  } else {
+    format = d3.timeFormat('%H:%M');
   }
 
   return format(d as Date);
@@ -64,10 +66,10 @@ function getAxisParamsY(data: Data, config?: AxisConfig) {
   const max = d3.max(data, ({ items }) => d3.max(items, ({ value }) => value)) ?? 0;
   const scale = config?.nice ?
     d3.scaleLinear()
-      .domain([ min, max ])
+      .domain([ config?.scale?.min ?? min, max ])
       .nice(config?.ticks ?? DEFAULT_TICKS_NUM) :
     d3.scaleLinear()
-      .domain([ min, max ]);
+      .domain([ config?.scale?.min ?? min, max ]);
 
   const ticks = scale.ticks(config?.ticks ?? DEFAULT_TICKS_NUM);
   const labelFormatParams = getYLabelFormatParams(ticks);
