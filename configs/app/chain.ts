@@ -46,7 +46,7 @@ const getChain = () => {
   const env = getEnvValue('NEXT_PUBLIC_CHAIN');
 
   switch (env) {
-    case 'develop':
+    case 'devnet':
       return {
         id: String(parseInt(String(FLUENT_DEVNET_CHAIN_ID), 16)),
         name: 'Fluent',
