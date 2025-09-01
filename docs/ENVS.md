@@ -804,6 +804,16 @@ For blockchains that use the Celo platform. _Note_, that once the Celo mainnet b
 
 &nbsp;
 
+### MegaETH chain
+
+For blockchains that use the MegaETH platform.
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
+| --- | --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_MEGA_ETH_SOCKET_URL_METRICS | `string` | Public WebSocket endpoint for streaming statistics data, used to display information on the uptime dashboard page. | - | - | `wss://testnet-dashboard.megaeth.com/metrics` | upcoming |
+
+&nbsp;
+
 ### Ton Application Chain (TAC)
 
 For Ton Application Chains, this feature enables additional views, such as a list of cross-chain operations and a detailed page for a specific cross-chain operation, as well as extra fields on the transaction page.

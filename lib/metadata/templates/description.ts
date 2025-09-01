@@ -29,6 +29,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/clusters/[name]': '%cluster_name% cluster | %app_name%',
   '/stats': DEFAULT_TEMPLATE,
   '/stats/[id]': DEFAULT_TEMPLATE,
+  '/uptime': DEFAULT_TEMPLATE,
   '/api-docs': DEFAULT_TEMPLATE,
   '/search-results': DEFAULT_TEMPLATE,
   '/auth/profile': DEFAULT_TEMPLATE,
