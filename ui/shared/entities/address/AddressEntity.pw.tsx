@@ -219,6 +219,22 @@ test('with name tag', async({ render }) => {
   await expect(component).toHaveScreenshot();
 });
 
+test.describe('with cex deposit tag', () => {
+  test.use({ viewport: { width: 500, height: 140 } });
+
+  test('default', async({ render }) => {
+    const address = { ...addressMock.withNameTag, metadata: { reputation: 1, tags: [ metadataMock.cexDepositTag ] } };
+
+    const component = await render(
+      <AddressEntity
+        address={ address }
+      />,
+    );
+
+    await expect(component).toHaveScreenshot();
+  });
+});
+
 test('external link', async({ render }) => {
   const component = await render(
     <AddressEntity

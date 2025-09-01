@@ -100,6 +100,7 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, hash }: Props) => {
       <EntityTags
         isLoading={ isLoading || (config.features.addressMetadata.isEnabled && addressMetadataQuery.isPending) }
         tags={ tags }
+        addressHash={ addressQuery.data?.hash }
         flexGrow={ 1 }
       />
     </>

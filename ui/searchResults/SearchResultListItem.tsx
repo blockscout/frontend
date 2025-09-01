@@ -406,7 +406,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading, addressFormat }: Pr
               </Flex>
             ) }
             { data.type === 'metadata_tag' && (
-              <SearchResultEntityTag metadata={ data.metadata } searchTerm={ searchTerm }/>
+              <SearchResultEntityTag metadata={ data.metadata } addressHash={ data.address_hash } searchTerm={ searchTerm }/>
             ) }
           </Flex>
         ) :

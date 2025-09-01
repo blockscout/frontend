@@ -380,6 +380,7 @@ const AddressPageContent = () => {
   const titleContentAfter = (
     <EntityTags
       tags={ tags }
+      addressHash={ addressQuery.data?.hash }
       isLoading={
         isLoading ||
         (config.features.userOps.isEnabled && userOpsAccountQuery.isPlaceholderData) ||
