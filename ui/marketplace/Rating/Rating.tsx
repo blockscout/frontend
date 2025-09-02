@@ -5,7 +5,7 @@ import config from 'configs/app';
 import type { EventTypes, EventPayload } from 'lib/mixpanel/index';
 import type { PopoverContentProps } from 'toolkit/chakra/popover';
 import { PopoverBody, PopoverContent, PopoverRoot } from 'toolkit/chakra/popover';
-import { Rating } from 'toolkit/chakra/rating';
+import { Rating as RatingComponent } from 'toolkit/chakra/rating';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import useIsAuth from 'ui/snippets/auth/useIsAuth';
 
@@ -26,7 +26,7 @@ type Props = {
   popoverContentProps?: PopoverContentProps;
 };
 
-const MarketplaceRating = ({
+const Rating = ({
   appId, rating, ratingsTotalCount, userRating,
   isLoading, fullView, source, popoverContentProps,
 }: Props) => {
@@ -45,7 +45,7 @@ const MarketplaceRating = ({
     >
       { fullView && (
         <>
-          <Rating defaultValue={ Math.floor(rating || 0) } readOnly key={ rating }/>
+          <RatingComponent defaultValue={ Math.floor(rating || 0) } readOnly key={ rating }/>
           { rating && <Text fontSize="md" ml={ 2 }>{ rating }</Text> }
           { ratingsTotalCount && <Text color="text.secondary" textStyle="md" ml={ 1 }>({ ratingsTotalCount })</Text> }
         </>
@@ -74,4 +74,4 @@ const MarketplaceRating = ({
   );
 };
 
-export default MarketplaceRating;
+export default Rating;

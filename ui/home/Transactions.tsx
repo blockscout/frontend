@@ -15,7 +15,7 @@ import LatestArbitrumDeposits from './latestDeposits/LatestArbitrumDeposits';
 const rollupFeature = config.features.rollup;
 const zetachainFeature = config.features.zetachain;
 
-const TransactionsHome = () => {
+const Transactions = () => {
   const isAuth = useAuth();
   if ((rollupFeature.isEnabled && (rollupFeature.type === 'optimistic' || rollupFeature.type === 'arbitrum')) || isAuth || zetachainFeature.isEnabled) {
     const tabs = [
@@ -51,4 +51,4 @@ const TransactionsHome = () => {
   );
 };
 
-export default TransactionsHome;
+export default Transactions;

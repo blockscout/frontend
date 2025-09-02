@@ -23,7 +23,7 @@ type Props = {
 
 const bridgedTokensFeature = config.features.bridgedTokens;
 
-const TokensTableItem = ({
+const TokensListItem = ({
   token,
   page,
   index,
@@ -101,4 +101,4 @@ const TokensTableItem = ({
   );
 };
 
-export default TokensTableItem;
+export default TokensListItem;
