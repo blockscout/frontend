@@ -21,7 +21,7 @@ interface Props {
   hasEmail: boolean;
 }
 
-const WatchlistTableItem = ({ item, isLoading, onEditClick, onDeleteClick, hasEmail }: Props) => {
+const WatchListTableItem = ({ item, isLoading, onEditClick, onDeleteClick, hasEmail }: Props) => {
   const [ notificationEnabled, setNotificationEnabled ] = useState(item.notification_methods.email);
   const [ switchDisabled, setSwitchDisabled ] = useState(false);
   const onItemEditClick = useCallback(() => {
@@ -96,4 +96,4 @@ const WatchlistTableItem = ({ item, isLoading, onEditClick, onDeleteClick, hasEm
   );
 };
 
-export default WatchlistTableItem;
+export default WatchListTableItem;

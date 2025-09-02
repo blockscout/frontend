@@ -3,6 +3,7 @@ import jsPlugin from '@eslint/js';
 import nextJsPlugin from '@next/eslint-plugin-next';
 import stylisticPlugin from '@stylistic/eslint-plugin';
 import reactQueryPlugin from '@tanstack/eslint-plugin-query';
+import consistentDefaultExportNamePlugin from 'eslint-plugin-consistent-default-export-name';
 import importPlugin from 'eslint-plugin-import';
 import importHelpersPlugin from 'eslint-plugin-import-helpers';
 import jestPlugin from 'eslint-plugin-jest';
@@ -328,6 +329,23 @@ export default tseslint.config(
       'jsx-a11y': jsxA11yPlugin,
     },
     languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+  },
+
+  {
+    plugins: {
+      'consistent-default-export-name': consistentDefaultExportNamePlugin,
+    },
+    files: [
+      'ui/**/[A-Z]*.tsx',
+    ],
+    ignores: [
+      '**/*.pw.*',
+      '**/*.pwstory.*',
+      '**/pages/**',
+    ],
+    rules: {
+      'consistent-default-export-name/default-export-match-filename': [ 'error', null ],
+    },
   },
 
   {

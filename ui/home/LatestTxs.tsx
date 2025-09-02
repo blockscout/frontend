@@ -14,7 +14,7 @@ import useNewTxsSocket from 'ui/txs/socket/useTxsSocketTypeAll';
 import LatestTxsItem from './LatestTxsItem';
 import LatestTxsItemMobile from './LatestTxsItemMobile';
 
-const LatestTransactions = () => {
+const LatestTxs = () => {
   const isMobile = useIsMobile();
   const txsCount = isMobile ? 2 : 5;
   const { data, isPlaceholderData, isError } = useApiQuery('general:homepage_txs', {
@@ -64,4 +64,4 @@ const LatestTransactions = () => {
   return null;
 };
 
-export default LatestTransactions;
+export default LatestTxs;

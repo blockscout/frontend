@@ -12,7 +12,7 @@ import LatestArbitrumDeposits from './latestDeposits/LatestArbitrumDeposits';
 
 const rollupFeature = config.features.rollup;
 
-const TransactionsHome = () => {
+const Transactions = () => {
   const isAuth = useAuth();
   if ((rollupFeature.isEnabled && (rollupFeature.type === 'optimistic' || rollupFeature.type === 'arbitrum')) || isAuth) {
     const tabs = [
@@ -39,4 +39,4 @@ const TransactionsHome = () => {
   );
 };
 
-export default TransactionsHome;
+export default Transactions;

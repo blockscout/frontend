@@ -19,7 +19,7 @@ import BeaconChainWithdrawalsTable from 'ui/withdrawals/beaconChain/BeaconChainW
 
 const feature = config.features.beaconChain;
 
-const Withdrawals = () => {
+const BeaconChainWithdrawals = () => {
   const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({
     resourceName: 'general:withdrawals',
     options: {
@@ -99,4 +99,4 @@ const Withdrawals = () => {
   );
 };
 
-export default Withdrawals;
+export default BeaconChainWithdrawals;

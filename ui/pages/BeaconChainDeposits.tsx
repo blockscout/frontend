@@ -17,7 +17,7 @@ import StickyPaginationWithText from 'ui/shared/StickyPaginationWithText';
 
 const feature = config.features.beaconChain;
 
-const Deposits = () => {
+const BeaconChainDeposits = () => {
   const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({
     resourceName: 'general:deposits',
     options: {
@@ -95,4 +95,4 @@ const Deposits = () => {
   );
 };
 
-export default Deposits;
+export default BeaconChainDeposits;
