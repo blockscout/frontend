@@ -22,8 +22,8 @@ import useIsAuth from 'ui/snippets/auth/useIsAuth';
 import TxsStats from 'ui/txs/TxsStats';
 import TxsWatchlist from 'ui/txs/TxsWatchlist';
 import TxsWithFrontendSorting from 'ui/txs/TxsWithFrontendSorting';
-import ZetaChainCCTXsTab from 'ui/txs/zetaChain/ZetaChainCCTXsTab';
-import ZetaChainEvmTransactions from 'ui/txs/zetaChain/ZetaChainEvmTransactions';
+import ZetaChainCCTXsTab from 'ui/zetaChain/ZetaChainCCTXsTab';
+import ZetaChainEvmTransactions from 'ui/zetaChain/ZetaChainEvmTransactions';
 
 const ZETACHAIN_TABS = [ 'zetachain_validated', 'zetachain_pending' ];
 const CROSS_CHAIN_TABS = [ 'cctx_pending', 'cctx_mined' ];

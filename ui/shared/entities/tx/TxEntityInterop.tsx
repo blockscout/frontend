@@ -1,7 +1,7 @@
 import { Box, chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import type { ChainInfo } from 'types/client/chainInfo';
+import type { CrossChainInfo } from 'types/client/crossChainInfo';
 
 import { route } from 'nextjs-routes';
 
@@ -15,7 +15,7 @@ import { distributeEntityProps } from '../base/utils';
 import * as TxEntity from './TxEntity';
 
 type Props = {
-  chain?: ChainInfo | null;
+  chain?: CrossChainInfo | null;
   hash?: string | null;
 } & Omit<TxEntity.EntityProps, 'hash' | 'chain'>;
 

@@ -1,21 +1,22 @@
 import React from 'react';
 
-import type { ZetaChainCCTXStatus } from 'types/api/zetaChain';
+import { CctxStatus } from '@blockscout/zetachain-cctx-types';
 
 import { Tag } from 'toolkit/chakra/tag';
 
 type Props = {
-  status: ZetaChainCCTXStatus;
+  status: CctxStatus;
   isLoading?: boolean;
 };
 
-const TagText: Record<ZetaChainCCTXStatus, string> = {
-  PENDING_OUTBOUND: 'Pending outbound',
-  PENDING_INBOUND: 'Pending inbound',
-  OUTBOUND_MINED: 'Outbound mined',
-  PENDING_REVERT: 'Pending revert',
-  ABORTED: 'Aborted',
-  REVERTED: 'Reverted',
+const TagText: Record<CctxStatus, string> = {
+  [CctxStatus.PENDING_OUTBOUND]: 'Pending outbound',
+  [CctxStatus.PENDING_INBOUND]: 'Pending inbound',
+  [CctxStatus.OUTBOUND_MINED]: 'Outbound mined',
+  [CctxStatus.PENDING_REVERT]: 'Pending revert',
+  [CctxStatus.ABORTED]: 'Aborted',
+  [CctxStatus.REVERTED]: 'Reverted',
+  [CctxStatus.UNRECOGNIZED]: 'Unknown Status',
 };
 
 const ZetaChainCCTXStatusTag = ({ status, isLoading }: Props) => {

@@ -4,8 +4,8 @@ import { throttle } from 'es-toolkit';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
 
+import type { ListCctxsResponse } from '@blockscout/zetachain-cctx-types';
 import type { SearchResultItem } from 'types/api/search';
-import type { ZetaChainCCTXListResponse } from 'types/api/zetaChain';
 
 import config from 'configs/app';
 import type { CosmosHashType } from 'lib/address/cosmos';
@@ -17,18 +17,18 @@ import * as regexp from 'toolkit/utils/regexp';
 import useMarketplaceApps from 'ui/marketplace/useMarketplaceApps';
 import TextAd from 'ui/shared/ad/TextAd';
 import ContentLoader from 'ui/shared/ContentLoader';
+import SearchCosmosNotice from 'ui/shared/search/SearchCosmosNotice';
 import type { ApiCategory, Category, ItemsCategoriesMap } from 'ui/shared/search/utils';
 import { getItemCategory, searchCategories } from 'ui/shared/search/utils';
 
 import SearchBarSuggestApp from './SearchBarSuggestApp';
 import SearchBarSuggestBlockCountdown from './SearchBarSuggestBlockCountdown';
-import SearchBarSuggestCosmosNotice from './SearchBarSuggestCosmosNotice';
 import SearchBarSuggestItem from './SearchBarSuggestItem';
 import SearchBarSuggestZetaChainCCTX from './SearchBarSuggestZetaChainCCTX';
 
 interface Props {
   query: UseQueryResult<Array<SearchResultItem>, ResourceError<unknown>>;
-  zetaChainCCTXQuery: UseQueryResult<ZetaChainCCTXListResponse, ResourceError<unknown>>;
+  zetaChainCCTXQuery: UseQueryResult<ListCctxsResponse, ResourceError<unknown>>;
   cosmosHashType: CosmosHashType;
   searchTerm: string;
   onItemClick: (event: React.MouseEvent<HTMLAnchorElement>) => void;
@@ -217,7 +217,7 @@ const SearchBarSuggest = ({ query, zetaChainCCTXQuery, cosmosHashType, searchTer
             </Element>
           );
         }) }
-        { cosmosHashType && <SearchBarSuggestCosmosNotice cosmosHash={ searchTerm } type={ cosmosHashType }/> }
+        { cosmosHashType && <SearchCosmosNotice cosmosHash={ searchTerm } type={ cosmosHashType }/> }
       </>
     );
   })();

@@ -49,7 +49,7 @@ import type { TxExternalTxsConfig } from '../../../types/client/externalTxsConfi
 import { replaceQuotes } from '../../../configs/app/utils';
 import * as regexp from '../../../toolkit/utils/regexp';
 import type { IconName } from '../../../ui/shared/IconSvg';
-import type { ChainInfo } from '../../../types/client/chainInfo';
+import type { CrossChainInfo } from '../../../types/client/crossChainInfo';
 
 const protocols = [ 'http', 'https' ];
 
@@ -628,11 +628,11 @@ const multichainProviderConfigSchema: yup.ObjectSchema<MultichainProviderConfig>
   dapp_id: yup.string(),
 });
 
-const zetaChainCCTXConfigSchema: yup.ObjectSchema<ChainInfo> = yup.object({
+const zetaChainCCTXConfigSchema: yup.ObjectSchema<CrossChainInfo> = yup.object({
   chain_id: yup.number().required(),
   chain_name: yup.string().required(),
   chain_logo: yup.string(),
-  instance_url: yup.string(),
+  instance_url: yup.string().test(urlTest),
   address_url_template: yup.string(),
   tx_url_template: yup.string(),
 });

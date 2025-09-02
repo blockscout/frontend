@@ -3,6 +3,7 @@ import React from 'react';
 
 import { route } from 'nextjs/routes';
 
+import { stripTrailingSlash } from 'toolkit/utils/url';
 import useZetaChainConfig from 'ui/zetaChain/useZetaChainConfig';
 
 import * as TxEntity from './TxEntity';
@@ -17,7 +18,7 @@ const TxEntityZetaChainExternal = (props: Props) => {
 
   const defaultHref = (() => {
     if (chain?.instance_url) {
-      return chain.instance_url.replace(/\/$/, '') + route({ pathname: '/tx/[hash]', query: { hash: props.hash } });
+      return stripTrailingSlash(chain.instance_url) + route({ pathname: '/tx/[hash]', query: { hash: props.hash } });
     }
     if (chain?.tx_url_template) {
       return chain.tx_url_template.replace('{hash}', props.hash);
@@ -25,7 +26,7 @@ const TxEntityZetaChainExternal = (props: Props) => {
     return;
   })();
 
-  return <TxEntity.default { ...props } icon={{ name: 'interop', boxSize: 6, marginRight: 1 }} href={ props.href ?? defaultHref } isExternal/>;
+  return <TxEntity.default { ...props } href={ props.href ?? defaultHref } isExternal/>;
 };
 
 export default chakra(TxEntityZetaChainExternal);

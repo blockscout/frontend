@@ -1,11 +1,11 @@
 import React from 'react';
 
-import type { ZetaChainCCTXStatusReduced } from 'types/api/zetaChain';
+import { CctxStatusReduced } from '@blockscout/zetachain-cctx-types';
 
 import StatusTag, { type StatusTagType } from 'ui/shared/statusTag/StatusTag';
 
 type Props = {
-  status: ZetaChainCCTXStatusReduced;
+  status: CctxStatusReduced;
   isLoading?: boolean;
   type?: 'reduced' | 'full';
 };
@@ -13,28 +13,34 @@ type Props = {
 const ZetaChainCCTXReducedStatus = ({ status, isLoading, type = 'reduced' }: Props) => {
   let statusTagType: StatusTagType;
   switch (status) {
-    case 'SUCCESS':
+    case CctxStatusReduced.SUCCESS:
       statusTagType = 'ok';
       break;
-    case 'PENDING':
+    case CctxStatusReduced.PENDING:
       statusTagType = 'pending';
       break;
-    case 'FAILED':
+    case CctxStatusReduced.FAILED:
       statusTagType = 'error';
+      break;
+    case CctxStatusReduced.UNRECOGNIZED:
+      statusTagType = 'pending';
       break;
   }
 
   if (type === 'full') {
     let text: string;
     switch (status) {
-      case 'SUCCESS':
+      case CctxStatusReduced.SUCCESS:
         text = 'Success';
         break;
-      case 'PENDING':
+      case CctxStatusReduced.PENDING:
         text = 'Pending';
         break;
-      case 'FAILED':
+      case CctxStatusReduced.FAILED:
         text = 'Failed';
+        break;
+      case CctxStatusReduced.UNRECOGNIZED:
+        text = 'Unrecognized';
         break;
     }
     return <StatusTag type={ statusTagType } text={ text } size="md" loading={ isLoading }/>;

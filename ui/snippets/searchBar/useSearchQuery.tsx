@@ -3,6 +3,7 @@ import React from 'react';
 
 import config from 'configs/app';
 import { fromBech32Address, isBech32Address } from 'lib/address/bech32';
+import { checkCosmosHash } from 'lib/address/cosmos';
 import useApiQuery from 'lib/api/useApiQuery';
 import useDebounce from 'lib/hooks/useDebounce';
 import useUpdateValueEffect from 'lib/hooks/useUpdateValueEffect';
@@ -43,7 +44,7 @@ export default function useSearchQuery(withRedirectCheck?: boolean) {
       offset: 0,
       direction: 'DESC',
     },
-    queryOptions: { enabled: config.features.zetachain.isEnabled },
+    queryOptions: { enabled: config.features.zetachain.isEnabled && debouncedSearchTerm.trim().length > 0 },
   });
 
   useUpdateValueEffect(() => {
@@ -58,5 +59,6 @@ export default function useSearchQuery(withRedirectCheck?: boolean) {
     redirectCheckQuery,
     pathname,
     zetaChainCCTXQuery,
+    cosmosHashType: checkCosmosHash(debouncedSearchTerm),
   }), [ debouncedSearchTerm, pathname, query, redirectCheckQuery, searchTerm, zetaChainCCTXQuery ]);
 }

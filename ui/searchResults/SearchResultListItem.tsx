@@ -18,6 +18,7 @@ import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tag } from 'toolkit/chakra/tag';
 import { ADDRESS_REGEXP } from 'toolkit/components/forms/validators/address';
+import { SECOND } from 'toolkit/utils/consts';
 import ContractCertifiedLabel from 'ui/shared/ContractCertifiedLabel';
 import * as AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import * as BlobEntity from 'ui/shared/entities/blob/BlobEntity';
@@ -372,7 +373,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading, addressFormat }: Pr
       }
       case 'zetaChainCCTX': {
         return (
-          <Text color="text.secondary">{ dayjs(Number(data.cctx.last_update_timestamp) * 1000).format('llll') }</Text>
+          <Text color="text.secondary">{ dayjs(Number(data.cctx.last_update_timestamp) * SECOND).format('llll') }</Text>
         );
       }
       case 'tac_operation': {

@@ -1,4 +1,4 @@
-import type { ZetaChainCCTX } from 'types/api/zetaChain';
+import type { CctxListItem } from '@blockscout/zetachain-cctx-types';
 import type { MarketplaceApp } from 'types/client/marketplace';
 import type { SearchResultItem } from 'types/client/search';
 
@@ -10,7 +10,7 @@ export type Category = ApiCategory | 'app' | 'zetaChainCCTX';
 export type ItemsCategoriesMap =
 Record<ApiCategory, Array<SearchResultItem>> &
 Record<'app', Array<MarketplaceApp>> &
-Record<'zetaChainCCTX', Array<ZetaChainCCTX>>;
+Record<'zetaChainCCTX', Array<CctxListItem>>;
 
 export type SearchResultAppItem = {
   type: 'app';

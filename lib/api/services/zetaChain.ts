@@ -1,5 +1,6 @@
 import type { ApiResource } from '../types';
-import type { ZetaChainCCTXFilterParams, ZetaChainCCTXListResponse, ZetaChainCCTXResponse, ZetaChainTokensResponse } from 'types/api/zetaChain';
+import type * as zetaChainCCTXType from '@blockscout/zetachain-cctx-types';
+import type { ZetaChainCCTXFilterParams } from 'types/client/zetaChain';
 
 export const ZETA_CHAIN_API_RESOURCES = {
   transactions: {
@@ -33,9 +34,9 @@ export type ZetaChainApiResourceName = `zetachain:${ keyof typeof ZETA_CHAIN_API
 
 /* eslint-disable @stylistic/indent */
 export type ZetaChainApiResourcePayload<R extends ZetaChainApiResourceName> =
-R extends 'zetachain:transactions' ? ZetaChainCCTXListResponse :
-R extends 'zetachain:transaction' ? ZetaChainCCTXResponse :
-R extends 'zetachain:tokens' ? ZetaChainTokensResponse :
+R extends 'zetachain:transactions' ? zetaChainCCTXType.ListCctxsResponse :
+R extends 'zetachain:transaction' ? zetaChainCCTXType.CrossChainTx :
+R extends 'zetachain:tokens' ? zetaChainCCTXType.Tokens :
 never;
 /* eslint-enable @stylistic/indent */
 

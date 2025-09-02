@@ -62,6 +62,9 @@ const BadgeShowcase = () => {
           <Sample label="size: md">
             <Badge size="md">Content</Badge>
           </Sample>
+          <Sample label="size: sm">
+            <Badge size="sm">Content</Badge>
+          </Sample>
         </SamplesStack>
       </Section>
       <Section>

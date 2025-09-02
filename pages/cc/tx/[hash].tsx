@@ -9,7 +9,7 @@ const ZetaChainCCTX = dynamic(() => import('ui/pages/ZetaChainCCTX'), { ssr: fal
 
 const Page: NextPage<Props> = (props: Props) => {
   return (
-    <PageNextJs pathname="/tx/[hash]" query={ props.query }>
+    <PageNextJs pathname="/cc/tx/[hash]" query={ props.query }>
       <ZetaChainCCTX/>
     </PageNextJs>
   );

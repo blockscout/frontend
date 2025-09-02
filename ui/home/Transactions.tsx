@@ -7,7 +7,7 @@ import AdaptiveTabs from 'toolkit/components/AdaptiveTabs/AdaptiveTabs';
 import LatestOptimisticDeposits from 'ui/home/latestDeposits/LatestOptimisticDeposits';
 import LatestTxs from 'ui/home/LatestTxs';
 import LatestWatchlistTxs from 'ui/home/LatestWatchlistTxs';
-import LatestZetaChainCCTXs from 'ui/home/latestZetaChainCCTX/LatestZetahainCCTXs';
+import LatestZetaChainCCTXs from 'ui/home/latestZetaChainCCTX/LatestZetaChainCCTXs';
 import useAuth from 'ui/snippets/auth/useIsAuth';
 
 import LatestArbitrumDeposits from './latestDeposits/LatestArbitrumDeposits';

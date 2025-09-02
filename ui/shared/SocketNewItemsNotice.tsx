@@ -60,10 +60,7 @@ const SocketNewItemsNotice = chakra(({ children, className, url, num, showErrorA
 
     if (type === 'cross_chain_transaction') {
       return (
-        <>
-          <Link href={ url } onClick={ !url ? handleLinkClick : undefined }>More { name }s available</Link>
-          <Text whiteSpace="pre"> have come in</Text>
-        </>
+        <Link href={ url } onClick={ !url ? handleLinkClick : undefined }>More { name }s available</Link>
       );
     }
 

@@ -23,6 +23,7 @@ export default function useNavItems(): ReturnType {
   const router = useRouter();
   const pathname = router.pathname;
   const query = router.query;
+  const tab = query.tab;
 
   return React.useMemo(() => {
     let blockchainNavItems: Array<NavItem> | Array<Array<NavItem>> = [];
@@ -45,7 +46,7 @@ export default function useNavItems(): ReturnType {
       icon: 'transactions',
       isActive:
         // sorry, but this is how it was designed
-        (pathname === '/txs' && (!config.features.zetachain.isEnabled || !query.tab || !query.tab.includes('cctx'))) ||
+        (pathname === '/txs' && (!config.features.zetachain.isEnabled || !tab || !tab.includes('cctx'))) ||
         pathname === '/tx/[hash]' ||
         pathname === '/chain/[chain-slug]/tx/[hash]',
     };
@@ -53,7 +54,7 @@ export default function useNavItems(): ReturnType {
       text: 'Cross-chain transactions',
       nextRoute: { pathname: '/txs' as const, query: { tab: 'cctx' } },
       icon: 'interop',
-      isActive: pathname === '/cc/tx/[hash]' || (pathname === '/txs' && query.tab?.includes('cctx')),
+      isActive: pathname === '/cc/tx/[hash]' || (pathname === '/txs' && tab?.includes('cctx')),
     } : null;
     const operations: NavItem | null = config.features.tac.isEnabled ? {
       text: 'Operations',
@@ -358,5 +359,5 @@ export default function useNavItems(): ReturnType {
     ].filter(Boolean);
 
     return { mainNavItems, accountNavItems };
-  }, [ pathname, query ]);
+  }, [ pathname, tab ]);
 }

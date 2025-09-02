@@ -1600,6 +1600,11 @@
   resolved "https://registry.yarnpkg.com/@blockscout/visualizer-types/-/visualizer-types-0.2.0.tgz#a8ef326d69e29417db124c78f868d68aca959ad1"
   integrity sha512-gasqbEL89iH8YnH/TIEk0MBSG9SwhEJegY9tnQ1c/jFZOCYjiVkgNwm4oH0ncwCKoNX1GoKAregbkEUwDDw7FQ==
 
+"@blockscout/zetachain-cctx-types@^1.0.0-rc.6":
+  version "1.0.0-rc.8"
+  resolved "https://registry.yarnpkg.com/@blockscout/zetachain-cctx-types/-/zetachain-cctx-types-1.0.0-rc.8.tgz#3d309abd05a46a64733e7c1cb1ccb05e3e5c6817"
+  integrity sha512-s3l6DJk6WzQABXtepcH2CSc0Nh42h684D+3quk/X79shvNGW1K5TRZBmIlU1tJNHnTloXNvIubWXc7KAICyvwg==
+
 "@chainsafe/as-chacha20poly1305@^0.1.0":
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/@chainsafe/as-chacha20poly1305/-/as-chacha20poly1305-0.1.0.tgz#7da6f8796f9b42dac6e830a086d964f1f9189e09"

@@ -13,8 +13,8 @@ import { getTxCourseType } from './utils';
 type Mode = 'compact' | 'long';
 
 interface Props {
-  from: { hash: string };
-  to: { hash: string } | null;
+  from: { hash: string } | { hash: string; chainId: string; chainType: 'zeta' };
+  to: { hash: string } | { hash: string; chainId: string; chainType: 'zeta' } | null;
   current?: string;
   mode?: Mode | ConditionalValue<Mode>;
   className?: string;
@@ -23,15 +23,11 @@ interface Props {
   tokenSymbol?: string;
   truncation?: EntityProps['truncation'];
   noIcon?: boolean;
-  zetaChainFromChainId?: string;
-  zetaChainToChainId?: string;
 }
 
 const AddressFromTo = ({
   from,
-  zetaChainFromChainId,
   to,
-  zetaChainToChainId,
   current,
   mode: modeProp,
   className, isLoading, tokenHash = '', tokenSymbol = '', noIcon }: Props) => {
@@ -44,7 +40,7 @@ const AddressFromTo = ({
   ) ?? 'long';
 
   const EntityFrom = (() => {
-    if (zetaChainFromChainId !== undefined) {
+    if ('chainType' in from && from.chainType === 'zeta') {
       return AddressEntityZetaChain;
     }
     if (tokenHash && tokenSymbol) {
@@ -54,7 +50,7 @@ const AddressFromTo = ({
   })();
 
   const EntityTo = (() => {
-    if (zetaChainToChainId !== undefined) {
+    if (to && 'chainType' in to && to.chainType === 'zeta') {
       return AddressEntityZetaChain;
     }
     if (tokenHash && tokenSymbol) {
@@ -65,6 +61,9 @@ const AddressFromTo = ({
 
   const isOutgoing = current ? current.toLowerCase() === from.hash.toLowerCase() : false;
   const isIncoming = current ? current.toLowerCase() === to?.hash?.toLowerCase() : false;
+
+  const fromChainId = 'chainType' in from && from.chainType === 'zeta' ? from.chainId : undefined;
+  const toChainId = to && 'chainType' in to && to.chainType === 'zeta' ? to.chainId : undefined;
 
   if (mode === 'compact') {
     return (
@@ -86,7 +85,7 @@ const AddressFromTo = ({
             truncation="constant"
             maxW="calc(100% - 28px)"
             w="min-content"
-            chainId={ zetaChainFromChainId }
+            chainId={ fromChainId }
           />
         </Flex>
         { to && (
@@ -102,7 +101,7 @@ const AddressFromTo = ({
             maxW="calc(100% - 28px)"
             w="min-content"
             ml="28px"
-            chainId={ zetaChainToChainId }
+            chainId={ toChainId }
           />
         ) }
       </Flex>
@@ -123,7 +122,7 @@ const AddressFromTo = ({
         tokenSymbol={ tokenSymbol }
         truncation="constant"
         mr={ isOutgoing ? 4 : 2 }
-        chainId={ zetaChainFromChainId }
+        chainId={ fromChainId }
       />
       <AddressFromToIcon
         isLoading={ isLoading }
@@ -140,7 +139,7 @@ const AddressFromTo = ({
           tokenSymbol={ tokenSymbol }
           truncation="constant"
           ml={ 3 }
-          chainId={ zetaChainToChainId }
+          chainId={ toChainId }
         />
       ) }
     </Grid>
