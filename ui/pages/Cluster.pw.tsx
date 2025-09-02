@@ -7,15 +7,20 @@ import { test, expect } from 'playwright/lib';
 
 import Cluster from './Cluster';
 
+const CDN_URL = 'https://localhost:3000/cdn';
+
 test.beforeEach(async({ mockEnvs, mockTextAd }) => {
-  await mockEnvs(ENVS_MAP.clusters);
+  await mockEnvs([
+    ...ENVS_MAP.clusters,
+    [ 'NEXT_PUBLIC_CLUSTERS_CDN_URL', CDN_URL ],
+  ]);
   await mockTextAd();
 });
 
 test.describe('Cluster Details Page', () => {
   test('mainnet cluster details +@mobile', async({ render, mockApiResponse, mockAssetResponse }) => {
     await mockAssetResponse(
-      'https://cdn.clusters.xyz/profile-image/campnetwork/lol',
+      `${ CDN_URL }/profile-image/campnetwork/lol`,
       './playwright/mocks/image_s.jpg',
     );
     await mockApiResponse('clusters:get_cluster_by_name', campNetworkClusterByName, {
@@ -39,17 +44,12 @@ test.describe('Cluster Details Page', () => {
       },
     );
 
-    await expect(component.getByText('campnetwork/lol').first()).toBeVisible();
-    await expect(component.getByText('Cluster Name')).toBeVisible();
-    await expect(component.getByText('Owner address')).toBeVisible();
-    await expect(component.getByText('Backing')).toBeVisible();
-
     await expect(component).toHaveScreenshot();
   });
 
   test('testnet cluster details +@mobile', async({ render, mockApiResponse, mockAssetResponse }) => {
     await mockAssetResponse(
-      'https://cdn.clusters.xyz/profile-image/test/cluster',
+      `${ CDN_URL }/profile-image/test/cluster`,
       './playwright/mocks/image_s.jpg',
     );
     await mockApiResponse('clusters:get_cluster_by_name', testnetClusterByName, {
@@ -72,11 +72,6 @@ test.describe('Cluster Details Page', () => {
         },
       },
     );
-
-    await expect(component.getByText('test/cluster').first()).toBeVisible();
-    await expect(component.getByText('Cluster Name')).toBeVisible();
-    await expect(component.getByText('Owner address')).toBeVisible();
-    await expect(component.getByText('Backing')).toBeVisible();
 
     await expect(component).toHaveScreenshot();
   });

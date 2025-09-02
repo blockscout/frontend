@@ -3,7 +3,7 @@ import type { Feature } from './types';
 import apis from '../apis';
 import { getEnvValue } from '../utils';
 
-const title = 'Clusters Universal Name Service';
+const title = 'Clusters universal name service';
 
 const config: Feature<{ cdnUrl: string }> = (() => {
   const cdnUrl = getEnvValue('NEXT_PUBLIC_CLUSTERS_CDN_URL') || 'https://cdn.clusters.xyz';
