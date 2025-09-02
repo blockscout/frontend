@@ -279,6 +279,7 @@ const colors = {
   medium: { value: '#231F20' },
   reddit: { value: '#FF4500' },
   celo: { value: '#FCFF52' },
+  clusters: { value: '#DE6061' },
 
   // THEME COLORS
   theme: defaultsDeep(config.UI.colorTheme.overrides, DEFAULT_THEME_COLORS),

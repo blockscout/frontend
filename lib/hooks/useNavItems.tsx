@@ -70,11 +70,11 @@ export default function useNavItems(): ReturnType {
        icon: 'verified',
        isActive: pathname === '/verified-contracts',
      };
-    const ensLookup = config.features.nameService.isEnabled ? {
+    const nameLookup = config.features.nameService.isEnabled || config.features.clusters.isEnabled ? {
       text: 'Name services lookup',
       nextRoute: { pathname: '/name-domains' as const },
       icon: 'ENS',
-      isActive: pathname === '/name-domains' || pathname === '/name-domains/[name]',
+      isActive: pathname === '/name-domains' || pathname === '/name-domains/[name]' || pathname === '/clusters/[name]',
     } : null;
     const validators = config.features.validators.isEnabled ? {
       text: 'Validators',
@@ -160,7 +160,7 @@ export default function useNavItems(): ReturnType {
           mudWorlds,
           validators,
           verifiedContracts,
-          ensLookup,
+          nameLookup,
         ].filter(Boolean),
       ];
     } else if (rollupFeature.isEnabled && rollupFeature.type === 'shibarium') {
@@ -176,7 +176,7 @@ export default function useNavItems(): ReturnType {
           userOps,
           topAccounts,
           verifiedContracts,
-          ensLookup,
+          nameLookup,
         ].filter(Boolean),
       ];
     } else if (rollupFeature.isEnabled && rollupFeature.type === 'zkSync') {
@@ -192,7 +192,7 @@ export default function useNavItems(): ReturnType {
           topAccounts,
           validators,
           verifiedContracts,
-          ensLookup,
+          nameLookup,
         ].filter(Boolean),
       ];
     } else {
@@ -206,7 +206,7 @@ export default function useNavItems(): ReturnType {
         topAccounts,
         validators,
         verifiedContracts,
-        ensLookup,
+        nameLookup,
         config.features.beaconChain.isEnabled && {
           text: 'Deposits',
           nextRoute: { pathname: '/deposits' as const },
