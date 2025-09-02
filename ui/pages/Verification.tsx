@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { Box, Flex, Text } from '@chakra-ui/react';
+// import { Box, Flex, Text } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 // import orderBy from 'lodash/orderBy';
 import type { NextPage } from 'next';
@@ -12,25 +12,8 @@ import PageNextJs from 'nextjs/PageNextJs';
 import { getEnvValue } from 'configs/app/utils';
 
 const TableList = dynamic(() => import('ui/storage/table-list'), { ssr: false });
-type RequestType = {
-  has_next: boolean;
-  has_more: boolean;
-  next_cursor: string;
-  previous_cursor?: string;
-  title_data: Array<{
-    block_number: number;
-    scheme_id: Array<string>;
-    from_address: string;
-    to_address: string;
-    transaction_status: string;
-    tx_fee: string;
-    tx_hash: string;
-    tx_time: string;
-    tx_value: string;
-  }>;
-};
+
 type IssuanceTalbeListType = {
-  'Schema ID': string;
   'Txn hash': string;
   Block: string;
   Method: string;
@@ -55,15 +38,24 @@ const ObjectDetails: NextPage = () => {
 
   const [ toNext, setToNext ] = React.useState<boolean>(true);
 
+  // const [ block, setBlock ] = React.useState<number>(0);
+
   const [ tableList, setTableList ] = React.useState<Array<IssuanceTalbeListType>>([]);
 
-  const tabThead = [ 'Schema ID', 'Txn hash', 'Block', 'Method', 'From/To', 'Time', 'Value MOCA', 'Fee MOCA' ];
-  const url = getEnvValue('NEXT_PUBLIC_CREDENTIAL_API_HOST');
-  const [ totalIssued, setTotalIssued ] = React.useState<number>(0);
-  const [ totalCredential, setTotalCredential ] = React.useState<number>(0);
+  const tabThead = [ 'Txn hash', 'Block', 'Method', 'From/To', 'Time', 'Value MOCA', 'Fee MOCA' ];
+
+  const url = getEnvValue('NEXT_PUBLIC_API_HOST');
+  // const [ totalIssued, setTotalIssued ] = React.useState<number>(0);
+  // const [ totalCredential, setTotalCredential ] = React.useState<number>(0);
   const [ loading, setLoading ] = React.useState<boolean>(false);
-  const [ nextCursor, setNextCursor ] = React.useState<string>('');
-  const [ previousCursor, setpreviousCursor ] = React.useState<string>('');
+  const [ map, setMap ] = React.useState<Map<string, any>>(new Map());
+  const setMapValue = React.useCallback((key: string, value: any) => {
+    setMap(prevMap => {
+      prevMap.set(key, value);
+      return prevMap;
+    });
+  }, [ ]);
+  // const [ previousCursor, setpreviousCursor ] = React.useState<string>('');
 
   const handleSearchChange = () => () => {};
 
@@ -84,83 +76,56 @@ const ObjectDetails: NextPage = () => {
     return num.decimalPlaces(decimalPlaces, BigNumber.ROUND_DOWN);
   }
 
-  const request = React.useCallback(async(hash?: string) => {
+  const request = React.useCallback(async() => {
     try {
       setLoading(true);
-      const rp1 = await (await fetch(url + `/api/v1/explorer/verificationstitle${ hash ? `?cursor=${ hash }` : '' }`, { method: 'get' })).json() as RequestType;
+      const hash = queryParams.page > 1 ? map.get((queryParams.page - 1).toString()) : '';
+      const rp1 = await (await fetch('https://' + url + '/api/v2/addresses/' +
+        '0xEfdefe08C6cD74CFEB2f0CC2B9401c52B859B427' + '/transactions?' + `${ hash || '' }`,
+      { method: 'get' })).json() as any;
       const tableList: Array<IssuanceTalbeListType> = [];
-      rp1.title_data.forEach((v: any) => {
+      rp1.items.forEach((v: any) => {
         tableList.push({
-          'Schema ID': v.scheme_id?.length ? v.scheme_id[0] || '/' : '/',
-          'Txn hash': v.tx_hash,
+          'Txn hash': v.hash,
           Block: v.block_number,
           Method: v.method,
-          'From/To': [ v.from_address, v.to_address ],
-          Time: v.tx_time.replace('Z', ''),
-          'Value MOCA': v.tx_value,
-          'Fee MOCA': truncateToSignificantDigits(BigNumber(v.tx_fee / 1e18).toString(10), 3).toString(10),
+          'From/To': [ v.from.hash, '0xEfdefe08C6cD74CFEB2f0CC2B9401c52B859B427' ],
+          Time: new Date(v.timestamp).toLocaleString(),
+          'Value MOCA': v.value,
+          'Fee MOCA': truncateToSignificantDigits(BigNumber(v.base_fee_per_gas / 1e18).toString(10), 3).toString(10),
         });
       });
-      setNextCursor(rp1.next_cursor);
-      setpreviousCursor(rp1?.previous_cursor || '');
-      setToNext(rp1.has_next);
+      setMapValue(queryParams.page.toString(), new URLSearchParams(
+        Object.entries(rp1.next_page_params).map(([ k, v ]) => [ k, String(v) ]),
+      ).toString());
+      setToNext(rp1.next_page_params ? true : false);
       setTableList(tableList);
       setLoading(false);
     } catch (error: any) {
       setLoading(false);
       throw Error(error);
     }
-  }, [ url ]);
-
-  const requestTotal = React.useCallback(async() => {
-    try {
-      setLoading(true);
-      const rp2 = await (await fetch(url + '/api/v1/explorer/totalverificationsinfo', { method: 'get' })).json() as {
-        total_verified_number: number; total_verified_scheme: number;
-      };
-      setLoading(false);
-      setTotalIssued(rp2.total_verified_number);
-      setTotalCredential(rp2.total_verified_scheme);
-    } catch (error: any) {
-      setLoading(false);
-      throw Error(error);
-    }
-  }, [ url ]);
+  }, [ url, setMapValue, queryParams.page, map ]);
 
   const propsPage = React.useCallback((value: number) => {
     window.scrollTo({
       top: 0,
       behavior: 'smooth',
     });
-    if (value > queryParams.page) {
-      request(nextCursor);
-    } else {
-      request(previousCursor);
-    }
+    request();
     updateQueryParams({
       page: value,
     });
-  }, [ queryParams.page, request, nextCursor, previousCursor ]);
+  }, [ request ]);
 
   React.useEffect(() => {
     if (url) {
       request();
-      requestTotal();
     }
-  }, [ requestTotal, request, url ]);
+  }, [ request, url ]);
 
   return (
     <PageNextJs pathname="/object">
-      <Flex justifyContent="space-between" textAlign="left" margin="24px 0">
-        <Box width="48%" border="solid 1px rgba(0, 0, 0, 0.06)" borderRadius="12px" display="grid" gridGap="8px" padding="16px">
-          <Text>Total Verified Number</Text>
-          <Text>{ Number(new Intl.NumberFormat('en-US').format(totalIssued)) || '-' }</Text>
-        </Box>
-        <Box width="48%" border="solid 1px rgba(0, 0, 0, 0.06)" borderRadius="12px" display="grid" gridGap="18px" padding="16px">
-          <Text>Total Verified Schema</Text>
-          <Text>{ Number(new Intl.NumberFormat('en-US').format(totalCredential)) || '-' }</Text>
-        </Box>
-      </Flex>
       <TableList
         totleDate={ 0 }
         showTotal={ true }
