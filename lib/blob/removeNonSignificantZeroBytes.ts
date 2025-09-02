@@ -1,4 +1,4 @@
-export default function removeNonSignificantZeroBytes(bytes: Uint8Array) {
+export default function removeNonSignificantZeroBytes(bytes: Uint8Array<ArrayBuffer>): Uint8Array<ArrayBuffer> {
   return shouldRemoveBytes(bytes) ? bytes.filter((item, index) => index % 32) : bytes;
 }
 

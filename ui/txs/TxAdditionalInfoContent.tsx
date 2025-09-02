@@ -26,7 +26,7 @@ const TxAdditionalInfoContent = ({ tx }: { tx: Transaction }) => {
   };
 
   const sectionTitleProps = {
-    color: 'gray.500',
+    color: 'text.secondary',
     fontWeight: 600,
     marginBottom: 3,
   };
@@ -107,7 +107,7 @@ const TxAdditionalInfoContent = ({ tx }: { tx: Transaction }) => {
           <Box>
             <Text as="span" fontWeight="500">Txn type: </Text>
             <Text fontWeight="600" as="span">{ tx.type }</Text>
-            { tx.type === 2 && <Text fontWeight="400" as="span" ml={ 1 } color="gray.500">(EIP-1559)</Text> }
+            { tx.type === 2 && <Text fontWeight="400" as="span" ml={ 1 } color="text.secondary">(EIP-1559)</Text> }
           </Box>
           <Box mt={ 1 }>
             <Text as="span" fontWeight="500">Nonce: </Text>

@@ -26,7 +26,7 @@ const Icon = (props: EntityBase.IconBaseProps) => {
   return (
     <EntityBase.Icon
       { ...props }
-      name={ props.name ?? 'key' }
+      name={ 'name' in props ? props.name : 'key' }
     />
   );
 };
@@ -34,10 +34,12 @@ const Icon = (props: EntityBase.IconBaseProps) => {
 type ContentProps = Omit<EntityBase.ContentBaseProps, 'text'> & Pick<EntityProps, 'id'>;
 
 const Content = chakra((props: ContentProps) => {
+  const { id, ...rest } = props;
+
   return (
     <EntityBase.Content
-      { ...props }
-      text={ props.id }
+      { ...rest }
+      text={ id }
     />
   );
 });
@@ -45,10 +47,12 @@ const Content = chakra((props: ContentProps) => {
 type CopyProps = Omit<EntityBase.CopyBaseProps, 'text'> & Pick<EntityProps, 'id'>;
 
 const Copy = (props: CopyProps) => {
+  const { id, ...rest } = props;
+
   return (
     <EntityBase.Copy
-      { ...props }
-      text={ props.id }
+      { ...rest }
+      text={ id }
     />
   );
 };

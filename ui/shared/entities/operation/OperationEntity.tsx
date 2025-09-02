@@ -35,7 +35,7 @@ const Icon = (props: IconProps) => {
       return (
         <EntityBase.Icon
           { ...props }
-          name={ props.name ?? 'operation_slim' }
+          name={ 'name' in props ? props.name : 'operation_slim' }
           borderRadius="none"
         />
       );
@@ -85,7 +85,7 @@ const OperationEntity = (props: EntityProps) => {
   );
 };
 
-export default React.memo(OperationEntity);
+export default React.memo(chakra(OperationEntity));
 
 export {
   Container,

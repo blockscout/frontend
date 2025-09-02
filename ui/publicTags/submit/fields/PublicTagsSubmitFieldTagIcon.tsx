@@ -28,7 +28,7 @@ const PublicTagsSubmitFieldTagIcon = ({ index }: Props) => {
       <PublicTagsSubmitFieldTagIconPreview url={ imageField.preview.src } isInvalid={ imageField.preview.isInvalid }>
         <FormFieldImagePreview
           { ...imageField.preview }
-          fallback={ <IconSvg name="blobs/image" color="gray.500" boxSize="30px"/> }
+          fallback={ <IconSvg name="blobs/image" color="icon.primary" boxSize="30px"/> }
           boxSize="30px"
         />
       </PublicTagsSubmitFieldTagIconPreview>

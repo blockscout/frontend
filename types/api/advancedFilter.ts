@@ -1,6 +1,9 @@
 import type { AddressParam } from './addressParams';
 import type { TokenInfo } from './token';
 
+export const ADVANCED_FILTER_ADDRESS_RELATION = [ 'or', 'and' ] as const;
+export type AddressRelation = typeof ADVANCED_FILTER_ADDRESS_RELATION[number];
+
 export type AdvancedFilterParams = {
   transaction_types?: Array<AdvancedFilterType>;
   methods?: Array<string>;
@@ -12,7 +15,7 @@ export type AdvancedFilterParams = {
   from_address_hashes_to_exclude?: Array<string>;
   to_address_hashes_to_include?: Array<string>;
   to_address_hashes_to_exclude?: Array<string>;
-  address_relation?: 'or' | 'and';
+  address_relation?: AddressRelation;
   amount_from?: string;
   amount_to?: string;
   token_contract_address_hashes_to_include?: Array<string>;

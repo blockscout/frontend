@@ -12,7 +12,7 @@ import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 const feature = config.features.rollup;
 
- type Props = { item: ShibariumDepositsItem; isLoading?: boolean };
+type Props = { item: ShibariumDepositsItem; isLoading?: boolean };
 
 const DepositsTableItem = ({ item, isLoading }: Props) => {
 

@@ -49,23 +49,23 @@ const TxDetailsInterop = ({ data, isLoading }: Props) => {
       { data.init_chain !== undefined ? (
         <AddressEntityInterop
           chain={ data.init_chain }
-          address={{ hash: data.sender }}
+          address={{ hash: data.sender_address_hash }}
           isLoading={ isLoading }
           truncation="constant"
         />
       ) : (
-        <AddressEntity address={{ hash: data.sender }} isLoading={ isLoading } truncation="constant"/>
+        <AddressEntity address={{ hash: data.sender_address_hash }} isLoading={ isLoading } truncation="constant"/>
       ) }
       <Text color="text.secondary">Target</Text>
       { data.relay_chain !== undefined ? (
         <AddressEntityInterop
           chain={ data.relay_chain }
-          address={{ hash: data.target }}
+          address={{ hash: data.target_address_hash }}
           isLoading={ isLoading }
           truncation="constant"
         />
       ) : (
-        <AddressEntity address={{ hash: data.target }} isLoading={ isLoading } truncation="constant"/>
+        <AddressEntity address={{ hash: data.target_address_hash }} isLoading={ isLoading } truncation="constant"/>
       ) }
       <Text color="text.secondary">Payload</Text>
       <Flex overflow="hidden">
@@ -91,7 +91,7 @@ const TxDetailsInterop = ({ data, isLoading }: Props) => {
         >
           Interop source tx
         </DetailedInfo.ItemLabel>
-        <DetailedInfo.ItemValue>
+        <DetailedInfo.ItemValue flexWrap="wrap" mt={{ lg: 1 }}>
           <InteropMessageSourceTx { ...data } isLoading={ isLoading }/>
           <CollapsibleDetails variant="secondary" noScroll ml={ 3 }>
             { details }
@@ -110,7 +110,7 @@ const TxDetailsInterop = ({ data, isLoading }: Props) => {
         >
           Interop relay tx
         </DetailedInfo.ItemLabel>
-        <DetailedInfo.ItemValue>
+        <DetailedInfo.ItemValue flexWrap="wrap" mt={{ lg: 1 }}>
           <InteropMessageDestinationTx { ...data } isLoading={ isLoading }/>
           <CollapsibleDetails variant="secondary" noScroll ml={ 3 }>
             { details }

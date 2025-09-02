@@ -7,11 +7,11 @@ import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
 import OptimisticDepositsTableItem from './OptimisticDepositsTableItem';
 
- type Props = {
-   items: Array<OptimisticL2DepositsItem>;
-   top: number;
-   isLoading?: boolean;
- };
+type Props = {
+  items: Array<OptimisticL2DepositsItem>;
+  top: number;
+  isLoading?: boolean;
+};
 
 const OptimisticDepositsTable = ({ items, top, isLoading }: Props) => {
   return (

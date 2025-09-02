@@ -1,4 +1,4 @@
-import { Grid, GridItem, Text } from '@chakra-ui/react';
+import { GridItem, Text } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import BigNumber from 'bignumber.js';
 import { useRouter } from 'next/router';
@@ -8,6 +8,7 @@ import { ZKSYNC_L2_TX_BATCH_STATUSES, type ZkSyncBatch } from 'types/api/zkSyncL
 
 import { route } from 'nextjs-routes';
 
+import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import { currencyUnits } from 'lib/units';
@@ -25,6 +26,8 @@ import TruncatedValue from 'ui/shared/TruncatedValue';
 import VerificationSteps from 'ui/shared/verificationSteps/VerificationSteps';
 
 import ZkSyncL2TxnBatchHashesInfo from './ZkSyncL2TxnBatchHashesInfo';
+
+const rollupFeature = config.features.rollup;
 
 interface Props {
   query: UseQueryResult<ZkSyncBatch, ResourceError>;
@@ -59,13 +62,11 @@ const ZkSyncL2TxnBatchDetails = ({ query }: Props) => {
   }
 
   const txNum = data.l2_transactions_count + data.l1_transactions_count;
+  const parentChainCurrency = rollupFeature.isEnabled ? rollupFeature.parentChain.currency?.symbol : undefined;
 
   return (
-    <Grid
-      columnGap={ 8 }
-      rowGap={{ base: 3, lg: 3 }}
+    <DetailedInfo.Container
       templateColumns={{ base: 'minmax(0, 1fr)', lg: 'minmax(min-content, 200px) minmax(0, 1fr)' }}
-      overflow="hidden"
     >
       <DetailedInfo.ItemLabel
         hint="Batch number indicates the length of batches produced by grouping L2 blocks to be proven on Ethereum."
@@ -146,8 +147,8 @@ const ZkSyncL2TxnBatchDetails = ({ query }: Props) => {
         >
           L1 gas price
         </DetailedInfo.ItemLabel>
-        <DetailedInfo.ItemValue>
-          <Text mr={ 1 }>{ BigNumber(data.l1_gas_price).dividedBy(WEI).toFixed() } { currencyUnits.ether }</Text>
+        <DetailedInfo.ItemValue multiRow>
+          <Text mr={ 1 }>{ BigNumber(data.l1_gas_price).dividedBy(WEI).toFixed() } { parentChainCurrency || currencyUnits.ether }</Text>
           <Text color="text.secondary">({ BigNumber(data.l1_gas_price).dividedBy(WEI_IN_GWEI).toFixed() } { currencyUnits.gwei })</Text>
         </DetailedInfo.ItemValue>
 
@@ -156,12 +157,12 @@ const ZkSyncL2TxnBatchDetails = ({ query }: Props) => {
         >
           L2 fair gas price
         </DetailedInfo.ItemLabel>
-        <DetailedInfo.ItemValue>
+        <DetailedInfo.ItemValue multiRow>
           <Text mr={ 1 }>{ BigNumber(data.l2_fair_gas_price).dividedBy(WEI).toFixed() } { currencyUnits.ether }</Text>
           <Text color="text.secondary">({ BigNumber(data.l2_fair_gas_price).dividedBy(WEI_IN_GWEI).toFixed() } { currencyUnits.gwei })</Text>
         </DetailedInfo.ItemValue>
       </CollapsibleDetails>
-    </Grid>
+    </DetailedInfo.Container>
   );
 };
 

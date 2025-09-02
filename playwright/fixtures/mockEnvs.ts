@@ -25,8 +25,7 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
   ],
   arbitrumRollup: [
     [ 'NEXT_PUBLIC_ROLLUP_TYPE', 'arbitrum' ],
-    [ 'NEXT_PUBLIC_ROLLUP_L1_BASE_URL', 'https://localhost:3101' ],
-    [ 'NEXT_PUBLIC_ROLLUP_PARENT_CHAIN_NAME', 'DuckChain' ],
+    [ 'NEXT_PUBLIC_ROLLUP_PARENT_CHAIN', '{"name":"DuckChain","baseUrl":"https://localhost:3101"}' ],
     [ 'NEXT_PUBLIC_ROLLUP_DA_CELESTIA_NAMESPACE', '0x1234' ],
     [ 'NEXT_PUBLIC_ROLLUP_DA_CELESTIA_CELENIUM_URL', 'https://mocha.celenium.io/blob' ],
   ],
@@ -68,6 +67,7 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
   ],
   beaconChain: [
     [ 'NEXT_PUBLIC_HAS_BEACON_CHAIN', 'true' ],
+    [ 'NEXT_PUBLIC_BEACON_CHAIN_VALIDATOR_URL_TEMPLATE', 'https://beaconcha.in/validator/{pk}' ],
   ],
   txInterpretation: [
     [ 'NEXT_PUBLIC_TRANSACTION_INTERPRETATION_PROVIDER', 'blockscout' ],
@@ -112,6 +112,10 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
   ],
   celo: [
     [ 'NEXT_PUBLIC_CELO_ENABLED', 'true' ],
+    [ 'NEXT_PUBLIC_CELO_NATIVE_TOKEN_ADDRESS', '0x471EcE3750Da237f93B8E339c536989b8978a438' ],
+  ],
+  opSuperchain: [
+    [ 'NEXT_PUBLIC_OP_SUPERCHAIN_ENABLED', 'true' ],
   ],
   clusters: [
     [ 'NEXT_PUBLIC_CLUSTERS_API_HOST', 'https://api.clusters.xyz' ],
@@ -121,5 +125,8 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
   ],
   navigationPromoBannerImage: [
     [ 'NEXT_PUBLIC_NAVIGATION_PROMO_BANNER_CONFIG', '{"img_url": {"small": "http://localhost:3000/image_s.jpg", "large": "http://localhost:3000/image_md.jpg"}, "link_url": "https://example.com"}' ],
+  ],
+  colorThemeOverrides: [
+    [ 'NEXT_PUBLIC_COLOR_THEME_OVERRIDES', '{"bg":{"primary":{"_light":{"value":"rgba(254,253,253)"},"_dark":{"value":"rgba(25,25,26)"}}},"text":{"primary":{"_light":{"value":"rgba(16,17,18,0.80)"},"_dark":{"value":"rgba(222,217,217)"}},"secondary":{"_light":{"value":"rgba(138,136,136)"},"_dark":{"value":"rgba(133,133,133)"}}},"hover":{"_light":{"value":"rgba(104,200,158)"},"_dark":{"value":"rgba(104,200,158)"}},"selected":{"control":{"text":{"_light":{"value":"rgba(25,25,26)"},"_dark":{"value":"rgba(247,250,252)"}},"bg":{"_light":{"value":"rgba(242,239,239)"},"_dark":{"value":"rgba(255,255,255,0.06)"}}},"option":{"bg":{"_light":{"value":"rgba(84,75,75)"},"_dark":{"value":"rgba(87,87,87)"}}}},"icon":{"primary":{"_light":{"value":"rgba(138,136,136)"},"_dark":{"value":"rgba(133,133,133)"}},"secondary":{"_light":{"value":"rgba(176,176,176)"},"_dark":{"value":"rgba(105,103,103)"}}},"button":{"primary":{"_light":{"value":"rgba(105,103,103)"},"_dark":{"value":"rgba(133,133,133)"}}},"link":{"primary":{"_light":{"value":"rgba(57,146,108)"},"_dark":{"value":"rgba(57,146,108)"}}},"graph":{"line":{"_light":{"value":"rgba(105,103,103)"},"_dark":{"value":"rgba(57,146,108)"}},"gradient":{"start":{"_light":{"value":"rgba(105,103,103,0.3)"},"_dark":{"value":"rgba(57,146,108,0.3)"}},"stop":{"_light":{"value":"rgba(105,103,103,0)"},"_dark":{"value":"rgba(57,146,108,0)"}}}},"stats":{"bg":{"_light":{"value":"rgba(242,239,239)"},"_dark":{"value":"rgba(255,255,255,0.06)"}}},"topbar":{"bg":{"_light":{"value":"rgba(242,239,239)"},"_dark":{"value":"rgba(255,255,255,0.06)"}}},"navigation":{"text":{"selected":{"_light":{"value":"rgba(25,25,26)"},"_dark":{"value":"rgba(247,250,252)"}}},"bg":{"selected":{"_light":{"value":"rgba(242,239,239)"},"_dark":{"value":"rgba(255,255,255,0.06)"}}}},"tabs":{"text":{"primary":{"_light":{"value":"rgba(25,25,26)"},"_dark":{"value":"rgba(222,217,217)"}}}}}' ],
   ],
 };

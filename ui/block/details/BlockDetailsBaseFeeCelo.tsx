@@ -23,7 +23,7 @@ const BreakDownItem = ({ amount, percentage, address, addressFrom, token }: Item
   const isBurning = address.hash === ZERO_ADDRESS;
 
   return (
-    <Flex alignItems="center" columnGap={ 2 } rowGap={ 1 } flexWrap="wrap">
+    <Flex alignItems="center" columnGap={ 2 } flexWrap="wrap">
       <Box color="text.secondary">{ percentage }% of amount</Box>
       <Flex columnGap={ 2 }>
         { BigNumber(amount).dividedBy(WEI).toFixed() }
@@ -32,7 +32,7 @@ const BreakDownItem = ({ amount, percentage, address, addressFrom, token }: Item
       { isBurning ? (
         <>
           <AddressEntity address={ addressFrom } truncation="constant"/>
-          <IconSvg name="flame" boxSize={ 5 } color="gray.500"/>
+          <IconSvg name="flame" boxSize={ 5 } color="icon.primary"/>
           <Box color="text.secondary">burnt</Box>
         </>
       ) : <AddressFromTo from={ addressFrom } to={ address }/> }
@@ -68,7 +68,7 @@ const BlockDetailsBaseFeeCelo = ({ data }: Props) => {
       <DetailedInfo.ItemLabel hint={ totalFeeLabel }>
         Base fee total
       </DetailedInfo.ItemLabel>
-      <DetailedInfo.ItemValue display="block">
+      <DetailedInfo.ItemValue multiRow flexDirection="column" alignItems="flex-start">
         <Flex columnGap={ 2 }>
           { totalBaseFee }
           <TokenEntity token={ data.token } noCopy onlySymbol/>

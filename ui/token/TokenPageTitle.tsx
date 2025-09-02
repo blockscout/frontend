@@ -10,6 +10,7 @@ import config from 'configs/app';
 import useAddressMetadataInfoQuery from 'lib/address/useAddressMetadataInfoQuery';
 import type { ResourceError } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
+import { useMultichainContext } from 'lib/contexts/multichain';
 import { getTokenTypeName } from 'lib/token/tokenTypes';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import AddressMetadataAlert from 'ui/address/details/AddressMetadataAlert';
@@ -36,6 +37,7 @@ interface Props {
 }
 
 const TokenPageTitle = ({ tokenQuery, addressQuery, hash }: Props) => {
+  const multichainContext = useMultichainContext();
   const addressHash = !tokenQuery.isPlaceholderData ? (tokenQuery.data?.address_hash || '') : '';
 
   const verifiedInfoQuery = useApiQuery('contractInfo:token_verified_info', {
@@ -110,6 +112,9 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, hash }: Props) => {
           address={{ ...addressQuery.data, name: '' }}
           isLoading={ isLoading }
           variant="subheading"
+          icon={ multichainContext?.chain ? {
+            shield: { name: 'pie_chart', isLoading },
+          } : undefined }
         />
       ) }
       { !isLoading && tokenQuery.data && <AddressAddToWallet token={ tokenQuery.data } variant="button"/> }
@@ -132,6 +137,7 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, hash }: Props) => {
             token={ tokenQuery.data }
             isLoading={ tokenQuery.isPlaceholderData }
             variant="heading"
+            chain={ multichainContext?.chain }
           />
         ) : null }
         contentAfter={ contentAfter }

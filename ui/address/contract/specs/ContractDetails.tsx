@@ -15,7 +15,11 @@ const ContractDetails = () => {
     isDisabled: !addressQuery.data,
   });
 
-  const { tabs } = useContractTabs({ addressData: addressQuery.data, isEnabled: true, channel });
+  const { tabs } = useContractTabs({
+    addressData: addressQuery.data,
+    isEnabled: true,
+    channel,
+  });
   const content = tabs.find(({ id }) => id === 'contract_code')?.component;
   return content ?? null;
 };

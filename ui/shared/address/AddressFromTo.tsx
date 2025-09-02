@@ -2,8 +2,6 @@ import type { ConditionalValue } from '@chakra-ui/react';
 import { Flex, Grid, chakra, useBreakpointValue } from '@chakra-ui/react';
 import React from 'react';
 
-import type { AddressParam } from 'types/api/addressParams';
-
 import type { EntityProps } from 'ui/shared/entities/address/AddressEntity';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import AddressEntityWithTokenFilter from 'ui/shared/entities/address/AddressEntityWithTokenFilter';
@@ -14,8 +12,8 @@ import { getTxCourseType } from './utils';
 type Mode = 'compact' | 'long';
 
 interface Props {
-  from: AddressParam;
-  to: AddressParam | null;
+  from: { hash: string };
+  to: { hash: string } | null;
   current?: string;
   mode?: Mode | ConditionalValue<Mode>;
   className?: string;

@@ -37,7 +37,7 @@ const Icon = (props: IconProps) => {
     return null;
   }
 
-  const styles = getIconProps(props.variant);
+  const styles = getIconProps(props, Boolean(props.shield));
 
   if (props.isLoading) {
     return <Skeleton loading boxSize={ styles.boxSize } borderRadius="base" mr={ 2 }/>;

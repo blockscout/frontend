@@ -71,7 +71,7 @@ export default function useBlockQuery({ heightOrHash }: Params): BlockQuery {
         size: Number(block.size),
         hash: block.hash,
         parent_hash: block.parentHash,
-        difficulty: block.difficulty.toString(),
+        difficulty: block.difficulty?.toString() ?? null,
         total_difficulty: block.totalDifficulty?.toString() ?? null,
         gas_used: block.gasUsed.toString(),
         gas_limit: block.gasLimit.toString(),

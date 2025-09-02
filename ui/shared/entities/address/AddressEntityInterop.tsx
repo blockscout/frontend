@@ -28,13 +28,13 @@ const IconStub = () => {
       width="14px"
       height="14px"
       border="1px solid"
-      borderColor="global.body.bg"
+      borderColor="bg.primary"
     >
       <IconSvg
         name="networks/icon-placeholder"
         width="10px"
         height="10px"
-        color="text.secondary"
+        color="icon.primary"
       />
     </Flex>
   );

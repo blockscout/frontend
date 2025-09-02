@@ -34,8 +34,8 @@ const Sort = (props: Props) => {
     return (
       <SelectControl
         loading={ isLoading }
-        _hover={{ color: 'link.primary.hover' }}
-        _open={{ color: 'link.primary.hover' }}
+        _hover={{ color: 'hover' }}
+        _open={{ color: 'hover' }}
       >
         <chakra.span
           flexShrink={ 0 }

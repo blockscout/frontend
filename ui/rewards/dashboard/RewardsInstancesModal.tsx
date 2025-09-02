@@ -59,8 +59,7 @@ const RewardsInstancesModal = ({ isOpen, onClose, items }: Props) => {
                     fallback={ (
                       <IconSvg
                         name="networks/icon-placeholder"
-                        boxSize={ 5 }
-                        color="text.secondary"
+                        color="icon.primary"
                       />
                     ) }
                   />

@@ -51,7 +51,8 @@ test('too many requests +@mobile', async({ render }) => {
   const error = {
     message: 'Too many requests',
     cause: { status: 429 },
-  } as Error;
+    rateLimits: { bypassOptions: 'temporary_token', reset: '42000' },
+  } as unknown as Error;
   const component = await render(<AppError error={ error }/>);
   await expect(component).toHaveScreenshot();
 });

@@ -16,4 +16,4 @@ const Page: NextPage = () => {
 
 export default Page;
 
-export { celo as getServerSideProps } from 'nextjs/getServerSideProps';
+export { celo as getServerSideProps } from 'nextjs/getServerSideProps/main';

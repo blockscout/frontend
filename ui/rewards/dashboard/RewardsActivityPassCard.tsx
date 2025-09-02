@@ -79,7 +79,7 @@ export default function RewardsActivityPassCard() {
           backgroundColor={{ _light: '#FFD57C', _dark: '#FFBA0D' }}
           color="#2B1A3F"
           iconColor="rgba(43, 26, 63, 0.3)"
-          _hover={{ color: 'link.primary.hover' }}
+          _hover={{ color: 'hover' }}
           flexShrink={ 0 }
           zIndex={ 1 }
         >

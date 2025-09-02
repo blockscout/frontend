@@ -14,7 +14,7 @@ interface Props {
 const ApiKeySnippet = ({ apiKey, name, isLoading }: Props) => {
   return (
     <HStack gap={ 2 } alignItems="start">
-      <IconSvg name="key" boxSize={ 6 } color={{ _light: 'gray.500', _dark: 'gray.400' }} isLoading={ isLoading }/>
+      <IconSvg name="key" boxSize={ 6 } color="icon.primary" isLoading={ isLoading }/>
       <Box>
         <Flex alignItems={{ base: 'flex-start', lg: 'center' }}>
           <Skeleton loading={ isLoading } display="inline-block" fontWeight={ 600 } mr={ 1 }>

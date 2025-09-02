@@ -6,10 +6,73 @@ const heroBannerButton = config.UI.homepage.heroBanner?.button;
 
 const semanticTokens: ThemingConfig['semanticTokens'] = {
   colors: {
+    // COMMON STATES
+    hover: {
+      DEFAULT: { value: { _light: '{colors.theme.hover._light}', _dark: '{colors.theme.hover._dark}' } },
+    },
+    selected: {
+      control: {
+        bg: { value: { _light: '{colors.theme.selected.control.bg._light}', _dark: '{colors.theme.selected.control.bg._dark}' } },
+        text: { value: { _light: '{colors.theme.selected.control.text._light}', _dark: '{colors.theme.selected.control.text._dark}' } },
+      },
+      option: {
+        bg: { value: { _light: '{colors.theme.selected.option.bg._light}', _dark: '{colors.theme.selected.option.bg._dark}' } },
+      },
+    },
+
+    // GLOBAL
+    global: {
+      body: {
+        bg: { value: '{colors.bg.primary}' },
+        fg: { value: '{colors.text.primary}' },
+      },
+      mark: {
+        bg: { value: { _light: '{colors.green.100}', _dark: '{colors.green.800}' } },
+      },
+      scrollbar: {
+        thumb: { value: { _light: '{colors.blackAlpha.300}', _dark: '{colors.whiteAlpha.300}' } },
+      },
+    },
+
+    // FOUNDATIONS
+    heading: {
+      DEFAULT: { value: { _light: '{colors.blackAlpha.800}', _dark: '{colors.whiteAlpha.800}' } },
+    },
+    text: {
+      primary: { value: { _light: '{colors.theme.text.primary._light}', _dark: '{colors.theme.text.primary._dark}' } },
+      secondary: { value: { _light: '{colors.theme.text.secondary._light}', _dark: '{colors.theme.text.secondary._dark}' } },
+      error: { value: '{colors.red.500}' },
+    },
+    bg: {
+      primary: { value: { _light: '{colors.theme.bg.primary._light}', _dark: '{colors.theme.bg.primary._dark}' } },
+    },
+    border: {
+      divider: { value: { _light: '{colors.blackAlpha.100}', _dark: '{colors.whiteAlpha.100}' } },
+      error: { value: '{colors.red.500}' },
+    },
+    icon: {
+      primary: { value: { _light: '{colors.theme.icon.primary._light}', _dark: '{colors.theme.icon.primary._dark}' } },
+      secondary: { value: { _light: '{colors.theme.icon.secondary._light}', _dark: '{colors.theme.icon.secondary._dark}' } },
+    },
+
+    // ELEMENTS
+    address: {
+      highlighted: {
+        bg: { value: { _light: '{colors.blue.50}', _dark: '{colors.blue.900}' } },
+        border: { value: { _light: '{colors.blue.200}', _dark: '{colors.blue.600}' } },
+      },
+    },
+
+    // COMPONENTS
     button: {
+      solid: {
+        bg: {
+          DEFAULT: { value: { _light: '{colors.theme.button.primary._light}', _dark: '{colors.theme.button.primary._dark}' } },
+        },
+      },
       outline: {
         fg: {
-          DEFAULT: { value: { _light: '{colors.blue.600}', _dark: '{colors.blue.600}' } },
+          DEFAULT: { value: { _light: '{colors.theme.button.primary._light}', _dark: '{colors.theme.button.primary._dark}' } },
         },
       },
       subtle: {
@@ -23,10 +86,6 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
       dropdown: {
         fg: {
           DEFAULT: { value: { _light: '{colors.blackAlpha.800}', _dark: '{colors.whiteAlpha.800}' } },
-          selected: { value: { _light: '{colors.blue.700}', _dark: '{colors.whiteAlpha.800}' } },
-        },
-        bg: {
-          selected: { value: { _light: '{colors.blue.50}', _dark: '{colors.whiteAlpha.100}' } },
         },
         border: {
           DEFAULT: { value: { _light: '{colors.gray.200}', _dark: '{colors.gray.600}' } },
@@ -48,29 +107,12 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
       },
       segmented: {
         fg: {
-          DEFAULT: { value: { _light: '{colors.blue.600}', _dark: '{colors.blue.300}' } },
-          selected: { value: { _light: '{colors.blue.700}', _dark: '{colors.gray.50}' } },
-        },
-        border: {
-          DEFAULT: { value: { _light: '{colors.blue.50}', _dark: '{colors.gray.800}' } },
-        },
-      },
-      icon_secondary: {
-        fg: {
-          DEFAULT: { value: { _light: '{colors.gray.400}', _dark: '{colors.gray.500}' } },
-          selected: { value: { _light: '{colors.blue.700}', _dark: '{colors.whiteAlpha.800}' } },
-        },
-        bg: {
-          selected: { value: { _light: '{colors.blue.50}', _dark: '{colors.whiteAlpha.100}' } },
+          DEFAULT: { value: '{colors.text.primary}' },
         },
       },
       pagination: {
         fg: {
           DEFAULT: { value: { _light: '{colors.blackAlpha.800}', _dark: '{colors.gray.50}' } },
-          selected: { value: { _light: '{colors.blue.700}', _dark: '{colors.gray.50}' } },
-        },
-        bg: {
-          selected: { value: { _light: '{colors.blue.50}', _dark: '{colors.whiteAlpha.100}' } },
         },
         border: {
           DEFAULT: { value: { _light: '{colors.gray.100}', _dark: '{colors.whiteAlpha.100}' } },
@@ -80,14 +122,14 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
         bg: {
           DEFAULT: {
             value: {
-              _light: heroBannerButton?._default?.background?.[0] || '{colors.blue.600}',
-              _dark: heroBannerButton?._default?.background?.[1] || heroBannerButton?._default?.background?.[0] || '{colors.blue.600}',
+              _light: heroBannerButton?._default?.background?.[0] || '{colors.theme.button.primary._light}',
+              _dark: heroBannerButton?._default?.background?.[1] || heroBannerButton?._default?.background?.[0] || '{colors.theme.button.primary._dark}',
             },
           },
           hover: {
             value: {
-              _light: heroBannerButton?._hover?.background?.[0] || '{colors.blue.400}',
-              _dark: heroBannerButton?._hover?.background?.[1] || heroBannerButton?._hover?.background?.[0] || '{colors.blue.400}',
+              _light: heroBannerButton?._hover?.background?.[0] || '{colors.hover}',
+              _dark: heroBannerButton?._hover?.background?.[1] || heroBannerButton?._hover?.background?.[0] || '{colors.hover}',
             },
           },
           selected: {
@@ -126,11 +168,11 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
     },
     link: {
       primary: {
-        DEFAULT: { value: { _light: '{colors.blue.600}', _dark: '{colors.blue.300}' } },
-        hover: { value: { _light: '{colors.blue.400}' } },
+        DEFAULT: { value: { _light: '{colors.theme.link.primary._light}', _dark: '{colors.theme.link.primary._dark}' } },
+        hover: { value: '{colors.hover}' },
       },
       secondary: {
-        DEFAULT: { value: { _light: '{colors.gray.500}', _dark: '{colors.gray.400}' } },
+        DEFAULT: { value: '{colors.text.secondary}' },
       },
       underlaid: {
         bg: { value: { _light: '{colors.gray.100}', _dark: '{colors.gray.800}' } },
@@ -141,13 +183,13 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
       },
       navigation: {
         fg: {
-          DEFAULT: { value: { _light: '{colors.gray.600}', _dark: '{colors.gray.400}' } },
-          selected: { value: { _light: '{colors.blue.700}', _dark: '{colors.gray.50}' } },
-          hover: { value: { _light: '{colors.link.primary.hover}' } },
-          active: { value: { _light: '{colors.link.primary.hover}' } },
+          DEFAULT: { value: '{colors.text.primary}' },
+          selected: { value: { _light: '{colors.theme.navigation.text.selected._light}', _dark: '{colors.theme.navigation.text.selected._dark}' } },
+          hover: { value: { _light: '{colors.hover}' } },
+          active: { value: { _light: '{colors.hover}' } },
         },
         bg: {
-          selected: { value: { _light: '{colors.blue.50}', _dark: '{colors.gray.800}' } },
+          selected: { value: { _light: '{colors.theme.navigation.bg.selected._light}', _dark: '{colors.theme.navigation.bg.selected._dark}' } },
           group: { value: { _light: '{colors.white}', _dark: '{colors.black}' } },
         },
       },
@@ -159,13 +201,6 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
       DEFAULT: {
         bg: { value: '{colors.gray.900}' },
         fg: { value: '{colors.white}' },
-      },
-      navigation: {
-        bg: { value: { _light: '{colors.blue.50}', _dark: '{colors.gray.800}' } },
-        fg: {
-          DEFAULT: { value: '{colors.blue.400}' },
-          selected: { value: { _light: '{colors.blue.700}', _dark: '{colors.gray.50}' } },
-        },
       },
     },
     popover: {
@@ -188,19 +223,12 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
     tabs: {
       solid: {
         fg: {
-          DEFAULT: { value: { _light: '{colors.blue.700}', _dark: '{colors.blue.100}' } },
-          selected: { value: { _light: '{colors.blue.700}', _dark: '{colors.gray.50}' } },
-        },
-        bg: {
-          selected: { value: { _light: '{colors.blue.50}', _dark: '{colors.whiteAlpha.100}' } },
+          DEFAULT: { value: { _light: '{colors.theme.tabs.text.primary._light}', _dark: '{colors.theme.tabs.text.primary._dark}' } },
         },
       },
       secondary: {
         fg: {
-          DEFAULT: { value: { _light: '{colors.blackAlpha.800}', _dark: '{colors.whiteAlpha.800}' } },
-        },
-        bg: {
-          selected: { value: { _light: '{colors.blue.50}', _dark: '{colors.whiteAlpha.100}' } },
+          DEFAULT: { value: '{colors.text.primary}' },
         },
         border: {
           DEFAULT: { value: { _light: '{colors.gray.300}', _dark: '{colors.gray.600}' } },
@@ -208,11 +236,7 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
       },
       segmented: {
         fg: {
-          DEFAULT: { value: { _light: '{colors.blue.600}', _dark: '{colors.blue.300}' } },
-          selected: { value: { _light: '{colors.blue.700}', _dark: '{colors.gray.50}' } },
-        },
-        border: {
-          DEFAULT: { value: { _light: '{colors.blue.50}', _dark: '{colors.gray.800}' } },
+          DEFAULT: { value: '{colors.text.primary}' },
         },
       },
     },
@@ -220,8 +244,6 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
       primary: {
         bg: {
           DEFAULT: { value: { _light: '{colors.gray.300}', _dark: '{colors.whiteAlpha.400}' } },
-          checked: { value: { _light: '{colors.blue.500}', _dark: '{colors.blue.300}' } },
-          hover: { value: { _light: '{colors.blue.600}', _dark: '{colors.blue.400}' } },
         },
       },
     },
@@ -231,8 +253,8 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
       },
       bg: {
         info: { value: { _light: '{colors.blackAlpha.50}', _dark: '{colors.whiteAlpha.100}' } },
-        warning: { value: { _light: '{colors.orange.100}', _dark: '{colors.orange.800/60}' } },
-        warning_table: { value: { _light: '{colors.orange.50}', _dark: '{colors.orange.800/60}' } },
+        warning: { value: { _light: '{colors.orange.100}', _dark: '{colors.orange.800/44}' } },
+        warning_table: { value: { _light: '{colors.orange.50}', _dark: '{colors.orange.800/44}' } },
         success: { value: { _light: '{colors.green.100}', _dark: '{colors.green.900}' } },
         error: { value: { _light: '{colors.red.100}', _dark: '{colors.red.900}' } },
       },
@@ -262,7 +284,7 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
       border: {
         DEFAULT: { value: { _light: '{colors.gray.100}', _dark: '{colors.gray.700}' } },
         hover: { value: { _light: '{colors.gray.200}', _dark: '{colors.gray.500}' } },
-        focus: { value: '{colors.blue.400}' },
+        focus: { value: '{colors.hover}' },
         filled: { value: { _light: '{colors.gray.100}', _dark: '{colors.gray.700}' } },
         readOnly: { value: { _light: '{colors.gray.200}', _dark: '{colors.gray.800}' } },
         error: { value: '{colors.red.500}' },
@@ -298,11 +320,6 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
           fg: { value: { _light: '{colors.blackAlpha.800}', _dark: '{colors.whiteAlpha.800}' } },
         },
       },
-      item: {
-        bg: {
-          highlighted: { value: { _light: '{colors.blue.50}', _dark: '{colors.whiteAlpha.100}' } },
-        },
-      },
       indicator: {
         fg: {
           DEFAULT: { value: { _light: '{colors.gray.400}', _dark: '{colors.gray.500}' } },
@@ -312,13 +329,6 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
         fg: {
           DEFAULT: { value: { _light: '{colors.gray.400}', _dark: '{colors.gray.500}' } },
           error: { value: '{colors.red.500}' },
-        },
-      },
-    },
-    menu: {
-      item: {
-        bg: {
-          highlighted: { value: { _light: '{colors.blue.50}', _dark: '{colors.whiteAlpha.100}' } },
         },
       },
     },
@@ -384,12 +394,11 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
           fg: { value: { _light: '{colors.blackAlpha.800}', _dark: '{colors.whiteAlpha.800}' } },
         },
         filter: {
-          bg: { value: { _light: '{colors.blue.50}', _dark: '{colors.blue.800}' } },
+          bg: { value: { _light: '{colors.blue.50}', _dark: '{colors.whiteAlpha.200}' } },
         },
         select: {
           bg: {
             DEFAULT: { value: { _light: '{colors.gray.100}', _dark: '{colors.gray.800}' } },
-            selected: { value: { _light: '{colors.blue.500}', _dark: '{colors.blue.900}' } },
           },
           fg: { value: { _light: '{colors.gray.500}', _dark: '{colors.whiteAlpha.800}' } },
         },
@@ -428,41 +437,6 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
     rating: {
       DEFAULT: { value: { _light: '{colors.gray.200}', _dark: '{colors.gray.700}' } },
       highlighted: { value: '{colors.yellow.400}' },
-    },
-    heading: {
-      DEFAULT: { value: { _light: '{colors.blackAlpha.800}', _dark: '{colors.whiteAlpha.800}' } },
-    },
-    text: {
-      primary: { value: { _light: '{colors.blackAlpha.800}', _dark: '{colors.whiteAlpha.800}' } },
-      secondary: { value: { _light: '{colors.gray.500}', _dark: '{colors.gray.400}' } },
-      error: { value: '{colors.red.500}' },
-    },
-    border: {
-      divider: { value: { _light: '{colors.blackAlpha.100}', _dark: '{colors.whiteAlpha.100}' } },
-      error: { value: '{colors.red.500}' },
-    },
-    icon: {
-      backTo: { value: '{colors.gray.400}' },
-      externalLink: { value: { _light: '{colors.gray.400}', _dark: '{colors.gray.500}' } },
-      info: { value: { _light: '{colors.gray.400}', _dark: '{colors.gray.500}' } },
-    },
-    address: {
-      highlighted: {
-        bg: { value: { _light: '{colors.blue.50}', _dark: '{colors.blue.900}' } },
-        border: { value: { _light: '{colors.blue.200}', _dark: '{colors.blue.600}' } },
-      },
-    },
-    global: {
-      body: {
-        bg: { value: { _light: '{colors.white}', _dark: '{colors.black}' } },
-        fg: { value: '{colors.text.primary}' },
-      },
-      mark: {
-        bg: { value: { _light: '{colors.green.100}', _dark: '{colors.green.800}' } },
-      },
-      scrollbar: {
-        thumb: { value: { _light: '{colors.blackAlpha.300}', _dark: '{colors.whiteAlpha.300}' } },
-      },
     },
   },
   shadows: {

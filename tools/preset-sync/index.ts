@@ -7,6 +7,7 @@ const PRESETS = {
   arbitrum_sepolia: 'https://arbitrum-sepolia.blockscout.com',
   base: 'https://base.blockscout.com',
   blackfort_testnet: 'https://blackfort-testnet.blockscout.com',
+  celo: 'https://celo.blockscout.com',
   celo_alfajores: 'https://celo-alfajores.blockscout.com',
   eth: 'https://eth.blockscout.com',
   eth_goerli: 'https://eth-goerli.blockscout.com',
@@ -15,6 +16,7 @@ const PRESETS = {
   garnet: 'https://explorer.garnetchain.com',
   gnosis: 'https://gnosis.blockscout.com',
   immutable: 'https://explorer.immutable.com',
+  mega_eth: 'https://eth.blockscout.com', // FIXME: change host when instance is ready
   mekong: 'https://mekong.blockscout.com',
   neon_devnet: 'https://neon-devnet.blockscout.com',
   optimism: 'https://optimism.blockscout.com',
@@ -48,6 +50,18 @@ const IGNORED_ENVS = [
   'NEXT_PUBLIC_GIT_COMMIT_SHA',
   'NEXT_PUBLIC_GIT_TAG',
   'NEXT_PUBLIC_ICON_SPRITE_HASH',
+
+  // DEPRECATED
+  'NEXT_PUBLIC_AUTH0_CLIENT_ID',
+  'NEXT_PUBLIC_AUTH_URL',
+  'NEXT_PUBLIC_LOGOUT_URL',
+  'NEXT_PUBLIC_SENTRY_DSN',
+  'SENTRY_CSP_REPORT_URI',
+  'NEXT_PUBLIC_SENTRY_ENABLE_TRACING',
+  'NEXT_PUBLIC_ROLLUP_PARENT_CHAIN_NAME',
+  'NEXT_PUBLIC_RE_CAPTCHA_V3_APP_SITE_KEY',
+  'NEXT_PUBLIC_HOMEPAGE_PLATE_TEXT_COLOR',
+  'NEXT_PUBLIC_HOMEPAGE_PLATE_BACKGROUND',
 ];
 
 function parseScriptArgs() {

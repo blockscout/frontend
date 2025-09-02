@@ -2,7 +2,7 @@ import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import React from 'react';
 
-import type { Props } from 'nextjs/getServerSideProps';
+import type { Props } from 'nextjs/getServerSideProps/handlers';
 import PageNextJs from 'nextjs/PageNextJs';
 
 const KettleTxs = dynamic(() => import('ui/pages/KettleTxs'), { ssr: false });
@@ -17,4 +17,4 @@ const Page: NextPage<Props> = (props: Props) => {
 
 export default Page;
 
-export { suave as getServerSideProps } from 'nextjs/getServerSideProps';
+export { suave as getServerSideProps } from 'nextjs/getServerSideProps/main';

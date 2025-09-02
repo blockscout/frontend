@@ -14,8 +14,8 @@ export const INTEROP_MESSAGE: InteropMessage = {
     instance_url: 'https://optimism-interop-alpha-0.blockscout.com/',
   },
   relay_transaction_hash: TX_HASH,
-  sender: ADDRESS_HASH,
+  sender_address_hash: ADDRESS_HASH,
   status: 'Relayed',
-  target: ADDRESS_HASH,
+  target_address_hash: ADDRESS_HASH,
   timestamp: '2025-02-20T01:05:14.000000Z',
 };

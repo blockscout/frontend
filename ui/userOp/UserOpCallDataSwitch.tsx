@@ -31,10 +31,8 @@ const UserOpCallDataSwitch = ({ className, initialValue, isDisabled, onChange, i
         checked={ isChecked }
         disabled={ isDisabled }
         onCheckedChange={ handleChange }
-        flexDirection="row-reverse"
-        size="md"
-        gap={ 2 }
-        labelProps={{ fontWeight: '600', fontSize: 'sm' }}
+        direction="rtl"
+        labelProps={{ fontWeight: '600', textStyle: 'sm' }}
       >
         <chakra.span hideBelow="lg">Show external call data</chakra.span>
         <chakra.span hideFrom="lg">External call data</chakra.span>

@@ -25,7 +25,7 @@ const OptimisticL2OutputRootsListItem = ({ item, isLoading }: Props) => {
     <ListItemMobileGrid.Container>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>L2 output index</ListItemMobileGrid.Label>
-      <ListItemMobileGrid.Value fontWeight={ 600 } color="text">
+      <ListItemMobileGrid.Value fontWeight={ 600 } color="text.primary">
         <Skeleton loading={ isLoading } display="inline-block">{ item.l2_output_index }</Skeleton>
       </ListItemMobileGrid.Value>
 

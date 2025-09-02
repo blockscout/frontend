@@ -24,7 +24,7 @@ const EntityTag = ({ data, isLoading, noLink, ...rest }: Props) => {
 
   const linkParams = !noLink ? getTagLinkParams(data, multichainContext) : undefined;
   const hasLink = Boolean(linkParams);
-  const iconColor = data.meta?.textColor ?? 'gray.400';
+  const iconColor = data.meta?.textColor ?? 'icon.secondary';
 
   const handleLinkClick = React.useCallback(() => {
     if (!linkParams?.href) {

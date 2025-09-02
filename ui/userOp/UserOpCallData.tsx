@@ -38,6 +38,7 @@ const UserOpDecodedCallData = ({ data }: Props) => {
     <>
       <DetailedInfo.ItemLabel
         hint="Data that’s passed to the sender for execution"
+        mb={{ base: 1, lg: 0 }}
       >
         { labelText }
       </DetailedInfo.ItemLabel>

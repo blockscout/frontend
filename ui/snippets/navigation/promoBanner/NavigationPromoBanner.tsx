@@ -11,7 +11,7 @@ import NavigationPromoBannerContent from './NavigationPromoBannerContent';
 
 const PROMO_BANNER_CLOSED_HASH_KEY = 'nav-promo-banner-closed-hash';
 const promoBanner = config.UI.navigation.promoBanner;
-const isHorizontalNavigation = config.UI.navigation.layout === 'horizontal';
+const isHorizontal = config.UI.navigation.layout === 'horizontal';
 
 type Props = {
   isCollapsed?: boolean;
@@ -20,6 +20,7 @@ type Props = {
 const NavigationPromoBanner = ({ isCollapsed }: Props) => {
   const isMobile = useIsMobile();
   const isXLScreen = useBreakpointValue({ base: false, xl: true });
+  const isHorizontalNavigation = isHorizontal && !isMobile;
 
   const [ isShown, setIsShown ] = useState(false);
   const [ promoBannerHash, setPromoBannerHash ] = useState('');
@@ -96,12 +97,13 @@ const NavigationPromoBanner = ({ isCollapsed }: Props) => {
               name="close"
               boxSize={ 3 }
               color={{ _light: 'gray.300', _dark: 'gray.600' }}
-              bgColor="global.body.bg"
+              bgColor="bg.primary"
               borderBottomLeftRadius="sm"
+              borderTopRightRadius="sm"
               position="absolute"
               top="0"
               right="0"
-              display="none"
+              display={ isMobile ? 'block' : 'none' }
             />
           </Box>
         </Tooltip>

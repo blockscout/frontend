@@ -1,31 +1,18 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
+import config from 'configs/app';
 import { apps as appsMock } from 'mocks/apps/apps';
-import { ratings as ratingsMock } from 'mocks/apps/ratings';
-import { securityReports as securityReportsMock } from 'mocks/apps/securityReports';
 import { test, expect, devices } from 'playwright/lib';
 
 import Marketplace from './Marketplace';
 
-const MARKETPLACE_CONFIG_URL = 'http://localhost:4000/marketplace-config.json';
-const MARKETPLACE_SECURITY_REPORTS_URL = 'https://localhost:4000/marketplace-security-reports.json';
-
-test.beforeEach(async({ mockConfigResponse, mockEnvs, mockAssetResponse, page }) => {
+test.beforeEach(async({ mockEnvs, mockAssetResponse, mockApiResponse }) => {
   await mockEnvs([
     [ 'NEXT_PUBLIC_MARKETPLACE_ENABLED', 'true' ],
-    [ 'NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', MARKETPLACE_CONFIG_URL ],
-    [ 'NEXT_PUBLIC_MARKETPLACE_SECURITY_REPORTS_URL', MARKETPLACE_SECURITY_REPORTS_URL ],
-    [ 'NEXT_PUBLIC_MARKETPLACE_RATING_AIRTABLE_API_KEY', 'test' ],
-    [ 'NEXT_PUBLIC_MARKETPLACE_RATING_AIRTABLE_BASE_ID', 'test' ],
   ]);
-  await mockConfigResponse('NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', MARKETPLACE_CONFIG_URL, appsMock);
-  await mockConfigResponse('NEXT_PUBLIC_MARKETPLACE_SECURITY_REPORTS_URL', MARKETPLACE_SECURITY_REPORTS_URL, securityReportsMock);
+  await mockApiResponse('admin:marketplace_dapps', appsMock, { pathParams: { chainId: config.chain.id } });
   await Promise.all(appsMock.map(app => mockAssetResponse(app.logo, './playwright/mocks/image_s.jpg')));
-  await page.route('https://api.airtable.com/v0/test/apps_ratings?fields%5B%5D=appId&fields%5B%5D=rating&fields%5B%5D=count', (route) => route.fulfill({
-    status: 200,
-    json: ratingsMock,
-  }));
 });
 
 test('base view +@dark-mode', async({ render, page }) => {

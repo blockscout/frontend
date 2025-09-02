@@ -19,7 +19,7 @@ export const recipe = defineRecipe({
         border: 'none',
         _hover: {
           bg: 'transparent',
-          color: 'link.primary.hover',
+          color: 'hover',
         },
       },
     },

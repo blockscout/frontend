@@ -16,4 +16,4 @@ const Page: NextPage = () => {
 
 export default Page;
 
-export { clusters as getServerSideProps } from 'nextjs/getServerSideProps';
+export { clusters as getServerSideProps } from 'nextjs/getServerSideProps/main';

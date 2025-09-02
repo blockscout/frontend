@@ -17,11 +17,11 @@ const NetworkMenuLink = ({ title, icon, isActive: isActiveProp, isMobile, url, i
   const style = useColorModeValue({}, invertIconInDarkMode ? darkModeFilter : {});
 
   const iconEl = icon ? (
-    <Image w="30px" h="30px" src={ icon } alt={ `${ title } network icon` } style={ style }/>
+    <Image w="20px" h="20px" src={ icon } alt={ `${ title } network icon` } style={ style }/>
   ) : (
     <IconSvg
       name="networks/icon-placeholder"
-      boxSize="30px"
+      boxSize="20px"
       color={{ base: 'blackAlpha.100', _dark: 'whiteAlpha.300' }}
     />
   );
@@ -46,22 +46,21 @@ const NetworkMenuLink = ({ title, icon, isActive: isActiveProp, isMobile, url, i
       <chakra.a
         display="flex"
         href={ url }
-        px={ 3 }
-        py="9px"
+        target="_blank"
+        px={ 2 }
+        py="5px"
+        opacity={ isActive ? 0.6 : 1 }
         alignItems="center"
         cursor="pointer"
         pointerEvents={ isActive ? 'none' : 'initial' }
         borderRadius="base"
-        color={ isActive ? { base: 'blackAlpha.900', _dark: 'whiteAlpha.900' } : { base: 'gray.600', _dark: 'gray.400' } }
-        bgColor={ isActive ? { base: 'blue.50', _dark: 'whiteAlpha.100' } : 'transparent' }
-        _hover={{ color: isActive ? { base: 'blackAlpha.900', _dark: 'whiteAlpha.900' } : 'link.primary.hover' }}
+        _hover={{ color: isActive ? 'text.primary' : 'hover' }}
       >
         { iconEl }
         <Text
-          marginLeft={ 3 }
-          fontWeight="500"
+          marginLeft={ 2 }
           color="inherit"
-          fontSize={ isMobile ? 'sm' : 'md' }
+          fontSize="sm"
           lineHeight={ isMobile ? '20px' : '24px' }
         >
           { title }
@@ -69,7 +68,7 @@ const NetworkMenuLink = ({ title, icon, isActive: isActiveProp, isMobile, url, i
         { isActive && (
           <IconSvg
             name="check"
-            boxSize="24px"
+            boxSize="20px"
             marginLeft="auto"
           />
         ) }

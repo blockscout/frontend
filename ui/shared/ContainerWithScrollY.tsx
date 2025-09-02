@@ -10,7 +10,7 @@ export interface Props extends FlexProps {
 const ContainerWithScrollY = ({ gradientHeight, children, onScrollVisibilityChange, ...rest }: Props) => {
   const ref = React.useRef<HTMLDivElement>(null);
   const [ hasScroll, setHasScroll ] = React.useState(false);
-  const gradientStopColor = useToken('colors', 'global.body.bg');
+  const gradientStopColor = useToken('colors', 'bg.primary');
 
   React.useEffect(() => {
     if (!ref.current) {
@@ -30,7 +30,7 @@ const ContainerWithScrollY = ({ gradientHeight, children, onScrollVisibilityChan
       _after={ hasScroll ? {
         position: 'absolute',
         content: '""',
-        bottom: 1,
+        bottom: 0,
         left: 0,
         right: '20px',
         height: `${ gradientHeight }px`,

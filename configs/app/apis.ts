@@ -100,6 +100,27 @@ const rewardsApi = (() => {
     endpoint: apiHost,
   });
 })();
+
+const multichainApi = (() => {
+  const apiHost = getEnvValue('NEXT_PUBLIC_MULTICHAIN_AGGREGATOR_API_HOST');
+  if (!apiHost) {
+    return;
+  }
+
+  try {
+    const url = new URL(apiHost);
+
+    return Object.freeze({
+      endpoint: apiHost,
+      socketEndpoint: `wss://${ url.host }`,
+      basePath: stripTrailingSlash(getEnvValue('NEXT_PUBLIC_MULTICHAIN_AGGREGATOR_BASE_PATH') || ''),
+    });
+  } catch (error) {
+    return;
+  }
+
+})();
+
 const statsApi = (() => {
   const apiHost = getEnvValue('NEXT_PUBLIC_STATS_API_HOST');
   if (!apiHost) {
@@ -155,24 +176,6 @@ const clustersApi = (() => {
   return Object.freeze({
     endpoint: apiHost,
   });
-})();
-
-const multichainApi = (() => {
-  const apiHost = getEnvValue('NEXT_PUBLIC_MULTICHAIN_AGGREGATOR_API_HOST');
-  if (!apiHost) {
-    return;
-  }
-
-  try {
-    const url = new URL(apiHost);
-
-    return Object.freeze({
-      endpoint: apiHost,
-      socketEndpoint: `wss://${ url.host }`,
-    });
-  } catch (error) {
-    return;
-  }
 })();
 
 export type Apis = {

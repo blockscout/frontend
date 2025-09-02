@@ -27,10 +27,8 @@ function formatUrl(tpl: string, ctx: Record<string, string>) {
   return tpl.replace(/\{\s*(\w+)\s*\}/g, (_, key) => ctx[key] ?? '');
 }
 
-const Address3rdPartyWidgetCard = ({ name, config, address, ...props }: Props) => {
-  const { data, isLoading: isDataLoading } = useWidgetData(name, config?.valuePath, address, props.isLoading);
-
-  const isLoading = props.isLoading || isDataLoading;
+const Address3rdPartyWidgetCard = ({ name, config, address, isLoading }: Props) => {
+  const { data, isLoading: isDataLoading } = useWidgetData(name, config?.valuePath, address, isLoading);
 
   const handleClick = useCallback(() => {
     mixpanel.logEvent(mixpanel.EventTypes.ADDRESS_WIDGET, { Name: name });
@@ -61,27 +59,29 @@ const Address3rdPartyWidgetCard = ({ name, config, address, ...props }: Props) =
   ) : (
     <>
       <LinkOverlay href={ url } external onClick={ handleClick }/>
-      { data ? (
-        <Text
-          textStyle="heading.xl"
-          color={ integer === '0' && !decimal ? 'text.secondary' : 'text.primary' }
-          textOverflow="ellipsis"
-          whiteSpace="nowrap"
-          overflow="hidden"
-        >
-          { integer }
-          { decimal && (
-            <>
-              .
-              <chakra.span color="text.secondary">
-                { decimal }
-              </chakra.span>
-            </>
-          ) }
-        </Text>
-      ) : (
-        <Text textStyle="heading.xl" color="gray.500" opacity={ 0.2 }>{ ndash }</Text>
-      ) }
+      <Skeleton loading={ isDataLoading } minW="88px" alignSelf="flex-start">
+        { data ? (
+          <Text
+            textStyle="heading.xl"
+            color={ integer === '0' && !decimal ? 'text.secondary' : 'text.primary' }
+            textOverflow="ellipsis"
+            whiteSpace="nowrap"
+            overflow="hidden"
+          >
+            { integer }
+            { decimal && (
+              <>
+                .
+                <chakra.span color="text.secondary">
+                  { decimal }
+                </chakra.span>
+              </>
+            ) }
+          </Text>
+        ) : (
+          <Text textStyle="heading.xl" color="text.secondary" opacity={ 0.2 }>{ ndash }</Text>
+        ) }
+      </Skeleton>
       <Flex alignItems="center" gap={ 1 } mt={ 1 }>
         <Text textStyle="sm">{ config.title }</Text>
         { config.hint && (
@@ -102,14 +102,14 @@ const Address3rdPartyWidgetCard = ({ name, config, address, ...props }: Props) =
           <Text
             textStyle="xs"
             color="text.secondary"
-            _groupHover={{ color: 'blue.400' }}
+            _groupHover={{ color: 'hover' }}
           >
             { config.name }
           </Text>
           <IconSvg
             name="link_external"
             boxSize={ 3 }
-            color="blue.400"
+            color="hover"
             display="none"
             _groupHover={{ display: 'block' }}
           />
@@ -119,24 +119,22 @@ const Address3rdPartyWidgetCard = ({ name, config, address, ...props }: Props) =
   );
 
   return (
-    <LinkBox className="group">
-      <Flex
-        flexDirection="column"
-        p={ 3 }
-        bgColor={ isLoading ? 'transparent' : { _light: 'blackAlpha.50', _dark: 'whiteAlpha.50' } }
-        borderRadius="md"
-        border="1px solid"
-        borderColor={ isLoading ? { _light: 'blackAlpha.50', _dark: 'whiteAlpha.50' } : 'transparent' }
-        _groupHover={{
-          borderColor: isLoading ? 'default' : { _light: 'blackAlpha.50', _dark: 'whiteAlpha.100' },
-          scale: 1.02,
-        }}
-        transition="all 0.2s ease-in-out"
-        scale={ 1 }
-        cursor={ isLoading ? 'default' : 'pointer' }
-      >
-        { content }
-      </Flex>
+    <LinkBox
+      as={ Flex }
+      className="group"
+      flexDirection="column"
+      p={ 3 }
+      cursor={ isLoading ? 'default' : 'pointer' }
+      borderRadius="md"
+      border="1px solid"
+      borderColor={ isLoading ? { _light: 'blackAlpha.50', _dark: 'whiteAlpha.100' } : 'transparent' }
+      bgColor={ isLoading ? 'transparent' : { _light: 'blackAlpha.50', _dark: 'whiteAlpha.100' } }
+      transition="border-color 0.2s ease-in-out"
+      _hover={ isLoading ? {} : {
+        borderColor: { _light: 'blackAlpha.200', _dark: 'whiteAlpha.200' },
+      } }
+    >
+      { content }
     </LinkBox>
   );
 };

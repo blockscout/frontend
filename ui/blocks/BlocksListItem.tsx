@@ -4,6 +4,7 @@ import { capitalize } from 'es-toolkit';
 import React from 'react';
 
 import type { Block } from 'types/api/block';
+import type { ChainConfig } from 'types/multichain';
 
 import { route } from 'nextjs-routes';
 
@@ -30,15 +31,16 @@ interface Props {
   isLoading?: boolean;
   enableTimeIncrement?: boolean;
   animation?: string;
+  chainData?: ChainConfig;
 }
 
 const isRollup = config.features.rollup.isEnabled;
 
-const BlocksListItem = ({ data, isLoading, enableTimeIncrement, animation }: Props) => {
+const BlocksListItem = ({ data, isLoading, enableTimeIncrement, animation, chainData }: Props) => {
   const totalReward = getBlockTotalReward(data);
   const burntFees = BigNumber(data.burnt_fees || 0);
   const txFees = BigNumber(data.transaction_fees || 0);
-  const baseFeeValue = getBaseFeeValue(data.base_fee_per_gas);
+  const baseFeeValue = getBaseFeeValue(data.base_fee_per_gas || null);
 
   return (
     <ListItemMobile rowGap={ 3 } key={ String(data.height) } animation={ animation }>
@@ -48,8 +50,8 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement, animation }: Pro
             isLoading={ isLoading }
             number={ data.height }
             hash={ data.type !== 'block' ? data.hash : undefined }
-            noIcon
             fontWeight={ 600 }
+            chain={ chainData }
           />
           { data.celo?.l1_era_finalized_epoch_number && (
             <Tooltip content={ `Finalized epoch #${ data.celo.l1_era_finalized_epoch_number }` } disabled={ isLoading }>
@@ -66,12 +68,14 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement, animation }: Pro
           display="inline-block"
         />
       </Flex>
-      <Flex columnGap={ 2 }>
-        <Text fontWeight={ 500 }>Size</Text>
-        <Skeleton loading={ isLoading } display="inline-block" color="text.secondary">
-          <span>{ data.size.toLocaleString() } bytes</span>
-        </Skeleton>
-      </Flex>
+      { data.size && (
+        <Flex columnGap={ 2 }>
+          <Text fontWeight={ 500 }>Size</Text>
+          <Skeleton loading={ isLoading } display="inline-block" color="text.secondary">
+            <span>{ data.size?.toLocaleString() } bytes</span>
+          </Skeleton>
+        </Flex>
+      ) }
       { !config.UI.views.block.hiddenFields?.miner && (
         <Flex columnGap={ 2 } w="100%">
           <Text fontWeight={ 500 }>{ capitalize(getNetworkValidatorTitle()) }</Text>

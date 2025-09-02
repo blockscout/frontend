@@ -42,9 +42,8 @@ const AddressAccountHistoryTableItem = (props: Props) => {
               name="lightning"
               height="5"
               width="5"
-              color="gray.500"
+              color="icon.primary"
               mr="8px"
-              _dark={{ color: 'gray.400' }}
             />
 
             <Link
