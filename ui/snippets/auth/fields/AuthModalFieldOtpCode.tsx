@@ -36,7 +36,6 @@ const AuthModalFieldOtpCode = ({ isDisabled: isDisabledProp }: Props) => {
           onValueChange={ handleChange }
           disabled={ isDisabled }
           invalid={ Boolean(fieldState.error) }
-          bgColor="dialog.bg"
         />
       </HStack>
       { fieldState.error?.message && <Text color="text.error" textStyle="sm" mt={ 1 }>{ fieldState.error.message }</Text> }

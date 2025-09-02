@@ -278,7 +278,7 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
         error: { value: '{colors.text.error}' },
       },
       bg: {
-        DEFAULT: { value: { _light: '{colors.white}', _dark: '{colors.black}' } },
+        DEFAULT: { value: 'transparent' },
         readOnly: { value: { _light: '{colors.gray.200}', _dark: '{colors.gray.800}' } },
       },
       border: {
