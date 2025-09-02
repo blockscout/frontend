@@ -16,7 +16,7 @@ type Props = {
   bottomText?: string;
 };
 
-const RewardsDashboardCard = ({ label, value, withIcon, hint, isLoading, bottomText }: Props) => (
+const RewardsDashboardCardValue = ({ label, value, withIcon, hint, isLoading, bottomText }: Props) => (
   <Flex key={ label } flexDirection="column" alignItems="center" gap={ 2 }>
     { label && (
       <Flex alignItems="center" gap={ 1 }>
@@ -49,4 +49,4 @@ const RewardsDashboardCard = ({ label, value, withIcon, hint, isLoading, bottomT
   </Flex>
 );
 
-export default RewardsDashboardCard;
+export default RewardsDashboardCardValue;

@@ -17,7 +17,7 @@ import LatestTxsItemMobile from './LatestTxsItemMobile';
 
 const zetachainFeature = config.features.zetachain;
 
-const LatestTransactions = () => {
+const LatestTxs = () => {
   const isMobile = useIsMobile();
   const txsCount = isMobile ? 2 : 5;
   const { data, isPlaceholderData, isError } = useApiQuery('general:homepage_txs', {
@@ -67,4 +67,4 @@ const LatestTransactions = () => {
   return null;
 };
 
-export default LatestTransactions;
+export default LatestTxs;

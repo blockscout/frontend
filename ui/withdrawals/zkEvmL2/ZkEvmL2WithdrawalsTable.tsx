@@ -13,7 +13,7 @@ type Props = {
   isLoading?: boolean;
 };
 
-const ZkEvmL2DepositsTable = ({ items, top, isLoading }: Props) => {
+const ZkEvmL2WithdrawalsTable = ({ items, top, isLoading }: Props) => {
   return (
     <TableRoot tableLayout="auto" minW="950px">
       <TableHeaderSticky top={ top }>
@@ -39,4 +39,4 @@ const ZkEvmL2DepositsTable = ({ items, top, isLoading }: Props) => {
   );
 };
 
-export default ZkEvmL2DepositsTable;
+export default ZkEvmL2WithdrawalsTable;

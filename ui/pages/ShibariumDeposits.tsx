@@ -14,7 +14,7 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import StickyPaginationWithText from 'ui/shared/StickyPaginationWithText';
 
-const L2Deposits = () => {
+const ShibariumDeposits = () => {
   const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({
     resourceName: 'general:shibarium_deposits',
     options: {
@@ -86,4 +86,4 @@ const L2Deposits = () => {
   );
 };
 
-export default L2Deposits;
+export default ShibariumDeposits;

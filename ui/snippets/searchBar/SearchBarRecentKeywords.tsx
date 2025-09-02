@@ -13,7 +13,7 @@ type Props = {
   onClear: () => void;
 };
 
-const SearchBarSuggest = ({ onClick, onClear }: Props) => {
+const SearchBarRecentKeywords = ({ onClick, onClear }: Props) => {
   const isMobile = useIsMobile();
 
   const [ keywords, setKeywords ] = React.useState<Array<string>>(getRecentSearchKeywords());
@@ -92,4 +92,4 @@ const SearchBarSuggest = ({ onClick, onClear }: Props) => {
   );
 };
 
-export default SearchBarSuggest;
+export default SearchBarRecentKeywords;
