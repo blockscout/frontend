@@ -88,7 +88,7 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
     [ 'NEXT_PUBLIC_DATA_AVAILABILITY_ENABLED', 'true' ],
   ],
   nameService: [
-    [ 'NEXT_PUBLIC_NAME_SERVICE_API_HOST', 'https://localhost:3008' ],
+    [ 'NEXT_PUBLIC_NAME_SERVICE_API_HOST', 'http://localhost:3008' ],
   ],
   rewardsService: [
     [ 'NEXT_PUBLIC_REWARDS_SERVICE_API_HOST', 'http://localhost:3009' ],

@@ -26,7 +26,6 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/token/[hash]/instance/[id]': '%hash%, balances and analytics on the %network_title%',
   '/apps': DEFAULT_TEMPLATE,
   '/apps/[id]': DEFAULT_TEMPLATE,
-  '/clusters': '%network_name% clusters | %app_name%',
   '/clusters/[name]': '%cluster_name% cluster | %app_name%',
   '/stats': DEFAULT_TEMPLATE,
   '/stats/[id]': DEFAULT_TEMPLATE,

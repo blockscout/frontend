@@ -1,4 +1,4 @@
-import { Box } from '@chakra-ui/react';
+import { Box, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React, { useCallback } from 'react';
 
@@ -18,14 +18,14 @@ import { useClusterSearch } from 'lib/clusters/useClusterSearch';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { useQueryParams } from 'lib/router/useQueryParams';
 import { apos } from 'toolkit/utils/htmlEntities';
-import ClustersActionBar from 'ui/clusters/ClustersActionBar';
-import ClustersDirectoryListItem from 'ui/clusters/ClustersDirectoryListItem';
-import ClustersDirectoryTable from 'ui/clusters/ClustersDirectoryTable';
-import ClustersLeaderboardListItem from 'ui/clusters/ClustersLeaderboardListItem';
-import ClustersLeaderboardTable from 'ui/clusters/ClustersLeaderboardTable';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import PageTitle from 'ui/shared/Page/PageTitle';
+
+import ClustersActionBar from './ClustersActionBar';
+import ClustersDirectoryListItem from './ClustersDirectoryListItem';
+import ClustersDirectoryTable from './ClustersDirectoryTable';
+import ClustersLeaderboardListItem from './ClustersLeaderboardListItem';
+import ClustersLeaderboardTable from './ClustersLeaderboardTable';
 
 const Clusters = () => {
   const router = useRouter();
@@ -137,7 +137,9 @@ const Clusters = () => {
 
   return (
     <>
-      <PageTitle title="Clusters lookup"/>
+      <Text mb={ 6 } textStyle={{ base: 'sm', lg: 'md' }}>
+        Clusters is a cross-chain name service for managing addresses on multiple blockchains using a universal naming directory.
+      </Text>
       <DataListDisplay
         isError={ isError }
         itemsNum={ currentDataLength }

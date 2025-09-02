@@ -19,13 +19,13 @@ const ClustersDirectoryTable = ({ data, isLoading, top, isClusterDetailsLoading 
     <TableRoot>
       <TableHeaderSticky top={ top }>
         <TableRow>
-          <TableColumnHeader width="20%">Cluster Name</TableColumnHeader>
-          <TableColumnHeader width="30%">Address</TableColumnHeader>
-          <TableColumnHeader width="10%">
+          <TableColumnHeader width="40%">Cluster Name</TableColumnHeader>
+          <TableColumnHeader width="40%">Address</TableColumnHeader>
+          <TableColumnHeader width="180px">
             Joined
             <TimeFormatToggle/>
           </TableColumnHeader>
-          <TableColumnHeader width="10%">Active Chains</TableColumnHeader>
+          <TableColumnHeader width="20%">Active Chains</TableColumnHeader>
         </TableRow>
       </TableHeaderSticky>
       <TableBody>

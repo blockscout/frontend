@@ -11,7 +11,9 @@ export const apiDocs = factory([ guards.apiDocs ]);
 export const csvExport = factory([ guards.csvExport ]);
 export const stats = factory([ guards.stats ]);
 export const suave = factory([ guards.suave ]);
-export const nameService = factory([ guards.nameService ]);
+export const nameDomain = factory([ guards.nameService, guards.clusters ]);
+export const clusters = factory([ guards.clusters ]);
+export const nameDomains = factory([ [ guards.nameService, guards.clusters ] ]);
 export const accounts = factory([ guards.accounts ]);
 export const accountsLabelSearch = factory([ guards.accountsLabelSearch ]);
 export const validators = factory([ guards.validators ]);
@@ -23,7 +25,6 @@ export const login = factory([ guards.login ]);
 export const dev = factory([ guards.dev ]);
 export const publicTagsSubmit = factory([ guards.publicTagsSubmit ]);
 export const pools = factory([ guards.pools ]);
-export const clusters = factory([ guards.clusters ]);
 
 // ROLLUPS
 export const rollup = factory([ guards.rollup ]);

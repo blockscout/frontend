@@ -99,7 +99,7 @@ const AddressClusters = ({ query, addressHash }: Props) => {
           </div>
           { showMoreLink && (
             <Link
-              href={ route({ pathname: '/clusters', query: { q: addressHash } }) }
+              href={ route({ pathname: '/name-domains', query: { q: addressHash, tab: 'directories' } }) }
             >
               <span>More results</span>
               <chakra.span color="text.secondary"> ({ totalRecords })</chakra.span>

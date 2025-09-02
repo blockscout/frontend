@@ -50,7 +50,6 @@ declare module "nextjs-routes" {
     | DynamicRoute<"/chain/[chain-slug]/tx/[hash]", { "chain-slug": string; "hash": string }>
     | StaticRoute<"/chakra">
     | DynamicRoute<"/clusters/[name]", { "name": string }>
-    | StaticRoute<"/clusters">
     | StaticRoute<"/contract-verification">
     | StaticRoute<"/csv-export">
     | StaticRoute<"/deposits">
