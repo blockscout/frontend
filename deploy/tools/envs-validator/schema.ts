@@ -867,6 +867,7 @@ const schema = yup
       .transform(replaceQuotes)
       .json()
       .of(yup.string<BlockFieldId>().oneOf(BLOCK_FIELDS_IDS)),
+    NEXT_PUBLIC_VIEWS_BLOCK_PENDING_UPDATE_ALERT_ENABLED: yup.boolean(),
     NEXT_PUBLIC_VIEWS_ADDRESS_IDENTICON_TYPE: yup.string().oneOf(IDENTICON_TYPES),
     NEXT_PUBLIC_VIEWS_ADDRESS_FORMAT: yup
       .array()

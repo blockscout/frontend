@@ -52,6 +52,7 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement, animation, chain
             hash={ data.type !== 'block' ? data.hash : undefined }
             fontWeight={ 600 }
             chain={ chainData }
+            isPendingUpdate={ data.is_pending_update }
           />
           { data.celo?.l1_era_finalized_epoch_number && (
             <Tooltip content={ `Finalized epoch #${ data.celo.l1_era_finalized_epoch_number }` } disabled={ isLoading }>
