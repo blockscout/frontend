@@ -19,7 +19,7 @@ const rollupFeature = config.features.rollup;
 
 type Props = { item: ScrollL2TxnBatch; isLoading?: boolean };
 
-const TxnBatchesTableItem = ({ item, isLoading }: Props) => {
+const ScrollL2TxnBatchesTableItem = ({ item, isLoading }: Props) => {
   if (!rollupFeature.isEnabled || rollupFeature.type !== 'scroll') {
     return null;
   }
@@ -100,4 +100,4 @@ const TxnBatchesTableItem = ({ item, isLoading }: Props) => {
   );
 };
 
-export default TxnBatchesTableItem;
+export default ScrollL2TxnBatchesTableItem;

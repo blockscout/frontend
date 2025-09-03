@@ -1,3 +1,4 @@
+/* eslint-disable consistent-default-export-name/default-export-match-filename */
 import React from 'react';
 
 import type { Props } from './types';
