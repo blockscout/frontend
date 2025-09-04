@@ -88,6 +88,11 @@ export const withWatchListNames: Transaction = {
   } as Transaction['to'],
 };
 
+export const withPendingUpdate: Transaction = {
+  ...withWatchListNames,
+  is_pending_update: true,
+};
+
 export const withContractCreation: Transaction = {
   ...base,
   hash: '0x62d597ebcf3e8d60096dd0363bc2f0f5e2df27ba1dacd696c51aa7c9409f3195',

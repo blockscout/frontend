@@ -133,6 +133,7 @@ export const base2: Block = {
       type: 'Emission Reward',
     },
   ],
+  is_pending_update: true,
 };
 
 export const rootstock: Block = {

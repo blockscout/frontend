@@ -20,6 +20,7 @@ const blockHiddenFields = (() => {
 
 const config = Object.freeze({
   hiddenFields: blockHiddenFields,
+  pendingUpdateAlertEnabled: getEnvValue('NEXT_PUBLIC_VIEWS_BLOCK_PENDING_UPDATE_ALERT_ENABLED') !== 'false',
 });
 
 export default config;

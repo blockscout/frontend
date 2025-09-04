@@ -16,6 +16,7 @@ import { Tooltip } from 'toolkit/chakra/tooltip';
 import { WEI } from 'toolkit/utils/consts';
 import ChainIcon from 'ui/optimismSuperchain/components/ChainIcon';
 import BlockGasUsed from 'ui/shared/block/BlockGasUsed';
+import BlockPendingUpdateHint from 'ui/shared/block/BlockPendingUpdateHint';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import IconSvg from 'ui/shared/IconSvg';
@@ -54,6 +55,7 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement, animation, chai
               <IconSvg name="checkered_flag" boxSize={ 5 } p="1px" isLoading={ isLoading } flexShrink={ 0 }/>
             </Tooltip>
           ) }
+          { data.is_pending_update && <BlockPendingUpdateHint/> }
           <Tooltip disabled={ data.type !== 'reorg' } content="Chain reorganizations">
             <span>
               <BlockEntity

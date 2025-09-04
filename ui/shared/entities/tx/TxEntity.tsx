@@ -3,6 +3,7 @@ import React from 'react';
 
 import { route } from 'nextjs/routes';
 
+import config from 'configs/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import getChainTooltipText from 'lib/multichain/getChainTooltipText';
 import getIconUrl from 'lib/multichain/getIconUrl';
@@ -28,13 +29,39 @@ const Link = chakra((props: LinkProps) => {
   );
 });
 
-const Icon = (props: EntityBase.IconBaseProps) => {
+type IconProps = EntityBase.IconBaseProps & Pick<EntityProps, 'isPendingUpdate'>;
+
+const Icon = (props: IconProps) => {
+  const isPendingUpdate = props.isPendingUpdate && config.UI.views.block.pendingUpdateAlertEnabled;
+
+  const name = (() => {
+    if ('name' in props) {
+      return props.name;
+    }
+
+    return isPendingUpdate ? 'status/warning' : 'transactions_slim';
+  })();
+
+  const hint = (() => {
+    if ('hint' in props) {
+      return props.hint;
+    }
+
+    if (props.chain) {
+      return getChainTooltipText(props.chain, 'Transaction on ');
+    }
+
+    return isPendingUpdate ?
+      'This transaction is part of a block that is being re-synced. Details may be incomplete until the update is finished.' :
+      undefined;
+  })();
+
   return (
     <EntityBase.Icon
       { ...props }
-      name={ 'name' in props ? props.name : 'transactions_slim' }
+      name={ name }
       shield={ props.shield ?? (props.chain ? { src: getIconUrl(props.chain) } : undefined) }
-      hint={ props.chain ? getChainTooltipText(props.chain, 'Transaction on ') : undefined }
+      hint={ hint }
     />
   );
 };
@@ -68,6 +95,7 @@ const Container = EntityBase.Container;
 export interface EntityProps extends EntityBase.EntityBaseProps {
   hash: string;
   text?: string;
+  isPendingUpdate?: boolean;
 }
 
 const TxEntity = (props: EntityProps) => {
@@ -78,7 +106,7 @@ const TxEntity = (props: EntityProps) => {
 
   return (
     <Container { ...partsProps.container }>
-      <Icon { ...partsProps.icon }/>
+      <Icon { ...partsProps.icon } isPendingUpdate={ props.isPendingUpdate }/>
       { props.noLink ? content : <Link { ...partsProps.link }>{ content }</Link> }
       <Copy { ...partsProps.copy }/>
     </Container>

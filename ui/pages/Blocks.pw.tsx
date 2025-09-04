@@ -33,7 +33,10 @@ test('base view +@dark-mode', async({ render, mockApiResponse }) => {
 });
 
 test('hidden fields', async({ render, mockApiResponse, mockEnvs }) => {
-  await mockEnvs(ENVS_MAP.blockHiddenFields);
+  await mockEnvs([
+    ...ENVS_MAP.blockHiddenFields,
+    [ 'NEXT_PUBLIC_VIEWS_BLOCK_PENDING_UPDATE_ALERT_ENABLED', 'false' ],
+  ]);
   await mockApiResponse('general:blocks', blockMock.baseListResponse, { queryParams: { type: 'block' } });
   await mockApiResponse('general:stats', statsMock.base);
 
@@ -55,7 +58,10 @@ test.describe('mobile', () => {
   });
 
   test('hidden fields', async({ render, mockApiResponse, mockEnvs }) => {
-    await mockEnvs(ENVS_MAP.blockHiddenFields);
+    await mockEnvs([
+      ...ENVS_MAP.blockHiddenFields,
+      [ 'NEXT_PUBLIC_VIEWS_BLOCK_PENDING_UPDATE_ALERT_ENABLED', 'false' ],
+    ]);
     await mockApiResponse('general:blocks', blockMock.baseListResponse, { queryParams: { type: 'block' } });
     await mockApiResponse('general:stats', statsMock.base);
 

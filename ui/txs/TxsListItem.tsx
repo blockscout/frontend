@@ -1,7 +1,6 @@
 import {
   HStack,
   Flex,
-
 } from '@chakra-ui/react';
 import React from 'react';
 
@@ -63,8 +62,9 @@ const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeI
           hash={ tx.hash }
           truncation="constant_long"
           fontWeight="700"
-          icon={ tx.transaction_types.includes('blob_transaction') ? { name: 'blob' } : {} }
+          icon={ !tx.is_pending_update && tx.transaction_types.includes('blob_transaction') ? { name: 'blob' } : undefined }
           chain={ chainData }
+          isPendingUpdate={ tx.is_pending_update }
         />
         <TimeWithTooltip
           timestamp={ tx.timestamp }
