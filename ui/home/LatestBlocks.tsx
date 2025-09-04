@@ -1,5 +1,6 @@
 import { chakra, Box, Flex, Text, VStack } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
+import { upperFirst } from 'es-toolkit';
 import React from 'react';
 
 import type { SocketMessage } from 'lib/socket/types';
@@ -11,6 +12,7 @@ import config from 'configs/app';
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 import useInitialList from 'lib/hooks/useInitialList';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import getNetworkUtilizationParams from 'lib/networks/getNetworkUtilizationParams';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import { BLOCK } from 'stubs/block';
@@ -18,6 +20,7 @@ import { HOMEPAGE_STATS } from 'stubs/stats';
 import { Heading } from 'toolkit/chakra/heading';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
+import { Tooltip } from 'toolkit/chakra/tooltip';
 import { nbsp } from 'toolkit/utils/htmlEntities';
 
 import LatestBlocksItem from './LatestBlocksItem';
@@ -101,6 +104,8 @@ const LatestBlocks = () => {
     );
   }
 
+  const networkUtilization = getNetworkUtilizationParams(statsQueryResult.data?.network_utilization_percentage ?? 0);
+
   return (
     <Box width={{ base: '100%', lg: '280px' }} flexShrink={ 0 }>
       <Heading level="3">Latest blocks</Heading>
@@ -109,9 +114,11 @@ const LatestBlocks = () => {
           <Text as="span">
             Network utilization:{ nbsp }
           </Text>
-          <Text as="span" color="blue.500" fontWeight={ 700 }>
-            { statsQueryResult.data?.network_utilization_percentage.toFixed(2) }%
-          </Text>
+          <Tooltip content={ `${ upperFirst(networkUtilization.load) } load` }>
+            <Text as="span" color={ networkUtilization.color } fontWeight={ 700 }>
+              { statsQueryResult.data?.network_utilization_percentage.toFixed(2) }%
+            </Text>
+          </Tooltip>
         </Skeleton>
       ) }
       { statsQueryResult.data?.celo && (
