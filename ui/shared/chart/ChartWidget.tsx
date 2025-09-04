@@ -1,7 +1,7 @@
 import { chakra, Flex } from '@chakra-ui/react';
 import React, { useRef } from 'react';
 
-import type { TimeChartItem } from './types';
+import type { AxesConfigFn, TimeChartItem } from './types';
 
 import { route, type Route } from 'nextjs-routes';
 
@@ -27,6 +27,7 @@ export type Props = {
   emptyText?: string;
   noAnimation?: boolean;
   href?: Route;
+  axesConfig?: AxesConfigFn;
 };
 
 const ChartWidget = ({
@@ -40,6 +41,7 @@ const ChartWidget = ({
   emptyText,
   noAnimation,
   href,
+  axesConfig,
 }: Props) => {
   const ref = useRef<HTMLDivElement>(null);
   const { zoomRange, handleZoom, handleZoomReset } = useZoom();
@@ -57,6 +59,7 @@ const ChartWidget = ({
       handleZoom={ handleZoom }
       zoomRange={ zoomRange }
       noAnimation={ noAnimation }
+      axesConfig={ axesConfig }
     />
   );
 
