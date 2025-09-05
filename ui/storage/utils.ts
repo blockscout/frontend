@@ -19,7 +19,7 @@ export const truncateString = (str: string, _length = 32): string => {
 };
 
 export const timeTool = (time: string) => {
-  const now = new Date(new Date().toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' })).getTime();
+  const now = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Shanghai', hour12: false })).getTime();
   const diff = now - new Date(time).getTime();
 
   const seconds = Math.floor(diff / 1000);
@@ -54,8 +54,11 @@ export const timeText = (time: string) => {
   const oldhours = new Date(time).getHours();
   const oldminutes = new Date(time).getMinutes();
   const oldseconds = new Date(time).getSeconds();
+  const oldtimezone = new Date(time).getTimezoneOffset();
+  const oldtimezoneOffset = Math.abs(oldtimezone / 60);
   const timeText = `${ oldyear }-${ oldmonth }-${ oldday } 
-  ${ oldhours }:${ oldminutes.toString().padStart(2, '0') }:${ oldseconds.toString().padStart(2, '0') } (UTC+8)`;
+  ${ oldhours }:${ oldminutes.toString().padStart(2, '0') }:
+  ${ oldseconds.toString().padStart(2, '0') } (UTC${ oldtimezoneOffset > 0 ? '+' : '-' }${ oldtimezoneOffset })`;
   return timeText;
 };
 
