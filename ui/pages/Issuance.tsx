@@ -90,7 +90,7 @@ const ObjectDetails: NextPage = () => {
           Block: v.block_number,
           Method: v.method,
           'From/To': [ v.from.hash, '0xC26Cc070c4Cc98EFC78D6ed1936987Db5d6Cd82b' ],
-          Time: new Date(v.timestamp).toLocaleString(),
+          Time: new Date(v.timestamp).toLocaleString('en-US', { timeZone: 'Asia/Shanghai', hour12: false }),
           'Value MOCA': v.value,
           'Fee MOCA': truncateToSignificantDigits(BigNumber(v.base_fee_per_gas / 1e18).toString(10), 3).toString(10),
         });
