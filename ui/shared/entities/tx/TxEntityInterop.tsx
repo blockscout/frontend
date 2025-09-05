@@ -1,7 +1,7 @@
 import { Box, chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import type { ChainInfo } from 'types/api/interop';
+import type { CrossChainInfo } from 'types/client/crossChainInfo';
 
 import { route } from 'nextjs-routes';
 
@@ -15,7 +15,7 @@ import { distributeEntityProps } from '../base/utils';
 import * as TxEntity from './TxEntity';
 
 type Props = {
-  chain: ChainInfo | null;
+  chain?: CrossChainInfo | null;
   hash?: string | null;
 } & Omit<TxEntity.EntityProps, 'hash' | 'chain'>;
 
@@ -56,7 +56,7 @@ const TxEntityInterop = ({ chain, hash, ...props }: Props) => {
 
   return (
     <TxEntity.Container { ...partsProps.container }>
-      { chain && (
+      { chain && !props.noIcon && (
         <Tooltip content={ `${ chain.chain_name ? chain.chain_name : 'External chain' } (chain id ${ chain.chain_id })` }>
           <Box>
             { chain.chain_logo ? (
@@ -74,7 +74,7 @@ const TxEntityInterop = ({ chain, hash, ...props }: Props) => {
           </Box>
         </Tooltip>
       ) }
-      { !chain && (
+      { !chain && !props.noIcon && (
         <IconStub/>
       ) }
       { hash && (
@@ -84,7 +84,9 @@ const TxEntityInterop = ({ chain, hash, ...props }: Props) => {
               <TxEntity.Content { ...partsProps.content } hash={ hash }/>
             </TxEntity.Link>
           ) : (
-            <TxEntity.Content { ...partsProps.content } hash={ hash }/>
+            <Box overflow="hidden">
+              <TxEntity.Content { ...partsProps.content } hash={ hash }/>
+            </Box>
           ) }
           <TxEntity.Copy { ...partsProps.copy } hash={ hash }/>
         </>

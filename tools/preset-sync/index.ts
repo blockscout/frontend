@@ -30,6 +30,8 @@ const PRESETS = {
   stability_testnet: 'https://stability-testnet.blockscout.com',
   tac: 'https://explorer.tac.build',
   tac_turin: 'https://tac-turin.blockscout.com',
+  zetachain: 'https://zetachain.blockscout.com',
+  zetachain_testnet: 'https://zetachain-testnet.blockscout.com',
   zkevm: 'https://zkevm.blockscout.com',
   zksync: 'https://zksync.blockscout.com',
   zilliqa: 'https://zilliqa.blockscout.com',

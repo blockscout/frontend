@@ -6,14 +6,15 @@ import type { EntityProps } from 'ui/shared/entities/address/AddressEntity';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import AddressEntityWithTokenFilter from 'ui/shared/entities/address/AddressEntityWithTokenFilter';
 
+import AddressEntityZetaChain from '../entities/address/AddressEntityZetaChain';
 import AddressFromToIcon from './AddressFromToIcon';
 import { getTxCourseType } from './utils';
 
 type Mode = 'compact' | 'long';
 
 interface Props {
-  from: { hash: string };
-  to: { hash: string } | null;
+  from: { hash: string } | { hash: string; chainId: string; chainType: 'zeta' };
+  to: { hash: string } | { hash: string; chainId: string; chainType: 'zeta' } | null;
   current?: string;
   mode?: Mode | ConditionalValue<Mode>;
   className?: string;
@@ -24,7 +25,12 @@ interface Props {
   noIcon?: boolean;
 }
 
-const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading, tokenHash = '', tokenSymbol = '', noIcon }: Props) => {
+const AddressFromTo = ({
+  from,
+  to,
+  current,
+  mode: modeProp,
+  className, isLoading, tokenHash = '', tokenSymbol = '', noIcon }: Props) => {
   const mode = useBreakpointValue(
     {
       base: (typeof modeProp === 'object' && 'base' in modeProp ? modeProp.base : modeProp),
@@ -33,9 +39,31 @@ const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading
     },
   ) ?? 'long';
 
-  const Entity = tokenHash && tokenSymbol ? AddressEntityWithTokenFilter : AddressEntity;
+  const EntityFrom = (() => {
+    if ('chainType' in from && from.chainType === 'zeta') {
+      return AddressEntityZetaChain;
+    }
+    if (tokenHash && tokenSymbol) {
+      return AddressEntityWithTokenFilter;
+    }
+    return AddressEntity;
+  })();
+
+  const EntityTo = (() => {
+    if (to && 'chainType' in to && to.chainType === 'zeta') {
+      return AddressEntityZetaChain;
+    }
+    if (tokenHash && tokenSymbol) {
+      return AddressEntityWithTokenFilter;
+    }
+    return AddressEntity;
+  })();
+
   const isOutgoing = current ? current.toLowerCase() === from.hash.toLowerCase() : false;
   const isIncoming = current ? current.toLowerCase() === to?.hash?.toLowerCase() : false;
+
+  const fromChainId = 'chainType' in from && from.chainType === 'zeta' ? from.chainId : undefined;
+  const toChainId = to && 'chainType' in to && to.chainType === 'zeta' ? to.chainId : undefined;
 
   if (mode === 'compact') {
     return (
@@ -46,7 +74,7 @@ const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading
             type={ getTxCourseType(from.hash, to?.hash, current) }
             transform="rotate(90deg)"
           />
-          <Entity
+          <EntityFrom
             address={ from }
             isLoading={ isLoading }
             noLink={ isOutgoing }
@@ -57,10 +85,11 @@ const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading
             truncation="constant"
             maxW="calc(100% - 28px)"
             w="min-content"
+            chainId={ fromChainId }
           />
         </Flex>
         { to && (
-          <Entity
+          <EntityTo
             address={ to }
             isLoading={ isLoading }
             noLink={ isIncoming }
@@ -72,6 +101,7 @@ const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading
             maxW="calc(100% - 28px)"
             w="min-content"
             ml="28px"
+            chainId={ toChainId }
           />
         ) }
       </Flex>
@@ -82,7 +112,7 @@ const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading
 
   return (
     <Grid className={ className } alignItems="center" gridTemplateColumns={ `minmax(auto, min-content) ${ iconSize }px minmax(auto, min-content)` }>
-      <Entity
+      <EntityFrom
         address={ from }
         isLoading={ isLoading }
         noLink={ isOutgoing }
@@ -92,13 +122,14 @@ const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading
         tokenSymbol={ tokenSymbol }
         truncation="constant"
         mr={ isOutgoing ? 4 : 2 }
+        chainId={ fromChainId }
       />
       <AddressFromToIcon
         isLoading={ isLoading }
         type={ getTxCourseType(from.hash, to?.hash, current) }
       />
       { to && (
-        <Entity
+        <EntityTo
           address={ to }
           isLoading={ isLoading }
           noLink={ isIncoming }
@@ -108,6 +139,7 @@ const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading
           tokenSymbol={ tokenSymbol }
           truncation="constant"
           ml={ 3 }
+          chainId={ toChainId }
         />
       ) }
     </Grid>

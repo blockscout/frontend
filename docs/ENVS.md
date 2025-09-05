@@ -78,6 +78,7 @@ All json-like values should be single-quoted. If it contains a hash (`#`) or a d
   - [DEX pools](#dex-pools)
   - [Flashblocks](#flashblocks)
   - [Address 3rd party widgets](#address-3rd-party-widgets)
+  - [ZetaChain](#zetachain)
 - [3rd party services configuration](#external-services-configuration)
 
 &nbsp;
@@ -930,7 +931,7 @@ This feature allows users to view [Flashblocks](https://docs.base.org/base-chain
 
 &nbsp;
 
-### Address 3rd party widgets
+#### Address 3rd party widget
 
 This feature allows to display widgets on the address page with data from 3rd party services.
 
@@ -951,6 +952,33 @@ This feature allows to display widgets on the address page with data from 3rd pa
 | valuePath | `string` | Path to the field in the API response that contains the value to be displayed | Required | - | `'result.balance'` |
 | pages | `Array<'eoa' \| 'contract' \| 'token'>` | List of pages where the widget should be displayed | Required | - | `['eoa']` |
 | chainIds | `Record<string, string>` | Mapping of chain IDs to custom values that will be used in `url` template | - | - | `{'1': 'eth', '10': 'op'}` |
+
+&nbsp;
+
+
+### ZetaChain cross-chain transactions
+
+This feature enables cross-chain transactions pages and views on ZetaChain instances
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
+| --- | --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST | `string` | ZetaChain cross-chain transactions service API endpoint url | - | - | `https://zetachain-cctx.services.blockscout.com` | v2.3.2+ |
+| NEXT_PUBLIC_ZETACHAIN_SERVICE_CHAINS_CONFIG_URL | `string` | URL of configuration file (`.json` format only) which contains chains info for the supported chains. | - | - | `https://example.com/zetachain_chains_config.json` | v2.3.2+ |
+| NEXT_PUBLIC_ZETACHAIN_COSMOS_TX_URL_TEMPLATE | `string` | URL template to redirect cosmos tx search. | - | - | `https://example.com/cosmos/tx/{hash}` | v2.3.2+ |
+| NEXT_PUBLIC_ZETACHAIN_COSMOS_ADDRESS_URL_TEMPLATE | `string` URL template to redirect cosmos address search. | - | - | `https://example.com/cosmos/address/{hash}` | v2.3.2+ |
+
+
+#### ZetaChain supported cain configuration properties
+
+| Property | Type | Description | Compulsoriness | Example value |
+| --- | --- | --- | --- | --- |
+| chain_id | `string` | Id of the chain | Required | - | `'11155111'` |
+| chain_name | `string` | Displayed name of the chain | Required | - | `'Sepolia Testnet'` |
+| chain_logo | `string` | Chain logo URL. Image should be at least 40x40 px  | - | - | `'https://example.com/logo.svg'` |
+| instance_url | `string` | Base URL of the blockscout explorer for the chain | - | - | `'https://eth-sepolia.blockscout.com/'` |
+| address_url_template | `string` | Address url template on external explorer. `{hash}` will be replaced with the address hash | - | - | `'https://external.explorer.com/address/{hash}'` |
+| tx_url_template | `string` | Transaction url template on external explorer. `{hash}` will be replaced with the transaction hash | - | - | `'https://external.explorer.com/tx/{hash}'` |
+
 
 &nbsp;
 

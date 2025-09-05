@@ -22,6 +22,8 @@ export function isInternalItem(item: NavItem): item is NavItemInternal {
 export default function useNavItems(): ReturnType {
   const router = useRouter();
   const pathname = router.pathname;
+  const query = router.query;
+  const tab = query.tab;
 
   return React.useMemo(() => {
     let blockchainNavItems: Array<NavItem> | Array<Array<NavItem>> = [];
@@ -42,8 +44,18 @@ export default function useNavItems(): ReturnType {
       text: 'Transactions',
       nextRoute: { pathname: '/txs' as const },
       icon: 'transactions',
-      isActive: pathname === '/txs' || pathname === '/tx/[hash]' || pathname === '/chain/[chain-slug]/tx/[hash]',
+      isActive:
+        // sorry, but this is how it was designed
+        (pathname === '/txs' && (!config.features.zetachain.isEnabled || !tab || !tab.includes('cctx'))) ||
+        pathname === '/tx/[hash]' ||
+        pathname === '/chain/[chain-slug]/tx/[hash]',
     };
+    const cctxs: NavItem | null = config.features.zetachain.isEnabled ? {
+      text: 'Cross-chain transactions',
+      nextRoute: { pathname: '/txs' as const, query: { tab: 'cctx' } },
+      icon: 'interop',
+      isActive: pathname === '/cc/tx/[hash]' || (pathname === '/txs' && tab?.includes('cctx')),
+    } : null;
     const operations: NavItem | null = config.features.tac.isEnabled ? {
       text: 'Operations',
       nextRoute: { pathname: '/operations' as const },
@@ -200,6 +212,7 @@ export default function useNavItems(): ReturnType {
         txs,
         operations,
         internalTxs,
+        cctxs,
         userOps,
         blocks,
         epochs,
@@ -346,5 +359,5 @@ export default function useNavItems(): ReturnType {
     ].filter(Boolean);
 
     return { mainNavItems, accountNavItems };
-  }, [ pathname ]);
+  }, [ pathname, tab ]);
 }

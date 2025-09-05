@@ -24,6 +24,7 @@ import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import * as Layout from 'ui/shared/layout/components';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
+import SearchCosmosNotice from 'ui/shared/search/SearchCosmosNotice';
 import type { SearchResultAppItem } from 'ui/shared/search/utils';
 import HeaderAlert from 'ui/snippets/header/HeaderAlert';
 import HeaderDesktop from 'ui/snippets/header/HeaderDesktop';
@@ -34,7 +35,15 @@ import useSearchQuery from 'ui/snippets/searchBar/useSearchQuery';
 const SearchResultsPageContent = () => {
   const router = useRouter();
   const withRedirectCheck = getQueryParamString(router.query.redirect) === 'true';
-  const { query, redirectCheckQuery, searchTerm, debouncedSearchTerm, handleSearchTermChange } = useSearchQuery(withRedirectCheck);
+  const {
+    query,
+    redirectCheckQuery,
+    searchTerm,
+    debouncedSearchTerm,
+    handleSearchTermChange,
+    zetaChainCCTXQuery,
+    cosmosHashType,
+  } = useSearchQuery(withRedirectCheck);
   const { data, isError, isPlaceholderData, pagination } = query;
   const [ showContent, setShowContent ] = React.useState(!withRedirectCheck);
 
@@ -130,11 +139,25 @@ const SearchResultsPageContent = () => {
 
     return [
       ...(pagination.page === 1 && !isLoading ? marketplaceApps.displayedApps.map((item) => ({ type: 'app' as const, app: item })) : []),
+      ...(
+        config.features.zetachain.isEnabled &&
+        pagination.page === 1 &&
+        !isLoading &&
+        zetaChainCCTXQuery.data ?
+          zetaChainCCTXQuery.data.items.map((item) => ({ type: 'zetaChainCCTX' as const, cctx: item })) : []),
       futureBlockItem,
       ...apiData,
     ].filter(Boolean);
-
-  }, [ data?.items, data?.next_page_params, isPlaceholderData, pagination.page, debouncedSearchTerm, marketplaceApps.displayedApps, isLoading ]);
+  }, [
+    data?.items,
+    data?.next_page_params,
+    isPlaceholderData,
+    pagination.page,
+    debouncedSearchTerm,
+    marketplaceApps.displayedApps,
+    isLoading,
+    zetaChainCCTXQuery.data,
+  ]);
 
   const content = (() => {
     if (isError) {
@@ -192,10 +215,16 @@ const SearchResultsPageContent = () => {
 
     const resultsCount = pagination.page === 1 && !data?.next_page_params ? displayedItems.length : '50+';
 
-    const text = isLoading && pagination.page === 1 ? (
-      <Skeleton loading h={ 6 } w="280px" borderRadius="full" mb={ pagination.isVisible ? 0 : 6 }/>
-    ) : (
-      (
+    const text = (() => {
+      if (isLoading && pagination.page === 1) {
+        return <Skeleton loading h={ 6 } w="280px" borderRadius="full" mb={ pagination.isVisible ? 0 : 6 }/>;
+      }
+
+      if (resultsCount === 0 && cosmosHashType) {
+        return <SearchCosmosNotice cosmosHash={ debouncedSearchTerm } type={ cosmosHashType }/>;
+      }
+
+      return (
         <>
           <Box mb={ pagination.isVisible ? 0 : 6 } lineHeight="32px">
             <span>Found </span>
@@ -208,8 +237,8 @@ const SearchResultsPageContent = () => {
           { resultsCount === 0 && regexp.BLOCK_HEIGHT.test(debouncedSearchTerm) &&
             <SearchBarSuggestBlockCountdown blockHeight={ debouncedSearchTerm } mt={ -4 }/> }
         </>
-      )
-    );
+      );
+    })();
 
     if (!pagination.isVisible) {
       return text;
