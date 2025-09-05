@@ -10,10 +10,11 @@ interface Params {
   onJoin?: (channel: Channel, message: unknown) => void;
   onSocketClose?: () => void;
   onSocketError?: () => void;
+  socketName?: string;
 }
 
-export default function useSocketChannel({ topic, params, isDisabled, onJoin, onSocketClose, onSocketError }: Params) {
-  const { socket, channelRegistry } = useSocket() || {};
+export default function useSocketChannel({ topic, params, isDisabled, onJoin, onSocketClose, onSocketError, socketName }: Params) {
+  const { socket, channelRegistry } = useSocket(socketName) || {};
   const [ channel, setChannel ] = useState<Channel>();
   const onCloseRef = useRef<string>(undefined);
   const onErrorRef = useRef<string>(undefined);

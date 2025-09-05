@@ -1,14 +1,16 @@
+import type { CctxListItem } from '@blockscout/zetachain-cctx-types';
 import type { MarketplaceApp } from 'types/client/marketplace';
 import type { SearchResultItem } from 'types/client/search';
 
 import config from 'configs/app';
 
 export type ApiCategory = 'token' | 'nft' | 'address' | 'public_tag' | 'transaction' | 'block' | 'user_operation' | 'blob' | 'domain' | 'tac_operation';
-export type Category = ApiCategory | 'app';
+export type Category = ApiCategory | 'app' | 'zetaChainCCTX';
 
 export type ItemsCategoriesMap =
 Record<ApiCategory, Array<SearchResultItem>> &
-Record<'app', Array<MarketplaceApp>>;
+Record<'app', Array<MarketplaceApp>> &
+Record<'zetaChainCCTX', Array<CctxListItem>>;
 
 export type SearchResultAppItem = {
   type: 'app';
@@ -24,6 +26,7 @@ export const searchCategories: Array<{ id: Category; title: string }> = [
   { id: 'transaction', title: 'Transactions' },
   { id: 'block', title: 'Blocks' },
   { id: 'tac_operation', title: 'Operations' },
+  { id: 'zetaChainCCTX', title: 'CCTXs' },
 ];
 
 if (config.features.userOps.isEnabled) {
@@ -50,6 +53,7 @@ export const searchItemTitles: Record<Category, { itemTitle: string; itemTitleSh
   user_operation: { itemTitle: 'User operation', itemTitleShort: 'User op' },
   blob: { itemTitle: 'Blob', itemTitleShort: 'Blob' },
   tac_operation: { itemTitle: 'Operations', itemTitleShort: 'Operations' },
+  zetaChainCCTX: { itemTitle: 'CCTX', itemTitleShort: 'CCTX' },
 };
 
 export function getItemCategory(item: SearchResultItem | SearchResultAppItem): Category | undefined {
@@ -88,6 +92,9 @@ export function getItemCategory(item: SearchResultItem | SearchResultAppItem): C
     }
     case 'tac_operation': {
       return 'tac_operation';
+    }
+    case 'zetaChainCCTX': {
+      return 'zetaChainCCTX';
     }
   }
 }

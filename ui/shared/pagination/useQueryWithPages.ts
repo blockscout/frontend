@@ -18,17 +18,19 @@ import { useMultichainContext } from 'lib/contexts/multichain';
 import getChainValueFromQuery from 'lib/multichain/getChainValueFromQuery';
 import getQueryParamString from 'lib/router/getQueryParamString';
 
+type NextPageParams = Record<string, unknown>;
+
 export interface Params<Resource extends PaginatedResourceName> {
   resourceName: Resource;
   options?: UseApiQueryParams<Resource>['queryOptions'];
+  queryParams?: UseApiQueryParams<Resource>['queryParams'];
   pathParams?: UseApiQueryParams<Resource>['pathParams'];
   filters?: PaginationFilters<Resource>;
   sorting?: PaginationSorting<Resource>;
   scrollRef?: React.RefObject<HTMLDivElement | null>;
   isMultichain?: boolean;
+  hasNextPageFn?: (nextPageParams: NextPageParams) => boolean;
 }
-
-type NextPageParams = Record<string, unknown>;
 
 const INITIAL_PAGE_PARAMS = { '1': {} };
 
@@ -70,8 +72,10 @@ export default function useQueryWithPages<Resource extends PaginatedResourceName
   sorting,
   options,
   pathParams,
+  queryParams: queryParamsFromProps,
   scrollRef,
   isMultichain,
+  hasNextPageFn,
 }: Params<Resource>): QueryWithPagesResult<Resource> {
   const queryClient = useQueryClient();
   const router = useRouter();
@@ -89,7 +93,7 @@ export default function useQueryWithPages<Resource extends PaginatedResourceName
   );
 
   const isMounted = React.useRef(false);
-  const queryParams = { ...pageParams[page], ...filters, ...sorting };
+  const queryParams = { ...pageParams[page], ...filters, ...sorting, ...queryParamsFromProps };
 
   const scrollToTop = useCallback(() => {
     scrollRef?.current ? scrollRef.current.scrollIntoView(true) : animateScroll.scrollToTop({ duration: 0 });
@@ -235,7 +239,11 @@ export default function useQueryWithPages<Resource extends PaginatedResourceName
     }
   }, [ page, resetPage, router ]);
 
-  const hasNextPage = nextPageParams ? Object.keys(nextPageParams).length > 0 : false;
+  let hasNextPage = false;
+  if (nextPageParams) {
+
+    hasNextPage = hasNextPageFn ? hasNextPageFn(nextPageParams as NextPageParams) : Object.keys(nextPageParams).length > 0;
+  }
 
   const pagination = {
     page,

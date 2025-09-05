@@ -172,6 +172,14 @@ export const pools: Guard = (chainConfig: typeof config) => async() => {
   }
 };
 
+export const zetaChainCCTX: Guard = (chainConfig: typeof config) => async() => {
+  if (!chainConfig.features.zetachain.isEnabled) {
+    return {
+      notFound: true,
+    };
+  }
+};
+
 // ROLLUPS
 export const rollup: Guard = (chainConfig: typeof config) => async() => {
   if (!chainConfig.features.rollup.isEnabled) {

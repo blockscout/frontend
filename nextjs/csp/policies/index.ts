@@ -17,3 +17,4 @@ export { rollup } from './rollup';
 export { safe } from './safe';
 export { usernameApi } from './usernameApi';
 export { walletConnect } from './walletConnect';
+export { zetachain } from './zetachain';
