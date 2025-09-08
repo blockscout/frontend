@@ -10,6 +10,7 @@ import getCheckedSummedAddress from 'lib/address/getCheckedSummedAddress';
 import useAddressMetadataInfoQuery from 'lib/address/useAddressMetadataInfoQuery';
 import useAddressMetadataInitUpdate from 'lib/address/useAddressMetadataInitUpdate';
 import useApiQuery from 'lib/api/useApiQuery';
+import { useAddressClusters } from 'lib/clusters/useAddressClusters';
 import useAddressProfileApiQuery from 'lib/hooks/useAddressProfileApiQuery';
 import useIsSafeAddress from 'lib/hooks/useIsSafeAddress';
 import getNetworkValidationActionText from 'lib/networks/getNetworkValidationActionText';
@@ -38,6 +39,7 @@ import AddressTokenTransfers from 'ui/address/AddressTokenTransfers';
 import AddressTxs from 'ui/address/AddressTxs';
 import AddressUserOps from 'ui/address/AddressUserOps';
 import AddressWithdrawals from 'ui/address/AddressWithdrawals';
+import AddressClusters from 'ui/address/clusters/AddressClusters';
 import { CONTRACT_TAB_IDS } from 'ui/address/contract/utils';
 import AddressFavoriteButton from 'ui/address/details/AddressFavoriteButton';
 import AddressMetadataAlert from 'ui/address/details/AddressMetadataAlert';
@@ -130,6 +132,8 @@ const AddressPageContent = () => {
   const addressMainDomain = !addressQuery.isPlaceholderData ?
     addressEnsDomainsQuery.data?.items.find((domain) => domain.name === addressQuery.data?.ens_domain_name) :
     undefined;
+
+  const addressClustersQuery = useAddressClusters(hash, areQueriesEnabled);
 
   const addressType = addressQuery.data?.is_contract && addressQuery.data?.proxy_type !== 'eip7702' ? 'contract' : 'eoa';
   const address3rdPartyWidgets = useAddress3rdPartyWidgets(addressType, addressQuery.isPlaceholderData, areQueriesEnabled);
@@ -438,6 +442,8 @@ const AddressPageContent = () => {
         <SolidityscanReport hash={ hash }/> }
       { !isLoading && addressEnsDomainsQuery.data && config.features.nameService.isEnabled &&
         <AddressEnsDomains query={ addressEnsDomainsQuery } addressHash={ hash } mainDomainName={ addressQuery.data?.ens_domain_name }/> }
+      { !isLoading && addressClustersQuery.data && config.features.clusters.isEnabled &&
+        <AddressClusters query={ addressClustersQuery } addressHash={ hash }/> }
       <NetworkExplorers type="address" pathParam={ hash }/>
     </Flex>
   );

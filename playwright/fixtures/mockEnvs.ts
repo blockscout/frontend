@@ -88,7 +88,7 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
     [ 'NEXT_PUBLIC_DATA_AVAILABILITY_ENABLED', 'true' ],
   ],
   nameService: [
-    [ 'NEXT_PUBLIC_NAME_SERVICE_API_HOST', 'https://localhost:3008' ],
+    [ 'NEXT_PUBLIC_NAME_SERVICE_API_HOST', 'http://localhost:3008' ],
   ],
   rewardsService: [
     [ 'NEXT_PUBLIC_REWARDS_SERVICE_API_HOST', 'http://localhost:3009' ],
@@ -116,6 +116,9 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
   ],
   opSuperchain: [
     [ 'NEXT_PUBLIC_OP_SUPERCHAIN_ENABLED', 'true' ],
+  ],
+  clusters: [
+    [ 'NEXT_PUBLIC_CLUSTERS_API_HOST', 'https://api.clusters.xyz' ],
   ],
   zetaChain: [
     [ 'NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST', 'http://localhost:3111' ],

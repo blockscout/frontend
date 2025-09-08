@@ -89,6 +89,7 @@
     "dayjs": "^1.11.5",
     "dom-to-image": "^2.6.0",
     "es-toolkit": "1.39.10",
+    "esbuild": "0.21.5",
     "focus-visible": "^5.2.0",
     "gradient-avatar": "git+https://github.com/blockscout/gradient-avatar.git",
     "graphiql": "^4.1.2",

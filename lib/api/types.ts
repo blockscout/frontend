@@ -1,16 +1,7 @@
 export type ApiName =
-'general' |
-'admin' |
-'bens' |
-'contractInfo' |
-'metadata' |
-'multichain' |
-'rewards' |
-'stats' |
-'tac' |
-'userOps' |
-'visualize' |
-'zetachain';
+'general' | 'admin' | 'bens' | 'contractInfo' | 'clusters' |
+'metadata' | 'multichain' | 'rewards' | 'stats' | 'tac' |
+'userOps' | 'visualize' | 'zetachain';
 
 export interface ApiResource {
   path: string;

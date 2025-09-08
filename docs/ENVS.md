@@ -56,6 +56,7 @@ All json-like values should be single-quoted. If it contains a hash (`#`) or a d
   - [Transaction interpretation](#transaction-interpretation)
   - [Verified tokens info](#verified-tokens-info)
   - [Name service integration](#name-service-integration)
+  - [Clusters universal name service](#clusters-universal-name-service)
   - [Metadata service integration](#metadata-service-integration)
   - [Public tag submission](#public-tag-submission)
   - [Data availability](#data-availability)
@@ -662,6 +663,17 @@ This feature allows resolving blockchain addresses using human-readable domain n
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_NAME_SERVICE_API_HOST | `string` | Name Service API endpoint url | Required | - | `https://bens.services.blockscout.com` | v1.22.0+ |
+
+&nbsp;
+
+### Clusters universal name service
+
+This feature integrates [Clusters.xyz](https://clusters.xyz/) universal naming service, enabling users to look up and track cross-chain identities through human-readable names like "vitalik/" or "uniswap/". Unlike traditional domain services that work on single chains, clusters span multiple blockchains - one cluster name can represent addresses on Ethereum, Base, Optimism, and other networks. This integration adds cluster lookup pages (/clusters/[name]), a clusters directory (/clusters), search functionality in the main search bar, and displays cluster profile information and images throughout the explorer.
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
+| --- | --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_CLUSTERS_API_HOST | `string` | Clusters.xyz API endpoint for fetching cluster data, directory listings, and cross-chain address mappings | Required | - | `https://example.com/clusters-api` | <upcoming> |
+| NEXT_PUBLIC_CLUSTERS_CDN_URL | `string` | CDN base URL for serving cluster profile images and avatars displayed in search results and cluster pages | - | `https://cdn.clusters.xyz` | `https://your-cdn.example.com` | <upcoming> |
 
 &nbsp;
 
