@@ -5,7 +5,7 @@ import React from 'react';
 import { Direction } from '@blockscout/zetachain-cctx-types';
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 import { ADVANCED_FILTER_AGES, type AdvancedFilterAge } from 'types/api/advancedFilter';
-import { ZETA_CHAIN_CCTX_STATUS_REDUCED_FILTERS } from 'types/api/zetaChain';
+import { ZETA_CHAIN_CCTX_STATUS_REDUCED_FILTERS } from 'types/client/zetaChain';
 import type { StatusReducedFilters, ZetaChainCCTXFilterParams } from 'types/client/zetaChain';
 
 import dayjs from 'lib/date/dayjs';
