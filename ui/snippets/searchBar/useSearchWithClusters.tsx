@@ -91,11 +91,8 @@ export default function useSearchWithClusters() {
   }, [ isClusterQuery, quickSearch, clusterQuery ]);
 
   const result = React.useMemo(() => ({
-    searchTerm: quickSearch.searchTerm,
-    debouncedSearchTerm: quickSearch.debouncedSearchTerm,
-    handleSearchTermChange: quickSearch.handleSearchTermChange,
+    ...quickSearch,
     query: combinedQuery,
-    redirectCheckQuery: quickSearch.redirectCheckQuery,
   }), [
     quickSearch,
     combinedQuery,

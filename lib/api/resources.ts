@@ -28,6 +28,8 @@ import { USER_OPS_API_RESOURCES } from './services/userOps';
 import type { IsPaginated } from './services/utils';
 import { VISUALIZE_API_RESOURCES } from './services/visualize';
 import type { VisualizeApiResourceName, VisualizeApiResourcePayload } from './services/visualize';
+import { ZETA_CHAIN_API_RESOURCES } from './services/zetaChain';
+import type { ZetaChainApiPaginationFilters, ZetaChainApiResourceName, ZetaChainApiResourcePayload } from './services/zetaChain';
 
 export const RESOURCES = {
   admin: ADMIN_API_RESOURCES,
@@ -42,6 +44,7 @@ export const RESOURCES = {
   tac: TAC_OPERATION_LIFECYCLE_API_RESOURCES,
   userOps: USER_OPS_API_RESOURCES,
   visualize: VISUALIZE_API_RESOURCES,
+  zetachain: ZETA_CHAIN_API_RESOURCES,
 } satisfies Record<ApiName, Record<string, ApiResource>>;
 
 export const resourceKey = (x: ResourceName) => x;
@@ -65,6 +68,7 @@ R extends RewardsApiResourceName ? RewardsApiResourcePayload<R> :
 R extends StatsApiResourceName ? StatsApiResourcePayload<R> :
 R extends TacOperationLifecycleApiResourceName ? TacOperationLifecycleApiResourcePayload<R> :
 R extends VisualizeApiResourceName ? VisualizeApiResourcePayload<R> :
+R extends ZetaChainApiResourceName ? ZetaChainApiResourcePayload<R> :
 never;
 /* eslint-enable @stylistic/indent */
 
@@ -98,6 +102,7 @@ R extends GeneralApiResourceName ? GeneralApiPaginationFilters<R> :
 R extends ContractInfoApiResourceName ? ContractInfoApiPaginationFilters<R> :
 R extends MultichainApiResourceName ? MultichainApiPaginationFilters<R> :
 R extends TacOperationLifecycleApiResourceName ? TacOperationLifecycleApiPaginationFilters<R> :
+R extends ZetaChainApiResourceName ? ZetaChainApiPaginationFilters<R> :
 never;
 /* eslint-enable @stylistic/indent */
 

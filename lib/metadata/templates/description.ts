@@ -68,6 +68,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/interop-messages': DEFAULT_TEMPLATE,
   '/operations': DEFAULT_TEMPLATE,
   '/operation/[id]': DEFAULT_TEMPLATE,
+  '/cc/tx/[hash]': DEFAULT_TEMPLATE,
 
   // multichain routes
   '/chain/[chain-slug]/accounts/label/[slug]': DEFAULT_TEMPLATE,

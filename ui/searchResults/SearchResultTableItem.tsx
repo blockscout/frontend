@@ -18,6 +18,7 @@ import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { Tag } from 'toolkit/chakra/tag';
+import { SECOND } from 'toolkit/utils/consts';
 import { ADDRESS_REGEXP } from 'toolkit/utils/regexp';
 import ContractCertifiedLabel from 'ui/shared/ContractCertifiedLabel';
 import * as AddressEntity from 'ui/shared/entities/address/AddressEntity';
@@ -169,7 +170,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
             ) }
             { data.type === 'metadata_tag' && (
               <TableCell colSpan={ addressName ? 1 : 2 } verticalAlign="middle" textAlign="right">
-                <SearchResultEntityTag metadata={ data.metadata } searchTerm={ searchTerm }/>
+                <SearchResultEntityTag metadata={ data.metadata } addressHash={ hash } searchTerm={ searchTerm }/>
               </TableCell>
             ) }
           </>
@@ -321,6 +322,34 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
             </TableCell>
             <TableCell fontSize="sm" verticalAlign="middle" isNumeric>
               <Text color="text.secondary">{ dayjs(data.timestamp).format('llll') }</Text>
+            </TableCell>
+          </>
+        );
+      }
+
+      case 'zetaChainCCTX': {
+        return (
+          <>
+            <TableCell colSpan={ 2 } fontSize="sm">
+              <TxEntity.Container>
+                <IconSvg name="interop" boxSize={ 6 } marginRight={ 1 } color="text.secondary"/>
+                <TxEntity.Link
+                  isLoading={ isLoading }
+                  hash={ data.cctx.index }
+                  href={ route({ pathname: '/cc/tx/[hash]', query: { hash: data.cctx.index } }) }
+                  onClick={ handleLinkClick }
+                >
+                  <TxEntity.Content
+                    asProp={ data.cctx.index === searchTerm ? 'mark' : 'span' }
+                    hash={ data.cctx.index }
+                    textStyle="sm"
+                    fontWeight={ 700 }
+                  />
+                </TxEntity.Link>
+              </TxEntity.Container>
+            </TableCell>
+            <TableCell fontSize="sm" verticalAlign="middle" isNumeric>
+              <Text color="text.secondary">{ dayjs(Number(data.cctx.last_update_timestamp) * SECOND).format('llll') }</Text>
             </TableCell>
           </>
         );

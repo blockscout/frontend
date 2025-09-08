@@ -91,6 +91,7 @@
 	| "integration/full"
 	| "integration/partial"
 	| "internal_txns"
+	| "interop_slim"
 	| "interop"
 	| "key"
 	| "lightning_navbar"
