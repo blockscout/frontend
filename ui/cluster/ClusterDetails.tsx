@@ -31,7 +31,7 @@ const ClusterDetails = ({ clusterData, clusterName, isLoading }: Props) => {
         hint="The unique cluster name"
         isLoading={ isLoading }
       >
-        Cluster Name
+        Cluster name
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
         <ClustersEntity
@@ -70,7 +70,7 @@ const ClusterDetails = ({ clusterData, clusterName, isLoading }: Props) => {
       </DetailedInfo.ItemValue>
 
       <DetailedInfo.ItemLabel
-        hint="The amount of ETH backing this cluster name"
+        hint={ `The amount of ${ currencyUnits.ether } backing this cluster name` }
         isLoading={ isLoading }
       >
         Backing

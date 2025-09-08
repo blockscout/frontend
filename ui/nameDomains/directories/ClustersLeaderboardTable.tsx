@@ -18,10 +18,10 @@ const ClustersLeaderboardTable = ({ data, isLoading, top }: Props) => {
       <TableHeaderSticky top={ top }>
         <TableRow>
           <TableColumnHeader width="5%">Rank</TableColumnHeader>
-          <TableColumnHeader width="40%">Cluster Name</TableColumnHeader>
+          <TableColumnHeader width="40%">Cluster name</TableColumnHeader>
           <TableColumnHeader width="10%">Names</TableColumnHeader>
-          <TableColumnHeader width="10%">Total Backing</TableColumnHeader>
-          <TableColumnHeader width="10%">Active Chains</TableColumnHeader>
+          <TableColumnHeader width="10%">Total backing</TableColumnHeader>
+          <TableColumnHeader width="10%">Active chains</TableColumnHeader>
         </TableRow>
       </TableHeaderSticky>
       <TableBody>

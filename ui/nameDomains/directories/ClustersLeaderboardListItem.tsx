@@ -24,7 +24,7 @@ const ClustersLeaderboardListItem = ({ item, isLoading }: Props) => {
       </ListItemMobileGrid.Value>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>
-        Cluster Name
+        Cluster name
       </ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
         <ClustersEntity clusterName={ item.name } isLoading={ isLoading } fontWeight={ 500 }/>
@@ -49,7 +49,7 @@ const ClustersLeaderboardListItem = ({ item, isLoading }: Props) => {
       </ListItemMobileGrid.Value>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>
-        Network Presence
+        Network presence
       </ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
         <Skeleton loading={ isLoading }>
