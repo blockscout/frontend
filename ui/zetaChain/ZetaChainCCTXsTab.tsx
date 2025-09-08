@@ -33,7 +33,7 @@ const TAB_LIST_PROPS = {
 const TABS_HEIGHT = 64;
 
 const hasNextPageFn = (nextPageParams: Record<string, unknown>) => {
-  return Boolean(nextPageParams.limit);
+  return nextPageParams.limit !== '0';
 };
 
 const ZetaChainEvmTransactions = () => {
