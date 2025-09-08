@@ -3,4 +3,5 @@ export interface FlashblockItem {
   index: number;
   transactions_count: number;
   gas_used: number;
+  timestamp?: string;
 }
