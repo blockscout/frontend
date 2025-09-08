@@ -170,7 +170,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
             ) }
             { data.type === 'metadata_tag' && (
               <TableCell colSpan={ addressName ? 1 : 2 } verticalAlign="middle" textAlign="right">
-                <SearchResultEntityTag metadata={ data.metadata } searchTerm={ searchTerm }/>
+                <SearchResultEntityTag metadata={ data.metadata } addressHash={ hash } searchTerm={ searchTerm }/>
               </TableCell>
             ) }
           </>
