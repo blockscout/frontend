@@ -4,6 +4,7 @@ import React from 'react';
 
 import type { ZetaChainCCTXFilterParams } from 'types/client/zetaChain';
 
+import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';
 import shortenString from 'lib/shortenString';
 import { Link } from 'toolkit/chakra/link';
@@ -106,13 +107,22 @@ const ZetaChainFilterTags = ({ filters, onClearFilter, onClearAll }: Props) => {
     });
   }
 
-  // Asset filter
+  // Asset filter (coin type is used to filter by zeta native token)
   const tokenSymbols = filters.token_symbol ? castArray(filters.token_symbol) : [];
-  if (tokenSymbols.length > 0) {
+  const coinTypes = filters.coin_type ? castArray(filters.coin_type) : [];
+  if (tokenSymbols.length > 0 || coinTypes.length > 0) {
+    const hasZetaNativeToken = coinTypes.includes('Zeta');
+    const value = [];
+    if (hasZetaNativeToken) {
+      value.push(config.chain.currency.symbol);
+    }
+    if (tokenSymbols.length > 0) {
+      value.push(...tokenSymbols);
+    }
     filterTags.push({
       key: 'token_symbol',
       name: 'Asset',
-      value: tokenSymbols.join(', '),
+      value: value.join(', '),
     });
   }
 

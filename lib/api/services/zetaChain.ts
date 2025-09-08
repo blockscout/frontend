@@ -16,6 +16,7 @@ export const ZETA_CHAIN_API_RESOURCES = {
       'source_chain_id' as const,
       'target_chain_id' as const,
       'token_symbol' as const,
+      'coin_type' as const,
       'hash' as const,
       'age' as const, // frontend only
     ],
