@@ -10,6 +10,20 @@ const essentialDapps = [
     buttonText: 'Swap tokens',
     imageUrl: '/static/marketplace/swap.png',
   },
+  {
+    id: 'revoke',
+    title: 'Revoke',
+    description: 'View and remove token approvals',
+    buttonText: 'Get started',
+    imageUrl: '/static/marketplace/revoke.png',
+  },
+  {
+    id: 'multisend',
+    title: 'Multisend',
+    description: 'Send tokens to multiple addresses at once',
+    buttonText: 'Send tokens',
+    imageUrl: '/static/marketplace/multisend.png',
+  },
 ];
 
 const EssentialDappsList = () => {

@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import getQueryParamString from 'lib/router/getQueryParamString';
+import Multisend from 'ui/marketplace/essentialDapps/multisend/Multisend';
 import Swap from 'ui/marketplace/essentialDapps/swap/Swap';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
@@ -16,6 +17,14 @@ const EssentialDapp = () => {
     case 'swap':
       title = 'Swap';
       content = <Swap/>;
+      break;
+    case 'revoke':
+      title = 'Revoke';
+      content = <div>To be implemented</div>;
+      break;
+    case 'multisend':
+      title = 'Multisend';
+      content = <Multisend/>;
       break;
   }
 

@@ -16,6 +16,7 @@ export function marketplace(): CspDev.DirectiveDescriptor {
       'https://ethereum-rpc.publicnode.com/',
       'https://eth.drpc.org/',
       'https://registry.npmjs.org/',
+      'https://*.multisender.app/',
     ],
 
     'frame-src': [
