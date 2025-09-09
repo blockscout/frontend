@@ -3,6 +3,7 @@
   export type IconName =
   	| "ABI_slim"
 	| "ABI"
+	| "advanced-filter"
 	| "API_slim"
 	| "API"
 	| "apps_list"

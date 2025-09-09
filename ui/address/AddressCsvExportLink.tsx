@@ -47,8 +47,8 @@ const AddressCsvExportLink = ({ className, address, params, isLoading, chainData
         justifyContent="center"
         textStyle="sm"
       >
-        <IconSvg name="files/csv" boxSize={ 6 }/>
-        <chakra.span ml={ 1 } hideBelow="lg">Download CSV</chakra.span>
+        <IconSvg name="files/csv" boxSize={ 5 }/>
+        <chakra.span ml={ 1 } hideBelow="lg">Download</chakra.span>
       </Link>
     </Tooltip>
   );

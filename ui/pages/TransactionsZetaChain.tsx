@@ -3,18 +3,15 @@ import React from 'react';
 
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
-import { route } from 'nextjs-routes';
-
 import config from 'configs/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { SocketProvider } from 'lib/socket/context';
 import { TX } from 'stubs/tx';
 import { generateListStub } from 'stubs/utils';
-import { Link } from 'toolkit/chakra/link';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import ActionBar from 'ui/shared/ActionBar';
-import IconSvg from 'ui/shared/IconSvg';
+import AdvancedFilterLink from 'ui/shared/links/AdvancedFilterLink';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
@@ -91,17 +88,7 @@ const TransactionsZetaChain = () => {
         justifyContent="end"
         gap={ 6 }
       >
-        { isAdvancedFilterEnabled && (
-          <Link
-            href={ route({ pathname: '/advanced-filter' }) }
-            alignItems="center"
-            display="flex"
-            gap={ 1 }
-          >
-            <IconSvg name="filter" boxSize={ 5 }/>
-            Advanced filter
-          </Link>
-        ) }
+        { isAdvancedFilterEnabled && <AdvancedFilterLink/> }
         { pagination?.isVisible && <Pagination { ...pagination }/> }
       </ActionBar>
     );
