@@ -1,14 +1,16 @@
 import { Box, Flex } from '@chakra-ui/react';
+import dynamic from 'next/dynamic';
 import React from 'react';
 
 import config from 'configs/app';
 import HeroBanner from 'ui/home/HeroBanner';
-import ChainIndicators from 'ui/home/indicators/ChainIndicators';
-import LatestArbitrumL2Batches from 'ui/home/latestBatches/LatestArbitrumL2Batches';
-import LatestZkEvmL2Batches from 'ui/home/latestBatches/LatestZkEvmL2Batches';
-import LatestBlocks from 'ui/home/LatestBlocks';
-import Stats from 'ui/home/Stats';
-import Transactions from 'ui/home/Transactions';
+
+const ChainIndicators = dynamic(() => import('ui/home/indicators/ChainIndicators'), { ssr: false });
+const LatestArbitrumL2Batches = dynamic(() => import('ui/home/latestBatches/LatestArbitrumL2Batches'), { ssr: false });
+const LatestZkEvmL2Batches = dynamic(() => import('ui/home/latestBatches/LatestZkEvmL2Batches'), { ssr: false });
+const LatestBlocks = dynamic(() => import('ui/home/LatestBlocks'), { ssr: false });
+const Stats = dynamic(() => import('ui/home/Stats'), { ssr: false });
+const Transactions = dynamic(() => import('ui/home/Transactions'), { ssr: false });
 
 const rollupFeature = config.features.rollup;
 
