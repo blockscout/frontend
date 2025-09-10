@@ -2,6 +2,7 @@ export type ApiName =
 'general' |
 'admin' |
 'bens' |
+'external' |
 'contractInfo' |
 'metadata' |
 'multichain' |

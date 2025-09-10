@@ -27,7 +27,7 @@ const AddressSaveOnGas = ({ gasUsed, address }: Props) => {
   const gasUsedNumber = Number(gasUsed);
 
   const query = useQuery({
-    queryKey: [ 'gas_hawk_saving_potential', { address } ],
+    queryKey: [ 'external:gas_hawk_saving_potential', { address } ],
     queryFn: async() => {
       if (!feature.isEnabled || !HEX_REGEXP_WITH_0X.test(address)) {
         return;
@@ -57,7 +57,7 @@ const AddressSaveOnGas = ({ gasUsed, address }: Props) => {
       fetch('/node-api/monitoring/invalid-api-schema', {
         method: 'POST',
         body: JSON.stringify({
-          resource: 'gas_hawk_saving_potential',
+          resource: 'external:gas_hawk_saving_potential',
           url: feature.isEnabled && HEX_REGEXP_WITH_0X.test(address) ? feature.apiUrlTemplate.replace('<address>', address) : undefined,
         }),
       });
