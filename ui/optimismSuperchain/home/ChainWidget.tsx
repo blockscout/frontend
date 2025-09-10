@@ -39,8 +39,8 @@ const ChainWidget = ({ data }: Props) => {
       borderRadius="xl"
       border="1px solid"
       borderColor={{ _light: 'blackAlpha.200', _dark: 'whiteAlpha.200' }}
-      p={ 4 }
-      flexBasis={{ base: '100%', lg: 'calc((100% - 3 * 12px) / 3)' }}
+      p={ 6 }
+      flexBasis={{ base: '100%', lg: 'calc((100% - 3 * 12px) / 4)' }}
       textStyle="sm"
     >
       <HStack justifyContent="space-between">
@@ -76,7 +76,7 @@ const ChainWidget = ({ data }: Props) => {
           </Tooltip>
         </HStack>
       </HStack>
-      <Heading my={ 3 } level="3">{ data.config.chain.name }</Heading>
+      <Heading my={ 3 } textStyle="heading.md ">{ data.config.chain.name }</Heading>
       <RollupStageBadge chainConfig={ data.config } variant="filled" mb={ 2.5 }/>
       <VStack gap={ 2 } alignItems="flex-start" fontWeight={ 500 }>
         <HStack gap={ 2 }>
