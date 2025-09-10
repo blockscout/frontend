@@ -1,16 +1,12 @@
-import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenInfo } from 'types/api/token';
-
-import { route } from 'nextjs/routes';
 
 import config from 'configs/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import useIsInitialLoading from 'lib/hooks/useIsInitialLoading';
 import type { LinkProps } from 'toolkit/chakra/link';
-import { Link } from 'toolkit/chakra/link';
-import IconSvg from 'ui/shared/IconSvg';
+import AdvancedFilterLink from 'ui/shared/links/AdvancedFilterLink';
 
 interface Props extends LinkProps {
   isLoading?: boolean;
@@ -30,18 +26,12 @@ const TokenAdvancedFilterLink = ({ isLoading, token, ...rest }: Props) => {
   };
 
   return (
-    <Link
-      whiteSpace="nowrap"
-      href={ route({ pathname: '/advanced-filter', query: queryParams }, multichainContext) }
-      flexShrink={ 0 }
+    <AdvancedFilterLink
+      query={ queryParams }
+      linkContext={ multichainContext }
       loading={ isInitialLoading }
-      minW={ 8 }
-      justifyContent="center"
       { ...rest }
-    >
-      <IconSvg name="filter" boxSize={ 6 }/>
-      <chakra.span ml={ 1 } hideBelow="lg">Advanced filter</chakra.span>
-    </Link>
+    />
   );
 };
 
