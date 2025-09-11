@@ -4785,10 +4785,10 @@
     "@multiformats/multiaddr" "^12.1.14"
     is-ip "^5.0.0"
 
-"@multisender.app/multisender-react-widget@^0.1.21":
-  version "0.1.21"
-  resolved "https://registry.yarnpkg.com/@multisender.app/multisender-react-widget/-/multisender-react-widget-0.1.21.tgz#6f5aadc0bcd91dbaa0666e0b5f728895cc525e19"
-  integrity sha512-bFiukuB7RXDv4faaGQ7zgqpJbiCL4XQFopCkTdfuw2FbFYDnagWDzu4JimN0QuLo81DeJbqCkMHwXY//J2cKaw==
+"@multisender.app/multisender-react-widget@^0.1.22":
+  version "0.1.22"
+  resolved "https://registry.yarnpkg.com/@multisender.app/multisender-react-widget/-/multisender-react-widget-0.1.22.tgz#bd6760a64ff85bd83d8609f51feb097b9bce55a8"
+  integrity sha512-+KcdpydLn4VrL7sp480huWtuq8J2gTY9K+X5dtFOQtUWStbeH1Cm48gLQwRQy489pVaf/R+8fMbTzVIDpgr3Bw==
   dependencies:
     "@codemirror/commands" "^6.8.1"
     "@csstools/normalize.css" "^12.1.1"
