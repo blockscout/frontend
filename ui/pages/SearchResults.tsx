@@ -275,7 +275,7 @@ const SearchResultsPageContent = () => {
 
   return (
     <>
-      <HeaderMobile/>
+      <HeaderMobile hideSearchButton/>
       <Layout.MainArea>
         <Layout.SideBar/>
         <Layout.MainColumn>

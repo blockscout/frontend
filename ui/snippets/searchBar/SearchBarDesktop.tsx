@@ -1,4 +1,3 @@
-import { Box } from '@chakra-ui/react';
 import { useClickAway } from '@uidotdev/usehooks';
 import { debounce } from 'es-toolkit';
 import { useRouter } from 'next/router';
@@ -25,11 +24,8 @@ type Props = {
   isHeroBanner?: boolean;
 };
 
-const SCROLL_CONTAINER_ID = 'search_bar_popover_content';
-
-const SearchBar = ({ isHeroBanner }: Props) => {
+const SearchBarDesktop = ({ isHeroBanner }: Props) => {
   const inputRef = React.useRef<HTMLFormElement>(null);
-  const scrollRef = React.useRef<HTMLDivElement>(null);
   const menuWidth = React.useRef<number>(0);
 
   const { open, onClose, onOpen } = useDisclosure();
@@ -168,30 +164,26 @@ const SearchBar = ({ isHeroBanner }: Props) => {
           zIndex="modal"
         >
           <PopoverBody
-            p={ 0 }
+            px={ 4 }
             color="chakra-body-text"
+            maxH="50vh"
+            display="flex"
+            flexDirection="column"
+            overflowY="hidden"
           >
-            <Box
-              maxH="50vh"
-              overflowY="auto"
-              id={ SCROLL_CONTAINER_ID }
-              ref={ scrollRef }
-              px={ 4 }
-            >
-              { searchTerm.trim().length === 0 && recentSearchKeywords.length > 0 && (
-                <SearchBarRecentKeywords onClick={ handleSearchTermChange } onClear={ onClose }/>
-              ) }
-              { searchTerm.trim().length > 0 && (
-                <SearchBarSuggest
-                  query={ query }
-                  searchTerm={ debouncedSearchTerm }
-                  onItemClick={ handleItemClick }
-                  containerId={ SCROLL_CONTAINER_ID }
-                  zetaChainCCTXQuery={ zetaChainCCTXQuery }
-                  externalSearchItem={ externalSearchItem }
-                />
-              ) }
-            </Box>
+            { searchTerm.trim().length === 0 && recentSearchKeywords.length > 0 && (
+              <SearchBarRecentKeywords onClick={ handleSearchTermChange } onClear={ onClose }/>
+            ) }
+            { searchTerm.trim().length > 0 && (
+              <SearchBarSuggest
+                query={ query }
+                searchTerm={ debouncedSearchTerm }
+                onItemClick={ handleItemClick }
+                containerId={ SCROLL_CONTAINER_ID }
+                zetaChainCCTXQuery={ zetaChainCCTXQuery }
+                externalSearchItem={ externalSearchItem }
+              />
+            ) }
           </PopoverBody>
           { showAllResultsLink && (
             <PopoverFooter pt={ 2 } borderTopWidth={ 1 } borderColor="border.divider">
@@ -210,4 +202,4 @@ const SearchBar = ({ isHeroBanner }: Props) => {
   );
 };
 
-export default SearchBar;
+export default SearchBarDesktop;

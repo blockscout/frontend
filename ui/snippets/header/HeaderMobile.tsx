@@ -1,9 +1,8 @@
 import { Box, Flex } from '@chakra-ui/react';
 import React from 'react';
-import { useInView } from 'react-intersection-observer';
 
 import config from 'configs/app';
-import { useScrollDirection } from 'lib/contexts/scrollDirection';
+import { useIsSticky } from 'toolkit/hooks/useIsSticky';
 import RewardsButton from 'ui/rewards/RewardsButton';
 import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
 import UserProfileMobile from 'ui/snippets/user/profile/UserProfileMobile';
@@ -18,8 +17,8 @@ type Props = {
 };
 
 const HeaderMobile = ({ hideSearchButton }: Props) => {
-  const scrollDirection = useScrollDirection();
-  const { ref, inView } = useInView({ threshold: 1 });
+  const ref = React.useRef<HTMLDivElement>(null);
+  const isSticky = useIsSticky(ref, 5);
 
   return (
     <Box
@@ -42,7 +41,7 @@ const HeaderMobile = ({ hideSearchButton }: Props) => {
         alignItems="center"
         transitionProperty="box-shadow"
         transitionDuration="slow"
-        boxShadow={ !inView && scrollDirection === 'down' ? 'md' : 'none' }
+        boxShadow={ isSticky ? 'md' : 'none' }
       >
         <Burger/>
         <NetworkLogo ml={ 2 } mr="auto"/>

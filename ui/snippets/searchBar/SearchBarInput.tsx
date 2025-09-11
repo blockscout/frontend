@@ -11,12 +11,12 @@ import { InputGroup } from 'toolkit/chakra/input-group';
 import { ClearButton } from 'toolkit/components/buttons/ClearButton';
 import IconSvg from 'ui/shared/IconSvg';
 interface Props extends Omit<HTMLChakraProps<'form'>, 'onChange'> {
-  onChange: (value: string) => void;
-  onSubmit: (event: FormEvent<HTMLFormElement>) => void;
+  onChange?: (value: string) => void;
+  onSubmit?: (event: FormEvent<HTMLFormElement>) => void;
   onBlur?: (event: FocusEvent<HTMLFormElement>) => void;
   onFocus?: () => void;
   onHide?: () => void;
-  onClear: () => void;
+  onClear?: () => void;
   onFormClick?: (event: React.MouseEvent<HTMLFormElement>) => void;
   isHeroBanner?: boolean;
   isSuggestOpen?: boolean;
@@ -38,18 +38,8 @@ const SearchBarInput = (
   );
 
   const handleChange = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
-    if (!readOnly) {
-      onChange(event.target.value);
-    }
-  }, [ onChange, readOnly ]);
-
-  const handleFocus = React.useCallback((event: FocusEvent<HTMLInputElement>) => {
-    if (readOnly) {
-      event.target.blur();
-      return;
-    }
-    onFocus?.();
-  }, [ onFocus, readOnly ]);
+    onChange?.(event.target.value);
+  }, [ onChange ]);
 
   const handleKeyPress = React.useCallback((event: KeyboardEvent) => {
     if (isMobile) {
@@ -136,20 +126,17 @@ const SearchBarInput = (
         endElement={ endElement }
       >
         <Input
-          size="md"
+          size={{ base: isHeroBanner ? 'md' : 'sm', lg: 'md' }}
           placeholder={ getPlaceholder() }
           value={ value }
           onChange={ handleChange }
-          onFocus={ handleFocus }
+          onFocus={ onFocus }
+          tabIndex={ readOnly ? -1 : 0 }
           borderWidth={ isHeroBanner ? borderWidthHeroBanner : '2px' }
           borderStyle="solid"
           borderColor={{ _light: 'blackAlpha.100', _dark: 'whiteAlpha.200' }}
           color={{ _light: 'black', _dark: 'white' }}
-          _placeholder={{
-            textOverflow: 'ellipsis',
-            overflow: 'hidden',
-            whiteSpace: 'nowrap',
-          }}
+          backgroundColor={{ base: isHeroBanner ? 'input.bg' : 'dialog.bg', lg: 'input.bg' }}
           _hover={{ borderColor: 'input.border.hover' }}
           _focusWithin={{ _placeholder: { color: 'gray.300' }, borderColor: 'input.border.focus', _hover: { borderColor: 'input.border.focus' } }}
         />

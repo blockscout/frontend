@@ -1,4 +1,3 @@
-import { Box } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -30,15 +29,12 @@ type Props = {
   isHeroBanner?: boolean;
 };
 
-const SCROLL_CONTAINER_ID = 'search_bar_drawer_content';
-
 const SearchBarMobile = ({ isHeroBanner }: Props) => {
   const inputRef = React.useRef<HTMLFormElement>(null);
-  const voidFn = React.useCallback(() => {}, []);
   const router = useRouter();
 
   const { open, onOpen, onClose, onOpenChange } = useDisclosure();
-  const { searchTerm, debouncedSearchTerm, handleSearchTermChange, query } = useQuickSearchQuery();
+  const { searchTerm, debouncedSearchTerm, handleSearchTermChange, query, zetaChainCCTXQuery, cosmosHashType } = useQuickSearchQuery();
   const recentSearchKeywords = getRecentSearchKeywords();
 
   const onTriggerClick = React.useCallback((event: React.MouseEvent) => {
@@ -62,20 +58,36 @@ const SearchBarMobile = ({ isHeroBanner }: Props) => {
     inputRef.current?.querySelector('input')?.focus();
   }, [ handleSearchTermChange ]);
 
+  const handleOverlayClick = React.useCallback((event: React.MouseEvent) => {
+    event.preventDefault();
+    event.stopPropagation();
+    onTriggerClick(event);
+  }, [ onTriggerClick ]);
+
   let trigger: React.ReactNode | null = null;
   if (isHeroBanner) {
     trigger = (
-      <SearchBarInput
-        onChange={ voidFn }
-        onSubmit={ voidFn }
-        onFocus={ voidFn }
-        onHide={ voidFn }
-        onBlur={ voidFn }
-        onClear={ voidFn }
-        onFormClick={ onTriggerClick }
-        isHeroBanner={ isHeroBanner }
-        readOnly={ true }
-      />
+      <div style={{ position: 'relative', width: '100%' }}>
+        <SearchBarInput
+          onFormClick={ onTriggerClick }
+          isHeroBanner={ isHeroBanner }
+          readOnly={ true }
+        />
+        <div
+          onClick={ handleOverlayClick }
+          aria-label="Search"
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            zIndex: 1,
+            backgroundColor: 'transparent',
+            cursor: 'pointer',
+          }}
+        />
+      </div>
     );
   } else {
     trigger = (
@@ -94,7 +106,7 @@ const SearchBarMobile = ({ isHeroBanner }: Props) => {
   }
 
   return (
-    <DrawerRoot placement="bottom" open={ open } onOpenChange={ onOpenChange } unmountOnExit={ false }>
+    <DrawerRoot placement="bottom" open={ open } onOpenChange={ onOpenChange } unmountOnExit={ false } lazyMount={ true }>
       <DrawerTrigger asChild>
         { trigger }
       </DrawerTrigger>
@@ -103,42 +115,32 @@ const SearchBarMobile = ({ isHeroBanner }: Props) => {
           <DrawerTitle>Search</DrawerTitle>
           <DrawerCloseTrigger/>
         </DrawerHeader>
-        <DrawerBody py={ 0 }>
+        <DrawerBody overflow="hidden" display="flex" flexDirection="column">
           <SearchBarInput
             ref={ inputRef }
             onChange={ handleSearchTermChange }
-            onSubmit={ voidFn }
-            onFocus={ voidFn }
-            onHide={ voidFn }
-            onBlur={ voidFn }
             onClear={ handleClear }
             onFormClick={ onTriggerClick }
             value={ searchTerm }
+            mb={ 5 }
           />
-          <Box
-            w="100%"
-            h="calc(100% - 56px)"
-            overflowY="auto"
-            id={ SCROLL_CONTAINER_ID }
-          >
-            { searchTerm.trim().length === 0 && recentSearchKeywords.length > 0 && (
-              <SearchBarRecentKeywords onClick={ handleSearchTermChange }/>
-            ) }
-            { searchTerm.trim().length > 0 && (
-              <SearchBarSuggest
-                query={ query }
-                searchTerm={ debouncedSearchTerm }
-                onItemClick={ handleItemClick }
-                containerId={ SCROLL_CONTAINER_ID }
-              />
-            ) }
-          </Box>
+          { searchTerm.trim().length === 0 && recentSearchKeywords.length > 0 && (
+            <SearchBarRecentKeywords onClick={ handleSearchTermChange }/>
+          ) }
+          { searchTerm.trim().length > 0 && (
+            <SearchBarSuggest
+              query={ query }
+              searchTerm={ debouncedSearchTerm }
+              onItemClick={ handleItemClick }
+              zetaChainCCTXQuery={ zetaChainCCTXQuery }
+              cosmosHashType={ cosmosHashType }
+            />
+          ) }
         </DrawerBody>
         { (query.data && query.data?.length > 0) && (
           <DrawerFooter
             borderTop="1px solid"
             borderColor="border.divider"
-            bg="background.primary"
             pt={ 3 }
             px={ 5 }
             pb={ 5 }

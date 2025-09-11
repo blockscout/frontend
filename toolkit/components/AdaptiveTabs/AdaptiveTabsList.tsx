@@ -4,7 +4,6 @@ import React from 'react';
 
 import type { TabItemRegular } from './types';
 
-import { useScrollDirection } from 'lib/contexts/scrollDirection';
 import useIsMobile from 'lib/hooks/useIsMobile';
 
 import { Skeleton } from '../../chakra/skeleton';
@@ -74,7 +73,6 @@ const AdaptiveTabsList = (props: Props) => {
     variant,
   } = props;
 
-  const scrollDirection = useScrollDirection();
   const isMobile = useIsMobile();
 
   const tabsList = React.useMemo(() => {
@@ -119,7 +117,7 @@ const AdaptiveTabsList = (props: Props) => {
         ...(props.stickyEnabled ? {
           position: 'sticky',
           boxShadow: { base: isSticky ? 'md' : 'none', lg: 'none' },
-          top: { base: scrollDirection === 'down' ? `0px` : `106px`, lg: 0 },
+          top: 0,
           zIndex: { base: 'sticky2', lg: 'docked' },
         } : { })
       }
