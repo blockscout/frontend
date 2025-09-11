@@ -14,7 +14,11 @@ import ChainSelect from 'ui/shared/multichain/ChainSelect';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
-const OpSuperchainAddressLogs = () => {
+interface Props {
+  isLoading: boolean;
+}
+
+const OpSuperchainAddressLogs = ({ isLoading }: Props) => {
   const router = useRouter();
 
   const hash = getQueryParamString(router.query.hash);
@@ -28,6 +32,7 @@ const OpSuperchainAddressLogs = () => {
         items_count: 50,
         transaction_index: 23,
       } }),
+      enabled: !isLoading,
     },
     isMultichain: true,
   });

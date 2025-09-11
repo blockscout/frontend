@@ -8,22 +8,26 @@ import { Select } from 'toolkit/chakra/select';
 import type { SelectOption, SelectProps, ViewMode } from 'toolkit/chakra/select';
 import ChainIcon from 'ui/optimismSuperchain/components/ChainIcon';
 
-const collection = createListCollection<SelectOption>({
-  items: multichainConfig()?.chains.map((chain) => ({
-    value: chain.slug,
-    label: chain.config.chain.name || chain.slug,
-    icon: <ChainIcon data={ chain } alt={ chain.config.chain.name }/>,
-  })) || [],
-});
-
 interface Props extends Omit<SelectProps, 'collection' | 'placeholder'> {
   loading?: boolean;
   mode?: ViewMode;
+  chainIds?: Array<string>;
 }
 
-const ChainSelect = ({ loading, mode, ...props }: Props) => {
+const ChainSelect = ({ loading, mode, chainIds, ...props }: Props) => {
   const isInitialLoading = useIsInitialLoading(loading);
   const isMobile = useIsMobile();
+
+  const collection = React.useMemo(() =>
+    createListCollection<SelectOption>({
+      items: multichainConfig()?.chains
+        .filter((chain) => !chainIds || (chain.config.chain.id && chainIds.includes(chain.config.chain.id)))
+        .map((chain) => ({
+          value: chain.slug,
+          label: chain.config.chain.name || chain.slug,
+          icon: <ChainIcon data={ chain } alt={ chain.config.chain.name }/>,
+        })) || [],
+    }), [ chainIds ]);
 
   return (
     <Select

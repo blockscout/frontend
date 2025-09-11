@@ -13,8 +13,12 @@ import DataListDisplay from 'ui/shared/DataListDisplay';
 import ChainSelect from 'ui/shared/multichain/ChainSelect';
 import Pagination from 'ui/shared/pagination/Pagination';
 
-const OpSuperchainAddressInternalTxs = () => {
-  const { hash, query, filterValue, onFilterChange } = useAddressInternalTxsQuery({ enabled: true, isMultichain: true });
+interface Props {
+  isLoading: boolean;
+}
+
+const OpSuperchainAddressInternalTxs = ({ isLoading }: Props) => {
+  const { hash, query, filterValue, onFilterChange } = useAddressInternalTxsQuery({ enabled: !isLoading, isMultichain: true });
   const { data, isPlaceholderData, isError, pagination } = query;
 
   const content = data?.items ? (

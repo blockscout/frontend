@@ -2,15 +2,14 @@ import type { ApiResource } from '../types';
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 
 export const MULTICHAIN_API_RESOURCES = {
-  // TODO @tom2drum remove unnecessary resources
-  interop_messages: {
-    path: '/messages',
-    filterFields: [ 'address' as const ],
-    paginated: true,
+  address: {
+    path: '/addresses/:hash',
+    pathParams: [ 'hash' as const ],
   },
-  interop_messages_count: {
-    path: '/messages/count',
-    filterFields: [ 'address' as const ],
+  address_tokens: {
+    path: '/addresses/:hash/tokens',
+    pathParams: [ 'hash' as const ],
+    paginated: true,
   },
 } satisfies Record<string, ApiResource>;
 
@@ -18,14 +17,13 @@ export type MultichainApiResourceName = `multichain:${ keyof typeof MULTICHAIN_A
 
 /* eslint-disable @stylistic/indent */
 export type MultichainApiResourcePayload<R extends MultichainApiResourceName> =
-R extends 'multichain:interop_messages' ? multichain.ListInteropMessagesResponse :
-R extends 'multichain:interop_messages_count' ? multichain.CountInteropMessagesResponse :
+R extends 'multichain:address' ? multichain.GetAddressResponse :
+R extends 'multichain:address_tokens' ? multichain.ListAddressTokensResponse :
 never;
 /* eslint-enable @stylistic/indent */
 
 /* eslint-disable @stylistic/indent */
 export type MultichainApiPaginationFilters<R extends MultichainApiResourceName> =
-R extends 'multichain:interop_messages' ? Partial<multichain.ListInteropMessagesRequest> :
-R extends 'multichain:interop_messages_count' ? Partial<multichain.CountInteropMessagesRequest> :
+R extends 'multichain:address_tokens' ? Partial<multichain.ListAddressTokensRequest> :
 never;
 /* eslint-enable @stylistic/indent */

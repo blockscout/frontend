@@ -1,5 +1,7 @@
 import React from 'react';
 
+import type * as multichain from '@blockscout/multichain-aggregator-types';
+
 import { route } from 'nextjs/routes';
 
 import multichainConfig from 'configs/multichain';
@@ -12,27 +14,34 @@ import TextSeparator from 'ui/shared/TextSeparator';
 import ChainIcon from '../components/ChainIcon';
 
 interface Props {
+  data: multichain.GetAddressResponse | undefined;
   addressHash: string;
+  isLoading: boolean;
 }
 
-const OpSuperchainAddressDetails = ({ addressHash }: Props) => {
+const OpSuperchainAddressDetails = ({ data, addressHash, isLoading }: Props) => {
   const chains = multichainConfig()?.chains;
+  const activeChainsIds = Object.keys(data?.chain_infos ?? {});
+  const activeChains = chains?.filter((chain) => activeChainsIds.includes(String(chain.config.chain.id))) ?? [];
 
-  const isLoading = false;
   const currencySymbol = getCurrencySymbol();
+
+  if (!data && !isLoading) {
+    return null;
+  }
 
   return (
     <DetailedInfo.Container templateColumns={{ base: 'minmax(0, 1fr)', lg: 'auto minmax(0, 1fr)' }} >
-      { chains && chains.length > 0 && (
+      { (isLoading || activeChains.length > 0) && (
         <>
           <DetailedInfo.ItemLabel
-            hint="Chains"
+            hint="Chains this address has interacted with"
             isLoading={ isLoading }
           >
-            Chain{ chains.length > 1 ? 's' : '' }
+            Chain{ activeChains.length > 1 ? 's' : '' }
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue columnGap={ 3 } multiRow>
-            { chains.map((chain) => (
+            { activeChains.map((chain) => (
               <Link
                 key={ chain.slug }
                 href={ chain.config.app.baseUrl + route({ pathname: '/address/[hash]', query: { hash: addressHash } }) }

@@ -1,24 +1,16 @@
-import * as multichain from '@blockscout/multichain-aggregator-types';
+import type * as multichain from '@blockscout/multichain-aggregator-types';
 
 import { ADDRESS_HASH } from './addressParams';
-import { TX_HASH } from './tx';
 
-// TODO @tom2drum remove this
-export const INTEROP_MESSAGE: multichain.InteropMessage = {
-  sender: {
-    hash: ADDRESS_HASH,
+export const ADDRESS: multichain.GetAddressResponse = {
+  hash: ADDRESS_HASH,
+  chain_infos: {
+    '420120000': {
+      coin_balance: '1000000000000000000000000',
+      is_contract: true,
+      is_verified: true,
+    },
   },
-  target: {
-    hash: ADDRESS_HASH,
-  },
-  nonce: 4261,
-  init_chain_id: '420120000',
-  init_transaction_hash: TX_HASH,
-  timestamp: '2025-06-03T10:43:58.000Z',
-  relay_chain_id: '420120001',
-  relay_transaction_hash: TX_HASH,
-  payload: '0x4f0edcc90000000000000000000000004',
-  message_type: 'coin_transfer',
-  method: 'sendERC20',
-  status: multichain.InteropMessage_Status.PENDING,
+  has_tokens: true,
+  has_interop_message_transfers: false,
 };

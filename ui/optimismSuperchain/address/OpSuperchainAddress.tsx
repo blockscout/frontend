@@ -6,7 +6,9 @@ import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 import type { EntityTag } from 'ui/shared/EntityTags/types';
 
 import getCheckedSummedAddress from 'lib/address/getCheckedSummedAddress';
+import useApiQuery from 'lib/api/useApiQuery';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import { ADDRESS } from 'stubs/optimismSuperchain';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import { CONTRACT_TAB_IDS } from 'ui/address/contract/utils';
 import AddressQrCode from 'ui/address/details/AddressQrCode';
@@ -32,13 +34,15 @@ const OpSuperchainAddress = () => {
 
   const hash = getQueryParamString(router.query.hash);
 
-  const isLoading = false;
-
-  const addressQuery = {
-    data: {
-      hash: undefined,
+  const addressQuery = useApiQuery('multichain:address', {
+    pathParams: { hash },
+    queryOptions: {
+      placeholderData: ADDRESS,
     },
-  };
+  });
+
+  const isLoading = addressQuery.isPlaceholderData;
+  const isContract = Object.values(addressQuery.data?.chain_infos ?? {}).some((chainInfo) => chainInfo.is_contract);
 
   const checkSummedHash = React.useMemo(() => addressQuery.data?.hash ?? getCheckedSummedAddress(hash), [ hash, addressQuery.data?.hash ]);
 
@@ -47,12 +51,12 @@ const OpSuperchainAddress = () => {
       {
         id: 'index',
         title: 'Details',
-        component: <OpSuperchainAddressDetails addressHash={ checkSummedHash }/>,
+        component: <OpSuperchainAddressDetails addressHash={ checkSummedHash } data={ addressQuery.data } isLoading={ isLoading }/>,
       },
-      {
+      isContract && {
         id: 'contract',
         title: 'Contract',
-        component: <OpSuperchainAddressContract addressHash={ checkSummedHash }/>,
+        component: <OpSuperchainAddressContract addressHash={ checkSummedHash } data={ addressQuery.data } isLoading={ isLoading }/>,
         subTabs: CONTRACT_TAB_IDS,
       },
       {
@@ -67,29 +71,29 @@ const OpSuperchainAddress = () => {
         component: <OpSuperchainAddressTokenTransfers/>,
         subTabs: ADDRESS_OP_SUPERCHAIN_TOKEN_TRANSFERS_TAB_IDS,
       },
-      {
+      addressQuery.data?.has_tokens && {
         id: 'tokens',
         title: 'Tokens',
         component: <OpSuperchainAddressTokens/>,
         subTabs: ADDRESS_OP_SUPERCHAIN_TOKENS_TAB_IDS,
       },
-      {
+      isContract && {
         id: 'internal_txs',
         title: 'Internal txns',
-        component: <OpSuperchainAddressInternalTxs/>,
+        component: <OpSuperchainAddressInternalTxs isLoading={ isLoading }/>,
       },
       {
         id: 'coin_balance_history',
         title: 'Coin balance history',
         component: <OpSuperchainAddressCoinBalanceHistory/>,
       },
-      {
+      isContract && {
         id: 'logs',
         title: 'Logs',
-        component: <OpSuperchainAddressLogs/>,
+        component: <OpSuperchainAddressLogs isLoading={ isLoading }/>,
       },
-    ];
-  }, [ checkSummedHash ]);
+    ].filter(Boolean);
+  }, [ addressQuery.data, isLoading, isContract, checkSummedHash ]);
 
   const titleSecondRow = (
     <Flex alignItems="center" w="100%" columnGap={ 2 } rowGap={ 2 } flexWrap={{ base: 'wrap', lg: 'nowrap' }}>
@@ -110,7 +114,7 @@ const OpSuperchainAddress = () => {
       />
       <AddressQrCode hash={ checkSummedHash } isLoading={ isLoading }/>
       <Box ml="auto"/>
-      <ClusterChainsPopover addressHash={ checkSummedHash }/>
+      <ClusterChainsPopover addressHash={ checkSummedHash } data={ addressQuery.data } isLoading={ isLoading }/>
     </Flex>
   );
 
