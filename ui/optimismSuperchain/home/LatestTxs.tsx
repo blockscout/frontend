@@ -7,9 +7,9 @@ import useRoutedChainSelect from 'lib/multichain/useRoutedChainSelect';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { Heading } from 'toolkit/chakra/heading';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
+import ComingSoon from 'ui/shared/ComingSoon';
 import ChainSelect from 'ui/shared/multichain/ChainSelect';
 
-import LatestTxsCrossChain from './LatestTxsCrossChain';
 import LatestTxsLocal from './LatestTxsLocal';
 
 const LatestTxs = () => {
@@ -18,11 +18,13 @@ const LatestTxs = () => {
   const tab = getQueryParamString(router.query.tab);
   const chainSelect = useRoutedChainSelect();
 
+  const isLocalTab = tab === 'txs_local' || !tab;
+
   const tabs = [
     {
       id: 'cross_chain_txs',
       title: 'Cross-chain',
-      component: <LatestTxsCrossChain/>,
+      component: <ComingSoon/>,
     },
     {
       id: 'txs_local',
@@ -33,7 +35,7 @@ const LatestTxs = () => {
 
   const heading = <Heading level="3" mb={{ base: 3, lg: 0 }}>Latest transactions</Heading>;
 
-  const rightSlot = tab === 'txs_local' ? (
+  const rightSlot = isLocalTab ? (
     <ChainSelect
       loading={ false }
       value={ chainSelect.value }
@@ -46,6 +48,8 @@ const LatestTxs = () => {
       { isMobile && heading }
       <RoutedTabs
         tabs={ tabs }
+        defaultTabId="txs_local"
+        listProps={{ mb: 3 }}
         leftSlot={ !isMobile ? heading : null }
         leftSlotProps={{ mr: 6 }}
         rightSlot={ rightSlot }

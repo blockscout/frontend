@@ -2,6 +2,7 @@ import type { ApiResource } from '../types';
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 
 export const MULTICHAIN_API_RESOURCES = {
+  // TODO @tom2drum remove unnecessary resources
   interop_messages: {
     path: '/messages',
     filterFields: [ 'address' as const ],

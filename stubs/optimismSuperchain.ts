@@ -3,6 +3,7 @@ import * as multichain from '@blockscout/multichain-aggregator-types';
 import { ADDRESS_HASH } from './addressParams';
 import { TX_HASH } from './tx';
 
+// TODO @tom2drum remove this
 export const INTEROP_MESSAGE: multichain.InteropMessage = {
   sender: {
     hash: ADDRESS_HASH,

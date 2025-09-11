@@ -31,7 +31,7 @@ const OpSuperchainAddressDetails = ({ addressHash }: Props) => {
           >
             Chain{ chains.length > 1 ? 's' : '' }
           </DetailedInfo.ItemLabel>
-          <DetailedInfo.ItemValue columnGap={ 3 }>
+          <DetailedInfo.ItemValue columnGap={ 3 } multiRow>
             { chains.map((chain) => (
               <Link
                 key={ chain.slug }

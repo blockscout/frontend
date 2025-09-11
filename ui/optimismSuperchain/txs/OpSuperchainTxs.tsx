@@ -7,10 +7,10 @@ import { MultichainProvider } from 'lib/contexts/multichain';
 import useRoutedChainSelect from 'lib/multichain/useRoutedChainSelect';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
+import ComingSoon from 'ui/shared/ComingSoon';
 import ChainSelect from 'ui/shared/multichain/ChainSelect';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
-import OpSuperchainTxsCrossChain from './OpSuperchainTxsCrossChain';
 import OpSuperchainTxsLocal, { OP_SUPERCHAIN_TXS_LOCAL_TAB_IDS } from './OpSuperchainTxsLocal';
 
 const TABS_RIGHT_SLOT_PROPS = {
@@ -23,7 +23,7 @@ const OpSuperchainTxs = () => {
   const chainSelect = useRoutedChainSelect({ persistedParams: QUERY_PRESERVED_PARAMS });
 
   const tab = getQueryParamString(router.query.tab);
-  const isLocalTxs = tab === 'txs_local' || OP_SUPERCHAIN_TXS_LOCAL_TAB_IDS.includes(tab);
+  const isLocalTxs = tab === 'txs_local' || OP_SUPERCHAIN_TXS_LOCAL_TAB_IDS.includes(tab) || !tab;
 
   React.useEffect(() => {
     if (isLocalTxs && chainSelect.value) {
@@ -31,7 +31,7 @@ const OpSuperchainTxs = () => {
       if (queryParam !== chainSelect.value[0]) {
         router.push({
           pathname: router.pathname,
-          query: { tab: router.query.tab, 'chain-slug': chainSelect.value[0] },
+          query: { tab: router.query.tab || 'txs_local', 'chain-slug': chainSelect.value[0] },
         });
       }
     }
@@ -41,9 +41,9 @@ const OpSuperchainTxs = () => {
   const tabs: Array<TabItemRegular> = React.useMemo(() => {
     return [
       {
-        id: 'index',
+        id: 'txs_cross_chain',
         title: 'Cross-chain',
-        component: <OpSuperchainTxsCrossChain/>,
+        component: <ComingSoon/>,
       },
       {
         id: 'txs_local',
@@ -73,6 +73,7 @@ const OpSuperchainTxs = () => {
       />
       <RoutedTabs
         tabs={ tabs }
+        defaultTabId="txs_local"
         rightSlot={ rightSlot }
         rightSlotProps={ rightSlot ? TABS_RIGHT_SLOT_PROPS : undefined }
       />
