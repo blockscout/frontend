@@ -1,26 +1,27 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import * as v from 'valibot';
 
 import type { ApiName } from 'lib/api/types';
 
 import { httpLogger } from 'nextjs/utils/logger';
 
 import { RESOURCES } from 'lib/api/resources';
+import getErrorMessage from 'lib/errors/getErrorMessage';
 import metrics from 'lib/monitoring/metrics';
-
-const PayloadSchema = v.object({
-  resource: v.string(),
-  url: v.optional(v.string()),
-});
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
-    const payload = v.parse(PayloadSchema, JSON.parse(req.body));
+    const payload: { resource?: string; url?: string } = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
+
+    if (!payload.resource) {
+      throw new Error('Resource not found');
+    }
+
     const [ apiName, resourceName ] = payload.resource.split(':');
-    const resource = RESOURCES[apiName as ApiName][resourceName as keyof typeof RESOURCES[ApiName]];
+    const api = RESOURCES[apiName as ApiName];
+    const resource = api?.[resourceName as keyof typeof api];
 
     if (!resource) {
-      throw new Error('Resource not found');
+      throw new Error(`Resource not found: ${ payload.resource }`);
     }
 
     const url = payload.url ? new URL(payload.url) : undefined;
@@ -30,7 +31,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       url: url?.toString(),
     });
   } catch (error) {
-    httpLogger.logger.error({ message: 'Unable to process invalid API schema', error });
+    httpLogger.logger.error({ message: 'Unable to process invalid API schema', error: getErrorMessage(error) || 'Unknown error' });
   }
   res.status(200).json({ status: 'ok' });
 }
