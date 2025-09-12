@@ -5,12 +5,14 @@ import type { BannerPlatform } from './types';
 import type { AdBannerProviders } from 'types/client/adProviders';
 
 import config from 'configs/app';
+import useAccount from 'lib/web3/useAccount';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 
 import AdbutlerBanner from './AdbutlerBanner';
 import CoinzillaBanner from './CoinzillaBanner';
 import HypeBanner from './HypeBanner';
 import SliseBanner from './SliseBanner';
+import SpecifyBanner from './SpecifyBanner';
 
 const feature = config.features.adsBanner;
 
@@ -22,7 +24,25 @@ interface Props {
 }
 
 const AdBannerContent = ({ className, isLoading, provider, platform }: Props) => {
+  const { address } = useAccount();
+  const [ showSpecify, setShowSpecify ] = React.useState(feature.isEnabled && feature.isSpecifyEnabled && Boolean(address));
+
+  React.useEffect(() => {
+    if (feature.isEnabled && feature.isSpecifyEnabled && Boolean(address)) {
+      setShowSpecify(true);
+    } else {
+      setShowSpecify(false);
+    }
+  }, [ address ]);
+
+  const handleEmptySpecify = React.useCallback(() => {
+    setShowSpecify(false);
+  }, []);
+
   const content = (() => {
+    if (showSpecify) {
+      return <SpecifyBanner platform={ platform } address={ address as `0x${ string }` } onEmpty={ handleEmptySpecify }/>;
+    }
     switch (provider) {
       case 'adbutler':
         return <AdbutlerBanner platform={ platform }/>;

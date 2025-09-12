@@ -453,6 +453,7 @@ const adsBannerSchema = yup
     NEXT_PUBLIC_AD_BANNER_ADDITIONAL_PROVIDER: yup.string<AdBannerAdditionalProviders>().oneOf(SUPPORTED_AD_BANNER_ADDITIONAL_PROVIDERS),
     NEXT_PUBLIC_AD_ADBUTLER_CONFIG_DESKTOP: adButlerConfigSchema,
     NEXT_PUBLIC_AD_ADBUTLER_CONFIG_MOBILE: adButlerConfigSchema,
+    NEXT_PUBLIC_AD_BANNER_ENABLE_SPECIFY: yup.boolean(),
   });
 
 const accountSchema = yup
