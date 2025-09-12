@@ -1,7 +1,6 @@
 import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
-import { CctxStatusReduced } from '@blockscout/zetachain-cctx-types';
 import type { ZetaChainCCTXFilterParams, StatusReducedFilters } from 'types/client/zetaChain';
 
 import { Radio, RadioGroup } from 'toolkit/chakra/radio';
@@ -17,35 +16,9 @@ const STATUS_OPTIONS: Array<{ value: FilterValue; label: string }> = [
   { value: 'Failed', label: 'Failed' },
 ];
 
-// // Helper function to convert uppercase status to capitalized for API
-// const convertStatusFromAPI = (status: CctxStatusReduced): StatusReducedFilters | 'all' => {
-//   switch (status) {
-//     case CctxStatusReduced.SUCCESS:
-//       return 'Success';
-//     case CctxStatusReduced.PENDING:
-//       return 'Pending';
-//     case CctxStatusReduced.FAILED:
-//       return 'Failed';
-//     default:
-//       return 'all';
-//   }
-// };
-
-// Helper function to convert uppercase status to capitalized for API
-const convertStatusForAPI = (status: StatusReducedFilters): CctxStatusReduced | undefined => {
-  switch (status) {
-    case 'Success':
-      return CctxStatusReduced.SUCCESS;
-    case 'Pending':
-      return CctxStatusReduced.PENDING;
-    case 'Failed':
-      return CctxStatusReduced.FAILED;
-  }
-};
-
 type Props = {
   value?: Array<StatusReducedFilters>;
-  handleFilterChange: (field: keyof ZetaChainCCTXFilterParams, value?: Array<CctxStatusReduced>) => void;
+  handleFilterChange: (field: keyof ZetaChainCCTXFilterParams, value?: Array<StatusReducedFilters>) => void;
   columnName: string;
   isLoading?: boolean;
   onClose?: () => void;
@@ -69,15 +42,15 @@ const ZetaChainStatusFilter = ({ value = [], handleFilterChange, onClose }: Prop
   const onReset = React.useCallback(() => setCurrentValue('all'), []);
 
   const onFilter = React.useCallback(() => {
-    let convertedValue: Array<CctxStatusReduced> | undefined;
+    let value: Array<StatusReducedFilters> | undefined;
 
     if (currentValue === 'all') {
-      convertedValue = undefined;
+      value = undefined;
     } else {
-      convertedValue = convertStatusForAPI(currentValue) ? [ convertStatusForAPI(currentValue) as CctxStatusReduced ] : undefined;
+      value = [ currentValue ];
     }
 
-    handleFilterChange(FILTER_PARAM_STATUS, convertedValue);
+    handleFilterChange(FILTER_PARAM_STATUS, value);
     onClose?.();
   }, [ handleFilterChange, currentValue, onClose ]);
 
