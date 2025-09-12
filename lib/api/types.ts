@@ -1,5 +1,5 @@
 export type ApiName =
-'general' | 'admin' | 'bens' | 'contractInfo' | 'clusters' |
+'general' | 'admin' | 'bens' | 'contractInfo' | 'clusters' | 'external' |
 'metadata' | 'multichain' | 'rewards' | 'stats' | 'tac' |
 'userOps' | 'visualize' | 'zetachain';
 

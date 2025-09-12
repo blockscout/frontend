@@ -25,7 +25,7 @@ export default function useDescribeTxs(items: Array<Transaction> | undefined, vi
   };
 
   const describeQuery = useQuery({
-    queryKey: [ 'noves_describe_txs', queryKey ],
+    queryKey: [ 'general:noves_describe_txs', queryKey ],
     queryFn: async() => {
       const queries = txChunks.map((hashes) => {
         if (hashes.length === 0) {
