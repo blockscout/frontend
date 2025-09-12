@@ -74,6 +74,7 @@
     "@rollbar/react": "0.12.1",
     "@scure/base": "1.1.9",
     "@slise/embed-react": "^2.2.0",
+    "@specify-sh/sdk": "^0.2.2",
     "@tanstack/react-query": "5.55.4",
     "@tanstack/react-query-devtools": "5.55.4",
     "@types/papaparse": "^5.3.5",
