@@ -16,7 +16,6 @@ const L2WithdrawalUrl = getEnvValue('NEXT_PUBLIC_ROLLUP_L2_WITHDRAWAL_URL');
 const parentChain: ParentChain | undefined = (() => {
   const envValue = parseEnvJson<ParentChain>(getEnvValue('NEXT_PUBLIC_ROLLUP_PARENT_CHAIN'));
   const baseUrl = stripTrailingSlash(getEnvValue('NEXT_PUBLIC_ROLLUP_L1_BASE_URL') || '');
-  const chainName = getEnvValue('NEXT_PUBLIC_ROLLUP_PARENT_CHAIN_NAME');
 
   if (!baseUrl && !envValue?.baseUrl) {
     return;
@@ -24,7 +23,6 @@ const parentChain: ParentChain | undefined = (() => {
 
   return {
     ...envValue,
-    name: chainName ?? envValue?.name,
     baseUrl: baseUrl ?? envValue?.baseUrl,
   };
 })();

@@ -14,7 +14,7 @@ import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 const rollupFeature = config.features.rollup;
 
- type Props = { item: ScrollL2MessageItem; isLoading?: boolean };
+type Props = { item: ScrollL2MessageItem; isLoading?: boolean };
 
 const ScrollL2WithdrawalsTableItem = ({ item, isLoading }: Props) => {
   if (!rollupFeature.isEnabled || rollupFeature.type !== 'scroll') {

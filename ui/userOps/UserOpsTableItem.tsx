@@ -14,13 +14,13 @@ import UserOpEntity from 'ui/shared/entities/userOp/UserOpEntity';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import UserOpStatus from 'ui/shared/userOps/UserOpStatus';
 
- type Props = {
-   item: UserOpsItem;
-   isLoading?: boolean;
-   showTx: boolean;
-   showSender: boolean;
-   chainData?: ChainConfig;
- };
+type Props = {
+  item: UserOpsItem;
+  isLoading?: boolean;
+  showTx: boolean;
+  showSender: boolean;
+  chainData?: ChainConfig;
+};
 
 const UserOpsTableItem = ({ item, isLoading, showTx, showSender, chainData }: Props) => {
   return (

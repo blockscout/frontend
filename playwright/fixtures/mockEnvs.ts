@@ -25,8 +25,7 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
   ],
   arbitrumRollup: [
     [ 'NEXT_PUBLIC_ROLLUP_TYPE', 'arbitrum' ],
-    [ 'NEXT_PUBLIC_ROLLUP_L1_BASE_URL', 'https://localhost:3101' ],
-    [ 'NEXT_PUBLIC_ROLLUP_PARENT_CHAIN_NAME', 'DuckChain' ],
+    [ 'NEXT_PUBLIC_ROLLUP_PARENT_CHAIN', '{"name":"DuckChain","baseUrl":"https://localhost:3101"}' ],
     [ 'NEXT_PUBLIC_ROLLUP_DA_CELESTIA_NAMESPACE', '0x1234' ],
     [ 'NEXT_PUBLIC_ROLLUP_DA_CELESTIA_CELENIUM_URL', 'https://mocha.celenium.io/blob' ],
   ],
@@ -89,7 +88,7 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
     [ 'NEXT_PUBLIC_DATA_AVAILABILITY_ENABLED', 'true' ],
   ],
   nameService: [
-    [ 'NEXT_PUBLIC_NAME_SERVICE_API_HOST', 'https://localhost:3008' ],
+    [ 'NEXT_PUBLIC_NAME_SERVICE_API_HOST', 'http://localhost:3008' ],
   ],
   rewardsService: [
     [ 'NEXT_PUBLIC_REWARDS_SERVICE_API_HOST', 'http://localhost:3009' ],
@@ -117,6 +116,9 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
   ],
   opSuperchain: [
     [ 'NEXT_PUBLIC_OP_SUPERCHAIN_ENABLED', 'true' ],
+  ],
+  clusters: [
+    [ 'NEXT_PUBLIC_CLUSTERS_API_HOST', 'https://api.clusters.xyz' ],
   ],
   zetaChain: [
     [ 'NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST', 'http://localhost:3111' ],

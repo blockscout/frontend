@@ -64,6 +64,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/interop-messages': '%network_name% interop messages',
   '/operations': '%network_name% operations',
   '/operation/[id]': '%network_name% operation %id%',
+  '/clusters/[name]': 'Clusters details for %name%',
   '/cc/tx/[hash]': '%network_name% cross-chain transaction %hash% details',
 
   // multichain routes

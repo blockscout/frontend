@@ -22,21 +22,21 @@ export type SmartContractLicenseType =
 'bsl_1_1';
 
 export type SmartContractProxyType =
-  | 'eip1167'
-  | 'eip1967'
-  | 'eip1822'
-  | 'eip930'
-  | 'eip2535'
-  | 'eip7702'
-  | 'erc7760'
-  | 'master_copy'
-  | 'basic_implementation'
-  | 'basic_get_implementation'
-  | 'comptroller'
-  | 'clone_with_immutable_arguments'
-  | 'resolved_delegate_proxy'
-  | 'unknown'
-  | null;
+  'eip1167' |
+  'eip1967' |
+  'eip1822' |
+  'eip930' |
+  'eip2535' |
+  'eip7702' |
+  'erc7760' |
+  'master_copy' |
+  'basic_implementation' |
+  'basic_get_implementation' |
+  'comptroller' |
+  'clone_with_immutable_arguments' |
+  'resolved_delegate_proxy' |
+  'unknown' |
+  null;
 
 export interface SmartContract {
   deployed_bytecode: string | null;
@@ -101,8 +101,8 @@ export interface SmartContractExternalLibrary {
 
 // VERIFICATION
 
-export type SmartContractVerificationMethodApi = 'flattened-code' | 'standard-input' | 'sourcify' | 'multi-part'
-| 'vyper-code' | 'vyper-multi-part' | 'vyper-standard-input' | 'stylus-github-repository';
+export type SmartContractVerificationMethodApi = 'flattened-code' | 'standard-input' | 'sourcify' | 'multi-part' |
+'vyper-code' | 'vyper-multi-part' | 'vyper-standard-input' | 'stylus-github-repository';
 
 export interface SmartContractVerificationConfigRaw {
   solidity_compiler_versions: Array<string>;

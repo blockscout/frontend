@@ -4,6 +4,8 @@ import type { AdminApiResourceName, AdminApiResourcePayload } from './services/a
 import { ADMIN_API_RESOURCES } from './services/admin';
 import { BENS_API_RESOURCES } from './services/bens';
 import type { BensApiResourceName, BensApiResourcePayload, BensApiPaginationFilters, BensApiPaginationSorting } from './services/bens';
+import { CLUSTERS_API_RESOURCES } from './services/clusters';
+import type { ClustersApiResourceName, ClustersApiResourcePayload, ClustersApiPaginationFilters, ClustersApiPaginationSorting } from './services/clusters';
 import { CONTRACT_INFO_API_RESOURCES } from './services/contractInfo';
 import type { ContractInfoApiPaginationFilters, ContractInfoApiResourceName, ContractInfoApiResourcePayload } from './services/contractInfo';
 import { GENERAL_API_RESOURCES } from './services/general';
@@ -32,6 +34,7 @@ import type { ZetaChainApiPaginationFilters, ZetaChainApiResourceName, ZetaChain
 export const RESOURCES = {
   admin: ADMIN_API_RESOURCES,
   bens: BENS_API_RESOURCES,
+  clusters: CLUSTERS_API_RESOURCES,
   contractInfo: CONTRACT_INFO_API_RESOURCES,
   general: GENERAL_API_RESOURCES,
   metadata: METADATA_API_RESOURCES,
@@ -66,6 +69,7 @@ export type ResourcePath = string;
 export type ResourcePayload<R extends ResourceName> =
 R extends AdminApiResourceName ? AdminApiResourcePayload<R> :
 R extends BensApiResourceName ? BensApiResourcePayload<R> :
+R extends ClustersApiResourceName ? ClustersApiResourcePayload<R> :
 R extends ContractInfoApiResourceName ? ContractInfoApiResourcePayload<R> :
 R extends GeneralApiResourceName ? GeneralApiResourcePayload<R> :
 R extends MetadataApiResourceName ? MetadataApiResourcePayload<R> :
@@ -103,6 +107,7 @@ export type ResourceErrorAccount<T> = ResourceError<{ errors: T }>;
 /* eslint-disable @stylistic/indent */
 export type PaginationFilters<R extends ResourceName> =
 R extends BensApiResourceName ? BensApiPaginationFilters<R> :
+R extends ClustersApiResourceName ? ClustersApiPaginationFilters :
 R extends GeneralApiResourceName ? GeneralApiPaginationFilters<R> :
 R extends ContractInfoApiResourceName ? ContractInfoApiPaginationFilters<R> :
 R extends MultichainApiResourceName ? MultichainApiPaginationFilters<R> :
@@ -116,6 +121,7 @@ export const SORTING_FIELDS = [ 'sort', 'order' ];
 /* eslint-disable @stylistic/indent */
 export type PaginationSorting<R extends ResourceName> =
 R extends BensApiResourceName ? BensApiPaginationSorting<R> :
+R extends ClustersApiResourceName ? ClustersApiPaginationSorting :
 R extends GeneralApiResourceName ? GeneralApiPaginationSorting<R> :
 never;
 /* eslint-enable @stylistic/indent */

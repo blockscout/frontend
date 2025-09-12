@@ -35,7 +35,7 @@ const LatestBlocksItem = ({ block, isLoading, animation }: Props) => {
           isLoading={ isLoading }
           number={ block.height }
           tailLength={ 2 }
-          textStyle="xl"
+          textStyle="md"
           fontWeight={ 500 }
           mr="auto"
         />

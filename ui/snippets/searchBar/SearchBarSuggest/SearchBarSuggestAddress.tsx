@@ -7,7 +7,7 @@ import type { SearchResultAddressOrContract, SearchResultMetadataTag } from 'typ
 import { toBech32Address } from 'lib/address/bech32';
 import dayjs from 'lib/date/dayjs';
 import highlightText from 'lib/highlightText';
-import { ADDRESS_REGEXP } from 'toolkit/components/forms/validators/address';
+import { ADDRESS_REGEXP } from 'toolkit/utils/regexp';
 import SearchResultEntityTag from 'ui/searchResults/SearchResultEntityTag';
 import ContractCertifiedLabel from 'ui/shared/ContractCertifiedLabel';
 import * as AddressEntity from 'ui/shared/entities/address/AddressEntity';
@@ -53,7 +53,7 @@ const SearchBarSuggestAddress = ({ data, isMobile, searchTerm, addressFormat }: 
     </Flex>
   );
   const tagEl = data.type === 'metadata_tag' ? (
-    <SearchResultEntityTag metadata={ data.metadata } searchTerm={ searchTerm } ml={{ base: 0, lg: 'auto' }}/>
+    <SearchResultEntityTag metadata={ data.metadata } addressHash={ hash } searchTerm={ searchTerm } ml={{ base: 0, lg: 'auto' }}/>
   ) : null;
   const addressEl = <HashStringShortenDynamic hash={ hash } noTooltip/>;
 

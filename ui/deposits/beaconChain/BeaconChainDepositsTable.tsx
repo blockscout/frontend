@@ -11,12 +11,12 @@ import BeaconChainDepositsTableItem from './BeaconChainDepositsTableItem';
 
 const feature = config.features.beaconChain;
 
- type Props = {
-   top: number;
-   isLoading?: boolean;
-   items: Array<DepositsItem>;
-   view: 'list' | 'address' | 'block';
- };
+type Props = {
+  top: number;
+  isLoading?: boolean;
+  items: Array<DepositsItem>;
+  view: 'list' | 'address' | 'block';
+};
 
 const BeaconChainDepositsTable = ({ items, isLoading, top, view }: Props) => {
   const { cutRef, renderedItemsNum } = useLazyRenderedList(items, !isLoading);

@@ -167,6 +167,17 @@ const visualizeApi = (() => {
   });
 })();
 
+const clustersApi = (() => {
+  const apiHost = getEnvValue('NEXT_PUBLIC_CLUSTERS_API_HOST');
+  if (!apiHost) {
+    return;
+  }
+
+  return Object.freeze({
+    endpoint: apiHost,
+  });
+})();
+
 const zetachainApi = (() => {
   const apiHost = getEnvValue('NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST');
   if (!apiHost) {
@@ -193,6 +204,7 @@ const apis: Apis = Object.freeze({
   general: generalApi,
   admin: adminApi,
   bens: bensApi,
+  clusters: clustersApi,
   contractInfo: contractInfoApi,
   metadata: metadataApi,
   multichain: multichainApi,

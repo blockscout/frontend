@@ -12,7 +12,7 @@ import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 const feature = config.features.rollup;
 
- type Props = { item: ShibariumWithdrawalsItem; isLoading?: boolean };
+type Props = { item: ShibariumWithdrawalsItem; isLoading?: boolean };
 
 const WithdrawalsTableItem = ({ item, isLoading }: Props) => {
   if (!(feature.isEnabled && feature.type === 'shibarium')) {

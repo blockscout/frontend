@@ -810,7 +810,9 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
                 L1 gas price
               </DetailedInfo.ItemLabel>
               <DetailedInfo.ItemValue multiRow>
-                <Text mr={ 1 }>{ BigNumber(data.l1_gas_price).dividedBy(WEI).toFixed() } { currencyUnits.ether }</Text>
+                <Text mr={ 1 }>
+                  { BigNumber(data.l1_gas_price).dividedBy(WEI).toFixed() } { rollupFeature.parentChain.currency?.symbol || currencyUnits.ether }
+                </Text>
                 <Text color="text.secondary">({ BigNumber(data.l1_gas_price).dividedBy(WEI_IN_GWEI).toFixed() } { currencyUnits.gwei })</Text>
               </DetailedInfo.ItemValue>
             </>
@@ -828,7 +830,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
               <DetailedInfo.ItemValue multiRow>
                 <CurrencyValue
                   value={ data.l1_fee }
-                  currency={ currencyUnits.ether }
+                  currency={ rollupFeature.parentChain.currency?.symbol || currencyUnits.ether }
                   exchangeRate={ data.exchange_rate }
                   flexWrap="wrap"
                   rowGap={ 0 }
