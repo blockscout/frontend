@@ -32,7 +32,7 @@ export const Field = React.forwardRef<HTMLDivElement, FieldProps>(
       };
 
       const labelElement = (
-        <ChakraField.Label bgColor={ rest.bgColor }>
+        <ChakraField.Label bgColor={ rest.bgColor || 'input.bg' }>
           { label }
           <ChakraField.RequiredIndicator fallback={ optionalText }/>
           { errorText && (

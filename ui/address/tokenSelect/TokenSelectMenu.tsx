@@ -32,7 +32,6 @@ const TokenSelectMenu = ({ erc20sort, erc1155sort, erc404sort, filteredData, onI
       <FilterInput
         placeholder="Search by token name"
         size="sm"
-        inputProps={{ bgColor: 'dialog.bg' }}
         mb={ 5 }
         onChange={ onInputChange }
       />
