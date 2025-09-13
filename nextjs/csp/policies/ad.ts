@@ -23,6 +23,9 @@ export function ad(): CspDev.DirectiveDescriptor {
       'api.hypelab.com',
       '*.ixncdn.com',
       '*.cloudfront.net',
+
+      // specify
+      'app.specify.sh',
     ],
     'frame-src': [
       // coinzilla
