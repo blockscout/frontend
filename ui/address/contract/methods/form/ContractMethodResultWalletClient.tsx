@@ -93,11 +93,9 @@ export const ContractMethodResultWalletClientDumb = ({ data, onSettle, txInfo }:
   return (
     <Box
       textStyle="sm"
-      mt={ 3 }
       alignItems="center"
       whiteSpace="pre-wrap"
       wordBreak="break-all"
-      color={ txInfo.status === 'error' || isErrorResult ? 'error' : undefined }
     >
       { content }
     </Box>

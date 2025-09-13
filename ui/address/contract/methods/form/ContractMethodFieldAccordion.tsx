@@ -20,7 +20,7 @@ const ContractMethodFieldAccordion = ({ label, level, children, onAddClick, onRe
   const bgColor = { _light: 'whiteAlpha.700', _dark: 'blackAlpha.700' };
 
   return (
-    <AccordionRoot w="100%" bgColor={ level === 0 ? bgColorLevel0 : bgColor } borderRadius="base" lazyMount>
+    <AccordionRoot w="100%" bgColor={ level === 0 ? bgColorLevel0 : bgColor } borderRadius="base">
       <AccordionItem value="default" _first={{ borderTopWidth: 0 }} _last={{ borderBottomWidth: 0 }}>
         <AccordionItemTrigger
           indicatorPlacement="start"
@@ -30,7 +30,7 @@ const ContractMethodFieldAccordion = ({ label, level, children, onAddClick, onRe
           textAlign="left"
           _hover={{ bgColor: 'inherit' }}
         >
-          <Box textStyle="sm" fontWeight={ 700 } mr="auto" color={ isInvalid ? 'error' : undefined }>
+          <Box textStyle="sm" fontWeight={ 700 } mr="auto" color={ isInvalid ? 'text.error' : undefined }>
             { label }
           </Box>
           { onRemoveClick && index !== undefined && <ContractMethodArrayButton index={ index } onClick={ onRemoveClick } type="remove"/> }

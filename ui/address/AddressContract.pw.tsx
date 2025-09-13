@@ -69,7 +69,7 @@ test.describe('ABI functionality', () => {
     await expect(component.getByLabel('9.').getByRole('button', { name: 'Write' })).toBeEnabled();
 
     await component.getByText('pause').click();
-    await expect(component.getByLabel('5.').getByRole('button', { name: 'Simulate' })).toBeHidden();
+    await expect(component.getByLabel('5.').getByRole('button', { name: 'Simulate' })).toBeEnabled();
     await expect(component.getByLabel('5.').getByRole('button', { name: 'Write' })).toBeEnabled();
   });
 
@@ -91,7 +91,7 @@ test.describe('ABI functionality', () => {
     await expect(component.getByLabel('9.').getByRole('button', { name: 'Write' })).toBeDisabled();
 
     await component.getByText('pause').click();
-    await expect(component.getByLabel('5.').getByRole('button', { name: 'Simulate' })).toBeHidden();
+    await expect(component.getByLabel('5.').getByRole('button', { name: 'Simulate' })).toBeEnabled();
     await expect(component.getByLabel('5.').getByRole('button', { name: 'Write' })).toBeDisabled();
   });
 });
