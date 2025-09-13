@@ -5,7 +5,7 @@ import type { TxBlob } from 'types/api/blobs';
 
 import TxBlobListItem from './TxBlobListItem';
 
-const TxBlobList = ({ data, isLoading }: { data: Array<TxBlob>; isLoading?: boolean }) => {
+const TxBlobsList = ({ data, isLoading }: { data: Array<TxBlob>; isLoading?: boolean }) => {
   return (
     <Box>
       { data.map((item, index) => (
@@ -19,4 +19,4 @@ const TxBlobList = ({ data, isLoading }: { data: Array<TxBlob>; isLoading?: bool
   );
 };
 
-export default TxBlobList;
+export default TxBlobsList;

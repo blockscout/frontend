@@ -1,3 +1,4 @@
+/* eslint-disable consistent-default-export-name/default-export-match-filename */
 import type { AppKitNetwork } from '@reown/appkit/networks';
 import { createAppKit, useAppKitTheme } from '@reown/appkit/react';
 import React from 'react';

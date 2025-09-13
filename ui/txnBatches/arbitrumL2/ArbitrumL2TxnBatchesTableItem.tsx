@@ -20,7 +20,7 @@ const rollupFeature = config.features.rollup;
 
 type Props = { item: ArbitrumL2TxnBatchesItem; isLoading?: boolean };
 
-const TxnBatchesTableItem = ({ item, isLoading }: Props) => {
+const ArbitrumL2TxnBatchesTableItem = ({ item, isLoading }: Props) => {
   if (!rollupFeature.isEnabled || rollupFeature.type !== 'arbitrum') {
     return null;
   }
@@ -78,4 +78,4 @@ const TxnBatchesTableItem = ({ item, isLoading }: Props) => {
   );
 };
 
-export default TxnBatchesTableItem;
+export default ArbitrumL2TxnBatchesTableItem;

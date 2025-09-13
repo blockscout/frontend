@@ -13,7 +13,7 @@ type Props = {
   isLoading?: boolean;
 };
 
-const TxnBatchesTable = ({ items, top, isLoading }: Props) => {
+const ZkEvmTxnBatchesTable = ({ items, top, isLoading }: Props) => {
   return (
     <TableRoot minW="1100px">
       <TableHeaderSticky top={ top }>
@@ -42,4 +42,4 @@ const TxnBatchesTable = ({ items, top, isLoading }: Props) => {
   );
 };
 
-export default TxnBatchesTable;
+export default ZkEvmTxnBatchesTable;
