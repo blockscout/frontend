@@ -6,11 +6,11 @@ import { createConfig } from 'wagmi';
 
 import appConfig from 'configs/app';
 import multichainConfig from 'configs/multichain';
-import { currentChain, parentChain, clusterChains } from 'lib/web3/chains';
+import { currentChain, parentChain, clusterChains, additionalChains } from 'lib/web3/chains';
 
 const feature = appConfig.features.blockchainInteraction;
 
-const chains = [ currentChain, parentChain, ...(clusterChains ?? []) ].filter(Boolean);
+const chains = [ currentChain, parentChain, ...(clusterChains ?? []), ...(additionalChains ?? []) ].filter(Boolean);
 
 const getChainTransportFromConfig = (config: typeof appConfig, readOnly?: boolean): Record<string, Transport> => {
   if (!config.chain.id) {

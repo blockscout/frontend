@@ -396,6 +396,12 @@ const Container = ({ children }: { children: React.ReactNode }) => (
             },
           },
         },
+        '& [class*="TokenSelect-module__grid_"]': {
+          display: 'flex',
+          justifyContent: 'flex-start',
+          gap: '12px',
+          flexWrap: 'wrap',
+        },
         '& > .multisenderMantineProvider': {
           '--mantine-color-text': 'text.primary',
           '--mantine-color-red-light': 'colors.alert.bg.error',
@@ -424,6 +430,39 @@ const config = {
     multisenderContractAddress: '0x88888c037DF4527933fa8Ab203a89e1e6E58db70',
     rpcUrls: [ 'https://eth.blockscout.com/api/eth-rpc' ],
     blockScoutApiUrl: 'https://eth.blockscout.com',
+  },
+  '11155111': {
+    id: 11155111,
+    name: 'Sepolia',
+    blockExplorerUrl: {
+      tx: 'https://eth-sepolia.blockscout.com/tx/',
+      address: 'https://eth-sepolia.blockscout.com/address/',
+    },
+    multisenderContractAddress: '0x88888c037DF4527933fa8Ab203a89e1e6E58db70',
+    rpcUrls: [ 'https://eth-sepolia.blockscout.com/api/eth-rpc' ],
+    blockScoutApiUrl: 'https://eth-sepolia.blockscout.com',
+  },
+  '30': {
+    id: 30,
+    name: 'Rootstock',
+    blockExplorerUrl: {
+      tx: 'https://rootstock.blockscout.com/tx/',
+      address: 'https://rootstock.blockscout.com/address/',
+    },
+    multisenderContractAddress: '0x88888c037DF4527933fa8Ab203a89e1e6E58db70',
+    rpcUrls: [ 'https://rootstock.blockscout.com/api/eth-rpc' ],
+    blockScoutApiUrl: 'https://rootstock.blockscout.com',
+  },
+  '100': {
+    id: 100,
+    name: 'Gnosis',
+    blockExplorerUrl: {
+      tx: 'https://gnosis.blockscout.com/tx/',
+      address: 'https://gnosis.blockscout.com/address/',
+    },
+    multisenderContractAddress: '0x88888c037DF4527933fa8Ab203a89e1e6E58db70',
+    rpcUrls: [ 'https://gnosis.blockscout.com/api/eth-rpc' ],
+    blockScoutApiUrl: 'https://gnosis.blockscout.com',
   },
 };
 

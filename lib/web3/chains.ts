@@ -1,10 +1,16 @@
 import { type Chain } from 'viem';
+import * as viemChains from 'viem/chains';
 
 import appConfig from 'configs/app';
 import multichainConfig from 'configs/multichain';
 
+const allChains = Object.values(viemChains);
+
 const getChainInfo = (config: typeof appConfig = appConfig) => {
+  const defaultChain = allChains.find((c) => c.id === Number(config.chain.id));
+
   return {
+    ...defaultChain,
     id: Number(config.chain.id),
     name: config.chain.name ?? '',
     nativeCurrency: {
@@ -70,3 +76,5 @@ export const clusterChains: Array<Chain> | undefined = (() => {
 
   return config.chains.map(({ config }) => getChainInfo(config)).filter(Boolean);
 })();
+
+export const additionalChains: Array<Chain> | undefined = [ viemChains.sepolia, viemChains.rootstock, viemChains.gnosis ];

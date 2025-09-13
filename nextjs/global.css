@@ -4,3 +4,5 @@
   unicode-range: U+2192; /* Only the right arrow */
   font-display: swap;
 }
+
+@layer multisender-mantine-provider, multisender, reset;

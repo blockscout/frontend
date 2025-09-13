@@ -29,7 +29,7 @@ const Swap = () => {
         fromChain: 1,
         fromToken: '0x0000000000000000000000000000000000000000',
         chains: {
-          allow: [ 1 ],
+          allow: [ 1, 11155111, 30, 100 ],
         },
         walletConfig: {
           // onConnect: open,
