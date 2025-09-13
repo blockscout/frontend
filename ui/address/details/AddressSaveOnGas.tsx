@@ -26,11 +26,17 @@ const AddressSaveOnGas = ({ gasUsed, address }: Props) => {
 
   const gasUsedNumber = Number(gasUsed);
 
+  // Simple Ethereum address validation (42 chars, starts with 0x, hex)
+  const isValidAddress = /^0x[a-fA-F0-9]{40}$/.test(address);
+
   const query = useQuery({
     queryKey: [ 'external:gas_hawk_saving_potential', { address } ],
     queryFn: async() => {
       if (!feature.isEnabled || !HEX_REGEXP_WITH_0X.test(address)) {
         return;
+      }
+      if (!isValidAddress) {
+        throw new Error('Invalid address format');
       }
 
       const response = await fetch(feature.apiUrlTemplate.replace('<address>', address));
