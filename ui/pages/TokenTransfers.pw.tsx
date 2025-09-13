@@ -1,4 +1,3 @@
-import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import * as tokenInstanceMock from 'mocks/tokens/tokenInstance';
@@ -12,6 +11,6 @@ test.skip('base view +@mobile', async({ render, mockTextAd, mockApiResponse, moc
   await mockAssetResponse(tokenInstanceMock.base.image_url as string, './playwright/mocks/image_s.jpg');
   await mockTextAd();
   await mockApiResponse('general:token_transfers_all', mixTokens, { queryParams: { type: [ 'all' ] } });
-  const component = await render(<Box pt={{ base: '106px', lg: 0 }}> <TokenTransfers/> </Box>);
+  const component = await render(<TokenTransfers/>);
   await expect(component).toHaveScreenshot();
 });

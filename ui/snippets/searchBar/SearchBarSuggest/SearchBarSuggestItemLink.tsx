@@ -10,7 +10,7 @@ const SearchBarSuggestItemLink = React.forwardRef<HTMLAnchorElement, Props>(({ c
     <Link
       ref={ ref }
       py={ 3 }
-      px={ 1 }
+      px={{ base: 0, lg: 1 }}
       display="flex"
       flexDir="column"
       alignItems="stretch"

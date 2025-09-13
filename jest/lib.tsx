@@ -5,7 +5,6 @@ import { render } from '@testing-library/react';
 import React from 'react';
 
 import { AppContextProvider } from 'lib/contexts/app';
-import { ScrollDirectionProvider } from 'lib/contexts/scrollDirection';
 import { SocketProvider } from 'lib/socket/context';
 import { Provider as ChakraProvider } from 'toolkit/chakra/provider';
 
@@ -34,13 +33,11 @@ const TestApp = ({ children }: { children: React.ReactNode }) => {
     <ChakraProvider>
       <QueryClientProvider client={ queryClient }>
         <AppContextProvider pageProps={ PAGE_PROPS }>
-          <ScrollDirectionProvider>
-            <GrowthBookProvider>
-              <SocketProvider>
-                { children }
-              </SocketProvider>
-            </GrowthBookProvider>
-          </ScrollDirectionProvider>
+          <GrowthBookProvider>
+            <SocketProvider>
+              { children }
+            </SocketProvider>
+          </GrowthBookProvider>
         </AppContextProvider>
       </QueryClientProvider>
     </ChakraProvider>

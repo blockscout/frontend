@@ -20,7 +20,7 @@ const LayoutDefault = ({ children }: Props) => {
         flexDirection="column"
       >
         <Layout.TopRow/>
-        <HeaderMobile hideSearchBar/>
+        <HeaderMobile/>
         <Layout.MainArea
           minH={{
             base: `calc(100dvh - ${ TOP_BAR_HEIGHT + HEADER_HEIGHT_MOBILE }px)`,
