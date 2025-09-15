@@ -11,7 +11,7 @@ import useTokenSelect from './useTokenSelect';
 
 interface Props {
   data: FormattedData;
-  isLoading: boolean;
+  isLoading?: boolean;
 }
 
 const TokenSelectDesktop = ({ data, isLoading }: Props) => {

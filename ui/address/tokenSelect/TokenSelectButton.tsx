@@ -13,7 +13,7 @@ import { getTokensTotalInfo } from '../utils/tokenUtils';
 
 interface Props {
   isOpen: boolean;
-  isLoading: boolean;
+  isLoading?: boolean;
   data: FormattedData;
 }
 

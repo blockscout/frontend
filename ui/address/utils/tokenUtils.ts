@@ -14,6 +14,7 @@ const isNativeToken = (token: TokenEnhancedData) =>
 
 export type TokenEnhancedData = AddressTokenBalance & {
   usd?: BigNumber ;
+  chain_values?: Record<string, string>;
 };
 
 export type Sort = 'desc' | 'asc';

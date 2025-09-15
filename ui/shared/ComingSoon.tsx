@@ -17,7 +17,7 @@ const ComingSoon = (props: Props) => {
         h="auto"
       />
       <Heading textStyle="heading.md" mt={{ base: 4, lg: 6 }}>Coming soon</Heading>
-      <Text textStyle={{ base: 'sm', lg: 'mg' }} mt={ 2 }>We are in the process of collecting information.</Text>
+      <Text textStyle={{ base: 'sm', lg: 'mg' }} mt={ 2 }>The information will be available soon. Stay tuned!</Text>
     </Flex>
   );
 };

@@ -1,3 +1,4 @@
+import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type * as multichain from '@blockscout/multichain-aggregator-types';
@@ -12,6 +13,7 @@ import DetailedInfoSponsoredItem from 'ui/shared/DetailedInfo/DetailedInfoSponso
 import TextSeparator from 'ui/shared/TextSeparator';
 
 import ChainIcon from '../components/ChainIcon';
+import OpSuperchainTokenSelect from './tokens/OpSuperchainTokenSelect';
 
 interface Props {
   data: multichain.GetAddressResponse | undefined;
@@ -87,7 +89,7 @@ const OpSuperchainAddressDetails = ({ data, addressHash, isLoading }: Props) => 
         Tokens
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
-        Coming soon 🔜
+        { data?.has_tokens ? <OpSuperchainTokenSelect/> : <Box>0</Box> }
       </DetailedInfo.ItemValue>
 
       <DetailedInfo.ItemLabel

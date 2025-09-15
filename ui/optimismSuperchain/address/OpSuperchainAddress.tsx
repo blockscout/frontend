@@ -71,7 +71,7 @@ const OpSuperchainAddress = () => {
         component: <OpSuperchainAddressTokenTransfers/>,
         subTabs: ADDRESS_OP_SUPERCHAIN_TOKEN_TRANSFERS_TAB_IDS,
       },
-      {
+      addressQuery.data?.has_tokens && {
         id: 'tokens',
         title: 'Tokens',
         component: <OpSuperchainAddressTokens/>,

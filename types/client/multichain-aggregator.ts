@@ -16,8 +16,10 @@ export interface AggregatedTokenInfo extends Pick<multichain.AggregatedTokenInfo
   icon_url: string | null;
 }
 
-export interface AddressTokenItem extends Omit<multichain.ListAddressTokensResponse_AggregatedTokenBalanceInfo, 'token'> {
+export interface AddressTokenItem extends Omit<multichain.ListAddressTokensResponse_AggregatedTokenBalanceInfo, 'token' | 'token_id'> {
   token: AggregatedTokenInfo;
+  token_id: string | null;
+  token_instance: null;
 }
 
 export interface AddressTokensResponse extends Omit<multichain.ListAddressTokensResponse, 'items'> {
