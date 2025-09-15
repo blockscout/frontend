@@ -8,7 +8,7 @@ import type { BannerProps } from './types';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { Image } from 'toolkit/chakra/image';
 
-const PUBLISHER_KEY = 'spk_1dqfv5mkgwpwl58zcaziklpurezud8';
+const PUBLISHER_KEY = 'spk_uq51124ciii28vt00f8za4m5hibpuh';
 
 const SpecifyBanner = ({ className, platform, address, onEmpty }: BannerProps & { address: string; onEmpty: () => void }) => {
   const isMobileViewport = useIsMobile();
