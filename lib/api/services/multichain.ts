@@ -1,6 +1,6 @@
 import type { ApiResource } from '../types';
 import type * as multichain from '@blockscout/multichain-aggregator-types';
-import type { AddressTokensResponse } from 'types/client/multichain';
+import type { AddressTokensResponse } from 'types/client/multichain-aggregator';
 
 export const MULTICHAIN_API_RESOURCES = {
   address: {
@@ -11,6 +11,7 @@ export const MULTICHAIN_API_RESOURCES = {
     path: '/addresses/:hash/tokens',
     pathParams: [ 'hash' as const ],
     paginated: true,
+    filterFields: [ 'chain_id' as const, 'type' as const ],
   },
 } satisfies Record<string, ApiResource>;
 

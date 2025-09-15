@@ -1,9 +1,10 @@
 import { Flex, HStack } from '@chakra-ui/react';
 import React from 'react';
 
-import type { AddressTokenBalance } from 'types/api/address';
+import type { AddressTokensErc20Item } from './types';
 
 import config from 'configs/app';
+import multichainConfig from 'configs/multichain';
 import getCurrencyValue from 'lib/getCurrencyValue';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
@@ -14,9 +15,9 @@ import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 
 const celoFeature = config.features.celo;
 
-type Props = Pick<AddressTokenBalance, 'token' | 'value'> & { isLoading: boolean };
+type Props = AddressTokensErc20Item & { isLoading: boolean };
 
-const ERC20TokensListItem = ({ token, value, isLoading }: Props) => {
+const ERC20TokensListItem = ({ token, value, isLoading, chain_values: chainValues }: Props) => {
 
   const {
     valueStr: tokenQuantity,
@@ -25,11 +26,22 @@ const ERC20TokensListItem = ({ token, value, isLoading }: Props) => {
 
   const isNativeToken = celoFeature.isEnabled && token.address_hash.toLowerCase() === celoFeature.nativeTokenAddress?.toLowerCase();
 
+  const chainInfo = React.useMemo(() => {
+    if (!chainValues) {
+      return;
+    }
+
+    const chainId = Object.keys(chainValues)[0];
+    const chain = multichainConfig()?.chains.find((chain) => chain.config.chain.id === chainId);
+    return chain;
+  }, [ chainValues ]);
+
   return (
     <ListItemMobile rowGap={ 2 }>
       <Flex alignItems="center" width="100%" columnGap={ 2 }>
         <TokenEntity
           token={ token }
+          chain={ chainInfo }
           isLoading={ isLoading }
           noCopy
           jointSymbol

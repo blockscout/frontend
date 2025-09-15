@@ -6,6 +6,7 @@ import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
 import { MultichainProvider } from 'lib/contexts/multichain';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import getChainIdFromSlug from 'lib/multichain/getChainIdFromSlug';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { TOKEN } from 'stubs/optimismSuperchain';
 import { generateListStub } from 'stubs/utils';
@@ -20,11 +21,13 @@ import ChainSelect from 'ui/shared/multichain/ChainSelect';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
+import useChainSelectErc20 from './useChainSelectErc20';
+
 export const ADDRESS_OP_SUPERCHAIN_TOKENS_TAB_IDS = [ 'tokens_erc20' as const, 'tokens_nfts' as const ];
 const TABS_RIGHT_SLOT_PROPS = {
   display: 'flex',
   justifyContent: { base: 'flex-end', lg: 'flex-start' },
-  ml: { base: 0, lg: 8 },
+  ml: { base: 0, lg: 6 },
   widthAllocation: 'available' as const,
 };
 const TAB_LIST_PROPS = {
@@ -42,11 +45,12 @@ const OpSuperchainAddressTokens = () => {
 
   const tab = getQueryParamString(router.query.tab) as typeof ADDRESS_OP_SUPERCHAIN_TOKENS_TAB_IDS[number] | 'tokens' | undefined;
   const hash = getQueryParamString(router.query.hash);
+  const [ chainSelectErc20Value, setChainSelectErc20Value ] = useChainSelectErc20();
 
   const erc20Query = useQueryWithPages({
     resourceName: 'multichain:address_tokens',
     pathParams: { hash },
-    filters: { type: 'ERC-20' },
+    filters: { type: 'ERC-20', chain_id: chainSelectErc20Value?.map(getChainIdFromSlug).filter(Boolean) },
     scrollRef,
     options: {
       enabled: tab === 'tokens' || tab === 'tokens_erc20',
@@ -60,6 +64,11 @@ const OpSuperchainAddressTokens = () => {
     addressHash: hash,
     isMultichain: true,
   });
+
+  const handelChainSelectErc20ValueChange = React.useCallback(({ value }: { value: Array<string> }) => {
+    erc20Query.onFilterChange({ chain_id: value.includes('all') ? undefined : value.map(getChainIdFromSlug).filter(Boolean) });
+    setChainSelectErc20Value(value);
+  }, [ setChainSelectErc20Value, erc20Query ]);
 
   const hasActiveFilters = (() => {
     if (tab === 'tokens_nfts') {
@@ -99,7 +108,17 @@ const OpSuperchainAddressTokens = () => {
       );
     }
 
-    return null;
+    return (
+      <>
+        <ChainSelect
+          loading={ erc20Query.pagination.isLoading }
+          value={ chainSelectErc20Value }
+          onValueChange={ handelChainSelectErc20ValueChange }
+          withAllOption
+        />
+        { erc20Query.pagination.isVisible && !isMobile && <Pagination { ...erc20Query.pagination } ml="auto"/> }
+      </>
+    );
   })();
 
   const tabs: Array<TabItemRegular> = [
@@ -112,6 +131,7 @@ const OpSuperchainAddressTokens = () => {
           isLoading={ erc20Query.isPlaceholderData }
           pagination={ erc20Query.pagination }
           isError={ erc20Query.isError }
+          top={ erc20Query.pagination.isVisible ? 68 : 0 }
         />
       ),
     },

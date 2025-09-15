@@ -46,13 +46,14 @@ const OpSuperchainAddressDetails = ({ data, addressHash, isLoading }: Props) => 
                 key={ chain.slug }
                 href={ chain.config.app.baseUrl + route({ pathname: '/address/[hash]', query: { hash: addressHash } }) }
                 external
+                loading={ isLoading }
                 display="flex"
                 alignItems="center"
                 color="text.primary"
                 _hover={{ color: 'link.primary.hover' }}
               >
                 <ChainIcon data={ chain } mr={ 2 }/>
-                { chain.config.chain.name }
+                <span>{ chain.config.chain.name }</span>
               </Link>
             )) }
           </DetailedInfo.ItemValue>

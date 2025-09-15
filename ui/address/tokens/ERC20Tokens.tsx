@@ -17,9 +17,10 @@ type Props = {
   isLoading: boolean;
   pagination: PaginationParams;
   isError: boolean;
+  top?: number;
 };
 
-const ERC20Tokens = ({ items, isLoading, pagination, isError }: Props) => {
+const ERC20Tokens = ({ items, isLoading, pagination, isError, top }: Props) => {
   const isMobile = useIsMobile();
 
   const actionBar = isMobile && pagination.isVisible && (
@@ -30,7 +31,7 @@ const ERC20Tokens = ({ items, isLoading, pagination, isError }: Props) => {
 
   const content = items ? (
     <>
-      <Box hideBelow="lg"><ERC20TokensTable data={ items } top={ pagination.isVisible ? 72 : 0 } isLoading={ isLoading }/></Box>
+      <Box hideBelow="lg"><ERC20TokensTable data={ items } top={ top ?? (pagination.isVisible ? 72 : 0) } isLoading={ isLoading }/></Box>
       <Box hideFrom="lg">{ items.map((item, index) => (
         <ERC20TokensListItem
           key={ item.token.address_hash + (isLoading ? index : '') }

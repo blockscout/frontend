@@ -10,6 +10,9 @@ export default function getChainValueFromQuery(query: Router['query'], chainIds?
   }
 
   const queryParam = getQueryParamString(query['chain-slug']);
-  return queryParam ||
-    config.chains.filter((chain) => !chainIds || (chain.config.chain.id && chainIds.includes(chain.config.chain.id)))?.[0].slug;
+  if (config.chains.some((chain) => chain.slug === queryParam)) {
+    return queryParam;
+  }
+
+  return config.chains.filter((chain) => !chainIds || (chain.config.chain.id && chainIds.includes(chain.config.chain.id)))?.[0].slug;
 }
