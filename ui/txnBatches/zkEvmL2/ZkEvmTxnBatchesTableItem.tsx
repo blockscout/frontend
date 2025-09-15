@@ -17,7 +17,7 @@ const rollupFeature = config.features.rollup;
 
 type Props = { item: ZkEvmL2TxnBatchesItem; isLoading?: boolean };
 
-const TxnBatchesTableItem = ({ item, isLoading }: Props) => {
+const ZkEvmTxnBatchesTableItem = ({ item, isLoading }: Props) => {
   if (!rollupFeature.isEnabled || rollupFeature.type !== 'zkEvm') {
     return null;
   }
@@ -80,4 +80,4 @@ const TxnBatchesTableItem = ({ item, isLoading }: Props) => {
   );
 };
 
-export default TxnBatchesTableItem;
+export default ZkEvmTxnBatchesTableItem;
