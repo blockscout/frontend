@@ -7,14 +7,18 @@ import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 import { MultichainProvider } from 'lib/contexts/multichain';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import { TOKEN } from 'stubs/optimismSuperchain';
+import { generateListStub } from 'stubs/utils';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import AddressCollections from 'ui/address/tokens/AddressCollections';
 import AddressNftDisplayTypeRadio from 'ui/address/tokens/AddressNftDisplayTypeRadio';
 import AddressNFTs from 'ui/address/tokens/AddressNFTs';
 import AddressNftTypeFilter from 'ui/address/tokens/AddressNftTypeFilter';
+import ERC20Tokens from 'ui/address/tokens/ERC20Tokens';
 import useAddressNftQuery from 'ui/address/tokens/useAddressNftQuery';
 import ChainSelect from 'ui/shared/multichain/ChainSelect';
 import Pagination from 'ui/shared/pagination/Pagination';
+import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
 export const ADDRESS_OP_SUPERCHAIN_TOKENS_TAB_IDS = [ 'tokens_erc20' as const, 'tokens_nfts' as const ];
 const TABS_RIGHT_SLOT_PROPS = {
@@ -36,8 +40,19 @@ const OpSuperchainAddressTokens = () => {
   const isMobile = useIsMobile();
   const router = useRouter();
 
-  const tab = getQueryParamString(router.query.tab) as typeof ADDRESS_OP_SUPERCHAIN_TOKENS_TAB_IDS[number] | undefined;
+  const tab = getQueryParamString(router.query.tab) as typeof ADDRESS_OP_SUPERCHAIN_TOKENS_TAB_IDS[number] | 'tokens' | undefined;
   const hash = getQueryParamString(router.query.hash);
+
+  const erc20Query = useQueryWithPages({
+    resourceName: 'multichain:address_tokens',
+    pathParams: { hash },
+    filters: { type: 'ERC-20' },
+    scrollRef,
+    options: {
+      enabled: tab === 'tokens' || tab === 'tokens_erc20',
+      placeholderData: generateListStub<'multichain:address_tokens'>(TOKEN, 10, { next_page_params: undefined }),
+    },
+  });
 
   const { nftsQuery, collectionsQuery, displayType: nftDisplayType, tokenTypes: nftTokenTypes, onDisplayTypeChange, onTokenTypesChange } = useAddressNftQuery({
     scrollRef,
@@ -91,7 +106,14 @@ const OpSuperchainAddressTokens = () => {
     {
       id: 'tokens_erc20',
       title: 'ERC-20',
-      component: <div>Coming soon 🔜</div>,
+      component: (
+        <ERC20Tokens
+          items={ erc20Query.data?.items }
+          isLoading={ erc20Query.isPlaceholderData }
+          pagination={ erc20Query.pagination }
+          isError={ erc20Query.isError }
+        />
+      ),
     },
     {
       id: 'tokens_nfts',

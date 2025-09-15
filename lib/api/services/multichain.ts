@@ -1,5 +1,6 @@
 import type { ApiResource } from '../types';
 import type * as multichain from '@blockscout/multichain-aggregator-types';
+import type { AddressTokensResponse } from 'types/client/multichain';
 
 export const MULTICHAIN_API_RESOURCES = {
   address: {
@@ -18,7 +19,7 @@ export type MultichainApiResourceName = `multichain:${ keyof typeof MULTICHAIN_A
 /* eslint-disable @stylistic/indent */
 export type MultichainApiResourcePayload<R extends MultichainApiResourceName> =
 R extends 'multichain:address' ? multichain.GetAddressResponse :
-R extends 'multichain:address_tokens' ? multichain.ListAddressTokensResponse :
+R extends 'multichain:address_tokens' ? AddressTokensResponse :
 never;
 /* eslint-enable @stylistic/indent */
 

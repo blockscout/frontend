@@ -12,7 +12,7 @@ import NativeTokenTag from 'ui/shared/celo/NativeTokenTag';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 
-type Props = AddressTokenBalance & { isLoading: boolean };
+type Props = Pick<AddressTokenBalance, 'token' | 'value'> & { isLoading: boolean };
 
 const celoFeature = config.features.celo;
 

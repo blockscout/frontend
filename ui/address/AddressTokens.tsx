@@ -72,7 +72,18 @@ const AddressTokens = ({ shouldRender = true, isQueryEnabled = true }: Props) =>
   const hasActiveFilters = Boolean(nftTokenTypes?.length);
 
   const tabs = [
-    { id: 'tokens_erc20', title: `${ config.chain.tokenStandard }-20`, component: <ERC20Tokens tokensQuery={ erc20Query }/> },
+    {
+      id: 'tokens_erc20',
+      title: `${ config.chain.tokenStandard }-20`,
+      component: (
+        <ERC20Tokens
+          items={ erc20Query.data?.items }
+          isLoading={ erc20Query.isPlaceholderData }
+          pagination={ erc20Query.pagination }
+          isError={ erc20Query.isError }
+        />
+      ),
+    },
     {
       id: 'tokens_nfts',
       title: 'NFTs',

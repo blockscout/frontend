@@ -48,6 +48,7 @@ async function computeChainConfig(url: string): Promise<unknown> {
 }
 
 async function getExplorerUrls() {
+  // return EXPLORER_URLS;
   try {
     const basePath = (process.env.NEXT_PUBLIC_MULTICHAIN_AGGREGATOR_BASE_PATH ?? '') + '/chains';
     const url = new URL(basePath, process.env.NEXT_PUBLIC_MULTICHAIN_AGGREGATOR_API_HOST);

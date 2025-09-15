@@ -7,7 +7,7 @@ import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } 
 import ERC20TokensTableItem from './ERC20TokensTableItem';
 
 interface Props {
-  data: Array<AddressTokenBalance>;
+  data: Array<Pick<AddressTokenBalance, 'token' | 'value'>>;
   top: number;
   isLoading: boolean;
 }

@@ -14,7 +14,7 @@ import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 
 const celoFeature = config.features.celo;
 
-type Props = AddressTokenBalance & { isLoading: boolean };
+type Props = Pick<AddressTokenBalance, 'token' | 'value'> & { isLoading: boolean };
 
 const ERC20TokensListItem = ({ token, value, isLoading }: Props) => {
 
