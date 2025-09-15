@@ -58,11 +58,10 @@ const Icon = dynamic(
       }
 
       case 'nouns': {
-        const Noun = (await import('@cloudnouns/kit'));
+        const NounsIdenticon = (await import('./NounsIdenticon')).default;
 
         return (props: IconProps) => {
-          const noun = Noun.NounFactory.createFromString(props.hash, { size: props.size });
-          return <Image src={ noun.svg } alt={ `Identicon for ${ props.hash }}` }/>;
+          return <NounsIdenticon hash={ props.hash } size={ props.size }/>;
         };
       }
 
