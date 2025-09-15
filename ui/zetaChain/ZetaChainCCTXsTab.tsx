@@ -36,7 +36,7 @@ const hasNextPageFn = (nextPageParams: Record<string, unknown>) => {
   return nextPageParams.limit !== '0';
 };
 
-const ZetaChainEvmTransactions = () => {
+const ZetaChainCCTXsTab = () => {
   const router = useRouter();
   const tab = getQueryParamString(router.query.tab);
   const isMobile = useIsMobile();
@@ -185,4 +185,4 @@ const ZetaChainEvmTransactions = () => {
   );
 };
 
-export default ZetaChainEvmTransactions;
+export default ZetaChainCCTXsTab;
