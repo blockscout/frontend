@@ -193,7 +193,7 @@ const SearchBarSuggest = ({ query, zetaChainCCTXQuery, externalSearchItem, searc
               overflowX: 'auto',
               mb: 0,
               mt: 0,
-              background: { _light: 'white', _dark: 'gray.900' },
+              bgColor: 'dialog.bg',
             }}
           />
         ) }

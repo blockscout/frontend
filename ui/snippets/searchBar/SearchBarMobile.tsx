@@ -1,3 +1,4 @@
+import { Box } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -34,7 +35,7 @@ const SearchBarMobile = ({ isHeroBanner }: Props) => {
   const router = useRouter();
 
   const { open, onOpen, onClose, onOpenChange } = useDisclosure();
-  const { searchTerm, debouncedSearchTerm, handleSearchTermChange, query, zetaChainCCTXQuery, cosmosHashType } = useQuickSearchQuery();
+  const { searchTerm, debouncedSearchTerm, handleSearchTermChange, query, zetaChainCCTXQuery, externalSearchItem } = useQuickSearchQuery();
   const recentSearchKeywords = getRecentSearchKeywords();
 
   const onTriggerClick = React.useCallback((event: React.MouseEvent) => {
@@ -67,27 +68,23 @@ const SearchBarMobile = ({ isHeroBanner }: Props) => {
   let trigger: React.ReactNode | null = null;
   if (isHeroBanner) {
     trigger = (
-      <div style={{ position: 'relative', width: '100%' }}>
+      <Box position="relative" width="100%">
         <SearchBarInput
-          onFormClick={ onTriggerClick }
           isHeroBanner={ isHeroBanner }
           readOnly={ true }
         />
-        <div
+        <Box
           onClick={ handleOverlayClick }
           aria-label="Search"
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            zIndex: 1,
-            backgroundColor: 'transparent',
-            cursor: 'pointer',
-          }}
+          cursor="pointer"
+          zIndex={ 1 }
+          position="absolute"
+          top={ 0 }
+          left={ 0 }
+          right={ 0 }
+          bottom={ 0 }
         />
-      </div>
+      </Box>
     );
   } else {
     trigger = (
@@ -120,7 +117,6 @@ const SearchBarMobile = ({ isHeroBanner }: Props) => {
             ref={ inputRef }
             onChange={ handleSearchTermChange }
             onClear={ handleClear }
-            onFormClick={ onTriggerClick }
             value={ searchTerm }
             mb={ 5 }
           />
@@ -133,7 +129,7 @@ const SearchBarMobile = ({ isHeroBanner }: Props) => {
               searchTerm={ debouncedSearchTerm }
               onItemClick={ handleItemClick }
               zetaChainCCTXQuery={ zetaChainCCTXQuery }
-              cosmosHashType={ cosmosHashType }
+              externalSearchItem={ externalSearchItem }
             />
           ) }
         </DrawerBody>

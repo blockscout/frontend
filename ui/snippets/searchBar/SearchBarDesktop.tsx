@@ -179,7 +179,6 @@ const SearchBarDesktop = ({ isHeroBanner }: Props) => {
                 query={ query }
                 searchTerm={ debouncedSearchTerm }
                 onItemClick={ handleItemClick }
-                containerId={ SCROLL_CONTAINER_ID }
                 zetaChainCCTXQuery={ zetaChainCCTXQuery }
                 externalSearchItem={ externalSearchItem }
               />

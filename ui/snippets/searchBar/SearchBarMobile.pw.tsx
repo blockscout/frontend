@@ -88,7 +88,7 @@ test('search by tag', async({ render, page, mockApiResponse }) => {
   ], { queryParams: { q: 'o' } });
   await render(<SearchBarMobile/>);
   await openSearchDrawer(page);
-  await page.getByPlaceholder(/search/i).fill('o');
+  await getSearchInput(page).fill('o');
   await page.waitForResponse(apiUrl);
 
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 600 } });
