@@ -101,5 +101,4 @@ jobs:
             version: ${{ github.ref_name }}
         permissions:
             contents: read
-            packages: write
             id-token: write

@@ -189,8 +189,9 @@ jobs:
                             } catch (error) {
                                 if (error.status === 404) {
                                     core.info('Nothing has found.\n');
-                                    return [];
                                 }
+                                core.info(`Error: ${ error.message }\n`);
+                                return [];
                             }
                         }
 

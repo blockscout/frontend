@@ -43,11 +43,13 @@ jobs:
                     const WHITE_LISTED_LABELS = [
                         'client feature',
                         'feature',
+                        'breaking changes',
 
                         'bug',
 
                         'dependencies',
                         'performance',
+                        'design',
 
                         'chore',
                         'enhancement',
