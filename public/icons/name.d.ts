@@ -165,6 +165,7 @@
 	| "token-transfers"
 	| "token"
 	| "tokens"
+	| "tokens/fusd"
 	| "tokens/xdai"
 	| "top-accounts"
 	| "transactions_slim"

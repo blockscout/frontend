@@ -59,7 +59,7 @@ const Link = chakra(({ isLoading, children, isExternal, onClick, href, noLink }:
   const styles = {
     display: 'inline-flex',
     alignItems: 'center',
-    minWidth: 0, // for content truncation - https://css-tricks.com/flexbox-truncated-text/
+    // minWidth: 0, // for content truncation - https://css-tricks.com/flexbox-truncated-text/
   };
 
   if (noLink) {

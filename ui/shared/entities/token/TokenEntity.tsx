@@ -6,8 +6,10 @@ import type { TokenInfo } from 'types/api/token';
 
 import { route } from 'nextjs-routes';
 
+import { TOKEN_LOGOS } from 'lib/token/tokenLogos';
 import Skeleton from 'ui/shared/chakra/Skeleton';
 import * as EntityBase from 'ui/shared/entities/base/components';
+import type { IconName } from 'ui/shared/IconSvg';
 import TokenLogoPlaceholder from 'ui/shared/TokenLogoPlaceholder';
 import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 
@@ -46,13 +48,15 @@ const Icon = (props: IconProps) => {
     return <Skeleton { ...styles } className={ props.className }/>;
   }
 
+  const tokenIcon = TOKEN_LOGOS?.[props.token.address] as IconName || undefined;
+
   return (
     <Image
       { ...styles }
       className={ props.className }
       src={ props.token.icon_url ?? undefined }
       alt={ `${ props.token.name || 'token' } logo` }
-      fallback={ <TokenLogoPlaceholder { ...styles }/> }
+      fallback={ <TokenLogoPlaceholder { ...styles } iconName={ tokenIcon }/> }
       fallbackStrategy={ props.token.icon_url ? 'onError' : 'beforeLoadOrError' }
     />
   );

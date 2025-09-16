@@ -8,6 +8,9 @@ import type { EntityProps } from 'ui/shared/entities/address/AddressEntity';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import AddressEntityWithTokenFilter from 'ui/shared/entities/address/AddressEntityWithTokenFilter';
 
+import AddressFromToIcon from './AddressFromToIcon';
+import { getTxCourseType } from './utils';
+
 type Mode = 'compact' | 'long';
 
 interface Props {
@@ -82,16 +85,22 @@ const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading
         mr={ isOutgoing ? 4 : 2 }
       />
       { to && (
-        <Entity
-          address={ to }
-          isLoading={ isLoading }
-          noLink={ current === to.hash }
-          noCopy={ current === to.hash }
-          noIcon={ noIcon }
-          tokenHash={ tokenHash }
-          truncation="constant"
-          ml={ 3 }
-        />
+        <>
+          <AddressFromToIcon
+            isLoading={ isLoading }
+            type={ getTxCourseType(from.hash, to?.hash, current) }
+          />
+          <Entity
+            address={ to }
+            isLoading={ isLoading }
+            noLink={ current === to.hash }
+            noCopy={ current === to.hash }
+            noIcon={ noIcon }
+            tokenHash={ tokenHash }
+            truncation="constant"
+            ml={ 3 }
+          />
+        </>
       ) }
     </Grid>
   );
