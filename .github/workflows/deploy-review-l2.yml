@@ -40,6 +40,11 @@ on:
             - zksync
             - zora
 
+permissions:
+  contents: read
+  packages: write
+  pull-requests: write
+
 jobs:
   make_slug:
     name: Make GitHub reference slug

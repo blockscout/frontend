@@ -18,6 +18,10 @@ on:
 #   group: ${{ github.workflow }}__${{ github.job }}__${{ github.ref }}
 #   cancel-in-progress: true
 
+permissions:
+  contents: read
+  pull-requests: write
+
 jobs:
   code_quality:
     name: Code quality

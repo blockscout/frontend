@@ -22,6 +22,10 @@ on:
                 required: true
                 type: string
 
+permissions:
+  issues: read
+  pull-requests: write
+
 jobs:
     run:
         name: Run

@@ -41,6 +41,9 @@ on:
                 required: true
                 type: string
 
+permissions:
+  issues: read
+
 jobs:
     run:
         name: Run
