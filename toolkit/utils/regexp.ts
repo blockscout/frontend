@@ -8,3 +8,5 @@ export const HEX_REGEXP_WITH_0X = /^0x[\da-fA-F]+$/;
 export const FILE_EXTENSION = /\.([\da-z]+)$/i;
 
 export const BLOCK_HEIGHT = /^\d+$/;
+
+export const ADDRESS_REGEXP = /^0x[a-fA-F\d]{40}$/;

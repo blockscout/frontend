@@ -49,6 +49,7 @@ import type { TxExternalTxsConfig } from '../../../types/client/externalTxsConfi
 import { replaceQuotes } from '../../../configs/app/utils';
 import * as regexp from '../../../toolkit/utils/regexp';
 import type { IconName } from '../../../ui/shared/IconSvg';
+import type { CrossChainInfo } from '../../../types/client/crossChainInfo';
 
 const protocols = [ 'http', 'https' ];
 
@@ -356,7 +357,7 @@ const rollupSchema = yup
       }),
   });
 
-const celoSchema = yup
+  const celoSchema = yup
   .object()
   .shape({
     NEXT_PUBLIC_CELO_ENABLED: yup.boolean(),
@@ -627,11 +628,66 @@ const multichainProviderConfigSchema: yup.ObjectSchema<MultichainProviderConfig>
   dapp_id: yup.string(),
 });
 
-const externalTxsConfigSchema: yup.ObjectSchema<TxExternalTxsConfig> = yup.object({
+const zetaChainCCTXConfigSchema: yup.ObjectSchema<CrossChainInfo> = yup.object({
+  chain_id: yup.number().required(),
   chain_name: yup.string().required(),
-  chain_logo_url: yup.string().required(),
-  explorer_url_template: yup.string().required(),
+  chain_logo: yup.string(),
+  instance_url: yup.string().test(urlTest),
+  address_url_template: yup.string(),
+  tx_url_template: yup.string(),
 });
+
+const zetaChainSchema = yup
+  .object()
+  .shape({
+    NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST: yup.string().test(urlTest),
+    NEXT_PUBLIC_ZETACHAIN_SERVICE_CHAINS_CONFIG_URL: yup
+      .array()
+      .transform(replaceQuotes)
+      .json()
+      .of(zetaChainCCTXConfigSchema)
+      .when('NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST', {
+        is: (value: string) => Boolean(value),
+        then: (schema) => schema,
+        otherwise: (schema) => schema.test(
+          'not-exist',
+          'NEXT_PUBLIC_ZETACHAIN_SERVICE_CHAINS_CONFIG_URL cannot be used if NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST is not set',
+          value => value === undefined,
+        ),
+      }),
+    NEXT_PUBLIC_ZETACHAIN_COSMOS_TX_URL_TEMPLATE: yup
+      .string()
+      .when('NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST', {
+        is: (value: string) => Boolean(value),
+        then: (schema) => schema,
+        otherwise: (schema) => schema.test(
+          'not-exist',
+          'NEXT_PUBLIC_ZETACHAIN_COSMOS_TX_URL_TEMPLATE cannot be used if NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST is not set',
+          value => value === undefined,
+        ),
+      }),
+    NEXT_PUBLIC_ZETACHAIN_COSMOS_ADDRESS_URL_TEMPLATE: yup
+      .string()
+      .when('NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST', {
+        is: (value: string) => Boolean(value),
+        then: (schema) => schema,
+        otherwise: (schema) => schema.test(
+          'not-exist',
+          'NEXT_PUBLIC_ZETACHAIN_COSMOS_ADDRESS_URL_TEMPLATE cannot be used if NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST is not set',
+          value => value === undefined,
+        ),
+      }),
+  })
+  .test('zetachain-api-host-dependency', 'NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST cannot be used without NEXT_PUBLIC_ZETACHAIN_SERVICE_CHAINS_CONFIG_URL', function(value) {
+    const hasApiHost = Boolean(value?.NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST);
+    const hasChainsConfig = Boolean(value?.NEXT_PUBLIC_ZETACHAIN_SERVICE_CHAINS_CONFIG_URL?.length);
+    
+    if (hasApiHost && !hasChainsConfig) {
+      return this.createError({ message: 'NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST cannot be used without NEXT_PUBLIC_ZETACHAIN_SERVICE_CHAINS_CONFIG_URL' });
+    }
+    
+    return true;
+  });
 
 const address3rdPartyWidgetsConfigSchema = yup
   .object()
@@ -966,6 +1022,8 @@ const schema = yup
     NEXT_PUBLIC_VISUALIZE_API_BASE_PATH: yup.string(),
     NEXT_PUBLIC_CONTRACT_INFO_API_HOST: yup.string().test(urlTest),
     NEXT_PUBLIC_NAME_SERVICE_API_HOST: yup.string().test(urlTest),
+    NEXT_PUBLIC_CLUSTERS_API_HOST: yup.string().test(urlTest),
+    NEXT_PUBLIC_CLUSTERS_CDN_URL: yup.string().test(urlTest),
     NEXT_PUBLIC_ADMIN_SERVICE_API_HOST: yup.string().test(urlTest),
     NEXT_PUBLIC_WEB3_WALLETS: yup
       .mixed()
@@ -1098,6 +1156,7 @@ const schema = yup
     NEXT_PUBLIC_GROWTH_BOOK_CLIENT_KEY: yup.string(),
     NEXT_PUBLIC_ROLLBAR_CLIENT_TOKEN: yup.string(),
 
+
     // Misc
     NEXT_PUBLIC_USE_NEXT_JS_PROXY: yup.boolean(),
   })
@@ -1114,6 +1173,7 @@ const schema = yup
   .concat(address3rdPartyWidgetsConfigSchema)
   .concat(addressMetadataSchema)
   .concat(userOpsSchema)
-  .concat(flashblocksSchema);
+  .concat(flashblocksSchema)
+  .concat(zetaChainSchema);
 
 export default schema;

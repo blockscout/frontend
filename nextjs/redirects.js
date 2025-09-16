@@ -340,6 +340,12 @@ const ETHERSCAN_URLS = [
     source: '/txsEnqueued',
     destination: '/deposits',
   },
+
+  // CROSS CHAIN TRANSACTIONS
+  {
+    source: '/cc/txs',
+    destination: '/txs?tab=cctx',
+  },
 ];
 
 const DEPRECATED_ROUTES = [

@@ -56,6 +56,7 @@ All json-like values should be single-quoted. If it contains a hash (`#`) or a d
   - [Transaction interpretation](#transaction-interpretation)
   - [Verified tokens info](#verified-tokens-info)
   - [Name service integration](#name-service-integration)
+  - [Clusters universal name service](#clusters-universal-name-service)
   - [Metadata service integration](#metadata-service-integration)
   - [Public tag submission](#public-tag-submission)
   - [Data availability](#data-availability)
@@ -78,6 +79,7 @@ All json-like values should be single-quoted. If it contains a hash (`#`) or a d
   - [DEX pools](#dex-pools)
   - [Flashblocks](#flashblocks)
   - [Address 3rd party widgets](#address-3rd-party-widgets)
+  - [ZetaChain](#zetachain)
 - [3rd party services configuration](#external-services-configuration)
 
 &nbsp;
@@ -273,7 +275,7 @@ Settings for meta tags, OG tags and SEO
 
 | Variable | Type | Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_VIEWS_ADDRESS_IDENTICON_TYPE | `"github" \| "jazzicon" \| "gradient_avatar" \| "blockie" \| "nouns"` | Default style of address identicon appearance. Choose between [GitHub](https://github.blog/2013-08-14-identicons/), [Metamask Jazzicon](https://metamask.github.io/jazzicon/), [Gradient Avatar](https://github.com/varld/gradient-avatar), [Ethereum Blocky](https://mycryptohq.github.io/ethereum-blockies-base64/) and [Nouns](https://nouns.wtf) | - | `jazzicon` | `gradient_avatar` | v1.12.0+ |
+| NEXT_PUBLIC_VIEWS_ADDRESS_IDENTICON_TYPE | `"github" \| "jazzicon" \| "gradient_avatar" \| "blockie" \| "nouns"` | Default style of address identicon appearance. Choose between [GitHub](https://github.blog/2013-08-14-identicons/), [Metamask Jazzicon](https://metamask.github.io/jazzicon/), [Gradient Avatar](https://github.com/varld/gradient-avatar), [Ethereum Blocky](https://mycryptohq.github.io/ethereum-blockies-base64/) and [Nouns](https://nouns.wtf) | - | `blockie` | `gradient_avatar` | v1.12.0+ |
 | NEXT_PUBLIC_VIEWS_ADDRESS_FORMAT | `Array<"base16" \| "bech32">` | Displayed address format, could be either `base16` standard or [`bech32`](https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki#bech32) standard. If the array contains multiple values, the address format toggle will appear in the UI, allowing the user to switch between formats. The first item in the array will be the default format. | - | `'["base16"]'` | `'["bech32", "base16"]'` | v1.36.0+ |
 | NEXT_PUBLIC_VIEWS_ADDRESS_BECH_32_PREFIX | `string` | Human-readable prefix of `bech32` address format. | Required, if `NEXT_PUBLIC_VIEWS_ADDRESS_FORMAT` contains "bech32" value | - | `duck` | v1.36.0+ |
 | NEXT_PUBLIC_VIEWS_ADDRESS_HIDDEN_VIEWS | `Array<AddressViewId>` | Address views that should not be displayed. See below the list of the possible id values.  | - | - | `'["top_accounts"]'` | v1.15.0+ |
@@ -665,6 +667,17 @@ This feature allows resolving blockchain addresses using human-readable domain n
 
 &nbsp;
 
+### Clusters universal name service
+
+This feature integrates [Clusters.xyz](https://clusters.xyz/) universal naming service, enabling users to look up and track cross-chain identities through human-readable names like "vitalik/" or "uniswap/". Unlike traditional domain services that work on single chains, clusters span multiple blockchains - one cluster name can represent addresses on Ethereum, Base, Optimism, and other networks. This integration adds cluster lookup pages (/clusters/[name]), a clusters directory (/clusters), search functionality in the main search bar, and displays cluster profile information and images throughout the explorer.
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
+| --- | --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_CLUSTERS_API_HOST | `string` | Clusters.xyz API endpoint for fetching cluster data, directory listings, and cross-chain address mappings | Required | - | `https://example.com/clusters-api` | <upcoming> |
+| NEXT_PUBLIC_CLUSTERS_CDN_URL | `string` | CDN base URL for serving cluster profile images and avatars displayed in search results and cluster pages | - | `https://cdn.clusters.xyz` | `https://your-cdn.example.com` | <upcoming> |
+
+&nbsp;
+
 ### Metadata service integration
 
 This feature allows name tags and other public tags for addresses.
@@ -931,7 +944,7 @@ This feature allows users to view [Flashblocks](https://docs.base.org/base-chain
 
 &nbsp;
 
-### Address 3rd party widgets
+#### Address 3rd party widget
 
 This feature allows to display widgets on the address page with data from 3rd party services.
 
@@ -952,6 +965,33 @@ This feature allows to display widgets on the address page with data from 3rd pa
 | valuePath | `string` | Path to the field in the API response that contains the value to be displayed | Required | - | `'result.balance'` |
 | pages | `Array<'eoa' \| 'contract' \| 'token'>` | List of pages where the widget should be displayed | Required | - | `['eoa']` |
 | chainIds | `Record<string, string>` | Mapping of chain IDs to custom values that will be used in `url` template | - | - | `{'1': 'eth', '10': 'op'}` |
+
+&nbsp;
+
+
+### ZetaChain cross-chain transactions
+
+This feature enables cross-chain transactions pages and views on ZetaChain instances
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
+| --- | --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST | `string` | ZetaChain cross-chain transactions service API endpoint url | - | - | `https://zetachain-cctx.services.blockscout.com` | v2.3.2+ |
+| NEXT_PUBLIC_ZETACHAIN_SERVICE_CHAINS_CONFIG_URL | `string` | URL of configuration file (`.json` format only) which contains chains info for the supported chains. | - | - | `https://example.com/zetachain_chains_config.json` | v2.3.2+ |
+| NEXT_PUBLIC_ZETACHAIN_COSMOS_TX_URL_TEMPLATE | `string` | URL template to redirect cosmos tx search. | - | - | `https://example.com/cosmos/tx/{hash}` | v2.3.2+ |
+| NEXT_PUBLIC_ZETACHAIN_COSMOS_ADDRESS_URL_TEMPLATE | `string` URL template to redirect cosmos address search. | - | - | `https://example.com/cosmos/address/{hash}` | v2.3.2+ |
+
+
+#### ZetaChain supported cain configuration properties
+
+| Property | Type | Description | Compulsoriness | Example value |
+| --- | --- | --- | --- | --- |
+| chain_id | `string` | Id of the chain | Required | - | `'11155111'` |
+| chain_name | `string` | Displayed name of the chain | Required | - | `'Sepolia Testnet'` |
+| chain_logo | `string` | Chain logo URL. Image should be at least 40x40 px  | - | - | `'https://example.com/logo.svg'` |
+| instance_url | `string` | Base URL of the blockscout explorer for the chain | - | - | `'https://eth-sepolia.blockscout.com/'` |
+| address_url_template | `string` | Address url template on external explorer. `{hash}` will be replaced with the address hash | - | - | `'https://external.explorer.com/address/{hash}'` |
+| tx_url_template | `string` | Transaction url template on external explorer. `{hash}` will be replaced with the transaction hash | - | - | `'https://external.explorer.com/tx/{hash}'` |
+
 
 &nbsp;
 

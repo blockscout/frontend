@@ -23,6 +23,7 @@ const OG_TYPE_DICT: Record<Route['pathname'], OGPageType> = {
   '/token/[hash]/instance/[id]': 'Regular page',
   '/apps': 'Root page',
   '/apps/[id]': 'Regular page',
+  '/clusters/[name]': 'Regular page',
   '/stats': 'Root page',
   '/stats/[id]': 'Regular page',
   '/api-docs': 'Regular page',
@@ -64,6 +65,7 @@ const OG_TYPE_DICT: Record<Route['pathname'], OGPageType> = {
   '/interop-messages': 'Root page',
   '/operations': 'Root page',
   '/operation/[id]': 'Regular page',
+  '/cc/tx/[hash]': 'Regular page',
 
   // multichain routes
   '/chain/[chain-slug]/accounts/label/[slug]': 'Root page',
