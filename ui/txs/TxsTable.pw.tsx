@@ -9,7 +9,7 @@ import TxsTable from './TxsTable';
 test('base view +@dark-mode', async({ render }) => {
   const component = await render(
     <TxsTable
-      txs={ [ txMock.base, txMock.withWatchListNames ] }
+      txs={ [ txMock.base, txMock.withPendingUpdate ] }
       sort="default"
       // eslint-disable-next-line react/jsx-no-bind
       onSortToggle={ () => {} }

@@ -64,6 +64,7 @@ export type Transaction = {
   l1_gas_price?: string;
   l1_gas_used?: string;
   has_error_in_internal_transactions: boolean | null;
+  is_pending_update?: boolean;
   // optimism fields
   op_withdrawals?: Array<OpWithdrawal>;
   // SUAVE fields
