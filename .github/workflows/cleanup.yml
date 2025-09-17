@@ -7,6 +7,10 @@ on:
       - merged
   workflow_dispatch:
 
+permissions:
+  contents: read
+  pull-requests: write
+
 jobs:
   cleanup_release:
     uses: blockscout/actions/.github/workflows/cleanup_helmfile.yaml@main

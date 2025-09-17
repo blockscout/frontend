@@ -8,6 +8,10 @@ on:
 #   group: ${{ github.workflow }}__${{ github.job }}__${{ github.ref }}
 #   cancel-in-progress: true
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   publish_image:
     name: Publish Docker image
