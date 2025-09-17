@@ -10,8 +10,22 @@ import config from 'configs/app';
 import { currencyUnits } from 'lib/units';
 import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
 import { Link } from 'toolkit/chakra/link';
+import { Hint } from 'toolkit/components/Hint/Hint';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TruncatedValue from 'ui/shared/TruncatedValue';
+
+const AddressCeloAccountItem = ({ label, hint, children }: { label: string; hint: string; children: React.ReactNode }) => {
+  return (
+    <>
+      <GridItem color="text.secondary" display="flex" alignItems="center">
+        <Hint label={ hint } boxSize={ 4 } mr={ 1 }/>
+        <TruncatedValue value={ label } maxW={{ base: '130px', lg: 'unset' }}/>
+      </GridItem>
+      { children }
+    </>
+  );
+};
 
 interface Props {
   isLoading?: boolean;
@@ -19,27 +33,10 @@ interface Props {
 }
 
 const AddressCeloAccount = ({ isLoading, data }: Props) => {
-  const hint = (
-    <>
-      Celo account info (from the Accounts contract){ data.name ? ', including it\'s human-readable name and' : '' }:<br/><br/>
-      Type – the role of the account: regular, validator, or validator group.<br/><br/>
-      { data.metadata_url ? <>Metadata URL – link to additional information published by the account owner.<br/><br/></> : null }
-      Locked CELO – total amount of CELO locked by this account (used for staking or governance).<br/><br/>
-      Non-voting Locked CELO – portion of locked CELO that is not currently used for voting.<br/><br/>
-    </>
-  );
-
   return (
     <>
       <DetailedInfo.ItemLabel
-        hint={ hint }
-        hintProps={{
-          tooltipProps: {
-            contentProps: {
-              textAlign: 'left',
-            },
-          },
-        }}
+        hint="Celo account info (from the Accounts contract), including it's human-readable name"
         isLoading={ isLoading }
       >
         Celo account
@@ -52,28 +49,65 @@ const AddressCeloAccount = ({ isLoading, data }: Props) => {
             textStyle="sm"
             bgColor={{ _light: 'blackAlpha.50', _dark: 'whiteAlpha.50' }}
             w="100%"
-            px="18px"
-            py={ 3 }
+            p={{ base: 2, lg: 3 }}
             mt={ 1 }
             columnGap={ 3 }
             rowGap={ 4 }
             borderBottomRightRadius="base"
             borderBottomLeftRadius="base"
           >
-            <GridItem color="text.secondary">Type</GridItem>
-            <GridItem>{ upperFirst(data.type) }</GridItem>
+            <AddressCeloAccountItem label="Type" hint="The role of the account: regular, validator, or validator group">
+              { upperFirst(data.type) }
+            </AddressCeloAccountItem>
+
             { data.metadata_url && (
-              <>
-                <GridItem color="text.secondary">Metadata URL</GridItem>
+              <AddressCeloAccountItem label="Metadata URL" hint="Link to additional information published by the account owner">
                 <Link href={ data.metadata_url } external>
                   <TruncatedValue value={ data.metadata_url }/>
                 </Link>
-              </>
+              </AddressCeloAccountItem>
             ) }
-            <GridItem color="text.secondary">Locked { currencyUnits.ether }</GridItem>
-            <TruncatedValue value={ BigNumber(data.locked_celo).div(10 ** config.chain.currency.decimals).toFormat() }/>
-            <GridItem color="text.secondary">Non-voting locked { currencyUnits.ether }</GridItem>
-            <TruncatedValue value={ BigNumber(data.nonvoting_locked_celo).div(10 ** config.chain.currency.decimals).toFormat() }/>
+
+            <AddressCeloAccountItem
+              label={ `Locked ${ currencyUnits.ether }` }
+              hint="Total amount of CELO locked by this account (used for staking or governance)"
+            >
+              <TruncatedValue value={ BigNumber(data.locked_celo).div(10 ** config.chain.currency.decimals).toFormat() }/>
+            </AddressCeloAccountItem>
+
+            <AddressCeloAccountItem
+              label={ `Non-voting locked ${ currencyUnits.ether }` }
+              hint="Portion of locked CELO that is not currently used for voting"
+            >
+              <TruncatedValue value={ BigNumber(data.nonvoting_locked_celo).div(10 ** config.chain.currency.decimals).toFormat() }/>
+            </AddressCeloAccountItem>
+
+            { data.vote_signer_address && (
+              <AddressCeloAccountItem
+                label="Vote signer address"
+                hint="Address authorized to vote in governance and validator elections on behalf of this account"
+              >
+                <AddressEntity address={ data.vote_signer_address }/>
+              </AddressCeloAccountItem>
+            ) }
+
+            { data.validator_signer_address && (
+              <AddressCeloAccountItem
+                label="Validator signer address"
+                hint="Address authorized to manage a validator or validator group and sign consensus messages for this account"
+              >
+                <AddressEntity address={ data.validator_signer_address }/>
+              </AddressCeloAccountItem>
+            ) }
+
+            { data.attestation_signer_address && (
+              <AddressCeloAccountItem
+                label="Attestation signer address"
+                hint="Address whose key this account uses to sign attestations on the Attestations contract"
+              >
+                <AddressEntity address={ data.attestation_signer_address }/>
+              </AddressCeloAccountItem>
+            ) }
           </Grid>
         </CollapsibleDetails>
       </DetailedInfo.ItemValue>

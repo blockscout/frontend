@@ -3,7 +3,7 @@ import { Flex, Grid, GridItem, Text } from '@chakra-ui/react';
 import React from 'react';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import { Hint, type Props as HintProps } from 'toolkit/components/Hint/Hint';
+import { Hint } from 'toolkit/components/Hint/Hint';
 import * as ContainerWithScrollY from 'ui/shared/ContainerWithScrollY';
 
 export const ITEM_VALUE_LINE_HEIGHT = { base: '30px', lg: '32px' };
@@ -22,7 +22,6 @@ export const Container = (props: GridProps) => {
 
 interface ItemLabelProps extends GridItemProps {
   hint?: React.ReactNode;
-  hintProps?: Partial<HintProps>;
   children: React.ReactNode;
   isLoading?: boolean;
   id?: string;
@@ -35,7 +34,7 @@ const ItemLabelScrollText = () => (
   </Text>
 );
 
-export const ItemLabel = ({ hint, children, isLoading, id, hasScroll, hintProps, ...rest }: ItemLabelProps) => {
+export const ItemLabel = ({ hint, children, isLoading, id, hasScroll, ...rest }: ItemLabelProps) => {
   return (
     <GridItem
       id={ id }
@@ -44,7 +43,7 @@ export const ItemLabel = ({ hint, children, isLoading, id, hasScroll, hintProps,
       { ...rest }
     >
       <Flex columnGap={{ base: 1, lg: 2 }} alignItems="flex-start" w="100%">
-        { hint && <Hint label={ hint } isLoading={ isLoading } my={{ base: '5px', lg: '6px' }} { ...hintProps }/> }
+        { hint && <Hint label={ hint } isLoading={ isLoading } my={{ base: '5px', lg: '6px' }}/> }
         <Skeleton loading={ isLoading } fontWeight={{ base: 700, lg: 500 }} py={{ base: '5px', lg: '4px' }} flexGrow={ 1 }>
           { children }
           { hasScroll && <ItemLabelScrollText/> }

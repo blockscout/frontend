@@ -48,6 +48,9 @@ export interface AddressCeloParams {
     name: string | null;
     nonvoting_locked_celo: string;
     type: string;
+    vote_signer_address: AddressParam | null;
+    validator_signer_address: AddressParam | null;
+    attestation_signer_address: AddressParam | null;
   } | null;
 }
 

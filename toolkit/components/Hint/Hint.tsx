@@ -8,7 +8,7 @@ import { IconButton } from '../../chakra/icon-button';
 import type { TooltipProps } from '../../chakra/tooltip';
 import { Tooltip } from '../../chakra/tooltip';
 
-export interface Props extends IconButtonProps {
+interface Props extends IconButtonProps {
   label: string | React.ReactNode;
   tooltipProps?: Partial<TooltipProps>;
   isLoading?: boolean;
