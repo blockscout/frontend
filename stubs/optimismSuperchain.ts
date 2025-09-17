@@ -1,5 +1,5 @@
 import type * as multichain from '@blockscout/multichain-aggregator-types';
-import type { AddressTokenItem } from 'types/client/multichain';
+import type { AddressTokenItem } from 'types/client/multichain-aggregator';
 
 import { ADDRESS_HASH } from './addressParams';
 
@@ -35,7 +35,8 @@ export const TOKEN: AddressTokenItem = {
       },
     },
   },
-  token_id: undefined,
+  token_id: null,
+  token_instance: null,
   value: '2860471393',
   chain_values: {
     '11155111': '2860471393',

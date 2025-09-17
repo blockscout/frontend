@@ -8,11 +8,14 @@ import { route } from 'nextjs/routes';
 import multichainConfig from 'configs/multichain';
 import getCurrencySymbol from 'lib/multichain/getCurrencySymbol';
 import { Link } from 'toolkit/chakra/link';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoSponsoredItem from 'ui/shared/DetailedInfo/DetailedInfoSponsoredItem';
-import TextSeparator from 'ui/shared/TextSeparator';
 
 import ChainIcon from '../components/ChainIcon';
+import OpSuperchainAddressCoinBalance from './details/OpSuperchainAddressCoinBalance';
+import OpSuperchainAddressContractName from './details/OpSuperchainAddressContractName';
+import OpSuperchainAddressNetWorth from './details/OpSuperchainAddressNetWorth';
 import OpSuperchainTokenSelect from './tokens/OpSuperchainTokenSelect';
 
 interface Props {
@@ -31,6 +34,8 @@ const OpSuperchainAddressDetails = ({ data, addressHash, isLoading }: Props) => 
   if (!data && !isLoading) {
     return null;
   }
+
+  const isContract = Object.values(data?.chain_infos ?? {}).some((chainInfo) => chainInfo.is_contract);
 
   return (
     <DetailedInfo.Container templateColumns={{ base: 'minmax(0, 1fr)', lg: 'auto minmax(0, 1fr)' }} >
@@ -62,15 +67,19 @@ const OpSuperchainAddressDetails = ({ data, addressHash, isLoading }: Props) => 
         </>
       ) }
 
-      <DetailedInfo.ItemLabel
-        hint="The name found in the source code of the Contract"
-        isLoading={ isLoading }
-      >
-        Contract name
-      </DetailedInfo.ItemLabel>
-      <DetailedInfo.ItemValue>
-        <Link href={ route({ pathname: '/address/[hash]', query: { hash: addressHash, tab: 'contract' } }) }>View by chain</Link>
-      </DetailedInfo.ItemValue>
+      { isContract && (
+        <>
+          <DetailedInfo.ItemLabel
+            hint="The name found in the source code of the Contract"
+            isLoading={ isLoading }
+          >
+            Contract name
+          </DetailedInfo.ItemLabel>
+          <DetailedInfo.ItemValue>
+            <OpSuperchainAddressContractName data={ data } isLoading={ isLoading }/>
+          </DetailedInfo.ItemValue>
+        </>
+      ) }
 
       <DetailedInfo.ItemLabel
         hint={ `${ currencySymbol } balance` }
@@ -79,7 +88,7 @@ const OpSuperchainAddressDetails = ({ data, addressHash, isLoading }: Props) => 
         { currencySymbol } balance
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
-        Coming soon 🔜
+        <OpSuperchainAddressCoinBalance data={ data } isLoading={ isLoading }/>
       </DetailedInfo.ItemValue>
 
       <DetailedInfo.ItemLabel
@@ -93,15 +102,25 @@ const OpSuperchainAddressDetails = ({ data, addressHash, isLoading }: Props) => 
       </DetailedInfo.ItemValue>
 
       <DetailedInfo.ItemLabel
+        hint="Total net worth in USD of all tokens for the address"
+        isLoading={ isLoading }
+      >
+        Net worth
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue>
+        <OpSuperchainAddressNetWorth data={ data } isLoading={ isLoading }/>
+      </DetailedInfo.ItemValue>
+
+      <DetailedInfo.ItemLabel
         hint="Number of transactions related to this address"
         isLoading={ isLoading }
       >
         Transactions
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue whiteSpace="pre-wrap">
-        Cross-chain <Link href={ route({ pathname: '/address/[hash]', query: { hash: addressHash, tab: 'txs_cross_chain' } }) }>TBD</Link>
-        <TextSeparator color="border.divider"/>
-        Local <Link href={ route({ pathname: '/address/[hash]', query: { hash: addressHash, tab: 'txs_local' } }) }>view by chain</Link>
+        <Skeleton loading={ isLoading }>
+          Local <Link href={ route({ pathname: '/address/[hash]', query: { hash: addressHash, tab: 'txs_local' } }) }>view by chain</Link>
+        </Skeleton>
       </DetailedInfo.ItemValue>
 
       <DetailedInfo.ItemLabel
@@ -111,19 +130,9 @@ const OpSuperchainAddressDetails = ({ data, addressHash, isLoading }: Props) => 
         Transfers
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue whiteSpace="pre-wrap">
-        Cross-chain <Link href={ route({ pathname: '/address/[hash]', query: { hash: addressHash, tab: 'token_transfers_cross_chain' } }) }>TBD</Link>
-        <TextSeparator color="border.divider"/>
-        Local <Link href={ route({ pathname: '/address/[hash]', query: { hash: addressHash, tab: 'token_transfers_local' } }) }>view by chain</Link>
-      </DetailedInfo.ItemValue>
-
-      <DetailedInfo.ItemLabel
-        hint="Block number in which the address was updated"
-        isLoading={ isLoading }
-      >
-        Last balance update
-      </DetailedInfo.ItemLabel>
-      <DetailedInfo.ItemValue>
-        Coming soon 🔜
+        <Skeleton loading={ isLoading }>
+          Local <Link href={ route({ pathname: '/address/[hash]', query: { hash: addressHash, tab: 'token_transfers_local' } }) }>view by chain</Link>
+        </Skeleton>
       </DetailedInfo.ItemValue>
 
       <DetailedInfoSponsoredItem isLoading={ isLoading }/>
