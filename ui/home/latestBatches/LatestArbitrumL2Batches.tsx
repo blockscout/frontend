@@ -21,7 +21,7 @@ import LatestBatchItem from './LatestBatchItem';
 
 const LatestArbitrumL2Batches = () => {
   const isMobile = useIsMobile();
-  const batchesMaxCount = isMobile ? 2 : 5;
+  const batchesMaxCount = isMobile ? 2 : 6;
   const queryClient = useQueryClient();
 
   const { data, isPlaceholderData, isError } = useApiQuery('general:homepage_arbitrum_l2_batches', {

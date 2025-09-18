@@ -30,7 +30,7 @@ export default function useQueryClientConfig() {
             return false;
           }
 
-          const EXTERNAL_API_RESOURCES: Array<ResourceName | 'safe_transaction_api' | 'gas_hawk_saving_potential'> = [
+          const EXTERNAL_API_RESOURCES: Array<ResourceName> = [
             'general:contract_solidity_scan_report',
             'general:address_xstar_score',
             'general:address_3rd_party_info',
@@ -38,8 +38,8 @@ export default function useQueryClientConfig() {
             'general:noves_address_history',
             'general:noves_describe_txs',
             // these resources are not proxied by the backend
-            'safe_transaction_api',
-            'gas_hawk_saving_potential',
+            'external:safe_transaction_api',
+            'external:gas_hawk_saving_potential',
           ];
           const isExternalApiResource = EXTERNAL_API_RESOURCES.some((resource) => query.queryKey[0] === resource);
 

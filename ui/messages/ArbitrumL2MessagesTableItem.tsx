@@ -20,7 +20,7 @@ import type { MessagesDirection } from './ArbitrumL2Messages';
 
 const rollupFeature = config.features.rollup;
 
- type Props = { item: ArbitrumL2MessagesItem; isLoading?: boolean; direction: MessagesDirection };
+type Props = { item: ArbitrumL2MessagesItem; isLoading?: boolean; direction: MessagesDirection };
 
 const ArbitrumL2MessagesTableItem = ({ item, direction, isLoading }: Props) => {
   if (!rollupFeature.isEnabled || rollupFeature.type !== 'arbitrum') {

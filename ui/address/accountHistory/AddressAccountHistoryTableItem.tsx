@@ -6,6 +6,7 @@ import type { NovesResponseData } from 'types/api/noves';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
+import { SECOND } from 'toolkit/utils/consts';
 import IconSvg from 'ui/shared/IconSvg';
 import NovesFromTo from 'ui/shared/Noves/NovesFromTo';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
@@ -28,7 +29,7 @@ const AddressAccountHistoryTableItem = (props: Props) => {
     <TableRow>
       <TableCell px={ 3 } py="18px" fontSize="sm" >
         <TimeWithTooltip
-          timestamp={ props.tx.rawTransactionData.timestamp * 1000 }
+          timestamp={ props.tx.rawTransactionData.timestamp * SECOND }
           isLoading={ props.isPlaceholderData }
           color="text.secondary"
           borderRadius="sm"

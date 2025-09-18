@@ -7,13 +7,13 @@ import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
 import ZkEvmL2WithdrawalsTableItem from './ZkEvmL2WithdrawalsTableItem';
 
- type Props = {
-   items: Array<ZkEvmL2WithdrawalsItem>;
-   top: number;
-   isLoading?: boolean;
- };
+type Props = {
+  items: Array<ZkEvmL2WithdrawalsItem>;
+  top: number;
+  isLoading?: boolean;
+};
 
-const ZkEvmL2DepositsTable = ({ items, top, isLoading }: Props) => {
+const ZkEvmL2WithdrawalsTable = ({ items, top, isLoading }: Props) => {
   return (
     <TableRoot tableLayout="auto" minW="950px">
       <TableHeaderSticky top={ top }>
@@ -39,4 +39,4 @@ const ZkEvmL2DepositsTable = ({ items, top, isLoading }: Props) => {
   );
 };
 
-export default ZkEvmL2DepositsTable;
+export default ZkEvmL2WithdrawalsTable;

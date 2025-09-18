@@ -3,6 +3,7 @@
   export type IconName =
   	| "ABI_slim"
 	| "ABI"
+	| "advanced-filter"
 	| "API_slim"
 	| "API"
 	| "apps_list"
@@ -38,6 +39,7 @@
 	| "clock-light"
 	| "clock"
 	| "close"
+	| "clusters"
 	| "coins/bitcoin"
 	| "collection"
 	| "columns"
@@ -91,6 +93,7 @@
 	| "integration/full"
 	| "integration/partial"
 	| "internal_txns"
+	| "interop_slim"
 	| "interop"
 	| "key"
 	| "lightning_navbar"

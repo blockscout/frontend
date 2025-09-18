@@ -13,19 +13,19 @@ import BeaconChainWithdrawalsTableItem from './BeaconChainWithdrawalsTableItem';
 
 const feature = config.features.beaconChain;
 
- type Props = {
-   top: number;
-   isLoading?: boolean;
- } & ({
-   items: Array<WithdrawalsItem>;
-   view: 'list';
- } | {
-   items: Array<AddressWithdrawalsItem>;
-   view: 'address';
- } | {
-   items: Array<BlockWithdrawalsItem>;
-   view: 'block';
- });
+type Props = {
+  top: number;
+  isLoading?: boolean;
+} & ({
+  items: Array<WithdrawalsItem>;
+  view: 'list';
+} | {
+  items: Array<AddressWithdrawalsItem>;
+  view: 'address';
+} | {
+  items: Array<BlockWithdrawalsItem>;
+  view: 'block';
+});
 
 const BeaconChainWithdrawalsTable = ({ items, isLoading, top, view }: Props) => {
   const { cutRef, renderedItemsNum } = useLazyRenderedList(items, !isLoading);

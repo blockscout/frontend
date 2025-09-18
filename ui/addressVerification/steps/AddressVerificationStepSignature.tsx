@@ -199,7 +199,7 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
         { rootError && <Alert status="warning" mb={ 6 }>{ rootError }</Alert> }
         <Box mb={ 8 }>
           <span>Please select the address to sign and copy the message and sign it using the Blockscout message provider of your choice. </span>
-          <Link href="https://docs.blockscout.com/for-users/my-account/verified-addresses/copy-and-sign-message" target="_blank">
+          <Link href="https://docs.blockscout.com/using-blockscout/my-account/verified-addresses/copy-and-sign-message" target="_blank">
             Additional instructions
           </Link>
           <span>. If you do not see your address here but are sure that you are the owner of the contract, kindly </span>

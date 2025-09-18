@@ -19,7 +19,7 @@ import SearchBarBackdrop from './SearchBarBackdrop';
 import SearchBarInput from './SearchBarInput';
 import SearchBarRecentKeywords from './SearchBarRecentKeywords';
 import SearchBarSuggest from './SearchBarSuggest/SearchBarSuggest';
-import useQuickSearchQuery from './useQuickSearchQuery';
+import useSearchWithClusters from './useSearchWithClusters';
 
 type Props = {
   isHomepage?: boolean;
@@ -38,7 +38,7 @@ const SearchBar = ({ isHomepage }: Props) => {
 
   const recentSearchKeywords = getRecentSearchKeywords();
 
-  const { searchTerm, debouncedSearchTerm, handleSearchTermChange, query } = useQuickSearchQuery();
+  const { searchTerm, debouncedSearchTerm, handleSearchTermChange, query, zetaChainCCTXQuery, cosmosHashType } = useSearchWithClusters();
 
   const handleSubmit = React.useCallback((event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -131,6 +131,11 @@ const SearchBar = ({ isHomepage }: Props) => {
     };
   }, [ calculateMenuWidth ]);
 
+  const showAllResultsLink = searchTerm.trim().length > 0 && (
+    (query.data && query.data.length >= 50) ||
+    (zetaChainCCTXQuery.data && zetaChainCCTXQuery.data?.items.length > 10)
+  );
+
   return (
     <>
       <PopoverRoot
@@ -182,11 +187,13 @@ const SearchBar = ({ isHomepage }: Props) => {
                   searchTerm={ debouncedSearchTerm }
                   onItemClick={ handleItemClick }
                   containerId={ SCROLL_CONTAINER_ID }
+                  zetaChainCCTXQuery={ zetaChainCCTXQuery }
+                  cosmosHashType={ cosmosHashType }
                 />
               ) }
             </Box>
           </PopoverBody>
-          { searchTerm.trim().length > 0 && query.data && query.data.length >= 50 && (
+          { showAllResultsLink && (
             <PopoverFooter pt={ 2 } borderTopWidth={ 1 } borderColor="border.divider">
               <Link
                 href={ route({ pathname: '/search-results', query: { q: searchTerm } }) }

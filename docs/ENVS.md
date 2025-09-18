@@ -56,6 +56,7 @@ All json-like values should be single-quoted. If it contains a hash (`#`) or a d
   - [Transaction interpretation](#transaction-interpretation)
   - [Verified tokens info](#verified-tokens-info)
   - [Name service integration](#name-service-integration)
+  - [Clusters universal name service](#clusters-universal-name-service)
   - [Metadata service integration](#metadata-service-integration)
   - [Public tag submission](#public-tag-submission)
   - [Data availability](#data-availability)
@@ -68,7 +69,6 @@ All json-like values should be single-quoted. If it contains a hash (`#`) or a d
   - [Ton Application Chain (TAC)](#ton-application-chain-tac)
   - [MetaSuites extension](#metasuites-extension)
   - [Validators list](#validators-list)
-  - [Sentry error monitoring](#sentry-error-monitoring)
   - [Rollbar error monitoring](#rollbar-error-monitoring)
   - [OpenTelemetry](#opentelemetry)
   - [DeFi dropdown](#defi-dropdown)
@@ -79,6 +79,7 @@ All json-like values should be single-quoted. If it contains a hash (`#`) or a d
   - [DEX pools](#dex-pools)
   - [Flashblocks](#flashblocks)
   - [Address 3rd party widgets](#address-3rd-party-widgets)
+  - [ZetaChain](#zetachain)
 - [3rd party services configuration](#external-services-configuration)
 
 &nbsp;
@@ -138,8 +139,6 @@ All json-like values should be single-quoted. If it contains a hash (`#`) or a d
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_HOMEPAGE_CHARTS | `Array<'daily_txs' \| 'daily_operational_txs' \| 'coin_price'  \| 'secondary_coin_price' \| 'market_cap' \| 'tvl'>` | List of charts displayed on the home page | - | - | `['daily_txs','coin_price','market_cap']` | v1.0.x+ |
 | NEXT_PUBLIC_HOMEPAGE_STATS | `Array<'latest_batch' \| 'total_blocks'  \| 'average_block_time' \| 'total_txs' \| 'total_operational_txs' \| 'latest_l1_state_batch' \| 'wallet_addresses' \| 'gas_tracker' \| 'btc_locked' \| 'current_epoch'>` | List of stats widgets displayed on the home page | - | For zkSync, zkEvm and Arbitrum rollups: `['latest_batch','average_block_time','total_txs','wallet_addresses','gas_tracker']`, for other cases: `['total_blocks','average_block_time','total_txs','wallet_addresses','gas_tracker']` | `['total_blocks','total_txs','wallet_addresses']` | v1.35.x+ |
-| NEXT_PUBLIC_HOMEPAGE_PLATE_TEXT_COLOR | `string` | Text color of the hero plate on the homepage (escape "#" symbol if you use HEX color codes or use rgba-value instead). **DEPRECATED** _Use `NEXT_PUBLIC_HOMEPAGE_HERO_BANNER_CONFIG` instead_  | - | `white` | `\#DCFE76` | v1.0.x+ |
-| NEXT_PUBLIC_HOMEPAGE_PLATE_BACKGROUND | `string` | Background css value for hero plate on the homepage (escape "#" symbol if you use HEX color codes or use rgba-value instead). **DEPRECATED** _Use `NEXT_PUBLIC_HOMEPAGE_HERO_BANNER_CONFIG` instead_  | - | `radial-gradient(103.03% 103.03% at 0% 0%, rgba(183, 148, 244, 0.8) 0%, rgba(0, 163, 196, 0.8) 100%), var(--chakra-colors-blue-400)` | `radial-gradient(at 15% 86%, hsla(350,65%,70%,1) 0px, transparent 50%)` \| `no-repeat bottom 20% right 0px/100% url(https://placekitten/1400/200)` | v1.1.0+ |
 | NEXT_PUBLIC_HOMEPAGE_HERO_BANNER_CONFIG | `HeroBannerConfig`, see details [below](#hero-banner-configuration-properties) | Configuration of hero banner appearance. | - | - | See [below](#hero-banner-configuration-properties) | v1.35.0+ |
 
 #### Hero banner configuration properties
@@ -256,6 +255,7 @@ Settings for meta tags, OG tags and SEO
 | Variable | Type | Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_VIEWS_BLOCK_HIDDEN_FIELDS | `Array<BlockFieldId>` | Array of the block fields ids that should be hidden. See below the list of the possible id values. | - | - | `'["burnt_fees","total_reward"]'` | v1.10.0+ |
+| NEXT_PUBLIC_VIEWS_BLOCK_PENDING_UPDATE_ALERT_ENABLED | `boolean` | The flag enables indication of the incomplete data for the block in the list and detailed views of the re-indexing block and its transactions. *Feature is enabled by default; pass `false` to disable it.* | - | `true` | `false` | <upcoming> |
 
 
 ##### Block fields list
@@ -275,7 +275,7 @@ Settings for meta tags, OG tags and SEO
 
 | Variable | Type | Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_VIEWS_ADDRESS_IDENTICON_TYPE | `"github" \| "jazzicon" \| "gradient_avatar" \| "blockie" \| "nouns"` | Default style of address identicon appearance. Choose between [GitHub](https://github.blog/2013-08-14-identicons/), [Metamask Jazzicon](https://metamask.github.io/jazzicon/), [Gradient Avatar](https://github.com/varld/gradient-avatar), [Ethereum Blocky](https://mycryptohq.github.io/ethereum-blockies-base64/) and [Nouns](https://nouns.wtf) | - | `jazzicon` | `gradient_avatar` | v1.12.0+ |
+| NEXT_PUBLIC_VIEWS_ADDRESS_IDENTICON_TYPE | `"github" \| "jazzicon" \| "gradient_avatar" \| "blockie" \| "nouns"` | Default style of address identicon appearance. Choose between [GitHub](https://github.blog/2013-08-14-identicons/), [Metamask Jazzicon](https://metamask.github.io/jazzicon/), [Gradient Avatar](https://github.com/varld/gradient-avatar), [Ethereum Blocky](https://mycryptohq.github.io/ethereum-blockies-base64/) and [Nouns](https://nouns.wtf) | - | `blockie` | `gradient_avatar` | v1.12.0+ |
 | NEXT_PUBLIC_VIEWS_ADDRESS_FORMAT | `Array<"base16" \| "bech32">` | Displayed address format, could be either `base16` standard or [`bech32`](https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki#bech32) standard. If the array contains multiple values, the address format toggle will appear in the UI, allowing the user to switch between formats. The first item in the array will be the default format. | - | `'["base16"]'` | `'["bech32", "base16"]'` | v1.36.0+ |
 | NEXT_PUBLIC_VIEWS_ADDRESS_BECH_32_PREFIX | `string` | Human-readable prefix of `bech32` address format. | Required, if `NEXT_PUBLIC_VIEWS_ADDRESS_FORMAT` contains "bech32" value | - | `duck` | v1.36.0+ |
 | NEXT_PUBLIC_VIEWS_ADDRESS_HIDDEN_VIEWS | `Array<AddressViewId>` | Address views that should not be displayed. See below the list of the possible id values.  | - | - | `'["top_accounts"]'` | v1.15.0+ |
@@ -401,9 +401,6 @@ Settings for meta tags, OG tags and SEO
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED | `boolean` | Set to true if network has account feature | Required | - | `true` | v1.0.x+ |
 | NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY | `boolean` | See [below](#google-recaptcha) | Required | - | `<your-secret>` | v1.0.x+ |
-| NEXT_PUBLIC_AUTH0_CLIENT_ID | `string` | **DEPRECATED** Client id for [Auth0](https://auth0.com/) provider | - | - | `<your-secret>` | v1.0.x+ |
-| NEXT_PUBLIC_AUTH_URL | `string` | **DEPRECATED** Account auth base url; it is used for building login URL (`${ NEXT_PUBLIC_AUTH_URL }/auth/auth0`) and logout return URL (`${ NEXT_PUBLIC_AUTH_URL }/auth/logout`); if not provided the base app URL will be used instead | - | - | `https://blockscout.com` | v1.0.x+ |
-| NEXT_PUBLIC_LOGOUT_URL | `string` | **DEPRECATED** Account logout url. Required if account is supported for the app instance. | - | - | `https://blockscoutcom.us.auth0.com/v2/logout` | v1.0.x+ |
 
 &nbsp;
 
@@ -508,7 +505,6 @@ Ads are enabled by default on all self-hosted instances. If you would like to di
 | NEXT_PUBLIC_INTEROP_ENABLED | `boolean` | Enables "Interop messages" page (Optimistic stack only)  | - | `false` | `true` | v1.39.0+ |
 | NEXT_PUBLIC_ROLLUP_HOMEPAGE_SHOW_LATEST_BLOCKS | `boolean` | Set to `true` to display "Latest blocks" widget instead of "Latest batches" on the home page | - | - | `true` | v1.36.0+ |
 | NEXT_PUBLIC_ROLLUP_OUTPUT_ROOTS_ENABLED | `boolean` | Enables "Output roots" page (Optimistic stack only)  | - | `false` | `true` | v1.37.0+ |
-| NEXT_PUBLIC_ROLLUP_PARENT_CHAIN_NAME | `string` | Set to customize L1 transaction status labels in the UI (e.g., "Sent to <chain-name>"). This setting is applicable only for Arbitrum-based chains. **DEPRECATED** _Use `NEXT_PUBLIC_ROLLUP_PARENT_CHAIN` instead_ | - | - | `DuckChain` | v1.37.0+ |
 | NEXT_PUBLIC_ROLLUP_PARENT_CHAIN | `ParentChain`, see details [below](#parent-chain-configuration-properties) | Configuration parameters for the parent chain. | - | - | `{'baseUrl':'https://explorer.duckchain.io'}` | v1.38.0+ |
 | NEXT_PUBLIC_ROLLUP_DA_CELESTIA_NAMESPACE | `string` | Hex-string for creating a link to the transaction batch on the Seleneium explorer. "0x"-format and 60 symbol length. Available only for Arbitrum roll-ups. | - | - | `0x00000000000000000000000000000000000000ca1de12a9905be97beaf` | v1.38.0+ |
 | NEXT_PUBLIC_ROLLUP_DA_CELESTIA_CELENIUM_URL | `string` | URL for the Selenium explorer. It is used to create links to the Data Availability Blobs page. The URL should contain the full path without any search parameters related to the blob, as these will be constructed at runtime for each blob separately. Available only for Optimistic or Arbitrum roll-ups. | - | - | `https://mocha.celenium.io/blob` | v2.0.2+ |
@@ -671,6 +667,17 @@ This feature allows resolving blockchain addresses using human-readable domain n
 
 &nbsp;
 
+### Clusters universal name service
+
+This feature integrates [Clusters.xyz](https://clusters.xyz/) universal naming service, enabling users to look up and track cross-chain identities through human-readable names like "vitalik/" or "uniswap/". Unlike traditional domain services that work on single chains, clusters span multiple blockchains - one cluster name can represent addresses on Ethereum, Base, Optimism, and other networks. This integration adds cluster lookup pages (/clusters/[name]), a clusters directory (/clusters), search functionality in the main search bar, and displays cluster profile information and images throughout the explorer.
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
+| --- | --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_CLUSTERS_API_HOST | `string` | Clusters.xyz API endpoint for fetching cluster data, directory listings, and cross-chain address mappings | Required | - | `https://example.com/clusters-api` | <upcoming> |
+| NEXT_PUBLIC_CLUSTERS_CDN_URL | `string` | CDN base URL for serving cluster profile images and avatars displayed in search results and cluster pages | - | `https://cdn.clusters.xyz` | `https://your-cdn.example.com` | <upcoming> |
+
+&nbsp;
+
 ### Metadata service integration
 
 This feature allows name tags and other public tags for addresses.
@@ -828,18 +835,6 @@ The feature enables the Validators page which provides detailed information abou
 
 &nbsp;
 
-### Sentry error monitoring
-
-_Note_ This feature is **deprecated**. All ENV variables will be removed in the future releases.
-
-| Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
-| --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_SENTRY_DSN | `string` | Client key for your Sentry.io app | Required | - | `<your-secret>` | v1.0.x+ |
-| SENTRY_CSP_REPORT_URI | `string` | URL for sending CSP-reports to your Sentry.io app | - | - | `<your-secret>` | v1.0.x+ |
-| NEXT_PUBLIC_SENTRY_ENABLE_TRACING | `boolean` | Enables tracing and performance monitoring in Sentry.io | - | `false` | `true` | v1.17.0+ |
-
-&nbsp;
-
 ### Rollbar error monitoring
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
@@ -949,7 +944,7 @@ This feature allows users to view [Flashblocks](https://docs.base.org/base-chain
 
 &nbsp;
 
-### Address 3rd party widgets
+#### Address 3rd party widget
 
 This feature allows to display widgets on the address page with data from 3rd party services.
 
@@ -970,6 +965,33 @@ This feature allows to display widgets on the address page with data from 3rd pa
 | valuePath | `string` | Path to the field in the API response that contains the value to be displayed | Required | - | `'result.balance'` |
 | pages | `Array<'eoa' \| 'contract' \| 'token'>` | List of pages where the widget should be displayed | Required | - | `['eoa']` |
 | chainIds | `Record<string, string>` | Mapping of chain IDs to custom values that will be used in `url` template | - | - | `{'1': 'eth', '10': 'op'}` |
+
+&nbsp;
+
+
+### ZetaChain cross-chain transactions
+
+This feature enables cross-chain transactions pages and views on ZetaChain instances
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
+| --- | --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST | `string` | ZetaChain cross-chain transactions service API endpoint url | - | - | `https://zetachain-cctx.services.blockscout.com` | v2.3.2+ |
+| NEXT_PUBLIC_ZETACHAIN_SERVICE_CHAINS_CONFIG_URL | `string` | URL of configuration file (`.json` format only) which contains chains info for the supported chains. | - | - | `https://example.com/zetachain_chains_config.json` | v2.3.2+ |
+| NEXT_PUBLIC_ZETACHAIN_COSMOS_TX_URL_TEMPLATE | `string` | URL template to redirect cosmos tx search. | - | - | `https://example.com/cosmos/tx/{hash}` | v2.3.2+ |
+| NEXT_PUBLIC_ZETACHAIN_COSMOS_ADDRESS_URL_TEMPLATE | `string` URL template to redirect cosmos address search. | - | - | `https://example.com/cosmos/address/{hash}` | v2.3.2+ |
+
+
+#### ZetaChain supported cain configuration properties
+
+| Property | Type | Description | Compulsoriness | Example value |
+| --- | --- | --- | --- | --- |
+| chain_id | `string` | Id of the chain | Required | - | `'11155111'` |
+| chain_name | `string` | Displayed name of the chain | Required | - | `'Sepolia Testnet'` |
+| chain_logo | `string` | Chain logo URL. Image should be at least 40x40 px  | - | - | `'https://example.com/logo.svg'` |
+| instance_url | `string` | Base URL of the blockscout explorer for the chain | - | - | `'https://eth-sepolia.blockscout.com/'` |
+| address_url_template | `string` | Address url template on external explorer. `{hash}` will be replaced with the address hash | - | - | `'https://external.explorer.com/address/{hash}'` |
+| tx_url_template | `string` | Transaction url template on external explorer. `{hash}` will be replaced with the transaction hash | - | - | `'https://external.explorer.com/tx/{hash}'` |
+
 
 &nbsp;
 
@@ -996,5 +1018,4 @@ To obtain the variable values, please refer to the [reCAPTCHA documentation](htt
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_RE_CAPTCHA_V3_APP_SITE_KEY | `string` | **DEPRECATED** Google reCAPTCHA v3 site key | - | - | `<your-secret>` | v1.36.x |
 | NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY | `string` | Google reCAPTCHA v2 site key | - | - | `<your-site-key>` | v1.0.x+ |

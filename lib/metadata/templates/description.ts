@@ -26,6 +26,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/token/[hash]/instance/[id]': '%hash%, balances and analytics on the %network_title%',
   '/apps': DEFAULT_TEMPLATE,
   '/apps/[id]': DEFAULT_TEMPLATE,
+  '/clusters/[name]': '%cluster_name% cluster | %app_name%',
   '/stats': DEFAULT_TEMPLATE,
   '/stats/[id]': DEFAULT_TEMPLATE,
   '/api-docs': DEFAULT_TEMPLATE,
@@ -67,6 +68,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/interop-messages': DEFAULT_TEMPLATE,
   '/operations': DEFAULT_TEMPLATE,
   '/operation/[id]': DEFAULT_TEMPLATE,
+  '/cc/tx/[hash]': DEFAULT_TEMPLATE,
 
   // multichain routes
   '/chain/[chain-slug]/accounts/label/[slug]': DEFAULT_TEMPLATE,

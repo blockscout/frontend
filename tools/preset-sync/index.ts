@@ -30,6 +30,8 @@ const PRESETS = {
   stability_testnet: 'https://stability-testnet.blockscout.com',
   tac: 'https://explorer.tac.build',
   tac_turin: 'https://tac-turin.blockscout.com',
+  zetachain: 'https://zetachain.blockscout.com',
+  zetachain_testnet: 'https://zetachain-testnet.blockscout.com',
   zkevm: 'https://zkevm.blockscout.com',
   zksync: 'https://zksync.blockscout.com',
   zilliqa: 'https://zilliqa.blockscout.com',
@@ -50,6 +52,18 @@ const IGNORED_ENVS = [
   'NEXT_PUBLIC_GIT_COMMIT_SHA',
   'NEXT_PUBLIC_GIT_TAG',
   'NEXT_PUBLIC_ICON_SPRITE_HASH',
+
+  // DEPRECATED
+  'NEXT_PUBLIC_AUTH0_CLIENT_ID',
+  'NEXT_PUBLIC_AUTH_URL',
+  'NEXT_PUBLIC_LOGOUT_URL',
+  'NEXT_PUBLIC_SENTRY_DSN',
+  'SENTRY_CSP_REPORT_URI',
+  'NEXT_PUBLIC_SENTRY_ENABLE_TRACING',
+  'NEXT_PUBLIC_ROLLUP_PARENT_CHAIN_NAME',
+  'NEXT_PUBLIC_RE_CAPTCHA_V3_APP_SITE_KEY',
+  'NEXT_PUBLIC_HOMEPAGE_PLATE_TEXT_COLOR',
+  'NEXT_PUBLIC_HOMEPAGE_PLATE_BACKGROUND',
 ];
 
 function parseScriptArgs() {

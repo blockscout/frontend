@@ -8,11 +8,11 @@ import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
 import ScrollL2WithdrawalsTableItem from './ScrollL2WithdrawalsTableItem';
 
- type Props = {
-   items: Array<ScrollL2MessageItem>;
-   top: number;
-   isLoading?: boolean;
- };
+type Props = {
+  items: Array<ScrollL2MessageItem>;
+  top: number;
+  isLoading?: boolean;
+};
 
 const ScrollL2WithdrawalsTable = ({ items, top, isLoading }: Props) => {
   return (

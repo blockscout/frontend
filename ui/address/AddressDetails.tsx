@@ -23,6 +23,7 @@ import Address3rdPartyWidgets from './Address3rdPartyWidgets';
 import useAddress3rdPartyWidgets from './address3rdPartyWidgets/useAddress3rdPartyWidgets';
 import AddressAlternativeFormat from './details/AddressAlternativeFormat';
 import AddressBalance from './details/AddressBalance';
+import AddressCeloAccount from './details/AddressCeloAccount';
 import AddressImplementations from './details/AddressImplementations';
 import AddressNameInfo from './details/AddressNameInfo';
 import AddressNetWorth from './details/AddressNetWorth';
@@ -62,6 +63,7 @@ const AddressDetails = ({ addressQuery, countersQuery, isLoading }: Props) => {
     has_token_transfers: true,
     has_validated_blocks: false,
     filecoin: undefined,
+    celo: undefined,
     creator_filecoin_robust_address: null,
     creator_address_hash: null,
   }), [ addressHash ]);
@@ -90,6 +92,11 @@ const AddressDetails = ({ addressQuery, countersQuery, isLoading }: Props) => {
     <>
       { addressQuery.isDegradedData && <ServiceDegradationWarning isLoading={ isLoading } mb={ 6 }/> }
       <DetailedInfo.Container>
+
+        { data.celo?.account && (
+          <AddressCeloAccount data={ data.celo.account } isLoading={ isLoading }/>
+        ) }
+
         <AddressAlternativeFormat isLoading={ isLoading } addressHash={ addressHash }/>
 
         { data.filecoin?.id && (

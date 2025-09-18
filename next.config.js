@@ -14,8 +14,6 @@ const rewrites = require('./nextjs/rewrites');
 const moduleExports = {
   transpilePackages: [
     'react-syntax-highlighter',
-    'swagger-client',
-    'swagger-ui-react',
   ],
   reactStrictMode: true,
   webpack(config) {

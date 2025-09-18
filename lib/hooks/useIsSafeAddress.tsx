@@ -9,7 +9,7 @@ export default function useIsSafeAddress(hash: string | undefined): boolean {
   const fetch = useFetch();
 
   const { data } = useQuery({
-    queryKey: [ 'safe_transaction_api', hash ],
+    queryKey: [ 'external:safe_transaction_api', hash ],
     queryFn: async() => {
       if (!feature.isEnabled || !hash) {
         return Promise.reject();

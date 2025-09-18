@@ -19,12 +19,10 @@ const HeroBanner = () => {
   const background = {
     _light:
       config.UI.homepage.heroBanner?.background?.[0] ||
-      config.UI.homepage.plate.background ||
       BACKGROUND_DEFAULT,
     _dark:
       config.UI.homepage.heroBanner?.background?.[1] ||
       config.UI.homepage.heroBanner?.background?.[0] ||
-      config.UI.homepage.plate.background ||
       BACKGROUND_DEFAULT,
   };
 
@@ -32,13 +30,11 @@ const HeroBanner = () => {
     _light:
       // light mode
       config.UI.homepage.heroBanner?.text_color?.[0] ||
-      config.UI.homepage.plate.textColor ||
       TEXT_COLOR_DEFAULT,
     // dark mode
     _dark:
       config.UI.homepage.heroBanner?.text_color?.[1] ||
       config.UI.homepage.heroBanner?.text_color?.[0] ||
-      config.UI.homepage.plate.textColor ||
       TEXT_COLOR_DEFAULT,
   };
 

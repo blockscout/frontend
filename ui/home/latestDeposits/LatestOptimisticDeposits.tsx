@@ -14,7 +14,7 @@ import LatestDeposits from './LatestDeposits';
 
 const LatestOptimisticDeposits = () => {
   const isMobile = useIsMobile();
-  const itemsCount = isMobile ? 2 : 6;
+  const itemsCount = isMobile ? 2 : 5;
   const { data, isPlaceholderData, isError } = useApiQuery('general:homepage_optimistic_deposits', {
     queryOptions: {
       placeholderData: Array(itemsCount).fill(L2_DEPOSIT_ITEM),

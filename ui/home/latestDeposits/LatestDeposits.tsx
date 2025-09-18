@@ -43,14 +43,12 @@ const LatestDepositsItem = ({ item, isLoading }: ItemProps) => {
     <BlockEntityL1
       number={ item.l1BlockNumber }
       isLoading={ isLoading }
-      textStyle="sm"
       fontWeight={ 700 }
     />
   ) : (
     <BlockEntityL1
       number="TBD"
       isLoading={ isLoading }
-      textStyle="sm"
       fontWeight={ 700 }
       noLink
     />
@@ -60,14 +58,12 @@ const LatestDepositsItem = ({ item, isLoading }: ItemProps) => {
     <TxEntityL1
       isLoading={ isLoading }
       hash={ item.l1TxHash }
-      textStyle="sm"
       truncation={ isMobile ? 'constant_long' : 'dynamic' }
     />
   ) : (
     <TxEntityL1
       isLoading={ isLoading }
       hash="To be determined"
-      textStyle="sm"
       truncation="none"
       noLink
     />
@@ -77,7 +73,6 @@ const LatestDepositsItem = ({ item, isLoading }: ItemProps) => {
     <TxEntity
       isLoading={ isLoading }
       hash={ item.l2TxHash }
-      textStyle="sm"
       truncation={ isMobile ? 'constant_long' : 'dynamic' }
     />
   );

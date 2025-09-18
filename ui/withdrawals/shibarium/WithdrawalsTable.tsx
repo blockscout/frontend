@@ -7,11 +7,11 @@ import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
 import WithdrawalsTableItem from './WithdrawalsTableItem';
 
- type Props = {
-   items: Array<ShibariumWithdrawalsItem>;
-   top: number;
-   isLoading?: boolean;
- };
+type Props = {
+  items: Array<ShibariumWithdrawalsItem>;
+  top: number;
+  isLoading?: boolean;
+};
 
 const WithdrawalsTable = ({ items, top, isLoading }: Props) => {
   return (

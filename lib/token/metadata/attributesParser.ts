@@ -3,6 +3,7 @@ import { upperFirst } from 'es-toolkit';
 import type { Metadata, MetadataAttributes } from 'types/client/token';
 
 import dayjs from 'lib/date/dayjs';
+import { SECOND } from 'toolkit/utils/consts';
 
 function formatValue(value: string | number, display: string | undefined, trait: string | undefined): Pick<MetadataAttributes, 'value' | 'value_type'> {
   // https://docs.opensea.io/docs/metadata-standards#attributes
@@ -19,7 +20,7 @@ function formatValue(value: string | number, display: string | undefined, trait:
     }
     case 'date': {
       return {
-        value: dayjs(Number(value) * 1000).format('YYYY-MM-DD'),
+        value: dayjs(Number(value) * SECOND).format('YYYY-MM-DD'),
       };
     }
     default: {

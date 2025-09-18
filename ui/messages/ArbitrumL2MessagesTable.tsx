@@ -8,12 +8,12 @@ import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 import type { MessagesDirection } from './ArbitrumL2Messages';
 import ArbitrumL2MessagesTableItem from './ArbitrumL2MessagesTableItem';
 
- type Props = {
-   items: Array<ArbitrumL2MessagesItem>;
-   direction: MessagesDirection;
-   top: number;
-   isLoading?: boolean;
- };
+type Props = {
+  items: Array<ArbitrumL2MessagesItem>;
+  direction: MessagesDirection;
+  top: number;
+  isLoading?: boolean;
+};
 
 const ArbitrumL2MessagesTable = ({ items, direction, top, isLoading }: Props) => {
   return (

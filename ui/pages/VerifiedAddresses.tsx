@@ -202,7 +202,7 @@ const VerifiedAddresses = () => {
           <List.Item>The source code for the smart contract is deployed on “{ config.chain.name }”.</List.Item>
           <List.Item>
             <span>The source code is verified (if not yet verified, you can use </span>
-            <Link href="https://docs.blockscout.com/for-users/verifying-a-smart-contract" target="_blank">this tool</Link>
+            <Link href="https://docs.blockscout.com/devs/verification" target="_blank">this tool</Link>
             <span>).</span>
           </List.Item>
         </List.Root>
