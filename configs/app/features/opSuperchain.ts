@@ -8,7 +8,7 @@ const isEnabled = getEnvValue('NEXT_PUBLIC_OP_SUPERCHAIN_ENABLED') === 'true';
 const title = 'OP Superchain interop explorer';
 
 const config: Feature<{ }> = (() => {
-  if (apis.multichain && isEnabled) {
+  if (apis.multichainAggregator && apis.multichainStats && isEnabled) {
     return Object.freeze({
       title,
       isEnabled: true,

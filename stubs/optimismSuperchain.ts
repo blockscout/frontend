@@ -1,4 +1,5 @@
 import type * as multichain from '@blockscout/multichain-aggregator-types';
+import type * as stats from '@blockscout/stats-types';
 import type { AddressTokenItem } from 'types/client/multichain-aggregator';
 
 import { ADDRESS_HASH } from './addressParams';
@@ -40,5 +41,22 @@ export const TOKEN: AddressTokenItem = {
   value: '2860471393',
   chain_values: {
     '11155111': '2860471393',
+  },
+};
+
+export const HOMEPAGE_STATS: stats.MainPageMultichainStats = {
+  total_multichain_txns: {
+    id: 'totalMultichainTxns',
+    value: '741682908',
+    title: 'Total transactions',
+    units: undefined,
+    description: 'Number of transactions across all chains in the cluster',
+  },
+  total_multichain_addresses: {
+    id: 'totalMultichainAddresses',
+    value: '153519638',
+    title: 'Total addresses',
+    units: undefined,
+    description: 'Number of addresses across all chains in the cluster',
   },
 };

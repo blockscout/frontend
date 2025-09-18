@@ -9,7 +9,7 @@ interface Props {
 }
 
 export default function useFetchTokens({ hash, enabled }: Props) {
-  const erc20Query = useApiQuery('multichain:address_tokens', {
+  const erc20Query = useApiQuery('multichainAggregator:address_tokens', {
     pathParams: { hash },
     queryParams: { type: 'ERC-20' },
     queryOptions: {
@@ -18,7 +18,7 @@ export default function useFetchTokens({ hash, enabled }: Props) {
     },
   });
 
-  const erc721Query = useApiQuery('multichain:address_tokens', {
+  const erc721Query = useApiQuery('multichainAggregator:address_tokens', {
     pathParams: { hash },
     queryParams: { type: 'ERC-721' },
     queryOptions: {
@@ -27,7 +27,7 @@ export default function useFetchTokens({ hash, enabled }: Props) {
     },
   });
 
-  const erc1155Query = useApiQuery('multichain:address_tokens', {
+  const erc1155Query = useApiQuery('multichainAggregator:address_tokens', {
     pathParams: { hash },
     queryParams: { type: 'ERC-1155' },
     queryOptions: {
@@ -36,7 +36,7 @@ export default function useFetchTokens({ hash, enabled }: Props) {
     },
   });
 
-  const erc404Query = useApiQuery('multichain:address_tokens', {
+  const erc404Query = useApiQuery('multichainAggregator:address_tokens', {
     pathParams: { hash },
     queryParams: { type: 'ERC-404' },
     queryOptions: {

@@ -1585,10 +1585,10 @@
   resolved "https://registry.yarnpkg.com/@blockscout/points-types/-/points-types-1.3.0-alpha.2.tgz#0308dcb4eef0dadf96f43b144835470e9f78f64f"
   integrity sha512-tXCA51q3y08caCm7UhGyj+xsP0pd6yBhjElDHxEzM5SRop3culMiacaBXd0OPBszHjA0YdYgXFymuJhofB22ig==
 
-"@blockscout/stats-types@2.10.0-alpha":
-  version "2.10.0-alpha"
-  resolved "https://registry.yarnpkg.com/@blockscout/stats-types/-/stats-types-2.10.0-alpha.tgz#eb0babf59ef01dfd0ff9b7700aebf15905aa4d6e"
-  integrity sha512-DzffwodJrn5k4oENtEAmexKwK9ERqibq9dn17sxfhcEBemcUPEiu9eQJbd+bepSyt+OumWlynUv4hEWxSBaFPA==
+"@blockscout/stats-types@2.11.1":
+  version "2.11.1"
+  resolved "https://registry.yarnpkg.com/@blockscout/stats-types/-/stats-types-2.11.1.tgz#686e387ee4d8f21db1c800279cc9209ef915e0b5"
+  integrity sha512-Ti9RbekRfLR7dUnOp2dWU0VBu7uRkutnkFqKphvfxvbrY9fiXUJ/tT6Qg+OTNewK3RbuQ0O1ZPxbqMX5eRr0OQ==
 
 "@blockscout/tac-operation-lifecycle-types@0.0.1-alpha.6":
   version "0.0.1-alpha.6"

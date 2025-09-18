@@ -30,7 +30,7 @@ const OpSuperchainAddress = () => {
 
   const hash = getQueryParamString(router.query.hash);
 
-  const addressQuery = useApiQuery('multichain:address', {
+  const addressQuery = useApiQuery('multichainAggregator:address', {
     pathParams: { hash },
     queryOptions: {
       placeholderData: ADDRESS,

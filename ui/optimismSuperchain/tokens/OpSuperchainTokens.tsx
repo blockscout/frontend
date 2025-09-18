@@ -46,13 +46,13 @@ const OpSuperchainTokens = () => {
   // const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
   const tokensQuery = useQueryWithPages({
-    resourceName: 'multichain:tokens',
+    resourceName: 'multichainAggregator:tokens',
     filters: {
       type: tokenTypes?.join(','),
       chain_id: getChainIdFilterValue(chainSlug),
     },
     options: {
-      placeholderData: generateListStub<'multichain:tokens'>(TOKEN['token'], 50, {
+      placeholderData: generateListStub<'multichainAggregator:tokens'>(TOKEN['token'], 50, {
         next_page_params: {
           page_size: 50,
           page_token: 'token',

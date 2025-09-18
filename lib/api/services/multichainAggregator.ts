@@ -2,7 +2,7 @@ import type { ApiResource } from '../types';
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 import type { AddressTokensResponse, TokensResponse } from 'types/client/multichain-aggregator';
 
-export const MULTICHAIN_API_RESOURCES = {
+export const MULTICHAIN_AGGREGATOR_API_RESOURCES = {
   address: {
     path: '/addresses/:hash',
     pathParams: [ 'hash' as const ],
@@ -20,19 +20,19 @@ export const MULTICHAIN_API_RESOURCES = {
   },
 } satisfies Record<string, ApiResource>;
 
-export type MultichainApiResourceName = `multichain:${ keyof typeof MULTICHAIN_API_RESOURCES }`;
+export type MultichainAggregatorApiResourceName = `multichainAggregator:${ keyof typeof MULTICHAIN_AGGREGATOR_API_RESOURCES }`;
 
 /* eslint-disable @stylistic/indent */
-export type MultichainApiResourcePayload<R extends MultichainApiResourceName> =
-R extends 'multichain:address' ? multichain.GetAddressResponse :
-R extends 'multichain:address_tokens' ? AddressTokensResponse :
-R extends 'multichain:tokens' ? TokensResponse :
+export type MultichainAggregatorApiResourcePayload<R extends MultichainAggregatorApiResourceName> =
+R extends 'multichainAggregator:address' ? multichain.GetAddressResponse :
+R extends 'multichainAggregator:address_tokens' ? AddressTokensResponse :
+R extends 'multichainAggregator:tokens' ? TokensResponse :
 never;
 /* eslint-enable @stylistic/indent */
 
 /* eslint-disable @stylistic/indent */
-export type MultichainApiPaginationFilters<R extends MultichainApiResourceName> =
-R extends 'multichain:address_tokens' ? Partial<multichain.ListAddressTokensRequest> :
-R extends 'multichain:tokens' ? Partial<multichain.ListClusterTokensRequest> :
+export type MultichainAggregatorApiPaginationFilters<R extends MultichainAggregatorApiResourceName> =
+R extends 'multichainAggregator:address_tokens' ? Partial<multichain.ListAddressTokensRequest> :
+R extends 'multichainAggregator:tokens' ? Partial<multichain.ListClusterTokensRequest> :
 never;
 /* eslint-enable @stylistic/indent */

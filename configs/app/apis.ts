@@ -101,7 +101,7 @@ const rewardsApi = (() => {
   });
 })();
 
-const multichainApi = (() => {
+const multichainAggregatorApi = (() => {
   const apiHost = getEnvValue('NEXT_PUBLIC_MULTICHAIN_AGGREGATOR_API_HOST');
   if (!apiHost) {
     return;
@@ -118,7 +118,17 @@ const multichainApi = (() => {
   } catch (error) {
     return;
   }
+})();
 
+const multichainStatsApi = (() => {
+  const apiHost = getEnvValue('NEXT_PUBLIC_MULTICHAIN_STATS_API_HOST');
+  if (!apiHost) {
+    return;
+  }
+
+  return Object.freeze({
+    endpoint: apiHost,
+  });
 })();
 
 const statsApi = (() => {
@@ -207,7 +217,8 @@ const apis: Apis = Object.freeze({
   clusters: clustersApi,
   contractInfo: contractInfoApi,
   metadata: metadataApi,
-  multichain: multichainApi,
+  multichainAggregator: multichainAggregatorApi,
+  multichainStats: multichainStatsApi,
   rewards: rewardsApi,
   stats: statsApi,
   tac: tacApi,
