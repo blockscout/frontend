@@ -58,7 +58,7 @@ const ObjectDetails: NextPage = () => {
 
   const [ toNext, setToNext ] = React.useState<boolean>(true);
 
-  // const [ allList, setAllList ] = React.useState<Array<any>>([]);
+  const [ allList, setAllList ] = React.useState<Array<any>>([]);
 
   const [ tableList, setTableList ] = React.useState<Array<IssuanceTalbeListType>>([]);
 
@@ -71,14 +71,14 @@ const ObjectDetails: NextPage = () => {
       prevMap.set(key, value);
       return prevMap;
     });
-  }, [ ]);
+  }, []);
   const [ transactionsAllList, setTransactionsAllList ] = React.useState<Map<string, any>>(new Map());
-  const setTransactionsAllListValue = React.useCallback((address: string, list: Array<IssuanceTalbeListType>) => {
+  const setTransactionsAllListValue = React.useCallback((address: string, list: any) => {
     setTransactionsAllList(prevList => {
       prevList.set(address, list);
       return prevList;
     });
-  }, [ ]);
+  }, []);
 
   const handleSearchChange = () => () => {};
 
@@ -98,23 +98,24 @@ const ObjectDetails: NextPage = () => {
 
     return num.decimalPlaces(decimalPlaces, BigNumber.ROUND_DOWN);
   }
-  const [ once, setOnce ] = React.useState(false);
 
   const getTransactions = React.useCallback(async(address: string, arr: Array<any>) => {
-    const page = transactionsAllList.get(address)?.next_page_params;
+    const page = transactionsAllList.get(address);
     let rp2 = null;
     if (page) {
-      rp2 = await transactionsRequest(address, page.index.toString()) as LogsRequestParams;
+      rp2 = await transactionsRequest(address, page) as LogsRequestParams;
     } else {
       rp2 = await transactionsRequest(address) as LogsRequestParams;
     }
-    setTransactionsAllListValue(address, rp2.next_page_params as any);
+    setTransactionsAllListValue(address, new URLSearchParams(
+      Object.entries(rp2.next_page_params).map(([ k, v ]) => [ k, String(v) ]),
+    ).toString());
     const newItems = arr.concat(rp2.items);
+    setAllList(newItems);
     return newItems;
   }, [ transactionsAllList, setTransactionsAllListValue ]);
 
   const pushTableList = React.useCallback(async(params: LogsRequestParams, arr: Array<any>) => {
-    if (!arr.length) return;
     const tableList: Array<IssuanceTalbeListType> = [];
     params.items.forEach((v: any) => {
       const item = arr.find((v2: any) => v2.hash === v.transaction_hash);
@@ -150,38 +151,21 @@ const ObjectDetails: NextPage = () => {
       Object.entries(params.next_page_params).map(([ k, v ]) => [ k, String(v) ]),
     ).toString());
     setTableList(tableList);
+    setLoading(false);
     setToNext(params.next_page_params ? true : false);
-  }, [ getTransactions, queryParams.page, setMapValue ]);
-
-  const requestTransactions = React.useCallback(async(params: LogsRequestParams) => {
-    let arr: Array<any> = [];
-    if (!once) {
-      const contract = params.items.map((v: any) => v.smart_contract.hash);
-
-      const contractSet = new Set(contract);
-      for (const i of contractSet) {
-        const rp2 = await transactionsRequest(i) as LogsRequestParams;
-        setTransactionsAllListValue(i, rp2.next_page_params as any);
-        arr = arr.concat(rp2.items);
-        // setAllList(arr);
-      }
-      setOnce(true);
-    }
-    pushTableList(params, arr);
-  }, [ once, pushTableList, setTransactionsAllListValue ]);
+  }, [ queryParams.page, setMapValue, getTransactions ]);
 
   const request = React.useCallback(async() => {
     try {
       setLoading(true);
       const page = queryParams.page > 1 ? map.get((queryParams.page - 1).toString()) : '';
       const rp1 = await verificationRequest(page) as LogsRequestParams;
-      await requestTransactions(rp1);
-      setLoading(false);
+      pushTableList(rp1, allList);
     } catch (error: any) {
       setLoading(false);
       throw Error(error);
     }
-  }, [ map, queryParams.page, requestTransactions ]);
+  }, [ queryParams.page, map, pushTableList, allList ]);
 
   const propsPage = React.useCallback((value: number) => {
     window.scrollTo({
@@ -191,11 +175,12 @@ const ObjectDetails: NextPage = () => {
     updateQueryParams({
       page: value,
     });
-  }, [ ]);
+  }, []);
 
   useEffect(() => {
     request();
-  }, [ queryParams.page, request ]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ queryParams.page ]);
 
   return (
     <PageNextJs pathname="/object">
