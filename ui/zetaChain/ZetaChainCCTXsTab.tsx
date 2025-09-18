@@ -14,7 +14,7 @@ import getValuesArrayFromQuery from 'lib/getValuesArrayFromQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import getNetworkValidationActionText from 'lib/networks/getNetworkValidationActionText';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import { zetaChainCCTXItem } from 'mocks/zetaChain/zetaChainCCTX';
+import { ZETA_CHAIN_CCTX_LIST_ITEM } from 'stubs/zetaChainCCTX';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import { getDurationFromAge } from 'ui/advancedFilter/lib';
 import Pagination from 'ui/shared/pagination/Pagination';
@@ -69,7 +69,7 @@ const ZetaChainCCTXsTab = () => {
       direction: 'DESC',
     },
     options: {
-      placeholderData: { items: Array(50).fill(zetaChainCCTXItem), next_page_params: { limit: 0, page_key: 0, direction: Direction.DESC } },
+      placeholderData: { items: Array(50).fill(ZETA_CHAIN_CCTX_LIST_ITEM), next_page_params: { limit: 0, page_key: 0, direction: Direction.DESC } },
       enabled: tab === 'cctx' || tab === 'cctx_mined',
     },
     hasNextPageFn,
@@ -85,7 +85,7 @@ const ZetaChainCCTXsTab = () => {
       direction: 'DESC',
     },
     options: {
-      placeholderData: { items: Array(50).fill(zetaChainCCTXItem), next_page_params: { limit: 0, page_key: 0, direction: Direction.DESC } },
+      placeholderData: { items: Array(50).fill(ZETA_CHAIN_CCTX_LIST_ITEM), next_page_params: { limit: 0, page_key: 0, direction: Direction.DESC } },
       enabled: tab === 'cctx_pending',
     },
     hasNextPageFn,
