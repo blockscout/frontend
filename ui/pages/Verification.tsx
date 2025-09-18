@@ -125,7 +125,7 @@ const ObjectDetails: NextPage = () => {
           Block: v.block_number,
           Method: v.decoded.method_call.split('(')[0],
           'From/To': [ item.from.hash, v.smart_contract.hash ],
-          Time: new Date(item.timestamp).toLocaleString('en-US', { timeZone: 'Asia/Shanghai', hour12: false }),
+          Time: new Date(item.timestamp).toLocaleString('en-US', { hour12: false }),
           'Value MOCA': item.value,
           'Fee MOCA': truncateToSignificantDigits(BigNumber(item.base_fee_per_gas / 1e18).toString(10), 3).toString(10),
         });
