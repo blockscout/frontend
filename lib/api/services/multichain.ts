@@ -1,6 +1,6 @@
 import type { ApiResource } from '../types';
 import type * as multichain from '@blockscout/multichain-aggregator-types';
-import type { AddressTokensResponse } from 'types/client/multichain-aggregator';
+import type { AddressTokensResponse, TokensResponse } from 'types/client/multichain-aggregator';
 
 export const MULTICHAIN_API_RESOURCES = {
   address: {
@@ -13,6 +13,11 @@ export const MULTICHAIN_API_RESOURCES = {
     paginated: true,
     filterFields: [ 'chain_id' as const, 'type' as const ],
   },
+  tokens: {
+    path: '/tokens',
+    filterFields: [ 'chain_id' as const, 'type' as const ],
+    paginated: true,
+  },
 } satisfies Record<string, ApiResource>;
 
 export type MultichainApiResourceName = `multichain:${ keyof typeof MULTICHAIN_API_RESOURCES }`;
@@ -21,11 +26,13 @@ export type MultichainApiResourceName = `multichain:${ keyof typeof MULTICHAIN_A
 export type MultichainApiResourcePayload<R extends MultichainApiResourceName> =
 R extends 'multichain:address' ? multichain.GetAddressResponse :
 R extends 'multichain:address_tokens' ? AddressTokensResponse :
+R extends 'multichain:tokens' ? TokensResponse :
 never;
 /* eslint-enable @stylistic/indent */
 
 /* eslint-disable @stylistic/indent */
 export type MultichainApiPaginationFilters<R extends MultichainApiResourceName> =
 R extends 'multichain:address_tokens' ? Partial<multichain.ListAddressTokensRequest> :
+R extends 'multichain:tokens' ? Partial<multichain.ListClusterTokensRequest> :
 never;
 /* eslint-enable @stylistic/indent */

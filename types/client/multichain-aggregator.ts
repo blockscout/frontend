@@ -25,3 +25,7 @@ export interface AddressTokenItem extends Omit<multichain.ListAddressTokensRespo
 export interface AddressTokensResponse extends Omit<multichain.ListAddressTokensResponse, 'items'> {
   items: Array<AddressTokenItem>;
 }
+
+export interface TokensResponse extends Omit<multichain.ListClusterTokensResponse, 'items'> {
+  items: Array<AggregatedTokenInfo>;
+}
