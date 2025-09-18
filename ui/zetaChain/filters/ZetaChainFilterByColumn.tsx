@@ -98,6 +98,7 @@ const ZetaChainFilterByColumn = ({ column, filters, columnName, handleFilterChan
           holders_count: null,
           exchange_rate: null,
           circulating_market_cap: null,
+          reputation: null,
         };
       }
 

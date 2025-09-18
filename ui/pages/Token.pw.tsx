@@ -92,6 +92,22 @@ test('bridged token', async({ render, page, createSocket, mockApiResponse, mockA
   });
 });
 
+test('scam token', async({ render, page, createSocket, mockApiResponse, mockEnvs }) => {
+  await mockEnvs([
+    [ 'NEXT_PUBLIC_VIEWS_TOKEN_SCAM_TOGGLE_ENABLED', 'true' ],
+  ]);
+  await mockApiResponse('general:token', { ...tokenInfo, reputation: 'scam' }, { pathParams: { hash } });
+  const component = await render(<Token/>, { hooksConfig }, { withSocket: true });
+
+  const socket = await createSocket();
+  await socketServer.joinChannel(socket, `tokens:${ hash }`);
+
+  await expect(component).toHaveScreenshot({
+    mask: [ page.locator(pwConfig.adsBannerSelector) ],
+    maskColor: pwConfig.maskColor,
+  });
+});
+
 test.describe('mobile', () => {
   test.use({ viewport: devices['iPhone 13 Pro'].viewport });
 

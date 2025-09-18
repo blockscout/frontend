@@ -35,6 +35,7 @@ export const mintToken: TxStateChange = {
     total_supply: '10645',
     type: 'ERC-721',
     icon_url: null,
+    reputation: 'ok',
   },
   type: 'token' as const,
 };
@@ -74,6 +75,7 @@ export const receiveMintedToken: TxStateChange = {
     total_supply: '10645',
     type: 'ERC-721',
     icon_url: null,
+    reputation: 'ok',
   },
   type: 'token' as const,
 };
@@ -105,6 +107,7 @@ export const transfer1155Token: TxStateChange = {
     symbol: null,
     total_supply: null,
     type: 'ERC-1155',
+    reputation: 'ok',
   },
   token_id: '1',
   type: 'token' as const,
@@ -177,6 +180,7 @@ export const sendERC20Token: TxStateChange = {
     symbol: 'USDT',
     total_supply: '39030615894320966',
     type: 'ERC-20' as const,
+    reputation: 'ok',
   },
   type: 'token' as const,
 };

@@ -141,6 +141,7 @@
 	| "rocket_xl"
 	| "rocket"
 	| "RPC"
+	| "scam"
 	| "scope"
 	| "score/score-not-ok"
 	| "score/score-ok"

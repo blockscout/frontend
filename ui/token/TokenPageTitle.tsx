@@ -12,6 +12,7 @@ import type { ResourceError } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import { getTokenTypeName } from 'lib/token/tokenTypes';
+import { Alert } from 'toolkit/chakra/alert';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import AddressMetadataAlert from 'ui/address/details/AddressMetadataAlert';
 import AddressQrCode from 'ui/address/details/AddressQrCode';
@@ -19,6 +20,7 @@ import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu'
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
+import { Reputation } from 'ui/shared/entities/token/TokenEntity';
 import EntityTags from 'ui/shared/EntityTags/EntityTags';
 import formatUserTags from 'ui/shared/EntityTags/formatUserTags';
 import sortEntityTags from 'ui/shared/EntityTags/sortEntityTags';
@@ -92,6 +94,7 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, hash }: Props) => {
 
   const contentAfter = (
     <>
+      { tokenQuery.data && <Reputation token={ tokenQuery.data }/> }
       { verifiedInfoQuery.data?.tokenAddress && (
         <Tooltip content={ `Information on this token has been verified by ${ config.chain.name }` }>
           <IconSvg name="certified" color="green.500" boxSize={ 6 } cursor="pointer"/>
@@ -144,6 +147,11 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, hash }: Props) => {
         contentAfter={ contentAfter }
         secondRow={ secondRow }
       />
+      { tokenQuery.data?.reputation === 'scam' && (
+        <Alert status="error" mt="-4px" mb={ 6 } width="fit-content">
+          This token has been flagged as a potential scam.
+        </Alert>
+      ) }
       { !addressMetadataQuery.isPending &&
         <AddressMetadataAlert tags={ addressMetadataQuery.data?.addresses?.[hash.toLowerCase()]?.tags } mt="-4px" mb={ 6 }/> }
     </>

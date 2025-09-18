@@ -112,6 +112,7 @@ const ZetaChainAssetFilter = ({ value = null, handleFilterChange }: Props) => {
       holders_count: null,
       exchange_rate: null,
       circulating_market_cap: null,
+      reputation: null,
     } : token;
     setCurrentValue(tokenInfo);
     const filterParams = getFilterParamsFromValue(tokenInfo);
