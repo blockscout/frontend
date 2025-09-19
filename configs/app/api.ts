@@ -1,16 +1,11 @@
 import stripTrailingSlash from 'lib/stripTrailingSlash';
 
-import { getApiHost, getEnvValue } from './utils';
+import { getApiHost, getEnvValue, getStatsApiHost } from './utils';
 
 const apiHost = getApiHost();
 const apiSchema = getEnvValue('NEXT_PUBLIC_API_PROTOCOL') || 'https';
 const apiPort = getEnvValue('NEXT_PUBLIC_API_PORT');
-const apiEndpoint = [
-  apiSchema || 'https',
-  '://',
-  apiHost,
-  apiPort && ':' + apiPort,
-].filter(Boolean).join('');
+const apiEndpoint = getStatsApiHost();
 
 const socketSchema = getEnvValue('NEXT_PUBLIC_API_WEBSOCKET_PROTOCOL') || 'wss';
 const socketEndpoint = [

@@ -39,7 +39,7 @@ export const getStatsApiHost = () => {
   const env = getEnvValue('NEXT_PUBLIC_CHAIN');
   const value = env === 'devnet' ? DEVNET_EXPLORER_URL : TESTNET_EXPLORER_URL;
 
-  return value + ':8080';
+  return value;
 };
 
 export const getVisualizeApiHost = () => {
