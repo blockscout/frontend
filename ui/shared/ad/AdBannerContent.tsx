@@ -7,6 +7,7 @@ import type { AdBannerProviders } from 'types/client/adProviders';
 import config from 'configs/app';
 import useAccount from 'lib/web3/useAccount';
 import { Skeleton } from 'toolkit/chakra/skeleton';
+import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
 
 import AdbutlerBanner from './AdbutlerBanner';
 import CoinzillaBanner from './CoinzillaBanner';
@@ -15,6 +16,7 @@ import SliseBanner from './SliseBanner';
 import SpecifyBanner from './SpecifyBanner';
 
 const feature = config.features.adsBanner;
+const isSpecifyEnabled = feature.isEnabled && feature.isSpecifyEnabled;
 
 interface Props {
   className?: string;
@@ -24,24 +26,20 @@ interface Props {
 }
 
 const AdBannerContent = ({ className, isLoading, provider, platform }: Props) => {
-  const { address } = useAccount();
-  const [ showSpecify, setShowSpecify ] = React.useState(feature.isEnabled && feature.isSpecifyEnabled && Boolean(address));
-
-  React.useEffect(() => {
-    if (feature.isEnabled && feature.isSpecifyEnabled && Boolean(address)) {
-      setShowSpecify(true);
-    } else {
-      setShowSpecify(false);
-    }
-  }, [ address ]);
+  const { address: addressWC } = useAccount();
+  const profileQuery = useProfileQuery();
+  const [ showSpecify, setShowSpecify ] = React.useState(isSpecifyEnabled);
 
   const handleEmptySpecify = React.useCallback(() => {
     setShowSpecify(false);
   }, []);
 
+  const address = addressWC || profileQuery.data?.address_hash as `0x${ string }` | undefined;
+
   const content = (() => {
-    if (showSpecify) {
-      return <SpecifyBanner platform={ platform } address={ address as `0x${ string }` } onEmpty={ handleEmptySpecify }/>;
+    if (showSpecify && (address || profileQuery.isLoading)) {
+      const isLoading = address ? false : profileQuery.isLoading;
+      return <SpecifyBanner platform={ platform } address={ address } onEmpty={ handleEmptySpecify } isLoading={ isLoading }/>;
     }
     switch (provider) {
       case 'adbutler':
