@@ -16,6 +16,7 @@ export function marketplace(): CspDev.DirectiveDescriptor {
       'https://registry.npmjs.org/',
       'https://*.multisender.app/',
       'https://*.blockscout.com/api/eth-rpc',
+      'https://chains.blockscout.com/',
     ],
 
     'frame-src': [

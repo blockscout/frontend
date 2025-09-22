@@ -11,14 +11,14 @@ import ApprovalsTableItem from './ApprovalsTableItem';
 // type SortDirection = 'asc' | 'desc' | null;
 
 type Props = {
-  selectedNetwork: number;
+  selectedChainId: number;
   approvals: Array<AllowanceType>;
   isLoading?: boolean;
   isAddressMatch?: boolean;
 };
 
 export default function ApprovalsTable({
-  selectedNetwork,
+  selectedChainId,
   approvals,
   isLoading,
   isAddressMatch,
@@ -86,7 +86,7 @@ export default function ApprovalsTable({
           { approvals.map((approval, index) => (
             <ApprovalsTableItem
               key={ index }
-              selectedNetwork={ selectedNetwork }
+              selectedChainId={ selectedChainId }
               approval={ approval }
               isLoading={ isLoading }
               isAddressMatch={ isAddressMatch }

@@ -15,19 +15,19 @@ import DateEntity from './DateEntity';
 import NumberEntity from './NumberEntity';
 
 type Props = {
-  selectedNetwork: number;
+  selectedChainId: number;
   approval: AllowanceType;
   isLoading?: boolean;
   isAddressMatch?: boolean;
 };
 
 export default function ApprovalsListItem({
-  selectedNetwork,
+  selectedChainId,
   approval,
   isLoading,
   isAddressMatch,
 }: Props) {
-  const revoke = useRevoke(approval, selectedNetwork);
+  const revoke = useRevoke(approval, selectedChainId);
 
   const allowance = formatAllowance(approval);
 
@@ -64,7 +64,7 @@ export default function ApprovalsListItem({
             truncation="constant"
             noIcon
             isLoading={ isLoading }
-            href={ `${ EXPLORER_URLS[selectedNetwork] }/token/${ approval.address }` }
+            href={ `${ EXPLORER_URLS[selectedChainId] }/token/${ approval.address }` }
           />
         </Flex>
       </Flex>

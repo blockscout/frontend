@@ -12,17 +12,18 @@ import EmptySearchResult from 'ui/shared/EmptySearchResult';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 
 import Approvals from './components/Approvals';
+import ChainSelect from './components/ChainSelect';
 import StartScreen from './components/StartScreen';
 import useApprovalsQuery from './hooks/useApprovalsQuery';
 import useCoinBalanceQuery from './hooks/useCoinBalanceQuery';
 import { EXPLORER_URLS } from './lib/chainUrls';
 
 const Revoke = () => {
-  const [ selectedNetwork, setSelectedNetwork ] = useState<number>(1);
+  const [ selectedChainId, setSelectedChainId ] = useState<number>(1);
   const { address: connectedAddress } = useAccount();
   const [ searchAddress, setSearchAddress ] = React.useState('');
-  const approvalsQuery = useApprovalsQuery(selectedNetwork, searchAddress);
-  const coinBalanceQuery = useCoinBalanceQuery(selectedNetwork, searchAddress);
+  const approvalsQuery = useApprovalsQuery(selectedChainId, searchAddress);
+  const coinBalanceQuery = useCoinBalanceQuery(selectedChainId, searchAddress);
 
   const isValidAddress = useMemo(
     () => isAddress(searchAddress.toLowerCase()),
@@ -57,8 +58,8 @@ const Revoke = () => {
     return Number(sum.toFixed(2)).toLocaleString('en-US');
   }, [ approvalsQuery ]);
 
-  const handleNetworkChange = useCallback((network: number) => {
-    setSelectedNetwork(network);
+  const handleChainChange = useCallback((chainId: number) => {
+    setSelectedChainId(chainId);
   }, []);
 
   const handleSearch = useCallback(async(address: string) => {
@@ -84,10 +85,10 @@ const Revoke = () => {
 
   const handleExampleClick = useCallback(
     (address: string) => () => {
-      handleNetworkChange(1);
+      handleChainChange(1);
       handleSearch(address);
     },
-    [ handleSearch, handleNetworkChange ],
+    [ handleSearch, handleChainChange ],
   );
 
   useEffect(() => {
@@ -98,7 +99,7 @@ const Revoke = () => {
 
   let content = <StartScreen/>;
 
-  if (searchAddress && selectedNetwork) {
+  if (searchAddress && selectedChainId) {
     content = isValidAddress ? (
       <Flex flexDir="column" w="full">
         <Flex flexDir={{ base: 'column', lg: 'row' }} gap={ 2 } mb={ 6 }>
@@ -111,18 +112,24 @@ const Revoke = () => {
             p={ 6 }
             borderRadius="base"
           >
-            <Flex gap={ 2 } alignItems="center">
-              <AddressEntity
-                address={{ hash: searchAddress }}
-                truncation="constant"
-                textStyle="heading.md"
-                fontWeight="500"
-                variant="heading"
-                noLink
+            <Flex gap={ 3 } alignItems="center" justifyContent="space-between" w="full">
+              <Flex gap={ 2 } alignItems="center">
+                <AddressEntity
+                  address={{ hash: searchAddress }}
+                  truncation="constant"
+                  textStyle="heading.md"
+                  fontWeight="500"
+                  variant="heading"
+                  noLink
+                />
+                <Badge colorPalette={ isAddressMatch ? 'green' : 'gray' }>
+                  { isAddressMatch ? 'Connected' : 'Not connected' }
+                </Badge>
+              </Flex>
+              <ChainSelect
+                selectedChainId={ selectedChainId }
+                changeChain={ handleChainChange }
               />
-              <Badge colorPalette={ isAddressMatch ? 'green' : 'gray' }>
-                { isAddressMatch ? 'Connected' : 'Not connected' }
-              </Badge>
             </Flex>
             <Flex
               flexDir={{ base: 'column', md: 'row' }}
@@ -155,7 +162,7 @@ const Revoke = () => {
                 ) }
               </Skeleton>
               <Link
-                href={ `${ EXPLORER_URLS[selectedNetwork] }/address/${ searchAddress }` }
+                href={ `${ EXPLORER_URLS[selectedChainId] }/address/${ searchAddress }` }
                 external
                 textStyle="sm"
                 fontWeight="500"
@@ -220,7 +227,7 @@ const Revoke = () => {
           </Flex>
         </Flex>
         <Approvals
-          selectedNetwork={ selectedNetwork }
+          selectedChainId={ selectedChainId }
           approvals={ approvalsQuery.data || [] }
           isLoading={ approvalsQuery.isPlaceholderData }
           isAddressMatch={ isAddressMatch }

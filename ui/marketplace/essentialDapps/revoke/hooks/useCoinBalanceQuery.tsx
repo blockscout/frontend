@@ -4,17 +4,17 @@ import { usePublicClient } from 'wagmi';
 
 import { API_URLS } from '../lib/chainUrls';
 
-export default function useCoinBalanceQuery(selectedNetwork: number, userAddress: string) {
-  const publicClient = usePublicClient({ chainId: selectedNetwork });
+export default function useCoinBalanceQuery(chainId: number, userAddress: string) {
+  const publicClient = usePublicClient({ chainId });
 
   return useQuery({
     queryKey: [ 'revoke:coin-balance', userAddress, publicClient ],
     queryFn: async() => {
-      if (!selectedNetwork) return;
+      if (!chainId) return;
 
       const [ balanceResponse, statsResponse ] = await Promise.all([
-        fetch(`${ API_URLS[selectedNetwork] }/api/v2/addresses/${ userAddress }`),
-        fetch(`${ API_URLS[selectedNetwork] }/api/v2/stats`),
+        fetch(`${ API_URLS[chainId] }/api/v2/addresses/${ userAddress }`),
+        fetch(`${ API_URLS[chainId] }/api/v2/stats`),
       ]);
 
       const balanceData = (await balanceResponse.json()) as {
@@ -60,7 +60,7 @@ export default function useCoinBalanceQuery(selectedNetwork: number, userAddress
     enabled:
       Boolean(userAddress) &&
       isAddress(userAddress) &&
-      Boolean(selectedNetwork),
+      Boolean(chainId),
     placeholderData: {
       balance: '10000',
       balanceUsd: '10000',

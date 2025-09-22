@@ -15,19 +15,19 @@ import DateEntity from './DateEntity';
 import NumberEntity from './NumberEntity';
 
 type Props = {
-  selectedNetwork: number;
+  selectedChainId: number;
   approval: AllowanceType;
   isLoading?: boolean;
   isAddressMatch?: boolean;
 };
 
 export default function ApprovalsTableItem({
-  selectedNetwork,
+  selectedChainId,
   approval,
   isLoading,
   isAddressMatch,
 }: Props) {
-  const revoke = useRevoke(approval, selectedNetwork);
+  const revoke = useRevoke(approval, selectedChainId);
 
   const allowance = formatAllowance(approval);
 
@@ -48,7 +48,7 @@ export default function ApprovalsTableItem({
             jointSymbol
             textStyle="sm"
             fontWeight="600"
-            href={ `${ EXPLORER_URLS[selectedNetwork] }/token/${ approval.address }` }
+            href={ `${ EXPLORER_URLS[selectedChainId] }/token/${ approval.address }` }
             isExternal
             link={{ noIcon: true }}
           />
@@ -57,7 +57,7 @@ export default function ApprovalsTableItem({
             truncation="constant"
             noIcon
             isLoading={ isLoading }
-            href={ `${ EXPLORER_URLS[selectedNetwork] }/token/${ approval.address }` }
+            href={ `${ EXPLORER_URLS[selectedChainId] }/token/${ approval.address }` }
             isExternal
             link={{ variant: 'secondary', noIcon: true }}
           />
@@ -69,7 +69,7 @@ export default function ApprovalsTableItem({
           truncation="constant"
           noIcon
           isLoading={ isLoading }
-          href={ `${ EXPLORER_URLS[selectedNetwork] }/address/${ approval.spender }` }
+          href={ `${ EXPLORER_URLS[selectedChainId] }/address/${ approval.spender }` }
           isExternal
           link={{ noIcon: true }}
         />

@@ -61,8 +61,8 @@ declare global {
 //   );
 // }
 
-export default function useRevoke(approval: AllowanceType, selectedNetwork: number) {
-  const connectedNetwork = useChainId();
+export default function useRevoke(approval: AllowanceType, chainId: number) {
+  const connectedChainId = useChainId();
   const { address: userAddress } = useAccount();
   const { switchChainAsync } = useSwitchChain();
   const { writeContractAsync } = useWriteContract();
@@ -80,7 +80,7 @@ export default function useRevoke(approval: AllowanceType, selectedNetwork: numb
     abi: isErc20 ? ERC20Artifact.abi : NftArtifact.abi,
     functionName: isErc20 ? 'approve' : 'setApprovalForAll',
     args: [ approval.spender, isErc20 ? 0 : false ],
-    chainId: selectedNetwork,
+    chainId,
   });
 
   const {
@@ -89,7 +89,7 @@ export default function useRevoke(approval: AllowanceType, selectedNetwork: numb
     isError: isFailed,
   } = useWaitForTransactionReceipt({
     hash: txHash,
-    chainId: selectedNetwork,
+    chainId,
   });
 
   useEffect(() => {
@@ -133,10 +133,10 @@ export default function useRevoke(approval: AllowanceType, selectedNetwork: numb
 
   const revoke = useCallback(async() => {
     try {
-      if (!selectedNetwork) return;
+      if (!chainId) return;
 
-      if (connectedNetwork !== selectedNetwork) {
-        await switchChainAsync({ chainId: selectedNetwork });
+      if (connectedChainId !== chainId) {
+        await switchChainAsync({ chainId });
       }
 
       if (simulationResult?.request) {
@@ -172,8 +172,8 @@ export default function useRevoke(approval: AllowanceType, selectedNetwork: numb
     simulationResult,
     writeContractAsync,
     switchChainAsync,
-    connectedNetwork,
-    selectedNetwork,
+    connectedChainId,
+    chainId,
   ]);
 
   return {

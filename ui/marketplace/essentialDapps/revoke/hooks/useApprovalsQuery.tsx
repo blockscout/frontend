@@ -5,8 +5,8 @@ import { usePublicClient } from 'wagmi';
 import searchAllowances from '../lib/searchAllowances';
 import allowancesStub from '../lib/stubs/allowances';
 
-export default function useApprovalsQuery(selectedNetwork: number, userAddress: string) {
-  const publicClient = usePublicClient({ chainId: selectedNetwork });
+export default function useApprovalsQuery(chainId: number, userAddress: string) {
+  const publicClient = usePublicClient({ chainId });
 
   return useQuery({
     queryKey: [ 'revoke:approvals', userAddress, publicClient ],
