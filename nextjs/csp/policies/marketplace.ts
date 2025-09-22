@@ -13,10 +13,9 @@ export function marketplace(): CspDev.DirectiveDescriptor {
     'connect-src': [
       'api' in feature ? feature.api.endpoint : '',
       'https://li.quest/', // TODO: check essential dapps feature
-      'https://ethereum-rpc.publicnode.com/',
-      'https://eth.drpc.org/',
       'https://registry.npmjs.org/',
       'https://*.multisender.app/',
+      'https://*.blockscout.com/api/eth-rpc',
     ],
 
     'frame-src': [

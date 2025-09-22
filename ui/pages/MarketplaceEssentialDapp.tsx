@@ -3,6 +3,7 @@ import React from 'react';
 
 import getQueryParamString from 'lib/router/getQueryParamString';
 import Multisend from 'ui/marketplace/essentialDapps/multisend/Multisend';
+import Revoke from 'ui/marketplace/essentialDapps/revoke/Revoke';
 import Swap from 'ui/marketplace/essentialDapps/swap/Swap';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
@@ -20,7 +21,7 @@ const EssentialDapp = () => {
       break;
     case 'revoke':
       title = 'Revoke';
-      content = <div>To be implemented</div>;
+      content = <Revoke/>;
       break;
     case 'multisend':
       title = 'Multisend';

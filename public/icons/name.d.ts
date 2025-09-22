@@ -135,6 +135,7 @@
 	| "refresh"
 	| "repeat"
 	| "restAPI"
+	| "return"
 	| "rocket_xl"
 	| "rocket"
 	| "RPC"

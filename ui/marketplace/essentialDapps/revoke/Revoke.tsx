@@ -1,0 +1,289 @@
+import { chakra, Box, Flex, Text, Separator } from '@chakra-ui/react';
+import React, { useMemo, useCallback, useEffect, useState } from 'react';
+import { isAddress } from 'viem';
+import { useAccount } from 'wagmi';
+
+import { Badge } from 'toolkit/chakra/badge';
+import { Image } from 'toolkit/chakra/image';
+import { Link } from 'toolkit/chakra/link';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { FilterInput } from 'toolkit/components/filters/FilterInput';
+import EmptySearchResult from 'ui/shared/EmptySearchResult';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+
+import Approvals from './components/Approvals';
+import StartScreen from './components/StartScreen';
+import useApprovalsQuery from './hooks/useApprovalsQuery';
+import useCoinBalanceQuery from './hooks/useCoinBalanceQuery';
+import { EXPLORER_URLS } from './lib/chainUrls';
+
+const Revoke = () => {
+  const [ selectedNetwork, setSelectedNetwork ] = useState<number>(1);
+  const { address: connectedAddress } = useAccount();
+  const [ searchAddress, setSearchAddress ] = React.useState('');
+  const approvalsQuery = useApprovalsQuery(selectedNetwork, searchAddress);
+  const coinBalanceQuery = useCoinBalanceQuery(selectedNetwork, searchAddress);
+
+  const isValidAddress = useMemo(
+    () => isAddress(searchAddress.toLowerCase()),
+    [ searchAddress ],
+  );
+
+  const isAddressMatch = useMemo(
+    () => searchAddress.toLowerCase() === connectedAddress?.toLowerCase(),
+    [ searchAddress, connectedAddress ],
+  );
+
+  const totalValueAtRiskUsd = useMemo(() => {
+    if (approvalsQuery.isPlaceholderData || !approvalsQuery.data) return 0;
+
+    const maxValues: Record<`0x${ string }`, number> = {};
+
+    approvalsQuery.data.forEach((item) => {
+      const { address, valueAtRiskUsd } = item;
+
+      if (!valueAtRiskUsd) return;
+
+      if (
+        maxValues[address] === undefined ||
+        valueAtRiskUsd > maxValues[address]
+      ) {
+        maxValues[address] = valueAtRiskUsd;
+      }
+    });
+
+    const sum = Object.values(maxValues).reduce((sum, val) => sum + val, 0);
+
+    return Number(sum.toFixed(2)).toLocaleString('en-US');
+  }, [ approvalsQuery ]);
+
+  const handleNetworkChange = useCallback((network: number) => {
+    setSelectedNetwork(network);
+  }, []);
+
+  const handleSearch = useCallback(async(address: string) => {
+    // if (address.endsWith('.eth')) {
+    //   const ensAddress = await getEnsAddress(wagmiAdapter.wagmiConfig, {
+    //     chainId: mainnet.id,
+    //     name: normalize(address),
+    //   });
+    //   if (ensAddress) {
+    //     setSearchAddress(ensAddress.toLowerCase());
+    //     return;
+    //   }
+    // }
+    setSearchAddress(address.toLowerCase());
+  }, []);
+
+  const handleFormSubmit = useCallback(async(event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.target as HTMLFormElement);
+    const address = formData.get('address') as string;
+    handleSearch(address);
+  }, [ handleSearch ]);
+
+  const handleExampleClick = useCallback(
+    (address: string) => () => {
+      handleNetworkChange(1);
+      handleSearch(address);
+    },
+    [ handleSearch, handleNetworkChange ],
+  );
+
+  useEffect(() => {
+    if (connectedAddress) {
+      setSearchAddress(connectedAddress);
+    }
+  }, [ connectedAddress ]);
+
+  let content = <StartScreen/>;
+
+  if (searchAddress && selectedNetwork) {
+    content = isValidAddress ? (
+      <Flex flexDir="column" w="full">
+        <Flex flexDir={{ base: 'column', lg: 'row' }} gap={ 2 } mb={ 6 }>
+          <Flex
+            flexDir="column"
+            alignItems="flex-start"
+            flex={ 1 }
+            bg="blackAlpha.50"
+            gap={ 3 }
+            p={ 6 }
+            borderRadius="base"
+          >
+            <Flex gap={ 2 } alignItems="center">
+              <AddressEntity
+                address={{ hash: searchAddress }}
+                truncation="constant"
+                textStyle="heading.md"
+                fontWeight="500"
+                variant="heading"
+                noLink
+              />
+              <Badge colorPalette={ isAddressMatch ? 'green' : 'gray' }>
+                { isAddressMatch ? 'Connected' : 'Not connected' }
+              </Badge>
+            </Flex>
+            <Flex
+              flexDir={{ base: 'column', md: 'row' }}
+              gap={ 3 }
+              alignItems={{ base: 'flex-start', md: 'center' }}
+            >
+              <Skeleton
+                loading={ coinBalanceQuery.isPlaceholderData }
+                as={ Flex }
+                gap={ 3 }
+              >
+                { (coinBalanceQuery.isPlaceholderData ||
+                  coinBalanceQuery.data) && (
+                  <>
+                    <Flex gap={ 2 } alignItems="center" ml="5px">
+                      <Image
+                        src={ coinBalanceQuery.data?.coinImage }
+                        alt={ coinBalanceQuery.data?.symbol }
+                        boxSize={ 5 }
+                      />
+                      <Text textStyle="sm" fontWeight="500">
+                        { coinBalanceQuery.data?.balance }{ ' ' }
+                        { coinBalanceQuery.data?.symbol }
+                      </Text>
+                    </Flex>
+                    <Text textStyle="sm" fontWeight="500" color="gray.500">
+                      ${ coinBalanceQuery.data?.balanceUsd }
+                    </Text>
+                  </>
+                ) }
+              </Skeleton>
+              <Link
+                href={ `${ EXPLORER_URLS[selectedNetwork] }/address/${ searchAddress }` }
+                external
+                textStyle="sm"
+                fontWeight="500"
+                noIcon
+              >
+                View details
+              </Link>
+            </Flex>
+          </Flex>
+          <Flex
+            w={{ base: 'full', lg: '400px' }}
+            bg="blackAlpha.50"
+            p={ 6 }
+            borderRadius="base"
+          >
+            <Flex
+              flexDir="column"
+              flex={ 1 }
+              justifyContent="center"
+              alignItems="center"
+              gap={ 2 }
+            >
+              <Text textStyle="sm" fontWeight="500" color="gray.500">
+                Total approvals
+              </Text>
+              <Skeleton
+                loading={ approvalsQuery.isPlaceholderData }
+                minW="40px"
+                textAlign="center"
+              >
+                <Text textStyle={{ base: 'md', md: 'lg' }} fontWeight="500">
+                  { approvalsQuery.data?.length || 0 }
+                </Text>
+              </Skeleton>
+            </Flex>
+            <Separator
+              orientation="vertical"
+              bgColor="divider"
+              opacity={ 1 }
+              mx={{ base: 4, md: 8 }}
+            />
+            <Flex
+              flexDir="column"
+              flex={ 1 }
+              justifyContent="center"
+              alignItems="center"
+              gap={ 2 }
+            >
+              <Text textStyle="sm" fontWeight="500" color="gray.500">
+                Total value at risk
+              </Text>
+              <Skeleton
+                loading={ approvalsQuery.isPlaceholderData }
+                minW="40px"
+                textAlign="center"
+              >
+                <Text textStyle={{ base: 'md', md: 'lg' }} fontWeight="500">
+                  ${ totalValueAtRiskUsd }
+                </Text>
+              </Skeleton>
+            </Flex>
+          </Flex>
+        </Flex>
+        <Approvals
+          selectedNetwork={ selectedNetwork }
+          approvals={ approvalsQuery.data || [] }
+          isLoading={ approvalsQuery.isPlaceholderData }
+          isAddressMatch={ isAddressMatch }
+        />
+      </Flex>
+    ) : (
+      <EmptySearchResult text="Enter a correct 0x address to search"/>
+    );
+  }
+
+  return (
+    <Flex flexDir="column" w="full" gap={{ base: 6, md: 12 }}>
+      <Flex flexDir="column" w="full" gap={ 3 }>
+        <chakra.form
+          onSubmit={ handleFormSubmit }
+          noValidate
+          w="full"
+        >
+          <FilterInput
+            name="address"
+            w="full"
+            size="sm"
+            placeholder="Search accounts by address..."
+          />
+        </chakra.form>
+        <Flex
+          gap={ 3 }
+          alignItems="center"
+          h="32px"
+          overflowX="auto"
+          css={{
+            '-ms-overflow-style': 'none',
+            scrollbarWidth: 'none',
+            '&::-webkit-scrollbar': {
+              display: 'none',
+            },
+          }}
+        >
+          <Text textStyle="sm" fontWeight="500" color="text.secondary">
+            Examples
+          </Text>
+          { [
+            '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045',
+            '0xFe89cc7aBB2C4183683ab71653C4cdc9B02D44b7',
+            '0xf6B6F07862A02C85628B3A9688beae07fEA9C863',
+          ].map((address) => (
+            <Box key={ address } onClick={ handleExampleClick(address) } cursor="pointer">
+              <AddressEntity
+                address={{ hash: address }}
+                truncation="constant"
+                noTooltip
+                noLink
+                noCopy
+                textStyle="sm"
+                fontWeight="600"
+              />
+            </Box>
+          )) }
+        </Flex>
+      </Flex>
+      { content }
+    </Flex>
+  );
+};
+
+export default Revoke;
