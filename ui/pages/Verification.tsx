@@ -117,12 +117,12 @@ const ObjectDetails: NextPage = () => {
 
   const pushTableList = React.useCallback(async(params: LogsRequestParams, arr: Array<any>) => {
     const tableList: Array<IssuanceTalbeListType> = [];
-    params.items.forEach((v: any) => {
+    for (const v of params.items) {
       const item = arr.find((v2: any) => v2.hash === v.transaction_hash);
       if (item) {
         tableList.push({
           'Txn hash': v.transaction_hash,
-          Block: v.block_number,
+          Block: v.block_number.toString(),
           Method: v.decoded.method_call.split('(')[0],
           'From/To': [ item.from.hash, v.smart_contract.hash ],
           Time: new Date(item.timestamp).toLocaleString('en-US', { hour12: false }),
@@ -130,23 +130,11 @@ const ObjectDetails: NextPage = () => {
           'Fee MOCA': truncateToSignificantDigits(BigNumber(item.base_fee_per_gas / 1e18).toString(10), 3).toString(10),
         });
       } else {
-        tableList.push({
-          'Txn hash': v.transaction_hash,
-          Block: v.block_number,
-          Method: v.decoded.method_call.split('(')[0],
-          'From/To': [ '', v.smart_contract.hash ],
-          Time: '',
-          'Value MOCA': '',
-          'Fee MOCA': '0',
-        });
+        const newItems = await getTransactions(v.smart_contract.hash, arr);
+        pushTableList(params, newItems);
+        return;
       }
-    });
-    const noneData = tableList.find((v: any) => v['From/To'][0] === '');
-    if (noneData) {
-      const newItems = await getTransactions(noneData['From/To'][1], arr);
-      pushTableList(params, newItems);
-      return;
-    }
+    };
     setMapValue(queryParams.page.toString(), new URLSearchParams(
       Object.entries(params.next_page_params).map(([ k, v ]) => [ k, String(v) ]),
     ).toString());
