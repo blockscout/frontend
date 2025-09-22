@@ -2,8 +2,6 @@ import { Grid } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
-import type { HomeStatsWidgetId } from 'types/homepage';
-
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import { HOMEPAGE_STATS, HOMEPAGE_STATS_MICROSERVICE } from 'stubs/stats';
@@ -11,8 +9,10 @@ import { WEI } from 'toolkit/utils/consts';
 import GasInfoTooltip from 'ui/shared/gas/GasInfoTooltip';
 import GasPrice from 'ui/shared/gas/GasPrice';
 import IconSvg from 'ui/shared/IconSvg';
-import type { Props as StatsWidgetProps } from 'ui/shared/stats/StatsWidget';
 import StatsWidget from 'ui/shared/stats/StatsWidget';
+
+import type { HomeStatsItem } from './utils';
+import { isHomeStatsItemEnabled, sortHomeStatsItems } from './utils';
 
 const rollupFeature = config.features.rollup;
 const isOptimisticRollup = rollupFeature.isEnabled && rollupFeature.type === 'optimistic';
@@ -90,14 +90,10 @@ const Stats = () => {
 
   const isLoading = isPlaceholderData || latestBatchQuery?.isPlaceholderData;
 
-  interface Item extends StatsWidgetProps {
-    id: HomeStatsWidgetId;
-  }
-
   const apiData = apiQuery.data;
   const statsData = statsQuery.data;
 
-  const items: Array<Item> = (() => {
+  const items: Array<HomeStatsItem> = (() => {
     if (!statsData && !apiData) {
       return [];
     }
@@ -208,18 +204,8 @@ const Stats = () => {
       },
     ]
       .filter(Boolean)
-      .filter(({ id }) => config.UI.homepage.stats.includes(id))
-      .sort((a, b) => {
-        const indexA = config.UI.homepage.stats.indexOf(a.id);
-        const indexB = config.UI.homepage.stats.indexOf(b.id);
-        if (indexA > indexB) {
-          return 1;
-        }
-        if (indexA < indexB) {
-          return -1;
-        }
-        return 0;
-      });
+      .filter(isHomeStatsItemEnabled)
+      .sort(sortHomeStatsItems);
   })();
 
   if (items.length === 0) {

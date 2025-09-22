@@ -59,4 +59,11 @@ export const HOMEPAGE_STATS: stats.MainPageMultichainStats = {
     units: undefined,
     description: 'Number of addresses across all chains in the cluster',
   },
+  yesterday_txns_multichain: {
+    id: 'yesterdayTxnsMultichain',
+    value: '1026175',
+    title: 'Yesterday txns',
+    units: undefined,
+    description: 'Number of transactions yesterday (0:00 - 23:59 UTC) across all chains in the cluste',
+  },
 };
