@@ -38,7 +38,7 @@ const SearchBar = ({ isHomepage }: Props) => {
 
   const recentSearchKeywords = getRecentSearchKeywords();
 
-  const { searchTerm, debouncedSearchTerm, handleSearchTermChange, query, zetaChainCCTXQuery, cosmosHashType } = useSearchWithClusters();
+  const { searchTerm, debouncedSearchTerm, handleSearchTermChange, query, zetaChainCCTXQuery, externalSearchItem } = useSearchWithClusters();
 
   const handleSubmit = React.useCallback((event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -188,7 +188,7 @@ const SearchBar = ({ isHomepage }: Props) => {
                   onItemClick={ handleItemClick }
                   containerId={ SCROLL_CONTAINER_ID }
                   zetaChainCCTXQuery={ zetaChainCCTXQuery }
-                  cosmosHashType={ cosmosHashType }
+                  externalSearchItem={ externalSearchItem }
                 />
               ) }
             </Box>

@@ -655,25 +655,23 @@ const zetaChainSchema = yup
           value => value === undefined,
         ),
       }),
-    NEXT_PUBLIC_ZETACHAIN_COSMOS_TX_URL_TEMPLATE: yup
-      .string()
+    NEXT_PUBLIC_ZETACHAIN_EXTERNAL_SEARCH_CONFIG: yup
+      .array()
+      .transform(replaceQuotes)
+      .json()
+      .of(
+        yup.object({
+          regex: yup.string().required(),
+          template: yup.string().required(),
+          name: yup.string().required(),
+        })
+      )
       .when('NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST', {
         is: (value: string) => Boolean(value),
         then: (schema) => schema,
         otherwise: (schema) => schema.test(
           'not-exist',
-          'NEXT_PUBLIC_ZETACHAIN_COSMOS_TX_URL_TEMPLATE cannot be used if NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST is not set',
-          value => value === undefined,
-        ),
-      }),
-    NEXT_PUBLIC_ZETACHAIN_COSMOS_ADDRESS_URL_TEMPLATE: yup
-      .string()
-      .when('NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST', {
-        is: (value: string) => Boolean(value),
-        then: (schema) => schema,
-        otherwise: (schema) => schema.test(
-          'not-exist',
-          'NEXT_PUBLIC_ZETACHAIN_COSMOS_ADDRESS_URL_TEMPLATE cannot be used if NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST is not set',
+          'NEXT_PUBLIC_ZETACHAIN_EXTERNAL_SEARCH_CONFIG cannot be used if NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST is not set',
           value => value === undefined,
         ),
       }),
