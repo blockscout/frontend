@@ -56,7 +56,7 @@ export const zetaChainCCTX: zetaChainCCTXType.CrossChainTx = {
   outbound_params: [
     {
       receiver: '0xcf558D29999C119425d28bF1c07ba97FfF39e387',
-      receiver_chain_id: 97,
+      receiver_chain_id: 11155111,
       coin_type: zetaChainCCTXType.CoinType.GAS,
       amount: '434880247204065094',
       tss_nonce: 62305,
@@ -83,7 +83,7 @@ export const zetaChainCCTX: zetaChainCCTXType.CrossChainTx = {
     {
       index: '0x0001150419abd8d8383fae702f3a8415e57c96e78c9815756d15e1f1f5c0f466',
       depth: 0,
-      source_chain_id: 5,
+      source_chain_id: 7001,
       status: zetaChainCCTXType.CctxStatus.OUTBOUND_MINED,
       inbound_amount: '100000000000000000',
       inbound_coin_type: zetaChainCCTXType.CoinType.GAS,
@@ -120,7 +120,7 @@ export const zetaChainCCTXFailed: zetaChainCCTXType.CrossChainTx = {
   },
   inbound_params: {
     sender: '0xDCbFA87533A478743B3f507e76170eA6F26FA69a',
-    sender_chain_id: 43113,
+    sender_chain_id: 7001,
     tx_origin: '0xDCbFA87533A478743B3f507e76170eA6F26FA69a',
     coin_type: zetaChainCCTXType.CoinType.ERC20,
     asset: '0x6B513B40eBc0B4D7B197730476ed3324346F2822',
@@ -137,7 +137,7 @@ export const zetaChainCCTXFailed: zetaChainCCTXType.CrossChainTx = {
   outbound_params: [
     {
       receiver: '0xDCbFA87533A478743B3f507e76170eA6F26FA69a',
-      receiver_chain_id: 7001,
+      receiver_chain_id: 11155111,
       coin_type: zetaChainCCTXType.CoinType.ERC20,
       amount: '0',
       tss_nonce: 0,
@@ -160,7 +160,7 @@ export const zetaChainCCTXFailed: zetaChainCCTXType.CrossChainTx = {
     },
     {
       receiver: '0xDCbFA87533A478743B3f507e76170eA6F26FA69a',
-      receiver_chain_id: 43113,
+      receiver_chain_id: 11155111,
       coin_type: zetaChainCCTXType.CoinType.ERC20,
       amount: '9999999',
       tss_nonce: 842,
@@ -195,7 +195,7 @@ export const zetaChainCCTXFailed: zetaChainCCTXType.CrossChainTx = {
     {
       index: '0x004d60b58cbbead6ddc0a100e17b88484f72e4f47b10c4b560a41cadd3315c4c',
       depth: 0,
-      source_chain_id: 43113,
+      source_chain_id: 7001,
       status: zetaChainCCTXType.CctxStatus.REVERTED,
       status_reduced: zetaChainCCTXType.CctxStatusReduced.FAILED,
       inbound_amount: '10000000',
@@ -209,7 +209,7 @@ export const zetaChainCCTXFailed: zetaChainCCTXType.CrossChainTx = {
         },
         {
           amount: '9999999',
-          chain_id: 43113,
+          chain_id: 11155111,
           coin_type: zetaChainCCTXType.CoinType.ERC20,
           gas_used: 61955,
         },
