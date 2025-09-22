@@ -18,6 +18,10 @@ export const MULTICHAIN_AGGREGATOR_API_RESOURCES = {
     filterFields: [ 'chain_id' as const, 'type' as const ],
     paginated: true,
   },
+  quick_search: {
+    path: '/search\\:quick',
+    filterFields: [ 'q' as const ],
+  },
 } satisfies Record<string, ApiResource>;
 
 export type MultichainAggregatorApiResourceName = `multichainAggregator:${ keyof typeof MULTICHAIN_AGGREGATOR_API_RESOURCES }`;
@@ -27,6 +31,7 @@ export type MultichainAggregatorApiResourcePayload<R extends MultichainAggregato
 R extends 'multichainAggregator:address' ? multichain.GetAddressResponse :
 R extends 'multichainAggregator:address_tokens' ? AddressTokensResponse :
 R extends 'multichainAggregator:tokens' ? TokensResponse :
+R extends 'multichainAggregator:quick_search' ? multichain.ClusterQuickSearchResponse :
 never;
 /* eslint-enable @stylistic/indent */
 

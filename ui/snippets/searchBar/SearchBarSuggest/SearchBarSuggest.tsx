@@ -5,9 +5,10 @@ import React from 'react';
 import { scroller, Element } from 'react-scroll';
 
 import type { ListCctxsResponse } from '@blockscout/zetachain-cctx-types';
-import type { SearchResultItem } from 'types/api/search';
+import type { QuickSearchResultItem } from 'types/client/search';
 
 import config from 'configs/app';
+import multichainConfig from 'configs/multichain';
 import type { CosmosHashType } from 'lib/address/cosmos';
 import type { ResourceError } from 'lib/api/resources';
 import { useSettingsContext } from 'lib/contexts/settings';
@@ -27,7 +28,7 @@ import SearchBarSuggestItem from './SearchBarSuggestItem';
 import SearchBarSuggestZetaChainCCTX from './SearchBarSuggestZetaChainCCTX';
 
 interface Props {
-  query: UseQueryResult<Array<SearchResultItem>, ResourceError<unknown>>;
+  query: UseQueryResult<Array<QuickSearchResultItem>, ResourceError<unknown>>;
   zetaChainCCTXQuery: UseQueryResult<ListCctxsResponse, ResourceError<unknown>>;
   cosmosHashType: CosmosHashType;
   searchTerm: string;
@@ -112,7 +113,7 @@ const SearchBarSuggest = ({ query, zetaChainCCTXQuery, cosmosHashType, searchTer
       map.zetaChainCCTX = zetaChainCCTXQuery.data.items;
     }
 
-    if (Object.keys(map).length > 0 && !map.block && regexp.BLOCK_HEIGHT.test(searchTerm)) {
+    if (Object.keys(map).length > 0 && !map.block && regexp.BLOCK_HEIGHT.test(searchTerm) && !multichainConfig()) {
       map['block'] = [ {
         type: 'block',
         block_type: 'block',
@@ -153,7 +154,7 @@ const SearchBarSuggest = ({ query, zetaChainCCTXQuery, cosmosHashType, searchTer
     const resultCategories = searchCategories.filter(cat => itemsGroups[cat.id]);
 
     if (resultCategories.length === 0 && !cosmosHashType) {
-      if (regexp.BLOCK_HEIGHT.test(searchTerm)) {
+      if (regexp.BLOCK_HEIGHT.test(searchTerm) && !multichainConfig()) {
         return <SearchBarSuggestBlockCountdown blockHeight={ searchTerm } onClick={ onItemClick }/>;
       }
 

@@ -29,3 +29,41 @@ export interface AddressTokensResponse extends Omit<multichain.ListAddressTokens
 export interface TokensResponse extends Omit<multichain.ListClusterTokensResponse, 'items'> {
   items: Array<AggregatedTokenInfo>;
 }
+
+// types for quick search results
+export type QuickSearchResultBlock = {
+  type: 'block';
+  block_number: string;
+  block_hash: undefined;
+  chain_id: string;
+} | {
+  type: 'block';
+  block_number: undefined;
+  block_hash: string;
+  chain_id: string;
+};
+
+export interface QuickSearchResultTransaction {
+  type: 'transaction';
+  transaction_hash: string;
+  chain_id: string;
+}
+
+export interface QuickSearchResultAddress {
+  type: 'address';
+  address_hash: string;
+  is_multichain: boolean;
+}
+
+export interface QuickSearchResultToken {
+  type: 'token';
+  token_type: 'ERC-20';
+  name: string;
+  symbol: string;
+  address_hash: string;
+  icon_url: string | null;
+  is_smart_contract_verified: boolean;
+  chain_id: string;
+}
+
+export type QuickSearchResultItem = QuickSearchResultBlock | QuickSearchResultTransaction | QuickSearchResultAddress | QuickSearchResultToken;
