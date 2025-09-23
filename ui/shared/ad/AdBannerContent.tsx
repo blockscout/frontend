@@ -11,7 +11,7 @@ import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
 
 import AdbutlerBanner from './AdbutlerBanner';
 import CoinzillaBanner from './CoinzillaBanner';
-import HypeBanner from './HypeBanner';
+import { DESKTOP_BANNER_WIDTH, MOBILE_BANNER_WIDTH } from './consts';
 import SliseBanner from './SliseBanner';
 import SpecifyBanner from './SpecifyBanner';
 
@@ -46,8 +46,6 @@ const AdBannerContent = ({ className, isLoading, provider, platform }: Props) =>
         return <AdbutlerBanner platform={ platform }/>;
       case 'coinzilla':
         return <CoinzillaBanner platform={ platform }/>;
-      case 'hype':
-        return <HypeBanner platform={ platform }/>;
       case 'slise':
         return <SliseBanner platform={ platform }/>;
     }
@@ -58,7 +56,7 @@ const AdBannerContent = ({ className, isLoading, provider, platform }: Props) =>
       className={ className }
       loading={ isLoading }
       borderRadius="none"
-      maxW={ ('adButler' in feature && feature.adButler) ? feature.adButler.config.desktop.width : '728px' }
+      maxW={{ base: `${ MOBILE_BANNER_WIDTH }px`, lg: `${ DESKTOP_BANNER_WIDTH }px` }}
       w="100%"
     >
       { content }
