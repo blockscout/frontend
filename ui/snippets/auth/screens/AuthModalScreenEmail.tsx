@@ -85,7 +85,6 @@ const AuthModalScreenEmail = ({ onSubmit, isAuth, mixpanelConfig }: Props) => {
           name="email"
           required
           placeholder="Email"
-          bgColor="dialog.bg"
           mt={ 6 }
         />
         <ReCaptcha { ...recaptcha }/>

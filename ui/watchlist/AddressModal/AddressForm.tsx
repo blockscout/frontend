@@ -131,7 +131,6 @@ const AddressForm: React.FC<Props> = ({ data, onSuccess, setAlertVisible, isAdd,
         <FormFieldAddress<Inputs>
           name="address"
           required
-          bgColor="dialog.bg"
           mb={ 5 }
         />
         <FormFieldText<Inputs>
@@ -141,7 +140,6 @@ const AddressForm: React.FC<Props> = ({ data, onSuccess, setAlertVisible, isAdd,
           rules={{
             maxLength: TAG_MAX_LENGTH,
           }}
-          bgColor="dialog.bg"
           mb={ 8 }
         />
         { hasEmail ? (
