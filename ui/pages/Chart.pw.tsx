@@ -38,7 +38,7 @@ test('base view +@dark-mode +@mobile', async({ render, mockApiResponse, page }) 
   const component = await render(<Chart/>, { hooksConfig });
   await page.waitForResponse(chartApiUrl);
   await page.waitForFunction(() => {
-    return document.querySelector('path[data-name="chart-Charttitle-fullscreen"]')?.getAttribute('opacity') === '1';
+    return document.querySelector('path[data-name="chart-Chart_title-fullscreen"]')?.getAttribute('opacity') === '1';
   });
   await expect(component).toHaveScreenshot();
 });

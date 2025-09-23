@@ -256,6 +256,46 @@ export default function useNavItems(): ReturnType {
       },
     ].filter(Boolean);
 
+    const statsNavItem = (() => {
+      const uptimeItem = {
+        text: 'Uptime',
+        nextRoute: { pathname: '/uptime' as const },
+        icon: 'refresh_menu',
+        isActive: pathname.startsWith('/uptime'),
+      };
+
+      if (config.features.stats.isEnabled && config.features.megaEth.isEnabled) {
+        return {
+          text: 'Charts & stats',
+          icon: 'stats',
+          isActive: pathname.startsWith('/stats') || pathname.startsWith('/uptime'),
+          subItems: [
+            {
+              text: `${ config.chain.name } stats`,
+              nextRoute: { pathname: '/stats' as const },
+              icon: 'graph',
+              isActive: pathname.startsWith('/stats/'),
+            },
+            uptimeItem,
+          ],
+        };
+      }
+
+      if (!config.features.stats.isEnabled) {
+        if (config.features.megaEth.isEnabled) {
+          return uptimeItem;
+        }
+        return null;
+      }
+
+      return {
+        text: 'Charts & stats',
+        nextRoute: { pathname: '/stats' as const },
+        icon: 'stats',
+        isActive: pathname.startsWith('/stats'),
+      };
+    })();
+
     const apiNavItem: NavItem | null = config.features.apiDocs.isEnabled ? {
       text: 'API',
       nextRoute: { pathname: '/api-docs' as const },
@@ -310,12 +350,7 @@ export default function useNavItems(): ReturnType {
         icon: 'apps',
         isActive: pathname.startsWith('/app'),
       } : null,
-      config.features.stats.isEnabled ? {
-        text: 'Charts & stats',
-        nextRoute: { pathname: '/stats' as const },
-        icon: 'stats',
-        isActive: pathname.startsWith('/stats'),
-      } : null,
+      statsNavItem,
       apiNavItem,
       {
         text: 'Other',
