@@ -3,13 +3,13 @@ import React from 'react';
 
 import type { AllowanceType } from '../lib/types';
 
+import essentialDappsChains from 'configs/essentialDappsChains';
 import { Button } from 'toolkit/chakra/button';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 
 import useRevoke from '../hooks/useRevoke';
-import { EXPLORER_URLS } from '../lib/chainUrls';
 import formatAllowance from '../lib/formatAllowance';
 import DateEntity from './DateEntity';
 import NumberEntity from './NumberEntity';
@@ -64,7 +64,7 @@ export default function ApprovalsListItem({
             truncation="constant"
             noIcon
             isLoading={ isLoading }
-            href={ `${ EXPLORER_URLS[selectedChainId] }/token/${ approval.address }` }
+            href={ `${ essentialDappsChains[selectedChainId] }/token/${ approval.address }` }
           />
         </Flex>
       </Flex>

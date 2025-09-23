@@ -4,10 +4,10 @@ import type { PublicClient, GetLogsParameters, Log } from 'viem';
 
 import type { AllowanceType, ContractAllowanceType } from './types';
 
+import essentialDappsChains from 'configs/essentialDappsChains';
 import { ZERO_ADDRESS } from 'toolkit/utils/consts';
 
 import OpenSeaRegistryAbi from './abis/OpenSeaRegistry.json';
-import { API_URLS } from './chainUrls';
 import { getApprovalEvents } from './logs';
 
 const OPENSEA_REGISTRY_ADDRESS = '0xa5409ec958C83C3f309868babACA7c86DCB077c1';
@@ -96,7 +96,7 @@ export async function getNftAllowances(
       tokenAddresses.map(async(tokenAddress) => {
         const chainId = await publicClient.getChainId();
         const response = await fetch(
-          `${ API_URLS[chainId] }/api/v2/tokens/${ tokenAddress }`,
+          `${ essentialDappsChains[chainId] }/api/v2/tokens/${ tokenAddress }`,
         );
 
         let tokenData: Record<string, string | null> = {};

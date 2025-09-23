@@ -8,12 +8,12 @@ import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolki
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import IconSvg from 'ui/shared/IconSvg';
 
+import essentialDappsConfig from '../../config';
+
 type Props = {
   selectedChainId: number;
   changeChain: (value: number) => void;
 };
-
-const CHAIN_IDS = [ 1, 100, 30, 11155111 ];
 
 export default function ChainSelect({ selectedChainId, changeChain }: Props) {
   const { open, onOpenChange } = useDisclosure();
@@ -21,12 +21,12 @@ export default function ChainSelect({ selectedChainId, changeChain }: Props) {
   const chainsQuery = useQuery({
     queryKey: [ 'revoke:chains' ],
     queryFn: async() => {
-      const chains = await Promise.all(CHAIN_IDS.map(async(id) => {
+      const chains = await Promise.all(essentialDappsConfig.revoke.chains.map(async(id) => {
         const response = await fetch(`https://chains.blockscout.com/api/chains/${ id }`);
         const data = await response.json() as { name: string; logo: string };
 
         return {
-          id,
+          id: Number(id),
           name: data.name,
           logoUrl: data.logo,
         };

@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { isAddress, formatUnits } from 'viem';
 import { usePublicClient } from 'wagmi';
 
-import { API_URLS } from '../lib/chainUrls';
+import essentialDappsChains from 'configs/essentialDappsChains';
 
 export default function useCoinBalanceQuery(chainId: number, userAddress: string) {
   const publicClient = usePublicClient({ chainId });
@@ -12,9 +12,11 @@ export default function useCoinBalanceQuery(chainId: number, userAddress: string
     queryFn: async() => {
       if (!chainId) return;
 
+      const explorerUrl = essentialDappsChains[chainId];
+
       const [ balanceResponse, statsResponse ] = await Promise.all([
-        fetch(`${ API_URLS[chainId] }/api/v2/addresses/${ userAddress }`),
-        fetch(`${ API_URLS[chainId] }/api/v2/stats`),
+        fetch(`${ explorerUrl }/api/v2/addresses/${ userAddress }`),
+        fetch(`${ explorerUrl }/api/v2/stats`),
       ]);
 
       const balanceData = (await balanceResponse.json()) as {

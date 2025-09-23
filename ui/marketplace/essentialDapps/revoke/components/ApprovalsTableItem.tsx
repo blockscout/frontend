@@ -2,6 +2,7 @@ import { Flex } from '@chakra-ui/react';
 
 import type { AllowanceType } from '../lib/types';
 
+import essentialDappsChains from 'configs/essentialDappsChains';
 import { Button } from 'toolkit/chakra/button';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableRow, TableCell } from 'toolkit/chakra/table';
@@ -9,7 +10,6 @@ import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 
 import useRevoke from '../hooks/useRevoke';
-import { EXPLORER_URLS } from '../lib/chainUrls';
 import formatAllowance from '../lib/formatAllowance';
 import DateEntity from './DateEntity';
 import NumberEntity from './NumberEntity';
@@ -48,7 +48,7 @@ export default function ApprovalsTableItem({
             jointSymbol
             textStyle="sm"
             fontWeight="600"
-            href={ `${ EXPLORER_URLS[selectedChainId] }/token/${ approval.address }` }
+            href={ `${ essentialDappsChains[selectedChainId] }/token/${ approval.address }` }
             isExternal
             link={{ noIcon: true }}
           />
@@ -57,7 +57,7 @@ export default function ApprovalsTableItem({
             truncation="constant"
             noIcon
             isLoading={ isLoading }
-            href={ `${ EXPLORER_URLS[selectedChainId] }/token/${ approval.address }` }
+            href={ `${ essentialDappsChains[selectedChainId] }/token/${ approval.address }` }
             isExternal
             link={{ variant: 'secondary', noIcon: true }}
           />
@@ -69,7 +69,7 @@ export default function ApprovalsTableItem({
           truncation="constant"
           noIcon
           isLoading={ isLoading }
-          href={ `${ EXPLORER_URLS[selectedChainId] }/address/${ approval.spender }` }
+          href={ `${ essentialDappsChains[selectedChainId] }/address/${ approval.spender }` }
           isExternal
           link={{ noIcon: true }}
         />

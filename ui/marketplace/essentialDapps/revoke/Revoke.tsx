@@ -3,6 +3,8 @@ import React, { useMemo, useCallback, useEffect, useState } from 'react';
 import { isAddress } from 'viem';
 import { useAccount } from 'wagmi';
 
+import config from 'configs/app';
+import essentialDappsChains from 'configs/essentialDappsChains';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useWeb3Wallet from 'lib/web3/useWallet';
 import { Badge } from 'toolkit/chakra/badge';
@@ -14,16 +16,23 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import EmptySearchResult from 'ui/shared/EmptySearchResult';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import IconSvg from 'ui/shared/IconSvg';
 
+import essentialDappsConfig from '../config';
 import Approvals from './components/Approvals';
 import ChainSelect from './components/ChainSelect';
 import StartScreen from './components/StartScreen';
 import useApprovalsQuery from './hooks/useApprovalsQuery';
 import useCoinBalanceQuery from './hooks/useCoinBalanceQuery';
-import { EXPLORER_URLS } from './lib/chainUrls';
+
+const defaultChainId = (
+  essentialDappsConfig.revoke.chains.includes(config.chain.id as string) ?
+    config.chain.id :
+    essentialDappsConfig.revoke.chains[0]
+) as string;
 
 const Revoke = () => {
-  const [ selectedChainId, setSelectedChainId ] = useState<number>(1);
+  const [ selectedChainId, setSelectedChainId ] = useState<number>(Number(defaultChainId));
   const { address: connectedAddress } = useAccount();
   const [ searchAddress, setSearchAddress ] = React.useState('');
   const approvalsQuery = useApprovalsQuery(selectedChainId, searchAddress);
@@ -61,7 +70,7 @@ const Revoke = () => {
 
     const sum = Object.values(maxValues).reduce((sum, val) => sum + val, 0);
 
-    return Number(sum.toFixed(2)).toLocaleString('en-US');
+    return Number(sum.toFixed(2)).toLocaleString();
   }, [ approvalsQuery ]);
 
   const handleChainChange = useCallback((chainId: number) => {
@@ -91,7 +100,7 @@ const Revoke = () => {
 
   const handleExampleClick = useCallback(
     (address: string) => () => {
-      handleChainChange(1);
+      handleChainChange(Number(defaultChainId));
       handleSearch(address);
     },
     [ handleSearch, handleChainChange ],
@@ -184,6 +193,14 @@ const Revoke = () => {
                         src={ coinBalanceQuery.data?.coinImage }
                         alt={ coinBalanceQuery.data?.symbol }
                         boxSize={ 5 }
+                        fallback={ (
+                          <IconSvg
+                            name="token-placeholder"
+                            bgColor={{ _light: 'gray.200', _dark: 'gray.600' }}
+                            color={{ _light: 'gray.400', _dark: 'gray.200' }}
+                            borderRadius="full"
+                          />
+                        ) }
                       />
                       <Text textStyle="sm" fontWeight="500">
                         { coinBalanceQuery.data?.balance }{ ' ' }
@@ -197,7 +214,7 @@ const Revoke = () => {
                 ) }
               </Skeleton>
               <Link
-                href={ `${ EXPLORER_URLS[selectedChainId] }/address/${ searchAddress }` }
+                href={ `${ essentialDappsChains[selectedChainId] }/address/${ searchAddress }` }
                 external
                 textStyle="sm"
                 fontWeight="500"

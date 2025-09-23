@@ -7,7 +7,7 @@ import type { AllowanceType, ContractAllowanceType } from './types';
 import type { AddressTokenBalance } from 'types/api/address';
 import type { TokenInfo } from 'types/api/token';
 
-import { API_URLS } from './chainUrls';
+import essentialDappsChains from 'configs/essentialDappsChains';
 
 export default async function searchERC20Allowances(
   searchQuery: string,
@@ -34,7 +34,7 @@ async function getERC20TokenData(
 ) {
   try {
     const response = await fetch(
-      `${ API_URLS[chainId] }/api/v2/tokens/${ tokenAddress }`,
+      `${ essentialDappsChains[chainId] }/api/v2/tokens/${ tokenAddress }`,
     );
     if (!response.ok) {
       return {};
@@ -68,7 +68,7 @@ async function getERC20Allowances(
   let balances: Record<string, bigint> = {};
 
   const response = await fetch(
-    `${ API_URLS[chainId] }/api/v2/addresses/${ searchQuery }/token-balances`,
+    `${ essentialDappsChains[chainId] }/api/v2/addresses/${ searchQuery }/token-balances`,
   );
 
   if (response.ok) {
