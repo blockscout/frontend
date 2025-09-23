@@ -3,7 +3,11 @@ import React, { useMemo, useCallback, useEffect, useState } from 'react';
 import { isAddress } from 'viem';
 import { useAccount } from 'wagmi';
 
+import useIsMobile from 'lib/hooks/useIsMobile';
+import useWeb3Wallet from 'lib/web3/useWallet';
 import { Badge } from 'toolkit/chakra/badge';
+import { Button } from 'toolkit/chakra/button';
+import { Heading } from 'toolkit/chakra/heading';
 import { Image } from 'toolkit/chakra/image';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
@@ -24,6 +28,8 @@ const Revoke = () => {
   const [ searchAddress, setSearchAddress ] = React.useState('');
   const approvalsQuery = useApprovalsQuery(selectedChainId, searchAddress);
   const coinBalanceQuery = useCoinBalanceQuery(selectedChainId, searchAddress);
+  const web3Wallet = useWeb3Wallet({ source: 'Revoke' });
+  const isMobile = useIsMobile();
 
   const isValidAddress = useMemo(
     () => isAddress(searchAddress.toLowerCase()),
@@ -99,9 +105,32 @@ const Revoke = () => {
 
   let content = <StartScreen/>;
 
+  const walletButtonAndChainSelect = (
+    <>
+      { !connectedAddress && (
+        <Button
+          size="sm"
+          variant="outline"
+          onClick={ web3Wallet.connect }
+          loading={ web3Wallet.isOpen }
+          loadingText="Connect wallet"
+        >
+          Connect wallet
+        </Button>
+      ) }
+      <ChainSelect
+        selectedChainId={ selectedChainId }
+        changeChain={ handleChainChange }
+      />
+    </>
+  );
+
   if (searchAddress && selectedChainId) {
     content = isValidAddress ? (
       <Flex flexDir="column" w="full">
+        <Flex hideFrom="lg" justifyContent="flex-end" gap={ 2 } mb={ 3 }>
+          { walletButtonAndChainSelect }
+        </Flex>
         <Flex flexDir={{ base: 'column', lg: 'row' }} gap={ 2 } mb={ 6 }>
           <Flex
             flexDir="column"
@@ -112,24 +141,30 @@ const Revoke = () => {
             p={ 6 }
             borderRadius="base"
           >
-            <Flex gap={ 3 } alignItems="center" justifyContent="space-between" w="full">
+            <Flex
+              flexDir={{ base: 'column', md: 'row' }}
+              gap={ 3 }
+              alignItems={{ base: 'flex-start', md: 'center' }}
+              justifyContent={{ base: 'flex-start', md: 'space-between' }}
+              w="full"
+              flexWrap="wrap"
+            >
               <Flex gap={ 2 } alignItems="center">
                 <AddressEntity
                   address={{ hash: searchAddress }}
                   truncation="constant"
-                  textStyle="heading.md"
+                  textStyle={{ base: 'heading.xs', lg: 'heading.md' }}
                   fontWeight="500"
-                  variant="heading"
+                  variant={ isMobile ? undefined : 'heading' }
                   noLink
                 />
                 <Badge colorPalette={ isAddressMatch ? 'green' : 'gray' }>
                   { isAddressMatch ? 'Connected' : 'Not connected' }
                 </Badge>
               </Flex>
-              <ChainSelect
-                selectedChainId={ selectedChainId }
-                changeChain={ handleChainChange }
-              />
+              <Flex hideBelow="lg" gap={ 2 }>
+                { walletButtonAndChainSelect }
+              </Flex>
             </Flex>
             <Flex
               flexDir={{ base: 'column', md: 'row' }}
@@ -144,7 +179,7 @@ const Revoke = () => {
                 { (coinBalanceQuery.isPlaceholderData ||
                   coinBalanceQuery.data) && (
                   <>
-                    <Flex gap={ 2 } alignItems="center" ml="5px">
+                    <Flex gap={ 2 } alignItems="center" ml={{ base: 0, lg: '5px' }}>
                       <Image
                         src={ coinBalanceQuery.data?.coinImage }
                         alt={ coinBalanceQuery.data?.symbol }
@@ -193,9 +228,9 @@ const Revoke = () => {
                 minW="40px"
                 textAlign="center"
               >
-                <Text textStyle={{ base: 'md', md: 'lg' }} fontWeight="500">
+                <Heading level="3">
                   { approvalsQuery.data?.length || 0 }
-                </Text>
+                </Heading>
               </Skeleton>
             </Flex>
             <Separator
@@ -218,9 +253,9 @@ const Revoke = () => {
                 minW="40px"
                 textAlign="center"
               >
-                <Text textStyle={{ base: 'md', md: 'lg' }} fontWeight="500">
+                <Heading level="3">
                   ${ totalValueAtRiskUsd }
-                </Text>
+                </Heading>
               </Skeleton>
             </Flex>
           </Flex>
@@ -238,7 +273,7 @@ const Revoke = () => {
   }
 
   return (
-    <Flex flexDir="column" w="full" gap={{ base: 6, md: 12 }}>
+    <Flex flexDir="column" w="full" gap={{ base: 3, lg: 12 }}>
       <Flex flexDir="column" w="full" gap={ 3 }>
         <chakra.form
           onSubmit={ handleFormSubmit }

@@ -59,10 +59,8 @@ export default function ChainSelect({ selectedChainId, changeChain }: Props) {
           px={ 2 }
           bgColor={{ _light: 'white', _dark: 'transparent' }}
         >
-          <Image src={ selectedChain?.logoUrl } alt={ selectedChain?.name } boxSize={ 5 }/>
-          <Box hideBelow="md" ml={ 1 }>
-            { selectedChain?.name }
-          </Box>
+          <Image src={ selectedChain?.logoUrl } alt={ selectedChain?.name } boxSize={ 5 } mr={ 1 }/>
+          <Text>{ selectedChain?.name }</Text>
           <IconSvg
             name="arrows/east-mini"
             transform={ open ? 'rotate(90deg)' : 'rotate(-90deg)' }
