@@ -25,6 +25,7 @@ const SearchBarSuggestAddress = ({ data, isMobile, searchTerm, addressFormat }: 
     <AddressEntity.Icon
       address={{
         hash: data.address_hash,
+        // TODO @tom2drum pass flags from chain info
         is_contract: data.type === 'contract',
         name: '',
         is_verified: 'is_smart_contract_verified' in data ? data.is_smart_contract_verified : false,

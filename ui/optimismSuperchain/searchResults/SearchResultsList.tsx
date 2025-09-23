@@ -35,33 +35,34 @@ const SearchResultsList = <T extends QueryType>({ queryType, query }: Props<T>) 
                   return null;
                 }
                 const token = item as multichain.Token;
-                return <SearchResultItemToken key={ token.address } data={ token } chain={ chain }/>;
+                return <SearchResultItemToken key={ token.address + chain.config.chain.id } data={ token } chain={ chain }/>;
               }
-              case 'blocksNumbers': {
+              case 'blockNumbers': {
                 if (!chain) {
                   return null;
                 }
                 const block = item as multichain.ChainBlockNumber;
-                return <SearchResultItemBlockNumber key={ block.block_number } data={ block } chain={ chain }/>;
+                return <SearchResultItemBlockNumber key={ block.block_number + String(chain.config.chain.id) } data={ block } chain={ chain }/>;
               }
               case 'blocks': {
                 if (!chain) {
                   return null;
                 }
                 const block = item as multichain.Hash;
-                return <SearchResultItemBlock key={ block.hash } data={ block } chain={ chain }/>;
+                return <SearchResultItemBlock key={ block.hash + chain.config.chain.id } data={ block } chain={ chain }/>;
               }
               case 'transactions': {
                 if (!chain) {
                   return null;
                 }
                 const block = item as multichain.Hash;
-                return <SearchResultItemTx key={ block.hash } data={ block } chain={ chain }/>;
+                return <SearchResultItemTx key={ block.hash + chain.config.chain.id } data={ block } chain={ chain }/>;
               }
               case 'addresses': {
                 const address = item as multichain.GetAddressResponse;
                 return <SearchResultItemAddress key={ address.hash } data={ address }/>;
               }
+              // TODO @tom2drum search by NFT
               default:
                 return null;
             }

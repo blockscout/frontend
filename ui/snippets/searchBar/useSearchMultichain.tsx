@@ -14,6 +14,7 @@ export default function useSearchMultichain({ searchTerm, enabled }: Props) {
     queryOptions: {
       enabled: searchTerm.trim().length > 0 && enabled,
       select: (data) => {
+        // TODO @tom2drum search by NFT
         const result: Array<QuickSearchResultItem> = [];
 
         if (data.block_numbers && data.block_numbers.length > 0) {

@@ -1,7 +1,7 @@
 import { Box, Flex, Text } from '@chakra-ui/react';
 import React from 'react';
 
-import SearchResultsList from './SearchRestultsList';
+import SearchResultsList from './SearchResultsList';
 import type { QueryType, SearchQueries } from './utils';
 import { SEARCH_TABS_NAMES } from './utils';
 
