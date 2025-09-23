@@ -56,17 +56,24 @@ export default function ChainSelect({ selectedChainId, changeChain }: Props) {
           expanded={ open }
           loading={ !selectedChain }
           loadingText="Network"
+          px={ 2 }
+          bgColor={{ _light: 'white', _dark: 'transparent' }}
         >
-          <Image src={ selectedChain?.logoUrl } alt={ selectedChain?.name }/>
+          <Image src={ selectedChain?.logoUrl } alt={ selectedChain?.name } boxSize={ 5 }/>
           <Box hideBelow="md" ml={ 1 }>
             { selectedChain?.name }
           </Box>
-          <IconSvg name="arrows/east-mini" transform={ open ? 'rotate(90deg)' : 'rotate(-90deg)' } transitionDuration="faster" boxSize={ 5 }/>
+          <IconSvg
+            name="arrows/east-mini"
+            transform={ open ? 'rotate(90deg)' : 'rotate(-90deg)' }
+            transitionDuration="faster"
+            boxSize={ 5 }
+            color="text.secondary"
+          />
         </Button>
       </PopoverTrigger>
       <PopoverContent
         w="fit-content"
-        // mx={{ base: 3, md: 0 }}
         minW="200px"
         maxH="300px"
         overflowY="scroll"
@@ -87,12 +94,12 @@ export default function ChainSelect({ selectedChainId, changeChain }: Props) {
               }}
               onClick={ handleChange }
             >
-              <Image src={ chain.logoUrl } alt={ chain.name }/>
+              <Image src={ chain.logoUrl } alt={ chain.name } boxSize={ 5 }/>
               <Text fontSize="sm" fontWeight="500">
                 { chain.name }
               </Text>
               { selectedChain?.id === chain.id && (
-                <IconSvg name="check" boxSize={ 5 } ml="auto" color="gray.500"/>
+                <IconSvg name="check" boxSize={ 5 } ml="auto" color="text.secondary"/>
               ) }
             </Box>
           )) }

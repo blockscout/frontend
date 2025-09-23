@@ -13,7 +13,7 @@ export default function NumberEntity({ value, suffix, postfix }: Props) {
       { suffix }
       { Number(integer) ? Number(integer).toLocaleString() : integer }
       { decimal && '.' }
-      <chakra.span color="gray.500">{ decimal }</chakra.span>
+      <chakra.span color="text.secondary">{ decimal }</chakra.span>
       { postfix && ` ${ postfix }` }
     </Text>
   );

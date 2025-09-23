@@ -107,7 +107,7 @@ const Revoke = () => {
             flexDir="column"
             alignItems="flex-start"
             flex={ 1 }
-            bg="blackAlpha.50"
+            bg={{ _light: 'blackAlpha.50', _dark: 'whiteAlpha.50' }}
             gap={ 3 }
             p={ 6 }
             borderRadius="base"
@@ -155,7 +155,7 @@ const Revoke = () => {
                         { coinBalanceQuery.data?.symbol }
                       </Text>
                     </Flex>
-                    <Text textStyle="sm" fontWeight="500" color="gray.500">
+                    <Text textStyle="sm" fontWeight="500" color="text.secondary">
                       ${ coinBalanceQuery.data?.balanceUsd }
                     </Text>
                   </>
@@ -174,7 +174,7 @@ const Revoke = () => {
           </Flex>
           <Flex
             w={{ base: 'full', lg: '400px' }}
-            bg="blackAlpha.50"
+            bg={{ _light: 'blackAlpha.50', _dark: 'whiteAlpha.50' }}
             p={ 6 }
             borderRadius="base"
           >
@@ -185,7 +185,7 @@ const Revoke = () => {
               alignItems="center"
               gap={ 2 }
             >
-              <Text textStyle="sm" fontWeight="500" color="gray.500">
+              <Text textStyle="sm" fontWeight="500" color="text.secondary">
                 Total approvals
               </Text>
               <Skeleton
@@ -200,8 +200,7 @@ const Revoke = () => {
             </Flex>
             <Separator
               orientation="vertical"
-              bgColor="divider"
-              opacity={ 1 }
+              borderColor="border.divider"
               mx={{ base: 4, md: 8 }}
             />
             <Flex
@@ -211,7 +210,7 @@ const Revoke = () => {
               alignItems="center"
               gap={ 2 }
             >
-              <Text textStyle="sm" fontWeight="500" color="gray.500">
+              <Text textStyle="sm" fontWeight="500" color="text.secondary">
                 Total value at risk
               </Text>
               <Skeleton
