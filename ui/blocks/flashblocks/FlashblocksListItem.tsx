@@ -5,10 +5,10 @@ import type { FlashblockItem } from 'types/client/flashblocks';
 
 import { route } from 'nextjs-routes';
 
+import dayjs from 'lib/date/dayjs';
 import { Link } from 'toolkit/chakra/link';
 import FlashblockEntity from 'ui/shared/entities/flashblock/FlashblockEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
-import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 interface Props {
   data: FlashblockItem;
@@ -29,7 +29,7 @@ const FlashblocksListItem = ({ data }: Props) => {
       { data.timestamp && (
         <Flex columnGap={ 2 }>
           <Text fontWeight={ 500 }>Timestamp</Text>
-          <TimeWithTooltip timestamp={ data.timestamp } timeFormat="absolute" color="text.secondary"/>
+          <Text color="text.secondary">{ dayjs(data.timestamp).format('DD MMM, HH:mm:ss.SSS') }</Text>
         </Flex>
       ) }
       <Flex columnGap={ 2 }>
