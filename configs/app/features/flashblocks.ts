@@ -7,13 +7,14 @@ const title = 'Flashblocks';
 
 const socketUrl = getEnvValue('NEXT_PUBLIC_FLASHBLOCKS_SOCKET_URL');
 
-const config: Feature<{ socketUrl: string; type: 'optimism' | 'megaEth' }> = (() => {
+const config: Feature<{ socketUrl: string; type: 'optimism' | 'megaEth'; name: string }> = (() => {
   if (megaEthFeature.isEnabled && megaEthFeature.socketUrl.rpc) {
     return Object.freeze({
       title,
       isEnabled: true,
       socketUrl: megaEthFeature.socketUrl.rpc,
       type: 'megaEth',
+      name: 'mini-block',
     });
   }
 
@@ -23,6 +24,7 @@ const config: Feature<{ socketUrl: string; type: 'optimism' | 'megaEth' }> = (()
       isEnabled: true,
       socketUrl,
       type: 'optimism',
+      name: 'flashblock',
     });
   }
 
