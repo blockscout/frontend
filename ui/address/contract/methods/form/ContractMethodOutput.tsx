@@ -1,8 +1,9 @@
-import { Flex } from '@chakra-ui/react';
 import React from 'react';
 import type { AbiFunction } from 'viem';
 
 import type { AbiFallback, ResultViewMode } from '../types';
+
+import { Alert } from 'toolkit/chakra/alert';
 
 import ResultItem from './resultPublicClient/Item';
 
@@ -25,19 +26,18 @@ const ContractMethodOutput = ({ data, abiItem, onSettle, mode }: Props) => {
   })();
 
   return (
-    <Flex
+    <Alert
+      status="info"
       flexDir="column"
-      rowGap={ 2 }
-      mt={ 3 }
-      px={ 3 }
-      py={ 2 }
-      borderRadius="md"
-      bgColor={{ _light: 'blackAlpha.50', _dark: 'whiteAlpha.50' }}
       color={ mode === 'preview' ? 'gray.500' : undefined }
-      fontSize="sm"
-      lineHeight="20px"
-      whiteSpace="break-spaces"
-      wordBreak="break-all"
+      textStyle="sm"
+      descriptionProps={{
+        flexDir: 'column',
+        alignItems: 'flex-start',
+        rowGap: 2,
+        whiteSpace: 'break-spaces',
+        wordBreak: 'break-all',
+      }}
     >
       { abiItem.outputs.map((output, index) => (
         <ResultItem
@@ -47,7 +47,7 @@ const ContractMethodOutput = ({ data, abiItem, onSettle, mode }: Props) => {
           mode={ mode }
         />
       )) }
-    </Flex>
+    </Alert>
   );
 };
 

@@ -125,22 +125,22 @@ const ChartTooltip = ({
       .on('touchmove.tooltip', (event: TouchEvent) => event.preventDefault()) // prevent scrolling
       .on(`touchstart.tooltip`, (event: TouchEvent) => {
         isMultiTouch = event.touches.length > 1;
-      })
+      }, { passive: true })
       .on(`touchend.tooltip`, (event: TouchEvent) => {
         if (isMultiTouch && event.touches.length === 0) {
           isMultiTouch = false;
         }
-      })
+      }, { passive: true })
       .on('pointerenter.tooltip pointerdown.tooltip', (event: PointerEvent) => {
         if (!isMultiTouch) {
           trackerId.current = createPointerTracker(event);
         }
-      })
+      }, { passive: true })
       .on('pointermove.tooltip', (event: PointerEvent) => {
         if (event.pointerType === 'mouse' && !isMultiTouch && trackerId.current === undefined) {
           trackerId.current = createPointerTracker(event);
         }
-      });
+      }, { passive: true });
 
     return () => {
       anchorD3.on('touchmove.tooltip pointerenter.tooltip pointerdown.tooltip', null);

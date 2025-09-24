@@ -1,7 +1,7 @@
 import { Box, Center, Flex, Text } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TimeChartItem } from './types';
+import type { AxesConfigFn, TimeChartItem } from './types';
 import type { Resolution } from '@blockscout/stats-types';
 
 import { Link } from 'toolkit/chakra/link';
@@ -23,6 +23,7 @@ export type Props = {
   isEnlarged?: boolean;
   noAnimation?: boolean;
   resolution?: Resolution;
+  axesConfig?: AxesConfigFn;
 };
 
 const ChartWidgetContent = ({
@@ -37,6 +38,7 @@ const ChartWidgetContent = ({
   isEnlarged,
   noAnimation,
   resolution,
+  axesConfig,
 }: Props) => {
   const hasItems = items && items.length > 2;
 
@@ -83,6 +85,7 @@ const ChartWidgetContent = ({
         isEnlarged={ isEnlarged }
         noAnimation={ noAnimation }
         resolution={ resolution }
+        axesConfig={ axesConfig }
       />
       <ChartWatermarkIcon w="162px" h="15%"/>
     </Box>

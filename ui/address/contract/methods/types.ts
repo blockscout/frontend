@@ -27,6 +27,7 @@ export type SmartContractMethod = SmartContractMethodRead | SmartContractMethodW
 export interface FormSubmitResultPublicClient {
   source: 'public_client';
   data: unknown | Error;
+  estimatedGas?: bigint;
 }
 export interface FormSubmitResultWalletClient {
   source: 'wallet_client';

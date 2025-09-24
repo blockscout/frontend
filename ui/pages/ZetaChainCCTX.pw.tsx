@@ -16,10 +16,12 @@ const hooksConfig = {
   },
 };
 
-test.beforeEach(async({ mockEnvs, mockTextAd, mockConfigResponse }) => {
+test.beforeEach(async({ mockEnvs, mockTextAd, mockConfigResponse, mockAssetResponse }) => {
   await mockEnvs(ENVS_MAP.zetaChain);
   await mockTextAd();
   await mockConfigResponse('NEXT_PUBLIC_ZETACHAIN_SERVICE_CHAINS_CONFIG_URL', CCTX_CONFIG_URL, zetaChainCCTXConfig);
+  await mockAssetResponse(zetaChainCCTXConfig[1].chain_logo, './playwright/mocks/image_s.jpg');
+  await mockAssetResponse(zetaChainCCTXConfig[2].chain_logo, './playwright/mocks/image_svg.svg');
 });
 
 test('successful transaction +@dark-mode +@mobile', async({ render, mockApiResponse }) => {
