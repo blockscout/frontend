@@ -173,7 +173,7 @@ const ContractMethodForm = ({ data, attempt, onSubmit, onReset, isOpen }: Props)
   })();
 
   const secondaryButton = (() => {
-    if (methodType === 'read' || data.type === 'receive') {
+    if (methodType === 'read') {
       return null;
     }
 

@@ -24,10 +24,6 @@ export default function useCallMethodPublicClient(): (params: Params) => Promise
   const { address: account } = useAccount();
 
   return React.useCallback(async({ args, item, addressHash, strategy }) => {
-    if (item.type === 'receive') {
-      throw new Error('Incorrect contract method');
-    }
-
     if (!publicClient) {
       throw new Error('Public Client is not defined');
     }
@@ -59,6 +55,20 @@ export default function useCallMethodPublicClient(): (params: Params) => Promise
       return {
         source: 'public_client' as const,
         data: result.data,
+        estimatedGas,
+      };
+    }
+
+    if (item.type === 'receive') {
+      const estimatedGas = await publicClient.estimateGas({
+        account,
+        to: address,
+        value,
+      });
+
+      return {
+        source: 'public_client' as const,
+        data: undefined,
         estimatedGas,
       };
     }
