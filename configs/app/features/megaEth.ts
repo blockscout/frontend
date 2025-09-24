@@ -5,7 +5,7 @@ import { getEnvValue } from '../utils';
 const title = 'MegaETH chain';
 
 const socketUrlMetrics = getEnvValue('NEXT_PUBLIC_MEGA_ETH_SOCKET_URL_METRICS');
-const socketUrlRpc = getEnvValue('NEXT_PUBLIC_MEGA_ETH_RPC_SOCKET_URL');
+const socketUrlRpc = getEnvValue('NEXT_PUBLIC_MEGA_ETH_SOCKET_URL_RPC');
 
 const config: Feature<{ socketUrl: { metrics?: string; rpc?: string } }> = (() => {
 
