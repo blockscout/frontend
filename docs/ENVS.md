@@ -899,3 +899,9 @@ For obtaining the variables values please refer to [reCAPTCHA documentation](htt
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_RE_CAPTCHA_V3_APP_SITE_KEY | `string` | **DEPRECATED** Google reCAPTCHA v3 site key | - | - | `<your-secret>` | v1.36.0+ |
 | NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY | `string` | Google reCAPTCHA v2 site key | - | - | `<your-secret>` | v1.0.x+ |
+
+### Credentials Contract Address
+| Variable | Type| Description | Compulsoriness | Default value | Example value | Version |
+| --- | --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_ISSUANCE_CONTRACT_ADDRESS | `string` | Issuance contract address | - | - | - | - |
+| NEXT_PUBLIC_VERIFICATION_CONTRACT_ADDRESS | `string` | Verification contract address | - | - | - | - |
