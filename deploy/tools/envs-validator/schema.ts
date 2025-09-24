@@ -613,6 +613,8 @@ const schema = yup
     NEXT_PUBLIC_API_HOST: yup.string().required(),
     NEXT_PUBLIC_API_PORT: yup.number().integer().positive(),
     NEXT_PUBLIC_API_BASE_PATH: yup.string(),
+    NEXT_PUBLIC_ISSUANCE_CONTRACT_ADDRESS: yup.string(),
+    NEXT_PUBLIC_VERIFICATION_CONTRACT_ADDRESS: yup.string(),
     NEXT_PUBLIC_API_WEBSOCKET_PROTOCOL: yup.string().oneOf([ 'ws', 'wss' ]),
 
     // 4. UI configuration
