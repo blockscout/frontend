@@ -107,9 +107,11 @@ const ObjectDetails: NextPage = () => {
     } else {
       rp2 = await transactionsRequest(address) as LogsRequestParams;
     }
-    setTransactionsAllListValue(address, new URLSearchParams(
-      Object.entries(rp2.next_page_params).map(([ k, v ]) => [ k, String(v) ]),
-    ).toString());
+    if (rp2.next_page_params) {
+      setTransactionsAllListValue(address, new URLSearchParams(
+        Object.entries(rp2.next_page_params).map(([ k, v ]) => [ k, String(v) ]),
+      ).toString());
+    }
     const newItems = arr.concat(rp2.items);
     setAllList(newItems);
     return newItems;
@@ -124,7 +126,7 @@ const ObjectDetails: NextPage = () => {
           'Txn hash': v.transaction_hash,
           Block: v.block_number.toString(),
           Method: v.decoded.method_call.split('(')[0],
-          'From/To': [ item.from.hash, v.smart_contract.hash ],
+          'From/To': [ item.from.hash, v.smart_contract?.hash ],
           Time: new Date(item.timestamp).toLocaleString('en-US', { hour12: false }),
           'Value MOCA': item.value,
           'Fee MOCA': truncateToSignificantDigits(BigNumber(item.base_fee_per_gas / 1e18).toString(10), 3).toString(10),
@@ -135,9 +137,11 @@ const ObjectDetails: NextPage = () => {
         return;
       }
     };
-    setMapValue(queryParams.page.toString(), new URLSearchParams(
-      Object.entries(params.next_page_params).map(([ k, v ]) => [ k, String(v) ]),
-    ).toString());
+    if (params.next_page_params) {
+      setMapValue(queryParams.page.toString(), new URLSearchParams(
+        Object.entries(params.next_page_params).map(([ k, v ]) => [ k, String(v) ]),
+      ).toString());
+    }
     setTableList(tableList);
     setLoading(false);
     setToNext(params.next_page_params ? true : false);

@@ -21,10 +21,12 @@ type LogsRequestParams = {
 
 const url = getEnvValue('NEXT_PUBLIC_API_HOST');
 
+const contractAddress = getEnvValue('NEXT_PUBLIC_VERIFICATION_CONTRACT_ADDRESS');
+
 export async function verificationRequest(hash: string = '') {
   try {
     const rp = await fetch(
-      `https://${ url }/api/v2/addresses/0xEfdefe08C6cD74CFEB2f0CC2B9401c52B859B427/logs?${ hash || '' }`,
+      `https://${ url }/api/v2/addresses/${ contractAddress }/logs?${ hash || '' }`,
       { method: 'get' },
     );
     return rp.json() as unknown as LogsRequestParams;
