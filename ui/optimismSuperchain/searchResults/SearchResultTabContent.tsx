@@ -21,46 +21,56 @@ interface Props {
   searchTerm: string;
   queries: SearchQueries;
   queryType: QueryType | undefined;
+  beforeContent?: React.ReactNode;
 }
 
-const SearchResultTabContent = ({ isLoading, searchTerm, queries, queryType }: Props) => {
-  if (isLoading) {
-    return <ContentLoader maxW="240px"/>;
-  }
+const SearchResultTabContent = ({ isLoading, searchTerm, queries, queryType, beforeContent }: Props) => {
+  const content = (() => {
+    if (isLoading) {
+      return <ContentLoader maxW="240px"/>;
+    }
 
-  if (!searchTerm) {
-    return (
-      <EmptySearchResult
-        title="Looking for something?"
-        text="Try searching by address, smart contract, transaction, block, token or NFT"
-      />
-    );
-  }
+    if (!searchTerm) {
+      return (
+        <EmptySearchResult
+          title="Looking for something?"
+          text="Try searching by address, smart contract, transaction, block, token or NFT"
+        />
+      );
+    }
 
-  const hasResults = queryType ?
-    queries[queryType]?.data?.pages?.[0]?.items && queries[queryType]?.data?.pages?.[0]?.items?.length > 0 :
-    Object.values(queries).some((query) => query.data?.pages?.[0]?.items?.length > 0);
+    const hasResults = queryType ?
+      queries[queryType]?.data?.pages?.[0]?.items && queries[queryType]?.data?.pages?.[0]?.items?.length > 0 :
+      Object.values(queries).some((query) => query.data?.pages?.[0]?.items?.length > 0);
 
-  if (!hasResults) {
-    return (
-      <EmptySearchResult
-        title={ queryType ? `No ${ EMPTY_SEARCH_NAME_MAP[queryType] } found` : 'No results found' }
-        text="It seems we can't find any results based on your request."
-      />
-    );
-  }
+    if (!hasResults) {
+      return (
+        <EmptySearchResult
+          title={ queryType ? `No ${ EMPTY_SEARCH_NAME_MAP[queryType] } found` : 'No results found' }
+          text="It seems we can't find any results based on your request."
+        />
+      );
+    }
 
-  switch (queryType) {
-    case 'addresses':
-    case 'blocks':
-    case 'blockNumbers':
-    case 'transactions':
-    case 'tokens':
-    case 'nfts':
-      return <SearchResultsList queryType={ queryType } query={ queries[queryType] }/>;
-    default:
-      return <SearchResultsTabAll queries={ queries }/>;
-  }
+    switch (queryType) {
+      case 'addresses':
+      case 'blocks':
+      case 'blockNumbers':
+      case 'transactions':
+      case 'tokens':
+      case 'nfts':
+        return <SearchResultsList queryType={ queryType } query={ queries[queryType] }/>;
+      default:
+        return <SearchResultsTabAll queries={ queries }/>;
+    }
+  })();
+
+  return (
+    <>
+      { beforeContent }
+      { content }
+    </>
+  );
 };
 
 export default React.memo(SearchResultTabContent);

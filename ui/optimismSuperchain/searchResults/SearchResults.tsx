@@ -16,6 +16,8 @@ import HeaderMobile from 'ui/snippets/header/HeaderMobile';
 
 import SearchResultTabContent from './SearchResultTabContent';
 import useSearchQuery from './useSearchQuery';
+import type { QueryType } from './utils';
+import { SEARCH_TABS_IDS, SEARCH_TABS_NAMES } from './utils';
 
 const TAB_LIST_PROPS = {
   marginBottom: 0,
@@ -59,51 +61,52 @@ const SearchResults = () => {
     }, 0);
   })();
 
+  const chainSelectElement = (
+    <ChainSelect
+      value={ chainSelect.value }
+      onValueChange={ chainSelect.onValueChange }
+      mode="default"
+      withAllOption
+      w={{ base: 'full', lg: 'fit-content' }}
+      mt={{ base: -3, lg: 0 }}
+      mb={{ base: 6, lg: 0 }}
+    />
+  );
+
+  const detailedTabs = Object.entries(SEARCH_TABS_IDS).map(([ key, value ]) => {
+    const queryType = key as QueryType;
+
+    return {
+      id: value,
+      title: SEARCH_TABS_NAMES[queryType],
+      component: (
+        <SearchResultTabContent
+          queries={ queries }
+          queryType={ queryType }
+          isLoading={ isLoading }
+          searchTerm={ debouncedSearchTerm }
+          beforeContent={ isMobile ? chainSelectElement : undefined }
+        />
+      ),
+    };
+  });
+
   const tabs = [
     {
       id: 'all',
       title: 'All',
-      component: <SearchResultTabContent queries={ queries } queryType={ undefined } isLoading={ isLoading } searchTerm={ debouncedSearchTerm }/>,
+      component: (
+        <SearchResultTabContent
+          queries={ queries }
+          queryType={ undefined }
+          isLoading={ isLoading }
+          searchTerm={ debouncedSearchTerm }
+          beforeContent={ isMobile ? chainSelectElement : undefined }
+        />
+      ),
     },
-    {
-      id: 'tokens',
-      title: 'Tokens (ERC-20)',
-      component: <SearchResultTabContent queries={ queries } queryType="tokens" isLoading={ isLoading } searchTerm={ debouncedSearchTerm }/>,
-    },
-    {
-      id: 'nfts',
-      title: 'NFTs (ERC-721 & 1155)',
-      component: <SearchResultTabContent queries={ queries } queryType="nfts" isLoading={ isLoading } searchTerm={ debouncedSearchTerm }/>,
-    },
-    {
-      id: 'addresses',
-      title: 'Addresses',
-      component: <SearchResultTabContent queries={ queries } queryType="addresses" isLoading={ isLoading } searchTerm={ debouncedSearchTerm }/>,
-    },
-    {
-      id: 'blocks',
-      title: 'Blocks',
-      component: <SearchResultTabContent queries={ queries } queryType="blocks" isLoading={ isLoading } searchTerm={ debouncedSearchTerm }/>,
-    },
-    {
-      id: 'block_numbers',
-      title: 'Block numbers',
-      component: <SearchResultTabContent queries={ queries } queryType="blockNumbers" isLoading={ isLoading } searchTerm={ debouncedSearchTerm }/>,
-    },
-    {
-      id: 'transactions',
-      title: 'Transactions',
-      component: <SearchResultTabContent queries={ queries } queryType="transactions" isLoading={ isLoading } searchTerm={ debouncedSearchTerm }/>,
-    },
+    ...detailedTabs,
   ];
-
-  const rightSlot = (
-    <ChainSelect
-      value={ chainSelect.value }
-      onValueChange={ chainSelect.onValueChange }
-      withAllOption
-    />
-  );
 
   return (
     <>
@@ -125,7 +128,7 @@ const SearchResults = () => {
                 size="sm"
                 preservedParams={ PRESERVED_PARAMS }
                 listProps={ isMobile ? undefined : TAB_LIST_PROPS }
-                rightSlot={ rightSlot }
+                rightSlot={ isMobile ? undefined : chainSelectElement }
                 // rightSlotProps={ TABS_RIGHT_SLOT_PROPS }
                 stickyEnabled={ !isMobile }
               />

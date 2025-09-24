@@ -19,3 +19,12 @@ export const SEARCH_TABS_NAMES: Record<QueryType, string> = {
   transactions: 'Transactions',
   nfts: 'NFTs (ERC-721 & 1155)',
 };
+
+export const SEARCH_TABS_IDS: Record<QueryType, string> = {
+  addresses: 'addresses',
+  tokens: 'tokens',
+  blockNumbers: 'block_numbers',
+  blocks: 'blocks',
+  transactions: 'transactions',
+  nfts: 'nfts',
+};
