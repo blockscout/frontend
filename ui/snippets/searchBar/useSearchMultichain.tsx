@@ -1,3 +1,4 @@
+import type * as bens from '@blockscout/bens-types';
 import type { QuickSearchResultBlock } from 'types/client/multichain-aggregator';
 import type { QuickSearchResultItem } from 'types/client/search';
 
@@ -51,6 +52,7 @@ export default function useSearchMultichain({ searchTerm, enabled }: Props) {
             type: 'address' as const,
             address_hash: item.hash,
             is_multichain: true,
+            chain_infos: item.chain_infos,
           }));
           result.push(...items);
         }
@@ -66,6 +68,22 @@ export default function useSearchMultichain({ searchTerm, enabled }: Props) {
             is_smart_contract_verified: item.is_verified_contract,
             chain_id: item.chain_id,
           }));
+          result.push(...items);
+        }
+
+        if (data.domains && data.domains.length > 0) {
+          const items: Array<QuickSearchResultItem> = data.domains
+            .map((item) => (item.address ? {
+              type: 'ens_domain' as const,
+              ens_info: {
+                address_hash: item.address,
+                expiry_date: item.expiry_date,
+                name: item.name,
+                protocol: item.protocol as bens.ProtocolInfo,
+              },
+              address_hash: item.address,
+            } : undefined))
+            .filter((item) => item !== undefined);
           result.push(...items);
         }
 

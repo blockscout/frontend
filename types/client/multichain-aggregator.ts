@@ -1,3 +1,4 @@
+import type * as bens from '@blockscout/bens-types';
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 import type { TokenType } from 'types/api/token';
 
@@ -53,6 +54,7 @@ export interface QuickSearchResultAddress {
   type: 'address';
   address_hash: string;
   is_multichain: boolean;
+  chain_infos: Record<string, multichain.GetAddressResponse_ChainInfo>;
 }
 
 export interface QuickSearchResultToken {
@@ -66,4 +68,19 @@ export interface QuickSearchResultToken {
   chain_id: string;
 }
 
-export type QuickSearchResultItem = QuickSearchResultBlock | QuickSearchResultTransaction | QuickSearchResultAddress | QuickSearchResultToken;
+export interface QuickSearchResultDomain {
+  type: 'ens_domain';
+  ens_info: {
+    address_hash: string;
+    expiry_date?: string;
+    name: string;
+    protocol?: bens.ProtocolInfo;
+  };
+  address_hash: string;
+}
+
+export type QuickSearchResultItem = QuickSearchResultBlock |
+QuickSearchResultTransaction |
+QuickSearchResultAddress |
+QuickSearchResultToken |
+QuickSearchResultDomain;

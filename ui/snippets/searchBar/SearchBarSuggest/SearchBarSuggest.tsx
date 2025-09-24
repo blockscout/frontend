@@ -154,8 +154,8 @@ const SearchBarSuggest = ({ query, zetaChainCCTXQuery, cosmosHashType, searchTer
     const resultCategories = searchCategories.filter(cat => itemsGroups[cat.id]);
 
     if (resultCategories.length === 0 && !cosmosHashType) {
-      if (regexp.BLOCK_HEIGHT.test(searchTerm) && !multichainConfig()) {
-        return <SearchBarSuggestBlockCountdown blockHeight={ searchTerm } onClick={ onItemClick }/>;
+      if (regexp.BLOCK_HEIGHT.test(searchTerm)) {
+        return <SearchBarSuggestBlockCountdown blockHeight={ searchTerm } isMultichain={ Boolean(multichainConfig()) } onClick={ onItemClick }/>;
       }
 
       return <Text>No results found.</Text>;

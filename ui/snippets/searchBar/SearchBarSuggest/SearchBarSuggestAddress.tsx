@@ -8,6 +8,7 @@ import type * as multichain from 'types/client/multichain-aggregator';
 import { toBech32Address } from 'lib/address/bech32';
 import dayjs from 'lib/date/dayjs';
 import highlightText from 'lib/highlightText';
+import getContractName from 'lib/multichain/getContractName';
 import { ADDRESS_REGEXP } from 'toolkit/utils/regexp';
 import SearchResultEntityTag from 'ui/searchResults/SearchResultEntityTag';
 import ContractCertifiedLabel from 'ui/shared/ContractCertifiedLabel';
@@ -21,21 +22,39 @@ const SearchBarSuggestAddress = ({ data, isMobile, searchTerm, addressFormat }: 
   const hash = 'filecoin_robust_address' in data ? data.filecoin_robust_address ||
     (addressFormat === 'bech32' ? toBech32Address(data.address_hash) : data.address_hash) : data.address_hash;
 
+  const isContract = (() => {
+    if ('chain_infos' in data) {
+      return Object.values(data.chain_infos).every((chainInfo) => chainInfo.is_contract);
+    }
+    return data.type === 'contract';
+  })();
+
+  const isVerified = (() => {
+    if ('chain_infos' in data) {
+      return Object.values(data.chain_infos).every((chainInfo) => chainInfo.is_verified);
+    }
+    return data.is_smart_contract_verified;
+  })();
+
   const icon = (
     <AddressEntity.Icon
       address={{
         hash: data.address_hash,
-        // TODO @tom2drum pass flags from chain info
-        is_contract: data.type === 'contract',
+        is_contract: isContract,
         name: '',
-        is_verified: 'is_smart_contract_verified' in data ? data.is_smart_contract_verified : false,
+        is_verified: isVerified,
         ens_domain_name: null,
         implementations: null,
       }}
       shield={ 'is_multichain' in data && data.is_multichain && data.is_multichain ? { name: 'pie_chart' } : undefined }
     />
   );
-  const addressName = 'name' in data ? data.name || data.ens_info?.name : undefined;
+  const addressName = (() => {
+    if ('chain_infos' in data) {
+      return getContractName(data);
+    }
+    return data.name || data.ens_info?.name;
+  })();
   const expiresText = 'ens_info' in data && data.ens_info?.expiry_date ? ` (expires ${ dayjs(data.ens_info.expiry_date).fromNow() })` : '';
 
   const nameEl = addressName && (

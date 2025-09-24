@@ -48,7 +48,7 @@ if (config.features.dataAvailability.isEnabled) {
   searchCategories.push({ id: 'blob', title: 'Blobs' });
 }
 
-if (config.features.nameService.isEnabled) {
+if (config.features.nameService.isEnabled || config.features.opSuperchain.isEnabled) {
   searchCategories.unshift({ id: 'domain', title: 'Names' });
 }
 
