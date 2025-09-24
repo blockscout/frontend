@@ -987,8 +987,7 @@ This feature enables cross-chain transactions pages and views on ZetaChain insta
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST | `string` | ZetaChain cross-chain transactions service API endpoint url | - | - | `https://zetachain-cctx.services.blockscout.com` | v2.3.2+ |
 | NEXT_PUBLIC_ZETACHAIN_SERVICE_CHAINS_CONFIG_URL | `string` | URL of configuration file (`.json` format only) which contains chains info for the supported chains. | - | - | `https://example.com/zetachain_chains_config.json` | v2.3.2+ |
-| NEXT_PUBLIC_ZETACHAIN_COSMOS_TX_URL_TEMPLATE | `string` | URL template to redirect cosmos tx search. | - | - | `https://example.com/cosmos/tx/{hash}` | v2.3.2+ |
-| NEXT_PUBLIC_ZETACHAIN_COSMOS_ADDRESS_URL_TEMPLATE | `string` URL template to redirect cosmos address search. | - | - | `https://example.com/cosmos/address/{hash}` | v2.3.2+ |
+| NEXT_PUBLIC_ZETACHAIN_EXTERNAL_SEARCH_CONFIG | `Array<{ regex: string; template: string }>` | List of objects with regex, template and name fields to build redirect links for external searches. The first matching regex will be used to generate the URL from the provided hash. | - | - | `'[{"regex":"^0x[0-9a-fA-F]{64}$","template":"https://example.com/cosmos/tx/{hash}","name":"Cosmos SDK style transaction"}]'` | v2.4.0+ |
 
 
 #### ZetaChain supported cain configuration properties
