@@ -2,9 +2,9 @@ import React from 'react';
 
 import config from 'configs/app';
 import { isBech32Address, fromBech32Address } from 'lib/address/bech32';
-import { checkCosmosHash } from 'lib/address/cosmos';
 import useApiQuery from 'lib/api/useApiQuery';
 import useDebounce from 'lib/hooks/useDebounce';
+import { getExternalSearchItem } from 'lib/search/externalSearch';
 
 export default function useQuickSearchQuery() {
   const [ searchTerm, setSearchTerm ] = React.useState('');
@@ -39,7 +39,7 @@ export default function useQuickSearchQuery() {
     handleSearchTermChange: setSearchTerm,
     query,
     redirectCheckQuery,
-    cosmosHashType: checkCosmosHash(debouncedSearchTerm),
+    externalSearchItem: getExternalSearchItem(debouncedSearchTerm),
     zetaChainCCTXQuery,
   }), [ debouncedSearchTerm, query, redirectCheckQuery, searchTerm, zetaChainCCTXQuery ]);
 }
