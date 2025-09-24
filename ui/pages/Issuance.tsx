@@ -36,6 +36,8 @@ const ObjectDetails: NextPage = () => {
     }));
   };
 
+  const contractAddress = getEnvValue('NEXT_PUBLIC_ISSUANCE_CONTRACT_ADDRESS');
+
   const [ toNext, setToNext ] = React.useState<boolean>(true);
 
   // const [ block, setBlock ] = React.useState<number>(0);
@@ -81,7 +83,7 @@ const ObjectDetails: NextPage = () => {
       setLoading(true);
       const hash = queryParams.page > 1 ? map.get((queryParams.page - 1).toString()) : '';
       const rp1 = await (await fetch('https://' + url + '/api/v2/addresses/' +
-        '0xC26Cc070c4Cc98EFC78D6ed1936987Db5d6Cd82b' + '/transactions?' + `${ hash || '' }`,
+        contractAddress + '/transactions?' + `${ hash || '' }`,
       { method: 'get' })).json() as any;
       const tableList: Array<IssuanceTalbeListType> = [];
       rp1.items.forEach((v: any) => {
@@ -89,15 +91,17 @@ const ObjectDetails: NextPage = () => {
           'Txn hash': v.hash,
           Block: v.block_number,
           Method: v.method,
-          'From/To': [ v.from.hash, '0xC26Cc070c4Cc98EFC78D6ed1936987Db5d6Cd82b' ],
+          'From/To': [ v.from.hash, contractAddress || '' ],
           Time: new Date(v.timestamp).toLocaleString('en-US', { timeZone: 'Asia/Shanghai', hour12: false }),
           'Value MOCA': v.value,
           'Fee MOCA': truncateToSignificantDigits(BigNumber(v.base_fee_per_gas / 1e18).toString(10), 3).toString(10),
         });
       });
-      setMapValue(queryParams.page.toString(), new URLSearchParams(
-        Object.entries(rp1.next_page_params).map(([ k, v ]) => [ k, String(v) ]),
-      ).toString());
+      if (rp1.next_page_params) {
+        setMapValue(queryParams.page.toString(), new URLSearchParams(
+          Object.entries(rp1.next_page_params).map(([ k, v ]) => [ k, String(v) ]),
+        ).toString());
+      }
       setToNext(rp1.next_page_params ? true : false);
       setTableList(tableList);
       setLoading(false);
@@ -105,7 +109,7 @@ const ObjectDetails: NextPage = () => {
       setLoading(false);
       throw Error(error);
     }
-  }, [ url, setMapValue, queryParams.page, map ]);
+  }, [ queryParams.page, map, url, contractAddress, setMapValue ]);
 
   const propsPage = React.useCallback((value: number) => {
     window.scrollTo({
