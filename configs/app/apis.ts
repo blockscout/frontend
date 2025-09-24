@@ -1,8 +1,8 @@
-import type { ApiName } from 'lib/api/types';
+import type { ApiName } from "lib/api/types";
 
-import { stripTrailingSlash } from 'toolkit/utils/url';
+import { stripTrailingSlash } from "toolkit/utils/url";
 
-import { getEnvValue } from './utils';
+import { getEnvValue } from "./utils";
 
 export interface ApiPropsBase {
   endpoint: string;
@@ -18,36 +18,43 @@ export interface ApiPropsFull extends ApiPropsBase {
 }
 
 const generalApi = (() => {
-  const apiHost = getEnvValue('NEXT_PUBLIC_API_HOST');
-  const apiSchema = getEnvValue('NEXT_PUBLIC_API_PROTOCOL') || 'https';
-  const apiPort = getEnvValue('NEXT_PUBLIC_API_PORT');
+  const apiHost = getEnvValue("NEXT_PUBLIC_API_HOST");
+  const apiSchema = getEnvValue("NEXT_PUBLIC_API_PROTOCOL") || "https";
+  const apiPort = getEnvValue("NEXT_PUBLIC_API_PORT");
   const apiEndpoint = [
-    apiSchema || 'https',
-    '://',
+    apiSchema || "https",
+    "://",
     apiHost,
-    apiPort && ':' + apiPort,
-  ].filter(Boolean).join('');
+    apiPort && ":" + apiPort,
+  ]
+    .filter(Boolean)
+    .join("");
 
-  const socketSchema = getEnvValue('NEXT_PUBLIC_API_WEBSOCKET_PROTOCOL') || 'wss';
+  const socketSchema =
+    getEnvValue("NEXT_PUBLIC_API_WEBSOCKET_PROTOCOL") || "wss";
   const socketEndpoint = [
     socketSchema,
-    '://',
+    "://",
     apiHost,
-    apiPort && ':' + apiPort,
-  ].filter(Boolean).join('');
+    apiPort && ":" + apiPort,
+  ]
+    .filter(Boolean)
+    .join("");
 
   return Object.freeze({
     endpoint: apiEndpoint,
-    basePath: stripTrailingSlash(getEnvValue('NEXT_PUBLIC_API_BASE_PATH') || ''),
+    basePath: stripTrailingSlash(
+      getEnvValue("NEXT_PUBLIC_API_BASE_PATH") || ""
+    ),
     socketEndpoint: socketEndpoint,
-    host: apiHost ?? '',
-    protocol: apiSchema ?? 'https',
+    host: apiHost ?? "",
+    protocol: apiSchema ?? "https",
     port: apiPort,
   });
 })();
 
 const adminApi = (() => {
-  const apiHost = getEnvValue('NEXT_PUBLIC_ADMIN_SERVICE_API_HOST');
+  const apiHost = getEnvValue("NEXT_PUBLIC_ADMIN_SERVICE_API_HOST");
   if (!apiHost) {
     return;
   }
@@ -58,7 +65,7 @@ const adminApi = (() => {
 })();
 
 const bensApi = (() => {
-  const apiHost = getEnvValue('NEXT_PUBLIC_NAME_SERVICE_API_HOST');
+  const apiHost = getEnvValue("NEXT_PUBLIC_NAME_SERVICE_API_HOST");
   if (!apiHost) {
     return;
   }
@@ -69,7 +76,7 @@ const bensApi = (() => {
 })();
 
 const contractInfoApi = (() => {
-  const apiHost = getEnvValue('NEXT_PUBLIC_CONTRACT_INFO_API_HOST');
+  const apiHost = getEnvValue("NEXT_PUBLIC_CONTRACT_INFO_API_HOST");
   if (!apiHost) {
     return;
   }
@@ -80,7 +87,7 @@ const contractInfoApi = (() => {
 })();
 
 const metadataApi = (() => {
-  const apiHost = getEnvValue('NEXT_PUBLIC_METADATA_SERVICE_API_HOST');
+  const apiHost = getEnvValue("NEXT_PUBLIC_METADATA_SERVICE_API_HOST");
   if (!apiHost) {
     return;
   }
@@ -91,7 +98,7 @@ const metadataApi = (() => {
 })();
 
 const rewardsApi = (() => {
-  const apiHost = getEnvValue('NEXT_PUBLIC_REWARDS_SERVICE_API_HOST');
+  const apiHost = getEnvValue("NEXT_PUBLIC_REWARDS_SERVICE_API_HOST");
   if (!apiHost) {
     return;
   }
@@ -102,7 +109,7 @@ const rewardsApi = (() => {
 })();
 
 const multichainApi = (() => {
-  const apiHost = getEnvValue('NEXT_PUBLIC_MULTICHAIN_AGGREGATOR_API_HOST');
+  const apiHost = getEnvValue("NEXT_PUBLIC_MULTICHAIN_AGGREGATOR_API_HOST");
   if (!apiHost) {
     return;
   }
@@ -112,29 +119,32 @@ const multichainApi = (() => {
 
     return Object.freeze({
       endpoint: apiHost,
-      socketEndpoint: `wss://${ url.host }`,
-      basePath: stripTrailingSlash(getEnvValue('NEXT_PUBLIC_MULTICHAIN_AGGREGATOR_BASE_PATH') || ''),
+      socketEndpoint: `wss://${url.host}`,
+      basePath: stripTrailingSlash(
+        getEnvValue("NEXT_PUBLIC_MULTICHAIN_AGGREGATOR_BASE_PATH") || ""
+      ),
     });
   } catch (error) {
     return;
   }
-
 })();
 
 const statsApi = (() => {
-  const apiHost = getEnvValue('NEXT_PUBLIC_STATS_API_HOST');
+  const apiHost = getEnvValue("NEXT_PUBLIC_STATS_API_HOST");
   if (!apiHost) {
     return;
   }
 
   return Object.freeze({
     endpoint: apiHost,
-    basePath: stripTrailingSlash(getEnvValue('NEXT_PUBLIC_STATS_API_BASE_PATH') || ''),
+    basePath: stripTrailingSlash(
+      getEnvValue("NEXT_PUBLIC_STATS_API_BASE_PATH") || ""
+    ),
   });
 })();
 
 const tacApi = (() => {
-  const apiHost = getEnvValue('NEXT_PUBLIC_TAC_OPERATION_LIFECYCLE_API_HOST');
+  const apiHost = getEnvValue("NEXT_PUBLIC_TAC_OPERATION_LIFECYCLE_API_HOST");
   if (!apiHost) {
     return;
   }
@@ -145,7 +155,7 @@ const tacApi = (() => {
 })();
 
 const userOpsApi = (() => {
-  const apiHost = getEnvValue('NEXT_PUBLIC_USER_OPS_INDEXER_API_HOST');
+  const apiHost = getEnvValue("NEXT_PUBLIC_USER_OPS_INDEXER_API_HOST");
   if (!apiHost) {
     return;
   }
@@ -156,19 +166,21 @@ const userOpsApi = (() => {
 })();
 
 const visualizeApi = (() => {
-  const apiHost = getEnvValue('NEXT_PUBLIC_VISUALIZE_API_HOST');
+  const apiHost = getEnvValue("NEXT_PUBLIC_VISUALIZE_API_HOST");
   if (!apiHost) {
     return;
   }
 
   return Object.freeze({
     endpoint: apiHost,
-    basePath: stripTrailingSlash(getEnvValue('NEXT_PUBLIC_VISUALIZE_API_BASE_PATH') || ''),
+    basePath: stripTrailingSlash(
+      getEnvValue("NEXT_PUBLIC_VISUALIZE_API_BASE_PATH") || ""
+    ),
   });
 })();
 
 const clustersApi = (() => {
-  const apiHost = getEnvValue('NEXT_PUBLIC_CLUSTERS_API_HOST');
+  const apiHost = getEnvValue("NEXT_PUBLIC_CLUSTERS_API_HOST");
   if (!apiHost) {
     return;
   }
@@ -179,7 +191,7 @@ const clustersApi = (() => {
 })();
 
 const zetachainApi = (() => {
-  const apiHost = getEnvValue('NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST');
+  const apiHost = getEnvValue("NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST");
   if (!apiHost) {
     return;
   }
@@ -189,7 +201,7 @@ const zetachainApi = (() => {
 
     return Object.freeze({
       endpoint: apiHost,
-      socketEndpoint: `wss://${ url.host }/socket`,
+      socketEndpoint: `wss://${url.host}/socket`,
     });
   } catch (error) {
     return;
@@ -198,7 +210,7 @@ const zetachainApi = (() => {
 
 export type Apis = {
   general: ApiPropsFull;
-} & Partial<Record<Exclude<ApiName, 'general'>, ApiPropsBase>>;
+} & Partial<Record<Exclude<ApiName, "general">, ApiPropsBase>>;
 
 const apis: Apis = Object.freeze({
   general: generalApi,
