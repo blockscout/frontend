@@ -1,13 +1,18 @@
+import { capitalize } from 'es-toolkit/string';
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import React from 'react';
 
+import type { Props } from 'nextjs/getServerSideProps/handlers';
 import PageNextJs from 'nextjs/PageNextJs';
 
 const MarketplaceEssentialDapp = dynamic(() => import('ui/pages/MarketplaceEssentialDapp'), { ssr: false });
 
-const Page: NextPage = () => (
-  <PageNextJs pathname="/essential-dapps/[id]">
+const Page: NextPage<Props> = (props: Props) => (
+  <PageNextJs
+    pathname="/essential-dapps/[id]"
+    query={{ ...props.query, id_cap: capitalize(props.query?.id as string) }}
+  >
     <MarketplaceEssentialDapp/>
   </PageNextJs>
 );
