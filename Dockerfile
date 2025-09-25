@@ -20,9 +20,9 @@ RUN apk add git
 RUN yarn --frozen-lockfile --network-timeout 100000
 
 # Optionally install the private widget only in the root app when token is provided via BuildKit secret
-RUN --mount=type=secret,id=multisender_npm_token \
+RUN --mount=type=secret,id=MULTISENDER_NPM_TOKEN \
     set -eu; \
-    TOKEN_FILE="/run/secrets/multisender_npm_token"; \
+    TOKEN_FILE="/run/secrets/MULTISENDER_NPM_TOKEN"; \
     if [ -s "$TOKEN_FILE" ]; then \
       echo "Installing @multisender.app/multisender-react-widget@^0.1.22"; \
       NPMRC_TMP="$(mktemp)"; \
