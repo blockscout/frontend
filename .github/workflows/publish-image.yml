@@ -107,6 +107,7 @@ jobs:
                     context: .
                     file: ./Dockerfile
                     push: true
+                    no-cache: true
                     cache-from: type=gha
                     tags: ${{ steps.meta.outputs.tags }}
                     platforms: ${{ inputs.platforms }}
