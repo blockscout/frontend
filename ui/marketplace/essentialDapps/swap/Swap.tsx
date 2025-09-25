@@ -3,6 +3,17 @@ import type { WidgetConfig } from '@lifi/widget';
 import { LiFiWidget } from '@lifi/widget';
 import { useMemo } from 'react';
 
+import config from 'configs/app';
+import essentialDappsChains from 'configs/essentialDappsChains';
+
+import essentialDappsConfig from '../config';
+
+const defaultChainId = Number(
+  essentialDappsConfig.revoke.chains.includes(config.chain.id as string) ?
+    config.chain.id :
+    essentialDappsConfig.revoke.chains[0],
+);
+
 const Swap = () => {
   const config = useMemo(
     () =>
@@ -26,10 +37,16 @@ const Swap = () => {
             borderRadiusSecondary: 8,
           },
         },
-        fromChain: 1,
+        fromChain: defaultChainId,
         fromToken: '0x0000000000000000000000000000000000000000',
         chains: {
-          allow: [ 1, 11155111, 30, 100 ],
+          allow: essentialDappsConfig.multisend.chains.map((chainId) => Number(chainId)),
+        },
+        sdkConfig: {
+          rpcUrls: Object.fromEntries(essentialDappsConfig.multisend.chains.map((chainId) => ([
+            Number(chainId),
+            [ `${ essentialDappsChains[chainId] }/api/eth-rpc` ],
+          ]))),
         },
         walletConfig: {
           // onConnect: open,
