@@ -107,10 +107,7 @@ jobs:
                     context: .
                     file: ./Dockerfile
                     push: true
-                    pull: true
-                    no-cache: true
-                    cache-from: type=gha,scope=frontend
-                    cache-to: type=gha,mode=max,scope=frontend
+                    cache-from: type=gha
                     tags: ${{ steps.meta.outputs.tags }}
                     platforms: ${{ inputs.platforms }}
                     labels: ${{ steps.meta.outputs.labels }}
@@ -119,5 +116,4 @@ jobs:
                     build-args: |
                         GIT_COMMIT_SHA=${{ env.SHORT_SHA }}
                         GIT_TAG=${{ github.ref_type == 'tag' && github.ref_name || '' }}
-                        CACHE_BUSTER=${{ github.run_id }}
                         ${{ inputs.build_args }}
