@@ -16,7 +16,7 @@ const PRESETS = {
   garnet: 'https://explorer.garnetchain.com',
   gnosis: 'https://gnosis.blockscout.com',
   immutable: 'https://explorer.immutable.com',
-  mega_eth: 'https://eth.blockscout.com', // FIXME: change host when instance is ready
+  mega_eth: 'https://megaeth-testnet.blockscout.com',
   mekong: 'https://mekong.blockscout.com',
   neon_devnet: 'https://neon-devnet.blockscout.com',
   optimism: 'https://optimism.blockscout.com',
@@ -30,6 +30,8 @@ const PRESETS = {
   stability_testnet: 'https://stability-testnet.blockscout.com',
   tac: 'https://explorer.tac.build',
   tac_turin: 'https://tac-turin.blockscout.com',
+  zetachain: 'https://zetachain.blockscout.com',
+  zetachain_testnet: 'https://zetachain-testnet.blockscout.com',
   zkevm: 'https://zkevm.blockscout.com',
   zksync: 'https://zksync.blockscout.com',
   zilliqa: 'https://zilliqa.blockscout.com',

@@ -49,6 +49,9 @@ on:
 # concurrency:
 #   group: ${{ github.workflow }}__${{ github.job }}__${{ github.ref }}
 #   cancel-in-progress: true
+permissions:
+  contents: read
+  issues: write
 
 jobs:
     run:

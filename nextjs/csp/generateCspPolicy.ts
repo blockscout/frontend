@@ -14,6 +14,7 @@ function generateCspPolicy() {
     descriptors.growthBook(),
     descriptors.helia(),
     descriptors.marketplace(),
+    descriptors.megaEth(),
     descriptors.mixpanel(),
     descriptors.monaco(),
     descriptors.multichain(),
@@ -22,6 +23,7 @@ function generateCspPolicy() {
     descriptors.safe(),
     descriptors.usernameApi(),
     descriptors.walletConnect(),
+    descriptors.zetachain(),
   );
 
   return makePolicyString(policyDescriptor);

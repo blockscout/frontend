@@ -1,8 +1,10 @@
 import React from 'react';
 
+import config from 'configs/app';
 import { isBech32Address, fromBech32Address } from 'lib/address/bech32';
 import useApiQuery from 'lib/api/useApiQuery';
 import useDebounce from 'lib/hooks/useDebounce';
+import { getExternalSearchItem } from 'lib/search/externalSearch';
 
 export default function useQuickSearchQuery() {
   const [ searchTerm, setSearchTerm ] = React.useState('');
@@ -21,11 +23,23 @@ export default function useQuickSearchQuery() {
     queryOptions: { enabled: Boolean(debouncedSearchTerm) },
   });
 
+  const zetaChainCCTXQuery = useApiQuery('zetachain:transactions', {
+    queryParams: {
+      hash: debouncedSearchTerm,
+      limit: 10,
+      offset: 0,
+      direction: 'DESC',
+    },
+    queryOptions: { enabled: debouncedSearchTerm.trim().length > 0 && config.features.zetachain.isEnabled },
+  });
+
   return React.useMemo(() => ({
     searchTerm,
     debouncedSearchTerm,
     handleSearchTermChange: setSearchTerm,
     query,
     redirectCheckQuery,
-  }), [ debouncedSearchTerm, query, redirectCheckQuery, searchTerm ]);
+    externalSearchItem: getExternalSearchItem(debouncedSearchTerm),
+    zetaChainCCTXQuery,
+  }), [ debouncedSearchTerm, query, redirectCheckQuery, searchTerm, zetaChainCCTXQuery ]);
 }

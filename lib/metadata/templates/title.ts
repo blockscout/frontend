@@ -26,6 +26,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/essential-dapps/[id]': '%id_cap%',
   '/stats': '%network_name% stats - %network_name% network insights',
   '/stats/[id]': '%network_name% stats - %id% chart',
+  '/uptime': '%network_name% uptime',
   '/api-docs': '%network_name% API docs - %network_name% developer tools',
   '/search-results': '%network_name% search result for %q%',
   '/auth/profile': '%network_name% - my profile',
@@ -65,6 +66,8 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/interop-messages': '%network_name% interop messages',
   '/operations': '%network_name% operations',
   '/operation/[id]': '%network_name% operation %id%',
+  '/clusters/[name]': 'Clusters details for %name%',
+  '/cc/tx/[hash]': '%network_name% cross-chain transaction %hash% details',
 
   // multichain routes
   '/chain/[chain-slug]/accounts/label/[slug]': '%network_name% addresses search by label',

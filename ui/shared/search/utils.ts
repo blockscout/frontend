@@ -1,14 +1,27 @@
+import type { CctxListItem } from '@blockscout/zetachain-cctx-types';
 import type { MarketplaceApp } from 'types/client/marketplace';
 import type { SearchResultItem } from 'types/client/search';
 
 import config from 'configs/app';
 
-export type ApiCategory = 'token' | 'nft' | 'address' | 'public_tag' | 'transaction' | 'block' | 'user_operation' | 'blob' | 'domain' | 'tac_operation';
-export type Category = ApiCategory | 'app';
+export type ApiCategory =
+  'token' |
+  'nft' |
+  'address' |
+  'public_tag' |
+  'transaction' |
+  'block' |
+  'user_operation' |
+  'blob' |
+  'domain' |
+  'cluster' |
+  'tac_operation';
+export type Category = ApiCategory | 'app' | 'zetaChainCCTX';
 
 export type ItemsCategoriesMap =
 Record<ApiCategory, Array<SearchResultItem>> &
-Record<'app', Array<MarketplaceApp>>;
+Record<'app', Array<MarketplaceApp>> &
+Record<'zetaChainCCTX', Array<CctxListItem>>;
 
 export type SearchResultAppItem = {
   type: 'app';
@@ -24,6 +37,7 @@ export const searchCategories: Array<{ id: Category; title: string }> = [
   { id: 'transaction', title: 'Transactions' },
   { id: 'block', title: 'Blocks' },
   { id: 'tac_operation', title: 'Operations' },
+  { id: 'zetaChainCCTX', title: 'CCTXs' },
 ];
 
 if (config.features.userOps.isEnabled) {
@@ -38,9 +52,14 @@ if (config.features.nameService.isEnabled) {
   searchCategories.unshift({ id: 'domain', title: 'Names' });
 }
 
+if (config.features.clusters.isEnabled) {
+  searchCategories.unshift({ id: 'cluster', title: 'Cluster Name' });
+}
+
 export const searchItemTitles: Record<Category, { itemTitle: string; itemTitleShort: string }> = {
   app: { itemTitle: 'DApp', itemTitleShort: 'App' },
   domain: { itemTitle: 'Name', itemTitleShort: 'Name' },
+  cluster: { itemTitle: 'Cluster', itemTitleShort: 'Cluster' },
   token: { itemTitle: 'Token', itemTitleShort: 'Token' },
   nft: { itemTitle: 'NFT', itemTitleShort: 'NFT' },
   address: { itemTitle: 'Address', itemTitleShort: 'Address' },
@@ -50,6 +69,7 @@ export const searchItemTitles: Record<Category, { itemTitle: string; itemTitleSh
   user_operation: { itemTitle: 'User operation', itemTitleShort: 'User op' },
   blob: { itemTitle: 'Blob', itemTitleShort: 'Blob' },
   tac_operation: { itemTitle: 'Operations', itemTitleShort: 'Operations' },
+  zetaChainCCTX: { itemTitle: 'CCTX', itemTitleShort: 'CCTX' },
 };
 
 export function getItemCategory(item: SearchResultItem | SearchResultAppItem): Category | undefined {
@@ -86,8 +106,14 @@ export function getItemCategory(item: SearchResultItem | SearchResultAppItem): C
     case 'ens_domain': {
       return 'domain';
     }
+    case 'cluster': {
+      return 'cluster';
+    }
     case 'tac_operation': {
       return 'tac_operation';
+    }
+    case 'zetaChainCCTX': {
+      return 'zetaChainCCTX';
     }
   }
 }

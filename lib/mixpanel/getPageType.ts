@@ -22,8 +22,10 @@ export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/apps': 'DApps',
   '/apps/[id]': 'DApp',
   '/essential-dapps/[id]': 'Essential DApp',
+  '/clusters/[name]': 'Cluster details',
   '/stats': 'Stats',
   '/stats/[id]': 'Stats chart',
+  '/uptime': 'Uptime',
   '/api-docs': 'REST API',
   '/search-results': 'Search results',
   '/auth/profile': 'Profile',
@@ -63,6 +65,7 @@ export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/interop-messages': 'Interop messages',
   '/operations': 'Operations',
   '/operation/[id]': 'Operation details',
+  '/cc/tx/[hash]': 'Cross-chain transaction details',
 
   // multichain routes
   '/chain/[chain-slug]/accounts/label/[slug]': 'Chain addresses search by label',

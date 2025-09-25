@@ -38,6 +38,7 @@ declare module "nextjs-routes" {
     | DynamicRoute<"/block/countdown/[height]", { "height": string }>
     | StaticRoute<"/block/countdown">
     | StaticRoute<"/blocks">
+    | DynamicRoute<"/cc/tx/[hash]", { "hash": string }>
     | DynamicRoute<"/chain/[chain-slug]/accounts/label/[slug]", { "chain-slug": string; "slug": string }>
     | DynamicRoute<"/chain/[chain-slug]/advanced-filter", { "chain-slug": string }>
     | DynamicRoute<"/chain/[chain-slug]/block/[height_or_hash]", { "chain-slug": string; "height_or_hash": string }>
@@ -49,6 +50,7 @@ declare module "nextjs-routes" {
     | DynamicRoute<"/chain/[chain-slug]/token/[hash]/instance/[id]", { "chain-slug": string; "hash": string; "id": string }>
     | DynamicRoute<"/chain/[chain-slug]/tx/[hash]", { "chain-slug": string; "hash": string }>
     | StaticRoute<"/chakra">
+    | DynamicRoute<"/clusters/[name]", { "name": string }>
     | StaticRoute<"/contract-verification">
     | StaticRoute<"/csv-export">
     | StaticRoute<"/deposits">
@@ -84,6 +86,7 @@ declare module "nextjs-routes" {
     | StaticRoute<"/txn-withdrawals">
     | StaticRoute<"/txs">
     | DynamicRoute<"/txs/kettle/[hash]", { "hash": string }>
+    | StaticRoute<"/uptime">
     | DynamicRoute<"/validators/[id]", { "id": string }>
     | StaticRoute<"/validators">
     | StaticRoute<"/verified-contracts">

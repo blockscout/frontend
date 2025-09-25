@@ -180,6 +180,22 @@ export const pools: Guard = (chainConfig: typeof config) => async() => {
   }
 };
 
+export const clusters: Guard = (chainConfig: typeof config) => async() => {
+  if (!chainConfig.features.clusters.isEnabled) {
+    return {
+      notFound: true,
+    };
+  }
+};
+
+export const zetaChainCCTX: Guard = (chainConfig: typeof config) => async() => {
+  if (!chainConfig.features.zetachain.isEnabled) {
+    return {
+      notFound: true,
+    };
+  }
+};
+
 // ROLLUPS
 export const rollup: Guard = (chainConfig: typeof config) => async() => {
   if (!chainConfig.features.rollup.isEnabled) {
@@ -302,6 +318,14 @@ export const opSuperchain: Guard = () => async() => {
 
 export const notOpSuperchain: Guard = () => async() => {
   if (config.features.opSuperchain.isEnabled) {
+    return {
+      notFound: true,
+    };
+  }
+};
+
+export const megaEth: Guard = () => async() => {
+  if (!config.features.megaEth.isEnabled) {
     return {
       notFound: true,
     };

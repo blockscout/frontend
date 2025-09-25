@@ -15,9 +15,12 @@ on:
                 description: Image platforms (you can specify multiple platforms separated by comma)
                 required: false
                 type: string
-                default: |
-                    linux/amd64
-                    linux/arm64/v8
+                default: linux/amd64,linux/arm64/v8
+            private:
+                description: Make image private (true) or public (false)
+                required: false
+                type: boolean
+                default: true
     workflow_call:
         inputs:
             tags:
@@ -32,9 +35,16 @@ on:
                 description: Image platforms (you can specify multiple platforms separated by comma)
                 required: false
                 type: string
-                default: |
-                    linux/amd64
-                    linux/arm64/v8
+                default: linux/amd64,linux/arm64/v8
+            private:
+                description: Make image private (true) or public (false)
+                required: false
+                type: boolean
+                default: true
+
+permissions:
+    contents: read
+    packages: write
 
 jobs:
     run:
@@ -44,12 +54,21 @@ jobs:
             -   name: Check out the repo
                 uses: actions/checkout@v4
     
+            -   name: Set image name based on private flag
+                id: image-name
+                run: |
+                    if [ "${{ inputs.private }}" = "true" ]; then
+                        echo "image-name=ghcr.io/blockscout/frontend-private" >> $GITHUB_OUTPUT
+                    else
+                        echo "image-name=ghcr.io/blockscout/frontend" >> $GITHUB_OUTPUT
+                    fi
+    
             # Will automatically make nice tags, see the table here https://github.com/docker/metadata-action#basic
             -   name: Docker meta
                 id: meta
                 uses: docker/metadata-action@v5
                 with:
-                    images: ghcr.io/blockscout/frontend
+                    images: ${{ steps.image-name.outputs.image-name }}
                     flavor: |
                         latest=false
                     tags: |
@@ -63,15 +82,19 @@ jobs:
                 env:
                     REF_TYPE: ${{ github.ref_type }}
                     REF_NAME: ${{ github.ref_name }}
+                    IMAGE_NAME: ${{ steps.image-name.outputs.image-name }}
+                    IS_PRIVATE: ${{ inputs.private }}
                 run: |
                     echo "ref_type: $REF_TYPE"
                     echo "ref_name: $REF_NAME"
+                    echo "image_name: $IMAGE_NAME"
+                    echo "is_private: $IS_PRIVATE"
     
             -   name: Setup repo
                 uses: blockscout/actions/.github/actions/setup-multiarch-buildx@no-metadata
                 id: setup
                 with:
-                    docker-image: ghcr.io/blockscout/frontend
+                    docker-image: ${{ steps.image-name.outputs.image-name }}
                     docker-username: ${{ github.actor }}
                     docker-password: ${{ secrets.GITHUB_TOKEN }}
                     docker-remote-multi-platform: true

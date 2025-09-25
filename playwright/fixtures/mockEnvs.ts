@@ -88,7 +88,7 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
     [ 'NEXT_PUBLIC_DATA_AVAILABILITY_ENABLED', 'true' ],
   ],
   nameService: [
-    [ 'NEXT_PUBLIC_NAME_SERVICE_API_HOST', 'https://localhost:3008' ],
+    [ 'NEXT_PUBLIC_NAME_SERVICE_API_HOST', 'http://localhost:3008' ],
   ],
   rewardsService: [
     [ 'NEXT_PUBLIC_REWARDS_SERVICE_API_HOST', 'http://localhost:3009' ],
@@ -116,6 +116,14 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
   ],
   opSuperchain: [
     [ 'NEXT_PUBLIC_OP_SUPERCHAIN_ENABLED', 'true' ],
+  ],
+  clusters: [
+    [ 'NEXT_PUBLIC_CLUSTERS_API_HOST', 'https://api.clusters.xyz' ],
+  ],
+  zetaChain: [
+    [ 'NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST', 'http://localhost:3111' ],
+    [ 'NEXT_PUBLIC_ZETACHAIN_SERVICE_CHAINS_CONFIG_URL', 'http://localhost:3000/zeta-config.json' ],
+    [ 'NEXT_PUBLIC_ZETACHAIN_EXTERNAL_SEARCH_CONFIG', '[{"regex":"^0x[0-9a-fA-F]{64}$","template":"https://example.com/tx/{hash}","name":"Cosmos SDK style transaction"}]' ],
   ],
   navigationPromoBannerText: [
     [ 'NEXT_PUBLIC_NAVIGATION_PROMO_BANNER_CONFIG', '{"img_url": "http://localhost:3000/image.svg", "text": "Try the DUCK!", "bg_color": {"light": "rgb(150, 211, 255)", "dark": "rgb(68, 51, 122)"}, "text_color": {"light": "rgb(69, 69, 69)", "dark": "rgb(233, 216, 253)"}, "link_url": "https://example.com"}' ],

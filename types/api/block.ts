@@ -45,6 +45,7 @@ export interface Block {
   uncles_hashes: Array<string>;
   withdrawals_count?: number;
   beacon_deposits_count?: number;
+  is_pending_update?: boolean;
   // ROOTSTOCK FIELDS
   bitcoin_merged_mining_coinbase_transaction?: string | null;
   bitcoin_merged_mining_header?: string | null;

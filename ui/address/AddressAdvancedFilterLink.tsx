@@ -1,4 +1,3 @@
-import { chakra } from '@chakra-ui/react';
 import { pickBy } from 'es-toolkit';
 import React from 'react';
 
@@ -7,13 +6,10 @@ import { ADVANCED_FILTER_TYPES } from 'types/api/advancedFilter';
 import type { TokenType } from 'types/api/token';
 import type { ChainConfig } from 'types/multichain';
 
-import { route } from 'nextjs/routes';
-
 import config from 'configs/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import useIsInitialLoading from 'lib/hooks/useIsInitialLoading';
-import { Link } from 'toolkit/chakra/link';
-import IconSvg from 'ui/shared/IconSvg';
+import AdvancedFilterLink from 'ui/shared/links/AdvancedFilterLink';
 
 interface Props {
   isLoading?: boolean;
@@ -42,18 +38,11 @@ const AddressAdvancedFilterLink = ({ isLoading, address, typeFilter, directionFi
   const linkContext = (chainData ? { chain: chainData } : undefined) ?? multichainContext;
 
   return (
-    <Link
-      whiteSpace="nowrap"
-      href={ route({ pathname: '/advanced-filter', query: queryParams }, linkContext) }
-      flexShrink={ 0 }
+    <AdvancedFilterLink
+      query={ queryParams }
+      linkContext={ linkContext }
       loading={ isInitialLoading }
-      minW={ 8 }
-      justifyContent="center"
-      textStyle="sm"
-    >
-      <IconSvg name="filter" boxSize={ 6 }/>
-      <chakra.span ml={ 1 } hideBelow="lg">Advanced filter</chakra.span>
-    </Link>
+    />
   );
 };
 

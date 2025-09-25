@@ -30,7 +30,7 @@ const ContractVerificationSolidityFoundry = () => {
         </Flex>
         <Box whiteSpace="pre-wrap">
           <span>Full tutorial about contract verification via Foundry on Blockscout is available </span>
-          <Link href="https://docs.blockscout.com/for-users/verifying-a-smart-contract/foundry-verification" external>
+          <Link href="https://docs.blockscout.com/devs/verification/foundry-verification" external>
             here
           </Link>
         </Box>

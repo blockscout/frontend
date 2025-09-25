@@ -67,6 +67,12 @@ export const recipe = defineRecipe({
       },
     },
     size: {
+      sm: {
+        textStyle: 'xs',
+        p: '1',
+        h: '4.5',
+        minH: '4.5',
+      },
       md: {
         textStyle: 'sm',
         px: '1',
