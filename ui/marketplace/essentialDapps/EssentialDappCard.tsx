@@ -24,6 +24,8 @@ const EssentialDappCard = ({ id, title, description, buttonText, imageUrl }: Pro
       border="1px solid"
       borderColor={{ _light: 'blackAlpha.300', _dark: 'whiteAlpha.300' }}
       borderRadius="base"
+      _hover={{ boxShadow: 'md' }}
+      _focusWithin={{ boxShadow: 'md' }}
     >
       <Image src={ imageUrl } alt={ title } h="50px" mb={ 6 }/>
       <Text textStyle="xl" fontWeight="600" mb={ 2 }>{ title }</Text>
