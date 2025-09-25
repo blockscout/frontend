@@ -48,7 +48,7 @@ const Icon = (props: IconProps) => {
     return <Skeleton { ...styles } className={ props.className }/>;
   }
 
-  const tokenIcon = TOKEN_LOGOS?.[props.token.address] as IconName || undefined;
+  const tokenIcon = TOKEN_LOGOS?.[props.token.address.toLowerCase()] as IconName || undefined;
 
   return (
     <Image
