@@ -6,11 +6,11 @@ import { createConfig } from 'wagmi';
 
 import appConfig from 'configs/app';
 import multichainConfig from 'configs/multichain';
-import { currentChain, parentChain, clusterChains } from 'lib/web3/chains';
+import { currentChain, parentChain, clusterChains, essentialDappsChains } from 'lib/web3/chains';
 
 const feature = appConfig.features.blockchainInteraction;
 
-const chains = [ currentChain, parentChain, ...(clusterChains ?? []) ].filter(Boolean);
+const chains = [ currentChain, parentChain, ...(clusterChains ?? []), ...(essentialDappsChains ?? []) ].filter(Boolean);
 
 const getChainTransportFromConfig = (config: typeof appConfig, readOnly?: boolean): Record<string, Transport> => {
   if (!config.chain.id) {
@@ -22,7 +22,7 @@ const getChainTransportFromConfig = (config: typeof appConfig, readOnly?: boolea
       config.chain.rpcUrls
         .concat(readOnly ? `${ config.apis.general.endpoint }/api/eth-rpc` : '')
         .filter(Boolean)
-        .map((url) => http(url, { batch: { wait: 100 } })),
+        .map((url) => http(url, { batch: { wait: 100, batchSize: 5 } })),
     ),
   };
 };
@@ -55,7 +55,7 @@ const wagmi = (() => {
         ...reduceClusterChainsToTransportConfig(true),
       },
       ssr: true,
-      batch: { multicall: { wait: 100 } },
+      batch: { multicall: { wait: 100, batchSize: 5 } },
     });
 
     return { config: wagmiConfig, adapter: null };
@@ -71,7 +71,7 @@ const wagmi = (() => {
     },
     projectId: feature.walletConnect.projectId,
     ssr: true,
-    batch: { multicall: { wait: 100 } },
+    batch: { multicall: { wait: 100, batchSize: 5 } },
     syncConnectedChain: false,
   });
 

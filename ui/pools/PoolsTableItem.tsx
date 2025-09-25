@@ -45,7 +45,7 @@ const PoolsTableItem = ({
                 noIcon
                 isLoading={ isLoading }
                 truncation="constant_long"
-                linkVariant="secondary"
+                link={{ variant: 'secondary' }}
               />
             ) : (
               <Flex color="text.secondary" alignItems="center">

@@ -87,7 +87,7 @@ const TokensTableItem = ({
                 noIcon
                 textStyle="sm"
                 fontWeight={ 500 }
-                linkVariant="secondary"
+                link={{ variant: 'secondary' }}
               />
               <AddressAddToWallet
                 token={ token }

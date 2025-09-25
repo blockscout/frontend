@@ -9,7 +9,7 @@ RUN ln -sf /usr/bin/python3 /usr/bin/python
 ### APP
 # Install dependencies
 WORKDIR /app
-COPY package.json yarn.lock tsconfig.json ./
+COPY package.json yarn.lock tsconfig.json .npmrc ./
 COPY types ./types
 COPY lib ./lib
 COPY configs/app ./configs/app
@@ -17,7 +17,15 @@ COPY toolkit/theme ./toolkit/theme
 COPY toolkit/utils ./toolkit/utils
 COPY toolkit/components/forms/validators/url.ts ./toolkit/components/forms/validators/url.ts
 RUN apk add git
-RUN yarn --frozen-lockfile --network-timeout 100000
+
+# Allow BuildKit secret to populate npm token via env for .npmrc
+RUN --mount=type=secret,id=MULTISENDER_NPM_TOKEN \
+    set -eu; \
+    TOKEN_FILE="/run/secrets/MULTISENDER_NPM_TOKEN"; \
+    if [ -s "$TOKEN_FILE" ]; then \
+      export MULTISENDER_NPM_TOKEN="$(cat "$TOKEN_FILE")"; \
+    fi; \
+    yarn --frozen-lockfile --network-timeout 100000
 
 
 ### FEATURE REPORTER
@@ -80,6 +88,9 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+# Remove npm auth config before running yarn in builder stage to avoid env interpolation errors
+RUN rm -f .npmrc
+
 # Build SVG sprite and generate .env.registry with ENVs list and save build args into .env file
 RUN set -a && \
     source ./deploy/scripts/build_sprite.sh && \
@@ -104,7 +115,7 @@ RUN cd ./deploy/tools/feature-reporter && yarn build
 
 
 ### ENV VARIABLES CHECKER
-# Copy dependencies and source code, then build 
+# Copy dependencies and source code, then build
 COPY --from=deps /envs-validator/node_modules ./deploy/tools/envs-validator/node_modules
 RUN cd ./deploy/tools/envs-validator && yarn build
 
@@ -119,12 +130,12 @@ COPY --from=deps /favicon-generator/node_modules ./deploy/tools/favicon-generato
 COPY --from=deps /sitemap-generator/node_modules ./deploy/tools/sitemap-generator/node_modules
 
 ### MULTICHAIN CONFIG GENERATOR
-# Copy dependencies and source code, then build 
+# Copy dependencies and source code, then build
 COPY --from=deps /multichain-config-generator/node_modules ./deploy/tools/multichain-config-generator/node_modules
 RUN cd ./deploy/tools/multichain-config-generator && yarn build
 
 ### llms.txt GENERATOR
-# Copy dependencies and source code, then build 
+# Copy dependencies and source code, then build
 COPY --from=deps /llms-txt-generator/node_modules ./deploy/tools/llms-txt-generator/node_modules
 RUN cd ./deploy/tools/llms-txt-generator && yarn build
 
