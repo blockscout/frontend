@@ -80,6 +80,8 @@ jobs:
 
             -   name: Build and push
                 uses: docker/build-push-action@v5
+                env:
+                    MULTISENDER_NPM_TOKEN: ${{ secrets.MULTISENDER_NPM_TOKEN }}
                 with:
                     context: .
                     file: ./Dockerfile
@@ -88,6 +90,8 @@ jobs:
                     tags: ${{ steps.meta.outputs.tags }}
                     platforms: ${{ inputs.platforms }}
                     labels: ${{ steps.meta.outputs.labels }}
+                    secrets: |
+                        id=multisender_npm_token,env=MULTISENDER_NPM_TOKEN
                     build-args: |
                         GIT_COMMIT_SHA=${{ env.SHORT_SHA }}
                         GIT_TAG=${{ github.ref_type == 'tag' && github.ref_name || '' }}

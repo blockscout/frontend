@@ -26,6 +26,20 @@ const moduleExports = {
     config.resolve.fallback = { fs: false, net: false, tls: false };
     config.externals.push('pino-pretty', 'lokijs', 'encoding');
 
+    // Use local shim only if the optional widget package is not installed
+    const fs = require('fs');
+    const path = require('path');
+    const widgetEsmEntry = path.resolve(
+      __dirname,
+      'node_modules/@multisender.app/multisender-react-widget-dev/dist/index.es.js',
+    );
+    if (!fs.existsSync(widgetEsmEntry)) {
+      config.resolve.alias = {
+        ...(config.resolve.alias || {}),
+        '@multisender.app/multisender-react-widget-dev': path.resolve(__dirname, 'lib/shims/multisender-widget.tsx'),
+      };
+    }
+
     return config;
   },
   // NOTE: all config functions should be static and not depend on any environment variables

@@ -19,6 +19,27 @@ COPY toolkit/components/forms/validators/url.ts ./toolkit/components/forms/valid
 RUN apk add git
 RUN yarn --frozen-lockfile --network-timeout 100000
 
+# Optionally install the private widget only in the root app when token is provided via BuildKit secret
+RUN --mount=type=secret,id=multisender_npm_token \
+    set -eu; \
+    TOKEN_FILE="/run/secrets/multisender_npm_token"; \
+    if [ -s "$TOKEN_FILE" ]; then \
+      echo "Installing @multisender.app/multisender-react-widget@^0.1.22"; \
+      NPMRC_TMP="$(mktemp)"; \
+      TOKEN="$(cat "$TOKEN_FILE")"; \
+      printf "@multisender.app:registry=https://registry.npmjs.org/\n//registry.npmjs.org/:_authToken=%s\n" "$TOKEN" > "$NPMRC_TMP"; \
+      export NPM_CONFIG_USERCONFIG="$NPMRC_TMP"; \
+      cp package.json package.json.bak 2>/dev/null || true; \
+      cp yarn.lock yarn.lock.bak 2>/dev/null || true; \
+      yarn add --non-interactive --ignore-scripts --network-timeout 100000 @multisender.app/multisender-react-widget-dev@^0.1.22-dev.7afc7d9; \
+      mv -f package.json.bak package.json 2>/dev/null || true; \
+      mv -f yarn.lock.bak yarn.lock 2>/dev/null || true; \
+      rm -f "$NPMRC_TMP"; \
+      unset NPM_CONFIG_USERCONFIG; \
+    else \
+      echo "No MULTISENDER_NPM_TOKEN secret; skipping widget install"; \
+    fi
+
 
 ### FEATURE REPORTER
 # Install dependencies
@@ -98,7 +119,7 @@ RUN cd ./deploy/tools/feature-reporter && yarn build
 
 
 ### ENV VARIABLES CHECKER
-# Copy dependencies and source code, then build 
+# Copy dependencies and source code, then build
 COPY --from=deps /envs-validator/node_modules ./deploy/tools/envs-validator/node_modules
 RUN cd ./deploy/tools/envs-validator && yarn build
 
@@ -113,7 +134,7 @@ COPY --from=deps /favicon-generator/node_modules ./deploy/tools/favicon-generato
 COPY --from=deps /sitemap-generator/node_modules ./deploy/tools/sitemap-generator/node_modules
 
 ### MULTICHAIN CONFIG GENERATOR
-# Copy dependencies and source code, then build 
+# Copy dependencies and source code, then build
 COPY --from=deps /multichain-config-generator/node_modules ./deploy/tools/multichain-config-generator/node_modules
 RUN cd ./deploy/tools/multichain-config-generator && yarn build
 
