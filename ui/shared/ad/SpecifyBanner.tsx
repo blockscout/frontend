@@ -31,11 +31,12 @@ const SpecifyBanner = ({ className, platform, address, onEmpty, isLoading }: Pro
 
   React.useEffect(() => {
     if (address && !isLoading) {
+      const specify = new Specify({
+        publisherKey: PUBLISHER_KEY,
+        // sdk provides cacheAddressesInLocalSession option, but we decided to launch without it for now
+      });
       const fetchContent = async() => {
         try {
-          const specify = new Specify({
-            publisherKey: PUBLISHER_KEY,
-          });
           const content = await specify.serve(
             [ address as `0x${ string }` ],
             { imageFormat: isMobile ? ImageFormat.SHORT_BANNER : ImageFormat.LONG_BANNER },
