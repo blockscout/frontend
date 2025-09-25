@@ -9,7 +9,7 @@ RUN ln -sf /usr/bin/python3 /usr/bin/python
 ### APP
 # Install dependencies
 WORKDIR /app
-COPY package.json yarn.lock tsconfig.json ./
+COPY package.json yarn.lock tsconfig.json .npmrc ./
 COPY types ./types
 COPY lib ./lib
 COPY configs/app ./configs/app
@@ -17,28 +17,15 @@ COPY toolkit/theme ./toolkit/theme
 COPY toolkit/utils ./toolkit/utils
 COPY toolkit/components/forms/validators/url.ts ./toolkit/components/forms/validators/url.ts
 RUN apk add git
-RUN yarn --frozen-lockfile --network-timeout 100000
 
-# Optionally install the private widget only in the root app when token is provided via BuildKit secret
+# Allow BuildKit secret to populate npm token via env for .npmrc
 RUN --mount=type=secret,id=MULTISENDER_NPM_TOKEN \
     set -eu; \
     TOKEN_FILE="/run/secrets/MULTISENDER_NPM_TOKEN"; \
     if [ -s "$TOKEN_FILE" ]; then \
-      echo "Installing @multisender.app/multisender-react-widget@^0.1.22"; \
-      NPMRC_TMP="$(mktemp)"; \
-      TOKEN="$(cat "$TOKEN_FILE")"; \
-      printf "@multisender.app:registry=https://registry.npmjs.org/\n//registry.npmjs.org/:_authToken=%s\n" "$TOKEN" > "$NPMRC_TMP"; \
-      export NPM_CONFIG_USERCONFIG="$NPMRC_TMP"; \
-      cp package.json package.json.bak 2>/dev/null || true; \
-      cp yarn.lock yarn.lock.bak 2>/dev/null || true; \
-      yarn add --non-interactive --ignore-scripts --network-timeout 100000 @multisender.app/multisender-react-widget-dev@^0.1.22-dev.7afc7d9; \
-      mv -f package.json.bak package.json 2>/dev/null || true; \
-      mv -f yarn.lock.bak yarn.lock 2>/dev/null || true; \
-      rm -f "$NPMRC_TMP"; \
-      unset NPM_CONFIG_USERCONFIG; \
-    else \
-      echo "No MULTISENDER_NPM_TOKEN secret; skipping widget install"; \
-    fi
+      export MULTISENDER_NPM_TOKEN="$(cat "$TOKEN_FILE")"; \
+    fi; \
+    yarn --frozen-lockfile --network-timeout 100000
 
 
 ### FEATURE REPORTER
@@ -101,6 +88,9 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+# Remove npm auth config before running yarn in builder stage to avoid env interpolation errors
+RUN rm -f .npmrc
+
 # Build SVG sprite and generate .env.registry with ENVs list and save build args into .env file
 RUN set -a && \
     source ./deploy/scripts/build_sprite.sh && \
@@ -145,7 +135,7 @@ COPY --from=deps /multichain-config-generator/node_modules ./deploy/tools/multic
 RUN cd ./deploy/tools/multichain-config-generator && yarn build
 
 ### llms.txt GENERATOR
-# Copy dependencies and source code, then build 
+# Copy dependencies and source code, then build
 COPY --from=deps /llms-txt-generator/node_modules ./deploy/tools/llms-txt-generator/node_modules
 RUN cd ./deploy/tools/llms-txt-generator && yarn build
 
