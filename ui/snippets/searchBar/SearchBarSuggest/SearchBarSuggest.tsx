@@ -1,8 +1,7 @@
-import { Box, Text } from '@chakra-ui/react';
+import { Box, Flex, Text } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
-import { throttle } from 'es-toolkit';
+import { debounce } from 'es-toolkit';
 import React from 'react';
-import { scroller, Element } from 'react-scroll';
 
 import type { ListCctxsResponse } from '@blockscout/zetachain-cctx-types';
 import type { SearchResultItem } from 'types/api/search';
@@ -12,7 +11,7 @@ import type { ResourceError } from 'lib/api/resources';
 import { useSettingsContext } from 'lib/contexts/settings';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import type { ExternalSearchItem as ExternalSearchItemType } from 'lib/search/externalSearch';
-import { TabsList, TabsRoot, TabsTrigger } from 'toolkit/chakra/tabs';
+import AdaptiveTabs from 'toolkit/components/AdaptiveTabs/AdaptiveTabs';
 import * as regexp from 'toolkit/utils/regexp';
 import useMarketplaceApps from 'ui/marketplace/useMarketplaceApps';
 import TextAd from 'ui/shared/ad/TextAd';
@@ -26,34 +25,34 @@ import SearchBarSuggestBlockCountdown from './SearchBarSuggestBlockCountdown';
 import SearchBarSuggestItem from './SearchBarSuggestItem';
 import SearchBarSuggestZetaChainCCTX from './SearchBarSuggestZetaChainCCTX';
 
+const TABS_HEIGHT = 72;
+
 interface Props {
   query: UseQueryResult<Array<SearchResultItem>, ResourceError<unknown>>;
   zetaChainCCTXQuery: UseQueryResult<ListCctxsResponse, ResourceError<unknown>>;
   externalSearchItem: ExternalSearchItemType;
   searchTerm: string;
   onItemClick: (event: React.MouseEvent<HTMLAnchorElement>) => void;
-  containerId: string;
 }
 
-const SearchBarSuggest = ({ query, zetaChainCCTXQuery, externalSearchItem, searchTerm, onItemClick, containerId }: Props) => {
+const SearchBarSuggest = ({ query, zetaChainCCTXQuery, externalSearchItem, searchTerm, onItemClick }: Props) => {
   const isMobile = useIsMobile();
 
+  const scrollContainerRef = React.useRef<HTMLDivElement>(null);
   const marketplaceApps = useMarketplaceApps(searchTerm);
   const settingsContext = useSettingsContext();
 
   const categoriesRefs = React.useRef<Array<HTMLParagraphElement>>([]);
-  const tabsRef = React.useRef<HTMLDivElement>(null);
 
   const [ currentTab, setCurrentTab ] = React.useState<Category | undefined>(undefined);
 
   const handleScroll = React.useCallback(() => {
-    const container = document.getElementById(containerId);
+    const container = scrollContainerRef.current;
     if (!container || (!query.data?.length && !zetaChainCCTXQuery.data?.items.length)) {
       return;
     }
-    const topLimit = container.getBoundingClientRect().y + (tabsRef.current?.clientHeight || 0) + 24;
-
-    if (categoriesRefs.current[categoriesRefs.current.length - 1]?.getBoundingClientRect().y <= topLimit) {
+    const topLimit = container.getBoundingClientRect().y + TABS_HEIGHT;
+    if (categoriesRefs.current[categoriesRefs.current.length - 1].getBoundingClientRect().y <= topLimit) {
       const lastCategory = categoriesRefs.current[categoriesRefs.current.length - 1];
       const lastCategoryId = lastCategory.getAttribute('data-id');
       if (lastCategoryId) {
@@ -71,20 +70,20 @@ const SearchBarSuggest = ({ query, zetaChainCCTXQuery, externalSearchItem, searc
         break;
       }
     }
-  }, [ containerId, query.data, zetaChainCCTXQuery.data ]);
+  }, [ query.data, zetaChainCCTXQuery.data ]);
 
   React.useEffect(() => {
-    const container = document.getElementById(containerId);
-    const throttledHandleScroll = throttle(handleScroll, 300);
+    const container = scrollContainerRef.current;
+    const debouncedHandleScroll = debounce(handleScroll, 300);
     if (container) {
-      container.addEventListener('scroll', throttledHandleScroll);
+      container.addEventListener('scroll', debouncedHandleScroll);
     }
     return () => {
       if (container) {
-        container.removeEventListener('scroll', throttledHandleScroll);
+        container.removeEventListener('scroll', debouncedHandleScroll);
       }
     };
-  }, [ containerId, handleScroll ]);
+  }, [ handleScroll ]);
 
   const itemsGroups = React.useMemo(() => {
     if (!query.data && !zetaChainCCTXQuery.data?.items.length && !marketplaceApps.displayedApps) {
@@ -133,17 +132,33 @@ const SearchBarSuggest = ({ query, zetaChainCCTXQuery, externalSearchItem, searc
 
   const handleTabsValueChange = React.useCallback(({ value }: { value: string }) => {
     setCurrentTab(value as Category);
-    scroller.scrollTo(`cat_${ value }`, {
-      duration: 250,
-      smooth: true,
-      offset: -(tabsRef.current?.clientHeight || 0),
-      containerId: containerId,
-    });
-  }, [ containerId ]);
+    const container = scrollContainerRef.current;
+    const targetElement = document.querySelector(`[data-scroll-target="cat_${ value }"]`);
+
+    if (container && targetElement) {
+      const containerRect = container.getBoundingClientRect();
+      const targetRect = targetElement.getBoundingClientRect();
+      const scrollTop = targetRect.top - containerRect.top + container.scrollTop;
+
+      container.scrollTo({
+        top: scrollTop,
+        behavior: 'smooth',
+      });
+    }
+  }, []);
+
+  const categoryTabs = React.useMemo(() => {
+    return searchCategories.filter(cat => itemsGroups[cat.id]).map(cat => ({
+      id: cat.id,
+      value: cat.id,
+      title: isMobile ? cat.tabTitle : cat.title,
+      component: null,
+    }));
+  }, [ itemsGroups, isMobile ]);
 
   const content = (() => {
     if (query.isPending || marketplaceApps.isPlaceholderData || (config.features.zetachain.isEnabled && zetaChainCCTXQuery.isPending)) {
-      return <ContentLoader text="We are searching, please wait... " fontSize="sm"/>;
+      return <ContentLoader text="We are searching, please wait... " fontSize="sm" maxW="250px"/>;
     }
 
     if (query.isError) {
@@ -163,75 +178,76 @@ const SearchBarSuggest = ({ query, zetaChainCCTXQuery, externalSearchItem, searc
     return (
       <>
         { resultCategories.length > 1 && (
-          <Box position="sticky" top="0" width="100%" background={{ _light: 'white', _dark: 'gray.900' }} py={ 5 } my={ -5 } ref={ tabsRef } zIndex={ 1 }>
-            <TabsRoot
-              variant="secondary"
-              size="sm"
-              value={ currentTab }
-              onValueChange={ handleTabsValueChange }
-            >
-              <TabsList columnGap={ 3 } rowGap={ 2 } flexWrap="wrap">
-                { resultCategories.map((cat) => (
-                  <TabsTrigger
-                    key={ cat.id }
-                    value={ cat.id }
-                  >
-                    { cat.title }
-                  </TabsTrigger>
-                )) }
-              </TabsList>
-            </TabsRoot>
-          </Box>
+          <AdaptiveTabs
+            tabs={ categoryTabs }
+            onValueChange={ handleTabsValueChange }
+            defaultValue={ currentTab }
+            variant="secondary"
+            size="sm"
+            pb={ 5 }
+            w="100%"
+            overflowX="hidden"
+            minH="52px"
+            h="52px"
+            listProps={{
+              overflowX: 'auto',
+              mb: 0,
+              mt: 0,
+              bgColor: 'dialog.bg',
+            }}
+          />
         ) }
-        { resultCategories.map((cat, index) => {
-          return (
-            <Element name={ `cat_${ cat.id }` } key={ cat.id }>
-              <Text
-                textStyle="sm"
-                fontWeight={ 600 }
-                color="text.secondary"
-                mt={ 6 }
-                mb={ 3 }
-                ref={ (el: HTMLParagraphElement) => {
-                  categoriesRefs.current[index] = el;
-                } }
-                data-id={ cat.id }
-              >
-                { cat.title }
-              </Text>
-              { cat.id !== 'app' && cat.id !== 'zetaChainCCTX' && itemsGroups[cat.id]?.map((item, index) => (
-                <SearchBarSuggestItem
-                  key={ index }
-                  data={ item }
-                  isMobile={ isMobile }
-                  searchTerm={ searchTerm }
-                  onClick={ onItemClick }
-                  addressFormat={ settingsContext?.addressFormat }
-                />
-              )) }
-              { cat.id === 'app' && itemsGroups[cat.id]?.map((item, index) =>
-                <SearchBarSuggestApp key={ index } data={ item } isMobile={ isMobile } searchTerm={ searchTerm } onClick={ onItemClick }/>,
-              ) }
-              { cat.id === 'zetaChainCCTX' && itemsGroups[cat.id]?.map((item, index) =>
-                <SearchBarSuggestZetaChainCCTX key={ index } data={ item } isMobile={ isMobile } searchTerm={ searchTerm } onClick={ onItemClick }/>,
-              ) }
-            </Element>
-          );
-        }) }
-        { externalSearchItem && <ExternalSearchItem item={ externalSearchItem }/> }
+        <Flex flexDirection="column" overflowY="auto" ref={ scrollContainerRef }>
+          { resultCategories.map((cat, index) => {
+            return (
+              <Box key={ cat.id } data-scroll-target={ `cat_${ cat.id }` }>
+                <Text
+                  textStyle="sm"
+                  fontWeight={ 600 }
+                  color="text.secondary"
+                  mt={ index === 0 ? 1 : 6 }
+                  mb={{ base: 2, lg: 3 }}
+                  ref={ (el: HTMLParagraphElement) => {
+                    categoriesRefs.current[index] = el;
+                  } }
+                  data-id={ cat.id }
+                >
+                  { cat.title }
+                </Text>
+                { cat.id !== 'app' && cat.id !== 'zetaChainCCTX' && itemsGroups[cat.id]?.map((item, index) => (
+                  <SearchBarSuggestItem
+                    key={ index }
+                    data={ item }
+                    isMobile={ isMobile }
+                    searchTerm={ searchTerm }
+                    onClick={ onItemClick }
+                    addressFormat={ settingsContext?.addressFormat }
+                  />
+                )) }
+                { cat.id === 'app' && itemsGroups[cat.id]?.map((item, index) =>
+                  <SearchBarSuggestApp key={ index } data={ item } isMobile={ isMobile } searchTerm={ searchTerm } onClick={ onItemClick }/>,
+                ) }
+                { cat.id === 'zetaChainCCTX' && itemsGroups[cat.id]?.map((item, index) =>
+                  <SearchBarSuggestZetaChainCCTX key={ index } data={ item } isMobile={ isMobile } searchTerm={ searchTerm } onClick={ onItemClick }/>,
+                ) }
+              </Box>
+            );
+          }) }
+          { externalSearchItem && <ExternalSearchItem item={ externalSearchItem }/> }
+        </Flex>
       </>
     );
   })();
 
   return (
-    <Box mt={ 5 } mb={ 5 }>
+    <>
       { !isMobile && (
         <Box pb={ 4 } mb={ 5 } borderColor="border.divider" borderBottomWidth="1px" _empty={{ display: 'none' }}>
           <TextAd/>
         </Box>
       ) }
       { content }
-    </Box>
+    </>
   );
 };
 

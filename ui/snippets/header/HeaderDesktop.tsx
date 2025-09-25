@@ -3,7 +3,7 @@ import React from 'react';
 
 import config from 'configs/app';
 import RewardsButton from 'ui/rewards/RewardsButton';
-import SearchBar from 'ui/snippets/searchBar/SearchBar';
+import SearchBar from 'ui/snippets/searchBar/SearchBarDesktop';
 import UserProfileDesktop from 'ui/snippets/user/profile/UserProfileDesktop';
 import UserWalletDesktop from 'ui/snippets/user/wallet/UserWalletDesktop';
 

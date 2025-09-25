@@ -35,7 +35,7 @@ const SearchBarSuggestAddress = ({ data, isMobile, searchTerm, addressFormat }: 
   const expiresText = data.ens_info?.expiry_date ? ` (expires ${ dayjs(data.ens_info.expiry_date).fromNow() })` : '';
 
   const nameEl = addressName && (
-    <Flex alignItems="center">
+    <Flex alignItems="center" overflow="hidden">
       <Text
         color="text.secondary"
         overflow="hidden"
