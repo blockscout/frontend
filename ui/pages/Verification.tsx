@@ -119,24 +119,34 @@ const ObjectDetails: NextPage = () => {
 
   const pushTableList = React.useCallback(async(params: LogsRequestParams, arr: Array<any>) => {
     const tableList: Array<IssuanceTalbeListType> = [];
+    const processedHashes = new Set<string>();
+    let nextPageHash = '';
     for (const v of params.items) {
+      if (processedHashes.has(v.transaction_hash)) {
+        continue;
+      }
+      processedHashes.add(v.transaction_hash);
       const item = arr.find((v2: any) => v2.hash === v.transaction_hash);
       if (item) {
         tableList.push({
           'Txn hash': v.transaction_hash,
           Block: v.block_number.toString(),
-          Method: v.decoded.method_call.split('(')[0],
+          Method: item.method,
           'From/To': [ item.from.hash, v.smart_contract?.hash ],
           Time: new Date(item.timestamp).toLocaleString('en-US', { hour12: false }),
           'Value MOCA': item.value,
           'Fee MOCA': truncateToSignificantDigits(BigNumber(item.base_fee_per_gas / 1e18).toString(10), 3).toString(10),
         });
       } else {
-        const newItems = await getTransactions(v.smart_contract.hash, arr);
-        pushTableList(params, newItems);
-        return;
+        nextPageHash = v.smart_contract.hash;
+        break;
       }
     };
+    if (nextPageHash) {
+      const newItems = await getTransactions(nextPageHash, arr);
+      pushTableList(params, newItems);
+      return;
+    }
     if (params.next_page_params) {
       setMapValue(queryParams.page.toString(), new URLSearchParams(
         Object.entries(params.next_page_params).map(([ k, v ]) => [ k, String(v) ]),
