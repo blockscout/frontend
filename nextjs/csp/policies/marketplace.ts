@@ -16,6 +16,7 @@ export function marketplace(): CspDev.DirectiveDescriptor {
       'https://li.quest/', // TODO: check essential dapps feature
       'https://registry.npmjs.org/',
       'https://*.multisender.app/',
+      'https://api.ninjit.su/', // TODO: remove, it's a dev domain
       'https://chains.blockscout.com/',
       ...Object.values(essentialDappsChains).map((explorerUrl) => `${ explorerUrl }/api/`),
     ],

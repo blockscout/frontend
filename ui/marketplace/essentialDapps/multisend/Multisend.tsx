@@ -1,6 +1,10 @@
 import { Box } from '@chakra-ui/react';
-import { MultisenderWidget } from '@multisender.app/multisender-react-widget';
+import { MultisenderWidget } from '@multisender.app/multisender-react-widget-dev';
 import React from 'react';
+
+import essentialDappsChains from 'configs/essentialDappsChains';
+
+import essentialDappsConfig from '../config';
 
 const Container = ({ children }: { children: React.ReactNode }) => (
   <Box
@@ -419,52 +423,18 @@ const Container = ({ children }: { children: React.ReactNode }) => (
   >{ children }</Box>
 );
 
-const config = {
-  '1': {
-    id: 1,
-    name: 'Ethereum',
+const config = Object.fromEntries(essentialDappsConfig.multisend.chains.map((chainId) => ([
+  chainId,
+  {
+    id: Number(chainId),
     blockExplorerUrl: {
-      tx: 'https://eth.blockscout.com/tx/',
-      address: 'https://eth.blockscout.com/address/',
+      tx: `${ essentialDappsChains[chainId] }/tx/`,
+      address: `${ essentialDappsChains[chainId] }/address/`,
     },
-    multisenderContractAddress: '0x88888c037DF4527933fa8Ab203a89e1e6E58db70',
-    rpcUrls: [ 'https://eth.blockscout.com/api/eth-rpc' ],
-    blockScoutApiUrl: 'https://eth.blockscout.com',
+    rpcUrls: [ `${ essentialDappsChains[chainId] }/api/eth-rpc` ],
+    blockScoutApiUrl: essentialDappsChains[chainId],
   },
-  '11155111': {
-    id: 11155111,
-    name: 'Sepolia',
-    blockExplorerUrl: {
-      tx: 'https://eth-sepolia.blockscout.com/tx/',
-      address: 'https://eth-sepolia.blockscout.com/address/',
-    },
-    multisenderContractAddress: '0x88888c037DF4527933fa8Ab203a89e1e6E58db70',
-    rpcUrls: [ 'https://eth-sepolia.blockscout.com/api/eth-rpc' ],
-    blockScoutApiUrl: 'https://eth-sepolia.blockscout.com',
-  },
-  '30': {
-    id: 30,
-    name: 'Rootstock',
-    blockExplorerUrl: {
-      tx: 'https://rootstock.blockscout.com/tx/',
-      address: 'https://rootstock.blockscout.com/address/',
-    },
-    multisenderContractAddress: '0x88888c037DF4527933fa8Ab203a89e1e6E58db70',
-    rpcUrls: [ 'https://rootstock.blockscout.com/api/eth-rpc' ],
-    blockScoutApiUrl: 'https://rootstock.blockscout.com',
-  },
-  '100': {
-    id: 100,
-    name: 'Gnosis',
-    blockExplorerUrl: {
-      tx: 'https://gnosis.blockscout.com/tx/',
-      address: 'https://gnosis.blockscout.com/address/',
-    },
-    multisenderContractAddress: '0x88888c037DF4527933fa8Ab203a89e1e6E58db70',
-    rpcUrls: [ 'https://gnosis.blockscout.com/api/eth-rpc' ],
-    blockScoutApiUrl: 'https://gnosis.blockscout.com',
-  },
-};
+])));
 
 const Multisend = () => {
   return (
