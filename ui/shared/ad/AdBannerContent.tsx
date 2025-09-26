@@ -26,7 +26,7 @@ interface Props {
 }
 
 const AdBannerContent = ({ className, isLoading, provider, platform }: Props) => {
-  const { address: addressWC } = useAccount();
+  const { address: addressWC, isConnecting } = useAccount();
   const profileQuery = useProfileQuery();
   const [ showSpecify, setShowSpecify ] = React.useState(isSpecifyEnabled);
 
@@ -37,8 +37,8 @@ const AdBannerContent = ({ className, isLoading, provider, platform }: Props) =>
   const address = addressWC || profileQuery.data?.address_hash as `0x${ string }` | undefined;
 
   const content = (() => {
-    if (showSpecify && (address || profileQuery.isLoading)) {
-      const isLoading = address ? false : profileQuery.isLoading;
+    if (showSpecify && (address || profileQuery.isLoading || isConnecting)) {
+      const isLoading = address ? false : profileQuery.isLoading || isConnecting;
       return <SpecifyBanner platform={ platform } address={ address } onEmpty={ handleEmptySpecify } isLoading={ isLoading }/>;
     }
     switch (provider) {
