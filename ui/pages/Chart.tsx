@@ -169,7 +169,7 @@ const Chart = () => {
         mb={ 3 }
         isLoading={ isInfoLoading }
         secondRow={ info?.description || lineQuery.data?.info?.description }
-        withTextAd
+       
       />
       <Flex alignItems="center" justifyContent="space-between">
         <Flex alignItems="center" gap={{ base: 3, lg: 6 }} maxW="100%">

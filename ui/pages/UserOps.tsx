@@ -22,7 +22,7 @@ const UserOps = () => {
     <>
       <PageTitle
         title={ config.meta.seo.enhancedDataEnabled ? `${ config.chain.name } user operations` : 'User operations' }
-        withTextAd
+       
       />
       <UserOpsContent query={ query }/>
     </>

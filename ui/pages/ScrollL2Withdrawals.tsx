@@ -68,7 +68,7 @@ const ScrollL2Withdrawals = () => {
 
   return (
     <>
-      <PageTitle title={ `Withdrawals (L2${ nbsp }${ rightLineArrow }${ nbsp }L1)` } withTextAd/>
+      <PageTitle title={ `Withdrawals (L2${ nbsp }${ rightLineArrow }${ nbsp }L1)` }/>
       <DataListDisplay
         isError={ isError }
         itemsNum={ data?.items?.length }

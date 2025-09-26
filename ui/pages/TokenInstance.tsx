@@ -17,7 +17,6 @@ import {
   getTokenInstanceHoldersStub,
 } from 'stubs/token';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import TextAd from 'ui/shared/ad/TextAd';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import TokenHolders from 'ui/token/TokenHolders/TokenHolders';
@@ -135,7 +134,6 @@ const TokenInstanceContent = () => {
 
   return (
     <MetadataUpdateProvider>
-      <TextAd mb={ 6 }/>
 
       <TokenInstancePageTitle
         isLoading={ isLoading }

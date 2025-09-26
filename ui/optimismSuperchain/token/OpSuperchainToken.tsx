@@ -4,7 +4,6 @@ import React from 'react';
 
 import getQueryParamString from 'lib/router/getQueryParamString';
 import AddressQrCode from 'ui/address/details/AddressQrCode';
-import TextAd from 'ui/shared/ad/TextAd';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
@@ -27,7 +26,6 @@ const OpSuperchainToken = () => {
 
   return (
     <>
-      <TextAd mb={ 6 }/>
       <PageTitle
         title="Unnamed token"
         secondRow={ secondRow }

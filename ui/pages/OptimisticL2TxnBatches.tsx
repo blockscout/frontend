@@ -72,7 +72,7 @@ const OptimisticL2TxnBatches = () => {
 
   return (
     <>
-      <PageTitle title="Txn batches" withTextAd/>
+      <PageTitle title="Txn batches"/>
       <DataListDisplay
         isError={ isError }
         itemsNum={ data?.items?.length }

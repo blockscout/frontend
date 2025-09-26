@@ -4,7 +4,6 @@ import React from 'react';
 import useApiQuery from 'lib/api/useApiQuery';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import ClusterDetails from 'ui/cluster/ClusterDetails';
-import TextAd from 'ui/shared/ad/TextAd';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 const Cluster = () => {
@@ -24,7 +23,6 @@ const Cluster = () => {
 
   return (
     <>
-      <TextAd mb={ 6 }/>
       <PageTitle title="Cluster details"/>
       <ClusterDetails
         clusterData={ clusterData }
