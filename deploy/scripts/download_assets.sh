@@ -131,7 +131,7 @@ done
 
 # Check if any downloads failed and exit with error code
 if [ $FAILED_DOWNLOADS -gt 0 ]; then
-    echo "🛑 Error: $FAILED_DOWNLOADS asset download(s) failed. Build cannot continue."
+    echo "🛑 Error: $FAILED_DOWNLOADS asset download(s) failed. The application cannot start."
     exit 1
 fi
 

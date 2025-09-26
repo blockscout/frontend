@@ -38,7 +38,7 @@ export_envs_from_preset
 # Download external assets
 ./download_assets.sh ./public/assets/configs
 if [ $? -ne 0 ]; then
-  echo "🛑 Failed to download external assets. Build cannot continue."
+  echo "🛑 Failed to download external assets. The application cannot start."
   exit 1
 fi
 
