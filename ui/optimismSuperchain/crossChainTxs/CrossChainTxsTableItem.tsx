@@ -126,6 +126,7 @@ const CrossChainTxsTableItem = ({ item, isLoading, animation, currencySymbol, cu
                 icon_url: '',
                 name: '',
                 symbol: 'TBD',
+                reputation: null,
               }}
               noCopy
               onlySymbol

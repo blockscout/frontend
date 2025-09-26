@@ -15,6 +15,7 @@ export const SEARCH_RESULT_ITEM: SearchResultItem = {
   exchange_rate: '1.11',
   total_supply: null,
   token_type: 'ERC-20',
+  reputation: 'ok',
 };
 
 export const SEARCH_RESULT_NEXT_PAGE_PARAMS: SearchResult['next_page_params'] = {

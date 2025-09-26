@@ -11,6 +11,7 @@ export const tokenInfo: TokenInfo = {
   type: 'ERC-20' as const,
   total_supply: '1235',
   icon_url: 'http://localhost:3000/token-icon.png',
+  reputation: 'ok',
 };
 
 export const tokenCounters: TokenCounters = {
@@ -29,6 +30,7 @@ export const tokenInfoERC20a: TokenInfo<'ERC-20'> = {
   total_supply: '369000000000000000000000000',
   type: 'ERC-20' as const,
   icon_url: 'http://localhost:3000/token-icon.png',
+  reputation: 'ok',
 };
 
 export const tokenInfoERC20b: TokenInfo<'ERC-20'> = {
@@ -42,6 +44,7 @@ export const tokenInfoERC20b: TokenInfo<'ERC-20'> = {
   total_supply: '900000000000000000000000000',
   type: 'ERC-20' as const,
   icon_url: null,
+  reputation: 'ok',
 };
 
 export const tokenInfoERC20c: TokenInfo<'ERC-20'> = {
@@ -55,6 +58,7 @@ export const tokenInfoERC20c: TokenInfo<'ERC-20'> = {
   total_supply: '1000000000000000000000000',
   type: 'ERC-20' as const,
   icon_url: null,
+  reputation: 'ok',
 };
 
 export const tokenInfoERC20d: TokenInfo<'ERC-20'> = {
@@ -68,6 +72,7 @@ export const tokenInfoERC20d: TokenInfo<'ERC-20'> = {
   total_supply: '2100000000000000000000000000',
   type: 'ERC-20' as const,
   icon_url: null,
+  reputation: 'ok',
 };
 
 export const tokenInfoERC20LongSymbol: TokenInfo<'ERC-20'> = {
@@ -81,6 +86,7 @@ export const tokenInfoERC20LongSymbol: TokenInfo<'ERC-20'> = {
   total_supply: '2100000000000000000000000000',
   type: 'ERC-20' as const,
   icon_url: null,
+  reputation: 'ok',
 };
 
 export const tokenInfoERC721a: TokenInfo<'ERC-721'> = {
@@ -94,6 +100,7 @@ export const tokenInfoERC721a: TokenInfo<'ERC-721'> = {
   total_supply: '105',
   type: 'ERC-721' as const,
   icon_url: null,
+  reputation: 'ok',
 };
 
 export const tokenInfoERC721b: TokenInfo<'ERC-721'> = {
@@ -107,6 +114,7 @@ export const tokenInfoERC721b: TokenInfo<'ERC-721'> = {
   total_supply: null,
   type: 'ERC-721' as const,
   icon_url: null,
+  reputation: 'ok',
 };
 
 export const tokenInfoERC721c: TokenInfo<'ERC-721'> = {
@@ -120,6 +128,7 @@ export const tokenInfoERC721c: TokenInfo<'ERC-721'> = {
   total_supply: null,
   type: 'ERC-721' as const,
   icon_url: null,
+  reputation: 'ok',
 };
 
 export const tokenInfoERC721LongSymbol: TokenInfo<'ERC-721'> = {
@@ -133,6 +142,7 @@ export const tokenInfoERC721LongSymbol: TokenInfo<'ERC-721'> = {
   total_supply: null,
   type: 'ERC-721' as const,
   icon_url: null,
+  reputation: 'ok',
 };
 
 export const tokenInfoERC1155a: TokenInfo<'ERC-1155'> = {
@@ -146,6 +156,7 @@ export const tokenInfoERC1155a: TokenInfo<'ERC-1155'> = {
   total_supply: '482',
   type: 'ERC-1155' as const,
   icon_url: null,
+  reputation: 'ok',
 };
 
 export const tokenInfoERC1155b: TokenInfo<'ERC-1155'> = {
@@ -159,6 +170,7 @@ export const tokenInfoERC1155b: TokenInfo<'ERC-1155'> = {
   total_supply: '4943',
   type: 'ERC-1155' as const,
   icon_url: null,
+  reputation: 'ok',
 };
 
 export const tokenInfoERC1155WithoutName: TokenInfo<'ERC-1155'> = {
@@ -172,6 +184,7 @@ export const tokenInfoERC1155WithoutName: TokenInfo<'ERC-1155'> = {
   total_supply: '482',
   type: 'ERC-1155' as const,
   icon_url: null,
+  reputation: 'ok',
 };
 
 export const tokenInfoERC404: TokenInfo<'ERC-404'> = {
@@ -185,6 +198,7 @@ export const tokenInfoERC404: TokenInfo<'ERC-404'> = {
   symbol: 'O404',
   total_supply: '6482275000000000000',
   type: 'ERC-404' as const,
+  reputation: 'ok',
 };
 
 export const bridgedTokenA: TokenInfo<'ERC-20'> = {

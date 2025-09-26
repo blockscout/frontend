@@ -23,6 +23,7 @@ const DefaultView = () => {
     exchange_rate: null,
     total_supply: null,
     icon_url: 'https://example.com/logo.png',
+    reputation: 'ok',
   };
 
   const contentAfter = (
