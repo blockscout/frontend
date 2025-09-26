@@ -145,7 +145,6 @@ export interface EntityProps extends EntityBase.EntityBaseProps {
   noSymbol?: boolean;
   jointSymbol?: boolean;
   onlySymbol?: boolean;
-  showReputation?: boolean;
 }
 
 const TokenEntity = (props: EntityProps) => {

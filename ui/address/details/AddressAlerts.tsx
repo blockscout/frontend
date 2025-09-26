@@ -8,19 +8,25 @@ import { Alert } from 'toolkit/chakra/alert';
 
 interface Props {
   tags: Array<AddressMetadataTagFormatted> | undefined;
+  isScamToken?: boolean;
   className?: string;
 }
 
-const AddressMetadataAlert = ({ tags, className }: Props) => {
+const AddressAlerts = ({ tags, isScamToken, className }: Props) => {
   const noteTags = tags?.filter(({ tagType }) => tagType === 'note').filter(({ meta }) => meta?.data);
 
-  if (!noteTags?.length) {
+  if (!noteTags?.length && !isScamToken) {
     return null;
   }
 
   return (
     <Flex flexDir="column" gap={ 3 } className={ className }>
-      { noteTags.map((noteTag) => (
+      { isScamToken && (
+        <Alert status="error">
+          This token has been flagged as a potential scam.
+        </Alert>
+      ) }
+      { noteTags?.map((noteTag) => (
         <Alert
           key={ noteTag.name }
           status={ noteTag.meta?.alertStatus as AlertProps['status'] ?? 'error' }
@@ -44,4 +50,4 @@ const AddressMetadataAlert = ({ tags, className }: Props) => {
   );
 };
 
-export default React.memo(chakra(AddressMetadataAlert));
+export default React.memo(chakra(AddressAlerts));

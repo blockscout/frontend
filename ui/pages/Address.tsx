@@ -41,8 +41,8 @@ import AddressUserOps from 'ui/address/AddressUserOps';
 import AddressWithdrawals from 'ui/address/AddressWithdrawals';
 import AddressClusters from 'ui/address/clusters/AddressClusters';
 import { CONTRACT_TAB_IDS } from 'ui/address/contract/utils';
+import AddressAlerts from 'ui/address/details/AddressAlerts';
 import AddressFavoriteButton from 'ui/address/details/AddressFavoriteButton';
-import AddressMetadataAlert from 'ui/address/details/AddressMetadataAlert';
 import AddressQrCode from 'ui/address/details/AddressQrCode';
 import AddressEnsDomains from 'ui/address/ensDomains/AddressEnsDomains';
 import SolidityscanReport from 'ui/address/SolidityscanReport';
@@ -468,7 +468,7 @@ const AddressPageContent = () => {
         isLoading={ isLoading }
       />
       { !addressMetadataQuery.isPending &&
-        <AddressMetadataAlert tags={ addressMetadataQuery.data?.addresses?.[hash.toLowerCase()]?.tags } mt="-4px" mb={ 6 }/> }
+        <AddressAlerts tags={ addressMetadataQuery.data?.addresses?.[hash.toLowerCase()]?.tags } mt="-4px" mb={ 6 }/> }
       { config.features.metasuites.isEnabled && <Box display="none" id="meta-suites__address" data-ready={ !isLoading }/> }
       <RoutedTabs tabs={ tabs } isLoading={ isTabsLoading }/>
     </>
