@@ -5,14 +5,18 @@ import type { BannerPlatform } from './types';
 import type { AdBannerProviders } from 'types/client/adProviders';
 
 import config from 'configs/app';
+import useAccount from 'lib/web3/useAccount';
 import { Skeleton } from 'toolkit/chakra/skeleton';
+import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
 
 import AdbutlerBanner from './AdbutlerBanner';
 import CoinzillaBanner from './CoinzillaBanner';
-import HypeBanner from './HypeBanner';
+import { DESKTOP_BANNER_WIDTH, MOBILE_BANNER_WIDTH } from './consts';
 import SliseBanner from './SliseBanner';
+import SpecifyBanner from './SpecifyBanner';
 
 const feature = config.features.adsBanner;
+const isSpecifyEnabled = feature.isEnabled && feature.isSpecifyEnabled;
 
 interface Props {
   className?: string;
@@ -22,14 +26,26 @@ interface Props {
 }
 
 const AdBannerContent = ({ className, isLoading, provider, platform }: Props) => {
+  const { address: addressWC, isConnecting } = useAccount();
+  const profileQuery = useProfileQuery();
+  const [ showSpecify, setShowSpecify ] = React.useState(isSpecifyEnabled);
+
+  const handleEmptySpecify = React.useCallback(() => {
+    setShowSpecify(false);
+  }, []);
+
+  const address = addressWC || profileQuery.data?.address_hash as `0x${ string }` | undefined;
+
   const content = (() => {
+    if (showSpecify && (address || profileQuery.isLoading || isConnecting)) {
+      const isLoading = address ? false : profileQuery.isLoading || isConnecting;
+      return <SpecifyBanner platform={ platform } address={ address } onEmpty={ handleEmptySpecify } isLoading={ isLoading }/>;
+    }
     switch (provider) {
       case 'adbutler':
         return <AdbutlerBanner platform={ platform }/>;
       case 'coinzilla':
         return <CoinzillaBanner platform={ platform }/>;
-      case 'hype':
-        return <HypeBanner platform={ platform }/>;
       case 'slise':
         return <SliseBanner platform={ platform }/>;
     }
@@ -40,7 +56,7 @@ const AdBannerContent = ({ className, isLoading, provider, platform }: Props) =>
       className={ className }
       loading={ isLoading }
       borderRadius="none"
-      maxW={ ('adButler' in feature && feature.adButler) ? feature.adButler.config.desktop.width : '728px' }
+      maxW={{ base: `${ MOBILE_BANNER_WIDTH }px`, lg: `${ DESKTOP_BANNER_WIDTH }px` }}
       w="100%"
     >
       { content }

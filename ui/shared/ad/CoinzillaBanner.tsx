@@ -7,6 +7,13 @@ import type { BannerProps } from './types';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { isBrowser } from 'toolkit/utils/isBrowser';
 
+import {
+  DESKTOP_BANNER_WIDTH,
+  MOBILE_BANNER_WIDTH,
+  DESKTOP_BANNER_HEIGHT,
+  MOBILE_BANNER_HEIGHT,
+} from './consts';
+
 const CoinzillaBanner = ({ className, platform }: BannerProps) => {
   const isInBrowser = isBrowser();
   const isMobileViewport = useIsMobile();
@@ -22,9 +29,9 @@ const CoinzillaBanner = ({ className, platform }: BannerProps) => {
   const { width, height } = (() => {
     switch (platform) {
       case 'desktop':
-        return { width: 728, height: 90 };
+        return { width: DESKTOP_BANNER_WIDTH, height: DESKTOP_BANNER_HEIGHT };
       case 'mobile':
-        return { width: 320, height: 100 };
+        return { width: MOBILE_BANNER_WIDTH, height: MOBILE_BANNER_HEIGHT };
       default:
         return { width: undefined, height: undefined };
     }
@@ -36,18 +43,18 @@ const CoinzillaBanner = ({ className, platform }: BannerProps) => {
       window.coinzilla_display = window.coinzilla_display || [];
       const cDisplayPreferences = {
         zone: '26660bf627543e46851',
-        width: width ? String(width) : '728',
-        height: height ? String(height) : '90',
+        width: width ? String(width) : DESKTOP_BANNER_WIDTH.toString(),
+        height: height ? String(height) : DESKTOP_BANNER_HEIGHT.toString(),
       };
       window.coinzilla_display.push(cDisplayPreferences);
     }
-  }, [ height, isInBrowser, isHidden, width ]);
+  }, [ isInBrowser, isHidden, platform, width, height ]);
 
   return (
     <Flex
       className={ className }
       id={ 'adBanner' + (platform ? `_${ platform }` : '') }
-      h={ height ? `${ height }px` : { base: '100px', lg: '90px' } }
+      h={ height ? `${ height }px` : { base: `${ MOBILE_BANNER_HEIGHT }px`, lg: `${ DESKTOP_BANNER_HEIGHT }px` } }
       w={ width ? `${ width }px` : undefined }
     >
       { !isHidden && (

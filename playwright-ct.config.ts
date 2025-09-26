@@ -94,6 +94,9 @@ const config: PlaywrightTestConfig = defineConfig({
 
           // Mock for @helia/verified-fetch to avoid build issues in tests
           { find: '@helia/verified-fetch', replacement: './playwright/mocks/modules/@helia/verified-fetch.js' },
+
+          // Mock for @specify-sh/sdk to avoid build issues in tests
+          { find: '@specify-sh/sdk', replacement: './playwright/mocks/modules/@specify-sh/sdk.js' },
         ],
       },
       define: {
