@@ -17,7 +17,7 @@ export default function useUptimeSocketData() {
   const [ historyData, setHistoryData ] = React.useState<UptimeHistoryFull | null>(null);
 
   const connect = React.useCallback(() => {
-    if (!megaEthFeature.isEnabled) {
+    if (!megaEthFeature.isEnabled || !megaEthFeature.socketUrl.metrics) {
       return;
     }
 

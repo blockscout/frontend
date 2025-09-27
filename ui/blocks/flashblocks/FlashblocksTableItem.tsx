@@ -1,10 +1,11 @@
-import { Text } from '@chakra-ui/react';
+import { HStack, Text } from '@chakra-ui/react';
 import React from 'react';
 
 import type { FlashblockItem } from 'types/client/flashblocks';
 
 import { route } from 'nextjs-routes';
 
+import dayjs from 'lib/date/dayjs';
 import { Link } from 'toolkit/chakra/link';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import FlashblockEntity from 'ui/shared/entities/flashblock/FlashblockEntity';
@@ -17,15 +18,18 @@ const FlashblocksTableItem = ({ data }: Props) => {
   return (
     <TableRow>
       <TableCell>
-        { data.block_number ? (
-          <FlashblockEntity
-            number={ data.block_number }
-            index={ data.index }
-            noIcon
-          />
-        ) : (
-          <Text color="text.secondary">N/A</Text>
-        ) }
+        <HStack alignItems="center" gap={ 3 }>
+          { data.block_number ? (
+            <FlashblockEntity
+              number={ data.block_number }
+              index={ data.index }
+              noIcon
+            />
+          ) : (
+            <Text color="text.secondary">N/A</Text>
+          ) }
+          { data.timestamp && <Text color="text.secondary">{ dayjs(data.timestamp).format('DD MMM, HH:mm:ss.SSS') }</Text> }
+        </HStack>
       </TableCell>
       <TableCell isNumeric>
         { data.transactions_count > 0 ? (
