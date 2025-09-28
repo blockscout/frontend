@@ -55,7 +55,8 @@
     "@growthbook/growthbook-react": "0.21.0",
     "@helia/verified-fetch": "2.6.12",
     "@hypelab/sdk-react": "^1.0.0",
-    "@lifi/widget": "^3.29.1",
+    "@lifi/widget": "3.25.0",
+    "@lifi/wallet-management": "3.6.1",
     "@metamask/post-message-stream": "^7.0.0",
     "@metamask/providers": "^10.2.1",
     "@monaco-editor/react": "^4.7.0",
@@ -202,7 +203,9 @@
   },
   "resolutions": {
     "@types/react": "18.3.12",
-    "@types/react-dom": "18.3.1"
+    "@types/react-dom": "18.3.1",
+    "@lifi/widget": "3.25.0",
+    "@lifi/wallet-management": "3.6.1"
   },
   "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }
