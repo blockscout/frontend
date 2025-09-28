@@ -31,7 +31,7 @@ export default function StartScreen() {
             key={ index }
             p={ 6 }
             borderRadius="md"
-            bgColor="blackAlpha.50"
+            bgColor={{ _light: 'blackAlpha.50', _dark: 'whiteAlpha.50' }}
             flex={ 1 }
             gap={ 6 }
             alignItems="center"

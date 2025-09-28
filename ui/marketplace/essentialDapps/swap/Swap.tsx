@@ -5,6 +5,7 @@ import { useMemo } from 'react';
 
 import config from 'configs/app';
 import essentialDappsChains from 'configs/essentialDappsChains';
+import useWeb3Wallet from 'lib/web3/useWallet';
 
 import essentialDappsConfig from '../config';
 
@@ -15,26 +16,23 @@ const defaultChainId = Number(
 );
 
 const Swap = () => {
+  const web3Wallet = useWeb3Wallet({ source: 'Swap' });
+
   const config = useMemo(
     () =>
       ({
         fee: 0.004, // 0.4% instead of 0.075%
         variant: 'compact',
         subvariant: 'default',
-        appearance: 'light',
         theme: {
+          typography: { fontFamily: 'var(--chakra-fonts-body)' },
+          shape: {
+            borderRadius: 12,
+            borderRadiusSecondary: 8,
+          },
           palette: {
             primary: { main: '#2B6CB0' },
             secondary: { main: '#2B6CB0' },
-          },
-          typography: { fontFamily: 'Inter, sans-serif' },
-          container: {
-            border: '1px solid #E2E8F0',
-            borderRadius: '16px',
-          },
-          shape: {
-            borderRadius: 24,
-            borderRadiusSecondary: 8,
           },
         },
         fromChain: defaultChainId,
@@ -49,14 +47,20 @@ const Swap = () => {
           ]))),
         },
         walletConfig: {
-          // onConnect: open,
+          onConnect: web3Wallet.connect,
         },
       } as Partial<WidgetConfig>),
-    [],
+    [ web3Wallet.connect ],
   );
 
   return (
-    <Box w="418px">
+    <Box
+      w="420px"
+      border="1px solid"
+      borderColor={{ _light: 'gray.200', _dark: 'whiteAlpha.100' }}
+      borderRadius="md"
+      overflow="hidden"
+    >
       <LiFiWidget config={ config } integrator="blockscout"/>
     </Box>
   );

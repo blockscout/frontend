@@ -98,7 +98,7 @@ Type extends EventTypes.VERIFY_TOKEN ? {
   Action: 'Form opened' | 'Submit';
 } :
 Type extends EventTypes.WALLET_CONNECT ? {
-  Source: 'Header' | 'Login' | 'Profile' | 'Profile dropdown' | 'Smart contracts' | 'Swap button' | 'Merits' | 'Revoke';
+  Source: 'Header' | 'Login' | 'Profile' | 'Profile dropdown' | 'Smart contracts' | 'Swap button' | 'Merits' | 'Revoke' | 'Swap';
   Status: 'Started' | 'Connected';
 } :
 Type extends EventTypes.WALLET_ACTION ? (
