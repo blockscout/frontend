@@ -6,6 +6,7 @@ import { useMemo } from 'react';
 import config from 'configs/app';
 import essentialDappsChains from 'configs/essentialDappsChains';
 import useWeb3Wallet from 'lib/web3/useWallet';
+import { useColorMode } from 'toolkit/chakra/color-mode';
 
 import essentialDappsConfig from '../config';
 
@@ -17,6 +18,7 @@ const defaultChainId = Number(
 
 const Swap = () => {
   const web3Wallet = useWeb3Wallet({ source: 'Swap' });
+  const { colorMode } = useColorMode();
 
   const config = useMemo(
     () =>
@@ -24,6 +26,7 @@ const Swap = () => {
         fee: 0.004, // 0.4% instead of 0.075%
         variant: 'compact',
         subvariant: 'default',
+        appearance: colorMode,
         theme: {
           typography: { fontFamily: 'var(--chakra-fonts-body)' },
           shape: {
@@ -50,7 +53,7 @@ const Swap = () => {
           onConnect: web3Wallet.connect,
         },
       } as Partial<WidgetConfig>),
-    [ web3Wallet.connect ],
+    [ web3Wallet.connect, colorMode ],
   );
 
   return (
