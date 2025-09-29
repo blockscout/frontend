@@ -13,11 +13,13 @@ const EssentialDapp = () => {
 
   let title = null;
   let content = null;
+  let isCentered = false;
 
   switch (id) {
     case 'swap':
       title = 'Swap';
       content = <Swap/>;
+      isCentered = true;
       break;
     case 'revoke':
       title = 'Revoke';
@@ -26,6 +28,7 @@ const EssentialDapp = () => {
     case 'multisend':
       title = 'Multisend';
       content = <Multisend/>;
+      isCentered = true;
       break;
   }
 
@@ -35,7 +38,7 @@ const EssentialDapp = () => {
 
   return (
     <>
-      <PageTitle title={ title }/>
+      <PageTitle title={ title } alignItems={ isCentered ? 'center' : undefined }/>
       { content }
     </>
   );

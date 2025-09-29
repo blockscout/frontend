@@ -63,6 +63,7 @@ const Swap = () => {
       borderColor={{ _light: 'gray.200', _dark: 'whiteAlpha.100' }}
       borderRadius="md"
       overflow="hidden"
+      mx="auto"
     >
       <LiFiWidget config={ config } integrator="blockscout"/>
     </Box>

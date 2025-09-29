@@ -9,6 +9,7 @@ import essentialDappsConfig from '../config';
 const Container = ({ children }: { children: React.ReactNode }) => (
   <Box
     maxW="670px"
+    mx="auto"
     css={{
       '& > .multisenderTheme': {
         '--mw-color-brand': { _light: 'colors.blue.600', _dark: 'colors.blue.500' },
