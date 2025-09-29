@@ -8,15 +8,15 @@ import type { ListCctxsResponse } from '@blockscout/zetachain-cctx-types';
 import type { SearchResultItem } from 'types/api/search';
 
 import config from 'configs/app';
-import type { CosmosHashType } from 'lib/address/cosmos';
 import type { ResourceError } from 'lib/api/resources';
 import { useSettingsContext } from 'lib/contexts/settings';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import type { ExternalSearchItem as ExternalSearchItemType } from 'lib/search/externalSearch';
 import { TabsList, TabsRoot, TabsTrigger } from 'toolkit/chakra/tabs';
 import * as regexp from 'toolkit/utils/regexp';
 import useMarketplaceApps from 'ui/marketplace/useMarketplaceApps';
 import ContentLoader from 'ui/shared/ContentLoader';
-import SearchCosmosNotice from 'ui/shared/search/SearchCosmosNotice';
+import ExternalSearchItem from 'ui/shared/search/ExternalSearchItem';
 import type { ApiCategory, Category, ItemsCategoriesMap } from 'ui/shared/search/utils';
 import { getItemCategory, searchCategories } from 'ui/shared/search/utils';
 
@@ -28,13 +28,13 @@ import SearchBarSuggestZetaChainCCTX from './SearchBarSuggestZetaChainCCTX';
 interface Props {
   query: UseQueryResult<Array<SearchResultItem>, ResourceError<unknown>>;
   zetaChainCCTXQuery: UseQueryResult<ListCctxsResponse, ResourceError<unknown>>;
-  cosmosHashType: CosmosHashType;
+  externalSearchItem: ExternalSearchItemType;
   searchTerm: string;
   onItemClick: (event: React.MouseEvent<HTMLAnchorElement>) => void;
   containerId: string;
 }
 
-const SearchBarSuggest = ({ query, zetaChainCCTXQuery, cosmosHashType, searchTerm, onItemClick, containerId }: Props) => {
+const SearchBarSuggest = ({ query, zetaChainCCTXQuery, externalSearchItem, searchTerm, onItemClick, containerId }: Props) => {
   const isMobile = useIsMobile();
 
   const marketplaceApps = useMarketplaceApps(searchTerm);
@@ -151,7 +151,7 @@ const SearchBarSuggest = ({ query, zetaChainCCTXQuery, cosmosHashType, searchTer
 
     const resultCategories = searchCategories.filter(cat => itemsGroups[cat.id]);
 
-    if (resultCategories.length === 0 && !cosmosHashType) {
+    if (resultCategories.length === 0 && !externalSearchItem) {
       if (regexp.BLOCK_HEIGHT.test(searchTerm)) {
         return <SearchBarSuggestBlockCountdown blockHeight={ searchTerm } onClick={ onItemClick }/>;
       }
@@ -217,7 +217,7 @@ const SearchBarSuggest = ({ query, zetaChainCCTXQuery, cosmosHashType, searchTer
             </Element>
           );
         }) }
-        { cosmosHashType && <SearchCosmosNotice cosmosHash={ searchTerm } type={ cosmosHashType }/> }
+        { externalSearchItem && <ExternalSearchItem item={ externalSearchItem }/> }
       </>
     );
   })();
