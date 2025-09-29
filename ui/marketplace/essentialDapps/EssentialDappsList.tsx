@@ -28,7 +28,7 @@ const essentialDapps = [
 
 const EssentialDappsList = () => {
   return (
-    <Flex gap={ 3 } mb={ 8 }>
+    <Flex gap={ 3 } mb={ 8 } w="full" overflowX="auto">
       { essentialDapps.map((dapp) => (
         <EssentialDappCard
           key={ dapp.id }
