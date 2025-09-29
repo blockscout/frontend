@@ -10,6 +10,13 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 import { isBrowser } from 'toolkit/utils/isBrowser';
 import { connectAdbutler, placeAd, ADBUTLER_ACCOUNT } from 'ui/shared/ad/adbutlerScript';
 
+import {
+  DESKTOP_BANNER_WIDTH,
+  DESKTOP_BANNER_HEIGHT,
+  MOBILE_BANNER_WIDTH,
+  MOBILE_BANNER_HEIGHT,
+} from './consts';
+
 const feature = config.features.adsBanner;
 
 const AdbutlerBanner = ({ className, platform }: BannerProps) => {
@@ -66,30 +73,15 @@ const AdbutlerBanner = ({ className, platform }: BannerProps) => {
     return null;
   }
 
-  const { width, height } = (() => {
-    switch (platform) {
-      case 'desktop':
-        return { width: `${ feature.adButler.config.desktop.width }px`, height: `${ feature.adButler.config.desktop.height }px` };
-      case 'mobile':
-        return { width: `${ feature.adButler.config.mobile.width }px`, height: `${ feature.adButler.config.mobile.height }px` };
-      default:
-        return {
-          width: {
-            base: `${ feature.adButler.config.mobile.width }px`,
-            lg: `${ feature.adButler.config.desktop.width }px`,
-          },
-          height: {
-            base: `${ feature.adButler.config.mobile.height }px`,
-            lg: `${ feature.adButler.config.desktop.height }px`,
-          },
-        };
-    }
-  })() ?? { width: '0', height: '0' };
-
   const getElementId = (id: string) => id + (platform ? `_${ platform }` : '');
 
   return (
-    <Flex className={ className } id={ getElementId('adBanner') } h={ height } w={ width }>
+    <Flex
+      className={ className }
+      id={ getElementId('adBanner') }
+      h={ platform === 'mobile' ? `${ MOBILE_BANNER_HEIGHT }px` : `${ DESKTOP_BANNER_HEIGHT }px` }
+      w={ platform === 'mobile' ? `${ MOBILE_BANNER_WIDTH }px` : `${ DESKTOP_BANNER_WIDTH }px` }
+    >
       { !isHidden && (
         <>
           <Script strategy="lazyOnload" id="ad-butler-1">{ connectAdbutler }</Script>

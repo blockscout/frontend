@@ -1,6 +1,6 @@
 import type * as bens from '@blockscout/bens-types';
 import type * as tac from '@blockscout/tac-operation-lifecycle-types';
-import type { TokenType } from 'types/api/token';
+import type { TokenReputation, TokenType } from 'types/api/token';
 
 import type { AddressMetadataTagApi } from './addressMetadata';
 
@@ -36,6 +36,7 @@ export interface SearchResultToken {
   is_smart_contract_verified: boolean;
   filecoin_robust_address?: string | null;
   certified?: boolean;
+  reputation: TokenReputation | null;
 }
 
 type SearchResultEnsInfo = {

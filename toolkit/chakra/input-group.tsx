@@ -31,33 +31,73 @@ export const InputGroup = React.forwardRef<HTMLDivElement, InputGroupProps>(
 
     const startElementRef = React.useRef<HTMLDivElement>(null);
     const endElementRef = React.useRef<HTMLDivElement>(null);
+    const groupRef = React.useRef<HTMLDivElement>(null);
 
     const [ inlinePaddings, setInlinePaddings ] = React.useState<{ start?: number; end?: number }>();
 
     const calculateInlinePaddings = React.useCallback(() => {
-      const { width: endWidth } = endElementRef?.current?.getBoundingClientRect() ?? {};
-      const { width: startWidth } = startElementRef?.current?.getBoundingClientRect() ?? {};
+      const startWidth = startElementRef.current?.getBoundingClientRect().width ?? 0;
+      const endWidth = endElementRef.current?.getBoundingClientRect().width ?? 0;
 
       setInlinePaddings({
-        start: startWidth ?? 0,
-        end: endWidth ?? 0,
+        start: startWidth,
+        end: endWidth,
       });
     }, []);
+
+    React.useEffect(() => {
+      if (!groupRef.current) return;
+
+      let timeoutId: ReturnType<typeof setTimeout>;
+
+      const intersectionObserver = new IntersectionObserver(
+        (entries) => {
+          const entry = entries[0];
+          if (entry && entry.isIntersecting) {
+            // Small delay to ensure rendering is complete
+            timeoutId = setTimeout(calculateInlinePaddings, 50);
+          }
+        },
+        { threshold: 0.01 },
+      );
+
+      intersectionObserver.observe(groupRef.current);
+
+      return () => {
+        intersectionObserver.disconnect();
+        if (timeoutId) {
+          clearTimeout(timeoutId);
+        }
+      };
+    }, [ calculateInlinePaddings ]);
 
     React.useEffect(() => {
       calculateInlinePaddings();
 
       const resizeHandler = debounce(calculateInlinePaddings, 300);
       const resizeObserver = new ResizeObserver(resizeHandler);
-      resizeObserver.observe(window.document.body);
+
+      if (groupRef.current) {
+        resizeObserver.observe(groupRef.current);
+      }
 
       return function cleanup() {
-        resizeObserver.unobserve(window.document.body);
+        resizeObserver.disconnect();
       };
     }, [ calculateInlinePaddings ]);
 
+    // Combine refs for the Group component
+    const combinedRef = React.useCallback((node: HTMLDivElement) => {
+      groupRef.current = node;
+      if (typeof ref === 'function') {
+        ref(node);
+      } else if (ref) {
+        ref.current = node;
+      }
+    }, [ ref ]);
+
     return (
-      <Group ref={ ref } w="100%" { ...rest }>
+      <Group ref={ combinedRef } w="100%" { ...rest }>
         { startElement && (
           <InputElement pointerEvents="none" ref={ startElementRef } px={ 0 } color="input.placeholder" { ...startElementProps }>
             { startElement }
