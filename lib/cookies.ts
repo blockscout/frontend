@@ -14,7 +14,6 @@ export enum NAMES {
   ADDRESS_FORMAT = 'address_format',
   TIME_FORMAT = 'time_format',
   INDEXING_ALERT = 'indexing_alert',
-  ADBLOCK_DETECTED = 'adblock_detected',
   MIXPANEL_DEBUG = '_mixpanel_debug',
   ADDRESS_NFT_DISPLAY_TYPE = 'address_nft_display_type',
   UUID = 'uuid',
@@ -31,7 +30,11 @@ export function get(name?: NAMES | undefined | null, serverCookie?: string) {
   }
 }
 
-export function set(name: NAMES, value: string, attributes: Cookies.CookieAttributes = {}) {
+export function set(
+  name: NAMES,
+  value: string,
+  attributes: Cookies.CookieAttributes = {},
+) {
   attributes.path = '/';
 
   return Cookies.set(name, value, attributes);
@@ -41,6 +44,9 @@ export function remove(name: NAMES, attributes: Cookies.CookieAttributes = {}) {
   return Cookies.remove(name, attributes);
 }
 
-export function getFromCookieString(cookieString: string, name?: NAMES | undefined | null) {
+export function getFromCookieString(
+  cookieString: string,
+  name?: NAMES | undefined | null,
+) {
   return cookieString.split(`${ name }=`)[1]?.split(';')[0];
 }

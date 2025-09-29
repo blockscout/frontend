@@ -9,7 +9,7 @@ const WithTextAd = () => {
     <PageTitle
       title="Block"
       contentAfter={ <Badge key="custom" colorPalette="orange" variant="solid">Awesome</Badge> }
-      withTextAd
+     
     />
   );
 };

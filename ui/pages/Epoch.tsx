@@ -10,7 +10,6 @@ import { CELO_EPOCH } from 'stubs/epoch';
 import { Tag } from 'toolkit/chakra/tag';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import EpochDetails from 'ui/epochs/EpochDetails';
-import TextAd from 'ui/shared/ad/TextAd';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
@@ -79,7 +78,6 @@ const EpochPageContent = () => {
 
   return (
     <>
-      <TextAd mb={ 6 }/>
       <PageTitle
         title={ `Epoch #${ number }` }
         contentAfter={ titleContentAfter }

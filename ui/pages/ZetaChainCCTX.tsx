@@ -5,7 +5,6 @@ import useApiQuery from 'lib/api/useApiQuery';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { ZETA_CHAIN_CCTX } from 'stubs/zetaChainCCTX';
-import TextAd from 'ui/shared/ad/TextAd';
 import TxEntityZetaChainCC from 'ui/shared/entities/tx/TxEntityZetaChainCC';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import ZetaChainCCTXDetails from 'ui/zetaChain/cctxDetails/ZetaChainCCTXDetails';
@@ -26,7 +25,6 @@ const ZetaChainCCTX = () => {
 
   return (
     <>
-      <TextAd mb={ 6 }/>
       <PageTitle
         title="Cross-chain tx details"
         secondRow={ <TxEntityZetaChainCC hash={ hash } noLink noCopy={ false } variant="subheading" mr={{ base: 0, lg: 2 }}/> }

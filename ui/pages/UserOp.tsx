@@ -12,7 +12,6 @@ import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { USER_OP } from 'stubs/userOps';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import TextAd from 'ui/shared/ad/TextAd';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import TxLogs from 'ui/tx/TxLogs';
 import TxTokenTransfer from 'ui/tx/TxTokenTransfer';
@@ -85,7 +84,6 @@ const UserOp = () => {
 
   return (
     <>
-      <TextAd mb={ 6 }/>
       <PageTitle
         title="User operation details"
         secondRow={ titleSecondRow }

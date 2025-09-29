@@ -6,7 +6,6 @@ import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { TAC_OPERATION_DETAILS } from 'stubs/operations';
 import TacOperationDetails from 'ui/operation/tac/TacOperationDetails';
-import TextAd from 'ui/shared/ad/TextAd';
 import OperationEntity from 'ui/shared/entities/operation/OperationEntity';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import TacOperationTag from 'ui/shared/TacOperationTag';
@@ -34,7 +33,6 @@ const TacOperation = () => {
 
   return (
     <>
-      <TextAd mb={ 6 }/>
       <PageTitle
         title="Operation details"
         contentAfter={ titleContentAfter }

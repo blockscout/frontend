@@ -225,7 +225,7 @@ const AdvancedFilter = () => {
     <>
       <PageTitle
         title="Advanced filter"
-        withTextAd
+       
       />
       <Flex mb={ 4 } justifyContent="space-between" alignItems="start">
         <Text fontSize="lg" mr={ 3 } lineHeight="24px" w="100px">Filtered by:</Text>

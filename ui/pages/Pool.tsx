@@ -133,7 +133,7 @@ const Pool = () => {
         contentAfter={ <Skeleton loading={ isPlaceholderData }><Tag>Pool</Tag></Skeleton> }
         secondRow={ titleSecondRow }
         isLoading={ isPlaceholderData }
-        withTextAd
+       
       />
       { content }
     </>

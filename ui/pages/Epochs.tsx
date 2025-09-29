@@ -60,7 +60,7 @@ const EpochsPageContent = () => {
 
   return (
     <>
-      <PageTitle title="Epochs" withTextAd/>
+      <PageTitle title="Epochs"/>
       <DataListDisplay
         isError={ epochsQuery.isError }
         itemsNum={ epochsQuery.data?.items?.length }

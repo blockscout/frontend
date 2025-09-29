@@ -53,7 +53,7 @@ const MudWorlds = () => {
 
   return (
     <>
-      <PageTitle title="MUD worlds" withTextAd/>
+      <PageTitle title="MUD worlds"/>
       <DataListDisplay
         isError={ isError }
         itemsNum={ data?.items.length }

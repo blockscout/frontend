@@ -11,7 +11,6 @@ import { TX_ZKEVM_L2 } from 'stubs/tx';
 import { generateListStub } from 'stubs/utils';
 import { ZKEVM_L2_TXN_BATCH } from 'stubs/zkEvmL2';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import TextAd from 'ui/shared/ad/TextAd';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import ZkEvmL2TxnBatchDetails from 'ui/txnBatches/zkEvmL2/ZkEvmL2TxnBatchDetails';
@@ -50,7 +49,6 @@ const ZkEvmL2TxnBatch = () => {
 
   return (
     <>
-      <TextAd mb={ 6 }/>
       <PageTitle title={ `Txn batch #${ number }` }/>
       <RoutedTabs
         tabs={ tabs }

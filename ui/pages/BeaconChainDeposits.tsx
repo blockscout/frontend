@@ -81,7 +81,7 @@ const BeaconChainDeposits = () => {
     <>
       <PageTitle
         title={ config.meta.seo.enhancedDataEnabled ? `${ config.chain.name } deposits` : 'Deposits' }
-        withTextAd
+       
       />
       <DataListDisplay
         isError={ isError }

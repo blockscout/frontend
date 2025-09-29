@@ -1,10 +1,9 @@
-import * as descriptors from './policies';
-import { makePolicyString, mergeDescriptors } from './utils';
+import * as descriptors from "./policies";
+import { makePolicyString, mergeDescriptors } from "./utils";
 
 function generateCspPolicy() {
   const policyDescriptor = mergeDescriptors(
     descriptors.app(),
-    descriptors.ad(),
     descriptors.cloudFlare(),
     descriptors.flashblocks(),
     descriptors.gasHawk(),
@@ -23,7 +22,7 @@ function generateCspPolicy() {
     descriptors.safe(),
     descriptors.usernameApi(),
     descriptors.walletConnect(),
-    descriptors.zetachain(),
+    descriptors.zetachain()
   );
 
   return makePolicyString(policyDescriptor);

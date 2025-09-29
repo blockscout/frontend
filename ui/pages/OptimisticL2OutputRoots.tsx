@@ -72,7 +72,7 @@ const OptimisticL2OutputRoots = () => {
 
   return (
     <>
-      <PageTitle title="Output roots" withTextAd/>
+      <PageTitle title="Output roots"/>
       <DataListDisplay
         isError={ isError }
         itemsNum={ data?.items.length }

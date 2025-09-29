@@ -181,7 +181,7 @@ const Tokens = () => {
     <>
       <PageTitle
         title={ config.meta.seo.enhancedDataEnabled ? `Tokens on ${ config.chain.name }` : 'Tokens' }
-        withTextAd
+       
       />
       { !hasMultipleTabs && !isMobile && actionBar }
       <RoutedTabs

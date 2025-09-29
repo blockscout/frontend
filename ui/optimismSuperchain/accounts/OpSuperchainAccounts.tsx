@@ -1,14 +1,11 @@
-import React from 'react';
+import React from "react";
 
-import PageTitle from 'ui/shared/Page/PageTitle';
+import PageTitle from "ui/shared/Page/PageTitle";
 
 const OpSuperchainAccounts = () => {
   return (
     <>
-      <PageTitle
-        title="Top accounts"
-        withTextAd
-      />
+      <PageTitle title="Top accounts" />
       <div>Coming soon 🔜</div>
     </>
   );

@@ -15,7 +15,6 @@ import type { ExternalSearchItem as ExternalSearchItemType } from 'lib/search/ex
 import { TabsList, TabsRoot, TabsTrigger } from 'toolkit/chakra/tabs';
 import * as regexp from 'toolkit/utils/regexp';
 import useMarketplaceApps from 'ui/marketplace/useMarketplaceApps';
-import TextAd from 'ui/shared/ad/TextAd';
 import ContentLoader from 'ui/shared/ContentLoader';
 import ExternalSearchItem from 'ui/shared/search/ExternalSearchItem';
 import type { ApiCategory, Category, ItemsCategoriesMap } from 'ui/shared/search/utils';
@@ -227,7 +226,6 @@ const SearchBarSuggest = ({ query, zetaChainCCTXQuery, externalSearchItem, searc
     <Box mt={ 5 } mb={ 5 }>
       { !isMobile && (
         <Box pb={ 4 } mb={ 5 } borderColor="border.divider" borderBottomWidth="1px" _empty={{ display: 'none' }}>
-          <TextAd/>
         </Box>
       ) }
       { content }

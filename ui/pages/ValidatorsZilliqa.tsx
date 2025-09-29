@@ -44,7 +44,7 @@ const ValidatorsZilliqa = () => {
 
   return (
     <Box>
-      <PageTitle title="Validators" withTextAd/>
+      <PageTitle title="Validators"/>
       <DataListDisplay
         isError={ isError }
         itemsNum={ data?.items.length }
