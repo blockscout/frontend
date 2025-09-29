@@ -1,4 +1,4 @@
-import { chakra, Box, Flex, Text, Separator } from '@chakra-ui/react';
+import { Box, Flex, Text, Separator } from '@chakra-ui/react';
 import React, { useMemo, useCallback, useEffect, useState } from 'react';
 import { isAddress } from 'viem';
 import { useAccount } from 'wagmi';
@@ -13,7 +13,6 @@ import { Heading } from 'toolkit/chakra/heading';
 import { Image } from 'toolkit/chakra/image';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import EmptySearchResult from 'ui/shared/EmptySearchResult';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import IconSvg from 'ui/shared/IconSvg';
@@ -21,6 +20,7 @@ import IconSvg from 'ui/shared/IconSvg';
 import essentialDappsConfig from '../config';
 import Approvals from './components/Approvals';
 import ChainSelect from './components/ChainSelect';
+import SearchInput from './components/SearchInput';
 import StartScreen from './components/StartScreen';
 import useApprovalsQuery from './hooks/useApprovalsQuery';
 import useCoinBalanceQuery from './hooks/useCoinBalanceQuery';
@@ -77,7 +77,7 @@ const Revoke = () => {
     setSelectedChainId(chainId);
   }, []);
 
-  const handleSearch = useCallback(async(address: string) => {
+  const handleSearch = useCallback((address: string) => {
     // if (address.endsWith('.eth')) {
     //   const ensAddress = await getEnsAddress(wagmiAdapter.wagmiConfig, {
     //     chainId: mainnet.id,
@@ -91,19 +91,11 @@ const Revoke = () => {
     setSearchAddress(address.toLowerCase());
   }, []);
 
-  const handleFormSubmit = useCallback(async(event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const formData = new FormData(event.target as HTMLFormElement);
-    const address = formData.get('address') as string;
-    handleSearch(address);
-  }, [ handleSearch ]);
-
   const handleExampleClick = useCallback(
     (address: string) => () => {
-      handleChainChange(Number(defaultChainId));
       handleSearch(address);
     },
-    [ handleSearch, handleChainChange ],
+    [ handleSearch ],
   );
 
   useEffect(() => {
@@ -290,20 +282,9 @@ const Revoke = () => {
   }
 
   return (
-    <Flex flexDir="column" w="full" gap={{ base: 3, lg: 12 }}>
+    <Flex flexDir="column" w="full" gap={{ base: 6, lg: 12 }}>
       <Flex flexDir="column" w="full" gap={ 3 }>
-        <chakra.form
-          onSubmit={ handleFormSubmit }
-          noValidate
-          w="full"
-        >
-          <FilterInput
-            name="address"
-            w="full"
-            size="sm"
-            placeholder="Search accounts by address..."
-          />
-        </chakra.form>
+        <SearchInput onSubmit={ handleSearch }/>
         <Flex
           gap={ 3 }
           alignItems="center"
@@ -324,7 +305,7 @@ const Revoke = () => {
             '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045',
             '0xFe89cc7aBB2C4183683ab71653C4cdc9B02D44b7',
             '0xf6B6F07862A02C85628B3A9688beae07fEA9C863',
-          ].map((address) => (
+          ].slice(0, isMobile ? 2 : undefined).map((address) => (
             <Box key={ address } onClick={ handleExampleClick(address) } cursor="pointer">
               <AddressEntity
                 address={{ hash: address }}
