@@ -30,6 +30,7 @@ const SearchResultItemToken = ({ data, chain }: Props) => {
             name: data.name,
             symbol: data.symbol,
             type: 'ERC-20',
+            reputation: null,
           }}
           chain={ chain }
           noLink

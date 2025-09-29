@@ -24,7 +24,7 @@ import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import * as Layout from 'ui/shared/layout/components';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
-import SearchCosmosNotice from 'ui/shared/search/SearchCosmosNotice';
+import ExternalSearchItem from 'ui/shared/search/ExternalSearchItem';
 import type { SearchResultAppItem } from 'ui/shared/search/utils';
 import HeaderAlert from 'ui/snippets/header/HeaderAlert';
 import HeaderDesktop from 'ui/snippets/header/HeaderDesktop';
@@ -42,7 +42,7 @@ const SearchResultsPageContent = () => {
     debouncedSearchTerm,
     handleSearchTermChange,
     zetaChainCCTXQuery,
-    cosmosHashType,
+    externalSearchItem,
   } = useSearchQuery(withRedirectCheck);
   const { data, isError, isPlaceholderData, pagination } = query;
   const [ showContent, setShowContent ] = React.useState(!withRedirectCheck);
@@ -220,8 +220,8 @@ const SearchResultsPageContent = () => {
         return <Skeleton loading h={ 6 } w="280px" borderRadius="full" mb={ pagination.isVisible ? 0 : 6 }/>;
       }
 
-      if (resultsCount === 0 && cosmosHashType) {
-        return <SearchCosmosNotice cosmosHash={ debouncedSearchTerm } type={ cosmosHashType }/>;
+      if (resultsCount === 0 && externalSearchItem) {
+        return <ExternalSearchItem item={ externalSearchItem }/>;
       }
 
       return (
@@ -275,7 +275,7 @@ const SearchResultsPageContent = () => {
 
   return (
     <>
-      <HeaderMobile renderSearchBar={ renderSearchBar }/>
+      <HeaderMobile hideSearchButton/>
       <Layout.MainArea>
         <Layout.SideBar/>
         <Layout.MainColumn>

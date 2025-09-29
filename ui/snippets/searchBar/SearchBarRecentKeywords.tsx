@@ -10,10 +10,10 @@ import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 
 type Props = {
   onClick: (kw: string) => void;
-  onClear: () => void;
+  onClear?: () => void;
 };
 
-const SearchBarSuggest = ({ onClick, onClear }: Props) => {
+const SearchBarRecentKeywords = ({ onClick, onClear }: Props) => {
   const isMobile = useIsMobile();
 
   const [ keywords, setKeywords ] = React.useState<Array<string>>(getRecentSearchKeywords());
@@ -24,14 +24,15 @@ const SearchBarSuggest = ({ onClick, onClear }: Props) => {
 
   const clearKeywords = React.useCallback(() => {
     clearRecentSearchKeywords();
-    onClear();
+    setKeywords([]);
+    onClear?.();
   }, [ onClear ]);
 
   const removeKeyword = React.useCallback((kw: string) => (e: React.SyntheticEvent) => {
     e.stopPropagation();
     const result = keywords.filter(item => item !== kw);
     setKeywords(result);
-    if (result.length === 0) {
+    if (result.length === 0 && onClear) {
       onClear();
     }
     removeRecentSearchKeyword(kw);
@@ -42,7 +43,7 @@ const SearchBarSuggest = ({ onClick, onClear }: Props) => {
   }
 
   return (
-    <Box py={ 6 }>
+    <>
       { !isMobile && (
         <Box pb={ 4 } mb={ 5 } borderColor="border.divider" borderBottomWidth="1px" _empty={{ display: 'none' }}>
           <TextAd/>
@@ -50,46 +51,48 @@ const SearchBarSuggest = ({ onClick, onClear }: Props) => {
       ) }
       <Flex mb={ 3 } justifyContent="space-between" fontSize="sm">
         <Text fontWeight={ 600 } color="text.secondary">Recent</Text>
-        <Link onClick={ clearKeywords }>Clear all</Link>
+        <Link onClick={ clearKeywords } variant="secondary">Clear all</Link>
       </Flex>
-      { keywords.map(kw => (
-        <Flex
-          key={ kw }
-          py={ 3 }
-          px={ 1 }
-          borderColor="border.divider"
-          borderBottomWidth="1px"
-          _last={{
-            borderBottomWidth: '0',
-          }}
-          _hover={{
-            bgColor: { _light: 'blue.50', _dark: 'gray.800' },
-          }}
-          fontSize="sm"
-          _first={{
-            mt: 2,
-          }}
-          onClick={ handleClick(kw) }
-          alignItems="center"
-          justifyContent="space-between"
-          cursor="pointer"
-          columnGap={ 2 }
-          fontWeight={ 700 }
-          minW={ 0 }
-          flexGrow={ 1 }
-        >
-          { kw.startsWith('0x') ? (
-            <Box overflow="hidden" whiteSpace="nowrap">
-              <HashStringShortenDynamic hash={ kw } noTooltip/>
-            </Box>
-          ) :
-            <Text overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis">{ kw }</Text>
-          }
-          <ClearButton onClick={ removeKeyword(kw) }/>
-        </Flex>
-      )) }
-    </Box>
+      <Flex flexDirection="column" overflowY="auto">
+        { keywords.map(kw => (
+          <Flex
+            key={ kw }
+            py={{ base: '9px', lg: 3 }}
+            px={{ base: 0, lg: 1 }}
+            borderColor="border.divider"
+            borderBottomWidth="1px"
+            _last={{
+              borderBottomWidth: '0',
+            }}
+            _hover={{
+              bgColor: { _light: 'blue.50', _dark: 'gray.800' },
+            }}
+            fontSize="sm"
+            _first={{
+              mt: 2,
+            }}
+            onClick={ handleClick(kw) }
+            alignItems="center"
+            justifyContent="space-between"
+            cursor="pointer"
+            columnGap={ 2 }
+            fontWeight={{ base: 400, lg: 700 }}
+            minW={ 0 }
+            flexGrow={ 1 }
+          >
+            { kw.startsWith('0x') ? (
+              <Box overflow="hidden" whiteSpace="nowrap">
+                <HashStringShortenDynamic hash={ kw } noTooltip/>
+              </Box>
+            ) :
+              <Text overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis">{ kw }</Text>
+            }
+            <ClearButton onClick={ removeKeyword(kw) } color={{ _light: 'gray.300', _dark: 'gray.600' }}/>
+          </Flex>
+        )) }
+      </Flex>
+    </>
   );
 };
 
-export default SearchBarSuggest;
+export default SearchBarRecentKeywords;

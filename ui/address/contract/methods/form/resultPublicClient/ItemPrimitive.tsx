@@ -1,3 +1,4 @@
+import { chakra } from '@chakra-ui/react';
 import React from 'react';
 import type { AbiParameter } from 'viem';
 
@@ -48,11 +49,11 @@ const ItemPrimitive = ({ abiParameter, data, level, hideLabel }: Props) => {
   })();
 
   return (
-    <p>
+    <chakra.span display="block">
       <span>{ printRowOffset(level) }</span>
       { !hideLabel && <ItemLabel abiParameter={ abiParameter }/> }
       { value }
-    </p>
+    </chakra.span>
   );
 };
 

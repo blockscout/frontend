@@ -22,6 +22,7 @@ export const txInterpretation: TxInterpretationResponse = {
             total_supply: '210000000000000000000000000',
             exchange_rate: null,
             circulating_market_cap: null,
+            reputation: 'ok',
           },
         },
         to_address: {

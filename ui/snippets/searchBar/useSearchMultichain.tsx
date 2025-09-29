@@ -67,6 +67,7 @@ export default function useSearchMultichain({ searchTerm, enabled }: Props) {
             icon_url: item.icon_url,
             is_smart_contract_verified: item.is_verified_contract,
             chain_id: item.chain_id,
+            reputation: null,
           }));
           result.push(...items);
         }

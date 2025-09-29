@@ -20,6 +20,7 @@ export interface Address extends UserTags {
   ens_domain_name: string | null;
   filecoin?: AddressFilecoinParams;
   zilliqa?: AddressZilliqaParams;
+  celo?: AddressCeloParams;
   // TODO: if we are happy with tabs-counters method, should we delete has_something fields?
   has_beacon_chain_withdrawals?: boolean;
   has_logs: boolean;
@@ -38,6 +39,19 @@ export interface Address extends UserTags {
 
 export interface AddressZilliqaParams {
   is_scilla_contract: boolean;
+}
+
+export interface AddressCeloParams {
+  account: {
+    locked_celo: string;
+    metadata_url: string | null;
+    name: string | null;
+    nonvoting_locked_celo: string;
+    type: string;
+    vote_signer_address: AddressParam | null;
+    validator_signer_address: AddressParam | null;
+    attestation_signer_address: AddressParam | null;
+  } | null;
 }
 
 export interface AddressCounters {

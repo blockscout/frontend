@@ -10,7 +10,7 @@ import * as Layout from './components';
 const TOP_BAR_HEIGHT = 36;
 const HEADER_HEIGHT_MOBILE = 56;
 
-const LayoutDefault = ({ children }: Props) => {
+const LayoutApp = ({ children }: Props) => {
   return (
     <Layout.Root content={ children }>
       <Layout.Container
@@ -20,7 +20,7 @@ const LayoutDefault = ({ children }: Props) => {
         flexDirection="column"
       >
         <Layout.TopRow/>
-        <HeaderMobile hideSearchBar/>
+        <HeaderMobile/>
         <Layout.MainArea
           minH={{
             base: `calc(100dvh - ${ TOP_BAR_HEIGHT + HEADER_HEIGHT_MOBILE }px)`,
@@ -45,4 +45,4 @@ const LayoutDefault = ({ children }: Props) => {
   );
 };
 
-export default LayoutDefault;
+export default LayoutApp;

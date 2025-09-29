@@ -31,6 +31,7 @@ const ArbitrumL2TxnWithdrawalsValue = ({ data }: Props) => {
         total_supply: null,
         circulating_market_cap: null,
         icon_url: null,
+        reputation: null,
       };
 
       return (

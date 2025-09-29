@@ -373,6 +373,12 @@ const rollupSchema = yup
       }),
   });
 
+const megaEthSchema = yup
+  .object()
+  .shape({
+    NEXT_PUBLIC_MEGA_ETH_SOCKET_URL_METRICS: yup.string().test(urlTest),
+  });
+
 const apiDocsScheme = yup
   .object()
   .shape({
@@ -453,6 +459,7 @@ const adsBannerSchema = yup
     NEXT_PUBLIC_AD_BANNER_ADDITIONAL_PROVIDER: yup.string<AdBannerAdditionalProviders>().oneOf(SUPPORTED_AD_BANNER_ADDITIONAL_PROVIDERS),
     NEXT_PUBLIC_AD_ADBUTLER_CONFIG_DESKTOP: adButlerConfigSchema,
     NEXT_PUBLIC_AD_ADBUTLER_CONFIG_MOBILE: adButlerConfigSchema,
+    NEXT_PUBLIC_AD_BANNER_ENABLE_SPECIFY: yup.boolean(),
   });
 
 const accountSchema = yup
@@ -655,25 +662,23 @@ const zetaChainSchema = yup
           value => value === undefined,
         ),
       }),
-    NEXT_PUBLIC_ZETACHAIN_COSMOS_TX_URL_TEMPLATE: yup
-      .string()
+    NEXT_PUBLIC_ZETACHAIN_EXTERNAL_SEARCH_CONFIG: yup
+      .array()
+      .transform(replaceQuotes)
+      .json()
+      .of(
+        yup.object({
+          regex: yup.string().required(),
+          template: yup.string().required(),
+          name: yup.string().required(),
+        })
+      )
       .when('NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST', {
         is: (value: string) => Boolean(value),
         then: (schema) => schema,
         otherwise: (schema) => schema.test(
           'not-exist',
-          'NEXT_PUBLIC_ZETACHAIN_COSMOS_TX_URL_TEMPLATE cannot be used if NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST is not set',
-          value => value === undefined,
-        ),
-      }),
-    NEXT_PUBLIC_ZETACHAIN_COSMOS_ADDRESS_URL_TEMPLATE: yup
-      .string()
-      .when('NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST', {
-        is: (value: string) => Boolean(value),
-        then: (schema) => schema,
-        otherwise: (schema) => schema.test(
-          'not-exist',
-          'NEXT_PUBLIC_ZETACHAIN_COSMOS_ADDRESS_URL_TEMPLATE cannot be used if NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST is not set',
+          'NEXT_PUBLIC_ZETACHAIN_EXTERNAL_SEARCH_CONFIG cannot be used if NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST is not set',
           value => value === undefined,
         ),
       }),
@@ -923,6 +928,7 @@ const schema = yup
       .transform(replaceQuotes)
       .json()
       .of(yup.string<BlockFieldId>().oneOf(BLOCK_FIELDS_IDS)),
+    NEXT_PUBLIC_VIEWS_BLOCK_PENDING_UPDATE_ALERT_ENABLED: yup.boolean(),
     NEXT_PUBLIC_VIEWS_ADDRESS_IDENTICON_TYPE: yup.string().oneOf(IDENTICON_TYPES),
     NEXT_PUBLIC_VIEWS_ADDRESS_FORMAT: yup
       .array()
@@ -1169,6 +1175,7 @@ const schema = yup
   .concat(apiDocsScheme)
   .concat(mixpanelSchema)
   .concat(tacSchema)
+  .concat(megaEthSchema)
   .concat(address3rdPartyWidgetsConfigSchema)
   .concat(addressMetadataSchema)
   .concat(userOpsSchema)

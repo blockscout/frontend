@@ -5,8 +5,8 @@ import React from 'react';
 import { Direction } from '@blockscout/zetachain-cctx-types';
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 import { ADVANCED_FILTER_AGES, type AdvancedFilterAge } from 'types/api/advancedFilter';
-import { ZETA_CHAIN_CCTX_STATUS_REDUCED_FILTERS } from 'types/api/zetaChain';
-import type { StatusReducedFilters, ZetaChainCCTXFilterParams } from 'types/client/zetaChain';
+import { ZETA_CHAIN_CCTX_COIN_TYPE_FILTER, ZETA_CHAIN_CCTX_STATUS_REDUCED_FILTERS } from 'types/client/zetaChain';
+import type { CoinTypeFilter, StatusReducedFilters, ZetaChainCCTXFilterParams } from 'types/client/zetaChain';
 
 import dayjs from 'lib/date/dayjs';
 import getFilterValueFromQuery from 'lib/getFilterValueFromQuery';
@@ -14,7 +14,7 @@ import getValuesArrayFromQuery from 'lib/getValuesArrayFromQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import getNetworkValidationActionText from 'lib/networks/getNetworkValidationActionText';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import { zetaChainCCTXItem } from 'mocks/zetaChain/zetaChainCCTX';
+import { ZETA_CHAIN_CCTX_LIST_ITEM } from 'stubs/zetaChainCCTX';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import { getDurationFromAge } from 'ui/advancedFilter/lib';
 import Pagination from 'ui/shared/pagination/Pagination';
@@ -33,10 +33,10 @@ const TAB_LIST_PROPS = {
 const TABS_HEIGHT = 64;
 
 const hasNextPageFn = (nextPageParams: Record<string, unknown>) => {
-  return Boolean(nextPageParams.limit);
+  return nextPageParams.limit !== '0';
 };
 
-const ZetaChainEvmTransactions = () => {
+const ZetaChainCCTXsTab = () => {
   const router = useRouter();
   const tab = getQueryParamString(router.query.tab);
   const isMobile = useIsMobile();
@@ -55,6 +55,7 @@ const ZetaChainEvmTransactions = () => {
       source_chain_id: getValuesArrayFromQuery(router.query.source_chain_id),
       target_chain_id: getValuesArrayFromQuery(router.query.target_chain_id),
       token_symbol: getValuesArrayFromQuery(router.query.token_symbol),
+      coin_type: getFilterValueFromQuery<CoinTypeFilter>([ ZETA_CHAIN_CCTX_COIN_TYPE_FILTER ], router.query.coin_type),
     };
   });
 
@@ -68,7 +69,7 @@ const ZetaChainEvmTransactions = () => {
       direction: 'DESC',
     },
     options: {
-      placeholderData: { items: Array(50).fill(zetaChainCCTXItem), next_page_params: { limit: 0, page_key: 0, direction: Direction.DESC } },
+      placeholderData: { items: Array(50).fill(ZETA_CHAIN_CCTX_LIST_ITEM), next_page_params: { limit: 0, page_key: 0, direction: Direction.DESC } },
       enabled: tab === 'cctx' || tab === 'cctx_mined',
     },
     hasNextPageFn,
@@ -84,7 +85,7 @@ const ZetaChainEvmTransactions = () => {
       direction: 'DESC',
     },
     options: {
-      placeholderData: { items: Array(50).fill(zetaChainCCTXItem), next_page_params: { limit: 0, page_key: 0, direction: Direction.DESC } },
+      placeholderData: { items: Array(50).fill(ZETA_CHAIN_CCTX_LIST_ITEM), next_page_params: { limit: 0, page_key: 0, direction: Direction.DESC } },
       enabled: tab === 'cctx_pending',
     },
     hasNextPageFn,
@@ -106,6 +107,9 @@ const ZetaChainEvmTransactions = () => {
     if (key === 'age') {
       handleFilterChange('start_timestamp', undefined);
       handleFilterChange('end_timestamp', undefined);
+    }
+    if (key === 'token_symbol') {
+      handleFilterChange('coin_type', undefined);
     }
     handleFilterChange(key, undefined);
   },
@@ -181,4 +185,4 @@ const ZetaChainEvmTransactions = () => {
   );
 };
 
-export default ZetaChainEvmTransactions;
+export default ZetaChainCCTXsTab;

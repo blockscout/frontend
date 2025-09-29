@@ -56,6 +56,7 @@ const VerifiedAddressesListItem = ({ item, application, onAdd, onEdit, isLoading
       address_hash: application.tokenAddress,
       name: item.metadata.tokenName,
       symbol: '',
+      reputation: null,
     };
 
     return (

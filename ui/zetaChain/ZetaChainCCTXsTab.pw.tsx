@@ -10,9 +10,11 @@ import ZetaChainCCTXsTab from './ZetaChainCCTXsTab';
 
 const CCTX_CONFIG_URL = 'http://localhost:3000/zeta-config.json';
 
-test.beforeEach(async({ mockEnvs, mockConfigResponse }) => {
+test.beforeEach(async({ mockEnvs, mockConfigResponse, mockAssetResponse }) => {
   await mockEnvs(ENVS_MAP.zetaChain);
   await mockConfigResponse('NEXT_PUBLIC_ZETACHAIN_SERVICE_CHAINS_CONFIG_URL', CCTX_CONFIG_URL, zetaChainCCTXConfig);
+  await mockAssetResponse(zetaChainCCTXConfig[1].chain_logo, './playwright/mocks/image_s.jpg');
+  await mockAssetResponse(zetaChainCCTXConfig[2].chain_logo, './playwright/mocks/image_svg.svg');
 });
 
 test('base view +@dark-mode', async({ render, mockApiResponse }) => {

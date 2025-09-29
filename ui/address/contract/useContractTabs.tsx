@@ -51,7 +51,7 @@ export default function useContractTabs({ addressData, isEnabled, hasMudTab, cha
   const mudSystemsQuery = useApiQuery('general:mud_systems', {
     pathParams: { hash: addressData?.hash },
     queryOptions: {
-      enabled: isEnabled && hasMudTab,
+      enabled: Boolean(isEnabled && hasMudTab),
       refetchOnMount: false,
       placeholderData: stubs.MUD_SYSTEMS,
     },

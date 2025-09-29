@@ -15,6 +15,7 @@ export interface AggregatedTokenInfo extends Pick<multichain.AggregatedTokenInfo
   total_supply: string | null;
   exchange_rate: string | null;
   icon_url: string | null;
+  reputation: null;
 }
 
 export interface AddressTokenItem extends Omit<multichain.ListAddressTokensResponse_AggregatedTokenBalanceInfo, 'token' | 'token_id'> {
@@ -66,6 +67,7 @@ export interface QuickSearchResultToken {
   icon_url: string | null;
   is_smart_contract_verified: boolean;
   chain_id: string;
+  reputation: null;
 }
 
 export interface QuickSearchResultDomain {

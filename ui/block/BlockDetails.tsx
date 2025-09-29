@@ -224,7 +224,7 @@ const BlockDetails = ({ query }: Props) => {
         </>
       ) }
 
-      { data.size && (
+      { typeof data.size === 'number' && (
         <>
           <DetailedInfo.ItemLabel
             hint="Size of the block in bytes"

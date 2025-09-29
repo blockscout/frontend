@@ -1,5 +1,5 @@
 import React from 'react';
-import { getAddress } from 'viem';
+import { encodeFunctionData, getAddress } from 'viem';
 import { usePublicClient } from 'wagmi';
 
 import type { FormSubmitResult, MethodCallStrategy, SmartContractMethod } from './types';
@@ -24,10 +24,6 @@ export default function useCallMethodPublicClient(): (params: Params) => Promise
   const { address: account } = useAccount();
 
   return React.useCallback(async({ args, item, addressHash, strategy }) => {
-    if (item.type === 'receive') {
-      throw new Error('Incorrect contract method');
-    }
-
     if (!publicClient) {
       throw new Error('Public Client is not defined');
     }
@@ -47,12 +43,33 @@ export default function useCallMethodPublicClient(): (params: Params) => Promise
         account,
         to: address,
         value,
-        ...(data ? { data } : {}),
+        data,
+      });
+      const estimatedGas = await publicClient.estimateGas({
+        account,
+        to: address,
+        value,
+        data,
       });
 
       return {
         source: 'public_client' as const,
         data: result.data,
+        estimatedGas,
+      };
+    }
+
+    if (item.type === 'receive') {
+      const estimatedGas = await publicClient.estimateGas({
+        account,
+        to: address,
+        value,
+      });
+
+      return {
+        source: 'public_client' as const,
+        data: undefined,
+        estimatedGas,
       };
     }
 
@@ -64,11 +81,24 @@ export default function useCallMethodPublicClient(): (params: Params) => Promise
       account,
       value,
     };
+    const paramsForGasEstimate = {
+      account,
+      value,
+      to: address,
+      data: encodeFunctionData({
+        abi: [ item ],
+        functionName: item.name,
+        args: _args,
+      }),
+    };
 
     const result = strategy === 'read' ? await publicClient.readContract(params) : await publicClient.simulateContract(params);
+    const estimatedGas = strategy === 'simulate' ? await publicClient.estimateGas(paramsForGasEstimate) : undefined;
+
     return {
       source: 'public_client' as const,
       data: strategy === 'read' ? result : result.result,
+      estimatedGas,
     };
 
   }, [ account, publicClient ]);

@@ -14,10 +14,11 @@ type Props = {
   hint?: string | React.ReactNode;
   isLoading?: boolean;
   bottomText?: string;
+  isBottomTextLoading?: boolean;
 };
 
-const RewardsDashboardCard = ({ label, value, withIcon, hint, isLoading, bottomText }: Props) => (
-  <Flex key={ label } flexDirection="column" alignItems="center" gap={ 2 }>
+const RewardsDashboardCardValue = ({ label, value, withIcon, hint, isLoading, bottomText, isBottomTextLoading }: Props) => (
+  <Flex key={ label } flexDirection="column" alignItems="center" gap={{ base: 1, md: 2 }}>
     { label && (
       <Flex alignItems="center" gap={ 1 }>
         { hint && <Hint label={ hint }/> }
@@ -40,8 +41,8 @@ const RewardsDashboardCard = ({ label, value, withIcon, hint, isLoading, bottomT
       </Heading>
     </Skeleton>
     { bottomText && (
-      <Skeleton loading={ isLoading }>
-        <Text textStyle="xs" fontWeight="500" color="text.secondary">
+      <Skeleton loading={ isBottomTextLoading || isLoading } minW="100px">
+        <Text textStyle={{ base: 'xs', md: 'sm' }} color="text.secondary">
           { bottomText }
         </Text>
       </Skeleton>
@@ -49,4 +50,4 @@ const RewardsDashboardCard = ({ label, value, withIcon, hint, isLoading, bottomT
   </Flex>
 );
 
-export default RewardsDashboardCard;
+export default RewardsDashboardCardValue;

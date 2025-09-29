@@ -88,6 +88,11 @@ export const withWatchListNames: Transaction = {
   } as Transaction['to'],
 };
 
+export const withPendingUpdate: Transaction = {
+  ...withWatchListNames,
+  is_pending_update: true,
+};
+
 export const withContractCreation: Transaction = {
   ...base,
   hash: '0x62d597ebcf3e8d60096dd0363bc2f0f5e2df27ba1dacd696c51aa7c9409f3195',
@@ -306,6 +311,7 @@ export const stabilityTx: Transaction = {
       symbol: 'GAS',
       total_supply: '10000000000000000000000000',
       type: 'ERC-20',
+      reputation: 'ok',
     },
     total_fee: '68762500000000',
     validator_address: {
@@ -337,6 +343,7 @@ export const celoTxn: Transaction = {
       symbol: 'cUSD',
       total_supply: '7145754483836626799435133',
       type: 'ERC-20',
+      reputation: 'ok',
     },
   },
 };

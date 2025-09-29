@@ -20,6 +20,8 @@ const ContractMethodArrayButton = ({ type, index, onClick, ...props }: Props) =>
 
   return (
     <Button
+      as="div"
+      role="button"
       data-index={ index }
       size="2xs_alt"
       onClick={ handleClick }

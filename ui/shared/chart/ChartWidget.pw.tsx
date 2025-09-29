@@ -35,7 +35,7 @@ test('base view +@dark-mode', async({ render, page }) => {
   const component = await render(<ChartWidget { ...props } href={{ pathname: '/stats/[id]', query: { id: 'test' } }}/>);
 
   await page.waitForFunction(() => {
-    return document.querySelector('path[data-name="chart-Nativecoincirculatingsupply-small"]')?.getAttribute('opacity') === '1';
+    return document.querySelector('path[data-name="chart-Native_coin_circulating_supply-small"]')?.getAttribute('opacity') === '1';
   });
   await expect(component).toHaveScreenshot();
 
@@ -84,7 +84,7 @@ test('small values', async({ render, page }) => {
 
   const component = await render(<ChartWidget { ...modifiedProps }/>);
   await page.waitForFunction(() => {
-    return document.querySelector('path[data-name="chart-Nativecoincirculatingsupply-small"]')?.getAttribute('opacity') === '1';
+    return document.querySelector('path[data-name="chart-Native_coin_circulating_supply-small"]')?.getAttribute('opacity') === '1';
   });
   await expect(component).toHaveScreenshot();
 });
@@ -109,7 +109,7 @@ test('small variations in big values', async({ render, page }) => {
 
   const component = await render(<ChartWidget { ...modifiedProps }/>);
   await page.waitForFunction(() => {
-    return document.querySelector('path[data-name="chart-Nativecoincirculatingsupply-small"]')?.getAttribute('opacity') === '1';
+    return document.querySelector('path[data-name="chart-Native_coin_circulating_supply-small"]')?.getAttribute('opacity') === '1';
   });
   await expect(component).toHaveScreenshot();
 });
@@ -125,7 +125,7 @@ test('incomplete day', async({ render, page }) => {
 
   const component = await render(<ChartWidget { ...modifiedProps }/>);
   await page.waitForFunction(() => {
-    return document.querySelector('path[data-name="chart-Nativecoincirculatingsupply-small"]')?.getAttribute('opacity') === '1';
+    return document.querySelector('path[data-name="chart-Native_coin_circulating_supply-small"]')?.getAttribute('opacity') === '1';
   });
   await expect(component).toHaveScreenshot();
 

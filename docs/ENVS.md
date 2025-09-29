@@ -255,6 +255,7 @@ Settings for meta tags, OG tags and SEO
 | Variable | Type | Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_VIEWS_BLOCK_HIDDEN_FIELDS | `Array<BlockFieldId>` | Array of the block fields ids that should be hidden. See below the list of the possible id values. | - | - | `'["burnt_fees","total_reward"]'` | v1.10.0+ |
+| NEXT_PUBLIC_VIEWS_BLOCK_PENDING_UPDATE_ALERT_ENABLED | `boolean` | The flag enables indication of the incomplete data for the block in the list and detailed views of the re-indexing block and its transactions. *Feature is enabled by default; pass `false` to disable it.* | - | `true` | `false` | <upcoming> |
 
 
 ##### Block fields list
@@ -455,10 +456,11 @@ Ads are enabled by default on all self-hosted instances. If you would like to di
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_AD_BANNER_PROVIDER | `slise` \| `adbutler` \| `coinzilla` \|  `hype` \| `none` | Ads provider  | - | `slise` | `coinzilla` | v1.0.x+ |
+| NEXT_PUBLIC_AD_BANNER_PROVIDER | `slise` \| `adbutler` \| `coinzilla` \| `none` | Ads provider  | - | `slise` | `coinzilla` | v1.0.x+ |
 | NEXT_PUBLIC_AD_BANNER_ADDITIONAL_PROVIDER | `adbutler` | Additional ads provider to mix with the main one | - | - | `adbutler` | v1.28.0+ |
 | NEXT_PUBLIC_AD_ADBUTLER_CONFIG_DESKTOP | `{ id: string; width: string; height: string }` | Placement config for desktop Adbutler banner | - | - | `{'id':'123456','width':'728','height':'90'}` | v1.3.0+ |
 | NEXT_PUBLIC_AD_ADBUTLER_CONFIG_MOBILE | `{ id: string; width: number; height: number }` | Placement config for mobile Adbutler banner | - | - | `{'id':'654321','width':'300','height':'100'}` | v1.3.0+ |
+| NEXT_PUBLIC_AD_BANNER_ENABLE_SPECIFY | `boolean` | Enables Specify ads in addition to the main ad banner provider | - | - | `true` | upcoming |
 
 &nbsp;
 
@@ -803,6 +805,16 @@ For blockchains that use the Celo platform. _Note_, that once the Celo mainnet b
 
 &nbsp;
 
+### MegaETH chain
+
+For blockchains that use the MegaETH platform.
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
+| --- | --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_MEGA_ETH_SOCKET_URL_METRICS | `string` | Public WebSocket endpoint for streaming statistics data, used to display information on the uptime dashboard page. | - | - | `wss://testnet-dashboard.megaeth.com/metrics` | upcoming |
+
+&nbsp;
+
 ### Ton Application Chain (TAC)
 
 For Ton Application Chains, this feature enables additional views, such as a list of cross-chain operations and a detailed page for a specific cross-chain operation, as well as extra fields on the transaction page.
@@ -976,8 +988,7 @@ This feature enables cross-chain transactions pages and views on ZetaChain insta
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST | `string` | ZetaChain cross-chain transactions service API endpoint url | - | - | `https://zetachain-cctx.services.blockscout.com` | v2.3.2+ |
 | NEXT_PUBLIC_ZETACHAIN_SERVICE_CHAINS_CONFIG_URL | `string` | URL of configuration file (`.json` format only) which contains chains info for the supported chains. | - | - | `https://example.com/zetachain_chains_config.json` | v2.3.2+ |
-| NEXT_PUBLIC_ZETACHAIN_COSMOS_TX_URL_TEMPLATE | `string` | URL template to redirect cosmos tx search. | - | - | `https://example.com/cosmos/tx/{hash}` | v2.3.2+ |
-| NEXT_PUBLIC_ZETACHAIN_COSMOS_ADDRESS_URL_TEMPLATE | `string` URL template to redirect cosmos address search. | - | - | `https://example.com/cosmos/address/{hash}` | v2.3.2+ |
+| NEXT_PUBLIC_ZETACHAIN_EXTERNAL_SEARCH_CONFIG | `Array<{ regex: string; template: string }>` | List of objects with regex, template and name fields to build redirect links for external searches. The first matching regex will be used to generate the URL from the provided hash. | - | - | `'[{"regex":"^0x[0-9a-fA-F]{64}$","template":"https://example.com/cosmos/tx/{hash}","name":"Cosmos SDK style transaction"}]'` | v2.4.0+ |
 
 
 #### ZetaChain supported cain configuration properties

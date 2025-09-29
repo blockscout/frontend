@@ -52,6 +52,16 @@ export const RESOURCES = {
   userOps: USER_OPS_API_RESOURCES,
   visualize: VISUALIZE_API_RESOURCES,
   zetachain: ZETA_CHAIN_API_RESOURCES,
+  // external API resources
+  // there is no type definition for them, use valibot to parse the response
+  external: {
+    gas_hawk_saving_potential: {
+      path: '/api/v2/gas-hawk-saving-potential',
+    },
+    safe_transaction_api: {
+      path: '',
+    },
+  },
 } satisfies Record<ApiName, Record<string, ApiResource>>;
 
 export const resourceKey = (x: ResourceName) => x;

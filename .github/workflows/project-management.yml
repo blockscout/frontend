@@ -16,6 +16,8 @@ jobs:
             field_value: Done
             issues: "[${{ github.event.issue.number }}]"
         secrets: inherit
+        permissions:
+            issues: read
 
     completed_issue:
         name: Update task for completed issue
@@ -27,6 +29,8 @@ jobs:
             field_value: Ready For Realease
             issues: "[${{ github.event.issue.number }}]"
         secrets: inherit
+        permissions:
+            issues: read
 
     pr_linked_issues:
         name: Get issues linked to PR
@@ -75,6 +79,9 @@ jobs:
                     core.info(`Found ${ issues.length } issue(s): ${ issues.join(', ') || '-' }`);
 
                     return issues;
+        permissions:
+            issues: read
+            pull-requests: read
 
     issues_in_review:
         name: Update status for issues in review
@@ -87,6 +94,8 @@ jobs:
             field_name: Status
             field_value: Review
             issues: ${{ needs.pr_linked_issues.outputs.issues }}
+        permissions:
+          issues: read
 
     copy_labels:
         name: Copy issues labels to pull request
@@ -97,3 +106,6 @@ jobs:
         with:
             pr_number: ${{ github.event.pull_request.number }}
             issues: ${{ needs.pr_linked_issues.outputs.issues }}
+        permissions:
+          issues: read
+          pull-requests: write

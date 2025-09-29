@@ -123,8 +123,7 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
   zetaChain: [
     [ 'NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST', 'http://localhost:3111' ],
     [ 'NEXT_PUBLIC_ZETACHAIN_SERVICE_CHAINS_CONFIG_URL', 'http://localhost:3000/zeta-config.json' ],
-    [ 'NEXT_PUBLIC_ZETACHAIN_COSMOS_TX_URL_TEMPLATE', 'https://example.com/cosmos/tx/{hash}' ],
-    [ 'NEXT_PUBLIC_ZETACHAIN_COSMOS_ADDRESS_URL_TEMPLATE', 'https://example.com/cosmos/address/{hash}' ],
+    [ 'NEXT_PUBLIC_ZETACHAIN_EXTERNAL_SEARCH_CONFIG', '[{"regex":"^0x[0-9a-fA-F]{64}$","template":"https://example.com/tx/{hash}","name":"Cosmos SDK style transaction"}]' ],
   ],
   navigationPromoBannerText: [
     [ 'NEXT_PUBLIC_NAVIGATION_PROMO_BANNER_CONFIG', '{"img_url": "http://localhost:3000/image.svg", "text": "Try the DUCK!", "bg_color": {"light": "rgb(150, 211, 255)", "dark": "rgb(68, 51, 122)"}, "text_color": {"light": "rgb(69, 69, 69)", "dark": "rgb(233, 216, 253)"}, "link_url": "https://example.com"}' ],

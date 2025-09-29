@@ -2,13 +2,13 @@ import { castArray } from 'es-toolkit/compat';
 import React from 'react';
 
 import type { AdvancedFilterAge } from 'types/api/advancedFilter';
-import type { TokenType } from 'types/api/token';
-import type { ZetaChainCCTXFilterParams } from 'types/client/zetaChain';
+import type { TokenInfo } from 'types/api/token';
+import { ZETA_CHAIN_CCTX_COIN_TYPE_FILTER, type ZetaChainCCTXFilterParams } from 'types/client/zetaChain';
 
 import TableColumnFilterWrapper from 'ui/shared/filters/TableColumnFilterWrapper';
 
 import ZetaChainAgeFilter from './ZetaChainAgeFilter';
-import ZetaChainAssetFilter from './ZetaChainAssetFilter';
+import ZetaChainAssetFilter, { ZETA_NATIVE_TOKEN } from './ZetaChainAssetFilter';
 import ZetaChainReceiverFilter from './ZetaChainReceiverFilter';
 import ZetaChainSenderFilter from './ZetaChainSenderFilter';
 import ZetaChainStatusFilter from './ZetaChainStatusFilter';
@@ -82,23 +82,31 @@ const ZetaChainFilterByColumn = ({ column, filters, columnName, handleFilterChan
       );
     }
     case 'asset': {
-      const value = filters.token_symbol ? castArray(filters.token_symbol).map(symbol => ({
-        address_hash: '',
-        symbol: symbol,
-        name: symbol,
-        decimals: '18',
-        total_supply: '0',
-        icon_url: null,
-        type: 'ERC-20' as TokenType,
-        holders_count: null,
-        exchange_rate: null,
-        circulating_market_cap: null,
-      })) : [];
+      let value: TokenInfo<'ERC-20'> | null = null;
+      if (filters.coin_type && castArray(filters.coin_type).includes(ZETA_CHAIN_CCTX_COIN_TYPE_FILTER)) {
+        value = ZETA_NATIVE_TOKEN;
+      }
+      if (filters.token_symbol?.[0]) {
+        value = {
+          address_hash: '',
+          symbol: filters.token_symbol[0],
+          name: filters.token_symbol[0],
+          decimals: '18',
+          total_supply: '0',
+          icon_url: null,
+          type: 'ERC-20' as const,
+          holders_count: null,
+          exchange_rate: null,
+          circulating_market_cap: null,
+          reputation: null,
+        };
+      }
+
       return (
         <TableColumnFilterWrapper
           columnName="Asset"
           isLoading={ isLoading }
-          selected={ Boolean(value && value.length) }
+          selected={ Boolean(value) }
           w="350px"
         >
           <ZetaChainAssetFilter { ...commonProps } value={ value }/>
