@@ -37,7 +37,7 @@ export const SUPPORTED_VERIFICATION_METHODS: Array<SmartContractVerificationMeth
 export const METHOD_LABELS: Record<SmartContractVerificationMethod, string> = {
   'flattened-code': 'Solidity (Single file)',
   'standard-input': 'Solidity (Standard JSON input)',
-  sourcify: 'Solidity or Vyper (Sourcify)',
+  sourcify: 'Sourcify (Solidity or Vyper)',
   'multi-part': 'Solidity (Multi-part files)',
   'vyper-code': 'Vyper (Contract)',
   'vyper-multi-part': 'Vyper (Multi-part files)',
