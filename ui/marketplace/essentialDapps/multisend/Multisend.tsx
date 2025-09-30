@@ -237,12 +237,13 @@ const Container = ({ children }: { children: React.ReactNode }) => (
           },
           '& [class*="_modalHeader_"]': {
             minHeight: '40px',
-            padding: 0,
+            height: '40px !important',
+            padding: '0 !important',
             marginBottom: '8px',
             '& [class*="_modalTitle_"]': {
               fontFamily: 'heading',
-              fontWeight: 'medium',
-              fontSize: '24px',
+              fontWeight: 'medium !important',
+              fontSize: '24px !important',
             },
           },
           '& [class*="_modalHeader_"] + div': {
@@ -407,10 +408,63 @@ const Container = ({ children }: { children: React.ReactNode }) => (
           gap: '12px',
           flexWrap: 'wrap',
         },
+        '& [class*="TokenSelect-module__chainsList_"]': {
+          gap: 0,
+          marginTop: '24px',
+          '& > div': {
+            display: 'flex',
+            padding: '8px',
+            margin: '0 -8px',
+            borderRadius: 'base',
+            cursor: 'pointer',
+            '&:hover': {
+              backgroundColor: 'selected.control.bg',
+            },
+            '& > [class*="_chainRow_"]': {
+              flex: 1,
+              '&:hover': {
+                color: 'inherit',
+              },
+            },
+            '& > svg': {
+              width: '18px',
+            },
+          },
+        },
+        '& [class*="TokenSelect-module__stickySection_"]': {
+          top: '10px',
+          '& > div:last-child': {
+            gap: '8px !important',
+          },
+        },
+        '& [class*="TokenSelect-module__searchInput_"]': {
+          marginTop: '8px',
+        },
+        '& [class*="TokenSelect-module__tokensList_"]': {
+          gap: 0,
+          '& svg > path:first-child': {
+            stroke: 'text.primary',
+          },
+        },
+        '& [class*="TokenSelect-module__tokenRow_"]': {
+          padding: '8px',
+          margin: '0 -8px',
+          borderRadius: 'base',
+          '&:hover': {
+            backgroundColor: 'selected.control.bg',
+          },
+          '& [class*="_tokenIcon_"]': {
+            width: '40px',
+            height: '40px',
+          },
+        },
         '& > .multisenderMantineProvider': {
           '--mantine-color-text': 'text.primary',
           '--mantine-color-red-light': 'colors.alert.bg.error',
           '--mantine-color-blue-light': 'colors.alert.bg.info',
+          '--mantine-color-blue-light-color': 'colors.text.secondary',
+          '--mantine-color-blue-text': 'colors.hover',
+          '--mantine-color-blue-outline': 'colors.hover',
           '& > div:nth-child(1)': {
             padding: '0 !important',
             gap: 0,
