@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React from 'react';
 
 import type { FlashblockItem } from 'types/client/flashblocks';
@@ -16,6 +17,7 @@ type Status = 'initial' | 'connected' | 'disconnected' | 'error';
 export default function useFlashblocksSocketData() {
   const websocketRef = React.useRef<WebSocket | null>(null);
   const isPausedRef = React.useRef(false);
+  const isInitialConnect = React.useRef(true);
 
   const [ items, setItems ] = React.useState<Array<FlashblockItem>>([]);
   const [ itemsNum, setItemsNum ] = React.useState(0);
@@ -25,7 +27,22 @@ export default function useFlashblocksSocketData() {
   const [ status, setStatus ] = React.useState<Status>('initial');
 
   const connect = React.useCallback(() => {
+    if (isInitialConnect.current) {
+      isInitialConnect.current = false;
+
+      // skip first mount in dev mode
+      if (config.app.isDev) {
+        return;
+      }
+    }
+
     if (!flashblocksFeature.isEnabled) {
+      return;
+    }
+
+    if (window.document.hidden) {
+      console.log('Tab has lost focus. Socket re-connect is disabled.');
+      setStatus('disconnected');
       return;
     }
 
@@ -48,13 +65,21 @@ export default function useFlashblocksSocketData() {
     };
     websocketRef.current.onopen = () => {
       setStatus('connected');
-      setInitialTs(Date.now());
+      setInitialTs((prev) => prev ?? Date.now());
+      console.log('Connected to the socket server.');
     };
-    websocketRef.current.onerror = () => {
+    websocketRef.current.onerror = (error) => {
       setStatus('error');
+      console.error('Error connecting to socket', error);
     };
-    websocketRef.current.onclose = () => {
-      setStatus('disconnected');
+    websocketRef.current.onclose = (event) => {
+      if (event.code !== 4000) {
+        console.log('Received close event from the socket server. Re-connecting...');
+        connect();
+      } else {
+        console.log('Received close event. Disconnecting...');
+        setStatus('disconnected');
+      }
     };
   }, []);
 
@@ -71,7 +96,7 @@ export default function useFlashblocksSocketData() {
   React.useEffect(() => {
     connect();
     return () => {
-      websocketRef.current?.close();
+      websocketRef.current?.close(4000, 'Component unmounted');
     };
   }, [ connect ]);
 
