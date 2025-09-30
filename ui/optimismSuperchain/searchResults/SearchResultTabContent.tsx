@@ -13,7 +13,7 @@ const EMPTY_SEARCH_NAME_MAP: Record<QueryType, string> = {
   blockNumbers: 'block numbers',
   blocks: 'blocks',
   transactions: 'transactions',
-  nfts: 'nfts',
+  nfts: 'NFTs',
 };
 
 interface Props {

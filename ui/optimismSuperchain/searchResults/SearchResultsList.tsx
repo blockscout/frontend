@@ -1,10 +1,12 @@
-import { Flex } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import React from 'react';
+import { useInView } from 'react-intersection-observer';
 
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 
 import multichainConfig from 'configs/multichain';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import ContentLoader from 'ui/shared/ContentLoader';
 
 import SearchResultItemAddress from './items/SearchResultItemAddress';
 import SearchResultItemBlock from './items/SearchResultItemBlock';
@@ -20,13 +22,21 @@ interface Props<T extends QueryType> {
 }
 
 const SearchResultsList = <T extends QueryType>({ queryType, query, maxItems = Infinity }: Props<T>) => {
-
   const config = multichainConfig();
   const isMobile = useIsMobile();
+  const { ref: cutRef } = useInView({
+    triggerOnce: false,
+    skip: maxItems !== Infinity || query.isFetchingNextPage || !query.hasNextPage,
+    onChange: (inView) => {
+      if (inView) {
+        query.fetchNextPage();
+      }
+    },
+  });
 
   return (
     <Flex flexDir="column" textStyle="sm">
-      { query.data?.pages?.map((page, index) => (
+      { query.data?.pages?.slice(0, maxItems !== Infinity ? 1 : Infinity).map((page, index) => (
         <React.Fragment key={ index }>
           { page.items.slice(0, maxItems).map((item) => {
 
@@ -73,6 +83,10 @@ const SearchResultsList = <T extends QueryType>({ queryType, query, maxItems = I
           }) }
         </React.Fragment>
       )) }
+
+      { query.isFetching && <ContentLoader maxW="240px" mt={ 6 }/> }
+
+      <Box h="0" w="100px" ref={ cutRef }/>
     </Flex>
   );
 };

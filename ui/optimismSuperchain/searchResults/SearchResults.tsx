@@ -59,7 +59,7 @@ const SearchResults = () => {
     const isOverflow = Object.values(queries).some((query) => query.data?.pages?.some((page) => page.next_page_params));
 
     const num = Object.values(queries).reduce((acc, query) => {
-      return acc + (query.data?.pages?.reduce((acc, page) => acc + page.items.length, 0) ?? 0);
+      return acc + (query.data?.pages[0]?.items.length ?? 0);
     }, 0);
 
     return { num, isOverflow };
