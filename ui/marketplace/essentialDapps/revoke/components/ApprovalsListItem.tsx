@@ -40,7 +40,7 @@ export default function ApprovalsListItem({
       pb={ 4 }
       mb={ 4 }
       borderBottom="1px solid"
-      borderColor="divider"
+      borderColor="border.divider"
     >
       <Flex>
         <Flex flex="1">

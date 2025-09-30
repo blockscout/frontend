@@ -65,7 +65,7 @@ export default function ApprovalsTable({
   return (
     <>
       <TableRoot>
-        <TableHeaderSticky>
+        <TableHeaderSticky top={ 136 }>
           <TableRow>
             <TableColumnHeader w="40%">Token</TableColumnHeader>
             <TableColumnHeader w="170px">Approved spender</TableColumnHeader>

@@ -58,6 +58,8 @@ export default function ChainSelect({ selectedChainId, changeChain }: Props) {
           loadingText="Network"
           px={ 2 }
           bgColor={{ _light: 'white', _dark: 'transparent' }}
+          flex={ 1 }
+          justifyContent="flex-start"
         >
           <Image src={ selectedChain?.logoUrl } alt={ selectedChain?.name } boxSize={ 5 } mr={ 1 }/>
           <Text>{ selectedChain?.name }</Text>
@@ -67,6 +69,7 @@ export default function ChainSelect({ selectedChainId, changeChain }: Props) {
             transitionDuration="faster"
             boxSize={ 5 }
             color="text.secondary"
+            ml="auto"
           />
         </Button>
       </PopoverTrigger>

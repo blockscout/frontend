@@ -88,10 +88,10 @@ const Revoke = () => {
     //     return;
     //   }
     // }
-    setSearchAddress(address.toLowerCase());
+    setSearchAddress(address);
   }, []);
 
-  const handleExampleClick = useCallback(
+  const handleAddressClick = useCallback(
     (address: string) => () => {
       handleSearch(address);
     },
@@ -106,33 +106,20 @@ const Revoke = () => {
 
   let content = <StartScreen/>;
 
-  const walletButtonAndChainSelect = (
-    <>
-      { !connectedAddress && (
-        <Button
-          size="sm"
-          variant="outline"
-          onClick={ web3Wallet.connect }
-          loading={ web3Wallet.isOpen }
-          loadingText="Connect wallet"
-        >
-          Connect wallet
-        </Button>
-      ) }
-      <ChainSelect
-        selectedChainId={ selectedChainId }
-        changeChain={ handleChainChange }
-      />
-    </>
-  );
-
   if (searchAddress && selectedChainId) {
     content = isValidAddress ? (
       <Flex flexDir="column" w="full">
-        <Flex hideFrom="lg" justifyContent="flex-end" gap={ 2 } mb={ 3 }>
-          { walletButtonAndChainSelect }
-        </Flex>
-        <Flex flexDir={{ base: 'column', lg: 'row' }} gap={ 2 } mb={ 6 }>
+        <Flex
+          flexDir={{ base: 'column', lg: 'row' }}
+          gap={ 2 }
+          mt={ -2 }
+          pt={ 2 }
+          pb={ 6 }
+          position={ !isMobile && approvalsQuery.data?.length ? 'sticky' : 'unset' }
+          top={ 0 }
+          zIndex="1"
+          bg={{ _light: 'white', _dark: 'black' }}
+        >
           <Flex
             flexDir="column"
             alignItems="flex-start"
@@ -154,7 +141,7 @@ const Revoke = () => {
                 <AddressEntity
                   address={{ hash: searchAddress }}
                   truncation="constant"
-                  textStyle={{ base: 'heading.xs', lg: 'heading.md' }}
+                  textStyle={{ base: 'heading.sm', lg: 'heading.md' }}
                   fontWeight="500"
                   variant={ isMobile ? undefined : 'heading' }
                   noLink
@@ -163,15 +150,8 @@ const Revoke = () => {
                   { isAddressMatch ? 'Connected' : 'Not connected' }
                 </Badge>
               </Flex>
-              <Flex hideBelow="lg" gap={ 2 }>
-                { walletButtonAndChainSelect }
-              </Flex>
             </Flex>
-            <Flex
-              flexDir={{ base: 'column', md: 'row' }}
-              gap={ 3 }
-              alignItems={{ base: 'flex-start', md: 'center' }}
-            >
+            <Flex gap={ 3 } alignItems="center" flexWrap="wrap">
               <Skeleton
                 loading={ coinBalanceQuery.isPlaceholderData }
                 as={ Flex }
@@ -285,39 +265,65 @@ const Revoke = () => {
     <Flex flexDir="column" w="full" gap={{ base: 6, lg: 12 }}>
       <Flex flexDir="column" w="full" gap={ 3 }>
         <SearchInput onSubmit={ handleSearch }/>
-        <Flex
-          gap={ 3 }
-          alignItems="center"
-          h="32px"
-          overflowX="auto"
-          css={{
-            '-ms-overflow-style': 'none',
-            scrollbarWidth: 'none',
-            '&::-webkit-scrollbar': {
-              display: 'none',
-            },
-          }}
-        >
-          <Text textStyle="sm" fontWeight="500" color="text.secondary">
-            Examples
-          </Text>
-          { [
-            '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045',
-            '0xFe89cc7aBB2C4183683ab71653C4cdc9B02D44b7',
-            '0xf6B6F07862A02C85628B3A9688beae07fEA9C863',
-          ].slice(0, isMobile ? 2 : undefined).map((address) => (
-            <Box key={ address } onClick={ handleExampleClick(address) } cursor="pointer">
-              <AddressEntity
-                address={{ hash: address }}
-                truncation="constant"
-                noTooltip
-                noLink
-                noCopy
-                textStyle="sm"
-                fontWeight="600"
-              />
-            </Box>
-          )) }
+        <Flex flexDir={{ base: 'column', md: 'row' }} gap={ 3 } justifyContent="space-between">
+          <Flex
+            gap={ 3 }
+            alignItems="center"
+            h="32px"
+            overflowX="auto"
+            css={{
+              '-ms-overflow-style': 'none',
+              scrollbarWidth: 'none',
+              '&::-webkit-scrollbar': {
+                display: 'none',
+              },
+            }}
+          >
+            <Text textStyle="sm" fontWeight="500" color="text.secondary">
+              Examples
+            </Text>
+            { [
+              '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045',
+              '0xFe89cc7aBB2C4183683ab71653C4cdc9B02D44b7',
+              '0xf6B6F07862A02C85628B3A9688beae07fEA9C863',
+            ].slice(0, isMobile ? 2 : undefined).map((address) => (
+              <Box key={ address } onClick={ handleAddressClick(address) } cursor="pointer">
+                <AddressEntity
+                  address={{ hash: address }}
+                  truncation="constant"
+                  noTooltip
+                  noLink
+                  noCopy
+                  textStyle="sm"
+                  fontWeight="600"
+                />
+              </Box>
+            )) }
+          </Flex>
+          <Flex gap={ 2 } w={{ base: 'full', md: 'auto' }}>
+            <Button
+              size="sm"
+              variant={ connectedAddress ? 'header' : 'outline' }
+              selected={ Boolean(connectedAddress) }
+              onClick={ connectedAddress ? handleAddressClick(connectedAddress) : web3Wallet.connect }
+              loading={ !connectedAddress && web3Wallet.isOpen }
+              loadingText="Connect wallet"
+            >
+              { connectedAddress ? (
+                <AddressEntity
+                  address={{ hash: connectedAddress }}
+                  truncation="constant"
+                  noTooltip
+                  noLink
+                  noCopy
+                />
+              ) : 'Connect wallet' }
+            </Button>
+            <ChainSelect
+              selectedChainId={ selectedChainId }
+              changeChain={ handleChainChange }
+            />
+          </Flex>
         </Flex>
       </Flex>
       { content }
