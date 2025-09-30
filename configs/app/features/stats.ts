@@ -1,14 +1,14 @@
-import type { Feature } from './types';
+import type { Feature } from "./types";
 
-import apis from '../apis';
+import apis from "../apis";
 
-const title = 'Blockchain statistics';
+const title = "Blockchain statistics";
 
 const config: Feature<{}> = (() => {
   if (apis.stats) {
     return Object.freeze({
       title,
-      isEnabled: true,
+      isEnabled: false,
     });
   }
 

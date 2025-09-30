@@ -39,8 +39,8 @@ const Home = () => {
           mt={3}
           _empty={{ mt: 0 }}
         >
-          <Stats />
-          <ChainIndicators />
+          {/* <Stats /> */}
+          {/* <ChainIndicators /> */}
           <Box ml={{ lg: "auto" }}>
             <SimpleLogin />
           </Box>

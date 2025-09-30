@@ -1,45 +1,57 @@
-import { Flex, Text } from '@chakra-ui/react';
-import React from 'react';
+import { Flex, Text } from "@chakra-ui/react";
+import React from "react";
 
-import type { TChainIndicator } from './types';
-import type { ChainIndicatorId } from 'types/homepage';
+import type { TChainIndicator } from "./types";
+import type { ChainIndicatorId } from "types/homepage";
 
-import config from 'configs/app';
-import useApiQuery from 'lib/api/useApiQuery';
-import { HOMEPAGE_STATS, HOMEPAGE_STATS_MICROSERVICE } from 'stubs/stats';
-import { Skeleton } from 'toolkit/chakra/skeleton';
-import { Hint } from 'toolkit/components/Hint/Hint';
-import IconSvg from 'ui/shared/IconSvg';
+import config from "configs/app";
+import useApiQuery from "lib/api/useApiQuery";
+import { HOMEPAGE_STATS, HOMEPAGE_STATS_MICROSERVICE } from "stubs/stats";
+import { Skeleton } from "toolkit/chakra/skeleton";
+import { Hint } from "toolkit/components/Hint/Hint";
+import IconSvg from "ui/shared/IconSvg";
 
-import ChainIndicatorChartContainer from './ChainIndicatorChartContainer';
-import ChainIndicatorItem from './ChainIndicatorItem';
-import useChartDataQuery from './useChartDataQuery';
-import getIndicatorValues from './utils/getIndicatorValues';
-import INDICATORS from './utils/indicators';
+import ChainIndicatorChartContainer from "./ChainIndicatorChartContainer";
+import ChainIndicatorItem from "./ChainIndicatorItem";
+import useChartDataQuery from "./useChartDataQuery";
+import getIndicatorValues from "./utils/getIndicatorValues";
+import INDICATORS from "./utils/indicators";
 
 const isStatsFeatureEnabled = config.features.stats.isEnabled;
 
-const indicators = INDICATORS
-  .filter(({ id }) => config.UI.homepage.charts.includes(id))
-  .sort((a, b) => {
-    if (config.UI.homepage.charts.indexOf(a.id) > config.UI.homepage.charts.indexOf(b.id)) {
-      return 1;
-    }
+const indicators = INDICATORS.filter(({ id }) =>
+  config.UI.homepage.charts.includes(id)
+).sort((a, b) => {
+  if (
+    config.UI.homepage.charts.indexOf(a.id) >
+    config.UI.homepage.charts.indexOf(b.id)
+  ) {
+    return 1;
+  }
 
-    if (config.UI.homepage.charts.indexOf(a.id) < config.UI.homepage.charts.indexOf(b.id)) {
-      return -1;
-    }
+  if (
+    config.UI.homepage.charts.indexOf(a.id) <
+    config.UI.homepage.charts.indexOf(b.id)
+  ) {
+    return -1;
+  }
 
-    return 0;
-  });
+  return 0;
+});
 
 const ChainIndicators = () => {
-  const [ selectedIndicator, selectIndicator ] = React.useState(indicators[0]?.id);
-  const selectedIndicatorData = indicators.find(({ id }) => id === selectedIndicator);
+  const [selectedIndicator, selectIndicator] = React.useState(
+    indicators[0]?.id
+  );
+  const selectedIndicatorData = indicators.find(
+    ({ id }) => id === selectedIndicator
+  );
 
-  const queryResult = useChartDataQuery(selectedIndicatorData?.id as ChainIndicatorId);
+  const queryResult = useChartDataQuery(
+    selectedIndicatorData?.id as ChainIndicatorId
+  );
 
-  const statsMicroserviceQueryResult = useApiQuery('stats:pages_main', {
+  const statsMicroserviceQueryResult = useApiQuery("stats:pages_main", {
     queryOptions: {
       refetchOnMount: false,
       enabled: isStatsFeatureEnabled,
@@ -47,7 +59,7 @@ const ChainIndicators = () => {
     },
   });
 
-  const statsApiQueryResult = useApiQuery('general:stats', {
+  const statsApiQueryResult = useApiQuery("general:stats", {
     queryOptions: {
       refetchOnMount: false,
       placeholderData: HOMEPAGE_STATS,
@@ -58,16 +70,30 @@ const ChainIndicators = () => {
     return null;
   }
 
-  const isPlaceholderData = (isStatsFeatureEnabled && statsMicroserviceQueryResult.isPlaceholderData) || statsApiQueryResult.isPlaceholderData;
-  const hasData = Boolean(statsApiQueryResult?.data || statsMicroserviceQueryResult?.data);
+  const isPlaceholderData =
+    (isStatsFeatureEnabled && statsMicroserviceQueryResult.isPlaceholderData) ||
+    statsApiQueryResult.isPlaceholderData;
+  const hasData = Boolean(
+    statsApiQueryResult?.data || statsMicroserviceQueryResult?.data
+  );
 
   const { value: indicatorValue, valueDiff: indicatorValueDiff } =
-    getIndicatorValues(selectedIndicatorData as TChainIndicator, statsMicroserviceQueryResult?.data, statsApiQueryResult?.data);
+    getIndicatorValues(
+      selectedIndicatorData as TChainIndicator,
+      statsMicroserviceQueryResult?.data,
+      statsApiQueryResult?.data
+    );
 
   const title = (() => {
     let title: string | undefined;
-    if (isStatsFeatureEnabled && selectedIndicatorData?.titleMicroservice && statsMicroserviceQueryResult?.data) {
-      title = selectedIndicatorData.titleMicroservice(statsMicroserviceQueryResult.data);
+    if (
+      isStatsFeatureEnabled &&
+      selectedIndicatorData?.titleMicroservice &&
+      statsMicroserviceQueryResult?.data
+    ) {
+      title = selectedIndicatorData.titleMicroservice(
+        statsMicroserviceQueryResult.data
+      );
     }
 
     return title || selectedIndicatorData?.title;
@@ -75,8 +101,14 @@ const ChainIndicators = () => {
 
   const hint = (() => {
     let hint: string | undefined;
-    if (isStatsFeatureEnabled && selectedIndicatorData?.hintMicroservice && statsMicroserviceQueryResult?.data) {
-      hint = selectedIndicatorData.hintMicroservice(statsMicroserviceQueryResult.data);
+    if (
+      isStatsFeatureEnabled &&
+      selectedIndicatorData?.hintMicroservice &&
+      statsMicroserviceQueryResult?.data
+    ) {
+      hint = selectedIndicatorData.hintMicroservice(
+        statsMicroserviceQueryResult.data
+      );
     }
 
     return hint || selectedIndicatorData?.hint;
@@ -84,7 +116,7 @@ const ChainIndicators = () => {
 
   const valueTitle = (() => {
     if (isPlaceholderData) {
-      return <Skeleton loading h="36px" w="215px"/>;
+      return <Skeleton loading h="36px" w="215px" />;
     }
 
     if (!hasData) {
@@ -92,8 +124,8 @@ const ChainIndicators = () => {
     }
 
     return (
-      <Text fontWeight={ 700 } fontSize="30px" lineHeight="36px">
-        { indicatorValue }
+      <Text fontWeight={700} fontSize="30px" lineHeight="36px">
+        {indicatorValue}
       </Text>
     );
   })();
@@ -103,12 +135,25 @@ const ChainIndicators = () => {
       return null;
     }
 
-    const diffColor = indicatorValueDiff >= 0 ? 'green.500' : 'red.500';
+    const diffColor = indicatorValueDiff >= 0 ? "green.500" : "red.500";
 
     return (
-      <Skeleton loading={ statsApiQueryResult.isPlaceholderData } display="flex" alignItems="center" color={ diffColor } ml={ 2 }>
-        <IconSvg name="arrows/up-head" boxSize={ 5 } mr={ 1 } transform={ indicatorValueDiff < 0 ? 'rotate(180deg)' : 'rotate(0)' }/>
-        <Text color={ diffColor } fontWeight={ 600 }>{ indicatorValueDiff }%</Text>
+      <Skeleton
+        loading={statsApiQueryResult.isPlaceholderData}
+        display="flex"
+        alignItems="center"
+        color={diffColor}
+        ml={2}
+      >
+        <IconSvg
+          name="arrows/up-head"
+          boxSize={5}
+          mr={1}
+          transform={indicatorValueDiff < 0 ? "rotate(180deg)" : "rotate(0)"}
+        />
+        <Text color={diffColor} fontWeight={600}>
+          {indicatorValueDiff}%
+        </Text>
       </Skeleton>
     );
   })();
@@ -116,29 +161,42 @@ const ChainIndicators = () => {
   return (
     <Flex
       px={{ base: 3, lg: 4 }}
-      py={ 3 }
+      py={3}
       borderRadius="base"
-      bgColor={{ _light: 'theme.stats.bg._light', _dark: 'theme.stats.bg._dark' }}
+      bgColor={{
+        _light: "theme.stats.bg._light",
+        _dark: "theme.stats.bg._dark",
+      }}
       columnGap={{ base: 3, lg: 4 }}
-      rowGap={ 0 }
+      rowGap={0}
       flexBasis="50%"
-      flexGrow={ 1 }
+      flexGrow={1}
       alignItems="stretch"
     >
-      <Flex flexGrow={ 1 } flexDir="column">
-        <Skeleton loading={ isPlaceholderData } display="flex" alignItems="center" w="fit-content" columnGap={ 1 }>
-          <Text fontWeight={ 500 }>{ title }</Text>
-          { hint && <Hint label={ hint }/> }
+      <Flex flexGrow={1} flexDir="column">
+        <Skeleton
+          loading={isPlaceholderData}
+          display="flex"
+          alignItems="center"
+          w="fit-content"
+          columnGap={1}
+        >
+          <Text fontWeight={500}>{title}</Text>
+          {hint && <Hint label={hint} />}
         </Skeleton>
-        <Flex mb={{ base: 0, lg: 2 }} mt={ 1 } alignItems="end">
-          { valueTitle }
-          { valueDiff }
+        <Flex mb={{ base: 0, lg: 2 }} mt={1} alignItems="end">
+          {valueTitle}
+          {valueDiff}
         </Flex>
-        <Flex h={{ base: '80px', lg: '110px' }} alignItems="flex-start" flexGrow={ 1 }>
-          <ChainIndicatorChartContainer { ...queryResult }/>
+        <Flex
+          h={{ base: "80px", lg: "110px" }}
+          alignItems="flex-start"
+          flexGrow={1}
+        >
+          <ChainIndicatorChartContainer {...queryResult} />
         </Flex>
       </Flex>
-      { indicators.length > 1 && (
+      {/* { indicators.length > 1 && (
         <Flex
           flexShrink={ 0 }
           flexDir="column"
@@ -161,7 +219,7 @@ const ChainIndicators = () => {
             />
           )) }
         </Flex>
-      ) }
+      ) } */}
     </Flex>
   );
 };
