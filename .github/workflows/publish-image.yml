@@ -111,8 +111,6 @@ jobs:
                     tags: ${{ steps.meta.outputs.tags }}
                     platforms: ${{ inputs.platforms }}
                     labels: ${{ steps.meta.outputs.labels }}
-                    secrets: |
-                        MULTISENDER_NPM_TOKEN=${{ secrets.MULTISENDER_NPM_TOKEN }}
                     build-args: |
                         GIT_COMMIT_SHA=${{ env.SHORT_SHA }}
                         GIT_TAG=${{ github.ref_type == 'tag' && github.ref_name || '' }}
