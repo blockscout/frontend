@@ -9,8 +9,8 @@ import type {
   Erc404TotalPayload,
 } from 'types/api/tokenTransfer';
 
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
-import Skeleton from 'ui/shared/chakra/Skeleton';
 
 import TokenTransferSnippetFiat from './TokenTransferSnippetFiat';
 import TokenTransferSnippetNft from './TokenTransferSnippetNft';
@@ -26,7 +26,7 @@ const TokenTransferSnippet = ({ data, isLoading, noAddressIcons = true }: Props)
   const content = (() => {
 
     if (isLoading) {
-      return <Skeleton w="250px" h={ 6 }/>;
+      return <Skeleton loading w="250px" h={ 6 }/>;
     }
 
     switch (data.token?.type) {
@@ -44,6 +44,7 @@ const TokenTransferSnippet = ({ data, isLoading, noAddressIcons = true }: Props)
           <TokenTransferSnippetNft
             token={ data.token }
             tokenId={ total.token_id }
+            instance={ total.token_instance }
             value="1"
           />
         );
@@ -56,6 +57,7 @@ const TokenTransferSnippet = ({ data, isLoading, noAddressIcons = true }: Props)
             key={ total.token_id }
             token={ data.token }
             tokenId={ total.token_id }
+            instance={ total.token_instance }
             value={ total.value }
           />
         );
@@ -94,17 +96,15 @@ const TokenTransferSnippet = ({ data, isLoading, noAddressIcons = true }: Props)
       alignItems="flex-start"
       flexWrap="wrap"
       columnGap={ 2 }
-      rowGap={ 3 }
+      rowGap={ 0 }
       flexDir="row"
       w="100%"
-      fontWeight={ 500 }
     >
       <AddressFromTo
         from={ data.from }
         to={ data.to }
         truncation="constant"
         noIcon={ noAddressIcons }
-        fontWeight="500"
         isLoading={ isLoading }
       />
       { content }

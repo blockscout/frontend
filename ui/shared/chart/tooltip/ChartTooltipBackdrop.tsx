@@ -12,7 +12,7 @@ const ChartTooltipBackdrop = () => {
       className="ChartTooltip__backdrop"
       rx={ 12 }
       ry={ 12 }
-      fill={ bgColor }
+      fill={ bgColor[0] }
     />
   );
 };
@@ -24,7 +24,7 @@ interface UseRenderBackdropParams {
   transitionDuration: number | null;
 }
 
-export function useRenderBackdrop(ref: React.RefObject<SVGGElement>, { seriesNum, transitionDuration }: UseRenderBackdropParams) {
+export function useRenderBackdrop(ref: React.RefObject<SVGGElement | null>, { seriesNum, transitionDuration }: UseRenderBackdropParams) {
   return React.useCallback((width: number, isIncompleteData: boolean) => {
     const height = calculateContainerHeight(seriesNum, isIncompleteData);
 

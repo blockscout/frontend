@@ -6,6 +6,7 @@ function generateCspPolicy() {
     descriptors.app(),
     descriptors.ad(),
     descriptors.cloudFlare(),
+    descriptors.flashblocks(),
     descriptors.gasHawk(),
     descriptors.googleAnalytics(),
     descriptors.googleFonts(),
@@ -15,10 +16,13 @@ function generateCspPolicy() {
     descriptors.marketplace(),
     descriptors.mixpanel(),
     descriptors.monaco(),
+    descriptors.multichain(),
     descriptors.rollbar(),
+    descriptors.rollup(),
     descriptors.safe(),
     descriptors.usernameApi(),
     descriptors.walletConnect(),
+    descriptors.zetachain(),
   );
 
   return makePolicyString(policyDescriptor);

@@ -6,7 +6,7 @@ import type { Address } from 'types/api/address';
 import config from 'configs/app';
 import getCurrencyValue from 'lib/getCurrencyValue';
 import * as mixpanel from 'lib/mixpanel/index';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import TextSeparator from 'ui/shared/TextSeparator';
 
 import { getTokensTotalInfo } from '../utils/tokenUtils';
@@ -49,8 +49,8 @@ const AddressNetWorth = ({ addressData, isLoading, addressHash }: Props) => {
 
     multichainItems = (
       <>
-        <TextSeparator mx={ 0 } color="gray.500"/>
-        <Flex alignItems="center" gap={ 2 }>
+        <TextSeparator/>
+        <Flex alignItems="center" columnGap={ 2 }>
           <Text>Multichain</Text>
           { providers.map((item) => (
             <AddressMultichainButton
@@ -68,7 +68,7 @@ const AddressNetWorth = ({ addressData, isLoading, addressHash }: Props) => {
   }
 
   return (
-    <Skeleton display="flex" alignItems="center" flexWrap="wrap" isLoaded={ !isLoading && !(addressData?.has_tokens && isPending) } gap={ 2 }>
+    <Skeleton display="flex" alignItems="center" flexWrap="wrap" loading={ isLoading && !(addressData?.has_tokens && isPending) }>
       <Text>
         { (isError || !addressData?.exchange_rate) ? 'N/A' : `${ prefix }$${ totalUsd.toFormat(2) }` }
       </Text>

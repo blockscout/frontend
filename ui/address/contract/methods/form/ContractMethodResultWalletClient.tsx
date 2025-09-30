@@ -1,4 +1,4 @@
-import { chakra, Spinner, Box, Alert } from '@chakra-ui/react';
+import { chakra, Spinner, Box } from '@chakra-ui/react';
 import React from 'react';
 import type { UseWaitForTransactionReceiptReturnType } from 'wagmi';
 import { useWaitForTransactionReceipt } from 'wagmi';
@@ -7,7 +7,8 @@ import type { FormSubmitResultWalletClient } from '../types';
 
 import { route } from 'nextjs-routes';
 
-import LinkInternal from 'ui/shared/links/LinkInternal';
+import { Alert } from 'toolkit/chakra/alert';
+import { Link } from 'toolkit/chakra/link';
 
 interface Props {
   data: FormSubmitResultWalletClient['data'];
@@ -45,13 +46,13 @@ export const ContractMethodResultWalletClientDumb = ({ data, onSettle, txInfo }:
   const isErrorResult = 'message' in data;
 
   const txLink = txHash ? (
-    <LinkInternal href={ route({ pathname: '/tx/[hash]', query: { hash: txHash } }) }>View transaction details</LinkInternal>
+    <Link href={ route({ pathname: '/tx/[hash]', query: { hash: txHash } }) }>View transaction details</Link>
   ) : null;
 
   const content = (() => {
     if (isErrorResult) {
       return (
-        <Alert status="error">
+        <Alert status="error" textStyle="sm">
           { data.message }
         </Alert>
       );
@@ -81,7 +82,7 @@ export const ContractMethodResultWalletClientDumb = ({ data, onSettle, txInfo }:
 
       case 'error': {
         return (
-          <Alert status="error" flexDir="column" alignItems="flex-start" rowGap={ 1 }>
+          <Alert status="error" textStyle="sm" descriptionProps={{ flexDir: 'column', alignItems: 'flex-start', rowGap: 1 }}>
             Error: { txInfo.error ? txInfo.error.message : 'Something went wrong' } { txLink }
           </Alert>
         );
@@ -91,7 +92,7 @@ export const ContractMethodResultWalletClientDumb = ({ data, onSettle, txInfo }:
 
   return (
     <Box
-      fontSize="sm"
+      textStyle="sm"
       mt={ 3 }
       alignItems="center"
       whiteSpace="pre-wrap"

@@ -1,11 +1,12 @@
-import { Box, Center, Flex, Link, Text } from '@chakra-ui/react';
+import { Box, Center, Flex, Text } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TimeChartItem } from './types';
 import type { Resolution } from '@blockscout/stats-types';
 
-import { apos } from 'lib/html-entities';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Link } from 'toolkit/chakra/link';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { apos } from 'toolkit/utils/htmlEntities';
 
 import ChartWatermarkIcon from './ChartWatermarkIcon';
 import ChartWidgetGraph from './ChartWidgetGraph';
@@ -48,7 +49,7 @@ const ChartWidgetContent = ({
         py={ 4 }
       >
         <Text
-          variant="secondary"
+          color="text.secondary"
           fontSize="sm"
           textAlign="center"
         >
@@ -60,13 +61,13 @@ const ChartWidgetContent = ({
   }
 
   if (isLoading) {
-    return <Skeleton flexGrow={ 1 } w="100%"/>;
+    return <Skeleton loading flexGrow={ 1 } w="100%"/>;
   }
 
   if (!hasItems) {
     return (
       <Center flexGrow={ 1 }>
-        <Text variant="secondary" fontSize="sm">{ emptyText || 'No data' }</Text>
+        <Text color="text.secondary" fontSize="sm">{ emptyText || 'No data' }</Text>
       </Center>
     );
   }

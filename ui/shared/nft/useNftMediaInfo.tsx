@@ -1,6 +1,5 @@
-import { verifiedFetch } from '@helia/verified-fetch';
+import type { UseQueryResult } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
-import React from 'react';
 
 import type { TokenInstance } from 'types/api/token';
 
@@ -8,151 +7,169 @@ import type { StaticRoute } from 'nextjs-routes';
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
-import type { ResourceError } from 'lib/api/resources';
-import useFetch from 'lib/hooks/useFetch';
 
-import type { MediaType, SrcType } from './utils';
+import type { MediaType, Size, TransportType } from './utils';
 import { getPreliminaryMediaType } from './utils';
 
 interface Params {
   data: TokenInstance;
+  size: Size;
+  allowedTypes?: Array<MediaType>;
+  field: 'animation_url' | 'image_url';
   isEnabled: boolean;
 }
 
-interface AssetsData {
-  imageUrl: string | undefined;
-  animationUrl: string | undefined;
-}
-
-type TransportType = 'http' | 'ipfs';
-
-type ReturnType =
-{
+interface MediaInfo {
   src: string;
+  srcSet?: string;
   mediaType: MediaType;
-  srcType: SrcType;
-} |
-{
-  mediaType: undefined;
-} |
-null;
-
-export default function useNftMediaInfo({ data, isEnabled }: Params): ReturnType | null {
-
-  const assetsData = composeAssetsData(data);
-  const httpPrimaryQuery = useNftMediaTypeQuery(assetsData.http.animationUrl, isEnabled);
-  const ipfsPrimaryQuery = useFetchAssetViaIpfs(
-    assetsData.ipfs.animationUrl,
-    httpPrimaryQuery.data?.mediaType,
-    isEnabled && (httpPrimaryQuery.data === null || Boolean(httpPrimaryQuery.data?.mediaType)),
-  );
-  const httpSecondaryQuery = useNftMediaTypeQuery(assetsData.http.imageUrl, isEnabled && !httpPrimaryQuery.data && !ipfsPrimaryQuery);
-  const ipfsSecondaryQuery = useFetchAssetViaIpfs(
-    assetsData.ipfs.imageUrl,
-    httpSecondaryQuery.data?.mediaType,
-    isEnabled && (httpSecondaryQuery.data === null || Boolean(httpSecondaryQuery.data?.mediaType)),
-  );
-
-  return React.useMemo(() => {
-    return ipfsPrimaryQuery || httpPrimaryQuery.data || ipfsSecondaryQuery || httpSecondaryQuery.data || null;
-  }, [ httpPrimaryQuery.data, httpSecondaryQuery.data, ipfsPrimaryQuery, ipfsSecondaryQuery ]);
+  transport: TransportType;
 }
 
-function composeAssetsData(data: TokenInstance): Record<TransportType, AssetsData> {
-  return {
-    http: {
-      imageUrl: data.image_url || undefined,
-      animationUrl: data.animation_url || undefined,
-    },
-    ipfs: {
-      imageUrl: typeof data.metadata?.image === 'string' ? data.metadata.image : undefined,
-      animationUrl: typeof data.metadata?.animation_url === 'string' ? data.metadata.animation_url : undefined,
-    },
-  };
-}
-
-// As of now we fetch only images via IPFS because video streaming has performance issues
-// Also, we don't want to store the entire file content in the ReactQuery cache, so we don't use useQuery hook here
-function useFetchAssetViaIpfs(url: string | undefined, mediaType: MediaType | undefined, isEnabled: boolean): ReturnType | null {
-  const [ result, setResult ] = React.useState<ReturnType | null>({ mediaType: undefined });
-  const controller = React.useRef<AbortController | null>(null);
-
-  const fetchAsset = React.useCallback(async(url: string) => {
-    try {
-      controller.current = new AbortController();
-      const response = await verifiedFetch(url, { signal: controller.current.signal });
-      if (response.status === 200) {
-        const blob = await response.blob();
-        const src = URL.createObjectURL(blob);
-        setResult({ mediaType: 'image', src, srcType: 'blob' });
-        return;
-      }
-    } catch (error) {}
-    setResult(null);
-  }, []);
-
-  React.useEffect(() => {
-    if (isEnabled) {
-      if (config.UI.views.nft.verifiedFetch.isEnabled && mediaType === 'image' && url && url.includes('ipfs')) {
-        fetchAsset(url);
-      } else {
-        setResult(null);
-      }
-    } else {
-      setResult({ mediaType: undefined });
-    }
-  }, [ fetchAsset, url, mediaType, isEnabled ]);
-
-  React.useEffect(() => {
-    return () => {
-      controller.current?.abort();
-    };
-  }, []);
-
-  return result;
-}
-
-function useNftMediaTypeQuery(url: string | undefined, enabled: boolean) {
-  const fetch = useFetch();
-
-  return useQuery<ReturnType | null, ResourceError<unknown>, ReturnType | null>({
-    queryKey: [ 'nft-media-type', url ],
+export default function useNftMediaInfo({ data, size, allowedTypes, field, isEnabled }: Params): UseQueryResult<Array<MediaInfo> | null> {
+  const url = data[field];
+  const query = useQuery({
+    queryKey: [ 'nft-media-info', data.id, url, size, ...(allowedTypes ? allowedTypes : []) ],
     queryFn: async() => {
-      if (!url) {
+      const metadataField = field === 'animation_url' ? 'animation_url' : 'image';
+      const mediaType = await getMediaType(data, field);
+
+      if (!mediaType || (allowedTypes ? !allowedTypes.includes(mediaType) : false)) {
         return null;
       }
 
-      // media could be either image, gif, video or html-page
-      // so we pre-fetch the resources in order to get its content type
-      // have to do it via Node.js due to strict CSP for connect-src
-      // but in order not to abuse our server firstly we check file url extension
-      // and if it is valid we will trust it and display corresponding media component
+      const cdnData = getCdnData(data, size, mediaType);
+      const ipfsData = getIpfsData(data.metadata?.[metadataField], mediaType);
 
-      const preliminaryType = getPreliminaryMediaType(url);
-
-      if (preliminaryType) {
-        return { mediaType: preliminaryType, src: url, srcType: 'url' };
-      }
-
-      const mediaType = await (async() => {
-        try {
-          const mediaTypeResourceUrl = route({ pathname: '/node-api/media-type' as StaticRoute<'/api/media-type'>['pathname'], query: { url } });
-          const response = await fetch<{ type: MediaType | undefined }, ResourceError>(mediaTypeResourceUrl, undefined, { resource: 'media-type' });
-
-          return 'type' in response ? response.type : undefined;
-        } catch (error) {
-          return;
-        }
-      })();
-
-      if (!mediaType) {
-        return null;
-      }
-
-      return { mediaType, src: url, srcType: 'url' };
+      return [
+        cdnData,
+        ipfsData,
+        url ? { src: url, mediaType, transport: 'http' as const } : undefined,
+      ].filter(Boolean);
     },
-    enabled,
-    placeholderData: { mediaType: undefined },
-    staleTime: Infinity,
+    enabled: isEnabled,
   });
+
+  return query;
+}
+
+async function getMediaType(data: TokenInstance, field: Params['field']): Promise<MediaType | undefined> {
+  const url = data[field];
+
+  if (!url) {
+    return;
+  }
+
+  // If the media_url is the same as the url, we can use the media_type field to determine the media type.
+  if (url === data.media_url) {
+    const mediaType = castMimeTypeToMediaType(data.media_type || undefined);
+    if (mediaType) {
+      return mediaType;
+    }
+  }
+
+  // Media can be an image, video, or HTML page.
+  // We pre-fetch the resources to determine their content type.
+  // We must do this via Node.js due to strict CSP for connect-src.
+  // To avoid overloading our server, we first check the file URL extension.
+  // If it is valid, we will trust it and display the corresponding media component.
+
+  const preliminaryType = getPreliminaryMediaType(url);
+
+  if (preliminaryType) {
+    return preliminaryType;
+  }
+
+  try {
+    const mediaTypeResourceUrl = route({ pathname: '/node-api/media-type' as StaticRoute<'/api/media-type'>['pathname'], query: { url } });
+    const response = await fetch(mediaTypeResourceUrl);
+    const payload = await response.json() as { type: MediaType | undefined };
+
+    return payload.type;
+  } catch (error) {
+    return;
+  }
+}
+
+function castMimeTypeToMediaType(mimeType: string | undefined): MediaType | undefined {
+  if (!mimeType) {
+    return;
+  }
+
+  if (mimeType.startsWith('image/')) {
+    return 'image';
+  }
+
+  if (mimeType.startsWith('video/')) {
+    return 'video';
+  }
+}
+
+function getCdnData(data: TokenInstance, size: Size, mediaType: MediaType): MediaInfo | undefined {
+  // CDN is only used for images
+  if (mediaType !== 'image') {
+    return;
+  }
+
+  if (!data.thumbnails) {
+    return;
+  }
+
+  switch (size) {
+    case 'sm': {
+      return {
+        src: data.thumbnails['60x60'] || data.thumbnails['250x250'] || data.thumbnails['500x500'] || data.thumbnails['original'],
+        // the smallest thumbnail is already greater than sm size by two times
+        // so there is no need to pass srcSet
+        srcSet: undefined,
+        mediaType: 'image',
+        transport: 'http',
+      };
+    }
+    case 'md': {
+      const srcSet = data.thumbnails['250x250'] && data.thumbnails['500x500'] ? `${ data.thumbnails['500x500'] } 2x` : undefined;
+      const src = (srcSet ? data.thumbnails['250x250'] : undefined) || data.thumbnails['500x500'] || data.thumbnails.original;
+
+      return {
+        src,
+        srcSet,
+        mediaType: 'image',
+        transport: 'http',
+      };
+    }
+    default: {
+      if (data.thumbnails.original) {
+        return {
+          src: data.thumbnails.original,
+          mediaType: 'image',
+          transport: 'http',
+        };
+      }
+    }
+  }
+}
+
+function getIpfsData(url: unknown, mediaType: MediaType): MediaInfo | undefined {
+  if (!config.UI.views.nft.verifiedFetch.isEnabled) {
+    return;
+  }
+
+  // Currently we only load images via IPFS
+  if (mediaType !== 'image') {
+    return;
+  }
+
+  if (typeof url !== 'string') {
+    return;
+  }
+
+  if (!url.includes('ipfs')) {
+    return;
+  }
+
+  return {
+    src: url,
+    mediaType,
+    transport: 'ipfs',
+  };
 }

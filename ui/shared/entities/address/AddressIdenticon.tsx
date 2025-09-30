@@ -1,9 +1,10 @@
-import { Box, Image } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import dynamic from 'next/dynamic';
 import React from 'react';
 
 import config from 'configs/app';
 import * as cookies from 'lib/cookies';
+import { Image } from 'toolkit/chakra/image';
 import IdenticonGithub from 'ui/shared/IdenticonGithub';
 
 interface IconProps {
@@ -17,7 +18,7 @@ const Icon = dynamic(
     switch (type) {
       case 'github': {
 
-        return (props: IconProps) => <IdenticonGithub size={ props.size } seed={ props.hash }/>;
+        return (props: IconProps) => <IdenticonGithub iconSize={ props.size } seed={ props.hash }/>;
       }
 
       case 'blockie': {
@@ -52,7 +53,7 @@ const Icon = dynamic(
 
         return (props: IconProps) => {
           const svg = GradientAvatar(props.hash, props.size, 'circle');
-          return <div dangerouslySetInnerHTML={{ __html: svg }}/>;
+          return <Box display="flex" dangerouslySetInnerHTML={{ __html: svg }}/>;
         };
       }
 

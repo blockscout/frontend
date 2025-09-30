@@ -8,7 +8,7 @@ import type { CustomLinksGroup } from 'types/footerLinks';
 import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
 import useFetch from 'lib/hooks/useFetch';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 
 import NetworkLogo from '../networkMenu/NetworkLogo';
 import FooterLinkItem from './FooterLinkItem';
@@ -52,7 +52,7 @@ const Footer = () => {
   const containerProps: HTMLChakraProps<'div'> = {
     as: 'footer',
     borderTopWidth: '1px',
-    borderTopColor: 'solid',
+    borderTopColor: 'border.divider',
   };
 
   const contentProps: GridProps = {
@@ -82,8 +82,8 @@ const Footer = () => {
                 .slice(0, colNum)
                 .map(linkGroup => (
                   <Box key={ linkGroup.title }>
-                    <Skeleton fontWeight={ 500 } mb={ 3 } display="inline-block" isLoaded={ !isPlaceholderData }>{ linkGroup.title }</Skeleton>
-                    <VStack spacing={ 1 } alignItems="start" flexDirection={{ lg: 'row', sm: 'column', xs: 'column' }}>
+                    <Skeleton fontWeight={ 500 } mb={ 3 } display="inline-block" loading={ !isPlaceholderData }>{ linkGroup.title }</Skeleton>
+                    <VStack alignItems="start" flexDirection={{ lg: 'row', sm: 'column', xs: 'column' }} gap={ 1 }>
                       { linkGroup.links.map(link => <FooterLinkItem { ...link } key={ link.text } isLoading={ isPlaceholderData }/>) }
                     </VStack>
                   </Box>

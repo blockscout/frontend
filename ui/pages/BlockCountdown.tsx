@@ -1,20 +1,25 @@
-import { Box, Center, Flex, Heading, Image, useColorModeValue, Grid, Button } from '@chakra-ui/react';
+import { Box, Center, Flex, Grid } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import { route } from 'nextjs-routes';
+import { route } from 'nextjs/routes';
 
 import useApiQuery from 'lib/api/useApiQuery';
+import { useMultichainContext } from 'lib/contexts/multichain';
 import dayjs from 'lib/date/dayjs';
 import downloadBlob from 'lib/downloadBlob';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import { Button } from 'toolkit/chakra/button';
+import { Heading } from 'toolkit/chakra/heading';
+import { Image } from 'toolkit/chakra/image';
+import { Link } from 'toolkit/chakra/link';
 import BlockCountdownTimer from 'ui/blockCountdown/BlockCountdownTimer';
 import createGoogleCalendarLink from 'ui/blockCountdown/createGoogleCalendarLink';
 import createIcsFileBlob from 'ui/blockCountdown/createIcsFileBlob';
+import ChainIcon from 'ui/optimismSuperchain/components/ChainIcon';
 import ContentLoader from 'ui/shared/ContentLoader';
 import IconSvg from 'ui/shared/IconSvg';
-import LinkExternal from 'ui/shared/links/LinkExternal';
 import StatsWidget from 'ui/shared/stats/StatsWidget';
 import TruncatedValue from 'ui/shared/TruncatedValue';
 
@@ -25,12 +30,11 @@ type Props = {
 };
 
 const BlockCountdown = ({ hideCapybaraRunner }: Props) => {
+  const multichainContext = useMultichainContext();
   const router = useRouter();
   const height = getQueryParamString(router.query.height);
-  const iconColor = useColorModeValue('gray.300', 'gray.600');
-  const buttonBgColor = useColorModeValue('gray.100', 'gray.700');
 
-  const { data, isPending, isError, error } = useApiQuery('block_countdown', {
+  const { data, isPending, isError, error } = useApiQuery('general:block_countdown', {
     queryParams: {
       module: 'block',
       action: 'getblockcountdown',
@@ -42,13 +46,13 @@ const BlockCountdown = ({ hideCapybaraRunner }: Props) => {
     if (!data?.result?.EstimateTimeInSec) {
       return;
     }
-    const fileBlob = createIcsFileBlob({ blockHeight: height, date: dayjs().add(Number(data.result.EstimateTimeInSec), 's') });
+    const fileBlob = createIcsFileBlob({ blockHeight: height, date: dayjs().add(Number(data.result.EstimateTimeInSec), 's'), multichainContext });
     downloadBlob(fileBlob, `Block #${ height } creation event.ics`);
-  }, [ data?.result?.EstimateTimeInSec, height ]);
+  }, [ data?.result?.EstimateTimeInSec, height, multichainContext ]);
 
   const handleTimerFinish = React.useCallback(() => {
-    window.location.assign(route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: height } }));
-  }, [ height ]);
+    window.location.assign(route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: height } }, multichainContext));
+  }, [ height, multichainContext ]);
 
   React.useEffect(() => {
     if (!isError && !isPending && !data.result) {
@@ -57,7 +61,7 @@ const BlockCountdown = ({ hideCapybaraRunner }: Props) => {
   }, [ data?.result, handleTimerFinish, isError, isPending ]);
 
   if (isError) {
-    throwOnResourceLoadError({ isError, error, resource: 'block_countdown' });
+    throwOnResourceLoadError({ isError, error, resource: 'general:block_countdown' });
   }
 
   if (isPending || !data?.result) {
@@ -70,43 +74,61 @@ const BlockCountdown = ({ hideCapybaraRunner }: Props) => {
         <Flex columnGap={ 8 } alignItems="flex-start" justifyContent={{ base: 'space-between', lg: undefined }} w="100%">
           <Box maxW={{ base: 'calc(100% - 65px - 32px)', lg: 'calc(100% - 125px - 32px)' }}>
             <Heading
-              fontSize={{ base: '18px', lg: '32px' }}
-              lineHeight={{ base: '24px', lg: '40px' }}
-              h={{ base: '24px', lg: '40px' }}
+              level="1"
             >
               <TruncatedValue value={ `Block #${ height }` } w="100%"/>
             </Heading>
-            <Box mt={ 2 } color="text_secondary">
+            <Box mt={ 2 } color="text.secondary">
               <Box fontWeight={ 600 }>Estimated target date</Box>
               <Box>{ dayjs().add(Number(data.result.EstimateTimeInSec), 's').format('llll') }</Box>
             </Box>
             <Flex columnGap={ 2 } mt={ 3 }>
-              <LinkExternal
-                variant="subtle"
-                fontSize="sm"
-                lineHeight="20px"
+              <Link
+                external
+                variant="underlaid"
+                textStyle="sm"
                 px={ 2 }
                 display="inline-flex"
-                href={ createGoogleCalendarLink({ blockHeight: height, timeFromNow: Number(data.result.EstimateTimeInSec) }) }
+                href={ createGoogleCalendarLink({ blockHeight: height, timeFromNow: Number(data.result.EstimateTimeInSec), multichainContext }) }
               >
                 <Image src="/static/google_calendar.svg" alt="Google calendar logo" boxSize={ 5 } mr={ 2 }/>
                 <span>Google</span>
-              </LinkExternal>
+              </Link>
               <Button
-                variant="subtle"
-                fontWeight={ 400 }
+                variant="plain"
                 px={ 2 }
                 size="sm"
-                bgColor={ buttonBgColor }
+                fontWeight="normal"
+                color="link.primary"
+                _hover={{ color: 'link.primary.hover' }}
+                bgColor="link.underlaid.bg"
                 display="inline-flex"
                 onClick={ handleAddToAppleCalClick }
               >
-                <Image src="/static/apple_calendar.svg" alt="Apple calendar logo" boxSize={ 5 } mr={ 2 }/>
+                <Image src="/static/apple_calendar.svg" alt="Apple calendar logo" boxSize={ 5 }/>
                 <span>Apple</span>
               </Button>
             </Flex>
           </Box>
-          <IconSvg name="block_slim" w={{ base: '65px', lg: '125px' }} h={{ base: '75px', lg: '140px' }} color={ iconColor } flexShrink={ 0 }/>
+          <Box position="relative">
+            <IconSvg
+              name="block_slim"
+              w={{ base: '65px', lg: '125px' }}
+              h={{ base: '75px', lg: '140px' }}
+              color={{ _light: 'gray.300', _dark: 'gray.600' }}
+              flexShrink={ 0 }
+            />
+            { multichainContext?.chain && (
+              <ChainIcon
+                data={ multichainContext.chain }
+                position="absolute"
+                bottom={{ base: '5px', lg: '6px' }}
+                right={{ base: '45px', lg: '86px' }}
+                boxSize={{ lg: '60px' }}
+                bgColor="bg.primary"
+              />
+            ) }
+          </Box>
         </Flex>
         { data.result.EstimateTimeInSec && (
           <BlockCountdownTimer

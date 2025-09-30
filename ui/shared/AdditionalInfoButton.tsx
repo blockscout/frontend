@@ -1,46 +1,35 @@
 import {
   chakra,
-  Button,
 } from '@chakra-ui/react';
 import React from 'react';
 
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { IconButton } from 'toolkit/chakra/icon-button';
 import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
-  isOpen?: boolean;
-  isLoading?: boolean;
+  loading?: boolean;
   className?: string;
-  onClick?: () => void;
 }
 
-const AdditionalInfoButton = ({ isOpen, onClick, className, isLoading }: Props, ref: React.ForwardedRef<HTMLButtonElement>) => {
-  if (isLoading) {
-    return <Skeleton boxSize={ 6 } borderRadius="sm" flexShrink={ 0 }/>;
-  }
+const AdditionalInfoButton = (props: Props, ref: React.ForwardedRef<HTMLButtonElement>) => {
+  const { loading, ...rest } = props;
 
   return (
-    <Button
-      variant="unstyled"
-      display="inline-flex"
-      alignItems="center"
-      className={ className }
+    <IconButton
       ref={ ref }
-      borderRadius="8px"
-      w="24px"
-      h="24px"
-      onClick={ onClick }
-      cursor="pointer"
-      flexShrink={ 0 }
+      variant="icon_secondary"
+      _open={{
+        bgColor: 'selected.control.bg',
+        color: 'selected.control.text',
+      }}
+      borderRadius="base"
       aria-label="Transaction info"
+      boxSize={ 6 }
+      loadingSkeleton={ loading }
+      { ...rest }
     >
-      <IconSvg
-        name="info"
-        boxSize={ 5 }
-        color={ isOpen ? 'white' : 'white' }
-        _hover={{ color: 'white' }}
-      />
-    </Button>
+      <IconSvg name="info" boxSize={ 5 }/>
+    </IconButton>
   );
 };
 

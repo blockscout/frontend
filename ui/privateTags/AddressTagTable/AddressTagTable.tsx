@@ -1,14 +1,8 @@
-import {
-  Table,
-  Tbody,
-  Tr,
-  Th,
-} from '@chakra-ui/react';
 import React from 'react';
 
 import type { AddressTags, AddressTag } from 'types/api/account';
 
-import TheadSticky from 'ui/shared/TheadSticky';
+import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 
 import AddressTagTableItem from './AddressTagTableItem';
 
@@ -22,15 +16,15 @@ interface Props {
 
 const AddressTagTable = ({ data, onDeleteClick, onEditClick, isLoading, top }: Props) => {
   return (
-    <Table minWidth="600px">
-      <TheadSticky top={ top }>
-        <Tr>
-          <Th width="60%">Address</Th>
-          <Th width="40%">Private tag</Th>
-          <Th width="116px"></Th>
-        </Tr>
-      </TheadSticky>
-      <Tbody>
+    <TableRoot minWidth="600px">
+      <TableHeaderSticky top={ top }>
+        <TableRow>
+          <TableColumnHeader width="60%">Address</TableColumnHeader>
+          <TableColumnHeader width="40%">Private tag</TableColumnHeader>
+          <TableColumnHeader width="116px"></TableColumnHeader>
+        </TableRow>
+      </TableHeaderSticky>
+      <TableBody>
         { data?.map((item: AddressTag, index: number) => (
           <AddressTagTableItem
             item={ item }
@@ -40,8 +34,8 @@ const AddressTagTable = ({ data, onDeleteClick, onEditClick, isLoading, top }: P
             isLoading={ isLoading }
           />
         )) }
-      </Tbody>
-    </Table>
+      </TableBody>
+    </TableRoot>
   );
 };
 

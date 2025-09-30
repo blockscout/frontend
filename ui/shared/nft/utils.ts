@@ -1,12 +1,32 @@
+import type { HTMLChakraProps } from '@chakra-ui/react';
+import type React from 'react';
+
 export type MediaType = 'image' | 'video' | 'html';
+export type TransportType = 'http' | 'ipfs';
 
-export type SrcType = 'url' | 'blob';
+// Currently we have only 3 sizes:
+//    sm = max-width<=30px
+//    md = max-width<=250px
+//    original
+export type Size = 'sm' | 'md' | 'original';
 
+export type MediaElementProps<As extends React.ElementType> = HTMLChakraProps<As> & {
+  src: string;
+  srcSet?: string;
+  transport: TransportType;
+  onLoad?: () => void;
+  onError?: () => void;
+  onClick?: () => void;
+};
+
+// https://developer.mozilla.org/en-US/docs/Web/Media/Guides/Formats/Image_types
 const IMAGE_EXTENSIONS = [
-  '.jpg', 'jpeg',
-  '.png',
+  '.jpg', 'jpeg', '.jfif', '.pjpeg', '.pjp',
+  '.png', '.apng',
+  '.avif',
   '.gif',
   '.svg',
+  '.webp',
 ];
 
 const VIDEO_EXTENSIONS = [

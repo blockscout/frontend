@@ -5,12 +5,12 @@ import type { ScrollL2MessageItem } from 'types/api/scrollL2';
 
 import config from 'configs/app';
 import getCurrencyValue from 'lib/getCurrencyValue';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
-import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 const rollupFeature = config.features.rollup;
 
@@ -31,15 +31,13 @@ const ScrollL2WithdrawalsListItem = ({ item, isLoading }: Props) => {
         <BlockEntity
           number={ item.origination_transaction_block_number }
           isLoading={ isLoading }
-          fontSize="sm"
-          lineHeight={ 5 }
           fontWeight={ 600 }
         />
       </ListItemMobileGrid.Value>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Index</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <Skeleton isLoaded={ !isLoading } display="inline-block">
+        <Skeleton loading={ isLoading } display="inline-block">
           { item.id }
         </Skeleton>
       </ListItemMobileGrid.Value>
@@ -49,15 +47,13 @@ const ScrollL2WithdrawalsListItem = ({ item, isLoading }: Props) => {
         <TxEntity
           isLoading={ isLoading }
           hash={ item.origination_transaction_hash }
-          fontSize="sm"
-          lineHeight={ 5 }
           truncation="constant_long"
         />
       </ListItemMobileGrid.Value>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Age</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <TimeAgoWithTooltip
+        <TimeWithTooltip
           timestamp={ item.origination_timestamp }
           isLoading={ isLoading }
           display="inline-block"
@@ -70,8 +66,6 @@ const ScrollL2WithdrawalsListItem = ({ item, isLoading }: Props) => {
           <TxEntityL1
             isLoading={ isLoading }
             hash={ item.completion_transaction_hash }
-            fontSize="sm"
-            lineHeight={ 5 }
             truncation="constant_long"
           />
         ) : (
@@ -83,7 +77,7 @@ const ScrollL2WithdrawalsListItem = ({ item, isLoading }: Props) => {
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Value</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <Skeleton isLoaded={ !isLoading } display="inline-block">
+        <Skeleton loading={ isLoading } display="inline-block">
           { `${ valueStr } ${ config.chain.currency.symbol }` }
         </Skeleton>
       </ListItemMobileGrid.Value>

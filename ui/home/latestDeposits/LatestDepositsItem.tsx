@@ -6,11 +6,11 @@ import {
 import React from 'react';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
-import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 type Props = {
   l1BlockNumber: number;
@@ -59,18 +59,19 @@ const LatestDepositsItem = ({ l1BlockNumber, l1TxHash, l2TxHash, timestamp, isLo
         <>
           <Flex justifyContent="space-between" alignItems="center" mb={ 1 }>
             { l1BlockLink }
-            <TimeAgoWithTooltip
+            <TimeWithTooltip
               timestamp={ timestamp }
+              timeFormat="relative"
               isLoading={ isLoading }
-              color="text_secondary"
+              color="text.secondary"
             />
           </Flex>
           <Grid gridTemplateColumns="56px auto">
-            <Skeleton isLoaded={ !isLoading } my="5px" w="fit-content">
+            <Skeleton loading={ isLoading } my="5px" w="fit-content">
               L1 txn
             </Skeleton>
             { l1TxLink }
-            <Skeleton isLoaded={ !isLoading } my="3px" w="fit-content">
+            <Skeleton loading={ isLoading } my="3px" w="fit-content">
               L2 txn
             </Skeleton>
             { l2TxLink }
@@ -82,19 +83,20 @@ const LatestDepositsItem = ({ l1BlockNumber, l1TxHash, l2TxHash, timestamp, isLo
     return (
       <Grid width="100%" columnGap={ 4 } rowGap={ 2 } templateColumns="max-content max-content auto" w="100%">
         { l1BlockLink }
-        <Skeleton isLoaded={ !isLoading } w="fit-content" h="fit-content" my="5px">
+        <Skeleton loading={ isLoading } w="fit-content" h="fit-content" my="5px">
           L1 txn
         </Skeleton>
         { l1TxLink }
-        <TimeAgoWithTooltip
+        <TimeWithTooltip
           timestamp={ timestamp }
+          timeFormat="relative"
           isLoading={ isLoading }
-          color="text_secondary"
+          color="text.secondary"
           w="fit-content"
           h="fit-content"
           my="2px"
         />
-        <Skeleton isLoaded={ !isLoading } w="fit-content" h="fit-content" my="2px">
+        <Skeleton loading={ isLoading } w="fit-content" h="fit-content" my="2px">
           L2 txn
         </Skeleton>
         { l2TxLink }
@@ -106,10 +108,10 @@ const LatestDepositsItem = ({ l1BlockNumber, l1TxHash, l2TxHash, timestamp, isLo
     <Box
       width="100%"
       borderTop="1px solid"
-      borderColor="divider"
+      borderColor="border.divider"
       py={ 4 }
       px={{ base: 0, lg: 4 }}
-      _last={{ borderBottom: '1px solid', borderColor: 'divider' }}
+      _last={{ borderBottom: '1px solid', borderColor: 'border.divider' }}
       fontSize="sm"
       lineHeight={ 5 }
     >

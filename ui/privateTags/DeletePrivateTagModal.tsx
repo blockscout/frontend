@@ -9,13 +9,13 @@ import { getResourceKey } from 'lib/api/useApiQuery';
 import DeleteModal from 'ui/shared/DeleteModal';
 
 type Props = {
-  isOpen: boolean;
-  onClose: () => void;
+  open: boolean;
+  onOpenChange: ({ open }: { open: boolean }) => void;
   data: AddressTag | TransactionTag;
   type: 'address' | 'transaction';
 };
 
-const DeletePrivateTagModal: React.FC<Props> = ({ isOpen, onClose, data, type }) => {
+const DeletePrivateTagModal: React.FC<Props> = ({ open, onOpenChange, data, type }) => {
   const tag = data.name;
   const id = data.id;
 
@@ -23,7 +23,7 @@ const DeletePrivateTagModal: React.FC<Props> = ({ isOpen, onClose, data, type })
   const apiFetch = useApiFetch();
 
   const mutationFn = useCallback(() => {
-    const resourceName = type === 'address' ? 'private_tags_address' : 'private_tags_tx';
+    const resourceName = type === 'address' ? 'general:private_tags_address' : 'general:private_tags_tx';
     return apiFetch(resourceName, {
       pathParams: { id: String(data.id) },
       fetchParams: { method: 'DELETE' },
@@ -32,13 +32,13 @@ const DeletePrivateTagModal: React.FC<Props> = ({ isOpen, onClose, data, type })
 
   const onSuccess = useCallback(async() => {
     if (type === 'address') {
-      queryClient.setQueryData(getResourceKey('private_tags_address'), (prevData: AddressTagsResponse | undefined) => {
+      queryClient.setQueryData(getResourceKey('general:private_tags_address'), (prevData: AddressTagsResponse | undefined) => {
         const newItems = prevData?.items.filter((item: AddressTag) => item.id !== id);
         return { ...prevData, items: newItems };
 
       });
     } else {
-      queryClient.setQueryData(getResourceKey('private_tags_tx'), (prevData: TransactionTagsResponse | undefined) => {
+      queryClient.setQueryData(getResourceKey('general:private_tags_tx'), (prevData: TransactionTagsResponse | undefined) => {
         const newItems = prevData?.items.filter((item: TransactionTag) => item.id !== id);
         return { ...prevData, items: newItems };
       });
@@ -53,8 +53,8 @@ const DeletePrivateTagModal: React.FC<Props> = ({ isOpen, onClose, data, type })
 
   return (
     <DeleteModal
-      isOpen={ isOpen }
-      onClose={ onClose }
+      open={ open }
+      onOpenChange={ onOpenChange }
       title="Removal of private tag"
       renderContent={ renderText }
       mutationFn={ mutationFn }

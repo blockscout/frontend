@@ -17,7 +17,7 @@ const ChartTooltipTitle = ({ resolution = Resolution.DAY }: { resolution?: Resol
       <text
         className="ChartTooltip__title"
         transform="translate(0,0)"
-        fill={ titleColor }
+        fill={ titleColor[0] }
         opacity={ 0 }
         dominantBaseline="hanging"
       >
@@ -29,7 +29,7 @@ const ChartTooltipTitle = ({ resolution = Resolution.DAY }: { resolution?: Resol
 
 export default React.memo(ChartTooltipTitle);
 
-export function useRenderTitle(ref: React.RefObject<SVGGElement>) {
+export function useRenderTitle(ref: React.RefObject<SVGGElement | null>) {
   return React.useCallback((isVisible: boolean) => {
     d3.select(ref.current)
       .select('.ChartTooltip__title')

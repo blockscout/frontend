@@ -1,12 +1,10 @@
-import { useRouter } from 'next/router';
+import type { Channel } from 'phoenix';
 import React from 'react';
 
 import type { Address } from 'types/api/address';
 
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
-import getQueryParamString from 'lib/router/getQueryParamString';
-import useSocketChannel from 'lib/socket/useSocketChannel';
 import * as stubs from 'stubs/contract';
 import ContractDetails from 'ui/address/contract/ContractDetails';
 import ContractMethodsCustom from 'ui/address/contract/methods/ContractMethodsCustom';
@@ -16,7 +14,7 @@ import ContractMethodsRegular from 'ui/address/contract/methods/ContractMethodsR
 import ContentLoader from 'ui/shared/ContentLoader';
 
 import type { CONTRACT_MAIN_TAB_IDS } from './utils';
-import { CONTRACT_DETAILS_TAB_IDS, CONTRACT_TAB_IDS } from './utils';
+import { CONTRACT_DETAILS_TAB_IDS } from './utils';
 
 interface ContractTab {
   id: typeof CONTRACT_MAIN_TAB_IDS[number] | Array<typeof CONTRACT_MAIN_TAB_IDS[number]>;
@@ -28,56 +26,64 @@ interface ContractTab {
 interface ReturnType {
   tabs: Array<ContractTab>;
   isLoading: boolean;
+  isPartiallyVerified?: boolean;
 }
 
-export default function useContractTabs(data: Address | undefined, isPlaceholderData: boolean, hasMudTab: boolean = false): ReturnType {
-  const [ isQueryEnabled, setIsQueryEnabled ] = React.useState(false);
+interface Props {
+  addressData: Address | undefined;
+  isEnabled: boolean;
+  hasMudTab?: boolean;
+  channel?: Channel;
+  chainSlug?: string;
+}
 
-  const router = useRouter();
-  const tab = getQueryParamString(router.query.tab);
-
-  const isEnabled = Boolean(data?.hash) && data?.is_contract && !isPlaceholderData && CONTRACT_TAB_IDS.concat('contract' as never).includes(tab);
-
-  const enableQuery = React.useCallback(() => {
-    setIsQueryEnabled(true);
-  }, []);
-
-  const contractQuery = useApiQuery('contract', {
-    pathParams: { hash: data?.hash },
+export default function useContractTabs({ addressData, isEnabled, hasMudTab, channel, chainSlug }: Props): ReturnType {
+  const contractQuery = useApiQuery('general:contract', {
+    pathParams: { hash: addressData?.hash },
     queryOptions: {
-      enabled: isEnabled && isQueryEnabled,
+      enabled: isEnabled,
       refetchOnMount: false,
-      placeholderData: data?.is_verified ? stubs.CONTRACT_CODE_VERIFIED : stubs.CONTRACT_CODE_UNVERIFIED,
+      placeholderData: addressData?.is_verified ? stubs.CONTRACT_CODE_VERIFIED : stubs.CONTRACT_CODE_UNVERIFIED,
     },
+    chainSlug,
   });
 
-  const mudSystemsQuery = useApiQuery('contract_mud_systems', {
-    pathParams: { hash: data?.hash },
+  const mudSystemsQuery = useApiQuery('general:mud_systems', {
+    pathParams: { hash: addressData?.hash },
     queryOptions: {
-      enabled: isEnabled && isQueryEnabled && hasMudTab,
+      enabled: isEnabled && hasMudTab,
       refetchOnMount: false,
       placeholderData: stubs.MUD_SYSTEMS,
     },
   });
 
-  const channel = useSocketChannel({
-    topic: `addresses:${ data?.hash?.toLowerCase() }`,
-    isDisabled: !isEnabled,
-    onJoin: enableQuery,
-    onSocketError: enableQuery,
-  });
-
   const verifiedImplementations = React.useMemo(() => {
-    return data?.implementations?.filter(({ name, address }) => name && address && address !== data?.hash) || [];
-  }, [ data?.hash, data?.implementations ]);
+    return addressData?.implementations?.filter(({ name, address_hash: addressHash }) => name && addressHash && addressHash !== addressData?.hash) || [];
+  }, [ addressData?.hash, addressData?.implementations ]);
 
   return React.useMemo(() => {
+
+    // TODO @tom2drum remove this condition once the API will return is_contract flag
+    if (isEnabled && !addressData?.is_contract) {
+      return {
+        tabs: [
+          {
+            id: 'contract_code' as const,
+            title: 'Code',
+            component: <div>Not a contract</div>,
+          },
+        ],
+        isLoading: false,
+        isPartiallyVerified: false,
+      };
+    }
+
     return {
       tabs: [
-        data?.hash && {
+        addressData && {
           id: 'contract_code' as const,
           title: 'Code',
-          component: <ContractDetails mainContractQuery={ contractQuery } channel={ channel } addressHash={ data.hash }/>,
+          component: <ContractDetails mainContractQuery={ contractQuery } channel={ channel } addressData={ addressData }/>,
           subTabs: CONTRACT_DETAILS_TAB_IDS as unknown as Array<string>,
         },
         contractQuery.data?.abi && {
@@ -92,7 +98,7 @@ export default function useContractTabs(data: Address | undefined, isPlaceholder
             <ContractMethodsProxy
               implementations={ verifiedImplementations }
               isLoading={ contractQuery.isPlaceholderData }
-              proxyType={ contractQuery.data?.proxy_type }
+              proxyType={ addressData?.proxy_type }
             />
           ),
         },
@@ -110,9 +116,11 @@ export default function useContractTabs(data: Address | undefined, isPlaceholder
         },
       ].filter(Boolean),
       isLoading: contractQuery.isPlaceholderData,
+      isPartiallyVerified: !contractQuery.isPlaceholderData ? contractQuery.data?.is_partially_verified || undefined : undefined,
     };
   }, [
-    data?.hash,
+    addressData,
+    isEnabled,
     contractQuery,
     channel,
     verifiedImplementations,

@@ -1,13 +1,19 @@
+import { createListCollection } from '@chakra-ui/react';
 import React from 'react';
 
 import hexToUtf8 from 'lib/hexToUtf8';
+import type { SelectOption } from 'toolkit/chakra/select';
+import { Select } from 'toolkit/chakra/select';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
-import Select from 'ui/shared/select/Select';
 
 const OPTIONS = [
   { label: 'Hex', value: 'Hex' as const },
   { label: 'UTF-8', value: 'UTF-8' as const },
 ];
+
+const collection = createListCollection<SelectOption>({
+  items: OPTIONS,
+});
 
 export type DataType = (typeof OPTIONS)[number]['value'];
 
@@ -22,16 +28,20 @@ interface Props {
 const RawInputData = ({ hex, rightSlot: rightSlotProp, defaultDataType = 'Hex', isLoading, minHeight }: Props) => {
   const [ selectedDataType, setSelectedDataType ] = React.useState<DataType>(defaultDataType);
 
+  const handleValueChange = React.useCallback(({ value }: { value: Array<string> }) => {
+    setSelectedDataType(value[0] as DataType);
+  }, []);
+
   const rightSlot = (
     <>
       <Select
-        options={ OPTIONS }
-        name="data-type"
-        defaultValue={ defaultDataType }
-        onChange={ setSelectedDataType }
-        isLoading={ isLoading }
-        w="90px"
+        collection={ collection }
+        placeholder="Select type"
+        defaultValue={ [ defaultDataType ] }
+        onValueChange={ handleValueChange }
+        w="100px"
         mr="auto"
+        loading={ isLoading }
       />
       { rightSlotProp }
     </>

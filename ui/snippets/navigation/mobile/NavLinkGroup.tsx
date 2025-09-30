@@ -33,9 +33,11 @@ const NavLinkGroup = ({ item, onClick, isExpanded }: Props) => {
         w="100%"
         px={ 2 }
         aria-label={ `${ item.text } link group` }
+        color={ item.isActive ? 'link.navigation.fg.selected' : 'link.navigation.fg' }
+        bgColor={ item.isActive ? 'link.navigation.bg.selected' : 'transparent' }
       >
         <Flex justifyContent="space-between" width="100%" alignItems="center" pr={ 1 }>
-          <HStack spacing={ 0 } overflow="hidden">
+          <HStack gap={ 0 } overflow="hidden">
             <NavLinkIcon item={ item }/>
             <Text
               { ...styleProps.textProps }
@@ -43,7 +45,7 @@ const NavLinkGroup = ({ item, onClick, isExpanded }: Props) => {
             >
               { item.text }
             </Text>
-            { isHighlighted && (<LightningLabel iconColor={ styleProps.itemProps.bgColor }/>) }
+            { isHighlighted && (<LightningLabel iconColor={ item.isActive ? 'link.navigation.bg.selected' : 'link.navigation.bg' }/>) }
           </HStack>
           <IconSvg name="arrows/east-mini" transform="rotate(180deg)" boxSize={ 6 }/>
         </Flex>

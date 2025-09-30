@@ -1,10 +1,10 @@
-import { Flex, Grid, useColorModeValue } from '@chakra-ui/react';
+import { Flex, Grid } from '@chakra-ui/react';
 import React from 'react';
 
 import type { DecodedInput } from 'types/api/decodedInput';
 import type { ArrayElement } from 'types/utils';
 
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TruncatedValue from 'ui/shared/TruncatedValue';
@@ -22,7 +22,7 @@ const HeaderItem = ({ children, isLoading }: { children: React.ReactNode; isLoad
       display="inline-block"
       width="fit-content"
       height="fit-content"
-      isLoaded={ !isLoading }
+      loading={ isLoading }
     >
       { children }
     </Skeleton>
@@ -63,15 +63,14 @@ const Row = ({ name, type, indexed, value, isLoading }: ArrayElement<DecodedInpu
       <TruncatedValue value={ name } isLoading={ isLoading }/>
       <TruncatedValue value={ type } isLoading={ isLoading }/>
       { indexed !== undefined && (
-        <Skeleton isLoaded={ !isLoading } display="inline-block">{ indexed ? 'true' : 'false' }</Skeleton>
+        <Skeleton loading={ isLoading } display="inline-block">{ indexed ? 'true' : 'false' }</Skeleton>
       ) }
-      <Skeleton isLoaded={ !isLoading } display="inline-block">{ content }</Skeleton>
+      <Skeleton loading={ isLoading } display="inline-block">{ content }</Skeleton>
     </>
   );
 };
 
 const LogDecodedInputDataTable = ({ data, isLoading }: Props) => {
-  const bgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
   const hasIndexed = data.some(({ indexed }) => indexed !== undefined);
 
   const gridTemplateColumnsBase = hasIndexed ?
@@ -84,9 +83,8 @@ const LogDecodedInputDataTable = ({ data, isLoading }: Props) => {
   return (
     <Grid
       gridTemplateColumns={{ base: gridTemplateColumnsBase, lg: gridTemplateColumnsLg }}
-      fontSize="sm"
-      lineHeight={ 5 }
-      bgColor={ bgColor }
+      textStyle="sm"
+      bgColor={{ _light: 'blackAlpha.50', _dark: 'whiteAlpha.50' }}
       p={ 4 }
       mt={ 2 }
       w="100%"

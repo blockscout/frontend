@@ -8,14 +8,26 @@ const stripTrailingSlash = (str) => str[str.length - 1] === '/' ? str.slice(0, -
 const fetchResource = async(url, formatter) => {
   console.log('🌀 [next-sitemap] Fetching resource:', url);
   try {
-    const res = await fetch(url);
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 15_000);
+
+    const res = await fetch(url, {
+      signal: controller.signal,
+    });
+
+    clearTimeout(timeoutId);
+
     if (res.ok) {
       const data = await res.json();
       console.log('✅ [next-sitemap] Data fetched for resource:', url);
       return formatter(data);
     }
   } catch (error) {
-    console.log('🚨 [next-sitemap] Error fetching resource:', url, error);
+    if (error.name === 'AbortError') {
+      console.log('🚨 [next-sitemap] Request timeout for resource:', url);
+    } else {
+      console.log('🚨 [next-sitemap] Error fetching resource:', url, error);
+    }
   }
 };
 
@@ -51,6 +63,15 @@ const config = {
   siteUrl,
   generateIndexSitemap: false,
   generateRobotsTxt: true,
+  robotsTxtOptions: {
+    policies: [
+      {
+        userAgent: '*',
+        allow: '/',
+        disallow: ['/auth/*', '/login', '/chakra', '/sprite', '/account/*', '/csv-export'],
+      },
+    ],
+  },
   sourceDir: path.resolve(process.cwd(), '../../../.next'),
   outDir: path.resolve(process.cwd(), '../../../public'),
   exclude: [
@@ -58,6 +79,8 @@ const config = {
     '/auth/*',
     '/login',
     '/sprite',
+    '/chakra',
+    '/csv-export',
   ],
   transform: async(config, path) => {
     switch (path) {
@@ -99,6 +122,11 @@ const config = {
         break;
       case '/output-roots':
         if (process.env.NEXT_PUBLIC_ROLLUP_OUTPUT_ROOTS_ENABLED !== 'true') {
+          return null;
+        }
+        break;
+      case '/interop-messages':
+        if (process.env.NEXT_PUBLIC_INTEROP_ENABLED !== 'true') {
           return null;
         }
         break;
@@ -148,6 +176,10 @@ const config = {
     };
   },
   additionalPaths: async(config) => {
+    if(process.env.NEXT_PUBLIC_OP_SUPERCHAIN_ENABLED === 'true'){
+      return;
+    }
+
     const addresses = fetchResource(
       `${ apiUrl }/addresses`,
       (data) => data.items.map(({ hash }) => `/address/${ hash }`),

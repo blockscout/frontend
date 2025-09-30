@@ -1,4 +1,4 @@
-import { Text, Flex, Grid, Tag } from '@chakra-ui/react';
+import { Text, Flex, Grid } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ItemsProps } from './types';
@@ -6,6 +6,7 @@ import type { SearchResultBlock } from 'types/client/search';
 
 import dayjs from 'lib/date/dayjs';
 import highlightText from 'lib/highlightText';
+import { Tag } from 'toolkit/chakra/tag';
 import * as BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 
@@ -26,17 +27,17 @@ const SearchBarSuggestBlock = ({ data, isMobile, searchTerm }: ItemsProps<Search
   );
   const hash = !isFutureBlock ? (
     <Text
-      variant="secondary"
+      color="text.secondary"
       overflow="hidden"
       whiteSpace="nowrap"
       as={ shouldHighlightHash ? 'mark' : 'span' }
       display="block"
     >
-      <HashStringShortenDynamic hash={ data.block_hash } isTooltipDisabled/>
+      <HashStringShortenDynamic hash={ data.block_hash } noTooltip/>
     </Text>
   ) : null;
   const date = !isFutureBlock ? dayjs(data.timestamp).format('llll') : undefined;
-  const futureBlockText = <Text variant="secondary">Learn estimated time for this block to be created.</Text>;
+  const futureBlockText = <Text color="text.secondary">Learn estimated time for this block to be created.</Text>;
 
   if (isMobile) {
     return (
@@ -48,7 +49,7 @@ const SearchBarSuggestBlock = ({ data, isMobile, searchTerm }: ItemsProps<Search
           { data.block_type === 'uncle' && <Tag ml="auto">Uncle</Tag> }
         </Flex>
         { hash }
-        { isFutureBlock ? futureBlockText : <Text variant="secondary">{ date }</Text> }
+        { isFutureBlock ? futureBlockText : <Text color="text.secondary">{ date }</Text> }
       </>
     );
   }
@@ -64,7 +65,7 @@ const SearchBarSuggestBlock = ({ data, isMobile, searchTerm }: ItemsProps<Search
         { data.block_type === 'uncle' && <Tag flexShrink={ 0 }>Uncle</Tag> }
         { isFutureBlock ? futureBlockText : hash }
       </Flex>
-      { date && <Text variant="secondary" textAlign="end">{ date }</Text> }
+      { date && <Text color="text.secondary" textAlign="end">{ date }</Text> }
     </Grid>
   );
 };

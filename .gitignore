@@ -14,12 +14,15 @@
 /out/
 /public/assets/envs.js
 /public/assets/configs
+/public/assets/multichain
 /public/icons/sprite.svg
 /public/icons/sprite.*.svg
+/public/icons/registry.json
 /public/icons/README.md
 /public/static/og_image.png
 /public/sitemap.xml
 /public/robots.txt
+/public/llms.txt
 /analyze
 
 # production
@@ -30,6 +33,7 @@
 *.pem
 .tools
 grafana
+.cursor
 
 # debug
 npm-debug.log*
@@ -62,3 +66,4 @@ yarn-error.log*
 /tools/preset-sync/index.js
 
 .idea
+/toolkit/package/dist

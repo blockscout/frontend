@@ -1,11 +1,11 @@
-import { Hide, Show, Text } from '@chakra-ui/react';
+import { Box, Text } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import { SCROLL_L2_TXN_BATCH } from 'stubs/scrollL2';
 import { generateListStub } from 'stubs/utils';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import Skeleton from 'ui/shared/chakra/Skeleton';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
@@ -15,9 +15,9 @@ import ScrollL2TxnBatchesTable from 'ui/txnBatches/scrollL2/ScrollL2TxnBatchesTa
 
 const ScrollL2TxnBatches = () => {
   const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({
-    resourceName: 'scroll_l2_txn_batches',
+    resourceName: 'general:scroll_l2_txn_batches',
     options: {
-      placeholderData: generateListStub<'scroll_l2_txn_batches'>(
+      placeholderData: generateListStub<'general:scroll_l2_txn_batches'>(
         SCROLL_L2_TXN_BATCH,
         50,
         {
@@ -30,7 +30,7 @@ const ScrollL2TxnBatches = () => {
     },
   });
 
-  const countersQuery = useApiQuery('scroll_l2_txn_batches_count', {
+  const countersQuery = useApiQuery('general:scroll_l2_txn_batches_count', {
     queryOptions: {
       placeholderData: 123456,
     },
@@ -38,7 +38,7 @@ const ScrollL2TxnBatches = () => {
 
   const content = data?.items ? (
     <>
-      <Show below="lg" ssr={ false }>
+      <Box hideFrom="lg">
         { data.items.map(((item, index) => (
           <ScrollL2TxnBatchesListItem
             key={ item.number + (isPlaceholderData ? String(index) : '') }
@@ -46,10 +46,10 @@ const ScrollL2TxnBatches = () => {
             isLoading={ isPlaceholderData }
           />
         ))) }
-      </Show>
-      <Hide below="lg" ssr={ false }>
+      </Box>
+      <Box hideBelow="lg">
         <ScrollL2TxnBatchesTable items={ data.items } top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 } isLoading={ isPlaceholderData }/>
-      </Hide>
+      </Box>
     </>
   ) : null;
 
@@ -59,7 +59,7 @@ const ScrollL2TxnBatches = () => {
     }
 
     return (
-      <Skeleton isLoaded={ !countersQuery.isPlaceholderData && !isPlaceholderData } display="flex" flexWrap="wrap">
+      <Skeleton loading={ countersQuery.isPlaceholderData || isPlaceholderData } display="flex" flexWrap="wrap">
         Txn batch
         <Text fontWeight={ 600 } whiteSpace="pre"> #{ data.items[0].number } </Text>to
         <Text fontWeight={ 600 } whiteSpace="pre"> #{ data.items[data.items.length - 1].number } </Text>
@@ -75,11 +75,12 @@ const ScrollL2TxnBatches = () => {
       <PageTitle title="Txn batches" withTextAd/>
       <DataListDisplay
         isError={ isError }
-        items={ data?.items }
+        itemsNum={ data?.items?.length }
         emptyText="There are no txn batches."
-        content={ content }
         actionBar={ actionBar }
-      />
+      >
+        { content }
+      </DataListDisplay>
     </>
   );
 };

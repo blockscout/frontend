@@ -4,6 +4,7 @@ import React from 'react';
 import { test, expect } from 'playwright/lib';
 
 import AddressFromToIcon from './AddressFromToIcon';
+import type { TxCourseType } from './utils';
 
 test.use({ viewport: { width: 36, height: 36 } });
 
@@ -11,7 +12,7 @@ test.use({ viewport: { width: 36, height: 36 } });
   test(`${ type } txn type +@dark-mode`, async({ render }) => {
     const component = await render(
       <Box p={ 2 }>
-        <AddressFromToIcon type={ type }/>
+        <AddressFromToIcon type={ type as TxCourseType }/>
       </Box>,
     );
     await expect(component).toHaveScreenshot();

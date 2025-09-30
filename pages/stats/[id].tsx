@@ -3,8 +3,8 @@ import dynamic from 'next/dynamic';
 import React from 'react';
 
 import type { Route } from 'nextjs-routes';
-import * as gSSP from 'nextjs/getServerSideProps';
-import type { Props } from 'nextjs/getServerSideProps';
+import type { Props } from 'nextjs/getServerSideProps/handlers';
+import * as gSSP from 'nextjs/getServerSideProps/main';
 import PageNextJs from 'nextjs/PageNextJs';
 import detectBotRequest from 'nextjs/utils/detectBotRequest';
 import fetchApi from 'nextjs/utils/fetchApi';
@@ -36,7 +36,7 @@ export const getServerSideProps: GetServerSideProps<Props<typeof pathname>> = as
       (config.meta.og.enhancedDataEnabled && detectBotRequest(ctx.req)?.type === 'social_preview')
     ) {
       const chartData = await fetchApi({
-        resource: 'stats_line',
+        resource: 'stats:line',
         pathParams: { id: getQueryParamString(ctx.query.id) },
         queryParams: { from: dayjs().format('YYYY-MM-DD'), to: dayjs().format('YYYY-MM-DD') },
         timeout: 1000,

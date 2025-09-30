@@ -20,6 +20,7 @@ export function middleware(req: NextRequest) {
 
   middlewares.colorTheme(req, res);
   middlewares.addressFormat(req, res);
+  middlewares.scamTokens(req, res);
 
   const end = Date.now();
 

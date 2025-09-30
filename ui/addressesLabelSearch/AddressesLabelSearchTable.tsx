@@ -1,10 +1,9 @@
-import { Table, Tbody, Tr, Th } from '@chakra-ui/react';
 import React from 'react';
 
 import type { AddressesItem } from 'types/api/addresses';
 
 import { currencyUnits } from 'lib/units';
-import { default as Thead } from 'ui/shared/TheadSticky';
+import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 
 import AddressesLabelSearchTableItem from './AddressesLabelSearchTableItem';
 
@@ -16,15 +15,15 @@ interface Props {
 
 const AddressesLabelSearchTable = ({ items, top, isLoading }: Props) => {
   return (
-    <Table>
-      <Thead top={ top }>
-        <Tr>
-          <Th width="70%">Address</Th>
-          <Th width="15%" isNumeric>{ `Balance ${ currencyUnits.ether }` }</Th>
-          <Th width="15%" isNumeric>Txn count</Th>
-        </Tr>
-      </Thead>
-      <Tbody>
+    <TableRoot>
+      <TableHeaderSticky top={ top }>
+        <TableRow>
+          <TableColumnHeader width="70%">Address</TableColumnHeader>
+          <TableColumnHeader width="15%" isNumeric>{ `Balance ${ currencyUnits.ether }` }</TableColumnHeader>
+          <TableColumnHeader width="15%" isNumeric>Txn count</TableColumnHeader>
+        </TableRow>
+      </TableHeaderSticky>
+      <TableBody>
         { items.map((item, index) => (
           <AddressesLabelSearchTableItem
             key={ item.hash + (isLoading ? index : '') }
@@ -32,8 +31,8 @@ const AddressesLabelSearchTable = ({ items, top, isLoading }: Props) => {
             isLoading={ isLoading }
           />
         )) }
-      </Tbody>
-    </Table>
+      </TableBody>
+    </TableRoot>
   );
 };
 

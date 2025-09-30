@@ -1,4 +1,4 @@
-import { Show, Hide } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import DataListDisplay from 'ui/shared/DataListDisplay';
@@ -21,22 +21,23 @@ const TxAuthorizations = ({ txQuery }: Props) => {
 
   const content = (
     <>
-      <Show below="lg" ssr={ false }>
+      <Box hideFrom="lg">
         <TxAuthorizationsList data={ txQuery.data?.authorization_list } isLoading={ txQuery.isPlaceholderData }/>
-      </Show>
-      <Hide below="lg" ssr={ false }>
+      </Box>
+      <Box hideBelow="lg">
         <TxAuthorizationsTable data={ txQuery.data?.authorization_list } isLoading={ txQuery.isPlaceholderData }/>
-      </Hide>
+      </Box>
     </>
   );
 
   return (
     <DataListDisplay
       isError={ txQuery.isError }
-      items={ txQuery.data?.authorization_list }
+      itemsNum={ txQuery.data?.authorization_list?.length }
       emptyText="There are no authorizations for this transaction."
-      content={ content }
-    />
+    >
+      { content }
+    </DataListDisplay>
   );
 };
 

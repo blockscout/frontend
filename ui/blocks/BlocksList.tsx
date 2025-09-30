@@ -1,30 +1,38 @@
 import { Box } from '@chakra-ui/react';
-import { AnimatePresence } from 'framer-motion';
 import React from 'react';
 
 import type { Block } from 'types/api/block';
+import type { ChainConfig } from 'types/multichain';
 
+import useInitialList from 'lib/hooks/useInitialList';
 import BlocksListItem from 'ui/blocks/BlocksListItem';
 
 interface Props {
   data: Array<Block>;
   isLoading: boolean;
   page: number;
+  chainData?: ChainConfig;
 }
 
-const BlocksList = ({ data, isLoading, page }: Props) => {
+const BlocksList = ({ data, isLoading, page, chainData }: Props) => {
+  const initialList = useInitialList({
+    data: data ?? [],
+    idFn: (item) => item.height,
+    enabled: !isLoading,
+  });
+
   return (
     <Box>
-      <AnimatePresence initial={ false }>
-        { data.map((item, index) => (
-          <BlocksListItem
-            key={ item.height + (isLoading ? String(index) : '') }
-            data={ item }
-            isLoading={ isLoading }
-            enableTimeIncrement={ page === 1 && !isLoading }
-          />
-        )) }
-      </AnimatePresence>
+      { data.map((item, index) => (
+        <BlocksListItem
+          key={ item.height + (isLoading ? String(index) : '') }
+          data={ item }
+          isLoading={ isLoading }
+          enableTimeIncrement={ page === 1 && !isLoading }
+          animation={ initialList.getAnimationProp(item) }
+          chainData={ chainData }
+        />
+      )) }
     </Box>
   );
 };

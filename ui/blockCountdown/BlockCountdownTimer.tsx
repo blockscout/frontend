@@ -1,7 +1,7 @@
-import { HStack, StackDivider, useColorModeValue } from '@chakra-ui/react';
+import { HStack, StackSeparator } from '@chakra-ui/react';
 import React from 'react';
 
-import { SECOND } from 'lib/consts';
+import { SECOND } from 'toolkit/utils/consts';
 
 import BlockCountdownTimerItem from './BlockCountdownTimerItem';
 import splitSecondsInPeriods from './splitSecondsInPeriods';
@@ -14,8 +14,6 @@ interface Props {
 const BlockCountdownTimer = ({ value: initialValue, onFinish }: Props) => {
 
   const [ value, setValue ] = React.useState(initialValue);
-
-  const bgColor = useColorModeValue('gray.50', 'whiteAlpha.100');
 
   React.useEffect(() => {
     const intervalId = window.setInterval(() => {
@@ -38,11 +36,11 @@ const BlockCountdownTimer = ({ value: initialValue, onFinish }: Props) => {
 
   return (
     <HStack
-      bgColor={ bgColor }
+      bgColor={{ _light: 'gray.50', _dark: 'whiteAlpha.100' }}
       mt={{ base: 6, lg: 8 }}
       p={{ base: 3, lg: 4 }}
       borderRadius="base"
-      divider={ <StackDivider borderColor="divider"/> }
+      separator={ <StackSeparator borderColor="border.divider"/> }
     >
       <BlockCountdownTimerItem label="Days" value={ periods.days }/>
       <BlockCountdownTimerItem label="Hours" value={ periods.hours }/>

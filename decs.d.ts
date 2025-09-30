@@ -1,4 +1,6 @@
-declare module 'react-identicons'
+declare module 'react-identicons';
+declare module 'use-font-face-observer';
+declare module 'brotli-compress/js';
 
 declare module '@fluent.xyz/sdk-core/dist/config/devnet-config' {
   export const DEVNET_NETWORK: string;

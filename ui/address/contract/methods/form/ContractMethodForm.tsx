@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Tooltip, chakra, useDisclosure } from '@chakra-ui/react';
+import { Box, Flex, chakra } from '@chakra-ui/react';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm, FormProvider } from 'react-hook-form';
@@ -7,15 +7,19 @@ import { encodeFunctionData, type AbiFunction } from 'viem';
 import type { FormSubmitHandler, FormSubmitResult, MethodCallStrategy, SmartContractMethod } from '../types';
 
 import config from 'configs/app';
-import { SECOND } from 'lib/consts';
 import * as mixpanel from 'lib/mixpanel/index';
+import { Button } from 'toolkit/chakra/button';
+import { Tooltip } from 'toolkit/chakra/tooltip';
+import { useDisclosure } from 'toolkit/hooks/useDisclosure';
+import { SECOND } from 'toolkit/utils/consts';
 import IconSvg from 'ui/shared/IconSvg';
 
-import { isReadMethod } from '../utils';
+import { isReadMethod, isWriteMethod } from '../utils';
 import ContractMethodFieldAccordion from './ContractMethodFieldAccordion';
 import ContractMethodFieldInput from './ContractMethodFieldInput';
 import ContractMethodFieldInputArray from './ContractMethodFieldInputArray';
 import ContractMethodFieldInputTuple from './ContractMethodFieldInputTuple';
+import ContractMethodOutput from './ContractMethodOutput';
 import ContractMethodResultPublicClient from './ContractMethodResultPublicClient';
 import ContractMethodResultWalletClient from './ContractMethodResultWalletClient';
 import { getFieldLabel, matchArray, transformFormDataToMethodArgs } from './utils';
@@ -65,16 +69,25 @@ const ContractMethodForm = ({ data, attempt, onSubmit, onReset, isOpen }: Props)
     const args = transformFormDataToMethodArgs(formData);
 
     if (callStrategyRef.current === 'copy_calldata') {
-      if (!('name' in data) || !data.name) {
+      if (!('inputs' in data)) {
+        return;
+      }
+
+      // since we have added additional input for native coin value
+      // we need to slice it off
+      const argsToPass = args.slice(0, data.inputs.length);
+
+      if (!('name' in data)) {
+        // this condition means that the fallback method acts as a read method with inputs
+        const data = typeof argsToPass[0] === 'string' && argsToPass[0].startsWith('0x') ? argsToPass[0] as `0x${ string }` : '0x';
+        await navigator.clipboard.writeText(data);
         return;
       }
 
       const callData = encodeFunctionData({
         abi: [ data ],
         functionName: data.name,
-        // since we have added additional input for native coin value
-        // we need to slice it off
-        args: args.slice(0, data.inputs.length),
+        args: argsToPass,
       });
       await navigator.clipboard.writeText(callData);
       return;
@@ -139,10 +152,10 @@ const ContractMethodForm = ({ data, attempt, onSubmit, onReset, isOpen }: Props)
     const buttonCallStrategy = methodType === 'write' ? 'write' : 'read';
 
     return (
-      <Tooltip label={ isDisabled ? NO_WALLET_CLIENT_TEXT : undefined } maxW="300px">
+      <Tooltip content={ NO_WALLET_CLIENT_TEXT } disabled={ !isDisabled }>
         <Button
-          isLoading={ callStrategy === buttonCallStrategy && isLoading }
-          isDisabled={ isLoading || isDisabled }
+          loading={ callStrategy === buttonCallStrategy && isLoading }
+          disabled={ isLoading || isDisabled }
           onClick={ handleButtonClick }
           loadingText={ text }
           variant="outline"
@@ -174,8 +187,8 @@ const ContractMethodForm = ({ data, attempt, onSubmit, onReset, isOpen }: Props)
 
     return (
       <Button
-        isLoading={ callStrategy === buttonCallStrategy && isLoading }
-        isDisabled={ isLoading }
+        loading={ callStrategy === buttonCallStrategy && isLoading }
+        disabled={ isLoading }
         onClick={ handleButtonClick }
         loadingText={ text }
         variant="outline"
@@ -183,7 +196,6 @@ const ContractMethodForm = ({ data, attempt, onSubmit, onReset, isOpen }: Props)
         flexShrink={ 0 }
         width="min-content"
         px={ 4 }
-        mr={ 3 }
         type="submit"
         data-call-strategy={ buttonCallStrategy }
       >
@@ -210,15 +222,14 @@ const ContractMethodForm = ({ data, attempt, onSubmit, onReset, isOpen }: Props)
 
     return (
       <Tooltip
-        isDisabled={ isDisabled }
-        label="Copied"
+        disabled={ isDisabled }
+        content="Copied"
         closeDelay={ SECOND }
-        isOpen={ calldataButtonTooltip.isOpen }
-        onClose={ calldataButtonTooltip.onClose }
+        open={ calldataButtonTooltip.open }
       >
         <Button
-          isLoading={ callStrategy === buttonCallStrategy && isLoading }
-          isDisabled={ isDisabled }
+          loading={ callStrategy === buttonCallStrategy && isLoading }
+          disabled={ isDisabled }
           onClick={ handleButtonClick }
           loadingText={ text }
           variant="outline"
@@ -226,7 +237,6 @@ const ContractMethodForm = ({ data, attempt, onSubmit, onReset, isOpen }: Props)
           flexShrink={ 0 }
           width="min-content"
           px={ 4 }
-          ml={ 3 }
           type="submit"
           data-call-strategy={ buttonCallStrategy }
         >
@@ -235,6 +245,8 @@ const ContractMethodForm = ({ data, attempt, onSubmit, onReset, isOpen }: Props)
       </Tooltip>
     );
   })();
+
+  const showOutputResult = result && result.source === 'public_client' && !(result.data instanceof Error);
 
   return (
     <Box>
@@ -251,6 +263,7 @@ const ContractMethodForm = ({ data, attempt, onSubmit, onReset, isOpen }: Props)
                 basePath: `${ index }`,
                 isDisabled: isLoading,
                 level: 0,
+                isOptional: data.type === 'fallback' && isWriteMethod(data),
               };
 
               if ('components' in input && input.components && input.type === 'tuple') {
@@ -282,21 +295,22 @@ const ContractMethodForm = ({ data, attempt, onSubmit, onReset, isOpen }: Props)
               return <ContractMethodFieldInput key={ index } { ...props } path={ `${ index }` }/>;
             }) }
           </Flex>
-          { secondaryButton }
-          { primaryButton }
-          { copyCallDataButton }
-          { result && !isLoading && (
-            <Button
-              variant="simple"
-              colorScheme="blue"
-              size="sm"
-              onClick={ onReset }
-              ml={ 1 }
-            >
-              <IconSvg name="repeat" boxSize={ 5 } mr={ 1 }/>
-              Reset
-            </Button>
-          ) }
+          <Flex flexDir="row" gap={ 3 }>
+            { secondaryButton }
+            { primaryButton }
+            { copyCallDataButton }
+            { result && !isLoading && (
+              <Button
+                variant="link"
+                size="sm"
+                onClick={ onReset }
+                gap={ 1 }
+              >
+                <IconSvg name="repeat" boxSize={ 5 }/>
+                Reset
+              </Button>
+            ) }
+          </Flex>
         </chakra.form>
       </FormProvider>
       { result && result.source === 'wallet_client' && (
@@ -305,12 +319,17 @@ const ContractMethodForm = ({ data, attempt, onSubmit, onReset, isOpen }: Props)
           onSettle={ handleResultSettle }
         />
       ) }
-      { 'outputs' in data && data.outputs.length > 0 && (
+      { result && result.source === 'public_client' && result.data instanceof Error && (
         <ContractMethodResultPublicClient
-          data={ result && result.source === 'public_client' ? result.data : undefined }
+          data={ result.data }
+        />
+      ) }
+      { 'outputs' in data && data.outputs.length > 0 && (
+        <ContractMethodOutput
+          data={ showOutputResult ? result.data : undefined }
           onSettle={ handleResultSettle }
           abiItem={ data }
-          mode={ result && result.source === 'public_client' ? 'result' : 'preview' }
+          mode={ showOutputResult ? 'result' : 'preview' }
         />
       ) }
     </Box>

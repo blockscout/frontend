@@ -1,36 +1,36 @@
-import { Tr, Td } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TxAuthorization } from 'types/api/transaction';
 
 import config from 'configs/app';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { TableRow, TableCell } from 'toolkit/chakra/table';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 
 interface Props extends TxAuthorization {
   isLoading?: boolean;
 }
 
-const TxAuthorizationsItem = ({ address, authority, chain_id: chainId, nonce, isLoading }: Props) => {
+const TxAuthorizationsItem = ({ address_hash: addressHash, authority, chain_id: chainId, nonce, isLoading }: Props) => {
   return (
-    <Tr alignItems="top">
-      <Td>
-        <AddressEntity address={{ hash: address }} isLoading={ isLoading } noIcon/>
-      </Td>
-      <Td verticalAlign="middle">
+    <TableRow alignItems="top">
+      <TableCell>
+        <AddressEntity address={{ hash: addressHash }} isLoading={ isLoading } noIcon/>
+      </TableCell>
+      <TableCell verticalAlign="middle">
         <AddressEntity address={{ hash: authority }} isLoading={ isLoading } noIcon/>
-      </Td>
-      <Td verticalAlign="middle">
-        <Skeleton isLoaded={ !isLoading } display="inline-block">
+      </TableCell>
+      <TableCell verticalAlign="middle">
+        <Skeleton loading={ isLoading } display="inline-block">
           { chainId === Number(config.chain.id) ? 'this' : 'any' }
         </Skeleton>
-      </Td>
-      <Td isNumeric verticalAlign="middle">
-        <Skeleton isLoaded={ !isLoading } display="inline-block">
+      </TableCell>
+      <TableCell isNumeric verticalAlign="middle">
+        <Skeleton loading={ isLoading } display="inline-block">
           { nonce }
         </Skeleton>
-      </Td>
-    </Tr>
+      </TableCell>
+    </TableRow>
   );
 };
 

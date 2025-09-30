@@ -26,7 +26,7 @@ export const baseResponse: AdvancedFilterResponse = {
         hash: '0x1c479675ad559DC151F6Ec7ed3FbF8ceE79582B6',
         implementations: [
           {
-            address: '0x31DA64D19Cd31A19CD09F4070366Fe2144792cf7',
+            address_hash: '0x31DA64D19Cd31A19CD09F4070366Fe2144792cf7',
             name: 'SequencerInbox',
           },
         ],

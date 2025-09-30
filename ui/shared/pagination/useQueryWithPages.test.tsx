@@ -63,8 +63,8 @@ const responseInit = {
 };
 
 it('returns correct data if there is only one page', async() => {
-  const params: Params<'address_txs'> = {
-    resourceName: 'address_txs',
+  const params: Params<'general:address_txs'> = {
+    resourceName: 'general:address_txs',
     pathParams: { hash: addressMock.hash },
   };
   fetch.mockResponse(JSON.stringify(responses.page_empty), responseInit);
@@ -84,8 +84,8 @@ it('returns correct data if there is only one page', async() => {
 });
 
 describe('if there are multiple pages', () => {
-  const params: Params<'address_txs'> = {
-    resourceName: 'address_txs',
+  const params: Params<'general:address_txs'> = {
+    resourceName: 'general:address_txs',
     pathParams: { hash: addressMock.hash },
   };
 
@@ -108,7 +108,7 @@ describe('if there are multiple pages', () => {
   describe('correctly navigates forward and backward', () => {
     const routerPush = jest.fn(() => Promise.resolve());
     let result: {
-      current: QueryWithPagesResult<'address_txs'>;
+      current: QueryWithPagesResult<'general:address_txs'>;
     };
 
     beforeEach(async() => {
@@ -344,8 +344,8 @@ describe('if there are multiple pages', () => {
         scrollIntoView: jest.fn(),
       },
     };
-    const params: Params<'address_txs'> = {
-      resourceName: 'address_txs',
+    const params: Params<'general:address_txs'> = {
+      resourceName: 'general:address_txs',
       pathParams: { hash: addressMock.hash },
       scrollRef: scrollRef as unknown as React.RefObject<HTMLDivElement>,
     };
@@ -369,8 +369,8 @@ describe('if there is page query param in URL', () => {
   it('sets this param as the page number', async() => {
     useRouter.mockReturnValue({ ...router, query: { page: '3' } });
 
-    const params: Params<'address_txs'> = {
-      resourceName: 'address_txs',
+    const params: Params<'general:address_txs'> = {
+      resourceName: 'general:address_txs',
       pathParams: { hash: addressMock.hash },
     };
     fetch.mockResponse(JSON.stringify(responses.page_empty), responseInit);
@@ -393,8 +393,8 @@ describe('if there is page query param in URL', () => {
     const routerPush = jest.fn(() => Promise.resolve());
     useRouter.mockReturnValue({ ...router, pathname: '/current-route', push: routerPush, query: { page: '2' } });
 
-    const params: Params<'address_txs'> = {
-      resourceName: 'address_txs',
+    const params: Params<'general:address_txs'> = {
+      resourceName: 'general:address_txs',
       pathParams: { hash: addressMock.hash },
     };
     fetch.once(JSON.stringify(responses.page_2), responseInit);
@@ -438,8 +438,8 @@ describe('queries with filters', () => {
     const routerPush = jest.fn(() => Promise.resolve());
     useRouter.mockReturnValue({ ...router, pathname: '/current-route', push: routerPush, query: { foo: 'bar', sort: 'val-desc' } });
 
-    const params: Params<'address_txs'> = {
-      resourceName: 'address_txs',
+    const params: Params<'general:address_txs'> = {
+      resourceName: 'general:address_txs',
       pathParams: { hash: addressMock.hash },
 
       // @ts-ignore:
@@ -490,8 +490,8 @@ describe('queries with filters', () => {
     const routerPush = jest.fn(() => Promise.resolve());
     useRouter.mockReturnValue({ ...router, pathname: '/current-route', push: routerPush, query: { filter: 'from', foo: 'bar' } });
 
-    const params: Params<'address_txs'> = {
-      resourceName: 'address_txs',
+    const params: Params<'general:address_txs'> = {
+      resourceName: 'general:address_txs',
       pathParams: { hash: addressMock.hash },
     };
     fetch.once(JSON.stringify(responses.page_1), responseInit);
@@ -527,8 +527,8 @@ describe('queries with sorting', () => {
     const routerPush = jest.fn(() => Promise.resolve());
     useRouter.mockReturnValue({ ...router, pathname: '/current-route', push: routerPush, query: { foo: 'bar', filter: 'from' } });
 
-    const params: Params<'address_txs'> = {
-      resourceName: 'address_txs',
+    const params: Params<'general:address_txs'> = {
+      resourceName: 'general:address_txs',
       pathParams: { hash: addressMock.hash },
       filters: { filter: 'from' },
     };
@@ -579,8 +579,8 @@ describe('queries with sorting', () => {
     const routerPush = jest.fn(() => Promise.resolve());
     useRouter.mockReturnValue({ ...router, pathname: '/current-route', push: routerPush, query: { foo: 'bar', sort: 'val-desc' } });
 
-    const params: Params<'address_txs'> = {
-      resourceName: 'address_txs',
+    const params: Params<'general:address_txs'> = {
+      resourceName: 'general:address_txs',
       pathParams: { hash: addressMock.hash },
 
       // @ts-ignore:
@@ -627,8 +627,8 @@ describe('router query changes', () => {
     };
     useRouter.mockReturnValue(router);
 
-    const params: Params<'address_txs'> = {
-      resourceName: 'address_txs',
+    const params: Params<'general:address_txs'> = {
+      resourceName: 'general:address_txs',
       pathParams: { hash: addressMock.hash },
     };
 

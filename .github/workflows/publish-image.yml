@@ -4,7 +4,7 @@ on:
     workflow_dispatch:
         inputs:
             tags:
-                description: Image tags
+                description: Image tags (e.g. "type=raw,value=foo")
                 required: false
                 type: string
             build_args:
@@ -15,11 +15,13 @@ on:
                 description: Image platforms (you can specify multiple platforms separated by comma)
                 required: false
                 type: string
-                default: linux/amd64
+                default: |
+                    linux/amd64
+                    linux/arm64/v8
     workflow_call:
         inputs:
             tags:
-                description: Image tags
+                description: Image tags (e.g. "type=raw,value=foo")
                 required: false
                 type: string
             build_args:
@@ -46,9 +48,6 @@ jobs:
             -   name: Check out the repo
                 uses: actions/checkout@v4
     
-            -   name: Set up Docker Buildx
-                uses: docker/setup-buildx-action@v3
-    
             # Will automatically make nice tags, see the table here https://github.com/docker/metadata-action#basic
             -   name: Docker meta
                 id: meta
@@ -74,6 +73,17 @@ jobs:
                     echo "ref_type: $REF_TYPE"
                     echo "ref_name: $REF_NAME"
     
+            -   name: Setup repo
+                uses: blockscout/actions/.github/actions/setup-multiarch-buildx@no-metadata
+                id: setup
+                with:
+                    docker-image: ghcr.io/blockscout/frontend
+                    docker-username: ${{ github.actor }}
+                    docker-password: ${{ secrets.GITHUB_TOKEN }}
+                    docker-remote-multi-platform: true
+                    docker-arm-host: ${{ secrets.ARM_RUNNER_HOSTNAME }}
+                    docker-arm-host-key: ${{ secrets.ARM_RUNNER_KEY }}
+
             -   name: Build and push
                 uses: docker/build-push-action@v5
                 with:
@@ -81,7 +91,7 @@ jobs:
                     file: ./Dockerfile
                     push: true
                     cache-from: type=gha
-                    tags: ${{ inputs.tags || steps.meta.outputs.tags }}
+                    tags: ${{ steps.meta.outputs.tags }}
                     platforms: ${{ inputs.platforms }}
                     labels: ${{ steps.meta.outputs.labels }}
                     build-args: |

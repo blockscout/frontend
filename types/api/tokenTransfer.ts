@@ -1,5 +1,5 @@
 import type { AddressParam } from './addressParams';
-import type { TokenInfo, TokenType } from './token';
+import type { TokenInfo, TokenInstance, TokenType } from './token';
 
 export type Erc20TotalPayload = {
   decimals: string | null;
@@ -8,20 +8,24 @@ export type Erc20TotalPayload = {
 
 export type Erc721TotalPayload = {
   token_id: string | null;
+  token_instance: TokenInstance | null;
 };
 
 export type Erc1155TotalPayload = {
   decimals: string | null;
   value: string;
   token_id: string | null;
+  token_instance: TokenInstance | null;
 };
 
 export type Erc404TotalPayload = {
   decimals: string;
   value: string;
   token_id: null;
+  token_instance: TokenInstance | null;
 } | {
   token_id: string;
+  token_instance: TokenInstance | null;
 };
 
 export type TokenTransfer = (

@@ -1,13 +1,14 @@
-import type { ButtonProps } from '@chakra-ui/react';
-import { Button, chakra, Tooltip } from '@chakra-ui/react';
+import { chakra } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 
 import { route } from 'nextjs-routes';
 
 import { useRewardsContext } from 'lib/contexts/rewards';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import type { ButtonProps } from 'toolkit/chakra/button';
+import { Button } from 'toolkit/chakra/button';
+import { Tooltip } from 'toolkit/chakra/tooltip';
 import IconSvg from 'ui/shared/IconSvg';
-import LinkInternal from 'ui/shared/links/LinkInternal';
 
 type Props = {
   size?: ButtonProps['size'];
@@ -25,25 +26,21 @@ const RewardsButton = ({ variant = 'header', size }: Props) => {
 
   return (
     <Tooltip
-      label="Earn Merits for using Blockscout"
-      textAlign="center"
-      padding={ 2 }
+      content="Earn Merits for using Blockscout"
       openDelay={ 500 }
-      isDisabled={ isMobile || isLoading || Boolean(apiToken) }
-      width="150px"
+      disabled={ isMobile || isLoading || Boolean(apiToken) }
     >
       <Button
         variant={ variant }
-        data-selected={ !isLoading && Boolean(apiToken) }
+        selected={ !isLoading && Boolean(apiToken) }
         flexShrink={ 0 }
-        as={ apiToken ? LinkInternal : 'button' }
-        { ...(apiToken ? { href: route({ pathname: '/account/rewards' }) } : {}) }
+        as={ apiToken ? 'a' : 'button' }
+        { ...(apiToken ? { href: route({ pathname: '/account/merits' }) } : {}) }
         onClick={ apiToken ? undefined : openLoginModal }
         onFocus={ handleFocus }
-        fontSize="sm"
         size={ size }
-        px={ !isLoading && Boolean(apiToken) ? 2.5 : 4 }
-        isLoading={ isLoading }
+        px={{ base: '10px', lg: 3 }}
+        loading={ isLoading }
         _hover={{
           textDecoration: 'none',
         }}
@@ -55,7 +52,6 @@ const RewardsButton = ({ variant = 'header', size }: Props) => {
         />
         <chakra.span
           display={{ base: 'none', md: 'inline' }}
-          ml={ 2 }
           fontWeight={ apiToken ? '700' : '600' }
         >
           { apiToken ? (balancesQuery.data?.total || 'N/A') : 'Merits' }

@@ -9,8 +9,6 @@ import { publicClient } from 'lib/web3/client';
 import { ADDRESS_COUNTERS } from 'stubs/address';
 import { GET_TRANSACTIONS_COUNT } from 'stubs/RPC';
 
-import type { AddressQuery } from './useAddressQuery';
-
 type RpcResponseType = [
   number | null,
 ];
@@ -21,19 +19,23 @@ export type AddressCountersQuery = UseQueryResult<AddressCounters, ResourceError
 
 interface Params {
   hash: string;
-  addressQuery: AddressQuery;
+  isEnabled?: boolean;
+  isLoading?: boolean;
+  isDegradedData?: boolean;
+  chainSlug?: string;
 }
 
-export default function useAddressCountersQuery({ hash, addressQuery }: Params): AddressCountersQuery {
-  const enabled = Boolean(hash) && !addressQuery.isPlaceholderData;
+export default function useAddressCountersQuery({ hash, isLoading, isDegradedData, isEnabled = true, chainSlug }: Params): AddressCountersQuery {
+  const enabled = isEnabled && Boolean(hash) && !isLoading;
 
-  const apiQuery = useApiQuery<'address_counters', { status: number }>('address_counters', {
+  const apiQuery = useApiQuery<'general:address_counters', { status: number }>('general:address_counters', {
     pathParams: { hash },
     queryOptions: {
-      enabled: enabled && !addressQuery.isDegradedData,
+      enabled: enabled && !isDegradedData,
       placeholderData: ADDRESS_COUNTERS,
       refetchOnMount: false,
     },
+    chainSlug,
   });
 
   const rpcQuery = useQuery<RpcResponseType, unknown, AddressCounters | null>({
@@ -59,12 +61,12 @@ export default function useAddressCountersQuery({ hash, addressQuery }: Params):
       };
     },
     placeholderData: [ GET_TRANSACTIONS_COUNT ],
-    enabled: enabled && (addressQuery.isDegradedData || apiQuery.isError),
+    enabled: enabled && (isDegradedData || apiQuery.isError),
     retry: false,
     refetchOnMount: false,
   });
 
-  const isRpcQuery = Boolean((addressQuery.isDegradedData || apiQuery.isError) && rpcQuery.data && publicClient);
+  const isRpcQuery = Boolean((isDegradedData || apiQuery.isError) && rpcQuery.data && publicClient);
   const query = isRpcQuery ? rpcQuery as UseQueryResult<AddressCounters, ResourceError<{ status: number }>> : apiQuery;
 
   return {

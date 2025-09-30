@@ -7,10 +7,10 @@ import type { SmartContractProxyType } from 'types/api/contract';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import ConnectWalletAlert from 'ui/shared/ConnectWalletAlert';
 
 import ContractSourceAddressSelector from '../ContractSourceAddressSelector';
 import ContractAbi from './ContractAbi';
-import ContractConnectWallet from './ContractConnectWallet';
 import ContractMethodsContainer from './ContractMethodsContainer';
 import ContractMethodsFilters from './ContractMethodsFilters';
 import useMethodsFilters from './useMethodsFilters';
@@ -28,12 +28,12 @@ const ContractMethodsProxy = ({ implementations, isLoading: isInitialLoading, pr
   const tab = getQueryParamString(router.query.tab);
   const addressHash = getQueryParamString(router.query.hash);
 
-  const [ selectedItem, setSelectedItem ] = React.useState(implementations.find((item) => item.address === sourceAddress) || implementations[0]);
+  const [ selectedItem, setSelectedItem ] = React.useState(implementations.find((item) => item.address_hash === sourceAddress) || implementations[0]);
 
-  const contractQuery = useApiQuery('contract', {
-    pathParams: { hash: selectedItem.address },
+  const contractQuery = useApiQuery('general:contract', {
+    pathParams: { hash: selectedItem.address_hash },
     queryOptions: {
-      enabled: Boolean(selectedItem.address),
+      enabled: Boolean(selectedItem.address_hash),
       refetchOnMount: false,
     },
   });
@@ -43,7 +43,7 @@ const ContractMethodsProxy = ({ implementations, isLoading: isInitialLoading, pr
 
   return (
     <Flex flexDir="column" rowGap={ 6 }>
-      <ContractConnectWallet isLoading={ isInitialLoading }/>
+      <ConnectWalletAlert isLoading={ isInitialLoading }/>
       <div>
         <ContractSourceAddressSelector
           items={ implementations }
@@ -61,7 +61,7 @@ const ContractMethodsProxy = ({ implementations, isLoading: isInitialLoading, pr
         />
       </div>
       <ContractMethodsContainer
-        key={ selectedItem.address }
+        key={ selectedItem.address_hash }
         isLoading={ isInitialLoading || contractQuery.isPending }
         isEmpty={ abi.length === 0 }
         type={ filters.methodType }
@@ -72,7 +72,7 @@ const ContractMethodsProxy = ({ implementations, isLoading: isInitialLoading, pr
           tab={ tab }
           addressHash={ addressHash }
           visibleItems={ filters.visibleItems }
-          sourceAddress={ selectedItem.address }
+          sourceAddress={ selectedItem.address_hash }
         />
       </ContractMethodsContainer>
     </Flex>

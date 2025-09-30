@@ -8,7 +8,7 @@ import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
-import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 const feature = config.features.rollup;
 
@@ -27,8 +27,7 @@ const DepositsListItem = ({ item, isLoading }: Props) => {
         <BlockEntityL1
           number={ item.l1_block_number }
           isLoading={ isLoading }
-          fontSize="sm"
-          lineHeight={ 5 }
+          textStyle="sm"
           fontWeight={ 600 }
         />
       </ListItemMobileGrid.Value>
@@ -38,8 +37,7 @@ const DepositsListItem = ({ item, isLoading }: Props) => {
         <TxEntityL1
           isLoading={ isLoading }
           hash={ item.l1_transaction_hash }
-          fontSize="sm"
-          lineHeight={ 5 }
+          textStyle="sm"
           truncation="constant_long"
         />
       </ListItemMobileGrid.Value>
@@ -49,8 +47,7 @@ const DepositsListItem = ({ item, isLoading }: Props) => {
         <TxEntity
           isLoading={ isLoading }
           hash={ item.l2_transaction_hash }
-          fontSize="sm"
-          lineHeight={ 5 }
+          textStyle="sm"
           truncation="constant_long"
         />
       </ListItemMobileGrid.Value>
@@ -67,7 +64,7 @@ const DepositsListItem = ({ item, isLoading }: Props) => {
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Age</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <TimeAgoWithTooltip
+        <TimeWithTooltip
           timestamp={ item.timestamp }
           isLoading={ isLoading }
           display="inline-block"

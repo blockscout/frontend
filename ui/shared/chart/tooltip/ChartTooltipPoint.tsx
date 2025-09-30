@@ -14,8 +14,8 @@ const ChartTooltipPoint = () => {
       className="ChartTooltip__point"
       r={ POINT_SIZE / 2 }
       opacity={ 1 }
-      fill={ bgColor }
-      stroke={ borderColor }
+      fill={ bgColor[0] }
+      stroke={ borderColor[0] }
       strokeWidth={ 4 }
     />
   );
@@ -40,7 +40,7 @@ interface RenderPointsReturnType {
   currentPoints: Array<CurrentPoint>;
 }
 
-export function useRenderPoints(ref: React.RefObject<SVGGElement>, params: UseRenderPointsParams) {
+export function useRenderPoints(ref: React.RefObject<SVGGElement | null>, params: UseRenderPointsParams) {
   return React.useCallback((x: number): RenderPointsReturnType => {
     const xDate = params.xScale.invert(x);
     const bisectDate = d3.bisector<TimeChartItem, unknown>((d) => d.date).left;

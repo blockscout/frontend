@@ -1,7 +1,7 @@
 import { Box, chakra, Flex } from '@chakra-ui/react';
 import React from 'react';
 
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import CodeEditor from 'ui/shared/monaco/CodeEditor';
 
@@ -25,12 +25,12 @@ const CodeViewSnippet = ({ data, copyData, language, title, className, rightSlot
     <Box className={ className } as="section" title={ title }>
       { (title || rightSlot) && (
         <Flex justifyContent={ title ? 'space-between' : 'flex-end' } alignItems="center" mb={ 3 }>
-          { title && <Skeleton fontWeight={ 500 } isLoaded={ !isLoading }>{ title }</Skeleton> }
+          { title && <Skeleton loading={ isLoading } fontWeight={ 500 }>{ title }</Skeleton> }
           { rightSlot }
           <CopyToClipboard text={ copyData ?? data } isLoading={ isLoading }/>
         </Flex>
       ) }
-      { isLoading ? <Skeleton height="500px" w="100%"/> : <CodeEditor data={ editorData } language={ language }/> }
+      { isLoading ? <Skeleton loading height="500px" w="100%"/> : <CodeEditor data={ editorData } language={ language }/> }
     </Box>
   );
 };

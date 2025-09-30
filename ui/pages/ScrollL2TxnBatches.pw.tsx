@@ -10,8 +10,8 @@ test('base view', async({ render, mockEnvs, mockTextAd, mockApiResponse }) => {
   test.slow();
   await mockEnvs(ENVS_MAP.scrollRollup);
   await mockTextAd();
-  await mockApiResponse('scroll_l2_txn_batches', scrollTxnBatchesMock.baseResponse);
-  await mockApiResponse('scroll_l2_txn_batches_count', 9927);
+  await mockApiResponse('general:scroll_l2_txn_batches', scrollTxnBatchesMock.baseResponse);
+  await mockApiResponse('general:scroll_l2_txn_batches_count', 9927);
 
   const component = await render(<ScrollL2TxnBatches/>);
   await expect(component).toHaveScreenshot();
@@ -24,8 +24,8 @@ test.describe('mobile', () => {
     test.slow();
     await mockEnvs(ENVS_MAP.scrollRollup);
     await mockTextAd();
-    await mockApiResponse('scroll_l2_txn_batches', scrollTxnBatchesMock.baseResponse);
-    await mockApiResponse('scroll_l2_txn_batches_count', 9927);
+    await mockApiResponse('general:scroll_l2_txn_batches', scrollTxnBatchesMock.baseResponse);
+    await mockApiResponse('general:scroll_l2_txn_batches_count', 9927);
 
     const component = await render(<ScrollL2TxnBatches/>);
     await expect(component).toHaveScreenshot();

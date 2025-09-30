@@ -66,7 +66,7 @@ test.describe('image', () => {
     } as TokenInstance;
     await render(
       <Box boxSize="250px">
-        <NftMedia data={ data }/>
+        <NftMedia data={ data } size="md"/>
       </Box>,
     );
     await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 250, height: 250 } });
@@ -84,7 +84,7 @@ test.describe('image', () => {
     await mockAssetResponse(THUMBNAIL_URL, './playwright/mocks/image_md.jpg');
     await render(
       <Box boxSize="250px">
-        <NftMedia data={ data }/>
+        <NftMedia data={ data } size="md"/>
       </Box>,
     );
     await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 250, height: 250 } });
@@ -95,8 +95,8 @@ test.describe('image', () => {
       animation_url: MEDIA_URL,
       image_url: null,
     } as TokenInstance;
-    const component = await render(<NftMedia data={ data } w="250px"/>);
-    await component.getByAltText('Token instance image').hover();
+    const component = await render(<NftMedia data={ data } w="250px" size="md"/>);
+    await component.getByRole('img', { name: 'Token instance image' }).hover();
     await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 250, height: 250 } });
   });
 
@@ -106,7 +106,7 @@ test.describe('image', () => {
       image_url: null,
     } as TokenInstance;
     const component = await render(<NftMedia data={ data } withFullscreen w="250px"/>);
-    await component.getByAltText('Token instance image').click();
+    await component.getByRole('img', { name: 'Token instance image' }).click();
     await expect(page).toHaveScreenshot();
   });
 });

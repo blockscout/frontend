@@ -33,7 +33,7 @@ test('status code 500', async({ render }) => {
 });
 
 test('tx not found', async({ render }) => {
-  const error = { message: 'Not found', cause: { status: 404, resource: 'tx' } } as Error;
+  const error = { message: 'Not found', cause: { status: 404, resource: 'general:tx' } } as Error;
   const component = await render(<AppError error={ error }/>);
   await expect(component).toHaveScreenshot();
 });
@@ -51,7 +51,8 @@ test('too many requests +@mobile', async({ render }) => {
   const error = {
     message: 'Too many requests',
     cause: { status: 429 },
-  } as Error;
+    rateLimits: { bypassOptions: 'temporary_token', reset: '42000' },
+  } as unknown as Error;
   const component = await render(<AppError error={ error }/>);
   await expect(component).toHaveScreenshot();
 });

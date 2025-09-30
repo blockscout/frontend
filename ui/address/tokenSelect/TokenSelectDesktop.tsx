@@ -1,9 +1,9 @@
-import { PopoverTrigger, PopoverContent, PopoverBody, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
 
 import type { FormattedData } from './types';
 
-import Popover from 'ui/shared/chakra/Popover';
+import { PopoverRoot, PopoverTrigger, PopoverContent, PopoverBody } from 'toolkit/chakra/popover';
+import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 
 import TokenSelectButton from './TokenSelectButton';
 import TokenSelectMenu from './TokenSelectMenu';
@@ -15,21 +15,21 @@ interface Props {
 }
 
 const TokenSelectDesktop = ({ data, isLoading }: Props) => {
-  const { isOpen, onToggle, onClose } = useDisclosure();
+  const { open, onOpenChange } = useDisclosure();
 
   const result = useTokenSelect(data);
 
   return (
-    <Popover isOpen={ isOpen } onClose={ onClose } placement="bottom-start" isLazy>
+    <PopoverRoot open={ open } onOpenChange={ onOpenChange }>
       <PopoverTrigger>
-        <TokenSelectButton isOpen={ isOpen } onClick={ onToggle } data={ result.data } isLoading={ isLoading }/>
+        <TokenSelectButton data={ result.data } isLoading={ isLoading } isOpen={ open }/>
       </PopoverTrigger>
       <PopoverContent w="355px" maxH="450px" overflowY="scroll">
-        <PopoverBody px={ 4 } py={ 6 } boxShadow="2xl" >
+        <PopoverBody>
           <TokenSelectMenu { ...result }/>
         </PopoverBody>
       </PopoverContent>
-    </Popover>
+    </PopoverRoot>
   );
 };
 

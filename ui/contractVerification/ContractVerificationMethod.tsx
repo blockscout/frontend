@@ -1,5 +1,7 @@
-import { Grid, Text } from '@chakra-ui/react';
+import { Grid } from '@chakra-ui/react';
 import React from 'react';
+
+import { Heading } from 'toolkit/chakra/heading';
 
 interface Props {
   title: string;
@@ -16,7 +18,7 @@ const ContractVerificationMethod = ({ title, children, disableScroll }: Props) =
 
   return (
     <section ref={ ref }>
-      <Text fontWeight={ 500 } fontSize="lg" fontFamily="heading" mt={ 12 } mb={ 5 }>{ title }</Text>
+      <Heading level="2" mt={ 12 } mb={ 5 }>{ title }</Heading>
       <Grid columnGap="30px" rowGap={{ base: 2, lg: 5 }} templateColumns={{ base: '1fr', lg: 'minmax(0, 680px) minmax(0, 340px)' }}>
         { children }
       </Grid>

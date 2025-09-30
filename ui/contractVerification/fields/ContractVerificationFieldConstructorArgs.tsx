@@ -1,9 +1,9 @@
-import { Link } from '@chakra-ui/react';
 import React from 'react';
 
 import type { FormFields } from '../types';
 
-import FormFieldText from 'ui/shared/forms/fields/FormFieldText';
+import { Link } from 'toolkit/chakra/link';
+import { FormFieldText } from 'toolkit/components/forms/fields/FormFieldText';
 
 import ContractVerificationFormRow from '../ContractVerificationFormRow';
 
@@ -12,10 +12,9 @@ const ContractVerificationFieldConstructorArgs = () => {
     <ContractVerificationFormRow>
       <FormFieldText<FormFields>
         name="constructor_args"
-        isRequired
+        required
         rules={{ maxLength: 255 }}
         placeholder="ABI-encoded Constructor Arguments"
-        size={{ base: 'md', lg: 'lg' }}
         asComponent="Textarea"
       />
       <>

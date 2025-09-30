@@ -1,5 +1,3 @@
-import type { LinkProps as NextLinkProps } from 'next/link';
-import NextLink from 'next/link';
 import React from 'react';
 
 import type { SearchResultItem } from 'types/client/search';
@@ -7,12 +5,16 @@ import type { AddressFormat } from 'types/views/address';
 
 import { route } from 'nextjs-routes';
 
+import { isEvmAddress } from 'lib/address/isEvmAddress';
+
 import SearchBarSuggestAddress from './SearchBarSuggestAddress';
 import SearchBarSuggestBlob from './SearchBarSuggestBlob';
 import SearchBarSuggestBlock from './SearchBarSuggestBlock';
+import SearchBarSuggestCluster from './SearchBarSuggestCluster';
 import SearchBarSuggestDomain from './SearchBarSuggestDomain';
 import SearchBarSuggestItemLink from './SearchBarSuggestItemLink';
 import SearchBarSuggestLabel from './SearchBarSuggestLabel';
+import SearchBarSuggestTacOperation from './SearchBarSuggestTacOperation';
 import SearchBarSuggestToken from './SearchBarSuggestToken';
 import SearchBarSuggestTx from './SearchBarSuggestTx';
 import SearchBarSuggestUserOp from './SearchBarSuggestUserOp';
@@ -26,16 +28,16 @@ interface Props {
 }
 
 const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick, addressFormat }: Props) => {
-
   const url = (() => {
     switch (data.type) {
       case 'token': {
-        return route({ pathname: '/token/[hash]', query: { hash: data.address } });
+        return route({ pathname: '/token/[hash]', query: { hash: data.address_hash } });
       }
       case 'contract':
       case 'address':
-      case 'label': {
-        return route({ pathname: '/address/[hash]', query: { hash: data.address } });
+      case 'label':
+      case 'metadata_tag': {
+        return route({ pathname: '/address/[hash]', query: { hash: data.address_hash } });
       }
       case 'transaction': {
         return route({ pathname: '/tx/[hash]', query: { hash: data.transaction_hash } });
@@ -55,7 +57,13 @@ const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick, addressForm
         return route({ pathname: '/blobs/[hash]', query: { hash: data.blob_hash } });
       }
       case 'ens_domain': {
-        return route({ pathname: '/address/[hash]', query: { hash: data.address } });
+        return route({ pathname: '/address/[hash]', query: { hash: data.address_hash } });
+      }
+      case 'cluster': {
+        return route({ pathname: '/address/[hash]', query: { hash: data.address_hash } });
+      }
+      case 'tac_operation': {
+        return route({ pathname: '/operation/[id]', query: { id: data.tac_operation.operation_id } });
       }
     }
   })();
@@ -72,6 +80,7 @@ const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick, addressForm
           />
         );
       }
+      case 'metadata_tag':
       case 'contract':
       case 'address': {
         return (
@@ -108,15 +117,25 @@ const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick, addressForm
       case 'ens_domain': {
         return <SearchBarSuggestDomain data={ data } searchTerm={ searchTerm } isMobile={ isMobile } addressFormat={ addressFormat }/>;
       }
+      case 'cluster': {
+        return <SearchBarSuggestCluster data={ data } searchTerm={ searchTerm } isMobile={ isMobile } addressFormat={ addressFormat }/>;
+      }
+      case 'tac_operation': {
+        return <SearchBarSuggestTacOperation data={ data } searchTerm={ searchTerm } isMobile={ isMobile } addressFormat={ addressFormat }/>;
+      }
     }
   })();
 
+  const hasLink = data.type === 'cluster' ? isEvmAddress(data.address_hash) : true;
+
+  if (!hasLink) {
+    return content;
+  }
+
   return (
-    <NextLink href={ url as NextLinkProps['href'] } passHref legacyBehavior>
-      <SearchBarSuggestItemLink onClick={ onClick }>
-        { content }
-      </SearchBarSuggestItemLink>
-    </NextLink>
+    <SearchBarSuggestItemLink onClick={ onClick } href={ url }>
+      { content }
+    </SearchBarSuggestItemLink>
   );
 };
 

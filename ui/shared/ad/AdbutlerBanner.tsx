@@ -7,7 +7,7 @@ import type { BannerProps } from './types';
 
 import config from 'configs/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
-import isBrowser from 'lib/isBrowser';
+import { isBrowser } from 'toolkit/utils/isBrowser';
 import { connectAdbutler, placeAd, ADBUTLER_ACCOUNT } from 'ui/shared/ad/adbutlerScript';
 
 const feature = config.features.adsBanner;

@@ -1,5 +1,7 @@
-import { AccordionButton, AccordionIcon, AccordionPanel, Box } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import React from 'react';
+
+import { AccordionItemContent, AccordionItemTrigger } from 'toolkit/chakra/accordion';
 
 import MetadataAccordion from './MetadataAccordion';
 import MetadataAccordionItem from './MetadataAccordionItem';
@@ -15,7 +17,7 @@ const MetadataItemObject = ({ name, value, level }: Props) => {
 
   if (level >= 4) {
     return (
-      <MetadataAccordionItem level={ level } isFlat>
+      <MetadataAccordionItem value={ name } level={ level } isFlat>
         <MetadataAccordionItemTitle name={ name }/>
         <Box whiteSpace="pre-wrap">{ JSON.stringify(value, undefined, 2) }</Box>
       </MetadataAccordionItem>
@@ -24,29 +26,30 @@ const MetadataItemObject = ({ name, value, level }: Props) => {
 
   return (
     <MetadataAccordionItem
+      value={ name }
       flexDir={{ lg: 'column' }}
       alignItems="stretch"
       py={ 0 }
       isFlat
       level={ level }
     >
-      <AccordionButton
+      <AccordionItemTrigger
         px={ 0 }
         py={ 2 }
         _hover={{ bgColor: 'inherit' }}
         fontSize="sm"
         textAlign="left"
         _expanded={{
-          borderColor: 'divider',
+          borderColor: 'border.divider',
           borderBottomWidth: '1px',
         }}
+        indicatorPlacement="start"
       >
-        <AccordionIcon boxSize={ 6 } p={ 1 }/>
         <MetadataAccordionItemTitle name={ name }/>
-      </AccordionButton>
-      <AccordionPanel p={ 0 }>
+      </AccordionItemTrigger>
+      <AccordionItemContent p={ 0 }>
         <MetadataAccordion data={ value as Record<string, unknown> } level={ level + 1 }/>
-      </AccordionPanel>
+      </AccordionItemContent>
     </MetadataAccordionItem>
   );
 };

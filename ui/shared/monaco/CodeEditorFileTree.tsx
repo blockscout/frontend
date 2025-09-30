@@ -1,9 +1,10 @@
-import type { ChakraProps } from '@chakra-ui/react';
-import { Box, Accordion, AccordionButton, AccordionItem, AccordionPanel, chakra } from '@chakra-ui/react';
+import type { AccordionItemProps } from '@chakra-ui/react';
+import { Box, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { FileTree } from './types';
 
+import { AccordionItem, AccordionItemContent, AccordionItemTrigger, AccordionRoot } from 'toolkit/chakra/accordion';
 import IconSvg from 'ui/shared/IconSvg';
 
 import CodeEditorFileIcon from './CodeEditorFileIcon';
@@ -20,7 +21,13 @@ interface Props {
 }
 
 const CodeEditorFileTree = ({ tree, level = 0, onItemClick, isCollapsed, selectedFile, mainFile }: Props) => {
-  const itemProps: ChakraProps = {
+  const [ value, setValue ] = React.useState<Array<string>>(isCollapsed ? [] : tree.map((item) => item.name));
+
+  const handleValueChange = React.useCallback(({ value }: { value: Array<string> }) => {
+    setValue(value);
+  }, []);
+
+  const itemProps: Partial<AccordionItemProps> = {
     borderWidth: '0px',
     cursor: 'pointer',
     lineHeight: '22px',
@@ -31,47 +38,52 @@ const CodeEditorFileTree = ({ tree, level = 0, onItemClick, isCollapsed, selecte
   const themeColors = useThemeColors();
 
   return (
-    <Accordion allowMultiple defaultIndex={ isCollapsed ? undefined : tree.map((item, index) => index) } reduceMotion>
+    <AccordionRoot multiple value={ value } onValueChange={ handleValueChange } noAnimation>
       {
         tree.map((leaf, index) => {
           const leafName = <chakra.span overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">{ leaf.name }</chakra.span>;
+          const isExpanded = value.includes(leaf.name);
 
           if ('children' in leaf) {
             return (
-              <AccordionItem key={ index } { ...itemProps }>
-                { ({ isExpanded }) => (
-                  <>
-                    <AccordionButton
-                      pr="8px"
-                      py="0"
-                      pl={ `${ 8 + 8 * level }px` }
-                      _hover={{ bgColor: themeColors['custom.list.hoverBackground'] }}
-                      fontSize="13px"
-                      lineHeight="22px"
-                      h="22px"
-                      transitionDuration="0"
-                    >
-                      <Box
-                        className="codicon codicon-tree-item-expanded"
-                        transform={ isExpanded ? 'rotate(0deg)' : 'rotate(-90deg)' }
-                        boxSize="16px"
-                        mr="2px"
-                      />
-                      <IconSvg name={ isExpanded ? 'monaco/folder-open' : 'monaco/folder' } boxSize="16px" mr="4px"/>
-                      { leafName }
-                    </AccordionButton>
-                    <AccordionPanel p="0">
-                      <CodeEditorFileTree
-                        tree={ leaf.children }
-                        level={ level + 1 }
-                        onItemClick={ onItemClick }
-                        isCollapsed={ isCollapsed }
-                        selectedFile={ selectedFile }
-                        mainFile={ mainFile }
-                      />
-                    </AccordionPanel>
-                  </>
-                ) }
+              <AccordionItem key={ index } value={ leaf.name } { ...itemProps }>
+                <AccordionItemTrigger
+                  pr="8px"
+                  py="0"
+                  pl={ `${ 8 + 8 * level }px` }
+                  _hover={{ bgColor: themeColors['custom.list.hoverBackground'] }}
+                  fontSize="13px"
+                  lineHeight="22px"
+                  h="22px"
+                  transitionDuration="0"
+                  noIndicator
+                >
+                  <Box
+                    className="codicon codicon-tree-item-expanded"
+                    transform="rotate(-90deg)"
+                    _groupExpanded={{
+                      transform: 'rotate(0deg)',
+                    }}
+                    boxSize="16px"
+                    mr="2px"
+                  />
+                  <IconSvg
+                    name={ isExpanded ? 'monaco/folder-open' : 'monaco/folder' }
+                    boxSize="16px"
+                    mr="4px"
+                  />
+                  { leafName }
+                </AccordionItemTrigger>
+                <AccordionItemContent p="0">
+                  <CodeEditorFileTree
+                    tree={ leaf.children }
+                    level={ level + 1 }
+                    onItemClick={ onItemClick }
+                    isCollapsed={ isCollapsed }
+                    selectedFile={ selectedFile }
+                    mainFile={ mainFile }
+                  />
+                </AccordionItemContent>
               </AccordionItem>
             );
           }
@@ -79,6 +91,7 @@ const CodeEditorFileTree = ({ tree, level = 0, onItemClick, isCollapsed, selecte
           return (
             <AccordionItem
               key={ index }
+              value={ leaf.name }
               { ...itemProps }
               pl={ `${ 26 + (level * 8) }px` }
               pr="8px"
@@ -106,7 +119,7 @@ const CodeEditorFileTree = ({ tree, level = 0, onItemClick, isCollapsed, selecte
           );
         })
       }
-    </Accordion>
+    </AccordionRoot>
   );
 };
 

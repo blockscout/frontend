@@ -1,21 +1,19 @@
-import {
-  Tr,
-  Td,
-  VStack,
-} from '@chakra-ui/react';
-import { motion } from 'framer-motion';
+import { VStack } from '@chakra-ui/react';
 import React from 'react';
 
 import type { Transaction } from 'types/api/transaction';
+import type { ChainConfig } from 'types/multichain';
 
 import config from 'configs/app';
+import { Badge } from 'toolkit/chakra/badge';
+import { TableCell, TableRow } from 'toolkit/chakra/table';
+import ChainIcon from 'ui/optimismSuperchain/components/ChainIcon';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
-import Tag from 'ui/shared/chakra/Tag';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
-import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import TxFee from 'ui/shared/tx/TxFee';
 import TxWatchListTags from 'ui/shared/tx/TxWatchListTags';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
@@ -29,42 +27,42 @@ type Props = {
   currentAddress?: string;
   enableTimeIncrement?: boolean;
   isLoading?: boolean;
+  animation?: string;
+  chainData?: ChainConfig;
 };
 
-const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, isLoading }: Props) => {
+const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, isLoading, animation, chainData }: Props) => {
   const dataTo = tx.to ? tx.to : tx.created_contract;
 
   return (
-    <Tr
-      as={ motion.tr }
-      initial={{ opacity: 0, scale: 0.97 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transitionDuration="normal"
-      transitionTimingFunction="linear"
-      key={ tx.hash }
-    >
-      <Td pl={ 4 }>
+    <TableRow key={ tx.hash } animation={ animation }>
+      <TableCell textAlign="center">
         <TxAdditionalInfo tx={ tx } isLoading={ isLoading }/>
-      </Td>
-      <Td pr={ 4 }>
+      </TableCell>
+      { chainData && (
+        <TableCell>
+          <ChainIcon data={ chainData } isLoading={ isLoading } my="2px"/>
+        </TableCell>
+      ) }
+      <TableCell pr={ 4 }>
         <VStack alignItems="start" lineHeight="24px">
           <TxEntity
             hash={ tx.hash }
             isLoading={ isLoading }
+            fontWeight="bold"
             noIcon
             maxW="100%"
             truncation="constant_long"
           />
-          <TimeAgoWithTooltip
+          <TimeWithTooltip
             timestamp={ tx.timestamp }
             enableIncrement={ enableTimeIncrement }
             isLoading={ isLoading }
-            color="text_secondary"
-            fontWeight="400"
+            color="text.secondary"
           />
         </VStack>
-      </Td>
-      <Td>
+      </TableCell>
+      <TableCell>
         <VStack alignItems="start">
           { tx.translation ? (
             <TxTranslationType
@@ -78,29 +76,28 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, 
           <TxStatus status={ tx.status } errorText={ tx.status === 'error' ? tx.result : undefined } isLoading={ isLoading }/>
           <TxWatchListTags tx={ tx } isLoading={ isLoading }/>
         </VStack>
-      </Td>
-      <Td whiteSpace="nowrap">
+      </TableCell>
+      <TableCell whiteSpace="nowrap">
         { tx.method && (
-          <Tag colorScheme={ tx.method === 'Multicall' ? 'teal' : 'gray' } isLoading={ isLoading } isTruncated>
-            { tx.method }
-          </Tag>
+          <Badge colorPalette={ tx.method === 'Multicall' ? 'teal' : 'gray' } loading={ isLoading } truncated>
+            <span>{ tx.method }</span>
+          </Badge>
         ) }
-      </Td>
+      </TableCell>
       { showBlockInfo && (
-        <Td>
+        <TableCell>
           { tx.block_number && (
             <BlockEntity
               isLoading={ isLoading }
               number={ tx.block_number }
               noIcon
-              fontSize="sm"
-              lineHeight={ 6 }
+              textStyle="sm"
               fontWeight={ 500 }
             />
           ) }
-        </Td>
+        </TableCell>
       ) }
-      <Td>
+      <TableCell>
         <AddressFromTo
           from={ tx.from }
           to={ dataTo }
@@ -109,24 +106,25 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, 
           mt="2px"
           mode="compact"
         />
-      </Td>
+      </TableCell>
       { !config.UI.views.tx.hiddenFields?.value && (
-        <Td isNumeric>
-          <CurrencyValue value={ tx.value } accuracy={ 8 } isLoading={ isLoading }/>
-        </Td>
+        <TableCell isNumeric>
+          <CurrencyValue value={ tx.value } accuracy={ 8 } isLoading={ isLoading } wordBreak="break-word"/>
+        </TableCell>
       ) }
       { !config.UI.views.tx.hiddenFields?.tx_fee && (
-        <Td isNumeric maxW="220px">
+        <TableCell isNumeric maxW="220px">
           <TxFee
             tx={ tx }
             accuracy={ 8 }
             isLoading={ isLoading }
             withCurrency={ Boolean(tx.celo || tx.stability_fee) }
             justifyContent="end"
+            wordBreak="break-word"
           />
-        </Td>
+        </TableCell>
       ) }
-    </Tr>
+    </TableRow>
   );
 };
 

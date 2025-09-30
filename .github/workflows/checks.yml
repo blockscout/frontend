@@ -45,11 +45,78 @@ jobs:
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: yarn --frozen-lockfile
 
+      - name: Generate Chakra types
+        if: steps.cache-node-modules.outputs.cache-hit == 'true'
+        run: yarn chakra:typegen
+
       - name: Run ESLint
         run: yarn lint:eslint
 
       - name: Compile TypeScript
         run: yarn lint:tsc
+
+  toolkit_build_check:
+    name: Toolkit build check
+    needs: [ code_quality ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.11.0
+          cache: 'yarn'
+
+      - name: Cache node_modules
+        uses: actions/cache@v4
+        id: cache-node-modules
+        with:
+          path: |
+            node_modules
+          key: node_modules-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+      
+      - name: Install project dependencies
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: yarn --frozen-lockfile
+
+      - name: Generate Chakra types
+        if: steps.cache-node-modules.outputs.cache-hit == 'true'
+        run: yarn chakra:typegen
+
+      - name: Install package dependencies
+        run: |
+          cd ./toolkit/package
+          yarn --frozen-lockfile
+
+      - name: Type check the package
+        run: |
+          cd ./toolkit/package
+          yarn typecheck
+
+      - name: Build the package
+        run: |
+          cd ./toolkit/package
+          yarn build
+
+      - name: Verify build output
+        run: |
+          cd ./toolkit/package
+          if [ ! -d "dist" ]; then
+            echo "Build failed: dist directory not found"
+            exit 1
+          fi
+          
+          if [ ! -f "dist/index.js" ]; then
+            echo "Build failed: dist/index.js not found"
+            exit 1
+          fi
+          
+          if [ ! -f "dist/index.d.ts" ]; then
+            echo "Build failed: dist/index.d.ts not found"
+            exit 1
+          fi
 
   envs_validation:
     name: ENV variables validation
@@ -76,6 +143,10 @@ jobs:
       - name: Install dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: yarn --frozen-lockfile
+
+      - name: Generate Chakra types
+        if: steps.cache-node-modules.outputs.cache-hit == 'true'
+        run: yarn chakra:typegen
 
       - name: Install script dependencies
         run: cd ./deploy/tools/envs-validator && yarn --frozen-lockfile
@@ -116,6 +187,10 @@ jobs:
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: yarn --frozen-lockfile
 
+      - name: Generate Chakra types
+        if: steps.cache-node-modules.outputs.cache-hit == 'true'
+        run: yarn chakra:typegen
+
       - name: Run Jest
         run: yarn test:jest ${{ github.event_name == 'pull_request' && '--changedSince=origin/main' || '' }} --passWithNoTests
 
@@ -147,6 +222,10 @@ jobs:
       - name: Install dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: yarn --frozen-lockfile
+
+      - name: Generate Chakra types
+        if: steps.cache-node-modules.outputs.cache-hit == 'true'
+        run: yarn chakra:typegen
 
       - name: Install script dependencies 
         run: cd ./deploy/tools/affected-tests && yarn --frozen-lockfile
@@ -204,6 +283,10 @@ jobs:
       - name: Install dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: yarn --frozen-lockfile
+
+      - name: Generate Chakra types
+        if: steps.cache-node-modules.outputs.cache-hit == 'true'
+        run: yarn chakra:typegen
 
       - name: Download affected tests list
         if: ${{ needs.pw_affected_tests.result == 'success' }}

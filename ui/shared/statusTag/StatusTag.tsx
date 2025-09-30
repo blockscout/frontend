@@ -1,43 +1,58 @@
-import { TagLabel, Tooltip, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import capitalizeFirstLetter from 'lib/capitalizeFirstLetter';
-import Tag from 'ui/shared/chakra/Tag';
+import type { BadgeProps } from 'toolkit/chakra/badge';
+import { Badge } from 'toolkit/chakra/badge';
+import { Tooltip } from 'toolkit/chakra/tooltip';
+import type { IconName } from 'ui/shared/IconSvg';
+import IconSvg from 'ui/shared/IconSvg';
 
 export type StatusTagType = 'ok' | 'error' | 'pending';
 
-export interface Props {
+export interface Props extends BadgeProps {
   type: 'ok' | 'error' | 'pending';
-  text: string;
+  text?: string;
   errorText?: string | null;
-  isLoading?: boolean;
-  className?: string;
 }
 
-const StatusTag = ({ type, text, errorText, isLoading, className }: Props) => {
-  let colorScheme;
-
-  const capitalizedText = capitalizeFirstLetter(text);
+const StatusTag = ({ type, text, errorText, ...rest }: Props) => {
+  let icon: IconName;
+  let colorPalette: BadgeProps['colorPalette'];
 
   switch (type) {
     case 'ok':
-      colorScheme = 'green';
+      icon = 'status/success';
+      colorPalette = 'green';
       break;
     case 'error':
-      colorScheme = 'red';
+      icon = 'status/error';
+      colorPalette = 'red';
       break;
     case 'pending':
-      colorScheme = 'gray';
+      icon = 'status/pending';
+      colorPalette = 'gray';
       break;
   }
 
+  const iconElement = <IconSvg name={ icon } boxSize={ 2.5 } display={ text ? 'inline-block' : 'block' }/>;
+
+  if (!text) {
+    return (
+      <Badge colorPalette={ colorPalette } { ...rest }>
+        { iconElement }
+      </Badge>
+    );
+  }
+
+  const capitalizedText = capitalizeFirstLetter(text);
+
   return (
-    <Tooltip label={ errorText }>
-      <Tag colorScheme={ colorScheme } display="flex" px="8px" isLoading={ isLoading } className={ className }>
-        <TagLabel display="block" fontSize="12px">{ capitalizedText }</TagLabel>
-      </Tag>
+    <Tooltip content={ errorText } disabled={ !errorText }>
+      <Badge colorPalette={ colorPalette } startElement={ iconElement } { ...rest }>
+        { capitalizedText }
+      </Badge>
     </Tooltip>
   );
 };
 
-export default chakra(StatusTag);
+export default StatusTag;

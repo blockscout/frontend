@@ -36,6 +36,6 @@ export const validatorsResponse: ValidatorsBlackfortResponse = {
 };
 
 export const validatorsCountersResponse: ValidatorsBlackfortCountersResponse = {
-  new_validators_counter_24h: '11',
-  validators_counter: '140',
+  new_validators_count_24h: '11',
+  validators_count: '140',
 };

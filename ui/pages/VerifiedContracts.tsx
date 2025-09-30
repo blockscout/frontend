@@ -1,85 +1,35 @@
-import { Box, Hide, HStack, Show } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
+import { Box, createListCollection, HStack } from '@chakra-ui/react';
 import React from 'react';
 
-import type { VerifiedContractsFilters } from 'types/api/contracts';
-import type { VerifiedContractsSorting, VerifiedContractsSortingField, VerifiedContractsSortingValue } from 'types/api/verifiedContracts';
-
 import config from 'configs/app';
-import useDebounce from 'lib/hooks/useDebounce';
 import useIsMobile from 'lib/hooks/useIsMobile';
-import { apos } from 'lib/html-entities';
-import getQueryParamString from 'lib/router/getQueryParamString';
-import { VERIFIED_CONTRACT_INFO } from 'stubs/contract';
-import { generateListStub } from 'stubs/utils';
+import { FilterInput } from 'toolkit/components/filters/FilterInput';
+import { apos } from 'toolkit/utils/htmlEntities';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import FilterInput from 'ui/shared/filters/FilterInput';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
-import getSortParamsFromValue from 'ui/shared/sort/getSortParamsFromValue';
-import getSortValueFromQuery from 'ui/shared/sort/getSortValueFromQuery';
 import Sort from 'ui/shared/sort/Sort';
+import useVerifiedContractsQuery from 'ui/verifiedContracts/useVerifiedContractsQuery';
 import { SORT_OPTIONS } from 'ui/verifiedContracts/utils';
 import VerifiedContractsCounters from 'ui/verifiedContracts/VerifiedContractsCounters';
 import VerifiedContractsFilter from 'ui/verifiedContracts/VerifiedContractsFilter';
 import VerifiedContractsList from 'ui/verifiedContracts/VerifiedContractsList';
 import VerifiedContractsTable from 'ui/verifiedContracts/VerifiedContractsTable';
 
+const sortCollection = createListCollection({
+  items: SORT_OPTIONS,
+});
+
 const VerifiedContracts = () => {
-  const router = useRouter();
-  const [ searchTerm, setSearchTerm ] = React.useState(getQueryParamString(router.query.q) || undefined);
-  const [ type, setType ] = React.useState(getQueryParamString(router.query.filter) as VerifiedContractsFilters['filter'] || undefined);
-  const [ sort, setSort ] =
-    React.useState<VerifiedContractsSortingValue | undefined>(getSortValueFromQuery<VerifiedContractsSortingValue>(router.query, SORT_OPTIONS));
-
-  const debouncedSearchTerm = useDebounce(searchTerm || '', 300);
-
   const isMobile = useIsMobile();
 
-  const { isError, isPlaceholderData, data, pagination, onFilterChange, onSortingChange } = useQueryWithPages({
-    resourceName: 'verified_contracts',
-    filters: { q: debouncedSearchTerm, filter: type },
-    sorting: getSortParamsFromValue<VerifiedContractsSortingValue, VerifiedContractsSortingField, VerifiedContractsSorting['order']>(sort),
-    options: {
-      placeholderData: generateListStub<'verified_contracts'>(
-        VERIFIED_CONTRACT_INFO,
-        50,
-        {
-          next_page_params: {
-            items_count: '50',
-            smart_contract_id: '50',
-          },
-        },
-      ),
-    },
-  });
-
-  const handleSearchTermChange = React.useCallback((value: string) => {
-    onFilterChange({ q: value, filter: type });
-    setSearchTerm(value);
-  }, [ type, onFilterChange ]);
-
-  const handleTypeChange = React.useCallback((value: string | Array<string>) => {
-    if (Array.isArray(value)) {
-      return;
-    }
-
-    const filter = value === 'all' ? undefined : value as VerifiedContractsFilters['filter'];
-
-    onFilterChange({ q: debouncedSearchTerm, filter });
-    setType(filter);
-  }, [ debouncedSearchTerm, onFilterChange ]);
-
-  const handleSortChange = React.useCallback((value?: VerifiedContractsSortingValue) => {
-    setSort(value);
-    onSortingChange(getSortParamsFromValue(value));
-  }, [ onSortingChange ]);
+  const { query, type, searchTerm, debouncedSearchTerm, sort, onSearchTermChange, onTypeChange, onSortChange } = useVerifiedContractsQuery();
+  const { isError, isPlaceholderData, data, pagination } = query;
 
   const typeFilter = (
     <VerifiedContractsFilter
-      onChange={ handleTypeChange }
+      onChange={ onTypeChange }
       defaultValue={ type }
       hasActiveFilter={ Boolean(type) }
     />
@@ -88,8 +38,8 @@ const VerifiedContracts = () => {
   const filterInput = (
     <FilterInput
       w={{ base: '100%', lg: '350px' }}
-      size="xs"
-      onChange={ handleSearchTermChange }
+      size="sm"
+      onChange={ onSearchTermChange }
       placeholder="Search by contract name or address"
       initialValue={ searchTerm }
     />
@@ -98,23 +48,23 @@ const VerifiedContracts = () => {
   const sortButton = (
     <Sort
       name="verified_contracts_sorting"
-      defaultValue={ sort }
-      options={ SORT_OPTIONS }
-      onChange={ handleSortChange }
+      defaultValue={ [ sort ] }
+      collection={ sortCollection }
+      onValueChange={ onSortChange }
       isLoading={ isPlaceholderData }
     />
   );
 
   const actionBar = (
     <>
-      <HStack spacing={ 3 } mb={ 6 } display={{ base: 'flex', lg: 'none' }}>
+      <HStack gap={ 3 } mb={ 6 } display={{ base: 'flex', lg: 'none' }}>
         { typeFilter }
         { sortButton }
         { filterInput }
       </HStack>
       { (!isMobile || pagination.isVisible) && (
         <ActionBar mt={ -6 }>
-          <HStack spacing={ 3 } display={{ base: 'none', lg: 'flex' }}>
+          <HStack gap={ 3 } display={{ base: 'none', lg: 'flex' }}>
             { typeFilter }
             { filterInput }
           </HStack>
@@ -126,12 +76,12 @@ const VerifiedContracts = () => {
 
   const content = data?.items ? (
     <>
-      <Show below="lg" ssr={ false }>
+      <Box hideFrom="lg">
         <VerifiedContractsList data={ data.items } isLoading={ isPlaceholderData }/>
-      </Show>
-      <Hide below="lg" ssr={ false }>
-        <VerifiedContractsTable data={ data.items } sort={ sort } setSorting={ handleSortChange } isLoading={ isPlaceholderData }/>
-      </Hide>
+      </Box>
+      <Box hideBelow="lg">
+        <VerifiedContractsTable data={ data.items } sort={ sort } setSorting={ onSortChange } isLoading={ isPlaceholderData }/>
+      </Box>
     </>
   ) : null;
 
@@ -144,15 +94,16 @@ const VerifiedContracts = () => {
       <VerifiedContractsCounters/>
       <DataListDisplay
         isError={ isError }
-        items={ data?.items }
+        itemsNum={ data?.items.length }
         emptyText="There are no verified contracts."
         filterProps={{
           emptyFilteredText: `Couldn${ apos }t find any contract that matches your query.`,
-          hasActiveFilters: Boolean(searchTerm || type),
+          hasActiveFilters: Boolean(debouncedSearchTerm || type),
         }}
-        content={ content }
         actionBar={ actionBar }
-      />
+      >
+        { content }
+      </DataListDisplay>
     </Box>
   );
 };

@@ -1,12 +1,12 @@
-import { Hide, Show } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import { rightLineArrow, nbsp } from 'lib/html-entities';
 import { SHIBARIUM_WITHDRAWAL_ITEM } from 'stubs/shibarium';
 import { generateListStub } from 'stubs/utils';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { rightLineArrow, nbsp } from 'toolkit/utils/htmlEntities';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import Skeleton from 'ui/shared/chakra/Skeleton';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
@@ -14,11 +14,11 @@ import StickyPaginationWithText from 'ui/shared/StickyPaginationWithText';
 import WithdrawalsListItem from 'ui/withdrawals/shibarium/WithdrawalsListItem';
 import WithdrawalsTable from 'ui/withdrawals/shibarium/WithdrawalsTable';
 
-const L2Withdrawals = () => {
+const ShibariumWithdrawals = () => {
   const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({
-    resourceName: 'shibarium_withdrawals',
+    resourceName: 'general:shibarium_withdrawals',
     options: {
-      placeholderData: generateListStub<'shibarium_withdrawals'>(
+      placeholderData: generateListStub<'general:shibarium_withdrawals'>(
         SHIBARIUM_WITHDRAWAL_ITEM,
         50,
         {
@@ -31,7 +31,7 @@ const L2Withdrawals = () => {
     },
   });
 
-  const countersQuery = useApiQuery('shibarium_withdrawals_count', {
+  const countersQuery = useApiQuery('general:shibarium_withdrawals_count', {
     queryOptions: {
       placeholderData: 23700,
     },
@@ -39,16 +39,18 @@ const L2Withdrawals = () => {
 
   const content = data?.items ? (
     <>
-      <Show below="lg" ssr={ false }>{ data.items.map(((item, index) => (
-        <WithdrawalsListItem
-          key={ item.l2_transaction_hash + (isPlaceholderData ? index : '') }
-          item={ item }
-          isLoading={ isPlaceholderData }
-        />
-      ))) }</Show>
-      <Hide below="lg" ssr={ false }>
+      <Box hideFrom="lg">
+        { data.items.map(((item, index) => (
+          <WithdrawalsListItem
+            key={ `${ item.l2_transaction_hash }-${ index }` }
+            item={ item }
+            isLoading={ isPlaceholderData }
+          />
+        ))) }
+      </Box>
+      <Box hideBelow="lg">
         <WithdrawalsTable items={ data.items } top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 } isLoading={ isPlaceholderData }/>
-      </Hide>
+      </Box>
     </>
   ) : null;
 
@@ -58,10 +60,7 @@ const L2Withdrawals = () => {
     }
 
     return (
-      <Skeleton
-        isLoaded={ !countersQuery.isPlaceholderData }
-        display="inline-block"
-      >
+      <Skeleton loading={ countersQuery.isPlaceholderData } display="inline-block">
         A total of { countersQuery.data?.toLocaleString() } withdrawals found
       </Skeleton>
     );
@@ -74,13 +73,14 @@ const L2Withdrawals = () => {
       <PageTitle title={ `Withdrawals (L2${ nbsp }${ rightLineArrow }${ nbsp }L1)` } withTextAd/>
       <DataListDisplay
         isError={ isError }
-        items={ data?.items }
+        itemsNum={ data?.items.length }
         emptyText="There are no withdrawals."
-        content={ content }
         actionBar={ actionBar }
-      />
+      >
+        { content }
+      </DataListDisplay>
     </>
   );
 };
 
-export default L2Withdrawals;
+export default ShibariumWithdrawals;

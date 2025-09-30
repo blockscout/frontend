@@ -4,7 +4,7 @@ import React from 'react';
 import type { TxAuthorization } from 'types/api/transaction';
 
 import config from 'configs/app';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 
@@ -12,24 +12,24 @@ interface Props extends TxAuthorization {
   isLoading?: boolean;
 }
 
-const TxAuthorizationsListItem = ({ address, authority, chain_id: chainId, nonce, isLoading }: Props) => {
+const TxAuthorizationsListItem = ({ address_hash: addressHash, authority, chain_id: chainId, nonce, isLoading }: Props) => {
   return (
     <ListItemMobile rowGap={ 3 } fontSize="sm">
-      <HStack spacing={ 3 } w="100%">
-        <Skeleton isLoaded={ !isLoading } fontWeight={ 500 }>Address</Skeleton>
-        <AddressEntity address={{ hash: address }} isLoading={ isLoading } noIcon/>
+      <HStack gap={ 3 } w="100%">
+        <Skeleton loading={ isLoading } fontWeight={ 500 }>Address</Skeleton>
+        <AddressEntity address={{ hash: addressHash }} isLoading={ isLoading } noIcon/>
       </HStack>
-      <HStack spacing={ 3 } w="100%">
-        <Skeleton isLoaded={ !isLoading } fontWeight={ 500 }>Authority</Skeleton>
+      <HStack gap={ 3 } w="100%">
+        <Skeleton loading={ isLoading } fontWeight={ 500 }>Authority</Skeleton>
         <AddressEntity address={{ hash: authority }} isLoading={ isLoading } noIcon/>
       </HStack>
-      <HStack spacing={ 3 }>
-        <Skeleton isLoaded={ !isLoading } fontWeight={ 500 }>Chain</Skeleton>
-        <Skeleton isLoaded={ !isLoading } color="text_secondary">{ chainId === Number(config.chain.id) ? 'this' : 'any' }</Skeleton>
+      <HStack gap={ 3 }>
+        <Skeleton loading={ isLoading } fontWeight={ 500 }>Chain</Skeleton>
+        <Skeleton loading={ isLoading } color="text.secondary">{ chainId === Number(config.chain.id) ? 'this' : 'any' }</Skeleton>
       </HStack>
-      <HStack spacing={ 3 }>
-        <Skeleton isLoaded={ !isLoading } fontWeight={ 500 }>Nonce</Skeleton>
-        <Skeleton isLoaded={ !isLoading } color="text_secondary">{ nonce }</Skeleton>
+      <HStack gap={ 3 }>
+        <Skeleton loading={ isLoading } fontWeight={ 500 }>Nonce</Skeleton>
+        <Skeleton loading={ isLoading } color="text.secondary">{ nonce }</Skeleton>
       </HStack>
     </ListItemMobile>
   );

@@ -88,6 +88,12 @@ const config: PlaywrightTestConfig = defineConfig({
 
           { find: '/playwright/index.ts', replacement: './playwright/index.ts' },
           { find: '/playwright/envs.js', replacement: './playwright/envs.js' },
+
+          // Fix for @libp2p/utils missing merge-options export
+          { find: '@libp2p/utils/merge-options', replacement: 'merge-options' },
+
+          // Mock for @helia/verified-fetch to avoid build issues in tests
+          { find: '@helia/verified-fetch', replacement: './playwright/mocks/modules/@helia/verified-fetch.js' },
         ],
       },
       define: {

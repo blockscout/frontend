@@ -1,12 +1,12 @@
-import { Grid, GridItem } from '@chakra-ui/react';
+import { createListCollection, Grid, GridItem } from '@chakra-ui/react';
 import React from 'react';
 
 import type * as stats from '@blockscout/stats-types';
 import type { StatsIntervalIds } from 'types/client/stats';
 
+import { Select } from 'toolkit/chakra/select';
+import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import ChartIntervalSelect from 'ui/shared/chart/ChartIntervalSelect';
-import FilterInput from 'ui/shared/filters/FilterInput';
-import Select from 'ui/shared/select/Select';
 
 type Props = {
   sections?: Array<stats.LineChartSection>;
@@ -30,12 +30,18 @@ const StatsFilters = ({
   initialFilterValue,
 }: Props) => {
 
-  const options = React.useMemo(() => {
-    return [
-      { value: 'all', label: 'All stats' },
-      ...(sections || []).map((section) => ({ value: section.id, label: section.title })),
-    ];
+  const collection = React.useMemo(() => {
+    return createListCollection({
+      items: [
+        { value: 'all', label: 'All stats' },
+        ...(sections || []).map((section) => ({ value: section.id, label: section.title })),
+      ],
+    });
   }, [ sections ]);
+
+  const handleItemSelect = React.useCallback(({ value }: { value: Array<string> }) => {
+    onSectionChange(value[0]);
+  }, [ onSectionChange ]);
 
   return (
     <Grid
@@ -53,12 +59,12 @@ const StatsFilters = ({
         area="section"
       >
         <Select
-          options={ options }
-          defaultValue={ currentSection }
-          onChange={ onSectionChange }
-          isLoading={ isLoading }
+          collection={ collection }
+          placeholder="Select section"
+          defaultValue={ [ currentSection ] }
+          onValueChange={ handleItemSelect }
           w={{ base: '100%', lg: '136px' }}
-          fontWeight={ 600 }
+          loading={ isLoading }
         />
       </GridItem>
 
@@ -75,11 +81,11 @@ const StatsFilters = ({
       >
         <FilterInput
           key={ initialFilterValue }
-          isLoading={ isLoading }
+          loading={ isLoading }
           onChange={ onFilterInputChange }
           placeholder="Find chart, metric..."
           initialValue={ initialFilterValue }
-          size="xs"
+          size="sm"
         />
       </GridItem>
     </Grid>

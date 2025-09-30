@@ -1,7 +1,7 @@
 export const data = {
   items: [
     {
-      contract_address: '0x5cbe1b88b6357e6a8f0821bea72cc0b88c231f1c',
+      contract_address_hash: '0x5cbe1b88b6357e6a8f0821bea72cc0b88c231f1c',
       created_at: '2022-05-27T01:13:48.000000Z',
       game_type: 0,
       index: 6662,
@@ -10,7 +10,7 @@ export const data = {
       status: 'In progress',
     },
     {
-      contract_address: '0x5cbe1b88b6357e6a8f0821bea72cc0b88c231f1c',
+      contract_address_hash: '0x5cbe1b88b6357e6a8f0821bea72cc0b88c231f1c',
       created_at: '2022-05-27T01:13:48.000000Z',
       game_type: 0,
       index: 6662,

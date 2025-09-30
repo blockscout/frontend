@@ -23,7 +23,7 @@ const ChartTooltipRow = ({ label, lineNum, children }: Props) => {
             className="ChartTooltip__label"
             transform="translate(0,0)"
             dominantBaseline="hanging"
-            fill={ labelColor }
+            fill={ labelColor[0] }
           >
             { label }
           </text>
@@ -31,7 +31,7 @@ const ChartTooltipRow = ({ label, lineNum, children }: Props) => {
             className="ChartTooltip__value"
             transform={ `translate(${ LABEL_WIDTH },0)` }
             dominantBaseline="hanging"
-            fill={ textColor }
+            fill={ textColor[0] }
           />
         </>
       ) }
@@ -51,7 +51,7 @@ interface UseRenderRowsReturnType {
   width: number;
 }
 
-export function useRenderRows(ref: React.RefObject<SVGGElement>, { data, xScale, minWidth }: UseRenderRowsParams) {
+export function useRenderRows(ref: React.RefObject<SVGGElement | null>, { data, xScale, minWidth }: UseRenderRowsParams) {
   return React.useCallback((x: number, currentPoints: Array<CurrentPoint>): UseRenderRowsReturnType => {
 
     // update "transform" prop of all rows

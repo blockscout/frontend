@@ -13,21 +13,16 @@ import PageTitle from '../PageTitle';
 
 const DefaultView = () => {
   const tokenData: TokenInfo = {
-    address: '0x363574E6C5C71c343d7348093D84320c76d5Dd29',
+    address_hash: '0x363574E6C5C71c343d7348093D84320c76d5Dd29',
     circulating_market_cap: '117629601.61913824',
     type: 'ERC-20',
     symbol: 'SHAAAAAAAAAAAAA',
     name: null,
     decimals: '18',
-    holders: '1',
+    holders_count: '1',
     exchange_rate: null,
     total_supply: null,
     icon_url: 'https://example.com/logo.png',
-  };
-
-  const backLink = {
-    label: 'Back to tokens list',
-    url: 'https://localhost:3000/tokens',
   };
 
   const contentAfter = (
@@ -35,7 +30,7 @@ const DefaultView = () => {
       <IconSvg name="certified" color="green.500" boxSize={ 6 } cursor="pointer"/>
       <EntityTags
         tags={ [
-          { slug: 'example', name: 'Example label', tagType: 'custom' },
+          { slug: 'example', name: 'Example label', tagType: 'custom', ordinal: 0 },
         ] }
         flexGrow={ 1 }
       />
@@ -46,9 +41,7 @@ const DefaultView = () => {
     <>
       <AddressEntity
         address={{ ...addressMock.token, name: '' }}
-        fontFamily="heading"
-        fontSize="lg"
-        fontWeight={ 500 }
+        variant="subheading"
       />
       <NetworkExplorers type="token" pathParam={ addressMock.hash } ml="auto"/>
     </>
@@ -60,10 +53,9 @@ const DefaultView = () => {
       beforeTitle={ (
         <TokenEntity.Icon
           token={ tokenData }
-          size="lg"
+          variant="heading"
         />
       ) }
-      backLink={ backLink }
       contentAfter={ contentAfter }
       secondRow={ secondRow }
     />

@@ -16,7 +16,7 @@ test.beforeEach(async({ mockAssetResponse, mockEnvs, mockTextAd }) => {
 });
 
 test('search by token name  +@mobile +@dark-mode', async({ render, page, mockApiResponse }) => {
-  const apiUrl = await mockApiResponse('quick_search', [
+  const apiUrl = await mockApiResponse('general:quick_search', [
     searchMock.token1,
     searchMock.token2,
   ], { queryParams: { q: 'o' } });
@@ -28,7 +28,7 @@ test('search by token name  +@mobile +@dark-mode', async({ render, page, mockApi
 });
 
 test('search by contract name  +@mobile +@dark-mode', async({ render, page, mockApiResponse }) => {
-  const apiUrl = await mockApiResponse('quick_search', [
+  const apiUrl = await mockApiResponse('general:quick_search', [
     searchMock.contract1,
     searchMock.contract2,
     searchMock.address2,
@@ -42,7 +42,7 @@ test('search by contract name  +@mobile +@dark-mode', async({ render, page, mock
 });
 
 test('search by name homepage +@dark-mode', async({ render, page, mockApiResponse }) => {
-  const apiUrl = await mockApiResponse('quick_search', [
+  const apiUrl = await mockApiResponse('general:quick_search', [
     searchMock.token1,
     searchMock.token2,
     searchMock.contract1,
@@ -55,7 +55,7 @@ test('search by name homepage +@dark-mode', async({ render, page, mockApiRespons
 });
 
 test('search by tag  +@mobile +@dark-mode', async({ render, page, mockApiResponse }) => {
-  const apiUrl = await mockApiResponse('quick_search', [
+  const apiUrl = await mockApiResponse('general:quick_search', [
     searchMock.label1,
   ], { queryParams: { q: 'o' } });
   await render(<SearchBar/>);
@@ -66,18 +66,31 @@ test('search by tag  +@mobile +@dark-mode', async({ render, page, mockApiRespons
 });
 
 test('search by address hash +@mobile', async({ render, page, mockApiResponse }) => {
-  const apiUrl = await mockApiResponse('quick_search', [
+  const apiUrl = await mockApiResponse('general:quick_search', [
     searchMock.address1,
-  ], { queryParams: { q: searchMock.address1.address } });
+  ], { queryParams: { q: searchMock.address1.address_hash } });
   await render(<SearchBar/>);
-  await page.getByPlaceholder(/search/i).fill(searchMock.address1.address);
+  await page.getByPlaceholder(/search/i).fill(searchMock.address1.address_hash);
   await page.waitForResponse(apiUrl);
 
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 300 } });
 });
 
+test('search by meta tag  +@mobile +@dark-mode', async({ render, page, mockApiResponse }) => {
+  const apiUrl = await mockApiResponse('general:quick_search', [
+    searchMock.metatag1,
+    searchMock.metatag2,
+    searchMock.metatag3,
+  ], { queryParams: { q: 'utko' } });
+  await render(<SearchBar/>);
+  await page.getByPlaceholder(/search/i).fill('utko');
+  await page.waitForResponse(apiUrl);
+
+  await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 500 } });
+});
+
 test('search by block number +@mobile', async({ render, page, mockApiResponse }) => {
-  const apiUrl = await mockApiResponse('quick_search', [
+  const apiUrl = await mockApiResponse('general:quick_search', [
     searchMock.block1,
     searchMock.block2,
     searchMock.block3,
@@ -90,7 +103,7 @@ test('search by block number +@mobile', async({ render, page, mockApiResponse })
 });
 
 test('search by block hash +@mobile', async({ render, page, mockApiResponse }) => {
-  const apiUrl = await mockApiResponse('quick_search', [
+  const apiUrl = await mockApiResponse('general:quick_search', [
     searchMock.block1,
   ], { queryParams: { q: searchMock.block1.block_hash } });
   await render(<SearchBar/>);
@@ -101,7 +114,7 @@ test('search by block hash +@mobile', async({ render, page, mockApiResponse }) =
 });
 
 test('search by tx hash +@mobile', async({ render, page, mockApiResponse }) => {
-  const apiUrl = await mockApiResponse('quick_search', [
+  const apiUrl = await mockApiResponse('general:quick_search', [
     searchMock.tx1,
   ], { queryParams: { q: searchMock.tx1.transaction_hash } });
   await render(<SearchBar/>);
@@ -111,9 +124,20 @@ test('search by tx hash +@mobile', async({ render, page, mockApiResponse }) => {
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 300 } });
 });
 
+test('search by tac operation hash +@mobile', async({ render, page, mockApiResponse }) => {
+  const apiUrl = await mockApiResponse('general:quick_search', [
+    searchMock.tacOperation1,
+  ], { queryParams: { q: searchMock.tacOperation1.tac_operation.operation_id } });
+  await render(<SearchBar/>);
+  await page.getByPlaceholder(/search/i).fill(searchMock.tacOperation1.tac_operation.operation_id);
+  await page.waitForResponse(apiUrl);
+
+  await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 300 } });
+});
+
 test('search by blob hash +@mobile', async({ render, page, mockApiResponse, mockEnvs }) => {
   await mockEnvs(ENVS_MAP.dataAvailability);
-  const apiUrl = await mockApiResponse('quick_search', [
+  const apiUrl = await mockApiResponse('general:quick_search', [
     searchMock.blob1,
   ], { queryParams: { q: searchMock.blob1.blob_hash } });
   await render(<SearchBar/>);
@@ -125,7 +149,7 @@ test('search by blob hash +@mobile', async({ render, page, mockApiResponse, mock
 
 test('search by domain name +@mobile', async({ render, page, mockApiResponse, mockEnvs }) => {
   await mockEnvs(ENVS_MAP.nameService);
-  const apiUrl = await mockApiResponse('quick_search', [
+  const apiUrl = await mockApiResponse('general:quick_search', [
     searchMock.domain1,
   ], { queryParams: { q: searchMock.domain1.ens_info.name } });
 
@@ -138,7 +162,7 @@ test('search by domain name +@mobile', async({ render, page, mockApiResponse, mo
 
 test('search by user op hash +@mobile', async({ render, page, mockApiResponse, mockEnvs }) => {
   await mockEnvs(ENVS_MAP.userOps);
-  const apiUrl = await mockApiResponse('quick_search', [
+  const apiUrl = await mockApiResponse('general:quick_search', [
     searchMock.userOp1,
   ], { queryParams: { q: searchMock.tx1.transaction_hash } });
   await render(<SearchBar/>);
@@ -149,7 +173,7 @@ test('search by user op hash +@mobile', async({ render, page, mockApiResponse, m
 });
 
 test('search with view all link', async({ render, page, mockApiResponse }) => {
-  const apiUrl = await mockApiResponse('quick_search', [
+  const apiUrl = await mockApiResponse('general:quick_search', [
     searchMock.token1,
     searchMock.token2,
     searchMock.contract1,
@@ -163,7 +187,7 @@ test('search with view all link', async({ render, page, mockApiResponse }) => {
 });
 
 test('scroll suggest to category', async({ render, page, mockApiResponse }) => {
-  const apiUrl = await mockApiResponse('quick_search', [
+  const apiUrl = await mockApiResponse('general:quick_search', [
     searchMock.token1,
     searchMock.token2,
     searchMock.contract1,
@@ -203,14 +227,18 @@ test.describe('with apps', () => {
       [ 'NEXT_PUBLIC_MARKETPLACE_ENABLED', 'true' ],
       [ 'NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', MARKETPLACE_CONFIG_URL ],
     ]);
-    const apiUrl = await mockApiResponse('quick_search', [
+    const apiUrl = await mockApiResponse('general:quick_search', [
       searchMock.token1,
     ], { queryParams: { q: 'o' } });
     await mockConfigResponse('NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', MARKETPLACE_CONFIG_URL, appsMock);
     await mockAssetResponse(appsMock[0].logo, './playwright/mocks/image_s.jpg');
     await mockAssetResponse(appsMock[1].logo, './playwright/mocks/image_s.jpg');
-
-    await render(<SearchBar/>);
+    const hooksConfig = {
+      router: {
+        query: { q: 'o' },
+      },
+    };
+    await render(<SearchBar/>, { hooksConfig });
     await page.getByPlaceholder(/search/i).fill('o');
     await page.waitForResponse(apiUrl);
 
@@ -220,7 +248,7 @@ test.describe('with apps', () => {
 
 test.describe('block countdown', () => {
   test('no results +@mobile', async({ render, page, mockApiResponse }) => {
-    const apiUrl = await mockApiResponse('quick_search', [], { queryParams: { q: '1234567890' } });
+    const apiUrl = await mockApiResponse('general:quick_search', [], { queryParams: { q: '1234567890' } });
     await render(<SearchBar/>);
     await page.getByPlaceholder(/search/i).fill('1234567890');
     await page.waitForResponse(apiUrl);
@@ -229,7 +257,7 @@ test.describe('block countdown', () => {
   });
 
   test('with results +@mobile', async({ render, page, mockApiResponse }) => {
-    const apiUrl = await mockApiResponse('quick_search', [
+    const apiUrl = await mockApiResponse('general:quick_search', [
       { ...searchMock.token1, name: '1234567890123456789' },
     ], { queryParams: { q: '1234567890' } });
     await render(<SearchBar/>);

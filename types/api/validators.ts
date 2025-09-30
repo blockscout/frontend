@@ -1,5 +1,7 @@
 import type { AddressParam } from './addressParams';
 
+// Stability
+
 export interface ValidatorStability {
   address: AddressParam;
   blocks_validated_count: number;
@@ -17,10 +19,10 @@ export interface ValidatorsStabilityResponse {
 }
 
 export interface ValidatorsStabilityCountersResponse {
-  active_validators_counter: string;
+  active_validators_count: string;
   active_validators_percentage: number;
-  new_validators_counter_24h: string;
-  validators_counter: string;
+  new_validators_count_24h: string;
+  validators_count: string;
 }
 
 export interface ValidatorsStabilityFilters {
@@ -35,7 +37,9 @@ export interface ValidatorsStabilitySorting {
 
 export type ValidatorsStabilitySortingField = ValidatorsStabilitySorting['sort'];
 
-export type ValidatorsStabilitySortingValue = `${ ValidatorsStabilitySortingField }-${ ValidatorsStabilitySorting['order'] }`;
+export type ValidatorsStabilitySortingValue = `${ ValidatorsStabilitySortingField }-${ ValidatorsStabilitySorting['order'] }` | 'default';
+
+// Blackfort
 
 export interface ValidatorBlackfort {
   address: AddressParam;
@@ -53,8 +57,8 @@ export interface ValidatorsBlackfortResponse {
 }
 
 export interface ValidatorsBlackfortCountersResponse {
-  new_validators_counter_24h: string;
-  validators_counter: string;
+  new_validators_count_24h: string;
+  validators_count: string;
 }
 
 export interface ValidatorsBlackfortSorting {
@@ -64,4 +68,28 @@ export interface ValidatorsBlackfortSorting {
 
 export type ValidatorsBlackfortSortingField = ValidatorsBlackfortSorting['sort'];
 
-export type ValidatorsBlackfortSortingValue = `${ ValidatorsBlackfortSortingField }-${ ValidatorsBlackfortSorting['order'] }`;
+export type ValidatorsBlackfortSortingValue = `${ ValidatorsBlackfortSortingField }-${ ValidatorsBlackfortSorting['order'] }` | 'default';
+
+// Zilliqa
+export interface ValidatorsZilliqaItem {
+  index: number;
+  bls_public_key: string;
+  balance: string;
+}
+
+export interface ValidatorsZilliqaResponse {
+  items: Array<ValidatorsZilliqaItem>;
+  next_page_params: null;
+}
+
+export interface ValidatorZilliqa {
+  added_at_block_number: number;
+  balance: string;
+  bls_public_key: string;
+  control_address: AddressParam;
+  index: number;
+  peer_id: string;
+  reward_address: AddressParam;
+  signing_address: AddressParam;
+  stake_updated_at_block_number: number;
+}

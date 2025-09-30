@@ -1,15 +1,17 @@
 import type { AddressParam } from './addressParams';
 import type { SmartContractLicenseType } from './contract';
 
+export type VerifiedContractsLanguage = 'solidity' | 'vyper' | 'yul' | 'scilla' | 'stylus_rust' | 'geas';
+
 export interface VerifiedContract {
   address: AddressParam;
   certified?: boolean;
   coin_balance: string;
   compiler_version: string | null;
-  language: 'vyper' | 'yul' | 'solidity' | 'stylus_rust';
+  language: VerifiedContractsLanguage;
   has_constructor_args: boolean;
   optimization_enabled: boolean;
-  transaction_count: number | null;
+  transactions_count: number | null;
   verified_at: string;
   market_cap: string | null;
   license_type: SmartContractLicenseType | null;
@@ -24,7 +26,7 @@ export interface VerifiedContractsResponse {
   } | null;
 }
 
-export type VerifiedContractsFilter = 'solidity' | 'vyper' | 'yul' | 'scilla';
+export type VerifiedContractsFilter = Exclude<VerifiedContractsLanguage, 'stylus_rust'>;
 
 export interface VerifiedContractsFilters {
   q: string | undefined;

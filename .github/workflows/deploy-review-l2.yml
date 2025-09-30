@@ -14,6 +14,7 @@ on:
             - arbitrum_nova
             - arbitrum_sepolia
             - base
+            - celo
             - celo_alfajores
             - garnet
             - gnosis
@@ -21,16 +22,21 @@ on:
             - eth_sepolia
             - eth_goerli
             - filecoin
+            - immutable
+            - mega_eth
+            - neon_devnet
             - optimism
-            - optimism_celestia
             - optimism_sepolia
+            - optimism_superchain
             - polygon
             - rootstock
             - scroll_sepolia
             - shibarium
             - stability
+            - zetachain
+            - zetachain_testnet
             - zkevm 
-            - zilliqa_prototestnet
+            - zilliqa
             - zksync
             - zora
 
@@ -60,7 +66,7 @@ jobs:
   deploy_review_l2:
     name: Deploy frontend (L2)
     needs: [ make_slug, publish_image ]
-    uses: blockscout/blockscout-ci-cd/.github/workflows/deploy_helmfile.yaml@master
+    uses: blockscout/actions/.github/workflows/deploy_helmfile.yaml@main
     with:
       appName: review-l2-${{ needs.make_slug.outputs.REF_SLUG }}
       globalEnv: review

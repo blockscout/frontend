@@ -1,18 +1,20 @@
-import { Tr, Td, Flex, Box } from '@chakra-ui/react';
+import { Flex, Box } from '@chakra-ui/react';
 import React from 'react';
 
+import type { TokenInstance } from 'types/api/token';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import getCurrencyValue from 'lib/getCurrencyValue';
 import { NFT_TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
+import { Badge } from 'toolkit/chakra/badge';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { TableCell, TableRow } from 'toolkit/chakra/table';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
-import Skeleton from 'ui/shared/chakra/Skeleton';
-import Tag from 'ui/shared/chakra/Tag';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
-import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
-type Props = TokenTransfer & { tokenId?: string; isLoading?: boolean };
+type Props = TokenTransfer & { tokenId?: string; isLoading?: boolean; instance?: TokenInstance };
 
 const TokenTransferTableItem = ({
   token,
@@ -24,6 +26,7 @@ const TokenTransferTableItem = ({
   timestamp,
   tokenId,
   isLoading,
+  instance,
 }: Props) => {
   const { usd, valueStr } = total && 'value' in total && total.value !== null ? getCurrencyValue({
     value: total.value,
@@ -34,71 +37,72 @@ const TokenTransferTableItem = ({
   }) : { usd: null, valueStr: null };
 
   return (
-    <Tr alignItems="top">
-      <Td>
-        <Flex alignItems="center" py="7px">
+    <TableRow alignItems="top">
+      <TableCell>
+        <Flex flexDirection="column" alignItems="flex-start" mt="5px" rowGap={ 3 }>
           <TxEntity
             hash={ txHash }
             isLoading={ isLoading }
             noIcon
             truncation="constant_long"
           />
-          <TimeAgoWithTooltip
+          <TimeWithTooltip
             timestamp={ timestamp }
             enableIncrement
             isLoading={ isLoading }
             display="inline-block"
-            color="gray.500"
+            color="text.secondary"
             fontWeight="400"
-            ml="10px"
           />
         </Flex>
-      </Td>
-      <Td>
+      </TableCell>
+      <TableCell>
         { method ? (
           <Box my="3px">
-            <Tag isLoading={ isLoading } isTruncated>{ method }</Tag>
+            <Badge loading={ isLoading } truncated>{ method }</Badge>
           </Box>
         ) : null }
-      </Td>
-      <Td>
+      </TableCell>
+      <TableCell>
         <AddressFromTo
           from={ from }
           to={ to }
           isLoading={ isLoading }
           mt="5px"
           mode={{ lg: 'compact', xl: 'long' }}
-          tokenHash={ token?.address }
+          tokenHash={ token?.address_hash }
+          tokenSymbol={ token?.symbol ?? undefined }
         />
-      </Td>
+      </TableCell>
       { (token && NFT_TOKEN_TYPE_IDS.includes(token.type)) && (
-        <Td>
+        <TableCell>
           { total && 'token_id' in total && token && total.token_id !== null ? (
             <NftEntity
-              hash={ token.address }
+              hash={ token.address_hash }
               id={ total.token_id }
+              instance={ instance || total.token_instance }
               noLink={ Boolean(tokenId && tokenId === total.token_id) }
               isLoading={ isLoading }
             />
           ) : ''
           }
-        </Td>
+        </TableCell>
       ) }
       { token && (token.type === 'ERC-20' || token.type === 'ERC-1155' || token.type === 'ERC-404') && (
-        <Td isNumeric verticalAlign="top">
+        <TableCell isNumeric verticalAlign="top">
           { valueStr && (
-            <Skeleton isLoaded={ !isLoading } display="inline-block" mt="7px" wordBreak="break-all">
+            <Skeleton loading={ isLoading } display="inline-block" mt="7px" wordBreak="break-all">
               { valueStr }
             </Skeleton>
           ) }
           { usd && (
-            <Skeleton isLoaded={ !isLoading } color="text_secondary" mt="10px" wordBreak="break-all">
+            <Skeleton loading={ isLoading } color="text.secondary" mt="10px" wordBreak="break-all">
               <span>${ usd }</span>
             </Skeleton>
           ) }
-        </Td>
+        </TableCell>
       ) }
-    </Tr>
+    </TableRow>
   );
 };
 

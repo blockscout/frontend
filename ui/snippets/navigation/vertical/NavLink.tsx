@@ -1,5 +1,4 @@
-import { Link, Text, HStack, Tooltip, Box, useBreakpointValue } from '@chakra-ui/react';
-import NextLink from 'next/link';
+import { HStack, Box, useBreakpointValue, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { NavItem } from 'types/client/navigation';
@@ -8,11 +7,11 @@ import { route } from 'nextjs-routes';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { isInternalItem } from 'lib/hooks/useNavItems';
-import IconSvg from 'ui/shared/IconSvg';
+import { Link } from 'toolkit/chakra/link';
+import { Tooltip } from 'toolkit/chakra/tooltip';
 
-import LightningLabel from '../LightningLabel';
+import LightningLabel, { LIGHTNING_LABEL_CLASS_NAME } from '../LightningLabel';
 import NavLinkIcon from '../NavLinkIcon';
-import useColors from '../useColors';
 import useNavLinkStyleProps from '../useNavLinkStyleProps';
 import { checkRouteHighlight } from '../utils';
 
@@ -21,16 +20,14 @@ type Props = {
   onClick?: (e: React.MouseEvent) => void;
   isCollapsed?: boolean;
   isDisabled?: boolean;
-  isMainNav?: boolean
-  onMouseOver?: () => void
+  isMainNav?: boolean;
+  onMouseOver?: () => void;
 };
 
-const NavLink = ({ item, onClick, isCollapsed, isMainNav, onMouseOver }: Props) => {
+const NavLink = ({ item, onClick, isCollapsed, isDisabled }: Props) => {
   const isMobile = useIsMobile();
-  const colors = useColors();
 
   const isInternalLink = isInternalItem(item);
-  const href = isInternalLink ? route(item.nextRoute) : item.url;
 
   const isExpanded = isCollapsed === false;
 
@@ -39,61 +36,102 @@ const NavLink = ({ item, onClick, isCollapsed, isMainNav, onMouseOver }: Props) 
 
   const isHighlighted = checkRouteHighlight(item);
 
-  const content = (
-    <Link
-      href={ href }
-      target={ isInternalLink ? '_self' : '_blank' }
-      { ...styleProps.itemProps }
-      display="flex"
-      position="relative"
-      px={ !isMainNav ? "12px" : "24px" }
-      py={ !isMainNav ? "12px" : "12px"}
-      aria-label={ `${ item.text } link` }
-      fontSize="12px"
-      whiteSpace="nowrap"
-      onClick={ onClick }
-      _hover={{
-        bg: "grey.20",
-        borderRadius: "14px"
-      }}
-      onMouseOver={onMouseOver}
-    >
-      <Tooltip
-        label={ item.text }
-        hasArrow={ false }
-        isDisabled={ isMobile || isCollapsed === false || (isCollapsed === undefined && isXLScreen) }
-        placement="right"
-        variant="nav"
-        gutter={ 20 }
-        color={ isInternalLink && item.isActive ? colors.text.active : colors.text.hover }
-        margin={ 0 }
-      >
-        <HStack spacing={ 0 } overflow="hidden">
-          {/*@ts-ignore*/}
-          {!isMainNav && (item.icon || item.iconComponent) &&
-            <Box w={{ base: '36px', lg: '36px' }} display="flex" borderRadius="10px" bg="black" p="6px">
-              <NavLinkIcon boxSize="24px" item={ item } color="rgba(255, 255, 255, 0.5)"/>
-            </Box>
-          }
-          <Text { ...styleProps.textProps } as="span" ml={ !isMainNav ? 3 : 0 }>
-            <span>{ item.text }</span>
-            { !isInternalLink && <IconSvg name="link_external" boxSize={ 3 } color="grey.50" verticalAlign="middle"/> }
-          </Text>
-          { isHighlighted && (
-            <LightningLabel iconColor={ styleProps.itemProps.bgColor } isCollapsed={ isCollapsed }/>
-          ) }
-        </HStack>
-      </Tooltip>
-    </Link>
-  );
+  // const content = (
+  //   <Link
+  //     href={ href }
+  //     target={ isInternalLink ? '_self' : '_blank' }
+  //     { ...styleProps.itemProps }
+  //     display="flex"
+  //     position="relative"
+  //     px={ !isMainNav ? "12px" : "24px" }
+  //     py={ !isMainNav ? "12px" : "12px"}
+  //     aria-label={ `${ item.text } link` }
+  //     fontSize="12px"
+  //     whiteSpace="nowrap"
+  //     onClick={ onClick }
+  //     _hover={{
+  //       bg: "grey.20",
+  //       borderRadius: "14px"
+  //     }}
+  //     onMouseOver={onMouseOver}
+  //   >
+  //     <Tooltip
+  //       label={ item.text }
+  //       hasArrow={ false }
+  //       isDisabled={ isMobile || isCollapsed === false || (isCollapsed === undefined && isXLScreen) }
+  //       placement="right"
+  //       variant="nav"
+  //       gutter={ 20 }
+  //       color={ isInternalLink && item.isActive ? colors.text.active : colors.text.hover }
+  //       margin={ 0 }
+  //     >
+  //       <HStack spacing={ 0 } overflow="hidden">
+  //         {/*@ts-ignore*/}
+  //         {!isMainNav && (item.icon || item.iconComponent) &&
+  //           <Box w={{ base: '36px', lg: '36px' }} display="flex" borderRadius="10px" bg="black" p="6px">
+  //             <NavLinkIcon boxSize="24px" item={ item } color="rgba(255, 255, 255, 0.5)"/>
+  //           </Box>
+  //         }
+  //         <Text { ...styleProps.textProps } as="span" ml={ !isMainNav ? 3 : 0 }>
+  //           <span>{ item.text }</span>
+  //           { !isInternalLink && <IconSvg name="link_external" boxSize={ 3 } color="grey.50" verticalAlign="middle"/> }
+  //         </Text>
+  //         { isHighlighted && (
+  //           <LightningLabel iconColor={ styleProps.itemProps.bgColor } isCollapsed={ isCollapsed }/>
+  //         ) }
+  //       </HStack>
+  //     </Tooltip>
+  //   </Link>
+  // );
 
   return (
     <Box as="li" listStyleType="none" w="100%">
-      { isInternalLink ? (
-        <NextLink href={ item.nextRoute } passHref legacyBehavior>
-          { content }
-        </NextLink>
-      ) : content }
+      <Link
+        href={ isInternalLink ? route(item.nextRoute) : item.url }
+        external={ !isInternalLink }
+        { ...styleProps.itemProps }
+        w={{ base: '100%', lg: isExpanded ? '100%' : '60px', xl: isCollapsed ? '60px' : '100%' }}
+        display="flex"
+        position="relative"
+        px={{ base: 2, lg: isExpanded ? 2 : '15px', xl: isCollapsed ? '15px' : 2 }}
+        aria-label={ `${ item.text } link` }
+        whiteSpace="nowrap"
+        onClick={ onClick }
+        _hover={{
+          [`& *:not(.${ LIGHTNING_LABEL_CLASS_NAME }, .${ LIGHTNING_LABEL_CLASS_NAME } *)`]: {
+            color: isDisabled ? 'inherit' : 'link.navigation.fg.hover',
+          },
+        }}
+      >
+        <Tooltip
+          content={ item.text }
+          showArrow={ false }
+          disabled={ isMobile || isCollapsed === false || (isCollapsed === undefined && isXLScreen) }
+          positioning={{ placement: 'right', offset: { crossAxis: 0, mainAxis: 20 } }}
+          variant="popover"
+          contentProps={{
+            color: isInternalLink && item.isActive ? 'link.navigation.fg.selected' : 'link.navigation.fg.hover',
+          }}
+          interactive
+        >
+          <HStack gap={ 0 } overflow="hidden">
+            <NavLinkIcon item={ item }/>
+            <chakra.span
+              { ...styleProps.textProps }
+              ml={ 3 }
+              display={{ base: 'inline', lg: isExpanded ? 'inline' : 'none', xl: isCollapsed ? 'none' : 'inline' }}
+            >
+              <span>{ item.text }</span>
+            </chakra.span>
+            { isHighlighted && (
+              <LightningLabel
+                iconColor={ isInternalLink && item.isActive ? 'link.navigation.bg.selected' : 'link.navigation.bg.group' }
+                isCollapsed={ isCollapsed }
+              />
+            ) }
+          </HStack>
+        </Tooltip>
+      </Link>
     </Box>
   );
 };

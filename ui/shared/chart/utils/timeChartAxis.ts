@@ -3,7 +3,7 @@ import { maxBy, uniq } from 'es-toolkit';
 
 import type { AxesConfig, AxisConfig, TimeChartData } from '../types';
 
-import { MONTH, YEAR } from 'lib/consts';
+import { MONTH, YEAR } from 'toolkit/utils/consts';
 
 export const DEFAULT_MAXIMUM_SIGNIFICANT_DIGITS = 2;
 export const DEFAULT_MAXIMUM_FRACTION_DIGITS = 3;

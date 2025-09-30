@@ -14,7 +14,7 @@ import { MetadataUpdateProvider } from 'ui/tokenInstance/contexts/metadataUpdate
 
 import TokenInstanceDetails from './TokenInstanceDetails';
 
-const hash = tokenInfoERC721a.address;
+const hash = tokenInfoERC721a.address_hash;
 
 const addressMetadataQueryParams = {
   addresses: [ hash ],
@@ -36,8 +36,8 @@ function generateAddressMetadataResponse(tag: AddressMetadataTagApi) {
 }
 
 test.beforeEach(async({ mockApiResponse, mockAssetResponse }) => {
-  await mockApiResponse('address', addressMock.contract, { pathParams: { hash } });
-  await mockApiResponse('token_instance_transfers_count', { transfers_count: 42 }, { pathParams: { id: tokenInstanceMock.unique.id, hash } });
+  await mockApiResponse('general:address', addressMock.contract, { pathParams: { hash } });
+  await mockApiResponse('general:token_instance_transfers_count', { transfers_count: 42 }, { pathParams: { id: tokenInstanceMock.unique.id, hash } });
   await mockAssetResponse('http://localhost:3000/nft-marketplace-logo.png', './playwright/mocks/image_s.jpg');
   await mockAssetResponse(tokenInstanceMock.unique.image_url as string, './playwright/mocks/image_md.jpg');
 });
@@ -57,7 +57,7 @@ test('base view +@dark-mode', async({ render, page }) => {
 test.describe('action button', () => {
   test.beforeEach(async({ mockApiResponse, mockAssetResponse }) => {
     const metadataResponse = generateAddressMetadataResponse(protocolTagWithMeta);
-    await mockApiResponse('address_metadata_info', metadataResponse, { queryParams: addressMetadataQueryParams });
+    await mockApiResponse('metadata:info', metadataResponse, { queryParams: addressMetadataQueryParams });
     await mockAssetResponse(protocolTagWithMeta?.meta?.appLogoURL as string, './playwright/mocks/image_s.jpg');
   });
 

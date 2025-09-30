@@ -14,7 +14,7 @@ const hooksConfig = {
 };
 
 test('base view +@mobile', async({ render, mockApiResponse }) => {
-  await mockApiResponse('address_epoch_rewards', epochRewards, { pathParams: { hash: ADDRESS_HASH } });
+  await mockApiResponse('general:address_epoch_rewards', epochRewards, { pathParams: { hash: ADDRESS_HASH } });
   const component = await render(
     <Box pt={{ base: '134px', lg: 6 }}>
       <AddressEpochRewards/>

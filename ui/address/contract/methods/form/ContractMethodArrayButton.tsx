@@ -1,31 +1,31 @@
-import { IconButton, chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import IconSvg from 'ui/shared/IconSvg';
+import type { IconButtonProps } from 'toolkit/chakra/icon-button';
+import AddButton from 'toolkit/components/buttons/AddButton';
+import RemoveButton from 'toolkit/components/buttons/RemoveButton';
 
-interface Props {
+interface Props extends Omit<IconButtonProps, 'type'> {
   index: number;
-  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
-  isDisabled?: boolean;
   type: 'add' | 'remove';
-  className?: string;
 }
 
-const ContractMethodArrayButton = ({ className, type, index, onClick, isDisabled }: Props) => {
+const ContractMethodArrayButton = ({ type, index, onClick, ...props }: Props) => {
+
+  const handleClick = React.useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+    onClick?.(event);
+  }, [ onClick ]);
+
+  const Button = type === 'add' ? AddButton : RemoveButton;
+
   return (
-    <IconButton
-      className={ className }
-      aria-label={ type }
+    <Button
       data-index={ index }
-      variant="outline"
-      w="20px"
-      h="20px"
-      flexShrink={ 0 }
-      onClick={ onClick }
-      icon={ <IconSvg name={ type === 'remove' ? 'minus' : 'plus' } boxSize={ 3 }/> }
-      isDisabled={ isDisabled }
+      size="2xs_alt"
+      onClick={ handleClick }
+      { ...props }
     />
   );
 };
 
-export default React.memo(chakra(ContractMethodArrayButton));
+export default React.memo(ContractMethodArrayButton);

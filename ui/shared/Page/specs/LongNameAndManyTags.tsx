@@ -13,11 +13,11 @@ import PageTitle from '../PageTitle';
 
 const LongNameAndManyTags = () => {
   const tokenData: TokenInfo = {
-    address: '0xa77A39CC9680B10C00af5D4ABFc92e1F07406c64',
+    address_hash: '0xa77A39CC9680B10C00af5D4ABFc92e1F07406c64',
     circulating_market_cap: null,
     decimals: null,
     exchange_rate: null,
-    holders: '294',
+    holders_count: '294',
     icon_url: null,
     name: 'Ring ding ding daa baa Baa aramba baa bom baa barooumba Wh-wha-what&#39;s going on-on? Ding, ding This is the Crazy Frog Ding, ding Bem, bem! Ring ding ding ding ding ding Ring ding ding ding bem bem bem Ring ding ding ding ding ding Ring ding ding ding baa b',
     symbol: 'BatcoiRing ding ding daa baa Baa aramba baa bom baa barooumba Wh-wha-what&#39;s going on-on? Ding, ding This is the Crazy Frog Ding, ding Bem, bem! Ring ding ding ding ding ding Ring ding ding ding bem bem bem Ring ding ding ding ding ding Ring ding ding ding',
@@ -30,14 +30,14 @@ const LongNameAndManyTags = () => {
       <IconSvg name="certified" color="green.500" boxSize={ 6 } cursor="pointer" flexShrink={ 0 }/>
       <EntityTags
         tags={ [
-          { slug: 'example', name: 'Example with long name', tagType: 'custom' },
+          { slug: 'example', name: 'Example with long name', tagType: 'custom', ordinal: 0 },
           ...formatUserTags({
             private_tags: [ privateTag ],
             public_tags: [ publicTag ],
             watchlist_names: [ watchlistName ],
           }),
-          { slug: 'after_1', name: 'Another tag', tagType: 'custom' },
-          { slug: 'after_2', name: 'And yet more', tagType: 'custom' },
+          { slug: 'after_1', name: 'Another tag', tagType: 'custom', ordinal: 0 },
+          { slug: 'after_2', name: 'And yet more', tagType: 'custom', ordinal: 0 },
         ] }
         flexGrow={ 1 }
       />
@@ -52,7 +52,7 @@ const LongNameAndManyTags = () => {
       beforeTitle={ (
         <TokenEntity.Icon
           token={ tokenData }
-          size="lg"
+          variant="heading"
         />
       ) }
       contentAfter={ contentAfter }

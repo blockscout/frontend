@@ -1,10 +1,10 @@
-import { HStack, PinInputField, Text } from '@chakra-ui/react';
+import { HStack, Text } from '@chakra-ui/react';
 import React from 'react';
 import { useController, useFormContext } from 'react-hook-form';
 
 import type { OtpCodeFormFields } from '../types';
 
-import PinInput from 'ui/shared/chakra/PinInput';
+import { PinInput } from 'toolkit/chakra/pin-input';
 
 const CODE_LENGTH = 6;
 
@@ -22,16 +22,24 @@ const AuthModalFieldOtpCode = ({ isDisabled: isDisabledProp }: Props) => {
 
   const isDisabled = isDisabledProp || formState.isSubmitting;
 
+  const handleChange = React.useCallback(({ value }: { value: Array<string> }) => {
+    field.onChange(value);
+  }, [ field ]);
+
   return (
     <>
       <HStack>
-        <PinInput otp placeholder="" { ...field } isDisabled={ isDisabled } isInvalid={ Boolean(fieldState.error) } bgColor="dialog_bg">
-          { Array.from({ length: CODE_LENGTH }).map((_, index) => (
-            <PinInputField key={ index } borderRadius="base" borderWidth="2px" bgColor="dialog_bg"/>
-          )) }
-        </PinInput>
+        <PinInput
+          otp
+          name={ field.name }
+          value={ field.value }
+          onValueChange={ handleChange }
+          disabled={ isDisabled }
+          invalid={ Boolean(fieldState.error) }
+          bgColor="dialog.bg"
+        />
       </HStack>
-      { fieldState.error?.message && <Text color="error" fontSize="xs" mt={ 1 }>{ fieldState.error.message }</Text> }
+      { fieldState.error?.message && <Text color="text.error" textStyle="sm" mt={ 1 }>{ fieldState.error.message }</Text> }
     </>
   );
 };

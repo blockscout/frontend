@@ -1,18 +1,21 @@
-import type { As } from '@chakra-ui/react';
-import { Box, Flex, Tooltip, chakra, VStack } from '@chakra-ui/react';
+import { Box, Flex, chakra, VStack } from '@chakra-ui/react';
 import React from 'react';
 
 import type { AddressParam } from 'types/api/addressParams';
 
-import { route } from 'nextjs-routes';
+import { route } from 'nextjs/routes';
 
 import { toBech32Address } from 'lib/address/bech32';
 import { useAddressHighlightContext } from 'lib/contexts/addressHighlight';
 import { useSettingsContext } from 'lib/contexts/settings';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import getIconUrl from 'lib/multichain/getIconUrl';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { Tooltip } from 'toolkit/chakra/tooltip';
 import * as EntityBase from 'ui/shared/entities/base/components';
+import { getTagName } from 'ui/shared/EntityTags/utils';
+import type { IconName } from 'ui/shared/IconSvg';
 
-import { distributeEntityProps, getIconProps } from '../base/utils';
+import { distributeEntityProps, getContentProps, getIconProps } from '../base/utils';
 import AddressEntityContentProxy from './AddressEntityContentProxy';
 import AddressIconDelegated from './AddressIconDelegated';
 import AddressIdenticon from './AddressIdenticon';
@@ -43,13 +46,13 @@ const Icon = (props: IconProps) => {
     return null;
   }
 
-  const styles = {
-    ...getIconProps(props.size),
-    marginRight: props.marginRight ?? 2,
-  };
+  const shield = props.shield ?? (props.chain ? { src: getIconUrl(props.chain) } : undefined);
+  const hintPostfix: string = props.hintPostfix ?? (props.chain ? ` on ${ props.chain.config.chain.name } (Chain ID: ${ props.chain.config.chain.id })` : '');
+
+  const styles = getIconProps(props, Boolean(shield));
 
   if (props.isLoading) {
-    return <Skeleton { ...styles } borderRadius="full" flexShrink={ 0 }/>;
+    return <Skeleton { ...styles } loading borderRadius="full" flexShrink={ 0 }/>;
   }
 
   const isDelegatedAddress = props.address.proxy_type === 'eip7702';
@@ -59,6 +62,7 @@ const Icon = (props: IconProps) => {
       return (
         <EntityBase.Icon
           { ...props }
+          shield={ shield }
           name="brands/safe"
         />
       );
@@ -66,36 +70,46 @@ const Icon = (props: IconProps) => {
 
     const isProxy = Boolean(props.address.implementations?.length);
     const isVerified = isProxy ? props.address.is_verified && props.address.implementations?.every(({ name }) => Boolean(name)) : props.address.is_verified;
-    const contractIconName: EntityBase.IconBaseProps['name'] = props.address.is_verified ? 'contracts/verified' : 'contracts/regular';
-    const label = (isVerified ? 'verified ' : '') + (isProxy ? 'proxy contract' : 'contract');
+    const contractIconName: IconName = props.address.is_verified ? 'contracts/verified' : 'contracts/regular';
+    const label = (isVerified ? 'verified ' : '') + (isProxy ? 'proxy contract' : 'contract') + hintPostfix;
 
     return (
-      <Tooltip label={ label.slice(0, 1).toUpperCase() + label.slice(1) }>
-        <span>
-          <EntityBase.Icon
-            { ...props }
-            name={ isProxy ? 'contracts/proxy' : contractIconName }
-            color={ isVerified ? 'green.500' : undefined }
-            borderRadius={ 0 }
-          />
-        </span>
-      </Tooltip>
+      <EntityBase.Icon
+        { ...props }
+        shield={ shield }
+        name={ isProxy ? 'contracts/proxy' : contractIconName }
+        color={ isVerified ? 'green.500' : undefined }
+        borderRadius={ 0 }
+        hint={ label.slice(0, 1).toUpperCase() + label.slice(1) }
+      />
     );
   }
 
   const label = (() => {
     if (isDelegatedAddress) {
-      return props.address.is_verified ? 'EOA + verified code' : 'EOA + code';
+      return (props.address.is_verified ? 'EOA + verified code' : 'EOA + code') + hintPostfix;
     }
+
+    if (props.chain) {
+      return 'Address' + hintPostfix;
+    }
+
+    return props.hint;
   })();
 
   return (
-    <Tooltip label={ label }>
+    <Tooltip
+      content={ label }
+      disabled={ !label }
+      interactive={ props.tooltipInteractive }
+      positioning={ shield ? { offset: { mainAxis: 8 } } : undefined }
+    >
       <Flex marginRight={ styles.marginRight } position="relative">
         <AddressIdenticon
-          size={ props.size === 'lg' ? 30 : 20 }
+          size={ props.variant === 'heading' ? 30 : 20 }
           hash={ getDisplayedAddress(props.address) }
         />
+        { shield && <EntityBase.IconShield { ...shield }/> }
         { isDelegatedAddress && <AddressIconDelegated isVerified={ Boolean(props.address.is_verified) }/> }
       </Flex>
     </Tooltip>
@@ -106,7 +120,14 @@ export type ContentProps = Omit<EntityBase.ContentBaseProps, 'text'> & Pick<Enti
 
 const Content = chakra((props: ContentProps) => {
   const displayedAddress = getDisplayedAddress(props.address, props.altHash);
-  const nameTag = props.address.metadata?.tags.find(tag => tag.tagType === 'name')?.name;
+  const nameTag = (() => {
+    const tagData = props.address.metadata?.tags.find(tag => tag.tagType === 'name');
+    if (!tagData || !tagData.name) {
+      return;
+    }
+
+    return getTagName(tagData, props.address.hash);
+  })();
   const nameText = nameTag || props.address.ens_domain_name || props.address.name;
 
   const isProxy = props.address.implementations && props.address.implementations.length > 0 && props.address.proxy_type !== 'eip7702';
@@ -116,6 +137,8 @@ const Content = chakra((props: ContentProps) => {
   }
 
   if (nameText) {
+    const styles = getContentProps(props.variant);
+
     const label = (
       <VStack gap={ 0 } py={ 1 } color="inherit">
         <Box fontWeight={ 600 } whiteSpace="pre-wrap" wordBreak="break-word">{ nameText }</Box>
@@ -126,8 +149,13 @@ const Content = chakra((props: ContentProps) => {
     );
 
     return (
-      <Tooltip label={ label } maxW={{ base: 'calc(100vw - 8px)', lg: '400px' }}>
-        <Skeleton isLoaded={ !props.isLoading } overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap" as="span">
+      <Tooltip
+        content={ label }
+        contentProps={{ maxW: { base: 'calc(100vw - 8px)', lg: '400px' } }}
+        triggerProps={{ minW: 0 }}
+        interactive={ props.tooltipInteractive }
+      >
+        <Skeleton loading={ props.isLoading } overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap" { ...styles }>
           { nameText }
         </Skeleton>
       </Tooltip>
@@ -166,11 +194,17 @@ export interface EntityProps extends EntityBase.EntityBaseProps {
   noAltHash?: boolean;
 }
 
-const AddressEntry = (props: EntityProps) => {
+const AddressEntity = (props: EntityProps) => {
   const partsProps = distributeEntityProps(props);
   const highlightContext = useAddressHighlightContext(props.noHighlight);
   const settingsContext = useSettingsContext();
+
   const altHash = !props.noAltHash && settingsContext?.addressFormat === 'bech32' ? toBech32Address(props.address.hash) : undefined;
+
+  // inside highlight context all tooltips should be interactive
+  // because non-interactive ones will not pass 'onMouseLeave' event to the parent component
+  // see issue - https://github.com/chakra-ui/chakra-ui/issues/9939#issuecomment-2810567024
+  const content = <Content { ...partsProps.content } altHash={ altHash } tooltipInteractive={ Boolean(highlightContext) }/>;
 
   return (
     <Container
@@ -184,15 +218,14 @@ const AddressEntry = (props: EntityProps) => {
       fontSize="14px"
       zIndex={ 0 }
     >
-      <Link { ...partsProps.link }>
-        <Content color="cyan" { ...partsProps.content } altHash={ altHash }/>
-      </Link>
-      <Copy { ...partsProps.copy } altHash={ altHash }/>
+      <Icon { ...partsProps.icon } tooltipInteractive={ Boolean(highlightContext) }/>
+      { props.noLink ? content : <Link { ...partsProps.link }>{ content }</Link> }
+      <Copy { ...partsProps.copy } altHash={ altHash } tooltipInteractive={ Boolean(highlightContext) }/>
     </Container>
   );
 };
 
-export default React.memo(chakra<As, EntityProps>(AddressEntry));
+export default React.memo(chakra(AddressEntity));
 
 export {
   Container,

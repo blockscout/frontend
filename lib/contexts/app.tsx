@@ -1,7 +1,7 @@
 import React, { createContext, useContext } from 'react';
 
 import type { Route } from 'nextjs-routes';
-import type { Props as PageProps } from 'nextjs/getServerSideProps';
+import type { Props as PageProps } from 'nextjs/getServerSideProps/handlers';
 
 type Props = {
   children: React.ReactNode;
@@ -14,6 +14,7 @@ const AppContext = createContext<PageProps>({
   query: {},
   adBannerProvider: null,
   apiData: null,
+  uuid: '',
 });
 
 export function AppContextProvider({ children, pageProps }: Props) {

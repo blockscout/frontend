@@ -23,7 +23,7 @@ test('base view +@dark-mode +@mobile', async({ render, mockApiResponse, page }) 
   date.setMonth(date.getMonth() - 1);
 
   const chartApiUrl = await mockApiResponse(
-    'stats_line',
+    'stats:line',
     statsLineMock.averageGasPrice,
     {
       pathParams: { id: CHART_ID },

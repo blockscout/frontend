@@ -12,14 +12,13 @@ import type { Transaction } from 'types/api/transaction';
 import config from 'configs/app';
 import getValueWithUnit from 'lib/getValueWithUnit';
 import { currencyUnits } from 'lib/units';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
-import Skeleton from 'ui/shared/chakra/Skeleton';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
-import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import TxFee from 'ui/shared/tx/TxFee';
 import TxWatchListTags from 'ui/shared/tx/TxWatchListTags';
-import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
 import TxType from 'ui/txs/TxType';
 
 type Props = {
@@ -40,10 +39,9 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
       gridGap={ 8 }
       width="100%"
       minW="700px"
-      borderTop="1px solid"
-      borderColor="divider"
+      borderBottom="1px solid"
+      borderColor="border.divider"
       p={ 4 }
-      _last={{ borderBottom: '1px solid', borderColor: 'divider' }}
       display={{ base: 'none', lg: 'grid' }}
     >
       <Flex overflow="hidden" w="100%">
@@ -62,13 +60,14 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
               isLoading={ isLoading }
               hash={ tx.hash }
             />
-            <TimeAgoWithTooltip
+            <TimeWithTooltip
               timestamp={ tx.timestamp }
               enableIncrement
+              timeFormat="relative"
               isLoading={ isLoading }
-              color="grey.50"
               fontWeight="400"
               fontSize="sm"
+              color="text.secondary"
               flexShrink={ 0 }
               ml={ 2 }
             />
@@ -81,22 +80,19 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
         isLoading={ isLoading }
         mode="compact"
       />
-      <Flex gap="10px" justify="space-between">
-        <Flex flexDir="column" justify="space-between">
-          { !config.UI.views.tx.hiddenFields?.value && (
-            <Skeleton isLoaded={ !isLoading } my="3px">
-              <Text as="span" whiteSpace="pre" fontSize="14px">Value: </Text>
-              <Text as="span" fontSize="14px" variant="secondary" color="grey.50">{ getValueWithUnit(tx.value).dp(5).toFormat() } { currencyUnits.ether }</Text>
-            </Skeleton>
-          ) }
-          { !config.UI.views.tx.hiddenFields?.tx_fee && (
-            <Skeleton isLoaded={ !isLoading } display="flex" whiteSpace="pre" my="3px">
-              <Text as="span" fontSize="14px">Fee: </Text>
-              <TxFee tx={ tx } accuracy={ 5 } color="grey.50"/>
-            </Skeleton>
-          ) }
-        </Flex>
-        <TxAdditionalInfo tx={ tx } isLoading={ isLoading } my="3px"/>
+      <Flex flexDir="column" rowGap={ 3 }>
+        { !config.UI.views.tx.hiddenFields?.value && (
+          <Skeleton loading={ isLoading }>
+            <Text as="span" whiteSpace="pre">Value </Text>
+            <Text as="span" color="text.secondary">{ getValueWithUnit(tx.value).dp(5).toFormat() } { currencyUnits.ether }</Text>
+          </Skeleton>
+        ) }
+        { !config.UI.views.tx.hiddenFields?.tx_fee && (
+          <Skeleton loading={ isLoading } display="flex" whiteSpace="pre">
+            <Text as="span">Fee </Text>
+            <TxFee tx={ tx } accuracy={ 5 } color="text.secondary"/>
+          </Skeleton>
+        ) }
       </Flex>
     </Grid>
   );

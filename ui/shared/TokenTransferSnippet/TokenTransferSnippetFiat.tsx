@@ -21,7 +21,7 @@ const FtTokenTransferSnippet = ({ token, value, decimals }: Props) => {
 
   return (
     <>
-      <chakra.span color="text_secondary">for</chakra.span>
+      <chakra.span color="text.secondary">for</chakra.span>
       <span>{ valueStr }</span>
       <TokenEntity
         token={{ ...token, name: token.symbol || token.name }}
@@ -29,7 +29,7 @@ const FtTokenTransferSnippet = ({ token, value, decimals }: Props) => {
         noSymbol
         w="auto"
       />
-      { usd && <chakra.span color="text_secondary">(${ usd })</chakra.span> }
+      { usd && <chakra.span color="text.secondary">(${ usd })</chakra.span> }
     </>
   );
 };

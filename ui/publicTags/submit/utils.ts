@@ -19,12 +19,13 @@ export function convertFormDataToRequestsBody(data: FormFields): Array<SubmitReq
         companyWebsite: data.companyWebsite,
         address: address.hash,
         name: tag.name,
-        tagType: tag.type.value,
+        tagType: tag.type[0],
         description: data.description,
         meta: pickBy({
           bgColor: tag.bgColor,
           textColor: tag.textColor,
           tagUrl: tag.url,
+          tagIcon: tag.iconUrl,
           tooltipDescription: tag.tooltipDescription,
         }, Boolean),
       });
@@ -37,8 +38,9 @@ export function convertFormDataToRequestsBody(data: FormFields): Array<SubmitReq
 export function convertTagApiFieldsToFormFields(tag: Pick<SubmitRequestBody, 'name' | 'tagType' | 'meta'>): FormFieldTag {
   return {
     name: tag.name,
-    type: { label: tag.tagType, value: tag.tagType },
+    type: [ tag.tagType ],
     url: tag.meta.tagUrl,
+    iconUrl: tag.meta.tagIcon,
     bgColor: tag.meta.bgColor,
     textColor: tag.meta.textColor,
     tooltipDescription: tag.meta.tooltipDescription,
@@ -104,7 +106,7 @@ export function getFormDefaultValues(query: Route['query'], userInfo: UserInfo |
     requesterEmail: getQueryParamString(query?.requesterEmail) || userInfo?.email || undefined,
     companyName: getQueryParamString(query?.companyName),
     companyWebsite: getQueryParamString(query?.companyWebsite),
-    tags: [ { name: '', type: { label: 'Name', value: 'name' as const } } ],
+    tags: [ { name: '', type: [ 'name' as const ] } ],
   };
 }
 

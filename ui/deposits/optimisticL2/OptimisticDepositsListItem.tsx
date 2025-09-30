@@ -4,13 +4,13 @@ import React from 'react';
 import type { OptimisticL2DepositsItem } from 'types/api/optimisticL2';
 
 import config from 'configs/app';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import AddressEntityL1 from 'ui/shared/entities/address/AddressEntityL1';
 import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
-import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 const rollupFeature = config.features.rollup;
 
@@ -29,8 +29,6 @@ const OptimisticDepositsListItem = ({ item, isLoading }: Props) => {
         <BlockEntityL1
           number={ item.l1_block_number }
           isLoading={ isLoading }
-          fontSize="sm"
-          lineHeight={ 5 }
           fontWeight={ 600 }
         />
       </ListItemMobileGrid.Value>
@@ -40,15 +38,13 @@ const OptimisticDepositsListItem = ({ item, isLoading }: Props) => {
         <TxEntity
           isLoading={ isLoading }
           hash={ item.l2_transaction_hash }
-          fontSize="sm"
-          lineHeight={ 5 }
           truncation="constant_long"
         />
       </ListItemMobileGrid.Value>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Age</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <TimeAgoWithTooltip
+        <TimeWithTooltip
           timestamp={ item.l1_block_timestamp }
           isLoading={ isLoading }
           display="inline-block"
@@ -60,8 +56,6 @@ const OptimisticDepositsListItem = ({ item, isLoading }: Props) => {
         <TxEntityL1
           isLoading={ isLoading }
           hash={ item.l1_transaction_hash }
-          fontSize="sm"
-          lineHeight={ 5 }
           truncation="constant_long"
         />
       </ListItemMobileGrid.Value>
@@ -78,7 +72,7 @@ const OptimisticDepositsListItem = ({ item, isLoading }: Props) => {
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Gas limit</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <Skeleton isLoaded={ !isLoading } display="inline-block">{ BigNumber(item.l2_transaction_gas_limit).toFormat() }</Skeleton>
+        <Skeleton loading={ isLoading } display="inline-block">{ BigNumber(item.l2_transaction_gas_limit).toFormat() }</Skeleton>
       </ListItemMobileGrid.Value>
 
     </ListItemMobileGrid.Container>

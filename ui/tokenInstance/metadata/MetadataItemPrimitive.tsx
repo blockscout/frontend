@@ -3,29 +3,33 @@ import React from 'react';
 import type { Primitive } from 'react-hook-form';
 
 import urlParser from 'lib/token/metadata/urlParser';
-import LinkExternal from 'ui/shared/links/LinkExternal';
+import { Link } from 'toolkit/chakra/link';
 
 import MetadataAccordionItem from './MetadataAccordionItem';
 import MetadataAccordionItemTitle from './MetadataAccordionItemTitle';
 
-interface Props {
-  name?: string;
-  value: Primitive;
-  isItem?: boolean;
+interface PropsItem {
+  itemValue: string;
+  isItem: true;
   isFlat?: boolean;
-  level: number;
 }
 
-const MetadataItemPrimitive = ({ name, value, isItem = true, isFlat, level }: Props) => {
+interface PropsBox {}
 
-  const Component = isItem ? MetadataAccordionItem : Box;
+type Props = {
+  name?: string;
+  value: Primitive;
+  level: number;
+} & (PropsItem | PropsBox);
+
+const MetadataItemPrimitive = ({ name, value, level, ...rest }: Props) => {
 
   const content = (() => {
     switch (typeof value) {
       case 'string': {
         const url = urlParser(value);
         if (url) {
-          return <LinkExternal href={ url.toString() }>{ value }</LinkExternal>;
+          return <Link external href={ url.toString() }>{ value }</Link>;
         }
         if (value === '') {
           return <div>&quot;&quot;</div>;
@@ -38,11 +42,20 @@ const MetadataItemPrimitive = ({ name, value, isItem = true, isFlat, level }: Pr
     }
   })();
 
+  if ('isItem' in rest) {
+    return (
+      <MetadataAccordionItem value={ rest.itemValue } level={ level } isFlat={ rest.isFlat }>
+        { name && <MetadataAccordionItemTitle name={ name }/> }
+        { content }
+      </MetadataAccordionItem>
+    );
+  }
+
   return (
-    <Component level={ level } { ...(isItem ? { isFlat } : {}) }>
+    <Box>
       { name && <MetadataAccordionItemTitle name={ name }/> }
       { content }
-    </Component>
+    </Box>
   );
 };
 

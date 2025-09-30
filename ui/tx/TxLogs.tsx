@@ -22,11 +22,11 @@ interface Props {
 
 const TxLogs = ({ txQuery, logsFilter }: Props) => {
   const { data, isPlaceholderData, isError, pagination } = useQueryWithPages({
-    resourceName: 'tx_logs',
+    resourceName: 'general:tx_logs',
     pathParams: { hash: txQuery.data?.hash },
     options: {
       enabled: !txQuery.isPlaceholderData && Boolean(txQuery.data?.hash) && Boolean(txQuery.data?.status),
-      placeholderData: generateListStub<'tx_logs'>(LOG, 3, { next_page_params: null }),
+      placeholderData: generateListStub<'general:tx_logs'>(LOG, 3, { next_page_params: null }),
     },
   });
 

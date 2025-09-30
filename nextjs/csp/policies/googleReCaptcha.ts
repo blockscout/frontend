@@ -8,6 +8,9 @@ export function googleReCaptcha(): CspDev.DirectiveDescriptor {
   }
 
   return {
+    'connect-src': [
+      'https://www.google.com/recaptcha/api2/clr',
+    ],
     'script-src': [
       'https://www.google.com/recaptcha/api.js',
       'https://www.gstatic.com',

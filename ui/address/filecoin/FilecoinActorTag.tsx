@@ -1,7 +1,8 @@
-import { Tag } from '@chakra-ui/react';
 import React from 'react';
 
 import type { FilecoinActorType } from 'types/api/addressParams';
+
+import { Badge } from 'toolkit/chakra/badge';
 
 const ACTOR_TYPES: Record<FilecoinActorType, string> = {
   account: 'Account',
@@ -33,7 +34,7 @@ const FilecoinActorTag = ({ actorType }: Props) => {
     return null;
   }
 
-  return <Tag colorScheme="gray">{ text }</Tag>;
+  return <Badge colorPalette="gray">{ text }</Badge>;
 };
 
 export default FilecoinActorTag;

@@ -1,14 +1,14 @@
-import { Flex, Checkbox, CheckboxGroup, Spinner, chakra } from '@chakra-ui/react';
+import { Flex, Spinner, chakra } from '@chakra-ui/react';
 import { isEqual, differenceBy } from 'es-toolkit';
-import type { ChangeEvent } from 'react';
 import React from 'react';
 
 import type { AdvancedFilterMethodInfo, AdvancedFilterParams } from 'types/api/advancedFilter';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import useDebounce from 'lib/hooks/useDebounce';
-import Tag from 'ui/shared/chakra/Tag';
-import FilterInput from 'ui/shared/filters/FilterInput';
+import { Badge } from 'toolkit/chakra/badge';
+import { Checkbox, CheckboxGroup } from 'toolkit/chakra/checkbox';
+import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import TableColumnFilter from 'ui/shared/filters/TableColumnFilter';
 
 const RESET_VALUE = 'all';
@@ -19,10 +19,9 @@ const NAMES_PARAM = 'methods_names';
 type Props = {
   value?: Array<AdvancedFilterMethodInfo>;
   handleFilterChange: (filed: keyof AdvancedFilterParams, val: Array<string>) => void;
-  onClose?: () => void;
 };
 
-const MethodFilter = ({ value = [], handleFilterChange, onClose }: Props) => {
+const MethodFilter = ({ value = [], handleFilterChange }: Props) => {
   const [ currentValue, setCurrentValue ] = React.useState<Array<AdvancedFilterMethodInfo>>([ ...value ]);
   const [ searchTerm, setSearchTerm ] = React.useState<string>('');
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
@@ -32,7 +31,7 @@ const MethodFilter = ({ value = [], handleFilterChange, onClose }: Props) => {
     setSearchTerm(value);
   }, []);
 
-  const methodsQuery = useApiQuery('advanced_filter_methods', {
+  const methodsQuery = useApiQuery('general:advanced_filter_methods', {
     queryParams: { q: debouncedSearchTerm },
     queryOptions: { refetchOnMount: false },
   });
@@ -43,9 +42,10 @@ const MethodFilter = ({ value = [], handleFilterChange, onClose }: Props) => {
     }
   }, [ methodsQuery.data, value, methodsList ]);
 
-  const handleChange = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
-    const checked = event.target.checked;
-    const id = event.target.id as string | typeof RESET_VALUE;
+  const handleChange: React.FormEventHandler<HTMLLabelElement> = React.useCallback((event) => {
+    const checked = (event.target as HTMLInputElement).checked;
+    const id = event.currentTarget.getAttribute('data-id');
+
     if (id === RESET_VALUE) {
       setCurrentValue([]);
       setMethodsList(methodsQuery.data || []);
@@ -75,11 +75,10 @@ const MethodFilter = ({ value = [], handleFilterChange, onClose }: Props) => {
       isTouched={ !isEqual(currentValue.map(i => JSON.stringify(i)).sort(), value.map(i => JSON.stringify(i)).sort()) }
       onFilter={ onFilter }
       onReset={ onReset }
-      onClose={ onClose }
       hasReset
     >
       <FilterInput
-        size="xs"
+        size="sm"
         onChange={ onSearchChange }
         placeholder="Find by function name/ method ID"
         mb={ 3 }
@@ -89,26 +88,23 @@ const MethodFilter = ({ value = [], handleFilterChange, onClose }: Props) => {
       { Boolean(searchTerm) && methodsQuery.data?.length === 0 && <span>No results found.</span> }
       { methodsQuery.data && (
         // added negative margin because of checkbox focus styles & overflow hidden
-        <Flex display="flex" flexDir="column" rowGap={ 3 } maxH="250px" overflowY="scroll" ml="-4px">
-          <CheckboxGroup value={ currentValue.length ? currentValue.map(i => i.method_id) : [ RESET_VALUE ] }>
+        <Flex display="flex" flexDir="column" rowGap={ 3 } maxH="250px" overflowY="scroll">
+          <CheckboxGroup
+            value={ currentValue.length ? currentValue.map(i => i.method_id) : [ ] }
+            orientation="vertical"
+          >
             { (searchTerm ? methodsQuery.data : (methodsList || [])).map(method => (
               <Checkbox
                 key={ method.method_id }
                 value={ method.method_id }
-                id={ method.method_id }
+                data-id={ method.method_id }
                 onChange={ handleChange }
-                pl={ 1 }
-                sx={{
-                  '.chakra-checkbox__label': {
-                    flexGrow: 1,
-                  },
-                }}
               >
                 <Flex justifyContent="space-between" alignItems="center" id={ method.method_id }>
                   <chakra.span overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis">{ method.name || method.method_id }</chakra.span>
-                  <Tag colorScheme="gray" isTruncated ml={ 2 }>
+                  <Badge colorPalette="gray" truncated ml="auto">
                     { method.method_id }
-                  </Tag>
+                  </Badge>
                 </Flex>
               </Checkbox>
             )) }

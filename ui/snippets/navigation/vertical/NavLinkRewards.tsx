@@ -17,7 +17,7 @@ const NavLinkRewards = ({ isCollapsed, onClick }: Props) => {
   const router = useRouter();
   const { openLoginModal, dailyRewardQuery, apiToken, isInitialized } = useRewardsContext();
 
-  const pathname = '/account/rewards';
+  const pathname = '/account/merits';
   const nextRoute = { pathname } as Route;
 
   const handleClick = useCallback((e: React.MouseEvent) => {

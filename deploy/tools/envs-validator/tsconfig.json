@@ -4,6 +4,7 @@
 		"noEmit": false,
 		"target": "es2016",
 		"module": "CommonJS",
+		"moduleResolution": "node",
 		"paths": {
 			"nextjs-routes": ["./nextjs/nextjs-routes.d.ts"],
 		}

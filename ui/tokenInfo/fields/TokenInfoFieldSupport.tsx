@@ -1,15 +1,15 @@
-import type { InputProps } from '@chakra-ui/react';
 import React from 'react';
 
 import type { Fields } from '../types';
 
-import FormFieldText from 'ui/shared/forms/fields/FormFieldText';
-import { validator as emailValidator } from 'ui/shared/forms/validators/email';
-import { urlValidator } from 'ui/shared/forms/validators/url';
+import type { FieldProps } from 'toolkit/chakra/field';
+import { FormFieldText } from 'toolkit/components/forms/fields/FormFieldText';
+import { emailValidator } from 'toolkit/components/forms/validators/email';
+import { urlValidator } from 'toolkit/components/forms/validators/url';
 
 interface Props {
-  isReadOnly?: boolean;
-  size?: InputProps['size'];
+  readOnly?: boolean;
+  size?: FieldProps['size'];
 }
 
 const TokenInfoFieldSupport = (props: Props) => {

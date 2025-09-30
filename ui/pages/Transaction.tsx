@@ -1,19 +1,19 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { RoutedTab } from 'ui/shared/Tabs/types';
+import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
+import type { EntityTag as TEntityTag } from 'ui/shared/EntityTags/types';
 
 import config from 'configs/app';
-import { useAppContext } from 'lib/contexts/app';
+import useApiQuery from 'lib/api/useApiQuery';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import useEtherscanRedirects from 'lib/router/useEtherscanRedirects';
 import { publicClient } from 'lib/web3/client';
+import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
 import EntityTags from 'ui/shared/EntityTags/EntityTags';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
-import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
-import useTabIndexFromQuery from 'ui/shared/Tabs/useTabIndexFromQuery';
 import TxAssetFlows from 'ui/tx/TxAssetFlows';
 import TxAuthorizations from 'ui/tx/TxAuthorizations';
 import TxBlobs from 'ui/tx/TxBlobs';
@@ -30,21 +30,33 @@ import TxUserOps from 'ui/tx/TxUserOps';
 import useTxQuery from 'ui/tx/useTxQuery';
 
 const txInterpretation = config.features.txInterpretation;
+const rollupFeature = config.features.rollup;
+const tacFeature = config.features.tac;
 
 const TransactionPageContent = () => {
   const router = useRouter();
-  const appProps = useAppContext();
 
   const hash = getQueryParamString(router.query.hash);
+
+  useEtherscanRedirects();
+
   const txQuery = useTxQuery();
+
+  const tacOperationQuery = useApiQuery('tac:operation_by_tx_hash', {
+    pathParams: { tx_hash: hash },
+    queryOptions: {
+      enabled: tacFeature.isEnabled,
+    },
+  });
+
   const { data, isPlaceholderData, isError, error, errorUpdateCount } = txQuery;
 
   const showDegradedView = publicClient && ((isError && error.status !== 422) || isPlaceholderData) && errorUpdateCount > 0;
 
-  const tabs: Array<RoutedTab> = (() => {
+  const tabs: Array<TabItemRegular> = (() => {
     const detailsComponent = showDegradedView ?
       <TxDetailsDegraded hash={ hash } txQuery={ txQuery }/> :
-      <TxDetails txQuery={ txQuery }/>;
+      <TxDetails txQuery={ txQuery } tacOperationQuery={ tacFeature.isEnabled ? tacOperationQuery : undefined }/>;
 
     return [
       {
@@ -76,46 +88,35 @@ const TransactionPageContent = () => {
     ].filter(Boolean);
   })();
 
-  const tabIndex = useTabIndexFromQuery(tabs);
+  const txTags: Array<TEntityTag> = data?.transaction_tag ?
+    [ { slug: data.transaction_tag, name: data.transaction_tag, tagType: 'private_tag' as const, ordinal: 1 } ] : [];
+
+  if (rollupFeature.isEnabled && rollupFeature.interopEnabled && data?.op_interop_messages && data.op_interop_messages.length > 0) {
+    if (data.op_interop_messages.some(message => message.init_chain !== undefined)) {
+      txTags.push({ slug: 'relay_tx', name: 'Relay tx', tagType: 'custom' as const, ordinal: 0 });
+    }
+    if (data.op_interop_messages.some(message => message.relay_chain !== undefined)) {
+      txTags.push({ slug: 'init_tx', name: 'Source tx', tagType: 'custom' as const, ordinal: 0 });
+    }
+  }
+
+  const protocolTags = data?.to?.metadata?.tags?.filter(tag => tag.tagType === 'protocol');
+  if (protocolTags && protocolTags.length > 0) {
+    txTags.push(...protocolTags);
+  }
 
   const tags = (
     <EntityTags
-      isLoading={ isPlaceholderData }
-      tags={ data?.transaction_tag ? [ { slug: data.transaction_tag, name: data.transaction_tag, tagType: 'private_tag' as const } ] : [] }
+      isLoading={ isPlaceholderData || (tacFeature.isEnabled && tacOperationQuery.isPlaceholderData) }
+      tags={ txTags }
     />
   );
 
-  const backLink = React.useMemo(() => {
-    const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/txs');
-
-    if (!hasGoBackLink) {
-      return;
-    }
-
-    return {
-      label: 'Back to transactions list',
-      url: appProps.referrer,
-    };
-  }, [ appProps.referrer ]);
-
   const titleSecondRow = <TxSubHeading hash={ hash } hasTag={ Boolean(data?.transaction_tag) } txQuery={ txQuery }/>;
-
-  const content = (() => {
-    if (isPlaceholderData && !showDegradedView) {
-      return (
-        <>
-          <TabsSkeleton tabs={ tabs } mt={ 6 }/>
-          { tabs[tabIndex]?.component }
-        </>
-      );
-    }
-
-    return <RoutedTabs tabs={ tabs }/>;
-  })();
 
   if (isError && !showDegradedView) {
     if (isCustomAppError(error)) {
-      throwOnResourceLoadError({ resource: 'tx', error, isError: true });
+      throwOnResourceLoadError({ resource: 'general:tx', error, isError: true });
     }
   }
 
@@ -123,11 +124,10 @@ const TransactionPageContent = () => {
     <>
       <PageTitle
         title="Transaction details"
-        backLink={ backLink }
         contentAfter={ tags }
         secondRow={ titleSecondRow }
       />
-      { content }
+      <RoutedTabs tabs={ tabs } isLoading={ isPlaceholderData }/>
     </>
   );
 };

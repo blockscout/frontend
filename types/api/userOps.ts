@@ -49,6 +49,7 @@ export type UserOp = {
   call_data: string;
   decoded_call_data: DecodedInput | null;
   execute_call_data: string | null;
+  execute_target?: AddressParamBasic | null;
   decoded_execute_call_data: DecodedInput | null;
   user_logs_start_index: number;
   user_logs_count: number;

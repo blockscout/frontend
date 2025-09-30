@@ -1,4 +1,4 @@
-import { Box, Button, Text } from '@chakra-ui/react';
+import { Box, Text } from '@chakra-ui/react';
 import React from 'react';
 
 import { route } from 'nextjs-routes';
@@ -6,7 +6,10 @@ import { route } from 'nextjs-routes';
 import getErrorCause from 'lib/errors/getErrorCause';
 import getErrorCauseStatusCode from 'lib/errors/getErrorCauseStatusCode';
 import getErrorObjStatusCode from 'lib/errors/getErrorObjStatusCode';
+import getErrorProp from 'lib/errors/getErrorProp';
 import getResourceErrorPayload from 'lib/errors/getResourceErrorPayload';
+import { Button } from 'toolkit/chakra/button';
+import { Link } from 'toolkit/chakra/link';
 
 import AppErrorIcon from './AppErrorIcon';
 import AppErrorTitle from './AppErrorTitle';
@@ -51,7 +54,7 @@ const AppError = ({ error, className }: Props) => {
             undefined;
     const statusCode = getErrorCauseStatusCode(error) || getErrorObjStatusCode(error);
 
-    const isInvalidTxHash = cause && 'resource' in cause && cause.resource === 'tx' && statusCode === 404;
+    const isInvalidTxHash = cause && 'resource' in cause && cause.resource === 'general:tx' && statusCode === 404;
     const isBlockConsensus = messageInPayload?.includes('Block lost consensus');
 
     if (isInvalidTxHash) {
@@ -71,7 +74,14 @@ const AppError = ({ error, className }: Props) => {
 
     switch (statusCode) {
       case 429: {
-        return <AppErrorTooManyRequests/>;
+        const rateLimits = getErrorProp(error, 'rateLimits');
+        const bypassOptions = typeof rateLimits === 'object' && rateLimits && 'bypassOptions' in rateLimits ? rateLimits.bypassOptions : undefined;
+        const reset = typeof rateLimits === 'object' && rateLimits && 'reset' in rateLimits ? rateLimits.reset : undefined;
+        return (
+          <AppErrorTooManyRequests
+            bypassOptions={ typeof bypassOptions === 'string' ? bypassOptions : undefined }
+            reset={ typeof reset === 'string' ? reset : undefined }/>
+        );
       }
 
       default: {
@@ -81,16 +91,18 @@ const AppError = ({ error, className }: Props) => {
           <>
             <AppErrorIcon statusCode={ statusCode }/>
             <AppErrorTitle title={ title }/>
-            <Text variant="secondary" mt={ 3 }>{ text }</Text>
-            <Button
-              mt={ 8 }
-              size="lg"
-              variant="outline"
-              as="a"
+            <Text color="text.secondary" mt={ 3 }>{ text }</Text>
+            <Link
               href={ route({ pathname: '/' }) }
+              asChild
             >
-              Back to home
-            </Button>
+              <Button
+                mt={ 8 }
+                variant="outline"
+              >
+                Back to home
+              </Button>
+            </Link>
           </>
         );
       }

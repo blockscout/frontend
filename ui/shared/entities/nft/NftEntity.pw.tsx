@@ -4,19 +4,19 @@ import { test, expect } from 'playwright/lib';
 
 import NftEntity from './NftEntity';
 
-const iconSizes = [ 'md', 'lg' ] as const;
+const variants = [ 'subheading', 'content' ] as const;
 const hash = '0xd789a607CEac2f0E14867de4EB15b15C9FFB5859';
 
 test.use({ viewport: { width: 180, height: 30 } });
 
-test.describe('icon sizes', () => {
-  iconSizes.forEach((size) => {
-    test(`${ size }`, async({ render }) => {
+test.describe('variants', () => {
+  variants.forEach((variant) => {
+    test(`${ variant }`, async({ render }) => {
       const component = await render(
         <NftEntity
           hash={ hash }
           id="1042"
-          icon={{ size }}
+          variant={ variant }
         />,
       );
 

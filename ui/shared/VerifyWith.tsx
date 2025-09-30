@@ -1,19 +1,10 @@
-import {
-  Button,
-  PopoverTrigger,
-  PopoverBody,
-  PopoverContent,
-  Show,
-  Hide,
-  chakra,
-  useDisclosure,
-  Grid,
-} from '@chakra-ui/react';
+import { Box, chakra, Grid } from '@chakra-ui/react';
 import React from 'react';
 
-import Popover from 'ui/shared/chakra/Popover';
+import { Button } from 'toolkit/chakra/button';
+import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
+import { Tooltip } from 'toolkit/chakra/tooltip';
 import IconSvg from 'ui/shared/IconSvg';
-import PopoverTriggerTooltip from 'ui/shared/PopoverTriggerTooltip';
 
 interface Props {
   className?: string;
@@ -24,39 +15,31 @@ interface Props {
 }
 
 const VerifyWith = ({ className, links, label, longText, shortText }: Props) => {
-  const { isOpen, onToggle, onClose } = useDisclosure();
 
   return (
-    <Popover isOpen={ isOpen } onClose={ onClose } placement="bottom-start" isLazy>
-      <PopoverTrigger>
-        <PopoverTriggerTooltip label={ label } className={ className }>
-          <Button
-            size="sm"
-            variant="outline"
-            colorScheme="gray"
-            onClick={ onToggle }
-            isActive={ isOpen }
-            aria-label={ label }
-            fontWeight={ 500 }
-            px={ shortText ? 2 : 1 }
-            h="32px"
-            flexShrink={ 0 }
-          >
-            <IconSvg name="explorer" boxSize={ 5 }/>
-            <Show above="xl">
-              <chakra.span ml={ 1 }>{ longText }</chakra.span>
-            </Show>
-            { shortText && (
-              <Hide above="xl">
-                <chakra.span ml={ 1 }>{ shortText }</chakra.span>
-              </Hide>
-            ) }
-          </Button>
-        </PopoverTriggerTooltip>
-      </PopoverTrigger>
+    <PopoverRoot>
+      <Tooltip content={ label } disableOnMobile>
+        <Box className={ className }>
+          <PopoverTrigger>
+            <Button
+              size="sm"
+              variant="dropdown"
+              aria-label={ label }
+              fontWeight={ 500 }
+              px={ shortText ? 2 : 1 }
+              flexShrink={ 0 }
+              columnGap={ 1 }
+            >
+              <IconSvg name="explorer" boxSize={ 5 }/>
+              <chakra.span hideBelow="xl">{ longText }</chakra.span>
+              { shortText && <chakra.span hideFrom="xl">{ shortText }</chakra.span> }
+            </Button>
+          </PopoverTrigger>
+        </Box>
+      </Tooltip>
       <PopoverContent w="auto">
         <PopoverBody >
-          <chakra.span color="text_secondary" fontSize="xs">{ label }</chakra.span>
+          <chakra.span color="text.secondary" textStyle="xs">{ label }</chakra.span>
           <Grid
             alignItems="center"
             templateColumns={ links.length > 1 ? 'auto auto' : '1fr' }
@@ -68,7 +51,7 @@ const VerifyWith = ({ className, links, label, longText, shortText }: Props) => 
           </Grid>
         </PopoverBody>
       </PopoverContent>
-    </Popover>
+    </PopoverRoot>
   );
 };
 

@@ -16,4 +16,4 @@ const Page: NextPage = () => {
 
 export default Page;
 
-export { nameService as getServerSideProps } from 'nextjs/getServerSideProps';
+export { nameDomains as getServerSideProps } from 'nextjs/getServerSideProps/main';

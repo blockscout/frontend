@@ -24,7 +24,7 @@ const BlockCountdownTimerItem = ({ label, value }: Props) => {
         fontWeight={ 600 }
         w="100%"
       />
-      <Box fontSize="sm" lineHeight="20px" mt={ 1 } color="text_secondary">{ label }</Box>
+      <Box fontSize="sm" lineHeight="20px" mt={ 1 } color="text.secondary">{ label }</Box>
     </Box>
   );
 };

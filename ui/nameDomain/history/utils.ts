@@ -3,10 +3,10 @@ import type * as bens from '@blockscout/bens-types';
 import getNextSortValueShared from 'ui/shared/sort/getNextSortValue';
 
 export type SortField = 'timestamp';
-export type Sort = `${ SortField }-asc` | `${ SortField }-desc`;
+export type Sort = `${ SortField }-asc` | `${ SortField }-desc` | 'default';
 
-const SORT_SEQUENCE: Record<SortField, Array<Sort | undefined>> = {
-  timestamp: [ 'timestamp-desc', 'timestamp-asc', undefined ],
+const SORT_SEQUENCE: Record<SortField, Array<Sort>> = {
+  timestamp: [ 'timestamp-desc', 'timestamp-asc', 'default' ],
 };
 
 export const getNextSortValue = (getNextSortValueShared<SortField, Sort>).bind(undefined, SORT_SEQUENCE);

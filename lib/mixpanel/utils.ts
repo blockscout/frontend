@@ -24,6 +24,7 @@ export enum EventTypes {
   BUTTON_CLICK = 'Button click',
   PROMO_BANNER = 'Promo banner',
   APP_FEEDBACK = 'App feedback',
+  ADDRESS_WIDGET = 'Address widget',
 }
 
 /* eslint-disable  @stylistic/indent */
@@ -124,12 +125,9 @@ Type extends EventTypes.PAGE_WIDGET ? (
   {
     Type: 'Tokens dropdown' | 'Tokens show all (icon)' | 'Add to watchlist' | 'Address actions (more button)';
   } | {
-    Type: 'Favorite app' | 'More button' | 'Security score' | 'Total contracts' | 'Verified contracts' | 'Analyzed contracts';
+    Type: 'Favorite app' | 'More button';
     Info: string;
-    Source: 'Discovery view' | 'Security view' | 'App modal' | 'App page' | 'Security score popup' | 'Banner';
-  } | {
-    Type: 'Security score';
-    Source: 'Analyzed contracts popup';
+    Source: 'Discovery view' | 'App modal' | 'App page' | 'Banner';
   } | {
     Type: 'Action button';
     Info: string;
@@ -168,6 +166,9 @@ Type extends EventTypes.APP_FEEDBACK ? {
   Source: 'Discovery' | 'App modal' | 'App page';
   AppId: string;
   Score: number;
+} :
+Type extends EventTypes.ADDRESS_WIDGET ? {
+  Name: string;
 } :
 undefined;
 /* eslint-enable  @stylistic/indent */

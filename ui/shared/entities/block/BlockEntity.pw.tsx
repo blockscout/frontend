@@ -4,17 +4,17 @@ import { test, expect } from 'playwright/lib';
 
 import BlockEntity from './BlockEntity';
 
-const iconSizes = [ 'md', 'lg' ] as const;
+const variants = [ 'subheading', 'content' ] as const;
 
 test.use({ viewport: { width: 180, height: 30 } });
 
 test.describe('icon sizes', () => {
-  iconSizes.forEach((size) => {
-    test(`${ size }`, async({ render }) => {
+  variants.forEach((variant) => {
+    test(`${ variant }`, async({ render }) => {
       const component = await render(
         <BlockEntity
           number={ 17943507 }
-          icon={{ size }}
+          variant={ variant }
         />,
       );
 

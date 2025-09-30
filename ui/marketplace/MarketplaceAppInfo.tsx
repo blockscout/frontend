@@ -1,18 +1,19 @@
 import React from 'react';
 
-import type { MarketplaceAppOverview } from 'types/client/marketplace';
+import type { MarketplaceApp } from 'types/client/marketplace';
 
 import InfoButton from 'ui/shared/InfoButton';
 
 import Content from './MarketplaceAppInfo/Content';
 
 interface Props {
-  data: MarketplaceAppOverview | undefined;
+  data: MarketplaceApp | undefined;
+  isLoading?: boolean;
 }
 
-const MarketplaceAppInfo = ({ data }: Props) => {
+const MarketplaceAppInfo = ({ data, isLoading }: Props) => {
   return (
-    <InfoButton>
+    <InfoButton isLoading={ isLoading }>
       <Content data={ data }/>
     </InfoButton>
   );

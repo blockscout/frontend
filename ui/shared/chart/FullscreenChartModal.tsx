@@ -1,19 +1,22 @@
-import { Box, Button, Grid, Heading, Modal, ModalBody, ModalCloseButton, ModalContent, ModalOverlay, Text } from '@chakra-ui/react';
+import { Grid, Text } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TimeChartItem } from './types';
 import type { Resolution } from '@blockscout/stats-types';
 
+import { Button } from 'toolkit/chakra/button';
+import { DialogBody, DialogContent, DialogHeader, DialogRoot } from 'toolkit/chakra/dialog';
+import { Heading } from 'toolkit/chakra/heading';
 import IconSvg from 'ui/shared/IconSvg';
 
 import ChartWidgetContent from './ChartWidgetContent';
 
 type Props = {
-  isOpen: boolean;
+  open: boolean;
+  onOpenChange: ({ open }: { open: boolean }) => void;
   title: string;
   description?: string;
   items: Array<TimeChartItem>;
-  onClose: () => void;
   units?: string;
   resolution?: Resolution;
   zoomRange?: [ Date, Date ];
@@ -22,47 +25,37 @@ type Props = {
 };
 
 const FullscreenChartModal = ({
-  isOpen,
+  open,
+  onOpenChange,
   title,
   description,
   items,
   units,
-  onClose,
   resolution,
   zoomRange,
   handleZoom,
   handleZoomReset,
 }: Props) => {
   return (
-    <Modal
-      isOpen={ isOpen }
-      onClose={ onClose }
-      size="full"
-      isCentered
+    <DialogRoot
+      open={ open }
+      onOpenChange={ onOpenChange }
+      // FIXME: with size="full" the chart will not be expanded to the full height of the modal
+      size="cover"
     >
-      <ModalOverlay/>
-
-      <ModalContent>
-
-        <Box
-          mb={ 1 }
-        >
-          <Grid
-            gridColumnGap={ 2 }
-          >
-            <Heading
-              mb={ 1 }
-              size={{ base: 'xs', sm: 'md' }}
-            >
+      <DialogContent>
+        <DialogHeader/>
+        <DialogBody pt={ 6 } display="flex" flexDir="column">
+          <Grid gridColumnGap={ 2 } mb={ 4 }>
+            <Heading mb={ 1 } level="2">
               { title }
             </Heading>
 
             { description && (
               <Text
                 gridColumn={ 1 }
-                as="p"
-                variant="secondary"
-                fontSize="xs"
+                color="text.secondary"
+                textStyle="sm"
               >
                 { description }
               </Text>
@@ -70,8 +63,6 @@ const FullscreenChartModal = ({
 
             { Boolean(zoomRange) && (
               <Button
-                leftIcon={ <IconSvg name="repeat" w={ 4 } h={ 4 }/> }
-                colorScheme="blue"
                 gridColumn={ 2 }
                 justifySelf="end"
                 alignSelf="top"
@@ -80,18 +71,11 @@ const FullscreenChartModal = ({
                 variant="outline"
                 onClick={ handleZoomReset }
               >
+                <IconSvg name="repeat" w={ 4 } h={ 4 }/>
                 Reset zoom
               </Button>
             ) }
           </Grid>
-        </Box>
-
-        <ModalCloseButton/>
-
-        <ModalBody
-          h="100%"
-          margin={{ bottom: 60 }}
-        >
           <ChartWidgetContent
             isEnlarged
             items={ items }
@@ -101,9 +85,9 @@ const FullscreenChartModal = ({
             title={ title }
             resolution={ resolution }
           />
-        </ModalBody>
-      </ModalContent>
-    </Modal>
+        </DialogBody>
+      </DialogContent>
+    </DialogRoot>
   );
 };
 

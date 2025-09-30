@@ -6,7 +6,7 @@ import { test, expect } from 'playwright/lib';
 import TokenInfoForm from './TokenInfoForm';
 
 test.beforeEach(async({ mockApiResponse, mockAssetResponse }) => {
-  await mockApiResponse('token_info_applications_config', mocks.TOKEN_INFO_FORM_CONFIG, { pathParams: { chainId: '1' } });
+  await mockApiResponse('admin:token_info_applications_config', mocks.TOKEN_INFO_FORM_CONFIG, { pathParams: { chainId: '1' } });
   await mockAssetResponse(mocks.TOKEN_INFO_APPLICATION_BASE.iconUrl, './playwright/mocks/image_md.jpg');
 });
 

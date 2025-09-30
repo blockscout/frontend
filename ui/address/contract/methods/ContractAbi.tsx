@@ -1,4 +1,4 @@
-import { Accordion, Box, Flex, Link } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import { range } from 'es-toolkit';
 import React from 'react';
 
@@ -6,8 +6,9 @@ import type { SmartContractMethod } from './types';
 
 import { route } from 'nextjs-routes';
 
-import { apos } from 'lib/html-entities';
-import LinkInternal from 'ui/shared/links/LinkInternal';
+import { AccordionRoot } from 'toolkit/chakra/accordion';
+import { Link } from 'toolkit/chakra/link';
+import { apos } from 'toolkit/utils/htmlEntities';
 
 import ContractAbiItem from './ContractAbiItem';
 import useFormSubmit from './useFormSubmit';
@@ -22,15 +23,15 @@ interface Props {
 }
 
 const ContractAbi = ({ abi, addressHash, sourceAddress, tab, visibleItems }: Props) => {
-  const [ expandedSections, setExpandedSections ] = React.useState<Array<number>>(abi.length === 1 ? [ 0 ] : []);
+  const [ expandedSections, setExpandedSections ] = React.useState<Array<string>>(abi.length === 1 ? [ '0' ] : []);
   const [ id, setId ] = React.useState(0);
 
   useScrollToMethod(abi, setExpandedSections);
 
   const handleFormSubmit = useFormSubmit({ addressHash });
 
-  const handleAccordionStateChange = React.useCallback((newValue: Array<number>) => {
-    setExpandedSections(newValue);
+  const handleAccordionStateChange = React.useCallback(({ value }: { value: Array<string> }) => {
+    setExpandedSections(value);
   }, []);
 
   const handleExpandAll = React.useCallback(() => {
@@ -39,7 +40,7 @@ const ContractAbi = ({ abi, addressHash, sourceAddress, tab, visibleItems }: Pro
     }
 
     if (expandedSections.length < abi.length) {
-      setExpandedSections(range(0, abi.length));
+      setExpandedSections(range(0, abi.length).map(String));
     } else {
       setExpandedSections([]);
     }
@@ -56,19 +57,20 @@ const ContractAbi = ({ abi, addressHash, sourceAddress, tab, visibleItems }: Pro
       <Flex mb={ 3 }>
         <Box fontWeight={ 500 } mr="auto">Contract information</Box>
         { abi.length > 1 && (
-          <Link onClick={ handleExpandAll }>
+          <Link onClick={ handleExpandAll } variant="secondary">
             { expandedSections.length === abi.length ? 'Collapse' : 'Expand' } all
           </Link>
         ) }
-        <Link onClick={ handleReset } ml={ 3 }>Reset</Link>
+        <Link onClick={ handleReset } ml={ 3 } variant="secondary">Reset</Link>
       </Flex>
-      <Accordion allowMultiple position="relative" onChange={ handleAccordionStateChange } index={ expandedSections }>
+      <AccordionRoot multiple lazyMount position="relative" onValueChange={ handleAccordionStateChange } value={ expandedSections }>
         { abi.map((item, index) => (
           <ContractAbiItem
             key={ index }
             id={ id }
             index={ index }
             data={ item }
+            isOpen={ expandedSections.includes(String(index)) }
             isVisible={ !visibleItems || visibleItems.includes(index) }
             addressHash={ addressHash }
             sourceAddress={ sourceAddress }
@@ -76,18 +78,18 @@ const ContractAbi = ({ abi, addressHash, sourceAddress, tab, visibleItems }: Pro
             onSubmit={ handleFormSubmit }
           />
         )) }
-      </Accordion>
+      </AccordionRoot>
       { !hasVisibleItems && (
         <div>
           <div>Couldn{ apos }t find any method that matches your query.</div>
           <div>
             You can use custom ABI for this contract without verifying the contract in the{ ' ' }
-            <LinkInternal
+            <Link
               href={ route({ pathname: '/address/[hash]', query: { hash: addressHash, tab: 'read_write_custom_methods' } }) }
               scroll={ false }
             >
               Custom ABI
-            </LinkInternal>
+            </Link>
             { ' ' }tab.
           </div>
         </div>

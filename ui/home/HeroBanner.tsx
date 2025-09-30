@@ -1,4 +1,6 @@
-import { Box, Flex, Heading, useColorModeValue } from '@chakra-ui/react';
+// we use custom heading size for hero banner
+// eslint-disable-next-line no-restricted-imports
+import { Box, Flex, Heading } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
@@ -16,10 +18,12 @@ const HeroBanner = () => {
 
   const textColor = TEXT_COLOR_DEFAULT;
 
-  const border = useColorModeValue(
-    config.UI.homepage.heroBanner?.border?.[0] || BORDER_DEFAULT,
-    config.UI.homepage.heroBanner?.border?.[1] || config.UI.homepage.heroBanner?.border?.[0] || BORDER_DEFAULT,
-  );
+  const border = {
+    _light:
+      config.UI.homepage.heroBanner?.border?.[0] || BORDER_DEFAULT,
+    _dark:
+      config.UI.homepage.heroBanner?.border?.[1] || config.UI.homepage.heroBanner?.border?.[0] || BORDER_DEFAULT,
+  };
 
   return (
     <Flex

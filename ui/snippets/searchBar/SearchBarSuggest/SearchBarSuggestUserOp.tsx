@@ -12,7 +12,7 @@ const SearchBarSuggestUserOp = ({ data, isMobile }: ItemsProps<SearchResultUserO
   const icon = <UserOpEntity.Icon/>;
   const hash = (
     <chakra.mark overflow="hidden" whiteSpace="nowrap" fontWeight={ 700 }>
-      <HashStringShortenDynamic hash={ data.user_operation_hash } isTooltipDisabled/>
+      <HashStringShortenDynamic hash={ data.user_operation_hash } noTooltip/>
     </chakra.mark>
   );
   const date = dayjs(data.timestamp).format('llll');
@@ -24,7 +24,7 @@ const SearchBarSuggestUserOp = ({ data, isMobile }: ItemsProps<SearchResultUserO
           { icon }
           { hash }
         </Flex>
-        <Text variant="secondary">{ date }</Text>
+        <Text color="text.secondary">{ date }</Text>
       </>
     );
   }
@@ -35,7 +35,7 @@ const SearchBarSuggestUserOp = ({ data, isMobile }: ItemsProps<SearchResultUserO
         { icon }
         { hash }
       </Flex>
-      <Text variant="secondary" textAlign="end" flexShrink={ 0 } ml="auto">{ date }</Text>
+      <Text color="text.secondary" textAlign="end" flexShrink={ 0 } ml="auto">{ date }</Text>
     </Flex>
   );
 };

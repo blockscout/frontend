@@ -12,21 +12,31 @@ type FilterProps = {
 
 type Props = {
   isError: boolean;
-  items?: Array<unknown>;
-  emptyText: React.ReactNode;
+  itemsNum?: number;
+  emptyText?: React.ReactNode;
   actionBar?: React.ReactNode;
   showActionBarIfEmpty?: boolean;
-  content: React.ReactNode;
+  showActionBarIfError?: boolean;
+  children: React.ReactNode;
   className?: string;
   filterProps?: FilterProps;
 };
 
 const DataListDisplay = (props: Props) => {
   if (props.isError) {
+    if (props.showActionBarIfError) {
+      return (
+        <Box className={ props.className }>
+          { props.actionBar }
+          <DataFetchAlert/>
+        </Box>
+      );
+    }
+
     return <DataFetchAlert className={ props.className }/>;
   }
 
-  if (props.filterProps?.hasActiveFilters && !props.items?.length) {
+  if (props.filterProps?.hasActiveFilters && !props.itemsNum) {
     return (
       <Box className={ props.className }>
         { props.actionBar }
@@ -35,7 +45,7 @@ const DataListDisplay = (props: Props) => {
     );
   }
 
-  if (!props.items?.length) {
+  if (!props.itemsNum) {
     return (
       <>
         { props.showActionBarIfEmpty && props.actionBar }
@@ -47,7 +57,7 @@ const DataListDisplay = (props: Props) => {
   return (
     <Box className={ props.className }>
       { props.actionBar }
-      { props.content }
+      { props.children }
     </Box>
   );
 };

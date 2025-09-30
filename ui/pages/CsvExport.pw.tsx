@@ -12,8 +12,8 @@ test('base view +@mobile +@dark-mode', async({ render, mockApiResponse }) => {
       query: { address: addressMock.hash, type: 'transactions', filterType: 'address', filterValue: 'from' },
     },
   };
-  await mockApiResponse('address', addressMock.validator, { pathParams: { hash: addressMock.hash } });
-  await mockApiResponse('config_csv_export', { limit: 42123 });
+  await mockApiResponse('general:address', addressMock.validator, { pathParams: { hash: addressMock.hash } });
+  await mockApiResponse('general:config_csv_export', { limit: 42123 });
 
   const component = await render(<CsvExport/>, { hooksConfig });
 
@@ -26,8 +26,8 @@ test('token holders', async({ render, mockApiResponse }) => {
       query: { address: addressMock.hash, type: 'holders' },
     },
   };
-  await mockApiResponse('address', addressMock.token, { pathParams: { hash: addressMock.hash } });
-  await mockApiResponse('token', tokenMock.tokenInfo, { pathParams: { hash: addressMock.hash } });
+  await mockApiResponse('general:address', addressMock.token, { pathParams: { hash: addressMock.hash } });
+  await mockApiResponse('general:token', tokenMock.tokenInfo, { pathParams: { hash: addressMock.hash } });
 
   const component = await render(<CsvExport/>, { hooksConfig });
 

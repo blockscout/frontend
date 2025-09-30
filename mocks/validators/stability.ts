@@ -30,8 +30,8 @@ export const validatorsResponse: ValidatorsStabilityResponse = {
 };
 
 export const validatorsCountersResponse: ValidatorsStabilityCountersResponse = {
-  active_validators_counter: '42',
+  active_validators_count: '42',
   active_validators_percentage: 7.14,
-  new_validators_counter_24h: '11',
-  validators_counter: '140',
+  new_validators_count_24h: '11',
+  validators_count: '140',
 };

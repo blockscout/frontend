@@ -1,9 +1,7 @@
-import { useColorModeValue } from '@chakra-ui/react';
-
 export default function useScoreLevelAndColor(score: number) {
-  const greatScoreColor = useColorModeValue('green.600', 'green.400');
-  const averageScoreColor = useColorModeValue('purple.600', 'purple.400');
-  const lowScoreColor = useColorModeValue('red.600', 'red.400');
+  const greatScoreColor = { _light: 'green.600', _dark: 'green.400' };
+  const averageScoreColor = { _light: 'purple.600', _dark: 'purple.400' };
+  const lowScoreColor = { _light: 'red.600', _dark: 'red.400' };
 
   let scoreColor;
   let scoreLevel;

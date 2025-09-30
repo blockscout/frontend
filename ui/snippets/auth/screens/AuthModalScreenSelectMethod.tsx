@@ -1,9 +1,10 @@
-import { Button, VStack } from '@chakra-ui/react';
+import { VStack } from '@chakra-ui/react';
 import React from 'react';
 
 import type { Screen } from '../types';
 
 import * as mixpanel from 'lib/mixpanel';
+import { Button } from 'toolkit/chakra/button';
 
 interface Props {
   onSelectMethod: (screen: Screen) => void;
@@ -24,11 +25,11 @@ const AuthModalScreenSelectMethod = ({ onSelectMethod }: Props) => {
       Action: 'Wallet',
       Source: 'Options selector',
     });
-    onSelectMethod({ type: 'connect_wallet' });
+    onSelectMethod({ type: 'connect_wallet', loginToRewards: true });
   }, [ onSelectMethod ]);
 
   return (
-    <VStack spacing={ 3 } mt={ 4 } align="stretch">
+    <VStack gap={ 3 } mt={ 4 } align="stretch">
       <Button variant="outline" onClick={ handleConnectWalletClick }>Continue with Web3 wallet</Button>
       <Button variant="outline" onClick={ handleEmailClick }>Continue with email</Button>
     </VStack>

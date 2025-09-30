@@ -32,14 +32,14 @@ const props: Props = {
 };
 
 test('base view +@dark-mode', async({ render, page }) => {
-  const component = await render(<ChartWidget { ...props }/>);
+  const component = await render(<ChartWidget { ...props } href={{ pathname: '/stats/[id]', query: { id: 'test' } }}/>);
 
   await page.waitForFunction(() => {
     return document.querySelector('path[data-name="chart-Nativecoincirculatingsupply-small"]')?.getAttribute('opacity') === '1';
   });
   await expect(component).toHaveScreenshot();
 
-  await component.locator('.chakra-menu__menu-button').click();
+  await component.getByLabel('Open chart options menu').click();
   await expect(component).toHaveScreenshot();
 
   await page.mouse.move(0, 0);

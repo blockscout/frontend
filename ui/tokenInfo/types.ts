@@ -1,12 +1,10 @@
-import type { Option } from 'ui/shared/forms/inputs/select/types';
-
 export interface Fields extends SocialLinkFields, TickerUrlFields {
   address: string;
   token_name: string;
   requester_name: string;
   requester_email: string;
   project_name?: string;
-  project_sector: Option | null;
+  project_sector: Array<string> | null;
   project_email: string;
   project_website: string;
   project_description: string;

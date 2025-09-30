@@ -1,4 +1,4 @@
-import { Box, useColorModeValue, chakra } from '@chakra-ui/react';
+import { Box, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 type Props = {
@@ -11,7 +11,7 @@ const NFTItemContainer = ({ children, className }: Props) => {
     <Box
       w={{ base: '100%', lg: '210px' }}
       border="1px solid"
-      borderColor={ useColorModeValue('blackAlpha.100', 'whiteAlpha.200') }
+      borderColor={{ _light: 'blackAlpha.100', _dark: 'whiteAlpha.200' }}
       borderRadius="12px"
       p="10px"
       fontSize="sm"

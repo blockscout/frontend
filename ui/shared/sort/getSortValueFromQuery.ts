@@ -1,6 +1,6 @@
-import type { SelectOption } from 'ui/shared/select/types';
-
 import type { Query } from 'nextjs-routes';
+
+import type { SelectOption } from 'toolkit/chakra/select';
 
 export default function getSortValueFromQuery<SortValue extends string>(query: Query, sortOptions: Array<SelectOption<SortValue>>) {
   if (!query.sort || !query.order) {

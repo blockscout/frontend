@@ -1,18 +1,35 @@
 // https://hexdocs.pm/phoenix/js/
-import type { SocketConnectOption } from 'phoenix';
+import type { Channel, SocketConnectOption } from 'phoenix';
 import { Socket } from 'phoenix';
 import React, { useEffect, useState } from 'react';
 
-export const SocketContext = React.createContext<Socket | null>(null);
+type ChannelRegistry = Record<string, { channel: Channel; subscribers: number }>;
+
+const socketContexts = new Map<string, React.Context<{
+  socket: Socket | null;
+  channelRegistry: React.MutableRefObject<ChannelRegistry>;
+} | null>>();
+
+function getSocketContext(name: string) {
+  if (!socketContexts.has(name)) {
+    socketContexts.set(name, React.createContext<{
+      socket: Socket | null;
+      channelRegistry: React.MutableRefObject<ChannelRegistry>;
+    } | null>(null));
+  }
+  return socketContexts.get(name)!;
+}
 
 interface SocketProviderProps {
   children: React.ReactNode;
   url?: string;
   options?: Partial<SocketConnectOption>;
+  name?: string;
 }
 
-export function SocketProvider({ children, options, url }: SocketProviderProps) {
+export function SocketProvider({ children, options, url, name = 'default' }: SocketProviderProps) {
   const [ socket, setSocket ] = useState<Socket | null>(null);
+  const channelRegistry = React.useRef<ChannelRegistry>({});
 
   useEffect(() => {
     if (!url) {
@@ -29,17 +46,26 @@ export function SocketProvider({ children, options, url }: SocketProviderProps) 
     };
   }, [ options, url ]);
 
+  const value = React.useMemo(() => ({
+    socket,
+    channelRegistry,
+  }), [ socket, channelRegistry ]);
+
+  const SocketContext = getSocketContext(name);
+
   return (
-    <SocketContext.Provider value={ socket }>
+    <SocketContext.Provider value={ value }>
       { children }
     </SocketContext.Provider>
   );
 }
 
-export function useSocket() {
+// Hook to use a specific named socket
+export function useSocket(name: string = 'default') {
+  const SocketContext = getSocketContext(name);
   const context = React.useContext(SocketContext);
   if (context === undefined) {
-    throw new Error('useSocket must be used within a SocketProvider');
+    throw new Error(`useSocket must be used within a SocketProvider with name "${ name }"`);
   }
   return context;
 }

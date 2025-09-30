@@ -1,16 +1,16 @@
-import { Image, Center, useColorModeValue } from '@chakra-ui/react';
+import { Center } from '@chakra-ui/react';
 import React from 'react';
+
+import { Image } from 'toolkit/chakra/image';
 
 interface Props {
   src: string;
 }
 
 const BlobDataImage = ({ src }: Props) => {
-  const bgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
-
   return (
     <Center
-      bgColor={ bgColor }
+      bgColor={{ _light: 'blackAlpha.50', _dark: 'whiteAlpha.50' }}
       p={ 4 }
       minH="200px"
       w="100%"

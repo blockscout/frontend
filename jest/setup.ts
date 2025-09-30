@@ -41,3 +41,15 @@ global.console = {
     consoleError(...args);
   },
 };
+
+// Polyfill for structuredClone
+if (typeof structuredClone === 'undefined') {
+  global.structuredClone = <T>(obj: T): T => {
+    try {
+      return JSON.parse(JSON.stringify(obj)) as T;
+    } catch (error) {
+      // Fallback for circular references and other special cases
+      return obj;
+    }
+  };
+}

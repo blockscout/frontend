@@ -19,7 +19,7 @@ export const getElementName = (data: SmartContractMethod) => {
   return `method_${ getElementId(data) }`;
 };
 
-export default function useScrollToMethod(data: Array<SmartContractMethod>, onScroll: (indices: Array<number>) => void) {
+export default function useScrollToMethod(data: Array<SmartContractMethod>, onScroll: (indices: Array<string>) => void) {
   React.useEffect(() => {
     const hash = window.location.hash.replace('#', '');
 
@@ -34,7 +34,7 @@ export default function useScrollToMethod(data: Array<SmartContractMethod>, onSc
         smooth: true,
         offset: -100,
       });
-      onScroll([ index ]);
+      onScroll([ String(index) ]);
     }
   }, [ data, onScroll ]);
 }

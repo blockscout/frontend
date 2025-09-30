@@ -10,11 +10,13 @@ type Args = {
   confirmation_transaction: ArbitrumL2TxData;
 };
 
+const parentChainName = rollupFeature.isEnabled ? rollupFeature.parentChain.name : undefined;
+
 export const VERIFICATION_STEPS_MAP: Record<ArbitrumBatchStatus, string> = {
   'Processed on rollup': 'Processed on rollup',
-  'Sent to base': rollupFeature.isEnabled && rollupFeature.parentChainName ? `Sent to ${ rollupFeature.parentChainName }` : 'Sent to parent chain',
-  'Confirmed on base': rollupFeature.isEnabled && rollupFeature.parentChainName ?
-    `Confirmed on ${ rollupFeature.parentChainName }` :
+  'Sent to base': parentChainName ? `Sent to ${ parentChainName }` : 'Sent to parent chain',
+  'Confirmed on base': parentChainName ?
+    `Confirmed on ${ parentChainName }` :
     'Confirmed on parent chain',
 };
 

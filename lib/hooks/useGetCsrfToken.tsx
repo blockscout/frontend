@@ -10,10 +10,10 @@ export default function useGetCsrfToken() {
   const nodeApiFetch = useFetch();
 
   return useQuery({
-    queryKey: getResourceKey('csrf'),
+    queryKey: getResourceKey('general:csrf'),
     queryFn: async() => {
       if (!isNeedProxy()) {
-        const url = buildUrl('csrf');
+        const url = buildUrl('general:csrf');
         const apiResponse = await fetch(url, { credentials: 'include' });
         const csrfFromHeader = apiResponse.headers.get('x-bs-account-csrf');
 

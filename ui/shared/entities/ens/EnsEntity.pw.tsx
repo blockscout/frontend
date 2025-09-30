@@ -1,22 +1,23 @@
 import React from 'react';
 
 import * as domainMock from 'mocks/ens/domain';
+import { stableHover } from 'playwright/helpers/stableHover';
 import { test, expect } from 'playwright/lib';
 
 import EnsEntity from './EnsEntity';
 
 const name = 'cat.eth';
-const iconSizes = [ 'md', 'lg' ] as const;
+const variants = [ 'subheading', 'content' ] as const;
 
 test.use({ viewport: { width: 180, height: 30 } });
 
-test.describe('icon size', () => {
-  iconSizes.forEach((size) => {
-    test(`${ size }`, async({ render }) => {
+test.describe('variant', () => {
+  variants.forEach((variant) => {
+    test(`${ variant }`, async({ render }) => {
       const component = await render(
         <EnsEntity
           domain={ name }
-          icon={{ size }}
+          variant={ variant }
         />,
       );
 
@@ -43,7 +44,7 @@ test('with long name', async({ render }) => {
     />,
   );
 
-  await component.getByText(name.slice(0, 4)).hover();
+  await stableHover(component.getByText(name.slice(0, 4)));
 
   await expect(component).toHaveScreenshot();
 });

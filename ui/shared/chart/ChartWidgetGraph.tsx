@@ -44,6 +44,7 @@ const ChartWidgetGraph = ({
   const color = useToken('colors', 'yellow.400');
   const gradientStart = useToken('colors', 'orange.600');
   const gradientEnd = useToken('colors', 'blackAlpha.900');
+  // const [ color ] = useToken('colors', useColorModeValue('theme.graph.line._light', 'theme.graph.line._dark'));
   const chartId = `chart-${ title.split(' ').join('') }-${ isEnlarged ? 'fullscreen' : 'small' }`;
 
   const overlayRef = React.useRef<SVGRectElement>(null);

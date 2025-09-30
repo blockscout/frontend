@@ -1,4 +1,4 @@
-import { Hide, Show } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -15,9 +15,9 @@ import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
 const Accounts = () => {
   const { isError, isPlaceholderData, data, pagination } = useQueryWithPages({
-    resourceName: 'addresses',
+    resourceName: 'general:addresses',
     options: {
-      placeholderData: generateListStub<'addresses'>(
+      placeholderData: generateListStub<'general:addresses'>(
         TOP_ADDRESS,
         50,
         {
@@ -45,7 +45,7 @@ const Accounts = () => {
 
   const content = data?.items ? (
     <>
-      <Hide below="lg" ssr={ false }>
+      <Box hideBelow="lg">
         <AddressesTable
           top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
           items={ data.items }
@@ -53,8 +53,8 @@ const Accounts = () => {
           pageStartIndex={ pageStartIndex }
           isLoading={ isPlaceholderData }
         />
-      </Hide>
-      <Show below="lg" ssr={ false }>
+      </Box>
+      <Box hideFrom="lg">
         { data.items.map((item, index) => {
           return (
             <AddressesListItem
@@ -66,7 +66,7 @@ const Accounts = () => {
             />
           );
         }) }
-      </Show>
+      </Box>
     </>
   ) : null;
 
@@ -75,11 +75,12 @@ const Accounts = () => {
       <PageTitle title="Top accounts" withTextAd/>
       <DataListDisplay
         isError={ isError }
-        items={ data?.items }
+        itemsNum={ data?.items.length }
         emptyText="There are no accounts."
-        content={ content }
         actionBar={ actionBar }
-      />
+      >
+        { content }
+      </DataListDisplay>
     </>
   );
 };

@@ -1,45 +1,70 @@
-import { Flex, Box, HStack, PopoverTrigger, PopoverContent, PopoverBody, VStack, useColorModeValue } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import { Flex, Box, VStack } from '@chakra-ui/react';
+import React from 'react';
 
-import config from 'configs/app';
+// import type { NavItem } from 'types/client/navigation';
+// import { useAppContext } from 'lib/contexts/app';
+import * as cookies from 'lib/cookies';
 import useNavItems, { isGroupItem } from 'lib/hooks/useNavItems';
+import IconSvg from 'ui/shared/IconSvg';
 import useIsAuth from 'ui/snippets/auth/useIsAuth';
 import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
-import NetworkMenu from 'ui/snippets/networkMenu/NetworkMenu';
-import Popover from 'ui/shared/chakra/Popover';
 
-
+import NavigationPromoBanner from '../promoBanner/NavigationPromoBanner';
+import RollupStageBadge from '../RollupStageBadge';
+import TestnetBadge from '../TestnetBadge';
 import NavLink from './NavLink';
 import NavLinkGroup from './NavLinkGroup';
 import NavLinkRewards from './NavLinkRewards';
-import { NavItem } from 'types/client/navigation';
+
+// import { useColorModeValue } from 'toolkit/chakra/color-mode';
 
 const NavigationDesktop = () => {
   const { mainNavItems, accountNavItems } = useNavItems();
-  const [subLinks, setSubLinks] = useState<NavItem[] | NavItem[][] | null>(null)
-  const [open, setOpen] = useState(false)
-  const navBg = useColorModeValue('white', 'grey.10')
-  const borderColor = useColorModeValue('transparent', 'rgba(255, 255, 255, 0.30)')
+  // const [subLinks, setSubLinks] = useState<NavItem[] | NavItem[][] | null>(null)
+  // const [open, setOpen] = useState(false)
+  // const navBg = useColorModeValue('white', 'grey.10')
+  // const borderColor = useColorModeValue('transparent', 'rgba(255, 255, 255, 0.30)')
 
   const isAuth = useIsAuth();
 
-  const isCollapsed = false;
+  const [ isCollapsed, setCollapsedState ] = React.useState<boolean | undefined>();
+
+  const handleTogglerClick = React.useCallback(() => {
+    setCollapsedState((flag) => !flag);
+    cookies.set(cookies.NAMES.NAV_BAR_COLLAPSED, isCollapsed ? 'false' : 'true');
+  }, [ isCollapsed ]);
+
+  const handleContainerClick = React.useCallback((event: React.MouseEvent) => {
+    if (event.target === event.currentTarget) {
+      handleTogglerClick();
+    }
+  }, [ handleTogglerClick ]);
+
   const isExpanded = isCollapsed === false;
 
-  const onMouseOver = (subItems: NavItem[] | NavItem[][] | null) => {
-    setSubLinks(subItems)
-  }
+  // const onMouseOver = (subItems: NavItem[] | NavItem[][] | null) => {
+  //   setSubLinks(subItems)
+  // }
   return (
     <Flex
       display={{ base: 'none', lg: 'flex' }}
-      alignItems="center"
-      justifyContent="space-between"
-      w="100%"
-      px={ 12 }
-      py={ 2 }
-      m="0 auto"
+      className="group"
+      position="relative"
+      flexDirection="column"
+      alignItems="stretch"
+      borderRight="1px solid"
+      borderColor="border.divider"
+      px={{ lg: isExpanded ? 6 : 4, xl: isCollapsed ? 4 : 6 }}
+      pt={ 12 }
+      pb={ 6 }
+      width={{ lg: isExpanded ? '229px' : '92px', xl: isCollapsed ? '92px' : '229px' }}
+      onClick={ handleContainerClick }
+      transitionProperty="width, padding"
+      transitionDuration="normal"
+      transitionTimingFunction="ease"
     >
-      { /*<TestnetBadge position="absolute" pl={ 3 } w="49px" top="34px"/>*/ }
+      <TestnetBadge position="absolute" pl={ 3 } w="49px" top="34px"/>
+      <RollupStageBadge position="absolute" ml={{ lg: isExpanded ? 3 : '10px', xl: isCollapsed ? '10px' : 3 }} top="34px"/>
       <Box
         as="header"
         display="flex"
@@ -54,92 +79,51 @@ const NavigationDesktop = () => {
         transitionTimingFunction="ease"
       >
         <NetworkLogo isCollapsed={ isCollapsed }/>
-        { Boolean(config.UI.navigation.featuredNetworks) && <NetworkMenu isCollapsed={ isCollapsed }/> }
       </Box>
-      <Popover
-        trigger="hover"
-        placement="bottom"
-        // should not be lazy to help google indexing pages
-        isLazy={ false }
-        gutter={ 8 }
-        matchWidth
-        onOpen={() => setOpen(true)}
-        onClose={() => setOpen(false)}
-      >
-        <PopoverTrigger>
-          <Box
-            as="nav"
-            p="4px"
-            background={open && subLinks ? navBg : "transparent"}
-            border={`1px solid ${open && subLinks ? borderColor : "transparent"}`}
-            borderBottom="none"
-            style={open && subLinks ? {
-              borderTopLeftRadius: "16px",
-              borderTopRightRadius: "16px",
-            } : {}}
-          >
-            <HStack as="ul" spacing="0" gap="0" alignItems="flex-start">
-              { mainNavItems.map((item) => {
-                if (isGroupItem(item)) {
-                  return (
-                    <NavLinkGroup
-                      hideSublinks
-                      onMouseOver={() => onMouseOver(item.subItems)}
-                      key={ item.text }
-                      item={ item }
-                      isCollapsed={ isCollapsed }
-                    />
-                  );
-                } else {
-                  return <NavLink onMouseOver={() => onMouseOver(null)} key={ item.text } isMainNav item={ item } isCollapsed={ isCollapsed }/>;
-                }
-              }) }
-            </HStack>
-          </Box>
-        </PopoverTrigger>
-        {subLinks && <PopoverContent
-          maxW="100%" w="100%" top={{ lg: isExpanded ? '-8px' : 0, xl: isCollapsed ? 0 : '-8px' }}
-          border={`1px solid ${borderColor}`}
-          borderTop="none"
-          borderBottomLeftRadius="16px"
-          borderBottomRightRadius="16px"
-          borderTopLeftRadius="0px"
-          borderTopRadius="0px"
-          boxShadow="none"
-        >
-          <PopoverBody
-            p={ 1 }
-          >
-            <VStack spacing={ 1 } alignItems="start" as="ul">
-              { subLinks?.map((subItem, index) => Array.isArray(subItem) ? (
-                <Box
-                  key={ index }
-                  w="100%"
-                  as="ul"
-                  _notLast={{
-                    mb: 2,
-                    pb: 2,
-                    borderBottomWidth: '1px',
-                    borderColor: 'divider',
-                  }}
-                >
-                  { subItem.map(subSubItem => <NavLink key={ subSubItem.text } item={ subSubItem } isCollapsed={ false }/>) }
-                </Box>
-              ) :
-                <NavLink key={ subItem.text } item={ subItem } isCollapsed={ false }/>,
-              ) }
-            </VStack>
-          </PopoverBody>
-        </PopoverContent>}
-      </Popover>
+      <Box as="nav" mt={ 6 } w="100%">
+        <VStack as="ul" gap="1" alignItems="flex-start">
+          { mainNavItems.map((item) => {
+            if (isGroupItem(item)) {
+              return <NavLinkGroup key={ item.text } item={ item } isCollapsed={ isCollapsed }/>;
+            } else {
+              return <NavLink key={ item.text } item={ item } isCollapsed={ isCollapsed }/>;
+            }
+          }) }
+        </VStack>
+      </Box>
       { isAuth && (
-        <Box as="nav" borderTopWidth="1px" borderColor="divider" w="100%" mt={ 3 } pt={ 3 }>
-          <HStack as="ul" spacing="1" alignItems="flex-start">
+        <Box as="nav" borderTopWidth="1px" borderColor="border.divider" w="100%" mt={ 3 } pt={ 3 }>
+          <VStack as="ul" gap="1" alignItems="flex-start">
             <NavLinkRewards isCollapsed={ isCollapsed }/>
             { accountNavItems.map((item) => <NavLink key={ item.text } item={ item } isCollapsed={ isCollapsed }/>) }
-          </HStack>
+          </VStack>
         </Box>
       ) }
+      <NavigationPromoBanner isCollapsed={ isCollapsed }/>
+      <IconSvg
+        name="arrows/east-mini"
+        width={ 6 }
+        height={ 6 }
+        _hover={{ color: 'hover' }}
+        borderRadius="base"
+        bgColor={{ base: 'white', _dark: 'black' }}
+        color={{ base: 'blackAlpha.400', _dark: 'whiteAlpha.400' }}
+        borderWidth="1px"
+        borderColor="border.divider"
+        transform={{ lg: isExpanded ? 'rotate(0)' : 'rotate(180deg)', xl: isCollapsed ? 'rotate(180deg)' : 'rotate(0)' }}
+        transformOrigin="center"
+        position="absolute"
+        top="104px"
+        left={{ lg: isExpanded ? '216px' : '80px', xl: isCollapsed ? '80px' : '216px' }}
+        cursor="pointer"
+        onClick={ handleTogglerClick }
+        aria-label="Expand/Collapse menu"
+        display="none"
+        _groupHover={{ display: 'block' }}
+        transitionProperty="transform, left"
+        transitionDuration="normal"
+        transitionTimingFunction="ease"
+      />
     </Flex>
   );
 };

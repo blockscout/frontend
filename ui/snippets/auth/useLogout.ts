@@ -8,13 +8,13 @@ import config from 'configs/app';
 import useApiFetch from 'lib/api/useApiFetch';
 import { getResourceKey } from 'lib/api/useApiQuery';
 import * as cookies from 'lib/cookies';
-import useToast from 'lib/hooks/useToast';
 import * as mixpanel from 'lib/mixpanel';
+import { toaster } from 'toolkit/chakra/toaster';
 
 const PROTECTED_ROUTES: Array<Route['pathname']> = [
   '/account/api-key',
   '/account/custom-abi',
-  '/account/rewards',
+  '/account/merits',
   '/account/tag-address',
   '/account/verified-addresses',
   '/account/watchlist',
@@ -24,18 +24,17 @@ const PROTECTED_ROUTES: Array<Route['pathname']> = [
 export default function useLogout() {
   const router = useRouter();
   const queryClient = useQueryClient();
-  const toast = useToast();
   const apiFetch = useApiFetch();
 
   return React.useCallback(async() => {
     try {
-      await apiFetch('auth_logout');
+      await apiFetch('general:auth_logout');
       cookies.remove(cookies.NAMES.API_TOKEN);
 
       if (config.features.rewards.isEnabled) {
         const rewardsToken = cookies.get(cookies.NAMES.REWARDS_API_TOKEN);
         if (rewardsToken) {
-          await apiFetch('rewards_logout', { fetchParams: {
+          await apiFetch('rewards:logout', { fetchParams: {
             method: 'POST',
             headers: { Authorization: `Bearer ${ rewardsToken }` },
           } });
@@ -44,11 +43,11 @@ export default function useLogout() {
       }
 
       queryClient.resetQueries({
-        queryKey: getResourceKey('user_info'),
+        queryKey: getResourceKey('general:user_info'),
         exact: true,
       });
       queryClient.resetQueries({
-        queryKey: getResourceKey('custom_abi'),
+        queryKey: getResourceKey('general:custom_abi'),
         exact: true,
       });
 
@@ -62,11 +61,10 @@ export default function useLogout() {
         router.push({ pathname: '/' }, undefined, { shallow: true });
       }
     } catch (error) {
-      toast({
-        status: 'error',
+      toaster.error({
         title: 'Logout failed',
         description: 'Please try again later',
       });
     }
-  }, [ apiFetch, queryClient, router, toast ]);
+  }, [ apiFetch, queryClient, router ]);
 }

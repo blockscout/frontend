@@ -1,22 +1,26 @@
+import { createListCollection } from '@chakra-ui/react';
 import React from 'react';
 
 import type { FormFields } from '../types';
 
 import { CONTRACT_LICENSES } from 'lib/contracts/licenses';
-import FormFieldFancySelect from 'ui/shared/forms/fields/FormFieldFancySelect';
+import type { SelectOption } from 'toolkit/chakra/select';
+import { FormFieldSelect } from 'toolkit/components/forms/fields/FormFieldSelect';
 
 import ContractVerificationFormRow from '../ContractVerificationFormRow';
 
-const options = CONTRACT_LICENSES.map(({ label, title, type }) => ({ label: `${ title } (${ label })`, value: type }));
+const collection = createListCollection<SelectOption>({
+  items: CONTRACT_LICENSES.map(({ label, title, type }) => ({ label: `${ title } (${ label })`, value: type })),
+});
 
 const ContractVerificationFieldLicenseType = () => {
 
   return (
     <ContractVerificationFormRow>
-      <FormFieldFancySelect<FormFields, 'license_type'>
+      <FormFieldSelect<FormFields, 'license_type'>
         name="license_type"
         placeholder="Contract license"
-        options={ options }
+        collection={ collection }
       />
       <span>
         For best practices, all contract source code holders, publishers and authors are encouraged to also

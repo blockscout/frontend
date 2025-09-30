@@ -7,25 +7,34 @@ const PRESETS = {
   arbitrum_sepolia: 'https://arbitrum-sepolia.blockscout.com',
   base: 'https://base.blockscout.com',
   blackfort_testnet: 'https://blackfort-testnet.blockscout.com',
+  celo: 'https://celo.blockscout.com',
   celo_alfajores: 'https://celo-alfajores.blockscout.com',
   eth: 'https://eth.blockscout.com',
   eth_goerli: 'https://eth-goerli.blockscout.com',
   eth_sepolia: 'https://eth-sepolia.blockscout.com',
-  garnet: 'https://explorer.garnetchain.com',
   filecoin: 'https://filecoin.blockscout.com',
+  garnet: 'https://explorer.garnetchain.com',
   gnosis: 'https://gnosis.blockscout.com',
+  immutable: 'https://explorer.immutable.com',
+  mega_eth: 'https://eth.blockscout.com', // FIXME: change host when instance is ready
   mekong: 'https://mekong.blockscout.com',
+  neon_devnet: 'https://neon-devnet.blockscout.com',
   optimism: 'https://optimism.blockscout.com',
-  optimism_celestia: 'https://opcelestia-raspberry.gelatoscout.com',
+  optimism_interop_0: 'https://optimism-interop-alpha-0.blockscout.com',
   optimism_sepolia: 'https://optimism-sepolia.blockscout.com',
   polygon: 'https://polygon.blockscout.com',
+  rari_testnet: 'https://rari-testnet.cloud.blockscout.com',
   rootstock_testnet: 'https://rootstock-testnet.blockscout.com',
   scroll_sepolia: 'https://scroll-sepolia.blockscout.com',
   shibarium: 'https://www.shibariumscan.io',
   stability_testnet: 'https://stability-testnet.blockscout.com',
+  tac: 'https://explorer.tac.build',
+  tac_turin: 'https://tac-turin.blockscout.com',
+  zetachain: 'https://zetachain.blockscout.com',
+  zetachain_testnet: 'https://zetachain-testnet.blockscout.com',
   zkevm: 'https://zkevm.blockscout.com',
   zksync: 'https://zksync.blockscout.com',
-  zilliqa_prototestnet: 'https://zilliqa-prototestnet.blockscout.com',
+  zilliqa: 'https://zilliqa.blockscout.com',
   zora: 'https://explorer.zora.energy',
   // main === staging
   main: 'https://eth-sepolia.k8s-dev.blockscout.com',
@@ -43,6 +52,18 @@ const IGNORED_ENVS = [
   'NEXT_PUBLIC_GIT_COMMIT_SHA',
   'NEXT_PUBLIC_GIT_TAG',
   'NEXT_PUBLIC_ICON_SPRITE_HASH',
+
+  // DEPRECATED
+  'NEXT_PUBLIC_AUTH0_CLIENT_ID',
+  'NEXT_PUBLIC_AUTH_URL',
+  'NEXT_PUBLIC_LOGOUT_URL',
+  'NEXT_PUBLIC_SENTRY_DSN',
+  'SENTRY_CSP_REPORT_URI',
+  'NEXT_PUBLIC_SENTRY_ENABLE_TRACING',
+  'NEXT_PUBLIC_ROLLUP_PARENT_CHAIN_NAME',
+  'NEXT_PUBLIC_RE_CAPTCHA_V3_APP_SITE_KEY',
+  'NEXT_PUBLIC_HOMEPAGE_PLATE_TEXT_COLOR',
+  'NEXT_PUBLIC_HOMEPAGE_PLATE_BACKGROUND',
 ];
 
 function parseScriptArgs() {
@@ -112,20 +133,36 @@ async function updatePresetFile(presetId: keyof typeof PRESETS) {
 }
 
 async function run() {
-  console.log(`🌀 Syncing preset configuration file...`);
-
   const args = parseScriptArgs();
   if (!args.name) {
     console.log('🚨 No "--name" argument is provided. Exiting...');
     return;
   }
 
-  const presetId = args.name as keyof typeof PRESETS;
+  const name = args.name;
+
+  if (name === 'all') {
+    console.log(`🌀 Syncing all presets configuration files...`);
+
+    for (const presetId in PRESETS) {
+      await updatePresetFile(presetId as keyof typeof PRESETS);
+      console.log(`  - [v] "${ presetId }" is ready`);
+    }
+
+    console.log(`✅ Done!`);
+
+    return;
+  }
+
+  const presetId = name as keyof typeof PRESETS;
+
   const instanceUrl = PRESETS[presetId];
   if (!instanceUrl) {
     console.log(`🚨 No preset with name "${ presetId }" found. Exiting...`);
     return;
   }
+
+  console.log(`🌀 Syncing preset configuration file...`);
 
   await updatePresetFile(presetId);
 

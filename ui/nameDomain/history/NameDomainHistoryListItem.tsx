@@ -5,12 +5,12 @@ import type * as bens from '@blockscout/bens-types';
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
-import stripTrailingSlash from 'lib/stripTrailingSlash';
-import Tag from 'ui/shared/chakra/Tag';
+import { Badge } from 'toolkit/chakra/badge';
+import { stripTrailingSlash } from 'toolkit/utils/url';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
-import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 interface Props {
   event: bens.DomainEvent;
@@ -37,10 +37,10 @@ const NameDomainHistoryListItem = ({ isLoading, domain, event }: Props) => {
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Age</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <TimeAgoWithTooltip
+        <TimeWithTooltip
           timestamp={ event.timestamp }
           isLoading={ isLoading }
-          color="text_secondary"
+          color="text.secondary"
           display="inline-block"
         />
       </ListItemMobileGrid.Value>
@@ -58,7 +58,7 @@ const NameDomainHistoryListItem = ({ isLoading, domain, event }: Props) => {
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>Method</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
-            <Tag colorScheme="gray" isLoading={ isLoading }>{ event.action }</Tag>
+            <Badge colorPalette="gray" loading={ isLoading }>{ event.action }</Badge>
           </ListItemMobileGrid.Value>
         </>
       ) }

@@ -10,3 +10,16 @@ export const ROLLUP_TYPES = [
 ] as const;
 
 export type RollupType = ArrayElement<typeof ROLLUP_TYPES>;
+
+export interface ParentChain {
+  id?: number;
+  name?: string;
+  baseUrl: string;
+  rpcUrls?: Array<string>;
+  currency?: {
+    name: string;
+    symbol: string;
+    decimals: number;
+  };
+  isTestnet?: boolean;
+}

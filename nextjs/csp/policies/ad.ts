@@ -23,10 +23,6 @@ export function ad(): CspDev.DirectiveDescriptor {
       'api.hypelab.com',
       '*.ixncdn.com',
       '*.cloudfront.net',
-
-      //getit
-      'v1.getittech.io',
-      'ipapi.co',
     ],
     'frame-src': [
       // coinzilla

@@ -1,4 +1,4 @@
-import { Alert, Button, chakra, Flex } from '@chakra-ui/react';
+import { chakra, Flex } from '@chakra-ui/react';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm, FormProvider } from 'react-hook-form';
@@ -9,9 +9,12 @@ import type { CsvExportParams } from 'types/client/address';
 import config from 'configs/app';
 import buildUrl from 'lib/api/buildUrl';
 import type { ResourceName } from 'lib/api/resources';
+import { useMultichainContext } from 'lib/contexts/multichain';
 import dayjs from 'lib/date/dayjs';
 import downloadBlob from 'lib/downloadBlob';
-import useToast from 'lib/hooks/useToast';
+import { Alert } from 'toolkit/chakra/alert';
+import { Button } from 'toolkit/chakra/button';
+import { toaster } from 'toolkit/chakra/toaster';
 import ReCaptcha from 'ui/shared/reCaptcha/ReCaptcha';
 import useReCaptcha from 'ui/shared/reCaptcha/useReCaptcha';
 
@@ -30,62 +33,68 @@ const CsvExportForm = ({ hash, resource, filterType, filterValue, fileNameTempla
   const formApi = useForm<FormFields>({
     mode: 'onBlur',
     defaultValues: {
-      from: dayjs().subtract(1, 'day').format('YYYY-MM-DD'),
-      to: dayjs().format('YYYY-MM-DD'),
+      from: dayjs().subtract(1, 'day').format('YYYY-MM-DDTHH:mm'),
+      to: dayjs().format('YYYY-MM-DDTHH:mm'),
     },
   });
   const { handleSubmit, formState } = formApi;
-  const toast = useToast();
   const recaptcha = useReCaptcha();
+  const multichainContext = useMultichainContext();
 
-  const onFormSubmit: SubmitHandler<FormFields> = React.useCallback(async(data) => {
-    try {
-      const token = await recaptcha.executeAsync();
+  const chainConfig = multichainContext?.chain.config || config;
 
-      if (!token) {
-        throw new Error('ReCaptcha is not solved');
-      }
-
+  const apiFetchFactory = React.useCallback((data: FormFields) => {
+    return async(recaptchaToken?: string) => {
       const url = buildUrl(resource, { hash } as never, {
         address_id: hash,
-        from_period: exportType !== 'holders' ? data.from : null,
-        to_period: exportType !== 'holders' ? data.to : null,
+        from_period: exportType !== 'holders' ? dayjs(data.from).toISOString() : null,
+        to_period: exportType !== 'holders' ? dayjs(data.to).toISOString() : null,
         filter_type: filterType,
         filter_value: filterValue,
-        recaptcha_response: token,
-      });
+        recaptcha_response: recaptchaToken,
+      }, undefined, multichainContext?.chain);
 
       const response = await fetch(url, {
         headers: {
           'content-type': 'application/octet-stream',
+          ...(recaptchaToken && { 'recaptcha-v2-response': recaptchaToken }),
         },
       });
 
       if (!response.ok) {
-        throw new Error();
+        throw new Error(response.statusText, {
+          cause: {
+            status: response.status,
+          },
+        });
       }
+
+      return response;
+    };
+  }, [ resource, hash, exportType, filterType, filterValue, multichainContext?.chain ]);
+
+  const onFormSubmit: SubmitHandler<FormFields> = React.useCallback(async(data) => {
+    try {
+      const response = await recaptcha.fetchProtectedResource<Response>(apiFetchFactory(data));
+      const chainText = multichainContext?.chain ? `${ multichainContext.chain.slug.replace(/-/g, '_') }_` : '';
 
       const blob = await response.blob();
       const fileName = exportType === 'holders' ?
-        `${ fileNameTemplate }_${ hash }.csv` :
+        `${ chainText }${ fileNameTemplate }_${ hash }.csv` :
         // eslint-disable-next-line max-len
-        `${ fileNameTemplate }_${ hash }_${ data.from }_${ data.to }${ filterType && filterValue ? '_with_filter_type_' + filterType + '_value_' + filterValue : '' }.csv`;
+        `${ chainText }${ fileNameTemplate }_${ hash }_${ data.from }_${ data.to }${ filterType && filterValue ? '_with_filter_type_' + filterType + '_value_' + filterValue : '' }.csv`;
       downloadBlob(blob, fileName);
 
     } catch (error) {
-      toast({
-        position: 'top-right',
+      toaster.error({
         title: 'Error',
         description: (error as Error)?.message || 'Something went wrong. Try again later.',
-        status: 'error',
-        variant: 'subtle',
-        isClosable: true,
       });
     }
 
-  }, [ recaptcha, resource, hash, exportType, filterType, filterValue, fileNameTemplate, toast ]);
+  }, [ recaptcha, apiFetchFactory, multichainContext?.chain, exportType, fileNameTemplate, hash, filterType, filterValue ]);
 
-  if (!config.services.reCaptchaV2.siteKey) {
+  if (!chainConfig.services.reCaptchaV2.siteKey) {
     return (
       <Alert status="error">
         CSV export is not available at the moment since reCaptcha is not configured for this application.
@@ -104,15 +113,14 @@ const CsvExportForm = ({ hash, resource, filterType, filterValue, fileNameTempla
           { exportType !== 'holders' && <CsvExportFormField name="from" formApi={ formApi }/> }
           { exportType !== 'holders' && <CsvExportFormField name="to" formApi={ formApi }/> }
         </Flex>
-        <ReCaptcha ref={ recaptcha.ref }/>
+        <ReCaptcha { ...recaptcha }/>
         <Button
           variant="solid"
-          size="lg"
           type="submit"
           mt={ 8 }
-          isLoading={ formState.isSubmitting }
+          loading={ formState.isSubmitting }
           loadingText="Download"
-          isDisabled={ Boolean(formState.errors.from || formState.errors.to) }
+          disabled={ Boolean(formState.errors.from || formState.errors.to || recaptcha.isInitError) }
         >
           Download
         </Button>

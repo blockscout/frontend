@@ -32,7 +32,7 @@ export default function useDescribeTxs(items: Array<Transaction> | undefined, vi
           return Promise.resolve([]);
         }
 
-        return apiFetch('noves_describe_txs', {
+        return apiFetch('general:noves_describe_txs', {
           queryParams: {
             viewAsAccountAddress,
             hashes,

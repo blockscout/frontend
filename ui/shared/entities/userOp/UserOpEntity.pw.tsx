@@ -5,17 +5,17 @@ import { test, expect } from 'playwright/lib';
 import UserOpEntity from './UserOpEntity';
 
 const hash = '0x376db52955d5bce114d0ccea2dcf22289b4eae1b86bcae5a59bb5fdbfef48899';
-const iconSizes = [ 'md', 'lg' ] as const;
+const variants = [ 'subheading', 'content' ] as const;
 
 test.use({ viewport: { width: 180, height: 30 } });
 
-test.describe('icon size', () => {
-  iconSizes.forEach((size) => {
-    test(`${ size }`, async({ render }) => {
+test.describe('variant', () => {
+  variants.forEach((variant) => {
+    test(`${ variant }`, async({ render }) => {
       const component = await render(
         <UserOpEntity
           hash={ hash }
-          icon={{ size }}
+          variant={ variant }
         />,
       );
 

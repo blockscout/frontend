@@ -5,6 +5,8 @@ import { useAccount, useWalletClient, useSwitchChain } from 'wagmi';
 import type { FormSubmitResult, SmartContractMethod } from './types';
 
 import config from 'configs/app';
+import { useMultichainContext } from 'lib/contexts/multichain';
+import useRewardsActivity from 'lib/hooks/useRewardsActivity';
 
 import { getNativeCoinValue } from './utils';
 
@@ -15,9 +17,13 @@ interface Params {
 }
 
 export default function useCallMethodWalletClient(): (params: Params) => Promise<FormSubmitResult> {
-  const { data: walletClient } = useWalletClient();
+  const multichainContext = useMultichainContext();
+  const chainConfig = (multichainContext?.chain.config ?? config).chain;
+
+  const { data: walletClient } = useWalletClient({ chainId: Number(chainConfig.id) });
   const { isConnected, chainId, address: account } = useAccount();
   const { switchChainAsync } = useSwitchChain();
+  const { trackTransaction, trackTransactionConfirm } = useRewardsActivity();
 
   return React.useCallback(async({ args, item, addressHash }) => {
     if (!isConnected) {
@@ -28,18 +34,32 @@ export default function useCallMethodWalletClient(): (params: Params) => Promise
       throw new Error('Wallet Client is not defined');
     }
 
-    if (chainId && String(chainId) !== config.chain.id) {
-      await switchChainAsync?.({ chainId: Number(config.chain.id) });
+    if (chainId && String(chainId) !== chainConfig.id) {
+      await switchChainAsync({ chainId: Number(chainConfig.id) });
     }
 
     const address = getAddress(addressHash);
+    const activityResponse = await trackTransaction(account ?? '', address);
+
+    // for payable methods we add additional input for native coin value
+    const inputs = 'inputs' in item ? item.inputs : [];
+    const _args = args.slice(0, inputs.length);
+    const value = getNativeCoinValue(args[inputs.length]);
 
     if (item.type === 'receive' || item.type === 'fallback') {
-      const value = getNativeCoinValue(args[0]);
+      // if the fallback method acts as a read method, it can only have one input of type bytes
+      // so we pass the input value as data without encoding it
+      const data = typeof _args[0] === 'string' && _args[0].startsWith('0x') ? _args[0] as `0x${ string }` : undefined;
       const hash = await walletClient.sendTransaction({
         to: address,
         value,
+        ...(data ? { data } : {}),
       });
+
+      if (activityResponse?.token) {
+        await trackTransactionConfirm(hash, activityResponse.token);
+      }
+
       return { source: 'wallet_client', data: { hash } };
     }
 
@@ -48,9 +68,6 @@ export default function useCallMethodWalletClient(): (params: Params) => Promise
     if (!methodName) {
       throw new Error('Method name is not defined');
     }
-
-    const _args = args.slice(0, item.inputs.length);
-    const value = getNativeCoinValue(args[item.inputs.length]);
 
     const hash = await walletClient.writeContract({
       args: _args,
@@ -68,6 +85,10 @@ export default function useCallMethodWalletClient(): (params: Params) => Promise
       account,
     });
 
+    if (activityResponse?.token) {
+      await trackTransactionConfirm(hash, activityResponse.token);
+    }
+
     return { source: 'wallet_client', data: { hash } };
-  }, [ chainId, isConnected, switchChainAsync, walletClient, account ]);
+  }, [ chainId, chainConfig, isConnected, switchChainAsync, walletClient, account, trackTransaction, trackTransactionConfirm ]);
 }

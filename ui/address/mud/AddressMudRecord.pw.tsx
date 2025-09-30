@@ -16,7 +16,7 @@ const hooksConfig = {
 };
 
 test('base view', async({ render, mockApiResponse }) => {
-  await mockApiResponse('address_mud_record', mudRecord, { pathParams: { hash: ADDRESS_HASH, table_id: TABLE_ID, record_id: RECORD_ID } });
+  await mockApiResponse('general:mud_record', mudRecord, { pathParams: { hash: ADDRESS_HASH, table_id: TABLE_ID, record_id: RECORD_ID } });
 
   const component = await render(
     <Box pt={{ base: '134px', lg: 6 }}>
@@ -32,7 +32,7 @@ test.describe('mobile', () => {
   test.use({ viewport: devices['iPhone 13 Pro'].viewport });
 
   test('base view', async({ render, mockApiResponse }) => {
-    await mockApiResponse('address_mud_record', mudRecord, { pathParams: { hash: ADDRESS_HASH, table_id: TABLE_ID, record_id: RECORD_ID } });
+    await mockApiResponse('general:mud_record', mudRecord, { pathParams: { hash: ADDRESS_HASH, table_id: TABLE_ID, record_id: RECORD_ID } });
 
     const component = await render(
       <Box pt={{ base: '134px', lg: 6 }}>

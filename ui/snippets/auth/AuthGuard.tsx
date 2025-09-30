@@ -1,8 +1,9 @@
-import { useDisclosure } from '@chakra-ui/react';
 import React from 'react';
 
+import { useDisclosure } from 'toolkit/hooks/useDisclosure';
+
 import AuthModal from './AuthModal';
-import useIsAuth from './useIsAuth';
+import useProfileQuery from './useProfileQuery';
 
 interface InjectedProps {
   onClick: () => void;
@@ -11,27 +12,51 @@ interface InjectedProps {
 interface Props {
   children: (props: InjectedProps) => React.ReactNode;
   onAuthSuccess: () => void;
+  ensureEmail?: boolean;
 }
 
-const AuthGuard = ({ children, onAuthSuccess }: Props) => {
+const AuthGuard = ({ children, onAuthSuccess, ensureEmail }: Props) => {
   const authModal = useDisclosure();
-  const isAuth = useIsAuth();
+  const profileQuery = useProfileQuery();
 
   const handleClick = React.useCallback(() => {
-    isAuth ? onAuthSuccess() : authModal.onOpen();
-  }, [ authModal, isAuth, onAuthSuccess ]);
+    if (profileQuery.data) {
+      if (ensureEmail && !profileQuery.data.email) {
+        authModal.onOpen();
+      } else {
+        onAuthSuccess();
+      }
+    } else {
+      authModal.onOpen();
+    }
+  }, [ authModal, ensureEmail, profileQuery.data, onAuthSuccess ]);
 
   const handleModalClose = React.useCallback((isSuccess?: boolean) => {
     if (isSuccess) {
+      if (ensureEmail && !profileQuery.data?.email) {
+        // If the user has logged in and has not added an email
+        // we need to close the modal and open it again
+        // so the initial screen will be correct
+        authModal.onClose();
+        window.setTimeout(() => {
+          authModal.onOpen();
+        }, 500);
+        return;
+      }
       onAuthSuccess();
     }
     authModal.onClose();
-  }, [ authModal, onAuthSuccess ]);
+  }, [ authModal, ensureEmail, profileQuery.data, onAuthSuccess ]);
 
   return (
     <>
       { children({ onClick: handleClick }) }
-      { authModal.isOpen && <AuthModal onClose={ handleModalClose } initialScreen={{ type: 'select_method' }}/> }
+      { authModal.open && (
+        <AuthModal
+          onClose={ handleModalClose }
+          initialScreen={ profileQuery.data && !profileQuery.data.email && ensureEmail ? { type: 'email', isAuth: true } : { type: 'select_method' } }
+        />
+      ) }
     </>
   );
 };

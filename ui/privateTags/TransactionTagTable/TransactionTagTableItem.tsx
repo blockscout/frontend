@@ -1,12 +1,9 @@
-import {
-  Tr,
-  Td,
-} from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 
 import type { TransactionTag } from 'types/api/account';
 
-import Tag from 'ui/shared/chakra/Tag';
+import { TableCell, TableRow } from 'toolkit/chakra/table';
+import { Tag } from 'toolkit/chakra/tag';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TableItemActionButtons from 'ui/shared/TableItemActionButtons';
 
@@ -27,22 +24,22 @@ const TransactionTagTableItem = ({ item, isLoading, onEditClick, onDeleteClick }
   }, [ item, onDeleteClick ]);
 
   return (
-    <Tr alignItems="top" key={ item.id }>
-      <Td>
+    <TableRow alignItems="top" key={ item.id }>
+      <TableCell>
         <TxEntity
           hash={ item.transaction_hash }
           isLoading={ isLoading }
           noCopy={ false }
           fontWeight={ 600 }
         />
-      </Td>
-      <Td>
-        <Tag isLoading={ isLoading } isTruncated>{ item.name }</Tag>
-      </Td>
-      <Td>
+      </TableCell>
+      <TableCell>
+        <Tag loading={ isLoading } truncated>{ item.name }</Tag>
+      </TableCell>
+      <TableCell>
         <TableItemActionButtons onDeleteClick={ onItemDeleteClick } onEditClick={ onItemEditClick } isLoading={ isLoading }/>
-      </Td>
-    </Tr>
+      </TableCell>
+    </TableRow>
   );
 };
 

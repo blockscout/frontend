@@ -19,11 +19,12 @@ const TABS_HEIGHT = 88;
 
 type Props = {
   token?: TokenInfo;
-  holdersQuery: QueryWithPagesResult<'token_holders'>;
+  holdersQuery: QueryWithPagesResult<'general:token_holders'>;
   shouldRender?: boolean;
+  tabsHeight?: number;
 };
 
-const TokenHoldersContent = ({ holdersQuery, token, shouldRender = true }: Props) => {
+const TokenHoldersContent = ({ holdersQuery, token, shouldRender = true, tabsHeight = TABS_HEIGHT }: Props) => {
   const isMobile = useIsMobile();
   const isMounted = useIsMounted();
 
@@ -37,11 +38,13 @@ const TokenHoldersContent = ({ holdersQuery, token, shouldRender = true }: Props
 
   const actionBar = isMobile && holdersQuery.pagination.isVisible && (
     <ActionBar mt={ -6 }>
-      <AddressCsvExportLink
-        address={ token?.address }
-        params={{ type: 'holders' }}
-        isLoading={ holdersQuery.pagination.isLoading }
-      />
+      { token && (
+        <AddressCsvExportLink
+          address={ token.address_hash }
+          params={{ type: 'holders' }}
+          isLoading={ holdersQuery.pagination.isLoading }
+        />
+      ) }
       <Pagination ml="auto" { ...holdersQuery.pagination }/>
     </ActionBar>
   );
@@ -54,7 +57,7 @@ const TokenHoldersContent = ({ holdersQuery, token, shouldRender = true }: Props
         <TokenHoldersTable
           data={ items }
           token={ token }
-          top={ holdersQuery.pagination.isVisible ? TABS_HEIGHT : 0 }
+          top={ tabsHeight }
           isLoading={ holdersQuery.isPlaceholderData }
         />
       </Box>
@@ -71,11 +74,12 @@ const TokenHoldersContent = ({ holdersQuery, token, shouldRender = true }: Props
   return (
     <DataListDisplay
       isError={ holdersQuery.isError }
-      items={ holdersQuery.data?.items }
+      itemsNum={ holdersQuery.data?.items.length }
       emptyText="There are no holders for this token."
-      content={ content }
       actionBar={ actionBar }
-    />
+    >
+      { content }
+    </DataListDisplay>
   );
 };
 

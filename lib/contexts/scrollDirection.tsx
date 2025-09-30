@@ -2,7 +2,7 @@ import { throttle, clamp } from 'es-toolkit';
 import React from 'react';
 
 const ScrollDirectionContext = React.createContext<'up' | 'down' | null>(null);
-import isBrowser from 'lib/isBrowser';
+import { isBrowser } from 'toolkit/utils/isBrowser';
 
 const SCROLL_DIFF_THRESHOLD = 20;
 

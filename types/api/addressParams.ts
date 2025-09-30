@@ -2,7 +2,7 @@ import type { AddressMetadataTagApi } from './addressMetadata';
 import type { SmartContractProxyType } from './contract';
 
 export interface AddressImplementation {
-  address: string;
+  address_hash: string;
   filecoin_robust_address?: string | null;
   name?: string | null;
 }

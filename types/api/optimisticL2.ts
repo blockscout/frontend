@@ -40,13 +40,13 @@ export type OptimisticL2OutputRootsResponse = {
 export type OptimisticL2BatchDataContainer = 'in_blob4844' | 'in_celestia' | 'in_calldata';
 
 export type OptimisticL2TxnBatchesItem = {
-  internal_id: number;
+  number: number;
   batch_data_container?: OptimisticL2BatchDataContainer;
   l1_timestamp: string;
   l1_transaction_hashes: Array<string>;
-  l2_block_start: number;
-  l2_block_end: number;
-  transaction_count: number;
+  l2_start_block_number: number;
+  l2_end_block_number: number;
+  transactions_count: number;
 };
 
 export type OptimisticL2TxnBatchesResponse = {
@@ -72,12 +72,12 @@ export interface OptimisticL2BlobTypeCelestia {
 }
 
 interface OptimismL2TxnBatchBase {
-  internal_id: number;
+  number: number;
   l1_timestamp: string;
   l1_transaction_hashes: Array<string>;
-  l2_block_start: number;
-  l2_block_end: number;
-  transaction_count: number;
+  l2_start_block_number: number;
+  l2_end_block_number: number;
+  transactions_count: number;
 }
 
 export interface OptimismL2TxnBatchTypeCallData extends OptimismL2TxnBatchBase {
@@ -151,7 +151,7 @@ export type OptimisticL2DisputeGamesResponse = {
 };
 
 export type OptimisticL2DisputeGamesItem = {
-  contract_address: string;
+  contract_address_hash: string;
   created_at: string;
   game_type: number;
   index: number;

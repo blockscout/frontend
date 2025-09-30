@@ -1,4 +1,6 @@
-export const light = {
+import type * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
+
+export const light: monaco.editor.IStandaloneThemeData = {
   base: 'vs' as const,
   inherit: true,
   rules: [
@@ -44,7 +46,7 @@ export const light = {
   } as const,
 };
 
-export const dark = {
+export const dark: monaco.editor.IStandaloneThemeData = {
   base: 'vs-dark' as const,
   inherit: true,
   rules: [

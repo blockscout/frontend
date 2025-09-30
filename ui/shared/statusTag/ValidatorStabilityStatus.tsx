@@ -12,11 +12,11 @@ interface Props {
 const ValidatorStabilityStatus = ({ state, isLoading }: Props) => {
   switch (state) {
     case 'active':
-      return <StatusTag type="ok" text="Active" isLoading={ isLoading }/>;
+      return <StatusTag type="ok" text="Active" loading={ isLoading }/>;
     case 'probation':
-      return <StatusTag type="pending" text="Probation" isLoading={ isLoading }/>;
+      return <StatusTag type="pending" text="Probation" loading={ isLoading }/>;
     case 'inactive':
-      return <StatusTag type="error" text="Inactive" isLoading={ isLoading }/>;
+      return <StatusTag type="error" text="Inactive" loading={ isLoading }/>;
   }
 };
 

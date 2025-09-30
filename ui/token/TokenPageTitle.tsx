@@ -1,4 +1,4 @@
-import { Box, Flex, Tooltip, useToken } from '@chakra-ui/react';
+import { Flex, useToken } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
@@ -10,8 +10,9 @@ import config from 'configs/app';
 import useAddressMetadataInfoQuery from 'lib/address/useAddressMetadataInfoQuery';
 import type { ResourceError } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
-import { useAppContext } from 'lib/contexts/app';
+import { useMultichainContext } from 'lib/contexts/multichain';
 import { getTokenTypeName } from 'lib/token/tokenTypes';
+import { Tooltip } from 'toolkit/chakra/tooltip';
 import AddressMetadataAlert from 'ui/address/details/AddressMetadataAlert';
 import AddressQrCode from 'ui/address/details/AddressQrCode';
 import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu';
@@ -36,10 +37,10 @@ interface Props {
 }
 
 const TokenPageTitle = ({ tokenQuery, addressQuery, hash }: Props) => {
-  const appProps = useAppContext();
-  const addressHash = !tokenQuery.isPlaceholderData ? (tokenQuery.data?.address || '') : '';
+  const multichainContext = useMultichainContext();
+  const addressHash = !tokenQuery.isPlaceholderData ? (tokenQuery.data?.address_hash || '') : '';
 
-  const verifiedInfoQuery = useApiQuery('token_verified_info', {
+  const verifiedInfoQuery = useApiQuery('contractInfo:token_verified_info', {
     pathParams: { hash: addressHash, chainId: config.chain.id },
     queryOptions: { enabled: Boolean(tokenQuery.data) && !tokenQuery.isPlaceholderData && config.features.verifiedTokens.isEnabled },
   });
@@ -53,21 +54,8 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, hash }: Props) => {
 
   const tokenSymbolText = tokenQuery.data?.symbol ? ` (${ tokenQuery.data.symbol })` : '';
 
-  const backLink = React.useMemo(() => {
-    const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/tokens');
-
-    if (!hasGoBackLink) {
-      return;
-    }
-
-    return {
-      label: 'Back to tokens list',
-      url: appProps.referrer,
-    };
-  }, [ appProps.referrer ]);
-
-  const bridgedTokenTagBgColor = useToken('colors', 'blue.500');
-  const bridgedTokenTagTextColor = useToken('colors', 'white');
+  const [ bridgedTokenTagBgColor ] = useToken('colors', 'blue.500');
+  const [ bridgedTokenTagTextColor ] = useToken('colors', 'white');
 
   const tags: Array<EntityTag> = React.useMemo(() => {
     return [
@@ -105,15 +93,14 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, hash }: Props) => {
   const contentAfter = (
     <>
       { verifiedInfoQuery.data?.tokenAddress && (
-        <Tooltip label={ `Information on this token has been verified by ${ config.chain.name }` }>
-          <Box boxSize={ 6 }>
-            <IconSvg name="certified" color="green.500" boxSize={ 6 } cursor="pointer"/>
-          </Box>
+        <Tooltip content={ `Information on this token has been verified by ${ config.chain.name }` }>
+          <IconSvg name="certified" color="green.500" boxSize={ 6 } cursor="pointer"/>
         </Tooltip>
       ) }
       <EntityTags
         isLoading={ isLoading || (config.features.addressMetadata.isEnabled && addressMetadataQuery.isPending) }
         tags={ tags }
+        addressHash={ addressQuery.data?.hash }
         flexGrow={ 1 }
       />
     </>
@@ -125,17 +112,18 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, hash }: Props) => {
         <AddressEntity
           address={{ ...addressQuery.data, name: '' }}
           isLoading={ isLoading }
-          fontFamily="heading"
-          fontSize="lg"
-          fontWeight={ 500 }
+          variant="subheading"
+          icon={ multichainContext?.chain ? {
+            shield: { name: 'pie_chart', isLoading },
+          } : undefined }
         />
       ) }
       { !isLoading && tokenQuery.data && <AddressAddToWallet token={ tokenQuery.data } variant="button"/> }
-      <AddressQrCode address={ addressQuery.data } isLoading={ isLoading }/>
+      { addressQuery.data && <AddressQrCode hash={ addressQuery.data.hash } isLoading={ isLoading }/> }
       <AccountActionsMenu isLoading={ isLoading }/>
       <Flex ml={{ base: 0, lg: 'auto' }} columnGap={ 2 } flexGrow={{ base: 1, lg: 0 }}>
         <TokenVerifiedInfo verifiedInfoQuery={ verifiedInfoQuery }/>
-        <NetworkExplorers type="token" pathParam={ addressHash.toLowerCase() } ml={{ base: 'auto', lg: 0 }}/>
+        <NetworkExplorers type="token" pathParam={ addressHash } ml={{ base: 'auto', lg: 0 }}/>
       </Flex>
     </Flex>
   );
@@ -145,12 +133,12 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, hash }: Props) => {
       <PageTitle
         title={ `${ tokenQuery.data?.name || 'Unnamed token' }${ tokenSymbolText }` }
         isLoading={ tokenQuery.isPlaceholderData }
-        backLink={ backLink }
         beforeTitle={ tokenQuery.data ? (
           <TokenEntity.Icon
             token={ tokenQuery.data }
             isLoading={ tokenQuery.isPlaceholderData }
-            size="lg"
+            variant="heading"
+            chain={ multichainContext?.chain }
           />
         ) : null }
         contentAfter={ contentAfter }

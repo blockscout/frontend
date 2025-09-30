@@ -1,6 +1,6 @@
-import type { RewardsUserReferralsResponse } from 'types/api/rewards';
+import type { GetReferralDataResponse } from '@blockscout/points-types';
 
-export const base: RewardsUserReferralsResponse = {
+export const base: GetReferralDataResponse = {
   code: 'QWERTY',
   link: 'https://example.com?ref=QWERTY',
   referrals: '15',

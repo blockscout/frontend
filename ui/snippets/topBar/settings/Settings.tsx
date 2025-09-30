@@ -1,37 +1,63 @@
-import { Box, IconButton, PopoverBody, PopoverContent, PopoverTrigger, useDisclosure } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import React from 'react';
 
-import Popover from 'ui/shared/chakra/Popover';
+import { IconButton } from 'toolkit/chakra/icon-button';
+import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
+import { Tooltip } from 'toolkit/chakra/tooltip';
+import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import IconSvg from 'ui/shared/IconSvg';
 
 import SettingsAddressFormat from './SettingsAddressFormat';
 // import SettingsColorTheme from './SettingsColorTheme';
 import SettingsIdentIcon from './SettingsIdentIcon';
+import SettingsScamTokens from './SettingsScamTokens';
 
 const Settings = () => {
-  const { isOpen, onToggle, onClose } = useDisclosure();
+  const popover = useDisclosure();
+  const tooltip = useDisclosure();
+
+  const handlePopoverOpenChange = React.useCallback(({ open }: { open: boolean }) => {
+    open && tooltip.onClose();
+    popover.onOpenChange({ open });
+  }, [ popover, tooltip ]);
+
+  const handleTooltipOpenChange = React.useCallback(({ open }: { open: boolean }) => {
+    if (!popover.open) {
+      tooltip.onOpenChange({ open });
+    }
+  }, [ popover, tooltip ]);
 
   return (
-    <Popover placement="bottom-start" trigger="click" isOpen={ isOpen } onClose={ onClose }>
-      <PopoverTrigger>
-        <IconButton
-          variant="simple"
-          colorScheme="white"
-          aria-label="User settings"
-          icon={ <IconSvg name="gear_slim" boxSize={ 5 }/> }
-          p="1px"
-          boxSize={ 5 }
-          onClick={ onToggle }
-        />
-      </PopoverTrigger>
+    <PopoverRoot
+      positioning={{ placement: 'bottom-start' }}
+      open={ popover.open }
+      onOpenChange={ handlePopoverOpenChange }
+      // should be false to enable auto-switch to default color theme
+      lazyMount={ false }
+    >
+      <Tooltip content="Website settings" disableOnMobile open={ tooltip.open } onOpenChange={ handleTooltipOpenChange }>
+        <Flex alignItems="center">
+          <PopoverTrigger>
+            <IconButton
+              variant="link"
+              size="2xs"
+              borderRadius="sm"
+              aria-label="User settings"
+            >
+              <IconSvg name="gear_slim"/>
+            </IconButton>
+          </PopoverTrigger>
+        </Flex>
+      </Tooltip>
       <PopoverContent overflowY="hidden" w="auto" fontSize="sm">
-        <PopoverBody boxShadow="2xl" p={ 4 }>
-          <Box borderColor="divider" borderWidth="1px" my={ 3 }/>
+        <PopoverBody>
+          <Box borderColor="border.divider" borderTopWidth="1px" my={ 3 }/>
           <SettingsIdentIcon/>
           <SettingsAddressFormat/>
+          <SettingsScamTokens/>
         </PopoverBody>
       </PopoverContent>
-    </Popover>
+    </PopoverRoot>
   );
 };
 

@@ -1,10 +1,11 @@
-import { Tag, Tooltip, useDisclosure } from '@chakra-ui/react';
+import { HStack } from '@chakra-ui/react';
 import React from 'react';
 
 import { route } from 'nextjs-routes';
 
-import config from 'configs/app';
-import LinkInternal from 'ui/shared/links/LinkInternal';
+import { Link } from 'toolkit/chakra/link';
+import { Tag } from 'toolkit/chakra/tag';
+import { Tooltip } from 'toolkit/chakra/tooltip';
 
 import type { BlockQuery } from './useBlockQuery';
 
@@ -12,60 +13,44 @@ interface Props {
   blockQuery: BlockQuery;
 }
 
-const BlockCeloEpochTag = ({ blockQuery }: Props) => {
-  // have to implement controlled tooltip because of the issue - https://github.com/chakra-ui/chakra-ui/issues/7107
-  const { isOpen, onOpen, onToggle, onClose } = useDisclosure();
-
+const BlockCeloEpochTagRegular = ({ blockQuery }: Props) => {
   if (!blockQuery.data?.celo) {
     return null;
   }
 
-  if (!blockQuery.data.celo.is_epoch_block) {
-    const celoConfig = config.features.celo;
-    const epochBlockNumber = celoConfig.isEnabled && celoConfig.L2UpgradeBlock && blockQuery.data.height <= celoConfig.L2UpgradeBlock ?
-      blockQuery.data.celo.epoch_number * celoConfig.BLOCKS_PER_EPOCH :
-      undefined;
-    const tag = (
-      <Tag
-        colorScheme={ epochBlockNumber ? 'gray-blue' : 'gray' }
-        onClick={ epochBlockNumber ? undefined : onToggle }
-        onMouseEnter={ onOpen }
-        onMouseLeave={ onClose }
-      >
-        Epoch #{ blockQuery.data.celo.epoch_number }
-      </Tag>
-    );
-    const content = epochBlockNumber ? (
-      <LinkInternal href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: String(epochBlockNumber) } }) }>
-        { tag }
-      </LinkInternal>
-    ) : tag;
+  return (
+    <Tooltip
+      key="epoch-tag-before-finalized"
+      content="Displays the epoch this block belongs to before the epoch is finalized"
+    >
+      <Link href={ route({ pathname: '/epochs/[number]', query: { number: String(blockQuery.data.celo.epoch_number) } }) }>
+        <Tag variant="clickable">Epoch #{ blockQuery.data.celo.epoch_number }</Tag>
+      </Link>
+    </Tooltip>
+  );
+};
 
-    return (
-      <Tooltip
-        label="Displays the epoch this block belongs to before the epoch is finalized"
-        maxW="280px"
-        textAlign="center"
-        isOpen={ isOpen }
-        onClose={ onClose }
-      >
-        { content }
-      </Tooltip>
-    );
+const BlockCeloEpochTag = ({ blockQuery }: Props) => {
+  if (!blockQuery.data?.celo) {
+    return null;
+  }
+
+  if (!blockQuery.data.celo.l1_era_finalized_epoch_number) {
+    return <BlockCeloEpochTagRegular blockQuery={ blockQuery }/>;
   }
 
   return (
-    <Tooltip
-      label="Displays the epoch finalized by this block"
-      maxW="280px"
-      textAlign="center"
-      isOpen={ isOpen }
-      onClose={ onClose }
-    >
-      <Tag bgColor="celo" color="blackAlpha.800" onClick={ onToggle } onMouseEnter={ onOpen } onMouseLeave={ onClose }>
-        Finalized epoch #{ blockQuery.data.celo.epoch_number }
-      </Tag>
-    </Tooltip>
+    <HStack gap={ 2 }>
+      <Tooltip
+        key="epoch-tag"
+        content="Displays the epoch finalized by this block"
+      >
+        <Link href={ route({ pathname: '/epochs/[number]', query: { number: String(blockQuery.data.celo.l1_era_finalized_epoch_number) } }) }>
+          <Tag bgColor="celo" color="blackAlpha.800" variant="clickable"> Finalized epoch #{ blockQuery.data.celo.l1_era_finalized_epoch_number } </Tag>
+        </Link>
+      </Tooltip>
+      <BlockCeloEpochTagRegular blockQuery={ blockQuery }/>
+    </HStack>
   );
 };
 

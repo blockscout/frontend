@@ -1,8 +1,8 @@
-import { Box, Divider } from '@chakra-ui/react';
+import { Box, Separator } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
 import TxAdditionalInfoContent from './TxAdditionalInfoContent';
@@ -12,7 +12,7 @@ interface Props {
 }
 
 const TxAdditionalInfoContainer = ({ hash }: Props) => {
-  const { data, isError, isPending } = useApiQuery('tx', {
+  const { data, isError, isPending } = useApiQuery('general:tx', {
     pathParams: { hash },
     queryOptions: {
       refetchOnMount: false,
@@ -22,30 +22,29 @@ const TxAdditionalInfoContainer = ({ hash }: Props) => {
   if (isPending) {
     return (
       <Box>
-        <Skeleton w="130px" h="24px" borderRadius="full" mb={ 6 }/>
         <Box>
-          <Skeleton w="110px" h="16px" borderRadius="full" mb={ 3 }/>
-          <Skeleton w="100%" h="16px" borderRadius="full"/>
+          <Skeleton loading w="110px" h="16px" borderRadius="full" mb={ 3 }/>
+          <Skeleton loading w="100%" h="16px" borderRadius="full"/>
         </Box>
-        <Divider my={ 4 }/>
+        <Separator my={ 4 }/>
         <Box>
-          <Skeleton w="110px" h="16px" borderRadius="full" mb={ 3 }/>
-          <Skeleton w="100%" h="16px" borderRadius="full"/>
+          <Skeleton loading w="110px" h="16px" borderRadius="full" mb={ 3 }/>
+          <Skeleton loading w="100%" h="16px" borderRadius="full"/>
         </Box>
-        <Divider my={ 4 }/>
+        <Separator my={ 4 }/>
         <Box>
-          <Skeleton w="110px" h="16px" borderRadius="full" mb={ 3 }/>
-          <Skeleton w="100%" h="16px" borderRadius="full"/>
+          <Skeleton loading w="110px" h="16px" borderRadius="full" mb={ 3 }/>
+          <Skeleton loading w="100%" h="16px" borderRadius="full"/>
         </Box>
-        <Divider my={ 4 }/>
+        <Separator my={ 4 }/>
         <Box>
-          <Skeleton w="110px" h="16px" borderRadius="full" mb={ 3 }/>
-          <Skeleton w="75%" h="16px" borderRadius="full"/>
-          <Skeleton w="75%" h="16px" borderRadius="full" mt={ 1 }/>
-          <Skeleton w="75%" h="16px" borderRadius="full" mt={ 1 }/>
+          <Skeleton loading w="110px" h="16px" borderRadius="full" mb={ 3 }/>
+          <Skeleton loading w="75%" h="16px" borderRadius="full"/>
+          <Skeleton loading w="75%" h="16px" borderRadius="full" mt={ 1 }/>
+          <Skeleton loading w="75%" h="16px" borderRadius="full" mt={ 1 }/>
         </Box>
-        <Divider my={ 4 }/>
-        <Skeleton w="80px" h="16px" borderRadius="full"/>
+        <Separator my={ 4 }/>
+        <Skeleton loading w="80px" h="16px" borderRadius="full"/>
       </Box>
     );
   }

@@ -1,5 +1,4 @@
 import type { AddressMetadataTagType } from 'types/api/addressMetadata';
-import type { Option } from 'ui/shared/forms/inputs/select/types';
 
 export interface FormFields {
   requesterName: string;
@@ -13,8 +12,9 @@ export interface FormFields {
 
 export interface FormFieldTag {
   name: string;
-  type: Option<AddressMetadataTagType>;
+  type: Array<AddressMetadataTagType>;
   url: string | undefined;
+  iconUrl: string | undefined;
   bgColor: string | undefined;
   textColor: string | undefined;
   tooltipDescription: string | undefined;
@@ -33,6 +33,7 @@ export interface SubmitRequestBody {
     bgColor?: string;
     textColor?: string;
     tagUrl?: string;
+    tagIcon?: string;
     tooltipDescription?: string;
   };
 }

@@ -1,5 +1,4 @@
-import getPageType from './getPageType';
-import getUuid from './getUuid';
+import getPageType, { PAGE_TYPE_DICT } from './getPageType';
 import logEvent from './logEvent';
 import reset from './reset';
 import useInit from './useInit';
@@ -12,7 +11,7 @@ export {
   useLogPageView,
   logEvent,
   getPageType,
-  getUuid,
   userProfile,
   reset,
+  PAGE_TYPE_DICT,
 };

@@ -1,36 +1,31 @@
-import { IconButton, Image, Link, LinkBox, useColorModeValue, chakra, Flex } from '@chakra-ui/react';
+import { chakra, Flex, Text } from '@chakra-ui/react';
 import type { MouseEvent } from 'react';
 import React, { useCallback } from 'react';
 
-import type { MarketplaceAppWithSecurityReport, ContractListTypes, AppRating } from 'types/client/marketplace';
+import type { MarketplaceApp } from 'types/client/marketplace';
 
-import useIsMobile from 'lib/hooks/useIsMobile';
-import isBrowser from 'lib/isBrowser';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { useColorModeValue } from 'toolkit/chakra/color-mode';
+import { IconButton } from 'toolkit/chakra/icon-button';
+import { Image } from 'toolkit/chakra/image';
+import { Link, LinkBox } from 'toolkit/chakra/link';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { isBrowser } from 'toolkit/utils/isBrowser';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 
-import AppSecurityReport from './AppSecurityReport';
 import FavoriteIcon from './FavoriteIcon';
 import MarketplaceAppCardLink from './MarketplaceAppCardLink';
 import MarketplaceAppGraphLinks from './MarketplaceAppGraphLinks';
 import MarketplaceAppIntegrationIcon from './MarketplaceAppIntegrationIcon';
 import Rating from './Rating/Rating';
-import type { RateFunction } from './Rating/useRatings';
 
-interface Props extends MarketplaceAppWithSecurityReport {
+interface Props extends MarketplaceApp {
   onInfoClick: (id: string) => void;
   isFavorite: boolean;
   onFavoriteClick: (id: string, isFavorite: boolean) => void;
   isLoading: boolean;
   onAppClick: (event: MouseEvent, id: string) => void;
   className?: string;
-  showContractList: (id: string, type: ContractListTypes) => void;
-  userRating?: AppRating;
-  rateApp: RateFunction;
-  isRatingSending: boolean;
-  isRatingLoading: boolean;
-  canRate: boolean | undefined;
-  graphLinks: Array<{ text: string; url: string }>;
+  graphLinks?: Array<{ title: string; url: string }>;
 }
 
 const MarketplaceAppCard = ({
@@ -48,18 +43,12 @@ const MarketplaceAppCard = ({
   isLoading,
   internalWallet,
   onAppClick,
-  securityReport,
   className,
-  showContractList,
   rating,
+  ratingsTotalCount,
   userRating,
-  rateApp,
-  isRatingSending,
-  isRatingLoading,
-  canRate,
   graphLinks,
 }: Props) => {
-  const isMobile = useIsMobile();
   const categoriesLabel = categories.join(', ');
 
   const handleInfoClick = useCallback((event: MouseEvent) => {
@@ -84,9 +73,8 @@ const MarketplaceAppCard = ({
       }}
       borderRadius="md"
       padding={{ base: 3, md: '20px' }}
-      border="1px"
-      borderColor={ useColorModeValue('gray.200', 'gray.600') }
-      role="group"
+      borderWidth="1px"
+      borderColor={{ _light: 'gray.200', _dark: 'gray.600' }}
     >
       <Flex
         flexDirection="column"
@@ -99,7 +87,7 @@ const MarketplaceAppCard = ({
           gap={ 4 }
         >
           <Skeleton
-            isLoaded={ !isLoading }
+            loading={ isLoading }
             w={{ base: '64px', md: '96px' }}
             h={{ base: '64px', md: '96px' }}
             display="flex"
@@ -121,9 +109,10 @@ const MarketplaceAppCard = ({
             pt={ 1 }
           >
             <Skeleton
-              isLoaded={ !isLoading }
+              loading={ isLoading }
               paddingRight={{ base: '40px', md: 0 }}
-              display="inline-block"
+              display="inline-flex"
+              alignItems="center"
             >
               <MarketplaceAppCardLink
                 id={ id }
@@ -141,13 +130,12 @@ const MarketplaceAppCard = ({
                 links={ graphLinks }
                 ml={ 2 }
                 verticalAlign="middle"
-                mb={{ base: 0, md: 1 }}
               />
             </Skeleton>
 
             <Skeleton
-              isLoaded={ !isLoading }
-              color="text_secondary"
+              loading={ isLoading }
+              color="text.secondary"
               fontSize="xs"
               lineHeight="16px"
             >
@@ -157,12 +145,12 @@ const MarketplaceAppCard = ({
         </Flex>
 
         <Skeleton
-          isLoaded={ !isLoading }
-          fontSize="sm"
-          lineHeight="20px"
-          noOfLines={{ base: 2, md: 3 }}
+          loading={ isLoading }
+          asChild
         >
-          { shortDescription }
+          <Text lineClamp={{ base: 2, md: 3 }} textStyle="sm">
+            { shortDescription }
+          </Text>
         </Skeleton>
 
         { !isLoading && (
@@ -170,70 +158,50 @@ const MarketplaceAppCard = ({
             alignItems="center"
             justifyContent="space-between"
             marginTop="auto"
+            h="30px"
           >
             <Link
-              fontSize="sm"
+              textStyle="sm"
               fontWeight="500"
-              paddingRight={{ md: 2 }}
+              paddingRight={ 3 }
+              h="full"
               href="#"
               onClick={ handleInfoClick }
             >
-              More info
+              Info
             </Link>
-            <Flex alignItems="center">
+            <Flex alignItems="center" gap={ 3 }>
               <Rating
                 appId={ id }
                 rating={ rating }
+                ratingsTotalCount={ ratingsTotalCount }
                 userRating={ userRating }
-                rate={ rateApp }
-                isSending={ isRatingSending }
-                isLoading={ isRatingLoading }
-                canRate={ canRate }
+                isLoading={ isLoading }
                 source="Discovery"
               />
-              <IconButton
-                aria-label="Mark as favorite"
-                title="Mark as favorite"
-                variant="ghost"
-                colorScheme="gray"
-                w={{ base: 6, md: '30px' }}
-                h={{ base: 6, md: '30px' }}
-                onClick={ handleFavoriteClick }
-                icon={ <FavoriteIcon isFavorite={ isFavorite }/> }
-                ml={ 2 }
-              />
-              <CopyToClipboard
-                text={ isBrowser() ? window.location.origin + `/apps/${ id }` : '' }
-                icon="share"
-                size={ 4 }
-                variant="ghost"
-                colorScheme="gray"
-                w={{ base: 6, md: '30px' }}
-                h={{ base: 6, md: '30px' }}
-                color="gray.400"
-                _hover={{ color: 'gray.400' }}
-                ml={{ base: 1, md: 0 }}
-                display="inline-flex"
-                borderRadius="base"
-              />
+              <Flex gap={ 2 }>
+                <IconButton
+                  aria-label="Mark as favorite"
+                  title="Mark as favorite"
+                  variant="icon_secondary"
+                  size="md"
+                  onClick={ handleFavoriteClick }
+                  selected={ isFavorite }
+                >
+                  <FavoriteIcon isFavorite={ isFavorite }/>
+                </IconButton>
+                <CopyToClipboard
+                  text={ isBrowser() ? window.location.origin + `/apps/${ id }` : '' }
+                  type="share"
+                  variant="icon_secondary"
+                  size="md"
+                  borderRadius="none"
+                  ml={ 0 }
+                  boxSize={ 8 }
+                />
+              </Flex>
             </Flex>
           </Flex>
-        ) }
-
-        { securityReport && (
-          <AppSecurityReport
-            id={ id }
-            securityReport={ securityReport }
-            showContractList={ showContractList }
-            isLoading={ isLoading }
-            source="Discovery view"
-            popoverPlacement={ isMobile ? 'bottom-end' : 'left' }
-            position="absolute"
-            right={{ base: 3, md: 5 }}
-            top={{ base: '10px', md: 5 }}
-            border={ 0 }
-            padding={ 0 }
-          />
         ) }
       </Flex>
     </LinkBox>

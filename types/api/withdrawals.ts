@@ -18,6 +18,6 @@ export type WithdrawalsItem = {
 };
 
 export type WithdrawalsCounters = {
-  withdrawal_count: string;
-  withdrawal_sum: string;
+  withdrawals_count: string;
+  withdrawals_sum: string;
 };

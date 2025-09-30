@@ -1,40 +1,39 @@
-import { Button } from '@chakra-ui/react';
 import React from 'react';
 
 import { route } from 'nextjs-routes';
 
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import config from 'configs/app';
+import { Button } from 'toolkit/chakra/button';
+import type { LinkProps } from 'toolkit/chakra/link';
+import { Link } from 'toolkit/chakra/link';
 
-interface Props {
+interface Props extends LinkProps {
   isLoading: boolean;
   addressHash: string;
-  isPartiallyVerified: boolean;
 }
 
-const ContractDetailsVerificationButton = ({ isLoading, addressHash, isPartiallyVerified }: Props) => {
-  if (isLoading) {
-    return (
-      <Skeleton
-        w="130px"
-        h={ 8 }
-        mr={ isPartiallyVerified ? 0 : 3 }
-        ml={ isPartiallyVerified ? 0 : 'auto' }
-        borderRadius="base"
-        flexShrink={ 0 }
-      />
-    );
-  }
+const ContractDetailsVerificationButton = ({ isLoading, addressHash, ...rest }: Props) => {
+
+  const href = config.features.opSuperchain.isEnabled ?
+  // TODO @tom2drum adjust URL to Vera
+    'https://vera.blockscout.com' :
+    route({ pathname: '/address/[hash]/contract-verification', query: { hash: addressHash } });
+
   return (
-    <Button
-      size="sm"
-      mr={ isPartiallyVerified ? 0 : 3 }
-      ml={ isPartiallyVerified ? 0 : 'auto' }
+    <Link
+      href={ href }
+      target={ config.features.opSuperchain.isEnabled ? '_blank' : undefined }
       flexShrink={ 0 }
-      as="a"
-      href={ route({ pathname: '/address/[hash]/contract-verification', query: { hash: addressHash } }) }
+      asChild
+      { ...rest }
     >
-      Verify & publish
-    </Button>
+      <Button
+        size="sm"
+        loadingSkeleton={ isLoading }
+      >
+        Verify & publish
+      </Button>
+    </Link>
   );
 };
 

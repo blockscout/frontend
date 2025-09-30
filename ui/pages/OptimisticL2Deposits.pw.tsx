@@ -13,8 +13,8 @@ test('base view +@mobile', async({ render, mockEnvs, mockTextAd, mockApiResponse
   test.slow();
   await mockEnvs(ENVS_MAP.optimisticRollup);
   await mockTextAd();
-  await mockApiResponse('optimistic_l2_deposits', depositsData);
-  await mockApiResponse('optimistic_l2_deposits_count', 3971111);
+  await mockApiResponse('general:optimistic_l2_deposits', depositsData);
+  await mockApiResponse('general:optimistic_l2_deposits_count', 3971111);
 
   const component = await render(<OptimisticL2Deposits/>);
 

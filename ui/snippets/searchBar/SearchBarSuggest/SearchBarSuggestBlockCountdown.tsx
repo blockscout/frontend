@@ -3,7 +3,7 @@ import React from 'react';
 
 import { route } from 'nextjs-routes';
 
-import LinkInternal from 'ui/shared/links/LinkInternal';
+import { Link } from 'toolkit/chakra/link';
 
 interface Props {
   blockHeight: string;
@@ -15,9 +15,9 @@ const SearchBarSuggestBlockCountdown = ({ blockHeight, onClick, className }: Pro
   return (
     <Box className={ className }>
       <span>Learn </span>
-      <LinkInternal href={ route({ pathname: '/block/countdown/[height]', query: { height: blockHeight } }) } onClick={ onClick }>
+      <Link href={ route({ pathname: '/block/countdown/[height]', query: { height: blockHeight } }) } onClick={ onClick }>
         estimated time for this block
-      </LinkInternal>
+      </Link>
       <span> to be created.</span>
     </Box>
   );

@@ -1,7 +1,9 @@
-import { Box, Button, Flex, IconButton, Spinner, Text } from '@chakra-ui/react';
+import { Box, Flex, Spinner, Text } from '@chakra-ui/react';
 import React from 'react';
 
 import delay from 'lib/delay';
+import { Button } from 'toolkit/chakra/button';
+import { IconButton } from 'toolkit/chakra/icon-button';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import IconSvg from 'ui/shared/IconSvg';
 
@@ -27,13 +29,13 @@ const UserWalletMenuContent = ({ isAutoConnectDisabled, address, domain, isRecon
     <Box>
       { isAutoConnectDisabled && <UserWalletAutoConnectAlert/> }
       <Text fontSize="sm" fontWeight={ 600 } mb={ 1 }>My wallet</Text>
-      <Text fontSize="sm" mb={ 5 } fontWeight={ 400 } color="text_secondary">
+      <Text fontSize="sm" mb={ 5 } fontWeight={ 400 } color="text.secondary">
         Your wallet is used to interact with apps and contracts in the explorer.
       </Text>
       <Flex alignItems="center" columnGap={ 2 } justifyContent="space-between">
         <AddressEntity
           address={{ hash: address, ens_domain_name: domain }}
-          isTooltipDisabled
+          noTooltip
           truncation="dynamic"
           fontSize="sm"
           fontWeight={ 700 }
@@ -41,13 +43,12 @@ const UserWalletMenuContent = ({ isAutoConnectDisabled, address, domain, isRecon
         { isReconnecting ? <Spinner size="sm" m="2px" flexShrink={ 0 }/> : (
           <IconButton
             aria-label="Open wallet"
-            icon={ <IconSvg name="gear_slim" boxSize={ 5 }/> }
-            variant="simple"
-            color="icon_info"
-            boxSize={ 5 }
+            variant="icon_secondary"
+            size="2xs"
             onClick={ handleOpenWalletClick }
-            flexShrink={ 0 }
-          />
+          >
+            <IconSvg name="gear_slim"/>
+          </IconButton>
         ) }
       </Flex>
       <Button size="sm" width="full" variant="outline" onClick={ onDisconnect } mt={ 6 }>

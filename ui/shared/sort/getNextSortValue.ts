@@ -1,7 +1,7 @@
 export default function getNextSortValue<SortField extends string, Sort extends string>(
-  sortSequence: Record<SortField, Array<Sort | undefined>>, field: SortField,
+  sortSequence: Record<SortField, Array<Sort>>, field: SortField,
 ) {
-  return (prevValue: Sort | undefined) => {
+  return (prevValue: Sort) => {
     const sequence = sortSequence[field];
     return getNextValueFromSequence(sequence, prevValue);
   };

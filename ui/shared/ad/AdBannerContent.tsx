@@ -5,11 +5,10 @@ import type { BannerPlatform } from './types';
 import type { AdBannerProviders } from 'types/client/adProviders';
 
 import config from 'configs/app';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 
 import AdbutlerBanner from './AdbutlerBanner';
 import CoinzillaBanner from './CoinzillaBanner';
-// import GetitBanner from './GetitBanner';
 import HypeBanner from './HypeBanner';
 import SliseBanner from './SliseBanner';
 
@@ -29,8 +28,6 @@ const AdBannerContent = ({ className, isLoading, provider, platform }: Props) =>
         return <AdbutlerBanner platform={ platform }/>;
       case 'coinzilla':
         return <CoinzillaBanner platform={ platform }/>;
-      // case 'getit':
-      //   return <GetitBanner platform={ platform }/>;
       case 'hype':
         return <HypeBanner platform={ platform }/>;
       case 'slise':
@@ -41,7 +38,7 @@ const AdBannerContent = ({ className, isLoading, provider, platform }: Props) =>
   return (
     <Skeleton
       className={ className }
-      isLoaded={ !isLoading }
+      loading={ isLoading }
       borderRadius="none"
       maxW={ ('adButler' in feature && feature.adButler) ? feature.adButler.config.desktop.width : '728px' }
       w="100%"

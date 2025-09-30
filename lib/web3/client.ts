@@ -1,9 +1,10 @@
 import { createPublicClient, http } from 'viem';
 
-import currentChain from './currentChain';
+import { currentChain } from './chains';
 
 export const publicClient = (() => {
-  if (currentChain.rpcUrls.default.http.filter(Boolean).length === 0) {
+  // TODO @tom2drum public clients for multichain (currently used only in degradation views)
+  if (currentChain?.rpcUrls.default.http.filter(Boolean).length === 0) {
     return;
   }
 

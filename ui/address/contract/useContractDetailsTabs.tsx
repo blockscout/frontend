@@ -1,17 +1,24 @@
-import { Alert, Button, Flex } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { Contract } from 'sevm';
 import wabtInit from 'wabt';
 
+import type { Address } from 'types/api/address';
 import type { SmartContract } from 'types/api/contract';
 
+import { Alert } from 'toolkit/chakra/alert';
+import { Button } from 'toolkit/chakra/button';
+// eslint-disable-next-line import-helpers/order-imports
 import CodeViewSnippet from 'ui/shared/CodeViewSnippet';
+
+//import ContractDetailsByteCode from './ContractDetailsByteCode';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
 
 import ContractDetailsConstructorArgs from './ContractDetailsConstructorArgs';
 import ContractDetailsVerificationButton from './ContractDetailsVerificationButton';
 import ContractSourceCode from './ContractSourceCode';
 import type { CONTRACT_DETAILS_TAB_IDS } from './utils';
+
 // import wabtInit from './utils/libwabt';
 
 function isEVM(bytecode: string) {
@@ -34,7 +41,7 @@ interface Tab {
 interface Props {
   data: SmartContract | undefined;
   isLoading: boolean;
-  addressHash: string;
+  addressData: Address;
   sourceAddress: string;
 }
 
@@ -99,21 +106,25 @@ const useOpcodesOrWat = ({ bytecode, evmVersion }: {
 
 };
 
-export default function useContractDetailsTabs({ data, isLoading, addressHash, sourceAddress }: Props): Array<Tab> {
+export default function useContractDetailsTabs({ data, isLoading, addressData, sourceAddress }: Props): Array<Tab> {
   const [ showOpCode, setShowOpCode ] = useState(false);
 
   const { opcodes } = useOpcodesOrWat({ bytecode: data?.creation_bytecode, evmVersion: data?.evm_version });
 
-  const canBeVerified = !data?.is_self_destructed && !data?.is_verified && data?.proxy_type !== 'eip7702';
+  const canBeVerified = ![ 'selfdestructed', 'failed' ].includes(data?.creation_status || '') && !data?.is_verified && addressData.proxy_type !== 'eip7702';
 
   return React.useMemo(() => {
     const verificationButton = (
       <ContractDetailsVerificationButton
         isLoading={ isLoading }
-        addressHash={ addressHash }
-        isPartiallyVerified={ Boolean(data?.is_partially_verified) }
+        addressHash={ addressData.hash }
+        // isPartiallyVerified={ Boolean(data?.is_partially_verified) }
       />
     );
+
+    if (!sourceAddress) {
+      return [];
+    }
     const opcodeBtnTitle = data?.evm_version || isEVM(data?.deployed_bytecode || '') ? 'Show Opcodes' : 'Show Wat';
     const toggleButton = () => setShowOpCode(!showOpCode);
 
@@ -131,6 +142,17 @@ export default function useContractDetailsTabs({ data, isLoading, addressHash, s
         { showOpCode ? 'Show ByteCode' : opcodeBtnTitle }
       </Button>
     );
+
+    const creationStatusText = (() => {
+      switch (data?.creation_status) {
+        case 'selfdestructed':
+          return 'This contract self-destructed after deployment and there is no runtime bytecode. Below is the raw creation bytecode.';
+        case 'failed':
+          return 'Contract creation failed and there is no runtime bytecode. Below is the raw creation bytecode.';
+        default:
+          return null;
+      }
+    })();
 
     return [
       (data?.constructor_args || data?.source_code) ? {
@@ -188,10 +210,9 @@ export default function useContractDetailsTabs({ data, isLoading, addressHash, s
                 data={ data.creation_bytecode }
                 title="Contract creation code"
                 rightSlot={ canBeVerified ? verificationButton : null }
-                beforeSlot={ data.is_self_destructed ? (
+                beforeSlot={ creationStatusText ? (
                   <Alert status="info" whiteSpace="pre-wrap" mb={ 3 }>
-                    Contracts that self destruct in their constructors have no contract code published and cannot be verified.
-                    Displaying the init data provided of the creating transaction.
+                    { creationStatusText }
                   </Alert>
                 ) : null }
                 textareaMaxHeight="300px"
@@ -210,7 +231,9 @@ export default function useContractDetailsTabs({ data, isLoading, addressHash, s
             ) }
           </Flex>
         ),
+        // title: 'Bytecode',
+        // component: <ContractDetailsByteCode data={ data } isLoading={ isLoading } addressData={ addressData }/>,
       } : undefined,
     ].filter(Boolean);
-  }, [ isLoading, addressHash, data, sourceAddress, canBeVerified, showOpCode, opcodes ]);
+  }, [ isLoading, addressData.hash, sourceAddress, data, showOpCode, canBeVerified, opcodes ]);
 }

@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { Transaction } from 'types/api/transaction';
 
-import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import TextSeparator from 'ui/shared/TextSeparator';
 
 type Props = Pick<Transaction, 'nonce' | 'type' | 'position'> & { queueIndex?: number };
@@ -11,50 +11,50 @@ type Props = Pick<Transaction, 'nonce' | 'type' | 'position'> & { queueIndex?: n
 const TxDetailsOther = ({ nonce, type, position, queueIndex }: Props) => {
   return (
     <>
-      <DetailsInfoItem.Label
+      <DetailedInfo.ItemLabel
         hint="Other data related to this transaction"
       >
         Other
-      </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value>
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue multiRow>
         {
           [
             typeof type === 'number' && (
               <Box key="type">
-                <Text as="span" fontWeight="500">Txn type: </Text>
-                <Text fontWeight="600" as="span">{ type }</Text>
-                { type === 2 && <Text fontWeight="400" as="span" ml={ 1 } variant="secondary">(EIP-1559)</Text> }
-                { type === 3 && <Text fontWeight="400" as="span" ml={ 1 } variant="secondary">(EIP-4844)</Text> }
-                { type === 4 && <Text fontWeight="400" as="span" ml={ 1 } variant="secondary">(EIP-7702)</Text> }
+                <span>Txn type: </span>
+                <span>{ type }</span>
+                { type === 2 && <Text as="span" ml={ 1 } color="text.secondary">(EIP-1559)</Text> }
+                { type === 3 && <Text as="span" ml={ 1 } color="text.secondary">(EIP-4844)</Text> }
+                { type === 4 && <Text as="span" ml={ 1 } color="text.secondary">(EIP-7702)</Text> }
               </Box>
             ),
             queueIndex !== undefined ? (
               <Box key="queueIndex">
-                <Text as="span" fontWeight="500">Queue index: </Text>
-                <Text fontWeight="600" as="span">{ queueIndex }</Text>
+                <span>Queue index: </span>
+                <span>{ queueIndex }</span>
               </Box>
             ) : (
               <Box key="nonce">
-                <Text as="span" fontWeight="500">Nonce: </Text>
-                <Text fontWeight="600" as="span">{ nonce }</Text>
+                <span>Nonce: </span>
+                <span>{ nonce }</span>
               </Box>
             ),
             position !== null && position !== undefined && (
               <Box key="position">
-                <Text as="span" fontWeight="500">Position: </Text>
-                <Text fontWeight="600" as="span">{ position }</Text>
+                <span>Position: </span>
+                <span>{ position }</span>
               </Box>
             ),
           ]
             .filter(Boolean)
             .map((item, index) => (
-              <>
+              <React.Fragment key={ index }>
                 { index !== 0 && <TextSeparator/> }
                 { item }
-              </>
+              </React.Fragment>
             ))
         }
-      </DetailsInfoItem.Value>
+      </DetailedInfo.ItemValue>
     </>
   );
 };

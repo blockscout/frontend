@@ -1,27 +1,29 @@
+import { createListCollection } from '@chakra-ui/react';
 import React from 'react';
 
 import type { Fields } from '../types';
 import type { TokenInfoApplicationConfig } from 'types/api/account';
 
-import FormFieldFancySelect from 'ui/shared/forms/fields/FormFieldFancySelect';
+import { FormFieldSelect } from 'toolkit/components/forms/fields/FormFieldSelect';
 
 interface Props {
-  isReadOnly?: boolean;
+  readOnly?: boolean;
   config: TokenInfoApplicationConfig['projectSectors'];
 }
 
-const TokenInfoFieldProjectSector = ({ isReadOnly, config }: Props) => {
+const TokenInfoFieldProjectSector = ({ readOnly, config }: Props) => {
 
-  const options = React.useMemo(() => {
-    return config.map((option) => ({ label: option, value: option }));
+  const collection = React.useMemo(() => {
+    const items = config.map((option) => ({ label: option, value: option }));
+    return createListCollection({ items });
   }, [ config ]);
 
   return (
-    <FormFieldFancySelect<Fields, 'project_sector'>
+    <FormFieldSelect<Fields, 'project_sector'>
       name="project_sector"
       placeholder="Project industry"
-      options={ options }
-      isReadOnly={ isReadOnly }
+      collection={ collection }
+      readOnly={ readOnly }
     />
   );
 };

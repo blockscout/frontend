@@ -31,15 +31,15 @@ export const L2_WITHDRAWAL_ITEM: OptimisticL2WithdrawalsItem = {
 };
 
 export const L2_TXN_BATCHES_ITEM: OptimisticL2TxnBatchesItem = {
-  internal_id: 260991,
+  number: 260991,
   batch_data_container: 'in_blob4844',
   l1_timestamp: '2023-06-01T14:46:48.000000Z',
   l1_transaction_hashes: [
     TX_HASH,
   ],
-  l2_block_start: 5218590,
-  l2_block_end: 5218777,
-  transaction_count: 9,
+  l2_start_block_number: 5218590,
+  l2_end_block_number: 5218777,
+  transactions_count: 9,
 };
 
 export const L2_TXN_BATCH: OptimismL2TxnBatch = {
@@ -64,7 +64,7 @@ export const L2_OUTPUT_ROOTS_ITEM: OptimisticL2OutputRootsItem = {
 };
 
 export const L2_DISPUTE_GAMES_ITEM: OptimisticL2DisputeGamesItem = {
-  contract_address: ADDRESS_HASH,
+  contract_address_hash: ADDRESS_HASH,
   created_at: '2023-06-01T15:26:12.000000Z',
   game_type: 0,
   index: 6594,

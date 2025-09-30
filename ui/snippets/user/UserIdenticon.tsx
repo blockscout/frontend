@@ -1,4 +1,4 @@
-import { Box, Center, useColorModeValue } from '@chakra-ui/react';
+import { Box, Center } from '@chakra-ui/react';
 import React from 'react';
 
 import AddressIdenticon from 'ui/shared/entities/address/AddressIdenticon';
@@ -10,8 +10,6 @@ type Props = {
 };
 
 const UserIdenticon = ({ address, isAutoConnectDisabled }: Props) => {
-  const borderColor = useColorModeValue('orange.100', 'orange.900');
-
   return (
     <Box position="relative">
       <AddressIdenticon size={ 20 } hash={ address }/>
@@ -24,7 +22,7 @@ const UserIdenticon = ({ address, isAutoConnectDisabled }: Props) => {
           backgroundColor="rgba(16, 17, 18, 0.80)"
           borderRadius="full"
           border="1px solid"
-          borderColor={ borderColor }
+          borderColor={{ _light: 'orange.100', _dark: 'orange.900' }}
         >
           <IconSvg
             name="integration/partial"

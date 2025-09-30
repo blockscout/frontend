@@ -4,13 +4,13 @@ import React from 'react';
 import type { OptimisticL2OutputRootsItem } from 'types/api/optimisticL2';
 
 import config from 'configs/app';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import BlockEntityL2 from 'ui/shared/entities/block/BlockEntityL2';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
-import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 const rollupFeature = config.features.rollup;
 
@@ -25,13 +25,13 @@ const OptimisticL2OutputRootsListItem = ({ item, isLoading }: Props) => {
     <ListItemMobileGrid.Container>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>L2 output index</ListItemMobileGrid.Label>
-      <ListItemMobileGrid.Value fontWeight={ 600 } color="text">
-        <Skeleton isLoaded={ !isLoading } display="inline-block">{ item.l2_output_index }</Skeleton>
+      <ListItemMobileGrid.Value fontWeight={ 600 } color="text.primary">
+        <Skeleton loading={ isLoading } display="inline-block">{ item.l2_output_index }</Skeleton>
       </ListItemMobileGrid.Value>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Age</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <TimeAgoWithTooltip
+        <TimeWithTooltip
           timestamp={ item.l1_timestamp }
           isLoading={ isLoading }
           display="inline-block"
@@ -43,8 +43,6 @@ const OptimisticL2OutputRootsListItem = ({ item, isLoading }: Props) => {
         <BlockEntityL2
           isLoading={ isLoading }
           number={ item.l2_block_number }
-          fontSize="sm"
-          lineHeight={ 5 }
           noIcon
         />
       </ListItemMobileGrid.Value>
@@ -54,8 +52,6 @@ const OptimisticL2OutputRootsListItem = ({ item, isLoading }: Props) => {
         <TxEntityL1
           isLoading={ isLoading }
           hash={ item.l1_transaction_hash }
-          fontSize="sm"
-          lineHeight={ 5 }
           truncation="constant_long"
         />
       </ListItemMobileGrid.Value>
@@ -63,7 +59,7 @@ const OptimisticL2OutputRootsListItem = ({ item, isLoading }: Props) => {
       <ListItemMobileGrid.Label isLoading={ isLoading }>Output root</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
         <Flex overflow="hidden" whiteSpace="nowrap" alignItems="center" w="100%" justifyContent="start">
-          <Skeleton isLoaded={ !isLoading } color="text_secondary">
+          <Skeleton loading={ isLoading } color="text.secondary">
             <HashStringShorten hash={ item.output_root } type="long"/>
           </Skeleton>
           <CopyToClipboard text={ item.output_root } isLoading={ isLoading }/>

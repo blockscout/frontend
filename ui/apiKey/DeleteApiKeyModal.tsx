@@ -9,24 +9,24 @@ import useApiFetch from 'lib/api/useApiFetch';
 import DeleteModal from 'ui/shared/DeleteModal';
 
 type Props = {
-  isOpen: boolean;
-  onClose: () => void;
+  open: boolean;
+  onOpenChange: ({ open }: { open: boolean }) => void;
   data: ApiKey;
 };
 
-const DeleteApiKeyModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
+const DeleteApiKeyModal: React.FC<Props> = ({ open, onOpenChange, data }) => {
   const queryClient = useQueryClient();
   const apiFetch = useApiFetch();
 
   const mutationFn = useCallback(() => {
-    return apiFetch('api_keys', {
+    return apiFetch('general:api_keys', {
       pathParams: { id: data.api_key },
       fetchParams: { method: 'DELETE' },
     });
   }, [ data.api_key, apiFetch ]);
 
   const onSuccess = useCallback(async() => {
-    queryClient.setQueryData([ resourceKey('api_keys') ], (prevData: ApiKeys | undefined) => {
+    queryClient.setQueryData([ resourceKey('general:api_keys') ], (prevData: ApiKeys | undefined) => {
       return prevData?.filter((item) => item.api_key !== data.api_key);
     });
   }, [ data, queryClient ]);
@@ -39,8 +39,8 @@ const DeleteApiKeyModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
 
   return (
     <DeleteModal
-      isOpen={ isOpen }
-      onClose={ onClose }
+      open={ open }
+      onOpenChange={ onOpenChange }
       title="Remove API key"
       renderContent={ renderText }
       mutationFn={ mutationFn }

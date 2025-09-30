@@ -11,6 +11,7 @@ test.beforeEach(async({ mockEnvs }) => {
   await mockEnvs([
     [ 'NEXT_PUBLIC_HOMEPAGE_CHARTS', '["daily_txs","coin_price","secondary_coin_price","market_cap","tvl"]' ],
     [ 'NEXT_PUBLIC_NETWORK_SECONDARY_COIN_SYMBOL', 'DUCK' ],
+    [ 'NEXT_PUBLIC_STATS_API_HOST', '' ],
   ]);
 });
 
@@ -18,8 +19,8 @@ test.describe('daily txs chart', () => {
   let component: Locator;
 
   test.beforeEach(async({ page, mockApiResponse, mockAssetResponse, render }) => {
-    await mockApiResponse('stats', statsMock.withSecondaryCoin);
-    await mockApiResponse('stats_charts_txs', dailyTxsMock.base);
+    await mockApiResponse('general:stats', statsMock.withSecondaryCoin);
+    await mockApiResponse('general:stats_charts_txs', dailyTxsMock.base);
     await mockAssetResponse(statsMock.withSecondaryCoin.coin_image as string, './playwright/mocks/image_svg.svg');
     await mockAssetResponse(statsMock.withSecondaryCoin.secondary_coin_image as string, './playwright/mocks/image_s.jpg');
     component = await render(<ChainIndicators/>);
@@ -43,8 +44,8 @@ test.describe('daily txs chart', () => {
 });
 
 test('partial data', async({ page, mockApiResponse, mockAssetResponse, render }) => {
-  await mockApiResponse('stats', statsMock.base);
-  await mockApiResponse('stats_charts_txs', dailyTxsMock.partialData);
+  await mockApiResponse('general:stats', statsMock.base);
+  await mockApiResponse('general:stats_charts_txs', dailyTxsMock.partialData);
   await mockAssetResponse(statsMock.base.coin_image as string, './playwright/mocks/image_s.jpg');
 
   const component = await render(<ChainIndicators/>);
@@ -55,8 +56,8 @@ test('partial data', async({ page, mockApiResponse, mockAssetResponse, render })
 });
 
 test('no data', async({ mockApiResponse, mockAssetResponse, render }) => {
-  await mockApiResponse('stats', statsMock.noChartData);
-  await mockApiResponse('stats_charts_txs', dailyTxsMock.noData);
+  await mockApiResponse('general:stats', statsMock.noChartData);
+  await mockApiResponse('general:stats_charts_txs', dailyTxsMock.noData);
   await mockAssetResponse(statsMock.noChartData.coin_image as string, './playwright/mocks/image_s.jpg');
 
   const component = await render(<ChainIndicators/>);

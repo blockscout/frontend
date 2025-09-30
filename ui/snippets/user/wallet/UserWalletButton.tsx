@@ -1,23 +1,24 @@
 import type { ButtonProps } from '@chakra-ui/react';
-import { Button, Box, HStack, Tooltip } from '@chakra-ui/react';
+import { Box, HStack } from '@chakra-ui/react';
 import React from 'react';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import shortenString from 'lib/shortenString';
+import { Button } from 'toolkit/chakra/button';
+import { Tooltip } from 'toolkit/chakra/tooltip';
 
 import UserIdenticon from '../UserIdenticon';
 
 interface Props {
   size?: ButtonProps['size'];
   variant?: ButtonProps['variant'];
-  onClick?: () => void;
   isPending?: boolean;
   isAutoConnectDisabled?: boolean;
   address?: string;
   domain?: string;
 }
 
-const UserWalletButton = ({ size, variant, onClick, isPending, isAutoConnectDisabled, address, domain }: Props, ref: React.ForwardedRef<HTMLButtonElement>) => {
+const UserWalletButton = ({ size, variant, isPending, isAutoConnectDisabled, address, domain, ...rest }: Props, ref: React.ForwardedRef<HTMLButtonElement>) => {
 
   const isMobile = useIsMobile();
 
@@ -38,28 +39,27 @@ const UserWalletButton = ({ size, variant, onClick, isPending, isAutoConnectDisa
 
   return (
     <Tooltip
-      label={ <span>Connect your wallet<br/>to Blockscout for<br/>full-featured access</span> }
-      textAlign="center"
-      padding={ 2 }
-      isDisabled={ isMobile || Boolean(address) }
+      content="Connect your wallet to Blockscout for full-featured access"
+      disabled={ isMobile || Boolean(address) }
       openDelay={ 500 }
+      disableOnMobile
     >
-      <Button
-        ref={ ref }
-        size={ size }
-        variant={ variant }
-        onClick={ onClick }
-        data-selected={ Boolean(address) }
-        data-warning={ isAutoConnectDisabled }
-        fontSize="sm"
-        lineHeight={ 5 }
-        px={ address ? 2.5 : 4 }
-        fontWeight={ address ? 700 : 600 }
-        isLoading={ isPending }
-        loadingText={ isMobile ? undefined : 'Connecting' }
-      >
-        { content }
-      </Button>
+      <span>
+        <Button
+          ref={ ref }
+          size={ size }
+          variant={ variant }
+          selected={ Boolean(address) }
+          highlighted={ isAutoConnectDisabled }
+          px={{ base: 2.5, lg: 3 }}
+          fontWeight={ address ? 700 : 600 }
+          loading={ isPending }
+          loadingText={ isMobile ? undefined : 'Connecting' }
+          { ...rest }
+        >
+          { content }
+        </Button>
+      </span>
     </Tooltip>
   );
 };

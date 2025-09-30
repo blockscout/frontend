@@ -20,5 +20,5 @@ export const MUD_SCHEMA: MudWorldSchema = {
 export const MUD_WORLD: MudWorldItem = {
   address: ADDRESS_PARAMS,
   coin_balance: '7072643779453701031672',
-  transaction_count: 442,
+  transactions_count: 442,
 };

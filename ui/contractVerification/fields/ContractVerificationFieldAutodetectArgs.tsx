@@ -3,7 +3,7 @@ import { useFormContext } from 'react-hook-form';
 
 import type { FormFields } from '../types';
 
-import FormFieldCheckbox from 'ui/shared/forms/fields/FormFieldCheckbox';
+import { FormFieldCheckbox } from 'toolkit/components/forms/fields/FormFieldCheckbox';
 
 import ContractVerificationFormRow from '../ContractVerificationFormRow';
 import ContractVerificationFieldConstructorArgs from './ContractVerificationFieldConstructorArgs';

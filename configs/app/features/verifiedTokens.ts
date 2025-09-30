@@ -1,20 +1,14 @@
 import type { Feature } from './types';
 
-import { getEnvValue } from '../utils';
-
-const contractInfoApiHost = getEnvValue('NEXT_PUBLIC_CONTRACT_INFO_API_HOST');
+import apis from '../apis';
 
 const title = 'Verified tokens info';
 
-const config: Feature<{ api: { endpoint: string; basePath: string } }> = (() => {
-  if (contractInfoApiHost) {
+const config: Feature<{}> = (() => {
+  if (apis.contractInfo) {
     return Object.freeze({
       title,
       isEnabled: true,
-      api: {
-        endpoint: contractInfoApiHost,
-        basePath: '',
-      },
     });
   }
 

@@ -5,4 +5,4 @@ export interface VerifiedContractsSorting {
 
 export type VerifiedContractsSortingField = VerifiedContractsSorting['sort'];
 
-export type VerifiedContractsSortingValue = `${ VerifiedContractsSortingField }-${ VerifiedContractsSorting['order'] }`;
+export type VerifiedContractsSortingValue = `${ VerifiedContractsSortingField }-${ VerifiedContractsSorting['order'] }` | 'default';

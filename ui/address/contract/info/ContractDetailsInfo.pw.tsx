@@ -12,7 +12,7 @@ test('with certified icon', async({ render }) => {
   const props = {
     data: contractMock.certified,
     isLoading: false,
-    addressHash: addressMock.contract.hash,
+    addressData: addressMock.contract,
   };
   const component = await render(<ContractDetailsInfo { ...props }/>);
 
@@ -24,7 +24,7 @@ test('zkSync contract', async({ render, mockEnvs }) => {
   const props = {
     data: contractMock.zkSync,
     isLoading: false,
-    addressHash: addressMock.contract.hash,
+    addressData: addressMock.contract,
   };
   const component = await render(<ContractDetailsInfo { ...props }/>);
 
@@ -36,7 +36,7 @@ test('stylus rust contract', async({ render, mockEnvs }) => {
   const props = {
     data: contractMock.stylusRust,
     isLoading: false,
-    addressHash: addressMock.contract.hash,
+    addressData: addressMock.contract,
   };
   const component = await render(<ContractDetailsInfo { ...props }/>);
 
@@ -50,11 +50,11 @@ test.describe('with audits feature', () => {
   });
 
   test('no audits', async({ render, mockApiResponse }) => {
-    await mockApiResponse('contract_security_audits', { items: [] }, { pathParams: { hash: addressMock.contract.hash } });
+    await mockApiResponse('general:contract_security_audits', { items: [] }, { pathParams: { hash: addressMock.contract.hash } });
     const props = {
       data: contractMock.verified,
       isLoading: false,
-      addressHash: addressMock.contract.hash,
+      addressData: addressMock.contract,
     };
     const component = await render(<ContractDetailsInfo { ...props }/>);
 
@@ -62,11 +62,11 @@ test.describe('with audits feature', () => {
   });
 
   test('has audits', async({ render, mockApiResponse }) => {
-    await mockApiResponse('contract_security_audits', contractAudits, { pathParams: { hash: addressMock.contract.hash } });
+    await mockApiResponse('general:contract_security_audits', contractAudits, { pathParams: { hash: addressMock.contract.hash } });
     const props = {
       data: contractMock.verified,
       isLoading: false,
-      addressHash: addressMock.contract.hash,
+      addressData: addressMock.contract,
     };
     const component = await render(<ContractDetailsInfo { ...props }/>);
 

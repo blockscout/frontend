@@ -1,9 +1,9 @@
-import { Table, Tbody, Th, Tr } from '@chakra-ui/react';
 import React from 'react';
 
 import type { OptimisticL2DisputeGamesItem } from 'types/api/optimisticL2';
 
-import { default as Thead } from 'ui/shared/TheadSticky';
+import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
+import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
 import OptimisticL2DisputeGamesTableItem from './OptimisticL2DisputeGamesTableItem';
 
@@ -15,19 +15,25 @@ type Props = {
 
 const OptimisticL2DisputeGamesTable = ({ items, top, isLoading }: Props) => {
   return (
-    <Table style={{ tableLayout: 'auto' }} minW="950px">
-      <Thead top={ top }>
-        <Tr>
-          <Th>Index</Th>
-          <Th>Game type</Th>
-          <Th>Address</Th>
-          <Th>L2 block #</Th>
-          <Th>Age</Th>
-          <Th>Status</Th>
-          <Th>Resolution age</Th>
-        </Tr>
-      </Thead>
-      <Tbody>
+    <TableRoot tableLayout="auto" minW="950px">
+      <TableHeaderSticky top={ top }>
+        <TableRow>
+          <TableColumnHeader>Index</TableColumnHeader>
+          <TableColumnHeader>Game type</TableColumnHeader>
+          <TableColumnHeader>Address</TableColumnHeader>
+          <TableColumnHeader>L2 block #</TableColumnHeader>
+          <TableColumnHeader>
+            Timestamp
+            <TimeFormatToggle/>
+          </TableColumnHeader>
+          <TableColumnHeader>Status</TableColumnHeader>
+          <TableColumnHeader>
+            Resolved
+            <TimeFormatToggle/>
+          </TableColumnHeader>
+        </TableRow>
+      </TableHeaderSticky>
+      <TableBody>
         { items.map((item, index) => (
           <OptimisticL2DisputeGamesTableItem
             key={ String(item.index) + (isLoading ? index : '') }
@@ -35,8 +41,8 @@ const OptimisticL2DisputeGamesTable = ({ items, top, isLoading }: Props) => {
             isLoading={ isLoading }
           />
         )) }
-      </Tbody>
-    </Table>
+      </TableBody>
+    </TableRoot>
   );
 };
 

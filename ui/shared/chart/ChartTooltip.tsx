@@ -38,7 +38,7 @@ const ChartTooltip = ({
   ...props
 }: Props) => {
   const ref = React.useRef<SVGGElement>(null);
-  const trackerId = React.useRef<number>();
+  const trackerId = React.useRef<number>(undefined);
   const isVisible = React.useRef(false);
 
   const transitionDuration = !noAnimation ? 100 : null;
@@ -155,8 +155,10 @@ const ChartTooltip = ({
     <g
       ref={ ref }
       opacity={ 0 }
-      fontSize="12px"
-      fontWeight="500"
+      style={{
+        fontWeight: '500',
+        fontSize: '12px',
+      }}
       { ...props }
     >
       <ChartTooltipLine/>

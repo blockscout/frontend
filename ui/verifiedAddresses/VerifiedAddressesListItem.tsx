@@ -1,10 +1,12 @@
-import { IconButton, Link, Tooltip } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenInfoApplication, VerifiedAddress } from 'types/api/account';
 
 import dayjs from 'lib/date/dayjs';
-import Skeleton from 'ui/shared/chakra/Skeleton';
+import { IconButton } from 'toolkit/chakra/icon-button';
+import { Link } from 'toolkit/chakra/link';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { Tooltip } from 'toolkit/chakra/tooltip';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import IconSvg from 'ui/shared/IconSvg';
@@ -37,7 +39,7 @@ const VerifiedAddressesListItem = ({ item, application, onAdd, onEdit, isLoading
 
   const tokenInfo = (() => {
     if (isLoading) {
-      return <Skeleton height={ 6 } width="140px"/>;
+      return <Skeleton loading height={ 6 } width="140px"/>;
     }
 
     if (!item.metadata.tokenName) {
@@ -51,7 +53,7 @@ const VerifiedAddressesListItem = ({ item, application, onAdd, onEdit, isLoading
     const token = {
       type: 'ERC-20' as const,
       icon_url: application.iconUrl,
-      address: application.tokenAddress,
+      address_hash: application.tokenAddress,
       name: item.metadata.tokenName,
       symbol: '',
     };
@@ -64,16 +66,16 @@ const VerifiedAddressesListItem = ({ item, application, onAdd, onEdit, isLoading
           noCopy
           noSymbol
         />
-        <Tooltip label="Edit">
+        <Tooltip content="Edit" disabled={ isLoading } disableOnMobile>
           <IconButton
             aria-label="edit"
-            variant="simple"
-            boxSize={ 5 }
+            variant="link"
+            size="2xs"
             borderRadius="none"
-            flexShrink={ 0 }
             onClick={ handleEditClick }
-            icon={ <IconSvg name="edit" boxSize={ 4 } flexShrink={ 0 }/> }
-          />
+          >
+            <IconSvg name="edit"/>
+          </IconButton>
         </Tooltip>
       </>
     );
@@ -103,7 +105,7 @@ const VerifiedAddressesListItem = ({ item, application, onAdd, onEdit, isLoading
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>Status</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
-            <Skeleton isLoaded={ !isLoading } display="inline-block">
+            <Skeleton loading={ isLoading } display="inline-block">
               <VerifiedAddressesStatus status={ application.status }/>
             </Skeleton>
           </ListItemMobileGrid.Value>
@@ -114,7 +116,7 @@ const VerifiedAddressesListItem = ({ item, application, onAdd, onEdit, isLoading
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>Date</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
-            <Skeleton isLoaded={ !isLoading } display="inline-block">
+            <Skeleton loading={ isLoading } display="inline-block">
               { dayjs(application.updatedAt).format('MMM DD, YYYY') }
             </Skeleton>
           </ListItemMobileGrid.Value>

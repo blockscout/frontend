@@ -9,15 +9,10 @@ import {
   TESTNET_RPC_URL,
 } from '@fluent.xyz/sdk-core/dist/config/testnet-config';
 
-const getHexFromChainId = (chainId: number) => {
-  const hex = chainId.toString(16);
-  return '0x' + hex;
-};
-
 import type { RollupType } from 'types/client/rollup';
 import type { NetworkVerificationType, NetworkVerificationTypeEnvs } from 'types/networks';
 
-import { urlValidator } from 'ui/shared/forms/validators/url';
+import { urlValidator } from 'toolkit/components/forms/validators/url';
 
 import { getEnvValue, parseEnvJson } from './utils';
 
@@ -53,7 +48,7 @@ const getChain = () => {
   switch (env) {
     case 'devnet':
       return {
-        id: getHexFromChainId(FLUENT_DEVNET_CHAIN_ID),
+        id: String(parseInt(String(FLUENT_DEVNET_CHAIN_ID), 16)),
         name: 'Fluent',
         shortName: 'Fluent',
         currency: {
@@ -73,7 +68,7 @@ const getChain = () => {
       };
     case 'testnet':
       return {
-        id: getHexFromChainId(FLUENT_TESTNET_CHAIN_ID),
+        id: String(parseInt(String(FLUENT_TESTNET_CHAIN_ID), 16)),
         name: 'Fluent',
         shortName: 'Fluent',
         currency: {
@@ -93,7 +88,7 @@ const getChain = () => {
       };
     default:
       return {
-        id: getHexFromChainId(FLUENT_DEVNET_CHAIN_ID),
+        id: String(parseInt(String(FLUENT_DEVNET_CHAIN_ID), 16)),
         name: 'Fluent',
         shortName: 'Fluent',
         currency: {

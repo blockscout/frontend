@@ -9,7 +9,7 @@ interface Params {
   hash: string;
 }
 
-const RESOURCE_NAME = 'address_xstar_score';
+const RESOURCE_NAME = 'general:address_xstar_score';
 const ERROR_NAME = 'Invalid response schema';
 
 export default function useFetchXStarScore({ hash }: Params) {

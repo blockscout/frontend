@@ -1,8 +1,8 @@
 import { DEVNET_EXPLORER_HOST, DEVNET_EXPLORER_URL } from '@fluent.xyz/sdk-core/dist/config/devnet-config';
 import { TESTNET_EXPLORER_HOST, TESTNET_EXPLORER_URL } from '@fluent.xyz/sdk-core/dist/config/testnet-config';
 
-import isBrowser from 'lib/isBrowser';
-import * as regexp from 'lib/regexp';
+import { isBrowser } from 'toolkit/utils/isBrowser';
+import * as regexp from 'toolkit/utils/regexp';
 
 export const replaceQuotes = (value: string | undefined) => value?.replaceAll('\'', '"');
 
@@ -39,7 +39,7 @@ export const getStatsApiHost = () => {
   const env = getEnvValue('NEXT_PUBLIC_CHAIN');
   const value = env === 'devnet' ? DEVNET_EXPLORER_URL : TESTNET_EXPLORER_URL;
 
-  return value;
+  return value + ':8080';
 };
 
 export const getVisualizeApiHost = () => {

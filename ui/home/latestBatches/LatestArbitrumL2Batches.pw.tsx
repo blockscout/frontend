@@ -8,7 +8,7 @@ import LatestArbitrumL2Batches from './LatestArbitrumL2Batches';
 
 test('default view +@mobile +@dark-mode', async({ render, mockEnvs, mockApiResponse }) => {
   await mockEnvs(ENVS_MAP.arbitrumRollup);
-  await mockApiResponse('homepage_arbitrum_l2_batches', { items: [ finalized, unfinalized ] });
+  await mockApiResponse('general:homepage_arbitrum_l2_batches', { items: [ finalized, unfinalized ] });
 
   const component = await render(<LatestArbitrumL2Batches/>);
   await expect(component).toHaveScreenshot();

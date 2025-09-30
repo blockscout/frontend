@@ -1,27 +1,36 @@
 import { Grid } from '@chakra-ui/react';
 import React from 'react';
 
+import type { NFTTokenType } from 'types/api/token';
+
+import { useMultichainContext } from 'lib/contexts/multichain';
 import useIsMobile from 'lib/hooks/useIsMobile';
-import { apos } from 'lib/html-entities';
+import { apos } from 'toolkit/utils/htmlEntities';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/pagination/Pagination';
 import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
 
+import AddressNftTypeFilter from './AddressNftTypeFilter';
 import NFTItem from './NFTItem';
 
 type Props = {
-  tokensQuery: QueryWithPagesResult<'address_nfts'>;
-  hasActiveFilters: boolean;
+  tokensQuery: QueryWithPagesResult<'general:address_nfts'>;
+  tokenTypes: Array<NFTTokenType> | undefined;
+  onTokenTypesChange: (value: Array<NFTTokenType>) => void;
 };
 
-const AddressNFTs = ({ tokensQuery, hasActiveFilters }: Props) => {
+const AddressNFTs = ({ tokensQuery, tokenTypes, onTokenTypesChange }: Props) => {
   const isMobile = useIsMobile();
+  const multichainContext = useMultichainContext();
 
   const { isError, isPlaceholderData, data, pagination } = tokensQuery;
 
+  const hasActiveFilters = Boolean(tokenTypes?.length);
+
   const actionBar = isMobile && pagination.isVisible && (
     <ActionBar mt={ -6 }>
+      <AddressNftTypeFilter value={ tokenTypes } onChange={ onTokenTypesChange }/>
       <Pagination ml="auto" { ...pagination }/>
     </ActionBar>
   );
@@ -34,7 +43,7 @@ const AddressNFTs = ({ tokensQuery, hasActiveFilters }: Props) => {
       gridTemplateColumns={{ base: 'repeat(2, calc((100% - 12px)/2))', lg: 'repeat(auto-fill, minmax(210px, 1fr))' }}
     >
       { data.items.map((item, index) => {
-        const key = item.token.address + '_' + (item.id && !isPlaceholderData ? `id_${ item.id }` : `index_${ index }`);
+        const key = item.token.address_hash + '_' + (item.id && !isPlaceholderData ? `id_${ item.id }` : `index_${ index }`);
 
         return (
           <NFTItem
@@ -42,6 +51,7 @@ const AddressNFTs = ({ tokensQuery, hasActiveFilters }: Props) => {
             { ...item }
             isLoading={ isPlaceholderData }
             withTokenLink
+            chain={ multichainContext?.chain }
           />
         );
       }) }
@@ -51,15 +61,16 @@ const AddressNFTs = ({ tokensQuery, hasActiveFilters }: Props) => {
   return (
     <DataListDisplay
       isError={ isError }
-      items={ data?.items }
+      itemsNum={ data?.items?.length }
       emptyText="There are no tokens of selected type."
-      content={ content }
       actionBar={ actionBar }
       filterProps={{
         emptyFilteredText: `Couldn${ apos }t find any token that matches your query.`,
         hasActiveFilters,
       }}
-    />
+    >
+      { content }
+    </DataListDisplay>
   );
 };
 
