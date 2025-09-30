@@ -1,5 +1,5 @@
 import type * as bens from '@blockscout/bens-types';
-import type { QuickSearchResultBlock } from 'types/client/multichain-aggregator';
+import type { QuickSearchResultBlock, QuickSearchResultToken } from 'types/client/multichain-aggregator';
 import type { QuickSearchResultItem } from 'types/client/search';
 
 import useApiQuery from 'lib/api/useApiQuery';
@@ -15,7 +15,6 @@ export default function useSearchMultichain({ searchTerm, enabled }: Props) {
     queryOptions: {
       enabled: searchTerm.trim().length > 0 && enabled,
       select: (data) => {
-        // TODO @tom2drum search by NFT
         const result: Array<QuickSearchResultItem> = [];
 
         if (data.block_numbers && data.block_numbers.length > 0) {
@@ -57,17 +56,23 @@ export default function useSearchMultichain({ searchTerm, enabled }: Props) {
           result.push(...items);
         }
 
-        if (data.tokens && data.tokens.length > 0) {
-          const items: Array<QuickSearchResultItem> = data.tokens.map((item) => ({
+        const tokens = data.tokens.concat(data.nfts);
+
+        if (tokens && tokens.length > 0) {
+          const items: Array<QuickSearchResultItem> = tokens.map((item) => ({
             type: 'token' as const,
-            token_type: 'ERC-20',
-            address_hash: item.address,
-            name: item.name,
-            symbol: item.symbol,
-            icon_url: item.icon_url,
-            is_smart_contract_verified: item.is_verified_contract,
-            chain_id: item.chain_id,
+            token_type: item.type as unknown as QuickSearchResultToken['token_type'],
+            address_hash: item.address_hash,
+            name: item.name ?? 'Unnamed token',
+            symbol: item.symbol ?? '',
+            icon_url: item.icon_url ?? null,
+            is_smart_contract_verified: false,
+            // As of now, there can be only one chain in the object
+            chain_id: Object.keys(item.chain_infos)[0],
             reputation: null,
+            total_supply: item.total_supply ?? null,
+            exchange_rate: item.exchange_rate ?? null,
+            chain_infos: item.chain_infos,
           }));
           result.push(...items);
         }

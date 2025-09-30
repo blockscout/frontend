@@ -24,7 +24,7 @@ const SearchResultItemBlockNumber = ({ data, chain }: Props) => {
         chain={ chain }
         noLink
         noCopy
-        fontWeight="700"
+        fontWeight={{ base: '600', lg: '700' }}
       />
     </SearchResultListItem>
   );

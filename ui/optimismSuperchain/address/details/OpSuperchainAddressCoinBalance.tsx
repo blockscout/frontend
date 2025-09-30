@@ -18,21 +18,21 @@ interface Props {
 const OpSuperchainAddressCoinBalance = ({ data, isLoading }: Props) => {
 
   const chains = multichainConfig()?.chains;
+  const currency = chains?.[0]?.config.chain.currency;
 
   return (
     <Flex alignItems="center" columnGap={ 3 }>
       <CurrencyValue
-        // TODO @tom2drum pass correct data
-        value="12345"
-        exchangeRate="0.42"
-        decimals="0"
-        currency={ currencyUnits.ether }
+        value={ data?.coin_balance || '0' }
+        exchangeRate={ data?.exchange_rate }
+        decimals={ currency ? String(currency.decimals) : undefined }
+        currency={ currency ? currency.symbol : undefined }
         accuracyUsd={ 2 }
         accuracy={ 8 }
         alignItems="center"
         isLoading={ isLoading }
       />
-      { data?.chain_infos && (
+      { data?.chain_infos && Object.keys(data.chain_infos).length > 1 && (
         <PopoverRoot>
           <PopoverTrigger>
             <Link

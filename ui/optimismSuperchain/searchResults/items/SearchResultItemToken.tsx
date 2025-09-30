@@ -1,11 +1,13 @@
-import { Box, Flex } from '@chakra-ui/react';
+import { Box, Flex, Text } from '@chakra-ui/react';
 import React from 'react';
 
 import type * as multichain from '@blockscout/multichain-aggregator-types';
+import type { TokenType } from 'types/api/token';
 import type { ChainConfig } from 'types/multichain';
 
 import { route } from 'nextjs/routes';
 
+import shortenString from 'lib/shortenString';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import IconSvg from 'ui/shared/IconSvg';
@@ -13,37 +15,61 @@ import IconSvg from 'ui/shared/IconSvg';
 import SearchResultListItem from '../SearchResultListItem';
 
 interface Props {
-  data: multichain.Token;
+  data: multichain.AggregatedTokenInfo;
   chain: ChainConfig;
+  isMobile?: boolean;
 }
 
-const SearchResultItemToken = ({ data, chain }: Props) => {
+const SearchResultItemToken = ({ data, chain, isMobile }: Props) => {
+
+  const isVerified = Object.values(data.chain_infos).every((chainInfo) => chainInfo.is_verified);
+
   return (
     <SearchResultListItem
-      href={ route({ pathname: '/token/[hash]', query: { hash: data.address } }, { chain }) }
+      href={ route({ pathname: '/token/[hash]', query: { hash: data.address_hash } }, { chain }) }
     >
-      <Box w="200px">
+      <Box w={{ base: '100%', lg: '200px' }}>
         <TokenEntity
           token={{
-            address_hash: data.address,
-            icon_url: data.icon_url,
-            name: data.name,
-            symbol: data.symbol,
-            type: 'ERC-20',
+            address_hash: data.address_hash,
+            icon_url: data.icon_url ?? null,
+            name: data.name ?? 'Unnamed token',
+            symbol: data.symbol ?? '',
+            type: data.type as unknown as TokenType,
             reputation: null,
           }}
           chain={ chain }
           noLink
           jointSymbol
           noCopy
-          fontWeight="700"
+          fontWeight={{ base: '600', lg: '700' }}
         />
       </Box>
-      <Flex alignItems="center" w={{ base: '100%', lg: 'auto' }}>
-        <Box overflow="hidden" whiteSpace="nowrap">
-          <HashStringShortenDynamic hash={ data.address } fontWeight="500" color="text.secondary" _groupHover={{ color: 'inherit' }}/>
+      <Flex alignItems="center" w={{ base: '100%', lg: 'auto' }} flexGrow={ 1 }>
+        <Box
+          overflow="hidden"
+          whiteSpace="nowrap"
+          textOverflow="ellipsis"
+          fontWeight={{ base: '400', lg: '500' }}
+          color="text.secondary"
+          _groupHover={{ color: 'inherit' }}
+        >
+          { isMobile ? shortenString(data.address_hash) : (
+            <HashStringShortenDynamic hash={ data.address_hash }/>
+          ) }
         </Box>
-        { data.is_verified_contract && <IconSvg name="status/success" boxSize="14px" color="green.500" ml={ 1 } flexShrink={ 0 }/> }
+        { isVerified && <IconSvg name="status/success" boxSize="14px" color="green.500" ml={ 1 } flexShrink={ 0 }/> }
+        <Text
+          overflow="hidden"
+          whiteSpace="nowrap"
+          textOverflow="ellipsis"
+          fontWeight={{ base: '400', lg: '600' }}
+          ml="auto"
+          maxW={{ base: '60%', lg: 'unset' }}
+        >
+          { (data.type as string) === 'ERC-20' && data.exchange_rate && `$${ Number(data.exchange_rate).toLocaleString() }` }
+          { (data.type as string) !== 'ERC-20' && data.total_supply && `Items ${ Number(data.total_supply).toLocaleString() }` }
+        </Text>
       </Flex>
     </SearchResultListItem>
   );

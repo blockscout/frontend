@@ -60,7 +60,7 @@ export interface QuickSearchResultAddress {
 
 export interface QuickSearchResultToken {
   type: 'token';
-  token_type: 'ERC-20';
+  token_type: 'ERC-20' | 'ERC-721' | 'ERC-1155';
   name: string;
   symbol: string;
   address_hash: string;
@@ -68,6 +68,9 @@ export interface QuickSearchResultToken {
   is_smart_contract_verified: boolean;
   chain_id: string;
   reputation: null;
+  total_supply: string | null;
+  exchange_rate: string | null;
+  chain_infos: Record<string, multichain.AggregatedTokenInfo_ChainInfo>;
 }
 
 export interface QuickSearchResultDomain {

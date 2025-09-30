@@ -15,7 +15,7 @@ export const MULTICHAIN_AGGREGATOR_API_RESOURCES = {
   },
   tokens: {
     path: '/tokens',
-    filterFields: [ 'chain_id' as const, 'type' as const ],
+    filterFields: [ 'chain_id' as const, 'type' as const, 'query' as const ],
     paginated: true,
   },
   quick_search: {

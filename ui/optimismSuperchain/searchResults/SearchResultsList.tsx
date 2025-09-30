@@ -4,6 +4,7 @@ import React from 'react';
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 
 import multichainConfig from 'configs/multichain';
+import useIsMobile from 'lib/hooks/useIsMobile';
 
 import SearchResultItemAddress from './items/SearchResultItemAddress';
 import SearchResultItemBlock from './items/SearchResultItemBlock';
@@ -15,27 +16,31 @@ import type { QueryType, SearchQueries } from './utils';
 interface Props<T extends QueryType> {
   queryType: T;
   query: SearchQueries[T];
+  maxItems?: number;
 }
 
-const SearchResultsList = <T extends QueryType>({ queryType, query }: Props<T>) => {
+const SearchResultsList = <T extends QueryType>({ queryType, query, maxItems = Infinity }: Props<T>) => {
 
   const config = multichainConfig();
+  const isMobile = useIsMobile();
 
   return (
     <Flex flexDir="column" textStyle="sm">
       { query.data?.pages?.map((page, index) => (
         <React.Fragment key={ index }>
-          { page.items.map((item) => {
+          { page.items.slice(0, maxItems).map((item) => {
 
             const chain = 'chain_id' in item ? config?.chains.find((chain) => chain.config.chain.id === item.chain_id) : undefined;
 
             switch (queryType) {
-              case 'tokens': {
+              case 'tokens':
+              case 'nfts': {
+                const chain = 'chain_infos' in item ? config?.chains.find((chain) => chain.config.chain.id === Object.keys(item.chain_infos)[0]) : undefined;
                 if (!chain) {
                   return null;
                 }
-                const token = item as multichain.Token;
-                return <SearchResultItemToken key={ token.address + chain.config.chain.id } data={ token } chain={ chain }/>;
+                const token = item as multichain.AggregatedTokenInfo;
+                return <SearchResultItemToken key={ token.address_hash + chain.config.chain.id } data={ token } chain={ chain } isMobile={ isMobile }/>;
               }
               case 'blockNumbers': {
                 if (!chain) {
@@ -60,9 +65,8 @@ const SearchResultsList = <T extends QueryType>({ queryType, query }: Props<T>) 
               }
               case 'addresses': {
                 const address = item as multichain.GetAddressResponse;
-                return <SearchResultItemAddress key={ address.hash } data={ address }/>;
+                return <SearchResultItemAddress key={ address.hash } data={ address } isMobile={ isMobile }/>;
               }
-              // TODO @tom2drum search by NFT
               default:
                 return null;
             }

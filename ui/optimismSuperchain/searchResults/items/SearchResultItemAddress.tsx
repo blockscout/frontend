@@ -5,7 +5,6 @@ import type * as multichain from '@blockscout/multichain-aggregator-types';
 
 import { route } from 'nextjs/routes';
 
-import useIsMobile from 'lib/hooks/useIsMobile';
 import getContractName from 'lib/multichain/getContractName';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 
@@ -13,11 +12,10 @@ import SearchResultListItem from '../SearchResultListItem';
 
 interface Props {
   data: multichain.GetAddressResponse;
+  isMobile?: boolean;
 }
 
-const SearchResultItemAddress = ({ data }: Props) => {
-
-  const isMobile = useIsMobile();
+const SearchResultItemAddress = ({ data, isMobile }: Props) => {
 
   const contractName = getContractName(data);
 
@@ -38,11 +36,11 @@ const SearchResultItemAddress = ({ data }: Props) => {
           truncation={ !isMobile ? 'constant' : 'dynamic' }
           noLink
           noCopy
-          fontWeight="700"
+          fontWeight={{ base: '600', lg: '700' }}
         />
       </Box>
       { contractName && (
-        <Box color="text.secondary" _groupHover={{ color: 'inherit' }}>
+        <Box color="text.secondary" _groupHover={{ color: 'inherit' }} fontWeight={{ base: '400', lg: '500' }}>
           { contractName }
         </Box>
       ) }

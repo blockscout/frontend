@@ -23,6 +23,13 @@ const SearchBarSuggestToken = ({ data, isMobile, searchTerm, addressFormat, chai
     return addressFormat === 'bech32' ? toBech32Address(data.address_hash) : data.address_hash;
   })();
 
+  const isVerified = (() => {
+    if ('chain_infos' in data) {
+      return Object.values(data.chain_infos).every((chainInfo) => chainInfo.is_verified);
+    }
+    return data.is_smart_contract_verified;
+  })();
+
   const name = (
     <Text
       fontWeight={ 700 }
@@ -40,7 +47,7 @@ const SearchBarSuggestToken = ({ data, isMobile, searchTerm, addressFormat, chai
     </Text>
   );
 
-  const contractVerifiedIcon = data.is_smart_contract_verified && <IconSvg name="status/success" boxSize="14px" color="green.500" ml={ 1 } flexShrink={ 0 }/>;
+  const contractVerifiedIcon = isVerified && <IconSvg name="status/success" boxSize="14px" color="green.500" ml={ 1 } flexShrink={ 0 }/>;
   const additionalInfo = (
     <Text overflow="hidden" whiteSpace="nowrap" fontWeight={ 700 }>
       { data.token_type === 'ERC-20' && 'exchange_rate' in data && data.exchange_rate && `$${ Number(data.exchange_rate).toLocaleString() }` }

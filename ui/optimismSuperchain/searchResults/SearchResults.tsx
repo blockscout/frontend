@@ -56,9 +56,13 @@ const SearchResults = () => {
       return;
     }
 
-    return Object.values(queries).reduce((acc, query) => {
+    const isOverflow = Object.values(queries).some((query) => query.data?.pages?.some((page) => page.next_page_params));
+
+    const num = Object.values(queries).reduce((acc, query) => {
       return acc + (query.data?.pages?.reduce((acc, page) => acc + page.items.length, 0) ?? 0);
     }, 0);
+
+    return { num, isOverflow };
   })();
 
   const chainSelectElement = (
@@ -120,7 +124,7 @@ const SearchResults = () => {
             <Layout.Content>
               <PageTitle title="Search results"/>
               <Skeleton loading={ totalResults === undefined } mb={ 6 } w="fit-content">
-                Found <chakra.span fontWeight={ 700 }>{ totalResults }</chakra.span> matching results
+                Found <chakra.span fontWeight={ 700 }>{ totalResults?.num }{ totalResults?.isOverflow ? '+' : '' }</chakra.span> matching results
               </Skeleton>
               <RoutedTabs
                 tabs={ tabs }

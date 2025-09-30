@@ -4,7 +4,7 @@ import React from 'react';
 
 import type { TokenType } from 'types/api/token';
 
-// import useDebounce from 'lib/hooks/useDebounce';
+import useDebounce from 'lib/hooks/useDebounce';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import getChainIdFromSlug from 'lib/multichain/getChainIdFromSlug';
 import getChainSlugFromId from 'lib/multichain/getChainSlugFromId';
@@ -35,21 +35,21 @@ const OpSuperchainTokens = () => {
   const router = useRouter();
   const isMobile = useIsMobile();
 
-  const q = getQueryParamString(router.query.q);
+  const q = getQueryParamString(router.query.query);
   const chainId = getQueryParamString(router.query.chain_id);
 
   const [ chainSlug, setChainSlug ] = React.useState<Array<string>>(getInitialChainSlug(chainId));
   const [ searchTerm, setSearchTerm ] = React.useState<string>(q ?? '');
   const [ tokenTypes, setTokenTypes ] = React.useState<Array<TokenType> | undefined>(getTokenFilterValue(router.query.type));
 
-  // TODO @tom2drum pass debounced search term to filters
-  // const debouncedSearchTerm = useDebounce(searchTerm, 300);
+  const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
   const tokensQuery = useQueryWithPages({
     resourceName: 'multichainAggregator:tokens',
     filters: {
       type: tokenTypes?.join(','),
       chain_id: getChainIdFilterValue(chainSlug),
+      query: debouncedSearchTerm,
     },
     options: {
       placeholderData: generateListStub<'multichainAggregator:tokens'>(TOKEN['token'], 50, {
@@ -66,14 +66,16 @@ const OpSuperchainTokens = () => {
     tokensQuery.onFilterChange({
       type: value.join(','),
       chain_id: getChainIdFilterValue(chainSlug),
+      query: debouncedSearchTerm,
     });
     setTokenTypes(value);
-  }, [ tokensQuery, chainSlug ]);
+  }, [ tokensQuery, chainSlug, debouncedSearchTerm ]);
 
   const handleSearchTermChange = React.useCallback((value: string) => {
     tokensQuery.onFilterChange({
       type: tokenTypes?.join(','),
       chain_id: getChainIdFilterValue(chainSlug),
+      query: value,
     });
     setSearchTerm(value);
   }, [ tokenTypes, tokensQuery, chainSlug ]);
@@ -82,9 +84,10 @@ const OpSuperchainTokens = () => {
     tokensQuery.onFilterChange({
       chain_id: getChainIdFilterValue(value),
       type: tokenTypes?.join(','),
+      query: debouncedSearchTerm,
     });
     setChainSlug(value);
-  }, [ setChainSlug, tokensQuery, tokenTypes ]);
+  }, [ tokensQuery, tokenTypes, debouncedSearchTerm ]);
 
   const filter = (
     <PopoverFilter contentProps={{ w: '200px' }} appliedFiltersNum={ tokenTypes?.length }>

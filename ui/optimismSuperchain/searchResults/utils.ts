@@ -12,12 +12,12 @@ export interface SearchQueries {
 export type QueryType = keyof SearchQueries;
 
 export const SEARCH_TABS_NAMES: Record<QueryType, string> = {
-  addresses: 'Addresses',
   tokens: 'Tokens (ERC-20)',
+  nfts: 'NFTs (ERC-721 & 1155)',
+  addresses: 'Addresses',
   blockNumbers: 'Block numbers',
   blocks: 'Blocks',
   transactions: 'Transactions',
-  nfts: 'NFTs (ERC-721 & 1155)',
 };
 
 export const SEARCH_TABS_IDS: Record<QueryType, string> = {

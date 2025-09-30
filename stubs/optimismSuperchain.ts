@@ -15,6 +15,7 @@ export const ADDRESS: multichain.GetAddressResponse = {
   },
   has_tokens: true,
   has_interop_message_transfers: false,
+  coin_balance: '1000000000000000000000000',
 };
 
 export const TOKEN: AddressTokenItem = {
@@ -34,6 +35,7 @@ export const TOKEN: AddressTokenItem = {
       '11155111': {
         holders_count: '141268',
         total_supply: '943969542711126',
+        is_verified: true,
       },
     },
   },
