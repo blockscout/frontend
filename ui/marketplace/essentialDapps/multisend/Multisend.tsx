@@ -1,5 +1,5 @@
 import { Box } from '@chakra-ui/react';
-import { MultisenderWidget } from '@multisender.app/multisender-react-widget-dev';
+import { MultisenderWidget } from '@multisender.app/multisender-react-widget';
 import React from 'react';
 
 import essentialDappsChains from 'configs/essentialDappsChains';
