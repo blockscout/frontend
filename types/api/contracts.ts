@@ -26,7 +26,7 @@ export interface VerifiedContractsResponse {
   } | null;
 }
 
-export type VerifiedContractsFilter = Exclude<VerifiedContractsLanguage, 'stylus_rust'>;
+export type VerifiedContractsFilter = VerifiedContractsLanguage;
 
 export interface VerifiedContractsFilters {
   q: string | undefined;
