@@ -117,7 +117,7 @@ export default function useFlashblocksSocketData() {
 
   const pause = React.useCallback(() => {
     isPausedRef.current = true;
-    setNewItemsNum(0);
+    setNewItemsNum(undefined);
   }, []);
 
   const resume = React.useCallback(() => {
