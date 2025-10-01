@@ -11,6 +11,7 @@ import ContentLoader from 'ui/shared/ContentLoader';
 import SearchResultItemAddress from './items/SearchResultItemAddress';
 import SearchResultItemBlock from './items/SearchResultItemBlock';
 import SearchResultItemBlockNumber from './items/SearchResultItemBlockNumber';
+import SearchResultItemDomain from './items/SearchResultItemDomain';
 import SearchResultItemToken from './items/SearchResultItemToken';
 import SearchResultItemTx from './items/SearchResultItemTx';
 import type { QueryType, SearchQueries } from './utils';
@@ -76,6 +77,10 @@ const SearchResultsList = <T extends QueryType>({ queryType, query, maxItems = I
               case 'addresses': {
                 const address = item as multichain.GetAddressResponse;
                 return <SearchResultItemAddress key={ address.hash } data={ address } isMobile={ isMobile }/>;
+              }
+              case 'domains': {
+                const domain = item as multichain.Domain;
+                return <SearchResultItemDomain key={ domain.address } data={ domain }/>;
               }
               default:
                 return null;

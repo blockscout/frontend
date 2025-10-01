@@ -14,6 +14,7 @@ const EMPTY_SEARCH_NAME_MAP: Record<QueryType, string> = {
   blocks: 'blocks',
   transactions: 'transactions',
   nfts: 'NFTs',
+  domains: 'names',
 };
 
 interface Props {
@@ -59,6 +60,7 @@ const SearchResultTabContent = ({ isLoading, searchTerm, queries, queryType, bef
       case 'transactions':
       case 'tokens':
       case 'nfts':
+      case 'domains':
         return <SearchResultsList queryType={ queryType } query={ queries[queryType] }/>;
       default:
         return <SearchResultsTabAll queries={ queries }/>;

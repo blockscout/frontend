@@ -50,6 +50,11 @@ export default function useSearchQuery({ chainSlug }: Props) {
     queryParams: { q: debouncedSearchTerm, chain_id: chainId },
   });
 
+  const domainsQuery = useApiInfiniteQuery({
+    resourceName: 'multichainAggregator:search_domains',
+    queryParams: { q: debouncedSearchTerm, chain_id: chainId },
+  });
+
   const handleSearchTermChange = React.useCallback((value: string) => {
     setSearchTerm(value);
     router.push({
@@ -69,7 +74,8 @@ export default function useSearchQuery({ chainSlug }: Props) {
     blocks: blocksQuery,
     nfts: nftsQuery,
     transactions: transactionsQuery,
-  }), [ addressesQuery, tokensQuery, blockNumbersQuery, blocksQuery, nftsQuery, transactionsQuery ]);
+    domains: domainsQuery,
+  }), [ addressesQuery, tokensQuery, blockNumbersQuery, blocksQuery, nftsQuery, transactionsQuery, domainsQuery ]);
 
   return React.useMemo(() => ({
     searchTerm,

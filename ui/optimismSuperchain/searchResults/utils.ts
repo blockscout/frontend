@@ -7,6 +7,7 @@ export interface SearchQueries {
   blocks: ReturnType<'multichainAggregator:search_blocks'>;
   transactions: ReturnType<'multichainAggregator:search_transactions'>;
   nfts: ReturnType<'multichainAggregator:search_nfts'>;
+  domains: ReturnType<'multichainAggregator:search_domains'>;
 }
 
 export type QueryType = keyof SearchQueries;
@@ -18,6 +19,7 @@ export const SEARCH_TABS_NAMES: Record<QueryType, string> = {
   blockNumbers: 'Block numbers',
   blocks: 'Blocks',
   transactions: 'Transactions',
+  domains: 'Names',
 };
 
 export const SEARCH_TABS_IDS: Record<QueryType, string> = {
@@ -27,4 +29,5 @@ export const SEARCH_TABS_IDS: Record<QueryType, string> = {
   blocks: 'blocks',
   transactions: 'transactions',
   nfts: 'nfts',
+  domains: 'names',
 };
