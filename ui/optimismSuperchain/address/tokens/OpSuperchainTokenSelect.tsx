@@ -16,7 +16,11 @@ import IconSvg from 'ui/shared/IconSvg';
 
 import useFetchTokens from './useFetchTokens';
 
-const OpSuperchainTokenSelect = () => {
+interface Props {
+  isLoading: boolean;
+}
+
+const OpSuperchainTokenSelect = ({ isLoading }: Props) => {
   const router = useRouter();
   const hash = getQueryParamString(router.query.hash);
   const isMobile = useIsMobile();
@@ -37,8 +41,8 @@ const OpSuperchainTokenSelect = () => {
   return (
     <Flex columnGap={ 3 } mt={{ base: 1, lg: 0 }}>
       { isMobile ?
-        <TokenSelectMobile data={ data } isLoading={ isPending }/> :
-        <TokenSelectDesktop data={ data } isLoading={ isPending }/>
+        <TokenSelectMobile data={ data } isLoading={ isLoading || isPending }/> :
+        <TokenSelectDesktop data={ data } isLoading={ isLoading || isPending }/>
       }
       <Tooltip content="Show all tokens">
         <Link
@@ -51,7 +55,7 @@ const OpSuperchainTokenSelect = () => {
             variant="icon_secondary"
             size="md"
             onClick={ handleIconButtonClick }
-            loadingSkeleton={ isPending }
+            loadingSkeleton={ isLoading || isPending }
           >
             <IconSvg name="wallet"/>
           </IconButton>

@@ -9,9 +9,10 @@ type Props = {
   icon: React.ReactNode;
   valueSecondary?: string;
   isLoading: boolean;
+  contentAfter?: React.ReactNode;
 };
 
-const TokenBalancesItem = ({ name, icon, value, valueSecondary, isLoading }: Props) => {
+const TokenBalancesItem = ({ name, icon, value, valueSecondary, isLoading, contentAfter }: Props) => {
 
   return (
     <Box px="12px" py="10px" bgColor={{ _light: 'theme.stats.bg._light', _dark: 'theme.stats.bg._dark' }} borderRadius="base">
@@ -22,6 +23,7 @@ const TokenBalancesItem = ({ name, icon, value, valueSecondary, isLoading }: Pro
           { value }
           { Boolean(valueSecondary) && <Text color="text.secondary"> ({ valueSecondary })</Text> }
         </Skeleton>
+        { contentAfter }
       </Flex>
     </Box>
   );

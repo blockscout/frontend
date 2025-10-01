@@ -1,17 +1,16 @@
-import { Box, Flex, HStack, VStack } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 
 import multichainConfig from 'configs/multichain';
 import getCurrencyValue from 'lib/getCurrencyValue';
-import { Link } from 'toolkit/chakra/link';
-import { PopoverRoot, PopoverTrigger, PopoverContent, PopoverBody } from 'toolkit/chakra/popover';
 import { Skeleton } from 'toolkit/chakra/skeleton';
+import { ZERO } from 'toolkit/utils/consts';
 import { getTokensTotalInfoByChain, type TokensTotalInfo } from 'ui/address/utils/tokenUtils';
-import ChainIcon from 'ui/optimismSuperchain/components/ChainIcon';
 
 import useFetchTokens from '../tokens/useFetchTokens';
+import OpSuperchainAddressInfoBreakdown from './OpSuperchainAddressInfoBreakdown';
 
 interface Props {
   data: multichain.GetAddressResponse | undefined;
@@ -20,18 +19,16 @@ interface Props {
 
 const OpSuperchainAddressNetWorth = ({ data: addressData, isLoading }: Props) => {
 
+  const chains = multichainConfig()?.chains;
+
   const { data, isError, isPending } = useFetchTokens({ hash: addressData?.hash, enabled: addressData?.has_tokens });
 
   const { usdBn: nativeUsd } = getCurrencyValue({
-    // TODO @tom2drum pass correct data
-    // value: addressData?.coin_balance || '0',
-    value: '12345',
+    value: addressData?.coin_balance || '0',
     accuracy: 8,
     accuracyUsd: 2,
-    // exchangeRate: addressData?.exchange_rate,
-    exchangeRate: '0.42',
-    // decimals: String(config.chain.currency.decimals),
-    decimals: '0',
+    exchangeRate: addressData?.exchange_rate,
+    decimals: String(chains?.[0]?.config.chain.currency.decimals),
   });
 
   const resultByChain = React.useMemo(() => {
@@ -47,9 +44,8 @@ const OpSuperchainAddressNetWorth = ({ data: addressData, isLoading }: Props) =>
   }, {} as TokensTotalInfo);
 
   const prefix = isOverflow ? '>' : '';
-  const totalUsd = nativeUsd.plus(usd);
-
-  const chains = multichainConfig()?.chains;
+  const totalUsd = usd ? nativeUsd.plus(usd) : ZERO;
+  const hasUsd = !isError && addressData?.exchange_rate;
 
   return (
     <Flex alignItems="center" columnGap={ 3 }>
@@ -58,48 +54,26 @@ const OpSuperchainAddressNetWorth = ({ data: addressData, isLoading }: Props) =>
         alignItems="center"
         loading={ isLoading || (addressData?.has_tokens && isPending) }
       >
-        { /* TODO @tom2drum pass correct data */ }
-        { /* { (isError || !addressData?.exchange_rate) ? 'N/A' : `${ prefix }$${ totalUsd.toFormat(2) }` } */ }
-        { isError ? 'N/A' : `${ prefix }$${ totalUsd.toFormat(2) }` }
+        { hasUsd ? `${ prefix }$${ totalUsd.dp(2).toFormat() }` : 'N/A' }
       </Skeleton>
-      { addressData?.chain_infos && (
-        <PopoverRoot>
-          <PopoverTrigger>
-            <Link
-              variant="secondary"
-              textStyle="sm"
-              textDecorationLine="underline"
-              textDecorationStyle="dashed"
-              loading={ isLoading }
-            >
-              By chain
-            </Link>
-          </PopoverTrigger>
-          <PopoverContent>
-            <PopoverBody display="flex" flexDirection="column" rowGap={ 3 }>
-              { Object.entries(addressData.chain_infos).map(([ chainId ]) => {
+      { hasUsd && (
+        <OpSuperchainAddressInfoBreakdown data={ addressData.chain_infos } loading={ isLoading }>
+          { ([ chain, chainInfo ]) => {
+            const { usdBn: chainNativeUsdBn } = getCurrencyValue({
+              value: chainInfo.coin_balance || '0',
+              accuracy: 8,
+              accuracyUsd: 2,
+              exchangeRate: addressData?.exchange_rate,
+              decimals: String(chain.config.chain.currency.decimals),
+            });
 
-                const chain = chains?.find((chain) => chain.config.chain.id === chainId);
+            if (!chain.config.chain.id) {
+              return null;
+            }
 
-                if (!chain) {
-                  return null;
-                }
-
-                // TODO @tom2drum add native usd value
-
-                return (
-                  <VStack key={ chainId } alignItems="flex-start">
-                    <HStack>
-                      <ChainIcon data={ chain }/>
-                      <span>{ chain.config.chain.name }</span>
-                    </HStack>
-                    <Box color="text.secondary" ml={ 7 }>${ resultByChain[chainId].usd.dp(2).toFormat() }</Box>
-                  </VStack>
-                );
-              }) }
-            </PopoverBody>
-          </PopoverContent>
-        </PopoverRoot>
+            return `$${ resultByChain[chain.config.chain.id].usd.plus(chainNativeUsdBn).dp(2).toFormat() }`;
+          } }
+        </OpSuperchainAddressInfoBreakdown>
       ) }
     </Flex>
   );

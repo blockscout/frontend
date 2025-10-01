@@ -16,6 +16,7 @@ export const ADDRESS: multichain.GetAddressResponse = {
   has_tokens: true,
   has_interop_message_transfers: false,
   coin_balance: '1000000000000000000000000',
+  exchange_rate: '123.456',
 };
 
 export const TOKEN: AddressTokenItem = {

@@ -21,6 +21,7 @@ import ChainSelect from 'ui/shared/multichain/ChainSelect';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
+import OpSuperchainTokenBalances from './tokens/OpSuperchainTokenBalances';
 import useChainSelectErc20 from './useChainSelectErc20';
 
 export const ADDRESS_OP_SUPERCHAIN_TOKENS_TAB_IDS = [ 'tokens_erc20' as const, 'tokens_nfts' as const ];
@@ -152,6 +153,7 @@ const OpSuperchainAddressTokens = () => {
 
   return (
     <>
+      <OpSuperchainTokenBalances/>
       <Box ref={ scrollRef }/>
       <RoutedTabs
         variant="secondary"

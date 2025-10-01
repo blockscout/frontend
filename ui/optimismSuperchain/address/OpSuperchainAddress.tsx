@@ -73,7 +73,7 @@ const OpSuperchainAddress = () => {
         component: <OpSuperchainAddressTokens/>,
         subTabs: ADDRESS_OP_SUPERCHAIN_TOKENS_TAB_IDS,
       },
-      isContract && {
+      {
         id: 'internal_txs',
         title: 'Internal txns',
         component: <OpSuperchainAddressInternalTxs isLoading={ isLoading }/>,

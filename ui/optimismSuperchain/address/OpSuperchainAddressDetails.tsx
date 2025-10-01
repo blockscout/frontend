@@ -1,4 +1,3 @@
-import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type * as multichain from '@blockscout/multichain-aggregator-types';
@@ -51,7 +50,14 @@ const OpSuperchainAddressDetails = ({ data, addressHash, isLoading }: Props) => 
             { activeChains.map((chain) => (
               <Link
                 key={ chain.slug }
-                href={ chain.config.app.baseUrl + route({ pathname: '/address/[hash]', query: { hash: addressHash } }) }
+                href={ chain.config.app.baseUrl + route({
+                  pathname: '/address/[hash]',
+                  query: {
+                    hash: addressHash,
+                    utm_source: 'multichain-explorer',
+                    utm_medium: 'address',
+                  },
+                }) }
                 external
                 loading={ isLoading }
                 display="flex"
@@ -91,18 +97,22 @@ const OpSuperchainAddressDetails = ({ data, addressHash, isLoading }: Props) => 
         <OpSuperchainAddressCoinBalance data={ data } isLoading={ isLoading }/>
       </DetailedInfo.ItemValue>
 
-      <DetailedInfo.ItemLabel
-        hint="All tokens in the account and total value"
-        isLoading={ isLoading }
-      >
-        Tokens
-      </DetailedInfo.ItemLabel>
-      <DetailedInfo.ItemValue>
-        { data?.has_tokens ? <OpSuperchainTokenSelect/> : <Box>0</Box> }
-      </DetailedInfo.ItemValue>
+      { data?.has_tokens && (
+        <>
+          <DetailedInfo.ItemLabel
+            hint="All tokens in the account and total value"
+            isLoading={ isLoading }
+          >
+            Tokens
+          </DetailedInfo.ItemLabel>
+          <DetailedInfo.ItemValue>
+            <OpSuperchainTokenSelect isLoading={ isLoading }/>
+          </DetailedInfo.ItemValue>
+        </>
+      ) }
 
       <DetailedInfo.ItemLabel
-        hint="Total net worth in USD of all tokens for the address"
+        hint="Total net worth in USD of native coin and all tokens for the address"
         isLoading={ isLoading }
       >
         Net worth

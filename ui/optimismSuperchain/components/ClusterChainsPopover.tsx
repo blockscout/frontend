@@ -59,7 +59,14 @@ const ClusterChainsPopover = ({ addressHash, data, isLoading }: Props) => {
             { activeChains.map((chain) => (
               <Link
                 key={ chain.slug }
-                href={ chain.config.app.baseUrl + route({ pathname: '/address/[hash]', query: { hash: addressHash } }) }
+                href={ chain.config.app.baseUrl + route({
+                  pathname: '/address/[hash]',
+                  query: {
+                    hash: addressHash,
+                    utm_source: 'multichain-explorer',
+                    utm_medium: 'address',
+                  },
+                }) }
                 external
                 display="flex"
                 alignItems="center"

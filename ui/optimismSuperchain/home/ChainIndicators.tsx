@@ -6,14 +6,13 @@ import type { TChainIndicator } from 'ui/home/indicators/types';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import { HOMEPAGE_STATS } from 'stubs/optimismSuperchain';
-import { Image } from 'toolkit/chakra/image';
 import ChainIndicatorsChart from 'ui/home/indicators/ChainIndicatorsChart';
 import ChainIndicatorsContainer from 'ui/home/indicators/ChainIndicatorsContainer';
 import ChainIndicatorsList from 'ui/home/indicators/ChainIndicatorsList';
 import { isIndicatorEnabled, sortIndicators } from 'ui/home/indicators/utils/indicators';
 import IconSvg from 'ui/shared/IconSvg';
-import TokenLogoPlaceholder from 'ui/shared/TokenLogoPlaceholder';
 
+import NativeTokenIcon from '../components/NativeTokenIcon';
 import useChartDataQuery from './useChartDataQuery';
 import useFetchParentChainApi from './useFetchParentChainApi';
 
@@ -69,7 +68,7 @@ const ChainIndicators = () => {
         return '$N/A';
       })(),
       valueDiff: parentChainStatsQuery.data.coin_price_change_percentage ?? undefined,
-      icon: <Image src={ parentChainStatsQuery.data.coin_image ?? undefined } fallback={ <TokenLogoPlaceholder/> } boxSize={ 6 } borderRadius="base"/>,
+      icon: <NativeTokenIcon boxSize={ 6 }/>,
       hint: 'ETH token daily price in USD.',
     },
     parentChainStatsQuery.data && {
