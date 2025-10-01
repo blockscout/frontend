@@ -92,7 +92,7 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, hash }: Props) => {
 
   const contentAfter = (
     <>
-      { tokenQuery.data && <TokenEntity.Reputation token={ tokenQuery.data }/> }
+      { tokenQuery.data && <TokenEntity.Reputation value={ tokenQuery.data.reputation } ml={ 0 }/> }
       { verifiedInfoQuery.data?.tokenAddress && (
         <Tooltip content={ `Information on this token has been verified by ${ config.chain.name }` }>
           <IconSvg name="certified" color="green.500" boxSize={ 6 } cursor="pointer"/>
@@ -149,8 +149,6 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, hash }: Props) => {
         <AddressAlerts
           tags={ addressMetadataQuery.data?.addresses?.[hash.toLowerCase()]?.tags }
           isScamToken={ tokenQuery.data?.reputation === 'scam' }
-          mt="-4px"
-          mb={ 6 }
         />
       ) }
     </>

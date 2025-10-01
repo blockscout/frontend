@@ -20,7 +20,7 @@ const AddressAlerts = ({ tags, isScamToken, className }: Props) => {
   }
 
   return (
-    <Flex flexDir="column" gap={ 3 } className={ className }>
+    <Flex flexDir="column" rowGap={{ base: 1, lg: 2 }} mb={ 3 } className={ className }>
       { isScamToken && (
         <Alert status="error">
           This token has been flagged as a potential scam.
