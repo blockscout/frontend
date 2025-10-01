@@ -47,6 +47,7 @@ const NetworkMenuLink = ({ title, icon, isActive: isActiveProp, isMobile, url, i
         display="flex"
         href={ url }
         target="_blank"
+        rel="noopener noreferrer"
         px={ 2 }
         py="5px"
         opacity={ isActive ? 0.6 : 1 }
