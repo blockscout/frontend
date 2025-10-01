@@ -103,7 +103,8 @@ const rewardsApi = (() => {
 
 const multichainAggregatorApi = (() => {
   const apiHost = getEnvValue('NEXT_PUBLIC_MULTICHAIN_AGGREGATOR_API_HOST');
-  if (!apiHost) {
+  const cluster = getEnvValue('NEXT_PUBLIC_MULTICHAIN_CLUSTER');
+  if (!apiHost || !cluster) {
     return;
   }
 
@@ -113,7 +114,7 @@ const multichainAggregatorApi = (() => {
     return Object.freeze({
       endpoint: apiHost,
       socketEndpoint: `wss://${ url.host }`,
-      basePath: stripTrailingSlash(getEnvValue('NEXT_PUBLIC_MULTICHAIN_AGGREGATOR_BASE_PATH') || ''),
+      basePath: `/api/v1/clusters/${ cluster }`,
     });
   } catch (error) {
     return;

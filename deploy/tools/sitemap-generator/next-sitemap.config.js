@@ -177,7 +177,7 @@ module.exports = {
     };
   },
   additionalPaths: async(config) => {
-    if(process.env.NEXT_PUBLIC_OP_SUPERCHAIN_ENABLED === 'true'){
+    if(process.env.NEXT_PUBLIC_MULTICHAIN_ENABLED === 'true'){
       return;
     }
 
