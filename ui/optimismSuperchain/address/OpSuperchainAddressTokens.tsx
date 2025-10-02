@@ -48,10 +48,12 @@ const OpSuperchainAddressTokens = () => {
   const hash = getQueryParamString(router.query.hash);
   const [ chainSelectErc20Value, setChainSelectErc20Value ] = useChainSelectErc20();
 
+  const chainId = chainSelectErc20Value?.map(getChainIdFromSlug).filter(Boolean);
+
   const erc20Query = useQueryWithPages({
     resourceName: 'multichainAggregator:address_tokens',
     pathParams: { hash },
-    filters: { type: 'ERC-20', chain_id: chainSelectErc20Value?.map(getChainIdFromSlug).filter(Boolean) },
+    filters: chainId?.length ? { type: 'ERC-20', chain_id: chainId } : { type: 'ERC-20' },
     scrollRef,
     options: {
       enabled: tab === 'tokens' || tab === 'tokens_erc20',

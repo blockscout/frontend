@@ -24,6 +24,7 @@ const TAB_LIST_PROPS = {
   pt: 6,
   pb: 6,
   marginTop: -6,
+  minW: { base: 'auto', lg: '1080px' },
 };
 const PRESERVED_PARAMS = [ 'q', 'tab', 'chain_id' ];
 
@@ -133,7 +134,6 @@ const SearchResults = () => {
                 preservedParams={ PRESERVED_PARAMS }
                 listProps={ isMobile ? undefined : TAB_LIST_PROPS }
                 rightSlot={ isMobile ? undefined : chainSelectElement }
-                // rightSlotProps={ TABS_RIGHT_SLOT_PROPS }
                 stickyEnabled={ !isMobile }
               />
             </Layout.Content>

@@ -37,7 +37,7 @@ test.describe('local txs', () => {
       countersMock.forContract,
       { pathParams: { hash: CURRENT_ADDRESS }, chainConfig: opSuperchainMock.chainDataA },
     );
-    await mockAssetResponse(getIconUrl(opSuperchainMock.chainDataA), './playwright/mocks/image_s.jpg');
+    await mockAssetResponse(getIconUrl(opSuperchainMock.chainDataA) as string, './playwright/mocks/image_s.jpg');
 
     component = await render(
       <Box pt={{ base: '134px', lg: 6 }}>
