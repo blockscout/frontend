@@ -36,8 +36,7 @@ const SearchBarDesktop = ({ isHeroBanner }: Props) => {
 
   const { searchTerm, debouncedSearchTerm, handleSearchTermChange, query, zetaChainCCTXQuery, externalSearchItem } = useSearchWithClusters();
 
-  const handleSubmit = React.useCallback((event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const navigateToResults = React.useCallback(() => {
     if (searchTerm) {
       const resultRoute: Route = { pathname: '/search-results', query: { q: searchTerm, redirect: 'true' } };
       const url = route(resultRoute);
@@ -50,6 +49,11 @@ const SearchBarDesktop = ({ isHeroBanner }: Props) => {
       router.push(resultRoute, undefined, { shallow: true });
     }
   }, [ searchTerm, router ]);
+
+  const handleSubmit = React.useCallback((event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    navigateToResults();
+  }, [ navigateToResults ]);
 
   const handleFocus = React.useCallback(() => {
     onOpen();
@@ -187,8 +191,8 @@ const SearchBarDesktop = ({ isHeroBanner }: Props) => {
           { showAllResultsLink && (
             <PopoverFooter pt={ 2 } borderTopWidth={ 1 } borderColor="border.divider">
               <Link
-                href={ route({ pathname: '/search-results', query: { q: searchTerm } }) }
                 textStyle="sm"
+                onClick={ navigateToResults }
               >
                 View all results
               </Link>

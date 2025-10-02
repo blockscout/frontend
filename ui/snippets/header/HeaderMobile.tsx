@@ -13,10 +13,10 @@ import Burger from './Burger';
 
 type Props = {
   hideSearchButton?: boolean;
-  renderSearchBar?: () => React.ReactNode;
+  onGoToSearchResults?: (searchTerm: string) => void;
 };
 
-const HeaderMobile = ({ hideSearchButton }: Props) => {
+const HeaderMobile = ({ hideSearchButton, onGoToSearchResults }: Props) => {
   const ref = React.useRef<HTMLDivElement>(null);
   const isSticky = useIsSticky(ref, 5);
 
@@ -46,7 +46,7 @@ const HeaderMobile = ({ hideSearchButton }: Props) => {
         <Burger/>
         <NetworkLogo ml={ 2 } mr="auto"/>
         <Flex columnGap={ 2 }>
-          { !hideSearchButton && <SearchBarMobile/> }
+          { !hideSearchButton && <SearchBarMobile onGoToSearchResults={ onGoToSearchResults }/> }
           { config.features.rewards.isEnabled && <RewardsButton/> }
           { (config.features.account.isEnabled && <UserProfileMobile/>) ||
             (config.features.blockchainInteraction.isEnabled && <UserWalletMobile/>)

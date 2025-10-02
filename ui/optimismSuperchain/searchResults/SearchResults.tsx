@@ -42,6 +42,10 @@ const SearchResults = () => {
 
   const isLoading = Object.values(queries).some((query) => query.isLoading);
 
+  const handleNavigateToResults = React.useCallback((searchTerm: string) => {
+    handleSearchTermChange(searchTerm);
+  }, [ handleSearchTermChange ]);
+
   const renderSearchBar = React.useCallback(() => {
     return (
       <SearchResultsInput
@@ -115,7 +119,7 @@ const SearchResults = () => {
 
   return (
     <>
-      <HeaderMobile renderSearchBar={ renderSearchBar }/>
+      <HeaderMobile onGoToSearchResults={ handleNavigateToResults }/>
       <Layout.MainArea>
         <Layout.SideBar/>
         <Layout.MainColumn>

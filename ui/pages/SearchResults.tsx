@@ -50,6 +50,10 @@ const SearchResultsPageContent = () => {
   const marketplaceApps = useMarketplaceApps(debouncedSearchTerm);
   const settingsContext = useSettingsContext();
 
+  const handleNavigateToResults = React.useCallback((searchTerm: string) => {
+    handleSearchTermChange(searchTerm);
+  }, [ handleSearchTermChange ]);
+
   React.useEffect(() => {
     if (showContent) {
       return;
@@ -275,7 +279,7 @@ const SearchResultsPageContent = () => {
 
   return (
     <>
-      <HeaderMobile hideSearchButton/>
+      <HeaderMobile onGoToSearchResults={ handleNavigateToResults }/>
       <Layout.MainArea>
         <Layout.SideBar/>
         <Layout.MainColumn>
