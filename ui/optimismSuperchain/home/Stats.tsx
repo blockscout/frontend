@@ -42,7 +42,7 @@ const Stats = () => {
       { items.length > 0 && (
         <Flex gap={ 2 } flexDirection={{ base: 'row', lg: 'column' }} w={{ base: '100%', lg: '270px' }}>
           { items.map((item) => (
-            <StatsWidget key={ item.id } label={ item.label } value={ item.value } icon={ item.icon }/>
+            <StatsWidget key={ item.id } label={ item.label } value={ item.value } icon={ item.icon } isLoading={ statsQuery.isPlaceholderData }/>
           )) }
         </Flex>
       ) }

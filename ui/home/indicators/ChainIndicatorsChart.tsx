@@ -20,7 +20,7 @@ interface Props {
 const ChainIndicatorsChart = ({ isLoading, value, valueDiff, chartQuery, title, hint }: Props) => {
   const valueTitleElement = (() => {
     if (isLoading) {
-      return <Skeleton loading h="36px" w="215px"/>;
+      return <Skeleton loading h="36px" w="200px"/>;
     }
 
     if (value.includes('N/A')) {
