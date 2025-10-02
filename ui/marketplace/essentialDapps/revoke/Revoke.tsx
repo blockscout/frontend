@@ -1,4 +1,5 @@
 import { Box, Flex, Text, Separator } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import React, { useMemo, useCallback, useEffect, useState } from 'react';
 import { isAddress } from 'viem';
 import { useAccount } from 'wagmi';
@@ -6,6 +7,8 @@ import { useAccount } from 'wagmi';
 import config from 'configs/app';
 import essentialDappsChains from 'configs/essentialDappsChains';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import getQueryParamString from 'lib/router/getQueryParamString';
+import { useQueryParams } from 'lib/router/useQueryParams';
 import useWeb3Wallet from 'lib/web3/useWallet';
 import { Badge } from 'toolkit/chakra/badge';
 import { Button } from 'toolkit/chakra/button';
@@ -32,9 +35,14 @@ const defaultChainId = (
 ) as string;
 
 const Revoke = () => {
-  const [ selectedChainId, setSelectedChainId ] = useState<number>(Number(defaultChainId));
+  const router = useRouter();
+  const { updateQuery } = useQueryParams();
+  const chainIdFromQuery = getQueryParamString(router.query.chainId);
+  const addressFromQuery = getQueryParamString(router.query.address);
+  const [ selectedChainId, setSelectedChainId ] = useState<number>(Number(chainIdFromQuery || defaultChainId));
   const { address: connectedAddress } = useAccount();
-  const [ searchAddress, setSearchAddress ] = React.useState('');
+  const [ searchAddress, setSearchAddress ] = useState(addressFromQuery || '');
+  const [ searchInputValue, setSearchInputValue ] = useState(searchAddress || '');
   const approvalsQuery = useApprovalsQuery(selectedChainId, searchAddress);
   const coinBalanceQuery = useCoinBalanceQuery(selectedChainId, searchAddress);
   const web3Wallet = useWeb3Wallet({ source: 'Revoke' });
@@ -75,7 +83,8 @@ const Revoke = () => {
 
   const handleChainChange = useCallback((chainId: number) => {
     setSelectedChainId(chainId);
-  }, []);
+    updateQuery({ chainId: chainId.toString() }, true);
+  }, [ updateQuery ]);
 
   const handleSearch = useCallback((address: string) => {
     // if (address.endsWith('.eth')) {
@@ -89,7 +98,11 @@ const Revoke = () => {
     //   }
     // }
     setSearchAddress(address);
-  }, []);
+    setSearchInputValue(address);
+    if (isAddress(address.toLowerCase())) {
+      updateQuery({ address }, true);
+    }
+  }, [ updateQuery ]);
 
   const handleAddressClick = useCallback(
     (address: string) => () => {
@@ -99,10 +112,10 @@ const Revoke = () => {
   );
 
   useEffect(() => {
-    if (connectedAddress) {
-      setSearchAddress(connectedAddress);
+    if (connectedAddress && !searchAddress) {
+      handleSearch(connectedAddress);
     }
-  }, [ connectedAddress ]);
+  }, [ connectedAddress, handleSearch, searchAddress ]);
 
   let content = <StartScreen/>;
 
@@ -264,7 +277,11 @@ const Revoke = () => {
   return (
     <Flex flexDir="column" w="full" gap={{ base: 6, lg: 12 }}>
       <Flex flexDir="column" w="full" gap={ 3 }>
-        <SearchInput onSubmit={ handleSearch }/>
+        <SearchInput
+          value={ searchInputValue }
+          onChange={ setSearchInputValue }
+          onSubmit={ handleSearch }
+        />
         <Flex flexDir={{ base: 'column', md: 'row' }} gap={ 3 } justifyContent="space-between">
           <Flex
             gap={ 3 }
