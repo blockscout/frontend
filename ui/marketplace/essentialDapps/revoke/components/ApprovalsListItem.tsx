@@ -1,5 +1,5 @@
 import { Flex, Text } from '@chakra-ui/react';
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 
 import type { AllowanceType } from '../lib/types';
 
@@ -27,9 +27,16 @@ export default function ApprovalsListItem({
   isLoading,
   isAddressMatch,
 }: Props) {
-  const revoke = useRevoke(approval, selectedChainId);
+  const { revoke, isError, isLoading: isTxLoading } = useRevoke(approval, selectedChainId);
+  const [ isPending, setIsPending ] = useState(false);
 
   const allowance = formatAllowance(approval);
+
+  const handleRevoke = useCallback(async() => {
+    setIsPending(true);
+    await revoke();
+    setIsPending(false);
+  }, [ revoke ]);
 
   return (
     <Flex
@@ -125,9 +132,9 @@ export default function ApprovalsListItem({
         <Button
           size="sm"
           variant="outline"
-          loading={ isLoading || revoke.isLoading }
-          onClick={ revoke.revoke }
-          disabled={ revoke.isError }
+          loading={ isLoading || isTxLoading || isPending }
+          onClick={ handleRevoke }
+          disabled={ isError }
         >
           Revoke
         </Button>

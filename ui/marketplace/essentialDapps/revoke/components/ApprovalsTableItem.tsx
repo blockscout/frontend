@@ -1,4 +1,5 @@
 import { Flex } from '@chakra-ui/react';
+import { useCallback, useState } from 'react';
 
 import type { AllowanceType } from '../lib/types';
 
@@ -27,9 +28,16 @@ export default function ApprovalsTableItem({
   isLoading,
   isAddressMatch,
 }: Props) {
-  const revoke = useRevoke(approval, selectedChainId);
+  const { revoke, isError, isLoading: isTxLoading } = useRevoke(approval, selectedChainId);
+  const [ isPending, setIsPending ] = useState(false);
 
   const allowance = formatAllowance(approval);
+
+  const handleRevoke = useCallback(async() => {
+    setIsPending(true);
+    await revoke();
+    setIsPending(false);
+  }, [ revoke ]);
 
   return (
     <TableRow fontWeight="500" css={{ '& > td': { verticalAlign: 'middle' } }}>
@@ -105,9 +113,9 @@ export default function ApprovalsTableItem({
           <Button
             size="sm"
             variant="outline"
-            loading={ isLoading || revoke.isLoading }
-            onClick={ revoke.revoke }
-            disabled={ revoke.isError }
+            loading={ isLoading || isTxLoading || isPending }
+            onClick={ handleRevoke }
+            disabled={ isError }
           >
             Revoke
           </Button>

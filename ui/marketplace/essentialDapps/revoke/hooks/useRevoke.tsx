@@ -13,8 +13,7 @@ import {
 
 import type { AllowanceType } from '../lib/types';
 
-import getErrorMessage from 'lib/errors/getErrorMessage';
-import getErrorObjPayload from 'lib/errors/getErrorObjPayload';
+import getErrorCause from 'lib/errors/getErrorCause';
 import { toaster } from 'toolkit/chakra/toaster';
 
 interface GtagEventParams {
@@ -28,39 +27,6 @@ declare global {
   }
 }
 
-// async function registerActivity(chainId: string, from: string, to: string) {
-//   const response = await fetch(
-//     `${config.rewardsService.apiUrl}/api/v1/activity/track/transaction`,
-//     {
-//       method: "POST",
-//       headers: { "Content-Type": "application/json" },
-//       body: JSON.stringify({
-//         chain_id: chainId,
-//         from_address: from,
-//         to_address: to,
-//       }),
-//     },
-//   );
-//   if (response.ok) {
-//     const { token } = (await response.json()) as { token: string };
-//     return token;
-//   }
-// }
-
-// function confirmActivity(token: string, txHash: string) {
-//   return fetch(
-//     `${config.rewardsService.apiUrl}/api/v1/activity/track/transaction/confirm`,
-//     {
-//       method: "POST",
-//       headers: { "Content-Type": "application/json" },
-//       body: JSON.stringify({
-//         tx_hash: txHash,
-//         token,
-//       }),
-//     },
-//   );
-// }
-
 export default function useRevoke(approval: AllowanceType, chainId: number) {
   const connectedChainId = useChainId();
   const { address: userAddress } = useAccount();
@@ -69,7 +35,6 @@ export default function useRevoke(approval: AllowanceType, chainId: number) {
   const queryClient = useQueryClient();
 
   const [ txHash, setTxHash ] = useState<`0x${ string }` | undefined>();
-  // const [ activityToken, setActivityToken ] = useState<string | undefined>();
   const [ gtagEventParams, setGtagEventParams ] = useState<GtagEventParams>();
 
   const isErc20 = approval.type === 'ERC-20';
@@ -83,51 +48,41 @@ export default function useRevoke(approval: AllowanceType, chainId: number) {
     chainId,
   });
 
-  const {
-    isLoading: isConfirming,
-    isSuccess: isConfirmed,
-    isError: isFailed,
-  } = useWaitForTransactionReceipt({
+  const receipt = useWaitForTransactionReceipt({
     hash: txHash,
     chainId,
   });
 
   useEffect(() => {
-    if (!txHash) return;
+    switch (receipt.status) {
+      case 'pending':
+        break;
 
-    if (isConfirmed) {
-      // if (activityToken) {
-      //   confirmActivity(activityToken, txHash);
-      // }
-
-      if (typeof window !== 'undefined' && window.gtag && gtagEventParams) {
-        window.gtag('event', 'revoke', gtagEventParams);
+      case 'success': {
+        if (typeof window !== 'undefined' && window.gtag && gtagEventParams) {
+          window.gtag('event', 'revoke', gtagEventParams);
+        }
+        queryClient.refetchQueries({ queryKey: [ 'revoke:approvals' ] });
+        toaster.success({
+          title: 'Success',
+          description: 'Approval revoked successfully.',
+        });
+        setTxHash(undefined);
+        break;
       }
 
-      queryClient.refetchQueries({ queryKey: [ 'revoke:approvals' ] });
-
-      toaster.success({
-        title: 'Success',
-        description: 'Approval revoked successfully.',
-      });
-
-      setTxHash(undefined);
-      // setActivityToken(undefined);
-    } else if (isFailed) {
-      toaster.error({
-        title: 'Error',
-        description: 'Failed to revoke approval.',
-      });
+      case 'error': {
+        toaster.error({
+          title: 'Error',
+          description: 'Failed to revoke approval.',
+        });
+        setTxHash(undefined);
+        break;
+      }
     }
-
-    setTxHash(undefined);
-    // setActivityToken(undefined);
   }, [
-    isConfirmed,
-    isFailed,
+    receipt,
     queryClient,
-    txHash,
-    // activityToken,
     gtagEventParams,
   ]);
 
@@ -142,14 +97,6 @@ export default function useRevoke(approval: AllowanceType, chainId: number) {
       if (simulationResult?.request) {
         const chainId = simulationResult.request.chainId.toString();
         const userAddress = simulationResult.request.account?.address || '';
-
-        // const activityToken = await registerActivity(
-        //   chainId,
-        //   userAddress,
-        //   simulationResult.request.address,
-        // );
-        // setActivityToken(activityToken);
-
         const hash = await writeContractAsync(simulationResult.request);
         setTxHash(hash);
         setGtagEventParams({
@@ -158,15 +105,11 @@ export default function useRevoke(approval: AllowanceType, chainId: number) {
         });
       }
     } catch (_error) {
-      const apiError = getErrorObjPayload<{ message: string }>(_error);
+      const cause = getErrorCause(_error as Error);
       toaster.error({
         title: 'Error',
-        description:
-          apiError?.message ||
-          getErrorMessage(_error) ||
-          'Something went wrong. Try again later.',
+        description: cause?.shortMessage || 'Something went wrong. Try again later.',
       });
-      throw _error;
     }
   }, [
     simulationResult,
@@ -178,7 +121,7 @@ export default function useRevoke(approval: AllowanceType, chainId: number) {
 
   return {
     revoke,
-    isLoading: !simulationResult?.request || isConfirming,
+    isLoading: !simulationResult?.request || (Boolean(txHash) && receipt.status === 'pending'),
     isError: Boolean(error),
   };
 }
