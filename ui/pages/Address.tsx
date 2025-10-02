@@ -468,7 +468,7 @@ const AddressPageContent = () => {
         isLoading={ isLoading }
       />
       { !addressMetadataQuery.isPending &&
-        <AddressAlerts tags={ addressMetadataQuery.data?.addresses?.[hash.toLowerCase()]?.tags } mt="-4px" mb={ 6 }/> }
+        <AddressAlerts tags={ addressMetadataQuery.data?.addresses?.[hash.toLowerCase()]?.tags }/> }
       { config.features.metasuites.isEnabled && <Box display="none" id="meta-suites__address" data-ready={ !isLoading }/> }
       <RoutedTabs tabs={ tabs } isLoading={ isTabsLoading }/>
     </>
