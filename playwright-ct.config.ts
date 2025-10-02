@@ -36,6 +36,12 @@ const config: PlaywrightTestConfig = defineConfig({
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'html',
 
+  expect: {
+    toHaveScreenshot: {
+      threshold: 0.05,
+    },
+  },
+
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     baseURL: appConfig.app.baseUrl,

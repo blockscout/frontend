@@ -1,3 +1,4 @@
+import type { BoxProps } from '@chakra-ui/react';
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
@@ -128,11 +129,15 @@ const Copy = (props: CopyProps) => {
 
 const Container = EntityBase.Container;
 
-export const Reputation = (props: Pick<EntityProps, 'token'>) => {
-  if (config.UI.views.token.hideScamTokensEnabled && props.token.reputation === 'scam') {
+interface ReputationProps extends BoxProps {
+  value: TokenInfo['reputation'];
+}
+
+const Reputation = ({ value, ...rest }: ReputationProps) => {
+  if (config.UI.views.token.hideScamTokensEnabled && value === 'scam') {
     return (
       <Tooltip content="This token has been flagged as a potential scam. You enabled the display of flagged tokens in the explorer — proceed with caution.">
-        <IconSvg name="scam" boxSize={ 5 } ml={ 2 }/>
+        <IconSvg name="scam" boxSize={ 5 } ml={ 2 } { ...rest }/>
       </Tooltip>
     );
   }
@@ -159,7 +164,7 @@ const TokenEntity = (props: EntityProps) => {
       { props.noLink ? content : <Link { ...partsProps.link }>{ content }</Link> }
       <Symbol { ...partsProps.symbol }/>
       <Copy { ...partsProps.copy }/>
-      <Reputation token={ props.token }/>
+      <Reputation value={ props.token.reputation }/>
     </Container>
   );
 };
@@ -172,4 +177,5 @@ export {
   Icon,
   Content,
   Copy,
+  Reputation,
 };

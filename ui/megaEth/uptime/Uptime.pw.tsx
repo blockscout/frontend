@@ -74,7 +74,6 @@ test('default view', async({ render, createSocket, mockEnvs, page }) => {
   const socket = await createSocket();
   socket.send(JSON.stringify(HISTORY_FULL_DATA));
   socket.send(JSON.stringify(REALTIME_DATA));
-  await expect(component).toHaveScreenshot();
 
   await page.waitForFunction(() => {
     return document.querySelector('path[data-name="chart-TPS-small"]')?.getAttribute('opacity') === '1';
@@ -85,8 +84,10 @@ test('default view', async({ render, createSocket, mockEnvs, page }) => {
   await page.waitForFunction(() => {
     return document.querySelector('path[data-name="chart-Block_time_ms-small"]')?.getAttribute('opacity') === '1';
   });
-  await component.locator('.ChartOverlay').first().hover({ position: { x: 400, y: 200 } });
+  await expect(component).toHaveScreenshot();
 
   socket.send(JSON.stringify(HISTORY_DELTA_DATA));
+  await component.locator('.ChartOverlay').first().hover({ position: { x: 350, y: 200 } });
+
   await expect(component).toHaveScreenshot();
 });
