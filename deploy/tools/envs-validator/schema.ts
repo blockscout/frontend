@@ -9,12 +9,8 @@ declare module 'yup' {
 
 import * as yup from 'yup';
 
-import type { AdButlerConfig } from '../../../types/client/adButlerConfig';
 import type { AddressProfileAPIConfig } from '../../../types/client/addressProfileAPIConfig';
-import { SUPPORTED_AD_TEXT_PROVIDERS, SUPPORTED_AD_BANNER_PROVIDERS, SUPPORTED_AD_BANNER_ADDITIONAL_PROVIDERS } from '../../../types/client/adProviders';
-import type { AdTextProviders, AdBannerProviders, AdBannerAdditionalProviders } from '../../../types/client/adProviders';
 import { SMART_CONTRACT_EXTRA_VERIFICATION_METHODS, SMART_CONTRACT_LANGUAGE_FILTERS, type ContractCodeIde, type SmartContractVerificationMethodExtra } from '../../../types/client/contract';
-import type { DeFiDropdownItem } from '../../../types/client/deFiDropdown';
 import type { GasRefuelProviderConfig } from '../../../types/client/gasRefuelProviderConfig';
 import { GAS_UNITS } from '../../../types/client/gasTracker';
 import type { GasUnit } from '../../../types/client/gasTracker';
@@ -22,7 +18,6 @@ import type { MarketplaceAppBase, MarketplaceAppSocialInfo } from '../../../type
 import type { MultichainProviderConfig } from '../../../types/client/multichainProviderConfig';
 import type { ApiDocsTabId } from '../../../types/views/apiDocs';
 import { API_DOCS_TABS } from '../../../types/views/apiDocs';
-import type { NavItemExternal, NavigationLayout, NavigationPromoBannerConfig } from '../../../types/client/navigation';
 import { ROLLUP_TYPES } from '../../../types/client/rollup';
 import type { BridgedTokenChain, TokenBridge } from '../../../types/client/token';
 import { PROVIDERS as TX_INTERPRETATION_PROVIDERS } from '../../../types/client/txInterpretation';
@@ -30,12 +25,7 @@ import { VALIDATORS_CHAIN_TYPE } from '../../../types/client/validators';
 import type { ValidatorsChainType } from '../../../types/client/validators';
 import type { WalletType } from '../../../types/client/wallets';
 import { SUPPORTED_WALLETS } from '../../../types/client/wallets';
-import type { CustomLink, CustomLinksGroup } from '../../../types/footerLinks';
-import { CHAIN_INDICATOR_IDS, HOME_STATS_WIDGET_IDS } from '../../../types/homepage';
-import type { ChainIndicatorId, HeroBannerButtonState, HeroBannerConfig, HomeStatsWidgetId } from '../../../types/homepage';
-import { type NetworkVerificationTypeEnvs, type NetworkExplorer, type FeaturedNetwork, NETWORK_GROUPS } from '../../../types/networks';
-import { COLOR_THEME_IDS } from '../../../types/settings';
-import type { FontFamily } from '../../../types/ui';
+import { type NetworkVerificationTypeEnvs, type NetworkExplorer } from '../../../types/networks';
 import type { AddressFormat, AddressViewId, Address3rdPartyWidget } from '../../../types/views/address';
 import { ADDRESS_FORMATS, ADDRESS_VIEWS_IDS, IDENTICON_TYPES, ADDRESS_3RD_PARTY_WIDGET_PAGES } from '../../../types/views/address';
 import { BLOCK_FIELDS_IDS } from '../../../types/views/block';
@@ -48,38 +38,11 @@ import type { TxExternalTxsConfig } from '../../../types/client/externalTxsConfi
 
 import { replaceQuotes } from '../../../configs/app/utils';
 import * as regexp from '../../../toolkit/utils/regexp';
-import type { IconName } from '../../../ui/shared/IconSvg';
 import type { CrossChainInfo } from '../../../types/client/crossChainInfo';
-
-const protocols = [ 'http', 'https' ];
-
-const urlTest: yup.TestConfig = {
-  name: 'url',
-  test: (value: unknown) => {
-    if (!value) {
-      return true;
-    }
-
-    try {
-      if (typeof value === 'string') {
-        new URL(value);
-        return true;
-      }
-    } catch (error) {}
-
-    return false;
-  },
-  message: '${path} is not a valid URL',
-  exclusive: true,
-};
-
-const getYupValidationErrorMessage = (error: unknown) =>
-  typeof error === 'object' &&
-  error !== null &&
-  'errors' in error &&
-  Array.isArray(error.errors) ?
-    error.errors.join(', ') :
-    '';
+import { urlTest, protocols, getYupValidationErrorMessage } from './utils';
+import * as uiSchemas from './schemas/ui';
+import * as featuresSchemas from './schemas/features';
+import servicesSchemas from './schemas/services';
 
 const marketplaceAppSchema: yup.ObjectSchema<MarketplaceAppBase & MarketplaceAppSocialInfo> = yup
   .object({
@@ -394,20 +357,6 @@ const apiDocsScheme = yup
     .matches(regexp.HEX_REGEXP),
   });
 
-const userOpsSchema = yup
-  .object()
-  .shape({
-    NEXT_PUBLIC_HAS_USER_OPS: yup.boolean(),
-    NEXT_PUBLIC_USER_OPS_INDEXER_API_HOST: yup
-      .string()
-      .test(urlTest)
-      .when('NEXT_PUBLIC_HAS_USER_OPS', {
-        is: (value: boolean) => value,
-        then: (schema) => schema,
-        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_USER_OPS_INDEXER_API_HOST can only be used if NEXT_PUBLIC_HAS_USER_OPS is set to \'true\''),
-      }),
-  });
-
 const mixpanelSchema = yup
   .object()
   .shape({
@@ -427,109 +376,10 @@ const mixpanelSchema = yup
       }),
   });
 
-const adButlerConfigSchema = yup
-  .object<AdButlerConfig>()
-  .transform(replaceQuotes)
-  .json()
-  .when('NEXT_PUBLIC_AD_BANNER_PROVIDER', {
-    is: (value: AdBannerProviders) => value === 'adbutler',
-    then: (schema) => schema
-      .shape({
-        id: yup.string().required(),
-        width: yup.number().positive().required(),
-        height: yup.number().positive().required(),
-      })
-      .required(),
-  })
-  .when('NEXT_PUBLIC_AD_BANNER_ADDITIONAL_PROVIDER', {
-    is: (value: AdBannerProviders) => value === 'adbutler',
-    then: (schema) => schema
-      .shape({
-        id: yup.string().required(),
-        width: yup.number().positive().required(),
-        height: yup.number().positive().required(),
-      })
-      .required(),
-  });
-
-const adsBannerSchema = yup
-  .object()
-  .shape({
-    NEXT_PUBLIC_AD_BANNER_PROVIDER: yup.string<AdBannerProviders>().oneOf(SUPPORTED_AD_BANNER_PROVIDERS),
-    NEXT_PUBLIC_AD_BANNER_ADDITIONAL_PROVIDER: yup.string<AdBannerAdditionalProviders>().oneOf(SUPPORTED_AD_BANNER_ADDITIONAL_PROVIDERS),
-    NEXT_PUBLIC_AD_ADBUTLER_CONFIG_DESKTOP: adButlerConfigSchema,
-    NEXT_PUBLIC_AD_ADBUTLER_CONFIG_MOBILE: adButlerConfigSchema,
-    NEXT_PUBLIC_AD_BANNER_ENABLE_SPECIFY: yup.boolean(),
-  });
-
 const accountSchema = yup
   .object()
   .shape({
     NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED: yup.boolean(),
-  });
-
-const featuredNetworkSchema: yup.ObjectSchema<FeaturedNetwork> = yup
-  .object()
-  .shape({
-    title: yup.string().required(),
-    url: yup.string().test(urlTest).required(),
-    group: yup.string().oneOf(NETWORK_GROUPS).required(),
-    icon: yup.string().test(urlTest),
-    isActive: yup.boolean(),
-    invertIconInDarkMode: yup.boolean(),
-  });
-
-const navItemExternalSchema: yup.ObjectSchema<NavItemExternal> = yup
-  .object({
-    text: yup.string().required(),
-    url: yup.string().test(urlTest).required(),
-  });
-
-const fontFamilySchema: yup.ObjectSchema<FontFamily> = yup
-  .object()
-  .transform(replaceQuotes)
-  .json()
-  .shape({
-    name: yup.string().required(),
-    url: yup.string().test(urlTest).required(),
-  });
-
-const heroBannerButtonStateSchema: yup.ObjectSchema<HeroBannerButtonState> = yup.object({
-  background: yup.array().max(2).of(yup.string()),
-  text_color: yup.array().max(2).of(yup.string()),
-});
-
-const heroBannerSchema: yup.ObjectSchema<HeroBannerConfig> = yup.object()
-  .transform(replaceQuotes)
-  .json()
-  .shape({
-    background: yup.array().max(2).of(yup.string()),
-    text_color: yup.array().max(2).of(yup.string()),
-    border: yup.array().max(2).of(yup.string()),
-    button: yup.object({
-      _default: heroBannerButtonStateSchema,
-      _hover: heroBannerButtonStateSchema,
-      _selected: heroBannerButtonStateSchema,
-    }),
-    search: yup.object({
-      border_width: yup.array().max(2).of(yup.string()),
-    }),
-  });
-
-const footerLinkSchema: yup.ObjectSchema<CustomLink> = yup
-  .object({
-    text: yup.string().required(),
-    url: yup.string().test(urlTest).required(),
-    iconUrl: yup.array().of(yup.string().required().test(urlTest)),
-  });
-
-const footerLinkGroupSchema: yup.ObjectSchema<CustomLinksGroup> = yup
-  .object({
-    title: yup.string().required(),
-    links: yup
-      .array()
-      .of(footerLinkSchema)
-      .required(),
   });
 
 const networkExplorerSchema: yup.ObjectSchema<NetworkExplorer> = yup
@@ -616,17 +466,6 @@ const addressMetadataSchema = yup
         ),
       }),
   });
-
-const deFiDropdownItemSchema: yup.ObjectSchema<DeFiDropdownItem> = yup
-  .object({
-    text: yup.string().required(),
-    icon: yup.string<IconName>().required(),
-    dappId: yup.string(),
-    url: yup.string().test(urlTest),
-  })
-  .test('oneOfRequired', 'NEXT_PUBLIC_DEFI_DROPDOWN_ITEMS: Either dappId or url is required', function(value) {
-    return Boolean(value.dappId) || Boolean(value.url);
-  }) as yup.ObjectSchema<DeFiDropdownItem>;
 
 const multichainProviderConfigSchema: yup.ObjectSchema<MultichainProviderConfig> = yup.object({
   name: yup.string().required(),
@@ -807,122 +646,7 @@ const schema = yup
     NEXT_PUBLIC_API_WEBSOCKET_PROTOCOL: yup.string().oneOf([ 'ws', 'wss' ]),
 
     // 4. UI configuration
-    //   a. homepage
-    NEXT_PUBLIC_HOMEPAGE_CHARTS: yup
-      .array()
-      .transform(replaceQuotes)
-      .json()
-      .of(yup.string<ChainIndicatorId>().oneOf(CHAIN_INDICATOR_IDS))
-      .test(
-        'stats-api-required',
-        'NEXT_PUBLIC_STATS_API_HOST is required when daily_operational_txs is enabled in NEXT_PUBLIC_HOMEPAGE_CHARTS',
-        function(value) {
-          // daily_operational_txs is presented only in stats microservice
-          if (value?.includes('daily_operational_txs')) {
-            return Boolean(this.parent.NEXT_PUBLIC_STATS_API_HOST);
-          }
-          return true;
-        }
-      ),
-    NEXT_PUBLIC_HOMEPAGE_STATS: yup
-      .array()
-      .transform(replaceQuotes)
-      .json()
-      .of(yup.string<HomeStatsWidgetId>().oneOf(HOME_STATS_WIDGET_IDS))
-      .test(
-        'stats-api-required',
-        'NEXT_PUBLIC_STATS_API_HOST is required when total_operational_txs is enabled in NEXT_PUBLIC_HOMEPAGE_STATS',
-        function(value) {
-          // total_operational_txs is presented only in stats microservice
-          if (value?.includes('total_operational_txs')) {
-            return Boolean(this.parent.NEXT_PUBLIC_STATS_API_HOST);
-          }
-          return true;
-        }
-      ),
-    NEXT_PUBLIC_HOMEPAGE_HERO_BANNER_CONFIG: yup
-      .mixed()
-      .test(
-        'shape',
-        (ctx) => {
-          try {
-            heroBannerSchema.validateSync(ctx.originalValue);
-            throw new Error('Unknown validation error');
-          } catch (error: unknown) {
-            const message = getYupValidationErrorMessage(error);
-            return 'Invalid schema were provided for NEXT_PUBLIC_HOMEPAGE_HERO_BANNER_CONFIG' + (message ? `: ${ message }` : '');
-          }
-        },
-        (data) => {
-          const isUndefined = data === undefined;
-          return isUndefined || heroBannerSchema.isValidSync(data);
-        }),
-
-    //     b. sidebar
-    NEXT_PUBLIC_FEATURED_NETWORKS: yup
-      .array()
-      .json()
-      .of(featuredNetworkSchema),
-    NEXT_PUBLIC_FEATURED_NETWORKS_ALL_LINK: yup
-      .string()
-      .when('NEXT_PUBLIC_FEATURED_NETWORKS', {
-        is: (value: Array<unknown> | undefined) => value && value.length > 0,
-        then: (schema) => schema.test(urlTest),
-        otherwise: (schema) => schema.max(-1,  'NEXT_PUBLIC_FEATURED_NETWORKS_ALL_LINK can only be set when NEXT_PUBLIC_FEATURED_NETWORKS is configured'),
-      }),
-    NEXT_PUBLIC_OTHER_LINKS: yup
-      .array()
-      .transform(replaceQuotes)
-      .json()
-      .of(navItemExternalSchema),
-    NEXT_PUBLIC_NAVIGATION_HIGHLIGHTED_ROUTES: yup
-      .array()
-      .transform(replaceQuotes)
-      .json()
-      .of(yup.string()),
-    NEXT_PUBLIC_NAVIGATION_LAYOUT: yup.string<NavigationLayout>().oneOf([ 'horizontal', 'vertical' ]),
-    NEXT_PUBLIC_NAVIGATION_PROMO_BANNER_CONFIG: yup
-      .mixed()
-      .test('shape', 'Invalid schema were provided for NEXT_PUBLIC_NAVIGATION_PROMO_BANNER_CONFIG, it should be either object with img_url, text, bg_color, text_color, link_url or object with img_url and link_url', (data) => {
-        const isUndefined = data === undefined;
-        const jsonSchema = yup.object<NavigationPromoBannerConfig>().transform(replaceQuotes).json();
-
-        const valueSchema1 = jsonSchema.shape({
-          img_url: yup.string().required(),
-          text: yup.string().required(),
-          bg_color: yup.object().shape({
-            light: yup.string().required(),
-            dark: yup.string().required(),
-          }).required(),
-          text_color: yup.object().shape({
-            light: yup.string().required(),
-            dark: yup.string().required(),
-          }).required(),
-          link_url: yup.string().required(),
-        });
-
-        const valueSchema2 = jsonSchema.shape({
-          img_url: yup.object().shape({
-            small: yup.string().required(),
-            large: yup.string().required(),
-          }).required(),
-          link_url: yup.string().required(),
-        });
-
-        return isUndefined || valueSchema1.isValidSync(data) || valueSchema2.isValidSync(data);
-      }),
-    NEXT_PUBLIC_NETWORK_LOGO: yup.string().test(urlTest),
-    NEXT_PUBLIC_NETWORK_LOGO_DARK: yup.string().test(urlTest),
-    NEXT_PUBLIC_NETWORK_ICON: yup.string().test(urlTest),
-    NEXT_PUBLIC_NETWORK_ICON_DARK: yup.string().test(urlTest),
-
-    //     c. footer
-    NEXT_PUBLIC_FOOTER_LINKS: yup
-      .array()
-      .json()
-      .of(footerLinkGroupSchema),
-
-    //     d. views
+    //      views
     NEXT_PUBLIC_VIEWS_BLOCK_HIDDEN_FIELDS: yup
       .array()
       .transform(replaceQuotes)
@@ -989,7 +713,6 @@ const schema = yup
     NEXT_PUBLIC_VIEWS_TOKEN_SCAM_TOGGLE_ENABLED: yup.boolean(),
     NEXT_PUBLIC_HELIA_VERIFIED_FETCH_ENABLED: yup.boolean(),
 
-    //     e. misc
     NEXT_PUBLIC_NETWORK_EXPLORERS: yup
       .array()
       .transform(replaceQuotes)
@@ -1001,24 +724,6 @@ const schema = yup
       .json()
       .of(contractCodeIdeSchema),
     NEXT_PUBLIC_HAS_CONTRACT_AUDIT_REPORTS: yup.boolean(),
-    NEXT_PUBLIC_HIDE_INDEXING_ALERT_BLOCKS: yup.boolean(),
-    NEXT_PUBLIC_HIDE_INDEXING_ALERT_INT_TXS: yup.boolean(),
-    NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE: yup.string(),
-    NEXT_PUBLIC_COLOR_THEME_DEFAULT: yup.string().oneOf(COLOR_THEME_IDS),
-    NEXT_PUBLIC_COLOR_THEME_OVERRIDES: yup.object().transform(replaceQuotes).json(),
-    NEXT_PUBLIC_FONT_FAMILY_HEADING: yup
-      .mixed()
-      .test('shape', 'Invalid schema were provided for NEXT_PUBLIC_FONT_FAMILY_HEADING', (data) => {
-        const isUndefined = data === undefined;
-        return isUndefined || fontFamilySchema.isValidSync(data);
-      }),
-    NEXT_PUBLIC_FONT_FAMILY_BODY: yup
-      .mixed()
-      .test('shape', 'Invalid schema were provided for NEXT_PUBLIC_FONT_FAMILY_BODY', (data) => {
-        const isUndefined = data === undefined;
-        return isUndefined || fontFamilySchema.isValidSync(data);
-      }),
-    NEXT_PUBLIC_MAX_CONTENT_WIDTH_ENABLED: yup.boolean(),
 
     // 5. Features configuration
     NEXT_PUBLIC_STATS_API_HOST: yup.string().test(urlTest),
@@ -1044,7 +749,6 @@ const schema = yup
       }),
     NEXT_PUBLIC_WEB3_DISABLE_ADD_TOKEN_TO_WALLET: yup.boolean(),
     NEXT_PUBLIC_TRANSACTION_INTERPRETATION_PROVIDER: yup.string().oneOf(TX_INTERPRETATION_PROVIDERS),
-    NEXT_PUBLIC_AD_TEXT_PROVIDER: yup.string<AdTextProviders>().oneOf(SUPPORTED_AD_TEXT_PROVIDERS),
     NEXT_PUBLIC_PROMOTE_BLOCKSCOUT_IN_TITLE: yup.boolean(),
     NEXT_PUBLIC_OG_DESCRIPTION: yup.string(),
     NEXT_PUBLIC_OG_IMAGE_URL: yup.string().test(urlTest),
@@ -1076,11 +780,6 @@ const schema = yup
     NEXT_PUBLIC_GAS_TRACKER_UNITS: yup.array().transform(replaceQuotes).json().of(yup.string<GasUnit>().oneOf(GAS_UNITS)),
     NEXT_PUBLIC_DATA_AVAILABILITY_ENABLED: yup.boolean(),
     NEXT_PUBLIC_ADVANCED_FILTER_ENABLED: yup.boolean(),
-    NEXT_PUBLIC_DEFI_DROPDOWN_ITEMS: yup
-      .array()
-      .transform(replaceQuotes)
-      .json()
-      .of(deFiDropdownItemSchema),
     NEXT_PUBLIC_FAULT_PROOF_ENABLED: yup.boolean()
       .when('NEXT_PUBLIC_ROLLUP_TYPE', {
         is: 'optimistic',
@@ -1154,19 +853,18 @@ const schema = yup
         return isUndefined || valueSchema.isValidSync(data);
       }),
 
-    // 6. External services envs
-    NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID: yup.string(),
-    NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY: yup.string(),
-    NEXT_PUBLIC_GOOGLE_ANALYTICS_PROPERTY_ID: yup.string(),
-    NEXT_PUBLIC_GROWTH_BOOK_CLIENT_KEY: yup.string(),
-    NEXT_PUBLIC_ROLLBAR_CLIENT_TOKEN: yup.string(),
-
-
     // Misc
     NEXT_PUBLIC_USE_NEXT_JS_PROXY: yup.boolean(),
   })
+  .concat(uiSchemas.homepageSchema)
+  .concat(uiSchemas.navigationSchema)
+  .concat(uiSchemas.footerSchema)
+  .concat(uiSchemas.miscSchema)
+  .concat(featuresSchemas.adsSchema)
+  .concat(featuresSchemas.userOpsSchema)
+  .concat(featuresSchemas.defiDropdownSchema)
+  .concat(servicesSchemas)
   .concat(accountSchema)
-  .concat(adsBannerSchema)
   .concat(marketplaceSchema)
   .concat(rollupSchema)
   .concat(celoSchema)
@@ -1178,7 +876,6 @@ const schema = yup
   .concat(megaEthSchema)
   .concat(address3rdPartyWidgetsConfigSchema)
   .concat(addressMetadataSchema)
-  .concat(userOpsSchema)
   .concat(flashblocksSchema)
   .concat(zetaChainSchema);
 

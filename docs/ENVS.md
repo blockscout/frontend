@@ -79,7 +79,8 @@ All json-like values should be single-quoted. If it contains a hash (`#`) or a d
   - [DEX pools](#dex-pools)
   - [Flashblocks](#flashblocks)
   - [Address 3rd party widgets](#address-3rd-party-widgets)
-  - [ZetaChain](#zetachain)
+  - [ZetaChain](#zetachain-cross-chain-transactions)
+  - [Multichain explorer](#multichain-explorer)
 - [3rd party services configuration](#external-services-configuration)
 
 &nbsp;
@@ -105,7 +106,7 @@ All json-like values should be single-quoted. If it contains a hash (`#`) or a d
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_NETWORK_NAME | `string` | Displayed name of the network | Required | - | `Gnosis Chain` | v1.0.x+ |
 | NEXT_PUBLIC_NETWORK_SHORT_NAME | `string` | Used for SEO attributes (e.g, page description) | - | -  | `OoG` | v1.0.x+ |
-| NEXT_PUBLIC_NETWORK_ID | `number` | Chain id, see [https://chainlist.org](https://chainlist.org) for the reference | Required | -  | `99` | v1.0.x+ |
+| NEXT_PUBLIC_NETWORK_ID | `number` | Chain id, see [https://chainlist.org](https://chainlist.org) for the reference | Required (except for multichain) | -  | `99` | v1.0.x+ |
 | NEXT_PUBLIC_NETWORK_RPC_URL | `string \| Array<string>` | Chain public RPC server url, see [https://chainlist.org](https://chainlist.org) for the reference. Can contain a single string value, or an array of urls. | - | - | `https://core.poa.network` | v1.0.x+ |
 | NEXT_PUBLIC_NETWORK_CURRENCY_NAME | `string` | Network currency name | - | - | `Ether` | v1.0.x+ |
 | NEXT_PUBLIC_NETWORK_CURRENCY_WEI_NAME | `string` | Name of network currency subdenomination | - | `wei` | `duck` | v1.23.0+ |
@@ -124,7 +125,7 @@ All json-like values should be single-quoted. If it contains a hash (`#`) or a d
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_API_PROTOCOL | `http \| https` | Main API protocol | - | `https` | `http` | v1.0.x+ |
-| NEXT_PUBLIC_API_HOST | `string` | Main API host | Required | - | `blockscout.com` | v1.0.x+ |
+| NEXT_PUBLIC_API_HOST | `string` | Main API host | Required (except for multichain) | - | `blockscout.com` | v1.0.x+ |
 | NEXT_PUBLIC_API_PORT | `number` | Port where API is running on the host | - | - | `3001` | v1.0.x+ |
 | NEXT_PUBLIC_API_BASE_PATH | `string` | Base path for Main API endpoint url | - | - | `/poa/core` | v1.0.x+ |
 | NEXT_PUBLIC_API_WEBSOCKET_PROTOCOL | `ws \| wss` | Main API websocket protocol | - | `wss` | `ws` | v1.0.x+ |
@@ -1005,12 +1006,26 @@ This feature enables cross-chain transactions pages and views on ZetaChain insta
 
 &nbsp;
 
+### Multichain explorer
+
+This feature enables the application to act as an explorer of multiple blockchains united in one cluster. Please note that this feature is currently in demo mode, and a major part of the cross-chain views is not implemented and serves as a placeholder. These will be developed in the future.
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
+| --- | --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_MULTICHAIN_ENABLED | `boolean` | The flag that enables the feature | Required | - | `true` | upcoming |
+| NEXT_PUBLIC_MULTICHAIN_CLUSTER | `string` | Chain's cluster name; used to construct the full URL for requests to the aggregator API service | Required | - | `interop` | upcoming |
+| NEXT_PUBLIC_MULTICHAIN_AGGREGATOR_API_HOST | `string` | Multichain aggregator API service host | Required | - | `https://multichain-aggregator.k8s-dev.blockscout.com` | upcoming |
+| NEXT_PUBLIC_MULTICHAIN_STATS_API_HOST | `string` | Multichain statistics API service host | Required | - | `http://multichain-search-stats.k8s-dev.blockscout.com` | upcoming |
+
+&nbsp;
+
 ### Badge claim link
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_GAME_BADGE_CLAIM_LINK | `string` | Provide to enable the easter egg badge feature | - | - | `https://example.com` | v1.37.0+ |
 
+&nbsp;
 
 ### Puzzle game badge claim link
 
