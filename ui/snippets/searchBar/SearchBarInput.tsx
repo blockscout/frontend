@@ -139,6 +139,7 @@ const SearchBarInput = (
           backgroundColor={{ base: isHeroBanner ? 'input.bg' : 'dialog.bg', lg: 'input.bg' }}
           _hover={{ borderColor: 'input.border.hover' }}
           _focusWithin={{ _placeholder: { color: 'gray.300' }, borderColor: 'input.border.focus', _hover: { borderColor: 'input.border.focus' } }}
+          enterKeyHint="search"
         />
       </InputGroup>
     </chakra.form>
