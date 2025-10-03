@@ -7,7 +7,7 @@ import { test, expect } from 'playwright/lib';
 
 import OpSuperchainAddress from './OpSuperchainAddress';
 
-const CURRENT_ADDRESS = '0xd789a607CEac2f0E14867de4EB15b15C9FFB5859';
+const CURRENT_ADDRESS = opSuperchainMock.addressA.hash;
 
 const hooksConfig = {
   router: {
