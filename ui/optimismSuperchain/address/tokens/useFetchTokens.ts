@@ -1,5 +1,7 @@
 import React from 'react';
 
+import type { FormattedData } from 'ui/address/tokenSelect/types';
+
 import useApiQuery from 'lib/api/useApiQuery';
 import { calculateUsdValue } from 'ui/address/utils/tokenUtils';
 
@@ -8,7 +10,13 @@ interface Props {
   enabled?: boolean;
 }
 
-export default function useFetchTokens({ hash, enabled }: Props) {
+export interface ReturnType {
+  isPending: boolean;
+  isError: boolean;
+  data: FormattedData;
+}
+
+export default function useFetchTokens({ hash, enabled }: Props): ReturnType {
   const erc20Query = useApiQuery('multichainAggregator:address_tokens', {
     pathParams: { hash },
     queryParams: { type: 'ERC-20' },

@@ -3,6 +3,8 @@ import { sumBy } from 'es-toolkit';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { FormattedData } from 'ui/address/tokenSelect/types';
+
 import { route } from 'nextjs-routes';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -16,18 +18,16 @@ import TokenSelectDesktop from 'ui/address/tokenSelect/TokenSelectDesktop';
 import TokenSelectMobile from 'ui/address/tokenSelect/TokenSelectMobile';
 import IconSvg from 'ui/shared/IconSvg';
 
-import useFetchTokens from './useFetchTokens';
-
 interface Props {
   isLoading: boolean;
+  isError: boolean;
+  data: FormattedData;
 }
 
-const OpSuperchainTokenSelect = ({ isLoading }: Props) => {
+const OpSuperchainTokenSelect = ({ isLoading, isError, data }: Props) => {
   const router = useRouter();
   const hash = getQueryParamString(router.query.hash);
   const isMobile = useIsMobile();
-
-  const { data, isError, isPending } = useFetchTokens({ hash });
 
   const handleIconButtonClick = React.useCallback(() => {
     mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'Tokens show all (icon)' });
@@ -35,15 +35,15 @@ const OpSuperchainTokenSelect = ({ isLoading }: Props) => {
   }, [ ]);
 
   const hasTokens = sumBy(Object.values(data), ({ items }) => items.length) > 0;
-  if (isError || (!isPending && !hasTokens)) {
-    return <Skeleton loading={ isLoading || isPending }>0</Skeleton>;
+  if (isError || (!isLoading && !hasTokens)) {
+    return <Skeleton loading={ isLoading }>0</Skeleton>;
   }
 
   return (
     <Flex columnGap={ 3 } mt={{ base: 1, lg: 0 }}>
       { isMobile ?
-        <TokenSelectMobile data={ data } isLoading={ isLoading || isPending }/> :
-        <TokenSelectDesktop data={ data } isLoading={ isLoading || isPending }/>
+        <TokenSelectMobile data={ data } isLoading={ isLoading }/> :
+        <TokenSelectDesktop data={ data } isLoading={ isLoading }/>
       }
       <Tooltip content="Show all tokens">
         <Link
@@ -56,7 +56,7 @@ const OpSuperchainTokenSelect = ({ isLoading }: Props) => {
             variant="icon_secondary"
             size="md"
             onClick={ handleIconButtonClick }
-            loadingSkeleton={ isLoading || isPending }
+            loadingSkeleton={ isLoading }
           >
             <IconSvg name="wallet"/>
           </IconButton>

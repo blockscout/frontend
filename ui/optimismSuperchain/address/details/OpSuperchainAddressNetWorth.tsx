@@ -2,6 +2,7 @@ import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type * as multichain from '@blockscout/multichain-aggregator-types';
+import type { FormattedData } from 'ui/address/tokenSelect/types';
 
 import multichainConfig from 'configs/multichain';
 import getCurrencyValue from 'lib/getCurrencyValue';
@@ -9,19 +10,18 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import { ZERO } from 'toolkit/utils/consts';
 import { getTokensTotalInfoByChain, type TokensTotalInfo } from 'ui/address/utils/tokenUtils';
 
-import useFetchTokens from '../tokens/useFetchTokens';
 import OpSuperchainAddressInfoBreakdown from './OpSuperchainAddressInfoBreakdown';
 
 interface Props {
-  data: multichain.GetAddressResponse | undefined;
+  addressData: multichain.GetAddressResponse | undefined;
+  tokensData: FormattedData;
   isLoading: boolean;
+  isError: boolean;
 }
 
-const OpSuperchainAddressNetWorth = ({ data: addressData, isLoading }: Props) => {
+const OpSuperchainAddressNetWorth = ({ addressData, isLoading, tokensData, isError }: Props) => {
 
   const chains = multichainConfig()?.chains;
-
-  const { data, isError, isPending } = useFetchTokens({ hash: addressData?.hash, enabled: addressData?.has_tokens });
 
   const { usdBn: nativeUsd } = getCurrencyValue({
     value: addressData?.coin_balance || '0',
@@ -32,8 +32,8 @@ const OpSuperchainAddressNetWorth = ({ data: addressData, isLoading }: Props) =>
   });
 
   const resultByChain = React.useMemo(() => {
-    return getTokensTotalInfoByChain(data, Object.keys(addressData?.chain_infos || {}));
-  }, [ addressData?.chain_infos, data ]);
+    return getTokensTotalInfoByChain(tokensData, Object.keys(addressData?.chain_infos || {}));
+  }, [ addressData?.chain_infos, tokensData ]);
 
   const { usd, isOverflow } = Object.values(resultByChain).reduce((result, item) => {
     return {
@@ -52,7 +52,7 @@ const OpSuperchainAddressNetWorth = ({ data: addressData, isLoading }: Props) =>
       <Skeleton
         display="flex"
         alignItems="center"
-        loading={ isLoading || (addressData?.has_tokens && isPending) }
+        loading={ isLoading }
       >
         { hasUsd ? `${ prefix }$${ totalUsd.dp(2).toFormat() }` : 'N/A' }
       </Skeleton>

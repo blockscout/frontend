@@ -16,6 +16,7 @@ import OpSuperchainAddressCoinBalance from './details/OpSuperchainAddressCoinBal
 import OpSuperchainAddressContractName from './details/OpSuperchainAddressContractName';
 import OpSuperchainAddressNetWorth from './details/OpSuperchainAddressNetWorth';
 import OpSuperchainTokenSelect from './tokens/OpSuperchainTokenSelect';
+import useFetchTokens from './tokens/useFetchTokens';
 
 interface Props {
   data: multichain.GetAddressResponse | undefined;
@@ -29,6 +30,8 @@ const OpSuperchainAddressDetails = ({ data, addressHash, isLoading }: Props) => 
   const activeChains = chains?.filter((chain) => activeChainsIds.includes(String(chain.config.chain.id))) ?? [];
 
   const currencySymbol = getCurrencySymbol();
+
+  const tokensInfo = useFetchTokens({ hash: addressHash, enabled: data?.has_tokens && !isLoading });
 
   if (!data && !isLoading) {
     return null;
@@ -106,7 +109,7 @@ const OpSuperchainAddressDetails = ({ data, addressHash, isLoading }: Props) => 
             Tokens
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue>
-            <OpSuperchainTokenSelect isLoading={ isLoading }/>
+            <OpSuperchainTokenSelect isLoading={ isLoading || tokensInfo.isPending } isError={ tokensInfo.isError } data={ tokensInfo.data }/>
           </DetailedInfo.ItemValue>
         </>
       ) }
@@ -118,7 +121,12 @@ const OpSuperchainAddressDetails = ({ data, addressHash, isLoading }: Props) => 
         Net worth
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
-        <OpSuperchainAddressNetWorth data={ data } isLoading={ isLoading }/>
+        <OpSuperchainAddressNetWorth
+          addressData={ data }
+          tokensData={ tokensInfo.data }
+          isLoading={ isLoading || Boolean(tokensInfo.isPending && data?.has_tokens) }
+          isError={ tokensInfo.isError }
+        />
       </DetailedInfo.ItemValue>
 
       <DetailedInfo.ItemLabel
