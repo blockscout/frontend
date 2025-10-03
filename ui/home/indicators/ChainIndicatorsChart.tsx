@@ -24,7 +24,7 @@ const ChainIndicatorsChart = ({ isLoading, value, valueDiff, chartQuery, title, 
     }
 
     if (value.includes('N/A')) {
-      return <Text fontSize="xs">There is no data</Text>;
+      return <Text fontWeight={ 700 } fontSize="30px" lineHeight="36px">N/A</Text>;
     }
 
     return (

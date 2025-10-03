@@ -40,13 +40,14 @@ const TokensListItem = ({
     circulating_market_cap: marketCap,
   } = token;
 
+  const originalChainId = 'origin_chain_id' in token ? token.origin_chain_id : undefined;
+  const chainInfos = 'chain_infos' in token ? token.chain_infos : undefined;
+
   const bridgedChainTag = bridgedTokensFeature.isEnabled ?
     bridgedTokensFeature.chains.find(({ id }) => id === originalChainId)?.short_title :
     undefined;
 
   const filecoinRobustAddress = 'filecoin_robust_address' in token ? token.filecoin_robust_address : undefined;
-  const originalChainId = 'origin_chain_id' in token ? token.origin_chain_id : undefined;
-  const chainInfos = 'chain_infos' in token ? token.chain_infos : undefined;
 
   const chainInfo = React.useMemo(() => {
     if (!chainInfos) {
