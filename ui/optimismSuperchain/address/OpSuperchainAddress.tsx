@@ -6,6 +6,7 @@ import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
 import getCheckedSummedAddress from 'lib/address/getCheckedSummedAddress';
 import useApiQuery from 'lib/api/useApiQuery';
+import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { ADDRESS } from 'stubs/optimismSuperchain';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
@@ -37,8 +38,13 @@ const OpSuperchainAddress = () => {
     },
   });
 
+  throwOnResourceLoadError(addressQuery);
+
   const isLoading = addressQuery.isPlaceholderData;
-  const isContract = Object.values(addressQuery.data?.chain_infos ?? {}).some((chainInfo) => chainInfo.is_contract);
+  const chainData = Object.values(addressQuery.data?.chain_infos ?? {});
+  const isContractSomewhere = chainData.some((chainInfo) => chainInfo.is_contract);
+  const isContractEverywhere = chainData.length > 0 && chainData.every((chainInfo) => chainInfo.is_contract);
+  const isVerifiedEverywhere = chainData.length > 0 && chainData.every((chainInfo) => chainInfo.is_verified);
 
   const checkSummedHash = React.useMemo(() => addressQuery.data?.hash ?? getCheckedSummedAddress(hash), [ hash, addressQuery.data?.hash ]);
 
@@ -49,7 +55,7 @@ const OpSuperchainAddress = () => {
         title: 'Details',
         component: <OpSuperchainAddressDetails addressHash={ checkSummedHash } data={ addressQuery.data } isLoading={ isLoading }/>,
       },
-      isContract && {
+      isContractSomewhere && {
         id: 'contract',
         title: 'Contract',
         component: <OpSuperchainAddressContract addressHash={ checkSummedHash } data={ addressQuery.data } isLoading={ isLoading }/>,
@@ -83,13 +89,13 @@ const OpSuperchainAddress = () => {
         title: 'Coin balance history',
         component: <OpSuperchainAddressCoinBalanceHistory/>,
       },
-      isContract && {
+      isContractSomewhere && {
         id: 'logs',
         title: 'Logs',
         component: <OpSuperchainAddressLogs isLoading={ isLoading }/>,
       },
     ].filter(Boolean);
-  }, [ addressQuery.data, isLoading, isContract, checkSummedHash ]);
+  }, [ addressQuery.data, isLoading, isContractSomewhere, checkSummedHash ]);
 
   const titleSecondRow = (
     <Flex alignItems="center" w="100%" columnGap={ 2 } rowGap={ 2 } flexWrap={{ base: 'wrap', lg: 'nowrap' }}>
@@ -100,6 +106,8 @@ const OpSuperchainAddress = () => {
           name: '',
           ens_domain_name: '',
           implementations: null,
+          is_contract: isContractEverywhere,
+          is_verified: isVerifiedEverywhere,
         }}
         isLoading={ isLoading }
         variant="subheading"
@@ -118,7 +126,7 @@ const OpSuperchainAddress = () => {
     <>
       <TextAd mb={ 6 }/>
       <PageTitle
-        title="Address details"
+        title={ `${ isContractEverywhere ? 'Contract' : 'Address' } details` }
         isLoading={ isLoading }
         secondRow={ titleSecondRow }
       />
