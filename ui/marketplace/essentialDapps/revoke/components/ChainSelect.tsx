@@ -2,13 +2,15 @@ import { Box, Text } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import React, { useCallback } from 'react';
 
+import config from 'configs/app';
 import { Button } from 'toolkit/chakra/button';
 import { Image } from 'toolkit/chakra/image';
 import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import IconSvg from 'ui/shared/IconSvg';
 
-import essentialDappsConfig from '../../config';
+const feature = config.features.marketplace;
+const dappConfig = feature.isEnabled ? feature.essentialDapps?.revoke : undefined;
 
 type Props = {
   selectedChainId: number;
@@ -21,7 +23,7 @@ export default function ChainSelect({ selectedChainId, changeChain }: Props) {
   const chainsQuery = useQuery({
     queryKey: [ 'revoke:chains' ],
     queryFn: async() => {
-      const chains = await Promise.all(essentialDappsConfig.revoke.chains.map(async(id) => {
+      const chains = await Promise.all(dappConfig?.chains.map(async(id) => {
         const response = await fetch(`https://chains.blockscout.com/api/chains/${ id }`);
         const data = await response.json() as { name: string; logo: string };
 
@@ -30,7 +32,7 @@ export default function ChainSelect({ selectedChainId, changeChain }: Props) {
           name: data.name,
           logoUrl: data.logo,
         };
-      }));
+      }) || []);
 
       return chains;
     },

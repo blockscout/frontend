@@ -1,6 +1,13 @@
 import { Flex } from '@chakra-ui/react';
 
+import type { EssentialDappsConfig } from 'types/client/marketplace';
+
+import config from 'configs/app';
+
 import EssentialDappCard from './EssentialDappCard';
+
+const feature = config.features.marketplace;
+const essentialDappsConfig = feature.isEnabled ? feature.essentialDapps : undefined;
 
 const essentialDapps = [
   {
@@ -27,7 +34,9 @@ const essentialDapps = [
     imageUrl: '/static/marketplace/multisend.png',
     darkImageUrl: '/static/marketplace/multisend-dark.png',
   },
-];
+].filter((dapp) =>
+  feature.isEnabled && Boolean(essentialDappsConfig?.[dapp.id as keyof EssentialDappsConfig]),
+);
 
 const EssentialDappsList = () => {
   return (

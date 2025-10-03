@@ -33,3 +33,17 @@ export enum MarketplaceCategory {
   ALL = 'All',
   FAVORITES = 'Favorites',
 }
+
+export type EssentialDappsConfig = {
+  swap?: {
+    chains: Array<string>;
+    fee: string;
+    integrator: string;
+  };
+  revoke?: {
+    chains: Array<string>;
+  };
+  multisend?: {
+    chains: Array<string>;
+  };
+};

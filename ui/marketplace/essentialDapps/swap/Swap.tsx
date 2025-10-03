@@ -7,13 +7,16 @@ import config from 'configs/app';
 import essentialDappsChains from 'configs/essentialDappsChains';
 import useWeb3Wallet from 'lib/web3/useWallet';
 import { useColorMode } from 'toolkit/chakra/color-mode';
+import colors from 'toolkit/theme/foundations/colors';
+import { BODY_TYPEFACE } from 'toolkit/theme/foundations/typography';
 
-import essentialDappsConfig from '../config';
+const feature = config.features.marketplace;
+const dappConfig = feature.isEnabled ? feature.essentialDapps?.swap : undefined;
 
 const defaultChainId = Number(
-  essentialDappsConfig.revoke.chains.includes(config.chain.id as string) ?
+  dappConfig?.chains.includes(config.chain.id as string) ?
     config.chain.id :
-    essentialDappsConfig.revoke.chains[0],
+    dappConfig?.chains[0],
 );
 
 const Swap = () => {
@@ -23,31 +26,31 @@ const Swap = () => {
   const config = useMemo(
     () =>
       ({
-        fee: 0.004, // 0.4% instead of 0.075%
+        fee: Number(dappConfig?.fee),
         variant: 'compact',
         subvariant: 'default',
         appearance: colorMode,
         theme: {
-          typography: { fontFamily: 'var(--chakra-fonts-body)' },
+          typography: { fontFamily: BODY_TYPEFACE },
           shape: {
             borderRadius: 12,
             borderRadiusSecondary: 8,
           },
           palette: {
-            primary: { main: '#2B6CB0' },
-            secondary: { main: '#2B6CB0' },
+            primary: { main: colors.blue[600].value },
+            secondary: { main: colors.blue[600].value },
           },
         },
         fromChain: defaultChainId,
         fromToken: '0x0000000000000000000000000000000000000000',
         chains: {
-          allow: essentialDappsConfig.multisend.chains.map((chainId) => Number(chainId)),
+          allow: dappConfig?.chains.map((chainId) => Number(chainId)),
         },
         sdkConfig: {
-          rpcUrls: Object.fromEntries(essentialDappsConfig.multisend.chains.map((chainId) => ([
+          rpcUrls: Object.fromEntries(dappConfig?.chains.map((chainId) => ([
             Number(chainId),
             [ `${ essentialDappsChains[chainId] }/api/eth-rpc` ],
-          ]))),
+          ])) || []),
         },
         walletConfig: {
           onConnect: web3Wallet.connect,
@@ -66,7 +69,7 @@ const Swap = () => {
       overflow="hidden"
       mx="auto"
     >
-      <LiFiWidget config={ config } integrator="blockscout"/>
+      <LiFiWidget config={ config } integrator={ dappConfig?.integrator || '' }/>
     </Box>
   );
 };

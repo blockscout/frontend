@@ -20,7 +20,6 @@ import EmptySearchResult from 'ui/shared/EmptySearchResult';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import IconSvg from 'ui/shared/IconSvg';
 
-import essentialDappsConfig from '../config';
 import Approvals from './components/Approvals';
 import ChainSelect from './components/ChainSelect';
 import SearchInput from './components/SearchInput';
@@ -28,10 +27,13 @@ import StartScreen from './components/StartScreen';
 import useApprovalsQuery from './hooks/useApprovalsQuery';
 import useCoinBalanceQuery from './hooks/useCoinBalanceQuery';
 
+const feature = config.features.marketplace;
+const dappConfig = feature.isEnabled ? feature.essentialDapps?.revoke : undefined;
+
 const defaultChainId = (
-  essentialDappsConfig.revoke.chains.includes(config.chain.id as string) ?
+  dappConfig?.chains.includes(config.chain.id as string) ?
     config.chain.id :
-    essentialDappsConfig.revoke.chains[0]
+    dappConfig?.chains[0]
 ) as string;
 
 const Revoke = () => {

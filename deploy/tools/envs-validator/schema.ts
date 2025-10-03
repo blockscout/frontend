@@ -18,7 +18,7 @@ import type { DeFiDropdownItem } from '../../../types/client/deFiDropdown';
 import type { GasRefuelProviderConfig } from '../../../types/client/gasRefuelProviderConfig';
 import { GAS_UNITS } from '../../../types/client/gasTracker';
 import type { GasUnit } from '../../../types/client/gasTracker';
-import type { MarketplaceAppBase, MarketplaceAppSocialInfo } from '../../../types/client/marketplace';
+import type { MarketplaceAppBase, MarketplaceAppSocialInfo, EssentialDappsConfig } from '../../../types/client/marketplace';
 import type { MultichainProviderConfig } from '../../../types/client/multichainProviderConfig';
 import type { ApiDocsTabId } from '../../../types/views/apiDocs';
 import { API_DOCS_TABS } from '../../../types/views/apiDocs';
@@ -50,6 +50,7 @@ import { replaceQuotes } from '../../../configs/app/utils';
 import * as regexp from '../../../toolkit/utils/regexp';
 import type { IconName } from '../../../ui/shared/IconSvg';
 import type { CrossChainInfo } from '../../../types/client/crossChainInfo';
+import essentialDappsChains from '../../../configs/essentialDappsChains';
 
 const protocols = [ 'http', 'https' ];
 
@@ -177,6 +178,41 @@ const marketplaceSchema = yup
         then: (schema) => schema,
         // eslint-disable-next-line max-len
         otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_MARKETPLACE_GRAPH_LINKS_URL cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED'),
+      }),
+    NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_CONFIG: yup
+      .mixed()
+      .when('NEXT_PUBLIC_MARKETPLACE_ENABLED', {
+        is: true,
+        then: (schema) => schema.test('shape', 'Invalid schema were provided for NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_CONFIG, it should contain optional swap/revoke/multisend sections with required fields', (data) => {
+          const isUndefined = data === undefined;
+          const CHAIN_KEYS = Object.keys(essentialDappsChains);
+          const chainsSchema = yup.array().of(yup.string().oneOf(CHAIN_KEYS).required()).min(1).required();
+          const valueSchema = yup.object<EssentialDappsConfig>().transform(replaceQuotes).json().shape({
+            swap: yup.lazy(value => value ?
+              yup.object<EssentialDappsConfig['swap']>().shape({
+                chains: chainsSchema,
+                fee: yup.string().required(),
+                integrator: yup.string().required(),
+              }) :
+              yup.object().nullable(),
+            ),
+            revoke: yup.lazy(value => value ?
+              yup.object<EssentialDappsConfig['revoke']>().shape({ chains: chainsSchema }) :
+              yup.object().nullable(),
+            ),
+            multisend: yup.lazy(value => value ?
+              yup.object<EssentialDappsConfig['multisend']>().shape({ chains: chainsSchema }) :
+              yup.object().nullable(),
+            ),
+          });
+          return isUndefined || valueSchema.isValidSync(data);
+        }),
+        // eslint-disable-next-line max-len
+        otherwise: (schema) => schema.test(
+          'not-exist',
+          'NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_CONFIG cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED',
+          value => value === undefined,
+        ),
       }),
   });
 
@@ -685,11 +721,11 @@ const zetaChainSchema = yup
   .test('zetachain-api-host-dependency', 'NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST cannot be used without NEXT_PUBLIC_ZETACHAIN_SERVICE_CHAINS_CONFIG_URL', function(value) {
     const hasApiHost = Boolean(value?.NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST);
     const hasChainsConfig = Boolean(value?.NEXT_PUBLIC_ZETACHAIN_SERVICE_CHAINS_CONFIG_URL?.length);
-    
+
     if (hasApiHost && !hasChainsConfig) {
       return this.createError({ message: 'NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST cannot be used without NEXT_PUBLIC_ZETACHAIN_SERVICE_CHAINS_CONFIG_URL' });
     }
-    
+
     return true;
   });
 

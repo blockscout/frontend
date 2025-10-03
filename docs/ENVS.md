@@ -581,6 +581,7 @@ Ads are enabled by default on all self-hosted instances. If you would like to di
 | NEXT_PUBLIC_MARKETPLACE_BANNER_CONTENT_URL | `string` | URL of the banner HTML content | - | - | `https://example.com/banner` | v1.29.0+ |
 | NEXT_PUBLIC_MARKETPLACE_BANNER_LINK_URL | `string` | URL of the page the banner leads to | - | - | `https://example.com` | v1.29.0+ |
 | NEXT_PUBLIC_MARKETPLACE_GRAPH_LINKS_URL | `string` | URL of the file (`.json` format only) which contains the list of The Graph links to be displayed on the Marketplace page | - | - | `https://example.com/graph_links.json` | v1.36.0+ |
+| NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_CONFIG | `EssentialDappsConfig`, see details [below](#essential-dapps-configuration-properties) | Configuration of the essential dapps to be displayed on the Marketplace page | - | - | `{'swap': {'chains': ['1', '10', '100', '11155111'], 'fee': '0.004', 'integrator': 'blockscout'}}` | v2.4.0+ |
 
 #### Marketplace app configuration properties
 
@@ -601,6 +602,16 @@ Ads are enabled by default on all self-hosted instances. If you would like to di
 | github | `string` | Displayed github link | - | `'https://github.com/blockscout'` |
 | internalWallet | `boolean` | `true` means that the application can automatically connect to the Blockscout wallet. | - | `true` |
 | priority | `number` | The higher the priority, the higher the app will appear in the list on the Marketplace page. | - | `7` |
+
+#### Essential dapps configuration properties
+
+*Note* Chain ids should exist in the `configs/essentialDappsChains.ts`.
+
+| Property | Type | Description | Compulsoriness | Example value |
+| --- | --- | --- | --- | --- |
+| swap | `{ chains: Array<string>, fee: string, integrator: string }` | Swap config | - | `{'chains': ['1'], 'fee': '0.004', 'integrator': 'blockscout'}` |
+| revoke | `{ chains: Array<string> }` | Revoke config | - | `{'chains': ['100']}` |
+| multisend | `{ chains: Array<string> }` | Multisend config | - | `{'chains': ['1', '10']}` |
 
 &nbsp;
 

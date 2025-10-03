@@ -2,9 +2,11 @@ import { Box } from '@chakra-ui/react';
 import { MultisenderWidget } from '@multisender.app/multisender-react-widget';
 import React from 'react';
 
+import config from 'configs/app';
 import essentialDappsChains from 'configs/essentialDappsChains';
 
-import essentialDappsConfig from '../config';
+const feature = config.features.marketplace;
+const dappConfig = feature.isEnabled ? feature.essentialDapps?.multisend : undefined;
 
 const Container = ({ children }: { children: React.ReactNode }) => (
   <Box
@@ -478,7 +480,7 @@ const Container = ({ children }: { children: React.ReactNode }) => (
   >{ children }</Box>
 );
 
-const config = Object.fromEntries(essentialDappsConfig.multisend.chains.map((chainId) => ([
+const widgetConfig = Object.fromEntries(dappConfig?.chains.map((chainId) => ([
   chainId,
   {
     id: Number(chainId),
@@ -489,13 +491,13 @@ const config = Object.fromEntries(essentialDappsConfig.multisend.chains.map((cha
     rpcUrls: [ `${ essentialDappsChains[chainId] }/api/eth-rpc` ],
     blockScoutApiUrl: essentialDappsChains[chainId],
   },
-])));
+])) || []);
 
 const Multisend = () => {
   return (
     <Container>
       <MultisenderWidget
-        config={ config }
+        config={ widgetConfig }
         logoType="minified"
         classNames={{
           theme: 'multisenderTheme',

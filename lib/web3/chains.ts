@@ -5,7 +5,9 @@ import * as viemChains from 'viem/chains';
 import appConfig from 'configs/app';
 import essentialDappsChainsConfig from 'configs/essentialDappsChains';
 import multichainConfig from 'configs/multichain';
-import essentialDappsConfig from 'ui/marketplace/essentialDapps/config';
+
+const marketplaceFeature = appConfig.features.marketplace;
+const essentialDappsConfig = marketplaceFeature.isEnabled ? marketplaceFeature.essentialDapps : undefined;
 
 const allChains = Object.values(viemChains);
 
@@ -84,7 +86,7 @@ export const clusterChains: Array<Chain> | undefined = (() => {
 })();
 
 const enabledChains = [ currentChain?.id, parentChain?.id, ...(clusterChains?.map((c) => c.id) ?? []) ].filter(Boolean);
-const enabledEssentialDappsChains = uniq(concat(...Object.values(essentialDappsConfig).map(({ chains }) => chains)));
+const enabledEssentialDappsChains = uniq(concat(...Object.values(essentialDappsConfig || {}).map(({ chains }) => chains)));
 const filteredEssentialDappsChains = enabledEssentialDappsChains.filter((id) => !enabledChains.includes(Number(id)));
 
 export const essentialDappsChains: Array<Chain> | undefined = filteredEssentialDappsChains.map((id) => {
