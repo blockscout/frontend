@@ -1,7 +1,10 @@
 import { Box, Flex, Text, Separator } from '@chakra-ui/react';
+import { getEnsAddress } from '@wagmi/core';
 import { useRouter } from 'next/router';
 import React, { useMemo, useCallback, useEffect, useState } from 'react';
 import { isAddress } from 'viem';
+import { mainnet } from 'viem/chains';
+import { normalize } from 'viem/ens';
 import { useAccount } from 'wagmi';
 
 import config from 'configs/app';
@@ -10,6 +13,7 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { useQueryParams } from 'lib/router/useQueryParams';
 import useWeb3Wallet from 'lib/web3/useWallet';
+import wagmiConfig from 'lib/web3/wagmiConfig';
 import { Badge } from 'toolkit/chakra/badge';
 import { Button } from 'toolkit/chakra/button';
 import { Heading } from 'toolkit/chakra/heading';
@@ -17,9 +21,9 @@ import { Image } from 'toolkit/chakra/image';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import EmptySearchResult from 'ui/shared/EmptySearchResult';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import IconSvg from 'ui/shared/IconSvg';
 
+import AddressEntity from './components/AddressEntity';
 import Approvals from './components/Approvals';
 import ChainSelect from './components/ChainSelect';
 import SearchInput from './components/SearchInput';
@@ -88,17 +92,16 @@ const Revoke = () => {
     updateQuery({ chainId: chainId.toString() }, true);
   }, [ updateQuery ]);
 
-  const handleSearch = useCallback((address: string) => {
-    // if (address.endsWith('.eth')) {
-    //   const ensAddress = await getEnsAddress(wagmiAdapter.wagmiConfig, {
-    //     chainId: mainnet.id,
-    //     name: normalize(address),
-    //   });
-    //   if (ensAddress) {
-    //     setSearchAddress(ensAddress.toLowerCase());
-    //     return;
-    //   }
-    // }
+  const handleSearch = useCallback(async(address: string) => {
+    if (address.endsWith('.eth')) {
+      const ensAddress = await getEnsAddress(wagmiConfig.config, {
+        chainId: mainnet.id,
+        name: normalize(address),
+      });
+      if (ensAddress) {
+        address = ensAddress.toLowerCase();
+      }
+    }
     setSearchAddress(address);
     setSearchInputValue('');
     if (isAddress(address.toLowerCase())) {

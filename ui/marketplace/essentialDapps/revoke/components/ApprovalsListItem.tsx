@@ -6,11 +6,11 @@ import type { AllowanceType } from '../lib/types';
 import essentialDappsChains from 'configs/essentialDappsChains';
 import { Button } from 'toolkit/chakra/button';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 
 import useRevoke from '../hooks/useRevoke';
 import formatAllowance from '../lib/formatAllowance';
+import AddressEntity from './AddressEntity';
 import DateEntity from './DateEntity';
 import NumberEntity from './NumberEntity';
 
