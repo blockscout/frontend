@@ -44,7 +44,7 @@ const Revoke = () => {
   const [ selectedChainId, setSelectedChainId ] = useState<number>(Number(chainIdFromQuery || defaultChainId));
   const { address: connectedAddress } = useAccount();
   const [ searchAddress, setSearchAddress ] = useState(addressFromQuery || '');
-  const [ searchInputValue, setSearchInputValue ] = useState(searchAddress || '');
+  const [ searchInputValue, setSearchInputValue ] = useState('');
   const approvalsQuery = useApprovalsQuery(selectedChainId, searchAddress);
   const coinBalanceQuery = useCoinBalanceQuery(selectedChainId, searchAddress);
   const web3Wallet = useWeb3Wallet({ source: 'Revoke' });
@@ -100,7 +100,7 @@ const Revoke = () => {
     //   }
     // }
     setSearchAddress(address);
-    setSearchInputValue(address);
+    setSearchInputValue('');
     if (isAddress(address.toLowerCase())) {
       updateQuery({ address }, true);
     }
@@ -272,7 +272,9 @@ const Revoke = () => {
         />
       </Flex>
     ) : (
-      <EmptySearchResult text="Enter a correct 0x address to search"/>
+      <EmptySearchResult
+        text={ `The input "${ searchAddress }" is not correct. Enter a correct 0x address to search` }
+      />
     );
   }
 
