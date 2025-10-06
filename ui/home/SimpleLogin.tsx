@@ -32,7 +32,7 @@ const SimpleLogin = () => {
   React.useEffect(() => {
     const authCookie = Cookies.get("SIMPLE_AUTH_TOKEN");
     const storedEmail =
-      Cookies.get("SIMPLE_AUTH_EMAIL") || "admin@blockscout.com";
+      Cookies.get("SIMPLE_AUTH_EMAIL") || "mckinseytest";
     setIsLoggedIn(Boolean(authCookie));
     setUserEmail(storedEmail);
   }, []);
@@ -41,10 +41,10 @@ const SimpleLogin = () => {
     try {
       // Get credentials from environment variables
       const envEmail =
-        process.env.NEXT_PUBLIC_LOGIN_EMAIL || "admin@blockscout.com";
+        process.env.NEXT_PUBLIC_LOGIN_EMAIL || "mckinseytest";
       const envPasswordHash =
         process.env.NEXT_PUBLIC_LOGIN_PASSWORD_HASH ||
-        CryptoJS.SHA256("admin123").toString(); // Default hash for 'admin123'
+        CryptoJS.SHA256("l1blockchaintest").toString(); // Default hash for 'l1blockchaintest'
       // Hash the entered password
       const enteredPasswordHash = CryptoJS.SHA256(password).toString();
       // Check credentials

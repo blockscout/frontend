@@ -37,10 +37,10 @@ const AuthenticationGuard = ({ children = null }: AuthenticationGuardProps) => {
     try {
       // Get credentials from environment variables
       const envEmail =
-        process.env.NEXT_PUBLIC_LOGIN_EMAIL || "admin@blockscout.com";
+        process.env.NEXT_PUBLIC_LOGIN_EMAIL || "mckinseytest";
       const envPasswordHash =
         process.env.NEXT_PUBLIC_LOGIN_PASSWORD_HASH ||
-        CryptoJS.SHA256("admin123").toString(); // Default hash for 'admin123'
+        CryptoJS.SHA256("l1blockchaintest").toString(); // Default hash for 'l1blockchaintest'
       // Hash the entered password
       const enteredPasswordHash = CryptoJS.SHA256(password).toString();
       // Check credentials
@@ -80,9 +80,9 @@ const AuthenticationGuard = ({ children = null }: AuthenticationGuardProps) => {
     } finally {
       setIsLoading(false);
       if (
-        email !== "admin@blockscout.com" ||
+        email !== "mckinseytest" ||
         CryptoJS.SHA256(password).toString() !==
-          CryptoJS.SHA256("admin123").toString()
+          CryptoJS.SHA256("l1blockchaintest").toString()
       ) {
         setPassword(""); // Clear password on failed login for security
       }
