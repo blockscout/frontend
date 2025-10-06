@@ -10,6 +10,7 @@ import Confetti from './Confetti';
 const easterEggPuzzleBadgeFeature = config.features.easterEggPuzzleBadge;
 
 const getPossibleMoves = (emptyIndex: number): Array<number> => {
+
   const moves: Array<number> = [];
   const row = Math.floor(emptyIndex / 4);
   const col = emptyIndex % 4;
@@ -44,18 +45,14 @@ const shuffleBoard = (initialBoard: Array<number>): Array<number> => {
 
     // Prevent immediate reversal of the last move
     if (lastMoveIndex !== -1) {
-      possibleMoves = possibleMoves.filter((index) => index !== lastMoveIndex);
+      possibleMoves = possibleMoves.filter(index => index !== lastMoveIndex);
     }
 
     // Randomly select a tile to move into the empty space
-    const moveIndex =
-      possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
+    const moveIndex = possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
 
     // Swap the selected tile with the empty space
-    [ board[emptyIndex], board[moveIndex] ] = [
-      board[moveIndex],
-      board[emptyIndex],
-    ];
+    [ board[emptyIndex], board[moveIndex] ] = [ board[moveIndex], board[emptyIndex] ];
 
     // Update indices for the next iteration
     lastMoveIndex = emptyIndex;
@@ -66,18 +63,16 @@ const shuffleBoard = (initialBoard: Array<number>): Array<number> => {
 };
 
 const Puzzle15 = () => {
-  const [ tiles, setTiles ] = useState<Array<number>>(
-    Array.from({ length: 16 }, (_, i) => i),
-  );
+  const [ tiles, setTiles ] = useState<Array<number>>(Array.from({ length: 16 }, (_, i) => i));
   const [ isWon, setIsWon ] = useState(false);
   const [ image, setImage ] = useState<HTMLImageElement | null>(null);
-  const canvasRefs = useRef<Array<HTMLCanvasElement | null>>([]);
+  const canvasRefs = useRef<Array<(HTMLCanvasElement | null)>>([]);
 
   const initializeGame = useCallback(() => {
     const newTiles = shuffleBoard(tiles);
     setTiles(newTiles);
     setIsWon(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -129,38 +124,24 @@ const Puzzle15 = () => {
     setIsWon(currentTiles.every((tile, index) => tile === index));
   }, []);
 
-  const moveTile = useCallback(
-    (index: number) => {
-      const emptyIndex = tiles.indexOf(15);
-      if (isAdjacent(index, emptyIndex)) {
-        const newTiles = [ ...tiles ];
-        [ newTiles[index], newTiles[emptyIndex] ] = [
-          newTiles[emptyIndex],
-          newTiles[index],
-        ];
-        setTiles(newTiles);
-        checkWinCondition(newTiles);
-      }
-    },
-    [ tiles, isAdjacent, checkWinCondition ],
-  );
+  const moveTile = useCallback((index: number) => {
+    const emptyIndex = tiles.indexOf(15);
+    if (isAdjacent(index, emptyIndex)) {
+      const newTiles = [ ...tiles ];
+      [ newTiles[index], newTiles[emptyIndex] ] = [ newTiles[emptyIndex], newTiles[index] ];
+      setTiles(newTiles);
+      checkWinCondition(newTiles);
+    }
+  }, [ tiles, isAdjacent, checkWinCondition ]);
 
-  const handleTileClick = useCallback(
-    (index: number) => () => {
-      if (!isWon) {
-        moveTile(index);
-      }
-    },
-    [ isWon, moveTile ],
-  );
+  const handleTileClick = useCallback((index: number) => () => {
+    if (!isWon) {
+      moveTile(index);
+    }
+  }, [ isWon, moveTile ]);
 
   return (
-    <Flex
-      flexDirection="column"
-      alignItems="center"
-      justifyContent="center"
-      my={ 10 }
-    >
+    <Flex flexDirection="column" alignItems="center" justifyContent="center" my={ 10 }>
       { isWon && <Confetti/> }
       <Grid templateColumns="repeat(4, 1fr)" w="400px" h="400px">
         { tiles.map((tile, index) => (
@@ -216,24 +197,13 @@ const Puzzle15 = () => {
         </>
       ) }
       { isWon && easterEggPuzzleBadgeFeature.isEnabled && (
-        <Flex
-          flexDirection="column"
-          alignItems="center"
-          justifyContent="center"
-          gap={ 4 }
-          mt={ 10 }
-        >
-          <Text fontSize="2xl" fontWeight="bold">
-            You unlocked a hidden badge!
-          </Text>
-          <Text fontSize="lg" textAlign="center">
-            Congratulations! You're eligible to claim an epic hidden badge!
-          </Text>
+        <Flex flexDirection="column" alignItems="center" justifyContent="center" gap={ 4 } mt={ 10 }>
+          <Text fontSize="2xl" fontWeight="bold">You unlocked a hidden badge!</Text>
+          <Text fontSize="lg" textAlign="center">Congratulations! You're eligible to claim an epic hidden badge!</Text>
           <Link
             href={ easterEggPuzzleBadgeFeature.badgeClaimLink }
+            external noIcon
             asChild
-            target="_blank"
-            rel="noopener noreferrer"
           >
             <Button>Claim</Button>
           </Link>

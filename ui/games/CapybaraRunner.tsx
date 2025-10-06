@@ -17,11 +17,7 @@ const CapybaraRunner = () => {
 
   React.useEffect(() => {
     const preventDefaultKeys = (e: KeyboardEvent) => {
-      if (
-        e.code === 'Space' ||
-        e.code === 'ArrowUp' ||
-        e.code === 'ArrowDown'
-      ) {
+      if (e.code === 'Space' || e.code === 'ArrowUp' || e.code === 'ArrowDown') {
         e.preventDefault();
       }
     };
@@ -41,51 +37,26 @@ const CapybaraRunner = () => {
 
   return (
     <>
-      <Heading level="2" mt={ 12 } mb={ 2 }>
-        Score 1000 to win a special prize!
-      </Heading>
-      <Box mb={ 4 }>
-        { isMobile ? 'Tap below to start' : 'Press space to start' }
-      </Box>
+      <Heading level="2" mt={ 12 } mb={ 2 }>Score 1000 to win a special prize!</Heading>
+      <Box mb={ 4 }>{ isMobile ? 'Tap below to start' : 'Press space to start' }</Box>
       <Script strategy="lazyOnload" src="/static/capibara/index.js"/>
       <Box width={{ base: '100%', lg: '600px' }} height="300px" p="50px 0">
-        <div
-          id="main-frame-error"
-          className="interstitial-wrapper"
-          style={{ marginTop: '20px' }}
-        >
+        <div id="main-frame-error" className="interstitial-wrapper" style={{ marginTop: '20px' }}>
           <div id="main-content"></div>
           <div id="offline-resources" style={{ display: 'none' }}>
-            <img
-              id="offline-resources-1x"
-              src="/static/capibara/capybaraSprite.png"
-            />
-            <img
-              id="offline-resources-2x"
-              src="/static/capibara/capybaraSpriteX2.png"
-            />
+            <img id="offline-resources-1x" src="/static/capibara/capybaraSprite.png"/>
+            <img id="offline-resources-2x" src="/static/capibara/capybaraSpriteX2.png"/>
           </div>
         </div>
       </Box>
       { easterEggBadgeFeature.isEnabled && hasReachedHighScore && (
-        <Flex
-          flexDirection="column"
-          alignItems="center"
-          justifyContent="center"
-          gap={ 4 }
-          mt={ 10 }
-        >
-          <Text fontSize="2xl" fontWeight="bold">
-            You unlocked a hidden badge!
-          </Text>
-          <Text fontSize="lg" textAlign="center">
-            Congratulations! You’re eligible to claim an epic hidden badge!
-          </Text>
+        <Flex flexDirection="column" alignItems="center" justifyContent="center" gap={ 4 } mt={ 10 }>
+          <Text fontSize="2xl" fontWeight="bold">You unlocked a hidden badge!</Text>
+          <Text fontSize="lg" textAlign="center">Congratulations! You’re eligible to claim an epic hidden badge!</Text>
           <Link
             href={ easterEggBadgeFeature.badgeClaimLink }
+            external noIcon
             asChild
-            target="_blank"
-            rel="noopener noreferrer"
           >
             <Button>Claim</Button>
           </Link>
