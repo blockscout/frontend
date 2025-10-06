@@ -67,16 +67,16 @@ export default function ApprovalsTable({
       <TableRoot>
         <TableHeaderSticky top={ 136 }>
           <TableRow>
-            <TableColumnHeader w="40%">Token</TableColumnHeader>
-            <TableColumnHeader w="170px">Approved spender</TableColumnHeader>
-            <TableColumnHeader w="30%" isNumeric>
+            <TableColumnHeader w="30%">Token</TableColumnHeader>
+            <TableColumnHeader w="15%">Approved spender</TableColumnHeader>
+            <TableColumnHeader w="20%" isNumeric>
               Approved amount
             </TableColumnHeader>
-            <TableColumnHeader w="30%" isNumeric>
+            <TableColumnHeader w="20%" isNumeric>
               Value at risk
             </TableColumnHeader>
             <TableColumnHeader w={ isAddressMatch ? '30px' : '50px' }/>
-            <TableColumnHeader w="170px">
+            <TableColumnHeader w="15%">
               Last updated
             </TableColumnHeader>
             { isAddressMatch && <TableColumnHeader w="95px" isNumeric/> }
