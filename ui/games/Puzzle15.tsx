@@ -203,7 +203,6 @@ const Puzzle15 = () => {
           <Link
             href={ easterEggPuzzleBadgeFeature.badgeClaimLink }
             external noIcon
-            asChild
           >
             <Button>Claim</Button>
           </Link>

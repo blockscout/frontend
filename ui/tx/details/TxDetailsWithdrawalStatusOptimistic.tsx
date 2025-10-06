@@ -75,7 +75,6 @@ const TxDetailsWithdrawalStatusOptimistic = ({ status, l1TxHash }: Props) => {
   const rightSlot = hasClaimButton ? (
     <Link
       href={ rollupFeature.L2WithdrawalUrl }
-      asChild
       external
       noIcon
     >

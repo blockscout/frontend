@@ -56,7 +56,6 @@ const CapybaraRunner = () => {
           <Link
             href={ easterEggBadgeFeature.badgeClaimLink }
             external noIcon
-            asChild
           >
             <Button>Claim</Button>
           </Link>
