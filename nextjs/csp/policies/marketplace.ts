@@ -13,12 +13,12 @@ export function marketplace(): CspDev.DirectiveDescriptor {
   return {
     'connect-src': [
       'api' in feature ? feature.api.endpoint : '',
-      'https://li.quest/', // TODO: check essential dapps feature
-      'https://registry.npmjs.org/',
-      'https://*.multisender.app/',
-      'https://api.ninjit.su/', // TODO: remove, it's a dev domain
-      'https://chains.blockscout.com/',
-      ...Object.values(essentialDappsChains).map((explorerUrl) => `${ explorerUrl }/api/`),
+      ...(feature.essentialDapps ? [
+        'https://li.quest/',
+        'https://*.multisender.app/',
+        'https://chains.blockscout.com/',
+        ...Object.values(essentialDappsChains).map((explorerUrl) => `${ explorerUrl }/api/`),
+      ] : []),
     ],
 
     'frame-src': [
