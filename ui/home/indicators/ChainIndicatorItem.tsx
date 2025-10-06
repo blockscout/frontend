@@ -55,12 +55,12 @@ const ChainIndicatorItem = ({ indicator, isSelected, onClick, isLoading }: Props
       borderRadius="base"
       cursor="pointer"
       color={ isSelected ? 'text.secondary' : 'link.primary' }
-      bgColor={ isSelected ? { _light: 'white', _dark: 'black' } : undefined }
+      bgColor={ isSelected ? 'bg.primary' : undefined }
       onClick={ handleClick }
       fontSize="xs"
       fontWeight={ 500 }
       _hover={{
-        bgColor: { _light: 'white', _dark: 'black' },
+        bgColor: 'bg.primary',
         color: isSelected ? 'text.secondary' : 'hover',
         zIndex: 1,
       }}

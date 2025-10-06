@@ -175,7 +175,6 @@ const IconShield = (props: IconShieldProps) => {
     borderRadius: 'full',
     borderWidth: '1px',
     borderStyle: 'solid',
-    // TODO @tom2drum bg color is not set correctly for dim theme
     // The colors can be changed on hover, if address is highlighted
     // Because the highlighted styles are described as CSS classes, we must do the same for the shield border color.
     // borderColor: 'bg.primary',

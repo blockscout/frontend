@@ -218,10 +218,10 @@ const ZetaChainCCTXDetailsLifecycleOut = ({ outboundParam, tx, isLoading, isLast
       <Flex
         h="100%"
         w="100%"
-        bg={ (isLast && !hasTxAfter) ? { _light: 'white', _dark: 'black' } : 'transparent' }
+        bg={ (isLast && !hasTxAfter) ? 'bg.primary' : 'transparent' }
         zIndex={ 1 }
       >
-        <IconSvg name="verification-steps/finalized" boxSize={ 5 } bg={{ _light: 'white', _dark: 'black' }} zIndex={ 1 } color={ color }/>
+        <IconSvg name="verification-steps/finalized" boxSize={ 5 } bg="bg.primary" zIndex={ 1 } color={ color }/>
       </Flex>
       <Skeleton loading={ isLoading } w="100%" overflow="hidden">
         <Flex color={ color } maxH="20px" alignItems="center" mb={ 2.5 }>
