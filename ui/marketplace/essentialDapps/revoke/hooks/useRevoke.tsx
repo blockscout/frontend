@@ -14,18 +14,8 @@ import {
 import type { AllowanceType } from '../lib/types';
 
 import getErrorCause from 'lib/errors/getErrorCause';
+import useRewardsActivity from 'lib/hooks/useRewardsActivity';
 import { toaster } from 'toolkit/chakra/toaster';
-
-interface GtagEventParams {
-  walletAddress: string;
-  chainId: string;
-}
-
-declare global {
-  interface Window {
-    gtag: (command: 'event', action: string, params?: GtagEventParams) => void;
-  }
-}
 
 export default function useRevoke(approval: AllowanceType, chainId: number) {
   const connectedChainId = useChainId();
@@ -33,9 +23,9 @@ export default function useRevoke(approval: AllowanceType, chainId: number) {
   const { switchChainAsync } = useSwitchChain();
   const { writeContractAsync } = useWriteContract();
   const queryClient = useQueryClient();
+  const { trackTransaction, trackTransactionConfirm } = useRewardsActivity();
 
   const [ txHash, setTxHash ] = useState<`0x${ string }` | undefined>();
-  const [ gtagEventParams, setGtagEventParams ] = useState<GtagEventParams>();
 
   const isErc20 = approval.type === 'ERC-20';
 
@@ -59,9 +49,6 @@ export default function useRevoke(approval: AllowanceType, chainId: number) {
         break;
 
       case 'success': {
-        if (typeof window !== 'undefined' && window.gtag && gtagEventParams) {
-          window.gtag('event', 'revoke', gtagEventParams);
-        }
         queryClient.refetchQueries({ queryKey: [ 'revoke:approvals' ] });
         toaster.success({
           title: 'Success',
@@ -83,7 +70,6 @@ export default function useRevoke(approval: AllowanceType, chainId: number) {
   }, [
     receipt,
     queryClient,
-    gtagEventParams,
   ]);
 
   const revoke = useCallback(async() => {
@@ -97,12 +83,12 @@ export default function useRevoke(approval: AllowanceType, chainId: number) {
       if (simulationResult?.request) {
         const chainId = simulationResult.request.chainId.toString();
         const userAddress = simulationResult.request.account?.address || '';
+        const activityResponse = await trackTransaction(userAddress, simulationResult.request.address, chainId);
         const hash = await writeContractAsync(simulationResult.request);
         setTxHash(hash);
-        setGtagEventParams({
-          walletAddress: `address_${ userAddress }`,
-          chainId,
-        });
+        if (activityResponse?.token) {
+          await trackTransactionConfirm(hash, activityResponse.token);
+        }
       }
     } catch (_error) {
       const cause = getErrorCause(_error as Error);
@@ -117,6 +103,8 @@ export default function useRevoke(approval: AllowanceType, chainId: number) {
     switchChainAsync,
     connectedChainId,
     chainId,
+    trackTransaction,
+    trackTransactionConfirm,
   ]);
 
   return {
