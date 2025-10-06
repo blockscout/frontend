@@ -13,7 +13,6 @@ import {
 
 import type { AllowanceType } from '../lib/types';
 
-import getErrorCause from 'lib/errors/getErrorCause';
 import useRewardsActivity from 'lib/hooks/useRewardsActivity';
 import { toaster } from 'toolkit/chakra/toaster';
 
@@ -91,10 +90,9 @@ export default function useRevoke(approval: AllowanceType, chainId: number) {
         }
       }
     } catch (_error) {
-      const cause = getErrorCause(_error as Error);
       toaster.error({
         title: 'Error',
-        description: cause?.shortMessage || 'Something went wrong. Try again later.',
+        description: (_error as Error)?.message || 'Something went wrong. Try again later.',
       });
     }
   }, [
