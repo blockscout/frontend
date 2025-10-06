@@ -40,7 +40,11 @@ const WITHDRAWAL_STATUS_ORDER_GAME: Array<OptimisticL2WithdrawalStatus> = [
 const rollupFeature = config.features.rollup;
 
 const TxDetailsWithdrawalStatusOptimistic = ({ status, l1TxHash }: Props) => {
-  if (!status || !rollupFeature.isEnabled || rollupFeature.type !== 'optimistic') {
+  if (
+    !status ||
+    !rollupFeature.isEnabled ||
+    rollupFeature.type !== 'optimistic'
+  ) {
     return null;
   }
 
@@ -57,10 +61,19 @@ const TxDetailsWithdrawalStatusOptimistic = ({ status, l1TxHash }: Props) => {
       case 'Relayed': {
         if (l1TxHash) {
           return WITHDRAWAL_STATUS_STEPS.map((status) => {
-            return status === 'Relayed' ? {
-              content: <TxEntityL1 hash={ l1TxHash } truncation="constant" text="Relayed" noIcon/>,
-              label: status,
-            } : status;
+            return status === 'Relayed' ?
+              {
+                content: (
+                  <TxEntityL1
+                    hash={ l1TxHash }
+                    truncation="constant"
+                    text="Relayed"
+                    noIcon
+                  />
+                ),
+                label: status,
+              } :
+              status;
           });
         }
 
@@ -76,13 +89,10 @@ const TxDetailsWithdrawalStatusOptimistic = ({ status, l1TxHash }: Props) => {
     <Link
       href={ rollupFeature.L2WithdrawalUrl }
       asChild
-      external
-      noIcon
+      target="_blank"
+      rel="noopener noreferrer"
     >
-      <Button
-        variant="outline"
-        size="sm"
-      >
+      <Button variant="outline" size="sm">
         Claim funds
       </Button>
     </Link>
