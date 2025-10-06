@@ -467,6 +467,7 @@ const Container = ({ children }: { children: React.ReactNode }) => (
           '--mantine-color-blue-light-color': 'colors.text.secondary',
           '--mantine-color-blue-text': 'colors.hover',
           '--mantine-color-blue-outline': 'colors.hover',
+          '--mantine-color-green-text': 'colors.green.500',
           '& > div:nth-child(1)': {
             padding: '0 !important',
             gap: 0,
