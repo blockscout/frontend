@@ -41,7 +41,7 @@ test.describe('local txs', () => {
 
     component = await render(
       <Box pt={{ base: '134px', lg: 6 }}>
-        <OpSuperchainAddressTxs/>
+        <OpSuperchainAddressTxs addressData={ opSuperchainMock.addressA } isLoading={ false }/>
       </Box>,
       { hooksConfig },
       { withSocket: true },

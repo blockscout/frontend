@@ -47,7 +47,7 @@ test.describe('tokens', () => {
     await mockAssetResponse(getIconUrl(opSuperchainMock.chainDataB) as string, './playwright/mocks/image_md.jpg');
 
     component = await render(
-      <OpSuperchainAddressTokens/>,
+      <OpSuperchainAddressTokens addressData={ opSuperchainMock.addressA }/>,
       { hooksConfig },
     );
   });
@@ -91,7 +91,7 @@ test.describe('nfts', () => {
     await mockAssetResponse(getIconUrl(opSuperchainMock.chainDataA) as string, './playwright/mocks/image_s.jpg');
 
     component = await render(
-      <OpSuperchainAddressTokens/>,
+      <OpSuperchainAddressTokens addressData={ opSuperchainMock.addressA }/>,
       { hooksConfig },
     );
   });

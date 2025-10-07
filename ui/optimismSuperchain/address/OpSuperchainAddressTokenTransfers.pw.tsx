@@ -41,7 +41,7 @@ test.describe('local transfers', () => {
 
     component = await render(
       <Box pt={{ base: '134px', lg: 6 }}>
-        <OpSuperchainAddressTokenTransfers/>
+        <OpSuperchainAddressTokenTransfers addressData={ opSuperchainMock.addressA } isLoading={ false }/>
       </Box>,
       { hooksConfig },
       { withSocket: true },
