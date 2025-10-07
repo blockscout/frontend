@@ -48,7 +48,6 @@ import RawInputData from 'ui/shared/RawInputData';
 import StatusTag from 'ui/shared/statusTag/StatusTag';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
 import TextSeparator from 'ui/shared/TextSeparator';
-import TxFee from 'ui/shared/tx/TxFee';
 import Utilization from 'ui/shared/Utilization/Utilization';
 import VerificationSteps from 'ui/shared/verificationSteps/VerificationSteps';
 import TxDetailsActions from 'ui/tx/details/txDetailsActions/TxDetailsActions';
@@ -64,8 +63,11 @@ import TxExternalTxs from 'ui/tx/TxExternalTxs';
 import TxSocketAlert from 'ui/tx/TxSocketAlert';
 import ZkSyncL2TxnBatchHashesInfo from 'ui/txnBatches/zkSyncL2/ZkSyncL2TxnBatchHashesInfo';
 
+import TxDetailsGasUsage from './TxDetailsGasUsage';
 import TxDetailsInterop from './TxDetailsInterop';
+import TxDetailsSetMaxGasLimit from './TxDetailsSetMaxGasLimit';
 import TxDetailsTacOperation from './TxDetailsTacOperation';
+import TxDetailsTxFee from './TxDetailsTxFee';
 import TxDetailsWithdrawalStatusArbitrum from './TxDetailsWithdrawalStatusArbitrum';
 import TxInfoScrollFees from './TxInfoScrollFees';
 
@@ -137,7 +139,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
   const hasInterop = rollupFeature.isEnabled && rollupFeature.interopEnabled && data.op_interop_messages && data.op_interop_messages.length > 0;
 
   return (
-    <DetailedInfo.Container>
+    <DetailedInfo.Container templateColumns={{ base: 'minmax(0, 1fr)', lg: 'minmax(215px, auto) minmax(0, 1fr)' }}>
 
       { config.features.metasuites.isEnabled && (
         <>
@@ -623,24 +625,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
         </>
       ) }
 
-      { !config.UI.views.tx.hiddenFields?.tx_fee && (
-        <>
-          <DetailedInfo.ItemLabel
-            hint={ data.blob_gas_used ? 'Transaction fee without blob fee' : 'Total transaction fee' }
-            isLoading={ isLoading }
-          >
-            Transaction fee
-          </DetailedInfo.ItemLabel>
-          <DetailedInfo.ItemValue multiRow>
-            <TxFee
-              tx={ data }
-              isLoading={ isLoading }
-              withUsd
-              rowGap={ 0 }
-            />
-          </DetailedInfo.ItemValue>
-        </>
-      ) }
+      <TxDetailsTxFee isLoading={ isLoading } data={ data }/>
 
       { rollupFeature.isEnabled && rollupFeature.type === 'arbitrum' && data.arbitrum && (
         <>
@@ -682,18 +667,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
 
       <TxDetailsFeePerGas txFee={ data.fee.value } gasUsed={ data.gas_used } isLoading={ isLoading }/>
 
-      <DetailedInfo.ItemLabel
-        hint="Actual gas amount used by the transaction"
-        isLoading={ isLoading }
-      >
-        Gas usage & limit by txn
-      </DetailedInfo.ItemLabel>
-      <DetailedInfo.ItemValue>
-        <Skeleton loading={ isLoading }>{ BigNumber(data.gas_used || 0).toFormat() }</Skeleton>
-        <TextSeparator/>
-        <Skeleton loading={ isLoading }>{ BigNumber(data.gas_limit).toFormat() }</Skeleton>
-        <Utilization ml={ 4 } value={ BigNumber(data.gas_used || 0).dividedBy(BigNumber(data.gas_limit)).toNumber() } isLoading={ isLoading }/>
-      </DetailedInfo.ItemValue>
+      { !config.UI.views.tx.additionalFields?.set_max_gas_limit && <TxDetailsGasUsage isLoading={ isLoading } data={ data }/> }
 
       { rollupFeature.isEnabled && rollupFeature.type === 'arbitrum' && data.arbitrum && data.gas_used && (
         <>
@@ -858,6 +832,8 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
 
       <CollapsibleDetails loading={ isLoading } mt={ 6 } gridColumn={{ base: undefined, lg: '1 / 3' }} isExpanded={ isExpanded } onClick={ handleCutLinkClick }>
         <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 4 }}/>
+
+        <TxDetailsSetMaxGasLimit data={ data }/>
 
         <TxDetailsWithdrawalStatusArbitrum data={ data }/>
 

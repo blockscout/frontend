@@ -14,6 +14,9 @@ export default function getNetworkValidatorTitle() {
     case 'sequencing': {
       return 'sequencer';
     }
+    case 'fee reception': {
+      return 'fee recipient';
+    }
     default: {
       return 'miner';
     }
