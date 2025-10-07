@@ -25,19 +25,6 @@ const OpSuperchainTxs = () => {
   const tab = getQueryParamString(router.query.tab);
   const isLocalTxs = tab === 'txs_local' || OP_SUPERCHAIN_TXS_LOCAL_TAB_IDS.includes(tab) || !tab;
 
-  React.useEffect(() => {
-    if (isLocalTxs && chainSelect.value) {
-      const queryParam = getQueryParamString(router.query['chain-slug']);
-      if (queryParam !== chainSelect.value[0]) {
-        router.push({
-          pathname: router.pathname,
-          query: { tab: router.query.tab || 'txs_local', 'chain-slug': chainSelect.value[0] },
-        });
-      }
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ isLocalTxs ]);
-
   const tabs: Array<TabItemRegular> = React.useMemo(() => {
     return [
       {

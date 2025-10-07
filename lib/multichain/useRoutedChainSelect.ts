@@ -34,7 +34,9 @@ export default function useRoutedChainSelect(props?: Props) {
       props.persistedParams.reduce((acc, param) => ({ ...acc, [param]: router.query[param] || undefined }), {}) :
       router.query;
 
-    switch (props?.field) {
+    const field = props?.field || 'chain-slug';
+
+    switch (field) {
       case 'chain-slug': {
         router.push({
           pathname: router.pathname,
