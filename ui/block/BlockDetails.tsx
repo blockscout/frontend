@@ -11,7 +11,6 @@ import { route, routeParams } from 'nextjs/routes';
 import config from 'configs/app';
 import getBlockReward from 'lib/block/getBlockReward';
 import { useMultichainContext } from 'lib/contexts/multichain';
-import getNetworkValidationActionText from 'lib/networks/getNetworkValidationActionText';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import * as arbitrum from 'lib/rollups/arbitrum';
 import getQueryParamString from 'lib/router/getQueryParamString';
@@ -110,8 +109,6 @@ const BlockDetails = ({ query }: Props) => {
       </Text>
     );
   })();
-
-  const verificationTitle = `${ capitalize(getNetworkValidationActionText()) } by`;
 
   const txsNum = (() => {
     const blockTxsNum = (
@@ -326,7 +323,7 @@ const BlockDetails = ({ query }: Props) => {
             hint="A block producer who successfully included the block onto the blockchain"
             isLoading={ isPlaceholderData }
           >
-            { verificationTitle }
+            { capitalize(validatorTitle) }
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue>
             <AddressEntity

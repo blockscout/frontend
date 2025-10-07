@@ -14,8 +14,11 @@ export default function getNetworkValidationActionText(chainConfig = config) {
     case 'sequencing': {
       return 'sequenced';
     }
+    case 'fee reception': {
+      return 'validated';
+    }
     default: {
-      return 'miner';
+      return 'mined';
     }
   }
 }
