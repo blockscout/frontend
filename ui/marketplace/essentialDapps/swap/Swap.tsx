@@ -43,6 +43,7 @@ const Widget = () => {
             secondary: { main: colors.blue[600].value },
           },
         },
+        hiddenUI: [ 'appearance' ],
         fromChain: defaultChainId,
         fromToken: '0x0000000000000000000000000000000000000000',
         chains: {
