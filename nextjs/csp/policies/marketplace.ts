@@ -16,7 +16,6 @@ export function marketplace(): CspDev.DirectiveDescriptor {
       ...(feature.essentialDapps ? [
         'https://li.quest/',
         'https://*.multisender.app/',
-        'https://chains.blockscout.com/',
         ...Object.values(essentialDappsChains).map((explorerUrl) => `${ explorerUrl }/api/`),
       ] : []),
     ],

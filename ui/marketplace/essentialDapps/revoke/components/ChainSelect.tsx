@@ -4,6 +4,7 @@ import React, { useCallback } from 'react';
 
 import config from 'configs/app';
 import { Button } from 'toolkit/chakra/button';
+import { useColorMode } from 'toolkit/chakra/color-mode';
 import { Image } from 'toolkit/chakra/image';
 import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
@@ -17,24 +18,46 @@ type Props = {
   changeChain: (value: number) => void;
 };
 
+type ChainsConfig = Record<string, { name?: string; icon?: string; iconDark?: string }>;
+
+function ChainIcon({ chain }: { chain: (ChainsConfig[string] & { id: number }) | undefined }) {
+  const { colorMode } = useColorMode();
+  const placeholder = <IconSvg name="networks/icon-placeholder" boxSize={ 5 } color="text.secondary"/>;
+
+  if (!chain) {
+    return placeholder;
+  }
+
+  let src = colorMode === 'dark' ? (chain.iconDark || chain.icon) : chain.icon;
+
+  if (!src && chain.id === 1) {
+    src = '/static/ethereum.svg';
+  }
+
+  return <Image src={ src } alt={ chain.name } boxSize={ 5 } fallback={ placeholder }/>;
+}
+
 export default function ChainSelect({ selectedChainId, changeChain }: Props) {
   const { open, onOpenChange } = useDisclosure();
 
   const chainsQuery = useQuery({
     queryKey: [ 'revoke:chains' ],
     queryFn: async() => {
-      const chains = await Promise.all(dappConfig?.chains.map(async(id) => {
-        const response = await fetch(`https://chains.blockscout.com/api/chains/${ id }`);
-        const data = await response.json() as { name: string; logo: string };
-
-        return {
+      try {
+        const response = await fetch('/assets/essential-dapps/chains.json');
+        const data = await response.json() as ChainsConfig;
+        if (!dappConfig?.chains || !data) {
+          return [];
+        }
+        return dappConfig.chains.map((id) => ({
           id: Number(id),
-          name: data.name,
-          logoUrl: data.logo,
-        };
-      }) || []);
-
-      return chains;
+          name: data[id].name,
+          icon: data[id].icon,
+          iconDark: data[id].iconDark,
+        }));
+      } catch {
+        return [];
+      }
     },
     placeholderData: [],
   });
@@ -63,7 +86,7 @@ export default function ChainSelect({ selectedChainId, changeChain }: Props) {
           flex={ 1 }
           justifyContent="flex-start"
         >
-          <Image src={ selectedChain?.logoUrl } alt={ selectedChain?.name } boxSize={ 5 } mr={ 1 }/>
+          <ChainIcon chain={ selectedChain }/>
           <Text>{ selectedChain?.name }</Text>
           <IconSvg
             name="arrows/east-mini"
@@ -97,7 +120,7 @@ export default function ChainSelect({ selectedChainId, changeChain }: Props) {
               }}
               onClick={ handleChange }
             >
-              <Image src={ chain.logoUrl } alt={ chain.name } boxSize={ 5 }/>
+              <ChainIcon chain={ chain }/>
               <Text fontSize="sm" fontWeight="500">
                 { chain.name }
               </Text>
