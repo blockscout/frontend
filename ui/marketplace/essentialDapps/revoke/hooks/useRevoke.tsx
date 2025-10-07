@@ -4,7 +4,6 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useCallback, useState, useEffect } from 'react';
 import {
   useAccount,
-  useSimulateContract,
   useWriteContract,
   useSwitchChain,
   useChainId,
@@ -26,22 +25,7 @@ export default function useRevoke(approval: AllowanceType, chainId: number) {
   const { trackTransaction, trackTransactionConfirm } = useRewardsActivity();
 
   const [ txHash, setTxHash ] = useState<`0x${ string }` | undefined>();
-
-  const isErc20 = approval.type === 'ERC-20';
-
-  const { data: simulationResult, error } = useSimulateContract({
-    account: userAddress,
-    address: approval.address,
-    abi: isErc20 ? ERC20Artifact.abi : NftArtifact.abi,
-    functionName: isErc20 ? 'approve' : 'setApprovalForAll',
-    args: [ approval.spender, isErc20 ? 0 : false ],
-    chainId,
-  });
-
-  const receipt = useWaitForTransactionReceipt({
-    hash: txHash,
-    chainId,
-  });
+  const receipt = useWaitForTransactionReceipt({ hash: txHash, chainId });
 
   useEffect(() => {
     switch (receipt.status) {
@@ -78,28 +62,36 @@ export default function useRevoke(approval: AllowanceType, chainId: number) {
 
   const revoke = useCallback(async() => {
     try {
-      if (!chainId) return;
+      if (!userAddress) return;
 
       if (connectedChainId !== chainId) {
         await switchChainAsync({ chainId });
       }
 
-      if (simulationResult?.request) {
-        const chainId = simulationResult.request.chainId.toString();
-        const userAddress = simulationResult.request.account?.address || '';
-        const activityResponse = await trackTransaction(userAddress, simulationResult.request.address, chainId);
-        const hash = await writeContractAsync(simulationResult.request);
-        setTxHash(hash);
-        mixpanel.logEvent(mixpanel.EventTypes.WALLET_ACTION, {
-          Action: 'Send Transaction',
-          Address: userAddress,
-          AppId: 'revoke',
-          Source: 'Essential dapps',
-          ChainId: chainId,
-        });
-        if (activityResponse?.token) {
-          await trackTransactionConfirm(hash, activityResponse.token);
-        }
+      const activityResponse = await trackTransaction(userAddress, approval.address, String(chainId));
+
+      const isErc20 = approval.type === 'ERC-20';
+
+      const hash = await writeContractAsync({
+        account: userAddress,
+        address: approval.address,
+        abi: isErc20 ? ERC20Artifact.abi : NftArtifact.abi,
+        functionName: isErc20 ? 'approve' : 'setApprovalForAll',
+        args: [ approval.spender, isErc20 ? 0 : false ],
+        chainId,
+      });
+      setTxHash(hash);
+
+      mixpanel.logEvent(mixpanel.EventTypes.WALLET_ACTION, {
+        Action: 'Send Transaction',
+        Address: userAddress,
+        AppId: 'revoke',
+        Source: 'Essential dapps',
+        ChainId: String(chainId),
+      });
+
+      if (activityResponse?.token) {
+        await trackTransactionConfirm(hash, activityResponse.token);
       }
     } catch (_error) {
       toaster.error({
@@ -108,7 +100,8 @@ export default function useRevoke(approval: AllowanceType, chainId: number) {
       });
     }
   }, [
-    simulationResult,
+    approval,
+    userAddress,
     writeContractAsync,
     switchChainAsync,
     connectedChainId,
@@ -119,7 +112,6 @@ export default function useRevoke(approval: AllowanceType, chainId: number) {
 
   return {
     revoke,
-    isLoading: !simulationResult?.request || (Boolean(txHash) && receipt.status === 'pending'),
-    isError: Boolean(error),
+    isLoading: Boolean(txHash) && receipt.status === 'pending',
   };
 }

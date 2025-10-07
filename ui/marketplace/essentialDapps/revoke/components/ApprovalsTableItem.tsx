@@ -7,11 +7,11 @@ import essentialDappsChains from 'configs/essentialDappsChains';
 import { Button } from 'toolkit/chakra/button';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableRow, TableCell } from 'toolkit/chakra/table';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 
 import useRevoke from '../hooks/useRevoke';
 import formatAllowance from '../lib/formatAllowance';
-import AddressEntity from './AddressEntity';
 import DateEntity from './DateEntity';
 import NumberEntity from './NumberEntity';
 
@@ -28,7 +28,7 @@ export default function ApprovalsTableItem({
   isLoading,
   isAddressMatch,
 }: Props) {
-  const { revoke, isError, isLoading: isTxLoading } = useRevoke(approval, selectedChainId);
+  const { revoke, isLoading: isTxLoading } = useRevoke(approval, selectedChainId);
   const [ isPending, setIsPending ] = useState(false);
 
   const allowance = formatAllowance(approval);
@@ -115,7 +115,6 @@ export default function ApprovalsTableItem({
             variant="outline"
             loading={ isLoading || isTxLoading || isPending }
             onClick={ handleRevoke }
-            disabled={ isError }
           >
             Revoke
           </Button>
