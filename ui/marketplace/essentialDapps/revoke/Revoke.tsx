@@ -324,25 +324,33 @@ const Revoke = () => {
               </Box>
             )) }
           </Flex>
-          <Flex gap={ 2 } w={{ base: 'full', md: 'auto' }}>
-            <Button
-              size="sm"
-              variant={ connectedAddress ? 'header' : 'outline' }
-              selected={ Boolean(connectedAddress) }
-              onClick={ connectedAddress ? handleAddressClick(connectedAddress) : web3Wallet.connect }
-              loading={ !connectedAddress && web3Wallet.isOpen }
-              loadingText="Connect wallet"
-            >
-              { connectedAddress ? (
-                <AddressEntity
-                  address={{ hash: connectedAddress }}
-                  truncation="constant"
-                  noTooltip
-                  noLink
-                  noCopy
-                />
-              ) : 'Connect wallet' }
-            </Button>
+          <Flex gap={ 3 } w={{ base: 'full', md: 'auto' }}>
+            { connectedAddress ? (
+              <Flex gap={ 2 } alignItems="center">
+                <Text textStyle="sm" fontWeight="500" color="text.secondary">My wallet</Text>
+                <Box cursor="pointer" onClick={ handleAddressClick(connectedAddress) }>
+                  <AddressEntity
+                    address={{ hash: connectedAddress }}
+                    truncation="constant"
+                    noTooltip
+                    noLink
+                    noCopy
+                    textStyle="sm"
+                    fontWeight="600"
+                  />
+                </Box>
+              </Flex>
+            ) : (
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={ web3Wallet.connect }
+                loading={ web3Wallet.isOpen }
+                loadingText="Connect wallet"
+              >
+                Connect wallet
+              </Button>
+            ) }
             <ChainSelect
               selectedChainId={ selectedChainId }
               changeChain={ handleChainChange }
