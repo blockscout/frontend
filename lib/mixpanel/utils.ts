@@ -107,8 +107,10 @@ Type extends EventTypes.WALLET_ACTION ? (
     Action: 'Open' | 'Address click';
   } | {
     Action: 'Send Transaction' | 'Sign Message' | 'Sign Typed Data';
-    Address: string | undefined;
+    Source: 'Dappscout' | 'Essential dapps';
     AppId: string;
+    Address?: string;
+    ChainId?: string;
   }
 ) :
 Type extends EventTypes.CONTRACT_INTERACTION ? {

@@ -14,6 +14,7 @@ import {
 import type { AllowanceType } from '../lib/types';
 
 import useRewardsActivity from 'lib/hooks/useRewardsActivity';
+import * as mixpanel from 'lib/mixpanel/index';
 import { toaster } from 'toolkit/chakra/toaster';
 
 export default function useRevoke(approval: AllowanceType, chainId: number) {
@@ -49,25 +50,29 @@ export default function useRevoke(approval: AllowanceType, chainId: number) {
 
       case 'success': {
         queryClient.refetchQueries({ queryKey: [ 'revoke:approvals' ] });
-        toaster.success({
-          title: 'Success',
-          description: 'Approval revoked successfully.',
+        Promise.resolve().then(() => {
+          toaster.success({
+            title: 'Success',
+            description: 'Approval revoked successfully.',
+          });
         });
         setTxHash(undefined);
         break;
       }
 
       case 'error': {
-        toaster.error({
-          title: 'Error',
-          description: 'Failed to revoke approval.',
+        Promise.resolve().then(() => {
+          toaster.error({
+            title: 'Error',
+            description: 'Failed to revoke approval.',
+          });
         });
         setTxHash(undefined);
         break;
       }
     }
   }, [
-    receipt,
+    receipt.status,
     queryClient,
   ]);
 
@@ -85,6 +90,13 @@ export default function useRevoke(approval: AllowanceType, chainId: number) {
         const activityResponse = await trackTransaction(userAddress, simulationResult.request.address, chainId);
         const hash = await writeContractAsync(simulationResult.request);
         setTxHash(hash);
+        mixpanel.logEvent(mixpanel.EventTypes.WALLET_ACTION, {
+          Action: 'Send Transaction',
+          Address: userAddress,
+          AppId: 'revoke',
+          Source: 'Essential dapps',
+          ChainId: chainId,
+        });
         if (activityResponse?.token) {
           await trackTransactionConfirm(hash, activityResponse.token);
         }

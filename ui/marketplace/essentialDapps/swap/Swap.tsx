@@ -1,10 +1,12 @@
 import { Box } from '@chakra-ui/react';
-import type { WidgetConfig } from '@lifi/widget';
-import { LiFiWidget } from '@lifi/widget';
-import { useMemo } from 'react';
+import type { RouteExecutionUpdate, WidgetConfig } from '@lifi/widget';
+import { LiFiWidget, useWidgetEvents, WidgetEvent } from '@lifi/widget';
+import { useEffect, useMemo, useRef } from 'react';
 
 import config from 'configs/app';
 import essentialDappsChains from 'configs/essentialDappsChains';
+import useRewardsActivity from 'lib/hooks/useRewardsActivity';
+import * as mixpanel from 'lib/mixpanel/index';
 import useWeb3Wallet from 'lib/web3/useWallet';
 import { useColorMode } from 'toolkit/chakra/color-mode';
 import colors from 'toolkit/theme/foundations/colors';
@@ -19,7 +21,7 @@ const defaultChainId = Number(
     dappConfig?.chains[0],
 );
 
-const Swap = () => {
+const Widget = () => {
   const web3Wallet = useWeb3Wallet({ source: 'Essential dapps' });
   const { colorMode } = useColorMode();
 
@@ -72,6 +74,58 @@ const Swap = () => {
       <LiFiWidget config={ config } integrator={ dappConfig?.integrator || '' }/>
     </Box>
   );
+};
+
+const Swap = () => {
+  const { trackTransaction, trackTransactionConfirm } = useRewardsActivity();
+  const widgetEvents = useWidgetEvents();
+  const eventParams = useRef<{
+    activityToken?: string;
+    routeId?: string;
+    from?: string;
+    chainId?: string;
+  }>({});
+
+  useEffect(() => {
+    const onRouteExecutionUpdated = async(update: RouteExecutionUpdate) => {
+      try {
+        if (!eventParams.current.activityToken || eventParams.current.routeId !== update.route.id) {
+          const { chainId, from, to } = update.route.steps.at(-1)?.transactionRequest ?? {};
+          if (chainId && from && to) {
+            const response = await trackTransaction(from, to, String(chainId));
+            eventParams.current = {
+              activityToken: response?.token,
+              routeId: update.route.id,
+              from,
+              chainId: String(chainId),
+            };
+          }
+        } else if (
+          [ 'SWAP', 'CROSS_CHAIN' ].includes(update.process.type) &&
+          eventParams.current.routeId === update.route.id &&
+          update.process.txHash
+        ) {
+          mixpanel.logEvent(mixpanel.EventTypes.WALLET_ACTION, {
+            Action: 'Send Transaction',
+            Address: eventParams.current.from,
+            AppId: 'swap',
+            Source: 'Essential dapps',
+            ChainId: eventParams.current.chainId,
+          });
+          if (eventParams.current.activityToken) {
+            await trackTransactionConfirm(update.process.txHash, eventParams.current.activityToken);
+          }
+          eventParams.current = {};
+        }
+      } catch {}
+    };
+
+    widgetEvents.on(WidgetEvent.RouteExecutionUpdated, onRouteExecutionUpdated);
+
+    return () => widgetEvents.all.clear();
+  }, [ widgetEvents, trackTransaction, trackTransactionConfirm ]);
+
+  return <Widget/>;
 };
 
 export default Swap;
