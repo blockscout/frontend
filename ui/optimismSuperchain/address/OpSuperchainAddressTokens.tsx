@@ -2,6 +2,7 @@ import { Box, HStack } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type * as multichain from '@blockscout/multichain-aggregator-types';
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
 import { MultichainProvider } from 'lib/contexts/multichain';
@@ -21,6 +22,7 @@ import ChainSelect from 'ui/shared/multichain/ChainSelect';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
+import getAvailableChainIds from './getAvailableChainIds';
 import OpSuperchainTokenBalances from './tokens/OpSuperchainTokenBalances';
 import useChainSelectErc20 from './useChainSelectErc20';
 
@@ -38,7 +40,13 @@ const TAB_LIST_PROPS = {
   marginTop: -6,
 };
 
-const OpSuperchainAddressTokens = () => {
+interface Props {
+  addressData: multichain.GetAddressResponse | undefined;
+}
+
+const OpSuperchainAddressTokens = ({ addressData }: Props) => {
+  const chainIds = React.useMemo(() => getAvailableChainIds(addressData), [ addressData ]);
+
   const scrollRef = React.useRef<HTMLDivElement>(null);
 
   const isMobile = useIsMobile();
@@ -46,7 +54,7 @@ const OpSuperchainAddressTokens = () => {
 
   const tab = getQueryParamString(router.query.tab) as typeof ADDRESS_OP_SUPERCHAIN_TOKENS_TAB_IDS[number] | 'tokens' | undefined;
   const hash = getQueryParamString(router.query.hash);
-  const [ chainSelectErc20Value, setChainSelectErc20Value ] = useChainSelectErc20();
+  const [ chainSelectErc20Value, setChainSelectErc20Value ] = useChainSelectErc20({ chainIds });
 
   const chainId = chainSelectErc20Value?.map(getChainIdFromSlug).filter(Boolean);
 
@@ -56,7 +64,7 @@ const OpSuperchainAddressTokens = () => {
     filters: chainId?.length ? { type: 'ERC-20', chain_id: chainId } : { type: 'ERC-20' },
     scrollRef,
     options: {
-      enabled: tab === 'tokens' || tab === 'tokens_erc20',
+      enabled: (tab === 'tokens' || tab === 'tokens_erc20'),
       placeholderData: generateListStub<'multichainAggregator:address_tokens'>(TOKEN, 10, { next_page_params: undefined }),
     },
   });
@@ -117,6 +125,7 @@ const OpSuperchainAddressTokens = () => {
           loading={ erc20Query.pagination.isLoading }
           value={ chainSelectErc20Value }
           onValueChange={ handelChainSelectErc20ValueChange }
+          chainIds={ chainIds }
           withAllOption
         />
         { erc20Query.pagination.isVisible && !isMobile && <Pagination { ...erc20Query.pagination } ml="auto"/> }

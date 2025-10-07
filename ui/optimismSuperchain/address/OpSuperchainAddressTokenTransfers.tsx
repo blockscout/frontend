@@ -2,6 +2,7 @@ import { HStack } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type * as multichain from '@blockscout/multichain-aggregator-types';
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
 import multichainConfig from 'configs/multichain';
@@ -21,6 +22,7 @@ import Pagination from 'ui/shared/pagination/Pagination';
 import TokenTransferFilter from 'ui/shared/TokenTransfer/TokenTransferFilter';
 
 import ListCounterText from '../components/ListCounterText';
+import getAvailableChainIds from './getAvailableChainIds';
 import TokenTransfersLocal from './tokenTransfers/TokenTransfersLocal';
 
 export const ADDRESS_OP_SUPERCHAIN_TOKEN_TRANSFERS_TAB_IDS = [ 'token_transfers_cross_chain' as const, 'token_transfers_local' as const ];
@@ -37,7 +39,12 @@ const TAB_LIST_PROPS = {
   marginTop: -6,
 };
 
-const OpSuperchainAddressTokenTransfers = () => {
+interface Props {
+  addressData: multichain.GetAddressResponse | undefined;
+  isLoading: boolean;
+}
+
+const OpSuperchainAddressTokenTransfers = ({ addressData, isLoading }: Props) => {
   const router = useRouter();
   const isMobile = useIsMobile();
 
@@ -45,10 +52,13 @@ const OpSuperchainAddressTokenTransfers = () => {
   const tab = getQueryParamString(router.query.tab) as typeof ADDRESS_OP_SUPERCHAIN_TOKEN_TRANSFERS_TAB_IDS[number] | 'token_transfers' | undefined;
   const isLocalTab = tab === 'token_transfers_local' || tab === 'token_transfers';
 
+  const chainIds = React.useMemo(() => getAvailableChainIds(addressData), [ addressData ]);
+
   const transfersQueryLocal = useAddressTokenTransfersQuery({
     currentAddress: hash,
-    enabled: isLocalTab,
+    enabled: isLocalTab && !isLoading,
     isMultichain: true,
+    chainIds,
   });
 
   const chainSlug = transfersQueryLocal.query.chainValue?.[0];
@@ -57,7 +67,7 @@ const OpSuperchainAddressTokenTransfers = () => {
   const countersQueryLocal = useAddressCountersQuery({
     hash,
     isLoading: transfersQueryLocal.query.isPlaceholderData,
-    isEnabled: isLocalTab,
+    isEnabled: isLocalTab && !isLoading,
     chainSlug,
   });
 
@@ -83,6 +93,7 @@ const OpSuperchainAddressTokenTransfers = () => {
           loading={ transfersQueryLocal.query.pagination.isLoading }
           value={ transfersQueryLocal.query.chainValue }
           onValueChange={ transfersQueryLocal.query.onChainValueChange }
+          chainIds={ chainIds }
         />
       );
 
@@ -102,11 +113,7 @@ const OpSuperchainAddressTokenTransfers = () => {
               defaultAddressFilter={ transfersQueryLocal.filters.filter }
               isLoading={ transfersQueryLocal.query.isPlaceholderData }
             />
-            <ChainSelect
-              loading={ transfersQueryLocal.query.pagination.isLoading }
-              value={ transfersQueryLocal.query.chainValue }
-              onValueChange={ transfersQueryLocal.query.onChainValueChange }
-            />
+            { chainSelect }
             { countersText }
           </HStack>
           <HStack gap={ 6 }>

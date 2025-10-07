@@ -64,35 +64,35 @@ const OpSuperchainAddress = () => {
       {
         id: 'txs',
         title: 'Transactions',
-        component: <OpSuperchainAddressTxs/>,
+        component: <OpSuperchainAddressTxs addressData={ addressQuery.data } isLoading={ isLoading }/>,
         subTabs: ADDRESS_OP_SUPERCHAIN_TXS_TAB_IDS,
       },
       {
         id: 'token_transfers',
         title: 'Token transfers',
-        component: <OpSuperchainAddressTokenTransfers/>,
+        component: <OpSuperchainAddressTokenTransfers addressData={ addressQuery.data } isLoading={ isLoading }/>,
         subTabs: ADDRESS_OP_SUPERCHAIN_TOKEN_TRANSFERS_TAB_IDS,
       },
       addressQuery.data?.has_tokens && {
         id: 'tokens',
         title: 'Tokens',
-        component: <OpSuperchainAddressTokens/>,
+        component: isLoading ? null : <OpSuperchainAddressTokens addressData={ addressQuery.data }/>,
         subTabs: ADDRESS_OP_SUPERCHAIN_TOKENS_TAB_IDS,
       },
       {
         id: 'internal_txs',
         title: 'Internal txns',
-        component: <OpSuperchainAddressInternalTxs isLoading={ isLoading }/>,
+        component: <OpSuperchainAddressInternalTxs addressData={ addressQuery.data } isLoading={ isLoading }/>,
       },
       {
         id: 'coin_balance_history',
         title: 'Coin balance history',
-        component: <OpSuperchainAddressCoinBalanceHistory/>,
+        component: <OpSuperchainAddressCoinBalanceHistory addressData={ addressQuery.data } isLoading={ isLoading }/>,
       },
       isContractSomewhere && {
         id: 'logs',
         title: 'Logs',
-        component: <OpSuperchainAddressLogs isLoading={ isLoading }/>,
+        component: <OpSuperchainAddressLogs addressData={ addressQuery.data } isLoading={ isLoading }/>,
       },
     ].filter(Boolean);
   }, [ addressQuery.data, isLoading, isContractSomewhere, checkSummedHash ]);

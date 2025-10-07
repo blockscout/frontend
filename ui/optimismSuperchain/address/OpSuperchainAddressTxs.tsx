@@ -2,6 +2,7 @@ import { HStack } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type * as multichain from '@blockscout/multichain-aggregator-types';
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
 import multichainConfig from 'configs/multichain';
@@ -22,6 +23,7 @@ import Pagination from 'ui/shared/pagination/Pagination';
 import TxsWithAPISorting from 'ui/txs/TxsWithAPISorting';
 
 import ListCounterText from '../components/ListCounterText';
+import getAvailableChainIds from './getAvailableChainIds';
 
 export const ADDRESS_OP_SUPERCHAIN_TXS_TAB_IDS = [ 'txs_cross_chain' as const, 'txs_local' as const ];
 const TAB_LIST_PROPS = {
@@ -37,7 +39,12 @@ const TABS_RIGHT_SLOT_PROPS = {
   widthAllocation: 'available' as const,
 };
 
-const OpSuperchainAddressTxs = () => {
+interface Props {
+  addressData: multichain.GetAddressResponse | undefined;
+  isLoading: boolean;
+}
+
+const OpSuperchainAddressTxs = ({ addressData, isLoading }: Props) => {
   const router = useRouter();
   const isMobile = useIsMobile();
 
@@ -45,10 +52,13 @@ const OpSuperchainAddressTxs = () => {
   const tab = getQueryParamString(router.query.tab) as typeof ADDRESS_OP_SUPERCHAIN_TXS_TAB_IDS[number] | 'txs' | undefined;
   const isLocalTab = tab === 'txs_local' || tab === 'txs';
 
+  const chainIds = React.useMemo(() => getAvailableChainIds(addressData), [ addressData ]);
+
   const txsQueryLocal = useAddressTxsQuery({
     addressHash: hash,
-    enabled: isLocalTab,
+    enabled: !isLoading && isLocalTab,
     isMultichain: true,
+    chainIds,
   });
 
   const chainSlug = txsQueryLocal.query.chainValue?.[0];
@@ -56,7 +66,7 @@ const OpSuperchainAddressTxs = () => {
 
   const countersQueryLocal = useAddressCountersQuery({
     hash,
-    isLoading: txsQueryLocal.query.isPlaceholderData,
+    isLoading: txsQueryLocal.query.isPlaceholderData || isLoading,
     isEnabled: isLocalTab,
     chainSlug,
   });
@@ -90,6 +100,7 @@ const OpSuperchainAddressTxs = () => {
       loading={ txsQueryLocal.query.pagination.isLoading }
       value={ txsQueryLocal.query.chainValue }
       onValueChange={ txsQueryLocal.query.onChainValueChange }
+      chainIds={ chainIds }
     />
   );
 

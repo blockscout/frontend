@@ -1,6 +1,8 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
+import type * as multichain from '@blockscout/multichain-aggregator-types';
+
 import { MultichainProvider } from 'lib/contexts/multichain';
 import { apos } from 'toolkit/utils/htmlEntities';
 import AddressCsvExportLink from 'ui/address/AddressCsvExportLink';
@@ -13,12 +15,21 @@ import DataListDisplay from 'ui/shared/DataListDisplay';
 import ChainSelect from 'ui/shared/multichain/ChainSelect';
 import Pagination from 'ui/shared/pagination/Pagination';
 
+import getAvailableChainIds from './getAvailableChainIds';
+
 interface Props {
+  addressData: multichain.GetAddressResponse | undefined;
   isLoading: boolean;
 }
 
-const OpSuperchainAddressInternalTxs = ({ isLoading }: Props) => {
-  const { hash, query, filterValue, onFilterChange } = useAddressInternalTxsQuery({ enabled: !isLoading, isMultichain: true });
+const OpSuperchainAddressInternalTxs = ({ addressData, isLoading }: Props) => {
+  const chainIds = React.useMemo(() => getAvailableChainIds(addressData), [ addressData ]);
+
+  const { hash, query, filterValue, onFilterChange } = useAddressInternalTxsQuery({
+    enabled: !isLoading,
+    isMultichain: true,
+    chainIds,
+  });
   const { data, isPlaceholderData, isError, pagination } = query;
 
   const content = data?.items ? (
@@ -44,6 +55,7 @@ const OpSuperchainAddressInternalTxs = ({ isLoading }: Props) => {
         loading={ pagination.isLoading }
         value={ query.chainValue }
         onValueChange={ query.onChainValueChange }
+        chainIds={ chainIds }
         ml={ 2 }
       />
       <AddressCsvExportLink

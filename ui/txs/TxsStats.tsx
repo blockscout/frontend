@@ -96,6 +96,7 @@ const TxsStats = (props: Props) => {
           value={ Number(txCount24h).toLocaleString() }
           period="24h"
           isLoading={ isLoading }
+          // TODO @tom2drum disable links to stats
           href={ chainConfig.features.stats.isEnabled ? { pathname: '/stats/[id]', query: { id: 'newTxns' } } : undefined }
         />
       ) }

@@ -16,6 +16,9 @@ import UserOpsTable from 'ui/userOps/UserOpsTable';
 
 const OpSuperchainUserOps = () => {
 
+  const chains = React.useMemo(() => (multichainConfig()?.chains || []).filter(chain => chain.config.features.userOps.isEnabled), []);
+  const chainIds = React.useMemo(() => chains.map(chain => chain.config.chain.id).filter(Boolean), [ chains ]);
+
   const query = useQueryWithPages({
     resourceName: 'general:user_ops',
     options: {
@@ -25,9 +28,10 @@ const OpSuperchainUserOps = () => {
       } }),
     },
     isMultichain: true,
+    chainIds,
   });
 
-  const chainConfig = multichainConfig()?.chains.find(chain => chain.slug === query.chainValue?.[0]);
+  const chainConfig = chains.find(chain => chain.slug === query.chainValue?.[0]);
 
   const content = query.data?.items ? (
     <MultichainProvider chainSlug={ query.chainValue?.[0] }>
@@ -60,6 +64,7 @@ const OpSuperchainUserOps = () => {
       <ChainSelect
         value={ query.chainValue }
         onValueChange={ query.onChainValueChange }
+        chainIds={ chainIds }
       />
       <Pagination ml="auto" { ...query.pagination }/>
     </ActionBar>
