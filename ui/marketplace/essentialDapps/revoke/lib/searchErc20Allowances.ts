@@ -9,11 +9,14 @@ import type { TokenInfo } from 'types/api/token';
 
 import essentialDappsChains from 'configs/essentialDappsChains';
 
+import getBlockTimestamp from './getBlockTimestamp';
+
 export default async function searchERC20Allowances(
+  chainId: number,
   searchQuery: string,
   approvalEvents: Array<Log>,
   publicClient: PublicClient,
-  options?: { signal?: AbortSignal },
+  signal?: AbortSignal,
 ) {
   const erc20Events = approvalEvents.filter((ev) => ev.topics.length === 3);
 
@@ -22,11 +25,12 @@ export default async function searchERC20Allowances(
   );
 
   return getERC20Allowances(
+    chainId,
     erc20Addresses,
     searchQuery,
     erc20Events,
     publicClient,
-    options,
+    signal,
   );
 }
 
@@ -61,20 +65,19 @@ async function getERC20TokenData(
 }
 
 async function getERC20Allowances(
+  chainId: number,
   tokenAddresses: Array<`0x${ string }`>,
   searchQuery: string,
   approvals: Array<Log>,
   publicClient: PublicClient,
-  options?: { signal?: AbortSignal },
+  signal?: AbortSignal,
 ) {
-  const chainId = await publicClient.getChainId();
-
   const allowances: Array<AllowanceType> = [];
   let balances: Record<string, bigint> = {};
 
   const response = await fetch(
     `${ essentialDappsChains[chainId] }/api/v2/addresses/${ searchQuery }/token-balances`,
-    { signal: options?.signal },
+    { signal },
   );
 
   if (response.ok) {
@@ -87,10 +90,10 @@ async function getERC20Allowances(
 
   await Promise.all(
     tokenAddresses.map(async(tokenAddress) => {
-      if (options?.signal?.aborted) {
+      if (signal?.aborted) {
         throw new DOMException('Aborted', 'AbortError');
       }
-      const tokenData = await getERC20TokenData(tokenAddress, chainId, options?.signal);
+      const tokenData = await getERC20TokenData(tokenAddress, chainId, signal);
 
       if (tokenData) {
         const tokenApprovals = approvals.filter(
@@ -107,12 +110,10 @@ async function getERC20Allowances(
 
           await Promise.all(
             tokenAllowances.map(async(allowance) => {
-              if (options?.signal?.aborted) {
+              if (signal?.aborted) {
                 throw new DOMException('Aborted', 'AbortError');
               }
-              const { timestamp } = await publicClient.getBlock({
-                blockNumber: allowance.blockNumber,
-              });
+              const timestampMs = await getBlockTimestamp(chainId, allowance.blockNumber, signal);
 
               let valueAtRiskUsd;
 
@@ -143,7 +144,7 @@ async function getERC20Allowances(
                   address: tokenAddress,
                   transactionId: allowance.transactionId,
                   spender: allowance.spender,
-                  timestamp: Number(timestamp) * 1000,
+                  timestamp: timestampMs,
                   allowance: allowance.allowance ?
                     formatAllowance(
                       allowance.allowance,

@@ -8,35 +8,47 @@ import essentialDappsChains from 'configs/essentialDappsChains';
 import { ZERO_ADDRESS } from 'toolkit/utils/consts';
 
 import OpenSeaRegistryAbi from './abis/OpenSeaRegistry.json';
-import { getApprovalEvents } from './logs';
+import getBlockTimestamp from './getBlockTimestamp';
+import getLogs from './getLogs';
 
 const OPENSEA_REGISTRY_ADDRESS = '0xa5409ec958C83C3f309868babACA7c86DCB077c1';
 const MOONBIRDS_ADDRESS = '0x23581767a106ae21c074b2276D25e5C3e136a68b';
 
 export default async function searchNftAllowances(
+  chainId: number,
   searchQuery: string,
   approvalEvents: Array<Log>,
   publicClient: PublicClient,
-  options?: { signal?: AbortSignal },
+  latestBlockNumber: bigint,
+  signal?: AbortSignal,
 ) {
   try {
-    const transferEvents: Array<Log> = await getApprovalEvents(
+    const transferEventsPromise = getLogs(
+      publicClient,
       {
         event: getAbiItem({ abi: NftArtifact.abi, name: 'Transfer' }),
         args: { to: searchQuery },
       } as unknown as GetLogsParameters,
-      publicClient,
-      options,
+      BigInt(0),
+      latestBlockNumber,
+      signal,
     );
 
-    const approvalForAllEvents: Array<Log> = await getApprovalEvents(
+    const approvalForAllEventsPromise = getLogs(
+      publicClient,
       {
         event: getAbiItem({ abi: NftArtifact.abi, name: 'ApprovalForAll' }),
         args: { owner: searchQuery },
       } as unknown as GetLogsParameters,
-      publicClient,
-      options,
+      BigInt(0),
+      latestBlockNumber,
+      signal,
     );
+
+    const [ transferEvents, approvalForAllEvents ] = await Promise.all([
+      transferEventsPromise,
+      approvalForAllEventsPromise,
+    ]);
 
     const nftApprovalEvents = approvalEvents.filter(
       (ev) => ev.topics.length === 4,
@@ -79,7 +91,8 @@ export default async function searchNftAllowances(
       nftApprovalEvents,
       patchedApprovalForAllEvents,
       publicClient,
-      options,
+      chainId,
+      signal,
     );
   } catch {
     return [];
@@ -92,20 +105,20 @@ export async function getNftAllowances(
   approvals: Array<Log>,
   approvalsForAll: Array<Log>,
   publicClient: PublicClient,
-  options?: { signal?: AbortSignal },
+  chainId: number,
+  signal?: AbortSignal,
 ) {
   const allowances: Array<AllowanceType> = [];
 
   try {
     await Promise.all(
       tokenAddresses.map(async(tokenAddress) => {
-        if (options?.signal?.aborted) {
+        if (signal?.aborted) {
           throw new DOMException('Aborted', 'AbortError');
         }
-        const chainId = await publicClient.getChainId();
         const response = await fetch(
           `${ essentialDappsChains[chainId] }/api/v2/tokens/${ tokenAddress }`,
-          { signal: options?.signal },
+          { signal },
         );
 
         let tokenData: Record<string, string | null> = {};
@@ -148,9 +161,7 @@ export async function getNftAllowances(
 
           return Promise.all(
             allAllowances.map(async(allowance) => {
-              const { timestamp } = await publicClient.getBlock({
-                blockNumber: allowance?.blockNumber,
-              });
+              const timestampMs = await getBlockTimestamp(chainId, allowance.blockNumber as bigint, signal);
 
               return (
                 allowance?.allowance &&
@@ -163,7 +174,7 @@ export async function getNftAllowances(
                   symbol: tokenData.symbol || undefined,
                   tokenIcon: tokenData.icon_url || undefined,
                   transactionId: allowance?.transactionId,
-                  timestamp: Number(timestamp) * 1000,
+                  timestamp: timestampMs,
                   spender: allowance?.spender,
                   tokenId: allowance?.tokenId,
                 })
