@@ -55,8 +55,7 @@ const CapybaraRunner = () => {
           <Text fontSize="lg" textAlign="center">Congratulations! You’re eligible to claim an epic hidden badge!</Text>
           <Link
             href={ easterEggBadgeFeature.badgeClaimLink }
-            target="_blank"
-            asChild
+            external noIcon
           >
             <Button>Claim</Button>
           </Link>

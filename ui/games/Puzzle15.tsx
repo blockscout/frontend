@@ -202,8 +202,7 @@ const Puzzle15 = () => {
           <Text fontSize="lg" textAlign="center">Congratulations! You're eligible to claim an epic hidden badge!</Text>
           <Link
             href={ easterEggPuzzleBadgeFeature.badgeClaimLink }
-            target="_blank"
-            asChild
+            external noIcon
           >
             <Button>Claim</Button>
           </Link>

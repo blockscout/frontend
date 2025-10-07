@@ -11,7 +11,8 @@ const DocsLink = ({ href }: Props) => {
   return (
     <Link
       href={ href }
-      target="_blank"
+      external
+      noIcon
       display="inline-flex"
       alignItems="center"
       columnGap={ 1 }

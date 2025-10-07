@@ -25,7 +25,7 @@ const LinkNewTab = ({ className, label, href }: Props) => {
         className={ className }
         borderRadius={ 0 }
       >
-        <Link href={ href } target="_blank">
+        <Link href={ href } external noIcon>
           <IconSvg name="open-link"/>
         </Link>
       </IconButton>

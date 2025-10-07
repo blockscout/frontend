@@ -36,7 +36,8 @@ const ContractVerificationFieldEvmVersion = ({ isVyper, config }: Props) => {
             'https://docs.vyperlang.org/en/stable/compiling-a-contract.html#target-options' :
             'https://docs.soliditylang.org/en/latest/using-the-compiler.html#target-options'
           }
-          target="_blank"
+          external
+          noIcon
         >
           EVM version details
         </Link>
