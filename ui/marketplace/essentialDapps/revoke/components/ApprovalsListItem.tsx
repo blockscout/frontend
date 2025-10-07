@@ -1,4 +1,4 @@
-import { Flex, Text } from '@chakra-ui/react';
+import { Flex, Text, Grid } from '@chakra-ui/react';
 import React, { useCallback, useState } from 'react';
 
 import type { AllowanceType } from '../lib/types';
@@ -39,95 +39,67 @@ export default function ApprovalsListItem({
   }, [ revoke ]);
 
   return (
-    <Flex
-      flexDir="column"
-      textStyle="sm"
-      fontWeight="500"
-      gap={ 3 }
+    <Grid
+      templateColumns="minmax(0, 1fr) minmax(0, 1fr)"
+      rowGap={ 3 }
       pb={ 4 }
       mb={ 4 }
       borderBottom="1px solid"
       borderColor="border.divider"
+      textStyle="sm"
+      fontWeight="500"
     >
-      <Flex>
-        <Flex flex="1">
-          <Text>Token</Text>
-        </Flex>
-        <Flex flex="1" flexDir="column" gap={ 2 }>
-          <TokenEntity
-            token={{
-              address_hash: approval.address,
-              type: approval.type,
-              symbol: approval.symbol || null,
-              name: approval.name || null,
-              icon_url: approval.tokenIcon || null,
-            }}
-            isLoading={ isLoading }
-            noCopy
-            noLink
+      <Text>Token</Text>
+      <Flex flexDir="column" gap={ 2 }>
+        <TokenEntity
+          token={{
+            address_hash: approval.address,
+            type: approval.type,
+            symbol: approval.symbol || null,
+            name: approval.name || null,
+            icon_url: approval.tokenIcon || null,
+          }}
+          isLoading={ isLoading }
+          noCopy
+          noLink
+        />
+        <AddressEntity
+          address={{ hash: approval.address }}
+          truncation="constant"
+          noIcon
+          isLoading={ isLoading }
+          href={ `${ essentialDappsChains[selectedChainId] }/token/${ approval.address }` }
+        />
+      </Flex>
+      <Text>Approved spender</Text>
+      <AddressEntity
+        address={{ hash: approval.spender }}
+        truncation="constant"
+        noIcon
+        isLoading={ isLoading }
+      />
+      <Text>Approved amount</Text>
+      <Skeleton loading={ isLoading }>
+        <NumberEntity
+          value={ allowance }
+          postfix={
+            [ 'Unlimited', 'N/A' ].includes(allowance) ? '' : approval.symbol
+          }
+        />
+      </Skeleton>
+      <Text>Value at risk</Text>
+      <Skeleton loading={ isLoading }>
+        { approval.valueAtRiskUsd ? (
+          <NumberEntity
+            value={ approval.valueAtRiskUsd.toString() }
+            suffix="$"
           />
-          <AddressEntity
-            address={{ hash: approval.address }}
-            truncation="constant"
-            noIcon
-            isLoading={ isLoading }
-            href={ `${ essentialDappsChains[selectedChainId] }/token/${ approval.address }` }
-          />
-        </Flex>
-      </Flex>
-      <Flex>
-        <Flex flex="1">
-          <Text>Approved spender</Text>
-        </Flex>
-        <Flex flex="1">
-          <AddressEntity
-            address={{ hash: approval.spender }}
-            truncation="constant"
-            noIcon
-            isLoading={ isLoading }
-          />
-        </Flex>
-      </Flex>
-      <Flex>
-        <Flex flex="1">
-          <Text>Approved amount</Text>
-        </Flex>
-        <Flex flex="1">
-          <Skeleton loading={ isLoading }>
-            <NumberEntity
-              value={ allowance }
-              postfix={
-                [ 'Unlimited', 'N/A' ].includes(allowance) ? '' : approval.symbol
-              }
-            />
-          </Skeleton>
-        </Flex>
-      </Flex>
-      <Flex>
-        <Flex flex="1">
-          <Text>Value at risk</Text>
-        </Flex>
-        <Flex flex="1">
-          <Skeleton loading={ isLoading }>
-            { approval.valueAtRiskUsd ? (
-              <NumberEntity
-                value={ approval.valueAtRiskUsd.toString() }
-                suffix="$"
-              />
-            ) : '-' }
-          </Skeleton>
-        </Flex>
-      </Flex>
-      <Flex>
-        <Flex flex="1">
-          <Text>Last updated</Text>
-        </Flex>
-        <Flex flex="1">
-          <Skeleton loading={ isLoading }>
-            <DateEntity value={ approval.timestamp }/>
-          </Skeleton>
-        </Flex>
-      </Flex>
+        ) : '-' }
+      </Skeleton>
+      <Text>Last updated</Text>
+      <Skeleton loading={ isLoading }>
+        <DateEntity value={ approval.timestamp }/>
+      </Skeleton>
       { isAddressMatch && (
         <Button
           size="sm"
@@ -135,10 +107,11 @@ export default function ApprovalsListItem({
           loading={ isLoading || isTxLoading || isPending }
           onClick={ handleRevoke }
           disabled={ isError }
+          gridColumn="span 2"
         >
           Revoke
         </Button>
       ) }
-    </Flex>
+    </Grid>
   );
 }
