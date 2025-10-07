@@ -33,9 +33,9 @@ export default function useApprovalsQuery(chainId: number, userAddress: string) 
   const publicClient = usePublicClient({ chainId, config });
 
   return useQuery({
-    queryKey: [ 'revoke:approvals', userAddress, publicClient ],
-    queryFn: async() => {
-      return searchAllowances(publicClient, userAddress);
+    queryKey: [ 'revoke:approvals', chainId, userAddress ],
+    queryFn: async({ signal }) => {
+      return searchAllowances(publicClient, userAddress, { signal });
     },
     enabled: Boolean(userAddress) && isAddress(userAddress),
     placeholderData: allowancesStub,

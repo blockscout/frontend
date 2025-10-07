@@ -13,6 +13,7 @@ export default async function searchERC20Allowances(
   searchQuery: string,
   approvalEvents: Array<Log>,
   publicClient: PublicClient,
+  options?: { signal?: AbortSignal },
 ) {
   const erc20Events = approvalEvents.filter((ev) => ev.topics.length === 3);
 
@@ -25,16 +26,19 @@ export default async function searchERC20Allowances(
     searchQuery,
     erc20Events,
     publicClient,
+    options,
   );
 }
 
 async function getERC20TokenData(
   tokenAddress: `0x${ string }`,
   chainId: number,
+  signal?: AbortSignal,
 ) {
   try {
     const response = await fetch(
       `${ essentialDappsChains[chainId] }/api/v2/tokens/${ tokenAddress }`,
+      { signal },
     );
     if (!response.ok) {
       return {};
@@ -61,6 +65,7 @@ async function getERC20Allowances(
   searchQuery: string,
   approvals: Array<Log>,
   publicClient: PublicClient,
+  options?: { signal?: AbortSignal },
 ) {
   const chainId = await publicClient.getChainId();
 
@@ -69,6 +74,7 @@ async function getERC20Allowances(
 
   const response = await fetch(
     `${ essentialDappsChains[chainId] }/api/v2/addresses/${ searchQuery }/token-balances`,
+    { signal: options?.signal },
   );
 
   if (response.ok) {
@@ -81,7 +87,10 @@ async function getERC20Allowances(
 
   await Promise.all(
     tokenAddresses.map(async(tokenAddress) => {
-      const tokenData = await getERC20TokenData(tokenAddress, chainId);
+      if (options?.signal?.aborted) {
+        throw new DOMException('Aborted', 'AbortError');
+      }
+      const tokenData = await getERC20TokenData(tokenAddress, chainId, options?.signal);
 
       if (tokenData) {
         const tokenApprovals = approvals.filter(
@@ -98,6 +107,9 @@ async function getERC20Allowances(
 
           await Promise.all(
             tokenAllowances.map(async(allowance) => {
+              if (options?.signal?.aborted) {
+                throw new DOMException('Aborted', 'AbortError');
+              }
               const { timestamp } = await publicClient.getBlock({
                 blockNumber: allowance.blockNumber,
               });

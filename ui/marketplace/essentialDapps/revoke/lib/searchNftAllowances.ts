@@ -17,6 +17,7 @@ export default async function searchNftAllowances(
   searchQuery: string,
   approvalEvents: Array<Log>,
   publicClient: PublicClient,
+  options?: { signal?: AbortSignal },
 ) {
   try {
     const transferEvents: Array<Log> = await getApprovalEvents(
@@ -25,6 +26,7 @@ export default async function searchNftAllowances(
         args: { to: searchQuery },
       } as unknown as GetLogsParameters,
       publicClient,
+      options,
     );
 
     const approvalForAllEvents: Array<Log> = await getApprovalEvents(
@@ -33,6 +35,7 @@ export default async function searchNftAllowances(
         args: { owner: searchQuery },
       } as unknown as GetLogsParameters,
       publicClient,
+      options,
     );
 
     const nftApprovalEvents = approvalEvents.filter(
@@ -76,6 +79,7 @@ export default async function searchNftAllowances(
       nftApprovalEvents,
       patchedApprovalForAllEvents,
       publicClient,
+      options,
     );
   } catch {
     return [];
@@ -88,15 +92,20 @@ export async function getNftAllowances(
   approvals: Array<Log>,
   approvalsForAll: Array<Log>,
   publicClient: PublicClient,
+  options?: { signal?: AbortSignal },
 ) {
   const allowances: Array<AllowanceType> = [];
 
   try {
     await Promise.all(
       tokenAddresses.map(async(tokenAddress) => {
+        if (options?.signal?.aborted) {
+          throw new DOMException('Aborted', 'AbortError');
+        }
         const chainId = await publicClient.getChainId();
         const response = await fetch(
           `${ essentialDappsChains[chainId] }/api/v2/tokens/${ tokenAddress }`,
+          { signal: options?.signal },
         );
 
         let tokenData: Record<string, string | null> = {};
