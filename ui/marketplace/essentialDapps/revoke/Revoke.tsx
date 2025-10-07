@@ -51,7 +51,7 @@ const Revoke = () => {
   const [ searchInputValue, setSearchInputValue ] = useState('');
   const approvalsQuery = useApprovalsQuery(selectedChainId, searchAddress);
   const coinBalanceQuery = useCoinBalanceQuery(selectedChainId, searchAddress);
-  const web3Wallet = useWeb3Wallet({ source: 'Revoke' });
+  const web3Wallet = useWeb3Wallet({ source: 'Essential dapps' });
   const isMobile = useIsMobile();
 
   const isValidAddress = useMemo(

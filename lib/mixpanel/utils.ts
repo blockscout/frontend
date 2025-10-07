@@ -34,6 +34,7 @@ Type extends EventTypes.PAGE_VIEW ?
   'Page type': string;
   Tab: string;
   Page?: string;
+  Source?: string;
   'Color mode': 'light' | 'dark';
   'Color theme': ColorThemeId | undefined;
 } :
@@ -98,7 +99,7 @@ Type extends EventTypes.VERIFY_TOKEN ? {
   Action: 'Form opened' | 'Submit';
 } :
 Type extends EventTypes.WALLET_CONNECT ? {
-  Source: 'Header' | 'Login' | 'Profile' | 'Profile dropdown' | 'Smart contracts' | 'Swap button' | 'Merits' | 'Revoke' | 'Swap';
+  Source: 'Header' | 'Login' | 'Profile' | 'Profile dropdown' | 'Smart contracts' | 'Swap button' | 'Merits' | 'Essential dapps';
   Status: 'Started' | 'Connected';
 } :
 Type extends EventTypes.WALLET_ACTION ? (

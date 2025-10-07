@@ -20,7 +20,7 @@ const defaultChainId = Number(
 );
 
 const Swap = () => {
-  const web3Wallet = useWeb3Wallet({ source: 'Swap' });
+  const web3Wallet = useWeb3Wallet({ source: 'Essential dapps' });
   const { colorMode } = useColorMode();
 
   const config = useMemo(
