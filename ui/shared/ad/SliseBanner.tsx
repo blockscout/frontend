@@ -28,7 +28,6 @@ const SliseBanner = ({ className, platform }: BannerProps) => {
   }
 
   if (platform === 'mobile') {
-    // slise provides 270x90 banner on mobile, but we use 320x100 format, so we scale it a little bit
     return (
       <Flex
         className={ className }
@@ -39,8 +38,8 @@ const SliseBanner = ({ className, platform }: BannerProps) => {
         <SliseAd
           slotId={ config.chain.name || '' }
           pub="pub-10"
-          format="270x90"
-          style={{ width: `300px`, height: `${ MOBILE_BANNER_HEIGHT }px` }}/>
+          format="320x100"
+          style={{ width: `${ MOBILE_BANNER_WIDTH }px`, height: `${ MOBILE_BANNER_HEIGHT }px` }}/>
       </Flex>
     );
   }
@@ -64,8 +63,8 @@ const SliseBanner = ({ className, platform }: BannerProps) => {
         <SliseAd
           slotId={ config.chain.name || '' }
           pub="pub-10"
-          format="270x90"
-          style={{ width: `300px`, height: `${ MOBILE_BANNER_HEIGHT }px` }}/>
+          format="320x100"
+          style={{ width: `${ MOBILE_BANNER_WIDTH }px`, height: `${ MOBILE_BANNER_HEIGHT }px` }}/>
       </Flex>
     </>
   );
