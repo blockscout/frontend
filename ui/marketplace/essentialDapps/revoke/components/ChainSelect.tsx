@@ -49,12 +49,14 @@ export default function ChainSelect({ selectedChainId, changeChain }: Props) {
         if (!dappConfig?.chains || !data) {
           return [];
         }
-        return dappConfig.chains.map((id) => ({
-          id: Number(id),
-          name: data[id].name,
-          icon: data[id].icon,
-          iconDark: data[id].iconDark,
-        }));
+        return dappConfig.chains.map(
+          (id) => data[id] ? ({
+            id: Number(id),
+            name: data[id].name,
+            icon: data[id].icon,
+            iconDark: data[id].iconDark,
+          }) : undefined,
+        ).filter(Boolean);
       } catch {
         return [];
       }

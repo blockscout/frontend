@@ -43,7 +43,10 @@ const defaultChainId = (
 const Revoke = () => {
   const router = useRouter();
   const { updateQuery } = useQueryParams();
-  const chainIdFromQuery = getQueryParamString(router.query.chainId);
+  let chainIdFromQuery: string | undefined = getQueryParamString(router.query.chainId);
+  if (!essentialDappsChains[chainIdFromQuery]) {
+    chainIdFromQuery = undefined;
+  }
   const addressFromQuery = getQueryParamString(router.query.address);
   const [ selectedChainId, setSelectedChainId ] = useState<number>(Number(chainIdFromQuery || defaultChainId));
   const { address: connectedAddress } = useAccount();
