@@ -84,7 +84,7 @@ const Copy = (props: CopyProps) => {
     <EntityBase.Copy
       { ...props }
       text={ props.hash }
-      noCopy={ props.noCopy ?? false }
+      noCopy={ props.noCopy }
     />
   );
 };
