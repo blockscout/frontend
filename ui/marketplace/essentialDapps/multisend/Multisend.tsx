@@ -235,12 +235,12 @@ const Container = ({ children }: { children: React.ReactNode }) => (
           },
           '& [class*="_modalContent_"]': {
             borderRadius: 'xl',
-            padding: '24px',
           },
           '& [class*="_modalHeader_"]': {
-            minHeight: '40px',
-            height: '40px !important',
-            padding: '0 !important',
+            minHeight: '64px',
+            height: '64px !important',
+            padding: '24px !important',
+            paddingBottom: '0 !important',
             marginBottom: '8px',
             '& [class*="_modalTitle_"]': {
               fontFamily: 'heading',
@@ -249,7 +249,9 @@ const Container = ({ children }: { children: React.ReactNode }) => (
             },
           },
           '& [class*="_modalHeader_"] + div': {
-            '&, & > div': {
+            padding: '24px !important',
+            paddingTop: '0 !important',
+            '& > div': {
               padding: '0 !important',
             },
             '& h6, & p': {
@@ -434,7 +436,7 @@ const Container = ({ children }: { children: React.ReactNode }) => (
           },
         },
         '& [class*="TokenSelect-module__stickySection_"]': {
-          top: '10px',
+          top: '16px',
           '& > div:last-child': {
             gap: '8px !important',
           },
