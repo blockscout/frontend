@@ -44,5 +44,5 @@ export default function useLogPageView(isInited: boolean) {
     // but we still want to log page view
     // so we use pathname from 'next/navigation' instead of router.pathname from 'next/router' as deps
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ isInited, page, pathname, tab, colorMode, id ]);
+  }, [ isInited, page, pathname, tab, colorMode ]);
 }
