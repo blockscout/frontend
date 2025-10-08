@@ -39,6 +39,7 @@ const OptimisticDepositsListItem = ({ item, isLoading }: Props) => {
           isLoading={ isLoading }
           hash={ item.l2_transaction_hash }
           truncation="constant_long"
+          noCopy
         />
       </ListItemMobileGrid.Value>
 
@@ -57,6 +58,7 @@ const OptimisticDepositsListItem = ({ item, isLoading }: Props) => {
           isLoading={ isLoading }
           hash={ item.l1_transaction_hash }
           truncation="constant_long"
+          noCopy
         />
       </ListItemMobileGrid.Value>
 

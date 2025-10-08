@@ -44,6 +44,7 @@ const ZkEvmL2DepositsTableItem = ({ item, isLoading }: Props) => {
           truncation="constant_long"
           noIcon
           textStyle="sm"
+          noCopy
         />
       </TableCell>
       <TableCell verticalAlign="middle" pr={ 12 }>
@@ -61,6 +62,7 @@ const ZkEvmL2DepositsTableItem = ({ item, isLoading }: Props) => {
             textStyle="sm"
             truncation="constant_long"
             noIcon
+            noCopy
           />
         ) : (
           <chakra.span color="text.secondary">

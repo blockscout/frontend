@@ -51,6 +51,7 @@ const ScrollL2TxnBatchesTableItem = ({ item, isLoading }: Props) => {
           hash={ item.commitment_transaction.hash }
           isLoading={ isLoading }
           truncation="constant_long"
+          noCopy
         />
       </TableCell>
       <TableCell verticalAlign="middle">
@@ -75,6 +76,7 @@ const ScrollL2TxnBatchesTableItem = ({ item, isLoading }: Props) => {
             hash={ item.confirmation_transaction.hash }
             isLoading={ isLoading }
             truncation="constant_long"
+            noCopy
           />
         ) : <Skeleton loading={ isLoading } display="inline-block">Pending</Skeleton> }
       </TableCell>

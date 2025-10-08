@@ -64,6 +64,7 @@ const ArbitrumL2TxnBatchesListItem = ({ item, isLoading }: Props) => {
           hash={ item.commitment_transaction.hash }
           isLoading={ isLoading }
           truncation="constant_long"
+          noCopy
         />
       </ListItemMobileGrid.Value>
 

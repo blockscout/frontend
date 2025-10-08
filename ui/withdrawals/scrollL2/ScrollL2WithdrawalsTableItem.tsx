@@ -43,6 +43,7 @@ const ScrollL2WithdrawalsTableItem = ({ item, isLoading }: Props) => {
           hash={ item.origination_transaction_hash }
           truncation="constant_long"
           noIcon
+          noCopy
         />
       </TableCell>
       <TableCell verticalAlign="middle" pr={ 12 }>
@@ -59,6 +60,7 @@ const ScrollL2WithdrawalsTableItem = ({ item, isLoading }: Props) => {
             hash={ item.completion_transaction_hash }
             truncation="constant_long"
             noIcon
+            noCopy
           />
         ) : (
           <chakra.span color="text.secondary">

@@ -17,7 +17,7 @@ import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import TruncatedValue from 'ui/shared/TruncatedValue';
 import { TX_INTERNALS_ITEMS } from 'ui/tx/internals/utils';
 
-type Props = InternalTransaction & { currentAddress?: string; isLoading?: boolean; showBlockInfo?: boolean; chainData?: ChainConfig };
+type Props = InternalTransaction & { currentAddress?: string; isLoading?: boolean; showBlockInfo?: boolean; chainData?: ChainConfig; noCopy?: boolean };
 
 const InternalTxsTableItem = ({
   type,
@@ -34,6 +34,7 @@ const InternalTxsTableItem = ({
   isLoading,
   showBlockInfo = true,
   chainData,
+  noCopy,
 }: Props) => {
   const typeTitle = TX_INTERNALS_ITEMS.find(({ id }) => id === type)?.title;
   const toData = to ? to : createdContract;
@@ -53,6 +54,7 @@ const InternalTxsTableItem = ({
             fontWeight={ 700 }
             noIcon
             truncation="constant_long"
+            noCopy={ noCopy }
           />
           <TimeWithTooltip
             timestamp={ timestamp }

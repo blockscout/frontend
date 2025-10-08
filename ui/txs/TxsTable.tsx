@@ -27,6 +27,7 @@ type Props = {
   enableTimeIncrement?: boolean;
   isLoading?: boolean;
   stickyHeader?: boolean;
+  noCopy?: boolean;
 };
 
 const TxsTable = ({
@@ -40,6 +41,7 @@ const TxsTable = ({
   enableTimeIncrement,
   isLoading,
   stickyHeader = true,
+  noCopy,
 }: Props) => {
   const { cutRef, renderedItemsNum } = useLazyRenderedList(txs, !isLoading);
   const initialList = useInitialList({
@@ -129,6 +131,7 @@ const TxsTable = ({
               isLoading={ isLoading }
               animation={ initialList.getAnimationProp(item) }
               chainData={ chainData }
+              noCopy={ noCopy }
             />
           )) }
         </TableBody>

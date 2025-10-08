@@ -25,7 +25,7 @@ type Props = {
 const ItemByColumn = ({ item, column, isLoading }: Props) => {
   switch (column) {
     case 'tx_hash':
-      return <TxEntity truncation="constant_long" hash={ item.hash } isLoading={ isLoading } noIcon fontWeight={ 700 }/>;
+      return <TxEntity truncation="constant_long" hash={ item.hash } isLoading={ isLoading } noIcon fontWeight={ 700 } noCopy/>;
     case 'type': {
       const type = ADVANCED_FILTER_TYPES.find(t => t.id === item.type);
       if (!type) {

@@ -17,9 +17,10 @@ interface Props {
   isLoading?: boolean;
   top?: number;
   showBlockInfo?: boolean;
+  noCopy?: boolean;
 }
 
-const InternalTxsTable = ({ data, currentAddress, isLoading, top, showBlockInfo = true }: Props) => {
+const InternalTxsTable = ({ data, currentAddress, isLoading, top, showBlockInfo = true, noCopy }: Props) => {
   const multichainContext = useMultichainContext();
   const chainData = getChainDataForList(multichainContext);
 
@@ -50,6 +51,7 @@ const InternalTxsTable = ({ data, currentAddress, isLoading, top, showBlockInfo 
               isLoading={ isLoading }
               showBlockInfo={ showBlockInfo }
               chainData={ chainData }
+              noCopy={ noCopy }
             />
           )) }
         </TableBody>

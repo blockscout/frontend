@@ -132,6 +132,7 @@ const ArbitrumL2TxnBatchDetails = ({ query }: Props) => {
           isLoading={ isPlaceholderData }
           hash={ data.commitment_transaction.hash }
           maxW="100%"
+          noCopy
         />
       </DetailedInfo.ItemValue>
 

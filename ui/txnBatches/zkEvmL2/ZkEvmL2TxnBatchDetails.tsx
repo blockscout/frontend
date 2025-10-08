@@ -106,6 +106,7 @@ const ZkEvmL2TxnBatchDetails = ({ query }: Props) => {
             isLoading={ isPlaceholderData }
             hash={ data.verify_transaction_hash }
             maxW="100%"
+            noCopy
           />
         ) : <Text>Pending</Text> }
       </DetailedInfo.ItemValue>
@@ -164,6 +165,7 @@ const ZkEvmL2TxnBatchDetails = ({ query }: Props) => {
             isLoading={ isPlaceholderData }
             hash={ data.sequence_transaction_hash }
             maxW="100%"
+            noCopy
           />
         ) : <Text>Pending</Text> }
       </DetailedInfo.ItemValue>
