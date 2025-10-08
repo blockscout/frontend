@@ -69,7 +69,7 @@ const Widget = () => {
 
   return (
     <Box
-      w="420px"
+      w="fit-content"
       maxW="full"
       border="1px solid"
       borderColor={{ _light: 'gray.200', _dark: 'whiteAlpha.100' }}
