@@ -88,10 +88,13 @@ const TokenDetails = ({ tokenQuery }: Props) => {
   } = tokenQuery.data || {};
 
   let totalSupplyValue;
+  let totalSupplyValueFull;
 
   if (decimals) {
     const totalValue = totalSupply ? getCurrencyValue({ value: totalSupply, accuracy: 3, accuracyUsd: 2, exchangeRate, decimals }) : undefined;
+    const totalValueFull = totalSupply ? getCurrencyValue({ value: totalSupply, accuracyUsd: 2, exchangeRate, decimals }) : undefined;
     totalSupplyValue = totalValue?.valueStr;
+    totalSupplyValueFull = totalValueFull?.valueStr;
   } else {
     totalSupplyValue = Number(totalSupply).toLocaleString();
   }
@@ -142,7 +145,12 @@ const TokenDetails = ({ tokenQuery }: Props) => {
         whiteSpace="pre-wrap"
       >
         <Skeleton loading={ tokenQuery.isPlaceholderData } w="100%" display="flex">
-          <TruncatedValue value={ totalSupplyValue || '0' } maxW="80%" flexShrink={ 0 }/>
+          <TruncatedValue
+            value={ totalSupplyValue || '0' }
+            maxW="80%"
+            flexShrink={ 0 }
+            tooltipContent={ totalSupplyValueFull !== totalSupplyValue ? totalSupplyValueFull : undefined }
+          />
           <Box flexShrink={ 0 }> </Box>
           <TruncatedValue value={ symbol || '' }/>
         </Skeleton>
