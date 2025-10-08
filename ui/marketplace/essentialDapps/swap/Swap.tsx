@@ -21,6 +21,13 @@ const defaultChainId = Number(
     dappConfig?.chains[0],
 );
 
+function getUrls(isRpc = false) {
+  return Object.fromEntries(dappConfig?.chains.map((chainId) => ([
+    Number(chainId),
+    [ `${ essentialDappsChains[chainId] }${ isRpc ? '/api/eth-rpc' : '' }` ],
+  ])) || []);
+}
+
 const Widget = () => {
   const web3Wallet = useWeb3Wallet({ source: 'Essential dapps' });
   const { colorMode } = useColorMode();
@@ -50,11 +57,9 @@ const Widget = () => {
           allow: dappConfig?.chains.map((chainId) => Number(chainId)),
         },
         sdkConfig: {
-          rpcUrls: Object.fromEntries(dappConfig?.chains.map((chainId) => ([
-            Number(chainId),
-            [ `${ essentialDappsChains[chainId] }/api/eth-rpc` ],
-          ])) || []),
+          rpcUrls: getUrls(true),
         },
+        explorerUrls: getUrls(),
         walletConfig: {
           onConnect: web3Wallet.connect,
         },
