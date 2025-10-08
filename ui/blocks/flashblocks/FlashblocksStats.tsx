@@ -1,8 +1,12 @@
 import { Box } from '@chakra-ui/react';
+import { upperFirst } from 'es-toolkit';
 import React from 'react';
 
+import config from 'configs/app';
 import { SECOND } from 'toolkit/utils/consts';
 import StatsWidget from 'ui/shared/stats/StatsWidget';
+
+const flashblocksFeature = config.features.flashblocks;
 
 interface Props {
   itemsNum: number;
@@ -14,6 +18,10 @@ const FlashblocksStats = ({ itemsNum, txsNum, initialTs }: Props) => {
 
   const timeElapsed = initialTs ? Date.now() - initialTs : undefined;
 
+  if (!flashblocksFeature.isEnabled) {
+    return null;
+  }
+
   return (
     <Box
       display="grid"
@@ -22,7 +30,7 @@ const FlashblocksStats = ({ itemsNum, txsNum, initialTs }: Props) => {
       mb={ 6 }
     >
       <StatsWidget
-        label="Flashblocks (sec)"
+        label={ `${ upperFirst(flashblocksFeature.name) }s (sec)` }
         value={ timeElapsed ? Number(itemsNum / (timeElapsed / SECOND)).toLocaleString(undefined, { maximumFractionDigits: 0 }) : '-' }
       />
       <StatsWidget
@@ -30,7 +38,7 @@ const FlashblocksStats = ({ itemsNum, txsNum, initialTs }: Props) => {
         value={ timeElapsed && txsNum > 0 ? Number(txsNum / (timeElapsed / SECOND)).toLocaleString(undefined, { maximumFractionDigits: 0 }) : '-' }
       />
       <StatsWidget
-        label="Flashblock time"
+        label={ `${ upperFirst(flashblocksFeature.name) } time` }
         value={
           timeElapsed && itemsNum > 0 ?
             Number(timeElapsed / itemsNum).toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + ' ms' :

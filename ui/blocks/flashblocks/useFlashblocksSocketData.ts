@@ -3,19 +3,31 @@ import React from 'react';
 import type { FlashblockItem } from 'types/client/flashblocks';
 
 import config from 'configs/app';
+import { SECOND } from 'toolkit/utils/consts';
 
-import formatFlashblockItem from './formatFlashblockItem';
-import parseSocketEventData from './parseSocketEventData';
+import { formatFlashblockItemMegaEth, formatFlashblockItemOptimism } from './formatFlashblockItem';
+import { parseSocketEventDataMegaEth, parseSocketEventDataOptimism } from './parseSocketEventData';
 
 const flashblocksFeature = config.features.flashblocks;
 
 const MAX_FLASHBLOCKS_COUNT = 50;
+const QUEUE_TIME_THRESHOLD = 200;
 
 type Status = 'initial' | 'connected' | 'disconnected' | 'error';
+
+interface ItemsQueue {
+  lastTs: number;
+  items: Array<FlashblockItem>;
+}
 
 export default function useFlashblocksSocketData() {
   const websocketRef = React.useRef<WebSocket | null>(null);
   const isPausedRef = React.useRef(false);
+  const subscriptionTimeoutRef = React.useRef(0);
+  const itemsQueueRef = React.useRef<ItemsQueue>({
+    lastTs: Date.now(),
+    items: [],
+  });
 
   const [ items, setItems ] = React.useState<Array<FlashblockItem>>([]);
   const [ itemsNum, setItemsNum ] = React.useState(0);
@@ -32,27 +44,72 @@ export default function useFlashblocksSocketData() {
     websocketRef.current = new WebSocket(flashblocksFeature.socketUrl);
 
     websocketRef.current.onmessage = async(event) => {
-      const newFlashBlock = await parseSocketEventData(event);
-      if (newFlashBlock) {
-        const newItem = formatFlashblockItem(newFlashBlock);
-        if (isPausedRef.current) {
-          setNewItemsNum((prev) => (prev ?? 0) + 1);
-        } else {
-          setItems((prev) => {
-            return [ newItem, ...prev ].slice(0, MAX_FLASHBLOCKS_COUNT);
-          });
+      try {
+        const newItem = await (async() => {
+          switch (flashblocksFeature.type) {
+            case 'optimism': {
+              const newFlashBlock = await parseSocketEventDataOptimism(event);
+              return newFlashBlock ? formatFlashblockItemOptimism(newFlashBlock) : undefined;
+            }
+            case 'megaEth': {
+              const newFlashBlock = parseSocketEventDataMegaEth(event);
+              return newFlashBlock ? formatFlashblockItemMegaEth(newFlashBlock) : undefined;
+            }
+            default:
+              return undefined;
+          }
+        })();
+
+        if (newItem) {
+          const now = Date.now();
+
+          if (now - itemsQueueRef.current.lastTs < QUEUE_TIME_THRESHOLD) {
+            itemsQueueRef.current.items.unshift(newItem);
+          } else {
+            const newItems = [ newItem, ...itemsQueueRef.current.items ];
+            const newTxsNum = newItems.reduce((acc, item) => acc + item.transactions_count, 0);
+
+            if (isPausedRef.current) {
+              setNewItemsNum((prev) => (prev ?? 0) + newItems.length);
+            } else {
+              setItems((prev) => {
+                if (prev.length === 0) {
+                  setInitialTs(now);
+                }
+                return [ ...newItems, ...prev ].slice(0, MAX_FLASHBLOCKS_COUNT);
+              });
+            }
+
+            setItemsNum((prev) => prev + newItems.length);
+            setTxsNum((prev) => prev + newTxsNum);
+
+            itemsQueueRef.current.items = [];
+            itemsQueueRef.current.lastTs = now;
+          }
         }
-        setItemsNum((prev) => prev + 1);
-        setTxsNum((prev) => prev + newItem.transactions_count);
-      }
+      } catch (error) {}
     };
+
     websocketRef.current.onopen = () => {
-      setStatus('connected');
-      setInitialTs(Date.now());
+      subscriptionTimeoutRef.current = window.setTimeout(() => {
+        if (flashblocksFeature.type === 'megaEth') {
+          websocketRef.current?.send(JSON.stringify({
+            jsonrpc: '2.0',
+            method: 'eth_subscribe',
+            params: [
+              'miniBlocks',
+            ],
+            id: 1,
+          }));
+        }
+        setStatus('connected');
+      }, SECOND);
     };
+
     websocketRef.current.onerror = () => {
       setStatus('error');
     };
+
     websocketRef.current.onclose = () => {
       setStatus('disconnected');
     };
@@ -60,7 +117,7 @@ export default function useFlashblocksSocketData() {
 
   const pause = React.useCallback(() => {
     isPausedRef.current = true;
-    setNewItemsNum(0);
+    setNewItemsNum(undefined);
   }, []);
 
   const resume = React.useCallback(() => {
@@ -72,6 +129,7 @@ export default function useFlashblocksSocketData() {
     connect();
     return () => {
       websocketRef.current?.close();
+      window.clearTimeout(subscriptionTimeoutRef.current);
     };
   }, [ connect ]);
 

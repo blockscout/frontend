@@ -1,3 +1,4 @@
+import { upperFirst } from 'es-toolkit';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -14,6 +15,8 @@ import BlocksTabSlot from 'ui/blocks/BlocksTabSlot';
 import Flashblocks from 'ui/blocks/Flashblocks';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
+
+const flashblocksFeature = config.features.flashblocks;
 
 const TAB_LIST_PROPS = {
   marginBottom: 0,
@@ -61,6 +64,9 @@ const BlocksPageContent = () => {
     },
   });
 
+  const flashblocksTabId = flashblocksFeature.isEnabled ? flashblocksFeature.name + 's' : undefined;
+  const isFlashblocksTab = tab === flashblocksTabId && flashblocksTabId !== undefined;
+
   const pagination = (() => {
     if (tab === 'reorgs') {
       return reorgsQuery.pagination;
@@ -68,7 +74,7 @@ const BlocksPageContent = () => {
     if (tab === 'uncles') {
       return unclesQuery.pagination;
     }
-    if (tab === 'flashblocks') {
+    if (isFlashblocksTab) {
       return null;;
     }
     return blocksQuery.pagination;
@@ -76,7 +82,7 @@ const BlocksPageContent = () => {
 
   const tabs: Array<TabItemRegular> = [
     { id: 'blocks', title: 'All', component: <BlocksContent type="block" query={ blocksQuery }/> },
-    config.features.flashblocks.isEnabled && { id: 'flashblocks', title: 'Flashblocks', component: <Flashblocks/> },
+    flashblocksFeature.isEnabled && flashblocksTabId && { id: flashblocksTabId, title: upperFirst(flashblocksFeature.name) + 's', component: <Flashblocks/> },
     { id: 'reorgs', title: 'Forked', component: <BlocksContent type="reorg" query={ reorgsQuery }/> },
     { id: 'uncles', title: 'Uncles', component: <BlocksContent type="uncle" query={ unclesQuery }/> },
   ].filter(Boolean);
@@ -88,7 +94,7 @@ const BlocksPageContent = () => {
         tabs={ tabs }
         listProps={ isMobile ? undefined : TAB_LIST_PROPS }
         rightSlot={ <BlocksTabSlot pagination={ pagination }/> }
-        stickyEnabled={ !isMobile && tab !== 'flashblocks' }
+        stickyEnabled={ !isMobile && !isFlashblocksTab }
       />
     </>
   );
