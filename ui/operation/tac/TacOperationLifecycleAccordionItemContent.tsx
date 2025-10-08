@@ -70,10 +70,10 @@ const TacOperationLifecycleAccordionItemContent = ({ isLast, data }: Props) => {
           {
             data.transactions.map((tx) => {
               if (tx.type === tac.BlockchainType.TON) {
-                return <TxEntityTon key={ tx.hash } hash={ tx.hash } noCopy={ false }/>;
+                return <TxEntityTon key={ tx.hash } hash={ tx.hash }/>;
               }
 
-              return <TxEntity key={ tx.hash } hash={ tx.hash } icon={{ name: 'brands/tac' }} noCopy={ false }/>;
+              return <TxEntity key={ tx.hash } hash={ tx.hash } icon={{ name: 'brands/tac' }}/>;
             })
           }
         </GridItem>
