@@ -6,15 +6,27 @@ import { Worker } from 'node:worker_threads';
 import * as viemChains from 'viem/chains';
 import { pick } from 'es-toolkit';
 
-import chainsMap from '../../../configs/essentialDappsChains';
 import { EssentialDappsConfig } from 'types/client/marketplace';
 import { ChainConfig } from 'types/multichain';
 import { getEnvValue, parseEnvJson } from 'configs/app/utils';
-import { difference, uniq } from 'es-toolkit';
+import {uniq } from 'es-toolkit';
 import currentChainConfig from 'configs/app';
 
 const currentFilePath = fileURLToPath(import.meta.url);
 const currentDir = dirname(currentFilePath);
+
+async function getExplorerUrls(chainIds: Array<string>) {
+  const response = await fetch('https://chains.blockscout.com/api/chains');
+  if (!response.ok) {
+    throw new Error(`Failed to fetch chains info from Chainscout API`);
+  }
+  const chainsInfo = await response.json() as Record<string, { explorers: [ { url: string } ] }>;
+
+  return chainIds.map((chainId) => ({
+    id: chainId,
+    explorerUrl: chainsInfo[chainId]?.explorers[0]?.url,
+  }))
+}
 
 function getSlug(chainName: string) {
   return chainName.toLowerCase().replace(/ /g, '-').replace(/[^a-z0-9-]/g, '');
@@ -77,14 +89,13 @@ async function run() {
       return;
     }
 
-    // TODO @tom2drum get chain url for chainscout
-    const chainsWithExplorerUrls = Object.keys(chainsMap).filter((key) => enabledChains.includes(key));
-    const chainsDiff = difference(enabledChains, chainsWithExplorerUrls);
-    const explorerUrls = chainsWithExplorerUrls.map((key) => chainsMap[key]);
+    const chainsUrlMap = await getExplorerUrls(enabledChains);
+    const chainsWithoutUrl = Object.entries(chainsUrlMap).filter(([_, explorerUrl]) => !explorerUrl);
 
-    if (chainsDiff.length > 0) {
-      console.log(`⚠️  For the following chains explorer url was not found: ${ chainsDiff.join(', ') }. Therefore, they will not be enabled.`);
+    if (chainsWithoutUrl.length > 0) {
+      console.log(`⚠️  For the following chains explorer url was not found: ${ chainsWithoutUrl.map(([chainId]) => chainId).join(', ') }. Therefore, they will not be enabled.`);
     }
+    const explorerUrls = Object.values(chainsUrlMap).map(({ explorerUrl }) => explorerUrl);
     console.log(`ℹ️  For ${ explorerUrls.length } chains explorer url was found in static config. Fetching parameters for each chain...`);
 
     const chainConfigs = await Promise.all(explorerUrls.map(computeChainConfig)) as Array<ChainConfig['config']>;
