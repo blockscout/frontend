@@ -37,7 +37,7 @@ const CurrencyValue = ({ value, currency = '', decimals, exchangeRate, className
   const { valueCurr, valueStr: valueResult, usd: usdResult } = getCurrencyValue({ value, accuracy, accuracyUsd, exchangeRate, decimals });
 
   const valueElement = (
-    <chakra.span display="inline-block">
+    <chakra.span display="inline-block" maxW="100%" whiteSpace="pre" overflow="hidden" textOverflow="ellipsis">
       { valueResult }{ currency ? ` ${ currency }` : '' }
     </chakra.span>
   );
