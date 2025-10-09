@@ -21,7 +21,7 @@ const OptimisticL2TxnBatchBlobCallData = ({ l1TxHashes, l1Timestamp, isLoading }
       </GridItem>
       <GridItem fontWeight={ 600 }>L1 txn hash{ l1TxHashes.length > 1 ? 'es' : '' }</GridItem>
       <GridItem overflow="hidden" display="flex" flexDir="column" rowGap={ 2 }>
-        { l1TxHashes.map((hash) => <TxEntityL1 key={ hash } hash={ hash } noIcon noCopy={ false }/>) }
+        { l1TxHashes.map((hash) => <TxEntityL1 key={ hash } hash={ hash } noIcon/>) }
       </GridItem>
     </OptimisticL2TxnBatchBlobWrapper>
 

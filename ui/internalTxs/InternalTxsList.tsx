@@ -13,9 +13,10 @@ type Props = {
   currentAddress?: string;
   isLoading?: boolean;
   showBlockInfo?: boolean;
+  noCopy?: boolean;
 };
 
-const InternalTxsList = ({ data, currentAddress, isLoading, showBlockInfo = true }: Props) => {
+const InternalTxsList = ({ data, currentAddress, isLoading, showBlockInfo = true, noCopy }: Props) => {
   const multichainContext = useMultichainContext();
   const chainData = getChainDataForList(multichainContext);
 
@@ -29,6 +30,7 @@ const InternalTxsList = ({ data, currentAddress, isLoading, showBlockInfo = true
           isLoading={ isLoading }
           showBlockInfo={ showBlockInfo }
           chainData={ chainData }
+          noCopy={ noCopy }
         />
       )) }
     </Box>

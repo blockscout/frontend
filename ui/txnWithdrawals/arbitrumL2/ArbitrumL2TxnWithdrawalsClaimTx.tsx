@@ -35,7 +35,7 @@ const ArbitrumL2TxnWithdrawalsClaimTx = ({ isPending, hash, onSuccess, onError }
   return (
     <HStack columnGap={ 2 } lineHeight="32px">
       { isPending && <Spinner size="sm"/> }
-      <TxEntityL1 hash={ hash } noIcon maxW="160px"/>
+      <TxEntityL1 hash={ hash } noIcon maxW="160px" noCopy/>
     </HStack >
   );
 };

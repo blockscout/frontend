@@ -20,6 +20,7 @@ type Props = {
   filterValue?: AddressFromToFilter;
   enableTimeIncrement?: boolean;
   top?: number;
+  noCopy?: boolean;
 };
 
 const TxsWithFrontendSorting = ({
@@ -31,6 +32,7 @@ const TxsWithFrontendSorting = ({
   currentAddress,
   enableTimeIncrement,
   top,
+  noCopy,
 }: Props) => {
   const { data, isPlaceholderData, isError, setSortByValue, sorting } = useTxsSort(query);
 
@@ -49,6 +51,7 @@ const TxsWithFrontendSorting = ({
       setSorting={ setSortByValue }
       sort={ sorting }
       pagination={ query.pagination }
+      noCopy={ noCopy }
     />
   );
 };

@@ -88,7 +88,7 @@ const TxEntityInterop = ({ chain, hash, ...props }: Props) => {
               <TxEntity.Content { ...partsProps.content } hash={ hash }/>
             </Box>
           ) }
-          <TxEntity.Copy { ...partsProps.copy } hash={ hash }/>
+          <TxEntity.Copy { ...partsProps.copy } hash={ hash } noCopy/>
         </>
       ) }
       { !hash && (

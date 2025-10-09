@@ -19,7 +19,7 @@ interface Props {
   currentAddress?: string;
   isLoading: boolean;
   items: Array<Transaction>;
-}
+  noCopy?: boolean; }
 
 const TxsList = (props: Props) => {
   const { cutRef, renderedItemsNum } = useLazyRenderedList(props.items, !props.isLoading);
@@ -44,6 +44,7 @@ const TxsList = (props: Props) => {
           isLoading={ props.isLoading }
           animation={ initialList.getAnimationProp(tx) }
           chainData={ chainData }
+          noCopy={ props.noCopy }
         />
       )) }
       <Box ref={ cutRef } h={ 0 }/>

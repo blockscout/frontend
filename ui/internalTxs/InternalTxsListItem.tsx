@@ -17,7 +17,7 @@ import TxStatus from 'ui/shared/statusTag/TxStatus';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import { TX_INTERNALS_ITEMS } from 'ui/tx/internals/utils';
 
-type Props = InternalTransaction & { currentAddress?: string; isLoading?: boolean; showBlockInfo?: boolean; chainData?: ChainConfig };
+type Props = InternalTransaction & { currentAddress?: string; isLoading?: boolean; showBlockInfo?: boolean; chainData?: ChainConfig; noCopy?: boolean };
 
 const InternalTxsListItem = ({
   type,
@@ -34,6 +34,7 @@ const InternalTxsListItem = ({
   isLoading,
   showBlockInfo = true,
   chainData,
+  noCopy,
 }: Props) => {
   const typeTitle = TX_INTERNALS_ITEMS.find(({ id }) => id === type)?.title;
   const toData = to ? to : createdContract;
@@ -51,6 +52,7 @@ const InternalTxsListItem = ({
           fontWeight={ 700 }
           truncation="constant_long"
           chain={ chainData }
+          noCopy={ noCopy }
         />
         <TimeWithTooltip
           timestamp={ timestamp }

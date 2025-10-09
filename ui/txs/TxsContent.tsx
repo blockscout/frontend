@@ -39,6 +39,7 @@ type Props = {
   setSorting?: (value: TransactionsSortingValue) => void;
   sort: TransactionsSortingValue;
   stickyHeader?: boolean;
+  noCopy?: boolean;
 };
 
 const TxsContent = ({
@@ -56,6 +57,7 @@ const TxsContent = ({
   setSorting,
   sort,
   stickyHeader = true,
+  noCopy,
 }: Props) => {
   const isMobile = useIsMobile();
 
@@ -76,6 +78,7 @@ const TxsContent = ({
           enableTimeIncrement={ enableTimeIncrement }
           currentAddress={ currentAddress }
           items={ itemsWithTranslation }
+          noCopy={ noCopy }
         />
       </Box>
       <Box hideBelow="lg">
@@ -90,6 +93,7 @@ const TxsContent = ({
           enableTimeIncrement={ enableTimeIncrement }
           isLoading={ isPlaceholderData }
           stickyHeader={ stickyHeader }
+          noCopy={ noCopy }
         />
       </Box>
     </>

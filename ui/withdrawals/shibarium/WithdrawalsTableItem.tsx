@@ -35,6 +35,7 @@ const WithdrawalsTableItem = ({ item, isLoading }: Props) => {
           hash={ item.l2_transaction_hash }
           textStyle="sm"
           truncation="constant_long"
+          noCopy
         />
       </TableCell>
       <TableCell verticalAlign="middle">
@@ -43,6 +44,7 @@ const WithdrawalsTableItem = ({ item, isLoading }: Props) => {
           hash={ item.l1_transaction_hash }
           truncation="constant_long"
           textStyle="sm"
+          noCopy
         />
       </TableCell>
       <TableCell verticalAlign="middle">

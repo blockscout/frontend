@@ -31,7 +31,7 @@ const LatestZetaChainCCTXItem = ({ tx, isLoading, animation }: Props) => {
       animation={ animation }
     >
       <ZetaChainCCTXReducedStatus status={ tx.status_reduced } isLoading={ isLoading } type="full"/>
-      <TxEntityZetaChainCC hash={ tx.index } isLoading={ isLoading } truncation="constant_long" fontWeight={ 600 }/>
+      <TxEntityZetaChainCC hash={ tx.index } isLoading={ isLoading } truncation="constant_long" fontWeight={ 600 } noCopy/>
       <Skeleton loading={ isLoading } display="flex" color="text.secondary" gap={ 2 } justifyContent="start">
         { dayjs(Number(tx.last_update_timestamp) * SECOND).fromNow() }
         <TextSeparator mx={ 0 }/>

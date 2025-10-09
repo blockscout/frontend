@@ -160,7 +160,7 @@ const AddressDetails = ({ addressQuery, countersQuery, isLoading }: Props) => {
                 noIcon
               />
               <Text whiteSpace="pre"> at txn </Text>
-              <TxEntity hash={ data.creation_transaction_hash } truncation="constant" noIcon noCopy={ false }/>
+              <TxEntity hash={ data.creation_transaction_hash } truncation="constant" noIcon/>
               { data.creation_status && <ContractCreationStatus status={ data.creation_status } ml={{ base: 0, lg: 2 }}/> }
             </DetailedInfo.ItemValue>
           </>

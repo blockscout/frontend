@@ -17,10 +17,10 @@ const BlockInternalTxs = ({ query, top }: Props) => {
   const content = data?.items ? (
     <>
       <Box hideFrom="lg">
-        <InternalTxsList data={ data.items } isLoading={ isPlaceholderData } showBlockInfo={ false }/>
+        <InternalTxsList data={ data.items } isLoading={ isPlaceholderData } showBlockInfo={ false } noCopy/>
       </Box>
       <Box hideBelow="lg">
-        <InternalTxsTable data={ data.items } isLoading={ isPlaceholderData } top={ top } showBlockInfo={ false }/>
+        <InternalTxsTable data={ data.items } isLoading={ isPlaceholderData } top={ top } showBlockInfo={ false } noCopy/>
       </Box>
     </>
   ) : null;

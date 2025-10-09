@@ -30,9 +30,10 @@ type Props = {
   isLoading?: boolean;
   animation?: string;
   chainData?: ChainConfig;
+  noCopy?: boolean;
 };
 
-const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, isLoading, animation, chainData }: Props) => {
+const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, isLoading, animation, chainData, noCopy }: Props) => {
   const dataTo = tx.to ? tx.to : tx.created_contract;
 
   return (
@@ -53,7 +54,7 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, 
             fontWeight="bold"
             noIcon
             maxW="100%"
-            truncation="constant_long"
+            noCopy={ noCopy }
           />
           <TimeWithTooltip
             timestamp={ tx.timestamp }

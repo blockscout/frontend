@@ -30,7 +30,7 @@ const TxDetailsWrapped = ({ data }: Props) => {
         Transaction hash
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
-        <TxEntity hash={ data.hash } noIcon noLink noCopy={ false }/>
+        <TxEntity hash={ data.hash } noIcon noLink/>
       </DetailedInfo.ItemValue>
 
       <DetailedInfo.ItemLabel

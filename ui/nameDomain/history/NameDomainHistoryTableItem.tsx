@@ -38,6 +38,7 @@ const NameDomainHistoryTableItem = ({ isLoading, event, domain }: Props) => {
           fontWeight={ 700 }
           noIcon
           truncation="constant_long"
+          noCopy
         />
       </TableCell>
       <TableCell pl={ 9 } verticalAlign="middle">

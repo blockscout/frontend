@@ -33,9 +33,10 @@ type Props = {
   isLoading?: boolean;
   animation?: string;
   chainData?: ChainConfig;
+  noCopy?: boolean;
 };
 
-const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeIncrement, animation, chainData }: Props) => {
+const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeIncrement, animation, chainData, noCopy }: Props) => {
   const dataTo = tx.to ? tx.to : tx.created_contract;
 
   return (
@@ -65,6 +66,7 @@ const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeI
           icon={ !tx.is_pending_update && tx.transaction_types.includes('blob_transaction') ? { name: 'blob' } : undefined }
           chain={ chainData }
           isPendingUpdate={ tx.is_pending_update }
+          noCopy={ noCopy }
         />
         <TimeWithTooltip
           timestamp={ tx.timestamp }

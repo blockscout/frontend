@@ -163,6 +163,8 @@ const ScrollL2TxnBatchDetails = ({ query }: Props) => {
           isLoading={ isPlaceholderData }
           hash={ data.commitment_transaction.hash }
           maxW="100%"
+          noCopy
+
         />
       </DetailedInfo.ItemValue>
 
@@ -191,6 +193,7 @@ const ScrollL2TxnBatchDetails = ({ query }: Props) => {
             isLoading={ isPlaceholderData }
             hash={ data.confirmation_transaction.hash }
             maxW="100%"
+            noCopy
           />
         ) : <Skeleton loading={ isPlaceholderData } display="inline-block">Pending</Skeleton> }
       </DetailedInfo.ItemValue>

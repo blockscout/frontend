@@ -59,6 +59,7 @@ const ScrollL2TxnBatchesListItem = ({ item, isLoading }: Props) => {
         <TxEntityL1
           hash={ item.commitment_transaction.hash }
           isLoading={ isLoading }
+          noCopy
         />
       </ListItemMobileGrid.Value>
 
@@ -88,6 +89,7 @@ const ScrollL2TxnBatchesListItem = ({ item, isLoading }: Props) => {
           <TxEntityL1
             hash={ item.confirmation_transaction.hash }
             isLoading={ isLoading }
+            noCopy
           />
         ) : <Skeleton loading={ isLoading } display="inline-block">Pending</Skeleton> }
       </ListItemMobileGrid.Value>

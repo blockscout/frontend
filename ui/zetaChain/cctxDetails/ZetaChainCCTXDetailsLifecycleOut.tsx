@@ -51,7 +51,6 @@ const ZetaChainCCTXDetailsLifecycleOut = ({ outboundParam, tx, isLoading, isLast
             hash={ outboundParam.hash }
             isLoading={ isLoading }
             noIcon
-            noCopy={ false }
           />
         </>
       );
@@ -60,9 +59,9 @@ const ZetaChainCCTXDetailsLifecycleOut = ({ outboundParam, tx, isLoading, isLast
       <>
         <Text color="text.secondary" fontWeight="medium">Transaction</Text>
         { chainToId !== config.chain.id ? (
-          <TxEntityZetaChainExternal chainId={ chainToId } hash={ outboundParam.hash } noIcon noCopy={ false }/>
+          <TxEntityZetaChainExternal chainId={ chainToId } hash={ outboundParam.hash } noIcon/>
         ) : (
-          <TxEntity hash={ outboundParam.hash } noIcon noCopy={ false }/>
+          <TxEntity hash={ outboundParam.hash } noIcon/>
         ) }
       </>
     );
