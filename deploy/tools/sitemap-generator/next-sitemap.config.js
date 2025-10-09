@@ -218,7 +218,7 @@ module.exports = {
     );
     const tokens = fetchResource(
       `${ apiUrl }/tokens`,
-      (data) => data.items.map(({ address }) => `/token/${ address }`),
+      (data) => data.items.map(({ address_hash }) => `/token/${ address_hash }`),
     );
     const contracts = fetchResource(
       `${ apiUrl }/smart-contracts`,

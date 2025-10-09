@@ -58,7 +58,7 @@ const SpecifyBanner = ({ className, platform, address, onEmpty, isLoading }: Pro
   }, [ address, isMobile, onEmpty, isLoading ]);
 
   const handleClick = React.useCallback(() => {
-    window.open(ad?.ctaUrl, '_blank');
+    window.open(ad?.ctaUrl, '_blank', 'noopener,noreferrer');
   }, [ ad?.ctaUrl ]);
 
   const { width, height } = (() => {

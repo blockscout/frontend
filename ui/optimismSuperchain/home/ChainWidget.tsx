@@ -63,7 +63,8 @@ const ChainWidget = ({ data }: Props) => {
           <Tooltip content="Open explorer">
             <Link
               href={ data.config.app.baseUrl }
-              target="_blank"
+              external
+              noIcon
               color="icon.secondary"
               _hover={{
                 color: 'hover',

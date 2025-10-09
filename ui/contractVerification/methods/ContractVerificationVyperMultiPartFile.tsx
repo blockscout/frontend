@@ -17,7 +17,7 @@ const ContractVerificationVyperMultiPartFile = ({ config }: { config: SmartContr
   const interfacesHint = (
     <>
       <span>Add any </span>
-      <Link href="https://docs.vyperlang.org/en/stable/interfaces.html" target="_blank">required interfaces</Link>
+      <Link href="https://docs.vyperlang.org/en/stable/interfaces.html" external noIcon>required interfaces</Link>
       <span> for the main compiled contract.</span>
     </>
   );

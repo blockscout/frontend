@@ -127,7 +127,7 @@ const TokenInstanceContent = () => {
 
   let pagination: PaginationParams | undefined;
 
-  if (tab === 'token_transfers') {
+  if (tab === 'token_transfers' || !tab) {
     pagination = transfersQuery.pagination;
   } else if (tab === 'holders') {
     pagination = holdersQuery.pagination;
