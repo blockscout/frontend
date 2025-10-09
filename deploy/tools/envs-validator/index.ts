@@ -5,6 +5,7 @@ import type { ValidationError } from 'yup';
 
 import { buildExternalAssetFilePath } from '../../../configs/app/utils';
 import schema from './schema';
+import schemaMultichain from './schema_multichain';
 
 const silent = process.argv.includes('--silent');
 
@@ -51,7 +52,12 @@ async function validateEnvs(appEnvs: Record<string, string>) {
       }
     }
 
-    await schema.validate(appEnvs, { stripUnknown: false, abortEarly: false });
+    if (appEnvs.NEXT_PUBLIC_MULTICHAIN_ENABLED === 'true') {
+      await schemaMultichain.validate(appEnvs, { stripUnknown: false, abortEarly: false });
+    } else {
+      await schema.validate(appEnvs, { stripUnknown: false, abortEarly: false });
+    }
+
     !silent && console.log('👍 All good!');
   } catch (_error) {
     if (typeof _error === 'object' && _error !== null && 'errors' in _error) {

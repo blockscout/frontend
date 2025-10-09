@@ -12,9 +12,9 @@ import TokensListItem from './TokensListItem';
 import TokensTable from './TokensTable';
 
 interface Props {
-  query: QueryWithPagesResult<'general:tokens'> | QueryWithPagesResult<'general:tokens_bridged'>;
-  onSortChange: (value: TokensSortingValue) => void;
-  sort: TokensSortingValue;
+  query: QueryWithPagesResult<'general:tokens'> | QueryWithPagesResult<'general:tokens_bridged'> | QueryWithPagesResult<'multichainAggregator:tokens'>;
+  onSortChange?: (value: TokensSortingValue) => void;
+  sort?: TokensSortingValue;
   actionBar?: React.ReactNode;
   hasActiveFilters: boolean;
   description?: React.ReactNode;

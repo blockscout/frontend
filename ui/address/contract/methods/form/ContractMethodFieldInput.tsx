@@ -47,7 +47,6 @@ const ContractMethodFieldInput = ({ data, hideLabel, path: name, className, isDi
   const { control, setValue, getValues } = useFormContext();
   const { field, fieldState } = useController({ control, name, rules: { validate } });
 
-  const inputBgColor = { _light: 'white', _dark: 'black' };
   const nativeCoinRowBgColor = { _light: 'gray.100', _dark: 'gray.700' };
 
   const hasMultiplyButton = argTypeMatchInt && Number(argTypeMatchInt.power) >= 64;
@@ -172,7 +171,7 @@ const ContractMethodFieldInput = ({ data, hideLabel, path: name, className, isDi
   const inputProps = {
     ...field,
     size: 'sm' as const,
-    bgColor: inputBgColor,
+    bgColor: 'bg.primary',
     onChange: handleChange,
     required: !isOptional,
     placeholder: data.type,

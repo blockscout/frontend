@@ -3,6 +3,8 @@ import { factory } from './utils';
 
 export const base = factory([ ]);
 export const block = factory([ guards.notOpSuperchain ]);
+export const tx = factory([ guards.notOpSuperchain ]);
+export const token = factory([ guards.notOpSuperchain ]);
 export const account = factory([ guards.account ]);
 export const verifiedAddresses = factory([ guards.account, guards.verifiedAddresses ]);
 export const userOps = factory([ guards.userOps ]);

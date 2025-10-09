@@ -1,3 +1,4 @@
+import type { BoxProps } from '@chakra-ui/react';
 import { Box, Icon } from '@chakra-ui/react';
 import React from 'react';
 
@@ -7,11 +8,12 @@ import React from 'react';
 import emptySearchResultIcon from 'icons/empty_search_result.svg';
 import { Heading } from 'toolkit/chakra/heading';
 
-interface Props {
+interface Props extends BoxProps {
+  title?: string;
   text: string | React.JSX.Element;
 }
 
-const EmptySearchResult = ({ text }: Props) => {
+const EmptySearchResult = ({ text, title, ...rest }: Props) => {
   return (
     <Box
       display="flex"
@@ -19,6 +21,7 @@ const EmptySearchResult = ({ text }: Props) => {
       alignItems="center"
       justifyContent="center"
       mt="50px"
+      { ...rest }
     >
       <Icon
         as={ emptySearchResultIcon }
@@ -28,7 +31,7 @@ const EmptySearchResult = ({ text }: Props) => {
       />
 
       <Heading level="3" mb={ 2 }>
-        No results
+        { title || 'No results' }
       </Heading>
 
       <Box fontSize={{ base: 'sm', sm: 'md' }} textAlign="center">

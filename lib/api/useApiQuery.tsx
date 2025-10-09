@@ -10,7 +10,7 @@ import useApiFetch from './useApiFetch';
 
 export interface Params<R extends ResourceName, E = unknown, D = ResourcePayload<R>> {
   pathParams?: ResourcePathParams<R>;
-  queryParams?: Record<string, string | Array<string> | number | boolean | undefined>;
+  queryParams?: Record<string, string | Array<string> | number | boolean | undefined | null>;
   fetchParams?: Pick<FetchParams, 'body' | 'method' | 'headers'>;
   queryOptions?: Partial<Omit<UseQueryOptions<ResourcePayload<R>, ResourceError<E>, D>, 'queryFn'>>;
   logError?: boolean;

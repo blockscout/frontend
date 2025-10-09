@@ -7,6 +7,7 @@ import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
 import getSocketUrl from 'lib/api/getSocketUrl';
 import { useMultichainContext } from 'lib/contexts/multichain';
+import useIsInitialLoading from 'lib/hooks/useIsInitialLoading';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import getNetworkValidationActionText from 'lib/networks/getNetworkValidationActionText';
 import getQueryParamString from 'lib/router/getQueryParamString';
@@ -41,7 +42,10 @@ const OpSuperchainTxsLocal = () => {
     resourceName: 'general:txs_validated',
     filters: { filter: 'validated' },
     options: {
-      enabled: tab === 'txs_local_validated' || tab === 'txs_local',
+      enabled: tab === 'txs_local_validated' ||
+        tab === 'txs_local' ||
+        !tab ||
+        (!chainConfig?.features.dataAvailability.isEnabled && tab === 'txs_local_blob'),
       placeholderData: generateListStub<'general:txs_validated'>(TX, 50, { next_page_params: {
         block_number: 9005713,
         index: 5,
@@ -115,11 +119,20 @@ const OpSuperchainTxsLocal = () => {
 
   const currentQuery = (() => {
     switch (tab) {
-      case 'txs_local_pending': return txsPendingQuery;
-      case 'txs_local_blob': return txsWithBlobsQuery;
+      case 'txs_local_pending': {
+        return txsPendingQuery;
+      };
+      case 'txs_local_blob': {
+        if (chainConfig?.features.dataAvailability.isEnabled) {
+          return txsWithBlobsQuery;
+        }
+        return txsValidatedQuery;
+      };
       default: return txsValidatedQuery;
     }
   })();
+
+  const isTabsLoading = useIsInitialLoading(currentQuery.isPlaceholderData);
 
   const rightSlot = (() => {
     if (isMobile) {
@@ -146,7 +159,7 @@ const OpSuperchainTxsLocal = () => {
       <SocketProvider url={ getSocketUrl(chainConfig) }>
         <RoutedTabs
           tabs={ tabs }
-          isLoading={ currentQuery.isPlaceholderData }
+          isLoading={ isTabsLoading }
           variant="secondary"
           size="sm"
           preservedParams={ QUERY_PRESERVED_PARAMS }

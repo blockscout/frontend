@@ -1,7 +1,9 @@
 import { Box } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
+import type { FormEvent } from 'react';
 import React from 'react';
 
+import type { Route } from 'nextjs-routes';
 import { route } from 'nextjs-routes';
 
 import * as mixpanel from 'lib/mixpanel/index';
@@ -28,15 +30,37 @@ import useQuickSearchQuery from './useQuickSearchQuery';
 
 type Props = {
   isHeroBanner?: boolean;
+  onGoToSearchResults?: (searchTerm: string) => void;
 };
 
-const SearchBarMobile = ({ isHeroBanner }: Props) => {
+const SearchBarMobile = ({ isHeroBanner, onGoToSearchResults }: Props) => {
   const inputRef = React.useRef<HTMLFormElement>(null);
   const router = useRouter();
 
   const { open, onOpen, onClose, onOpenChange } = useDisclosure();
   const { searchTerm, debouncedSearchTerm, handleSearchTermChange, query, zetaChainCCTXQuery, externalSearchItem } = useQuickSearchQuery();
   const recentSearchKeywords = getRecentSearchKeywords();
+
+  const navigateToResults = React.useCallback(() => {
+    if (searchTerm) {
+      const resultRoute: Route = { pathname: '/search-results', query: { q: searchTerm, redirect: 'true' } };
+      const url = route(resultRoute);
+      mixpanel.logEvent(mixpanel.EventTypes.SEARCH_QUERY, {
+        'Search query': searchTerm,
+        'Source page type': mixpanel.getPageType(router.pathname),
+        'Result URL': url,
+      });
+      saveToRecentKeywords(searchTerm);
+      router.push(resultRoute, undefined, { shallow: true });
+      onGoToSearchResults?.(searchTerm);
+      onClose();
+    }
+  }, [ searchTerm, router, onGoToSearchResults, onClose ]);
+
+  const handleSubmit = React.useCallback((event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    navigateToResults();
+  }, [ navigateToResults ]);
 
   const onTriggerClick = React.useCallback((event: React.MouseEvent) => {
     onOpen();
@@ -117,6 +141,7 @@ const SearchBarMobile = ({ isHeroBanner }: Props) => {
             ref={ inputRef }
             onChange={ handleSearchTermChange }
             onClear={ handleClear }
+            onSubmit={ handleSubmit }
             value={ searchTerm }
             mb={ 5 }
           />
@@ -143,7 +168,7 @@ const SearchBarMobile = ({ isHeroBanner }: Props) => {
             justifyContent="center"
           >
             <Link
-              href={ route({ pathname: '/search-results', query: { q: searchTerm } }) }
+              onClick={ navigateToResults }
               textStyle="sm"
             >
               View all results

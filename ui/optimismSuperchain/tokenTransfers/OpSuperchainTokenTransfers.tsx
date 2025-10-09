@@ -8,6 +8,7 @@ import { MultichainProvider } from 'lib/contexts/multichain';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
+import ComingSoon from 'ui/shared/ComingSoon';
 import PopoverFilter from 'ui/shared/filters/PopoverFilter';
 import TokenTypeFilter from 'ui/shared/filters/TokenTypeFilter';
 import ChainSelect from 'ui/shared/multichain/ChainSelect';
@@ -35,7 +36,7 @@ const OpSuperchainTokenTransfers = () => {
   const router = useRouter();
   const tab = getQueryParamString(router.query.tab);
 
-  const isLocalTab = tab === 'local';
+  const isLocalTab = tab === 'local' || !tab;
 
   const queryLocal = useTokenTransfersQuery({ enabled: isLocalTab, isMultichain: true });
 
@@ -44,7 +45,7 @@ const OpSuperchainTokenTransfers = () => {
       {
         id: 'index',
         title: 'Cross-chain',
-        component: <div>Coming soon 🔜</div>,
+        component: <ComingSoon/>,
       },
       {
         id: 'local',
@@ -88,6 +89,7 @@ const OpSuperchainTokenTransfers = () => {
       />
       <RoutedTabs
         tabs={ tabs }
+        defaultTabId="local"
         listProps={ isMobile ? undefined : TAB_LIST_PROPS }
         rightSlot={ rightSlot }
         rightSlotProps={ rightSlot ? TABS_RIGHT_SLOT_PROPS : undefined }

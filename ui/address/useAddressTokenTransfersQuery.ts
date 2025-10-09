@@ -23,9 +23,10 @@ interface Props {
   currentAddress: string;
   enabled?: boolean;
   isMultichain?: boolean;
+  chainIds?: Array<string>;
 }
 
-export default function useAddressTokenTransfersQuery({ currentAddress, enabled, isMultichain }: Props) {
+export default function useAddressTokenTransfersQuery({ currentAddress, enabled, isMultichain, chainIds }: Props) {
   const router = useRouter();
 
   const [ filters, setFilters ] = React.useState<Filters>(
@@ -48,6 +49,7 @@ export default function useAddressTokenTransfersQuery({ currentAddress, enabled,
       }),
     },
     isMultichain,
+    chainIds,
   });
 
   const onTypeFilterChange = React.useCallback((nextValue: Array<TokenType>) => {

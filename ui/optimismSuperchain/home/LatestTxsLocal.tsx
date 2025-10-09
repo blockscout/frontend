@@ -44,7 +44,7 @@ const LatestTxsLocal = ({ chainSlug }: Props) => {
     <MultichainProvider chainSlug={ chainSlug }>
       <SocketProvider url={ getSocketUrl(chainData?.config) }>
         <TxsContent
-          items={ query.data || [] }
+          items={ query.data }
           isPlaceholderData={ query.isPlaceholderData }
           isError={ query.isError }
           pagination={ PAGINATION_PARAMS }

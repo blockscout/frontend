@@ -306,7 +306,6 @@ export default function useNavItems(): ReturnType {
     const otherNavItems: Array<NavItem> | Array<Array<NavItem>> = [
       config.features.opSuperchain.isEnabled ? {
         text: 'Verify contract',
-        // TODO @tom2drum adjust URL to Vera
         url: 'https://vera.blockscout.com',
       } : {
         text: 'Verify contract',

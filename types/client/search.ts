@@ -1,5 +1,6 @@
 import type { CctxListItem } from '@blockscout/zetachain-cctx-types';
 import type * as api from 'types/api/search';
+import type * as multichain from 'types/client/multichain-aggregator';
 
 export interface SearchResultFutureBlock {
   type: 'block';
@@ -18,3 +19,5 @@ export interface SearchResultZetaChainCCTX {
 }
 
 export type SearchResultItem = api.SearchResultItem | SearchResultBlock | SearchResultZetaChainCCTX;
+
+export type QuickSearchResultItem = multichain.QuickSearchResultItem | SearchResultItem;

@@ -8,6 +8,7 @@
 
 // so i did it with js
 
+import type { BoxProps } from '@chakra-ui/react';
 import { chakra } from '@chakra-ui/react';
 import { debounce } from 'es-toolkit';
 import React, { useCallback, useEffect, useRef } from 'react';
@@ -20,7 +21,7 @@ import { BODY_TYPEFACE, HEADING_TYPEFACE } from 'toolkit/theme/foundations/typog
 const TAIL_LENGTH = 4;
 const HEAD_MIN_LENGTH = 4;
 
-interface Props {
+interface Props extends BoxProps {
   hash: string;
   fontWeight?: string | number;
   noTooltip?: boolean;
@@ -29,7 +30,7 @@ interface Props {
   as?: React.ElementType;
 }
 
-const HashStringShortenDynamic = ({ hash, fontWeight = '400', noTooltip, tailLength = TAIL_LENGTH, as = 'span', tooltipInteractive }: Props) => {
+const HashStringShortenDynamic = ({ hash, fontWeight = '400', noTooltip, tailLength = TAIL_LENGTH, as = 'span', tooltipInteractive, ...props }: Props) => {
   const elementRef = useRef<HTMLSpanElement>(null);
   const [ displayedString, setDisplayedString ] = React.useState(hash);
 
@@ -91,7 +92,7 @@ const HashStringShortenDynamic = ({ hash, fontWeight = '400', noTooltip, tailLen
     };
   }, [ calculateString ]);
 
-  const content = <chakra.span ref={ elementRef } as={ as }>{ displayedString }</chakra.span>;
+  const content = <chakra.span ref={ elementRef } as={ as } { ...props }>{ displayedString }</chakra.span>;
   const isTruncated = hash.length !== displayedString.length;
 
   if (isTruncated && !noTooltip) {

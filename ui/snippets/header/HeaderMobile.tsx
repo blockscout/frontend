@@ -13,17 +13,17 @@ import Burger from './Burger';
 
 type Props = {
   hideSearchButton?: boolean;
-  renderSearchBar?: () => React.ReactNode;
+  onGoToSearchResults?: (searchTerm: string) => void;
 };
 
-const HeaderMobile = ({ hideSearchButton }: Props) => {
+const HeaderMobile = ({ hideSearchButton, onGoToSearchResults }: Props) => {
   const ref = React.useRef<HTMLDivElement>(null);
   const isSticky = useIsSticky(ref, 5);
 
   return (
     <Box
       ref={ ref }
-      bgColor={{ _light: 'white', _dark: 'black' }}
+      bgColor="bg.primary"
       display={{ base: 'block', lg: 'none' }}
       position="sticky"
       top="-1px"
@@ -36,7 +36,7 @@ const HeaderMobile = ({ hideSearchButton }: Props) => {
         as="header"
         paddingX={ 3 }
         paddingY={ 2 }
-        bgColor={{ _light: 'white', _dark: 'black' }}
+        bgColor="bg.primary"
         width="100%"
         alignItems="center"
         transitionProperty="box-shadow"
@@ -46,7 +46,7 @@ const HeaderMobile = ({ hideSearchButton }: Props) => {
         <Burger/>
         <NetworkLogo ml={ 2 } mr="auto"/>
         <Flex columnGap={ 2 }>
-          { !hideSearchButton && <SearchBarMobile/> }
+          { !hideSearchButton && <SearchBarMobile onGoToSearchResults={ onGoToSearchResults }/> }
           { config.features.rewards.isEnabled && <RewardsButton/> }
           { (config.features.account.isEnabled && <UserProfileMobile/>) ||
             (config.features.blockchainInteraction.isEnabled && <UserWalletMobile/>)
