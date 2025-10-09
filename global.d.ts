@@ -21,6 +21,7 @@ declare global {
     abkw: string;
     __envs: Record<string, string>;
     __multichainConfig: MultichainConfig;
+    __essentialDappsChains: MultichainConfig;
   }
 
   namespace NodeJS {
