@@ -1,7 +1,7 @@
 import type CspDev from 'csp-dev';
 
 import config from 'configs/app';
-import essentialDappsChains from 'configs/essentialDappsChains';
+import * as essentialDappsChains from 'configs/essential-dapps-chains/config.edge';
 
 const feature = config.features.marketplace;
 
@@ -11,6 +11,8 @@ export function marketplace(): CspDev.DirectiveDescriptor {
   }
 
   const posthogHost = feature.essentialDapps?.multisend?.posthogHost ? '*.posthog.com' : '';
+  const chainsConfig = feature.essentialDapps && essentialDappsChains.getValue();
+  const externalApiEndpoints = chainsConfig?.chains.map((chain) => chain.config.apis.general?.endpoint).filter(Boolean);
 
   return {
     'connect-src': [
@@ -19,7 +21,7 @@ export function marketplace(): CspDev.DirectiveDescriptor {
         'https://li.quest/',
         'https://*.multisender.app/',
         posthogHost,
-        ...Object.values(essentialDappsChains).map((explorerUrl) => `${ explorerUrl }/api/`),
+        ...(externalApiEndpoints ?? []),
       ] : []),
     ],
 

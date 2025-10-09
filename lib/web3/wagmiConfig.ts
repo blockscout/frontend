@@ -5,12 +5,11 @@ import { fallback, http } from 'viem';
 import { createConfig } from 'wagmi';
 
 import appConfig from 'configs/app';
+import essentialDappsChainsConfig from 'configs/essential-dapps-chains';
 import multichainConfig from 'configs/multichain';
-import { currentChain, parentChain, clusterChains, essentialDappsChains } from 'lib/web3/chains';
+import { chains, parentChain } from 'lib/web3/chains';
 
 const feature = appConfig.features.blockchainInteraction;
-
-const chains = [ currentChain, parentChain, ...(clusterChains ?? []), ...(essentialDappsChains ?? []) ].filter(Boolean);
 
 const getChainTransportFromConfig = (config: typeof appConfig, readOnly?: boolean): Record<string, Transport> => {
   if (!config.chain.id) {
@@ -27,14 +26,16 @@ const getChainTransportFromConfig = (config: typeof appConfig, readOnly?: boolea
   };
 };
 
-const reduceClusterChainsToTransportConfig = (readOnly: boolean): Record<string, Transport> => {
-  const config = multichainConfig();
+const reduceExternalChainsToTransportConfig = (readOnly: boolean): Record<string, Transport> => {
+  const multichain = multichainConfig();
+  const essentialDapps = essentialDappsChainsConfig();
+  const chains = [ ...(multichain?.chains ?? []), ...(essentialDapps?.chains ?? []) ].filter(Boolean);
 
-  if (!config) {
+  if (!chains) {
     return {};
   }
 
-  return config.chains
+  return chains
     .map(({ config }) => getChainTransportFromConfig(config, readOnly))
     .reduce((result, item) => {
       Object.entries(item).map(([ id, transport ]) => {
@@ -52,7 +53,7 @@ const wagmi = (() => {
       transports: {
         ...getChainTransportFromConfig(appConfig, true),
         ...(parentChain ? { [parentChain.id]: http(parentChain.rpcUrls.default.http[0]) } : {}),
-        ...reduceClusterChainsToTransportConfig(true),
+        ...reduceExternalChainsToTransportConfig(true),
       },
       ssr: true,
       batch: { multicall: { wait: 100, batchSize: 5 } },
@@ -67,7 +68,7 @@ const wagmi = (() => {
     transports: {
       ...getChainTransportFromConfig(appConfig, false),
       ...(parentChain ? { [parentChain.id]: http() } : {}),
-      ...reduceClusterChainsToTransportConfig(false),
+      ...reduceExternalChainsToTransportConfig(false),
     },
     projectId: feature.walletConnect.projectId,
     ssr: true,

@@ -2,35 +2,70 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, resolve as resolvePath } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { Worker } from 'node:worker_threads';
+import * as viemChains from 'viem/chains';
+import { pick } from 'es-toolkit';
 
-import chainsMap from '../../../configs/essentialDappsChains';
-
-type ChainEnvConfig = {
-  envs: Record<string, string>;
-};
-
-type OutputChainValue = {
-  name: string | undefined;
-  icon: string | undefined;
-  iconDark: string | undefined;
-};
+import { EssentialDappsConfig } from 'types/client/marketplace';
+import { ChainConfig } from 'types/multichain';
+import { getEnvValue, parseEnvJson } from 'configs/app/utils';
+import {uniq } from 'es-toolkit';
+import currentChainConfig from 'configs/app';
 
 const currentFilePath = fileURLToPath(import.meta.url);
 const currentDir = dirname(currentFilePath);
 
-async function fetchChainConfig(url: string): Promise<ChainEnvConfig | null> {
-  try {
-    const response = await fetch(`${ url }/node-api/config`);
-    if (!response.ok) {
-      console.error(`   ❌ Failed to fetch config from ${ url }: ${ response.status } ${ response.statusText }`);
-      return null;
-    }
-    const config = await response.json();
-    return config as ChainEnvConfig;
-  } catch (error) {
-    console.error(`   ❌ Error fetching config from ${ url }:`, error);
-    return null;
+async function getExplorerUrls(chainIds: Array<string>) {
+  const response = await fetch('https://chains.blockscout.com/api/chains');
+  if (!response.ok) {
+    throw new Error(`Failed to fetch chains info from Chainscout API`);
   }
+  const chainsInfo = await response.json() as Record<string, { explorers: [ { url: string } ] }>;
+
+  return chainIds.map((chainId) => ({
+    id: chainId,
+    explorerUrl: chainsInfo[chainId]?.explorers[0]?.url,
+  }))
+}
+
+function getSlug(chainName: string) {
+  return chainName.toLowerCase().replace(/ /g, '-').replace(/[^a-z0-9-]/g, '');
+}
+
+function trimChainConfig(config: ChainConfig['config']) {
+  return {
+    ...pick(config, [ 'app', 'chain' ]),
+    apis: pick(config.apis || {}, [ 'general' ]),
+    UI: {
+      navigation: pick(config.UI.navigation || {}, [ 'icon' ]),
+    }
+  };
+}
+
+async function computeChainConfig(url: string): Promise<unknown> {
+  return new Promise((resolve, reject) => {
+    const workerPath = resolvePath(currentDir, 'worker.js');
+
+    const worker = new Worker(workerPath, {
+      workerData: { url },
+      env: {} // Start with empty environment
+    });
+
+    worker.on('message', (config) => {
+      resolve(config);
+    });
+
+    worker.on('error', (error) => {
+      console.error('Worker error:', error);
+      reject(error);
+    });
+
+    worker.on('exit', (code) => {
+      if (code !== 0) {
+        reject(new Error(`Worker stopped with exit code ${ code }`));
+      }
+    });
+  });
 }
 
 async function run() {
@@ -42,27 +77,48 @@ async function run() {
 
     console.log('🌀 Generating essential dapps chains config...');
 
-    const entries = Object.entries(chainsMap as Record<string, string>) as Array<[string, string]>;
+    const featureConfig = parseEnvJson<EssentialDappsConfig>(getEnvValue('NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_CONFIG'));
+    const enabledChains = uniq([
+      ...Object.values(featureConfig?.swap?.chains ?? []),
+      ...Object.values(featureConfig?.revoke?.chains ?? []),
+      ...Object.values(featureConfig?.multisend?.chains ?? []),
+    ].filter((chain) => chain !== currentChainConfig.chain.id))
 
-    const mappingEntries = await Promise.all(entries.map(async([ id, explorerUrl ]) => {
-      console.log('   ⏳ Fetching chain config from:', explorerUrl);
-      const cfg = await fetchChainConfig(explorerUrl);
-      const envs = cfg?.envs || {};
-      const value: OutputChainValue = {
-        name: envs.NEXT_PUBLIC_NETWORK_NAME,
-        icon: envs.NEXT_PUBLIC_NETWORK_ICON,
-        iconDark: envs.NEXT_PUBLIC_NETWORK_ICON_DARK,
-      };
-      return [ String(id), value ] as const;
-    }));
+    if (enabledChains.length === 0) {
+      console.log('⚠️  No chains are enabled. Skipping essential dapps chains config generation.\n');
+      return;
+    }
 
-    const chainsData = Object.fromEntries(mappingEntries) as Record<string, OutputChainValue>;
+    const chainsUrlMap = await getExplorerUrls(enabledChains);
+    const chainsWithoutUrl = Object.entries(chainsUrlMap).filter(([_, explorerUrl]) => !explorerUrl);
 
+    if (chainsWithoutUrl.length > 0) {
+      console.log(`⚠️  For the following chains explorer url was not found: ${ chainsWithoutUrl.map(([chainId]) => chainId).join(', ') }. Therefore, they will not be enabled.`);
+    }
+    const explorerUrls = Object.values(chainsUrlMap).map(({ explorerUrl }) => explorerUrl);
+    console.log(`ℹ️  For ${ explorerUrls.length } chains explorer url was found in static config. Fetching parameters for each chain...`);
+
+    const chainConfigs = await Promise.all(explorerUrls.map(computeChainConfig)) as Array<ChainConfig['config']>;
+
+    const result = {
+      chains: [ currentChainConfig, ...chainConfigs ].map((config, index) => {
+        const chainName = (config as { chain: { name: string } })?.chain?.name ?? `Chain ${ index + 1 }`;
+        return {
+          slug: getSlug(chainName),
+          config: trimChainConfig(config),
+          contracts: Object.values(viemChains).find(({ id }) => id === Number(config.chain.id))?.contracts
+        };
+      }),
+    };
+    
     const outputDir = resolvePath(currentDir, '../../../../public/assets/essential-dapps');
     mkdirSync(outputDir, { recursive: true });
-
+    
     const outputPathJson = resolvePath(outputDir, 'chains.json');
-    writeFileSync(outputPathJson, JSON.stringify(chainsData, null, 2));
+    writeFileSync(outputPathJson, JSON.stringify(result, null, 2));
+
+    const outputPathJs = resolvePath(outputDir, 'chains.js');
+    writeFileSync(outputPathJs, `window.__essentialDappsChains = ${ JSON.stringify(result) };`);
 
     console.log('👍 Done!\n');
   } catch (error) {
