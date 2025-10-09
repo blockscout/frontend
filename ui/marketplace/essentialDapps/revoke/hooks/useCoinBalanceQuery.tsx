@@ -14,7 +14,7 @@ const PLACEHOLDER_DATA = {
 };
 
 export default function useCoinBalanceQuery(chain: ChainConfig | undefined, userAddress: string) {
-  const publicClient = usePublicClient({ chainId: chain?.config.chain.id });
+  const publicClient = usePublicClient({ chainId: Number(chain?.config.chain.id) });
 
   const addressQuery = useApiQuery('general:address', {
     pathParams: { hash: userAddress },

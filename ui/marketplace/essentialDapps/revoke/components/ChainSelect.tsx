@@ -10,8 +10,8 @@ import ChainIcon from 'ui/optimismSuperchain/components/ChainIcon';
 
 const collection = createListCollection<SelectOption>({
   items: essentialDappsChainsConfig()?.chains.map((chain) => ({
-    value: chain.config.chain.id,
-    label: chain.config.chain.name,
+    value: chain.config.chain.id as string,
+    label: chain.config.chain.name || chain.slug,
     icon: <ChainIcon data={ chain } alt={ chain.config.chain.name }/>,
   })) || [],
 });
