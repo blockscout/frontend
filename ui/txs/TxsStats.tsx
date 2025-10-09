@@ -96,8 +96,7 @@ const TxsStats = (props: Props) => {
           value={ Number(txCount24h).toLocaleString() }
           period="24h"
           isLoading={ isLoading }
-          // TODO @tom2drum disable links to stats
-          href={ chainConfig.features.stats.isEnabled ? { pathname: '/stats/[id]', query: { id: 'newTxns' } } : undefined }
+          href={ !multichainContext && chainConfig.features.stats.isEnabled ? { pathname: '/stats/[id]', query: { id: 'newTxns' } } : undefined }
         />
       ) }
       { operationalTxns24hArbitrum && (
@@ -139,7 +138,7 @@ const TxsStats = (props: Props) => {
           valuePostfix={ thinsp + chainConfig.chain.currency.symbol }
           period="24h"
           isLoading={ isLoading }
-          href={ chainConfig.features.stats.isEnabled ? { pathname: '/stats/[id]', query: { id: 'txnsFee' } } : undefined }
+          href={ !multichainContext && chainConfig.features.stats.isEnabled ? { pathname: '/stats/[id]', query: { id: 'txnsFee' } } : undefined }
         />
       ) }
       { txFeeAvg && (
@@ -152,7 +151,7 @@ const TxsStats = (props: Props) => {
           valuePostfix={ txFeeAvg.usd ? undefined : thinsp + chainConfig.chain.currency.symbol }
           period="24h"
           isLoading={ isLoading }
-          href={ chainConfig.features.stats.isEnabled ? { pathname: '/stats/[id]', query: { id: 'averageTxnFee' } } : undefined }
+          href={ !multichainContext && chainConfig.features.stats.isEnabled ? { pathname: '/stats/[id]', query: { id: 'averageTxnFee' } } : undefined }
         />
       ) }
     </Box>
