@@ -1,18 +1,17 @@
-import { createPublicClient as createPublicClientDefault, http, type Chain } from 'viem';
-import * as viemChains from 'viem/chains';
+import { createPublicClient as createPublicClientDefault, http } from 'viem';
 
-import essentialDappsChains from 'configs/essentialDappsChains';
-
-const allChains = Object.values(viemChains);
+import essentialDappsChainsConfig from 'configs/essential-dapps-chains';
+import { chains } from 'lib/web3/chains';
 
 export default function createPublicClient(chainId: number) {
-  const chain = allChains.find((c) => c.id === chainId);
-  const explorerUrl = essentialDappsChains[chainId];
-  if (!chain || !explorerUrl) return undefined;
+  const chain = chains.find((chain) => chain.id === chainId);
+  const chainConfig = essentialDappsChainsConfig()?.chains.find((chain) => chain.config.chain.id === String(chainId));
+
+  if (!chain || !chainConfig) return undefined;
 
   return createPublicClientDefault({
-    chain: chain as Chain,
-    transport: http(`${ explorerUrl }/api/eth-rpc`, { batch: { wait: 100, batchSize: 5 } }),
+    chain,
+    transport: http(`${ chainConfig?.config.apis.general?.endpoint }/api/eth-rpc`, { batch: { wait: 100, batchSize: 5 } }),
     batch: { multicall: true },
   });
 }

@@ -1,6 +1,5 @@
 import React from 'react';
 import { formatUnits } from 'viem';
-import { usePublicClient } from 'wagmi';
 
 import type { ChainConfig } from 'types/multichain';
 
@@ -14,8 +13,6 @@ const PLACEHOLDER_DATA = {
 };
 
 export default function useCoinBalanceQuery(chain: ChainConfig | undefined, userAddress: string) {
-  const publicClient = usePublicClient({ chainId: Number(chain?.config.chain.id) });
-
   const addressQuery = useApiQuery('general:address', {
     pathParams: { hash: userAddress },
     chain,
@@ -35,7 +32,7 @@ export default function useCoinBalanceQuery(chain: ChainConfig | undefined, user
     let balance = parseFloat(
       formatUnits(
         BigInt(addressQuery.data.coin_balance || '0'),
-        publicClient?.chain.nativeCurrency.decimals || 18,
+        chain?.config.chain.currency.decimals || 18,
       ),
     );
 
@@ -59,9 +56,9 @@ export default function useCoinBalanceQuery(chain: ChainConfig | undefined, user
       data: {
         balance: balanceString || '0',
         balanceUsd,
-        symbol: publicClient?.chain.nativeCurrency.symbol,
+        symbol: chain?.config.chain.currency.symbol,
         coinImage,
       },
     };
-  }, [ addressQuery.data, statsQuery.data, publicClient?.chain.nativeCurrency.decimals, publicClient?.chain.nativeCurrency.symbol ]);
+  }, [ addressQuery.data, statsQuery.data, chain?.config.chain.currency.decimals, chain?.config.chain.currency.symbol ]);
 }
