@@ -2,13 +2,7 @@ import ERC20Artifact from '@openzeppelin/contracts/build/contracts/ERC20.json';
 import NftArtifact from '@openzeppelin/contracts/build/contracts/ERC721.json';
 import { useQueryClient } from '@tanstack/react-query';
 import { useCallback, useState, useEffect } from 'react';
-import {
-  useAccount,
-  useWriteContract,
-  useSwitchChain,
-  useChainId,
-  useWaitForTransactionReceipt,
-} from 'wagmi';
+import { useAccount, useWriteContract, useSwitchChain, useWaitForTransactionReceipt } from 'wagmi';
 
 import type { AllowanceType } from '../lib/types';
 
@@ -17,7 +11,6 @@ import * as mixpanel from 'lib/mixpanel/index';
 import { toaster } from 'toolkit/chakra/toaster';
 
 export default function useRevoke(approval: AllowanceType, chainId: number) {
-  const connectedChainId = useChainId();
   const { address: userAddress } = useAccount();
   const { switchChainAsync } = useSwitchChain();
   const { writeContractAsync } = useWriteContract();
@@ -64,9 +57,7 @@ export default function useRevoke(approval: AllowanceType, chainId: number) {
     try {
       if (!userAddress) return;
 
-      if (connectedChainId !== chainId) {
-        await switchChainAsync({ chainId });
-      }
+      await switchChainAsync({ chainId });
 
       const activityResponse = await trackTransaction(userAddress, approval.address, String(chainId));
 
@@ -104,7 +95,6 @@ export default function useRevoke(approval: AllowanceType, chainId: number) {
     userAddress,
     writeContractAsync,
     switchChainAsync,
-    connectedChainId,
     chainId,
     trackTransaction,
     trackTransactionConfirm,
