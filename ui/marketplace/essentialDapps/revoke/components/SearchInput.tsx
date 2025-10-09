@@ -55,7 +55,7 @@ export default function SearchInput({ value, onChange, onSubmit }: Props) {
           size="sm"
           value={ value }
           onChange={ handleValueChange }
-          placeholder="Search accounts by address..."
+          placeholder="Search accounts by address or domain..."
           borderWidth="2px"
           textOverflow="ellipsis"
           whiteSpace="nowrap"

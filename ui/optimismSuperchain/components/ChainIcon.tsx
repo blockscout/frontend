@@ -22,7 +22,7 @@ const ChainIcon = ({ data, boxSize = 5, borderRadius = 'full', isLoading, withTo
 
   const iconUrl = useColorModeValue(getIconUrl(data, 'light'), getIconUrl(data, 'dark'));
 
-  const src = data.config.chain.id === '1' ? '/static/ethereum.svg' : iconUrl;
+  const src = data.config.chain.id === '1' ? '/static/ethereum-icon.svg' : iconUrl;
 
   const content = <Image src={ src } boxSize={ boxSize } borderRadius={ borderRadius } fallback={ placeholder } { ...rest }/>;
 

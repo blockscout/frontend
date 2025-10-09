@@ -44,7 +44,8 @@ export const marketplace: Guard = (chainConfig: typeof config) => async() => {
 };
 
 export const marketplaceEssentialDapp: Guard = (chainConfig: typeof config) => async() => {
-  if (!chainConfig.features.marketplace.isEnabled) { // TODO: add essentialDapp feature flag
+  const feature = chainConfig.features.marketplace;
+  if (!feature.isEnabled || !feature.essentialDapps) {
     return {
       notFound: true,
     };

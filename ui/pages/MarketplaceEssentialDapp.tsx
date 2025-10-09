@@ -38,7 +38,7 @@ const EssentialDapp = () => {
   }
 
   if (!content || (feature.isEnabled && !feature.essentialDapps?.[id as keyof EssentialDappsConfig])) {
-    return <div>Not found</div>;
+    throw new Error('Essential dapp not found', { cause: { status: 404 } });
   }
 
   return (

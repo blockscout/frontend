@@ -15,7 +15,8 @@ export function useQueryParams() {
       }
     });
 
-    router[replace ? 'replace' : 'push']({ pathname: router.pathname, query: newQuery }, undefined, { shallow: true });
+    const routerFn = replace ? router.replace : router.push;
+    routerFn({ pathname: router.pathname, query: newQuery }, undefined, { shallow: true });
   }, [ router ]);
 
   return { updateQuery };
