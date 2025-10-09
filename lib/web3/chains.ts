@@ -1,21 +1,11 @@
-import { uniq, concat } from 'es-toolkit/compat';
-import { type Chain } from 'viem';
-import * as viemChains from 'viem/chains';
+import type { Chain } from 'viem';
 
 import appConfig from 'configs/app';
-import essentialDappsChainsConfig from 'configs/essentialDappsChains';
+import essentialDappsChainsConfig from 'configs/essential-dapps-chains';
 import multichainConfig from 'configs/multichain';
 
-const marketplaceFeature = appConfig.features.marketplace;
-const essentialDappsConfig = marketplaceFeature.isEnabled ? marketplaceFeature.essentialDapps : undefined;
-
-const allChains = Object.values(viemChains);
-
-const getChainInfo = (config: typeof appConfig = appConfig) => {
-  const defaultChain = allChains.find((c) => c.id === Number(config.chain.id));
-
+const getChainInfo = (config: typeof appConfig = appConfig, contracts?: Chain['contracts']): Chain => {
   return {
-    ...defaultChain,
     id: Number(config.chain.id),
     name: config.chain.name ?? '',
     nativeCurrency: {
@@ -35,6 +25,7 @@ const getChainInfo = (config: typeof appConfig = appConfig) => {
       },
     },
     testnet: config.chain.isTestnet,
+    contracts,
   };
 };
 
@@ -53,10 +44,7 @@ export const parentChain: Chain | undefined = (() => {
     return;
   }
 
-  const defaultChain = allChains.find((c) => c.id === Number(parentChain.id));
-
   return {
-    ...defaultChain,
     id: parentChain.id,
     name: parentChain.name,
     nativeCurrency: parentChain.currency,
@@ -82,28 +70,30 @@ export const clusterChains: Array<Chain> | undefined = (() => {
     return;
   }
 
-  return config.chains.map(({ config }) => getChainInfo(config)).filter(Boolean);
+  return config.chains.map(({ config, contracts }) => getChainInfo(config, contracts)).filter(Boolean);
 })();
 
-const enabledChains = [ currentChain?.id, parentChain?.id, ...(clusterChains?.map((c) => c.id) ?? []) ].filter(Boolean);
-const enabledEssentialDappsChains = uniq(concat(...Object.values(essentialDappsConfig || {}).map(({ chains }) => chains)));
-const filteredEssentialDappsChains = enabledEssentialDappsChains.filter((id) => !enabledChains.includes(Number(id)));
+export const essentialDappsChains: Array<Chain> | undefined = (() => {
+  const config = essentialDappsChainsConfig();
 
-export const essentialDappsChains: Array<Chain> | undefined = filteredEssentialDappsChains.map((id) => {
-  const defaultChain = allChains.find((c) => c.id === Number(id));
-  const explorerUrl = essentialDappsChainsConfig[id];
-
-  if (!defaultChain || !explorerUrl) {
-    return undefined;
+  if (!config) {
+    return;
   }
 
-  return {
-    ...defaultChain,
-    blockExplorers: {
-      'default': {
-        name: 'Blockscout',
-        url: explorerUrl,
-      },
-    },
-  };
-}).filter(Boolean);
+  return config.chains.map(({ config, contracts }) => getChainInfo(config, contracts)).filter(Boolean);
+})();
+
+export const chains = (() => {
+  if (essentialDappsChains) {
+    const hasCurrentChain = essentialDappsChains.some((chain) => chain.id === currentChain?.id);
+    const hasParentChain = essentialDappsChains.some((chain) => chain.id === parentChain?.id);
+
+    return [
+      ...essentialDappsChains,
+      hasCurrentChain ? undefined : currentChain,
+      hasParentChain ? undefined : parentChain,
+    ].filter(Boolean);
+  }
+
+  return [ currentChain, parentChain, ...(clusterChains ?? []) ].filter(Boolean);
+})();

@@ -13,23 +13,20 @@ import { getEnvValue, parseEnvJson } from 'configs/app/utils';
 import { difference, uniq } from 'es-toolkit';
 import currentChainConfig from 'configs/app';
 
-type ChainEnvConfig = {
-  envs: Record<string, string>;
-};
-
-type OutputChainValue = {
-  name: string | undefined;
-  icon: string | undefined;
-  iconDark: string | undefined;
-};
-
 const currentFilePath = fileURLToPath(import.meta.url);
 const currentDir = dirname(currentFilePath);
+
+function getSlug(chainName: string) {
+  return chainName.toLowerCase().replace(/ /g, '-').replace(/[^a-z0-9-]/g, '');
+}
 
 function trimChainConfig(config: ChainConfig['config']) {
   return {
     ...pick(config, [ 'app', 'chain' ]),
     apis: pick(config.apis || {}, [ 'general' ]),
+    UI: {
+      navigation: pick(config.UI.navigation || {}, [ 'icon' ]),
+    }
   };
 }
 
@@ -93,8 +90,10 @@ async function run() {
     const chainConfigs = await Promise.all(explorerUrls.map(computeChainConfig)) as Array<ChainConfig['config']>;
 
     const result = {
-      chains: [ currentChainConfig, ...chainConfigs ].map((config) => {
+      chains: [ currentChainConfig, ...chainConfigs ].map((config, index) => {
+        const chainName = (config as { chain: { name: string } })?.chain?.name ?? `Chain ${ index + 1 }`;
         return {
+          slug: getSlug(chainName),
           config: trimChainConfig(config),
           contracts: Object.values(viemChains).find(({ id }) => id === Number(config.chain.id))?.contracts
         };

@@ -7,8 +7,10 @@ import { mainnet } from 'viem/chains';
 import { normalize } from 'viem/ens';
 import { useAccount } from 'wagmi';
 
+import { route } from 'nextjs/routes';
+
 import config from 'configs/app';
-import essentialDappsChains from 'configs/essentialDappsChains';
+import essentialDappsChainsConfig from 'configs/essential-dapps-chains';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { useQueryParams } from 'lib/router/useQueryParams';
@@ -43,17 +45,17 @@ const defaultChainId = (
 const Revoke = () => {
   const router = useRouter();
   const { updateQuery } = useQueryParams();
-  let chainIdFromQuery: string | undefined = getQueryParamString(router.query.chainId);
-  if (!essentialDappsChains[chainIdFromQuery]) {
-    chainIdFromQuery = undefined;
-  }
+  const chainIdFromQuery: string | undefined = getQueryParamString(router.query.chainId);
   const addressFromQuery = getQueryParamString(router.query.address);
-  const [ selectedChainId, setSelectedChainId ] = useState<number>(Number(chainIdFromQuery || defaultChainId));
+  const [ selectedChainId, setSelectedChainId ] = useState<Array<string>>([ chainIdFromQuery || defaultChainId ]);
   const { address: connectedAddress } = useAccount();
   const [ searchAddress, setSearchAddress ] = useState(addressFromQuery || '');
   const [ searchInputValue, setSearchInputValue ] = useState('');
-  const approvalsQuery = useApprovalsQuery(selectedChainId, searchAddress);
-  const coinBalanceQuery = useCoinBalanceQuery(selectedChainId, searchAddress);
+
+  const selectedChain = essentialDappsChainsConfig()?.chains.find((chain) => chain.config.chain.id === selectedChainId[0]);
+
+  const approvalsQuery = useApprovalsQuery(Number(selectedChainId[0]), searchAddress);
+  const coinBalanceQuery = useCoinBalanceQuery(selectedChain, searchAddress);
   const web3Wallet = useWeb3Wallet({ source: 'Essential dapps' });
   const isMobile = useIsMobile();
 
@@ -90,9 +92,9 @@ const Revoke = () => {
     return Number(sum.toFixed(2)).toLocaleString();
   }, [ approvalsQuery ]);
 
-  const handleChainChange = useCallback((chainId: number) => {
-    setSelectedChainId(chainId);
-    updateQuery({ chainId: chainId.toString() }, true);
+  const handleChainValueChange = useCallback(({ value }: { value: Array<string> }) => {
+    setSelectedChainId(value);
+    updateQuery({ chainId: value[0] }, true);
   }, [ updateQuery ]);
 
   const handleSearch = useCallback(async(address: string) => {
@@ -207,7 +209,7 @@ const Revoke = () => {
                 ) }
               </Skeleton>
               <Link
-                href={ `${ essentialDappsChains[selectedChainId] }/address/${ searchAddress }` }
+                href={ selectedChain?.config.app.baseUrl + route({ pathname: '/address/[hash]', query: { hash: searchAddress } }) }
                 external
                 textStyle="sm"
                 fontWeight="500"
@@ -271,7 +273,7 @@ const Revoke = () => {
           </Flex>
         </Flex>
         <Approvals
-          selectedChainId={ selectedChainId }
+          selectedChainId={ Number(selectedChainId[0]) }
           approvals={ approvalsQuery.data || [] }
           isLoading={ approvalsQuery.isPlaceholderData }
           isAddressMatch={ isAddressMatch }
@@ -355,8 +357,8 @@ const Revoke = () => {
               </Button>
             ) }
             <ChainSelect
-              selectedChainId={ selectedChainId }
-              changeChain={ handleChainChange }
+              value={ selectedChainId }
+              onValueChange={ handleChainValueChange }
             />
           </Flex>
         </Flex>

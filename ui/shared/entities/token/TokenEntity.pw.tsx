@@ -30,7 +30,7 @@ test.describe('variant', () => {
       const LOGO_URL = 'https://example.com/logo.png';
       const chainLogoUrl = getIconUrl(opSuperchainMock.chainDataA);
       await mockAssetResponse(LOGO_URL, './playwright/mocks/image_s.jpg');
-      await mockAssetResponse(chainLogoUrl, './playwright/mocks/image_svg.svg');
+      await mockAssetResponse(chainLogoUrl as string, './playwright/mocks/image_svg.svg');
 
       const component = await render(
         <TokenEntity
@@ -53,7 +53,7 @@ test.describe('variant', () => {
 test('icon in heading variant', async({ render, mockAssetResponse }) => {
   const chainLogoUrl = getIconUrl(opSuperchainMock.chainDataA);
   await mockAssetResponse(tokenMock.tokenInfo.icon_url as string, './playwright/mocks/image_s.jpg');
-  await mockAssetResponse(chainLogoUrl, './playwright/mocks/image_svg.svg');
+  await mockAssetResponse(chainLogoUrl as string, './playwright/mocks/image_svg.svg');
 
   const component = await render(
     <Icon

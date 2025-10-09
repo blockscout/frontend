@@ -25,3 +25,4 @@ export default {
   '11155111': 'https://eth-sepolia.blockscout.com',
   '1313161554': 'https://explorer.mainnet.aurora.dev',
 } as Record<string, string>;
+// TODO @tom2drum remove this file
