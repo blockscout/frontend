@@ -21,6 +21,7 @@ type Props = {
   approval: AllowanceType;
   isLoading?: boolean;
   isAddressMatch?: boolean;
+  hideApproval: (approval: AllowanceType) => void;
 };
 
 export default function ApprovalsListItem({
@@ -28,17 +29,21 @@ export default function ApprovalsListItem({
   approval,
   isLoading,
   isAddressMatch,
+  hideApproval,
 }: Props) {
-  const { revoke, isLoading: isTxLoading } = useRevoke(approval, Number(selectedChain?.config.chain.id));
+  const revoke = useRevoke();
   const [ isPending, setIsPending ] = useState(false);
 
   const allowance = formatAllowance(approval);
 
   const handleRevoke = useCallback(async() => {
     setIsPending(true);
-    await revoke();
+    try {
+      await revoke(approval, Number(selectedChain?.config.chain.id));
+      hideApproval(approval);
+    } catch {}
     setIsPending(false);
-  }, [ revoke ]);
+  }, [ revoke, hideApproval, approval, selectedChain?.config.chain.id ]);
 
   return (
     <Grid
@@ -111,7 +116,7 @@ export default function ApprovalsListItem({
         <Button
           size="sm"
           variant="outline"
-          loading={ isLoading || isTxLoading || isPending }
+          loading={ isLoading || isPending }
           onClick={ handleRevoke }
           gridColumn="span 2"
         >

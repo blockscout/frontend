@@ -7,6 +7,8 @@ import { mainnet } from 'viem/chains';
 import { normalize } from 'viem/ens';
 import { useAccount } from 'wagmi';
 
+import type { AllowanceType } from './lib/types';
+
 import { route } from 'nextjs/routes';
 
 import config from 'configs/app';
@@ -51,6 +53,7 @@ const Revoke = () => {
   const { address: connectedAddress } = useAccount();
   const [ searchAddress, setSearchAddress ] = useState(addressFromQuery || '');
   const [ searchInputValue, setSearchInputValue ] = useState('');
+  const [ hiddenApprovals, setHiddenApprovals ] = useState<Array<AllowanceType>>([]);
 
   const selectedChain = essentialDappsChainsConfig()?.chains.find((chain) => chain.config.chain.id === selectedChainId[0]);
 
@@ -58,6 +61,10 @@ const Revoke = () => {
   const coinBalanceQuery = useCoinBalanceQuery(selectedChain, searchAddress);
   const web3Wallet = useWeb3Wallet({ source: 'Essential dapps' });
   const isMobile = useIsMobile();
+
+  const approvals = useMemo(() => {
+    return approvalsQuery.data?.filter((approval) => !hiddenApprovals.includes(approval));
+  }, [ approvalsQuery.data, hiddenApprovals ]);
 
   const isValidAddress = useMemo(
     () => isAddress(searchAddress.toLowerCase()),
@@ -70,11 +77,11 @@ const Revoke = () => {
   );
 
   const totalValueAtRiskUsd = useMemo(() => {
-    if (approvalsQuery.isPlaceholderData || !approvalsQuery.data) return 0;
+    if (approvalsQuery.isPlaceholderData || !approvals) return 0;
 
     const maxValues: Record<`0x${ string }`, number> = {};
 
-    approvalsQuery.data.forEach((item) => {
+    approvals.forEach((item) => {
       const { address, valueAtRiskUsd } = item;
 
       if (!valueAtRiskUsd) return;
@@ -90,7 +97,7 @@ const Revoke = () => {
     const sum = Object.values(maxValues).reduce((sum, val) => sum + val, 0);
 
     return Number(sum.toFixed(2)).toLocaleString();
-  }, [ approvalsQuery ]);
+  }, [ approvalsQuery.isPlaceholderData, approvals ]);
 
   const handleChainValueChange = useCallback(({ value }: { value: Array<string> }) => {
     setSelectedChainId(value);
@@ -121,6 +128,10 @@ const Revoke = () => {
     [ handleSearch ],
   );
 
+  const hideApproval = useCallback((approval: AllowanceType) => {
+    setHiddenApprovals((prev) => [ ...prev, approval ]);
+  }, []);
+
   useEffect(() => {
     if (connectedAddress && !searchAddress) {
       handleSearch(connectedAddress);
@@ -138,7 +149,7 @@ const Revoke = () => {
           mt={ -2 }
           pt={ 2 }
           pb={ 6 }
-          position={ !isMobile && approvalsQuery.data?.length ? 'sticky' : 'unset' }
+          position={ !isMobile && approvals?.length ? 'sticky' : 'unset' }
           top={ 0 }
           zIndex="1"
           bg={{ _light: 'white', _dark: 'black' }}
@@ -241,7 +252,7 @@ const Revoke = () => {
                 textAlign="center"
               >
                 <Heading level="3">
-                  { approvalsQuery.data?.length || 0 }
+                  { approvals?.length || 0 }
                 </Heading>
               </Skeleton>
             </Flex>
@@ -274,9 +285,10 @@ const Revoke = () => {
         </Flex>
         <Approvals
           selectedChain={ selectedChain }
-          approvals={ approvalsQuery.data || [] }
+          approvals={ approvals || [] }
           isLoading={ approvalsQuery.isPlaceholderData }
           isAddressMatch={ isAddressMatch }
+          hideApproval={ hideApproval }
         />
       </Flex>
     ) : (

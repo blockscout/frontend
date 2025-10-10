@@ -13,6 +13,7 @@ type Props = {
   approvals: Array<AllowanceType>;
   isLoading?: boolean;
   isAddressMatch?: boolean;
+  hideApproval: (approval: AllowanceType) => void;
 };
 
 export default function ApprovalsTable({
@@ -20,6 +21,7 @@ export default function ApprovalsTable({
   approvals,
   isLoading,
   isAddressMatch,
+  hideApproval,
 }: Props) {
   return (
     <>
@@ -49,6 +51,7 @@ export default function ApprovalsTable({
               approval={ approval }
               isLoading={ isLoading }
               isAddressMatch={ isAddressMatch }
+              hideApproval={ hideApproval }
             />
           )) }
         </TableBody>

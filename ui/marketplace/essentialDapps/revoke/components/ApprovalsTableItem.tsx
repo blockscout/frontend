@@ -22,6 +22,7 @@ type Props = {
   approval: AllowanceType;
   isLoading?: boolean;
   isAddressMatch?: boolean;
+  hideApproval: (approval: AllowanceType) => void;
 };
 
 export default function ApprovalsTableItem({
@@ -29,17 +30,21 @@ export default function ApprovalsTableItem({
   approval,
   isLoading,
   isAddressMatch,
+  hideApproval,
 }: Props) {
-  const { revoke, isLoading: isTxLoading } = useRevoke(approval, Number(selectedChain?.config.chain.id));
+  const revoke = useRevoke();
   const [ isPending, setIsPending ] = useState(false);
 
   const allowance = formatAllowance(approval);
 
   const handleRevoke = useCallback(async() => {
     setIsPending(true);
-    await revoke();
+    try {
+      await revoke(approval, Number(selectedChain?.config.chain.id));
+      hideApproval(approval);
+    } catch {}
     setIsPending(false);
-  }, [ revoke ]);
+  }, [ revoke, hideApproval, approval, selectedChain?.config.chain.id ]);
 
   return (
     <TableRow fontWeight="500" css={{ '& > td': { verticalAlign: 'middle' } }}>
@@ -115,7 +120,7 @@ export default function ApprovalsTableItem({
           <Button
             size="sm"
             variant="outline"
-            loading={ isLoading || isTxLoading || isPending }
+            loading={ isLoading || isPending }
             onClick={ handleRevoke }
           >
             Revoke

@@ -1,59 +1,23 @@
 import ERC20Artifact from '@openzeppelin/contracts/build/contracts/ERC20.json';
 import NftArtifact from '@openzeppelin/contracts/build/contracts/ERC721.json';
-import { useQueryClient } from '@tanstack/react-query';
-import { useCallback, useState, useEffect } from 'react';
-import { useAccount, useWriteContract, useSwitchChain, useWaitForTransactionReceipt } from 'wagmi';
+import { waitForTransactionReceipt } from '@wagmi/core';
+import { useCallback } from 'react';
+import { useAccount, useWriteContract, useSwitchChain } from 'wagmi';
 
 import type { AllowanceType } from '../lib/types';
 
 import useRewardsActivity from 'lib/hooks/useRewardsActivity';
 import * as mixpanel from 'lib/mixpanel/index';
+import wagmiConfig from 'lib/web3/wagmiConfig';
 import { toaster } from 'toolkit/chakra/toaster';
 
-export default function useRevoke(approval: AllowanceType, chainId: number) {
+export default function useRevoke() {
   const { address: userAddress } = useAccount();
   const { switchChainAsync } = useSwitchChain();
   const { writeContractAsync } = useWriteContract();
-  const queryClient = useQueryClient();
   const { trackTransaction, trackTransactionConfirm } = useRewardsActivity();
 
-  const [ txHash, setTxHash ] = useState<`0x${ string }` | undefined>();
-  const receipt = useWaitForTransactionReceipt({ hash: txHash, chainId });
-
-  useEffect(() => {
-    switch (receipt.status) {
-      case 'pending':
-        break;
-
-      case 'success': {
-        queryClient.refetchQueries({ queryKey: [ 'revoke:approvals' ] });
-        Promise.resolve().then(() => {
-          toaster.success({
-            title: 'Success',
-            description: 'Approval revoked successfully.',
-          });
-        });
-        setTxHash(undefined);
-        break;
-      }
-
-      case 'error': {
-        Promise.resolve().then(() => {
-          toaster.error({
-            title: 'Error',
-            description: 'Failed to revoke approval.',
-          });
-        });
-        setTxHash(undefined);
-        break;
-      }
-    }
-  }, [
-    receipt.status,
-    queryClient,
-  ]);
-
-  const revoke = useCallback(async() => {
+  return useCallback(async(approval: AllowanceType, chainId: number) => {
     try {
       if (!userAddress) return;
 
@@ -71,7 +35,6 @@ export default function useRevoke(approval: AllowanceType, chainId: number) {
         args: [ approval.spender, isErc20 ? 0 : false ],
         chainId,
       });
-      setTxHash(hash);
 
       mixpanel.logEvent(mixpanel.EventTypes.WALLET_ACTION, {
         Action: 'Send Transaction',
@@ -84,6 +47,17 @@ export default function useRevoke(approval: AllowanceType, chainId: number) {
       if (activityResponse?.token) {
         await trackTransactionConfirm(hash, activityResponse.token);
       }
+
+      const receipt = await waitForTransactionReceipt(wagmiConfig.config, { hash, chainId });
+
+      if (receipt.status === 'reverted') {
+        throw new Error('Failed to revoke approval.');
+      }
+
+      toaster.success({
+        title: 'Success',
+        description: 'Approval revoked successfully.',
+      });
     } catch (_error) {
       toaster.error({
         title: 'Error',
@@ -91,17 +65,10 @@ export default function useRevoke(approval: AllowanceType, chainId: number) {
       });
     }
   }, [
-    approval,
     userAddress,
     writeContractAsync,
     switchChainAsync,
-    chainId,
     trackTransaction,
     trackTransactionConfirm,
   ]);
-
-  return {
-    revoke,
-    isLoading: Boolean(txHash) && receipt.status === 'pending',
-  };
 }

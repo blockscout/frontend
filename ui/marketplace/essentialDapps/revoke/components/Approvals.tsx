@@ -13,6 +13,7 @@ type Props = {
   approvals: Array<AllowanceType>;
   isLoading?: boolean;
   isAddressMatch?: boolean;
+  hideApproval: (approval: AllowanceType) => void;
 };
 
 export default function Approvals({
@@ -20,6 +21,7 @@ export default function Approvals({
   approvals,
   isLoading,
   isAddressMatch,
+  hideApproval,
 }: Props) {
   return (
     <>
@@ -32,6 +34,7 @@ export default function Approvals({
               approval={ approval }
               isLoading={ isLoading }
               isAddressMatch={ isAddressMatch }
+              hideApproval={ hideApproval }
             />
           )) }
           { !isLoading && !approvals.length && (
@@ -45,6 +48,7 @@ export default function Approvals({
           approvals={ approvals }
           isLoading={ isLoading }
           isAddressMatch={ isAddressMatch }
+          hideApproval={ hideApproval }
         />
       </Box>
     </>
