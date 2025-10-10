@@ -13,6 +13,7 @@ export function marketplace(): CspDev.DirectiveDescriptor {
   const posthogHost = feature.essentialDapps?.multisend?.posthogHost ? '*.posthog.com' : '';
   const chainsConfig = feature.essentialDapps && essentialDappsChains.getValue();
   const externalApiEndpoints = chainsConfig?.chains.map((chain) => chain.config.apis.general?.endpoint).filter(Boolean);
+  const defaultRpcUrls = chainsConfig?.chains.map((chain) => chain.config.chain.rpcUrls).flat();
 
   return {
     'connect-src': [
@@ -22,6 +23,7 @@ export function marketplace(): CspDev.DirectiveDescriptor {
         'https://*.multisender.app/',
         posthogHost,
         ...(externalApiEndpoints ?? []),
+        ...(defaultRpcUrls ?? []),
       ] : []),
     ],
 
