@@ -1,16 +1,16 @@
 import type { ChainConfig } from 'types/multichain';
 
-import type { ColorMode } from 'toolkit/chakra/color-mode';
-
-export default function getIconUrl(config: ChainConfig, colorMode?: ColorMode) {
+export default function getIconUrl(config: ChainConfig) {
   if (!config.config?.UI?.navigation?.icon || !config.config.app) {
     return;
   }
 
-  const appUrl = config.config.app.baseUrl;
-  const iconPath = colorMode === 'dark' ?
-    (config.config.UI.navigation.icon.dark || config.config.UI.navigation.icon.default) :
-    config.config.UI.navigation.icon.default;
+  const iconPath = config.config.UI.navigation.icon.default;
 
+  if (iconPath?.startsWith('http')) {
+    return iconPath;
+  }
+
+  const appUrl = config.config.app.baseUrl;
   return `${ appUrl }${ iconPath }`;
 }

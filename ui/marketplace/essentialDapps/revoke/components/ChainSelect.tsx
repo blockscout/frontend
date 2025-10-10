@@ -12,7 +12,7 @@ const collection = createListCollection<SelectOption>({
   items: essentialDappsChainsConfig()?.chains.map((chain) => ({
     value: chain.config.chain.id as string,
     label: chain.config.chain.name || chain.slug,
-    icon: <ChainIcon data={ chain } alt={ chain.config.chain.name }/>,
+    icon: <ChainIcon data={ chain } borderRadius="none"/>,
   })) || [],
 });
 

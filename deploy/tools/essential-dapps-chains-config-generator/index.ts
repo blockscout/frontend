@@ -15,29 +15,41 @@ import currentChainConfig from 'configs/app';
 const currentFilePath = fileURLToPath(import.meta.url);
 const currentDir = dirname(currentFilePath);
 
-async function getExplorerUrls(chainIds: Array<string>) {
+async function getChainscoutInfo(externalChainIds: Array<string>, currentChainId: string | undefined) {
   const response = await fetch('https://chains.blockscout.com/api/chains');
   if (!response.ok) {
     throw new Error(`Failed to fetch chains info from Chainscout API`);
   }
-  const chainsInfo = await response.json() as Record<string, { explorers: [ { url: string } ] }>;
+  const chainsInfo = await response.json() as Record<string, { explorers: [ { url: string } ], logo: string }>;
 
-  return chainIds.map((chainId) => ({
-    id: chainId,
-    explorerUrl: chainsInfo[chainId]?.explorers[0]?.url,
-  }))
+  return {
+    externals: externalChainIds.map((chainId) => ({
+      id: chainId,
+      explorerUrl: chainsInfo[chainId]?.explorers[0]?.url,
+      logoUrl: chainsInfo[chainId]?.logo,
+    })),
+    current: currentChainId ? {
+      id: currentChainId,
+      explorerUrl: chainsInfo[currentChainId]?.explorers[0]?.url,
+      logoUrl: chainsInfo[currentChainId]?.logo,
+    } : undefined,
+  }
 }
 
 function getSlug(chainName: string) {
   return chainName.toLowerCase().replace(/ /g, '-').replace(/[^a-z0-9-]/g, '');
 }
 
-function trimChainConfig(config: ChainConfig['config']) {
+function trimChainConfig(config: ChainConfig['config'], logoUrl: string | undefined) {
   return {
     ...pick(config, [ 'app', 'chain' ]),
     apis: pick(config.apis || {}, [ 'general' ]),
     UI: {
-      navigation: pick(config.UI.navigation || {}, [ 'icon' ]),
+      navigation: {
+        icon: {
+          'default': logoUrl,
+        }
+      },
     }
   };
 }
@@ -89,23 +101,24 @@ async function run() {
       return;
     }
 
-    const chainsUrlMap = await getExplorerUrls(enabledChains);
-    const chainsWithoutUrl = Object.entries(chainsUrlMap).filter(([_, explorerUrl]) => !explorerUrl);
+    const chainscoutInfo = await getChainscoutInfo(enabledChains, currentChainConfig.chain.id);
+    const chainsWithoutUrl = Object.entries(chainscoutInfo.externals).filter(([_, explorerUrl]) => !explorerUrl);
 
     if (chainsWithoutUrl.length > 0) {
       console.log(`⚠️  For the following chains explorer url was not found: ${ chainsWithoutUrl.map(([chainId]) => chainId).join(', ') }. Therefore, they will not be enabled.`);
     }
-    const explorerUrls = Object.values(chainsUrlMap).map(({ explorerUrl }) => explorerUrl);
+    const explorerUrls = Object.values(chainscoutInfo.externals).map(({ explorerUrl }) => explorerUrl);
     console.log(`ℹ️  For ${ explorerUrls.length } chains explorer url was found in static config. Fetching parameters for each chain...`);
 
     const chainConfigs = await Promise.all(explorerUrls.map(computeChainConfig)) as Array<ChainConfig['config']>;
 
     const result = {
       chains: [ currentChainConfig, ...chainConfigs ].map((config, index) => {
+        const logoUrl = [...chainscoutInfo.externals, chainscoutInfo.current].find((chain) => chain?.id === config.chain.id)?.logoUrl;
         const chainName = (config as { chain: { name: string } })?.chain?.name ?? `Chain ${ index + 1 }`;
         return {
           slug: getSlug(chainName),
-          config: trimChainConfig(config),
+          config: trimChainConfig(config, logoUrl),
           contracts: Object.values(viemChains).find(({ id }) => id === Number(config.chain.id))?.contracts
         };
       }),
