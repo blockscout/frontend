@@ -1,6 +1,7 @@
 import { Box, Flex } from '@chakra-ui/react';
 
 import type { AllowanceType } from '../lib/types';
+import type { ChainConfig } from 'types/multichain';
 
 import EmptySearchResult from 'ui/shared/EmptySearchResult';
 
@@ -8,14 +9,14 @@ import ApprovalsListItem from './ApprovalsListItem';
 import ApprovalsTable from './ApprovalsTable';
 
 type Props = {
-  selectedChainId: number;
+  selectedChain: ChainConfig | undefined;
   approvals: Array<AllowanceType>;
   isLoading?: boolean;
   isAddressMatch?: boolean;
 };
 
 export default function Approvals({
-  selectedChainId,
+  selectedChain,
   approvals,
   isLoading,
   isAddressMatch,
@@ -27,7 +28,7 @@ export default function Approvals({
           { approvals.map((approval, index) => (
             <ApprovalsListItem
               key={ index }
-              selectedChainId={ selectedChainId }
+              selectedChain={ selectedChain }
               approval={ approval }
               isLoading={ isLoading }
               isAddressMatch={ isAddressMatch }
@@ -40,7 +41,7 @@ export default function Approvals({
       </Box>
       <Box hideBelow="lg">
         <ApprovalsTable
-          selectedChainId={ selectedChainId }
+          selectedChain={ selectedChain }
           approvals={ approvals }
           isLoading={ isLoading }
           isAddressMatch={ isAddressMatch }

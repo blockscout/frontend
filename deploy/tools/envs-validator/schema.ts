@@ -50,7 +50,6 @@ import { replaceQuotes } from '../../../configs/app/utils';
 import * as regexp from '../../../toolkit/utils/regexp';
 import type { IconName } from '../../../ui/shared/IconSvg';
 import type { CrossChainInfo } from '../../../types/client/crossChainInfo';
-import essentialDappsChains from '../../../configs/essentialDappsChains';
 
 const protocols = [ 'http', 'https' ];
 
@@ -185,8 +184,7 @@ const marketplaceSchema = yup
         is: true,
         then: (schema) => schema.test('shape', 'Invalid schema were provided for NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_CONFIG, it should contain optional swap/revoke/multisend sections with required fields', (data) => {
           const isUndefined = data === undefined;
-          const CHAIN_KEYS = Object.keys(essentialDappsChains);
-          const chainsSchema = yup.array().of(yup.string().oneOf(CHAIN_KEYS).required()).min(1).required();
+          const chainsSchema = yup.array().of(yup.string().required()).min(1).required();
           const valueSchema = yup.object<EssentialDappsConfig>().transform(replaceQuotes).json().shape({
             swap: yup.lazy(value => value ?
               yup.object<EssentialDappsConfig['swap']>().shape({

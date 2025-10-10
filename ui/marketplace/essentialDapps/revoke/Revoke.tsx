@@ -273,7 +273,7 @@ const Revoke = () => {
           </Flex>
         </Flex>
         <Approvals
-          selectedChainId={ Number(selectedChainId[0]) }
+          selectedChain={ selectedChain }
           approvals={ approvalsQuery.data || [] }
           isLoading={ approvalsQuery.isPlaceholderData }
           isAddressMatch={ isAddressMatch }

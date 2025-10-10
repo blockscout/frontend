@@ -607,7 +607,7 @@ Ads are enabled by default on all self-hosted instances. If you would like to di
 
 Essential dapps are built-in dapps that are displayed on the Marketplace page in a separate section.
 
-*Note* Chain ids should exist in the `configs/essentialDappsChains.ts`.
+*Note* All chains should have a Blockscout instance.
 
 | Property | Type | Description | Compulsoriness | Example value |
 | --- | --- | --- | --- | --- |

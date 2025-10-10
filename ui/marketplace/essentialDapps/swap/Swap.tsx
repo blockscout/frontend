@@ -4,7 +4,7 @@ import { LiFiWidget, useWidgetEvents, WidgetEvent } from '@lifi/widget';
 import { useEffect, useMemo, useRef } from 'react';
 
 import config from 'configs/app';
-import essentialDappsChains from 'configs/essentialDappsChains';
+import essentialDappsChainsConfig from 'configs/essential-dapps-chains';
 import useRewardsActivity from 'lib/hooks/useRewardsActivity';
 import * as mixpanel from 'lib/mixpanel/index';
 import useWeb3Wallet from 'lib/web3/useWallet';
@@ -22,10 +22,11 @@ const defaultChainId = Number(
 );
 
 function getUrls(isRpc = false) {
-  return Object.fromEntries(dappConfig?.chains.map((chainId) => ([
-    Number(chainId),
-    [ `${ essentialDappsChains[chainId] }${ isRpc ? '/api/eth-rpc' : '' }` ],
-  ])) || []);
+  return Object.fromEntries(dappConfig?.chains.map((chainId) => {
+    const chainConfig = essentialDappsChainsConfig()?.chains.find((chain) => chain.config.chain.id === chainId);
+    const url = isRpc ? `${ chainConfig?.config.apis.general?.endpoint }/api/eth-rpc` : chainConfig?.config.app.baseUrl;
+    return [ Number(chainId), [ url ] ];
+  }) || []);
 }
 
 const Widget = () => {

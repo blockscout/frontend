@@ -3,7 +3,7 @@ import { MultisenderWidget } from '@multisender.app/multisender-react-widget';
 import React from 'react';
 
 import config from 'configs/app';
-import essentialDappsChains from 'configs/essentialDappsChains';
+import essentialDappsChainsConfig from 'configs/essential-dapps-chains';
 
 const feature = config.features.marketplace;
 const dappConfig = feature.isEnabled ? feature.essentialDapps?.multisend : undefined;
@@ -483,18 +483,23 @@ const Container = ({ children }: { children: React.ReactNode }) => (
   >{ children }</Box>
 );
 
-const widgetConfig = Object.fromEntries(dappConfig?.chains.map((chainId) => ([
-  chainId,
-  {
-    id: Number(chainId),
-    blockExplorerUrl: {
-      tx: `${ essentialDappsChains[chainId] }/tx/`,
-      address: `${ essentialDappsChains[chainId] }/address/`,
+const widgetConfig = Object.fromEntries(dappConfig?.chains.map((chainId) => {
+  const chainConfig = essentialDappsChainsConfig()?.chains.find((chain) => chain.config.chain.id === chainId);
+  const explorerUrl = chainConfig?.config.app.baseUrl;
+  const apiUrl = chainConfig?.config.apis.general?.endpoint;
+  return [
+    chainId,
+    {
+      id: Number(chainId),
+      blockExplorerUrl: {
+        tx: `${ explorerUrl }/tx/`,
+        address: `${ explorerUrl }/address/`,
+      },
+      rpcUrls: [ `${ apiUrl }/api/eth-rpc` ],
+      blockScoutApiUrl: apiUrl,
     },
-    rpcUrls: [ `${ essentialDappsChains[chainId] }/api/eth-rpc` ],
-    blockScoutApiUrl: essentialDappsChains[chainId],
-  },
-])) || []);
+  ];
+}) || []);
 
 const Multisend = () => {
   return (

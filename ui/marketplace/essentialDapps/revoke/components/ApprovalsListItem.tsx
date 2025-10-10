@@ -2,8 +2,10 @@ import { Flex, Text, Grid } from '@chakra-ui/react';
 import React, { useCallback, useState } from 'react';
 
 import type { AllowanceType } from '../lib/types';
+import type { ChainConfig } from 'types/multichain';
 
-import essentialDappsChains from 'configs/essentialDappsChains';
+import { route } from 'nextjs/routes';
+
 import { Button } from 'toolkit/chakra/button';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
@@ -15,19 +17,19 @@ import DateEntity from './DateEntity';
 import NumberEntity from './NumberEntity';
 
 type Props = {
-  selectedChainId: number;
+  selectedChain: ChainConfig | undefined;
   approval: AllowanceType;
   isLoading?: boolean;
   isAddressMatch?: boolean;
 };
 
 export default function ApprovalsListItem({
-  selectedChainId,
+  selectedChain,
   approval,
   isLoading,
   isAddressMatch,
 }: Props) {
-  const { revoke, isLoading: isTxLoading } = useRevoke(approval, selectedChainId);
+  const { revoke, isLoading: isTxLoading } = useRevoke(approval, Number(selectedChain?.config.chain.id));
   const [ isPending, setIsPending ] = useState(false);
 
   const allowance = formatAllowance(approval);
@@ -68,7 +70,9 @@ export default function ApprovalsListItem({
           truncation="constant"
           noIcon
           isLoading={ isLoading }
-          href={ `${ essentialDappsChains[selectedChainId] }/token/${ approval.address }` }
+          href={ selectedChain?.config.app.baseUrl + route({ pathname: '/token/[hash]', query: { hash: approval.address } }) }
+          isExternal
+          link={{ noIcon: true }}
         />
       </Flex>
       <Text>Approved spender</Text>
@@ -77,6 +81,9 @@ export default function ApprovalsListItem({
         truncation="constant"
         noIcon
         isLoading={ isLoading }
+        href={ selectedChain?.config.app.baseUrl + route({ pathname: '/address/[hash]', query: { hash: approval.spender } }) }
+        isExternal
+        link={{ noIcon: true }}
       />
       <Text>Approved amount</Text>
       <Skeleton loading={ isLoading }>

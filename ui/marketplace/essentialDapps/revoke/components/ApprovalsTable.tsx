@@ -1,67 +1,26 @@
 import React from 'react';
 
 import type { AllowanceType } from '../lib/types';
+import type { ChainConfig } from 'types/multichain';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import EmptySearchResult from 'ui/shared/EmptySearchResult';
 
 import ApprovalsTableItem from './ApprovalsTableItem';
 
-// type SortField = 'valueAtRisk' | 'timestamp' | null;
-// type SortDirection = 'asc' | 'desc' | null;
-
 type Props = {
-  selectedChainId: number;
+  selectedChain: ChainConfig | undefined;
   approvals: Array<AllowanceType>;
   isLoading?: boolean;
   isAddressMatch?: boolean;
 };
 
 export default function ApprovalsTable({
-  selectedChainId,
+  selectedChain,
   approvals,
   isLoading,
   isAddressMatch,
 }: Props) {
-  // const [sortField, setSortField] = useState<SortField>('timestamp');
-  // const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
-
-  // const handleSort = (field: SortField) => {
-  //   if (field === "timestamp") {
-  //     if (sortField === "timestamp") {
-  //       setSortDirection(sortDirection === "desc" ? "asc" : "desc");
-  //     } else {
-  //       setSortField("timestamp");
-  //       setSortDirection("desc");
-  //     }
-  //   } else {
-  //     if (sortField === "valueAtRisk") {
-  //       if (sortDirection === "desc") {
-  //         setSortDirection("asc");
-  //       } else if (sortDirection === "asc") {
-  //         setSortField("timestamp");
-  //         setSortDirection("desc");
-  //       }
-  //     } else {
-  //       setSortField("valueAtRisk");
-  //       setSortDirection("desc");
-  //     }
-  //   }
-  // };
-
-  // const sortedApprovals = useMemo(() => {
-  //   if (!sortField) return approvals;
-
-  //   return [...approvals].sort((a, b) => {
-  //     const aValue =
-  //       sortField === 'valueAtRisk' ? a.valueAtRiskUsd || 0 : a.timestamp;
-  //     const bValue =
-  //       sortField === 'valueAtRisk' ? b.valueAtRiskUsd || 0 : b.timestamp;
-
-  //     return sortDirection === 'asc' ? aValue - bValue : bValue - aValue;
-  //   });
-  // }, [approvals, sortField, sortDirection]);
-
   return (
     <>
       <TableRoot>
@@ -86,7 +45,7 @@ export default function ApprovalsTable({
           { approvals.map((approval, index) => (
             <ApprovalsTableItem
               key={ index }
-              selectedChainId={ selectedChainId }
+              selectedChain={ selectedChain }
               approval={ approval }
               isLoading={ isLoading }
               isAddressMatch={ isAddressMatch }
