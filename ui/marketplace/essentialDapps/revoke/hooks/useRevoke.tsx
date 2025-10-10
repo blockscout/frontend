@@ -58,11 +58,16 @@ export default function useRevoke() {
         title: 'Success',
         description: 'Approval revoked successfully.',
       });
+
+      return true;
+
     } catch (_error) {
       toaster.error({
         title: 'Error',
         description: (_error as Error)?.message || 'Something went wrong. Try again later.',
       });
+
+      return false;
     }
   }, [
     userAddress,

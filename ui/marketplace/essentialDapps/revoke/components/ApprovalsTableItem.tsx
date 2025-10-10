@@ -39,10 +39,10 @@ export default function ApprovalsTableItem({
 
   const handleRevoke = useCallback(async() => {
     setIsPending(true);
-    try {
-      await revoke(approval, Number(selectedChain?.config.chain.id));
+    const success = await revoke(approval, Number(selectedChain?.config.chain.id));
+    if (success) {
       hideApproval(approval);
-    } catch {}
+    }
     setIsPending(false);
   }, [ revoke, hideApproval, approval, selectedChain?.config.chain.id ]);
 
