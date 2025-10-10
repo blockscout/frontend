@@ -3,9 +3,9 @@ import { createPublicClient as createPublicClientDefault, http } from 'viem';
 import essentialDappsChainsConfig from 'configs/essential-dapps-chains';
 import { chains } from 'lib/web3/chains';
 
-export default function createPublicClient(chainId: number) {
-  const chain = chains.find((chain) => chain.id === chainId);
-  const chainConfig = essentialDappsChainsConfig()?.chains.find((chain) => chain.config.chain.id === String(chainId));
+export default function createPublicClient(chainId: string | undefined) {
+  const chain = chains.find((chain) => chain.id === Number(chainId));
+  const chainConfig = essentialDappsChainsConfig()?.chains.find((chain) => chain.config.chain.id === chainId);
 
   if (!chain || !chainConfig) return undefined;
 

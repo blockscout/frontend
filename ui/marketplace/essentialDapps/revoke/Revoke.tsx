@@ -54,7 +54,7 @@ const Revoke = () => {
 
   const selectedChain = essentialDappsChainsConfig()?.chains.find((chain) => chain.config.chain.id === selectedChainId[0]);
 
-  const approvalsQuery = useApprovalsQuery(Number(selectedChainId[0]), searchAddress);
+  const approvalsQuery = useApprovalsQuery(selectedChain, searchAddress);
   const coinBalanceQuery = useCoinBalanceQuery(selectedChain, searchAddress);
   const web3Wallet = useWeb3Wallet({ source: 'Essential dapps' });
   const isMobile = useIsMobile();
