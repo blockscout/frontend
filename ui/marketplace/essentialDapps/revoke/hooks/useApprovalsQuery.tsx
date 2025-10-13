@@ -6,9 +6,10 @@ import { isAddress, getAbiItem } from 'viem';
 
 import type { ChainConfig } from 'types/multichain';
 
+import { ALLOWANCES } from 'stubs/revoke';
+
 import createPublicClient from '../lib/createPublicClient';
 import getLogs from '../lib/getLogs';
-import allowancesStub from '../lib/stubs/allowances';
 import useSearchErc20Allowances from './useSearchErc20Allowances';
 import useSearchNftAllowances from './useSearchNftAllowances';
 
@@ -56,6 +57,6 @@ export default function useApprovalsQuery(chain: ChainConfig | undefined, userAd
     queryKey: [ 'revoke:approvals', chain?.config.chain.id, userAddress ],
     queryFn: ({ signal }) => searchAllowances(chain, userAddress, signal),
     enabled: Boolean(userAddress) && isAddress(userAddress),
-    placeholderData: allowancesStub,
+    placeholderData: ALLOWANCES,
   });
 }

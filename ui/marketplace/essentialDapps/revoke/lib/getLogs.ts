@@ -1,4 +1,4 @@
-import type { PublicClient, GetLogsParameters, GetLogsReturnType } from 'viem';
+import type { PublicClient, GetLogsParameters, Log } from 'viem';
 
 export default async function getLogs(
   publicClient: PublicClient,
@@ -6,7 +6,7 @@ export default async function getLogs(
   fromBlock: bigint,
   toBlock: bigint,
   signal?: AbortSignal,
-): Promise<GetLogsReturnType> {
+): Promise<Array<Log>> {
   const filter = { ...baseFilter, fromBlock, toBlock } as GetLogsParameters;
 
   if (signal?.aborted) {
@@ -14,7 +14,7 @@ export default async function getLogs(
   }
 
   try {
-    return (await publicClient.getLogs(filter)) as GetLogsReturnType;
+    return (await publicClient.getLogs(filter));
   } catch {
     const middle = fromBlock + (toBlock - fromBlock) / BigInt(2);
     const leftPromise = getLogs(publicClient, baseFilter, fromBlock, middle, signal);

@@ -1,15 +1,3 @@
-export interface Log {
-  blockNumber: bigint;
-  blockHash: string;
-  transactionIndex: number;
-  removed: boolean;
-  address: string;
-  data: string;
-  topics: Array<string>;
-  transactionHash: string;
-  logIndex: number;
-}
-
 export interface ContractAllowanceType {
   transactionId: `0x${ string }` | null;
   spender: `0x${ string }`;

@@ -1,4 +1,4 @@
-import type { AllowanceType } from './types';
+import type { AllowanceType } from 'types/client/revoke';
 
 export default function formatAllowance(approval: AllowanceType) {
   if (!approval.allowance) return 'N/A';

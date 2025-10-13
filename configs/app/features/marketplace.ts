@@ -4,6 +4,7 @@ import type { EssentialDappsConfig } from 'types/client/marketplace';
 import apis from '../apis';
 import chain from '../chain';
 import { getEnvValue, getExternalAssetFilePath, parseEnvJson } from '../utils';
+import blockchainInteraction from './blockchainInteraction';
 
 // config file will be downloaded at run-time and saved in the public folder
 const enabled = getEnvValue('NEXT_PUBLIC_MARKETPLACE_ENABLED');
@@ -42,7 +43,7 @@ const config: Feature<(
         linkUrl: bannerLinkUrl,
       } : undefined,
       graphLinksUrl,
-      essentialDapps: essentialDappsConfig || undefined,
+      essentialDapps: blockchainInteraction.isEnabled ? (essentialDappsConfig || undefined) : undefined,
     };
 
     if (configUrl) {

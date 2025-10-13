@@ -55,7 +55,7 @@ RUN yarn --frozen-lockfile --network-timeout 100000
 # Install dependencies
 WORKDIR /essential-dapps-chains-config-generator
 COPY ./deploy/tools/essential-dapps-chains-config-generator/package.json ./
-RUN yarn --network-timeout 100000 || true
+RUN yarn --frozen-lockfile --network-timeout 100000
 
 ### llms.txt GENERATOR
 # Install dependencies
@@ -132,7 +132,7 @@ RUN cd ./deploy/tools/multichain-config-generator && yarn build
 ### ESSENTIAL DAPPS CHAINS CONFIG GENERATOR
 # Copy dependencies and source code, then build
 COPY --from=deps /essential-dapps-chains-config-generator/node_modules ./deploy/tools/essential-dapps-chains-config-generator/node_modules
-RUN cd ./deploy/tools/essential-dapps-chains-config-generator && yarn build || true
+RUN cd ./deploy/tools/essential-dapps-chains-config-generator && yarn build
 
 ### llms.txt GENERATOR
 # Copy dependencies and source code, then build

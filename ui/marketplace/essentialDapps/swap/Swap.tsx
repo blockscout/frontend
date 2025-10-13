@@ -73,7 +73,7 @@ const Widget = () => {
       w="fit-content"
       maxW="full"
       border="1px solid"
-      borderColor={{ _light: 'gray.200', _dark: 'whiteAlpha.100' }}
+      borderColor="border.divider"
       borderRadius="md"
       overflow="hidden"
       mx="auto"

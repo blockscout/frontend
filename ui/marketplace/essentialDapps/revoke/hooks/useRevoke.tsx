@@ -4,7 +4,7 @@ import { waitForTransactionReceipt } from '@wagmi/core';
 import { useCallback } from 'react';
 import { useAccount, useWriteContract, useSwitchChain } from 'wagmi';
 
-import type { AllowanceType } from '../lib/types';
+import type { AllowanceType } from 'types/client/revoke';
 
 import useRewardsActivity from 'lib/hooks/useRewardsActivity';
 import * as mixpanel from 'lib/mixpanel/index';

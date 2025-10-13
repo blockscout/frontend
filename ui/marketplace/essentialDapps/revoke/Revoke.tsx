@@ -1,4 +1,4 @@
-import { Box, Flex, Text, Separator } from '@chakra-ui/react';
+import { Flex, Text, Separator } from '@chakra-ui/react';
 import { getEnsAddress } from '@wagmi/core';
 import { useRouter } from 'next/router';
 import React, { useMemo, useCallback, useEffect, useState } from 'react';
@@ -7,7 +7,7 @@ import { mainnet } from 'viem/chains';
 import { normalize } from 'viem/ens';
 import { useAccount } from 'wagmi';
 
-import type { AllowanceType } from './lib/types';
+import type { AllowanceType } from 'types/client/revoke';
 
 import { route } from 'nextjs/routes';
 
@@ -25,7 +25,7 @@ import { Image } from 'toolkit/chakra/image';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import EmptySearchResult from 'ui/shared/EmptySearchResult';
-import IconSvg from 'ui/shared/IconSvg';
+import TokenLogoPlaceholder from 'ui/shared/TokenLogoPlaceholder';
 
 import AddressEntity from './components/AddressEntity';
 import Approvals from './components/Approvals';
@@ -196,25 +196,18 @@ const Revoke = () => {
                   <>
                     <Flex gap={ 2 } alignItems="center" ml={{ base: 0, lg: '5px' }}>
                       <Image
-                        src={ coinBalanceQuery.data?.coinImage }
-                        alt={ coinBalanceQuery.data?.symbol }
+                        src={ coinBalanceQuery.data.coinImage }
+                        alt={ coinBalanceQuery.data.symbol }
                         boxSize={ 5 }
-                        fallback={ (
-                          <IconSvg
-                            name="token-placeholder"
-                            bgColor={{ _light: 'gray.200', _dark: 'gray.600' }}
-                            color={{ _light: 'gray.400', _dark: 'gray.200' }}
-                            borderRadius="full"
-                          />
-                        ) }
+                        fallback={ <TokenLogoPlaceholder/> }
                       />
                       <Text textStyle="sm" fontWeight="500">
-                        { coinBalanceQuery.data?.balance }{ ' ' }
-                        { coinBalanceQuery.data?.symbol }
+                        { coinBalanceQuery.data.balance }{ ' ' }
+                        { coinBalanceQuery.data.symbol }
                       </Text>
                     </Flex>
                     <Text textStyle="sm" fontWeight="500" color="text.secondary">
-                      ${ coinBalanceQuery.data?.balanceUsd }
+                      ${ coinBalanceQuery.data.balanceUsd }
                     </Text>
                   </>
                 ) }
@@ -328,7 +321,13 @@ const Revoke = () => {
               '0xFe89cc7aBB2C4183683ab71653C4cdc9B02D44b7',
               '0xf6B6F07862A02C85628B3A9688beae07fEA9C863',
             ].slice(0, isMobile ? 2 : undefined).map((address) => (
-              <Box key={ address } onClick={ handleAddressClick(address) } cursor="pointer">
+              <Button
+                key={ address }
+                variant="plain"
+                size="sm"
+                p={ 0 }
+                onClick={ handleAddressClick(address) }
+              >
                 <AddressEntity
                   address={{ hash: address }}
                   truncation="constant"
@@ -338,14 +337,19 @@ const Revoke = () => {
                   textStyle="sm"
                   fontWeight="600"
                 />
-              </Box>
+              </Button>
             )) }
           </Flex>
           <Flex gap={ 3 } w={{ base: 'full', md: 'auto' }}>
             { connectedAddress ? (
               <Flex gap={ 2 } alignItems="center">
                 <Text textStyle="sm" fontWeight="500" color="text.secondary">My wallet</Text>
-                <Box cursor="pointer" onClick={ handleAddressClick(connectedAddress) }>
+                <Button
+                  variant="plain"
+                  size="sm"
+                  p={ 0 }
+                  onClick={ handleAddressClick(connectedAddress) }
+                >
                   <AddressEntity
                     address={{ hash: connectedAddress }}
                     truncation="constant"
@@ -355,7 +359,7 @@ const Revoke = () => {
                     textStyle="sm"
                     fontWeight="600"
                   />
-                </Box>
+                </Button>
               </Flex>
             ) : (
               <Button

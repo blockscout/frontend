@@ -4,9 +4,9 @@ import { useCallback } from 'react';
 import { getAddress, formatUnits, slice } from 'viem';
 import type { PublicClient, Log } from 'viem';
 
-import type { AllowanceType, ContractAllowanceType } from '../lib/types';
 import type { AddressTokenBalancesResponse } from 'types/api/address';
 import type { TokenInfo } from 'types/api/token';
+import type { AllowanceType, ContractAllowanceType } from 'types/client/revoke';
 import type { ChainConfig } from 'types/multichain';
 
 import useApiFetch from 'lib/api/useApiFetch';
@@ -182,9 +182,7 @@ const useGetERC20Allowances = () => {
                   );
                 }
 
-                return (
-                  allowance.allowance &&
-                  allowance.allowance !== BigInt(0) &&
+                if (allowance.allowance && allowance.allowance !== BigInt(0)) {
                   allowances.push({
                     ...tokenData,
                     type: 'ERC-20',
@@ -199,8 +197,8 @@ const useGetERC20Allowances = () => {
                         tokenData.totalSupply,
                       ) : undefined,
                     valueAtRiskUsd,
-                  })
-                );
+                  });
+                }
               }),
             );
           }

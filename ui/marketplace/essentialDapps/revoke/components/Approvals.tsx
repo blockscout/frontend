@@ -1,6 +1,6 @@
 import { Box, Flex } from '@chakra-ui/react';
 
-import type { AllowanceType } from '../lib/types';
+import type { AllowanceType } from 'types/client/revoke';
 import type { ChainConfig } from 'types/multichain';
 
 import EmptySearchResult from 'ui/shared/EmptySearchResult';

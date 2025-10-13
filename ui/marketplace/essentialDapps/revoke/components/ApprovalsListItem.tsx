@@ -1,7 +1,7 @@
 import { Flex, Text, Grid } from '@chakra-ui/react';
 import React, { useCallback, useState } from 'react';
 
-import type { AllowanceType } from '../lib/types';
+import type { AllowanceType } from 'types/client/revoke';
 import type { ChainConfig } from 'types/multichain';
 
 import { route } from 'nextjs/routes';

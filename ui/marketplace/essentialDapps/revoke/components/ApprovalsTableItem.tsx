@@ -1,7 +1,7 @@
 import { Flex } from '@chakra-ui/react';
 import { useCallback, useState } from 'react';
 
-import type { AllowanceType } from '../lib/types';
+import type { AllowanceType } from 'types/client/revoke';
 import type { ChainConfig } from 'types/multichain';
 
 import { route } from 'nextjs/routes';
@@ -47,8 +47,8 @@ export default function ApprovalsTableItem({
   }, [ revoke, hideApproval, approval, selectedChain?.config.chain.id ]);
 
   return (
-    <TableRow fontWeight="500" css={{ '& > td': { verticalAlign: 'middle' } }}>
-      <TableCell>
+    <TableRow fontWeight="500">
+      <TableCell verticalAlign="middle">
         <Flex flexDir="column" gap={ 2 } mr={ 2 }>
           <TokenEntity
             token={{
@@ -78,7 +78,7 @@ export default function ApprovalsTableItem({
           />
         </Flex>
       </TableCell>
-      <TableCell>
+      <TableCell verticalAlign="middle">
         <AddressEntity
           address={{ hash: approval.spender }}
           truncation="constant"
@@ -89,7 +89,7 @@ export default function ApprovalsTableItem({
           link={{ noIcon: true }}
         />
       </TableCell>
-      <TableCell isNumeric>
+      <TableCell isNumeric verticalAlign="middle">
         <Skeleton loading={ isLoading } display="inline-block">
           <NumberEntity
             value={ allowance }
@@ -99,7 +99,7 @@ export default function ApprovalsTableItem({
           />
         </Skeleton>
       </TableCell>
-      <TableCell isNumeric>
+      <TableCell isNumeric verticalAlign="middle">
         <Skeleton loading={ isLoading } display="inline-block">
           { approval.valueAtRiskUsd && (
             <NumberEntity
@@ -110,13 +110,13 @@ export default function ApprovalsTableItem({
         </Skeleton>
       </TableCell>
       <TableCell></TableCell>
-      <TableCell>
+      <TableCell verticalAlign="middle">
         <Skeleton loading={ isLoading } display="inline-block">
           <DateEntity value={ approval.timestamp }/>
         </Skeleton>
       </TableCell>
       { isAddressMatch && (
-        <TableCell isNumeric>
+        <TableCell isNumeric verticalAlign="middle">
           <Button
             size="sm"
             variant="outline"

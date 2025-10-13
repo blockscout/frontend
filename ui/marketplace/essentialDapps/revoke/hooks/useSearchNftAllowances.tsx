@@ -3,8 +3,8 @@ import { useCallback } from 'react';
 import { getAbiItem, getAddress, slice, encodeEventTopics } from 'viem';
 import type { PublicClient, GetLogsParameters, Log } from 'viem';
 
-import type { AllowanceType, ContractAllowanceType } from '../lib/types';
 import type { TokenInfo } from 'types/api/token';
+import type { AllowanceType, ContractAllowanceType } from 'types/client/revoke';
 import type { ChainConfig } from 'types/multichain';
 
 import useApiFetch from 'lib/api/useApiFetch';
@@ -239,9 +239,7 @@ function useGetNftAllowances() {
               allAllowances.map(async(allowance) => {
                 const timestampMs = await getBlockTimestamp(chain, allowance.blockNumber as bigint, signal);
 
-                return (
-                  allowance?.allowance &&
-                  allowance?.allowance !== BigInt(0) &&
+                if (allowance?.allowance && allowance?.allowance !== BigInt(0)) {
                   allowances.push({
                     type: 'ERC-721',
                     allowance: allowance?.allowance === BigInt(-1) ? 'Unlimited' : allowance?.allowance.toString(),
@@ -253,8 +251,8 @@ function useGetNftAllowances() {
                     timestamp: timestampMs,
                     spender: allowance?.spender,
                     tokenId: allowance?.tokenId,
-                  })
-                );
+                  });
+                }
               }),
             );
           }
