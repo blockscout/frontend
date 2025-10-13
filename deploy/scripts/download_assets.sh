@@ -32,6 +32,9 @@ ASSETS_ENVS=(
 # Create the assets directory if it doesn't exist
 mkdir -p "$ASSETS_DIR"
 
+# Track failed downloads
+FAILED_DOWNLOADS=0
+
 # Function to determine the target file name based on the environment variable
 get_target_filename() {
     local env_var="$1"
@@ -88,9 +91,10 @@ download_and_save_asset() {
     else
         # Check if the value is a URL
         if [[ "$url" == http* ]]; then
-            # Download the asset using curl with timeouts
-            if ! curl -f -s --connect-timeout 5 --max-time 15 -o "$destination" "$url"; then
-                echo "   [-] $env_var: Failed to download from $url (timeout or connection error)"
+            # Download the asset using curl with built-in retries
+            if ! curl -f -s --connect-timeout 10 --max-time 60 --retry 3 --retry-delay 3 --retry-max-time 180 -o "$destination" "$url"; then
+                echo "   [-] $env_var: Failed to download from $url after 3 retry attempts (timeout or connection error)"
+                FAILED_DOWNLOADS=$((FAILED_DOWNLOADS + 1))
                 return 1
             fi
         else
@@ -124,6 +128,12 @@ for env_var in "${ASSETS_ENVS[@]}"; do
     filename=$(get_target_filename "$env_var")
     download_and_save_asset "$env_var" "$url" "$filename"
 done
+
+# Check if any downloads failed and exit with error code
+if [ $FAILED_DOWNLOADS -gt 0 ]; then
+    echo "🛑 Error: $FAILED_DOWNLOADS asset download(s) failed. The application cannot start."
+    exit 1
+fi
 
 echo "✅ Done."
 echo

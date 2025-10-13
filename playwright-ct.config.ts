@@ -36,6 +36,12 @@ const config: PlaywrightTestConfig = defineConfig({
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'html',
 
+  expect: {
+    toHaveScreenshot: {
+      threshold: 0.05,
+    },
+  },
+
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     baseURL: appConfig.app.baseUrl,
@@ -94,6 +100,9 @@ const config: PlaywrightTestConfig = defineConfig({
 
           // Mock for @helia/verified-fetch to avoid build issues in tests
           { find: '@helia/verified-fetch', replacement: './playwright/mocks/modules/@helia/verified-fetch.js' },
+
+          // Mock for @specify-sh/sdk to avoid build issues in tests
+          { find: '@specify-sh/sdk', replacement: './playwright/mocks/modules/@specify-sh/sdk.js' },
         ],
       },
       define: {

@@ -19,7 +19,7 @@ const SocialLink = ({ href, icon, title }: Props) => {
       href={ href }
       aria-label={ title }
       title={ title }
-      target="_blank"
+      external noIcon
       display="inline-flex"
       alignItems="center"
     >

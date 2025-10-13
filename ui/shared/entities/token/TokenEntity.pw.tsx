@@ -40,6 +40,7 @@ test.describe('variant', () => {
             symbol: 'DUCK DUCK DUCK',
             address_hash: tokenMock.tokenInfo.address_hash,
             icon_url: LOGO_URL,
+            reputation: 'ok',
           }}
           chain={ opSuperchainMock.chainDataA }
         />,
@@ -83,6 +84,7 @@ test('with logo, long name and symbol', async({ page, render }) => {
         symbol: 'DUCK DUCK DUCK',
         address_hash: tokenMock.tokenInfo.address_hash,
         icon_url: LOGO_URL,
+        reputation: 'ok',
       }}
     />,
   );
@@ -91,6 +93,34 @@ test('with logo, long name and symbol', async({ page, render }) => {
   await expect(page).toHaveScreenshot();
 
   await stableHover(page.getByText(/duc/i));
+  await expect(page).toHaveScreenshot();
+});
+
+test('scam token', async({ page, render, mockEnvs }) => {
+  await mockEnvs([
+    [ 'NEXT_PUBLIC_VIEWS_TOKEN_SCAM_TOGGLE_ENABLED', 'true' ],
+  ]);
+
+  const LOGO_URL = 'https://example.com/logo.png';
+  await page.route(LOGO_URL, (route) => {
+    return route.fulfill({
+      status: 200,
+      path: './playwright/mocks/image_s.jpg',
+    });
+  });
+
+  await render(
+    <TokenEntity
+      token={{
+        type: 'ERC-20',
+        name: 'Duck Token',
+        symbol: 'DUCK',
+        address_hash: tokenMock.tokenInfo.address_hash,
+        icon_url: LOGO_URL,
+        reputation: 'scam',
+      }}
+    />,
+  );
   await expect(page).toHaveScreenshot();
 });
 

@@ -53,6 +53,7 @@ const SearchBarSuggestToken = ({ data, isMobile, searchTerm, addressFormat }: It
           { name }
           { data.certified && certifiedIcon }
           { data.is_verified_via_admin_panel && !data.certified && verifiedIcon }
+          { data.reputation && <TokenEntity.Reputation value={ data.reputation }/> }
         </Flex>
         <Grid templateColumns={ templateCols } alignItems="center" gap={ 2 }>
           <Flex alignItems="center" overflow="hidden">
@@ -72,6 +73,7 @@ const SearchBarSuggestToken = ({ data, isMobile, searchTerm, addressFormat }: It
         { name }
         { data.certified && certifiedIcon }
         { data.is_verified_via_admin_panel && !data.certified && verifiedIcon }
+        { data.reputation && <TokenEntity.Reputation value={ data.reputation }/> }
       </Flex>
       <Flex alignItems="center" overflow="hidden">
         { address }

@@ -4,6 +4,8 @@ import type { AddressParam } from './addressParams';
 export type NFTTokenType = 'ERC-721' | 'ERC-1155' | 'ERC-404';
 export type TokenType = 'ERC-20' | NFTTokenType;
 
+export type TokenReputation = 'ok' | 'scam';
+
 export interface TokenInfo<T extends TokenType = TokenType> {
   address_hash: string;
   type: T;
@@ -15,6 +17,7 @@ export interface TokenInfo<T extends TokenType = TokenType> {
   total_supply: string | null;
   icon_url: string | null;
   circulating_market_cap: string | null;
+  reputation: TokenReputation | null;
   // bridged token fields
   is_bridged?: boolean | null;
   bridge_type?: string | null;

@@ -37,6 +37,7 @@ export const erc20: TokenTransfer = {
     type: 'ERC-20',
     total_supply: '0',
     icon_url: null,
+    reputation: 'ok',
   },
   total: {
     decimals: '18',
@@ -85,6 +86,7 @@ export const erc721: TokenTransfer = {
     type: 'ERC-721',
     total_supply: '0',
     icon_url: null,
+    reputation: 'ok',
   },
   total: {
     token_id: '875879856',
@@ -133,6 +135,7 @@ export const erc1155A: TokenTransfer = {
     type: 'ERC-1155',
     total_supply: '0',
     icon_url: null,
+    reputation: 'ok',
   },
   total: {
     token_id: '123',
@@ -212,6 +215,7 @@ export const erc404A: TokenTransfer = {
     type: 'ERC-404',
     total_supply: '0',
     icon_url: null,
+    reputation: 'ok',
   },
   total: {
     value: '42000000000000000000000000',

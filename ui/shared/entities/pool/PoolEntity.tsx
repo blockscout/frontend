@@ -50,6 +50,7 @@ const Icon = (props: IconProps) => {
             address_hash: props.pool.base_token_address,
             name: '',
             type: 'ERC-20',
+            reputation: null,
           }}
           isLoading={ props.isLoading }
         />
@@ -70,6 +71,7 @@ const Icon = (props: IconProps) => {
             address_hash: props.pool.quote_token_address,
             name: '',
             type: 'ERC-20',
+            reputation: null,
           }}
           isLoading={ props.isLoading }
         />

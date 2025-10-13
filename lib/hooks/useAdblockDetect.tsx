@@ -15,7 +15,6 @@ const TEST_URLS: Record<AdBannerProviders, string> = {
   slise: 'https://v1.slise.xyz/serve',
   coinzilla: 'https://request-global.czilladx.com',
   adbutler: 'https://servedbyadbutler.com/app.js',
-  hype: 'https://api.hypelab.com/v1/scripts/hp-sdk.js',
   none: DEFAULT_URL,
 };
 

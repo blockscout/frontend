@@ -83,6 +83,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading, addressFormat }: Pr
             </Link>
             { data.certified && <ContractCertifiedLabel iconSize={ 4 } boxSize={ 4 } ml={ 1 }/> }
             { data.is_verified_via_admin_panel && !data.certified && <IconSvg name="certified" boxSize={ 4 } ml={ 1 } color="green.500"/> }
+            { data.reputation && <TokenEntity.Reputation value={ data.reputation }/> }
           </Flex>
         );
       }

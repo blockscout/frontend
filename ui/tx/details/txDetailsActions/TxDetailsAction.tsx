@@ -44,6 +44,7 @@ const TxDetailsAction = ({ action }: Props) => {
         type: 'ERC-20' as const,
         symbol: null,
         icon_url: null,
+        reputation: null,
       };
       const token1 = {
         address_hash: data.symbol1 === 'Ether' ? '' : data.address1,
@@ -51,6 +52,7 @@ const TxDetailsAction = ({ action }: Props) => {
         type: 'ERC-20' as const,
         symbol: null,
         icon_url: null,
+        reputation: null,
       };
 
       return (
@@ -102,6 +104,7 @@ const TxDetailsAction = ({ action }: Props) => {
         type: 'ERC-20' as const,
         symbol: null,
         icon_url: null,
+        reputation: null,
       };
 
       return (

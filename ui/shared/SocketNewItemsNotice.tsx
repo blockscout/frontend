@@ -1,10 +1,13 @@
 import { Text, chakra } from '@chakra-ui/react';
 import React from 'react';
 
+import config from 'configs/app';
 import { Alert } from 'toolkit/chakra/alert';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
+
+const flashblocksFeature = config.features.flashblocks;
 
 interface InjectedProps {
   content: React.ReactNode;
@@ -43,9 +46,12 @@ const SocketNewItemsNotice = chakra(({ children, className, url, num, showErrorA
       case 'block':
         name = 'block';
         break;
-      case 'flashblock':
-        name = 'flashblock';
+      case 'flashblock': {
+        if (flashblocksFeature.isEnabled) {
+          name = flashblocksFeature.name;
+        }
         break;
+      }
       case 'cross_chain_transaction':
         name = 'cross chain transaction';
         break;

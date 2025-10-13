@@ -5,6 +5,7 @@ import type { FlashblockItem } from 'types/client/flashblocks';
 
 import { route } from 'nextjs-routes';
 
+import dayjs from 'lib/date/dayjs';
 import { Link } from 'toolkit/chakra/link';
 import FlashblockEntity from 'ui/shared/entities/flashblock/FlashblockEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
@@ -25,6 +26,12 @@ const FlashblocksListItem = ({ data }: Props) => {
           />
         ) : <Text color="text.secondary">N/A</Text> }
       </Flex>
+      { data.timestamp && (
+        <Flex columnGap={ 2 }>
+          <Text fontWeight={ 500 }>Timestamp</Text>
+          <Text color="text.secondary">{ dayjs(data.timestamp).format('DD MMM, HH:mm:ss.SSS') }</Text>
+        </Flex>
+      ) }
       <Flex columnGap={ 2 }>
         <Text fontWeight={ 500 }>Txn</Text>
         { data.transactions_count > 0 ? (

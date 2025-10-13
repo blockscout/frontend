@@ -57,6 +57,7 @@ const VerifiedAddressesTableItem = ({ item, application, onAdd, onEdit, isLoadin
       address_hash: application.tokenAddress,
       name: item.metadata.tokenName,
       symbol: '',
+      reputation: null,
     };
 
     return (

@@ -37,6 +37,10 @@ export_envs_from_preset
 
 # Download external assets
 ./download_assets.sh ./public/assets/configs
+if [ $? -ne 0 ]; then
+  echo "🛑 Failed to download external assets. The application cannot start."
+  exit 1
+fi
 
 # Check run-time ENVs values
 if [ "$SKIP_ENVS_VALIDATION" != "true" ]; then

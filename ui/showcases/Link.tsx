@@ -32,6 +32,7 @@ const TOKEN = {
   total_supply: '76923002799740785',
   type: 'ERC-20' as const,
   volume_24h: '82069586622.4918',
+  reputation: 'ok' as const,
 };
 
 const LinkShowcase = () => {

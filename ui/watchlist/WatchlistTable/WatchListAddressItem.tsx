@@ -21,6 +21,7 @@ const WatchListAddressItem = ({ item, isLoading }: { item: WatchlistAddress; isL
     symbol: '',
     address_hash: '',
     type: 'ERC-20' as const,
+    reputation: null,
   }), [ ]);
 
   const { usdBn: usdNative } = getCurrencyValue({ value: item.address_balance, accuracy: 2, accuracyUsd: 2, exchangeRate: item.exchange_rate });

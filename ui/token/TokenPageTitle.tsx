@@ -13,7 +13,7 @@ import useApiQuery from 'lib/api/useApiQuery';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import { getTokenTypeName } from 'lib/token/tokenTypes';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import AddressMetadataAlert from 'ui/address/details/AddressMetadataAlert';
+import AddressAlerts from 'ui/address/details/AddressAlerts';
 import AddressQrCode from 'ui/address/details/AddressQrCode';
 import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu';
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
@@ -92,6 +92,7 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, hash }: Props) => {
 
   const contentAfter = (
     <>
+      { tokenQuery.data && <TokenEntity.Reputation value={ tokenQuery.data.reputation } ml={ 0 }/> }
       { verifiedInfoQuery.data?.tokenAddress && (
         <Tooltip content={ `Information on this token has been verified by ${ config.chain.name }` }>
           <IconSvg name="certified" color="green.500" boxSize={ 6 } cursor="pointer"/>
@@ -144,8 +145,12 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, hash }: Props) => {
         contentAfter={ contentAfter }
         secondRow={ secondRow }
       />
-      { !addressMetadataQuery.isPending &&
-        <AddressMetadataAlert tags={ addressMetadataQuery.data?.addresses?.[hash.toLowerCase()]?.tags } mt="-4px" mb={ 6 }/> }
+      { !addressMetadataQuery.isPending && (
+        <AddressAlerts
+          tags={ addressMetadataQuery.data?.addresses?.[hash.toLowerCase()]?.tags }
+          isScamToken={ tokenQuery.data?.reputation === 'scam' }
+        />
+      ) }
     </>
   );
 };

@@ -1,27 +1,24 @@
 import { Box, Flex } from '@chakra-ui/react';
 import React from 'react';
-import { useInView } from 'react-intersection-observer';
 
 import config from 'configs/app';
-import { useScrollDirection } from 'lib/contexts/scrollDirection';
+import { useIsSticky } from 'toolkit/hooks/useIsSticky';
 import RewardsButton from 'ui/rewards/RewardsButton';
 import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
-import SearchBar from 'ui/snippets/searchBar/SearchBar';
 import UserProfileMobile from 'ui/snippets/user/profile/UserProfileMobile';
 import UserWalletMobile from 'ui/snippets/user/wallet/UserWalletMobile';
 
+import SearchBarMobile from '../searchBar/SearchBarMobile';
 import Burger from './Burger';
 
 type Props = {
-  hideSearchBar?: boolean;
+  hideSearchButton?: boolean;
   renderSearchBar?: () => React.ReactNode;
 };
 
-const HeaderMobile = ({ hideSearchBar, renderSearchBar }: Props) => {
-  const scrollDirection = useScrollDirection();
-  const { ref, inView } = useInView({ threshold: 1 });
-
-  const searchBar = renderSearchBar ? renderSearchBar() : <SearchBar/>;
+const HeaderMobile = ({ hideSearchButton }: Props) => {
+  const ref = React.useRef<HTMLDivElement>(null);
+  const isSticky = useIsSticky(ref, 5);
 
   return (
     <Box
@@ -44,20 +41,18 @@ const HeaderMobile = ({ hideSearchBar, renderSearchBar }: Props) => {
         alignItems="center"
         transitionProperty="box-shadow"
         transitionDuration="slow"
-        boxShadow={ !inView && scrollDirection === 'down' ? 'md' : 'none' }
+        boxShadow={ isSticky ? 'md' : 'none' }
       >
         <Burger/>
         <NetworkLogo ml={ 2 } mr="auto"/>
         <Flex columnGap={ 2 }>
+          { !hideSearchButton && <SearchBarMobile/> }
           { config.features.rewards.isEnabled && <RewardsButton/> }
-          {
-            (config.features.account.isEnabled && <UserProfileMobile/>) ||
-            (config.features.blockchainInteraction.isEnabled && <UserWalletMobile/>) ||
-            <Box boxSize={ 10 }/>
+          { (config.features.account.isEnabled && <UserProfileMobile/>) ||
+            (config.features.blockchainInteraction.isEnabled && <UserWalletMobile/>)
           }
         </Flex>
       </Flex>
-      { !hideSearchBar && searchBar }
     </Box>
   );
 };

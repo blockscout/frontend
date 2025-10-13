@@ -36,14 +36,14 @@ const ContractVerificationFieldMethod = ({ methods }: Props) => {
       case 'multi-part':
         return <List.Item key={ method }>Verification of multi-part Solidity files.</List.Item>;
       case 'sourcify':
-        return <List.Item key={ method }>Verification through <Link href="https://sourcify.dev/" target="_blank" className="dark">Sourcify</Link>.</List.Item>;
+        return <List.Item key={ method }>Verification through <Link href="https://sourcify.dev/" external noIcon className="dark">Sourcify</Link>.</List.Item>;
       case 'standard-input':
         return (
           <List.Item key={ method }>
             <span>Verification using </span>
             <Link
               href="https://docs.soliditylang.org/en/latest/using-the-compiler.html#input-description"
-              target="_blank"
+              external noIcon
               className="dark"
             >
               Standard input JSON
@@ -61,7 +61,7 @@ const ContractVerificationFieldMethod = ({ methods }: Props) => {
             <span>Verification of Vyper contract using </span>
             <Link
               href="https://docs.vyperlang.org/en/stable/compiling-a-contract.html#compiler-input-and-output-json-description"
-              target="_blank"
+              external noIcon
               className="dark"
             >
               Standard input JSON

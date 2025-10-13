@@ -59,7 +59,7 @@ const Sol2UmlDiagram = ({ addressHash }: Props) => {
     const image = new Image();
     image.src = imgUrl;
 
-    const newWindow = window.open(imgUrl);
+    const newWindow = window.open(imgUrl, '_blank', 'noopener,noreferrer');
     newWindow?.document.write(image.outerHTML);
   }, [ imgUrl ]);
 

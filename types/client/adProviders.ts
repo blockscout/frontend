@@ -4,7 +4,6 @@ export const SUPPORTED_AD_BANNER_PROVIDERS = [
   'slise',
   'adbutler',
   'coinzilla',
-  'hype',
   'none',
 ] as const;
 export type AdBannerProviders = ArrayElement<typeof SUPPORTED_AD_BANNER_PROVIDERS>;

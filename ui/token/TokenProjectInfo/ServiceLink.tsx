@@ -19,7 +19,8 @@ const ServiceLink = ({ href, title, icon }: Props) => {
       href={ href }
       aria-label={ title }
       title={ title }
-      target="_blank"
+      external
+      noIcon
       display="inline-flex"
       alignItems="center"
     >

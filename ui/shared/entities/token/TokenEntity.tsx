@@ -1,3 +1,4 @@
+import type { BoxProps } from '@chakra-ui/react';
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
@@ -5,12 +6,15 @@ import type { TokenInfo } from 'types/api/token';
 
 import { route } from 'nextjs/routes';
 
+import config from 'configs/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import getChainTooltipText from 'lib/multichain/getChainTooltipText';
 import getIconUrl from 'lib/multichain/getIconUrl';
 import { Skeleton } from 'toolkit/chakra/skeleton';
+import { Tooltip } from 'toolkit/chakra/tooltip';
 import { TruncatedTextTooltip } from 'toolkit/components/truncation/TruncatedTextTooltip';
 import * as EntityBase from 'ui/shared/entities/base/components';
+import IconSvg from 'ui/shared/IconSvg';
 import TokenLogoPlaceholder from 'ui/shared/TokenLogoPlaceholder';
 
 import { distributeEntityProps, getIconProps } from '../base/utils';
@@ -125,8 +129,24 @@ const Copy = (props: CopyProps) => {
 
 const Container = EntityBase.Container;
 
+interface ReputationProps extends BoxProps {
+  value: TokenInfo['reputation'];
+}
+
+const Reputation = ({ value, ...rest }: ReputationProps) => {
+  if (config.UI.views.token.hideScamTokensEnabled && value === 'scam') {
+    return (
+      <Tooltip content="This token has been flagged as a potential scam. You enabled the display of flagged tokens in the explorer — proceed with caution.">
+        <IconSvg name="scam" boxSize={ 5 } ml={ 2 } { ...rest }/>
+      </Tooltip>
+    );
+  }
+
+  return null;
+};
+
 export interface EntityProps extends EntityBase.EntityBaseProps {
-  token: Pick<TokenInfo, 'address_hash' | 'icon_url' | 'name' | 'symbol' | 'type'>;
+  token: Pick<TokenInfo, 'address_hash' | 'icon_url' | 'name' | 'symbol' | 'type' | 'reputation'>;
   noSymbol?: boolean;
   jointSymbol?: boolean;
   onlySymbol?: boolean;
@@ -144,6 +164,7 @@ const TokenEntity = (props: EntityProps) => {
       { props.noLink ? content : <Link { ...partsProps.link }>{ content }</Link> }
       <Symbol { ...partsProps.symbol }/>
       <Copy { ...partsProps.copy }/>
+      <Reputation value={ props.token.reputation }/>
     </Container>
   );
 };
@@ -156,4 +177,5 @@ export {
   Icon,
   Content,
   Copy,
+  Reputation,
 };
