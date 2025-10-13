@@ -66,6 +66,7 @@ export const recipe = defineRecipe({
         },
       },
       plain: {
+        color: 'inherit',
         _hover: {
           textDecoration: 'none',
         },
