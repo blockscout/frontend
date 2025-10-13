@@ -342,7 +342,7 @@ const Revoke = () => {
           </Flex>
           <Flex gap={ 3 } w={{ base: 'full', md: 'auto' }}>
             { connectedAddress ? (
-              <Flex gap={ 2 } alignItems="center">
+              <Flex gap={ 2 } alignItems="center" flexShrink={ 0 }>
                 <Text textStyle="sm" fontWeight="500" color="text.secondary">My wallet</Text>
                 <Button
                   variant="plain"
@@ -368,6 +368,7 @@ const Revoke = () => {
                 onClick={ web3Wallet.connect }
                 loading={ web3Wallet.isOpen }
                 loadingText="Connect wallet"
+                flexShrink={ 0 }
               >
                 Connect wallet
               </Button>
