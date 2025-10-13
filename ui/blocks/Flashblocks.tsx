@@ -32,20 +32,6 @@ const Flashblocks = () => {
     handleFormatChange({ checked: true });
   }, [ handleFormatChange ]);
 
-  const handleMouseEnter = React.useCallback(() => {
-    if (isRealTime && status === 'connected' && !manualModeRef.current) {
-      pause();
-      setIsRealTime(false);
-    }
-  }, [ isRealTime, pause, status ]);
-
-  const handleMouseLeave = React.useCallback(() => {
-    if (!isRealTime && status === 'connected' && !manualModeRef.current) {
-      resume();
-      setIsRealTime(true);
-    }
-  }, [ isRealTime, resume, status ]);
-
   const showAlertError = status === 'error' || status === 'disconnected';
 
   if (!flashblocksFeature.isEnabled) {
@@ -63,7 +49,7 @@ const Flashblocks = () => {
           label={ `Real-time ${ flashblocksFeature.name }s show the latest ${ flashblocksFeature.name }s with real-time updates in the chronological order. ` }
         />
       </HStack>
-      <Box hideBelow="lg" onMouseEnter={ handleMouseEnter } onMouseLeave={ handleMouseLeave }>
+      <Box hideBelow="lg">
         <FlashblocksTable
           items={ items }
           newItemsNum={ newItemsNum }
