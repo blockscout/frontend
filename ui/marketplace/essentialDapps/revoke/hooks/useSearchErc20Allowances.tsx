@@ -99,6 +99,7 @@ const useGetERC20TokenData = () => {
         name: data.name || undefined,
         tokenIcon: data.icon_url || undefined,
         price: data.exchange_rate || undefined,
+        tokenReputation: data.reputation,
         balance: undefined,
       };
     } catch {

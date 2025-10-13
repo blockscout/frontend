@@ -57,6 +57,7 @@ export default function ApprovalsTableItem({
               symbol: approval.symbol || null,
               name: approval.name || null,
               icon_url: approval.tokenIcon || null,
+              reputation: approval.tokenReputation,
             }}
             isLoading={ isLoading }
             noCopy

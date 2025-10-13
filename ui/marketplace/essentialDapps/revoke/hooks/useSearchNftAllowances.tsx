@@ -247,6 +247,7 @@ function useGetNftAllowances() {
                     name: tokenData.name || undefined,
                     symbol: tokenData.symbol || undefined,
                     tokenIcon: tokenData.icon_url || undefined,
+                    tokenReputation: tokenData.reputation,
                     transactionId: allowance?.transactionId,
                     timestamp: timestampMs,
                     spender: allowance?.spender,

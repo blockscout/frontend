@@ -15,4 +15,5 @@ export const ALLOWANCES = Array.from({ length: 3 }, () => ({
   totalSupply: BigInt(0),
   timestamp: 0,
   valueAtRiskUsd: 100000,
+  tokenReputation: 'ok',
 })) as Array<AllowanceType>;

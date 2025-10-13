@@ -1,3 +1,5 @@
+import type { TokenReputation } from 'types/api/token';
+
 export interface ContractAllowanceType {
   transactionId: `0x${ string }` | null;
   spender: `0x${ string }`;
@@ -12,6 +14,7 @@ export interface AllowanceType {
   transactionId: `0x${ string }` | null;
   tokenId?: string;
   tokenIcon?: string;
+  tokenReputation: TokenReputation | null;
   allowance?: string;
   price?: string;
   balance?: string;
