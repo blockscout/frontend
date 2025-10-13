@@ -25,13 +25,10 @@ function readFileConfig() {
 
 export async function load() {
   if (!value) {
-    return new Promise<MultichainConfig | undefined>((resolve) => {
-      const value = readFileConfig();
-      resolve(value);
-    });
+    return readFileConfig();
   }
 
-  return Promise.resolve(value);
+  return value;
 }
 
 export function getValue() {
