@@ -1,6 +1,6 @@
 import NftArtifact from '@openzeppelin/contracts/build/contracts/ERC721.json';
 import { useCallback } from 'react';
-import { getAbiItem, getAddress, slice, encodeEventTopics } from 'viem';
+import { getAbiItem, getAddress, slice } from 'viem';
 import type { PublicClient, GetLogsParameters, Log } from 'viem';
 
 import type { TokenInfo } from 'types/api/token';
@@ -10,12 +10,8 @@ import type { ChainConfig } from 'types/multichain';
 import useApiFetch from 'lib/api/useApiFetch';
 import { ZERO_ADDRESS } from 'toolkit/utils/consts';
 
-import OpenSeaRegistryAbi from '../lib/abis/OpenSeaRegistry.json';
 import getLogs from '../lib/getLogs';
 import useGetBlockTimestamp from './useGetBlockTimestamp';
-
-const OPENSEA_REGISTRY_ADDRESS = '0xa5409ec958C83C3f309868babACA7c86DCB077c1';
-const MOONBIRDS_ADDRESS = '0x23581767a106ae21c074b2276D25e5C3e136a68b';
 
 async function getLimitedNftAllowancesFromApprovals(
   tokenAddress: `0x${ string }`,
@@ -117,64 +113,6 @@ async function getNftUnlimitedAllowanceFromApproval(
     allowance: isApprovedForAll && BigInt(-1),
     blockNumber: approval.blockNumber as bigint,
   };
-}
-
-async function getOpenSeaProxyAddress(
-  userAddress: string,
-  publicClient: PublicClient,
-): Promise<string | undefined> {
-  try {
-    const proxyAddress = await publicClient.readContract({
-      address: OPENSEA_REGISTRY_ADDRESS,
-      abi: OpenSeaRegistryAbi,
-      functionName: 'proxies',
-      args: [ userAddress ],
-    });
-    if (!proxyAddress || proxyAddress === ZERO_ADDRESS) return undefined;
-
-    return proxyAddress as string;
-  } catch {
-    return undefined;
-  }
-}
-
-// This function is a hardcoded patch to show Moonbirds' OpenSea allowances,
-// which do not show up normally because of a bug in their contract
-function generatePatchedAllowanceEvents(
-  userAddress: string,
-  openseaProxyAddress?: string,
-  allEvents: Array<Log> = [],
-): Array<Log> {
-  if (!userAddress || !openseaProxyAddress) return [];
-  // Only add the Moonbirds approval event if the account has interacted with Moonbirds at all
-  if (!allEvents.some((ev) => ev.address === MOONBIRDS_ADDRESS)) return [];
-
-  const prefix = '0x';
-
-  const baseDummyEventLog = {
-    blockNumber: 0,
-    blockHash: prefix,
-    transactionIndex: 0,
-    removed: false,
-    data: prefix,
-    transactionHash: prefix,
-    logIndex: 0,
-  };
-
-  return [
-    {
-      ...baseDummyEventLog,
-      address: MOONBIRDS_ADDRESS,
-      topics: encodeEventTopics({
-        abi: NftArtifact.abi,
-        eventName: 'ApprovalForAll',
-        args: {
-          owner: userAddress,
-          operator: openseaProxyAddress,
-        },
-      }),
-    } as unknown as Log,
-  ];
 }
 
 function useGetNftAllowances() {
@@ -315,23 +253,9 @@ export default function useSearchNftAllowances() {
         (ev) => ev.topics.length === 4,
       );
 
-      const openSeaProxy = await getOpenSeaProxyAddress(
-        searchQuery,
-        publicClient,
-      );
-
-      const patchedApprovalForAllEvents = [
-        ...approvalForAllEvents,
-        ...generatePatchedAllowanceEvents(searchQuery, openSeaProxy, [
-          ...approvalEvents,
-          ...approvalForAllEvents,
-          ...transferEvents,
-        ]),
-      ];
-
       const nftEvents = [
         ...nftApprovalEvents,
-        ...patchedApprovalForAllEvents,
+        ...approvalForAllEvents,
         ...nftTransferEvents,
       ];
 
@@ -347,7 +271,7 @@ export default function useSearchNftAllowances() {
         nftAddresses,
         searchQuery,
         nftApprovalEvents,
-        patchedApprovalForAllEvents,
+        approvalForAllEvents,
         publicClient,
         chain,
         signal,
