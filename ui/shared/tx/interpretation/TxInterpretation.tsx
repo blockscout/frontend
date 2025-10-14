@@ -179,6 +179,9 @@ const TxInterpretationElementByType = (
         </chakra.span>
       );
     }
+    case 'link': {
+      return <Link external href={ value.url }>{ value.name }</Link>;
+    }
   }
 };
 
