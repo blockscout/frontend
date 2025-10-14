@@ -110,4 +110,4 @@ const NftVideo = ({ src, transport, instance, autoPlay = true, onLoad, size = 'o
   );
 };
 
-export default chakra(NftVideo);
+export default React.memo(NftVideo);
