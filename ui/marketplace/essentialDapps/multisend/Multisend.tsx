@@ -15,9 +15,9 @@ const Container = ({ children }: { children: React.ReactNode }) => (
     css={{
       '& > .multisenderTheme': {
         '--mw-color-brand': { _light: 'colors.blue.600', _dark: 'colors.blue.500' },
-        '--mw-color-brand-stroke': { _light: 'colors.gray.200', _dark: 'colors.theme.topbar.bg._dark' },
+        '--mw-color-brand-stroke': { _light: 'colors.gray.200', _dark: 'colors.whiteAlpha.100' },
         '--mw-color-brand-text-secondary': 'colors.text.secondary',
-        '--mw-color-brand-fill': 'colors.dialog.bg',
+        '--mw-color-brand-fill': 'colors.dialog.bg', // modal background
         fontFamily: 'body',
         '& [class*="_stepBody_"] > span': {
           fontSize: 'xs',
@@ -28,7 +28,7 @@ const Container = ({ children }: { children: React.ReactNode }) => (
             color: 'text.secondary',
           },
           '& [class*="_stepIcon_"]': {
-            backgroundColor: { _light: 'gray.100', _dark: 'theme.topbar.bg._dark' },
+            backgroundColor: { _light: 'gray.100', _dark: 'whiteAlpha.100' },
           },
           '& [class*="_stepCompletedIcon_"]': {
             color: 'text.secondary',
@@ -141,7 +141,7 @@ const Container = ({ children }: { children: React.ReactNode }) => (
         '& [class*="_itemRoot_"]': {
           border: 'none',
           borderRadius: 'base',
-          backgroundColor: { _light: 'theme.topbar.bg._light', _dark: 'theme.topbar.bg._dark' },
+          backgroundColor: { _light: 'gray.50', _dark: 'whiteAlpha.100' },
           '& > div': {
             gap: '8px',
           },
@@ -389,7 +389,7 @@ const Container = ({ children }: { children: React.ReactNode }) => (
             '& > div[class*="LargeRadio-module__body_"]': {
               border: 'none',
               borderRadius: 'base',
-              backgroundColor: { _light: 'theme.topbar.bg._light', _dark: 'theme.topbar.bg._dark' },
+              backgroundColor: { _light: 'gray.50', _dark: 'whiteAlpha.100' },
             },
             '&:not([data-checked="true"]) input': {
               backgroundColor: 'transparent',

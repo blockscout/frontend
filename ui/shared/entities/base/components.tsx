@@ -100,6 +100,7 @@ type EntityIconProps = (ImageProps | IconSvgProps) & Pick<IconProps, 'color' | '
   hint?: string;
   hintPostfix?: string;
   tooltipInteractive?: boolean;
+  size?: number; // for AddressIdenticon in address entity
 };
 
 export type IconBaseProps = Pick<EntityBaseProps, 'isLoading' | 'noIcon' | 'variant' | 'chain'> & EntityIconProps;

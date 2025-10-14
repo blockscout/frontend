@@ -106,7 +106,7 @@ const Icon = (props: IconProps) => {
     >
       <Flex marginRight={ styles.marginRight } position="relative">
         <AddressIdenticon
-          size={ props.variant === 'heading' ? 30 : 20 }
+          size={ props.size ?? (props.variant === 'heading' ? 30 : 20) }
           hash={ getDisplayedAddress(props.address) }
         />
         { shield && <EntityBase.IconShield { ...shield }/> }

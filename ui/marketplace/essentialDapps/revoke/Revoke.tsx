@@ -177,7 +177,7 @@ const Revoke = () => {
                   truncation="constant"
                   textStyle={{ base: 'heading.sm', lg: 'heading.md' }}
                   fontWeight="500"
-                  variant={ isMobile ? undefined : 'heading' }
+                  icon={{ size: isMobile ? undefined : 30 }}
                   noLink
                 />
                 <Badge colorPalette={ isAddressMatch ? 'green' : 'gray' }>

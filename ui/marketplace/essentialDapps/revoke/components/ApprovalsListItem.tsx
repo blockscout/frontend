@@ -6,15 +6,15 @@ import type { ChainConfig } from 'types/multichain';
 
 import { route } from 'nextjs/routes';
 
+import dayjs from 'lib/date/dayjs';
 import { Button } from 'toolkit/chakra/button';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
+import NumberEntity from 'ui/shared/NumberEntity';
 
 import useRevoke from '../hooks/useRevoke';
 import formatAllowance from '../lib/formatAllowance';
-import DateEntity from './DateEntity';
-import NumberEntity from './NumberEntity';
 
 type Props = {
   selectedChain: ChainConfig | undefined;
@@ -111,7 +111,8 @@ export default function ApprovalsListItem({
       </Skeleton>
       <Text>Last updated</Text>
       <Skeleton loading={ isLoading }>
-        <DateEntity value={ approval.timestamp }/>
+        <Text>{ dayjs(approval.timestamp).format('lll') }</Text>
+        <Text>{ dayjs(approval.timestamp).fromNow() }</Text>
       </Skeleton>
       { isAddressMatch && (
         <Button

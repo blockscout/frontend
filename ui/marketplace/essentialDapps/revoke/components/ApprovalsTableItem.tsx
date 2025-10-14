@@ -11,11 +11,11 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableRow, TableCell } from 'toolkit/chakra/table';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
+import NumberEntity from 'ui/shared/NumberEntity';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 import useRevoke from '../hooks/useRevoke';
 import formatAllowance from '../lib/formatAllowance';
-import DateEntity from './DateEntity';
-import NumberEntity from './NumberEntity';
 
 type Props = {
   selectedChain: ChainConfig | undefined;
@@ -112,9 +112,7 @@ export default function ApprovalsTableItem({
       </TableCell>
       <TableCell></TableCell>
       <TableCell verticalAlign="middle">
-        <Skeleton loading={ isLoading } display="inline-block">
-          <DateEntity value={ approval.timestamp }/>
-        </Skeleton>
+        <TimeWithTooltip timestamp={ approval.timestamp } isLoading={ isLoading }/>
       </TableCell>
       { isAddressMatch && (
         <TableCell isNumeric verticalAlign="middle">
