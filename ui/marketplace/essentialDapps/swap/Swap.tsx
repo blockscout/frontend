@@ -1,4 +1,4 @@
-import { Box } from '@chakra-ui/react';
+import { Box, useToken } from '@chakra-ui/react';
 import type { RouteExecutionUpdate, WidgetConfig } from '@lifi/widget';
 import { LiFiWidget, useWidgetEvents, WidgetEvent } from '@lifi/widget';
 import { useEffect, useMemo, useRef } from 'react';
@@ -9,7 +9,6 @@ import useRewardsActivity from 'lib/hooks/useRewardsActivity';
 import * as mixpanel from 'lib/mixpanel/index';
 import useWeb3Wallet from 'lib/web3/useWallet';
 import { useColorMode } from 'toolkit/chakra/color-mode';
-import colors from 'toolkit/theme/foundations/colors';
 import { BODY_TYPEFACE } from 'toolkit/theme/foundations/typography';
 
 const feature = config.features.marketplace;
@@ -32,6 +31,7 @@ function getUrls(isRpc = false) {
 const Widget = () => {
   const web3Wallet = useWeb3Wallet({ source: 'Essential dapps' });
   const { colorMode } = useColorMode();
+  const [ color ] = useToken('colors', 'blue.600');
 
   const config = useMemo(
     () =>
@@ -47,8 +47,8 @@ const Widget = () => {
             borderRadiusSecondary: 8,
           },
           palette: {
-            primary: { main: colors.blue[600].value },
-            secondary: { main: colors.blue[600].value },
+            primary: { main: color },
+            secondary: { main: color },
           },
         },
         hiddenUI: [ 'appearance' ],
@@ -65,7 +65,7 @@ const Widget = () => {
           onConnect: web3Wallet.connect,
         },
       } as Partial<WidgetConfig>),
-    [ web3Wallet.connect, colorMode ],
+    [ web3Wallet.connect, colorMode, color ],
   );
 
   return (
