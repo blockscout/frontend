@@ -34,7 +34,11 @@ const TruncatedValue = ({ className, isLoading, value, tooltipPlacement, tooltip
   // if tooltipContent is provided, we display the tooltip content no matter if the value is truncated or not
   if (tooltipContent) {
     return (
-      <Tooltip content={ tooltipContent }>
+      <Tooltip
+        content={ tooltipContent }
+        positioning={{ placement: tooltipPlacement }}
+        interactive={ tooltipInteractive }
+      >
         { valueElement }
       </Tooltip>
     );
