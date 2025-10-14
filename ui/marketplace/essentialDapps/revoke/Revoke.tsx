@@ -25,6 +25,7 @@ import { Heading } from 'toolkit/chakra/heading';
 import { Image } from 'toolkit/chakra/image';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
+import { Tooltip } from 'toolkit/chakra/tooltip';
 import EmptySearchResult from 'ui/shared/EmptySearchResult';
 import TokenLogoPlaceholder from 'ui/shared/TokenLogoPlaceholder';
 
@@ -186,9 +187,11 @@ const Revoke = () => {
                   icon={{ size: isMobile ? undefined : 30 }}
                   noLink
                 />
-                <Badge colorPalette={ isAddressMatch ? 'green' : 'gray' }>
-                  { isAddressMatch ? 'Connected' : 'Not connected' }
-                </Badge>
+                <Tooltip content="Connect a wallet to revoke approvals" disabled={ isAddressMatch } disableOnMobile>
+                  <Badge colorPalette={ isAddressMatch ? 'green' : 'gray' }>
+                    { isAddressMatch ? 'Connected' : 'Not connected' }
+                  </Badge>
+                </Tooltip>
               </Flex>
             </Flex>
             <Flex gap={ 3 } alignItems="center" flexWrap="wrap">
@@ -337,7 +340,6 @@ const Revoke = () => {
                 <AddressEntity
                   address={{ hash: address }}
                   truncation="constant"
-                  noTooltip
                   noLink
                   noCopy
                   textStyle="sm"
@@ -350,22 +352,24 @@ const Revoke = () => {
             { connectedAddress ? (
               <Flex gap={ 2 } alignItems="center" flexShrink={ 0 }>
                 <Text textStyle="sm" fontWeight="500" color="text.secondary">My wallet</Text>
-                <Button
-                  variant="plain"
-                  size="sm"
-                  p={ 0 }
-                  onClick={ handleAddressClick(connectedAddress) }
-                >
-                  <AddressEntity
-                    address={{ hash: connectedAddress }}
-                    truncation="constant"
-                    noTooltip
-                    noLink
-                    noCopy
-                    textStyle="sm"
-                    fontWeight="600"
-                  />
-                </Button>
+                <Tooltip content="Click to see your approvals" disableOnMobile>
+                  <Button
+                    variant="plain"
+                    size="sm"
+                    p={ 0 }
+                    onClick={ handleAddressClick(connectedAddress) }
+                  >
+                    <AddressEntity
+                      address={{ hash: connectedAddress }}
+                      truncation="constant"
+                      noTooltip
+                      noLink
+                      noCopy
+                      textStyle="sm"
+                      fontWeight="600"
+                    />
+                  </Button>
+                </Tooltip>
               </Flex>
             ) : (
               <Button

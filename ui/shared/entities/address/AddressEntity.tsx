@@ -154,6 +154,7 @@ const Content = chakra((props: ContentProps) => {
         contentProps={{ maxW: { base: 'calc(100vw - 8px)', lg: '400px' } }}
         triggerProps={{ minW: 0 }}
         interactive={ props.tooltipInteractive }
+        disabled={ props.noTooltip }
       >
         <Skeleton loading={ props.isLoading } overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap" { ...styles }>
           { nameText }
