@@ -13,7 +13,7 @@ export const ALLOWANCES = Array.from({ length: 3 }, () => ({
   symbol: 'ETH',
   name: 'Ethereum',
   totalSupply: BigInt(0),
-  timestamp: 0,
+  timestamp: 1718352000,
   valueAtRiskUsd: 100000,
   tokenReputation: 'ok',
 })) as Array<AllowanceType>;

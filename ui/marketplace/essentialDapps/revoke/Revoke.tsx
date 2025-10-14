@@ -1,4 +1,4 @@
-import { Flex, Text, Separator } from '@chakra-ui/react';
+import { Flex, Text } from '@chakra-ui/react';
 import { getEnsAddress } from '@wagmi/core';
 import { useRouter } from 'next/router';
 import React, { useMemo, useCallback, useEffect, useState } from 'react';
@@ -6,10 +6,6 @@ import { isAddress } from 'viem';
 import { mainnet } from 'viem/chains';
 import { normalize } from 'viem/ens';
 import { useAccount } from 'wagmi';
-
-import type { AllowanceType } from 'types/client/revoke';
-
-import { route } from 'nextjs/routes';
 
 import config from 'configs/app';
 import essentialDappsChainsConfig from 'configs/essential-dapps-chains';
@@ -19,19 +15,13 @@ import getQueryParamString from 'lib/router/getQueryParamString';
 import { useQueryParams } from 'lib/router/useQueryParams';
 import useWeb3Wallet from 'lib/web3/useWallet';
 import wagmiConfig from 'lib/web3/wagmiConfig';
-import { Badge } from 'toolkit/chakra/badge';
 import { Button } from 'toolkit/chakra/button';
-import { Heading } from 'toolkit/chakra/heading';
-import { Image } from 'toolkit/chakra/image';
-import { Link } from 'toolkit/chakra/link';
-import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import EmptySearchResult from 'ui/shared/EmptySearchResult';
-import TokenLogoPlaceholder from 'ui/shared/TokenLogoPlaceholder';
 
 import AddressEntity from './components/AddressEntity';
-import Approvals from './components/Approvals';
 import ChainSelect from './components/ChainSelect';
+import Content from './components/Content';
 import SearchInput from './components/SearchInput';
 import StartScreen from './components/StartScreen';
 import useApprovalsQuery from './hooks/useApprovalsQuery';
@@ -55,7 +45,6 @@ const Revoke = () => {
   const { address: connectedAddress } = useAccount();
   const [ searchAddress, setSearchAddress ] = useState(addressFromQuery || '');
   const [ searchInputValue, setSearchInputValue ] = useState('');
-  const [ hiddenApprovals, setHiddenApprovals ] = useState<Array<AllowanceType>>([]);
 
   const selectedChain = essentialDappsChainsConfig()?.chains.find((chain) => chain.config.chain.id === selectedChainId[0]);
 
@@ -63,10 +52,6 @@ const Revoke = () => {
   const coinBalanceQuery = useCoinBalanceQuery(selectedChain, searchAddress);
   const web3Wallet = useWeb3Wallet({ source: 'Essential dapps' });
   const isMobile = useIsMobile();
-
-  const approvals = useMemo(() => {
-    return approvalsQuery.data?.filter((approval) => !hiddenApprovals.includes(approval));
-  }, [ approvalsQuery.data, hiddenApprovals ]);
 
   const isValidAddress = useMemo(
     () => isAddress(searchAddress.toLowerCase()),
@@ -77,29 +62,6 @@ const Revoke = () => {
     () => searchAddress.toLowerCase() === connectedAddress?.toLowerCase(),
     [ searchAddress, connectedAddress ],
   );
-
-  const totalValueAtRiskUsd = useMemo(() => {
-    if (approvalsQuery.isPlaceholderData || !approvals) return 0;
-
-    const maxValues: Record<`0x${ string }`, number> = {};
-
-    approvals.forEach((item) => {
-      const { address, valueAtRiskUsd } = item;
-
-      if (!valueAtRiskUsd) return;
-
-      if (
-        maxValues[address] === undefined ||
-        valueAtRiskUsd > maxValues[address]
-      ) {
-        maxValues[address] = valueAtRiskUsd;
-      }
-    });
-
-    const sum = Object.values(maxValues).reduce((sum, val) => sum + val, 0);
-
-    return Number(sum.toFixed(2)).toLocaleString();
-  }, [ approvalsQuery.isPlaceholderData, approvals ]);
 
   const handleChainValueChange = useCallback(({ value }: { value: Array<string> }) => {
     setSelectedChainId(value);
@@ -135,10 +97,6 @@ const Revoke = () => {
     [ handleSearch ],
   );
 
-  const hideApproval = useCallback((approval: AllowanceType) => {
-    setHiddenApprovals((prev) => [ ...prev, approval ]);
-  }, []);
-
   useEffect(() => {
     if (connectedAddress && !searchAddress) {
       handleSearch(connectedAddress);
@@ -149,150 +107,13 @@ const Revoke = () => {
 
   if (searchAddress && selectedChainId) {
     content = isValidAddress ? (
-      <Flex flexDir="column" w="full">
-        <Flex
-          flexDir={{ base: 'column', lg: 'row' }}
-          gap={ 2 }
-          mt={ -2 }
-          pt={ 2 }
-          pb={ 6 }
-          position={ !isMobile && approvals?.length ? 'sticky' : 'unset' }
-          top={ 0 }
-          zIndex="1"
-          bg={{ _light: 'white', _dark: 'black' }}
-        >
-          <Flex
-            flexDir="column"
-            alignItems="flex-start"
-            flex={ 1 }
-            bg={{ _light: 'blackAlpha.50', _dark: 'whiteAlpha.50' }}
-            gap={ 3 }
-            p={ 6 }
-            borderRadius="base"
-          >
-            <Flex
-              flexDir={{ base: 'column', md: 'row' }}
-              gap={ 3 }
-              alignItems={{ base: 'flex-start', md: 'center' }}
-              justifyContent={{ base: 'flex-start', md: 'space-between' }}
-              w="full"
-              flexWrap="wrap"
-            >
-              <Flex gap={ 2 } alignItems="center">
-                <AddressEntity
-                  address={{ hash: searchAddress }}
-                  truncation="constant"
-                  textStyle={{ base: 'heading.sm', lg: 'heading.md' }}
-                  fontWeight="500"
-                  icon={{ size: isMobile ? undefined : 30 }}
-                  noLink
-                />
-                <Tooltip content="Connect a wallet to revoke approvals" disabled={ isAddressMatch } disableOnMobile>
-                  <Badge colorPalette={ isAddressMatch ? 'green' : 'gray' }>
-                    { isAddressMatch ? 'Connected' : 'Not connected' }
-                  </Badge>
-                </Tooltip>
-              </Flex>
-            </Flex>
-            <Flex gap={ 3 } alignItems="center" flexWrap="wrap">
-              <Skeleton
-                loading={ coinBalanceQuery.isPlaceholderData }
-                as={ Flex }
-                gap={ 3 }
-              >
-                { (coinBalanceQuery.isPlaceholderData ||
-                  coinBalanceQuery.data) && (
-                  <>
-                    <Flex gap={ 2 } alignItems="center" ml={{ base: 0, lg: '5px' }}>
-                      <Image
-                        src={ coinBalanceQuery.data.coinImage }
-                        alt={ coinBalanceQuery.data.symbol }
-                        boxSize={ 5 }
-                        fallback={ <TokenLogoPlaceholder/> }
-                      />
-                      <Text textStyle="sm" fontWeight="500">
-                        { coinBalanceQuery.data.balance }{ ' ' }
-                        { coinBalanceQuery.data.symbol }
-                      </Text>
-                    </Flex>
-                    <Text textStyle="sm" fontWeight="500" color="text.secondary">
-                      ${ coinBalanceQuery.data.balanceUsd }
-                    </Text>
-                  </>
-                ) }
-              </Skeleton>
-              <Link
-                href={ selectedChain?.config.app.baseUrl + route({ pathname: '/address/[hash]', query: { hash: searchAddress } }) }
-                external
-                textStyle="sm"
-                fontWeight="500"
-                noIcon
-              >
-                View details
-              </Link>
-            </Flex>
-          </Flex>
-          <Flex
-            w={{ base: 'full', lg: '400px' }}
-            bg={{ _light: 'blackAlpha.50', _dark: 'whiteAlpha.50' }}
-            p={ 6 }
-            borderRadius="base"
-          >
-            <Flex
-              flexDir="column"
-              flex={ 1 }
-              justifyContent="center"
-              alignItems="center"
-              gap={ 2 }
-            >
-              <Text textStyle="sm" fontWeight="500" color="text.secondary">
-                Total approvals
-              </Text>
-              <Skeleton
-                loading={ approvalsQuery.isPlaceholderData }
-                minW="40px"
-                textAlign="center"
-              >
-                <Heading level="3">
-                  { approvals?.length || 0 }
-                </Heading>
-              </Skeleton>
-            </Flex>
-            <Separator
-              orientation="vertical"
-              borderColor="border.divider"
-              mx={{ base: 4, md: 8 }}
-            />
-            <Flex
-              flexDir="column"
-              flex={ 1 }
-              justifyContent="center"
-              alignItems="center"
-              gap={ 2 }
-            >
-              <Text textStyle="sm" fontWeight="500" color="text.secondary">
-                Total value at risk
-              </Text>
-              <Skeleton
-                loading={ approvalsQuery.isPlaceholderData }
-                minW="40px"
-                textAlign="center"
-              >
-                <Heading level="3">
-                  ${ totalValueAtRiskUsd }
-                </Heading>
-              </Skeleton>
-            </Flex>
-          </Flex>
-        </Flex>
-        <Approvals
-          selectedChain={ selectedChain }
-          approvals={ approvals || [] }
-          isLoading={ approvalsQuery.isPlaceholderData }
-          isAddressMatch={ isAddressMatch }
-          hideApproval={ hideApproval }
-        />
-      </Flex>
+      <Content
+        searchAddress={ searchAddress }
+        selectedChain={ selectedChain }
+        isAddressMatch={ isAddressMatch }
+        coinBalanceQuery={ coinBalanceQuery }
+        approvalsQuery={ approvalsQuery }
+      />
     ) : (
       <EmptySearchResult
         text={ `The input "${ searchAddress }" is not correct. Enter a correct 0x address to search` }

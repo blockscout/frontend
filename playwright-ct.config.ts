@@ -103,10 +103,6 @@ const config: PlaywrightTestConfig = defineConfig({
 
           // Mock for @specify-sh/sdk to avoid build issues in tests
           { find: '@specify-sh/sdk', replacement: './playwright/mocks/modules/@specify-sh/sdk.js' },
-
-          // Light mocks to avoid pulling huge UI libs in CT bundle when essential dapps are imported
-          { find: '@lifi/widget', replacement: './playwright/mocks/modules/@lifi/widget.js' },
-          // { find: '@multisender.app/multisender-react-widget', replacement: './playwright/mocks/modules/@multisender.app/multisender-react-widget.js' },
         ],
       },
       define: {
