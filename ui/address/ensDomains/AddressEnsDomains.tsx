@@ -47,7 +47,7 @@ const AddressEnsDomains = ({ query, addressHash, mainDomainName }: Props) => {
     return <Skeleton loading h={ 8 } w={{ base: '50px', xl: '120px' }} borderRadius="base"/>;
   }
 
-  if (data.items.length === 0) {
+  if (!data || data.items.length === 0) {
     return null;
   }
 

@@ -17,6 +17,7 @@ import { useClustersData } from 'lib/clusters/useClustersData';
 import { useClusterSearch } from 'lib/clusters/useClusterSearch';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { useQueryParams } from 'lib/router/useQueryParams';
+import { Link } from 'toolkit/chakra/link';
 import { apos } from 'toolkit/utils/htmlEntities';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
@@ -138,7 +139,8 @@ const Clusters = () => {
   return (
     <>
       <Text mb={ 6 } textStyle={{ base: 'sm', lg: 'md' }}>
-        Clusters is a cross-chain name service for managing addresses on multiple blockchains using a universal naming directory.
+        <Link href="https://clusters.xyz/?utm_source=blockscout" external noIcon>Clusters</Link>{ ' ' }
+        is a cross-chain name service for managing addresses on multiple blockchains using a universal naming directory.
       </Text>
       <DataListDisplay
         isError={ isError }

@@ -85,7 +85,7 @@ export default function useNavItems(): ReturnType {
     const nameLookup = config.features.nameService.isEnabled || config.features.clusters.isEnabled ? {
       text: 'Name services lookup',
       nextRoute: { pathname: '/name-domains' as const },
-      icon: 'ENS',
+      icon: 'name_services',
       isActive: pathname === '/name-domains' || pathname === '/name-domains/[name]' || pathname === '/clusters/[name]',
     } : null;
     const validators = config.features.validators.isEnabled ? {
