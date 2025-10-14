@@ -627,6 +627,24 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
 
       <TxDetailsTxFee isLoading={ isLoading } data={ data }/>
 
+      { rollupFeature.isEnabled && rollupFeature.type === 'optimistic' && data.operator_fee && (
+        <>
+          <DetailedInfo.ItemLabel
+            hint="A fee set by the chain operator to cover extra costs of additional services"
+          >
+            Operator fee
+          </DetailedInfo.ItemLabel>
+          <DetailedInfo.ItemValue multiRow>
+            <CurrencyValue
+              value={ data.operator_fee }
+              currency={ currencyUnits.ether }
+              exchangeRate={ data.exchange_rate }
+              flexWrap="wrap"
+            />
+          </DetailedInfo.ItemValue>
+        </>
+      ) }
+
       { rollupFeature.isEnabled && rollupFeature.type === 'arbitrum' && data.arbitrum && (
         <>
           <DetailedInfo.ItemLabel
