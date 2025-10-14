@@ -142,6 +142,10 @@ Type extends EventTypes.PAGE_WIDGET ? (
   } | {
     Type: 'Share chart';
     Info: string;
+  } | {
+    Type: 'Chain switch';
+    Info: string;
+    Source: 'Revoke essential dapp';
   }
 ) :
 Type extends EventTypes.TX_INTERPRETATION_INTERACTION ? {

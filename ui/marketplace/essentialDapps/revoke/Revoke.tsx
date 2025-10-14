@@ -14,6 +14,7 @@ import { route } from 'nextjs/routes';
 import config from 'configs/app';
 import essentialDappsChainsConfig from 'configs/essential-dapps-chains';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import * as mixpanel from 'lib/mixpanel';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { useQueryParams } from 'lib/router/useQueryParams';
 import useWeb3Wallet from 'lib/web3/useWallet';
@@ -101,6 +102,11 @@ const Revoke = () => {
 
   const handleChainValueChange = useCallback(({ value }: { value: Array<string> }) => {
     setSelectedChainId(value);
+    mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, {
+      Type: 'Chain switch',
+      Info: value[0],
+      Source: 'Revoke essential dapp',
+    });
     updateQuery({ chainId: value[0] }, true);
   }, [ updateQuery ]);
 
