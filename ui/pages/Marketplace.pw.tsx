@@ -7,6 +7,12 @@ import { test, expect, devices } from 'playwright/lib';
 
 import Marketplace from './Marketplace';
 
+const ESSENTIAL_DAPPS_CONFIG = JSON.stringify({
+  swap: { chains: [ config.chain.id ], fee: '0.004', integrator: 'blockscout' },
+  revoke: { chains: [ config.chain.id ] },
+  multisend: { chains: [ config.chain.id ] },
+});
+
 test.beforeEach(async({ mockEnvs, mockAssetResponse, mockApiResponse }) => {
   await mockEnvs([
     [ 'NEXT_PUBLIC_MARKETPLACE_ENABLED', 'true' ],
@@ -45,6 +51,14 @@ test('with banner +@dark-mode', async({ render, mockEnvs, mockConfigResponse }) 
   await mockConfigResponse('MARKETPLACE_BANNER_CONTENT_URL', MARKETPLACE_BANNER_CONTENT_URL, './playwright/mocks/page.html', true);
   const component = await render(<Marketplace/>);
 
+  await expect(component).toHaveScreenshot();
+});
+
+test('with essential dapps +@dark-mode', async({ render, mockEnvs }) => {
+  await mockEnvs([
+    [ 'NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_CONFIG', ESSENTIAL_DAPPS_CONFIG ],
+  ]);
+  const component = await render(<Marketplace/>);
   await expect(component).toHaveScreenshot();
 });
 
@@ -89,6 +103,14 @@ test.describe('mobile', () => {
     await mockConfigResponse('MARKETPLACE_BANNER_CONTENT_URL', MARKETPLACE_BANNER_CONTENT_URL, './playwright/mocks/page.html', true);
     const component = await render(<Marketplace/>);
 
+    await expect(component).toHaveScreenshot();
+  });
+
+  test('with essential dapps', async({ render, mockEnvs }) => {
+    await mockEnvs([
+      [ 'NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_CONFIG', ESSENTIAL_DAPPS_CONFIG ],
+    ]);
+    const component = await render(<Marketplace/>);
     await expect(component).toHaveScreenshot();
   });
 });
