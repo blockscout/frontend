@@ -77,8 +77,7 @@ export default function ApprovalsListItem({
           noIcon
           isLoading={ isLoading }
           href={ selectedChain?.config.app.baseUrl + route({ pathname: '/token/[hash]', query: { hash: approval.address } }) }
-          isExternal
-          link={{ noIcon: true }}
+          link={{ noIcon: true, external: true }}
         />
       </Flex>
       <Text>Approved spender</Text>
@@ -88,8 +87,7 @@ export default function ApprovalsListItem({
         noIcon
         isLoading={ isLoading }
         href={ selectedChain?.config.app.baseUrl + route({ pathname: '/address/[hash]', query: { hash: approval.spender } }) }
-        isExternal
-        link={{ noIcon: true }}
+        link={{ noIcon: true, external: true }}
       />
       <Text>Approved amount</Text>
       <Skeleton loading={ isLoading }>

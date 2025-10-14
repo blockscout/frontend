@@ -112,7 +112,7 @@ const AddressEntityZetaChain = ({ chainId, ...props }: Props) => {
         { addressIcon }
       </Tooltip>
       { href ? (
-        <AddressEntityBase.Link { ...partsProps.link } href={ href } isExternal={ !isCurrentChain }>
+        <AddressEntityBase.Link { ...partsProps.link } href={ href } external={ !isCurrentChain }>
           <AddressEntityBase.Content { ...partsProps.content }/>
         </AddressEntityBase.Link>
       ) : (

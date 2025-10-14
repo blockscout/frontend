@@ -65,8 +65,7 @@ export default function ApprovalsTableItem({
             textStyle="sm"
             fontWeight="600"
             href={ selectedChain?.config.app.baseUrl + route({ pathname: '/token/[hash]', query: { hash: approval.address } }) }
-            isExternal
-            link={{ noIcon: true }}
+            link={{ noIcon: true, external: true }}
           />
           <AddressEntity
             address={{ hash: approval.address }}
@@ -74,8 +73,7 @@ export default function ApprovalsTableItem({
             noIcon
             isLoading={ isLoading }
             href={ selectedChain?.config.app.baseUrl + route({ pathname: '/token/[hash]', query: { hash: approval.address } }) }
-            isExternal
-            link={{ variant: 'secondary', noIcon: true }}
+            link={{ variant: 'secondary', noIcon: true, external: true }}
           />
         </Flex>
       </TableCell>
@@ -86,8 +84,7 @@ export default function ApprovalsTableItem({
           noIcon
           isLoading={ isLoading }
           href={ selectedChain?.config.app.baseUrl + route({ pathname: '/address/[hash]', query: { hash: approval.spender } }) }
-          isExternal
-          link={{ noIcon: true }}
+          link={{ noIcon: true, external: true }}
         />
       </TableCell>
       <TableCell isNumeric verticalAlign="middle">

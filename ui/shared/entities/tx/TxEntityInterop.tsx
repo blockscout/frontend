@@ -80,7 +80,7 @@ const TxEntityInterop = ({ chain, hash, ...props }: Props) => {
       { hash && (
         <>
           { href ? (
-            <TxEntity.Link { ...partsProps.link } hash={ hash } href={ href } isExternal>
+            <TxEntity.Link { ...partsProps.link } hash={ hash } href={ href } external>
               <TxEntity.Content { ...partsProps.content } hash={ hash }/>
             </TxEntity.Link>
           ) : (

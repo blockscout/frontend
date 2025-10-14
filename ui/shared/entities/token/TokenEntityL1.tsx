@@ -20,7 +20,7 @@ const TokenEntityL1 = (props: TokenEntity.EntityProps) => {
   });
 
   return (
-    <TokenEntity.default { ...props } href={ props.href ?? defaultHref } isExternal/>
+    <TokenEntity.default { ...props } href={ props.href ?? defaultHref } link={{ external: true }}/>
   );
 };
 

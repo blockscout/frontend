@@ -28,7 +28,6 @@ export interface EntityBaseProps {
   href?: string;
   icon?: EntityIconProps;
   link?: LinkProps;
-  isExternal?: boolean;
   isLoading?: boolean;
   noTooltip?: boolean;
   noCopy?: boolean;
@@ -63,13 +62,14 @@ const Container = chakra(({ className, children, ...props }: ContainerBaseProps)
   );
 });
 
-export interface LinkBaseProps extends Pick<EntityBaseProps, 'className' | 'onClick' | 'isLoading' | 'isExternal' | 'href' | 'noLink' | 'query' | 'chain'> {
+export interface LinkBaseProps extends Pick<EntityBaseProps, 'className' | 'onClick' | 'isLoading' | 'href' | 'noLink' | 'query' | 'chain'> {
   children: React.ReactNode;
   variant?: LinkProps['variant'];
   noIcon?: LinkProps['noIcon'];
+  external?: LinkProps['external'];
 }
 
-const Link = chakra(({ isLoading, children, isExternal, onClick, href, noLink, variant, noIcon }: LinkBaseProps) => {
+const Link = chakra(({ isLoading, children, external, onClick, href, noLink, variant, noIcon }: LinkBaseProps) => {
   const styles = {
     display: 'inline-flex',
     alignItems: 'center',
@@ -85,7 +85,7 @@ const Link = chakra(({ isLoading, children, isExternal, onClick, href, noLink, v
       { ...styles }
       href={ href }
       loading={ isLoading }
-      external={ isExternal }
+      external={ external }
       onClick={ onClick }
       variant={ variant }
       noIcon={ noIcon }

@@ -39,7 +39,7 @@ test('external link', async({ render }) => {
   const component = await render(
     <TxEntity
       hash={ hash }
-      isExternal
+      link={{ external: true }}
     />,
   );
 
