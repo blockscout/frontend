@@ -10,7 +10,6 @@ export const HEADING_TYPEFACE = config.UI.fonts.heading?.name ?? 'Poppins';
 export const fonts: ExcludeUndefined<ThemingConfig['tokens']>['fonts'] = {
   heading: { value: `${ HEADING_TYPEFACE }, sans-serif` },
   body: { value: `${ BODY_TYPEFACE }, sans-serif` },
-  mono: { value: 'monospace' },
 };
 
 export const textStyles: ThemingConfig['textStyles'] = {
