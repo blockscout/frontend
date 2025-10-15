@@ -1,4 +1,4 @@
-import { Flex, Text, Grid } from '@chakra-ui/react';
+import { Text } from '@chakra-ui/react';
 import React, { useCallback, useState } from 'react';
 
 import type { AllowanceType } from 'types/client/revoke';
@@ -11,6 +11,7 @@ import { Button } from 'toolkit/chakra/button';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
+import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 import NumberEntity from 'ui/shared/NumberEntity';
 
 import useRevoke from '../hooks/useRevoke';
@@ -46,18 +47,9 @@ export default function ApprovalsListItem({
   }, [ revoke, hideApproval, approval, selectedChain?.config.chain.id ]);
 
   return (
-    <Grid
-      templateColumns="minmax(0, 1fr) minmax(0, 1fr)"
-      rowGap={ 3 }
-      pb={ 4 }
-      mb={ 4 }
-      borderBottom="1px solid"
-      borderColor="border.divider"
-      textStyle="sm"
-      fontWeight="500"
-    >
-      <Text>Token</Text>
-      <Flex flexDir="column" gap={ 2 }>
+    <ListItemMobileGrid.Container gridTemplateColumns="minmax(0, 1fr) minmax(0, 1fr)" fontWeight="500">
+      <ListItemMobileGrid.Label isLoading={ isLoading }>Token</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Value display="flex" flexDir="column" gap={ 2 } color="inherit">
         <TokenEntity
           token={{
             address_hash: approval.address,
@@ -79,39 +71,47 @@ export default function ApprovalsListItem({
           href={ selectedChain?.config.app.baseUrl + route({ pathname: '/token/[hash]', query: { hash: approval.address } }) }
           link={{ noIcon: true, external: true }}
         />
-      </Flex>
-      <Text>Approved spender</Text>
-      <AddressEntity
-        address={{ hash: approval.spender }}
-        truncation="constant"
-        noIcon
-        isLoading={ isLoading }
-        href={ selectedChain?.config.app.baseUrl + route({ pathname: '/address/[hash]', query: { hash: approval.spender } }) }
-        link={{ noIcon: true, external: true }}
-      />
-      <Text>Approved amount</Text>
-      <Skeleton loading={ isLoading }>
-        <NumberEntity
-          value={ allowance }
-          postfix={
-            [ 'Unlimited', 'N/A' ].includes(allowance) ? '' : approval.symbol
-          }
+      </ListItemMobileGrid.Value>
+      <ListItemMobileGrid.Label isLoading={ isLoading }>Approved spender</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Value>
+        <AddressEntity
+          address={{ hash: approval.spender }}
+          truncation="constant"
+          noIcon
+          isLoading={ isLoading }
+          href={ selectedChain?.config.app.baseUrl + route({ pathname: '/address/[hash]', query: { hash: approval.spender } }) }
+          link={{ noIcon: true, external: true }}
         />
-      </Skeleton>
-      <Text>Value at risk</Text>
-      <Skeleton loading={ isLoading }>
-        { approval.valueAtRiskUsd ? (
+      </ListItemMobileGrid.Value>
+      <ListItemMobileGrid.Label isLoading={ isLoading }>Approved amount</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Value color="inherit">
+        <Skeleton loading={ isLoading }>
           <NumberEntity
-            value={ approval.valueAtRiskUsd.toString() }
-            suffix="$"
+            value={ allowance }
+            postfix={
+              [ 'Unlimited', 'N/A' ].includes(allowance) ? '' : approval.symbol
+            }
           />
-        ) : '-' }
-      </Skeleton>
-      <Text>Last updated</Text>
-      <Skeleton loading={ isLoading }>
-        <Text>{ dayjs(approval.timestamp).format('lll') }</Text>
-        <Text>{ dayjs(approval.timestamp).fromNow() }</Text>
-      </Skeleton>
+        </Skeleton>
+      </ListItemMobileGrid.Value>
+      <ListItemMobileGrid.Label isLoading={ isLoading }>Value at risk</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Value color="inherit">
+        <Skeleton loading={ isLoading }>
+          { approval.valueAtRiskUsd ? (
+            <NumberEntity
+              value={ approval.valueAtRiskUsd.toString() }
+              suffix="$"
+            />
+          ) : '-' }
+        </Skeleton>
+      </ListItemMobileGrid.Value>
+      <ListItemMobileGrid.Label isLoading={ isLoading }>Last updated</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Value color="inherit">
+        <Skeleton loading={ isLoading } display="flex" flexDir="column" rowGap={ 2 }>
+          <Text>{ dayjs(approval.timestamp).format('lll') }</Text>
+          <Text>{ dayjs(approval.timestamp).fromNow() }</Text>
+        </Skeleton>
+      </ListItemMobileGrid.Value>
       { isAddressMatch && (
         <Button
           size="sm"
@@ -123,6 +123,6 @@ export default function ApprovalsListItem({
           Revoke
         </Button>
       ) }
-    </Grid>
+    </ListItemMobileGrid.Container>
   );
 }
