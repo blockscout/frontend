@@ -143,7 +143,7 @@ const Marketplace = () => {
   return (
     <>
       <PageTitle
-        title={ feature.essentialDapps ? 'Essential dapps' : 'DAppscout' }
+        title="DAppscout"
         contentAfter={ (isMobile && links.length > 1) ? (
           <MenuRoot>
             <MenuTrigger asChild>
@@ -177,8 +177,6 @@ const Marketplace = () => {
         ) }
       />
 
-      { feature.essentialDapps && <EssentialDappsList/> }
-
       <Banner
         apps={ apps }
         favoriteApps={ favoriteApps }
@@ -188,7 +186,13 @@ const Marketplace = () => {
         onAppClick={ handleAppClick }
       />
 
-      { feature.essentialDapps && <Heading level="2" mt={ 6 }>Explore dapps</Heading> }
+      { feature.essentialDapps && (
+        <>
+          <Heading level="2" mt={ 8 } mb={ 6 }>Essential dapps</Heading>
+          <EssentialDappsList/>
+          <Heading level="2">Explore dapps</Heading>
+        </>
+      ) }
 
       <ActionBar
         showShadow
