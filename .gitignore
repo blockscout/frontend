@@ -33,7 +33,6 @@
 *.pem
 .tools
 grafana
-.cursor
 .zed
 
 # debug
