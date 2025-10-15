@@ -26,9 +26,12 @@ export default function useGetBlockTimestamp() {
       fetchParams: {
         signal,
       },
-    }) as Promise<Block>).then((data) => {
-      return data.timestamp ? Date.parse(data.timestamp) : 0;
-    });
+    }) as Promise<Block>)
+      .then((data) => data.timestamp ? Date.parse(data.timestamp) : 0)
+      .catch((err) => {
+        timestampCache.delete(cacheKey);
+        throw err;
+      });
 
     timestampCache.set(cacheKey, response);
 

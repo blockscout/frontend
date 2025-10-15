@@ -6,7 +6,7 @@ import { isAddress, getAbiItem } from 'viem';
 
 import type { ChainConfig } from 'types/multichain';
 
-import { ALLOWANCES } from 'stubs/revoke';
+import { ALLOWANCES } from 'stubs/essentialDapps/revoke';
 
 import createPublicClient from '../lib/createPublicClient';
 import getLogs from '../lib/getLogs';

@@ -61,10 +61,10 @@ export default function useRevoke() {
 
       return true;
 
-    } catch (_error) {
+    } catch (error) {
       toaster.error({
         title: 'Error',
-        description: (_error as Error)?.message || 'Something went wrong. Try again later.',
+        description: (error as Error)?.message || 'Something went wrong. Try again later.',
       });
 
       return false;

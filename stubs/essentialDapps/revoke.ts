@@ -2,7 +2,7 @@ import type { AllowanceType } from 'types/client/revoke';
 
 import { ZERO_ADDRESS } from 'toolkit/utils/consts';
 
-export const ALLOWANCES = Array.from({ length: 3 }, () => ({
+export const ALLOWANCES: Array<AllowanceType> = Array.from({ length: 3 }, () => ({
   type: 'ERC-20',
   address: ZERO_ADDRESS,
   transactionId: null,
@@ -16,4 +16,4 @@ export const ALLOWANCES = Array.from({ length: 3 }, () => ({
   timestamp: 1718352000,
   valueAtRiskUsd: 100000,
   tokenReputation: 'ok',
-})) as Array<AllowanceType>;
+}));

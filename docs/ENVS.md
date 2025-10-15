@@ -608,7 +608,7 @@ Ads are enabled by default on all self-hosted instances. If you would like to di
 
 Essential dapps are built-in dapps that are displayed on the Marketplace page in a separate section.
 
-*Note* All chains should have a Blockscout instance.
+*Note* All chains should have a Blockscout instance. The current chain id should also be present in the `chains` array, if needed.
 
 | Property | Type | Description | Compulsoriness | Example value |
 | --- | --- | --- | --- | --- |

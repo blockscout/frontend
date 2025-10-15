@@ -10,17 +10,20 @@ export function marketplace(): CspDev.DirectiveDescriptor {
     return {};
   }
 
-  const posthogHost = feature.essentialDapps?.multisend?.posthogHost ? '*.posthog.com' : '';
   const chainsConfig = feature.essentialDapps && essentialDappsChains.getValue();
   const externalApiEndpoints = chainsConfig?.chains.map((chain) => chain.config.apis.general?.endpoint).filter(Boolean);
   const defaultRpcUrls = chainsConfig?.chains.map((chain) => chain.config.chain.rpcUrls).flat();
+
+  const liFiHost = feature.essentialDapps?.swap ? 'li.quest' : '';
+  const multisenderHost = feature.essentialDapps?.multisend ? '*.multisender.app' : '';
+  const posthogHost = feature.essentialDapps?.multisend?.posthogHost ? '*.posthog.com' : '';
 
   return {
     'connect-src': [
       'api' in feature ? feature.api.endpoint : '',
       ...(feature.essentialDapps ? [
-        'https://li.quest/',
-        'https://*.multisender.app/',
+        liFiHost,
+        multisenderHost,
         posthogHost,
         ...(externalApiEndpoints ?? []),
         ...(defaultRpcUrls ?? []),

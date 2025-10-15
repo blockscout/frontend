@@ -9,7 +9,7 @@ const ESSENTIAL_DAPPS_CONFIG = JSON.stringify({
   multisend: { chains: [ '1' ] },
 });
 
-const testFn = async({ render, mockEnvs }: TestFnArgs) => {
+test('base view +@dark-mode +@mobile', async({ render, mockEnvs }: TestFnArgs) => {
   await mockEnvs([
     [ 'NEXT_PUBLIC_MARKETPLACE_ENABLED', 'true' ],
     [ 'NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_CONFIG', ESSENTIAL_DAPPS_CONFIG ],
@@ -18,6 +18,4 @@ const testFn = async({ render, mockEnvs }: TestFnArgs) => {
   const component = await render(<Multisend/>);
 
   await expect(component).toHaveScreenshot();
-};
-
-test('base view +@dark-mode +@mobile', testFn);
+});
