@@ -109,7 +109,7 @@ const NavigationDesktop = () => {
         height={ 6 }
         _hover={{ color: 'hover' }}
         borderRadius="base"
-        bgColor={{ base: 'white', _dark: 'black' }}
+        bgColor="bg.primary"
         color={{ base: 'blackAlpha.400', _dark: 'whiteAlpha.400' }}
         borderWidth="1px"
         borderColor="border.divider"

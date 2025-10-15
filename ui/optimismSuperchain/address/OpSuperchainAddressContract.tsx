@@ -1,5 +1,7 @@
 import React from 'react';
 
+import type * as multichain from '@blockscout/multichain-aggregator-types';
+
 import useApiQuery from 'lib/api/useApiQuery';
 import { MultichainProvider } from 'lib/contexts/multichain';
 import useRoutedChainSelect from 'lib/multichain/useRoutedChainSelect';
@@ -8,31 +10,36 @@ import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import useContractTabs from 'ui/address/contract/useContractTabs';
 import ChainSelect from 'ui/shared/multichain/ChainSelect';
 
+import getContractChainIds from './getContractChainIds';
+
 const LEFT_SLOT_PROPS = {
   mr: 6,
 };
 const QUERY_PRESERVED_PARAMS = [ 'tab', 'hash' ];
 
 interface Props {
+  data: multichain.GetAddressResponse | undefined;
   addressHash: string;
+  isLoading: boolean;
 }
 
-const OpSuperchainAddressContract = ({ addressHash }: Props) => {
+const OpSuperchainAddressContract = ({ addressHash, data, isLoading }: Props) => {
 
-  const chainSelect = useRoutedChainSelect({ persistedParams: QUERY_PRESERVED_PARAMS });
+  const chainIds = React.useMemo(() => getContractChainIds(data), [ data ]);
+  const chainSelect = useRoutedChainSelect({ persistedParams: QUERY_PRESERVED_PARAMS, isLoading, chainIds });
 
-  const addressQuery = useApiQuery('general:address', {
+  const localAddressQuery = useApiQuery('general:address', {
     pathParams: { hash: addressHash },
     queryOptions: {
-      enabled: Boolean(addressHash),
+      enabled: Boolean(addressHash) && !isLoading,
       placeholderData: ADDRESS_INFO,
     },
     chainSlug: chainSelect.value?.[0],
   });
 
   const contractTabs = useContractTabs({
-    addressData: addressQuery.data,
-    isEnabled: !addressQuery.isPlaceholderData,
+    addressData: localAddressQuery.data,
+    isEnabled: !localAddressQuery.isPlaceholderData,
     hasMudTab: false,
     chainSlug: chainSelect.value?.[0],
   });
@@ -41,6 +48,8 @@ const OpSuperchainAddressContract = ({ addressHash }: Props) => {
     <ChainSelect
       value={ chainSelect.value }
       onValueChange={ chainSelect.onValueChange }
+      loading={ isLoading }
+      chainIds={ chainIds }
     />
   );
 

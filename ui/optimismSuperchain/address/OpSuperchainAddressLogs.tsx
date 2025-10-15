@@ -1,6 +1,8 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type * as multichain from '@blockscout/multichain-aggregator-types';
+
 import multichainConfig from 'configs/multichain';
 import { MultichainProvider } from 'lib/contexts/multichain';
 import getQueryParamString from 'lib/router/getQueryParamString';
@@ -14,8 +16,16 @@ import ChainSelect from 'ui/shared/multichain/ChainSelect';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
-const OpSuperchainAddressLogs = () => {
+import getAvailableChainIds from './getAvailableChainIds';
+
+interface Props {
+  addressData: multichain.GetAddressResponse | undefined;
+  isLoading: boolean;
+}
+
+const OpSuperchainAddressLogs = ({ addressData, isLoading }: Props) => {
   const router = useRouter();
+  const chainIds = React.useMemo(() => getAvailableChainIds(addressData), [ addressData ]);
 
   const hash = getQueryParamString(router.query.hash);
   const { data, isPlaceholderData, isError, pagination, chainValue, onChainValueChange } = useQueryWithPages({
@@ -28,8 +38,10 @@ const OpSuperchainAddressLogs = () => {
         items_count: 50,
         transaction_index: 23,
       } }),
+      enabled: !isLoading,
     },
     isMultichain: true,
+    chainIds,
   });
 
   const chainData = multichainConfig()?.chains.find(chain => chain.slug === chainValue?.[0]);
@@ -39,6 +51,8 @@ const OpSuperchainAddressLogs = () => {
       <ChainSelect
         value={ chainValue }
         onValueChange={ onChainValueChange }
+        chainIds={ chainIds }
+        loading={ isLoading }
       />
       <AddressCsvExportLink
         address={ hash }

@@ -17,14 +17,16 @@ yarn build
 
 validate_file() {
     local test_file="$1"
+    local with_common="$2"
 
     echo
     echo "🧿 Validating file '$test_file'..."
 
-    dotenv \
-        -e $test_file \
-        -e $common_file \
-            yarn run validate -- --silent
+    if [ "$with_common" = "true" ]; then
+        dotenv -e "$test_file" -e "$common_file" yarn run validate -- --silent
+    else
+        dotenv -e "$test_file" yarn run validate -- --silent
+    fi
 
     if [ $? -eq 0 ]; then
         echo "👍 All good!"
@@ -39,7 +41,12 @@ validate_file() {
 test_files=($(find "$test_folder" -maxdepth 1 -type f | grep -vE '\/\.env\.common$'))
 
 for file in "${test_files[@]}"; do
-    validate_file "$file"
+    if [[ "$file" == *".env.multichain" ]]; then
+        validate_file "$file" false
+    else
+        validate_file "$file" true
+    fi
+    
     if [ $? -eq 1 ]; then
         exit 1
     fi

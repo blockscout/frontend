@@ -101,11 +101,11 @@ export const SelectItem = React.forwardRef<
 >(function SelectItem(props, ref) {
   const { item, children, ...rest } = props;
 
-  const startElement = item.icon;
+  const { icon, ...itemProps } = item;
 
   return (
-    <ChakraSelect.Item key={ item.value } item={ item } { ...rest } ref={ ref }>
-      { startElement }
+    <ChakraSelect.Item key={ itemProps.value } item={ itemProps } { ...rest } ref={ ref }>
+      { icon }
       { children }
       <ChakraSelect.ItemIndicator asChild>
         <Icon boxSize={ 5 } flexShrink={ 0 } ml="auto"><CheckIcon/></Icon>

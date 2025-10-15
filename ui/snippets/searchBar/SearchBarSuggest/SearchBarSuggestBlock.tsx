@@ -1,7 +1,8 @@
-import { Text, Flex, Grid } from '@chakra-ui/react';
+import { Text, Flex, Grid, Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ItemsProps } from './types';
+import type * as multichain from 'types/client/multichain-aggregator';
 import type { SearchResultBlock } from 'types/client/search';
 
 import dayjs from 'lib/date/dayjs';
@@ -10,10 +11,30 @@ import { Tag } from 'toolkit/chakra/tag';
 import * as BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 
-const SearchBarSuggestBlock = ({ data, isMobile, searchTerm }: ItemsProps<SearchResultBlock>) => {
-  const icon = <BlockEntity.Icon/>;
-  const shouldHighlightHash = data.block_hash.toLowerCase() === searchTerm.toLowerCase();
-  const isFutureBlock = data.timestamp === undefined;
+const SearchBarSuggestBlock = ({ data, isMobile, searchTerm, chainInfo }: ItemsProps<SearchResultBlock | multichain.QuickSearchResultBlock>) => {
+  const icon = <BlockEntity.Icon chain={ chainInfo }/>;
+  const shouldHighlightHash = data.block_hash?.toLowerCase() === searchTerm.toLowerCase();
+  const isFutureBlock = 'timestamp' in data && data.timestamp === undefined;
+  const hasOnlyHash = data.block_number === undefined && data.block_hash !== undefined;
+
+  if (hasOnlyHash) {
+    const hash = (
+      <Box
+        overflow="hidden"
+        whiteSpace="nowrap"
+        as="mark"
+        display="block"
+      >
+        <HashStringShortenDynamic hash={ data.block_hash } noTooltip/>
+      </Box>
+    );
+    return (
+      <Flex alignItems="center">
+        { icon }
+        { hash }
+      </Flex>
+    );
+  }
 
   const blockNumber = (
     <Text
@@ -25,7 +46,7 @@ const SearchBarSuggestBlock = ({ data, isMobile, searchTerm }: ItemsProps<Search
       <span dangerouslySetInnerHTML={{ __html: highlightText(data.block_number.toString(), searchTerm) }}/>
     </Text>
   );
-  const hash = !isFutureBlock ? (
+  const hash = data.block_hash && !isFutureBlock ? (
     <Text
       color="text.secondary"
       overflow="hidden"
@@ -36,8 +57,9 @@ const SearchBarSuggestBlock = ({ data, isMobile, searchTerm }: ItemsProps<Search
       <HashStringShortenDynamic hash={ data.block_hash } noTooltip/>
     </Text>
   ) : null;
-  const date = !isFutureBlock ? dayjs(data.timestamp).format('llll') : undefined;
+  const date = 'timestamp' in data && data.timestamp && !isFutureBlock ? dayjs(data.timestamp).format('llll') : undefined;
   const futureBlockText = <Text color="text.secondary">Learn estimated time for this block to be created.</Text>;
+  const blockType = 'block_type' in data ? data.block_type : undefined;
 
   if (isMobile) {
     return (
@@ -45,8 +67,8 @@ const SearchBarSuggestBlock = ({ data, isMobile, searchTerm }: ItemsProps<Search
         <Flex alignItems="center">
           { icon }
           { blockNumber }
-          { data.block_type === 'reorg' && <Tag ml="auto">Reorg</Tag> }
-          { data.block_type === 'uncle' && <Tag ml="auto">Uncle</Tag> }
+          { blockType === 'reorg' && <Tag ml="auto">Reorg</Tag> }
+          { blockType === 'uncle' && <Tag ml="auto">Uncle</Tag> }
         </Flex>
         { hash }
         { isFutureBlock ? futureBlockText : <Text color="text.secondary">{ date }</Text> }
@@ -61,8 +83,8 @@ const SearchBarSuggestBlock = ({ data, isMobile, searchTerm }: ItemsProps<Search
         { blockNumber }
       </Flex>
       <Flex columnGap={ 3 } minW={ 0 } alignItems="center">
-        { data.block_type === 'reorg' && <Tag flexShrink={ 0 }>Reorg</Tag> }
-        { data.block_type === 'uncle' && <Tag flexShrink={ 0 }>Uncle</Tag> }
+        { blockType === 'reorg' && <Tag flexShrink={ 0 }>Reorg</Tag> }
+        { blockType === 'uncle' && <Tag flexShrink={ 0 }>Uncle</Tag> }
         { isFutureBlock ? futureBlockText : hash }
       </Flex>
       { date && <Text color="text.secondary" textAlign="end">{ date }</Text> }

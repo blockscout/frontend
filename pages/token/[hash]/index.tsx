@@ -10,7 +10,6 @@ import fetchApi from 'nextjs/utils/fetchApi';
 
 import config from 'configs/app';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import OpSuperchainToken from 'ui/optimismSuperchain/token/OpSuperchainToken';
 import Token from 'ui/pages/Token';
 
 const pathname: Route['pathname'] = '/token/[hash]';
@@ -18,7 +17,7 @@ const pathname: Route['pathname'] = '/token/[hash]';
 const Page: NextPage<Props<typeof pathname>> = (props: Props<typeof pathname>) => {
   return (
     <PageNextJs pathname={ pathname } query={ props.query } apiData={ props.apiData }>
-      { config.features.opSuperchain.isEnabled ? <OpSuperchainToken/> : <Token/> }
+      <Token/>
     </PageNextJs>
   );
 };
@@ -26,7 +25,7 @@ const Page: NextPage<Props<typeof pathname>> = (props: Props<typeof pathname>) =
 export default Page;
 
 export const getServerSideProps: GetServerSideProps<Props<typeof pathname>> = async(ctx) => {
-  const baseResponse = await gSSP.base<typeof pathname>(ctx);
+  const baseResponse = await gSSP.token<typeof pathname>(ctx);
 
   if ('props' in baseResponse && !config.features.opSuperchain.isEnabled) {
     if (

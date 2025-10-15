@@ -65,18 +65,21 @@ interface CollapsibleListProps<T> extends FlexProps {
   renderItem: (item: T, index: number) => React.ReactNode;
   triggerProps?: LinkProps;
   cutLength?: number;
+  text?: [string, string];
 }
 
 export const CollapsibleList = <T,>(props: CollapsibleListProps<T>) => {
   const CUT_LENGTH = 3;
 
-  const { items, renderItem, triggerProps, cutLength = CUT_LENGTH, ...rest } = props;
+  const { items, renderItem, triggerProps, cutLength = CUT_LENGTH, text: textProp, ...rest } = props;
 
   const [ isExpanded, setIsExpanded ] = React.useState(false);
 
   const handleToggle = React.useCallback(() => {
     setIsExpanded((flag) => !flag);
   }, []);
+
+  const text = isExpanded ? (textProp?.[1] ?? 'Hide') : (textProp?.[0] ?? 'Show all');
 
   return (
     <Flex flexDir="column" w="100%" { ...rest }>
@@ -91,7 +94,7 @@ export const CollapsibleList = <T,>(props: CollapsibleListProps<T>) => {
           onClick={ handleToggle }
           { ...triggerProps }
         >
-          { isExpanded ? 'Hide' : 'Show all' }
+          { text }
         </Link>
       ) }
     </Flex>

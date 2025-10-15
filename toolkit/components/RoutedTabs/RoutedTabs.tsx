@@ -13,10 +13,10 @@ interface Props extends AdaptiveTabsProps {
 }
 
 const RoutedTabs = (props: Props) => {
-  const { tabs, onValueChange, preservedParams, ...rest } = props;
+  const { tabs, defaultTabId, onValueChange, preservedParams, ...rest } = props;
 
   const router = useRouter();
-  const activeTab = useActiveTabFromQuery(props.tabs, props.defaultTabId);
+  const activeTab = useActiveTabFromQuery(tabs, defaultTabId);
   const tabsRef = React.useRef<HTMLDivElement>(null);
 
   const handleValueChange = React.useCallback(({ value }: { value: string }) => {

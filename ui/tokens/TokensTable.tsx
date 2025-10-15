@@ -2,6 +2,7 @@ import React from 'react';
 
 import type { TokenInfo } from 'types/api/token';
 import type { TokensSortingField, TokensSortingValue } from 'types/api/tokens';
+import type { AggregatedTokenInfo } from 'types/client/multichain-aggregator';
 
 import { TableBody, TableColumnHeader, TableColumnHeaderSortable, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
@@ -18,53 +19,76 @@ const SORT_SEQUENCE: Record<TokensSortingField, Array<TokensSortingValue>> = {
 const getNextSortValue = (getNextSortValueShared<TokensSortingField, TokensSortingValue>).bind(undefined, SORT_SEQUENCE);
 
 type Props = {
-  items: Array<TokenInfo>;
+  items: Array<TokenInfo> | Array<AggregatedTokenInfo>;
   page: number;
-  sorting: TokensSortingValue;
-  setSorting: (value: TokensSortingValue) => void;
+  sorting?: TokensSortingValue;
+  setSorting?: (value: TokensSortingValue) => void;
   isLoading?: boolean;
   top?: number;
 };
 
 const TokensTable = ({ items, page, isLoading, sorting, setSorting, top }: Props) => {
 
+  const hasSorting = setSorting && sorting;
+
   const sort = React.useCallback((field: TokensSortingField) => {
+    if (!hasSorting) {
+      return;
+    }
     const value = getNextSortValue(field)(sorting);
     setSorting(value);
-  }, [ sorting, setSorting ]);
+  }, [ sorting, setSorting, hasSorting ]);
 
   return (
     <TableRoot>
       <TableHeaderSticky top={ top ?? ACTION_BAR_HEIGHT_DESKTOP }>
         <TableRow>
           <TableColumnHeader w="50%">Token</TableColumnHeader>
-          <TableColumnHeaderSortable
-            isNumeric
-            w="15%"
-            sortField="fiat_value"
-            sortValue={ sorting }
-            onSortToggle={ sort }
-          >
-            Price
-          </TableColumnHeaderSortable>
-          <TableColumnHeaderSortable
-            isNumeric
-            w="20%"
-            sortField="circulating_market_cap"
-            sortValue={ sorting }
-            onSortToggle={ sort }
-          >
-            On-chain market cap
-          </TableColumnHeaderSortable>
-          <TableColumnHeaderSortable
-            isNumeric
-            w="15%"
-            sortField="holders_count"
-            sortValue={ sorting }
-            onSortToggle={ sort }
-          >
-            Holders
-          </TableColumnHeaderSortable>
+          { hasSorting ? (
+            <TableColumnHeaderSortable
+              isNumeric
+              w="15%"
+              sortField="fiat_value"
+              sortValue={ sorting }
+              onSortToggle={ sort }
+            >
+              Price
+            </TableColumnHeaderSortable>
+          ) : (
+            <TableColumnHeader isNumeric width="15%">
+              Price
+            </TableColumnHeader>
+          ) }
+          { hasSorting ? (
+            <TableColumnHeaderSortable
+              isNumeric
+              w="20%"
+              sortField="circulating_market_cap"
+              sortValue={ sorting }
+              onSortToggle={ sort }
+            >
+              On-chain market cap
+            </TableColumnHeaderSortable>
+          ) : (
+            <TableColumnHeader isNumeric width="20%">
+              On-chain market cap
+            </TableColumnHeader>
+          ) }
+          { hasSorting ? (
+            <TableColumnHeaderSortable
+              isNumeric
+              w="15%"
+              sortField="holders_count"
+              sortValue={ sorting }
+              onSortToggle={ sort }
+            >
+              Holders
+            </TableColumnHeaderSortable>
+          ) : (
+            <TableColumnHeader isNumeric width="15%">
+              Holders
+            </TableColumnHeader>
+          ) }
         </TableRow>
       </TableHeaderSticky>
       <TableBody>

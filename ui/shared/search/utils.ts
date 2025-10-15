@@ -1,6 +1,6 @@
 import type { CctxListItem } from '@blockscout/zetachain-cctx-types';
 import type { MarketplaceApp } from 'types/client/marketplace';
-import type { SearchResultItem } from 'types/client/search';
+import type { QuickSearchResultItem } from 'types/client/search';
 
 import config from 'configs/app';
 
@@ -19,7 +19,7 @@ export type ApiCategory =
 export type Category = ApiCategory | 'app' | 'zetaChainCCTX';
 
 export type ItemsCategoriesMap =
-Record<ApiCategory, Array<SearchResultItem>> &
+Record<ApiCategory, Array<QuickSearchResultItem>> &
 Record<'app', Array<MarketplaceApp>> &
 Record<'zetaChainCCTX', Array<CctxListItem>>;
 
@@ -48,7 +48,7 @@ if (config.features.dataAvailability.isEnabled) {
   searchCategories.push({ id: 'blob', title: 'Blobs', tabTitle: 'Blobs' });
 }
 
-if (config.features.nameService.isEnabled) {
+if (config.features.nameService.isEnabled || config.features.opSuperchain.isEnabled) {
   searchCategories.unshift({ id: 'domain', title: 'Names', tabTitle: 'Names' });
 }
 
@@ -72,7 +72,7 @@ export const searchItemTitles: Record<Category, { itemTitle: string; itemTitleSh
   zetaChainCCTX: { itemTitle: 'CCTX', itemTitleShort: 'CCTX' },
 };
 
-export function getItemCategory(item: SearchResultItem | SearchResultAppItem): Category | undefined {
+export function getItemCategory(item: QuickSearchResultItem | SearchResultAppItem): Category | undefined {
   switch (item.type) {
     case 'address':
     case 'contract':

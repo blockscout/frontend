@@ -140,25 +140,25 @@ const Icon = (props: IconBaseProps) => {
     );
   })();
 
-  const iconElementWithHint = hint ? (
+  const content = (
+    <Box position="relative" display="inline-flex" alignItems="center" flexShrink={ 0 }>
+      { iconElement }
+      { shield && <IconShield isLoading={ isLoading } variant={ variant } { ...shield }/> }
+    </Box>
+  );
+
+  if (!hint) {
+    return content;
+  }
+
+  return (
     <Tooltip
       content={ hint }
       interactive={ tooltipInteractive }
       positioning={ shield ? { offset: { mainAxis: 8 } } : undefined }
     >
-      { iconElement }
+      { content }
     </Tooltip>
-  ) : iconElement;
-
-  if (!shield) {
-    return iconElementWithHint;
-  }
-
-  return (
-    <Box position="relative" display="inline-flex" alignItems="center" flexShrink={ 0 }>
-      { iconElementWithHint }
-      <IconShield isLoading={ isLoading } variant={ variant } { ...shield }/>
-    </Box>
   );
 };
 

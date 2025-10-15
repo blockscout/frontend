@@ -14,9 +14,10 @@ const getFilterValue = (getFilterValueFromQuery<AddressFromToFilter>).bind(null,
 interface Props {
   enabled: boolean;
   isMultichain?: boolean;
+  chainIds?: Array<string>;
 }
 
-export default function useAddressInternalTxsQuery({ enabled, isMultichain }: Props) {
+export default function useAddressInternalTxsQuery({ enabled, isMultichain, chainIds }: Props) {
   const router = useRouter();
   const hash = getQueryParamString(router.query.hash);
   const [ filterValue, setFilterValue ] = React.useState<AddressFromToFilter>(getFilterValue(router.query.filter));
@@ -41,6 +42,7 @@ export default function useAddressInternalTxsQuery({ enabled, isMultichain }: Pr
       ),
     },
     isMultichain,
+    chainIds,
   });
 
   const onFilterChange = React.useCallback((val: string | Array<string>) => {

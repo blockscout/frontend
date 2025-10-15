@@ -10,6 +10,8 @@ const fixture: TestFixture<MockMultichainConfigFixture, { page: Page }> = async(
       window.__multichainConfig = {
         chains: [
           opSuperchainMock.chainDataA,
+          opSuperchainMock.chainDataB,
+          opSuperchainMock.chainDataC,
         ],
       };
     }, [ opSuperchainMock ]);

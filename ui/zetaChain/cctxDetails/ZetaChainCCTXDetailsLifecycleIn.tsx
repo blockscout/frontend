@@ -37,7 +37,7 @@ const ZetaChainCCTXDetailsLifecycleIn = ({ tx, isLoading }: Props) => {
       <IconSvg
         name="verification-steps/finalized"
         boxSize={ 5 }
-        bg={{ _light: 'white', _dark: 'black' }}
+        bg="bg.primary"
         zIndex={ 1 }
         color={ color }
       />

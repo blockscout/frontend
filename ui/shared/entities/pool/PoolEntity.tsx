@@ -31,12 +31,11 @@ const Link = chakra((props: LinkProps) => {
 type IconProps = Pick<EntityProps, 'pool' | 'className'> & EntityBase.IconBaseProps;
 
 const Icon = (props: IconProps) => {
-  const bgColor = { _light: 'white', _dark: 'black' };
   const borderColor = { _light: 'whiteAlpha.800', _dark: 'blackAlpha.800' };
   return (
     <Flex>
       <Flex
-        bgColor={ bgColor }
+        bgColor="bg.primary"
         borderRadius="full"
         border="1px solid"
         borderColor={ borderColor }
@@ -57,7 +56,7 @@ const Icon = (props: IconProps) => {
       </Flex>
       <Flex
         transform="translateX(-8px)"
-        bgColor={ bgColor }
+        bgColor="bg.primary"
         borderRadius="full"
         border="1px solid"
         borderColor={ borderColor }
