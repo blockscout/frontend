@@ -200,6 +200,7 @@ const Container = ({ children }: { children: React.ReactNode }) => (
             height: '18px',
             transitionProperty: 'all',
             transitionDuration: 'moderate',
+            borderRadius: 0,
             '&:hover': {
               color: 'link.primary.hover',
             },
@@ -221,6 +222,7 @@ const Container = ({ children }: { children: React.ReactNode }) => (
             borderRightWidth: '2px',
             borderColor: 'input.border.filled',
             backgroundColor: { _light: 'gray.50', _dark: 'whiteAlpha.50' },
+            backdropFilter: 'none',
             '&:before': {
               background: 'none',
             },
