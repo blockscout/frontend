@@ -75,13 +75,15 @@ const Revoke = () => {
 
   const handleSearch = useCallback(async(address: string) => {
     if (address.endsWith('.eth')) {
-      const ensAddress = await getEnsAddress(wagmiConfig.config, {
-        chainId: mainnet.id,
-        name: normalize(address),
-      });
-      if (ensAddress) {
-        address = ensAddress.toLowerCase();
-      }
+      try {
+        const ensAddress = await getEnsAddress(wagmiConfig.config, {
+          chainId: mainnet.id,
+          name: normalize(address),
+        });
+        if (ensAddress) {
+          address = ensAddress.toLowerCase();
+        }
+      } catch {}
     }
     setSearchAddress(address);
     setSearchInputValue('');
