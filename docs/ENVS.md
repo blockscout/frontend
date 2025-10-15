@@ -88,6 +88,7 @@ All json-like values should be single-quoted. If it contains a hash (`#`) or a d
 
 | Variable | Type| Description | Compulsoriness | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_AI_BOT_NAME | `string` | Test the AI integration | - | - | `duck` | upcoming |
 | NEXT_PUBLIC_APP_PROTOCOL | `http \| https` | App url schema | - | `https` | `http` | v1.0.x+ |
 | NEXT_PUBLIC_APP_HOST | `string` | App host | Required | - | `blockscout.com` | v1.0.x+ |
 | NEXT_PUBLIC_APP_PORT | `number` | Port where app is running | - | `3000` | `3001` | v1.0.x+ |
