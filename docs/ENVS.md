@@ -798,7 +798,7 @@ For blockchains that implement SUAVE architecture additional fields will be show
 
 ### Celo chain
 
-For blockchains that use the Celo platform. _Note_, that once the Celo mainnet becomes an L2 chain, these variables will be migrated to the Rollup configuration section.
+For blockchains that use the Celo platform.
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |

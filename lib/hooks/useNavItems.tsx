@@ -162,7 +162,9 @@ export default function useNavItems(): ReturnType {
         ].filter(Boolean),
         [
           blocks,
-          rollupTxnBatches,
+          epochs,
+          // currently, transaction batches are not implemented for Celo
+          !config.features.celo.isEnabled ? rollupTxnBatches : undefined,
           rollupDisputeGames,
           rollupFeature.outputRootsEnabled ? rollupOutputRoots : undefined,
         ].filter(Boolean),
