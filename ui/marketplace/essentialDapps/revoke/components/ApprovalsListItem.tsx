@@ -47,7 +47,18 @@ export default function ApprovalsListItem({
   }, [ revoke, hideApproval, approval, selectedChain?.config.chain.id ]);
 
   return (
-    <ListItemMobileGrid.Container gridTemplateColumns="minmax(0, 1fr) minmax(0, 1fr)" fontWeight="500">
+    <ListItemMobileGrid.Container
+      gridTemplateColumns="minmax(0, 1fr) minmax(0, 1fr)"
+      fontWeight="500"
+      _first={{
+        borderTop: 0,
+        paddingTop: 0,
+      }}
+      _last={{
+        borderBottom: 0,
+        paddingBottom: 0,
+      }}
+    >
       <ListItemMobileGrid.Label isLoading={ isLoading }>Token</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value display="flex" flexDir="column" gap={ 2 } color="inherit">
         <TokenEntity
