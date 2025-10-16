@@ -173,7 +173,7 @@ const TxInterpretationElementByType = (
       })();
 
       return (
-        <chakra.span display="inline-flex" alignItems="center" verticalAlign="top" _notFirst={{ marginLeft: 1 }} gap={ 1 }>
+        <chakra.span display="inline-flex" alignItems="center" verticalAlign="top" _notFirst={{ marginLeft: 1 }} gap={ 1 } mr={ 2 }>
           { icon && <Image src={ icon } alt={ value.name } width={ 5 } height={ 5 }/> }
           { name }
         </chakra.span>
