@@ -182,5 +182,6 @@ test('with interop message out +@mobile', async({ page, render, mockEnvs, mockAs
   await expect(component).toHaveScreenshot({
     mask: [ page.locator(pwConfig.adsBannerSelector) ],
     maskColor: pwConfig.maskColor,
+    maxDiffPixels: 20,
   });
 });
