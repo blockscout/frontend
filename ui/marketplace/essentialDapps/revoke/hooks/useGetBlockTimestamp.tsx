@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 
 import type { Block } from 'types/api/block';
 import type { ChainConfig } from 'types/multichain';
@@ -7,9 +7,21 @@ import useApiFetch from 'lib/api/useApiFetch';
 
 // Cache for block timestamp requests across the session
 const timestampCache = new Map<string, Promise<number>>();
+let activeInstances = 0;
 
 export default function useGetBlockTimestamp() {
   const apiFetch = useApiFetch();
+
+  // Clear entire cache when the last consumer unmounts
+  useEffect(() => {
+    activeInstances += 1;
+    return () => {
+      activeInstances -= 1;
+      if (activeInstances === 0) {
+        timestampCache.clear();
+      }
+    };
+  }, []);
 
   return useCallback(async(
     chain: ChainConfig | undefined,

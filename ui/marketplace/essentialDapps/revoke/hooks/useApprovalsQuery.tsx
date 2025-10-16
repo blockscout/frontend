@@ -1,7 +1,7 @@
 import ERC20Artifact from '@openzeppelin/contracts/build/contracts/ERC20.json';
 import { useQuery } from '@tanstack/react-query';
-import { useCallback } from 'react';
-import type { PublicClient, GetLogsParameters } from 'viem';
+import { useCallback, useMemo } from 'react';
+import type { GetLogsParameters } from 'viem';
 import { isAddress, getAbiItem } from 'viem';
 
 import type { ChainConfig } from 'types/multichain';
@@ -17,28 +17,31 @@ export default function useApprovalsQuery(chain: ChainConfig | undefined, userAd
   const searchErc20Allowances = useSearchErc20Allowances();
   const searchNftAllowances = useSearchNftAllowances();
 
-  const searchAllowances = useCallback(async(
-    chain: ChainConfig | undefined,
-    searchQuery: string,
-    signal?: AbortSignal,
-  ) => {
+  const publicClient = useMemo(
+    () => createPublicClient(chain?.config.chain.id),
+    [ chain?.config.chain.id ],
+  );
+
+  const searchAllowances = useCallback(async(signal?: AbortSignal) => {
     try {
       if (signal?.aborted) {
         throw new DOMException('Aborted', 'AbortError');
       }
+      if (!publicClient) {
+        throw new Error('Public client not found');
+      }
 
-      const publicClient = createPublicClient(chain?.config.chain.id) as PublicClient;
       const latestBlockNumber = await publicClient.getBlockNumber();
 
       const filter = {
         event: getAbiItem({ abi: ERC20Artifact.abi, name: 'Approval' }),
-        args: { owner: searchQuery },
+        args: { owner: userAddress },
       } as unknown as GetLogsParameters;
       const approvalEvents = await getLogs(publicClient, filter, BigInt(0), latestBlockNumber, signal);
 
       const [ erc20Allowances, nftAllowances ] = await Promise.all([
-        searchErc20Allowances(chain, searchQuery, approvalEvents, publicClient, signal),
-        searchNftAllowances(chain, searchQuery, approvalEvents, publicClient, latestBlockNumber, signal),
+        searchErc20Allowances(chain, userAddress, approvalEvents, publicClient, signal),
+        searchNftAllowances(chain, userAddress, approvalEvents, publicClient, latestBlockNumber, signal),
       ]);
 
       const allowances = [ ...erc20Allowances, ...nftAllowances ].sort((a, b) => {
@@ -51,11 +54,11 @@ export default function useApprovalsQuery(chain: ChainConfig | undefined, userAd
     } catch {
       return [];
     }
-  }, [ searchErc20Allowances, searchNftAllowances ]);
+  }, [ searchErc20Allowances, searchNftAllowances, publicClient, chain, userAddress ]);
 
   return useQuery({
     queryKey: [ 'revoke:approvals', chain?.config.chain.id, userAddress ],
-    queryFn: ({ signal }) => searchAllowances(chain, userAddress, signal),
+    queryFn: ({ signal }) => searchAllowances(signal),
     enabled: Boolean(userAddress) && isAddress(userAddress),
     placeholderData: ALLOWANCES,
   });
