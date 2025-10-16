@@ -91,15 +91,14 @@ const SearchBarInput = (
 
   const endElement = (
     <>
-      <ClearButton onClick={ onClear } visible={ Boolean(value?.length) } mx={ 2 } color="input.placeholder"/>
+      <ClearButton onClick={ onClear } visible={ Boolean(value?.length) } mx={ 2 }/>
       { !isMobile && (
         <Center
           boxSize="20px"
           mr={ 2 }
           borderRadius="sm"
           borderWidth="1px"
-          borderColor="gray.500"
-          color="gray.500"
+          borderColor="input.element"
         >
           /
         </Center>
