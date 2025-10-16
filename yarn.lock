@@ -6422,10 +6422,10 @@
   resolved "https://registry.yarnpkg.com/@socket.io/component-emitter/-/component-emitter-3.1.0.tgz#96116f2a912e0c02817345b3c10751069920d553"
   integrity sha512-+9jVqKhRSpsc591z5vX+X5Yyw+he/HCB4iQ/RYxw35CEPaY1gnsNE43nf9n9AaYjAQrTiI/mOwKUKdUs9vf7Xg==
 
-"@specify-sh/sdk@0.3.0":
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/@specify-sh/sdk/-/sdk-0.3.0.tgz#997dcb864607e5e93801672d2b6197667e7e9c3a"
-  integrity sha512-xTX19bQp0R36bee4QW4r6A21d2WQ2za9vps4DUI87uKRNXhQ3m3DUxfmWO9TCQ0l2MVyWRdIGsZXe4FWnHjKnw==
+"@specify-sh/sdk@0.4.1":
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/@specify-sh/sdk/-/sdk-0.4.1.tgz#016cd004c35fa64b8a510daac675edfce012958f"
+  integrity sha512-IY5xUFbZo3CYfBh+iRqIP3sguUyJhgY/hWA2EvBrwwOrgLL9vjJVEI+ijSYRlNBBTTEHreB0KC6eK0USO87jYQ==
   dependencies:
     cross-fetch "4.0.0"
 
