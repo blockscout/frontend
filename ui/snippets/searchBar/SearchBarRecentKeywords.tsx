@@ -87,7 +87,7 @@ const SearchBarRecentKeywords = ({ onClick, onClear }: Props) => {
             ) :
               <Text overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis">{ kw }</Text>
             }
-            <ClearButton onClick={ removeKeyword(kw) } color={{ _light: 'gray.300', _dark: 'gray.600' }}/>
+            <ClearButton onClick={ removeKeyword(kw) }/>
           </Flex>
         )) }
       </Flex>

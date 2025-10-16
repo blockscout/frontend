@@ -294,6 +294,9 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
         DEFAULT: { value: { _light: '{colors.gray.400}', _dark: '{colors.gray.500}' } },
         error: { value: '{colors.red.500}' },
       },
+      element: {
+        DEFAULT: { value: { _light: '{colors.gray.400}', _dark: '{colors.gray.500}' } },
+      },
     },
     field: {
       placeholder: {
