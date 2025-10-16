@@ -30,6 +30,7 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
       startElement,
       endElement,
       loading,
+      size,
       showIcon = false,
       descriptionProps,
       ...rest
@@ -62,7 +63,7 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
 
     return (
       <Skeleton loading={ loading } asChild>
-        <ChakraAlert.Root ref={ ref } { ...rest }>
+        <ChakraAlert.Root ref={ ref } size={ size ?? { base: 'sm', lg: 'md' } } { ...rest }>
           { iconElement }
           { children ? (
             <ChakraAlert.Content>
@@ -76,7 +77,8 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
           { closable && (
             <CloseButton
               pos="relative"
-              m={ 0.5 }
+              // default size for mobile is "sm", and for desktop is "md"
+              m={{ base: size === 'md' ? 0.5 : 0, lg: size === 'sm' ? 0 : 0.5 }}
               alignSelf="flex-start"
               onClick={ handleClose }
             />

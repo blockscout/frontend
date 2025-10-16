@@ -71,6 +71,21 @@ export const recipe = defineSlotRecipe({
     },
 
     size: {
+      sm: {
+        root: {
+          gap: '2',
+          px: '2',
+          py: '2',
+          textStyle: 'xs',
+        },
+        indicator: {
+          boxSize: '5',
+          my: 0,
+        },
+        content: {
+          minH: '5',
+        },
+      },
       md: {
         root: {
           gap: '2',
