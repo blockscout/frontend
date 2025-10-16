@@ -4,6 +4,9 @@
 Create a well-structured pull request with proper description, labels, and reviewers.
 
 ## Steps
+
+_Note_ in the command output, format all URLs as clickable Markdown links: `[Link Text](URL)`
+
 1. **Check that the pull request is not already open in the remote repository**
    - If it is opened, write only PR summary (see step 3) and skip all other steps
 

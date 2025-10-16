@@ -5,6 +5,8 @@ Create Github deployment for current branch using `.github/workflows/deploy-revi
 
 ## Steps
 
+_Note_ in the command output, format all URLs as clickable Markdown links: `[Link Text](URL)`
+
 1. **Ensure all changes are pushed to remote**
 
 2. **Check if there is a running deployment workflow for current branch**
