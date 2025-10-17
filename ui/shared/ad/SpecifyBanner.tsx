@@ -30,15 +30,15 @@ const SpecifyBanner = ({ className, platform, address, onEmpty, isLoading }: Pro
   const [ isFetching, setIsFetching ] = React.useState(true);
 
   React.useEffect(() => {
-    if (address && !isLoading) {
+    if (!isLoading) {
       const specify = new Specify({
         publisherKey: PUBLISHER_KEY,
-        // sdk provides cacheAddressesInLocalSession option, but we decided to launch without it for now
+        cacheMostRecentAddress: true,
       });
       const fetchContent = async() => {
         try {
           const content = await specify.serve(
-            [ address as `0x${ string }` ],
+            address ? [ address as `0x${ string }` ] : null,
             { imageFormat: isMobile ? ImageFormat.SHORT_BANNER : ImageFormat.LONG_BANNER },
           );
           if (content?.imageUrl) {
