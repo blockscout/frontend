@@ -21,7 +21,8 @@ export type TxInterpretationVariable =
   TxInterpretationVariableAddress |
   TxInterpretationVariableDomain |
   TxInterpretationVariableMethod |
-  TxInterpretationVariableDex;
+  TxInterpretationVariableDex |
+  TxInterpretationVariableLink;
 
 export type TxInterpretationVariableType =
   'string' |
@@ -32,7 +33,8 @@ export type TxInterpretationVariableType =
   'address' |
   'domain' |
   'method' |
-  'dexTag';
+  'dexTag' |
+  'link';
 
 export type TxInterpretationVariableString = {
   type: 'string';
@@ -85,5 +87,13 @@ export type TxInterpretationVariableDex = {
     url: string;
     app_id?: string;
     app_icon?: string;
+  };
+};
+
+export type TxInterpretationVariableLink = {
+  type: 'link';
+  value: {
+    name: string;
+    url: string;
   };
 };

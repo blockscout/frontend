@@ -13,7 +13,7 @@ import { useMultichainContext } from 'lib/contexts/multichain';
 import throwOnAbsentParamError from 'lib/errors/throwOnAbsentParamError';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useIsMobile from 'lib/hooks/useIsMobile';
-import getNetworkValidationActionText from 'lib/networks/getNetworkValidationActionText';
+import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
@@ -186,7 +186,7 @@ const BlockPageContent = () => {
           fontWeight={ 500 }
         >
           <chakra.span flexShrink={ 0 }>
-            { `${ capitalize(getNetworkValidationActionText()) } by` }
+            { capitalize(getNetworkValidatorTitle()) }
           </chakra.span>
           <AddressEntity address={ blockQuery.data.miner }/>
         </Skeleton>

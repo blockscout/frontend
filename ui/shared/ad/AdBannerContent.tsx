@@ -37,7 +37,7 @@ const AdBannerContent = ({ className, isLoading, provider, platform }: Props) =>
   const address = addressWC || profileQuery.data?.address_hash as `0x${ string }` | undefined;
 
   const content = (() => {
-    if (showSpecify && (address || profileQuery.isLoading || isConnecting)) {
+    if (showSpecify) {
       const isLoading = address ? false : profileQuery.isLoading || isConnecting;
       return <SpecifyBanner platform={ platform } address={ address } onEmpty={ handleEmptySpecify } isLoading={ isLoading }/>;
     }

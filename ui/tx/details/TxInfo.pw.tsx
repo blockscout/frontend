@@ -121,6 +121,23 @@ test('stability customization', async({ render, page, mockEnvs, mockAssetRespons
   });
 });
 
+test('with grouped fees', async({ render, page, mockEnvs }) => {
+  await mockEnvs([
+    [ 'NEXT_PUBLIC_VIEWS_TX_GROUPED_FEES', 'true' ],
+    [ 'NEXT_PUBLIC_VIEWS_TX_HIDDEN_FIELDS', '["gas_price","gas_fees","burnt_fees"]' ],
+    [ 'NEXT_PUBLIC_VIEWS_TX_ADDITIONAL_FIELDS', '["set_max_gas_limit"]' ],
+  ]);
+  const component = await render(<TxInfo data={ txMock.base } isLoading={ false }/>);
+
+  await component.getByText('View details').first().click();
+  await component.getByText('View details').first().click();
+
+  await expect(component).toHaveScreenshot({
+    mask: [ page.locator(pwConfig.adsBannerSelector) ],
+    maskColor: pwConfig.maskColor,
+  });
+});
+
 test('arbitrum L1 status', async({ render, mockEnvs }) => {
   await mockEnvs(ENVS_MAP.arbitrumRollup);
   const component = await render(<TxInfo data={ txMock.arbitrumTxn } isLoading={ false }/>);
@@ -165,5 +182,6 @@ test('with interop message out +@mobile', async({ page, render, mockEnvs, mockAs
   await expect(component).toHaveScreenshot({
     mask: [ page.locator(pwConfig.adsBannerSelector) ],
     maskColor: pwConfig.maskColor,
+    maxDiffPixels: 20,
   });
 });

@@ -825,7 +825,7 @@ const schema = yup
     NEXT_PUBLIC_NETWORK_SECONDARY_COIN_SYMBOL: yup.string(),
     NEXT_PUBLIC_NETWORK_MULTIPLE_GAS_CURRENCIES: yup.boolean(),
     NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE: yup
-      .string<NetworkVerificationTypeEnvs>().oneOf([ 'validation', 'mining' ])
+      .string<NetworkVerificationTypeEnvs>().oneOf([ 'validation', 'mining', 'fee reception' ])
       .when('NEXT_PUBLIC_ROLLUP_TYPE', {
         is: (value: string) => value === 'arbitrum' || value === 'zkEvm',
         then: (schema) => schema.test(
@@ -1020,6 +1020,7 @@ const schema = yup
       .transform(replaceQuotes)
       .json()
       .of(yup.string<TxAdditionalFieldsId>().oneOf(TX_ADDITIONAL_FIELDS_IDS)),
+    NEXT_PUBLIC_VIEWS_TX_GROUPED_FEES: yup.boolean(),
     NEXT_PUBLIC_VIEWS_NFT_MARKETPLACES: yup
       .array()
       .transform(replaceQuotes)
