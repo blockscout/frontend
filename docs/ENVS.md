@@ -255,7 +255,7 @@ Settings for meta tags, OG tags and SEO
 | Variable | Type | Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_VIEWS_BLOCK_HIDDEN_FIELDS | `Array<BlockFieldId>` | Array of the block fields ids that should be hidden. See below the list of the possible id values. | - | - | `'["burnt_fees","total_reward"]'` | v1.10.0+ |
-| NEXT_PUBLIC_VIEWS_BLOCK_PENDING_UPDATE_ALERT_ENABLED | `boolean` | The flag enables indication of the incomplete data for the block in the list and detailed views of the re-indexing block and its transactions. *Feature is enabled by default; pass `false` to disable it.* | - | `true` | `false` | <upcoming> |
+| NEXT_PUBLIC_VIEWS_BLOCK_PENDING_UPDATE_ALERT_ENABLED | `boolean` | The flag enables indication of the incomplete data for the block in the list and detailed views of the re-indexing block and its transactions. *Feature is enabled by default; pass `false` to disable it.* | - | `true` | `false` | v2.4.0+ |
 
 
 ##### Block fields list
@@ -462,7 +462,7 @@ Ads are enabled by default on all self-hosted instances. If you would like to di
 | NEXT_PUBLIC_AD_BANNER_ADDITIONAL_PROVIDER | `adbutler` | Additional ads provider to mix with the main one | - | - | `adbutler` | v1.28.0+ |
 | NEXT_PUBLIC_AD_ADBUTLER_CONFIG_DESKTOP | `{ id: string; width: string; height: string }` | Placement config for desktop Adbutler banner | - | - | `{'id':'123456','width':'728','height':'90'}` | v1.3.0+ |
 | NEXT_PUBLIC_AD_ADBUTLER_CONFIG_MOBILE | `{ id: string; width: number; height: number }` | Placement config for mobile Adbutler banner | - | - | `{'id':'654321','width':'300','height':'100'}` | v1.3.0+ |
-| NEXT_PUBLIC_AD_BANNER_ENABLE_SPECIFY | `boolean` | Enables Specify ads in addition to the main ad banner provider | - | - | `true` | upcoming |
+| NEXT_PUBLIC_AD_BANNER_ENABLE_SPECIFY | `boolean` | Enables Specify ads in addition to the main ad banner provider | - | - | `true` | v2.4.0+ |
 
 &nbsp;
 
@@ -584,7 +584,7 @@ Ads are enabled by default on all self-hosted instances. If you would like to di
 | NEXT_PUBLIC_MARKETPLACE_BANNER_CONTENT_URL | `string` | URL of the banner HTML content | - | - | `https://example.com/banner` | v1.29.0+ |
 | NEXT_PUBLIC_MARKETPLACE_BANNER_LINK_URL | `string` | URL of the page the banner leads to | - | - | `https://example.com` | v1.29.0+ |
 | NEXT_PUBLIC_MARKETPLACE_GRAPH_LINKS_URL | `string` | URL of the file (`.json` format only) which contains the list of The Graph links to be displayed on the Marketplace page | - | - | `https://example.com/graph_links.json` | v1.36.0+ |
-| NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_CONFIG | `EssentialDappsConfig`, see details [below](#essential-dapps-configuration-properties) | Configuration of the essential dapps to be displayed on the Marketplace page | - | - | `{'swap': {'chains': ['1', '10', '100', '11155111'], 'fee': '0.004', 'integrator': 'blockscout'}}` | upcoming |
+| NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_CONFIG | `EssentialDappsConfig`, see details [below](#essential-dapps-configuration-properties) | Configuration of the essential dapps to be displayed on the Marketplace page | - | - | `{'swap': {'chains': ['1', '10', '100', '11155111'], 'fee': '0.004', 'integrator': 'blockscout'}}` | v2.4.0+ |
 
 #### Marketplace app configuration properties
 
@@ -689,8 +689,8 @@ This feature integrates [Clusters.xyz](https://clusters.xyz/) universal naming s
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_CLUSTERS_API_HOST | `string` | Clusters.xyz API endpoint for fetching cluster data, directory listings, and cross-chain address mappings | Required | - | `https://example.com/clusters-api` | <upcoming> |
-| NEXT_PUBLIC_CLUSTERS_CDN_URL | `string` | CDN base URL for serving cluster profile images and avatars displayed in search results and cluster pages | - | `https://cdn.clusters.xyz` | `https://your-cdn.example.com` | <upcoming> |
+| NEXT_PUBLIC_CLUSTERS_API_HOST | `string` | Clusters.xyz API endpoint for fetching cluster data, directory listings, and cross-chain address mappings | Required | - | `https://example.com/clusters-api` | v2.4.0+ |
+| NEXT_PUBLIC_CLUSTERS_CDN_URL | `string` | CDN base URL for serving cluster profile images and avatars displayed in search results and cluster pages | - | `https://cdn.clusters.xyz` | `https://your-cdn.example.com` | v2.4.0+ |
 
 &nbsp;
 
@@ -826,8 +826,8 @@ For blockchains that use the MegaETH platform.
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_MEGA_ETH_SOCKET_URL_METRICS | `string` | Public WebSocket endpoint for streaming statistics data, used to display information on the uptime dashboard page. | - | - | `wss://testnet-dashboard.megaeth.com/metrics` | upcoming |
-| NEXT_PUBLIC_MEGA_ETH_SOCKET_URL_RPC | `string` | Public WebSocket endpoint for streaming RPC node data, including mini-block data. | - | - | `wss://carrot.megaeth.com/mafia/ws` | upcoming |
+| NEXT_PUBLIC_MEGA_ETH_SOCKET_URL_METRICS | `string` | Public WebSocket endpoint for streaming statistics data, used to display information on the uptime dashboard page. | - | - | `wss://testnet-dashboard.megaeth.com/metrics` | v2.4.0+ |
+| NEXT_PUBLIC_MEGA_ETH_SOCKET_URL_RPC | `string` | Public WebSocket endpoint for streaming RPC node data, including mini-block data. | - | - | `wss://carrot.megaeth.com/mafia/ws` | v2.4.0+ |
 
 &nbsp;
 
