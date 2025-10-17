@@ -48,7 +48,7 @@ const ContractDetailsAlerts = ({ data, isLoading, addressData, channel }: Props)
         </Box>
       ) }
       { data?.is_verified && (
-        <Alert status="success" loading={ isLoading } descriptionProps={{ alignItems: 'center', flexWrap: 'wrap', rowGap: 3, columnGap: 5 }}>
+        <Alert status="success" loading={ isLoading } descriptionProps={{ alignItems: 'center', flexWrap: 'wrap', rowGap: 2, columnGap: 5 }}>
           <span>Contract Source Code Verified ({ data.is_partially_verified ? 'Partial' : 'Exact' } Match)</span>
           {
             data.is_partially_verified ? (

@@ -16,7 +16,6 @@ const ContractDetailsAlertVerificationSource = ({ data }: Props) => {
         <span>This contract has been { data.is_partially_verified ? 'partially ' : '' }verified using </span>
         <Link
           href="https://docs.blockscout.com/devs/verification/ethereum-bytecode-database-microservice"
-          textStyle="md"
           external
         >
           Blockscout Bytecode Database

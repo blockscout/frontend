@@ -20,7 +20,7 @@ const LayoutHome = ({ children }: Props) => {
           <Layout.MainColumn
             paddingTop={{ base: 3, lg: 6 }}
           >
-            <HeaderAlert/>
+            <HeaderAlert mb={ 3 }/>
             <AppErrorBoundary>
               { children }
             </AppErrorBoundary>
