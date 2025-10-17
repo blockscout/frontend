@@ -243,7 +243,7 @@ const SearchBarSuggest = ({ query, zetaChainCCTXQuery, externalSearchItem, searc
     <>
       { !isMobile && (
         <Box pb={ 4 } mb={ 5 } borderColor="border.divider" borderBottomWidth="1px" _empty={{ display: 'none' }}>
-          <TextAd/>
+          <TextAd textStyle={{ lg: 'sm' }}/>
         </Box>
       ) }
       { content }
