@@ -21,6 +21,7 @@ export default function useLogPageView(isInited: boolean) {
 
   const tab = getQueryParamString(router.query.tab);
   const page = getQueryParamString(router.query.page);
+  const id = getQueryParamString(router.query.id);
   const { colorMode } = useColorMode();
 
   React.useEffect(() => {
@@ -34,6 +35,7 @@ export default function useLogPageView(isInited: boolean) {
       'Page type': getPageType(router.pathname),
       Tab: getTabName(tab),
       Page: page || undefined,
+      Source: router.pathname === '/essential-dapps/[id]' ? id : undefined,
       'Color mode': colorMode,
       'Color theme': cookieColorTheme || getDefaultColorTheme(colorMode),
     });

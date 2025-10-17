@@ -20,7 +20,7 @@ const BlobEntityL1 = (props: BlobEntity.EntityProps) => {
   });
 
   return (
-    <BlobEntity.default { ...props } href={ props.href ?? defaultHref } isExternal/>
+    <BlobEntity.default { ...props } href={ props.href ?? defaultHref } link={{ external: true }}/>
   );
 };
 

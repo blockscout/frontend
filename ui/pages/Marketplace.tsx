@@ -9,12 +9,14 @@ import config from 'configs/app';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useGraphLinks from 'lib/hooks/useGraphLinks';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import { Heading } from 'toolkit/chakra/heading';
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { Link } from 'toolkit/chakra/link';
 import { MenuContent, MenuItem, MenuRoot, MenuTrigger } from 'toolkit/chakra/menu';
 import AdaptiveTabs from 'toolkit/components/AdaptiveTabs/AdaptiveTabs';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import Banner from 'ui/marketplace/Banner';
+import EssentialDappsList from 'ui/marketplace/essentialDapps/EssentialDappsList';
 import MarketplaceAppModal from 'ui/marketplace/MarketplaceAppModal';
 import MarketplaceDisclaimerModal from 'ui/marketplace/MarketplaceDisclaimerModal';
 import MarketplaceList from 'ui/marketplace/MarketplaceList';
@@ -142,7 +144,6 @@ const Marketplace = () => {
     <>
       <PageTitle
         title="DAppscout"
-        mb={ 2 }
         contentAfter={ (isMobile && links.length > 1) ? (
           <MenuRoot>
             <MenuTrigger asChild>
@@ -184,6 +185,14 @@ const Marketplace = () => {
         onFavoriteClick={ onFavoriteClick }
         onAppClick={ handleAppClick }
       />
+
+      { feature.essentialDapps && (
+        <>
+          <Heading level="2" mt={ 8 } mb={ 6 }>Essential dapps</Heading>
+          <EssentialDappsList/>
+          <Heading level="2">Explore dapps</Heading>
+        </>
+      ) }
 
       <ActionBar
         showShadow

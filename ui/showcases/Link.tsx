@@ -93,7 +93,7 @@ const LinkShowcase = () => {
         <SamplesStack>
           <Sample label="Without name" vertical>
             <AddressEntity address={ addressMock.withoutName }/>
-            <AddressEntity address={ addressMock.withoutName } isExternal/>
+            <AddressEntity address={ addressMock.withoutName } link={{ external: true }}/>
             <AddressEntity address={{ ...addressMock.filecoin, name: null }}/>
             <Box maxW="200px">
               <AddressEntity address={ addressMock.withoutName }/>
@@ -148,7 +148,7 @@ const LinkShowcase = () => {
         <SamplesStack>
           <Sample label="Default" vertical w="100%">
             <TxEntity hash={ txMock.base.hash }/>
-            <TxEntity hash={ txMock.base.hash } isExternal/>
+            <TxEntity hash={ txMock.base.hash } link={{ external: true }}/>
             <Box maxW="200px">
               <TxEntity hash={ txMock.base.hash } noCopy={ false }/>
             </Box>
@@ -160,7 +160,7 @@ const LinkShowcase = () => {
         <SamplesStack>
           <Sample label="Default" vertical w="100%">
             <BlockEntity number={ blockMock.base.height }/>
-            <BlockEntity number={ blockMock.base.height } isExternal icon={{ name: 'txn_batches_slim' }}/>
+            <BlockEntity number={ blockMock.base.height } link={{ external: true }} icon={{ name: 'txn_batches_slim' }}/>
             <Box maxW="150px">
               <BlockEntity number={ 1234567890123456 }/>
             </Box>
@@ -199,7 +199,7 @@ const LinkShowcase = () => {
           <Sample label="Default" vertical w="100%">
             <BlobEntity hash={ blobsMock.base1.hash }/>
             <Box maxW="200px">
-              <BlobEntity hash={ blobsMock.base1.hash } isExternal/>
+              <BlobEntity hash={ blobsMock.base1.hash } link={{ external: true }}/>
             </Box>
             <BlobEntity hash={ blobsMock.base1.hash } isLoading/>
           </Sample>
@@ -214,7 +214,7 @@ const LinkShowcase = () => {
               quote_token_icon_url: 'https://coin-images.coingecko.com/coins/images/39925/large/sky.jpg?1724827980',
             }}/>
             <Box maxW="150px">
-              <PoolEntity pool={ poolMock.noIcons } isExternal/>
+              <PoolEntity pool={ poolMock.noIcons } link={{ external: true }}/>
             </Box>
             <PoolEntity pool={ poolMock.noIcons } isLoading/>
           </Sample>

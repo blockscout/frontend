@@ -43,6 +43,15 @@ export const marketplace: Guard = (chainConfig: typeof config) => async() => {
   }
 };
 
+export const marketplaceEssentialDapp: Guard = (chainConfig: typeof config) => async() => {
+  const feature = chainConfig.features.marketplace;
+  if (!feature.isEnabled || !feature.essentialDapps) {
+    return {
+      notFound: true,
+    };
+  }
+};
+
 export const apiDocs: Guard = (chainConfig: typeof config) => async() => {
   if (!chainConfig.features.apiDocs.isEnabled) {
     return {

@@ -191,7 +191,7 @@ const NameDomainDetails = ({ query }: Props) => {
         { query.data?.tokens.map((token) => {
           const isProtocolBaseChain = stripTrailingSlash(query.data.protocol?.deployment_blockscout_base_url ?? '') === config.app.baseUrl;
           const entityProps = {
-            isExternal: !isProtocolBaseChain ? true : false,
+            link: { external: !isProtocolBaseChain ? true : false },
             href: !isProtocolBaseChain ? (
               stripTrailingSlash(query.data.protocol?.deployment_blockscout_base_url ?? '') +
             route({ pathname: '/token/[hash]/instance/[id]', query: { hash: token.contract_hash, id: token.id } })

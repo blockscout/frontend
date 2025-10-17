@@ -23,7 +23,7 @@ const AddressEntityL1 = (props: AddressEntity.EntityProps) => {
   });
 
   return (
-    <AddressEntity.default { ...props } href={ props.href ?? defaultHref } isExternal/>
+    <AddressEntity.default { ...props } href={ props.href ?? defaultHref } link={{ external: true }}/>
   );
 };
 

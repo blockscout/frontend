@@ -106,7 +106,7 @@ const Icon = (props: IconProps) => {
     >
       <Flex marginRight={ styles.marginRight } position="relative">
         <AddressIdenticon
-          size={ props.variant === 'heading' ? 30 : 20 }
+          size={ props.size ?? (props.variant === 'heading' ? 30 : 20) }
           hash={ getDisplayedAddress(props.address) }
         />
         { shield && <EntityBase.IconShield { ...shield }/> }
@@ -154,6 +154,7 @@ const Content = chakra((props: ContentProps) => {
         contentProps={{ maxW: { base: 'calc(100vw - 8px)', lg: '400px' } }}
         triggerProps={{ minW: 0 }}
         interactive={ props.tooltipInteractive }
+        disabled={ props.noTooltip }
       >
         <Skeleton loading={ props.isLoading } overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap" { ...styles }>
           { nameText }

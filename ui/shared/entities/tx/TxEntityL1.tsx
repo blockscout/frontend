@@ -19,7 +19,7 @@ const TxEntityL1 = (props: TxEntity.EntityProps) => {
     query: { hash: props.hash },
   });
 
-  return <TxEntity.default { ...props } href={ props.href ?? defaultHref } isExternal/>;
+  return <TxEntity.default { ...props } href={ props.href ?? defaultHref } link={{ external: true }}/>;
 };
 
 export default chakra(TxEntityL1);

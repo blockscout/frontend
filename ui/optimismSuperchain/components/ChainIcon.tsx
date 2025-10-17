@@ -8,6 +8,7 @@ import type { ImageProps } from 'toolkit/chakra/image';
 import { Image } from 'toolkit/chakra/image';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
+import IconSvg from 'ui/shared/IconSvg';
 
 interface Props extends ImageProps {
   data: ChainConfig;
@@ -16,11 +17,24 @@ interface Props extends ImageProps {
 }
 
 const ChainIcon = ({ data, boxSize = 5, borderRadius = 'full', isLoading, withTooltip, ...rest }: Props) => {
+  const placeholder = <IconSvg name="networks/icon-placeholder" boxSize={ boxSize } color="text.secondary"/>;
+
+  const iconUrl = getIconUrl(data);
+
+  const content = (
+    <Image
+      src={ iconUrl }
+      boxSize={ boxSize }
+      borderRadius={ borderRadius }
+      fallback={ placeholder }
+      alt={ `${ data.config.chain.name } chain icon` }
+      { ...rest }
+    />
+  );
+
   if (isLoading) {
     return <Skeleton boxSize={ boxSize } borderRadius={ borderRadius } { ...rest } loading/>;
   }
-
-  const content = <Image src={ getIconUrl(data) } boxSize={ boxSize } borderRadius={ borderRadius } { ...rest }/>;
 
   if (withTooltip) {
     return (

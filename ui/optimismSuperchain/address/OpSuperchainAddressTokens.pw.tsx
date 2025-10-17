@@ -29,7 +29,7 @@ test.describe('nfts', () => {
       { ...tokensMock.collections, items: [ tokensMock.collections.items[2] ] },
       { pathParams: { hash: CURRENT_ADDRESS }, queryParams: { type: [] }, chainConfig: opSuperchainMock.chainDataA },
     );
-    await mockAssetResponse(getIconUrl(opSuperchainMock.chainDataA), './playwright/mocks/image_s.jpg');
+    await mockAssetResponse(getIconUrl(opSuperchainMock.chainDataA) as string, './playwright/mocks/image_s.jpg');
 
     component = await render(
       <Box pt={{ base: '134px', lg: 6 }}>

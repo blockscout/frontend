@@ -350,7 +350,7 @@ export default function useNavItems(): ReturnType {
         text: 'DApps',
         nextRoute: { pathname: '/apps' as const },
         icon: 'apps',
-        isActive: pathname.startsWith('/app'),
+        isActive: pathname.startsWith('/app') || pathname.startsWith('/essential-dapps'),
       } : null,
       statsNavItem,
       apiNavItem,

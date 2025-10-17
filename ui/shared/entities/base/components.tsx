@@ -27,7 +27,7 @@ export interface EntityBaseProps {
   className?: string;
   href?: string;
   icon?: EntityIconProps;
-  isExternal?: boolean;
+  link?: LinkProps;
   isLoading?: boolean;
   noTooltip?: boolean;
   noCopy?: boolean;
@@ -40,7 +40,6 @@ export interface EntityBaseProps {
   truncation?: Truncation;
   truncationMaxSymbols?: number;
   variant?: Variant;
-  linkVariant?: LinkProps['variant'];
   chain?: ChainConfig;
 }
 
@@ -63,12 +62,14 @@ const Container = chakra(({ className, children, ...props }: ContainerBaseProps)
   );
 });
 
-export interface LinkBaseProps extends Pick<EntityBaseProps, 'className' | 'onClick' | 'isLoading' | 'isExternal' | 'href' | 'noLink' | 'query' | 'chain'> {
+export interface LinkBaseProps extends Pick<EntityBaseProps, 'className' | 'onClick' | 'isLoading' | 'href' | 'noLink' | 'query' | 'chain'> {
   children: React.ReactNode;
   variant?: LinkProps['variant'];
+  noIcon?: LinkProps['noIcon'];
+  external?: LinkProps['external'];
 }
 
-const Link = chakra(({ isLoading, children, isExternal, onClick, href, noLink, variant }: LinkBaseProps) => {
+const Link = chakra(({ isLoading, children, external, onClick, href, noLink, variant, noIcon }: LinkBaseProps) => {
   const styles = {
     display: 'inline-flex',
     alignItems: 'center',
@@ -84,9 +85,10 @@ const Link = chakra(({ isLoading, children, isExternal, onClick, href, noLink, v
       { ...styles }
       href={ href }
       loading={ isLoading }
-      external={ isExternal }
+      external={ external }
       onClick={ onClick }
       variant={ variant }
+      noIcon={ noIcon }
     >
       { children }
     </LinkToolkit>
@@ -98,6 +100,7 @@ type EntityIconProps = (ImageProps | IconSvgProps) & Pick<IconProps, 'color' | '
   hint?: string;
   hintPostfix?: string;
   tooltipInteractive?: boolean;
+  size?: number; // for AddressIdenticon in address entity
 };
 
 export type IconBaseProps = Pick<EntityBaseProps, 'isLoading' | 'noIcon' | 'variant' | 'chain'> & EntityIconProps;

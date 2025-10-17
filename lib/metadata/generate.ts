@@ -13,12 +13,16 @@ import getPageOgType from './getPageOgType';
 import * as templates from './templates';
 
 export default function generate<Pathname extends Route['pathname']>(route: RouteParams<Pathname>, apiData: ApiData<Pathname> = null): Metadata {
+  const idCap = route.pathname === '/essential-dapps/[id]' && typeof route.query?.id === 'string' ?
+    route.query.id.charAt(0).toUpperCase() + route.query.id.slice(1) : undefined;
+
   const params = {
     ...route.query,
     ...apiData,
     network_name: config.chain.name,
     network_title: getNetworkTitle(),
     network_gwei: currencyUnits.gwei,
+    id_cap: idCap,
   };
 
   const title = compileValue(templates.title.make(route.pathname, Boolean(apiData)), params);

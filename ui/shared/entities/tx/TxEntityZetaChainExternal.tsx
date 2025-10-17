@@ -26,7 +26,7 @@ const TxEntityZetaChainExternal = (props: Props) => {
     return;
   })();
 
-  return <TxEntity.default { ...props } href={ props.href ?? defaultHref } isExternal/>;
+  return <TxEntity.default { ...props } href={ props.href ?? defaultHref } link={{ external: true }}/>;
 };
 
 export default chakra(TxEntityZetaChainExternal);

@@ -38,7 +38,7 @@ test('external link +@dark-mode', async({ render }) => {
   const component = await render(
     <BlockEntity
       number={ 17943507 }
-      isExternal
+      link={{ external: true }}
     />,
   );
 
