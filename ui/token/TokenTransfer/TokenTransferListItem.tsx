@@ -45,7 +45,6 @@ const TokenTransferListItem = ({
           hash={ txHash }
           truncation="constant_long"
           fontWeight="700"
-          noCopy
         />
         <TimeWithTooltip
           timestamp={ timestamp }

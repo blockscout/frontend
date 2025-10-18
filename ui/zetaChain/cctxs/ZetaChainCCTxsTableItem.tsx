@@ -30,7 +30,6 @@ const ZetaChainCCTxsTableItem = ({ tx, enableTimeIncrement, isLoading, animation
             noIcon
             maxW="100%"
             truncation="constant"
-            noCopy
           />
           <TimeWithTooltip
             timestamp={ Number(tx.last_update_timestamp) * SECOND }

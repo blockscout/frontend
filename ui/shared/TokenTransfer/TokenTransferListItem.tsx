@@ -80,7 +80,6 @@ const TokenTransferListItem = ({
             truncation="constant_long"
             fontWeight="700"
             chain={ chainData }
-            noCopy
           />
           <TimeWithTooltip
             timestamp={ timestamp }

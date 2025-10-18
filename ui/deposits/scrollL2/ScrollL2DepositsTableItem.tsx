@@ -61,7 +61,6 @@ const ScrollL2DepositsTableItem = ({ item, isLoading }: Props) => {
             hash={ item.completion_transaction_hash }
             truncation="constant_long"
             noIcon
-            noCopy
           />
         ) : (
           <chakra.span color="text.secondary">

@@ -48,7 +48,6 @@ const ScrollL2WithdrawalsListItem = ({ item, isLoading }: Props) => {
           isLoading={ isLoading }
           hash={ item.origination_transaction_hash }
           truncation="constant_long"
-          noCopy
         />
       </ListItemMobileGrid.Value>
 

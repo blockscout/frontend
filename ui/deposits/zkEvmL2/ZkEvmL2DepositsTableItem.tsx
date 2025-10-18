@@ -62,7 +62,6 @@ const ZkEvmL2DepositsTableItem = ({ item, isLoading }: Props) => {
             textStyle="sm"
             truncation="constant_long"
             noIcon
-            noCopy
           />
         ) : (
           <chakra.span color="text.secondary">

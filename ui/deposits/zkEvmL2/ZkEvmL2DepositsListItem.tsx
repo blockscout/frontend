@@ -69,7 +69,6 @@ const ZkEvmL2DepositsListItem = ({ item, isLoading }: Props) => {
             hash={ item.l2_transaction_hash }
             textStyle="sm"
             truncation="constant_long"
-            noCopy
           />
         ) : (
           <chakra.span>

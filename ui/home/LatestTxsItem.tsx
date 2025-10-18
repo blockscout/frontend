@@ -62,7 +62,6 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
               isLoading={ isLoading }
               hash={ tx.hash }
               fontWeight="700"
-              noCopy
             />
             <TimeWithTooltip
               timestamp={ tx.timestamp }

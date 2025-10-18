@@ -46,7 +46,6 @@ const TokenTransferTableItem = ({ item, isLoading, chainData }: Props) => {
           fontWeight={ 600 }
           noIcon
           truncation="constant_long"
-          noCopy
         />
         <TimeWithTooltip
           timestamp={ item.timestamp }

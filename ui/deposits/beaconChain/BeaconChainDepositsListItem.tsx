@@ -32,7 +32,7 @@ const BeaconChainDepositsListItem = ({ item, isLoading, view }: Props) => {
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Transaction hash</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <TxEntity hash={ item.transaction_hash } isLoading={ isLoading } truncation="constant_long" noCopy/>
+        <TxEntity hash={ item.transaction_hash } isLoading={ isLoading } truncation="constant_long"/>
       </ListItemMobileGrid.Value>
 
       { view !== 'block' && (

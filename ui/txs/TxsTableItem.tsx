@@ -53,8 +53,7 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, 
             fontWeight="bold"
             noIcon
             maxW="100%"
-            truncation="constant_long"
-            noCopy
+            truncation="constant"
           />
           <TimeWithTooltip
             timestamp={ tx.timestamp }

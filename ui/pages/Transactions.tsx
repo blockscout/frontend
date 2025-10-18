@@ -98,7 +98,6 @@ const Transactions = () => {
           query={ txsValidatedQuery }
           socketType="txs_validated"
           top={ TABS_HEIGHT }
-          noCopy
         /> },
     {
       id: 'pending',
@@ -109,7 +108,6 @@ const Transactions = () => {
           showBlockInfo={ false }
           socketType="txs_pending"
           top={ TABS_HEIGHT }
-          noCopy
         />
       ),
     },
@@ -120,7 +118,6 @@ const Transactions = () => {
         <TxsWithFrontendSorting
           query={ txsWithBlobsQuery }
           top={ TABS_HEIGHT }
-          noCopy
         />
       ),
     },

@@ -44,7 +44,6 @@ const ZkEvmL2WithdrawalsTableItem = ({ item, isLoading }: Props) => {
           textStyle="sm"
           truncation="constant_long"
           noIcon
-          noCopy
         />
       </TableCell>
       <TableCell verticalAlign="middle" pr={ 12 }>

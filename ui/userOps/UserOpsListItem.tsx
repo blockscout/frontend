@@ -71,7 +71,6 @@ const UserOpsListItem = ({ item, isLoading, showTx, showSender, chainData }: Pro
               isLoading={ isLoading }
               noIcon
               truncation="constant_long"
-              noCopy
             />
           </ListItemMobileGrid.Value>
         </>

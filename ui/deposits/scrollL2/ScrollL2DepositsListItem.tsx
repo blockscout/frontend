@@ -68,7 +68,6 @@ const ScrollL2DepositsListItem = ({ item, isLoading }: Props) => {
             isLoading={ isLoading }
             hash={ item.completion_transaction_hash }
             truncation="constant_long"
-            noCopy
           />
         ) : (
           <chakra.span>

@@ -60,7 +60,6 @@ const UserOpsTableItem = ({ item, isLoading, showTx, showSender, chainData }: Pr
             isLoading={ isLoading }
             truncation="constant"
             noIcon
-            noCopy
           />
         </TableCell>
       ) }

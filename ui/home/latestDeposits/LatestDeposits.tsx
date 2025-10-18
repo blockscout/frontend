@@ -76,7 +76,6 @@ const LatestDepositsItem = ({ item, isLoading }: ItemProps) => {
       isLoading={ isLoading }
       hash={ item.l2TxHash }
       truncation={ isMobile ? 'constant_long' : 'dynamic' }
-      noCopy
     />
   );
 
