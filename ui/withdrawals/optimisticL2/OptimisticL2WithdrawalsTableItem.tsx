@@ -67,6 +67,7 @@ const OptimisticL2WithdrawalsTableItem = ({ item, isLoading }: Props) => {
             hash={ item.l1_transaction_hash }
             truncation="constant_long"
             noIcon
+            noCopy
           />
         ) :
           'N/A'

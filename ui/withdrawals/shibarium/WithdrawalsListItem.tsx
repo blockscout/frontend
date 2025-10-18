@@ -49,6 +49,7 @@ const WithdrawalsListItem = ({ item, isLoading }: Props) => {
           hash={ item.l1_transaction_hash }
           textStyle="sm"
           truncation="constant_long"
+          noCopy
         />
       </ListItemMobileGrid.Value>
 

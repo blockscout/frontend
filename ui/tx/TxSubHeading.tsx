@@ -123,7 +123,7 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
         />
       );
     } else {
-      return <TxEntity hash={ hash } noLink noCopy={ false } variant="subheading" mr={{ base: 0, lg: 2 }} chain={ multichainContext?.chain }/>;
+      return <TxEntity hash={ hash } noLink variant="subheading" mr={{ base: 0, lg: 2 }} chain={ multichainContext?.chain }/>;
     }
   })();
 

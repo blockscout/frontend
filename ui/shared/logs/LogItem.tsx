@@ -67,6 +67,7 @@ const LogItem = ({ address, index, topics, data, decoded, type, transaction_hash
             mr={{ base: 9, lg: 4 }}
             w="100%"
             chain={ chainData }
+            noCopy
           />
         ) : (
           <AddressEntity
