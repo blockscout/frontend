@@ -44,6 +44,7 @@ const ZkEvmL2WithdrawalsTableItem = ({ item, isLoading }: Props) => {
           textStyle="sm"
           truncation="constant_long"
           noIcon
+          noCopy
         />
       </TableCell>
       <TableCell verticalAlign="middle" pr={ 12 }>
@@ -61,6 +62,7 @@ const ZkEvmL2WithdrawalsTableItem = ({ item, isLoading }: Props) => {
             truncation="constant_long"
             noIcon
             textStyle="sm"
+            noCopy
           />
         ) : (
           <chakra.span color="text.secondary">

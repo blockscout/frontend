@@ -70,6 +70,7 @@ const ZkEvmTxnBatchesListItem = ({ item, isLoading }: Props) => {
             hash={ item.verify_transaction_hash }
             textStyle="sm"
             truncation="constant_long"
+            noCopy
           />
         ) : <Text>Pending</Text> }
       </ListItemMobileGrid.Value>
@@ -82,6 +83,7 @@ const ZkEvmTxnBatchesListItem = ({ item, isLoading }: Props) => {
             hash={ item.sequence_transaction_hash }
             textStyle="sm"
             truncation="constant_long"
+            noCopy
           />
         ) : <Text>Pending</Text> }
       </ListItemMobileGrid.Value>

@@ -30,7 +30,7 @@ const OptimisticL2TxnBatchBlobEip4844 = ({ blobs, isLoading }: Props) => {
             </GridItem>
             <GridItem fontWeight={ 600 }>L1 txn hash</GridItem>
             <GridItem overflow="hidden">
-              <TxEntityL1 hash={ blob.l1_transaction_hash } noIcon noCopy={ false }/>
+              <TxEntityL1 hash={ blob.l1_transaction_hash } noIcon/>
             </GridItem>
           </OptimisticL2TxnBatchBlobWrapper>
         );

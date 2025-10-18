@@ -53,6 +53,7 @@ const InternalTxsTableItem = ({
             fontWeight={ 700 }
             noIcon
             truncation="constant_long"
+            noCopy
           />
           <TimeWithTooltip
             timestamp={ timestamp }

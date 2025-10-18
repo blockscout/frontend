@@ -51,6 +51,7 @@ const InternalTxsListItem = ({
           fontWeight={ 700 }
           truncation="constant_long"
           chain={ chainData }
+          noCopy
         />
         <TimeWithTooltip
           timestamp={ timestamp }

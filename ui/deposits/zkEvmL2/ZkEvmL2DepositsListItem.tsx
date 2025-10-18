@@ -48,6 +48,7 @@ const ZkEvmL2DepositsListItem = ({ item, isLoading }: Props) => {
           hash={ item.l1_transaction_hash }
           textStyle="sm"
           truncation="constant_long"
+          noCopy
         />
       </ListItemMobileGrid.Value>
 
@@ -68,6 +69,7 @@ const ZkEvmL2DepositsListItem = ({ item, isLoading }: Props) => {
             hash={ item.l2_transaction_hash }
             textStyle="sm"
             truncation="constant_long"
+            noCopy
           />
         ) : (
           <chakra.span>

@@ -98,6 +98,7 @@ const TokenTransferTableItem = ({
             noIcon
             mt="7px"
             truncation="constant_long"
+            noCopy
           />
           <TimeWithTooltip
             timestamp={ timestamp }

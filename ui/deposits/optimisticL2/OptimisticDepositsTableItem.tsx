@@ -38,6 +38,7 @@ const OptimisticDepositsTableItem = ({ item, isLoading }: Props) => {
           hash={ item.l2_transaction_hash }
           truncation="constant_long"
           noIcon
+          noCopy
         />
       </TableCell>
       <TableCell verticalAlign="middle" pr={ 12 }>
@@ -54,6 +55,7 @@ const OptimisticDepositsTableItem = ({ item, isLoading }: Props) => {
           hash={ item.l1_transaction_hash }
           truncation="constant_long"
           noIcon
+          noCopy
         />
       </TableCell>
       <TableCell verticalAlign="middle">

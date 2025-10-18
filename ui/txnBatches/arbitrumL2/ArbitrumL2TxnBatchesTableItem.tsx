@@ -55,6 +55,7 @@ const ArbitrumL2TxnBatchesTableItem = ({ item, isLoading }: Props) => {
           hash={ item.commitment_transaction.hash }
           isLoading={ isLoading }
           truncation="constant_long"
+          noCopy
         />
       </TableCell>
       <TableCell verticalAlign="middle">

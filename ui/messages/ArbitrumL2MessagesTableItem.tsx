@@ -66,6 +66,7 @@ const ArbitrumL2MessagesTableItem = ({ item, direction, isLoading }: Props) => {
             hash={ l2TxHash }
             truncation="constant_long"
             noIcon
+            noCopy
           />
         ) : (
           <chakra.span color="text.secondary">
@@ -92,6 +93,7 @@ const ArbitrumL2MessagesTableItem = ({ item, direction, isLoading }: Props) => {
             hash={ l1TxHash }
             truncation="constant_long"
             noIcon
+            noCopy
           />
         ) : (
           <chakra.span color="text.secondary">

@@ -65,6 +65,7 @@ const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeI
           icon={ !tx.is_pending_update && tx.transaction_types.includes('blob_transaction') ? { name: 'blob' } : undefined }
           chain={ chainData }
           isPendingUpdate={ tx.is_pending_update }
+          noCopy
         />
         <TimeWithTooltip
           timestamp={ tx.timestamp }
