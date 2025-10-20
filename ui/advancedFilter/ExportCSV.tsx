@@ -6,10 +6,10 @@ import config from 'configs/app';
 import buildUrl from 'lib/api/buildUrl';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import dayjs from 'lib/date/dayjs';
-import downloadBlob from 'lib/downloadBlob';
 import { Button } from 'toolkit/chakra/button';
 import { toaster } from 'toolkit/chakra/toaster';
 import { Tooltip } from 'toolkit/chakra/tooltip';
+import downloadBlob from 'toolkit/utils/file/downloadBlob';
 import ReCaptcha from 'ui/shared/reCaptcha/ReCaptcha';
 import useReCaptcha from 'ui/shared/reCaptcha/useReCaptcha';
 

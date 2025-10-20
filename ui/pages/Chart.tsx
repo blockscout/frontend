@@ -17,13 +17,14 @@ import { Button } from 'toolkit/chakra/button';
 import type { SelectOption } from 'toolkit/chakra/select';
 import { Select } from 'toolkit/chakra/select';
 import { Skeleton } from 'toolkit/chakra/skeleton';
+import ChartWidgetContent from 'toolkit/components/charts/ChartWidgetContent';
+import ChartMenu from 'toolkit/components/charts/parts/ChartMenu';
+import useZoom from 'toolkit/components/charts/utils/useZoom';
 import { isBrowser } from 'toolkit/utils/isBrowser';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
 import ChartIntervalSelect from 'ui/shared/chart/ChartIntervalSelect';
-import ChartMenu from 'ui/shared/chart/ChartMenu';
-import ChartWidgetContent from 'ui/shared/chart/ChartWidgetContent';
 import useChartQuery from 'ui/shared/chart/useChartQuery';
-import useZoom from 'ui/shared/chart/useZoom';
+import useChartsConfig from 'ui/shared/chart/useChartsConfig';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import IconSvg from 'ui/shared/IconSvg';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -82,6 +83,7 @@ const Chart = () => {
 
   const isMobile = useIsMobile();
   const isInBrowser = isBrowser();
+  const chartsConfig = useChartsConfig();
 
   const onIntervalChange = React.useCallback((interval: StatsIntervalIds) => {
     setIntervalState(interval);
@@ -112,6 +114,24 @@ const Chart = () => {
   }, [ handleZoomReset, onResolutionChange ]);
 
   const { items, info, lineQuery } = useChartQuery(id, resolution, interval);
+
+  const charts = React.useMemo(() => {
+    if (!info || !items) {
+      return [];
+    }
+
+    return [
+      {
+        id: info.id,
+        name: 'Value',
+        items,
+        charts: chartsConfig,
+        units: info.units,
+      },
+    ];
+  }, [ chartsConfig, info, items ]);
+
+  const hasNonEmptyCharts = charts.some((chart) => chart.items.length > 2);
 
   React.useEffect(() => {
     if (info && !config.meta.seo.enhancedDataEnabled) {
@@ -226,7 +246,7 @@ const Chart = () => {
           )) }
           { (hasItems || lineQuery.isPlaceholderData) && (
             <ChartMenu
-              items={ items }
+              charts={ charts }
               title={ info?.title || '' }
               description={ info?.description || '' }
               isLoading={ lineQuery.isPlaceholderData }
@@ -249,13 +269,13 @@ const Chart = () => {
       >
         <ChartWidgetContent
           isError={ lineQuery.isError }
-          items={ items }
+          charts={ charts }
           title={ info?.title || '' }
-          units={ info?.units || undefined }
           isEnlarged
           isLoading={ lineQuery.isPlaceholderData }
           zoomRange={ zoomRange }
           handleZoom={ handleZoom }
+          empty={ !hasNonEmptyCharts }
           emptyText="No data for the selected resolution & interval."
           resolution={ resolution }
         />

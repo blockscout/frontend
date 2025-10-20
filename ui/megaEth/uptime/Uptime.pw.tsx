@@ -76,13 +76,13 @@ test('default view', async({ render, createSocket, mockEnvs, page }) => {
   socket.send(JSON.stringify(REALTIME_DATA));
 
   await page.waitForFunction(() => {
-    return document.querySelector('path[data-name="chart-TPS-small"]')?.getAttribute('opacity') === '1';
+    return document.querySelector('path[data-name="tps-small"]')?.getAttribute('opacity') === '1';
   });
   await page.waitForFunction(() => {
-    return document.querySelector('path[data-name="chart-MGass-small"]')?.getAttribute('opacity') === '1';
+    return document.querySelector('path[data-name="gas-small"]')?.getAttribute('opacity') === '1';
   });
   await page.waitForFunction(() => {
-    return document.querySelector('path[data-name="chart-Block_time_ms-small"]')?.getAttribute('opacity') === '1';
+    return document.querySelector('path[data-name="blockInterval-small"]')?.getAttribute('opacity') === '1';
   });
   await expect(component).toHaveScreenshot();
 

@@ -5,9 +5,8 @@ import type { StatsIntervalIds } from 'types/client/stats';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
+import formatDate from 'toolkit/components/charts/utils/formatIntervalDate';
 import { STATS_INTERVALS } from 'ui/stats/constants';
-
-import formatDate from './utils/formatIntervalDate';
 
 export default function useChartQuery(id: string, resolution: Resolution, interval: StatsIntervalIds, enabled = true) {
   const { apiData } = useAppContext<'/stats/[id]'>();

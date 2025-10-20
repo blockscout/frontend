@@ -1,5 +1,5 @@
+import type { TimeChartData, TimeChartDataItem, TimeChartItemRaw } from 'toolkit/components/charts/types';
 import type { ChainIndicatorId } from 'types/homepage';
-import type { TimeChartData, TimeChartDataItem, TimeChartItemRaw } from 'ui/shared/chart/types';
 
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
@@ -47,6 +47,8 @@ type UseFetchChartDataResult = {
 
 function getChartData(indicatorId: ChainIndicatorId, data: Array<TimeChartItemRaw>): TimeChartData {
   return [ {
+    id: indicatorId,
+    charts: [],
     items: prepareChartItems(data),
     name: CHART_ITEMS[indicatorId].name,
     valueFormatter: CHART_ITEMS[indicatorId].valueFormatter,

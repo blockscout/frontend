@@ -1,6 +1,6 @@
-import type { TimeChartItem, TimeChartItemRaw } from 'ui/shared/chart/types';
+import type { TimeChartItem, TimeChartItemRaw } from 'toolkit/components/charts/types';
 
-import { sortByDateDesc } from 'ui/shared/chart/utils/sorts';
+import { sortByDateDesc } from 'toolkit/components/charts/utils/sorts';
 
 const nonNullTailReducer = (result: Array<TimeChartItemRaw>, item: TimeChartItemRaw) => {
   if (item.value === null && result.length === 0) {

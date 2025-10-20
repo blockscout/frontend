@@ -47,7 +47,6 @@ const GasTrackerChart = () => {
         title={ chart.title }
         description={ chart.description }
         interval="oneMonth"
-        units={ chart.units || undefined }
         isPlaceholderData={ isPlaceholderData }
         onLoadingError={ handleLoadingError }
         h="320px"
