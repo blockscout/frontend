@@ -1,7 +1,7 @@
 import { Center, chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import ContentLoader from 'ui/shared/ContentLoader';
+import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 
 import useThemeColors from './utils/useThemeColors';
 

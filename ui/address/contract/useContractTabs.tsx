@@ -6,12 +6,12 @@ import type { Address } from 'types/api/address';
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import * as stubs from 'stubs/contract';
+import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 import ContractDetails from 'ui/address/contract/ContractDetails';
 import ContractMethodsCustom from 'ui/address/contract/methods/ContractMethodsCustom';
 import ContractMethodsMudSystem from 'ui/address/contract/methods/ContractMethodsMudSystem';
 import ContractMethodsProxy from 'ui/address/contract/methods/ContractMethodsProxy';
 import ContractMethodsRegular from 'ui/address/contract/methods/ContractMethodsRegular';
-import ContentLoader from 'ui/shared/ContentLoader';
 
 import type { CONTRACT_MAIN_TAB_IDS } from './utils';
 import { CONTRACT_DETAILS_TAB_IDS } from './utils';

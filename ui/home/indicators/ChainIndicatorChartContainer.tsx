@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { TimeChartData } from 'ui/shared/chart/types';
 
-import ContentLoader from 'ui/shared/ContentLoader';
+import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
 import ChainIndicatorChartContent from './ChainIndicatorChartContent';

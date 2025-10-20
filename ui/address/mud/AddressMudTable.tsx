@@ -7,9 +7,9 @@ import type { AddressMudRecordsFilter, AddressMudRecordsSorting } from 'types/ap
 import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { Tag } from 'toolkit/chakra/tag';
+import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 import { apos } from 'toolkit/utils/htmlEntities';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import ContentLoader from 'ui/shared/ContentLoader';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';

@@ -2,7 +2,7 @@ import React from 'react';
 
 import type { MethodType } from './types';
 
-import ContentLoader from 'ui/shared/ContentLoader';
+import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
 interface Props {

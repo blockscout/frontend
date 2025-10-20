@@ -102,6 +102,7 @@ export * from '../../components/forms/fields';
 export * from '../../components/forms/inputs';
 export * from '../../components/forms/utils';
 export * from '../../components/forms/validators';
+export * from '../../components/loaders/ContentLoader';
 export * from '../../components/truncation/TruncatedTextTooltip';
 
 // Export utils

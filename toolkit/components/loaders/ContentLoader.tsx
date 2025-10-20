@@ -1,14 +1,14 @@
-import { Box, Text, chakra } from '@chakra-ui/react';
+import type { BoxProps } from '@chakra-ui/react';
+import { Box, Text } from '@chakra-ui/react';
 import React from 'react';
 
-interface Props {
-  className?: string;
+interface Props extends BoxProps {
   text?: string;
 }
 
-const ContentLoader = ({ className, text }: Props) => {
+export const ContentLoader = React.memo(({ text, ...props }: Props) => {
   return (
-    <Box display="inline-block" className={ className }>
+    <Box display="inline-block" { ...props }>
       <Box
         width="100%"
         height="6px"
@@ -30,6 +30,4 @@ const ContentLoader = ({ className, text }: Props) => {
       </Text>
     </Box>
   );
-};
-
-export default chakra(ContentLoader);
+});
