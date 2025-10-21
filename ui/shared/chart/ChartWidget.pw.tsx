@@ -1,13 +1,12 @@
 import React from 'react';
 
 import { test, expect } from 'playwright/lib';
+import type { ChartWidgetProps } from 'toolkit/components/charts/ChartWidget';
 
-import type { ChartWidgetProps } from './ChartWidget';
-import { ChartWidget } from './ChartWidget';
+import ChartWidget from './ChartWidget.pwstory';
 
 test.use({ viewport: { width: 400, height: 300 } });
 
-// TODO @tom2drum fix tests
 const props: ChartWidgetProps = {
   charts: [
     {
@@ -26,17 +25,7 @@ const props: ChartWidgetProps = {
         { date: new Date('2023-02-22'), value: 30446292.68212635 },
         { date: new Date('2023-02-23'), value: 25136740.887217894 },
       ],
-      charts: [
-        {
-          type: 'line',
-          color: 'blue',
-          strokeWidth: 2,
-        },
-        {
-          type: 'area',
-          gradient: { startColor: 'blue', stopColor: 'blue' },
-        },
-      ],
+      charts: [],
       units: 'ETH',
     },
   ],
@@ -163,5 +152,56 @@ test('incomplete day', async({ render, page }) => {
   await page.hover('.ChartOverlay', { position: { x: 120, y: 120 } });
   await page.hover('.ChartOverlay', { position: { x: 320, y: 120 } });
   await expect(page.getByText('Incomplete day')).toBeVisible();
+  await expect(component).toHaveScreenshot();
+});
+
+test('multiple charts', async({ render, page }) => {
+  const modifiedProps: ChartWidgetProps = {
+    ...props,
+    charts: [
+      {
+        ...props.charts[0],
+        charts: [
+          {
+            type: 'area' as const,
+            gradient: {
+              startColor: 'rgba(233, 216, 253, 1)',
+              stopColor: 'rgba(233, 216, 253, 0)',
+            },
+          },
+          {
+            type: 'line' as const,
+            color: '#DBC7F5',
+          },
+        ],
+      },
+      {
+        id: 'native-coin-circulating-supply-2',
+        name: 'Limit',
+        charts: [
+          {
+            type: 'line' as const,
+            color: '#D53F8C',
+            strokeWidth: 3,
+            strokeDasharray: '6 6',
+          },
+        ],
+        items: props.charts[0].items.map(({ date }) => ({ date, value: 20000000 })),
+        units: 'ETH',
+      },
+    ],
+  };
+
+  const component = await render(<ChartWidget { ...modifiedProps }/>);
+  await page.waitForFunction(() => {
+    return document.querySelector('path[data-name="native-coin-circulating-supply-small"]')?.getAttribute('opacity') === '1';
+  });
+  await expect(component).toHaveScreenshot();
+
+  await page.hover('.ChartOverlay', { position: { x: 120, y: 120 } });
+  await page.hover('.ChartOverlay', { position: { x: 320, y: 120 } });
+  await expect(component).toHaveScreenshot();
+
+  await page.locator('p').filter({ hasText: 'Value' }).click();
   await expect(component).toHaveScreenshot();
 });

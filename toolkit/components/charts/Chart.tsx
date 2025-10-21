@@ -132,6 +132,7 @@ export const Chart = React.memo(({
                     yScale={ axes.y.scale }
                     stroke={ chartConfig.color }
                     strokeWidth={ chartConfig.strokeWidth || 2 }
+                    strokeDasharray={ chartConfig.strokeDasharray }
                     animation="none"
                   />
                 );

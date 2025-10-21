@@ -68,11 +68,28 @@ export const ChartWidget = React.memo(({
     });
   }, []);
 
+  const displayedCharts = React.useMemo(() => {
+    return charts.filter((_, index) => selectedCharts.includes(index));
+  }, [ charts, selectedCharts ]);
+
   const hasNonEmptyCharts = charts.some(({ items }) => items && items.length > 2);
+  const hasMenu = (() => {
+    const hasIds = !(menuItemIds && menuItemIds.length === 0);
+    if (!hasIds) {
+      return false;
+    }
+    if (isError) {
+      return false;
+    }
+    if (!hasNonEmptyCharts) {
+      return false;
+    }
+    return true;
+  })();
 
   const content = (
     <ChartWidgetContent
-      charts={ charts }
+      charts={ displayedCharts }
       isError={ isError }
       isLoading={ isLoading }
       title={ title }
@@ -144,7 +161,7 @@ export const ChartWidget = React.memo(({
             </IconButton>
           </Tooltip>
 
-          { hasNonEmptyCharts && menuItemIds && menuItemIds.length > 0 && (
+          { hasMenu && (
             <ChartMenu
               charts={ charts }
               itemIds={ menuItemIds }

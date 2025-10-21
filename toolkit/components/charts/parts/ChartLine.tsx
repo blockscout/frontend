@@ -14,7 +14,7 @@ export interface ChartLineProps extends React.SVGProps<SVGPathElement> {
   animation: AnimationType;
 }
 
-export const ChartLine = React.memo(({ xScale, yScale, data, animation, ...props }: ChartLineProps) => {
+export const ChartLine = React.memo(({ xScale, yScale, data, animation, strokeDasharray, ...props }: ChartLineProps) => {
   const dataPathRef = React.useRef<SVGPathElement>(null);
   const incompleteDataPathRef = React.useRef<SVGPathElement>(null);
 
@@ -63,6 +63,7 @@ export const ChartLine = React.memo(({ xScale, yScale, data, animation, ...props
         d={ line(data.filter(({ isApproximate }) => !isApproximate)) || undefined }
         strokeWidth={ 1 }
         strokeLinecap="round"
+        strokeDasharray={ strokeDasharray }
         fill="none"
         opacity={ 0 }
         { ...props }
