@@ -31,6 +31,7 @@ const TxExternalTxs: React.FC<Props> = ({ data }) => {
             hash={ txHash }
             href={ externalTxFeature.explorerUrlTemplate.replace('{hash}', txHash) }
             link={{ external: true }}
+            noCopy
             // tooltip inside tooltip doesn't work well
             noTooltip
           />

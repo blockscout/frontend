@@ -89,7 +89,7 @@ const BlobInfo = ({ data, isLoading }: Props) => {
             Transaction hash
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue>
-            <TxEntity hash={ data.transaction_hashes[0].transaction_hash } isLoading={ isLoading } noIcon noCopy={ false }/>
+            <TxEntity hash={ data.transaction_hashes[0].transaction_hash } isLoading={ isLoading } noIcon/>
           </DetailedInfo.ItemValue>
         </>
       ) }

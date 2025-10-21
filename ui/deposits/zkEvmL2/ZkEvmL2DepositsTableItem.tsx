@@ -44,6 +44,7 @@ const ZkEvmL2DepositsTableItem = ({ item, isLoading }: Props) => {
           truncation="constant_long"
           noIcon
           textStyle="sm"
+          noCopy
         />
       </TableCell>
       <TableCell verticalAlign="middle" pr={ 12 }>

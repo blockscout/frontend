@@ -58,15 +58,15 @@ const ZetaChainCCTXDetailsLifecycleIn = ({ tx, isLoading }: Props) => {
           { isCCTX ? (
             <>
               <Text color="text.secondary" fontWeight="medium">CCTX</Text>
-              <TxEntityZetaChainCC hash={ inboundParams.observed_hash } isLoading={ isLoading } noIcon noCopy={ false }/>
+              <TxEntityZetaChainCC hash={ inboundParams.observed_hash } isLoading={ isLoading } noIcon/>
             </>
           ) : (
             <>
               <Text color="text.secondary" fontWeight="medium">Transaction</Text>
               { chainFromId !== config.chain.id ? (
-                <TxEntityZetaChainExternal chainId={ chainFromId } hash={ inboundParams.observed_hash } noIcon noCopy={ false }/>
+                <TxEntityZetaChainExternal chainId={ chainFromId } hash={ inboundParams.observed_hash } noIcon/>
               ) : (
-                <TxEntity hash={ inboundParams.observed_hash } noIcon noCopy={ false }/>
+                <TxEntity hash={ inboundParams.observed_hash } noIcon/>
               ) }
             </>
           ) }

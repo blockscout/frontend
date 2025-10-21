@@ -62,6 +62,7 @@ const ZkEvmTxnBatchesTableItem = ({ item, isLoading }: Props) => {
             textStyle="sm"
             truncation="constant_long"
             noIcon
+            noCopy
           />
         ) : <Text>Pending</Text> }
       </TableCell>
@@ -73,6 +74,7 @@ const ZkEvmTxnBatchesTableItem = ({ item, isLoading }: Props) => {
             textStyle="sm"
             truncation="constant_long"
             noIcon
+            noCopy
           />
         ) : <Text>Pending</Text> }
       </TableCell>

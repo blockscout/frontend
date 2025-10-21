@@ -29,9 +29,10 @@ const LatestZetaChainCCTXItem = ({ tx, isLoading, animation }: Props) => {
       p={ 4 }
       fontSize="sm"
       animation={ animation }
+
     >
       <ZetaChainCCTXReducedStatus status={ tx.status_reduced } isLoading={ isLoading }/>
-      <TxEntityZetaChainCC hash={ tx.index } isLoading={ isLoading } truncation="constant" fontWeight={ 600 }/>
+      <TxEntityZetaChainCC truncation="constant" hash={ tx.index } isLoading={ isLoading } fontWeight={ 600 }/>
       <TimeWithTooltip color="text.secondary" timestamp={ Number(tx.last_update_timestamp) * SECOND } isLoading={ isLoading } timeFormat="relative"/>
       <AddressFromTo
         from={{ hash: tx.sender_address, chainId: tx.source_chain_id.toString(), chainType: 'zeta' }}

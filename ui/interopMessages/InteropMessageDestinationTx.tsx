@@ -21,6 +21,7 @@ const InteropMessageDestinationTx = (props: Props) => {
         hash={ props.relay_transaction_hash }
         isLoading={ props.isLoading }
         truncation={ props.truncation || 'constant' }
+        noCopy
       />
     );
   }
@@ -35,6 +36,7 @@ const InteropMessageDestinationTx = (props: Props) => {
       isLoading={ props.isLoading }
       noIcon
       truncation={ props.truncation || 'constant' }
+      noCopy
     />
   );
 };

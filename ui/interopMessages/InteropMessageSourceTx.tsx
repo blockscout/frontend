@@ -20,6 +20,7 @@ const InteropMessageSourceTx = (props: Props) => {
         hash={ props.init_transaction_hash }
         isLoading={ props.isLoading }
         truncation={ props.truncation || 'constant' }
+        noCopy
       />
     );
   }
@@ -34,6 +35,7 @@ const InteropMessageSourceTx = (props: Props) => {
       isLoading={ props.isLoading }
       noIcon
       truncation={ props.truncation || 'constant' }
+      noCopy
     />
   );
 };

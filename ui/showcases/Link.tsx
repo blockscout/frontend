@@ -150,9 +150,9 @@ const LinkShowcase = () => {
             <TxEntity hash={ txMock.base.hash }/>
             <TxEntity hash={ txMock.base.hash } link={{ external: true }}/>
             <Box maxW="200px">
-              <TxEntity hash={ txMock.base.hash } noCopy={ false }/>
+              <TxEntity hash={ txMock.base.hash }/>
             </Box>
-            <TxEntity hash={ txMock.base.hash } isLoading noCopy={ false }/>
+            <TxEntity hash={ txMock.base.hash } isLoading/>
           </Sample>
         </SamplesStack>
 

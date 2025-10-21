@@ -58,7 +58,7 @@ const TxDetailsWithdrawalStatusOptimistic = ({ status, l1TxHash }: Props) => {
         if (l1TxHash) {
           return WITHDRAWAL_STATUS_STEPS.map((status) => {
             return status === 'Relayed' ? {
-              content: <TxEntityL1 hash={ l1TxHash } truncation="constant" text="Relayed" noIcon/>,
+              content: <TxEntityL1 hash={ l1TxHash } truncation="constant" text="Relayed" noIcon noCopy/>,
               label: status,
             } : status;
           });

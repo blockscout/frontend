@@ -83,6 +83,7 @@ const OptimisticL2WithdrawalsListItem = ({ item, isLoading }: Props) => {
               isLoading={ isLoading }
               hash={ item.l1_transaction_hash }
               truncation="constant_long"
+              noCopy
             />
           </ListItemMobileGrid.Value>
         </>

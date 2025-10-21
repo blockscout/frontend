@@ -35,11 +35,11 @@ test('loading', async({ render }) => {
   await expect(component).toHaveScreenshot();
 });
 
-test('with copy +@dark-mode', async({ render }) => {
+test('with no copy +@dark-mode', async({ render }) => {
   const component = await render(
     <UserOpEntity
       hash={ hash }
-      noCopy={ false }
+      noCopy
     />,
   );
 
