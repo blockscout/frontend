@@ -33,6 +33,10 @@ jobs:
           node-version: '22.11.0'
           registry-url: 'https://registry.npmjs.org'
 
+      # Ensure npm 11.5.1 is installed
+      - name: Update npm
+        run: npm install -g npm@11.5.1
+
       - name: Update package version
         run: |
           cd ./toolkit/package
@@ -48,6 +52,11 @@ jobs:
       - name: Publish to NPM registry
         run: |
           cd ./toolkit/package
-          npm publish --provenance --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          # Determine npm tag based on version
+          if [[ "${{ inputs.version }}" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            # Stable release (e.g., 1.7.2)
+            npm publish --access public --tag latest
+          else
+            # Pre-release (e.g., 1.7.2-alpha.1)
+            npm publish --access public --tag beta
+          fi
