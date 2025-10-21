@@ -44,7 +44,7 @@ const ZetaChainCCTXDetailsRelatedTx = ({ tx, isLoading }: Props) => {
       <IconSvg name="arrows/east" boxSize={ 5 } color="text.secondary"/>
       { chainsTo.map((chain, index) => <ChainIcon key={ index } chain={ chain }/>) }
       <Box>CCTX</Box>
-      <TxEntityZetaChainCC hash={ tx.index } isLoading={ isLoading } noIcon truncation="constant" noCopy={ false }/>
+      <TxEntityZetaChainCC hash={ tx.index } isLoading={ isLoading } noIcon truncation="constant"/>
       <ZetaChainCCTXReducedStatus status={ tx.status_reduced } isLoading={ isLoading } type="full"/>
     </Skeleton>
   );

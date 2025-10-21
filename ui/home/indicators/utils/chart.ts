@@ -1,9 +1,9 @@
+import type { TimeChartData, TimeChartDataItem, TimeChartItemRaw, TimeChartItem } from 'toolkit/components/charts/types';
 import type { ChainIndicatorId } from 'types/homepage';
-import type { TimeChartData, TimeChartDataItem, TimeChartItem, TimeChartItemRaw } from 'ui/shared/chart/types';
 
 import config from 'configs/app';
 import getCurrencySymbol from 'lib/multichain/getCurrencySymbol';
-import { sortByDateDesc } from 'ui/shared/chart/utils/sorts';
+import { sortByDateDesc } from 'ui/shared/chart/utils';
 
 const CHART_ITEMS: Record<ChainIndicatorId, Pick<TimeChartDataItem, 'name' | 'valueFormatter'>> = {
   daily_txs: {
@@ -51,6 +51,8 @@ export function prepareChartItems(items: Array<TimeChartItemRaw>) {
 
 export function getChartData(indicatorId: ChainIndicatorId, data: Array<TimeChartItemRaw>): TimeChartData {
   return [ {
+    id: indicatorId,
+    charts: [],
     items: prepareChartItems(data),
     name: CHART_ITEMS[indicatorId].name,
     valueFormatter: CHART_ITEMS[indicatorId].valueFormatter,

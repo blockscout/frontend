@@ -33,3 +33,4 @@ jobs:
       tags: |
         type=ref,event=branch
         type=raw,value=unstable
+      platforms: linux/amd64

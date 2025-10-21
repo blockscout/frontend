@@ -84,7 +84,7 @@ const AddressEntityInterop = ({ chain, ...props }: Props) => {
       ) }
       { !chain && addressIcon }
       { href ? (
-        <AddressEntity.Link { ...partsProps.link } href={ href } isExternal>
+        <AddressEntity.Link { ...partsProps.link } href={ href } external>
           <AddressEntity.Content { ...partsProps.content }/>
         </AddressEntity.Link>
       ) : (

@@ -9,7 +9,7 @@ import useApiQuery from 'lib/api/useApiQuery';
 import throwOnAbsentParamError from 'lib/errors/throwOnAbsentParamError';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import ContentLoader from 'ui/shared/ContentLoader';
+import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 
 interface Props {
   addressHash: string;

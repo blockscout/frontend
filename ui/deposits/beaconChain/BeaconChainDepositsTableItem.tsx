@@ -27,7 +27,6 @@ const BeaconChainDepositsTableItem = ({ item, view, isLoading }: Props) => {
           isLoading={ isLoading }
           truncation="constant_long"
           noIcon
-          noCopy={ false }
         />
       </TableCell>
       { view !== 'block' && (

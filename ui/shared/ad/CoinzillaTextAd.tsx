@@ -71,7 +71,12 @@ const CoinzillaTextAd = ({ className }: { className?: string }) => {
   const urlObject = new URL(adData.ad.url);
 
   return (
-    <Box className={ className }>
+    <Box
+      className={ className }
+      display={{ base: 'flex', lg: 'block' }}
+      textStyle={{ base: 'xs', lg: 'md' }}
+      color={{ base: 'text.secondary', lg: 'text.primary' }}
+    >
       <Text
         as="span"
         whiteSpace="pre-wrap"
@@ -87,14 +92,18 @@ const CoinzillaTextAd = ({ className }: { className?: string }) => {
             src={ adData.ad.thumbnail }
             width="20px"
             height="20px"
-            verticalAlign="text-bottom"
-            mr={ 1 }
             display="inline-block"
+            verticalAlign="text-bottom"
+            flexShrink={ 0 }
+            alignSelf={{ base: 'flex-start', lg: 'center' }}
+            mr={ 1 }
             alt=""
           />
         ) }
-      <Text as="span" whiteSpace="pre-wrap">{ `${ adData.ad.name } ${ ndash } ${ adData.ad.description_short } ` }</Text>
-      <Link href={ adData.ad.url } external noIcon>{ adData.ad.cta_button }</Link>
+      <Box display={{ base: 'block', lg: 'inline' }}>
+        <Text as="span" whiteSpace="pre-wrap">{ `${ adData.ad.name } ${ ndash } ${ adData.ad.description_short } ` }</Text>
+        <Link href={ adData.ad.url } external noIcon>{ adData.ad.cta_button }</Link>
+      </Box>
     </Box>
   );
 };

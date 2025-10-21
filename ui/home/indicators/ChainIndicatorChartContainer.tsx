@@ -1,9 +1,9 @@
 import { chakra, Box } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TimeChartData } from 'ui/shared/chart/types';
+import type { TimeChartData } from 'toolkit/components/charts/types';
 
-import ContentLoader from 'ui/shared/ContentLoader';
+import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
 import ChainIndicatorChartContent from './ChainIndicatorChartContent';

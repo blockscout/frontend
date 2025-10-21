@@ -62,7 +62,7 @@ const UserOpDetails = ({ query }: Props) => {
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
         <Skeleton loading={ isPlaceholderData } overflow="hidden">
-          <UserOpEntity hash={ data.hash } noIcon noLink noCopy={ false }/>
+          <UserOpEntity hash={ data.hash } noIcon noLink/>
         </Skeleton>
       </DetailedInfo.ItemValue>
 
@@ -188,7 +188,7 @@ const UserOpDetails = ({ query }: Props) => {
         Transaction hash
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
-        <TxEntity hash={ data.transaction_hash } isLoading={ isPlaceholderData } noCopy={ false }/>
+        <TxEntity hash={ data.transaction_hash } isLoading={ isPlaceholderData }/>
       </DetailedInfo.ItemValue>
 
       <DetailedInfo.ItemLabel

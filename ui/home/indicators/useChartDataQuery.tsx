@@ -1,5 +1,5 @@
+import type { TimeChartData } from 'toolkit/components/charts/types';
 import type { ChainIndicatorId } from 'types/homepage';
-import type { TimeChartData } from 'ui/shared/chart/types';
 
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';

@@ -46,7 +46,7 @@ const SearchBarRecentKeywords = ({ onClick, onClear }: Props) => {
     <>
       { !isMobile && (
         <Box pb={ 4 } mb={ 5 } borderColor="border.divider" borderBottomWidth="1px" _empty={{ display: 'none' }}>
-          <TextAd/>
+          <TextAd textStyle={{ lg: 'sm' }}/>
         </Box>
       ) }
       <Flex mb={ 3 } justifyContent="space-between" fontSize="sm">
@@ -87,7 +87,7 @@ const SearchBarRecentKeywords = ({ onClick, onClear }: Props) => {
             ) :
               <Text overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis">{ kw }</Text>
             }
-            <ClearButton onClick={ removeKeyword(kw) } color={{ _light: 'gray.300', _dark: 'gray.600' }}/>
+            <ClearButton onClick={ removeKeyword(kw) }/>
           </Flex>
         )) }
       </Flex>

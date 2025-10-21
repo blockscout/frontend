@@ -95,7 +95,7 @@ const ContractDetailsInfo = ({ data, isLoading, addressData }: Props) => {
               noIcon
             />
             <Text whiteSpace="pre" color="text.secondary"> at txn </Text>
-            <TxEntity hash={ addressData.creation_transaction_hash } truncation="constant" noIcon noCopy={ false }/>
+            <TxEntity hash={ addressData.creation_transaction_hash } truncation="constant" noIcon/>
             { addressData.creation_status && <ContractCreationStatus status={ addressData.creation_status } ml={{ base: 0, lg: 2 }}/> }
           </Flex>
         </ContractDetailsInfoItem>

@@ -85,7 +85,7 @@ export default function useNavItems(): ReturnType {
     const nameLookup = config.features.nameService.isEnabled || config.features.clusters.isEnabled ? {
       text: 'Name services lookup',
       nextRoute: { pathname: '/name-domains' as const },
-      icon: 'ENS',
+      icon: 'name_services',
       isActive: pathname === '/name-domains' || pathname === '/name-domains/[name]' || pathname === '/clusters/[name]',
     } : null;
     const validators = config.features.validators.isEnabled ? {
@@ -162,7 +162,9 @@ export default function useNavItems(): ReturnType {
         ].filter(Boolean),
         [
           blocks,
-          rollupTxnBatches,
+          epochs,
+          // currently, transaction batches are not implemented for Celo
+          !config.features.celo.isEnabled ? rollupTxnBatches : undefined,
           rollupDisputeGames,
           rollupFeature.outputRootsEnabled ? rollupOutputRoots : undefined,
         ].filter(Boolean),
@@ -347,7 +349,7 @@ export default function useNavItems(): ReturnType {
         text: 'DApps',
         nextRoute: { pathname: '/apps' as const },
         icon: 'apps',
-        isActive: pathname.startsWith('/app'),
+        isActive: pathname.startsWith('/app') || pathname.startsWith('/essential-dapps'),
       } : null,
       statsNavItem,
       apiNavItem,

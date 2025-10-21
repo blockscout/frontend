@@ -1,4 +1,3 @@
-import type { BoxProps } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ChainConfig } from 'types/multichain';
@@ -10,16 +9,6 @@ import { Image } from 'toolkit/chakra/image';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import IconSvg from 'ui/shared/IconSvg';
-
-const Placeholder = (props: BoxProps) => {
-  return (
-    <IconSvg
-      name="networks/icon-placeholder"
-      color="text.secondary"
-      { ...props }
-    />
-  );
-};
 
 interface Props extends ImageProps {
   data: ChainConfig;
@@ -33,7 +22,17 @@ const ChainIcon = ({ data, boxSize = 5, borderRadius = 'full', isLoading, withTo
   }
 
   const src = getIconUrl(data);
-  const content = <Image src={ src } boxSize={ boxSize } borderRadius={ borderRadius } fallback={ <Placeholder/> } { ...rest }/>;
+  const placeholder = <IconSvg name="networks/icon-placeholder" boxSize={ boxSize } color="text.secondary"/>;
+  const content = (
+    <Image
+      src={ src }
+      boxSize={ boxSize }
+      borderRadius={ borderRadius }
+      fallback={ placeholder }
+      alt={ `${ data.config.chain.name } chain icon` }
+      { ...rest }
+    />
+  );
 
   if (withTooltip) {
     return (

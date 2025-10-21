@@ -6,7 +6,7 @@ import type * as multichain from '@blockscout/multichain-aggregator-types';
 
 import multichainConfig from 'configs/multichain';
 import useIsMobile from 'lib/hooks/useIsMobile';
-import ContentLoader from 'ui/shared/ContentLoader';
+import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 
 import SearchResultItemAddress from './items/SearchResultItemAddress';
 import SearchResultItemBlock from './items/SearchResultItemBlock';

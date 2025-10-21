@@ -14,7 +14,7 @@ import { SMART_CONTRACT_EXTRA_VERIFICATION_METHODS, SMART_CONTRACT_LANGUAGE_FILT
 import type { GasRefuelProviderConfig } from '../../../types/client/gasRefuelProviderConfig';
 import { GAS_UNITS } from '../../../types/client/gasTracker';
 import type { GasUnit } from '../../../types/client/gasTracker';
-import type { MarketplaceAppBase, MarketplaceAppSocialInfo } from '../../../types/client/marketplace';
+import type { MarketplaceAppBase, MarketplaceAppSocialInfo, EssentialDappsConfig } from '../../../types/client/marketplace';
 import type { MultichainProviderConfig } from '../../../types/client/multichainProviderConfig';
 import type { ApiDocsTabId } from '../../../types/views/apiDocs';
 import { API_DOCS_TABS } from '../../../types/views/apiDocs';
@@ -140,6 +140,44 @@ const marketplaceSchema = yup
         then: (schema) => schema,
         // eslint-disable-next-line max-len
         otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_MARKETPLACE_GRAPH_LINKS_URL cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED'),
+      }),
+    NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_CONFIG: yup
+      .mixed()
+      .when('NEXT_PUBLIC_MARKETPLACE_ENABLED', {
+        is: true,
+        then: (schema) => schema.test('shape', 'Invalid schema were provided for NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_CONFIG, it should contain optional swap/revoke/multisend sections with required fields', (data) => {
+          const isUndefined = data === undefined;
+          const chainsSchema = yup.array().of(yup.string().required()).min(1).required();
+          const valueSchema = yup.object<EssentialDappsConfig>().transform(replaceQuotes).json().shape({
+            swap: yup.lazy(value => value ?
+              yup.object<EssentialDappsConfig['swap']>().shape({
+                chains: chainsSchema,
+                fee: yup.string().required(),
+                integrator: yup.string().required(),
+              }) :
+              yup.object().nullable(),
+            ),
+            revoke: yup.lazy(value => value ?
+              yup.object<EssentialDappsConfig['revoke']>().shape({ chains: chainsSchema }) :
+              yup.object().nullable(),
+            ),
+            multisend: yup.lazy(value => value ?
+              yup.object<EssentialDappsConfig['multisend']>().shape({
+                chains: chainsSchema,
+                posthogKey: yup.string(),
+                posthogHost: yup.string().test(urlTest),
+              }) :
+              yup.object().nullable(),
+            ),
+          });
+          return isUndefined || valueSchema.isValidSync(data);
+        }),
+        // eslint-disable-next-line max-len
+        otherwise: (schema) => schema.test(
+          'not-exist',
+          'NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_CONFIG cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED',
+          value => value === undefined,
+        ),
       }),
   });
 
@@ -526,11 +564,11 @@ const zetaChainSchema = yup
   .test('zetachain-api-host-dependency', 'NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST cannot be used without NEXT_PUBLIC_ZETACHAIN_SERVICE_CHAINS_CONFIG_URL', function(value) {
     const hasApiHost = Boolean(value?.NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST);
     const hasChainsConfig = Boolean(value?.NEXT_PUBLIC_ZETACHAIN_SERVICE_CHAINS_CONFIG_URL?.length);
-    
+
     if (hasApiHost && !hasChainsConfig) {
       return this.createError({ message: 'NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST cannot be used without NEXT_PUBLIC_ZETACHAIN_SERVICE_CHAINS_CONFIG_URL' });
     }
-    
+
     return true;
   });
 
@@ -626,7 +664,7 @@ const schema = yup
     NEXT_PUBLIC_NETWORK_SECONDARY_COIN_SYMBOL: yup.string(),
     NEXT_PUBLIC_NETWORK_MULTIPLE_GAS_CURRENCIES: yup.boolean(),
     NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE: yup
-      .string<NetworkVerificationTypeEnvs>().oneOf([ 'validation', 'mining' ])
+      .string<NetworkVerificationTypeEnvs>().oneOf([ 'validation', 'mining', 'fee reception' ])
       .when('NEXT_PUBLIC_ROLLUP_TYPE', {
         is: (value: string) => value === 'arbitrum' || value === 'zkEvm',
         then: (schema) => schema.test(
@@ -706,6 +744,7 @@ const schema = yup
       .transform(replaceQuotes)
       .json()
       .of(yup.string<TxAdditionalFieldsId>().oneOf(TX_ADDITIONAL_FIELDS_IDS)),
+    NEXT_PUBLIC_VIEWS_TX_GROUPED_FEES: yup.boolean(),
     NEXT_PUBLIC_VIEWS_NFT_MARKETPLACES: yup
       .array()
       .transform(replaceQuotes)

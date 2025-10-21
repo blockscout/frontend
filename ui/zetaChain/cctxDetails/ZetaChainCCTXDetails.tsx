@@ -150,7 +150,7 @@ const ZetaChainCCTXDetails = ({ data, isLoading }: Props) => {
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
         <Skeleton loading={ isLoading } display="flex" flexWrap="nowrap" alignItems="center" overflow="hidden">
-          <TxEntityZetaChainCC hash={ data.index } isLoading={ isLoading } noIcon noCopy={ false } noLink/>
+          <TxEntityZetaChainCC hash={ data.index } isLoading={ isLoading } noIcon noLink/>
         </Skeleton>
       </DetailedInfo.ItemValue>
       <DetailedInfo.ItemLabel

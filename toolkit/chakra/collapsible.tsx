@@ -6,7 +6,7 @@ import { useUpdateEffect } from '../hooks/useUpdateEffect';
 import type { LinkProps } from './link';
 import { Link } from './link';
 
-interface CollapsibleDetailsProps extends LinkProps {
+export interface CollapsibleDetailsProps extends LinkProps {
   children: React.ReactNode;
   id?: string;
   isExpanded?: boolean;

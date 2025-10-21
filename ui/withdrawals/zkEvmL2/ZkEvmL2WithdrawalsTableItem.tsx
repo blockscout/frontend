@@ -61,6 +61,7 @@ const ZkEvmL2WithdrawalsTableItem = ({ item, isLoading }: Props) => {
             truncation="constant_long"
             noIcon
             textStyle="sm"
+            noCopy
           />
         ) : (
           <chakra.span color="text.secondary">

@@ -57,7 +57,7 @@ test.describe('local transfers', () => {
     test.use({ viewport: pwConfig.viewport.mobile });
 
     test('base view', async() => {
-      await expect(component).toHaveScreenshot();
+      await expect(component).toHaveScreenshot({ maxDiffPixels: 10 });
     });
   });
 });

@@ -36,6 +36,7 @@ const DepositsTableItem = ({ item, isLoading }: Props) => {
           hash={ item.l1_transaction_hash }
           truncation="constant_long"
           textStyle="sm"
+          noCopy
         />
       </TableCell>
       <TableCell verticalAlign="middle">

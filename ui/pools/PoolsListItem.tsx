@@ -31,7 +31,7 @@ const PoolsListItem = ({ item, isLoading }: Props) => {
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>Contract</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
-            <AddressEntity address={{ hash: item.pool_id }} noIcon linkVariant="secondary" isLoading={ isLoading } truncation="constant_long"/>
+            <AddressEntity address={{ hash: item.pool_id }} noIcon link={{ variant: 'secondary' }} isLoading={ isLoading } truncation="constant_long"/>
           </ListItemMobileGrid.Value>
         </>
       ) }

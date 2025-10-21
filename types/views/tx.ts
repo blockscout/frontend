@@ -15,6 +15,7 @@ export type TxFieldsId = ArrayElement<typeof TX_FIELDS_IDS>;
 
 export const TX_ADDITIONAL_FIELDS_IDS = [
   'fee_per_gas',
+  'set_max_gas_limit',
 ] as const;
 
 export type TxAdditionalFieldsId = ArrayElement<typeof TX_ADDITIONAL_FIELDS_IDS>;

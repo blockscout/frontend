@@ -79,7 +79,7 @@ const UserOpSubHeading = ({ hash }: Props) => {
     //     />
     //   );
   } else {
-    return <UserOpEntity hash={ hash } noLink noCopy={ false } variant="subheading" chain={ multichainContext?.chain }/>;
+    return <UserOpEntity hash={ hash } noLink variant="subheading" chain={ multichainContext?.chain }/>;
   }
 };
 

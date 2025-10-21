@@ -73,6 +73,8 @@ export default function useChartDataQuery({ indicatorId }: Props) {
     default:
       return {
         data: [ {
+          id: indicatorId,
+          charts: [],
           items: [],
           name: 'Daily transactions',
         } ],

@@ -38,6 +38,17 @@ const AlertShowcase = () => {
         </SamplesStack>
       </Section>
       <Section>
+        <SectionHeader>Size</SectionHeader>
+        <SamplesStack>
+          <Sample label="size: sm">
+            <Alert status="info" title="Info" showIcon size="sm" closable> Alert content </Alert>
+          </Sample>
+          <Sample label="size: md">
+            <Alert status="info" title="Info" showIcon size="md"> Alert content </Alert>
+          </Sample>
+        </SamplesStack>
+      </Section>
+      <Section>
         <SectionHeader>Closable</SectionHeader>
         <SamplesStack>
           <Sample label="closable">

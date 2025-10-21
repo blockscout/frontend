@@ -17,7 +17,7 @@ export_envs_from_preset() {
   fi
 
   local blacklist=(
-    "NEXT_PUBLIC_APP_PROTOCOL" 
+    "NEXT_PUBLIC_APP_PROTOCOL"
     "NEXT_PUBLIC_APP_HOST"
     "NEXT_PUBLIC_APP_PORT"
     "NEXT_PUBLIC_APP_ENV"
@@ -70,6 +70,9 @@ node --no-warnings ./og_image_generator.js
 
 # Generate multichain config
 node ./deploy/tools/multichain-config-generator/dist/index.js
+
+# Generate essential dapps chains config
+node ./deploy/tools/essential-dapps-chains-config-generator/dist/index.js
 
 # Generate sitemap.xml and robots.txt files
 ./sitemap_generator.sh

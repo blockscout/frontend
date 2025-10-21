@@ -67,6 +67,7 @@ export type Transaction = {
   is_pending_update?: boolean;
   // optimism fields
   op_withdrawals?: Array<OpWithdrawal>;
+  operator_fee?: string;
   // SUAVE fields
   execution_node?: AddressParam | null;
   allowed_peekers?: Array<string>;

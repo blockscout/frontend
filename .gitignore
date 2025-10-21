@@ -15,6 +15,7 @@
 /public/assets/envs.js
 /public/assets/configs
 /public/assets/multichain
+/public/assets/essential-dapps
 /public/icons/sprite.svg
 /public/icons/sprite.*.svg
 /public/icons/registry.json
@@ -33,7 +34,7 @@
 *.pem
 .tools
 grafana
-.cursor
+.zed
 
 # debug
 npm-debug.log*

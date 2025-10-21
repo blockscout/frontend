@@ -111,6 +111,7 @@ const ArbitrumL2MessagesListItem = ({ item, isLoading, direction }: Props) => {
             isLoading={ isLoading }
             hash={ l1TxHash }
             truncation="constant_long"
+            noCopy
           />
         ) : (
           <chakra.span>

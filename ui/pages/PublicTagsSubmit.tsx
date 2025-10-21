@@ -3,9 +3,9 @@ import React from 'react';
 import type { FormSubmitResult } from 'ui/publicTags/submit/types';
 
 import useApiQuery from 'lib/api/useApiQuery';
+import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 import PublicTagsSubmitForm from 'ui/publicTags/submit/PublicTagsSubmitForm';
 import PublicTagsSubmitResult from 'ui/publicTags/submit/PublicTagsSubmitResult';
-import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import useProfileQuery from 'ui/snippets/auth/useProfileQuery';

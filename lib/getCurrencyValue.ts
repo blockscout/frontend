@@ -28,5 +28,5 @@ export default function getCurrencyValue({ value, accuracy, accuracyUsd, decimal
     }
   }
 
-  return { valueStr: valueResult, usd: usdResult, usdBn };
+  return { valueCurr, valueStr: valueResult, usd: usdResult, usdBn };
 }

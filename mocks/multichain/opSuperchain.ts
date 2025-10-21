@@ -16,6 +16,9 @@ export const chainDataA = {
         symbol: 'ETH',
         decimals: 18,
       },
+      rpcUrls: [
+        'https://rpc.op-mainnet.com',
+      ],
     },
     UI: {
       navigation: {

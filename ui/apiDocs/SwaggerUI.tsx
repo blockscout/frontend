@@ -11,7 +11,7 @@ import React from 'react';
 
 import type { SwaggerRequest } from './types';
 
-import ContentLoader from 'ui/shared/ContentLoader';
+import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 
 import 'swagger-ui-react/swagger-ui.css';
 

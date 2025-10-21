@@ -1,12 +1,20 @@
 import type { ChainConfig } from 'types/multichain';
 
 export default function getIconUrl(config: ChainConfig) {
-  const appUrl = config.config.app.baseUrl;
+  if (!config.config?.UI?.navigation?.icon || !config.config.app) {
+    return;
+  }
+
   const iconPath = config.config.UI.navigation.icon.default;
 
   if (!iconPath) {
     return;
   }
 
+  if (iconPath?.startsWith('http')) {
+    return iconPath;
+  }
+
+  const appUrl = config.config.app.baseUrl;
   return `${ appUrl }${ iconPath }`;
 }

@@ -15,6 +15,7 @@ export const ClearButton = ({ disabled, visible = true, ...rest }: ClearButtonPr
       title="Clear"
       opacity={ visible ? 1 : 0 }
       visibility={ visible ? 'visible' : 'hidden' }
+      color={{ _light: 'gray.300', _dark: 'whiteAlpha.300' }}
       { ...rest }
     />
   );
