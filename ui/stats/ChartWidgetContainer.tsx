@@ -4,17 +4,17 @@ import React, { useEffect } from 'react';
 import { Resolution } from '@blockscout/stats-types';
 import type { StatsIntervalIds } from 'types/client/stats';
 
-import type { Route } from 'nextjs-routes';
+import { route, type Route } from 'nextjs-routes';
 
+import config from 'configs/app';
+import { ChartWidget } from 'toolkit/components/charts/ChartWidget';
+import { useChartsConfig } from 'ui/shared/chart/config';
 import useChartQuery from 'ui/shared/chart/useChartQuery';
-
-import ChartWidget from '../shared/chart/ChartWidget';
 
 type Props = {
   id: string;
   title: string;
   description: string;
-  units?: string;
   interval: StatsIntervalIds;
   onLoadingError: () => void;
   isPlaceholderData: boolean;
@@ -28,12 +28,12 @@ const ChartWidgetContainer = ({
   description,
   interval,
   onLoadingError,
-  units,
   isPlaceholderData,
   className,
   href,
 }: Props) => {
   const { items, lineQuery } = useChartQuery(id, Resolution.DAY, interval, !isPlaceholderData);
+  const chartsConfig = useChartsConfig();
 
   useEffect(() => {
     if (lineQuery.isError) {
@@ -41,17 +41,33 @@ const ChartWidgetContainer = ({
     }
   }, [ lineQuery.isError, onLoadingError ]);
 
+  const charts = React.useMemo(() => {
+    if (!lineQuery.data?.info || !items) {
+      return [];
+    }
+
+    return [
+      {
+        id: lineQuery.data?.info?.id,
+        name: 'Value',
+        items,
+        charts: chartsConfig,
+        units: lineQuery.data.info.units,
+      },
+    ];
+  }, [ lineQuery.data?.info, items, chartsConfig ]);
+
   return (
     <ChartWidget
       isError={ lineQuery.isError }
-      items={ items }
+      charts={ charts }
       title={ title }
-      units={ units }
       description={ description }
       isLoading={ lineQuery.isPlaceholderData }
       minH="230px"
       className={ className }
-      href={ href }
+      href={ href ? route(href) : undefined }
+      chartUrl={ href ? `${ config.app.baseUrl }${ route(href) }` : undefined }
     />
   );
 };
