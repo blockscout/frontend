@@ -2,7 +2,7 @@ import { useToken } from '@chakra-ui/react';
 import * as d3 from 'd3';
 import React from 'react';
 
-interface Props extends Omit<React.SVGProps<SVGGElement>, 'scale'> {
+export interface ChartGridLineProps extends Omit<React.SVGProps<SVGGElement>, 'scale'> {
   type: 'vertical' | 'horizontal';
   scale: d3.ScaleTime<number, number> | d3.ScaleLinear<number, number>;
   noAnimation?: boolean;
@@ -10,7 +10,7 @@ interface Props extends Omit<React.SVGProps<SVGGElement>, 'scale'> {
   ticks: number;
 }
 
-const ChartGridLine = ({ type, scale, ticks, size, noAnimation, ...props }: Props) => {
+export const ChartGridLine = React.memo(({ type, scale, ticks, size, noAnimation, ...props }: ChartGridLineProps) => {
   const ref = React.useRef<SVGGElement>(null);
 
   const strokeColor = useToken('colors', 'border.divider');
@@ -35,6 +35,4 @@ const ChartGridLine = ({ type, scale, ticks, size, noAnimation, ...props }: Prop
   }, [ scale, ticks, size, noAnimation, type, strokeColor ]);
 
   return <g ref={ ref } { ...props }/>;
-};
-
-export default React.memo(ChartGridLine);
+});

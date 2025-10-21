@@ -11,7 +11,7 @@ import { Button } from 'toolkit/chakra/button';
 import type { SelectOption } from 'toolkit/chakra/select';
 import { Select } from 'toolkit/chakra/select';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import downloadBlob from 'toolkit/utils/file/downloadBlob';
+import { downloadBlob } from 'toolkit/utils/file';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';

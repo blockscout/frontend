@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function useZoom() {
+export function useChartZoom() {
   const [ isZoomResetInitial, setIsZoomResetInitial ] = React.useState(true);
   const [ zoomRange, setZoomRange ] = React.useState<[ Date, Date ] | undefined>();
 

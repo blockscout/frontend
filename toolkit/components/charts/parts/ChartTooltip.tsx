@@ -13,7 +13,7 @@ import ChartTooltipTitle, { useRenderTitle } from './tooltip/ChartTooltipTitle';
 import { trackPointer } from './tooltip/pointerTracker';
 import type { Pointer } from './tooltip/pointerTracker';
 
-interface Props {
+export interface ChartTooltipProps {
   width?: number;
   tooltipWidth?: number;
   height?: number;
@@ -25,7 +25,7 @@ interface Props {
   resolution?: Resolution;
 }
 
-const ChartTooltip = ({
+export const ChartTooltip = React.memo(({
   xScale,
   yScale,
   width,
@@ -36,7 +36,7 @@ const ChartTooltip = ({
   noAnimation,
   resolution,
   ...props
-}: Props) => {
+}: ChartTooltipProps) => {
   const ref = React.useRef<SVGGElement>(null);
   const trackerId = React.useRef<number>(undefined);
   const isVisible = React.useRef(false);
@@ -171,9 +171,7 @@ const ChartTooltip = ({
       </ChartTooltipContent>
     </g>
   );
-};
-
-export default React.memo(ChartTooltip);
+});
 
 function getDateLabel(resolution?: Resolution): string {
   switch (resolution) {

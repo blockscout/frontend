@@ -48,7 +48,7 @@ const props: ChartWidgetProps = {
 };
 
 test('base view +@dark-mode', async({ render, page }) => {
-  const component = await render(<ChartWidget { ...props } href={{ pathname: '/stats/[id]', query: { id: 'test' } }}/>);
+  const component = await render(<ChartWidget { ...props } href="/stats/test"/>);
 
   await page.waitForFunction(() => {
     return document.querySelector('path[data-name="native-coin-circulating-supply-small"]')?.getAttribute('opacity') === '1';

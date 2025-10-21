@@ -1,7 +1,7 @@
 import { range } from 'es-toolkit';
 import React from 'react';
 
-export default function useChartLegend(dataLength: number) {
+export function useChartLegend(dataLength: number) {
   const [ selectedLines, setSelectedLines ] = React.useState<Array<number>>(range(dataLength));
 
   const handleLegendItemClick = React.useCallback((index: number) => {

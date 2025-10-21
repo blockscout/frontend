@@ -5,7 +5,7 @@ import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import { currencyUnits } from 'lib/units';
 import { ChartWidget } from 'toolkit/components/charts/ChartWidget';
-import useChartsConfig from 'ui/shared/chart/useChartsConfig';
+import { useChartsConfig } from 'ui/shared/chart/config';
 
 interface Props {
   addressHash: string;

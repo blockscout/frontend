@@ -7,14 +7,14 @@ import type { AnimationType } from '../utils/animations';
 import { ANIMATIONS } from '../utils/animations';
 import { getIncompleteDataLineSource } from '../utils/formatters';
 
-interface Props extends React.SVGProps<SVGPathElement> {
+export interface ChartLineProps extends React.SVGProps<SVGPathElement> {
   xScale: d3.ScaleTime<number, number> | d3.ScaleLinear<number, number>;
   yScale: d3.ScaleTime<number, number> | d3.ScaleLinear<number, number>;
   data: Array<TimeChartItem>;
   animation: AnimationType;
 }
 
-const ChartLine = ({ xScale, yScale, data, animation, ...props }: Props) => {
+export const ChartLine = React.memo(({ xScale, yScale, data, animation, ...props }: ChartLineProps) => {
   const dataPathRef = React.useRef<SVGPathElement>(null);
   const incompleteDataPathRef = React.useRef<SVGPathElement>(null);
 
@@ -69,6 +69,4 @@ const ChartLine = ({ xScale, yScale, data, animation, ...props }: Props) => {
       />
     </>
   );
-};
-
-export default React.memo(ChartLine);
+});

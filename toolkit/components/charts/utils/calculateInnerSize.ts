@@ -1,6 +1,6 @@
 import type { ChartMargin, ChartOffset } from '../types';
 
-export default function calculateInnerSize(rect: DOMRect | null, margin?: ChartMargin, offsets?: ChartOffset) {
+export function calculateInnerSize(rect: DOMRect | null, margin?: ChartMargin, offsets?: ChartOffset) {
   if (!rect) {
     return { innerWidth: 0, innerHeight: 0 };
   }

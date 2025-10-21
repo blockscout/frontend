@@ -17,11 +17,21 @@ import { useColorModeValue } from '../../../chakra/color-mode';
 import { IconButton } from '../../../chakra/icon-button';
 import { MenuContent, MenuItem, MenuRoot, MenuTrigger } from '../../../chakra/menu';
 import { useDisclosure } from '../../../hooks/useDisclosure';
-import saveAsCsv from '../../../utils/file/saveAsCsv';
+import { saveAsCsv } from '../../../utils/file';
 import { isBrowser } from '../../../utils/isBrowser';
 import ChartFullscreenDialog from '../ChartFullscreenDialog';
 
+export const CHART_MENU_ITEMS_IDS = [
+  'share' as const,
+  'fullscreen' as const,
+  'save_png' as const,
+  'save_csv' as const,
+];
+
+export type ChartMenuItemId = (typeof CHART_MENU_ITEMS_IDS)[number];
+
 export interface Props {
+  itemIds?: Array<ChartMenuItemId>;
   charts: TimeChartData;
   title: string;
   description?: string;
@@ -37,6 +47,7 @@ export interface Props {
 const DOWNLOAD_IMAGE_SCALE = 5;
 
 const ChartMenu = ({
+  itemIds = CHART_MENU_ITEMS_IDS,
   charts,
   title,
   description,
@@ -126,7 +137,7 @@ const ChartMenu = ({
           </IconButton>
         </MenuTrigger>
         <MenuContent>
-          { chartUrl && (
+          { itemIds.includes('share') && chartUrl && (
             <MenuItem
               value={ hasShare ? 'share' : 'copy' }
               onClick={ hasShare ? handleShare : handleCopy }
@@ -136,27 +147,33 @@ const ChartMenu = ({
               { hasShare ? 'Share' : 'Copy link' }
             </MenuItem>
           ) }
-          <MenuItem
-            value="fullscreen"
-            onClick={ showChartFullscreen }
-          >
-            <Icon boxSize={ 5 }><ScopeIcon/></Icon>
-            View fullscreen
-          </MenuItem>
-          <MenuItem
-            value="save-png"
-            onClick={ handleFileSaveClick }
-          >
-            <Icon boxSize={ 5 }><ImageIcon/></Icon>
-            Save as PNG
-          </MenuItem>
-          <MenuItem
-            value="save-csv"
-            onClick={ handleSVGSavingClick }
-          >
-            <Icon boxSize={ 5 }><CsvIcon/></Icon>
-            Save as CSV
-          </MenuItem>
+          { itemIds.includes('fullscreen') && (
+            <MenuItem
+              value="fullscreen"
+              onClick={ showChartFullscreen }
+            >
+              <Icon boxSize={ 5 }><ScopeIcon/></Icon>
+              View fullscreen
+            </MenuItem>
+          ) }
+          { itemIds.includes('save_png') && (
+            <MenuItem
+              value="save-png"
+              onClick={ handleFileSaveClick }
+            >
+              <Icon boxSize={ 5 }><ImageIcon/></Icon>
+              Save as PNG
+            </MenuItem>
+          ) }
+          { itemIds.includes('save_csv') && (
+            <MenuItem
+              value="save-csv"
+              onClick={ handleSVGSavingClick }
+            >
+              <Icon boxSize={ 5 }><CsvIcon/></Icon>
+              Save as CSV
+            </MenuItem>
+          ) }
         </MenuContent>
       </MenuRoot>
       <ChartFullscreenDialog

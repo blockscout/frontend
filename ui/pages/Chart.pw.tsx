@@ -2,7 +2,7 @@ import React from 'react';
 
 import * as statsLineMock from 'mocks/stats/line';
 import { test, expect } from 'playwright/lib';
-import formatDate from 'toolkit/components/charts/utils/formatIntervalDate';
+import { formatDate } from 'ui/shared/chart/utils';
 
 import Chart from './Chart';
 

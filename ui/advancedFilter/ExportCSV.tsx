@@ -9,7 +9,7 @@ import dayjs from 'lib/date/dayjs';
 import { Button } from 'toolkit/chakra/button';
 import { toaster } from 'toolkit/chakra/toaster';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import downloadBlob from 'toolkit/utils/file/downloadBlob';
+import { downloadBlob } from 'toolkit/utils/file';
 import ReCaptcha from 'ui/shared/reCaptcha/ReCaptcha';
 import useReCaptcha from 'ui/shared/reCaptcha/useReCaptcha';
 

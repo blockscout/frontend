@@ -4,7 +4,7 @@ import React from 'react';
 
 import { useColorModeValue } from '../../../chakra/color-mode';
 
-interface Props extends Omit<React.SVGProps<SVGGElement>, 'scale'> {
+export interface ChartAxisProps extends Omit<React.SVGProps<SVGGElement>, 'scale'> {
   type: 'left' | 'bottom';
   scale: d3.ScaleTime<number, number> | d3.ScaleLinear<number, number>;
   noAnimation?: boolean;
@@ -13,7 +13,7 @@ interface Props extends Omit<React.SVGProps<SVGGElement>, 'scale'> {
   anchorEl?: SVGRectElement | null;
 }
 
-const ChartAxis = ({ type, scale, ticks, tickFormatGenerator, noAnimation, anchorEl, ...props }: Props) => {
+export const ChartAxis = React.memo(({ type, scale, ticks, tickFormatGenerator, noAnimation, anchorEl, ...props }: ChartAxisProps) => {
   const ref = React.useRef<SVGGElement>(null);
 
   const textColor = useToken('colors', useColorModeValue('blackAlpha.600', 'whiteAlpha.500'));
@@ -74,6 +74,4 @@ const ChartAxis = ({ type, scale, ticks, tickFormatGenerator, noAnimation, ancho
   }, [ anchorEl, scale ]);
 
   return <g ref={ ref } { ...props }/>;
-};
-
-export default React.memo(ChartAxis);
+});

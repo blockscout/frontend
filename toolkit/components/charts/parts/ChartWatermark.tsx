@@ -4,10 +4,9 @@ import React from 'react';
 
 import LogoIcon from 'icons/networks/logo-placeholder.svg';
 
-const ChartWatermarkIcon = (props: IconProps) => {
+export const ChartWatermark = React.memo((props: IconProps) => {
   return (
     <Icon
-      { ...props }
       position="absolute"
       opacity={ 0.1 }
       top="50%"
@@ -16,10 +15,9 @@ const ChartWatermarkIcon = (props: IconProps) => {
       pointerEvents="none"
       viewBox="0 0 114 20"
       color={{ _light: 'link.primary', _dark: 'white' }}
+      { ...props }
     >
       <LogoIcon/>
     </Icon>
   );
-};
-
-export default ChartWatermarkIcon;
+});

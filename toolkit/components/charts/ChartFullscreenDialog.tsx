@@ -8,7 +8,7 @@ import { Heading } from 'toolkit/chakra/heading';
 
 import { Button } from '../../chakra/button';
 import { DialogBody, DialogContent, DialogHeader, DialogRoot } from '../../chakra/dialog';
-import ChartWidgetContent from './ChartWidgetContent';
+import { ChartWidgetContent } from './ChartWidgetContent';
 
 export interface Props {
   open: boolean;

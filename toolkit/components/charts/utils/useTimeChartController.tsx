@@ -3,7 +3,7 @@ import React from 'react';
 import type { AxesConfig, ChartMargin, TimeChartData } from '../types';
 
 import { useClientRect } from '../../../hooks/useClientRect';
-import calculateInnerSize from './calculateInnerSize';
+import { calculateInnerSize } from './calculateInnerSize';
 import { getAxesParams } from './timeChartAxis';
 
 interface Props {
@@ -12,7 +12,7 @@ interface Props {
   axesConfig?: AxesConfig;
 }
 
-export default function useTimeChartController({ data, margin, axesConfig }: Props) {
+export function useTimeChartController({ data, margin, axesConfig }: Props) {
 
   const [ rect, ref ] = useClientRect<SVGSVGElement>();
 

@@ -4,11 +4,12 @@ import React, { useEffect } from 'react';
 import { Resolution } from '@blockscout/stats-types';
 import type { StatsIntervalIds } from 'types/client/stats';
 
-import type { Route } from 'nextjs-routes';
+import { route, type Route } from 'nextjs-routes';
 
+import config from 'configs/app';
 import { ChartWidget } from 'toolkit/components/charts/ChartWidget';
+import { useChartsConfig } from 'ui/shared/chart/config';
 import useChartQuery from 'ui/shared/chart/useChartQuery';
-import useChartsConfig from 'ui/shared/chart/useChartsConfig';
 
 type Props = {
   id: string;
@@ -65,7 +66,8 @@ const ChartWidgetContainer = ({
       isLoading={ lineQuery.isPlaceholderData }
       minH="230px"
       className={ className }
-      href={ href }
+      href={ href ? route(href) : undefined }
+      chartUrl={ href ? `${ config.app.baseUrl }${ route(href) }` : undefined }
     />
   );
 };

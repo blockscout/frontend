@@ -10,7 +10,7 @@ import type { TimeChartData, TimeChartItem } from '../types';
 
 const SELECTION_THRESHOLD = 2;
 
-interface Props {
+export interface ChartSelectionXProps {
   height: number;
   anchorEl?: SVGRectElement | null;
   scale: d3.ScaleTime<number, number>;
@@ -18,7 +18,7 @@ interface Props {
   onSelect: (range: [Date, Date]) => void;
 }
 
-const ChartSelectionX = ({ anchorEl, height, scale, data, onSelect }: Props) => {
+export const ChartSelectionX = React.memo(({ anchorEl, height, scale, data, onSelect }: ChartSelectionXProps) => {
   const [ borderColor ] = useToken('colors', 'blue.200');
 
   const ref = React.useRef(null);
@@ -142,6 +142,4 @@ const ChartSelectionX = ({ anchorEl, height, scale, data, onSelect }: Props) => 
       <line className="ChartSelectionX__line ChartSelectionX__line_right" x1={ 0 } x2={ 0 } y1={ 0 } y2={ height } stroke={ borderColor }/>
     </g>
   );
-};
-
-export default React.memo(ChartSelectionX);
+});

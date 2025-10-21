@@ -2,12 +2,8 @@ import React from 'react';
 
 import type { TimeChartData } from 'toolkit/components/charts/types';
 
-import ChartArea from 'toolkit/components/charts/parts/ChartArea';
-import ChartLine from 'toolkit/components/charts/parts/ChartLine';
-import ChartOverlay from 'toolkit/components/charts/parts/ChartOverlay';
-import ChartTooltip from 'toolkit/components/charts/parts/ChartTooltip';
-import { useDefaultGradient, useDefaultLineColor } from 'toolkit/components/charts/utils/styles';
-import useTimeChartController from 'toolkit/components/charts/utils/useTimeChartController';
+import { ChartArea, ChartLine, ChartOverlay, ChartTooltip, useTimeChartController } from 'toolkit/components/charts';
+import { useDefaultGradient, useDefaultLineColor } from 'ui/shared/chart/config';
 
 interface Props {
   data: TimeChartData;

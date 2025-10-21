@@ -2,7 +2,7 @@ import * as d3 from 'd3';
 
 import { Resolution } from '../types';
 
-export default function getDateLabel(date: Date, dateTo?: Date, resolution?: Resolution): string {
+export function getDateLabel(date: Date, dateTo?: Date, resolution?: Resolution): string {
   switch (resolution) {
     case Resolution.WEEK:
       return d3.timeFormat('%e %b %Y')(date) + (dateTo ? ` – ${ d3.timeFormat('%e %b %Y')(dateTo) }` : '');

@@ -6,15 +6,15 @@ import { Resolution } from './types';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 
-import ChartArea from './parts/ChartArea';
-import ChartAxis from './parts/ChartAxis';
-import ChartGridLine from './parts/ChartGridLine';
-import ChartLine from './parts/ChartLine';
-import ChartOverlay from './parts/ChartOverlay';
-import ChartSelectionX from './parts/ChartSelectionX';
-import ChartTooltip from './parts/ChartTooltip';
-import getDateLabel from './utils/getDateLabel';
-import useTimeChartController from './utils/useTimeChartController';
+import { ChartArea } from './parts/ChartArea';
+import { ChartAxis } from './parts/ChartAxis';
+import { ChartGridLine } from './parts/ChartGridLine';
+import { ChartLine } from './parts/ChartLine';
+import { ChartOverlay } from './parts/ChartOverlay';
+import { ChartSelectionX } from './parts/ChartSelectionX';
+import { ChartTooltip } from './parts/ChartTooltip';
+import { getDateLabel } from './utils/getDateLabel';
+import { useTimeChartController } from './utils/useTimeChartController';
 
 export interface ChartProps {
   charts: TimeChartData;
@@ -133,8 +133,6 @@ export const Chart = React.memo(({
                     stroke={ chartConfig.color }
                     strokeWidth={ chartConfig.strokeWidth || 2 }
                     animation="none"
-                    // TODO @tom2drum move this logic to charts
-                    // strokeWidth={ isMobile ? 1 : 2 }
                   />
                 );
               }) }

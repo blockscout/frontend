@@ -5,19 +5,17 @@ import React, { useRef } from 'react';
 
 import type { AxesConfigFn, TimeChartData } from './types';
 
-import { route, type Route } from 'nextjs-routes';
-
-import config from 'configs/app';
 import RepeatIcon from 'icons/repeat.svg';
 
 import { IconButton } from '../../chakra/icon-button';
 import { Link } from '../../chakra/link';
 import { Skeleton } from '../../chakra/skeleton';
 import { Tooltip } from '../../chakra/tooltip';
-import ChartWidgetContent from './ChartWidgetContent';
-import ChartLegend from './parts/ChartLegend';
+import { ChartWidgetContent } from './ChartWidgetContent';
+import { ChartLegend } from './parts/ChartLegend';
+import type { ChartMenuItemId } from './parts/ChartMenu';
 import ChartMenu from './parts/ChartMenu';
-import useZoom from './utils/useZoom';
+import { useChartZoom } from './utils/useChartZoom';
 
 export interface ChartWidgetProps extends FlexProps {
   charts: TimeChartData;
@@ -27,11 +25,10 @@ export interface ChartWidgetProps extends FlexProps {
   isError: boolean;
   emptyText?: string;
   noAnimation?: boolean;
-  // TODO @tom2drum change to string
-  href?: Route;
+  href?: string;
+  chartUrl?: string;
   axesConfig?: AxesConfigFn;
-
-  // TODO @tom2drum pass menu items
+  menuItemIds?: Array<ChartMenuItemId>;
 };
 
 export const ChartWidget = React.memo(({
@@ -43,12 +40,14 @@ export const ChartWidget = React.memo(({
   emptyText,
   noAnimation,
   href,
+  chartUrl,
   axesConfig,
+  menuItemIds,
   ...rest
 }: ChartWidgetProps) => {
   const ref = useRef<HTMLDivElement>(null);
 
-  const { zoomRange, handleZoom, handleZoomReset } = useZoom();
+  const { zoomRange, handleZoom, handleZoomReset } = useChartZoom();
 
   const [ selectedCharts, setSelectedCharts ] = React.useState<Array<number>>(
     range(charts.length),
@@ -128,7 +127,7 @@ export const ChartWidget = React.memo(({
     >
       <Flex columnGap={ 6 } mb={ 2 } alignItems="flex-start">
         { href ? (
-          <Link href={ route(href) }>
+          <Link href={ href }>
             { chartHeader }
           </Link>
         ) : chartHeader }
@@ -145,12 +144,13 @@ export const ChartWidget = React.memo(({
             </IconButton>
           </Tooltip>
 
-          { hasNonEmptyCharts && (
+          { hasNonEmptyCharts && menuItemIds && menuItemIds.length > 0 && (
             <ChartMenu
               charts={ charts }
+              itemIds={ menuItemIds }
               title={ title }
               description={ description }
-              chartUrl={ href ? config.app.baseUrl + route(href) : undefined }
+              chartUrl={ chartUrl }
               isLoading={ isLoading }
               chartRef={ ref }
               handleZoom={ handleZoom }

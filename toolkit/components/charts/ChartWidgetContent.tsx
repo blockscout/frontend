@@ -7,9 +7,9 @@ import { Link } from '../../chakra/link';
 import { Skeleton } from '../../chakra/skeleton';
 import { apos } from '../../utils/htmlEntities';
 import { Chart } from './Chart';
-import ChartWatermark from './parts/ChartWatermark';
+import { ChartWatermark } from './parts/ChartWatermark';
 
-export interface Props {
+export interface ChartWidgetContentProps {
   charts: TimeChartData;
   title: string;
   isLoading?: boolean;
@@ -24,7 +24,7 @@ export interface Props {
   axesConfig?: AxesConfigFn;
 };
 
-const ChartWidgetContent = ({
+export const ChartWidgetContent = React.memo(({
   charts,
   title,
   isLoading,
@@ -37,7 +37,7 @@ const ChartWidgetContent = ({
   noAnimation,
   resolution,
   axesConfig,
-}: Props) => {
+}: ChartWidgetContentProps) => {
   if (isError) {
     return (
       <Flex
@@ -85,6 +85,4 @@ const ChartWidgetContent = ({
       <ChartWatermark w="162px" h="15%"/>
     </Box>
   );
-};
-
-export default React.memo(ChartWidgetContent);
+});

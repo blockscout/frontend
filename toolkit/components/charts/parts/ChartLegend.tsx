@@ -1,15 +1,16 @@
+import type { BoxProps } from '@chakra-ui/react';
 import { Box, Circle, Text } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TimeChartData } from '../types';
 
-interface Props {
+export interface ChartLegendProps extends BoxProps {
   data: TimeChartData;
   selectedIndexes?: Array<number>;
   onItemClick?: (index: number) => void;
 }
 
-const ChartLegend = ({ data, selectedIndexes, onItemClick }: Props) => {
+export const ChartLegend = React.memo(({ data, selectedIndexes, onItemClick, ...props }: ChartLegendProps) => {
   const handleItemClick = React.useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
       const itemIndex = (event.currentTarget as HTMLDivElement).getAttribute(
@@ -21,7 +22,7 @@ const ChartLegend = ({ data, selectedIndexes, onItemClick }: Props) => {
   );
 
   return (
-    <Box display="flex" columnGap={ 3 }>
+    <Box display="flex" columnGap={ 3 } { ...props }>
       { data.map((item, index) => {
         const isSelected = selectedIndexes?.includes(index);
         const lineColor = (() => {
@@ -57,6 +58,4 @@ const ChartLegend = ({ data, selectedIndexes, onItemClick }: Props) => {
       }) }
     </Box>
   );
-};
-
-export default React.memo(ChartLegend);
+});

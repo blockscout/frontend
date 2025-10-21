@@ -17,14 +17,13 @@ import { Button } from 'toolkit/chakra/button';
 import type { SelectOption } from 'toolkit/chakra/select';
 import { Select } from 'toolkit/chakra/select';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import ChartWidgetContent from 'toolkit/components/charts/ChartWidgetContent';
+import { ChartWidgetContent, useChartZoom } from 'toolkit/components/charts';
 import ChartMenu from 'toolkit/components/charts/parts/ChartMenu';
-import useZoom from 'toolkit/components/charts/utils/useZoom';
 import { isBrowser } from 'toolkit/utils/isBrowser';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
 import ChartIntervalSelect from 'ui/shared/chart/ChartIntervalSelect';
+import { useChartsConfig } from 'ui/shared/chart/config';
 import useChartQuery from 'ui/shared/chart/useChartQuery';
-import useChartsConfig from 'ui/shared/chart/useChartsConfig';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import IconSvg from 'ui/shared/IconSvg';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -75,7 +74,7 @@ const Chart = () => {
   const defaultResolution = resolutionFromQuery || DEFAULT_RESOLUTION;
   const [ intervalState, setIntervalState ] = React.useState<StatsIntervalIds | undefined>(intervalFromQuery);
   const [ resolution, setResolution ] = React.useState<Resolution>(defaultResolution);
-  const { zoomRange, handleZoom, handleZoomReset } = useZoom();
+  const { zoomRange, handleZoom, handleZoomReset } = useChartZoom();
 
   const interval = intervalState || getIntervalByResolution(resolution);
 

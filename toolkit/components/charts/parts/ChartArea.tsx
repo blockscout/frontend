@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { TimeChartItem } from '../types';
 
-interface Props extends React.SVGProps<SVGPathElement> {
+export interface ChartAreaProps extends React.SVGProps<SVGPathElement> {
   id: string;
   xScale: d3.ScaleTime<number, number> | d3.ScaleLinear<number, number>;
   yScale: d3.ScaleTime<number, number> | d3.ScaleLinear<number, number>;
@@ -15,7 +15,7 @@ interface Props extends React.SVGProps<SVGPathElement> {
   noAnimation?: boolean;
 }
 
-const ChartArea = ({ id, xScale, yScale, gradient, data, noAnimation, ...props }: Props) => {
+export const ChartArea = React.memo(({ id, xScale, yScale, gradient, data, noAnimation, ...props }: ChartAreaProps) => {
   const ref = React.useRef(null);
 
   const gradientId = `gradient-chart-area-${ id }`;
@@ -59,6 +59,4 @@ const ChartArea = ({ id, xScale, yScale, gradient, data, noAnimation, ...props }
       </defs>
     </>
   );
-};
-
-export default React.memo(ChartArea);
+});
