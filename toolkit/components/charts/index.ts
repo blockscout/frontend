@@ -6,6 +6,7 @@ export * from './parts/ChartAxis';
 export * from './parts/ChartGridLine';
 export * from './parts/ChartLegend';
 export * from './parts/ChartLine';
+export * from './parts/ChartMenu';
 export * from './parts/ChartOverlay';
 export * from './parts/ChartSelectionX';
 export * from './parts/ChartTooltip';

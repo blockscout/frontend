@@ -22,6 +22,7 @@ export interface ChartWidgetContentProps {
   noAnimation?: boolean;
   resolution?: Resolution;
   axesConfig?: AxesConfigFn;
+  noWatermark?: boolean;
 };
 
 export const ChartWidgetContent = React.memo(({
@@ -37,6 +38,7 @@ export const ChartWidgetContent = React.memo(({
   noAnimation,
   resolution,
   axesConfig,
+  noWatermark,
 }: ChartWidgetContentProps) => {
   if (isError) {
     return (
@@ -82,7 +84,7 @@ export const ChartWidgetContent = React.memo(({
         resolution={ resolution }
         axesConfig={ axesConfig }
       />
-      <ChartWatermark w="162px" h="15%"/>
+      { !noWatermark && <ChartWatermark w="162px" h="15%"/> }
     </Box>
   );
 });
