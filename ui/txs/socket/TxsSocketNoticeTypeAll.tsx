@@ -25,7 +25,7 @@ const TxsSocketNoticeTypeAll = ({ type, place, isLoading }: Props) => {
 
   const url = (() => {
     if (type === 'txs_home' && multichainContext) {
-      return route({ pathname: '/txs', query: { tab: 'txs_local', 'chain-slug': multichainContext.chain.slug } });
+      return route({ pathname: '/txs', query: { tab: 'txs_local', chain_id: multichainContext.chain.id } });
     }
   })();
 

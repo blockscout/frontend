@@ -97,7 +97,7 @@ const OpSuperchainVerifiedContracts = () => {
         onValueChange={ onChainValueChange }
         mb={ 3 }
       />
-      <MultichainProvider chainSlug={ chainValue?.[0] }>
+      <MultichainProvider chainId={ chainValue?.[0] }>
         <VerifiedContractsCounters/>
         <DataListDisplay
           isError={ isError }

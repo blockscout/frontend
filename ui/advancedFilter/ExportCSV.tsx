@@ -55,7 +55,7 @@ const ExportCSV = ({ filters }: Props) => {
 
       const blob = await response.blob();
 
-      const chainText = multichainContext?.chain ? `${ multichainContext.chain.slug.replace(/-/g, '_') }_` : '';
+      const chainText = multichainContext?.chain ? `${ multichainContext.chain.name.replace(' ', '-') }_` : '';
       const fileName = `${ chainText }export-filtered-txs-${ dayjs().format('YYYY-MM-DD-HH-mm-ss') }.csv`;
       downloadBlob(blob, fileName);
 

@@ -54,7 +54,7 @@ const OpSuperchainInternalTxs = () => {
   );
 
   const content = data?.items ? (
-    <MultichainProvider chainSlug={ query.chainValue?.[0] }>
+    <MultichainProvider chainId={ query.chainValue?.[0] }>
       <Box hideBelow="lg">
         <InternalTxsTable data={ data.items } isLoading={ isPlaceholderData }/>
       </Box>

@@ -21,7 +21,7 @@ export default function useZetaChainConfig() {
     ) as Promise<Array<ZetaChainChainsConfigEnv>>,
     select: (data) => {
       return data.map((item) => ({
-        id: item.chain_id,
+        id: item.chain_id.toString(),
         name: item.chain_name || `Chain ${ item.chain_id }`,
         logo: item.chain_logo || undefined,
         explorer_url: item.instance_url,

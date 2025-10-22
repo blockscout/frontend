@@ -76,7 +76,7 @@ const CsvExportForm = ({ hash, resource, filterType, filterValue, fileNameTempla
   const onFormSubmit: SubmitHandler<FormFields> = React.useCallback(async(data) => {
     try {
       const response = await recaptcha.fetchProtectedResource<Response>(apiFetchFactory(data));
-      const chainText = multichainContext?.chain ? `${ multichainContext.chain.slug.replace(/-/g, '_') }_` : '';
+      const chainText = multichainContext?.chain ? `${ multichainContext.chain.name.replace(' ', '-') }_` : '';
 
       const blob = await response.blob();
       const fileName = exportType === 'holders' ?

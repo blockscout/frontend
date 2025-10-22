@@ -46,7 +46,12 @@ const OpSuperchainAddress = () => {
   const isContractEverywhere = chainData.length > 0 && chainData.every((chainInfo) => chainInfo.is_contract);
   const isVerifiedEverywhere = chainData.length > 0 && chainData.every((chainInfo) => chainInfo.is_verified);
 
-  const checkSummedHash = React.useMemo(() => addressQuery.data?.hash ?? getCheckedSummedAddress(hash), [ hash, addressQuery.data?.hash ]);
+  const checkSummedHash = React.useMemo(() => {
+    if (isLoading) {
+      return getCheckedSummedAddress(hash);
+    }
+    return addressQuery.data?.hash ?? getCheckedSummedAddress(hash);
+  }, [ hash, addressQuery.data?.hash, isLoading ]);
 
   const tabs: Array<TabItemRegular> = React.useMemo(() => {
     return [

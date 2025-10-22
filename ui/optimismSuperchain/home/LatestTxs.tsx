@@ -2,6 +2,7 @@ import { Box } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import { MultichainProvider } from 'lib/contexts/multichain';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useRoutedChainSelect from 'lib/multichain/useRoutedChainSelect';
 import getQueryParamString from 'lib/router/getQueryParamString';
@@ -29,7 +30,11 @@ const LatestTxs = () => {
     {
       id: 'txs_local',
       title: 'Local',
-      component: chainSelect.value ? <LatestTxsLocal key={ chainSelect.value[0] } chainSlug={ chainSelect.value[0] }/> : null,
+      component: chainSelect.value ? (
+        <MultichainProvider chainId={ chainSelect.value[0] }>
+          <LatestTxsLocal/>
+        </MultichainProvider>
+      ) : null,
     },
   ];
 

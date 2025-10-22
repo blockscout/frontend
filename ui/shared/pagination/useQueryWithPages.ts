@@ -9,6 +9,7 @@ import type { PaginationParams } from './types';
 
 import type { Route } from 'nextjs-routes';
 
+import multichainConfig from 'configs/multichain';
 import getResourceParams from 'lib/api/getResourceParams';
 import type { PaginatedResourceName, PaginationFilters, PaginationSorting, ResourceError, ResourcePayload } from 'lib/api/resources';
 import { SORTING_FIELDS } from 'lib/api/resources';
@@ -94,6 +95,21 @@ export default function useQueryWithPages<Resource extends PaginatedResourceName
     hasChainValue ? [ getChainValueFromQuery(router.query, chainIds) ].filter(Boolean) : undefined,
   );
 
+  const selectedChain = React.useMemo(() => {
+    if (!hasChainValue) {
+      return;
+    }
+
+    if (multichainContext?.chain) {
+      return multichainContext.chain.id === chainValue?.[0] ? multichainContext.chain : undefined;
+    }
+
+    const config = multichainConfig();
+    if (config) {
+      return config.chains.find((chain) => chain.id === chainValue?.[0]);
+    }
+  }, [ chainValue, hasChainValue, multichainContext?.chain ]);
+
   const isMounted = React.useRef(false);
   const queryParams = { ...pageParams[page], ...filters, ...sorting, ...queryParamsFromProps };
 
@@ -108,7 +124,7 @@ export default function useQueryWithPages<Resource extends PaginatedResourceName
       staleTime: page === 1 ? 0 : Infinity,
       ...options,
     },
-    chainSlug: chainValue?.[0],
+    chain: selectedChain,
   });
   const { data } = queryResult;
   const nextPageParams = getNextPageParams(data);
@@ -167,7 +183,7 @@ export default function useQueryWithPages<Resource extends PaginatedResourceName
     scrollToTop();
     const nextRouterQuery = omit(router.query, [ 'next_page_params', 'page' ]);
     if (chainValue) {
-      nextRouterQuery['chain-slug'] = chainValue[0];
+      nextRouterQuery.chain_id = chainValue[0];
     }
     router.push({ pathname: router.pathname, query: nextRouterQuery }, undefined, { shallow: true }).then(() => {
       queryClient.removeQueries({ queryKey: [ resourceName ] });
@@ -183,7 +199,7 @@ export default function useQueryWithPages<Resource extends PaginatedResourceName
   }, [ queryClient, resourceName, router, scrollToTop ]);
 
   const onFilterChange = useCallback(<R extends PaginatedResourceName = Resource>(newFilters: PaginationFilters<R> | undefined) => {
-    const { resource } = getResourceParams(resourceName);
+    const { resource } = getResourceParams(resourceName, selectedChain);
     const newQuery: typeof router.query = omit(
       router.query,
       [
@@ -213,7 +229,7 @@ export default function useQueryWithPages<Resource extends PaginatedResourceName
       setPage(1);
       setPageParams(INITIAL_PAGE_PARAMS);
     });
-  }, [ router, resourceName, scrollToTop ]);
+  }, [ resourceName, selectedChain, router, scrollToTop ]);
 
   const onSortingChange = useCallback((newSorting: PaginationSorting<Resource> | undefined) => {
     const newQuery: typeof router.query = {
@@ -241,7 +257,7 @@ export default function useQueryWithPages<Resource extends PaginatedResourceName
     } else {
       const nextPageQuery = {
         ...router.query,
-        'chain-slug': value[0],
+        chain_id: value[0],
       };
 
       setChainValue(value);

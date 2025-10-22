@@ -33,7 +33,7 @@ const OpSuperchainAddressInternalTxs = ({ addressData, isLoading }: Props) => {
   const { data, isPlaceholderData, isError, pagination } = query;
 
   const content = data?.items ? (
-    <MultichainProvider chainSlug={ query.chainValue?.[0] }>
+    <MultichainProvider chainId={ query.chainValue?.[0] }>
       <Box hideFrom="lg">
         <InternalTxsList data={ data.items } currentAddress={ hash } isLoading={ isPlaceholderData }/>
       </Box>

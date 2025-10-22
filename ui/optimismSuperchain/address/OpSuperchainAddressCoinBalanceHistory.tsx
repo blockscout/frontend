@@ -23,7 +23,7 @@ const OpSuperchainAddressCoinBalanceHistory = ({ addressData, isLoading }: Props
   const chainIds = React.useMemo(() => getAvailableChainIds(addressData), [ addressData ]);
 
   const chainSelect = useRoutedChainSelect({ persistedParams: QUERY_PRESERVED_PARAMS, chainIds, isLoading });
-  const chainConfig = multichainConfig()?.chains.find(({ slug }) => slug === chainSelect.value?.[0]);
+  const chainConfig = multichainConfig()?.chains.find(({ id }) => id === chainSelect.value?.[0]);
 
   return (
     <>
@@ -35,7 +35,7 @@ const OpSuperchainAddressCoinBalanceHistory = ({ addressData, isLoading }: Props
         mb={ 3 }
       />
       { !isLoading && chainSelect.value?.[0] && chainConfig && (
-        <MultichainProvider chainSlug={ chainSelect.value?.[0] }>
+        <MultichainProvider chainId={ chainSelect.value?.[0] }>
           <SocketProvider url={ getSocketUrl(chainConfig?.config) }>
             <AddressCoinBalance key={ chainSelect.value?.[0] }/>
           </SocketProvider>

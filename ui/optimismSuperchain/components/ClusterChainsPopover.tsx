@@ -58,7 +58,7 @@ const ClusterChainsPopover = ({ addressHash, data, isLoading }: Props) => {
           <VStack gap={ 2 } mt={ 1 } alignItems="flex-start">
             { activeChains.map((chain) => (
               <Link
-                key={ chain.slug }
+                key={ chain.id }
                 href={ chain.config.app.baseUrl + route({
                   pathname: '/address/[hash]',
                   query: {

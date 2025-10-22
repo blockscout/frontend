@@ -61,14 +61,14 @@ const OpSuperchainAddressTxs = ({ addressData, isLoading }: Props) => {
     chainIds,
   });
 
-  const chainSlug = txsQueryLocal.query.chainValue?.[0];
-  const chainData = multichainConfig()?.chains.find(chain => chain.slug === chainSlug);
+  const chainId = txsQueryLocal.query.chainValue?.[0];
+  const chainData = multichainConfig()?.chains.find(chain => chain.id === chainId);
 
   const countersQueryLocal = useAddressCountersQuery({
     hash,
     isLoading: txsQueryLocal.query.isPlaceholderData || isLoading,
-    isEnabled: isLocalTab,
-    chainSlug,
+    isEnabled: !isLoading && isLocalTab,
+    chain: chainData,
   });
 
   const txsLocalFilter = isLocalTab ? (
@@ -84,7 +84,7 @@ const OpSuperchainAddressTxs = ({ addressData, isLoading }: Props) => {
     if (isLocalTab) {
       return (
         <ListCounterText
-          key={ chainSlug }
+          key={ chainId }
           value={ countersQueryLocal.data?.transactions_count }
           isLoading={ countersQueryLocal.isPlaceholderData || txsQueryLocal.query.isPlaceholderData }
           type="transaction"
@@ -144,7 +144,7 @@ const OpSuperchainAddressTxs = ({ addressData, isLoading }: Props) => {
       title: 'Local',
       component: (
         <SocketProvider url={ getSocketUrl(chainData?.config) }>
-          <MultichainProvider chainSlug={ txsQueryLocal.query.chainValue?.[0] }>
+          <MultichainProvider chainId={ chainId }>
             { isMobile && countersText }
             <TxsWithAPISorting
               filter={ txsLocalFilter }

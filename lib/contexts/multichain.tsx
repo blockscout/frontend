@@ -4,11 +4,12 @@ import React from 'react';
 import type { ChainConfig } from 'types/multichain';
 
 import multichainConfig from 'configs/multichain';
+import getChainIdFromSlug from 'lib/multichain/getChainIdFromSlug';
 import getQueryParamString from 'lib/router/getQueryParamString';
 
 interface MultichainProviderProps {
   children: React.ReactNode;
-  chainSlug?: string;
+  chainId?: string;
 }
 
 export interface TMultichainContext {
@@ -17,17 +18,20 @@ export interface TMultichainContext {
 
 export const MultichainContext = React.createContext<TMultichainContext | null>(null);
 
-export function MultichainProvider({ children, chainSlug: chainSlugProp }: MultichainProviderProps) {
+export function MultichainProvider({ children, chainId: chainIdProp }: MultichainProviderProps) {
   const router = useRouter();
   const chainSlugQueryParam = router.pathname.includes('chain-slug') ? getQueryParamString(router.query['chain-slug']) : undefined;
 
-  const [ chainSlug, setChainSlug ] = React.useState<string | undefined>(chainSlugProp ?? chainSlugQueryParam);
+  const [ chainId, setChainId ] = React.useState<string | undefined>(
+    chainIdProp ??
+    (chainSlugQueryParam ? getChainIdFromSlug(chainSlugQueryParam) : undefined),
+  );
 
   React.useEffect(() => {
-    if (chainSlugProp) {
-      setChainSlug(chainSlugProp);
+    if (chainIdProp) {
+      setChainId(chainIdProp);
     }
-  }, [ chainSlugProp ]);
+  }, [ chainIdProp ]);
 
   const chain = React.useMemo(() => {
     const config = multichainConfig();
@@ -35,12 +39,12 @@ export function MultichainProvider({ children, chainSlug: chainSlugProp }: Multi
       return;
     }
 
-    if (!chainSlug) {
+    if (!chainId) {
       return;
     }
 
-    return config.chains.find((chain) => chain.slug === chainSlug);
-  }, [ chainSlug ]);
+    return config.chains.find((chain) => chain.id === chainId);
+  }, [ chainId ]);
 
   const value = React.useMemo(() => {
     if (!chain) {

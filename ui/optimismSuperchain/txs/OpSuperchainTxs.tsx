@@ -36,7 +36,7 @@ const OpSuperchainTxs = () => {
         id: 'txs_local',
         title: 'Local',
         component: (
-          <MultichainProvider chainSlug={ chainSelect.value?.[0] }>
+          <MultichainProvider chainId={ chainSelect.value?.[0] }>
             <OpSuperchainTxsLocal/>
           </MultichainProvider>
         ),

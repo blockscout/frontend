@@ -32,7 +32,7 @@ export interface ZetaChainChainsConfigEnv {
 }
 
 export type ZetaChainExternalChainConfig = ExternalChain | {
-  id: number;
+  id: string;
   name: string;
   logo: string | undefined;
   address_url_template?: string;

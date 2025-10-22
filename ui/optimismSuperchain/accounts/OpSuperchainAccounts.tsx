@@ -37,7 +37,7 @@ const OpSuperchainAccounts = () => {
   }, [ data?.total_supply ]);
 
   const content = data?.items ? (
-    <MultichainProvider chainSlug={ chainValue?.[0] }>
+    <MultichainProvider chainId={ chainValue?.[0] }>
       <Box hideBelow="lg">
         <AddressesTable
           top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }

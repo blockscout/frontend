@@ -27,7 +27,7 @@ const OpSuperchainHome = () => {
 
   const renderItem = React.useCallback((chain: ChainConfig) => {
     return (
-      <MultichainProvider key={ chain.slug } chainSlug={ chain.slug }>
+      <MultichainProvider key={ chain.id } chainId={ chain.id }>
         <SocketProvider url={ getSocketUrl(chain.config) }>
           <ChainWidget data={ chain }/>
         </SocketProvider>

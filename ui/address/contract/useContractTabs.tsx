@@ -2,6 +2,7 @@ import type { Channel } from 'phoenix';
 import React from 'react';
 
 import type { Address } from 'types/api/address';
+import type { ChainConfig } from 'types/multichain';
 
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
@@ -34,10 +35,10 @@ interface Props {
   isEnabled: boolean;
   hasMudTab?: boolean;
   channel?: Channel;
-  chainSlug?: string;
+  chain?: ChainConfig;
 }
 
-export default function useContractTabs({ addressData, isEnabled, hasMudTab, channel, chainSlug }: Props): ReturnType {
+export default function useContractTabs({ addressData, isEnabled, hasMudTab, channel, chain }: Props): ReturnType {
   const contractQuery = useApiQuery('general:contract', {
     pathParams: { hash: addressData?.hash },
     queryOptions: {
@@ -45,7 +46,7 @@ export default function useContractTabs({ addressData, isEnabled, hasMudTab, cha
       refetchOnMount: false,
       placeholderData: addressData?.is_verified ? stubs.CONTRACT_CODE_VERIFIED : stubs.CONTRACT_CODE_UNVERIFIED,
     },
-    chainSlug,
+    chain,
   });
 
   const mudSystemsQuery = useApiQuery('general:mud_systems', {

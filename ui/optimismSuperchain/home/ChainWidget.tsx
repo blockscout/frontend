@@ -24,7 +24,7 @@ interface Props {
 
 const ChainWidget = ({ data }: Props) => {
   const statsQuery = useApiQuery('general:stats', {
-    chainSlug: data.slug,
+    chain: data,
     queryOptions: {
       placeholderData: HOMEPAGE_STATS,
     },
@@ -85,7 +85,7 @@ const ChainWidget = ({ data }: Props) => {
           <Box>{ data.config.chain.id }</Box>
           <CopyToClipboard text={ String(data.config.chain.id) } ml={ 0 }/>
         </HStack>
-        <ChainLatestBlockInfo slug={ data.slug }/>
+        <ChainLatestBlockInfo chainData={ data }/>
         { statsQuery.data && statsQuery.data.gas_prices && data.config.features.gasTracker.isEnabled && (
           <HStack gap={ 2 }>
             <Box color="text.secondary">Gas price</Box>

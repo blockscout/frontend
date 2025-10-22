@@ -31,10 +31,10 @@ const OpSuperchainUserOps = () => {
     chainIds,
   });
 
-  const chainConfig = chains.find(chain => chain.slug === query.chainValue?.[0]);
+  const chainConfig = chains.find(chain => chain.id === query.chainValue?.[0]);
 
   const content = query.data?.items ? (
-    <MultichainProvider chainSlug={ query.chainValue?.[0] }>
+    <MultichainProvider chainId={ query.chainValue?.[0] }>
       <Box hideBelow="lg">
         <UserOpsTable
           items={ query.data.items }

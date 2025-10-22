@@ -17,9 +17,9 @@ type Props = {
 
 const ZetaChainCCTXDetailsRelatedTx = ({ tx, isLoading }: Props) => {
   const { data: chainsConfig } = useZetaChainConfig();
-  const chainFrom = chainsConfig?.find((chain) => chain.id === tx.source_chain_id);
+  const chainFrom = chainsConfig?.find((chain) => chain.id === tx.source_chain_id.toString());
 
-  const chainsTo = tx.outbound_params.map((p) => chainsConfig?.find((chain) => chain.id === p.chain_id));
+  const chainsTo = tx.outbound_params.map((p) => chainsConfig?.find((chain) => chain.id === p.chain_id.toString()));
 
   const color = (() => {
     if (tx.status_reduced === CctxStatusReduced.SUCCESS) {

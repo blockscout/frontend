@@ -21,7 +21,7 @@ import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
 import OpSuperchainBlocksContent from './OpSuperchainBlocksContent';
 
-const QUERY_PRESERVED_PARAMS = [ 'chain-slug' ];
+const QUERY_PRESERVED_PARAMS = [ 'chain_id' ];
 const TABS_LEFT_SLOT_PROPS = {
   mr: { base: 'auto', lg: 6 - 2 },
 };
@@ -77,9 +77,9 @@ const OpSuperchainBlocks = () => {
   });
 
   const tabs: Array<TabItemRegular> = [
-    { id: 'blocks', title: 'All', component: <OpSuperchainBlocksContent type="block" query={ blocksQuery } chainSlug={ blocksQuery.chainValue?.[0] }/> },
-    { id: 'reorgs', title: 'Forked', component: <OpSuperchainBlocksContent type="reorg" query={ reorgsQuery } chainSlug={ reorgsQuery.chainValue?.[0] }/> },
-    { id: 'uncles', title: 'Uncles', component: <OpSuperchainBlocksContent type="uncle" query={ unclesQuery } chainSlug={ unclesQuery.chainValue?.[0] }/> },
+    { id: 'blocks', title: 'All', component: <OpSuperchainBlocksContent type="block" query={ blocksQuery } chainId={ blocksQuery.chainValue?.[0] }/> },
+    { id: 'reorgs', title: 'Forked', component: <OpSuperchainBlocksContent type="reorg" query={ reorgsQuery } chainId={ reorgsQuery.chainValue?.[0] }/> },
+    { id: 'uncles', title: 'Uncles', component: <OpSuperchainBlocksContent type="uncle" query={ unclesQuery } chainId={ unclesQuery.chainValue?.[0] }/> },
   ];
 
   const currentQuery = (() => {
@@ -90,7 +90,7 @@ const OpSuperchainBlocks = () => {
     }
   })();
 
-  const currentChainInfo = multichainConfig()?.chains.find(chain => chain.slug === currentQuery.chainValue?.[0]);
+  const currentChainInfo = multichainConfig()?.chains.find(chain => chain.id === currentQuery.chainValue?.[0]);
 
   const leftSlot = (
     <ChainSelect

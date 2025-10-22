@@ -23,11 +23,11 @@ const ChainSelect = ({ loading, mode, chainIds, withAllOption, ...props }: Props
   const collection = React.useMemo(() => {
 
     const chainItems = multichainConfig()?.chains
-      .filter((chain) => !chainIds || (chain.config.chain.id && chainIds.includes(chain.config.chain.id)))
+      .filter((chain) => !chainIds || chainIds.includes(chain.id))
       .map((chain) => ({
-        value: chain.slug,
-        label: chain.config.chain.name || chain.slug,
-        icon: <ChainIcon data={ chain } alt={ chain.config.chain.name }/>,
+        value: chain.id,
+        label: chain.name || `Chain ${ chain.id }`,
+        icon: <ChainIcon data={ chain } alt={ `${ chain.name } logo` }/>,
       })) || [];
     const allOption = withAllOption ? {
       value: 'all',

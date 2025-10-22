@@ -4,7 +4,7 @@ import type config from 'configs/app';
 
 export interface ExternalChain {
   // required fields
-  id: number;
+  id: string;
   name: string;
   logo: string | undefined;
   explorer_url: string;

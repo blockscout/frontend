@@ -51,7 +51,7 @@ const OpSuperchainTokenTransfers = () => {
         id: 'local',
         title: 'Local',
         component: (
-          <MultichainProvider chainSlug={ queryLocal.query.chainValue?.[0] }>
+          <MultichainProvider chainId={ queryLocal.query.chainValue?.[0] }>
             <OpSuperchainTokenTransfersLocal
               query={ queryLocal.query }
               typeFilter={ queryLocal.typeFilter }

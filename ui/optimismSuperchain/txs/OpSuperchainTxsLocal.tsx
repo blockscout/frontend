@@ -28,7 +28,7 @@ const TAB_LIST_PROPS = {
   pt: 6,
   pb: { base: 9, lg: 3 },
 };
-const QUERY_PRESERVED_PARAMS = [ 'chain-slug' ];
+const QUERY_PRESERVED_PARAMS = [ 'chain_id' ];
 
 const OpSuperchainTxsLocal = () => {
   const isMobile = useIsMobile();

@@ -32,12 +32,12 @@ const SearchResults = () => {
   const isMobile = useIsMobile();
 
   const chainSelect = useRoutedChainSelect({
-    field: 'chain_id',
     withAllOption: true,
     persistedParams: [ 'q', 'tab' ],
   });
+  const chainId = chainSelect.value?.[0];
   const { searchTerm, debouncedSearchTerm, handleSearchTermChange, handleSubmit, queries } = useSearchQuery({
-    chainSlug: chainSelect.value?.[0],
+    chainId: chainId === 'all' ? undefined : chainId,
   });
 
   const isLoading = Object.values(queries).some((query) => query.isLoading);

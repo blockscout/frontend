@@ -61,21 +61,21 @@ const OpSuperchainAddressTokenTransfers = ({ addressData, isLoading }: Props) =>
     chainIds,
   });
 
-  const chainSlug = transfersQueryLocal.query.chainValue?.[0];
-  const chainData = multichainConfig()?.chains.find(chain => chain.slug === chainSlug);
+  const chainId = transfersQueryLocal.query.chainValue?.[0];
+  const chainData = multichainConfig()?.chains.find(chain => chain.id === chainId);
 
   const countersQueryLocal = useAddressCountersQuery({
     hash,
     isLoading: transfersQueryLocal.query.isPlaceholderData,
     isEnabled: isLocalTab && !isLoading,
-    chainSlug,
+    chain: chainData,
   });
 
   const countersText = (() => {
     if (isLocalTab) {
       return (
         <ListCounterText
-          key={ chainSlug }
+          key={ chainId }
           value={ countersQueryLocal.data?.token_transfers_count }
           isLoading={ countersQueryLocal.isPlaceholderData || transfersQueryLocal.query.isPlaceholderData }
           type="transfer"
@@ -149,7 +149,7 @@ const OpSuperchainAddressTokenTransfers = ({ addressData, isLoading }: Props) =>
       id: [ 'token_transfers_local', 'token_transfers' ],
       title: 'Local',
       component: (
-        <MultichainProvider chainSlug={ transfersQueryLocal.query.chainValue?.[0] }>
+        <MultichainProvider chainId={ transfersQueryLocal.query.chainValue?.[0] }>
           <SocketProvider url={ getSocketUrl(chainData?.config) }>
             { isMobile && countersText }
             <TokenTransfersLocal
@@ -170,6 +170,7 @@ const OpSuperchainAddressTokenTransfers = ({ addressData, isLoading }: Props) =>
       variant="secondary"
       size="sm"
       tabs={ tabs }
+      isLoading={ isLoading }
       defaultTabId="token_transfers_local"
       rightSlot={ rightSlot }
       rightSlotProps={ TABS_RIGHT_SLOT_PROPS }

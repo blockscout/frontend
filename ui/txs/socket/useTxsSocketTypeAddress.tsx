@@ -54,7 +54,7 @@ export default function useTxsSocketTypeAddress({ isLoading }: Params) {
     const queryKey = getResourceKey('general:address_txs', {
       pathParams: { hash: currentAddress },
       queryParams: filterValue ? { filter: filterValue } : undefined,
-      chainSlug: chain?.slug,
+      chainId: chain?.id,
     });
     setShowErrorAlert(false);
 
@@ -97,7 +97,7 @@ export default function useTxsSocketTypeAddress({ isLoading }: Params) {
           ].sort(sortTxsFromSocket(sort)),
         };
       });
-  }, [ currentAddress, filterValue, queryClient, sort, chain?.slug ]);
+  }, [ currentAddress, filterValue, queryClient, sort, chain?.id ]);
 
   const handleSocketClose = React.useCallback(() => {
     setShowErrorAlert(true);

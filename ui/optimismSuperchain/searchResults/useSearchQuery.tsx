@@ -3,14 +3,13 @@ import React from 'react';
 
 import useApiInfiniteQuery from 'lib/api/useApiInfiniteQuery';
 import useDebounce from 'lib/hooks/useDebounce';
-import getChainIdFromSlug from 'lib/multichain/getChainIdFromSlug';
 import getQueryParamString from 'lib/router/getQueryParamString';
 
 interface Props {
-  chainSlug: string | undefined;
+  chainId: string | undefined;
 }
 
-export default function useSearchQuery({ chainSlug }: Props) {
+export default function useSearchQuery({ chainId }: Props) {
   const router = useRouter();
   const q = React.useRef(getQueryParamString(router.query.q));
   const initialValue = q.current;
@@ -18,7 +17,6 @@ export default function useSearchQuery({ chainSlug }: Props) {
   const [ searchTerm, setSearchTerm ] = React.useState(initialValue);
 
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
-  const chainId = chainSlug ? getChainIdFromSlug(chainSlug) : undefined;
 
   const addressesQuery = useApiInfiniteQuery({
     resourceName: 'multichainAggregator:search_addresses',

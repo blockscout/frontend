@@ -6,5 +6,5 @@ export default function getChainIdFromSlug(slug: string) {
     return undefined;
   }
 
-  return config.chains.find((chain) => chain.slug === slug)?.config.chain.id;
+  return config.chains.find((chain) => chain.slug === slug)?.id;
 }

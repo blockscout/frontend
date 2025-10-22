@@ -19,6 +19,10 @@ export interface ApiPropsFull extends ApiPropsBase {
 
 const generalApi = (() => {
   const apiHost = getEnvValue('NEXT_PUBLIC_API_HOST');
+  if (!apiHost) {
+    return;
+  }
+
   const apiSchema = getEnvValue('NEXT_PUBLIC_API_PROTOCOL') || 'https';
   const apiPort = getEnvValue('NEXT_PUBLIC_API_PORT');
   const apiEndpoint = [
@@ -208,7 +212,7 @@ const zetachainApi = (() => {
 })();
 
 export type Apis = {
-  general: ApiPropsFull;
+  general: ApiPropsFull | undefined;
 } & Partial<Record<Exclude<ApiName, 'general'>, ApiPropsBase>>;
 
 const apis: Apis = Object.freeze({

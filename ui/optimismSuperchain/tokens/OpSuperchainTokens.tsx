@@ -6,8 +6,6 @@ import type { TokenType } from 'types/api/token';
 
 import useDebounce from 'lib/hooks/useDebounce';
 import useIsMobile from 'lib/hooks/useIsMobile';
-import getChainIdFromSlug from 'lib/multichain/getChainIdFromSlug';
-import getChainSlugFromId from 'lib/multichain/getChainSlugFromId';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { TOKEN } from 'stubs/optimismSuperchain';
 import { generateListStub } from 'stubs/utils';
@@ -22,13 +20,8 @@ import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import Tokens from 'ui/tokens/Tokens';
 import { getTokenFilterValue } from 'ui/tokens/utils';
 
-const getInitialChainSlug = (chainId: string) => {
-  const chainSlug = chainId && getChainSlugFromId(chainId);
-  return chainSlug ? [ chainSlug ] : [ 'all' ];
-};
-
-const getChainIdFilterValue = (chainSlug: Array<string>) => {
-  return chainSlug.includes('all') ? undefined : chainSlug.map(getChainIdFromSlug).filter(Boolean);
+const getChainIdFilterValue = (chainIds: Array<string>) => {
+  return chainIds.includes('all') ? undefined : chainIds.filter(Boolean);
 };
 
 const OpSuperchainTokens = () => {
@@ -36,9 +29,9 @@ const OpSuperchainTokens = () => {
   const isMobile = useIsMobile();
 
   const q = getQueryParamString(router.query.query);
-  const chainId = getQueryParamString(router.query.chain_id);
+  const chainIdParam = getQueryParamString(router.query.chain_id);
 
-  const [ chainSlug, setChainSlug ] = React.useState<Array<string>>(getInitialChainSlug(chainId));
+  const [ chainIds, setChainIds ] = React.useState<Array<string>>(chainIdParam ? [ chainIdParam ] : [ 'all' ]);
   const [ searchTerm, setSearchTerm ] = React.useState<string>(q ?? '');
   const [ tokenTypes, setTokenTypes ] = React.useState<Array<TokenType> | undefined>(getTokenFilterValue(router.query.type));
 
@@ -48,7 +41,7 @@ const OpSuperchainTokens = () => {
     resourceName: 'multichainAggregator:tokens',
     filters: {
       type: tokenTypes?.join(','),
-      chain_id: getChainIdFilterValue(chainSlug),
+      chain_id: getChainIdFilterValue(chainIds),
       query: debouncedSearchTerm,
     },
     options: {
@@ -65,28 +58,28 @@ const OpSuperchainTokens = () => {
   const handleTokenTypesChange = React.useCallback((value: Array<TokenType>) => {
     tokensQuery.onFilterChange({
       type: value.join(','),
-      chain_id: getChainIdFilterValue(chainSlug),
+      chain_id: getChainIdFilterValue(chainIds),
       query: debouncedSearchTerm,
     });
     setTokenTypes(value);
-  }, [ tokensQuery, chainSlug, debouncedSearchTerm ]);
+  }, [ tokensQuery, chainIds, debouncedSearchTerm ]);
 
   const handleSearchTermChange = React.useCallback((value: string) => {
     tokensQuery.onFilterChange({
       type: tokenTypes?.join(','),
-      chain_id: getChainIdFilterValue(chainSlug),
+      chain_id: getChainIdFilterValue(chainIds),
       query: value,
     });
     setSearchTerm(value);
-  }, [ tokenTypes, tokensQuery, chainSlug ]);
+  }, [ tokenTypes, tokensQuery, chainIds ]);
 
-  const handleChainSlugChange = React.useCallback(({ value }: { value: Array<string> }) => {
+  const handleChainIdsChange = React.useCallback(({ value }: { value: Array<string> }) => {
     tokensQuery.onFilterChange({
       chain_id: getChainIdFilterValue(value),
       type: tokenTypes?.join(','),
       query: debouncedSearchTerm,
     });
-    setChainSlug(value);
+    setChainIds(value);
   }, [ tokensQuery, tokenTypes, debouncedSearchTerm ]);
 
   const filter = (
@@ -111,8 +104,8 @@ const OpSuperchainTokens = () => {
 
   const chainSelect = (
     <ChainSelect
-      value={ chainSlug }
-      onValueChange={ handleChainSlugChange }
+      value={ chainIds }
+      onValueChange={ handleChainIdsChange }
       withAllOption
     />
   );
@@ -150,7 +143,7 @@ const OpSuperchainTokens = () => {
       <Tokens
         query={ tokensQuery }
         actionBar={ actionBar }
-        hasActiveFilters={ Boolean(searchTerm || tokenTypes || !chainSlug.includes('all')) }
+        hasActiveFilters={ Boolean(searchTerm || tokenTypes || !chainIds.includes('all')) }
       />
     </>
   );

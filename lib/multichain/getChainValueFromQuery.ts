@@ -3,25 +3,29 @@ import type { Router } from 'next/router';
 import multichainConfig from 'configs/multichain';
 import getQueryParamString from 'lib/router/getQueryParamString';
 
-import getChainSlugFromId from './getChainSlugFromId';
-
 export default function getChainValueFromQuery(
   query: Router['query'],
   chainIds?: Array<string>,
   withAllOption?: boolean,
-  field: 'chain-slug' | 'chain_id' = 'chain-slug',
 ) {
   const config = multichainConfig();
   if (!config) {
     return undefined;
   }
 
-  const queryParam = getQueryParamString(query[field]);
-  if (queryParam) {
-    if (field === 'chain-slug' && config.chains.some((chain) => chain.slug === queryParam)) {
-      return queryParam;
-    } else if (field === 'chain_id' && config.chains.some((chain) => chain.config.chain.id === queryParam)) {
-      return getChainSlugFromId(queryParam);
+  const chainId = getQueryParamString(query.chain_id);
+  const chainSlug = getQueryParamString(query['chain-slug']);
+
+  if (chainId) {
+    if (config.chains.some((chain) => chain.id === chainId)) {
+      return chainId;
+    }
+  }
+
+  if (chainSlug) {
+    const chain = config.chains.find((chain) => chain.slug === chainSlug);
+    if (chain) {
+      return chain.id;
     }
   }
 
@@ -29,5 +33,5 @@ export default function getChainValueFromQuery(
     return 'all';
   }
 
-  return config.chains.filter((chain) => !chainIds || (chain.config.chain.id && chainIds.includes(chain.config.chain.id)))?.[0].slug;
+  return config.chains.filter((chain) => !chainIds || (chain.id && chainIds.includes(chain.id)))?.[0].id;
 }

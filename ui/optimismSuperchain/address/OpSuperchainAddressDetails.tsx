@@ -52,7 +52,8 @@ const OpSuperchainAddressDetails = ({ data, addressHash, isLoading }: Props) => 
           <DetailedInfo.ItemValue columnGap={ 3 } multiRow>
             { activeChains.map((chain) => (
               <Link
-                key={ chain.slug }
+                key={ chain.id }
+                // TODO @tom2drum replace after refactoring link builder
                 href={ chain.config.app.baseUrl + route({
                   pathname: '/address/[hash]',
                   query: {

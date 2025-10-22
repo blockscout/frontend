@@ -19,7 +19,7 @@ const getChainTransportFromConfig = (config: typeof appConfig, readOnly?: boolea
   return {
     [config.chain.id]: fallback(
       config.chain.rpcUrls
-        .concat(readOnly ? `${ config.apis.general.endpoint }/api/eth-rpc` : '')
+        .concat(readOnly && config.apis.general ? `${ config.apis.general.endpoint }/api/eth-rpc` : '')
         .filter(Boolean)
         .map((url) => http(url, { batch: { wait: 100, batchSize: 5 } })),
     ),

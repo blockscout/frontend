@@ -44,13 +44,6 @@ function trimChainConfig(config: ChainConfig['config'], logoUrl: string | undefi
   return {
     ...pick(config, [ 'app', 'chain' ]),
     apis: pick(config.apis || {}, [ 'general' ]),
-    UI: {
-      navigation: {
-        icon: {
-          'default': logoUrl,
-        }
-      },
-    }
   };
 }
 
@@ -113,10 +106,16 @@ async function run() {
     const chainConfigs = await Promise.all(explorerUrls.map(computeChainConfig)) as Array<ChainConfig['config']>;
 
     const result = {
-      chains: [ currentChainConfig, ...chainConfigs ].map((config, index) => {
+      chains: [ currentChainConfig, ...chainConfigs ].map((config) => {
+        const chainId = config.chain.id;
+        const chainInfo = [...chainscoutInfo.externals, chainscoutInfo.current].find((chain) => chain?.id === chainId);
         const logoUrl = [...chainscoutInfo.externals, chainscoutInfo.current].find((chain) => chain?.id === config.chain.id)?.logoUrl;
-        const chainName = (config as { chain: { name: string } })?.chain?.name ?? `Chain ${ index + 1 }`;
+        const chainName = (config as { chain: { name: string } })?.chain?.name ?? `Chain ${ chainId }`;
         return {
+          id: chainId,
+          name: chainName,
+          logo: chainInfo?.logoUrl,
+          explorer_url: chainInfo?.explorerUrl,
           slug: getSlug(chainName),
           config: trimChainConfig(config, logoUrl),
           contracts: Object.values(viemChains).find(({ id }) => id === Number(config.chain.id))?.contracts

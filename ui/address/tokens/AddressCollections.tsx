@@ -89,6 +89,7 @@ const AddressCollections = ({ collectionsQuery, address, tokenTypes, onTokenType
                 { ...instance }
                 token={ item.token }
                 isLoading={ isPlaceholderData }
+                chain={ multichainContext?.chain }
               />
             );
           }) }

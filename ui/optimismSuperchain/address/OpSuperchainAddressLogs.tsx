@@ -44,7 +44,7 @@ const OpSuperchainAddressLogs = ({ addressData, isLoading }: Props) => {
     chainIds,
   });
 
-  const chainData = multichainConfig()?.chains.find(chain => chain.slug === chainValue?.[0]);
+  const chainData = multichainConfig()?.chains.find(chain => chain.id === chainValue?.[0]);
 
   const actionBar = (
     <ActionBar mt={ -6 } showShadow>
@@ -82,7 +82,7 @@ const OpSuperchainAddressLogs = ({ addressData, isLoading }: Props) => {
       showActionBarIfEmpty
       actionBar={ actionBar }
     >
-      <MultichainProvider chainSlug={ chainValue?.[0] }>
+      <MultichainProvider chainId={ chainValue?.[0] }>
         { content }
       </MultichainProvider>
     </DataListDisplay>

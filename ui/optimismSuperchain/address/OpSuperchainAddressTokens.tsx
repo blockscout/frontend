@@ -7,7 +7,6 @@ import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
 import { MultichainProvider } from 'lib/contexts/multichain';
 import useIsMobile from 'lib/hooks/useIsMobile';
-import getChainIdFromSlug from 'lib/multichain/getChainIdFromSlug';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { TOKEN } from 'stubs/optimismSuperchain';
 import { generateListStub } from 'stubs/utils';
@@ -56,12 +55,12 @@ const OpSuperchainAddressTokens = ({ addressData }: Props) => {
   const hash = getQueryParamString(router.query.hash);
   const [ chainSelectErc20Value, setChainSelectErc20Value ] = useChainSelectErc20({ chainIds });
 
-  const chainId = chainSelectErc20Value?.map(getChainIdFromSlug).filter(Boolean);
+  const chainId = chainSelectErc20Value?.filter(Boolean);
 
   const erc20Query = useQueryWithPages({
     resourceName: 'multichainAggregator:address_tokens',
     pathParams: { hash },
-    filters: chainId?.length ? { type: 'ERC-20', chain_id: chainId } : { type: 'ERC-20' },
+    filters: chainId?.length ? { type: 'ERC-20', chain_id: chainId.includes('all') ? undefined : chainId.filter(Boolean) } : { type: 'ERC-20' },
     scrollRef,
     options: {
       enabled: (tab === 'tokens' || tab === 'tokens_erc20'),
@@ -77,7 +76,7 @@ const OpSuperchainAddressTokens = ({ addressData }: Props) => {
   });
 
   const handelChainSelectErc20ValueChange = React.useCallback(({ value }: { value: Array<string> }) => {
-    erc20Query.onFilterChange({ chain_id: value.includes('all') ? undefined : value.map(getChainIdFromSlug).filter(Boolean) });
+    erc20Query.onFilterChange({ chain_id: value.includes('all') ? undefined : value.filter(Boolean) });
     setChainSelectErc20Value(value);
   }, [ setChainSelectErc20Value, erc20Query ]);
 
@@ -151,11 +150,11 @@ const OpSuperchainAddressTokens = ({ addressData }: Props) => {
       id: 'tokens_nfts',
       title: 'NFT',
       component: nftDisplayType === 'list' ? (
-        <MultichainProvider chainSlug={ nftsQuery.chainValue?.[0] }>
+        <MultichainProvider chainId={ nftsQuery.chainValue?.[0] }>
           <AddressNFTs tokensQuery={ nftsQuery } tokenTypes={ nftTokenTypes } onTokenTypesChange={ onTokenTypesChange }/>
         </MultichainProvider>
       ) : (
-        <MultichainProvider chainSlug={ collectionsQuery.chainValue?.[0] }>
+        <MultichainProvider chainId={ collectionsQuery.chainValue?.[0] }>
           <AddressCollections collectionsQuery={ collectionsQuery } address={ hash } tokenTypes={ nftTokenTypes } onTokenTypesChange={ onTokenTypesChange }/>
         </MultichainProvider>
       ),

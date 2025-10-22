@@ -3,7 +3,6 @@ import { useQuery } from '@tanstack/react-query';
 
 import type { ChainConfig } from 'types/multichain';
 
-import multichainConfig from 'configs/multichain';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import type { Params as FetchParams } from 'lib/hooks/useFetch';
 
@@ -16,33 +15,32 @@ export interface Params<R extends ResourceName, E = unknown, D = ResourcePayload
   fetchParams?: Pick<FetchParams, 'body' | 'method' | 'headers'>;
   queryOptions?: Partial<Omit<UseQueryOptions<ResourcePayload<R>, ResourceError<E>, D>, 'queryFn'>>;
   logError?: boolean;
-  chainSlug?: string;
   chain?: ChainConfig;
 }
 
 export interface GetResourceKeyParams<R extends ResourceName, E = unknown, D = ResourcePayload<R>>
   extends Pick<Params<R, E, D>, 'pathParams' | 'queryParams'> {
-  chainSlug?: string;
+  chainId?: string;
 }
 
-export function getResourceKey<R extends ResourceName>(resource: R, { pathParams, queryParams, chainSlug }: GetResourceKeyParams<R> = {}) {
+export function getResourceKey<R extends ResourceName>(resource: R, { pathParams, queryParams, chainId }: GetResourceKeyParams<R> = {}) {
   if (pathParams || queryParams) {
-    return [ resource, chainSlug, { ...pathParams, ...queryParams } ].filter(Boolean);
+    return [ resource, chainId, { ...pathParams, ...queryParams } ].filter(Boolean);
   }
 
-  return [ resource, chainSlug ].filter(Boolean);
+  return [ resource, chainId ].filter(Boolean);
 }
 
 export default function useApiQuery<R extends ResourceName, E = unknown, D = ResourcePayload<R>>(
   resource: R,
-  { queryOptions, pathParams, queryParams, fetchParams, logError, chainSlug, chain: chainProp }: Params<R, E, D> = {},
+  { queryOptions, pathParams, queryParams, fetchParams, logError, chain: chainProp }: Params<R, E, D> = {},
 ) {
   const apiFetch = useApiFetch();
-  const { chain } = useMultichainContext() || (chainProp && { chain: chainProp }) ||
-    { chain: chainSlug ? multichainConfig()?.chains.find((chain) => chain.slug === chainSlug) : undefined };
+  const multichainContext = useMultichainContext();
+  const chain = chainProp || multichainContext?.chain;
 
   return useQuery<ResourcePayload<R>, ResourceError<E>, D>({
-    queryKey: queryOptions?.queryKey || getResourceKey(resource, { pathParams, queryParams, chainSlug: chain?.slug }),
+    queryKey: queryOptions?.queryKey || getResourceKey(resource, { pathParams, queryParams, chainId: chain?.config.chain.id }),
     queryFn: async({ signal }) => {
       // all errors and error typing is handled by react-query
       // so error response will never go to the data

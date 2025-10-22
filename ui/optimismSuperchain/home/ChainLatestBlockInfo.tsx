@@ -3,6 +3,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
 import type { SocketMessage } from 'lib/socket/types';
+import type { ChainConfig } from 'types/multichain';
 
 import { route } from 'nextjs-routes';
 
@@ -14,25 +15,25 @@ import { Link } from 'toolkit/chakra/link';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 interface Props {
-  slug: string;
+  chainData: ChainConfig;
 }
 
-const ChainLatestBlockInfo = ({ slug }: Props) => {
+const ChainLatestBlockInfo = ({ chainData }: Props) => {
   const queryClient = useQueryClient();
 
   const blocksQuery = useApiQuery('general:homepage_blocks', {
-    chainSlug: slug,
+    chain: chainData,
     queryOptions: {
       placeholderData: [ BLOCK ],
     },
   });
 
   const handleNewBlockMessage: SocketMessage.NewBlock['handler'] = React.useCallback((payload) => {
-    const queryKey = getResourceKey('general:homepage_blocks', { chainSlug: slug });
+    const queryKey = getResourceKey('general:homepage_blocks', { chainId: chainData.id });
     queryClient.setQueryData(queryKey, () => {
       return [ payload.block ];
     });
-  }, [ queryClient, slug ]);
+  }, [ queryClient, chainData.id ]);
 
   const channel = useSocketChannel({
     topic: 'blocks:new_block',
@@ -56,7 +57,8 @@ const ChainLatestBlockInfo = ({ slug }: Props) => {
         href={ route({
           pathname: '/chain/[chain-slug]/block/[height_or_hash]',
           query: {
-            'chain-slug': slug,
+            // TODO @tom2drum rename chain-slug to chain_slug
+            'chain-slug': chainData.slug,
             height_or_hash: blocksQuery.data[0].height.toString(),
           },
         }) }
