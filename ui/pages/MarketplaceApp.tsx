@@ -9,6 +9,7 @@ import type { MarketplaceApp } from 'types/client/marketplace';
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
+import essentialDappsChainsConfig from 'configs/essential-dapps-chains';
 import type { ResourceError } from 'lib/api/resources';
 import useApiFetch from 'lib/api/useApiFetch';
 import { useMarketplaceContext } from 'lib/contexts/marketplace';
@@ -23,7 +24,7 @@ import useIsAuth from 'ui/snippets/auth/useIsAuth';
 import MarketplaceAppTopBar from '../marketplace/MarketplaceAppTopBar';
 import useAutoConnectWallet from '../marketplace/useAutoConnectWallet';
 import useMarketplaceWallet from '../marketplace/useMarketplaceWallet';
-import { getAppUrl } from '../marketplace/utils';
+// import { getAppUrl } from '../marketplace/utils';
 
 const feature = config.features.marketplace;
 
@@ -105,7 +106,7 @@ export default function MarketplaceApp() {
   const apiFetch = useApiFetch();
   const router = useRouter();
   const id = getQueryParamString(router.query.id);
-  const { address, sendTransaction, signMessage, signTypedData } = useMarketplaceWallet(id);
+  const { address, chainId, sendTransaction, signMessage, signTypedData, switchChain } = useMarketplaceWallet(id);
   const isAuth = useIsAuth();
   useAutoConnectWallet();
 
@@ -138,7 +139,8 @@ export default function MarketplaceApp() {
 
   const { setIsAutoConnectDisabled } = useMarketplaceContext();
 
-  const appUrl = useMemo(() => getAppUrl(data?.url, router), [ data?.url, router ]);
+  // const appUrl = useMemo(() => getAppUrl(data?.url, router), [ data?.url, router ]);
+  const appUrl = 'https://swapscout-git-test-custom-connector-blockscout.vercel.app';
 
   useEffect(() => {
     if (data) {
@@ -152,6 +154,11 @@ export default function MarketplaceApp() {
 
   throwOnResourceLoadError(query);
 
+  const rpcUrl = useMemo(() => {
+    const chainConfig = essentialDappsChainsConfig()?.chains.find((chain) => chain.config.chain.id === String(chainId));
+    return chainConfig?.config.chain.rpcUrls[0] || config.chain.rpcUrls[0];
+  }, [ chainId ]);
+
   return (
     <Flex flexDirection="column" h="100%">
       <MarketplaceAppTopBar
@@ -162,10 +169,11 @@ export default function MarketplaceApp() {
       <DappscoutIframeProvider
         address={ address }
         appUrl={ appUrl }
-        rpcUrl={ config.chain.rpcUrls[0] }
+        rpcUrl={ rpcUrl }
         sendTransaction={ sendTransaction }
         signMessage={ signMessage }
         signTypedData={ signTypedData }
+        switchChain={ switchChain }
       >
         <MarketplaceAppContent address={ address } data={ data } isPending={ isPending } appUrl={ appUrl }/>
       </DappscoutIframeProvider>

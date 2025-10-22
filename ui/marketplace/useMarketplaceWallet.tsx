@@ -3,7 +3,7 @@ import { useCallback } from 'react';
 import type { Account, SignTypedDataParameters } from 'viem';
 import { useAccount, useSendTransaction, useSwitchChain, useSignMessage, useSignTypedData } from 'wagmi';
 
-import config from 'configs/app';
+// import config from 'configs/app';
 import useRewardsActivity from 'lib/hooks/useRewardsActivity';
 import * as mixpanel from 'lib/mixpanel/index';
 
@@ -37,14 +37,13 @@ export default function useMarketplaceWallet(appId: string) {
     );
   }, [ address, appId ]);
 
-  const switchNetwork = useCallback(async() => {
-    if (Number(config.chain.id) !== chainId) {
-      await switchChainAsync?.({ chainId: Number(config.chain.id) });
-    }
-  }, [ chainId, switchChainAsync ]);
+  // const switchNetwork = useCallback(async() => {
+  //   if (Number(config.chain.id) !== chainId) {
+  //     await switchChainAsync?.({ chainId: Number(config.chain.id) });
+  //   }
+  // }, [ chainId, switchChainAsync ]);
 
   const sendTransaction = useCallback(async(transaction: SendTransactionArgs) => {
-    await switchNetwork();
     const activityResponse = await trackTransaction(address ?? '', transaction.to ?? '');
     const tx = await sendTransactionAsync(transaction);
     if (activityResponse?.token) {
@@ -52,29 +51,35 @@ export default function useMarketplaceWallet(appId: string) {
     }
     logEvent('Send Transaction');
     return tx;
-  }, [ sendTransactionAsync, switchNetwork, logEvent, trackTransaction, trackTransactionConfirm, address ]);
+  }, [ sendTransactionAsync, logEvent, trackTransaction, trackTransactionConfirm, address ]);
 
   const signMessage = useCallback(async(message: string) => {
-    await switchNetwork();
     const signature = await signMessageAsync({ message });
     logEvent('Sign Message');
     return signature;
-  }, [ signMessageAsync, switchNetwork, logEvent ]);
+  }, [ signMessageAsync, logEvent ]);
 
   const signTypedData = useCallback(async(typedData: SignTypedDataArgs) => {
-    await switchNetwork();
     if (typedData.domain) {
-      typedData.domain.chainId = Number(typedData.domain.chainId);
+      const chainId = Number(typedData.domain.chainId);
+      await switchChainAsync({ chainId });
+      typedData.domain.chainId = chainId;
     }
     const signature = await signTypedDataAsync(typedData);
     logEvent('Sign Typed Data');
     return signature;
-  }, [ signTypedDataAsync, switchNetwork, logEvent ]);
+  }, [ signTypedDataAsync, switchChainAsync, logEvent ]);
+
+  const switchChain = useCallback((chainId: number) => {
+    return switchChainAsync({ chainId });
+  }, [ switchChainAsync ]);
 
   return {
     address,
+    chainId,
     sendTransaction,
     signMessage,
     signTypedData,
+    switchChain,
   };
 }
