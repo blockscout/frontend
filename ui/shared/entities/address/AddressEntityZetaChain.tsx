@@ -1,7 +1,7 @@
 import { Box, chakra, Flex } from '@chakra-ui/react';
 import React from 'react';
 
-import { route } from 'nextjs-routes';
+import { route } from 'nextjs/routes';
 
 import config from 'configs/app';
 import { useColorModeValue } from 'toolkit/chakra/color-mode';
@@ -28,11 +28,12 @@ const AddressEntityZetaChain = ({ chainId, ...props }: Props) => {
   const addressEntityProps = { ...props, address: addressFull };
 
   const partsProps = distributeEntityProps(addressEntityProps);
-  const chain = chainsConfig?.find((chain) => chain.chain_id.toString() === chainId);
+  const chain = chainsConfig?.find((chain) => chain.id.toString() === chainId);
 
   const isCurrentChain = chainId === config.chain.id;
 
   const href = (() => {
+    // TODO @tom2drum refactor this after link builder
     const blockscoutAddressRoute = route({
       pathname: '/address/[hash]',
       query: {
@@ -43,18 +44,18 @@ const AddressEntityZetaChain = ({ chainId, ...props }: Props) => {
     if (isCurrentChain) {
       return blockscoutAddressRoute;
     }
-    if (chain?.instance_url) {
-      return stripTrailingSlash(chain.instance_url) + blockscoutAddressRoute;
+    if (chain && 'explorer_url' in chain && chain.explorer_url) {
+      return stripTrailingSlash(chain.explorer_url) + blockscoutAddressRoute;
     }
-    if (chain?.address_url_template) {
+    if (chain && 'address_url_template' in chain && chain.address_url_template) {
       return chain.address_url_template.replace('{hash}', props.address.hash);
     }
     return null;
   })();
 
   const zetaChainIcon = useColorModeValue(config.UI.navigation.icon.default, config.UI.navigation.icon.dark || config.UI.navigation.icon.default);
-  const chainLogo = isCurrentChain ? zetaChainIcon : chain?.chain_logo;
-  const chainName = isCurrentChain ? config.chain.name : chain?.chain_name;
+  const chainLogo = isCurrentChain ? zetaChainIcon : chain?.logo;
+  const chainName = isCurrentChain ? config.chain.name : chain?.name;
   const iconStyles = getIconProps(partsProps.icon, false);
 
   const addressIcon = (() => {

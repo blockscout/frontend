@@ -27,7 +27,7 @@ const ZetaChainCCTXDetailsLifecycleIn = ({ tx, isLoading }: Props) => {
     return null;
   }
   const chainFromId = inboundParams.sender_chain_id.toString();
-  const chainFrom = chainsConfig?.find((chain) => chain.chain_id.toString() === chainFromId);
+  const chainFrom = chainsConfig?.find((chain) => chain.id.toString() === chainFromId);
 
   const isCCTX = tx.related_cctxs.some((cctx) => cctx.index === inboundParams.observed_hash);
   const color = inboundParams.status === InboundStatus.INBOUND_SUCCESS ? 'text.success' : 'text.error';
@@ -43,7 +43,7 @@ const ZetaChainCCTXDetailsLifecycleIn = ({ tx, isLoading }: Props) => {
       />
       <Skeleton loading={ isLoading }>
         <Flex color={ color } maxH="20px" mb={ 2.5 } alignItems="center">
-          { `Sender tx from ${ chainFrom?.chain_name || 'unknown chain' }` }
+          { `Sender tx from ${ chainFrom?.name || 'unknown chain' }` }
         </Flex>
         <Grid
           templateColumns="100px 1fr"

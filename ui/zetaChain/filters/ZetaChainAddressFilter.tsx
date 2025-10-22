@@ -3,8 +3,7 @@ import { isEqual } from 'es-toolkit';
 import type { ChangeEvent } from 'react';
 import React from 'react';
 
-import type { CrossChainInfo } from 'types/client/crossChainInfo';
-import type { ZetaChainCCTXFilterParams } from 'types/client/zetaChain';
+import type { ZetaChainCCTXFilterParams, ZetaChainExternalChainConfig } from 'types/client/zetaChain';
 
 import { Image } from 'toolkit/chakra/image';
 import { Input } from 'toolkit/chakra/input';
@@ -42,7 +41,7 @@ type InputProps = {
 type ChainSelectProps = {
   selectedChains: Array<string>;
   onChainChange: (chains: Array<string>) => void;
-  chains: Array<CrossChainInfo>;
+  chains: Array<ZetaChainExternalChainConfig>;
   isLoading: boolean;
 };
 
@@ -65,21 +64,22 @@ const AddressFilterInput = ({ address, onChange, onClear, isLast, onAddFieldClic
   );
 };
 
+// TODO @tom2drum refactor chain selects
 const ChainSelect = ({ selectedChains, onChainChange, chains, isLoading }: ChainSelectProps) => {
   const collection = React.useMemo(() => {
     const options: Array<SelectOption> = [
       { value: 'all', label: 'All chains' },
       ...chains.map(chain => ({
-        value: chain.chain_id.toString(),
-        label: chain.chain_name || `Chain ${ chain.chain_id }`,
+        value: chain.id.toString(),
+        label: chain.name,
         renderLabel: () => (
           <Flex alignItems="center" gap={ 2 }>
-            { chain.chain_logo ? (
-              <Image src={ chain.chain_logo } boxSize={ 5 } borderRadius="base" alt={ chain.chain_name || 'chain logo' }/>
+            { chain.logo ? (
+              <Image src={ chain.logo } boxSize={ 5 } borderRadius="base" alt={ chain.name || 'chain logo' }/>
             ) : (
               <IconSvg name="networks/icon-placeholder" boxSize={ 5 } color="text.secondary"/>
             ) }
-            <span>{ chain.chain_name || `Chain ${ chain.chain_id }` }</span>
+            <span>{ chain.name }</span>
           </Flex>
         ),
       })),

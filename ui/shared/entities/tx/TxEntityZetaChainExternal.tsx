@@ -14,13 +14,14 @@ type Props = {
 
 const TxEntityZetaChainExternal = (props: Props) => {
   const { data: chainsConfig } = useZetaChainConfig();
-  const chain = chainsConfig?.find((chain) => chain.chain_id.toString() === props.chainId);
+  const chain = chainsConfig?.find((chain) => chain.id.toString() === props.chainId);
 
   const defaultHref = (() => {
-    if (chain?.instance_url) {
-      return stripTrailingSlash(chain.instance_url) + route({ pathname: '/tx/[hash]', query: { hash: props.hash } });
+    // TODO @tom2drum refactor this after link builder
+    if (chain && 'explorer_url' in chain && chain.explorer_url) {
+      return stripTrailingSlash(chain.explorer_url) + route({ pathname: '/tx/[hash]', query: { hash: props.hash } });
     }
-    if (chain?.tx_url_template) {
+    if (chain && 'tx_url_template' in chain && chain.tx_url_template) {
       return chain.tx_url_template.replace('{hash}', props.hash);
     }
     return;
