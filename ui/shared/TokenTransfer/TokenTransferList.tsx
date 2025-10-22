@@ -4,7 +4,6 @@ import React from 'react';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import { useMultichainContext } from 'lib/contexts/multichain';
-import { getChainDataForList } from 'lib/multichain/getChainDataForList';
 import TokenTransferListItem from 'ui/shared/TokenTransfer/TokenTransferListItem';
 
 interface Props {
@@ -17,7 +16,7 @@ interface Props {
 
 const TokenTransferList = ({ data, baseAddress, showTxInfo, enableTimeIncrement, isLoading }: Props) => {
   const multichainContext = useMultichainContext();
-  const chainData = getChainDataForList(multichainContext);
+  const chainData = multichainContext?.chain;
 
   return (
     <Box>

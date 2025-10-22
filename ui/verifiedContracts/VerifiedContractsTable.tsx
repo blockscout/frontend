@@ -4,7 +4,6 @@ import type { VerifiedContract } from 'types/api/contracts';
 import type { VerifiedContractsSortingField, VerifiedContractsSortingValue } from 'types/api/verifiedContracts';
 
 import { useMultichainContext } from 'lib/contexts/multichain';
-import { getChainDataForList } from 'lib/multichain/getChainDataForList';
 import { currencyUnits } from 'lib/units';
 import { TableBody, TableColumnHeader, TableColumnHeaderSortable, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
@@ -23,7 +22,7 @@ interface Props {
 
 const VerifiedContractsTable = ({ data, sort, setSorting, isLoading }: Props) => {
   const multichainContext = useMultichainContext();
-  const chainData = getChainDataForList(multichainContext);
+  const chainData = multichainContext?.chain;
 
   const onSortToggle = React.useCallback((field: VerifiedContractsSortingField) => {
     const value = getNextSortValue<VerifiedContractsSortingField, VerifiedContractsSortingValue>(SORT_SEQUENCE, field)(sort);

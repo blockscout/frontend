@@ -34,7 +34,7 @@ const ChainIndicatorChartContent = ({ data }: Props) => {
     <svg width="100%" height="100%" ref={ ref } cursor="pointer">
       <g transform={ `translate(${ chartMargin.left || 0 },${ chartMargin.top || 0 })` } opacity={ rect ? 1 : 0 }>
         <ChartArea
-          id={ data[0].name }
+          id={ data[0].id }
           data={ data[0].items }
           xScale={ axes.x.scale }
           yScale={ axes.y.scale }

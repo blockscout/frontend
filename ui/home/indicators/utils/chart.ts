@@ -51,7 +51,7 @@ export function prepareChartItems(items: Array<TimeChartItemRaw>) {
 
 export function getChartData(indicatorId: ChainIndicatorId, data: Array<TimeChartItemRaw>): TimeChartData {
   return [ {
-    id: indicatorId,
+    id: indicatorId.replace(' ', '_'),
     charts: [],
     items: prepareChartItems(data),
     name: CHART_ITEMS[indicatorId].name,

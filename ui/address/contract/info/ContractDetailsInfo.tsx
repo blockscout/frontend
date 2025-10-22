@@ -83,7 +83,7 @@ const ContractDetailsInfo = ({ data, isLoading, addressData }: Props) => {
           { contractNameWithCertifiedIcon }
         </ContractDetailsInfoItem>
       ) }
-      { multichainContext && multichainContext.level !== 'page' && addressData.creator_address_hash && addressData.creation_transaction_hash && (
+      { multichainContext && addressData.creator_address_hash && addressData.creation_transaction_hash && (
         <ContractDetailsInfoItem
           label="Creator"
           isLoading={ isLoading }
@@ -100,7 +100,7 @@ const ContractDetailsInfo = ({ data, isLoading, addressData }: Props) => {
           </Flex>
         </ContractDetailsInfoItem>
       ) }
-      { !isLoading && multichainContext && multichainContext.level !== 'page' && addressData.implementations && addressData.implementations.length > 0 && (
+      { !isLoading && multichainContext && addressData.implementations && addressData.implementations.length > 0 && (
         <ContractDetailsInfoItem
           label={ `${ addressData.proxy_type === 'eip7702' ? 'Delegated to' : `Implementation${ addressData.implementations.length > 1 ? 's' : '' }` }` }
           isLoading={ isLoading }

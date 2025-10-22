@@ -27,6 +27,7 @@ const OpSuperchainInternalTxs = () => {
       onChange={ onSearchTermChange }
       placeholder="Search by transaction hash"
       initialValue={ searchTerm }
+      ml={{ base: 0, lg: 2 }}
     />
   );
 
@@ -34,7 +35,6 @@ const OpSuperchainInternalTxs = () => {
     <ChainSelect
       value={ query.chainValue }
       onValueChange={ query.onChainValueChange }
-      ml={{ base: 0, lg: 2 }}
     />
   );
 
@@ -46,8 +46,8 @@ const OpSuperchainInternalTxs = () => {
         </Box>
       ) }
       <ActionBar mt={ -6 } justifyContent="flex-start">
-        { !isMobile && filterInput }
         { chainSelect }
+        { !isMobile && filterInput }
         <Pagination ml="auto" { ...pagination }/>
       </ActionBar>
     </>

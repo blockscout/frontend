@@ -9,7 +9,7 @@ import CsvExport from 'ui/pages/CsvExport';
 const Page: NextPage = () => {
   return (
     <PageNextJs pathname="/chain/[chain-slug]/csv-export">
-      <MultichainProvider level="page">
+      <MultichainProvider>
         <CsvExport/>
       </MultichainProvider>
     </PageNextJs>

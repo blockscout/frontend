@@ -10,7 +10,6 @@ import { route } from 'nextjs/routes';
 import { getResourceKey } from 'lib/api/useApiQuery';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import useIsMobile from 'lib/hooks/useIsMobile';
-import { getChainDataForList } from 'lib/multichain/getChainDataForList';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import { Link } from 'toolkit/chakra/link';
@@ -92,7 +91,7 @@ const BlocksContent = ({ type, query, enableSocket = true, top }: Props) => {
     handler: handleNewBlockMessage,
   });
 
-  const chainData = getChainDataForList(multichainContext);
+  const chainData = multichainContext?.chain;
 
   const content = query.data?.items ? (
     <>

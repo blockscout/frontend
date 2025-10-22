@@ -7,7 +7,6 @@ import type { Transaction } from 'types/api/transaction';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import useInitialList from 'lib/hooks/useInitialList';
 import useLazyRenderedList from 'lib/hooks/useLazyRenderedList';
-import { getChainDataForList } from 'lib/multichain/getChainDataForList';
 
 import TxsSocketNotice from './socket/TxsSocketNotice';
 import TxsListItem from './TxsListItem';
@@ -29,7 +28,7 @@ const TxsList = (props: Props) => {
     enabled: !props.isLoading,
   });
   const multichainContext = useMultichainContext();
-  const chainData = getChainDataForList(multichainContext);
+  const chainData = multichainContext?.chain;
 
   return (
     <Box>

@@ -8,7 +8,6 @@ import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import useInitialList from 'lib/hooks/useInitialList';
 import useLazyRenderedList from 'lib/hooks/useLazyRenderedList';
-import { getChainDataForList } from 'lib/multichain/getChainDataForList';
 import { currencyUnits } from 'lib/units';
 import { TableBody, TableColumnHeader, TableColumnHeaderSortable, TableHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
@@ -48,7 +47,7 @@ const TxsTable = ({
     enabled: !isLoading,
   });
   const multichainContext = useMultichainContext();
-  const chainData = getChainDataForList(multichainContext);
+  const chainData = multichainContext?.chain;
 
   const feeCurrency = config.UI.views.tx.hiddenFields?.fee_currency || config.chain.hasMultipleGasCurrencies ?
     '' :

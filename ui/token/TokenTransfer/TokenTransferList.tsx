@@ -4,6 +4,7 @@ import React from 'react';
 import type { TokenInstance } from 'types/api/token';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
+import { useMultichainContext } from 'lib/contexts/multichain';
 import TokenTransferListItem from 'ui/token/TokenTransfer/TokenTransferListItem';
 
 interface Props {
@@ -14,6 +15,9 @@ interface Props {
 }
 
 const TokenTransferList = ({ data, tokenId, instance, isLoading }: Props) => {
+  const multichainContext = useMultichainContext();
+  const chainData = multichainContext?.chain;
+
   return (
     <Box>
       { data.map((item, index) => (
@@ -23,6 +27,7 @@ const TokenTransferList = ({ data, tokenId, instance, isLoading }: Props) => {
           tokenId={ tokenId }
           instance={ instance }
           isLoading={ isLoading }
+          chainData={ chainData }
         />
       )) }
     </Box>
