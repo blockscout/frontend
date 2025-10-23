@@ -4,8 +4,8 @@
   "private": false,
   "homepage": "https://github.com/blockscout/frontend#readme",
   "engines": {
-    "node": "22.11.0",
-    "npm": "10.9.0"
+    "node": ">=22.11.0",
+    "npm": ">=10.9.0"
   },
   "scripts": {
     "dev": "./tools/scripts/dev.sh",

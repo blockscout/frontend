@@ -7,12 +7,22 @@ import metrics from 'lib/monitoring/metrics';
 import getQueryParamString from 'lib/router/getQueryParamString';
 
 export default async function mediaTypeHandler(req: NextApiRequest, res: NextApiResponse) {
+  const url = getQueryParamString(req.query.url);
 
   try {
-    const url = getQueryParamString(req.query.url);
 
     const end = metrics?.apiRequestDuration.startTimer();
-    const response = await nodeFetch(url, { method: 'HEAD' });
+
+    // Add timeout for slow IPFS requests (3 seconds)
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 3000);
+
+    const response = await nodeFetch(url, {
+      method: 'HEAD',
+      signal: controller.signal,
+    });
+    clearTimeout(timeoutId);
+
     const duration = end?.({ route: '/media-type', code: response.status });
 
     if (response.status !== 200) {
@@ -38,6 +48,12 @@ export default async function mediaTypeHandler(req: NextApiRequest, res: NextApi
 
     res.status(200).json({ type: mediaType });
   } catch (error) {
-    res.status(200).json({ type: undefined });
+    // Return image as default for timeout/errors to show placeholder
+    if (error instanceof Error && error.name === 'AbortError') {
+      httpLogger.logger.warn({ message: 'API fetch timeout', url, duration: 3000 });
+      res.status(200).json({ type: 'image' }); // Default to image on timeout
+    } else {
+      res.status(200).json({ type: undefined });
+    }
   }
 }

@@ -18,13 +18,21 @@ const Icon = dynamic(
     switch (type) {
       case 'github': {
 
-        return (props: IconProps) => <IdenticonGithub iconSize={ props.size } seed={ props.hash }/>;
+        return (props: IconProps) => {
+          if (!props.hash) {
+            return null;
+          }
+          return <IdenticonGithub iconSize={ props.size } seed={ props.hash }/>;
+        };
       }
 
       case 'blockie': {
         const { blo } = (await import('blo'));
 
         return (props: IconProps) => {
+          if (!props.hash) {
+            return null;
+          }
           const data = blo(props.hash as `0x${ string }`, props.size);
           return (
             <Image
@@ -39,6 +47,9 @@ const Icon = dynamic(
         const Jazzicon = await import('react-jazzicon');
 
         return (props: IconProps) => {
+          if (!props.hash) {
+            return null;
+          }
           return (
             <Jazzicon.default
               diameter={ props.size }
@@ -52,6 +63,9 @@ const Icon = dynamic(
         const GradientAvatar = (await import('gradient-avatar')).default;
 
         return (props: IconProps) => {
+          if (!props.hash) {
+            return null;
+          }
           const svg = GradientAvatar(props.hash, props.size, 'circle');
           return <Box display="flex" dangerouslySetInnerHTML={{ __html: svg }}/>;
         };
@@ -61,6 +75,9 @@ const Icon = dynamic(
         const NounsIdenticon = (await import('./NounsIdenticon')).default;
 
         return (props: IconProps) => {
+          if (!props.hash) {
+            return null;
+          }
           return <NounsIdenticon hash={ props.hash } size={ props.size }/>;
         };
       }
