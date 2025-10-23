@@ -166,7 +166,7 @@ const AddressPageContent = () => {
     isEnabled: !countersQuery.isPlaceholderData && !countersQuery.isDegradedData,
   });
 
-  const isSafeAddress = useIsSafeAddress(!addressQuery.isPlaceholderData && addressQuery.data?.is_contract ? hash : undefined);
+  const isSafeAddress = useIsSafeAddress(!addressQuery.isPlaceholderData && addressQuery.data?.is_contract ? addressQuery.data.hash : undefined);
 
   const xStarQuery = useFetchXStarScore({ hash });
 
