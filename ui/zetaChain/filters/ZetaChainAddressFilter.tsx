@@ -75,6 +75,7 @@ const ChainSelect = ({ chainsConfig, value, onValueChange, ...props }: ChainSele
       { ...props }
       chainsConfig={ chainsConfig }
       withAllOption
+      mode="default"
       value={ formattedValue }
       onValueChange={ handleValueChange }
       size="sm"

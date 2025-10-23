@@ -209,6 +209,7 @@ const Revoke = () => {
             <ChainSelect
               value={ selectedChainId }
               onValueChange={ handleChainValueChange }
+              mode="default"
             />
           </Flex>
         </Flex>
