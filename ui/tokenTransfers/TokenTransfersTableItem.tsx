@@ -40,13 +40,17 @@ const TokenTransferTableItem = ({ item, isLoading, chainData }: Props) => {
         </TableCell>
       ) }
       <TableCell>
-        <TxEntity
-          hash={ item.transaction_hash }
-          isLoading={ isLoading }
-          fontWeight={ 600 }
-          noIcon
-          truncation="constant_long"
-        />
+        { item.transaction_hash ? (
+          <TxEntity
+            hash={ item.transaction_hash }
+            isLoading={ isLoading }
+            fontWeight={ 600 }
+            noIcon
+            truncation="constant_long"
+          />
+        ) : (
+          <Skeleton loading={ isLoading }>-</Skeleton>
+        ) }
         <TimeWithTooltip
           timestamp={ item.timestamp }
           enableIncrement
