@@ -46,7 +46,6 @@ const SearchBarSuggestAddress = ({ data, isMobile, searchTerm, addressFormat }: 
         ens_domain_name: null,
         implementations: null,
       }}
-      shield={ 'is_multichain' in data && data.is_multichain && data.is_multichain ? { name: 'pie_chart' } : undefined }
     />
   );
   const addressName = (() => {

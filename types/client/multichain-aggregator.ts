@@ -54,7 +54,6 @@ export interface QuickSearchResultTransaction {
 export interface QuickSearchResultAddress {
   type: 'address';
   address_hash: string;
-  is_multichain: boolean;
   chain_infos: Record<string, multichain.GetAddressResponse_ChainInfo>;
 }
 

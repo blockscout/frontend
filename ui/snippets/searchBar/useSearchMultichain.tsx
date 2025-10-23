@@ -50,7 +50,6 @@ export default function useSearchMultichain({ searchTerm, enabled }: Props) {
           const items: Array<QuickSearchResultItem> = data.addresses.map((item) => ({
             type: 'address' as const,
             address_hash: item.hash,
-            is_multichain: true,
             chain_infos: item.chain_infos,
           }));
           result.push(...items);

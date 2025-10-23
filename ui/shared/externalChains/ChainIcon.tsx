@@ -16,9 +16,9 @@ interface Props extends ImageProps {
   noTooltip?: boolean;
 }
 
-const ChainIcon = ({ data, boxSize = 5, borderRadius = 'full', isLoading, noTooltip, ...rest }: Props) => {
+const ChainIcon = ({ data, boxSize = 5, borderRadius = 'none', isLoading, noTooltip, ...rest }: Props) => {
   if (isLoading) {
-    return <Skeleton boxSize={ boxSize } borderRadius={ borderRadius } { ...rest } loading/>;
+    return <Skeleton boxSize={ boxSize } borderRadius={ borderRadius === 'none' ? 'full' : borderRadius } { ...rest } loading/>;
   }
 
   const placeholder = <IconSvg name="networks/icon-placeholder" boxSize={ boxSize } color="icon.primary"/>;

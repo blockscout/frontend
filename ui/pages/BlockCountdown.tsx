@@ -126,6 +126,7 @@ const BlockCountdown = ({ hideCapybaraRunner }: Props) => {
                 right={{ base: '45px', lg: '86px' }}
                 boxSize={{ lg: '60px' }}
                 bgColor="bg.primary"
+                borderRadius="full"
               />
             ) }
           </Box>

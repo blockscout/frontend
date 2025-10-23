@@ -30,9 +30,6 @@ const SearchResultItemAddress = ({ data, isMobile }: Props) => {
             is_contract: Object.values(data.chain_infos ?? {}).every((chainInfo) => chainInfo.is_contract),
             is_verified: Object.values(data.chain_infos ?? {}).every((chainInfo) => chainInfo.is_verified),
           }}
-          icon={{
-            shield: { name: 'pie_chart' },
-          }}
           truncation={ !isMobile ? 'constant' : 'dynamic' }
           noLink
           noCopy

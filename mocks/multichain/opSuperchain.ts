@@ -7,6 +7,7 @@ export const chainDataA = {
   name: 'OP Mainnet',
   id: '420',
   logo: 'https://example.com/logo_s.png',
+  explorer_url: 'https://op-mainnet.com',
   app_config: {
     app: {
       baseUrl: 'https://op-mainnet.com',
@@ -48,6 +49,7 @@ export const chainDataB = {
   name: 'OP Testnet',
   logo: 'https://example.com/logo_md.png',
   slug: 'op-testnet',
+  explorer_url: 'https://op-testnet.com',
   app_config: {
     ...chainDataA.app_config,
     app: {
@@ -68,6 +70,7 @@ export const chainDataC = {
   id: '422',
   name: 'OP Devnet',
   slug: 'op-devnet',
+  explorer_url: 'https://op-devnet.com',
   logo: undefined,
   app_config: {
     ...chainDataA.app_config,
