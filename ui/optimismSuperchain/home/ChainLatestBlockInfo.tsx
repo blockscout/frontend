@@ -55,10 +55,9 @@ const ChainLatestBlockInfo = ({ chainData }: Props) => {
       <Link
         loading={ blocksQuery.isPlaceholderData }
         href={ route({
-          pathname: '/chain/[chain-slug]/block/[height_or_hash]',
+          pathname: '/chain/[chain_slug]/block/[height_or_hash]',
           query: {
-            // TODO @tom2drum rename chain-slug to chain_slug
-            'chain-slug': chainData.slug,
+            chain_slug: chainData.slug,
             height_or_hash: blocksQuery.data[0].height.toString(),
           },
         }) }

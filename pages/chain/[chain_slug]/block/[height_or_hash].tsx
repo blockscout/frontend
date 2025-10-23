@@ -7,13 +7,13 @@ import PageNextJs from 'nextjs/PageNextJs';
 
 import { MultichainProvider } from 'lib/contexts/multichain';
 
-const UserOp = dynamic(() => import('ui/pages/UserOp'), { ssr: false });
+const Block = dynamic(() => import('ui/pages/Block'), { ssr: false });
 
 const Page: NextPage<Props> = (props: Props) => {
   return (
-    <PageNextJs pathname="/chain/[chain-slug]/op/[hash]" query={ props.query }>
+    <PageNextJs pathname="/chain/[chain_slug]/block/[height_or_hash]" query={ props.query }>
       <MultichainProvider>
-        <UserOp/>
+        <Block/>
       </MultichainProvider>
     </PageNextJs>
   );
@@ -21,4 +21,4 @@ const Page: NextPage<Props> = (props: Props) => {
 
 export default Page;
 
-export { userOps as getServerSideProps } from 'nextjs/getServerSideProps/multichain';
+export { base as getServerSideProps } from 'nextjs/getServerSideProps/multichain';

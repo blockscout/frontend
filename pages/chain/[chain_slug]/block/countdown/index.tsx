@@ -11,7 +11,7 @@ const BlockCountdownIndex = dynamic(() => import('ui/pages/BlockCountdownIndex')
 
 const Page: NextPage<Props> = (props: Props) => {
   return (
-    <PageNextJs pathname="/chain/[chain-slug]/block/countdown" query={ props.query }>
+    <PageNextJs pathname="/chain/[chain_slug]/block/countdown" query={ props.query }>
       <MultichainProvider>
         <BlockCountdownIndex/>
       </MultichainProvider>

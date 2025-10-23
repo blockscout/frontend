@@ -11,7 +11,7 @@ const BlockCountdown = dynamic(() => import('ui/pages/BlockCountdown'), { ssr: f
 
 const Page: NextPage<Props> = (props: Props) => {
   return (
-    <PageNextJs pathname="/chain/[chain-slug]/block/countdown/[height]" query={ props.query }>
+    <PageNextJs pathname="/chain/[chain_slug]/block/countdown/[height]" query={ props.query }>
       <MultichainProvider>
         <BlockCountdown/>
       </MultichainProvider>

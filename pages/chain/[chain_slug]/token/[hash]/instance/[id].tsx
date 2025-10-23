@@ -14,7 +14,7 @@ import TokenInstance from 'ui/pages/TokenInstance';
 const pathname: Route['pathname'] = '/token/[hash]/instance/[id]';
 
 const Page: NextPage<Props<typeof pathname>> = (props: Props<typeof pathname>) => {
-  const chainSlug = props.query?.['chain-slug'];
+  const chainSlug = props.query?.['chain_slug'];
   const chainData = multichainConfig()?.chains.find(chain => chain.slug === chainSlug);
 
   return (

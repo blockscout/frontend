@@ -14,7 +14,7 @@ export default function getChainValueFromQuery(
   }
 
   const chainId = getQueryParamString(query.chain_id);
-  const chainSlug = getQueryParamString(query['chain-slug']);
+  const chainSlug = getQueryParamString(query.chain_slug);
 
   if (chainId) {
     if (config.chains.some((chain) => chain.id === chainId)) {

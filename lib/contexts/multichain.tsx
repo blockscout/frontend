@@ -20,7 +20,7 @@ export const MultichainContext = React.createContext<TMultichainContext | null>(
 
 export function MultichainProvider({ children, chainId: chainIdProp }: MultichainProviderProps) {
   const router = useRouter();
-  const chainSlugQueryParam = router.pathname.includes('chain-slug') ? getQueryParamString(router.query['chain-slug']) : undefined;
+  const chainSlugQueryParam = router.pathname.includes('chain_slug') ? getQueryParamString(router.query.chain_slug) : undefined;
 
   const [ chainId, setChainId ] = React.useState<string | undefined>(
     chainIdProp ??
