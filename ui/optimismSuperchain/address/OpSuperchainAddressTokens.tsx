@@ -17,7 +17,7 @@ import AddressNFTs from 'ui/address/tokens/AddressNFTs';
 import AddressNftTypeFilter from 'ui/address/tokens/AddressNftTypeFilter';
 import ERC20Tokens from 'ui/address/tokens/ERC20Tokens';
 import useAddressNftQuery from 'ui/address/tokens/useAddressNftQuery';
-import ChainSelect from 'ui/shared/multichain/ChainSelect';
+import ChainSelect from 'ui/optimismSuperchain/components/ChainSelect';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 

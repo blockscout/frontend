@@ -4,9 +4,8 @@ import React from 'react';
 import { route } from 'nextjs/routes';
 
 import { useMultichainContext } from 'lib/contexts/multichain';
-import getChainTooltipText from 'lib/multichain/getChainTooltipText';
-import getIconUrl from 'lib/multichain/getIconUrl';
 import * as EntityBase from 'ui/shared/entities/base/components';
+import getChainTooltipText from 'ui/shared/externalChains/getChainTooltipText';
 
 import { distributeEntityProps } from '../base/utils';
 
@@ -33,7 +32,7 @@ const Icon = (props: EntityBase.IconBaseProps) => {
     <EntityBase.Icon
       { ...props }
       name={ 'name' in props ? props.name : 'user_op_slim' }
-      shield={ props.shield ?? (props.chain ? { src: getIconUrl(props.chain) } : undefined) }
+      shield={ props.shield ?? (props.chain ? { src: props.chain.logo } : undefined) }
       hint={ props.chain ? getChainTooltipText(props.chain, 'User operation on ') : undefined }
     />
   );

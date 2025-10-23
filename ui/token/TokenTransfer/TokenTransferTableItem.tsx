@@ -10,10 +10,10 @@ import { NFT_TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
 import { Badge } from 'toolkit/chakra/badge';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
-import ChainIcon from 'ui/optimismSuperchain/components/ChainIcon';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
+import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 type Props = TokenTransfer & { tokenId?: string; isLoading?: boolean; instance?: TokenInstance; chainData?: ClusterChainConfig };

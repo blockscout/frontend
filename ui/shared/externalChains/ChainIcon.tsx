@@ -1,40 +1,39 @@
 import React from 'react';
 
-import type { ClusterChainConfig } from 'types/multichain';
+import type { ExternalChain } from 'types/externalChains';
 
-import getChainTooltipText from 'lib/multichain/getChainTooltipText';
-import getIconUrl from 'lib/multichain/getIconUrl';
 import type { ImageProps } from 'toolkit/chakra/image';
 import { Image } from 'toolkit/chakra/image';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import IconSvg from 'ui/shared/IconSvg';
 
+import getChainTooltipText from './getChainTooltipText';
+
 interface Props extends ImageProps {
-  data: ClusterChainConfig;
+  data: Omit<ExternalChain, 'explorer_url'> | undefined;
   isLoading?: boolean;
-  withTooltip?: boolean;
+  noTooltip?: boolean;
 }
 
-const ChainIcon = ({ data, boxSize = 5, borderRadius = 'full', isLoading, withTooltip, ...rest }: Props) => {
+const ChainIcon = ({ data, boxSize = 5, borderRadius = 'full', isLoading, noTooltip, ...rest }: Props) => {
   if (isLoading) {
     return <Skeleton boxSize={ boxSize } borderRadius={ borderRadius } { ...rest } loading/>;
   }
 
-  const src = getIconUrl(data);
-  const placeholder = <IconSvg name="networks/icon-placeholder" boxSize={ boxSize } color="text.secondary"/>;
+  const placeholder = <IconSvg name="networks/icon-placeholder" boxSize={ boxSize } color="icon.primary"/>;
   const content = (
     <Image
-      src={ src }
+      src={ data?.logo }
       boxSize={ boxSize }
       borderRadius={ borderRadius }
       fallback={ placeholder }
-      alt={ `${ data.name } chain icon` }
+      alt={ `${ data?.name || 'Unknown' } chain icon` }
       { ...rest }
     />
   );
 
-  if (withTooltip) {
+  if (!noTooltip) {
     return (
       <Tooltip content={ getChainTooltipText(data) }>
         { content }

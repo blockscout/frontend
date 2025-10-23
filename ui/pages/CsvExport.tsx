@@ -14,9 +14,9 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 import { nbsp } from 'toolkit/utils/htmlEntities';
 import CsvExportForm from 'ui/csvExport/CsvExportForm';
-import ChainIcon from 'ui/optimismSuperchain/components/ChainIcon';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
+import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 interface ExportTypeEntity {

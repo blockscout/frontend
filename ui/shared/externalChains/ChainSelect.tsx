@@ -1,44 +1,48 @@
 import { createListCollection } from '@chakra-ui/react';
 import React from 'react';
 
-import multichainConfig from 'configs/multichain';
+import type { ExternalChain } from 'types/externalChains';
+
 import useIsInitialLoading from 'lib/hooks/useIsInitialLoading';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { Select } from 'toolkit/chakra/select';
 import type { SelectOption, SelectProps, ViewMode } from 'toolkit/chakra/select';
-import ChainIcon from 'ui/optimismSuperchain/components/ChainIcon';
 import IconSvg from 'ui/shared/IconSvg';
 
-interface Props extends Omit<SelectProps, 'collection' | 'placeholder'> {
+import ChainIcon from './ChainIcon';
+
+const ALL_OPTION = {
+  value: 'all',
+  label: 'All chains',
+  icon: <IconSvg name="apps_slim" boxSize={ 5 }/>,
+};
+
+export interface Props extends Omit<SelectProps, 'collection' | 'placeholder'> {
   loading?: boolean;
   mode?: ViewMode;
+  chainsConfig: Array<Omit<ExternalChain, 'explorer_url'>>;
   chainIds?: Array<string>;
   withAllOption?: boolean;
 }
 
-const ChainSelect = ({ loading, mode, chainIds, withAllOption, ...props }: Props) => {
+const ChainSelect = ({ loading, mode, chainsConfig, chainIds, withAllOption, ...props }: Props) => {
   const isInitialLoading = useIsInitialLoading(loading);
   const isMobile = useIsMobile();
 
   const collection = React.useMemo(() => {
 
-    const chainItems = multichainConfig()?.chains
+    const chainItems = chainsConfig
       .filter((chain) => !chainIds || chainIds.includes(chain.id))
       .map((chain) => ({
         value: chain.id,
         label: chain.name || `Chain ${ chain.id }`,
-        icon: <ChainIcon data={ chain } alt={ `${ chain.name } logo` }/>,
+        icon: <ChainIcon data={ chain } alt={ `${ chain.name } logo` } borderRadius="none" noTooltip/>,
       })) || [];
-    const allOption = withAllOption ? {
-      value: 'all',
-      label: 'All chains',
-      icon: <IconSvg name="apps_slim" boxSize={ 5 }/>,
-    } : null;
 
-    const items = [ allOption, ...chainItems ].filter(Boolean);
+    const items = [ withAllOption ? ALL_OPTION : undefined, ...chainItems ].filter(Boolean);
 
     return createListCollection<SelectOption>({ items });
-  }, [ chainIds, withAllOption ]);
+  }, [ chainIds, chainsConfig, withAllOption ]);
 
   return (
     <Select

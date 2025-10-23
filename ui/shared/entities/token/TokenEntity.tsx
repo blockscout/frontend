@@ -8,12 +8,11 @@ import { route } from 'nextjs/routes';
 
 import config from 'configs/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
-import getChainTooltipText from 'lib/multichain/getChainTooltipText';
-import getIconUrl from 'lib/multichain/getIconUrl';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { TruncatedTextTooltip } from 'toolkit/components/truncation/TruncatedTextTooltip';
 import * as EntityBase from 'ui/shared/entities/base/components';
+import getChainTooltipText from 'ui/shared/externalChains/getChainTooltipText';
 import IconSvg from 'ui/shared/IconSvg';
 import TokenLogoPlaceholder from 'ui/shared/TokenLogoPlaceholder';
 
@@ -56,7 +55,7 @@ const Icon = (props: IconProps) => {
       src={ props.token.icon_url ?? undefined }
       alt={ `${ props.token.name || 'token' } logo` }
       fallback={ <TokenLogoPlaceholder/> }
-      shield={ props.shield ?? (props.chain ? { src: getIconUrl(props.chain) } : undefined) }
+      shield={ props.shield ?? (props.chain ? { src: props.chain.logo } : undefined) }
       hint={ props.chain ? getChainTooltipText(props.chain, 'Token on ') : undefined }
       { ...props }
     />

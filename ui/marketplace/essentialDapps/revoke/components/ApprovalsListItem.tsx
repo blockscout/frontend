@@ -4,8 +4,6 @@ import React, { useCallback, useState } from 'react';
 import type { EssentialDappsChainConfig } from 'types/client/marketplace';
 import type { AllowanceType } from 'types/client/revoke';
 
-import { route } from 'nextjs/routes';
-
 import dayjs from 'lib/date/dayjs';
 import { Button } from 'toolkit/chakra/button';
 import { Skeleton } from 'toolkit/chakra/skeleton';
@@ -79,7 +77,7 @@ export default function ApprovalsListItem({
           truncation="constant"
           noIcon
           isLoading={ isLoading }
-          href={ route({ pathname: '/token/[hash]', query: { hash: approval.address } }, { chain: selectedChain, external: true }) }
+          chain={ selectedChain }
           link={{ noIcon: true, external: true }}
         />
       </ListItemMobileGrid.Value>
@@ -90,7 +88,7 @@ export default function ApprovalsListItem({
           truncation="constant"
           noIcon
           isLoading={ isLoading }
-          href={ route({ pathname: '/address/[hash]', query: { hash: approval.spender } }, { chain: selectedChain, external: true }) }
+          chain={ selectedChain }
           link={{ noIcon: true, external: true }}
         />
       </ListItemMobileGrid.Value>

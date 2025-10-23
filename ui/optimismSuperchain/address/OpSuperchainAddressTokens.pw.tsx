@@ -1,7 +1,6 @@
 import type { Locator } from '@playwright/test';
 import React from 'react';
 
-import getIconUrl from 'lib/multichain/getIconUrl';
 import * as tokensMock from 'mocks/address/tokens';
 import * as opSuperchainMock from 'mocks/multichain/opSuperchain';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
@@ -43,8 +42,8 @@ test.describe('tokens', () => {
   let component: Locator;
 
   test.beforeEach(async({ render, mockAssetResponse }) => {
-    await mockAssetResponse(getIconUrl(opSuperchainMock.chainDataA) as string, './playwright/mocks/image_s.jpg');
-    await mockAssetResponse(getIconUrl(opSuperchainMock.chainDataB) as string, './playwright/mocks/image_md.jpg');
+    await mockAssetResponse(opSuperchainMock.chainDataA.logo as string, './playwright/mocks/image_s.jpg');
+    await mockAssetResponse(opSuperchainMock.chainDataB.logo as string, './playwright/mocks/image_md.jpg');
 
     component = await render(
       <OpSuperchainAddressTokens addressData={ opSuperchainMock.addressA }/>,
@@ -88,7 +87,7 @@ test.describe('nfts', () => {
       { ...tokensMock.collections, items: [ tokensMock.collections.items[2] ] },
       { pathParams: { hash: CURRENT_ADDRESS }, queryParams: { type: [] }, chainConfig: opSuperchainMock.chainDataA },
     );
-    await mockAssetResponse(getIconUrl(opSuperchainMock.chainDataA) as string, './playwright/mocks/image_s.jpg');
+    await mockAssetResponse(opSuperchainMock.chainDataA.logo as string, './playwright/mocks/image_s.jpg');
 
     component = await render(
       <OpSuperchainAddressTokens addressData={ opSuperchainMock.addressA }/>,

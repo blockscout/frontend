@@ -8,9 +8,9 @@ import { apos } from 'toolkit/utils/htmlEntities';
 import InternalTxsList from 'ui/internalTxs/InternalTxsList';
 import InternalTxsTable from 'ui/internalTxs/InternalTxsTable';
 import useInternalTxsQuery from 'ui/internalTxs/useInternalTxsQuery';
+import ChainSelect from 'ui/optimismSuperchain/components/ChainSelect';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import ChainSelect from 'ui/shared/multichain/ChainSelect';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 

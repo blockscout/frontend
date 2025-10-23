@@ -4,8 +4,6 @@ import { useCallback, useState } from 'react';
 import type { EssentialDappsChainConfig } from 'types/client/marketplace';
 import type { AllowanceType } from 'types/client/revoke';
 
-import { route } from 'nextjs/routes';
-
 import { Button } from 'toolkit/chakra/button';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableRow, TableCell } from 'toolkit/chakra/table';
@@ -64,7 +62,7 @@ export default function ApprovalsTableItem({
             jointSymbol
             textStyle="sm"
             fontWeight="600"
-            href={ route({ pathname: '/token/[hash]', query: { hash: approval.address } }, { chain: selectedChain, external: true }) }
+            chain={ selectedChain }
             link={{ noIcon: true, external: true }}
           />
           <AddressEntity
@@ -72,7 +70,7 @@ export default function ApprovalsTableItem({
             truncation="constant"
             noIcon
             isLoading={ isLoading }
-            href={ route({ pathname: '/token/[hash]', query: { hash: approval.address } }, { chain: selectedChain, external: true }) }
+            chain={ selectedChain }
             link={{ variant: 'secondary', noIcon: true, external: true }}
           />
         </Flex>
@@ -83,7 +81,7 @@ export default function ApprovalsTableItem({
           truncation="constant"
           noIcon
           isLoading={ isLoading }
-          href={ route({ pathname: '/address/[hash]', query: { hash: approval.spender } }, { chain: selectedChain, external: true }) }
+          chain={ selectedChain }
           link={{ noIcon: true, external: true }}
         />
       </TableCell>

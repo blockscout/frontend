@@ -4,8 +4,8 @@ import React from 'react';
 import { type RelatedCctx, CctxStatusReduced } from '@blockscout/zetachain-cctx-types';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import ChainIcon from 'ui/shared/ChainIcon';
 import TxEntityZetaChainCC from 'ui/shared/entities/tx/TxEntityZetaChainCC';
+import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 import IconSvg from 'ui/shared/IconSvg';
 import ZetaChainCCTXReducedStatus from 'ui/shared/zetaChain/ZetaChainCCTXReducedStatus';
 import useZetaChainConfig from 'ui/zetaChain/useZetaChainConfig';
@@ -40,9 +40,9 @@ const ZetaChainCCTXDetailsRelatedTx = ({ tx, isLoading }: Props) => {
       color={ color }
       maxH="20px"
     >
-      <ChainIcon chain={ chainFrom }/>
+      <ChainIcon data={ chainFrom }/>
       <IconSvg name="arrows/east" boxSize={ 5 } color="text.secondary"/>
-      { chainsTo.map((chain, index) => <ChainIcon key={ index } chain={ chain }/>) }
+      { chainsTo.map((chain, index) => <ChainIcon key={ index } data={ chain }/>) }
       <Box>CCTX</Box>
       <TxEntityZetaChainCC hash={ tx.index } isLoading={ isLoading } noIcon truncation="constant"/>
       <ZetaChainCCTXReducedStatus status={ tx.status_reduced } isLoading={ isLoading } type="full"/>

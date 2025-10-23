@@ -8,7 +8,7 @@ import { MultichainProvider } from 'lib/contexts/multichain';
 import useRoutedChainSelect from 'lib/multichain/useRoutedChainSelect';
 import { SocketProvider } from 'lib/socket/context';
 import AddressCoinBalance from 'ui/address/AddressCoinBalance';
-import ChainSelect from 'ui/shared/multichain/ChainSelect';
+import ChainSelect from 'ui/optimismSuperchain/components/ChainSelect';
 
 import getAvailableChainIds from './getAvailableChainIds';
 

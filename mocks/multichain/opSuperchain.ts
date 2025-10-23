@@ -4,13 +4,14 @@ import type { ClusterChainConfig } from 'types/multichain';
 
 export const chainDataA = {
   slug: 'op-mainnet',
+  name: 'OP Mainnet',
+  id: '420',
+  logo: 'https://example.com/logo_s.png',
   app_config: {
     app: {
       baseUrl: 'https://op-mainnet.com',
     },
     chain: {
-      name: 'OP Mainnet',
-      id: '420',
       currency: {
         name: 'Ether',
         symbol: 'ETH',
@@ -19,13 +20,6 @@ export const chainDataA = {
       rpcUrls: [
         'https://rpc.op-mainnet.com',
       ],
-    },
-    UI: {
-      navigation: {
-        icon: {
-          'default': '/logo.png',
-        },
-      },
     },
     apis: {
       general: {
@@ -50,23 +44,14 @@ export const chainDataA = {
 
 export const chainDataB = {
   ...chainDataA,
+  id: '421',
+  name: 'OP Testnet',
+  logo: 'https://example.com/logo_md.png',
   slug: 'op-testnet',
   app_config: {
     ...chainDataA.app_config,
     app: {
       baseUrl: 'https://op-testnet.com',
-    },
-    chain: {
-      ...chainDataA.app_config?.chain,
-      id: '421',
-      name: 'OP Testnet',
-    },
-    UI: {
-      navigation: {
-        icon: {
-          'default': '/logo_md.png',
-        },
-      },
     },
     apis: {
       general: {
@@ -80,21 +65,14 @@ export const chainDataB = {
 
 export const chainDataC = {
   ...chainDataA,
+  id: '422',
+  name: 'OP Devnet',
   slug: 'op-devnet',
+  logo: undefined,
   app_config: {
     ...chainDataA.app_config,
     app: {
       baseUrl: 'https://op-devnet.com',
-    },
-    chain: {
-      ...chainDataA.app_config?.chain,
-      id: '422',
-      name: 'OP Devnet',
-    },
-    UI: {
-      navigation: {
-        icon: {},
-      },
     },
     apis: {
       general: {

@@ -8,12 +8,11 @@ import { route } from 'nextjs/routes';
 import { toBech32Address } from 'lib/address/bech32';
 import { useAddressHighlightContext } from 'lib/contexts/addressHighlight';
 import { useSettingsContext } from 'lib/contexts/settings';
-import getChainTooltipText from 'lib/multichain/getChainTooltipText';
-import getIconUrl from 'lib/multichain/getIconUrl';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import * as EntityBase from 'ui/shared/entities/base/components';
 import { getTagName } from 'ui/shared/EntityTags/utils';
+import getChainTooltipText from 'ui/shared/externalChains/getChainTooltipText';
 import type { IconName } from 'ui/shared/IconSvg';
 
 import { distributeEntityProps, getContentProps, getIconProps } from '../base/utils';
@@ -50,7 +49,7 @@ const Icon = (props: IconProps) => {
     return null;
   }
 
-  const shield = props.shield ?? (props.chain ? { src: getIconUrl(props.chain) } : undefined);
+  const shield = props.shield ?? (props.chain ? { src: props.chain.logo } : undefined);
   const hintPostfix: string = props.hintPostfix ?? (props.chain ? getChainTooltipText(props.chain, ' on') : '');
 
   const styles = getIconProps(props, Boolean(shield));

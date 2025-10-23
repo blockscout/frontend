@@ -9,10 +9,10 @@ import getQueryParamString from 'lib/router/getQueryParamString';
 import { LOG } from 'stubs/log';
 import { generateListStub } from 'stubs/utils';
 import AddressCsvExportLink from 'ui/address/AddressCsvExportLink';
+import ChainSelect from 'ui/optimismSuperchain/components/ChainSelect';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import LogItem from 'ui/shared/logs/LogItem';
-import ChainSelect from 'ui/shared/multichain/ChainSelect';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 

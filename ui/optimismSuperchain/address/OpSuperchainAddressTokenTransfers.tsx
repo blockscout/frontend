@@ -16,8 +16,8 @@ import AddressAdvancedFilterLink from 'ui/address/AddressAdvancedFilterLink';
 import AddressCsvExportLink from 'ui/address/AddressCsvExportLink';
 import useAddressTokenTransfersQuery from 'ui/address/useAddressTokenTransfersQuery';
 import useAddressCountersQuery from 'ui/address/utils/useAddressCountersQuery';
+import ChainSelect from 'ui/optimismSuperchain/components/ChainSelect';
 import ComingSoon from 'ui/shared/ComingSoon';
-import ChainSelect from 'ui/shared/multichain/ChainSelect';
 import Pagination from 'ui/shared/pagination/Pagination';
 import TokenTransferFilter from 'ui/shared/TokenTransfer/TokenTransferFilter';
 

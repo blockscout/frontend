@@ -10,8 +10,8 @@ import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoSponsoredItem from 'ui/shared/DetailedInfo/DetailedInfoSponsoredItem';
+import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 
-import ChainIcon from '../components/ChainIcon';
 import OpSuperchainAddressCoinBalance from './details/OpSuperchainAddressCoinBalance';
 import OpSuperchainAddressContractName from './details/OpSuperchainAddressContractName';
 import OpSuperchainAddressNetWorth from './details/OpSuperchainAddressNetWorth';
@@ -53,7 +53,6 @@ const OpSuperchainAddressDetails = ({ data, addressHash, isLoading }: Props) => 
             { activeChains.map((chain) => (
               <Link
                 key={ chain.id }
-                // TODO @tom2drum replace after refactoring link builder
                 href={ route({
                   pathname: '/address/[hash]',
                   query: {

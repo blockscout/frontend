@@ -7,7 +7,7 @@ import { routeParams } from 'nextjs/routes';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import { Heading } from 'toolkit/chakra/heading';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
-import ChainIcon from 'ui/optimismSuperchain/components/ChainIcon';
+import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 import IconSvg from 'ui/shared/IconSvg';
 
 const BlockCountdownIndex = () => {

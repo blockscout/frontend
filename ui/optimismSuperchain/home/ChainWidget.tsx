@@ -11,11 +11,11 @@ import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
+import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 import GasPrice from 'ui/shared/gas/GasPrice';
 import IconSvg from 'ui/shared/IconSvg';
 import RollupStageBadge from 'ui/snippets/navigation/RollupStageBadge';
 
-import ChainIcon from '../components/ChainIcon';
 import ChainLatestBlockInfo from './ChainLatestBlockInfo';
 
 interface Props {

@@ -10,9 +10,9 @@ import AddressTxsFilter from 'ui/address/AddressTxsFilter';
 import useAddressInternalTxsQuery from 'ui/address/useAddressInternalTxsQuery';
 import InternalTxsList from 'ui/internalTxs/InternalTxsList';
 import InternalTxsTable from 'ui/internalTxs/InternalTxsTable';
+import ChainSelect from 'ui/optimismSuperchain/components/ChainSelect';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import ChainSelect from 'ui/shared/multichain/ChainSelect';
 import Pagination from 'ui/shared/pagination/Pagination';
 
 import getAvailableChainIds from './getAvailableChainIds';

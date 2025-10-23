@@ -1,19 +1,17 @@
-import { Flex, VStack, createListCollection } from '@chakra-ui/react';
+import { Flex, VStack } from '@chakra-ui/react';
 import { isEqual } from 'es-toolkit';
 import type { ChangeEvent } from 'react';
 import React from 'react';
 
-import type { ZetaChainCCTXFilterParams, ZetaChainExternalChainConfig } from 'types/client/zetaChain';
+import type { ZetaChainCCTXFilterParams } from 'types/client/zetaChain';
 
-import { Image } from 'toolkit/chakra/image';
 import { Input } from 'toolkit/chakra/input';
 import { InputGroup } from 'toolkit/chakra/input-group';
-import { Select } from 'toolkit/chakra/select';
-import type { SelectOption } from 'toolkit/chakra/select';
 import AddButton from 'toolkit/components/buttons/AddButton';
 import { ClearButton } from 'toolkit/components/buttons/ClearButton';
+import type { Props as ChainSelectBaseProps } from 'ui/shared/externalChains/ChainSelect';
+import ChainSelectBase from 'ui/shared/externalChains/ChainSelect';
 import TableColumnFilter from 'ui/shared/filters/TableColumnFilter';
-import IconSvg from 'ui/shared/IconSvg';
 import useZetaChainConfig from 'ui/zetaChain/useZetaChainConfig';
 
 type Props = {
@@ -38,13 +36,6 @@ type InputProps = {
   placeholder: string;
 };
 
-type ChainSelectProps = {
-  selectedChains: Array<string>;
-  onChainChange: (chains: Array<string>) => void;
-  chains: Array<ZetaChainExternalChainConfig>;
-  isLoading: boolean;
-};
-
 const AddressFilterInput = ({ address, onChange, onClear, isLast, onAddFieldClick, placeholder }: InputProps) => {
   return (
     <Flex alignItems="center" w="100%">
@@ -64,49 +55,30 @@ const AddressFilterInput = ({ address, onChange, onClear, isLast, onAddFieldClic
   );
 };
 
-// TODO @tom2drum refactor chain selects
-const ChainSelect = ({ selectedChains, onChainChange, chains, isLoading }: ChainSelectProps) => {
-  const collection = React.useMemo(() => {
-    const options: Array<SelectOption> = [
-      { value: 'all', label: 'All chains' },
-      ...chains.map(chain => ({
-        value: chain.id.toString(),
-        label: chain.name,
-        renderLabel: () => (
-          <Flex alignItems="center" gap={ 2 }>
-            { chain.logo ? (
-              <Image src={ chain.logo } boxSize={ 5 } borderRadius="base" alt={ chain.name || 'chain logo' }/>
-            ) : (
-              <IconSvg name="networks/icon-placeholder" boxSize={ 5 } color="text.secondary"/>
-            ) }
-            <span>{ chain.name }</span>
-          </Flex>
-        ),
-      })),
-    ];
-    return createListCollection<SelectOption>({ items: options });
-  }, [ chains ]);
+interface ChainSelectProps extends ChainSelectBaseProps {}
 
-  const handleValueChange = React.useCallback(({ value }: { value: Array<string> }) => {
-    const chainIds = value.filter(v => v !== 'all');
-    onChainChange(chainIds);
-  }, [ onChainChange ]);
-
-  const selectedValues = React.useMemo(() => {
-    if (selectedChains.length === 0) {
+const ChainSelect = ({ chainsConfig, value, onValueChange, ...props }: ChainSelectProps) => {
+  const formattedValue = React.useMemo(() => {
+    if (!value || value.length === 0) {
       return [ 'all' ];
     }
-    return selectedChains.map(id => id.toString());
-  }, [ selectedChains ]);
 
+    return value;
+  }, [ value ]);
+
+  const handleValueChange = React.useCallback(({ value }: { value: Array<string> }) => {
+    const chainIds = value.filter(item => item !== 'all');
+    onValueChange?.({ value: chainIds, items: chainsConfig.filter(chain => chainIds.includes(chain.id)) });
+  }, [ chainsConfig, onValueChange ]);
   return (
-    <Select
-      collection={ collection }
-      placeholder="Select chains"
-      value={ selectedValues }
+    <ChainSelectBase
+      { ...props }
+      chainsConfig={ chainsConfig }
+      withAllOption
+      value={ formattedValue }
       onValueChange={ handleValueChange }
-      loading={ isLoading }
       size="sm"
+      w="full"
       positioning={{
         placement: 'bottom-start',
         sameWidth: true,
@@ -156,8 +128,8 @@ const ZetaChainAddressFilter = ({
     setCurrentValue(prev => [ ...prev, { address: '' } ]);
   }, []);
 
-  const handleChainChange = React.useCallback((chains: Array<string>) => {
-    setCurrentChainValue(chains);
+  const handleChainChange = React.useCallback(({ value }: { value: Array<string> }) => {
+    setCurrentChainValue(value);
   }, []);
 
   const onReset = React.useCallback(() => {
@@ -198,10 +170,10 @@ const ZetaChainAddressFilter = ({
     >
       <VStack gap={ 3 } align="stretch">
         <ChainSelect
-          selectedChains={ currentChainValue }
-          onChainChange={ handleChainChange }
-          chains={ chains }
-          isLoading={ isChainsLoading }
+          value={ currentChainValue }
+          onValueChange={ handleChainChange }
+          chainsConfig={ chains }
+          loading={ isChainsLoading }
         />
         <VStack gap={ 2 } align="stretch">
           { currentValue.map((item, index) => (

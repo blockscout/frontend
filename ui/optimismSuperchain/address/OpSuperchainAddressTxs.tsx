@@ -16,9 +16,9 @@ import AddressCsvExportLink from 'ui/address/AddressCsvExportLink';
 import AddressTxsFilter from 'ui/address/AddressTxsFilter';
 import useAddressTxsQuery from 'ui/address/useAddressTxsQuery';
 import useAddressCountersQuery from 'ui/address/utils/useAddressCountersQuery';
+import ChainSelect from 'ui/optimismSuperchain/components/ChainSelect';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import ComingSoon from 'ui/shared/ComingSoon';
-import ChainSelect from 'ui/shared/multichain/ChainSelect';
 import Pagination from 'ui/shared/pagination/Pagination';
 import TxsWithAPISorting from 'ui/txs/TxsWithAPISorting';
 

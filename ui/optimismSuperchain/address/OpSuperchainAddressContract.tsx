@@ -8,7 +8,7 @@ import useRoutedChainSelect from 'lib/multichain/useRoutedChainSelect';
 import { ADDRESS_INFO } from 'stubs/address';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import useContractTabs from 'ui/address/contract/useContractTabs';
-import ChainSelect from 'ui/shared/multichain/ChainSelect';
+import ChainSelect from 'ui/optimismSuperchain/components/ChainSelect';
 
 import getContractChainIds from './getContractChainIds';
 

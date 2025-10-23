@@ -5,12 +5,12 @@ import type { ClusterChainConfig } from 'types/multichain';
 
 import config from 'configs/app';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
-import ChainIcon from 'ui/optimismSuperchain/components/ChainIcon';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import AddressStringOrParam from 'ui/shared/entities/address/AddressStringOrParam';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import UserOpEntity from 'ui/shared/entities/userOp/UserOpEntity';
+import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import UserOpStatus from 'ui/shared/userOps/UserOpStatus';
 

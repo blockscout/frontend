@@ -18,7 +18,7 @@ import { downloadBlob } from 'toolkit/utils/file';
 import BlockCountdownTimer from 'ui/blockCountdown/BlockCountdownTimer';
 import createGoogleCalendarLink from 'ui/blockCountdown/createGoogleCalendarLink';
 import createIcsFileBlob from 'ui/blockCountdown/createIcsFileBlob';
-import ChainIcon from 'ui/optimismSuperchain/components/ChainIcon';
+import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 import IconSvg from 'ui/shared/IconSvg';
 import StatsWidget from 'ui/shared/stats/StatsWidget';
 import TruncatedValue from 'ui/shared/TruncatedValue';

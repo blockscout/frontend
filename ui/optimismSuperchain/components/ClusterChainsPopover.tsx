@@ -9,9 +9,8 @@ import multichainConfig from 'configs/multichain';
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';
 import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
+import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 import IconSvg from 'ui/shared/IconSvg';
-
-import ChainIcon from './ChainIcon';
 
 interface Props {
   addressHash: string;

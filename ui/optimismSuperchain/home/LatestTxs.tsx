@@ -8,8 +8,8 @@ import useRoutedChainSelect from 'lib/multichain/useRoutedChainSelect';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { Heading } from 'toolkit/chakra/heading';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
+import ChainSelect from 'ui/optimismSuperchain/components/ChainSelect';
 import ComingSoon from 'ui/shared/ComingSoon';
-import ChainSelect from 'ui/shared/multichain/ChainSelect';
 
 import LatestTxsLocal from './LatestTxsLocal';
 

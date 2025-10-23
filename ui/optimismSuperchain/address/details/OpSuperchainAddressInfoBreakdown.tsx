@@ -7,7 +7,7 @@ import multichainConfig from 'configs/multichain';
 import type { LinkProps } from 'toolkit/chakra/link';
 import { Link } from 'toolkit/chakra/link';
 import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
-import ChainIcon from 'ui/optimismSuperchain/components/ChainIcon';
+import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 
 interface Props<T> extends Omit<LinkProps, 'children'> {
   data: Record<string, T> | undefined;

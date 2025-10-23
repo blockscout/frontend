@@ -1,6 +1,5 @@
 import React from 'react';
 
-import getIconUrl from 'lib/multichain/getIconUrl';
 import * as opSuperchainMock from 'mocks/multichain/opSuperchain';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';
@@ -39,8 +38,8 @@ test('base view', async({ mockApiResponse, render, page, mockMultichainConfig, m
     next_page_params: undefined,
   }, { pathParams: { hash: CURRENT_ADDRESS }, queryParams: { type: 'ERC-404' } });
 
-  await mockAssetResponse(getIconUrl(opSuperchainMock.chainDataA) as string, './playwright/mocks/image_s.jpg');
-  await mockAssetResponse(getIconUrl(opSuperchainMock.chainDataB) as string, './playwright/mocks/image_md.jpg');
+  await mockAssetResponse(opSuperchainMock.chainDataA.logo as string, './playwright/mocks/image_s.jpg');
+  await mockAssetResponse(opSuperchainMock.chainDataB.logo as string, './playwright/mocks/image_md.jpg');
 
   const component = await render(
     <OpSuperchainAddress/>,
