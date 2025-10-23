@@ -4,7 +4,7 @@ import type * as multichain from '@blockscout/multichain-aggregator-types';
 
 import { route } from 'nextjs-routes';
 
-import getContractName from 'lib/multichain/getContractName';
+import * as contract from 'lib/multichain/contract';
 import shortenString from 'lib/shortenString';
 import { Badge } from 'toolkit/chakra/badge';
 import { Link } from 'toolkit/chakra/link';
@@ -21,7 +21,7 @@ const OpSuperchainAddressContractName = ({ data, isLoading }: Props) => {
     return null;
   }
 
-  const contractName = getContractName(data);
+  const contractName = contract.getName(data);
 
   return (
     <>

@@ -1,4 +1,5 @@
 import { Grid, Text, Flex } from '@chakra-ui/react';
+import { mapValues } from 'es-toolkit';
 import React from 'react';
 
 import type { ItemsProps } from './types';
@@ -7,6 +8,7 @@ import type * as multichain from 'types/client/multichain-aggregator';
 
 import { toBech32Address } from 'lib/address/bech32';
 import highlightText from 'lib/highlightText';
+import * as contract from 'lib/multichain/contract';
 import ContractCertifiedLabel from 'ui/shared/ContractCertifiedLabel';
 import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
@@ -25,7 +27,7 @@ const SearchBarSuggestToken = ({ data, isMobile, searchTerm, addressFormat, chai
 
   const isVerified = (() => {
     if ('chain_infos' in data) {
-      return Object.values(data.chain_infos).every((chainInfo) => chainInfo.is_verified);
+      return contract.isVerified({ chain_infos: mapValues(data.chain_infos, (chainInfo) => ({ ...chainInfo, is_contract: true, coin_balance: '0' })) });
     }
     return data.is_smart_contract_verified;
   })();

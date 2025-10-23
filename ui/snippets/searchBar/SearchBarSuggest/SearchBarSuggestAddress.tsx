@@ -8,7 +8,7 @@ import type * as multichain from 'types/client/multichain-aggregator';
 import { toBech32Address } from 'lib/address/bech32';
 import dayjs from 'lib/date/dayjs';
 import highlightText from 'lib/highlightText';
-import getContractName from 'lib/multichain/getContractName';
+import * as contract from 'lib/multichain/contract';
 import { ADDRESS_REGEXP } from 'toolkit/utils/regexp';
 import SearchResultEntityTag from 'ui/searchResults/SearchResultEntityTag';
 import ContractCertifiedLabel from 'ui/shared/ContractCertifiedLabel';
@@ -24,14 +24,14 @@ const SearchBarSuggestAddress = ({ data, isMobile, searchTerm, addressFormat }: 
 
   const isContract = (() => {
     if ('chain_infos' in data) {
-      return Object.values(data.chain_infos).every((chainInfo) => chainInfo.is_contract);
+      return contract.isContract(data);
     }
     return data.type === 'contract';
   })();
 
   const isVerified = (() => {
     if ('chain_infos' in data) {
-      return Object.values(data.chain_infos).every((chainInfo) => chainInfo.is_verified);
+      return contract.isVerified(data);
     }
     return data.is_smart_contract_verified;
   })();
@@ -50,7 +50,7 @@ const SearchBarSuggestAddress = ({ data, isMobile, searchTerm, addressFormat }: 
   );
   const addressName = (() => {
     if ('chain_infos' in data) {
-      return getContractName(data);
+      return contract.getName(data);
     }
     return data.name || data.ens_info?.name;
   })();

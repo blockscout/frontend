@@ -1,4 +1,5 @@
 import { Box, Flex, Text } from '@chakra-ui/react';
+import { mapValues } from 'es-toolkit';
 import React from 'react';
 
 import type * as multichain from '@blockscout/multichain-aggregator-types';
@@ -7,6 +8,7 @@ import type { ClusterChainConfig } from 'types/multichain';
 
 import { route } from 'nextjs/routes';
 
+import * as contract from 'lib/multichain/contract';
 import shortenString from 'lib/shortenString';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
@@ -22,7 +24,7 @@ interface Props {
 
 const SearchResultItemToken = ({ data, chain, isMobile }: Props) => {
 
-  const isVerified = Object.values(data.chain_infos).every((chainInfo) => chainInfo.is_verified);
+  const isVerified = contract.isVerified({ chain_infos: mapValues(data.chain_infos, (chainInfo) => ({ ...chainInfo, is_contract: true, coin_balance: '0' })) });
 
   return (
     <SearchResultListItem

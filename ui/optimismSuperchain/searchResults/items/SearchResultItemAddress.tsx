@@ -5,7 +5,7 @@ import type * as multichain from '@blockscout/multichain-aggregator-types';
 
 import { route } from 'nextjs/routes';
 
-import getContractName from 'lib/multichain/getContractName';
+import * as contract from 'lib/multichain/contract';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 
 import SearchResultListItem from '../SearchResultListItem';
@@ -17,7 +17,7 @@ interface Props {
 
 const SearchResultItemAddress = ({ data, isMobile }: Props) => {
 
-  const contractName = getContractName(data);
+  const contractName = contract.getName(data);
 
   return (
     <SearchResultListItem
@@ -27,8 +27,8 @@ const SearchResultItemAddress = ({ data, isMobile }: Props) => {
         <AddressEntity
           address={{
             hash: data.hash,
-            is_contract: Object.values(data.chain_infos ?? {}).every((chainInfo) => chainInfo.is_contract),
-            is_verified: Object.values(data.chain_infos ?? {}).every((chainInfo) => chainInfo.is_verified),
+            is_contract: contract.isContract(data),
+            is_verified: contract.isVerified(data),
           }}
           truncation={ !isMobile ? 'constant' : 'dynamic' }
           noLink

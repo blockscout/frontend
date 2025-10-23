@@ -7,6 +7,7 @@ import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 import getCheckedSummedAddress from 'lib/address/getCheckedSummedAddress';
 import useApiQuery from 'lib/api/useApiQuery';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
+import * as contract from 'lib/multichain/contract';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { ADDRESS } from 'stubs/optimismSuperchain';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
@@ -43,8 +44,8 @@ const OpSuperchainAddress = () => {
   const isLoading = addressQuery.isPlaceholderData;
   const chainData = Object.values(addressQuery.data?.chain_infos ?? {});
   const isContractSomewhere = chainData.some((chainInfo) => chainInfo.is_contract);
-  const isContractEverywhere = chainData.length > 0 && chainData.every((chainInfo) => chainInfo.is_contract);
-  const isVerifiedEverywhere = chainData.length > 0 && chainData.every((chainInfo) => chainInfo.is_verified);
+  const isContract = contract.isContract(addressQuery.data);
+  const isVerified = contract.isVerified(addressQuery.data);
 
   const checkSummedHash = React.useMemo(() => {
     if (isLoading) {
@@ -111,8 +112,8 @@ const OpSuperchainAddress = () => {
           name: '',
           ens_domain_name: '',
           implementations: null,
-          is_contract: isContractEverywhere,
-          is_verified: isVerifiedEverywhere,
+          is_contract: isContract,
+          is_verified: isVerified,
         }}
         isLoading={ isLoading }
         variant="subheading"
@@ -131,7 +132,7 @@ const OpSuperchainAddress = () => {
     <>
       <TextAd mb={ 6 }/>
       <PageTitle
-        title={ `${ isContractEverywhere ? 'Contract' : 'Address' } details` }
+        title={ `${ isContract ? 'Contract' : 'Address' } details` }
         isLoading={ isLoading }
         secondRow={ titleSecondRow }
       />
