@@ -32,7 +32,7 @@ const ERC20TokensListItem = ({ token, value, isLoading, chain_values: chainValue
     }
 
     const chainId = Object.keys(chainValues)[0];
-    const chain = multichainConfig()?.chains.find((chain) => chain.config.chain.id === chainId);
+    const chain = multichainConfig()?.chains.find((chain) => chain.id === chainId);
     return chain;
   }, [ chainValues ]);
 

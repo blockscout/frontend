@@ -36,7 +36,7 @@ const OpSuperchainTxsLocal = () => {
   const tab = getQueryParamString(router.query.tab);
   const multichainContext = useMultichainContext();
 
-  const chainConfig = multichainContext?.chain.config;
+  const chainConfig = multichainContext?.chain.app_config;
 
   const txsValidatedQuery = useQueryWithPages({
     resourceName: 'general:txs_validated',
@@ -147,7 +147,7 @@ const OpSuperchainTxsLocal = () => {
 
     return (
       <Flex alignItems="center" gap={ 6 }>
-        { isAdvancedFilterEnabled && <AdvancedFilterLink linkContext={ multichainContext }/> }
+        { isAdvancedFilterEnabled && <AdvancedFilterLink routeParams={{ chain: multichainContext?.chain }}/> }
         { currentQuery.pagination.isVisible && <Pagination { ...currentQuery.pagination }/> }
       </Flex>
     );

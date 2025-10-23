@@ -28,7 +28,7 @@ const OpSuperchainAddressNetWorth = ({ addressData, isLoading, tokensData, isErr
     accuracy: 8,
     accuracyUsd: 2,
     exchangeRate: addressData?.exchange_rate,
-    decimals: String(chains?.[0]?.config.chain.currency.decimals),
+    decimals: String(chains?.[0]?.app_config.chain.currency.decimals),
   });
 
   const resultByChain = React.useMemo(() => {
@@ -64,14 +64,14 @@ const OpSuperchainAddressNetWorth = ({ addressData, isLoading, tokensData, isErr
               accuracy: 8,
               accuracyUsd: 2,
               exchangeRate: addressData?.exchange_rate,
-              decimals: String(chain.config.chain.currency.decimals),
+              decimals: String(chain.app_config?.chain?.currency.decimals),
             });
 
-            if (!chain.config.chain.id) {
+            if (!chain.id) {
               return null;
             }
 
-            return `$${ resultByChain[chain.config.chain.id].usd.plus(chainNativeUsdBn).dp(2).toFormat() }`;
+            return `$${ resultByChain[chain.id].usd.plus(chainNativeUsdBn).dp(2).toFormat() }`;
           } }
         </OpSuperchainAddressInfoBreakdown>
       ) }

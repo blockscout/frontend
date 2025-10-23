@@ -2,7 +2,7 @@ import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type { Block } from 'types/api/block';
-import type { ChainConfig } from 'types/multichain';
+import type { ClusterChainConfig } from 'types/multichain';
 
 import useInitialList from 'lib/hooks/useInitialList';
 import BlocksListItem from 'ui/blocks/BlocksListItem';
@@ -11,7 +11,7 @@ interface Props {
   data: Array<Block>;
   isLoading: boolean;
   page: number;
-  chainData?: ChainConfig;
+  chainData?: ClusterChainConfig;
 }
 
 const BlocksList = ({ data, isLoading, page, chainData }: Props) => {

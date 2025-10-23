@@ -3,7 +3,7 @@ import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { AddressCoinBalanceHistoryItem } from 'types/api/address';
-import type { ChainConfig } from 'types/multichain';
+import type { ClusterChainConfig } from 'types/multichain';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
@@ -16,7 +16,7 @@ import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 type Props = AddressCoinBalanceHistoryItem & {
   page: number;
   isLoading: boolean;
-  chainData?: ChainConfig;
+  chainData?: ClusterChainConfig;
 };
 
 const AddressCoinBalanceTableItem = (props: Props) => {

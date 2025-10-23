@@ -1,7 +1,7 @@
 import React from 'react';
 
 import type * as multichain from '@blockscout/multichain-aggregator-types';
-import type { ChainConfig } from 'types/multichain';
+import type { ClusterChainConfig } from 'types/multichain';
 
 import { route } from 'nextjs/routes';
 
@@ -11,7 +11,7 @@ import SearchResultListItem from '../SearchResultListItem';
 
 interface Props {
   data: multichain.ChainBlockNumber;
-  chain: ChainConfig;
+  chain: ClusterChainConfig;
 }
 
 const SearchResultItemBlockNumber = ({ data, chain }: Props) => {

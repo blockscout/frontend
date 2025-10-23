@@ -150,7 +150,7 @@ const CsvExport = () => {
       <Flex display="inline-flex" alignItems="center" columnGap={ 2 }>
         <span>on</span>
         <ChainIcon data={ multichainContext.chain }/>
-        <span>{ multichainContext.chain.config.chain.name }</span>
+        <span>{ multichainContext.chain.app_config.chain.name }</span>
       </Flex>
     ) : null;
 

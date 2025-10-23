@@ -41,7 +41,7 @@ const CsvExportForm = ({ hash, resource, filterType, filterValue, fileNameTempla
   const recaptcha = useReCaptcha();
   const multichainContext = useMultichainContext();
 
-  const chainConfig = multichainContext?.chain.config || config;
+  const chainConfig = multichainContext?.chain.app_config || config;
 
   const apiFetchFactory = React.useCallback((data: FormFields) => {
     return async(recaptchaToken?: string) => {

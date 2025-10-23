@@ -55,7 +55,7 @@ const TokensListItem = ({
     }
 
     const chainId = Object.keys(chainInfos)[0];
-    const chain = multichainConfig()?.chains.find((chain) => chain.config.chain.id === chainId);
+    const chain = multichainConfig()?.chains.find((chain) => chain.id === chainId);
     return chain;
   }, [ chainInfos ]);
 

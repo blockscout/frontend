@@ -69,7 +69,7 @@ const TokenSelect = () => {
       }
       <Tooltip content="Show all tokens">
         <Link
-          href={ route({ pathname: '/address/[hash]', query: { hash: addressHash, tab: 'tokens' } }, multichainContext) }
+          href={ route({ pathname: '/address/[hash]', query: { hash: addressHash, tab: 'tokens' } }, { chain: multichainContext?.chain }) }
           asChild
           scroll={ false }
         >

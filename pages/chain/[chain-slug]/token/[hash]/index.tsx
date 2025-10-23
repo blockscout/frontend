@@ -19,7 +19,7 @@ const Page: NextPage<Props<typeof pathname>> = (props: Props<typeof pathname>) =
 
   return (
     <PageNextJs pathname={ pathname } query={ props.query } apiData={ props.apiData }>
-      <SocketProvider url={ getSocketUrl(chainData?.config) }>
+      <SocketProvider url={ getSocketUrl(chainData?.app_config) }>
         <MultichainProvider>
           <Token/>
         </MultichainProvider>

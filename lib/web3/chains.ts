@@ -4,7 +4,11 @@ import appConfig from 'configs/app';
 import essentialDappsChainsConfig from 'configs/essential-dapps-chains';
 import multichainConfig from 'configs/multichain';
 
-const getChainInfo = (config: typeof appConfig = appConfig, contracts?: Chain['contracts']): Chain => {
+const getChainInfo = (config: Partial<typeof appConfig> = appConfig, contracts?: Chain['contracts']): Chain | undefined => {
+  if (!config.chain || !config.app) {
+    return;
+  }
+
   return {
     id: Number(config.chain.id),
     name: config.chain.name ?? '',
@@ -70,7 +74,7 @@ export const clusterChains: Array<Chain> | undefined = (() => {
     return;
   }
 
-  return config.chains.map(({ config, contracts }) => getChainInfo(config, contracts)).filter(Boolean);
+  return config.chains.map(({ app_config: config }) => getChainInfo(config)).filter(Boolean);
 })();
 
 export const essentialDappsChains: Array<Chain> | undefined = (() => {
@@ -80,7 +84,7 @@ export const essentialDappsChains: Array<Chain> | undefined = (() => {
     return;
   }
 
-  return config.chains.map(({ config, contracts }) => getChainInfo(config, contracts)).filter(Boolean);
+  return config.chains.map(({ app_config: config, contracts }) => getChainInfo(config, contracts)).filter(Boolean);
 })();
 
 export const chains = (() => {

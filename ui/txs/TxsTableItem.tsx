@@ -2,7 +2,7 @@ import { Flex, VStack } from '@chakra-ui/react';
 import React from 'react';
 
 import type { Transaction } from 'types/api/transaction';
-import type { ChainConfig } from 'types/multichain';
+import type { ClusterChainConfig } from 'types/multichain';
 
 import config from 'configs/app';
 import { Badge } from 'toolkit/chakra/badge';
@@ -29,7 +29,7 @@ type Props = {
   enableTimeIncrement?: boolean;
   isLoading?: boolean;
   animation?: string;
-  chainData?: ChainConfig;
+  chainData?: ClusterChainConfig;
 };
 
 const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, isLoading, animation, chainData }: Props) => {

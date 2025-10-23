@@ -3,7 +3,7 @@ import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { VerifiedContract } from 'types/api/contracts';
-import type { ChainConfig } from 'types/multichain';
+import type { ClusterChainConfig } from 'types/multichain';
 
 import config from 'configs/app';
 import formatLanguageName from 'lib/contracts/formatLanguageName';
@@ -21,7 +21,7 @@ import TruncatedValue from 'ui/shared/TruncatedValue';
 interface Props {
   data: VerifiedContract;
   isLoading?: boolean;
-  chainData?: ChainConfig;
+  chainData?: ClusterChainConfig;
 }
 
 const VerifiedContractsTableItem = ({ data, isLoading, chainData }: Props) => {

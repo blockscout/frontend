@@ -5,7 +5,7 @@ import {
 import React from 'react';
 
 import type { Transaction } from 'types/api/transaction';
-import type { ChainConfig } from 'types/multichain';
+import type { ClusterChainConfig } from 'types/multichain';
 
 import config from 'configs/app';
 import getValueWithUnit from 'lib/getValueWithUnit';
@@ -32,7 +32,7 @@ type Props = {
   enableTimeIncrement?: boolean;
   isLoading?: boolean;
   animation?: string;
-  chainData?: ChainConfig;
+  chainData?: ClusterChainConfig;
 };
 
 const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeIncrement, animation, chainData }: Props) => {

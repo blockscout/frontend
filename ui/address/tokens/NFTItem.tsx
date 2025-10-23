@@ -2,7 +2,7 @@ import { Flex, Text } from '@chakra-ui/react';
 import React from 'react';
 
 import type { AddressNFT } from 'types/api/address';
-import type { ChainConfig } from 'types/multichain';
+import type { ClusterChainConfig } from 'types/multichain';
 
 import { route } from 'nextjs/routes';
 
@@ -17,7 +17,7 @@ import NftMedia from 'ui/shared/nft/NftMedia';
 
 import NFTItemContainer from './NFTItemContainer';
 
-type Props = AddressNFT & { isLoading: boolean; withTokenLink?: boolean; chain?: ChainConfig };
+type Props = AddressNFT & { isLoading: boolean; withTokenLink?: boolean; chain?: ClusterChainConfig };
 
 const NFTItem = ({ token, value, isLoading, withTokenLink, chain, ...tokenInstance }: Props) => {
   const valueResult = token.decimals && value ? getCurrencyValue({ value, decimals: token.decimals, accuracy: 2 }).valueStr : value;

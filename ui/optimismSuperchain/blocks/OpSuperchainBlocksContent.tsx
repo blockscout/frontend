@@ -17,7 +17,7 @@ const OpSuperchainBlocksContent = ({ chainId, ...rest }: Props) => {
 
   return (
     <MultichainProvider chainId={ chainId }>
-      <SocketProvider url={ chainConfig ? getSocketUrl(chainConfig.config) : undefined }>
+      <SocketProvider url={ chainConfig ? getSocketUrl(chainConfig.app_config) : undefined }>
         <BlocksContent
           { ...rest }
           top={ ACTION_BAR_HEIGHT_DESKTOP }

@@ -1,15 +1,12 @@
-import type { Chain } from 'viem';
+import type { EssentialDappsChainConfig } from 'types/client/marketplace';
+import type { ClusterChainConfig } from 'types/multichain';
 
-import type config from 'configs/app';
-
+// minimal set of fields for external chains
 export interface ExternalChain {
-  // required fields
   id: string;
   name: string;
   logo: string | undefined;
   explorer_url: string;
-
-  // optional fields
-  app_config?: typeof config;
-  contracts?: Chain['contracts'];
 }
+
+export type ExternalChainExtended = ClusterChainConfig | EssentialDappsChainConfig;

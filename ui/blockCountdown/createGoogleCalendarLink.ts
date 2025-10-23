@@ -14,7 +14,7 @@ const DATE_FORMAT = 'YYYYMMDDTHHmm';
 
 export default function createGoogleCalendarLink({ timeFromNow, blockHeight, multichainContext }: Params): string {
 
-  const chainConfig = multichainContext?.chain.config || config;
+  const chainConfig = multichainContext?.chain.app_config || config;
 
   const date = dayjs().add(timeFromNow, 's');
   const name = `Block #${ blockHeight } reminder | ${ chainConfig.chain.name }`;

@@ -17,7 +17,7 @@ const Link = chakra((props: LinkProps) => {
   const heightOrHash = props.hash ?? String(props.number);
   const defaultHref = route(
     { pathname: '/block/[height_or_hash]', query: { height_or_hash: heightOrHash } },
-    props.chain ? { chain: props.chain } : undefined,
+    { chain: props.chain, external: props.external },
   );
 
   return (

@@ -2,7 +2,7 @@ import type { UseQueryResult } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
 
 import type { AddressCounters } from 'types/api/address';
-import type { ChainConfig } from 'types/multichain';
+import type { ClusterChainConfig } from 'types/multichain';
 
 import type { ResourceError } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
@@ -23,7 +23,7 @@ interface Params {
   isEnabled?: boolean;
   isLoading?: boolean;
   isDegradedData?: boolean;
-  chain?: ChainConfig;
+  chain?: ClusterChainConfig;
 }
 
 export default function useAddressCountersQuery({ hash, isLoading, isDegradedData, isEnabled = true, chain }: Params): AddressCountersQuery {

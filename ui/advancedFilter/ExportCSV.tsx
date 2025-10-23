@@ -69,7 +69,7 @@ const ExportCSV = ({ filters }: Props) => {
     }
   }, [ apiFetchFactory, recaptcha, multichainContext?.chain ]);
 
-  const chainConfig = multichainContext?.chain.config || config;
+  const chainConfig = multichainContext?.chain.app_config || config;
 
   if (!chainConfig.services.reCaptchaV2.siteKey) {
     return null;

@@ -1,6 +1,8 @@
 import { createListCollection } from '@chakra-ui/react';
 import React from 'react';
 
+import type { ClusterChainConfig } from 'types/multichain';
+
 import essentialDappsChainsConfig from 'configs/essential-dapps-chains';
 import useIsInitialLoading from 'lib/hooks/useIsInitialLoading';
 import { Select } from 'toolkit/chakra/select';
@@ -11,7 +13,7 @@ const collection = createListCollection<SelectOption>({
   items: essentialDappsChainsConfig()?.chains.map((chain) => ({
     value: chain.id,
     label: chain.name || `Chain ${ chain.id }`,
-    icon: <ChainIcon data={ chain } borderRadius="none"/>,
+    icon: <ChainIcon data={ chain as ClusterChainConfig } borderRadius="none"/>,
   })) || [],
 });
 

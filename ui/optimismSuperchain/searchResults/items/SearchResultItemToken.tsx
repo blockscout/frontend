@@ -3,7 +3,7 @@ import React from 'react';
 
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 import type { TokenType } from 'types/api/token';
-import type { ChainConfig } from 'types/multichain';
+import type { ClusterChainConfig } from 'types/multichain';
 
 import { route } from 'nextjs/routes';
 
@@ -16,7 +16,7 @@ import SearchResultListItem from '../SearchResultListItem';
 
 interface Props {
   data: multichain.AggregatedTokenInfo;
-  chain: ChainConfig;
+  chain: ClusterChainConfig;
   isMobile?: boolean;
 }
 

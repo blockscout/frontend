@@ -1,5 +1,5 @@
-import type { ChainConfig } from 'types/multichain';
+import type { ExternalChain } from 'types/externalChains';
 
-export default function getChainTooltipText(chain: ChainConfig, prefix: string = '') {
-  return `${ prefix }${ chain.config.chain.name } (Chain ID ${ chain.config.chain.id })`;
+export default function getChainTooltipText(chain: ExternalChain, prefix: string = '') {
+  return `${ prefix }${ chain.name } (Chain ID: ${ chain.id })`;
 }

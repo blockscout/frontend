@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from 'react';
 
 import type { Block } from 'types/api/block';
-import type { ChainConfig } from 'types/multichain';
+import type { EssentialDappsChainConfig } from 'types/client/marketplace';
 
 import useApiFetch from 'lib/api/useApiFetch';
 
@@ -24,11 +24,11 @@ export default function useGetBlockTimestamp() {
   }, []);
 
   return useCallback(async(
-    chain: ChainConfig | undefined,
+    chain: EssentialDappsChainConfig | undefined,
     blockNumber: bigint,
     signal?: AbortSignal,
   ): Promise<number> => {
-    const cacheKey = `${ chain?.config.chain.id }:${ blockNumber.toString() }`;
+    const cacheKey = `${ chain?.id }:${ blockNumber.toString() }`;
     const cached = timestampCache.get(cacheKey);
     if (cached) return cached;
 

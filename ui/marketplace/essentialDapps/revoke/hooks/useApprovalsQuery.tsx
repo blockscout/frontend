@@ -4,7 +4,7 @@ import { useCallback, useMemo } from 'react';
 import type { GetLogsParameters } from 'viem';
 import { isAddress, getAbiItem } from 'viem';
 
-import type { ChainConfig } from 'types/multichain';
+import type { EssentialDappsChainConfig } from 'types/client/marketplace';
 
 import { ALLOWANCES } from 'stubs/essentialDapps/revoke';
 
@@ -13,13 +13,13 @@ import getLogs from '../lib/getLogs';
 import useSearchErc20Allowances from './useSearchErc20Allowances';
 import useSearchNftAllowances from './useSearchNftAllowances';
 
-export default function useApprovalsQuery(chain: ChainConfig | undefined, userAddress: string) {
+export default function useApprovalsQuery(chain: EssentialDappsChainConfig | undefined, userAddress: string) {
   const searchErc20Allowances = useSearchErc20Allowances();
   const searchNftAllowances = useSearchNftAllowances();
 
   const publicClient = useMemo(
-    () => createPublicClient(chain?.config.chain.id),
-    [ chain?.config.chain.id ],
+    () => createPublicClient(chain?.id),
+    [ chain?.id ],
   );
 
   const searchAllowances = useCallback(async(signal?: AbortSignal) => {
@@ -57,7 +57,7 @@ export default function useApprovalsQuery(chain: ChainConfig | undefined, userAd
   }, [ searchErc20Allowances, searchNftAllowances, publicClient, chain, userAddress ]);
 
   return useQuery({
-    queryKey: [ 'revoke:approvals', chain?.config.chain.id, userAddress ],
+    queryKey: [ 'revoke:approvals', chain?.id, userAddress ],
     queryFn: ({ signal }) => searchAllowances(signal),
     enabled: Boolean(userAddress) && isAddress(userAddress),
     placeholderData: ALLOWANCES,

@@ -4,7 +4,7 @@ import React from 'react';
 import type { AddressFromToFilter } from 'types/api/address';
 import { ADVANCED_FILTER_TYPES } from 'types/api/advancedFilter';
 import type { TokenType } from 'types/api/token';
-import type { ChainConfig } from 'types/multichain';
+import type { ClusterChainConfig } from 'types/multichain';
 
 import config from 'configs/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
@@ -16,16 +16,16 @@ interface Props {
   address: string;
   typeFilter: Array<TokenType>;
   directionFilter: AddressFromToFilter;
-  chainData?: ChainConfig;
+  chainData?: ClusterChainConfig;
 }
 
 const AddressAdvancedFilterLink = ({ isLoading, address, typeFilter, directionFilter, chainData }: Props) => {
   const isInitialLoading = useIsInitialLoading(isLoading);
   const multichainContext = useMultichainContext();
 
-  const chainConfig = chainData?.config || multichainContext?.chain.config || config;
+  const chainConfig = chainData?.app_config || multichainContext?.chain.app_config || config;
 
-  if (!chainConfig.features.advancedFilter.isEnabled) {
+  if (!chainConfig?.features?.advancedFilter.isEnabled) {
     return null;
   }
 
@@ -35,12 +35,12 @@ const AddressAdvancedFilterLink = ({ isLoading, address, typeFilter, directionFi
     transaction_types: typeFilter.length > 0 ? typeFilter : ADVANCED_FILTER_TYPES.filter((type) => type !== 'coin_transfer'),
   }, (value) => value !== undefined);
 
-  const linkContext = (chainData ? { chain: chainData } : undefined) ?? multichainContext;
+  const routeParams = (chainData ? { chain: chainData } : undefined) ?? multichainContext;
 
   return (
     <AdvancedFilterLink
       query={ queryParams }
-      linkContext={ linkContext }
+      routeParams={ routeParams || undefined }
       loading={ isInitialLoading }
     />
   );

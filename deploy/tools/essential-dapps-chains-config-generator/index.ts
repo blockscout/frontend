@@ -7,10 +7,11 @@ import * as viemChains from 'viem/chains';
 import { pick } from 'es-toolkit';
 
 import { EssentialDappsConfig } from 'types/client/marketplace';
-import { ChainConfig } from 'types/multichain';
 import { getEnvValue, parseEnvJson } from 'configs/app/utils';
-import {uniq } from 'es-toolkit';
+import { uniq } from 'es-toolkit';
 import currentChainConfig from 'configs/app';
+import appConfig from 'configs/app';
+import { EssentialDappsChainConfig } from 'types/client/marketplace';
 
 const currentFilePath = fileURLToPath(import.meta.url);
 const currentDir = dirname(currentFilePath);
@@ -36,11 +37,7 @@ async function getChainscoutInfo(externalChainIds: Array<string>, currentChainId
   }
 }
 
-function getSlug(chainName: string) {
-  return chainName.toLowerCase().replace(/ /g, '-').replace(/[^a-z0-9-]/g, '');
-}
-
-function trimChainConfig(config: ChainConfig['config'], logoUrl: string | undefined) {
+function trimChainConfig(config: typeof appConfig, logoUrl: string | undefined) {
   return {
     ...pick(config, [ 'app', 'chain' ]),
     apis: pick(config.apis || {}, [ 'general' ]),
@@ -103,7 +100,7 @@ async function run() {
     const explorerUrls = Object.values(chainscoutInfo.externals).map(({ explorerUrl }) => explorerUrl);
     console.log(`ℹ️  For ${ explorerUrls.length } chains explorer url was found in static config. Fetching parameters for each chain...`);
 
-    const chainConfigs = await Promise.all(explorerUrls.map(computeChainConfig)) as Array<ChainConfig['config']>;
+    const chainConfigs = await Promise.all(explorerUrls.map(computeChainConfig)) as Array<typeof appConfig>;
 
     const result = {
       chains: [ currentChainConfig, ...chainConfigs ].map((config) => {
@@ -112,14 +109,13 @@ async function run() {
         const logoUrl = [...chainscoutInfo.externals, chainscoutInfo.current].find((chain) => chain?.id === config.chain.id)?.logoUrl;
         const chainName = (config as { chain: { name: string } })?.chain?.name ?? `Chain ${ chainId }`;
         return {
-          id: chainId,
+          id: chainId || '',
           name: chainName,
           logo: chainInfo?.logoUrl,
-          explorer_url: chainInfo?.explorerUrl,
-          slug: getSlug(chainName),
-          config: trimChainConfig(config, logoUrl),
+          explorer_url: chainInfo?.explorerUrl || '',
+          app_config: trimChainConfig(config, logoUrl),
           contracts: Object.values(viemChains).find(({ id }) => id === Number(config.chain.id))?.contracts
-        };
+        } satisfies EssentialDappsChainConfig;
       }),
     };
     

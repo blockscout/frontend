@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { ChainConfig } from 'types/multichain';
+import type { ClusterChainConfig } from 'types/multichain';
 
 import getChainTooltipText from 'lib/multichain/getChainTooltipText';
 import getIconUrl from 'lib/multichain/getIconUrl';
@@ -11,7 +11,7 @@ import { Tooltip } from 'toolkit/chakra/tooltip';
 import IconSvg from 'ui/shared/IconSvg';
 
 interface Props extends ImageProps {
-  data: ChainConfig;
+  data: ClusterChainConfig;
   isLoading?: boolean;
   withTooltip?: boolean;
 }
@@ -29,7 +29,7 @@ const ChainIcon = ({ data, boxSize = 5, borderRadius = 'full', isLoading, withTo
       boxSize={ boxSize }
       borderRadius={ borderRadius }
       fallback={ placeholder }
-      alt={ `${ data.config.chain.name } chain icon` }
+      alt={ `${ data.name } chain icon` }
       { ...rest }
     />
   );

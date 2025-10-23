@@ -1,7 +1,7 @@
 import React from 'react';
 
 import type { UserOpsItem } from 'types/api/userOps';
-import type { ChainConfig } from 'types/multichain';
+import type { ClusterChainConfig } from 'types/multichain';
 
 import config from 'configs/app';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
@@ -19,7 +19,7 @@ type Props = {
   isLoading?: boolean;
   showTx: boolean;
   showSender: boolean;
-  chainData?: ChainConfig;
+  chainData?: ClusterChainConfig;
 };
 
 const UserOpsTableItem = ({ item, isLoading, showTx, showSender, chainData }: Props) => {

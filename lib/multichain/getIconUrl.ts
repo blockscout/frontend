@@ -1,20 +1,6 @@
-import type { ChainConfig } from 'types/multichain';
+import type { ExternalChain } from 'types/externalChains';
 
-export default function getIconUrl(config: ChainConfig) {
-  if (!config.config?.UI?.navigation?.icon || !config.config.app) {
-    return;
-  }
-
-  const iconPath = config.config.UI.navigation.icon.default;
-
-  if (!iconPath) {
-    return;
-  }
-
-  if (iconPath?.startsWith('http')) {
-    return iconPath;
-  }
-
-  const appUrl = config.config.app.baseUrl;
-  return `${ appUrl }${ iconPath }`;
+// TODO @tom2drum remove this file
+export default function getIconUrl(config: ExternalChain) {
+  return config.logo;
 }

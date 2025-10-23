@@ -22,8 +22,8 @@ const defaultChainId = Number(
 
 function getUrls(isRpc = false) {
   return Object.fromEntries(dappConfig?.chains.map((chainId) => {
-    const chainConfig = essentialDappsChainsConfig()?.chains.find((chain) => chain.config.chain.id === chainId);
-    const url = isRpc ? `${ chainConfig?.config.apis.general?.endpoint }/api/eth-rpc` : chainConfig?.config.app.baseUrl;
+    const chainConfig = essentialDappsChainsConfig()?.chains.find((chain) => chain.id === chainId);
+    const url = isRpc ? `${ chainConfig?.app_config?.apis?.general?.endpoint }/api/eth-rpc` : chainConfig?.explorer_url;
     return [ Number(chainId), [ url ] ];
   }) || []);
 }

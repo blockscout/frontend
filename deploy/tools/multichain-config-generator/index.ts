@@ -3,6 +3,8 @@ import { dirname, resolve as resolvePath } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { Worker } from 'node:worker_threads';
 
+import { ClusterChainConfig } from 'types/multichain';
+
 const currentFilePath = fileURLToPath(import.meta.url);
 const currentDir = dirname(currentFilePath);
 
@@ -105,8 +107,8 @@ async function run() {
           logo: chainscoutInfo.find((chain) => chain.id === chainId)?.logoUrl,
           explorer_url: explorerUrls[index],
           slug: getSlug(chainName),
-          config,
-        };
+          app_config: config,
+        } satisfies ClusterChainConfig;
       }),
     };
 

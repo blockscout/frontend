@@ -20,7 +20,7 @@ type Props = {
 const UserOpsTable = ({ items, isLoading, top, showTx, showSender }: Props) => {
   const multichainContext = useMultichainContext();
   const chainData = multichainContext?.chain;
-  const chainConfig = (multichainContext?.chain.config || config);
+  const chainConfig = (multichainContext?.chain.app_config || config);
 
   return (
     <TableRoot minW="1000px">

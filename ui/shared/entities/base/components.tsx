@@ -2,7 +2,7 @@ import { Box, chakra, Flex } from '@chakra-ui/react';
 import type { IconProps } from '@chakra-ui/react';
 import React from 'react';
 
-import type { ChainConfig } from 'types/multichain';
+import type { ExternalChain } from 'types/externalChains';
 
 import type { ImageProps } from 'toolkit/chakra/image';
 import { Image } from 'toolkit/chakra/image';
@@ -40,7 +40,7 @@ export interface EntityBaseProps {
   truncation?: Truncation;
   truncationMaxSymbols?: number;
   variant?: Variant;
-  chain?: ChainConfig;
+  chain?: ExternalChain;
 }
 
 export interface ContainerBaseProps extends Pick<EntityBaseProps, 'className'> {

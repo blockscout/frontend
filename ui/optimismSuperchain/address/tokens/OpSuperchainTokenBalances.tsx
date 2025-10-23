@@ -20,7 +20,7 @@ import useFetchTokens from './useFetchTokens';
 
 const OpSuperchainTokenBalances = () => {
   const chains = multichainConfig()?.chains;
-  const currency = chains?.[0]?.config.chain.currency;
+  const currency = chains?.[0]?.app_config.chain.currency;
 
   const router = useRouter();
   const hash = getQueryParamString(router.query.hash);
@@ -72,18 +72,18 @@ const OpSuperchainTokenBalances = () => {
     <OpSuperchainAddressInfoBreakdown data={ addressQuery.data?.chain_infos } loading={ isLoading } ml={ 2 }>
       { ([ chain, chainInfo ]) => {
 
-        if (!chain.config.chain.id) {
+        if (!chain.id) {
           return null;
         }
 
-        const tokensInfo = resultByChain[chain.config.chain.id];
+        const tokensInfo = resultByChain[chain.id];
 
         const { usdBn: chainNativeUsdBn } = getCurrencyValue({
           value: chainInfo.coin_balance || '0',
           accuracy: 8,
           accuracyUsd: 2,
           exchangeRate: addressQuery.data.exchange_rate,
-          decimals: String(chain.config.chain.currency.decimals),
+          decimals: String(chain.app_config.chain.currency.decimals),
         });
 
         const prefix = tokensInfo.isOverflow ? '>' : '';
@@ -101,8 +101,8 @@ const OpSuperchainTokenBalances = () => {
             isLoading={ isLoading }
             value={ chainInfo.coin_balance }
             exchangeRate={ addressQuery.data?.exchange_rate }
-            decimals={ chain.config.chain.currency.decimals.toString() }
-            currency={ chain.config.chain.currency.symbol }
+            decimals={ chain.app_config.chain.currency.decimals.toString() }
+            currency={ chain.app_config.chain.currency.symbol }
             accuracyUsd={ 2 }
             accuracy={ 8 }
             alignItems="center"

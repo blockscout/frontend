@@ -13,8 +13,8 @@ export default function useProvider() {
 
   const multichainContext = useMultichainContext();
 
-  const feature = (multichainContext?.chain.config ?? config).features.web3Wallet;
-  const wallets = getFeaturePayload(feature)?.wallets;
+  const feature = (multichainContext?.chain.app_config ?? config).features?.web3Wallet;
+  const wallets = feature ? getFeaturePayload(feature)?.wallets : undefined;
 
   const initializeProvider = React.useMemo(() => async() => {
     if (!feature.isEnabled || !wallets) {

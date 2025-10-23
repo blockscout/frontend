@@ -31,7 +31,7 @@ interface Props {
 const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick, addressFormat }: Props) => {
 
   const multichainContext = React.useMemo(() => {
-    const chainInfo = 'chain_id' in data && multichainConfig()?.chains.find((chain) => chain.config.chain.id === data.chain_id);
+    const chainInfo = 'chain_id' in data && multichainConfig()?.chains.find((chain) => chain.id === data.chain_id);
     if (chainInfo) {
       return {
         chain: chainInfo,

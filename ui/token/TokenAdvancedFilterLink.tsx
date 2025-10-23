@@ -28,7 +28,7 @@ const TokenAdvancedFilterLink = ({ isLoading, token, ...rest }: Props) => {
   return (
     <AdvancedFilterLink
       query={ queryParams }
-      linkContext={ multichainContext }
+      routeParams={{ chain: multichainContext?.chain }}
       loading={ isInitialLoading }
       { ...rest }
     />

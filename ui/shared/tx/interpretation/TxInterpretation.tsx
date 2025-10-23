@@ -9,7 +9,7 @@ import type {
   TxInterpretationVariable,
   TxInterpretationVariableString,
 } from 'types/api/txInterpretation';
-import type { ChainConfig } from 'types/multichain';
+import type { ClusterChainConfig } from 'types/multichain';
 
 import { route } from 'nextjs-routes';
 
@@ -46,7 +46,7 @@ interface Props extends BoxProps {
   addressDataMap?: Record<string, AddressParam>;
   className?: string;
   isNoves?: boolean;
-  chainData?: ChainConfig;
+  chainData?: ClusterChainConfig;
 };
 
 type NonStringTxInterpretationVariable = Exclude<TxInterpretationVariable, TxInterpretationVariableString>;

@@ -150,7 +150,7 @@ const OpSuperchainAddressTokenTransfers = ({ addressData, isLoading }: Props) =>
       title: 'Local',
       component: (
         <MultichainProvider chainId={ transfersQueryLocal.query.chainValue?.[0] }>
-          <SocketProvider url={ getSocketUrl(chainData?.config) }>
+          <SocketProvider url={ getSocketUrl(chainData?.app_config) }>
             { isMobile && countersText }
             <TokenTransfersLocal
               query={ transfersQueryLocal.query }

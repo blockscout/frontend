@@ -3,7 +3,7 @@ import React from 'react';
 
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 
-import { route } from 'nextjs-routes';
+import { route } from 'nextjs/routes';
 
 import multichainConfig from 'configs/multichain';
 import { Button } from 'toolkit/chakra/button';
@@ -27,7 +27,7 @@ const ClusterChainsPopover = ({ addressHash, data, isLoading }: Props) => {
 
   const chains = multichainConfig()?.chains;
   const activeChainsIds = Object.keys(data.chain_infos ?? {});
-  const activeChains = chains?.filter((chain) => activeChainsIds.includes(String(chain.config.chain.id))) ?? [];
+  const activeChains = chains?.filter((chain) => activeChainsIds.includes(String(chain.id))) ?? [];
 
   if (!isLoading && activeChains.length === 0) {
     return null;
@@ -59,21 +59,21 @@ const ClusterChainsPopover = ({ addressHash, data, isLoading }: Props) => {
             { activeChains.map((chain) => (
               <Link
                 key={ chain.id }
-                href={ chain.config.app.baseUrl + route({
+                href={ route({
                   pathname: '/address/[hash]',
                   query: {
                     hash: addressHash,
                     utm_source: 'multichain-explorer',
                     utm_medium: 'address',
                   },
-                }) }
+                }, { chain, external: true }) }
                 external
                 display="flex"
                 alignItems="center"
                 py="7px"
               >
                 <ChainIcon data={ chain } mr={ 2 }/>
-                { chain.config.chain.name }
+                { chain.name }
               </Link>
             )) }
           </VStack>

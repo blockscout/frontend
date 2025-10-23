@@ -27,7 +27,7 @@ interface Props {
 const OpSuperchainAddressDetails = ({ data, addressHash, isLoading }: Props) => {
   const chains = multichainConfig()?.chains;
   const activeChainsIds = Object.keys(data?.chain_infos ?? {});
-  const activeChains = chains?.filter((chain) => activeChainsIds.includes(String(chain.config.chain.id))) ?? [];
+  const activeChains = chains?.filter((chain) => activeChainsIds.includes(String(chain.id))) ?? [];
 
   const currencySymbol = getCurrencySymbol();
 
@@ -54,14 +54,14 @@ const OpSuperchainAddressDetails = ({ data, addressHash, isLoading }: Props) => 
               <Link
                 key={ chain.id }
                 // TODO @tom2drum replace after refactoring link builder
-                href={ chain.config.app.baseUrl + route({
+                href={ route({
                   pathname: '/address/[hash]',
                   query: {
                     hash: addressHash,
                     utm_source: 'multichain-explorer',
                     utm_medium: 'address',
                   },
-                }) }
+                }, { chain, external: true }) }
                 external
                 loading={ isLoading }
                 display="flex"
@@ -70,7 +70,7 @@ const OpSuperchainAddressDetails = ({ data, addressHash, isLoading }: Props) => 
                 _hover={{ color: 'link.primary.hover' }}
               >
                 <ChainIcon data={ chain } mr={ 2 }/>
-                <span>{ chain.config.chain.name }</span>
+                <span>{ chain.name }</span>
               </Link>
             )) }
           </DetailedInfo.ItemValue>

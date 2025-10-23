@@ -17,7 +17,7 @@ interface Props {
 const OpSuperchainAddressCoinBalance = ({ data, isLoading }: Props) => {
 
   const chains = multichainConfig()?.chains;
-  const currency = chains?.[0]?.config.chain.currency;
+  const currency = chains?.[0]?.app_config.chain.currency;
 
   return (
     <Flex alignItems="center" columnGap={ 3 }>
@@ -41,8 +41,8 @@ const OpSuperchainAddressCoinBalance = ({ data, isLoading }: Props) => {
               isLoading={ isLoading }
               value={ chainInfo.coin_balance }
               exchangeRate={ data?.exchange_rate }
-              decimals={ chain.config.chain.currency.decimals.toString() }
-              currency={ chain.config.chain.currency.symbol }
+              decimals={ chain.app_config.chain.currency.decimals.toString() }
+              currency={ chain.app_config.chain.currency.symbol }
               accuracyUsd={ 2 }
               accuracy={ 8 }
               alignItems="center"

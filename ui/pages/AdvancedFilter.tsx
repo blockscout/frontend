@@ -246,7 +246,7 @@ const AdvancedFilter = () => {
       <HStack gap={ 2 } flexWrap="wrap" mb={ 6 }>
         { multichainContext?.chain && (
           <Tag variant="filter" label="Chain">
-            { multichainContext.chain.config.chain.name }
+            { multichainContext.chain.app_config.chain.name }
           </Tag>
         ) }
         { filterTags.map(t => (

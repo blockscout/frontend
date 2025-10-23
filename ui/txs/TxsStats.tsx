@@ -17,7 +17,7 @@ interface Props extends BoxProps {}
 const TxsStats = (props: Props) => {
   const multichainContext = useMultichainContext();
 
-  const chainConfig = multichainContext?.chain.config || config;
+  const chainConfig = multichainContext?.chain.app_config || config;
   const isStatsFeatureEnabled = chainConfig.features.stats.isEnabled;
   const rollupFeature = chainConfig.features.rollup;
   const isOptimisticRollup = rollupFeature.isEnabled && rollupFeature.type === 'optimistic';

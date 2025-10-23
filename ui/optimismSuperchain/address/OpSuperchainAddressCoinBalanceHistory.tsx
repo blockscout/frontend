@@ -36,7 +36,7 @@ const OpSuperchainAddressCoinBalanceHistory = ({ addressData, isLoading }: Props
       />
       { !isLoading && chainSelect.value?.[0] && chainConfig && (
         <MultichainProvider chainId={ chainSelect.value?.[0] }>
-          <SocketProvider url={ getSocketUrl(chainConfig?.config) }>
+          <SocketProvider url={ getSocketUrl(chainConfig?.app_config) }>
             <AddressCoinBalance key={ chainSelect.value?.[0] }/>
           </SocketProvider>
         </MultichainProvider>

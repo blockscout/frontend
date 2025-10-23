@@ -16,8 +16,8 @@ import UserOpsTable from 'ui/userOps/UserOpsTable';
 
 const OpSuperchainUserOps = () => {
 
-  const chains = React.useMemo(() => (multichainConfig()?.chains || []).filter(chain => chain.config.features.userOps.isEnabled), []);
-  const chainIds = React.useMemo(() => chains.map(chain => chain.config.chain.id).filter(Boolean), [ chains ]);
+  const chains = React.useMemo(() => (multichainConfig()?.chains || []).filter(chain => chain.app_config.features.userOps.isEnabled), []);
+  const chainIds = React.useMemo(() => chains.map(chain => chain.id).filter(Boolean), [ chains ]);
 
   const query = useQueryWithPages({
     resourceName: 'general:user_ops',

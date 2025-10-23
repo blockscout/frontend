@@ -1,17 +1,17 @@
 import type { ApiName, ApiResource } from './types';
-import type { ChainConfig } from 'types/multichain';
+import type { ExternalChainExtended } from 'types/externalChains';
 
 import config from 'configs/app';
 
 import type { ResourceName } from './resources';
 import { RESOURCES } from './resources';
 
-export default function getResourceParams(resourceFullName: ResourceName, chain?: ChainConfig) {
+export default function getResourceParams(resourceFullName: ResourceName, chain?: ExternalChainExtended) {
   const [ apiName, resourceName ] = resourceFullName.split(':') as [ ApiName, string ];
 
   const apiConfig = (() => {
-    if (chain) {
-      return chain.config.apis[apiName];
+    if (chain?.app_config?.apis) {
+      return chain.app_config.apis[apiName as keyof typeof chain.app_config.apis];
     }
 
     return config.apis[apiName];

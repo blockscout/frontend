@@ -1,10 +1,10 @@
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 import type { AddressTokenItem } from 'types/client/multichain-aggregator';
-import type { ChainConfig } from 'types/multichain';
+import type { ClusterChainConfig } from 'types/multichain';
 
 export const chainDataA = {
   slug: 'op-mainnet',
-  config: {
+  app_config: {
     app: {
       baseUrl: 'https://op-mainnet.com',
     },
@@ -46,18 +46,18 @@ export const chainDataA = {
       },
     },
   },
-} as ChainConfig;
+} as ClusterChainConfig;
 
 export const chainDataB = {
   ...chainDataA,
   slug: 'op-testnet',
-  config: {
-    ...chainDataA.config,
+  app_config: {
+    ...chainDataA.app_config,
     app: {
       baseUrl: 'https://op-testnet.com',
     },
     chain: {
-      ...chainDataA.config.chain,
+      ...chainDataA.app_config?.chain,
       id: '421',
       name: 'OP Testnet',
     },
@@ -70,24 +70,24 @@ export const chainDataB = {
     },
     apis: {
       general: {
-        ...chainDataA.config.apis.general,
+        ...chainDataA.app_config?.apis?.general,
         port: '4004',
         endpoint: 'http://localhost:4004',
       },
     },
   },
-} as ChainConfig;
+} as ClusterChainConfig;
 
 export const chainDataC = {
   ...chainDataA,
   slug: 'op-devnet',
-  config: {
-    ...chainDataA.config,
+  app_config: {
+    ...chainDataA.app_config,
     app: {
       baseUrl: 'https://op-devnet.com',
     },
     chain: {
-      ...chainDataA.config.chain,
+      ...chainDataA.app_config?.chain,
       id: '422',
       name: 'OP Devnet',
     },
@@ -98,13 +98,13 @@ export const chainDataC = {
     },
     apis: {
       general: {
-        ...chainDataA.config.apis.general,
+        ...chainDataA.app_config?.apis?.general,
         port: '4005',
         endpoint: 'http://localhost:4005',
       },
     },
   },
-} as ChainConfig;
+} as ClusterChainConfig;
 
 export const addressA: multichain.GetAddressResponse = {
   hash: '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045',

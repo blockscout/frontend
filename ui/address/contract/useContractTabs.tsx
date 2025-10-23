@@ -2,7 +2,7 @@ import type { Channel } from 'phoenix';
 import React from 'react';
 
 import type { Address } from 'types/api/address';
-import type { ChainConfig } from 'types/multichain';
+import type { ClusterChainConfig } from 'types/multichain';
 
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
@@ -35,7 +35,7 @@ interface Props {
   isEnabled: boolean;
   hasMudTab?: boolean;
   channel?: Channel;
-  chain?: ChainConfig;
+  chain?: ClusterChainConfig;
 }
 
 export default function useContractTabs({ addressData, isEnabled, hasMudTab, channel, chain }: Props): ReturnType {

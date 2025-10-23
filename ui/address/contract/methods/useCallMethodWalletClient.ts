@@ -18,9 +18,9 @@ interface Params {
 
 export default function useCallMethodWalletClient(): (params: Params) => Promise<FormSubmitResult> {
   const multichainContext = useMultichainContext();
-  const chainConfig = (multichainContext?.chain.config ?? config).chain;
+  const chainConfig = (multichainContext?.chain.app_config ?? config).chain;
 
-  const { data: walletClient } = useWalletClient({ chainId: Number(chainConfig.id) });
+  const { data: walletClient } = useWalletClient({ chainId: Number(chainConfig?.id) });
   const { isConnected, chainId, address: account } = useAccount();
   const { switchChainAsync } = useSwitchChain();
   const { trackTransaction, trackTransactionConfirm } = useRewardsActivity();
@@ -34,8 +34,8 @@ export default function useCallMethodWalletClient(): (params: Params) => Promise
       throw new Error('Wallet Client is not defined');
     }
 
-    if (chainId && String(chainId) !== chainConfig.id) {
-      await switchChainAsync({ chainId: Number(chainConfig.id) });
+    if (chainId && String(chainId) !== chainConfig?.id) {
+      await switchChainAsync({ chainId: Number(chainConfig?.id) });
     }
 
     const address = getAddress(addressHash);

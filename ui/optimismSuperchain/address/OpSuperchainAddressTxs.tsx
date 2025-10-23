@@ -143,7 +143,7 @@ const OpSuperchainAddressTxs = ({ addressData, isLoading }: Props) => {
       id: [ 'txs_local', 'txs' ],
       title: 'Local',
       component: (
-        <SocketProvider url={ getSocketUrl(chainData?.config) }>
+        <SocketProvider url={ getSocketUrl(chainData?.app_config) }>
           <MultichainProvider chainId={ chainId }>
             { isMobile && countersText }
             <TxsWithAPISorting

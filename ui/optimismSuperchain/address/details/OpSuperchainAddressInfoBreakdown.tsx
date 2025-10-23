@@ -1,7 +1,7 @@
 import { Box, HStack, VStack } from '@chakra-ui/react';
 import React from 'react';
 
-import type { ChainConfig } from 'types/multichain';
+import type { ClusterChainConfig } from 'types/multichain';
 
 import multichainConfig from 'configs/multichain';
 import type { LinkProps } from 'toolkit/chakra/link';
@@ -11,7 +11,7 @@ import ChainIcon from 'ui/optimismSuperchain/components/ChainIcon';
 
 interface Props<T> extends Omit<LinkProps, 'children'> {
   data: Record<string, T> | undefined;
-  children: (data: [ ChainConfig, T ]) => React.ReactNode;
+  children: (data: [ ClusterChainConfig, T ]) => React.ReactNode;
 }
 
 const OpSuperchainAddressInfoBreakdown = <T,>({ data, children, ...rest }: Props<T>) => {
@@ -38,7 +38,7 @@ const OpSuperchainAddressInfoBreakdown = <T,>({ data, children, ...rest }: Props
         <PopoverBody display="flex" flexDirection="column" rowGap={ 3 }>
           { Object.entries(data).map(([ chainId, chainInfo ]) => {
 
-            const chain = chains?.find((chain) => chain.config.chain.id === chainId);
+            const chain = chains?.find((chain) => chain.id === chainId);
 
             if (!chain) {
               return null;
@@ -48,7 +48,7 @@ const OpSuperchainAddressInfoBreakdown = <T,>({ data, children, ...rest }: Props
               <VStack key={ chainId } alignItems="flex-start">
                 <HStack>
                   <ChainIcon data={ chain }/>
-                  <span>{ chain.config.chain.name }</span>
+                  <span>{ chain.name }</span>
                 </HStack>
                 <Box color="text.secondary" ml={ 7 }>
                   { children([ chain, chainInfo ]) }

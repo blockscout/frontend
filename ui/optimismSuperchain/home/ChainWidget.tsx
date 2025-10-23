@@ -1,7 +1,7 @@
 import { Box, HStack, VStack } from '@chakra-ui/react';
 import React from 'react';
 
-import type { ChainConfig } from 'types/multichain';
+import type { ClusterChainConfig } from 'types/multichain';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import useAddChainClick from 'lib/web3/useAddChainClick';
@@ -19,7 +19,7 @@ import ChainIcon from '../components/ChainIcon';
 import ChainLatestBlockInfo from './ChainLatestBlockInfo';
 
 interface Props {
-  data: ChainConfig;
+  data: ClusterChainConfig;
 }
 
 const ChainWidget = ({ data }: Props) => {
@@ -62,7 +62,7 @@ const ChainWidget = ({ data }: Props) => {
           </Tooltip>
           <Tooltip content="Open explorer">
             <Link
-              href={ data.config.app.baseUrl }
+              href={ data.explorer_url }
               external
               noIcon
               color="icon.secondary"
@@ -77,16 +77,16 @@ const ChainWidget = ({ data }: Props) => {
           </Tooltip>
         </HStack>
       </HStack>
-      <Heading my={ 3 } textStyle="heading.md ">{ data.config.chain.name }</Heading>
-      <RollupStageBadge chainConfig={ data.config } variant="filled" mb={ 2.5 }/>
+      <Heading my={ 3 } textStyle="heading.md ">{ data.name }</Heading>
+      <RollupStageBadge chainConfig={ data.app_config } variant="filled" mb={ 2.5 }/>
       <VStack gap={ 2 } alignItems="flex-start" fontWeight={ 500 }>
         <HStack gap={ 2 }>
           <Box color="text.secondary">Chain ID</Box>
-          <Box>{ data.config.chain.id }</Box>
-          <CopyToClipboard text={ String(data.config.chain.id) } ml={ 0 }/>
+          <Box>{ data.id }</Box>
+          <CopyToClipboard text={ String(data.id) } ml={ 0 }/>
         </HStack>
         <ChainLatestBlockInfo chainData={ data }/>
-        { statsQuery.data && statsQuery.data.gas_prices && data.config.features.gasTracker.isEnabled && (
+        { statsQuery.data && statsQuery.data.gas_prices && data.app_config.features.gasTracker.isEnabled && (
           <HStack gap={ 2 }>
             <Box color="text.secondary">Gas price</Box>
             <Skeleton loading={ statsQuery.isPlaceholderData }>

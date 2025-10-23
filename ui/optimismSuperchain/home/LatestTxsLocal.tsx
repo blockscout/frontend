@@ -36,7 +36,7 @@ const LatestTxsLocal = () => {
   });
 
   return (
-    <SocketProvider url={ getSocketUrl(chain?.config) }>
+    <SocketProvider url={ getSocketUrl(chain?.app_config) }>
       <TxsContent
         items={ query.data }
         isPlaceholderData={ query.isPlaceholderData }

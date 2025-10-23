@@ -30,7 +30,7 @@ const TokenSelectItem = ({ data }: Props) => {
     }
 
     const chainId = Object.keys(data.chain_values)[0];
-    const chain = multichainConfig()?.chains.find((chain) => chain.config.chain.id === chainId);
+    const chain = multichainConfig()?.chains.find((chain) => chain.id === chainId);
     return chain;
   }, [ data.chain_values ]);
 
@@ -85,7 +85,7 @@ const TokenSelectItem = ({ data }: Props) => {
     }
   })();
 
-  const url = route({ pathname: '/token/[hash]', query: { hash: data.token.address_hash } }, chain ? { chain } : undefined);
+  const url = route({ pathname: '/token/[hash]', query: { hash: data.token.address_hash } }, { chain });
 
   return (
     <Link

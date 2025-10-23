@@ -1,7 +1,7 @@
 import type { UseQueryOptions } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
 
-import type { ChainConfig } from 'types/multichain';
+import type { ExternalChainExtended } from 'types/externalChains';
 
 import { useMultichainContext } from 'lib/contexts/multichain';
 import type { Params as FetchParams } from 'lib/hooks/useFetch';
@@ -15,7 +15,7 @@ export interface Params<R extends ResourceName, E = unknown, D = ResourcePayload
   fetchParams?: Pick<FetchParams, 'body' | 'method' | 'headers'>;
   queryOptions?: Partial<Omit<UseQueryOptions<ResourcePayload<R>, ResourceError<E>, D>, 'queryFn'>>;
   logError?: boolean;
-  chain?: ChainConfig;
+  chain?: ExternalChainExtended;
 }
 
 export interface GetResourceKeyParams<R extends ResourceName, E = unknown, D = ResourcePayload<R>>
@@ -40,7 +40,7 @@ export default function useApiQuery<R extends ResourceName, E = unknown, D = Res
   const chain = chainProp || multichainContext?.chain;
 
   return useQuery<ResourcePayload<R>, ResourceError<E>, D>({
-    queryKey: queryOptions?.queryKey || getResourceKey(resource, { pathParams, queryParams, chainId: chain?.config.chain.id }),
+    queryKey: queryOptions?.queryKey || getResourceKey(resource, { pathParams, queryParams, chainId: chain?.id }),
     queryFn: async({ signal }) => {
       // all errors and error typing is handled by react-query
       // so error response will never go to the data

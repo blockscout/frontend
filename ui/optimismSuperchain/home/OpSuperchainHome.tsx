@@ -1,7 +1,7 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import type { ChainConfig } from 'types/multichain';
+import type { ClusterChainConfig } from 'types/multichain';
 
 import multichainConfig from 'configs/multichain';
 import getSocketUrl from 'lib/api/getSocketUrl';
@@ -25,10 +25,10 @@ const COLLAPSIBLE_TRIGGER_PROPS = {
 const OpSuperchainHome = () => {
   const chains = multichainConfig()?.chains;
 
-  const renderItem = React.useCallback((chain: ChainConfig) => {
+  const renderItem = React.useCallback((chain: ClusterChainConfig) => {
     return (
       <MultichainProvider key={ chain.id } chainId={ chain.id }>
-        <SocketProvider url={ getSocketUrl(chain.config) }>
+        <SocketProvider url={ getSocketUrl(chain.app_config) }>
           <ChainWidget data={ chain }/>
         </SocketProvider>
       </MultichainProvider>

@@ -2,7 +2,7 @@ import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { CsvExportParams } from 'types/client/address';
-import type { ChainConfig } from 'types/multichain';
+import type { ClusterChainConfig } from 'types/multichain';
 
 import { route } from 'nextjs/routes';
 
@@ -19,7 +19,7 @@ interface Props {
   params: CsvExportParams;
   className?: string;
   isLoading?: boolean;
-  chainData?: ChainConfig;
+  chainData?: ClusterChainConfig;
 }
 
 const AddressCsvExportLink = ({ className, address, params, isLoading, chainData }: Props) => {
@@ -27,20 +27,18 @@ const AddressCsvExportLink = ({ className, address, params, isLoading, chainData
   const isInitialLoading = useIsInitialLoading(isLoading);
   const multichainContext = useMultichainContext();
 
-  const chainConfig = chainData?.config || multichainContext?.chain.config || config;
+  const chainConfig = chainData?.app_config || multichainContext?.chain.app_config || config;
 
   if (!chainConfig.features.csvExport.isEnabled) {
     return null;
   }
-
-  const linkContext = (chainData ? { chain: chainData } : undefined) ?? multichainContext;
 
   return (
     <Tooltip disabled={ !isMobile } content="Download CSV">
       <Link
         className={ className }
         whiteSpace="nowrap"
-        href={ route({ pathname: '/csv-export', query: { ...params, address } }, linkContext) }
+        href={ route({ pathname: '/csv-export', query: { ...params, address } }, { chain: chainData ?? multichainContext?.chain }) }
         flexShrink={ 0 }
         loading={ isInitialLoading }
         minW={ 8 }

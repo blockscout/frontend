@@ -20,7 +20,7 @@ const ContractDetailsVerificationButton = ({ isLoading, addressHash, ...rest }: 
   const href = (() => {
     if (multichainContext) {
       const searchParams = new URLSearchParams();
-      searchParams.set('contracts', `${ multichainContext.chain.config.chain.id }:${ addressHash }`);
+      searchParams.set('contracts', `${ multichainContext.chain.id }:${ addressHash }`);
       return `https://vera.blockscout.com?${ searchParams.toString() }`;
     }
     return route({ pathname: '/address/[hash]/contract-verification', query: { hash: addressHash } });

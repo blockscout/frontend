@@ -3,7 +3,7 @@ import { omit, pickBy } from 'es-toolkit';
 import React from 'react';
 
 import type { CsrfData } from 'types/client/account';
-import type { ChainConfig } from 'types/multichain';
+import type { ExternalChainExtended } from 'types/externalChains';
 
 import config from 'configs/app';
 import isBodyAllowed from 'lib/api/isBodyAllowed';
@@ -22,7 +22,7 @@ export interface Params<R extends ResourceName> {
   queryParams?: Record<string, string | Array<string> | number | boolean | undefined | null>;
   fetchParams?: Pick<FetchParams, 'body' | 'method' | 'signal' | 'headers'>;
   logError?: boolean;
-  chain?: ChainConfig;
+  chain?: ExternalChainExtended;
 }
 
 export default function useApiFetch() {

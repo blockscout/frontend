@@ -3,7 +3,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
 import type { SocketMessage } from 'lib/socket/types';
-import type { ChainConfig } from 'types/multichain';
+import type { ClusterChainConfig } from 'types/multichain';
 
 import { route } from 'nextjs-routes';
 
@@ -15,7 +15,7 @@ import { Link } from 'toolkit/chakra/link';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 interface Props {
-  chainData: ChainConfig;
+  chainData: ClusterChainConfig;
 }
 
 const ChainLatestBlockInfo = ({ chainData }: Props) => {

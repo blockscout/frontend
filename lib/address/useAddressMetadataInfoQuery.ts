@@ -11,8 +11,8 @@ export default function useAddressMetadataInfoQuery(addresses: Array<string>, is
   const resource = 'metadata:info';
 
   const multichainContext = useMultichainContext();
-  const feature = multichainContext?.chain?.config.features.addressMetadata || config.features.addressMetadata;
-  const chainId = multichainContext?.chain?.config.chain.id || config.chain.id;
+  const feature = multichainContext?.chain?.app_config.features.addressMetadata || config.features.addressMetadata;
+  const chainId = multichainContext?.chain?.app_config.chain.id || config.chain.id;
 
   return useApiQuery<typeof resource, unknown, AddressMetadataInfoFormatted>(resource, {
     queryParams: {

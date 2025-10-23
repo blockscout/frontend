@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { ChainConfig } from 'types/multichain';
+import type { ClusterChainConfig } from 'types/multichain';
 
 import multichainConfig from 'configs/multichain';
 import getChainIdFromSlug from 'lib/multichain/getChainIdFromSlug';
@@ -13,7 +13,7 @@ interface MultichainProviderProps {
 }
 
 export interface TMultichainContext {
-  chain: ChainConfig;
+  chain: ClusterChainConfig;
 }
 
 export const MultichainContext = React.createContext<TMultichainContext | null>(null);
