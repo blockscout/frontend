@@ -70,7 +70,9 @@ export default function ApprovalsListItem({
           }}
           isLoading={ isLoading }
           noCopy
-          noLink
+          jointSymbol
+          chain={ selectedChain }
+          link={{ noIcon: true, external: true }}
         />
         <AddressEntity
           address={{ hash: approval.address }}
