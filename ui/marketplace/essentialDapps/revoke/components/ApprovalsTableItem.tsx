@@ -63,6 +63,7 @@ export default function ApprovalsTableItem({
             textStyle="sm"
             fontWeight="600"
             chain={ selectedChain }
+            icon={{ shield: false }}
             link={{ noIcon: true, external: true }}
           />
           <AddressEntity

@@ -50,7 +50,7 @@ const Icon = (props: IconProps) => {
   }
 
   const shield = props.shield ?? (props.chain ? { src: props.chain.logo } : undefined);
-  const hintPostfix: string = props.hintPostfix ?? (props.chain ? getChainTooltipText(props.chain, ' on') : '');
+  const hintPostfix: string = props.hintPostfix ?? (props.chain && props.shield !== false ? getChainTooltipText(props.chain, ' on') : '');
 
   const styles = getIconProps(props, Boolean(shield));
 

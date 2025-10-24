@@ -56,7 +56,7 @@ const Icon = (props: IconProps) => {
       alt={ `${ props.token.name || 'token' } logo` }
       fallback={ <TokenLogoPlaceholder/> }
       shield={ props.shield ?? (props.chain ? { src: props.chain.logo } : undefined) }
-      hint={ props.chain ? getChainTooltipText(props.chain, 'Token on ') : undefined }
+      hint={ props.chain && props.shield !== false ? getChainTooltipText(props.chain, 'Token on ') : undefined }
       { ...props }
     />
   );

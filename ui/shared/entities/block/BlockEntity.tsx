@@ -48,7 +48,7 @@ const Icon = (props: IconProps) => {
       return props.hint;
     }
 
-    if (props.chain) {
+    if (props.chain && props.shield !== false) {
       return getChainTooltipText(props.chain, 'Block on ');
     }
 

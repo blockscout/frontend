@@ -96,7 +96,7 @@ const Link = chakra(({ isLoading, children, external, onClick, href, noLink, var
 });
 
 type EntityIconProps = (ImageProps | IconSvgProps) & Pick<IconProps, 'color' | 'borderRadius' | 'marginRight' | 'boxSize'> & {
-  shield?: IconShieldProps;
+  shield?: IconShieldProps | false;
   hint?: string;
   hintPostfix?: string;
   tooltipInteractive?: boolean;
