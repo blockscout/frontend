@@ -240,6 +240,7 @@ const Chart = () => {
                 borderRadius="base"
                 variant="icon_background"
                 size="md"
+                boxSize={ 8 }
               />
             )
           )) }

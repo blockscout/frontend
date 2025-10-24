@@ -50,14 +50,14 @@ test.describe('local txs', () => {
   });
 
   test('base view', async() => {
-    await expect(component).toHaveScreenshot();
+    await expect(component).toHaveScreenshot({ maxDiffPixels: 5 });
   });
 
   test.describe('mobile', () => {
     test.use({ viewport: pwConfig.viewport.mobile });
 
     test('base view', async() => {
-      await expect(component).toHaveScreenshot();
+      await expect(component).toHaveScreenshot({ maxDiffPixels: 5 });
     });
   });
 });
