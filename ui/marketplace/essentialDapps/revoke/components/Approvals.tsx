@@ -3,7 +3,7 @@ import { Box, Flex } from '@chakra-ui/react';
 import type { AllowanceType } from 'types/client/revoke';
 import type { ChainConfig } from 'types/multichain';
 
-import EmptySearchResult from 'ui/shared/EmptySearchResult';
+import DataListDisplay from 'ui/shared/DataListDisplay';
 
 import ApprovalsListItem from './ApprovalsListItem';
 import ApprovalsTable from './ApprovalsTable';
@@ -23,25 +23,20 @@ export default function Approvals({
   isAddressMatch,
   hideApproval,
 }: Props) {
-  return (
+  const content = (
     <>
-      <Box hideFrom="lg">
-        <Flex flexDirection="column">
-          { approvals.map((approval, index) => (
-            <ApprovalsListItem
-              key={ index }
-              selectedChain={ selectedChain }
-              approval={ approval }
-              isLoading={ isLoading }
-              isAddressMatch={ isAddressMatch }
-              hideApproval={ hideApproval }
-            />
-          )) }
-          { !isLoading && !approvals.length && (
-            <EmptySearchResult text="No approvals found"/>
-          ) }
-        </Flex>
-      </Box>
+      <Flex hideFrom="lg" flexDirection="column">
+        { approvals.map((approval, index) => (
+          <ApprovalsListItem
+            key={ index }
+            selectedChain={ selectedChain }
+            approval={ approval }
+            isLoading={ isLoading }
+            isAddressMatch={ isAddressMatch }
+            hideApproval={ hideApproval }
+          />
+        )) }
+      </Flex>
       <Box hideBelow="lg">
         <ApprovalsTable
           selectedChain={ selectedChain }
@@ -52,5 +47,18 @@ export default function Approvals({
         />
       </Box>
     </>
+  );
+
+  return (
+    <DataListDisplay
+      itemsNum={ approvals.length }
+      isError={ false }
+      filterProps={{
+        emptyFilteredText: 'No approvals found',
+        hasActiveFilters: true,
+      }}
+    >
+      { content }
+    </DataListDisplay>
   );
 }
