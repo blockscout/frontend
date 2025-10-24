@@ -259,6 +259,28 @@ export const recipe = defineRecipe({
           color: 'hover',
         },
       },
+      icon_background: {
+        bg: 'button.icon_background.bg',
+        color: 'icon.secondary',
+        border: 'none',
+        _hover: {
+          color: 'hover',
+        },
+        _selected: {
+          bg: 'selected.control.bg',
+          color: 'selected.control.text',
+          _hover: {
+            bg: 'selected.control.bg',
+            color: 'hover',
+          },
+          _expanded: {
+            color: 'hover',
+          },
+        },
+        _expanded: {
+          color: 'hover',
+        },
+      },
       pagination: {
         borderWidth: '2px',
         borderStyle: 'solid',

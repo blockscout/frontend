@@ -172,7 +172,7 @@ const MarketplaceAppCard = ({
                 <IconButton
                   aria-label="Mark as favorite"
                   title="Mark as favorite"
-                  variant="icon_secondary"
+                  variant="icon_background"
                   size="md"
                   onClick={ handleFavoriteClick }
                   selected={ isFavorite }
@@ -182,9 +182,9 @@ const MarketplaceAppCard = ({
                 <CopyToClipboard
                   text={ isBrowser() ? window.location.origin + `/apps/${ id }` : '' }
                   type="share"
-                  variant="icon_secondary"
+                  variant="icon_background"
                   size="md"
-                  borderRadius="none"
+                  borderRadius="base"
                   ml={ 0 }
                   boxSize={ 8 }
                 />

@@ -129,7 +129,7 @@ const FeaturedApp = ({
               <IconButton
                 aria-label="Mark as favorite"
                 title="Mark as favorite"
-                variant="icon_secondary"
+                variant="icon_background"
                 size="md"
                 onClick={ handleFavoriteClick }
                 selected={ isFavorite }

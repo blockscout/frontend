@@ -75,7 +75,7 @@ const TokenSelect = () => {
         >
           <IconButton
             aria-label="Show all tokens"
-            variant="icon_secondary"
+            variant="icon_background"
             size="md"
             onClick={ handleIconButtonClick }
           >

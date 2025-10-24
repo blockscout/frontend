@@ -157,7 +157,7 @@ export const ChartWidget = React.memo(({
               hidden={ !zoomRange }
               aria-label="Reset zoom"
               size="md"
-              variant="icon_secondary"
+              variant="icon_background"
               onClick={ handleZoomReset }
             >
               <Icon><RepeatIcon/></Icon>
