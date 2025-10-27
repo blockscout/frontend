@@ -12,8 +12,6 @@ import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 
-const celoFeature = config.features.celo;
-
 type Props = AddressTokenBalance & { isLoading: boolean };
 
 const ERC20TokensListItem = ({ token, value, isLoading }: Props) => {
@@ -23,7 +21,8 @@ const ERC20TokensListItem = ({ token, value, isLoading }: Props) => {
     usd: tokenValue,
   } = getCurrencyValue({ value: value, exchangeRate: token.exchange_rate, decimals: token.decimals, accuracy: 8, accuracyUsd: 2 });
 
-  const isNativeToken = celoFeature.isEnabled && token.address_hash.toLowerCase() === celoFeature.nativeTokenAddress?.toLowerCase();
+  const isNativeToken = config.UI.views.address.nativeTokenAddress &&
+    token.address_hash.toLowerCase() === config.UI.views.address.nativeTokenAddress.toLowerCase();
 
   return (
     <ListItemMobile rowGap={ 2 }>

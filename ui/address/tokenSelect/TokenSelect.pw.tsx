@@ -129,8 +129,7 @@ test('long values', async({ render, page, mockApiResponse }) => {
 
 test('native token', async({ render, mockEnvs, page }) => {
   await mockEnvs([
-    [ 'NEXT_PUBLIC_CELO_ENABLED', 'true' ],
-    [ 'NEXT_PUBLIC_CELO_NATIVE_TOKEN_ADDRESS', tokenInfoERC20c.address_hash ],
+    [ 'NEXT_PUBLIC_VIEWS_ADDRESS_NATIVE_TOKEN_ADDRESS', tokenInfoERC20c.address_hash ],
   ]);
 
   await render(
