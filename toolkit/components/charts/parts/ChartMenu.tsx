@@ -104,7 +104,8 @@ const ChartMenu = ({
         'Date', 'Value',
       ];
       const dataRows = chart.items.map((item) => [
-        dayjs(item.date).format('YYYY-MM-DD'), String(item.value),
+        item.dateLabel ?? dayjs(item.date).format('YYYY-MM-DD'),
+        String(item.value),
       ]);
       saveAsCsv(headerRows, dataRows, `${ chart.name } (Blockscout stats)`);
     });
