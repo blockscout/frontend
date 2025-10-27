@@ -237,9 +237,10 @@ const Chart = () => {
                 text={ config.app.baseUrl + router.asPath }
                 type="link"
                 ml={ 0 }
-                borderRadius="none"
-                variant="icon_secondary"
+                borderRadius="base"
+                variant="icon_background"
                 size="md"
+                boxSize={ 8 }
               />
             )
           )) }

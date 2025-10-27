@@ -21,7 +21,7 @@ const ButtonItem = ({ className, label, onClick, icon, isDisabled }: Props) => {
         className={ className }
         onClick={ onClick }
         disabled={ isDisabled }
-        variant="icon_secondary"
+        variant="icon_background"
         boxSize={ 8 }
       >
         { typeof icon === 'string' ? <IconSvg name={ icon } boxSize={ 6 }/> : icon }

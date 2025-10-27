@@ -132,7 +132,7 @@ const ChartMenu = ({
     <>
       <MenuRoot>
         <MenuTrigger asChild>
-          <IconButton variant="icon_secondary" size="md" aria-label="Open chart options menu" loadingSkeleton={ isLoading }>
+          <IconButton variant="icon_background" size="md" aria-label="Open chart options menu" loadingSkeleton={ isLoading }>
             <Icon><DotsIcon/></Icon>
           </IconButton>
         </MenuTrigger>

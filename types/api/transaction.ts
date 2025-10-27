@@ -219,6 +219,7 @@ export interface TxAuthorization {
   authority: string;
   chain_id: number;
   nonce: number;
+  status: 'ok' | 'invalid_chain_id' | 'invalid_nonce' | 'invalid_signature' | null;
 }
 
 export interface InteropTransactionInfo {

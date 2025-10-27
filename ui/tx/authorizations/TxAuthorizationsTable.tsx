@@ -18,10 +18,11 @@ const TxAuthorizationsTable = ({ data, isLoading }: Props) => {
       <TableRoot>
         <TableHeaderSticky>
           <TableRow>
-            <TableColumnHeader width="50%">Address</TableColumnHeader>
             <TableColumnHeader width="50%">Authority</TableColumnHeader>
+            <TableColumnHeader width="50%">Delegated address</TableColumnHeader>
             <TableColumnHeader width="120px">Chain</TableColumnHeader>
-            <TableColumnHeader width="120px" isNumeric>Nonce</TableColumnHeader>
+            <TableColumnHeader width="120px">Nonce</TableColumnHeader>
+            <TableColumnHeader width="200px">Status</TableColumnHeader>
           </TableRow>
         </TableHeaderSticky>
         <TableBody>

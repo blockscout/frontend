@@ -111,6 +111,11 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
           DEFAULT: { value: '{colors.text.primary}' },
         },
       },
+      icon_background: {
+        bg: {
+          DEFAULT: { value: { _light: '{colors.gray.50}', _dark: '{colors.whiteAlpha.50}' } },
+        },
+      },
       pagination: {
         fg: {
           DEFAULT: { value: { _light: '{colors.blackAlpha.800}', _dark: '{colors.gray.50}' } },
