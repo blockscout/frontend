@@ -24,7 +24,7 @@ describe('ClustersEntity', () => {
     render(<ClustersEntity clusterName={ mockClusterName }/>);
 
     const link = screen.getByRole('link');
-    expect(link.getAttribute('href')).toBe('/clusters/test-cluster');
+    expect(link.getAttribute('href')).toBe('/name-services/clusters/test-cluster');
   });
 
   it('should render without link when noLink is true', () => {
