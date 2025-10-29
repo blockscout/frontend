@@ -12,6 +12,7 @@ import CsvIcon from 'icons/files/csv.svg';
 import ImageIcon from 'icons/files/image.svg';
 import ScopeIcon from 'icons/scope.svg';
 import ShareIcon from 'icons/share.svg';
+import { useMultichainContext } from 'lib/contexts/multichain';
 
 import { useColorModeValue } from '../../../chakra/color-mode';
 import { IconButton } from '../../../chakra/icon-button';
@@ -66,6 +67,12 @@ const ChartMenu = ({
 
   const isInBrowser = isBrowser();
 
+  const multichainContext = useMultichainContext();
+
+  const chainPostfix = React.useMemo(() => {
+    return multichainContext?.chain.name ? ` on ${ multichainContext.chain.name }` : '';
+  }, [ multichainContext?.chain.name ]);
+
   const showChartFullscreen = React.useCallback(() => {
     fullscreenDialog.onOpenChange({ open: true });
   }, [ fullscreenDialog ]);
@@ -89,14 +96,14 @@ const ChartMenu = ({
           })
           .then((dataUrl) => {
             const link = document.createElement('a');
-            link.download = `${ title } (Blockscout chart).png`;
+            link.download = `${ title }${ chainPostfix } (Blockscout chart).png`;
             link.href = dataUrl;
             link.click();
             link.remove();
           });
       }
     }, 100);
-  }, [ pngBackgroundColor, title, chartRef ]);
+  }, [ pngBackgroundColor, title, chainPostfix, chartRef ]);
 
   const handleSVGSavingClick = React.useCallback(() => {
     const headerRows = [
@@ -106,8 +113,8 @@ const ChartMenu = ({
       item.dateLabel ?? dayjs(item.date).format('YYYY-MM-DD'),
       ...charts.map((chart) => String(chart.items[index].value)),
     ]);
-    saveAsCsv(headerRows, dataRows, `${ title } (Blockscout stats)`);
-  }, [ charts, title ]);
+    saveAsCsv(headerRows, dataRows, `${ title }${ chainPostfix } (Blockscout stats)`);
+  }, [ charts, title, chainPostfix ]);
 
   // TS thinks window.navigator.share can't be undefined, but it can
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
