@@ -78,7 +78,6 @@ const FullscreenChartModal = ({
             charts={ charts }
             handleZoom={ handleZoom }
             zoomRange={ zoomRange }
-            title={ title }
             resolution={ resolution }
           />
         </DialogBody>

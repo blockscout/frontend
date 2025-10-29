@@ -95,6 +95,7 @@ const OpSuperchainVerifiedContracts = () => {
       <ChainSelect
         value={ chainValue }
         onValueChange={ onChainValueChange }
+        mode="default"
         mb={ 3 }
       />
       <MultichainProvider chainId={ chainValue?.[0] }>

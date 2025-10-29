@@ -11,7 +11,6 @@ import { ChartWatermark } from './parts/ChartWatermark';
 
 export interface ChartWidgetContentProps {
   charts: TimeChartData;
-  title: string;
   isLoading?: boolean;
   isError?: boolean;
   empty?: boolean;
@@ -27,7 +26,6 @@ export interface ChartWidgetContentProps {
 
 export const ChartWidgetContent = React.memo(({
   charts,
-  title,
   isLoading,
   isError,
   empty,
@@ -78,7 +76,6 @@ export const ChartWidgetContent = React.memo(({
         charts={ charts }
         zoomRange={ zoomRange }
         onZoom={ handleZoom }
-        title={ title }
         isEnlarged={ isEnlarged }
         noAnimation={ noAnimation }
         resolution={ resolution }

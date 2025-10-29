@@ -94,7 +94,6 @@ export const ChartWidget = React.memo(({
       charts={ displayedCharts }
       isError={ isError }
       isLoading={ isLoading }
-      title={ title }
       empty={ !hasNonEmptyCharts }
       emptyText={ emptyText }
       handleZoom={ handleZoom }
