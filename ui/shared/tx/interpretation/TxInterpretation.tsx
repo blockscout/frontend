@@ -40,6 +40,8 @@ import {
   WEI_VAR_NAME,
 } from './utils';
 
+const nameServicesFeature = config.features.nameServices;
+
 interface Props extends BoxProps {
   summary?: TxInterpretationSummary;
   isLoading?: boolean;
@@ -102,7 +104,7 @@ const TxInterpretationElementByType = (
         </chakra.span>
       );
     case 'domain': {
-      if (config.features.nameService.isEnabled) {
+      if (nameServicesFeature.isEnabled && nameServicesFeature.ens.isEnabled) {
         return (
           <chakra.span display="inline-block" verticalAlign="top" _notFirst={{ marginLeft: 1 }}>
             <EnsEntity

@@ -7,10 +7,9 @@ import config from 'configs/app';
 import sumBnReducer from 'lib/bigint/sumBnReducer';
 import { ZERO } from 'toolkit/utils/consts';
 
-const celoFeature = config.features.celo;
-
 const isNativeToken = (token: TokenEnhancedData) =>
-  celoFeature.isEnabled && token.token.address_hash.toLowerCase() === celoFeature.nativeTokenAddress?.toLowerCase();
+  config.UI.views.address.nativeTokenAddress &&
+  token.token.address_hash.toLowerCase() === config.UI.views.address.nativeTokenAddress.toLowerCase();
 
 export type TokenEnhancedData = AddressTokenBalance & {
   usd?: BigNumber ;

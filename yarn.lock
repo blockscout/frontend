@@ -7488,10 +7488,10 @@
     rpc-websockets "^9.0.2"
     superstruct "^2.0.2"
 
-"@specify-sh/sdk@0.4.1":
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/@specify-sh/sdk/-/sdk-0.4.1.tgz#016cd004c35fa64b8a510daac675edfce012958f"
-  integrity sha512-IY5xUFbZo3CYfBh+iRqIP3sguUyJhgY/hWA2EvBrwwOrgLL9vjJVEI+ijSYRlNBBTTEHreB0KC6eK0USO87jYQ==
+"@specify-sh/sdk@0.4.2":
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/@specify-sh/sdk/-/sdk-0.4.2.tgz#409072780661e9ba6c9d773403a1252b26ddc92b"
+  integrity sha512-vskPvwpE3SWkmrOPhfMgvmvxvC+XNL93FTTF4SD3cPNZDsry5qfPNIW6TU1OTh3DWk7JMl/3X605CJUUAdEYmw==
   dependencies:
     cross-fetch "4.0.0"
 

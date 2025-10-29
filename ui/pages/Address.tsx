@@ -68,6 +68,7 @@ const PREDEFINED_TAG_PRIORITY = 100;
 const txInterpretation = config.features.txInterpretation;
 const addressProfileAPIFeature = config.features.addressProfileAPI;
 const xScoreFeature = config.features.xStarScore;
+const nameServicesFeature = config.features.nameServices;
 
 const AddressPageContent = () => {
   const router = useRouter();
@@ -126,7 +127,7 @@ const AddressPageContent = () => {
       order: 'ASC',
     },
     queryOptions: {
-      enabled: Boolean(hash) && config.features.nameService.isEnabled,
+      enabled: Boolean(hash) && nameServicesFeature.isEnabled && nameServicesFeature.ens.isEnabled,
     },
   });
   const addressMainDomain = !addressQuery.isPlaceholderData ?
@@ -166,7 +167,7 @@ const AddressPageContent = () => {
     isEnabled: !countersQuery.isPlaceholderData && !countersQuery.isDegradedData,
   });
 
-  const isSafeAddress = useIsSafeAddress(!addressQuery.isPlaceholderData && addressQuery.data?.is_contract ? hash : undefined);
+  const isSafeAddress = useIsSafeAddress(!addressQuery.isPlaceholderData && addressQuery.data?.is_contract ? addressQuery.data.hash : undefined);
 
   const xStarQuery = useFetchXStarScore({ hash });
 
@@ -450,9 +451,9 @@ const AddressPageContent = () => {
       <HStack ml="auto" gap={ 2 }/>
       { !isLoading && addressQuery.data?.is_contract && addressQuery.data?.is_verified && config.UI.views.address.solidityscanEnabled &&
         <SolidityscanReport hash={ hash }/> }
-      { !isLoading && config.features.nameService.isEnabled &&
+      { !isLoading && nameServicesFeature.isEnabled && nameServicesFeature.ens.isEnabled &&
         <AddressEnsDomains query={ addressEnsDomainsQuery } addressHash={ hash } mainDomainName={ addressQuery.data?.ens_domain_name }/> }
-      { !isLoading && config.features.clusters.isEnabled &&
+      { !isLoading && nameServicesFeature.isEnabled && nameServicesFeature.clusters.isEnabled &&
         <AddressClusters query={ addressClustersQuery } addressHash={ hash }/> }
       <NetworkExplorers type="address" pathParam={ hash }/>
     </Flex>

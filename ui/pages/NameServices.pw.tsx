@@ -7,7 +7,7 @@ import * as ensDomainMock from 'mocks/ens/domain';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect, devices } from 'playwright/lib';
 
-import NameDomains from './NameDomains';
+import NameServices from './NameServices';
 
 test.describe('domains', () => {
 
@@ -49,7 +49,7 @@ test.describe('domains', () => {
 
   test('default view', async({ render }) => {
     test.slow();
-    const component = await render(<NameDomains/>, { hooksConfig });
+    const component = await render(<NameServices/>, { hooksConfig });
     await expect(component).toHaveScreenshot({ timeout: 10_000 });
   });
 
@@ -57,13 +57,13 @@ test.describe('domains', () => {
     test.use({ viewport: devices['iPhone 13 Pro'].viewport });
 
     test('default view', async({ render }) => {
-      const component = await render(<NameDomains/>, { hooksConfig });
+      const component = await render(<NameServices/>, { hooksConfig });
       await expect(component).toHaveScreenshot({ timeout: 10_000 });
     });
   });
 
   test('filters', async({ render, page }) => {
-    const component = await render(<NameDomains/>, { hooksConfig });
+    const component = await render(<NameServices/>, { hooksConfig });
 
     await component.getByRole('button', { name: 'Filter' }).click();
     await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 250, height: 500 } });
@@ -120,12 +120,12 @@ test.describe('directories', () => {
   });
 
   test('directory view', async({ render }) => {
-    const component = await render(<NameDomains/>, { hooksConfig: hooksConfig.directories });
+    const component = await render(<NameServices/>, { hooksConfig: hooksConfig.directories });
     await expect(component).toHaveScreenshot();
   });
 
   test('leaderboard view', async({ render }) => {
-    const component = await render(<NameDomains/>, { hooksConfig: hooksConfig.leaderboard });
+    const component = await render(<NameServices/>, { hooksConfig: hooksConfig.leaderboard });
     await expect(component).toHaveScreenshot();
   });
 
@@ -133,12 +133,12 @@ test.describe('directories', () => {
     test.use({ viewport: devices['iPhone 13 Pro'].viewport });
 
     test('directory view', async({ render }) => {
-      const component = await render(<NameDomains/>, { hooksConfig: hooksConfig.directories });
+      const component = await render(<NameServices/>, { hooksConfig: hooksConfig.directories });
       await expect(component).toHaveScreenshot();
     });
 
     test('leaderboard view', async({ render }) => {
-      const component = await render(<NameDomains/>, { hooksConfig: hooksConfig.leaderboard });
+      const component = await render(<NameServices/>, { hooksConfig: hooksConfig.leaderboard });
       await expect(component).toHaveScreenshot();
     });
   });

@@ -40,12 +40,14 @@ const TokenTransferListItem = ({
   return (
     <ListItemMobile rowGap={ 3 }>
       <Flex justifyContent="space-between" alignItems="center" lineHeight="24px" width="100%">
-        <TxEntity
-          isLoading={ isLoading }
-          hash={ txHash }
-          truncation="constant_long"
-          fontWeight="700"
-        />
+        { txHash && (
+          <TxEntity
+            isLoading={ isLoading }
+            hash={ txHash }
+            truncation="constant_long"
+            fontWeight="700"
+          />
+        ) }
         <TimeWithTooltip
           timestamp={ timestamp }
           enableIncrement

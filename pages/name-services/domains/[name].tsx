@@ -9,7 +9,7 @@ const NameDomain = dynamic(() => import('ui/pages/NameDomain'), { ssr: false });
 
 const Page: NextPage<Props> = (props: Props) => {
   return (
-    <PageNextJs pathname="/name-domains/[name]" query={ props.query }>
+    <PageNextJs pathname="/name-services/domains/[name]" query={ props.query }>
       <NameDomain/>
     </PageNextJs>
   );
@@ -17,4 +17,4 @@ const Page: NextPage<Props> = (props: Props) => {
 
 export default Page;
 
-export { nameDomain as getServerSideProps } from 'nextjs/getServerSideProps/main';
+export { nameServiceEns as getServerSideProps } from 'nextjs/getServerSideProps/main';

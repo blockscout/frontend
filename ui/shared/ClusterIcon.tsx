@@ -1,8 +1,6 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import { getFeaturePayload } from 'configs/app/features/types';
-
 import config from 'configs/app';
 import { Image } from 'toolkit/chakra/image';
 import type { ImageProps } from 'toolkit/chakra/image';
@@ -12,6 +10,8 @@ interface ClusterIconProps extends Omit<ImageProps, 'src' | 'alt'> {
   clusterName: string;
 }
 
+const nameServicesFeature = config.features.nameServices;
+
 const ClusterIcon = ({
   clusterName,
   boxSize = 5,
@@ -20,7 +20,7 @@ const ClusterIcon = ({
   flexShrink = 0,
   ...imageProps
 }: ClusterIconProps) => {
-  const clustersFeature = getFeaturePayload(config.features.clusters);
+  const clustersFeature = nameServicesFeature.isEnabled && nameServicesFeature.clusters.isEnabled ? nameServicesFeature.clusters : undefined;
 
   const fallbackElement = (
     <Box

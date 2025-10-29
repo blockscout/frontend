@@ -1,6 +1,8 @@
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 
+const feature = config.features.nameServices;
+
 export function useAddressClusters(addressHash: string, isEnabled: boolean = true) {
   return useApiQuery('clusters:get_clusters_by_address', {
     queryParams: {
@@ -9,7 +11,7 @@ export function useAddressClusters(addressHash: string, isEnabled: boolean = tru
       }),
     },
     queryOptions: {
-      enabled: Boolean(addressHash) && config.features.clusters.isEnabled && isEnabled,
+      enabled: Boolean(addressHash) && feature.isEnabled && feature.clusters.isEnabled && isEnabled,
     },
   });
 }

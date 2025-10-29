@@ -1,8 +1,6 @@
 import { Box, chakra, Flex, Text } from '@chakra-ui/react';
 import React from 'react';
 
-import { getFeaturePayload } from 'configs/app/features/types';
-
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
@@ -15,10 +13,13 @@ import IconSvg from 'ui/shared/IconSvg';
 
 import { distributeEntityProps, getIconProps } from '../base/utils';
 
+const nameServicesFeature = config.features.nameServices;
+const clustersFeature = nameServicesFeature.isEnabled && nameServicesFeature.clusters.isEnabled ? nameServicesFeature.clusters : undefined;
+
 type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'clusterName'>;
 
 const Link = chakra((props: LinkProps) => {
-  const defaultHref = route({ pathname: '/clusters/[name]', query: { name: encodeURIComponent(props.clusterName) } });
+  const defaultHref = route({ pathname: '/name-services/clusters/[name]', query: { name: encodeURIComponent(props.clusterName) } });
 
   return (
     <EntityBase.Link
@@ -72,7 +73,7 @@ const Icon = (props: IconProps) => {
       borderRadius="base"
       mr={ 2 }
       flexShrink={ 0 }
-      src={ `${ getFeaturePayload(config.features.clusters)?.cdnUrl || '' }/profile-image/${ props.clusterName }` }
+      src={ `${ clustersFeature?.cdnUrl || '' }/profile-image/${ props.clusterName }` }
       alt={ `${ props.clusterName } profile` }
       fallback={ fallbackElement }
     />

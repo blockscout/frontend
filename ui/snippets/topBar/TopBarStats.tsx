@@ -49,13 +49,17 @@ const TopBarStats = () => {
     return <div/>;
   }
 
+  const hasNativeCoinPrice = data?.coin_price && !config.UI.nativeCoinPrice.isHidden;
+  const hasSecondaryCoinPrice = data?.secondary_coin_price && config.chain.secondaryCoin.symbol && (hasNativeCoinPrice ? !isMobile : true);
+  const hasGasInfo = data?.gas_prices && data.gas_prices.average !== null && config.features.gasTracker.isEnabled;
+
   return (
     <Flex
       alignItems="center"
       fontSize="xs"
       fontWeight={ 500 }
     >
-      { data?.coin_price && (
+      { hasNativeCoinPrice && (
         <Flex columnGap={ 1 }>
           <Skeleton loading={ isPlaceholderData }>
             <chakra.span color="text.secondary">{ config.chain.currency.symbol } </chakra.span>
@@ -70,7 +74,7 @@ const TopBarStats = () => {
           ) }
         </Flex>
       ) }
-      { !isMobile && data?.secondary_coin_price && config.chain.secondaryCoin.symbol && (
+      { hasSecondaryCoinPrice && (
         <Flex columnGap={ 1 } ml={ data?.coin_price ? 3 : 0 }>
           <Skeleton loading={ isPlaceholderData }>
             <chakra.span color="text.secondary">{ config.chain.secondaryCoin.symbol } </chakra.span>
@@ -78,14 +82,14 @@ const TopBarStats = () => {
           </Skeleton>
         </Flex>
       ) }
-      { data?.coin_price && config.features.gasTracker.isEnabled && <TextSeparator/> }
-      { data?.gas_prices && data.gas_prices.average !== null && config.features.gasTracker.isEnabled && (
+      { (hasNativeCoinPrice || hasSecondaryCoinPrice) && hasGasInfo && <TextSeparator/> }
+      { hasGasInfo && (
         <>
           <Skeleton loading={ isPlaceholderData } display={{ base: 'none', lg: 'inline-flex' }} whiteSpace="pre-wrap">
             <chakra.span color="text.secondary">Gas </chakra.span>
             <GasInfoTooltip data={ data } dataUpdatedAt={ dataUpdatedAt } placement={ !data?.coin_price ? 'bottom-start' : undefined }>
               <Link>
-                <GasPrice data={ data.gas_prices.average }/>
+                <GasPrice data={ data.gas_prices?.average ?? null }/>
               </Link>
             </GasInfoTooltip>
           </Skeleton>

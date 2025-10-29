@@ -23,7 +23,7 @@ import NameDomainsTable from './NameDomainsTable';
 import type { Sort, SortField } from './utils';
 import { SORT_OPTIONS, getNextSortValue } from './utils';
 
-const NameDomainsContent = () => {
+const NameDomains = () => {
   const router = useRouter();
 
   const q = getQueryParamString(router.query.name) || getQueryParamString(router.query.address);
@@ -244,4 +244,4 @@ const NameDomainsContent = () => {
   );
 };
 
-export default NameDomainsContent;
+export default NameDomains;

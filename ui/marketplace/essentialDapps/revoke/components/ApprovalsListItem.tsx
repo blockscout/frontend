@@ -72,14 +72,16 @@ export default function ApprovalsListItem({
           }}
           isLoading={ isLoading }
           noCopy
-          noLink
+          jointSymbol
+          href={ selectedChain?.config.app.baseUrl + route({ pathname: '/token/[hash]', query: { hash: approval.address } }) }
+          link={{ noIcon: true, external: true }}
         />
         <AddressEntity
           address={{ hash: approval.address }}
           truncation="constant"
           noIcon
           isLoading={ isLoading }
-          href={ selectedChain?.config.app.baseUrl + route({ pathname: '/token/[hash]', query: { hash: approval.address } }) }
+          href={ selectedChain?.config.app.baseUrl + route({ pathname: '/address/[hash]', query: { hash: approval.address } }) }
           link={{ noIcon: true, external: true }}
         />
       </ListItemMobileGrid.Value>
