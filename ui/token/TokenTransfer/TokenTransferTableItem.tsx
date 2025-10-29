@@ -48,13 +48,15 @@ const TokenTransferTableItem = ({
       ) }
       <TableCell>
         <Flex flexDirection="column" alignItems="flex-start" mt="5px" rowGap={ 3 }>
-          <TxEntity
-            hash={ txHash }
-            isLoading={ isLoading }
-            fontWeight={ 600 }
-            noIcon
-            truncation="constant_long"
-          />
+          { txHash ? (
+            <TxEntity
+              hash={ txHash }
+              isLoading={ isLoading }
+              fontWeight={ 600 }
+              noIcon
+              truncation="constant_long"
+            />
+          ) : <Skeleton loading={ isLoading }>-</Skeleton> }
           <TimeWithTooltip
             timestamp={ timestamp }
             enableIncrement

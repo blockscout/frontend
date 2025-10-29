@@ -4,6 +4,8 @@ import type { QuickSearchResultItem } from 'types/client/search';
 
 import config from 'configs/app';
 
+const nameServicesFeature = config.features.nameServices;
+
 export type ApiCategory =
   'token' |
   'nft' |
@@ -48,11 +50,11 @@ if (config.features.dataAvailability.isEnabled) {
   searchCategories.push({ id: 'blob', title: 'Blobs', tabTitle: 'Blobs' });
 }
 
-if (config.features.nameService.isEnabled || config.features.opSuperchain.isEnabled) {
+if ((nameServicesFeature.isEnabled && nameServicesFeature.ens.isEnabled) || config.features.opSuperchain.isEnabled) {
   searchCategories.unshift({ id: 'domain', title: 'Names', tabTitle: 'Names' });
 }
 
-if (config.features.clusters.isEnabled) {
+if (nameServicesFeature.isEnabled && nameServicesFeature.clusters.isEnabled) {
   searchCategories.unshift({ id: 'cluster', title: 'Cluster Name', tabTitle: 'Cluster' });
 }
 

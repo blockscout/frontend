@@ -148,7 +148,7 @@ const Marketplace = () => {
           <MenuRoot>
             <MenuTrigger asChild>
               <IconButton
-                variant="icon_secondary"
+                variant="icon_background"
                 size="md"
                 ml="auto"
               >

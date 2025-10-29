@@ -206,8 +206,9 @@ const ZetaChainCCTXDetailsLifecycleOut = ({ outboundParam, tx, isLoading, isLast
           />
         </>
       );
-      text = `Abort executed`;
-      color = 'text.success';
+      const isFailed = tx.cctx_status?.is_abort_refunded === false;
+      text = isFailed ? `Abort failed` : `Abort executed`;
+      color = isFailed ? 'text.error' : 'text.success';
     }
   }
 

@@ -4,16 +4,16 @@ import React from 'react';
 
 import PageNextJs from 'nextjs/PageNextJs';
 
-const NameDomains = dynamic(() => import('ui/pages/NameDomains'), { ssr: false });
+const NameServices = dynamic(() => import('ui/pages/NameServices'), { ssr: false });
 
 const Page: NextPage = () => {
   return (
-    <PageNextJs pathname="/name-domains">
-      <NameDomains/>
+    <PageNextJs pathname="/name-services">
+      <NameServices/>
     </PageNextJs>
   );
 };
 
 export default Page;
 
-export { nameDomains as getServerSideProps } from 'nextjs/getServerSideProps/main';
+export { nameServices as getServerSideProps } from 'nextjs/getServerSideProps/main';

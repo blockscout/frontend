@@ -17,7 +17,7 @@ import { distributeEntityProps, getIconProps } from '../base/utils';
 type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'domain'>;
 
 const Link = chakra((props: LinkProps) => {
-  const defaultHref = route({ pathname: '/name-domains/[name]', query: { name: props.domain } });
+  const defaultHref = route({ pathname: '/name-services/domains/[name]', query: { name: props.domain } });
 
   return (
     <EntityBase.Link

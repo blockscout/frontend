@@ -10,6 +10,9 @@ import { getResourceKey } from 'lib/api/useApiQuery';
 
 import useQuickSearchQuery from './useQuickSearchQuery';
 
+const nameServicesFeature = config.features.nameServices;
+const isClustersEnabled = nameServicesFeature.isEnabled && nameServicesFeature.clusters.isEnabled;
+
 function isClusterSearch(term: string): boolean {
   const trimmed = term.trim();
   const hasTrailingSlash = trimmed.endsWith('/');
@@ -52,7 +55,7 @@ function transformClusterToSearchResult(cluster: {
 export default function useSearchWithClusters() {
   const quickSearch = useQuickSearchQuery();
 
-  const isClusterQuery = config.features.clusters.isEnabled ?
+  const isClusterQuery = isClustersEnabled ?
     isClusterSearch(quickSearch.debouncedSearchTerm) : false;
 
   const clusterName = isClusterQuery ? extractClusterName(quickSearch.debouncedSearchTerm) : '';
@@ -75,7 +78,7 @@ export default function useSearchWithClusters() {
         return null;
       }
     },
-    enabled: config.features.clusters.isEnabled && isClusterQuery && clusterName.length > 0,
+    enabled: isClustersEnabled && isClusterQuery && clusterName.length > 0,
     select: (data) => {
       if (!data?.result?.data) return [];
       return [ transformClusterToSearchResult(data.result.data, data.result.data.owner) ];
@@ -83,7 +86,7 @@ export default function useSearchWithClusters() {
   });
 
   const combinedQuery = React.useMemo(() => {
-    if (!config.features.clusters.isEnabled || !isClusterQuery) {
+    if (!isClustersEnabled || !isClusterQuery) {
       return quickSearch.query;
     }
 
@@ -98,5 +101,5 @@ export default function useSearchWithClusters() {
     combinedQuery,
   ]);
 
-  return config.features.clusters.isEnabled ? result : quickSearch;
+  return isClustersEnabled ? result : quickSearch;
 }

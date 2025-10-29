@@ -28,6 +28,8 @@ const ClustersDirectoryTableItem = ({ item, isLoading, isClusterDetailsLoading }
             isLoading={ isLoading }
             fontWeight={ 500 }
             noLink={ !isEvmAddress(item.owner) }
+            w="fit-content"
+            maxW="100%"
           />
         ) }
         { !item.owner && <Skeleton loading={ isLoading }>—</Skeleton> }

@@ -121,7 +121,10 @@ const NameDomainDetails = ({ query }: Props) => {
                 <Link
                   flexShrink={ 0 }
                   display="inline-flex"
-                  href={ route({ pathname: '/name-domains', query: { owned_by: 'true', resolved_to: 'true', address: query.data.registrant.hash } }) }
+                  href={ route({
+                    pathname: '/name-services',
+                    query: { tab: 'domains', owned_by: 'true', resolved_to: 'true', address: query.data.registrant.hash },
+                  }) }
                 >
                   <IconSvg name="search" boxSize={ 5 } isLoading={ isLoading }/>
                 </Link>
@@ -150,7 +153,10 @@ const NameDomainDetails = ({ query }: Props) => {
                 <Link
                   flexShrink={ 0 }
                   display="inline-flex"
-                  href={ route({ pathname: '/name-domains', query: { owned_by: 'true', resolved_to: 'true', address: query.data.owner.hash } }) }
+                  href={ route({
+                    pathname: '/name-services',
+                    query: { tab: 'domains', owned_by: 'true', resolved_to: 'true', address: query.data.owner.hash },
+                  }) }
                 >
                   <IconSvg name="search" boxSize={ 5 } isLoading={ isLoading }/>
                 </Link>
@@ -179,7 +185,10 @@ const NameDomainDetails = ({ query }: Props) => {
                 <Link
                   flexShrink={ 0 }
                   display="inline-flex"
-                  href={ route({ pathname: '/name-domains', query: { owned_by: 'true', resolved_to: 'true', address: query.data.wrapped_owner.hash } }) }
+                  href={ route({
+                    pathname: '/name-services',
+                    query: { tab: 'domains', owned_by: 'true', resolved_to: 'true', address: query.data.wrapped_owner.hash },
+                  }) }
                 >
                   <IconSvg name="search" boxSize={ 5 } isLoading={ isLoading }/>
                 </Link>

@@ -14,15 +14,14 @@ import TruncatedValue from 'ui/shared/TruncatedValue';
 
 import type { TokenEnhancedData } from '../utils/tokenUtils';
 
-const celoFeature = config.features.celo;
-
 interface Props {
   data: TokenEnhancedData;
 }
 
 const TokenSelectItem = ({ data }: Props) => {
 
-  const isNativeToken = celoFeature.isEnabled && data.token.address_hash.toLowerCase() === celoFeature.nativeTokenAddress?.toLowerCase();
+  const isNativeToken = config.UI.views.address.nativeTokenAddress &&
+    data.token.address_hash.toLowerCase() === config.UI.views.address.nativeTokenAddress.toLowerCase();
 
   const chain = React.useMemo(() => {
     if (!data.chain_values) {

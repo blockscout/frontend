@@ -12,7 +12,7 @@ const heroBannerButtonStateSchema: yup.ObjectSchema<HeroBannerButtonState> = yup
     background: yup.array().max(2).of(yup.string()),
     text_color: yup.array().max(2).of(yup.string()),
   });
-  
+
 const heroBannerSchema: yup.ObjectSchema<HeroBannerConfig> = yup.object()
     .transform(replaceQuotes)
     .json()
@@ -189,10 +189,11 @@ const fontFamilySchema: yup.ObjectSchema<FontFamily> = yup
     name: yup.string().required(),
     url: yup.string().test(urlTest).required(),
   });
-  
+
 export const miscSchema = yup.object({
     NEXT_PUBLIC_HIDE_INDEXING_ALERT_BLOCKS: yup.boolean(),
     NEXT_PUBLIC_HIDE_INDEXING_ALERT_INT_TXS: yup.boolean(),
+    NEXT_PUBLIC_HIDE_NATIVE_COIN_PRICE: yup.boolean(),
     NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE: yup.string(),
     NEXT_PUBLIC_COLOR_THEME_DEFAULT: yup.string().oneOf(COLOR_THEME_IDS),
     NEXT_PUBLIC_COLOR_THEME_OVERRIDES: yup.object().transform(replaceQuotes).json(),

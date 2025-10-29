@@ -62,7 +62,7 @@ const AddressQrCode = ({ hash, className, isLoading }: Props) => {
         <IconButton
           className={ className }
           aria-label="Show QR code"
-          variant="icon_secondary"
+          variant="icon_background"
           size="md"
           onClick={ onOpen }
         >

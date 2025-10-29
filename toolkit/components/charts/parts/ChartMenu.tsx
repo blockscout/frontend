@@ -99,16 +99,15 @@ const ChartMenu = ({
   }, [ pngBackgroundColor, title, chartRef ]);
 
   const handleSVGSavingClick = React.useCallback(() => {
-    charts.forEach((chart) => {
-      const headerRows = [
-        'Date', 'Value',
-      ];
-      const dataRows = chart.items.map((item) => [
-        dayjs(item.date).format('YYYY-MM-DD'), String(item.value),
-      ]);
-      saveAsCsv(headerRows, dataRows, `${ chart.name } (Blockscout stats)`);
-    });
-  }, [ charts ]);
+    const headerRows = [
+      'Date', ...charts.map((chart) => chart.name),
+    ];
+    const dataRows = charts[0].items.map((item, index) => [
+      item.dateLabel ?? dayjs(item.date).format('YYYY-MM-DD'),
+      ...charts.map((chart) => String(chart.items[index].value)),
+    ]);
+    saveAsCsv(headerRows, dataRows, `${ title } (Blockscout stats)`);
+  }, [ charts, title ]);
 
   // TS thinks window.navigator.share can't be undefined, but it can
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -132,7 +131,7 @@ const ChartMenu = ({
     <>
       <MenuRoot>
         <MenuTrigger asChild>
-          <IconButton variant="icon_secondary" size="md" aria-label="Open chart options menu" loadingSkeleton={ isLoading }>
+          <IconButton variant="icon_background" size="md" aria-label="Open chart options menu" loadingSkeleton={ isLoading }>
             <Icon><DotsIcon/></Icon>
           </IconButton>
         </MenuTrigger>

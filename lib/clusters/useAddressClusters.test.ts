@@ -7,8 +7,10 @@ jest.mock('lib/api/useApiQuery', () => ({
 
 jest.mock('configs/app', () => ({
   features: {
-    clusters: {
+    nameServices: {
       isEnabled: true,
+      ens: { isEnabled: true },
+      clusters: { isEnabled: true },
     },
   },
 }));

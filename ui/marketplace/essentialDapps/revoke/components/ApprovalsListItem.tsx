@@ -1,5 +1,5 @@
 import { Text } from '@chakra-ui/react';
-import React, { useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import type { EssentialDappsChainConfig } from 'types/client/marketplace';
 import type { AllowanceType } from 'types/client/revoke';

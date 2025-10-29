@@ -272,8 +272,7 @@ test.describe('update balances via socket', () => {
 
 test('native token', async({ render, mockEnvs }) => {
   await mockEnvs([
-    [ 'NEXT_PUBLIC_CELO_ENABLED', 'true' ],
-    [ 'NEXT_PUBLIC_CELO_NATIVE_TOKEN_ADDRESS', tokenInfo.tokenInfoERC20c.address_hash ],
+    [ 'NEXT_PUBLIC_VIEWS_ADDRESS_NATIVE_TOKEN_ADDRESS', tokenInfo.tokenInfoERC20c.address_hash ],
   ]);
   const hooksConfig = {
     router: {

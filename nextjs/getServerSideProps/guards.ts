@@ -84,8 +84,18 @@ export const suave: Guard = (chainConfig: typeof config) => async() => {
   }
 };
 
-export const nameService: Guard = (chainConfig: typeof config) => async() => {
-  if (!chainConfig.features.nameService.isEnabled) {
+export const nameServiceEns: Guard = (chainConfig: typeof config) => async() => {
+  const feature = chainConfig.features.nameServices;
+  if (!feature.isEnabled || !feature.ens.isEnabled) {
+    return {
+      notFound: true,
+    };
+  }
+};
+
+export const nameServiceClusters: Guard = (chainConfig: typeof config) => async() => {
+  const feature = chainConfig.features.nameServices;
+  if (!feature.isEnabled || !feature.clusters.isEnabled) {
     return {
       notFound: true,
     };
@@ -175,14 +185,6 @@ export const publicTagsSubmit: Guard = (chainConfig: typeof config) => async() =
 
 export const pools: Guard = (chainConfig: typeof config) => async() => {
   if (!chainConfig.features.pools.isEnabled) {
-    return {
-      notFound: true,
-    };
-  }
-};
-
-export const clusters: Guard = (chainConfig: typeof config) => async() => {
-  if (!chainConfig.features.clusters.isEnabled) {
     return {
       notFound: true,
     };

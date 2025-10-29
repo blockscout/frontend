@@ -72,15 +72,17 @@ const TokenTransferListItem = ({
       { total && 'token_id' in total && total.token_id !== null && token && (
         <NftEntity hash={ token.address_hash } id={ total.token_id } instance={ total.token_instance } isLoading={ isLoading }/>
       ) }
-      { showTxInfo && txHash && (
+      { showTxInfo && (
         <Flex justifyContent="space-between" alignItems="center" lineHeight="24px" width="100%">
-          <TxEntity
-            isLoading={ isLoading }
-            hash={ txHash }
-            truncation="constant_long"
-            fontWeight="700"
-            chain={ chainData }
-          />
+          { txHash && (
+            <TxEntity
+              isLoading={ isLoading }
+              hash={ txHash }
+              truncation="constant_long"
+              fontWeight="700"
+              chain={ chainData }
+            />
+          ) }
           <TimeWithTooltip
             timestamp={ timestamp }
             enableIncrement={ enableTimeIncrement }

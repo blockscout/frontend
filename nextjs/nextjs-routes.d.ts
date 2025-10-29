@@ -50,7 +50,6 @@ declare module "nextjs-routes" {
     | DynamicRoute<"/chain/[chain_slug]/token/[hash]/instance/[id]", { "chain_slug": string; "hash": string; "id": string }>
     | DynamicRoute<"/chain/[chain_slug]/tx/[hash]", { "chain_slug": string; "hash": string }>
     | StaticRoute<"/chakra">
-    | DynamicRoute<"/clusters/[name]", { "name": string }>
     | StaticRoute<"/contract-verification">
     | StaticRoute<"/csv-export">
     | StaticRoute<"/deposits">
@@ -64,8 +63,9 @@ declare module "nextjs-routes" {
     | StaticRoute<"/interop-messages">
     | StaticRoute<"/login">
     | StaticRoute<"/mud-worlds">
-    | DynamicRoute<"/name-domains/[name]", { "name": string }>
-    | StaticRoute<"/name-domains">
+    | DynamicRoute<"/name-services/clusters/[name]", { "name": string }>
+    | DynamicRoute<"/name-services/domains/[name]", { "name": string }>
+    | StaticRoute<"/name-services">
     | DynamicRoute<"/op/[hash]", { "hash": string }>
     | DynamicRoute<"/operation/[id]", { "id": string }>
     | StaticRoute<"/operations">

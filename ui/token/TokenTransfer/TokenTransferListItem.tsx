@@ -1,4 +1,4 @@
-import { Grid, Flex } from '@chakra-ui/react';
+import { Flex, Grid } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenInstance } from 'types/api/token';
@@ -42,13 +42,15 @@ const TokenTransferListItem = ({
   return (
     <ListItemMobile rowGap={ 3 }>
       <Flex justifyContent="space-between" alignItems="center" lineHeight="24px" width="100%">
-        <TxEntity
-          isLoading={ isLoading }
-          hash={ txHash }
-          truncation="constant_long"
-          fontWeight="700"
-          chain={ chainData }
-        />
+        { txHash && (
+          <TxEntity
+            isLoading={ isLoading }
+            hash={ txHash }
+            truncation="constant_long"
+            fontWeight="700"
+            chain={ chainData }
+          />
+        ) }
         <TimeWithTooltip
           timestamp={ timestamp }
           enableIncrement

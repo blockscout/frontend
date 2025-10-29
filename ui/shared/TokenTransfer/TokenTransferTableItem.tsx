@@ -50,11 +50,17 @@ const TokenTransferTableItem = ({
 
   return (
     <TableRow alignItems="top">
-      { showTxInfo && txHash && (
+      { showTxInfo && (
         <TableCell>
-          <Box my="3px" textAlign="center">
-            <TxAdditionalInfo hash={ txHash } isLoading={ isLoading }/>
-          </Box>
+          {
+            txHash ? (
+              <Box my="3px" textAlign="center">
+                <TxAdditionalInfo hash={ txHash } isLoading={ isLoading }/>
+              </Box>
+            ) : (
+              <div/>
+            )
+          }
         </TableCell>
       ) }
       { chainData && (
@@ -89,16 +95,20 @@ const TokenTransferTableItem = ({
           />
         ) }
       </TableCell>
-      { showTxInfo && txHash && (
+      { showTxInfo && (
         <TableCell>
-          <TxEntity
-            hash={ txHash }
-            isLoading={ isLoading }
-            fontWeight={ 600 }
-            noIcon
-            mt="7px"
-            truncation="constant_long"
-          />
+          { txHash ? (
+            <TxEntity
+              hash={ txHash }
+              isLoading={ isLoading }
+              fontWeight={ 600 }
+              noIcon
+              mt={ 1 }
+              truncation="constant_long"
+            />
+          ) : (
+            <Skeleton loading={ isLoading } mt={ 1 }>-</Skeleton>
+          ) }
           <TimeWithTooltip
             timestamp={ timestamp }
             enableIncrement={ enableTimeIncrement }

@@ -362,16 +362,6 @@ const rollupSchema = yup
   .object()
   .shape({
     NEXT_PUBLIC_CELO_ENABLED: yup.boolean(),
-    NEXT_PUBLIC_CELO_NATIVE_TOKEN_ADDRESS: yup
-      .string()
-      .min(42)
-      .max(42)
-      .matches(regexp.HEX_REGEXP_WITH_0X)
-      .when('NEXT_PUBLIC_CELO_ENABLED', {
-        is: (value: boolean) => value,
-        then: (schema) => schema,
-        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_CELO_NATIVE_TOKEN_ADDRESS can only be used if NEXT_PUBLIC_CELO_ENABLED is set to \'true\''),
-      }),
   });
 
 const megaEthSchema = yup
@@ -705,6 +695,11 @@ const schema = yup
         then: (schema) => schema.required().min(1).max(83),
         otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_VIEWS_ADDRESS_BECH_32_PREFIX is required if NEXT_PUBLIC_VIEWS_ADDRESS_FORMAT contains "bech32"'),
       }),
+    NEXT_PUBLIC_VIEWS_ADDRESS_NATIVE_TOKEN_ADDRESS: yup
+      .string()
+      .min(42)
+      .max(42)
+      .matches(regexp.HEX_REGEXP_WITH_0X),
 
     NEXT_PUBLIC_VIEWS_ADDRESS_HIDDEN_VIEWS: yup
       .array()

@@ -52,7 +52,7 @@ const defaultUseQueryResult: Partial<UseQueryResult> = {
 
 jest.mock('configs/app', () => ({
   features: {
-    clusters: { isEnabled: true },
+    nameServices: { isEnabled: true, ens: { isEnabled: true }, clusters: { isEnabled: true } },
     rollbar: { isEnabled: false },
   },
   UI: {

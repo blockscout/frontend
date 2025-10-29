@@ -32,6 +32,8 @@ import HeaderMobile from 'ui/snippets/header/HeaderMobile';
 import SearchBarSuggestBlockCountdown from 'ui/snippets/searchBar/SearchBarSuggest/SearchBarSuggestBlockCountdown';
 import useSearchQuery from 'ui/snippets/searchBar/useSearchQuery';
 
+const nameServicesFeature = config.features.nameServices;
+
 const SearchResultsPageContent = () => {
   const router = useRouter();
   const withRedirectCheck = getQueryParamString(router.query.redirect) === 'true';
@@ -118,7 +120,7 @@ const SearchResultsPageContent = () => {
       if (!config.features.dataAvailability.isEnabled && item.type === 'blob') {
         return false;
       }
-      if (!config.features.nameService.isEnabled && item.type === 'ens_domain') {
+      if ((!nameServicesFeature.isEnabled || !nameServicesFeature.ens.isEnabled) && item.type === 'ens_domain') {
         return false;
       }
       if (!config.features.tac.isEnabled && item.type === 'tac_operation') {

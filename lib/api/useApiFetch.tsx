@@ -2,6 +2,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { omit, pickBy } from 'es-toolkit';
 import React from 'react';
 
+import type { ApiName } from './types';
 import type { CsrfData } from 'types/client/account';
 import type { ExternalChainExtended } from 'types/externalChains';
 
@@ -16,6 +17,22 @@ import useFetch from 'lib/hooks/useFetch';
 import buildUrl from './buildUrl';
 import getResourceParams from './getResourceParams';
 import type { ResourceName, ResourcePathParams } from './resources';
+
+function needCredentials(apiName: ApiName) {
+  if (![ 'general' ].includes(apiName)) {
+    return false;
+  }
+
+  // currently, the cookies are used only for the following features
+  if (
+    config.features.account.isEnabled ||
+    config.UI.views.token.hideScamTokensEnabled
+  ) {
+    return true;
+  }
+
+  return false;
+}
 
 export interface Params<R extends ResourceName> {
   pathParams?: ResourcePathParams<R>;
@@ -50,11 +67,7 @@ export default function useApiFetch() {
     return fetch<SuccessType, ErrorType>(
       url,
       {
-        // as of today, we use cookies only
-        //    for user authentication in My account
-        //    for API rate-limits (cannot use in the condition though, but we agreed with devops team that should not be an issue)
-        // change condition here if something is changed
-        credentials: config.features.account.isEnabled ? 'include' : 'same-origin',
+        credentials: needCredentials(apiName) ? 'include' : 'same-origin',
         headers,
         ...(fetchParams ? omit(fetchParams, [ 'headers' ]) : {}),
       },
