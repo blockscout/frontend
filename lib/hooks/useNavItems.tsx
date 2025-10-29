@@ -82,11 +82,11 @@ export default function useNavItems(): ReturnType {
        icon: 'verified',
        isActive: pathname === '/verified-contracts',
      };
-    const nameLookup = config.features.nameService.isEnabled || config.features.clusters.isEnabled ? {
+    const nameLookup = config.features.nameServices.isEnabled ? {
       text: 'Name services lookup',
-      nextRoute: { pathname: '/name-domains' as const },
+      nextRoute: { pathname: '/name-services' as const },
       icon: 'name_services',
-      isActive: pathname === '/name-domains' || pathname === '/name-domains/[name]' || pathname === '/clusters/[name]',
+      isActive: pathname.startsWith('/name-services'),
     } : null;
     const validators = config.features.validators.isEnabled ? {
       text: 'Validators',

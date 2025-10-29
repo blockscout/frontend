@@ -51,8 +51,9 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/ops': 'User operations on %network_name% - %network_name% explorer',
   '/op/[hash]': '%network_name% user operation %hash%',
   '/404': '%network_name% error - page not found',
-  '/name-domains': '%network_name% name domains - %network_name% explorer',
-  '/name-domains/[name]': '%network_name% %name% domain details',
+  '/name-services': '%network_name% name services - %network_name% explorer',
+  '/name-services/domains/[name]': '%network_name% %name% domain details',
+  '/name-services/clusters/[name]': '%network_name% %name% cluster details',
   '/validators': '%network_name% validators list',
   '/validators/[id]': '%network_name% validator %id% details',
   '/epochs': '%network_name% epochs',
@@ -66,7 +67,6 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/interop-messages': '%network_name% interop messages',
   '/operations': '%network_name% operations',
   '/operation/[id]': '%network_name% operation %id%',
-  '/clusters/[name]': 'Clusters details for %name%',
   '/cc/tx/[hash]': '%network_name% cross-chain transaction %hash% details',
 
   // multichain routes
