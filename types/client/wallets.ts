@@ -13,4 +13,5 @@ export type WalletType = ArrayElement<typeof SUPPORTED_WALLETS>;
 export interface WalletInfo {
   name: string;
   icon: IconName;
+  color: string;
 }
