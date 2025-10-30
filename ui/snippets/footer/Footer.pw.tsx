@@ -9,12 +9,11 @@ import Footer from './Footer';
 const FOOTER_LINKS_URL = 'https://localhost:3000/footer-links.json';
 
 test.describe('with custom links, max cols', () => {
-  test.beforeEach(async({ render, mockApiResponse, mockConfigResponse, injectMetaMaskProvider, mockEnvs, mockAssetResponse }) => {
+  test.beforeEach(async({ render, mockApiResponse, mockConfigResponse, mockEnvs, mockAssetResponse }) => {
     await mockEnvs([
       [ 'NEXT_PUBLIC_FOOTER_LINKS', FOOTER_LINKS_URL ],
     ]);
     await mockConfigResponse('NEXT_PUBLIC_FOOTER_LINKS', FOOTER_LINKS_URL, FOOTER_LINKS);
-    await injectMetaMaskProvider();
     await mockApiResponse('general:homepage_indexing_status', {
       finished_indexing: false,
       finished_indexing_blocks: false,
@@ -52,15 +51,13 @@ test.describe('with custom links, min cols', () => {
 });
 
 test.describe('without custom links', () => {
-  test('base view +@dark-mode +@mobile', async({ render, page, injectMetaMaskProvider, mockApiResponse }) => {
-    await injectMetaMaskProvider();
+  test('base view +@dark-mode +@mobile', async({ render, page, mockApiResponse }) => {
     await mockApiResponse('general:config_backend_version', { backend_version: 'v5.2.0-beta.+commit.1ce1a355' });
     await render(<Footer/>);
     await expect(page).toHaveScreenshot();
   });
 
-  test('with indexing alert +@dark-mode +@mobile', async({ render, injectMetaMaskProvider, mockApiResponse }) => {
-    await injectMetaMaskProvider();
+  test('with indexing alert +@dark-mode +@mobile', async({ render, mockApiResponse }) => {
     await mockApiResponse('general:homepage_indexing_status', {
       finished_indexing: false,
       finished_indexing_blocks: false,

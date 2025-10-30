@@ -14,9 +14,12 @@ test.beforeEach(async({ mockEnvs }) => {
   ]);
 });
 
-test('default view +@dark-mode', async({ render, mockApiResponse, page }) => {
+test('default view +@dark-mode', async({ render, mockApiResponse, page, injectMetaMaskProvider }) => {
+  await injectMetaMaskProvider();
   await mockApiResponse('general:stats', statsMock.base);
   const component = await render(<TopBar/>);
+
+  await expect(page.getByText(/add chain/i)).toBeVisible();
 
   await component.getByText(/\$1\.39/).click();
   await expect(page.getByText(/last update/i)).toBeVisible();
@@ -26,8 +29,9 @@ test('default view +@dark-mode', async({ render, mockApiResponse, page }) => {
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1500, height: 400 } });
 });
 
-test('default view +@mobile -@default', async({ render, mockApiResponse, page }) => {
+test('default view +@mobile -@default', async({ render, mockApiResponse, page, injectMetaMaskProvider }) => {
   await mockApiResponse('general:stats', statsMock.base);
+  await injectMetaMaskProvider();
   const component = await render(<TopBar/>);
 
   await component.getByLabel('User settings').click();

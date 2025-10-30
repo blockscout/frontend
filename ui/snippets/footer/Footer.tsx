@@ -104,6 +104,7 @@ const Footer = () => {
       <Box
         gridArea={ gridArea }
         mb={{ base: 5, lg: 10 }}
+        w="fit-content"
         _empty={{ display: 'none' }}
       >
         { !config.UI.indexingAlert.intTxs.isHidden && <IntTxsIndexingStatus/> }
