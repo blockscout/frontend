@@ -8,6 +8,7 @@ import type { StatsIntervalIds } from 'types/client/stats';
 import { StatsIntervalId } from 'types/client/stats';
 
 import config from 'configs/app';
+import { useMultichainContext } from 'lib/contexts/multichain';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import * as metadata from 'lib/metadata';
@@ -86,6 +87,7 @@ const Chart = () => {
   const isInBrowser = isBrowser();
   const chartsConfig = useChartsConfig();
   const chainSelect = useRoutedChainSelect();
+  const multichainContext = useMultichainContext();
 
   const onIntervalChange = React.useCallback((interval: StatsIntervalIds) => {
     setIntervalState(interval);
@@ -195,11 +197,13 @@ const Chart = () => {
       />
       <Flex alignItems="center" justifyContent="space-between">
         <Flex alignItems="center" gap={{ base: 3, lg: 6 }} maxW="100%">
-          <ChainSelect
-            value={ chainSelect.value }
-            onValueChange={ chainSelect.onValueChange }
-            loading={ isInfoLoading }
-          />
+          { multichainContext?.chain && (
+            <ChainSelect
+              value={ chainSelect.value }
+              onValueChange={ chainSelect.onValueChange }
+              loading={ isInfoLoading }
+            />
+          ) }
           <Flex alignItems="center" gap={ 3 }>
             { !isMobile && <Text>Period</Text> }
             <ChartIntervalSelect interval={ interval } onIntervalChange={ onIntervalChange }/>

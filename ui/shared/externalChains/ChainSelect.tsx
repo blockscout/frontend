@@ -5,8 +5,8 @@ import type { ExternalChain } from 'types/externalChains';
 
 import useIsInitialLoading from 'lib/hooks/useIsInitialLoading';
 import useIsMobile from 'lib/hooks/useIsMobile';
-import { Select } from 'toolkit/chakra/select';
 import type { SelectOption, SelectProps, ViewMode } from 'toolkit/chakra/select';
+import { Select } from 'toolkit/chakra/select';
 import IconSvg from 'ui/shared/IconSvg';
 
 import ChainIcon from './ChainIcon';
@@ -47,7 +47,7 @@ const ChainSelect = ({ loading, mode, chainsConfig, chainIds, withAllOption, ...
   return (
     <Select
       collection={ collection }
-      defaultValue={ [ collection.items[0].value ] }
+      defaultValue={ collection.items.length > 0 ? [ collection.items[0].value ] : undefined }
       placeholder="Select chain"
       loading={ isInitialLoading }
       mode={ isMobile && !mode ? 'compact' : mode }
