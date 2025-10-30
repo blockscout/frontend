@@ -201,6 +201,9 @@
 	| "wallet"
 	| "wallets/coinbase"
 	| "wallets/metamask"
+	| "wallets/okx"
+	| "wallets/rabby"
 	| "wallets/token-pocket"
+	| "wallets/trust"
 	| "watchlist";
   

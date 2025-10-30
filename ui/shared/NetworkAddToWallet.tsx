@@ -23,8 +23,12 @@ const NetworkAddToWallet = () => {
       color={ WALLETS_INFO[wallet].color }
       borderColor={ WALLETS_INFO[wallet].color }
       onClick={ handleClick }
+      _hover={{
+        color: 'link.primary.hover',
+        borderColor: 'link.primary.hover',
+      }}
     >
-      <IconSvg name={ WALLETS_INFO[wallet].icon } boxSize={ 4 }/>
+      <IconSvg name={ WALLETS_INFO[wallet].icon } boxSize={ 3 }/>
       Add chain
     </Button>
   );

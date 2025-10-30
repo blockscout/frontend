@@ -7,11 +7,15 @@ import type { WalletProvider } from 'types/web3';
 import config from 'configs/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
 
+import detectWallet from './detectWallet';
+import useDetectWalletEip6963 from './useDetectWalletEip6963';
+
 export default function useProvider() {
   const [ provider, setProvider ] = React.useState<WalletProvider>();
   const [ wallet, setWallet ] = React.useState<WalletType>();
 
   const multichainContext = useMultichainContext();
+  const { detect: detectWalletEip6963 } = useDetectWalletEip6963();
 
   const feature = (multichainContext?.chain.config ?? config).features.web3Wallet;
   const wallets = getFeaturePayload(feature)?.wallets;
@@ -51,31 +55,24 @@ export default function useProvider() {
       return;
     }
 
-    // if user has multiple wallets installed, they all are injected in the window.ethereum.providers array
-    // if user has only one wallet, the provider is injected in the window.ethereum directly
-    const providers = Array.isArray(window.ethereum.providers) ? window.ethereum.providers : [ window.ethereum ];
-
     for (const wallet of wallets) {
-      const provider = providers.find((provider) => {
-        return (
-          // some wallets (e.g TokenPocket, Liquality, etc) try to look like MetaMask but they are not (not even close)
-          // so we have to check in addition the presence of the provider._events property
-          // found this hack in wagmi repo
-          // https://github.com/wagmi-dev/wagmi/blob/399b9eab8cfd698b49bfaa8456598dad9b597e0e/packages/connectors/src/types.ts#L65
-          // for now it's the only way to distinguish them
-          (wallet === 'metamask' && provider.isMetaMask && Boolean(provider._events)) ||
-          (wallet === 'coinbase' && provider.isCoinbaseWallet) ||
-          (wallet === 'token_pocket' && provider.isTokenPocket)
-        );
-      });
+      const detectedWalletEip6963 = await detectWalletEip6963(wallet);
 
-      if (provider) {
-        setProvider(provider);
-        setWallet(wallet);
+      if (detectedWalletEip6963) {
+        setProvider(detectedWalletEip6963.provider);
+        setWallet(detectedWalletEip6963.wallet);
+        break;
+      }
+
+      const detectedWallet = detectWallet(wallet);
+
+      if (detectedWallet) {
+        setProvider(detectedWallet.provider);
+        setWallet(detectedWallet.wallet);
         break;
       }
     }
-  }, [ feature.isEnabled, wallets ]);
+  }, [ feature.isEnabled, wallets, detectWalletEip6963 ]);
 
   React.useEffect(() => {
     initializeProvider();
