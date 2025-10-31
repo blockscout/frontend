@@ -61,6 +61,7 @@ const PublicTagsSubmitResultWithErrors = ({ data }: Props) => {
                         key={ tag.name }
                         maxW={{ base: '100%', lg: '300px' }}
                         data={{ ...tag, slug: '', ordinal: 0 }}
+                        noLink
                       />
                     )) }
                   </Flex>
