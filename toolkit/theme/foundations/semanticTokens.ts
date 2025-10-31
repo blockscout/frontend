@@ -215,8 +215,13 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
         shadow: { value: { _light: '{colors.blackAlpha.200}', _dark: '{colors.whiteAlpha.300}' } },
       },
     },
+    progress: {
+      track: {
+        DEFAULT: { value: { _light: '{colors.gray.100}', _dark: '{colors.whiteAlpha.100}' } },
+      },
+    },
     progressCircle: {
-      trackColor: {
+      track: {
         DEFAULT: { value: { _light: '{colors.gray.100}', _dark: '{colors.whiteAlpha.100}' } },
       },
     },

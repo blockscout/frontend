@@ -15,6 +15,7 @@ import { recipe as menu } from './menu.recipe';
 import { recipe as pinInput } from './pin-input.recipe';
 import { recipe as popover } from './popover.recipe';
 import { recipe as progressCircle } from './progress-circle.recipe';
+import { recipe as progress } from './progress.recipe';
 import { recipe as radioGroup } from './radio-group.recipe';
 import { recipe as radiomark } from './radiomark.recipe';
 import { recipe as ratingGroup } from './rating-group.recipe';
@@ -54,6 +55,7 @@ export const slotRecipes = {
   menu,
   pinInput,
   popover,
+  progress,
   progressCircle,
   radioGroup,
   ratingGroup,
