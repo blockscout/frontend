@@ -311,7 +311,7 @@ const rollupSchema = yup
       .string()
       .when('NEXT_PUBLIC_ROLLUP_TYPE', {
         is: (value: string) => value === 'optimistic',
-        then: (schema) => schema.test(urlTest).required(),
+        then: (schema) => schema.test(urlTest),
         otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_ROLLUP_L2_WITHDRAWAL_URL can be used only if NEXT_PUBLIC_ROLLUP_TYPE is set to \'optimistic\' '),
       }),
     NEXT_PUBLIC_ROLLUP_OUTPUT_ROOTS_ENABLED: yup
