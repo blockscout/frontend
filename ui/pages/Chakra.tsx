@@ -23,6 +23,7 @@ import MenuShowcase from 'ui/showcases/Menu';
 import PaginationShowcase from 'ui/showcases/Pagination';
 import PinInputShowcase from 'ui/showcases/PinInput';
 import PopoverShowcase from 'ui/showcases/Popover';
+import ProgressShowcase from 'ui/showcases/Progress';
 import ProgressCircleShowcase from 'ui/showcases/ProgressCircle';
 import RadioShowcase from 'ui/showcases/Radio';
 import RatingShowcase from 'ui/showcases/Rating';
@@ -54,6 +55,7 @@ const tabs = [
   { label: 'Link', value: 'link', component: <LinkShowcase/> },
   { label: 'Menu', value: 'menu', component: <MenuShowcase/> },
   { label: 'Pagination', value: 'pagination', component: <PaginationShowcase/> },
+  { label: 'Progress', value: 'progress', component: <ProgressShowcase/> },
   { label: 'Progress Circle', value: 'progress-circle', component: <ProgressCircleShowcase/> },
   { label: 'Radio', value: 'radio', component: <RadioShowcase/> },
   { label: 'Rating', value: 'rating', component: <RatingShowcase/> },

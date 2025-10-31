@@ -1,9 +1,10 @@
-import { Flex, Text, Progress } from '@chakra-ui/react';
+import { Flex, Text } from '@chakra-ui/react';
 
 import type { GetAvailableBadgesResponse } from '@blockscout/points-types';
 
 import { Image } from 'toolkit/chakra/image';
 import { Link } from 'toolkit/chakra/link';
+import { Progress } from 'toolkit/chakra/progress';
 
 const BADGE_BG_COLORS = [ '#DFE8F5', '#D2E5FE', '#EFE1FF' ];
 
@@ -81,11 +82,13 @@ export default function BadgeCard({ badge, currentStreak, index }: Props) {
                 <Text textStyle="xs" color="text.secondary" minW="50px">
                   { progress }/{ target }
                 </Text>
-                <Progress.Root value={ progress } min={ 0 } max={ target } flex={ 1 } size="xs" variant="subtle">
-                  <Progress.Track h="4px" bg={{ _light: 'gray.200', _dark: 'whiteAlpha.200' }}>
-                    <Progress.Range bg="green.400"/>
-                  </Progress.Track>
-                </Progress.Root>
+                <Progress
+                  value={ progress }
+                  min={ 0 }
+                  max={ target }
+                  flex={ 1 }
+                  color="green.400"
+                />
               </>
             );
           })() }
