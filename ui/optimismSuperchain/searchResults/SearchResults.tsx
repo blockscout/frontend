@@ -40,7 +40,7 @@ const SearchResults = () => {
     chainId: chainId === 'all' ? undefined : chainId,
   });
 
-  const isLoading = Object.values(queries).some((query) => query.isLoading);
+  const isLoading = Object.values(queries).some((query) => query.isPending);
 
   const handleNavigateToResults = React.useCallback((searchTerm: string) => {
     handleSearchTermChange(searchTerm);
