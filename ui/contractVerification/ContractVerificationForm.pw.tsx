@@ -102,6 +102,14 @@ test('standard input json method', async({ render, page }) => {
 });
 
 test('sourcify method', async({ render, page }) => {
+  await page.route('https://verify.sourcify.dev/widget**', (route) => {
+    return route.fulfill({
+      status: 200,
+      contentType: 'text/html',
+      path: './playwright/mocks/page.html',
+    });
+  });
+
   const component = await render(
     <ContractVerificationForm config={ formConfig } hash={ hash }/>,
     { hooksConfig },
