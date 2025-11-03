@@ -96,7 +96,7 @@ const Swap = () => {
   useEffect(() => {
     const onRouteExecutionUpdated = async(update: RouteExecutionUpdate) => {
       try {
-        if (!eventParams.current.activityToken || eventParams.current.routeId !== update.route.id) {
+        if (eventParams.current.routeId !== update.route.id) {
           const { chainId, from, to } = update.route.steps.at(-1)?.transactionRequest ?? {};
           if (chainId && from && to) {
             const response = await trackTransaction(from, to, String(chainId));
@@ -107,11 +107,7 @@ const Swap = () => {
               chainId: String(chainId),
             };
           }
-        } else if (
-          [ 'SWAP', 'CROSS_CHAIN' ].includes(update.process.type) &&
-          eventParams.current.routeId === update.route.id &&
-          update.process.txHash
-        ) {
+        } else if ([ 'SWAP', 'CROSS_CHAIN' ].includes(update.process.type) && update.process.txHash) {
           mixpanel.logEvent(mixpanel.EventTypes.WALLET_ACTION, {
             Action: 'Send Transaction',
             Address: eventParams.current.from,
