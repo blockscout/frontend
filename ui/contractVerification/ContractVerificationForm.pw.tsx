@@ -118,7 +118,7 @@ test('sourcify method', async({ render, page }) => {
 
   // select method
   await component.locator('button').filter({ hasText: 'Verification method' }).click();
-  await page.getByRole('option', { name: 'Solidity or Vyper (Sourcify)' }).click();
+  await page.getByRole('option', { name: 'Sourcify (Solidity or Vyper)' }).click();
 
   await expect(component).toHaveScreenshot();
 });
