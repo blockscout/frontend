@@ -25,7 +25,7 @@ test.describe('daily txs chart', () => {
     await mockAssetResponse(statsMock.withSecondaryCoin.secondary_coin_image as string, './playwright/mocks/image_s.jpg');
     component = await render(<ChainIndicators/>);
     await page.waitForFunction(() => {
-      return document.querySelector('path[data-name="Tx/day"]')?.getAttribute('opacity') === '1';
+      return document.querySelector('path[data-name="daily_txs"]')?.getAttribute('opacity') === '1';
     });
     await page.hover('.ChartOverlay', { position: { x: 50, y: 50 } });
   });
@@ -50,7 +50,7 @@ test('partial data', async({ page, mockApiResponse, mockAssetResponse, render })
 
   const component = await render(<ChainIndicators/>);
   await page.waitForFunction(() => {
-    return document.querySelector('path[data-name="Tx/day"]')?.getAttribute('opacity') === '1';
+    return document.querySelector('path[data-name="daily_txs"]')?.getAttribute('opacity') === '1';
   });
   await expect(component).toHaveScreenshot();
 });
