@@ -59,6 +59,7 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, setType, showMoreCli
     const map: Partial<ItemsCategoriesMap> = {};
 
     filteredData.forEach(item => {
+      if (!item) return;
       const cat = getItemCategory(item) as ApiCategory;
       if (cat) {
         if (cat in map) {
@@ -93,6 +94,7 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, setType, showMoreCli
     const map: Partial<ItemsCategoriesMap> = {};
 
     query.data?.forEach(item => {
+      if (!item) return;
       const cat = getItemCategory(item) as ApiCategory;
       if (cat) {
         if (cat in map) {
