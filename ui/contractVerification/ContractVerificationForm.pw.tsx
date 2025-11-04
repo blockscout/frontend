@@ -3,7 +3,6 @@ import React from 'react';
 import type { SmartContractVerificationConfig } from 'types/client/contract';
 
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
-import * as socketServer from 'playwright/fixtures/socketServer';
 import { test, expect } from 'playwright/lib';
 
 import ContractVerificationForm from './ContractVerificationForm';
@@ -102,49 +101,26 @@ test('standard input json method', async({ render, page }) => {
   await expect(component).toHaveScreenshot();
 });
 
-test.describe('sourcify', () => {
-  test.describe.configure({ mode: 'serial', timeout: 20_000 });
-
-  test('with multiple contracts', async({ render, page, createSocket }) => {
-    const component = await render(
-      <ContractVerificationForm config={ formConfig } hash={ hash }/>,
-      { hooksConfig },
-      { withSocket: true },
-    );
-
-    // select method
-    await component.locator('button').filter({ hasText: 'Verification method' }).click();
-    await page.getByRole('option', { name: 'Solidity (Sourcify)' }).click();
-
-    await page.getByText(/drop files/i).click();
-    await page.locator('input[name="sources"]').setInputFiles([
-      './playwright/mocks/file_mock_1.json',
-      './playwright/mocks/file_mock_2.json',
-      './playwright/mocks/file_mock_with_very_long_name.json',
-    ]);
-
-    await expect(component).toHaveScreenshot();
-
-    const socket = await createSocket();
-    const channel = await socketServer.joinChannel(socket, `addresses:${ hash.toLowerCase() }`);
-
-    await page.getByRole('button', { name: /verify/i }).click();
-
-    socketServer.sendMessage(socket, channel, 'verification_result', {
-      status: 'error',
-      errors: {
-        // eslint-disable-next-line max-len
-        files: [ 'Detected 5 contracts (ERC20, IERC20, IERC20Metadata, Context, MockERC20), but can only verify 1 at a time. Please choose a main contract and click Verify again.' ],
-      },
+test('sourcify method', async({ render, page }) => {
+  await page.route('https://verify.sourcify.dev/widget**', (route) => {
+    return route.fulfill({
+      status: 200,
+      contentType: 'text/html',
+      path: './playwright/mocks/page.html',
     });
-
-    await component.locator('button').filter({ hasText: 'Contract name*' }).click();
-    const contractNameOption = page.getByRole('option', { name: 'MockERC20' });
-
-    await expect(contractNameOption).toBeVisible();
-
-    await expect(component).toHaveScreenshot();
   });
+
+  const component = await render(
+    <ContractVerificationForm config={ formConfig } hash={ hash }/>,
+    { hooksConfig },
+    { withSocket: true },
+  );
+
+  // select method
+  await component.locator('button').filter({ hasText: 'Verification method' }).click();
+  await page.getByRole('option', { name: 'Sourcify (Solidity or Vyper)' }).click();
+
+  await expect(component).toHaveScreenshot();
 });
 
 test('multi-part files method', async({ render, page }) => {

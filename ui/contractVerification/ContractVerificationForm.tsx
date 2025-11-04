@@ -205,7 +205,7 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
         </Grid>
         { content }
         { formState.errors.root?.message && <Text color="text.error" mt={ 4 } fontSize="sm" whiteSpace="pre-wrap">{ formState.errors.root.message }</Text> }
-        { Boolean(method) && methodValue !== 'solidity-hardhat' && methodValue !== 'solidity-foundry' && (
+        { Boolean(method) && methodValue !== 'solidity-hardhat' && methodValue !== 'solidity-foundry' && methodValue !== 'sourcify' && (
           <Button
             size="md"
             type="submit"
