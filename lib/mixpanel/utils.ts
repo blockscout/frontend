@@ -51,6 +51,7 @@ Type extends EventTypes.ADD_TO_WALLET ? (
   {
     Wallet: WalletType;
     Target: 'network';
+    Source: 'Footer' | 'Top bar' | 'Chain widget';
   } | {
     Wallet: WalletType;
     Target: 'token';

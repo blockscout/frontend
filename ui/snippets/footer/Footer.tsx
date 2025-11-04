@@ -15,6 +15,7 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import { copy } from 'toolkit/utils/htmlEntities';
 import IconSvg from 'ui/shared/IconSvg';
 import { CONTENT_MAX_WIDTH } from 'ui/shared/layout/utils';
+import NetworkAddToWallet from 'ui/shared/NetworkAddToWallet';
 
 import FooterLinkItem from './FooterLinkItem';
 import IntTxsIndexingStatus from './IntTxsIndexingStatus';
@@ -101,14 +102,19 @@ const Footer = () => {
 
   const renderNetworkInfo = React.useCallback((gridArea?: GridProps['gridArea']) => {
     return (
-      <Box
+      <Flex
+        alignItems="center"
         gridArea={ gridArea }
+        flexWrap="wrap"
+        justifyContent="flex-start"
+        columnGap={ 3 }
+        rowGap={ 2 }
         mb={{ base: 5, lg: 10 }}
-        w="fit-content"
         _empty={{ display: 'none' }}
       >
         { !config.UI.indexingAlert.intTxs.isHidden && <IntTxsIndexingStatus/> }
-      </Box>
+        <NetworkAddToWallet source="Footer"/>
+      </Flex>
     );
   }, []);
 

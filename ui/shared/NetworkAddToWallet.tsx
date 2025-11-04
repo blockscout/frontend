@@ -1,14 +1,19 @@
 import React from 'react';
 
+import config from 'configs/app';
 import useAddChainClick from 'lib/web3/useAddChainClick';
 import useProvider from 'lib/web3/useProvider';
 import { WALLETS_INFO } from 'lib/web3/wallets';
 import { Button } from 'toolkit/chakra/button';
 import IconSvg from 'ui/shared/IconSvg';
 
-const NetworkAddToWallet = () => {
+interface Props {
+  source: 'Footer' | 'Top bar';
+}
+
+const NetworkAddToWallet = ({ source }: Props) => {
   const { provider, wallet } = useProvider();
-  const handleClick = useAddChainClick();
+  const handleClick = useAddChainClick({ source });
 
   if (!provider || !wallet) {
     return null;
@@ -29,7 +34,7 @@ const NetworkAddToWallet = () => {
       }}
     >
       <IconSvg name={ WALLETS_INFO[wallet].icon } boxSize={ 3 }/>
-      Add chain
+      Add { config.chain.name }
     </Button>
   );
 };

@@ -34,7 +34,7 @@ const TopBar = () => {
         <HStack alignItems="center" separator={ <Separator mx={{ base: 2, lg: 3 }} height={ 4 } orientation="vertical"/> }>
           { (hasAddChainButton || hasDeFiDropdown) && (
             <HStack>
-              { hasAddChainButton && <NetworkAddToWallet/> }
+              { hasAddChainButton && <NetworkAddToWallet source="Top bar"/> }
               { hasDeFiDropdown && <DeFiDropdown/> }
             </HStack>
           ) }

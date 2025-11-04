@@ -7,7 +7,11 @@ import useAddChain from './useAddChain';
 import useProvider from './useProvider';
 import useSwitchChain from './useSwitchChain';
 
-export default function useAddChainClick() {
+interface Props {
+  source: 'Footer' | 'Top bar' | 'Chain widget';
+}
+
+export default function useAddChainClick({ source }: Props) {
   const { provider, wallet } = useProvider();
   const addChain = useAddChain();
   const switchChain = useSwitchChain();
@@ -29,6 +33,7 @@ export default function useAddChainClick() {
       mixpanel.logEvent(mixpanel.EventTypes.ADD_TO_WALLET, {
         Target: 'network',
         Wallet: wallet,
+        Source: source,
       });
 
     } catch (error) {
@@ -37,5 +42,5 @@ export default function useAddChainClick() {
         description: (error as Error)?.message || 'Something went wrong',
       });
     }
-  }, [ addChain, provider, wallet, switchChain ]);
+  }, [ addChain, provider, wallet, switchChain, source ]);
 }

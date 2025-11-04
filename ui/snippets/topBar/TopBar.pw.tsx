@@ -19,7 +19,7 @@ test('default view +@dark-mode', async({ render, mockApiResponse, page, injectMe
   await mockApiResponse('general:stats', statsMock.base);
   const component = await render(<TopBar/>);
 
-  await expect(page.getByText(/add chain/i)).toBeVisible();
+  await expect(page.getByText(/add blockscout/i)).toBeVisible();
 
   await component.getByText(/\$1\.39/).click();
   await expect(page.getByText(/last update/i)).toBeVisible();
