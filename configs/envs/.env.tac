@@ -17,7 +17,6 @@ NEXT_PUBLIC_API_SPEC_URL=https://raw.githubusercontent.com/blockscout/blockscout
 NEXT_PUBLIC_CONTRACT_INFO_API_HOST=https://contracts-info.services.blockscout.com
 NEXT_PUBLIC_FOOTER_LINKS=https://raw.githubusercontent.com/blockscout/frontend-configs/main/configs/footer-links/tac.json
 NEXT_PUBLIC_GAME_BADGE_CLAIM_LINK=https://badges.blockscout.com/mint/sherblockHolmesBadge
-NEXT_PUBLIC_GRAPHIQL_TRANSACTION=0x9e2386a15e263fffc7b481ae1a6b8d71aa94b87c7683b3f2d756bb912622d638
 NEXT_PUBLIC_HOMEPAGE_CHARTS=['daily_txs']
 NEXT_PUBLIC_HOMEPAGE_HERO_BANNER_CONFIG={'background':['no-repeat center/100% auto url(https://raw.githubusercontent.com/blockscout/frontend-configs/main/configs/network-skins/tac.jpg)'],'text_color':['rgba(242,235,255,1)'],'button':{'_default':{'background':['rgba(30,23,44,1)']},'_hover':{'background':['rgba(66,14,70,1)']}}}
 NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED=true
