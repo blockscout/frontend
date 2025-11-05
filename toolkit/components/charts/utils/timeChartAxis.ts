@@ -22,12 +22,12 @@ export function getAxesParams(data: Data, axesConfig?: AxesConfig) {
   return {
     x: {
       scale: getAxisParamsX(data).scale,
-      tickFormatter: tickFormatterX,
+      tickFormatter: axesConfig?.x?.tickFormatter ?? tickFormatterX,
     },
     y: {
       scale: yScale,
       labelFormatParams: labelFormatParamsY,
-      tickFormatter: getTickFormatterY(labelFormatParamsY),
+      tickFormatter: axesConfig?.y?.tickFormatter ?? getTickFormatterY(labelFormatParamsY),
     },
   };
 }
@@ -48,13 +48,13 @@ const tickFormatterX = (axis: d3.Axis<d3.NumberValue>) => (d: d3.AxisDomain) => 
   const span = Number(extent[1]) - Number(extent[0]);
 
   if (span > 2 * YEAR) {
-    format = d3.timeFormat('%Y');
+    format = d3.utcFormat('%Y');
   } else if (span > 4 * MONTH) {
-    format = d3.timeFormat('%b \'%y');
+    format = d3.utcFormat('%b \'%y');
   } else if (span > 2 * DAY) {
-    format = d3.timeFormat('%d %b');
+    format = d3.utcFormat('%d %b');
   } else {
-    format = d3.timeFormat('%H:%M');
+    format = d3.utcFormat('%H:%M');
   }
 
   return format(d as Date);
