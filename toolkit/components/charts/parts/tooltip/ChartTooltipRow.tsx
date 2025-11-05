@@ -70,7 +70,7 @@ export function useRenderRows(ref: React.RefObject<SVGGElement | null>, { data, 
         if (index === 0) {
           const date = xScale.invert(x);
           const dateValue = data[0].items.find((item) => item.date.getTime() === date.getTime())?.dateLabel;
-          const dateValueFallback = d3.timeFormat('%e %b %Y')(xScale.invert(x));
+          const dateValueFallback = d3.utcFormat('%e %b %Y')(xScale.invert(x));
           return dateValue || dateValueFallback;
         }
 
