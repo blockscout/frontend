@@ -1,4 +1,4 @@
-import { Box, useToken } from '@chakra-ui/react';
+import { Box, Flex, useToken } from '@chakra-ui/react';
 import type { RouteExecutionUpdate, WidgetConfig } from '@lifi/widget';
 import { LiFiWidget, useWidgetEvents, WidgetEvent } from '@lifi/widget';
 import { useEffect, useMemo, useRef } from 'react';
@@ -10,6 +10,7 @@ import * as mixpanel from 'lib/mixpanel/index';
 import useWeb3Wallet from 'lib/web3/useWallet';
 import { useColorMode } from 'toolkit/chakra/color-mode';
 import { BODY_TYPEFACE } from 'toolkit/theme/foundations/typography';
+import AdBanner from 'ui/shared/ad/AdBanner';
 
 const feature = config.features.marketplace;
 const dappConfig = feature.isEnabled ? feature.essentialDapps?.swap : undefined;
@@ -128,7 +129,19 @@ const Swap = () => {
     return () => widgetEvents.all.clear();
   }, [ widgetEvents, trackTransaction, trackTransactionConfirm ]);
 
-  return <Widget/>;
+  return (
+    <Flex flex="1" flexDir="column" justifyContent="space-between" gap={ 6 }>
+      <Widget/>
+      <AdBanner
+        platform="mobile"
+        w="fit-content"
+        borderRadius="md"
+        overflow="hidden"
+        ml="auto"
+        display={{ base: 'none', lg: 'block ' }}
+      />
+    </Flex>
+  );
 };
 
 export default Swap;

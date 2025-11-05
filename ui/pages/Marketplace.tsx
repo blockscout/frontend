@@ -23,6 +23,7 @@ import MarketplaceList from 'ui/marketplace/MarketplaceList';
 import type { SortValue } from 'ui/marketplace/utils';
 import { SORT_OPTIONS } from 'ui/marketplace/utils';
 import ActionBar from 'ui/shared/ActionBar';
+import AdBanner from 'ui/shared/ad/AdBanner';
 import IconSvg from 'ui/shared/IconSvg';
 import type { IconName } from 'ui/shared/IconSvg';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -177,14 +178,26 @@ const Marketplace = () => {
         ) }
       />
 
-      <Banner
-        apps={ apps }
-        favoriteApps={ favoriteApps }
-        isLoading={ isPlaceholderData }
-        onInfoClick={ showAppInfo }
-        onFavoriteClick={ onFavoriteClick }
-        onAppClick={ handleAppClick }
-      />
+      <Flex gap={ 6 } mb={ 2 } mt={ 6 }>
+        <Banner
+          apps={ apps }
+          favoriteApps={ favoriteApps }
+          isLoading={ isPlaceholderData }
+          onInfoClick={ showAppInfo }
+          onFavoriteClick={ onFavoriteClick }
+          onAppClick={ handleAppClick }
+        />
+        { (feature.featuredApp || feature.banner) && (
+          <AdBanner
+            platform="mobile"
+            w="fit-content"
+            flexShrink={ 0 }
+            borderRadius="md"
+            overflow="hidden"
+            display={{ base: 'none', lg: 'block ' }}
+          />
+        ) }
+      </Flex>
 
       { feature.essentialDapps && (
         <>

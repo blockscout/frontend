@@ -20,11 +20,9 @@ const IframeBanner = ({ contentUrl, linkUrl }: { contentUrl: string; linkUrl: st
     <Skeleton
       loading={ isFrameLoading }
       position="relative"
-      h="136px"
+      h="100px"
       w="100%"
       borderRadius="md"
-      mb={{ base: 0, sm: 2 }}
-      mt={ 6 }
       overflow="hidden"
     >
       <Link

@@ -4,12 +4,14 @@ import React from 'react';
 
 import config from 'configs/app';
 import essentialDappsChainsConfig from 'configs/essential-dapps-chains';
+import AdBanner from 'ui/shared/ad/AdBanner';
 
 const feature = config.features.marketplace;
 const dappConfig = feature.isEnabled ? feature.essentialDapps?.multisend : undefined;
 
 const Container = ({ children }: { children: React.ReactNode }) => (
   <Box
+    w="full"
     maxW="670px"
     mx="auto"
     css={{
@@ -505,18 +507,29 @@ const widgetConfig = Object.fromEntries(dappConfig?.chains.map((chainId) => {
 
 const Multisend = () => {
   return (
-    <Container>
-      <MultisenderWidget
-        config={ widgetConfig }
-        logoType="minified"
-        posthogKey={ dappConfig?.posthogKey }
-        posthogHost={ dappConfig?.posthogHost }
-        classNames={{
-          theme: 'multisenderTheme',
-          mantineProvider: 'multisenderMantineProvider',
-        }}
+    <>
+      <Container>
+        <MultisenderWidget
+          config={ widgetConfig }
+          logoType="minified"
+          posthogKey={ dappConfig?.posthogKey }
+          posthogHost={ dappConfig?.posthogHost }
+          classNames={{
+            theme: 'multisenderTheme',
+            mantineProvider: 'multisenderMantineProvider',
+          }}
+        />
+      </Container>
+      <AdBanner
+        platform="desktop"
+        w="fit-content"
+        borderRadius="md"
+        overflow="hidden"
+        mx="auto"
+        mt={ 10 }
+        display={{ base: 'none', lg: 'block ' }}
       />
-    </Container>
+    </>
   );
 };
 
