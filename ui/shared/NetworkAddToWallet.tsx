@@ -12,12 +12,14 @@ interface Props {
 }
 
 const NetworkAddToWallet = ({ source }: Props) => {
-  const { provider, wallet } = useProvider();
+  const { data: { wallet } = {} } = useProvider();
   const handleClick = useAddChainClick({ source });
 
-  if (!provider || !wallet) {
+  if (!wallet) {
     return null;
   }
+
+  const walletInfo = WALLETS_INFO[wallet];
 
   return (
     <Button
@@ -25,15 +27,15 @@ const NetworkAddToWallet = ({ source }: Props) => {
       size="2xs"
       borderWidth="1px"
       fontWeight="500"
-      color={ WALLETS_INFO[wallet].color }
-      borderColor={ WALLETS_INFO[wallet].color }
+      color={ walletInfo.color }
+      borderColor={ walletInfo.color }
       onClick={ handleClick }
       _hover={{
         color: 'link.primary.hover',
         borderColor: 'link.primary.hover',
       }}
     >
-      <IconSvg name={ WALLETS_INFO[wallet].icon } boxSize={ 3 }/>
+      <IconSvg name={ walletInfo.icon } boxSize={ 3 }/>
       Add { config.chain.name }
     </Button>
   );

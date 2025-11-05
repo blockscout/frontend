@@ -16,7 +16,13 @@ const TopBar = () => {
   const web3 = useProvider();
   const isMobile = useIsMobile();
 
-  const hasAddChainButton = Boolean(web3.provider && web3.wallet && config.chain.rpcUrls.length && config.features.web3Wallet.isEnabled && !isMobile);
+  const hasAddChainButton = Boolean(
+    web3.data?.provider &&
+    web3.data?.wallet &&
+    config.chain.rpcUrls.length &&
+    config.features.web3Wallet.isEnabled &&
+    !isMobile,
+  );
   const hasDeFiDropdown = Boolean(config.features.deFiDropdown.isEnabled);
 
   return (

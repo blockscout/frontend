@@ -12,7 +12,7 @@ interface Props {
 }
 
 export default function useAddChainClick({ source }: Props) {
-  const { provider, wallet } = useProvider();
+  const { data: { wallet, provider } = {} } = useProvider();
   const addChain = useAddChain();
   const switchChain = useSwitchChain();
 
