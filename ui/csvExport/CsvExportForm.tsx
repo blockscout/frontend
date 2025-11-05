@@ -8,6 +8,7 @@ import type { CsvExportParams } from 'types/client/address';
 
 import config from 'configs/app';
 import buildUrl from 'lib/api/buildUrl';
+import isNeedProxy from 'lib/api/isNeedProxy';
 import type { ResourceName } from 'lib/api/resources';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import dayjs from 'lib/date/dayjs';
@@ -58,6 +59,7 @@ const CsvExportForm = ({ hash, resource, filterType, filterValue, fileNameTempla
         headers: {
           'content-type': 'application/octet-stream',
           ...(recaptchaToken && { 'recaptcha-v2-response': recaptchaToken }),
+          ...(isNeedProxy() && multichainContext?.chain ? { 'x-endpoint': multichainContext.chain.app_config.apis.general?.endpoint } : {}),
         },
       });
 

@@ -4,6 +4,7 @@ import type { AdvancedFilterParams } from 'types/api/advancedFilter';
 
 import config from 'configs/app';
 import buildUrl from 'lib/api/buildUrl';
+import isNeedProxy from 'lib/api/isNeedProxy';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import dayjs from 'lib/date/dayjs';
 import { Button } from 'toolkit/chakra/button';
@@ -33,6 +34,7 @@ const ExportCSV = ({ filters }: Props) => {
       headers: {
         'content-type': 'application/octet-stream',
         ...(recaptchaToken && { 'recaptcha-v2-response': recaptchaToken }),
+        ...(isNeedProxy() && multichainContext?.chain ? { 'x-endpoint': multichainContext.chain.app_config.apis.general?.endpoint } : {}),
       },
     });
 

@@ -80,6 +80,7 @@ const OG_TYPE_DICT: Record<Route['pathname'], OGPageType> = {
   '/chain/[chain_slug]/token/[hash]': 'Regular page',
   '/chain/[chain_slug]/token/[hash]/instance/[id]': 'Regular page',
   '/chain/[chain_slug]/tx/[hash]': 'Regular page',
+  '/chain/[chain_slug]/visualize/sol2uml': 'Regular page',
 
   // service routes, added only to make typescript happy
   '/login': 'Regular page',
