@@ -9,11 +9,13 @@ import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   source: 'Footer' | 'Top bar';
+  onAddSuccess?: () => void;
 }
 
-const NetworkAddToWallet = ({ source }: Props) => {
+const NetworkAddToWallet = ({ source, onAddSuccess }: Props) => {
   const { data: { wallet } = {} } = useProvider();
-  const handleClick = useAddChainClick({ source });
+
+  const handleClick = useAddChainClick({ source, onSuccess: onAddSuccess });
 
   if (!wallet) {
     return null;

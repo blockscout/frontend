@@ -2,6 +2,8 @@ import { Flex, Separator, Box, HStack } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
+import { useAppContext } from 'lib/contexts/app';
+import * as cookies from 'lib/cookies';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useProvider from 'lib/web3/useProvider';
 import { CONTENT_MAX_WIDTH } from 'ui/shared/layout/utils';
@@ -13,10 +15,14 @@ import Settings from './settings/Settings';
 import TopBarStats from './TopBarStats';
 
 const TopBar = () => {
+  const hideAddToWalletButtonCookie = cookies.get(cookies.NAMES.HIDE_ADD_TO_WALLET_BUTTON, useAppContext().cookies);
+  const [ isAddChainButtonVisible, setIsAddChainButtonVisible ] = React.useState(hideAddToWalletButtonCookie !== 'topbar');
+
   const web3 = useProvider();
   const isMobile = useIsMobile();
 
   const hasAddChainButton = Boolean(
+    isAddChainButtonVisible &&
     web3.data?.provider &&
     web3.data?.wallet &&
     config.chain.rpcUrls.length &&
@@ -24,6 +30,11 @@ const TopBar = () => {
     !isMobile,
   );
   const hasDeFiDropdown = Boolean(config.features.deFiDropdown.isEnabled);
+
+  const handleAddSuccess = React.useCallback(() => {
+    cookies.set(cookies.NAMES.HIDE_ADD_TO_WALLET_BUTTON, 'topbar', { expires: 3 * 365 });
+    setIsAddChainButtonVisible(false);
+  }, [ ]);
 
   return (
     // not ideal if scrollbar is visible, but better than having a horizontal scroll
@@ -40,7 +51,7 @@ const TopBar = () => {
         <HStack alignItems="center" separator={ <Separator mx={{ base: 2, lg: 3 }} height={ 4 } orientation="vertical"/> }>
           { (hasAddChainButton || hasDeFiDropdown) && (
             <HStack>
-              { hasAddChainButton && <NetworkAddToWallet source="Top bar"/> }
+              { hasAddChainButton && <NetworkAddToWallet source="Top bar" onAddSuccess={ handleAddSuccess }/> }
               { hasDeFiDropdown && <DeFiDropdown/> }
             </HStack>
           ) }

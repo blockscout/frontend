@@ -9,9 +9,10 @@ import useSwitchChain from './useSwitchChain';
 
 interface Props {
   source: 'Footer' | 'Top bar' | 'Chain widget';
+  onSuccess?: () => void;
 }
 
-export default function useAddChainClick({ source }: Props) {
+export default function useAddChainClick({ source, onSuccess }: Props) {
   const { data: { wallet, provider } = {} } = useProvider();
   const addChain = useAddChain();
   const switchChain = useSwitchChain();
@@ -36,11 +37,12 @@ export default function useAddChainClick({ source }: Props) {
         Source: source,
       });
 
+      onSuccess?.();
     } catch (error) {
       toaster.error({
         title: 'Error',
         description: (error as Error)?.message || 'Something went wrong',
       });
     }
-  }, [ addChain, provider, wallet, switchChain, source ]);
+  }, [ addChain, provider, wallet, switchChain, source, onSuccess ]);
 }
