@@ -43,6 +43,7 @@ import type { BlockFieldId } from '../../../types/views/block';
 import type { NftMarketplaceItem } from '../../../types/views/nft';
 import type { TxAdditionalFieldsId, TxFieldsId } from '../../../types/views/tx';
 import { TX_ADDITIONAL_FIELDS_IDS, TX_FIELDS_IDS } from '../../../types/views/tx';
+import type { MarketplaceTitles } from '../../../types/views/marketplace';
 import type { VerifiedContractsFilter } from '../../../types/api/contracts';
 import type { TxExternalTxsConfig } from '../../../types/client/externalTxsConfig';
 
@@ -1023,6 +1024,19 @@ const schema = yup
       .of(nftMarketplaceSchema),
     NEXT_PUBLIC_VIEWS_TOKEN_SCAM_TOGGLE_ENABLED: yup.boolean(),
     NEXT_PUBLIC_HELIA_VERIFIED_FETCH_ENABLED: yup.boolean(),
+    NEXT_PUBLIC_VIEWS_MARKETPLACE_TITLES: yup
+    .mixed()
+    .test('shape', 'Invalid schema were provided for NEXT_PUBLIC_VIEWS_MARKETPLACE_TITLES', (data) => {
+      const isUndefined = data === undefined;
+      const valueSchema = yup.object<MarketplaceTitles>().transform(replaceQuotes).json().shape({
+        menu_item: yup.string(),
+        title: yup.string(),
+        subtitle_essential_dapps: yup.string(),
+        subtitle_list: yup.string(),
+      });
+
+      return isUndefined || valueSchema.isValidSync(data);
+    }),
 
     //     e. misc
     NEXT_PUBLIC_NETWORK_EXPLORERS: yup

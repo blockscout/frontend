@@ -347,7 +347,7 @@ export default function useNavItems(): ReturnType {
         subItems: tokensNavItems,
       },
       config.features.marketplace.isEnabled ? {
-        text: 'DApps',
+        text: config.UI.views.marketplace.titles.menu_item || 'Dapps',
         nextRoute: { pathname: '/apps' as const },
         icon: 'apps',
         isActive: pathname.startsWith('/app') || pathname.startsWith('/essential-dapps'),

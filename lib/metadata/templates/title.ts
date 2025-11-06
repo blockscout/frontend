@@ -2,6 +2,8 @@ import type { Route } from 'nextjs-routes';
 
 import config from 'configs/app';
 
+const dappEntityName = (config.UI.views.marketplace.titles.entity_name || 'Dapp').toLowerCase();
+
 const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/': '%network_name% blockchain explorer - View %network_name% stats',
   '/txs': '%network_name% transactions - %network_name% explorer',
@@ -21,8 +23,8 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/tokens': 'Tokens list - %network_name% explorer',
   '/token/[hash]': '%network_name% token details',
   '/token/[hash]/instance/[id]': '%network_name% NFT instance',
-  '/apps': '%network_name% DApps - Explore top apps',
-  '/apps/[id]': '%network_name% marketplace app',
+  '/apps': `%network_name% ${ dappEntityName }s - Explore top ${ dappEntityName }s`,
+  '/apps/[id]': `%network_name% marketplace ${ dappEntityName }`,
   '/essential-dapps/[id]': '%id_cap%',
   '/stats': '%network_name% stats - %network_name% network insights',
   '/stats/[id]': '%network_name% stats - %id% chart',

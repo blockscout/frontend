@@ -31,6 +31,7 @@ All json-like values should be single-quoted. If it contains a hash (`#`) or a d
     - [Address](#address-views)
     - [Transaction](#transaction-views)
     - [NFT](#nft-views)
+    - [Marketplace](#marketplace-views)
   - [Misc](#misc)
 - [App features](#app-features)
   - [My account](#my-account)
@@ -343,6 +344,14 @@ Settings for meta tags, OG tags and SEO
 | logo_url | `string` | URL of marketplace logo | Required | - | `https://opensea.io/static/images/logos/opensea-logo.svg` |
 
 *Note* URL templates should contain placeholders for the NFT hash (`{hash}` or `{hash_lowercase}`) and NFT ID (`{id}` or `{id_lowercase}`). These placeholders will be replaced with specific values or their lowercase equivalents for each collection or instance.
+
+&nbsp;
+
+#### Marketplace views
+
+| Variable | Type | Description | Compulsoriness  | Default value | Example value | Version |
+| --- | --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_VIEWS_MARKETPLACE_TITLES | `{ entity_name?: string; menu_item?: string; title?: string; subtitle_essential_dapps?: string; subtitle_list?: string }` | Used to change titles of the Marketplace and dapps | - | - | `{ 'entity_name': 'Dapp', 'menu_item': 'Dapps', 'title': 'Dappscout', 'subtitle_essential_dapps': 'Essential dapps', 'subtitle_list': 'Explore dapps' }` | upcoming |
 
 &nbsp;
 
@@ -887,7 +896,7 @@ If the feature is enabled, a single button or a dropdown (if more than 1 item is
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_DEFI_DROPDOWN_ITEMS | `[{ text: string; icon: string; dappId?: string, url?: string }]` | An array of dropdown items containing the button text, icon name and dappId in DAppscout or an external url | - | - | `[{'text':'Swap','icon':'swap','dappId':'uniswap'},{'text':'Payment link','icon':'payment_link','dappId':'peanut-protocol'}]` | v1.31.0+ |
+| NEXT_PUBLIC_DEFI_DROPDOWN_ITEMS | `[{ text: string; icon: string; dappId?: string, url?: string }]` | An array of dropdown items containing the button text, icon name and dappId in Dappscout or an external url | - | - | `[{'text':'Swap','icon':'swap','dappId':'uniswap'},{'text':'Payment link','icon':'payment_link','dappId':'peanut-protocol'}]` | v1.31.0+ |
 
 &nbsp;
 

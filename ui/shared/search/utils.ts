@@ -6,6 +6,8 @@ import config from 'configs/app';
 
 const nameServicesFeature = config.features.nameServices;
 
+const dappEntityName = config.UI.views.marketplace.titles.entity_name || 'Dapp';
+
 export type ApiCategory =
   'token' |
   'nft' |
@@ -31,7 +33,7 @@ export type SearchResultAppItem = {
 };
 
 export const searchCategories: Array<{ id: Category; title: string; tabTitle: string }> = [
-  { id: 'app', title: 'DApps', tabTitle: 'DApps' },
+  { id: 'app', title: `${ dappEntityName }s`, tabTitle: `${ dappEntityName }s` },
   { id: 'token', title: `Tokens (${ config.chain.tokenStandard }-20)`, tabTitle: 'Tokens' },
   { id: 'nft', title: `NFTs (${ config.chain.tokenStandard }-721 & 1155)`, tabTitle: 'NFTs' },
   { id: 'address', title: 'Addresses', tabTitle: 'Addresses' },
@@ -59,7 +61,7 @@ if (nameServicesFeature.isEnabled && nameServicesFeature.clusters.isEnabled) {
 }
 
 export const searchItemTitles: Record<Category, { itemTitle: string; itemTitleShort: string }> = {
-  app: { itemTitle: 'DApp', itemTitleShort: 'App' },
+  app: { itemTitle: dappEntityName, itemTitleShort: dappEntityName },
   domain: { itemTitle: 'Name', itemTitleShort: 'Name' },
   cluster: { itemTitle: 'Cluster', itemTitleShort: 'Cluster' },
   token: { itemTitle: 'Token', itemTitleShort: 'Token' },
