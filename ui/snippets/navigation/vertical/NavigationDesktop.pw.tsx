@@ -104,7 +104,7 @@ test.describe('with tooltips', () => {
 
     await component.locator('header').hover();
     await page.locator('svg[aria-label="Expand/Collapse menu"]').click();
-    await page.locator('a[aria-label="DApps link"]').hover();
+    await page.locator('a[aria-label="Dapps link"]').hover();
 
     await expect(component).toHaveScreenshot();
   });
