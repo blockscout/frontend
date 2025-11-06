@@ -132,14 +132,16 @@ const Swap = () => {
   return (
     <Flex flex="1" flexDir="column" justifyContent="space-between" gap={ 6 }>
       <Widget/>
-      <AdBanner
-        platform="mobile"
-        w="fit-content"
-        borderRadius="md"
-        overflow="hidden"
-        ml="auto"
-        display={{ base: 'none', lg: 'block ' }}
-      />
+      { config.UI.views.marketplace.essentialDappsAdEnabled && (
+        <AdBanner
+          platform="mobile"
+          w="fit-content"
+          borderRadius="md"
+          overflow="hidden"
+          ml="auto"
+          display={{ base: 'none', lg: 'block ' }}
+        />
+      ) }
     </Flex>
   );
 };

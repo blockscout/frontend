@@ -1037,6 +1037,7 @@ const schema = yup
 
       return isUndefined || valueSchema.isValidSync(data);
     }),
+    NEXT_PUBLIC_VIEWS_MARKETPLACE_ESSENTIAL_DAPPS_AD_ENABLED: yup.boolean(),
 
     //     e. misc
     NEXT_PUBLIC_NETWORK_EXPLORERS: yup

@@ -520,15 +520,17 @@ const Multisend = () => {
           }}
         />
       </Container>
-      <AdBanner
-        platform="desktop"
-        w="fit-content"
-        borderRadius="md"
-        overflow="hidden"
-        mx="auto"
-        mt={ 10 }
-        display={{ base: 'none', lg: 'block ' }}
-      />
+      { config.UI.views.marketplace.essentialDappsAdEnabled && (
+        <AdBanner
+          platform="desktop"
+          w="fit-content"
+          borderRadius="md"
+          overflow="hidden"
+          mx="auto"
+          mt={ 10 }
+          display={{ base: 'none', lg: 'block ' }}
+        />
+      ) }
     </>
   );
 };
