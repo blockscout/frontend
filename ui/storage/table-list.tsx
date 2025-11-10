@@ -224,7 +224,7 @@ function TableList(props: Props<string>) {
                                 value === 'id' ? null :
                                   value === 'Last Updated Time' || value === 'Time' ? (
                                     <Tooltip
-                                      label={ timeText(title[value]) } placement="top" bg="#FFFFFF" color="#000000" >
+                                      label={ timeText(title[value], title.TimeZone) } placement="top" bg="#FFFFFF" color="#000000" >
                                       <Box overflow="hidden" color="#000000" display="inline-block">
                                         <Skeleton isLoaded={ !props.loading }>{ timeTool(title[value]) }</Skeleton>
                                       </Box>

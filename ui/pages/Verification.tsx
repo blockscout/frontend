@@ -19,6 +19,7 @@ type IssuanceTalbeListType = {
   Time: string;
   'Value MOCA': string;
   'Fee MOCA': string;
+  TimeZone: string;
 };
 
 type LogsRequestParams = {
@@ -133,9 +134,10 @@ const ObjectDetails: NextPage = () => {
           Block: v.block_number.toString(),
           Method: item.method,
           'From/To': [ item.from.hash, v.smart_contract?.hash ],
-          Time: new Date(item.timestamp).toLocaleString('en-US', { hour12: false }),
+          Time: new Date(item.timestamp).toLocaleString('en-US', { timeZone: 'UTC', hour12: false }),
           'Value MOCA': item.value,
           'Fee MOCA': truncateToSignificantDigits(BigNumber(item.base_fee_per_gas / 1e18).toString(10), 3).toString(10),
+          TimeZone: '0',
         });
       } else {
         nextPageHash = v.smart_contract.hash;
