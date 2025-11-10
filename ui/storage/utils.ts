@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 export const formatPubKey = (pubKey: string | undefined, _length = 4, _preLength = 4, settingDate = 0) => {
   if (pubKey && pubKey.toString().length <= settingDate) {
     return pubKey;
@@ -47,7 +48,7 @@ export const timeTool = (time: string) => {
   return `${ seconds } seconds ago`;
 };
 
-export const timeText = (time: string) => {
+export const timeText = (time: string, timeZone?: string) => {
   const oldyear = new Date(time).getFullYear();
   const oldmonth = new Date(time).getMonth() + 1;
   const oldday = new Date(time).getDate();
@@ -58,7 +59,7 @@ export const timeText = (time: string) => {
   const oldtimezoneOffset = Math.abs(oldtimezone / 60);
   const timeText = `${ oldyear }-${ oldmonth }-${ oldday } 
   ${ oldhours }:${ oldminutes.toString().padStart(2, '0') }:
-  ${ oldseconds.toString().padStart(2, '0') } (UTC${ oldtimezoneOffset > 0 ? '+' : '-' }${ oldtimezoneOffset })`;
+  ${ oldseconds.toString().padStart(2, '0') } (UTC${ timeZone ? '' : (oldtimezoneOffset > 0 ? '+' : '-') }${ timeZone || oldtimezoneOffset })`;
   return timeText;
 };
 

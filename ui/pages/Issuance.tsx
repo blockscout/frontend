@@ -21,6 +21,7 @@ type IssuanceTalbeListType = {
   Time: string;
   'Value MOCA': string;
   'Fee MOCA': string;
+  TimeZone: string;
 };
 const ObjectDetails: NextPage = () => {
   const [ queryParams, setQueryParams ] = React.useState<{ offset: number; searchTerm: string; page: number }>({
@@ -92,9 +93,10 @@ const ObjectDetails: NextPage = () => {
           Block: v.block_number,
           Method: v.method,
           'From/To': [ v.from.hash, contractAddress || '' ],
-          Time: new Date(v.timestamp).toLocaleString('en-US', { timeZone: 'Asia/Shanghai', hour12: false }),
+          Time: new Date(v.timestamp).toLocaleString('en-US', { timeZone: 'UTC', hour12: false }),
           'Value MOCA': v.value,
           'Fee MOCA': truncateToSignificantDigits(BigNumber(v.base_fee_per_gas / 1e18).toString(10), 3).toString(10),
+          TimeZone: '0',
         });
       });
       if (rp1.next_page_params) {
