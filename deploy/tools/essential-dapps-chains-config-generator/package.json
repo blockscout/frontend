@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "es-toolkit": "1.39.10",
-    "viem": "2.23.14"
+    "viem": "2.38.6"
   },
   "devDependencies": {
     "@types/node": "22.12.0",
