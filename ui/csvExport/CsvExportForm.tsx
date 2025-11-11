@@ -46,7 +46,6 @@ const CsvExportForm = ({ hash, resource, filterType, filterValue, fileNameTempla
   const apiFetchFactory = React.useCallback((data: FormFields) => {
     return async(recaptchaToken?: string) => {
       const url = buildUrl(resource, { hash } as never, {
-        address_id: hash,
         from_period: exportType !== 'holders' ? dayjs(data.from).toISOString() : null,
         to_period: exportType !== 'holders' ? dayjs(data.to).toISOString() : null,
         filter_type: filterType,

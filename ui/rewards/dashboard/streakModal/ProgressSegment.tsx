@@ -1,6 +1,7 @@
-import { Flex, Text, Progress } from '@chakra-ui/react';
+import { Flex, Text } from '@chakra-ui/react';
 import { clamp } from 'es-toolkit';
 
+import { Progress } from 'toolkit/chakra/progress';
 import IconSvg from 'ui/shared/IconSvg';
 
 type Props = {
@@ -17,23 +18,17 @@ export default function ProgressSegment({ value, target, prevTarget, isFirst }: 
   return (
     <Flex gap={ 0 } flex={{ base: isFirst ? 0.7 : 1, lg: 1 }} minW="0">
       <Flex flex={ 1 } alignItems="center" h={{ base: '32px', lg: '40px' }} mx={ -2.5 }>
-        <Progress.Root
+        <Progress
           value={ progress }
           min={ prevTarget }
           max={ target }
-          size="xs"
-          variant="subtle"
           w="full"
-        >
-          <Progress.Track
-            h="4px"
-            bg={{ _light: 'gray.200', _dark: 'whiteAlpha.200' }}
-            borderStartRadius={ isFirst ? undefined : 0 }
-            borderEndRadius={ 0 }
-          >
-            <Progress.Range bg="green.400"/>
-          </Progress.Track>
-        </Progress.Root>
+          color="green.400"
+          trackProps={{
+            borderStartRadius: isFirst ? undefined : 0,
+            borderEndRadius: 0,
+          }}
+        />
       </Flex>
       <Flex
         direction="column"
@@ -47,7 +42,7 @@ export default function ProgressSegment({ value, target, prevTarget, isFirst }: 
             w="40px"
             h="32px"
             borderRadius="lg"
-            bgColor={ isDone ? 'green.400' : { _light: 'gray.200', _dark: 'whiteAlpha.200' } }
+            bgColor={ isDone ? 'green.400' : 'progress.track' }
             alignItems="center"
             justifyContent="center"
             zIndex={ 1 }

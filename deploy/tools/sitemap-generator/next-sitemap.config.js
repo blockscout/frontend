@@ -101,8 +101,8 @@ module.exports = {
           return null;
         }
         break;
-      case '/name-domains':
-        if (!process.env.NEXT_PUBLIC_NAME_SERVICE_API_HOST) {
+      case '/name-services':
+        if (!process.env.NEXT_PUBLIC_NAME_SERVICE_API_HOST || !process.env.NEXT_PUBLIC_CLUSTERS_API_HOST) {
           return null;
         }
         break;

@@ -342,7 +342,7 @@ Settings for meta tags, OG tags and SEO
 | instance_url | `string` | URL template for NFT instance | - | - | `https://opensea.io/assets/ethereum/{hash}/{id}` |
 | logo_url | `string` | URL of marketplace logo | Required | - | `https://opensea.io/static/images/logos/opensea-logo.svg` |
 
-*Note* URL templates should contain placeholders of NFT hash (`{hash}`) and NFT id (`{id}`). This placeholders will be substituted with particular values for every collection or instance.
+*Note* URL templates should contain placeholders for the NFT hash (`{hash}` or `{hash_lowercase}`) and NFT ID (`{id}` or `{id_lowercase}`). These placeholders will be replaced with specific values or their lowercase equivalents for each collection or instance.
 
 &nbsp;
 
@@ -503,7 +503,7 @@ Ads are enabled by default on all self-hosted instances. If you would like to di
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_ROLLUP_TYPE | `'optimistic' \| 'arbitrum' \| 'shibarium' \| 'zkEvm' \| 'zkSync' \| 'scroll'` | Rollup chain type | Required | - | `'optimistic'` | v1.24.0+ |
 | NEXT_PUBLIC_ROLLUP_L1_BASE_URL | `string` | Blockscout base URL for L1 network. **DEPRECATED** _Use `NEXT_PUBLIC_ROLLUP_PARENT_CHAIN` instead_ | Required | - | `'http://eth-goerli.blockscout.com'` | v1.24.0+ |
-| NEXT_PUBLIC_ROLLUP_L2_WITHDRAWAL_URL | `string` | URL for L2 -> L1 withdrawals (Optimistic stack only) | Required for `optimistic` rollups | - | `https://app.optimism.io/bridge/withdraw` | v1.24.0+ |
+| NEXT_PUBLIC_ROLLUP_L2_WITHDRAWAL_URL | `string` | URL for L2 -> L1 withdrawals (Optimistic stack only) | - | - | `https://app.optimism.io/bridge/withdraw` | v1.24.0+ |
 | NEXT_PUBLIC_ROLLUP_STAGE_INDEX | `1 \| 2` | Reflects the maturity and decentralization level of the chain based on [L2BEAT's framework](https://medium.com/l2beat/introducing-stages-a-framework-to-evaluate-rollups-maturity-d290bb22befe). The label will be added to the sidebar according to the provided stage index. Not applicable for testnets. | - | - | `1` | v2.1.0+ |
 | NEXT_PUBLIC_FAULT_PROOF_ENABLED | `boolean` | Set to `true` for chains with fault proof system enabled (Optimistic stack only) | - | - | `true` | v1.31.0+ |
 | NEXT_PUBLIC_HAS_MUD_FRAMEWORK | `boolean` | Set to `true` for instances that use MUD framework (Optimistic stack only) | - | - | `true` | v1.33.0+ |
