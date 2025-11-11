@@ -65,6 +65,9 @@ const ItemByColumn = ({ item, column, isLoading }: Props) => {
       if (item.token?.type === 'ERC-721') {
         return <Skeleton loading={ isLoading }>1</Skeleton>;
       }
+      if (item.token?.type === 'ERC-7984') {
+        return <Skeleton loading={ isLoading }>•••••</Skeleton>;
+      }
       if (item.total) {
         return (
           <Skeleton loading={ isLoading }>

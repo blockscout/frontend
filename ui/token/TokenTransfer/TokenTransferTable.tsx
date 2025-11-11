@@ -41,8 +41,8 @@ const TokenTransferTable = ({ data, top, showSocketInfo, showSocketErrorAlert, s
             { (NFT_TOKEN_TYPE_IDS.includes(tokenType)) &&
               <TableColumnHeader width={ tokenType === 'ERC-1155' || tokenType === 'ERC-404' ? '50%' : '100%' }>Token ID</TableColumnHeader>
             }
-            { (tokenType === 'ERC-20' || tokenType === 'ERC-1155' || tokenType === 'ERC-404') && (
-              <TableColumnHeader width={ tokenType === 'ERC-20' ? '100%' : '50%' } isNumeric>
+            { (tokenType === 'ERC-20' || tokenType === 'ERC-1155' || tokenType === 'ERC-404' || tokenType === 'ERC-7984') && (
+              <TableColumnHeader width={ tokenType === 'ERC-20' || tokenType === 'ERC-7984' ? '100%' : '50%' } isNumeric>
                 <TruncatedValue value={ `Value ${ token?.symbol || '' }` } w="100%" verticalAlign="middle"/>
               </TableColumnHeader>
             ) }

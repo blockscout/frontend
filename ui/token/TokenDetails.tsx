@@ -133,28 +133,32 @@ const TokenDetails = ({ tokenQuery }: Props) => {
         </>
       ) }
 
-      <DetailedInfo.ItemLabel
-        hint="The total amount of tokens issued"
-        isLoading={ tokenQuery.isPlaceholderData }
-      >
-        Max total supply
-      </DetailedInfo.ItemLabel>
-      <DetailedInfo.ItemValue
-        alignSelf="center"
-        wordBreak="break-word"
-        whiteSpace="pre-wrap"
-      >
-        <Skeleton loading={ tokenQuery.isPlaceholderData } w="100%" display="flex">
-          <TruncatedValue
-            value={ totalSupplyValue || '0' }
-            maxW="80%"
-            flexShrink={ 0 }
-            tooltipContent={ totalSupplyValueFull !== totalSupplyValue ? totalSupplyValueFull : undefined }
-          />
-          <Box flexShrink={ 0 }> </Box>
-          <TruncatedValue value={ symbol || '' }/>
-        </Skeleton>
-      </DetailedInfo.ItemValue>
+      { type !== 'ERC-7984' && (
+        <>
+          <DetailedInfo.ItemLabel
+            hint="The total amount of tokens issued"
+            isLoading={ tokenQuery.isPlaceholderData }
+          >
+            Max total supply
+          </DetailedInfo.ItemLabel>
+          <DetailedInfo.ItemValue
+            alignSelf="center"
+            wordBreak="break-word"
+            whiteSpace="pre-wrap"
+          >
+            <Skeleton loading={ tokenQuery.isPlaceholderData } w="100%" display="flex">
+              <TruncatedValue
+                value={ totalSupplyValue || '0' }
+                maxW="80%"
+                flexShrink={ 0 }
+                tooltipContent={ totalSupplyValueFull !== totalSupplyValue ? totalSupplyValueFull : undefined }
+              />
+              <Box flexShrink={ 0 }> </Box>
+              <TruncatedValue value={ symbol || '' }/>
+            </Skeleton>
+          </DetailedInfo.ItemValue>
+        </>
+      ) }
 
       <DetailedInfo.ItemLabel
         hint="Number of accounts holding the token"

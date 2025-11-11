@@ -89,17 +89,25 @@ const TokenTransferTableItem = ({
           }
         </TableCell>
       ) }
-      { token && (token.type === 'ERC-20' || token.type === 'ERC-1155' || token.type === 'ERC-404') && (
+      { token && (token.type === 'ERC-20' || token.type === 'ERC-1155' || token.type === 'ERC-404' || token.type === 'ERC-7984') && (
         <TableCell isNumeric verticalAlign="top">
-          { valueStr && (
+          { token.type === 'ERC-7984' ? (
             <Skeleton loading={ isLoading } display="inline-block" mt="7px" wordBreak="break-all">
-              { valueStr }
+              •••••
             </Skeleton>
-          ) }
-          { usd && (
-            <Skeleton loading={ isLoading } color="text.secondary" mt="10px" wordBreak="break-all">
-              <span>${ usd }</span>
-            </Skeleton>
+          ) : (
+            <>
+              { valueStr && (
+                <Skeleton loading={ isLoading } display="inline-block" mt="7px" wordBreak="break-all">
+                  { valueStr }
+                </Skeleton>
+              ) }
+              { usd && (
+                <Skeleton loading={ isLoading } color="text.secondary" mt="10px" wordBreak="break-all">
+                  <span>${ usd }</span>
+                </Skeleton>
+              ) }
+            </>
           ) }
         </TableCell>
       ) }

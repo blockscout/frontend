@@ -93,6 +93,23 @@ const TokenTransferListItem = ({
           ) }
         </Grid>
       ) }
+      { token && token.type === 'ERC-7984' && (
+        <Grid gap={ 2 } templateColumns="1fr auto auto">
+          <Skeleton loading={ isLoading } flexShrink={ 0 } fontWeight={ 500 }>
+            Value
+          </Skeleton>
+          <Skeleton
+            loading={ isLoading }
+            color="text.secondary"
+            wordBreak="break-all"
+            overflow="hidden"
+            flexGrow={ 1 }
+          >
+            <span>•••••</span>
+          </Skeleton>
+          { token.symbol && <TruncatedValue isLoading={ isLoading } value={ token.symbol }/> }
+        </Grid>
+      ) }
       { total && 'token_id' in total && token && (NFT_TOKEN_TYPE_IDS.includes(token.type)) && total.token_id !== null && (
         <NftEntity
           hash={ token.address_hash }

@@ -12,11 +12,12 @@ export const NFT_TOKEN_TYPES: Record<NFTTokenType, string > = {
 
 export const TOKEN_TYPES: Record<TokenType, string > = {
   'ERC-20': `${ tokenStandardName }-20`,
+  'ERC-7984': `${ tokenStandardName }-7984`,
   ...NFT_TOKEN_TYPES,
 };
 
 export const NFT_TOKEN_TYPE_IDS: Array<NFTTokenType> = [ 'ERC-721', 'ERC-1155', 'ERC-404' ];
-export const TOKEN_TYPE_IDS: Array<TokenType> = [ 'ERC-20', ...NFT_TOKEN_TYPE_IDS ];
+export const TOKEN_TYPE_IDS: Array<TokenType> = [ 'ERC-20', 'ERC-7984', ...NFT_TOKEN_TYPE_IDS ];
 
 export function getTokenTypeName(typeId: TokenType) {
   return TOKEN_TYPES[typeId];
