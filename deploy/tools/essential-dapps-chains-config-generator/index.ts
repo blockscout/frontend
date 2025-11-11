@@ -102,12 +102,12 @@ async function run() {
     }
 
     const chainscoutInfo = await getChainscoutInfo(enabledChains, currentChainConfig.chain.id);
-    const chainsWithoutUrl = Object.entries(chainscoutInfo.externals).filter(([_, explorerUrl]) => !explorerUrl);
+    const chainsWithoutUrl = chainscoutInfo.externals.filter(({ explorerUrl }) => !explorerUrl);
 
     if (chainsWithoutUrl.length > 0) {
-      console.log(`⚠️  For the following chains explorer url was not found: ${ chainsWithoutUrl.map(([chainId]) => chainId).join(', ') }. Therefore, they will not be enabled.`);
+      console.log(`⚠️  For the following chains explorer url was not found: ${ chainsWithoutUrl.map(({ id }) => id).join(', ') }. Therefore, they will not be enabled.`);
     }
-    const explorerUrls = Object.values(chainscoutInfo.externals).map(({ explorerUrl }) => explorerUrl);
+    const explorerUrls = chainscoutInfo.externals.map(({ explorerUrl }) => explorerUrl).filter(Boolean);
     console.log(`ℹ️  For ${ explorerUrls.length } chains explorer url was found in static config. Fetching parameters for each chain...`);
 
     const chainConfigs = await Promise.all(explorerUrls.map(computeChainConfig)) as Array<ChainConfig['config']>;
@@ -123,10 +123,10 @@ async function run() {
         };
       }),
     };
-    
+
     const outputDir = resolvePath(currentDir, '../../../../public/assets/essential-dapps');
     mkdirSync(outputDir, { recursive: true });
-    
+
     const outputPathJson = resolvePath(outputDir, 'chains.json');
     writeFileSync(outputPathJson, JSON.stringify(result, null, 2));
 
