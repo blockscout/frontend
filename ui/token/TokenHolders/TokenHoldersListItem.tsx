@@ -42,7 +42,7 @@ const TokenHoldersListItem = ({ holder, token, isLoading }: Props) => {
       <ListItemMobileGrid.Label isLoading={ isLoading }>Quantity</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
         <Skeleton loading={ isLoading } display="inline-block">
-          { quantity }
+          { token.type === 'ERC-7984' ? '•••••' : quantity }
         </Skeleton>
       </ListItemMobileGrid.Value>
 
