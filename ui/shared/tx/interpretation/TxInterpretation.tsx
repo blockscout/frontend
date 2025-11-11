@@ -224,6 +224,7 @@ const TxInterpretation = ({ summary, isLoading, addressDataMap, className, chain
               borderStyle="solid"
               borderColor="bg.primary"
               backgroundColor="bg.primary"
+              noTooltip
             />
           ) }
         </Box>

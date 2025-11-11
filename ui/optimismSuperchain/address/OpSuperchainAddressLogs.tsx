@@ -44,7 +44,10 @@ const OpSuperchainAddressLogs = ({ addressData, isLoading }: Props) => {
     chainIds,
   });
 
-  const chainData = multichainConfig()?.chains.find(chain => chain.id === chainValue?.[0]);
+  const chainData = React.useMemo(() => {
+    const config = multichainConfig();
+    return config?.chains.find(({ id }) => id === chainValue?.[0]);
+  }, [ chainValue ]);
 
   const actionBar = (
     <ActionBar mt={ -6 } showShadow>
@@ -59,6 +62,7 @@ const OpSuperchainAddressLogs = ({ addressData, isLoading }: Props) => {
         isLoading={ pagination.isLoading }
         params={{ type: 'logs' }}
         ml={{ base: 2, lg: 'auto' }}
+        chainData={ chainData }
       />
       <Pagination ml={{ base: 'auto', lg: 8 }} { ...pagination }/>
     </ActionBar>

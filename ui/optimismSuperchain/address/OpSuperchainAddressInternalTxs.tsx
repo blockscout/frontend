@@ -3,6 +3,7 @@ import React from 'react';
 
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 
+import multichainConfig from 'configs/multichain';
 import { MultichainProvider } from 'lib/contexts/multichain';
 import { apos } from 'toolkit/utils/htmlEntities';
 import AddressCsvExportLink from 'ui/address/AddressCsvExportLink';
@@ -30,10 +31,15 @@ const OpSuperchainAddressInternalTxs = ({ addressData, isLoading }: Props) => {
     isMultichain: true,
     chainIds,
   });
-  const { data, isPlaceholderData, isError, pagination } = query;
+  const { data, isPlaceholderData, isError, pagination, chainValue, onChainValueChange } = query;
+
+  const chainData = React.useMemo(() => {
+    const config = multichainConfig();
+    return config?.chains.find(({ id }) => id === chainValue?.[0]);
+  }, [ chainValue ]);
 
   const content = data?.items ? (
-    <MultichainProvider chainId={ query.chainValue?.[0] }>
+    <MultichainProvider chainId={ chainValue?.[0] }>
       <Box hideFrom="lg">
         <InternalTxsList data={ data.items } currentAddress={ hash } isLoading={ isPlaceholderData }/>
       </Box>
@@ -53,8 +59,8 @@ const OpSuperchainAddressInternalTxs = ({ addressData, isLoading }: Props) => {
       />
       <ChainSelect
         loading={ pagination.isLoading }
-        value={ query.chainValue }
-        onValueChange={ query.onChainValueChange }
+        value={ chainValue }
+        onValueChange={ onChainValueChange }
         chainIds={ chainIds }
         ml={ 2 }
       />
@@ -63,6 +69,7 @@ const OpSuperchainAddressInternalTxs = ({ addressData, isLoading }: Props) => {
         isLoading={ pagination.isLoading }
         params={{ type: 'internal-transactions', filterType: 'address', filterValue }}
         ml={{ base: 2, lg: 'auto' }}
+        chainData={ chainData }
       />
       <Pagination ml={{ base: 'auto', lg: 8 }} { ...pagination }/>
     </ActionBar>
