@@ -6,7 +6,6 @@ import type { Route } from 'nextjs-routes';
 import type { Props } from 'nextjs/getServerSideProps/handlers';
 
 import config from 'configs/app';
-import isNeedProxy from 'lib/api/isNeedProxy';
 
 export type Guard = (chainConfig: typeof config) => <Pathname extends Route['pathname'] = never>(context: GetServerSidePropsContext) =>
 Promise<GetServerSidePropsResult<Props<Pathname>> | undefined>;
@@ -159,8 +158,8 @@ export const dataAvailability: Guard = (chainConfig: typeof config) => async() =
   }
 };
 
-export const login: Guard = () => async() => {
-  if (!isNeedProxy()) {
+export const login: Guard = (chainConfig: typeof config) => async() => {
+  if (!chainConfig.app.isReview && !chainConfig.app.isDev) {
     return {
       notFound: true,
     };
