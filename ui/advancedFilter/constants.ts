@@ -73,19 +73,27 @@ export const ADVANCED_FILTER_TYPES = [
   },
   {
     id: 'ERC-20',
-    name: 'ERC-20',
+    name: 'ERC-20 Transfer',
   },
   {
     id: 'ERC-404',
-    name: ' ERC-404',
+    name: 'ERC-404 Transfer',
   },
   {
     id: 'ERC-721',
-    name: 'ERC-721',
+    name: 'ERC-721 Transfer',
   },
   {
     id: 'ERC-1155',
-    name: 'ERC-1155',
+    name: 'ERC-1155 Transfer',
+  },
+  {
+    id: 'contract_creation',
+    name: 'Contract Creation',
+  },
+  {
+    id: 'contract_interaction',
+    name: 'Contract Interaction',
   },
 ] as const;
 
