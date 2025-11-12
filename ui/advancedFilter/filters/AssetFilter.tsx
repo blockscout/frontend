@@ -106,13 +106,13 @@ const AssetFilter = ({ value = [], handleFilterChange }: Props) => {
       { !searchTerm && currentValue.map((item, index) => (
         <Flex key={ item.token.address_hash } alignItems="center">
           <Select
-            size="sm"
-            value={ [ item.mode ] }
-            onValueChange={ handleModeSelectChange(index) }
             collection={ collection }
             placeholder="Select mode"
-            minW="105px"
+            defaultValue={ [ item.mode || 'include' ] }
+            onValueChange={ handleModeSelectChange(index) }
+            portalled={ false }
             w="105px"
+            minW="105px"
             mr={ 3 }
           />
           <TokenEntity.default token={ item.token } noLink noCopy flexGrow={ 1 }/>
