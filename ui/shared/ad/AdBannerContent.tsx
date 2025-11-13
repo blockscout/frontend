@@ -1,7 +1,7 @@
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import type { BannerPlatform } from './types';
+import type { BannerFormat } from './types';
 import type { AdBannerProviders } from 'types/client/adProviders';
 
 import config from 'configs/app';
@@ -21,11 +21,11 @@ const isSpecifyEnabled = feature.isEnabled && feature.isSpecifyEnabled;
 interface Props {
   className?: string;
   isLoading?: boolean;
-  platform?: BannerPlatform;
+  format?: BannerFormat;
   provider: AdBannerProviders;
 }
 
-const AdBannerContent = ({ className, isLoading, provider, platform }: Props) => {
+const AdBannerContent = ({ className, isLoading, provider, format }: Props) => {
   const { address: addressWC, isConnecting } = useAccount();
   const profileQuery = useProfileQuery();
   const [ showSpecify, setShowSpecify ] = React.useState(isSpecifyEnabled);
@@ -39,15 +39,15 @@ const AdBannerContent = ({ className, isLoading, provider, platform }: Props) =>
   const content = (() => {
     if (showSpecify) {
       const isLoading = address ? false : profileQuery.isLoading || isConnecting;
-      return <SpecifyBanner platform={ platform } address={ address } onEmpty={ handleEmptySpecify } isLoading={ isLoading }/>;
+      return <SpecifyBanner format={ format } address={ address } onEmpty={ handleEmptySpecify } isLoading={ isLoading }/>;
     }
     switch (provider) {
       case 'adbutler':
-        return <AdbutlerBanner platform={ platform }/>;
+        return <AdbutlerBanner format={ format }/>;
       case 'coinzilla':
-        return <CoinzillaBanner platform={ platform }/>;
+        return <CoinzillaBanner format={ format }/>;
       case 'slise':
-        return <SliseBanner platform={ platform }/>;
+        return <SliseBanner format={ format }/>;
     }
   })();
 

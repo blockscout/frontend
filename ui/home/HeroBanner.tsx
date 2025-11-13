@@ -4,6 +4,7 @@ import { Box, Flex, Heading } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
+import useIsMobile from 'lib/hooks/useIsMobile';
 import RewardsButton from 'ui/rewards/RewardsButton';
 import AdBanner from 'ui/shared/ad/AdBanner';
 import SearchBar from 'ui/snippets/searchBar/SearchBarDesktop';
@@ -17,6 +18,9 @@ const TEXT_COLOR_DEFAULT = 'white';
 const BORDER_DEFAULT = 'none';
 
 const HeroBanner = () => {
+
+  const isMobile = useIsMobile();
+
   const background = {
     _light:
       config.UI.homepage.heroBanner?.background?.[0] ||
@@ -88,7 +92,7 @@ const HeroBanner = () => {
           <SearchBar isHeroBanner/>
         </Box>
       </Box>
-      <AdBanner platform="mobile" w="fit-content" flexShrink={ 0 } borderRadius="md" overflow="hidden" display={{ base: 'none', lg: 'block ' }}/>
+      { !isMobile && <AdBanner format="mobile" w="fit-content" flexShrink={ 0 } borderRadius="md" overflow="hidden"/> }
     </Flex>
   );
 };

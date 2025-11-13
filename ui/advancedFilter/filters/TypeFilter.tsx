@@ -45,7 +45,7 @@ const TypeFilter = ({ value = [ RESET_VALUE ], handleFilterChange }: Props) => {
 
   return (
     <TableColumnFilter
-      title="Type of transfer"
+      title="Transaction type"
       isFilled={ !(currentValue.length === 1 && currentValue[0] === RESET_VALUE) }
       isTouched={ !isEqual(currentValue.sort(), value.sort()) }
       onFilter={ onFilter }

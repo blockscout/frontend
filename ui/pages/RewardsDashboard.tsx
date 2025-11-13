@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 
 import config from 'configs/app';
 import { useRewardsContext } from 'lib/contexts/rewards';
+import useIsMobile from 'lib/hooks/useIsMobile';
 import { Alert } from 'toolkit/chakra/alert';
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';
@@ -25,6 +26,7 @@ const RewardsDashboard = () => {
   const { balancesQuery, apiToken, referralsQuery, rewardsConfigQuery, dailyRewardQuery, isInitialized } = useRewardsContext();
   const { nextAchievementText, isLoading: isBadgesLoading, badgesQuery } = useStreakBadges();
   const streakModal = useDisclosure();
+  const isMobile = useIsMobile();
 
   const [ isError, setIsError ] = useState(false);
 
@@ -59,7 +61,7 @@ const RewardsDashboard = () => {
           ) }
           mb={ 0 }
         />
-        <AdBanner platform="mobile" w="fit-content" flexShrink={ 0 } borderRadius="md" overflow="hidden" display={{ base: 'none', lg: 'block ' }}/>
+        { !isMobile && <AdBanner format="mobile" w="fit-content" flexShrink={ 0 } borderRadius="md" overflow="hidden"/> }
       </Flex>
       <Flex flexDirection="column" alignItems="flex-start" w="full" gap={ 6 }>
         { isError && <Alert status="error">Failed to load some data. Please try again later.</Alert> }

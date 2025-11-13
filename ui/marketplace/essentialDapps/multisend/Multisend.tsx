@@ -138,6 +138,9 @@ const Container = ({ children }: { children: React.ReactNode }) => (
             '& + button': {
               marginTop: '12px',
             },
+            '& span': {
+              '--loader-color': 'var(--chakra-colors-text-primary) !important',
+            },
           },
         },
         '& [class*="_itemRoot_"]': {
@@ -276,7 +279,7 @@ const Container = ({ children }: { children: React.ReactNode }) => (
           margin: '0 !important',
           '& p, & div': {
             fontSize: 'md',
-            color: 'text.primary',
+            color: 'text.primary !important',
           },
           '& [class*="_alertIcon_"]': {
             marginTop: '2px',
@@ -289,6 +292,9 @@ const Container = ({ children }: { children: React.ReactNode }) => (
           },
           '&:not([data-variant="filled"]) [class*="_alertIcon_"]': {
             display: 'none',
+          },
+          '&[data-variant="filled"]': {
+            backgroundColor: 'alert.bg.info !important',
           },
         },
         '& div[role="tooltip"]': {
