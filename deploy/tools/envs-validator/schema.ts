@@ -18,7 +18,7 @@ import type { DeFiDropdownItem } from '../../../types/client/deFiDropdown';
 import type { GasRefuelProviderConfig } from '../../../types/client/gasRefuelProviderConfig';
 import { GAS_UNITS } from '../../../types/client/gasTracker';
 import type { GasUnit } from '../../../types/client/gasTracker';
-import type { MarketplaceAppBase, MarketplaceAppSocialInfo, EssentialDappsConfig } from '../../../types/client/marketplace';
+import type { MarketplaceAppBase, MarketplaceAppSocialInfo, EssentialDappsConfig, MarketplaceTitles } from '../../../types/client/marketplace';
 import type { MultichainProviderConfig } from '../../../types/client/multichainProviderConfig';
 import type { ApiDocsTabId } from '../../../types/views/apiDocs';
 import { API_DOCS_TABS } from '../../../types/views/apiDocs';
@@ -43,7 +43,6 @@ import type { BlockFieldId } from '../../../types/views/block';
 import type { NftMarketplaceItem } from '../../../types/views/nft';
 import type { TxAdditionalFieldsId, TxFieldsId } from '../../../types/views/tx';
 import { TX_ADDITIONAL_FIELDS_IDS, TX_FIELDS_IDS } from '../../../types/views/tx';
-import type { MarketplaceTitles } from '../../../types/views/marketplace';
 import type { VerifiedContractsFilter } from '../../../types/api/contracts';
 import type { TxExternalTxsConfig } from '../../../types/client/externalTxsConfig';
 
@@ -214,6 +213,38 @@ const marketplaceSchema = yup
         otherwise: (schema) => schema.test(
           'not-exist',
           'NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_CONFIG cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED',
+          value => value === undefined,
+        ),
+      }),
+    NEXT_PUBLIC_MARKETPLACE_TITLES: yup
+      .mixed()
+      .when('NEXT_PUBLIC_MARKETPLACE_ENABLED', {
+        is: true,
+        then: (schema) => schema.test('shape', 'Invalid schema were provided for NEXT_PUBLIC_MARKETPLACE_TITLES', (data) => {
+          const isUndefined = data === undefined;
+          const valueSchema = yup.object<MarketplaceTitles>().transform(replaceQuotes).json().shape({
+            menu_item: yup.string(),
+            title: yup.string(),
+            subtitle_essential_dapps: yup.string(),
+            subtitle_list: yup.string(),
+          });
+
+          return isUndefined || valueSchema.isValidSync(data);
+        }),
+        otherwise: (schema) => schema.test(
+          'not-exist',
+          'NEXT_PUBLIC_MARKETPLACE_TITLES cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED',
+          value => value === undefined,
+        ),
+      }),
+    NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_AD_ENABLED: yup
+      .boolean()
+      .when('NEXT_PUBLIC_MARKETPLACE_ENABLED', {
+        is: true,
+        then: (schema) => schema,
+        otherwise: (schema) => schema.test(
+          'not-exist',
+          'NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_AD_ENABLED cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED',
           value => value === undefined,
         ),
       }),
@@ -1024,20 +1055,6 @@ const schema = yup
       .of(nftMarketplaceSchema),
     NEXT_PUBLIC_VIEWS_TOKEN_SCAM_TOGGLE_ENABLED: yup.boolean(),
     NEXT_PUBLIC_HELIA_VERIFIED_FETCH_ENABLED: yup.boolean(),
-    NEXT_PUBLIC_VIEWS_MARKETPLACE_TITLES: yup
-    .mixed()
-    .test('shape', 'Invalid schema were provided for NEXT_PUBLIC_VIEWS_MARKETPLACE_TITLES', (data) => {
-      const isUndefined = data === undefined;
-      const valueSchema = yup.object<MarketplaceTitles>().transform(replaceQuotes).json().shape({
-        menu_item: yup.string(),
-        title: yup.string(),
-        subtitle_essential_dapps: yup.string(),
-        subtitle_list: yup.string(),
-      });
-
-      return isUndefined || valueSchema.isValidSync(data);
-    }),
-    NEXT_PUBLIC_VIEWS_MARKETPLACE_ESSENTIAL_DAPPS_AD_ENABLED: yup.boolean(),
 
     //     e. misc
     NEXT_PUBLIC_NETWORK_EXPLORERS: yup

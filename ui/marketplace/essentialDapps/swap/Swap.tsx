@@ -3,6 +3,8 @@ import type { RouteExecutionUpdate, WidgetConfig } from '@lifi/widget';
 import { LiFiWidget, useWidgetEvents, WidgetEvent } from '@lifi/widget';
 import { useEffect, useMemo, useRef } from 'react';
 
+import { getFeaturePayload } from 'configs/app/features/types';
+
 import config from 'configs/app';
 import essentialDappsChainsConfig from 'configs/essential-dapps-chains';
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -13,8 +15,8 @@ import { useColorMode } from 'toolkit/chakra/color-mode';
 import { BODY_TYPEFACE } from 'toolkit/theme/foundations/typography';
 import AdBanner from 'ui/shared/ad/AdBanner';
 
-const feature = config.features.marketplace;
-const dappConfig = feature.isEnabled ? feature.essentialDapps?.swap : undefined;
+const feature = getFeaturePayload(config.features.marketplace);
+const dappConfig = feature?.essentialDapps?.swap;
 
 const defaultChainId = Number(
   dappConfig?.chains.includes(config.chain.id as string) ?
@@ -134,7 +136,7 @@ const Swap = () => {
   return (
     <Flex flex="1" flexDir="column" justifyContent="space-between" gap={ 6 }>
       <Widget/>
-      { (config.UI.views.marketplace.essentialDappsAdEnabled && !isMobile) && (
+      { (feature?.essentialDappsAdEnabled && !isMobile) && (
         <AdBanner
           format="mobile"
           w="fit-content"

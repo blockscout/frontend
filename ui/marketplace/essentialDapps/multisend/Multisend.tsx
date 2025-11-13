@@ -2,13 +2,15 @@ import { Box } from '@chakra-ui/react';
 import { MultisenderWidget } from '@multisender.app/multisender-react-widget';
 import React from 'react';
 
+import { getFeaturePayload } from 'configs/app/features/types';
+
 import config from 'configs/app';
 import essentialDappsChainsConfig from 'configs/essential-dapps-chains';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import AdBanner from 'ui/shared/ad/AdBanner';
 
-const feature = config.features.marketplace;
-const dappConfig = feature.isEnabled ? feature.essentialDapps?.multisend : undefined;
+const feature = getFeaturePayload(config.features.marketplace);
+const dappConfig = feature?.essentialDapps?.multisend;
 
 const Container = ({ children }: { children: React.ReactNode }) => (
   <Box
@@ -529,7 +531,7 @@ const Multisend = () => {
           }}
         />
       </Container>
-      { (config.UI.views.marketplace.essentialDappsAdEnabled && !isMobile) && (
+      { (feature?.essentialDappsAdEnabled && !isMobile) && (
         <AdBanner
           format="desktop"
           w="fit-content"

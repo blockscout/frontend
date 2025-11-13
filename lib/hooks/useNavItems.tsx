@@ -6,6 +6,8 @@ import type { NavItemInternal, NavItem, NavGroupItem } from 'types/client/naviga
 import config from 'configs/app';
 import { rightLineArrow } from 'toolkit/utils/htmlEntities';
 
+const marketplaceFeature = config.features.marketplace;
+
 interface ReturnType {
   mainNavItems: Array<NavItem | NavGroupItem>;
   accountNavItems: Array<NavItem>;
@@ -346,8 +348,8 @@ export default function useNavItems(): ReturnType {
         isActive: tokensNavItems.flat().some(item => isInternalItem(item) && item.isActive),
         subItems: tokensNavItems,
       },
-      config.features.marketplace.isEnabled ? {
-        text: config.UI.views.marketplace.titles.menu_item || 'Dapps',
+      marketplaceFeature.isEnabled ? {
+        text: marketplaceFeature.titles.menu_item,
         nextRoute: { pathname: '/apps' as const },
         icon: 'apps',
         isActive: pathname.startsWith('/app') || pathname.startsWith('/essential-dapps'),

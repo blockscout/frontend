@@ -1,8 +1,10 @@
+import { getFeaturePayload } from 'configs/app/features/types';
+
 import type { Route } from 'nextjs-routes';
 
 import config from 'configs/app';
 
-const dappEntityName = (config.UI.views.marketplace.titles.entity_name || 'Dapp').toLowerCase();
+const dappEntityName = (getFeaturePayload(config.features.marketplace)?.titles.entity_name ?? '').toLowerCase();
 
 const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/': '%network_name% blockchain explorer - View %network_name% stats',
