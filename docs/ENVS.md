@@ -174,6 +174,7 @@ _Note_ Here, all values are arrays of up to two strings. The first string repres
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_FEATURED_NETWORKS | `string` | URL of configuration file (`.json` format only) or file content string representation. It contains list of featured networks that will be shown in the network menu. See [below](#featured-network-configuration-properties) list of available properties for particular network | - | - | `https://example.com/featured_networks_config.json` \| `[{'title':'Astar(EVM)','url':'https://astar.blockscout.com/','group':'Mainnets','icon':'https://example.com/astar.svg'}]` | v1.0.x+ |
 | NEXT_PUBLIC_FEATURED_NETWORKS_ALL_LINK | `string` | Link to the all chains resource. Will be displayed at the bottom of featured networks list. | Works only if NEXT_PUBLIC_FEATURED_NETWORKS is set | - | `https://example.com` | v2.3.0+ |
+| NEXT_PUBLIC_FEATURED_NETWORKS_MODE | `tabs \| list` | Indicates how the networks are presented: in one list or in separate tabs. | Works only if NEXT_PUBLIC_FEATURED_NETWORKS is set | `tabs` | `list` | upcoming |
 
 #### Featured network configuration properties
 

@@ -1,4 +1,4 @@
-import { VStack, Flex, Box } from '@chakra-ui/react';
+import { VStack, Flex, Box, Text } from '@chakra-ui/react';
 import React from 'react';
 
 import type { FeaturedNetwork, NetworkGroup } from 'types/networks';
@@ -55,6 +55,20 @@ const NetworkMenuContent = ({ items, tabs }: Props) => {
       );
     }
 
+    const viewAllLink = config.UI.featuredNetworks.allLink && (
+      <Link
+        href={ config.UI.featuredNetworks.allLink }
+        external
+        noIcon
+        variant="secondary"
+        my={ 2 }
+        px={ 2 }
+        fontSize="xs"
+      >
+        View all chains
+      </Link>
+    );
+
     if (tabs.length === 1) {
       return (
         <VStack as="ul" gap={ 1 } alignItems="stretch" overflowY="scroll" maxH="516px">
@@ -66,19 +80,32 @@ const NetworkMenuContent = ({ items, tabs }: Props) => {
                 { ...network }
               />
             )) }
-          { config.UI.featuredNetworks.allLink && (
-            <Link
-              href={ config.UI.featuredNetworks.allLink }
-              external
-              noIcon
-              variant="secondary"
-              my={ 2 }
-              px={ 2 }
-              fontSize="xs"
-            >
-              View all chains
-            </Link>
-          ) }
+          { viewAllLink }
+        </VStack>
+      );
+    }
+
+    if (config.UI.featuredNetworks.mode === 'list') {
+      return (
+        <VStack overflowY="scroll" maxH="516px" alignItems="stretch" gap={ 3 }>
+          { tabs.map((tab, index) => {
+            return (
+              <Box key={ tab }>
+                <Text fontSize="sm" fontWeight={ 600 } mb={ 2 }>{ tab }</Text>
+                <VStack key={ tab } as="ul" gap={ 1 } alignItems="stretch">
+                  { items
+                    .filter((network) => network.group === tab)
+                    .map((network) => (
+                      <NetworkMenuLink
+                        key={ network.title }
+                        { ...network }
+                      />
+                    )) }
+                  { index === tabs.length - 1 && viewAllLink }
+                </VStack>
+              </Box>
+            );
+          }) }
         </VStack>
       );
     }
@@ -118,19 +145,7 @@ const NetworkMenuContent = ({ items, tabs }: Props) => {
                       { ...network }
                     />
                   )) }
-                { config.UI.featuredNetworks.allLink && (
-                  <Link
-                    href={ config.UI.featuredNetworks.allLink }
-                    external
-                    noIcon
-                    variant="secondary"
-                    my={ 2 }
-                    px={ 2 }
-                    fontSize="xs"
-                  >
-                    View all chains
-                  </Link>
-                ) }
+                { viewAllLink }
               </VStack>
             </TabsContent>
           )) }
