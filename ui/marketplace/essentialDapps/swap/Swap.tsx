@@ -5,6 +5,7 @@ import { useEffect, useMemo, useRef } from 'react';
 
 import config from 'configs/app';
 import essentialDappsChainsConfig from 'configs/essential-dapps-chains';
+import useIsMobile from 'lib/hooks/useIsMobile';
 import useRewardsActivity from 'lib/hooks/useRewardsActivity';
 import * as mixpanel from 'lib/mixpanel/index';
 import useWeb3Wallet from 'lib/web3/useWallet';
@@ -85,6 +86,7 @@ const Widget = () => {
 };
 
 const Swap = () => {
+  const isMobile = useIsMobile();
   const { trackTransaction, trackTransactionConfirm } = useRewardsActivity();
   const widgetEvents = useWidgetEvents();
   const eventParams = useRef<{
@@ -132,14 +134,13 @@ const Swap = () => {
   return (
     <Flex flex="1" flexDir="column" justifyContent="space-between" gap={ 6 }>
       <Widget/>
-      { config.UI.views.marketplace.essentialDappsAdEnabled && (
+      { (config.UI.views.marketplace.essentialDappsAdEnabled && !isMobile) && (
         <AdBanner
-          platform="mobile"
+          format="mobile"
           w="fit-content"
           borderRadius="md"
           overflow="hidden"
           ml="auto"
-          display={{ base: 'none', lg: 'block ' }}
         />
       ) }
     </Flex>

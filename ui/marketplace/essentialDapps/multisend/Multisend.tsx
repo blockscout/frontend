@@ -4,6 +4,7 @@ import React from 'react';
 
 import config from 'configs/app';
 import essentialDappsChainsConfig from 'configs/essential-dapps-chains';
+import useIsMobile from 'lib/hooks/useIsMobile';
 import AdBanner from 'ui/shared/ad/AdBanner';
 
 const feature = config.features.marketplace;
@@ -512,6 +513,8 @@ const widgetConfig = Object.fromEntries(dappConfig?.chains.map((chainId) => {
 }) || []);
 
 const Multisend = () => {
+  const isMobile = useIsMobile();
+
   return (
     <>
       <Container>
@@ -526,15 +529,14 @@ const Multisend = () => {
           }}
         />
       </Container>
-      { config.UI.views.marketplace.essentialDappsAdEnabled && (
+      { (config.UI.views.marketplace.essentialDappsAdEnabled && !isMobile) && (
         <AdBanner
-          platform="desktop"
+          format="desktop"
           w="fit-content"
           borderRadius="md"
           overflow="hidden"
           mx="auto"
           mt={ 10 }
-          display={{ base: 'none', lg: 'block ' }}
         />
       ) }
     </>
