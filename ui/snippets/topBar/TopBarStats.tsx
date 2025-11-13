@@ -66,7 +66,7 @@ const TopBarStats = () => {
               <chakra.span color="text.secondary">{ config.chain.currency.symbol } </chakra.span>
               <span>${ Number(data.coin_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 }) }</span>
             </Skeleton>
-            { data.coin_price_change_percentage && !isMobile && (
+            { data.coin_price_change_percentage && !(isMobile && Boolean(config.UI.featuredNetworks.items)) && (
               <Skeleton loading={ isPlaceholderData }>
                 <chakra.span color={ Number(data.coin_price_change_percentage) >= 0 ? 'green.500' : 'red.500' }>
                   { Number(data.coin_price_change_percentage).toFixed(2) }%
