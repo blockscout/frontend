@@ -56,7 +56,7 @@ const OpSuperchainAddressTxs = ({ addressData, isLoading }: Props) => {
 
   const txsQueryLocal = useAddressTxsQuery({
     addressHash: hash,
-    enabled: !isLoading && isLocalTab,
+    enabled: !isLoading && isLocalTab && chainIds.length > 0,
     isMultichain: true,
     chainIds,
   });
@@ -67,7 +67,7 @@ const OpSuperchainAddressTxs = ({ addressData, isLoading }: Props) => {
   const countersQueryLocal = useAddressCountersQuery({
     hash,
     isLoading: txsQueryLocal.query.isPlaceholderData || isLoading,
-    isEnabled: !isLoading && isLocalTab,
+    isEnabled: !isLoading && isLocalTab && chainIds.length > 0,
     chain: chainData,
   });
 
@@ -106,6 +106,10 @@ const OpSuperchainAddressTxs = ({ addressData, isLoading }: Props) => {
 
   const rightSlot = (() => {
     if (isLocalTab) {
+      if (chainIds.length === 0) {
+        return null;
+      }
+
       if (isMobile) {
         return chainSelect;
       }
@@ -142,7 +146,7 @@ const OpSuperchainAddressTxs = ({ addressData, isLoading }: Props) => {
     {
       id: [ 'txs_local', 'txs' ],
       title: 'Local',
-      component: (
+      component: chainIds.length > 0 ? (
         <SocketProvider url={ getSocketUrl(chainData?.app_config) }>
           <MultichainProvider chainId={ chainId }>
             { isMobile && countersText }
@@ -159,7 +163,7 @@ const OpSuperchainAddressTxs = ({ addressData, isLoading }: Props) => {
             />
           </MultichainProvider>
         </SocketProvider>
-      ),
+      ) : <p>There are no transactions.</p>,
     },
   ];
 

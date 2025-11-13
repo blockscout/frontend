@@ -27,7 +27,7 @@ const OpSuperchainAddressInternalTxs = ({ addressData, isLoading }: Props) => {
   const chainIds = React.useMemo(() => getAvailableChainIds(addressData), [ addressData ]);
 
   const { hash, query, filterValue, onFilterChange } = useAddressInternalTxsQuery({
-    enabled: !isLoading,
+    enabled: !isLoading && chainIds.length > 0,
     isMultichain: true,
     chainIds,
   });
@@ -37,6 +37,10 @@ const OpSuperchainAddressInternalTxs = ({ addressData, isLoading }: Props) => {
     const config = multichainConfig();
     return config?.chains.find(({ id }) => id === chainValue?.[0]);
   }, [ chainValue ]);
+
+  if (chainIds.length === 0) {
+    return <p>There are no internal transactions.</p>;
+  }
 
   const content = data?.items ? (
     <MultichainProvider chainId={ chainValue?.[0] }>
@@ -80,7 +84,7 @@ const OpSuperchainAddressInternalTxs = ({ addressData, isLoading }: Props) => {
       isError={ isError }
       itemsNum={ data?.items.length }
       filterProps={{ emptyFilteredText: `Couldn${ apos }t find any transaction that matches your query.`, hasActiveFilters: Boolean(filterValue) }}
-      emptyText="There are no internal transactions for this address."
+      emptyText="There are no internal transactions."
       showActionBarIfEmpty
       showActionBarIfError
       actionBar={ actionBar }

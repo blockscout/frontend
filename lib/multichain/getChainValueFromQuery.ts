@@ -33,5 +33,5 @@ export default function getChainValueFromQuery(
     return 'all';
   }
 
-  return config.chains.filter((chain) => !chainIds || (chain.id && chainIds.includes(chain.id)))?.[0].id;
+  return config.chains.filter((chain) => !chainIds || (chain.id && chainIds.includes(chain.id)))?.[0]?.id;
 }

@@ -44,6 +44,10 @@ const ChainSelect = ({ loading, mode, chainsConfig, chainIds, withAllOption, ...
     return createListCollection<SelectOption>({ items });
   }, [ chainIds, chainsConfig, withAllOption ]);
 
+  if (collection.items.length === 0) {
+    return null;
+  }
+
   return (
     <Select
       collection={ collection }

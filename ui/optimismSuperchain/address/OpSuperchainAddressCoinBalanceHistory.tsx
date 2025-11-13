@@ -25,6 +25,10 @@ const OpSuperchainAddressCoinBalanceHistory = ({ addressData, isLoading }: Props
   const chainSelect = useRoutedChainSelect({ persistedParams: QUERY_PRESERVED_PARAMS, chainIds, isLoading });
   const chainConfig = multichainConfig()?.chains.find(({ id }) => id === chainSelect.value?.[0]);
 
+  if (chainIds.length === 0) {
+    return <p>There is no coin balance history.</p>;
+  }
+
   return (
     <>
       <ChainSelect
