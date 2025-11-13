@@ -649,7 +649,7 @@ const addressMetadataSchema = yup
 const deFiDropdownItemSchema: yup.ObjectSchema<DeFiDropdownItem> = yup
   .object({
     text: yup.string().required(),
-    icon: yup.string<IconName>().required(),
+    icon: yup.string<IconName>(),
     dappId: yup.string(),
     url: yup.string().test(urlTest),
   })
