@@ -1,29 +1,19 @@
 import type { NextPage } from 'next';
+import dynamic from 'next/dynamic';
 import React from 'react';
 
 import type { Route } from 'nextjs-routes';
 import type { Props } from 'nextjs/getServerSideProps/handlers';
 import PageNextJs from 'nextjs/PageNextJs';
 
-import multichainConfig from 'configs/multichain';
-import getSocketUrl from 'lib/api/getSocketUrl';
-import { MultichainProvider } from 'lib/contexts/multichain';
-import { SocketProvider } from 'lib/socket/context';
-import Token from 'ui/pages/Token';
+const OpSuperchainToken = dynamic(() => import('ui/optimismSuperchain/token/OpSuperchainToken'), { ssr: false });
 
 const pathname: Route['pathname'] = '/token/[hash]';
 
 const Page: NextPage<Props<typeof pathname>> = (props: Props<typeof pathname>) => {
-  const chainSlug = props.query?.chain_slug;
-  const chainData = multichainConfig()?.chains.find(chain => chain.slug === chainSlug);
-
   return (
     <PageNextJs pathname={ pathname } query={ props.query } apiData={ props.apiData }>
-      <SocketProvider url={ getSocketUrl(chainData?.app_config) }>
-        <MultichainProvider>
-          <Token/>
-        </MultichainProvider>
-      </SocketProvider>
+      <OpSuperchainToken/>
     </PageNextJs>
   );
 };
