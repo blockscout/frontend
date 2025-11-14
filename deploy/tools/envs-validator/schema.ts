@@ -18,7 +18,7 @@ import type { DeFiDropdownItem } from '../../../types/client/deFiDropdown';
 import type { GasRefuelProviderConfig } from '../../../types/client/gasRefuelProviderConfig';
 import { GAS_UNITS } from '../../../types/client/gasTracker';
 import type { GasUnit } from '../../../types/client/gasTracker';
-import type { MarketplaceAppBase, MarketplaceAppSocialInfo, EssentialDappsConfig } from '../../../types/client/marketplace';
+import type { MarketplaceAppBase, MarketplaceAppSocialInfo, EssentialDappsConfig, MarketplaceTitles } from '../../../types/client/marketplace';
 import type { MultichainProviderConfig } from '../../../types/client/multichainProviderConfig';
 import type { ApiDocsTabId } from '../../../types/views/apiDocs';
 import { API_DOCS_TABS } from '../../../types/views/apiDocs';
@@ -213,6 +213,38 @@ const marketplaceSchema = yup
         otherwise: (schema) => schema.test(
           'not-exist',
           'NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_CONFIG cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED',
+          value => value === undefined,
+        ),
+      }),
+    NEXT_PUBLIC_MARKETPLACE_TITLES: yup
+      .mixed()
+      .when('NEXT_PUBLIC_MARKETPLACE_ENABLED', {
+        is: true,
+        then: (schema) => schema.test('shape', 'Invalid schema were provided for NEXT_PUBLIC_MARKETPLACE_TITLES', (data) => {
+          const isUndefined = data === undefined;
+          const valueSchema = yup.object<MarketplaceTitles>().transform(replaceQuotes).json().shape({
+            menu_item: yup.string(),
+            title: yup.string(),
+            subtitle_essential_dapps: yup.string(),
+            subtitle_list: yup.string(),
+          });
+
+          return isUndefined || valueSchema.isValidSync(data);
+        }),
+        otherwise: (schema) => schema.test(
+          'not-exist',
+          'NEXT_PUBLIC_MARKETPLACE_TITLES cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED',
+          value => value === undefined,
+        ),
+      }),
+    NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_AD_ENABLED: yup
+      .boolean()
+      .when('NEXT_PUBLIC_MARKETPLACE_ENABLED', {
+        is: true,
+        then: (schema) => schema,
+        otherwise: (schema) => schema.test(
+          'not-exist',
+          'NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_AD_ENABLED cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED',
           value => value === undefined,
         ),
       }),

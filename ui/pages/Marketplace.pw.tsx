@@ -4,6 +4,7 @@ import React from 'react';
 import config from 'configs/app';
 import { apps as appsMock } from 'mocks/apps/apps';
 import { test, expect, devices } from 'playwright/lib';
+import * as pwConfig from 'playwright/utils/config';
 
 import Marketplace from './Marketplace';
 
@@ -40,10 +41,13 @@ test('with featured app +@dark-mode', async({ render, mockEnvs, page }) => {
 
   const component = await render(<Marketplace/>);
 
-  await expect(component).toHaveScreenshot();
+  await expect(component).toHaveScreenshot({
+    mask: [ page.locator(pwConfig.adsBannerSelector) ],
+    maskColor: pwConfig.maskColor,
+  });
 });
 
-test('with banner +@dark-mode', async({ render, mockEnvs, mockConfigResponse }) => {
+test('with banner +@dark-mode', async({ render, mockEnvs, mockConfigResponse, page }) => {
   await mockEnvs([
     [ 'NEXT_PUBLIC_MARKETPLACE_BANNER_CONTENT_URL', MARKETPLACE_BANNER_CONTENT_URL ],
     [ 'NEXT_PUBLIC_MARKETPLACE_BANNER_LINK_URL', MARKETPLACE_BANNER_LINK_URL ],
@@ -51,10 +55,13 @@ test('with banner +@dark-mode', async({ render, mockEnvs, mockConfigResponse }) 
   await mockConfigResponse('MARKETPLACE_BANNER_CONTENT_URL', MARKETPLACE_BANNER_CONTENT_URL, './playwright/mocks/page.html', true);
   const component = await render(<Marketplace/>);
 
-  await expect(component).toHaveScreenshot();
+  await expect(component).toHaveScreenshot({
+    mask: [ page.locator(pwConfig.adsBannerSelector) ],
+    maskColor: pwConfig.maskColor,
+  });
 });
 
-test('with essential dapps +@dark-mode', async({ render, mockEnvs, mockConfigResponse }) => {
+test('with essential dapps +@dark-mode', async({ render, mockEnvs, mockConfigResponse, page }) => {
   await mockEnvs([
     [ 'NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_CONFIG', ESSENTIAL_DAPPS_CONFIG ],
     [ 'NEXT_PUBLIC_MARKETPLACE_BANNER_CONTENT_URL', MARKETPLACE_BANNER_CONTENT_URL ],
@@ -62,7 +69,10 @@ test('with essential dapps +@dark-mode', async({ render, mockEnvs, mockConfigRes
   ]);
   await mockConfigResponse('MARKETPLACE_BANNER_CONTENT_URL', MARKETPLACE_BANNER_CONTENT_URL, './playwright/mocks/page.html', true);
   const component = await render(<Marketplace/>);
-  await expect(component).toHaveScreenshot();
+  await expect(component).toHaveScreenshot({
+    mask: [ page.locator(pwConfig.adsBannerSelector) ],
+    maskColor: pwConfig.maskColor,
+  });
 });
 
 // I had a memory error while running tests in GH actions
