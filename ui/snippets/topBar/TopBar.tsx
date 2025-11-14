@@ -1,4 +1,4 @@
-import { Flex, Separator, Box } from '@chakra-ui/react';
+import { Flex, Separator, Box, HStack } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
@@ -21,21 +21,18 @@ const TopBar = () => {
         alignItems="center"
         maxW={ `${ CONTENT_MAX_WIDTH }px` }
       >
-        { !config.features.opSuperchain.isEnabled ? <TopBarStats/> : <div/> }
+        <HStack gap={ 0 } fontSize="xs">
+          { Boolean(config.UI.featuredNetworks.items) && <NetworkMenu/> }
+          { !config.features.opSuperchain.isEnabled ? <TopBarStats/> : <div/> }
+        </HStack>
         <Flex alignItems="center">
           { config.features.deFiDropdown.isEnabled && (
             <>
               <DeFiDropdown/>
-              <Separator mr={ 3 } ml={{ base: 2, sm: 3 }} height={ 4 } orientation="vertical"/>
+              <Separator mr={ 3 } ml={{ base: 2, sm: 3 }} height={ 4 } orientation="vertical" borderColor="border.divider"/>
             </>
           ) }
           <Settings/>
-          { Boolean(config.UI.featuredNetworks.items) && (
-            <>
-              <Separator mx={ 3 } height={ 4 } orientation="vertical"/>
-              <NetworkMenu/>
-            </>
-          ) }
         </Flex>
       </Flex>
     </Box>
