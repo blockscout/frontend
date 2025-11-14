@@ -145,6 +145,7 @@ const UserOpDetails = ({ query }: Props) => {
             <CurrencyValue
               value={ data.fee }
               currency={ currencyUnits.ether }
+              decimals={ String(config.chain.currency.decimals) }
               isLoading={ isPlaceholderData }
             />
           </DetailedInfo.ItemValue>

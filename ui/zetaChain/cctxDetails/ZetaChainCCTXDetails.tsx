@@ -3,6 +3,7 @@ import React from 'react';
 
 import type { CrossChainTx } from '@blockscout/zetachain-cctx-types';
 
+import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import base64ToHex from 'lib/base64ToHex';
 import { currencyUnits } from 'lib/units';
@@ -116,6 +117,7 @@ const ZetaChainCCTXDetails = ({ data, isLoading }: Props) => {
         <CurrencyValue
           value={ data.zeta_fees }
           currency={ currencyUnits.ether }
+          decimals={ String(config.chain.currency.decimals) }
           exchangeRate={ statsQuery.data?.coin_price }
           accuracy={ 4 }
           accuracyUsd={ 2 }
