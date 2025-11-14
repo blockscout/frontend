@@ -82,7 +82,7 @@ const BeaconChainWithdrawalsListItem = ({ item, isLoading, view }: Props) => {
 
           <ListItemMobileGrid.Label isLoading={ isLoading }>Value</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
-            <CurrencyValue value={ item.amount } currency={ currencyUnits.ether } isLoading={ isLoading }/>
+            <CurrencyValue value={ item.amount } currency={ currencyUnits.ether } decimals={ String(config.chain.currency.decimals) } isLoading={ isLoading }/>
           </ListItemMobileGrid.Value>
         </>
       ) }

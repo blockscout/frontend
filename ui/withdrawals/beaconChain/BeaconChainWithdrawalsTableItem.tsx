@@ -4,6 +4,7 @@ import type { AddressWithdrawalsItem } from 'types/api/address';
 import type { BlockWithdrawalsItem } from 'types/api/block';
 import type { WithdrawalsItem } from 'types/api/withdrawals';
 
+import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import CurrencyValue from 'ui/shared/CurrencyValue';
@@ -61,7 +62,7 @@ const BeaconChainWithdrawalsTableItem = ({ item, view, isLoading }: Props) => {
         </TableCell>
       ) }
       <TableCell verticalAlign="middle">
-        <CurrencyValue value={ item.amount } isLoading={ isLoading }/>
+        <CurrencyValue value={ item.amount } decimals={ String(config.chain.currency.decimals) } isLoading={ isLoading }/>
       </TableCell>
     </TableRow>
   );

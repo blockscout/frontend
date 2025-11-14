@@ -617,6 +617,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
             <CurrencyValue
               value={ data.value }
               currency={ currencyUnits.ether }
+              decimals={ String(config.chain.currency.decimals) }
               exchangeRate={ data.exchange_rate }
               isLoading={ isLoading }
               flexWrap="wrap"
@@ -638,6 +639,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
             <CurrencyValue
               value={ data.operator_fee }
               currency={ currencyUnits.ether }
+              decimals={ String(config.chain.currency.decimals) }
               exchangeRate={ data.exchange_rate }
               flexWrap="wrap"
             />
@@ -657,6 +659,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
             <CurrencyValue
               value={ data.arbitrum.poster_fee }
               currency={ currencyUnits.ether }
+              decimals={ String(config.chain.currency.decimals) }
               exchangeRate={ data.exchange_rate }
               flexWrap="wrap"
               isLoading={ isLoading }
@@ -673,6 +676,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
             <CurrencyValue
               value={ data.arbitrum.network_fee }
               currency={ currencyUnits.ether }
+              decimals={ String(config.chain.currency.decimals) }
               exchangeRate={ data.exchange_rate }
               flexWrap="wrap"
               isLoading={ isLoading }

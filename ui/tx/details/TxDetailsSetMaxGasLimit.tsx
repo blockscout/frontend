@@ -32,6 +32,7 @@ const TxDetailsSetMaxGasLimit = ({ data }: Props) => {
         <CurrencyValue
           value={ maxGasLimit.toString() }
           currency={ currencyUnits.ether }
+          decimals={ String(config.chain.currency.decimals) }
           exchangeRate={ 'exchange_rate' in data ? data.exchange_rate : null }
           showGweiTooltip
           flexWrap="wrap"
