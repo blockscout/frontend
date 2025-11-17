@@ -450,9 +450,6 @@ const apiDocsScheme = yup
     NEXT_PUBLIC_API_SPEC_URL: yup
       .string()
       .test(urlTest),
-    NEXT_PUBLIC_GRAPHIQL_TRANSACTION: yup
-    .string()
-    .matches(regexp.HEX_REGEXP),
   });
 
 const userOpsSchema = yup

@@ -146,11 +146,6 @@ module.exports = {
           return null;
         }
         break;
-      case '/graphql':
-        if (process.env.NEXT_PUBLIC_GRAPHIQL_TRANSACTION === 'none') {
-          return null;
-        }
-        break;
       case '/stats':
         if (!process.env.NEXT_PUBLIC_STATS_API_HOST) {
           return null;
