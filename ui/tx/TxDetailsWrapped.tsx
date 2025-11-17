@@ -5,6 +5,7 @@ import React from 'react';
 import type { Transaction } from 'types/api/transaction';
 import type { ExcludeUndefined } from 'types/utils';
 
+import config from 'configs/app';
 import { currencyUnits } from 'lib/units';
 import { Badge } from 'toolkit/chakra/badge';
 import CurrencyValue from 'ui/shared/CurrencyValue';
@@ -72,6 +73,7 @@ const TxDetailsWrapped = ({ data }: Props) => {
         <CurrencyValue
           value={ data.value }
           currency={ currencyUnits.ether }
+          decimals={ String(config.chain.currency.decimals) }
           flexWrap="wrap"
         />
       </DetailedInfo.ItemValue>

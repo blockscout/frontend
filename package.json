@@ -59,7 +59,7 @@
     "@metamask/post-message-stream": "^7.0.0",
     "@metamask/providers": "^10.2.1",
     "@monaco-editor/react": "^4.7.0",
-    "@multisender.app/multisender-react-widget": "0.2.2",
+    "@multisender.app/multisender-react-widget": "0.2.3",
     "@mysten/dapp-kit": "0.17.6",
     "@next/bundle-analyzer": "15.5.2",
     "@nouns/assets": "^0.10.0",

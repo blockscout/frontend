@@ -4,6 +4,7 @@ import React from 'react';
 
 import type { Transaction } from 'types/api/transaction';
 
+import config from 'configs/app';
 import { currencyUnits } from 'lib/units';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { WEI_IN_GWEI } from 'toolkit/utils/consts';
@@ -32,6 +33,7 @@ export const TxInfoScrollFees = ({ data, isLoading }: Props) => {
             <CurrencyValue
               value={ data.scroll?.l1_fee }
               currency={ currencyUnits.ether }
+              decimals={ String(config.chain.currency.decimals) }
               exchangeRate={ data.exchange_rate }
               flexWrap="wrap"
             />
@@ -51,6 +53,7 @@ export const TxInfoScrollFees = ({ data, isLoading }: Props) => {
             <CurrencyValue
               value={ data.scroll?.l2_fee.value }
               currency={ currencyUnits.ether }
+              decimals={ String(config.chain.currency.decimals) }
               exchangeRate={ data.exchange_rate }
               flexWrap="wrap"
             />
@@ -70,6 +73,7 @@ export const TxInfoScrollFees = ({ data, isLoading }: Props) => {
             <CurrencyValue
               value={ String(data.scroll?.l1_fee_commit_scalar) }
               currency={ currencyUnits.ether }
+              decimals={ String(config.chain.currency.decimals) }
               exchangeRate={ data.exchange_rate }
               flexWrap="wrap"
             />
@@ -90,6 +94,7 @@ export const TxInfoScrollFees = ({ data, isLoading }: Props) => {
               <CurrencyValue
                 value={ String(data.scroll?.l1_fee_overhead) }
                 currency={ currencyUnits.ether }
+                decimals={ String(config.chain.currency.decimals) }
                 exchangeRate={ data.exchange_rate }
                 flexWrap="wrap"
               />

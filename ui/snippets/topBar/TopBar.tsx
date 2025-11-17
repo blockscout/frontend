@@ -47,8 +47,14 @@ const TopBar = () => {
         alignItems="center"
         maxW={ `${ CONTENT_MAX_WIDTH }px` }
       >
-        { !config.features.opSuperchain.isEnabled ? <TopBarStats/> : <div/> }
-        <HStack alignItems="center" separator={ <Separator mx={{ base: 2, lg: 3 }} height={ 4 } orientation="vertical"/> }>
+        <HStack gap={ 0 } fontSize="xs">
+          { Boolean(config.UI.featuredNetworks.items) && <NetworkMenu/> }
+          { !config.features.opSuperchain.isEnabled ? <TopBarStats/> : <div/> }
+        </HStack>
+        <HStack
+          alignItems="center"
+          separator={ <Separator mx={{ base: 2, lg: 3 }} height={ 4 } orientation="vertical" borderColor="border.divider"/> }
+        >
           { (hasAddChainButton || hasDeFiDropdown) && (
             <HStack>
               { hasAddChainButton && <NetworkAddToWallet source="Top bar" onAddSuccess={ handleAddSuccess }/> }
@@ -56,7 +62,6 @@ const TopBar = () => {
             </HStack>
           ) }
           <Settings/>
-          { Boolean(config.UI.featuredNetworks.items) && <NetworkMenu/> }
         </HStack>
       </Flex>
     </Box>

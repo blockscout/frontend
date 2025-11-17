@@ -90,7 +90,13 @@ const UserOpsListItem = ({ item, isLoading, showTx, showSender, chainData }: Pro
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>Fee</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
-            <CurrencyValue value={ item.fee } isLoading={ isLoading } accuracy={ 8 } currency={ chainConfig.chain.currency.symbol }/>
+            <CurrencyValue
+              value={ item.fee }
+              isLoading={ isLoading }
+              accuracy={ 8 }
+              currency={ chainConfig.chain.currency.symbol }
+              decimals={ String(config.chain.currency.decimals) }
+            />
           </ListItemMobileGrid.Value>
         </>
       ) }

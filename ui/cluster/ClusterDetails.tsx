@@ -2,6 +2,7 @@ import React from 'react';
 
 import type { ClusterByNameResponse } from 'types/api/clusters';
 
+import config from 'configs/app';
 import { isEvmAddress } from 'lib/address/isEvmAddress';
 import { currencyUnits } from 'lib/units';
 import { Skeleton } from 'toolkit/chakra/skeleton';
@@ -79,6 +80,7 @@ const ClusterDetails = ({ clusterData, clusterName, isLoading }: Props) => {
         <CurrencyValue
           value={ clusterData?.backingWei || '0' }
           currency={ currencyUnits.ether }
+          decimals={ String(config.chain.currency.decimals) }
           isLoading={ isLoading }
         />
       </DetailedInfo.ItemValue>

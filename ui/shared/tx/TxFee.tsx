@@ -65,6 +65,7 @@ const TxFee = ({ className, tx, accuracy, accuracyUsd, isLoading, withCurrency =
     <CurrencyValue
       value={ tx.fee.value }
       currency={ showCurrency ? currencyUnits.ether : '' }
+      decimals={ String(config.chain.currency.decimals) }
       exchangeRate={ withUsd && 'exchange_rate' in tx ? tx.exchange_rate : null }
       accuracy={ accuracy }
       accuracyUsd={ accuracyUsd }

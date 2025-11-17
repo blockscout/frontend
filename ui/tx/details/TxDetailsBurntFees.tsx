@@ -45,6 +45,7 @@ const TxDetailsBurntFees = ({ data, isLoading }: Props) => {
           startElement={ <IconSvg name="flame" boxSize={ 5 } color="icon.primary" isLoading={ isLoading } mr={{ base: 0, lg: 1 }}/> }
           value={ value.toString() }
           currency={ currencyUnits.ether }
+          decimals={ String(config.chain.currency.decimals) }
           exchangeRate={ data.exchange_rate }
           alignItems="center"
           flexWrap="wrap"

@@ -2,14 +2,19 @@ import { Box } from '@chakra-ui/react';
 import { MultisenderWidget } from '@multisender.app/multisender-react-widget';
 import React from 'react';
 
+import { getFeaturePayload } from 'configs/app/features/types';
+
 import config from 'configs/app';
 import essentialDappsChainsConfig from 'configs/essential-dapps-chains';
+import useIsMobile from 'lib/hooks/useIsMobile';
+import AdBanner from 'ui/shared/ad/AdBanner';
 
-const feature = config.features.marketplace;
-const dappConfig = feature.isEnabled ? feature.essentialDapps?.multisend : undefined;
+const feature = getFeaturePayload(config.features.marketplace);
+const dappConfig = feature?.essentialDapps?.multisend;
 
 const Container = ({ children }: { children: React.ReactNode }) => (
   <Box
+    w="full"
     maxW="670px"
     mx="auto"
     css={{
@@ -135,6 +140,9 @@ const Container = ({ children }: { children: React.ReactNode }) => (
             },
             '& + button': {
               marginTop: '12px',
+            },
+            '& span': {
+              '--loader-color': 'var(--chakra-colors-text-primary) !important',
             },
           },
         },
@@ -274,7 +282,7 @@ const Container = ({ children }: { children: React.ReactNode }) => (
           margin: '0 !important',
           '& p, & div': {
             fontSize: 'md',
-            color: 'text.primary',
+            color: 'text.primary !important',
           },
           '& [class*="_alertIcon_"]': {
             marginTop: '2px',
@@ -287,6 +295,9 @@ const Container = ({ children }: { children: React.ReactNode }) => (
           },
           '&:not([data-variant="filled"]) [class*="_alertIcon_"]': {
             display: 'none',
+          },
+          '&[data-variant="filled"]': {
+            backgroundColor: 'alert.bg.info !important',
           },
         },
         '& div[role="tooltip"]': {
@@ -504,19 +515,33 @@ const widgetConfig = Object.fromEntries(dappConfig?.chains.map((chainId) => {
 }) || []);
 
 const Multisend = () => {
+  const isMobile = useIsMobile();
+
   return (
-    <Container>
-      <MultisenderWidget
-        config={ widgetConfig }
-        logoType="minified"
-        posthogKey={ dappConfig?.posthogKey }
-        posthogHost={ dappConfig?.posthogHost }
-        classNames={{
-          theme: 'multisenderTheme',
-          mantineProvider: 'multisenderMantineProvider',
-        }}
-      />
-    </Container>
+    <>
+      <Container>
+        <MultisenderWidget
+          config={ widgetConfig }
+          logoType="minified"
+          posthogKey={ dappConfig?.posthogKey }
+          posthogHost={ dappConfig?.posthogHost }
+          classNames={{
+            theme: 'multisenderTheme',
+            mantineProvider: 'multisenderMantineProvider',
+          }}
+        />
+      </Container>
+      { (feature?.essentialDappsAdEnabled && !isMobile) && (
+        <AdBanner
+          format="desktop"
+          w="fit-content"
+          borderRadius="md"
+          overflow="hidden"
+          mx="auto"
+          mt={ 10 }
+        />
+      ) }
+    </>
   );
 };
 

@@ -24,7 +24,7 @@ export type AdvancedFilterParams = {
   token_contract_symbols_to_exclude?: Array<string>;
 };
 
-export const ADVANCED_FILTER_TYPES = [ 'coin_transfer', 'ERC-20', 'ERC-404', 'ERC-721', 'ERC-1155' ] as const;
+export const ADVANCED_FILTER_TYPES = [ 'coin_transfer', 'ERC-20', 'ERC-404', 'ERC-721', 'ERC-1155', 'contract_creation', 'contract_interaction' ] as const;
 export type AdvancedFilterType = typeof ADVANCED_FILTER_TYPES[number];
 
 export const ADVANCED_FILTER_AGES = [ '1h', '24h', '7d', '1m', '3m', '6m' ] as const;

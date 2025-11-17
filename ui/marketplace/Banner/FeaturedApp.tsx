@@ -4,17 +4,17 @@ import React, { useCallback } from 'react';
 
 import type { MarketplaceApp } from 'types/client/marketplace';
 
-import { route } from 'nextjs-routes';
-
 import useIsMobile from 'lib/hooks/useIsMobile';
 import * as mixpanel from 'lib/mixpanel/index';
 import { useColorModeValue } from 'toolkit/chakra/color-mode';
+import { Heading } from 'toolkit/chakra/heading';
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { Image } from 'toolkit/chakra/image';
-import { Link, LinkBox, LinkOverlay } from 'toolkit/chakra/link';
+import { Link, LinkBox } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 
 import FavoriteIcon from '../FavoriteIcon';
+import MarketplaceAppCardLink from '../MarketplaceAppCardLink';
 import MarketplaceAppIntegrationIcon from '../MarketplaceAppIntegrationIcon';
 import FeaturedAppMobile from './FeaturedAppMobile';
 
@@ -63,18 +63,16 @@ const FeaturedApp = ({
   return (
     <LinkBox>
       <Flex
-        gap={ 6 }
+        gap={ 4 }
         borderRadius="md"
-        height="136px"
-        padding={ 5 }
+        height="100px"
+        padding={ 3 }
         background={{ _light: 'purple.50', _dark: 'whiteAlpha.100' }}
-        mb={ 2 }
-        mt={ 6 }
       >
         <Skeleton
           loading={ isLoading }
-          w="96px"
-          h="96px"
+          w="76px"
+          h="76px"
           display="flex"
           alignItems="center"
           justifyContent="center"
@@ -86,22 +84,18 @@ const FeaturedApp = ({
           />
         </Skeleton>
 
-        <Flex flexDirection="column" flex={ 1 } gap={ 2 }>
+        <Flex flexDirection="column" flex={ 1 } gap={ 1 }>
           <Flex alignItems="center" gap={ 3 }>
-            <Skeleton
-              loading={ isLoading }
-              fontSize="30px"
-              fontWeight="semibold"
-              fontFamily="heading"
-              lineHeight="36px"
-            >
-              <LinkOverlay
-                href={ external ? url : route({ pathname: '/apps/[id]', query: { id } }) }
-                marginRight={ 2 }
-                external={ external }
-              >
-                { title }
-              </LinkOverlay>
+            <Skeleton loading={ isLoading } display="flex" alignItems="center">
+              <Heading level="3">
+                <MarketplaceAppCardLink
+                  id={ id }
+                  url={ url }
+                  external={ external }
+                  title={ title }
+                  onClick={ onAppClick }
+                />
+              </Heading>
               <MarketplaceAppIntegrationIcon external={ external } internalWallet={ internalWallet }/>
             </Skeleton>
 

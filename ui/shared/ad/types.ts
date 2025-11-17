@@ -1,6 +1,6 @@
-export type BannerPlatform = 'mobile' | 'desktop';
+export type BannerFormat = 'mobile' | 'desktop' | 'responsive';
 
 export interface BannerProps {
   className?: string;
-  platform?: BannerPlatform;
+  format?: BannerFormat;
 }

@@ -32,8 +32,8 @@ export function ad(): CspDev.DirectiveDescriptor {
       // adbutler
       'servedbyadbutler.com',
       `'sha256-${ Base64.stringify(sha256(connectAdbutler)) }'`,
-      `'sha256-${ Base64.stringify(sha256(placeAd(undefined) ?? '')) }'`,
-      `'sha256-${ Base64.stringify(sha256(placeAd('mobile') ?? '')) }'`,
+      `'sha256-${ Base64.stringify(sha256(placeAd(false) ?? '')) }'`,
+      `'sha256-${ Base64.stringify(sha256(placeAd(true) ?? '')) }'`,
 
       // slise
       '*.slise.xyz',
