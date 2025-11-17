@@ -649,7 +649,7 @@ This feature is **enabled by default** with the `['metamask']` value. To switch 
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_WEB3_WALLETS | `Array<'metamask' \| 'coinbase' \| 'token_pocket'>` | Array of Web3 wallets which will be used  to add tokens or chain to. The first wallet which is enabled in user's browser will be shown. | - | `[ 'metamask' ]` | `[ 'coinbase' ]` | v1.10.0+ |
+| NEXT_PUBLIC_WEB3_WALLETS | `Array<'metamask' \| 'coinbase' \| 'token_pocket' \| 'rabby' \| 'trust' \| 'okx'>` | Array of Web3 wallets which will be used  to add tokens or chain to. The first wallet which is enabled in user's browser will be shown. | - | `[ 'metamask', 'rabby', 'coinbase', 'trust', 'okx', 'token_pocket' ]` | `[ 'coinbase' ]` | v1.10.0+ |
 | NEXT_PUBLIC_WEB3_DISABLE_ADD_TOKEN_TO_WALLET | `boolean`| Set to `true` to hide icon "Add to your wallet" next to token addresses | - | - | `true` | v1.0.x+ |
 
 &nbsp;

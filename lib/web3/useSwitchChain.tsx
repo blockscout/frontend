@@ -15,7 +15,7 @@ function getParams(chainConfig: typeof config): { chainId: string } {
 }
 
 export default function useSwitchChain() {
-  const { wallet, provider } = useProvider();
+  const { data: { wallet, provider } = {} } = useProvider();
   const multichainContext = useMultichainContext();
 
   const chainConfig = multichainContext?.chain.config ?? config;

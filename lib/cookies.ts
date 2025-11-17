@@ -18,6 +18,7 @@ export enum NAMES {
   ADBLOCK_DETECTED = 'adblock_detected',
   MIXPANEL_DEBUG = '_mixpanel_debug',
   ADDRESS_NFT_DISPLAY_TYPE = 'address_nft_display_type',
+  HIDE_ADD_TO_WALLET_BUTTON = 'hide_add_to_wallet_button',
   UUID = 'uuid',
   SHOW_SCAM_TOKENS = 'show_scam_tokens',
 }

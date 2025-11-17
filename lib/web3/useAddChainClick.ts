@@ -7,8 +7,13 @@ import useAddChain from './useAddChain';
 import useProvider from './useProvider';
 import useSwitchChain from './useSwitchChain';
 
-export default function useAddChainClick() {
-  const { provider, wallet } = useProvider();
+interface Props {
+  source: 'Footer' | 'Top bar' | 'Chain widget';
+  onSuccess?: () => void;
+}
+
+export default function useAddChainClick({ source, onSuccess }: Props) {
+  const { data: { wallet, provider } = {} } = useProvider();
   const addChain = useAddChain();
   const switchChain = useSwitchChain();
 
@@ -29,13 +34,15 @@ export default function useAddChainClick() {
       mixpanel.logEvent(mixpanel.EventTypes.ADD_TO_WALLET, {
         Target: 'network',
         Wallet: wallet,
+        Source: source,
       });
 
+      onSuccess?.();
     } catch (error) {
       toaster.error({
         title: 'Error',
         description: (error as Error)?.message || 'Something went wrong',
       });
     }
-  }, [ addChain, provider, wallet, switchChain ]);
+  }, [ addChain, provider, wallet, switchChain, source, onSuccess ]);
 }

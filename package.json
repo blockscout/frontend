@@ -24,7 +24,7 @@
     "lint:tsc": "tsc -p ./tsconfig.json",
     "lint:envs-validator:test": "cd ./deploy/tools/envs-validator && ./test.sh",
     "prepare": "husky install",
-    "svg:format": "svgo -r ./icons",
+    "svg:format": "svgo -r --config svgo.config.format.js ./icons",
     "svg:build-sprite": "./deploy/scripts/build_sprite.sh",
     "test:pw": "./tools/scripts/pw.sh",
     "test:pw:local": "export NODE_PATH=$(pwd)/node_modules && yarn test:pw",
