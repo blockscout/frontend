@@ -60,3 +60,5 @@ jobs:
             # Pre-release (e.g., 1.7.2-alpha.1 or v1.7.2-alpha.1)
             npm publish --access public --tag beta
           fi
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
