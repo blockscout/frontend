@@ -62,7 +62,6 @@ export default function useDetectWalletEip6963() {
   React.useEffect(() => {
     return () => {
       window.removeEventListener('eip6963:announceProvider', handleAnnounceProviderEvent as EventListener);
-      // detectionTimeoutRef.current && window.clearTimeout(detectionTimeoutRef.current);
     };
   }, [ handleAnnounceProviderEvent ]);
 
