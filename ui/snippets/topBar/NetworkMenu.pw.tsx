@@ -11,6 +11,7 @@ test('tabs +@dark-mode', async({ render, mockEnvs, mockConfigResponse, mockAsset
   await mockEnvs([
     [ 'NEXT_PUBLIC_FEATURED_NETWORKS', FEATURED_NETWORKS_URL ],
     [ 'NEXT_PUBLIC_FEATURED_NETWORKS_ALL_LINK', 'https://example.com' ],
+    [ 'NEXT_PUBLIC_FEATURED_NETWORKS_MODE', 'tabs' ],
   ]);
   await mockConfigResponse('NEXT_PUBLIC_FEATURED_NETWORKS', FEATURED_NETWORKS_URL, FEATURED_NETWORKS);
   await mockAssetResponse('https://localhost:3000/my-logo.png', './playwright/mocks/image_s.jpg');
@@ -29,7 +30,6 @@ test('list +@dark-mode', async({ render, mockEnvs, mockConfigResponse, mockAsset
   await mockEnvs([
     [ 'NEXT_PUBLIC_FEATURED_NETWORKS', FEATURED_NETWORKS_URL ],
     [ 'NEXT_PUBLIC_FEATURED_NETWORKS_ALL_LINK', 'https://example.com' ],
-    [ 'NEXT_PUBLIC_FEATURED_NETWORKS_MODE', 'list' ],
   ]);
   await mockConfigResponse('NEXT_PUBLIC_FEATURED_NETWORKS', FEATURED_NETWORKS_URL, FEATURED_NETWORKS);
   await mockAssetResponse('https://localhost:3000/my-logo.png', './playwright/mocks/image_s.jpg');
