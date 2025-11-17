@@ -450,9 +450,6 @@ const apiDocsScheme = yup
     NEXT_PUBLIC_API_SPEC_URL: yup
       .string()
       .test(urlTest),
-    NEXT_PUBLIC_GRAPHIQL_TRANSACTION: yup
-    .string()
-    .matches(regexp.HEX_REGEXP),
   });
 
 const userOpsSchema = yup
@@ -842,6 +839,7 @@ const schema = yup
       }),
     NEXT_PUBLIC_NETWORK_CURRENCY_NAME: yup.string(),
     NEXT_PUBLIC_NETWORK_CURRENCY_WEI_NAME: yup.string(),
+    NEXT_PUBLIC_NETWORK_CURRENCY_GWEI_NAME: yup.string(),
     NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL: yup.string(),
     NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS: yup.number().integer().positive(),
     NEXT_PUBLIC_NETWORK_SECONDARY_COIN_SYMBOL: yup.string(),

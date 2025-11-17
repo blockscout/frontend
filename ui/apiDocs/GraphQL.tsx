@@ -6,7 +6,10 @@ import React from 'react';
 import config from 'configs/app';
 import buildUrl from 'lib/api/buildUrl';
 import 'graphiql/graphiql.css';
+import useApiQuery from 'lib/api/useApiQuery';
 import { useColorMode } from 'toolkit/chakra/color-mode';
+import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
+import { ZERO_ADDRESS } from 'toolkit/utils/consts';
 import { isBrowser } from 'toolkit/utils/isBrowser';
 
 const feature = config.features.apiDocs;
@@ -18,6 +21,12 @@ const graphQLStyle = {
 };
 
 const GraphQL = () => {
+
+  const latestTxsQuery = useApiQuery('general:homepage_txs', {
+    queryOptions: {
+      enabled: feature.isEnabled,
+    },
+  });
 
   const { colorMode } = useColorMode();
 
@@ -35,18 +44,31 @@ const GraphQL = () => {
     }
   }, [ colorMode, graphqlTheme ]);
 
-  if (!feature.isEnabled || !feature.graphqlDefaultTxnHash) {
+  if (!feature.isEnabled) {
     return null;
   }
 
-  const initialQuery = `{
+  if (latestTxsQuery.isPending) {
+    return <ContentLoader/>;
+  }
+
+  const latestTxHash = latestTxsQuery.data?.[0]?.hash;
+
+  const initialQuery = latestTxHash ? `{
     transaction(
-      hash: "${ feature.graphqlDefaultTxnHash }"
+      hash: "${ latestTxHash }"
     ) {
       hash
       blockNumber
       value
       gasUsed
+    }
+  }` : `{
+    address(
+      hash: "${ ZERO_ADDRESS }"
+    ) {
+      hash
+      fetchedCoinBalance
     }
   }`;
 
