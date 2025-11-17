@@ -14,7 +14,7 @@ import { SMART_CONTRACT_EXTRA_VERIFICATION_METHODS, SMART_CONTRACT_LANGUAGE_FILT
 import type { GasRefuelProviderConfig } from '../../../types/client/gasRefuelProviderConfig';
 import { GAS_UNITS } from '../../../types/client/gasTracker';
 import type { GasUnit } from '../../../types/client/gasTracker';
-import type { MarketplaceAppBase, MarketplaceAppSocialInfo, EssentialDappsConfig } from '../../../types/client/marketplace';
+import type { MarketplaceAppBase, MarketplaceAppSocialInfo, EssentialDappsConfig, MarketplaceTitles } from '../../../types/client/marketplace';
 import type { MultichainProviderConfig } from '../../../types/client/multichainProviderConfig';
 import type { ApiDocsTabId } from '../../../types/views/apiDocs';
 import { API_DOCS_TABS } from '../../../types/views/apiDocs';
@@ -179,6 +179,38 @@ const marketplaceSchema = yup
           value => value === undefined,
         ),
       }),
+    NEXT_PUBLIC_MARKETPLACE_TITLES: yup
+      .mixed()
+      .when('NEXT_PUBLIC_MARKETPLACE_ENABLED', {
+        is: true,
+        then: (schema) => schema.test('shape', 'Invalid schema were provided for NEXT_PUBLIC_MARKETPLACE_TITLES', (data) => {
+          const isUndefined = data === undefined;
+          const valueSchema = yup.object<MarketplaceTitles>().transform(replaceQuotes).json().shape({
+            menu_item: yup.string(),
+            title: yup.string(),
+            subtitle_essential_dapps: yup.string(),
+            subtitle_list: yup.string(),
+          });
+
+          return isUndefined || valueSchema.isValidSync(data);
+        }),
+        otherwise: (schema) => schema.test(
+          'not-exist',
+          'NEXT_PUBLIC_MARKETPLACE_TITLES cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED',
+          value => value === undefined,
+        ),
+      }),
+    NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_AD_ENABLED: yup
+      .boolean()
+      .when('NEXT_PUBLIC_MARKETPLACE_ENABLED', {
+        is: true,
+        then: (schema) => schema,
+        otherwise: (schema) => schema.test(
+          'not-exist',
+          'NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_AD_ENABLED cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED',
+          value => value === undefined,
+        ),
+      }),
   });
 
 const beaconChainSchema = yup
@@ -274,7 +306,7 @@ const rollupSchema = yup
       .string()
       .when('NEXT_PUBLIC_ROLLUP_TYPE', {
         is: (value: string) => value === 'optimistic',
-        then: (schema) => schema.test(urlTest).required(),
+        then: (schema) => schema.test(urlTest),
         otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_ROLLUP_L2_WITHDRAWAL_URL can be used only if NEXT_PUBLIC_ROLLUP_TYPE is set to \'optimistic\' '),
       }),
     NEXT_PUBLIC_ROLLUP_OUTPUT_ROOTS_ENABLED: yup
@@ -381,9 +413,6 @@ const apiDocsScheme = yup
     NEXT_PUBLIC_API_SPEC_URL: yup
       .string()
       .test(urlTest),
-    NEXT_PUBLIC_GRAPHIQL_TRANSACTION: yup
-    .string()
-    .matches(regexp.HEX_REGEXP),
   });
 
 const mixpanelSchema = yup
@@ -649,6 +678,7 @@ const schema = yup
       }),
     NEXT_PUBLIC_NETWORK_CURRENCY_NAME: yup.string(),
     NEXT_PUBLIC_NETWORK_CURRENCY_WEI_NAME: yup.string(),
+    NEXT_PUBLIC_NETWORK_CURRENCY_GWEI_NAME: yup.string(),
     NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL: yup.string(),
     NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS: yup.number().integer().positive(),
     NEXT_PUBLIC_NETWORK_SECONDARY_COIN_SYMBOL: yup.string(),
@@ -674,8 +704,7 @@ const schema = yup
     NEXT_PUBLIC_API_BASE_PATH: yup.string(),
     NEXT_PUBLIC_API_WEBSOCKET_PROTOCOL: yup.string().oneOf([ 'ws', 'wss' ]),
 
-    // 4. UI configuration
-    //      views
+    //     d. views
     NEXT_PUBLIC_VIEWS_BLOCK_HIDDEN_FIELDS: yup
       .array()
       .transform(replaceQuotes)

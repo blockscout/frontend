@@ -1,15 +1,11 @@
 import type { BrowserContext } from '@playwright/test';
 import React from 'react';
 
-import { FEATURED_NETWORKS } from 'mocks/config/network';
 import { contextWithAuth } from 'playwright/fixtures/auth';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect, devices } from 'playwright/lib';
 
 import Burger from './Burger';
-
-const FEATURED_NETWORKS_URL = 'https://localhost:3000/featured-networks.json';
-const LOGO_URL = 'https://localhost:3000/my-logo.png';
 
 test.use({ viewport: devices['iPhone 13 Pro'].viewport });
 
@@ -20,14 +16,6 @@ const hooksConfig = {
     pathname: '/blocks',
   },
 };
-
-test.beforeEach(async({ mockEnvs, mockConfigResponse, mockAssetResponse }) => {
-  await mockEnvs([
-    [ 'NEXT_PUBLIC_FEATURED_NETWORKS', FEATURED_NETWORKS_URL ],
-  ]);
-  await mockConfigResponse('NEXT_PUBLIC_FEATURED_NETWORKS', FEATURED_NETWORKS_URL, FEATURED_NETWORKS);
-  await mockAssetResponse(LOGO_URL, './playwright/mocks/image_s.jpg');
-});
 
 test('base view', async({ render, page }) => {
   const component = await render(<Burger/>, { hooksConfig });

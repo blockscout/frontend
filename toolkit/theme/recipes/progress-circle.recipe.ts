@@ -14,7 +14,7 @@ export const recipe = defineSlotRecipe({
       },
     },
     circleTrack: {
-      '--track-color': 'colors.progressCircle.trackColor',
+      '--track-color': 'colors.progressCircle.track',
       stroke: 'var(--track-color)',
     },
     circleRange: {

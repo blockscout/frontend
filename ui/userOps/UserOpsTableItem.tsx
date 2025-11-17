@@ -73,7 +73,7 @@ const UserOpsTableItem = ({ item, isLoading, showTx, showSender, chainData }: Pr
       </TableCell>
       { !config.UI.views.tx.hiddenFields?.tx_fee && (
         <TableCell verticalAlign="middle" isNumeric>
-          <CurrencyValue value={ item.fee } isLoading={ isLoading } accuracy={ 8 }/>
+          <CurrencyValue value={ item.fee } isLoading={ isLoading } accuracy={ 8 } decimals={ String(config.chain.currency.decimals) }/>
         </TableCell>
       ) }
     </TableRow>

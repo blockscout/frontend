@@ -19,26 +19,14 @@ import {
 
 const feature = config.features.adsBanner;
 
-const AdbutlerBanner = ({ className, platform }: BannerProps) => {
+const AdbutlerBanner = ({ className, format = 'responsive' }: BannerProps) => {
   const router = useRouter();
 
   const isMobileViewport = useIsMobile();
-  const isMobile = platform === 'mobile' || isMobileViewport;
-
-  // On the home page there are two ad banners
-  //  - one in the stats section with prop "platform === mobile", should be hidden on mobile devices
-  //  - another - a regular ad banner, should be hidden on desktop devices
-  // The Adbutler provider doesn't work properly with 2 banners with the same id on the page
-  // So we use this flag to skip ad initialization for the first home page banner on mobile devices
-  // For all other pages this is not the case
-  const isHidden = (isMobileViewport && platform === 'mobile');
+  const isMobile = format === 'mobile' || (format === 'responsive' && isMobileViewport);
 
   React.useEffect(() => {
     if (!('adButler' in feature)) {
-      return;
-    }
-
-    if (isHidden) {
       return;
     }
 
@@ -67,28 +55,24 @@ const AdbutlerBanner = ({ className, platform }: BannerProps) => {
         );
       }, opt: { place: plc++, keywords: abkw, domain: 'servedbyadbutler.com', click: 'CLICK_MACRO_PLACEHOLDER' } });
     }
-  }, [ router, isMobile, isHidden ]);
+  }, [ router, isMobile ]);
 
   if (!('adButler' in feature)) {
     return null;
   }
 
-  const getElementId = (id: string) => id + (platform ? `_${ platform }` : '');
+  const getElementId = (id: string) => id + (format ? `_${ format }` : '');
 
   return (
     <Flex
       className={ className }
       id={ getElementId('adBanner') }
-      h={ platform === 'mobile' ? `${ MOBILE_BANNER_HEIGHT }px` : `${ DESKTOP_BANNER_HEIGHT }px` }
-      w={ platform === 'mobile' ? `${ MOBILE_BANNER_WIDTH }px` : `${ DESKTOP_BANNER_WIDTH }px` }
+      h={ isMobile ? `${ MOBILE_BANNER_HEIGHT }px` : `${ DESKTOP_BANNER_HEIGHT }px` }
+      w={ isMobile ? `${ MOBILE_BANNER_WIDTH }px` : `${ DESKTOP_BANNER_WIDTH }px` }
     >
-      { !isHidden && (
-        <>
-          <Script strategy="lazyOnload" id="ad-butler-1">{ connectAdbutler }</Script>
-          <Script strategy="lazyOnload" id="ad-butler-2">{ placeAd(platform) }</Script>
-          <div id="ad-banner"></div>
-        </>
-      ) }
+      <Script strategy="lazyOnload" id="ad-butler-1">{ connectAdbutler }</Script>
+      <Script strategy="lazyOnload" id="ad-butler-2">{ placeAd(isMobile) }</Script>
+      <div id="ad-banner"></div>
     </Flex>
   );
 };

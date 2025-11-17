@@ -8,7 +8,7 @@ import useProvider from './useProvider';
 import useSwitchChain from './useSwitchChain';
 
 export default function useSwitchOrAddChain() {
-  const { wallet, provider } = useProvider();
+  const { data: { wallet, provider } = {} } = useProvider();
   const addChain = useAddChain();
   const switchChain = useSwitchChain();
 

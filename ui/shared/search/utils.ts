@@ -1,10 +1,13 @@
 import type { CctxListItem } from '@blockscout/zetachain-cctx-types';
+import { getFeaturePayload } from 'configs/app/features/types';
 import type { MarketplaceApp } from 'types/client/marketplace';
 import type { QuickSearchResultItem } from 'types/client/search';
 
 import config from 'configs/app';
 
 const nameServicesFeature = config.features.nameServices;
+
+const dappEntityName = getFeaturePayload(config.features.marketplace)?.titles.entity_name ?? '';
 
 export type ApiCategory =
   'token' |
@@ -31,7 +34,6 @@ export type SearchResultAppItem = {
 };
 
 export const searchCategories: Array<{ id: Category; title: string; tabTitle: string }> = [
-  { id: 'app', title: 'DApps', tabTitle: 'DApps' },
   { id: 'token', title: `Tokens (${ config.chain.tokenStandard }-20)`, tabTitle: 'Tokens' },
   { id: 'nft', title: `NFTs (${ config.chain.tokenStandard }-721 & 1155)`, tabTitle: 'NFTs' },
   { id: 'address', title: 'Addresses', tabTitle: 'Addresses' },
@@ -50,6 +52,14 @@ if (config.features.dataAvailability.isEnabled) {
   searchCategories.push({ id: 'blob', title: 'Blobs', tabTitle: 'Blobs' });
 }
 
+if (config.features.marketplace.isEnabled) {
+  searchCategories.unshift({ id: 'app', title: `${ dappEntityName }s`, tabTitle: `${ dappEntityName }s` });
+}
+
+if (config.features.marketplace.isEnabled) {
+  searchCategories.unshift({ id: 'app', title: `${ dappEntityName }s`, tabTitle: `${ dappEntityName }s` });
+}
+
 if ((nameServicesFeature.isEnabled && nameServicesFeature.ens.isEnabled) || config.features.opSuperchain.isEnabled) {
   searchCategories.unshift({ id: 'domain', title: 'Names', tabTitle: 'Names' });
 }
@@ -59,7 +69,7 @@ if (nameServicesFeature.isEnabled && nameServicesFeature.clusters.isEnabled) {
 }
 
 export const searchItemTitles: Record<Category, { itemTitle: string; itemTitleShort: string }> = {
-  app: { itemTitle: 'DApp', itemTitleShort: 'App' },
+  app: { itemTitle: dappEntityName, itemTitleShort: dappEntityName },
   domain: { itemTitle: 'Name', itemTitleShort: 'Name' },
   cluster: { itemTitle: 'Cluster', itemTitleShort: 'Cluster' },
   token: { itemTitle: 'Token', itemTitleShort: 'Token' },

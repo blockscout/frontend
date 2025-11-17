@@ -118,19 +118,22 @@ const PublicTagsSubmitFieldTag = ({ index, isDisabled, errors, onAddClick, onRem
         </Flex>
         { !isMobile && (
           <Flex flexDir="column" alignItems="flex-start" mt={ 4 } rowGap={ 2 }>
-            <EntityTag data={{
-              name: field.name || 'Tag name',
-              tagType: field.type[0],
-              meta: {
-                tagIcon: errors?.iconUrl ? undefined : field.iconUrl,
-                tagUrl: field.url,
-                bgColor: field.bgColor && colorValidator(field.bgColor) === true ? field.bgColor : undefined,
-                textColor: field.textColor && colorValidator(field.textColor) === true ? field.textColor : undefined,
-                tooltipDescription: field.tooltipDescription,
-              },
-              slug: 'new',
-              ordinal: 0,
-            }}/>
+            <EntityTag
+              data={{
+                name: field.name || 'Tag name',
+                tagType: field.type[0],
+                meta: {
+                  tagIcon: errors?.iconUrl ? undefined : field.iconUrl,
+                  tagUrl: field.url,
+                  bgColor: field.bgColor && colorValidator(field.bgColor) === true ? field.bgColor : undefined,
+                  textColor: field.textColor && colorValidator(field.textColor) === true ? field.textColor : undefined,
+                  tooltipDescription: field.tooltipDescription,
+                },
+                slug: 'new',
+                ordinal: 0,
+              }}
+              noLink
+            />
             <chakra.span color="text.secondary" fontSize="sm">
               { tagTypes?.find(({ type }) => type === field.type[0])?.description }
             </chakra.span>

@@ -4947,10 +4947,10 @@
     "@multiformats/multiaddr" "^12.1.14"
     is-ip "^5.0.0"
 
-"@multisender.app/multisender-react-widget@0.2.2":
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/@multisender.app/multisender-react-widget/-/multisender-react-widget-0.2.2.tgz#aeee1d49429ae104e9d91082d8bac7cbcb0f2f33"
-  integrity sha512-MRpyvGL/TXznAGBFQn4kau7h3+CenaVhcGUS+uRoWNtu4Md5EGWQxOifd2mgcyK0bZ/kTPmr224+ReW5KlRDaQ==
+"@multisender.app/multisender-react-widget@0.2.3":
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/@multisender.app/multisender-react-widget/-/multisender-react-widget-0.2.3.tgz#661a951b0915ee6295a42f11ac2ee5636e9c4ade"
+  integrity sha512-D2AhC0gKAGH0SCqhBQ/9qzciFZ8sfoHT294VekDkEalR3BsEBXJ8J0g3At8IWOoddsYMcnhHMyH9BeY3MoLiAg==
   dependencies:
     "@codemirror/commands" "^6.8.1"
     "@csstools/normalize.css" "^12.1.1"
@@ -12809,13 +12809,6 @@ debug@^4.4.0:
   dependencies:
     ms "^2.1.3"
 
-decache@^3.0.5:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/decache/-/decache-3.1.0.tgz#4f5036fbd6581fcc97237ac3954a244b9536c2da"
-  integrity sha512-p7D6wJ5EJFFq1CcF2lu1XeqKFLBob8jRQGNAvFLTsV3CbSKBl3VtliAVlUIGz2i9H6kEFnI2Amaft5ZopIG2Fw==
-  dependencies:
-    find "^0.2.4"
-
 decamelize@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/decamelize/-/decamelize-1.2.0.tgz#f6534d15148269b20352e7bee26f501f9a191290"
@@ -14339,13 +14332,6 @@ find-up@^5.0.0:
   dependencies:
     locate-path "^6.0.0"
     path-exists "^4.0.0"
-
-find@^0.2.4:
-  version "0.2.9"
-  resolved "https://registry.yarnpkg.com/find/-/find-0.2.9.tgz#4b73f1ff9e56ad91b76e716407fe5ffe6554bb8c"
-  integrity sha512-7a4/LCiInB9xYMnAUEjLilL9FKclwbwK7VlXw+h5jMvT2TDFeYFCHM24O1XdnC/on/hx8mxVO3FTQkyHZnOghQ==
-  dependencies:
-    traverse-chain "~0.1.0"
 
 flat-cache@^4.0.0:
   version "4.0.1"
@@ -19681,10 +19667,10 @@ robust-predicates@^3.0.0:
   resolved "https://registry.yarnpkg.com/robust-predicates/-/robust-predicates-3.0.1.tgz#ecde075044f7f30118682bd9fb3f123109577f9a"
   integrity sha512-ndEIpszUHiG4HtDsQLeIuMvRsDnn8c8rYStabochtUeCvfuvNptb5TUbVD68LRAILPX7p9nqQGh4xJgn3EHS/g==
 
-rollbar@2.26.4:
-  version "2.26.4"
-  resolved "https://registry.yarnpkg.com/rollbar/-/rollbar-2.26.4.tgz#05e47d3b1f52ab6da9f88710ec66371a76cdc3c9"
-  integrity sha512-JKmrj6riYm9ZPJisgxljgH4uCsvjMHDHXrinDF7aAFaP+eoF51HomVPtLcDTYLsrJ568aKVNLUhedFajONBwSg==
+rollbar@2.26.5:
+  version "2.26.5"
+  resolved "https://registry.yarnpkg.com/rollbar/-/rollbar-2.26.5.tgz#6fa61762d73963cfe8788e4cb7b42618b6ce00bd"
+  integrity sha512-4Of0ALl5+CU2glyDy5dWMRRy9Ty81DrY2r46ucbqjtCikbgHoWJNGXbQUWpDaLxsc8Q71LT/yj1bPb9NHbJIFQ==
   dependencies:
     async "~3.2.3"
     console-polyfill "0.3.0"
@@ -19693,8 +19679,6 @@ rollbar@2.26.4:
     lru-cache "~2.2.1"
     request-ip "~3.3.0"
     source-map "^0.5.7"
-  optionalDependencies:
-    decache "^3.0.5"
 
 rollup@^4.20.0:
   version "4.22.4"
@@ -20935,11 +20919,6 @@ tr46@~0.0.3:
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/tr46/-/tr46-0.0.3.tgz#8184fd347dac9cdc185992f3a6622e14b9d9ab6a"
   integrity sha512-N3WMsuqV66lT30CrXNbEjx4GEwlow3v6rr4mCcv6prnfwhS01rkgyFdjPNBYd9br7LpXV1+Emh01fHnq2Gdgrw==
-
-traverse-chain@~0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/traverse-chain/-/traverse-chain-0.1.0.tgz#61dbc2d53b69ff6091a12a168fd7d433107e40f1"
-  integrity sha512-up6Yvai4PYKhpNp5PkYtx50m3KbwQrqDwbuZP/ItyL64YEWHAvH6Md83LFLV/GRSk/BoUVwwgUzX6SOQSbsfAg==
 
 tree-sitter-json@=0.24.8:
   version "0.24.8"

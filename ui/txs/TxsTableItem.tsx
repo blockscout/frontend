@@ -113,7 +113,7 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, 
       </TableCell>
       { !config.UI.views.tx.hiddenFields?.value && (
         <TableCell isNumeric>
-          <CurrencyValue value={ tx.value } accuracy={ 8 } isLoading={ isLoading } wordBreak="break-word"/>
+          <CurrencyValue value={ tx.value } decimals={ String(config.chain.currency.decimals) } accuracy={ 8 } isLoading={ isLoading } wordBreak="break-word"/>
         </TableCell>
       ) }
       { !config.UI.views.tx.hiddenFields?.tx_fee && (

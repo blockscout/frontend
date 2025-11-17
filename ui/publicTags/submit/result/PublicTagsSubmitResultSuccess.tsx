@@ -42,7 +42,9 @@ const PublicTagsSubmitResultSuccess = ({ data }: Props) => {
                   ...tag,
                   slug: '',
                   ordinal: 0,
-                }}/>
+                }}
+                noLink
+              />
             )) }
         </Flex>
       </GridItem>

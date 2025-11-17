@@ -15,12 +15,11 @@ on:
             - arbitrum_sepolia
             - base
             - celo
-            - celo_alfajores
+            - celo_sepolia
             - garnet
             - gnosis
             - eth
             - eth_sepolia
-            - eth_goerli
             - filecoin
             - immutable
             - mega_eth

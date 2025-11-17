@@ -22,10 +22,10 @@ const testFn = async({ render, mockAssetResponse, mockEnvs, mockRpcResponse, moc
   ]);
   await mockApiResponse('admin:marketplace_dapp', appsMock[0], { pathParams: { chainId: config.chain.id, dappId: appsMock[0].id } });
   await mockAssetResponse(appsMock[0].url, './mocks/apps/app.html');
-  await mockRpcResponse({
+  await mockRpcResponse([ {
     Method: 'eth_chainId',
     ReturnType: numberToHex(Number(config.chain.id)),
-  });
+  } ]);
 
   const component = await render(
     <Flex flexDirection="column" mx={{ base: 4, lg: 6 }} h="100vh">

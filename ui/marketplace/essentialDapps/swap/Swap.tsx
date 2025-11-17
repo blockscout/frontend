@@ -1,18 +1,22 @@
-import { Box, useToken } from '@chakra-ui/react';
+import { Box, Flex, useToken } from '@chakra-ui/react';
 import type { RouteExecutionUpdate, WidgetConfig } from '@lifi/widget';
 import { LiFiWidget, useWidgetEvents, WidgetEvent } from '@lifi/widget';
 import { useEffect, useMemo, useRef } from 'react';
 
+import { getFeaturePayload } from 'configs/app/features/types';
+
 import config from 'configs/app';
 import essentialDappsChainsConfig from 'configs/essential-dapps-chains';
+import useIsMobile from 'lib/hooks/useIsMobile';
 import useRewardsActivity from 'lib/hooks/useRewardsActivity';
 import * as mixpanel from 'lib/mixpanel/index';
 import useWeb3Wallet from 'lib/web3/useWallet';
 import { useColorMode } from 'toolkit/chakra/color-mode';
 import { BODY_TYPEFACE } from 'toolkit/theme/foundations/typography';
+import AdBanner from 'ui/shared/ad/AdBanner';
 
-const feature = config.features.marketplace;
-const dappConfig = feature.isEnabled ? feature.essentialDapps?.swap : undefined;
+const feature = getFeaturePayload(config.features.marketplace);
+const dappConfig = feature?.essentialDapps?.swap;
 
 const defaultChainId = Number(
   dappConfig?.chains.includes(config.chain.id as string) ?
@@ -84,6 +88,7 @@ const Widget = () => {
 };
 
 const Swap = () => {
+  const isMobile = useIsMobile();
   const { trackTransaction, trackTransactionConfirm } = useRewardsActivity();
   const widgetEvents = useWidgetEvents();
   const eventParams = useRef<{
@@ -96,7 +101,7 @@ const Swap = () => {
   useEffect(() => {
     const onRouteExecutionUpdated = async(update: RouteExecutionUpdate) => {
       try {
-        if (!eventParams.current.activityToken || eventParams.current.routeId !== update.route.id) {
+        if (eventParams.current.routeId !== update.route.id) {
           const { chainId, from, to } = update.route.steps.at(-1)?.transactionRequest ?? {};
           if (chainId && from && to) {
             const response = await trackTransaction(from, to, String(chainId));
@@ -107,11 +112,7 @@ const Swap = () => {
               chainId: String(chainId),
             };
           }
-        } else if (
-          [ 'SWAP', 'CROSS_CHAIN' ].includes(update.process.type) &&
-          eventParams.current.routeId === update.route.id &&
-          update.process.txHash
-        ) {
+        } else if ([ 'SWAP', 'CROSS_CHAIN' ].includes(update.process.type) && update.process.txHash) {
           mixpanel.logEvent(mixpanel.EventTypes.WALLET_ACTION, {
             Action: 'Send Transaction',
             Address: eventParams.current.from,
@@ -132,7 +133,20 @@ const Swap = () => {
     return () => widgetEvents.all.clear();
   }, [ widgetEvents, trackTransaction, trackTransactionConfirm ]);
 
-  return <Widget/>;
+  return (
+    <Flex flex="1" flexDir="column" justifyContent="space-between" gap={ 6 }>
+      <Widget/>
+      { (feature?.essentialDappsAdEnabled && !isMobile) && (
+        <AdBanner
+          format="mobile"
+          w="fit-content"
+          borderRadius="md"
+          overflow="hidden"
+          ml="auto"
+        />
+      ) }
+    </Flex>
+  );
 };
 
 export default Swap;

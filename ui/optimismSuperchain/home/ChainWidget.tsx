@@ -30,7 +30,7 @@ const ChainWidget = ({ data }: Props) => {
     },
   });
 
-  const handleAddToWalletClick = useAddChainClick();
+  const handleAddToWalletClick = useAddChainClick({ source: 'Chain widget' });
 
   return (
     <Box

@@ -1,7 +1,7 @@
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import type { BannerPlatform } from './types';
+import type { BannerFormat } from './types';
 
 import config from 'configs/app';
 import { useAppContext } from 'lib/contexts/app';
@@ -14,10 +14,10 @@ const feature = config.features.adsBanner;
 interface Props {
   className?: string;
   isLoading?: boolean;
-  platform?: BannerPlatform;
+  format?: BannerFormat;
 }
 
-const AdBanner = ({ className, isLoading, platform }: Props) => {
+const AdBanner = ({ className, isLoading, format }: Props) => {
   const provider = useAppContext().adBannerProvider;
 
   const hasAdblockCookie = cookies.get(cookies.NAMES.ADBLOCK_DETECTED, useAppContext().cookies);
@@ -31,7 +31,7 @@ const AdBanner = ({ className, isLoading, platform }: Props) => {
       className={ className }
       isLoading={ isLoading }
       provider={ provider }
-      platform={ platform }
+      format={ format }
     />
   );
 };

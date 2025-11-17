@@ -143,7 +143,7 @@ const Marketplace = () => {
   return (
     <>
       <PageTitle
-        title="DAppscout"
+        title={ feature.titles.title }
         contentAfter={ (isMobile && links.length > 1) ? (
           <MenuRoot>
             <MenuTrigger asChild>
@@ -188,9 +188,13 @@ const Marketplace = () => {
 
       { feature.essentialDapps && (
         <>
-          <Heading level="2" mt={ 8 } mb={ 6 }>Essential dapps</Heading>
+          <Heading level="2" mb={ 6 } mt={ 8 }>
+            { feature.titles.subtitle_essential_dapps }
+          </Heading>
           <EssentialDappsList/>
-          <Heading level="2">Explore dapps</Heading>
+          <Heading level="2">
+            { feature.titles.subtitle_list }
+          </Heading>
         </>
       ) }
 

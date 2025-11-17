@@ -41,6 +41,7 @@ const TxDetailsTxFee = ({ isLoading, data }: Props) => {
         <CurrencyValue
           value={ data.fee.value }
           currency={ currencyUnits.ether }
+          decimals={ String(config.chain.currency.decimals) }
           exchangeRate={ 'exchange_rate' in data ? data.exchange_rate : null }
           isLoading={ isLoading }
           showGweiTooltip
@@ -56,6 +57,7 @@ const TxDetailsTxFee = ({ isLoading, data }: Props) => {
             <CurrencyValue
               value={ baseFeeBn.toString() }
               currency={ currencyUnits.ether }
+              decimals={ String(config.chain.currency.decimals) }
               exchangeRate={ 'exchange_rate' in data ? data.exchange_rate : null }
               isLoading={ isLoading }
               showGweiTooltip
@@ -70,6 +72,7 @@ const TxDetailsTxFee = ({ isLoading, data }: Props) => {
             <CurrencyValue
               value={ priorityFeeBn.toString() }
               currency={ currencyUnits.ether }
+              decimals={ String(config.chain.currency.decimals) }
               exchangeRate={ 'exchange_rate' in data ? data.exchange_rate : null }
               isLoading={ isLoading }
               showGweiTooltip

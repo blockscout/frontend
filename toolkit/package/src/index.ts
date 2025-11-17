@@ -20,6 +20,7 @@ export * from '../../chakra/link';
 export * from '../../chakra/menu';
 export * from '../../chakra/pin-input';
 export * from '../../chakra/popover';
+export * from '../../chakra/progress';
 export * from '../../chakra/progress-circle';
 export * from '../../chakra/provider';
 export * from '../../chakra/radio';

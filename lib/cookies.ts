@@ -5,6 +5,7 @@ import { isBrowser } from 'toolkit/utils/isBrowser';
 export enum NAMES {
   NAV_BAR_COLLAPSED = 'nav_bar_collapsed',
   API_TOKEN = '_explorer_key',
+  API_TEMP_TOKEN = 'api_temp_token',
   REWARDS_API_TOKEN = 'rewards_api_token',
   REWARDS_REFERRAL_CODE = 'rewards_ref_code',
   TXS_SORT = 'txs_sort',
@@ -17,6 +18,7 @@ export enum NAMES {
   ADBLOCK_DETECTED = 'adblock_detected',
   MIXPANEL_DEBUG = '_mixpanel_debug',
   ADDRESS_NFT_DISPLAY_TYPE = 'address_nft_display_type',
+  HIDE_ADD_TO_WALLET_BUTTON = 'hide_add_to_wallet_button',
   UUID = 'uuid',
   SHOW_SCAM_TOKENS = 'show_scam_tokens',
 }

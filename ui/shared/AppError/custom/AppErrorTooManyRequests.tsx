@@ -3,10 +3,10 @@ import React from 'react';
 
 import config from 'configs/app';
 import buildUrl from 'lib/api/buildUrl';
-import useFetch from 'lib/hooks/useFetch';
+import * as cookies from 'lib/cookies';
 import { Button } from 'toolkit/chakra/button';
 import { toaster } from 'toolkit/chakra/toaster';
-import { SECOND } from 'toolkit/utils/consts';
+import { DAY, SECOND } from 'toolkit/utils/consts';
 import { apos } from 'toolkit/utils/htmlEntities';
 import ReCaptcha from 'ui/shared/reCaptcha/ReCaptcha';
 import useReCaptcha from 'ui/shared/reCaptcha/useReCaptcha';
@@ -31,7 +31,6 @@ const AppErrorTooManyRequests = ({ bypassOptions, reset }: Props) => {
 
   const [ timeLeft, setTimeLeft ] = React.useState(reset ? Math.ceil(Number(reset) / SECOND) : undefined);
 
-  const fetch = useFetch();
   const recaptcha = useReCaptcha();
 
   const handleSubmit = React.useCallback(async() => {
@@ -42,17 +41,28 @@ const AppErrorTooManyRequests = ({ bypassOptions, reset }: Props) => {
         throw new Error('ReCaptcha is not solved');
       }
 
-      const url = buildUrl('general:api_v2_key');
+      const url = buildUrl('general:api_v2_key', undefined, { in_header: true });
 
-      await fetch(url, {
+      const response = await fetch(url, {
         method: 'POST',
-        body: { recaptcha_response: token },
+        body: JSON.stringify({ recaptcha_response: token }),
         headers: {
           'recaptcha-v2-response': token,
         },
-        credentials: 'include',
-      }, {
-        resource: 'general:api_v2_key',
+      });
+
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+
+      const apiTempToken = response.headers.get('api-v2-temp-token');
+
+      if (!apiTempToken) {
+        throw new Error('API temp token is not found');
+      }
+
+      cookies.set(cookies.NAMES.API_TEMP_TOKEN, apiTempToken, {
+        expires: reset ? Number(reset) / DAY : 1 / 24,
       });
 
       window.location.reload();
@@ -64,7 +74,7 @@ const AppErrorTooManyRequests = ({ bypassOptions, reset }: Props) => {
         type: 'error',
       });
     }
-  }, [ recaptcha, fetch ]);
+  }, [ recaptcha, reset ]);
 
   React.useEffect(() => {
     if (reset === undefined) {

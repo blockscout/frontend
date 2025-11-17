@@ -28,7 +28,7 @@ function getParams(chainConfig: typeof config): AddEthereumChainParameter {
 }
 
 export default function useAddChain() {
-  const { wallet, provider } = useProvider();
+  const { data: { wallet, provider } = {} } = useProvider();
   const { trackUsage } = useRewardsActivity();
   const multichainContext = useMultichainContext();
 

@@ -44,7 +44,7 @@ const TxDetailsWithdrawalStatusOptimistic = ({ status, l1TxHash }: Props) => {
     return null;
   }
 
-  const hasClaimButton = status === 'Ready for relay';
+  const hasClaimButton = status === 'Ready for relay' && rollupFeature.L2WithdrawalUrl;
 
   const steps = (() => {
     switch (status) {
