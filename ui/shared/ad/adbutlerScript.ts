@@ -1,5 +1,4 @@
 /* eslint-disable max-len */
-import type { BannerPlatform } from './types';
 
 import config from 'configs/app';
 
@@ -7,14 +6,14 @@ export const ADBUTLER_ACCOUNT = 182226;
 
 export const connectAdbutler = `if (!window.AdButler){(function(){var s = document.createElement("script"); s.async = true; s.type = "text/javascript";s.src = 'https://servedbyadbutler.com/app.js';var n = document.getElementsByTagName("script")[0]; n.parentNode.insertBefore(s, n);}());}`;
 
-export const placeAd = ((platform: BannerPlatform | undefined) => {
+export const placeAd = ((isMobile: boolean | undefined) => {
   const feature = config.features.adsBanner;
 
   if (!('adButler' in feature)) {
     return;
   }
 
-  if (platform === 'mobile') {
+  if (isMobile) {
     return `
       var AdButler = AdButler || {}; AdButler.ads = AdButler.ads || [];
       var abkw = window.abkw || '';

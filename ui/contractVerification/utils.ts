@@ -5,7 +5,6 @@ import type {
   FormFields,
   FormFieldsFlattenSourceCode,
   FormFieldsMultiPartFile,
-  FormFieldsSourcify,
   FormFieldsStandardInput,
   FormFieldsStandardInputZk,
   FormFieldsStylusGitHubRepo,
@@ -38,7 +37,7 @@ export const SUPPORTED_VERIFICATION_METHODS: Array<SmartContractVerificationMeth
 export const METHOD_LABELS: Record<SmartContractVerificationMethod, string> = {
   'flattened-code': 'Solidity (Single file)',
   'standard-input': 'Solidity (Standard JSON input)',
-  sourcify: 'Solidity (Sourcify)',
+  sourcify: 'Sourcify (Solidity or Vyper)',
   'multi-part': 'Solidity (Multi-part files)',
   'vyper-code': 'Vyper (Contract)',
   'vyper-multi-part': 'Vyper (Multi-part files)',
@@ -233,16 +232,6 @@ export function prepareRequestBody(data: FormFields): FetchParams['body'] {
 
       // zkSync fields
       'zk_compiler' in _data && _data.zk_compiler && body.set('zk_compiler_version', _data.zk_compiler?.[0]);
-
-      return body;
-    }
-
-    case 'sourcify': {
-      const _data = data as FormFieldsSourcify;
-      const body = new FormData();
-      addFilesToFormData(body, _data.sources, 'files');
-      body.set('chosen_contract_index', _data.contract_index?.value ?? '0');
-      _data.license_type && body.set('license_type', _data.license_type?.[0] ?? defaultLicenseType);
 
       return body;
     }

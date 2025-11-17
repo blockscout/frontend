@@ -5,6 +5,7 @@ import React from 'react';
 import type { MarketplaceApp } from 'types/client/marketplace';
 
 import { useColorModeValue } from 'toolkit/chakra/color-mode';
+import { Heading } from 'toolkit/chakra/heading';
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { Image } from 'toolkit/chakra/image';
 import { Link, LinkBox } from 'toolkit/chakra/link';
@@ -47,8 +48,7 @@ const FeaturedAppMobile = ({
       borderRadius="md"
       padding={{ base: 3, sm: '20px' }}
       role="group"
-      background={{ base: 'purple.50', sm: 'whiteAlpha.100' }}
-      mt={ 6 }
+      background={{ _light: 'purple.50', _dark: 'whiteAlpha.100' }}
     >
       <Flex
         flexDirection="row"
@@ -98,20 +98,19 @@ const FeaturedAppMobile = ({
         <Flex flexDirection="column" gap={ 2 }>
           <Skeleton
             loading={ isLoading }
-            fontSize={{ base: 'sm', sm: 'lg' }}
-            lineHeight={{ base: '20px', sm: '28px' }}
             paddingRight={{ base: '25px', sm: '110px' }}
-            fontWeight="semibold"
-            fontFamily="heading"
-            display="inline-block"
+            display="flex"
+            alignItems="center"
           >
-            <MarketplaceAppCardLink
-              id={ id }
-              url={ url }
-              external={ external }
-              title={ title }
-              onClick={ onAppClick }
-            />
+            <Heading level="3">
+              <MarketplaceAppCardLink
+                id={ id }
+                url={ url }
+                external={ external }
+                title={ title }
+                onClick={ onAppClick }
+              />
+            </Heading>
             <MarketplaceAppIntegrationIcon external={ external } internalWallet={ internalWallet }/>
           </Skeleton>
 

@@ -22,7 +22,7 @@ const DeFiDropdownItem = ({ item }: Props) => {
       variant="menu"
       onClick={ item.onClick }
     >
-      <IconSvg name={ item.icon } boxSize={ 5 } mr={ 2 }/>
+      { item.icon && <IconSvg name={ item.icon } boxSize={ 5 } mr={ 2 }/> }
       <Text as="span" fontSize="sm">{ item.text }</Text>
     </Link>
   );

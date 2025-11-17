@@ -13,9 +13,9 @@ import {
   MOBILE_BANNER_WIDTH,
 } from './consts';
 
-const SliseBanner = ({ className, platform }: BannerProps) => {
+const SliseBanner = ({ className, format = 'responsive' }: BannerProps) => {
 
-  if (platform === 'desktop') {
+  if (format === 'desktop') {
     return (
       <Flex className={ className } h={ `${ DESKTOP_BANNER_HEIGHT }px` }>
         <SliseAd
@@ -27,7 +27,7 @@ const SliseBanner = ({ className, platform }: BannerProps) => {
     );
   }
 
-  if (platform === 'mobile') {
+  if (format === 'mobile') {
     return (
       <Flex
         className={ className }

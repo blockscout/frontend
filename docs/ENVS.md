@@ -108,7 +108,8 @@ All json-like values should be single-quoted. If it contains a hash (`#`) or a d
 | NEXT_PUBLIC_NETWORK_ID | `number` | Chain id, see [https://chainlist.org](https://chainlist.org) for the reference | Required | -  | `99` | v1.0.x+ |
 | NEXT_PUBLIC_NETWORK_RPC_URL | `string \| Array<string>` | Chain public RPC server url, see [https://chainlist.org](https://chainlist.org) for the reference. Can contain a single string value, or an array of urls. | - | - | `https://core.poa.network` | v1.0.x+ |
 | NEXT_PUBLIC_NETWORK_CURRENCY_NAME | `string` | Network currency name | - | - | `Ether` | v1.0.x+ |
-| NEXT_PUBLIC_NETWORK_CURRENCY_WEI_NAME | `string` | Name of network currency subdenomination | - | `wei` | `duck` | v1.23.0+ |
+| NEXT_PUBLIC_NETWORK_CURRENCY_WEI_NAME | `string` | Name of the smallest unit of the native currency (e.g., 'wei' for Ethereum, where 1 ETH = 10^18 wei). Used for displaying gas prices and transaction fees in the smallest denomination. | - | `wei` | `duck` | v1.23.0+ |
+| NEXT_PUBLIC_NETWORK_CURRENCY_GWEI_NAME | `string` | Name of the giga-unit of the native currency (e.g., 'gwei' for Ethereum, where 1 gwei = 10^9 of the smallest unit). Used for displaying gas prices in a more readable format throughout the UI. | - | `gwei` | `gduck` | <upcoming> |
 | NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL | `string` | Network currency symbol | - | - | `ETH` | v1.0.x+ |
 | NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS | `string` | Network currency decimals | - | `18` | `6` | v1.0.x+ |
 | NEXT_PUBLIC_NETWORK_SECONDARY_COIN_SYMBOL | `string` | Network secondary coin symbol.  | - | - | `GNO` | v1.29.0+ |
@@ -174,6 +175,7 @@ _Note_ Here, all values are arrays of up to two strings. The first string repres
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_FEATURED_NETWORKS | `string` | URL of configuration file (`.json` format only) or file content string representation. It contains list of featured networks that will be shown in the network menu. See [below](#featured-network-configuration-properties) list of available properties for particular network | - | - | `https://example.com/featured_networks_config.json` \| `[{'title':'Astar(EVM)','url':'https://astar.blockscout.com/','group':'Mainnets','icon':'https://example.com/astar.svg'}]` | v1.0.x+ |
 | NEXT_PUBLIC_FEATURED_NETWORKS_ALL_LINK | `string` | Link to the all chains resource. Will be displayed at the bottom of featured networks list. | Works only if NEXT_PUBLIC_FEATURED_NETWORKS is set | - | `https://example.com` | v2.3.0+ |
+| NEXT_PUBLIC_FEATURED_NETWORKS_MODE | `tabs \| list` | Indicates how the networks are presented: in one list or in separate tabs. | Works only if NEXT_PUBLIC_FEATURED_NETWORKS is set | `list` | `tabs` | upcoming |
 
 #### Featured network configuration properties
 
@@ -342,7 +344,7 @@ Settings for meta tags, OG tags and SEO
 | instance_url | `string` | URL template for NFT instance | - | - | `https://opensea.io/assets/ethereum/{hash}/{id}` |
 | logo_url | `string` | URL of marketplace logo | Required | - | `https://opensea.io/static/images/logos/opensea-logo.svg` |
 
-*Note* URL templates should contain placeholders of NFT hash (`{hash}`) and NFT id (`{id}`). This placeholders will be substituted with particular values for every collection or instance.
+*Note* URL templates should contain placeholders for the NFT hash (`{hash}` or `{hash_lowercase}`) and NFT ID (`{id}` or `{id_lowercase}`). These placeholders will be replaced with specific values or their lowercase equivalents for each collection or instance.
 
 &nbsp;
 
@@ -586,6 +588,8 @@ Ads are enabled by default on all self-hosted instances. If you would like to di
 | NEXT_PUBLIC_MARKETPLACE_BANNER_LINK_URL | `string` | URL of the page the banner leads to | - | - | `https://example.com` | v1.29.0+ |
 | NEXT_PUBLIC_MARKETPLACE_GRAPH_LINKS_URL | `string` | URL of the file (`.json` format only) which contains the list of The Graph links to be displayed on the Marketplace page | - | - | `https://example.com/graph_links.json` | v1.36.0+ |
 | NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_CONFIG | `EssentialDappsConfig`, see details [below](#essential-dapps-configuration-properties) | Configuration of the essential dapps to be displayed on the Marketplace page | - | - | `{'swap': {'chains': ['1', '10', '100', '11155111'], 'fee': '0.004', 'integrator': 'blockscout'}}` | v2.4.0+ |
+| NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_AD_ENABLED | `boolean` | The flag enables ad in essential dapps. *Feature is enabled by default; pass `false` to disable it.* | - | `true` | `false` | upcoming |
+| NEXT_PUBLIC_MARKETPLACE_TITLES | `{ entity_name?: string; menu_item?: string; title?: string; subtitle_essential_dapps?: string; subtitle_list?: string }` | Used to override default titles of the Marketplace and dapps | - | `{ 'entity_name': 'Dapp', 'menu_item': 'Dapps', 'title': 'Dappscout', 'subtitle_essential_dapps': 'Essential dapps', 'subtitle_list': 'Explore dapps' }` | `{ 'entity_name': 'App', 'menu_item': 'Apps', 'title': 'Marketplace', 'subtitle_essential_dapps': 'Essential apps', 'subtitle_list': 'Explore apps' }` | upcoming |
 
 #### Marketplace app configuration properties
 
@@ -886,7 +890,7 @@ If the feature is enabled, a single button or a dropdown (if more than 1 item is
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_DEFI_DROPDOWN_ITEMS | `[{ text: string; icon: string; dappId?: string, url?: string }]` | An array of dropdown items containing the button text, icon name and dappId in DAppscout or an external url | - | - | `[{'text':'Swap','icon':'swap','dappId':'uniswap'},{'text':'Payment link','icon':'payment_link','dappId':'peanut-protocol'}]` | v1.31.0+ |
+| NEXT_PUBLIC_DEFI_DROPDOWN_ITEMS | `[{ text: string; icon: string; dappId?: string, url?: string }]` | An array of dropdown items containing the button text, icon name and dappId in Dappscout or an external url | - | - | `[{'text':'Swap','icon':'swap','dappId':'uniswap'},{'text':'Payment link','icon':'payment_link','dappId':'peanut-protocol'}]` | v1.31.0+ |
 
 &nbsp;
 

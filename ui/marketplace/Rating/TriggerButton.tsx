@@ -1,6 +1,9 @@
 import { chakra, Text } from '@chakra-ui/react';
 import React from 'react';
 
+import { getFeaturePayload } from 'configs/app/features/types';
+
+import config from 'configs/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import usePreventFocusAfterModalClosing from 'lib/hooks/usePreventFocusAfterModalClosing';
 import type { ButtonProps } from 'toolkit/chakra/button';
@@ -18,7 +21,7 @@ interface Props extends ButtonProps {
 
 const getTooltipText = (canRate: boolean) => {
   if (!canRate) {
-    return <>Please log in to Blockscout to rate this DApp.</>;
+    return <>Please log in to Blockscout to rate this { (getFeaturePayload(config.features.marketplace)?.titles.entity_name ?? '').toLowerCase() }.</>;
   }
   return <>Ratings come from verified users.<br/>Click here to rate!</>;
 };

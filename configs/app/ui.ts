@@ -60,6 +60,7 @@ const UI = Object.freeze({
   featuredNetworks: {
     items: getExternalAssetFilePath('NEXT_PUBLIC_FEATURED_NETWORKS'),
     allLink: getEnvValue('NEXT_PUBLIC_FEATURED_NETWORKS_ALL_LINK'),
+    mode: (getEnvValue('NEXT_PUBLIC_FEATURED_NETWORKS_MODE') || 'list') as 'tabs' | 'list',
   },
   footer: {
     links: getExternalAssetFilePath('NEXT_PUBLIC_FOOTER_LINKS'),

@@ -28,7 +28,7 @@ const DetailedInfoSponsoredItem = ({ isLoading }: Props) => {
         Sponsored
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue mt={{ base: 0, lg: 1 }}>
-        <AdBanner isLoading={ isLoading }/>
+        <AdBanner format="responsive" isLoading={ isLoading }/>
       </DetailedInfo.ItemValue>
     </>
   );

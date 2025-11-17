@@ -16,20 +16,6 @@ repositories:
 ---
 releases:
   # Deploy review L2
-  - name: reg-secret
-    chart: bedag/raw
-    namespace: review-l2-{{ requiredEnv "GITHUB_REF_NAME_SLUG" }}
-    labels:
-      app: review-l2-{{ requiredEnv "GITHUB_REF_NAME_SLUG" }}
-    values:
-      - resources:
-        - apiVersion: v1
-          data:
-            .dockerconfigjson: ref+vault://deployment-values/blockscout/common?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/dockerRegistryCreds
-          kind: Secret
-          metadata:
-            name: regcred
-          type: kubernetes.io/dockerconfigjson
   - name: bs-stack
     chart: blockscout/blockscout-stack
     version: 1.*.*
@@ -41,20 +27,6 @@ releases:
     - global:
         env: "review"
   # Deploy review
-  - name: reg-secret
-    chart: bedag/raw
-    namespace: review-{{ requiredEnv "GITHUB_REF_NAME_SLUG" }}
-    labels:
-      app: review-{{ requiredEnv "GITHUB_REF_NAME_SLUG" }}
-    values:
-      - resources:
-        - apiVersion: v1
-          data:
-            .dockerconfigjson: ref+vault://deployment-values/blockscout/common?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/dockerRegistryCreds
-          kind: Secret
-          metadata:
-            name: regcred
-          type: kubernetes.io/dockerconfigjson
   - name: bs-stack
     chart: blockscout/blockscout-stack
     version: 1.*.*

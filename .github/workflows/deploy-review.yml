@@ -15,12 +15,11 @@ on:
             - arbitrum_sepolia
             - base
             - celo
-            - celo_alfajores
+            - celo_sepolia
             - garnet
             - gnosis
             - eth
             - eth_sepolia
-            - eth_goerli
             - filecoin
             - immutable
             - main
@@ -37,7 +36,7 @@ on:
             - scroll_sepolia
             - stability
             - tac
-            - tac_turin
+            - tac_spb
             - zetachain
             - zetachain_testnet
             - zkevm

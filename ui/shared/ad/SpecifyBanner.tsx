@@ -23,9 +23,9 @@ type Props = BannerProps & {
   isLoading: boolean;
 };
 
-const SpecifyBanner = ({ className, platform, address, onEmpty, isLoading }: Props) => {
+const SpecifyBanner = ({ className, format = 'responsive', address, onEmpty, isLoading }: Props) => {
   const isMobileViewport = useIsMobile();
-  const isMobile = platform === 'mobile' || isMobileViewport;
+  const isMobile = format === 'mobile' || (format === 'responsive' && isMobileViewport);
   const [ ad, setAd ] = React.useState<SpecifyAd | null>(null);
   const [ isFetching, setIsFetching ] = React.useState(true);
 
@@ -62,15 +62,10 @@ const SpecifyBanner = ({ className, platform, address, onEmpty, isLoading }: Pro
   }, [ ad?.ctaUrl ]);
 
   const { width, height } = (() => {
-    switch (platform) {
-      case 'desktop':
-        return { width: DESKTOP_BANNER_WIDTH, height: DESKTOP_BANNER_HEIGHT };
-      case 'mobile':
-        return { width: MOBILE_BANNER_WIDTH, height: MOBILE_BANNER_HEIGHT };
-      default:
-        return { width: undefined, height: undefined };
+    if (isMobile) {
+      return { width: MOBILE_BANNER_WIDTH, height: MOBILE_BANNER_HEIGHT };
     }
-
+    return { width: DESKTOP_BANNER_WIDTH, height: DESKTOP_BANNER_HEIGHT };
   })();
 
   if (isLoading || isFetching) {

@@ -27,6 +27,9 @@ const AXES_CONFIG_BASE: AxesConfigFn = ({ isEnlarged, isMobile }) => ({
   },
   x: {
     ticks: isEnlarged && !isMobile ? 8 : 5,
+    tickFormatter: () => (d: d3.AxisDomain) => {
+      return d3.timeFormat('%H:%M')(d as Date);
+    },
   },
 });
 
@@ -108,6 +111,10 @@ const UptimeCharts = ({ historyData }: Props) => {
     const items = smoothedData
       .map(({ value, timestamp }) => {
         const date = new Date(timestamp * SECOND);
+        // Here and below,
+        // despite the other charts in the stats page, this one should display dates & time in the local timezone, not UTC.
+        // This is because it is a "time-based" chart not a "date-based" one.
+        // That is why we use d3.timeFormat() instead of dayjs.utcFormat() here.
         return { date, value: Number(value.toFixed(0)), dateLabel: d3.timeFormat(TIME_FORMAT)(date) };
       })
       .filter(filterByInterval(interval, now));
