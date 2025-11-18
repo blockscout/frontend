@@ -50,7 +50,6 @@ const NavLinkGroup = ({ item }: Props) => {
     <Tooltip
       variant="popover"
       content={ content }
-      open={ item.text === 'Blockchain' }
       onOpenChange={ onOpenChange }
       lazyMount={ false }
       positioning={{
