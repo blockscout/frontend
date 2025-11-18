@@ -2,6 +2,7 @@ import type { Feature } from './types';
 import { SUPPORTED_WALLETS } from 'types/client/wallets';
 import type { WalletType } from 'types/client/wallets';
 
+import app from '../app';
 import { getEnvValue, parseEnvJson } from '../utils';
 
 const wallets = ((): Array<WalletType> | undefined => {
@@ -22,7 +23,7 @@ const wallets = ((): Array<WalletType> | undefined => {
 const title = 'Web3 wallet integration (add token or network to the wallet)';
 
 const config: Feature<{ wallets: Array<WalletType>; addToken: { isDisabled: boolean } }> = (() => {
-  if (wallets && wallets.length > 0) {
+  if (app.appProfile !== 'private' && wallets && wallets.length > 0) {
     return Object.freeze({
       title,
       isEnabled: true,
