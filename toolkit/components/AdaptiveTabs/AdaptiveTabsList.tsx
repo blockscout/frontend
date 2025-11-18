@@ -96,7 +96,7 @@ const AdaptiveTabsList = (props: Props) => {
       flexWrap="nowrap"
       alignItems="center"
       whiteSpace="nowrap"
-      bgColor={{ _light: 'white', _dark: 'black' }}
+      bgColor="bg.primary"
       marginBottom={ 6 }
       mx={{ base: '-12px', lg: 'unset' }}
       px={{ base: '12px', lg: 'unset' }}

@@ -1,42 +1,39 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { ChainConfig } from 'types/multichain';
+import type { ClusterChainConfig } from 'types/multichain';
 
 import multichainConfig from 'configs/multichain';
+import getChainIdFromSlug from 'lib/multichain/getChainIdFromSlug';
 import getQueryParamString from 'lib/router/getQueryParamString';
-
-export type ContextLevel = 'page' | 'tab';
 
 interface MultichainProviderProps {
   children: React.ReactNode;
-  chainSlug?: string;
-  level?: ContextLevel;
+  chainId?: string;
 }
 
 export interface TMultichainContext {
-  chain: ChainConfig;
-  level?: ContextLevel;
+  chain: ClusterChainConfig;
 }
 
 export const MultichainContext = React.createContext<TMultichainContext | null>(null);
 
-export function MultichainProvider({ children, chainSlug: chainSlugProp, level: levelProp }: MultichainProviderProps) {
+export function MultichainProvider({ children, chainId: chainIdProp }: MultichainProviderProps) {
   const router = useRouter();
-  const chainSlugQueryParam = router.pathname.includes('chain-slug') ? getQueryParamString(router.query['chain-slug']) : undefined;
+  const chainSlugQueryParam = router.pathname.includes('chain_slug') ? getQueryParamString(router.query.chain_slug) : undefined;
+  const chainIdQueryParam = router.query.chain_id ? getQueryParamString(router.query.chain_id) : undefined;
 
-  const [ chainSlug, setChainSlug ] = React.useState<string | undefined>(chainSlugProp ?? chainSlugQueryParam);
-  const [ level, setLevel ] = React.useState<ContextLevel | undefined>(levelProp);
+  const [ chainId, setChainId ] = React.useState<string | undefined>(
+    chainIdProp ??
+    chainIdQueryParam ??
+    (chainSlugQueryParam ? getChainIdFromSlug(chainSlugQueryParam) : undefined),
+  );
 
   React.useEffect(() => {
-    if (chainSlugProp) {
-      setChainSlug(chainSlugProp);
+    if (chainIdProp) {
+      setChainId(chainIdProp);
     }
-  }, [ chainSlugProp ]);
-
-  React.useEffect(() => {
-    setLevel(levelProp);
-  }, [ levelProp ]);
+  }, [ chainIdProp ]);
 
   const chain = React.useMemo(() => {
     const config = multichainConfig();
@@ -44,12 +41,12 @@ export function MultichainProvider({ children, chainSlug: chainSlugProp, level: 
       return;
     }
 
-    if (!chainSlug) {
+    if (!chainId) {
       return;
     }
 
-    return config.chains.find((chain) => chain.slug === chainSlug);
-  }, [ chainSlug ]);
+    return config.chains.find((chain) => chain.id === chainId);
+  }, [ chainId ]);
 
   const value = React.useMemo(() => {
     if (!chain) {
@@ -58,9 +55,8 @@ export function MultichainProvider({ children, chainSlug: chainSlugProp, level: 
 
     return {
       chain,
-      level,
     };
-  }, [ chain, level ]);
+  }, [ chain ]);
 
   return (
     <MultichainContext.Provider value={ value }>

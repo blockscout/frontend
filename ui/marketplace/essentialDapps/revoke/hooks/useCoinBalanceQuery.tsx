@@ -1,7 +1,7 @@
 import React from 'react';
 import { formatUnits } from 'viem';
 
-import type { ChainConfig } from 'types/multichain';
+import type { EssentialDappsChainConfig } from 'types/client/marketplace';
 
 import useApiQuery from 'lib/api/useApiQuery';
 
@@ -12,7 +12,7 @@ const PLACEHOLDER_DATA = {
   coinImage: undefined,
 };
 
-export default function useCoinBalanceQuery(chain: ChainConfig | undefined, userAddress: string) {
+export default function useCoinBalanceQuery(chain: EssentialDappsChainConfig | undefined, userAddress: string) {
   const addressQuery = useApiQuery('general:address', {
     pathParams: { hash: userAddress },
     chain,
@@ -32,7 +32,7 @@ export default function useCoinBalanceQuery(chain: ChainConfig | undefined, user
     let balance = parseFloat(
       formatUnits(
         BigInt(addressQuery.data.coin_balance || '0'),
-        chain?.config.chain.currency.decimals || 18,
+        chain?.app_config?.chain.currency.decimals || 18,
       ),
     );
 
@@ -56,9 +56,9 @@ export default function useCoinBalanceQuery(chain: ChainConfig | undefined, user
       data: {
         balance: balanceString || '0',
         balanceUsd,
-        symbol: chain?.config.chain.currency.symbol,
+        symbol: chain?.app_config?.chain.currency.symbol,
         coinImage,
       },
     };
-  }, [ addressQuery.data, statsQuery.data, chain?.config.chain.currency.decimals, chain?.config.chain.currency.symbol ]);
+  }, [ addressQuery.data, statsQuery.data, chain?.app_config?.chain.currency.decimals, chain?.app_config?.chain.currency.symbol ]);
 }

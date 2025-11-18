@@ -1,16 +1,12 @@
-import type { Chain } from 'viem';
+import type { ExternalChain } from 'types/externalChains';
 
 import type config from 'configs/app';
 
-export interface ChainConfig {
-  // TODO @tom2drum make optional
+export interface ClusterChainConfig extends ExternalChain {
   slug: string;
-  // TODO @tom2drum make partial
-  // TODO @tom2drum make chain id primary key
-  config: typeof config;
-  contracts?: Chain['contracts'];
+  app_config: typeof config;
 }
 
 export interface MultichainConfig {
-  chains: Array<ChainConfig>;
+  chains: Array<ClusterChainConfig>;
 }

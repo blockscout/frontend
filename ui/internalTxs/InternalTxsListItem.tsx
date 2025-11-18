@@ -3,7 +3,7 @@ import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { InternalTransaction } from 'types/api/internalTransaction';
-import type { ChainConfig } from 'types/multichain';
+import type { ClusterChainConfig } from 'types/multichain';
 
 import config from 'configs/app';
 import { currencyUnits } from 'lib/units';
@@ -17,7 +17,7 @@ import TxStatus from 'ui/shared/statusTag/TxStatus';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import { TX_INTERNALS_ITEMS } from 'ui/tx/internals/utils';
 
-type Props = InternalTransaction & { currentAddress?: string; isLoading?: boolean; showBlockInfo?: boolean; chainData?: ChainConfig };
+type Props = InternalTransaction & { currentAddress?: string; isLoading?: boolean; showBlockInfo?: boolean; chainData?: ClusterChainConfig };
 
 const InternalTxsListItem = ({
   type,

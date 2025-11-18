@@ -52,7 +52,7 @@ const AddressCollections = ({ collectionsQuery, address, tokenTypes, onTokenType
         holder_address_hash: address,
         scroll_to_tabs: 'true',
       },
-    }, multichainContext);
+    }, { chain: multichainContext?.chain });
     const hasOverload = Number(item.amount) > item.token_instances.length;
     return (
       <Box key={ item.token.address_hash + index } mb={ 6 }>
@@ -89,6 +89,7 @@ const AddressCollections = ({ collectionsQuery, address, tokenTypes, onTokenType
                 { ...instance }
                 token={ item.token }
                 isLoading={ isPlaceholderData }
+                chain={ multichainContext?.chain }
               />
             );
           }) }

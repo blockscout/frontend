@@ -4,7 +4,6 @@ import React from 'react';
 import type { InternalTransaction } from 'types/api/internalTransaction';
 
 import { useMultichainContext } from 'lib/contexts/multichain';
-import { getChainDataForList } from 'lib/multichain/getChainDataForList';
 
 import InternalTxsListItem from './InternalTxsListItem';
 
@@ -17,7 +16,7 @@ type Props = {
 
 const InternalTxsList = ({ data, currentAddress, isLoading, showBlockInfo = true }: Props) => {
   const multichainContext = useMultichainContext();
-  const chainData = getChainDataForList(multichainContext);
+  const chainData = multichainContext?.chain;
 
   return (
     <Box>

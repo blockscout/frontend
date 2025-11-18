@@ -4,7 +4,9 @@ import React, { useCallback, useState } from 'react';
 import type * as stats from '@blockscout/stats-types';
 import type { StatsIntervalIds } from 'types/client/stats';
 
+import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
+import { useMultichainContext } from 'lib/contexts/multichain';
 import { Heading } from 'toolkit/chakra/heading';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { apos } from 'toolkit/utils/htmlEntities';
@@ -38,9 +40,13 @@ const ChartsWidgetsList = ({ filterQuery, isError, isPlaceholderData, charts, in
     }
   }, [ shouldScrollToSection ]);
 
+  const { chain } = useMultichainContext() || {};
+  const isGasTrackerEnabled = config.features.gasTracker.isEnabled;
+
   const homeStatsQuery = useApiQuery('general:stats', {
     queryOptions: {
       refetchOnMount: false,
+      enabled: isGasTrackerEnabled,
     },
   });
 
@@ -76,7 +82,7 @@ const ChartsWidgetsList = ({ filterQuery, isError, isPlaceholderData, charts, in
                 <Heading level="2" id={ section.id }>
                   { section.title }
                 </Heading>
-                { section.id === 'gas' && homeStatsQuery.data && homeStatsQuery.data.gas_prices && (
+                { isGasTrackerEnabled && section.id === 'gas' && homeStatsQuery.data && homeStatsQuery.data.gas_prices && (
                   <GasInfoTooltip data={ homeStatsQuery.data } dataUpdatedAt={ homeStatsQuery.dataUpdatedAt }>
                     <IconSvg name="info" boxSize={ 5 } display="block" cursor="pointer" color="icon.secondary" _hover={{ color: 'hover' }}/>
                   </GasInfoTooltip>
@@ -96,7 +102,7 @@ const ChartsWidgetsList = ({ filterQuery, isError, isPlaceholderData, charts, in
                     interval={ interval }
                     isPlaceholderData={ isPlaceholderData }
                     onLoadingError={ handleChartLoadingError }
-                    href={{ pathname: '/stats/[id]', query: { id: chart.id } }}
+                    href={{ pathname: '/stats/[id]', query: { id: chart.id, ...(chain?.id ? { chain_id: chain.id } : {}) } }}
                   />
                 )) }
               </Grid>

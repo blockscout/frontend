@@ -13,7 +13,7 @@ type LinkProps = EntityBase.LinkBaseProps & Partial<Pick<EntityProps, 'number'>>
 const Link = chakra((props: LinkProps) => {
   const defaultHref = route(
     { pathname: '/block/[height_or_hash]', query: { height_or_hash: String(props.number) } },
-    props.chain ? { chain: props.chain } : undefined,
+    { chain: props.chain, external: props.external },
   );
 
   return (

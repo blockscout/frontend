@@ -114,7 +114,10 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
     [ 'NEXT_PUBLIC_CELO_ENABLED', 'true' ],
   ],
   opSuperchain: [
-    [ 'NEXT_PUBLIC_OP_SUPERCHAIN_ENABLED', 'true' ],
+    [ 'NEXT_PUBLIC_MULTICHAIN_ENABLED', 'true' ],
+    [ 'NEXT_PUBLIC_MULTICHAIN_CLUSTER', 'test' ],
+    [ 'NEXT_PUBLIC_MULTICHAIN_AGGREGATOR_API_HOST', 'http://localhost:3012' ],
+    [ 'NEXT_PUBLIC_MULTICHAIN_STATS_API_HOST', 'http://localhost:3013' ],
   ],
   clusters: [
     [ 'NEXT_PUBLIC_CLUSTERS_API_HOST', 'https://api.clusters.xyz' ],

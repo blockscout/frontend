@@ -34,6 +34,7 @@ import ItemByColumn from 'ui/advancedFilter/ItemByColumn';
 import { getDurationFromAge, getFilterTags } from 'ui/advancedFilter/lib';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
+import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 import IconSvg from 'ui/shared/IconSvg';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
@@ -146,6 +147,7 @@ const AdvancedFilter = () => {
         <TableRoot tableLayout="fixed" minWidth="950px" w="100%">
           <TableHeaderSticky>
             <TableRow>
+              { multichainContext?.chain && <TableColumnHeader width="38px"/> }
               { columnsToShow.map(column => {
                 return (
                   <TableColumnHeader
@@ -178,6 +180,11 @@ const AdvancedFilter = () => {
           <TableBody>
             { data?.items.map((item, index) => (
               <TableRow key={ item.hash + String(index) }>
+                { multichainContext?.chain && (
+                  <TableCell>
+                    <ChainIcon data={ multichainContext.chain } isLoading={ isPlaceholderData }/>
+                  </TableCell>
+                ) }
                 { columnsToShow.map(column => {
                   const textAlign = (() => {
                     if (column.id === 'or_and') {
@@ -239,7 +246,7 @@ const AdvancedFilter = () => {
       <HStack gap={ 2 } flexWrap="wrap" mb={ 6 }>
         { multichainContext?.chain && (
           <Tag variant="filter" label="Chain">
-            { multichainContext.chain.config.chain.name }
+            { multichainContext.chain.app_config.chain.name }
           </Tag>
         ) }
         { filterTags.map(t => (

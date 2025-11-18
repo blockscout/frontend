@@ -9,14 +9,13 @@ import type {
   TxInterpretationVariable,
   TxInterpretationVariableString,
 } from 'types/api/txInterpretation';
-import type { ChainConfig } from 'types/multichain';
+import type { ClusterChainConfig } from 'types/multichain';
 
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';
 import * as mixpanel from 'lib/mixpanel/index';
-import getChainTooltipText from 'lib/multichain/getChainTooltipText';
 import { currencyUnits } from 'lib/units';
 import { Badge } from 'toolkit/chakra/badge';
 import { useColorModeValue } from 'toolkit/chakra/color-mode';
@@ -25,10 +24,11 @@ import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { SECOND } from 'toolkit/utils/consts';
-import ChainIcon from 'ui/optimismSuperchain/components/ChainIcon';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
+import ChainIcon from 'ui/shared/externalChains/ChainIcon';
+import getChainTooltipText from 'ui/shared/externalChains/getChainTooltipText';
 import IconSvg from 'ui/shared/IconSvg';
 
 import {
@@ -48,7 +48,7 @@ interface Props extends BoxProps {
   addressDataMap?: Record<string, AddressParam>;
   className?: string;
   isNoves?: boolean;
-  chainData?: ChainConfig;
+  chainData?: ClusterChainConfig;
 };
 
 type NonStringTxInterpretationVariable = Exclude<TxInterpretationVariable, TxInterpretationVariableString>;
@@ -224,6 +224,7 @@ const TxInterpretation = ({ summary, isLoading, addressDataMap, className, chain
               borderStyle="solid"
               borderColor="bg.primary"
               backgroundColor="bg.primary"
+              noTooltip
             />
           ) }
         </Box>

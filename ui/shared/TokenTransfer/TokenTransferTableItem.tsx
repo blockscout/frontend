@@ -2,18 +2,18 @@ import { Flex, Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenTransfer } from 'types/api/tokenTransfer';
-import type { ChainConfig } from 'types/multichain';
+import type { ClusterChainConfig } from 'types/multichain';
 
 import getCurrencyValue from 'lib/getCurrencyValue';
 import { getTokenTypeName } from 'lib/token/tokenTypes';
 import { Badge } from 'toolkit/chakra/badge';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
-import ChainIcon from 'ui/optimismSuperchain/components/ChainIcon';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
+import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import { getTokenTransferTypeText } from 'ui/shared/TokenTransfer/helpers';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
@@ -23,7 +23,7 @@ type Props = TokenTransfer & {
   showTxInfo?: boolean;
   enableTimeIncrement?: boolean;
   isLoading?: boolean;
-  chainData?: ChainConfig;
+  chainData?: ClusterChainConfig;
 };
 
 const TokenTransferTableItem = ({

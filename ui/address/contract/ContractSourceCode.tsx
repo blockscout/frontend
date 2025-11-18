@@ -3,8 +3,9 @@ import React from 'react';
 
 import type { SmartContract } from 'types/api/contract';
 
-import { route } from 'nextjs-routes';
+import { route } from 'nextjs/routes';
 
+import { useMultichainContext } from 'lib/contexts/multichain';
 import formatLanguageName from 'lib/contracts/formatLanguageName';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
@@ -52,6 +53,8 @@ interface Props {
 
 export const ContractSourceCode = ({ data, isLoading, sourceAddress }: Props) => {
 
+  const multichainContext = useMultichainContext();
+
   const editorData = React.useMemo(() => {
     return getEditorData(data);
   }, [ data ]);
@@ -71,7 +74,7 @@ export const ContractSourceCode = ({ data, isLoading, sourceAddress }: Props) =>
   const diagramLink = data?.can_be_visualized_via_sol2uml ? (
     <Tooltip content="Visualize contract code using Sol2Uml JS library">
       <Link
-        href={ route({ pathname: '/visualize/sol2uml', query: { address: sourceAddress } }) }
+        href={ route({ pathname: '/visualize/sol2uml', query: { address: sourceAddress } }, multichainContext) }
         ml={{ base: '0', lg: 'auto' }}
         loading={ isLoading }
       >

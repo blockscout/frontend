@@ -18,7 +18,7 @@ export default function useSwitchChain() {
   const { data: { wallet, provider } = {} } = useProvider();
   const multichainContext = useMultichainContext();
 
-  const chainConfig = multichainContext?.chain.config ?? config;
+  const chainConfig = multichainContext?.chain.app_config ?? config;
 
   return React.useCallback(() => {
     if (!wallet || !provider) {

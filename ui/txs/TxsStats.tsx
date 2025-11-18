@@ -17,7 +17,7 @@ interface Props extends BoxProps {}
 const TxsStats = (props: Props) => {
   const multichainContext = useMultichainContext();
 
-  const chainConfig = multichainContext?.chain.config || config;
+  const chainConfig = multichainContext?.chain.app_config || config;
   const isStatsFeatureEnabled = chainConfig.features.stats.isEnabled;
   const rollupFeature = chainConfig.features.rollup;
   const isOptimisticRollup = rollupFeature.isEnabled && rollupFeature.type === 'optimistic';
@@ -96,7 +96,11 @@ const TxsStats = (props: Props) => {
           value={ Number(txCount24h).toLocaleString() }
           period="24h"
           isLoading={ isLoading }
-          href={ chainConfig.features.stats.isEnabled ? { pathname: '/stats/[id]', query: { id: 'newTxns' } } : undefined }
+          href={
+            chainConfig.features.stats.isEnabled ?
+              { pathname: '/stats/[id]', query: { id: 'newTxns', ...(multichainContext?.chain.id ? { chain_id: multichainContext.chain.id } : {}) } } :
+              undefined
+          }
         />
       ) }
       { operationalTxns24hArbitrum && (
@@ -138,7 +142,11 @@ const TxsStats = (props: Props) => {
           valuePostfix={ thinsp + chainConfig.chain.currency.symbol }
           period="24h"
           isLoading={ isLoading }
-          href={ chainConfig.features.stats.isEnabled ? { pathname: '/stats/[id]', query: { id: 'txnsFee' } } : undefined }
+          href={
+            chainConfig.features.stats.isEnabled ?
+              { pathname: '/stats/[id]', query: { id: 'txnsFee', ...(multichainContext?.chain.id ? { chain_id: multichainContext.chain.id } : {}) } } :
+              undefined
+          }
         />
       ) }
       { txFeeAvg && (
@@ -151,7 +159,11 @@ const TxsStats = (props: Props) => {
           valuePostfix={ txFeeAvg.usd ? undefined : thinsp + chainConfig.chain.currency.symbol }
           period="24h"
           isLoading={ isLoading }
-          href={ chainConfig.features.stats.isEnabled ? { pathname: '/stats/[id]', query: { id: 'averageTxnFee' } } : undefined }
+          href={
+            chainConfig.features.stats.isEnabled ?
+              { pathname: '/stats/[id]', query: { id: 'averageTxnFee', ...(multichainContext?.chain.id ? { chain_id: multichainContext.chain.id } : {}) } } :
+              undefined
+          }
         />
       ) }
     </Box>

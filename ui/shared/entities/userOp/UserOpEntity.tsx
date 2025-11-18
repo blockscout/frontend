@@ -4,9 +4,8 @@ import React from 'react';
 import { route } from 'nextjs/routes';
 
 import { useMultichainContext } from 'lib/contexts/multichain';
-import getChainTooltipText from 'lib/multichain/getChainTooltipText';
-import getIconUrl from 'lib/multichain/getIconUrl';
 import * as EntityBase from 'ui/shared/entities/base/components';
+import getChainTooltipText from 'ui/shared/externalChains/getChainTooltipText';
 
 import { distributeEntityProps } from '../base/utils';
 
@@ -15,7 +14,7 @@ type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'hash'>;
 const Link = chakra((props: LinkProps) => {
   const defaultHref = route(
     { pathname: '/op/[hash]', query: { hash: props.hash } },
-    props.chain ? { chain: props.chain } : undefined,
+    { chain: props.chain, external: props.external },
   );
 
   return (
@@ -33,8 +32,8 @@ const Icon = (props: EntityBase.IconBaseProps) => {
     <EntityBase.Icon
       { ...props }
       name={ 'name' in props ? props.name : 'user_op_slim' }
-      shield={ props.shield ?? (props.chain ? { src: getIconUrl(props.chain) } : undefined) }
-      hint={ props.chain ? getChainTooltipText(props.chain, 'User operation on ') : undefined }
+      shield={ props.shield ?? (props.chain ? { src: props.chain.logo } : undefined) }
+      hint={ props.chain && props.shield !== false ? getChainTooltipText(props.chain, 'User operation on ') : undefined }
     />
   );
 };

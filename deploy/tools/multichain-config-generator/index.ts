@@ -3,6 +3,8 @@ import { dirname, resolve as resolvePath } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { Worker } from 'node:worker_threads';
 
+import { ClusterChainConfig } from 'types/multichain';
+
 const currentFilePath = fileURLToPath(import.meta.url);
 const currentDir = dirname(currentFilePath);
 
@@ -19,6 +21,19 @@ const currentDir = dirname(currentFilePath);
 
 function getSlug(chainName: string) {
   return chainName.toLowerCase().replace(/ /g, '-').replace(/[^a-z0-9-]/g, '');
+}
+
+async function getChainscoutInfo(chainIds: Array<string>) {
+  const response = await fetch('https://chains.blockscout.com/api/chains');
+  if (!response.ok) {
+    throw new Error(`Failed to fetch chains info from Chainscout API`);
+  }
+  const chainsInfo = await response.json() as Record<string, { explorers: [ { url: string } ], logo: string }>;
+
+  return chainIds.map((chainId) => ({
+    id: chainId,
+    logoUrl: chainsInfo[chainId]?.logo,
+  }))
 }
 
 async function computeChainConfig(url: string): Promise<unknown> {
@@ -48,8 +63,9 @@ async function computeChainConfig(url: string): Promise<unknown> {
 }
 
 async function getExplorerUrls() {
+  // return EXPLORER_URLS;
   try {
-    const basePath = (process.env.NEXT_PUBLIC_MULTICHAIN_AGGREGATOR_BASE_PATH ?? '') + '/chains';
+    const basePath = `/api/v1/clusters/${ process.env.NEXT_PUBLIC_MULTICHAIN_CLUSTER }/chains`;
     const url = new URL(basePath, process.env.NEXT_PUBLIC_MULTICHAIN_AGGREGATOR_API_HOST);
 
     const response = await fetch(url.toString());
@@ -79,14 +95,20 @@ async function run() {
     }
 
     const configs = await Promise.all(explorerUrls.map(computeChainConfig));
+    const chainscoutInfo = await getChainscoutInfo(configs.map((config) => config.chain.id));
 
     const config = {
       chains: configs.map((config, index) => {
-        const chainName = (config as { chain: { name: string } })?.chain?.name ?? `Chain ${ index + 1 }`;
+        const chainId = config.chain.id;
+        const chainName = (config as { chain: { name: string } })?.chain?.name ?? `Chain ${ chainId }`;
         return {
+          id: chainId,
+          name: chainName,
+          logo: chainscoutInfo.find((chain) => chain.id === chainId)?.logoUrl,
+          explorer_url: explorerUrls[index],
           slug: getSlug(chainName),
-          config,
-        };
+          app_config: config,
+        } satisfies ClusterChainConfig;
       }),
     };
 

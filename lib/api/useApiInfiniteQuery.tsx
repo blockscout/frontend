@@ -15,22 +15,24 @@ export interface Params<R extends PaginatedResourceName> {
   // eslint-disable-next-line max-len
   queryOptions?: Omit<UseInfiniteQueryOptions<TQueryData<R>, TError, InfiniteData<TQueryData<R>>, TQueryData<R>, QueryKey, TPageParam<R>>, 'queryKey' | 'queryFn' | 'getNextPageParam' | 'initialPageParam'>;
   pathParams?: ApiFetchParams<R>['pathParams'];
+  queryParams?: Record<string, string | Array<string> | number | boolean | undefined | null>;
 }
 
-type ReturnType<Resource extends PaginatedResourceName> = UseInfiniteQueryResult<InfiniteData<ResourcePayload<Resource>>, ResourceError<unknown>>;
+export type ReturnType<Resource extends PaginatedResourceName> = UseInfiniteQueryResult<InfiniteData<ResourcePayload<Resource>>, ResourceError<unknown>>;
 
 export default function useApiInfiniteQuery<R extends PaginatedResourceName>({
   resourceName,
   queryOptions,
   pathParams,
+  queryParams,
 }: Params<R>): ReturnType<R> {
   const apiFetch = useApiFetch();
 
   return useInfiniteQuery<TQueryData<R>, TError, InfiniteData<TQueryData<R>>, QueryKey, TPageParam<R>>({
-    queryKey: getResourceKey(resourceName, { pathParams }),
+    queryKey: getResourceKey(resourceName, { pathParams, queryParams }),
     queryFn: (context) => {
-      const queryParams = 'pageParam' in context ? (context.pageParam || undefined) : undefined;
-      return apiFetch(resourceName, { pathParams, queryParams }) as Promise<TQueryData<R>>;
+      const nextQueryParams = 'pageParam' in context ? (context.pageParam || undefined) : undefined;
+      return apiFetch(resourceName, { pathParams, queryParams: { ...queryParams, ...nextQueryParams } }) as Promise<TQueryData<R>>;
     },
     initialPageParam: null,
     getNextPageParam: (lastPage) => {

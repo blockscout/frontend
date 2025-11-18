@@ -10,6 +10,7 @@ import { CONTRACT_LICENSES } from 'lib/contracts/licenses';
 import dayjs from 'lib/date/dayjs';
 import { Link } from 'toolkit/chakra/link';
 import { getGitHubOwnerAndRepo } from 'ui/contractVerification/utils';
+import ContainerWithScrollY from 'ui/shared/ContainerWithScrollY';
 import ContractCertifiedLabel from 'ui/shared/ContractCertifiedLabel';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
@@ -82,7 +83,7 @@ const ContractDetailsInfo = ({ data, isLoading, addressData }: Props) => {
           { contractNameWithCertifiedIcon }
         </ContractDetailsInfoItem>
       ) }
-      { multichainContext && multichainContext.level !== 'page' && addressData.creator_address_hash && addressData.creation_transaction_hash && (
+      { multichainContext && addressData.creator_address_hash && addressData.creation_transaction_hash && (
         <ContractDetailsInfoItem
           label="Creator"
           isLoading={ isLoading }
@@ -97,6 +98,29 @@ const ContractDetailsInfo = ({ data, isLoading, addressData }: Props) => {
             <TxEntity hash={ addressData.creation_transaction_hash } truncation="constant" noIcon/>
             { addressData.creation_status && <ContractCreationStatus status={ addressData.creation_status } ml={{ base: 0, lg: 2 }}/> }
           </Flex>
+        </ContractDetailsInfoItem>
+      ) }
+      { !isLoading && multichainContext && addressData.implementations && addressData.implementations.length > 0 && (
+        <ContractDetailsInfoItem
+          label={ `${ addressData.proxy_type === 'eip7702' ? 'Delegated to' : `Implementation${ addressData.implementations.length > 1 ? 's' : '' }` }` }
+          isLoading={ isLoading }
+          contentProps={{ maxW: 'calc(100% - 194px)', position: 'relative' }}
+        >
+          <ContainerWithScrollY gradientHeight={ 48 } maxH="200px">
+            { addressData.implementations.map((item) => (
+              <AddressEntity
+                key={ item.address_hash }
+                address={{
+                  hash: item.address_hash,
+                  filecoin: { robust: item.filecoin_robust_address },
+                  name: item.name,
+                  is_contract: true,
+                }}
+                isLoading={ isLoading }
+                noIcon
+              />
+            )) }
+          </ContainerWithScrollY>
         </ContractDetailsInfoItem>
       ) }
       { data.compiler_version && (

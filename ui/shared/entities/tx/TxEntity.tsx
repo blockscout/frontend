@@ -5,9 +5,8 @@ import { route } from 'nextjs/routes';
 
 import config from 'configs/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
-import getChainTooltipText from 'lib/multichain/getChainTooltipText';
-import getIconUrl from 'lib/multichain/getIconUrl';
 import * as EntityBase from 'ui/shared/entities/base/components';
+import getChainTooltipText from 'ui/shared/externalChains/getChainTooltipText';
 
 import { distributeEntityProps } from '../base/utils';
 
@@ -16,7 +15,7 @@ type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'hash'>;
 const Link = chakra((props: LinkProps) => {
   const defaultHref = route(
     { pathname: '/tx/[hash]', query: { hash: props.hash } },
-    props.chain ? { chain: props.chain } : undefined,
+    { chain: props.chain, external: props.external },
   );
 
   return (
@@ -47,7 +46,7 @@ const Icon = (props: IconProps) => {
       return props.hint;
     }
 
-    if (props.chain) {
+    if (props.chain && props.shield !== false) {
       return getChainTooltipText(props.chain, 'Transaction on ');
     }
 
@@ -60,7 +59,7 @@ const Icon = (props: IconProps) => {
     <EntityBase.Icon
       { ...props }
       name={ name }
-      shield={ props.shield ?? (props.chain ? { src: getIconUrl(props.chain) } : undefined) }
+      shield={ props.shield ?? (props.chain ? { src: props.chain.logo } : undefined) }
       hint={ hint }
     />
   );

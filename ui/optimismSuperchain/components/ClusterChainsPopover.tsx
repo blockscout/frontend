@@ -1,25 +1,34 @@
 import { Box, chakra, VStack } from '@chakra-ui/react';
 import React from 'react';
 
-import { route } from 'nextjs-routes';
+import type * as multichain from '@blockscout/multichain-aggregator-types';
+
+import { route } from 'nextjs/routes';
 
 import multichainConfig from 'configs/multichain';
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';
 import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
+import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 import IconSvg from 'ui/shared/IconSvg';
-
-import ChainIcon from './ChainIcon';
 
 interface Props {
   addressHash: string;
+  data: multichain.GetAddressResponse | undefined;
+  isLoading: boolean;
 }
 
-const ClusterChainsPopover = ({ addressHash }: Props) => {
+const ClusterChainsPopover = ({ addressHash, data, isLoading }: Props) => {
+
+  if (!data) {
+    return null;
+  }
 
   const chains = multichainConfig()?.chains;
+  const activeChainsIds = Object.keys(data.chain_infos ?? {});
+  const activeChains = chains?.filter((chain) => activeChainsIds.includes(String(chain.id))) ?? [];
 
-  if (!chains || chains.length === 0) {
+  if (!isLoading && activeChains.length === 0) {
     return null;
   }
 
@@ -30,32 +39,40 @@ const ClusterChainsPopover = ({ addressHash }: Props) => {
           <Button
             size="sm"
             variant="dropdown"
-            aria-label="This address is on cluster chains"
+            aria-label="Chains this address has interacted with"
             px={ 2 }
             fontWeight={ 500 }
             flexShrink={ 0 }
             columnGap={ 1 }
+            loadingSkeleton={ isLoading }
           >
             <IconSvg name="pie_chart" boxSize={ 5 }/>
-            { chains.length } Chain{ chains.length > 1 ? 's' : '' }
+            { activeChains.length } Chain{ activeChains.length > 1 ? 's' : '' }
           </Button>
         </PopoverTrigger>
       </Box>
       <PopoverContent w="auto">
         <PopoverBody >
-          <chakra.span color="text.secondary" textStyle="xs">This address is on cluster chains</chakra.span>
+          <chakra.span color="text.secondary" textStyle="xs">Chains this address has interacted with</chakra.span>
           <VStack gap={ 2 } mt={ 1 } alignItems="flex-start">
-            { chains.map((chain) => (
+            { activeChains.map((chain) => (
               <Link
-                key={ chain.slug }
-                href={ chain.config.app.baseUrl + route({ pathname: '/address/[hash]', query: { hash: addressHash } }) }
+                key={ chain.id }
+                href={ route({
+                  pathname: '/address/[hash]',
+                  query: {
+                    hash: addressHash,
+                    utm_source: 'multichain-explorer',
+                    utm_medium: 'address',
+                  },
+                }, { chain, external: true }) }
                 external
                 display="flex"
                 alignItems="center"
                 py="7px"
               >
                 <ChainIcon data={ chain } mr={ 2 }/>
-                { chain.config.chain.name }
+                { chain.name }
               </Link>
             )) }
           </VStack>

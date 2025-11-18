@@ -46,7 +46,7 @@ const Revoke = () => {
   const [ searchAddress, setSearchAddress ] = useState(addressFromQuery || '');
   const [ searchInputValue, setSearchInputValue ] = useState('');
 
-  const selectedChain = essentialDappsChainsConfig()?.chains.find((chain) => chain.config.chain.id === selectedChainId[0]);
+  const selectedChain = essentialDappsChainsConfig()?.chains.find((chain) => chain.id === selectedChainId[0]);
 
   const approvalsQuery = useApprovalsQuery(selectedChain, searchAddress);
   const coinBalanceQuery = useCoinBalanceQuery(selectedChain, searchAddress);
@@ -209,6 +209,7 @@ const Revoke = () => {
             <ChainSelect
               value={ selectedChainId }
               onValueChange={ handleChainValueChange }
+              mode="default"
             />
           </Flex>
         </Flex>

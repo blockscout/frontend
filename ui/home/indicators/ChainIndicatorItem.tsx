@@ -1,50 +1,45 @@
 import { Text, Flex, Box } from '@chakra-ui/react';
 import React from 'react';
 
+import type { TChainIndicator } from './types';
 import type { ChainIndicatorId } from 'types/homepage';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
-
 interface Props {
-  id: ChainIndicatorId;
-  title: string;
-  value?: string;
-  valueDiff?: number | null | undefined;
-  icon: React.ReactNode;
+  indicator: TChainIndicator;
   isSelected: boolean;
   onClick: (id: ChainIndicatorId) => void;
   isLoading: boolean;
-  hasData: boolean;
 }
 
-const ChainIndicatorItem = ({ id, title, value, valueDiff, icon, isSelected, onClick, isLoading, hasData }: Props) => {
+const ChainIndicatorItem = ({ indicator, isSelected, onClick, isLoading }: Props) => {
   const handleClick = React.useCallback(() => {
-    onClick(id);
-  }, [ id, onClick ]);
+    onClick(indicator.id);
+  }, [ indicator.id, onClick ]);
 
   const valueContent = (() => {
-    if (!hasData) {
+    if (indicator.value.includes('N/A')) {
       return <Text color="text.secondary" fontWeight={ 400 }>no data</Text>;
     }
 
     return (
       <Skeleton loading={ isLoading } fontWeight={ 600 } minW="30px">
-        { value }
+        { indicator.value }
       </Skeleton>
     );
   })();
 
   const valueDiffContent = (() => {
-    if (valueDiff === undefined || valueDiff === null) {
+    if (indicator.valueDiff === undefined) {
       return null;
     }
 
-    const diffColor = valueDiff >= 0 ? 'green.500' : 'red.500';
+    const diffColor = indicator.valueDiff >= 0 ? 'green.500' : 'red.500';
 
     return (
       <Skeleton loading={ isLoading } ml={ 1 } display="flex" alignItems="center" color={ diffColor }>
-        <span>{ valueDiff >= 0 ? '+' : '-' }</span>
-        <Text color={ diffColor } fontWeight={ 600 }>{ Math.abs(valueDiff) }%</Text>
+        <span>{ indicator.valueDiff >= 0 ? '+' : '-' }</span>
+        <Text color={ diffColor } fontWeight={ 600 }>{ Math.abs(indicator.valueDiff) }%</Text>
       </Skeleton>
     );
   })();
@@ -60,19 +55,19 @@ const ChainIndicatorItem = ({ id, title, value, valueDiff, icon, isSelected, onC
       borderRadius="base"
       cursor="pointer"
       color={ isSelected ? 'text.secondary' : 'link.primary' }
-      bgColor={ isSelected ? { _light: 'white', _dark: 'black' } : undefined }
+      bgColor={ isSelected ? 'bg.primary' : undefined }
       onClick={ handleClick }
       fontSize="xs"
       fontWeight={ 500 }
       _hover={{
-        bgColor: { _light: 'white', _dark: 'black' },
+        bgColor: 'bg.primary',
         color: isSelected ? 'text.secondary' : 'hover',
         zIndex: 1,
       }}
     >
-      { icon }
+      { indicator.icon }
       <Box display={{ base: 'none', lg: 'block' }}>
-        <span>{ title }</span>
+        <span>{ indicator.titleShort || indicator.title }</span>
         <Flex alignItems="center" color="text.primary">
           { valueContent }
           { valueDiffContent }

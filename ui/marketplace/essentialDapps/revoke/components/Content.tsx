@@ -1,8 +1,8 @@
 import { Flex, Text, Separator } from '@chakra-ui/react';
 import React, { useState, useCallback, useMemo } from 'react';
 
+import type { EssentialDappsChainConfig } from 'types/client/marketplace';
 import type { AllowanceType } from 'types/client/revoke';
-import type { ChainConfig } from 'types/multichain';
 
 import { route } from 'nextjs/routes';
 
@@ -22,7 +22,7 @@ import Approvals from './Approvals';
 
 type Props = {
   searchAddress: string;
-  selectedChain: ChainConfig | undefined;
+  selectedChain: EssentialDappsChainConfig | undefined;
   isAddressMatch: boolean;
   coinBalanceQuery: ReturnType<typeof useCoinBalanceQuery>;
   approvalsQuery: ReturnType<typeof useApprovalsQuery>;
@@ -143,7 +143,7 @@ const Content = ({
               ) }
             </Skeleton>
             <Link
-              href={ selectedChain?.config.app.baseUrl + route({ pathname: '/address/[hash]', query: { hash: searchAddress } }) }
+              href={ route({ pathname: '/address/[hash]', query: { hash: searchAddress } }, { chain: selectedChain, external: true }) }
               external
               textStyle="sm"
               fontWeight="500"

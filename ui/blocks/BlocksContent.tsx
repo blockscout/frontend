@@ -10,7 +10,6 @@ import { route } from 'nextjs/routes';
 import { getResourceKey } from 'lib/api/useApiQuery';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import useIsMobile from 'lib/hooks/useIsMobile';
-import { getChainDataForList } from 'lib/multichain/getChainDataForList';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import { Link } from 'toolkit/chakra/link';
@@ -45,7 +44,7 @@ const BlocksContent = ({ type, query, enableSocket = true, top }: Props) => {
   const handleNewBlockMessage: SocketMessage.NewBlock['handler'] = React.useCallback((payload) => {
     const queryKey = getResourceKey('general:blocks', {
       queryParams: { type },
-      chainSlug: multichainContext?.chain?.slug,
+      chainId: multichainContext?.chain?.id,
     });
 
     queryClient.setQueryData(queryKey, (prevData: BlocksResponse | undefined) => {
@@ -70,7 +69,7 @@ const BlocksContent = ({ type, query, enableSocket = true, top }: Props) => {
       const newItems = [ payload.block, ...prevData.items ].sort((b1, b2) => b2.height - b1.height);
       return { ...prevData, items: newItems };
     });
-  }, [ multichainContext?.chain?.slug, queryClient, type ]);
+  }, [ multichainContext?.chain?.id, queryClient, type ]);
 
   const handleSocketClose = React.useCallback(() => {
     setShowSocketAlert(true);
@@ -92,7 +91,7 @@ const BlocksContent = ({ type, query, enableSocket = true, top }: Props) => {
     handler: handleNewBlockMessage,
   });
 
-  const chainData = getChainDataForList(multichainContext);
+  const chainData = multichainContext?.chain;
 
   const content = query.data?.items ? (
     <>

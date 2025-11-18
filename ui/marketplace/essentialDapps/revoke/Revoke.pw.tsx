@@ -7,7 +7,7 @@ import { test, expect } from 'playwright/lib';
 import Revoke from './Revoke';
 
 const ESSENTIAL_DAPPS_CONFIG = JSON.stringify({
-  revoke: { chains: [ opSuperchainMock.chainDataA.config.chain.id ] },
+  revoke: { chains: [ opSuperchainMock.chainDataA.id ] },
 });
 
 test('base view +@dark-mode +@mobile', async({ render, mockEnvs, mockEssentialDappsChainsConfig }: TestFnArgs) => {

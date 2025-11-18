@@ -68,16 +68,17 @@ export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/cc/tx/[hash]': 'Cross-chain transaction details',
 
   // multichain routes
-  '/chain/[chain-slug]/accounts/label/[slug]': 'Chain addresses search by label',
-  '/chain/[chain-slug]/advanced-filter': 'Chain advanced filter',
-  '/chain/[chain-slug]/block/[height_or_hash]': 'Chain block details',
-  '/chain/[chain-slug]/block/countdown': 'Chain block countdown index',
-  '/chain/[chain-slug]/block/countdown/[height]': 'Chain block countdown',
-  '/chain/[chain-slug]/csv-export': 'Chain export data to CSV',
-  '/chain/[chain-slug]/op/[hash]': 'Chain user operation details',
-  '/chain/[chain-slug]/token/[hash]': 'Chain token details',
-  '/chain/[chain-slug]/token/[hash]/instance/[id]': 'Chain token NFT instance',
-  '/chain/[chain-slug]/tx/[hash]': 'Chain transaction details',
+  '/chain/[chain_slug]/accounts/label/[slug]': 'Chain addresses search by label',
+  '/chain/[chain_slug]/advanced-filter': 'Chain advanced filter',
+  '/chain/[chain_slug]/block/[height_or_hash]': 'Chain block details',
+  '/chain/[chain_slug]/block/countdown': 'Chain block countdown index',
+  '/chain/[chain_slug]/block/countdown/[height]': 'Chain block countdown',
+  '/chain/[chain_slug]/csv-export': 'Chain export data to CSV',
+  '/chain/[chain_slug]/op/[hash]': 'Chain user operation details',
+  '/chain/[chain_slug]/token/[hash]': 'Chain token details',
+  '/chain/[chain_slug]/token/[hash]/instance/[id]': 'Chain token NFT instance',
+  '/chain/[chain_slug]/tx/[hash]': 'Chain transaction details',
+  '/chain/[chain_slug]/visualize/sol2uml': 'Chain Solidity UML diagram',
 
   // service routes, added only to make typescript happy
   '/login': 'Login',

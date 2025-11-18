@@ -1,7 +1,7 @@
 import { Box, Flex } from '@chakra-ui/react';
 
+import type { EssentialDappsChainConfig } from 'types/client/marketplace';
 import type { AllowanceType } from 'types/client/revoke';
-import type { ChainConfig } from 'types/multichain';
 
 import DataListDisplay from 'ui/shared/DataListDisplay';
 
@@ -9,7 +9,7 @@ import ApprovalsListItem from './ApprovalsListItem';
 import ApprovalsTable from './ApprovalsTable';
 
 type Props = {
-  selectedChain: ChainConfig | undefined;
+  selectedChain: EssentialDappsChainConfig | undefined;
   approvals: Array<AllowanceType>;
   isLoading?: boolean;
   isAddressMatch?: boolean;

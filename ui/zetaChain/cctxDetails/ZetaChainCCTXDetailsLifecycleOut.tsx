@@ -26,7 +26,7 @@ type Props = {
 const ZetaChainCCTXDetailsLifecycleOut = ({ outboundParam, tx, isLoading, isLast, hasTxAfter }: Props) => {
   const { data: chainsConfig } = useZetaChainConfig();
   const chainToId = outboundParam.receiver_chain_id?.toString() || '';
-  const chainTo = chainsConfig?.find((chain) => chain.chain_id.toString() === chainToId);
+  const chainTo = chainsConfig?.find((chain) => chain.id.toString() === chainToId);
 
   const gasDecimals = config.chain.currency.decimals;
 
@@ -94,7 +94,7 @@ const ZetaChainCCTXDetailsLifecycleOut = ({ outboundParam, tx, isLoading, isLast
         </Text>
       </>
     );
-    text = `Sent tx to ${ chainTo?.chain_name || 'Unknown chain' }`;
+    text = `Sent tx to ${ chainTo?.name || 'Unknown chain' }`;
     color = 'text.success';
   } else if (tx.cctx_status?.status === CctxStatus.PENDING_REVERT) {
     if (!isLast) {
@@ -119,7 +119,7 @@ const ZetaChainCCTXDetailsLifecycleOut = ({ outboundParam, tx, isLoading, isLast
           />
         </>
       );
-      text = `Waiting for revert to ${ chainTo?.chain_name || 'Unknown chain' }`;
+      text = `Waiting for revert to ${ chainTo?.name || 'Unknown chain' }`;
       color = 'text.secondary';
     }
   } else if (tx.cctx_status?.status === CctxStatus.PENDING_OUTBOUND) {
@@ -136,7 +136,7 @@ const ZetaChainCCTXDetailsLifecycleOut = ({ outboundParam, tx, isLoading, isLast
         <Text>{ outboundParam.tss_nonce }</Text>
       </>
     );
-    text = `Waiting for outbound tx to ${ chainTo?.chain_name || 'Unknown chain' }`;
+    text = `Waiting for outbound tx to ${ chainTo?.name || 'Unknown chain' }`;
     color = 'text.secondary';
   } else if (tx.cctx_status?.status === CctxStatus.REVERTED) {
     if (!isLast) {
@@ -176,7 +176,7 @@ const ZetaChainCCTXDetailsLifecycleOut = ({ outboundParam, tx, isLoading, isLast
           </Text>
         </>
       );
-      text = `Reverted to ${ chainTo?.chain_name || 'Unknown chain' }`;
+      text = `Reverted to ${ chainTo?.name || 'Unknown chain' }`;
       color = 'text.success';
     }
   } else if (tx.cctx_status?.status === CctxStatus.ABORTED) {
@@ -218,10 +218,10 @@ const ZetaChainCCTXDetailsLifecycleOut = ({ outboundParam, tx, isLoading, isLast
       <Flex
         h="100%"
         w="100%"
-        bg={ (isLast && !hasTxAfter) ? { _light: 'white', _dark: 'black' } : 'transparent' }
+        bg={ (isLast && !hasTxAfter) ? 'bg.primary' : 'transparent' }
         zIndex={ 1 }
       >
-        <IconSvg name="verification-steps/finalized" boxSize={ 5 } bg={{ _light: 'white', _dark: 'black' }} zIndex={ 1 } color={ color }/>
+        <IconSvg name="verification-steps/finalized" boxSize={ 5 } bg="bg.primary" zIndex={ 1 } color={ color }/>
       </Flex>
       <Skeleton loading={ isLoading } w="100%" overflow="hidden">
         <Flex color={ color } maxH="20px" alignItems="center" mb={ 2.5 }>

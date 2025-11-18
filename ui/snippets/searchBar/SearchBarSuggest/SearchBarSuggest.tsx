@@ -4,9 +4,10 @@ import { debounce } from 'es-toolkit';
 import React from 'react';
 
 import type { ListCctxsResponse } from '@blockscout/zetachain-cctx-types';
-import type { SearchResultItem } from 'types/api/search';
+import type { QuickSearchResultItem } from 'types/client/search';
 
 import config from 'configs/app';
+import multichainConfig from 'configs/multichain';
 import type { ResourceError } from 'lib/api/resources';
 import { useSettingsContext } from 'lib/contexts/settings';
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -28,7 +29,7 @@ import SearchBarSuggestZetaChainCCTX from './SearchBarSuggestZetaChainCCTX';
 const TABS_HEIGHT = 72;
 
 interface Props {
-  query: UseQueryResult<Array<SearchResultItem>, ResourceError<unknown>>;
+  query: UseQueryResult<Array<QuickSearchResultItem>, ResourceError<unknown>>;
   zetaChainCCTXQuery: UseQueryResult<ListCctxsResponse, ResourceError<unknown>>;
   externalSearchItem: ExternalSearchItemType;
   searchTerm: string;
@@ -111,7 +112,7 @@ const SearchBarSuggest = ({ query, zetaChainCCTXQuery, externalSearchItem, searc
       map.zetaChainCCTX = zetaChainCCTXQuery.data.items;
     }
 
-    if (Object.keys(map).length > 0 && !map.block && regexp.BLOCK_HEIGHT.test(searchTerm)) {
+    if (Object.keys(map).length > 0 && !map.block && regexp.BLOCK_HEIGHT.test(searchTerm) && !multichainConfig()) {
       map['block'] = [ {
         type: 'block',
         block_type: 'block',
@@ -169,7 +170,7 @@ const SearchBarSuggest = ({ query, zetaChainCCTXQuery, externalSearchItem, searc
 
     if (resultCategories.length === 0 && !externalSearchItem) {
       if (regexp.BLOCK_HEIGHT.test(searchTerm)) {
-        return <SearchBarSuggestBlockCountdown blockHeight={ searchTerm } onClick={ onItemClick }/>;
+        return <SearchBarSuggestBlockCountdown blockHeight={ searchTerm } isMultichain={ Boolean(multichainConfig()) } onClick={ onItemClick }/>;
       }
 
       return <Text>No results found.</Text>;

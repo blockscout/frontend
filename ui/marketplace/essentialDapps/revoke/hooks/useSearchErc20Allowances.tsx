@@ -6,8 +6,8 @@ import type { PublicClient, Log } from 'viem';
 
 import type { AddressTokenBalancesResponse } from 'types/api/address';
 import type { TokenInfo } from 'types/api/token';
+import type { EssentialDappsChainConfig } from 'types/client/marketplace';
 import type { AllowanceType, ContractAllowanceType } from 'types/client/revoke';
-import type { ChainConfig } from 'types/multichain';
 
 import useApiFetch from 'lib/api/useApiFetch';
 
@@ -80,7 +80,7 @@ const useGetERC20TokenData = () => {
 
   return useCallback(async(
     tokenAddress: `0x${ string }`,
-    chain: ChainConfig | undefined,
+    chain: EssentialDappsChainConfig | undefined,
     signal?: AbortSignal,
   ) => {
     try {
@@ -114,7 +114,7 @@ const useGetERC20Allowances = () => {
   const apiFetch = useApiFetch();
 
   return useCallback(async(
-    chain: ChainConfig | undefined,
+    chain: EssentialDappsChainConfig | undefined,
     tokenAddresses: Array<`0x${ string }`>,
     searchQuery: string,
     approvals: Array<Log>,
@@ -215,7 +215,7 @@ export default function useSearchErc20Allowances() {
   const getERC20Allowances = useGetERC20Allowances();
 
   return useCallback(async(
-    chain: ChainConfig | undefined,
+    chain: EssentialDappsChainConfig | undefined,
     searchQuery: string,
     approvalEvents: Array<Log>,
     publicClient: PublicClient,

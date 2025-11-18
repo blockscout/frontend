@@ -1,7 +1,7 @@
 import React from 'react';
 
 import type { UserOpsItem } from 'types/api/userOps';
-import type { ChainConfig } from 'types/multichain';
+import type { ClusterChainConfig } from 'types/multichain';
 
 import config from 'configs/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
@@ -19,12 +19,12 @@ type Props = {
   isLoading?: boolean;
   showTx: boolean;
   showSender: boolean;
-  chainData?: ChainConfig;
+  chainData?: ClusterChainConfig;
 };
 
 const UserOpsListItem = ({ item, isLoading, showTx, showSender, chainData }: Props) => {
   const multichainContext = useMultichainContext();
-  const chainConfig = (multichainContext?.chain.config || config);
+  const chainConfig = (multichainContext?.chain.app_config || config);
 
   return (
     <ListItemMobileGrid.Container gridTemplateColumns="100px auto">

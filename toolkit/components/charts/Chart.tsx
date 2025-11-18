@@ -18,7 +18,6 @@ import { useTimeChartController } from './utils/useTimeChartController';
 
 export interface ChartProps {
   charts: TimeChartData;
-  title: string;
   zoomRange?: [ Date, Date ];
   onZoom: (range: [ Date, Date ]) => void;
   margin?: ChartMargin;

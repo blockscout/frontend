@@ -8,10 +8,12 @@ import type { StatsIntervalIds } from 'types/client/stats';
 import { StatsIntervalId } from 'types/client/stats';
 
 import config from 'configs/app';
+import { useMultichainContext } from 'lib/contexts/multichain';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import * as metadata from 'lib/metadata';
 import * as mixpanel from 'lib/mixpanel/index';
+import useRoutedChainSelect from 'lib/multichain/useRoutedChainSelect';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { Button } from 'toolkit/chakra/button';
 import type { SelectOption } from 'toolkit/chakra/select';
@@ -20,6 +22,7 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import { ChartWidgetContent, useChartZoom } from 'toolkit/components/charts';
 import ChartMenu from 'toolkit/components/charts/parts/ChartMenu';
 import { isBrowser } from 'toolkit/utils/isBrowser';
+import ChainSelect from 'ui/optimismSuperchain/components/ChainSelect';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
 import ChartIntervalSelect from 'ui/shared/chart/ChartIntervalSelect';
 import { useChartsConfig } from 'ui/shared/chart/config';
@@ -83,6 +86,8 @@ const Chart = () => {
   const isMobile = useIsMobile();
   const isInBrowser = isBrowser();
   const chartsConfig = useChartsConfig();
+  const chainSelect = useRoutedChainSelect();
+  const multichainContext = useMultichainContext();
 
   const onIntervalChange = React.useCallback((interval: StatsIntervalIds) => {
     setIntervalState(interval);
@@ -192,6 +197,13 @@ const Chart = () => {
       />
       <Flex alignItems="center" justifyContent="space-between">
         <Flex alignItems="center" gap={{ base: 3, lg: 6 }} maxW="100%">
+          { multichainContext?.chain && (
+            <ChainSelect
+              value={ chainSelect.value }
+              onValueChange={ chainSelect.onValueChange }
+              loading={ isInfoLoading }
+            />
+          ) }
           <Flex alignItems="center" gap={ 3 }>
             { !isMobile && <Text>Period</Text> }
             <ChartIntervalSelect interval={ interval } onIntervalChange={ onIntervalChange }/>
@@ -270,7 +282,6 @@ const Chart = () => {
         <ChartWidgetContent
           isError={ lineQuery.isError }
           charts={ charts }
-          title={ info?.title || '' }
           isEnlarged
           isLoading={ lineQuery.isPlaceholderData }
           zoomRange={ zoomRange }

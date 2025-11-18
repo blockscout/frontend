@@ -1687,20 +1687,20 @@
   resolved "https://registry.yarnpkg.com/@blockscout/bens-types/-/bens-types-1.4.1.tgz#9182a79d9015b7fa2339edf0bfa3cd0c32045e66"
   integrity sha512-TlZ1HVdZ2Cswm/CcvNoxS+Ydiht/YGaLo//PJR/UmkmihlEFoY4HfVJvVcUnOQXi+Si7FwJ486DPii889nTJsQ==
 
-"@blockscout/multichain-aggregator-types@1.6.0-alpha.2":
-  version "1.6.0-alpha.2"
-  resolved "https://registry.yarnpkg.com/@blockscout/multichain-aggregator-types/-/multichain-aggregator-types-1.6.0-alpha.2.tgz#13f07652029a5d3bdcf4a07207c22599e3a5b08a"
-  integrity sha512-/013NEL+kC+vx3qOWWRTMhVFFifMjFXSRTjUkxnJPYrgdBZbYSNI1kB8vqe7z7nshu6uedkpgNMW2HpiVKUvQw==
+"@blockscout/multichain-aggregator-types@1.6.3-alpha.3":
+  version "1.6.3-alpha.3"
+  resolved "https://registry.yarnpkg.com/@blockscout/multichain-aggregator-types/-/multichain-aggregator-types-1.6.3-alpha.3.tgz#76169e8276552130a1424cc9dc24bfb31bbb7e3d"
+  integrity sha512-i2w0M2BSFAnzwAOwQJwxN6hfqLZP44XiuZtlYGgmJtmRgakp6O0N1/nm+19CnyfQCrbBzUsDaVzKhcVjxBK/xw==
 
 "@blockscout/points-types@1.4.0-alpha.1":
   version "1.4.0-alpha.1"
   resolved "https://registry.yarnpkg.com/@blockscout/points-types/-/points-types-1.4.0-alpha.1.tgz#326885fcdda7c478440e4737efdfe105a29565fb"
   integrity sha512-DaN42ulieCLjoKyDqVc5jCuho/A8g1k7OUpOMnVgc7k8D1esSlCg+LclJ7vrcigdUXsJ5cx2nlCkySKUOfr4mA==
 
-"@blockscout/stats-types@2.10.0-alpha":
-  version "2.10.0-alpha"
-  resolved "https://registry.yarnpkg.com/@blockscout/stats-types/-/stats-types-2.10.0-alpha.tgz#eb0babf59ef01dfd0ff9b7700aebf15905aa4d6e"
-  integrity sha512-DzffwodJrn5k4oENtEAmexKwK9ERqibq9dn17sxfhcEBemcUPEiu9eQJbd+bepSyt+OumWlynUv4hEWxSBaFPA==
+"@blockscout/stats-types@2.11.1":
+  version "2.11.1"
+  resolved "https://registry.yarnpkg.com/@blockscout/stats-types/-/stats-types-2.11.1.tgz#686e387ee4d8f21db1c800279cc9209ef915e0b5"
+  integrity sha512-Ti9RbekRfLR7dUnOp2dWU0VBu7uRkutnkFqKphvfxvbrY9fiXUJ/tT6Qg+OTNewK3RbuQ0O1ZPxbqMX5eRr0OQ==
 
 "@blockscout/tac-operation-lifecycle-types@0.0.1-alpha.6":
   version "0.0.1-alpha.6"

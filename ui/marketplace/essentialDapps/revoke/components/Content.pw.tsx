@@ -23,6 +23,7 @@ test('base view +@dark-mode +@mobile', async({ render, mockAssetResponse }: Test
   };
 
   await mockAssetResponse(revokeMock.allowances[0].tokenIcon as string, './playwright/mocks/image_s.jpg');
+  await mockAssetResponse(opSuperchainMock.chainDataA.logo as string, './playwright/mocks/image_md.jpg');
 
   const component = await render(<Content { ...props }/>);
 

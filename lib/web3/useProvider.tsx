@@ -10,7 +10,7 @@ import useDetectWalletEip6963 from './useDetectWalletEip6963';
 
 export default function useProvider() {
   const multichainContext = useMultichainContext();
-  const feature = (multichainContext?.chain.config ?? config).features.web3Wallet;
+  const feature = (multichainContext?.chain.app_config ?? config).features.web3Wallet;
   const wallets = getFeaturePayload(feature)?.wallets;
 
   const { detect: detectWalletEip6963 } = useDetectWalletEip6963();

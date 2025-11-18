@@ -497,9 +497,9 @@ const Container = ({ children }: { children: React.ReactNode }) => (
 );
 
 const widgetConfig = Object.fromEntries(dappConfig?.chains.map((chainId) => {
-  const chainConfig = essentialDappsChainsConfig()?.chains.find((chain) => chain.config.chain.id === chainId);
-  const explorerUrl = chainConfig?.config.app.baseUrl;
-  const apiUrl = chainConfig?.config.apis.general?.endpoint;
+  const chainConfig = essentialDappsChainsConfig()?.chains.find((chain) => chain.id === chainId);
+  const explorerUrl = chainConfig?.app_config?.app?.baseUrl;
+  const apiUrl = chainConfig?.app_config?.apis?.general?.endpoint;
   return [
     chainId,
     {

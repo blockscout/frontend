@@ -7,8 +7,6 @@ import config from 'configs/app';
 import type { SelectOption } from 'toolkit/chakra/select';
 import PopoverFilterRadio from 'ui/shared/filters/PopoverFilterRadio';
 
-type OptionValue = TVerifiedContractsFilter | 'all';
-
 const OPTIONS = [
   { value: 'all', label: 'All' },
   { value: 'solidity', label: 'Solidity' },
@@ -17,19 +15,24 @@ const OPTIONS = [
   { value: 'scilla', label: 'Scilla' },
   { value: 'geas', label: 'Geas' },
   { value: 'stylus_rust', label: 'Stylus Rust' },
-].filter(({ value }) => value === 'all' || config.UI.views.address.languageFilters.includes(value)) as Array<{ value: OptionValue; label: string }>;
-
-const collection = createListCollection<SelectOption>({
-  items: OPTIONS,
-});
+];
 
 interface Props {
   hasActiveFilter: boolean;
   defaultValue: TVerifiedContractsFilter | undefined;
   onChange: (nextValue: string | Array<string>) => void;
+  chainConfig?: typeof config;
 }
 
-const VerifiedContractsFilter = ({ onChange, defaultValue, hasActiveFilter }: Props) => {
+const VerifiedContractsFilter = ({ onChange, defaultValue, hasActiveFilter, chainConfig }: Props) => {
+  const options = React.useMemo(() => {
+    return OPTIONS.filter(({ value }) => value === 'all' || (chainConfig || config).UI.views.address.languageFilters.includes(value));
+  }, [ chainConfig ]);
+
+  const collection = React.useMemo(() => {
+    return createListCollection<SelectOption>({ items: options });
+  }, [ options ]);
+
   return (
     <PopoverFilterRadio
       name="verified_contracts_filter"

@@ -1,8 +1,9 @@
-import { Grid, Flex } from '@chakra-ui/react';
+import { Flex, Grid } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenInstance } from 'types/api/token';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
+import type { ClusterChainConfig } from 'types/multichain';
 
 import getCurrencyValue from 'lib/getCurrencyValue';
 import { NFT_TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
@@ -15,7 +16,7 @@ import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import TruncatedValue from 'ui/shared/TruncatedValue';
 
-type Props = TokenTransfer & { tokenId?: string; isLoading?: boolean; instance?: TokenInstance };
+type Props = TokenTransfer & { tokenId?: string; isLoading?: boolean; instance?: TokenInstance; chainData?: ClusterChainConfig };
 
 const TokenTransferListItem = ({
   token,
@@ -28,6 +29,7 @@ const TokenTransferListItem = ({
   tokenId,
   isLoading,
   instance,
+  chainData,
 }: Props) => {
   const { usd, valueStr } = total && 'value' in total && total.value !== null ? getCurrencyValue({
     value: total.value,
@@ -46,6 +48,7 @@ const TokenTransferListItem = ({
             hash={ txHash }
             truncation="constant_long"
             fontWeight="700"
+            chain={ chainData }
           />
         ) }
         <TimeWithTooltip

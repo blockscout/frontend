@@ -74,16 +74,17 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/cc/tx/[hash]': '%network_name% cross-chain transaction %hash% details',
 
   // multichain routes
-  '/chain/[chain-slug]/accounts/label/[slug]': '%network_name% addresses search by label',
-  '/chain/[chain-slug]/advanced-filter': '%network_name% advanced filter',
-  '/chain/[chain-slug]/block/[height_or_hash]': '%network_name% block %height_or_hash% details',
-  '/chain/[chain-slug]/block/countdown': '%network_name% block countdown index',
-  '/chain/[chain-slug]/block/countdown/[height]': '%network_name% block %height% countdown',
-  '/chain/[chain-slug]/csv-export': '%network_name% export data to CSV',
-  '/chain/[chain-slug]/op/[hash]': '%network_name% user operation %hash% details',
-  '/chain/[chain-slug]/token/[hash]': '%network_name% token details',
-  '/chain/[chain-slug]/token/[hash]/instance/[id]': '%network_name% token NFT instance',
-  '/chain/[chain-slug]/tx/[hash]': '%network_name% transaction %hash% details',
+  '/chain/[chain_slug]/accounts/label/[slug]': '%network_name% addresses search by label',
+  '/chain/[chain_slug]/advanced-filter': '%network_name% advanced filter',
+  '/chain/[chain_slug]/block/[height_or_hash]': '%network_name% block %height_or_hash% details',
+  '/chain/[chain_slug]/block/countdown': '%network_name% block countdown index',
+  '/chain/[chain_slug]/block/countdown/[height]': '%network_name% block %height% countdown',
+  '/chain/[chain_slug]/csv-export': '%network_name% export data to CSV',
+  '/chain/[chain_slug]/op/[hash]': '%network_name% user operation %hash% details',
+  '/chain/[chain_slug]/token/[hash]': '%network_name% token details',
+  '/chain/[chain_slug]/token/[hash]/instance/[id]': '%network_name% token NFT instance',
+  '/chain/[chain_slug]/tx/[hash]': '%network_name% transaction %hash% details',
+  '/chain/[chain_slug]/visualize/sol2uml': '%network_name% Solidity UML diagram',
 
   // service routes, added only to make typescript happy
   '/login': '%network_name% login',

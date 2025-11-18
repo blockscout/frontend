@@ -2,7 +2,6 @@ import { Box } from '@chakra-ui/react';
 import type { Locator } from '@playwright/test';
 import React from 'react';
 
-import getIconUrl from 'lib/multichain/getIconUrl';
 import * as countersMock from 'mocks/address/counters';
 import * as opSuperchainMock from 'mocks/multichain/opSuperchain';
 import * as txMock from 'mocks/txs/tx';
@@ -37,11 +36,11 @@ test.describe('local txs', () => {
       countersMock.forContract,
       { pathParams: { hash: CURRENT_ADDRESS }, chainConfig: opSuperchainMock.chainDataA },
     );
-    await mockAssetResponse(getIconUrl(opSuperchainMock.chainDataA) as string, './playwright/mocks/image_s.jpg');
+    await mockAssetResponse(opSuperchainMock.chainDataA.logo as string, './playwright/mocks/image_s.jpg');
 
     component = await render(
       <Box pt={{ base: '134px', lg: 6 }}>
-        <OpSuperchainAddressTxs/>
+        <OpSuperchainAddressTxs addressData={ opSuperchainMock.addressA } isLoading={ false }/>
       </Box>,
       { hooksConfig },
       { withSocket: true },

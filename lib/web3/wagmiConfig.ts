@@ -11,15 +11,15 @@ import { chains, parentChain } from 'lib/web3/chains';
 
 const feature = appConfig.features.blockchainInteraction;
 
-const getChainTransportFromConfig = (config: typeof appConfig, readOnly?: boolean): Record<string, Transport> => {
-  if (!config.chain.id) {
+const getChainTransportFromConfig = (config: Partial<typeof appConfig> | undefined, readOnly?: boolean): Record<string, Transport> => {
+  if (!config?.chain?.id) {
     return {};
   }
 
   return {
     [config.chain.id]: fallback(
       config.chain.rpcUrls
-        .concat(readOnly ? `${ config.apis.general.endpoint }/api/eth-rpc` : '')
+        .concat(readOnly && config.apis?.general ? `${ config.apis.general.endpoint }/api/eth-rpc` : '')
         .filter(Boolean)
         .map((url) => http(url, { batch: { wait: 100, batchSize: 5 } })),
     ),
@@ -36,7 +36,7 @@ const reduceExternalChainsToTransportConfig = (readOnly: boolean): Record<string
   }
 
   return chains
-    .map(({ config }) => getChainTransportFromConfig(config, readOnly))
+    .map(({ app_config: config }) => getChainTransportFromConfig(config, readOnly))
     .reduce((result, item) => {
       Object.entries(item).map(([ id, transport ]) => {
         result[id] = transport;

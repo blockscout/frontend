@@ -65,7 +65,7 @@ const BlockDetails = ({ query }: Props) => {
     const increment = direction === 'next' ? +1 : -1;
     const nextId = String(data.height + increment);
 
-    router.push(routeParams({ pathname: '/block/[height_or_hash]', query: { height_or_hash: nextId } }, multichainContext), undefined);
+    router.push(routeParams({ pathname: '/block/[height_or_hash]', query: { height_or_hash: nextId } }, { chain: multichainContext?.chain }));
   }, [ data, multichainContext, router ]);
 
   if (!data) {

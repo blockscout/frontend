@@ -39,16 +39,17 @@ declare module "nextjs-routes" {
     | StaticRoute<"/block/countdown">
     | StaticRoute<"/blocks">
     | DynamicRoute<"/cc/tx/[hash]", { "hash": string }>
-    | DynamicRoute<"/chain/[chain-slug]/accounts/label/[slug]", { "chain-slug": string; "slug": string }>
-    | DynamicRoute<"/chain/[chain-slug]/advanced-filter", { "chain-slug": string }>
-    | DynamicRoute<"/chain/[chain-slug]/block/[height_or_hash]", { "chain-slug": string; "height_or_hash": string }>
-    | DynamicRoute<"/chain/[chain-slug]/block/countdown/[height]", { "chain-slug": string; "height": string }>
-    | DynamicRoute<"/chain/[chain-slug]/block/countdown", { "chain-slug": string }>
-    | DynamicRoute<"/chain/[chain-slug]/csv-export", { "chain-slug": string }>
-    | DynamicRoute<"/chain/[chain-slug]/op/[hash]", { "chain-slug": string; "hash": string }>
-    | DynamicRoute<"/chain/[chain-slug]/token/[hash]", { "chain-slug": string; "hash": string }>
-    | DynamicRoute<"/chain/[chain-slug]/token/[hash]/instance/[id]", { "chain-slug": string; "hash": string; "id": string }>
-    | DynamicRoute<"/chain/[chain-slug]/tx/[hash]", { "chain-slug": string; "hash": string }>
+    | DynamicRoute<"/chain/[chain_slug]/accounts/label/[slug]", { "chain_slug": string; "slug": string }>
+    | DynamicRoute<"/chain/[chain_slug]/advanced-filter", { "chain_slug": string }>
+    | DynamicRoute<"/chain/[chain_slug]/block/[height_or_hash]", { "chain_slug": string; "height_or_hash": string }>
+    | DynamicRoute<"/chain/[chain_slug]/block/countdown/[height]", { "chain_slug": string; "height": string }>
+    | DynamicRoute<"/chain/[chain_slug]/block/countdown", { "chain_slug": string }>
+    | DynamicRoute<"/chain/[chain_slug]/csv-export", { "chain_slug": string }>
+    | DynamicRoute<"/chain/[chain_slug]/op/[hash]", { "chain_slug": string; "hash": string }>
+    | DynamicRoute<"/chain/[chain_slug]/token/[hash]", { "chain_slug": string; "hash": string }>
+    | DynamicRoute<"/chain/[chain_slug]/token/[hash]/instance/[id]", { "chain_slug": string; "hash": string; "id": string }>
+    | DynamicRoute<"/chain/[chain_slug]/tx/[hash]", { "chain_slug": string; "hash": string }>
+    | DynamicRoute<"/chain/[chain_slug]/visualize/sol2uml", { "chain_slug": string }>
     | StaticRoute<"/chakra">
     | StaticRoute<"/contract-verification">
     | StaticRoute<"/csv-export">

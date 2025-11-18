@@ -4,8 +4,8 @@ import { getAbiItem, getAddress, slice } from 'viem';
 import type { PublicClient, GetLogsParameters, Log } from 'viem';
 
 import type { TokenInfo } from 'types/api/token';
+import type { EssentialDappsChainConfig } from 'types/client/marketplace';
 import type { AllowanceType, ContractAllowanceType } from 'types/client/revoke';
-import type { ChainConfig } from 'types/multichain';
 
 import useApiFetch from 'lib/api/useApiFetch';
 import { ZERO_ADDRESS } from 'toolkit/utils/consts';
@@ -125,7 +125,7 @@ function useGetNftAllowances() {
     approvals: Array<Log>,
     approvalsForAll: Array<Log>,
     publicClient: PublicClient,
-    chain: ChainConfig | undefined,
+    chain: EssentialDappsChainConfig | undefined,
     signal?: AbortSignal,
   ) => {
     const allowances: Array<AllowanceType> = [];
@@ -211,7 +211,7 @@ export default function useSearchNftAllowances() {
   const getNftAllowances = useGetNftAllowances();
 
   return useCallback(async(
-    chain: ChainConfig | undefined,
+    chain: EssentialDappsChainConfig | undefined,
     searchQuery: string,
     approvalEvents: Array<Log>,
     publicClient: PublicClient,

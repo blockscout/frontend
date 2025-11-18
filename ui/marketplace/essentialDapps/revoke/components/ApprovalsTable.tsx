@@ -1,7 +1,7 @@
 import React from 'react';
 
+import type { EssentialDappsChainConfig } from 'types/client/marketplace';
 import type { AllowanceType } from 'types/client/revoke';
-import type { ChainConfig } from 'types/multichain';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
@@ -9,7 +9,7 @@ import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 import ApprovalsTableItem from './ApprovalsTableItem';
 
 type Props = {
-  selectedChain: ChainConfig | undefined;
+  selectedChain: EssentialDappsChainConfig | undefined;
   approvals: Array<AllowanceType>;
   isLoading?: boolean;
   isAddressMatch?: boolean;

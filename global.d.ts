@@ -1,3 +1,4 @@
+import type { EssentialDappsChainConfig } from 'types/client/marketplace';
 import type { MultichainConfig } from 'types/multichain';
 import type { WalletProvider } from 'types/web3';
 
@@ -21,7 +22,7 @@ declare global {
     abkw: string;
     __envs: Record<string, string>;
     __multichainConfig: MultichainConfig;
-    __essentialDappsChains: MultichainConfig;
+    __essentialDappsChains: { chains: Array<EssentialDappsChainConfig> };
   }
 
   namespace NodeJS {

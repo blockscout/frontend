@@ -19,7 +19,7 @@ interface Params {
 
 export default function useCallMethodPublicClient(): (params: Params) => Promise<FormSubmitResult> {
   const multichainContext = useMultichainContext();
-  const chainId = Number((multichainContext?.chain.config ?? config).chain.id);
+  const chainId = Number((multichainContext?.chain.app_config ?? config).chain?.id);
   const publicClient = usePublicClient({ chainId });
   const { address: account } = useAccount();
 

@@ -1,3 +1,9 @@
+import type { Chain } from 'viem';
+
+import type { ExternalChain } from 'types/externalChains';
+
+import type config from 'configs/app';
+
 export type MarketplaceAppBase = {
   id: string;
   author: string;
@@ -32,6 +38,13 @@ export type MarketplaceApp = MarketplaceAppBase & MarketplaceAppSocialInfo & Mar
 export enum MarketplaceCategory {
   ALL = 'All',
   FAVORITES = 'Favorites',
+}
+
+export interface EssentialDappsChainConfig extends ExternalChain {
+  app_config?: Pick<typeof config, 'app' | 'chain'> & {
+    apis: Pick<typeof config['apis'], 'general'>;
+  };
+  contracts?: Chain['contracts'];
 }
 
 export type EssentialDappsConfig = {

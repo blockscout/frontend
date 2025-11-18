@@ -4,7 +4,7 @@ import { capitalize } from 'es-toolkit';
 import React from 'react';
 
 import type { Block } from 'types/api/block';
-import type { ChainConfig } from 'types/multichain';
+import type { ClusterChainConfig } from 'types/multichain';
 
 import { route } from 'nextjs-routes';
 
@@ -31,7 +31,7 @@ interface Props {
   isLoading?: boolean;
   enableTimeIncrement?: boolean;
   animation?: string;
-  chainData?: ChainConfig;
+  chainData?: ClusterChainConfig;
 }
 
 const isRollup = config.features.rollup.isEnabled;

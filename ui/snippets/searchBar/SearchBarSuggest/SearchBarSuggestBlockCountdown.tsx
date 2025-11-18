@@ -9,9 +9,19 @@ interface Props {
   blockHeight: string;
   onClick?: (event: React.MouseEvent<HTMLAnchorElement>) => void;
   className?: string;
+  isMultichain?: boolean;
 }
 
-const SearchBarSuggestBlockCountdown = ({ blockHeight, onClick, className }: Props) => {
+const SearchBarSuggestBlockCountdown = ({ blockHeight, onClick, className, isMultichain }: Props) => {
+
+  if (isMultichain) {
+    return (
+      <Box className={ className }>
+        This block hasn’t been created yet. <Link href={ route({ pathname: '/blocks' }) } onClick={ onClick }>View existing blocks</Link>.
+      </Box>
+    );
+  }
+
   return (
     <Box className={ className }>
       <span>Learn </span>

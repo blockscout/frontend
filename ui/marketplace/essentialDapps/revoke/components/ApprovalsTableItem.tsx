@@ -1,10 +1,8 @@
 import { Flex } from '@chakra-ui/react';
 import { useCallback, useState } from 'react';
 
+import type { EssentialDappsChainConfig } from 'types/client/marketplace';
 import type { AllowanceType } from 'types/client/revoke';
-import type { ChainConfig } from 'types/multichain';
-
-import { route } from 'nextjs/routes';
 
 import { Button } from 'toolkit/chakra/button';
 import { Skeleton } from 'toolkit/chakra/skeleton';
@@ -18,7 +16,7 @@ import useRevoke from '../hooks/useRevoke';
 import formatAllowance from '../lib/formatAllowance';
 
 type Props = {
-  selectedChain: ChainConfig | undefined;
+  selectedChain: EssentialDappsChainConfig | undefined;
   approval: AllowanceType;
   isLoading?: boolean;
   isAddressMatch?: boolean;
@@ -39,12 +37,12 @@ export default function ApprovalsTableItem({
 
   const handleRevoke = useCallback(async() => {
     setIsPending(true);
-    const success = await revoke(approval, Number(selectedChain?.config.chain.id));
+    const success = await revoke(approval, Number(selectedChain?.id));
     if (success) {
       hideApproval(approval);
     }
     setIsPending(false);
-  }, [ revoke, hideApproval, approval, selectedChain?.config.chain.id ]);
+  }, [ revoke, hideApproval, approval, selectedChain?.id ]);
 
   return (
     <TableRow fontWeight="500">
@@ -64,7 +62,7 @@ export default function ApprovalsTableItem({
             jointSymbol
             textStyle="sm"
             fontWeight="600"
-            href={ selectedChain?.config.app.baseUrl + route({ pathname: '/token/[hash]', query: { hash: approval.address } }) }
+            chain={ selectedChain }
             link={{ noIcon: true, external: true }}
           />
           <AddressEntity
@@ -72,7 +70,7 @@ export default function ApprovalsTableItem({
             truncation="constant"
             noIcon
             isLoading={ isLoading }
-            href={ selectedChain?.config.app.baseUrl + route({ pathname: '/address/[hash]', query: { hash: approval.address } }) }
+            chain={ selectedChain }
             link={{ variant: 'secondary', noIcon: true, external: true }}
           />
         </Flex>
@@ -83,7 +81,7 @@ export default function ApprovalsTableItem({
           truncation="constant"
           noIcon
           isLoading={ isLoading }
-          href={ selectedChain?.config.app.baseUrl + route({ pathname: '/address/[hash]', query: { hash: approval.spender } }) }
+          chain={ selectedChain }
           link={{ noIcon: true, external: true }}
         />
       </TableCell>

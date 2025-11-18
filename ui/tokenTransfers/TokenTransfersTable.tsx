@@ -1,7 +1,7 @@
 import React from 'react';
 
 import type { TokenTransfer } from 'types/api/tokenTransfer';
-import type { ChainConfig } from 'types/multichain';
+import type { ClusterChainConfig } from 'types/multichain';
 
 import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
@@ -12,7 +12,7 @@ interface Props {
   items?: Array<TokenTransfer>;
   top: number;
   isLoading?: boolean;
-  chainData?: ChainConfig;
+  chainData?: ClusterChainConfig;
 }
 
 const TokenTransferTable = ({ items, top, isLoading, chainData }: Props) => {

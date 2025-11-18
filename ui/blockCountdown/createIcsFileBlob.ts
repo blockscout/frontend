@@ -13,7 +13,7 @@ interface Params {
 const DATE_FORMAT = 'YYYYMMDDTHHmmss';
 
 export default function createIcsFileBlob({ date, blockHeight, multichainContext }: Params): Blob {
-  const chainConfig = multichainContext?.chain.config || config;
+  const chainConfig = multichainContext?.chain.app_config || config;
 
   const name = `Block #${ blockHeight } reminder | ${ chainConfig.chain.name }`;
   const description = `#${ blockHeight } block creation time on ${ chainConfig.chain.name } blockchain.`;

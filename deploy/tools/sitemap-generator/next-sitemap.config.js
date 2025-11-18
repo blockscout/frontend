@@ -137,7 +137,7 @@ module.exports = {
         }
         break;
       case '/api-docs':
-        if (process.env.NEXT_PUBLIC_API_SPEC_URL === 'none') {
+        if (process.env.NEXT_PUBLIC_API_DOCS_TABS === '[]') {
           return null;
         }
         break;
@@ -161,6 +161,34 @@ module.exports = {
           return null;
         }
         break;
+      case '/epochs':
+        if (process.env.NEXT_PUBLIC_CELO_ENABLED !== 'true') {
+          return null;
+        }
+        break;
+      case '/operations':
+        if (!process.env.NEXT_PUBLIC_TAC_OPERATION_LIFECYCLE_API_HOST) {
+          return null;
+        }
+        break;
+      case '/public-tags/submit':
+        if (!process.env.NEXT_PUBLIC_ADMIN_SERVICE_API_HOST || !process.env.NEXT_PUBLIC_METADATA_SERVICE_API_HOST) {
+          return null;
+        }
+        break;
+      case '/txn-withdrawals':
+        if (!process.env.NEXT_PUBLIC_ROLLUP_TYPE || process.env.NEXT_PUBLIC_ROLLUP_TYPE !== 'arbitrum') {
+          return null;
+        }
+        break;
+      // disabled routes for multichain
+      case '/block/countdown':
+      case '/contract-verification':
+      case '/visualize/sol2uml':
+        if (process.env.NEXT_PUBLIC_MULTICHAIN_ENABLED === 'true') {
+          return null;
+        }
+        break;
     }
 
     return {
@@ -172,7 +200,7 @@ module.exports = {
     };
   },
   additionalPaths: async(config) => {
-    if(process.env.NEXT_PUBLIC_OP_SUPERCHAIN_ENABLED === 'true'){
+    if(process.env.NEXT_PUBLIC_MULTICHAIN_ENABLED === 'true'){
       return;
     }
 

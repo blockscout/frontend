@@ -8,6 +8,7 @@ import type { CsvExportParams } from 'types/client/address';
 
 import config from 'configs/app';
 import buildUrl from 'lib/api/buildUrl';
+import isNeedProxy from 'lib/api/isNeedProxy';
 import type { ResourceName } from 'lib/api/resources';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import dayjs from 'lib/date/dayjs';
@@ -41,7 +42,7 @@ const CsvExportForm = ({ hash, resource, filterType, filterValue, fileNameTempla
   const recaptcha = useReCaptcha();
   const multichainContext = useMultichainContext();
 
-  const chainConfig = multichainContext?.chain.config || config;
+  const chainConfig = multichainContext?.chain.app_config || config;
 
   const apiFetchFactory = React.useCallback((data: FormFields) => {
     return async(recaptchaToken?: string) => {
@@ -57,6 +58,7 @@ const CsvExportForm = ({ hash, resource, filterType, filterValue, fileNameTempla
         headers: {
           'content-type': 'application/octet-stream',
           ...(recaptchaToken && { 'recaptcha-v2-response': recaptchaToken }),
+          ...(isNeedProxy() && multichainContext?.chain ? { 'x-endpoint': multichainContext.chain.app_config.apis.general?.endpoint } : {}),
         },
       });
 
@@ -75,7 +77,7 @@ const CsvExportForm = ({ hash, resource, filterType, filterValue, fileNameTempla
   const onFormSubmit: SubmitHandler<FormFields> = React.useCallback(async(data) => {
     try {
       const response = await recaptcha.fetchProtectedResource<Response>(apiFetchFactory(data));
-      const chainText = multichainContext?.chain ? `${ multichainContext.chain.slug.replace(/-/g, '_') }_` : '';
+      const chainText = multichainContext?.chain ? `${ multichainContext.chain.name.replace(' ', '-') }_` : '';
 
       const blob = await response.blob();
       const fileName = exportType === 'holders' ?

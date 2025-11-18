@@ -1,9 +1,10 @@
 import { Flex, HStack } from '@chakra-ui/react';
 import React from 'react';
 
-import type { AddressTokenBalance } from 'types/api/address';
+import type { AddressTokensErc20Item } from './types';
 
 import config from 'configs/app';
+import multichainConfig from 'configs/multichain';
 import getCurrencyValue from 'lib/getCurrencyValue';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
@@ -12,11 +13,12 @@ import NativeTokenTag from 'ui/shared/celo/NativeTokenTag';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 
-type Props = AddressTokenBalance & { isLoading: boolean };
+type Props = AddressTokensErc20Item & { isLoading: boolean };
 
 const ERC20TokensTableItem = ({
   token,
   value,
+  chain_values: chainValues,
   isLoading,
 }: Props) => {
 
@@ -28,12 +30,23 @@ const ERC20TokensTableItem = ({
   const isNativeToken = config.UI.views.address.nativeTokenAddress &&
     token.address_hash.toLowerCase() === config.UI.views.address.nativeTokenAddress.toLowerCase();
 
+  const chainInfo = React.useMemo(() => {
+    if (!chainValues) {
+      return;
+    }
+
+    const chainId = Object.keys(chainValues)[0];
+    const chain = multichainConfig()?.chains.find((chain) => chain.id === chainId);
+    return chain;
+  }, [ chainValues ]);
+
   return (
     <TableRow role="group" >
       <TableCell verticalAlign="middle">
         <HStack gap={ 2 }>
           <TokenEntity
             token={ token }
+            chain={ chainInfo }
             isLoading={ isLoading }
             noCopy
             jointSymbol

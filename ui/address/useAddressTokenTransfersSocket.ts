@@ -83,7 +83,7 @@ export default function useAddressTokenTransfersSocket({ filters, addressHash, d
       const queryKey = getResourceKey('general:address_token_transfers', {
         pathParams: { hash: addressHash },
         queryParams: { ...filters },
-        chainSlug: multichainContext?.chain?.slug,
+        chainId: multichainContext?.chain?.id,
       });
       queryClient.setQueryData(
         queryKey,
@@ -103,7 +103,7 @@ export default function useAddressTokenTransfersSocket({ filters, addressHash, d
       );
     }
 
-  }, [ data?.items, overloadCount, enabled, filters, addressHash, multichainContext?.chain?.slug, queryClient, shouldHideScamTokens ]);
+  }, [ data?.items, overloadCount, enabled, filters, addressHash, multichainContext?.chain?.id, queryClient, shouldHideScamTokens ]);
 
   const handleSocketClose = React.useCallback(() => {
     setShowSocketAlert(true);
