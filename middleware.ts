@@ -19,13 +19,14 @@ export async function middleware(req: NextRequest) {
 
   const res = NextResponse.next();
 
+  middlewares.appProfile(req, res);
   middlewares.colorTheme(req, res);
   middlewares.addressFormat(req, res);
   middlewares.scamTokens(req, res);
 
   const end = Date.now();
 
-  const cspHeader = await csp.get();
+  const cspHeader = await csp.get(req);
 
   res.headers.append('Content-Security-Policy', cspHeader);
   res.headers.append('Server-Timing', `middleware;dur=${ end - start }`);

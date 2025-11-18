@@ -3,6 +3,7 @@ import type { AdButlerConfig } from 'types/client/adButlerConfig';
 import { SUPPORTED_AD_BANNER_PROVIDERS } from 'types/client/adProviders';
 import type { AdBannerProviders, AdBannerAdditionalProviders } from 'types/client/adProviders';
 
+import app from '../app';
 import { getEnvValue, parseEnvJson } from '../utils';
 
 const provider: AdBannerProviders = (() => {
@@ -42,6 +43,13 @@ type AdsBannerFeaturePayload = AdsBannerFeatureProviderPayload & {
 };
 
 const config: Feature<AdsBannerFeaturePayload> = (() => {
+  if (app.appProfile === 'private') {
+    return Object.freeze({
+      title,
+      isEnabled: false,
+    });
+  }
+
   if (provider === 'adbutler') {
     const desktopConfig = parseEnvJson<AdButlerConfig>(getEnvValue('NEXT_PUBLIC_AD_ADBUTLER_CONFIG_DESKTOP'));
     const mobileConfig = parseEnvJson<AdButlerConfig>(getEnvValue('NEXT_PUBLIC_AD_ADBUTLER_CONFIG_MOBILE'));
