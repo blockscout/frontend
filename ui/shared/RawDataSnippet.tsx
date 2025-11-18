@@ -1,4 +1,4 @@
-import type { HTMLChakraProps } from '@chakra-ui/react';
+import type { BoxProps, HTMLChakraProps } from '@chakra-ui/react';
 import { Box, Flex, chakra } from '@chakra-ui/react';
 import React from 'react';
 
@@ -12,8 +12,8 @@ interface Props {
   className?: string;
   rightSlot?: React.ReactNode;
   beforeSlot?: React.ReactNode;
-  textareaMaxHeight?: string;
-  textareaMinHeight?: string;
+  textareaMaxHeight?: BoxProps['maxH'];
+  textareaMinHeight?: BoxProps['minH'];
   showCopy?: boolean;
   isLoading?: boolean;
   contentProps?: HTMLChakraProps<'div'>;
