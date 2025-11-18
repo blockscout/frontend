@@ -110,7 +110,7 @@ All json-like values should be single-quoted. If it contains a hash (`#`) or a d
 | NEXT_PUBLIC_NETWORK_RPC_URL | `string \| Array<string>` | Chain public RPC server url, see [https://chainlist.org](https://chainlist.org) for the reference. Can contain a single string value, or an array of urls. | - | - | `https://core.poa.network` | v1.0.x+ |
 | NEXT_PUBLIC_NETWORK_CURRENCY_NAME | `string` | Network currency name | - | - | `Ether` | v1.0.x+ |
 | NEXT_PUBLIC_NETWORK_CURRENCY_WEI_NAME | `string` | Name of the smallest unit of the native currency (e.g., 'wei' for Ethereum, where 1 ETH = 10^18 wei). Used for displaying gas prices and transaction fees in the smallest denomination. | - | `wei` | `duck` | v1.23.0+ |
-| NEXT_PUBLIC_NETWORK_CURRENCY_GWEI_NAME | `string` | Name of the giga-unit of the native currency (e.g., 'gwei' for Ethereum, where 1 gwei = 10^9 of the smallest unit). Used for displaying gas prices in a more readable format throughout the UI. | - | `gwei` | `gduck` | <upcoming> |
+| NEXT_PUBLIC_NETWORK_CURRENCY_GWEI_NAME | `string` | Name of the giga-unit of the native currency (e.g., 'gwei' for Ethereum, where 1 gwei = 10^9 of the smallest unit). Used for displaying gas prices in a more readable format throughout the UI. | - | `gwei` | `gduck` | v2.5.0+ |
 | NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL | `string` | Network currency symbol | - | - | `ETH` | v1.0.x+ |
 | NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS | `string` | Network currency decimals | - | `18` | `6` | v1.0.x+ |
 | NEXT_PUBLIC_NETWORK_SECONDARY_COIN_SYMBOL | `string` | Network secondary coin symbol.  | - | - | `GNO` | v1.29.0+ |
@@ -176,7 +176,7 @@ _Note_ Here, all values are arrays of up to two strings. The first string repres
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_FEATURED_NETWORKS | `string` | URL of configuration file (`.json` format only) or file content string representation. It contains list of featured networks that will be shown in the network menu. See [below](#featured-network-configuration-properties) list of available properties for particular network | - | - | `https://example.com/featured_networks_config.json` \| `[{'title':'Astar(EVM)','url':'https://astar.blockscout.com/','group':'Mainnets','icon':'https://example.com/astar.svg'}]` | v1.0.x+ |
 | NEXT_PUBLIC_FEATURED_NETWORKS_ALL_LINK | `string` | Link to the all chains resource. Will be displayed at the bottom of featured networks list. | Works only if NEXT_PUBLIC_FEATURED_NETWORKS is set | - | `https://example.com` | v2.3.0+ |
-| NEXT_PUBLIC_FEATURED_NETWORKS_MODE | `tabs \| list` | Indicates how the networks are presented: in one list or in separate tabs. | Works only if NEXT_PUBLIC_FEATURED_NETWORKS is set | `list` | `tabs` | upcoming |
+| NEXT_PUBLIC_FEATURED_NETWORKS_MODE | `tabs \| list` | Indicates how the networks are presented: in one list or in separate tabs. | Works only if NEXT_PUBLIC_FEATURED_NETWORKS is set | `list` | `tabs` | v2.5.0+ |
 
 #### Featured network configuration properties
 
@@ -589,8 +589,8 @@ Ads are enabled by default on all self-hosted instances. If you would like to di
 | NEXT_PUBLIC_MARKETPLACE_BANNER_LINK_URL | `string` | URL of the page the banner leads to | - | - | `https://example.com` | v1.29.0+ |
 | NEXT_PUBLIC_MARKETPLACE_GRAPH_LINKS_URL | `string` | URL of the file (`.json` format only) which contains the list of The Graph links to be displayed on the Marketplace page | - | - | `https://example.com/graph_links.json` | v1.36.0+ |
 | NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_CONFIG | `EssentialDappsConfig`, see details [below](#essential-dapps-configuration-properties) | Configuration of the essential dapps to be displayed on the Marketplace page | - | - | `{'swap': {'chains': ['1', '10', '100', '11155111'], 'fee': '0.004', 'integrator': 'blockscout'}}` | v2.4.0+ |
-| NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_AD_ENABLED | `boolean` | The flag enables ad in essential dapps. *Feature is enabled by default; pass `false` to disable it.* | - | `true` | `false` | upcoming |
-| NEXT_PUBLIC_MARKETPLACE_TITLES | `{ entity_name?: string; menu_item?: string; title?: string; subtitle_essential_dapps?: string; subtitle_list?: string }` | Used to override default titles of the Marketplace and dapps | - | `{ 'entity_name': 'Dapp', 'menu_item': 'Dapps', 'title': 'Dappscout', 'subtitle_essential_dapps': 'Essential dapps', 'subtitle_list': 'Explore dapps' }` | `{ 'entity_name': 'App', 'menu_item': 'Apps', 'title': 'Marketplace', 'subtitle_essential_dapps': 'Essential apps', 'subtitle_list': 'Explore apps' }` | upcoming |
+| NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_AD_ENABLED | `boolean` | The flag enables ad in essential dapps. *Feature is enabled by default; pass `false` to disable it.* | - | `true` | `false` | v2.5.0+ |
+| NEXT_PUBLIC_MARKETPLACE_TITLES | `{ entity_name?: string; menu_item?: string; title?: string; subtitle_essential_dapps?: string; subtitle_list?: string }` | Used to override default titles of the Marketplace and dapps | - | `{ 'entity_name': 'Dapp', 'menu_item': 'Dapps', 'title': 'Dappscout', 'subtitle_essential_dapps': 'Essential dapps', 'subtitle_list': 'Explore dapps' }` | `{ 'entity_name': 'App', 'menu_item': 'Apps', 'title': 'Marketplace', 'subtitle_essential_dapps': 'Essential apps', 'subtitle_list': 'Explore apps' }` | v2.5.0+ |
 
 #### Marketplace app configuration properties
 
@@ -1032,10 +1032,10 @@ This feature enables the application to act as an explorer of multiple blockchai
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_MULTICHAIN_ENABLED | `boolean` | The flag that enables the feature | Required | - | `true` | upcoming |
-| NEXT_PUBLIC_MULTICHAIN_CLUSTER | `string` | Chain's cluster name; used to construct the full URL for requests to the aggregator API service | Required | - | `interop` | upcoming |
-| NEXT_PUBLIC_MULTICHAIN_AGGREGATOR_API_HOST | `string` | Multichain aggregator API service host | Required | - | `https://multichain-aggregator.k8s-dev.blockscout.com` | upcoming |
-| NEXT_PUBLIC_MULTICHAIN_STATS_API_HOST | `string` | Multichain statistics API service host | Required | - | `http://multichain-search-stats.k8s-dev.blockscout.com` | upcoming |
+| NEXT_PUBLIC_MULTICHAIN_ENABLED | `boolean` | The flag that enables the feature | Required | - | `true` | v2.5.0+ |
+| NEXT_PUBLIC_MULTICHAIN_CLUSTER | `string` | Chain's cluster name; used to construct the full URL for requests to the aggregator API service | Required | - | `interop` | v2.5.0+ |
+| NEXT_PUBLIC_MULTICHAIN_AGGREGATOR_API_HOST | `string` | Multichain aggregator API service host | Required | - | `https://multichain-aggregator.k8s-dev.blockscout.com` | v2.5.0+ |
+| NEXT_PUBLIC_MULTICHAIN_STATS_API_HOST | `string` | Multichain statistics API service host | Required | - | `http://multichain-search-stats.k8s-dev.blockscout.com` | v2.5.0+ |
 
 &nbsp;
 

@@ -10,11 +10,15 @@
 -  Description of the performance improvement 1.
 -  Description of the performance improvement 2.
 
-## 📦 Dependencies updates
+## 📦 Dependencies Updates
 -  Updated dependency: PackageName 1 to version x.x.x.
 -  Updated dependency: PackageName 2 to version x.x.x.
 
-## 🎨 Design updates
+## 🛠️ DX & Tooling
+-  New tool #1
+-  Improvement #2
+
+## 🎨 Design Updates
 -  New style 1.
 -  New style 2.
 
