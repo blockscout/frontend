@@ -28,6 +28,13 @@ export const L2_WITHDRAWAL_ITEM: OptimisticL2WithdrawalsItem = {
   msg_nonce: 2393,
   msg_nonce_version: 1,
   status: 'Ready to prove',
+  portal_contract_address_hash: null,
+  msg_sender_address_hash: null,
+  msg_target_address_hash: null,
+  msg_data: null,
+  msg_gas_limit: null,
+  msg_nonce_raw: null,
+  msg_value: null,
 };
 
 export const L2_TXN_BATCHES_ITEM: OptimisticL2TxnBatchesItem = {

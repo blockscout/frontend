@@ -23,7 +23,7 @@ const parentChain: ParentChain | undefined = (() => {
 
   return {
     ...envValue,
-    baseUrl: baseUrl ?? envValue?.baseUrl,
+    baseUrl: baseUrl || envValue?.baseUrl || '',
   };
 })();
 
