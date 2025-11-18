@@ -118,8 +118,3 @@ export type NovesDescribeTxsResponse = {
   type: string;
   description: string;
 };
-
-export interface NovesTxTranslation {
-  data?: NovesDescribeTxsResponse;
-  isLoading: boolean;
-}

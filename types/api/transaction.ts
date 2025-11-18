@@ -4,7 +4,6 @@ import type { BlockTransactionsResponse } from './block';
 import type { DecodedInput } from './decodedInput';
 import type { Fee } from './fee';
 import type { ChainInfo, MessageStatus } from './interop';
-import type { NovesTxTranslation } from './noves';
 import type { OptimisticL2WithdrawalClaimInfo, OptimisticL2WithdrawalStatus } from './optimisticL2';
 import type { ScrollL2BlockStatus } from './scrollL2';
 import type { TokenInfo } from './token';
@@ -104,8 +103,6 @@ export type Transaction = {
   blob_gas_price?: string;
   burnt_blob_fee?: string;
   max_fee_per_blob_gas?: string;
-  // Noves-fi
-  translation?: NovesTxTranslation;
   arbitrum?: ArbitrumTransactionData;
   scroll?: ScrollTransactionData;
   // EIP-7702

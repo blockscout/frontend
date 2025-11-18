@@ -64,9 +64,9 @@ const TxsContent = ({
     setSorting?.(value);
   }, [ sort, setSorting ]);
 
-  const itemsWithTranslation = useDescribeTxs(items, currentAddress, isPlaceholderData);
+  const translationQuery = useDescribeTxs(items, currentAddress, isPlaceholderData);
 
-  const content = itemsWithTranslation ? (
+  const content = items && items.length > 0 ? (
     <>
       <Box hideFrom="lg">
         <TxsList
@@ -75,12 +75,13 @@ const TxsContent = ({
           isLoading={ isPlaceholderData }
           enableTimeIncrement={ enableTimeIncrement }
           currentAddress={ currentAddress }
-          items={ itemsWithTranslation }
+          items={ items }
+          translationQuery={ translationQuery }
         />
       </Box>
       <Box hideBelow="lg">
         <TxsTable
-          txs={ itemsWithTranslation }
+          txs={ items }
           sort={ sort }
           onSortToggle={ setSorting ? onSortToggle : undefined }
           showBlockInfo={ showBlockInfo }
@@ -90,6 +91,7 @@ const TxsContent = ({
           enableTimeIncrement={ enableTimeIncrement }
           isLoading={ isPlaceholderData }
           stickyHeader={ stickyHeader }
+          translationQuery={ translationQuery }
         />
       </Box>
     </>
@@ -117,7 +119,7 @@ const TxsContent = ({
   return (
     <DataListDisplay
       isError={ isError }
-      itemsNum={ itemsWithTranslation?.length }
+      itemsNum={ items?.length }
       emptyText="There are no transactions."
       actionBar={ actionBar }
       filterProps={{
