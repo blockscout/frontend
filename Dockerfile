@@ -98,8 +98,8 @@ RUN set -a && \
 # ENV NEXT_TELEMETRY_DISABLED 1
 
 # Build app for production
-ENV NODE_OPTIONS="--max-old-space-size=4096"
-RUN yarn build
+ENV NODE_OPTIONS="--max-old-space-size=2048"
+RUN yarn build --no-cache
 
 
 ### FEATURE REPORTER
