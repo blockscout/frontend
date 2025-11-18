@@ -20,6 +20,7 @@ import { recipe as radioGroup } from './radio-group.recipe';
 import { recipe as radiomark } from './radiomark.recipe';
 import { recipe as ratingGroup } from './rating-group.recipe';
 import { recipe as select } from './select.recipe';
+import { recipe as separator } from './separator.recipe';
 import { recipe as skeleton } from './skeleton.recipe';
 import { recipe as spinner } from './spinner.recipe';
 import { recipe as stat } from './stat.recipe';
@@ -41,6 +42,7 @@ export const recipes = {
   radiomark,
   skeleton,
   spinner,
+  separator,
   textarea,
 };
 

@@ -181,7 +181,6 @@ const Content = ({
           </Flex>
           <Separator
             orientation="vertical"
-            borderColor="border.divider"
             mx={{ base: 4, md: 8 }}
           />
           <Flex
