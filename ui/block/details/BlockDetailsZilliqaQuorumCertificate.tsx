@@ -63,7 +63,7 @@ const BlockDetailsZilliqaQuorumCertificate = ({ data }: Props) => {
         </Grid>
         { data.nested_quorum_certificates && data.nested_quorum_certificates.length > 0 && (
           <>
-            <Separator mt={ 2 } w="100%" borderColor="border.divider"/>
+            <Separator mt={ 2 } w="100%"/>
             <AccordionRoot
               multiple
               w="100%"

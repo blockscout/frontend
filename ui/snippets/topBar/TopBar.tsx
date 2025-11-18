@@ -53,7 +53,7 @@ const TopBar = () => {
         </HStack>
         <HStack
           alignItems="center"
-          separator={ <Separator mx={{ base: 2, lg: 3 }} height={ 4 } orientation="vertical" borderColor="border.divider"/> }
+          separator={ <Separator mx={{ base: 2, lg: 3 }} height={ 4 }/> }
         >
           { (hasAddChainButton || hasDeFiDropdown) && (
             <HStack>
