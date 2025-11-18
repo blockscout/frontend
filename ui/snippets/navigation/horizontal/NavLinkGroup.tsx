@@ -22,7 +22,7 @@ const NavLinkGroup = ({ item }: Props) => {
   const hasGroups = item.subItems.some((subItem) => Array.isArray(subItem));
 
   const content = hasGroups ? (
-    <HStack separator={ <Separator/> } alignItems="flex-start">
+    <HStack separator={ <Separator/> } alignItems="stretch">
       { item.subItems.map((subItem, index) => {
         if (!Array.isArray(subItem)) {
           return <NavLink key={ subItem.text } item={ subItem }/>;

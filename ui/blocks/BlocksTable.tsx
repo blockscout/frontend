@@ -2,7 +2,7 @@ import { capitalize } from 'es-toolkit';
 import React from 'react';
 
 import type { Block } from 'types/api/block';
-import type { ChainConfig } from 'types/multichain';
+import type { ClusterChainConfig } from 'types/multichain';
 
 import config from 'configs/app';
 import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
@@ -22,7 +22,7 @@ interface Props {
   socketInfoNum?: number;
   showSocketErrorAlert?: boolean;
   showSocketInfo?: boolean;
-  chainData?: ChainConfig;
+  chainData?: ClusterChainConfig;
 }
 
 const VALIDATOR_COL_WEIGHT = 23;

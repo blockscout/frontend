@@ -12,6 +12,7 @@ import getQueryParamString from 'lib/router/getQueryParamString';
 import removeQueryParam from 'lib/router/removeQueryParam';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
+import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 import * as regexp from 'toolkit/utils/regexp';
 import useMarketplaceApps from 'ui/marketplace/useMarketplaceApps';
 import SearchResultListItem from 'ui/searchResults/SearchResultListItem';
@@ -19,7 +20,6 @@ import SearchResultsInput from 'ui/searchResults/SearchResultsInput';
 import SearchResultTableItem from 'ui/searchResults/SearchResultTableItem';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import AppErrorBoundary from 'ui/shared/AppError/AppErrorBoundary';
-import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import * as Layout from 'ui/shared/layout/components';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -31,6 +31,8 @@ import HeaderDesktop from 'ui/snippets/header/HeaderDesktop';
 import HeaderMobile from 'ui/snippets/header/HeaderMobile';
 import SearchBarSuggestBlockCountdown from 'ui/snippets/searchBar/SearchBarSuggest/SearchBarSuggestBlockCountdown';
 import useSearchQuery from 'ui/snippets/searchBar/useSearchQuery';
+
+const nameServicesFeature = config.features.nameServices;
 
 const SearchResultsPageContent = () => {
   const router = useRouter();
@@ -49,6 +51,10 @@ const SearchResultsPageContent = () => {
 
   const marketplaceApps = useMarketplaceApps(debouncedSearchTerm);
   const settingsContext = useSettingsContext();
+
+  const handleNavigateToResults = React.useCallback((searchTerm: string) => {
+    handleSearchTermChange(searchTerm);
+  }, [ handleSearchTermChange ]);
 
   React.useEffect(() => {
     if (showContent) {
@@ -114,7 +120,7 @@ const SearchResultsPageContent = () => {
       if (!config.features.dataAvailability.isEnabled && item.type === 'blob') {
         return false;
       }
-      if (!config.features.nameService.isEnabled && item.type === 'ens_domain') {
+      if ((!nameServicesFeature.isEnabled || !nameServicesFeature.ens.isEnabled) && item.type === 'ens_domain') {
         return false;
       }
       if (!config.features.tac.isEnabled && item.type === 'tac_operation') {
@@ -275,7 +281,7 @@ const SearchResultsPageContent = () => {
 
   return (
     <>
-      <HeaderMobile hideSearchButton/>
+      <HeaderMobile onGoToSearchResults={ handleNavigateToResults }/>
       <Layout.MainArea>
         <Layout.SideBar/>
         <Layout.MainColumn>

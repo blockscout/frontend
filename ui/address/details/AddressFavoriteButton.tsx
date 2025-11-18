@@ -64,7 +64,7 @@ const AddressFavoriteButton = ({ className, hash, watchListId }: Props) => {
             <IconButton
               className={ className }
               aria-label="edit"
-              variant="icon_secondary"
+              variant="icon_background"
               size="md"
               selected={ Boolean(watchListId) }
               onClick={ onClick }

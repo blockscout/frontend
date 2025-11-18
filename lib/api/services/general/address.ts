@@ -19,6 +19,7 @@ import type {
   AddressTokenTransferFilters,
   AddressTokensFilter,
   AddressNFTTokensFilter,
+  AddressTokenBalancesResponse,
 } from 'types/api/address';
 import type { AddressesMetadataSearchFilters, AddressesMetadataSearchResult, AddressesResponse } from 'types/api/addresses';
 import type { DepositsResponse } from 'types/api/deposits';
@@ -97,6 +98,11 @@ export const GENERAL_API_ADDRESS_RESOURCES = {
     pathParams: [ 'hash' as const ],
     filterFields: [ 'type' as const ],
     paginated: true,
+  },
+  address_token_balances: {
+    path: '/api/v2/addresses/:hash/token-balances',
+    pathParams: [ 'hash' as const ],
+    filterFields: [ ],
   },
   address_nfts: {
     path: '/api/v2/addresses/:hash/nft',
@@ -178,6 +184,7 @@ R extends 'general:address_coin_balance' ? AddressCoinBalanceHistoryResponse :
 R extends 'general:address_coin_balance_chart' ? AddressCoinBalanceHistoryChart :
 R extends 'general:address_logs' ? LogsResponseAddress :
 R extends 'general:address_tokens' ? AddressTokensResponse :
+R extends 'general:address_token_balances' ? AddressTokenBalancesResponse :
 R extends 'general:address_nfts' ? AddressNFTsResponse :
 R extends 'general:address_collections' ? AddressCollectionsResponse :
 R extends 'general:address_withdrawals' ? AddressWithdrawalsResponse :

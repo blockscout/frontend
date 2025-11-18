@@ -44,6 +44,7 @@ const ScrollL2DepositsTableItem = ({ item, isLoading }: Props) => {
           hash={ item.origination_transaction_hash }
           truncation="constant_long"
           noIcon
+          noCopy
         />
       </TableCell>
       <TableCell verticalAlign="middle" pr={ 12 }>

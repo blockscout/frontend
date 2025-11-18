@@ -108,12 +108,24 @@ const TokenPageContent = () => {
     handler: handleTotalSupplyMessage,
   });
 
+  const verifiedInfoQuery = useApiQuery('contractInfo:token_verified_info', {
+    pathParams: { hash: tokenQuery.data?.address_hash, chainId: config.chain.id },
+    queryOptions: { enabled: Boolean(tokenQuery.data) && !tokenQuery.isPlaceholderData && config.features.verifiedTokens.isEnabled },
+  });
+
   useEffect(() => {
-    if (tokenQuery.data && !tokenQuery.isPlaceholderData && !config.meta.seo.enhancedDataEnabled) {
-      const apiData = { ...tokenQuery.data, symbol_or_name: tokenQuery.data.symbol ?? tokenQuery.data.name ?? '' };
+    // even if config.meta.seo.enhancedDataEnabled is enabled, we don't fetch contract info for the project description
+    // so we need to update the metadata anyway.
+    if (tokenQuery.data && !tokenQuery.isPlaceholderData && !verifiedInfoQuery.isPlaceholderData) {
+      const apiData = {
+        ...tokenQuery.data,
+        symbol_or_name: tokenQuery.data.symbol ?? tokenQuery.data.name ?? '',
+        description: verifiedInfoQuery.data?.projectDescription,
+        projectName: verifiedInfoQuery.data?.projectName,
+      };
       metadata.update({ pathname: '/token/[hash]', query: { hash: tokenQuery.data.address_hash } }, apiData);
     }
-  }, [ tokenQuery.data, tokenQuery.isPlaceholderData ]);
+  }, [ tokenQuery.data, tokenQuery.isPlaceholderData, verifiedInfoQuery.isPlaceholderData, verifiedInfoQuery.data ]);
 
   const hasData = (tokenQuery.data && !tokenQuery.isPlaceholderData) && (addressQuery.data && !addressQuery.isPlaceholderData);
   const hasInventoryTab = tokenQuery.data?.type && NFT_TOKEN_TYPE_IDS.includes(tokenQuery.data.type);
@@ -266,7 +278,12 @@ const TokenPageContent = () => {
     <>
       <TextAd mb={ 6 }/>
 
-      <TokenPageTitle tokenQuery={ tokenQuery } addressQuery={ addressQuery } hash={ hashString }/>
+      <TokenPageTitle
+        tokenQuery={ tokenQuery }
+        addressQuery={ addressQuery }
+        verifiedInfoQuery={ verifiedInfoQuery }
+        hash={ hashString }
+      />
 
       <TokenDetails tokenQuery={ tokenQuery }/>
 

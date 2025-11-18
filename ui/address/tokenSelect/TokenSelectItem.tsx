@@ -2,9 +2,10 @@ import { chakra, Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
-import { route } from 'nextjs-routes';
+import { route } from 'nextjs/routes';
 
 import config from 'configs/app';
+import multichainConfig from 'configs/multichain';
 import getCurrencyValue from 'lib/getCurrencyValue';
 import { Link } from 'toolkit/chakra/link';
 import NativeTokenTag from 'ui/shared/celo/NativeTokenTag';
@@ -13,15 +14,24 @@ import TruncatedValue from 'ui/shared/TruncatedValue';
 
 import type { TokenEnhancedData } from '../utils/tokenUtils';
 
-const celoFeature = config.features.celo;
-
 interface Props {
   data: TokenEnhancedData;
 }
 
 const TokenSelectItem = ({ data }: Props) => {
 
-  const isNativeToken = celoFeature.isEnabled && data.token.address_hash.toLowerCase() === celoFeature.nativeTokenAddress?.toLowerCase();
+  const isNativeToken = config.UI.views.address.nativeTokenAddress &&
+    data.token.address_hash.toLowerCase() === config.UI.views.address.nativeTokenAddress.toLowerCase();
+
+  const chain = React.useMemo(() => {
+    if (!data.chain_values) {
+      return;
+    }
+
+    const chainId = Object.keys(data.chain_values)[0];
+    const chain = multichainConfig()?.chains.find((chain) => chain.id === chainId);
+    return chain;
+  }, [ data.chain_values ]);
 
   const secondRow = (() => {
     switch (data.token.type) {
@@ -84,7 +94,7 @@ const TokenSelectItem = ({ data }: Props) => {
     }
   })();
 
-  const url = route({ pathname: '/token/[hash]', query: { hash: data.token.address_hash } });
+  const url = route({ pathname: '/token/[hash]', query: { hash: data.token.address_hash } }, { chain });
 
   return (
     <Link
@@ -102,9 +112,10 @@ const TokenSelectItem = ({ data }: Props) => {
       fontSize="sm"
       href={ url }
     >
-      <Flex alignItems="center" w="100%" overflow="hidden">
+      <Flex alignItems="center" w="100%">
         <TokenEntity
           token={ data.token }
+          chain={ chain }
           noSymbol
           noCopy
           noLink

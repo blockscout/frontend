@@ -119,6 +119,7 @@
 	| "moon"
 	| "MUD_menu"
 	| "MUD"
+	| "multisend"
 	| "name_services"
 	| "networks"
 	| "networks/icon-placeholder"
@@ -141,6 +142,8 @@
 	| "refresh"
 	| "repeat"
 	| "restAPI"
+	| "return"
+	| "revoke"
 	| "rocket_xl"
 	| "rocket"
 	| "RPC"
@@ -200,6 +203,9 @@
 	| "wallet"
 	| "wallets/coinbase"
 	| "wallets/metamask"
+	| "wallets/okx"
+	| "wallets/rabby"
 	| "wallets/token-pocket"
+	| "wallets/trust"
 	| "watchlist";
   

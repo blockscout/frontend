@@ -3,6 +3,7 @@ import React from 'react';
 
 import type { TokenInstance } from 'types/api/token';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
+import type { ClusterChainConfig } from 'types/multichain';
 
 import getCurrencyValue from 'lib/getCurrencyValue';
 import { NFT_TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
@@ -12,9 +13,10 @@ import { TableCell, TableRow } from 'toolkit/chakra/table';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
+import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
-type Props = TokenTransfer & { tokenId?: string; isLoading?: boolean; instance?: TokenInstance };
+type Props = TokenTransfer & { tokenId?: string; isLoading?: boolean; instance?: TokenInstance; chainData?: ClusterChainConfig };
 
 const TokenTransferTableItem = ({
   token,
@@ -27,6 +29,7 @@ const TokenTransferTableItem = ({
   tokenId,
   isLoading,
   instance,
+  chainData,
 }: Props) => {
   const { usd, valueStr } = total && 'value' in total && total.value !== null ? getCurrencyValue({
     value: total.value,
@@ -38,15 +41,22 @@ const TokenTransferTableItem = ({
 
   return (
     <TableRow alignItems="top">
+      { chainData && (
+        <TableCell>
+          <ChainIcon data={ chainData } isLoading={ isLoading } my="5px"/>
+        </TableCell>
+      ) }
       <TableCell>
         <Flex flexDirection="column" alignItems="flex-start" mt="5px" rowGap={ 3 }>
-          <TxEntity
-            hash={ txHash }
-            isLoading={ isLoading }
-            fontWeight={ 600 }
-            noIcon
-            truncation="constant_long"
-          />
+          { txHash ? (
+            <TxEntity
+              hash={ txHash }
+              isLoading={ isLoading }
+              fontWeight={ 600 }
+              noIcon
+              truncation="constant_long"
+            />
+          ) : <Skeleton loading={ isLoading }>-</Skeleton> }
           <TimeWithTooltip
             timestamp={ timestamp }
             enableIncrement

@@ -4,12 +4,13 @@ import type { AdvancedFilterParams } from 'types/api/advancedFilter';
 
 import config from 'configs/app';
 import buildUrl from 'lib/api/buildUrl';
+import isNeedProxy from 'lib/api/isNeedProxy';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import dayjs from 'lib/date/dayjs';
-import downloadBlob from 'lib/downloadBlob';
 import { Button } from 'toolkit/chakra/button';
 import { toaster } from 'toolkit/chakra/toaster';
 import { Tooltip } from 'toolkit/chakra/tooltip';
+import { downloadBlob } from 'toolkit/utils/file';
 import ReCaptcha from 'ui/shared/reCaptcha/ReCaptcha';
 import useReCaptcha from 'ui/shared/reCaptcha/useReCaptcha';
 
@@ -33,6 +34,7 @@ const ExportCSV = ({ filters }: Props) => {
       headers: {
         'content-type': 'application/octet-stream',
         ...(recaptchaToken && { 'recaptcha-v2-response': recaptchaToken }),
+        ...(isNeedProxy() && multichainContext?.chain ? { 'x-endpoint': multichainContext.chain.app_config.apis.general?.endpoint } : {}),
       },
     });
 
@@ -55,7 +57,7 @@ const ExportCSV = ({ filters }: Props) => {
 
       const blob = await response.blob();
 
-      const chainText = multichainContext?.chain ? `${ multichainContext.chain.slug.replace(/-/g, '_') }_` : '';
+      const chainText = multichainContext?.chain ? `${ multichainContext.chain.name.replace(' ', '-') }_` : '';
       const fileName = `${ chainText }export-filtered-txs-${ dayjs().format('YYYY-MM-DD-HH-mm-ss') }.csv`;
       downloadBlob(blob, fileName);
 
@@ -69,7 +71,7 @@ const ExportCSV = ({ filters }: Props) => {
     }
   }, [ apiFetchFactory, recaptcha, multichainContext?.chain ]);
 
-  const chainConfig = multichainContext?.chain.config || config;
+  const chainConfig = multichainContext?.chain.app_config || config;
 
   if (!chainConfig.services.reCaptchaV2.siteKey) {
     return null;

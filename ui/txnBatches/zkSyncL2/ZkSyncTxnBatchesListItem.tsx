@@ -70,6 +70,7 @@ const ZkSyncTxnBatchesListItem = ({ item, isLoading }: Props) => {
             hash={ item.commit_transaction_hash }
             textStyle="sm"
             truncation="constant_long"
+            noCopy
           />
         ) : <Text>Pending</Text> }
       </ListItemMobileGrid.Value>
@@ -82,6 +83,7 @@ const ZkSyncTxnBatchesListItem = ({ item, isLoading }: Props) => {
             hash={ item.prove_transaction_hash }
             textStyle="sm"
             truncation="constant_long"
+            noCopy
           />
         ) : <Text>Pending</Text> }
       </ListItemMobileGrid.Value>

@@ -19,7 +19,7 @@ const BlockEntityL1 = (props: BlockEntity.EntityProps) => {
     query: { height_or_hash: props.hash ?? String(props.number) },
   });
 
-  return <BlockEntity.default { ...props } href={ props.href ?? defaultHref } isExternal/>;
+  return <BlockEntity.default { ...props } href={ props.href ?? defaultHref } link={{ external: true }}/>;
 };
 
 export default chakra(BlockEntityL1);

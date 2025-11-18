@@ -44,6 +44,6 @@
     "../../decs.d.ts",
     "../../reset.d.ts",
   ],
-  "exclude": ["node_modules", "dist", "../../node_modules"],
+  "exclude": ["node_modules", "dist", "../../node_modules", "vite.config.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 } 

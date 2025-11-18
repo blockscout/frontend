@@ -84,7 +84,7 @@ const SocketNewItemsNotice = chakra(({ children, className, url, num, showErrorA
       status={ showErrorAlert || !num ? 'warning_table' : 'info' }
       px={ 4 }
       py="6px"
-      fontSize="sm"
+      textStyle="sm"
     >
       { alertContent }
     </Alert>

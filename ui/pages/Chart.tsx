@@ -8,22 +8,25 @@ import type { StatsIntervalIds } from 'types/client/stats';
 import { StatsIntervalId } from 'types/client/stats';
 
 import config from 'configs/app';
+import { useMultichainContext } from 'lib/contexts/multichain';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import * as metadata from 'lib/metadata';
 import * as mixpanel from 'lib/mixpanel/index';
+import useRoutedChainSelect from 'lib/multichain/useRoutedChainSelect';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { Button } from 'toolkit/chakra/button';
 import type { SelectOption } from 'toolkit/chakra/select';
 import { Select } from 'toolkit/chakra/select';
 import { Skeleton } from 'toolkit/chakra/skeleton';
+import { ChartWidgetContent, useChartZoom } from 'toolkit/components/charts';
+import ChartMenu from 'toolkit/components/charts/parts/ChartMenu';
 import { isBrowser } from 'toolkit/utils/isBrowser';
+import ChainSelect from 'ui/optimismSuperchain/components/ChainSelect';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
 import ChartIntervalSelect from 'ui/shared/chart/ChartIntervalSelect';
-import ChartMenu from 'ui/shared/chart/ChartMenu';
-import ChartWidgetContent from 'ui/shared/chart/ChartWidgetContent';
+import { useChartsConfig } from 'ui/shared/chart/config';
 import useChartQuery from 'ui/shared/chart/useChartQuery';
-import useZoom from 'ui/shared/chart/useZoom';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import IconSvg from 'ui/shared/IconSvg';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -74,7 +77,7 @@ const Chart = () => {
   const defaultResolution = resolutionFromQuery || DEFAULT_RESOLUTION;
   const [ intervalState, setIntervalState ] = React.useState<StatsIntervalIds | undefined>(intervalFromQuery);
   const [ resolution, setResolution ] = React.useState<Resolution>(defaultResolution);
-  const { zoomRange, handleZoom, handleZoomReset } = useZoom();
+  const { zoomRange, handleZoom, handleZoomReset } = useChartZoom();
 
   const interval = intervalState || getIntervalByResolution(resolution);
 
@@ -82,6 +85,9 @@ const Chart = () => {
 
   const isMobile = useIsMobile();
   const isInBrowser = isBrowser();
+  const chartsConfig = useChartsConfig();
+  const chainSelect = useRoutedChainSelect();
+  const multichainContext = useMultichainContext();
 
   const onIntervalChange = React.useCallback((interval: StatsIntervalIds) => {
     setIntervalState(interval);
@@ -112,6 +118,24 @@ const Chart = () => {
   }, [ handleZoomReset, onResolutionChange ]);
 
   const { items, info, lineQuery } = useChartQuery(id, resolution, interval);
+
+  const charts = React.useMemo(() => {
+    if (!info || !items) {
+      return [];
+    }
+
+    return [
+      {
+        id: info.id,
+        name: 'Value',
+        items,
+        charts: chartsConfig,
+        units: info.units,
+      },
+    ];
+  }, [ chartsConfig, info, items ]);
+
+  const hasNonEmptyCharts = charts.some((chart) => chart.items.length > 2);
 
   React.useEffect(() => {
     if (info && !config.meta.seo.enhancedDataEnabled) {
@@ -173,6 +197,13 @@ const Chart = () => {
       />
       <Flex alignItems="center" justifyContent="space-between">
         <Flex alignItems="center" gap={{ base: 3, lg: 6 }} maxW="100%">
+          { multichainContext?.chain && (
+            <ChainSelect
+              value={ chainSelect.value }
+              onValueChange={ chainSelect.onValueChange }
+              loading={ isInfoLoading }
+            />
+          ) }
           <Flex alignItems="center" gap={ 3 }>
             { !isMobile && <Text>Period</Text> }
             <ChartIntervalSelect interval={ interval } onIntervalChange={ onIntervalChange }/>
@@ -218,15 +249,16 @@ const Chart = () => {
                 text={ config.app.baseUrl + router.asPath }
                 type="link"
                 ml={ 0 }
-                borderRadius="none"
-                variant="icon_secondary"
+                borderRadius="base"
+                variant="icon_background"
                 size="md"
+                boxSize={ 8 }
               />
             )
           )) }
           { (hasItems || lineQuery.isPlaceholderData) && (
             <ChartMenu
-              items={ items }
+              charts={ charts }
               title={ info?.title || '' }
               description={ info?.description || '' }
               isLoading={ lineQuery.isPlaceholderData }
@@ -249,13 +281,12 @@ const Chart = () => {
       >
         <ChartWidgetContent
           isError={ lineQuery.isError }
-          items={ items }
-          title={ info?.title || '' }
-          units={ info?.units || undefined }
+          charts={ charts }
           isEnlarged
           isLoading={ lineQuery.isPlaceholderData }
           zoomRange={ zoomRange }
           handleZoom={ handleZoom }
+          empty={ !hasNonEmptyCharts }
           emptyText="No data for the selected resolution & interval."
           resolution={ resolution }
         />

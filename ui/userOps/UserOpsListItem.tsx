@@ -1,7 +1,7 @@
 import React from 'react';
 
 import type { UserOpsItem } from 'types/api/userOps';
-import type { ChainConfig } from 'types/multichain';
+import type { ClusterChainConfig } from 'types/multichain';
 
 import config from 'configs/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
@@ -19,19 +19,19 @@ type Props = {
   isLoading?: boolean;
   showTx: boolean;
   showSender: boolean;
-  chainData?: ChainConfig;
+  chainData?: ClusterChainConfig;
 };
 
 const UserOpsListItem = ({ item, isLoading, showTx, showSender, chainData }: Props) => {
   const multichainContext = useMultichainContext();
-  const chainConfig = (multichainContext?.chain.config || config);
+  const chainConfig = (multichainContext?.chain.app_config || config);
 
   return (
     <ListItemMobileGrid.Container gridTemplateColumns="100px auto">
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>User op hash</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <UserOpEntity hash={ item.hash } isLoading={ isLoading } fontWeight="700" noIcon={ !chainData } truncation="constant_long" chain={ chainData }/>
+        <UserOpEntity hash={ item.hash } isLoading={ isLoading } fontWeight="700" noIcon={ !chainData } truncation="constant_long" chain={ chainData } noCopy/>
       </ListItemMobileGrid.Value>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Age</ListItemMobileGrid.Label>
@@ -90,7 +90,13 @@ const UserOpsListItem = ({ item, isLoading, showTx, showSender, chainData }: Pro
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>Fee</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
-            <CurrencyValue value={ item.fee } isLoading={ isLoading } accuracy={ 8 } currency={ chainConfig.chain.currency.symbol }/>
+            <CurrencyValue
+              value={ item.fee }
+              isLoading={ isLoading }
+              accuracy={ 8 }
+              currency={ chainConfig.chain.currency.symbol }
+              decimals={ String(config.chain.currency.decimals) }
+            />
           </ListItemMobileGrid.Value>
         </>
       ) }

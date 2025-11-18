@@ -3,6 +3,7 @@ import React from 'react';
 
 import type { CrossChainTx } from '@blockscout/zetachain-cctx-types';
 
+import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import base64ToHex from 'lib/base64ToHex';
 import { currencyUnits } from 'lib/units';
@@ -116,6 +117,7 @@ const ZetaChainCCTXDetails = ({ data, isLoading }: Props) => {
         <CurrencyValue
           value={ data.zeta_fees }
           currency={ currencyUnits.ether }
+          decimals={ String(config.chain.currency.decimals) }
           exchangeRate={ statsQuery.data?.coin_price }
           accuracy={ 4 }
           accuracyUsd={ 2 }
@@ -150,7 +152,7 @@ const ZetaChainCCTXDetails = ({ data, isLoading }: Props) => {
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
         <Skeleton loading={ isLoading } display="flex" flexWrap="nowrap" alignItems="center" overflow="hidden">
-          <TxEntityZetaChainCC hash={ data.index } isLoading={ isLoading } noIcon noCopy={ false } noLink/>
+          <TxEntityZetaChainCC hash={ data.index } isLoading={ isLoading } noIcon noLink/>
         </Skeleton>
       </DetailedInfo.ItemValue>
       <DetailedInfo.ItemLabel
@@ -220,7 +222,7 @@ const ZetaChainCCTXDetails = ({ data, isLoading }: Props) => {
         <Grid templateColumns="20px 1fr" rowGap={ 6 } columnGap={ 2 } w="100%">
           { transactionsBefore.length > 0 && (
             <>
-              <IconSvg name="verification-steps/finalized" boxSize={ 5 } bg={{ _light: 'white', _dark: 'black' }} zIndex={ 1 } color="text.secondary"/>
+              <IconSvg name="verification-steps/finalized" boxSize={ 5 } bg="bg.primary" zIndex={ 1 } color="text.secondary"/>
               <VStack gap={ 2 } alignItems="flex-start">
                 { transactionsBefore.map((tx) => (
                   <ZetaChainCCTXDetailsRelatedTx
@@ -255,10 +257,10 @@ const ZetaChainCCTXDetails = ({ data, isLoading }: Props) => {
               <Flex
                 h="100%"
                 w="100%"
-                bg={{ _light: 'white', _dark: 'black' }}
+                bg="bg.primary"
                 zIndex={ 1 }
               >
-                <IconSvg name="interop_slim" boxSize={ 5 } bg={{ _light: 'white', _dark: 'black' }} zIndex={ 1 } color="text.secondary"/>
+                <IconSvg name="interop_slim" boxSize={ 5 } bg="bg.primary" zIndex={ 1 } color="text.secondary"/>
               </Flex>
               <VStack gap={ 2 } alignItems="flex-start">
                 { transactionsAfter.map((tx) => (

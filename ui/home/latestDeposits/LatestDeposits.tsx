@@ -59,6 +59,7 @@ const LatestDepositsItem = ({ item, isLoading }: ItemProps) => {
       isLoading={ isLoading }
       hash={ item.l1TxHash }
       truncation={ isMobile ? 'constant_long' : 'dynamic' }
+      noCopy
     />
   ) : (
     <TxEntityL1
@@ -66,6 +67,7 @@ const LatestDepositsItem = ({ item, isLoading }: ItemProps) => {
       hash="To be determined"
       truncation="none"
       noLink
+      noCopy
     />
   );
 

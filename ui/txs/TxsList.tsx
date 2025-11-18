@@ -7,8 +7,8 @@ import type { Transaction } from 'types/api/transaction';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import useInitialList from 'lib/hooks/useInitialList';
 import useLazyRenderedList from 'lib/hooks/useLazyRenderedList';
-import { getChainDataForList } from 'lib/multichain/getChainDataForList';
 
+import type { TxsTranslationQuery } from './noves/useDescribeTxs';
 import TxsSocketNotice from './socket/TxsSocketNotice';
 import TxsListItem from './TxsListItem';
 
@@ -19,6 +19,7 @@ interface Props {
   currentAddress?: string;
   isLoading: boolean;
   items: Array<Transaction>;
+  translationQuery?: TxsTranslationQuery;
 }
 
 const TxsList = (props: Props) => {
@@ -29,23 +30,27 @@ const TxsList = (props: Props) => {
     enabled: !props.isLoading,
   });
   const multichainContext = useMultichainContext();
-  const chainData = getChainDataForList(multichainContext);
+  const chainData = multichainContext?.chain;
 
   return (
     <Box>
       { props.socketType && <TxsSocketNotice type={ props.socketType } place="list" isLoading={ props.isLoading }/> }
-      { props.items.slice(0, renderedItemsNum).map((tx, index) => (
-        <TxsListItem
-          key={ tx.hash + (props.isLoading ? index : '') }
-          tx={ tx }
-          showBlockInfo={ props.showBlockInfo }
-          currentAddress={ props.currentAddress }
-          enableTimeIncrement={ props.enableTimeIncrement }
-          isLoading={ props.isLoading }
-          animation={ initialList.getAnimationProp(tx) }
-          chainData={ chainData }
-        />
-      )) }
+      { props.items.slice(0, renderedItemsNum).map((tx, index) => {
+        return (
+          <TxsListItem
+            key={ tx.hash + (props.isLoading ? index : '') }
+            tx={ tx }
+            showBlockInfo={ props.showBlockInfo }
+            currentAddress={ props.currentAddress }
+            enableTimeIncrement={ props.enableTimeIncrement }
+            isLoading={ props.isLoading }
+            animation={ initialList.getAnimationProp(tx) }
+            chainData={ chainData }
+            translationIsLoading={ props.translationQuery?.isLoading }
+            translationData={ props.translationQuery?.data?.find(({ txHash }) => txHash.toLowerCase() === tx.hash.toLowerCase()) }
+          />
+        );
+      }) }
       <Box ref={ cutRef } h={ 0 }/>
     </Box>
   );

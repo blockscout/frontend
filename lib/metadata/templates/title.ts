@@ -1,6 +1,10 @@
+import { getFeaturePayload } from 'configs/app/features/types';
+
 import type { Route } from 'nextjs-routes';
 
 import config from 'configs/app';
+
+const dappEntityName = (getFeaturePayload(config.features.marketplace)?.titles.entity_name ?? '').toLowerCase();
 
 const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/': '%network_name% blockchain explorer - View %network_name% stats',
@@ -21,8 +25,9 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/tokens': 'Tokens list - %network_name% explorer',
   '/token/[hash]': '%network_name% token details',
   '/token/[hash]/instance/[id]': '%network_name% NFT instance',
-  '/apps': '%network_name% DApps - Explore top apps',
-  '/apps/[id]': '%network_name% marketplace app',
+  '/apps': `%network_name% ${ dappEntityName }s - Explore top ${ dappEntityName }s`,
+  '/apps/[id]': `%network_name% marketplace ${ dappEntityName }`,
+  '/essential-dapps/[id]': '%id_cap%',
   '/stats': '%network_name% stats - %network_name% network insights',
   '/stats/[id]': '%network_name% stats - %id% chart',
   '/uptime': '%network_name% uptime',
@@ -50,8 +55,9 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/ops': 'User operations on %network_name% - %network_name% explorer',
   '/op/[hash]': '%network_name% user operation %hash%',
   '/404': '%network_name% error - page not found',
-  '/name-domains': '%network_name% name domains - %network_name% explorer',
-  '/name-domains/[name]': '%network_name% %name% domain details',
+  '/name-services': '%network_name% name services - %network_name% explorer',
+  '/name-services/domains/[name]': '%network_name% %name% domain details',
+  '/name-services/clusters/[name]': '%network_name% %name% cluster details',
   '/validators': '%network_name% validators list',
   '/validators/[id]': '%network_name% validator %id% details',
   '/epochs': '%network_name% epochs',
@@ -65,20 +71,20 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/interop-messages': '%network_name% interop messages',
   '/operations': '%network_name% operations',
   '/operation/[id]': '%network_name% operation %id%',
-  '/clusters/[name]': 'Clusters details for %name%',
   '/cc/tx/[hash]': '%network_name% cross-chain transaction %hash% details',
 
   // multichain routes
-  '/chain/[chain-slug]/accounts/label/[slug]': '%network_name% addresses search by label',
-  '/chain/[chain-slug]/advanced-filter': '%network_name% advanced filter',
-  '/chain/[chain-slug]/block/[height_or_hash]': '%network_name% block %height_or_hash% details',
-  '/chain/[chain-slug]/block/countdown': '%network_name% block countdown index',
-  '/chain/[chain-slug]/block/countdown/[height]': '%network_name% block %height% countdown',
-  '/chain/[chain-slug]/csv-export': '%network_name% export data to CSV',
-  '/chain/[chain-slug]/op/[hash]': '%network_name% user operation %hash% details',
-  '/chain/[chain-slug]/token/[hash]': '%network_name% token details',
-  '/chain/[chain-slug]/token/[hash]/instance/[id]': '%network_name% token NFT instance',
-  '/chain/[chain-slug]/tx/[hash]': '%network_name% transaction %hash% details',
+  '/chain/[chain_slug]/accounts/label/[slug]': '%network_name% addresses search by label',
+  '/chain/[chain_slug]/advanced-filter': '%network_name% advanced filter',
+  '/chain/[chain_slug]/block/[height_or_hash]': '%network_name% block %height_or_hash% details',
+  '/chain/[chain_slug]/block/countdown': '%network_name% block countdown index',
+  '/chain/[chain_slug]/block/countdown/[height]': '%network_name% block %height% countdown',
+  '/chain/[chain_slug]/csv-export': '%network_name% export data to CSV',
+  '/chain/[chain_slug]/op/[hash]': '%network_name% user operation %hash% details',
+  '/chain/[chain_slug]/token/[hash]': '%network_name% token details',
+  '/chain/[chain_slug]/token/[hash]/instance/[id]': '%network_name% token NFT instance',
+  '/chain/[chain_slug]/tx/[hash]': '%network_name% transaction %hash% details',
+  '/chain/[chain_slug]/visualize/sol2uml': '%network_name% Solidity UML diagram',
 
   // service routes, added only to make typescript happy
   '/login': '%network_name% login',

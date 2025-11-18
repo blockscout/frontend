@@ -33,7 +33,16 @@ const TEST_CASES = [
       pathname: '/token/[hash]',
       query: { hash: '0x12345' },
     },
-    apiData: { symbol_or_name: 'USDT' },
+    apiData: {
+      symbol_or_name: 'USDT',
+      address_hash: '0x12345',
+      description: 'USDT is a stablecoin',
+      projectName: 'Tether',
+      icon_url: 'https://example.com/usdt.png',
+      exchange_rate: '1.00',
+      name: 'USDT',
+      symbol: 'USDT',
+    },
   } as TestCase<'/token/[hash]'>,
 ];
 

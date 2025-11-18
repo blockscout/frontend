@@ -183,7 +183,7 @@ const MarketplaceAppModal = ({
                 <IconButton
                   aria-label="Mark as favorite"
                   title="Mark as favorite"
-                  variant="icon_secondary"
+                  variant="icon_background"
                   size="md"
                   onClick={ handleFavoriteClick }
                   selected={ isFavorite }
@@ -194,10 +194,11 @@ const MarketplaceAppModal = ({
                 <CopyToClipboard
                   text={ isBrowser() ? window.location.origin + `/apps/${ id }` : '' }
                   type="share"
-                  variant="icon_secondary"
+                  variant="icon_background"
                   size="md"
                   ml={ 0 }
                   boxSize={ 8 }
+                  borderRadius="base"
                 />
               </Flex>
             </Flex>

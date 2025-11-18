@@ -4,8 +4,18 @@ import React from 'react';
 import config from 'configs/app';
 import { apps as appsMock } from 'mocks/apps/apps';
 import { test, expect, devices } from 'playwright/lib';
+import * as pwConfig from 'playwright/utils/config';
 
 import Marketplace from './Marketplace';
+
+const ESSENTIAL_DAPPS_CONFIG = JSON.stringify({
+  swap: { chains: [ config.chain.id ], fee: '0.004', integrator: 'blockscout' },
+  revoke: { chains: [ config.chain.id ] },
+  multisend: { chains: [ config.chain.id ] },
+});
+
+const MARKETPLACE_BANNER_CONTENT_URL = 'https://localhost/marketplace-banner.html';
+const MARKETPLACE_BANNER_LINK_URL = 'https://example.com';
 
 test.beforeEach(async({ mockEnvs, mockAssetResponse, mockApiResponse }) => {
   await mockEnvs([
@@ -31,13 +41,13 @@ test('with featured app +@dark-mode', async({ render, mockEnvs, page }) => {
 
   const component = await render(<Marketplace/>);
 
-  await expect(component).toHaveScreenshot();
+  await expect(component).toHaveScreenshot({
+    mask: [ page.locator(pwConfig.adsBannerSelector) ],
+    maskColor: pwConfig.maskColor,
+  });
 });
 
-test('with banner +@dark-mode', async({ render, mockEnvs, mockConfigResponse }) => {
-  const MARKETPLACE_BANNER_CONTENT_URL = 'https://localhost/marketplace-banner.html';
-  const MARKETPLACE_BANNER_LINK_URL = 'https://example.com';
-
+test('with banner +@dark-mode', async({ render, mockEnvs, mockConfigResponse, page }) => {
   await mockEnvs([
     [ 'NEXT_PUBLIC_MARKETPLACE_BANNER_CONTENT_URL', MARKETPLACE_BANNER_CONTENT_URL ],
     [ 'NEXT_PUBLIC_MARKETPLACE_BANNER_LINK_URL', MARKETPLACE_BANNER_LINK_URL ],
@@ -45,7 +55,24 @@ test('with banner +@dark-mode', async({ render, mockEnvs, mockConfigResponse }) 
   await mockConfigResponse('MARKETPLACE_BANNER_CONTENT_URL', MARKETPLACE_BANNER_CONTENT_URL, './playwright/mocks/page.html', true);
   const component = await render(<Marketplace/>);
 
-  await expect(component).toHaveScreenshot();
+  await expect(component).toHaveScreenshot({
+    mask: [ page.locator(pwConfig.adsBannerSelector) ],
+    maskColor: pwConfig.maskColor,
+  });
+});
+
+test('with essential dapps +@dark-mode', async({ render, mockEnvs, mockConfigResponse, page }) => {
+  await mockEnvs([
+    [ 'NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_CONFIG', ESSENTIAL_DAPPS_CONFIG ],
+    [ 'NEXT_PUBLIC_MARKETPLACE_BANNER_CONTENT_URL', MARKETPLACE_BANNER_CONTENT_URL ],
+    [ 'NEXT_PUBLIC_MARKETPLACE_BANNER_LINK_URL', MARKETPLACE_BANNER_LINK_URL ],
+  ]);
+  await mockConfigResponse('MARKETPLACE_BANNER_CONTENT_URL', MARKETPLACE_BANNER_CONTENT_URL, './playwright/mocks/page.html', true);
+  const component = await render(<Marketplace/>);
+  await expect(component).toHaveScreenshot({
+    mask: [ page.locator(pwConfig.adsBannerSelector) ],
+    maskColor: pwConfig.maskColor,
+  });
 });
 
 // I had a memory error while running tests in GH actions
@@ -79,9 +106,6 @@ test.describe('mobile', () => {
   });
 
   test('with banner', async({ render, mockEnvs, mockConfigResponse }) => {
-    const MARKETPLACE_BANNER_CONTENT_URL = 'https://localhost/marketplace-banner.html';
-    const MARKETPLACE_BANNER_LINK_URL = 'https://example.com';
-
     await mockEnvs([
       [ 'NEXT_PUBLIC_MARKETPLACE_BANNER_CONTENT_URL', MARKETPLACE_BANNER_CONTENT_URL ],
       [ 'NEXT_PUBLIC_MARKETPLACE_BANNER_LINK_URL', MARKETPLACE_BANNER_LINK_URL ],
@@ -89,6 +113,17 @@ test.describe('mobile', () => {
     await mockConfigResponse('MARKETPLACE_BANNER_CONTENT_URL', MARKETPLACE_BANNER_CONTENT_URL, './playwright/mocks/page.html', true);
     const component = await render(<Marketplace/>);
 
+    await expect(component).toHaveScreenshot();
+  });
+
+  test('with essential dapps', async({ render, mockEnvs, mockConfigResponse }) => {
+    await mockEnvs([
+      [ 'NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_CONFIG', ESSENTIAL_DAPPS_CONFIG ],
+      [ 'NEXT_PUBLIC_MARKETPLACE_BANNER_CONTENT_URL', MARKETPLACE_BANNER_CONTENT_URL ],
+      [ 'NEXT_PUBLIC_MARKETPLACE_BANNER_LINK_URL', MARKETPLACE_BANNER_LINK_URL ],
+    ]);
+    await mockConfigResponse('MARKETPLACE_BANNER_CONTENT_URL', MARKETPLACE_BANNER_CONTENT_URL, './playwright/mocks/page.html', true);
+    const component = await render(<Marketplace/>);
     await expect(component).toHaveScreenshot();
   });
 });

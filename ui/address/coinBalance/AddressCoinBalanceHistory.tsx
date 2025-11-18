@@ -7,7 +7,6 @@ import type { PaginationParams } from 'ui/shared/pagination/types';
 
 import type { ResourceError } from 'lib/api/resources';
 import { useMultichainContext } from 'lib/contexts/multichain';
-import { getChainDataForList } from 'lib/multichain/getChainDataForList';
 import { currencyUnits } from 'lib/units';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
@@ -26,7 +25,7 @@ interface Props {
 
 const AddressCoinBalanceHistory = ({ query }: Props) => {
   const multichainContext = useMultichainContext();
-  const chainData = getChainDataForList(multichainContext);
+  const chainData = multichainContext?.chain;
 
   const content = query.data?.items ? (
     <>

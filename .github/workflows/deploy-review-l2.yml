@@ -15,12 +15,11 @@ on:
             - arbitrum_sepolia
             - base
             - celo
-            - celo_alfajores
+            - celo_sepolia
             - garnet
             - gnosis
             - eth
             - eth_sepolia
-            - eth_goerli
             - filecoin
             - immutable
             - mega_eth
@@ -67,6 +66,7 @@ jobs:
         tags: |
           type=raw,value=review-${{ needs.make_slug.outputs.REF_SLUG }}
         build_args: ENVS_PRESET=${{ inputs.envs_preset }}
+        platforms: linux/amd64
     secrets: inherit
 
   deploy_review_l2:

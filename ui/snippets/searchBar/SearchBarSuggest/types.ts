@@ -1,3 +1,4 @@
+import type { ClusterChainConfig } from 'types/multichain';
 import type { AddressFormat } from 'types/views/address';
 
 export interface ItemsProps<Data> {
@@ -5,4 +6,5 @@ export interface ItemsProps<Data> {
   searchTerm: string;
   isMobile?: boolean | undefined;
   addressFormat?: AddressFormat;
+  chainInfo?: ClusterChainConfig;
 }

@@ -13,6 +13,7 @@ jobs:
         secrets: inherit
         permissions:
           contents: read
+          pull-requests: write
 
     # publish_image:
     # image will be published in e2e-tests.yml workflow
@@ -25,9 +26,7 @@ jobs:
         needs: checks
         uses: "./.github/workflows/e2e-tests.yml"
         secrets: inherit
-        permissions:
-          contents: read
-          packages: write
+        permissions: write-all
 
     version:
         name: Pre-release version info

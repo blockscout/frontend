@@ -7,7 +7,7 @@ import type { TokenInfo } from 'types/api/token';
 
 import getCurrencyValue from 'lib/getCurrencyValue';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import ContentLoader from 'ui/shared/ContentLoader';
+import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import useLazyLoadedList from 'ui/shared/pagination/useLazyLoadedList';

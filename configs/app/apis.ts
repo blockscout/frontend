@@ -19,6 +19,10 @@ export interface ApiPropsFull extends ApiPropsBase {
 
 const generalApi = (() => {
   const apiHost = getEnvValue('NEXT_PUBLIC_API_HOST');
+  if (!apiHost) {
+    return;
+  }
+
   const apiSchema = getEnvValue('NEXT_PUBLIC_API_PROTOCOL') || 'https';
   const apiPort = getEnvValue('NEXT_PUBLIC_API_PORT');
   const apiEndpoint = [
@@ -101,9 +105,10 @@ const rewardsApi = (() => {
   });
 })();
 
-const multichainApi = (() => {
+const multichainAggregatorApi = (() => {
   const apiHost = getEnvValue('NEXT_PUBLIC_MULTICHAIN_AGGREGATOR_API_HOST');
-  if (!apiHost) {
+  const cluster = getEnvValue('NEXT_PUBLIC_MULTICHAIN_CLUSTER');
+  if (!apiHost || !cluster) {
     return;
   }
 
@@ -113,12 +118,22 @@ const multichainApi = (() => {
     return Object.freeze({
       endpoint: apiHost,
       socketEndpoint: `wss://${ url.host }`,
-      basePath: stripTrailingSlash(getEnvValue('NEXT_PUBLIC_MULTICHAIN_AGGREGATOR_BASE_PATH') || ''),
+      basePath: `/api/v1/clusters/${ cluster }`,
     });
   } catch (error) {
     return;
   }
+})();
 
+const multichainStatsApi = (() => {
+  const apiHost = getEnvValue('NEXT_PUBLIC_MULTICHAIN_STATS_API_HOST');
+  if (!apiHost) {
+    return;
+  }
+
+  return Object.freeze({
+    endpoint: apiHost,
+  });
 })();
 
 const statsApi = (() => {
@@ -197,7 +212,7 @@ const zetachainApi = (() => {
 })();
 
 export type Apis = {
-  general: ApiPropsFull;
+  general: ApiPropsFull | undefined;
 } & Partial<Record<Exclude<ApiName, 'general'>, ApiPropsBase>>;
 
 const apis: Apis = Object.freeze({
@@ -207,7 +222,8 @@ const apis: Apis = Object.freeze({
   clusters: clustersApi,
   contractInfo: contractInfoApi,
   metadata: metadataApi,
-  multichain: multichainApi,
+  multichainAggregator: multichainAggregatorApi,
+  multichainStats: multichainStatsApi,
   rewards: rewardsApi,
   stats: statsApi,
   tac: tacApi,

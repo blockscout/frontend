@@ -40,7 +40,7 @@ const PrevNext = ({ className, onClick, prevLabel, nextLabel, isPrevDisabled, is
         <IconButton
           aria-label="prev"
           borderRadius="sm"
-          variant="subtle"
+          variant="icon_background"
           boxSize={ 6 }
           onClick={ handelPrevClick }
           disabled={ isPrevDisabled }
@@ -52,7 +52,7 @@ const PrevNext = ({ className, onClick, prevLabel, nextLabel, isPrevDisabled, is
         <IconButton
           aria-label="next"
           borderRadius="sm"
-          variant="subtle"
+          variant="icon_background"
           boxSize={ 6 }
           ml="10px"
           onClick={ handelNextClick }

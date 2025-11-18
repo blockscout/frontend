@@ -10,11 +10,13 @@ const baseUrl = [
   appPort && ':' + appPort,
 ].filter(Boolean).join('');
 const isDev = getEnvValue('NEXT_PUBLIC_APP_ENV') === 'development';
+const isReview = getEnvValue('NEXT_PUBLIC_APP_ENV') === 'review';
 const isPw = getEnvValue('NEXT_PUBLIC_APP_INSTANCE') === 'pw';
 const spriteHash = getEnvValue('NEXT_PUBLIC_ICON_SPRITE_HASH');
 
 const app = Object.freeze({
   isDev,
+  isReview,
   isPw,
   protocol: appSchema,
   host: appHost,

@@ -6,7 +6,6 @@ import type { Route } from 'nextjs-routes';
 import type { Props } from 'nextjs/getServerSideProps/handlers';
 
 import config from 'configs/app';
-import isNeedProxy from 'lib/api/isNeedProxy';
 
 export type Guard = (chainConfig: typeof config) => <Pathname extends Route['pathname'] = never>(context: GetServerSidePropsContext) =>
 Promise<GetServerSidePropsResult<Props<Pathname>> | undefined>;
@@ -37,6 +36,15 @@ export const userOps: Guard = (chainConfig: typeof config) => async() => {
 
 export const marketplace: Guard = (chainConfig: typeof config) => async() => {
   if (!chainConfig.features.marketplace.isEnabled) {
+    return {
+      notFound: true,
+    };
+  }
+};
+
+export const marketplaceEssentialDapp: Guard = (chainConfig: typeof config) => async() => {
+  const feature = chainConfig.features.marketplace;
+  if (!feature.isEnabled || !feature.essentialDapps) {
     return {
       notFound: true,
     };
@@ -75,8 +83,18 @@ export const suave: Guard = (chainConfig: typeof config) => async() => {
   }
 };
 
-export const nameService: Guard = (chainConfig: typeof config) => async() => {
-  if (!chainConfig.features.nameService.isEnabled) {
+export const nameServiceEns: Guard = (chainConfig: typeof config) => async() => {
+  const feature = chainConfig.features.nameServices;
+  if (!feature.isEnabled || !feature.ens.isEnabled) {
+    return {
+      notFound: true,
+    };
+  }
+};
+
+export const nameServiceClusters: Guard = (chainConfig: typeof config) => async() => {
+  const feature = chainConfig.features.nameServices;
+  if (!feature.isEnabled || !feature.clusters.isEnabled) {
     return {
       notFound: true,
     };
@@ -140,8 +158,8 @@ export const dataAvailability: Guard = (chainConfig: typeof config) => async() =
   }
 };
 
-export const login: Guard = () => async() => {
-  if (!isNeedProxy()) {
+export const login: Guard = (chainConfig: typeof config) => async() => {
+  if (!chainConfig.app.isReview && !chainConfig.app.isDev) {
     return {
       notFound: true,
     };
@@ -166,14 +184,6 @@ export const publicTagsSubmit: Guard = (chainConfig: typeof config) => async() =
 
 export const pools: Guard = (chainConfig: typeof config) => async() => {
   if (!chainConfig.features.pools.isEnabled) {
-    return {
-      notFound: true,
-    };
-  }
-};
-
-export const clusters: Guard = (chainConfig: typeof config) => async() => {
-  if (!chainConfig.features.clusters.isEnabled) {
     return {
       notFound: true,
     };

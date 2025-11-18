@@ -148,7 +148,7 @@ const BlockPageContent = () => {
   throwOnAbsentParamError(heightOrHash);
 
   if (blockQuery.isError) {
-    if (!blockQuery.isDegradedData && blockQuery.error.status === 404 && !heightOrHash.startsWith('0x')) {
+    if (!blockQuery.isDegradedData && blockQuery.error.status === 404 && !heightOrHash.startsWith('0x') && blockQuery.isFutureBlock) {
       const url = routeParams({ pathname: '/block/countdown/[height]', query: { height: heightOrHash } }, multichainContext);
       router.push(url, undefined, { shallow: true });
       return null;

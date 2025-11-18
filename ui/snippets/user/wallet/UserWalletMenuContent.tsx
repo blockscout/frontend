@@ -35,7 +35,6 @@ const UserWalletMenuContent = ({ isAutoConnectDisabled, address, domain, isRecon
       <Flex alignItems="center" columnGap={ 2 } justifyContent="space-between">
         <AddressEntity
           address={{ hash: address, ens_domain_name: domain }}
-          noTooltip
           truncation="dynamic"
           fontSize="sm"
           fontWeight={ 700 }

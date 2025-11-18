@@ -1,16 +1,16 @@
 import React from 'react';
 
 import type { UserOpsItem } from 'types/api/userOps';
-import type { ChainConfig } from 'types/multichain';
+import type { ClusterChainConfig } from 'types/multichain';
 
 import config from 'configs/app';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
-import ChainIcon from 'ui/optimismSuperchain/components/ChainIcon';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import AddressStringOrParam from 'ui/shared/entities/address/AddressStringOrParam';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import UserOpEntity from 'ui/shared/entities/userOp/UserOpEntity';
+import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import UserOpStatus from 'ui/shared/userOps/UserOpStatus';
 
@@ -19,7 +19,7 @@ type Props = {
   isLoading?: boolean;
   showTx: boolean;
   showSender: boolean;
-  chainData?: ChainConfig;
+  chainData?: ClusterChainConfig;
 };
 
 const UserOpsTableItem = ({ item, isLoading, showTx, showSender, chainData }: Props) => {
@@ -31,7 +31,7 @@ const UserOpsTableItem = ({ item, isLoading, showTx, showSender, chainData }: Pr
         </TableCell>
       ) }
       <TableCell verticalAlign="middle">
-        <UserOpEntity hash={ item.hash } isLoading={ isLoading } noIcon fontWeight={ 700 } truncation="constant_long"/>
+        <UserOpEntity hash={ item.hash } isLoading={ isLoading } noIcon fontWeight={ 700 } truncation="constant_long" noCopy/>
       </TableCell>
       <TableCell verticalAlign="middle">
         <TimeWithTooltip
@@ -73,7 +73,7 @@ const UserOpsTableItem = ({ item, isLoading, showTx, showSender, chainData }: Pr
       </TableCell>
       { !config.UI.views.tx.hiddenFields?.tx_fee && (
         <TableCell verticalAlign="middle" isNumeric>
-          <CurrencyValue value={ item.fee } isLoading={ isLoading } accuracy={ 8 }/>
+          <CurrencyValue value={ item.fee } isLoading={ isLoading } accuracy={ 8 } decimals={ String(config.chain.currency.decimals) }/>
         </TableCell>
       ) }
     </TableRow>

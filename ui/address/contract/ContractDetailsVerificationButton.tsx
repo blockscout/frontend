@@ -3,6 +3,7 @@ import React from 'react';
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
+import { useMultichainContext } from 'lib/contexts/multichain';
 import { Button } from 'toolkit/chakra/button';
 import type { LinkProps } from 'toolkit/chakra/link';
 import { Link } from 'toolkit/chakra/link';
@@ -14,10 +15,16 @@ interface Props extends LinkProps {
 
 const ContractDetailsVerificationButton = ({ isLoading, addressHash, ...rest }: Props) => {
 
-  const href = config.features.opSuperchain.isEnabled ?
-  // TODO @tom2drum adjust URL to Vera
-    'https://vera.blockscout.com' :
-    route({ pathname: '/address/[hash]/contract-verification', query: { hash: addressHash } });
+  const multichainContext = useMultichainContext();
+
+  const href = (() => {
+    if (multichainContext) {
+      const searchParams = new URLSearchParams();
+      searchParams.set('contracts', `${ multichainContext.chain.id }:${ addressHash }`);
+      return `https://vera.blockscout.com?${ searchParams.toString() }`;
+    }
+    return route({ pathname: '/address/[hash]/contract-verification', query: { hash: addressHash } });
+  })();
 
   return (
     <Link

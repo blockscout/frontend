@@ -3,20 +3,20 @@ import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { AddressCoinBalanceHistoryItem } from 'types/api/address';
-import type { ChainConfig } from 'types/multichain';
+import type { ClusterChainConfig } from 'types/multichain';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { WEI, ZERO } from 'toolkit/utils/consts';
-import ChainIcon from 'ui/optimismSuperchain/components/ChainIcon';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
+import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 type Props = AddressCoinBalanceHistoryItem & {
   page: number;
   isLoading: boolean;
-  chainData?: ChainConfig;
+  chainData?: ClusterChainConfig;
 };
 
 const AddressCoinBalanceTableItem = (props: Props) => {

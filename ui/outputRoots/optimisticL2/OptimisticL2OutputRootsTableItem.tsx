@@ -48,6 +48,7 @@ const OptimisticL2OutputRootsTableItem = ({ item, isLoading }: Props) => {
           hash={ item.l1_transaction_hash }
           noIcon
           truncation="constant_long"
+          noCopy
         />
       </TableCell>
       <TableCell verticalAlign="middle">

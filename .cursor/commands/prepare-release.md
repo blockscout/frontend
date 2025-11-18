@@ -30,15 +30,22 @@ Prepare the next release of the application.
         | Dependencies updates        | dependencies                                   |
         | Design updates              | design                                        |
 
-    - Compose the "Changes in ENV variables" section with the following rules:
-        - Find all pull requests with the "ENVs" tag.
-        - Create a temporary file and paste the pull request numbers along with their descriptions, excluding the "Checklist for PR author" section. Then, remove any content from the descriptions that is unrelated to the enviroment variables or does not describe changes in them. Rephrase sentences if necessary. If pull request description doesn't mention any of these changes, use "Cannot find any changes in ENVs in PR description" as a placeholder.
-        - Copy the result to the `./RELEASE_NOTES_<release-tag>.md` file. Group all changes by the pull request number, leaving the link to it. Use the following formatting:
+    - Compose the "Changes in ENV Variables" section following these rules:
+        - Find all pull requests tagged with "ENVs."
+        - Create a temporary file and paste the pull request numbers along with their descriptions, excluding the "Checklist for PR Author" section.
+        - Analyze the changes made to the ENV variables based on those descriptions. Feel free to rephrase sentences if necessary. If you cannot determine the correct changes or are unsure of their accuracy, use "Cannot find any changes in ENVs in PR description" as a placeholder in the next step.
+        - Compose the section according to the following template (note that changes are grouped by the related pull request number):
             ```
-            - <link-to-pull-request>:
+            - <pull-request-number>:
                 - <change-1>
-                - <change-1>
+                - <change-2>
             ```
+            Examples:
+            - #3005
+                - Added `NEXT_PUBLIC_AD_BANNER_ENABLE_SPECIFY` to enable the Specify ad provider for users with a connected wallet.
+                - Removed the `hype` option from the `NEXT_PUBLIC_AD_BANNER_PROVIDER` variable values.
+            - #2968 
+                - Added `NEXT_PUBLIC_MEGA_ETH_SOCKET_URL_METRICS` to display information on the uptime dashboard page.
     - Update the "Full list of the ENV variables" and "Full Changelog" with the correct version tags.
     - Update the "New Contributors" section if necessary.
     - Keep the "Compatibility" section unchanged.

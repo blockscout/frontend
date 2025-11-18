@@ -10,6 +10,9 @@ import { Input } from 'toolkit/chakra/input';
 import { InputGroup } from 'toolkit/chakra/input-group';
 import { ClearButton } from 'toolkit/components/buttons/ClearButton';
 import IconSvg from 'ui/shared/IconSvg';
+
+const nameServicesFeature = config.features.nameServices;
+
 interface Props extends Omit<HTMLChakraProps<'form'>, 'onChange'> {
   onChange?: (value: string) => void;
   onSubmit?: (event: FormEvent<HTMLFormElement>) => void;
@@ -77,7 +80,7 @@ const SearchBarInput = (
   }, [ handleKeyPress ]);
 
   const getPlaceholder = () => {
-    const clusterText = config.features.clusters.isEnabled ? ' / cluster ' : '';
+    const clusterText = nameServicesFeature.isEnabled && nameServicesFeature.clusters.isEnabled ? ' / cluster ' : '';
     return `Search by address / txn hash / block / token${ clusterText }/... `;
   };
 
@@ -114,7 +117,7 @@ const SearchBarInput = (
       onBlur={ onBlur }
       onClick={ onFormClick }
       w="100%"
-      backgroundColor={{ _light: 'white', _dark: 'black' }}
+      backgroundColor="bg.primary"
       borderRadius="base"
       position="relative"
       zIndex={ isSuggestOpen ? 'modal' : 'auto' }
@@ -138,6 +141,7 @@ const SearchBarInput = (
           backgroundColor={{ base: isHeroBanner ? 'input.bg' : 'dialog.bg', lg: 'input.bg' }}
           _hover={{ borderColor: 'input.border.hover' }}
           _focusWithin={{ _placeholder: { color: 'gray.300' }, borderColor: 'input.border.focus', _hover: { borderColor: 'input.border.focus' } }}
+          enterKeyHint="search"
         />
       </InputGroup>
     </chakra.form>

@@ -76,7 +76,7 @@ const ContractMethodsCustom = ({ isLoading: isLoadingProp }: Props) => {
     <Flex flexDir="column" rowGap={ 6 }>
       { currentInfo ? (
         <>
-          <Flex flexDir="column" rowGap={ 2 }>
+          <Flex flexDir="column" rowGap={ 1 }>
             <ConnectWalletAlert isLoading={ isLoading }/>
             <ContractCustomAbiAlert isLoading={ isLoading }/>
           </Flex>

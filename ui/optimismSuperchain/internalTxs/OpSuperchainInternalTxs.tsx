@@ -8,9 +8,9 @@ import { apos } from 'toolkit/utils/htmlEntities';
 import InternalTxsList from 'ui/internalTxs/InternalTxsList';
 import InternalTxsTable from 'ui/internalTxs/InternalTxsTable';
 import useInternalTxsQuery from 'ui/internalTxs/useInternalTxsQuery';
+import ChainSelect from 'ui/optimismSuperchain/components/ChainSelect';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import ChainSelect from 'ui/shared/multichain/ChainSelect';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 
@@ -27,6 +27,7 @@ const OpSuperchainInternalTxs = () => {
       onChange={ onSearchTermChange }
       placeholder="Search by transaction hash"
       initialValue={ searchTerm }
+      ml={{ base: 0, lg: 2 }}
     />
   );
 
@@ -34,7 +35,6 @@ const OpSuperchainInternalTxs = () => {
     <ChainSelect
       value={ query.chainValue }
       onValueChange={ query.onChainValueChange }
-      ml={{ base: 0, lg: 2 }}
     />
   );
 
@@ -46,15 +46,15 @@ const OpSuperchainInternalTxs = () => {
         </Box>
       ) }
       <ActionBar mt={ -6 } justifyContent="flex-start">
-        { !isMobile && filterInput }
         { chainSelect }
+        { !isMobile && filterInput }
         <Pagination ml="auto" { ...pagination }/>
       </ActionBar>
     </>
   );
 
   const content = data?.items ? (
-    <MultichainProvider chainSlug={ query.chainValue?.[0] }>
+    <MultichainProvider chainId={ query.chainValue?.[0] }>
       <Box hideBelow="lg">
         <InternalTxsTable data={ data.items } isLoading={ isPlaceholderData }/>
       </Box>

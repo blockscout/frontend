@@ -9,15 +9,15 @@ import BlocksContent from 'ui/blocks/BlocksContent';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 
 interface Props extends BlocksContentProps {
-  chainSlug: string | undefined;
+  chainId: string | undefined;
 }
 
-const OpSuperchainBlocksContent = ({ chainSlug, ...rest }: Props) => {
-  const chainConfig = multichainConfig()?.chains.find(chain => chain.slug === chainSlug);
+const OpSuperchainBlocksContent = ({ chainId, ...rest }: Props) => {
+  const chainConfig = multichainConfig()?.chains.find(chain => chain.id === chainId);
 
   return (
-    <MultichainProvider chainSlug={ chainSlug }>
-      <SocketProvider url={ chainConfig ? getSocketUrl(chainConfig.config) : undefined }>
+    <MultichainProvider chainId={ chainId }>
+      <SocketProvider url={ chainConfig ? getSocketUrl(chainConfig.app_config) : undefined }>
         <BlocksContent
           { ...rest }
           top={ ACTION_BAR_HEIGHT_DESKTOP }

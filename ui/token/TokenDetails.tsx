@@ -10,6 +10,7 @@ import type { TokenInfo } from 'types/api/token';
 import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
+import { useMultichainContext } from 'lib/contexts/multichain';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getCurrencyValue from 'lib/getCurrencyValue';
 import useIsMounted from 'lib/hooks/useIsMounted';
@@ -35,6 +36,9 @@ const TokenDetails = ({ tokenQuery }: Props) => {
 
   const hash = router.query.hash?.toString();
 
+  const multichainContext = useMultichainContext();
+  const chainSlug = multichainContext?.chain?.slug;
+
   const tokenCountersQuery = useApiQuery('general:token_counters', {
     pathParams: { hash },
     queryOptions: { enabled: Boolean(router.query.hash), placeholderData: TOKEN_COUNTERS },
@@ -43,8 +47,11 @@ const TokenDetails = ({ tokenQuery }: Props) => {
   const appActionData = useAppActionData(hash);
 
   const changeUrlAndScroll = useCallback((tab: TokenTabs) => () => {
+
     router.push(
-      { pathname: '/token/[hash]', query: { hash: hash || '', tab } },
+      chainSlug ?
+        { pathname: '/chain/[chain_slug]/token/[hash]', query: { hash: hash || '', tab, chain_slug: chainSlug } } :
+        { pathname: '/token/[hash]', query: { hash: hash || '', tab } },
       undefined,
       { shallow: true },
     );
@@ -52,7 +59,7 @@ const TokenDetails = ({ tokenQuery }: Props) => {
       duration: 500,
       smooth: true,
     });
-  }, [ hash, router ]);
+  }, [ chainSlug, hash, router ]);
 
   const countersItem = useCallback((item: 'token_holders_count' | 'transfers_count') => {
     const itemValue = tokenCountersQuery.data?.[item];

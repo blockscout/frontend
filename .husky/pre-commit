@@ -10,7 +10,7 @@ echo 🧿 Running svg formatter...
 for file in `git diff --diff-filter=ACMRT --cached --name-only | grep ".svg\$"`
     do 
         echo "Formatting $file" 
-        ./node_modules/.bin/svgo -q $file 
+        ./node_modules/.bin/svgo -q $file --config svgo.config.format.js
         git add $file
     done
 

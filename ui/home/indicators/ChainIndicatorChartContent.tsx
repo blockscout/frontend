@@ -1,14 +1,9 @@
-import { useToken } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TimeChartData } from 'ui/shared/chart/types';
+import type { TimeChartData } from 'toolkit/components/charts/types';
 
-import { useColorModeValue } from 'toolkit/chakra/color-mode';
-import ChartArea from 'ui/shared/chart/ChartArea';
-import ChartLine from 'ui/shared/chart/ChartLine';
-import ChartOverlay from 'ui/shared/chart/ChartOverlay';
-import ChartTooltip from 'ui/shared/chart/ChartTooltip';
-import useTimeChartController from 'ui/shared/chart/useTimeChartController';
+import { ChartArea, ChartLine, ChartOverlay, ChartTooltip, useTimeChartController } from 'toolkit/components/charts';
+import { useDefaultGradient, useDefaultLineColor } from 'ui/shared/chart/config';
 
 interface Props {
   data: TimeChartData;
@@ -19,7 +14,8 @@ const CHART_MARGIN = { bottom: 5, left: 10, right: 10, top: 5 };
 
 const ChainIndicatorChartContent = ({ data }: Props) => {
   const overlayRef = React.useRef<SVGRectElement>(null);
-  const lineColor = useToken('colors', useColorModeValue('theme.graph.line._light', 'theme.graph.line._dark'));
+  const lineColor = useDefaultLineColor();
+  const gradient = useDefaultGradient();
 
   const axesConfig = React.useMemo(() => {
     return {
@@ -38,17 +34,19 @@ const ChainIndicatorChartContent = ({ data }: Props) => {
     <svg width="100%" height="100%" ref={ ref } cursor="pointer">
       <g transform={ `translate(${ chartMargin.left || 0 },${ chartMargin.top || 0 })` } opacity={ rect ? 1 : 0 }>
         <ChartArea
+          id={ data[0].id }
           data={ data[0].items }
           xScale={ axes.x.scale }
           yScale={ axes.y.scale }
+          gradient={ gradient }
         />
         <ChartLine
           data={ data[0].items }
           xScale={ axes.x.scale }
           yScale={ axes.y.scale }
-          stroke={ lineColor[0] }
-          animation="left"
+          stroke={ lineColor }
           strokeWidth={ 3 }
+          animation="left"
         />
         <ChartOverlay ref={ overlayRef } width={ innerWidth } height={ innerHeight }>
           <ChartTooltip

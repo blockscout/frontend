@@ -4,8 +4,7 @@ import type { BlockTransactionsResponse } from './block';
 import type { DecodedInput } from './decodedInput';
 import type { Fee } from './fee';
 import type { ChainInfo, MessageStatus } from './interop';
-import type { NovesTxTranslation } from './noves';
-import type { OptimisticL2WithdrawalStatus } from './optimisticL2';
+import type { OptimisticL2WithdrawalClaimInfo, OptimisticL2WithdrawalStatus } from './optimisticL2';
 import type { ScrollL2BlockStatus } from './scrollL2';
 import type { TokenInfo } from './token';
 import type { TokenTransfer } from './tokenTransfer';
@@ -19,7 +18,7 @@ export type TransactionRevertReason = {
 export type WrappedTransactionFields = 'decoded_input' | 'fee' | 'gas_limit' | 'gas_price' | 'hash' | 'max_fee_per_gas' |
 'max_priority_fee_per_gas' | 'method' | 'nonce' | 'raw_input' | 'to' | 'type' | 'value';
 
-export interface OpWithdrawal {
+export interface OpWithdrawal extends OptimisticL2WithdrawalClaimInfo {
   l1_transaction_hash: string;
   nonce: number;
   status: OptimisticL2WithdrawalStatus;
@@ -104,8 +103,6 @@ export type Transaction = {
   blob_gas_price?: string;
   burnt_blob_fee?: string;
   max_fee_per_blob_gas?: string;
-  // Noves-fi
-  translation?: NovesTxTranslation;
   arbitrum?: ArbitrumTransactionData;
   scroll?: ScrollTransactionData;
   // EIP-7702
@@ -219,6 +216,7 @@ export interface TxAuthorization {
   authority: string;
   chain_id: number;
   nonce: number;
+  status: 'ok' | 'invalid_chain_id' | 'invalid_nonce' | 'invalid_signature' | null;
 }
 
 export interface InteropTransactionInfo {

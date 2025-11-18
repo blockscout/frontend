@@ -1,12 +1,18 @@
 import React from 'react';
 
+import type * as multichain from '@blockscout/multichain-aggregator-types';
+
+import multichainConfig from 'configs/multichain';
+import getSocketUrl from 'lib/api/getSocketUrl';
 import useApiQuery from 'lib/api/useApiQuery';
 import { MultichainProvider } from 'lib/contexts/multichain';
 import useRoutedChainSelect from 'lib/multichain/useRoutedChainSelect';
+import { SocketProvider } from 'lib/socket/context';
 import { ADDRESS_INFO } from 'stubs/address';
-import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import useContractTabs from 'ui/address/contract/useContractTabs';
-import ChainSelect from 'ui/shared/multichain/ChainSelect';
+import AddressContract from 'ui/address/AddressContract';
+import ChainSelect from 'ui/optimismSuperchain/components/ChainSelect';
+
+import getContractChainIds from './getContractChainIds';
 
 const LEFT_SLOT_PROPS = {
   mr: 6,
@@ -15,45 +21,47 @@ const QUERY_PRESERVED_PARAMS = [ 'tab', 'hash' ];
 
 interface Props {
   addressHash: string;
+  isLoading: boolean;
+  data: multichain.GetAddressResponse | undefined;
 }
 
-const OpSuperchainAddressContract = ({ addressHash }: Props) => {
+const OpSuperchainAddressContract = ({ addressHash, isLoading, data }: Props) => {
+  const chainIds = React.useMemo(() => getContractChainIds(data), [ data ]);
+  const chainSelect = useRoutedChainSelect({ persistedParams: QUERY_PRESERVED_PARAMS, isLoading, chainIds });
 
-  const chainSelect = useRoutedChainSelect({ persistedParams: QUERY_PRESERVED_PARAMS });
+  const chain = React.useMemo(() => {
+    return multichainConfig()?.chains.find(({ id }) => id === chainSelect.value?.[0]);
+  }, [ chainSelect.value ]);
 
   const addressQuery = useApiQuery('general:address', {
     pathParams: { hash: addressHash },
     queryOptions: {
-      enabled: Boolean(addressHash),
+      enabled: Boolean(addressHash) && !isLoading,
       placeholderData: ADDRESS_INFO,
     },
-    chainSlug: chainSelect.value?.[0],
-  });
-
-  const contractTabs = useContractTabs({
-    addressData: addressQuery.data,
-    isEnabled: !addressQuery.isPlaceholderData,
-    hasMudTab: false,
-    chainSlug: chainSelect.value?.[0],
+    chain,
   });
 
   const leftSlot = (
     <ChainSelect
       value={ chainSelect.value }
       onValueChange={ chainSelect.onValueChange }
+      loading={ isLoading }
+      chainIds={ chainIds }
     />
   );
 
   return (
-    <MultichainProvider chainSlug={ chainSelect.value?.[0] }>
-      <RoutedTabs
-        tabs={ contractTabs.tabs }
-        variant="secondary"
-        size="sm"
-        isLoading={ contractTabs.isLoading }
-        leftSlot={ leftSlot }
-        leftSlotProps={ LEFT_SLOT_PROPS }
-      />
+    <MultichainProvider chainId={ chainSelect.value?.[0] }>
+      <SocketProvider url={ getSocketUrl(chain?.app_config) }>
+        <AddressContract
+          addressData={ addressQuery.data }
+          isLoading={ isLoading || addressQuery.isPlaceholderData }
+          hasMudTab={ false }
+          leftSlot={ leftSlot }
+          leftSlotProps={ LEFT_SLOT_PROPS }
+        />
+      </SocketProvider>
     </MultichainProvider>
   );
 };

@@ -77,7 +77,6 @@ const RewardsStreakModal = ({ open, onOpenChange, currentStreak, badges = EMPTY_
                       <Separator
                         display={{ base: 'none', lg: 'block' }}
                         orientation="vertical"
-                        borderColor="border.divider"
                       />
                     ) }
                   </>

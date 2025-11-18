@@ -28,7 +28,7 @@ type Props = {
 
 const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
   const multichainContext = useMultichainContext();
-  const feature = multichainContext?.chain?.config.features.txInterpretation || config.features.txInterpretation;
+  const feature = multichainContext?.chain?.app_config.features.txInterpretation || config.features.txInterpretation;
 
   const hasInterpretationFeature = feature.isEnabled;
   const isNovesInterpretation = hasInterpretationFeature && feature.provider === 'noves';
@@ -123,7 +123,7 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
         />
       );
     } else {
-      return <TxEntity hash={ hash } noLink noCopy={ false } variant="subheading" mr={{ base: 0, lg: 2 }} chain={ multichainContext?.chain }/>;
+      return <TxEntity hash={ hash } noLink variant="subheading" mr={{ base: 0, lg: 2 }} chain={ multichainContext?.chain }/>;
     }
   })();
 

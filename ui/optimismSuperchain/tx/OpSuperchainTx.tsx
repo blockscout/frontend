@@ -1,17 +1,20 @@
+import { useRouter } from 'next/router';
 import React from 'react';
 
-import TextAd from 'ui/shared/ad/TextAd';
-import PageTitle from 'ui/shared/Page/PageTitle';
+import multichainConfig from 'configs/multichain';
+import { MultichainProvider } from 'lib/contexts/multichain';
+import getQueryParamString from 'lib/router/getQueryParamString';
+import Transaction from 'ui/pages/Transaction';
 
 const OpSuperchainTx = () => {
+  const router = useRouter();
+  const chainSlug = getQueryParamString(router.query.chain_slug);
+  const chainData = multichainConfig()?.chains.find(chain => chain.slug === chainSlug);
+
   return (
-    <>
-      <TextAd mb={ 6 }/>
-      <PageTitle
-        title="Cross-chain tx details"
-      />
-      <div>Coming soon 🔜</div>
-    </>
+    <MultichainProvider chainId={ chainData?.id }>
+      <Transaction/>
+    </MultichainProvider>
   );
 };
 

@@ -103,15 +103,17 @@ const Footer = () => {
   const renderNetworkInfo = React.useCallback((gridArea?: GridProps['gridArea']) => {
     return (
       <Flex
+        alignItems="center"
         gridArea={ gridArea }
         flexWrap="wrap"
-        columnGap={ 8 }
-        rowGap={ 6 }
+        justifyContent="flex-start"
+        columnGap={ 3 }
+        rowGap={ 2 }
         mb={{ base: 5, lg: 10 }}
         _empty={{ display: 'none' }}
       >
         { !config.UI.indexingAlert.intTxs.isHidden && <IntTxsIndexingStatus/> }
-        <NetworkAddToWallet/>
+        <NetworkAddToWallet source="Footer"/>
       </Flex>
     );
   }, []);

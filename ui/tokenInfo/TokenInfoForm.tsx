@@ -18,8 +18,8 @@ import { FormFieldEmail } from 'toolkit/components/forms/fields/FormFieldEmail';
 import { FormFieldText } from 'toolkit/components/forms/fields/FormFieldText';
 import { FormFieldUrl } from 'toolkit/components/forms/fields/FormFieldUrl';
 import { noWhitespaceValidator } from 'toolkit/components/forms/validators/text';
+import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 import { useUpdateEffect } from 'toolkit/hooks/useUpdateEffect';
-import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
 import TokenInfoFieldIconUrl from './fields/TokenInfoFieldIconUrl';

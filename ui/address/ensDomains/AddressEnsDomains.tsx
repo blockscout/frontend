@@ -127,7 +127,7 @@ const AddressEnsDomains = ({ query, addressHash, mainDomainName }: Props) => {
           ) }
           { (ownedDomains.length > 9 || resolvedDomains.length > 9) && (
             <Link
-              href={ route({ pathname: '/name-domains', query: { owned_by: 'true', resolved_to: 'true', address: addressHash } }) }
+              href={ route({ pathname: '/name-services', query: { tab: 'domains', owned_by: 'true', resolved_to: 'true', address: addressHash } }) }
             >
               <span> More results</span>
               <chakra.span color="text.secondary"> ({ totalRecords })</chakra.span>

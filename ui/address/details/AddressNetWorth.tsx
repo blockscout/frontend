@@ -43,7 +43,9 @@ const AddressNetWorth = ({ addressData, isLoading, addressHash }: Props) => {
 
   let multichainItems = null;
 
-  if (multichainFeature.isEnabled && !addressData?.is_contract) {
+  const isEip7702 = addressData?.implementations?.length && addressData?.proxy_type === 'eip7702';
+
+  if (multichainFeature.isEnabled && (!addressData?.is_contract || isEip7702)) {
     const { providers } = multichainFeature;
     const hasSingleProvider = providers.length === 1;
 

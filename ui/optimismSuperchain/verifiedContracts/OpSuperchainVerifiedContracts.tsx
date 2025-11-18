@@ -1,13 +1,14 @@
 import { Box, createListCollection, HStack } from '@chakra-ui/react';
 import React from 'react';
 
+import multichainConfig from 'configs/multichain';
 import { MultichainProvider } from 'lib/contexts/multichain';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import { apos } from 'toolkit/utils/htmlEntities';
+import ChainSelect from 'ui/optimismSuperchain/components/ChainSelect';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import ChainSelect from 'ui/shared/multichain/ChainSelect';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 import Sort from 'ui/shared/sort/Sort';
@@ -28,11 +29,16 @@ const OpSuperchainVerifiedContracts = () => {
   const { query, type, searchTerm, sort, onSearchTermChange, onTypeChange, onSortChange } = useVerifiedContractsQuery({ isMultichain: true });
   const { isError, isPlaceholderData, data, pagination, chainValue, onChainValueChange } = query;
 
+  const chainConfig = React.useMemo(() => {
+    return multichainConfig()?.chains.find((chain) => chain.id === chainValue?.[0])?.app_config;
+  }, [ chainValue ]);
+
   const typeFilter = (
     <VerifiedContractsFilter
       onChange={ onTypeChange }
       defaultValue={ type }
       hasActiveFilter={ Boolean(type) }
+      chainConfig={ chainConfig }
     />
   );
 
@@ -95,9 +101,10 @@ const OpSuperchainVerifiedContracts = () => {
       <ChainSelect
         value={ chainValue }
         onValueChange={ onChainValueChange }
+        mode="default"
         mb={ 3 }
       />
-      <MultichainProvider chainSlug={ chainValue?.[0] }>
+      <MultichainProvider chainId={ chainValue?.[0] }>
         <VerifiedContractsCounters/>
         <DataListDisplay
           isError={ isError }

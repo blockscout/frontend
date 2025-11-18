@@ -14,9 +14,6 @@ function getSocketParams(type: TxsSocketType, page: string) {
     case 'txs_home': {
       return { topic: 'transactions:new_transaction' as const, event: 'transaction' as const };
     }
-    case 'txs_home_cross_chain': {
-      return { topic: 'interop_messages:new_messages' as const, event: 'new_messages' as const };
-    }
     case 'txs_validated': {
       return !page || page === '1' ? { topic: 'transactions:new_transaction' as const, event: 'transaction' as const } : {};
     }

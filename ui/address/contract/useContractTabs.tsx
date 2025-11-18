@@ -2,16 +2,17 @@ import type { Channel } from 'phoenix';
 import React from 'react';
 
 import type { Address } from 'types/api/address';
+import type { ClusterChainConfig } from 'types/multichain';
 
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import * as stubs from 'stubs/contract';
+import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 import ContractDetails from 'ui/address/contract/ContractDetails';
 import ContractMethodsCustom from 'ui/address/contract/methods/ContractMethodsCustom';
 import ContractMethodsMudSystem from 'ui/address/contract/methods/ContractMethodsMudSystem';
 import ContractMethodsProxy from 'ui/address/contract/methods/ContractMethodsProxy';
 import ContractMethodsRegular from 'ui/address/contract/methods/ContractMethodsRegular';
-import ContentLoader from 'ui/shared/ContentLoader';
 
 import type { CONTRACT_MAIN_TAB_IDS } from './utils';
 import { CONTRACT_DETAILS_TAB_IDS } from './utils';
@@ -34,10 +35,10 @@ interface Props {
   isEnabled: boolean;
   hasMudTab?: boolean;
   channel?: Channel;
-  chainSlug?: string;
+  chain?: ClusterChainConfig;
 }
 
-export default function useContractTabs({ addressData, isEnabled, hasMudTab, channel, chainSlug }: Props): ReturnType {
+export default function useContractTabs({ addressData, isEnabled, hasMudTab, channel, chain }: Props): ReturnType {
   const contractQuery = useApiQuery('general:contract', {
     pathParams: { hash: addressData?.hash },
     queryOptions: {
@@ -45,7 +46,7 @@ export default function useContractTabs({ addressData, isEnabled, hasMudTab, cha
       refetchOnMount: false,
       placeholderData: addressData?.is_verified ? stubs.CONTRACT_CODE_VERIFIED : stubs.CONTRACT_CODE_UNVERIFIED,
     },
-    chainSlug,
+    chain,
   });
 
   const mudSystemsQuery = useApiQuery('general:mud_systems', {
@@ -62,22 +63,6 @@ export default function useContractTabs({ addressData, isEnabled, hasMudTab, cha
   }, [ addressData?.hash, addressData?.implementations ]);
 
   return React.useMemo(() => {
-
-    // TODO @tom2drum remove this condition once the API will return is_contract flag
-    if (isEnabled && !addressData?.is_contract) {
-      return {
-        tabs: [
-          {
-            id: 'contract_code' as const,
-            title: 'Code',
-            component: <div>Not a contract</div>,
-          },
-        ],
-        isLoading: false,
-        isPartiallyVerified: false,
-      };
-    }
-
     return {
       tabs: [
         addressData && {
@@ -120,7 +105,6 @@ export default function useContractTabs({ addressData, isEnabled, hasMudTab, cha
     };
   }, [
     addressData,
-    isEnabled,
     contractQuery,
     channel,
     verifiedImplementations,

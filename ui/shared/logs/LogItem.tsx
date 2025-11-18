@@ -2,7 +2,7 @@ import { Grid, GridItem } from '@chakra-ui/react';
 import React from 'react';
 
 import type { Log } from 'types/api/log';
-import type { ChainConfig } from 'types/multichain';
+import type { ClusterChainConfig } from 'types/multichain';
 
 import { route } from 'nextjs-routes';
 
@@ -24,7 +24,7 @@ type Props = Log & {
   type: 'address' | 'transaction';
   isLoading?: boolean;
   defaultDataType?: DataType;
-  chainData?: ChainConfig;
+  chainData?: ClusterChainConfig;
 };
 
 const RowHeader = ({ children, isLoading }: { children: React.ReactNode; isLoading?: boolean }) => (
@@ -67,6 +67,7 @@ const LogItem = ({ address, index, topics, data, decoded, type, transaction_hash
             mr={{ base: 9, lg: 4 }}
             w="100%"
             chain={ chainData }
+            noCopy
           />
         ) : (
           <AddressEntity

@@ -1,8 +1,13 @@
 import type { CctxListItem } from '@blockscout/zetachain-cctx-types';
+import { getFeaturePayload } from 'configs/app/features/types';
 import type { MarketplaceApp } from 'types/client/marketplace';
-import type { SearchResultItem } from 'types/client/search';
+import type { QuickSearchResultItem } from 'types/client/search';
 
 import config from 'configs/app';
+
+const nameServicesFeature = config.features.nameServices;
+
+const dappEntityName = getFeaturePayload(config.features.marketplace)?.titles.entity_name ?? '';
 
 export type ApiCategory =
   'token' |
@@ -20,7 +25,7 @@ export type ApiCategory =
 export type Category = ApiCategory | 'app' | 'zetaChainCCTX';
 
 export type ItemsCategoriesMap =
-Record<ApiCategory, Array<SearchResultItem>> &
+Record<ApiCategory, Array<QuickSearchResultItem>> &
 Record<'app', Array<MarketplaceApp>> &
 Record<'zetaChainCCTX', Array<CctxListItem>>;
 
@@ -30,7 +35,6 @@ export type SearchResultAppItem = {
 };
 
 export const searchCategories: Array<{ id: Category; title: string; tabTitle: string }> = [
-  { id: 'app', title: 'DApps', tabTitle: 'DApps' },
   { id: 'token', title: `Tokens (${ config.chain.tokenStandard }-20)`, tabTitle: 'Tokens' },
   { id: 'nft', title: `NFTs (${ config.chain.tokenStandard }-721 & 1155)`, tabTitle: 'NFTs' },
   { id: 'confidential_token', title: `Confidential Tokens (${ config.chain.tokenStandard }-7984)`, tabTitle: 'Confidential Tokens' },
@@ -50,16 +54,20 @@ if (config.features.dataAvailability.isEnabled) {
   searchCategories.push({ id: 'blob', title: 'Blobs', tabTitle: 'Blobs' });
 }
 
-if (config.features.nameService.isEnabled) {
+if (config.features.marketplace.isEnabled) {
+  searchCategories.unshift({ id: 'app', title: `${ dappEntityName }s`, tabTitle: `${ dappEntityName }s` });
+}
+
+if ((nameServicesFeature.isEnabled && nameServicesFeature.ens.isEnabled) || config.features.opSuperchain.isEnabled) {
   searchCategories.unshift({ id: 'domain', title: 'Names', tabTitle: 'Names' });
 }
 
-if (config.features.clusters.isEnabled) {
+if (nameServicesFeature.isEnabled && nameServicesFeature.clusters.isEnabled) {
   searchCategories.unshift({ id: 'cluster', title: 'Cluster Name', tabTitle: 'Cluster' });
 }
 
 export const searchItemTitles: Record<Category, { itemTitle: string; itemTitleShort: string }> = {
-  app: { itemTitle: 'DApp', itemTitleShort: 'App' },
+  app: { itemTitle: dappEntityName, itemTitleShort: dappEntityName },
   domain: { itemTitle: 'Name', itemTitleShort: 'Name' },
   cluster: { itemTitle: 'Cluster', itemTitleShort: 'Cluster' },
   token: { itemTitle: 'Token', itemTitleShort: 'Token' },
@@ -75,7 +83,7 @@ export const searchItemTitles: Record<Category, { itemTitle: string; itemTitleSh
   zetaChainCCTX: { itemTitle: 'CCTX', itemTitleShort: 'CCTX' },
 };
 
-export function getItemCategory(item: SearchResultItem | SearchResultAppItem): Category | undefined {
+export function getItemCategory(item: QuickSearchResultItem | SearchResultAppItem): Category | undefined {
   switch (item.type) {
     case 'address':
     case 'contract':

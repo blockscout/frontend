@@ -239,7 +239,7 @@ test('external link', async({ render }) => {
   const component = await render(
     <AddressEntity
       address={ addressMock.withoutName }
-      isExternal
+      link={{ external: true }}
     />,
   );
 

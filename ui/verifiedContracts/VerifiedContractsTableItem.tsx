@@ -3,7 +3,7 @@ import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { VerifiedContract } from 'types/api/contracts';
-import type { ChainConfig } from 'types/multichain';
+import type { ClusterChainConfig } from 'types/multichain';
 
 import config from 'configs/app';
 import formatLanguageName from 'lib/contracts/formatLanguageName';
@@ -11,9 +11,9 @@ import { CONTRACT_LICENSES } from 'lib/contracts/licenses';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import ChainIcon from 'ui/optimismSuperchain/components/ChainIcon';
 import ContractCertifiedLabel from 'ui/shared/ContractCertifiedLabel';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 import IconSvg from 'ui/shared/IconSvg';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import TruncatedValue from 'ui/shared/TruncatedValue';
@@ -21,7 +21,7 @@ import TruncatedValue from 'ui/shared/TruncatedValue';
 interface Props {
   data: VerifiedContract;
   isLoading?: boolean;
-  chainData?: ChainConfig;
+  chainData?: ClusterChainConfig;
 }
 
 const VerifiedContractsTableItem = ({ data, isLoading, chainData }: Props) => {

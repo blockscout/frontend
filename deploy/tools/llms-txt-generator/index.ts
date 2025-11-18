@@ -15,7 +15,7 @@ function run() {
             
         const chainName = config.chain.name ?? '';
         const chainId = config.chain.id ?? '';
-        const generalApiUrl = config.apis.general.endpoint + config.apis.general.basePath;
+        const generalApiUrl = config.apis.general? config.apis.general.endpoint + config.apis.general.basePath : '';
         const statsApiUrl = config.apis.stats ? config.apis.stats.endpoint + config.apis.stats.basePath : undefined;
 
         const rollupFeature = config.features.rollup;

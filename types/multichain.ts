@@ -1,10 +1,12 @@
+import type { ExternalChain } from 'types/externalChains';
+
 import type config from 'configs/app';
 
-export interface ChainConfig {
+export interface ClusterChainConfig extends ExternalChain {
   slug: string;
-  config: typeof config;
+  app_config: typeof config;
 }
 
 export interface MultichainConfig {
-  chains: Array<ChainConfig>;
+  chains: Array<ClusterChainConfig>;
 }

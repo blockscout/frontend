@@ -1,6 +1,6 @@
 import React from 'react';
 
-import ContentLoader from 'ui/shared/ContentLoader';
+import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 
 import { Section, Container, SectionHeader, SamplesStack, Sample } from './parts';
 

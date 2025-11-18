@@ -1,6 +1,6 @@
 import { compile } from 'path-to-regexp';
 
-import type { ChainConfig } from 'types/multichain';
+import type { ExternalChainExtended } from 'types/externalChains';
 
 import config from 'configs/app';
 
@@ -13,7 +13,7 @@ export default function buildUrl<R extends ResourceName>(
   pathParams?: ResourcePathParams<R>,
   queryParams?: Record<string, string | Array<string> | number | boolean | null | undefined>,
   noProxy?: boolean,
-  chain?: ChainConfig,
+  chain?: ExternalChainExtended,
 ): string {
   const { api, resource } = getResourceParams(resourceFullName, chain);
   const baseUrl = !noProxy && isNeedProxy() ? config.app.baseUrl : api.endpoint;

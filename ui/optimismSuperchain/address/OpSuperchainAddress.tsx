@@ -3,17 +3,19 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
-import type { EntityTag } from 'ui/shared/EntityTags/types';
 
 import getCheckedSummedAddress from 'lib/address/getCheckedSummedAddress';
+import useApiQuery from 'lib/api/useApiQuery';
+import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
+import * as contract from 'lib/multichain/contract';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import { ADDRESS } from 'stubs/optimismSuperchain';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import { CONTRACT_TAB_IDS } from 'ui/address/contract/utils';
 import AddressQrCode from 'ui/address/details/AddressQrCode';
 import ClusterChainsPopover from 'ui/optimismSuperchain/components/ClusterChainsPopover';
 import TextAd from 'ui/shared/ad/TextAd';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
-import EntityTags from 'ui/shared/EntityTags/EntityTags';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 import OpSuperchainAddressCoinBalanceHistory from './OpSuperchainAddressCoinBalanceHistory';
@@ -25,71 +27,81 @@ import OpSuperchainAddressTokens, { ADDRESS_OP_SUPERCHAIN_TOKENS_TAB_IDS } from 
 import OpSuperchainAddressTokenTransfers, { ADDRESS_OP_SUPERCHAIN_TOKEN_TRANSFERS_TAB_IDS } from './OpSuperchainAddressTokenTransfers';
 import OpSuperchainAddressTxs, { ADDRESS_OP_SUPERCHAIN_TXS_TAB_IDS } from './OpSuperchainAddressTxs';
 
-const PREDEFINED_TAG_PRIORITY = 100;
-
 const OpSuperchainAddress = () => {
   const router = useRouter();
 
   const hash = getQueryParamString(router.query.hash);
 
-  const isLoading = false;
-
-  const addressQuery = {
-    data: {
-      hash: undefined,
+  const addressQuery = useApiQuery('multichainAggregator:address', {
+    pathParams: { hash },
+    queryOptions: {
+      placeholderData: ADDRESS,
     },
-  };
+  });
 
-  const checkSummedHash = React.useMemo(() => addressQuery.data?.hash ?? getCheckedSummedAddress(hash), [ hash, addressQuery.data?.hash ]);
+  throwOnResourceLoadError(addressQuery);
+
+  const isLoading = addressQuery.isPlaceholderData;
+  const chainData = Object.values(addressQuery.data?.chain_infos ?? {});
+  const isContractSomewhere = chainData.some((chainInfo) => chainInfo.is_contract);
+  const isContract = contract.isContract(addressQuery.data);
+  const isVerified = contract.isVerified(addressQuery.data);
+
+  const checkSummedHash = React.useMemo(() => {
+    if (isLoading) {
+      return getCheckedSummedAddress(hash);
+    }
+    return addressQuery.data?.hash ?? getCheckedSummedAddress(hash);
+  }, [ hash, addressQuery.data?.hash, isLoading ]);
 
   const tabs: Array<TabItemRegular> = React.useMemo(() => {
     return [
       {
         id: 'index',
         title: 'Details',
-        component: <OpSuperchainAddressDetails addressHash={ checkSummedHash }/>,
+        component: <OpSuperchainAddressDetails addressHash={ checkSummedHash } data={ addressQuery.data } isLoading={ isLoading }/>,
       },
-      {
+      isContractSomewhere && {
         id: 'contract',
         title: 'Contract',
-        component: <OpSuperchainAddressContract addressHash={ checkSummedHash }/>,
+        component: <OpSuperchainAddressContract addressHash={ checkSummedHash } data={ addressQuery.data } isLoading={ isLoading }/>,
         subTabs: CONTRACT_TAB_IDS,
       },
       {
         id: 'txs',
         title: 'Transactions',
-        component: <OpSuperchainAddressTxs/>,
+        component: <OpSuperchainAddressTxs addressData={ addressQuery.data } isLoading={ isLoading }/>,
         subTabs: ADDRESS_OP_SUPERCHAIN_TXS_TAB_IDS,
       },
       {
         id: 'token_transfers',
         title: 'Token transfers',
-        component: <OpSuperchainAddressTokenTransfers/>,
+        component: <OpSuperchainAddressTokenTransfers addressData={ addressQuery.data } isLoading={ isLoading }/>,
         subTabs: ADDRESS_OP_SUPERCHAIN_TOKEN_TRANSFERS_TAB_IDS,
       },
-      {
+      addressQuery.data?.has_tokens && {
         id: 'tokens',
         title: 'Tokens',
-        component: <OpSuperchainAddressTokens/>,
+        component: isLoading ? null : <OpSuperchainAddressTokens addressData={ addressQuery.data }/>,
         subTabs: ADDRESS_OP_SUPERCHAIN_TOKENS_TAB_IDS,
       },
       {
         id: 'internal_txs',
         title: 'Internal txns',
-        component: <OpSuperchainAddressInternalTxs/>,
+        component: <OpSuperchainAddressInternalTxs addressData={ addressQuery.data } isLoading={ isLoading }/>,
       },
       {
         id: 'coin_balance_history',
         title: 'Coin balance history',
-        component: <OpSuperchainAddressCoinBalanceHistory/>,
+        component: <OpSuperchainAddressCoinBalanceHistory addressData={ addressQuery.data } isLoading={ isLoading }/>,
       },
-      {
+      isContractSomewhere && {
         id: 'logs',
         title: 'Logs',
-        component: <OpSuperchainAddressLogs/>,
+        component: <OpSuperchainAddressLogs addressData={ addressQuery.data } isLoading={ isLoading }/>,
       },
-    ];
-  }, [ checkSummedHash ]);
+    ].filter(Boolean);
+  }, [ addressQuery.data, isLoading, isContractSomewhere, checkSummedHash ]);
 
   const titleSecondRow = (
     <Flex alignItems="center" w="100%" columnGap={ 2 } rowGap={ 2 } flexWrap={{ base: 'wrap', lg: 'nowrap' }}>
@@ -100,6 +112,8 @@ const OpSuperchainAddress = () => {
           name: '',
           ens_domain_name: '',
           implementations: null,
+          is_contract: isContract,
+          is_verified: isVerified,
         }}
         isLoading={ isLoading }
         variant="subheading"
@@ -110,32 +124,17 @@ const OpSuperchainAddress = () => {
       />
       <AddressQrCode hash={ checkSummedHash } isLoading={ isLoading }/>
       <Box ml="auto"/>
-      <ClusterChainsPopover addressHash={ checkSummedHash }/>
+      <ClusterChainsPopover addressHash={ checkSummedHash } data={ addressQuery.data } isLoading={ isLoading }/>
     </Flex>
-  );
-
-  const tags: Array<EntityTag> = React.useMemo(() => {
-    return [
-      { slug: 'eoa', name: 'EOA', tagType: 'custom' as const, ordinal: PREDEFINED_TAG_PRIORITY },
-    ];
-  }, []);
-
-  const titleContentAfter = (
-    <EntityTags
-      tags={ tags }
-      isLoading={ isLoading }
-      addressHash={ checkSummedHash }
-    />
   );
 
   return (
     <>
       <TextAd mb={ 6 }/>
       <PageTitle
-        title="Address details"
+        title={ `${ isContract ? 'Contract' : 'Address' } details` }
         isLoading={ isLoading }
         secondRow={ titleSecondRow }
-        contentAfter={ titleContentAfter }
       />
       <RoutedTabs tabs={ tabs } isLoading={ isLoading }/>
     </>

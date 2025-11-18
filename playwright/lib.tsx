@@ -8,6 +8,7 @@ import * as mockAssetResponse from './fixtures/mockAssetResponse';
 import * as mockConfigResponse from './fixtures/mockConfigResponse';
 import * as mockContractReadResponse from './fixtures/mockContractReadResponse';
 import * as mockEnvs from './fixtures/mockEnvs';
+import * as mockEssentialDappsChainsConfig from './fixtures/mockEssentialDappsChainsConfig';
 import * as mockFeatures from './fixtures/mockFeatures';
 import * as mockMultichainConfig from './fixtures/mockMultichainConfig';
 import * as mockRpcResponse from './fixtures/mockRpcResponse';
@@ -24,6 +25,7 @@ export interface Fixtures {
   mockEnvs: mockEnvs.MockEnvsFixture;
   mockFeatures: mockFeatures.MockFeaturesFixture;
   mockMultichainConfig: mockMultichainConfig.MockMultichainConfigFixture;
+  mockEssentialDappsChainsConfig: mockEssentialDappsChainsConfig.MockEssentialDappsChainsConfigFixture;
   mockRpcResponse: mockRpcResponse.MockRpcResponseFixture;
   createSocket: socketServer.CreateSocketFixture;
   injectMetaMaskProvider: injectMetaMaskProvider.InjectMetaMaskProvider;
@@ -41,6 +43,7 @@ const test = base.extend<Fixtures>({
   mockEnvs: mockEnvs.default,
   mockFeatures: mockFeatures.default,
   mockMultichainConfig: mockMultichainConfig.default,
+  mockEssentialDappsChainsConfig: mockEssentialDappsChainsConfig.default,
   mockRpcResponse: mockRpcResponse.default,
   // FIXME: for some reason Playwright does not intercept requests to text ad provider when running multiple tests in parallel
   // even if we have a global request interceptor (maybe it is related to service worker issue, maybe not)

@@ -228,14 +228,11 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
             <Flex flexDir="column" rowGap={ 2 }>
               { data.op_withdrawals.map((withdrawal) => (
                 <Box key={ withdrawal.nonce }>
-                  <Box mb={ 2 }>
+                  <Box mb={ 2 } py={{ base: '5px', lg: 1 }}>
                     <span>Nonce: </span>
                     <chakra.span fontWeight={ 600 }>{ withdrawal.nonce }</chakra.span>
                   </Box>
-                  <TxDetailsWithdrawalStatusOptimistic
-                    status={ withdrawal.status }
-                    l1TxHash={ withdrawal.l1_transaction_hash }
-                  />
+                  <TxDetailsWithdrawalStatusOptimistic data={ withdrawal } txHash={ data.hash } from={ data.from }/>
                 </Box>
               )) }
             </Flex>
@@ -617,6 +614,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
             <CurrencyValue
               value={ data.value }
               currency={ currencyUnits.ether }
+              decimals={ String(config.chain.currency.decimals) }
               exchangeRate={ data.exchange_rate }
               isLoading={ isLoading }
               flexWrap="wrap"
@@ -638,6 +636,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
             <CurrencyValue
               value={ data.operator_fee }
               currency={ currencyUnits.ether }
+              decimals={ String(config.chain.currency.decimals) }
               exchangeRate={ data.exchange_rate }
               flexWrap="wrap"
             />
@@ -657,6 +656,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
             <CurrencyValue
               value={ data.arbitrum.poster_fee }
               currency={ currencyUnits.ether }
+              decimals={ String(config.chain.currency.decimals) }
               exchangeRate={ data.exchange_rate }
               flexWrap="wrap"
               isLoading={ isLoading }
@@ -673,6 +673,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
             <CurrencyValue
               value={ data.arbitrum.network_fee }
               currency={ currencyUnits.ether }
+              decimals={ String(config.chain.currency.decimals) }
               exchangeRate={ data.exchange_rate }
               flexWrap="wrap"
               isLoading={ isLoading }

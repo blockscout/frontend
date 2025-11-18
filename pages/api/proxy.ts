@@ -13,7 +13,7 @@ const handler = async(nextReq: NextApiRequest, nextRes: NextApiResponse) => {
 
   const url = new URL(
     nextReq.url.replace(/^\/node-api\/proxy/, ''),
-    nextReq.headers['x-endpoint']?.toString() || appConfig.apis.general.endpoint,
+    nextReq.headers['x-endpoint']?.toString() || appConfig.apis.general?.endpoint,
   );
   const apiRes = await fetchFactory(nextReq)(
     url.toString(),
@@ -28,6 +28,7 @@ const handler = async(nextReq: NextApiRequest, nextRes: NextApiResponse) => {
     'x-ratelimit-limit',
     'x-ratelimit-remaining',
     'x-ratelimit-reset',
+    'api-v2-temp-token',
   ];
 
   HEADERS_TO_PROXY.forEach((header) => {

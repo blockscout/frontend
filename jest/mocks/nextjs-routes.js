@@ -9,8 +9,8 @@ module.exports = {
     if (pathname === '/tx/[hash]') {
       return `/tx/${ query.hash || 'test-hash' }`;
     }
-    if (pathname === '/clusters/[name]') {
-      return `/clusters/${ query.name || 'test-cluster' }`;
+    if (pathname === '/name-services/clusters/[name]') {
+      return `/name-services/clusters/${ query.name || 'test-cluster' }`;
     }
 
     return pathname || '/';

@@ -82,6 +82,7 @@ const config = Object.freeze({
     bech32Prefix,
   },
   hiddenViews,
+  nativeTokenAddress: getEnvValue('NEXT_PUBLIC_VIEWS_ADDRESS_NATIVE_TOKEN_ADDRESS'),
   solidityscanEnabled: getEnvValue('NEXT_PUBLIC_VIEWS_CONTRACT_SOLIDITYSCAN_ENABLED') === 'true',
   extraVerificationMethods,
   languageFilters,

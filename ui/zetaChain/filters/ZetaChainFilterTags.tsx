@@ -73,8 +73,8 @@ const ZetaChainFilterTags = ({ filters, onClearFilter, onClearAll }: Props) => {
   const sourceChainIds = filters.source_chain_id ? castArray(filters.source_chain_id) : [];
   if (sourceChainIds.length > 0) {
     const chainNames = sourceChainIds.map(chainId => {
-      const chain = chains.find(c => c.chain_id.toString() === chainId);
-      return chain?.chain_name || `Chain ${ chainId }`;
+      const chain = chains.find(c => c.id.toString() === chainId);
+      return chain?.name;
     });
     filterTags.push({
       key: 'source_chain_id',
@@ -97,8 +97,8 @@ const ZetaChainFilterTags = ({ filters, onClearFilter, onClearAll }: Props) => {
   const targetChainIds = filters.target_chain_id ? castArray(filters.target_chain_id) : [];
   if (targetChainIds.length > 0) {
     const chainNames = targetChainIds.map(chainId => {
-      const chain = chains.find(c => c.chain_id.toString() === chainId);
-      return chain?.chain_name || `Chain ${ chainId }`;
+      const chain = chains.find(c => c.id.toString() === chainId);
+      return chain?.name;
     });
     filterTags.push({
       key: 'target_chain_id',

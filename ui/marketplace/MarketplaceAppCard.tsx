@@ -71,10 +71,10 @@ const MarketplaceAppCard = ({
       _focusWithin={{
         boxShadow: isLoading ? 'none' : 'md',
       }}
-      borderRadius="md"
-      padding={{ base: 3, md: '20px' }}
+      borderRadius="base"
+      padding={ 3 }
       borderWidth="1px"
-      borderColor={{ _light: 'gray.200', _dark: 'gray.600' }}
+      borderColor={{ _light: 'blackAlpha.300', _dark: 'whiteAlpha.300' }}
     >
       <Flex
         flexDirection="column"
@@ -82,18 +82,15 @@ const MarketplaceAppCard = ({
         alignContent="start"
         gap={ 2 }
       >
-        <Flex
-          display={{ base: 'flex', md: 'contents' }}
-          gap={ 4 }
-        >
+        <Flex gap={ 4 }>
           <Skeleton
             loading={ isLoading }
-            w={{ base: '64px', md: '96px' }}
-            h={{ base: '64px', md: '96px' }}
+            w="64px"
+            h="64px"
             display="flex"
             alignItems="center"
             justifyContent="center"
-            mb={{ base: 0, md: 2 }}
+            flexShrink={ 0 }
           >
             <Image
               src={ isLoading ? undefined : logoUrl }
@@ -102,15 +99,9 @@ const MarketplaceAppCard = ({
             />
           </Skeleton>
 
-          <Flex
-            display={{ base: 'flex', md: 'contents' }}
-            flexDirection="column"
-            gap={ 2 }
-            pt={ 1 }
-          >
+          <Flex flexDirection="column" gap={ 2 } pt={ 1 }>
             <Skeleton
               loading={ isLoading }
-              paddingRight={{ base: '40px', md: 0 }}
               display="inline-flex"
               alignItems="center"
             >
@@ -120,10 +111,8 @@ const MarketplaceAppCard = ({
                 external={ external }
                 title={ title }
                 onClick={ onAppClick }
+                textStyle="sm"
                 fontWeight="semibold"
-                fontFamily="heading"
-                fontSize={{ base: 'sm', md: 'lg' }}
-                lineHeight={{ base: '20px', md: '28px' }}
               />
               <MarketplaceAppIntegrationIcon external={ external } internalWallet={ internalWallet }/>
               <MarketplaceAppGraphLinks
@@ -148,7 +137,7 @@ const MarketplaceAppCard = ({
           loading={ isLoading }
           asChild
         >
-          <Text lineClamp={{ base: 2, md: 3 }} textStyle="sm">
+          <Text lineClamp={ 2 } textStyle="sm">
             { shortDescription }
           </Text>
         </Skeleton>
@@ -183,7 +172,7 @@ const MarketplaceAppCard = ({
                 <IconButton
                   aria-label="Mark as favorite"
                   title="Mark as favorite"
-                  variant="icon_secondary"
+                  variant="icon_background"
                   size="md"
                   onClick={ handleFavoriteClick }
                   selected={ isFavorite }
@@ -193,9 +182,9 @@ const MarketplaceAppCard = ({
                 <CopyToClipboard
                   text={ isBrowser() ? window.location.origin + `/apps/${ id }` : '' }
                   type="share"
-                  variant="icon_secondary"
+                  variant="icon_background"
                   size="md"
-                  borderRadius="none"
+                  borderRadius="base"
                   ml={ 0 }
                   boxSize={ 8 }
                 />

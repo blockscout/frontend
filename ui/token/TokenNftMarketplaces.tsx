@@ -31,7 +31,11 @@ const TokenNftMarketplaces = ({ hash, id, isLoading, appActionData, source }: Pr
       if (!hrefTemplate) {
         return null;
       }
-      const href = hrefTemplate.replace('{id}', id || '').replace('{hash}', hash || '');
+      const href = hrefTemplate
+        .replace('{id}', id || '')
+        .replace('{id_lowercase}', id?.toLowerCase() || '')
+        .replace('{hash}', hash || '')
+        .replace('{hash_lowercase}', hash?.toLowerCase() || '');
 
       return {
         href,

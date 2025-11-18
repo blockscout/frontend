@@ -59,12 +59,12 @@ export default function useRewardsActivity() {
     } catch {}
   }, [ apiFetch, checkActivityPassQuery.data, apiToken ]);
 
-  const trackTransaction = useCallback(async(from: string, to: string) => {
+  const trackTransaction = useCallback(async(from: string, to: string, chainId?: string) => {
     return (
       await makeRequest('rewards:user_activity_track_tx', {
         from_address: from,
         to_address: to,
-        chain_id: config.chain.id ?? '',
+        chain_id: chainId || config.chain.id || '',
       })
     ) as PreSubmitTransactionResponse | undefined;
   }, [ makeRequest ]);

@@ -21,7 +21,7 @@ interface Props {
 const NameDomainHistoryTableItem = ({ isLoading, event, domain }: Props) => {
   const isProtocolBaseChain = stripTrailingSlash(domain?.protocol?.deployment_blockscout_base_url ?? '') === config.app.baseUrl;
   const txEntityProps = {
-    isExternal: !isProtocolBaseChain ? true : false,
+    link: { external: !isProtocolBaseChain ? true : false },
     href: !isProtocolBaseChain ? (
       stripTrailingSlash(domain?.protocol?.deployment_blockscout_base_url ?? '') +
       route({ pathname: '/tx/[hash]', query: { hash: event.transaction_hash } })
@@ -38,6 +38,7 @@ const NameDomainHistoryTableItem = ({ isLoading, event, domain }: Props) => {
           fontWeight={ 700 }
           noIcon
           truncation="constant_long"
+          noCopy
         />
       </TableCell>
       <TableCell pl={ 9 } verticalAlign="middle">

@@ -13,7 +13,7 @@ import { getTokensTotalInfo } from '../utils/tokenUtils';
 
 interface Props {
   isOpen: boolean;
-  isLoading: boolean;
+  isLoading?: boolean;
   data: FormattedData;
 }
 
@@ -64,7 +64,7 @@ const TokenSelectButton = ({ isOpen, isLoading, data, ...rest }: Props, ref: Rea
           position="absolute"
           top={ 0 }
           left={ 0 }
-          bgColor={{ _light: 'white', _dark: 'black' }}
+          bgColor="bg.primary"
           borderRadius="base"
         />
       ) }

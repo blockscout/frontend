@@ -7,18 +7,18 @@ import { route } from 'nextjs/routes';
 import useApiQuery from 'lib/api/useApiQuery';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import dayjs from 'lib/date/dayjs';
-import downloadBlob from 'lib/downloadBlob';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { Button } from 'toolkit/chakra/button';
 import { Heading } from 'toolkit/chakra/heading';
 import { Image } from 'toolkit/chakra/image';
 import { Link } from 'toolkit/chakra/link';
+import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
+import { downloadBlob } from 'toolkit/utils/file';
 import BlockCountdownTimer from 'ui/blockCountdown/BlockCountdownTimer';
 import createGoogleCalendarLink from 'ui/blockCountdown/createGoogleCalendarLink';
 import createIcsFileBlob from 'ui/blockCountdown/createIcsFileBlob';
-import ChainIcon from 'ui/optimismSuperchain/components/ChainIcon';
-import ContentLoader from 'ui/shared/ContentLoader';
+import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 import IconSvg from 'ui/shared/IconSvg';
 import StatsWidget from 'ui/shared/stats/StatsWidget';
 import TruncatedValue from 'ui/shared/TruncatedValue';
@@ -126,6 +126,7 @@ const BlockCountdown = ({ hideCapybaraRunner }: Props) => {
                 right={{ base: '45px', lg: '86px' }}
                 boxSize={{ lg: '60px' }}
                 bgColor="bg.primary"
+                borderRadius="full"
               />
             ) }
           </Box>

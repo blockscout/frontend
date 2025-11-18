@@ -1,44 +1,25 @@
-import { Flex, Text } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TChainIndicator } from './types';
-import type { ChainIndicatorId } from 'types/homepage';
 
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import { HOMEPAGE_STATS, HOMEPAGE_STATS_MICROSERVICE } from 'stubs/stats';
-import { Skeleton } from 'toolkit/chakra/skeleton';
-import { Hint } from 'toolkit/components/Hint/Hint';
 import IconSvg from 'ui/shared/IconSvg';
+import NativeTokenIcon from 'ui/shared/NativeTokenIcon';
 
-import ChainIndicatorChartContainer from './ChainIndicatorChartContainer';
-import ChainIndicatorItem from './ChainIndicatorItem';
+import ChainIndicatorsChart from './ChainIndicatorsChart';
+import ChainIndicatorsContainer from './ChainIndicatorsContainer';
+import ChainIndicatorsList from './ChainIndicatorsList';
 import useChartDataQuery from './useChartDataQuery';
-import getIndicatorValues from './utils/getIndicatorValues';
-import INDICATORS from './utils/indicators';
+import { isIndicatorEnabled, sortIndicators } from './utils/indicators';
 
 const isStatsFeatureEnabled = config.features.stats.isEnabled;
-
-const indicators = INDICATORS
-  .filter(({ id }) => config.UI.homepage.charts.includes(id))
-  .sort((a, b) => {
-    if (config.UI.homepage.charts.indexOf(a.id) > config.UI.homepage.charts.indexOf(b.id)) {
-      return 1;
-    }
-
-    if (config.UI.homepage.charts.indexOf(a.id) < config.UI.homepage.charts.indexOf(b.id)) {
-      return -1;
-    }
-
-    return 0;
-  });
+const rollupFeature = config.features.rollup;
+const isOptimisticRollup = rollupFeature.isEnabled && rollupFeature.type === 'optimistic';
+const isArbitrumRollup = rollupFeature.isEnabled && rollupFeature.type === 'arbitrum';
 
 const ChainIndicators = () => {
-  const [ selectedIndicator, selectIndicator ] = React.useState(indicators[0]?.id);
-  const selectedIndicatorData = indicators.find(({ id }) => id === selectedIndicator);
-
-  const queryResult = useChartDataQuery(selectedIndicatorData?.id as ChainIndicatorId);
-
   const statsMicroserviceQueryResult = useApiQuery('stats:pages_main', {
     queryOptions: {
       refetchOnMount: false,
@@ -54,115 +35,151 @@ const ChainIndicators = () => {
     },
   });
 
+  const indicators: Array<TChainIndicator> = React.useMemo(() => {
+    return [
+      {
+        id: 'daily_txs' as const,
+        title: (() => {
+          if (isStatsFeatureEnabled && statsMicroserviceQueryResult?.data?.daily_new_transactions?.info?.title) {
+            return statsMicroserviceQueryResult.data.daily_new_transactions.info.title;
+          }
+          return 'Daily transactions';
+        })(),
+        value: (() => {
+          const STRING_FORMAT = { maximumFractionDigits: 2, notation: 'compact' as const };
+          if (isStatsFeatureEnabled) {
+            if (typeof statsMicroserviceQueryResult?.data?.yesterday_transactions?.value === 'string') {
+              return Number(statsMicroserviceQueryResult.data.yesterday_transactions.value).toLocaleString(undefined, STRING_FORMAT);
+            }
+          } else {
+            if (typeof statsApiQueryResult?.data?.transactions_today === 'string') {
+              return Number(statsApiQueryResult.data.transactions_today).toLocaleString(undefined, STRING_FORMAT);
+            }
+          }
+          return 'N/A';
+        })(),
+        hint: (() => {
+          if (isStatsFeatureEnabled && statsMicroserviceQueryResult?.data?.daily_new_transactions?.info?.description) {
+            return statsMicroserviceQueryResult.data.daily_new_transactions.info.description;
+          }
+          return `Number of transactions yesterday (0:00 - 23:59 UTC). The chart displays daily transactions for the past 30 days.`;
+        })(),
+        icon: <IconSvg name="transactions" boxSize={ 6 } bgColor="#56ACD1" borderRadius="base" color="white"/>,
+      },
+      {
+        id: 'daily_operational_txs' as const,
+        title: (() => {
+          if (isStatsFeatureEnabled) {
+            if (isArbitrumRollup && statsMicroserviceQueryResult?.data?.daily_new_operational_transactions?.info?.title) {
+              return statsMicroserviceQueryResult.data.daily_new_operational_transactions.info.title;
+            }
+            if (isOptimisticRollup && statsMicroserviceQueryResult?.data?.op_stack_daily_new_operational_transactions?.info?.title) {
+              return statsMicroserviceQueryResult.data.op_stack_daily_new_operational_transactions.info.title;
+            }
+          }
+          return 'Daily op txns';
+        })(),
+        titleShort: 'Daily op txns',
+        value: (() => {
+          const STRING_FORMAT = { maximumFractionDigits: 2, notation: 'compact' as const };
+          if (isStatsFeatureEnabled) {
+            if (isArbitrumRollup && typeof statsMicroserviceQueryResult?.data?.yesterday_operational_transactions?.value === 'string') {
+              return Number(statsMicroserviceQueryResult.data.yesterday_operational_transactions.value).toLocaleString(undefined, STRING_FORMAT);
+            }
+            if (isOptimisticRollup && typeof statsMicroserviceQueryResult?.data?.op_stack_yesterday_operational_transactions?.value === 'string') {
+              return Number(statsMicroserviceQueryResult.data.op_stack_yesterday_operational_transactions.value).toLocaleString(undefined, STRING_FORMAT);
+            }
+          }
+          return 'N/A';
+        })(),
+        hint: (() => {
+          if (isStatsFeatureEnabled) {
+            if (isArbitrumRollup && statsMicroserviceQueryResult?.data?.daily_new_operational_transactions?.info?.description) {
+              return statsMicroserviceQueryResult.data.daily_new_operational_transactions.info.description;
+            }
+            if (isOptimisticRollup && statsMicroserviceQueryResult?.data?.op_stack_daily_new_operational_transactions?.info?.description) {
+              return statsMicroserviceQueryResult.data.op_stack_daily_new_operational_transactions.info.description;
+            }
+          }
+          return `Number of operational transactions yesterday (0:00 - 23:59 UTC). The chart displays daily operational transactions for the past 30 days.`;
+        })(),
+        icon: <IconSvg name="transactions" boxSize={ 6 } bgColor="#56ACD1" borderRadius="base" color="white"/>,
+      },
+      {
+        id: 'coin_price' as const,
+        title: `${ config.chain.currency.symbol } price`,
+        value: typeof statsApiQueryResult.data?.coin_price !== 'string' ?
+          '$N/A' :
+          '$' + Number(statsApiQueryResult.data?.coin_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 }),
+        valueDiff: typeof statsApiQueryResult.data?.coin_price_change_percentage === 'number' ?
+          statsApiQueryResult.data.coin_price_change_percentage :
+          undefined,
+        hint: `${ config.chain.currency.symbol } token daily price in USD.`,
+        icon: <NativeTokenIcon boxSize={ 6 }/>,
+      },
+      {
+        id: 'secondary_coin_price' as const,
+        title: `${ config.chain.secondaryCoin.symbol } price`,
+        value: typeof statsApiQueryResult.data?.secondary_coin_price !== 'string' ?
+          '$N/A' :
+          '$' + Number(statsApiQueryResult.data?.secondary_coin_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 }),
+        hint: `${ config.chain.secondaryCoin.symbol } token daily price in USD.`,
+        icon: <NativeTokenIcon boxSize={ 6 } type="secondary"/>,
+      },
+      {
+        id: 'market_cap' as const,
+        title: 'Market cap',
+        value: typeof statsApiQueryResult.data?.market_cap !== 'string' ?
+          '$N/A' :
+          '$' + Number(statsApiQueryResult.data.market_cap).toLocaleString(undefined, { maximumFractionDigits: 2, notation: 'compact' }),
+        // eslint-disable-next-line max-len
+        hint: 'The total market value of a cryptocurrency\'s circulating supply. It is analogous to the free-float capitalization in the stock market. Market Cap = Current Price x Circulating Supply.',
+        icon: <IconSvg name="globe" boxSize={ 6 } bgColor="#6A5DCC" borderRadius="base" color="white"/>,
+      },
+      {
+        id: 'tvl' as const,
+        title: 'Total value locked',
+        value: typeof statsApiQueryResult.data?.tvl !== 'string' ?
+          '$N/A' :
+          '$' + Number(statsApiQueryResult.data.tvl).toLocaleString(undefined, { maximumFractionDigits: 2, notation: 'compact' }),
+        hint: 'Total value of digital assets locked or staked in a chain',
+        icon: <IconSvg name="lock" boxSize={ 6 } bgColor="#517FDB" borderRadius="base" color="white"/>,
+      },
+    ]
+      .filter(isIndicatorEnabled)
+      .sort(sortIndicators);
+  }, [ statsApiQueryResult?.data, statsMicroserviceQueryResult?.data ]);
+
+  const [ selectedIndicatorId, selectIndicatorId ] = React.useState(indicators[0]?.id);
+  const selectedIndicator = indicators.find(({ id }) => id === selectedIndicatorId);
+
+  const chartQuery = useChartDataQuery(selectedIndicatorId);
+
   if (indicators.length === 0) {
     return null;
   }
 
-  const isPlaceholderData = (isStatsFeatureEnabled && statsMicroserviceQueryResult.isPlaceholderData) || statsApiQueryResult.isPlaceholderData;
-  const hasData = Boolean(statsApiQueryResult?.data || statsMicroserviceQueryResult?.data);
-
-  const { value: indicatorValue, valueDiff: indicatorValueDiff } =
-    getIndicatorValues(selectedIndicatorData as TChainIndicator, statsMicroserviceQueryResult?.data, statsApiQueryResult?.data);
-
-  const title = (() => {
-    let title: string | undefined;
-    if (isStatsFeatureEnabled && selectedIndicatorData?.titleMicroservice && statsMicroserviceQueryResult?.data) {
-      title = selectedIndicatorData.titleMicroservice(statsMicroserviceQueryResult.data);
-    }
-
-    return title || selectedIndicatorData?.title;
-  })();
-
-  const hint = (() => {
-    let hint: string | undefined;
-    if (isStatsFeatureEnabled && selectedIndicatorData?.hintMicroservice && statsMicroserviceQueryResult?.data) {
-      hint = selectedIndicatorData.hintMicroservice(statsMicroserviceQueryResult.data);
-    }
-
-    return hint || selectedIndicatorData?.hint;
-  })();
-
-  const valueTitle = (() => {
-    if (isPlaceholderData) {
-      return <Skeleton loading h="36px" w="215px"/>;
-    }
-
-    if (!hasData) {
-      return <Text fontSize="xs">There is no data</Text>;
-    }
-
-    return (
-      <Text fontWeight={ 700 } fontSize="30px" lineHeight="36px">
-        { indicatorValue }
-      </Text>
-    );
-  })();
-
-  const valueDiff = (() => {
-    if (indicatorValueDiff === undefined || indicatorValueDiff === null) {
-      return null;
-    }
-
-    const diffColor = indicatorValueDiff >= 0 ? 'green.500' : 'red.500';
-
-    return (
-      <Skeleton loading={ statsApiQueryResult.isPlaceholderData } display="flex" alignItems="center" color={ diffColor } ml={ 2 }>
-        <IconSvg name="arrows/up-head" boxSize={ 5 } mr={ 1 } transform={ indicatorValueDiff < 0 ? 'rotate(180deg)' : 'rotate(0)' }/>
-        <Text color={ diffColor } fontWeight={ 600 }>{ indicatorValueDiff }%</Text>
-      </Skeleton>
-    );
-  })();
+  const isLoading = (isStatsFeatureEnabled && statsMicroserviceQueryResult.isPlaceholderData) || statsApiQueryResult.isPlaceholderData;
 
   return (
-    <Flex
-      px={{ base: 3, lg: 4 }}
-      py={ 3 }
-      borderRadius="base"
-      bgColor={{ _light: 'theme.stats.bg._light', _dark: 'theme.stats.bg._dark' }}
-      columnGap={{ base: 3, lg: 4 }}
-      rowGap={ 0 }
-      flexBasis="50%"
-      flexGrow={ 1 }
-      alignItems="stretch"
-    >
-      <Flex flexGrow={ 1 } flexDir="column">
-        <Skeleton loading={ isPlaceholderData } display="flex" alignItems="center" w="fit-content" columnGap={ 1 }>
-          <Text fontWeight={ 500 }>{ title }</Text>
-          { hint && <Hint label={ hint }/> }
-        </Skeleton>
-        <Flex mb={{ base: 0, lg: 2 }} mt={ 1 } alignItems="end">
-          { valueTitle }
-          { valueDiff }
-        </Flex>
-        <Flex h={{ base: '80px', lg: '110px' }} alignItems="flex-start" flexGrow={ 1 }>
-          <ChainIndicatorChartContainer { ...queryResult }/>
-        </Flex>
-      </Flex>
-      { indicators.length > 1 && (
-        <Flex
-          flexShrink={ 0 }
-          flexDir="column"
-          as="ul"
-          borderRadius="lg"
-          rowGap="6px"
-          m={{ base: 'auto 0', lg: 0 }}
-        >
-          { indicators.map((indicator) => (
-            <ChainIndicatorItem
-              key={ indicator.id }
-              id={ indicator.id }
-              title={ indicator.title }
-              icon={ indicator.icon }
-              isSelected={ selectedIndicator === indicator.id }
-              onClick={ selectIndicator }
-              { ...getIndicatorValues(indicator, statsMicroserviceQueryResult?.data, statsApiQueryResult?.data) }
-              isLoading={ isPlaceholderData }
-              hasData={ hasData }
-            />
-          )) }
-        </Flex>
+    <ChainIndicatorsContainer>
+      { selectedIndicator && (
+        <ChainIndicatorsChart
+          isLoading={ isLoading }
+          title={ selectedIndicator.title }
+          hint={ selectedIndicator.hint }
+          value={ selectedIndicator?.value }
+          valueDiff={ selectedIndicator?.valueDiff }
+          chartQuery={ chartQuery }
+        />
       ) }
-    </Flex>
+      <ChainIndicatorsList
+        indicators={ indicators }
+        isLoading={ isLoading }
+        selectedId={ selectedIndicatorId }
+        onItemClick={ selectIndicatorId }
+      />
+    </ChainIndicatorsContainer>
   );
 };
 

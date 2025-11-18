@@ -17,7 +17,7 @@ import useFetch from 'lib/hooks/useFetch';
 import * as metadata from 'lib/metadata';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { useColorMode } from 'toolkit/chakra/color-mode';
-import ContentLoader from 'ui/shared/ContentLoader';
+import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 import useIsAuth from 'ui/snippets/auth/useIsAuth';
 
 import MarketplaceAppTopBar from '../marketplace/MarketplaceAppTopBar';

@@ -64,7 +64,7 @@ type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'hash' | 'id'>;
 const Link = chakra((props: LinkProps) => {
   const defaultHref = route(
     { pathname: '/token/[hash]/instance/[id]', query: { hash: props.hash, id: props.id } },
-    props.chain ? { chain: props.chain } : undefined,
+    { chain: props.chain, external: props.external },
   );
 
   return (

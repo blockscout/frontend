@@ -9,18 +9,20 @@ export function multichain(): CspDev.DirectiveDescriptor {
   }
 
   const apiEndpoints = value.chains.map((chain) => {
-    return [
-      ...Object.values(chain.config.apis).filter(Boolean).map((api) => api.endpoint),
-      ...Object.values(chain.config.apis).filter(Boolean).map((api) => api.socketEndpoint),
-    ].filter(Boolean);
+    return chain.app_config?.apis ? [
+      ...Object.values(chain.app_config.apis).filter(Boolean).map((api) => api.endpoint),
+      ...Object.values(chain.app_config.apis).filter(Boolean).map((api) => api.socketEndpoint),
+    ].filter(Boolean) : [];
   }).flat();
 
-  const rpcEndpoints = value.chains.map(({ config }) => config.chain.rpcUrls).flat();
+  const rpcEndpoints = value.chains.map(({ app_config: config }) => config?.chain?.rpcUrls).flat().filter(Boolean);
 
   return {
     'connect-src': [
       ...apiEndpoints,
       ...rpcEndpoints,
+      // please see comment in the useFetchParentChainApi.tsx file
+      'https://eth.blockscout.com',
     ],
   };
 }

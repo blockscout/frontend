@@ -21,8 +21,6 @@ const IntTxsIndexingStatus = () => {
     },
   });
 
-  const bgColor = { base: 'blackAlpha.100', _dark: 'whiteAlpha.100' };
-
   const queryClient = useQueryClient();
 
   const handleInternalTxsIndexStatus: SocketMessage.InternalTxsIndexStatus['handler'] = React.useCallback((payload) => {
@@ -65,15 +63,13 @@ const IntTxsIndexingStatus = () => {
 
   const trigger = (
     <Flex
-      px={ 2 }
-      py={ 1 }
-      bg={ bgColor }
-      borderRadius="base"
+      px={ 1 }
+      bg={{ base: 'blackAlpha.50', _dark: 'whiteAlpha.100' }}
+      borderRadius="sm"
       alignItems="center"
       justifyContent="center"
-      columnGap={ 1 }
       color="green.400"
-      _hover={{ color: 'blue.400' }}
+      _hover={{ color: 'hover' }}
     >
       <IconSvg name="info" boxSize={ 5 }/>
       { data.indexed_internal_transactions_ratio && (

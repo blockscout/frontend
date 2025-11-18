@@ -3,7 +3,7 @@ import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { Block } from 'types/api/block';
-import type { ChainConfig } from 'types/multichain';
+import type { ClusterChainConfig } from 'types/multichain';
 
 import { route } from 'nextjs-routes';
 
@@ -14,11 +14,11 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { WEI } from 'toolkit/utils/consts';
-import ChainIcon from 'ui/optimismSuperchain/components/ChainIcon';
 import BlockGasUsed from 'ui/shared/block/BlockGasUsed';
 import BlockPendingUpdateHint from 'ui/shared/block/BlockPendingUpdateHint';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
+import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 import IconSvg from 'ui/shared/IconSvg';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import Utilization from 'ui/shared/Utilization/Utilization';
@@ -30,7 +30,7 @@ interface Props {
   isLoading?: boolean;
   animation?: string;
   enableTimeIncrement?: boolean;
-  chainData?: ChainConfig;
+  chainData?: ClusterChainConfig;
 }
 
 const isRollup = config.features.rollup.isEnabled;

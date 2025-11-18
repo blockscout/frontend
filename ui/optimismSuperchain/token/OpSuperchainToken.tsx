@@ -1,39 +1,24 @@
-import { Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import multichainConfig from 'configs/multichain';
+import getSocketUrl from 'lib/api/getSocketUrl';
+import { MultichainProvider } from 'lib/contexts/multichain';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import AddressQrCode from 'ui/address/details/AddressQrCode';
-import TextAd from 'ui/shared/ad/TextAd';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
-import PageTitle from 'ui/shared/Page/PageTitle';
+import { SocketProvider } from 'lib/socket/context';
+import Token from 'ui/pages/Token';
 
 const OpSuperchainToken = () => {
   const router = useRouter();
-
-  const isLoading = false;
-  const hash = getQueryParamString(router.query.hash);
-
-  const secondRow = (
-    <Flex alignItems="center" w="100%" minW={ 0 } columnGap={ 2 } rowGap={ 2 } flexWrap={{ base: 'wrap', lg: 'nowrap' }}>
-      <AddressEntity
-        address={{ hash, is_contract: true, name: '' }}
-        isLoading={ isLoading }
-        variant="subheading"
-      />
-      <AddressQrCode hash={ hash } isLoading={ isLoading }/>
-    </Flex>
-  );
+  const chainSlug = getQueryParamString(router.query.chain_slug);
+  const chainData = multichainConfig()?.chains.find(chain => chain.slug === chainSlug);
 
   return (
-    <>
-      <TextAd mb={ 6 }/>
-      <PageTitle
-        title="Unnamed token"
-        secondRow={ secondRow }
-      />
-      <div>Coming soon 🔜</div>
-    </>
+    <MultichainProvider chainId={ chainData?.id }>
+      <SocketProvider url={ getSocketUrl(chainData?.app_config) }>
+        <Token/>
+      </SocketProvider>
+    </MultichainProvider>
   );
 };
 

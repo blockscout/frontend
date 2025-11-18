@@ -6,7 +6,7 @@ import { route } from 'nextjs-routes';
 import useApiQuery from 'lib/api/useApiQuery';
 import { STATS_CHARTS_SECTION_GAS } from 'stubs/stats';
 import { Link } from 'toolkit/chakra/link';
-import ContentLoader from 'ui/shared/ContentLoader';
+import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import ChartWidgetContainer from 'ui/stats/ChartWidgetContainer';
 
@@ -47,7 +47,6 @@ const GasTrackerChart = () => {
         title={ chart.title }
         description={ chart.description }
         interval="oneMonth"
-        units={ chart.units || undefined }
         isPlaceholderData={ isPlaceholderData }
         onLoadingError={ handleLoadingError }
         h="320px"
