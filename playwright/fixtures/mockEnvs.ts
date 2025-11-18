@@ -18,7 +18,7 @@ export default fixture;
 export const ENVS_MAP: Record<string, Array<[string, string]>> = {
   optimisticRollup: [
     [ 'NEXT_PUBLIC_ROLLUP_TYPE', 'optimistic' ],
-    [ 'NEXT_PUBLIC_ROLLUP_L1_BASE_URL', 'https://localhost:3101' ],
+    [ 'NEXT_PUBLIC_ROLLUP_PARENT_CHAIN', '{"id":11155111,"name":"Sepolia","baseUrl":"https://localhost:3101","rpcUrls":["https://localhost:3101"],"currency":{"name":"Ether","symbol":"ETH","decimals":18},"isTestnet":true}' ],
     [ 'NEXT_PUBLIC_ROLLUP_L2_WITHDRAWAL_URL', 'https://localhost:3102' ],
     [ 'NEXT_PUBLIC_FAULT_PROOF_ENABLED', 'true' ],
     [ 'NEXT_PUBLIC_ROLLUP_DA_CELESTIA_CELENIUM_URL', 'https://mocha.celenium.io/blob' ],

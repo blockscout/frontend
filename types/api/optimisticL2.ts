@@ -113,7 +113,17 @@ export type OptimismL2BatchBlocks = {
   } | null;
 };
 
-export type OptimisticL2WithdrawalsItem = {
+export interface OptimisticL2WithdrawalClaimInfo {
+  portal_contract_address_hash: string | null;
+  msg_sender_address_hash: string | null;
+  msg_target_address_hash: string | null;
+  msg_data: string | null;
+  msg_gas_limit: string | null;
+  msg_nonce_raw: string | null;
+  msg_value: string | null;
+}
+
+export interface OptimisticL2WithdrawalsItem extends OptimisticL2WithdrawalClaimInfo {
   challenge_period_end: string | null;
   from: AddressParam | null;
   l1_transaction_hash: string | null;
