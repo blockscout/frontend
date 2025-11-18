@@ -98,9 +98,8 @@ RUN set -a && \
 # ENV NEXT_TELEMETRY_DISABLED 1
 
 # Build app for production
-ENV NODE_OPTIONS="--max-old-space-size=8192"
+ENV NODE_OPTIONS="--max-old-space-size=6144"
 ENV NEXT_BUILD_CACHE_DISABLED=1
-ENV NEXT_CONCURRENT_FEATURES=false
 RUN yarn build && \
     rm -rf .next/cache && \
     rm -rf node_modules/.cache && \
