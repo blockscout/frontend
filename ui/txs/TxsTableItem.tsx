@@ -1,6 +1,7 @@
 import { Flex, VStack } from '@chakra-ui/react';
 import React from 'react';
 
+import type { NovesDescribeTxsResponse } from 'types/api/noves';
 import type { Transaction } from 'types/api/transaction';
 import type { ClusterChainConfig } from 'types/multichain';
 
@@ -30,9 +31,21 @@ type Props = {
   isLoading?: boolean;
   animation?: string;
   chainData?: ClusterChainConfig;
+  translationIsLoading?: boolean;
+  translationData?: NovesDescribeTxsResponse;
 };
 
-const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, isLoading, animation, chainData }: Props) => {
+const TxsTableItem = ({
+  tx,
+  showBlockInfo,
+  currentAddress,
+  enableTimeIncrement,
+  isLoading,
+  animation,
+  chainData,
+  translationIsLoading,
+  translationData,
+}: Props) => {
   const dataTo = tx.to ? tx.to : tx.created_contract;
 
   return (
@@ -65,11 +78,11 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, 
       </TableCell>
       <TableCell>
         <VStack alignItems="start">
-          { tx.translation ? (
+          { translationIsLoading || translationData ? (
             <TxTranslationType
-              types={ tx.transaction_types }
-              isLoading={ isLoading || tx.translation.isLoading }
-              translatationType={ tx.translation.data?.type }
+              txTypes={ tx.transaction_types }
+              isLoading={ isLoading || translationIsLoading }
+              type={ translationData?.type }
             />
           ) :
             <TxType types={ tx.transaction_types } isLoading={ isLoading }/>

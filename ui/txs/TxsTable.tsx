@@ -12,6 +12,7 @@ import { currencyUnits } from 'lib/units';
 import { TableBody, TableColumnHeader, TableColumnHeaderSortable, TableHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
+import type { TxsTranslationQuery } from './noves/useDescribeTxs';
 import TxsSocketNotice from './socket/TxsSocketNotice';
 import TxsTableItem from './TxsTableItem';
 
@@ -26,6 +27,7 @@ type Props = {
   enableTimeIncrement?: boolean;
   isLoading?: boolean;
   stickyHeader?: boolean;
+  translationQuery?: TxsTranslationQuery;
 };
 
 const TxsTable = ({
@@ -39,6 +41,7 @@ const TxsTable = ({
   enableTimeIncrement,
   isLoading,
   stickyHeader = true,
+  translationQuery,
 }: Props) => {
   const { cutRef, renderedItemsNum } = useLazyRenderedList(txs, !isLoading);
   const initialList = useInitialList({
@@ -118,18 +121,22 @@ const TxsTable = ({
         </TableHeaderComponent>
         <TableBody>
           { socketType && <TxsSocketNotice type={ socketType } place="table" isLoading={ isLoading }/> }
-          { txs.slice(0, renderedItemsNum).map((item, index) => (
-            <TxsTableItem
-              key={ item.hash + (isLoading ? index : '') }
-              tx={ item }
-              showBlockInfo={ showBlockInfo }
-              currentAddress={ currentAddress }
-              enableTimeIncrement={ enableTimeIncrement }
-              isLoading={ isLoading }
-              animation={ initialList.getAnimationProp(item) }
-              chainData={ chainData }
-            />
-          )) }
+          { txs.slice(0, renderedItemsNum).map((item, index) => {
+            return (
+              <TxsTableItem
+                key={ item.hash + (isLoading ? index : '') }
+                tx={ item }
+                showBlockInfo={ showBlockInfo }
+                currentAddress={ currentAddress }
+                enableTimeIncrement={ enableTimeIncrement }
+                isLoading={ isLoading }
+                animation={ initialList.getAnimationProp(item) }
+                chainData={ chainData }
+                translationIsLoading={ translationQuery?.isLoading }
+                translationData={ translationQuery?.data?.find(({ txHash }) => txHash.toLowerCase() === item.hash.toLowerCase()) }
+              />
+            );
+          }) }
         </TableBody>
       </TableRoot>
       <div ref={ cutRef }/>
