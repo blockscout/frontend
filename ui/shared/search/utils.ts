@@ -56,10 +56,6 @@ if (config.features.marketplace.isEnabled) {
   searchCategories.unshift({ id: 'app', title: `${ dappEntityName }s`, tabTitle: `${ dappEntityName }s` });
 }
 
-if (config.features.marketplace.isEnabled) {
-  searchCategories.unshift({ id: 'app', title: `${ dappEntityName }s`, tabTitle: `${ dappEntityName }s` });
-}
-
 if ((nameServicesFeature.isEnabled && nameServicesFeature.ens.isEnabled) || config.features.opSuperchain.isEnabled) {
   searchCategories.unshift({ id: 'domain', title: 'Names', tabTitle: 'Names' });
 }
