@@ -40,7 +40,7 @@ const ReCaptchaInvisible = ({ onInitError, hideWarning = false }: Props, ref: Re
     }
   }, [ ]);
 
-  if (!chainConfig.services.reCaptchaV2.siteKey) {
+  if (!chainConfig.services.reCaptchaV2.siteKey || config.app.appProfile === 'private') {
     return null;
   }
 

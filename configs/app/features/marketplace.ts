@@ -2,6 +2,7 @@ import type { Feature } from './types';
 import type { EssentialDappsConfig } from 'types/client/marketplace';
 
 import apis from '../apis';
+import app from '../app';
 import chain from '../chain';
 import { getEnvValue, getExternalAssetFilePath, parseEnvJson } from '../utils';
 import blockchainInteraction from './blockchainInteraction';
@@ -32,7 +33,12 @@ const config: Feature<(
   graphLinksUrl: string | undefined;
   essentialDapps: EssentialDappsConfig | undefined;
 }> = (() => {
-  if (enabled === 'true' && chain.rpcUrls.length > 0 && submitFormUrl) {
+  if (
+    app.appProfile !== 'private' &&
+    chain.rpcUrls.length > 0 &&
+    enabled === 'true' &&
+    submitFormUrl
+  ) {
     const props = {
       submitFormUrl,
       categoriesUrl,

@@ -1,6 +1,7 @@
 import type { Feature } from './types';
 import type { AddressProfileAPIConfig } from 'types/client/addressProfileAPIConfig';
 
+import app from '../app';
 import { getEnvValue, parseEnvJson } from '../utils';
 
 const value = parseEnvJson<AddressProfileAPIConfig>(getEnvValue('NEXT_PUBLIC_ADDRESS_USERNAME_TAG'));
@@ -24,7 +25,7 @@ const config: Feature<{
   tagBgColor?: string;
   tagTextColor?: string;
 }> = (() => {
-  if (value && checkApiUrlTemplate(value.api_url_template)) {
+  if (app.appProfile !== 'private' && value && checkApiUrlTemplate(value.api_url_template)) {
     return Object.freeze({
       title,
       isEnabled: true,
