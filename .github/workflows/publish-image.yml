@@ -50,8 +50,16 @@ jobs:
     run:
         name: Run
         runs-on: github-k8s-dev-runner
+        services:
+            dind:
+                image: docker:24-dind
+                options: --privileged
+                env:
+                    DOCKER_TLS_CERTDIR: ""
         container:
             image: ubuntu:24.04
+            env:
+                DOCKER_HOST: tcp://dind:2375
         steps:
             -   name: Check out the repo
                 uses: actions/checkout@v4
