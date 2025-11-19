@@ -1,4 +1,4 @@
-import { chakra, Tooltip, useColorModeValue } from '@chakra-ui/react';
+import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type * as visualizer from '@blockscout/visualizer-types';
@@ -8,7 +8,8 @@ import type { ResourceError } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
 import throwOnAbsentParamError from 'lib/errors/throwOnAbsentParamError';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
-import ContentLoader from 'ui/shared/ContentLoader';
+import { Tooltip } from 'toolkit/chakra/tooltip';
+import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 
 interface Props {
   addressHash: string;
@@ -30,7 +31,7 @@ function composeSources(contract: SmartContract | undefined): visualizer.Visuali
 }
 
 const Sol2UmlDiagram = ({ addressHash }: Props) => {
-  const contractQuery = useApiQuery<'contract', ResourceError>('contract', {
+  const contractQuery = useApiQuery<'general:contract', ResourceError>('general:contract', {
     pathParams: { hash: addressHash },
     queryOptions: {
       enabled: Boolean(addressHash),
@@ -38,28 +39,27 @@ const Sol2UmlDiagram = ({ addressHash }: Props) => {
     },
   });
 
-  const umlQuery = useApiQuery('visualize_sol2uml', {
+  const umlQuery = useApiQuery('visualize:solidity_contract', {
     fetchParams: {
       method: 'POST',
       body: {
         sources: composeSources(contractQuery.data),
       },
     },
-    queryKey: [ 'visualize_sol2uml', addressHash ],
     queryOptions: {
+      queryKey: [ 'solidity_contract', addressHash ],
       enabled: Boolean(contractQuery.data),
       refetchOnMount: false,
     },
   });
 
   const imgUrl = `data:image/svg+xml;base64,${ umlQuery.data?.svg }`;
-  const imgFilter = useColorModeValue('invert(0)', 'invert(1)');
 
   const handleClick = React.useCallback(() => {
     const image = new Image();
     image.src = imgUrl;
 
-    const newWindow = window.open(imgUrl);
+    const newWindow = window.open(imgUrl, '_blank', 'noopener,noreferrer');
     newWindow?.document.write(image.outerHTML);
   }, [ imgUrl ]);
 
@@ -76,13 +76,13 @@ const Sol2UmlDiagram = ({ addressHash }: Props) => {
   }
 
   return (
-    <Tooltip label="Click on image to zoom" placement="top">
+    <Tooltip content="Click on image to zoom" positioning={{ placement: 'top' }}>
       <chakra.img
         src={ imgUrl }
         alt={ `Contract ${ contractQuery.data.name } UML diagram` }
         onClick={ handleClick }
         cursor="pointer"
-        filter={ imgFilter }
+        filter={{ _light: 'invert(0)', _dark: 'invert(1)' }}
       />
     </Tooltip>
   );

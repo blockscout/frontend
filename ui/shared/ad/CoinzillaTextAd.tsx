@@ -1,8 +1,11 @@
-import { Box, Image, Link, Text, chakra, Skeleton } from '@chakra-ui/react';
+import { Box, Text, chakra } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 
-import { ndash } from 'lib/html-entities';
-import isBrowser from 'lib/isBrowser';
+import { Image } from 'toolkit/chakra/image';
+import { Link } from 'toolkit/chakra/link';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { ndash } from 'toolkit/utils/htmlEntities';
+import { isBrowser } from 'toolkit/utils/isBrowser';
 
 type AdData = {
   ad: {
@@ -13,19 +16,19 @@ type AdData = {
     cta_button: string;
     impressionUrl?: string;
   };
-}
+};
 
 // const MOCK: AdData = {
 //   ad: {
 //     url: 'https://unsplash.com/s/photos/cute-kitten',
-//     thumbnail: 'https://placekitten.com/40/40',
+//     thumbnail: 'https://raw.githubusercontent.com/blockscout/frontend-configs/main/configs/network-icons/gnosis.svg',
 //     name: 'All about kitties',
 //     description_short: 'To see millions picture of cute kitties',
 //     cta_button: 'click here',
 //   },
 // };
 
-const CoinzillaTextAd = ({ className }: {className?: string}) => {
+const CoinzillaTextAd = ({ className }: { className?: string }) => {
   const [ adData, setAdData ] = React.useState<AdData | null>(null);
   const [ isLoading, setIsLoading ] = React.useState(true);
 
@@ -50,6 +53,7 @@ const CoinzillaTextAd = ({ className }: {className?: string}) => {
   if (isLoading) {
     return (
       <Skeleton
+        loading
         className={ className }
         h={{ base: 12, lg: 6 }}
         w="100%"
@@ -67,7 +71,12 @@ const CoinzillaTextAd = ({ className }: {className?: string}) => {
   const urlObject = new URL(adData.ad.url);
 
   return (
-    <Box className={ className }>
+    <Box
+      className={ className }
+      display={{ base: 'flex', lg: 'block' }}
+      textStyle={{ base: 'xs', lg: 'md' }}
+      color={{ base: 'text.secondary', lg: 'text.primary' }}
+    >
       <Text
         as="span"
         whiteSpace="pre-wrap"
@@ -78,11 +87,23 @@ const CoinzillaTextAd = ({ className }: {className?: string}) => {
         Ads:
       </Text>
       { urlObject.hostname === 'nifty.ink' ?
-        <Text as="span" mr={ 1 }>🎨</Text> :
-        <Image src={ adData.ad.thumbnail } width="20px" height="20px" mb="-4px" mr={ 1 } display="inline" alt=""/>
-      }
-      <Text as="span" whiteSpace="pre-wrap">{ `${ adData.ad.name } ${ ndash } ${ adData.ad.description_short } ` }</Text>
-      <Link href={ adData.ad.url }>{ adData.ad.cta_button }</Link>
+        <Text as="span" mr={ 1 }>🎨</Text> : (
+          <Image
+            src={ adData.ad.thumbnail }
+            width="20px"
+            height="20px"
+            display="inline-block"
+            verticalAlign="text-bottom"
+            flexShrink={ 0 }
+            alignSelf={{ base: 'flex-start', lg: 'center' }}
+            mr={ 1 }
+            alt=""
+          />
+        ) }
+      <Box display={{ base: 'block', lg: 'inline' }}>
+        <Text as="span" whiteSpace="pre-wrap">{ `${ adData.ad.name } ${ ndash } ${ adData.ad.description_short } ` }</Text>
+        <Link href={ adData.ad.url } external noIcon>{ adData.ad.cta_button }</Link>
+      </Box>
     </Box>
   );
 };

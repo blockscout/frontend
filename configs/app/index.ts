@@ -1,6 +1,5 @@
 import * as allChains from 'viem/chains';
-
-import api from './api';
+import apis from './apis';
 import app from './app';
 import chain from './chain';
 import * as features from './features';
@@ -16,7 +15,7 @@ const config = Object.freeze({
   app,
   chain,
   l1Chain,
-  api,
+  apis,
   UI,
   features,
   services,

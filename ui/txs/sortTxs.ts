@@ -13,6 +13,12 @@ export default function sortTxs(sorting: TransactionsSortingValue | undefined) {
         return compareBns(tx2.fee.value || 0, tx1.fee.value || 0);
       case 'fee-asc':
         return compareBns(tx1.fee.value || 0, tx2.fee.value || 0);
+      case 'block_number-asc': {
+        if (tx1.block_number && tx2.block_number) {
+          return tx1.block_number - tx2.block_number;
+        }
+        return 0;
+      }
       default:
         return 0;
     }
@@ -20,7 +26,7 @@ export default function sortTxs(sorting: TransactionsSortingValue | undefined) {
 }
 
 export function sortTxsFromSocket(sorting: TransactionsSortingValue | undefined) {
-  if (sorting) {
+  if (sorting && sorting !== 'default') {
     return sortTxs(sorting);
   }
 

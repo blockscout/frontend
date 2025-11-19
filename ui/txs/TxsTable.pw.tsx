@@ -6,43 +6,40 @@ import * as pwConfig from 'playwright/utils/config';
 
 import TxsTable from './TxsTable';
 
-test.describe('base view', () => {
+test('base view +@dark-mode', async({ render }) => {
+  const component = await render(
+    <TxsTable
+      txs={ [ txMock.base, txMock.withPendingUpdate ] }
+      sort="default"
+      // eslint-disable-next-line react/jsx-no-bind
+      onSortToggle={ () => {} }
+      top={ 0 }
+      showBlockInfo
+    />,
+  );
 
-  test('+@dark-mode', async({ render }) => {
+  await component.getByText('kitty').first().hover();
+
+  await expect(component).toHaveScreenshot();
+});
+
+test.describe('screen xl', () => {
+  test.use({ viewport: pwConfig.viewport.xl });
+
+  test('base view', async({ render }) => {
     const component = await render(
       <TxsTable
         txs={ [ txMock.base, txMock.withWatchListNames ] }
+        sort="default"
         // eslint-disable-next-line react/jsx-no-bind
-        sort={ () => () => {} }
+        onSortToggle={ () => {} }
         top={ 0 }
         showBlockInfo
-        showSocketInfo={ false }
       />,
     );
 
     await component.getByText('kitty').first().hover();
 
     await expect(component).toHaveScreenshot();
-  });
-
-  test.describe('screen xl', () => {
-    test.use({ viewport: pwConfig.viewport.xl });
-
-    test('', async({ render }) => {
-      const component = await render(
-        <TxsTable
-          txs={ [ txMock.base, txMock.withWatchListNames ] }
-          // eslint-disable-next-line react/jsx-no-bind
-          sort={ () => () => {} }
-          top={ 0 }
-          showBlockInfo
-          showSocketInfo={ false }
-        />,
-      );
-
-      await component.getByText('kitty').first().hover();
-
-      await expect(component).toHaveScreenshot();
-    });
   });
 });

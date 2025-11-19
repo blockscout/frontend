@@ -1,4 +1,4 @@
-import { Skeleton, Text } from '@chakra-ui/react';
+import { Text } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ZkEvmL2TxnBatchesItem } from 'types/api/zkEvmL2';
@@ -6,12 +6,12 @@ import type { ZkEvmL2TxnBatchesItem } from 'types/api/zkEvmL2';
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
+import { Link } from 'toolkit/chakra/link';
 import BatchEntityL2 from 'ui/shared/entities/block/BatchEntityL2';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
-import LinkInternal from 'ui/shared/links/LinkInternal';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 import ZkEvmL2TxnBatchStatus from 'ui/shared/statusTag/ZkEvmL2TxnBatchStatus';
-import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 const rollupFeature = config.features.rollup;
 
@@ -30,8 +30,7 @@ const ZkEvmTxnBatchesListItem = ({ item, isLoading }: Props) => {
         <BatchEntityL2
           isLoading={ isLoading }
           number={ item.number }
-          fontSize="sm"
-          lineHeight={ 5 }
+          textStyle="sm"
           fontWeight={ 600 }
         />
       </ListItemMobileGrid.Value>
@@ -43,7 +42,7 @@ const ZkEvmTxnBatchesListItem = ({ item, isLoading }: Props) => {
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Age</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <TimeAgoWithTooltip
+        <TimeWithTooltip
           timestamp={ item.timestamp }
           fallbackText="Undefined"
           isLoading={ isLoading }
@@ -53,39 +52,38 @@ const ZkEvmTxnBatchesListItem = ({ item, isLoading }: Props) => {
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Txn count</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <LinkInternal
+        <Link
           href={ route({ pathname: '/batches/[number]', query: { number: item.number.toString(), tab: 'txs' } }) }
-          isLoading={ isLoading }
+          loading={ isLoading }
           fontWeight={ 600 }
+          minW="40px"
         >
-          <Skeleton isLoaded={ !isLoading } minW="40px">
-            { item.tx_count }
-          </Skeleton>
-        </LinkInternal>
+          { item.transactions_count }
+        </Link>
       </ListItemMobileGrid.Value>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Verify tx hash</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        { item.verify_tx_hash ? (
+        { item.verify_transaction_hash ? (
           <TxEntityL1
             isLoading={ isLoading }
-            hash={ item.verify_tx_hash }
-            fontSize="sm"
-            lineHeight={ 5 }
+            hash={ item.verify_transaction_hash }
+            textStyle="sm"
             truncation="constant_long"
+            noCopy
           />
         ) : <Text>Pending</Text> }
       </ListItemMobileGrid.Value>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Sequence hash</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        { item.sequence_tx_hash ? (
+        { item.sequence_transaction_hash ? (
           <TxEntityL1
             isLoading={ isLoading }
-            hash={ item.sequence_tx_hash }
-            fontSize="sm"
-            lineHeight={ 5 }
+            hash={ item.sequence_transaction_hash }
+            textStyle="sm"
             truncation="constant_long"
+            noCopy
           />
         ) : <Text>Pending</Text> }
       </ListItemMobileGrid.Value>

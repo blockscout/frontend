@@ -1,98 +1,175 @@
+import type { UseQueryResult } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
-import React from 'react';
+
+import type { TokenInstance } from 'types/api/token';
 
 import type { StaticRoute } from 'nextjs-routes';
 import { route } from 'nextjs-routes';
 
-import type { ResourceError } from 'lib/api/resources';
-import useFetch from 'lib/hooks/useFetch';
+import config from 'configs/app';
 
-import type { MediaType } from './utils';
+import type { MediaType, Size, TransportType } from './utils';
 import { getPreliminaryMediaType } from './utils';
 
 interface Params {
-  imageUrl: string | null;
-  animationUrl: string | null;
+  data: TokenInstance;
+  size: Size;
+  allowedTypes?: Array<MediaType>;
+  field: 'animation_url' | 'image_url';
   isEnabled: boolean;
 }
 
-interface ReturnType {
-  type: MediaType | undefined;
-  url: string | null;
+interface MediaInfo {
+  src: string;
+  srcSet?: string;
+  mediaType: MediaType;
+  transport: TransportType;
 }
 
-export default function useNftMediaInfo({ imageUrl, animationUrl, isEnabled }: Params): ReturnType | null {
-
-  const primaryQuery = useNftMediaTypeQuery(animationUrl, isEnabled);
-  const secondaryQuery = useNftMediaTypeQuery(imageUrl, isEnabled && !primaryQuery.isPending && !primaryQuery.data);
-
-  return React.useMemo(() => {
-    if (primaryQuery.isPending) {
-      return {
-        type: undefined,
-        url: animationUrl,
-      };
-    }
-
-    if (primaryQuery.data) {
-      return primaryQuery.data;
-    }
-
-    if (secondaryQuery.isPending) {
-      return {
-        type: undefined,
-        url: imageUrl,
-      };
-    }
-
-    if (secondaryQuery.data) {
-      return secondaryQuery.data;
-    }
-
-    return null;
-  }, [ animationUrl, imageUrl, primaryQuery.data, primaryQuery.isPending, secondaryQuery.data, secondaryQuery.isPending ]);
-}
-
-function useNftMediaTypeQuery(url: string | null, enabled: boolean) {
-  const fetch = useFetch();
-
-  return useQuery<unknown, ResourceError<unknown>, ReturnType | null>({
-    queryKey: [ 'nft-media-type', url ],
+export default function useNftMediaInfo({ data, size, allowedTypes, field, isEnabled }: Params): UseQueryResult<Array<MediaInfo> | null> {
+  const url = data[field];
+  const query = useQuery({
+    queryKey: [ 'nft-media-info', data.id, url, size, ...(allowedTypes ? allowedTypes : []) ],
     queryFn: async() => {
-      if (!url) {
+      const metadataField = field === 'animation_url' ? 'animation_url' : 'image';
+      const mediaType = await getMediaType(data, field);
+
+      if (!mediaType || (allowedTypes ? !allowedTypes.includes(mediaType) : false)) {
         return null;
       }
 
-      // media could be either image, gif, video or html-page
-      // so we pre-fetch the resources in order to get its content type
-      // have to do it via Node.js due to strict CSP for connect-src
-      // but in order not to abuse our server firstly we check file url extension
-      // and if it is valid we will trust it and display corresponding media component
+      const cdnData = getCdnData(data, size, mediaType);
+      const ipfsData = getIpfsData(data.metadata?.[metadataField], mediaType);
 
-      const preliminaryType = getPreliminaryMediaType(url);
-
-      if (preliminaryType) {
-        return { type: preliminaryType, url };
-      }
-
-      const type = await (async() => {
-        try {
-          const mediaTypeResourceUrl = route({ pathname: '/node-api/media-type' as StaticRoute<'/api/media-type'>['pathname'], query: { url } });
-          const response = await fetch<{ type: MediaType | undefined }, ResourceError>(mediaTypeResourceUrl, undefined, { resource: 'media-type' });
-
-          return 'type' in response ? response.type : undefined;
-        } catch (error) {
-          return;
-        }
-      })();
-
-      if (!type) {
-        return null;
-      }
-
-      return { type, url };
+      return [
+        cdnData,
+        ipfsData,
+        url ? { src: url, mediaType, transport: 'http' as const } : undefined,
+      ].filter(Boolean);
     },
-    enabled,
-    staleTime: Infinity,
+    enabled: isEnabled,
   });
+
+  return query;
+}
+
+async function getMediaType(data: TokenInstance, field: Params['field']): Promise<MediaType | undefined> {
+  const url = data[field];
+
+  if (!url) {
+    return;
+  }
+
+  // If the media_url is the same as the url, we can use the media_type field to determine the media type.
+  if (url === data.media_url) {
+    const mediaType = castMimeTypeToMediaType(data.media_type || undefined);
+    if (mediaType) {
+      return mediaType;
+    }
+  }
+
+  // Media can be an image, video, or HTML page.
+  // We pre-fetch the resources to determine their content type.
+  // We must do this via Node.js due to strict CSP for connect-src.
+  // To avoid overloading our server, we first check the file URL extension.
+  // If it is valid, we will trust it and display the corresponding media component.
+
+  const preliminaryType = getPreliminaryMediaType(url);
+
+  if (preliminaryType) {
+    return preliminaryType;
+  }
+
+  try {
+    const mediaTypeResourceUrl = route({ pathname: '/node-api/media-type' as StaticRoute<'/api/media-type'>['pathname'], query: { url } });
+    const response = await fetch(mediaTypeResourceUrl);
+    const payload = await response.json() as { type: MediaType | undefined };
+
+    return payload.type;
+  } catch (error) {
+    return;
+  }
+}
+
+function castMimeTypeToMediaType(mimeType: string | undefined): MediaType | undefined {
+  if (!mimeType) {
+    return;
+  }
+
+  if (mimeType.startsWith('image/')) {
+    return 'image';
+  }
+
+  if (mimeType.startsWith('video/')) {
+    return 'video';
+  }
+}
+
+function getCdnData(data: TokenInstance, size: Size, mediaType: MediaType): MediaInfo | undefined {
+  // CDN is only used for images
+  if (mediaType !== 'image') {
+    return;
+  }
+
+  if (!data.thumbnails) {
+    return;
+  }
+
+  switch (size) {
+    case 'sm': {
+      return {
+        src: data.thumbnails['60x60'] || data.thumbnails['250x250'] || data.thumbnails['500x500'] || data.thumbnails['original'],
+        // the smallest thumbnail is already greater than sm size by two times
+        // so there is no need to pass srcSet
+        srcSet: undefined,
+        mediaType: 'image',
+        transport: 'http',
+      };
+    }
+    case 'md': {
+      const srcSet = data.thumbnails['250x250'] && data.thumbnails['500x500'] ? `${ data.thumbnails['500x500'] } 2x` : undefined;
+      const src = (srcSet ? data.thumbnails['250x250'] : undefined) || data.thumbnails['500x500'] || data.thumbnails.original;
+
+      return {
+        src,
+        srcSet,
+        mediaType: 'image',
+        transport: 'http',
+      };
+    }
+    default: {
+      if (data.thumbnails.original) {
+        return {
+          src: data.thumbnails.original,
+          mediaType: 'image',
+          transport: 'http',
+        };
+      }
+    }
+  }
+}
+
+function getIpfsData(url: unknown, mediaType: MediaType): MediaInfo | undefined {
+  if (!config.UI.views.nft.verifiedFetch.isEnabled) {
+    return;
+  }
+
+  // Currently we only load images via IPFS
+  if (mediaType !== 'image') {
+    return;
+  }
+
+  if (typeof url !== 'string') {
+    return;
+  }
+
+  if (!url.includes('ipfs')) {
+    return;
+  }
+
+  return {
+    src: url,
+    mediaType,
+    transport: 'ipfs',
+  };
 }

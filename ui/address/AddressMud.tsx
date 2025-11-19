@@ -7,13 +7,12 @@ import AddressMudRecord from './mud/AddressMudRecord';
 import AddressMudTable from './mud/AddressMudTable';
 import AddressMudTables from './mud/AddressMudTables';
 
-type Props ={
-  scrollRef?: React.RefObject<HTMLDivElement>;
+type Props = {
   shouldRender?: boolean;
   isQueryEnabled?: boolean;
-}
+};
 
-const AddressMud = ({ scrollRef, shouldRender = true, isQueryEnabled = true }: Props) => {
+const AddressMud = ({ shouldRender = true, isQueryEnabled = true }: Props) => {
   const isMounted = useIsMounted();
   const router = useRouter();
   const tableId = router.query.table_id?.toString();
@@ -24,14 +23,14 @@ const AddressMud = ({ scrollRef, shouldRender = true, isQueryEnabled = true }: P
   }
 
   if (tableId && recordId) {
-    return <AddressMudRecord tableId={ tableId } recordId={ recordId } isQueryEnabled={ isQueryEnabled } scrollRef={ scrollRef }/>;
+    return <AddressMudRecord tableId={ tableId } recordId={ recordId } isQueryEnabled={ isQueryEnabled }/>;
   }
 
   if (tableId) {
-    return <AddressMudTable tableId={ tableId } scrollRef={ scrollRef } isQueryEnabled={ isQueryEnabled }/>;
+    return <AddressMudTable tableId={ tableId } isQueryEnabled={ isQueryEnabled }/>;
   }
 
-  return <AddressMudTables scrollRef={ scrollRef } isQueryEnabled={ isQueryEnabled }/>;
+  return <AddressMudTables isQueryEnabled={ isQueryEnabled }/>;
 };
 
 export default AddressMud;

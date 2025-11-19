@@ -3,12 +3,13 @@ import type { Transaction } from 'types/api/transaction';
 
 import * as addressMock from 'mocks/address/address';
 import { publicTag, privateTag, watchlistName } from 'mocks/address/tag';
+import * as interopMock from 'mocks/interop/interop';
 import * as tokenTransferMock from 'mocks/tokens/tokenTransfer';
 import * as decodedInputDataMock from 'mocks/txs/decodedInputData';
 
 export const base: Transaction = {
   base_fee_per_gas: '10000000000',
-  block: 29611750,
+  block_number: 29611750,
   confirmation_duration: [
     0,
     6364,
@@ -60,15 +61,15 @@ export const base: Transaction = {
   },
   token_transfers: [],
   token_transfers_overflow: false,
-  tx_burnt_fee: '461030000000000',
-  tx_tag: null,
-  tx_types: [
+  transaction_burnt_fee: '461030000000000',
+  transaction_tag: null,
+  transaction_types: [
     'contract_call',
   ],
   type: 2,
   value: '42000000000000000000',
   actions: [],
-  has_error_in_internal_txs: false,
+  has_error_in_internal_transactions: false,
 };
 
 export const withWatchListNames: Transaction = {
@@ -87,6 +88,11 @@ export const withWatchListNames: Transaction = {
   } as Transaction['to'],
 };
 
+export const withPendingUpdate: Transaction = {
+  ...withWatchListNames,
+  is_pending_update: true,
+};
+
 export const withContractCreation: Transaction = {
   ...base,
   hash: '0x62d597ebcf3e8d60096dd0363bc2f0f5e2df27ba1dacd696c51aa7c9409f3195',
@@ -102,7 +108,7 @@ export const withContractCreation: Transaction = {
     watchlist_names: [],
     ens_domain_name: null,
   },
-  tx_types: [
+  transaction_types: [
     'contract_creation',
   ],
 };
@@ -132,7 +138,7 @@ export const withTokenTransfer: Transaction = {
     tokenTransferMock.erc404B,
   ],
   token_transfers_overflow: true,
-  tx_types: [
+  transaction_types: [
     'token_transfer',
   ],
 };
@@ -182,7 +188,7 @@ export const withRawRevertReason: Transaction = {
 export const pending: Transaction = {
   ...base,
   base_fee_per_gas: null,
-  block: null,
+  block_number: null,
   confirmation_duration: [],
   confirmations: 0,
   decoded_input: null,
@@ -196,8 +202,8 @@ export const pending: Transaction = {
   revert_reason: null,
   status: null,
   timestamp: null,
-  tx_burnt_fee: null,
-  tx_tag: null,
+  transaction_burnt_fee: null,
+  transaction_tag: null,
   type: null,
   value: '0',
 };
@@ -277,6 +283,7 @@ export const l2tx: Transaction = {
   l1_fee_scalar: '1.0',
   l1_gas_used: '17060',
   l1_fee: '1584574188135760',
+  operator_fee: '2769347953',
 };
 
 export const stabilityTx: Transaction = {
@@ -295,16 +302,17 @@ export const stabilityTx: Transaction = {
     },
     dapp_fee: '34381250000000',
     token: {
-      address: '0xDc2B93f3291030F3F7a6D9363ac37757f7AD5C43',
+      address_hash: '0xDc2B93f3291030F3F7a6D9363ac37757f7AD5C43',
       circulating_market_cap: null,
       decimals: '18',
       exchange_rate: '123.567',
-      holders: '92',
+      holders_count: '92',
       icon_url: 'https://example.com/icon.png',
       name: 'Stability Gas',
       symbol: 'GAS',
       total_supply: '10000000000000000000000000',
       type: 'ERC-20',
+      reputation: 'ok',
     },
     total_fee: '68762500000000',
     validator_address: {
@@ -326,17 +334,45 @@ export const celoTxn: Transaction = {
   ...base,
   celo: {
     gas_token: {
-      address: '0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1',
+      address_hash: '0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1',
       circulating_market_cap: null,
       decimals: '18',
       exchange_rate: '0.42',
-      holders: '205738',
+      holders_count: '205738',
       icon_url: 'https://example.com/icon.png',
       name: 'Celo Dollar',
       symbol: 'cUSD',
       total_supply: '7145754483836626799435133',
       type: 'ERC-20',
+      reputation: 'ok',
     },
+  },
+};
+
+export const arbitrumTxn: Transaction = {
+  ...base,
+  arbitrum: {
+    batch_number: 743991,
+    commitment_transaction: {
+      hash: '0x71a25e01dde129a308704de217d200ea42e0f5b8c221c8ba8b2b680ff347f708',
+      status: 'unfinalized',
+      timestamp: '2024-11-19T14:26:23.000000Z',
+    },
+    confirmation_transaction: {
+      hash: null,
+      status: null,
+      timestamp: null,
+    },
+    contains_message: null,
+    gas_used_for_l1: '129773',
+    gas_used_for_l2: '128313',
+    message_related_info: {
+      associated_l1_transaction_hash: null,
+      message_status: 'Relayed',
+    },
+    network_fee: '1283130000000',
+    poster_fee: '1297730000000',
+    status: 'Sent to base',
   },
 };
 
@@ -373,7 +409,7 @@ export const withBlob = {
   ],
   burnt_blob_fee: '2820464441688064',
   max_fee_per_blob_gas: '60000000000',
-  tx_types: [ 'blob_transaction' as const ],
+  transaction_types: [ 'blob_transaction' as const ],
   type: 3,
 };
 
@@ -390,4 +426,35 @@ export const withRecipientEns = {
 export const withRecipientNameTag = {
   ...withRecipientEns,
   to: addressMock.withNameTag,
+};
+
+export const withRecipientContract = {
+  ...withRecipientEns,
+  to: addressMock.contract,
+};
+
+export const withInteropInMessage: Transaction = {
+  ...base,
+  op_interop_messages: [ {
+    init_chain: interopMock.chain,
+    nonce: 1,
+    payload: '0x',
+    init_transaction_hash: '0x01a8c328b0370068aaaef49c107f70901cd79adcda81e3599a88855532122e09',
+    sender_address_hash: addressMock.hash,
+    status: 'Sent',
+    target_address_hash: addressMock.hash,
+  } ],
+};
+
+export const withInteropOutMessage: Transaction = {
+  ...base,
+  op_interop_messages: [ {
+    relay_chain: interopMock.chain,
+    nonce: 1,
+    payload: '0xfa4b78b90000000000000000000000000000000000000000000000000000000005001bcfe835d1028984e9e6e7d016b77164eacbcc6cc061e9333c0b37982b504f7ea791000000000000000000000000a79b29ad7e0196c95b87f4663ded82fbf2e3add8',
+    relay_transaction_hash: '0x01a8c328b0370068aaaef49c107f70901cd79adcda81e3599a88855532122e09',
+    sender_address_hash: addressMock.hash,
+    status: 'Sent',
+    target_address_hash: addressMock.hash,
+  } ],
 };

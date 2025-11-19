@@ -1,27 +1,17 @@
-import {
-  Alert,
-  Box,
-  Button,
-  Flex,
-  Heading,
-  Modal,
-  ModalCloseButton,
-  ModalContent,
-  PopoverBody,
-  PopoverContent,
-  PopoverTrigger,
-  Skeleton,
-  StackDivider,
-  useDisclosure,
-  VStack,
-} from '@chakra-ui/react';
+import { Box, Flex, Separator, VStack } from '@chakra-ui/react';
 import React from 'react';
 
 import type { SmartContractExternalLibrary } from 'types/api/contract';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
-import { apos } from 'lib/html-entities';
-import Popover from 'ui/shared/chakra/Popover';
+import { Alert } from 'toolkit/chakra/alert';
+import { Button } from 'toolkit/chakra/button';
+import { DialogBody, DialogContent, DialogHeader, DialogRoot } from 'toolkit/chakra/dialog';
+import { Heading } from 'toolkit/chakra/heading';
+import { PopoverRoot, PopoverBody, PopoverContent, PopoverTrigger } from 'toolkit/chakra/popover';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { useDisclosure } from 'toolkit/hooks/useDisclosure';
+import { apos } from 'toolkit/utils/htmlEntities';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import IconSvg from 'ui/shared/IconSvg';
 
@@ -47,11 +37,11 @@ const Item = (data: SmartContractExternalLibrary) => {
 };
 
 const ContractExternalLibraries = ({ className, data, isLoading }: Props) => {
-  const { isOpen, onToggle, onClose } = useDisclosure();
+  const { open, onToggle, onOpenChange } = useDisclosure();
   const isMobile = useIsMobile();
 
   if (isLoading) {
-    return <Skeleton h={ 8 } w="150px" borderRadius="base"/>;
+    return <Skeleton loading h={ 8 } w="150px" borderRadius="base"/>;
   }
 
   if (data.length === 0) {
@@ -62,30 +52,30 @@ const ContractExternalLibraries = ({ className, data, isLoading }: Props) => {
     <Button
       className={ className }
       size="sm"
-      variant="outline"
-      colorScheme="gray"
+      variant="dropdown"
       onClick={ onToggle }
-      isActive={ isOpen }
+      expanded={ open }
       fontWeight={ 600 }
       px={ 2 }
+      gap={ 0 }
       aria-label="View external libraries"
     >
       <span>{ data.length } { data.length > 1 ? 'Libraries' : 'Library' } </span>
       <IconSvg name="status/warning" boxSize={ 5 } color="orange.400" ml="2px"/>
-      <IconSvg name="arrows/east-mini" transform={ isOpen ? 'rotate(90deg)' : 'rotate(-90deg)' } transitionDuration="faster" boxSize={ 5 } ml={ 2 }/>
+      <IconSvg name="arrows/east-mini" transform={ open ? 'rotate(90deg)' : 'rotate(-90deg)' } transitionDuration="faster" boxSize={ 5 } ml={ 2 }/>
     </Button>
   );
 
   const content = (
     <>
-      <Heading size="sm">External libraries ({ data.length })</Heading>
+      <Heading size="sm" level="3">External libraries ({ data.length })</Heading>
       <Alert status="warning" mt={ 4 }>
         The linked library{ apos }s source code may not be the real one.
         Check the source code at the library address (if any) if you want to be sure in case if there is any library linked
       </Alert>
       <VStack
-        divider={ <StackDivider borderColor="divider"/> }
-        spacing={ 2 }
+        separator={ <Separator/> }
+        gap={ 2 }
         mt={ 4 }
         maxH={{ lg: '50vh' }}
         overflowY="scroll"
@@ -99,18 +89,20 @@ const ContractExternalLibraries = ({ className, data, isLoading }: Props) => {
     return (
       <>
         { button }
-        <Modal isOpen={ isOpen } onClose={ onClose } size="full">
-          <ModalContent paddingTop={ 4 }>
-            <ModalCloseButton/>
-            { content }
-          </ModalContent>
-        </Modal>
+        <DialogRoot open={ open } onOpenChange={ onOpenChange } size="full">
+          <DialogContent paddingTop={ 4 }>
+            <DialogHeader/>
+            <DialogBody>
+              { content }
+            </DialogBody>
+          </DialogContent>
+        </DialogRoot>
       </>
     );
   }
 
   return (
-    <Popover isOpen={ isOpen } onClose={ onClose } placement="bottom-start" isLazy>
+    <PopoverRoot open={ open } onOpenChange={ onOpenChange }>
       <PopoverTrigger>
         { button }
       </PopoverTrigger>
@@ -119,7 +111,7 @@ const ContractExternalLibraries = ({ className, data, isLoading }: Props) => {
           { content }
         </PopoverBody>
       </PopoverContent>
-    </Popover>
+    </PopoverRoot>
   );
 };
 

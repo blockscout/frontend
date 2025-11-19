@@ -1,9 +1,10 @@
-import { Box, Image } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import dynamic from 'next/dynamic';
 import React from 'react';
 
 import config from 'configs/app';
 import * as cookies from 'lib/cookies';
+import { Image } from 'toolkit/chakra/image';
 import IdenticonGithub from 'ui/shared/IdenticonGithub';
 
 interface IconProps {
@@ -16,14 +17,13 @@ const Icon = dynamic(
     const type = cookies.get(cookies.NAMES.ADDRESS_IDENTICON_TYPE) || config.UI.views.address.identiconType;
     switch (type) {
       case 'github': {
-        // eslint-disable-next-line react/display-name
-        return (props: IconProps) => <IdenticonGithub size={ props.size } seed={ props.hash }/>;
+
+        return (props: IconProps) => <IdenticonGithub iconSize={ props.size } seed={ props.hash }/>;
       }
 
       case 'blockie': {
         const { blo } = (await import('blo'));
 
-        // eslint-disable-next-line react/display-name
         return (props: IconProps) => {
           const data = blo(props.hash as `0x${ string }`, props.size);
           return (
@@ -38,7 +38,6 @@ const Icon = dynamic(
       case 'jazzicon': {
         const Jazzicon = await import('react-jazzicon');
 
-        // eslint-disable-next-line react/display-name
         return (props: IconProps) => {
           return (
             <Jazzicon.default
@@ -52,10 +51,17 @@ const Icon = dynamic(
       case 'gradient_avatar': {
         const GradientAvatar = (await import('gradient-avatar')).default;
 
-        // eslint-disable-next-line react/display-name
         return (props: IconProps) => {
           const svg = GradientAvatar(props.hash, props.size, 'circle');
-          return <div dangerouslySetInnerHTML={{ __html: svg }}/>;
+          return <Box display="flex" dangerouslySetInnerHTML={{ __html: svg }}/>;
+        };
+      }
+
+      case 'nouns': {
+        const NounsIdenticon = (await import('./NounsIdenticon')).default;
+
+        return (props: IconProps) => {
+          return <NounsIdenticon hash={ props.hash } size={ props.size }/>;
         };
       }
 

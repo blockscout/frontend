@@ -10,13 +10,14 @@ import TextAd from 'ui/shared/ad/TextAd';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import BlobEntity from 'ui/shared/entities/blob/BlobEntity';
+import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 const BlobPageContent = () => {
   const router = useRouter();
   const hash = getQueryParamString(router.query.hash);
 
-  const { data, isPlaceholderData, isError, error } = useApiQuery('blob', {
+  const { data, isPlaceholderData, isError, error } = useApiQuery('general:blob', {
     pathParams: { hash },
     queryOptions: {
       placeholderData: BLOB,
@@ -27,7 +28,7 @@ const BlobPageContent = () => {
   const content = (() => {
     if (isError) {
       if (isCustomAppError(error)) {
-        throwOnResourceLoadError({ resource: 'blob', error, isError: true });
+        throwOnResourceLoadError({ resource: 'general:blob', error, isError: true });
       }
 
       return <DataFetchAlert/>;
@@ -41,7 +42,14 @@ const BlobPageContent = () => {
   })();
 
   const titleSecondRow = (
-    <BlobEntity hash={ hash } noLink fontWeight={ 500 } fontFamily="heading"/>
+    <>
+      <BlobEntity hash={ hash } noLink variant="subheading"/>
+      <NetworkExplorers
+        type="blob"
+        pathParam={ hash }
+        ml={{ base: 3, lg: 'auto' }}
+      />
+    </>
   );
 
   return (

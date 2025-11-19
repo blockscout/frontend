@@ -1,101 +1,52 @@
-import {
-  PopoverTrigger,
-  PopoverContent,
-  PopoverBody,
-  useDisclosure,
-  useRadio,
-  Box,
-  useRadioGroup,
-  useColorModeValue,
-} from '@chakra-ui/react';
+import type { ListCollection } from '@chakra-ui/react';
 import React from 'react';
 
-import Popover from 'ui/shared/chakra/Popover';
+import type { SelectOption } from 'toolkit/chakra/select';
+import { SelectContent, SelectItem, SelectRoot, SelectControl } from 'toolkit/chakra/select';
 import FilterButton from 'ui/shared/filters/FilterButton';
-import IconSvg from 'ui/shared/IconSvg';
-
-// OPTION
-export interface TOption {
-  value: string;
-  label: string;
-}
-
-type OptionProps = ReturnType<ReturnType<typeof useRadioGroup>['getRadioProps']>;
-
-const Option = (props: OptionProps) => {
-  const { getInputProps, getRadioProps } = useRadio(props);
-
-  const input = getInputProps();
-  const checkbox = getRadioProps();
-  const bgColorHover = useColorModeValue('blue.50', 'whiteAlpha.100');
-
-  return (
-    <Box
-      as="label"
-      px={ 4 }
-      py={ 2 }
-      cursor="pointer"
-      display="flex"
-      columnGap={ 3 }
-      alignItems="center"
-      _hover={{
-        bgColor: bgColorHover,
-      }}
-    >
-      <input { ...input }/>
-      <Box { ...checkbox }>
-        { props.children }
-      </Box>
-      { props.isChecked && <IconSvg name="check" boxSize={ 4 }/> }
-    </Box>
-  );
-};
-
-// FILTER
 
 interface Props {
   name: string;
-  options: Array<TOption>;
+  collection: ListCollection<SelectOption>;
   hasActiveFilter: boolean;
-  defaultValue?: string;
+  initialValue?: string;
   isLoading?: boolean;
   onChange: (nextValue: string) => void;
 }
 
-const PopoverFilterRadio = ({ name, hasActiveFilter, options, isLoading, onChange, defaultValue }: Props) => {
-  const { isOpen, onToggle, onClose } = useDisclosure();
+const PopoverFilterRadio = ({ name, hasActiveFilter, collection, isLoading, onChange, initialValue }: Props) => {
 
-  const { getRootProps, getRadioProps } = useRadioGroup({
-    name,
-    defaultValue,
-    onChange,
-  });
-
-  const root = getRootProps();
+  const handleValueChange = React.useCallback(({ value }: { value: Array<string> }) => {
+    onChange(value[0]);
+  }, [ onChange ]);
 
   return (
-    <Popover isOpen={ isOpen } onClose={ onClose } placement="bottom-start" isLazy>
-      <PopoverTrigger>
+    <SelectRoot
+      name={ name }
+      collection={ collection }
+      defaultValue={ initialValue ? [ initialValue ] : [ collection.items[0].value ] }
+      onValueChange={ handleValueChange }
+      w="fit-content"
+      variant="plain"
+    >
+      <SelectControl
+        triggerProps={{ asChild: true, px: { base: 1, lg: 2 } }}
+        noIndicator
+        defaultValue={ [ collection.items[0].value ] }
+      >
         <FilterButton
-          isActive={ isOpen }
-          onClick={ onToggle }
           appliedFiltersNum={ hasActiveFilter ? 1 : 0 }
           isLoading={ isLoading }
         />
-      </PopoverTrigger>
-      <PopoverContent w="fit-content" minW="150px">
-        <PopoverBody { ...root } py={ 2 } px={ 0 } display="flex" flexDir="column">
-          { options.map((option) => {
-            const radio = getRadioProps({ value: option.value });
-            return (
-              <Option key={ option.value } { ...radio }>
-                { option.label }
-              </Option>
-            );
-          }) }
-        </PopoverBody>
-      </PopoverContent>
-    </Popover>
+      </SelectControl>
+      <SelectContent>
+        { collection.items.map((item) => (
+          <SelectItem item={ item } key={ item.value }>
+            { item.label }
+          </SelectItem>
+        )) }
+      </SelectContent>
+    </SelectRoot>
   );
 };
 

@@ -1,7 +1,9 @@
-import { Box, useColorModeValue } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ContractAbiItemInput } from '../types';
+
+import { Hint } from 'toolkit/components/Hint/Hint';
 
 import { getFieldLabel } from './utils';
 
@@ -12,19 +14,18 @@ interface Props {
 }
 
 const ContractMethodFieldLabel = ({ data, isOptional, level }: Props) => {
-  const color = useColorModeValue('blackAlpha.600', 'whiteAlpha.600');
-
   return (
     <Box
       w="250px"
-      fontSize="sm"
-      lineHeight={ 5 }
+      textStyle="sm"
       py="6px"
       flexShrink={ 0 }
       fontWeight={ 500 }
-      color={ level > 1 ? color : undefined }
+      color={ level > 1 ? { _light: 'blackAlpha.600', _dark: 'whiteAlpha.600' } : undefined }
+      wordBreak="break-all"
     >
       { getFieldLabel(data, !isOptional) }
+      { data.type === 'string' && <Hint label={ `The "" string will be treated as an empty string` } ml={ 2 }/> }
     </Box>
   );
 };

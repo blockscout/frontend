@@ -4,16 +4,16 @@ import type { TokensSortingValue } from 'types/api/tokens';
 import config from 'configs/app';
 import getFilterValuesFromQuery from 'lib/getFilterValuesFromQuery';
 import { TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
-import type { TOption } from 'ui/shared/sort/Option';
+import type { SelectOption } from 'toolkit/chakra/select';
 
-export const SORT_OPTIONS: Array<TOption<TokensSortingValue>> = [
-  { title: 'Default', id: undefined },
-  { title: 'Price ascending', id: 'fiat_value-asc' },
-  { title: 'Price descending', id: 'fiat_value-desc' },
-  { title: 'Holders ascending', id: 'holder_count-asc' },
-  { title: 'Holders descending', id: 'holder_count-desc' },
-  { title: 'On-chain market cap ascending', id: 'circulating_market_cap-asc' },
-  { title: 'On-chain market cap descending', id: 'circulating_market_cap-desc' },
+export const SORT_OPTIONS: Array<SelectOption<TokensSortingValue>> = [
+  { label: 'Default', value: 'default' },
+  { label: 'Price ascending', value: 'fiat_value-asc' },
+  { label: 'Price descending', value: 'fiat_value-desc' },
+  { label: 'Holders ascending', value: 'holders_count-asc' },
+  { label: 'Holders descending', value: 'holders_count-desc' },
+  { label: 'On-chain market cap ascending', value: 'circulating_market_cap-asc' },
+  { label: 'On-chain market cap descending', value: 'circulating_market_cap-desc' },
 ];
 
 export const getTokenFilterValue = (getFilterValuesFromQuery<TokenType>).bind(null, TOKEN_TYPE_IDS);

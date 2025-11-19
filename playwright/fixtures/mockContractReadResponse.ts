@@ -1,5 +1,5 @@
 import type { TestFixture, Page } from '@playwright/test';
-import _isEqual from 'lodash/isEqual';
+import { isEqual } from 'es-toolkit';
 import { encodeFunctionData, encodeFunctionResult, type AbiFunction } from 'viem';
 
 import { getEnvValue } from 'configs/app/utils';
@@ -8,13 +8,16 @@ interface Params {
   abiItem: AbiFunction;
   args?: Array<unknown>;
   address: string;
-  result: Array<unknown>;
+  result: unknown;
+  noResultEncoding?: boolean;
+  rpcMethod?: string;
+  times?: number;
 }
 
 export type MockContractReadResponseFixture = (params: Params) => Promise<void>;
 
 const fixture: TestFixture<MockContractReadResponseFixture, { page: Page }> = async({ page }, use) => {
-  await use(async({ abiItem, args = [], address, result }) => {
+  await use(async({ abiItem, args = [], address, result, rpcMethod = 'eth_call', times = 1, noResultEncoding = false }) => {
     const rpcUrl = getEnvValue('NEXT_PUBLIC_NETWORK_RPC_URL');
 
     if (!rpcUrl) {
@@ -40,23 +43,24 @@ const fixture: TestFixture<MockContractReadResponseFixture, { page: Page }> = as
           args,
         }),
         to: address,
+        value: params?.value,
       };
 
-      if (_isEqual(params, callParams) && id) {
+      if (isEqual(params, callParams) && id !== undefined && json?.method === rpcMethod) {
         return route.fulfill({
           status: 200,
-          body: JSON.stringify({
+          json: {
             id,
             jsonrpc: '2.0',
-            result: encodeFunctionResult({
+            result: noResultEncoding ? result : encodeFunctionResult({
               abi: [ abiItem ],
               functionName: abiItem.name,
-              result,
+              result: result as never,
             }),
-          }),
+          },
         });
       }
-    });
+    }, { times });
   });
 };
 

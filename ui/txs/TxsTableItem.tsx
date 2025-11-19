@@ -1,21 +1,21 @@
-import {
-  Tr,
-  Td,
-  VStack,
-} from '@chakra-ui/react';
-import { motion } from 'framer-motion';
+import { Flex, VStack } from '@chakra-ui/react';
 import React from 'react';
 
+import type { NovesDescribeTxsResponse } from 'types/api/noves';
 import type { Transaction } from 'types/api/transaction';
+import type { ClusterChainConfig } from 'types/multichain';
 
 import config from 'configs/app';
+import { Badge } from 'toolkit/chakra/badge';
+import { TableCell, TableRow } from 'toolkit/chakra/table';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
-import Tag from 'ui/shared/chakra/Tag';
+import BlockPendingUpdateHint from 'ui/shared/block/BlockPendingUpdateHint';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
+import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
-import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import TxFee from 'ui/shared/tx/TxFee';
 import TxWatchListTags from 'ui/shared/tx/TxWatchListTags';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
@@ -29,74 +29,92 @@ type Props = {
   currentAddress?: string;
   enableTimeIncrement?: boolean;
   isLoading?: boolean;
-}
+  animation?: string;
+  chainData?: ClusterChainConfig;
+  translationIsLoading?: boolean;
+  translationData?: NovesDescribeTxsResponse;
+};
 
-const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, isLoading }: Props) => {
+const TxsTableItem = ({
+  tx,
+  showBlockInfo,
+  currentAddress,
+  enableTimeIncrement,
+  isLoading,
+  animation,
+  chainData,
+  translationIsLoading,
+  translationData,
+}: Props) => {
   const dataTo = tx.to ? tx.to : tx.created_contract;
 
   return (
-    <Tr
-      as={ motion.tr }
-      initial={{ opacity: 0, scale: 0.97 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transitionDuration="normal"
-      transitionTimingFunction="linear"
-      key={ tx.hash }
-    >
-      <Td pl={ 4 }>
+    <TableRow key={ tx.hash } animation={ animation }>
+      <TableCell textAlign="center">
         <TxAdditionalInfo tx={ tx } isLoading={ isLoading }/>
-      </Td>
-      <Td pr={ 4 }>
+      </TableCell>
+      { chainData && (
+        <TableCell>
+          <ChainIcon data={ chainData } isLoading={ isLoading } my="2px"/>
+        </TableCell>
+      ) }
+      <TableCell pr={ 4 }>
         <VStack alignItems="start" lineHeight="24px">
           <TxEntity
             hash={ tx.hash }
             isLoading={ isLoading }
-            fontWeight={ 700 }
+            fontWeight="bold"
             noIcon
             maxW="100%"
-            truncation="constant_long"
+            truncation="constant"
           />
-          <TimeAgoWithTooltip
+          <TimeWithTooltip
             timestamp={ tx.timestamp }
             enableIncrement={ enableTimeIncrement }
             isLoading={ isLoading }
-            color="text_secondary"
-            fontWeight="400"
+            color="text.secondary"
           />
         </VStack>
-      </Td>
-      <Td>
+      </TableCell>
+      <TableCell>
         <VStack alignItems="start">
-          { tx.translation ?
-            <TxTranslationType types={ tx.tx_types } isLoading={ isLoading || tx.translation.isLoading } translatationType={ tx.translation.data?.type }/> :
-            <TxType types={ tx.tx_types } isLoading={ isLoading }/>
+          { translationIsLoading || translationData ? (
+            <TxTranslationType
+              txTypes={ tx.transaction_types }
+              isLoading={ isLoading || translationIsLoading }
+              type={ translationData?.type }
+            />
+          ) :
+            <TxType types={ tx.transaction_types } isLoading={ isLoading }/>
           }
           <TxStatus status={ tx.status } errorText={ tx.status === 'error' ? tx.result : undefined } isLoading={ isLoading }/>
           <TxWatchListTags tx={ tx } isLoading={ isLoading }/>
         </VStack>
-      </Td>
-      <Td whiteSpace="nowrap">
+      </TableCell>
+      <TableCell whiteSpace="nowrap">
         { tx.method && (
-          <Tag colorScheme={ tx.method === 'Multicall' ? 'teal' : 'gray' } isLoading={ isLoading } isTruncated>
-            { tx.method }
-          </Tag>
+          <Badge colorPalette={ tx.method === 'Multicall' ? 'teal' : 'gray' } loading={ isLoading } truncated>
+            <span>{ tx.method }</span>
+          </Badge>
         ) }
-      </Td>
+      </TableCell>
       { showBlockInfo && (
-        <Td>
-          { tx.block && (
-            <BlockEntity
-              isLoading={ isLoading }
-              number={ tx.block }
-              noIcon
-              fontSize="sm"
-              lineHeight={ 6 }
-              fontWeight={ 500 }
-            />
-          ) }
-        </Td>
+        <TableCell>
+          <Flex alignItems="center" gap={ 2 }>
+            { tx.block_number && (
+              <BlockEntity
+                isLoading={ isLoading }
+                number={ tx.block_number }
+                noIcon
+                textStyle="sm"
+                fontWeight={ 500 }
+              />
+            ) }
+            { tx.is_pending_update && <BlockPendingUpdateHint view="tx"/> }
+          </Flex>
+        </TableCell>
       ) }
-      <Td>
+      <TableCell>
         <AddressFromTo
           from={ tx.from }
           to={ dataTo }
@@ -105,24 +123,25 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, 
           mt="2px"
           mode="compact"
         />
-      </Td>
+      </TableCell>
       { !config.UI.views.tx.hiddenFields?.value && (
-        <Td isNumeric>
-          <CurrencyValue value={ tx.value } accuracy={ 8 } isLoading={ isLoading }/>
-        </Td>
+        <TableCell isNumeric>
+          <CurrencyValue value={ tx.value } decimals={ String(config.chain.currency.decimals) } accuracy={ 8 } isLoading={ isLoading } wordBreak="break-word"/>
+        </TableCell>
       ) }
       { !config.UI.views.tx.hiddenFields?.tx_fee && (
-        <Td isNumeric>
+        <TableCell isNumeric maxW="220px">
           <TxFee
             tx={ tx }
             accuracy={ 8 }
             isLoading={ isLoading }
             withCurrency={ Boolean(tx.celo || tx.stability_fee) }
             justifyContent="end"
+            wordBreak="break-word"
           />
-        </Td>
+        </TableCell>
       ) }
-    </Tr>
+    </TableRow>
   );
 };
 

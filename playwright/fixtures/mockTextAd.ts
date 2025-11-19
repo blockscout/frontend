@@ -9,7 +9,7 @@ const fixture: TestFixture<MockTextAdFixture, { page: Page }> = async({ page }, 
 
     await page.route('https://request-global.czilladx.com/serve/native.php?z=19260bf627546ab7242', (route) => route.fulfill({
       status: 200,
-      body: JSON.stringify(textAdMock.duck),
+      json: textAdMock.duck,
     }));
     await page.route(textAdMock.duck.ad.thumbnail, (route) => {
       return route.fulfill({

@@ -1,4 +1,4 @@
-import { Td, Tr, Text, Skeleton } from '@chakra-ui/react';
+import { Text } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ZkEvmL2TxnBatchesItem } from 'types/api/zkEvmL2';
@@ -6,80 +6,80 @@ import type { ZkEvmL2TxnBatchesItem } from 'types/api/zkEvmL2';
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
+import { Link } from 'toolkit/chakra/link';
+import { TableCell, TableRow } from 'toolkit/chakra/table';
 import BatchEntityL2 from 'ui/shared/entities/block/BatchEntityL2';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
-import LinkInternal from 'ui/shared/links/LinkInternal';
 import ZkEvmL2TxnBatchStatus from 'ui/shared/statusTag/ZkEvmL2TxnBatchStatus';
-import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 const rollupFeature = config.features.rollup;
 
 type Props = { item: ZkEvmL2TxnBatchesItem; isLoading?: boolean };
 
-const TxnBatchesTableItem = ({ item, isLoading }: Props) => {
+const ZkEvmTxnBatchesTableItem = ({ item, isLoading }: Props) => {
   if (!rollupFeature.isEnabled || rollupFeature.type !== 'zkEvm') {
     return null;
   }
 
   return (
-    <Tr>
-      <Td verticalAlign="middle">
+    <TableRow>
+      <TableCell verticalAlign="middle">
         <BatchEntityL2
           isLoading={ isLoading }
           number={ item.number }
-          fontSize="sm"
-          lineHeight={ 5 }
+          textStyle="sm"
           fontWeight={ 600 }
           noIcon
         />
-      </Td>
-      <Td verticalAlign="middle">
+      </TableCell>
+      <TableCell verticalAlign="middle">
         <ZkEvmL2TxnBatchStatus status={ item.status } isLoading={ isLoading }/>
-      </Td>
-      <Td verticalAlign="middle">
-        <TimeAgoWithTooltip
+      </TableCell>
+      <TableCell verticalAlign="middle">
+        <TimeWithTooltip
           timestamp={ item.timestamp }
           fallbackText="Undefined"
           isLoading={ isLoading }
-          color="text_secondary"
+          color="text.secondary"
         />
-      </Td>
-      <Td verticalAlign="middle">
-        <LinkInternal
+      </TableCell>
+      <TableCell verticalAlign="middle">
+        <Link
           href={ route({ pathname: '/batches/[number]', query: { number: item.number.toString(), tab: 'txs' } }) }
-          isLoading={ isLoading }
+          minW="40px"
+          my={ 1 }
+          loading={ isLoading }
         >
-          <Skeleton isLoaded={ !isLoading } minW="40px" my={ 1 }>
-            { item.tx_count }
-          </Skeleton>
-        </LinkInternal>
-      </Td>
-      <Td pr={ 12 } verticalAlign="middle">
-        { item.verify_tx_hash ? (
+          { item.transactions_count }
+        </Link>
+      </TableCell>
+      <TableCell pr={ 12 } verticalAlign="middle">
+        { item.verify_transaction_hash ? (
           <TxEntityL1
             isLoading={ isLoading }
-            hash={ item.verify_tx_hash }
-            fontSize="sm"
-            lineHeight={ 5 }
+            hash={ item.verify_transaction_hash }
+            textStyle="sm"
             truncation="constant_long"
             noIcon
+            noCopy
           />
         ) : <Text>Pending</Text> }
-      </Td>
-      <Td pr={ 12 } verticalAlign="middle">
-        { item.sequence_tx_hash ? (
+      </TableCell>
+      <TableCell pr={ 12 } verticalAlign="middle">
+        { item.sequence_transaction_hash ? (
           <TxEntityL1
             isLoading={ isLoading }
-            hash={ item.sequence_tx_hash }
-            fontSize="sm"
-            lineHeight={ 5 }
+            hash={ item.sequence_transaction_hash }
+            textStyle="sm"
             truncation="constant_long"
             noIcon
+            noCopy
           />
         ) : <Text>Pending</Text> }
-      </Td>
-    </Tr>
+      </TableCell>
+    </TableRow>
   );
 };
 
-export default TxnBatchesTableItem;
+export default ZkEvmTxnBatchesTableItem;

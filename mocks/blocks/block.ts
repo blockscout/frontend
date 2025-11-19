@@ -1,7 +1,12 @@
 /* eslint-disable max-len */
 import type { RpcBlock } from 'viem';
 
-import type { Block, BlocksResponse } from 'types/api/block';
+import type { Block, BlocksResponse, ZilliqaBlockData } from 'types/api/block';
+
+import { ZERO_ADDRESS } from 'toolkit/utils/consts';
+
+import * as addressMock from '../address/address';
+import * as tokenMock from '../tokens/tokenInfo';
 
 export const base: Block = {
   base_fee_per_gas: '10000000000',
@@ -47,8 +52,9 @@ export const base: Block = {
   state_root: 'TODO',
   timestamp: '2022-11-11T11:59:35Z',
   total_difficulty: '10258276095980170141167591583995189665817672619',
-  tx_count: 5,
-  tx_fees: '26853607500000000',
+  transactions_count: 5,
+  internal_transactions_count: 12,
+  transaction_fees: '26853607500000000',
   type: 'block',
   uncles_hashes: [],
 };
@@ -84,8 +90,9 @@ export const genesis: Block = {
   state_root: 'TODO',
   timestamp: '2017-12-16T00:13:24.000000Z',
   total_difficulty: '131072',
-  tx_count: 0,
-  tx_fees: '0',
+  transactions_count: 0,
+  internal_transactions_count: 0,
+  transaction_fees: '0',
   type: 'block',
   uncles_hashes: [],
 };
@@ -106,7 +113,7 @@ export const base2: Block = {
     ens_domain_name: null,
   },
   timestamp: '2022-11-11T11:46:05Z',
-  tx_count: 253,
+  transactions_count: 253,
   gas_target_percentage: 23.6433,
   gas_used: '6333342',
   gas_used_percentage: 87.859504,
@@ -126,6 +133,7 @@ export const base2: Block = {
       type: 'Emission Reward',
     },
   ],
+  is_pending_update: true,
 };
 
 export const rootstock: Block = {
@@ -137,13 +145,80 @@ export const rootstock: Block = {
   minimum_gas_price: '59240000',
 };
 
+export const celo: Block = {
+  ...base,
+  celo: {
+    base_fee: {
+      token: tokenMock.tokenInfoERC20a,
+      amount: '445690000000000',
+      breakdown: [
+        {
+          address: addressMock.withName,
+          amount: '356552000000000.0000000000000',
+          percentage: 80,
+        },
+        {
+          address: {
+            ...addressMock.withoutName,
+            hash: ZERO_ADDRESS,
+          },
+          amount: '89138000000000.0000000000000',
+          percentage: 20,
+        },
+      ],
+      recipient: addressMock.contract,
+    },
+    epoch_number: 1486,
+    l1_era_finalized_epoch_number: 1485,
+  },
+};
+
+export const zilliqaWithAggregateQuorumCertificate: Block = {
+  ...base,
+  zilliqa: {
+    view: 1137735,
+    aggregate_quorum_certificate: {
+      signature: '0x82d29e8f06adc890f6574c3d0ae0c811de1db695b05ed2755ef384fe21bc44f6505b99e201f6000a65f38ff6a13e286306d0e380ef1b43a273eb9947b3f11f852e14b93c258c32b516f89696fcb1190b147364b789572ebdf85d79c4cf3cbbbb',
+      view: 1137735,
+      signers: [ 1, 2, 3, 8 ],
+      nested_quorum_certificates: [
+        {
+          signature: '0xaeb3567577f9db68565c6f97c158b17522620a9684c6f6beaa78920951ad4cae0f287b630bdd034c4a4f89ada42e3dbe012985e976a6f64057d735a4531a26b4e46c182414eabbe625e5b15e6645be5b6522bdec113df408874f6d1e0d894dca',
+          view: 1137732,
+          proposed_by_validator_index: 1,
+          signers: [ 3, 8 ],
+        },
+        {
+          signature: '0xaeb3567577f9db68565c6f97c158b17522620a9684c6f6beaa78920951ad4cae0f287b630bdd034c4a4f89ada42e3dbe012985e976a6f64057d735a4531a26b4e46c182414eabbe625e5b15e6645be5b6522bdec113df408874f6d1e0d894dca',
+          view: 1137732,
+          proposed_by_validator_index: 2,
+          signers: [ 0, 2 ],
+        },
+      ],
+    },
+    quorum_certificate: {
+      signature: '0xaeb3567577f9db68565c6f97c158b17522620a9684c6f6beaa78920951ad4cae0f287b630bdd034c4a4f89ada42e3dbe012985e976a6f64057d735a4531a26b4e46c182414eabbe625e5b15e6645be5b6522bdec113df408874f6d1e0d894dca',
+      view: 1137732,
+      signers: [ 0, 2, 3, 8 ],
+    },
+  },
+};
+
+export const zilliqaWithoutAggregateQuorumCertificate: Block = {
+  ...base,
+  zilliqa: {
+    ...zilliqaWithAggregateQuorumCertificate.zilliqa,
+    aggregate_quorum_certificate: null,
+  } as ZilliqaBlockData,
+};
+
 export const withBlobTxs: Block = {
   ...base,
   blob_gas_price: '21518435987',
   blob_gas_used: '393216',
   burnt_blob_fees: '8461393325064192',
   excess_blob_gas: '79429632',
-  blob_tx_count: 1,
+  blob_transaction_count: 1,
 };
 
 export const withWithdrawals: Block = {

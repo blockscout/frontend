@@ -78,14 +78,14 @@ test.describe('custom logo with dark option -@default +@dark-mode', () => {
     component = await render(<NetworkLogo/>);
   });
 
-  test('', async() => {
+  test('base view', async() => {
     await expect(component.locator('a')).toHaveScreenshot();
   });
 
   test.describe('screen xl', () => {
     test.use({ viewport: pwConfig.viewport.xl });
 
-    test('', async() => {
+    test('base view', async() => {
       await expect(component.locator('a')).toHaveScreenshot();
     });
   });

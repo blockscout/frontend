@@ -8,7 +8,12 @@ interface Props {
 
 const Container = ({ children, className }: Props) => {
   return (
-    <Box className={ className } minWidth={{ base: '100vw', lg: 'fit-content' }}>
+    <Box
+      className={ className }
+      minWidth={{ base: '100vw', lg: 'fit-content' }}
+      m="0 auto"
+      bgColor="bg.primary"
+    >
       { children }
     </Box>
   );

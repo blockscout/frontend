@@ -14,17 +14,9 @@ const rewrites = require('./nextjs/rewrites');
 const moduleExports = {
   transpilePackages: [
     'react-syntax-highlighter',
-    'swagger-client',
-    'swagger-ui-react',
   ],
   reactStrictMode: true,
-  webpack(config, { webpack }) {
-    config.plugins.push(
-      new webpack.DefinePlugin({
-        __SENTRY_DEBUG__: false,
-        __SENTRY_TRACING__: false,
-      }),
-    );
+  webpack(config) {
     config.module.rules.push(
       {
         test: /\.svg$/,
@@ -45,17 +37,12 @@ const moduleExports = {
   headers,
   output: 'standalone',
   productionBrowserSourceMaps: true,
+  serverExternalPackages: ["@opentelemetry/sdk-node", "@opentelemetry/auto-instrumentations-node"],
   experimental: {
-    instrumentationHook: process.env.NEXT_OPEN_TELEMETRY_ENABLED === 'true',
-    // disabled as it is not stable yet
-    // turbo: {
-    //   rules: {
-    //     '*.svg': {
-    //       loaders: [ '@svgr/webpack' ],
-    //       as: '*.js',
-    //     },
-    //   },
-    // },
+    staleTimes: {
+      dynamic: 30,
+      'static': 180,
+    },
   },
 };
 

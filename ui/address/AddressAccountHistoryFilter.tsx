@@ -1,3 +1,4 @@
+import { createListCollection } from '@chakra-ui/react';
 import React from 'react';
 
 import type { NovesHistoryFilterValue } from 'types/api/noves';
@@ -10,6 +11,8 @@ const OPTIONS = [
   { value: 'received', label: 'Received from' },
   { value: 'sent', label: 'Sent to' },
 ];
+
+const collection = createListCollection({ items: OPTIONS });
 
 interface Props {
   hasActiveFilter: boolean;
@@ -24,11 +27,11 @@ const AccountHistoryFilter = ({ onFilterChange, defaultFilter, hasActiveFilter, 
   return (
     <PopoverFilterRadio
       name="account_history_filter"
-      options={ OPTIONS }
+      collection={ collection }
       onChange={ onFilterChange }
       hasActiveFilter={ hasActiveFilter }
       isLoading={ isInitialLoading }
-      defaultValue={ defaultFilter || OPTIONS[0].value }
+      initialValue={ defaultFilter || OPTIONS[0].value }
     />
   );
 };

@@ -1,8 +1,8 @@
-import { Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import type { UserOp } from 'types/api/userOps';
 
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
 
 // order is taken from the ERC-4337 standard
@@ -27,7 +27,7 @@ const UserOpRaw = ({ rawData, isLoading }: Props) => {
     return res;
   }, {} as UserOp['raw']), undefined, 4);
 
-  return <Skeleton isLoaded={ !isLoading }><RawDataSnippet data={ text }/></Skeleton>;
+  return <Skeleton loading={ isLoading }><RawDataSnippet data={ text }/></Skeleton>;
 };
 
 export default UserOpRaw;

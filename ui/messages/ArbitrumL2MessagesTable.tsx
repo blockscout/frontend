@@ -1,35 +1,38 @@
-import { Table, Tbody, Th, Tr } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ArbitrumL2MessagesItem } from 'types/api/arbitrumL2';
 
-import { default as Thead } from 'ui/shared/TheadSticky';
+import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
+import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
 import type { MessagesDirection } from './ArbitrumL2Messages';
 import ArbitrumL2MessagesTableItem from './ArbitrumL2MessagesTableItem';
 
- type Props = {
-   items: Array<ArbitrumL2MessagesItem>;
-   direction: MessagesDirection;
-   top: number;
-   isLoading?: boolean;
- }
+type Props = {
+  items: Array<ArbitrumL2MessagesItem>;
+  direction: MessagesDirection;
+  top: number;
+  isLoading?: boolean;
+};
 
 const ArbitrumL2MessagesTable = ({ items, direction, top, isLoading }: Props) => {
   return (
-    <Table variant="simple" size="sm" style={{ tableLayout: 'auto' }} minW="950px">
-      <Thead top={ top }>
-        <Tr>
-          { direction === 'to-rollup' && <Th>L1 block</Th> }
-          { direction === 'from-rollup' && <Th>From</Th> }
-          <Th>Message #</Th>
-          <Th>L2 transaction</Th>
-          <Th>Age</Th>
-          <Th>Status</Th>
-          <Th>L1 transaction</Th>
-        </Tr>
-      </Thead>
-      <Tbody>
+    <TableRoot tableLayout="auto" minW="950px">
+      <TableHeaderSticky top={ top }>
+        <TableRow>
+          { direction === 'to-rollup' && <TableColumnHeader>L1 block</TableColumnHeader> }
+          { direction === 'from-rollup' && <TableColumnHeader>From</TableColumnHeader> }
+          <TableColumnHeader>Message #</TableColumnHeader>
+          <TableColumnHeader>L2 transaction</TableColumnHeader>
+          <TableColumnHeader>
+            Timestamp
+            <TimeFormatToggle/>
+          </TableColumnHeader>
+          <TableColumnHeader>Status</TableColumnHeader>
+          <TableColumnHeader>L1 transaction</TableColumnHeader>
+        </TableRow>
+      </TableHeaderSticky>
+      <TableBody>
         { items.map((item, index) => (
           <ArbitrumL2MessagesTableItem
             key={ String(item.id) + (isLoading ? index : '') }
@@ -38,8 +41,8 @@ const ArbitrumL2MessagesTable = ({ items, direction, top, isLoading }: Props) =>
             isLoading={ isLoading }
           />
         )) }
-      </Tbody>
-    </Table>
+      </TableBody>
+    </TableRoot>
   );
 };
 

@@ -7,15 +7,19 @@ export function getTxCourseType(from: string, to: string | undefined, current?: 
     return 'unspecified';
   }
 
-  if (to && from === to && from === current) {
+  const fromLower = from.toLowerCase();
+  const toLower = to?.toLowerCase();
+  const currentLower = current.toLowerCase();
+
+  if (toLower && fromLower === toLower && fromLower === currentLower) {
     return 'self';
   }
 
-  if (from === current) {
+  if (fromLower === currentLower) {
     return 'out';
   }
 
-  if (to && to === current) {
+  if (toLower && toLower === currentLower) {
     return 'in';
   }
 

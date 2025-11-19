@@ -2,7 +2,7 @@ import BigNumber from 'bignumber.js';
 
 import type { Block } from 'types/api/block';
 
-import { WEI, ZERO } from 'lib/consts';
+import { WEI, ZERO } from 'toolkit/utils/consts';
 
 export default function getBlockTotalReward(block: Block) {
   const totalReward = block.rewards

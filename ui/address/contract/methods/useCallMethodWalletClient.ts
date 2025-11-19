@@ -5,6 +5,10 @@ import { useAccount, useWalletClient } from 'wagmi';
 
 import type { FormSubmitResult, SmartContractMethod } from './types';
 
+import config from 'configs/app';
+import { useMultichainContext } from 'lib/contexts/multichain';
+import useRewardsActivity from 'lib/hooks/useRewardsActivity';
+
 import { getNativeCoinValue } from './utils';
 
 interface Params {
@@ -14,12 +18,17 @@ interface Params {
 }
 
 export default function useCallMethodWalletClient(): (params: Params) => Promise<FormSubmitResult> {
-  const { data: walletClientWithoutFacet } = useWalletClient();
-  const { isConnected, address: from } = useAccount();
+  const multichainContext = useMultichainContext();
+  const chainConfig = (multichainContext?.chain.app_config ?? config).chain;
+
+  const { data: walletClientWithoutFacet } = useWalletClient({ chainId: Number(chainConfig?.id) });
+  const { isConnected, chainId, address: account } = useAccount();
   const walletClient = useMemo(
     () => walletClientWithoutFacet?.extend(facetViem.walletL1FacetActions),
     [ walletClientWithoutFacet ],
   );
+  const { switchChainAsync } = useSwitchChain();
+  const { trackTransaction, trackTransactionConfirm } = useRewardsActivity();
 
   return React.useCallback(async({ args, item, addressHash }) => {
     if (!isConnected || !from) {
@@ -30,19 +39,38 @@ export default function useCallMethodWalletClient(): (params: Params) => Promise
       throw new Error('Wallet Client is not defined');
     }
 
+    if (chainId && String(chainId) !== chainConfig?.id) {
+      await switchChainAsync({ chainId: Number(chainConfig?.id) });
+    }
+
     const address = getAddress(addressHash);
+    const activityResponse = await trackTransaction(account ?? '', address);
+
+    // for payable methods we add additional input for native coin value
+    const inputs = 'inputs' in item ? item.inputs : [];
+    const _args = args.slice(0, inputs.length);
+    const value = getNativeCoinValue(args[inputs.length]);
 
     let value = BigInt(0);
 
     let data: `0x${ string }` = '0x';
 
     if (item.type === 'receive' || item.type === 'fallback') {
-      value = getNativeCoinValue(args[0]);
-    } else {
-      const _args = args.slice(0, item.inputs.length);
-      value = getNativeCoinValue(args[item.inputs.length]);
+      // if the fallback method acts as a read method, it can only have one input of type bytes
+      // so we pass the input value as data without encoding it
+      const data = typeof _args[0] === 'string' && _args[0].startsWith('0x') ? _args[0] as `0x${ string }` : undefined;
+      const hash = await walletClient.sendTransaction({
+        to: address,
+        value,
+        ...(data ? { data } : {}),
+      });
 
-      const methodName = item.name;
+      if (activityResponse?.token) {
+        await trackTransactionConfirm(hash, activityResponse.token);
+      }
+
+      return { source: 'wallet_client', data: { hash } };
+    }
 
       if (!methodName) {
         throw new Error('Method name is not defined');
@@ -59,8 +87,17 @@ export default function useCallMethodWalletClient(): (params: Params) => Promise
       }
     }
 
-    const { facetTransactionHash } = await walletClient.sendFacetTransaction({ to: address, value, data });
+    const { facetTransactionHash: hash } = await walletClient.sendFacetTransaction({
+      to: address,
+      value,
+      data,
+      account,
+    });
 
-    return { source: 'wallet_client', data: { hash: facetTransactionHash } };
-  }, [ from, isConnected, walletClient ]);
+    if (activityResponse?.token) {
+      await trackTransactionConfirm(hash, activityResponse.token);
+    }
+
+    return { source: 'wallet_client', data: { hash } };
+  }, [ chainId, chainConfig, isConnected, switchChainAsync, walletClient, account, trackTransaction, trackTransactionConfirm ]);
 }

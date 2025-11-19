@@ -1,15 +1,17 @@
-import { Flex, Skeleton, Tooltip } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { TxStateChange } from 'types/api/txStateChanges';
 
 import config from 'configs/app';
-import { ZERO_ADDRESS } from 'lib/consts';
-import { nbsp, space } from 'lib/html-entities';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import { currencyUnits } from 'lib/units';
-import Tag from 'ui/shared/chakra/Tag';
+import { Badge } from 'toolkit/chakra/badge';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { Tooltip } from 'toolkit/chakra/tooltip';
+import { ZERO_ADDRESS } from 'toolkit/utils/consts';
+import { nbsp, space } from 'toolkit/utils/htmlEntities';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 
@@ -19,10 +21,10 @@ export function getStateElements(data: TxStateChange, isLoading?: boolean) {
   const tag = (() => {
     if (data.is_miner) {
       return (
-        <Tooltip label="A block producer who successfully included the block into the blockchain">
-          <Tag textTransform="capitalize" colorScheme="yellow" isLoading={ isLoading }>
+        <Tooltip content="A block producer who successfully included the block into the blockchain">
+          <Badge textTransform="capitalize" colorPalette="yellow" loading={ isLoading }>
             { getNetworkValidatorTitle() }
-          </Tag>
+          </Badge>
         </Tooltip>
       );
     }
@@ -39,8 +41,8 @@ export function getStateElements(data: TxStateChange, isLoading?: boolean) {
       if (changeDirection) {
         const text = changeDirection === 'from' ? 'Mint' : 'Burn';
         return (
-          <Tooltip label="Address used in tokens mintings and burnings">
-            <Tag textTransform="capitalize" colorScheme="yellow" isLoading={ isLoading }>{ text } address</Tag>
+          <Tooltip content="Address used in tokens mintings and burnings">
+            <Badge textTransform="capitalize" colorPalette="yellow" loading={ isLoading }>{ text } address</Badge>
           </Tooltip>
         );
       }
@@ -59,17 +61,17 @@ export function getStateElements(data: TxStateChange, isLoading?: boolean) {
 
       return {
         before: (
-          <Skeleton isLoaded={ !isLoading } wordBreak="break-all" display="inline-block">
+          <Skeleton loading={ isLoading } wordBreak="break-all" display="inline-block">
             { beforeBn.toFormat() } { currencyUnits.ether }
           </Skeleton>
         ),
         after: (
-          <Skeleton isLoaded={ !isLoading } wordBreak="break-all" display="inline-block">
+          <Skeleton loading={ isLoading } wordBreak="break-all" display="inline-block">
             { afterBn.toFormat() } { currencyUnits.ether }
           </Skeleton>
         ),
         change: (
-          <Skeleton isLoaded={ !isLoading } display="inline-block" color={ changeColor }>
+          <Skeleton loading={ isLoading } display="inline-block" color={ changeColor }>
             <span>{ changeSign }{ nbsp }{ differenceBn.abs().toFormat() }</span>
           </Skeleton>
         ),
@@ -105,7 +107,7 @@ export function getStateElements(data: TxStateChange, isLoading?: boolean) {
         const changeSign = differenceBn.isGreaterThanOrEqualTo(0) ? '+' : '-';
 
         return (
-          <Skeleton isLoaded={ !isLoading } display="inline-block" color={ changeColor }>
+          <Skeleton loading={ isLoading } display="inline-block" color={ changeColor } wordBreak="break-all">
             <span>{ changeSign }{ nbsp }{ differenceBn.abs().toFormat() }</span>
           </Skeleton>
         );
@@ -116,7 +118,7 @@ export function getStateElements(data: TxStateChange, isLoading?: boolean) {
           if ('token_id' in data && data.token_id) {
             return (
               <NftEntity
-                hash={ data.token.address }
+                hash={ data.token.address_hash }
                 id={ data.token_id }
                 isLoading={ isLoading }
               />
@@ -126,20 +128,20 @@ export function getStateElements(data: TxStateChange, isLoading?: boolean) {
           }
         }
 
-        return <TxStateTokenIdList items={ data.change } tokenAddress={ data.token.address } isLoading={ isLoading }/>;
+        return <TxStateTokenIdList items={ data.change } tokenAddress={ data.token.address_hash } isLoading={ isLoading }/>;
       })();
 
       return {
         before: data.balance_before ? (
           <Flex whiteSpace="pre-wrap" justifyContent={{ base: 'flex-start', lg: 'flex-end' }} flexWrap="wrap">
-            <Skeleton isLoaded={ !isLoading }>{ beforeBn.toFormat() }</Skeleton>
+            <Skeleton loading={ isLoading } wordBreak="break-all">{ beforeBn.toFormat() }</Skeleton>
             <span>{ space }</span>
             { tokenLink }
           </Flex>
         ) : null,
         after: data.balance_after ? (
           <Flex whiteSpace="pre-wrap" justifyContent={{ base: 'flex-start', lg: 'flex-end' }} flexWrap="wrap">
-            <Skeleton isLoaded={ !isLoading }>{ afterBn.toFormat() }</Skeleton>
+            <Skeleton loading={ isLoading } wordBreak="break-all">{ afterBn.toFormat() }</Skeleton>
             <span>{ space }</span>
             { tokenLink }
           </Flex>

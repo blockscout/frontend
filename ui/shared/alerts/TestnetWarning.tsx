@@ -1,7 +1,8 @@
-import { Alert, Skeleton, chakra } from '@chakra-ui/react';
+import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
+import { Alert } from 'toolkit/chakra/alert';
 
 interface Props {
   isLoading?: boolean;
@@ -14,9 +15,7 @@ const TestnetWarning = ({ isLoading, className }: Props) => {
   }
 
   return (
-    <Skeleton className={ className } isLoaded={ !isLoading }>
-      <Alert status="warning">This is a testnet transaction only</Alert>
-    </Skeleton>
+    <Alert status="warning" loading={ isLoading } className={ className }>This is a testnet transaction only</Alert>
   );
 };
 

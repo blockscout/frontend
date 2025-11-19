@@ -1,3 +1,4 @@
+import { createListCollection } from '@chakra-ui/react';
 import React from 'react';
 
 import type { AddressFromToFilter } from 'types/api/address';
@@ -10,25 +11,26 @@ const OPTIONS = [
   { value: 'from', label: 'Outgoing transactions' },
   { value: 'to', label: 'Incoming transactions' },
 ];
+const collection = createListCollection({ items: OPTIONS });
 
 interface Props {
   hasActiveFilter: boolean;
-  defaultFilter: AddressFromToFilter;
+  initialValue: AddressFromToFilter;
   onFilterChange: (nextValue: string | Array<string>) => void;
   isLoading?: boolean;
 }
 
-const AddressTxsFilter = ({ onFilterChange, defaultFilter, hasActiveFilter, isLoading }: Props) => {
+const AddressTxsFilter = ({ onFilterChange, initialValue, hasActiveFilter, isLoading }: Props) => {
   const isInitialLoading = useIsInitialLoading(isLoading);
 
   return (
     <PopoverFilterRadio
       name="txs_filter"
-      options={ OPTIONS }
+      collection={ collection }
       onChange={ onFilterChange }
       hasActiveFilter={ hasActiveFilter }
       isLoading={ isInitialLoading }
-      defaultValue={ defaultFilter || OPTIONS[0].value }
+      initialValue={ initialValue }
     />
   );
 };

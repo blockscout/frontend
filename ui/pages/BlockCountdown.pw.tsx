@@ -12,7 +12,7 @@ test('short period until the block +@mobile', async({ render, mockApiResponse })
     },
   };
 
-  await mockApiResponse('block_countdown', {
+  await mockApiResponse('general:block_countdown', {
     result: {
       CountdownBlock: height,
       CurrentBlock: '1234567700',
@@ -26,7 +26,7 @@ test('short period until the block +@mobile', async({ render, mockApiResponse })
       blockno: height,
     },
   });
-  const component = await render(<BlockCountdown/>, { hooksConfig });
+  const component = await render(<BlockCountdown hideCapybaraRunner/>, { hooksConfig });
   await expect(component).toHaveScreenshot();
 });
 
@@ -38,7 +38,7 @@ test('long period until the block +@mobile', async({ render, mockApiResponse }) 
     },
   };
 
-  await mockApiResponse('block_countdown', {
+  await mockApiResponse('general:block_countdown', {
     result: {
       CountdownBlock: height,
       CurrentBlock: '1234567700',
@@ -52,6 +52,6 @@ test('long period until the block +@mobile', async({ render, mockApiResponse }) 
       blockno: height,
     },
   });
-  const component = await render(<BlockCountdown/>, { hooksConfig });
+  const component = await render(<BlockCountdown hideCapybaraRunner/>, { hooksConfig });
   await expect(component).toHaveScreenshot();
 });

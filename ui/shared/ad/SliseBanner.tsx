@@ -6,47 +6,65 @@ import type { BannerProps } from './types';
 
 import config from 'configs/app';
 
-const SliseBanner = ({ className, platform }: BannerProps) => {
+import {
+  DESKTOP_BANNER_HEIGHT,
+  DESKTOP_BANNER_WIDTH,
+  MOBILE_BANNER_HEIGHT,
+  MOBILE_BANNER_WIDTH,
+} from './consts';
 
-  if (platform === 'desktop') {
+const SliseBanner = ({ className, format = 'responsive' }: BannerProps) => {
+
+  if (format === 'desktop') {
     return (
-      <Flex className={ className } h="90px">
+      <Flex className={ className } h={ `${ DESKTOP_BANNER_HEIGHT }px` }>
         <SliseAd
           slotId={ config.chain.name || '' }
           pub="pub-10"
           format="728x90"
-          style={{ width: '728px', height: '90px' }}/>
+          style={{ width: `${ DESKTOP_BANNER_WIDTH }px`, height: `${ DESKTOP_BANNER_HEIGHT }px` }}/>
       </Flex>
     );
   }
 
-  if (platform === 'mobile') {
+  if (format === 'mobile') {
     return (
-      <Flex className={ className } h="90px">
+      <Flex
+        className={ className }
+        h={ `${ MOBILE_BANNER_HEIGHT }px` }
+        w={ `${ MOBILE_BANNER_WIDTH }px` }
+        justifyContent="center"
+      >
         <SliseAd
           slotId={ config.chain.name || '' }
           pub="pub-10"
-          format="270x90"
-          style={{ width: '270px', height: '90px' }}/>
+          format="320x100"
+          style={{ width: `${ MOBILE_BANNER_WIDTH }px`, height: `${ MOBILE_BANNER_HEIGHT }px` }}/>
       </Flex>
     );
   }
 
   return (
     <>
-      <Flex className={ className } h="90px" display={{ base: 'none', lg: 'flex' }}>
+      <Flex className={ className } h={ `${ DESKTOP_BANNER_HEIGHT }px` } display={{ base: 'none', lg: 'flex' }}>
         <SliseAd
           slotId={ config.chain.name || '' }
           pub="pub-10"
           format="728x90"
-          style={{ width: '728px', height: '90px' }}/>
+          style={{ width: `${ DESKTOP_BANNER_WIDTH }px`, height: `${ DESKTOP_BANNER_HEIGHT }px` }}/>
       </Flex>
-      <Flex className={ className } h="90px" display={{ base: 'flex', lg: 'none' }}>
+      <Flex
+        className={ className }
+        h={ `${ MOBILE_BANNER_HEIGHT }px` }
+        w={ `${ MOBILE_BANNER_WIDTH }px` }
+        justifyContent="center"
+        display={{ base: 'flex', lg: 'none' }}
+      >
         <SliseAd
           slotId={ config.chain.name || '' }
           pub="pub-10"
-          format="270x90"
-          style={{ width: '270px', height: '90px' }}/>
+          format="320x100"
+          style={{ width: `${ MOBILE_BANNER_WIDTH }px`, height: `${ MOBILE_BANNER_HEIGHT }px` }}/>
       </Flex>
     </>
   );

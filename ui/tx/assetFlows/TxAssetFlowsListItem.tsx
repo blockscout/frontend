@@ -1,6 +1,7 @@
-import { Box, Skeleton, Text } from '@chakra-ui/react';
+import { Box, Text } from '@chakra-ui/react';
 import React from 'react';
 
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import IconSvg from 'ui/shared/IconSvg';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import NovesFromTo from 'ui/shared/Noves/NovesFromTo';
@@ -17,17 +18,17 @@ const TxAssetFlowsListItem = (props: Props) => {
 
   return (
     <ListItemMobile rowGap={ 4 } w="full" >
-      <Skeleton borderRadius="sm" isLoaded={ !props.isPlaceholderData } w="full">
+      <Skeleton borderRadius="sm" loading={ props.isPlaceholderData } w="full">
 
         <Box display="flex" >
           <IconSvg
             name="lightning"
             height="5"
             width="5"
-            color="text_secondary"
+            color="icon.primary"
           />
 
-          <Text fontSize="sm" fontWeight={ 500 }>
+          <Text textStyle="sm" fontWeight="medium">
             Action
           </Text>
         </Box>

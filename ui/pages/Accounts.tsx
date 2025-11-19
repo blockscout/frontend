@@ -1,7 +1,8 @@
-import { Hide, Show } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
+import getItemIndex from 'lib/getItemIndex';
 import { TOP_ADDRESS } from 'stubs/address';
 import { generateListStub } from 'stubs/utils';
 import AddressesListItem from 'ui/addresses/AddressesListItem';
@@ -12,13 +13,11 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
-const PAGE_SIZE = 50;
-
 const Accounts = () => {
   const { isError, isPlaceholderData, data, pagination } = useQueryWithPages({
-    resourceName: 'addresses',
+    resourceName: 'general:addresses',
     options: {
-      placeholderData: generateListStub<'addresses'>(
+      placeholderData: generateListStub<'general:addresses'>(
         TOP_ADDRESS,
         50,
         {
@@ -39,14 +38,14 @@ const Accounts = () => {
     </ActionBar>
   );
 
-  const pageStartIndex = (pagination.page - 1) * PAGE_SIZE + 1;
+  const pageStartIndex = getItemIndex(0, pagination.page);
   const totalSupply = React.useMemo(() => {
     return BigNumber(data?.total_supply || '0');
   }, [ data?.total_supply ]);
 
   const content = data?.items ? (
     <>
-      <Hide below="lg" ssr={ false }>
+      <Box hideBelow="lg">
         <AddressesTable
           top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
           items={ data.items }
@@ -54,8 +53,8 @@ const Accounts = () => {
           pageStartIndex={ pageStartIndex }
           isLoading={ isPlaceholderData }
         />
-      </Hide>
-      <Show below="lg" ssr={ false }>
+      </Box>
+      <Box hideFrom="lg">
         { data.items.map((item, index) => {
           return (
             <AddressesListItem
@@ -67,7 +66,7 @@ const Accounts = () => {
             />
           );
         }) }
-      </Show>
+      </Box>
     </>
   ) : null;
 
@@ -76,11 +75,12 @@ const Accounts = () => {
       <PageTitle title="Top accounts" withTextAd/>
       <DataListDisplay
         isError={ isError }
-        items={ data?.items }
+        itemsNum={ data?.items.length }
         emptyText="There are no accounts."
-        content={ content }
         actionBar={ actionBar }
-      />
+      >
+        { content }
+      </DataListDisplay>
     </>
   );
 };

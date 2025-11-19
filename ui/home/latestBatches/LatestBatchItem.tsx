@@ -1,16 +1,12 @@
-import {
-  Box,
-  Flex,
-  Skeleton,
-} from '@chakra-ui/react';
-import { motion } from 'framer-motion';
+import { Box, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import { route } from 'nextjs-routes';
 
+import { Link } from 'toolkit/chakra/link';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import BatchEntityL2 from 'ui/shared/entities/block/BatchEntityL2';
-import LinkInternal from 'ui/shared/links/LinkInternal';
-import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 type Props = {
   number: number;
@@ -18,20 +14,16 @@ type Props = {
   txCount: number;
   status?: React.ReactNode;
   isLoading: boolean;
-}
+  animation?: string;
+};
 
-const LatestBatchItem = ({ number, timestamp, txCount, status, isLoading }: Props) => {
+const LatestBatchItem = ({ number, timestamp, txCount, status, isLoading, animation }: Props) => {
   return (
     <Box
-      as={ motion.div }
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ display: 'none' }}
-      transitionDuration="normal"
-      transitionTimingFunction="linear"
+      animation={ animation }
       borderRadius="md"
       border="1px solid"
-      borderColor="divider"
+      borderColor="border.divider"
       p={ 3 }
     >
       <Flex alignItems="center" overflow="hidden" w="100%" mb={ 3 }>
@@ -39,34 +31,31 @@ const LatestBatchItem = ({ number, timestamp, txCount, status, isLoading }: Prop
           isLoading={ isLoading }
           number={ number }
           tailLength={ 2 }
-          fontSize="xl"
-          lineHeight={ 7 }
+          textStyle="md"
           fontWeight={ 500 }
           mr="auto"
         />
-        <TimeAgoWithTooltip
+        <TimeWithTooltip
           timestamp={ timestamp }
           enableIncrement={ !isLoading }
+          timeFormat="relative"
           isLoading={ isLoading }
-          color="text_secondary"
-          fontWeight={ 400 }
+          color="text.secondary"
           display="inline-block"
-          fontSize="sm"
+          textStyle="sm"
           flexShrink={ 0 }
           ml={ 2 }
         />
       </Flex>
-      <Flex alignItems="center" justifyContent="space-between" w="100%" flexWrap="wrap">
+      <Flex alignItems="center" justifyContent="space-between" w="100%" flexWrap="wrap" textStyle="sm">
         <Flex alignItems="center">
-          <Skeleton isLoaded={ !isLoading } mr={ 2 }>Txn</Skeleton>
-          <LinkInternal
+          <Skeleton loading={ isLoading } mr={ 2 }>Txn</Skeleton>
+          <Link
             href={ route({ pathname: '/batches/[number]', query: { number: number.toString(), tab: 'txs' } }) }
-            isLoading={ isLoading }
+            loading={ isLoading }
           >
-            <Skeleton isLoaded={ !isLoading }>
-              { txCount }
-            </Skeleton>
-          </LinkInternal>
+            { txCount }
+          </Link>
         </Flex>
         { status }
       </Flex>

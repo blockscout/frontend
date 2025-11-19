@@ -9,7 +9,7 @@ export default function colorThemeMiddleware(req: NextRequest, res: NextResponse
   if (!colorModeCookie) {
     if (appConfig.UI.colorTheme.default) {
       res.cookies.set(cookiesLib.NAMES.COLOR_MODE, appConfig.UI.colorTheme.default.colorMode, { path: '/' });
-      res.cookies.set(cookiesLib.NAMES.COLOR_MODE_HEX, appConfig.UI.colorTheme.default.hex, { path: '/' });
+      res.cookies.set(cookiesLib.NAMES.COLOR_THEME, appConfig.UI.colorTheme.default.id, { path: '/' });
     }
   }
 }

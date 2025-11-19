@@ -1,39 +1,35 @@
-import {
-  Box,
-  Button,
-} from '@chakra-ui/react';
 import { useMutation } from '@tanstack/react-query';
-import React, { useCallback, useState } from 'react';
-import type { SubmitHandler, ControllerRenderProps } from 'react-hook-form';
-import { useForm, Controller } from 'react-hook-form';
+import React, { useState } from 'react';
+import type { SubmitHandler } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 
 import type { AddressTag, AddressTagErrors } from 'types/api/account';
 
 import type { ResourceErrorAccount } from 'lib/api/resources';
 import useApiFetch from 'lib/api/useApiFetch';
 import getErrorMessage from 'lib/getErrorMessage';
-import { ADDRESS_REGEXP } from 'lib/validations/address';
-import AddressInput from 'ui/shared/AddressInput';
-import TagInput from 'ui/shared/TagInput';
+import { Button } from 'toolkit/chakra/button';
+import { FormFieldAddress } from 'toolkit/components/forms/fields/FormFieldAddress';
+import { FormFieldText } from 'toolkit/components/forms/fields/FormFieldText';
 
 const TAG_MAX_LENGTH = 35;
 
 type Props = {
   data?: Partial<AddressTag>;
-  onClose: () => void;
+  onOpenChange: ({ open }: { open: boolean }) => void;
   onSuccess: () => Promise<void>;
   setAlertVisible: (isAlertVisible: boolean) => void;
-}
+};
 
 type Inputs = {
   address: string;
   tag: string;
-}
+};
 
-const AddressForm: React.FC<Props> = ({ data, onClose, onSuccess, setAlertVisible }) => {
+const AddressForm: React.FC<Props> = ({ data, onOpenChange, onSuccess, setAlertVisible }) => {
   const apiFetch = useApiFetch();
   const [ pending, setPending ] = useState(false);
-  const { control, handleSubmit, formState: { errors, isDirty }, setError } = useForm<Inputs>({
+  const formApi = useForm<Inputs>({
     mode: 'onTouched',
     defaultValues: {
       address: data?.address_hash || '',
@@ -41,7 +37,7 @@ const AddressForm: React.FC<Props> = ({ data, onClose, onSuccess, setAlertVisibl
     },
   });
 
-  const { mutate } = useMutation({
+  const { mutateAsync } = useMutation({
     mutationFn: (formData: Inputs) => {
       const body = {
         name: formData?.tag,
@@ -50,82 +46,67 @@ const AddressForm: React.FC<Props> = ({ data, onClose, onSuccess, setAlertVisibl
 
       const isEdit = data?.id;
       if (isEdit) {
-        return apiFetch('private_tags_address', {
-          pathParams: { id: data.id },
+        return apiFetch('general:private_tags_address', {
+          pathParams: { id: String(data.id) },
           fetchParams: { method: 'PUT', body },
         });
       }
 
-      return apiFetch('private_tags_address', { fetchParams: { method: 'POST', body } });
+      return apiFetch('general:private_tags_address', { fetchParams: { method: 'POST', body } });
     },
     onError: (error: ResourceErrorAccount<AddressTagErrors>) => {
       setPending(false);
       const errorMap = error.payload?.errors;
       if (errorMap?.address_hash || errorMap?.name) {
-        errorMap?.address_hash && setError('address', { type: 'custom', message: getErrorMessage(errorMap, 'address_hash') });
-        errorMap?.name && setError('tag', { type: 'custom', message: getErrorMessage(errorMap, 'name') });
+        errorMap?.address_hash && formApi.setError('address', { type: 'custom', message: getErrorMessage(errorMap, 'address_hash') });
+        errorMap?.name && formApi.setError('tag', { type: 'custom', message: getErrorMessage(errorMap, 'name') });
       } else if (errorMap?.identity_id) {
-        setError('address', { type: 'custom', message: getErrorMessage(errorMap, 'identity_id') });
+        formApi.setError('address', { type: 'custom', message: getErrorMessage(errorMap, 'identity_id') });
       } else {
         setAlertVisible(true);
       }
     },
     onSuccess: async() => {
       await onSuccess();
-      onClose();
+      onOpenChange({ open: false });
       setPending(false);
     },
   });
 
-  const onSubmit: SubmitHandler<Inputs> = (formData) => {
+  const onSubmit: SubmitHandler<Inputs> = async(formData) => {
     setAlertVisible(false);
     setPending(true);
-    mutate(formData);
+    await mutateAsync(formData);
   };
 
-  const renderAddressInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'address'>}) => {
-    return <AddressInput<Inputs, 'address'> field={ field } error={ errors.address } bgColor="dialog_bg"/>;
-  }, [ errors ]);
-
-  const renderTagInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'tag'>}) => {
-    return <TagInput<Inputs, 'tag'> field={ field } error={ errors.tag } bgColor="dialog_bg"/>;
-  }, [ errors ]);
-
   return (
-    <form noValidate onSubmit={ handleSubmit(onSubmit) }>
-      <Box marginBottom={ 5 }>
-        <Controller
+    <FormProvider { ...formApi }>
+      <form noValidate onSubmit={ formApi.handleSubmit(onSubmit) }>
+        <FormFieldAddress<Inputs>
           name="address"
-          control={ control }
-          rules={{
-            pattern: ADDRESS_REGEXP,
-            required: true,
-          }}
-          render={ renderAddressInput }
+          required
+          bgColor="dialog.bg"
+          mb={ 5 }
         />
-      </Box>
-      <Box marginBottom={ 8 }>
-        <Controller
+        <FormFieldText<Inputs>
           name="tag"
-          control={ control }
+          placeholder="Private tag (max 35 characters)"
+          required
           rules={{
             maxLength: TAG_MAX_LENGTH,
-            required: true,
           }}
-          render={ renderTagInput }
+          bgColor="dialog.bg"
+          mb={ 8 }
         />
-      </Box>
-      <Box marginTop={ 8 }>
         <Button
-          size="lg"
           type="submit"
-          isDisabled={ !isDirty }
-          isLoading={ pending }
+          disabled={ !formApi.formState.isDirty }
+          loading={ pending }
         >
           { data ? 'Save changes' : 'Add tag' }
         </Button>
-      </Box>
-    </form>
+      </form>
+    </FormProvider>
   );
 };
 

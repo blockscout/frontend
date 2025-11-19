@@ -10,6 +10,7 @@ const fixture: TestFixture<InjectMetaMaskProvider, { page: Page }> = async({ pag
       window.ethereum = {
         isMetaMask: true,
         _events: {},
+        _state: {},
       } as WalletProvider;
     });
   });

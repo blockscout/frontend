@@ -4,7 +4,7 @@ import React from 'react';
 import useIsMobile from 'lib/hooks/useIsMobile';
 
 interface Props {
-  children: [JSX.Element, JSX.Element | null] | (JSX.Element | null);
+  children: [React.JSX.Element, React.JSX.Element | null] | (React.JSX.Element | null);
   className?: string;
 }
 
@@ -17,7 +17,7 @@ const ContractVerificationFormRow = ({ children, className }: Props) => {
   return (
     <>
       <GridItem className={ className } _notFirst={{ mt: { base: 3, lg: 0 } }}>{ firstChildren }</GridItem>
-      { isMobile && !secondChildren ? null : <GridItem fontSize="sm" className={ className } color="text_secondary">{ secondChildren }</GridItem> }
+      { isMobile && !secondChildren ? null : <GridItem fontSize="sm" className={ className } color="text.secondary">{ secondChildren }</GridItem> }
     </>
   );
 };

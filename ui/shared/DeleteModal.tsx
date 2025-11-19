@@ -1,32 +1,24 @@
-import {
-  Box,
-  Button,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalBody,
-  ModalCloseButton,
-} from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import { useMutation } from '@tanstack/react-query';
 import React, { useCallback, useState } from 'react';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
+import { Button } from 'toolkit/chakra/button';
+import { DialogBody, DialogContent, DialogFooter, DialogHeader, DialogRoot } from 'toolkit/chakra/dialog';
 import FormSubmitAlert from 'ui/shared/FormSubmitAlert';
 
 type Props = {
-  isOpen: boolean;
-  onClose: () => void;
+  open: boolean;
+  onOpenChange: ({ open }: { open: boolean }) => void;
   title: string;
-  renderContent: () => JSX.Element;
+  renderContent: () => React.JSX.Element;
   mutationFn: () => Promise<unknown>;
   onSuccess: () => Promise<void>;
-}
+};
 
 const DeleteModal: React.FC<Props> = ({
-  isOpen,
-  onClose,
+  open,
+  onOpenChange,
   title,
   renderContent,
   mutationFn,
@@ -34,16 +26,16 @@ const DeleteModal: React.FC<Props> = ({
 }) => {
   const [ isAlertVisible, setAlertVisible ] = useState(false);
 
-  const onModalClose = useCallback(() => {
-    setAlertVisible(false);
-    onClose();
-  }, [ onClose, setAlertVisible ]);
+  const onModalOpenChange = useCallback(({ open }: { open: boolean }) => {
+    !open && setAlertVisible(false);
+    onOpenChange({ open });
+  }, [ onOpenChange, setAlertVisible ]);
 
-  const mutation = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn,
     onSuccess: async() => {
       onSuccess();
-      onClose();
+      onOpenChange({ open: false });
     },
     onError: () => {
       setAlertVisible(true);
@@ -52,34 +44,29 @@ const DeleteModal: React.FC<Props> = ({
 
   const onDeleteClick = useCallback(() => {
     setAlertVisible(false);
-    mutation.mutate();
-  }, [ setAlertVisible, mutation ]);
+    mutate();
+  }, [ setAlertVisible, mutate ]);
 
   const isMobile = useIsMobile();
 
   return (
-    <Modal isOpen={ isOpen } onClose={ onModalClose } size={ isMobile ? 'full' : 'md' }>
-      <ModalOverlay/>
-      <ModalContent>
-        <ModalHeader fontWeight="500" textStyle="h3">{ title }</ModalHeader>
-        <ModalCloseButton/>
-        <ModalBody>
+    <DialogRoot open={ open } onOpenChange={ onModalOpenChange } size={ isMobile ? 'full' : 'md' }>
+      <DialogContent>
+        <DialogHeader fontWeight="500" textStyle="h3">{ title }</DialogHeader>
+        <DialogBody>
           { isAlertVisible && <Box mb={ 4 }><FormSubmitAlert/></Box> }
           { renderContent() }
-        </ModalBody>
-        <ModalFooter>
+        </DialogBody>
+        <DialogFooter>
           <Button
-            size="lg"
             onClick={ onDeleteClick }
-            isLoading={ mutation.isPending }
-            // FIXME: chackra's button is disabled when isLoading
-            isDisabled={ false }
+            loading={ isPending }
           >
-              Delete
+            Delete
           </Button>
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
+        </DialogFooter>
+      </DialogContent>
+    </DialogRoot>
   );
 };
 

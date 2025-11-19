@@ -25,6 +25,10 @@ const Withdrawals = dynamic(() => {
     return import('ui/pages/ZkEvmL2Withdrawals');
   }
 
+  if (rollupFeature.isEnabled && rollupFeature.type === 'scroll') {
+    return import('ui/pages/ScrollL2Withdrawals');
+  }
+
   if (beaconChainFeature.isEnabled) {
     return import('ui/pages/BeaconChainWithdrawals');
   }
@@ -42,4 +46,4 @@ const Page: NextPage = () => {
 
 export default Page;
 
-export { withdrawals as getServerSideProps } from 'nextjs/getServerSideProps';
+export { withdrawals as getServerSideProps } from 'nextjs/getServerSideProps/main';

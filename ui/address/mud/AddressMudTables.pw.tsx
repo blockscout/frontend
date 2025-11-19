@@ -14,7 +14,7 @@ const hooksConfig = {
 };
 
 test('base view +@mobile', async({ render, mockApiResponse }) => {
-  await mockApiResponse('address_mud_tables', mudTables, { pathParams: { hash: ADDRESS_HASH }, queryParams: { q: 'o' } });
+  await mockApiResponse('general:mud_tables', mudTables, { pathParams: { hash: ADDRESS_HASH }, queryParams: { q: 'o' } });
 
   const component = await render(
     <Box pt={{ base: '134px', lg: 6 }}>
@@ -26,8 +26,8 @@ test('base view +@mobile', async({ render, mockApiResponse }) => {
   await expect(component).toHaveScreenshot();
 });
 
-test('with schema opened +@mobile', async({ render, mockApiResponse }) => {
-  await mockApiResponse('address_mud_tables', mudTables, { pathParams: { hash: ADDRESS_HASH }, queryParams: { q: 'o' } });
+test('with schema opened +@mobile', async({ render, mockApiResponse }, testInfo) => {
+  await mockApiResponse('general:mud_tables', mudTables, { pathParams: { hash: ADDRESS_HASH }, queryParams: { q: 'o' } });
 
   const component = await render(
     <Box pt={{ base: '134px', lg: 6 }}>
@@ -36,7 +36,7 @@ test('with schema opened +@mobile', async({ render, mockApiResponse }) => {
     { hooksConfig },
   );
 
-  await component.locator('div[aria-label="View schema"]').first().click();
+  await component.getByLabel('View schema').nth(testInfo.project.name === 'mobile' ? 2 : 0).click();
 
   await expect(component).toHaveScreenshot();
 });

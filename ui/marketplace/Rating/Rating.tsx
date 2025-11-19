@@ -1,40 +1,36 @@
-import { Text, PopoverTrigger, PopoverBody, PopoverContent, useDisclosure, Skeleton, useOutsideClick, Box } from '@chakra-ui/react';
+import { Text } from '@chakra-ui/react';
 import React from 'react';
-
-import type { AppRating } from 'types/client/marketplace';
 
 import config from 'configs/app';
 import type { EventTypes, EventPayload } from 'lib/mixpanel/index';
-import Popover from 'ui/shared/chakra/Popover';
+import type { PopoverContentProps } from 'toolkit/chakra/popover';
+import { PopoverBody, PopoverContent, PopoverRoot } from 'toolkit/chakra/popover';
+import { Rating as RatingComponent } from 'toolkit/chakra/rating';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import useIsAuth from 'ui/snippets/auth/useIsAuth';
 
 import Content from './PopoverContent';
-import Stars from './Stars';
 import TriggerButton from './TriggerButton';
-import type { RateFunction } from './useRatings';
 
 const feature = config.features.marketplace;
-const isEnabled = feature.isEnabled && feature.rating;
+const isEnabled = feature.isEnabled && 'api' in feature;
 
 type Props = {
   appId: string;
-  rating?: AppRating;
-  userRating?: AppRating;
-  rate: RateFunction;
-  isSending?: boolean;
+  rating?: number;
+  ratingsTotalCount?: number;
+  userRating?: number;
   isLoading?: boolean;
   fullView?: boolean;
-  canRate: boolean | undefined;
   source: EventPayload<EventTypes.APP_FEEDBACK>['Source'];
+  popoverContentProps?: PopoverContentProps;
 };
 
 const Rating = ({
-  appId, rating, userRating, rate,
-  isSending, isLoading, fullView, canRate, source,
+  appId, rating, ratingsTotalCount, userRating,
+  isLoading, fullView, source, popoverContentProps,
 }: Props) => {
-  const { isOpen, onToggle, onClose } = useDisclosure();
-  // have to implement this solution because popover loses focus on button click inside it (issue: https://github.com/chakra-ui/chakra-ui/issues/7359)
-  const popoverRef = React.useRef(null);
-  useOutsideClick({ ref: popoverRef, handler: onClose });
+  const isAuth = useIsAuth();
 
   if (!isEnabled) {
     return null;
@@ -44,40 +40,36 @@ const Rating = ({
     <Skeleton
       display="flex"
       alignItems="center"
-      isLoaded={ !isLoading }
+      loading={ isLoading }
       w={ (isLoading && !fullView) ? '40px' : 'auto' }
     >
       { fullView && (
         <>
-          <Stars filledIndex={ (rating?.value || 0) - 1 }/>
-          <Text fontSize="md" ml={ 2 }>{ rating?.value }</Text>
+          <RatingComponent defaultValue={ Math.floor(rating || 0) } readOnly key={ rating }/>
+          { rating && <Text fontSize="md" ml={ 2 }>{ rating }</Text> }
+          { ratingsTotalCount && <Text color="text.secondary" textStyle="md" ml={ 1 }>({ ratingsTotalCount })</Text> }
         </>
       ) }
-      <Box ref={ popoverRef }>
-        <Popover isOpen={ isOpen } placement="bottom" isLazy>
-          <PopoverTrigger>
-            <TriggerButton
-              rating={ rating?.value }
-              fullView={ fullView }
-              isActive={ isOpen }
-              onClick={ onToggle }
-              canRate={ canRate }
-            />
-          </PopoverTrigger>
-          <PopoverContent w="250px" mx={ 3 }>
-            <PopoverBody p={ 4 }>
+      <PopoverRoot positioning={{ placement: 'bottom' }}>
+
+        <TriggerButton
+          rating={ rating }
+          count={ ratingsTotalCount }
+          fullView={ fullView }
+          canRate={ isAuth }
+        />
+        { isAuth ? (
+          <PopoverContent w="250px" { ...popoverContentProps }>
+            <PopoverBody>
               <Content
                 appId={ appId }
-                rating={ rating }
                 userRating={ userRating }
-                rate={ rate }
-                isSending={ isSending }
                 source={ source }
               />
             </PopoverBody>
           </PopoverContent>
-        </Popover>
-      </Box>
+        ) : <PopoverContent/> }
+      </PopoverRoot>
     </Skeleton>
   );
 };

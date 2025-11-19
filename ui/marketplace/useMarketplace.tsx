@@ -1,14 +1,13 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { ContractListTypes } from 'types/client/marketplace';
 import { MarketplaceCategory } from 'types/client/marketplace';
 
 import useDebounce from 'lib/hooks/useDebounce';
 import * as mixpanel from 'lib/mixpanel/index';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import removeQueryParam from 'lib/router/removeQueryParam';
 
-import useRatings from './Rating/useRatings';
 import useMarketplaceApps from './useMarketplaceApps';
 import useMarketplaceCategories from './useMarketplaceCategories';
 
@@ -34,10 +33,8 @@ export default function useMarketplace() {
   const [ isFavoriteAppsLoaded, setIsFavoriteAppsLoaded ] = React.useState<boolean>(false);
   const [ isAppInfoModalOpen, setIsAppInfoModalOpen ] = React.useState<boolean>(false);
   const [ isDisclaimerModalOpen, setIsDisclaimerModalOpen ] = React.useState<boolean>(false);
-  const [ contractListModalType, setContractListModalType ] = React.useState<ContractListTypes | null>(null);
-  const [ hasPreviousStep, setHasPreviousStep ] = React.useState<boolean>(false);
 
-  const handleFavoriteClick = React.useCallback((id: string, isFavorite: boolean, source: 'Discovery view' | 'Security view' | 'App modal' | 'Banner') => {
+  const handleFavoriteClick = React.useCallback((id: string, isFavorite: boolean, source: 'Discovery view' | 'App modal' | 'Banner') => {
     mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'Favorite app', Info: id, Source: source });
 
     const favoriteApps = getFavoriteApps();
@@ -63,21 +60,11 @@ export default function useMarketplace() {
     setIsDisclaimerModalOpen(true);
   }, []);
 
-  const showContractList = React.useCallback((id: string, type: ContractListTypes, hasPreviousStep?: boolean) => {
-    setSelectedAppId(id);
-    setContractListModalType(type);
-    if (hasPreviousStep) {
-      setHasPreviousStep(true);
-    }
-  }, []);
-
   const debouncedFilterQuery = useDebounce(filterQuery, 500);
   const clearSelectedAppId = React.useCallback(() => {
     setSelectedAppId(null);
     setIsAppInfoModalOpen(false);
     setIsDisclaimerModalOpen(false);
-    setContractListModalType(null);
-    setHasPreviousStep(false);
   }, []);
 
   const handleCategoryChange = React.useCallback((newCategory: string) => {
@@ -85,10 +72,9 @@ export default function useMarketplace() {
     setSelectedCategoryId(newCategory);
   }, []);
 
-  const { ratings, userRatings, rateApp, isRatingSending, isRatingLoading, canRate } = useRatings();
   const {
-    isPlaceholderData, isError, error, data, displayedApps, setSorting,
-  } = useMarketplaceApps(debouncedFilterQuery, selectedCategoryId, favoriteApps, isFavoriteAppsLoaded, ratings);
+    isPlaceholderData, isError, error, data, displayedApps, setSorting, refetch,
+  } = useMarketplaceApps(debouncedFilterQuery, selectedCategoryId, favoriteApps, isFavoriteAppsLoaded);
   const {
     isPlaceholderData: isCategoriesPlaceholderData, data: categories,
   } = useMarketplaceCategories(data, isPlaceholderData);
@@ -106,6 +92,14 @@ export default function useMarketplace() {
     // run only when data is loaded
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ isPlaceholderData ]);
+  React.useEffect(() => {
+    const selectedAppId = getQueryParamString(router.query.selectedAppId);
+    if (selectedAppId) {
+      setSelectedAppId(selectedAppId);
+      setIsAppInfoModalOpen(true);
+      removeQueryParam(router, 'selectedAppId');
+    }
+  }, [ router.query.selectedAppId, router ]);
 
   React.useEffect(() => {
     if (isPlaceholderData) {
@@ -162,15 +156,8 @@ export default function useMarketplace() {
     showDisclaimer,
     appsTotal: data?.length || 0,
     isCategoriesPlaceholderData,
-    showContractList,
-    contractListModalType,
-    hasPreviousStep,
     setSorting,
-    userRatings,
-    rateApp,
-    isRatingSending,
-    isRatingLoading,
-    canRate,
+    refetch,
   }), [
     selectedCategoryId,
     categories,
@@ -190,14 +177,7 @@ export default function useMarketplace() {
     isDisclaimerModalOpen,
     showDisclaimer,
     isCategoriesPlaceholderData,
-    showContractList,
-    contractListModalType,
-    hasPreviousStep,
     setSorting,
-    userRatings,
-    rateApp,
-    isRatingSending,
-    isRatingLoading,
-    canRate,
+    refetch,
   ]);
 }

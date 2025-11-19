@@ -1,29 +1,48 @@
-import { Select } from '@chakra-ui/react';
+import { createListCollection } from '@chakra-ui/react';
 import React from 'react';
 
 import hexToUtf8 from 'lib/hexToUtf8';
+import type { SelectOption } from 'toolkit/chakra/select';
+import { Select } from 'toolkit/chakra/select';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
 
-type DataType = 'Hex' | 'UTF-8'
-const OPTIONS: Array<DataType> = [ 'Hex', 'UTF-8' ];
+const OPTIONS = [
+  { label: 'Hex', value: 'Hex' as const },
+  { label: 'UTF-8', value: 'UTF-8' as const },
+];
+
+const collection = createListCollection<SelectOption>({
+  items: OPTIONS,
+});
+
+export type DataType = (typeof OPTIONS)[number]['value'];
 
 interface Props {
   hex: string;
   rightSlot?: React.ReactNode;
+  defaultDataType?: DataType;
+  isLoading?: boolean;
+  minHeight?: string;
 }
 
-const RawInputData = ({ hex, rightSlot: rightSlotProp }: Props) => {
-  const [ selectedDataType, setSelectedDataType ] = React.useState<DataType>('Hex');
+const RawInputData = ({ hex, rightSlot: rightSlotProp, defaultDataType = 'Hex', isLoading, minHeight }: Props) => {
+  const [ selectedDataType, setSelectedDataType ] = React.useState<DataType>(defaultDataType);
 
-  const handleSelectChange = React.useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedDataType(event.target.value as DataType);
+  const handleValueChange = React.useCallback(({ value }: { value: Array<string> }) => {
+    setSelectedDataType(value[0] as DataType);
   }, []);
 
   const rightSlot = (
     <>
-      <Select size="xs" borderRadius="base" value={ selectedDataType } onChange={ handleSelectChange } w="auto" mr="auto">
-        { OPTIONS.map((option) => <option key={ option } value={ option }>{ option }</option>) }
-      </Select>
+      <Select
+        collection={ collection }
+        placeholder="Select type"
+        defaultValue={ [ defaultDataType ] }
+        onValueChange={ handleValueChange }
+        w="100px"
+        mr="auto"
+        loading={ isLoading }
+      />
       { rightSlotProp }
     </>
   );
@@ -32,8 +51,9 @@ const RawInputData = ({ hex, rightSlot: rightSlotProp }: Props) => {
     <RawDataSnippet
       data={ selectedDataType === 'Hex' ? hex : hexToUtf8(hex) }
       rightSlot={ rightSlot }
+      isLoading={ isLoading }
       textareaMaxHeight="220px"
-      textareaMinHeight="160px"
+      textareaMinHeight={ minHeight || '160px' }
       w="100%"
     />
   );

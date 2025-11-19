@@ -1,22 +1,19 @@
-import _inRange from 'lodash/inRange';
+import { inRange } from 'es-toolkit';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 import type { Log } from 'types/api/log';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
-import type { RoutedTab } from 'ui/shared/Tabs/types';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import { useAppContext } from 'lib/contexts/app';
 import throwOnAbsentParamError from 'lib/errors/throwOnAbsentParamError';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { USER_OP } from 'stubs/userOps';
+import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import TextAd from 'ui/shared/ad/TextAd';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
-import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
-import useTabIndexFromQuery from 'ui/shared/Tabs/useTabIndexFromQuery';
 import TxLogs from 'ui/tx/TxLogs';
 import TxTokenTransfer from 'ui/tx/TxTokenTransfer';
 import useTxQuery from 'ui/tx/useTxQuery';
@@ -26,10 +23,9 @@ import UserOpSubHeading from 'ui/userOp/UserOpSubHeading';
 
 const UserOp = () => {
   const router = useRouter();
-  const appProps = useAppContext();
   const hash = getQueryParamString(router.query.hash);
 
-  const userOpQuery = useApiQuery('user_op', {
+  const userOpQuery = useApiQuery('general:user_op', {
     pathParams: { hash },
     queryOptions: {
       enabled: Boolean(hash),
@@ -43,7 +39,10 @@ const UserOp = () => {
     if (!userOpQuery.data) {
       return true;
     } else {
-      if (_inRange(
+      if (!userOpQuery.data.user_logs_start_index || !userOpQuery.data.user_logs_count) {
+        return false;
+      }
+      if (inRange(
         Number(tt.log_index),
         userOpQuery.data?.user_logs_start_index,
         userOpQuery.data?.user_logs_start_index + userOpQuery.data?.user_logs_count,
@@ -58,14 +57,17 @@ const UserOp = () => {
     if (!userOpQuery.data) {
       return true;
     } else {
-      if (_inRange(log.index, userOpQuery.data?.user_logs_start_index, userOpQuery.data?.user_logs_start_index + userOpQuery.data?.user_logs_count)) {
+      if (!userOpQuery.data.user_logs_start_index || !userOpQuery.data.user_logs_count) {
+        return false;
+      }
+      if (inRange(log.index, userOpQuery.data?.user_logs_start_index, userOpQuery.data?.user_logs_start_index + userOpQuery.data?.user_logs_count)) {
         return true;
       }
       return false;
     }
   }, [ userOpQuery.data ]);
 
-  const tabs: Array<RoutedTab> = React.useMemo(() => ([
+  const tabs: Array<TabItemRegular> = React.useMemo(() => ([
     { id: 'index', title: 'Details', component: <UserOpDetails query={ userOpQuery }/> },
     {
       id: 'token_transfers',
@@ -75,21 +77,6 @@ const UserOp = () => {
     { id: 'logs', title: 'Logs', component: <TxLogs txQuery={ txQuery } logsFilter={ filterLogsByLogIndex }/> },
     { id: 'raw', title: 'Raw', component: <UserOpRaw rawData={ userOpQuery.data?.raw } isLoading={ userOpQuery.isPlaceholderData }/> },
   ]), [ userOpQuery, txQuery, filterTokenTransfersByLogIndex, filterLogsByLogIndex ]);
-
-  const tabIndex = useTabIndexFromQuery(tabs);
-
-  const backLink = React.useMemo(() => {
-    const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/ops');
-
-    if (!hasGoBackLink) {
-      return;
-    }
-
-    return {
-      label: 'Back to user operations list',
-      url: appProps.referrer,
-    };
-  }, [ appProps.referrer ]);
 
   throwOnAbsentParamError(hash);
   throwOnResourceLoadError(userOpQuery);
@@ -101,16 +88,9 @@ const UserOp = () => {
       <TextAd mb={ 6 }/>
       <PageTitle
         title="User operation details"
-        backLink={ backLink }
         secondRow={ titleSecondRow }
       />
-      { userOpQuery.isPlaceholderData ? (
-        <>
-          <TabsSkeleton tabs={ tabs } mt={ 6 }/>
-          { tabs[tabIndex]?.component }
-        </>
-      ) :
-        <RoutedTabs tabs={ tabs }/> }
+      <RoutedTabs tabs={ tabs } isLoading={ userOpQuery.isPlaceholderData }/>
     </>
   );
 };

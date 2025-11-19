@@ -7,7 +7,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import updateLocale from 'dayjs/plugin/updateLocale';
 import weekOfYear from 'dayjs/plugin/weekOfYear';
 
-import { nbsp } from 'lib/html-entities';
+import { nbsp } from 'toolkit/utils/htmlEntities';
 
 const relativeTimeConfig = {
   thresholds: [

@@ -1,12 +1,14 @@
+import type { Abi } from 'viem';
+
 import type { AddressParam } from './addressParams';
 export interface AddressTag {
   address_hash: string;
   address: AddressParam;
   name: string;
-  id: string;
+  id: number;
 }
 
-export type AddressTags = Array<AddressTag>
+export type AddressTags = Array<AddressTag>;
 
 export type AddressTagsResponse = {
   items: AddressTags;
@@ -14,14 +16,14 @@ export type AddressTagsResponse = {
     id: number;
     items_count: number;
   } | null;
-}
+};
 
 export interface ApiKey {
   api_key: string;
   name: string;
 }
 
-export type ApiKeys = Array<ApiKey>
+export type ApiKeys = Array<ApiKey>;
 
 export interface ModelError {
   message: string;
@@ -52,10 +54,10 @@ export interface Transaction {
 export interface TransactionTag {
   transaction_hash: string;
   name: string;
-  id: string;
+  id: number;
 }
 
-export type TransactionTags = Array<TransactionTag>
+export type TransactionTags = Array<TransactionTag>;
 
 export type TransactionTagsResponse = {
   items: TransactionTags;
@@ -63,14 +65,15 @@ export type TransactionTagsResponse = {
     id: number;
     items_count: number;
   } | null;
-}
+};
 
-export type Transactions = Array<Transaction>
+export type Transactions = Array<Transaction>;
 
 export interface UserInfo {
   name?: string;
   nickname?: string;
   email: string | null;
+  address_hash: string | null;
   avatar?: string;
 }
 
@@ -81,7 +84,7 @@ export interface WatchlistAddress {
   exchange_rate: string;
   notification_settings: NotificationSettings;
   notification_methods: NotificationMethods;
-  id: string;
+  id: number;
   address: AddressParam;
   tokens_count: number;
   tokens_fiat_value: string;
@@ -93,7 +96,7 @@ export interface WatchlistAddressNew {
   notificationSettings: NotificationSettings;
 }
 
-export type WatchlistAddresses = Array<WatchlistAddress>
+export type WatchlistAddresses = Array<WatchlistAddress>;
 
 export type WatchlistResponse = {
   items: WatchlistAddresses;
@@ -101,45 +104,30 @@ export type WatchlistResponse = {
     id: number;
     items_count: number;
   } | null;
-}
+};
 
-export type CustomAbis = Array<CustomAbi>
+export type CustomAbis = Array<CustomAbi>;
 
 export interface CustomAbi {
   name: string;
-  id: string;
+  id: number;
   contract_address_hash: string;
   contract_address: AddressParam;
-  abi: Array<AbiItem>;
-}
-
-export interface AbiItem {
-  type: 'function';
-  stateMutability: 'nonpayable' | 'view';
-  payable: boolean;
-  outputs: Array<AbiInputOutput>;
-  name: string;
-  inputs: Array<AbiInputOutput>;
-  constant: boolean;
-}
-
-interface AbiInputOutput {
-  type: 'uint256' | 'address';
-  name: string;
+  abi: Abi;
 }
 
 export type WatchlistErrors = {
   address_hash?: Array<string>;
   name?: Array<string>;
   watchlist_id?: Array<string>;
-}
+};
 
 export type CustomAbiErrors = {
   address_hash?: Array<string>;
   name?: Array<string>;
   abi?: Array<string>;
   identity_id?: Array<string>;
-}
+};
 
 export type ApiKeyErrors = {
   name?: Array<string>;
@@ -150,13 +138,13 @@ export type AddressTagErrors = {
   address_hash: Array<string>;
   name: Array<string>;
   identity_id?: Array<string>;
-}
+};
 
 export type TransactionTagErrors = {
-  tx_hash: Array<string>;
+  transaction_hash: Array<string>;
   name: Array<string>;
   identity_id?: Array<string>;
-}
+};
 
 export interface VerifiedAddress {
   userId: string;

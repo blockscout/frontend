@@ -10,7 +10,7 @@ type Props = {
   isTxDataLoading: boolean;
   actions?: Array<TxAction>;
   hash?: string;
-}
+};
 
 const TxDetailsActions = ({ isTxDataLoading, actions, hash }: Props) => {
   if (config.features.txInterpretation.isEnabled) {

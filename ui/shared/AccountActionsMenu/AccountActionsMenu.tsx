@@ -1,15 +1,15 @@
-import { Box, IconButton, MenuButton, MenuList, Skeleton, chakra } from '@chakra-ui/react';
+import { Box, chakra } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { ItemProps } from './types';
 
 import config from 'configs/app';
-import useFetchProfileInfo from 'lib/hooks/useFetchProfileInfo';
-import useIsAccountActionAllowed from 'lib/hooks/useIsAccountActionAllowed';
 import * as mixpanel from 'lib/mixpanel/index';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import Menu from 'ui/shared/chakra/Menu';
+import { IconButton } from 'toolkit/chakra/icon-button';
+import { MenuContent, MenuRoot, MenuTrigger } from 'toolkit/chakra/menu';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import IconSvg from 'ui/shared/IconSvg';
 
 import MetadataUpdateMenuItem from './items/MetadataUpdateMenuItem';
@@ -30,19 +30,10 @@ const AccountActionsMenu = ({ isLoading, className, showUpdateMetadataItem }: Pr
   const isTokenPage = router.pathname === '/token/[hash]';
   const isTokenInstancePage = router.pathname === '/token/[hash]/instance/[id]';
   const isTxPage = router.pathname === '/tx/[hash]';
-  const isAccountActionAllowed = useIsAccountActionAllowed();
-
-  const userInfoQuery = useFetchProfileInfo();
 
   const handleButtonClick = React.useCallback(() => {
     mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'Address actions (more button)' });
   }, []);
-
-  if (!config.features.account.isEnabled) {
-    return null;
-  }
-
-  const userWithoutEmail = userInfoQuery.data && !userInfoQuery.data.email;
 
   const items = [
     {
@@ -51,15 +42,15 @@ const AccountActionsMenu = ({ isLoading, className, showUpdateMetadataItem }: Pr
     },
     {
       render: (props: ItemProps) => <TokenInfoMenuItem { ...props }/>,
-      enabled: isTokenPage && config.features.addressVerification.isEnabled && !userWithoutEmail,
+      enabled: config.features.account.isEnabled && isTokenPage && config.features.addressVerification.isEnabled,
     },
     {
       render: (props: ItemProps) => <PrivateTagMenuItem { ...props } entityType={ isTxPage ? 'tx' : 'address' }/>,
-      enabled: true,
+      enabled: config.features.account.isEnabled,
     },
     {
       render: (props: ItemProps) => <PublicTagMenuItem { ...props }/>,
-      enabled: !isTxPage && config.features.publicTagsSubmission.isEnabled,
+      enabled: config.features.account.isEnabled && !isTxPage && config.features.publicTagsSubmission.isEnabled,
     },
   ].filter(({ enabled }) => enabled);
 
@@ -68,38 +59,32 @@ const AccountActionsMenu = ({ isLoading, className, showUpdateMetadataItem }: Pr
   }
 
   if (isLoading) {
-    return <Skeleton w="36px" h="32px" borderRadius="base" className={ className }/>;
+    return <Skeleton loading w="36px" h="32px" borderRadius="base" className={ className }/>;
   }
 
   if (items.length === 1) {
     return (
       <Box className={ className }>
-        { items[0].render({ type: 'button', hash, onBeforeClick: isAccountActionAllowed }) }
+        { items[0].render({ type: 'button', hash }) }
       </Box>
     );
   }
 
   return (
-    <Menu>
-      <MenuButton
-        as={ IconButton }
-        className={ className }
-        size="sm"
-        variant="outline"
-        colorScheme="gray"
-        px="7px"
-        onClick={ handleButtonClick }
-        icon={ <IconSvg name="dots" boxSize="18px"/> }
-        aria-label="Show address menu"
-      />
-      <MenuList minWidth="180px" zIndex="popover">
+    <MenuRoot unmountOnExit={ false }>
+      <MenuTrigger asChild>
+        <IconButton variant="icon_background" size="md" className={ className } onClick={ handleButtonClick } aria-label="Show address menu">
+          <IconSvg name="dots"/>
+        </IconButton>
+      </MenuTrigger>
+      <MenuContent>
         { items.map(({ render }, index) => (
           <React.Fragment key={ index }>
-            { render({ type: 'menu_item', hash, onBeforeClick: isAccountActionAllowed }) }
+            { render({ type: 'menu_item', hash }) }
           </React.Fragment>
         )) }
-      </MenuList>
-    </Menu>
+      </MenuContent>
+    </MenuRoot>
   );
 };
 

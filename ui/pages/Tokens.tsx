@@ -2,9 +2,9 @@ import { Box } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 import type { TokenType } from 'types/api/token';
 import type { TokensSortingValue, TokensSortingField, TokensSorting } from 'types/api/tokens';
-import type { RoutedTab } from 'ui/shared/Tabs/types';
 
 import config from 'configs/app';
 import useDebounce from 'lib/hooks/useDebounce';
@@ -12,13 +12,14 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { TOKEN_INFO_ERC_20 } from 'stubs/token';
 import { generateListStub } from 'stubs/utils';
+import type { SlotProps } from 'toolkit/components/AdaptiveTabs/AdaptiveTabsList';
+import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import PopoverFilter from 'ui/shared/filters/PopoverFilter';
 import TokenTypeFilter from 'ui/shared/filters/TokenTypeFilter';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import getSortParamsFromValue from 'ui/shared/sort/getSortParamsFromValue';
 import getSortValueFromQuery from 'ui/shared/sort/getSortValueFromQuery';
-import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 import TokensList from 'ui/tokens/Tokens';
 import TokensActionBar from 'ui/tokens/TokensActionBar';
 import TokensBridgedChainsFilter from 'ui/tokens/TokensBridgedChainsFilter';
@@ -33,9 +34,9 @@ const TAB_LIST_PROPS = {
 };
 const TABS_HEIGHT = 88;
 
-const TABS_RIGHT_SLOT_PROPS = {
+const TABS_RIGHT_SLOT_PROPS: SlotProps = {
   ml: 8,
-  flexGrow: 1,
+  widthAllocation: 'available',
 };
 
 const bridgedTokensFeature = config.features.bridgedTokens;
@@ -48,23 +49,23 @@ const Tokens = () => {
   const q = getQueryParamString(router.query.q);
 
   const [ searchTerm, setSearchTerm ] = React.useState<string>(q ?? '');
-  const [ sort, setSort ] = React.useState<TokensSortingValue | undefined>(getSortValueFromQuery<TokensSortingValue>(router.query, SORT_OPTIONS));
+  const [ sort, setSort ] = React.useState<TokensSortingValue>(getSortValueFromQuery<TokensSortingValue>(router.query, SORT_OPTIONS) ?? 'default');
   const [ tokenTypes, setTokenTypes ] = React.useState<Array<TokenType> | undefined>(getTokenFilterValue(router.query.type));
   const [ bridgeChains, setBridgeChains ] = React.useState<Array<string> | undefined>(getBridgedChainsFilterValue(router.query.chain_ids));
 
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
   const tokensQuery = useQueryWithPages({
-    resourceName: tab === 'bridged' ? 'tokens_bridged' : 'tokens',
+    resourceName: tab === 'bridged' ? 'general:tokens_bridged' : 'general:tokens',
     filters: tab === 'bridged' ? { q: debouncedSearchTerm, chain_ids: bridgeChains } : { q: debouncedSearchTerm, type: tokenTypes },
     sorting: getSortParamsFromValue<TokensSortingValue, TokensSortingField, TokensSorting['order']>(sort),
     options: {
-      placeholderData: generateListStub<'tokens'>(
+      placeholderData: generateListStub<'general:tokens'>(
         TOKEN_INFO_ERC_20,
         50,
         {
           next_page_params: {
-            holder_count: 81528,
+            holders_count: 81528,
             items_count: 50,
             name: '',
             market_cap: null,
@@ -91,14 +92,14 @@ const Tokens = () => {
     setBridgeChains(value);
   }, [ debouncedSearchTerm, tokensQuery ]);
 
-  const handleSortChange = React.useCallback((value?: TokensSortingValue) => {
+  const handleSortChange = React.useCallback((value: TokensSortingValue) => {
     setSort(value);
     tokensQuery.onSortingChange(getSortParamsFromValue(value));
   }, [ tokensQuery ]);
 
   const handleTabChange = React.useCallback(() => {
     setSearchTerm('');
-    setSort(undefined);
+    setSort('default');
     setTokenTypes(undefined);
     setBridgeChains(undefined);
   }, []);
@@ -144,7 +145,7 @@ const Tokens = () => {
     );
   })();
 
-  const tabs: Array<RoutedTab> = [
+  const tabs: Array<TabItemRegular> = [
     {
       id: 'all',
       title: 'All',
@@ -185,11 +186,11 @@ const Tokens = () => {
       { !hasMultipleTabs && !isMobile && actionBar }
       <RoutedTabs
         tabs={ tabs }
-        tabListProps={ isMobile ? undefined : TAB_LIST_PROPS }
+        listProps={ isMobile ? undefined : TAB_LIST_PROPS }
         rightSlot={ hasMultipleTabs && !isMobile ? actionBar : null }
         rightSlotProps={ !isMobile ? TABS_RIGHT_SLOT_PROPS : undefined }
         stickyEnabled={ !isMobile }
-        onTabChange={ handleTabChange }
+        onValueChange={ handleTabChange }
       />
     </>
   );

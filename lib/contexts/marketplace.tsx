@@ -3,14 +3,14 @@ import React, { createContext, useContext, useEffect, useState, useMemo } from '
 
 type Props = {
   children: React.ReactNode;
-}
+};
 
 type TMarketplaceContext = {
   isAutoConnectDisabled: boolean;
   setIsAutoConnectDisabled: (isAutoConnectDisabled: boolean) => void;
-}
+};
 
-const MarketplaceContext = createContext<TMarketplaceContext>({
+export const MarketplaceContext = createContext<TMarketplaceContext>({
   isAutoConnectDisabled: false,
   setIsAutoConnectDisabled: () => {},
 });

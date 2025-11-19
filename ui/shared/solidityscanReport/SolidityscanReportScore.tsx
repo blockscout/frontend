@@ -1,4 +1,4 @@
-import { Box, Flex, Text, chakra, Center, useColorModeValue } from '@chakra-ui/react';
+import { Box, Flex, Text, chakra, Center } from '@chakra-ui/react';
 import React from 'react';
 
 import IconSvg from 'ui/shared/IconSvg';
@@ -13,21 +13,22 @@ interface Props {
 const SolidityscanReportScore = ({ className, score }: Props) => {
   const { scoreLevel, scoreColor } = useScoreLevelAndColor(score);
 
-  const chartGrayColor = useColorModeValue('gray.100', 'gray.700');
-  const yetAnotherGrayColor = useColorModeValue('gray.400', 'gray.500');
-  const popoverBgColor = useColorModeValue('white', 'gray.900');
+  const yetAnotherGrayColor = { _light: 'gray.400', _dark: 'gray.500' };
 
   return (
     <Flex className={ className } alignItems="center">
       <Box
         w={ 12 }
         h={ 12 }
-        bgGradient={ `conic-gradient(${ scoreColor } 0, ${ scoreColor } ${ score }%, ${ chartGrayColor } 0, ${ chartGrayColor } 100%)` }
+        bgGradient={{
+          _light: `conic-gradient({colors.${ scoreColor._light }} 0, {colors.${ scoreColor._light }} ${ score }%, {colors.gray.100} 0, {colors.gray.100} 100%)`,
+          _dark: `conic-gradient({colors.${ scoreColor._dark }} 0, {colors.${ scoreColor._dark }} ${ score }%, {colors.gray.700} 0, {colors.gray.700} 100%)`,
+        }}
         borderRadius="24px"
         position="relative"
         mr={ 3 }
       >
-        <Center position="absolute" w="38px" h="38px" top="5px" right="5px" bg={ popoverBgColor } borderRadius="20px">
+        <Center position="absolute" w="38px" h="38px" top="5px" right="5px" bg="popover.bg" borderRadius="20px">
           <IconSvg name={ score < 80 ? 'score/score-not-ok' : 'score/score-ok' } boxSize={ 5 } color={ scoreColor }/>
         </Center>
       </Box>

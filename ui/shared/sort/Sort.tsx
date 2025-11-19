@@ -1,70 +1,71 @@
-import {
-  PopoverTrigger,
-  PopoverContent,
-  PopoverBody,
-  useDisclosure,
-  useRadioGroup,
-  chakra,
-} from '@chakra-ui/react';
+import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
-import Popover from 'ui/shared/chakra/Popover';
+import { IconButton } from 'toolkit/chakra/icon-button';
+import type { SelectRootProps } from 'toolkit/chakra/select';
+import { SelectContent, SelectItem, SelectRoot, SelectControl, SelectValueText } from 'toolkit/chakra/select';
+import IconSvg from 'ui/shared/IconSvg';
 
-import SortButtonDesktop from './ButtonDesktop';
-import SortButtonMobile from './ButtonMobile';
-import Option from './Option';
-import type { TOption } from './Option';
-
-interface Props<Sort extends string> {
-  name: string;
-  options: Array<TOption<Sort>>;
-  defaultValue?: Sort;
+export interface Props extends SelectRootProps {
   isLoading?: boolean;
-  onChange: (value: Sort | undefined) => void;
 }
 
-const Sort = <Sort extends string>({ name, options, isLoading, onChange, defaultValue }: Props<Sort>) => {
+const Sort = (props: Props) => {
+  const { collection, isLoading, ...rest } = props;
   const isMobile = useIsMobile(false);
-  const { isOpen, onToggle, onClose } = useDisclosure();
 
-  const handleChange = (value: Sort) => {
-    onChange(value);
-    onClose();
-  };
+  const trigger = (() => {
+    if (isMobile) {
+      return (
+        <SelectControl triggerProps={{ asChild: true }} noIndicator>
+          <IconButton
+            loadingSkeleton={ isLoading }
+            aria-label="sort"
+            size="md"
+            variant="dropdown"
+          >
+            <IconSvg name="arrows/up-down"/>
+          </IconButton>
+        </SelectControl>
+      );
+    }
 
-  const { value, getRootProps, getRadioProps } = useRadioGroup({
-    name,
-    defaultValue,
-    onChange: handleChange,
-  });
-
-  const root = getRootProps();
+    return (
+      <SelectControl
+        loading={ isLoading }
+        _hover={{ color: 'hover' }}
+        _open={{ color: 'hover' }}
+      >
+        <chakra.span
+          flexShrink={ 0 }
+          fontWeight="normal"
+          color={{ _light: 'blackAlpha.600', _dark: 'whiteAlpha.600' }}
+          _groupHover={{ color: 'inherit' }}
+          _groupExpanded={{ color: 'inherit' }}
+        >
+          Sort by
+        </chakra.span>
+        <SelectValueText
+          color={{ _light: 'blackAlpha.800', _dark: 'whiteAlpha.800' }}
+          _groupHover={{ color: 'inherit' }}
+          _groupExpanded={{ color: 'inherit' }}
+        />
+      </SelectControl>
+    );
+  })();
 
   return (
-    <Popover isOpen={ isOpen } onClose={ onClose } placement="bottom-start" isLazy>
-      <PopoverTrigger>
-        { isMobile ? (
-          <SortButtonMobile isActive={ isOpen || Boolean(value) } onClick={ onToggle } isLoading={ isLoading }/>
-        ) : (
-          <SortButtonDesktop isActive={ isOpen } isLoading={ isLoading } onClick={ onToggle }>
-            { options.find((option: TOption<Sort>) => option.id === value || (!option.id && !value))?.title }
-          </SortButtonDesktop>
-        ) }
-      </PopoverTrigger>
-      <PopoverContent w="fit-content" minW="165px">
-        <PopoverBody { ...root } py={ 2 } px={ 0 } display="flex" flexDir="column">
-          { options.map((option, index) => {
-            const radio = getRadioProps({ value: option.id });
-            return (
-              <Option key={ index } { ...radio } isChecked={ radio.isChecked || (!option.id && !value) }>
-                { option.title }
-              </Option>
-            );
-          }) }
-        </PopoverBody>
-      </PopoverContent>
-    </Popover>
+    <SelectRoot collection={ collection } w="fit-content" variant="plain" { ...rest }>
+      { trigger }
+      <SelectContent>
+        { collection.items.map((item) => (
+          <SelectItem item={ item } key={ item.value }>
+            { item.label }
+          </SelectItem>
+        )) }
+      </SelectContent>
+    </SelectRoot>
   );
 };
 

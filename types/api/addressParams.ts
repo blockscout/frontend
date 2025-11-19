@@ -1,8 +1,10 @@
 import type { AddressMetadataTagApi } from './addressMetadata';
+import type { SmartContractProxyType } from './contract';
 
 export interface AddressImplementation {
-  address: string;
-  name: string | null;
+  address_hash: string;
+  filecoin_robust_address?: string | null;
+  name?: string | null;
 }
 
 export interface AddressTag {
@@ -15,6 +17,30 @@ export interface WatchlistName {
   label: string;
   display_name: string;
 }
+
+export type AddressFilecoinParams = {
+  actor_type?: FilecoinActorType;
+  id?: string | null;
+  robust?: string | null;
+};
+
+export type FilecoinActorType =
+  'account' |
+  'cron' |
+  'datacap' |
+  'eam' |
+  'ethaccount' |
+  'evm' |
+  'init' |
+  'market' |
+  'miner' |
+  'multisig' |
+  'paych' |
+  'placeholder' |
+  'power' |
+  'reward' |
+  'system' |
+  'verifreg';
 
 export interface UserTags {
   private_tags: Array<AddressTag> | null;
@@ -33,6 +59,8 @@ export type AddressParamBasic = {
     reputation: number | null;
     tags: Array<AddressMetadataTagApi>;
   } | null;
-}
+  filecoin?: AddressFilecoinParams;
+  proxy_type?: SmartContractProxyType | null;
+};
 
 export type AddressParam = UserTags & AddressParamBasic;

@@ -16,15 +16,27 @@ interface Props {
 
 const ItemTuple = ({ abiParameter, data, mode, level }: Props) => {
   return (
-    <div>
-      <p>
+    <chakra.span display="block">
+      <chakra.span display="block">
         <span>{ printRowOffset(level) }</span>
         <chakra.span fontWeight={ 500 }>{ abiParameter.name || abiParameter.internalType }</chakra.span>
         <span> { '{' }</span>
-      </p>
+      </chakra.span>
       { 'components' in abiParameter && abiParameter.components.map((component, index) => {
-        const dataObj = typeof data === 'object' && data !== null ? data : undefined;
-        const itemData = dataObj && component.name && component.name in dataObj ? dataObj[component.name as keyof typeof dataObj] : undefined;
+        const itemData = (() => {
+          if (typeof data !== 'object' || data === null) {
+            return;
+          }
+
+          if (Array.isArray(data)) {
+            return data[index];
+          }
+
+          if (component.name && component.name in data) {
+            return data[component.name as keyof typeof data];
+          }
+        })();
+
         return (
           <Item
             key={ index }
@@ -35,8 +47,8 @@ const ItemTuple = ({ abiParameter, data, mode, level }: Props) => {
           />
         );
       }) }
-      <p>{ printRowOffset(level) }{ '}' }</p>
-    </div>
+      <chakra.span display="block">{ printRowOffset(level) }{ '}' }</chakra.span>
+    </chakra.span>
   );
 };
 

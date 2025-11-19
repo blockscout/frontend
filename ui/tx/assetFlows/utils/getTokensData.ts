@@ -1,14 +1,13 @@
-import _groupBy from 'lodash/groupBy';
-import _keysIn from 'lodash/keysIn';
-import _mapValues from 'lodash/mapValues';
+import { groupBy, mapValues } from 'es-toolkit';
 
 import type { NovesResponseData } from 'types/api/noves';
 import type { TokenInfo } from 'types/api/token';
 
-import { HEX_REGEXP } from 'lib/regexp';
+import { HEX_REGEXP } from 'toolkit/utils/regexp';
 
-export interface NovesTokenInfo extends Pick<TokenInfo, 'address' | 'name' | 'symbol'> {
+export interface NovesTokenInfo extends Pick<TokenInfo, 'name' | 'symbol'> {
   id?: string | undefined;
+  address?: string;
 }
 
 export interface TokensData {
@@ -49,28 +48,28 @@ export function getTokensData(data: NovesResponseData): TokensData {
   });
 
   // Group tokens by property into arrays
-  const tokensGroupByname = _groupBy(tokens, 'name');
-  const tokensGroupBySymbol = _groupBy(tokens, 'symbol');
-  const tokensGroupById = _groupBy(tokens, 'id');
+  const tokensGroupByName = groupBy(tokens, (item) => item.name || 'null');
+  const tokensGroupBySymbol = groupBy(tokens, (item) => item.symbol || 'null');
+  const tokensGroupById = groupBy(tokens, (item) => item.id || 'null');
 
   // Map properties to an object and remove duplicates
-  const mappedNames = _mapValues(tokensGroupByname, (i) => {
+  const mappedNames = mapValues(tokensGroupByName, (i) => {
     return i[0];
   });
 
-  const mappedSymbols = _mapValues(tokensGroupBySymbol, (i) => {
+  const mappedSymbols = mapValues(tokensGroupBySymbol, (i) => {
     return i[0];
   });
 
-  const mappedIds = _mapValues(tokensGroupById, (i) => {
+  const mappedIds = mapValues(tokensGroupById, (i) => {
     return i[0];
   });
 
   const filters = [ 'undefined', 'null' ];
   // Array of keys to match in string
-  const nameList = _keysIn(mappedNames).filter(i => !filters.includes(i));
-  const symbolList = _keysIn(mappedSymbols).filter(i => !filters.includes(i));
-  const idList = _keysIn(mappedIds).filter(i => !filters.includes(i));
+  const nameList = Object.keys(mappedNames).filter(i => !filters.includes(i));
+  const symbolList = Object.keys(mappedSymbols).filter(i => !filters.includes(i));
+  const idList = Object.keys(mappedIds).filter(i => !filters.includes(i));
 
   return {
     nameList,

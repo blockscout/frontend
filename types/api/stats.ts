@@ -19,13 +19,17 @@ export type HomeStats = {
   rootstock_locked_btc?: string | null;
   last_output_root_size?: string | null;
   secondary_coin_price?: string | null;
-}
+  secondary_coin_image?: string | null;
+  celo?: {
+    epoch_number: number;
+  };
+};
 
 export type GasPrices = {
   average: GasPriceInfo | null;
   fast: GasPriceInfo | null;
   slow: GasPriceInfo | null;
-}
+};
 
 export interface GasPriceInfo {
   fiat_price: string | null;

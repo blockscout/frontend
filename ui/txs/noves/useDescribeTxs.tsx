@@ -1,90 +1,45 @@
-import { useQuery } from '@tanstack/react-query';
-import _chunk from 'lodash/chunk';
-import _uniq from 'lodash/uniq';
+import { uniq, chunk } from 'es-toolkit';
 import React from 'react';
 
-import type { NovesDescribeTxsResponse } from 'types/api/noves';
 import type { Transaction } from 'types/api/transaction';
 
 import config from 'configs/app';
-import useApiFetch from 'lib/api/useApiFetch';
+import type { ReturnType } from 'lib/api/useApiQueries';
+import useApiQueries from 'lib/api/useApiQueries';
 
 const feature = config.features.txInterpretation;
 
 const translateEnabled = feature.isEnabled && feature.provider === 'noves';
 
-export default function useDescribeTxs(items: Array<Transaction> | undefined, viewAsAccountAddress: string | undefined, isPlaceholderData: boolean) {
-  const apiFetch = useApiFetch();
+export type TxsTranslationQuery = ReturnType<'general:noves_describe_txs'> | undefined;
 
-  const txsHash = _uniq(items?.map(i => i.hash));
-  const txChunks = _chunk(txsHash, 10);
+export default function useDescribeTxs(
+  items: Array<Transaction> | undefined,
+  viewAsAccountAddress: string | undefined,
+  isPlaceholderData: boolean,
+): TxsTranslationQuery {
+  const enabled = translateEnabled && !isPlaceholderData;
+  const chunks = React.useMemo(() => {
+    if (!enabled) {
+      return [];
+    }
 
-  const queryKey = {
-    viewAsAccountAddress,
-    firstHash: txsHash[0] || '',
-    lastHash: txsHash[txsHash.length - 1] || '',
-  };
+    const txsHash = items ? uniq(items.map(({ hash }) => hash)) : [];
+    return chunk(txsHash, 10);
+  }, [ items, enabled ]);
 
-  const describeQuery = useQuery({
-    queryKey: [ 'noves_describe_txs', queryKey ],
-    queryFn: async() => {
-      const queries = txChunks.map((hashes) => {
-        if (hashes.length === 0) {
-          return Promise.resolve([]);
-        }
-
-        return apiFetch('noves_describe_txs', {
-          queryParams: {
-            viewAsAccountAddress,
-            hashes,
-          },
-        }) as Promise<NovesDescribeTxsResponse>;
-      });
-
-      return Promise.all(queries);
-    },
-    select: (data) => {
-      return data.flat();
-    },
-    enabled: translateEnabled && !isPlaceholderData,
-  });
-
-  const itemsWithTranslation = React.useMemo(() => items?.map(tx => {
-    const queryData = describeQuery.data;
-    const isLoading = describeQuery.isLoading;
-
-    if (isLoading) {
+  const query = useApiQueries(
+    'general:noves_describe_txs',
+    chunks.map((hashes) => {
       return {
-        ...tx,
-        translation: {
-          isLoading,
+        queryParams: {
+          viewAsAccountAddress,
+          hashes,
         },
       };
-    }
+    }),
+    { enabled },
+  );
 
-    if (!queryData || !translateEnabled) {
-      return tx;
-    }
-
-    const query = queryData.find(data => data.txHash.toLowerCase() === tx.hash.toLowerCase());
-
-    if (query) {
-      return {
-        ...tx,
-        translation: {
-          data: query,
-          isLoading: false,
-        },
-      };
-    }
-
-    return tx;
-  }), [ items, describeQuery ]);
-
-  if (!translateEnabled || isPlaceholderData) {
-    return items;
-  }
-
-  // return same "items" array of Transaction with a new "translation" field.
-  return itemsWithTranslation;
+  return enabled ? query : undefined;
 }

@@ -1,22 +1,24 @@
 import type { Feature } from './types';
-import type { MultichainProviderConfig } from 'types/client/multichainProviderConfig';
+import type { MultichainProviderConfig, MultichainProviderConfigParsed } from 'types/client/multichainProviderConfig';
 
 import { getEnvValue, parseEnvJson } from '../utils';
 import marketplace from './marketplace';
 
-const value = parseEnvJson<MultichainProviderConfig>(getEnvValue('NEXT_PUBLIC_MULTICHAIN_BALANCE_PROVIDER_CONFIG'));
+const value = parseEnvJson<Array<MultichainProviderConfig>>(getEnvValue('NEXT_PUBLIC_MULTICHAIN_BALANCE_PROVIDER_CONFIG'));
 
 const title = 'Multichain balance';
 
-const config: Feature<{name: string; logoUrl?: string; urlTemplate: string; dappId?: string }> = (() => {
+const config: Feature<{ providers: Array<MultichainProviderConfigParsed> }> = (() => {
   if (value) {
     return Object.freeze({
       title,
       isEnabled: true,
-      name: value.name,
-      logoUrl: value.logo,
-      urlTemplate: value.url_template,
-      dappId: marketplace.isEnabled ? value.dapp_id : undefined,
+      providers: value.map((provider) => ({
+        name: provider.name,
+        logoUrl: provider.logo,
+        urlTemplate: provider.url_template,
+        dappId: marketplace.isEnabled ? provider.dapp_id : undefined,
+      })),
     });
   }
 

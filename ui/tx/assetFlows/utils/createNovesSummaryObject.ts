@@ -19,7 +19,7 @@ export interface SummaryValues {
 
 interface NovesSummary {
   summary_template: string;
-  summary_template_variables: {[x: string]: unknown};
+  summary_template_variables: { [x: string]: unknown };
 }
 
 export const createNovesSummaryObject = (translateData: NovesResponseData) => {

@@ -3,12 +3,19 @@ import React from 'react';
 
 import type { NextPageWithLayout } from 'nextjs/types';
 
-import type { Props } from 'nextjs/getServerSideProps';
+import type { Props } from 'nextjs/getServerSideProps/handlers';
 import PageNextJs from 'nextjs/PageNextJs';
 
+import config from 'configs/app';
 import LayoutSearchResults from 'ui/shared/layout/LayoutSearchResults';
 
-const SearchResults = dynamic(() => import('ui/pages/SearchResults'), { ssr: false });
+const SearchResults = dynamic(() => {
+  if (config.features.opSuperchain.isEnabled) {
+    return import('ui/optimismSuperchain/searchResults/SearchResults');
+  }
+
+  return import('ui/pages/SearchResults');
+}, { ssr: false });
 
 const Page: NextPageWithLayout<Props> = (props: Props) => {
   return (
@@ -28,4 +35,4 @@ Page.getLayout = function getLayout(page: React.ReactElement) {
 
 export default Page;
 
-export { base as getServerSideProps } from 'nextjs/getServerSideProps';
+export { base as getServerSideProps } from 'nextjs/getServerSideProps/main';

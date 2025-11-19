@@ -1,16 +1,17 @@
-import { Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import type { OptimisticL2WithdrawalsItem } from 'types/api/optimisticL2';
 
 import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
-import LinkExternal from 'ui/shared/links/LinkExternal';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
-import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
+
+import OptimisticL2WithdrawalsItemStatus from './OptimisticL2WithdrawalsItemStatus';
 
 const rollupFeature = config.features.rollup;
 
@@ -28,7 +29,7 @@ const OptimisticL2WithdrawalsListItem = ({ item, isLoading }: Props) => {
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Msg nonce</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <Skeleton isLoaded={ !isLoading } display="inline-block">
+        <Skeleton loading={ isLoading } display="inline-block">
           { item.msg_nonce_version + '-' + item.msg_nonce }
         </Skeleton>
       </ListItemMobileGrid.Value>
@@ -50,9 +51,7 @@ const OptimisticL2WithdrawalsListItem = ({ item, isLoading }: Props) => {
       <ListItemMobileGrid.Value>
         <TxEntity
           isLoading={ isLoading }
-          hash={ item.l2_tx_hash }
-          fontSize="sm"
-          lineHeight={ 5 }
+          hash={ item.l2_transaction_hash }
           truncation="constant_long"
         />
       </ListItemMobileGrid.Value>
@@ -61,7 +60,7 @@ const OptimisticL2WithdrawalsListItem = ({ item, isLoading }: Props) => {
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>Age</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
-            <TimeAgoWithTooltip
+            <TimeWithTooltip
               timestamp={ item.l2_timestamp }
               isLoading={ isLoading }
               display="inline-block"
@@ -72,21 +71,18 @@ const OptimisticL2WithdrawalsListItem = ({ item, isLoading }: Props) => {
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Status</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        { item.status === 'Ready for relay' && rollupFeature.L2WithdrawalUrl ?
-          <LinkExternal href={ rollupFeature.L2WithdrawalUrl }>{ item.status }</LinkExternal> :
-          <Skeleton isLoaded={ !isLoading } display="inline-block">{ item.status }</Skeleton> }
+        <OptimisticL2WithdrawalsItemStatus data={ item } isLoading={ isLoading }/>
       </ListItemMobileGrid.Value>
 
-      { item.l1_tx_hash && (
+      { item.l1_transaction_hash && (
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>L1 txn hash</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
             <TxEntityL1
               isLoading={ isLoading }
-              hash={ item.l1_tx_hash }
-              fontSize="sm"
-              lineHeight={ 5 }
+              hash={ item.l1_transaction_hash }
               truncation="constant_long"
+              noCopy
             />
           </ListItemMobileGrid.Value>
         </>

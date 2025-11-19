@@ -1,7 +1,5 @@
 import type CspDev from 'csp-dev';
 
-import { getFeaturePayload } from 'configs/app/features/types';
-
 import config from 'configs/app';
 
 import { KEY_WORDS } from '../utils';
@@ -11,24 +9,17 @@ const MAIN_DOMAINS = [
   config.app.host,
 ].filter(Boolean);
 
-const getCspReportUrl = () => {
+const externalFontsDomains = (() => {
   try {
-    const sentryFeature = config.features.sentry;
-    if (!sentryFeature.isEnabled || !process.env.SENTRY_CSP_REPORT_URI) {
-      return;
-    }
-
-    const url = new URL(process.env.SENTRY_CSP_REPORT_URI);
-
-    // https://docs.sentry.io/product/security-policy-reporting/#additional-configuration
-    url.searchParams.set('sentry_environment', sentryFeature.environment);
-    sentryFeature.release && url.searchParams.set('sentry_release', sentryFeature.release);
-
-    return url.toString();
-  } catch (error) {
-    return;
-  }
-};
+    return [
+      config.UI.fonts.heading?.url,
+      config.UI.fonts.body?.url,
+    ]
+      .filter(Boolean)
+      .map((urlString) => new URL(urlString))
+      .map((url) => url.hostname);
+  } catch (error) {}
+})();
 
 export function app(): CspDev.DirectiveDescriptor {
   return {
@@ -47,21 +38,18 @@ export function app(): CspDev.DirectiveDescriptor {
       config.app.isDev ? 'ws://localhost:3000/_next/webpack-hmr' : '',
 
       // APIs
-      config.api.endpoint,
-      config.api.socket,
-      getFeaturePayload(config.features.stats)?.api.endpoint,
-      getFeaturePayload(config.features.sol2uml)?.api.endpoint,
-      getFeaturePayload(config.features.verifiedTokens)?.api.endpoint,
-      getFeaturePayload(config.features.addressVerification)?.api.endpoint,
-      getFeaturePayload(config.features.nameService)?.api.endpoint,
-      getFeaturePayload(config.features.addressMetadata)?.api.endpoint,
+      ...Object.values(config.apis).filter(Boolean).map((api) => api.endpoint),
+      ...Object.values(config.apis).filter(Boolean).map((api) => api.socketEndpoint),
 
       // chain RPC server
-      config.chain.rpcUrl,
+      ...config.chain.rpcUrls,
       'https://infragrid.v.network', // RPC providers
 
       // github (spec for api-docs page)
       'raw.githubusercontent.com',
+
+      // github api (used for Stylus contract verification)
+      'api.github.com',
     ].filter(Boolean),
 
     'script-src': [
@@ -72,8 +60,11 @@ export function app(): CspDev.DirectiveDescriptor {
       // https://github.com/vercel/next.js/issues/14221#issuecomment-657258278
       config.app.isDev ? KEY_WORDS.UNSAFE_EVAL : '',
 
-      // hash of ColorModeScript
-      '\'sha256-e7MRMmTzLsLQvIy1iizO1lXf7VWYoQ6ysj5fuUzvRwE=\'',
+      // hash of ColorModeScript: system + dark
+      '\'sha256-yYJq8IP5/WhJj6zxyTmujEqBFs/MufRufp2QKJFU76M=\'',
+
+      // CapybaraRunner
+      '\'sha256-5+YTmTcBwCYdJ8Jetbr6kyjGp0Ry/H7ptpoun6CrSwQ=\'',
     ],
 
     'style-src': [
@@ -109,12 +100,15 @@ export function app(): CspDev.DirectiveDescriptor {
     ],
 
     'media-src': [
+      KEY_WORDS.BLOB,
       '*', // see comment for img-src directive
     ],
 
     'font-src': [
       KEY_WORDS.DATA,
+      KEY_WORDS.SELF,
       ...MAIN_DOMAINS,
+      ...(externalFontsDomains || []),
     ],
 
     'object-src': [
@@ -132,18 +126,9 @@ export function app(): CspDev.DirectiveDescriptor {
 
     'frame-ancestors': [
       KEY_WORDS.SELF,
+
+      // allow remix.ethereum.org to embed our contract page in iframe
+      'remix.ethereum.org',
     ],
-
-    ...((() => {
-      if (!config.features.sentry.isEnabled) {
-        return {};
-      }
-
-      return {
-        'report-uri': [
-          getCspReportUrl(),
-        ].filter(Boolean),
-      };
-    })()),
   };
 }

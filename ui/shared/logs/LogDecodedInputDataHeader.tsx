@@ -1,7 +1,9 @@
-import { Divider, Flex, Skeleton, VStack } from '@chakra-ui/react';
+import type { FlexProps } from '@chakra-ui/react';
+import { Separator, Flex, VStack } from '@chakra-ui/react';
 import React from 'react';
 
-import Tag from 'ui/shared/chakra/Tag';
+import { Badge } from 'toolkit/chakra/badge';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 
 interface Props {
   methodId: string;
@@ -10,16 +12,24 @@ interface Props {
   rightSlot?: React.ReactNode;
 }
 
-const Item = ({ label, children, isLoading }: { label: string; children: React.ReactNode; isLoading?: boolean}) => {
+interface ItemProps extends FlexProps {
+  label: string;
+  children: React.ReactNode;
+  isLoading?: boolean;
+}
+
+const Item = ({ label, children, isLoading, ...rest }: ItemProps) => {
   return (
     <Flex
-      columnGap={ 5 }
+      w="100%"
+      columnGap={{ base: 2, lg: 5 }}
       rowGap={ 2 }
       px={{ base: 0, lg: 4 }}
       flexDir={{ base: 'column', lg: 'row' }}
       alignItems={{ base: 'flex-start', lg: 'center' }}
+      { ...rest }
     >
-      <Skeleton fontWeight={ 600 } w={{ base: 'auto', lg: '80px' }} flexShrink={ 0 } isLoaded={ !isLoading }>
+      <Skeleton fontWeight={ 600 } w={{ base: 'auto', lg: '80px' }} flexShrink={ 0 } loading={ isLoading }>
         { label }
       </Skeleton >
       { children }
@@ -31,19 +41,20 @@ const LogDecodedInputDataHeader = ({ methodId, methodCall, isLoading, rightSlot 
   return (
     <VStack
       align="flex-start"
-      divider={ <Divider/> }
-      fontSize="sm"
-      lineHeight={ 5 }
+      separator={ <Separator w="100%" borderColor="border.divider"/> }
+      textStyle="sm"
       flexGrow={ 1 }
+      gap={ 2 }
+      w="100%"
     >
       <Flex columnGap={ 2 } w="100%">
-        <Item label="Method id" isLoading={ isLoading }>
-          <Tag isLoading={ isLoading }>{ methodId }</Tag>
+        <Item label="Method id" isLoading={ isLoading } flexDir="row" alignItems="center">
+          <Badge loading={ isLoading }>{ methodId }</Badge>
         </Item>
         { rightSlot }
       </Flex>
       <Item label="Call" isLoading={ isLoading }>
-        <Skeleton isLoaded={ !isLoading } whiteSpace="pre-wrap">{ methodCall }</Skeleton>
+        <Skeleton loading={ isLoading } whiteSpace="pre-wrap" wordBreak="break-all" flexGrow={ 1 }>{ methodCall }</Skeleton>
       </Item>
     </VStack>
   );

@@ -1,8 +1,6 @@
-import type { ToastId } from '@chakra-ui/react';
-import { chakra, Alert, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Spinner } from '@chakra-ui/react';
+import { Spinner, Center } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
-import ReCaptcha from 'react-google-recaptcha';
 
 import type { SocketMessage } from 'lib/socket/types';
 import type { TokenInstance } from 'types/api/token';
@@ -10,12 +8,19 @@ import type { TokenInstance } from 'types/api/token';
 import config from 'configs/app';
 import useApiFetch from 'lib/api/useApiFetch';
 import { getResourceKey } from 'lib/api/useApiQuery';
-import { MINUTE, SECOND } from 'lib/consts';
-import useToast from 'lib/hooks/useToast';
+import getErrorMessage from 'lib/errors/getErrorMessage';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
+import { Alert } from 'toolkit/chakra/alert';
+import { DialogBody, DialogContent, DialogHeader, DialogRoot } from 'toolkit/chakra/dialog';
+import { toaster } from 'toolkit/chakra/toaster';
+import { MINUTE, SECOND } from 'toolkit/utils/consts';
+import ReCaptcha from 'ui/shared/reCaptcha/ReCaptcha';
+import useReCaptcha from 'ui/shared/reCaptcha/useReCaptcha';
 
 import { useMetadataUpdateContext } from './contexts/metadataUpdate';
+
+const TOAST_ID = 'token-instance-metadata-fetcher';
 
 interface Props {
   hash: string;
@@ -23,78 +28,70 @@ interface Props {
 }
 
 const TokenInstanceMetadataFetcher = ({ hash, id }: Props) => {
-  const timeoutId = React.useRef<number>();
-  const toastId = React.useRef<ToastId>();
+  const timeoutId = React.useRef<number>(undefined);
 
   const { status, setStatus } = useMetadataUpdateContext() || {};
   const apiFetch = useApiFetch();
-  const toast = useToast();
   const queryClient = useQueryClient();
+  const recaptcha = useReCaptcha();
 
   const handleRefreshError = React.useCallback(() => {
     setStatus?.('ERROR');
-    toastId.current && toast.update(toastId.current, {
+    toaster.update(TOAST_ID, {
       title: 'Error',
       description: 'The refreshing process has failed. Please try again.',
-      status: 'warning',
+      type: 'error',
       duration: 5 * SECOND,
-      isClosable: true,
     });
-  }, [ setStatus, toast ]);
+  }, [ setStatus ]);
 
-  const initializeUpdate = React.useCallback((reCaptchaToken: string) => {
-    apiFetch<'token_instance_refresh_metadata', unknown, unknown>('token_instance_refresh_metadata', {
+  const apiFetchFactory = React.useCallback(async(recaptchaToken?: string) => {
+    return apiFetch<'general:token_instance_refresh_metadata', unknown, unknown>('general:token_instance_refresh_metadata', {
       pathParams: { hash, id },
       fetchParams: {
         method: 'PATCH',
-        body: { recaptcha_response: reCaptchaToken },
+        body: { recaptcha_response: recaptchaToken },
+        headers: {
+          ...(recaptchaToken && { 'recaptcha-v2-response': recaptchaToken }),
+        },
       },
-    })
-      .then(() => {
-        setStatus?.('WAITING_FOR_RESPONSE');
-        toastId.current = toast({
-          title: 'Please wait',
-          description: 'Refetching metadata request sent',
-          icon: <Spinner size="sm" mr={ 2 }/>,
-          status: 'warning',
-          duration: null,
-          isClosable: false,
-        });
-        timeoutId.current = window.setTimeout(handleRefreshError, 2 * MINUTE);
-      })
-      .catch(() => {
-        toast({
-          title: 'Error',
-          description: 'Unable to initialize metadata update',
-          status: 'warning',
-        });
-        setStatus?.('ERROR');
+    });
+  }, [ apiFetch, hash, id ]);
+
+  const initializeUpdate = React.useCallback(async() => {
+    try {
+      await recaptcha.fetchProtectedResource(apiFetchFactory);
+      setStatus?.('WAITING_FOR_RESPONSE');
+      toaster.loading({
+        id: TOAST_ID,
+        title: 'Please wait',
+        description: 'Refetching metadata request sent',
+        duration: Infinity,
       });
-  }, [ apiFetch, handleRefreshError, hash, id, setStatus, toast ]);
-
-  const handleModalClose = React.useCallback(() => {
-    setStatus?.('INITIAL');
-  }, [ setStatus ]);
-
-  const handleReCaptchaChange = React.useCallback((token: string | null) => {
-    if (token) {
-      initializeUpdate(token);
+      timeoutId.current = window.setTimeout(handleRefreshError, 2 * MINUTE);
+    } catch (error) {
+      toaster.error({
+        id: TOAST_ID,
+        title: 'Error',
+        description: getErrorMessage(error) || 'Unable to initialize metadata update',
+      });
+      setStatus?.('ERROR');
     }
-  }, [ initializeUpdate ]);
 
-  const handleFormSubmit: React.FormEventHandler<HTMLFormElement> = React.useCallback((event) => {
-    event.preventDefault();
-    const data = new FormData(event.target as HTMLFormElement);
-    const token = data.get('recaptcha_token');
-    typeof token === 'string' && initializeUpdate(token);
-  }, [ initializeUpdate ]);
+  }, [ apiFetchFactory, handleRefreshError, recaptcha, setStatus ]);
+
+  const handleModalClose = React.useCallback(({ open }: { open: boolean }) => {
+    if (!open) {
+      setStatus?.('INITIAL');
+    }
+  }, [ setStatus ]);
 
   const handleSocketMessage: SocketMessage.TokenInstanceMetadataFetched['handler'] = React.useCallback((payload) => {
     if (String(payload.token_id) !== id) {
       return;
     }
 
-    const queryKey = getResourceKey('token_instance', { queryParams: { hash, id } });
+    const queryKey = getResourceKey('general:token_instance', { queryParams: { hash, id } });
     queryClient.setQueryData(queryKey, (prevData: TokenInstance | undefined): TokenInstance | undefined => {
       if (!prevData) {
         return;
@@ -115,18 +112,17 @@ const TokenInstanceMetadataFetcher = ({ hash, id }: Props) => {
       };
     });
 
-    toastId.current && toast.update(toastId.current, {
+    toaster.update(TOAST_ID, {
       title: 'Success!',
       description: 'Metadata has been refreshed',
-      status: 'success',
+      type: 'success',
       duration: 5 * SECOND,
-      isClosable: true,
     });
 
     setStatus?.('SUCCESS');
 
     window.clearTimeout(timeoutId.current);
-  }, [ hash, id, queryClient, setStatus, toast ]);
+  }, [ hash, id, queryClient, setStatus ]);
 
   const channel = useSocketChannel({
     topic: `token_instances:${ hash.toLowerCase() }`,
@@ -142,44 +138,55 @@ const TokenInstanceMetadataFetcher = ({ hash, id }: Props) => {
   });
 
   React.useEffect(() => {
+    if (status !== 'MODAL_OPENED') {
+      return;
+    }
+
+    const timeoutId = window.setTimeout(initializeUpdate, 100);
+    return () => window.clearTimeout(timeoutId);
+  }, [ status, initializeUpdate ]);
+
+  React.useEffect(() => {
     return () => {
       timeoutId.current && window.clearTimeout(timeoutId.current);
-      toastId.current && toast.close(toastId.current);
+      toaster.remove(TOAST_ID);
     };
-  // run only on mount/unmount
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // run only on mount/unmount
   }, []);
 
+  if (status !== 'MODAL_OPENED') {
+    return null;
+  }
+
   return (
-    <Modal isOpen={ status === 'MODAL_OPENED' } onClose={ handleModalClose } size={{ base: 'full', lg: 'sm' }}>
-      <ModalOverlay/>
-      <ModalContent>
-        <ModalHeader fontWeight="500" textStyle="h3" mb={ 4 }>Solve captcha to refresh metadata</ModalHeader>
-        <ModalCloseButton/>
-        <ModalBody mb={ 0 } minH="78px">
-          { config.services.reCaptcha.siteKey ? (
-            <ReCaptcha
-              className="recaptcha"
-              sitekey={ config.services.reCaptcha.siteKey }
-              onChange={ handleReCaptchaChange }
-            />
+    <DialogRoot
+      open={ status === 'MODAL_OPENED' }
+      onOpenChange={ handleModalClose }
+      size={{ lgDown: 'full', lg: 'sm' }}
+      trapFocus={ false }
+      preventScroll={ false }
+      modal={ false }
+      closeOnInteractOutside={ false }
+    >
+      <DialogContent>
+        <DialogHeader fontWeight="500" textStyle="h3" mb={ 4 }>Sending request</DialogHeader>
+        <DialogBody mb={ 0 } minH="78px">
+          { config.services.reCaptchaV2.siteKey ? (
+            <>
+              <Center h="80px">
+                <Spinner size="lg"/>
+              </Center>
+              <ReCaptcha { ...recaptcha } hideWarning/>
+            </>
           ) : (
             <Alert status="error">
-                Metadata refresh is not available at the moment since reCaptcha is not configured for this application.
-                Please contact the service maintainer to make necessary changes in the service configuration.
+              Metadata refresh is not available at the moment since reCaptcha is not configured for this application.
+              Please contact the service maintainer to make necessary changes in the service configuration.
             </Alert>
           ) }
-          { /* ONLY FOR TEST PURPOSES */ }
-          <chakra.form noValidate onSubmit={ handleFormSubmit } display="none">
-            <chakra.input
-              name="recaptcha_token"
-              placeholder="reCaptcha token"
-            />
-            <chakra.button type="submit">Submit</chakra.button>
-          </chakra.form>
-        </ModalBody>
-      </ModalContent>
-    </Modal>
+        </DialogBody>
+      </DialogContent>
+    </DialogRoot>
   );
 };
 

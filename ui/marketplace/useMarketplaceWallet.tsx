@@ -4,18 +4,19 @@ import type { Account, SignTypedDataParameters } from 'viem';
 import { useAccount, useSendTransaction, useSwitchChain, useSignMessage, useSignTypedData } from 'wagmi';
 
 import config from 'configs/app';
+import useRewardsActivity from 'lib/hooks/useRewardsActivity';
 import * as mixpanel from 'lib/mixpanel/index';
 
 type SendTransactionArgs = {
   chainId?: number;
   mode?: 'prepared';
-  to: `0x${ string }`;
+  to: `0x${ string }` | null;
 };
 
 export type SignTypedDataArgs<
   TTypedData extends
-  | TypedData
-  | {
+  | TypedData |
+  {
     [key: string]: unknown;
   } = TypedData,
   TPrimaryType extends string = string,
@@ -27,11 +28,12 @@ export default function useMarketplaceWallet(appId: string) {
   const { signMessageAsync } = useSignMessage();
   const { signTypedDataAsync } = useSignTypedData();
   const { switchChainAsync } = useSwitchChain();
+  const { trackTransaction, trackTransactionConfirm } = useRewardsActivity();
 
   const logEvent = useCallback((event: mixpanel.EventPayload<mixpanel.EventTypes.WALLET_ACTION>['Action']) => {
     mixpanel.logEvent(
       mixpanel.EventTypes.WALLET_ACTION,
-      { Action: event, Address: address, AppId: appId },
+      { Action: event, Address: address, AppId: appId, Source: 'Dappscout' },
     );
   }, [ address, appId ]);
 
@@ -43,10 +45,14 @@ export default function useMarketplaceWallet(appId: string) {
 
   const sendTransaction = useCallback(async(transaction: SendTransactionArgs) => {
     await switchNetwork();
+    const activityResponse = await trackTransaction(address ?? '', transaction.to ?? '');
     const tx = await sendTransactionAsync(transaction);
+    if (activityResponse?.token) {
+      await trackTransactionConfirm(tx, activityResponse.token);
+    }
     logEvent('Send Transaction');
     return tx;
-  }, [ sendTransactionAsync, switchNetwork, logEvent ]);
+  }, [ sendTransactionAsync, switchNetwork, logEvent, trackTransaction, trackTransactionConfirm, address ]);
 
   const signMessage = useCallback(async(message: string) => {
     await switchNetwork();

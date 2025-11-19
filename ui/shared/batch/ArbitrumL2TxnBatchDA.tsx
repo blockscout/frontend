@@ -1,7 +1,8 @@
-import { Skeleton, Tag } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ArbitrumL2TxnBatchesItem } from 'types/api/arbitrumL2';
+
+import { Badge } from 'toolkit/chakra/badge';
 
 export interface Props {
   dataContainer: ArbitrumL2TxnBatchesItem['batch_data_container'];
@@ -17,16 +18,16 @@ const ArbitrumL2TxnBatchDA = ({ dataContainer, isLoading }: Props) => {
 
   switch (dataContainer) {
     case 'in_blob4844':
-      text = 'blob';
+      text = 'Blob';
       break;
     case 'in_anytrust':
-      text = 'anytrust';
+      text = 'AnyTrust';
       break;
     case 'in_calldata':
-      text = 'calldata';
+      text = 'Calldata';
       break;
     case 'in_celestia':
-      text = 'celestia';
+      text = 'Celestia';
       break;
     default:
       text = '';
@@ -37,11 +38,9 @@ const ArbitrumL2TxnBatchDA = ({ dataContainer, isLoading }: Props) => {
   }
 
   return (
-    <Skeleton isLoaded={ !isLoading }>
-      <Tag colorScheme={ dataContainer === 'in_blob4844' ? 'yellow' : 'gray' }>
-        { text }
-      </Tag>
-    </Skeleton>
+    <Badge loading={ isLoading } colorPalette={ dataContainer === 'in_blob4844' ? 'yellow' : 'gray' }>
+      { text }
+    </Badge>
   );
 };
 

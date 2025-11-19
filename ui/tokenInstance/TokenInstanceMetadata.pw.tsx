@@ -21,8 +21,9 @@ test('base view +@mobile', async({ render }) => {
   await expect(component).toHaveScreenshot();
 });
 
-test('raw view', async({ render }) => {
+test('raw view', async({ render, page }) => {
   const component = await render(<TokenInstanceMetadata data={ tokenInstanceMock.withRichMetadata.metadata }/>);
-  await component.locator('select').selectOption('JSON');
+  await component.getByRole('combobox').click();
+  await page.getByRole('option', { name: 'JSON' }).click();
   await expect(component).toHaveScreenshot();
 });

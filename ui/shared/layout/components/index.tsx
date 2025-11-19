@@ -6,9 +6,11 @@ import Content from './Content';
 import MainArea from './MainArea';
 import MainColumn from './MainColumn';
 import NavBar from './NavBar';
+import Root from './Root';
 import SideBar from './SideBar';
 
 export {
+  Root,
   Container,
   Content,
   MainArea,
@@ -19,7 +21,8 @@ export {
   TopRow,
 };
 
-// Container
+// Root
+//  Container
 //    TopRow
 //    MainArea
 //       SideBar

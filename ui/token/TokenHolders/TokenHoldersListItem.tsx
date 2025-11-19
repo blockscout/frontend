@@ -1,11 +1,12 @@
-import { Skeleton } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { TokenHolder, TokenInfo } from 'types/api/token';
 
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
+import TruncatedValue from 'ui/shared/TruncatedValue';
 import Utilization from 'ui/shared/Utilization/Utilization';
 
 interface Props {
@@ -33,16 +34,14 @@ const TokenHoldersListItem = ({ holder, token, isLoading }: Props) => {
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>ID#</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
-            <Skeleton isLoaded={ !isLoading } display="inline-block">
-              { holder.token_id }
-            </Skeleton>
+            <TruncatedValue value={ holder.token_id } isLoading={ isLoading } w="100%"/>
           </ListItemMobileGrid.Value>
         </>
       ) }
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Quantity</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <Skeleton isLoaded={ !isLoading } display="inline-block">
+        <Skeleton loading={ isLoading } display="inline-block">
           { quantity }
         </Skeleton>
       </ListItemMobileGrid.Value>

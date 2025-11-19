@@ -9,7 +9,7 @@ type ReturnType = {
 } | {
   type: 'search_engine';
   bot: SearchEngineBot;
-} | undefined
+} | undefined;
 
 export default function detectBotRequest(req: IncomingMessage): ReturnType {
   const userAgent = req.headers['user-agent'];

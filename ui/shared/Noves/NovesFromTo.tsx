@@ -1,12 +1,13 @@
-import { Box, Skeleton } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import type { FC } from 'react';
 import React from 'react';
 
 import type { NovesResponseData } from 'types/api/noves';
 
+import { Badge } from 'toolkit/chakra/badge';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import type { NovesFlowViewItem } from 'ui/tx/assetFlows/utils/generateFlowViewData';
 
-import Tag from '../chakra/Tag';
 import AddressEntity from '../entities/address/AddressEntity';
 import { getActionFromTo, getFromTo } from './utils';
 
@@ -34,16 +35,17 @@ const NovesFromTo: FC<Props> = ({ isLoaded, txData, currentAddress = '', item })
   const address = { hash: data.address || '', name: data.name || '' };
 
   return (
-    <Skeleton borderRadius="sm" isLoaded={ isLoaded }>
+    <Skeleton borderRadius="sm" loading={ !isLoaded }>
       <Box display="flex">
-        <Tag
-          colorScheme={ isSent ? 'yellow' : 'green' }
+        <Badge
+          colorPalette={ isSent ? 'yellow' : 'green' }
           px={ 0 }
           w="113px"
-          textAlign="center"
+          flexShrink={ 0 }
+          justifyContent="center"
         >
           { data.text }
-        </Tag>
+        </Badge>
 
         <AddressEntity
           address={ address }

@@ -1,11 +1,15 @@
-import { HStack, Tag } from '@chakra-ui/react';
+import { HStack } from '@chakra-ui/react';
 import React from 'react';
+
+import type { TagProps } from 'toolkit/chakra/tag';
+import { Tag } from 'toolkit/chakra/tag';
 
 type Props<T extends string> = {
   items: Array<{ id: T; title: string }>;
+  tagSize?: TagProps['size'];
 } & (
   {
-    value: T;
+    value?: T;
     onChange: (value: T) => void;
     isMulti?: false;
   } | {
@@ -13,9 +17,9 @@ type Props<T extends string> = {
     onChange: (value: Array<T>) => void;
     isMulti: true;
   }
-)
+);
 
-const TagGroupSelect = <T extends string>({ items, value, isMulti, onChange }: Props<T>) => {
+const TagGroupSelect = <T extends string>({ items, value, isMulti, onChange, tagSize, ...rest }: Props<T>) => {
   const onItemClick = React.useCallback((event: React.SyntheticEvent) => {
     const itemValue = (event.currentTarget as HTMLDivElement).getAttribute('data-id') as T;
     if (isMulti) {
@@ -32,7 +36,7 @@ const TagGroupSelect = <T extends string>({ items, value, isMulti, onChange }: P
   }, [ isMulti, onChange, value ]);
 
   return (
-    <HStack>
+    <HStack { ...rest }>
       { items.map(item => {
         const isSelected = isMulti ? value.includes(item.id) : value === item.id;
         return (
@@ -40,10 +44,12 @@ const TagGroupSelect = <T extends string>({ items, value, isMulti, onChange }: P
             variant="select"
             key={ item.id }
             data-id={ item.id }
-            data-selected={ isSelected }
+            selected={ isSelected }
             fontWeight={ 500 }
-            cursor="pointer"
             onClick={ onItemClick }
+            size={ tagSize }
+            display="inline-flex"
+            justifyContent="center"
           >
             { item.title }
           </Tag>

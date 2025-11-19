@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js';
 
-import { ZERO } from 'lib/consts';
+import { ZERO } from 'toolkit/utils/consts';
 
 interface Params {
   value: string;
@@ -28,5 +28,5 @@ export default function getCurrencyValue({ value, accuracy, accuracyUsd, decimal
     }
   }
 
-  return { valueStr: valueResult, usd: usdResult, usdBn };
+  return { valueCurr, valueStr: valueResult, usd: usdResult, usdBn };
 }

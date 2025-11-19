@@ -1,4 +1,4 @@
-import _clamp from 'lodash/clamp';
+import { clamp } from 'es-toolkit';
 import React from 'react';
 import { useInView } from 'react-intersection-observer';
 
@@ -15,7 +15,7 @@ export default function useLazyRenderedList(list: Array<unknown>, isEnabled: boo
 
   React.useEffect(() => {
     if (inView) {
-      setRenderedItemsNum((prev) => _clamp(prev + STEP, 0, list.length));
+      setRenderedItemsNum((prev) => clamp(prev + STEP, 0, list.length));
     }
   }, [ inView, list.length ]);
 

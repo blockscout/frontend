@@ -17,23 +17,38 @@ type NavItemCommon = {
 export type NavItemInternal = NavItemCommon & {
   nextRoute: Route;
   isActive?: boolean;
-}
+};
 
 export type NavItemExternal = {
   text: string;
   url: string;
-}
+};
 
-export type NavItem = NavItemInternal | NavItemExternal
+export type NavItem = NavItemInternal | NavItemExternal;
 
 export type NavGroupItem = NavItemCommon & {
   isActive?: boolean;
   subItems: Array<NavItem> | Array<Array<NavItem>>;
-}
-
-import type { ArrayElement } from '../utils';
-
-export const NAVIGATION_LINK_IDS = [ 'rpc_api', 'eth_rpc_api' ] as const;
-export type NavigationLinkId = ArrayElement<typeof NAVIGATION_LINK_IDS>;
+};
 
 export type NavigationLayout = 'vertical' | 'horizontal';
+
+export type NavigationPromoBannerConfig = {
+  img_url: string;
+  text: string;
+  bg_color: {
+    light: string;
+    dark: string;
+  };
+  text_color: {
+    light: string;
+    dark: string;
+  };
+  link_url: string;
+} | {
+  img_url: {
+    small: string;
+    large: string;
+  };
+  link_url: string;
+};

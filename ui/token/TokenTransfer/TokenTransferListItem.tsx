@@ -1,75 +1,84 @@
-import { Grid, Flex, Skeleton } from '@chakra-ui/react';
+import { Flex, Grid } from '@chakra-ui/react';
 import React from 'react';
 
+import type { TokenInstance } from 'types/api/token';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
+import type { ClusterChainConfig } from 'types/multichain';
 
 import getCurrencyValue from 'lib/getCurrencyValue';
 import { NFT_TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
+import { Badge } from 'toolkit/chakra/badge';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
-import Tag from 'ui/shared/chakra/Tag';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
-import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import TruncatedValue from 'ui/shared/TruncatedValue';
 
-type Props = TokenTransfer & { tokenId?: string; isLoading?: boolean };
+type Props = TokenTransfer & { tokenId?: string; isLoading?: boolean; instance?: TokenInstance; chainData?: ClusterChainConfig };
 
 const TokenTransferListItem = ({
   token,
   total,
-  tx_hash: txHash,
+  transaction_hash: txHash,
   from,
   to,
   method,
   timestamp,
   tokenId,
   isLoading,
+  instance,
+  chainData,
 }: Props) => {
-  const { usd, valueStr } = 'value' in total && total.value !== null ? getCurrencyValue({
+  const { usd, valueStr } = total && 'value' in total && total.value !== null ? getCurrencyValue({
     value: total.value,
-    exchangeRate: token.exchange_rate,
+    exchangeRate: token?.exchange_rate,
     accuracy: 8,
     accuracyUsd: 2,
     decimals: total.decimals || '0',
   }) : { usd: null, valueStr: null };
 
   return (
-    <ListItemMobile rowGap={ 3 } isAnimated>
+    <ListItemMobile rowGap={ 3 }>
       <Flex justifyContent="space-between" alignItems="center" lineHeight="24px" width="100%">
-        <TxEntity
-          isLoading={ isLoading }
-          hash={ txHash }
-          truncation="constant_long"
-          fontWeight="700"
-        />
-        <TimeAgoWithTooltip
+        { txHash && (
+          <TxEntity
+            isLoading={ isLoading }
+            hash={ txHash }
+            truncation="constant_long"
+            fontWeight="700"
+            chain={ chainData }
+          />
+        ) }
+        <TimeWithTooltip
           timestamp={ timestamp }
           enableIncrement
           isLoading={ isLoading }
-          color="text_secondary"
+          color="text.secondary"
           fontWeight="400"
           fontSize="sm"
           display="inline-block"
         />
       </Flex>
-      { method && <Tag isLoading={ isLoading }>{ method }</Tag> }
+      { method && <Badge loading={ isLoading }>{ method }</Badge> }
       <AddressFromTo
         from={ from }
         to={ to }
         isLoading={ isLoading }
-        tokenHash={ token.address }
+        tokenHash={ token?.address_hash }
+        tokenSymbol={ token?.symbol ?? undefined }
         w="100%"
         fontWeight="500"
       />
-      { valueStr && (token.type === 'ERC-20' || token.type === 'ERC-1155') && (
+      { valueStr && token && (token.type === 'ERC-20' || token.type === 'ERC-1155') && (
         <Grid gap={ 2 } templateColumns={ `1fr auto auto${ usd ? ' auto' : '' }` }>
-          <Skeleton isLoaded={ !isLoading } flexShrink={ 0 } fontWeight={ 500 }>
+          <Skeleton loading={ isLoading } flexShrink={ 0 } fontWeight={ 500 }>
             Value
           </Skeleton>
           <Skeleton
-            isLoaded={ !isLoading }
-            color="text_secondary"
+            loading={ isLoading }
+            color="text.secondary"
             wordBreak="break-all"
             overflow="hidden"
             flexGrow={ 1 }
@@ -79,8 +88,8 @@ const TokenTransferListItem = ({
           { token.symbol && <TruncatedValue isLoading={ isLoading } value={ token.symbol }/> }
           { usd && (
             <Skeleton
-              isLoaded={ !isLoading }
-              color="text_secondary"
+              loading={ isLoading }
+              color="text.secondary"
               wordBreak="break-all"
               overflow="hidden"
             >
@@ -89,10 +98,11 @@ const TokenTransferListItem = ({
           ) }
         </Grid>
       ) }
-      { 'token_id' in total && (NFT_TOKEN_TYPE_IDS.includes(token.type)) && total.token_id !== null && (
+      { total && 'token_id' in total && token && (NFT_TOKEN_TYPE_IDS.includes(token.type)) && total.token_id !== null && (
         <NftEntity
-          hash={ token.address }
+          hash={ token.address_hash }
           id={ total.token_id }
+          instance={ instance || total.token_instance }
           noLink={ Boolean(tokenId && tokenId === total.token_id) }
           isLoading={ isLoading }
         />

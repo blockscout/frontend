@@ -13,12 +13,12 @@ it('split string without capturing variables', () => {
 });
 
 it('checks that summary is valid', () => {
-  const result = checkSummary('{foo} {native} {bar}', { foo: { type: 'string', value: 'foo' }, bar: { type: 'string', value: 'bar' } });
+  const result = checkSummary('{foo} {native} {bar} {wei}', { foo: { type: 'string', value: 'foo' }, bar: { type: 'string', value: 'bar' } });
   expect(result).toBe(true);
 });
 
 it('checks that summary is invalid', () => {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+
   // @ts-ignore:
   const result = checkSummary('{foo} {native} {bar}', { foo: { type: 'string', value: null }, bar: { type: 'string', value: 'bar' } });
   expect(result).toBe(false);

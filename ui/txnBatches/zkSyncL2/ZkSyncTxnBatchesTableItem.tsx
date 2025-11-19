@@ -1,4 +1,4 @@
-import { Td, Tr, Text, Skeleton } from '@chakra-ui/react';
+import { Text } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ZkSyncBatchesItem } from 'types/api/zkSyncL2';
@@ -6,11 +6,12 @@ import type { ZkSyncBatchesItem } from 'types/api/zkSyncL2';
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
+import { Link } from 'toolkit/chakra/link';
+import { TableCell, TableRow } from 'toolkit/chakra/table';
 import BatchEntityL2 from 'ui/shared/entities/block/BatchEntityL2';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
-import LinkInternal from 'ui/shared/links/LinkInternal';
 import ZkSyncL2TxnBatchStatus from 'ui/shared/statusTag/ZkSyncL2TxnBatchStatus';
-import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 const rollupFeature = config.features.rollup;
 
@@ -22,63 +23,62 @@ const ZkSyncTxnBatchesTableItem = ({ item, isLoading }: Props) => {
   }
 
   return (
-    <Tr>
-      <Td verticalAlign="middle">
+    <TableRow>
+      <TableCell verticalAlign="middle">
         <BatchEntityL2
           isLoading={ isLoading }
           number={ item.number }
-          fontSize="sm"
-          lineHeight={ 5 }
+          textStyle="sm"
           fontWeight={ 600 }
           noIcon
         />
-      </Td>
-      <Td verticalAlign="middle">
+      </TableCell>
+      <TableCell verticalAlign="middle">
         <ZkSyncL2TxnBatchStatus status={ item.status } isLoading={ isLoading }/>
-      </Td>
-      <Td verticalAlign="middle">
-        <TimeAgoWithTooltip
+      </TableCell>
+      <TableCell verticalAlign="middle">
+        <TimeWithTooltip
           timestamp={ item.timestamp }
           fallbackText="Undefined"
           isLoading={ isLoading }
-          color="text_secondary"
+          color="text.secondary"
         />
-      </Td>
-      <Td verticalAlign="middle">
-        <LinkInternal
+      </TableCell>
+      <TableCell verticalAlign="middle">
+        <Link
           href={ route({ pathname: '/batches/[number]', query: { number: item.number.toString(), tab: 'txs' } }) }
-          isLoading={ isLoading }
+          loading={ isLoading }
+          minW="40px"
+          my={ 1 }
         >
-          <Skeleton isLoaded={ !isLoading } minW="40px" my={ 1 }>
-            { item.tx_count }
-          </Skeleton>
-        </LinkInternal>
-      </Td>
-      <Td verticalAlign="middle">
+          { item.transactions_count }
+        </Link>
+      </TableCell>
+      <TableCell verticalAlign="middle">
         { item.commit_transaction_hash ? (
           <TxEntityL1
             isLoading={ isLoading }
             hash={ item.commit_transaction_hash }
-            fontSize="sm"
-            lineHeight={ 5 }
+            textStyle="sm"
             truncation="constant_long"
             noIcon
+            noCopy
           />
         ) : <Text>Pending</Text> }
-      </Td>
-      <Td verticalAlign="middle">
+      </TableCell>
+      <TableCell verticalAlign="middle">
         { item.prove_transaction_hash ? (
           <TxEntityL1
             isLoading={ isLoading }
             hash={ item.prove_transaction_hash }
-            fontSize="sm"
-            lineHeight={ 5 }
+            textStyle="sm"
             truncation="constant_long"
             noIcon
+            noCopy
           />
         ) : <Text>Pending</Text> }
-      </Td>
-    </Tr>
+      </TableCell>
+    </TableRow>
   );
 };
 

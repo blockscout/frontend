@@ -1,5 +1,4 @@
-import _mapValues from 'lodash/mapValues';
-import type { ChangeEvent } from 'react';
+import { mapValues } from 'es-toolkit';
 import React from 'react';
 
 import type { FormattedData } from './types';
@@ -13,8 +12,8 @@ export default function useTokenSelect(data: FormattedData) {
   const [ erc404sort, setErc404Sort ] = React.useState<Sort>('desc');
   const [ erc20sort, setErc20Sort ] = React.useState<Sort>('desc');
 
-  const onInputChange = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value);
+  const onInputChange = React.useCallback((searchTerm: string) => {
+    setSearchTerm(searchTerm);
   }, []);
 
   const onSortClick = React.useCallback((event: React.SyntheticEvent) => {
@@ -31,7 +30,7 @@ export default function useTokenSelect(data: FormattedData) {
   }, []);
 
   const filteredData = React.useMemo(() => {
-    return _mapValues(data, ({ items, isOverflow }) => ({
+    return mapValues(data, ({ items, isOverflow }) => ({
       isOverflow,
       items: items.filter(filterTokens(searchTerm.toLowerCase())),
     }));

@@ -8,10 +8,9 @@ import { test, expect, devices } from 'playwright/lib';
 import AddressTokenTransfers from './AddressTokenTransfers';
 
 const CURRENT_ADDRESS = '0xd789a607CEac2f0E14867de4EB15b15C9FFB5859';
-const TOKEN_HASH = '0x1189a607CEac2f0E14867de4EB15b15C9FFB5859';
 const hooksConfig = {
   router: {
-    query: { hash: CURRENT_ADDRESS, token: TOKEN_HASH },
+    query: { hash: CURRENT_ADDRESS },
   },
 };
 
@@ -28,10 +27,10 @@ const tokenTransfersWoPagination = {
   next_page_params: null,
 };
 
-test('with token filter and pagination', async({ render, mockApiResponse }) => {
-  await mockApiResponse('address_token_transfers', tokenTransfersWithPagination, {
+test('with pagination', async({ render, mockApiResponse }) => {
+  await mockApiResponse('general:address_token_transfers', tokenTransfersWithPagination, {
     pathParams: { hash: CURRENT_ADDRESS },
-    queryParams: { token: TOKEN_HASH },
+    queryParams: { type: [] },
   });
   const component = await render(
     <Box pt={{ base: '134px', lg: 6 }}>
@@ -42,10 +41,10 @@ test('with token filter and pagination', async({ render, mockApiResponse }) => {
   await expect(component).toHaveScreenshot();
 });
 
-test('with token filter and no pagination', async({ render, mockApiResponse }) => {
-  await mockApiResponse('address_token_transfers', tokenTransfersWoPagination, {
+test('without pagination', async({ render, mockApiResponse }) => {
+  await mockApiResponse('general:address_token_transfers', tokenTransfersWoPagination, {
     pathParams: { hash: CURRENT_ADDRESS },
-    queryParams: { token: TOKEN_HASH },
+    queryParams: { type: [] },
   });
   const component = await render(
     <Box pt={{ base: '134px', lg: 6 }}>
@@ -59,10 +58,10 @@ test('with token filter and no pagination', async({ render, mockApiResponse }) =
 test.describe('mobile', () => {
   test.use({ viewport: devices['iPhone 13 Pro'].viewport });
 
-  test('with token filter and pagination', async({ render, mockApiResponse }) => {
-    await mockApiResponse('address_token_transfers', tokenTransfersWithPagination, {
+  test('with pagination', async({ render, mockApiResponse }) => {
+    await mockApiResponse('general:address_token_transfers', tokenTransfersWithPagination, {
       pathParams: { hash: CURRENT_ADDRESS },
-      queryParams: { token: TOKEN_HASH },
+      queryParams: { type: [] },
     });
     const component = await render(
       <Box pt={{ base: '134px', lg: 6 }}>
@@ -73,10 +72,10 @@ test.describe('mobile', () => {
     await expect(component).toHaveScreenshot();
   });
 
-  test('with token filter and no pagination', async({ render, mockApiResponse }) => {
-    await mockApiResponse('address_token_transfers', tokenTransfersWoPagination, {
+  test('without pagination', async({ render, mockApiResponse }) => {
+    await mockApiResponse('general:address_token_transfers', tokenTransfersWoPagination, {
       pathParams: { hash: CURRENT_ADDRESS },
-      queryParams: { token: TOKEN_HASH },
+      queryParams: { type: [] },
     });
     const component = await render(
       <Box pt={{ base: '134px', lg: 6 }}>
@@ -95,7 +94,7 @@ test.describe('socket', () => {
         query: { hash: CURRENT_ADDRESS },
       },
     };
-    await mockApiResponse('address_token_transfers', tokenTransfersWithPagination, {
+    await mockApiResponse('general:address_token_transfers', tokenTransfersWithPagination, {
       pathParams: { hash: CURRENT_ADDRESS },
       queryParams: { type: [] },
     });
@@ -115,7 +114,8 @@ test.describe('socket', () => {
 
     socketServer.sendMessage(socket, channel, 'token_transfer', { token_transfers: [ tokenTransferMock.erc1155B, tokenTransferMock.erc1155C ] });
 
-    await page.waitForSelector('tbody tr:nth-child(3)');
+    const thirdRow = page.locator('tbody tr:nth-child(3)');
+    await thirdRow.waitFor();
 
     const itemsCountNew = await page.locator('tbody tr').count();
     expect(itemsCountNew).toBe(4);
@@ -127,7 +127,7 @@ test.describe('socket', () => {
         query: { hash: CURRENT_ADDRESS },
       },
     };
-    await mockApiResponse('address_token_transfers', tokenTransfersWithPagination, {
+    await mockApiResponse('general:address_token_transfers', tokenTransfersWithPagination, {
       pathParams: { hash: CURRENT_ADDRESS },
       queryParams: { type: [] },
     });
@@ -147,7 +147,8 @@ test.describe('socket', () => {
 
     socketServer.sendMessage(socket, channel, 'token_transfer', { token_transfers: [ tokenTransferMock.erc1155B, tokenTransferMock.erc1155C ] });
 
-    await page.waitForSelector('tbody tr:nth-child(3)');
+    const thirdRow = page.locator('tbody tr:nth-child(3)');
+    await thirdRow.waitFor();
 
     const itemsCountNew = await page.locator('tbody tr').count();
     expect(itemsCountNew).toBe(3);
@@ -162,7 +163,7 @@ test.describe('socket', () => {
         query: { hash: CURRENT_ADDRESS, type: 'ERC-1155' },
       },
     };
-    await mockApiResponse('address_token_transfers', tokenTransfersWithPagination, {
+    await mockApiResponse('general:address_token_transfers', tokenTransfersWithPagination, {
       pathParams: { hash: CURRENT_ADDRESS },
       queryParams: { type: 'ERC-1155' },
     });
@@ -183,7 +184,8 @@ test.describe('socket', () => {
 
     socketServer.sendMessage(socket, channel, 'token_transfer', { token_transfers: [ tokenTransferMock.erc1155B, tokenTransferMock.erc20 ] });
 
-    await page.waitForSelector('tbody tr:nth-child(3)');
+    const thirdRow = page.locator('tbody tr:nth-child(3)');
+    await thirdRow.waitFor();
 
     const itemsCountNew = await page.locator('tbody tr').count();
     expect(itemsCountNew).toBe(3);
@@ -195,7 +197,7 @@ test.describe('socket', () => {
         query: { hash: CURRENT_ADDRESS, type: 'ERC-1155' },
       },
     };
-    await mockApiResponse('address_token_transfers', tokenTransfersWithPagination, {
+    await mockApiResponse('general:address_token_transfers', tokenTransfersWithPagination, {
       pathParams: { hash: CURRENT_ADDRESS },
       queryParams: { type: 'ERC-1155' },
     });
@@ -221,7 +223,8 @@ test.describe('socket', () => {
       { token_transfers: [ tokenTransferMock.erc1155B, tokenTransferMock.erc20, tokenTransferMock.erc1155C, tokenTransferMock.erc721 ] },
     );
 
-    await page.waitForSelector('tbody tr:nth-child(3)');
+    const thirdRow = page.locator('tbody tr:nth-child(3)');
+    await thirdRow.waitFor();
 
     const itemsCountNew = await page.locator('tbody tr').count();
     expect(itemsCountNew).toBe(3);

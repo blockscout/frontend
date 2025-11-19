@@ -1,9 +1,16 @@
-import type { SolidityscanReport, SolidityscanReportSeverityDistribution } from 'types/api/contract';
+import type { Chain } from 'viem';
 
-export type MarketplaceAppPreview = {
+import type { ExternalChain } from 'types/externalChains';
+
+import type config from 'configs/app';
+
+export type MarketplaceAppBase = {
   id: string;
+  author: string;
+  site?: string;
   external?: boolean;
   title: string;
+  description: string;
   logo: string;
   logoDarkMode?: string;
   shortDescription: string;
@@ -11,61 +18,55 @@ export type MarketplaceAppPreview = {
   url: string;
   internalWallet?: boolean;
   priority?: number;
-}
+};
+
+export type MarketplaceAppRating = {
+  rating?: number;
+  ratingsTotalCount?: number;
+  userRating?: number;
+};
 
 export type MarketplaceAppSocialInfo = {
   twitter?: string;
   telegram?: string;
   github?: string | Array<string>;
   discord?: string;
-}
+};
 
-export type MarketplaceAppOverview = MarketplaceAppPreview & MarketplaceAppSocialInfo & {
-  author: string;
-  description: string;
-  site?: string;
-}
-
-export type AppRating = {
-  recordId: string;
-  value: number | undefined;
-}
-
-export type MarketplaceAppWithSecurityReport = MarketplaceAppOverview & {
-  securityReport?: MarketplaceAppSecurityReport;
-  rating?: AppRating;
-}
+export type MarketplaceApp = MarketplaceAppBase & MarketplaceAppSocialInfo & MarketplaceAppRating;
 
 export enum MarketplaceCategory {
   ALL = 'All',
   FAVORITES = 'Favorites',
 }
 
-export enum ContractListTypes {
-  ANALYZED = 'Analyzed',
-  ALL = 'All',
-  VERIFIED = 'Verified',
+export interface EssentialDappsChainConfig extends ExternalChain {
+  app_config?: Pick<typeof config, 'app' | 'chain'> & {
+    apis: Pick<typeof config['apis'], 'general'>;
+  };
+  contracts?: Chain['contracts'];
 }
 
-export type MarketplaceAppSecurityReport = {
-  overallInfo: {
-    verifiedNumber: number;
-    totalContractsNumber: number;
-    solidityScanContractsNumber: number;
-    securityScore: number;
-    totalIssues?: number;
-    issueSeverityDistribution: SolidityscanReportSeverityDistribution;
+export type EssentialDappsConfig = {
+  swap?: {
+    chains: Array<string>;
+    fee: string;
+    integrator: string;
   };
-  contractsData: Array<{
-    address: string;
-    isVerified: boolean;
-    solidityScanReport?: SolidityscanReport['scan_report'] | null;
-  }>;
-}
+  revoke?: {
+    chains: Array<string>;
+  };
+  multisend?: {
+    chains: Array<string>;
+    posthogKey?: string;
+    posthogHost?: string;
+  };
+};
 
-export type MarketplaceAppSecurityReportRaw = {
-  appName: string;
-  chainsData: {
-    [chainId: string]: MarketplaceAppSecurityReport;
-  };
+export interface MarketplaceTitles {
+  entity_name: string;
+  menu_item: string;
+  title: string;
+  subtitle_essential_dapps: string;
+  subtitle_list: string;
 }

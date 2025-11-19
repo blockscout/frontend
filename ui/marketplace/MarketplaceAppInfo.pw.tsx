@@ -16,7 +16,7 @@ test.describe('mobile', () => {
 
   test('base view', async({ render, page }) => {
     await render(<MarketplaceAppInfo data={ appsMock[0] }/>);
-    await page.getByLabel('Show project info').click();
+    await page.getByLabel('Show info').click();
     await expect(page).toHaveScreenshot();
   });
 });

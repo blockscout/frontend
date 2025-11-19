@@ -13,7 +13,7 @@ const wallets = ((): Array<WalletType> | undefined => {
   const wallets = parseEnvJson<Array<WalletType>>(envValue)?.filter((type) => SUPPORTED_WALLETS.includes(type));
 
   if (!wallets || wallets.length === 0) {
-    return [ 'metamask' ];
+    return [ 'metamask', 'rabby', 'coinbase', 'trust', 'okx', 'token_pocket' ];
   }
 
   return wallets;
@@ -21,7 +21,7 @@ const wallets = ((): Array<WalletType> | undefined => {
 
 const title = 'Web3 wallet integration (add token or network to the wallet)';
 
-const config: Feature<{ wallets: Array<WalletType>; addToken: { isDisabled: boolean }}> = (() => {
+const config: Feature<{ wallets: Array<WalletType>; addToken: { isDisabled: boolean } }> = (() => {
   if (wallets && wallets.length > 0) {
     return Object.freeze({
       title,

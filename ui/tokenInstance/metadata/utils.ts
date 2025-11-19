@@ -1,11 +1,11 @@
-import _upperFirst from 'lodash/upperFirst';
+import { upperFirst } from 'es-toolkit';
 
 export function formatName(_name: string) {
   const name = _name
     .replaceAll('_', ' ')
     .replaceAll(/\burl|nft|id\b/gi, (str) => str.toUpperCase());
 
-  return _upperFirst(name.trim());
+  return upperFirst(name.trim());
 }
 
 const PINNED_FIELDS = [ 'name', 'description' ];

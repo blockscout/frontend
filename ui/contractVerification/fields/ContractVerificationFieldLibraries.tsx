@@ -1,8 +1,10 @@
-import { Checkbox, useUpdateEffect } from '@chakra-ui/react';
 import React from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 
 import type { FormFields } from '../types';
+
+import { Checkbox } from 'toolkit/chakra/checkbox';
+import { useUpdateEffect } from 'toolkit/hooks/useUpdateEffect';
 
 import ContractVerificationFormRow from '../ContractVerificationFormRow';
 import ContractVerificationFieldLibraryItem from './ContractVerificationFieldLibraryItem';
@@ -44,10 +46,9 @@ const ContractVerificationFieldLibraries = () => {
     <>
       <ContractVerificationFormRow>
         <Checkbox
-          size="lg"
           onChange={ handleCheckboxChange }
           mt={ 9 }
-          isDisabled={ formState.isSubmitting }
+          disabled={ formState.isSubmitting }
         >
           Add contract libraries
         </Checkbox>
@@ -56,11 +57,9 @@ const ContractVerificationFieldLibraries = () => {
         <ContractVerificationFieldLibraryItem
           key={ field.id }
           index={ index }
-          control={ control }
           fieldsLength={ fields.length }
           onAddFieldClick={ handleAddFieldClick }
           onRemoveFieldClick={ handleRemoveFieldClick }
-          error={ 'libraries' in formState.errors ? formState.errors.libraries?.[index] : undefined }
           isDisabled={ formState.isSubmitting }
         />
       )) }

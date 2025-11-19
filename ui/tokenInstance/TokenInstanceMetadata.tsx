@@ -1,16 +1,26 @@
-import { Alert, Box, Flex, Select, chakra } from '@chakra-ui/react';
+import { Box, Flex, chakra, createListCollection } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenInstance } from 'types/api/token';
 
-import ContentLoader from 'ui/shared/ContentLoader';
+import { Alert } from 'toolkit/chakra/alert';
+import type { SelectOption } from 'toolkit/chakra/select';
+import { Select } from 'toolkit/chakra/select';
+import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
 
 import { useMetadataUpdateContext } from './contexts/metadataUpdate';
 import MetadataAccordion from './metadata/MetadataAccordion';
 
-type Format = 'JSON' | 'Table'
+const OPTIONS = [
+  { label: 'Table', value: 'Table' as const },
+  { label: 'JSON', value: 'JSON' as const },
+];
+
+const collection = createListCollection<SelectOption>({ items: OPTIONS });
+
+type Format = (typeof OPTIONS)[number]['value'];
 
 interface Props {
   data: TokenInstance['metadata'] | undefined;
@@ -18,12 +28,12 @@ interface Props {
 }
 
 const TokenInstanceMetadata = ({ data, isPlaceholderData }: Props) => {
-  const [ format, setFormat ] = React.useState<Format>('Table');
+  const [ format, setFormat ] = React.useState<Array<Format>>([ 'Table' ]);
 
   const { status: refetchStatus } = useMetadataUpdateContext() || {};
 
-  const handleSelectChange = React.useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
-    setFormat(event.target.value as Format);
+  const handleValueChange = React.useCallback(({ value }: { value: Array<string> }) => {
+    setFormat(value as Array<Format>);
   }, []);
 
   if (isPlaceholderData || refetchStatus === 'WAITING_FOR_RESPONSE') {
@@ -34,25 +44,28 @@ const TokenInstanceMetadata = ({ data, isPlaceholderData }: Props) => {
     return <Box>There is no metadata for this NFT</Box>;
   }
 
-  const content = format === 'Table' ?
+  const content = format[0] === 'Table' ?
     <MetadataAccordion data={ data }/> :
     <RawDataSnippet data={ JSON.stringify(data, undefined, 4) } showCopy={ false }/>;
 
   return (
     <Box>
       { refetchStatus === 'ERROR' && (
-        <Alert status="warning" display="flow" mb={ 6 }>
-          <chakra.span fontWeight={ 600 }>Ooops! </chakra.span>
+        <Alert status="warning" mb={ 6 } title="Ooops!" display={{ base: 'block', lg: 'flex' }}>
           <span>We { `couldn't` } refresh metadata. Please try again now or later.</span>
         </Alert>
       ) }
       <Flex alignItems="center" mb={ 6 }>
         <chakra.span fontWeight={ 500 }>Metadata</chakra.span>
-        <Select size="xs" borderRadius="base" value={ format } onChange={ handleSelectChange } w="auto" ml={ 5 }>
-          <option value="Table">Table</option>
-          <option value="JSON">JSON</option>
-        </Select>
-        { format === 'JSON' && <CopyToClipboard text={ JSON.stringify(data) } ml="auto"/> }
+        <Select
+          collection={ collection }
+          placeholder="Select type"
+          value={ format }
+          onValueChange={ handleValueChange }
+          ml={ 5 }
+          w="100px"
+        />
+        { format[0] === 'JSON' && <CopyToClipboard text={ JSON.stringify(data) } ml="auto"/> }
       </Flex>
       { content }
     </Box>

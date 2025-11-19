@@ -4,38 +4,46 @@ import React from 'react';
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import { currencyUnits } from 'lib/units';
-import ChartWidget from 'ui/shared/chart/ChartWidget';
+import { ChartWidget } from 'toolkit/components/charts/ChartWidget';
+import { useChartsConfig } from 'ui/shared/chart/config';
 
 interface Props {
   addressHash: string;
 }
 
 const AddressCoinBalanceChart = ({ addressHash }: Props) => {
-  const { data, isPending, isError } = useApiQuery('address_coin_balance_chart', {
+  const { data, isPending, isError } = useApiQuery('general:address_coin_balance_chart', {
     pathParams: { hash: addressHash },
   });
+  const chartsConfig = useChartsConfig();
 
-  const items = React.useMemo(() => {
+  const charts = React.useMemo(() => {
     if (!data) {
-      return undefined;
+      return [];
     }
 
-    const dataItems = 'items' in data ? data.items : data;
-    return dataItems.map(({ date, value }) => ({
-      date: new Date(date),
-      value: BigNumber(value).div(10 ** config.chain.currency.decimals).toNumber(),
-    }));
-  }, [ data ]);
+    return [
+      {
+        id: 'balance',
+        name: 'Value',
+        items: data.items.map(({ date, value }) => ({
+          date: new Date(date),
+          value: BigNumber(value).div(10 ** config.chain.currency.decimals).toNumber(),
+        })),
+        charts: chartsConfig,
+        units: currencyUnits.ether,
+      },
+    ];
+  }, [ chartsConfig, data ]);
 
   return (
     <ChartWidget
       isError={ isError }
       title="Balances"
-      items={ items }
+      charts={ charts }
       isLoading={ isPending }
       h="300px"
-      units={ currencyUnits.ether }
-      emptyText={ data && 'days' in data && `Insufficient data for the past ${ data.days } days` }
+      emptyText={ data?.days ? `Insufficient data for the past ${ data.days } days` : undefined }
     />
   );
 };

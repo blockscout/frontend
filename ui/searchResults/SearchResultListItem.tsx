@@ -1,39 +1,50 @@
-import { chakra, Flex, Grid, Image, Box, Text, Skeleton, useColorMode, Tag } from '@chakra-ui/react';
+import { chakra, Flex, Grid, Box, Text } from '@chakra-ui/react';
 import React from 'react';
 import xss from 'xss';
 
 import type { SearchResultItem } from 'types/client/search';
+import type { AddressFormat } from 'types/views/address';
 
 import { route } from 'nextjs-routes';
 
+import { toBech32Address } from 'lib/address/bech32';
 import dayjs from 'lib/date/dayjs';
 import highlightText from 'lib/highlightText';
 import * as mixpanel from 'lib/mixpanel/index';
 import { saveToRecentKeywords } from 'lib/recentSearchKeywords';
-import { ADDRESS_REGEXP } from 'lib/validations/address';
+import { useColorMode } from 'toolkit/chakra/color-mode';
+import { Image } from 'toolkit/chakra/image';
+import { Link } from 'toolkit/chakra/link';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { Tag } from 'toolkit/chakra/tag';
+import { SECOND } from 'toolkit/utils/consts';
+import { ADDRESS_REGEXP } from 'toolkit/utils/regexp';
 import ContractCertifiedLabel from 'ui/shared/ContractCertifiedLabel';
 import * as AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import * as BlobEntity from 'ui/shared/entities/blob/BlobEntity';
 import * as BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import * as EnsEntity from 'ui/shared/entities/ens/EnsEntity';
+import * as OperationEntity from 'ui/shared/entities/operation/OperationEntity';
 import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import * as TxEntity from 'ui/shared/entities/tx/TxEntity';
 import * as UserOpEntity from 'ui/shared/entities/userOp/UserOpEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import IconSvg from 'ui/shared/IconSvg';
-import LinkExternal from 'ui/shared/links/LinkExternal';
-import LinkInternal from 'ui/shared/links/LinkInternal';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import type { SearchResultAppItem } from 'ui/shared/search/utils';
 import { getItemCategory, searchItemTitles } from 'ui/shared/search/utils';
+import TacOperationStatus from 'ui/shared/statusTag/TacOperationStatus';
+
+import SearchResultEntityTag from './SearchResultEntityTag';
 
 interface Props {
   data: SearchResultItem | SearchResultAppItem;
   searchTerm: string;
   isLoading?: boolean;
+  addressFormat?: AddressFormat;
 }
 
-const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
+const SearchResultListItem = ({ data, searchTerm, isLoading, addressFormat }: Props) => {
 
   const handleLinkClick = React.useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
     saveToRecentKeywords(searchTerm);
@@ -54,32 +65,40 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
         return (
           <Flex alignItems="center" overflow="hidden">
             <TokenEntity.Icon token={{ ...data, type: data.token_type }} isLoading={ isLoading }/>
-            <LinkInternal
-              href={ route({ pathname: '/token/[hash]', query: { hash: data.address } }) }
+            <Link
+              href={ route({ pathname: '/token/[hash]', query: { hash: data.address_hash } }) }
               fontWeight={ 700 }
               wordBreak="break-all"
-              isLoading={ isLoading }
+              loading={ isLoading }
               onClick={ handleLinkClick }
               overflow="hidden"
             >
               <Skeleton
-                isLoaded={ !isLoading }
+                loading={ isLoading }
                 dangerouslySetInnerHTML={{ __html: highlightText(name, searchTerm) }}
                 whiteSpace="nowrap"
                 overflow="hidden"
                 textOverflow="ellipsis"
               />
-            </LinkInternal>
-            { data.is_verified_via_admin_panel && <IconSvg name="certified" boxSize={ 4 } ml={ 1 } color="green.500"/> }
+            </Link>
+            { data.certified && <ContractCertifiedLabel iconSize={ 4 } boxSize={ 4 } ml={ 1 }/> }
+            { data.is_verified_via_admin_panel && !data.certified && <IconSvg name="certified" boxSize={ 4 } ml={ 1 } color="green.500"/> }
+            { data.reputation && <TokenEntity.Reputation value={ data.reputation }/> }
           </Flex>
         );
       }
 
+      case 'metadata_tag':
       case 'contract':
       case 'address': {
         const shouldHighlightHash = ADDRESS_REGEXP.test(searchTerm);
+        const hash = addressFormat === 'bech32' ? toBech32Address(data.address_hash) : data.address_hash;
+
         const address = {
-          hash: data.address,
+          hash: data.address_hash,
+          filecoin: {
+            robust: data.filecoin_robust_address,
+          },
           is_contract: data.type === 'contract',
           is_verified: data.is_smart_contract_verified,
           name: null,
@@ -96,13 +115,12 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
             >
               <AddressEntity.Content
                 asProp={ shouldHighlightHash ? 'mark' : 'span' }
-                address={ address }
-                fontSize="sm"
-                lineHeight={ 5 }
+                address={{ ...address, hash }}
+                textStyle="sm"
                 fontWeight={ 700 }
               />
             </AddressEntity.Link>
-            <AddressEntity.Copy address={ address }/>
+            <AddressEntity.Copy address={{ ...address, hash }}/>
           </AddressEntity.Container>
         );
       }
@@ -110,16 +128,16 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
       case 'label': {
         return (
           <Flex alignItems="center">
-            <IconSvg name="publictags_slim" boxSize={ 6 } mr={ 2 } color="gray.500"/>
-            <LinkInternal
-              href={ route({ pathname: '/address/[hash]', query: { hash: data.address } }) }
+            <IconSvg name="publictags_slim" boxSize={ 6 } mr={ 2 } color="icon.primary"/>
+            <Link
+              href={ route({ pathname: '/address/[hash]', query: { hash: data.address_hash } }) }
               fontWeight={ 700 }
               wordBreak="break-all"
-              isLoading={ isLoading }
+              loading={ isLoading }
               onClick={ handleLinkClick }
             >
               <span dangerouslySetInnerHTML={{ __html: highlightText(data.name, searchTerm) }}/>
-            </LinkInternal>
+            </Link>
           </Flex>
         );
       }
@@ -135,27 +153,18 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
               src={ colorMode === 'dark' && data.app.logoDarkMode ? data.app.logoDarkMode : data.app.logo }
               alt={ `${ data.app.title } app icon` }
             />
-            { data.app.external ? (
-              <LinkExternal
-                href={ data.app.url }
-                fontWeight={ 700 }
-                wordBreak="break-all"
-                isLoading={ isLoading }
-                onClick={ handleLinkClick }
-              >
-                { title }
-              </LinkExternal>
-            ) : (
-              <LinkInternal
-                href={ route({ pathname: '/apps/[id]', query: { id: data.app.id } }) }
-                fontWeight={ 700 }
-                wordBreak="break-all"
-                isLoading={ isLoading }
-                onClick={ handleLinkClick }
-              >
-                { title }
-              </LinkInternal>
-            ) }
+            <Link
+              href={ data.app.external ?
+                route({ pathname: '/apps', query: { selectedAppId: data.app.id } }) :
+                route({ pathname: '/apps/[id]', query: { id: data.app.id } })
+              }
+              fontWeight={ 700 }
+              wordBreak="break-all"
+              loading={ isLoading }
+              onClick={ handleLinkClick }
+            >
+              { title }
+            </Link>
           </Flex>
         );
       }
@@ -195,18 +204,60 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
             <TxEntity.Icon/>
             <TxEntity.Link
               isLoading={ isLoading }
-              hash={ data.tx_hash }
+              hash={ data.transaction_hash }
               onClick={ handleLinkClick }
             >
               <TxEntity.Content
                 asProp="mark"
-                hash={ data.tx_hash }
-                fontSize="sm"
-                lineHeight={ 5 }
+                hash={ data.transaction_hash }
+                textStyle="sm"
                 fontWeight={ 700 }
               />
             </TxEntity.Link>
           </TxEntity.Container>
+        );
+      }
+
+      case 'zetaChainCCTX': {
+        return (
+          <TxEntity.Container>
+            <IconSvg name="interop" boxSize={ 6 } marginRight={ 1 } color="text.secondary"/>
+            <TxEntity.Link
+              isLoading={ isLoading }
+              hash={ data.cctx.index }
+              href={ route({ pathname: '/cc/tx/[hash]', query: { hash: data.cctx.index } }) }
+              onClick={ handleLinkClick }
+            >
+              <TxEntity.Content
+                asProp={ data.cctx.index === searchTerm ? 'mark' : 'span' }
+                hash={ data.cctx.index }
+                textStyle="sm"
+                fontWeight={ 700 }
+              />
+            </TxEntity.Link>
+          </TxEntity.Container>
+        );
+      }
+
+      case 'tac_operation': {
+        return (
+          <OperationEntity.Container>
+            <OperationEntity.Icon type={ data.tac_operation.type }/>
+            <OperationEntity.Link
+              isLoading={ isLoading }
+              id={ data.tac_operation.operation_id }
+              onClick={ handleLinkClick }
+            >
+              <OperationEntity.Content
+                asProp="mark"
+                id={ data.tac_operation.operation_id }
+                textStyle="sm"
+                fontWeight={ 700 }
+                mr={ 2 }
+              />
+            </OperationEntity.Link>
+            <TacOperationStatus status={ data.tac_operation.type }/>
+          </OperationEntity.Container>
         );
       }
 
@@ -222,8 +273,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
               <BlobEntity.Content
                 asProp="mark"
                 hash={ data.blob_hash }
-                fontSize="sm"
-                lineHeight={ 5 }
+                textStyle="sm"
                 fontWeight={ 700 }
               />
             </BlobEntity.Link>
@@ -243,8 +293,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
               <UserOpEntity.Content
                 asProp="mark"
                 hash={ data.user_operation_hash }
-                fontSize="sm"
-                lineHeight={ 5 }
+                textStyle="sm"
                 fontWeight={ 700 }
               />
             </UserOpEntity.Link>
@@ -255,23 +304,22 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
       case 'ens_domain': {
         return (
           <EnsEntity.Container>
-            <EnsEntity.Icon/>
-            <LinkInternal
-              href={ route({ pathname: '/address/[hash]', query: { hash: data.address } }) }
+            <EnsEntity.Icon protocol={ data.ens_info.protocol }/>
+            <Link
+              href={ route({ pathname: '/address/[hash]', query: { hash: data.address_hash } }) }
               fontWeight={ 700 }
               wordBreak="break-all"
-              isLoading={ isLoading }
+              loading={ isLoading }
               onClick={ handleLinkClick }
               overflow="hidden"
             >
-              <Skeleton
-                isLoaded={ !isLoading }
+              <Box
                 dangerouslySetInnerHTML={{ __html: highlightText(data.ens_info.name, searchTerm) }}
                 whiteSpace="nowrap"
                 overflow="hidden"
                 textOverflow="ellipsis"
               />
-            </LinkInternal>
+            </Link>
           </EnsEntity.Container>
         );
       }
@@ -283,16 +331,17 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
       case 'token': {
         const templateCols = `1fr
         ${ (data.token_type === 'ERC-20' && data.exchange_rate) || (data.token_type !== 'ERC-20' && data.total_supply) ? ' auto' : '' }`;
+        const hash = data.filecoin_robust_address || (addressFormat === 'bech32' ? toBech32Address(data.address_hash) : data.address_hash);
 
         return (
           <Grid templateColumns={ templateCols } alignItems="center" gap={ 2 }>
-            <Skeleton isLoaded={ !isLoading } overflow="hidden" display="flex" alignItems="center">
+            <Skeleton loading={ isLoading } overflow="hidden" display="flex" alignItems="center">
               <Text whiteSpace="nowrap" overflow="hidden">
-                <HashStringShortenDynamic hash={ data.address } isTooltipDisabled/>
+                <HashStringShortenDynamic hash={ hash } noTooltip/>
               </Text>
               { data.is_smart_contract_verified && <IconSvg name="status/success" boxSize="14px" color="green.500" ml={ 1 } flexShrink={ 0 }/> }
             </Skeleton>
-            <Skeleton isLoaded={ !isLoading } overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis" fontWeight={ 700 }>
+            <Skeleton loading={ isLoading } overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis" fontWeight={ 700 }>
               { data.token_type === 'ERC-20' && data.exchange_rate && `$${ Number(data.exchange_rate).toLocaleString() }` }
               { data.token_type !== 'ERC-20' && data.total_supply && `Items ${ Number(data.total_supply).toLocaleString() }` }
             </Skeleton>
@@ -304,15 +353,15 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
         const isFutureBlock = data.timestamp === undefined;
 
         if (isFutureBlock) {
-          return <Skeleton isLoaded={ !isLoading }>Learn estimated time for this block to be created.</Skeleton>;
+          return <Skeleton loading={ isLoading }>Learn estimated time for this block to be created.</Skeleton>;
         }
 
         return (
           <>
-            <Skeleton isLoaded={ !isLoading } as={ shouldHighlightHash ? 'mark' : 'span' } display="block" whiteSpace="nowrap" overflow="hidden" mb={ 1 }>
-              <HashStringShortenDynamic hash={ data.block_hash }/>
+            <Skeleton loading={ isLoading } display="block" whiteSpace="nowrap" overflow="hidden" mb={ 1 }>
+              <HashStringShortenDynamic hash={ data.block_hash } as={ shouldHighlightHash ? 'mark' : 'span' }/>
             </Skeleton>
-            <Skeleton isLoaded={ !isLoading } color="text_secondary" mr={ 2 }>
+            <Skeleton loading={ isLoading } color="text.secondary" mr={ 2 }>
               <span>{ dayjs(data.timestamp).format('llll') }</span>
             </Skeleton>
           </>
@@ -320,20 +369,32 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
       }
       case 'transaction': {
         return (
-          <Text variant="secondary">{ dayjs(data.timestamp).format('llll') }</Text>
+          <Text color="text.secondary">{ dayjs(data.timestamp).format('llll') }</Text>
+        );
+      }
+      case 'zetaChainCCTX': {
+        return (
+          <Text color="text.secondary">{ dayjs(Number(data.cctx.last_update_timestamp) * SECOND).format('llll') }</Text>
+        );
+      }
+      case 'tac_operation': {
+        return (
+          <Text color="text.secondary">{ dayjs(data.tac_operation.timestamp).format('llll') }</Text>
         );
       }
       case 'user_operation': {
 
         return (
-          <Text variant="secondary">{ dayjs(data.timestamp).format('llll') }</Text>
+          <Text color="text.secondary">{ dayjs(data.timestamp).format('llll') }</Text>
         );
       }
       case 'label': {
+        const hash = data.filecoin_robust_address || (addressFormat === 'bech32' ? toBech32Address(data.address_hash) : data.address_hash);
+
         return (
           <Flex alignItems="center">
             <Box overflow="hidden">
-              <HashStringShortenDynamic hash={ data.address }/>
+              <HashStringShortenDynamic hash={ hash }/>
             </Box>
             { data.is_smart_contract_verified && <IconSvg name="status/success" boxSize="14px" color="green.500" ml={ 1 } flexShrink={ 0 }/> }
           </Flex>
@@ -341,55 +402,57 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
       }
       case 'app': {
         return (
-          <Text
-            overflow="hidden"
-            textOverflow="ellipsis"
-            sx={{
-              display: '-webkit-box',
-              '-webkit-box-orient': 'vertical',
-              '-webkit-line-clamp': '3',
-            }}
-          >
+          <Text lineClamp={ 3 }>
             { data.app.description }
           </Text>
         );
       }
+      case 'metadata_tag':
       case 'contract':
       case 'address': {
         const shouldHighlightHash = ADDRESS_REGEXP.test(searchTerm);
         const addressName = data.name || data.ens_info?.name;
         const expiresText = data.ens_info?.expiry_date ? ` (expires ${ dayjs(data.ens_info.expiry_date).fromNow() })` : '';
 
-        return addressName ? (
-          <Flex alignItems="center">
-            <Text
-              overflow="hidden"
-              whiteSpace="nowrap"
-              textOverflow="ellipsis"
-            >
-              <span dangerouslySetInnerHTML={{ __html: shouldHighlightHash ? xss(addressName) : highlightText(addressName, searchTerm) }}/>
-              { data.ens_info && (
-                data.ens_info.names_count > 1 ?
-                  <chakra.span color="text_secondary"> ({ data.ens_info.names_count > 39 ? '40+' : `+${ data.ens_info.names_count - 1 }` })</chakra.span> :
-                  <chakra.span color="text_secondary">{ expiresText }</chakra.span>
-              ) }
-            </Text>
-            { data.certified && <ContractCertifiedLabel iconSize={ 5 } boxSize={ 5 } ml={ 1 }/> }
+        return (addressName || data.type === 'metadata_tag') ? (
+          <Flex alignItems="center" gap={ 2 } justifyContent="space-between" flexWrap="wrap">
+            { addressName && (
+              <Flex alignItems="center">
+                <Text
+                  overflow="hidden"
+                  whiteSpace="nowrap"
+                  textOverflow="ellipsis"
+                >
+                  <span dangerouslySetInnerHTML={{ __html: shouldHighlightHash ? xss(addressName) : highlightText(addressName, searchTerm) }}/>
+                  { data.ens_info && (
+                    data.ens_info.names_count > 1 ?
+                      <chakra.span color="text.secondary"> ({ data.ens_info.names_count > 39 ? '40+' : `+${ data.ens_info.names_count - 1 }` })</chakra.span> :
+                      <chakra.span color="text.secondary">{ expiresText }</chakra.span>
+                  ) }
+                </Text>
+                { data.certified && <ContractCertifiedLabel iconSize={ 4 } boxSize={ 4 } ml={ 1 }/> }
+              </Flex>
+            ) }
+            { data.type === 'metadata_tag' && (
+              <SearchResultEntityTag metadata={ data.metadata } addressHash={ data.address_hash } searchTerm={ searchTerm }/>
+            ) }
           </Flex>
         ) :
           null;
       }
       case 'ens_domain': {
         const expiresText = data.ens_info?.expiry_date ? ` expires ${ dayjs(data.ens_info.expiry_date).fromNow() }` : '';
+        const hash = data.filecoin_robust_address || (addressFormat === 'bech32' ? toBech32Address(data.address_hash) : data.address_hash);
+
         return (
           <Flex alignItems="center" gap={ 3 }>
             <Box overflow="hidden">
-              <HashStringShortenDynamic hash={ data.address }/>
+              <HashStringShortenDynamic hash={ hash }/>
             </Box>
             {
               data.ens_info.names_count > 1 ?
-                <chakra.span color="text_secondary"> ({ data.ens_info.names_count > 39 ? '40+' : `+${ data.ens_info.names_count - 1 }` })</chakra.span> :
-                <chakra.span color="text_secondary">{ expiresText }</chakra.span>
+                <chakra.span color="text.secondary"> ({ data.ens_info.names_count > 39 ? '40+' : `+${ data.ens_info.names_count - 1 }` })</chakra.span> :
+                <chakra.span color="text.secondary">{ expiresText }</chakra.span>
             }
           </Flex>
         );
@@ -403,10 +466,10 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
   const category = getItemCategory(data);
 
   return (
-    <ListItemMobile py={ 3 } fontSize="sm" rowGap={ 2 }>
-      <Grid templateColumns="1fr auto" w="100%" overflow="hidden" lineHeight={ 6 }>
+    <ListItemMobile py={ 3 } textStyle="sm" rowGap={ 2 }>
+      <Grid templateColumns="1fr auto" w="100%" overflow="hidden">
         { firstRow }
-        <Skeleton isLoaded={ !isLoading } color="text_secondary" ml={ 8 } textTransform="capitalize">
+        <Skeleton loading={ isLoading } color="text.secondary" ml={ 8 } textTransform="capitalize">
           <span>{ category ? searchItemTitles[category].itemTitleShort : '' }</span>
         </Skeleton>
       </Grid>

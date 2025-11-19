@@ -11,18 +11,21 @@ test.beforeEach(async({ mockTextAd }) => {
   await mockTextAd();
 });
 
-test('base view +@dark-mode +@mobile', async({ render, mockApiResponse, page }) => {
-  await mockApiResponse('stats', { ...statsMock.base, coin_price: '2442.789' });
-  await mockApiResponse('stats_lines', statsLinesMock.base);
+test('base view +@dark-mode +@mobile', async({ render, mockApiResponse, mockEnvs, page }) => {
+  await mockEnvs([
+    [ 'NEXT_PUBLIC_SEO_ENHANCED_DATA_ENABLED', 'true' ],
+  ]);
+  await mockApiResponse('general:stats', { ...statsMock.base, coin_price: '2442.789' });
+  await mockApiResponse('stats:lines', statsLinesMock.base);
   const chartApiUrl = await mockApiResponse(
-    'stats_line',
+    'stats:line',
     statsLineMock.averageGasPrice,
     { pathParams: { id: 'averageGasPrice' }, queryParams: { from: '**' } },
   );
   const component = await render(<GasTracker/>);
   await page.waitForResponse(chartApiUrl);
   await page.waitForFunction(() => {
-    return document.querySelector('path[data-name="chart-Averagegasprice-small"]')?.getAttribute('opacity') === '1';
+    return document.querySelector('path[data-name="chart-small"]')?.getAttribute('opacity') === '1';
   });
   await expect(component).toHaveScreenshot();
 });

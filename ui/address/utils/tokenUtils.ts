@@ -1,15 +1,21 @@
 import BigNumber from 'bignumber.js';
-import fpAdd from 'lodash/fp/add';
+import { mapValues } from 'es-toolkit';
 
 import type { AddressTokenBalance } from 'types/api/address';
 import type { TokenType } from 'types/api/token';
 
+import config from 'configs/app';
 import sumBnReducer from 'lib/bigint/sumBnReducer';
-import { ZERO } from 'lib/consts';
+import { ZERO } from 'toolkit/utils/consts';
+
+const isNativeToken = (token: TokenEnhancedData) =>
+  config.UI.views.address.nativeTokenAddress &&
+  token.token.address_hash.toLowerCase() === config.UI.views.address.nativeTokenAddress.toLowerCase();
 
 export type TokenEnhancedData = AddressTokenBalance & {
   usd?: BigNumber ;
-}
+  chain_values?: Record<string, string>;
+};
 
 export type Sort = 'desc' | 'asc';
 
@@ -70,7 +76,7 @@ export const sortingFns = {
 
 export const filterTokens = (searchTerm: string) => ({ token }: AddressTokenBalance) => {
   if (!token.name) {
-    return !searchTerm ? true : token.address.toLowerCase().includes(searchTerm);
+    return !searchTerm ? true : token.address_hash.toLowerCase().includes(searchTerm);
   }
 
   return token.name?.toLowerCase().includes(searchTerm);
@@ -93,18 +99,37 @@ export const calculateUsdValue = (data: AddressTokenBalance): TokenEnhancedData 
   };
 };
 
-export const getTokensTotalInfo = (data: TokenSelectData) => {
+export interface TokensTotalInfo {
+  usd: BigNumber;
+  num: number;
+  isOverflow: boolean;
+}
+
+export const getTokensTotalInfo = (data: TokenSelectData): TokensTotalInfo => {
   const usd = Object.values(data)
-    .map(({ items }) => items.reduce(usdValueReducer, ZERO))
+    .map(({ items }) => items.filter((item) => !isNativeToken(item)).reduce(usdValueReducer, ZERO))
     .reduce(sumBnReducer, ZERO);
 
   const num = Object.values(data)
     .map(({ items }) => items.length)
-    .reduce(fpAdd, 0);
+    .reduce((result, item) => result + item, 0);
 
   const isOverflow = Object.values(data).some(({ isOverflow }) => isOverflow);
 
   return { usd, num, isOverflow };
+};
+
+export const getTokensTotalInfoByChain = (data: TokenSelectData, chainIds: Array<string>) => {
+  return chainIds.reduce((result, chainId) => {
+    const filteredData = mapValues(data, (item) => ({
+      ...item,
+      items: item.items.filter((item) => item.chain_values?.[chainId]),
+    }));
+
+    result[chainId] = getTokensTotalInfo(filteredData);
+
+    return result;
+  }, {} as Record<string, TokensTotalInfo>);
 };
 
 const usdValueReducer = (result: BigNumber, item: TokenEnhancedData) => !item.usd ? result : result.plus(BigNumber(item.usd));

@@ -1,4 +1,4 @@
-import _padStart from 'lodash/padStart';
+import { padStart } from 'es-toolkit/compat';
 
 export default function splitSecondsInPeriods(value: number) {
   const seconds = value % 60;
@@ -7,9 +7,9 @@ export default function splitSecondsInPeriods(value: number) {
   const days = (value - seconds - minutes * 60 - hours * 60 * 60) / (60 * 60 * 24);
 
   return {
-    seconds: _padStart(String(seconds), 2, '0'),
-    minutes: _padStart(String(minutes), 2, '0'),
-    hours: _padStart(String(hours), 2, '0'),
-    days: _padStart(String(days), 2, '0'),
+    seconds: padStart(String(seconds), 2, '0'),
+    minutes: padStart(String(minutes), 2, '0'),
+    hours: padStart(String(hours), 2, '0'),
+    days: padStart(String(days), 2, '0'),
   };
 }

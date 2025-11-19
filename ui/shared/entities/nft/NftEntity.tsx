@@ -1,28 +1,60 @@
 import { chakra } from '@chakra-ui/react';
-import _omit from 'lodash/omit';
 import React from 'react';
 
-import { route } from 'nextjs-routes';
+import type { TokenInstance } from 'types/api/token';
 
+import { route } from 'nextjs/routes';
+
+import { useMultichainContext } from 'lib/contexts/multichain';
 import * as EntityBase from 'ui/shared/entities/base/components';
-import TruncatedValue from 'ui/shared/TruncatedValue';
+import NftMedia from 'ui/shared/nft/NftMedia';
+
+import { distributeEntityProps, getIconProps } from '../base/utils';
 
 const Container = EntityBase.Container;
 
-type IconProps = Pick<EntityProps, 'isLoading' | 'noIcon' | 'iconSize'> & {
-  name?: EntityBase.IconBaseProps['name'];
+type IconProps = EntityBase.IconBaseProps & {
+  instance?: TokenInstance | null;
 };
+
+const ICON_MEDIA_TYPES = [ 'image' as const ];
 
 const Icon = (props: IconProps) => {
   if (props.noIcon) {
     return null;
   }
 
+  if (props.instance) {
+    const styles = getIconProps({ ...props, variant: props.variant ?? 'heading' });
+    const fallback = (
+      <EntityBase.Icon
+        { ...props }
+        variant={ props.variant ?? 'heading' }
+        name={ 'name' in props ? props.name : 'nft_shield' }
+        marginRight={ 0 }
+      />
+    );
+
+    return (
+      <NftMedia
+        data={ props.instance }
+        isLoading={ props.isLoading }
+        boxSize={ styles.boxSize }
+        size="sm"
+        allowedTypes={ ICON_MEDIA_TYPES }
+        borderRadius="sm"
+        flexShrink={ 0 }
+        marginRight={ 2 }
+        fallback={ fallback }
+      />
+    );
+  }
+
   return (
     <EntityBase.Icon
       { ...props }
-      iconSize={ props.iconSize ?? 'lg' }
-      name={ props.name ?? 'nft_shield' }
+      variant="heading"
+      name={ 'name' in props ? props.name : 'nft_shield' }
     />
   );
 };
@@ -30,7 +62,10 @@ const Icon = (props: IconProps) => {
 type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'hash' | 'id'>;
 
 const Link = chakra((props: LinkProps) => {
-  const defaultHref = route({ pathname: '/token/[hash]/instance/[id]', query: { hash: props.hash, id: props.id } });
+  const defaultHref = route(
+    { pathname: '/token/[hash]/instance/[id]', query: { hash: props.hash, id: props.id } },
+    { chain: props.chain, external: props.external },
+  );
 
   return (
     <EntityBase.Link
@@ -46,9 +81,10 @@ type ContentProps = Omit<EntityBase.ContentBaseProps, 'text'> & Pick<EntityProps
 
 const Content = chakra((props: ContentProps) => {
   return (
-    <TruncatedValue
-      isLoading={ props.isLoading }
-      value={ props.id }
+    <EntityBase.Content
+      { ...props }
+      text={ props.id }
+      truncation="tail"
     />
   );
 });
@@ -56,18 +92,19 @@ const Content = chakra((props: ContentProps) => {
 export interface EntityProps extends EntityBase.EntityBaseProps {
   hash: string;
   id: string;
+  instance?: TokenInstance | null;
 }
 
 const NftEntity = (props: EntityProps) => {
-  const linkProps = _omit(props, [ 'className' ]);
-  const partsProps = _omit(props, [ 'className', 'onClick' ]);
+  const multichainContext = useMultichainContext();
+  const partsProps = distributeEntityProps(props, multichainContext);
+
+  const content = <Content { ...partsProps.content }/>;
 
   return (
-    <Container className={ props.className } w="100%">
-      <Icon { ...partsProps }/>
-      <Link { ...linkProps }>
-        <Content { ...partsProps }/>
-      </Link>
+    <Container w="100%" { ...partsProps.container }>
+      <Icon { ...partsProps.icon }/>
+      { props.noLink ? content : <Link { ...partsProps.link }>{ content }</Link> }
     </Container>
   );
 };

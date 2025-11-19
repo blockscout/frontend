@@ -74,4 +74,55 @@ describe('transformFormDataToMethodArgs', () => {
       ],
     ]);
   });
+
+  it('should transform all nested empty arrays to empty arrays', () => {
+    const formData = {
+      '0': '0x1D415D28380ff51A507F7B176ca5F27833F7FffD',
+      '1': '0x1D415D28380ff51A507F7B176ca5F27833F7FffD',
+      '2': '3160',
+      '3': true,
+      // tuple array without elements
+      '4:0:0:0': undefined,
+      '4:0:1:0': undefined,
+      '4:0:1:1': undefined,
+      '4:0:1:2': undefined,
+      '4:0:1:3': undefined,
+    };
+    const result = transformFormDataToMethodArgs(formData);
+    expect(result).toEqual([
+      '0x1D415D28380ff51A507F7B176ca5F27833F7FffD',
+      '0x1D415D28380ff51A507F7B176ca5F27833F7FffD',
+      '3160',
+      true,
+      [],
+    ]);
+  });
+
+  it('should cast empty strings', () => {
+    const formData = {
+      '0': '""',
+      '1': '0x1D415D28380ff51A507F7B176ca5F27833F7FffD',
+      '2': '3160',
+      '3': true,
+      // nested elements
+      '4:0:0:0': undefined,
+      '4:0:1:0': '', // <<< not real case, the form will not allow to submit this value
+      '4:0:1:1': '""',
+      '4:0:1:2': '0',
+      '4:0:1:3': false,
+    };
+    const result = transformFormDataToMethodArgs(formData);
+    expect(result).toEqual([
+      '',
+      '0x1D415D28380ff51A507F7B176ca5F27833F7FffD',
+      '3160',
+      true,
+      [
+        [
+          [],
+          [ '', '', '0', false ],
+        ],
+      ],
+    ]);
+  });
 });

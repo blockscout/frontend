@@ -1,19 +1,21 @@
-import { Td, Tr, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import type { OptimisticL2WithdrawalsItem } from 'types/api/optimisticL2';
 
 import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { TableCell, TableRow } from 'toolkit/chakra/table';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
-import LinkExternal from 'ui/shared/links/LinkExternal';
-import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
+
+import OptimisticL2WithdrawalsItemStatus from './OptimisticL2WithdrawalsItemStatus';
 
 const rollupFeature = config.features.rollup;
 
- type Props = { item: OptimisticL2WithdrawalsItem; isLoading?: boolean };
+type Props = { item: OptimisticL2WithdrawalsItem; isLoading?: boolean };
 
 const OptimisticL2WithdrawalsTableItem = ({ item, isLoading }: Props) => {
   const timeToEnd = item.challenge_period_end ? dayjs(item.challenge_period_end).fromNow(true) + ' left' : '';
@@ -23,11 +25,11 @@ const OptimisticL2WithdrawalsTableItem = ({ item, isLoading }: Props) => {
   }
 
   return (
-    <Tr>
-      <Td verticalAlign="middle" fontWeight={ 600 }>
-        <Skeleton isLoaded={ !isLoading } display="inline-block">{ item.msg_nonce_version + '-' + item.msg_nonce }</Skeleton>
-      </Td>
-      <Td verticalAlign="middle">
+    <TableRow>
+      <TableCell verticalAlign="middle" fontWeight={ 600 }>
+        <Skeleton loading={ isLoading } display="inline-block">{ item.msg_nonce_version + '-' + item.msg_nonce }</Skeleton>
+      </TableCell>
+      <TableCell verticalAlign="middle">
         { item.from ? (
           <AddressEntity
             address={ item.from }
@@ -35,50 +37,44 @@ const OptimisticL2WithdrawalsTableItem = ({ item, isLoading }: Props) => {
             truncation="constant"
           />
         ) : 'N/A' }
-      </Td>
-      <Td verticalAlign="middle">
+      </TableCell>
+      <TableCell verticalAlign="middle">
         <TxEntity
           isLoading={ isLoading }
-          hash={ item.l2_tx_hash }
-          fontSize="sm"
-          lineHeight={ 5 }
+          hash={ item.l2_transaction_hash }
           truncation="constant_long"
           noIcon
         />
-      </Td>
-      <Td verticalAlign="middle" pr={ 12 }>
-        <TimeAgoWithTooltip
+      </TableCell>
+      <TableCell verticalAlign="middle" pr={ 12 }>
+        <TimeWithTooltip
           timestamp={ item.l2_timestamp }
           fallbackText="N/A"
           isLoading={ isLoading }
           display="inline-block"
-          color="text_secondary"
+          color="text.secondary"
         />
-      </Td>
-      <Td verticalAlign="middle">
-        { item.status === 'Ready for relay' && rollupFeature.L2WithdrawalUrl ?
-          <LinkExternal href={ rollupFeature.L2WithdrawalUrl }>{ item.status }</LinkExternal> :
-          <Skeleton isLoaded={ !isLoading } display="inline-block">{ item.status }</Skeleton>
-        }
-      </Td>
-      <Td verticalAlign="middle">
-        { item.l1_tx_hash ? (
+      </TableCell>
+      <TableCell verticalAlign="middle">
+        <OptimisticL2WithdrawalsItemStatus data={ item } isLoading={ isLoading }/>
+      </TableCell>
+      <TableCell verticalAlign="middle">
+        { item.l1_transaction_hash ? (
           <TxEntityL1
             isLoading={ isLoading }
-            hash={ item.l1_tx_hash }
+            hash={ item.l1_transaction_hash }
             truncation="constant_long"
             noIcon
-            fontSize="sm"
-            lineHeight={ 5 }
+            noCopy
           />
         ) :
           'N/A'
         }
-      </Td>
-      <Td verticalAlign="middle">
-        <Skeleton isLoaded={ !isLoading } color="text_secondary" minW="50px" minH="20px" display="inline-block">{ timeToEnd }</Skeleton>
-      </Td>
-    </Tr>
+      </TableCell>
+      <TableCell verticalAlign="middle">
+        <Skeleton loading={ isLoading } color="text.secondary" minW="50px" minH="20px" display="inline-block">{ timeToEnd }</Skeleton>
+      </TableCell>
+    </TableRow>
   );
 };
 

@@ -1,11 +1,15 @@
-import { Image, Link, Skeleton, Tooltip } from '@chakra-ui/react';
+import { HStack } from '@chakra-ui/react';
 import React from 'react';
 
 import type { AddressMetadataTagFormatted } from 'types/client/addressMetadata';
 
 import config from 'configs/app';
+import { Image } from 'toolkit/chakra/image';
+import { Link } from 'toolkit/chakra/link';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { Tooltip } from 'toolkit/chakra/tooltip';
 import AppActionButton from 'ui/shared/AppActionButton/AppActionButton';
-import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import TextSeparator from 'ui/shared/TextSeparator';
 
 interface Props {
@@ -21,44 +25,66 @@ const TokenNftMarketplaces = ({ hash, id, isLoading, appActionData, source }: Pr
     return null;
   }
 
+  const items = config.UI.views.nft.marketplaces
+    .map((item) => {
+      const hrefTemplate = id ? item.instance_url : item.collection_url;
+      if (!hrefTemplate) {
+        return null;
+      }
+      const href = hrefTemplate
+        .replace('{id}', id || '')
+        .replace('{id_lowercase}', id?.toLowerCase() || '')
+        .replace('{hash}', hash || '')
+        .replace('{hash_lowercase}', hash?.toLowerCase() || '');
+
+      return {
+        href,
+        logo_url: item.logo_url,
+        name: item.name,
+      };
+    })
+    .filter(Boolean);
+
+  if (items.length === 0) {
+    return null;
+  }
+
   return (
     <>
-      <DetailsInfoItem.Label
+      <DetailedInfo.ItemLabel
         hint="Marketplaces trading this NFT"
         isLoading={ isLoading }
       >
         Marketplaces
-      </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue
         py={ appActionData ? '1px' : '6px' }
       >
-        <Skeleton isLoaded={ !isLoading } display="flex" columnGap={ 3 } flexWrap="wrap" alignItems="center">
-          { config.UI.views.nft.marketplaces.map((item) => {
-
-            const hrefTemplate = id ? item.instance_url : item.collection_url;
-            const href = hrefTemplate.replace('{id}', id || '').replace('{hash}', hash || '');
-
-            return (
-              <Tooltip label={ `View on ${ item.name }` } key={ item.name }>
-                <Link href={ href } target="_blank">
-                  <Image
-                    src={ item.logo_url }
-                    alt={ `${ item.name } marketplace logo` }
-                    boxSize={ 5 }
-                    borderRadius="full"
-                  />
-                </Link>
-              </Tooltip>
-            );
-          }) }
+        <Skeleton loading={ isLoading } display="flex" flexWrap="wrap" alignItems="center">
+          <HStack gap={ 3 }>
+            { items.map((item) => {
+              return (
+                <Tooltip content={ `View on ${ item.name }` } key={ item.name }>
+                  <Link href={ item.href } external noIcon>
+                    <Image
+                      src={ item.logo_url }
+                      alt={ `${ item.name } marketplace logo` }
+                      boxSize={ 5 }
+                      borderRadius="full"
+                    />
+                  </Link>
+                </Tooltip>
+              );
+            }) }
+          </HStack>
           { appActionData && (
             <>
-              <TextSeparator color="gray.500" margin={ 0 }/>
+              <TextSeparator/>
               <AppActionButton data={ appActionData } height="30px" source={ source }/>
             </>
           ) }
         </Skeleton>
-      </DetailsInfoItem.Value>
+      </DetailedInfo.ItemValue>
     </>
   );
 };

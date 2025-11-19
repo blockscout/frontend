@@ -5,7 +5,7 @@ import * as tokenStubs from 'stubs/token';
 export default function useTokenQuery(hash: string) {
   const { apiData } = useAppContext<'/token/[hash]'>();
 
-  return useApiQuery('token', {
+  return useApiQuery('general:token', {
     pathParams: { hash },
     queryOptions: {
       enabled: Boolean(hash),

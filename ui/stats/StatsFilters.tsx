@@ -1,18 +1,12 @@
-import { Grid, GridItem, Skeleton } from '@chakra-ui/react';
+import { createListCollection, Grid, GridItem } from '@chakra-ui/react';
 import React from 'react';
 
 import type * as stats from '@blockscout/stats-types';
-import type { StatsInterval, StatsIntervalIds } from 'types/client/stats';
+import type { StatsIntervalIds } from 'types/client/stats';
 
-import FilterInput from 'ui/shared/filters/FilterInput';
-
-import { STATS_INTERVALS } from './constants';
-import StatsDropdownMenu from './StatsDropdownMenu';
-
-const intervalList = Object.keys(STATS_INTERVALS).map((id: string) => ({
-  id: id,
-  title: STATS_INTERVALS[id as StatsIntervalIds].title,
-})) as Array<StatsInterval>;
+import { Select } from 'toolkit/chakra/select';
+import { FilterInput } from 'toolkit/components/filters/FilterInput';
+import ChartIntervalSelect from 'ui/shared/chart/ChartIntervalSelect';
 
 type Props = {
   sections?: Array<stats.LineChartSection>;
@@ -23,7 +17,7 @@ type Props = {
   onFilterInputChange: (q: string) => void;
   isLoading: boolean;
   initialFilterValue: string;
-}
+};
 
 const StatsFilters = ({
   sections,
@@ -35,45 +29,50 @@ const StatsFilters = ({
   isLoading,
   initialFilterValue,
 }: Props) => {
-  const sectionsList = [ {
-    id: 'all',
-    title: 'All',
-  }, ... (sections || []) ];
+
+  const collection = React.useMemo(() => {
+    return createListCollection({
+      items: [
+        { value: 'all', label: 'All stats' },
+        ...(sections || []).map((section) => ({ value: section.id, label: section.title })),
+      ],
+    });
+  }, [ sections ]);
+
+  const handleItemSelect = React.useCallback(({ value }: { value: Array<string> }) => {
+    onSectionChange(value[0]);
+  }, [ onSectionChange ]);
 
   return (
     <Grid
-      gap={ 2 }
+      gap={{ base: 2, lg: 6 }}
       templateAreas={{
         base: `"section interval"
                 "input input"`,
         lg: `"section interval input"`,
       }}
       gridTemplateColumns={{ base: 'repeat(2, minmax(0, 1fr))', lg: 'auto auto 1fr' }}
+      alignItems="center"
     >
       <GridItem
         w={{ base: '100%', lg: 'auto' }}
         area="section"
       >
-        { isLoading ? <Skeleton w={{ base: '100%', lg: '76px' }} h="40px" borderRadius="base"/> : (
-          <StatsDropdownMenu
-            items={ sectionsList }
-            selectedId={ currentSection }
-            onSelect={ onSectionChange }
-          />
-        ) }
+        <Select
+          collection={ collection }
+          placeholder="Select section"
+          defaultValue={ [ currentSection ] }
+          onValueChange={ handleItemSelect }
+          w={{ base: '100%', lg: '136px' }}
+          loading={ isLoading }
+        />
       </GridItem>
 
       <GridItem
         w={{ base: '100%', lg: 'auto' }}
         area="interval"
       >
-        { isLoading ? <Skeleton w={{ base: '100%', lg: '118px' }} h="40px" borderRadius="base"/> : (
-          <StatsDropdownMenu
-            items={ intervalList }
-            selectedId={ interval }
-            onSelect={ onIntervalChange }
-          />
-        ) }
+        <ChartIntervalSelect interval={ interval } onIntervalChange={ onIntervalChange } isLoading={ isLoading } selectTagSize="md"/>
       </GridItem>
 
       <GridItem
@@ -82,10 +81,11 @@ const StatsFilters = ({
       >
         <FilterInput
           key={ initialFilterValue }
-          isLoading={ isLoading }
+          loading={ isLoading }
           onChange={ onFilterInputChange }
           placeholder="Find chart, metric..."
           initialValue={ initialFilterValue }
+          size="sm"
         />
       </GridItem>
     </Grid>

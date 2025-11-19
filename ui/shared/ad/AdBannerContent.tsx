@@ -1,48 +1,62 @@
-import { chakra, Skeleton } from '@chakra-ui/react';
+import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import type { BannerPlatform } from './types';
+import type { BannerFormat } from './types';
 import type { AdBannerProviders } from 'types/client/adProviders';
 
 import config from 'configs/app';
+import useAccount from 'lib/web3/useAccount';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
 
 import AdbutlerBanner from './AdbutlerBanner';
 import CoinzillaBanner from './CoinzillaBanner';
-// import GetitBanner from './GetitBanner';
-import HypeBanner from './HypeBanner';
+import { DESKTOP_BANNER_WIDTH, MOBILE_BANNER_WIDTH } from './consts';
 import SliseBanner from './SliseBanner';
+import SpecifyBanner from './SpecifyBanner';
 
 const feature = config.features.adsBanner;
+const isSpecifyEnabled = feature.isEnabled && feature.isSpecifyEnabled;
 
 interface Props {
   className?: string;
   isLoading?: boolean;
-  platform?: BannerPlatform;
+  format?: BannerFormat;
   provider: AdBannerProviders;
 }
 
-const AdBannerContent = ({ className, isLoading, provider, platform }: Props) => {
+const AdBannerContent = ({ className, isLoading, provider, format }: Props) => {
+  const { address: addressWC, isConnecting } = useAccount();
+  const profileQuery = useProfileQuery();
+  const [ showSpecify, setShowSpecify ] = React.useState(isSpecifyEnabled);
+
+  const handleEmptySpecify = React.useCallback(() => {
+    setShowSpecify(false);
+  }, []);
+
+  const address = addressWC || profileQuery.data?.address_hash as `0x${ string }` | undefined;
+
   const content = (() => {
+    if (showSpecify) {
+      const isLoading = address ? false : profileQuery.isLoading || isConnecting;
+      return <SpecifyBanner format={ format } address={ address } onEmpty={ handleEmptySpecify } isLoading={ isLoading }/>;
+    }
     switch (provider) {
       case 'adbutler':
-        return <AdbutlerBanner platform={ platform }/>;
+        return <AdbutlerBanner format={ format }/>;
       case 'coinzilla':
-        return <CoinzillaBanner platform={ platform }/>;
-      // case 'getit':
-      //   return <GetitBanner platform={ platform }/>;
-      case 'hype':
-        return <HypeBanner platform={ platform }/>;
+        return <CoinzillaBanner format={ format }/>;
       case 'slise':
-        return <SliseBanner platform={ platform }/>;
+        return <SliseBanner format={ format }/>;
     }
   })();
 
   return (
     <Skeleton
       className={ className }
-      isLoaded={ !isLoading }
+      loading={ isLoading }
       borderRadius="none"
-      maxW={ ('adButler' in feature && feature.adButler) ? feature.adButler.config.desktop.width : '728px' }
+      maxW={{ base: `${ MOBILE_BANNER_WIDTH }px`, lg: `${ DESKTOP_BANNER_WIDTH }px` }}
       w="100%"
     >
       { content }

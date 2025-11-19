@@ -2,14 +2,13 @@ import type { UseQueryResult } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
 
 import type { AddressCounters } from 'types/api/address';
+import type { ClusterChainConfig } from 'types/multichain';
 
 import type { ResourceError } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
 import { publicClient } from 'lib/web3/client';
 import { ADDRESS_COUNTERS } from 'stubs/address';
 import { GET_TRANSACTIONS_COUNT } from 'stubs/RPC';
-
-import type { AddressQuery } from './useAddressQuery';
 
 type RpcResponseType = [
   number | null,
@@ -21,19 +20,23 @@ export type AddressCountersQuery = UseQueryResult<AddressCounters, ResourceError
 
 interface Params {
   hash: string;
-  addressQuery: AddressQuery;
+  isEnabled?: boolean;
+  isLoading?: boolean;
+  isDegradedData?: boolean;
+  chain?: ClusterChainConfig;
 }
 
-export default function useAddressQuery({ hash, addressQuery }: Params): AddressCountersQuery {
-  const enabled = Boolean(hash) && !addressQuery.isPlaceholderData;
+export default function useAddressCountersQuery({ hash, isLoading, isDegradedData, isEnabled = true, chain }: Params): AddressCountersQuery {
+  const enabled = isEnabled && Boolean(hash) && !isLoading;
 
-  const apiQuery = useApiQuery<'address_counters', { status: number }>('address_counters', {
+  const apiQuery = useApiQuery<'general:address_counters', { status: number }>('general:address_counters', {
     pathParams: { hash },
     queryOptions: {
-      enabled: enabled && !addressQuery.isDegradedData,
+      enabled: enabled && !isDegradedData,
       placeholderData: ADDRESS_COUNTERS,
       refetchOnMount: false,
     },
+    chain,
   });
 
   const rpcQuery = useQuery<RpcResponseType, unknown, AddressCounters | null>({
@@ -59,12 +62,12 @@ export default function useAddressQuery({ hash, addressQuery }: Params): Address
       };
     },
     placeholderData: [ GET_TRANSACTIONS_COUNT ],
-    enabled: enabled && (addressQuery.isDegradedData || apiQuery.isError),
+    enabled: enabled && (isDegradedData || apiQuery.isError),
     retry: false,
     refetchOnMount: false,
   });
 
-  const isRpcQuery = Boolean((addressQuery.isDegradedData || apiQuery.isError) && rpcQuery.data && publicClient);
+  const isRpcQuery = Boolean((isDegradedData || apiQuery.isError) && rpcQuery.data && publicClient);
   const query = isRpcQuery ? rpcQuery as UseQueryResult<AddressCounters, ResourceError<{ status: number }>> : apiQuery;
 
   return {

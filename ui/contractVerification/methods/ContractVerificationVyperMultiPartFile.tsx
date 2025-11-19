@@ -1,5 +1,8 @@
-import { Link } from '@chakra-ui/react';
 import React from 'react';
+
+import type { SmartContractVerificationConfig } from 'types/client/contract';
+
+import { Link } from 'toolkit/chakra/link';
 
 import ContractVerificationMethod from '../ContractVerificationMethod';
 import ContractVerificationFieldCompiler from '../fields/ContractVerificationFieldCompiler';
@@ -9,20 +12,20 @@ import ContractVerificationFieldSources from '../fields/ContractVerificationFiel
 const MAIN_SOURCES_TYPES = [ '.vy' as const ];
 const INTERFACE_TYPES = [ '.vy' as const, '.json' as const ];
 
-const ContractVerificationVyperMultiPartFile = () => {
+const ContractVerificationVyperMultiPartFile = ({ config }: { config: SmartContractVerificationConfig }) => {
 
   const interfacesHint = (
     <>
       <span>Add any </span>
-      <Link href="https://docs.vyperlang.org/en/stable/interfaces.html" target="_blank">required interfaces</Link>
+      <Link href="https://docs.vyperlang.org/en/stable/interfaces.html" external noIcon>required interfaces</Link>
       <span> for the main compiled contract.</span>
     </>
   );
 
   return (
     <ContractVerificationMethod title="Contract verification via Vyper (multi-part files)">
-      <ContractVerificationFieldCompiler isVyper/>
-      <ContractVerificationFieldEvmVersion isVyper/>
+      <ContractVerificationFieldCompiler config={ config } isVyper/>
+      <ContractVerificationFieldEvmVersion isVyper config={ config }/>
       <ContractVerificationFieldSources
         name="sources"
         fileTypes={ MAIN_SOURCES_TYPES }
@@ -37,6 +40,7 @@ const ContractVerificationVyperMultiPartFile = () => {
         name="interfaces"
         fileTypes={ INTERFACE_TYPES }
         multiple
+        fullFilePath
         title="Interfaces (.vy or .json)"
         hint={ interfacesHint }
       />
