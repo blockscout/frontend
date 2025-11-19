@@ -59,7 +59,7 @@ jobs:
         container:
             image: ubuntu:24.04
             env:
-                DOCKER_HOST: tcp://dind:2375
+                DOCKER_HOST: tcp://localhost:2375
         steps:
             -   name: Check out the repo
                 uses: actions/checkout@v4
