@@ -13,7 +13,8 @@
 		"configs/*": ["../../../configs/*"],
 		"lib/*": ["../../../lib/*"],
 		"toolkit/*": ["../../../toolkit/*"],
-		"types/*": ["../../../types/*"]
+		"types/*": ["../../../types/*"],
+		"public/*": ["../../../public/*"]
 	  },
 	  "types": ["node"],
 	  "allowImportingTsExtensions": true,

@@ -26,6 +26,7 @@ export default defineConfig({
       lib: resolve(__dirname, '../../../lib'),
       toolkit: resolve(__dirname, '../../../toolkit'),
       types: resolve(__dirname, '../../../types'),
+      public: resolve(__dirname, '../../../public'),
     },
     preserveSymlinks: true,
   },
