@@ -49,9 +49,7 @@ permissions:
 jobs:
     run:
         name: Run
-        runs-on: github-k8s-dev-runner
-        container:
-            image: ubuntu:24.04
+        runs-on: build-test
         steps:
             -   name: Check out the repo
                 uses: actions/checkout@v4
