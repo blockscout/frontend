@@ -1,12 +1,22 @@
 import * as yup from 'yup';
-import { CHAIN_INDICATOR_IDS, ChainIndicatorId, HeroBannerConfig, HeroBannerButtonState, HOME_STATS_WIDGET_IDS, HomeStatsWidgetId } from '../../../../types/homepage';
-import { replaceQuotes } from '../../../../configs/app/utils';
+import { CHAIN_INDICATOR_IDS, ChainIndicatorId, HeroBannerConfig, HeroBannerButtonState, HOME_STATS_WIDGET_IDS, HomeStatsWidgetId } from 'types/homepage';
+import { replaceQuotes } from 'configs/app/utils';
 import { getYupValidationErrorMessage, urlTest } from '../utils';
-import { NavigationLayout, NavigationPromoBannerConfig, NavItemExternal } from '../../../../types/client/navigation';
-import { FeaturedNetwork, NETWORK_GROUPS } from '../../../../types/networks';
-import { CustomLink, CustomLinksGroup } from '../../../../types/footerLinks';
-import { COLOR_THEME_IDS } from '../../../../types/settings';
-import { FontFamily } from '../../../../types/ui';
+import { NavigationLayout, NavigationPromoBannerConfig, NavItemExternal } from 'types/client/navigation';
+import { FeaturedNetwork, NETWORK_GROUPS, NetworkExplorer } from 'types/networks';
+import { CustomLink, CustomLinksGroup } from 'types/footerLinks';
+import { COLOR_THEME_IDS } from 'types/settings';
+import { FontFamily } from 'types/ui';
+import { ContractCodeIde, SMART_CONTRACT_EXTRA_VERIFICATION_METHODS, SMART_CONTRACT_LANGUAGE_FILTERS, type SmartContractVerificationMethodExtra } from 'types/client/contract';
+import type { AddressFormat, AddressViewId } from 'types/views/address';
+import { ADDRESS_FORMATS, ADDRESS_VIEWS_IDS, IDENTICON_TYPES } from 'types/views/address';
+import { BLOCK_FIELDS_IDS } from 'types/views/block';
+import type { BlockFieldId } from 'types/views/block';
+import type { TxAdditionalFieldsId, TxFieldsId } from 'types/views/tx';
+import { TX_ADDITIONAL_FIELDS_IDS, TX_FIELDS_IDS } from 'types/views/tx';
+import type { VerifiedContractsFilter } from 'types/api/contracts';
+import * as regexp from 'toolkit/utils/regexp';
+import { NftMarketplaceItem } from 'types/views/nft';
 
 const heroBannerButtonStateSchema: yup.ObjectSchema<HeroBannerButtonState> = yup.object({
     background: yup.array().max(2).of(yup.string()),
@@ -217,4 +227,122 @@ export const miscSchema = yup.object({
         return isUndefined || fontFamilySchema.isValidSync(data);
       }),
     NEXT_PUBLIC_MAX_CONTENT_WIDTH_ENABLED: yup.boolean(),
+});
+
+const networkExplorerSchema: yup.ObjectSchema<NetworkExplorer> = yup
+  .object({
+    title: yup.string().required(),
+    logo: yup.string().test(urlTest),
+    baseUrl: yup.string().test(urlTest).required(),
+    paths: yup
+      .object()
+      .shape({
+        tx: yup.string(),
+        address: yup.string(),
+        token: yup.string(),
+        block: yup.string(),
+        blob: yup.string(),
+      }),
+  });
+
+const contractCodeIdeSchema: yup.ObjectSchema<ContractCodeIde> = yup
+  .object({
+    title: yup.string().required(),
+    url: yup.string().test(urlTest).required(),
+    icon_url: yup.string().test(urlTest).required(),
+  });
+
+const nftMarketplaceSchema: yup.ObjectSchema<NftMarketplaceItem> = yup
+  .object({
+    name: yup.string().required(),
+    collection_url: yup.string().test(urlTest),
+    instance_url: yup.string().test(urlTest),
+    logo_url: yup.string().test(urlTest).required(),
+  });
+
+
+export const viewsSchema = yup.object({
+  NEXT_PUBLIC_VIEWS_BLOCK_HIDDEN_FIELDS: yup
+      .array()
+      .transform(replaceQuotes)
+      .json()
+      .of(yup.string<BlockFieldId>().oneOf(BLOCK_FIELDS_IDS)),
+    NEXT_PUBLIC_VIEWS_BLOCK_PENDING_UPDATE_ALERT_ENABLED: yup.boolean(),
+    NEXT_PUBLIC_VIEWS_ADDRESS_IDENTICON_TYPE: yup.string().oneOf(IDENTICON_TYPES),
+    NEXT_PUBLIC_VIEWS_ADDRESS_FORMAT: yup
+      .array()
+      .transform(replaceQuotes)
+      .json()
+      .of(yup.string<AddressFormat>().oneOf(ADDRESS_FORMATS)),
+    NEXT_PUBLIC_VIEWS_ADDRESS_BECH_32_PREFIX: yup
+      .string()
+      .when('NEXT_PUBLIC_VIEWS_ADDRESS_FORMAT', {
+        is: (value: Array<AddressFormat> | undefined) => value && value.includes('bech32'),
+        then: (schema) => schema.required().min(1).max(83),
+        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_VIEWS_ADDRESS_BECH_32_PREFIX is required if NEXT_PUBLIC_VIEWS_ADDRESS_FORMAT contains "bech32"'),
+      }),
+    NEXT_PUBLIC_VIEWS_ADDRESS_NATIVE_TOKEN_ADDRESS: yup
+      .string()
+      .min(42)
+      .max(42)
+      .matches(regexp.HEX_REGEXP_WITH_0X),
+
+    NEXT_PUBLIC_VIEWS_ADDRESS_HIDDEN_VIEWS: yup
+      .array()
+      .transform(replaceQuotes)
+      .json()
+      .of(yup.string<AddressViewId>().oneOf(ADDRESS_VIEWS_IDS)),
+    NEXT_PUBLIC_VIEWS_CONTRACT_SOLIDITYSCAN_ENABLED: yup.boolean(),
+    NEXT_PUBLIC_VIEWS_CONTRACT_DECODED_BYTECODE_ENABLED: yup.boolean(),
+    NEXT_PUBLIC_VIEWS_CONTRACT_EXTRA_VERIFICATION_METHODS: yup
+      .mixed()
+      .test(
+        'shape',
+        'Invalid schema were provided for NEXT_PUBLIC_VIEWS_CONTRACT_EXTRA_VERIFICATION_METHODS, it should be either array of method ids or "none" string literal',
+        (data) => {
+          const isNoneSchema = yup.string().oneOf([ 'none' ]);
+          const isArrayOfMethodsSchema = yup
+            .array()
+            .transform(replaceQuotes)
+            .json()
+            .of(yup.string<SmartContractVerificationMethodExtra>().oneOf(SMART_CONTRACT_EXTRA_VERIFICATION_METHODS));
+
+          return isNoneSchema.isValidSync(data) || isArrayOfMethodsSchema.isValidSync(data);
+        }),
+    NEXT_PUBLIC_VIEWS_CONTRACT_LANGUAGE_FILTERS: yup
+      .array()
+      .transform(replaceQuotes)
+      .json()
+      .of(yup.string<VerifiedContractsFilter>().oneOf(SMART_CONTRACT_LANGUAGE_FILTERS)),
+
+    NEXT_PUBLIC_VIEWS_TX_HIDDEN_FIELDS: yup
+      .array()
+      .transform(replaceQuotes)
+      .json()
+      .of(yup.string<TxFieldsId>().oneOf(TX_FIELDS_IDS)),
+    NEXT_PUBLIC_VIEWS_TX_ADDITIONAL_FIELDS: yup
+      .array()
+      .transform(replaceQuotes)
+      .json()
+      .of(yup.string<TxAdditionalFieldsId>().oneOf(TX_ADDITIONAL_FIELDS_IDS)),
+    NEXT_PUBLIC_VIEWS_TX_GROUPED_FEES: yup.boolean(),
+    NEXT_PUBLIC_VIEWS_NFT_MARKETPLACES: yup
+      .array()
+      .transform(replaceQuotes)
+      .json()
+      .of(nftMarketplaceSchema),
+    NEXT_PUBLIC_VIEWS_TOKEN_SCAM_TOGGLE_ENABLED: yup.boolean(),
+    NEXT_PUBLIC_HELIA_VERIFIED_FETCH_ENABLED: yup.boolean(),
+
+    NEXT_PUBLIC_NETWORK_EXPLORERS: yup
+      .array()
+      .transform(replaceQuotes)
+      .json()
+      .of(networkExplorerSchema),
+    NEXT_PUBLIC_CONTRACT_CODE_IDES: yup
+      .array()
+      .transform(replaceQuotes)
+      .json()
+      .of(contractCodeIdeSchema),
+    NEXT_PUBLIC_HAS_CONTRACT_AUDIT_REPORTS: yup.boolean(),
 });

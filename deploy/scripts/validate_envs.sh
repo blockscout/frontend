@@ -7,7 +7,7 @@ if [ -f .env ]; then
 fi
 
 # Check run-time ENVs values integrity
-node "$(dirname "$0")/envs-validator.js" "$input"
+node "$(dirname "$0")/envs-validator/index.js" "$input"
 if [ $? != 0 ]; then                   
    exit 1
 fi
