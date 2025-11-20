@@ -2,6 +2,7 @@ import type { Feature } from './types';
 import { SUPPORTED_AD_TEXT_PROVIDERS } from 'types/client/adProviders';
 import type { AdTextProviders } from 'types/client/adProviders';
 
+import app from '../app';
 import { getEnvValue } from '../utils';
 
 const provider: AdTextProviders = (() => {
@@ -12,7 +13,7 @@ const provider: AdTextProviders = (() => {
 const title = 'Text ads';
 
 const config: Feature<{ provider: AdTextProviders }> = (() => {
-  if (provider !== 'none') {
+  if (app.appProfile !== 'private' && provider !== 'none') {
     return Object.freeze({
       title,
       isEnabled: true,
