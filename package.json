@@ -173,7 +173,8 @@
     "prismjs": "^1.30.0",
     "@metamask/sdk": "^0.33.1",
     "@metamask/sdk-communication-layer": "^0.33.1",
-    "nanoid": "^5.1.5"
+    "nanoid": "^5.1.5",
+    "**/glob": ">=11.1.0"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": "eslint --cache --fix"
