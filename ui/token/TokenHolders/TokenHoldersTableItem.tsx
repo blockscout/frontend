@@ -35,7 +35,7 @@ const TokenTransferTableItem = ({ holder, token, isLoading }: Props) => {
       ) }
       <TableCell verticalAlign="middle" isNumeric>
         <Skeleton loading={ isLoading } display="inline-block" wordBreak="break-word">
-          { quantity }
+          { token.type === 'ERC-7984' ? '•••••' : quantity }
         </Skeleton>
       </TableCell>
       { token.total_supply && token.type !== 'ERC-404' && (
