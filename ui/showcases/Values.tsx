@@ -3,7 +3,9 @@ import React from 'react';
 
 import AssetValue from 'ui/shared/value/AssetValue';
 import SimpleValue from 'ui/shared/value/SimpleValue';
+import TokenValue from 'ui/shared/value/TokenValue';
 
+import { TOKEN } from './Link';
 import { Section, Container, SectionHeader, SamplesStack, Sample, SectionSubHeader } from './parts';
 
 const ValuesShowcase = () => {
@@ -119,6 +121,16 @@ const ValuesShowcase = () => {
               layout="vertical"
               loading
             />
+          </Sample>
+        </SamplesStack>
+      </Section>
+
+      <Section>
+        <SectionHeader>TokenValue</SectionHeader>
+        <SectionSubHeader>Examples</SectionSubHeader>
+        <SamplesStack>
+          <Sample label="convertible token">
+            <TokenValue amount="1000000000000000000000000" token={ TOKEN } maxW="400px"/>
           </Sample>
         </SamplesStack>
       </Section>

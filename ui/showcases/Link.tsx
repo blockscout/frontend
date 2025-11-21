@@ -1,6 +1,8 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
+import type { TokenInfo } from 'types/api/token';
+
 import * as addressMock from 'mocks/address/address';
 import * as implementationsMock from 'mocks/address/implementations';
 import * as blobsMock from 'mocks/blobs/blobs';
@@ -20,20 +22,19 @@ import TxEntity from 'ui/shared/entities/tx/TxEntity';
 
 import { Section, Container, SectionHeader, SamplesStack, Sample, SectionSubHeader } from './parts';
 
-const TOKEN = {
+export const TOKEN = {
   address_hash: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
   circulating_market_cap: '139446916652.6728',
   decimals: '6',
   exchange_rate: '0.999921',
-  holders: '8348277',
+  holders_count: '8348277',
   icon_url: 'https://assets.coingecko.com/coins/images/325/small/Tether.png?1696501661',
   name: 'Tether',
   symbol: 'USDT',
   total_supply: '76923002799740785',
   type: 'ERC-20' as const,
-  volume_24h: '82069586622.4918',
   reputation: 'ok' as const,
-};
+} satisfies TokenInfo<'ERC-20'>;
 
 const LinkShowcase = () => {
 

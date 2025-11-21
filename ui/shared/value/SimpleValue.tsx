@@ -19,17 +19,27 @@ interface Props extends Omit<BoxProps, 'prefix' | 'postfix'> {
   overflowed?: boolean;
 }
 
-const SimpleValue = ({ value, accuracy = DEFAULT_ACCURACY, prefix, startElement, endElement, noTooltip, loading, overflowed, ...rest }: Props) => {
+const SimpleValue = ({
+  value,
+  accuracy = DEFAULT_ACCURACY,
+  prefix,
+  startElement,
+  endElement,
+  noTooltip,
+  loading,
+  overflowed,
+  ...rest
+}: Props) => {
   return (
-    <Tooltip content={ `${ prefix ?? '' }${ value.toFormat() }` } disabled={ noTooltip }>
-      <Skeleton loading={ loading } display="inline-flex" alignItems="center" whiteSpace="pre" maxW="100%" overflow="hidden" { ...rest }>
-        { startElement }
+    <Skeleton loading={ loading } display="inline-flex" alignItems="center" whiteSpace="pre" maxW="100%" overflow="hidden" { ...rest }>
+      { startElement }
+      <Tooltip content={ `${ prefix ?? '' }${ value.toFormat() }` } disabled={ noTooltip }>
         <chakra.span display="inline-block" maxW="100%" overflow="hidden" textOverflow="ellipsis">
           { formatBnValue({ value, accuracy, prefix, overflowed }) }
         </chakra.span>
-        { typeof endElement === 'string' ? <span>{ endElement }</span> : endElement }
-      </Skeleton>
-    </Tooltip>
+      </Tooltip>
+      { typeof endElement === 'string' ? <span>{ endElement }</span> : endElement }
+    </Skeleton>
   );
 };
 

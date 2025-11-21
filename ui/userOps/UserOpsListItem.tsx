@@ -5,7 +5,6 @@ import type { ClusterChainConfig } from 'types/multichain';
 
 import config from 'configs/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
-import CurrencyValue from 'ui/shared/CurrencyValue';
 import AddressStringOrParam from 'ui/shared/entities/address/AddressStringOrParam';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
@@ -13,6 +12,7 @@ import UserOpEntity from 'ui/shared/entities/userOp/UserOpEntity';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import UserOpStatus from 'ui/shared/userOps/UserOpStatus';
+import AssetValue from 'ui/shared/value/AssetValue';
 
 type Props = {
   item: UserOpsItem;
@@ -90,12 +90,11 @@ const UserOpsListItem = ({ item, isLoading, showTx, showSender, chainData }: Pro
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>Fee</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
-            <CurrencyValue
-              value={ item.fee }
-              isLoading={ isLoading }
-              accuracy={ 8 }
-              currency={ chainConfig.chain.currency.symbol }
+            <AssetValue
+              amount={ item.fee }
+              asset={ chainConfig.chain.currency.symbol }
               decimals={ String(config.chain.currency.decimals) }
+              loading={ isLoading }
             />
           </ListItemMobileGrid.Value>
         </>

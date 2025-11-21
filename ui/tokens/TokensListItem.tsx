@@ -15,6 +15,8 @@ import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
+import SimpleValue from 'ui/shared/value/SimpleValue';
+import { DEFAULT_ACCURACY_USD } from 'ui/shared/value/utils';
 
 type Props = {
   token: TokenInfo | AggregatedTokenInfo;
@@ -106,7 +108,14 @@ const TokensListItem = ({
       { marketCap && (
         <HStack gap={ 3 }>
           <Skeleton loading={ isLoading } textStyle="sm" fontWeight={ 500 }>On-chain market cap</Skeleton>
-          <Skeleton loading={ isLoading } textStyle="sm" color="text.secondary"><span>{ BigNumber(marketCap).toFormat() }</span></Skeleton>
+          <SimpleValue
+            value={ BigNumber(marketCap) }
+            loading={ isLoading }
+            prefix="$"
+            accuracy={ DEFAULT_ACCURACY_USD }
+            textStyle="sm"
+            color="text.secondary"
+          />
         </HStack>
       ) }
       <HStack gap={ 3 }>

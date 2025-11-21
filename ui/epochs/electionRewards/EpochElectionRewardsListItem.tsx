@@ -3,13 +3,12 @@ import React from 'react';
 
 import type { CeloEpochElectionReward, CeloEpochDetails } from 'types/api/epochs';
 
-import getCurrencyValue from 'lib/getCurrencyValue';
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
-import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import EpochRewardTypeTag from 'ui/shared/EpochRewardTypeTag';
 import IconSvg from 'ui/shared/IconSvg';
+import TokenValue from 'ui/shared/value/TokenValue';
 
 import EpochElectionRewardDetailsMobile from './EpochElectionRewardDetailsMobile';
 import { getRewardNumText } from './utils';
@@ -22,12 +21,6 @@ interface Props {
 
 const EpochElectionRewardsListItem = ({ data, isLoading, type }: Props) => {
   const section = useDisclosure();
-
-  const { valueStr } = getCurrencyValue({
-    value: data.total,
-    decimals: data.token.decimals,
-    accuracy: 2,
-  });
 
   return (
     <Box
@@ -57,16 +50,13 @@ const EpochElectionRewardsListItem = ({ data, isLoading, type }: Props) => {
         ) : <Box boxSize={ 6 }/> }
         <EpochRewardTypeTag type={ type } isLoading={ isLoading }/>
         <Skeleton loading={ isLoading } ml="auto">{ getRewardNumText(type, data.count) }</Skeleton>
-        <Flex columnGap={ 2 } alignItems="center" ml={{ base: 9, lg: 'auto' }} w={{ base: '100%', lg: 'fit-content' }} fontWeight={ 500 }>
-          <Skeleton loading={ isLoading }>{ valueStr }</Skeleton>
-          <TokenEntity
-            token={ data.token }
-            noCopy
-            onlySymbol
-            w="auto"
-            isLoading={ isLoading }
-          />
-        </Flex>
+        <TokenValue
+          amount={ data.total }
+          token={ data.token }
+          accuracy={ 0 }
+          loading={ isLoading }
+          fontWeight={ 500 }
+        />
       </Flex>
       { section.open && (
         <Box mt={ 2 }>

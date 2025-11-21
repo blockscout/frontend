@@ -7,7 +7,7 @@ import calculateUsdValue from './calculateUsdValue';
 import SimpleValue from './SimpleValue';
 import { DEFAULT_ACCURACY, DEFAULT_ACCURACY_USD, DEFAULT_DECIMALS } from './utils';
 
-interface Props extends Omit<BoxProps, 'prefix' | 'suffix'>, Omit<CalculateUsdValueParams, 'amount'> {
+export interface Props extends Omit<BoxProps, 'prefix' | 'suffix'>, Omit<CalculateUsdValueParams, 'amount'> {
   amount: string | null | undefined;
   asset?: React.ReactNode;
   startElement?: React.ReactNode;

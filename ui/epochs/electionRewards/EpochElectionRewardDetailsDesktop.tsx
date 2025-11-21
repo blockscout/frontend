@@ -5,11 +5,11 @@ import React from 'react';
 import type { CeloEpochDetails } from 'types/api/epochs';
 import type { TokenInfo } from 'types/api/token';
 
-import getCurrencyValue from 'lib/getCurrencyValue';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import useLazyLoadedList from 'ui/shared/pagination/useLazyLoadedList';
+import AssetValue from 'ui/shared/value/AssetValue';
 
 import { formatRewardType, getRewardDetailsTableTitles } from './utils';
 
@@ -65,19 +65,16 @@ const CeloEpochElectionRewardDetailsDesktop = ({ type, token }: Props) => {
             .map((page) => page.items)
             .flat()
             .map((item, index) => {
-
-              const amount = getCurrencyValue({
-                value: item.amount,
-                decimals: token.decimals,
-              });
-
               return (
                 <React.Fragment key={ index }>
                   <GridItem>
                     <AddressEntity address={ item.account } noIcon truncation="constant"/>
                   </GridItem>
                   <GridItem textAlign="right">
-                    { amount.valueStr }
+                    <AssetValue
+                      amount={ item.amount }
+                      decimals={ token.decimals }
+                    />
                   </GridItem>
                   <GridItem>
                     <AddressEntity address={ item.associated_account } noIcon truncation="constant"/>

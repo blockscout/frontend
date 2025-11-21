@@ -17,6 +17,8 @@ import type { EntityProps as AddressEntityProps } from 'ui/shared/entities/addre
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import TruncatedValue from 'ui/shared/TruncatedValue';
+import SimpleValue from 'ui/shared/value/SimpleValue';
+import { DEFAULT_ACCURACY_USD } from 'ui/shared/value/utils';
 
 type Props = {
   token: TokenInfo | AggregatedTokenInfo;
@@ -126,18 +128,19 @@ const TokensTableItem = ({
           maxW="100%"
         />
       </TableCell>
-      <TableCell isNumeric maxWidth="300px" width="300px">
-        <TruncatedValue
-          value={ marketCap ? `$${ BigNumber(marketCap).toFormat() }` : '' }
-          isLoading={ isLoading }
-          maxW="100%"
-        />
+      <TableCell isNumeric>
+        { marketCap && (
+          <SimpleValue
+            value={ BigNumber(marketCap) }
+            loading={ isLoading }
+            prefix="$"
+            accuracy={ DEFAULT_ACCURACY_USD }
+          />
+        ) }
       </TableCell>
       <TableCell isNumeric>
         <Skeleton
           loading={ isLoading }
-          textStyle="sm"
-          fontWeight={ 500 }
           display="inline-block"
         >
           { Number(holdersCount).toLocaleString() }

@@ -19,7 +19,7 @@ export const formatBnValue = ({ value, accuracy, prefix, overflowed }: FormatBnV
   const formattedValue = value.dp(accuracy).toFormat();
 
   return formattedValue === '0' && !value.isEqualTo(ZERO) && !overflowed ?
-    `< ${ prefix }0.${ '0'.repeat(accuracy - 1) }1` :
+    `< ${ prefix ?? '' }0.${ '0'.repeat(accuracy - 1) }1` :
     `${ fullPrefix }${ formattedValue }`;
 };
 

@@ -79,7 +79,7 @@ const AddressBalance = ({ data, isLoading }: Props) => {
           asset={ currencyUnits.ether }
           exchangeRate={ data.exchange_rate }
           decimals={ String(config.chain.currency.decimals) }
-          startElement={ <NativeTokenIcon boxSize={ 5 } isLoading={ isLoading }/> }
+          startElement={ <NativeTokenIcon boxSize={ 5 } isLoading={ isLoading } mr={ 2 }/> }
           loading={ isLoading }
         />
       </DetailedInfo.ItemValue>
