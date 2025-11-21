@@ -37,6 +37,7 @@ import TagShowcase from 'ui/showcases/Tag';
 import TextareaShowcase from 'ui/showcases/Textarea';
 import ToastShowcase from 'ui/showcases/Toast';
 import TooltipShowcase from 'ui/showcases/Tooltip';
+import ValuesShowcase from 'ui/showcases/Values';
 
 const tabs = [
   { label: 'Accordion', value: 'accordion', component: <AccordionsShowcase/> },
@@ -71,6 +72,7 @@ const tabs = [
   { label: 'Textarea', value: 'textarea', component: <TextareaShowcase/> },
   { label: 'Toast', value: 'toast', component: <ToastShowcase/> },
   { label: 'Tooltip', value: 'tooltip', component: <TooltipShowcase/> },
+  { label: 'Values', value: 'values', component: <ValuesShowcase/> },
 ];
 
 const ChakraShowcases = () => {

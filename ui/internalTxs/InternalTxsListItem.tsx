@@ -15,6 +15,7 @@ import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
+import SimpleValue from 'ui/shared/value/SimpleValue';
 import { TX_INTERNALS_ITEMS } from 'ui/tx/internals/utils';
 
 type Props = InternalTransaction & { currentAddress?: string; isLoading?: boolean; showBlockInfo?: boolean; chainData?: ClusterChainConfig };
@@ -80,9 +81,14 @@ const InternalTxsListItem = ({
       />
       <HStack gap={ 3 }>
         <Skeleton loading={ isLoading } fontSize="sm" fontWeight={ 500 }>Value { currencyUnits.ether }</Skeleton>
-        <Skeleton loading={ isLoading } fontSize="sm" color="text.secondary" minW={ 6 }>
-          <span>{ BigNumber(value).div(BigNumber(10 ** config.chain.currency.decimals)).toFormat() }</span>
-        </Skeleton>
+        <SimpleValue
+          value={ BigNumber(value).div(BigNumber(10 ** config.chain.currency.decimals)) }
+          accuracy={ 0 }
+          loading={ isLoading }
+          minW={ 6 }
+          fontSize="sm"
+          color="text.secondary"
+        />
       </HStack>
     </ListItemMobile>
   );

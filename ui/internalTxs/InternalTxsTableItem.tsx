@@ -14,7 +14,7 @@ import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
-import TruncatedValue from 'ui/shared/TruncatedValue';
+import SimpleValue from 'ui/shared/value/SimpleValue';
 import { TX_INTERNALS_ITEMS } from 'ui/tx/internals/utils';
 
 type Props = InternalTransaction & { currentAddress?: string; isLoading?: boolean; showBlockInfo?: boolean; chainData?: ClusterChainConfig };
@@ -93,11 +93,11 @@ const InternalTxsTableItem = ({
         />
       </TableCell>
       <TableCell isNumeric verticalAlign="middle">
-        <TruncatedValue
-          value={ BigNumber(value).div(BigNumber(10 ** config.chain.currency.decimals)).toFormat() }
-          isLoading={ isLoading }
+        <SimpleValue
+          value={ BigNumber(value).div(BigNumber(10 ** config.chain.currency.decimals)) }
+          accuracy={ 0 }
+          loading={ isLoading }
           minW={ 6 }
-          maxW="100%"
           verticalAlign="middle"
         />
       </TableCell>

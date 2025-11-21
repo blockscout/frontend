@@ -6,6 +6,7 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { TruncatedTextTooltip } from 'toolkit/components/truncation/TruncatedTextTooltip';
 
+// TODO @tom2drum maybe remove this
 interface Props {
   className?: string;
   isLoading?: boolean;

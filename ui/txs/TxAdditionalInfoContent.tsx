@@ -15,6 +15,7 @@ import BlobEntity from 'ui/shared/entities/blob/BlobEntity';
 import TextSeparator from 'ui/shared/TextSeparator';
 import TxFee from 'ui/shared/tx/TxFee';
 import Utilization from 'ui/shared/Utilization/Utilization';
+import AssetValue from 'ui/shared/value/AssetValue';
 
 const TxAdditionalInfoContent = ({ tx }: { tx: Transaction }) => {
   const multichainContext = useMultichainContext();
@@ -56,14 +57,20 @@ const TxAdditionalInfoContent = ({ tx }: { tx: Transaction }) => {
           </Flex>
         </Box>
       ) }
-      { !config.UI.views.tx.hiddenFields?.tx_fee && (
+      <Box { ...sectionProps } mb={ 4 }>
+        <Text { ...sectionTitleProps }>Value</Text>
+        <AssetValue
+          amount={ tx.value }
+          asset={ currencyUnits.ether }
+          decimals={ String(config.chain.currency.decimals) }
+          exchangeRate={ tx.exchange_rate }
+          noTooltip
+        />
+      </Box>
+      { !config.UI.views.tx.hiddenFields?.tx_fee && (tx.stability_fee !== undefined || tx.fee.value !== null) && (
         <Box { ...sectionProps } mb={ 4 }>
-          { (tx.stability_fee !== undefined || tx.fee.value !== null) && (
-            <>
-              <Text { ...sectionTitleProps }>Transaction fee</Text>
-              <TxFee tx={ tx } withUsd accuracyUsd={ 2 } rowGap={ 0 }/>
-            </>
-          ) }
+          <Text { ...sectionTitleProps }>Transaction fee</Text>
+          <TxFee tx={ tx } withUsd accuracyUsd={ 2 } rowGap={ 0 } noTooltip/>
         </Box>
       ) }
       { tx.gas_used !== null && (

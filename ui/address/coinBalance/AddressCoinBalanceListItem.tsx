@@ -5,6 +5,7 @@ import React from 'react';
 import type { AddressCoinBalanceHistoryItem } from 'types/api/address';
 import type { ClusterChainConfig } from 'types/multichain';
 
+import config from 'configs/app';
 import { currencyUnits } from 'lib/units';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { WEI, ZERO } from 'toolkit/utils/consts';
@@ -12,6 +13,8 @@ import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
+import AssetValue from 'ui/shared/value/AssetValue';
+import SimpleValue from 'ui/shared/value/SimpleValue';
 
 type Props = AddressCoinBalanceHistoryItem & {
   page: number;
@@ -26,13 +29,20 @@ const AddressCoinBalanceListItem = (props: Props) => {
   return (
     <ListItemMobile rowGap={ 2 }>
       <Flex justifyContent="space-between" w="100%">
-        <Skeleton loading={ props.isLoading } fontWeight={ 600 }>
-          { BigNumber(props.value).div(WEI).dp(8).toFormat() } { currencyUnits.ether }
-        </Skeleton>
+        <AssetValue
+          amount={ props.value }
+          asset={ currencyUnits.ether }
+          decimals={ String(config.chain.currency.decimals) }
+          loading={ props.isLoading }
+          fontWeight={ 600 }
+        />
         <Skeleton loading={ props.isLoading }>
           <Stat.Root flexGrow="0" positive={ isPositiveDelta } size="sm">
             <Stat.ValueText fontWeight={ 600 }>
-              { deltaBn.dp(8).toFormat() }
+              <SimpleValue
+                value={ deltaBn }
+                loading={ props.isLoading }
+              />
             </Stat.ValueText>
             { isPositiveDelta ? <Stat.UpIndicator/> : <Stat.DownIndicator/> }
           </Stat.Root>

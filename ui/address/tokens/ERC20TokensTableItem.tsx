@@ -5,13 +5,15 @@ import type { AddressTokensErc20Item } from './types';
 
 import config from 'configs/app';
 import multichainConfig from 'configs/multichain';
-import getCurrencyValue from 'lib/getCurrencyValue';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
 import NativeTokenTag from 'ui/shared/celo/NativeTokenTag';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
+import calculateUsdValue from 'ui/shared/value/calculateUsdValue';
+import SimpleValue from 'ui/shared/value/SimpleValue';
+import { DEFAULT_ACCURACY_USD } from 'ui/shared/value/utils';
 
 type Props = AddressTokensErc20Item & { isLoading: boolean };
 
@@ -23,9 +25,9 @@ const ERC20TokensTableItem = ({
 }: Props) => {
 
   const {
-    valueStr: tokenQuantity,
-    usd: tokenValue,
-  } = getCurrencyValue({ value: value, exchangeRate: token.exchange_rate, decimals: token.decimals, accuracy: 8, accuracyUsd: 2 });
+    valueBn: tokenQuantity,
+    usdBn: tokenValue,
+  } = calculateUsdValue({ amount: value, exchangeRate: token.exchange_rate, decimals: token.decimals });
 
   const isNativeToken = config.UI.views.address.nativeTokenAddress &&
     token.address_hash.toLowerCase() === config.UI.views.address.nativeTokenAddress.toLowerCase();
@@ -73,14 +75,22 @@ const ERC20TokensTableItem = ({
         </Skeleton>
       </TableCell>
       <TableCell isNumeric verticalAlign="middle">
-        <Skeleton loading={ isLoading } display="inline" color={ isNativeToken ? 'text.secondary' : undefined }>
-          { tokenQuantity }
-        </Skeleton>
+        <SimpleValue
+          value={ tokenQuantity }
+          color={ isNativeToken ? 'text.secondary' : undefined }
+          loading={ isLoading }
+        />
       </TableCell>
       <TableCell isNumeric verticalAlign="middle">
-        <Skeleton loading={ isLoading } display="inline" color={ isNativeToken ? 'text.secondary' : undefined }>
-          { tokenValue && `$${ tokenValue }` }
-        </Skeleton>
+        { token.exchange_rate && (
+          <SimpleValue
+            value={ tokenValue }
+            prefix="$"
+            color={ isNativeToken ? 'text.secondary' : undefined }
+            loading={ isLoading }
+            accuracy={ DEFAULT_ACCURACY_USD }
+          />
+        ) }
       </TableCell>
     </TableRow>
   );

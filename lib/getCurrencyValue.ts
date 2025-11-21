@@ -10,9 +10,18 @@ interface Params {
   decimals?: string | null;
 }
 
+// TODO @tom2drum remove this function
 export default function getCurrencyValue({ value, accuracy, accuracyUsd, decimals, exchangeRate }: Params) {
-  const valueCurr = BigNumber(value).div(BigNumber(10 ** Number(decimals || '18')));
-  const valueResult = accuracy ? valueCurr.dp(accuracy).toFormat() : valueCurr.toFormat();
+  const valueBn = BigNumber(value);
+  const valueCurr = valueBn.div(BigNumber(10 ** Number(decimals || '18')));
+
+  const valueStr = (() => {
+    if (!accuracy) {
+      return valueCurr.toFormat();
+    }
+    const formattedValue = valueCurr.dp(accuracy).toFormat();
+    return formattedValue === '0' && !valueBn.isEqualTo(ZERO) ? `< 0.${ '0'.repeat(accuracy - 1) }1` : formattedValue;
+  })();
 
   let usdResult: string | undefined;
   let usdBn = ZERO;
@@ -28,5 +37,5 @@ export default function getCurrencyValue({ value, accuracy, accuracyUsd, decimal
     }
   }
 
-  return { valueCurr, valueStr: valueResult, usd: usdResult, usdBn };
+  return { valueCurr, valueStr, usd: usdResult, usdBn };
 }

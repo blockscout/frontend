@@ -5,22 +5,24 @@ import type { AddressTokensErc20Item } from './types';
 
 import config from 'configs/app';
 import multichainConfig from 'configs/multichain';
-import getCurrencyValue from 'lib/getCurrencyValue';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
 import NativeTokenTag from 'ui/shared/celo/NativeTokenTag';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
+import calculateUsdValue from 'ui/shared/value/calculateUsdValue';
+import SimpleValue from 'ui/shared/value/SimpleValue';
+import { DEFAULT_ACCURACY_USD } from 'ui/shared/value/utils';
 
 type Props = AddressTokensErc20Item & { isLoading: boolean };
 
 const ERC20TokensListItem = ({ token, value, isLoading, chain_values: chainValues }: Props) => {
 
   const {
-    valueStr: tokenQuantity,
-    usd: tokenValue,
-  } = getCurrencyValue({ value: value, exchangeRate: token.exchange_rate, decimals: token.decimals, accuracy: 8, accuracyUsd: 2 });
+    valueBn: tokenQuantity,
+    usdBn: tokenValue,
+  } = calculateUsdValue({ amount: value, exchangeRate: token.exchange_rate, decimals: token.decimals });
 
   const isNativeToken = config.UI.views.address.nativeTokenAddress &&
     token.address_hash.toLowerCase() === config.UI.views.address.nativeTokenAddress.toLowerCase();
@@ -68,16 +70,24 @@ const ERC20TokensListItem = ({ token, value, isLoading, chain_values: chainValue
       ) }
       <HStack gap={ 3 } alignItems="baseline">
         <Skeleton loading={ isLoading } fontSize="sm" fontWeight={ 500 }>Quantity</Skeleton>
-        <Skeleton loading={ isLoading } fontSize="sm" color="text.secondary" whiteSpace="pre-wrap" wordBreak="break-word">
-          <span>{ tokenQuantity }</span>
-        </Skeleton>
+        <SimpleValue
+          value={ tokenQuantity }
+          loading={ isLoading }
+          fontSize="sm"
+          color="text.secondary"
+        />
       </HStack>
-      { tokenValue !== undefined && (
+      { token.exchange_rate && (
         <HStack gap={ 3 } alignItems="baseline">
           <Skeleton loading={ isLoading } fontSize="sm" fontWeight={ 500 }>Value</Skeleton>
-          <Skeleton loading={ isLoading } fontSize="sm" color="text.secondary" whiteSpace="pre-wrap" wordBreak="break-word">
-            <span>${ tokenValue }</span>
-          </Skeleton>
+          <SimpleValue
+            value={ tokenValue }
+            prefix="$"
+            loading={ isLoading }
+            accuracy={ DEFAULT_ACCURACY_USD }
+            fontSize="sm"
+            color="text.secondary"
+          />
         </HStack>
       ) }
     </ListItemMobile>

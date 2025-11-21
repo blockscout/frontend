@@ -1,3 +1,4 @@
+import type { BoxProps } from '@chakra-ui/react';
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
@@ -7,21 +8,22 @@ import config from 'configs/app';
 import getCurrencyValue from 'lib/getCurrencyValue';
 import { currencyUnits } from 'lib/units';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import CurrencyValue from 'ui/shared/CurrencyValue';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
+import AssetValue from 'ui/shared/value/AssetValue';
 
-interface Props {
-  className?: string;
+interface Props extends BoxProps {
   isLoading?: boolean;
   tx: Transaction | Pick<Transaction, WrappedTransactionFields>;
   withCurrency?: boolean;
   withUsd?: boolean;
   accuracy?: number;
   accuracyUsd?: number;
+  noTooltip?: boolean;
 }
 
-const TxFee = ({ className, tx, accuracy, accuracyUsd, isLoading, withCurrency = true, withUsd }: Props) => {
+const TxFee = ({ tx, accuracy, accuracyUsd, isLoading, withCurrency = true, withUsd, noTooltip, ...rest }: Props) => {
 
+  // TODO @tom2drum check celo and stability cases
   if ('celo' in tx && tx.celo?.gas_token) {
     const token = tx.celo.gas_token;
     const { valueStr, usd } = getCurrencyValue({
@@ -32,7 +34,7 @@ const TxFee = ({ className, tx, accuracy, accuracyUsd, isLoading, withCurrency =
       accuracyUsd,
     });
     return (
-      <Skeleton whiteSpace="pre-wrap" wordBreak="break-word" loading={ isLoading } display="flex" flexWrap="wrap" className={ className }>
+      <Skeleton whiteSpace="pre-wrap" wordBreak="break-word" loading={ isLoading } display="flex" flexWrap="wrap" { ...rest }>
         <span>{ valueStr } </span>
         <TokenEntity token={ token } noCopy onlySymbol w="auto" ml={ 1 }/>
         { usd && withUsd && <chakra.span color="text.secondary"> (${ usd })</chakra.span> }
@@ -51,7 +53,7 @@ const TxFee = ({ className, tx, accuracy, accuracyUsd, isLoading, withCurrency =
     });
 
     return (
-      <Skeleton whiteSpace="pre" loading={ isLoading } display="flex" className={ className }>
+      <Skeleton whiteSpace="pre" loading={ isLoading } display="flex" { ...rest }>
         <span>{ valueStr } </span>
         { valueStr !== '0' && <TokenEntity token={ token } noCopy onlySymbol w="auto" ml={ 1 }/> }
         { usd && withUsd && <chakra.span color="text.secondary"> (${ usd })</chakra.span> }
@@ -62,16 +64,17 @@ const TxFee = ({ className, tx, accuracy, accuracyUsd, isLoading, withCurrency =
   const showCurrency = withCurrency && !config.UI.views.tx.hiddenFields?.fee_currency;
 
   return (
-    <CurrencyValue
-      value={ tx.fee.value }
-      currency={ showCurrency ? currencyUnits.ether : '' }
+    <AssetValue
+      amount={ tx.fee.value || '0' }
+      asset={ showCurrency ? currencyUnits.ether : '' }
       decimals={ String(config.chain.currency.decimals) }
       exchangeRate={ withUsd && 'exchange_rate' in tx ? tx.exchange_rate : null }
       accuracy={ accuracy }
       accuracyUsd={ accuracyUsd }
       flexWrap="wrap"
-      className={ className }
-      isLoading={ isLoading }
+      loading={ isLoading }
+      noTooltip={ noTooltip }
+      { ...rest }
     />
   );
 };

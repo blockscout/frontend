@@ -1,3 +1,4 @@
+import type { BoxProps } from '@chakra-ui/react';
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
@@ -7,53 +8,99 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { GWEI } from 'toolkit/utils/consts';
 
-interface Props {
+interface Props extends BoxProps {
   value: string | null;
   currency?: string;
+  decimals?: string | null;
   exchangeRate?: string | null;
-  className?: string;
+  layout?: 'horizontal' | 'vertical';
   accuracy?: number;
   accuracyUsd?: number;
-  decimals?: string | null;
   isLoading?: boolean;
   startElement?: React.ReactNode;
   showGweiTooltip?: boolean;
+  noValueTooltip?: boolean;
 }
 
-const CurrencyValue = ({ value, currency = '', decimals, exchangeRate, className, accuracy, accuracyUsd, isLoading, startElement, showGweiTooltip }: Props) => {
+// TODO @tom2drum remove this component
+const CurrencyValue = ({
+  value,
+  currency = '',
+  decimals,
+  exchangeRate,
+  layout = 'horizontal',
+  accuracy,
+  accuracyUsd,
+  isLoading,
+  startElement,
+  showGweiTooltip,
+  noValueTooltip,
+  ...rest
+}: Props) => {
   if (isLoading) {
     return (
-      <Skeleton className={ className } loading display="inline-block">0.00 ($0.00)</Skeleton>
+      <Skeleton loading display="inline-flex" { ...rest }><span>0.00 </span><span>($0.00)</span></Skeleton>
     );
   }
 
   if (value === undefined || value === null) {
     return (
-      <chakra.span className={ className }>
+      <chakra.span { ...rest }>
         -
       </chakra.span>
     );
   }
   const { valueCurr, valueStr: valueResult, usd: usdResult } = getCurrencyValue({ value, accuracy, accuracyUsd, exchangeRate, decimals });
 
-  const valueElement = (
-    <chakra.span display="inline-block" maxW="100%" whiteSpace="pre" overflow="hidden" textOverflow="ellipsis">
-      { valueResult }{ currency ? ` ${ currency }` : '' }
-    </chakra.span>
-  );
-  const valueInGwei = showGweiTooltip ? valueCurr.multipliedBy(GWEI).toFormat() : null;
+  const mainElement = (() => {
+    const valueElement = (
+      <chakra.span display="inline-block" maxW="100%" overflow="hidden" textOverflow="ellipsis">
+        { valueResult }{ currency ? ` ${ currency }` : '' }
+      </chakra.span>
+    );
 
-  return (
-    <chakra.span className={ className } display="inline-flex" rowGap={ 3 } columnGap={ 1 }>
-      { startElement }
-      { showGweiTooltip ? (
+    if (showGweiTooltip) {
+      const valueInGwei = showGweiTooltip ? valueCurr.multipliedBy(GWEI).toFormat() : null;
+      return (
         <Tooltip content={ `${ valueInGwei } ${ currencyUnits.gwei }` }>
           { valueElement }
         </Tooltip>
-      ) : valueElement }
-      { usdResult && <chakra.span color="text.secondary" fontWeight={ 400 }>(${ usdResult })</chakra.span> }
+      );
+    }
+
+    if (!noValueTooltip) {
+      return (
+        <Tooltip content={ `${ valueCurr.toFormat() }${ currency ? ` ${ currency }` : '' }` }>
+          { valueElement }
+        </Tooltip>
+      );
+    }
+
+    return valueElement;
+  })();
+
+  return (
+    <chakra.span
+      display="inline-flex"
+      flexDirection={ layout === 'vertical' ? 'column' : 'row' }
+      alignItems={ layout === 'vertical' ? 'flex-end' : 'center' }
+      whiteSpace="pre"
+      maxW="100%"
+      overflow="hidden"
+      textOverflow="ellipsis"
+      { ...rest }
+    >
+      <chakra.span display="inline-flex" alignItems="center" overflow="hidden" maxW="100%">
+        { startElement }
+        { mainElement }
+      </chakra.span>
+      { usdResult && (
+        <chakra.span color="text.secondary" maxW="100%" overflow="hidden" textOverflow="ellipsis">
+          { layout === 'horizontal' ? ` ($${ usdResult })` : `$${ usdResult }` }
+        </chakra.span>
+      ) }
     </chakra.span>
   );
 };
 
-export default React.memo(chakra(CurrencyValue));
+export default React.memo(CurrencyValue);

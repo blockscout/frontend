@@ -9,9 +9,9 @@ import { getResourceKey } from 'lib/api/useApiQuery';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import { currencyUnits } from 'lib/units';
-import CurrencyValue from 'ui/shared/CurrencyValue';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import NativeTokenIcon from 'ui/shared/NativeTokenIcon';
+import AssetValue from 'ui/shared/value/AssetValue';
 
 interface Props {
   data: Pick<Address, 'block_number_balance_updated_at' | 'coin_balance' | 'hash' | 'exchange_rate'>;
@@ -74,18 +74,13 @@ const AddressBalance = ({ data, isLoading }: Props) => {
         Balance
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue multiRow>
-        <CurrencyValue
-          value={ data.coin_balance || '0' }
+        <AssetValue
+          amount={ data.coin_balance || '0' }
+          asset={ currencyUnits.ether }
           exchangeRate={ data.exchange_rate }
           decimals={ String(config.chain.currency.decimals) }
-          currency={ currencyUnits.ether }
-          accuracyUsd={ 2 }
-          accuracy={ 8 }
-          flexWrap="wrap"
-          alignItems="center"
-          rowGap={ 0 }
-          isLoading={ isLoading }
           startElement={ <NativeTokenIcon boxSize={ 5 } isLoading={ isLoading }/> }
+          loading={ isLoading }
         />
       </DetailedInfo.ItemValue>
     </>
