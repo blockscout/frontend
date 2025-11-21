@@ -4,13 +4,13 @@ import React from 'react';
 import type { ScrollL2MessageItem } from 'types/api/scrollL2';
 
 import config from 'configs/app';
-import getCurrencyValue from 'lib/getCurrencyValue';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
+import AssetValue from 'ui/shared/value/AssetValue';
 
 const rollupFeature = config.features.rollup;
 
@@ -21,7 +21,6 @@ const ScrollL2WithdrawalsTableItem = ({ item, isLoading }: Props) => {
     return null;
   }
 
-  const { valueStr } = getCurrencyValue({ value: item.value, decimals: String(config.chain.currency.decimals) });
   return (
     <TableRow>
       <TableCell verticalAlign="middle">
@@ -68,9 +67,11 @@ const ScrollL2WithdrawalsTableItem = ({ item, isLoading }: Props) => {
         ) }
       </TableCell>
       <TableCell verticalAlign="middle" isNumeric>
-        <Skeleton loading={ isLoading } display="inline-block">
-          <span>{ valueStr }</span>
-        </Skeleton>
+        <AssetValue
+          amount={ item.value }
+          decimals={ String(config.chain.currency.decimals) }
+          loading={ isLoading }
+        />
       </TableCell>
     </TableRow>
   );

@@ -27,9 +27,7 @@ const ArbitrumL2TxnWithdrawalsTableItem = ({ data, isLoading, txHash }: Props) =
         <AddressEntityL1 address={{ hash: data.token?.destination_address_hash || data.destination_address_hash }} isLoading={ isLoading }/>
       </TableCell>
       <TableCell verticalAlign="middle" isNumeric>
-        <Skeleton loading={ isLoading }>
-          <ArbitrumL2TxnWithdrawalsValue data={ data }/>
-        </Skeleton>
+        <ArbitrumL2TxnWithdrawalsValue data={ data } loading={ isLoading }/>
       </TableCell>
       <TableCell verticalAlign="middle">
         <Flex alignItems="center" justifyContent="space-between" columnGap={ 8 }>

@@ -5,6 +5,7 @@ import React from 'react';
 
 import config from 'configs/app';
 import { currencyUnits } from 'lib/units';
+import { GWEI } from 'toolkit/utils/consts';
 
 import SimpleValue from './SimpleValue';
 
@@ -23,7 +24,6 @@ const GasValue = ({
   asset = currencyUnits.ether,
   accuracy = 0,
   decimals = String(config.chain.currency.decimals),
-  gweiDecimals = '9',
   noTooltip = true,
   loading,
   ...rest
@@ -46,7 +46,7 @@ const GasValue = ({
         loading={ loading }
       />
       <SimpleValue
-        value={ BigNumber(amount).div(BigNumber(10).pow(Number(gweiDecimals))) }
+        value={ BigNumber(amount).div(GWEI) }
         accuracy={ accuracy }
         startElement={ <span>(</span> }
         endElement={ ` ${ currencyUnits.gwei })` }

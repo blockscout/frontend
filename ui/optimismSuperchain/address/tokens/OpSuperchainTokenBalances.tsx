@@ -4,7 +4,6 @@ import React from 'react';
 
 import multichainConfig from 'configs/multichain';
 import useApiQuery from 'lib/api/useApiQuery';
-import getCurrencyValue from 'lib/getCurrencyValue';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { ADDRESS } from 'stubs/optimismSuperchain';
 import { ZERO } from 'toolkit/utils/consts';
@@ -12,8 +11,11 @@ import TokenBalancesItem from 'ui/address/tokens/TokenBalancesItem';
 import type { TokensTotalInfo } from 'ui/address/utils/tokenUtils';
 import { getTokensTotalInfoByChain } from 'ui/address/utils/tokenUtils';
 import NativeTokenIcon from 'ui/optimismSuperchain/components/NativeTokenIcon';
-import CurrencyValue from 'ui/shared/CurrencyValue';
 import IconSvg from 'ui/shared/IconSvg';
+import AssetValue from 'ui/shared/value/AssetValue';
+import calculateUsdValue from 'ui/shared/value/calculateUsdValue';
+import SimpleValue from 'ui/shared/value/SimpleValue';
+import { DEFAULT_ACCURACY_USD } from 'ui/shared/value/utils';
 
 import OpSuperchainAddressInfoBreakdown from '../details/OpSuperchainAddressInfoBreakdown';
 import useFetchTokens from './useFetchTokens';
@@ -38,10 +40,8 @@ const OpSuperchainTokenBalances = () => {
   const isLoading = addressQuery.isPlaceholderData || tokensQuery.isPending;
   const isError = addressQuery.isError || tokensQuery.isError;
 
-  const { valueStr: nativeValue, usdBn: nativeUsd } = getCurrencyValue({
-    value: addressQuery.data?.coin_balance || '0',
-    accuracy: 8,
-    accuracyUsd: 2,
+  const { valueStr: nativeValue, usdBn: nativeUsd } = calculateUsdValue({
+    amount: addressQuery.data?.coin_balance || '0',
     exchangeRate: addressQuery.data?.exchange_rate,
     decimals: currency ? String(currency.decimals) : undefined,
   });
@@ -78,17 +78,20 @@ const OpSuperchainTokenBalances = () => {
 
         const tokensInfo = resultByChain[chain.id];
 
-        const { usdBn: chainNativeUsdBn } = getCurrencyValue({
-          value: chainInfo.coin_balance || '0',
-          accuracy: 8,
-          accuracyUsd: 2,
+        const { usdBn: chainNativeUsdBn } = calculateUsdValue({
+          amount: chainInfo.coin_balance || '0',
           exchangeRate: addressQuery.data.exchange_rate,
           decimals: String(chain.app_config.chain.currency.decimals),
         });
 
-        const prefix = tokensInfo.isOverflow ? '>' : '';
-
-        return `${ prefix }$${ chainNativeUsdBn.plus(tokensInfo.usd).dp(2).toFormat() }`;
+        return (
+          <SimpleValue
+            value={ chainNativeUsdBn.plus(tokensInfo.usd) }
+            prefix="$"
+            accuracy={ DEFAULT_ACCURACY_USD }
+            overflowed={ tokensInfo.isOverflow }
+          />
+        );
       } }
     </OpSuperchainAddressInfoBreakdown>
   ) : null;
@@ -97,15 +100,12 @@ const OpSuperchainTokenBalances = () => {
     <OpSuperchainAddressInfoBreakdown data={ addressQuery.data?.chain_infos } loading={ isLoading } ml={ 2 }>
       { ([ chain, chainInfo ]) => {
         return (
-          <CurrencyValue
-            isLoading={ isLoading }
-            value={ chainInfo.coin_balance }
+          <AssetValue
+            amount={ chainInfo.coin_balance }
+            asset={ chain.app_config.chain.currency.symbol }
             exchangeRate={ addressQuery.data?.exchange_rate }
             decimals={ chain.app_config.chain.currency.decimals.toString() }
-            currency={ chain.app_config.chain.currency.symbol }
-            accuracyUsd={ 2 }
-            accuracy={ 8 }
-            alignItems="center"
+            loading={ isLoading }
           />
         );
       } }

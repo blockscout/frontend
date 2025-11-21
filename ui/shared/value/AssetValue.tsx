@@ -2,6 +2,9 @@ import type { BoxProps } from '@chakra-ui/react';
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
+import { currencyUnits } from 'lib/units';
+import { GWEI } from 'toolkit/utils/consts';
+
 import type { Params as CalculateUsdValueParams } from './calculateUsdValue';
 import calculateUsdValue from './calculateUsdValue';
 import SimpleValue from './SimpleValue';
@@ -14,6 +17,7 @@ export interface Props extends Omit<BoxProps, 'prefix' | 'suffix'>, Omit<Calcula
   noTooltip?: boolean;
   loading?: boolean;
   layout?: 'horizontal' | 'vertical';
+  gweiValue?: boolean;
 }
 
 const AssetValue = ({
@@ -27,6 +31,7 @@ const AssetValue = ({
   loading,
   exchangeRate,
   layout = 'horizontal',
+  gweiValue = false,
   ...rest
 }: Props) => {
 
@@ -36,6 +41,8 @@ const AssetValue = ({
 
   const { valueBn, usdBn } = calculateUsdValue({ amount, decimals, accuracy, accuracyUsd, exchangeRate });
 
+  const tooltipContent = gweiValue ? `${ valueBn.multipliedBy(GWEI).toFormat() } ${ currencyUnits.gwei }` : undefined;
+
   if (!exchangeRate) {
     return (
       <SimpleValue
@@ -43,6 +50,7 @@ const AssetValue = ({
         accuracy={ accuracy }
         startElement={ startElement }
         endElement={ typeof asset === 'string' ? ` ${ asset }` : asset }
+        tooltipContent={ tooltipContent }
         noTooltip={ noTooltip }
         loading={ loading }
         { ...rest }
@@ -65,6 +73,7 @@ const AssetValue = ({
         accuracy={ accuracy }
         startElement={ startElement }
         endElement={ typeof asset === 'string' ? ` ${ asset }` : asset }
+        tooltipContent={ tooltipContent }
         noTooltip={ noTooltip }
         loading={ loading }
       />

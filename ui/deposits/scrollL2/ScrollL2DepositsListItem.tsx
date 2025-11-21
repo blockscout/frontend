@@ -4,13 +4,13 @@ import React from 'react';
 import type { ScrollL2MessageItem } from 'types/api/scrollL2';
 
 import config from 'configs/app';
-import getCurrencyValue from 'lib/getCurrencyValue';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
+import AssetValue from 'ui/shared/value/AssetValue';
 
 const rollupFeature = config.features.rollup;
 
@@ -20,8 +20,6 @@ const ScrollL2DepositsListItem = ({ item, isLoading }: Props) => {
   if (!rollupFeature.isEnabled || rollupFeature.type !== 'scroll') {
     return null;
   }
-
-  const { valueStr } = getCurrencyValue({ value: item.value, decimals: String(config.chain.currency.decimals) });
 
   return (
     <ListItemMobileGrid.Container>
@@ -78,9 +76,12 @@ const ScrollL2DepositsListItem = ({ item, isLoading }: Props) => {
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Value</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <Skeleton loading={ isLoading } display="inline-block">
-          { `${ valueStr } ${ config.chain.currency.symbol }` }
-        </Skeleton>
+        <AssetValue
+          amount={ item.value }
+          asset={ config.chain.currency.symbol }
+          decimals={ String(config.chain.currency.decimals) }
+          loading={ isLoading }
+        />
       </ListItemMobileGrid.Value>
 
     </ListItemMobileGrid.Container>

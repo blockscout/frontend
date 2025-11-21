@@ -4,7 +4,6 @@ import React from 'react';
 import type { AdvancedFilterResponseItem } from 'types/api/advancedFilter';
 
 import config from 'configs/app';
-import getCurrencyValue from 'lib/getCurrencyValue';
 import { Badge } from 'toolkit/chakra/badge';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import type { ColumnsIds } from 'ui/advancedFilter/constants';
@@ -13,6 +12,7 @@ import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
+import AssetValue from 'ui/shared/value/AssetValue';
 
 import { ADVANCED_FILTER_TYPES } from './constants';
 
@@ -67,16 +67,20 @@ const ItemByColumn = ({ item, column, isLoading }: Props) => {
       }
       if (item.total) {
         return (
-          <Skeleton loading={ isLoading }>
-            { getCurrencyValue({ value: item.total?.value, decimals: item.total.decimals, accuracy: 8 }).valueStr }
-          </Skeleton>
+          <AssetValue
+            amount={ item.total?.value }
+            decimals={ item.total.decimals }
+            loading={ isLoading }
+          />
         );
       }
       if (item.value) {
         return (
-          <Skeleton loading={ isLoading }>
-            { getCurrencyValue({ value: item.value, decimals: config.chain.currency.decimals.toString(), accuracy: 8 }).valueStr }
-          </Skeleton>
+          <AssetValue
+            amount={ item.value }
+            decimals={ config.chain.currency.decimals.toString() }
+            loading={ isLoading }
+          />
         );
       }
       return null;
@@ -86,7 +90,13 @@ const ItemByColumn = ({ item, column, isLoading }: Props) => {
         <TokenEntity token={ item.token } isLoading={ isLoading } fontWeight={ 700 } onlySymbol noCopy/> :
         <Skeleton loading={ isLoading } fontWeight={ 700 }>{ config.chain.currency.symbol }</Skeleton>;
     case 'fee':
-      return <Skeleton loading={ isLoading }>{ item.fee ? getCurrencyValue({ value: item.fee, accuracy: 8 }).valueStr : '-' }</Skeleton>;
+      return (
+        <AssetValue
+          amount={ item.fee }
+          decimals={ config.chain.currency.decimals.toString() }
+          loading={ isLoading }
+        />
+      );
     default:
       return null;
   }

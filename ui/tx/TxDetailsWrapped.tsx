@@ -8,8 +8,8 @@ import type { ExcludeUndefined } from 'types/utils';
 import config from 'configs/app';
 import { currencyUnits } from 'lib/units';
 import { Badge } from 'toolkit/chakra/badge';
-import CurrencyValue from 'ui/shared/CurrencyValue';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
+import DetailedInfoAssetValue from 'ui/shared/DetailedInfo/DetailedInfoAssetValue';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import LogDecodedInputData from 'ui/shared/logs/LogDecodedInputData';
@@ -69,14 +69,11 @@ const TxDetailsWrapped = ({ data }: Props) => {
       >
         Value
       </DetailedInfo.ItemLabel>
-      <DetailedInfo.ItemValue>
-        <CurrencyValue
-          value={ data.value }
-          currency={ currencyUnits.ether }
-          decimals={ String(config.chain.currency.decimals) }
-          flexWrap="wrap"
-        />
-      </DetailedInfo.ItemValue>
+      <DetailedInfoAssetValue
+        amount={ data.value }
+        asset={ currencyUnits.ether }
+        decimals={ String(config.chain.currency.decimals) }
+      />
 
       { data.fee.value !== null && (
         <>

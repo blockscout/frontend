@@ -1,11 +1,11 @@
-import { Flex, HStack } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 
 import multichainConfig from 'configs/multichain';
 import NativeTokenIcon from 'ui/optimismSuperchain/components/NativeTokenIcon';
-import CurrencyValue from 'ui/shared/CurrencyValue';
+import AssetValue from 'ui/shared/value/AssetValue';
 
 import OpSuperchainAddressInfoBreakdown from './OpSuperchainAddressInfoBreakdown';
 
@@ -21,31 +21,23 @@ const OpSuperchainAddressCoinBalance = ({ data, isLoading }: Props) => {
 
   return (
     <Flex alignItems="center" columnGap={ 3 }>
-      <HStack>
-        <NativeTokenIcon boxSize={ 5 } isLoading={ isLoading }/>
-        <CurrencyValue
-          value={ data?.coin_balance || '0' }
-          exchangeRate={ data?.exchange_rate }
-          decimals={ currency ? String(currency.decimals) : undefined }
-          currency={ currency ? currency.symbol : undefined }
-          accuracyUsd={ 2 }
-          accuracy={ 8 }
-          alignItems="center"
-          isLoading={ isLoading }
-        />
-      </HStack>
+      <AssetValue
+        amount={ data?.coin_balance || '0' }
+        asset={ currency ? currency.symbol : undefined }
+        exchangeRate={ data?.exchange_rate }
+        decimals={ currency ? String(currency.decimals) : undefined }
+        startElement={ <NativeTokenIcon boxSize={ 5 } isLoading={ isLoading } mr={ 2 }/> }
+        loading={ isLoading }
+      />
       <OpSuperchainAddressInfoBreakdown data={ data?.chain_infos } loading={ isLoading }>
         { ([ chain, chainInfo ]) => {
           return (
-            <CurrencyValue
-              isLoading={ isLoading }
-              value={ chainInfo.coin_balance }
-              exchangeRate={ data?.exchange_rate }
+            <AssetValue
+              amount={ chainInfo.coin_balance }
+              asset={ chain.app_config.chain.currency.symbol }
               decimals={ chain.app_config.chain.currency.decimals.toString() }
-              currency={ chain.app_config.chain.currency.symbol }
-              accuracyUsd={ 2 }
-              accuracy={ 8 }
-              alignItems="center"
+              exchangeRate={ data?.exchange_rate }
+              loading={ isLoading }
             />
           );
         } }

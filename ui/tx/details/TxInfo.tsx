@@ -30,10 +30,10 @@ import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import { WEI, WEI_IN_GWEI } from 'toolkit/utils/consts';
+import { WEI_IN_GWEI } from 'toolkit/utils/consts';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
-import CurrencyValue from 'ui/shared/CurrencyValue';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
+import DetailedInfoAssetValue from 'ui/shared/DetailedInfo/DetailedInfoAssetValue';
 import DetailedInfoSponsoredItem from 'ui/shared/DetailedInfo/DetailedInfoSponsoredItem';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
@@ -49,6 +49,7 @@ import StatusTag from 'ui/shared/statusTag/StatusTag';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
 import TextSeparator from 'ui/shared/TextSeparator';
 import Utilization from 'ui/shared/Utilization/Utilization';
+import GasValue from 'ui/shared/value/GasValue';
 import VerificationSteps from 'ui/shared/verificationSteps/VerificationSteps';
 import TxDetailsActions from 'ui/tx/details/txDetailsActions/TxDetailsActions';
 import TxDetailsBurntFees from 'ui/tx/details/TxDetailsBurntFees';
@@ -610,16 +611,13 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
           >
             Value
           </DetailedInfo.ItemLabel>
-          <DetailedInfo.ItemValue>
-            <CurrencyValue
-              value={ data.value }
-              currency={ currencyUnits.ether }
-              decimals={ String(config.chain.currency.decimals) }
-              exchangeRate={ data.exchange_rate }
-              isLoading={ isLoading }
-              flexWrap="wrap"
-            />
-          </DetailedInfo.ItemValue>
+          <DetailedInfoAssetValue
+            amount={ data.value }
+            asset={ currencyUnits.ether }
+            decimals={ String(config.chain.currency.decimals) }
+            exchangeRate={ data.exchange_rate }
+            loading={ isLoading }
+          />
         </>
       ) }
 
@@ -632,15 +630,13 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
           >
             Operator fee
           </DetailedInfo.ItemLabel>
-          <DetailedInfo.ItemValue multiRow>
-            <CurrencyValue
-              value={ data.operator_fee }
-              currency={ currencyUnits.ether }
-              decimals={ String(config.chain.currency.decimals) }
-              exchangeRate={ data.exchange_rate }
-              flexWrap="wrap"
-            />
-          </DetailedInfo.ItemValue>
+          <DetailedInfoAssetValue
+            amount={ data.operator_fee }
+            asset={ currencyUnits.ether }
+            decimals={ String(config.chain.currency.decimals) }
+            exchangeRate={ data.exchange_rate }
+            loading={ isLoading }
+          />
         </>
       ) }
 
@@ -652,16 +648,13 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
           >
             Poster fee
           </DetailedInfo.ItemLabel>
-          <DetailedInfo.ItemValue>
-            <CurrencyValue
-              value={ data.arbitrum.poster_fee }
-              currency={ currencyUnits.ether }
-              decimals={ String(config.chain.currency.decimals) }
-              exchangeRate={ data.exchange_rate }
-              flexWrap="wrap"
-              isLoading={ isLoading }
-            />
-          </DetailedInfo.ItemValue>
+          <DetailedInfoAssetValue
+            amount={ data.arbitrum.poster_fee }
+            asset={ currencyUnits.ether }
+            decimals={ String(config.chain.currency.decimals) }
+            exchangeRate={ data.exchange_rate }
+            loading={ isLoading }
+          />
 
           <DetailedInfo.ItemLabel
             hint="Fee paid to the network for L2 resources"
@@ -669,16 +662,13 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
           >
             Network fee
           </DetailedInfo.ItemLabel>
-          <DetailedInfo.ItemValue>
-            <CurrencyValue
-              value={ data.arbitrum.network_fee }
-              currency={ currencyUnits.ether }
-              decimals={ String(config.chain.currency.decimals) }
-              exchangeRate={ data.exchange_rate }
-              flexWrap="wrap"
-              isLoading={ isLoading }
-            />
-          </DetailedInfo.ItemValue>
+          <DetailedInfoAssetValue
+            amount={ data.arbitrum.network_fee }
+            asset={ currencyUnits.ether }
+            decimals={ String(config.chain.currency.decimals) }
+            exchangeRate={ data.exchange_rate }
+            loading={ isLoading }
+          />
         </>
       ) }
 
@@ -802,12 +792,11 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
               >
                 L1 gas price
               </DetailedInfo.ItemLabel>
-              <DetailedInfo.ItemValue multiRow>
-                <Text mr={ 1 }>
-                  { BigNumber(data.l1_gas_price).dividedBy(WEI).toFixed() } { rollupFeature.parentChain.currency?.symbol || currencyUnits.ether }
-                </Text>
-                <Text color="text.secondary">({ BigNumber(data.l1_gas_price).dividedBy(WEI_IN_GWEI).toFixed() } { currencyUnits.gwei })</Text>
-              </DetailedInfo.ItemValue>
+              <GasValue
+                amount={ data.l1_gas_price }
+                asset={ rollupFeature.parentChain.currency?.symbol || currencyUnits.ether }
+                loading={ isLoading }
+              />
             </>
           ) }
 
@@ -820,15 +809,12 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
               >
                 L1 fee
               </DetailedInfo.ItemLabel>
-              <DetailedInfo.ItemValue multiRow>
-                <CurrencyValue
-                  value={ data.l1_fee }
-                  currency={ rollupFeature.parentChain.currency?.symbol || currencyUnits.ether }
-                  exchangeRate={ data.exchange_rate }
-                  flexWrap="wrap"
-                  rowGap={ 0 }
-                />
-              </DetailedInfo.ItemValue>
+              <DetailedInfoAssetValue
+                amount={ data.l1_fee }
+                asset={ rollupFeature.parentChain.currency?.symbol || currencyUnits.ether }
+                exchangeRate={ data.exchange_rate }
+                loading={ isLoading }
+              />
             </>
           ) }
 
@@ -865,15 +851,12 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
                 >
                   Blob fee
                 </DetailedInfo.ItemLabel>
-                <DetailedInfo.ItemValue>
-                  <CurrencyValue
-                    value={ BigNumber(data.blob_gas_used).multipliedBy(data.blob_gas_price).toString() }
-                    currency={ config.UI.views.tx.hiddenFields?.fee_currency ? '' : currencyUnits.ether }
-                    exchangeRate={ data.exchange_rate }
-                    flexWrap="wrap"
-                    isLoading={ isLoading }
-                  />
-                </DetailedInfo.ItemValue>
+                <DetailedInfoAssetValue
+                  amount={ BigNumber(data.blob_gas_used).multipliedBy(data.blob_gas_price).toString() }
+                  asset={ config.UI.views.tx.hiddenFields?.fee_currency ? '' : currencyUnits.ether }
+                  exchangeRate={ data.exchange_rate }
+                  loading={ isLoading }
+                />
               </>
             ) }
 

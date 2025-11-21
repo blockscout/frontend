@@ -5,6 +5,7 @@ import type { TokenInfo } from 'types/api/token';
 
 import type { EntityProps as TokenEntityProps } from 'ui/shared/entities/token/TokenEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
+import TokenEntityL1 from 'ui/shared/entities/token/TokenEntityL1';
 
 import type { Props as AssetValueProps } from './AssetValue';
 import AssetValue from './AssetValue';
@@ -12,11 +13,14 @@ import AssetValue from './AssetValue';
 interface Props extends Omit<AssetValueProps, 'asset'> {
   token: TokenInfo;
   tokenEntityProps?: Omit<TokenEntityProps, 'token'> & BoxProps;
+  layer?: 'L1' | 'L2';
 }
 
-const TokenValue = ({ token, tokenEntityProps, ...rest }: Props) => {
+const TokenValue = ({ token, tokenEntityProps, layer = 'L1', ...rest }: Props) => {
+  const TokenComponent = layer === 'L1' ? TokenEntityL1 : TokenEntity;
+
   const asset = (
-    <TokenEntity
+    <TokenComponent
       token={ token }
       noCopy
       onlySymbol

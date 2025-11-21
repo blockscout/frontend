@@ -12,8 +12,8 @@ import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { SECOND } from 'toolkit/utils/consts';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
-import CurrencyValue from 'ui/shared/CurrencyValue';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
+import DetailedInfoAssetValue from 'ui/shared/DetailedInfo/DetailedInfoAssetValue';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 import AddressEntityZetaChain from 'ui/shared/entities/address/AddressEntityZetaChain';
 import TxEntityZetaChainCC from 'ui/shared/entities/tx/TxEntityZetaChainCC';
@@ -113,18 +113,16 @@ const ZetaChainCCTXDetails = ({ data, isLoading }: Props) => {
       >
         Cross-chain fee
       </DetailedInfo.ItemLabel>
-      <DetailedInfo.ItemValue>
-        <CurrencyValue
-          value={ data.zeta_fees }
-          currency={ currencyUnits.ether }
-          decimals={ String(config.chain.currency.decimals) }
-          exchangeRate={ statsQuery.data?.coin_price }
-          accuracy={ 4 }
-          accuracyUsd={ 2 }
-          flexWrap="wrap"
-          isLoading={ isLoading }
-        />
-      </DetailedInfo.ItemValue>
+      <DetailedInfoAssetValue
+        amount={ data.zeta_fees }
+        asset={ currencyUnits.ether }
+        decimals={ String(config.chain.currency.decimals) }
+        exchangeRate={ statsQuery.data?.coin_price }
+        accuracy={ 4 }
+        accuracyUsd={ 2 }
+        noTooltip={ false }
+        loading={ isLoading }
+      />
       { data.relayed_message && (
         <>
           <DetailedInfo.ItemLabel

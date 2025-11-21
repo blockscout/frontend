@@ -4,12 +4,12 @@ import React from 'react';
 
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
-import getCurrencyValue from 'lib/getCurrencyValue';
 import { currencyUnits } from 'lib/units';
 import { ZERO } from 'toolkit/utils/consts';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import IconSvg from 'ui/shared/IconSvg';
 import NativeTokenIcon from 'ui/shared/NativeTokenIcon';
+import calculateUsdValue from 'ui/shared/value/calculateUsdValue';
 
 import { getTokensTotalInfo } from '../utils/tokenUtils';
 import useFetchTokens from '../utils/useFetchTokens';
@@ -32,10 +32,8 @@ const TokenBalances = () => {
   }
 
   const addressData = addressQuery.data;
-  const { valueStr: nativeValue, usdBn: nativeUsd } = getCurrencyValue({
-    value: addressData?.coin_balance || '0',
-    accuracy: 8,
-    accuracyUsd: 2,
+  const { valueStr: nativeValue, usdBn: nativeUsd } = calculateUsdValue({
+    amount: addressData?.coin_balance || '0',
     exchangeRate: addressData?.exchange_rate,
     decimals: String(config.chain.currency.decimals),
   });

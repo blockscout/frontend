@@ -14,6 +14,7 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
+import DetailedInfoAssetValue from 'ui/shared/DetailedInfo/DetailedInfoAssetValue';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import AddressStringOrParam from 'ui/shared/entities/address/AddressStringOrParam';
@@ -23,7 +24,6 @@ import UserOpEntity from 'ui/shared/entities/userOp/UserOpEntity';
 import UserOpSponsorType from 'ui/shared/userOps/UserOpSponsorType';
 import UserOpStatus from 'ui/shared/userOps/UserOpStatus';
 import Utilization from 'ui/shared/Utilization/Utilization';
-import AssetValue from 'ui/shared/value/AssetValue';
 import GasValue from 'ui/shared/value/GasValue';
 
 import UserOpCallData from './UserOpCallData';
@@ -140,16 +140,12 @@ const UserOpDetails = ({ query }: Props) => {
           >
             Fee
           </DetailedInfo.ItemLabel>
-          <DetailedInfo.ItemValue>
-            <AssetValue
-              amount={ data.fee }
-              asset={ currencyUnits.ether }
-              decimals={ String(config.chain.currency.decimals) }
-              accuracy={ 0 }
-              loading={ isPlaceholderData }
-              noTooltip
-            />
-          </DetailedInfo.ItemValue>
+          <DetailedInfoAssetValue
+            amount={ data.fee }
+            asset={ currencyUnits.ether }
+            decimals={ String(config.chain.currency.decimals) }
+            loading={ isPlaceholderData }
+          />
         </>
       ) }
 
