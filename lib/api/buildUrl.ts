@@ -16,7 +16,8 @@ export default function buildUrl<R extends ResourceName>(
   const baseUrl = !noProxy && isNeedProxy() ? config.app.baseUrl : (resource.endpoint || config.api.endpoint);
   const basePath = resource.basePath !== undefined ? resource.basePath : config.api.basePath;
   const path = !noProxy && isNeedProxy() ? '/node-api/proxy' + basePath + resource.path : basePath + resource.path;
-  const url = new URL(compile(path)(pathParams), baseUrl);
+  // Use relative URL if baseUrl is empty (same origin)
+  const url = baseUrl ? new URL(compile(path)(pathParams), baseUrl) : new URL(compile(path)(pathParams), typeof window !== 'undefined' ? window.location.origin : 'http://localhost');
 
   queryParams && Object.entries(queryParams).forEach(([ key, value ]) => {
     // there are some pagination params that can be null or false for the next page

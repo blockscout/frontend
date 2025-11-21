@@ -5,12 +5,13 @@ import { getEnvValue } from './utils';
 const apiHost = getEnvValue('NEXT_PUBLIC_API_HOST');
 const apiSchema = getEnvValue('NEXT_PUBLIC_API_PROTOCOL') || 'https';
 const apiPort = getEnvValue('NEXT_PUBLIC_API_PORT');
-const apiEndpoint = [
+// Use relative path if apiHost is empty (same origin)
+const apiEndpoint = apiHost ? [
   apiSchema || 'https',
   '://',
   apiHost,
   apiPort && ':' + apiPort,
-].filter(Boolean).join('');
+].filter(Boolean).join('') : '';
 
 const socketSchema = getEnvValue('NEXT_PUBLIC_API_WEBSOCKET_PROTOCOL') || 'wss';
 const socketEndpoint = [

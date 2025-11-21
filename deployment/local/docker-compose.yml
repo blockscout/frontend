@@ -1,0 +1,177 @@
+version: "3.8"
+
+services:
+  # PostgreSQL Service (for Blockscout Backend)
+  postgres:
+    container_name: blockscout-postgres
+    image: postgres:15-alpine
+    restart: unless-stopped
+    # Port not exposed - accessible via Docker network only
+    environment:
+      - POSTGRES_USER=blockscout
+      - POSTGRES_PASSWORD=blockscout
+      - POSTGRES_DB=blockscout
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - blockscout-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U blockscout"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # Redis Service (for Blockscout Backend)
+  redis:
+    container_name: blockscout-redis
+    image: redis:7-alpine
+    restart: unless-stopped
+    # Port not exposed - accessible via Docker network only
+    volumes:
+      - redis_data:/data
+    networks:
+      - blockscout-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # Nginx Reverse Proxy
+  nginx:
+    container_name: blockscout-nginx
+    image: nginx:alpine
+    restart: unless-stopped
+    ports:
+      - "3001:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - frontend
+      - blockscout
+    networks:
+      - blockscout-network
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost/"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  # Blockscout Backend Service
+  blockscout:
+    container_name: blockscout-backend
+    image: blockscout/blockscout:6.10.0
+    restart: unless-stopped
+    # Port not exposed - accessible via nginx proxy only
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    env_file:
+      - local.env
+    environment:
+      # Override database URL to use local postgres
+      - DATABASE_URL=postgresql://blockscout:blockscout@postgres:5432/blockscout
+      - ACCOUNT_REDIS_URL=redis://redis:6379
+      # RPC Configuration is loaded from local.env via env_file
+      # For RPC on host: use 172.17.0.1 (Linux Docker default gateway)
+      # For remote RPC: use the actual IP address
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    command:
+      - /bin/sh
+      - -c
+      - |
+        echo "Running database migrations..."
+        bin/blockscout eval "Elixir.Explorer.ReleaseTasks.create_and_migrate()"
+        echo "Starting Blockscout backend..."
+        bin/blockscout start
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4000/api/v1/health/liveness"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    networks:
+      - blockscout-network
+
+  # MongoDB Service (for Frontend)
+  mongodb:
+    container_name: blockscout-mongodb
+    image: mongo:7.0
+    restart: unless-stopped
+    # Port not exposed - accessible via Docker network only
+    environment:
+      - MONGO_INITDB_DATABASE=blockscout
+    volumes:
+      - mongodb_data:/data/db
+      - mongodb_config:/data/configdb
+    networks:
+      - blockscout-network
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # Blockscout Frontend Service
+  frontend:
+    container_name: blockscout-frontend
+    image: zkmelabs/blockscout-frontend:latest
+    build:
+      context: ../..
+      dockerfile: Dockerfile
+      args:
+        - GIT_COMMIT_SHA=${GIT_COMMIT_SHA:-latest}
+        - GIT_TAG=${GIT_TAG:-latest}
+        - NEXT_OPEN_TELEMETRY_ENABLED=${NEXT_OPEN_TELEMETRY_ENABLED:-false}
+        - ENVS_PRESET=${ENVS_PRESET:-none}
+    restart: unless-stopped
+    # Port not exposed - accessible via nginx proxy only
+    env_file:
+      - local.env
+    environment:
+      # Skip environment validation for local development
+      - SKIP_ENVS_VALIDATION=true
+      # Override PORT to 3000 for frontend (local.env has PORT=4000 for backend)
+      - PORT=3000
+      # Disable preset to use local.env values
+      - ENVS_PRESET=none
+      # Use empty API host to enable relative paths (same origin via nginx)
+      - NEXT_PUBLIC_API_HOST=
+      - NEXT_PUBLIC_API_PROTOCOL=http
+    volumes:
+      # Mount configs for runtime customization
+      - ../../configs/envs:/app/configs/envs:ro
+      # Note: public directory is not mounted to allow startup script to write assets
+    depends_on:
+      - mongodb
+      - blockscout
+    healthcheck:
+      # Next.js listens on container IP, use wget to test port or check process
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://$$(hostname -i | awk '{print $$1}'):3000/api/healthz || exit 1"]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    networks:
+      - blockscout-network
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  mongodb_data:
+    driver: local
+  mongodb_config:
+    driver: local
+
+networks:
+  blockscout-network:
+    driver: bridge
