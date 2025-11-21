@@ -17,23 +17,39 @@ const currentFilePath = fileURLToPath(import.meta.url);
 const currentDir = dirname(currentFilePath);
 
 async function getChainscoutInfo(externalChainIds: Array<string>, currentChainId: string | undefined) {
-  const response = await fetch('https://chains.blockscout.com/api/chains');
-  if (!response.ok) {
-    throw new Error(`Failed to fetch chains info from Chainscout API`);
-  }
-  const chainsInfo = await response.json() as Record<string, { explorers: [ { url: string } ], logo: string }>;
+  
+  const controller = new AbortController();
+  const timeout = setTimeout(() => {
+    controller.abort(`Request to Chainscout API timed out`);
+  }, 10_000);
 
-  return {
-    externals: externalChainIds.map((chainId) => ({
-      id: chainId,
-      explorerUrl: chainsInfo[chainId]?.explorers[0]?.url,
-      logoUrl: chainsInfo[chainId]?.logo,
-    })),
-    current: currentChainId ? {
-      id: currentChainId,
-      explorerUrl: chainsInfo[currentChainId]?.explorers[0]?.url,
-      logoUrl: chainsInfo[currentChainId]?.logo,
-    } : undefined,
+  try {
+    const response = await fetch(
+      `https://chains.blockscout.com/api/chains?chain_ids=${ [currentChainId, ...externalChainIds].filter(Boolean).join(',') }`,
+      { signal: controller.signal }
+    );
+    if (!response.ok) {
+      throw new Error(`Failed to fetch chains info from Chainscout API`);
+    }
+    const chainsInfo = await response.json() as Record<string, { explorers: [ { url: string } ], logo: string }>;
+  
+    return {
+      externals: externalChainIds.map((chainId) => ({
+        id: chainId,
+        explorerUrl: chainsInfo[chainId]?.explorers[0]?.url,
+        logoUrl: chainsInfo[chainId]?.logo,
+      })),
+      current: currentChainId ? {
+        id: currentChainId,
+        explorerUrl: chainsInfo[currentChainId]?.explorers[0]?.url,
+        logoUrl: chainsInfo[currentChainId]?.logo,
+      } : undefined,
+    }
+    
+  } catch (error) {
+    throw error;
+  } finally {
+    clearTimeout(timeout);
   }
 }
 
