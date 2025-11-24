@@ -122,11 +122,20 @@ const useGraphqlQuery = (aliasName: string, queries: Array<QueryConfig>, cached?
           `;
             }
             // Handle regular queries
+            const orderByClause = order ? (() => {
+              const orderKey = Object.keys(order)[0];
+              const orderValue = Object.values(order)[0];
+              // GraphQL enum values (asc/desc) should not be quoted
+              const normalizedValue = typeof orderValue === 'string' && (orderValue.toLowerCase() === 'desc' || orderValue.toLowerCase() === 'asc')
+                ? orderValue.toLowerCase()
+                : JSON.stringify(orderValue);
+              return `order_by: { ${ orderKey }: ${ normalizedValue } },`;
+            })() : '';
             return `
           ${ tableName }(
             where: { ${ formatWhereCondition(where) } },
             ${ distinctOn ? `distinct_on: [${ distinctOn }],` : '' }
-            ${ order ? `order_by: { ${ Object.keys(order)[0] }: ${ Object.values(order) } },` : '' }
+            ${ orderByClause }
             ${ limit !== undefined ? `limit: $limit,` : '' }
             ${ offset !== undefined ? `offset: $offset` : '' }
           ) {
