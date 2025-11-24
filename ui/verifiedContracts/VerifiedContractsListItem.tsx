@@ -1,10 +1,8 @@
 import { Box, Flex } from '@chakra-ui/react';
-import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { VerifiedContract } from 'types/api/contracts';
 
-import config from 'configs/app';
 import formatLanguageName from 'lib/contracts/formatLanguageName';
 import { CONTRACT_LICENSES } from 'lib/contracts/licenses';
 import { currencyUnits } from 'lib/units';
@@ -14,7 +12,7 @@ import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import IconSvg from 'ui/shared/IconSvg';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
-import TruncatedValue from 'ui/shared/TruncatedValue';
+import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 interface Props {
   data: VerifiedContract;
@@ -22,10 +20,6 @@ interface Props {
 }
 
 const VerifiedContractsListItem = ({ data, isLoading }: Props) => {
-  const balance = data.coin_balance && data.coin_balance !== '0' ?
-    BigNumber(data.coin_balance).div(10 ** config.chain.currency.decimals).dp(6).toFormat() :
-    '0';
-
   const license = (() => {
     const license = CONTRACT_LICENSES.find((license) => license.type === data.license_type);
     if (!license || license.type === 'none') {
@@ -60,9 +54,11 @@ const VerifiedContractsListItem = ({ data, isLoading }: Props) => {
       </Flex>
       <Flex columnGap={ 3 } w="100%">
         <Skeleton loading={ isLoading } fontWeight={ 500 } flexShrink="0">Balance { currencyUnits.ether }</Skeleton>
-        <TruncatedValue
-          value={ balance }
-          isLoading={ isLoading }
+        <NativeCoinValue
+          amount={ data.coin_balance }
+          noSymbol
+          loading={ isLoading }
+          color="text.secondary"
         />
       </Flex>
       <Flex columnGap={ 3 }>

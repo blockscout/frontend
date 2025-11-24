@@ -1,11 +1,9 @@
 import { Flex, HStack } from '@chakra-ui/react';
-import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { InternalTransaction } from 'types/api/internalTransaction';
 import type { ClusterChainConfig } from 'types/multichain';
 
-import config from 'configs/app';
 import { currencyUnits } from 'lib/units';
 import { Badge } from 'toolkit/chakra/badge';
 import { Skeleton } from 'toolkit/chakra/skeleton';
@@ -15,7 +13,7 @@ import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
-import SimpleValue from 'ui/shared/value/SimpleValue';
+import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 import { TX_INTERNALS_ITEMS } from 'ui/tx/internals/utils';
 
 type Props = InternalTransaction & { currentAddress?: string; isLoading?: boolean; showBlockInfo?: boolean; chainData?: ClusterChainConfig };
@@ -81,8 +79,9 @@ const InternalTxsListItem = ({
       />
       <HStack gap={ 3 }>
         <Skeleton loading={ isLoading } fontSize="sm" fontWeight={ 500 }>Value { currencyUnits.ether }</Skeleton>
-        <SimpleValue
-          value={ BigNumber(value).div(BigNumber(10 ** config.chain.currency.decimals)) }
+        <NativeCoinValue
+          amount={ value }
+          noSymbol
           accuracy={ 0 }
           loading={ isLoading }
           minW={ 6 }

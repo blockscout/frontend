@@ -1,5 +1,3 @@
-import { Text } from '@chakra-ui/react';
-import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { AddressesItem } from 'types/api/addresses';
@@ -8,6 +6,7 @@ import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import AssetValue from 'ui/shared/value/AssetValue';
 
 type Props = {
   item: AddressesItem;
@@ -18,9 +17,6 @@ const AddressesLabelSearchTableItem = ({
   item,
   isLoading,
 }: Props) => {
-
-  const addressBalance = BigNumber(item.coin_balance || 0).div(BigNumber(10 ** config.chain.currency.decimals));
-  const addressBalanceChunks = addressBalance.dp(8).toFormat().split('.');
 
   return (
     <TableRow>
@@ -33,10 +29,16 @@ const AddressesLabelSearchTableItem = ({
         />
       </TableCell>
       <TableCell isNumeric>
-        <Skeleton loading={ isLoading } display="inline-block" maxW="100%">
+        <AssetValue
+          amount={ item.coin_balance }
+          decimals={ String(config.chain.currency.decimals) }
+          loading={ isLoading }
+          lineHeight="24px"
+        />
+        { /* <Skeleton loading={ isLoading } display="inline-block" maxW="100%">
           <Text lineHeight="24px" as="span">{ addressBalanceChunks[0] + (addressBalanceChunks[1] ? '.' : '') }</Text>
           <Text lineHeight="24px" color="text.secondary" as="span">{ addressBalanceChunks[1] }</Text>
-        </Skeleton>
+        </Skeleton> */ }
       </TableCell>
       <TableCell isNumeric>
         <Skeleton loading={ isLoading } display="inline-block" lineHeight="24px">

@@ -8,10 +8,11 @@ import { Tooltip } from 'toolkit/chakra/tooltip';
 
 import { DEFAULT_ACCURACY, formatBnValue } from './utils';
 
-interface Props extends Omit<BoxProps, 'prefix' | 'postfix'> {
+export interface Props extends Omit<BoxProps, 'prefix' | 'postfix'> {
   value: BigNumber;
   accuracy?: number;
   prefix?: string;
+  postfix?: string;
   startElement?: React.ReactNode;
   endElement?: React.ReactNode;
   tooltipContent?: React.ReactNode;
@@ -24,6 +25,7 @@ const SimpleValue = ({
   value,
   accuracy = DEFAULT_ACCURACY,
   prefix,
+  postfix,
   startElement,
   endElement,
   tooltipContent,
@@ -35,9 +37,9 @@ const SimpleValue = ({
   return (
     <Skeleton loading={ loading } display="inline-flex" alignItems="center" whiteSpace="pre" maxW="100%" overflow="hidden" { ...rest }>
       { startElement }
-      <Tooltip content={ tooltipContent ?? `${ prefix ?? '' }${ value.toFormat() }` } disabled={ noTooltip }>
+      <Tooltip content={ tooltipContent ?? `${ prefix ?? '' }${ value.toFormat() }${ postfix ?? '' }` } disabled={ noTooltip }>
         <chakra.span display="inline-block" maxW="100%" overflow="hidden" textOverflow="ellipsis">
-          { formatBnValue({ value, accuracy, prefix, overflowed }) }
+          { formatBnValue({ value, accuracy, prefix, postfix, overflowed }) }
         </chakra.span>
       </Tooltip>
       { typeof endElement === 'string' ? <span>{ endElement }</span> : endElement }

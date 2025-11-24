@@ -3,30 +3,32 @@ import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import { currencyUnits } from 'lib/units';
-import { GWEI } from 'toolkit/utils/consts';
 
 import type { Params as CalculateUsdValueParams } from './calculateUsdValue';
 import calculateUsdValue from './calculateUsdValue';
 import SimpleValue from './SimpleValue';
-import { DEFAULT_ACCURACY, DEFAULT_ACCURACY_USD, DEFAULT_DECIMALS } from './utils';
+import { DEFAULT_ACCURACY, DEFAULT_ACCURACY_USD, GWEI } from './utils';
 
 export interface Props extends Omit<BoxProps, 'prefix' | 'suffix'>, Omit<CalculateUsdValueParams, 'amount'> {
   amount: string | null | undefined;
   asset?: React.ReactNode;
   startElement?: React.ReactNode;
+  endElement?: React.ReactNode;
   noTooltip?: boolean;
   loading?: boolean;
   layout?: 'horizontal' | 'vertical';
   gweiValue?: boolean;
 }
 
+// TODO @tom2drum refactor usage in favor of NativeCoinValue
 const AssetValue = ({
   amount,
   asset,
-  decimals = DEFAULT_DECIMALS,
+  decimals,
   accuracy = DEFAULT_ACCURACY,
   accuracyUsd = DEFAULT_ACCURACY_USD,
   startElement,
+  endElement,
   noTooltip,
   loading,
   exchangeRate,
@@ -49,7 +51,7 @@ const AssetValue = ({
         value={ valueBn }
         accuracy={ accuracy }
         startElement={ startElement }
-        endElement={ typeof asset === 'string' ? ` ${ asset }` : asset }
+        endElement={ endElement ?? (typeof asset === 'string' ? ` ${ asset }` : asset) }
         tooltipContent={ tooltipContent }
         noTooltip={ noTooltip }
         loading={ loading }
@@ -72,7 +74,7 @@ const AssetValue = ({
         value={ valueBn }
         accuracy={ accuracy }
         startElement={ startElement }
-        endElement={ typeof asset === 'string' ? ` ${ asset }` : asset }
+        endElement={ endElement ?? (typeof asset === 'string' ? ` ${ asset }` : asset) }
         tooltipContent={ tooltipContent }
         noTooltip={ noTooltip }
         loading={ loading }

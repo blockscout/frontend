@@ -8,13 +8,14 @@ import type { ClusterChainConfig } from 'types/multichain';
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
-import { WEI, ZERO } from 'toolkit/utils/consts';
+import { ZERO } from 'toolkit/utils/consts';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import AssetValue from 'ui/shared/value/AssetValue';
 import SimpleValue from 'ui/shared/value/SimpleValue';
+import { WEI } from 'ui/shared/value/utils';
 
 type Props = AddressCoinBalanceHistoryItem & {
   page: number;

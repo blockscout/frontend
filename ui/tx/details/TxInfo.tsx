@@ -30,7 +30,6 @@ import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import { WEI_IN_GWEI } from 'toolkit/utils/consts';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoAssetValue from 'ui/shared/DetailedInfo/DetailedInfoAssetValue';
@@ -50,6 +49,7 @@ import TxStatus from 'ui/shared/statusTag/TxStatus';
 import TextSeparator from 'ui/shared/TextSeparator';
 import Utilization from 'ui/shared/Utilization/Utilization';
 import GasValue from 'ui/shared/value/GasValue';
+import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 import VerificationSteps from 'ui/shared/verificationSteps/VerificationSteps';
 import TxDetailsActions from 'ui/tx/details/txDetailsActions/TxDetailsActions';
 import TxDetailsBurntFees from 'ui/tx/details/TxDetailsBurntFees';
@@ -743,24 +743,33 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue multiRow>
             { data.base_fee_per_gas && (
-              <Skeleton loading={ isLoading }>
-                <span>Base: </span>
-                <span>{ BigNumber(data.base_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() }</span>
-                { (data.max_fee_per_gas || data.max_priority_fee_per_gas) && <TextSeparator/> }
-              </Skeleton>
+              <NativeCoinValue
+                amount={ data.base_fee_per_gas }
+                units="gwei"
+                noSymbol
+                loading={ isLoading }
+                startElement="Base: "
+                endElement={ (data.max_fee_per_gas || data.max_priority_fee_per_gas) && <TextSeparator/> }
+              />
             ) }
             { data.max_fee_per_gas && (
-              <Skeleton loading={ isLoading }>
-                <span>Max: </span>
-                <span>{ BigNumber(data.max_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() }</span>
-                { data.max_priority_fee_per_gas && <TextSeparator/> }
-              </Skeleton>
+              <NativeCoinValue
+                amount={ data.max_fee_per_gas }
+                units="gwei"
+                noSymbol
+                loading={ isLoading }
+                startElement="Max: "
+                endElement={ data.max_priority_fee_per_gas && <TextSeparator/> }
+              />
             ) }
             { data.max_priority_fee_per_gas && (
-              <Skeleton loading={ isLoading }>
-                <span>Max priority: </span>
-                <span>{ BigNumber(data.max_priority_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() }</span>
-              </Skeleton>
+              <NativeCoinValue
+                amount={ data.max_priority_fee_per_gas }
+                units="gwei"
+                noSymbol
+                loading={ isLoading }
+                startElement="Max priority: "
+              />
             ) }
           </DetailedInfo.ItemValue>
         </>
@@ -882,14 +891,24 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
                 </DetailedInfo.ItemLabel>
                 <DetailedInfo.ItemValue>
                   { data.blob_gas_price && (
-                    <Text fontWeight="600" as="span">{ BigNumber(data.blob_gas_price).dividedBy(WEI_IN_GWEI).toFixed() }</Text>
+                    <NativeCoinValue
+                      amount={ data.blob_gas_price }
+                      units="gwei"
+                      noSymbol
+                      loading={ isLoading }
+                      fontWeight="600"
+                    />
                   ) }
                   { (data.max_fee_per_blob_gas && data.blob_gas_price) && <TextSeparator/> }
                   { data.max_fee_per_blob_gas && (
-                    <>
-                      <Text as="span" fontWeight="500" whiteSpace="pre">Max: </Text>
-                      <Text fontWeight="600" as="span">{ BigNumber(data.max_fee_per_blob_gas).dividedBy(WEI_IN_GWEI).toFixed() }</Text>
-                    </>
+                    <NativeCoinValue
+                      amount={ data.max_fee_per_blob_gas }
+                      units="gwei"
+                      noSymbol
+                      loading={ isLoading }
+                      startElement="Max: "
+                      fontWeight="600"
+                    />
                   ) }
                 </DetailedInfo.ItemValue>
               </>

@@ -1,8 +1,6 @@
 import BigNumber from 'bignumber.js';
 
-export const WEI = new BigNumber(10 ** 18);
-export const GWEI = new BigNumber(10 ** 9);
-export const WEI_IN_GWEI = WEI.dividedBy(GWEI);
+// TODO @tom2drum check usage of these constants
 export const ZERO = new BigNumber(0);
 
 export const SECOND = 1_000;

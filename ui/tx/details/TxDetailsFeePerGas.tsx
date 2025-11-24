@@ -25,6 +25,7 @@ const TxDetailsFeePerGas = ({ txFee, gasUsed, isLoading }: Props) => {
       >
         Fee per gas
       </DetailedInfo.ItemLabel>
+      { /* TODO @tom2drum refactor usage in favor of NativeCoinValue */ }
       <DetailedInfo.ItemValue>
         <Skeleton loading={ isLoading } mr={ 1 }>
           { BigNumber(txFee).dividedBy(10 ** config.chain.currency.decimals).dividedBy(gasUsed).toFixed() }

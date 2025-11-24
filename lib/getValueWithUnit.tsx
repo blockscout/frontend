@@ -2,7 +2,7 @@ import BigNumber from 'bignumber.js';
 
 import type { Unit } from 'types/unit';
 
-import { WEI, GWEI } from 'toolkit/utils/consts';
+import { WEI, GWEI } from 'ui/shared/value/utils';
 
 // TODO @tom2drum remove this
 export default function getValueWithUnit(value: string | number, unit: Unit = 'wei') {

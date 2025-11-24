@@ -2,18 +2,18 @@ import BigNumber from 'bignumber.js';
 
 import { ZERO } from 'toolkit/utils/consts';
 
-import { DEFAULT_ACCURACY, DEFAULT_ACCURACY_USD, DEFAULT_DECIMALS } from './utils';
+import { DEFAULT_ACCURACY, DEFAULT_ACCURACY_USD } from './utils';
 
 export interface Params {
   amount: string;
-  decimals?: string | null;
+  decimals?: string | number | null;
   exchangeRate?: string | null;
   accuracy?: number;
   accuracyUsd?: number;
 }
 
 export default function calculateUsdValue({ amount, accuracy = DEFAULT_ACCURACY, accuracyUsd = DEFAULT_ACCURACY_USD, decimals, exchangeRate }: Params) {
-  const valueBn = BigNumber(amount).div(BigNumber(10 ** Number(decimals || DEFAULT_DECIMALS)));
+  const valueBn = BigNumber(amount).div(BigNumber(10 ** Number(decimals || '0')));
 
   const valueStr = (() => {
     if (!accuracy) {

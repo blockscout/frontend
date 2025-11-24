@@ -6,11 +6,12 @@ import type { Block } from 'types/api/block';
 
 import { currencyUnits } from 'lib/units';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import { WEI, WEI_IN_GWEI, ZERO } from 'toolkit/utils/consts';
-import { space } from 'toolkit/utils/htmlEntities';
+import { ZERO } from 'toolkit/utils/consts';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import IconSvg from 'ui/shared/IconSvg';
 import Utilization from 'ui/shared/Utilization/Utilization';
+import GasValue from 'ui/shared/value/GasValue';
+import { WEI } from 'ui/shared/value/utils';
 
 interface Props {
   data: Block;
@@ -41,10 +42,7 @@ const BlockDetailsBlobInfo = ({ data }: Props) => {
             Blob gas price
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue multiRow>
-            <Text whiteSpace="pre">{ BigNumber(data.blob_gas_price).dividedBy(WEI).toFixed() } { currencyUnits.ether }{ space }</Text>
-            <Text color="text.secondary" whiteSpace="pre">
-              ({ BigNumber(data.blob_gas_price).dividedBy(WEI_IN_GWEI).toFixed() } { currencyUnits.gwei })
-            </Text>
+            <GasValue amount={ data.blob_gas_price }/>
           </DetailedInfo.ItemValue>
         </>
       ) }
@@ -88,10 +86,7 @@ const BlockDetailsBlobInfo = ({ data }: Props) => {
             Excess blob gas
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue>
-            <Text>{ BigNumber(data.excess_blob_gas).dividedBy(WEI).toFixed() } { currencyUnits.ether } </Text>
-            <Text color="text.secondary" whiteSpace="pre">
-              { space }({ BigNumber(data.excess_blob_gas).dividedBy(WEI_IN_GWEI).toFixed() } { currencyUnits.gwei })
-            </Text>
+            <GasValue amount={ data.excess_blob_gas }/>
           </DetailedInfo.ItemValue>
         </>
       ) }

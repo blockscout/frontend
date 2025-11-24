@@ -5,9 +5,9 @@ import React from 'react';
 
 import config from 'configs/app';
 import { currencyUnits } from 'lib/units';
-import { GWEI } from 'toolkit/utils/consts';
 
 import SimpleValue from './SimpleValue';
+import { GWEI } from './utils';
 
 export interface Props extends Omit<BoxProps, 'prefix' | 'suffix'> {
   amount: string;
@@ -19,6 +19,7 @@ export interface Props extends Omit<BoxProps, 'prefix' | 'suffix'> {
   loading?: boolean;
 }
 
+// TODO @tom2drum rename to GasPriceValue
 const GasValue = ({
   amount,
   asset = currencyUnits.ether,

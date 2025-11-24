@@ -12,6 +12,7 @@ import BlockGasUsed from 'ui/shared/block/BlockGasUsed';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
+import SimpleValue from 'ui/shared/value/SimpleValue';
 
 type Props = Block & {
   page: number;
@@ -58,9 +59,12 @@ const AddressBlocksValidatedListItem = (props: Props) => {
       { !config.UI.views.block.hiddenFields?.total_reward && !config.features.rollup.isEnabled && (
         <Flex columnGap={ 2 } w="100%">
           <Skeleton loading={ props.isLoading } fontWeight={ 500 } flexShrink={ 0 }>Reward { currencyUnits.ether }</Skeleton>
-          <Skeleton loading={ props.isLoading }>
-            <Text color="text.secondary">{ totalReward.toFixed() }</Text>
-          </Skeleton>
+          <SimpleValue
+            value={ totalReward }
+            accuracy={ 0 }
+            loading={ props.isLoading }
+            color="text.secondary"
+          />
         </Flex>
       ) }
     </ListItemMobile>

@@ -1,3 +1,4 @@
+// TODO @tom2drum refactor this to use TokenValue
 import { Box, Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
