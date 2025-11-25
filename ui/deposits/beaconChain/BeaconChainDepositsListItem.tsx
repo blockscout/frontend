@@ -3,7 +3,6 @@ import React from 'react';
 import type { DepositsItem } from 'types/api/deposits';
 
 import config from 'configs/app';
-import { currencyUnits } from 'lib/units';
 import BeaconChainDepositSignature from 'ui/shared/beacon/BeaconChainDepositSignature';
 import BeaconChainDepositStatusTag from 'ui/shared/beacon/BeaconChainDepositStatusTag';
 import BeaconChainValidatorLink from 'ui/shared/beacon/BeaconChainValidatorLink';
@@ -12,7 +11,7 @@ import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
-import AssetValue from 'ui/shared/value/AssetValue';
+import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 const feature = config.features.beaconChain;
 
@@ -59,10 +58,8 @@ const BeaconChainDepositsListItem = ({ item, isLoading, view }: Props) => {
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Value</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <AssetValue
+        <NativeCoinValue
           amount={ item.amount }
-          asset={ currencyUnits.ether }
-          decimals={ String(config.chain.currency.decimals) }
           loading={ isLoading }
         />
       </ListItemMobileGrid.Value>

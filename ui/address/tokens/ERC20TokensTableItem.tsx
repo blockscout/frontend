@@ -1,11 +1,11 @@
 import { Flex, HStack } from '@chakra-ui/react';
+import { BigNumber } from 'bignumber.js';
 import React from 'react';
 
 import type { AddressTokensErc20Item } from './types';
 
 import config from 'configs/app';
 import multichainConfig from 'configs/multichain';
-import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
 import NativeTokenTag from 'ui/shared/celo/NativeTokenTag';
@@ -70,9 +70,14 @@ const ERC20TokensTableItem = ({
         </Flex>
       </TableCell>
       <TableCell isNumeric verticalAlign="middle">
-        <Skeleton loading={ isLoading } display="inline-block" color={ isNativeToken ? 'text.secondary' : undefined }>
-          { token.exchange_rate && `$${ Number(token.exchange_rate).toLocaleString() }` }
-        </Skeleton>
+        { token.exchange_rate ? (
+          <SimpleValue
+            value={ BigNumber(token.exchange_rate) }
+            prefix="$"
+            loading={ isLoading }
+            color={ isNativeToken ? 'text.secondary' : undefined }
+          />
+        ) : null }
       </TableCell>
       <TableCell isNumeric verticalAlign="middle">
         <SimpleValue

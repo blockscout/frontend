@@ -4,14 +4,13 @@ import React from 'react';
 import type { SocketMessage } from 'lib/socket/types';
 import type { Address } from 'types/api/address';
 
-import config from 'configs/app';
 import { getResourceKey } from 'lib/api/useApiQuery';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import { currencyUnits } from 'lib/units';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import NativeTokenIcon from 'ui/shared/NativeTokenIcon';
-import AssetValue from 'ui/shared/value/AssetValue';
+import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 interface Props {
   data: Pick<Address, 'block_number_balance_updated_at' | 'coin_balance' | 'hash' | 'exchange_rate'>;
@@ -74,11 +73,9 @@ const AddressBalance = ({ data, isLoading }: Props) => {
         Balance
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue multiRow>
-        <AssetValue
+        <NativeCoinValue
           amount={ data.coin_balance || '0' }
-          asset={ currencyUnits.ether }
           exchangeRate={ data.exchange_rate }
-          decimals={ String(config.chain.currency.decimals) }
           startElement={ <NativeTokenIcon boxSize={ 5 } isLoading={ isLoading } mr={ 2 }/> }
           loading={ isLoading }
         />

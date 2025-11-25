@@ -36,7 +36,7 @@ import PrevNext from 'ui/shared/PrevNext';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
 import StatusTag from 'ui/shared/statusTag/StatusTag';
 import Utilization from 'ui/shared/Utilization/Utilization';
-import GasValue from 'ui/shared/value/GasValue';
+import GasPriceValue from 'ui/shared/value/GasPriceValue';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 import { WEI } from 'ui/shared/value/utils';
 import VerificationSteps from 'ui/shared/verificationSteps/VerificationSteps';
@@ -483,7 +483,7 @@ const BlockDetails = ({ query }: Props) => {
             Base fee per gas
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue multiRow>
-            <GasValue
+            <GasPriceValue
               amount={ data.base_fee_per_gas }
               loading={ isPlaceholderData }
             />

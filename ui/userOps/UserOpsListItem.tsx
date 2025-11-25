@@ -12,7 +12,7 @@ import UserOpEntity from 'ui/shared/entities/userOp/UserOpEntity';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import UserOpStatus from 'ui/shared/userOps/UserOpStatus';
-import AssetValue from 'ui/shared/value/AssetValue';
+import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 type Props = {
   item: UserOpsItem;
@@ -90,10 +90,8 @@ const UserOpsListItem = ({ item, isLoading, showTx, showSender, chainData }: Pro
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>Fee</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
-            <AssetValue
+            <NativeCoinValue
               amount={ item.fee }
-              asset={ chainConfig.chain.currency.symbol }
-              decimals={ String(config.chain.currency.decimals) }
               loading={ isLoading }
             />
           </ListItemMobileGrid.Value>

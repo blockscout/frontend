@@ -8,14 +8,13 @@ import { route } from 'nextjs/routes';
 
 import config from 'configs/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
-import getValueWithUnit from 'lib/getValueWithUnit';
 import { currencyUnits } from 'lib/units';
 import { Link } from 'toolkit/chakra/link';
 import BlobEntity from 'ui/shared/entities/blob/BlobEntity';
 import TextSeparator from 'ui/shared/TextSeparator';
 import TxFee from 'ui/shared/tx/TxFee';
 import Utilization from 'ui/shared/Utilization/Utilization';
-import AssetValue from 'ui/shared/value/AssetValue';
+import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 const TxAdditionalInfoContent = ({ tx }: { tx: Transaction }) => {
   const multichainContext = useMultichainContext();
@@ -59,10 +58,8 @@ const TxAdditionalInfoContent = ({ tx }: { tx: Transaction }) => {
       ) }
       <Box { ...sectionProps } mb={ 4 }>
         <Text { ...sectionTitleProps }>Value</Text>
-        <AssetValue
+        <NativeCoinValue
           amount={ tx.value }
-          asset={ currencyUnits.ether }
-          decimals={ String(config.chain.currency.decimals) }
           exchangeRate={ tx.exchange_rate }
           noTooltip
         />
@@ -70,7 +67,7 @@ const TxAdditionalInfoContent = ({ tx }: { tx: Transaction }) => {
       { !config.UI.views.tx.hiddenFields?.tx_fee && (tx.stability_fee !== undefined || tx.fee.value !== null) && (
         <Box { ...sectionProps } mb={ 4 }>
           <Text { ...sectionTitleProps }>Transaction fee</Text>
-          <TxFee tx={ tx } withUsd accuracyUsd={ 2 } rowGap={ 0 } noTooltip/>
+          <TxFee tx={ tx } rowGap={ 0 } noTooltip/>
         </Box>
       ) }
       { tx.gas_used !== null && (
@@ -91,19 +88,34 @@ const TxAdditionalInfoContent = ({ tx }: { tx: Transaction }) => {
           { tx.base_fee_per_gas !== null && (
             <Box>
               <Text as="span" fontWeight="500">Base: </Text>
-              <Text fontWeight="700" as="span">{ getValueWithUnit(tx.base_fee_per_gas, 'gwei').toFormat() }</Text>
+              <NativeCoinValue
+                amount={ tx.base_fee_per_gas }
+                units="gwei"
+                noSymbol
+                fontWeight="700"
+              />
             </Box>
           ) }
           { tx.max_fee_per_gas !== null && (
             <Box mt={ 1 }>
               <Text as="span" fontWeight="500">Max: </Text>
-              <Text fontWeight="700" as="span">{ getValueWithUnit(tx.max_fee_per_gas, 'gwei').toFormat() }</Text>
+              <NativeCoinValue
+                amount={ tx.max_fee_per_gas }
+                units="gwei"
+                noSymbol
+                fontWeight="700"
+              />
             </Box>
           ) }
           { tx.max_priority_fee_per_gas !== null && (
             <Box mt={ 1 }>
               <Text as="span" fontWeight="500">Max priority: </Text>
-              <Text fontWeight="700" as="span">{ getValueWithUnit(tx.max_priority_fee_per_gas, 'gwei').toFormat() }</Text>
+              <NativeCoinValue
+                amount={ tx.max_priority_fee_per_gas }
+                units="gwei"
+                noSymbol
+                fontWeight="700"
+              />
             </Box>
           ) }
         </Box>

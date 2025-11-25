@@ -12,7 +12,7 @@ import UserOpEntity from 'ui/shared/entities/userOp/UserOpEntity';
 import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import UserOpStatus from 'ui/shared/userOps/UserOpStatus';
-import AssetValue from 'ui/shared/value/AssetValue';
+import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 type Props = {
   item: UserOpsItem;
@@ -73,7 +73,7 @@ const UserOpsTableItem = ({ item, isLoading, showTx, showSender, chainData }: Pr
       </TableCell>
       { !config.UI.views.tx.hiddenFields?.tx_fee && (
         <TableCell verticalAlign="middle" isNumeric>
-          <AssetValue amount={ item.fee } loading={ isLoading } decimals={ String(config.chain.currency.decimals) }/>
+          <NativeCoinValue amount={ item.fee } loading={ isLoading } noSymbol/>
         </TableCell>
       ) }
     </TableRow>

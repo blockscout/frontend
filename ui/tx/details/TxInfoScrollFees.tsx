@@ -3,11 +3,9 @@ import React from 'react';
 
 import type { Transaction } from 'types/api/transaction';
 
-import config from 'configs/app';
-import { currencyUnits } from 'lib/units';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import DetailedInfoAssetValue from 'ui/shared/DetailedInfo/DetailedInfoAssetValue';
+import DetailedInfoNativeCoinValue from 'ui/shared/DetailedInfo/DetailedInfoNativeCoinValue';
 import TextSeparator from 'ui/shared/TextSeparator';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
@@ -28,10 +26,8 @@ export const TxInfoScrollFees = ({ data, isLoading }: Props) => {
           >
             L1 data fee
           </DetailedInfo.ItemLabel>
-          <DetailedInfoAssetValue
+          <DetailedInfoNativeCoinValue
             amount={ data.scroll?.l1_fee }
-            asset={ currencyUnits.ether }
-            decimals={ String(config.chain.currency.decimals) }
             exchangeRate={ data.exchange_rate }
             loading={ isLoading }
           />
@@ -46,10 +42,8 @@ export const TxInfoScrollFees = ({ data, isLoading }: Props) => {
           >
             Execution fee
           </DetailedInfo.ItemLabel>
-          <DetailedInfoAssetValue
+          <DetailedInfoNativeCoinValue
             amount={ data.scroll?.l2_fee.value }
-            asset={ currencyUnits.ether }
-            decimals={ String(config.chain.currency.decimals) }
             exchangeRate={ data.exchange_rate }
             loading={ isLoading }
           />
@@ -64,10 +58,8 @@ export const TxInfoScrollFees = ({ data, isLoading }: Props) => {
           >
             L1 commit scalar
           </DetailedInfo.ItemLabel>
-          <DetailedInfoAssetValue
+          <DetailedInfoNativeCoinValue
             amount={ String(data.scroll?.l1_fee_commit_scalar) }
-            asset={ currencyUnits.ether }
-            decimals={ String(config.chain.currency.decimals) }
             exchangeRate={ data.exchange_rate }
             loading={ isLoading }
           />
@@ -82,10 +74,8 @@ export const TxInfoScrollFees = ({ data, isLoading }: Props) => {
           >
             L1 Fee Overhead
           </DetailedInfo.ItemLabel>
-          <DetailedInfoAssetValue
+          <DetailedInfoNativeCoinValue
             amount={ String(data.scroll?.l1_fee_overhead) }
-            asset={ currencyUnits.ether }
-            decimals={ String(config.chain.currency.decimals) }
             exchangeRate={ data.exchange_rate }
             loading={ isLoading }
           />

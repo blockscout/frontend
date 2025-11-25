@@ -13,6 +13,7 @@ import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import AssetValue from 'ui/shared/value/AssetValue';
+import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 import { ADVANCED_FILTER_TYPES } from './constants';
 
@@ -76,9 +77,9 @@ const ItemByColumn = ({ item, column, isLoading }: Props) => {
       }
       if (item.value) {
         return (
-          <AssetValue
+          <NativeCoinValue
             amount={ item.value }
-            decimals={ config.chain.currency.decimals.toString() }
+            noSymbol
             loading={ isLoading }
           />
         );
@@ -91,9 +92,9 @@ const ItemByColumn = ({ item, column, isLoading }: Props) => {
         <Skeleton loading={ isLoading } fontWeight={ 700 }>{ config.chain.currency.symbol }</Skeleton>;
     case 'fee':
       return (
-        <AssetValue
+        <NativeCoinValue
           amount={ item.fee }
-          decimals={ config.chain.currency.decimals.toString() }
+          noSymbol
           loading={ isLoading }
         />
       );

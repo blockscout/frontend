@@ -7,6 +7,7 @@ import useApiQuery from 'lib/api/useApiQuery';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { ADDRESS } from 'stubs/optimismSuperchain';
 import { ZERO } from 'toolkit/utils/consts';
+import { thinsp } from 'toolkit/utils/htmlEntities';
 import TokenBalancesItem from 'ui/address/tokens/TokenBalancesItem';
 import type { TokensTotalInfo } from 'ui/address/utils/tokenUtils';
 import { getTokensTotalInfoByChain } from 'ui/address/utils/tokenUtils';
@@ -58,7 +59,7 @@ const OpSuperchainTokenBalances = () => {
     };
   }, {} as TokensTotalInfo);
 
-  const prefix = tokensInfo.isOverflow ? '>' : '';
+  const prefix = tokensInfo.isOverflow ? `>${ thinsp }` : '';
   const totalUsd = nativeUsd.plus(tokensInfo.usd);
   const tokensNumText = tokensInfo.num > 0 ?
     `${ prefix }${ tokensInfo.num } ${ tokensInfo.num > 1 ? 'tokens' : 'token' }` :

@@ -3,14 +3,13 @@ import React from 'react';
 
 import type { CeloEpochDetails } from 'types/api/epochs';
 
-import config from 'configs/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import CeloEpochStatus from 'ui/shared/statusTag/CeloEpochStatus';
 import TokenTransferSnippet from 'ui/shared/TokenTransferSnippet/TokenTransferSnippet';
-import AssetValue from 'ui/shared/value/AssetValue';
+import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 import TokenValue from 'ui/shared/value/TokenValue';
 
 import EpochElectionRewards from './electionRewards/EpochElectionRewards';
@@ -59,10 +58,8 @@ const EpochDetails = ({ data, isLoading }: Props) => {
     }
 
     return (
-      <AssetValue
+      <NativeCoinValue
         amount={ data.distribution?.transfers_total?.total?.value }
-        asset={ config.chain.currency.symbol }
-        decimals={ data.distribution?.transfers_total?.total?.decimals }
         accuracy={ 0 }
         loading={ isLoading }
       />

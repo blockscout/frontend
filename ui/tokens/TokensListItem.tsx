@@ -100,9 +100,14 @@ const TokensListItem = ({
       { exchangeRate && (
         <HStack gap={ 3 }>
           <Skeleton loading={ isLoading } textStyle="sm" fontWeight={ 500 }>Price</Skeleton>
-          <Skeleton loading={ isLoading } textStyle="sm" color="text.secondary">
-            <span>${ Number(exchangeRate).toLocaleString(undefined, { minimumSignificantDigits: 4 }) }</span>
-          </Skeleton>
+          <SimpleValue
+            value={ BigNumber(exchangeRate) }
+            loading={ isLoading }
+            accuracy={ 4 }
+            prefix="$"
+            textStyle="sm"
+            color="text.secondary"
+          />
         </HStack>
       ) }
       { marketCap && (

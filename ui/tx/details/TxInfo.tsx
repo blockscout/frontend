@@ -32,7 +32,7 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import DetailedInfoAssetValue from 'ui/shared/DetailedInfo/DetailedInfoAssetValue';
+import DetailedInfoNativeCoinValue from 'ui/shared/DetailedInfo/DetailedInfoNativeCoinValue';
 import DetailedInfoSponsoredItem from 'ui/shared/DetailedInfo/DetailedInfoSponsoredItem';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
@@ -48,7 +48,7 @@ import StatusTag from 'ui/shared/statusTag/StatusTag';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
 import TextSeparator from 'ui/shared/TextSeparator';
 import Utilization from 'ui/shared/Utilization/Utilization';
-import GasValue from 'ui/shared/value/GasValue';
+import GasPriceValue from 'ui/shared/value/GasPriceValue';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 import VerificationSteps from 'ui/shared/verificationSteps/VerificationSteps';
 import TxDetailsActions from 'ui/tx/details/txDetailsActions/TxDetailsActions';
@@ -611,10 +611,8 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
           >
             Value
           </DetailedInfo.ItemLabel>
-          <DetailedInfoAssetValue
+          <DetailedInfoNativeCoinValue
             amount={ data.value }
-            asset={ currencyUnits.ether }
-            decimals={ String(config.chain.currency.decimals) }
             exchangeRate={ data.exchange_rate }
             loading={ isLoading }
           />
@@ -630,10 +628,8 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
           >
             Operator fee
           </DetailedInfo.ItemLabel>
-          <DetailedInfoAssetValue
+          <DetailedInfoNativeCoinValue
             amount={ data.operator_fee }
-            asset={ currencyUnits.ether }
-            decimals={ String(config.chain.currency.decimals) }
             exchangeRate={ data.exchange_rate }
             loading={ isLoading }
           />
@@ -648,10 +644,8 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
           >
             Poster fee
           </DetailedInfo.ItemLabel>
-          <DetailedInfoAssetValue
+          <DetailedInfoNativeCoinValue
             amount={ data.arbitrum.poster_fee }
-            asset={ currencyUnits.ether }
-            decimals={ String(config.chain.currency.decimals) }
             exchangeRate={ data.exchange_rate }
             loading={ isLoading }
           />
@@ -662,10 +656,8 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
           >
             Network fee
           </DetailedInfo.ItemLabel>
-          <DetailedInfoAssetValue
+          <DetailedInfoNativeCoinValue
             amount={ data.arbitrum.network_fee }
-            asset={ currencyUnits.ether }
-            decimals={ String(config.chain.currency.decimals) }
             exchangeRate={ data.exchange_rate }
             loading={ isLoading }
           />
@@ -801,7 +793,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
               >
                 L1 gas price
               </DetailedInfo.ItemLabel>
-              <GasValue
+              <GasPriceValue
                 amount={ data.l1_gas_price }
                 asset={ rollupFeature.parentChain.currency?.symbol || currencyUnits.ether }
                 loading={ isLoading }
@@ -818,9 +810,10 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
               >
                 L1 fee
               </DetailedInfo.ItemLabel>
-              <DetailedInfoAssetValue
+              <DetailedInfoNativeCoinValue
                 amount={ data.l1_fee }
                 asset={ rollupFeature.parentChain.currency?.symbol || currencyUnits.ether }
+                decimals={ rollupFeature.parentChain.currency?.decimals ?? config.chain.currency.decimals }
                 exchangeRate={ data.exchange_rate }
                 loading={ isLoading }
               />
@@ -860,9 +853,9 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
                 >
                   Blob fee
                 </DetailedInfo.ItemLabel>
-                <DetailedInfoAssetValue
+                <DetailedInfoNativeCoinValue
                   amount={ BigNumber(data.blob_gas_used).multipliedBy(data.blob_gas_price).toString() }
-                  asset={ config.UI.views.tx.hiddenFields?.fee_currency ? '' : currencyUnits.ether }
+                  noSymbol={ config.UI.views.tx.hiddenFields?.fee_currency }
                   exchangeRate={ data.exchange_rate }
                   loading={ isLoading }
                 />

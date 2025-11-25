@@ -17,7 +17,7 @@ import TxStatus from 'ui/shared/statusTag/TxStatus';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import TxFee from 'ui/shared/tx/TxFee';
 import TxWatchListTags from 'ui/shared/tx/TxWatchListTags';
-import AssetValue from 'ui/shared/value/AssetValue';
+import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
 
 import TxTranslationType from './TxTranslationType';
@@ -126,10 +126,12 @@ const TxsTableItem = ({
       </TableCell>
       { !config.UI.views.tx.hiddenFields?.value && (
         <TableCell isNumeric>
-          <AssetValue
+          <NativeCoinValue
             amount={ tx.value }
-            decimals={ String(config.chain.currency.decimals) }
+            noSymbol
             loading={ isLoading }
+            exchangeRate={ tx.exchange_rate }
+            layout="vertical"
           />
         </TableCell>
       ) }
@@ -138,9 +140,9 @@ const TxsTableItem = ({
           <TxFee
             tx={ tx }
             accuracy={ 8 }
-            isLoading={ isLoading }
-            withCurrency={ Boolean(tx.celo || tx.stability_fee) }
-            justifyContent="end"
+            loading={ isLoading }
+            noSymbol={ !(tx.celo || tx.stability_fee) }
+            layout="vertical"
           />
         </TableCell>
       ) }

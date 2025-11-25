@@ -10,7 +10,7 @@ import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
-import AssetValue from 'ui/shared/value/AssetValue';
+import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 const rollupFeature = config.features.rollup;
 
@@ -76,10 +76,8 @@ const ScrollL2WithdrawalsListItem = ({ item, isLoading }: Props) => {
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Value</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <AssetValue
+        <NativeCoinValue
           amount={ item.value }
-          asset={ config.chain.currency.symbol }
-          decimals={ String(config.chain.currency.decimals) }
           loading={ isLoading }
         />
       </ListItemMobileGrid.Value>

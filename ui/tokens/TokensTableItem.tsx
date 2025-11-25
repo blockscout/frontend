@@ -16,7 +16,6 @@ import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
 import type { EntityProps as AddressEntityProps } from 'ui/shared/entities/address/AddressEntity';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
-import TruncatedValue from 'ui/shared/TruncatedValue';
 import SimpleValue from 'ui/shared/value/SimpleValue';
 import { DEFAULT_ACCURACY_USD } from 'ui/shared/value/utils';
 
@@ -122,11 +121,14 @@ const TokensTableItem = ({
         </Flex>
       </TableCell>
       <TableCell isNumeric>
-        <TruncatedValue
-          value={ exchangeRate ? `$${ Number(exchangeRate).toLocaleString(undefined, { minimumSignificantDigits: 4 }) }` : '' }
-          isLoading={ isLoading }
-          maxW="100%"
-        />
+        { exchangeRate ? (
+          <SimpleValue
+            value={ BigNumber(exchangeRate) }
+            accuracy={ 4 }
+            loading={ isLoading }
+            prefix="$"
+          />
+        ) : null }
       </TableCell>
       <TableCell isNumeric>
         { marketCap && (

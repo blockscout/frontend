@@ -4,9 +4,8 @@ import React from 'react';
 import type { Transaction } from 'types/api/transaction';
 
 import config from 'configs/app';
-import { currencyUnits } from 'lib/units';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import DetailedInfoAssetValue from 'ui/shared/DetailedInfo/DetailedInfoAssetValue';
+import DetailedInfoNativeCoinValue from 'ui/shared/DetailedInfo/DetailedInfoNativeCoinValue';
 
 import TxDetailsGasUsage from './TxDetailsGasUsage';
 
@@ -28,13 +27,10 @@ const TxDetailsSetMaxGasLimit = ({ data }: Props) => {
       >
         User’s set max gas limit
       </DetailedInfo.ItemLabel>
-      <DetailedInfoAssetValue
+      <DetailedInfoNativeCoinValue
         amount={ maxGasLimit.toString() }
-        asset={ currencyUnits.ether }
-        decimals={ String(config.chain.currency.decimals) }
         exchangeRate={ 'exchange_rate' in data ? data.exchange_rate : null }
-        gweiValue
-        noTooltip={ false }
+        gweiTooltip
       />
       <TxDetailsGasUsage data={ data }/>
     </>

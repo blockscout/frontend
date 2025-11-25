@@ -5,21 +5,21 @@ import React from 'react';
 import type { Transaction, WrappedTransactionFields } from 'types/api/transaction';
 
 import config from 'configs/app';
-import { currencyUnits } from 'lib/units';
-import AssetValue from 'ui/shared/value/AssetValue';
+import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 import TokenValue from 'ui/shared/value/TokenValue';
 
 interface Props extends BoxProps {
-  isLoading?: boolean;
+  loading?: boolean;
   tx: Transaction | Pick<Transaction, WrappedTransactionFields>;
-  withCurrency?: boolean;
-  withUsd?: boolean;
   accuracy?: number;
   accuracyUsd?: number;
   noTooltip?: boolean;
+  noSymbol?: boolean;
+  noUsd?: boolean;
+  layout?: 'horizontal' | 'vertical';
 }
 
-const TxFee = ({ tx, accuracy, accuracyUsd, isLoading, withCurrency = true, withUsd, noTooltip, ...rest }: Props) => {
+const TxFee = ({ tx, accuracy, accuracyUsd, loading, noSymbol: noSymbolProp, noUsd, noTooltip, ...rest }: Props) => {
 
   if ('celo' in tx && tx.celo?.gas_token) {
     return (
@@ -28,7 +28,7 @@ const TxFee = ({ tx, accuracy, accuracyUsd, isLoading, withCurrency = true, with
         token={ tx.celo.gas_token }
         accuracy={ accuracy }
         accuracyUsd={ accuracyUsd }
-        loading={ isLoading }
+        loading={ loading }
         { ...rest }
       />
     );
@@ -41,23 +41,22 @@ const TxFee = ({ tx, accuracy, accuracyUsd, isLoading, withCurrency = true, with
         token={ tx.stability_fee.token }
         accuracy={ accuracy }
         accuracyUsd={ accuracyUsd }
-        loading={ isLoading }
+        loading={ loading }
         { ...rest }
       />
     );
   }
 
-  const showCurrency = withCurrency && !config.UI.views.tx.hiddenFields?.fee_currency;
+  const noSymbol = noSymbolProp || config.UI.views.tx.hiddenFields?.fee_currency;
 
   return (
-    <AssetValue
+    <NativeCoinValue
       amount={ tx.fee.value || '0' }
-      asset={ showCurrency ? currencyUnits.ether : '' }
-      decimals={ String(config.chain.currency.decimals) }
-      exchangeRate={ withUsd && 'exchange_rate' in tx ? tx.exchange_rate : null }
+      noSymbol={ noSymbol }
+      exchangeRate={ !noUsd && 'exchange_rate' in tx ? tx.exchange_rate : null }
       accuracy={ accuracy }
       accuracyUsd={ accuracyUsd }
-      loading={ isLoading }
+      loading={ loading }
       noTooltip={ noTooltip }
       flexWrap="wrap"
       { ...rest }

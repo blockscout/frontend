@@ -21,7 +21,7 @@ import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 import PrevNext from 'ui/shared/PrevNext';
 import TruncatedValue from 'ui/shared/TruncatedValue';
-import GasValue from 'ui/shared/value/GasValue';
+import GasPriceValue from 'ui/shared/value/GasPriceValue';
 import VerificationSteps from 'ui/shared/verificationSteps/VerificationSteps';
 
 import ZkSyncL2TxnBatchHashesInfo from './ZkSyncL2TxnBatchHashesInfo';
@@ -147,7 +147,7 @@ const ZkSyncL2TxnBatchDetails = ({ query }: Props) => {
           L1 gas price
         </DetailedInfo.ItemLabel>
         <DetailedInfo.ItemValue multiRow>
-          <GasValue
+          <GasPriceValue
             amount={ data.l1_gas_price }
             loading={ isPlaceholderData }
             asset={ parentChainCurrency || currencyUnits.ether }
@@ -160,7 +160,7 @@ const ZkSyncL2TxnBatchDetails = ({ query }: Props) => {
           L2 fair gas price
         </DetailedInfo.ItemLabel>
         <DetailedInfo.ItemValue multiRow>
-          <GasValue
+          <GasPriceValue
             amount={ data.l2_fair_gas_price }
             loading={ isPlaceholderData }
           />

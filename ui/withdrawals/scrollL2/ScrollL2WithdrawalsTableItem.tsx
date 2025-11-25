@@ -10,7 +10,7 @@ import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
-import AssetValue from 'ui/shared/value/AssetValue';
+import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 const rollupFeature = config.features.rollup;
 
@@ -67,9 +67,9 @@ const ScrollL2WithdrawalsTableItem = ({ item, isLoading }: Props) => {
         ) }
       </TableCell>
       <TableCell verticalAlign="middle" isNumeric>
-        <AssetValue
+        <NativeCoinValue
           amount={ item.value }
-          decimals={ String(config.chain.currency.decimals) }
+          noSymbol
           loading={ isLoading }
         />
       </TableCell>

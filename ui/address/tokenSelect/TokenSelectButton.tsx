@@ -6,7 +6,7 @@ import type { FormattedData } from './types';
 import * as mixpanel from 'lib/mixpanel/index';
 import { Button } from 'toolkit/chakra/button';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import { space } from 'toolkit/utils/htmlEntities';
+import { space, thinsp } from 'toolkit/utils/htmlEntities';
 import IconSvg from 'ui/shared/IconSvg';
 
 import { getTokensTotalInfo } from '../utils/tokenUtils';
@@ -20,7 +20,7 @@ interface Props {
 const TokenSelectButton = ({ isOpen, isLoading, data, ...rest }: Props, ref: React.ForwardedRef<HTMLButtonElement>) => {
   const { usd, num, isOverflow } = getTokensTotalInfo(data);
 
-  const prefix = isOverflow ? '>' : '';
+  const prefix = isOverflow ? ` >${ thinsp }` : '';
 
   const handleClick = React.useCallback(() => {
     if (isLoading && !isOpen) {

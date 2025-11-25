@@ -2,12 +2,12 @@ import type { BoxProps } from '@chakra-ui/react';
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import { currencyUnits } from 'lib/units';
+import { thinsp } from 'toolkit/utils/htmlEntities';
 
 import type { Params as CalculateUsdValueParams } from './calculateUsdValue';
 import calculateUsdValue from './calculateUsdValue';
 import SimpleValue from './SimpleValue';
-import { DEFAULT_ACCURACY, DEFAULT_ACCURACY_USD, GWEI } from './utils';
+import { DEFAULT_ACCURACY, DEFAULT_ACCURACY_USD } from './utils';
 
 export interface Props extends Omit<BoxProps, 'prefix' | 'suffix'>, Omit<CalculateUsdValueParams, 'amount'> {
   amount: string | null | undefined;
@@ -17,7 +17,7 @@ export interface Props extends Omit<BoxProps, 'prefix' | 'suffix'>, Omit<Calcula
   noTooltip?: boolean;
   loading?: boolean;
   layout?: 'horizontal' | 'vertical';
-  gweiValue?: boolean;
+  tooltipContent?: React.ReactNode;
 }
 
 // TODO @tom2drum refactor usage in favor of NativeCoinValue
@@ -33,7 +33,7 @@ const AssetValue = ({
   loading,
   exchangeRate,
   layout = 'horizontal',
-  gweiValue = false,
+  tooltipContent,
   ...rest
 }: Props) => {
 
@@ -43,15 +43,13 @@ const AssetValue = ({
 
   const { valueBn, usdBn } = calculateUsdValue({ amount, decimals, accuracy, accuracyUsd, exchangeRate });
 
-  const tooltipContent = gweiValue ? `${ valueBn.multipliedBy(GWEI).toFormat() } ${ currencyUnits.gwei }` : undefined;
-
   if (!exchangeRate) {
     return (
       <SimpleValue
         value={ valueBn }
         accuracy={ accuracy }
         startElement={ startElement }
-        endElement={ endElement ?? (typeof asset === 'string' ? ` ${ asset }` : asset) }
+        endElement={ endElement ?? (typeof asset === 'string' ? `${ thinsp }${ asset }` : asset) }
         tooltipContent={ tooltipContent }
         noTooltip={ noTooltip }
         loading={ loading }
@@ -74,7 +72,7 @@ const AssetValue = ({
         value={ valueBn }
         accuracy={ accuracy }
         startElement={ startElement }
-        endElement={ endElement ?? (typeof asset === 'string' ? ` ${ asset }` : asset) }
+        endElement={ endElement ?? (typeof asset === 'string' ? `${ thinsp }${ asset }` : asset) }
         tooltipContent={ tooltipContent }
         noTooltip={ noTooltip }
         loading={ loading }
@@ -85,7 +83,6 @@ const AssetValue = ({
         startElement={ layout === 'horizontal' ? <span>(</span> : undefined }
         prefix="$"
         endElement={ layout === 'horizontal' ? <span>)</span> : undefined }
-        noTooltip={ noTooltip }
         loading={ loading }
         color="text.secondary"
       />

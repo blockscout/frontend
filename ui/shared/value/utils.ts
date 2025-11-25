@@ -2,6 +2,7 @@ import BigNumber from 'bignumber.js';
 
 import config from 'configs/app';
 import { ZERO } from 'toolkit/utils/consts';
+import { thinsp } from 'toolkit/utils/htmlEntities';
 
 interface FormatBnValueParams {
   value: BigNumber;
@@ -12,7 +13,7 @@ interface FormatBnValueParams {
 }
 
 export const formatBnValue = ({ value, accuracy, prefix, postfix, overflowed }: FormatBnValueParams) => {
-  const fullPrefix = `${ overflowed ? '> ' : '' }${ prefix ?? '' }`;
+  const fullPrefix = `${ overflowed ? `>${ thinsp }` : '' }${ prefix ?? '' }`;
 
   if (!accuracy) {
     return `${ fullPrefix }${ value.toFormat() }${ postfix ?? '' }`;
@@ -21,7 +22,7 @@ export const formatBnValue = ({ value, accuracy, prefix, postfix, overflowed }: 
   const formattedValue = value.dp(accuracy).toFormat();
 
   return formattedValue === '0' && !value.isEqualTo(ZERO) && !overflowed ?
-    `< ${ prefix ?? '' }0.${ '0'.repeat(accuracy - 1) }1${ postfix ?? '' }` :
+    `<${ thinsp }${ prefix ?? '' }0.${ '0'.repeat(accuracy - 1) }1${ postfix ?? '' }` :
     `${ fullPrefix }${ formattedValue }${ postfix ?? '' }`;
 };
 

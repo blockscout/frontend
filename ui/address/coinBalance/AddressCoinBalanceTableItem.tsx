@@ -5,7 +5,6 @@ import React from 'react';
 import type { AddressCoinBalanceHistoryItem } from 'types/api/address';
 import type { ClusterChainConfig } from 'types/multichain';
 
-import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { ZERO } from 'toolkit/utils/consts';
@@ -13,7 +12,7 @@ import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
-import AssetValue from 'ui/shared/value/AssetValue';
+import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 import SimpleValue from 'ui/shared/value/SimpleValue';
 import { WEI } from 'ui/shared/value/utils';
 
@@ -63,10 +62,9 @@ const AddressCoinBalanceTableItem = (props: Props) => {
         />
       </TableCell>
       <TableCell isNumeric pr={ 1 }>
-        <AssetValue
+        <NativeCoinValue
           amount={ props.value }
-          decimals={ String(config.chain.currency.decimals) }
-          accuracy={ 8 }
+          noSymbol
           loading={ props.isLoading }
           color="text.secondary"
         />

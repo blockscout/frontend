@@ -8,13 +8,12 @@ import type { UserOp } from 'types/api/userOps';
 import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
-import { currencyUnits } from 'lib/units';
 import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import DetailedInfoAssetValue from 'ui/shared/DetailedInfo/DetailedInfoAssetValue';
+import DetailedInfoNativeCoinValue from 'ui/shared/DetailedInfo/DetailedInfoNativeCoinValue';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import AddressStringOrParam from 'ui/shared/entities/address/AddressStringOrParam';
@@ -24,7 +23,7 @@ import UserOpEntity from 'ui/shared/entities/userOp/UserOpEntity';
 import UserOpSponsorType from 'ui/shared/userOps/UserOpSponsorType';
 import UserOpStatus from 'ui/shared/userOps/UserOpStatus';
 import Utilization from 'ui/shared/Utilization/Utilization';
-import GasValue from 'ui/shared/value/GasValue';
+import GasPriceValue from 'ui/shared/value/GasPriceValue';
 
 import UserOpCallData from './UserOpCallData';
 import UserOpDecodedCallData from './UserOpDecodedCallData';
@@ -140,10 +139,8 @@ const UserOpDetails = ({ query }: Props) => {
           >
             Fee
           </DetailedInfo.ItemLabel>
-          <DetailedInfoAssetValue
+          <DetailedInfoNativeCoinValue
             amount={ data.fee }
-            asset={ currencyUnits.ether }
-            decimals={ String(config.chain.currency.decimals) }
             loading={ isPlaceholderData }
           />
         </>
@@ -250,7 +247,7 @@ const UserOpDetails = ({ query }: Props) => {
               Max fee per gas
             </DetailedInfo.ItemLabel>
             <DetailedInfo.ItemValue multiRow>
-              <GasValue amount={ data.max_fee_per_gas }/>
+              <GasPriceValue amount={ data.max_fee_per_gas }/>
             </DetailedInfo.ItemValue>
 
             <DetailedInfo.ItemLabel
@@ -259,7 +256,7 @@ const UserOpDetails = ({ query }: Props) => {
               Max priority fee per gas
             </DetailedInfo.ItemLabel>
             <DetailedInfo.ItemValue multiRow>
-              <GasValue amount={ data.max_priority_fee_per_gas }/>
+              <GasPriceValue amount={ data.max_priority_fee_per_gas }/>
             </DetailedInfo.ItemValue>
           </>
         ) }

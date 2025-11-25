@@ -3,9 +3,8 @@ import React from 'react';
 import type { ArbitrumL2TxnWithdrawalsItem } from 'types/api/arbitrumL2';
 import type { TokenInfo } from 'types/api/token';
 
-import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import AssetValue from 'ui/shared/value/AssetValue';
+import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 import TokenValue from 'ui/shared/value/TokenValue';
 
 interface Props {
@@ -41,10 +40,8 @@ const ArbitrumL2TxnWithdrawalsValue = ({ data, loading }: Props) => {
 
   if (data.callvalue && data.callvalue !== '0') {
     return (
-      <AssetValue
+      <NativeCoinValue
         amount={ data.callvalue }
-        asset={ config.chain.currency.symbol }
-        decimals={ String(config.chain.currency.decimals) }
         loading={ loading }
       />
     );

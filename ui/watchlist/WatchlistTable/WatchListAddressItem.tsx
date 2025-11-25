@@ -11,8 +11,8 @@ import { nbsp } from 'toolkit/utils/htmlEntities';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import IconSvg from 'ui/shared/IconSvg';
-import AssetValue from 'ui/shared/value/AssetValue';
 import calculateUsdValue from 'ui/shared/value/calculateUsdValue';
+import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 import SimpleValue from 'ui/shared/value/SimpleValue';
 import { DEFAULT_ACCURACY_USD } from 'ui/shared/value/utils';
 
@@ -43,10 +43,10 @@ const WatchListAddressItem = ({ item, isLoading }: { item: WatchlistAddress; isL
         />
         <Skeleton loading={ isLoading } whiteSpace="pre" display="inline-flex">
           <span>{ currencyUnits.ether } balance: </span>
-          <AssetValue
+          <NativeCoinValue
             amount={ item.address_balance }
             exchangeRate={ item.exchange_rate }
-            decimals={ String(config.chain.currency.decimals) }
+            noSymbol
           />
         </Skeleton>
       </Flex>

@@ -3,9 +3,8 @@ import React from 'react';
 import type { TokenInfo } from 'types/api/token';
 
 import config from 'configs/app';
-import { currencyUnits } from 'lib/units';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import GasValue from 'ui/shared/value/GasValue';
+import GasPriceValue from 'ui/shared/value/GasPriceValue';
 import TokenValue from 'ui/shared/value/TokenValue';
 
 interface Props {
@@ -32,9 +31,8 @@ const TxDetailsGasPrice = ({ gasPrice, gasToken, isLoading }: Props) => {
     }
 
     return (
-      <GasValue
+      <GasPriceValue
         amount={ gasPrice }
-        asset={ currencyUnits.ether }
         loading={ isLoading }
       />
     );

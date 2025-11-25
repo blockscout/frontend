@@ -10,10 +10,12 @@ import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import { currencyUnits } from 'lib/units';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
+import { thinsp } from 'toolkit/utils/htmlEntities';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import IconSvg from 'ui/shared/IconSvg';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
+import SimpleValue from 'ui/shared/value/SimpleValue';
 
 type Props = {
   block: Block;
@@ -64,11 +66,12 @@ const LatestBlocksItem = ({ block, isLoading, animation }: Props) => {
         { !config.features.rollup.isEnabled && !config.UI.views.block.hiddenFields?.total_reward && (
           <>
             <Skeleton loading={ isLoading }>Reward</Skeleton>
-            <Skeleton loading={ isLoading } color="text.secondary">
-              <span>
-                { totalReward.dp(10).toFixed() } { currencyUnits.ether }
-              </span>
-            </Skeleton>
+            <SimpleValue
+              value={ totalReward }
+              loading={ isLoading }
+              color="text.secondary"
+              endElement={ `${ thinsp }${ currencyUnits.ether }` }
+            />
           </>
         ) }
 

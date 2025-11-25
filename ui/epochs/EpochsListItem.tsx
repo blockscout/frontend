@@ -3,13 +3,12 @@ import React from 'react';
 
 import type { CeloEpochListItem } from 'types/api/epochs';
 
-import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 import EpochEntity from 'ui/shared/entities/epoch/EpochEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import CeloEpochStatus from 'ui/shared/statusTag/CeloEpochStatus';
-import AssetValue from 'ui/shared/value/AssetValue';
+import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 interface Props {
   item: CeloEpochListItem;
@@ -38,10 +37,8 @@ const EpochsListItem = ({ item, isLoading }: Props) => {
       { item.distribution?.community_transfer ? (
         <HStack minH="30px">
           <Skeleton loading={ isLoading }>Community</Skeleton>
-          <AssetValue
+          <NativeCoinValue
             amount={ item.distribution?.community_transfer.value }
-            asset={ config.chain.currency.symbol }
-            decimals={ item.distribution?.community_transfer.decimals }
             loading={ isLoading }
             color="text.secondary"
           />
@@ -50,10 +47,8 @@ const EpochsListItem = ({ item, isLoading }: Props) => {
       { item.distribution?.carbon_offsetting_transfer ? (
         <HStack minH="30px">
           <Skeleton loading={ isLoading }>Carbon offset</Skeleton>
-          <AssetValue
+          <NativeCoinValue
             amount={ item.distribution?.carbon_offsetting_transfer.value }
-            asset={ config.chain.currency.symbol }
-            decimals={ item.distribution?.carbon_offsetting_transfer.decimals }
             loading={ isLoading }
             color="text.secondary"
           />
@@ -62,10 +57,9 @@ const EpochsListItem = ({ item, isLoading }: Props) => {
       { item.distribution?.transfers_total ? (
         <HStack minH="30px">
           <Skeleton loading={ isLoading }>Total</Skeleton>
-          <AssetValue
+          <NativeCoinValue
             amount={ item.distribution?.transfers_total.value }
-            asset={ config.chain.currency.symbol }
-            decimals={ item.distribution?.transfers_total.decimals }
+            noSymbol
             loading={ isLoading }
             color="text.secondary"
           />

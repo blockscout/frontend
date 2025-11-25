@@ -10,7 +10,7 @@ import { ZERO } from 'toolkit/utils/consts';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import IconSvg from 'ui/shared/IconSvg';
 import Utilization from 'ui/shared/Utilization/Utilization';
-import GasValue from 'ui/shared/value/GasValue';
+import GasPriceValue from 'ui/shared/value/GasPriceValue';
 import { WEI } from 'ui/shared/value/utils';
 
 interface Props {
@@ -42,7 +42,7 @@ const BlockDetailsBlobInfo = ({ data }: Props) => {
             Blob gas price
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue multiRow>
-            <GasValue amount={ data.blob_gas_price }/>
+            <GasPriceValue amount={ data.blob_gas_price }/>
           </DetailedInfo.ItemValue>
         </>
       ) }
@@ -86,7 +86,7 @@ const BlockDetailsBlobInfo = ({ data }: Props) => {
             Excess blob gas
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue>
-            <GasValue amount={ data.excess_blob_gas }/>
+            <GasPriceValue amount={ data.excess_blob_gas }/>
           </DetailedInfo.ItemValue>
         </>
       ) }

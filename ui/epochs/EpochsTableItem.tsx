@@ -8,7 +8,7 @@ import { TableCell, TableRow } from 'toolkit/chakra/table';
 import EpochEntity from 'ui/shared/entities/epoch/EpochEntity';
 import CeloEpochStatus from 'ui/shared/statusTag/CeloEpochStatus';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
-import AssetValue from 'ui/shared/value/AssetValue';
+import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 interface Props {
   item: CeloEpochListItem;
@@ -43,23 +43,23 @@ const EpochsTableItem = ({ item, isLoading }: Props) => {
         </Skeleton>
       </TableCell>
       <TableCell verticalAlign="middle" isNumeric>
-        <AssetValue
+        <NativeCoinValue
           amount={ item.distribution?.community_transfer?.value }
-          decimals={ item.distribution?.community_transfer?.decimals }
+          noSymbol
           loading={ isLoading }
         />
       </TableCell>
       <TableCell verticalAlign="middle" isNumeric>
-        <AssetValue
+        <NativeCoinValue
           amount={ item.distribution?.carbon_offsetting_transfer?.value }
-          decimals={ item.distribution?.carbon_offsetting_transfer?.decimals }
+          noSymbol
           loading={ isLoading }
         />
       </TableCell>
       <TableCell verticalAlign="middle" isNumeric>
-        <AssetValue
+        <NativeCoinValue
           amount={ item.distribution?.transfers_total?.value }
-          decimals={ item.distribution?.transfers_total?.decimals }
+          noSymbol
           loading={ isLoading }
         />
       </TableCell>

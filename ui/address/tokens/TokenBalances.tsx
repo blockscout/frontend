@@ -6,6 +6,7 @@ import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import { currencyUnits } from 'lib/units';
 import { ZERO } from 'toolkit/utils/consts';
+import { thinsp } from 'toolkit/utils/htmlEntities';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import IconSvg from 'ui/shared/IconSvg';
 import NativeTokenIcon from 'ui/shared/NativeTokenIcon';
@@ -39,7 +40,7 @@ const TokenBalances = () => {
   });
 
   const tokensInfo = getTokensTotalInfo(tokenQuery.data);
-  const prefix = tokensInfo.isOverflow ? '>' : '';
+  const prefix = tokensInfo.isOverflow ? `>${ thinsp }` : '';
   const totalUsd = nativeUsd.plus(tokensInfo.usd);
   const tokensNumText = tokensInfo.num > 0 ?
     `${ prefix }${ tokensInfo.num } ${ tokensInfo.num > 1 ? 'tokens' : 'token' }` :

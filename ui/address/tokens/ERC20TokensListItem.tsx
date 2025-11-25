@@ -1,4 +1,5 @@
 import { Flex, HStack } from '@chakra-ui/react';
+import { BigNumber } from 'bignumber.js';
 import React from 'react';
 
 import type { AddressTokensErc20Item } from './types';
@@ -63,9 +64,13 @@ const ERC20TokensListItem = ({ token, value, isLoading, chain_values: chainValue
       { token.exchange_rate !== undefined && token.exchange_rate !== null && (
         <HStack gap={ 3 }>
           <Skeleton loading={ isLoading } fontSize="sm" fontWeight={ 500 }>Price</Skeleton>
-          <Skeleton loading={ isLoading } fontSize="sm" color="text.secondary">
-            <span>{ `$${ Number(token.exchange_rate).toLocaleString() }` }</span>
-          </Skeleton>
+          <SimpleValue
+            value={ BigNumber(token.exchange_rate) }
+            loading={ isLoading }
+            prefix="$"
+            fontSize="sm"
+            color="text.secondary"
+          />
         </HStack>
       ) }
       <HStack gap={ 3 } alignItems="baseline">

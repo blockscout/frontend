@@ -9,7 +9,6 @@ import type { Transaction } from 'types/api/transaction';
 import type { ClusterChainConfig } from 'types/multichain';
 
 import config from 'configs/app';
-import { currencyUnits } from 'lib/units';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
@@ -19,7 +18,7 @@ import TxStatus from 'ui/shared/statusTag/TxStatus';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import TxFee from 'ui/shared/tx/TxFee';
 import TxWatchListTags from 'ui/shared/tx/TxWatchListTags';
-import AssetValue from 'ui/shared/value/AssetValue';
+import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
 import TxType from 'ui/txs/TxType';
 
@@ -122,10 +121,9 @@ const TxsListItem = ({
       { !config.UI.views.tx.hiddenFields?.value && (
         <Flex mt={ 2 } columnGap={ 2 }>
           <Skeleton loading={ isLoading } display="inline-block" whiteSpace="pre">Value</Skeleton>
-          <AssetValue
+          <NativeCoinValue
             amount={ tx.value }
-            asset={ currencyUnits.ether }
-            decimals={ String(config.chain.currency.decimals) }
+            exchangeRate={ tx.exchange_rate }
             loading={ isLoading }
             color="text.secondary"
           />
@@ -136,7 +134,7 @@ const TxsListItem = ({
           { (tx.stability_fee !== undefined || tx.fee.value !== null) && (
             <>
               <Skeleton loading={ isLoading } display="inline-block" whiteSpace="pre">Fee</Skeleton>
-              <TxFee tx={ tx } isLoading={ isLoading }/>
+              <TxFee tx={ tx } loading={ isLoading } color="text.secondary"/>
             </>
           ) }
         </Flex>

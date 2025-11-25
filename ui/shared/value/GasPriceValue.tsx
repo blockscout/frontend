@@ -3,29 +3,25 @@ import { chakra } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
-import config from 'configs/app';
 import { currencyUnits } from 'lib/units';
+import { thinsp } from 'toolkit/utils/htmlEntities';
 
 import SimpleValue from './SimpleValue';
-import { GWEI } from './utils';
+import { GWEI, WEI } from './utils';
 
 export interface Props extends Omit<BoxProps, 'prefix' | 'suffix'> {
   amount: string;
   asset?: string;
   accuracy?: number;
-  decimals?: string;
-  gweiDecimals?: string;
   noTooltip?: boolean;
   loading?: boolean;
 }
 
-// TODO @tom2drum rename to GasPriceValue
-const GasValue = ({
+const GasPriceValue = ({
   amount,
   asset = currencyUnits.ether,
   accuracy = 0,
-  decimals = String(config.chain.currency.decimals),
-  noTooltip = true,
+  noTooltip,
   loading,
   ...rest
 }: Props) => {
@@ -40,9 +36,9 @@ const GasValue = ({
       { ...rest }
     >
       <SimpleValue
-        value={ BigNumber(amount).div(BigNumber(10).pow(Number(decimals))) }
+        value={ BigNumber(amount).div(WEI) }
         accuracy={ accuracy }
-        endElement={ asset ? ` ${ asset }` : undefined }
+        endElement={ asset ? `${ thinsp }${ asset }` : undefined }
         noTooltip={ noTooltip }
         loading={ loading }
       />
@@ -50,7 +46,7 @@ const GasValue = ({
         value={ BigNumber(amount).div(GWEI) }
         accuracy={ accuracy }
         startElement={ <span>(</span> }
-        endElement={ ` ${ currencyUnits.gwei })` }
+        endElement={ `${ thinsp }${ currencyUnits.gwei })` }
         noTooltip={ noTooltip }
         loading={ loading }
         color="text.secondary"
@@ -59,4 +55,4 @@ const GasValue = ({
   );
 };
 
-export default React.memo(GasValue);
+export default React.memo(GasPriceValue);
