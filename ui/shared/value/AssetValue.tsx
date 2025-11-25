@@ -20,7 +20,6 @@ export interface Props extends Omit<BoxProps, 'prefix' | 'suffix'>, Omit<Calcula
   tooltipContent?: React.ReactNode;
 }
 
-// TODO @tom2drum refactor usage in favor of NativeCoinValue
 const AssetValue = ({
   amount,
   asset,

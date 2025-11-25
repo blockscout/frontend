@@ -31,7 +31,7 @@ const ArbitrumL2TxnWithdrawalsValue = ({ data, loading }: Props) => {
       <TokenValue
         amount={ data.token.amount ?? '0' }
         token={ token }
-        layer="L2"
+        layer="L1"
         tokenEntityProps={{ noIcon: true }}
         loading={ loading }
       />

@@ -2,6 +2,8 @@ import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import AssetValue from 'ui/shared/value/AssetValue';
+import GasPriceValue from 'ui/shared/value/GasPriceValue';
+import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 import SimpleValue from 'ui/shared/value/SimpleValue';
 import TokenValue from 'ui/shared/value/TokenValue';
 
@@ -77,7 +79,100 @@ const ValuesShowcase = () => {
       </Section>
 
       <Section>
-        <SectionHeader>ValueWithUsd</SectionHeader>
+        <SectionHeader>NativeCoinValue</SectionHeader>
+        <SectionSubHeader>Units</SectionSubHeader>
+        <SamplesStack>
+          <Sample label="wei">
+            <NativeCoinValue
+              amount="1000000000000000000000000"
+              units="wei"
+              maxW="200px"
+            />
+          </Sample>
+        </SamplesStack>
+        <SamplesStack>
+          <Sample label="gwei">
+            <NativeCoinValue
+              amount="1000000000000000000000000"
+              units="gwei"
+              maxW="200px"
+            />
+          </Sample>
+        </SamplesStack>
+        <SamplesStack>
+          <Sample label="ether">
+            <NativeCoinValue
+              amount="1000000000000000000000000"
+              units="ether"
+              maxW="200px"
+            />
+          </Sample>
+        </SamplesStack>
+
+        <SectionSubHeader>Gwei threshold</SectionSubHeader>
+        <SamplesStack>
+          <Sample label="gweiThreshold: undefined">
+            <NativeCoinValue
+              amount="100000000000"
+              units="wei"
+              maxW="200px"
+            />
+          </Sample>
+          <Sample label="gweiThreshold: 5">
+            <NativeCoinValue
+              amount="100000000000"
+              units="wei"
+              gweiThreshold={ 5 }
+              maxW="200px"
+            />
+          </Sample>
+        </SamplesStack>
+
+        <SectionSubHeader>Gwei tooltip</SectionSubHeader>
+        <SamplesStack>
+          <Sample label="true">
+            <NativeCoinValue
+              amount="100000000000"
+              units="wei"
+              gweiTooltip
+              maxW="200px"
+            />
+          </Sample>
+        </SamplesStack>
+
+        <SectionSubHeader>Layout</SectionSubHeader>
+        <SamplesStack>
+          <Sample label="horizontal">
+            <NativeCoinValue
+              amount="1000000000000000"
+              exchangeRate="4200"
+              layout="horizontal"
+              maxW="200px"
+            />
+          </Sample>
+          <Sample label="vertical">
+            <NativeCoinValue
+              amount="1000000000000000"
+              exchangeRate="4200"
+              layout="vertical"
+              maxW="200px"
+            />
+          </Sample>
+        </SamplesStack>
+      </Section>
+
+      <Section>
+        <SectionHeader>TokenValue</SectionHeader>
+        <SectionSubHeader>Examples</SectionSubHeader>
+        <SamplesStack>
+          <Sample label="convertible token">
+            <TokenValue amount="1000000000000000000000000" token={ TOKEN } maxW="400px"/>
+          </Sample>
+        </SamplesStack>
+      </Section>
+
+      <Section>
+        <SectionHeader>AssetValue</SectionHeader>
         <SectionSubHeader>Layout</SectionSubHeader>
         <SamplesStack>
           <Sample label="horizontal">
@@ -126,14 +221,17 @@ const ValuesShowcase = () => {
       </Section>
 
       <Section>
-        <SectionHeader>TokenValue</SectionHeader>
+        <SectionHeader>GasPriceValue</SectionHeader>
         <SectionSubHeader>Examples</SectionSubHeader>
         <SamplesStack>
-          <Sample label="convertible token">
-            <TokenValue amount="1000000000000000000000000" token={ TOKEN } maxW="400px"/>
+          <Sample label="default">
+            <GasPriceValue
+              amount="420000"
+            />
           </Sample>
         </SamplesStack>
       </Section>
+
     </Container>
   );
 };

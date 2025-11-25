@@ -1,6 +1,5 @@
 import BigNumber from 'bignumber.js';
 
-// TODO @tom2drum check usage of these constants
 export const ZERO = new BigNumber(0);
 
 export const SECOND = 1_000;

@@ -13,10 +13,10 @@ import AssetValue from './AssetValue';
 interface Props extends Omit<AssetValueProps, 'asset'> {
   token: TokenInfo;
   tokenEntityProps?: Omit<TokenEntityProps, 'token'> & BoxProps;
-  layer?: 'L1' | 'L2';
+  layer?: 'L1';
 }
 
-const TokenValue = ({ token, tokenEntityProps, layer = 'L1', ...rest }: Props) => {
+const TokenValue = ({ token, tokenEntityProps, layer, ...rest }: Props) => {
   const TokenComponent = layer === 'L1' ? TokenEntityL1 : TokenEntity;
 
   const asset = (
