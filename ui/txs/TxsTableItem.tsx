@@ -132,6 +132,7 @@ const TxsTableItem = ({
             loading={ isLoading }
             exchangeRate={ tx.exchange_rate }
             layout="vertical"
+            rowGap={ 3 }
           />
         </TableCell>
       ) }
@@ -143,6 +144,7 @@ const TxsTableItem = ({
             loading={ isLoading }
             noSymbol={ !(tx.celo || tx.stability_fee) }
             layout="vertical"
+            rowGap={ 3 }
           />
         </TableCell>
       ) }
