@@ -14,7 +14,6 @@ import { useMultichainContext } from 'lib/contexts/multichain';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import * as arbitrum from 'lib/rollups/arbitrum';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import { currencyUnits } from 'lib/units';
 import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
@@ -385,9 +384,7 @@ const BlockDetails = ({ query }: Props) => {
             Block reward
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue columnGap={ 1 } multiRow>
-            <Skeleton loading={ isPlaceholderData }>
-              { totalReward.dividedBy(WEI).toFixed() } { currencyUnits.ether }
-            </Skeleton>
+            <NativeCoinValue amount={ totalReward.toString() } accuracy={ 0 } loading={ isPlaceholderData }/>
             { rewardBreakDown }
           </DetailedInfo.ItemValue>
         </>
@@ -403,7 +400,7 @@ const BlockDetails = ({ query }: Props) => {
               { type }
             </DetailedInfo.ItemLabel>
             <DetailedInfo.ItemValue>
-              { BigNumber(reward).dividedBy(WEI).toFixed() } { currencyUnits.ether }
+              <NativeCoinValue amount={ reward.toString() } accuracy={ 0 }/>
             </DetailedInfo.ItemValue>
           </React.Fragment>
         ))
@@ -503,10 +500,13 @@ const BlockDetails = ({ query }: Props) => {
             Burnt fees
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue multiRow>
-            <IconSvg name="flame" boxSize={ 5 } color="icon.primary" isLoading={ isPlaceholderData }/>
-            <Skeleton loading={ isPlaceholderData } ml={{ base: 1, lg: 2 }} mr={ 4 }>
-              { burntFees.dividedBy(WEI).toFixed() } { currencyUnits.ether }
-            </Skeleton>
+            <NativeCoinValue
+              amount={ burntFees.toString() }
+              accuracy={ 0 }
+              loading={ isPlaceholderData }
+              startElement={ <IconSvg name="flame" boxSize={ 5 } mr={{ base: 1, lg: 2 }} color="icon.primary" isLoading={ isPlaceholderData }/> }
+              mr={ 4 }
+            />
             { !txFees.isEqualTo(ZERO) && (
               <Tooltip content="Burnt fees / Txn fees * 100%">
                 <Utilization
@@ -528,9 +528,7 @@ const BlockDetails = ({ query }: Props) => {
             Priority fee / Tip
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue>
-            <Skeleton loading={ isPlaceholderData }>
-              { BigNumber(data.priority_fee).dividedBy(WEI).toFixed() } { currencyUnits.ether }
-            </Skeleton>
+            <NativeCoinValue amount={ data.priority_fee.toString() } accuracy={ 0 } loading={ isPlaceholderData }/>
           </DetailedInfo.ItemValue>
         </>
       ) }
