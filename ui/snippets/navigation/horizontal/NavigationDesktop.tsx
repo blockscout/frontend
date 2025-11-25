@@ -5,7 +5,7 @@ import config from 'configs/app';
 import useNavItems, { isGroupItem } from 'lib/hooks/useNavItems';
 import RewardsButton from 'ui/rewards/RewardsButton';
 import { CONTENT_MAX_WIDTH } from 'ui/shared/layout/utils';
-import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
+import NetworkLogo from 'ui/snippets/networkLogo/NetworkLogo';
 import UserProfileDesktop from 'ui/snippets/user/profile/UserProfileDesktop';
 import UserWalletDesktop from 'ui/snippets/user/wallet/UserWalletDesktop';
 
@@ -28,7 +28,7 @@ const NavigationDesktop = () => {
         maxW={ `${ CONTENT_MAX_WIDTH }px` }
         m="0 auto"
       >
-        <NetworkLogo isCollapsed={ false } w={{ lg: '100%' }} maxW="120px"/>
+        <NetworkLogo/>
         <TestnetBadge ml={ 3 }/>
         <RollupStageBadge ml={ 3 }/>
         <chakra.nav ml="auto" mr={ config.features.account.isEnabled || config.features.blockchainInteraction.isEnabled ? 8 : 0 }>
