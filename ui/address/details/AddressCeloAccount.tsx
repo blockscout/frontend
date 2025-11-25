@@ -6,10 +6,10 @@ import type { ExcludeNull, ExcludeUndefined } from 'types/utils';
 
 import { currencyUnits } from 'lib/units';
 import { Link } from 'toolkit/chakra/link';
+import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import * as DetailedInfoItemBreakdown from 'ui/shared/DetailedInfo/DetailedInfoItemBreakdown';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
-import TruncatedValue from 'ui/shared/TruncatedValue';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 interface Props {
@@ -27,7 +27,7 @@ const AddressCeloAccount = ({ isLoading, data }: Props) => {
         Celo account
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue multiRow>
-        { data.name && <TruncatedValue value={ data.name } mr={ 3 }/> }
+        { data.name && <TruncatedText text={ data.name } mr={ 3 }/> }
         <DetailedInfoItemBreakdown.Container loading={ isLoading }>
           <DetailedInfoItemBreakdown.Row
             label="Type"
@@ -42,7 +42,7 @@ const AddressCeloAccount = ({ isLoading, data }: Props) => {
               hint="Link to additional information published by the account owner"
             >
               <Link href={ data.metadata_url } external>
-                <TruncatedValue value={ data.metadata_url }/>
+                <TruncatedText text={ data.metadata_url }/>
               </Link>
             </DetailedInfoItemBreakdown.Row>
           ) }

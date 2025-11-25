@@ -2,10 +2,9 @@ import React from 'react';
 
 import dayjs from 'lib/date/dayjs';
 import { Skeleton } from 'toolkit/chakra/skeleton';
+import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
 import IconSvg from 'ui/shared/IconSvg';
 import TextSeparator from 'ui/shared/TextSeparator';
-
-import TruncatedValue from '../TruncatedValue';
 
 type Props = {
   // should be string, will be fixed on the back-end
@@ -22,9 +21,9 @@ const DetailedInfoTimestamp = ({ timestamp, isLoading, noIcon }: Props) => {
         { dayjs(timestamp).fromNow() }
       </Skeleton>
       <TextSeparator mx={ 2 }/>
-      <TruncatedValue
-        value={ dayjs(timestamp).format('llll') }
-        isLoading={ isLoading }
+      <TruncatedText
+        text={ dayjs(timestamp).format('llll') }
+        loading={ isLoading }
       />
     </>
   );

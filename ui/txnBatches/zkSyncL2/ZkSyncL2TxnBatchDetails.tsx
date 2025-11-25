@@ -14,13 +14,13 @@ import { currencyUnits } from 'lib/units';
 import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
+import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 import PrevNext from 'ui/shared/PrevNext';
-import TruncatedValue from 'ui/shared/TruncatedValue';
 import GasPriceValue from 'ui/shared/value/GasPriceValue';
 import VerificationSteps from 'ui/shared/verificationSteps/VerificationSteps';
 
@@ -137,7 +137,7 @@ const ZkSyncL2TxnBatchDetails = ({ query }: Props) => {
           flexWrap="nowrap"
           alignSelf="flex-start"
         >
-          <TruncatedValue value={ data.root_hash }/>
+          <TruncatedText text={ data.root_hash }/>
           <CopyToClipboard text={ data.root_hash }/>
         </DetailedInfo.ItemValue>
 

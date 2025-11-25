@@ -4,9 +4,9 @@ import React from 'react';
 import type { ValidatorBlackfort } from 'types/api/validators';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
+import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
-import TruncatedValue from 'ui/shared/TruncatedValue';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 interface Props {
@@ -32,7 +32,7 @@ const ValidatorsListItem = ({ data, isLoading }: Props) => {
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>Name</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
-            <Flex><TruncatedValue value={ data.name } isLoading={ isLoading }/></Flex>
+            <Flex><TruncatedText text={ data.name } loading={ isLoading }/></Flex>
           </ListItemMobileGrid.Value>
         </>
       ) }

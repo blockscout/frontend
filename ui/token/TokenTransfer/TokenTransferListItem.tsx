@@ -8,12 +8,12 @@ import type { ClusterChainConfig } from 'types/multichain';
 import { NFT_TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
 import { Badge } from 'toolkit/chakra/badge';
 import { Skeleton } from 'toolkit/chakra/skeleton';
+import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
-import TruncatedValue from 'ui/shared/TruncatedValue';
 import AssetValue from 'ui/shared/value/AssetValue';
 
 type Props = TokenTransfer & { tokenId?: string; isLoading?: boolean; instance?: TokenInstance; chainData?: ClusterChainConfig };
@@ -76,7 +76,7 @@ const TokenTransferListItem = ({
             overflow="hidden"
           >
             <span>Value </span>
-            { token.symbol && <TruncatedValue isLoading={ isLoading } value={ token.symbol }/> }
+            { token.symbol && <TruncatedText text={ token.symbol } loading={ isLoading }/> }
           </Skeleton>
           <AssetValue
             amount={ total.value }

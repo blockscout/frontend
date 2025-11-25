@@ -4,8 +4,8 @@ import React from 'react';
 import type { TokenHolder, TokenInfo } from 'types/api/token';
 
 import { TableCell, TableRow } from 'toolkit/chakra/table';
+import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
-import TruncatedValue from 'ui/shared/TruncatedValue';
 import Utilization from 'ui/shared/Utilization/Utilization';
 import AssetValue from 'ui/shared/value/AssetValue';
 
@@ -28,7 +28,7 @@ const TokenTransferTableItem = ({ holder, token, isLoading }: Props) => {
       </TableCell>
       { (token.type === 'ERC-1155' || token.type === 'ERC-404') && 'token_id' in holder && (
         <TableCell verticalAlign="middle">
-          <TruncatedValue value={ holder.token_id } isLoading={ isLoading } w="100%"/>
+          <TruncatedText text={ holder.token_id } loading={ isLoading } w="100%"/>
         </TableCell>
       ) }
       <TableCell verticalAlign="middle" isNumeric>

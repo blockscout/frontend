@@ -10,13 +10,13 @@ import type { LinkProps } from 'toolkit/chakra/link';
 import { Link as LinkToolkit } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
+import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
 import type { Props as CopyToClipboardProps } from 'ui/shared/CopyToClipboard';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import type { Props as IconSvgProps } from 'ui/shared/IconSvg';
 import IconSvg from 'ui/shared/IconSvg';
-import TruncatedValue from 'ui/shared/TruncatedValue';
 
 import { getContentProps, getIconProps } from './utils';
 
@@ -218,10 +218,10 @@ const Content = chakra(({
 
   if (truncation === 'tail') {
     return (
-      <TruncatedValue
+      <TruncatedText
+        text={ text }
+        loading={ isLoading }
         className={ className }
-        isLoading={ isLoading }
-        value={ text }
         tooltipInteractive={ tooltipInteractive }
         { ...styles }
       />
