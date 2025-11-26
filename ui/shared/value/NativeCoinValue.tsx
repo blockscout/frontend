@@ -1,32 +1,36 @@
+import { Box } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
-import config from 'configs/app';
-import { currencyUnits } from 'lib/units';
 import { thinsp } from 'toolkit/utils/htmlEntities';
+import CopyToClipboard from 'ui/shared/CopyToClipboard';
 
 import type { Props as AssetValueProps } from './AssetValue';
 import AssetValue from './AssetValue';
-import { GWEI, GWEI_DECIMALS } from './utils';
+import type { Unit } from './utils';
+import { GWEI, getUnitName, getUnitDecimals } from './utils';
 
 export interface Props extends AssetValueProps {
-  units?: 'wei' | 'gwei' | 'ether';
+  units?: Unit;
+  unitsTooltip?: Unit;
+  // if units in tooltip are different from units and copyOriginalValue is true, the original value will be copied to clipboard
+  // otherwise the the value shown in tooltip will be copied
+  copyOriginalValue?: boolean;
   noSymbol?: boolean;
   // if value is greater than 10 ^ gweiThreshold and unit are wei, gwei units will be used for better formatting
   gweiThreshold?: number;
-  // for the main value element show tooltip with value in gwei
-  gweiTooltip?: boolean;
 }
 
 const NativeCoinValue = ({
   amount,
   asset: assetProp,
   units: unitsProp = 'ether',
+  unitsTooltip,
+  copyOriginalValue,
   noSymbol,
   loading,
   gweiThreshold,
   accuracy,
-  gweiTooltip,
   noTooltip,
   ...rest
 }: Props) => {
@@ -42,38 +46,33 @@ const NativeCoinValue = ({
     return unitsProp;
   }, [ gweiThreshold, unitsProp, amount ]);
 
-  const decimals = (() => {
-    if (units === 'wei') {
-      return 0;
-    }
-    if (units === 'gwei') {
-      return GWEI_DECIMALS;
-    }
-    return config.chain.currency.decimals;
-  })();
+  const decimals = getUnitDecimals(units);
 
-  const asset = React.useMemo(() => {
+  const asset = (() => {
     if (!noSymbol) {
       if (assetProp) {
         return assetProp;
       }
 
-      switch (units) {
-        case 'wei':
-          return currencyUnits.wei;
-        case 'gwei':
-          return currencyUnits.gwei;
-        case 'ether':
-          return currencyUnits.ether;
-      }
+      return getUnitName(units);
     }
-  }, [ assetProp, noSymbol, units ]);
+  })();
 
   const tooltipContent = React.useMemo(() => {
-    if (gweiTooltip) {
-      return `${ BigNumber(amount || 0).div(GWEI).toFormat() }${ thinsp }${ currencyUnits.gwei }`;
+    if (unitsTooltip && unitsTooltip !== units) {
+      const unitDecimals = getUnitDecimals(unitsTooltip);
+      const unitName = getUnitName(unitsTooltip);
+      const displayedValue = BigNumber(amount || 0).div(new BigNumber(10).pow(unitDecimals));
+      const valueToCopy = copyOriginalValue ? BigNumber(amount || 0).div(new BigNumber(10).pow(decimals)).toFixed() : displayedValue.toFixed();
+
+      return (
+        <Box display="inline" whiteSpace="wrap" wordBreak="break-all">
+          { displayedValue.toFormat() }{ thinsp }{ unitName }
+          <CopyToClipboard text={ valueToCopy } noTooltip/>
+        </Box>
+      );
     }
-  }, [ gweiTooltip, amount ]);
+  }, [ unitsTooltip, units, amount, copyOriginalValue, decimals ]);
 
   return (
     <AssetValue

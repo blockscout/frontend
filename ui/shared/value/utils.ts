@@ -1,8 +1,11 @@
 import BigNumber from 'bignumber.js';
 
 import config from 'configs/app';
+import { currencyUnits } from 'lib/units';
 import { ZERO } from 'toolkit/utils/consts';
 import { thinsp } from 'toolkit/utils/htmlEntities';
+
+export type Unit = 'wei' | 'gwei' | 'ether';
 
 interface FormatBnValueParams {
   value: BigNumber;
@@ -35,3 +38,23 @@ export const GWEI_DECIMALS = 9;
 
 export const WEI = new BigNumber(10 ** WEI_DECIMALS);
 export const GWEI = new BigNumber(10 ** GWEI_DECIMALS);
+
+export const getUnitDecimals = (units: Unit) => {
+  if (units === 'wei') {
+    return 0;
+  }
+  if (units === 'gwei') {
+    return GWEI_DECIMALS;
+  }
+  return WEI_DECIMALS;
+};
+
+export const getUnitName = (units: Unit) => {
+  if (units === 'wei') {
+    return currencyUnits.wei;
+  }
+  if (units === 'gwei') {
+    return currencyUnits.gwei;
+  }
+  return currencyUnits.ether;
+};

@@ -96,6 +96,7 @@ export const TxInfoScrollFees = ({ data, isLoading }: Props) => {
                 <NativeCoinValue
                   amount={ String(data.scroll?.l1_base_fee || 0) }
                   units="gwei"
+                  unitsTooltip="wei"
                   noSymbol
                   fontWeight="600"
                 />
@@ -108,6 +109,7 @@ export const TxInfoScrollFees = ({ data, isLoading }: Props) => {
                 <NativeCoinValue
                   amount={ String(data.scroll?.l1_fee_scalar || 0) }
                   units="gwei"
+                  unitsTooltip="wei"
                   noSymbol
                   fontWeight="600"
                 />
@@ -131,6 +133,7 @@ export const TxInfoScrollFees = ({ data, isLoading }: Props) => {
                 <NativeCoinValue
                   amount={ String(data.scroll?.l1_blob_base_fee || 0) }
                   units="gwei"
+                  unitsTooltip="wei"
                   noSymbol
                   fontWeight="600"
                 />
@@ -143,6 +146,7 @@ export const TxInfoScrollFees = ({ data, isLoading }: Props) => {
                 <NativeCoinValue
                   amount={ String(data.scroll?.l1_fee_blob_scalar || 0) }
                   units="gwei"
+                  unitsTooltip="wei"
                   noSymbol
                   fontWeight="600"
                 />

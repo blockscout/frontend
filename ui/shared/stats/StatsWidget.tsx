@@ -77,7 +77,12 @@ const StatsWidget = ({
             flexShrink={ 0 }
           />
         ) }
-        <Box w={{ base: '100%', lg: icon ? 'calc(100% - 48px)' : '100%' }}>
+        <Box
+          w={{
+            base: `calc(100% - ${ hint ? '24px' : '0px' })`,
+            lg: `calc(100% - ${ icon ? '48px' : '0px' } - ${ hint ? '24px' : '0px' })`,
+          }}
+        >
           <Skeleton
             loading={ isLoading }
             color="text.secondary"

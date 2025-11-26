@@ -1,5 +1,5 @@
 import type { BoxProps } from '@chakra-ui/react';
-import { chakra, Flex } from '@chakra-ui/react';
+import { Box, chakra } from '@chakra-ui/react';
 import type BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -8,6 +8,8 @@ import { Tooltip } from 'toolkit/chakra/tooltip';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 
 import { DEFAULT_ACCURACY, formatBnValue } from './utils';
+
+const TOOLTIP_CONTENT_PROPS = { maxW: { base: 'calc(100vw - 8px)', lg: '400px' } };
 
 export interface Props extends Omit<BoxProps, 'prefix' | 'postfix'> {
   value: BigNumber;
@@ -37,20 +39,23 @@ const SimpleValue = ({
 }: Props) => {
 
   const tooltipContent = React.useMemo(() => {
-    const content = tooltipContentProp ?? `${ prefix ?? '' }${ value.toFormat() }${ postfix ?? '' }`;
-
     return (
-      <Flex alignItems="center">
-        { content }
-        <CopyToClipboard text={ value.toString() } noTooltip/>
-      </Flex>
+      <Box display="inline" whiteSpace="wrap" wordBreak="break-all">
+        { prefix ?? '' }{ value.toFormat() }{ postfix ?? '' }
+        <CopyToClipboard text={ value.toFixed() } noTooltip/>
+      </Box>
     );
-  }, [ postfix, prefix, tooltipContentProp, value ]);
+  }, [ postfix, prefix, value ]);
 
   return (
     <Skeleton loading={ loading } display="inline-flex" alignItems="center" whiteSpace="pre" maxW="100%" overflow="hidden" { ...rest }>
       { startElement }
-      <Tooltip content={ tooltipContent } disabled={ noTooltip } interactive>
+      <Tooltip
+        content={ tooltipContentProp ?? tooltipContent }
+        contentProps={ TOOLTIP_CONTENT_PROPS }
+        disabled={ noTooltip }
+        interactive
+      >
         <chakra.span display="inline-block" maxW="100%" overflow="hidden" textOverflow="ellipsis">
           { formatBnValue({ value, accuracy, prefix, postfix, overflowed }) }
         </chakra.span>

@@ -38,7 +38,8 @@ const TxDetailsTxFee = ({ isLoading, data }: Props) => {
           amount={ data.fee.value }
           exchangeRate={ 'exchange_rate' in data ? data.exchange_rate : null }
           loading={ isLoading }
-          gweiTooltip
+          unitsTooltip="gwei"
+          copyOriginalValue
           accuracy={ 0 }
           flexWrap="wrap"
           mr={ 3 }
@@ -53,7 +54,8 @@ const TxDetailsTxFee = ({ isLoading, data }: Props) => {
               amount={ BigNumber(data.base_fee_per_gas || 0).multipliedBy(data.gas_used || 0).toString() }
               exchangeRate={ 'exchange_rate' in data ? data.exchange_rate : null }
               accuracy={ 0 }
-              gweiTooltip
+              unitsTooltip="gwei"
+              copyOriginalValue
               loading={ isLoading }
               flexWrap="wrap"
               rowGap={ 0 }
@@ -67,7 +69,8 @@ const TxDetailsTxFee = ({ isLoading, data }: Props) => {
               amount={ data.priority_fee || '0' }
               exchangeRate={ 'exchange_rate' in data ? data.exchange_rate : null }
               accuracy={ 0 }
-              gweiTooltip
+              unitsTooltip="gwei"
+              copyOriginalValue
               loading={ isLoading }
               flexWrap="wrap"
               rowGap={ 0 }

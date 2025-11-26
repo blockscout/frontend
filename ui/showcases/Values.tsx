@@ -128,13 +128,13 @@ const ValuesShowcase = () => {
           </Sample>
         </SamplesStack>
 
-        <SectionSubHeader>Gwei tooltip</SectionSubHeader>
+        <SectionSubHeader>Different units in tooltip</SectionSubHeader>
         <SamplesStack>
-          <Sample label="true">
+          <Sample label="unitsTooltip: 'gwei'">
             <NativeCoinValue
               amount="100000000000"
               units="wei"
-              gweiTooltip
+              unitsTooltip="gwei"
               maxW="200px"
             />
           </Sample>

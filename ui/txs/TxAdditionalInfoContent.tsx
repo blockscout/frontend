@@ -91,6 +91,7 @@ const TxAdditionalInfoContent = ({ tx }: { tx: Transaction }) => {
               <NativeCoinValue
                 amount={ tx.base_fee_per_gas }
                 units="gwei"
+                unitsTooltip="wei"
                 noSymbol
                 fontWeight="700"
               />
@@ -102,6 +103,7 @@ const TxAdditionalInfoContent = ({ tx }: { tx: Transaction }) => {
               <NativeCoinValue
                 amount={ tx.max_fee_per_gas }
                 units="gwei"
+                unitsTooltip="wei"
                 noSymbol
                 fontWeight="700"
               />
@@ -113,6 +115,7 @@ const TxAdditionalInfoContent = ({ tx }: { tx: Transaction }) => {
               <NativeCoinValue
                 amount={ tx.max_priority_fee_per_gas }
                 units="gwei"
+                unitsTooltip="wei"
                 noSymbol
                 fontWeight="700"
               />

@@ -22,7 +22,7 @@ const NumberWidgetsList = () => {
 
   return (
     <Grid
-      gridTemplateColumns={{ base: 'repeat(2, 1fr)', lg: 'repeat(4, 1fr)' }}
+      gridTemplateColumns={{ base: 'repeat(2, 50%)', lg: 'repeat(4, 25%)' }}
       gridGap={{ base: 1, lg: 2 }}
     >
       {
@@ -35,11 +35,15 @@ const NumberWidgetsList = () => {
             unitsStr = ' ' + units;
           }
 
+          const valueNum = Number(value);
+          const maximumFractionDigits = valueNum < 10 ** -3 ? undefined : 3;
+
           return (
             <StatsWidget
               key={ id + (isPlaceholderData ? index : '') }
               label={ title }
-              value={ `${ Number(value).toLocaleString(undefined, { maximumFractionDigits: 3, notation: 'compact' }) }${ unitsStr }` }
+              value={ Number(value).toLocaleString(undefined, { maximumFractionDigits, notation: 'compact' }) }
+              valuePostfix={ unitsStr }
               isLoading={ isPlaceholderData }
               hint={ description }
             />

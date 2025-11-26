@@ -738,6 +738,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
               <NativeCoinValue
                 amount={ data.base_fee_per_gas }
                 units="gwei"
+                unitsTooltip="wei"
                 noSymbol
                 loading={ isLoading }
                 startElement="Base: "
@@ -748,6 +749,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
               <NativeCoinValue
                 amount={ data.max_fee_per_gas }
                 units="gwei"
+                unitsTooltip="wei"
                 noSymbol
                 loading={ isLoading }
                 startElement="Max: "
@@ -758,6 +760,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
               <NativeCoinValue
                 amount={ data.max_priority_fee_per_gas }
                 units="gwei"
+                unitsTooltip="wei"
                 noSymbol
                 loading={ isLoading }
                 startElement="Max priority: "
@@ -887,6 +890,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
                     <NativeCoinValue
                       amount={ data.blob_gas_price }
                       units="gwei"
+                      unitsTooltip="wei"
                       noSymbol
                       loading={ isLoading }
                       fontWeight="600"
@@ -897,6 +901,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
                     <NativeCoinValue
                       amount={ data.max_fee_per_blob_gas }
                       units="gwei"
+                      unitsTooltip="wei"
                       noSymbol
                       loading={ isLoading }
                       startElement="Max: "
