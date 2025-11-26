@@ -42,6 +42,8 @@ const AddressEpochRewardsTableItem = ({ item, isLoading }: Props) => {
           amount={ item.amount }
           token={ item.token }
           loading={ isLoading }
+          layout="vertical"
+          rowGap="10px"
         />
       </TableCell>
     </TableRow>
