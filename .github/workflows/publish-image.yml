@@ -49,7 +49,7 @@ permissions:
 jobs:
     run:
         name: Run
-        runs-on: build-test
+        runs-on: build
         steps:
             -   name: Check out the repo
                 uses: actions/checkout@v4
