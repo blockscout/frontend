@@ -76,9 +76,9 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
         fontWeight="500"
       />
       { !(config.UI.views.tx.hiddenFields?.value && config.UI.views.tx.hiddenFields?.tx_fee) ? (
-        <VStack rowGap={ 2 } mt={ 3 }>
+        <VStack rowGap={ 2 } mt={ 3 } alignItems="flex-start">
           { !config.UI.views.tx.hiddenFields?.value && (
-            <Skeleton loading={ isLoading } mb={ 2 } w="fit-content">
+            <Skeleton loading={ isLoading } w="fit-content">
               <Text as="span">Value </Text>
               <Text as="span" color="text.secondary">{ getValueWithUnit(tx.value).dp(5).toFormat() } { currencyUnits.ether }</Text>
             </Skeleton>

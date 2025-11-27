@@ -21,7 +21,7 @@ const config: Feature<{ providers: Array<MultichainProviderConfigParsed> }> = ((
           dappId: marketplace.isEnabled ? provider.dapp_id : undefined,
           promo: provider.promo,
         }))
-        .sort((a, b) => (b.promo ? 1 : -1)),
+        .sort((_, b) => (b.promo ? 1 : -1)),
     });
   }
 
