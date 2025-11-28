@@ -80,6 +80,7 @@ export const protocolTagWithMeta: AddressMetadataTagApi = {
   ordinal: 0,
   meta: {
     appID: 'uniswap',
+    appMarketplaceURL: 'https://example.com',
     appLogoURL: 'https://localhost:3100/icon.svg',
     appActionButtonText: 'Swap',
     textColor: '#FFFFFF',
