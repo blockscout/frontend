@@ -13,6 +13,7 @@ const rewrites = require('./nextjs/rewrites');
 /** @type {import('next').NextConfig} */
 const moduleExports = {
   transpilePackages: [
+    '@0xfacet/sdk',
     'react-syntax-highlighter',
   ],
   reactStrictMode: true,

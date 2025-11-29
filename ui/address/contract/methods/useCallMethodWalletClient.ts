@@ -1,3 +1,4 @@
+import { facetMainnet, facetSepolia, sendFacetTransaction, writeFacetContract } from '@0xfacet/sdk';
 import React from 'react';
 import { getAddress, type Abi } from 'viem';
 import { useAccount, useWalletClient, useSwitchChain } from 'wagmi';
@@ -18,9 +19,13 @@ interface Params {
 
 export default function useCallMethodWalletClient(): (params: Params) => Promise<FormSubmitResult> {
   const multichainContext = useMultichainContext();
-  const chainConfig = (multichainContext?.chain.app_config ?? config).chain;
+  const chainConfig = multichainContext?.chain.app_config ?? config;
+  const isFacetChain = chainConfig.chain.id === String(facetMainnet.id) || chainConfig.chain.id === String(facetSepolia.id);
+  const rollupFeature = chainConfig.features.rollup;
+  const parentChain = rollupFeature.isEnabled ? rollupFeature.parentChain : undefined;
+  const targetChainId = isFacetChain && parentChain ? Number(parentChain.id) : Number(chainConfig.chain.id);
 
-  const { data: walletClient } = useWalletClient({ chainId: Number(chainConfig?.id) });
+  const { data: walletClient } = useWalletClient({ chainId: targetChainId });
   const { isConnected, chainId, address: account } = useAccount();
   const { switchChainAsync } = useSwitchChain();
   const { trackTransaction, trackTransactionConfirm } = useRewardsActivity();
@@ -34,8 +39,12 @@ export default function useCallMethodWalletClient(): (params: Params) => Promise
       throw new Error('Wallet Client is not defined');
     }
 
-    if (chainId && String(chainId) !== chainConfig?.id) {
-      await switchChainAsync({ chainId: Number(chainConfig?.id) });
+    if (chainId && chainId !== targetChainId) {
+      await switchChainAsync({ chainId: targetChainId });
+    }
+
+    if (walletClient.chain?.id !== targetChainId) {
+      await walletClient.switchChain({ id: targetChainId });
     }
 
     const address = getAddress(addressHash);
@@ -50,11 +59,16 @@ export default function useCallMethodWalletClient(): (params: Params) => Promise
       // if the fallback method acts as a read method, it can only have one input of type bytes
       // so we pass the input value as data without encoding it
       const data = typeof _args[0] === 'string' && _args[0].startsWith('0x') ? _args[0] as `0x${ string }` : undefined;
-      const hash = await walletClient.sendTransaction({
+
+      const txRequest = {
         to: address,
         value,
         ...(data ? { data } : {}),
-      });
+      } as const;
+
+      const hash = isFacetChain ?
+        await sendFacetTransaction(walletClient, txRequest) :
+        await walletClient.sendTransaction(txRequest);
 
       if (activityResponse?.token) {
         await trackTransactionConfirm(hash, activityResponse.token);
@@ -69,7 +83,7 @@ export default function useCallMethodWalletClient(): (params: Params) => Promise
       throw new Error('Method name is not defined');
     }
 
-    const hash = await walletClient.writeContract({
+    const writeRequest = {
       args: _args,
       // Here we provide the ABI as an array containing only one item from the submitted form.
       // This is a workaround for the issue with the "viem" library.
@@ -83,12 +97,16 @@ export default function useCallMethodWalletClient(): (params: Params) => Promise
       address,
       value,
       account,
-    });
+    } as const;
+
+    const hash = isFacetChain ?
+      await writeFacetContract(walletClient, writeRequest) :
+      await walletClient.writeContract(writeRequest);
 
     if (activityResponse?.token) {
       await trackTransactionConfirm(hash, activityResponse.token);
     }
 
     return { source: 'wallet_client', data: { hash } };
-  }, [ chainId, chainConfig, isConnected, switchChainAsync, walletClient, account, trackTransaction, trackTransactionConfirm ]);
+  }, [ isConnected, walletClient, chainId, targetChainId, trackTransaction, account, isFacetChain, switchChainAsync, trackTransactionConfirm ]);
 }
