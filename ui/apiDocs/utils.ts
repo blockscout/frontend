@@ -83,4 +83,12 @@ export const REST_API_SECTIONS = [
       requestInterceptor: microserviceRequestInterceptorFactory(config.apis.tac),
     },
   },
+  config.apis.zetachain && {
+    id: 'zetachain-api',
+    title: 'Zetachain CCCTX API',
+    swagger: {
+      url: getMicroserviceSwaggerUrl(config.apis.zetachain),
+      requestInterceptor: microserviceRequestInterceptorFactory(config.apis.zetachain),
+    },
+  },
 ].filter(Boolean);
