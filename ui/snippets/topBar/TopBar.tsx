@@ -27,6 +27,7 @@ const TopBar = () => {
     web3.data?.wallet &&
     config.chain.rpcUrls.length &&
     config.features.web3Wallet.isEnabled &&
+    !config.features.opSuperchain.isEnabled &&
     !isMobile,
   );
   const hasDeFiDropdown = Boolean(config.features.deFiDropdown.isEnabled);
