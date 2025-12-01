@@ -33,7 +33,7 @@ test.describe('no auth', () => {
   });
 
   test('+@dark-mode', async({ page }) => {
-    await page.locator('a[aria-label="Link to main page"]').hover();
+    await page.locator('a[aria-label="Link to main page"]').last().hover();
     await expect(component).toHaveScreenshot();
   });
 
@@ -41,7 +41,7 @@ test.describe('no auth', () => {
     test.use({ viewport: pwConfig.viewport.xl });
 
     test('+@dark-mode', async({ page }) => {
-      await page.locator('a[aria-label="Link to main page"]').hover();
+      await page.locator('a[aria-label="Link to main page"]').first().hover();
       await expect(component).toHaveScreenshot();
     });
   });
@@ -228,7 +228,8 @@ test.describe('with highlighted routes', () => {
     );
   });
 
-  test('+@dark-mode', async() => {
+  test('+@dark-mode', async({ page }) => {
+    await page.locator('a[aria-label="Link to main page"]').last().hover();
     await expect(component).toHaveScreenshot();
   });
 
@@ -240,7 +241,8 @@ test.describe('with highlighted routes', () => {
   test.describe('xl screen', () => {
     test.use({ viewport: pwConfig.viewport.xl });
 
-    test('+@dark-mode', async() => {
+    test('+@dark-mode', async({ page }) => {
+      await page.locator('a[aria-label="Link to main page"]').first().hover();
       await expect(component).toHaveScreenshot();
     });
   });
@@ -269,7 +271,8 @@ const promoBannerTest = (type: 'text' | 'image') => {
       await component.waitFor({ state: 'visible' });
     });
 
-    test(`${ darkModeRule }`, async() => {
+    test(`${ darkModeRule }`, async({ page }) => {
+      await page.locator('a[aria-label="Link to main page"]').last().hover();
       await expect(component).toHaveScreenshot();
     });
 
@@ -281,7 +284,8 @@ const promoBannerTest = (type: 'text' | 'image') => {
     test.describe('xl screen', () => {
       test.use({ viewport: pwConfig.viewport.xl });
 
-      test(`${ darkModeRule }`, async() => {
+      test(`${ darkModeRule }`, async({ page }) => {
+        await page.locator('a[aria-label="Link to main page"]').first().hover();
         await expect(component).toHaveScreenshot();
       });
     });
