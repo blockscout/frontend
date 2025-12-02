@@ -18,10 +18,7 @@ body:
     attributes:
       label: To‑do / Implementation notes
       description: High-level checklist or tasks to implement (use - [ ] items for checklists)
-      value: |
-        - [ ] Task 1
-        - [ ] Task 2
-        - [ ] Notes on approach...
+      placeholder: "- [ ] Task 1\n- [ ] Task 2\n- [ ] Notes on approach..."
 
   - type: textarea
     id: mockups
@@ -42,7 +39,4 @@ body:
     attributes:
       label: Acceptance criteria
       description: Conditions that must be met for this feature to be considered done
-      value: |
-        - Users can ...
-        - API returns ...
-        - No regressions in ...
+      placeholder: "- Users can ...\n- API returns ...\n- No regressions in ..."
