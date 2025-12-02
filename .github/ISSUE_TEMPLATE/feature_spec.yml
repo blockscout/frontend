@@ -10,6 +10,7 @@ body:
       label: Title
       description: Short, descriptive title for the feature
       placeholder: "E.g. Improve transaction list performance"
+    validations:
       required: true
 
   - type: textarea
@@ -18,6 +19,7 @@ body:
       label: Overview
       description: Brief summary of the feature and why it's needed
       placeholder: "Describe the purpose and goals of this feature..."
+    validations:
       required: true
 
   - type: textarea
@@ -25,7 +27,10 @@ body:
     attributes:
       label: To‑do / Implementation notes
       description: High-level checklist or tasks to implement (use - [ ] items for checklists)
-      placeholder: "- [ ] Task 1\n- [ ] Task 2\n- [ ] Notes on approach..."
+      value: 
+        - "[ ] Task 1"
+        - "[ ] Task 2"
+        - "[ ] Notes on approach..."
 
   - type: textarea
     id: mockups
@@ -46,4 +51,7 @@ body:
     attributes:
       label: Acceptance criteria
       description: Conditions that must be met for this feature to be considered done
-      placeholder: "- Users can ...\n- API returns ...\n- No regressions in ..."
+      value: 
+        - Users can ...
+        - API returns ...
+        - No regressions in ...
