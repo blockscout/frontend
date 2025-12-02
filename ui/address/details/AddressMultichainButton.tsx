@@ -1,4 +1,4 @@
-import { capitalize } from 'es-toolkit';
+import { upperFirst } from 'es-toolkit';
 import React from 'react';
 
 import type { MultichainProviderConfigParsed } from 'types/client/multichainProviderConfig';
@@ -37,13 +37,15 @@ const AddressMultichainButton = ({ item, addressHash, onClick, isFirst, isLast }
     />
   );
 
+  const name = upperFirst(item.name.replaceAll('_', ' '));
+
   const buttonContent = isOnlyOne ? (
     <>
       { buttonIcon }
-      { capitalize(item.name) }
+      { name }
     </>
   ) : (
-    <Tooltip content={ capitalize(item.name) }>{ buttonIcon }</Tooltip>
+    <Tooltip content={ name }>{ buttonIcon }</Tooltip>
   );
 
   try {
