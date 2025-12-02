@@ -4,15 +4,6 @@ type: feature
 labels: ['enhancement']
 assignees: []
 body:
-  - type: input
-    id: feature_title
-    attributes:
-      label: Title
-      description: Short, descriptive title for the feature
-      placeholder: "E.g. Improve transaction list performance"
-    validations:
-      required: true
-
   - type: textarea
     id: overview
     attributes:
