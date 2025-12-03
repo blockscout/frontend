@@ -1,0 +1,42 @@
+name: Feature spec (Blockscout team)
+description: A simple template to capture title, overview, todo, mockups and deployment info.
+type: feature
+labels: ['enhancement']
+assignees: []
+body:
+  - type: textarea
+    id: overview
+    attributes:
+      label: Overview
+      description: Brief summary of the feature and why it's needed
+      placeholder: "Describe the purpose and goals of this feature..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: todo
+    attributes:
+      label: To‑do / Implementation notes
+      description: High-level checklist or tasks to implement (use - [ ] items for checklists)
+      placeholder: "- [ ] Task 1\n- [ ] Task 2\n- [ ] Notes on approach..."
+
+  - type: textarea
+    id: mockups
+    attributes:
+      label: Mockups / Screenshots / Links
+      description: Paste links (Figma, image URLs) or describe the visual changes. Attach screenshots when possible.
+      placeholder: "https://www.figma.com/..., or link to image(s) / attach screenshots"
+
+  - type: textarea
+    id: deployment
+    attributes:
+      label: Deployment info
+      description: Deployment notes, feature flags, rollout plan, or special instructions
+      placeholder: "e.g. Requires DB migration X; enable feature-flag Y during rollout"
+
+  - type: textarea
+    id: acceptance_criteria
+    attributes:
+      label: Acceptance criteria
+      description: Conditions that must be met for this feature to be considered done
+      placeholder: "- Users can ...\n- API returns ...\n- No regressions in ..."

@@ -13,7 +13,7 @@ import { Link } from 'toolkit/chakra/link';
 import { BackToButton } from 'toolkit/components/buttons/BackToButton';
 import { makePrettyLink } from 'toolkit/utils/url';
 import RewardsButton from 'ui/rewards/RewardsButton';
-import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
+import NetworkIcon from 'ui/snippets/networkLogo/NetworkIcon';
 import UserProfileDesktop from 'ui/snippets/user/profile/UserProfileDesktop';
 import UserWalletDesktop from 'ui/snippets/user/wallet/UserWalletDesktop';
 
@@ -43,7 +43,7 @@ const MarketplaceAppTopBar = ({ appId, data, isLoading }: Props) => {
 
   return (
     <Flex alignItems="center" mb={{ base: 3, md: 2 }} rowGap={ 3 } columnGap={ 2 }>
-      { !isMobile && <NetworkLogo isCollapsed mr={ 4 }/> }
+      { !isMobile && <NetworkIcon mr={ 4 }/> }
       <BackToButton
         href={ goBackUrl }
         hint="Back to dApps list"
