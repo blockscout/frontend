@@ -42,7 +42,7 @@ const SimpleValue = ({
     return (
       <Box display="inline" whiteSpace="wrap" wordBreak="break-all">
         { prefix ?? '' }{ value.toFormat() }{ postfix ?? '' }
-        <CopyToClipboard text={ value.toFixed() } noTooltip/>
+        <CopyToClipboard text={ value.toFixed() } verticalAlign="bottom" noTooltip/>
       </Box>
     );
   }, [ postfix, prefix, value ]);

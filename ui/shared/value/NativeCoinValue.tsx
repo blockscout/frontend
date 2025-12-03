@@ -68,7 +68,7 @@ const NativeCoinValue = ({
       return (
         <Box display="inline" whiteSpace="wrap" wordBreak="break-all">
           { displayedValue.toFormat() }{ thinsp }{ unitName }
-          <CopyToClipboard text={ valueToCopy } noTooltip/>
+          <CopyToClipboard text={ valueToCopy } verticalAlign="bottom" noTooltip/>
         </Box>
       );
     }
