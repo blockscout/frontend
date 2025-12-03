@@ -36,7 +36,7 @@ const TokenTransferTable = ({ items, top, isLoading, chainData }: Props) => {
         <TableBody>
           { items?.map((item, index) => (
             <TokenTransferTableItem
-              key={ item.transaction_hash + item.log_index + (isLoading ? index : '') }
+              key={ item.transaction_hash + item.log_index + (isLoading ? index : '') + (chainData ? chainData.id : '') }
               item={ item }
               isLoading={ isLoading }
               chainData={ chainData }

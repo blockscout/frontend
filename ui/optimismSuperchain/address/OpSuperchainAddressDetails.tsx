@@ -137,7 +137,7 @@ const OpSuperchainAddressDetails = ({ data, addressHash, isLoading }: Props) => 
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue whiteSpace="pre-wrap">
         <Skeleton loading={ isLoading }>
-          Local <Link href={ route({ pathname: '/address/[hash]', query: { hash: addressHash, tab: 'txs_local' } }) }>view by chain</Link>
+          <Link href={ route({ pathname: '/address/[hash]', query: { hash: addressHash, tab: 'txs_local' } }) }>View by chain</Link>
         </Skeleton>
       </DetailedInfo.ItemValue>
 
@@ -149,7 +149,7 @@ const OpSuperchainAddressDetails = ({ data, addressHash, isLoading }: Props) => 
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue whiteSpace="pre-wrap">
         <Skeleton loading={ isLoading }>
-          Local <Link href={ route({ pathname: '/address/[hash]', query: { hash: addressHash, tab: 'token_transfers_local' } }) }>view by chain</Link>
+          <Link href={ route({ pathname: '/address/[hash]', query: { hash: addressHash, tab: 'token_transfers_local' } }) }>View by chain</Link>
         </Skeleton>
       </DetailedInfo.ItemValue>
 
