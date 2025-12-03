@@ -36,6 +36,7 @@ export enum MarketplaceCategory {
 
 export type EssentialDappsConfig = {
   swap?: {
+    url: string;
     chains: Array<string>;
     fee: string;
     integrator: string;

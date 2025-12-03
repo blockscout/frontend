@@ -1,3 +1,4 @@
+import { Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -42,10 +43,10 @@ const EssentialDapp = () => {
   }
 
   return (
-    <>
-      <PageTitle title={ title || '' } alignItems={ isCentered ? 'center' : undefined }/>
+    <Flex flexDirection="column" h="100%" alignItems={ isCentered ? 'center' : undefined }>
+      <PageTitle title={ title || '' }/>
       { content }
-    </>
+    </Flex>
   );
 };
 
