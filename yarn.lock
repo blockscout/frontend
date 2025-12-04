@@ -12682,13 +12682,13 @@ damerau-levenshtein@^1.0.8:
   resolved "https://registry.yarnpkg.com/damerau-levenshtein/-/damerau-levenshtein-1.0.8.tgz#b43d286ccbd36bc5b2f7ed41caf2d0aba1f8a6e7"
   integrity sha512-sdQSFB7+llfUcQHUQO3+B8ERRj0Oa4w9POWMI/puGtuf7gFywGmkaLCElnudfTiKZV+NvHqL0ifzdrI8Ro7ESA==
 
-dappscout-iframe@0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/dappscout-iframe/-/dappscout-iframe-0.3.0.tgz#785d46774552dbc2a29f4196b6f39daa53689cd6"
-  integrity sha512-vHiDO9jXG4Q80ZZbtqiHrDXEYbO1q3nNGYnF5nbUpe7lrYiCHvXK/NUKXC6sHt1zp8tSfD95fmgY/6ZDCrgfpA==
+dappscout-iframe@0.3.2:
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/dappscout-iframe/-/dappscout-iframe-0.3.2.tgz#a338a69a23ca1f4abe45566659c733afa1db0f13"
+  integrity sha512-YZN/GTCUKm+gTi9FkFeRxmNqvh3FY3pQS+JFUuCcK7aTFmfPzohJFG1ILZafZbI44V2mJAc63PEBfdiNbwJYiQ==
   dependencies:
-    react "19.1.0"
-    react-dom "19.1.0"
+    react "19.1.2"
+    react-dom "19.1.2"
     viem "^1.20.3"
 
 data-uri-to-buffer@^4.0.0:
@@ -19079,13 +19079,6 @@ react-device-detect@^2.2.3:
   dependencies:
     ua-parser-js "^1.0.33"
 
-react-dom@19.1.0:
-  version "19.1.0"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-19.1.0.tgz#133558deca37fa1d682708df8904b25186793623"
-  integrity sha512-Xs1hdnE+DyKgeHJeJznQmYMIBG3TKIHJJT95Q58nHLSrElKlGQqDTR2HQ9fx5CN/Gk6Vh/kupBTDLU11/nDk/g==
-  dependencies:
-    scheduler "^0.26.0"
-
 react-dom@19.1.2:
   version "19.1.2"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-19.1.2.tgz#18ce6b14f682f4871a69cc6b2568d42af2cd5a33"
@@ -19325,11 +19318,6 @@ react-transition-group@^4.3.0, react-transition-group@^4.4.5:
     dom-helpers "^5.0.1"
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
-
-react@19.1.0:
-  version "19.1.0"
-  resolved "https://registry.yarnpkg.com/react/-/react-19.1.0.tgz#926864b6c48da7627f004795d6cce50e90793b75"
-  integrity sha512-FS+XFBNvn3GTAWq26joslQgWNoFu08F4kl0J4CgdNKADkdSGXQyTCnKteIAJy96Br6YbpEU1LSzV5dYtjMkMDg==
 
 react@19.1.2:
   version "19.1.2"
