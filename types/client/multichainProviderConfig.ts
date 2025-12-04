@@ -3,6 +3,7 @@ export type MultichainProviderConfig = {
   dapp_id?: string;
   url_template: string;
   logo: string;
+  promo?: boolean;
 };
 
 export type MultichainProviderConfigParsed = {
@@ -10,4 +11,5 @@ export type MultichainProviderConfigParsed = {
   logoUrl: string;
   urlTemplate: string;
   dappId?: string;
+  promo?: boolean;
 };

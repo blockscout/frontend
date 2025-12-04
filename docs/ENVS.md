@@ -102,6 +102,8 @@ All json-like values should be single-quoted. If it contains a hash (`#`) or a d
 
 *Note!* The `NEXT_PUBLIC_NETWORK_CURRENCY` variables represent the blockchain's native token used for paying transaction fees. `NEXT_PUBLIC_NETWORK_SECONDARY_COIN` variables refer to tokens like protocol-specific tokens (e.g., OP token on Optimism chain) or governance tokens (e.g., GNO on Gnosis chain).
 
+Also, be aware that if you customize the name of the currency or any of its denominations (wei or gwei) while running Stats microservices, you may want to change those names in the indicators and charts returned by the microservice. To do this, pass the appropriate values to the Stats microservice environment variables, such as `STATS_CHARTS__LINE_CHARTS__<LINE_CHART_NAME>__UNITS` and `STATS_CHARTS__LINE_CHARTS__<LINE_CHART_NAME>__DESCRIPTION`. For the Average Gas Price chart, the `<LINE_CHART_NAME>` will be `average_gas_price`. Please refer to the [microservice documentation](https://github.com/blockscout/blockscout-rs/tree/main/stats#charts) for the complete list of these variables.
+
 | Variable | Type| Description | Compulsoriness | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_NETWORK_NAME | `string` | Displayed name of the network | Required | - | `Gnosis Chain` | v1.0.x+ |
@@ -913,6 +915,7 @@ If the feature is enabled, a Multichain balance button will be displayed on the 
 | url_template | `string` | Url template to the portfolio. Should be a template with `{address}` variable | Required | - | `https://app.zerion.io/{address}/overview` |
 | dapp_id | `string` | Set for open a Blockscout dapp page with the portfolio instead of opening external app page | - | - | `zerion` |
 | logo | `string` | Multichain portfolio application logo (.svg) url | - | - | `https://example.com/icon.svg` |
+| promo | `boolean` | Make the provider stand out by placing their logo prominently at the first place in the section and in the page subheader. | - | - | `true` |
 
 &nbsp;
 

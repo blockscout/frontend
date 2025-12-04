@@ -1,17 +1,15 @@
-import { Box, HStack } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
 import type { SocketMessage } from 'lib/socket/types';
 import type { ClusterChainConfig } from 'types/multichain';
 
-import { route } from 'nextjs-routes';
-
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import { BLOCK } from 'stubs/block';
-import { Link } from 'toolkit/chakra/link';
+import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 interface Props {
@@ -50,20 +48,13 @@ const ChainLatestBlockInfo = ({ chainData }: Props) => {
   }
 
   return (
-    <HStack gap={ 2 }>
-      <Box color="text.secondary">Latest block</Box>
-      <Link
-        loading={ blocksQuery.isPlaceholderData }
-        href={ route({
-          pathname: '/chain/[chain_slug]/block/[height_or_hash]',
-          query: {
-            chain_slug: chainData.slug,
-            height_or_hash: blocksQuery.data[0].height.toString(),
-          },
-        }) }
-      >
-        { blocksQuery.data[0].height }
-      </Link>
+    <Box display="grid" gridTemplateColumns="repeat(3, auto)" gap={ 2 }>
+      <Box color="text.secondary" whiteSpace="nowrap">Latest block</Box>
+      <BlockEntity
+        number={ blocksQuery.data[0].height }
+        isLoading={ blocksQuery.isPlaceholderData }
+        noIcon
+      />
       <TimeWithTooltip
         timestamp={ blocksQuery.data[0].timestamp }
         enableIncrement={ !blocksQuery.isPlaceholderData }
@@ -72,7 +63,7 @@ const ChainLatestBlockInfo = ({ chainData }: Props) => {
         flexShrink={ 0 }
         timeFormat="relative"
       />
-    </HStack>
+    </Box>
   );
 };
 

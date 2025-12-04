@@ -13,12 +13,15 @@ const config: Feature<{ providers: Array<MultichainProviderConfigParsed> }> = ((
     return Object.freeze({
       title,
       isEnabled: true,
-      providers: value.map((provider) => ({
-        name: provider.name,
-        logoUrl: provider.logo,
-        urlTemplate: provider.url_template,
-        dappId: marketplace.isEnabled ? provider.dapp_id : undefined,
-      })),
+      providers: value
+        .map((provider) => ({
+          name: provider.name,
+          logoUrl: provider.logo,
+          urlTemplate: provider.url_template,
+          dappId: marketplace.isEnabled ? provider.dapp_id : undefined,
+          promo: provider.promo,
+        }))
+        .sort((_, b) => (b.promo ? 1 : -1)),
     });
   }
 

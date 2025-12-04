@@ -9,6 +9,7 @@ import AddressNetWorth from './AddressNetWorth';
 
 const ADDRESS_HASH = addressMock.hash;
 const ICON_URL = 'https://localhost:3000/my-icon.png';
+const ICON_URL_PROMO = 'https://localhost:3000/my-icon-promo.png';
 
 test.beforeEach(async({ mockApiResponse }) => {
   await mockApiResponse('general:address_tokens', tokensMock.erc20List, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-20' } });
@@ -47,14 +48,16 @@ test('with single multichain button external', async({ render, mockEnvs, mockAss
   await expect(component).toHaveScreenshot();
 });
 
-test('with two multichain button external', async({ render, mockEnvs, mockAssetResponse }) => {
+test('with two multichain button and promo', async({ render, mockEnvs, mockAssetResponse }) => {
   await mockEnvs([
     [ 'NEXT_PUBLIC_MULTICHAIN_BALANCE_PROVIDER_CONFIG', `[
       {"name": "duck", "url_template": "https://duck.url/{address}", "logo": "${ ICON_URL }"},
-      {"name": "duck2", "url_template": "https://duck.url/{address}", "logo": "${ ICON_URL }"}
+      {"name": "duck2", "url_template": "https://duck.url/{address}", "logo": "${ ICON_URL }"},
+      {"name": "duck3", "url_template": "https://duck.url/{address}", "logo": "${ ICON_URL_PROMO }", "promo": true}
     ]` ],
   ]);
   await mockAssetResponse(ICON_URL, './playwright/mocks/image_svg.svg');
+  await mockAssetResponse(ICON_URL_PROMO, './playwright/mocks/image_s.jpg');
 
   const component = await render(<AddressNetWorth addressData={ addressMock.eoa } addressHash={ ADDRESS_HASH }/>);
 

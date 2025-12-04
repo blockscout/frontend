@@ -35,6 +35,7 @@ const multichainProviderConfigSchema: yup.ObjectSchema<MultichainProviderConfig>
     url_template: yup.string().required(),
     logo: yup.string().required(),
     dapp_id: yup.string(),
+    promo: yup.boolean(),
 });
 
 const schema = yup

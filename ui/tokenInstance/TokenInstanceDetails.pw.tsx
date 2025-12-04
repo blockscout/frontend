@@ -56,7 +56,8 @@ test('base view +@dark-mode', async({ render, page }) => {
 
 test.describe('action button', () => {
   test.beforeEach(async({ mockApiResponse, mockAssetResponse }) => {
-    const metadataResponse = generateAddressMetadataResponse(protocolTagWithMeta);
+    const meta = { ...protocolTagWithMeta.meta, appMarketplaceURL: undefined };
+    const metadataResponse = generateAddressMetadataResponse({ ...protocolTagWithMeta, meta });
     await mockApiResponse('metadata:info', metadataResponse, { queryParams: addressMetadataQueryParams });
     await mockAssetResponse(protocolTagWithMeta?.meta?.appLogoURL as string, './playwright/mocks/image_s.jpg');
   });

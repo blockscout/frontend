@@ -10,12 +10,23 @@ interface ChainConfig {
 }
 
 async function fetchChainConfig(url: string): Promise<ChainConfig> {
-  const response = await fetch(`${ url }/node-api/config`);
-  if (!response.ok) {
-    throw new Error(`Failed to fetch config from ${ url }: ${ response.statusText }`);
+  const controller = new AbortController();
+  const timeout = setTimeout(() => {
+    controller.abort(`Request to ${ url } timed out`);
+  }, 5_000);
+
+  try {
+    const response = await fetch(`${ url }/node-api/config`, { signal: controller.signal });
+    if (!response.ok) {
+      throw new Error(`Failed to fetch config from ${ url }: ${ response.statusText }`);
+    }
+    const config = await response.json();
+    return config as ChainConfig;
+  } catch (error) {
+    throw error;
+  } finally {
+    clearTimeout(timeout);
   }
-  const config = await response.json();
-  return config as ChainConfig;
 }
 
 async function computeConfig() {

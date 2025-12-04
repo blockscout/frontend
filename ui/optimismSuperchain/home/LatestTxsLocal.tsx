@@ -30,8 +30,8 @@ const LatestTxsLocal = () => {
   const query = useApiQuery('general:homepage_txs', {
     chain,
     queryOptions: {
-      placeholderData: Array(5).fill(TX),
-      select: (data) => data.slice(0, 5),
+      placeholderData: Array(3).fill(TX),
+      select: (data) => data.slice(0, 3),
     },
   });
 
