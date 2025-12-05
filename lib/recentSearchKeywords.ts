@@ -1,5 +1,6 @@
 import { uniq } from 'es-toolkit';
 
+import config from 'configs/app';
 import { isBrowser } from 'toolkit/utils/isBrowser';
 
 const RECENT_KEYWORDS_LS_KEY = 'recent_search_keywords';
@@ -22,6 +23,9 @@ const parseKeywordsArray = (keywordsStr: string) => {
 };
 
 export function saveToRecentKeywords(value: string) {
+  if (config.app.appProfile === 'private') {
+    return;
+  }
   if (!value) {
     return;
   }
@@ -32,7 +36,7 @@ export function saveToRecentKeywords(value: string) {
 }
 
 export function getRecentSearchKeywords(input?: string) {
-  if (!isBrowser()) {
+  if (!isBrowser() || config.app.appProfile === 'private') {
     return [];
   }
   const keywordsStr = window.localStorage.getItem(RECENT_KEYWORDS_LS_KEY) || '';

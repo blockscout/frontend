@@ -1,6 +1,7 @@
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
+import config from 'configs/app';
 import { LinkOverlay } from 'toolkit/chakra/link';
 
 import type { MediaElementProps } from './utils';
@@ -28,6 +29,12 @@ const NftHtml = ({ src, transport, onLoad, onError, onClick, ...rest }: Props) =
   }, [ src, handleLoad, onError ]);
 
   React.useEffect(() => {
+    // Disable iframe in private mode to prevent tracking
+    if (config.app.appProfile === 'private') {
+      onError?.();
+      return;
+    }
+
     switch (transport) {
       case 'ipfs': {
         // Currently we don't support IPFS video loading
@@ -39,6 +46,11 @@ const NftHtml = ({ src, transport, onLoad, onError, onClick, ...rest }: Props) =
         break;
     }
   }, [ loadViaHttp, onError, transport ]);
+
+  // Disable iframe in private mode to prevent tracking
+  if (config.app.appProfile === 'private') {
+    return null;
+  }
 
   return (
     <LinkOverlay

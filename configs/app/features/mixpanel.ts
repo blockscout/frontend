@@ -2,6 +2,7 @@ import type { Config } from 'mixpanel-browser';
 
 import type { Feature } from './types';
 
+import app from '../app';
 import { getEnvValue, parseEnvJson } from '../utils';
 
 const projectToken = getEnvValue('NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN');
@@ -17,7 +18,7 @@ const configOverrides = (() => {
 const title = 'Mixpanel analytics';
 
 const config: Feature<{ projectToken: string; configOverrides?: Partial<Config> }> = (() => {
-  if (projectToken) {
+  if (app.appProfile !== 'private' && projectToken) {
     return Object.freeze({
       title,
       isEnabled: true,
