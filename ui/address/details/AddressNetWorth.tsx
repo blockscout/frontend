@@ -1,4 +1,4 @@
-import { Text, Flex } from '@chakra-ui/react';
+import { Text, HStack } from '@chakra-ui/react';
 import React from 'react';
 
 import type { Address } from 'types/api/address';
@@ -46,24 +46,26 @@ const AddressNetWorth = ({ addressData, isLoading, addressHash }: Props) => {
 
   if (multichainFeature.isEnabled && (!addressData?.is_contract || isEip7702)) {
     const { providers } = multichainFeature;
-    const hasSingleProvider = providers.length === 1;
 
     multichainItems = (
       <>
         <TextSeparator/>
-        <Flex alignItems="center" columnGap={ 2 }>
+        <HStack columnGap={ 2 }>
           <Text>Multichain</Text>
-          { providers.map((item) => (
-            <AddressMultichainButton
-              key={ item.name }
-              item={ item }
-              addressHash={ addressHash }
-              onClick={ onMultichainClick }
-              hasSingleProvider={ hasSingleProvider }
-            />
-          ))
-          }
-        </Flex>
+          <HStack gap={{ base: 2, lg: 3 }}>
+            { providers.map((item, index) => (
+              <AddressMultichainButton
+                key={ item.name }
+                item={ item }
+                addressHash={ addressHash }
+                onClick={ onMultichainClick }
+                isFirst={ index === 0 }
+                isLast={ index === providers.length - 1 }
+              />
+            ))
+            }
+          </HStack>
+        </HStack>
       </>
     );
   }

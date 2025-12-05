@@ -80,25 +80,27 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
         isLoading={ isLoading }
         mode="compact"
       />
-      <Flex flexDir="column" rowGap={ 3 }>
-        { !config.UI.views.tx.hiddenFields?.value && (
-          <Skeleton loading={ isLoading }>
-            <Text as="span" whiteSpace="pre">Value </Text>
-            <NativeCoinValue
-              amount={ tx.value }
-              accuracy={ 5 }
-              loading={ isLoading }
-              color="text.secondary"
-            />
-          </Skeleton>
-        ) }
-        { !config.UI.views.tx.hiddenFields?.tx_fee && (
-          <Skeleton loading={ isLoading } display="flex" whiteSpace="pre">
-            <Text as="span">Fee </Text>
-            <TxFee tx={ tx } accuracy={ 5 } color="text.secondary" noUsd/>
-          </Skeleton>
-        ) }
-      </Flex>
+      { !(config.UI.views.tx.hiddenFields?.value && config.UI.views.tx.hiddenFields?.tx_fee) ? (
+        <Flex flexDir="column" rowGap={ 3 }>
+          { !config.UI.views.tx.hiddenFields?.value && (
+            <Skeleton loading={ isLoading }>
+              <Text as="span" whiteSpace="pre">Value </Text>
+              <NativeCoinValue
+                amount={ tx.value }
+                accuracy={ 5 }
+                loading={ isLoading }
+                color="text.secondary"
+              />
+            </Skeleton>
+          ) }
+          { !config.UI.views.tx.hiddenFields?.tx_fee && (
+            <Skeleton loading={ isLoading } display="flex" whiteSpace="pre">
+              <Text as="span">Fee </Text>
+              <TxFee tx={ tx } accuracy={ 5 } color="text.secondary" noUsd/>
+            </Skeleton>
+          ) }
+        </Flex>
+      ) : null }
     </Grid>
   );
 };

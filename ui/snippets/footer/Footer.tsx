@@ -113,7 +113,7 @@ const Footer = () => {
         _empty={{ display: 'none' }}
       >
         { !config.UI.indexingAlert.intTxs.isHidden && <IntTxsIndexingStatus/> }
-        <NetworkAddToWallet source="Footer"/>
+        { !config.features.opSuperchain.isEnabled && <NetworkAddToWallet source="Footer"/> }
       </Flex>
     );
   }, []);

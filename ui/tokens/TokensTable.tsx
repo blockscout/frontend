@@ -92,9 +92,19 @@ const TokensTable = ({ items, page, isLoading, sorting, setSorting, top }: Props
         </TableRow>
       </TableHeaderSticky>
       <TableBody>
-        { items.map((item, index) => (
-          <TokensTableItem key={ item.address_hash + (isLoading ? index : '') } token={ item } index={ index } page={ page } isLoading={ isLoading }/>
-        )) }
+        { items.map((item, index) => {
+          const chainIds = 'chain_infos' in item ? Object.keys(item.chain_infos).join(',') : undefined;
+
+          return (
+            <TokensTableItem
+              key={ item.address_hash + (isLoading ? index : '') + (chainIds ? chainIds : '') }
+              token={ item }
+              index={ index }
+              page={ page }
+              isLoading={ isLoading }
+            />
+          );
+        }) }
       </TableBody>
     </TableRoot>
   );

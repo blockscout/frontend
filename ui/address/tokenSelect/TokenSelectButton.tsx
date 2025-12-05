@@ -5,7 +5,6 @@ import type { FormattedData } from './types';
 
 import * as mixpanel from 'lib/mixpanel/index';
 import { Button } from 'toolkit/chakra/button';
-import { Skeleton } from 'toolkit/chakra/skeleton';
 import { space, thinsp } from 'toolkit/utils/htmlEntities';
 import IconSvg from 'ui/shared/IconSvg';
 
@@ -39,6 +38,7 @@ const TokenSelectButton = ({ isOpen, isLoading, data, ...rest }: Props, ref: Rea
         onClick={ handleClick }
         gap={ 0 }
         aria-label="Token select"
+        loadingSkeleton={ isLoading && !isOpen }
         { ...rest }
       >
         <IconSvg name="tokens" boxSize={ 4 } mr={ 2 }/>
@@ -56,18 +56,6 @@ const TokenSelectButton = ({ isOpen, isLoading, data, ...rest }: Props, ref: Rea
         </chakra.span>
         <IconSvg name="arrows/east-mini" transform={ isOpen ? 'rotate(90deg)' : 'rotate(-90deg)' } transitionDuration="faster" boxSize={ 5 } ml={ 3 }/>
       </Button>
-      { isLoading && !isOpen && (
-        <Skeleton
-          loading
-          h="100%"
-          w="100%"
-          position="absolute"
-          top={ 0 }
-          left={ 0 }
-          bgColor="bg.primary"
-          borderRadius="base"
-        />
-      ) }
     </Box>
   );
 };

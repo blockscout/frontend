@@ -43,7 +43,7 @@ const ERC20TokensTableItem = ({
   }, [ chainValues ]);
 
   return (
-    <TableRow role="group" >
+    <TableRow className="group" >
       <TableCell verticalAlign="middle">
         <HStack gap={ 2 }>
           <TokenEntity

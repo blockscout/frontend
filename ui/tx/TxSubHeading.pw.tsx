@@ -58,7 +58,8 @@ test.describe('blockscout provider', () => {
   });
 
   test('with interpretation and action button +@mobile +@dark-mode', async({ render, mockApiResponse, mockAssetResponse }) => {
-    const metadataResponse = generateAddressMetadataResponse(protocolTagWithMeta);
+    const meta = { ...protocolTagWithMeta.meta, appMarketplaceURL: undefined };
+    const metadataResponse = generateAddressMetadataResponse({ ...protocolTagWithMeta, meta });
     await mockApiResponse('metadata:info', metadataResponse, { queryParams: addressMetadataQueryParams });
     await mockAssetResponse(protocolTagWithMeta?.meta?.appLogoURL as string, './playwright/mocks/image_s.jpg');
     await mockApiResponse('general:tx_interpretation', txInterpretation, { pathParams: { hash } });
@@ -100,7 +101,6 @@ test.describe('blockscout provider', () => {
   test('with interpretation and view all link, and action button (external link) +@mobile', async({
     render, mockApiResponse, mockAssetResponse,
   }) => {
-    delete protocolTagWithMeta?.meta?.appID;
     const metadataResponse = generateAddressMetadataResponse(protocolTagWithMeta);
     await mockApiResponse('metadata:info', metadataResponse, { queryParams: addressMetadataQueryParams });
     await mockAssetResponse(protocolTagWithMeta?.meta?.appLogoURL as string, './playwright/mocks/image_s.jpg');

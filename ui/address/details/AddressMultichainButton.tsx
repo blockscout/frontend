@@ -1,4 +1,4 @@
-import { capitalize } from 'es-toolkit';
+import { upperFirst } from 'es-toolkit';
 import React from 'react';
 
 import type { MultichainProviderConfigParsed } from 'types/client/multichainProviderConfig';
@@ -8,36 +8,44 @@ import { route } from 'nextjs-routes';
 import { Image } from 'toolkit/chakra/image';
 import { Link } from 'toolkit/chakra/link';
 import { Tooltip } from 'toolkit/chakra/tooltip';
+import TextSeparator from 'ui/shared/TextSeparator';
+
+import styles from './AddressMultichainButton.module.css';
 
 const TEMPLATE_ADDRESS = '{address}';
 
 type Props = {
-  hasSingleProvider: boolean;
   item: MultichainProviderConfigParsed;
   addressHash: string;
   onClick?: () => void;
+  isFirst: boolean;
+  isLast: boolean;
 };
 
-const AddressMultichainButton = ({ item, addressHash, onClick, hasSingleProvider }: Props) => {
+const AddressMultichainButton = ({ item, addressHash, onClick, isFirst, isLast }: Props) => {
+
+  const isOnlyOne = isFirst && isLast;
 
   const buttonIcon = (
     <Image
       src={ item.logoUrl }
       alt={ item.name }
       boxSize={ 5 }
-      mr={ hasSingleProvider ? { base: 1, lg: 2 } : 0 }
+      mr={ isOnlyOne ? { base: 1, lg: 2 } : 0 }
       borderRadius="4px"
       overflow="hidden"
     />
   );
 
-  const buttonContent = hasSingleProvider ? (
+  const name = upperFirst(item.name.replaceAll('_', ' '));
+
+  const buttonContent = isOnlyOne ? (
     <>
       { buttonIcon }
-      { capitalize(item.name) }
+      { name }
     </>
   ) : (
-    <Tooltip content={ capitalize(item.name) }>{ buttonIcon }</Tooltip>
+    <Tooltip content={ name }>{ buttonIcon }</Tooltip>
   );
 
   try {
@@ -49,17 +57,21 @@ const AddressMultichainButton = ({ item, addressHash, onClick, hasSingleProvider
     const isExternal = typeof dappId !== 'string';
 
     return (
-      <Link
-        external={ isExternal }
-        href={ isExternal ? portfolioUrl.toString() : route({ pathname: '/apps/[id]', query: { id: dappId, url: portfolioUrl.toString() } }) }
-        variant={ hasSingleProvider ? 'underlaid' : undefined }
-        textStyle="sm"
-        fontWeight="medium"
-        onClick={ onClick }
-        noIcon={ !hasSingleProvider }
-      >
-        { buttonContent }
-      </Link>
+      <>
+        <Link
+          className={ item.promo ? styles.promo : undefined }
+          external={ isExternal }
+          href={ isExternal ? portfolioUrl.toString() : route({ pathname: '/apps/[id]', query: { id: dappId, url: portfolioUrl.toString() } }) }
+          variant={ isOnlyOne ? 'underlaid' : undefined }
+          textStyle="sm"
+          fontWeight="medium"
+          onClick={ onClick }
+          noIcon={ !isOnlyOne }
+        >
+          { buttonContent }
+        </Link>
+        { item.promo && isFirst && !isLast && <TextSeparator mx={ 0 }/> }
+      </>
     );
   } catch (error) {}
 

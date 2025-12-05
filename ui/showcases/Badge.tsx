@@ -40,11 +40,44 @@ const BadgeShowcase = () => {
           <Sample label="colorPalette: cyan">
             <Badge colorPalette="cyan">Internal txn</Badge>
           </Sample>
+          <Sample label="colorPalette: pink">
+            <Badge colorPalette="pink">Content</Badge>
+          </Sample>
           <Sample label="colorPalette: purple_alt">
             <Badge colorPalette="purple_alt">read</Badge>
           </Sample>
           <Sample label="colorPalette: blue_alt">
             <Badge colorPalette="blue_alt">write</Badge>
+          </Sample>
+          <Sample label="colorPalette: bright_gray">
+            <Badge colorPalette="bright_gray">Content</Badge>
+          </Sample>
+          <Sample label="colorPalette: bright_green">
+            <Badge colorPalette="bright_green">Content</Badge>
+          </Sample>
+          <Sample label="colorPalette: bright_red">
+            <Badge colorPalette="bright_red">Content</Badge>
+          </Sample>
+          <Sample label="colorPalette: bright_blue">
+            <Badge colorPalette="bright_blue">Content</Badge>
+          </Sample>
+          <Sample label="colorPalette: bright_yellow">
+            <Badge colorPalette="bright_yellow">Content</Badge>
+          </Sample>
+          <Sample label="colorPalette: bright_teal">
+            <Badge colorPalette="bright_teal">Content</Badge>
+          </Sample>
+          <Sample label="colorPalette: bright_cyan">
+            <Badge colorPalette="bright_cyan">Content</Badge>
+          </Sample>
+          <Sample label="colorPalette: bright_orange">
+            <Badge colorPalette="bright_orange">Content</Badge>
+          </Sample>
+          <Sample label="colorPalette: bright_purple">
+            <Badge colorPalette="bright_purple">Content</Badge>
+          </Sample>
+          <Sample label="colorPalette: bright_pink">
+            <Badge colorPalette="bright_pink">Content</Badge>
           </Sample>
         </SamplesStack>
       </Section>
@@ -59,11 +92,14 @@ const BadgeShowcase = () => {
       <Section>
         <SectionHeader>Size</SectionHeader>
         <SamplesStack>
+          <Sample label="size: sm">
+            <Badge size="sm">Content</Badge>
+          </Sample>
           <Sample label="size: md">
             <Badge size="md">Content</Badge>
           </Sample>
-          <Sample label="size: sm">
-            <Badge size="sm">Content</Badge>
+          <Sample label="size: lg">
+            <Badge size="lg">Content</Badge>
           </Sample>
         </SamplesStack>
       </Section>
