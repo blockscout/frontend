@@ -261,34 +261,34 @@ export default function useNavItems(): ReturnType {
     ].filter(Boolean);
 
     const statsNavItem = (() => {
-      const uptimeItem = {
-        text: 'Uptime',
-        nextRoute: { pathname: '/uptime' as const },
-        icon: 'refresh_menu',
-        isActive: pathname.startsWith('/uptime'),
-      };
+      const items = [
+        config.features.stats.isEnabled && {
+          text: 'Chain stats',
+          nextRoute: { pathname: '/stats' as const },
+          icon: 'graph',
+          isActive: pathname.startsWith('/stats/'),
+        },
+        config.features.megaEth.isEnabled && {
+          text: 'Uptime',
+          nextRoute: { pathname: '/uptime' as const },
+          icon: 'refresh_menu',
+          isActive: pathname.startsWith('/uptime'),
+        },
+        config.features.hotContracts.isEnabled && {
+          text: 'Hot contracts',
+          nextRoute: { pathname: '/hot-contracts' as const },
+          icon: 'hot-contracts',
+          isActive: pathname.startsWith('/hot-contracts'),
+        },
+        config.features.gasTracker.isEnabled && {
+          text: 'Gas tracker',
+          nextRoute: { pathname: '/gas-tracker' as const },
+          icon: 'gas',
+          isActive: pathname.startsWith('/gas-tracker'),
+        },
+      ].filter(Boolean);
 
-      if (config.features.stats.isEnabled && config.features.megaEth.isEnabled) {
-        return {
-          text: 'Charts & stats',
-          icon: 'stats',
-          isActive: pathname.startsWith('/stats') || pathname.startsWith('/uptime'),
-          subItems: [
-            {
-              text: `${ config.chain.name } stats`,
-              nextRoute: { pathname: '/stats' as const },
-              icon: 'graph',
-              isActive: pathname.startsWith('/stats/'),
-            },
-            uptimeItem,
-          ],
-        };
-      }
-
-      if (!config.features.stats.isEnabled) {
-        if (config.features.megaEth.isEnabled) {
-          return uptimeItem;
-        }
+      if (items.length === 0) {
         return null;
       }
 
@@ -297,6 +297,7 @@ export default function useNavItems(): ReturnType {
         nextRoute: { pathname: '/stats' as const },
         icon: 'stats',
         isActive: pathname.startsWith('/stats'),
+        subItems: items,
       };
     })();
 
@@ -315,11 +316,6 @@ export default function useNavItems(): ReturnType {
         text: 'Verify contract',
         nextRoute: { pathname: '/contract-verification' as const },
         isActive: pathname.startsWith('/contract-verification'),
-      },
-      config.features.gasTracker.isEnabled && {
-        text: 'Gas tracker',
-        nextRoute: { pathname: '/gas-tracker' as const },
-        isActive: pathname.startsWith('/gas-tracker'),
       },
       config.features.publicTagsSubmission.isEnabled && {
         text: 'Submit public tag',

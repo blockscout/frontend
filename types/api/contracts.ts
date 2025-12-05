@@ -39,3 +39,33 @@ export type VerifiedContractsCounters = {
   smart_contracts: string;
   verified_smart_contracts: string;
 };
+
+export interface HotContract {
+  contract_address: AddressParam ;
+  balance: string;
+  transactions_count: string;
+  total_gas_used: string;
+}
+
+export interface HotContractsResponse {
+  items: Array<HotContract>;
+  next_page_params: {
+    items_count: string;
+    transactions_count: string;
+    total_gas_used: string;
+    contract_address_hash: string;
+  } | null;
+}
+
+export interface HotContractsFilters {
+  scale?: string;
+}
+
+export interface HotContractsSorting {
+  sort: 'transactions_count' | 'total_gas_used';
+  order: 'asc' | 'desc';
+}
+
+export type HotContractsSortingField = HotContractsSorting['sort'];
+
+export type HotContractsSortingValue = `${ HotContractsSortingField }-${ HotContractsSorting['order'] }` | 'default';
