@@ -1,7 +1,7 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import TruncatedValue from 'ui/shared/TruncatedValue';
+import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
 
 interface Props {
   label: string;
@@ -16,8 +16,8 @@ const BlockCountdownTimerItem = ({ label, value }: Props) => {
       overflow="hidden"
       flex="1 1 auto"
     >
-      <TruncatedValue
-        value={ value }
+      <TruncatedText
+        text={ value }
         fontFamily="heading"
         fontSize={{ base: '40px', lg: '48px' }}
         lineHeight="48px"

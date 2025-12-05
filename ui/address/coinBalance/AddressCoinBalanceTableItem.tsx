@@ -7,11 +7,14 @@ import type { ClusterChainConfig } from 'types/multichain';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
-import { WEI, ZERO } from 'toolkit/utils/consts';
+import { ZERO } from 'toolkit/utils/consts';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
+import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
+import SimpleValue from 'ui/shared/value/SimpleValue';
+import { WEI } from 'ui/shared/value/utils';
 
 type Props = AddressCoinBalanceHistoryItem & {
   page: number;
@@ -59,15 +62,21 @@ const AddressCoinBalanceTableItem = (props: Props) => {
         />
       </TableCell>
       <TableCell isNumeric pr={ 1 }>
-        <Skeleton loading={ props.isLoading } color="text.secondary" display="inline-block">
-          <span>{ BigNumber(props.value).div(WEI).dp(8).toFormat() }</span>
-        </Skeleton>
+        <NativeCoinValue
+          amount={ props.value }
+          noSymbol
+          loading={ props.isLoading }
+          color="text.secondary"
+        />
       </TableCell>
       <TableCell isNumeric display="flex" justifyContent="end">
         <Skeleton loading={ props.isLoading }>
           <Stat.Root flexGrow="0" size="sm" positive={ isPositiveDelta }>
             <Stat.ValueText fontWeight={ 600 }>
-              { deltaBn.dp(8).toFormat() }
+              <SimpleValue
+                value={ deltaBn }
+                loading={ props.isLoading }
+              />
             </Stat.ValueText>
             { isPositiveDelta ? <Stat.UpIndicator/> : <Stat.DownIndicator/> }
           </Stat.Root>

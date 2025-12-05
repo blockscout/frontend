@@ -15,7 +15,6 @@ import { currencyUnits } from 'lib/units';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import { WEI } from 'toolkit/utils/consts';
 import BlockGasUsed from 'ui/shared/block/BlockGasUsed';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
@@ -23,8 +22,8 @@ import IconSvg from 'ui/shared/IconSvg';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import Utilization from 'ui/shared/Utilization/Utilization';
-
-import { getBaseFeeValue } from './utils';
+import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
+import SimpleValue from 'ui/shared/value/SimpleValue';
 
 interface Props {
   data: Block;
@@ -40,7 +39,6 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement, animation, chain
   const totalReward = getBlockTotalReward(data);
   const burntFees = BigNumber(data.burnt_fees || 0);
   const txFees = BigNumber(data.transaction_fees || 0);
-  const baseFeeValue = getBaseFeeValue(data.base_fee_per_gas || null);
 
   return (
     <ListItemMobile rowGap={ 3 } key={ String(data.height) } animation={ animation }>
@@ -116,31 +114,35 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement, animation, chain
       { !isRollup && !config.UI.views.block.hiddenFields?.total_reward && (
         <Flex columnGap={ 2 }>
           <Text fontWeight={ 500 }>Reward { currencyUnits.ether }</Text>
-          <Skeleton loading={ isLoading } display="inline-block" color="text.secondary">
-            <span>{ totalReward.toFixed() }</span>
-          </Skeleton>
+          <SimpleValue value={ totalReward } loading={ isLoading } color="text.secondary"/>
         </Flex>
       ) }
       { !isRollup && !config.UI.views.block.hiddenFields?.burnt_fees && (
         <Box>
           <Text fontWeight={ 500 }>Burnt fees</Text>
           <Flex columnGap={ 4 } mt={ 2 }>
-            <Flex>
-              <IconSvg name="flame" boxSize={ 5 } color="gray.500" isLoading={ isLoading }/>
-              <Skeleton loading={ isLoading } display="inline-block" color="text.secondary" ml={ 2 }>
-                <span>{ burntFees.div(WEI).toFixed() }</span>
-              </Skeleton>
-            </Flex>
-            <Utilization ml={ 4 } value={ burntFees.div(txFees).toNumber() } isLoading={ isLoading }/>
+            <NativeCoinValue
+              amount={ data.burnt_fees }
+              noSymbol
+              startElement={ <IconSvg name="flame" mr={ 2 } boxSize={ 5 } color={{ _light: 'gray.500', _dark: 'inherit' }} isLoading={ isLoading }/> }
+              loading={ isLoading }
+              display="flex"
+              color="text.secondary"
+            />
+            <Utilization value={ burntFees.div(txFees).toNumber() } isLoading={ isLoading }/>
           </Flex>
         </Box>
       ) }
-      { !isRollup && !config.UI.views.block.hiddenFields?.base_fee && baseFeeValue && (
+      { !isRollup && !config.UI.views.block.hiddenFields?.base_fee && data.base_fee_per_gas && (
         <Flex columnGap={ 2 }>
           <Text fontWeight={ 500 }>Base fee</Text>
-          <Skeleton loading={ isLoading } display="inline-block" color="text.secondary">
-            <span>{ baseFeeValue }</span>
-          </Skeleton>
+          <NativeCoinValue
+            amount={ data.base_fee_per_gas }
+            loading={ isLoading }
+            gweiThreshold={ 4 }
+            units="wei"
+            color="text.secondary"
+          />
         </Flex>
       ) }
     </ListItemMobile>

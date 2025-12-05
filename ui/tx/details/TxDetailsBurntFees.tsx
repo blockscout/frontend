@@ -6,8 +6,8 @@ import type { Transaction } from 'types/api/transaction';
 import config from 'configs/app';
 import { currencyUnits } from 'lib/units';
 import { ZERO } from 'toolkit/utils/consts';
-import CurrencyValue from 'ui/shared/CurrencyValue';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
+import DetailedInfoNativeCoinValue from 'ui/shared/DetailedInfo/DetailedInfoNativeCoinValue';
 import IconSvg from 'ui/shared/IconSvg';
 
 const rollupFeature = config.features.rollup;
@@ -40,19 +40,12 @@ const TxDetailsBurntFees = ({ data, isLoading }: Props) => {
       >
         Burnt fees
       </DetailedInfo.ItemLabel>
-      <DetailedInfo.ItemValue multiRow>
-        <CurrencyValue
-          startElement={ <IconSvg name="flame" boxSize={ 5 } color="icon.primary" isLoading={ isLoading } mr={{ base: 0, lg: 1 }}/> }
-          value={ value.toString() }
-          currency={ currencyUnits.ether }
-          decimals={ String(config.chain.currency.decimals) }
-          exchangeRate={ data.exchange_rate }
-          alignItems="center"
-          flexWrap="wrap"
-          rowGap={ 0 }
-          isLoading={ isLoading }
-        />
-      </DetailedInfo.ItemValue>
+      <DetailedInfoNativeCoinValue
+        amount={ value.toString() }
+        exchangeRate={ data.exchange_rate }
+        startElement={ <IconSvg name="flame" boxSize={ 5 } color="icon.primary" isLoading={ isLoading } mr={{ base: 0, lg: 1 }}/> }
+        loading={ isLoading }
+      />
     </>
   );
 };

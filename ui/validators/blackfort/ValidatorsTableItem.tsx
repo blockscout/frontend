@@ -1,14 +1,13 @@
 import { Flex } from '@chakra-ui/react';
-import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { ValidatorBlackfort } from 'types/api/validators';
 
-import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
+import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
-import TruncatedValue from 'ui/shared/TruncatedValue';
+import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 interface Props {
   data: ValidatorBlackfort;
@@ -27,7 +26,7 @@ const ValidatorsTableItem = ({ data, isLoading }: Props) => {
       </TableCell>
       <TableCell verticalAlign="middle">
         <Flex>
-          <TruncatedValue value={ data.name } isLoading={ isLoading }/>
+          <TruncatedText text={ data.name } loading={ isLoading }/>
         </Flex>
       </TableCell>
       <TableCell verticalAlign="middle" isNumeric>
@@ -36,14 +35,18 @@ const ValidatorsTableItem = ({ data, isLoading }: Props) => {
         </Skeleton>
       </TableCell>
       <TableCell verticalAlign="middle" isNumeric>
-        <Skeleton loading={ isLoading }>
-          { BigNumber(data.self_bonded_amount).div(BigNumber(10 ** config.chain.currency.decimals)).toFormat() }
-        </Skeleton>
+        <NativeCoinValue
+          amount={ data.self_bonded_amount }
+          loading={ isLoading }
+          noSymbol
+        />
       </TableCell>
       <TableCell verticalAlign="middle" isNumeric>
-        <Skeleton loading={ isLoading }>
-          { BigNumber(data.delegated_amount).div(BigNumber(10 ** config.chain.currency.decimals)).toFormat() }
-        </Skeleton>
+        <NativeCoinValue
+          amount={ data.delegated_amount }
+          loading={ isLoading }
+          noSymbol
+        />
       </TableCell>
     </TableRow>
   );

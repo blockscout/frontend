@@ -34,6 +34,19 @@ test('with negative diff', async({ render }) => {
   await expect(component).toHaveScreenshot();
 });
 
+test('with long value', async({ render }) => {
+  const component = await render(
+    <StatsWidget
+      label="Average transaction fee"
+      hint="Average transaction fee"
+      value="1234567890123456789012345678901234567890"
+      valuePostfix="DUCK"
+    />,
+  );
+
+  await expect(component).toHaveScreenshot();
+});
+
 test('loading state', async({ render }) => {
   const component = await render(
     <StatsWidget

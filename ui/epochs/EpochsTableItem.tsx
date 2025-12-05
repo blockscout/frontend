@@ -3,12 +3,12 @@ import React from 'react';
 
 import type { CeloEpochListItem } from 'types/api/epochs';
 
-import getCurrencyValue from 'lib/getCurrencyValue';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import EpochEntity from 'ui/shared/entities/epoch/EpochEntity';
 import CeloEpochStatus from 'ui/shared/statusTag/CeloEpochStatus';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
+import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 interface Props {
   item: CeloEpochListItem;
@@ -16,23 +16,6 @@ interface Props {
 };
 
 const EpochsTableItem = ({ item, isLoading }: Props) => {
-
-  const communityReward = getCurrencyValue({
-    value: item.distribution?.community_transfer?.value ?? '0',
-    decimals: item.distribution?.community_transfer?.decimals,
-    accuracy: 8,
-  });
-  const carbonOffsettingReward = getCurrencyValue({
-    value: item.distribution?.carbon_offsetting_transfer?.value ?? '0',
-    decimals: item.distribution?.carbon_offsetting_transfer?.decimals,
-    accuracy: 8,
-  });
-  const totalReward = getCurrencyValue({
-    value: item.distribution?.transfers_total?.value ?? '0',
-    decimals: item.distribution?.transfers_total?.decimals,
-    accuracy: 8,
-  });
-
   return (
     <TableRow>
       <TableCell verticalAlign="middle">
@@ -60,19 +43,25 @@ const EpochsTableItem = ({ item, isLoading }: Props) => {
         </Skeleton>
       </TableCell>
       <TableCell verticalAlign="middle" isNumeric>
-        <Skeleton loading={ isLoading }>
-          { item.distribution?.community_transfer ? communityReward.valueStr : '-' }
-        </Skeleton>
+        <NativeCoinValue
+          amount={ item.distribution?.community_transfer?.value }
+          noSymbol
+          loading={ isLoading }
+        />
       </TableCell>
       <TableCell verticalAlign="middle" isNumeric>
-        <Skeleton loading={ isLoading }>
-          { item.distribution?.carbon_offsetting_transfer ? carbonOffsettingReward.valueStr : '-' }
-        </Skeleton>
+        <NativeCoinValue
+          amount={ item.distribution?.carbon_offsetting_transfer?.value }
+          noSymbol
+          loading={ isLoading }
+        />
       </TableCell>
       <TableCell verticalAlign="middle" isNumeric>
-        <Skeleton loading={ isLoading }>
-          { item.distribution?.transfers_total ? totalReward.valueStr : '-' }
-        </Skeleton>
+        <NativeCoinValue
+          amount={ item.distribution?.transfers_total?.value }
+          noSymbol
+          loading={ isLoading }
+        />
       </TableCell>
     </TableRow>
   );

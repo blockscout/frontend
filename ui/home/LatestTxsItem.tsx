@@ -10,8 +10,6 @@ import React from 'react';
 import type { Transaction } from 'types/api/transaction';
 
 import config from 'configs/app';
-import getValueWithUnit from 'lib/getValueWithUnit';
-import { currencyUnits } from 'lib/units';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
@@ -19,6 +17,7 @@ import TxStatus from 'ui/shared/statusTag/TxStatus';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import TxFee from 'ui/shared/tx/TxFee';
 import TxWatchListTags from 'ui/shared/tx/TxWatchListTags';
+import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
 import TxType from 'ui/txs/TxType';
 
@@ -86,13 +85,18 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
           { !config.UI.views.tx.hiddenFields?.value && (
             <Skeleton loading={ isLoading }>
               <Text as="span" whiteSpace="pre">Value </Text>
-              <Text as="span" color="text.secondary">{ getValueWithUnit(tx.value).dp(5).toFormat() } { currencyUnits.ether }</Text>
+              <NativeCoinValue
+                amount={ tx.value }
+                accuracy={ 5 }
+                loading={ isLoading }
+                color="text.secondary"
+              />
             </Skeleton>
           ) }
           { !config.UI.views.tx.hiddenFields?.tx_fee && (
             <Skeleton loading={ isLoading } display="flex" whiteSpace="pre">
               <Text as="span">Fee </Text>
-              <TxFee tx={ tx } accuracy={ 5 } color="text.secondary"/>
+              <TxFee tx={ tx } accuracy={ 5 } color="text.secondary" noUsd/>
             </Skeleton>
           ) }
         </Flex>

@@ -5,10 +5,12 @@ import type * as multichain from '@blockscout/multichain-aggregator-types';
 import type { FormattedData } from 'ui/address/tokenSelect/types';
 
 import multichainConfig from 'configs/multichain';
-import getCurrencyValue from 'lib/getCurrencyValue';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { ZERO } from 'toolkit/utils/consts';
 import { getTokensTotalInfoByChain, type TokensTotalInfo } from 'ui/address/utils/tokenUtils';
+import calculateUsdValue from 'ui/shared/value/calculateUsdValue';
+import SimpleValue from 'ui/shared/value/SimpleValue';
+import { DEFAULT_ACCURACY_USD } from 'ui/shared/value/utils';
 
 import OpSuperchainAddressInfoBreakdown from './OpSuperchainAddressInfoBreakdown';
 
@@ -23,10 +25,8 @@ const OpSuperchainAddressNetWorth = ({ addressData, isLoading, tokensData, isErr
 
   const chains = multichainConfig()?.chains;
 
-  const { usdBn: nativeUsd } = getCurrencyValue({
-    value: addressData?.coin_balance || '0',
-    accuracy: 8,
-    accuracyUsd: 2,
+  const { usdBn: nativeUsd } = calculateUsdValue({
+    amount: addressData?.coin_balance || '0',
     exchangeRate: addressData?.exchange_rate,
     decimals: String(chains?.[0]?.app_config.chain.currency.decimals),
   });
@@ -43,26 +43,27 @@ const OpSuperchainAddressNetWorth = ({ addressData, isLoading, tokensData, isErr
     };
   }, {} as TokensTotalInfo);
 
-  const prefix = isOverflow ? '>' : '';
   const totalUsd = usd ? nativeUsd.plus(usd) : ZERO;
   const hasUsd = !isError && addressData?.exchange_rate;
 
   return (
     <Flex alignItems="center" columnGap={ 3 }>
-      <Skeleton
-        display="flex"
-        alignItems="center"
-        loading={ isLoading }
-      >
-        { hasUsd ? `${ prefix }$${ totalUsd.dp(2).toFormat() }` : 'N/A' }
-      </Skeleton>
+      { hasUsd ? (
+        <SimpleValue
+          value={ totalUsd }
+          prefix="$"
+          accuracy={ DEFAULT_ACCURACY_USD }
+          overflowed={ isOverflow }
+          loading={ isLoading }
+        />
+      ) : (
+        <Skeleton loading={ isLoading }>N/A</Skeleton>
+      ) }
       { hasUsd && (
         <OpSuperchainAddressInfoBreakdown data={ addressData.chain_infos } loading={ isLoading }>
           { ([ chain, chainInfo ]) => {
-            const { usdBn: chainNativeUsdBn } = getCurrencyValue({
-              value: chainInfo.coin_balance || '0',
-              accuracy: 8,
-              accuracyUsd: 2,
+            const { usdBn: chainNativeUsdBn } = calculateUsdValue({
+              amount: chainInfo.coin_balance || '0',
               exchangeRate: addressData?.exchange_rate,
               decimals: String(chain.app_config?.chain?.currency.decimals),
             });
@@ -71,7 +72,13 @@ const OpSuperchainAddressNetWorth = ({ addressData, isLoading, tokensData, isErr
               return null;
             }
 
-            return `$${ resultByChain[chain.id].usd.plus(chainNativeUsdBn).dp(2).toFormat() }`;
+            return (
+              <SimpleValue
+                value={ resultByChain[chain.id].usd.plus(chainNativeUsdBn) }
+                prefix="$"
+                accuracy={ DEFAULT_ACCURACY_USD }
+              />
+            );
           } }
         </OpSuperchainAddressInfoBreakdown>
       ) }

@@ -5,12 +5,11 @@ import React from 'react';
 import type { CeloEpochDetails } from 'types/api/epochs';
 import type { TokenInfo } from 'types/api/token';
 
-import getCurrencyValue from 'lib/getCurrencyValue';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
-import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import useLazyLoadedList from 'ui/shared/pagination/useLazyLoadedList';
+import TokenValue from 'ui/shared/value/TokenValue';
 
 import { formatRewardType } from './utils';
 
@@ -49,20 +48,15 @@ const CeloEpochElectionRewardDetailsMobile = ({ type, token }: Props) => {
         .map((page) => page.items)
         .flat()
         .map((item, index) => {
-
-          const amount = getCurrencyValue({
-            value: item.amount,
-            decimals: token.decimals,
-          });
-
           return (
             <Flex key={ index } flexDir="column" alignItems="flex-start" rowGap={ 1 } fontWeight={ 400 }>
               <AddressEntity address={ item.account } noIcon w="100%"/>
-              <Flex columnGap={ 1 } alignItems="center">
-                <Box flexShrink={ 0 } color="text.secondary">got</Box>
-                <Box>{ amount.valueStr }</Box>
-                <TokenEntity token={ token } noIcon onlySymbol w="auto"/>
-              </Flex>
+              <TokenValue
+                amount={ item.amount }
+                token={ token }
+                tokenEntityProps={{ noIcon: true, ml: 1 }}
+                startElement={ <Box flexShrink={ 0 } color="text.secondary">got </Box> }
+              />
               <Flex columnGap={ 1 } alignItems="center" w="100%">
                 <Box flexShrink={ 0 } color="text.secondary">on behalf of</Box>
                 <AddressEntity address={ item.associated_account } noIcon/>

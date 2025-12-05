@@ -9,10 +9,7 @@ import type { Transaction } from 'types/api/transaction';
 import type { ClusterChainConfig } from 'types/multichain';
 
 import config from 'configs/app';
-import getValueWithUnit from 'lib/getValueWithUnit';
-import { currencyUnits } from 'lib/units';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import { space } from 'toolkit/utils/htmlEntities';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
@@ -21,6 +18,7 @@ import TxStatus from 'ui/shared/statusTag/TxStatus';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import TxFee from 'ui/shared/tx/TxFee';
 import TxWatchListTags from 'ui/shared/tx/TxWatchListTags';
+import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
 import TxType from 'ui/txs/TxType';
 
@@ -123,13 +121,12 @@ const TxsListItem = ({
       { !config.UI.views.tx.hiddenFields?.value && (
         <Flex mt={ 2 } columnGap={ 2 }>
           <Skeleton loading={ isLoading } display="inline-block" whiteSpace="pre">Value</Skeleton>
-          <Skeleton loading={ isLoading } display="inline-block" color="text.secondary" whiteSpace="pre">
-            <span>
-              { getValueWithUnit(tx.value).toFormat() }
-              { space }
-              { currencyUnits.ether }
-            </span>
-          </Skeleton>
+          <NativeCoinValue
+            amount={ tx.value }
+            exchangeRate={ tx.exchange_rate }
+            loading={ isLoading }
+            color="text.secondary"
+          />
         </Flex>
       ) }
       { !config.UI.views.tx.hiddenFields?.tx_fee && (
@@ -137,7 +134,7 @@ const TxsListItem = ({
           { (tx.stability_fee !== undefined || tx.fee.value !== null) && (
             <>
               <Skeleton loading={ isLoading } display="inline-block" whiteSpace="pre">Fee</Skeleton>
-              <TxFee tx={ tx } isLoading={ isLoading }/>
+              <TxFee tx={ tx } loading={ isLoading } color="text.secondary"/>
             </>
           ) }
         </Flex>

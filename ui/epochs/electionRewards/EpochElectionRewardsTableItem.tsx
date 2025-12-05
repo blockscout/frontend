@@ -1,16 +1,14 @@
-import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { CeloEpochDetails, CeloEpochElectionReward } from 'types/api/epochs';
 
-import getCurrencyValue from 'lib/getCurrencyValue';
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
-import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import EpochRewardTypeTag from 'ui/shared/EpochRewardTypeTag';
 import IconSvg from 'ui/shared/IconSvg';
+import TokenValue from 'ui/shared/value/TokenValue';
 
 import EpochElectionRewardDetailsDesktop from './EpochElectionRewardDetailsDesktop';
 import { getRewardNumText } from './utils';
@@ -23,11 +21,6 @@ interface Props {
 
 const EpochElectionRewardsTableItem = ({ isLoading, data, type }: Props) => {
   const section = useDisclosure();
-
-  const { valueStr } = getCurrencyValue({
-    value: data.total,
-    decimals: data.token.decimals,
-  });
 
   const mainRowBorderColor = section.open ? 'transparent' : 'border.divider';
 
@@ -62,17 +55,14 @@ const EpochElectionRewardsTableItem = ({ isLoading, data, type }: Props) => {
             { getRewardNumText(type, data.count) }
           </Skeleton>
         </TableCell>
-        <TableCell borderColor={ mainRowBorderColor }>
-          <Flex columnGap={ 2 } alignItems="center" justifyContent="flex-end" my="2px">
-            <Skeleton loading={ isLoading }>{ valueStr }</Skeleton>
-            <TokenEntity
-              token={ data.token }
-              noCopy
-              onlySymbol
-              w="auto"
-              isLoading={ isLoading }
-            />
-          </Flex>
+        <TableCell borderColor={ mainRowBorderColor } textAlign="right">
+          <TokenValue
+            amount={ data.total }
+            token={ data.token }
+            accuracy={ 0 }
+            loading={ isLoading }
+            my="2px"
+          />
         </TableCell>
       </TableRow>
       { section.open && (

@@ -8,6 +8,7 @@ import type { TokenType } from 'types/api/token';
 import { getTokenTypeName } from 'lib/token/tokenTypes';
 import { Link } from 'toolkit/chakra/link';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
+import { thinsp } from 'toolkit/utils/htmlEntities';
 import IconSvg from 'ui/shared/IconSvg';
 
 import type { Sort } from '../utils/tokenUtils';
@@ -63,7 +64,7 @@ const TokenSelectMenu = ({ erc20sort, erc1155sort, erc404sort, filteredData, onI
             (type === 'ERC-404' && tokenInfo.items.some(item => item.value)) ||
             type === 'ERC-1155' ||
             (type === 'ERC-20' && tokenInfo.items.some(({ usd }) => usd));
-          const numPrefix = tokenInfo.isOverflow ? '>' : '';
+          const numPrefix = tokenInfo.isOverflow ? `>${ thinsp }` : '';
 
           return (
             <Box key={ type }>
