@@ -1,15 +1,16 @@
-import { Box } from '@chakra-ui/react';
+import { Box, createListCollection, Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { HotContractsSorting, HotContractsSortingField, HotContractsSortingValue } from 'types/api/contracts';
+import type { HotContractsInterval, HotContractsSorting, HotContractsSortingField, HotContractsSortingValue } from 'types/api/contracts';
 
-import getQueryParamString from 'lib/router/getQueryParamString';
 import { HOT_CONTRACTS } from 'stubs/contract';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import { apos } from 'toolkit/utils/htmlEntities';
+import HotContractsIntervalSelect from 'ui/hotContracts/HotContractsIntervalSelect';
 import HotContractsListItem from 'ui/hotContracts/HotContractsListItem';
 import HotContractsTable from 'ui/hotContracts/HotContractsTable';
-import { SORT_OPTIONS } from 'ui/hotContracts/utils';
+import { getIntervalValueFromQuery, SORT_OPTIONS } from 'ui/hotContracts/utils';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -17,16 +18,21 @@ import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import getSortParamsFromValue from 'ui/shared/sort/getSortParamsFromValue';
 import getSortValueFromQuery from 'ui/shared/sort/getSortValueFromQuery';
+import Sort from 'ui/shared/sort/Sort';
+
+const sortCollection = createListCollection({
+  items: SORT_OPTIONS,
+});
 
 const HotContracts = () => {
   const router = useRouter();
-  const scale = getQueryParamString(router.query.scale) || '5m';
+  const [ interval, setInterval ] = React.useState<HotContractsInterval>(getIntervalValueFromQuery(router.query.scale));
   const [ sort, setSort ] =
       React.useState<HotContractsSortingValue>(getSortValueFromQuery<HotContractsSortingValue>(router.query, SORT_OPTIONS) ?? 'default');
 
-  const { data, isError, isPlaceholderData, pagination, onSortingChange } = useQueryWithPages({
+  const { data, isError, isPlaceholderData, pagination, onSortingChange, onFilterChange } = useQueryWithPages({
     resourceName: 'general:stats_hot_contracts',
-    filters: { scale },
+    filters: { scale: interval },
     sorting: getSortParamsFromValue<HotContractsSortingValue, HotContractsSortingField, HotContractsSorting['order']>(sort),
     options: {
       placeholderData: {
@@ -40,6 +46,11 @@ const HotContracts = () => {
     setSort(value[0] as HotContractsSortingValue);
     onSortingChange(value[0] === 'default' ? undefined : getSortParamsFromValue(value[0] as HotContractsSortingValue));
   }, [ onSortingChange ]);
+
+  const handleIntervalChange = React.useCallback((newInterval: HotContractsInterval) => {
+    setInterval(newInterval);
+    onFilterChange({ scale: newInterval });
+  }, [ onFilterChange ]);
 
   const content = (
     <>
@@ -65,9 +76,23 @@ const HotContracts = () => {
 
   const actionBar = (
     <ActionBar mt={ -6 }>
-      <Box>
-        PERIOD FILTER
-      </Box>
+      <Flex alignItems="center">
+        <HotContractsIntervalSelect interval={ interval } onIntervalChange={ handleIntervalChange } isLoading={ isPlaceholderData }/>
+        { [ '1d', '7d', '30d' ].includes(interval) && (
+          <Skeleton loading={ isPlaceholderData } color="text.secondary" hideBelow="lg" textStyle="sm" ml={ 6 }>
+            <span>The data is updated once a day.</span>
+          </Skeleton>
+        ) }
+        <Sort
+          name="hot_contracts_sorting"
+          defaultValue={ [ sort ] }
+          collection={ sortCollection }
+          onValueChange={ handleSortChange }
+          isLoading={ isPlaceholderData }
+          hideFrom="lg"
+          ml={ 2 }
+        />
+      </Flex>
       <Pagination { ...pagination } ml="auto"/>
     </ActionBar>
   );
@@ -85,7 +110,7 @@ const HotContracts = () => {
         actionBar={ actionBar }
         filterProps={{
           emptyFilteredText: `Couldn${ apos }t find hot contracts that matches your filter query.`,
-          hasActiveFilters: Boolean(scale),
+          hasActiveFilters: Boolean(interval),
         }}
       >
         { content }

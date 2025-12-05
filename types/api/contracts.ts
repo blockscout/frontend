@@ -58,7 +58,7 @@ export interface HotContractsResponse {
 }
 
 export interface HotContractsFilters {
-  scale?: string;
+  scale?: HotContractsInterval;
 }
 
 export interface HotContractsSorting {
@@ -69,3 +69,5 @@ export interface HotContractsSorting {
 export type HotContractsSortingField = HotContractsSorting['sort'];
 
 export type HotContractsSortingValue = `${ HotContractsSortingField }-${ HotContractsSorting['order'] }` | 'default';
+
+export type HotContractsInterval = '5m' | '1h' | '3h' | '1d' | '7d' | '30d';
