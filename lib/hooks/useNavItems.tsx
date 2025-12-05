@@ -296,7 +296,7 @@ export default function useNavItems(): ReturnType {
         text: 'Charts & stats',
         nextRoute: { pathname: '/stats' as const },
         icon: 'stats',
-        isActive: pathname.startsWith('/stats'),
+        isActive: items.some(item => isInternalItem(item) && item.isActive),
         subItems: items,
       };
     })();
