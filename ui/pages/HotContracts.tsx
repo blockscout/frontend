@@ -4,7 +4,9 @@ import React from 'react';
 
 import type { HotContractsInterval, HotContractsSorting, HotContractsSortingField, HotContractsSortingValue } from 'types/api/contracts';
 
+import useApiQuery from 'lib/api/useApiQuery';
 import { HOT_CONTRACTS } from 'stubs/contract';
+import { HOMEPAGE_STATS } from 'stubs/stats';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { apos } from 'toolkit/utils/htmlEntities';
 import HotContractsIntervalSelect from 'ui/hotContracts/HotContractsIntervalSelect';
@@ -42,6 +44,13 @@ const HotContracts = () => {
     },
   });
 
+  const statsQuery = useApiQuery('general:stats', {
+    queryOptions: {
+      placeholderData: HOMEPAGE_STATS,
+      refetchOnMount: false,
+    },
+  });
+
   const handleSortChange = React.useCallback(({ value }: { value: Array<string> }) => {
     setSort(value[0] as HotContractsSortingValue);
     onSortingChange(value[0] === 'default' ? undefined : getSortParamsFromValue(value[0] as HotContractsSortingValue));
@@ -60,6 +69,7 @@ const HotContracts = () => {
             key={ item.contract_address.hash + (isPlaceholderData ? index : '') }
             isLoading={ isPlaceholderData }
             data={ item }
+            exchangeRate={ statsQuery.data?.coin_price ?? null }
           />
         )) }
       </Box>
@@ -69,6 +79,7 @@ const HotContracts = () => {
           isLoading={ isPlaceholderData }
           sort={ sort }
           setSorting={ handleSortChange }
+          exchangeRate={ statsQuery.data?.coin_price ?? null }
         />
       </Box>
     </>

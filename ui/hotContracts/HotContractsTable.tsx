@@ -2,6 +2,7 @@ import React from 'react';
 
 import type { HotContract, HotContractsSortingField, HotContractsSortingValue } from 'types/api/contracts';
 
+import { currencyUnits } from 'lib/units';
 import { TableBody, TableColumnHeader, TableColumnHeaderSortable, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import getNextSortValue from 'ui/shared/sort/getNextSortValue';
@@ -14,9 +15,10 @@ interface Props {
   isLoading?: boolean;
   sort: HotContractsSortingValue;
   setSorting: ({ value }: { value: Array<string> }) => void;
+  exchangeRate: string | null;
 };
 
-const HotContractsTable = ({ items, isLoading, sort, setSorting }: Props) => {
+const HotContractsTable = ({ items, isLoading, sort, setSorting, exchangeRate }: Props) => {
 
   const onSortToggle = React.useCallback((field: HotContractsSortingField) => {
     const value = getNextSortValue<HotContractsSortingField, HotContractsSortingValue>(SORT_SEQUENCE, field)(sort);
@@ -48,12 +50,12 @@ const HotContractsTable = ({ items, isLoading, sort, setSorting }: Props) => {
           >
             Gas used
           </TableColumnHeaderSortable>
-          <TableColumnHeader width="25%" isNumeric>Balance ETH</TableColumnHeader>
+          <TableColumnHeader width="25%" isNumeric>Balance { currencyUnits.ether }</TableColumnHeader>
         </TableRow>
       </TableHeaderSticky>
       <TableBody>
         { items.map((item, index) => (
-          <HotContractsTableItem key={ index } isLoading={ isLoading } data={ item }/>
+          <HotContractsTableItem key={ index } isLoading={ isLoading } data={ item } exchangeRate={ exchangeRate }/>
         )) }
       </TableBody>
     </TableRoot>
