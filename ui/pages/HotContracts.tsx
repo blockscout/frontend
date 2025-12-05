@@ -117,7 +117,7 @@ const HotContracts = () => {
       <DataListDisplay
         isError={ isError }
         itemsNum={ data?.items.length }
-        emptyText="There are no pools."
+        emptyText="There are no hot contracts."
         actionBar={ actionBar }
         filterProps={{
           emptyFilteredText: `Couldn${ apos }t find hot contracts that matches your filter query.`,
