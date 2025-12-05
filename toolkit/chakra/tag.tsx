@@ -48,7 +48,7 @@ export const Tag = React.forwardRef<HTMLSpanElement, TagProps>(
       <Skeleton loading={ loading } asChild>
         <ChakraTag.Root
           ref={ ref }
-          { ...(selected && { 'data-selected': true }) }
+          { ...(selected && !loading && { 'data-selected': true }) }
           { ...rest }
         >
           { startElement && (

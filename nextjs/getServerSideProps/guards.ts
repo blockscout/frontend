@@ -142,6 +142,14 @@ export const gasTracker: Guard = (chainConfig: typeof config) => async() => {
   }
 };
 
+export const hotContracts: Guard = (chainConfig: typeof config) => async() => {
+  if (!chainConfig.features.hotContracts.isEnabled) {
+    return {
+      notFound: true,
+    };
+  }
+};
+
 export const advancedFilter: Guard = (chainConfig: typeof config) => async() => {
   if (!chainConfig.features.advancedFilter.isEnabled) {
     return {

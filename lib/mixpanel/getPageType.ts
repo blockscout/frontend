@@ -25,6 +25,7 @@ export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/stats': 'Stats',
   '/stats/[id]': 'Stats chart',
   '/uptime': 'Uptime',
+  '/hot-contracts': 'Hot contracts',
   '/api-docs': 'REST API',
   '/search-results': 'Search results',
   '/auth/profile': 'Profile',

@@ -22,6 +22,7 @@ export const accountsLabelSearch = factory([ guards.accountsLabelSearch ]);
 export const validators = factory([ guards.validators ]);
 export const validatorDetails = factory([ guards.validatorDetails ]);
 export const gasTracker = factory([ guards.gasTracker ]);
+export const hotContracts = factory([ guards.hotContracts ]);
 export const advancedFilter = factory([ guards.advancedFilter ]);
 export const dataAvailability = factory([ guards.dataAvailability ]);
 export const login = factory([ guards.login ]);
