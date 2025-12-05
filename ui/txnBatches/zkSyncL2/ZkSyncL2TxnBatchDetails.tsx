@@ -1,6 +1,5 @@
-import { GridItem, Text } from '@chakra-ui/react';
+import { GridItem } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
-import BigNumber from 'bignumber.js';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -15,14 +14,14 @@ import { currencyUnits } from 'lib/units';
 import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import { WEI, WEI_IN_GWEI } from 'toolkit/utils/consts';
+import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 import PrevNext from 'ui/shared/PrevNext';
-import TruncatedValue from 'ui/shared/TruncatedValue';
+import GasPriceValue from 'ui/shared/value/GasPriceValue';
 import VerificationSteps from 'ui/shared/verificationSteps/VerificationSteps';
 
 import ZkSyncL2TxnBatchHashesInfo from './ZkSyncL2TxnBatchHashesInfo';
@@ -138,7 +137,7 @@ const ZkSyncL2TxnBatchDetails = ({ query }: Props) => {
           flexWrap="nowrap"
           alignSelf="flex-start"
         >
-          <TruncatedValue value={ data.root_hash }/>
+          <TruncatedText text={ data.root_hash }/>
           <CopyToClipboard text={ data.root_hash }/>
         </DetailedInfo.ItemValue>
 
@@ -148,8 +147,11 @@ const ZkSyncL2TxnBatchDetails = ({ query }: Props) => {
           L1 gas price
         </DetailedInfo.ItemLabel>
         <DetailedInfo.ItemValue multiRow>
-          <Text mr={ 1 }>{ BigNumber(data.l1_gas_price).dividedBy(WEI).toFixed() } { parentChainCurrency || currencyUnits.ether }</Text>
-          <Text color="text.secondary">({ BigNumber(data.l1_gas_price).dividedBy(WEI_IN_GWEI).toFixed() } { currencyUnits.gwei })</Text>
+          <GasPriceValue
+            amount={ data.l1_gas_price }
+            loading={ isPlaceholderData }
+            asset={ parentChainCurrency || currencyUnits.ether }
+          />
         </DetailedInfo.ItemValue>
 
         <DetailedInfo.ItemLabel
@@ -158,8 +160,10 @@ const ZkSyncL2TxnBatchDetails = ({ query }: Props) => {
           L2 fair gas price
         </DetailedInfo.ItemLabel>
         <DetailedInfo.ItemValue multiRow>
-          <Text mr={ 1 }>{ BigNumber(data.l2_fair_gas_price).dividedBy(WEI).toFixed() } { currencyUnits.ether }</Text>
-          <Text color="text.secondary">({ BigNumber(data.l2_fair_gas_price).dividedBy(WEI_IN_GWEI).toFixed() } { currencyUnits.gwei })</Text>
+          <GasPriceValue
+            amount={ data.l2_fair_gas_price }
+            loading={ isPlaceholderData }
+          />
         </DetailedInfo.ItemValue>
       </CollapsibleDetails>
     </DetailedInfo.Container>

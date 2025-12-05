@@ -3,11 +3,11 @@ import React from 'react';
 
 import type { TokenHolder, TokenInfo } from 'types/api/token';
 
-import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
+import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
-import TruncatedValue from 'ui/shared/TruncatedValue';
 import Utilization from 'ui/shared/Utilization/Utilization';
+import AssetValue from 'ui/shared/value/AssetValue';
 
 type Props = {
   holder: TokenHolder;
@@ -16,8 +16,6 @@ type Props = {
 };
 
 const TokenTransferTableItem = ({ holder, token, isLoading }: Props) => {
-  const quantity = BigNumber(holder.value).div(BigNumber(10 ** Number(token.decimals))).toFormat();
-
   return (
     <TableRow>
       <TableCell verticalAlign="middle">
@@ -30,13 +28,15 @@ const TokenTransferTableItem = ({ holder, token, isLoading }: Props) => {
       </TableCell>
       { (token.type === 'ERC-1155' || token.type === 'ERC-404') && 'token_id' in holder && (
         <TableCell verticalAlign="middle">
-          <TruncatedValue value={ holder.token_id } isLoading={ isLoading } w="100%"/>
+          <TruncatedText text={ holder.token_id } loading={ isLoading } w="100%"/>
         </TableCell>
       ) }
       <TableCell verticalAlign="middle" isNumeric>
-        <Skeleton loading={ isLoading } display="inline-block" wordBreak="break-word">
-          { quantity }
-        </Skeleton>
+        <AssetValue
+          amount={ holder.value }
+          decimals={ token.decimals ?? '0' }
+          loading={ isLoading }
+        />
       </TableCell>
       { token.total_supply && token.type !== 'ERC-404' && (
         <TableCell verticalAlign="middle" isNumeric>

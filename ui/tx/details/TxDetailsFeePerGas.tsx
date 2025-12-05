@@ -2,9 +2,8 @@ import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import config from 'configs/app';
-import { currencyUnits } from 'lib/units';
-import { Skeleton } from 'toolkit/chakra/skeleton';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
+import DetailedInfoNativeCoinValue from 'ui/shared/DetailedInfo/DetailedInfoNativeCoinValue';
 
 interface Props {
   txFee: string | null;
@@ -25,12 +24,11 @@ const TxDetailsFeePerGas = ({ txFee, gasUsed, isLoading }: Props) => {
       >
         Fee per gas
       </DetailedInfo.ItemLabel>
-      <DetailedInfo.ItemValue>
-        <Skeleton loading={ isLoading } mr={ 1 }>
-          { BigNumber(txFee).dividedBy(10 ** config.chain.currency.decimals).dividedBy(gasUsed).toFixed() }
-          { config.UI.views.tx.hiddenFields?.fee_currency ? '' : ` ${ currencyUnits.ether }` }
-        </Skeleton>
-      </DetailedInfo.ItemValue>
+      <DetailedInfoNativeCoinValue
+        amount={ BigNumber(txFee).dividedBy(gasUsed).toFixed() }
+        noSymbol={ config.UI.views.tx.hiddenFields?.fee_currency }
+        loading={ isLoading }
+      />
     </>
   );
 };

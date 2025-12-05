@@ -7,8 +7,8 @@ import type { MetadataAttributes } from 'types/client/token';
 import parseMetadata from 'lib/token/parseMetadata';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
+import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import TruncatedValue from 'ui/shared/TruncatedValue';
 
 import { useMetadataUpdateContext } from '../contexts/metadataUpdate';
 
@@ -37,12 +37,12 @@ const Item = ({ data, isLoading }: ItemProps) => {
           textStyle="sm"
           loading={ isLoading }
         >
-          <TruncatedValue value={ data.value } w="calc(100% - 16px)" isLoading={ isLoading }/>
+          <TruncatedText text={ data.value } w="calc(100% - 16px)" loading={ isLoading }/>
         </Link>
       );
     }
 
-    return <TruncatedValue value={ data.value } fontSize="sm" w="100%" isLoading={ isLoading }/>;
+    return <TruncatedText text={ data.value } fontSize="sm" w="100%" loading={ isLoading }/>;
   })();
 
   return (
@@ -55,14 +55,14 @@ const Item = ({ data, isLoading }: ItemProps) => {
       flexDir="column"
       alignItems="flex-start"
     >
-      <TruncatedValue
-        value={ data.trait_type }
+      <TruncatedText
+        text={ data.trait_type }
         textStyle="xs"
         w="100%"
         color="text.secondary"
         fontWeight={ 500 }
         mb={ 1 }
-        isLoading={ isLoading }
+        loading={ isLoading }
       />
       { value }
     </GridItem>

@@ -1,15 +1,13 @@
 import { Box, Flex } from '@chakra-ui/react';
-import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { InternalTransaction } from 'types/api/internalTransaction';
 
-import config from 'configs/app';
 import { Badge } from 'toolkit/chakra/badge';
-import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
+import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 import { TX_INTERNALS_ITEMS } from 'ui/tx/internals/utils';
 
 type Props = InternalTransaction & {
@@ -40,14 +38,19 @@ const TxInternalTableItem = ({ type, from, to, value, success, error, gas_limit:
         />
       </TableCell>
       <TableCell isNumeric verticalAlign="middle">
-        <Skeleton loading={ isLoading } display="inline-block">
-          { BigNumber(value).div(BigNumber(10 ** config.chain.currency.decimals)).toFormat() }
-        </Skeleton>
+        <NativeCoinValue
+          amount={ value }
+          noSymbol
+          loading={ isLoading }
+        />
       </TableCell>
       <TableCell isNumeric verticalAlign="middle">
-        <Skeleton loading={ isLoading } display="inline-block">
-          { BigNumber(gasLimit).toFormat() }
-        </Skeleton>
+        <NativeCoinValue
+          amount={ gasLimit }
+          units="wei"
+          noSymbol
+          loading={ isLoading }
+        />
       </TableCell>
     </TableRow>
   );

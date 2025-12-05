@@ -12,7 +12,7 @@ export const recipe = defineSlotRecipe({
       textAlign: 'center',
       boxShadow: 'size.md',
       zIndex: 'tooltip',
-      maxW: '320px',
+      maxW: { base: 'calc(100vw - 8px)', lg: '320px' },
       transformOrigin: 'var(--transform-origin)',
       _open: {
         animationStyle: 'scale-fade-in',

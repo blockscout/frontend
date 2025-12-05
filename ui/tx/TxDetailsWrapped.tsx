@@ -5,11 +5,9 @@ import React from 'react';
 import type { Transaction } from 'types/api/transaction';
 import type { ExcludeUndefined } from 'types/utils';
 
-import config from 'configs/app';
-import { currencyUnits } from 'lib/units';
 import { Badge } from 'toolkit/chakra/badge';
-import CurrencyValue from 'ui/shared/CurrencyValue';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
+import DetailedInfoNativeCoinValue from 'ui/shared/DetailedInfo/DetailedInfoNativeCoinValue';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import LogDecodedInputData from 'ui/shared/logs/LogDecodedInputData';
@@ -69,14 +67,7 @@ const TxDetailsWrapped = ({ data }: Props) => {
       >
         Value
       </DetailedInfo.ItemLabel>
-      <DetailedInfo.ItemValue>
-        <CurrencyValue
-          value={ data.value }
-          currency={ currencyUnits.ether }
-          decimals={ String(config.chain.currency.decimals) }
-          flexWrap="wrap"
-        />
-      </DetailedInfo.ItemValue>
+      <DetailedInfoNativeCoinValue amount={ data.value }/>
 
       { data.fee.value !== null && (
         <>
@@ -86,7 +77,7 @@ const TxDetailsWrapped = ({ data }: Props) => {
             Transaction fee
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue>
-            <TxFee tx={ data } withUsd/>
+            <TxFee tx={ data }/>
           </DetailedInfo.ItemValue>
         </>
       ) }

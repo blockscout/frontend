@@ -1,20 +1,20 @@
-import { Flex, Grid } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenInstance } from 'types/api/token';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 import type { ClusterChainConfig } from 'types/multichain';
 
-import getCurrencyValue from 'lib/getCurrencyValue';
 import { NFT_TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
 import { Badge } from 'toolkit/chakra/badge';
 import { Skeleton } from 'toolkit/chakra/skeleton';
+import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
-import TruncatedValue from 'ui/shared/TruncatedValue';
+import AssetValue from 'ui/shared/value/AssetValue';
 
 type Props = TokenTransfer & { tokenId?: string; isLoading?: boolean; instance?: TokenInstance; chainData?: ClusterChainConfig };
 
@@ -31,14 +31,6 @@ const TokenTransferListItem = ({
   instance,
   chainData,
 }: Props) => {
-  const { usd, valueStr } = total && 'value' in total && total.value !== null ? getCurrencyValue({
-    value: total.value,
-    exchangeRate: token?.exchange_rate,
-    accuracy: 8,
-    accuracyUsd: 2,
-    decimals: total.decimals || '0',
-  }) : { usd: null, valueStr: null };
-
   return (
     <ListItemMobile rowGap={ 3 }>
       <Flex justifyContent="space-between" alignItems="center" lineHeight="24px" width="100%">
@@ -71,32 +63,29 @@ const TokenTransferListItem = ({
         w="100%"
         fontWeight="500"
       />
-      { valueStr && token && (token.type === 'ERC-20' || token.type === 'ERC-1155') && (
-        <Grid gap={ 2 } templateColumns={ `1fr auto auto${ usd ? ' auto' : '' }` }>
-          <Skeleton loading={ isLoading } flexShrink={ 0 } fontWeight={ 500 }>
-            Value
-          </Skeleton>
+      { total && 'value' in total && token && (token.type === 'ERC-20' || token.type === 'ERC-1155') && (
+        <Flex alignItems="center" columnGap={ 2 } maxW="100%">
           <Skeleton
+            display="inline-flex"
+            alignItems="center"
+            loading={ isLoading }
+            flexShrink={ 0 }
+            fontWeight={ 500 }
+            maxW="50%"
+            whiteSpace="pre"
+            overflow="hidden"
+          >
+            <span>Value </span>
+            { token.symbol && <TruncatedText text={ token.symbol } loading={ isLoading }/> }
+          </Skeleton>
+          <AssetValue
+            amount={ total.value }
+            decimals={ total.decimals || '0' }
+            exchangeRate={ token?.exchange_rate }
             loading={ isLoading }
             color="text.secondary"
-            wordBreak="break-all"
-            overflow="hidden"
-            flexGrow={ 1 }
-          >
-            <span>{ valueStr }</span>
-          </Skeleton>
-          { token.symbol && <TruncatedValue isLoading={ isLoading } value={ token.symbol }/> }
-          { usd && (
-            <Skeleton
-              loading={ isLoading }
-              color="text.secondary"
-              wordBreak="break-all"
-              overflow="hidden"
-            >
-              <span>(${ usd })</span>
-            </Skeleton>
-          ) }
-        </Grid>
+          />
+        </Flex>
       ) }
       { total && 'token_id' in total && token && (NFT_TOKEN_TYPE_IDS.includes(token.type)) && total.token_id !== null && (
         <NftEntity

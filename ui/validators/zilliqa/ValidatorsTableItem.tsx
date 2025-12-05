@@ -1,12 +1,11 @@
-import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { ValidatorsZilliqaItem } from 'types/api/validators';
 
-import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import ValidatorEntity from 'ui/shared/entities/validator/ValidatorEntity';
+import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 interface Props {
   data: ValidatorsZilliqaItem;
@@ -25,9 +24,11 @@ const ValidatorsTableItem = ({ data, isLoading }: Props) => {
         </Skeleton>
       </TableCell>
       <TableCell verticalAlign="middle" isNumeric>
-        <Skeleton loading={ isLoading } display="inline-block" wordBreak="break-all">
-          { BigNumber(data.balance).div(BigNumber(10 ** config.chain.currency.decimals)).toFormat() }
-        </Skeleton>
+        <NativeCoinValue
+          amount={ data.balance }
+          loading={ isLoading }
+          noSymbol
+        />
       </TableCell>
     </TableRow>
   );

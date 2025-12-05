@@ -1,4 +1,4 @@
-import { Text, Flex } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -9,6 +9,7 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { Tag } from 'toolkit/chakra/tag';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import SimpleValue from 'ui/shared/value/SimpleValue';
 
 type Props = {
   item: AddressesItem;
@@ -27,7 +28,6 @@ const AddressesTableItem = ({
 }: Props) => {
 
   const addressBalance = BigNumber(item.coin_balance || 0).div(BigNumber(10 ** config.chain.currency.decimals));
-  const addressBalanceChunks = addressBalance.dp(8).toFormat().split('.');
 
   return (
     <TableRow>
@@ -50,14 +50,20 @@ const AddressesTableItem = ({
         </Flex>
       </TableCell>
       <TableCell isNumeric>
-        <Skeleton loading={ isLoading } display="inline-block" maxW="100%">
-          <Text lineHeight="24px" as="span">{ addressBalanceChunks[0] + (addressBalanceChunks[1] ? '.' : '') }</Text>
-          <Text lineHeight="24px" color="text.secondary" as="span">{ addressBalanceChunks[1] }</Text>
-        </Skeleton>
+        <SimpleValue
+          value={ addressBalance }
+          loading={ isLoading }
+          lineHeight="24px"
+        />
       </TableCell>
       { hasPercentage && (
         <TableCell isNumeric>
-          <Text lineHeight="24px">{ addressBalance.div(totalSupply).multipliedBy(100).dp(8).toFormat() + '%' }</Text>
+          <SimpleValue
+            value={ addressBalance.div(totalSupply).multipliedBy(100) }
+            loading={ isLoading }
+            postfix="%"
+            lineHeight="24px"
+          />
         </TableCell>
       ) }
       <TableCell isNumeric>

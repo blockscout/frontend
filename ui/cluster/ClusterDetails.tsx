@@ -2,15 +2,14 @@ import React from 'react';
 
 import type { ClusterByNameResponse } from 'types/api/clusters';
 
-import config from 'configs/app';
 import { isEvmAddress } from 'lib/address/isEvmAddress';
 import { currencyUnits } from 'lib/units';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import CurrencyValue from 'ui/shared/CurrencyValue';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import ClustersEntity from 'ui/shared/entities/clusters/ClustersEntity';
+import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 interface Props {
   clusterData?: ClusterByNameResponse['result']['data'];
@@ -77,11 +76,9 @@ const ClusterDetails = ({ clusterData, clusterName, isLoading }: Props) => {
         Backing
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
-        <CurrencyValue
-          value={ clusterData?.backingWei || '0' }
-          currency={ currencyUnits.ether }
-          decimals={ String(config.chain.currency.decimals) }
-          isLoading={ isLoading }
+        <NativeCoinValue
+          amount={ clusterData?.backingWei || '0' }
+          loading={ isLoading }
         />
       </DetailedInfo.ItemValue>
 
