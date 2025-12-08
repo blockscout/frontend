@@ -99,7 +99,6 @@ export default function MarketplaceApp() {
         appId={ id }
         appUrl={ appUrl }
         message={ message }
-        isFixedChainId
         mx={{ base: -4, lg: -6 }}
       />
     </Flex>

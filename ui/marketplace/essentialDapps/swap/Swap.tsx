@@ -53,7 +53,7 @@ export default function Swap() {
         appId="swap"
         appUrl={ dappConfig?.url }
         message={ message }
-        isAdaptiveHeight
+        isEssentialDapp
       />
       { (feature?.essentialDappsAdEnabled && !isMobile) && (
         <AdBanner

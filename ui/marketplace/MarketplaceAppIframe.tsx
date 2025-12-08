@@ -93,13 +93,12 @@ type Props = {
   appId: string;
   appUrl?: string;
   message?: Record<string, unknown>;
-  isFixedChainId?: boolean;
-  isAdaptiveHeight?: boolean;
+  isEssentialDapp?: boolean;
   className?: string;
 };
 
 const MarketplaceAppIframe = ({
-  appId, appUrl, message, isFixedChainId, isAdaptiveHeight, className,
+  appId, appUrl, message, isEssentialDapp, className,
 }: Props) => {
   const {
     address,
@@ -108,12 +107,12 @@ const MarketplaceAppIframe = ({
     signMessage,
     signTypedData,
     switchChain,
-  } = useMarketplaceWallet(appId, isFixedChainId);
+  } = useMarketplaceWallet(appId, isEssentialDapp);
 
   const [ chainId, rpcUrl ] = useMemo(() => {
     let data: [ number?, string? ] = [ Number(config.chain.id), config.chain.rpcUrls[0] ];
 
-    if (!isFixedChainId) {
+    if (isEssentialDapp) {
       const chainConfig = essentialDappsChainsConfig()?.chains.find(
         (chain) => chain.id === String(connectedChainId),
       );
@@ -123,7 +122,7 @@ const MarketplaceAppIframe = ({
     }
 
     return data;
-  }, [ isFixedChainId, connectedChainId ]);
+  }, [ isEssentialDapp, connectedChainId ]);
 
   return (
     <DappscoutIframeProvider
@@ -140,7 +139,7 @@ const MarketplaceAppIframe = ({
         appUrl={ appUrl }
         address={ address }
         message={ message }
-        isAdaptiveHeight={ isAdaptiveHeight }
+        isAdaptiveHeight={ isEssentialDapp }
         className={ className }
       />
     </DappscoutIframeProvider>

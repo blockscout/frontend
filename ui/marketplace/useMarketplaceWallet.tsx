@@ -22,7 +22,7 @@ export type SignTypedDataArgs<
   TPrimaryType extends string = string,
 > = SignTypedDataParameters<TTypedData, TPrimaryType, Account>;
 
-export default function useMarketplaceWallet(appId: string, isFixedChainId = false) {
+export default function useMarketplaceWallet(appId: string, isEssentialDapp = false) {
   const { address, chainId } = useAccount();
   const { sendTransactionAsync } = useSendTransaction();
   const { signMessageAsync } = useSignMessage();
@@ -35,10 +35,10 @@ export default function useMarketplaceWallet(appId: string, isFixedChainId = fal
       Action: event,
       Address: address,
       AppId: appId,
-      Source: isFixedChainId ? 'Dappscout' : 'Essential dapps',
-      ChainId: isFixedChainId ? undefined : String(chainId),
+      Source: isEssentialDapp ? 'Essential dapps' : 'Dappscout',
+      ChainId: isEssentialDapp ? String(chainId) : undefined,
     });
-  }, [ address, appId, chainId, isFixedChainId ]);
+  }, [ address, appId, chainId, isEssentialDapp ]);
 
   const switchChain = useCallback(
     (chainId: number) => switchChainAsync({ chainId }),
@@ -46,10 +46,10 @@ export default function useMarketplaceWallet(appId: string, isFixedChainId = fal
   );
 
   const checkAndSwitchChain = useCallback(async() => {
-    if (isFixedChainId && Number(config.chain.id) !== chainId) {
+    if (!isEssentialDapp && Number(config.chain.id) !== chainId) {
       await switchChain(Number(config.chain.id));
     }
-  }, [ chainId, switchChain, isFixedChainId ]);
+  }, [ chainId, switchChain, isEssentialDapp ]);
 
   const sendTransaction = useCallback(async(transaction: SendTransactionArgs) => {
     await checkAndSwitchChain();
