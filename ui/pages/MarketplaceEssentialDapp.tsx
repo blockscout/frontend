@@ -43,8 +43,8 @@ const EssentialDapp = () => {
   }
 
   return (
-    <Flex flexDir="column" h="full" w="full" alignItems={ isCentered ? 'center' : undefined }>
-      <PageTitle title={ title || '' }/>
+    <Flex flexDir="column" h="full" w="full">
+      <PageTitle title={ title || '' } alignItems={ isCentered ? 'center' : undefined }/>
       { content }
     </Flex>
   );

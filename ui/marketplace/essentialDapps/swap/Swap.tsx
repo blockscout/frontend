@@ -48,7 +48,7 @@ export default function Swap() {
   }), [ mainColor, borderColor ]);
 
   return (
-    <Flex flex="1" flexDir="column" w="full" justifyContent="space-between" gap={ 6 }>
+    <Flex flex="1" flexDir="column" justifyContent="space-between" gap={ 6 }>
       <MarketplaceAppIframe
         appId="swap"
         appUrl={ dappConfig?.url }
