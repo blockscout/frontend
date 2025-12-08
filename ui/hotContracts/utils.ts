@@ -17,10 +17,10 @@ export const SORT_SEQUENCE: Record<HotContractsSortingField, Array<HotContractsS
 };
 
 export const INTERVAL_ITEMS: Array<{ id: HotContractsInterval; labelShort: string; labelFull: string }> = [
-  { id: '5m', labelShort: '5M', labelFull: '5 minutes' },
-  { id: '1h', labelShort: '1H', labelFull: '1 hour' },
-  { id: '3h', labelShort: '3H', labelFull: '3 hours' },
-  { id: '1d', labelShort: '24H', labelFull: '1 day' },
+  { id: '5m', labelShort: '5m', labelFull: '5 minutes' },
+  { id: '1h', labelShort: '1h', labelFull: '1 hour' },
+  { id: '3h', labelShort: '3h', labelFull: '3 hours' },
+  { id: '1d', labelShort: '1D', labelFull: '1 day' },
   { id: '7d', labelShort: '1W', labelFull: '1 week' },
   { id: '30d', labelShort: '1M', labelFull: '1 month' },
 ];
