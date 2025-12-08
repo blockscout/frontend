@@ -1,14 +1,14 @@
 import type { Feature } from './types';
 
 import chain from '../chain';
-import { getEnvValue } from '../utils';
+import { getEnvValue, parseEnvJson } from '../utils';
 import opSuperchain from './opSuperchain';
 
 const walletConnectProjectId = getEnvValue('NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID');
 
 const title = 'Blockchain interaction (writing to contract, etc.)';
 
-const config: Feature<{ walletConnect: { projectId: string } }> = (() => {
+const config: Feature<{ walletConnect: { projectId: string; featuredWalletIds: Array<string> } }> = (() => {
 
   // all chain parameters are required for wagmi provider
   // @wagmi/chains/dist/index.d.ts
@@ -32,6 +32,7 @@ const config: Feature<{ walletConnect: { projectId: string } }> = (() => {
       isEnabled: true,
       walletConnect: {
         projectId: walletConnectProjectId,
+        featuredWalletIds: parseEnvJson<Array<string>>(getEnvValue('NEXT_PUBLIC_WALLET_CONNECT_FEATURED_WALLET_IDS')) ?? [],
       },
     });
   }
