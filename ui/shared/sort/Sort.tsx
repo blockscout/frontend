@@ -1,6 +1,7 @@
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
+import useIsInitialLoading from 'lib/hooks/useIsInitialLoading';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { IconButton } from 'toolkit/chakra/icon-button';
 import type { SelectRootProps } from 'toolkit/chakra/select';
@@ -14,16 +15,18 @@ export interface Props extends SelectRootProps {
 const Sort = (props: Props) => {
   const { collection, isLoading, ...rest } = props;
   const isMobile = useIsMobile(false);
+  const isInitialLoading = useIsInitialLoading(isLoading);
 
   const trigger = (() => {
     if (isMobile) {
       return (
         <SelectControl triggerProps={{ asChild: true }} noIndicator>
           <IconButton
-            loadingSkeleton={ isLoading }
+            loadingSkeleton={ isInitialLoading }
             aria-label="sort"
             size="md"
             variant="dropdown"
+            disabled={ isLoading }
           >
             <IconSvg name="arrows/up-down"/>
           </IconButton>
@@ -33,7 +36,7 @@ const Sort = (props: Props) => {
 
     return (
       <SelectControl
-        loading={ isLoading }
+        loading={ isInitialLoading }
         _hover={{ color: 'hover' }}
         _open={{ color: 'hover' }}
       >
@@ -56,7 +59,7 @@ const Sort = (props: Props) => {
   })();
 
   return (
-    <SelectRoot collection={ collection } w="fit-content" variant="plain" { ...rest }>
+    <SelectRoot collection={ collection } w="fit-content" variant="plain" disabled={ isLoading } { ...rest }>
       { trigger }
       <SelectContent>
         { collection.items.map((item) => (

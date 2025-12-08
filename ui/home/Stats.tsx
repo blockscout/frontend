@@ -181,7 +181,7 @@ const Stats = () => {
       },
       hasGasTracker && apiData?.gas_prices && {
         id: 'gas_tracker' as const,
-        icon: 'gas' as const,
+        icon: 'gas_slim' as const,
         label: 'Gas tracker',
         value: apiData.gas_prices.average ? <GasPrice data={ apiData.gas_prices.average }/> : 'N/A',
         hint: gasInfoTooltip,

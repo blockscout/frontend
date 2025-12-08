@@ -31,6 +31,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/stats': '%network_name% stats - %network_name% network insights',
   '/stats/[id]': '%network_name% stats - %id% chart',
   '/uptime': '%network_name% uptime',
+  '/hot-contracts': '%network_name% hot contracts',
   '/api-docs': '%network_name% API docs - %network_name% developer tools',
   '/search-results': '%network_name% search result for %q%',
   '/auth/profile': '%network_name% - my profile',
