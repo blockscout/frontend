@@ -11,7 +11,7 @@ import HotContractsTableItem from './HotContractsTableItem';
 import { SORT_SEQUENCE } from './utils';
 
 interface Props {
-  items: Array<HotContract>;
+  items: Array<HotContract> | undefined;
   isLoading?: boolean;
   sort: HotContractsSortingValue;
   setSorting: ({ value }: { value: Array<string> }) => void;
@@ -54,7 +54,7 @@ const HotContractsTable = ({ items, isLoading, sort, setSorting, exchangeRate }:
         </TableRow>
       </TableHeaderSticky>
       <TableBody>
-        { items.map((item, index) => (
+        { items?.map((item, index) => (
           <HotContractsTableItem key={ index } isLoading={ isLoading } data={ item } exchangeRate={ exchangeRate }/>
         )) }
       </TableBody>

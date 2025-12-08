@@ -75,7 +75,7 @@ const HotContracts = () => {
       </Box>
       <Box hideBelow="lg">
         <HotContractsTable
-          items={ data?.items ?? [] }
+          items={ data?.items }
           isLoading={ isPlaceholderData }
           sort={ sort }
           setSorting={ handleSortChange }
@@ -88,7 +88,11 @@ const HotContracts = () => {
   const actionBar = (
     <ActionBar mt={ -6 }>
       <Flex alignItems="center">
-        <HotContractsIntervalSelect interval={ interval } onIntervalChange={ handleIntervalChange } isLoading={ isPlaceholderData }/>
+        <HotContractsIntervalSelect
+          interval={ interval }
+          onIntervalChange={ handleIntervalChange }
+          isLoading={ isPlaceholderData }
+        />
         { [ '1d', '7d', '30d' ].includes(interval) && (
           <Skeleton loading={ isPlaceholderData } color="text.secondary" hideBelow="lg" textStyle="sm" ml={ 6 }>
             <span>The data is updated once a day.</span>

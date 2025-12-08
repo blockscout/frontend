@@ -3,6 +3,7 @@ import React from 'react';
 
 import type { HotContractsInterval } from 'types/api/contracts';
 
+import useIsInitialLoading from 'lib/hooks/useIsInitialLoading';
 import type { SelectOption } from 'toolkit/chakra/select';
 import { Select } from 'toolkit/chakra/select';
 import type { TagProps } from 'toolkit/chakra/tag';
@@ -31,6 +32,8 @@ interface Props {
 
 const HotContractsIntervalSelect = ({ interval, onIntervalChange, isLoading, selectTagSize }: Props) => {
 
+  const isInitialLoading = useIsInitialLoading(isLoading);
+
   const handleItemSelect = React.useCallback(({ value }: { value: Array<string> }) => {
     onIntervalChange(value[0] as HotContractsInterval);
   }, [ onIntervalChange ]);
@@ -42,7 +45,8 @@ const HotContractsIntervalSelect = ({ interval, onIntervalChange, isLoading, sel
         onChange={ onIntervalChange }
         value={ interval }
         tagSize={ selectTagSize }
-        loading={ isLoading }
+        loading={ isInitialLoading }
+        disabled={ isLoading }
         hideBelow="lg"
       />
       <Select
@@ -52,7 +56,8 @@ const HotContractsIntervalSelect = ({ interval, onIntervalChange, isLoading, sel
         onValueChange={ handleItemSelect }
         hideFrom="lg"
         w="100%"
-        loading={ isLoading }
+        loading={ isInitialLoading }
+        disabled={ isLoading }
       />
     </>
   );

@@ -266,7 +266,7 @@ export default function useNavItems(): ReturnType {
           text: 'Chain stats',
           nextRoute: { pathname: '/stats' as const },
           icon: 'graph',
-          isActive: pathname.startsWith('/stats/'),
+          isActive: pathname.startsWith('/stats'),
         },
         config.features.megaEth.isEnabled && {
           text: 'Uptime',

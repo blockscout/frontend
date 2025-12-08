@@ -9,6 +9,7 @@ type Props<T extends string> = {
   items: Array<{ id: T; title: string }>;
   tagSize?: TagProps['size'];
   loading?: boolean;
+  disabled?: boolean;
 } & (
   {
     value?: T;
@@ -21,7 +22,7 @@ type Props<T extends string> = {
   }
 ) & Omit<StackProps, 'onChange'>;
 
-const TagGroupSelect = <T extends string>({ items, value, isMulti, onChange, tagSize, loading, ...rest }: Props<T>) => {
+const TagGroupSelect = <T extends string>({ items, value, isMulti, onChange, tagSize, loading, disabled, ...rest }: Props<T>) => {
   const onItemClick = React.useCallback((event: React.SyntheticEvent) => {
     const itemValue = (event.currentTarget as HTMLDivElement).getAttribute('data-id') as T;
     if (isMulti) {
@@ -48,11 +49,12 @@ const TagGroupSelect = <T extends string>({ items, value, isMulti, onChange, tag
             data-id={ item.id }
             selected={ isSelected }
             fontWeight={ 500 }
-            onClick={ onItemClick }
+            onClick={ disabled ? undefined : onItemClick }
             size={ tagSize }
             display="inline-flex"
             justifyContent="center"
             loading={ loading }
+            disabled={ disabled }
           >
             { item.title }
           </Tag>
