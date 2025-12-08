@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useState, useMemo } from 'react';
 
 import config from 'configs/app';
 import essentialDappsChainsConfig from 'configs/essential-dapps-chains';
-import ContentLoader from 'ui/shared/ContentLoader';
+import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 
 import useMarketplaceWallet from '../marketplace/useMarketplaceWallet';
 
@@ -20,9 +20,10 @@ type ContentProps = {
   address?: string;
   message?: Record<string, unknown>;
   isAdaptiveHeight?: boolean;
+  className?: string;
 };
 
-const Content = ({ appUrl, address, message, isAdaptiveHeight }: ContentProps) => {
+const Content = chakra(({ appUrl, address, message, isAdaptiveHeight, className }: ContentProps) => {
   const { iframeRef, isReady } = useDappscoutIframe();
 
   const [ iframeKey, setIframeKey ] = useState(0);
@@ -60,9 +61,9 @@ const Content = ({ appUrl, address, message, isAdaptiveHeight }: ContentProps) =
   return (
     <Center
       flexGrow={ 1 }
-      mx={{ base: -4, lg: -6 }}
       minH={ isAdaptiveHeight ? `${ iframeHeight }px` : undefined }
       minW="100%"
+      className={ className }
     >
       { (isFrameLoading) && (
         <ContentLoader/>
@@ -86,7 +87,7 @@ const Content = ({ appUrl, address, message, isAdaptiveHeight }: ContentProps) =
       ) }
     </Center>
   );
-};
+});
 
 type Props = {
   appId: string;
@@ -94,9 +95,12 @@ type Props = {
   message?: Record<string, unknown>;
   isFixedChainId?: boolean;
   isAdaptiveHeight?: boolean;
+  className?: string;
 };
 
-export default function MarketplaceAppIframe({ appId, appUrl, message, isFixedChainId, isAdaptiveHeight }: Props) {
+const MarketplaceAppIframe = ({
+  appId, appUrl, message, isFixedChainId, isAdaptiveHeight, className,
+}: Props) => {
   const {
     address,
     chainId: connectedChainId,
@@ -111,10 +115,10 @@ export default function MarketplaceAppIframe({ appId, appUrl, message, isFixedCh
 
     if (!isFixedChainId) {
       const chainConfig = essentialDappsChainsConfig()?.chains.find(
-        (chain) => chain.config.chain.id === String(connectedChainId),
+        (chain) => chain.id === String(connectedChainId),
       );
-      if (chainConfig?.config.chain.rpcUrls[0]) {
-        data = [ connectedChainId, chainConfig.config.chain.rpcUrls[0] ];
+      if (chainConfig?.app_config?.chain?.rpcUrls[0]) {
+        data = [ connectedChainId, chainConfig.app_config.chain.rpcUrls[0] ];
       }
     }
 
@@ -132,7 +136,15 @@ export default function MarketplaceAppIframe({ appId, appUrl, message, isFixedCh
       signTypedData={ signTypedData }
       switchChain={ switchChain }
     >
-      <Content appUrl={ appUrl } address={ address } message={ message } isAdaptiveHeight={ isAdaptiveHeight }/>
+      <Content
+        appUrl={ appUrl }
+        address={ address }
+        message={ message }
+        isAdaptiveHeight={ isAdaptiveHeight }
+        className={ className }
+      />
     </DappscoutIframeProvider>
   );
 };
+
+export default chakra(MarketplaceAppIframe);

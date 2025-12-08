@@ -1,14 +1,24 @@
-import { useToken } from '@chakra-ui/react';
+import { Flex, useToken } from '@chakra-ui/react';
 import React, { useMemo } from 'react';
+
+import { getFeaturePayload } from 'configs/app/features/types';
 
 import config from 'configs/app';
 import essentialDappsChainsConfig from 'configs/essential-dapps-chains';
+import useIsMobile from 'lib/hooks/useIsMobile';
 import { useColorMode } from 'toolkit/chakra/color-mode';
 import { BODY_TYPEFACE } from 'toolkit/theme/foundations/typography';
 import MarketplaceAppIframe from 'ui/marketplace/MarketplaceAppIframe';
+import AdBanner from 'ui/shared/ad/AdBanner';
 
-const feature = config.features.marketplace;
-const dappConfig = feature.isEnabled ? feature.essentialDapps?.swap : undefined;
+const feature = getFeaturePayload(config.features.marketplace);
+const dappConfig = feature?.essentialDapps?.swap;
+
+const defaultChainId = Number(
+  dappConfig?.chains.includes(config.chain.id as string) ?
+    config.chain.id :
+    dappConfig?.chains[0],
+);
 
 function getExplorerUrls() {
   return Object.fromEntries(dappConfig?.chains.map((chainId) => {
@@ -20,6 +30,7 @@ function getExplorerUrls() {
 }
 
 export default function Swap() {
+  const isMobile = useIsMobile();
   const { colorMode } = useColorMode();
   const [ mainColor ] = useToken('colors', 'blue.600');
   const [ borderColor ] = useToken('colors', colorMode === 'light' ? 'blackAlpha.100' : 'whiteAlpha.100');
@@ -33,15 +44,26 @@ export default function Swap() {
     mainColor,
     borderColor,
     fontFamily: BODY_TYPEFACE,
-    initialChainId: Number(config.chain.id),
+    defaultChainId,
   }), [ mainColor, borderColor ]);
 
   return (
-    <MarketplaceAppIframe
-      appId="swap"
-      appUrl={ dappConfig?.url }
-      message={ message }
-      isAdaptiveHeight
-    />
+    <Flex flex="1" flexDir="column" w="full" justifyContent="space-between" gap={ 6 }>
+      <MarketplaceAppIframe
+        appId="swap"
+        appUrl={ dappConfig?.url }
+        message={ message }
+        isAdaptiveHeight
+      />
+      { (feature?.essentialDappsAdEnabled && !isMobile) && (
+        <AdBanner
+          format="mobile"
+          w="fit-content"
+          borderRadius="md"
+          overflow="hidden"
+          ml="auto"
+        />
+      ) }
+    </Flex>
   );
 };
