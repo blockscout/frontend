@@ -1,3 +1,5 @@
+import { it, expect } from 'vitest';
+
 import { extractVariables, getStringChunks, checkSummary } from './utils';
 
 const template = '{action_type} {source_amount} {native} into {destination_amount} {destination_token}';

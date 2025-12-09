@@ -1,3 +1,5 @@
+import { expect, test, describe } from 'vitest';
+
 import buildUrl from './buildUrl';
 
 test('builds URL for resource without path params', () => {

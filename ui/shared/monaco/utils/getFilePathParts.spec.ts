@@ -1,3 +1,5 @@
+import { it, expect } from 'vitest';
+
 import getFilePathParts from './getFilePathParts';
 
 it('computes correct chunks if all file name are unique', () => {

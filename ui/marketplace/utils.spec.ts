@@ -1,4 +1,5 @@
 import type { NextRouter } from 'next/router';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 import { getAppUrl } from './utils';
 
@@ -10,7 +11,7 @@ describe('getAppUrl', () => {
       pathname: '/current/path',
       asPath: '/current/path?someParam=value',
       query: {},
-      replace: jest.fn(),
+      replace: vi.fn(),
     } as unknown as NextRouter;
   });
 

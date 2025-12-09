@@ -1,3 +1,5 @@
+import { describe, it, expect } from 'vitest';
+
 import getFullPathOfImportedFile from './getFullPathOfImportedFile';
 
 it('construct correct absolute path', () => {

@@ -4,8 +4,8 @@
   "private": false,
   "homepage": "https://github.com/blockscout/frontend#readme",
   "engines": {
-    "node": "22.11.0",
-    "npm": "10.9.0"
+    "node": ">=22.11.0",
+    "npm": ">=10.9.0"
   },
   "scripts": {
     "dev": "./tools/scripts/dev.sh",
@@ -33,6 +33,7 @@
     "test:pw:ci": "yarn test:pw --project=$PW_PROJECT",
     "test:pw:detect-affected": "node ./deploy/tools/affected-tests/index.js",
     "test:jest": "jest",
+    "test:vitest": "vitest",
     "test:jest:watch": "jest --watch",
     "favicon:generate:dev": "./tools/scripts/favicon-generator.dev.sh",
     "og-image:generate:dev": "./tools/scripts/og-image-generator.dev.sh",
@@ -194,7 +195,8 @@
     "typescript": "5.9.2",
     "typescript-eslint": "8.41.0",
     "vite-plugin-svgr": "^2.2.2",
-    "vite-tsconfig-paths": "4.3.2",
+    "vite-tsconfig-paths": "5.1.4",
+    "vitest": "4.0.15",
     "ws": "^8.17.1"
   },
   "lint-staged": {
