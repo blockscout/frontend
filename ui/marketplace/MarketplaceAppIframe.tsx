@@ -46,12 +46,14 @@ const Content = chakra(({ appUrl, address, message, isAdaptiveHeight, className 
 
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
-      if (event.origin !== appUrl) {
-        return;
-      }
-      if (event.data?.type === 'window-height' && isAdaptiveHeight) {
-        setIframeHeight(Number(event.data.height));
-      }
+      try {
+        if (event.origin !== new URL(appUrl ?? '').origin) {
+          return;
+        }
+        if (event.data?.type === 'window-height' && isAdaptiveHeight) {
+          setIframeHeight(Number(event.data.height));
+        }
+      } catch {}
     };
 
     window.addEventListener('message', handleMessage);
