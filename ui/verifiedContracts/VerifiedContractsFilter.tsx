@@ -3,31 +3,29 @@ import React from 'react';
 
 import type { VerifiedContractsFilter as TVerifiedContractsFilter } from 'types/api/contracts';
 
-import config from 'configs/app';
+import useApiQuery from 'lib/api/useApiQuery';
+import formatLanguageName from 'lib/contracts/formatLanguageName';
 import type { SelectOption } from 'toolkit/chakra/select';
 import PopoverFilterRadio from 'ui/shared/filters/PopoverFilterRadio';
-
-const OPTIONS = [
-  { value: 'all', label: 'All' },
-  { value: 'solidity', label: 'Solidity' },
-  { value: 'vyper', label: 'Vyper' },
-  { value: 'yul', label: 'Yul' },
-  { value: 'scilla', label: 'Scilla' },
-  { value: 'geas', label: 'Geas' },
-  { value: 'stylus_rust', label: 'Stylus Rust' },
-];
 
 interface Props {
   hasActiveFilter: boolean;
   defaultValue: TVerifiedContractsFilter | undefined;
   onChange: (nextValue: string | Array<string>) => void;
-  chainConfig?: typeof config;
 }
 
-const VerifiedContractsFilter = ({ onChange, defaultValue, hasActiveFilter, chainConfig }: Props) => {
+// TODO @tom2drum remove NEXT_PUBLIC_VIEWS_CONTRACT_LANGUAGE_FILTERS occurrences
+// TODO @tom2drum check on multichain setup
+const VerifiedContractsFilter = ({ onChange, defaultValue, hasActiveFilter }: Props) => {
+
+  const { data, isPending } = useApiQuery('general:config_contract_languages');
+
   const options = React.useMemo(() => {
-    return OPTIONS.filter(({ value }) => value === 'all' || (chainConfig || config).UI.views.address.languageFilters.includes(value));
-  }, [ chainConfig ]);
+    return [
+      { value: 'all', label: 'All' },
+      ...(data?.languages || []).map((language) => ({ value: language, label: formatLanguageName(language) })),
+    ];
+  }, [ data?.languages ]);
 
   const collection = React.useMemo(() => {
     return createListCollection<SelectOption>({ items: options });
@@ -39,7 +37,8 @@ const VerifiedContractsFilter = ({ onChange, defaultValue, hasActiveFilter, chai
       collection={ collection }
       onChange={ onChange }
       hasActiveFilter={ hasActiveFilter }
-      initialValue={ defaultValue || OPTIONS[0].value }
+      initialValue={ defaultValue || options[0].value }
+      isLoading={ isPending }
     />
   );
 };

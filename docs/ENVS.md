@@ -287,7 +287,6 @@ Settings for meta tags, OG tags and SEO
 | NEXT_PUBLIC_VIEWS_ADDRESS_NATIVE_TOKEN_ADDRESS | `string` | The address of a native ERC-20 token that shadows the balance of the native coin; used to exclude its balance from the net worth value of user tokens. | - | - | `0x471EcE3750Da237f93B8E339c536989b8978a438` | v2.4.0+ |
 | NEXT_PUBLIC_VIEWS_CONTRACT_SOLIDITYSCAN_ENABLED | `boolean` | Set to `true` if SolidityScan reports are supported | - | - | `true` | v1.19.0+ |
 | NEXT_PUBLIC_VIEWS_CONTRACT_EXTRA_VERIFICATION_METHODS | `Array<'solidity-hardhat' \| 'solidity-foundry'>` | Pass an array of additional methods from which users can choose while verifying a smart contract. Both methods are available by default, pass `'none'` string to disable them all. | - | - | `['solidity-hardhat']` | v1.33.0+ |
-| NEXT_PUBLIC_VIEWS_CONTRACT_LANGUAGE_FILTERS | `Array<'solidity' \| 'vyper' \| 'yul' \| 'scilla' \| 'geas' \| 'stylus_rust'>` | Pass an array of contract languages that will be displayed as options in the filter on the verified contract page. | - | `['solidity','vyper','yul','geas','stylus_rust']` | `['solidity','vyper','yul','scilla']` | v1.37.0+ |
 | NEXT_PUBLIC_VIEWS_CONTRACT_DECODED_BYTECODE_ENABLED | `boolean` | If set to true, the deployed bytecode for unverified contracts will be parsed on the client side to retrieve the source code. If successful, the source code will be displayed in the snippet along with the content type selector. This feature works only for Scilla contracts.  | - | - | `true` | v2.3.0+ |
 
 ##### Address views list
