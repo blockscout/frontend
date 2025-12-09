@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useState, useMemo } from 'react';
 
 import config from 'configs/app';
 import essentialDappsChainsConfig from 'configs/essential-dapps-chains';
+import useWeb3Wallet from 'lib/web3/useWallet';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 
 import useMarketplaceWallet from '../marketplace/useMarketplaceWallet';
@@ -19,12 +20,13 @@ type ContentProps = {
   appUrl?: string;
   address?: string;
   message?: Record<string, unknown>;
-  isAdaptiveHeight?: boolean;
+  isEssentialDapp?: boolean;
   className?: string;
 };
 
-const Content = chakra(({ appUrl, address, message, isAdaptiveHeight, className }: ContentProps) => {
+const Content = chakra(({ appUrl, address, message, isEssentialDapp, className }: ContentProps) => {
   const { iframeRef, isReady } = useDappscoutIframe();
+  const web3Wallet = useWeb3Wallet({ source: 'Essential dapps' });
 
   const [ iframeKey, setIframeKey ] = useState(0);
   const [ isFrameLoading, setIsFrameLoading ] = useState(true);
@@ -48,23 +50,28 @@ const Content = chakra(({ appUrl, address, message, isAdaptiveHeight, className 
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
       try {
-        if (event.origin !== new URL(appUrl ?? '').origin) {
+        if (event.origin !== new URL(appUrl ?? '').origin || !isEssentialDapp) {
           return;
         }
-        if (event.data?.type === 'window-height' && isAdaptiveHeight) {
-          setIframeHeight(Number(event.data.height));
+        switch (event.data?.type) {
+          case 'window-height':
+            setIframeHeight(Number(event.data.height));
+            break;
+          case 'connect-wallet':
+            web3Wallet.connect();
+            break;
         }
       } catch {}
     };
 
     window.addEventListener('message', handleMessage);
     return () => window.removeEventListener('message', handleMessage);
-  }, [ appUrl, isAdaptiveHeight ]);
+  }, [ appUrl, isEssentialDapp, web3Wallet ]);
 
   return (
     <Center
       flexGrow={ 1 }
-      minH={ isAdaptiveHeight ? `${ iframeHeight }px` : undefined }
+      minH={ isEssentialDapp ? `${ iframeHeight }px` : undefined }
       minW="100%"
       className={ className }
     >
@@ -142,7 +149,7 @@ const MarketplaceAppIframe = ({
         appUrl={ appUrl }
         address={ address }
         message={ message }
-        isAdaptiveHeight={ isEssentialDapp }
+        isEssentialDapp={ isEssentialDapp }
         className={ className }
       />
     </DappscoutIframeProvider>
