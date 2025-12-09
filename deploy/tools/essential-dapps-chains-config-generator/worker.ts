@@ -13,7 +13,7 @@ async function fetchChainConfig(url: string): Promise<ChainConfig> {
   const controller = new AbortController();
   const timeout = setTimeout(() => {
     controller.abort(`Request to ${ url } timed out`);
-  }, 5_000);
+  }, 10_000);
 
   try {
     const response = await fetch(`${ url }/node-api/config`, { signal: controller.signal });
