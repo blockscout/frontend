@@ -31,6 +31,7 @@ const Content = chakra(({ appUrl, address, message, isAdaptiveHeight, className 
   const [ iframeHeight, setIframeHeight ] = useState(0);
 
   useEffect(() => {
+    setIsFrameLoading(true);
     setIframeKey((key) => key + 1);
   }, [ address ]);
 
