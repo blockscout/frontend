@@ -3,6 +3,7 @@ import React from 'react';
 
 import * as tokensMock from 'mocks/address/tokens';
 import * as opSuperchainMock from 'mocks/multichain/opSuperchain';
+import * as statsMock from 'mocks/stats';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';
 import * as pwConfig from 'playwright/utils/config';
@@ -11,7 +12,7 @@ import OpSuperchainAddressTokens from './OpSuperchainAddressTokens';
 
 const CURRENT_ADDRESS = '0xd789a607CEac2f0E14867de4EB15b15C9FFB5859';
 
-test.beforeEach(async({ mockApiResponse, mockMultichainConfig, mockEnvs }) => {
+test.beforeEach(async({ mockApiResponse, mockMultichainConfig, mockEnvs, page }) => {
   await mockApiResponse('multichainAggregator:address', opSuperchainMock.addressA, { pathParams: { hash: CURRENT_ADDRESS } });
   await mockApiResponse('multichainAggregator:address_tokens', {
     items: [ opSuperchainMock.tokenA ],
@@ -29,6 +30,10 @@ test.beforeEach(async({ mockApiResponse, mockMultichainConfig, mockEnvs }) => {
     items: [ ],
     next_page_params: undefined,
   }, { pathParams: { hash: CURRENT_ADDRESS }, queryParams: { type: 'ERC-404' } });
+  await page.route('https://eth.blockscout.com/api/v2/stats', (route) => route.fulfill({
+    status: 200,
+    json: { ...statsMock.base, coin_image: null },
+  }));
   await mockMultichainConfig();
   await mockEnvs(ENVS_MAP.opSuperchain);
 });
@@ -55,13 +60,13 @@ test.describe('tokens', () => {
     await expect(component).toHaveScreenshot();
 
     await component.getByText('By chain').nth(0).click();
-    await expect(page.locator('div[data-scope="popover"][data-part="content"]')).toHaveScreenshot();
+    await expect(page.locator('div[data-scope="popover"][data-part="content"]').first()).toHaveScreenshot();
 
     await component.getByText('By chain').nth(1).click();
-    await expect(page.locator('div[data-scope="popover"][data-part="content"]')).toHaveScreenshot();
+    await expect(page.locator('div[data-scope="popover"][data-part="content"]').first()).toHaveScreenshot();
 
     await component.getByText('By chain').nth(2).click();
-    await expect(page.locator('div[data-scope="popover"][data-part="content"]')).toHaveScreenshot();
+    await expect(page.locator('div[data-scope="popover"][data-part="content"]').first()).toHaveScreenshot();
   });
 
   test.describe('mobile', () => {
