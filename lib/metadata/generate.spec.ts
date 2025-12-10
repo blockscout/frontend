@@ -1,8 +1,8 @@
-import { describe, it, expect } from 'vitest';
-
 import type { ApiData } from './types';
 
 import type { Route } from 'nextjs-routes';
+
+import { describe, it, expect } from 'vitest';
 
 import generate from './generate';
 

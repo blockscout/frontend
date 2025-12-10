@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 
 import { useRouter } from 'next/router';
+
 import type { Mock } from 'vitest';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { renderHook } from 'vitest/lib';

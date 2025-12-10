@@ -34,7 +34,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 22.11.0
+          node-version: 22.14.0
           cache: 'yarn'
 
       - name: Cache node_modules
@@ -70,7 +70,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 22.11.0
+          node-version: 22.14.0
           cache: 'yarn'
 
       - name: Cache node_modules
@@ -133,7 +133,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 22.11.0
+          node-version: 22.14.0
           cache: 'yarn'
 
       - name: Cache node_modules
@@ -176,7 +176,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 22.11.0
+          node-version: 22.14.0
           cache: 'yarn'
 
       - name: Cache node_modules
@@ -212,7 +212,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 22.11.0
+          node-version: 22.14.0
           cache: 'yarn'
 
       - name: Cache node_modules
@@ -254,7 +254,7 @@ jobs:
       (needs.pw_affected_tests.result == 'success' || needs.pw_affected_tests.result == 'skipped') 
     runs-on: ubuntu-latest
     container:
-      image: mcr.microsoft.com/playwright:v1.49.0-noble
+      image: mcr.microsoft.com/playwright:v1.57.0-noble
 
     strategy:
       fail-fast: false
@@ -273,7 +273,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 22.11.0
+          node-version: 22.14.0
           cache: 'yarn'
 
       - name: Cache node_modules

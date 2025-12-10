@@ -1,4 +1,5 @@
 import type { NextRouter } from 'next/router';
+
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 import { getAppUrl } from './utils';

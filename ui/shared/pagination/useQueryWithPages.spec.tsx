@@ -2,12 +2,12 @@
 
 import { useRouter } from 'next/router';
 import type React from 'react';
+
+import * as addressMock from 'mocks/address/address';
 import type { Mock } from 'vitest';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { renderHook, wrapper, act } from 'vitest/lib';
 import flushPromises from 'vitest/utils/flushPromises';
-
-import * as addressMock from 'mocks/address/address';
 
 const { mockScrollToTop, mockRouterPush } = vi.hoisted(() => ({
   mockScrollToTop: vi.fn(),

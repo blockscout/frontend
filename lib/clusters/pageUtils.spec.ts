@@ -1,7 +1,7 @@
-import { describe, it, expect } from 'vitest';
-
 import { ClustersOrderBy } from 'types/api/clusters';
 import type { ClustersDirectoryObject } from 'types/api/clusters';
+
+import { describe, it, expect } from 'vitest';
 
 import {
   getViewModeOrderBy,

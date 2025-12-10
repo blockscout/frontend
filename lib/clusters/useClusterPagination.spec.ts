@@ -1,12 +1,12 @@
 // @vitest-environment jsdom
 
 import { useRouter } from 'next/router';
-import type { Mock } from 'vitest';
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { renderHook, act } from 'vitest/lib';
 
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { useQueryParams } from 'lib/router/useQueryParams';
+import type { Mock } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { renderHook, act } from 'vitest/lib';
 
 import { useClusterPagination } from '../clusters/useClusterPagination';
 

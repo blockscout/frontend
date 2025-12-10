@@ -2,11 +2,11 @@
 
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
+
+import useApiFetch from 'lib/api/useApiFetch';
 import type { Mock } from 'vitest';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { renderHook } from 'vitest/lib';
-
-import useApiFetch from 'lib/api/useApiFetch';
 
 import useQuickSearchQuery from './useQuickSearchQuery';
 import useSearchWithClusters from './useSearchWithClusters';

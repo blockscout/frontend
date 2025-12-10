@@ -1,6 +1,5 @@
-import { describe, it, expect } from 'vitest';
-
 import { isEvmAddress } from 'lib/address/isEvmAddress';
+import { describe, it, expect } from 'vitest';
 
 import { detectInputType } from './detectInputType';
 

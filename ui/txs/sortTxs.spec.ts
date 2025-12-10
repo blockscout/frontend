@@ -1,6 +1,6 @@
-import { describe, it, expect } from 'vitest';
-
 import type { Transaction } from 'types/api/transaction';
+
+import { describe, it, expect } from 'vitest';
 
 import sortTxs, { sortTxsFromSocket } from './sortTxs';
 

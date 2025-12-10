@@ -1,7 +1,6 @@
-import { it, expect } from 'vitest';
-
 import * as transactionMock from 'mocks/noves/transaction';
 import type { NovesFlowViewItem } from 'ui/tx/assetFlows/utils/generateFlowViewData';
+import { it, expect } from 'vitest';
 
 import { getActionFromTo, getFromTo, getFromToValue } from './utils';
 
