@@ -1,18 +1,14 @@
-import { Box, Flex, useToken } from '@chakra-ui/react';
-import type { RouteExecutionUpdate, WidgetConfig } from '@lifi/widget';
-import { LiFiWidget, useWidgetEvents, WidgetEvent } from '@lifi/widget';
-import { useEffect, useMemo, useRef } from 'react';
+import { Flex, useToken } from '@chakra-ui/react';
+import React, { useMemo } from 'react';
 
 import { getFeaturePayload } from 'configs/app/features/types';
 
 import config from 'configs/app';
 import essentialDappsChainsConfig from 'configs/essential-dapps-chains';
 import useIsMobile from 'lib/hooks/useIsMobile';
-import useRewardsActivity from 'lib/hooks/useRewardsActivity';
-import * as mixpanel from 'lib/mixpanel/index';
-import useWeb3Wallet from 'lib/web3/useWallet';
 import { useColorMode } from 'toolkit/chakra/color-mode';
 import { BODY_TYPEFACE } from 'toolkit/theme/foundations/typography';
+import MarketplaceAppIframe from 'ui/marketplace/MarketplaceAppIframe';
 import AdBanner from 'ui/shared/ad/AdBanner';
 
 const feature = getFeaturePayload(config.features.marketplace);
@@ -24,118 +20,41 @@ const defaultChainId = Number(
     dappConfig?.chains[0],
 );
 
-function getUrls(isRpc = false) {
+function getExplorerUrls() {
   return Object.fromEntries(dappConfig?.chains.map((chainId) => {
-    const chainConfig = essentialDappsChainsConfig()?.chains.find((chain) => chain.id === chainId);
-    const url = isRpc ? `${ chainConfig?.app_config?.apis?.general?.endpoint }/api/eth-rpc` : chainConfig?.explorer_url;
-    return [ Number(chainId), [ url ] ];
+    const chainConfig = essentialDappsChainsConfig()?.chains.find(
+      (chain) => chain.id === chainId,
+    );
+    return [ Number(chainId), [ chainConfig?.explorer_url ] ];
   }) || []);
 }
 
-const Widget = () => {
-  const web3Wallet = useWeb3Wallet({ source: 'Essential dapps' });
-  const { colorMode } = useColorMode();
-  const [ color ] = useToken('colors', 'blue.600');
-
-  const config = useMemo(
-    () =>
-      ({
-        fee: Number(dappConfig?.fee),
-        variant: 'compact',
-        subvariant: 'default',
-        appearance: colorMode,
-        theme: {
-          typography: { fontFamily: BODY_TYPEFACE },
-          shape: {
-            borderRadius: 12,
-            borderRadiusSecondary: 8,
-          },
-          palette: {
-            primary: { main: color },
-            secondary: { main: color },
-          },
-        },
-        hiddenUI: [ 'appearance' ],
-        fromChain: defaultChainId,
-        fromToken: '0x0000000000000000000000000000000000000000',
-        chains: {
-          allow: dappConfig?.chains.map((chainId) => Number(chainId)),
-        },
-        sdkConfig: {
-          rpcUrls: getUrls(true),
-        },
-        explorerUrls: getUrls(),
-        walletConfig: {
-          onConnect: web3Wallet.connect,
-        },
-      } as Partial<WidgetConfig>),
-    [ web3Wallet.connect, colorMode, color ],
-  );
-
-  return (
-    <Box
-      w="fit-content"
-      maxW="full"
-      border="1px solid"
-      borderColor="border.divider"
-      borderRadius="md"
-      overflow="hidden"
-      mx="auto"
-    >
-      <LiFiWidget config={ config } integrator={ dappConfig?.integrator || '' }/>
-    </Box>
-  );
-};
-
-const Swap = () => {
+export default function Swap() {
   const isMobile = useIsMobile();
-  const { trackTransaction, trackTransactionConfirm } = useRewardsActivity();
-  const widgetEvents = useWidgetEvents();
-  const eventParams = useRef<{
-    activityToken?: string;
-    routeId?: string;
-    from?: string;
-    chainId?: string;
-  }>({});
+  const { colorMode } = useColorMode();
+  const [ mainColor ] = useToken('colors', 'blue.600');
+  const [ borderColor ] = useToken('colors', colorMode === 'light' ? 'blackAlpha.100' : 'whiteAlpha.100');
 
-  useEffect(() => {
-    const onRouteExecutionUpdated = async(update: RouteExecutionUpdate) => {
-      try {
-        if (eventParams.current.routeId !== update.route.id) {
-          const { chainId, from, to } = update.route.steps.at(-1)?.transactionRequest ?? {};
-          if (chainId && from && to) {
-            const response = await trackTransaction(from, to, String(chainId));
-            eventParams.current = {
-              activityToken: response?.token,
-              routeId: update.route.id,
-              from,
-              chainId: String(chainId),
-            };
-          }
-        } else if ([ 'SWAP', 'CROSS_CHAIN' ].includes(update.process.type) && update.process.txHash) {
-          mixpanel.logEvent(mixpanel.EventTypes.WALLET_ACTION, {
-            Action: 'Send Transaction',
-            Address: eventParams.current.from,
-            AppId: 'swap',
-            Source: 'Essential dapps',
-            ChainId: eventParams.current.chainId,
-          });
-          if (eventParams.current.activityToken) {
-            await trackTransactionConfirm(update.process.txHash, eventParams.current.activityToken);
-          }
-          eventParams.current = {};
-        }
-      } catch {}
-    };
-
-    widgetEvents.on(WidgetEvent.RouteExecutionUpdated, onRouteExecutionUpdated);
-
-    return () => widgetEvents.all.clear();
-  }, [ widgetEvents, trackTransaction, trackTransactionConfirm ]);
+  const message = useMemo(() => ({
+    type: 'config',
+    integrator: dappConfig?.integrator,
+    fee: Number(dappConfig?.fee),
+    chains: dappConfig?.chains.map((chainId) => Number(chainId)),
+    explorerUrls: getExplorerUrls(),
+    mainColor,
+    borderColor,
+    fontFamily: BODY_TYPEFACE,
+    defaultChainId,
+  }), [ mainColor, borderColor ]);
 
   return (
     <Flex flex="1" flexDir="column" justifyContent="space-between" gap={ 6 }>
-      <Widget/>
+      <MarketplaceAppIframe
+        appId="swap"
+        appUrl={ dappConfig?.url }
+        message={ message }
+        isEssentialDapp
+      />
       { (feature?.essentialDappsAdEnabled && !isMobile) && (
         <AdBanner
           format="mobile"
@@ -148,5 +67,3 @@ const Swap = () => {
     </Flex>
   );
 };
-
-export default Swap;

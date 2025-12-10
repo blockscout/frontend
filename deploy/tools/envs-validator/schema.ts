@@ -56,11 +56,11 @@ const schema = yup
     NEXT_PUBLIC_APP_PROTOCOL: yup.string().oneOf(protocols),
     NEXT_PUBLIC_APP_PORT: yup.number().positive().integer(),
     NEXT_PUBLIC_APP_ENV: yup.string(),
-    NEXT_PUBLIC_APP_INSTANCE: yup.string(),    
+    NEXT_PUBLIC_APP_INSTANCE: yup.string(),
 
 
     // Features configuration
-    // NOTE: As a rule of thumb, only include features that require a single ENV variable here.  
+    // NOTE: As a rule of thumb, only include features that require a single ENV variable here.
     // Otherwise, consider placing them in the corresponding schema file in the "./schemas/features" directory.
     NEXT_PUBLIC_WEB3_WALLETS: yup
       .mixed()
