@@ -1,25 +1,30 @@
-import { renderHook, act } from 'jest/lib';
+// @vitest-environment jsdom
+
+import { useRouter } from 'next/router';
+import type { Mock } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { renderHook, act } from 'vitest/lib';
+
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { useQueryParams } from 'lib/router/useQueryParams';
 
 import { useClusterPagination } from '../clusters/useClusterPagination';
 
-jest.mock('next/router', () => ({
-  useRouter: jest.fn(),
+vi.mock('next/router', () => ({
+  useRouter: vi.fn(),
 }));
-jest.mock('lib/router/useQueryParams');
-jest.mock('lib/router/getQueryParamString');
+vi.mock('lib/router/useQueryParams');
+vi.mock('lib/router/getQueryParamString');
 
-const { useRouter } = require('next/router');
-const mockUseRouter = useRouter as jest.MockedFunction<typeof useRouter>;
-const mockUseQueryParams = useQueryParams as jest.MockedFunction<typeof useQueryParams>;
-const mockGetQueryParamString = getQueryParamString as jest.MockedFunction<typeof getQueryParamString>;
+const mockUseRouter = useRouter as Mock<typeof useRouter>;
+const mockUseQueryParams = useQueryParams as Mock<typeof useQueryParams>;
+const mockGetQueryParamString = getQueryParamString as Mock<typeof getQueryParamString>;
 
 describe('useClusterPagination', () => {
-  const mockUpdateQuery = jest.fn();
+  const mockUpdateQuery = vi.fn();
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     mockUseRouter.mockReturnValue({
       query: {},
     } as unknown as ReturnType<typeof useRouter>);

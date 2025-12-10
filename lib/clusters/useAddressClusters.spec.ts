@@ -1,32 +1,47 @@
+// @vitest-environment jsdom
+
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { renderHook } from 'vitest/lib';
+
 import { useAddressClusters } from './useAddressClusters';
 
-jest.mock('lib/api/useApiQuery', () => ({
-  __esModule: true,
-  'default': jest.fn(),
+const { mockUseApiQuery } = vi.hoisted(() => ({
+  mockUseApiQuery: vi.fn(),
 }));
 
-jest.mock('configs/app', () => ({
-  features: {
-    nameServices: {
-      isEnabled: true,
-      ens: { isEnabled: true },
-      clusters: { isEnabled: true },
+vi.mock('lib/api/useApiQuery', () => ({
+  'default': mockUseApiQuery,
+}));
+
+vi.mock('configs/app', async() => {
+  return {
+    'default': {
+      UI: {
+        colorTheme: {},
+        homepage: {},
+        fonts: {},
+      },
+      features: {
+        nameServices: {
+          isEnabled: true,
+          ens: { isEnabled: true },
+          clusters: { isEnabled: true },
+        },
+      },
     },
-  },
-}));
-
-const mockUseApiQuery = require('lib/api/useApiQuery').default;
+  };
+});
 
 describe('useAddressClusters', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     mockUseApiQuery.mockReturnValue({ data: null, isLoading: false });
   });
 
   it('should call API with correct parameters', () => {
     const addressHash = '0x1234567890123456789012345678901234567890';
 
-    useAddressClusters(addressHash);
+    renderHook(() => useAddressClusters(addressHash));
 
     expect(mockUseApiQuery).toHaveBeenCalledWith('clusters:get_clusters_by_address', {
       queryParams: {
@@ -41,7 +56,7 @@ describe('useAddressClusters', () => {
   });
 
   it('should be disabled when addressHash is empty', () => {
-    useAddressClusters('');
+    renderHook(() => useAddressClusters(''));
 
     expect(mockUseApiQuery).toHaveBeenCalledWith('clusters:get_clusters_by_address', {
       queryParams: {
@@ -58,7 +73,7 @@ describe('useAddressClusters', () => {
   it('should handle isEnabled parameter', () => {
     const addressHash = '0x1234567890123456789012345678901234567890';
 
-    useAddressClusters(addressHash, false);
+    renderHook(() => useAddressClusters(addressHash, false));
 
     expect(mockUseApiQuery).toHaveBeenCalledWith('clusters:get_clusters_by_address', {
       queryParams: {

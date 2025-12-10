@@ -1,27 +1,35 @@
+// @vitest-environment jsdom
+
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
+import type { Mock } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { renderHook } from 'vitest/lib';
 
-import { renderHook } from 'jest/lib';
 import useApiFetch from 'lib/api/useApiFetch';
 
 import useQuickSearchQuery from './useQuickSearchQuery';
 import useSearchWithClusters from './useSearchWithClusters';
 
-jest.mock('@tanstack/react-query', () => ({
-  useQuery: jest.fn(),
+vi.mock('@tanstack/react-query', () => ({
+  useQuery: vi.fn(),
 }));
 
-const mockUseQuery = useQuery as jest.MockedFunction<typeof useQuery>;
+const mockUseQuery = useQuery as Mock<typeof useQuery>;
 
 type MockQuickSearchQuery = ReturnType<typeof useQuickSearchQuery>;
 type MockApiQuery = ReturnType<typeof useApiFetch>;
 
-jest.mock('lib/api/useApiFetch', () => jest.fn());
-const mockUseApiFetch = useApiFetch as jest.MockedFunction<typeof useApiFetch>;
-jest.mock('./useQuickSearchQuery');
-jest.mock('lib/hooks/useDebounce', () => (value: unknown) => value);
+vi.mock('lib/api/useApiFetch', () => ({
+  'default': vi.fn(),
+}));
+const mockUseApiFetch = useApiFetch as Mock<typeof useApiFetch>;
+vi.mock('./useQuickSearchQuery');
+vi.mock('lib/hooks/useDebounce', () => ({
+  'default': (value: unknown) => value,
+}));
 
-const mockUseQuickSearchQuery = useQuickSearchQuery as jest.MockedFunction<typeof useQuickSearchQuery>;
+const mockUseQuickSearchQuery = useQuickSearchQuery as Mock<typeof useQuickSearchQuery>;
 
 const defaultUseQueryResult: Partial<UseQueryResult> = {
   data: [],
@@ -36,7 +44,7 @@ const defaultUseQueryResult: Partial<UseQueryResult> = {
   isStale: false,
   status: 'success',
   fetchStatus: 'idle',
-  refetch: jest.fn(),
+  refetch: vi.fn(),
   failureCount: 0,
   failureReason: null,
   errorUpdateCount: 0,
@@ -50,58 +58,33 @@ const defaultUseQueryResult: Partial<UseQueryResult> = {
   isPaused: false,
 };
 
-jest.mock('configs/app', () => ({
-  features: {
-    nameServices: { isEnabled: true, ens: { isEnabled: true }, clusters: { isEnabled: true } },
-    rollbar: { isEnabled: false },
-  },
-  UI: {
-    homepage: {
-      heroBanner: null,
-      charts: [],
-      stats: [],
+vi.mock('configs/app', () => {
+  return {
+    'default': {
+      UI: {
+        colorTheme: {},
+        homepage: {},
+        fonts: {},
+      },
+      features: {
+        nameServices: {
+          isEnabled: true,
+          ens: { isEnabled: true },
+          clusters: { isEnabled: true },
+        },
+      },
     },
-    fonts: {
-      heading: null,
-      body: null,
-    },
-    navigation: {
-      logo: { 'default': null, dark: null },
-      icon: { 'default': null, dark: null },
-      highlightedRoutes: [],
-      otherLinks: [],
-      featuredNetworks: null,
-      layout: 'vertical',
-    },
-    footer: {
-      links: null,
-      frontendVersion: null,
-      frontendCommit: null,
-    },
-    views: {},
-    indexingAlert: { blocks: { isHidden: false }, intTxs: { isHidden: false } },
-    maintenanceAlert: { message: null },
-    explorers: { items: [] },
-    ides: { items: [] },
-    hasContractAuditReports: false,
-    colorTheme: { 'default': null },
-    maxContentWidth: true,
-  },
-  app: {},
-  chain: {},
-  apis: {},
-  services: {},
-  meta: {},
-}));
+  };
+});
 
 describe('useSearchWithClusters', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
 
     mockUseQuickSearchQuery.mockReturnValue({
       searchTerm: '',
       debouncedSearchTerm: '',
-      handleSearchTermChange: jest.fn(),
+      handleSearchTermChange: vi.fn(),
       query: {
         data: [],
         isError: false,
@@ -130,7 +113,7 @@ describe('useSearchWithClusters', () => {
       mockUseQuickSearchQuery.mockReturnValue({
         searchTerm: 'test-cluster/',
         debouncedSearchTerm: 'test-cluster/',
-        handleSearchTermChange: jest.fn(),
+        handleSearchTermChange: vi.fn(),
         query: { data: [], isError: false, isLoading: false },
         redirectCheckQuery: { data: null, isError: false, isLoading: false },
       } as unknown as MockQuickSearchQuery);
@@ -149,7 +132,7 @@ describe('useSearchWithClusters', () => {
       mockUseQuickSearchQuery.mockReturnValue({
         searchTerm: 'campnetwork/lol',
         debouncedSearchTerm: 'campnetwork/lol',
-        handleSearchTermChange: jest.fn(),
+        handleSearchTermChange: vi.fn(),
         query: { data: [], isError: false, isLoading: false },
         redirectCheckQuery: { data: null, isError: false, isLoading: false },
       } as unknown as MockQuickSearchQuery);
@@ -168,7 +151,7 @@ describe('useSearchWithClusters', () => {
       mockUseQuickSearchQuery.mockReturnValue({
         searchTerm: 'test-cluster',
         debouncedSearchTerm: 'test-cluster',
-        handleSearchTermChange: jest.fn(),
+        handleSearchTermChange: vi.fn(),
         query: { data: [], isError: false, isLoading: false },
         redirectCheckQuery: { data: null, isError: false, isLoading: false },
       } as unknown as MockQuickSearchQuery);
@@ -187,7 +170,7 @@ describe('useSearchWithClusters', () => {
       mockUseQuickSearchQuery.mockReturnValue({
         searchTerm: '  my-cluster/  ',
         debouncedSearchTerm: '  my-cluster/  ',
-        handleSearchTermChange: jest.fn(),
+        handleSearchTermChange: vi.fn(),
         query: { data: [], isError: false, isLoading: false },
         redirectCheckQuery: { data: null, isError: false, isLoading: false },
       } as unknown as MockQuickSearchQuery);
@@ -206,7 +189,7 @@ describe('useSearchWithClusters', () => {
       mockUseQuickSearchQuery.mockReturnValue({
         searchTerm: 'test-cluster-123/',
         debouncedSearchTerm: 'test-cluster-123/',
-        handleSearchTermChange: jest.fn(),
+        handleSearchTermChange: vi.fn(),
         query: { data: [], isError: false, isLoading: false },
         redirectCheckQuery: { data: null, isError: false, isLoading: false },
       } as unknown as MockQuickSearchQuery);
@@ -236,7 +219,7 @@ describe('useSearchWithClusters', () => {
         mockUseQuickSearchQuery.mockReturnValue({
           searchTerm: input,
           debouncedSearchTerm: input,
-          handleSearchTermChange: jest.fn(),
+          handleSearchTermChange: vi.fn(),
           query: { data: [], isError: false, isLoading: false },
           redirectCheckQuery: { data: null, isError: false, isLoading: false },
         } as unknown as MockQuickSearchQuery);
@@ -250,7 +233,7 @@ describe('useSearchWithClusters', () => {
           select: expect.any(Function),
         });
 
-        jest.clearAllMocks();
+        vi.clearAllMocks();
       });
     });
 
@@ -258,7 +241,7 @@ describe('useSearchWithClusters', () => {
       mockUseQuickSearchQuery.mockReturnValue({
         searchTerm: 'org/team/project',
         debouncedSearchTerm: 'org/team/project',
-        handleSearchTermChange: jest.fn(),
+        handleSearchTermChange: vi.fn(),
         query: { data: [], isError: false, isLoading: false },
         redirectCheckQuery: { data: null, isError: false, isLoading: false },
       } as unknown as MockQuickSearchQuery);
@@ -277,7 +260,7 @@ describe('useSearchWithClusters', () => {
       mockUseQuickSearchQuery.mockReturnValue({
         searchTerm: 'campnetwork/lol/',
         debouncedSearchTerm: 'campnetwork/lol/',
-        handleSearchTermChange: jest.fn(),
+        handleSearchTermChange: vi.fn(),
         query: { data: [], isError: false, isLoading: false },
         redirectCheckQuery: { data: null, isError: false, isLoading: false },
       } as unknown as MockQuickSearchQuery);
@@ -291,12 +274,12 @@ describe('useSearchWithClusters', () => {
         select: expect.any(Function),
       });
 
-      jest.clearAllMocks();
+      vi.clearAllMocks();
 
       mockUseQuickSearchQuery.mockReturnValue({
         searchTerm: 'campnetwork/lol',
         debouncedSearchTerm: 'campnetwork/lol',
-        handleSearchTermChange: jest.fn(),
+        handleSearchTermChange: vi.fn(),
         query: { data: [], isError: false, isLoading: false },
         redirectCheckQuery: { data: null, isError: false, isLoading: false },
       } as unknown as MockQuickSearchQuery);
@@ -317,7 +300,7 @@ describe('useSearchWithClusters', () => {
       mockUseQuickSearchQuery.mockReturnValue({
         searchTerm: 'test-cluster/',
         debouncedSearchTerm: 'test-cluster/',
-        handleSearchTermChange: jest.fn(),
+        handleSearchTermChange: vi.fn(),
         query: { data: [], isError: false, isLoading: false },
         redirectCheckQuery: { data: null, isError: false, isLoading: false },
       } as unknown as MockQuickSearchQuery);
@@ -354,7 +337,7 @@ describe('useSearchWithClusters', () => {
       mockUseQuickSearchQuery.mockReturnValue({
         searchTerm: 'simple-cluster/',
         debouncedSearchTerm: 'simple-cluster/',
-        handleSearchTermChange: jest.fn(),
+        handleSearchTermChange: vi.fn(),
         query: { data: [], isError: false, isLoading: false },
         redirectCheckQuery: { data: null, isError: false, isLoading: false },
       } as unknown as MockQuickSearchQuery);
@@ -391,7 +374,7 @@ describe('useSearchWithClusters', () => {
       mockUseQuickSearchQuery.mockReturnValue({
         searchTerm: 'test/',
         debouncedSearchTerm: 'test/',
-        handleSearchTermChange: jest.fn(),
+        handleSearchTermChange: vi.fn(),
         query: { data: [], isError: false, isLoading: false },
         redirectCheckQuery: { data: null, isError: false, isLoading: false },
       } as unknown as MockQuickSearchQuery);
@@ -431,7 +414,7 @@ describe('useSearchWithClusters', () => {
       mockUseQuickSearchQuery.mockReturnValue({
         searchTerm: 'nonexistent-cluster/',
         debouncedSearchTerm: 'nonexistent-cluster/',
-        handleSearchTermChange: jest.fn(),
+        handleSearchTermChange: vi.fn(),
         query: { data: [], isError: false, isLoading: false },
         redirectCheckQuery: { data: null, isError: false, isLoading: false },
       } as unknown as MockQuickSearchQuery);
@@ -456,7 +439,7 @@ describe('useSearchWithClusters', () => {
       mockUseQuickSearchQuery.mockReturnValue({
         searchTerm: 'empty-cluster/',
         debouncedSearchTerm: 'empty-cluster/',
-        handleSearchTermChange: jest.fn(),
+        handleSearchTermChange: vi.fn(),
         query: { data: [], isError: false, isLoading: false },
         redirectCheckQuery: { data: null, isError: false, isLoading: false },
       } as unknown as MockQuickSearchQuery);
@@ -481,7 +464,7 @@ describe('useSearchWithClusters', () => {
       mockUseQuickSearchQuery.mockReturnValue({
         searchTerm: '0x123456',
         debouncedSearchTerm: '0x123456',
-        handleSearchTermChange: jest.fn(),
+        handleSearchTermChange: vi.fn(),
         query: {
           data: regularSearchData,
           isError: false,
@@ -499,7 +482,7 @@ describe('useSearchWithClusters', () => {
       const mockQuickSearchQuery = {
         searchTerm: 'regular search',
         debouncedSearchTerm: 'regular search',
-        handleSearchTermChange: jest.fn(),
+        handleSearchTermChange: vi.fn(),
         query: {
           data: [],
           isError: false,
@@ -523,7 +506,7 @@ describe('useSearchWithClusters', () => {
       mockUseQuickSearchQuery.mockReturnValue({
         searchTerm: 'error-search',
         debouncedSearchTerm: 'error-search',
-        handleSearchTermChange: jest.fn(),
+        handleSearchTermChange: vi.fn(),
         query: {
           data: [],
           isError: true,
@@ -545,7 +528,7 @@ describe('useSearchWithClusters', () => {
       mockUseQuickSearchQuery.mockReturnValue({
         searchTerm: '',
         debouncedSearchTerm: '',
-        handleSearchTermChange: jest.fn(),
+        handleSearchTermChange: vi.fn(),
         query: { data: [], isError: false, isLoading: false },
         redirectCheckQuery: { data: null, isError: false, isLoading: false },
       } as unknown as MockQuickSearchQuery);
@@ -564,7 +547,7 @@ describe('useSearchWithClusters', () => {
       mockUseQuickSearchQuery.mockReturnValue({
         searchTerm: '/',
         debouncedSearchTerm: '/',
-        handleSearchTermChange: jest.fn(),
+        handleSearchTermChange: vi.fn(),
         query: { data: [], isError: false, isLoading: false },
         redirectCheckQuery: { data: null, isError: false, isLoading: false },
       } as unknown as MockQuickSearchQuery);
@@ -583,7 +566,7 @@ describe('useSearchWithClusters', () => {
       mockUseQuickSearchQuery.mockReturnValue({
         searchTerm: 'test',
         debouncedSearchTerm: 'test-debounced',
-        handleSearchTermChange: jest.fn(),
+        handleSearchTermChange: vi.fn(),
         query: { data: [], isError: false, isLoading: false },
         redirectCheckQuery: { data: 'redirect-data', isError: false, isLoading: false },
       } as unknown as MockQuickSearchQuery);
@@ -601,7 +584,7 @@ describe('useSearchWithClusters', () => {
       mockUseQuickSearchQuery.mockReturnValue({
         searchTerm: 'loading-cluster/',
         debouncedSearchTerm: 'loading-cluster/',
-        handleSearchTermChange: jest.fn(),
+        handleSearchTermChange: vi.fn(),
         query: { data: [], isError: false, isLoading: false },
         redirectCheckQuery: { data: null, isError: false, isLoading: false },
       } as unknown as MockQuickSearchQuery);
@@ -622,7 +605,7 @@ describe('useSearchWithClusters', () => {
       mockUseQuickSearchQuery.mockReturnValue({
         searchTerm: 'original-term/',
         debouncedSearchTerm: 'final-cluster/',
-        handleSearchTermChange: jest.fn(),
+        handleSearchTermChange: vi.fn(),
         query: { data: [], isError: false, isLoading: false },
         redirectCheckQuery: { data: null, isError: false, isLoading: false },
       } as unknown as MockQuickSearchQuery);
@@ -641,7 +624,7 @@ describe('useSearchWithClusters', () => {
       mockUseQuickSearchQuery.mockReturnValue({
         searchTerm: 'original-term',
         debouncedSearchTerm: 'debounced/',
-        handleSearchTermChange: jest.fn(),
+        handleSearchTermChange: vi.fn(),
         query: { data: [], isError: false, isLoading: false },
         redirectCheckQuery: { data: null, isError: false, isLoading: false },
       } as unknown as MockQuickSearchQuery);

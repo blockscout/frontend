@@ -9,7 +9,8 @@ export default defineConfig({
   ],
   test: {
     globalSetup: [ './vitest/global-setup.ts' ],
-    include: [ '**/*.spec.ts' ],
+    setupFiles: [ './vitest/setup.ts' ],
+    include: [ '**/*.spec.ts', '**/*.spec.tsx' ],
     exclude: [ '**/node_modules/**', '**/node_modules_linux/**' ],
   },
 });

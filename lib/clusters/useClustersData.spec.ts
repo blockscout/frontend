@@ -1,23 +1,28 @@
+// @vitest-environment jsdom
+
 import { renderHook } from '@testing-library/react';
+import type { Mock } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 import useApiQuery from 'lib/api/useApiQuery';
+import { detectInputType } from 'lib/clusters/detectInputType';
 
 import { useClustersData } from './useClustersData';
 
-jest.mock('lib/api/useApiQuery');
-const mockUseApiQuery = useApiQuery as jest.MockedFunction<typeof useApiQuery>;
+vi.mock('lib/api/useApiQuery');
+const mockUseApiQuery = useApiQuery as Mock<typeof useApiQuery>;
 
 type MockQueryResult = ReturnType<typeof useApiQuery>;
 
-jest.mock('lib/clusters/detectInputType', () => ({
-  detectInputType: jest.fn(),
+vi.mock('lib/clusters/detectInputType', () => ({
+  detectInputType: vi.fn(),
 }));
 
-const mockDetectInputType = require('lib/clusters/detectInputType').detectInputType;
+const mockDetectInputType = detectInputType as Mock<typeof detectInputType>;
 
 describe('useClustersData', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
 
     mockUseApiQuery.mockReturnValue({
       data: null,
@@ -183,7 +188,7 @@ describe('useClustersData', () => {
         { initialProps: { searchTerm: 'search' } },
       );
 
-      jest.clearAllMocks();
+      vi.clearAllMocks();
 
       rerender({ searchTerm: 'search' });
 
