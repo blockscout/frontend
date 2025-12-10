@@ -1,33 +1,34 @@
-import { chakra } from '@chakra-ui/react';
+// Arbitrary text that will be truncated if there is not enough space in the container
+
 import type { Placement } from '@floating-ui/dom';
 import React from 'react';
 
-import { Skeleton } from 'toolkit/chakra/skeleton';
-import { Tooltip } from 'toolkit/chakra/tooltip';
-import { TruncatedTextTooltip } from 'toolkit/components/truncation/TruncatedTextTooltip';
+import type { SkeletonTextProps } from '../../chakra/skeleton';
+import { Skeleton } from '../../chakra/skeleton';
+import { Tooltip } from '../../chakra/tooltip';
+import { TruncatedTextTooltip } from './TruncatedTextTooltip';
 
-interface Props {
-  className?: string;
-  isLoading?: boolean;
-  value: string;
+export interface TruncatedTextProps extends Omit<SkeletonTextProps, 'loading'> {
+  text: string;
+  loading?: boolean;
   // tooltipContent is used to display the tooltip value different from the truncated value
   tooltipContent?: string;
   tooltipPlacement?: Placement;
   tooltipInteractive?: boolean;
 }
 
-const TruncatedValue = ({ className, isLoading, value, tooltipPlacement, tooltipInteractive, tooltipContent }: Props) => {
+export const TruncatedText = ({ text, tooltipPlacement, tooltipInteractive, tooltipContent, loading, ...rest }: TruncatedTextProps) => {
   const valueElement = (
     <Skeleton
-      className={ className }
-      loading={ isLoading }
+      loading={ loading }
       display="inline-block"
       whiteSpace="nowrap"
       overflow="hidden"
       textOverflow="ellipsis"
       height="fit-content"
+      { ...rest }
     >
-      <span>{ value }</span>
+      <span>{ text }</span>
     </Skeleton>
   );
 
@@ -45,10 +46,8 @@ const TruncatedValue = ({ className, isLoading, value, tooltipPlacement, tooltip
   };
 
   return (
-    <TruncatedTextTooltip label={ value } placement={ tooltipPlacement } interactive={ tooltipInteractive }>
+    <TruncatedTextTooltip label={ text } placement={ tooltipPlacement } interactive={ tooltipInteractive }>
       { valueElement }
     </TruncatedTextTooltip>
   );
 };
-
-export default React.memo(chakra(TruncatedValue));

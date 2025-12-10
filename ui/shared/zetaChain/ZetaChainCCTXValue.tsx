@@ -4,8 +4,8 @@ import React from 'react';
 import { CoinType } from '@blockscout/zetachain-cctx-types';
 
 import config from 'configs/app';
-import getCurrencyValue from 'lib/getCurrencyValue';
 import { Skeleton } from 'toolkit/chakra/skeleton';
+import calculateUsdValue from 'ui/shared/value/calculateUsdValue';
 
 type Props = {
   coinType: CoinType;
@@ -23,15 +23,15 @@ const ZetaChainCCTXValue = ({ coinType, tokenSymbol, amount, decimals, isLoading
   switch (coinType) {
     case CoinType.ERC20:
       unit = tokenSymbol || 'Unnamed token';
-      value = getCurrencyValue({ value: amount, decimals: decimals?.toString() || '18', accuracy }).valueStr;
+      value = calculateUsdValue({ amount, decimals: decimals?.toString() || '18', accuracy }).valueStr;
       break;
     case CoinType.ZETA:
       unit = config.chain.currency.symbol || config.chain.currency.name || '';
-      value = getCurrencyValue({ value: amount, decimals: config.chain.currency.decimals?.toString() || '18', accuracy }).valueStr;
+      value = calculateUsdValue({ amount, decimals: config.chain.currency.decimals?.toString() || '18', accuracy }).valueStr;
       break;
     case CoinType.GAS:
       unit = tokenSymbol || 'Unnamed token';
-      value = getCurrencyValue({ value: amount, decimals: decimals?.toString() || '18', accuracy }).valueStr;
+      value = calculateUsdValue({ amount, decimals: decimals?.toString() || '18', accuracy }).valueStr;
       break;
     default:
       unit = '-';

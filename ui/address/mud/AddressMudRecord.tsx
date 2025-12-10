@@ -7,8 +7,8 @@ import dayjs from 'lib/date/dayjs';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { TableRoot, TableRow, TableCell } from 'toolkit/chakra/table';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
+import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import TruncatedValue from 'ui/shared/TruncatedValue';
 
 import AddressMudBreadcrumbs from './AddressMudBreadcrumbs';
 import AddressMudRecordValues from './AddressMudRecordValues';
@@ -61,7 +61,7 @@ const AddressMudRecord = ({ tableId, recordId, isQueryEnabled = true }: Props) =
               </TableCell>
               <TableCell colSpan={ 2 } fontSize="sm">
                 <Flex justifyContent="space-between">
-                  <TruncatedValue value={ getValueString(data.record.decoded[keyName]) } mr={ 2 }/>
+                  <TruncatedText text={ getValueString(data.record.decoded[keyName]) } mr={ 2 }/>
                   { index === 0 && <Box color="text.secondary">{ dayjs(data.record.timestamp).format('lll') }</Box> }
                 </Flex>
               </TableCell>

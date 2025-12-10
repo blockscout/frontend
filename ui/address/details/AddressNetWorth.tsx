@@ -4,10 +4,12 @@ import React from 'react';
 import type { Address } from 'types/api/address';
 
 import config from 'configs/app';
-import getCurrencyValue from 'lib/getCurrencyValue';
 import * as mixpanel from 'lib/mixpanel/index';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import TextSeparator from 'ui/shared/TextSeparator';
+import calculateUsdValue from 'ui/shared/value/calculateUsdValue';
+import SimpleValue from 'ui/shared/value/SimpleValue';
+import { DEFAULT_ACCURACY_USD } from 'ui/shared/value/utils';
 
 import { getTokensTotalInfo } from '../utils/tokenUtils';
 import useFetchTokens from '../utils/useFetchTokens';
@@ -24,16 +26,13 @@ type Props = {
 const AddressNetWorth = ({ addressData, isLoading, addressHash }: Props) => {
   const { data, isError, isPending } = useFetchTokens({ hash: addressData?.hash, enabled: addressData?.has_tokens });
 
-  const { usdBn: nativeUsd } = getCurrencyValue({
-    value: addressData?.coin_balance || '0',
-    accuracy: 8,
-    accuracyUsd: 2,
+  const { usdBn: nativeUsd } = calculateUsdValue({
+    amount: addressData?.coin_balance || '0',
     exchangeRate: addressData?.exchange_rate,
     decimals: String(config.chain.currency.decimals),
   });
 
   const { usd, isOverflow } = getTokensTotalInfo(data);
-  const prefix = isOverflow ? '>' : '';
 
   const totalUsd = nativeUsd.plus(usd);
 
@@ -73,9 +72,9 @@ const AddressNetWorth = ({ addressData, isLoading, addressHash }: Props) => {
 
   return (
     <Skeleton display="flex" alignItems="center" flexWrap="wrap" loading={ isLoading && !(addressData?.has_tokens && isPending) }>
-      <Text>
-        { (isError || !addressData?.exchange_rate) ? 'N/A' : `${ prefix }$${ totalUsd.toFormat(2) }` }
-      </Text>
+      { (isError || !addressData?.exchange_rate) ?
+        <span>N/A</span> :
+        <SimpleValue value={ totalUsd } accuracy={ DEFAULT_ACCURACY_USD } prefix="$" overflowed={ isOverflow }/> }
       { multichainItems }
     </Skeleton>
   );

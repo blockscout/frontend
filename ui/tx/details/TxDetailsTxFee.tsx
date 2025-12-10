@@ -4,11 +4,10 @@ import React from 'react';
 import type { Transaction } from 'types/api/transaction';
 
 import config from 'configs/app';
-import { currencyUnits } from 'lib/units';
-import CurrencyValue from 'ui/shared/CurrencyValue';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import * as DetailedInfoItemBreakdown from 'ui/shared/DetailedInfo/DetailedInfoItemBreakdown';
 import TxFee from 'ui/shared/tx/TxFee';
+import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 interface Props {
   isLoading: boolean;
@@ -26,25 +25,22 @@ const TxDetailsTxFee = ({ isLoading, data }: Props) => {
       return (
         <TxFee
           tx={ data }
-          isLoading={ isLoading }
-          withUsd
+          loading={ isLoading }
+          accuracy={ 0 }
           rowGap={ 0 }
         />
       );
     }
 
-    const baseFeeBn = BigNumber(data.base_fee_per_gas || 0).multipliedBy(data.gas_used || 0);
-    const priorityFeeBn = BigNumber(data.priority_fee || 0);
-
     return (
       <>
-        <CurrencyValue
-          value={ data.fee.value }
-          currency={ currencyUnits.ether }
-          decimals={ String(config.chain.currency.decimals) }
+        <NativeCoinValue
+          amount={ data.fee.value }
           exchangeRate={ 'exchange_rate' in data ? data.exchange_rate : null }
-          isLoading={ isLoading }
-          showGweiTooltip
+          loading={ isLoading }
+          unitsTooltip="gwei"
+          copyOriginalValue
+          accuracy={ 0 }
           flexWrap="wrap"
           mr={ 3 }
           rowGap={ 0 }
@@ -54,13 +50,13 @@ const TxDetailsTxFee = ({ isLoading, data }: Props) => {
             label="Base fee"
             hint="The minimum network fee charged per transaction"
           >
-            <CurrencyValue
-              value={ baseFeeBn.toString() }
-              currency={ currencyUnits.ether }
-              decimals={ String(config.chain.currency.decimals) }
+            <NativeCoinValue
+              amount={ BigNumber(data.base_fee_per_gas || 0).multipliedBy(data.gas_used || 0).toString() }
               exchangeRate={ 'exchange_rate' in data ? data.exchange_rate : null }
-              isLoading={ isLoading }
-              showGweiTooltip
+              accuracy={ 0 }
+              unitsTooltip="gwei"
+              copyOriginalValue
+              loading={ isLoading }
               flexWrap="wrap"
               rowGap={ 0 }
             />
@@ -69,13 +65,13 @@ const TxDetailsTxFee = ({ isLoading, data }: Props) => {
             label="Priority fee"
             hint="An extra fee set by the sender to speed up transaction execution"
           >
-            <CurrencyValue
-              value={ priorityFeeBn.toString() }
-              currency={ currencyUnits.ether }
-              decimals={ String(config.chain.currency.decimals) }
+            <NativeCoinValue
+              amount={ data.priority_fee || '0' }
               exchangeRate={ 'exchange_rate' in data ? data.exchange_rate : null }
-              isLoading={ isLoading }
-              showGweiTooltip
+              accuracy={ 0 }
+              unitsTooltip="gwei"
+              copyOriginalValue
+              loading={ isLoading }
               flexWrap="wrap"
               rowGap={ 0 }
             />

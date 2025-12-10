@@ -1,17 +1,16 @@
-import BigNumber from 'bignumber.js';
 import { upperFirst } from 'es-toolkit';
 import React from 'react';
 
 import type { Address } from 'types/api/address';
 import type { ExcludeNull, ExcludeUndefined } from 'types/utils';
 
-import config from 'configs/app';
 import { currencyUnits } from 'lib/units';
 import { Link } from 'toolkit/chakra/link';
+import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import * as DetailedInfoItemBreakdown from 'ui/shared/DetailedInfo/DetailedInfoItemBreakdown';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
-import TruncatedValue from 'ui/shared/TruncatedValue';
+import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 interface Props {
   isLoading?: boolean;
@@ -28,7 +27,7 @@ const AddressCeloAccount = ({ isLoading, data }: Props) => {
         Celo account
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue multiRow>
-        { data.name && <TruncatedValue value={ data.name } mr={ 3 }/> }
+        { data.name && <TruncatedText text={ data.name } mr={ 3 }/> }
         <DetailedInfoItemBreakdown.Container loading={ isLoading }>
           <DetailedInfoItemBreakdown.Row
             label="Type"
@@ -43,7 +42,7 @@ const AddressCeloAccount = ({ isLoading, data }: Props) => {
               hint="Link to additional information published by the account owner"
             >
               <Link href={ data.metadata_url } external>
-                <TruncatedValue value={ data.metadata_url }/>
+                <TruncatedText text={ data.metadata_url }/>
               </Link>
             </DetailedInfoItemBreakdown.Row>
           ) }
@@ -52,14 +51,14 @@ const AddressCeloAccount = ({ isLoading, data }: Props) => {
             label={ `Locked ${ currencyUnits.ether }` }
             hint="Total amount of CELO locked by this account (used for staking or governance)"
           >
-            <TruncatedValue value={ BigNumber(data.locked_celo).div(10 ** config.chain.currency.decimals).toFormat() }/>
+            <NativeCoinValue amount={ data.locked_celo } noSymbol/>
           </DetailedInfoItemBreakdown.Row>
 
           <DetailedInfoItemBreakdown.Row
             label={ `Non-voting locked ${ currencyUnits.ether }` }
             hint="Portion of locked CELO that is not currently used for voting"
           >
-            <TruncatedValue value={ BigNumber(data.nonvoting_locked_celo).div(10 ** config.chain.currency.decimals).toFormat() }/>
+            <NativeCoinValue amount={ data.nonvoting_locked_celo } noSymbol/>
           </DetailedInfoItemBreakdown.Row>
 
           { data.vote_signer_address && (

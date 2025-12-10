@@ -27,6 +27,8 @@ export interface AddressMetadataTagApi extends Omit<AddressMetadataTag, 'meta'> 
     tooltipTitle?: string;
     tooltipDescription?: string;
     tooltipUrl?: string;
+    tooltipAttribution?: string;
+    tooltipAttributionIcon?: string;
     appID?: string;
     appMarketplaceURL?: string;
     appLogoURL?: string;

@@ -1,12 +1,11 @@
-import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { ValidatorsZilliqaItem } from 'types/api/validators';
 
-import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import ValidatorEntity from 'ui/shared/entities/validator/ValidatorEntity';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
+import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 interface Props {
   data: ValidatorsZilliqaItem;
@@ -35,9 +34,10 @@ const ValidatorsListItem = ({ data, isLoading }: Props) => {
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Balance</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <Skeleton loading={ isLoading } display="inline-block">
-          { BigNumber(data.balance).div(BigNumber(10 ** config.chain.currency.decimals)).toFormat() } { config.chain.currency.symbol }
-        </Skeleton>
+        <NativeCoinValue
+          amount={ data.balance }
+          loading={ isLoading }
+        />
       </ListItemMobileGrid.Value>
     </ListItemMobileGrid.Container>
   );

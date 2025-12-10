@@ -5,14 +5,12 @@ import type { AddressEpochRewardsItem } from 'types/api/address';
 
 import { route } from 'nextjs-routes';
 
-import getCurrencyValue from 'lib/getCurrencyValue';
 import { Link } from 'toolkit/chakra/link';
-import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
-import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import EpochRewardTypeTag from 'ui/shared/EpochRewardTypeTag';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
+import TokenValue from 'ui/shared/value/TokenValue';
 
 type Props = {
   item: AddressEpochRewardsItem;
@@ -20,7 +18,6 @@ type Props = {
 };
 
 const AddressEpochRewardsTableItem = ({ item, isLoading }: Props) => {
-  const { valueStr } = getCurrencyValue({ value: item.amount, decimals: item.token.decimals });
   return (
     <TableRow>
       <TableCell verticalAlign="middle">
@@ -41,10 +38,13 @@ const AddressEpochRewardsTableItem = ({ item, isLoading }: Props) => {
         <AddressEntity address={ item.associated_account } isLoading={ isLoading } truncation="constant"/>
       </TableCell>
       <TableCell verticalAlign="middle" isNumeric>
-        <Skeleton loading={ isLoading } display="flex" alignItems="center" gap={ 2 } justifyContent="flex-end">
-          { valueStr }
-          <TokenEntity token={ item.token } isLoading={ isLoading } onlySymbol width="auto" noCopy/>
-        </Skeleton>
+        <TokenValue
+          amount={ item.amount }
+          token={ item.token }
+          loading={ isLoading }
+          layout="vertical"
+          rowGap="10px"
+        />
       </TableCell>
     </TableRow>
   );

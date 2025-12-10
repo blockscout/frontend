@@ -14,12 +14,11 @@ import { useMultichainContext } from 'lib/contexts/multichain';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import * as arbitrum from 'lib/rollups/arbitrum';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import { currencyUnits } from 'lib/units';
 import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import { GWEI, WEI, WEI_IN_GWEI, ZERO } from 'toolkit/utils/consts';
+import { ZERO } from 'toolkit/utils/consts';
 import { space } from 'toolkit/utils/htmlEntities';
 import OptimisticL2TxnBatchDA from 'ui/shared/batch/OptimisticL2TxnBatchDA';
 import BlockGasUsed from 'ui/shared/block/BlockGasUsed';
@@ -36,6 +35,9 @@ import PrevNext from 'ui/shared/PrevNext';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
 import StatusTag from 'ui/shared/statusTag/StatusTag';
 import Utilization from 'ui/shared/Utilization/Utilization';
+import GasPriceValue from 'ui/shared/value/GasPriceValue';
+import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
+import { WEI } from 'ui/shared/value/utils';
 import VerificationSteps from 'ui/shared/verificationSteps/VerificationSteps';
 import ZkSyncL2TxnBatchHashesInfo from 'ui/txnBatches/zkSyncL2/ZkSyncL2TxnBatchHashesInfo';
 
@@ -382,9 +384,7 @@ const BlockDetails = ({ query }: Props) => {
             Block reward
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue columnGap={ 1 } multiRow>
-            <Skeleton loading={ isPlaceholderData }>
-              { totalReward.dividedBy(WEI).toFixed() } { currencyUnits.ether }
-            </Skeleton>
+            <NativeCoinValue amount={ totalReward.toString() } accuracy={ 0 } loading={ isPlaceholderData }/>
             { rewardBreakDown }
           </DetailedInfo.ItemValue>
         </>
@@ -400,7 +400,7 @@ const BlockDetails = ({ query }: Props) => {
               { type }
             </DetailedInfo.ItemLabel>
             <DetailedInfo.ItemValue>
-              { BigNumber(reward).dividedBy(WEI).toFixed() } { currencyUnits.ether }
+              <NativeCoinValue amount={ reward.toString() } accuracy={ 0 }/>
             </DetailedInfo.ItemValue>
           </React.Fragment>
         ))
@@ -466,9 +466,7 @@ const BlockDetails = ({ query }: Props) => {
             Minimum gas price
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue>
-            <Skeleton loading={ isPlaceholderData }>
-              { BigNumber(data.minimum_gas_price).dividedBy(GWEI).toFormat() } { currencyUnits.gwei }
-            </Skeleton>
+            <NativeCoinValue amount={ data.minimum_gas_price } units="gwei" loading={ isPlaceholderData }/>
           </DetailedInfo.ItemValue>
         </>
       ) }
@@ -481,17 +479,11 @@ const BlockDetails = ({ query }: Props) => {
           >
             Base fee per gas
           </DetailedInfo.ItemLabel>
-          <DetailedInfo.ItemValue>
-            { isPlaceholderData ? (
-              <Skeleton loading={ isPlaceholderData } h="20px" maxW="380px" w="100%"/>
-            ) : (
-              <>
-                <Text>{ BigNumber(data.base_fee_per_gas).dividedBy(WEI).toFixed() } { currencyUnits.ether } </Text>
-                <Text color="text.secondary" whiteSpace="pre">
-                  { space }({ BigNumber(data.base_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() } { currencyUnits.gwei })
-                </Text>
-              </>
-            ) }
+          <DetailedInfo.ItemValue multiRow>
+            <GasPriceValue
+              amount={ data.base_fee_per_gas }
+              loading={ isPlaceholderData }
+            />
           </DetailedInfo.ItemValue>
         </>
       ) }
@@ -507,15 +499,17 @@ const BlockDetails = ({ query }: Props) => {
           >
             Burnt fees
           </DetailedInfo.ItemLabel>
-          <DetailedInfo.ItemValue>
-            <IconSvg name="flame" boxSize={ 5 } color="icon.primary" isLoading={ isPlaceholderData }/>
-            <Skeleton loading={ isPlaceholderData } ml={{ base: 1, lg: 2 }}>
-              { burntFees.dividedBy(WEI).toFixed() } { currencyUnits.ether }
-            </Skeleton>
+          <DetailedInfo.ItemValue multiRow>
+            <NativeCoinValue
+              amount={ burntFees.toString() }
+              accuracy={ 0 }
+              loading={ isPlaceholderData }
+              startElement={ <IconSvg name="flame" boxSize={ 5 } mr={{ base: 1, lg: 2 }} color="icon.primary" isLoading={ isPlaceholderData }/> }
+              mr={ 4 }
+            />
             { !txFees.isEqualTo(ZERO) && (
               <Tooltip content="Burnt fees / Txn fees * 100%">
                 <Utilization
-                  ml={ 4 }
                   value={ burntFees.dividedBy(txFees).toNumber() }
                   isLoading={ isPlaceholderData }
                 />
@@ -534,9 +528,7 @@ const BlockDetails = ({ query }: Props) => {
             Priority fee / Tip
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue>
-            <Skeleton loading={ isPlaceholderData }>
-              { BigNumber(data.priority_fee).dividedBy(WEI).toFixed() } { currencyUnits.ether }
-            </Skeleton>
+            <NativeCoinValue amount={ data.priority_fee.toString() } accuracy={ 0 } loading={ isPlaceholderData }/>
           </DetailedInfo.ItemValue>
         </>
       ) }

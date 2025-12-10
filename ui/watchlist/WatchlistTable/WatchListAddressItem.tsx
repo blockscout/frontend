@@ -5,14 +5,16 @@ import React from 'react';
 import type { WatchlistAddress } from 'types/api/account';
 
 import config from 'configs/app';
-import getCurrencyValue from 'lib/getCurrencyValue';
 import { currencyUnits } from 'lib/units';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { nbsp } from 'toolkit/utils/htmlEntities';
-import CurrencyValue from 'ui/shared/CurrencyValue';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import IconSvg from 'ui/shared/IconSvg';
+import calculateUsdValue from 'ui/shared/value/calculateUsdValue';
+import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
+import SimpleValue from 'ui/shared/value/SimpleValue';
+import { DEFAULT_ACCURACY_USD } from 'ui/shared/value/utils';
 
 const WatchListAddressItem = ({ item, isLoading }: { item: WatchlistAddress; isLoading?: boolean }) => {
   const nativeTokenData = React.useMemo(() => ({
@@ -24,7 +26,7 @@ const WatchListAddressItem = ({ item, isLoading }: { item: WatchlistAddress; isL
     reputation: null,
   }), [ ]);
 
-  const { usdBn: usdNative } = getCurrencyValue({ value: item.address_balance, accuracy: 2, accuracyUsd: 2, exchangeRate: item.exchange_rate });
+  const { usdBn: usdNative } = calculateUsdValue({ amount: item.address_balance, exchangeRate: item.exchange_rate });
 
   return (
     <VStack gap={ 3 } align="stretch" fontWeight={ 500 }>
@@ -41,12 +43,10 @@ const WatchListAddressItem = ({ item, isLoading }: { item: WatchlistAddress; isL
         />
         <Skeleton loading={ isLoading } whiteSpace="pre" display="inline-flex">
           <span>{ currencyUnits.ether } balance: </span>
-          <CurrencyValue
-            value={ item.address_balance }
+          <NativeCoinValue
+            amount={ item.address_balance }
             exchangeRate={ item.exchange_rate }
-            decimals={ String(config.chain.currency.decimals) }
-            accuracy={ 2 }
-            accuracyUsd={ 2 }
+            noSymbol
           />
         </Skeleton>
       </Flex>
@@ -60,17 +60,21 @@ const WatchListAddressItem = ({ item, isLoading }: { item: WatchlistAddress; isL
         </HStack>
       ) }
       { Boolean(item.tokens_fiat_value) && (
-        <HStack gap={ 2 } fontSize="sm" pl={ 7 }>
-          <IconSvg boxSize={ 5 } name="wallet" isLoading={ isLoading }/>
-          <Skeleton loading={ isLoading } display="inline-flex">
-            <Text>{ `Net worth:${ nbsp }` }
-              {
-                `${ item.tokens_overflow ? '>' : '' }
-                $${ BigNumber(item.tokens_fiat_value).plus((BigNumber(item.address_balance ? usdNative : '0'))).toFormat(2) }`
-              }
-            </Text>
-          </Skeleton>
-        </HStack>
+        <SimpleValue
+          value={ BigNumber(item.tokens_fiat_value).plus(usdNative) }
+          prefix="$"
+          startElement={ (
+            <HStack>
+              <IconSvg boxSize={ 5 } name="wallet" isLoading={ isLoading }/>
+              <span>Net worth:{ nbsp }</span>
+            </HStack>
+          ) }
+          accuracy={ DEFAULT_ACCURACY_USD }
+          loading={ isLoading }
+          overflowed={ item.tokens_overflow }
+          pl={ 7 }
+          fontSize="sm"
+        />
       ) }
     </VStack>
   );

@@ -1,20 +1,17 @@
-import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 import type { ClusterChainConfig } from 'types/multichain';
 
-import getCurrencyValue from 'lib/getCurrencyValue';
 import { NFT_TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
 import { Badge } from 'toolkit/chakra/badge';
-import { Skeleton } from 'toolkit/chakra/skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
-import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
+import TokenValue from 'ui/shared/value/TokenValue';
 
 type Props = {
   item: TokenTransfer;
@@ -23,14 +20,6 @@ type Props = {
 };
 
 const TokenTransfersListItem = ({ item, isLoading, chainData }: Props) => {
-
-  const { valueStr } = item.total && 'value' in item.total && item.total.value !== null ? getCurrencyValue({
-    value: item.total.value,
-    exchangeRate: item.token?.exchange_rate,
-    accuracy: 8,
-    accuracyUsd: 2,
-    decimals: item.total.decimals || '0',
-  }) : { valueStr: null };
 
   return (
     <ListItemMobileGrid.Container>
@@ -90,24 +79,16 @@ const TokenTransfersListItem = ({ item, isLoading, chainData }: Props) => {
         </>
       ) }
 
-      { valueStr && item.token && (item.token.type === 'ERC-20' || item.token.type === 'ERC-1155') && (
+      { item.token && item.total && 'value' in item.total && item.total.value !== null && (item.token.type === 'ERC-20' || item.token.type === 'ERC-1155') && (
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>Amount</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
-            <Flex gap={ 2 } overflow="hidden">
-              <Skeleton loading={ isLoading } wordBreak="break-all">
-                { valueStr }
-              </Skeleton>
-              <TokenEntity
-                token={ item.token }
-                isLoading={ isLoading }
-                onlySymbol
-                noCopy
-                width="auto"
-                minW="auto"
-                maxW="100px"
-              />
-            </Flex>
+            <TokenValue
+              amount={ item.total.value }
+              token={ item.token }
+              decimals={ item.total.decimals || '0' }
+              loading={ isLoading }
+            />
           </ListItemMobileGrid.Value>
         </>
       ) }

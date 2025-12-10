@@ -7,8 +7,8 @@ import { route } from 'nextjs-routes';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Hint } from 'toolkit/components/Hint/Hint';
+import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
 import IconSvg, { type IconName } from 'ui/shared/IconSvg';
-import TruncatedValue from 'ui/shared/TruncatedValue';
 
 export type Props = {
   className?: string;
@@ -77,7 +77,12 @@ const StatsWidget = ({
             flexShrink={ 0 }
           />
         ) }
-        <Box w={{ base: '100%', lg: icon ? 'calc(100% - 48px)' : '100%' }}>
+        <Box
+          w={{
+            base: `calc(100% - ${ hint ? '24px' : '0px' })`,
+            lg: `calc(100% - ${ icon ? '48px' : '0px' } - ${ hint ? '24px' : '0px' })`,
+          }}
+        >
           <Skeleton
             loading={ isLoading }
             color="text.secondary"
@@ -95,7 +100,7 @@ const StatsWidget = ({
           >
             { valuePrefix && <chakra.span whiteSpace="pre">{ valuePrefix }</chakra.span> }
             { typeof value === 'string' ? (
-              <TruncatedValue isLoading={ isLoading } value={ value }/>
+              <TruncatedText text={ value } loading={ isLoading }/>
             ) : (
               value
             ) }

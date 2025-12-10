@@ -1,4 +1,4 @@
-import { chakra, Flex } from '@chakra-ui/react';
+import { Box, chakra, Flex, Separator } from '@chakra-ui/react';
 import React from 'react';
 
 import type { EntityTag } from './types';
@@ -15,8 +15,23 @@ interface Props {
 }
 
 const EntityTagTooltip = ({ data, children }: Props) => {
+  const hasPopover = Boolean(
+    data.meta?.tooltipIcon ||
+    data.meta?.tooltipTitle ||
+    data.meta?.tooltipDescription ||
+    data.meta?.tooltipUrl ||
+    data.meta?.tooltipAttribution,
+  );
+
   const link = makePrettyLink(data.meta?.tooltipUrl);
-  const hasPopover = Boolean(data.meta?.tooltipIcon || data.meta?.tooltipTitle || data.meta?.tooltipDescription || data.meta?.tooltipUrl);
+
+  const attribution = React.useMemo(() => {
+    if (!data.meta?.tooltipAttribution) {
+      return;
+    }
+    const link = makePrettyLink(data.meta?.tooltipAttribution);
+    return link ?? data.meta.tooltipAttribution;
+  }, [ data.meta?.tooltipAttribution ]);
 
   const handleLinkClick = React.useCallback(() => {
     if (!data.meta?.tooltipUrl) {
@@ -36,16 +51,30 @@ const EntityTagTooltip = ({ data, children }: Props) => {
   }
 
   const content = (
-    <Flex textStyle="sm" flexDir="column" rowGap={ 2 } textAlign="left" className="dark">
-      { (data.meta?.tooltipIcon || data.meta?.tooltipTitle) && (
-        <Flex columnGap={ 3 } alignItems="center">
-          { data.meta?.tooltipIcon && <Image src={ data.meta.tooltipIcon } boxSize="30px" alt={ `${ data.name } tag logo` }/> }
-          { data.meta?.tooltipTitle && <chakra.span fontWeight="600">{ data.meta.tooltipTitle }</chakra.span> }
-        </Flex>
-      ) }
-      { data.meta?.tooltipDescription && <chakra.span>{ data.meta.tooltipDescription }</chakra.span> }
-      { link && <Link external href={ link.href } onClick={ handleLinkClick }>{ link.domain }</Link> }
-    </Flex>
+    <Box className="dark">
+      <Flex textStyle="sm" flexDir="column" rowGap={ 2 } textAlign="left" _empty={{ display: 'none' }}>
+        { (data.meta?.tooltipIcon || data.meta?.tooltipTitle) && (
+          <Flex columnGap={ 3 } alignItems="center">
+            { data.meta?.tooltipIcon && <Image src={ data.meta.tooltipIcon } boxSize="30px" alt={ `${ data.name } tag logo` }/> }
+            { data.meta?.tooltipTitle && <chakra.span fontWeight="600">{ data.meta.tooltipTitle }</chakra.span> }
+          </Flex>
+        ) }
+        { data.meta?.tooltipDescription && <chakra.span>{ data.meta.tooltipDescription }</chakra.span> }
+        { link && <Link external href={ link.href } onClick={ handleLinkClick }>{ link.domain }</Link> }
+      </Flex>
+      { attribution ? (
+        <>
+          { (data.meta?.tooltipIcon || data.meta?.tooltipTitle || data.meta?.tooltipDescription || link) && <Separator mt={ 2 } mb={ 1 }/> }
+          <Flex alignItems="center" color="text.secondary" textStyle="xs">
+            <chakra.span mr={ 2 }>Source:</chakra.span>
+            { data.meta?.tooltipAttributionIcon && <Image src={ data.meta.tooltipAttributionIcon } boxSize={ 4 } mr={ 1 } zIndex={ 1 }/> }
+            { typeof attribution === 'string' ?
+              <chakra.span fontWeight="500">{ attribution }</chakra.span> :
+              <Link external href={ attribution.href }>{ attribution.domain }</Link> }
+          </Flex>
+        </>
+      ) : null }
+    </Box>
   );
 
   return (
