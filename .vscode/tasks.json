@@ -198,34 +198,13 @@
             },
         },
 
-        // JEST TESTS
+        // VITEST TESTS
         {
             "type": "npm",
-            "script": "test:jest",
+            "script": "test:vitest",
             "problemMatcher": [],
-            "label": "jest",
-            "detail": "run jest tests",
-            "presentation": {
-                "reveal": "always",
-                "panel": "shared",
-                "focus": true,
-                "close": false,
-                "revealProblems": "onProblem",
-            },
-            "icon": {
-                "color": "terminal.ansiBlue",
-                "id": "beaker"
-            },
-            "runOptions": {
-                "instanceLimit": 1
-            }
-        },
-        {
-            "type": "npm",
-            "script": "test:jest:watch",
-            "problemMatcher": [],
-            "label": "jest: watch all",
-            "detail": "run jest tests in watch mode",
+            "label": "vitest",
+            "detail": "run unit tests",
             "presentation": {
                 "reveal": "always",
                 "panel": "shared",
@@ -243,10 +222,10 @@
         },
         {
             "type": "shell",
-            "command": "yarn test:jest ${relativeFileDirname}/${fileBasename} --watch",
+            "command": "yarn test:vitest ${relativeFileDirname}/${fileBasename}",
             "problemMatcher": [],
-            "label": "jest: watch",
-            "detail": "run jest tests in watch mode for current file",
+            "label": "vitest: file",
+            "detail": "run unit tests for current file",
             "presentation": {
                 "reveal": "always",
                 "panel": "shared",

@@ -1,6 +1,5 @@
-import { it, expect } from 'vitest';
-
 import * as transactionMock from 'mocks/noves/transaction';
+import { it, expect } from 'vitest';
 
 import { getTokensData } from './getTokensData';
 

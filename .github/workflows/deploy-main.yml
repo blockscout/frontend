@@ -9,7 +9,7 @@ on:
       - '.husky/**'
       - '.vscode/**'
       - 'docs/**'
-      - 'jest/**'
+      - 'vitest/**'
       - 'mocks/**'
       - 'playwright/**'
       - 'stubs/**'
