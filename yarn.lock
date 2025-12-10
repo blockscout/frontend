@@ -12143,13 +12143,13 @@ damerau-levenshtein@^1.0.8:
   resolved "https://registry.yarnpkg.com/damerau-levenshtein/-/damerau-levenshtein-1.0.8.tgz#b43d286ccbd36bc5b2f7ed41caf2d0aba1f8a6e7"
   integrity sha512-sdQSFB7+llfUcQHUQO3+B8ERRj0Oa4w9POWMI/puGtuf7gFywGmkaLCElnudfTiKZV+NvHqL0ifzdrI8Ro7ESA==
 
-dappscout-iframe@0.4.0-alpha.7:
-  version "0.4.0-alpha.7"
-  resolved "https://registry.yarnpkg.com/dappscout-iframe/-/dappscout-iframe-0.4.0-alpha.7.tgz#1ff19c4a9e393a66b690ee8ba63e4d9e08170660"
-  integrity sha512-pEJ1U5BdBh0588f0/UPaWmd3POWrMcVirDqZA6RDxlCS26ppvcBE7Djuln9nWpH5Kei+eJ/B7RBAeYTr1/f2EA==
+dappscout-iframe@0.4.0-alpha.9:
+  version "0.4.0-alpha.9"
+  resolved "https://registry.yarnpkg.com/dappscout-iframe/-/dappscout-iframe-0.4.0-alpha.9.tgz#c0138c5655fc14f21959c41bd2980d47515856fa"
+  integrity sha512-XqfpydPHiNeGjl900MVAD80cC7Y5I4+m3EpID+xbJGeAxQrx6kp0WoDv5KJVZWCE7KesOCdsOMTzUjU4E+7W9Q==
   dependencies:
-    react "19.1.0"
-    react-dom "19.1.0"
+    react "19.1.2"
+    react-dom "19.1.2"
     viem "^1.20.3"
 
 data-uri-to-buffer@^4.0.0:
@@ -18445,13 +18445,6 @@ react-device-detect@^2.2.3:
   dependencies:
     ua-parser-js "^1.0.33"
 
-react-dom@19.1.0:
-  version "19.1.0"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-19.1.0.tgz#133558deca37fa1d682708df8904b25186793623"
-  integrity sha512-Xs1hdnE+DyKgeHJeJznQmYMIBG3TKIHJJT95Q58nHLSrElKlGQqDTR2HQ9fx5CN/Gk6Vh/kupBTDLU11/nDk/g==
-  dependencies:
-    scheduler "^0.26.0"
-
 react-dom@19.1.2:
   version "19.1.2"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-19.1.2.tgz#18ce6b14f682f4871a69cc6b2568d42af2cd5a33"
@@ -18633,11 +18626,6 @@ react-textarea-autosize@8.5.9:
     "@babel/runtime" "^7.20.13"
     use-composed-ref "^1.3.0"
     use-latest "^1.2.1"
-
-react@19.1.0:
-  version "19.1.0"
-  resolved "https://registry.yarnpkg.com/react/-/react-19.1.0.tgz#926864b6c48da7627f004795d6cce50e90793b75"
-  integrity sha512-FS+XFBNvn3GTAWq26joslQgWNoFu08F4kl0J4CgdNKADkdSGXQyTCnKteIAJy96Br6YbpEU1LSzV5dYtjMkMDg==
 
 react@19.1.2:
   version "19.1.2"
