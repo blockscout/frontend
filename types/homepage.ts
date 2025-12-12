@@ -33,3 +33,15 @@ export interface HeroBannerConfig {
     border_width?: Array<string | undefined>;
   };
 }
+
+export interface HighlightsBannerConfig {
+  title: string;
+  description: string;
+  title_color?: Array<string | undefined>;
+  description_color?: Array<string | undefined>;
+  background?: Array<string | undefined>;
+  side_img_url?: Array<string | undefined>;
+  is_pinned?: boolean;
+  page_path?: string;
+  redirect_url?: string;
+}

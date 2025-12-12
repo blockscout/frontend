@@ -4,6 +4,7 @@ export * from './apiDocs';
 export * from './beaconChain';
 export * from './bridgedToken';
 export * from './defiDropdown';
+export * from './highlights';
 export * from './marketplace';
 export * from './megaEth';
 export * from './rollup';
