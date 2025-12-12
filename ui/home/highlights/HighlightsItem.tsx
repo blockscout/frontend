@@ -11,7 +11,7 @@ import { Image } from 'toolkit/chakra/image';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 
-interface ContainerProps extends Props, JsxStyleProps {
+interface ContainerProps extends Omit<Props, 'totalNum'>, JsxStyleProps {
   children: React.ReactNode;
 }
 
@@ -42,7 +42,7 @@ const Container = ({ children, data, isLoading, ...rest }: ContainerProps) => {
 interface Props {
   data: HighlightsBannerConfig;
   isLoading: boolean;
-  totalNum?: number;
+  totalNum: number;
 }
 
 const HighlightsItem = ({ data, isLoading, totalNum }: Props) => {
@@ -60,7 +60,7 @@ const HighlightsItem = ({ data, isLoading, totalNum }: Props) => {
       alignItems="center"
       minH="153px"
       pl={ 6 }
-      flexGrow={ 1 }
+      w={ `calc((100% - ${ (totalNum - 1) * 12 }px) / ${ totalNum })` }
       overflow="hidden"
       borderRadius="md"
       bg={ !isLoading ? {
@@ -101,7 +101,6 @@ const HighlightsItem = ({ data, isLoading, totalNum }: Props) => {
             height="112px"
             skeletonWidth="0px"
             objectFit="cover"
-            borderRadius="6px"
             ml="auto"
             mr={ 6 }
           />
