@@ -1,3 +1,4 @@
+import type { StackProps } from '@chakra-ui/react';
 import { HStack } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import { shuffle } from 'es-toolkit';
@@ -13,7 +14,7 @@ import HighlightsItem from './highlights/HighlightsItem';
 
 const HIGHLIGHTS_BANNER_COUNT = 3;
 
-const Highlights = () => {
+const Highlights = (props: StackProps) => {
   const fetch = useFetch();
 
   const { isPlaceholderData, data } = useQuery({
@@ -34,7 +35,7 @@ const Highlights = () => {
   });
 
   return (
-    <HStack gap={ 3 } mt={ 3 }>
+    <HStack gap={ 3 } { ...props }>
       { data?.map((banner, index) => (
         <HighlightsItem key={ index } data={ banner } isLoading={ isPlaceholderData } totalNum={ data.length }/>
       )) }
