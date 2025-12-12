@@ -164,6 +164,7 @@ const schema = yup
   .concat(featuresSchemas.beaconChainSchema)
   .concat(featuresSchemas.bridgedTokensSchema)
   .concat(featuresSchemas.defiDropdownSchema)
+  .concat(featuresSchemas.highlightsConfigSchema)
   .concat(featuresSchemas.marketplaceSchema)
   .concat(featuresSchemas.megaEthSchema)
   .concat(featuresSchemas.rollupSchema)
