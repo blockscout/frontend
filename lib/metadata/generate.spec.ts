@@ -2,7 +2,7 @@ import type { ApiData } from './types';
 
 import type { Route } from 'nextjs-routes';
 
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
 import generate from './generate';
 
@@ -49,6 +49,16 @@ const TEST_CASES = [
 ];
 
 describe('generates correct metadata for:', () => {
+  beforeEach(() => {
+    // Mock date to a fixed value: 2024-01-01T00:00:00.000Z
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date('2024-01-01T00:00:00.000Z'));
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   TEST_CASES.forEach((testCase) => {
     it(`${ testCase.title }`, () => {
       const result = generate(testCase.route, testCase.apiData);
