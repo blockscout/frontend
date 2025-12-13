@@ -11,6 +11,15 @@ const ContractVerificationSourcify = () => {
   const { watch } = useFormContext<FormFields>();
   const address = watch('address');
 
+  // Disable iframe in private mode to prevent tracking
+  if (config.app.appProfile === 'private') {
+    return (
+      <ContractVerificationMethod title="Contract verification via Sourcify (Solidity or Vyper)">
+        <p>This feature is disabled in private mode.</p>
+      </ContractVerificationMethod>
+    );
+  }
+
   const iframeUrl = `https://verify.sourcify.dev/widget?chainId=${ config.chain.id }&address=${ address }`;
 
   return (

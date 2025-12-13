@@ -21,7 +21,7 @@ const externalFontsDomains = (() => {
   } catch (error) {}
 })();
 
-export function app(): CspDev.DirectiveDescriptor {
+export function app(isPrivateMode = false): CspDev.DirectiveDescriptor {
   return {
     'default-src': [
       // KEY_WORDS.NONE,
@@ -119,10 +119,14 @@ export function app(): CspDev.DirectiveDescriptor {
       KEY_WORDS.NONE,
     ],
 
-    'frame-src': [
-      // could be a marketplace app or NFT media (html-page)
-      '*',
-    ],
+    // Restrict frame-src in private mode to prevent iframe tracking
+    // In normal mode, frame-src is also set by marketplace.ts when marketplace is enabled
+    ...(isPrivateMode ? {} as CspDev.DirectiveDescriptor : {
+      'frame-src': [
+        // could be a marketplace app or NFT media (html-page)
+        '*',
+      ],
+    }),
 
     'frame-ancestors': [
       KEY_WORDS.SELF,
