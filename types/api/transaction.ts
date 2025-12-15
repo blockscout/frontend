@@ -109,6 +109,8 @@ export type Transaction = {
   authorization_list?: Array<TxAuthorization>;
   // Interop
   op_interop_messages?: Array<InteropTransactionInfo>;
+  // FHE operations
+  fhe_operations_count?: number;
 };
 
 type ArbitrumTransactionData = {
