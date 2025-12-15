@@ -6,8 +6,14 @@ import fetchFactory from 'nextjs/utils/fetchProxy';
 import appConfig from 'configs/app';
 
 const handler = async(nextReq: NextApiRequest, nextRes: NextApiResponse) => {
+
+  if (!appConfig.app.useProxy) {
+    nextRes.status(404).json({ error: 'Not found' });
+    return;
+  }
+
   if (!nextReq.url) {
-    nextRes.status(500).json({ error: 'no url provided' });
+    nextRes.status(500).json({ error: 'No url provided' });
     return;
   }
 
