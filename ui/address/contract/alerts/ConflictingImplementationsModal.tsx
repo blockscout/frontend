@@ -3,11 +3,12 @@ import React from 'react';
 
 import type { SmartContractConflictingImplementation } from 'types/api/contract';
 
-import useIsMobile from 'lib/hooks/useIsMobile';
 import { Button } from 'toolkit/chakra/button';
 import { DialogActionTrigger, DialogBody, DialogContent, DialogHeader, DialogRoot, DialogTrigger } from 'toolkit/chakra/dialog';
 import { Link } from 'toolkit/chakra/link';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+
+import { PROXY_TYPES } from './utils';
 
 interface Props {
   data: Array<SmartContractConflictingImplementation>;
@@ -15,8 +16,6 @@ interface Props {
 }
 
 const ConflictingImplementationsModal = ({ data, children }: Props) => {
-  const isMobile = useIsMobile();
-
   return (
     <DialogRoot size={{ lgDown: 'full', lg: 'md' }}>
       <DialogTrigger>
@@ -31,32 +30,38 @@ const ConflictingImplementationsModal = ({ data, children }: Props) => {
             Review carefully.
           </Text>
           <VStack alignItems="stretch" mt={ 6 } textStyle="sm">
-            { data.map((item) => (
-              <Grid
-                key={ item.proxy_type }
-                templateColumns="80px 1fr"
-                p={ 4 }
-                columnGap={ 5 }
-                rowGap={ 2 }
-                borderRadius="md"
-                bgColor={{ _light: 'blackAlpha.50', _dark: 'whiteAlpha.50' }}
-              >
-                <GridItem>Proxy type:</GridItem>
-                <GridItem>{ item.proxy_type }</GridItem>
-                <GridItem>Address:</GridItem>
-                <GridItem>
-                  <VStack alignItems="stretch">
-                    { item.implementations.map((implementation) => (
-                      <AddressEntity
-                        key={ implementation.address_hash }
-                        address={{ hash: implementation.address_hash, name: implementation.name }}
-                        truncation={ isMobile ? 'constant' : 'none' }
-                      />
-                    )) }
-                  </VStack>
-                </GridItem>
-              </Grid>
-            )) }
+            { data.map((item) => {
+              const addressNum = item.implementations.length;
+              const addressText = addressNum === 1 ? 'Implementation:' : 'Implementations:';
+              const proxyType = PROXY_TYPES[item.proxy_type]?.name || PROXY_TYPES.unknown?.name;
+
+              return (
+                <Grid
+                  key={ item.proxy_type }
+                  templateColumns="115px minmax(0px, 1fr)"
+                  w="100%"
+                  p={ 4 }
+                  columnGap={ 5 }
+                  rowGap={ 2 }
+                  borderRadius="md"
+                  bgColor={{ _light: 'blackAlpha.50', _dark: 'whiteAlpha.50' }}
+                >
+                  <GridItem>Proxy type:</GridItem>
+                  <GridItem>{ proxyType }</GridItem>
+                  <GridItem>{ addressText }</GridItem>
+                  <GridItem>
+                    <VStack alignItems="stretch">
+                      { item.implementations.map((implementation) => (
+                        <AddressEntity
+                          key={ implementation.address_hash }
+                          address={{ hash: implementation.address_hash, name: implementation.name }}
+                        />
+                      )) }
+                    </VStack>
+                  </GridItem>
+                </Grid>
+              );
+            }) }
           </VStack>
           <HStack mt={ 6 } gap={ 6 }>
             <DialogActionTrigger asChild>

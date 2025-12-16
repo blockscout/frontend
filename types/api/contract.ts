@@ -26,6 +26,8 @@ export type SmartContractLicenseType =
 export type SmartContractProxyType =
   'eip1167' |
   'eip1967' |
+  'eip1967_oz' |
+  'eip1967_beacon' |
   'eip1822' |
   'eip930' |
   'eip2535' |
@@ -41,7 +43,7 @@ export type SmartContractProxyType =
   null;
 
 export interface SmartContractConflictingImplementation {
-  proxy_type: string;
+  proxy_type: NonNullable<SmartContractProxyType>;
   implementations: Array<AddressImplementation>;
 }
 
