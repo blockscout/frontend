@@ -13,6 +13,7 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
+import EntityTag from 'ui/shared/EntityTags/EntityTag';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
@@ -49,6 +50,8 @@ const TxsListItem = ({
 }: Props) => {
   const dataTo = tx.to ? tx.to : tx.created_contract;
 
+  const protocolTag = tx.to?.metadata?.tags?.find(tag => tag.tagType === 'protocol');
+
   return (
     <ListItemMobile display="block" width="100%" animation={ animation } key={ tx.hash }>
       <Flex justifyContent="space-between" alignItems="flex-start" mt={ 4 }>
@@ -64,6 +67,7 @@ const TxsListItem = ({
           }
           <TxStatus status={ tx.status } errorText={ tx.status === 'error' ? tx.result : undefined } isLoading={ isLoading }/>
           <TxWatchListTags tx={ tx } isLoading={ isLoading }/>
+          { protocolTag && <EntityTag data={ protocolTag } isLoading={ isLoading }/> }
         </HStack>
         <TxAdditionalInfo tx={ tx } isMobile isLoading={ isLoading }/>
       </Flex>
