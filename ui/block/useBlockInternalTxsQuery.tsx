@@ -15,7 +15,7 @@ export default function useBlockInternalTxsQuery({ heightOrHash, blockQuery, tab
     resourceName: 'general:block_internal_txs',
     pathParams: { height_or_hash: heightOrHash },
     options: {
-      enabled: Boolean(tab === 'internal_txs' && !blockQuery.isPlaceholderData && blockQuery.data?.internal_transactions_count),
+      enabled: Boolean(tab === 'internal_txs' && !blockQuery.isPlaceholderData),
       placeholderData: generateListStub<'general:block_internal_txs'>(INTERNAL_TX, 10, { next_page_params: null }),
       refetchOnMount: false,
     },
