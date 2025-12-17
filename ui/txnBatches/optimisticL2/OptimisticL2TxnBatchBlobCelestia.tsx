@@ -16,6 +16,7 @@ interface Props {
   isLoading: boolean;
 }
 
+// TODO @tom2drum refactor this component
 const OptimisticL2TxnBatchBlobCelestia = ({ blobs, isLoading }: Props) => {
   return (
     <VStack rowGap={ 2 } w="100%">

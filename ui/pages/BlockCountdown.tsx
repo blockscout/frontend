@@ -22,6 +22,7 @@ import createIcsFileBlob from 'ui/blockCountdown/createIcsFileBlob';
 import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 import IconSvg from 'ui/shared/IconSvg';
 import StatsWidget from 'ui/shared/stats/StatsWidget';
+import Time from 'ui/shared/time/Time';
 
 import CapybaraRunner from '../games/CapybaraRunner';
 
@@ -80,7 +81,7 @@ const BlockCountdown = ({ hideCapybaraRunner }: Props) => {
             </Heading>
             <Box mt={ 2 } color="text.secondary">
               <Box fontWeight={ 600 }>Estimated target date</Box>
-              <Box>{ dayjs().add(Number(data.result.EstimateTimeInSec), 's').format('llll') }</Box>
+              <Time timestamp={ dayjs().add(Number(data.result.EstimateTimeInSec), 's').toISOString() }/>
             </Box>
             <Flex columnGap={ 2 } mt={ 3 }>
               <Link

@@ -12,6 +12,7 @@ interface Props {
   isLoading: boolean;
 }
 
+// TODO @tom2drum refactor this component
 const OptimisticL2TxnBatchBlobCallData = ({ l1TxHashes, l1Timestamp, isLoading }: Props) => {
   return (
     <OptimisticL2TxnBatchBlobWrapper isLoading={ isLoading }>

@@ -26,6 +26,7 @@ interface Props {
   query: UseQueryResult<bens.DetailedDomain, ResourceError<unknown>>;
 }
 
+// TODO @tom2drum revise this component
 const NameDomainDetails = ({ query }: Props) => {
   const isLoading = query.isPlaceholderData;
 

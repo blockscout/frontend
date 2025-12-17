@@ -15,6 +15,7 @@ type Props = {
   data: ArbitrumL2TxnBatchDAAnytrust;
 };
 
+// TODO @tom2drum check this component
 const ArbitrumL2TxnBatchDetailsAnyTrustDA = ({ data }: Props) => {
   return (
     <>
