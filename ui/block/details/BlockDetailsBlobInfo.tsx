@@ -1,4 +1,4 @@
-import { Text, chakra } from '@chakra-ui/react';
+import { Text } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -6,11 +6,12 @@ import type { Block } from 'types/api/block';
 
 import { currencyUnits } from 'lib/units';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import { WEI, WEI_IN_GWEI, ZERO } from 'toolkit/utils/consts';
-import { space } from 'toolkit/utils/htmlEntities';
+import { ZERO } from 'toolkit/utils/consts';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import IconSvg from 'ui/shared/IconSvg';
 import Utilization from 'ui/shared/Utilization/Utilization';
+import GasPriceValue from 'ui/shared/value/GasPriceValue';
+import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 interface Props {
   data: Block;
@@ -41,10 +42,7 @@ const BlockDetailsBlobInfo = ({ data }: Props) => {
             Blob gas price
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue multiRow>
-            <Text whiteSpace="pre">{ BigNumber(data.blob_gas_price).dividedBy(WEI).toFixed() } { currencyUnits.ether }{ space }</Text>
-            <Text color="text.secondary" whiteSpace="pre">
-              ({ BigNumber(data.blob_gas_price).dividedBy(WEI_IN_GWEI).toFixed() } { currencyUnits.gwei })
-            </Text>
+            <GasPriceValue amount={ data.blob_gas_price }/>
           </DetailedInfo.ItemValue>
         </>
       ) }
@@ -68,10 +66,12 @@ const BlockDetailsBlobInfo = ({ data }: Props) => {
             Blob burnt fees
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue multiRow>
-            <IconSvg name="flame" boxSize={ 5 } color="icon.primary" mr={{ base: 1, lg: 2 }}/>
-            <chakra.span mr={ 4 }>
-              { burntBlobFees.dividedBy(WEI).toFixed() } { currencyUnits.ether }
-            </chakra.span>
+            <NativeCoinValue
+              amount={ burntBlobFees.toString() }
+              accuracy={ 0 }
+              startElement={ <IconSvg name="flame" boxSize={ 5 } color="icon.primary" mr={{ base: 1, lg: 2 }}/> }
+              mr={ 4 }
+            />
             { !blobFees.isEqualTo(ZERO) && (
               <Tooltip content="Blob burnt fees / Txn fees * 100%">
                 <Utilization value={ burntBlobFees.dividedBy(blobFees).toNumber() }/>
@@ -88,10 +88,7 @@ const BlockDetailsBlobInfo = ({ data }: Props) => {
             Excess blob gas
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue>
-            <Text>{ BigNumber(data.excess_blob_gas).dividedBy(WEI).toFixed() } { currencyUnits.ether } </Text>
-            <Text color="text.secondary" whiteSpace="pre">
-              { space }({ BigNumber(data.excess_blob_gas).dividedBy(WEI_IN_GWEI).toFixed() } { currencyUnits.gwei })
-            </Text>
+            <GasPriceValue amount={ data.excess_blob_gas }/>
           </DetailedInfo.ItemValue>
         </>
       ) }

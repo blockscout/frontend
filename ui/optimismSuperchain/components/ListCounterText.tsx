@@ -1,7 +1,7 @@
 import React from 'react';
 
 import useIsInitialLoading from 'lib/hooks/useIsInitialLoading';
-import TruncatedValue from 'ui/shared/TruncatedValue';
+import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
 
 interface Props {
   value: string | undefined;
@@ -20,9 +20,9 @@ const ListCounterText = ({ isLoading, value, type }: Props) => {
   const text = `A total of ${ valueNum.toLocaleString() } ${ valueNum === 1 ? type : `${ type }s` } found`;
 
   return (
-    <TruncatedValue
-      value={ text }
-      isLoading={ isInitialLoading }
+    <TruncatedText
+      text={ text }
+      loading={ isInitialLoading }
       textStyle={{ base: 'md', lg: 'sm' }}
       color="text.secondary"
       ml={{ base: 0, lg: 4 }}

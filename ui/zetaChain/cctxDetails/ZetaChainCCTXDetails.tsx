@@ -3,17 +3,15 @@ import React from 'react';
 
 import type { CrossChainTx } from '@blockscout/zetachain-cctx-types';
 
-import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import base64ToHex from 'lib/base64ToHex';
-import { currencyUnits } from 'lib/units';
 import { HOMEPAGE_STATS } from 'stubs/stats';
 import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { SECOND } from 'toolkit/utils/consts';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
-import CurrencyValue from 'ui/shared/CurrencyValue';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
+import DetailedInfoNativeCoinValue from 'ui/shared/DetailedInfo/DetailedInfoNativeCoinValue';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 import AddressEntityZetaChain from 'ui/shared/entities/address/AddressEntityZetaChain';
 import TxEntityZetaChainCC from 'ui/shared/entities/tx/TxEntityZetaChainCC';
@@ -113,18 +111,13 @@ const ZetaChainCCTXDetails = ({ data, isLoading }: Props) => {
       >
         Cross-chain fee
       </DetailedInfo.ItemLabel>
-      <DetailedInfo.ItemValue>
-        <CurrencyValue
-          value={ data.zeta_fees }
-          currency={ currencyUnits.ether }
-          decimals={ String(config.chain.currency.decimals) }
-          exchangeRate={ statsQuery.data?.coin_price }
-          accuracy={ 4 }
-          accuracyUsd={ 2 }
-          flexWrap="wrap"
-          isLoading={ isLoading }
-        />
-      </DetailedInfo.ItemValue>
+      <DetailedInfoNativeCoinValue
+        amount={ data.zeta_fees }
+        exchangeRate={ statsQuery.data?.coin_price }
+        accuracy={ 4 }
+        noTooltip={ false }
+        loading={ isLoading }
+      />
       { data.relayed_message && (
         <>
           <DetailedInfo.ItemLabel

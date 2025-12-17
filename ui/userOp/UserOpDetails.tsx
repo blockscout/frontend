@@ -1,4 +1,4 @@
-import { GridItem, Text } from '@chakra-ui/react';
+import { GridItem } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import BigNumber from 'bignumber.js';
 import React from 'react';
@@ -8,15 +8,12 @@ import type { UserOp } from 'types/api/userOps';
 import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
-import { currencyUnits } from 'lib/units';
 import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import { WEI, WEI_IN_GWEI } from 'toolkit/utils/consts';
-import { space } from 'toolkit/utils/htmlEntities';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
-import CurrencyValue from 'ui/shared/CurrencyValue';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
+import DetailedInfoNativeCoinValue from 'ui/shared/DetailedInfo/DetailedInfoNativeCoinValue';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import AddressStringOrParam from 'ui/shared/entities/address/AddressStringOrParam';
@@ -26,6 +23,7 @@ import UserOpEntity from 'ui/shared/entities/userOp/UserOpEntity';
 import UserOpSponsorType from 'ui/shared/userOps/UserOpSponsorType';
 import UserOpStatus from 'ui/shared/userOps/UserOpStatus';
 import Utilization from 'ui/shared/Utilization/Utilization';
+import GasPriceValue from 'ui/shared/value/GasPriceValue';
 
 import UserOpCallData from './UserOpCallData';
 import UserOpDecodedCallData from './UserOpDecodedCallData';
@@ -141,14 +139,10 @@ const UserOpDetails = ({ query }: Props) => {
           >
             Fee
           </DetailedInfo.ItemLabel>
-          <DetailedInfo.ItemValue>
-            <CurrencyValue
-              value={ data.fee }
-              currency={ currencyUnits.ether }
-              decimals={ String(config.chain.currency.decimals) }
-              isLoading={ isPlaceholderData }
-            />
-          </DetailedInfo.ItemValue>
+          <DetailedInfoNativeCoinValue
+            amount={ data.fee }
+            loading={ isPlaceholderData }
+          />
         </>
       ) }
 
@@ -252,11 +246,8 @@ const UserOpDetails = ({ query }: Props) => {
             >
               Max fee per gas
             </DetailedInfo.ItemLabel>
-            <DetailedInfo.ItemValue>
-              <Text>{ BigNumber(data.max_fee_per_gas).dividedBy(WEI).toFixed() } { currencyUnits.ether } </Text>
-              <Text color="text.secondary" whiteSpace="pre">
-                { space }({ BigNumber(data.max_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() } { currencyUnits.gwei })
-              </Text>
+            <DetailedInfo.ItemValue multiRow>
+              <GasPriceValue amount={ data.max_fee_per_gas }/>
             </DetailedInfo.ItemValue>
 
             <DetailedInfo.ItemLabel
@@ -264,11 +255,8 @@ const UserOpDetails = ({ query }: Props) => {
             >
               Max priority fee per gas
             </DetailedInfo.ItemLabel>
-            <DetailedInfo.ItemValue>
-              <Text>{ BigNumber(data.max_priority_fee_per_gas).dividedBy(WEI).toFixed() } { currencyUnits.ether } </Text>
-              <Text color="text.secondary" whiteSpace="pre">
-                { space }({ BigNumber(data.max_priority_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() } { currencyUnits.gwei })
-              </Text>
+            <DetailedInfo.ItemValue multiRow>
+              <GasPriceValue amount={ data.max_priority_fee_per_gas }/>
             </DetailedInfo.ItemValue>
           </>
         ) }

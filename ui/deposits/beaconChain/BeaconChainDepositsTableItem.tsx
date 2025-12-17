@@ -2,16 +2,15 @@ import React from 'react';
 
 import type { DepositsItem } from 'types/api/deposits';
 
-import config from 'configs/app';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import BeaconChainDepositSignature from 'ui/shared/beacon/BeaconChainDepositSignature';
 import BeaconChainDepositStatusTag from 'ui/shared/beacon/BeaconChainDepositStatusTag';
 import BeaconChainValidatorLink from 'ui/shared/beacon/BeaconChainValidatorLink';
-import CurrencyValue from 'ui/shared/CurrencyValue';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
+import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 type Props = {
   item: DepositsItem;
@@ -52,7 +51,7 @@ const BeaconChainDepositsTableItem = ({ item, view, isLoading }: Props) => {
         </TableCell>
       ) }
       <TableCell verticalAlign="middle">
-        <CurrencyValue value={ item.amount } isLoading={ isLoading } decimals={ String(config.chain.currency.decimals) }/>
+        <NativeCoinValue amount={ item.amount } loading={ isLoading } noSymbol/>
       </TableCell>
       { view !== 'address' && (
         <TableCell verticalAlign="middle">

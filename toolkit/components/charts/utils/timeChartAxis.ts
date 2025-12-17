@@ -17,7 +17,7 @@ export interface LabelFormatParams extends Intl.NumberFormatOptions {
 type Data = TimeChartData;
 
 export function getAxesParams(data: Data, axesConfig?: AxesConfig) {
-  const { labelFormatParams: labelFormatParamsY, scale: yScale } = getAxisParamsY(data, axesConfig?.y);
+  const { labelFormatParams: labelFormatParamsY, scale: yScale } = getAxisParamsY(data, axesConfig?.y, axesConfig?.y?.tickFormatter);
 
   return {
     x: {
@@ -60,7 +60,7 @@ const tickFormatterX = (axis: d3.Axis<d3.NumberValue>) => (d: d3.AxisDomain) => 
   return format(d as Date);
 };
 
-function getAxisParamsY(data: Data, config?: AxisConfig) {
+function getAxisParamsY(data: Data, config?: AxisConfig, tickFormatter?: () => (d: d3.AxisDomain) => string) {
   const DEFAULT_TICKS_NUM = 3;
   const min = d3.min(data, ({ items }) => d3.min(items, ({ value }) => value)) ?? 0;
   const max = d3.max(data, ({ items }) => d3.max(items, ({ value }) => value)) ?? 0;
@@ -72,7 +72,7 @@ function getAxisParamsY(data: Data, config?: AxisConfig) {
       .domain([ config?.scale?.min ?? min, max ]);
 
   const ticks = scale.ticks(config?.ticks ?? DEFAULT_TICKS_NUM);
-  const labelFormatParams = getYLabelFormatParams(ticks);
+  const labelFormatParams = getYLabelFormatParams(ticks, tickFormatter);
 
   return { min, max, scale, labelFormatParams };
 }
@@ -82,19 +82,23 @@ const getTickFormatterY = (params: Intl.NumberFormatOptions) => () => (d: d3.Axi
   return num.toLocaleString(undefined, params);
 };
 
-function getYLabelFormatParams(ticks: Array<number>, maximumSignificantDigits = DEFAULT_MAXIMUM_SIGNIFICANT_DIGITS): LabelFormatParams {
+function getYLabelFormatParams(
+  ticks: Array<number>,
+  tickFormatter?: () => (d: d3.AxisDomain) => string,
+  maximumSignificantDigits = DEFAULT_MAXIMUM_SIGNIFICANT_DIGITS,
+): LabelFormatParams {
   const params = {
     maximumFractionDigits: DEFAULT_MAXIMUM_FRACTION_DIGITS,
     maximumSignificantDigits,
     notation: 'compact' as const,
   };
 
-  const uniqTicksStr = uniq(ticks.map((tick) => tick.toLocaleString(undefined, params)));
+  const uniqTicksStr = uniq(ticks.map((tick) => tickFormatter ? tickFormatter()(tick) : tick.toLocaleString(undefined, params)));
   const maxLabelLength = maxBy(uniqTicksStr, (items) => items.length)?.length ?? DEFAULT_LABEL_LENGTH;
 
   if (uniqTicksStr.length === ticks.length || maximumSignificantDigits === MAXIMUM_SIGNIFICANT_DIGITS_LIMIT) {
     return { ...params, maxLabelLength };
   }
 
-  return getYLabelFormatParams(ticks, maximumSignificantDigits + 1);
+  return getYLabelFormatParams(ticks, tickFormatter, maximumSignificantDigits + 1);
 }

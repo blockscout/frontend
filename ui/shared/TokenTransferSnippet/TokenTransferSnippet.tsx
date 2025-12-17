@@ -12,6 +12,7 @@ import type {
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
+import ConfidentialValue from 'ui/shared/value/ConfidentialValue';
 
 import TokenTransferSnippetFiat from './TokenTransferSnippetFiat';
 import TokenTransferSnippetNft from './TokenTransferSnippetNft';
@@ -91,7 +92,7 @@ const TokenTransferSnippet = ({ data, isLoading, noAddressIcons = true }: Props)
         return (
           <>
             <chakra.span color="text.secondary">for</chakra.span>
-            <span>•••••</span>
+            <ConfidentialValue loading={ false } wordBreak="break-word"/>
             <TokenEntity
               token={{ ...data.token, name: data.token.symbol || data.token.name }}
               noCopy

@@ -9,12 +9,12 @@ const bgColor = '#FF007A';
 
 export const buttonWithoutStyles: AddressMetadataTagApi['meta'] = {
   appID,
-  appMarketplaceURL,
   appLogoURL,
   appActionButtonText,
 };
 
 export const linkWithoutStyles: AddressMetadataTagApi['meta'] = {
+  appID,
   appMarketplaceURL,
   appLogoURL,
   appActionButtonText,
@@ -22,7 +22,6 @@ export const linkWithoutStyles: AddressMetadataTagApi['meta'] = {
 
 export const buttonWithStyles: AddressMetadataTagApi['meta'] = {
   appID,
-  appMarketplaceURL,
   appLogoURL,
   appActionButtonText,
   textColor,

@@ -396,6 +396,53 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
         bg: { value: { _light: '{colors.cyan.50}', _dark: '{colors.cyan.800}' } },
         fg: { value: { _light: '{colors.cyan.500}', _dark: '{colors.cyan.100}' } },
       },
+      pink: {
+        bg: { value: { _light: '{colors.pink.50}', _dark: '{colors.pink.800}' } },
+        fg: { value: { _light: '{colors.pink.500}', _dark: '{colors.pink.100}' } },
+      },
+      // bright badges mainly used in other projects (e.g. autoscout, dev portal, etc.)
+      bright: {
+        gray: {
+          bg: { value: { _light: '{colors.gray.100}', _dark: '{colors.gray.800}' } },
+          fg: { value: { _light: '{colors.gray.600}', _dark: '{colors.gray.200}' } },
+        },
+        green: {
+          bg: { value: { _light: '{colors.green.100}', _dark: '{colors.green.800}' } },
+          fg: { value: { _light: '{colors.green.600}', _dark: '{colors.green.200}' } },
+        },
+        red: {
+          bg: { value: { _light: '{colors.red.100}', _dark: '{colors.red.800}' } },
+          fg: { value: { _light: '{colors.red.600}', _dark: '{colors.red.200}' } },
+        },
+        blue: {
+          bg: { value: { _light: '{colors.blue.100}', _dark: '{colors.blue.800}' } },
+          fg: { value: { _light: '{colors.blue.600}', _dark: '{colors.blue.200}' } },
+        },
+        yellow: {
+          bg: { value: { _light: '{colors.yellow.100}', _dark: '{colors.yellow.800}' } },
+          fg: { value: { _light: '{colors.yellow.600}', _dark: '{colors.yellow.200}' } },
+        },
+        teal: {
+          bg: { value: { _light: '{colors.teal.100}', _dark: '{colors.teal.800}' } },
+          fg: { value: { _light: '{colors.teal.600}', _dark: '{colors.teal.200}' } },
+        },
+        cyan: {
+          bg: { value: { _light: '{colors.cyan.100}', _dark: '{colors.cyan.800}' } },
+          fg: { value: { _light: '{colors.cyan.600}', _dark: '{colors.cyan.200}' } },
+        },
+        orange: {
+          bg: { value: { _light: '{colors.orange.100}', _dark: '{colors.orange.600}' } },
+          fg: { value: { _light: '{colors.orange.600}', _dark: '{colors.orange.100}' } },
+        },
+        purple: {
+          bg: { value: { _light: '{colors.purple.50}', _dark: '{colors.purple.600}' } },
+          fg: { value: { _light: '{colors.purple.600}', _dark: '{colors.purple.50}' } },
+        },
+        pink: {
+          bg: { value: { _light: '{colors.pink.50}', _dark: '{colors.pink.600}' } },
+          fg: { value: { _light: '{colors.pink.600}', _dark: '{colors.pink.50}' } },
+        },
+      },
     },
     tag: {
       root: {

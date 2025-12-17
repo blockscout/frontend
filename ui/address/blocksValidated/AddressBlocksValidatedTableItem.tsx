@@ -11,6 +11,7 @@ import { TableCell, TableRow } from 'toolkit/chakra/table';
 import BlockGasUsed from 'ui/shared/block/BlockGasUsed';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
+import SimpleValue from 'ui/shared/value/SimpleValue';
 
 type Props = Block & {
   page: number;
@@ -59,9 +60,11 @@ const AddressBlocksValidatedTableItem = (props: Props) => {
       </TableCell>
       { !config.UI.views.block.hiddenFields?.total_reward && !config.features.rollup.isEnabled && (
         <TableCell isNumeric>
-          <Skeleton loading={ props.isLoading } display="inline-block">
-            <span>{ totalReward.toFixed() }</span>
-          </Skeleton>
+          <SimpleValue
+            value={ totalReward }
+            accuracy={ 0 }
+            loading={ props.isLoading }
+          />
         </TableCell>
       ) }
     </TableRow>

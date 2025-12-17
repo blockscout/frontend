@@ -40,7 +40,7 @@ const TxInternalsTable = ({ data, sort, onSortToggle, top, isLoading }: Props) =
               sortValue={ sort }
               onSortToggle={ onSortToggle }
             >
-              Gas limit { currencyUnits.ether }
+              Gas limit
             </TableColumnHeaderSortable>
           </TableRow>
         </TableHeaderSticky>

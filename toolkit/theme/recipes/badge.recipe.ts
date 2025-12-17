@@ -57,6 +57,10 @@ export const recipe = defineRecipe({
         bg: 'badge.cyan.bg',
         color: 'badge.cyan.fg',
       },
+      pink: {
+        bg: 'badge.pink.bg',
+        color: 'badge.pink.fg',
+      },
       purple_alt: {
         bg: 'badge.purple_alt.bg',
         color: 'badge.purple_alt.fg',
@@ -64,6 +68,47 @@ export const recipe = defineRecipe({
       blue_alt: {
         bg: 'badge.blue_alt.bg',
         color: 'badge.blue_alt.fg',
+      },
+      // bright badges mainly used in other projects (e.g. autoscout, dev portal, etc.)
+      bright_gray: {
+        bg: 'badge.bright.gray.bg',
+        color: 'badge.bright.gray.fg',
+      },
+      bright_green: {
+        bg: 'badge.bright.green.bg',
+        color: 'badge.bright.green.fg',
+      },
+      bright_red: {
+        bg: 'badge.bright.red.bg',
+        color: 'badge.bright.red.fg',
+      },
+      bright_blue: {
+        bg: 'badge.bright.blue.bg',
+        color: 'badge.bright.blue.fg',
+      },
+      bright_yellow: {
+        bg: 'badge.bright.yellow.bg',
+        color: 'badge.bright.yellow.fg',
+      },
+      bright_teal: {
+        bg: 'badge.bright.teal.bg',
+        color: 'badge.bright.teal.fg',
+      },
+      bright_cyan: {
+        bg: 'badge.bright.cyan.bg',
+        color: 'badge.bright.cyan.fg',
+      },
+      bright_orange: {
+        bg: 'badge.bright.orange.bg',
+        color: 'badge.bright.orange.fg',
+      },
+      bright_purple: {
+        bg: 'badge.bright.purple.bg',
+        color: 'badge.bright.purple.fg',
+      },
+      bright_pink: {
+        bg: 'badge.bright.pink.bg',
+        color: 'badge.bright.pink.fg',
       },
     },
     size: {
@@ -78,6 +123,13 @@ export const recipe = defineRecipe({
         px: '1',
         py: '0.5',
         minH: '6',
+      },
+      lg: {
+        textStyle: 'sm',
+        px: '2',
+        py: '1',
+        minH: '7',
+        fontWeight: '600',
       },
     },
   },

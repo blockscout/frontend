@@ -41,7 +41,7 @@ export default function generateProductSchema<Pathname extends Route['pathname']
     '@type': 'Product',
     name: tokenData.name || tokenData.symbol || undefined,
     description: tokenData.description || undefined,
-    logo: tokenData.icon_url || undefined,
+    image: tokenData.icon_url || undefined,
     url: tokenUrl,
     productID: tokenData.address_hash,
   };
@@ -60,6 +60,8 @@ export default function generateProductSchema<Pathname extends Route['pathname']
       '@type': 'Offer',
       price: tokenData.exchange_rate,
       priceCurrency: 'USD',
+      priceValidUntil: new Date(Date.now() + 1000 * 60 * 60 * 24).toISOString(),
+      availability: 'InStock',
     };
   }
 

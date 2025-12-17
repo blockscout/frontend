@@ -3,11 +3,12 @@ import React from 'react';
 
 import type { TokenHolder, TokenInfo } from 'types/api/token';
 
-import { Skeleton } from 'toolkit/chakra/skeleton';
+import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
-import TruncatedValue from 'ui/shared/TruncatedValue';
 import Utilization from 'ui/shared/Utilization/Utilization';
+import AssetValue from 'ui/shared/value/AssetValue';
+import ConfidentialValue from 'ui/shared/value/ConfidentialValue';
 
 interface Props {
   holder: TokenHolder;
@@ -16,8 +17,6 @@ interface Props {
 }
 
 const TokenHoldersListItem = ({ holder, token, isLoading }: Props) => {
-  const quantity = BigNumber(holder.value).div(BigNumber(10 ** Number(token.decimals))).dp(6).toFormat();
-
   return (
     <ListItemMobileGrid.Container>
       <ListItemMobileGrid.Label isLoading={ isLoading }>Address</ListItemMobileGrid.Label>
@@ -34,16 +33,22 @@ const TokenHoldersListItem = ({ holder, token, isLoading }: Props) => {
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>ID#</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
-            <TruncatedValue value={ holder.token_id } isLoading={ isLoading } w="100%"/>
+            <TruncatedText text={ holder.token_id } loading={ isLoading } w="100%"/>
           </ListItemMobileGrid.Value>
         </>
       ) }
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Quantity</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <Skeleton loading={ isLoading } display="inline-block">
-          { token.type === 'ERC-7984' ? '•••••' : quantity }
-        </Skeleton>
+        { token.type === 'ERC-7984' ? (
+          <ConfidentialValue loading={ isLoading }/>
+        ) : (
+          <AssetValue
+            amount={ holder.value }
+            decimals={ token.decimals ?? '0' }
+            loading={ isLoading }
+          />
+        ) }
       </ListItemMobileGrid.Value>
 
       { token.total_supply && token.type !== 'ERC-404' && (

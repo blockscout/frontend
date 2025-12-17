@@ -3,16 +3,15 @@ import React from 'react';
 import type { DepositsItem } from 'types/api/deposits';
 
 import config from 'configs/app';
-import { currencyUnits } from 'lib/units';
 import BeaconChainDepositSignature from 'ui/shared/beacon/BeaconChainDepositSignature';
 import BeaconChainDepositStatusTag from 'ui/shared/beacon/BeaconChainDepositStatusTag';
 import BeaconChainValidatorLink from 'ui/shared/beacon/BeaconChainValidatorLink';
-import CurrencyValue from 'ui/shared/CurrencyValue';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
+import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 const feature = config.features.beaconChain;
 
@@ -59,11 +58,9 @@ const BeaconChainDepositsListItem = ({ item, isLoading, view }: Props) => {
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Value</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <CurrencyValue
-          value={ item.amount }
-          currency={ currencyUnits.ether }
-          decimals={ String(config.chain.currency.decimals) }
-          isLoading={ isLoading }
+        <NativeCoinValue
+          amount={ item.amount }
+          loading={ isLoading }
         />
       </ListItemMobileGrid.Value>
 

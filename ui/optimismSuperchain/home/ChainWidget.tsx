@@ -78,7 +78,7 @@ const ChainWidget = ({ data }: Props) => {
         </HStack>
       </HStack>
       <Heading my={ 3 } textStyle="heading.md ">{ data.name }</Heading>
-      <RollupStageBadge chainConfig={ data.app_config } variant="filled" mb={ 2.5 }/>
+      <RollupStageBadge chainConfig={ data.app_config } mb={ 2.5 }/>
       <VStack gap={ 2 } alignItems="flex-start" fontWeight={ 500 }>
         <HStack gap={ 2 }>
           <Box color="text.secondary">Chain ID</Box>

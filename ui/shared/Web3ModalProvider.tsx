@@ -43,7 +43,7 @@ const init = () => {
         '--w3m-border-radius-master': '2px',
         '--w3m-z-index': zIndex?.modal2?.value,
       },
-      featuredWalletIds: [],
+      featuredWalletIds: feature.walletConnect.featuredWalletIds,
       allowUnsupportedChain: true,
     });
   } catch (error) {}

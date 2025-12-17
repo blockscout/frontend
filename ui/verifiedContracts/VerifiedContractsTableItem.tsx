@@ -1,11 +1,9 @@
 import { Flex, chakra } from '@chakra-ui/react';
-import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { VerifiedContract } from 'types/api/contracts';
 import type { ClusterChainConfig } from 'types/multichain';
 
-import config from 'configs/app';
 import formatLanguageName from 'lib/contracts/formatLanguageName';
 import { CONTRACT_LICENSES } from 'lib/contracts/licenses';
 import { Skeleton } from 'toolkit/chakra/skeleton';
@@ -16,7 +14,7 @@ import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 import IconSvg from 'ui/shared/IconSvg';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
-import TruncatedValue from 'ui/shared/TruncatedValue';
+import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 interface Props {
   data: VerifiedContract;
@@ -25,10 +23,6 @@ interface Props {
 }
 
 const VerifiedContractsTableItem = ({ data, isLoading, chainData }: Props) => {
-  const balance = data.coin_balance && data.coin_balance !== '0' ?
-    BigNumber(data.coin_balance).div(10 ** config.chain.currency.decimals).dp(6).toFormat() :
-    '0';
-
   const license = (() => {
     const license = CONTRACT_LICENSES.find((license) => license.type === data.license_type);
     if (!license || license.type === 'none') {
@@ -68,11 +62,11 @@ const VerifiedContractsTableItem = ({ data, isLoading, chainData }: Props) => {
         />
       </TableCell>
       <TableCell isNumeric>
-        <TruncatedValue
-          value={ balance }
-          isLoading={ isLoading }
+        <NativeCoinValue
+          amount={ data.coin_balance }
+          noSymbol
+          loading={ isLoading }
           my={ 1 }
-          maxW="100%"
         />
       </TableCell>
       <TableCell isNumeric>

@@ -10,15 +10,14 @@ import NativeTokenTag from 'ui/shared/celo/NativeTokenTag';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
-
-const celoFeature = config.features.celo;
+import ConfidentialValue from 'ui/shared/value/ConfidentialValue';
 
 type Props = AddressTokenBalance & { isLoading: boolean };
 
 const ERC7984TokensListItem = ({ token, isLoading }: Props) => {
 
-  const isNativeToken = celoFeature.isEnabled && token.address_hash.toLowerCase() === celoFeature.nativeTokenAddress?.toLowerCase();
-
+  const isNativeToken = config.UI.views.address.nativeTokenAddress &&
+    token.address_hash.toLowerCase() === config.UI.views.address.nativeTokenAddress.toLowerCase();
   return (
     <ListItemMobile rowGap={ 2 }>
       <Flex alignItems="center" width="100%" columnGap={ 2 }>
@@ -51,15 +50,11 @@ const ERC7984TokensListItem = ({ token, isLoading }: Props) => {
       ) }
       <HStack gap={ 3 } alignItems="baseline">
         <Skeleton loading={ isLoading } fontSize="sm" fontWeight={ 500 }>Quantity</Skeleton>
-        <Skeleton loading={ isLoading } fontSize="sm" color="text.secondary" whiteSpace="pre-wrap" wordBreak="break-word">
-          <span>•••••</span>
-        </Skeleton>
+        <ConfidentialValue loading={ isLoading } fontSize="sm" color="text.secondary" whiteSpace="pre-wrap" wordBreak="break-word"/>
       </HStack>
       <HStack gap={ 3 } alignItems="baseline">
         <Skeleton loading={ isLoading } fontSize="sm" fontWeight={ 500 }>Value</Skeleton>
-        <Skeleton loading={ isLoading } fontSize="sm" color="text.secondary" whiteSpace="pre-wrap" wordBreak="break-word">
-          <span>•••••</span>
-        </Skeleton>
+        <ConfidentialValue loading={ isLoading } fontSize="sm" color="text.secondary" whiteSpace="pre-wrap" wordBreak="break-word"/>
       </HStack>
     </ListItemMobile>
   );

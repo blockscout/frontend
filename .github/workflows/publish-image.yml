@@ -49,11 +49,11 @@ permissions:
 jobs:
     run:
         name: Run
-        runs-on: ubuntu-latest
+        runs-on: build
         steps:
             -   name: Check out the repo
                 uses: actions/checkout@v4
-    
+
             -   name: Set image name based on private flag
                 id: image-name
                 run: |
@@ -62,7 +62,7 @@ jobs:
                     else
                         echo "image-name=ghcr.io/blockscout/frontend" >> $GITHUB_OUTPUT
                     fi
-    
+
             # Will automatically make nice tags, see the table here https://github.com/docker/metadata-action#basic
             -   name: Docker meta
                 id: meta
@@ -74,7 +74,7 @@ jobs:
                     tags: |
                         type=ref,event=tag
                         ${{ inputs.tags }}
-    
+
             -   name: Add SHORT_SHA env property with commit short sha
                 run: echo "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`" >> $GITHUB_ENV
 
@@ -89,7 +89,7 @@ jobs:
                     echo "ref_name: $REF_NAME"
                     echo "image_name: $IMAGE_NAME"
                     echo "is_private: $IS_PRIVATE"
-    
+
             -   name: Setup repo
                 uses: blockscout/actions/.github/actions/setup-multiarch-buildx@no-metadata
                 id: setup

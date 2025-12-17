@@ -1,11 +1,15 @@
 /* eslint-disable no-console */
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import { dirname, resolve as resolvePath } from 'node:path';
 import type { ValidationError } from 'yup';
 
-import { buildExternalAssetFilePath } from '../../../configs/app/utils';
+import { buildExternalAssetFilePath } from 'configs/app/utils';
 import schema from './schema';
 import schemaMultichain from './schema_multichain';
+import { fileURLToPath } from 'node:url';
+
+const currentFilePath = fileURLToPath(import.meta.url);
+const distDir = dirname(currentFilePath);
 
 const silent = process.argv.includes('--silent');
 
@@ -80,7 +84,7 @@ async function getExternalJsonContent(envName: string): Promise<string | void> {
   return new Promise((resolve, reject) => {
     const fileName = `./public${ buildExternalAssetFilePath(envName, 'https://foo.bar/baz.json') }`;
 
-    fs.readFile(path.resolve(__dirname, fileName), 'utf8', (err, data) => {
+    fs.readFile(resolvePath(distDir, '..', fileName), 'utf8', (err, data) => {
       if (err) {
         console.log(`🚨 Unable to read file: ${ fileName }`);
         reject(err);
@@ -96,8 +100,8 @@ async function checkPlaceholdersCongruity(envsMap: Record<string, string>) {
   try {
     !silent && console.log(`🌀 Checking environment variables and their placeholders congruity...`);
 
-    const runTimeEnvs = await getEnvsPlaceholders(path.resolve(__dirname, '.env.registry'));
-    const buildTimeEnvs = await getEnvsPlaceholders(path.resolve(__dirname, '.env'));
+    const runTimeEnvs = await getEnvsPlaceholders(resolvePath(distDir, '..', '.env.registry'));
+    const buildTimeEnvs = await getEnvsPlaceholders(resolvePath(distDir, '..', '.env'));
     const envs = Object.keys(envsMap).filter((env) => !buildTimeEnvs.includes(env));
 
     const inconsistencies: Array<string> = [];
@@ -121,7 +125,7 @@ async function checkPlaceholdersCongruity(envsMap: Record<string, string>) {
 
     !silent && console.log('👍 All good!\n');
   } catch (error) {
-    console.log('🚨 Congruity check failed.\n');
+    console.log('🚨 Congruity check failed.\n', error);
     throw error;
   }
 }

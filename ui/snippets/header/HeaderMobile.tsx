@@ -4,10 +4,12 @@ import React from 'react';
 import config from 'configs/app';
 import { useIsSticky } from 'toolkit/hooks/useIsSticky';
 import RewardsButton from 'ui/rewards/RewardsButton';
-import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
+import NetworkIcon from 'ui/snippets/networkLogo/NetworkIcon';
 import UserProfileMobile from 'ui/snippets/user/profile/UserProfileMobile';
 import UserWalletMobile from 'ui/snippets/user/wallet/UserWalletMobile';
 
+import RollupStageBadge from '../navigation/RollupStageBadge';
+import TestnetBadge from '../navigation/TestnetBadge';
 import SearchBarMobile from '../searchBar/SearchBarMobile';
 import Burger from './Burger';
 
@@ -44,7 +46,11 @@ const HeaderMobile = ({ hideSearchButton, onGoToSearchResults }: Props) => {
         boxShadow={ isSticky ? 'md' : 'none' }
       >
         <Burger/>
-        <NetworkLogo ml={ 2 } mr="auto"/>
+        <Flex alignItems="center" flexGrow={ 1 } mx={ 2 }>
+          <NetworkIcon/>
+          <TestnetBadge ml={ 2 }/>
+          <RollupStageBadge ml={ 2 }/>
+        </Flex>
         <Flex columnGap={ 2 }>
           { !hideSearchButton && <SearchBarMobile onGoToSearchResults={ onGoToSearchResults }/> }
           { config.features.rewards.isEnabled && <RewardsButton/> }

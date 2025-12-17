@@ -50,13 +50,13 @@ const OpSuperchainTokenSelect = ({ isLoading, isError, data }: Props) => {
           href={ route({ pathname: '/address/[hash]', query: { hash, tab: 'tokens' } }) }
           asChild
           scroll={ false }
+          loading={ isLoading }
         >
           <IconButton
             aria-label="Show all tokens"
             variant="icon_secondary"
             size="md"
             onClick={ handleIconButtonClick }
-            loadingSkeleton={ isLoading }
           >
             <IconSvg name="wallet"/>
           </IconButton>

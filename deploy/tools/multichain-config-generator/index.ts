@@ -24,16 +24,27 @@ function getSlug(chainName: string) {
 }
 
 async function getChainscoutInfo(chainIds: Array<string>) {
-  const response = await fetch('https://chains.blockscout.com/api/chains');
-  if (!response.ok) {
-    throw new Error(`Failed to fetch chains info from Chainscout API`);
-  }
-  const chainsInfo = await response.json() as Record<string, { explorers: [ { url: string } ], logo: string }>;
+  const controller = new AbortController();
+  const timeout = setTimeout(() => {
+    controller.abort(`Request to Chainscout API timed out`);
+  }, 30_000);
 
-  return chainIds.map((chainId) => ({
-    id: chainId,
-    logoUrl: chainsInfo[chainId]?.logo,
-  }))
+  try {
+    const response = await fetch(`https://chains.blockscout.com/api/chains?chain_ids=${ chainIds.join(',') }`, { signal: controller.signal });
+    if (!response.ok) {
+      throw new Error(`Failed to fetch chains info from Chainscout API`);
+    }
+    const chainsInfo = await response.json() as Record<string, { explorers: [ { url: string } ], logo: string }>;
+  
+    return chainIds.map((chainId) => ({
+      id: chainId,
+      logoUrl: chainsInfo[chainId]?.logo,
+    }))
+  } catch (error) {
+    throw error;
+  } finally {
+    clearTimeout(timeout);
+  }
 }
 
 async function computeChainConfig(url: string): Promise<unknown> {

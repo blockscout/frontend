@@ -8,10 +8,9 @@ import { Tooltip } from 'toolkit/chakra/tooltip';
 
 interface Props extends ImageProps {
   chainConfig?: typeof config;
-  variant?: 'outline' | 'filled';
 }
 
-const RollupStageBadge = ({ chainConfig = config, variant = 'outline', ...props }: Props) => {
+const RollupStageBadge = ({ chainConfig = config, ...props }: Props) => {
 
   const feature = chainConfig.features.rollup;
 
@@ -31,18 +30,10 @@ const RollupStageBadge = ({ chainConfig = config, variant = 'outline', ...props 
         </>
       );
 
-      const src = (() => {
-        if (variant === 'filled') {
-          return feature.stageIndex === '1' ? '/static/labels/stage-1-filled.svg' : '/static/labels/stage-2-filled.svg';
-        }
-
-        return feature.stageIndex === '1' ? '/static/labels/stage-1.svg' : '/static/labels/stage-2.svg';
-      })();
-
       return (
         <Tooltip content={ tooltipContent } interactive>
           <Image
-            src={ src }
+            src={ feature.stageIndex === '1' ? '/static/labels/stage-1.svg' : '/static/labels/stage-2.svg' }
             h="14px"
             w="42px"
             { ...props }

@@ -106,6 +106,7 @@ export * from '../../components/forms/utils';
 export * from '../../components/forms/validators';
 export * from '../../components/loaders/ContentLoader';
 export * from '../../components/truncation/TruncatedTextTooltip';
+export * from '../../components/truncation/TruncatedText';
 
 // Export utils
 export { default as getComponentDisplayName } from '../../utils/getComponentDisplayName';

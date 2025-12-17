@@ -1,10 +1,8 @@
 import { Flex } from '@chakra-ui/react';
-import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { ValidatorZilliqa } from 'types/api/validators';
 
-import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
@@ -13,6 +11,7 @@ import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import NativeTokenIcon from 'ui/shared/NativeTokenIcon';
+import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 interface Props {
   data: ValidatorZilliqa;
@@ -41,10 +40,11 @@ const ValidatorDetails = ({ data, isLoading }: Props) => {
         Staked
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
-        <NativeTokenIcon isLoading={ isLoading } boxSize={ 5 } mr={ 2 }/>
-        <Skeleton loading={ isLoading } display="inline">
-          { BigNumber(data.balance).div(BigNumber(10 ** config.chain.currency.decimals)).toFormat() } { config.chain.currency.symbol }
-        </Skeleton>
+        <NativeCoinValue
+          startElement={ <NativeTokenIcon isLoading={ isLoading } boxSize={ 5 } mr={ 2 }/> }
+          amount={ data.balance }
+          loading={ isLoading }
+        />
       </DetailedInfo.ItemValue>
 
       <DetailedInfo.ItemLabel

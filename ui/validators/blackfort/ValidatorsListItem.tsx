@@ -1,15 +1,13 @@
 import { Flex } from '@chakra-ui/react';
-import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { ValidatorBlackfort } from 'types/api/validators';
 
-import config from 'configs/app';
-import { currencyUnits } from 'lib/units';
 import { Skeleton } from 'toolkit/chakra/skeleton';
+import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
-import TruncatedValue from 'ui/shared/TruncatedValue';
+import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 interface Props {
   data: ValidatorBlackfort;
@@ -34,7 +32,7 @@ const ValidatorsListItem = ({ data, isLoading }: Props) => {
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>Name</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
-            <Flex><TruncatedValue value={ data.name } isLoading={ isLoading }/></Flex>
+            <Flex><TruncatedText text={ data.name } loading={ isLoading }/></Flex>
           </ListItemMobileGrid.Value>
         </>
       ) }
@@ -48,16 +46,18 @@ const ValidatorsListItem = ({ data, isLoading }: Props) => {
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Self bonded</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <Skeleton loading={ isLoading }>
-          { `${ BigNumber(data.self_bonded_amount).div(BigNumber(10 ** config.chain.currency.decimals)).toFormat() } ${ currencyUnits.ether }` }
-        </Skeleton>
+        <NativeCoinValue
+          amount={ data.self_bonded_amount }
+          loading={ isLoading }
+        />
       </ListItemMobileGrid.Value>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Delegated amount</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <Skeleton loading={ isLoading }>
-          { `${ BigNumber(data.delegated_amount).div(BigNumber(10 ** config.chain.currency.decimals)).toFormat() } ${ currencyUnits.ether }` }
-        </Skeleton>
+        <NativeCoinValue
+          amount={ data.delegated_amount }
+          loading={ isLoading }
+        />
       </ListItemMobileGrid.Value>
 
     </ListItemMobileGrid.Container>

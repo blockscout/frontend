@@ -4,7 +4,7 @@ import React from 'react';
 import type { CollapsibleDetailsProps } from 'toolkit/chakra/collapsible';
 import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
 import { Hint } from 'toolkit/components/Hint/Hint';
-import TruncatedValue from 'ui/shared/TruncatedValue';
+import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
 
 interface ContainerProps extends CollapsibleDetailsProps {}
 
@@ -41,7 +41,7 @@ export const Row = ({ label, hint, children }: RowProps) => {
     <>
       <GridItem color="text.secondary" display="flex" alignItems="center">
         <Hint label={ hint } boxSize={ 4 } mr={ 1 }/>
-        <TruncatedValue value={ label } maxW={{ base: '130px', lg: 'unset' }}/>
+        <TruncatedText text={ label } maxW={{ base: '130px', lg: 'unset' }}/>
       </GridItem>
       { children }
     </>

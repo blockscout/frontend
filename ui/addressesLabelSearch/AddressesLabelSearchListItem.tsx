@@ -1,14 +1,13 @@
 import { HStack } from '@chakra-ui/react';
-import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { AddressesItem } from 'types/api/addresses';
 
-import config from 'configs/app';
 import { currencyUnits } from 'lib/units';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
+import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 type Props = {
   item: AddressesItem;
@@ -20,8 +19,6 @@ const AddressesLabelSearchListItem = ({
   isLoading,
 }: Props) => {
 
-  const addressBalance = BigNumber(item.coin_balance || 0).div(BigNumber(10 ** config.chain.currency.decimals));
-
   return (
     <ListItemMobile rowGap={ 3 }>
       <AddressEntity
@@ -32,9 +29,13 @@ const AddressesLabelSearchListItem = ({
       />
       <HStack gap={ 3 } maxW="100%" alignItems="flex-start">
         <Skeleton loading={ isLoading } fontSize="sm" fontWeight={ 500 } flexShrink={ 0 }>{ `Balance ${ currencyUnits.ether }` }</Skeleton>
-        <Skeleton loading={ isLoading } fontSize="sm" color="text.secondary" minW="0" whiteSpace="pre-wrap">
-          <span>{ addressBalance.dp(8).toFormat() }</span>
-        </Skeleton>
+        <NativeCoinValue
+          amount={ item.coin_balance }
+          noSymbol
+          loading={ isLoading }
+          fontSize="sm"
+          color="text.secondary"
+        />
       </HStack>
       <HStack gap={ 3 }>
         <Skeleton loading={ isLoading } fontSize="sm" fontWeight={ 500 }>Txn count</Skeleton>

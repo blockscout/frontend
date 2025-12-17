@@ -10,17 +10,17 @@ import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
 import NativeTokenTag from 'ui/shared/celo/NativeTokenTag';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
+import ConfidentialValue from 'ui/shared/value/ConfidentialValue';
 
 type Props = AddressTokenBalance & { isLoading: boolean };
-
-const celoFeature = config.features.celo;
 
 const ERC7984TokensTableItem = ({
   token,
   isLoading,
 }: Props) => {
 
-  const isNativeToken = celoFeature.isEnabled && token.address_hash.toLowerCase() === celoFeature.nativeTokenAddress?.toLowerCase();
+  const isNativeToken = config.UI.views.address.nativeTokenAddress &&
+    token.address_hash.toLowerCase() === config.UI.views.address.nativeTokenAddress.toLowerCase();
 
   return (
     <TableRow role="group" >
@@ -54,14 +54,10 @@ const ERC7984TokensTableItem = ({
         </Skeleton>
       </TableCell>
       <TableCell isNumeric verticalAlign="middle">
-        <Skeleton loading={ isLoading } display="inline" color={ isNativeToken ? 'text.secondary' : undefined }>
-          •••••
-        </Skeleton>
+        <ConfidentialValue loading={ isLoading } color={ isNativeToken ? 'text.secondary' : undefined }/>
       </TableCell>
       <TableCell isNumeric verticalAlign="middle">
-        <Skeleton loading={ isLoading } display="inline" color={ isNativeToken ? 'text.secondary' : undefined }>
-          •••••
-        </Skeleton>
+        <ConfidentialValue loading={ isLoading } color={ isNativeToken ? 'text.secondary' : undefined }/>
       </TableCell>
     </TableRow>
   );
