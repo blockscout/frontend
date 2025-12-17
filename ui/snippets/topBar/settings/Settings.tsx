@@ -56,8 +56,8 @@ const Settings = () => {
           <Separator my={ 3 }/>
           <SettingsIdentIcon/>
           <SettingsAddressFormat/>
-          <Separator mt={ 3 } mb="18px"/>
-          <VStack gap="18px">
+          <Separator my={ 3 }/>
+          <VStack gap={ 1 }>
             <SettingsScamTokens/>
             <SettingsLocalTime/>
           </VStack>

@@ -15,7 +15,6 @@ type Props = {
   data: ArbitrumL2TxnBatchDAAnytrust;
 };
 
-// TODO @tom2drum check this component
 const ArbitrumL2TxnBatchDetailsAnyTrustDA = ({ data }: Props) => {
   return (
     <>
@@ -43,7 +42,7 @@ const ArbitrumL2TxnBatchDetailsAnyTrustDA = ({ data }: Props) => {
           <DetailsTimestamp timestamp={ data.timeout }/> :
           (
             <>
-              <Text>{ dayjs(data.timeout).format('llll') }</Text>
+              <DetailsTimestamp timestamp={ data.timeout } noRelativeTime/>
               <TextSeparator/>
               <Text color="red.500">{ dayjs(data.timeout).diff(dayjs(), 'day') } days left</Text>
             </>

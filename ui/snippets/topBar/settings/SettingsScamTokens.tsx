@@ -33,6 +33,7 @@ const SettingsScamTokens = () => {
       direction="rtl"
       justifyContent="space-between"
       w="100%"
+      minH="34px"
     >
       Hide scam tokens
     </Switch>

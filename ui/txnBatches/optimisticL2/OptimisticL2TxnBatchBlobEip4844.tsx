@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { OptimisticL2BlobTypeEip4844 } from 'types/api/optimisticL2';
 
-import dayjs from 'lib/date/dayjs';
+import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 import BlobEntityL1 from 'ui/shared/entities/blob/BlobEntityL1';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 
@@ -14,7 +14,6 @@ interface Props {
   isLoading: boolean;
 }
 
-// TODO @tom2drum refactor this component
 const OptimisticL2TxnBatchBlobEip4844 = ({ blobs, isLoading }: Props) => {
   return (
     <VStack rowGap={ 2 } w="100%">
@@ -26,8 +25,8 @@ const OptimisticL2TxnBatchBlobEip4844 = ({ blobs, isLoading }: Props) => {
               <BlobEntityL1 hash={ blob.hash }/>
             </GridItem>
             <GridItem fontWeight={ 600 }>Timestamp</GridItem>
-            <GridItem whiteSpace="normal">
-              { dayjs(blob.l1_timestamp).fromNow() } | { dayjs(blob.l1_timestamp).format('llll') }
+            <GridItem overflow="hidden">
+              <DetailedInfoTimestamp timestamp={ blob.l1_timestamp } isLoading={ isLoading } flexWrap={{ base: 'wrap', lg: 'nowrap' }}/>
             </GridItem>
             <GridItem fontWeight={ 600 }>L1 txn hash</GridItem>
             <GridItem overflow="hidden">

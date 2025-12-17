@@ -24,9 +24,7 @@ const EpochsListItem = ({ item, isLoading }: Props) => {
         <CeloEpochStatus isFinalized={ item.is_finalized } loading={ isLoading }/>
       </HStack>
       { item.timestamp && (
-        <HStack minH="30px" gap={ 0 } color="text.secondary" fontWeight={ 400 }>
-          <DetailedInfoTimestamp timestamp={ item.timestamp } isLoading={ isLoading } noIcon/>
-        </HStack>
+        <DetailedInfoTimestamp minH="30px" color="text.secondary" timestamp={ item.timestamp } isLoading={ isLoading }/>
       ) }
       <HStack minH="30px">
         <Skeleton loading={ isLoading }>Block range</Skeleton>
