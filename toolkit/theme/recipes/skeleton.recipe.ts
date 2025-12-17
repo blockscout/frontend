@@ -50,7 +50,7 @@ export const recipe = defineRecipe({
   },
 
   defaultVariants: {
-    variant: 'shine',
+    variant: 'none',
     loading: 'reset',
   },
 });
