@@ -78,7 +78,7 @@ const DetailedInfoTimestamp = ({ timestamp, isLoading, noRelativeTime, ...rest }
           >
             <IconButton
               aria-label="Toggle time format"
-              variant="dropdown"
+              variant="icon_secondary"
               boxSize={ 5 }
               borderRadius="sm"
               selected={ !isLoading }
