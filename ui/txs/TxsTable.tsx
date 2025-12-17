@@ -6,7 +6,7 @@ import type { Transaction, TransactionsSortingField, TransactionsSortingValue } 
 import config from 'configs/app';
 import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
 import { useMultichainContext } from 'lib/contexts/multichain';
-import useInitialList from 'lib/hooks/useInitialList';
+// import useInitialList from 'lib/hooks/useInitialList';
 import useLazyRenderedList from 'lib/hooks/useLazyRenderedList';
 import { currencyUnits } from 'lib/units';
 import { TableBody, TableColumnHeader, TableColumnHeaderSortable, TableHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
@@ -44,11 +44,11 @@ const TxsTable = ({
   translationQuery,
 }: Props) => {
   const { cutRef, renderedItemsNum } = useLazyRenderedList(txs, !isLoading);
-  const initialList = useInitialList({
-    data: txs ?? [],
-    idFn: (item) => item.hash,
-    enabled: !isLoading,
-  });
+  // const initialList = useInitialList({
+  //   data: txs ?? [],
+  //   idFn: (item) => item.hash,
+  //   enabled: !isLoading,
+  // });
   const multichainContext = useMultichainContext();
   const chainData = multichainContext?.chain;
 
@@ -138,7 +138,7 @@ const TxsTable = ({
                 currentAddress={ currentAddress }
                 enableTimeIncrement={ enableTimeIncrement }
                 isLoading={ isLoading }
-                animation={ initialList.getAnimationProp(item) }
+                // animation={ initialList.getAnimationProp(item) }
                 chainData={ chainData }
                 translationIsLoading={ translationQuery?.isLoading }
                 translationData={ translationQuery?.data?.find(({ txHash }) => txHash.toLowerCase() === item.hash.toLowerCase()) }

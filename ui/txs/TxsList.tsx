@@ -5,7 +5,7 @@ import type { TxsSocketType } from './socket/types';
 import type { Transaction } from 'types/api/transaction';
 
 import { useMultichainContext } from 'lib/contexts/multichain';
-import useInitialList from 'lib/hooks/useInitialList';
+// import useInitialList from 'lib/hooks/useInitialList';
 import useLazyRenderedList from 'lib/hooks/useLazyRenderedList';
 
 import type { TxsTranslationQuery } from './noves/useDescribeTxs';
@@ -24,11 +24,11 @@ interface Props {
 
 const TxsList = (props: Props) => {
   const { cutRef, renderedItemsNum } = useLazyRenderedList(props.items, !props.isLoading);
-  const initialList = useInitialList({
-    data: props.items ?? [],
-    idFn: (item) => item.hash,
-    enabled: !props.isLoading,
-  });
+  // const initialList = useInitialList({
+  //   data: props.items ?? [],
+  //   idFn: (item) => item.hash,
+  //   enabled: !props.isLoading,
+  // });
   const multichainContext = useMultichainContext();
   const chainData = multichainContext?.chain;
 
@@ -44,7 +44,7 @@ const TxsList = (props: Props) => {
             currentAddress={ props.currentAddress }
             enableTimeIncrement={ props.enableTimeIncrement }
             isLoading={ props.isLoading }
-            animation={ initialList.getAnimationProp(tx) }
+            // animation={ initialList.getAnimationProp(tx) }
             chainData={ chainData }
             translationIsLoading={ props.translationQuery?.isLoading }
             translationData={ props.translationQuery?.data?.find(({ txHash }) => txHash.toLowerCase() === tx.hash.toLowerCase()) }
