@@ -59,6 +59,7 @@ declare module "nextjs-routes" {
     | StaticRoute<"/epochs">
     | DynamicRoute<"/essential-dapps/[id]", { "id": string }>
     | StaticRoute<"/gas-tracker">
+    | StaticRoute<"/hot-contracts">
     | StaticRoute<"/">
     | StaticRoute<"/internal-txs">
     | StaticRoute<"/interop-messages">

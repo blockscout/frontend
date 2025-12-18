@@ -988,6 +988,16 @@ This feature enables Blockscout Merits program. It requires that the [My account
 
 &nbsp;
 
+### Hot contract
+
+Show the page with aggregate metrics for the most popular contracts.
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
+| --- | --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_HOT_CONTRACTS_ENABLED | `boolean` | Set to true to enable the feature | Required | - | `true` | upcoming |
+
+&nbsp;
+
 ### Flashblocks
 
 This feature allows users to view [Flashblocks](https://docs.base.org/base-chain/flashblocks/apps)-related content in the explorer, including the Flashblocks real-time feed. It currently supports only Base chains.
