@@ -94,7 +94,7 @@ const AddressEnsDomains = ({ query, addressHash, mainDomainName }: Props) => {
               flexShrink={ 0 }
               columnGap={ 1 }
             >
-              <IconSvg name="ENS_slim" boxSize={ 5 }/>
+              <IconSvg name="ENS" boxSize={ 5 }/>
               <chakra.span hideBelow="xl">{ totalRecords } Domain{ data.items.length > 1 ? 's' : '' }</chakra.span>
               <chakra.span hideFrom="xl">{ totalRecords }</chakra.span>
             </Button>

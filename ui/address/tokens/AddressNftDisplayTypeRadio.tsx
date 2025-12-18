@@ -24,7 +24,7 @@ const AddressNftDisplayTypeRadio = ({ value, onChange, ...rest }: Props) => {
         <chakra.span hideBelow="lg">By collection</chakra.span>
       </Button>
       <Button value="list" size="sm" px={ 3 }>
-        <IconSvg name="apps_slim" boxSize={ 5 }/>
+        <IconSvg name="apps" boxSize={ 5 }/>
         <chakra.span hideBelow="lg">List</chakra.span>
       </Button>
     </ButtonGroupRadio>

@@ -253,7 +253,7 @@ const ZetaChainCCTXDetails = ({ data, isLoading }: Props) => {
                 bg="bg.primary"
                 zIndex={ 1 }
               >
-                <IconSvg name="interop_slim" boxSize={ 5 } bg="bg.primary" zIndex={ 1 } color="text.secondary"/>
+                <IconSvg name="interop" boxSize={ 5 } bg="bg.primary" zIndex={ 1 } color="text.secondary"/>
               </Flex>
               <VStack gap={ 2 } alignItems="flex-start">
                 { transactionsAfter.map((tx) => (

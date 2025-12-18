@@ -44,7 +44,7 @@ const Settings = () => {
               borderRadius="sm"
               aria-label="User settings"
             >
-              <IconSvg name="gear_slim"/>
+              <IconSvg name="gear"/>
             </IconButton>
           </PopoverTrigger>
         </Flex>

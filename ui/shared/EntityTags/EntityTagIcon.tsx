@@ -20,7 +20,7 @@ const EntityTagIcon = ({ data, ignoreColor }: Props) => {
   }
 
   if (data.tagType === 'name') {
-    return <IconSvg name="publictags_slim" boxSize={ 3 } color={ iconColor }/>;
+    return <IconSvg name="publictags" boxSize={ 3 } color={ iconColor }/>;
   }
 
   if (data.tagType === 'protocol' || data.tagType === 'generic') {

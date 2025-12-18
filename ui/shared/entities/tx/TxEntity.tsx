@@ -38,7 +38,7 @@ const Icon = (props: IconProps) => {
       return props.name;
     }
 
-    return isPendingUpdate ? 'status/warning' : 'transactions_slim';
+    return isPendingUpdate ? 'status/warning' : 'transactions';
   })();
 
   const hint = (() => {
