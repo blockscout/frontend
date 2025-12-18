@@ -22,10 +22,10 @@ declare module "nextjs-routes" {
     | StaticRoute<"/api/csrf">
     | StaticRoute<"/api/healthz">
     | StaticRoute<"/api/log">
-    | StaticRoute<"/api/media-type">
     | StaticRoute<"/api/metrics">
     | StaticRoute<"/api/monitoring/invalid-api-schema">
     | StaticRoute<"/api/proxy">
+    | DynamicRoute<"/api/tokens/[hash]/instances/[id]/media-type", { "hash": string; "id": string }>
     | StaticRoute<"/api-docs">
     | DynamicRoute<"/apps/[id]", { "id": string }>
     | StaticRoute<"/apps">
