@@ -21,8 +21,14 @@ const OptimisticL2TxnBatchDA = ({ container, isLoading, ...rest }: Props) => {
         return 'Calldata';
       case 'in_celestia':
         return 'Celestia blob';
+      case 'in_eigenda':
+        return 'EigenDA';
     }
   })();
+
+  if (!text) {
+    return null;
+  }
 
   return (
     <Badge colorPalette="yellow" loading={ isLoading } { ...rest }>
