@@ -9,4 +9,12 @@ export const keyframes = {
       transform: 'translateX(-100%)',
     },
   },
+  skeletonShimmer: {
+    from: {
+      transform: 'translateX(-100%)',
+    },
+    to: {
+      transform: 'translateX(100%)',
+    },
+  },
 };
