@@ -333,7 +333,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
           <>
             <TableCell colSpan={ 2 } fontSize="sm">
               <TxEntity.Container>
-                <IconSvg name="interop" boxSize={ 6 } marginRight={ 1 } color="text.secondary"/>
+                <IconSvg name="interop_slim" boxSize={ 5 } marginRight={ 1 } color="text.secondary"/>
                 <TxEntity.Link
                   isLoading={ isLoading }
                   hash={ data.cctx.index }

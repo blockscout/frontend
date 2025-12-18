@@ -71,7 +71,8 @@ const PopoverContent = ({ appId, userRating, source }: Props) => {
     <>
       <Flex alignItems="center" h="30px">
         { ratingValue && (
-          <IconSvg name="verified" color="green.400" boxSize="30px" mr={ 1 } ml="-5px"/>
+          // FIXME use non-navigation icon
+          <IconSvg name="navigation/verified_contracts" color="green.400" boxSize="30px" mr={ 1 } ml="-5px"/>
         ) }
         <Text fontWeight="500" textStyle="xs" color="text.secondary">
           { ratingValue ? 'App is already rated by you' : 'How was your experience?' }

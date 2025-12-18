@@ -221,7 +221,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading, addressFormat }: Pr
       case 'zetaChainCCTX': {
         return (
           <TxEntity.Container>
-            <IconSvg name="interop" boxSize={ 6 } marginRight={ 1 } color="text.secondary"/>
+            <IconSvg name="interop_slim" boxSize={ 5 } marginRight={ 1 } color="text.secondary"/>
             <TxEntity.Link
               isLoading={ isLoading }
               hash={ data.cctx.index }
