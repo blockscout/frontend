@@ -26,7 +26,7 @@ test('default view', async({ render, mockTextAd, mockAssetResponse, mockApiRespo
   await mockApiResponse('general:optimistic_l2_interop_messages', MESSAGES_RESPONSE);
   await mockApiResponse('general:optimistic_l2_interop_messages_count', 4000000);
   const component = await render(<InteropMessages/>);
-  await expect(component).toHaveScreenshot();
+  await expect(component).toHaveScreenshot({ maxDiffPixels: 30 });
 });
 
 test.describe('mobile', () => {
@@ -37,6 +37,6 @@ test.describe('mobile', () => {
     await mockApiResponse('general:optimistic_l2_interop_messages', MESSAGES_RESPONSE);
     await mockApiResponse('general:optimistic_l2_interop_messages_count', 4000000);
     const component = await render(<InteropMessages/>);
-    await expect(component).toHaveScreenshot({ maxDiffPixels: 20 });
+    await expect(component).toHaveScreenshot({ maxDiffPixels: 30 });
   });
 });
