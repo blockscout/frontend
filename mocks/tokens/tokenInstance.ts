@@ -2,8 +2,10 @@
 import type { TokenInstance } from 'types/api/token';
 
 import * as addressMock from '../address/address';
+import * as tokenInfoMock from './tokenInfo';
 
 export const base: TokenInstance = {
+  token: tokenInfoMock.tokenInfoERC721a,
   animation_url: null,
   external_app_url: 'https://duck.nft/get-your-duck-today',
   id: '32925298983216553915666621415831103694597106215670571463977478984525997408266',
