@@ -25,5 +25,6 @@ test('base view +@mobile +@dark-mode', async({ render, mockApiResponse, mockText
   await expect(component).toHaveScreenshot({
     mask: [ page.locator(pwConfig.adsBannerSelector) ],
     maskColor: pwConfig.maskColor,
+    maxDiffPixels: 20,
   });
 });

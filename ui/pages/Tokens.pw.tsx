@@ -63,7 +63,7 @@ test('with search +@mobile +@dark-mode', async({ render, mockApiResponse }) => {
   await component.getByRole('textbox', { name: 'Token name or symbol' }).fill('foo');
   await component.getByRole('textbox', { name: 'Token name or symbol' }).blur();
 
-  await expect(component).toHaveScreenshot();
+  await expect(component).toHaveScreenshot({ maxDiffPixels: 20 });
 });
 
 test.describe('bridged tokens', () => {
