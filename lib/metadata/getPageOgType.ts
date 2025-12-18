@@ -89,7 +89,7 @@ const OG_TYPE_DICT: Record<Route['pathname'], OGPageType> = {
   '/api/metrics': 'Regular page',
   '/api/monitoring/invalid-api-schema': 'Regular page',
   '/api/log': 'Regular page',
-  '/api/media-type': 'Regular page',
+  '/api/tokens/[hash]/instances/[id]/media-type': 'Regular page',
   '/api/proxy': 'Regular page',
   '/api/csrf': 'Regular page',
   '/api/healthz': 'Regular page',

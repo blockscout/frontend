@@ -93,7 +93,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/api/metrics': '%network_name% node API prometheus metrics',
   '/api/monitoring/invalid-api-schema': '%network_name% node API prometheus metrics',
   '/api/log': '%network_name% node API request log',
-  '/api/media-type': '%network_name% node API media type',
+  '/api/tokens/[hash]/instances/[id]/media-type': '%network_name% node API token instance media type',
   '/api/proxy': '%network_name% node API proxy',
   '/api/csrf': '%network_name% node API CSRF token',
   '/api/healthz': '%network_name% node API health check',
