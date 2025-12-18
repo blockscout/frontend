@@ -21,7 +21,7 @@ async function getChainscoutInfo(externalChainIds: Array<string>, currentChainId
   const controller = new AbortController();
   const timeout = setTimeout(() => {
     controller.abort(`Request to Chainscout API timed out`);
-  }, 10_000);
+  }, 30_000);
 
   try {
     const response = await fetch(

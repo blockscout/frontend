@@ -3,6 +3,7 @@ import React from 'react';
 import * as opSuperchainMock from 'mocks/multichain/opSuperchain';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';
+import * as pwConfig from 'playwright/utils/config';
 
 import OpSuperchainAddress from './OpSuperchainAddress';
 
@@ -46,11 +47,14 @@ test('base view', async({ mockApiResponse, render, page, mockMultichainConfig, m
     { hooksConfig },
   );
 
-  await expect(component).toHaveScreenshot();
+  await expect(component).toHaveScreenshot({
+    mask: [ page.locator(pwConfig.adsBannerSelector) ],
+    maskColor: pwConfig.maskColor,
+  });
 
   await component.getByText('By chain').nth(0).click();
-  await expect(page.locator('div[data-scope="popover"][data-part="content"]')).toHaveScreenshot();
+  await expect(page.locator('div[data-scope="popover"][data-part="content"]').nth(0)).toHaveScreenshot();
 
   await component.getByText('By chain').nth(1).click();
-  await expect(page.locator('div[data-scope="popover"][data-part="content"]')).toHaveScreenshot();
+  await expect(page.locator('div[data-scope="popover"][data-part="content"]').nth(0)).toHaveScreenshot();
 });

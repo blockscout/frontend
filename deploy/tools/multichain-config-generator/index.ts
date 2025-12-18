@@ -27,7 +27,7 @@ async function getChainscoutInfo(chainIds: Array<string>) {
   const controller = new AbortController();
   const timeout = setTimeout(() => {
     controller.abort(`Request to Chainscout API timed out`);
-  }, 10_000);
+  }, 30_000);
 
   try {
     const response = await fetch(`https://chains.blockscout.com/api/chains?chain_ids=${ chainIds.join(',') }`, { signal: controller.signal });
