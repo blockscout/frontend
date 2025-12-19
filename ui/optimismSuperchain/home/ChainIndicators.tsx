@@ -50,7 +50,8 @@ const ChainIndicators = () => {
         }
         return undefined;
       })(),
-      icon: <IconSvg name="transactions" boxSize={ 6 } bgColor="#56ACD1" borderRadius="base" color="white"/>,
+      // FIXME use non-navigation icon
+      icon: <IconSvg name="navigation/transactions" boxSize={ 6 } bgColor="#56ACD1" borderRadius="base" color="white"/>,
       hint: (() => {
         if (statsQuery.data.new_txns_multichain_window?.info) {
           return statsQuery.data.new_txns_multichain_window.info.description;
