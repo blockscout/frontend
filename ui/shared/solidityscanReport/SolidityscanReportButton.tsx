@@ -13,15 +13,16 @@ import useScoreLevelAndColor from './useScoreLevelAndColor';
 interface Props extends ButtonProps {
   score: number;
   isLoading?: boolean;
+  tooltipDisabled?: boolean;
 }
 
-const SolidityscanReportButton = ({ score, isLoading, ...rest }: Props) => {
+const SolidityscanReportButton = ({ score, isLoading, tooltipDisabled, ...rest }: Props) => {
   const { scoreColor } = useScoreLevelAndColor(score);
   const colorLoading = { _light: 'gray.300', _dark: 'gray.600' };
   const onFocusCapture = usePreventFocusAfterModalClosing();
 
   return (
-    <Tooltip content="Security score" disableOnMobile>
+    <Tooltip content="Security score" disabled={ tooltipDisabled } disableOnMobile closeOnClick>
       <Box>
         <PopoverTrigger>
           <Button
