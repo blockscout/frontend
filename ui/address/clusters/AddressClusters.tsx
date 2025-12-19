@@ -20,6 +20,7 @@ import { Link } from 'toolkit/chakra/link';
 import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
+import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import ClustersEntity from 'ui/shared/entities/clusters/ClustersEntity';
 import IconSvg from 'ui/shared/IconSvg';
 
@@ -48,6 +49,8 @@ const ClustersGrid = ({ data }: ClustersGridProps) => {
 const AddressClusters = ({ query, addressHash }: Props) => {
   const { data, isPending, isError } = query;
 
+  const popover = useDisclosure();
+
   if (isError) {
     return null;
   }
@@ -71,8 +74,8 @@ const AddressClusters = ({ query, addressHash }: Props) => {
   const showMoreLink = hasMoreClusters(ownedClusters.length, 10);
 
   return (
-    <PopoverRoot>
-      <Tooltip content="List of clusters registered to this address" disableOnMobile>
+    <PopoverRoot open={ popover.open } onOpenChange={ popover.onOpenChange }>
+      <Tooltip content="List of clusters registered to this address" disabled={ popover.open } disableOnMobile closeOnClick>
         <div>
           <PopoverTrigger>
             <Button
