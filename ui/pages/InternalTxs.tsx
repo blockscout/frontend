@@ -3,7 +3,6 @@ import React from 'react';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
-import { apos } from 'toolkit/utils/htmlEntities';
 import InternalTxsList from 'ui/internalTxs/InternalTxsList';
 import InternalTxsTable from 'ui/internalTxs/InternalTxsTable';
 import useInternalTxsQuery from 'ui/internalTxs/useInternalTxsQuery';
@@ -66,9 +65,9 @@ const InternalTxs = () => {
         isError={ isError }
         itemsNum={ data?.items.length }
         emptyText="There are no internal transactions."
-        filterProps={{
-          emptyFilteredText: `Couldn${ apos }t find any internal transaction that matches your query.`,
-          hasActiveFilters: Boolean(debouncedSearchTerm),
+        hasActiveFilters={ Boolean(debouncedSearchTerm) }
+        emptyStateProps={{
+          term: 'internal transaction',
         }}
         actionBar={ actionBar }
       >

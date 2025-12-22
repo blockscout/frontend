@@ -15,7 +15,7 @@ const ICONS: Partial<Record<EmptyStateType, React.FC>> = {
 
 export interface EmptyStateProps extends ChakraEmptyState.RootProps {
   title?: string;
-  description?: string;
+  description?: React.ReactNode;
   term?: string;
   type?: EmptyStateType;
   icon?: React.ReactNode;

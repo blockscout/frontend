@@ -3,7 +3,6 @@ import React from 'react';
 
 import type { TokensSortingValue } from 'types/api/tokens';
 
-import { apos } from 'toolkit/utils/htmlEntities';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
@@ -66,9 +65,9 @@ const Tokens = ({ query, onSortChange, sort, actionBar, description, hasActiveFi
       isError={ isError }
       itemsNum={ data?.items.length }
       emptyText="There are no tokens."
-      filterProps={{
-        emptyFilteredText: `Couldn${ apos }t find token that matches your filter query.`,
-        hasActiveFilters,
+      hasActiveFilters={ hasActiveFilters }
+      emptyStateProps={{
+        term: 'token',
       }}
       actionBar={ query.pagination.isVisible || hasActiveFilters ? actionBar : null }
     >

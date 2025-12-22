@@ -53,9 +53,9 @@ export default function Approvals({
     <DataListDisplay
       itemsNum={ approvals.length }
       isError={ false }
-      filterProps={{
-        emptyFilteredText: 'No approvals found',
-        hasActiveFilters: true,
+      hasActiveFilters
+      emptyStateProps={{
+        term: 'approval',
       }}
     >
       { content }

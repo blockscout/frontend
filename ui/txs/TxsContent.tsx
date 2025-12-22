@@ -7,7 +7,6 @@ import type { Transaction, TransactionsSortingField, TransactionsSortingValue } 
 import type { PaginationParams } from 'ui/shared/pagination/types';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
-import { apos } from 'toolkit/utils/htmlEntities';
 import AddressCsvExportLink from 'ui/address/AddressCsvExportLink';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
@@ -122,9 +121,9 @@ const TxsContent = ({
       itemsNum={ items?.length }
       emptyText="There are no transactions."
       actionBar={ actionBar }
-      filterProps={{
-        hasActiveFilters: Boolean(filterValue),
-        emptyFilteredText: `Couldn${ apos }t find any transaction that matches your query.`,
+      hasActiveFilters={ Boolean(filterValue) }
+      emptyStateProps={{
+        term: 'transaction',
       }}
     >
       { content }
