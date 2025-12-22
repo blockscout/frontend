@@ -39,6 +39,7 @@ const RESTRICTED_MODULES = {
         'Table', 'TableRoot', 'TableBody', 'TableHeader', 'TableRow', 'TableCell',
         'Menu', 'MenuRoot', 'MenuTrigger', 'MenuContent', 'MenuItem', 'MenuTriggerItem', 'MenuRadioItemGroup', 'MenuContextTrigger',
         'Rating', 'RatingGroup', 'Textarea', 'Progress', 'ProgressCircle',
+        'EmptyState',
       ],
       message: 'Please use corresponding component or hook from "toolkit" instead',
     },

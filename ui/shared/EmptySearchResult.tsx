@@ -13,6 +13,7 @@ interface Props extends BoxProps {
   text: string | React.JSX.Element;
 }
 
+// TODO @tom2drum remove this component
 const EmptySearchResult = ({ text, title, ...rest }: Props) => {
   return (
     <Box
