@@ -56,7 +56,7 @@ export const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
       if (Icon) {
         return <Icon/>;
       }
-      return null;
+      return icon;
     })();
 
     return (
