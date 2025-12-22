@@ -51,15 +51,14 @@
   },
   "devDependencies": {
     "@svgr/plugin-jsx": "8.1.0",
-    "@svgr/plugin-svgo": "8.1.0",
     "@types/node": "20.16.7",
     "@types/react": "18.3.12",
     "@types/react-dom": "18.3.1",
     "@vitejs/plugin-react": "4.3.4",
     "typescript": "5.9.2",
     "vite": "6.4.1",
-    "vite-plugin-dts": "4.5.3",
-    "vite-plugin-svgr": "4.3.0",
+    "vite-plugin-dts": "4.5.4",
+    "vite-plugin-svgr": "4.5.0",
     "vite-tsconfig-paths": "5.1.4"
   },
   "engines": {
@@ -67,5 +66,9 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "resolutions": {
+    "vite-plugin-dts/**/brace-expansion": "2.0.2",
+    "vite-plugin-svgr/**/js-yaml": "4.1.1"
   }
 }

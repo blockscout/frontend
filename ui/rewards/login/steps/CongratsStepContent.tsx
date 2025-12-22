@@ -124,7 +124,8 @@ const CongratsStepContent = ({ isReferral, customReferralReward }: Props) => {
             color={{ _light: 'blue.500', _dark: 'blue.100' }}
             bgColor={{ _light: 'blue.50', _dark: 'blue.800' }}
           >
-            <IconSvg name="stats" boxSize={ 6 }/>
+            { /* FIXME use non-navigation icon */ }
+            <IconSvg name="navigation/stats" boxSize={ 6 }/>
           </Center>
           <Text fontSize="lg" fontWeight="500">
             Dashboard

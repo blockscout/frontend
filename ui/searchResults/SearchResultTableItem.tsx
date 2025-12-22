@@ -185,7 +185,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
           <>
             <TableCell>
               <Flex alignItems="center">
-                <IconSvg name="publictags_slim" boxSize={ 6 } mr={ 2 } color="icon.primary"/>
+                <IconSvg name="publictags" boxSize={ 6 } mr={ 2 } color="icon.primary"/>
                 <Link
                   href={ route({ pathname: '/address/[hash]', query: { hash: data.address_hash } }) }
                   fontWeight={ 700 }
@@ -333,7 +333,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
           <>
             <TableCell colSpan={ 2 } fontSize="sm">
               <TxEntity.Container>
-                <IconSvg name="interop" boxSize={ 6 } marginRight={ 1 } color="text.secondary"/>
+                <IconSvg name="interop" boxSize={ 5 } marginRight={ 1 } color="text.secondary"/>
                 <TxEntity.Link
                   isLoading={ isLoading }
                   hash={ data.cctx.index }

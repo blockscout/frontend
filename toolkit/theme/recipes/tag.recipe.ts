@@ -14,6 +14,11 @@ export const recipe = defineSlotRecipe({
       _loading: {
         borderRadius: 'sm',
       },
+      _disabled: {
+        opacity: 'control.disabled',
+        pointerEvents: 'none',
+        cursor: 'not-allowed',
+      },
     },
     label: {
       lineClamp: '1',

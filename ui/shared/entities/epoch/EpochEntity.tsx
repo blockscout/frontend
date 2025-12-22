@@ -26,7 +26,7 @@ const Icon = (props: EntityBase.IconBaseProps) => {
   return (
     <EntityBase.Icon
       { ...props }
-      name={ 'name' in props ? props.name : 'hourglass_slim' }
+      name={ 'name' in props ? props.name : 'hourglass' }
     />
   );
 };

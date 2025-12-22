@@ -23,7 +23,7 @@ const Stats = () => {
         id: 'total_txs' as const,
         label: statsQuery.data.total_multichain_txns.title,
         value: Number(statsQuery.data.total_multichain_txns.value).toLocaleString(),
-        icon: 'transactions_slim' as const,
+        icon: 'transactions' as const,
       },
       statsQuery.data?.total_multichain_addresses && {
         id: 'wallet_addresses' as const,

@@ -15,7 +15,7 @@ import { Section, Container, SectionHeader, SamplesStack, Sample, SectionSubHead
 
 const frameworks = createListCollection<SelectOption>({
   items: [
-    { label: 'React.js is the most popular framework', value: 'react', icon: <IconSvg name="API" boxSize={ 5 } flexShrink={ 0 }/> },
+    { label: 'React.js is the most popular framework', value: 'react', icon: <IconSvg name="navigation/api_keys" boxSize={ 5 } flexShrink={ 0 }/> },
     { label: 'Vue.js is the second most popular framework', value: 'vue' },
     { value: 'angular', label: 'Angular', renderLabel: () => <div>Angular is <Box as="span" color="red" fontWeight="700">not awesome</Box></div> },
     { label: 'Svelte', value: 'svelte' },

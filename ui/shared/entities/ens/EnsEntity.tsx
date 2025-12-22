@@ -32,7 +32,7 @@ const Link = chakra((props: LinkProps) => {
 type IconProps = Pick<EntityProps, 'protocol'> & EntityBase.IconBaseProps;
 
 const Icon = (props: IconProps) => {
-  const icon = <EntityBase.Icon { ...props } name={ 'name' in props ? props.name : 'ENS_slim' }/>;
+  const icon = <EntityBase.Icon { ...props } name={ 'name' in props ? props.name : 'ENS' }/>;
 
   if (props.protocol) {
     const styles = getIconProps(props);

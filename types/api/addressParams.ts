@@ -1,5 +1,6 @@
 import type { AddressMetadataTagApi } from './addressMetadata';
 import type { SmartContractProxyType } from './contract';
+import type { TokenReputation } from './token';
 
 export interface AddressImplementation {
   address_hash: string;
@@ -61,6 +62,7 @@ export type AddressParamBasic = {
   } | null;
   filecoin?: AddressFilecoinParams;
   proxy_type?: SmartContractProxyType | null;
+  reputation?: TokenReputation;
 };
 
 export type AddressParam = UserTags & AddressParamBasic;
