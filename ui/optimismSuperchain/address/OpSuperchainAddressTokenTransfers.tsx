@@ -11,13 +11,13 @@ import { MultichainProvider } from 'lib/contexts/multichain';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { SocketProvider } from 'lib/socket/context';
+import { EmptyState } from 'toolkit/chakra/empty-state';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import AddressAdvancedFilterLink from 'ui/address/AddressAdvancedFilterLink';
 import AddressCsvExportLink from 'ui/address/AddressCsvExportLink';
 import useAddressTokenTransfersQuery from 'ui/address/useAddressTokenTransfersQuery';
 import useAddressCountersQuery from 'ui/address/utils/useAddressCountersQuery';
 import ChainSelect from 'ui/optimismSuperchain/components/ChainSelect';
-import ComingSoon from 'ui/shared/ComingSoon';
 import Pagination from 'ui/shared/pagination/Pagination';
 import TokenTransferFilter from 'ui/shared/TokenTransfer/TokenTransferFilter';
 
@@ -147,7 +147,7 @@ const OpSuperchainAddressTokenTransfers = ({ addressData, isLoading }: Props) =>
     {
       id: 'token_transfers_cross_chain',
       title: 'Cross-chain',
-      component: <ComingSoon/>,
+      component: <EmptyState type="coming_soon"/>,
     },
     {
       id: [ 'token_transfers_local', 'token_transfers' ],

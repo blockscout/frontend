@@ -16,6 +16,9 @@ const EmptyStateShowcase = () => {
           <Sample label="type: stats">
             <EmptyState type="stats" term="transactions" outline="1px dashed deepskyblue"/>
           </Sample>
+          <Sample label="type: coming_soon">
+            <EmptyState type="coming_soon" outline="1px dashed deepskyblue"/>
+          </Sample>
         </SamplesStack>
       </Section>
     </Container>

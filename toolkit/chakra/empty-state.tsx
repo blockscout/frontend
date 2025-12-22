@@ -3,14 +3,16 @@ import { upperFirst } from 'es-toolkit';
 import * as React from 'react';
 
 import { apos } from '../utils/htmlEntities';
+import ComingSoonIcon from './assets/empty_state_coming_soon.svg';
 import QueryIcon from './assets/empty_state_query.svg';
 import StatsIcon from './assets/empty_state_stats.svg';
 
-export type EmptyStateType = 'query' | 'stats';
+export type EmptyStateType = 'query' | 'stats' | 'coming_soon';
 
 const ICONS: Partial<Record<EmptyStateType, React.FC>> = {
   query: QueryIcon,
   stats: StatsIcon,
+  coming_soon: ComingSoonIcon,
 };
 
 export interface EmptyStateProps extends ChakraEmptyState.RootProps {
@@ -34,6 +36,10 @@ export const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
         return 'Collecting data';
       }
 
+      if (type === 'coming_soon') {
+        return 'Coming soon';
+      }
+
       return 'No results';
     })();
 
@@ -48,6 +54,10 @@ export const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
 
       if (type === 'stats') {
         return term ? `${ upperFirst(term) } stats will be added soon` : 'Charts and statistics will be available soon';
+      }
+
+      if (type === 'coming_soon') {
+        return 'The information will be available soon. Stay tuned!';
       }
     })();
 
