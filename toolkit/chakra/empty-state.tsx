@@ -9,10 +9,10 @@ import StatsIcon from './assets/empty_state_stats.svg';
 
 export type EmptyStateType = 'query' | 'stats' | 'coming_soon';
 
-const ICONS: Partial<Record<EmptyStateType, React.FC>> = {
-  query: QueryIcon,
-  stats: StatsIcon,
-  coming_soon: ComingSoonIcon,
+const ICONS: Partial<Record<EmptyStateType, React.FunctionComponent>> = {
+  query: QueryIcon as unknown as React.FunctionComponent,
+  stats: StatsIcon as unknown as React.FunctionComponent,
+  coming_soon: ComingSoonIcon as unknown as React.FunctionComponent,
 };
 
 export interface EmptyStateProps extends ChakraEmptyState.RootProps {
