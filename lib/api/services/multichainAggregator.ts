@@ -22,6 +22,9 @@ export const MULTICHAIN_AGGREGATOR_API_RESOURCES = {
     path: '/search\\:quick',
     filterFields: [ 'q' as const ],
   },
+  search_check_redirect: {
+    path: '/search\\:check-redirect',
+  },
   search_addresses: {
     path: '/search/addresses',
     filterFields: [ 'q' as const, 'chain_id' as const ],
@@ -67,6 +70,7 @@ R extends 'multichainAggregator:address' ? multichain.GetAddressResponse :
 R extends 'multichainAggregator:address_tokens' ? AddressTokensResponse :
 R extends 'multichainAggregator:tokens' ? TokensResponse :
 R extends 'multichainAggregator:quick_search' ? multichain.ClusterQuickSearchResponse :
+R extends 'multichainAggregator:search_check_redirect' ? multichain.CheckRedirectResponse :
 R extends 'multichainAggregator:search_addresses' ? multichain.SearchAddressesResponse :
 R extends 'multichainAggregator:search_blocks' ? multichain.SearchBlocksResponse :
 R extends 'multichainAggregator:search_block_numbers' ? multichain.SearchBlockNumbersResponse :

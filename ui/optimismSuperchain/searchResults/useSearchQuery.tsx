@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import useApiInfiniteQuery from 'lib/api/useApiInfiniteQuery';
+import useApiQuery from 'lib/api/useApiQuery';
 import useDebounce from 'lib/hooks/useDebounce';
 import getQueryParamString from 'lib/router/getQueryParamString';
 
@@ -13,10 +14,17 @@ export default function useSearchQuery({ chainId }: Props) {
   const router = useRouter();
   const q = React.useRef(getQueryParamString(router.query.q));
   const initialValue = q.current;
+  const checkRedirect = getQueryParamString(router.query.redirect) === 'true';
 
   const [ searchTerm, setSearchTerm ] = React.useState(initialValue);
 
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
+
+  const checkRedirectQuery = useApiQuery('multichainAggregator:search_check_redirect', {
+    // on search result page we check redirect only once on mount
+    queryParams: { q: initialValue },
+    queryOptions: { enabled: Boolean(initialValue) && checkRedirect },
+  });
 
   const addressesQuery = useApiInfiniteQuery({
     resourceName: 'multichainAggregator:search_addresses',
@@ -81,11 +89,13 @@ export default function useSearchQuery({ chainId }: Props) {
     handleSearchTermChange,
     handleSubmit,
     queries,
+    checkRedirectQuery,
   }), [
     queries,
     debouncedSearchTerm,
     handleSearchTermChange,
     handleSubmit,
     searchTerm,
+    checkRedirectQuery,
   ]);
 }
