@@ -21,7 +21,6 @@ const Stats = () => {
     handleIntervalChange,
     handleFilterChange,
     displayedCharts,
-    filterQuery,
     initialFilterQuery,
   } = useStats();
 
@@ -51,12 +50,13 @@ const Stats = () => {
       </Box>
 
       <ChartsWidgetsList
-        filterQuery={ filterQuery }
         initialFilterQuery={ initialFilterQuery }
         isError={ isError }
         isPlaceholderData={ isPlaceholderData }
         charts={ displayedCharts }
         interval={ interval }
+        sections={ sections }
+        selectedSectionId={ currentSection }
       />
     </>
   );

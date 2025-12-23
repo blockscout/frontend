@@ -4,7 +4,6 @@ import React from 'react';
 import type { TokenType } from 'types/api/token';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
-import { apos } from 'toolkit/utils/htmlEntities';
 import AddressAdvancedFilterLink from 'ui/address/AddressAdvancedFilterLink';
 import AddressCsvExportLink from 'ui/address/AddressCsvExportLink';
 import type { Filters } from 'ui/address/useAddressTokenTransfersQuery';
@@ -107,9 +106,9 @@ const TokenTransfersLocal = ({ query, filters, addressHash, onTypeFilterChange, 
       isError={ isError }
       itemsNum={ data?.items?.length }
       emptyText="There are no token transfers."
-      filterProps={{
-        emptyFilteredText: `Couldn${ apos }t find any token transfer that matches your query.`,
-        hasActiveFilters: Boolean(numActiveFilters),
+      hasActiveFilters={ Boolean(numActiveFilters) }
+      emptyStateProps={{
+        term: 'token transfer',
       }}
       actionBar={ actionBar }
     >

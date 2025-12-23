@@ -51,7 +51,6 @@
 	| "dots"
 	| "edit"
 	| "email"
-	| "empty_search_result"
 	| "ENS"
 	| "error-pages/403"
 	| "error-pages/404"

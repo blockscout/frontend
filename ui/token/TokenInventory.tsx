@@ -90,9 +90,9 @@ const TokenInventory = ({ inventoryQuery, tokenQuery, ownerFilter, shouldRender 
       isError={ inventoryQuery.isError }
       itemsNum={ items?.length }
       emptyText="There are no tokens."
-      filterProps={{
-        hasActiveFilters: Boolean(ownerFilter),
-        emptyFilteredText: 'No tokens found for the selected owner.',
+      hasActiveFilters={ Boolean(ownerFilter) }
+      emptyStateProps={{
+        description: 'No tokens found for the selected owner.',
       }}
       actionBar={ actionBar }
     >

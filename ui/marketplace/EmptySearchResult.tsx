@@ -3,9 +3,9 @@ import React from 'react';
 import { MarketplaceCategory } from 'types/client/marketplace';
 
 import config from 'configs/app';
+import { EmptyState } from 'toolkit/chakra/empty-state';
 import { Link } from 'toolkit/chakra/link';
-import { apos } from 'toolkit/utils/htmlEntities';
-import EmptySearchResultDefault from 'ui/shared/EmptySearchResult';
+import { apos, space } from 'toolkit/utils/htmlEntities';
 import IconSvg from 'ui/shared/IconSvg';
 
 const feature = config.features.marketplace;
@@ -16,12 +16,13 @@ type Props = {
 };
 
 const EmptySearchResult = ({ favoriteApps, selectedCategoryId }: Props) => (
-  <EmptySearchResultDefault
-    text={
+  <EmptyState
+    description={
       (selectedCategoryId === MarketplaceCategory.FAVORITES && !favoriteApps.length) ? (
         <>
           You don{ apos }t have any favorite apps.<br/>
-          Click on the <IconSvg name="heart_outline" boxSize={ 5 } mb={ -1 } color="icon.secondary"/> icon on the app{ apos }s card to add it to Favorites.
+          Click on the <IconSvg name="heart_outline" boxSize={ 5 } verticalAlign="text-bottom" color="icon.secondary"/>{ space }
+          icon on the app{ apos }s card to add it to Favorites.
         </>
       ) : (
         <>

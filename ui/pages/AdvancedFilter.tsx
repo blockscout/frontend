@@ -270,9 +270,9 @@ const AdvancedFilter = () => {
         itemsNum={ data?.items.length }
         emptyText="There are no transactions."
         actionBar={ actionBar }
-        filterProps={{
-          hasActiveFilters: Object.values(filters).some(Boolean),
-          emptyFilteredText: 'No match found for current filter',
+        hasActiveFilters={ Object.values(filters).some(Boolean) }
+        emptyStateProps={{
+          term: 'transaction',
         }}
       >
         { content }
