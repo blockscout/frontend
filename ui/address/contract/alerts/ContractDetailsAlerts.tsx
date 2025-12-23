@@ -60,6 +60,13 @@ const ContractDetailsAlerts = ({ data, isLoading, addressData, channel }: Props)
           }
         </Alert>
       ) }
+      { addressData.proxy_type && (
+        <ContractDetailsAlertProxyPattern
+          type={ addressData.proxy_type }
+          isLoading={ isLoading }
+          conflictingImplementations={ data?.conflicting_implementations ?? undefined }
+        />
+      ) }
       <ContractDetailsAlertVerificationSource data={ data }/>
       { (data?.is_changed_bytecode || isChangedBytecodeSocket) && (
         <Alert status="warning">
@@ -82,7 +89,6 @@ const ContractDetailsAlerts = ({ data, isLoading, addressData, channel }: Props)
           <span> page</span>
         </Alert>
       ) }
-      { addressData.proxy_type && <ContractDetailsAlertProxyPattern type={ addressData.proxy_type } isLoading={ isLoading }/> }
     </Flex>
   );
 };
