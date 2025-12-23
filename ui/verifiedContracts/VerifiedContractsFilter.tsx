@@ -14,8 +14,6 @@ interface Props {
   onChange: (nextValue: string | Array<string>) => void;
 }
 
-// TODO @tom2drum remove NEXT_PUBLIC_VIEWS_CONTRACT_LANGUAGE_FILTERS occurrences
-// TODO @tom2drum check on multichain setup
 const VerifiedContractsFilter = ({ onChange, defaultValue, hasActiveFilter }: Props) => {
 
   const { data, isPending } = useApiQuery('general:config_contract_languages');
