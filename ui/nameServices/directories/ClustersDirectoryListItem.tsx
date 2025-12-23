@@ -8,6 +8,7 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import ClustersEntity from 'ui/shared/entities/clusters/ClustersEntity';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
+import Time from 'ui/shared/time/Time';
 
 interface Props {
   item: ClustersDirectoryObject;
@@ -45,7 +46,7 @@ const ClustersDirectoryListItem = ({ item, isLoading, isClusterDetailsLoading }:
       </ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
         <Skeleton loading={ isLoading }>
-          <div>{ dayjs(item.createdAt).format('lll') }</div>
+          <Time timestamp={ item.createdAt } display="block"/>
           <div> { dayjs(item.createdAt).fromNow() }</div>
         </Skeleton>
       </ListItemMobileGrid.Value>

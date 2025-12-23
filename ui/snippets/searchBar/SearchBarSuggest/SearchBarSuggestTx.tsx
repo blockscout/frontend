@@ -5,9 +5,9 @@ import type { ItemsProps } from './types';
 import type { SearchResultTx } from 'types/api/search';
 import type * as multichain from 'types/client/multichain-aggregator';
 
-import dayjs from 'lib/date/dayjs';
 import * as TxEntity from 'ui/shared/entities/tx/TxEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
+import Time from 'ui/shared/time/Time';
 
 const SearchBarSuggestTx = ({ data, isMobile, chainInfo }: ItemsProps<SearchResultTx | multichain.QuickSearchResultTransaction>) => {
   const icon = <TxEntity.Icon chain={ chainInfo }/>;
@@ -16,7 +16,7 @@ const SearchBarSuggestTx = ({ data, isMobile, chainInfo }: ItemsProps<SearchResu
       <HashStringShortenDynamic hash={ data.transaction_hash } noTooltip/>
     </chakra.mark>
   );
-  const date = 'timestamp' in data && data.timestamp ? dayjs(data.timestamp).format('llll') : undefined;
+  const date = 'timestamp' in data && data.timestamp ? <Time timestamp={ data.timestamp }/> : undefined;
 
   if (isMobile) {
     return (

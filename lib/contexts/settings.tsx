@@ -16,6 +16,8 @@ interface TSettingsContext {
   toggleAddressFormat: () => void;
   timeFormat: TimeFormat;
   toggleTimeFormat: () => void;
+  isLocalTime: boolean;
+  toggleIsLocalTime: () => void;
 }
 
 export const SettingsContext = React.createContext<TSettingsContext | null>(null);
@@ -30,6 +32,10 @@ export function SettingsContextProvider({ children }: SettingsProviderProps) {
 
   const [ timeFormat, setTimeFormat ] = React.useState<TimeFormat>(
     cookies.get(cookies.NAMES.TIME_FORMAT, appCookies) as TimeFormat || 'relative',
+  );
+
+  const [ isLocalTime, setIsLocalTime ] = React.useState<boolean>(
+    (cookies.get(cookies.NAMES.LOCAL_TIME, appCookies) ?? 'true') === 'true',
   );
 
   const toggleAddressFormat = React.useCallback(() => {
@@ -48,14 +54,24 @@ export function SettingsContextProvider({ children }: SettingsProviderProps) {
     });
   }, []);
 
+  const toggleIsLocalTime = React.useCallback(() => {
+    setIsLocalTime(prev => {
+      const nextValue = !prev;
+      cookies.set(cookies.NAMES.LOCAL_TIME, nextValue ? 'true' : 'false');
+      return nextValue;
+    });
+  }, []);
+
   const value = React.useMemo(() => {
     return {
       addressFormat,
       toggleAddressFormat,
       timeFormat,
       toggleTimeFormat,
+      isLocalTime,
+      toggleIsLocalTime,
     };
-  }, [ addressFormat, toggleAddressFormat, timeFormat, toggleTimeFormat ]);
+  }, [ addressFormat, toggleAddressFormat, timeFormat, toggleTimeFormat, isLocalTime, toggleIsLocalTime ]);
 
   return (
     <SettingsContext.Provider value={ value }>

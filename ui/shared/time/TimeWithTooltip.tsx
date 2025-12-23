@@ -34,10 +34,11 @@ const TimeWithTooltip = ({ timestamp, fallbackText, isLoading, enableIncrement, 
     }
 
     if (timeFormat === 'relative') {
-      return <Tooltip content={ dayjs(timestamp).format('llll') }><span>{ timeAgo }</span></Tooltip>;
+      const content = settings?.isLocalTime ? dayjs(timestamp).format('llll') : dayjs(timestamp).utc().format('llll');
+      return <Tooltip content={ content }><span>{ timeAgo }</span></Tooltip>;
     }
 
-    return <Tooltip content={ timeAgo }><span>{ dayjs(timestamp).format('lll') }</span></Tooltip>;
+    return <Tooltip content={ timeAgo }><span>{ dayjs(timestamp).utc(settings?.isLocalTime).format('lll') }</span></Tooltip>;
   })();
 
   return (
