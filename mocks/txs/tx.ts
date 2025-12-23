@@ -1,9 +1,11 @@
 /* eslint-disable max-len */
+import type { AddressParam } from 'types/api/addressParams';
 import type { Transaction } from 'types/api/transaction';
 
 import * as addressMock from 'mocks/address/address';
 import { publicTag, privateTag, watchlistName } from 'mocks/address/tag';
 import * as interopMock from 'mocks/interop/interop';
+import { protocolTag } from 'mocks/metadata/address';
 import * as tokenTransferMock from 'mocks/tokens/tokenTransfer';
 import * as decodedInputDataMock from 'mocks/txs/decodedInputData';
 
@@ -88,8 +90,24 @@ export const withWatchListNames: Transaction = {
   } as Transaction['to'],
 };
 
+export const withProtocolTag: Transaction = {
+  ...base,
+  hash: '0x62d597ebcf3e8d60096dd0363bc2f0f5e2df27ba1dacd696c51aa7c9409f3194',
+  to: {
+    ...(base.to as AddressParam),
+    metadata: {
+      tags: [ protocolTag ],
+      reputation: null,
+    },
+    private_tags: [],
+    watchlist_names: [],
+    public_tags: [],
+  },
+};
+
 export const withPendingUpdate: Transaction = {
-  ...withWatchListNames,
+  ...withProtocolTag,
+  hash: '0x62d597ebcf3e8d60096dd0363bc2f0f5e2df27ba1dacd696c51aa7c9409f3133',
   is_pending_update: true,
 };
 
