@@ -4,7 +4,6 @@ import React from 'react';
 
 import useIsMounted from 'lib/hooks/useIsMounted';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import { apos } from 'toolkit/utils/htmlEntities';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/pagination/Pagination';
@@ -117,9 +116,9 @@ const AddressTokenTransfers = ({ overloadCount, shouldRender = true, isQueryEnab
       isError={ isError }
       itemsNum={ data?.items?.length }
       emptyText="There are no token transfers."
-      filterProps={{
-        emptyFilteredText: `Couldn${ apos }t find any token transfer that matches your query.`,
-        hasActiveFilters: Boolean(numActiveFilters),
+      hasActiveFilters={ Boolean(numActiveFilters) }
+      emptyStateProps={{
+        term: 'token transfer',
       }}
       actionBar={ actionBar }
     >

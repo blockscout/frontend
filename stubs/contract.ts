@@ -1,6 +1,6 @@
 import type * as stats from '@blockscout/stats-types';
 import type { SmartContract, SmartContractMudSystemsResponse } from 'types/api/contract';
-import type { VerifiedContract, VerifiedContractsCounters } from 'types/api/contracts';
+import type { HotContract, VerifiedContract, VerifiedContractsCounters } from 'types/api/contracts';
 
 import type { SolidityScanReport } from 'lib/solidityScan/schema';
 
@@ -116,4 +116,11 @@ export const MUD_SYSTEMS: SmartContractMudSystemsResponse = {
       address_hash: ADDRESS_HASH,
     },
   ],
+};
+
+export const HOT_CONTRACTS: HotContract = {
+  contract_address: VERIFIED_CONTRACT_INFO.address,
+  balance: '1000000000000000000',
+  transactions_count: '1000',
+  total_gas_used: '100000000',
 };

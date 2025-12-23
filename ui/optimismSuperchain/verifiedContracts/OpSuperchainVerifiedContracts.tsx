@@ -5,7 +5,6 @@ import multichainConfig from 'configs/multichain';
 import { MultichainProvider } from 'lib/contexts/multichain';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
-import { apos } from 'toolkit/utils/htmlEntities';
 import ChainSelect from 'ui/optimismSuperchain/components/ChainSelect';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
@@ -110,9 +109,9 @@ const OpSuperchainVerifiedContracts = () => {
           isError={ isError }
           itemsNum={ data?.items.length }
           emptyText="There are no verified contracts."
-          filterProps={{
-            emptyFilteredText: `Couldn${ apos }t find any contract that matches your query.`,
-            hasActiveFilters: Boolean(searchTerm || type),
+          hasActiveFilters={ Boolean(searchTerm || type) }
+          emptyStateProps={{
+            term: 'contract',
           }}
           actionBar={ actionBar }
         >

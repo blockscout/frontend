@@ -31,7 +31,7 @@ const Icon = (props: EntityBase.IconBaseProps) => {
   return (
     <EntityBase.Icon
       { ...props }
-      name={ 'name' in props ? props.name : 'user_op_slim' }
+      name={ 'name' in props ? props.name : 'user_op' }
       shield={ props.shield ?? (props.chain ? { src: props.chain.logo } : undefined) }
       hint={ props.chain && props.shield !== false ? getChainTooltipText(props.chain, 'User operation on ') : undefined }
     />

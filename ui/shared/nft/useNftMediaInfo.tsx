@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import type { TokenInstance } from 'types/api/token';
 
-import type { StaticRoute } from 'nextjs-routes';
+import type { DynamicRoute } from 'nextjs-routes';
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
@@ -81,7 +81,15 @@ async function getMediaType(data: TokenInstance, field: Params['field']): Promis
   }
 
   try {
-    const mediaTypeResourceUrl = route({ pathname: '/node-api/media-type' as StaticRoute<'/api/media-type'>['pathname'], query: { url } });
+    const mediaTypeResourceUrl = route({
+      // eslint-disable-next-line max-len
+      pathname: '/node-api/tokens/[hash]/instances/[id]/media-type' as DynamicRoute<'/api/tokens/[hash]/instances/[id]/media-type', { hash: string; id: string }>['pathname'],
+      query: {
+        hash: data.token.address_hash,
+        id: data.id,
+        field,
+      },
+    });
     const response = await fetch(mediaTypeResourceUrl);
     const payload = await response.json() as { type: MediaType | undefined };
 

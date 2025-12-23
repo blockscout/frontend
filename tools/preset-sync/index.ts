@@ -15,7 +15,7 @@ const PRESETS = {
   garnet: 'https://explorer.garnetchain.com',
   gnosis: 'https://gnosis.blockscout.com',
   immutable: 'https://explorer.immutable.com',
-  mega_eth: 'https://megaeth-testnet-v2.blockscout.com',
+  mega_eth: 'https://megaeth.blockscout.com',
   mekong: 'https://mekong.blockscout.com',
   neon_devnet: 'https://neon-devnet.blockscout.com',
   optimism: 'https://optimism.blockscout.com',

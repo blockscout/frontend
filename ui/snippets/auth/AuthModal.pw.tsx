@@ -32,11 +32,15 @@ test('email login', async({ render, page, mockApiResponse }) => {
   await page.getByLabel('pin code 4 of 6').fill('4');
   await page.getByLabel('pin code 5 of 6').fill('5');
   await page.getByLabel('pin code 6 of 6').fill('6');
+  // make sure that the focus is removed from the button
+  await page.getByText('Confirmation code').click();
   await expect(page).toHaveScreenshot();
 
   // submit otp code
   await mockApiResponse('general:auth_confirm_otp', profileMock.base as never);
   await page.getByText('Submit').click();
+  // make sure that the focus is removed from the button
+  await page.getByText('Congrats').click();
   await expect(page).toHaveScreenshot();
 
   await page.getByLabel('Close').click();

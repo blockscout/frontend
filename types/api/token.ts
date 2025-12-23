@@ -68,6 +68,7 @@ export interface TokenInstance {
   metadata: Record<string, unknown> | null;
   owner: AddressParam | null;
   thumbnails: ({ original: string } & Partial<Record<Exclude<ThumbnailSize, 'original'>, string>>) | null;
+  token: TokenInfo;
 }
 
 export interface TokenInstanceMetadataSocketMessage {
