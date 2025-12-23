@@ -1,3 +1,4 @@
+import type { StackProps } from '@chakra-ui/react';
 import { HStack } from '@chakra-ui/react';
 import React from 'react';
 
@@ -7,6 +8,8 @@ import { Tag } from 'toolkit/chakra/tag';
 type Props<T extends string> = {
   items: Array<{ id: T; title: string }>;
   tagSize?: TagProps['size'];
+  loading?: boolean;
+  disabled?: boolean;
 } & (
   {
     value?: T;
@@ -17,9 +20,9 @@ type Props<T extends string> = {
     onChange: (value: Array<T>) => void;
     isMulti: true;
   }
-);
+) & Omit<StackProps, 'onChange'>;
 
-const TagGroupSelect = <T extends string>({ items, value, isMulti, onChange, tagSize, ...rest }: Props<T>) => {
+const TagGroupSelect = <T extends string>({ items, value, isMulti, onChange, tagSize, loading, disabled, ...rest }: Props<T>) => {
   const onItemClick = React.useCallback((event: React.SyntheticEvent) => {
     const itemValue = (event.currentTarget as HTMLDivElement).getAttribute('data-id') as T;
     if (isMulti) {
@@ -46,10 +49,12 @@ const TagGroupSelect = <T extends string>({ items, value, isMulti, onChange, tag
             data-id={ item.id }
             selected={ isSelected }
             fontWeight={ 500 }
-            onClick={ onItemClick }
+            onClick={ disabled ? undefined : onItemClick }
             size={ tagSize }
             display="inline-flex"
             justifyContent="center"
+            loading={ loading }
+            disabled={ disabled }
           >
             { item.title }
           </Tag>

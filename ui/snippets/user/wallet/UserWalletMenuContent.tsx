@@ -46,7 +46,7 @@ const UserWalletMenuContent = ({ isAutoConnectDisabled, address, domain, isRecon
             size="2xs"
             onClick={ handleOpenWalletClick }
           >
-            <IconSvg name="gear_slim"/>
+            <IconSvg name="gear"/>
           </IconButton>
         ) }
       </Flex>

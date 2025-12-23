@@ -1,7 +1,7 @@
 import React from 'react';
 
+import { EmptyState } from 'toolkit/chakra/empty-state';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
-import EmptySearchResult from 'ui/shared/EmptySearchResult';
 
 import SearchResultsList from './SearchResultsList';
 import SearchResultsTabAll from './SearchResultsTabAll';
@@ -33,9 +33,9 @@ const SearchResultTabContent = ({ isLoading, searchTerm, queries, queryType, bef
 
     if (!searchTerm) {
       return (
-        <EmptySearchResult
+        <EmptyState
           title="Looking for something?"
-          text="Try searching by address, smart contract, transaction, block, token or NFT"
+          description="Try searching by address, smart contract, transaction, block, token or NFT"
         />
       );
     }
@@ -46,9 +46,9 @@ const SearchResultTabContent = ({ isLoading, searchTerm, queries, queryType, bef
 
     if (!hasResults) {
       return (
-        <EmptySearchResult
+        <EmptyState
           title={ queryType ? `No ${ EMPTY_SEARCH_NAME_MAP[queryType] } found` : 'No results found' }
-          text="It seems we can't find any results based on your request."
+          description="It seems we can't find any results based on your request."
         />
       );
     }

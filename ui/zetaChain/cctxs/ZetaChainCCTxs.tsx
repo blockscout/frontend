@@ -12,7 +12,6 @@ import useInitialList from 'lib/hooks/useInitialList';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
-import { apos } from 'toolkit/utils/htmlEntities';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/pagination/Pagination';
@@ -184,9 +183,9 @@ const ZetaChainCCTxs = ({
       isError={ isError }
       itemsNum={ items?.length }
       emptyText="There are no cross chain transactions."
-      filterProps={{
-        hasActiveFilters: hasFilters,
-        emptyFilteredText: `Couldn${ apos }t find cross chain transactions that match your filter query.`,
+      hasActiveFilters={ hasFilters }
+      emptyStateProps={{
+        term: 'cross chain transaction',
       }}
       actionBar={ actionBar }
     >

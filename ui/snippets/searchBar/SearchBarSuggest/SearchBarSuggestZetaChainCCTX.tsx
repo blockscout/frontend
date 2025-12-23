@@ -20,7 +20,7 @@ interface Props {
 }
 
 const SearchBarSuggestZetaChainCCTX = ({ data, isMobile, searchTerm, onClick }: Props) => {
-  const icon = <IconSvg name="interop" boxSize={ 6 } marginRight={ 1 } color="text.secondary"/>;
+  const icon = <IconSvg name="interop" boxSize={ 5 } marginRight={ 1 } color="text.secondary"/>;
 
   // search term can be either cctx hash or observed hash (hash from another chain)
   const hash = (

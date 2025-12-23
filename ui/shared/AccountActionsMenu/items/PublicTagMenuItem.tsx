@@ -17,12 +17,14 @@ const PublicTagMenuItem = ({ hash, type }: ItemProps) => {
 
   switch (type) {
     case 'button': {
-      return <ButtonItem label="Add public tag" icon="publictags" onClick={ handleClick }/>;
+      // FIXME use non-navigation icon
+      return <ButtonItem label="Add public tag" icon="navigation/public_tags" onClick={ handleClick }/>;
     }
     case 'menu_item': {
       return (
         <MenuItem onClick={ handleClick } value="add-public-tag">
-          <IconSvg name="publictags" boxSize={ 6 }/>
+          { /* FIXME use non-navigation icon */ }
+          <IconSvg name="navigation/public_tags" boxSize={ 6 }/>
           <span>Add public tag</span>
         </MenuItem>
       );

@@ -36,7 +36,7 @@ const NavLinkRewards = ({ isCollapsed, onClick }: Props) => {
     <NavLink
       item={{
         text: 'Merits',
-        icon: dailyRewardQuery.data?.available ? 'merits_with_dot' : 'merits',
+        icon: dailyRewardQuery.data?.available ? 'navigation/merits_with_dot' : 'navigation/merits',
         nextRoute: nextRoute,
         isActive: router.pathname === pathname,
       }}

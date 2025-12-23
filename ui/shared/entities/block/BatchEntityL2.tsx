@@ -20,7 +20,7 @@ const BatchEntityL2 = (props: BlockEntity.EntityProps) => {
     <BlockEntity.default
       { ...props }
       href={ props.href ?? defaultHref }
-      icon={{ name: 'txn_batches_slim' }}
+      icon={{ name: 'txn_batches' }}
     />
   );
 };

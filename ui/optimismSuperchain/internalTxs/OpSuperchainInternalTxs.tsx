@@ -4,7 +4,6 @@ import React from 'react';
 import { MultichainProvider } from 'lib/contexts/multichain';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
-import { apos } from 'toolkit/utils/htmlEntities';
 import InternalTxsList from 'ui/internalTxs/InternalTxsList';
 import InternalTxsTable from 'ui/internalTxs/InternalTxsTable';
 import useInternalTxsQuery from 'ui/internalTxs/useInternalTxsQuery';
@@ -74,9 +73,9 @@ const OpSuperchainInternalTxs = () => {
         isError={ isError }
         itemsNum={ data?.items.length }
         emptyText="There are no internal transactions."
-        filterProps={{
-          emptyFilteredText: `Couldn${ apos }t find any internal transaction that matches your query.`,
-          hasActiveFilters: Boolean(searchTerm),
+        hasActiveFilters={ Boolean(searchTerm) }
+        emptyStateProps={{
+          term: 'internal transaction',
         }}
         actionBar={ actionBar }
         showActionBarIfError
