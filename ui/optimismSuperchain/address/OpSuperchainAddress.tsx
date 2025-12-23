@@ -16,8 +16,10 @@ import AddressQrCode from 'ui/address/details/AddressQrCode';
 import ClusterChainsPopover from 'ui/optimismSuperchain/components/ClusterChainsPopover';
 import TextAd from 'ui/shared/ad/TextAd';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
+import OpSuperchainAddressEnsDomains from './header/OpSuperchainAddressEnsDomains';
 import OpSuperchainAddressCoinBalanceHistory from './OpSuperchainAddressCoinBalanceHistory';
 import OpSuperchainAddressContract from './OpSuperchainAddressContract';
 import OpSuperchainAddressDetails from './OpSuperchainAddressDetails';
@@ -39,9 +41,15 @@ const OpSuperchainAddress = () => {
     },
   });
 
+  const domainProtocolsQuery = useApiQuery('multichainAggregator:domain_protocols', {
+    queryOptions: {
+      placeholderData: { items: [] },
+    },
+  });
+
   throwOnResourceLoadError(addressQuery);
 
-  const isLoading = addressQuery.isPlaceholderData;
+  const isLoading = addressQuery.isPlaceholderData || domainProtocolsQuery.isPlaceholderData;
   const chainData = Object.values(addressQuery.data?.chain_infos ?? {});
   const isContractSomewhere = chainData.some((chainInfo) => chainInfo.is_contract);
   const isContract = contract.isContract(addressQuery.data);
@@ -105,6 +113,17 @@ const OpSuperchainAddress = () => {
 
   const titleSecondRow = (
     <Flex alignItems="center" w="100%" columnGap={ 2 } rowGap={ 2 } flexWrap={{ base: 'wrap', lg: 'nowrap' }}>
+      { addressQuery.data?.domains?.[0] && (
+        <EnsEntity
+          domain={ addressQuery.data?.domains[0].name }
+          protocol={ domainProtocolsQuery.data?.items.find((protocol) => protocol.short_name === addressQuery.data?.domains[0].protocol) }
+          isLoading={ isLoading }
+          variant="subheading"
+          noLink
+          mr={ 1 }
+          maxW="300px"
+        />
+      ) }
       <AddressEntity
         address={{
           ...addressQuery.data,
@@ -124,6 +143,7 @@ const OpSuperchainAddress = () => {
       />
       <AddressQrCode hash={ checkSummedHash } isLoading={ isLoading }/>
       <Box ml="auto"/>
+      <OpSuperchainAddressEnsDomains data={ addressQuery.data?.domains } isLoading={ isLoading } protocolsQuery={ domainProtocolsQuery }/>
       <ClusterChainsPopover addressHash={ checkSummedHash } data={ addressQuery.data } isLoading={ isLoading }/>
     </Flex>
   );

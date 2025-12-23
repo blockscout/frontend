@@ -18,6 +18,9 @@ export const MULTICHAIN_AGGREGATOR_API_RESOURCES = {
     filterFields: [ 'chain_id' as const, 'type' as const, 'query' as const ],
     paginated: true,
   },
+  domain_protocols: {
+    path: '/domain-protocols',
+  },
   quick_search: {
     path: '/search\\:quick',
     filterFields: [ 'q' as const ],
@@ -69,6 +72,7 @@ export type MultichainAggregatorApiResourcePayload<R extends MultichainAggregato
 R extends 'multichainAggregator:address' ? multichain.GetAddressResponse :
 R extends 'multichainAggregator:address_tokens' ? AddressTokensResponse :
 R extends 'multichainAggregator:tokens' ? TokensResponse :
+R extends 'multichainAggregator:domain_protocols' ? multichain.ListDomainProtocolsResponse :
 R extends 'multichainAggregator:quick_search' ? multichain.ClusterQuickSearchResponse :
 R extends 'multichainAggregator:search_check_redirect' ? multichain.CheckRedirectResponse :
 R extends 'multichainAggregator:search_addresses' ? multichain.SearchAddressesResponse :

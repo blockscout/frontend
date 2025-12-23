@@ -113,6 +113,10 @@ export const addressA: multichain.GetAddressResponse = {
   has_interop_message_transfers: false,
   coin_balance: '35135081814718054525',
   exchange_rate: '123.455',
+  domains: [
+    { name: 'ga-ga-ga.goose', protocol: 'GOOSE' },
+    { name: 'quack-quack.duck', protocol: 'DUCK' },
+  ],
 };
 
 export const tokenA: AddressTokenItem = {
@@ -166,6 +170,7 @@ export const searchAddressesA: multichain.GetAddressResponse = {
   has_interop_message_transfers: false,
   coin_balance: '0',
   exchange_rate: '123.456',
+  domains: [],
 };
 
 export const searchAddressesB: multichain.GetAddressResponse = {
@@ -182,6 +187,7 @@ export const searchAddressesB: multichain.GetAddressResponse = {
   has_interop_message_transfers: false,
   coin_balance: '0',
   exchange_rate: '123.456',
+  domains: [],
 };
 
 export const searchTokenA: multichain.AggregatedTokenInfo = {
@@ -204,3 +210,26 @@ export const searchTokenA: multichain.AggregatedTokenInfo = {
     },
   },
 };
+
+export const domainProtocols: Array<multichain.ProtocolInfo> = [
+  {
+    id: 'goose',
+    short_name: 'GOOSE',
+    title: 'Goose Name Service',
+    description: 'The Goose Name Service is a decentralized naming system for the Goose blockchain.',
+    deployment_blockscout_base_url: 'https://blockscout.com',
+    tld_list: [ 'goose' ],
+    icon_url: 'https://goose.com/icon.jpg',
+    docs_url: 'https://goose.com/docs',
+  },
+  {
+    id: 'duck',
+    short_name: 'DUCK',
+    title: 'Duck Name Service',
+    description: 'The Duck Name Service is a decentralized naming system for the Duck blockchain.',
+    deployment_blockscout_base_url: 'https://blockscout.com',
+    tld_list: [ 'duck', 'quack' ],
+    icon_url: 'https://duck.com/icon.jpg',
+    docs_url: 'https://duck.com/docs',
+  },
+];

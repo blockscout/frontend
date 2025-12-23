@@ -22,6 +22,9 @@ test('base view', async({ mockApiResponse, render, page, mockMultichainConfig, m
   await mockTextAd();
 
   await mockApiResponse('multichainAggregator:address', opSuperchainMock.addressA, { pathParams: { hash: CURRENT_ADDRESS } });
+  await mockApiResponse('multichainAggregator:domain_protocols', {
+    items: opSuperchainMock.domainProtocols,
+  });
   await mockApiResponse('multichainAggregator:address_tokens', {
     items: [ opSuperchainMock.tokenA ],
     next_page_params: undefined,
@@ -41,6 +44,8 @@ test('base view', async({ mockApiResponse, render, page, mockMultichainConfig, m
 
   await mockAssetResponse(opSuperchainMock.chainDataA.logo as string, './playwright/mocks/image_s.jpg');
   await mockAssetResponse(opSuperchainMock.chainDataB.logo as string, './playwright/mocks/image_md.jpg');
+  await mockAssetResponse(opSuperchainMock.domainProtocols[0].icon_url as string, './playwright/mocks/goose.png');
+  await mockAssetResponse(opSuperchainMock.domainProtocols[1].icon_url as string, './playwright/mocks/duck.png');
 
   const component = await render(
     <OpSuperchainAddress/>,
@@ -56,5 +61,9 @@ test('base view', async({ mockApiResponse, render, page, mockMultichainConfig, m
   await expect(page.locator('div[data-scope="popover"][data-part="content"]').nth(0)).toHaveScreenshot();
 
   await component.getByText('By chain').nth(1).click();
+  await expect(page.locator('div[data-scope="popover"][data-part="content"]').nth(0)).toHaveScreenshot();
+
+  await component.getByText('Contract details').click();
+  await component.getByRole('button', { name: 'Address domains' }).click();
   await expect(page.locator('div[data-scope="popover"][data-part="content"]').nth(0)).toHaveScreenshot();
 });

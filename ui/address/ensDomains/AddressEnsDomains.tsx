@@ -136,7 +136,7 @@ const AddressEnsDomains = ({ query, addressHash, mainDomainName }: Props) => {
             </Link>
           ) }
           { mainDomain && (
-            <chakra.span fontSize="xs" mt={ -1 }>
+            <chakra.span textStyle="xs" mt={ -1 }>
               *A domain name is not necessarily held by a person popularly associated with the name
             </chakra.span>
           ) }
