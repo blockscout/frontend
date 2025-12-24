@@ -24,6 +24,7 @@ export interface TokenInfo<T extends TokenType = TokenType> {
   origin_chain_id?: string | null;
   foreign_address?: string | null;
   filecoin_robust_address?: string | null;
+  zilliqa?: { zrc2_address_hash?: string };
 }
 
 export interface TokenCounters {
