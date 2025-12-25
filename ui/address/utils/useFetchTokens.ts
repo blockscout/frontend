@@ -1,15 +1,20 @@
-import { useQueryClient } from '@tanstack/react-query';
+import { useQueries, useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
 import type { SocketMessage } from 'lib/socket/types';
 import type { AddressTokenBalance, AddressTokensBalancesSocketMessage, AddressTokensResponse } from 'types/api/address';
 import type { TokenType } from 'types/api/token';
 
+import config from 'configs/app';
+import useApiFetch from 'lib/api/useApiFetch';
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
+import { useMultichainContext } from 'lib/contexts/multichain';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 
+import type { TokenEnhancedData } from './tokenUtils';
 import { calculateUsdValue } from './tokenUtils';
+
 interface Props {
   hash?: string;
   enabled?: boolean;
@@ -20,6 +25,11 @@ const tokenBalanceItemIdentityFactory = (match: AddressTokenBalance) => (item: A
   match.token_id === item.token_id &&
   match.token_instance?.id === item.token_instance?.id
 ));
+
+const socketEventForTokenType = (tokenTypeId: string): string => {
+  const normalizedTypeId = tokenTypeId.toLowerCase().replace(/[^a-z0-9]+/g, '_');
+  return `updated_token_balances_${ normalizedTypeId }`;
+};
 
 export default function useFetchTokens({ hash, enabled }: Props) {
   const erc20query = useApiQuery('general:address_tokens', {
@@ -43,9 +53,34 @@ export default function useFetchTokens({ hash, enabled }: Props) {
     queryOptions: { enabled: Boolean(hash) && enabled, refetchOnMount: false },
   });
 
+  const apiFetch = useApiFetch();
+  const multichainContext = useMultichainContext();
+  const chain = multichainContext?.chain;
+
+  const additionalTokenTypes = React.useMemo(() => {
+    const defaultTypes = new Set<string>([ 'ERC-20', 'ERC-721', 'ERC-1155', 'ERC-404' ]);
+    return config.chain.additionalTokenTypes.filter((item) => !defaultTypes.has(item.id));
+  }, []);
+
+  const additionalTokenQueries = useQueries({
+    queries: additionalTokenTypes.map((item) => ({
+      queryKey: getResourceKey('general:address_tokens', { pathParams: { hash }, queryParams: { type: item.id as unknown as TokenType }, chainId: chain?.id }),
+      queryFn: async({ signal }) => {
+        return apiFetch('general:address_tokens', {
+          pathParams: { hash },
+          queryParams: { type: item.id as unknown as TokenType },
+          chain,
+          fetchParams: { signal },
+        }) as Promise<AddressTokensResponse>;
+      },
+      enabled: Boolean(hash) && enabled,
+      refetchOnMount: false,
+    })),
+  });
+
   const queryClient = useQueryClient();
 
-  const updateTokensData = React.useCallback((type: TokenType, payload: AddressTokensBalancesSocketMessage) => {
+  const updateTokensData = React.useCallback((type: TokenType | Array<TokenType>, payload: AddressTokensBalancesSocketMessage) => {
     const queryKey = getResourceKey('general:address_tokens', { pathParams: { hash }, queryParams: { type } });
 
     queryClient.setQueryData(queryKey, (prevData: AddressTokensResponse | undefined) => {
@@ -74,6 +109,8 @@ export default function useFetchTokens({ hash, enabled }: Props) {
 
   const handleTokenBalancesErc20Message: SocketMessage.AddressTokenBalancesErc20['handler'] = React.useCallback((payload) => {
     updateTokensData('ERC-20', payload);
+    // udpate ERC-20 & additional token types query, that is used on the address tokens list
+    updateTokensData([ 'ERC-20', ...config.chain.additionalTokenTypes.map((item) => item.id) as Array<TokenType> ], payload);
   }, [ updateTokensData ]);
 
   const handleTokenBalancesErc721Message: SocketMessage.AddressTokenBalancesErc721['handler'] = React.useCallback((payload) => {
@@ -84,7 +121,7 @@ export default function useFetchTokens({ hash, enabled }: Props) {
     updateTokensData('ERC-1155', payload);
   }, [ updateTokensData ]);
 
-  const handleTokenBalancesErc404Message: SocketMessage.AddressTokenBalancesErc1155['handler'] = React.useCallback((payload) => {
+  const handleTokenBalancesErc404Message: SocketMessage.AddressTokenBalancesErc404['handler'] = React.useCallback((payload) => {
     updateTokensData('ERC-404', payload);
   }, [ updateTokensData ]);
 
@@ -114,7 +151,44 @@ export default function useFetchTokens({ hash, enabled }: Props) {
     handler: handleTokenBalancesErc404Message,
   });
 
+  const additionalTokenTypesForAddressList = React.useMemo(() => {
+    return [ 'ERC-20', ...config.chain.additionalTokenTypes.map((item) => item.id) ] as Array<TokenType>;
+  }, []);
+
+  React.useEffect(() => {
+    if (!channel || additionalTokenTypes.length === 0) {
+      return;
+    }
+
+    const refs = additionalTokenTypes.map((item) => {
+      const event = socketEventForTokenType(item.id);
+
+      return channel.on(event, (payload: AddressTokensBalancesSocketMessage) => {
+        updateTokensData(item.id as unknown as TokenType, payload);
+
+        // keep the "ERC-20 & custom token types" list in sync
+        updateTokensData(additionalTokenTypesForAddressList, payload);
+      });
+    });
+
+    return () => {
+      refs.forEach((ref, index) => {
+        channel.off(socketEventForTokenType(additionalTokenTypes[index]?.id || ''), ref);
+      });
+    };
+  }, [ additionalTokenTypes, channel, additionalTokenTypesForAddressList, updateTokensData ]);
+
   const data = React.useMemo(() => {
+    const additionalById = new Map(additionalTokenTypes.map((item, index) => [ item.id, additionalTokenQueries[index] ] as const));
+    const additionalGroups = additionalTokenTypes.reduce((result, item) => {
+      const query = additionalById.get(item.id);
+      result[item.id] = {
+        items: query?.data?.items.map(calculateUsdValue) || [],
+        isOverflow: Boolean(query?.data?.next_page_params),
+      };
+      return result;
+    }, {} as Record<string, { items: Array<TokenEnhancedData>; isOverflow: boolean }>);
+
     return {
       'ERC-20': {
         items: erc20query.data?.items.map(calculateUsdValue) || [],
@@ -130,14 +204,29 @@ export default function useFetchTokens({ hash, enabled }: Props) {
       },
       'ERC-404': {
         items: erc404query.data?.items.map(calculateUsdValue) || [],
-        isOverflow: Boolean(erc1155query.data?.next_page_params),
+        isOverflow: Boolean(erc404query.data?.next_page_params),
       },
+      ...additionalGroups,
     };
-  }, [ erc1155query.data, erc20query.data, erc721query.data, erc404query.data ]);
+  }, [ additionalTokenQueries, additionalTokenTypes, erc1155query.data, erc20query.data, erc721query.data, erc404query.data ]);
+
+  const isPending =
+    erc20query.isPending ||
+    erc721query.isPending ||
+    erc1155query.isPending ||
+    erc404query.isPending ||
+    additionalTokenQueries.some((query) => query.isPending);
+
+  const isError =
+    erc20query.isError ||
+    erc721query.isError ||
+    erc1155query.isError ||
+    erc404query.isError ||
+    additionalTokenQueries.some((query) => query.isError);
 
   return {
-    isPending: erc20query.isPending || erc721query.isPending || erc1155query.isPending || erc404query.isPending,
-    isError: erc20query.isError || erc721query.isError || erc1155query.isError || erc404query.isError,
+    isPending,
+    isError,
     data,
   };
 }

@@ -49,9 +49,6 @@ export default yup.object({
       .of(yup.object({
         id: yup.string().required(),
         name: yup.string().required(),
-        isNFT: yup.boolean(),
-        hasValue: yup.boolean(),
-        hasIds: yup.boolean(),
       }).noUnknown(true)),
     NEXT_PUBLIC_IS_TESTNET: yup.boolean(),
 });

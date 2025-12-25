@@ -23,10 +23,7 @@ export interface TokenBridge {
   short_title: string;
 }
 
-export type AdditionalTokenType = {
-  name: string;
+export interface AdditionalTokenType {
   id: string;
-  isNFT?: boolean;
-  hasValue?: boolean;
-  hasIds?: boolean;
-};
+  name: string;
+}

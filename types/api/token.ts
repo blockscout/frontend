@@ -2,7 +2,8 @@ import type { TokenInfoApplication } from './account';
 import type { AddressParam } from './addressParams';
 
 export type NFTTokenType = 'ERC-721' | 'ERC-1155' | 'ERC-404';
-export type TokenType = 'ERC-20' | NFTTokenType;
+// token type can come from the environment config, so it can be any string
+export type TokenType = string;
 
 export type TokenReputation = 'ok' | 'scam';
 
