@@ -1,10 +1,12 @@
 import React from 'react';
 import type ReCAPTCHA from 'react-google-recaptcha';
 
+import config from 'configs/app';
 import getErrorCauseStatusCode from 'lib/errors/getErrorCauseStatusCode';
 import getErrorObjStatusCode from 'lib/errors/getErrorObjStatusCode';
 
 export default function useReCaptcha() {
+  const isDisabled = config.app.appProfile === 'private';
   const ref = React.useRef<ReCAPTCHA>(null);
   const rejectCb = React.useRef<((error: Error) => void) | null>(null);
 
@@ -12,6 +14,10 @@ export default function useReCaptcha() {
   const [ isInitError, setIsInitError ] = React.useState(false);
 
   const executeAsync: () => Promise<string | null> = React.useCallback(async() => {
+    if (isDisabled) {
+      return Promise.resolve(null);
+    }
+
     setIsOpen(true);
     const tokenPromise = ref.current?.executeAsync() || Promise.reject(new Error('Unable to execute ReCaptcha'));
     const modalOpenPromise = new Promise<null>((resolve, reject) => {
@@ -19,7 +25,7 @@ export default function useReCaptcha() {
     });
 
     return Promise.race([ tokenPromise, modalOpenPromise ]);
-  }, [ ref ]);
+  }, [ ref, isDisabled ]);
 
   const handleContainerClick = React.useCallback(() => {
     setIsOpen(false);
@@ -49,7 +55,7 @@ export default function useReCaptcha() {
       return result;
     } catch (error) {
       const statusCode = error instanceof Error ? getErrorCauseStatusCode(error) : getErrorObjStatusCode(error);
-      if (statusCode === 429) {
+      if (statusCode === 429 && !isDisabled) {
         const token = await executeAsync();
 
         if (!token) {
@@ -61,7 +67,7 @@ export default function useReCaptcha() {
 
       throw error;
     }
-  }, [ executeAsync ]);
+  }, [ executeAsync, isDisabled ]);
 
   return React.useMemo(() => ({
     ref,
