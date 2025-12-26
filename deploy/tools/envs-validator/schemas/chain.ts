@@ -42,5 +42,13 @@ export default yup.object({
         otherwise: (schema) => schema,
       }),
     NEXT_PUBLIC_NETWORK_TOKEN_STANDARD_NAME: yup.string(),
+    NEXT_PUBLIC_NETWORK_ADDITIONAL_TOKEN_TYPES: yup
+      .array()
+      .transform(replaceQuotes)
+      .json()
+      .of(yup.object({
+        id: yup.string().required(),
+        name: yup.string().required(),
+      }).noUnknown(true)),
     NEXT_PUBLIC_IS_TESTNET: yup.boolean(),
 });

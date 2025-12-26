@@ -10,9 +10,10 @@ interface Props {
   data: Array<AddressTokensErc20Item>;
   top: number;
   isLoading: boolean;
+  hasAdditionalTokenTypes?: boolean;
 }
 
-const ERC20TokensTable = ({ data, top, isLoading }: Props) => {
+const ERC20TokensTable = ({ data, top, isLoading, hasAdditionalTokenTypes }: Props) => {
   return (
     <TableRoot>
       <TableHeaderSticky top={ top }>
@@ -30,6 +31,7 @@ const ERC20TokensTable = ({ data, top, isLoading }: Props) => {
             key={ item.token.address_hash + (isLoading ? index : '') + (item.chain_values ? Object.keys(item.chain_values).join(',') : '') }
             { ...item }
             isLoading={ isLoading }
+            hasAdditionalTokenTypes={ hasAdditionalTokenTypes }
           />
         )) }
       </TableBody>

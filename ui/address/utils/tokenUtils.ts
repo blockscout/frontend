@@ -2,7 +2,6 @@ import BigNumber from 'bignumber.js';
 import { mapValues } from 'es-toolkit';
 
 import type { AddressTokenBalance } from 'types/api/address';
-import type { TokenType } from 'types/api/token';
 
 import config from 'configs/app';
 import sumBnReducer from 'lib/bigint/sumBnReducer';
@@ -19,7 +18,7 @@ export type TokenEnhancedData = AddressTokenBalance & {
 
 export type Sort = 'desc' | 'asc';
 
-export type TokenSelectData = Record<TokenType, TokenSelectDataItem>;
+export type TokenSelectData = Record<string, TokenSelectDataItem>;
 
 export interface TokenSelectDataItem {
   items: Array<TokenEnhancedData>;
@@ -28,10 +27,28 @@ export interface TokenSelectDataItem {
 
 type TokenGroup = [string, TokenSelectDataItem];
 
-const TOKEN_GROUPS_ORDER: Array<TokenType> = [ 'ERC-20', 'ERC-721', 'ERC-1155', 'ERC-404' ];
+const NFT_TOKEN_GROUPS_ORDER = [ 'ERC-721', 'ERC-1155', 'ERC-404' ] as const;
 
 export const sortTokenGroups = (groupA: TokenGroup, groupB: TokenGroup) => {
-  return TOKEN_GROUPS_ORDER.indexOf(groupA[0] as TokenType) > TOKEN_GROUPS_ORDER.indexOf(groupB[0] as TokenType) ? 1 : -1;
+  const additionalTypeIds = config.chain.additionalTokenTypes.map((item) => item.id);
+
+  const tokenGroupsOrder = [
+    'ERC-20',
+    ...additionalTypeIds,
+    ...NFT_TOKEN_GROUPS_ORDER,
+  ] as const;
+
+  const orderA = tokenGroupsOrder.indexOf(groupA[0] as (typeof tokenGroupsOrder)[number]);
+  const orderB = tokenGroupsOrder.indexOf(groupB[0] as (typeof tokenGroupsOrder)[number]);
+
+  const normalizedA = orderA === -1 ? 999 : orderA;
+  const normalizedB = orderB === -1 ? 999 : orderB;
+
+  if (normalizedA !== normalizedB) {
+    return normalizedA > normalizedB ? 1 : -1;
+  }
+
+  return groupA[0].localeCompare(groupB[0]);
 };
 
 const sortErc1155or404Tokens = (sort: Sort) => (dataA: AddressTokenBalance, dataB: AddressTokenBalance) => {
@@ -74,6 +91,10 @@ export const sortingFns = {
   'ERC-404': sortErc1155or404Tokens,
 };
 
+export const getSortingFn = (typeId: string) => {
+  return sortingFns[typeId as keyof typeof sortingFns] || sortErc20Tokens;
+};
+
 export const filterTokens = (searchTerm: string) => ({ token }: AddressTokenBalance) => {
   if (!token.name) {
     return !searchTerm ? true : token.address_hash.toLowerCase().includes(searchTerm);
@@ -83,7 +104,11 @@ export const filterTokens = (searchTerm: string) => ({ token }: AddressTokenBala
 };
 
 export const calculateUsdValue = (data: AddressTokenBalance): TokenEnhancedData => {
-  if (data.token.type !== 'ERC-20') {
+  const isFungibleTokenType =
+    data.token.type === 'ERC-20' ||
+    config.chain.additionalTokenTypes.some((item) => item.id === data.token.type);
+
+  if (!isFungibleTokenType) {
     return data;
   }
 

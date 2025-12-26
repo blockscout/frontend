@@ -1,4 +1,5 @@
 import type { RollupType } from 'types/client/rollup';
+import type { AdditionalTokenType } from 'types/client/token';
 import type { NetworkVerificationType, NetworkVerificationTypeEnvs } from 'types/networks';
 
 import { urlValidator } from 'toolkit/components/forms/validators/url';
@@ -48,6 +49,7 @@ const chain = Object.freeze({
   },
   hasMultipleGasCurrencies: getEnvValue('NEXT_PUBLIC_NETWORK_MULTIPLE_GAS_CURRENCIES') === 'true',
   tokenStandard: getEnvValue('NEXT_PUBLIC_NETWORK_TOKEN_STANDARD_NAME') || 'ERC',
+  additionalTokenTypes: parseEnvJson<Array<AdditionalTokenType>>(getEnvValue('NEXT_PUBLIC_NETWORK_ADDITIONAL_TOKEN_TYPES')) || [],
   rpcUrls,
   isTestnet: getEnvValue('NEXT_PUBLIC_IS_TESTNET') === 'true',
   verificationType,

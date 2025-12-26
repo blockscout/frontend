@@ -3,6 +3,7 @@ import React from 'react';
 
 import type { TokenHolder, TokenInfo } from 'types/api/token';
 
+import { hasTokenIds } from 'lib/token/tokenTypes';
 import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
@@ -28,7 +29,7 @@ const TokenHoldersListItem = ({ holder, token, isLoading }: Props) => {
         />
       </ListItemMobileGrid.Value>
 
-      { (token.type === 'ERC-1155' || token.type === 'ERC-404') && 'token_id' in holder && (
+      { (hasTokenIds(token.type)) && 'token_id' in holder && (
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>ID#</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>

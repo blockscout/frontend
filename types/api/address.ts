@@ -144,7 +144,7 @@ export type AddressTokenTransferFilters = {
 };
 
 export type AddressTokensFilter = {
-  type: TokenType;
+  type: TokenType | Array<TokenType>;
 };
 
 export type AddressNFTTokensFilter = {
