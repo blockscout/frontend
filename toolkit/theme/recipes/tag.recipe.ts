@@ -8,7 +8,7 @@ export const recipe = defineSlotRecipe({
       alignItems: 'center',
       verticalAlign: 'top',
       maxWidth: '100%',
-      userSelect: 'none',
+      userSelect: 'text',
       borderRadius: 'sm',
       focusVisibleRing: 'outside',
       _loading: {
