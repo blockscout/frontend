@@ -3,11 +3,13 @@ import React from 'react';
 
 import type { CeloEpochListItem } from 'types/api/epochs';
 
+import dayjs from 'lib/date/dayjs';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 import EpochEntity from 'ui/shared/entities/epoch/EpochEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import CeloEpochStatus from 'ui/shared/statusTag/CeloEpochStatus';
+import TextSeparator from 'ui/shared/TextSeparator';
+import Time from 'ui/shared/time/Time';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 interface Props {
@@ -24,7 +26,11 @@ const EpochsListItem = ({ item, isLoading }: Props) => {
         <CeloEpochStatus isFinalized={ item.is_finalized } loading={ isLoading }/>
       </HStack>
       { item.timestamp && (
-        <DetailedInfoTimestamp minH="30px" color="text.secondary" timestamp={ item.timestamp } isLoading={ isLoading }/>
+        <Skeleton loading={ isLoading } display="flex" alignItems="center" minH="30px" color="text.secondary">
+          <div>{ dayjs(item.timestamp).fromNow() }</div>
+          <TextSeparator/>
+          <Time timestamp={ item.timestamp } format="lll_s"/>
+        </Skeleton>
       ) }
       <HStack minH="30px">
         <Skeleton loading={ isLoading }>Block range</Skeleton>

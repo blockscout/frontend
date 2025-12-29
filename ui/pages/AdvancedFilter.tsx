@@ -171,7 +171,7 @@ const AdvancedFilter = () => {
                       searchParams={ data?.search_params }
                       isLoading={ isPlaceholderData }
                     />
-                    { column.id === 'age' && <TimeFormatToggle ml={ 1 }/> }
+                    { column.id === 'age' && <TimeFormatToggle ml={ 1 } verticalAlign="middle"/> }
                   </TableColumnHeader>
                 );
               }) }

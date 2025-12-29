@@ -81,7 +81,7 @@ const BlockCountdown = ({ hideCapybaraRunner }: Props) => {
             </Heading>
             <Box mt={ 2 } color="text.secondary">
               <Box fontWeight={ 600 }>Estimated target date</Box>
-              <Time timestamp={ dayjs().add(Number(data.result.EstimateTimeInSec), 's').toISOString() }/>
+              <Time timestamp={ dayjs().add(Number(data.result.EstimateTimeInSec), 's').valueOf() }/>
             </Box>
             <Flex columnGap={ 2 } mt={ 3 }>
               <Link

@@ -3,7 +3,7 @@ import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import { useSettingsContext } from 'lib/contexts/settings';
-import dayjs from 'lib/date/dayjs';
+import dayjs, { FORMATS } from 'lib/date/dayjs';
 
 interface Props extends BoxProps {
   timestamp: string | number;
@@ -12,8 +12,8 @@ interface Props extends BoxProps {
 
 const Time = ({ timestamp, format = 'lll', ...rest }: Props) => {
   const settings = useSettingsContext();
-
-  return <chakra.span { ...rest }>{ dayjs(timestamp).utc(settings?.isLocalTime).format(format) }</chakra.span>;
+  const formatStr = FORMATS[format as keyof typeof FORMATS] || format;
+  return <chakra.span { ...rest }>{ dayjs(timestamp).utc(settings?.isLocalTime).format(formatStr) }</chakra.span>;
 };
 
 export default React.memo(Time);

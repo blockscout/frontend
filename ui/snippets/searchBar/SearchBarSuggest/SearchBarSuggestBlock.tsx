@@ -57,7 +57,7 @@ const SearchBarSuggestBlock = ({ data, isMobile, searchTerm, chainInfo }: ItemsP
       <HashStringShortenDynamic hash={ data.block_hash } noTooltip/>
     </Text>
   ) : null;
-  const date = 'timestamp' in data && data.timestamp && !isFutureBlock ? <Time timestamp={ data.timestamp } color="text.secondary"/> : undefined;
+  const date = 'timestamp' in data && data.timestamp && !isFutureBlock ? <Time timestamp={ data.timestamp } color="text.secondary" format="lll_s"/> : undefined;
   const futureBlockText = <Text color="text.secondary">Learn estimated time for this block to be created.</Text>;
   const blockType = 'block_type' in data ? data.block_type : undefined;
 

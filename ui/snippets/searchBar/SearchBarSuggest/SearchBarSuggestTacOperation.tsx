@@ -26,7 +26,7 @@ const SearchBarSuggestTacOperation = ({ data, isMobile }: ItemsProps<SearchResul
           { hash }
           { status }
         </Flex>
-        <Time timestamp={ data.tac_operation.timestamp } color="text.secondary"/>
+        <Time timestamp={ data.tac_operation.timestamp } color="text.secondary" format="lll_s"/>
       </>
     );
   }
@@ -38,7 +38,7 @@ const SearchBarSuggestTacOperation = ({ data, isMobile }: ItemsProps<SearchResul
         { hash }
         { status }
       </Flex>
-      <Time timestamp={ data.tac_operation.timestamp } color="text.secondary" textAlign="end" flexShrink={ 0 } ml="auto"/>
+      <Time timestamp={ data.tac_operation.timestamp } color="text.secondary" textAlign="end" flexShrink={ 0 } ml="auto" format="lll_s"/>
     </Flex>
   );
 };

@@ -294,7 +294,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
             { !isFutureBlock && data.timestamp && (
               <TableCell fontSize="sm" verticalAlign="middle" isNumeric>
                 <Skeleton loading={ isLoading } color="text.secondary">
-                  <Time timestamp={ data.timestamp }/>
+                  <Time timestamp={ data.timestamp } format="lll_s"/>
                 </Skeleton>
               </TableCell>
             ) }
@@ -323,7 +323,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
               </TxEntity.Container>
             </TableCell>
             <TableCell fontSize="sm" verticalAlign="middle" isNumeric>
-              <Time timestamp={ data.timestamp } color="text.secondary"/>
+              <Time timestamp={ data.timestamp } color="text.secondary" format="lll_s"/>
             </TableCell>
           </>
         );
@@ -351,7 +351,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
               </TxEntity.Container>
             </TableCell>
             <TableCell fontSize="sm" verticalAlign="middle" isNumeric>
-              <Time timestamp={ Number(data.cctx.last_update_timestamp) * SECOND } color="text.secondary"/>
+              <Time timestamp={ Number(data.cctx.last_update_timestamp) * SECOND } color="text.secondary" format="lll_s"/>
             </TableCell>
           </>
         );
@@ -380,7 +380,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
               </OperationEntity.Container>
             </TableCell>
             <TableCell fontSize="sm" verticalAlign="middle" isNumeric>
-              <Time timestamp={ data.tac_operation.timestamp } color="text.secondary"/>
+              <Time timestamp={ data.tac_operation.timestamp } color="text.secondary" format="lll_s"/>
             </TableCell>
           </>
         );
@@ -429,7 +429,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
               </UserOpEntity.Container>
             </TableCell>
             <TableCell fontSize="sm" verticalAlign="middle" isNumeric>
-              <Time timestamp={ data.timestamp } color="text.secondary"/>
+              <Time timestamp={ data.timestamp } color="text.secondary" format="lll_s"/>
             </TableCell>
           </>
         );

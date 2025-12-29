@@ -16,7 +16,7 @@ const SearchBarSuggestTx = ({ data, isMobile, chainInfo }: ItemsProps<SearchResu
       <HashStringShortenDynamic hash={ data.transaction_hash } noTooltip/>
     </chakra.mark>
   );
-  const date = 'timestamp' in data && data.timestamp ? <Time timestamp={ data.timestamp }/> : undefined;
+  const date = 'timestamp' in data && data.timestamp ? <Time timestamp={ data.timestamp } format="lll_s"/> : undefined;
 
   if (isMobile) {
     return (

@@ -363,30 +363,30 @@ const SearchResultListItem = ({ data, searchTerm, isLoading, addressFormat }: Pr
               <HashStringShortenDynamic hash={ data.block_hash } as={ shouldHighlightHash ? 'mark' : 'span' }/>
             </Skeleton>
             <Skeleton loading={ isLoading } color="text.secondary" mr={ 2 }>
-              <Time timestamp={ data.timestamp }/>
+              <Time timestamp={ data.timestamp } format="lll_s"/>
             </Skeleton>
           </>
         );
       }
       case 'transaction': {
         return (
-          <Time timestamp={ data.timestamp } color="text.secondary"/>
+          <Time timestamp={ data.timestamp } color="text.secondary" format="lll_s"/>
         );
       }
       case 'zetaChainCCTX': {
         return (
-          <Time timestamp={ Number(data.cctx.last_update_timestamp) * SECOND } color="text.secondary"/>
+          <Time timestamp={ Number(data.cctx.last_update_timestamp) * SECOND } color="text.secondary" format="lll_s"/>
         );
       }
       case 'tac_operation': {
         return (
-          <Time timestamp={ data.tac_operation.timestamp } color="text.secondary"/>
+          <Time timestamp={ data.tac_operation.timestamp } color="text.secondary" format="lll_s"/>
         );
       }
       case 'user_operation': {
 
         return (
-          <Time timestamp={ data.timestamp } color="text.secondary"/>
+          <Time timestamp={ data.timestamp } color="text.secondary" format="lll_s"/>
         );
       }
       case 'label': {

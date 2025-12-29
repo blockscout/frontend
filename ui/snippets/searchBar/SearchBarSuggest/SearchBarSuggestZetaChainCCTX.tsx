@@ -38,7 +38,7 @@ const SearchBarSuggestZetaChainCCTX = ({ data, isMobile, searchTerm, onClick }: 
           { icon }
           { hash }
         </Flex>
-        <Time timestamp={ Number(data.last_update_timestamp) * SECOND } color="text.secondary"/>
+        <Time timestamp={ Number(data.last_update_timestamp) * SECOND } color="text.secondary" format="lll_s"/>
       </>
     );
   } else {
@@ -48,7 +48,7 @@ const SearchBarSuggestZetaChainCCTX = ({ data, isMobile, searchTerm, onClick }: 
           { icon }
           { hash }
         </Flex>
-        <Time timestamp={ Number(data.last_update_timestamp) * SECOND } color="text.secondary" textAlign="end" flexShrink={ 0 } ml="auto"/>
+        <Time timestamp={ Number(data.last_update_timestamp) * SECOND } color="text.secondary" textAlign="end" flexShrink={ 0 } ml="auto" format="lll_s"/>
       </Flex>
     );
   }

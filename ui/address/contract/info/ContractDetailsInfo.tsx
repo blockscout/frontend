@@ -187,7 +187,7 @@ const ContractDetailsInfo = ({ data, isLoading, addressData }: Props) => {
           wordBreak="break-word"
           isLoading={ isLoading }
         >
-          <Time timestamp={ data.verified_at }/>
+          <Time timestamp={ data.verified_at } format="lll_s"/>
         </ContractDetailsInfoItem>
       ) }
       { data.file_path && !isStylusContract && (

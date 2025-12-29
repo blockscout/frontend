@@ -65,3 +65,8 @@ dayjs.updateLocale('en', {
 dayjs.locale('en');
 
 export default dayjs;
+
+export const FORMATS = {
+  // the "lll" format with seconds
+  lll_s: 'MMM D, YYYY h:mm:ss A',
+};

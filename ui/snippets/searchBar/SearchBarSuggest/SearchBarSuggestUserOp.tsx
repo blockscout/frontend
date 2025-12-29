@@ -23,7 +23,7 @@ const SearchBarSuggestUserOp = ({ data, isMobile }: ItemsProps<SearchResultUserO
           { icon }
           { hash }
         </Flex>
-        <Time timestamp={ data.timestamp } color="text.secondary"/>
+        <Time timestamp={ data.timestamp } color="text.secondary" format="lll_s"/>
       </>
     );
   }
@@ -34,7 +34,7 @@ const SearchBarSuggestUserOp = ({ data, isMobile }: ItemsProps<SearchResultUserO
         { icon }
         { hash }
       </Flex>
-      <Time timestamp={ data.timestamp } color="text.secondary" textAlign="end" flexShrink={ 0 } ml="auto"/>
+      <Time timestamp={ data.timestamp } color="text.secondary" textAlign="end" flexShrink={ 0 } ml="auto" format="lll_s"/>
     </Flex>
   );
 };

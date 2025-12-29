@@ -36,7 +36,7 @@ const LatestZetaChainCCTXItem = ({ tx, isLoading, animation }: Props) => {
       <Skeleton loading={ isLoading } display="flex" color="text.secondary" gap={ 2 } justifyContent="start">
         { dayjs(Number(tx.last_update_timestamp) * SECOND).fromNow() }
         <TextSeparator mx={ 0 }/>
-        <Time timestamp={ Number(tx.last_update_timestamp) * SECOND }/>
+        <Time timestamp={ Number(tx.last_update_timestamp) * SECOND } format="lll_s"/>
       </Skeleton>
       <Grid gridTemplateColumns="100px 1fr" gap={ 2 }>
         <Text>Sender</Text>
