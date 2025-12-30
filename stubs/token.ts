@@ -167,6 +167,7 @@ export const getTokenInstanceTransfersStub = (type?: TokenType, pagination: Toke
 };
 
 export const TOKEN_INSTANCE: TokenInstance = {
+  token: TOKEN_INFO_ERC_721,
   animation_url: null,
   external_app_url: 'https://vipsland.com/nft/collections/genesis/188882',
   id: '188882',

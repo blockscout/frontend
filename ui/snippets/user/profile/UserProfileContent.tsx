@@ -33,22 +33,22 @@ const navLinks: Array<NavLink> = [
   {
     text: 'Private tags',
     href: route({ pathname: '/account/tag-address' }),
-    icon: 'private_tags_slim' as const,
+    icon: 'private_tags' as const,
   },
   {
     text: 'API keys',
     href: route({ pathname: '/account/api-key' }),
-    icon: 'API_slim' as const,
+    icon: 'API' as const,
   },
   {
     text: 'Custom ABI',
     href: route({ pathname: '/account/custom-abi' }),
-    icon: 'ABI_slim' as const,
+    icon: 'ABI' as const,
   },
   config.features.addressVerification.isEnabled && {
     text: 'Verified addrs',
     href: route({ pathname: '/account/verified-addresses' }),
-    icon: 'verified_slim' as const,
+    icon: 'verified' as const,
   },
 ].filter(Boolean);
 

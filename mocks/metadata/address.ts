@@ -62,6 +62,8 @@ export const tagWithTooltip: AddressMetadataTagApi = {
     tooltipIcon: 'https://localhost:3100/icon.svg',
     tooltipTitle: 'Blockscout team member',
     tooltipUrl: 'https://blockscout.com',
+    tooltipAttribution: 'https://duck.org',
+    tooltipAttributionIcon: 'https://localhost:3100/icon_sm.svg',
   },
 };
 

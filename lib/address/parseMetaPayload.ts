@@ -22,6 +22,8 @@ export default function parseMetaPayload(meta: AddressMetadataTag['meta']): Addr
       'tooltipTitle',
       'tooltipDescription',
       'tooltipUrl',
+      'tooltipAttribution',
+      'tooltipAttributionIcon',
       'appID',
       'appMarketplaceURL',
       'appLogoURL',

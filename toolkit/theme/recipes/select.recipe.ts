@@ -57,7 +57,9 @@ export const recipe = defineSlotRecipe({
       background: 'popover.bg',
       display: 'flex',
       flexDirection: 'column',
-      zIndex: 'popover',
+      // For selects inside modals
+      '--select-z-index': 'modal',
+      zIndex: 'modal',
       borderRadius: 'md',
       borderWidth: '0',
       outline: 0,

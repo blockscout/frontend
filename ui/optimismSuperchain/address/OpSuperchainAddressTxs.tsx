@@ -11,6 +11,7 @@ import { MultichainProvider } from 'lib/contexts/multichain';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { SocketProvider } from 'lib/socket/context';
+import { EmptyState } from 'toolkit/chakra/empty-state';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import AddressCsvExportLink from 'ui/address/AddressCsvExportLink';
 import AddressTxsFilter from 'ui/address/AddressTxsFilter';
@@ -18,7 +19,6 @@ import useAddressTxsQuery from 'ui/address/useAddressTxsQuery';
 import useAddressCountersQuery from 'ui/address/utils/useAddressCountersQuery';
 import ChainSelect from 'ui/optimismSuperchain/components/ChainSelect';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import ComingSoon from 'ui/shared/ComingSoon';
 import Pagination from 'ui/shared/pagination/Pagination';
 import TxsWithAPISorting from 'ui/txs/TxsWithAPISorting';
 
@@ -141,7 +141,7 @@ const OpSuperchainAddressTxs = ({ addressData, isLoading }: Props) => {
     {
       id: 'txs_cross_chain',
       title: 'Cross-chain',
-      component: <ComingSoon/>,
+      component: <EmptyState type="coming_soon"/>,
     },
     {
       id: [ 'txs_local', 'txs' ],

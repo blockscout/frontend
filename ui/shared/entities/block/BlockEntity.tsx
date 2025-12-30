@@ -40,7 +40,7 @@ const Icon = (props: IconProps) => {
       return props.name;
     }
 
-    return isPendingUpdate ? 'status/warning' : 'block_slim';
+    return isPendingUpdate ? 'status/warning' : 'block';
   })();
 
   const hint = (() => {

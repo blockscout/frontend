@@ -1,6 +1,7 @@
 import type { PlaywrightTestConfig } from '@playwright/experimental-ct-react';
 import { devices, defineConfig } from '@playwright/experimental-ct-react';
 import react from '@vitejs/plugin-react';
+import type { Plugin } from 'esbuild';
 import svgr from 'vite-plugin-svgr';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
@@ -61,7 +62,7 @@ const config: PlaywrightTestConfig = defineConfig({
         svgr({
           exportAsDefault: true,
         }),
-      ],
+      ] as unknown as Array<Plugin>,
       build: {
         // it actually frees some memory that vite needs a lot
         // https://github.com/storybookjs/builder-vite/issues/409#issuecomment-1152848986

@@ -19,7 +19,8 @@ import NFTItemContainer from './NFTItemContainer';
 
 type Props = AddressNFT & { isLoading: boolean; withTokenLink?: boolean; chain?: ClusterChainConfig };
 
-const NFTItem = ({ token, value, isLoading, withTokenLink, chain, ...tokenInstance }: Props) => {
+const NFTItem = ({ value, isLoading, withTokenLink, chain, ...tokenInstance }: Props) => {
+  const { token } = tokenInstance;
   const valueResult = token.decimals && value ? calculateUsdValue({ amount: value, decimals: token.decimals, accuracy: 2 }).valueStr : value;
   const tokenInstanceLink = tokenInstance.id ?
     route({ pathname: '/token/[hash]/instance/[id]', query: { hash: token.address_hash, id: tokenInstance.id } }, chain ? { chain } : undefined) :

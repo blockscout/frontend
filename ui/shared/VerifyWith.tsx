@@ -4,6 +4,7 @@ import React from 'react';
 import { Button } from 'toolkit/chakra/button';
 import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
 import { Tooltip } from 'toolkit/chakra/tooltip';
+import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
@@ -15,10 +16,11 @@ interface Props {
 }
 
 const VerifyWith = ({ className, links, label, longText, shortText }: Props) => {
+  const popover = useDisclosure();
 
   return (
-    <PopoverRoot>
-      <Tooltip content={ label } disableOnMobile>
+    <PopoverRoot open={ popover.open } onOpenChange={ popover.onOpenChange }>
+      <Tooltip content={ label } disabled={ popover.open } disableOnMobile closeOnClick>
         <Box className={ className }>
           <PopoverTrigger>
             <Button

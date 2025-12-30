@@ -47,7 +47,7 @@ We are using following technology stack in the project
 - [Next.js](https://nextjs.org/) as application framework
 - [Chakra](https://chakra-ui.com/) as component library; our theme customization can be found in `/theme` folder
 - [TanStack Query](https://tanstack.com/query/v4/docs/react/overview/) for fetching, caching and updating data from the API
-- [Jest](https://jestjs.io/) as JavaScript testing framework
+- [Vitest](https://vitest.dev/) as JavaScript testing framework
 - [Playwright](https://playwright.dev/) as a tool for components visual testing
 
 And of course our premier language is [Typescript](https://www.typescriptlang.org/).
@@ -119,13 +119,13 @@ These are the steps that you have to follow to make everything work:
 
 Every feature or bugfix should be accompanied by tests, either unit tests or component visual tests, or both, except from trivial fixes (for example, typo fix). All commands for running tests you can find [below](./CONTRIBUTING.md#command-list).
 
-### Jest unit tests
+### Vitest unit tests
 
-If your changes are only related to the logic of the app and not to its visual presentation, then try to write unit tests using [Jest](https://jestjs.io/) framework and [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/). In general these tests are "cheaper" and faster than Playwright ones. Use them for testing your utilities and React hooks, as well as the whole components logic. 
+If your changes are only related to the logic of the app and not to its visual presentation, then try to write unit tests using [Vitest](https://vitest.dev/) framework and [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/). In general these tests are "cheaper" and faster than Playwright ones. Use them for testing your utilities and React hooks, as well as the whole components logic. 
 
-Place your test suites in `.test.ts` or `.test.tsx` files. You can find or add some mocks or other helpful utilities for these tests purposes in the `/jest` folder. 
+Place your test suites in `.spec.ts` or `.spec.tsx` files. You can find or add some mocks or other helpful utilities for these tests purposes in the `/vitest` folder. 
 
-*Note*, that we are using custom renderer and wrapper in all tests for React components, so please do not import package `@testing-library/react` directly in your test suites, instead use imports from `jest/lib` utility.
+*Note*, that we are using custom renderer and wrapper in all tests for React components, so please do not import package `@testing-library/react` directly in your test suites, instead use imports from `vitest/lib` utility.
 
 ### Playwright components tests
 
@@ -198,8 +198,7 @@ We have 3 pre-configured projects. You can run your test with the desired projec
 | `yarn svg:format` | format and optimize SVG icons in the `/icons` folder using SVGO tool |
 | `yarn svg:build-sprite` | build SVG icons sprite |
 | **Testing** |
-| `yarn test:jest` | run all Jest unit tests |
-| `yarn test:jest:watch` | run all Jest unit tests in watch mode |
+| `yarn test:vitest` | run all Vitest unit tests |
 | `yarn test:pw:local` | run Playwright component tests locally |
 | `yarn test:pw:docker` | run Playwright component tests in docker container |
 | `yarn test:pw:ci` | run Playwright component tests in CI |
@@ -213,7 +212,5 @@ We have 3 pre-configured projects. You can run your test with the desired projec
 #### VSCode
 
 There are some predefined tasks for all commands described above. You can see the full list by pressing <kbd>cmd + shift + P</kbd> and using command `Task: Run task`
-
-Also there is a Jest test launch configuration for debugging and running current test file in the watch mode.
 
 And you may find the Dev Container setup useful too.

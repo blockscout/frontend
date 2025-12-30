@@ -4,12 +4,12 @@ import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
 import useFetch from 'lib/hooks/useFetch';
+import { EmptyState } from 'toolkit/chakra/empty-state';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 import { useClipboard } from 'toolkit/hooks/useClipboard';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import EmptySearchResult from 'ui/shared/EmptySearchResult';
 import type { IconName } from 'ui/shared/IconSvg';
 import IconSvg from 'ui/shared/IconSvg';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -78,7 +78,7 @@ const Sprite = () => {
       .sort((a, b) => a.name.localeCompare(b.name));
 
     if (items.length === 0) {
-      return <EmptySearchResult text="No icons found"/>;
+      return <EmptyState description="No icons found"/>;
     }
 
     return (

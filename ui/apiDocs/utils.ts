@@ -34,9 +34,9 @@ export const REST_API_SECTIONS = [
 
         if (!req.loadSpec) {
           const newUrl = new URL(
-            req.url
-              .replace(DEFAULT_SERVER, config.apis.general.host)
-              .replace(DEFAULT_SERVER_NEW, config.apis.general.host),
+            req.url.includes(DEFAULT_SERVER) ?
+              req.url.replace(DEFAULT_SERVER, config.apis.general.host) :
+              req.url.replace(DEFAULT_SERVER_NEW, config.apis.general.host),
           );
 
           newUrl.protocol = config.apis.general.protocol + ':';
@@ -85,7 +85,7 @@ export const REST_API_SECTIONS = [
   },
   config.apis.zetachain && {
     id: 'zetachain-api',
-    title: 'Zetachain CCCTX API',
+    title: 'Zetachain CCTX API',
     swagger: {
       url: getMicroserviceSwaggerUrl(config.apis.zetachain),
       requestInterceptor: microserviceRequestInterceptorFactory(config.apis.zetachain),

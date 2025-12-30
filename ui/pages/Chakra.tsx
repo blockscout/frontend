@@ -15,6 +15,7 @@ import CloseButtonShowcase from 'ui/showcases/CloseButton';
 import CollapsibleShowcase from 'ui/showcases/Collapsible';
 import ContentLoaderShowcase from 'ui/showcases/ContentLoader';
 import DialogShowcase from 'ui/showcases/Dialog';
+import EmptyStateShowcase from 'ui/showcases/EmptyState';
 import FieldShowcase from 'ui/showcases/Field';
 import IconButtonShowcase from 'ui/showcases/IconButton';
 import InputShowcase from 'ui/showcases/Input';
@@ -50,9 +51,10 @@ const tabs = [
   { label: 'Collapsible', value: 'collapsible', component: <CollapsibleShowcase/> },
   { label: 'Content loader', value: 'content-loader', component: <ContentLoaderShowcase/> },
   { label: 'Dialog', value: 'dialog', component: <DialogShowcase/> },
+  { label: 'Empty state', value: 'empty-state', component: <EmptyStateShowcase/> },
+  { label: 'Field', value: 'field', component: <FieldShowcase/> },
   { label: 'Icon button', value: 'icon-button', component: <IconButtonShowcase/> },
   { label: 'Input', value: 'input', component: <InputShowcase/> },
-  { label: 'Field', value: 'field', component: <FieldShowcase/> },
   { label: 'Link', value: 'link', component: <LinkShowcase/> },
   { label: 'Menu', value: 'menu', component: <MenuShowcase/> },
   { label: 'Pagination', value: 'pagination', component: <PaginationShowcase/> },

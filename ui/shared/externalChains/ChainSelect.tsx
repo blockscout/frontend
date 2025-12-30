@@ -14,7 +14,7 @@ import ChainIcon from './ChainIcon';
 const ALL_OPTION = {
   value: 'all',
   label: 'All chains',
-  icon: <IconSvg name="apps_slim" boxSize={ 5 }/>,
+  icon: <IconSvg name="apps" boxSize={ 5 }/>,
 };
 
 export interface Props extends Omit<SelectProps, 'collection' | 'placeholder'> {

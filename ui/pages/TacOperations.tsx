@@ -8,7 +8,6 @@ import getQueryParamString from 'lib/router/getQueryParamString';
 import { TAC_OPERATION } from 'stubs/operations';
 import { generateListStub } from 'stubs/utils';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
-import { apos } from 'toolkit/utils/htmlEntities';
 import TacOperationsListItem from 'ui/operations/tac/TacOperationsListItem';
 import TacOperationsTable from 'ui/operations/tac/TacOperationsTable';
 import ActionBar from 'ui/shared/ActionBar';
@@ -95,9 +94,9 @@ const TacOperations = () => {
         isError={ isError }
         itemsNum={ data?.items?.length }
         emptyText="There are no operations."
-        filterProps={{
-          emptyFilteredText: `Couldn${ apos }t find any operation that matches your query.`,
-          hasActiveFilters: Boolean(debouncedSearchTerm),
+        hasActiveFilters={ Boolean(debouncedSearchTerm) }
+        emptyStateProps={{
+          term: 'operation',
         }}
         actionBar={ actionBar }
       >

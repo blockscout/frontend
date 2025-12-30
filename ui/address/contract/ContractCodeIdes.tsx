@@ -25,7 +25,7 @@ const ContractCodeIde = ({ className, hash, isLoading }: Props) => {
         const url = decodeURIComponent(ide.url.replace('{hash}', hash).replace('{domain}', config.app.host || ''));
         const icon = 'icon_url' in ide ?
           <Image boxSize={ 5 } mr={ 2 } src={ ide.icon_url } alt={ `${ ide.title } icon` }/> :
-          <IconSvg name="ABI_slim" boxSize={ 5 } color="icon.primary" mr={ 2 }/>;
+          <IconSvg name="ABI" boxSize={ 5 } color="icon.primary" mr={ 2 }/>;
 
         return (
           <Link external key={ ide.title } href={ url } display="inline-flex" alignItems="center">

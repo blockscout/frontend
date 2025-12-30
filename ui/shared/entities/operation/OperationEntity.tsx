@@ -35,7 +35,7 @@ const Icon = (props: IconProps) => {
       return (
         <EntityBase.Icon
           { ...props }
-          name={ 'name' in props ? props.name : 'operation_slim' }
+          name={ 'name' in props ? props.name : 'operation' }
           borderRadius="none"
         />
       );

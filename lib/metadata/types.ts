@@ -19,13 +19,15 @@ export interface ProductSchema {
     '@type': 'Product';
     name?: string;
     description?: string;
-    logo?: string;
+    image?: string;
     url?: string;
     productID?: string;
     offers?: {
         '@type': 'Offer';
         price?: string;
         priceCurrency?: string;
+        priceValidUntil?: string;
+        availability?: string;
     };
     brand?: {
         '@type': 'Brand';

@@ -12,7 +12,6 @@
   "devDependencies": {
     "typescript": "5.4.2",
     "vite": "6.4.1",
-    "vite-plugin-dts": "4.5.4",
     "@types/node": "22.12.0"
   }
 } 

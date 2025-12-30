@@ -38,7 +38,6 @@ const OpSuperchainStats = () => {
     handleIntervalChange,
     handleFilterChange,
     displayedCharts,
-    filterQuery,
     initialFilterQuery,
   } = useStats({ chain });
 
@@ -71,12 +70,13 @@ const OpSuperchainStats = () => {
         </Box>
 
         <ChartsWidgetsList
-          filterQuery={ filterQuery }
           initialFilterQuery={ initialFilterQuery }
           isError={ isError }
           isPlaceholderData={ isPlaceholderData }
           charts={ displayedCharts }
           interval={ interval }
+          sections={ sections }
+          selectedSectionId={ currentSection }
         />
       </MultichainProvider>
 
