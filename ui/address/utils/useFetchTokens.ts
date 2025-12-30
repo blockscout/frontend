@@ -31,6 +31,8 @@ const socketEventForTokenType = (tokenTypeId: string): string => {
   return `updated_token_balances_${ normalizedTypeId }`;
 };
 
+const additionalTokenTypes = config.chain.additionalTokenTypes;
+
 export default function useFetchTokens({ hash, enabled }: Props) {
   const erc20query = useApiQuery('general:address_tokens', {
     pathParams: { hash },
@@ -56,11 +58,6 @@ export default function useFetchTokens({ hash, enabled }: Props) {
   const apiFetch = useApiFetch();
   const multichainContext = useMultichainContext();
   const chain = multichainContext?.chain;
-
-  const additionalTokenTypes = React.useMemo(() => {
-    const defaultTypes = new Set<string>([ 'ERC-20', 'ERC-721', 'ERC-1155', 'ERC-404' ]);
-    return config.chain.additionalTokenTypes.filter((item) => !defaultTypes.has(item.id));
-  }, []);
 
   const additionalTokenQueries = useQueries({
     queries: additionalTokenTypes.map((item) => ({
@@ -107,11 +104,15 @@ export default function useFetchTokens({ hash, enabled }: Props) {
     });
   }, [ hash, queryClient ]);
 
+  const additionalTokenTypesIds = React.useMemo(() => {
+    return additionalTokenTypes.map((item) => item.id);
+  }, []);
+
   const handleTokenBalancesErc20Message: SocketMessage.AddressTokenBalancesErc20['handler'] = React.useCallback((payload) => {
     updateTokensData('ERC-20', payload);
     // udpate ERC-20 & additional token types query, that is used on the address tokens list
-    updateTokensData([ 'ERC-20', ...config.chain.additionalTokenTypes.map((item) => item.id) as Array<TokenType> ], payload);
-  }, [ updateTokensData ]);
+    updateTokensData([ 'ERC-20', ...additionalTokenTypesIds ], payload);
+  }, [ updateTokensData, additionalTokenTypesIds ]);
 
   const handleTokenBalancesErc721Message: SocketMessage.AddressTokenBalancesErc721['handler'] = React.useCallback((payload) => {
     updateTokensData('ERC-721', payload);
@@ -151,10 +152,6 @@ export default function useFetchTokens({ hash, enabled }: Props) {
     handler: handleTokenBalancesErc404Message,
   });
 
-  const additionalTokenTypesForAddressList = React.useMemo(() => {
-    return [ 'ERC-20', ...config.chain.additionalTokenTypes.map((item) => item.id) ] as Array<TokenType>;
-  }, []);
-
   React.useEffect(() => {
     if (!channel || additionalTokenTypes.length === 0) {
       return;
@@ -167,7 +164,7 @@ export default function useFetchTokens({ hash, enabled }: Props) {
         updateTokensData(item.id as unknown as TokenType, payload);
 
         // keep the "ERC-20 & custom token types" list in sync
-        updateTokensData(additionalTokenTypesForAddressList, payload);
+        updateTokensData([ 'ERC-20', ...additionalTokenTypesIds ], payload);
       });
     });
 
@@ -176,12 +173,11 @@ export default function useFetchTokens({ hash, enabled }: Props) {
         channel.off(socketEventForTokenType(additionalTokenTypes[index]?.id || ''), ref);
       });
     };
-  }, [ additionalTokenTypes, channel, additionalTokenTypesForAddressList, updateTokensData ]);
+  }, [ channel, additionalTokenTypesIds, updateTokensData ]);
 
   const data = React.useMemo(() => {
-    const additionalById = new Map(additionalTokenTypes.map((item, index) => [ item.id, additionalTokenQueries[index] ] as const));
-    const additionalGroups = additionalTokenTypes.reduce((result, item) => {
-      const query = additionalById.get(item.id);
+    const additionalGroups = additionalTokenTypes.reduce((result, item, index) => {
+      const query = additionalTokenQueries[index];
       result[item.id] = {
         items: query?.data?.items.map(calculateUsdValue) || [],
         isOverflow: Boolean(query?.data?.next_page_params),
@@ -208,7 +204,7 @@ export default function useFetchTokens({ hash, enabled }: Props) {
       },
       ...additionalGroups,
     };
-  }, [ additionalTokenQueries, additionalTokenTypes, erc1155query.data, erc20query.data, erc721query.data, erc404query.data ]);
+  }, [ additionalTokenQueries, erc1155query.data, erc20query.data, erc721query.data, erc404query.data ]);
 
   const isPending =
     erc20query.isPending ||
