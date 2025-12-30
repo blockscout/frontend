@@ -5,6 +5,7 @@ import type { AddressTokenBalance } from 'types/api/address';
 
 import config from 'configs/app';
 import sumBnReducer from 'lib/bigint/sumBnReducer';
+import { isFungibleTokenType } from 'lib/token/tokenTypes';
 import { ZERO } from 'toolkit/utils/consts';
 
 const isNativeToken = (token: TokenEnhancedData) =>
@@ -104,11 +105,9 @@ export const filterTokens = (searchTerm: string) => ({ token }: AddressTokenBala
 };
 
 export const calculateUsdValue = (data: AddressTokenBalance): TokenEnhancedData => {
-  const isFungibleTokenType =
-    data.token.type === 'ERC-20' ||
-    config.chain.additionalTokenTypes.some((item) => item.id === data.token.type);
+  const isFungibleToken = isFungibleTokenType(data.token.type);
 
-  if (!isFungibleTokenType) {
+  if (!isFungibleToken) {
     return data;
   }
 

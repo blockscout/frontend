@@ -6,6 +6,7 @@ import { route } from 'nextjs/routes';
 
 import config from 'configs/app';
 import multichainConfig from 'configs/multichain';
+import { isFungibleTokenType } from 'lib/token/tokenTypes';
 import { Link } from 'toolkit/chakra/link';
 import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
 import NativeTokenTag from 'ui/shared/celo/NativeTokenTag';
@@ -34,11 +35,9 @@ const TokenSelectItem = ({ data }: Props) => {
   }, [ data.chain_values ]);
 
   const secondRow = (() => {
-    const isFungibleTokenType =
-      data.token.type === 'ERC-20' ||
-      config.chain.additionalTokenTypes.some((item) => item.id === data.token.type);
+    const isFungibleToken = isFungibleTokenType(data.token.type);
 
-    if (isFungibleTokenType) {
+    if (isFungibleToken) {
       const tokenDecimals = Number(data.token.decimals ?? 18);
       const text = `${ BigNumber(data.value).dividedBy(10 ** tokenDecimals).dp(8).toFormat() } ${ data.token.symbol || '' }`;
 
