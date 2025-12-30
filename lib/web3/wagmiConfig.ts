@@ -48,6 +48,9 @@ const reduceExternalChainsToTransportConfig = (readOnly: boolean): Record<string
 const wagmi = (() => {
 
   if (!feature.isEnabled) {
+    // TODO @tom2drum introduce provider to blockchains interaction feature
+    const accountFeature = appConfig.features.account;
+
     const wagmiConfig = createConfig({
       chains: chains as [Chain, ...Array<Chain>],
       transports: {
@@ -57,6 +60,7 @@ const wagmi = (() => {
       },
       ssr: true,
       batch: { multicall: { wait: 100, batchSize: 5 } },
+      multiInjectedProviderDiscovery: accountFeature.isEnabled && accountFeature.authProvider === 'dynamic' ? false : true,
     });
 
     return { config: wagmiConfig, adapter: null };

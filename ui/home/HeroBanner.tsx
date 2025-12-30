@@ -9,6 +9,7 @@ import RewardsButton from 'ui/rewards/RewardsButton';
 import AdBanner from 'ui/shared/ad/AdBanner';
 import SearchBar from 'ui/snippets/searchBar/SearchBarDesktop';
 import SearchBarMobile from 'ui/snippets/searchBar/SearchBarMobile';
+import UserProfileDynamic from 'ui/snippets/user/dynamic/UserProfileDynamic';
 import UserProfileDesktop from 'ui/snippets/user/profile/UserProfileDesktop';
 import UserWalletDesktop from 'ui/snippets/user/wallet/UserWalletDesktop';
 
@@ -50,6 +51,20 @@ const HeroBanner = () => {
       config.UI.homepage.heroBanner?.border?.[1] || config.UI.homepage.heroBanner?.border?.[0] || BORDER_DEFAULT,
   };
 
+  const userProfileButton = (() => {
+    const accountFeature = config.features.account;
+    if (accountFeature.isEnabled) {
+      if (accountFeature.authProvider === 'auth0') {
+        return <UserProfileDesktop buttonVariant="hero"/>;
+      } else {
+        return <UserProfileDynamic buttonVariant="hero"/>;
+      }
+    }
+    if (config.features.blockchainInteraction.isEnabled) {
+      return <UserWalletDesktop buttonVariant="hero"/>;
+    }
+  })();
+
   return (
     <Flex
       w="100%"
@@ -78,10 +93,7 @@ const HeroBanner = () => {
           { config.UI.navigation.layout === 'vertical' && (
             <Box display={{ base: 'none', lg: 'flex' }} gap={ 2 }>
               { config.features.rewards.isEnabled && <RewardsButton variant="hero"/> }
-              {
-                (config.features.account.isEnabled && <UserProfileDesktop buttonVariant="hero"/>) ||
-                (config.features.blockchainInteraction.isEnabled && <UserWalletDesktop buttonVariant="hero"/>)
-              }
+              { userProfileButton }
             </Box>
           ) }
         </Flex>

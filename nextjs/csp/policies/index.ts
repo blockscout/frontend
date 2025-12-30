@@ -1,3 +1,4 @@
+export { account } from './account';
 export { ad } from './ad';
 export { app } from './app';
 export { cloudFlare } from './cloudFlare';
