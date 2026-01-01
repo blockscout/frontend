@@ -7,6 +7,7 @@ import config from 'configs/app';
 import { rightLineArrow } from 'toolkit/utils/htmlEntities';
 
 const marketplaceFeature = config.features.marketplace;
+const beaconChainFeature = config.features.beaconChain;
 
 interface ReturnType {
   mainNavItems: Array<NavItem | NavGroupItem>;
@@ -224,7 +225,7 @@ export default function useNavItems(): ReturnType {
         validators,
         verifiedContracts,
         nameLookup,
-        config.features.beaconChain.isEnabled && {
+        beaconChainFeature.isEnabled && !beaconChainFeature.withdrawalsOnly && {
           text: 'Deposits',
           nextRoute: { pathname: '/deposits' as const },
           icon: 'navigation/deposits',
