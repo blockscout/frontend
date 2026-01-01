@@ -70,6 +70,7 @@ const txInterpretation = config.features.txInterpretation;
 const addressProfileAPIFeature = config.features.addressProfileAPI;
 const xScoreFeature = config.features.xStarScore;
 const nameServicesFeature = config.features.nameServices;
+const beaconChainFeature = config.features.beaconChain;
 
 const AddressPageContent = () => {
   const router = useRouter();
@@ -231,7 +232,7 @@ const AddressPageContent = () => {
           component: <AddressUserOps shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
         } :
         undefined,
-      config.features.beaconChain.isEnabled && addressTabsCountersQuery.data?.beacon_deposits_count ?
+      beaconChainFeature.isEnabled && !beaconChainFeature.withdrawalsOnly && addressTabsCountersQuery.data?.beacon_deposits_count ?
         {
           id: 'deposits',
           title: 'Deposits',

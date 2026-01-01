@@ -82,7 +82,7 @@ module.exports = {
         break;
       case '/batches':
       case '/deposits':
-        if (!process.env.NEXT_PUBLIC_ROLLUP_TYPE) {
+        if (!process.env.NEXT_PUBLIC_ROLLUP_TYPE && (process.env.NEXT_PUBLIC_HAS_BEACON_CHAIN !== 'true' || process.env.NEXT_PUBLIC_BEACON_CHAIN_WITHDRAWALS_ONLY === 'true')) {
           return null;
         }
         break;

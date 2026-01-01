@@ -29,7 +29,7 @@ const Deposits = dynamic(() => {
     return import('ui/pages/ScrollL2Deposits');
   }
 
-  if (beaconChainFeature.isEnabled) {
+  if (beaconChainFeature.isEnabled && !beaconChainFeature.withdrawalsOnly) {
     return import('ui/pages/BeaconChainDeposits');
   }
 
