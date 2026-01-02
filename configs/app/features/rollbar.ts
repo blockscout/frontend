@@ -23,7 +23,7 @@ const config: Feature<{
   instance: string | undefined;
   codeVersion: string | undefined;
 }> = (() => {
-  if (clientToken) {
+  if (!app.isPrivateMode && clientToken) {
     return Object.freeze({
       title,
       isEnabled: true,

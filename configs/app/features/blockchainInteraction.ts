@@ -1,5 +1,6 @@
 import type { Feature } from './types';
 
+import app from '../app';
 import chain from '../chain';
 import { getEnvValue, parseEnvJson } from '../utils';
 import opSuperchain from './opSuperchain';
@@ -24,6 +25,7 @@ const config: Feature<{ walletConnect: { projectId: string; featuredWalletIds: A
   const isOpSuperchain = opSuperchain.isEnabled;
 
   if (
+    !app.isPrivateMode &&
     (isSingleChain || isOpSuperchain) &&
     walletConnectProjectId
   ) {
