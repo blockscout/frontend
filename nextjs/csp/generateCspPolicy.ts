@@ -3,9 +3,9 @@ import { makePolicyString, mergeDescriptors } from './utils';
 
 function generateCspPolicy() {
   const policyDescriptor = mergeDescriptors(
-    descriptors.account(),
     descriptors.app(),
     descriptors.ad(),
+    descriptors.blockchainInteraction(),
     descriptors.cloudFlare(),
     descriptors.flashblocks(),
     descriptors.gasHawk(),
@@ -23,7 +23,6 @@ function generateCspPolicy() {
     descriptors.rollup(),
     descriptors.safe(),
     descriptors.usernameApi(),
-    descriptors.walletConnect(),
     descriptors.zetachain(),
   );
 

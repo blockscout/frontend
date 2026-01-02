@@ -1,8 +1,11 @@
 /* eslint-disable consistent-default-export-name/default-export-match-filename */
+import { EthereumWalletConnectors } from '@dynamic-labs/ethereum';
+import { DynamicContextProvider } from '@dynamic-labs/sdk-react-core';
+import { DynamicWagmiConnector } from '@dynamic-labs/wagmi-connector';
 import type { AppKitNetwork } from '@reown/appkit/networks';
 import { createAppKit, useAppKitTheme } from '@reown/appkit/react';
 import React from 'react';
-import { WagmiProvider } from 'wagmi';
+import { WagmiProvider as WagmiProviderCore } from 'wagmi';
 
 import config from 'configs/app';
 import { chains } from 'lib/web3/chains';
@@ -14,9 +17,9 @@ import zIndex from 'toolkit/theme/foundations/zIndex';
 
 const feature = config.features.blockchainInteraction;
 
-const init = () => {
+const initReown = () => {
   try {
-    if (!feature.isEnabled || !wagmiConfig.adapter) {
+    if (!feature.isEnabled || !wagmiConfig.adapter || feature.connectorType === 'dynamic') {
       return;
     }
 
@@ -29,7 +32,7 @@ const init = () => {
         url: config.app.baseUrl,
         icons: [ config.UI.navigation.icon.default ].filter(Boolean),
       },
-      projectId: feature.walletConnect.projectId,
+      projectId: feature.reown.projectId,
       features: {
         analytics: false,
         email: false,
@@ -43,27 +46,27 @@ const init = () => {
         '--w3m-border-radius-master': '2px',
         '--w3m-z-index': zIndex?.modal2?.value,
       },
-      featuredWalletIds: feature.walletConnect.featuredWalletIds,
+      featuredWalletIds: feature.reown.featuredWalletIds,
       allowUnsupportedChain: true,
     });
   } catch (error) {}
 };
 
-init();
+initReown();
 
 interface Props {
   children: React.ReactNode;
 }
 
-const DefaultProvider = ({ children }: Props) => {
+const WagmiProvider = ({ children }: Props) => {
   return (
-    <WagmiProvider config={ wagmiConfig.config }>
+    <WagmiProviderCore config={ wagmiConfig.config }>
       { children }
-    </WagmiProvider>
+    </WagmiProviderCore>
   );
 };
 
-const Web3ModalProvider = ({ children }: Props) => {
+const ReownProvider = ({ children }: Props) => {
   const { colorMode } = useColorMode();
   const { setThemeMode } = useAppKitTheme();
 
@@ -72,12 +75,59 @@ const Web3ModalProvider = ({ children }: Props) => {
   }, [ colorMode, setThemeMode ]);
 
   return (
-    <DefaultProvider>
+    <WagmiProvider>
       { children }
-    </DefaultProvider>
+    </WagmiProvider>
   );
 };
 
-const Provider = feature.isEnabled ? Web3ModalProvider : DefaultProvider;
+const DynamicProvider = ({ children }: Props) => {
+  const settings = React.useMemo(() => {
+    const environmentId = feature.isEnabled && feature.connectorType === 'dynamic' ? feature.dynamic.environmentId : undefined;
+
+    if (!environmentId) {
+      throw new Error('Dynamic environment ID is not set');
+    }
+
+    return {
+      walletConnectors: [
+        EthereumWalletConnectors,
+      ],
+      environmentId,
+      // events: {
+      //   onAuthSuccess: (args) => {
+      //     console.log('onAuthSuccess was called', args);
+      //     // you can get the jwt by calling the getAuthToken helper function
+      //     const authToken = getAuthToken();
+      //     console.log('authToken', authToken);
+      //   },
+      // },
+    };
+  }, []);
+
+  return (
+    <WagmiProvider>
+      <DynamicContextProvider
+        settings={ settings }
+      >
+        <DynamicWagmiConnector>
+          { children }
+        </DynamicWagmiConnector>
+      </DynamicContextProvider>
+    </WagmiProvider>
+  );
+};
+
+const Provider = (() => {
+  if (feature.isEnabled && feature.connectorType === 'reown') {
+    return ReownProvider;
+  }
+
+  if (feature.isEnabled && feature.connectorType === 'dynamic') {
+    return DynamicProvider;
+  }
+
+  return WagmiProvider;
+})();
 
 export default Provider;

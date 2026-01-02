@@ -47,10 +47,7 @@ const reduceExternalChainsToTransportConfig = (readOnly: boolean): Record<string
 
 const wagmi = (() => {
 
-  if (!feature.isEnabled) {
-    // TODO @tom2drum introduce provider to blockchains interaction feature
-    const accountFeature = appConfig.features.account;
-
+  if (!feature.isEnabled || feature.connectorType === 'dynamic') {
     const wagmiConfig = createConfig({
       chains: chains as [Chain, ...Array<Chain>],
       transports: {
@@ -60,7 +57,7 @@ const wagmi = (() => {
       },
       ssr: true,
       batch: { multicall: { wait: 100, batchSize: 5 } },
-      multiInjectedProviderDiscovery: accountFeature.isEnabled && accountFeature.authProvider === 'dynamic' ? false : true,
+      multiInjectedProviderDiscovery: feature.isEnabled && feature.connectorType === 'dynamic' ? true : false,
     });
 
     return { config: wagmiConfig, adapter: null };
@@ -74,7 +71,7 @@ const wagmi = (() => {
       ...(parentChain ? { [parentChain.id]: http() } : {}),
       ...reduceExternalChainsToTransportConfig(false),
     },
-    projectId: feature.walletConnect.projectId,
+    projectId: feature.reown.projectId,
     ssr: true,
     batch: { multicall: { wait: 100, batchSize: 5 } },
     syncConnectedChain: false,

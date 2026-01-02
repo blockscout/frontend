@@ -4,6 +4,7 @@ import React from 'react';
 
 import { useMarketplaceContext } from 'lib/contexts/marketplace';
 import shortenString from 'lib/shortenString';
+import useWallet from 'lib/web3/useWallet';
 import { Button } from 'toolkit/chakra/button';
 import IconSvg from 'ui/shared/IconSvg';
 
@@ -15,22 +16,24 @@ interface Props {
   buttonVariant?: ButtonProps['variant'];
 }
 
+// TODO @tom2drum add ENS support
+// TODO @tom2drum restructure folder
 const UserProfileDynamic = ({ buttonSize, buttonVariant = 'header' }: Props) => {
   const isLoggedIn = useIsLoggedIn();
-  const { setShowDynamicUserProfile, primaryWallet, user } = useDynamicContext();
+  const { user } = useDynamicContext();
+  const wallet = useWallet({ source: 'Profile dropdown' });
   const { isAutoConnectDisabled } = useMarketplaceContext();
 
-  const handleMyProfileClick = React.useCallback(() => {
-    setShowDynamicUserProfile(true);
-  }, [ setShowDynamicUserProfile ]);
+  const handleOpenModal = React.useCallback(() => {
+    wallet.openModal();
+  }, [ wallet ]);
 
   if (isLoggedIn) {
-    const address = primaryWallet?.address;
-    const content = address ? (
+    const content = wallet.address ? (
       <HStack gap={ 2 }>
-        <UserIdenticon address={ address } isAutoConnectDisabled={ isAutoConnectDisabled }/>
+        <UserIdenticon address={ wallet.address } isAutoConnectDisabled={ isAutoConnectDisabled }/>
         <Box display={{ base: 'none', md: 'block' }}>
-          { shortenString(address) }
+          { shortenString(wallet.address) }
         </Box>
       </HStack>
     ) : (
@@ -46,7 +49,7 @@ const UserProfileDynamic = ({ buttonSize, buttonVariant = 'header' }: Props) => 
           size={ buttonSize }
           variant={ buttonVariant }
           px={{ base: 2.5, lg: 3 }}
-          onClick={ handleMyProfileClick }
+          onClick={ handleOpenModal }
           selected
           highlighted={ isAutoConnectDisabled }
           fontWeight={ 700 }

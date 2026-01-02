@@ -1,16 +1,20 @@
+import { useDynamicContext, useDynamicEvents } from '@dynamic-labs/sdk-react-core';
 import { useAppKit, useAppKitState } from '@reown/appkit/react';
 import React from 'react';
 import { useDisconnect, useAccountEffect } from 'wagmi';
 
+import config from 'configs/app';
 import * as mixpanel from 'lib/mixpanel/index';
 import useAccount from 'lib/web3/useAccount';
+
+const feature = config.features.blockchainInteraction;
 
 interface Params {
   source: mixpanel.EventPayload<mixpanel.EventTypes.WALLET_CONNECT>['Source'];
   onConnect?: () => void;
 }
 
-export default function useWeb3Wallet({ source, onConnect }: Params) {
+function useWalletReown({ source, onConnect }: Params) {
   const { open: openModal } = useAppKit();
   const { open: isOpen } = useAppKitState();
   const { disconnect } = useDisconnect();
@@ -61,3 +65,85 @@ export default function useWeb3Wallet({ source, onConnect }: Params) {
     openModal,
   }), [ handleConnect, handleDisconnect, isOpening, isOpen, isConnected, account.isReconnecting, address, openModal ]);
 }
+
+function useWalletDynamic({ source, onConnect }: Params) {
+  const isConnectionStarted = React.useRef(false);
+  const [ isOpen, setIsOpen ] = React.useState(false);
+  const [ isClientLoaded, setIsClientLoaded ] = React.useState(false);
+
+  const { setShowDynamicUserProfile, primaryWallet } = useDynamicContext();
+  const { disconnect } = useDisconnect();
+
+  const openModal = React.useCallback(() => {
+    setShowDynamicUserProfile(true);
+  }, [ setShowDynamicUserProfile ]);
+
+  useDynamicEvents('authFlowOpen', async() => {
+    setIsOpen(true);
+    mixpanel.logEvent(mixpanel.EventTypes.WALLET_CONNECT, { Source: source, Status: 'Started' });
+    isConnectionStarted.current = true;
+  });
+  useDynamicEvents('authFlowClose', async() => {
+    setIsOpen(false);
+  });
+
+  const handleAccountConnected = React.useCallback(({ isReconnected }: { isReconnected: boolean }) => {
+    if (!isReconnected && isConnectionStarted.current) {
+      mixpanel.logEvent(mixpanel.EventTypes.WALLET_CONNECT, { Source: source, Status: 'Connected' });
+      mixpanel.userProfile.setOnce({
+        'With Connected Wallet': true,
+      });
+      onConnect?.();
+    }
+    isConnectionStarted.current = false;
+  }, [ source, onConnect ]);
+
+  const handleDisconnect = React.useCallback(() => {
+    disconnect();
+  }, [ disconnect ]);
+
+  useAccountEffect({ onConnect: handleAccountConnected });
+
+  React.useEffect(() => {
+    setIsClientLoaded(true);
+  }, []);
+
+  const address = primaryWallet?.address;
+  const isConnected = isClientLoaded && Boolean(address);
+
+  return React.useMemo(() => ({
+    connect: () => {},
+    disconnect: handleDisconnect,
+    isOpen,
+    isConnected,
+    isReconnecting: false,
+    address,
+    openModal,
+  }), [ handleDisconnect, isOpen, isConnected, address, openModal ]);
+}
+
+function useWalletFallback() {
+  return {
+    connect: () => {},
+    disconnect: () => {},
+    isOpen: false,
+    isConnected: false,
+    isReconnecting: false,
+    address: undefined,
+    openModal: () => {},
+  };
+}
+
+const useWallet = (() => {
+  if (feature.isEnabled && feature.connectorType === 'reown') {
+    return useWalletReown;
+  }
+
+  if (feature.isEnabled && feature.connectorType === 'dynamic') {
+    return useWalletDynamic;
+  }
+
+  return useWalletFallback;
+})();
+
+export default useWallet;

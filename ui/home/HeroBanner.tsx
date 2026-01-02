@@ -54,10 +54,11 @@ const HeroBanner = () => {
   const userProfileButton = (() => {
     const accountFeature = config.features.account;
     if (accountFeature.isEnabled) {
-      if (accountFeature.authProvider === 'auth0') {
-        return <UserProfileDesktop buttonVariant="hero"/>;
-      } else {
-        return <UserProfileDynamic buttonVariant="hero"/>;
+      switch (accountFeature.authProvider) {
+        case 'auth0':
+          return <UserProfileDesktop buttonVariant="hero"/>;
+        case 'dynamic':
+          return <UserProfileDynamic buttonVariant="hero"/>;
       }
     }
     if (config.features.blockchainInteraction.isEnabled) {

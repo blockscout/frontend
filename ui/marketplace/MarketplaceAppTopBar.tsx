@@ -14,6 +14,7 @@ import { BackToButton } from 'toolkit/components/buttons/BackToButton';
 import { makePrettyLink } from 'toolkit/utils/url';
 import RewardsButton from 'ui/rewards/RewardsButton';
 import NetworkIcon from 'ui/snippets/networkLogo/NetworkIcon';
+import UserProfileDynamic from 'ui/snippets/user/dynamic/UserProfileDynamic';
 import UserProfileDesktop from 'ui/snippets/user/profile/UserProfileDesktop';
 import UserWalletDesktop from 'ui/snippets/user/wallet/UserWalletDesktop';
 
@@ -40,6 +41,21 @@ const MarketplaceAppTopBar = ({ appId, data, isLoading }: Props) => {
   const handleBackToClick = React.useCallback(() => {
     mixpanel.logEvent(mixpanel.EventTypes.BUTTON_CLICK, { Content: 'Back to', Source: mixpanel.PAGE_TYPE_DICT['/apps/[id]'] });
   }, []);
+
+  const userProfile = (() => {
+    const accountFeature = config.features.account;
+    if (accountFeature.isEnabled) {
+      switch (accountFeature.authProvider) {
+        case 'auth0':
+          return <UserProfileDesktop buttonSize="sm"/>;
+        case 'dynamic':
+          return <UserProfileDynamic buttonSize="sm"/>;
+      }
+    }
+    if (config.features.blockchainInteraction.isEnabled) {
+      return <UserWalletDesktop buttonSize="sm"/>;
+    }
+  })();
 
   return (
     <Flex alignItems="center" mb={{ base: 3, md: 2 }} rowGap={ 3 } columnGap={ 2 }>
@@ -76,10 +92,7 @@ const MarketplaceAppTopBar = ({ appId, data, isLoading }: Props) => {
       { !isMobile && (
         <Flex ml="auto" gap={ 2 }>
           { config.features.rewards.isEnabled && <RewardsButton size="sm"/> }
-          {
-            (config.features.account.isEnabled && <UserProfileDesktop buttonSize="sm"/>) ||
-            (config.features.blockchainInteraction.isEnabled && <UserWalletDesktop buttonSize="sm"/>)
-          }
+          { userProfile }
         </Flex>
       ) }
     </Flex>
