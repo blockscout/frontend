@@ -43,6 +43,7 @@ export const verified: SmartContract = {
   file_path: '',
   additional_sources: [],
   verified_twin_address_hash: null,
+  conflicting_implementations: null,
 };
 
 export const certified: SmartContract = {
@@ -144,6 +145,7 @@ export const nonVerified: SmartContract = {
   additional_sources: [],
   external_libraries: null,
   verified_twin_address_hash: null,
+  conflicting_implementations: null,
   language: null,
   license_type: null,
 };

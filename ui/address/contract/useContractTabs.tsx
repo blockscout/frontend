@@ -84,6 +84,7 @@ export default function useContractTabs({ addressData, isEnabled, hasMudTab, cha
               implementations={ verifiedImplementations }
               isLoading={ contractQuery.isPlaceholderData }
               proxyType={ addressData?.proxy_type }
+              conflictingImplementations={ contractQuery.data?.conflicting_implementations ?? undefined }
             />
           ),
         },
