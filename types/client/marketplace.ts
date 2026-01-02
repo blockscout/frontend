@@ -49,6 +49,7 @@ export interface EssentialDappsChainConfig extends ExternalChain {
 
 export type EssentialDappsConfig = {
   swap?: {
+    url: string;
     chains: Array<string>;
     fee: string;
     integrator: string;
