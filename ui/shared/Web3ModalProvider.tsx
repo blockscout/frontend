@@ -1,19 +1,28 @@
 /* eslint-disable consistent-default-export-name/default-export-match-filename */
 import { EthereumWalletConnectors } from '@dynamic-labs/ethereum';
-import { DynamicContextProvider } from '@dynamic-labs/sdk-react-core';
+import { DynamicContextProvider, getAuthToken } from '@dynamic-labs/sdk-react-core';
 import { DynamicWagmiConnector } from '@dynamic-labs/wagmi-connector';
 import type { AppKitNetwork } from '@reown/appkit/networks';
 import { createAppKit, useAppKitTheme } from '@reown/appkit/react';
+import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 import { WagmiProvider as WagmiProviderCore } from 'wagmi';
 
+import type { UserInfo } from 'types/api/account';
+
 import config from 'configs/app';
+import useApiFetch from 'lib/api/useApiFetch';
+import { getResourceKey } from 'lib/api/useApiQuery';
+import getErrorMessage from 'lib/errors/getErrorMessage';
+import useGetCsrfToken from 'lib/hooks/useGetCsrfToken';
 import { chains } from 'lib/web3/chains';
 import wagmiConfig from 'lib/web3/wagmiConfig';
 import { useColorMode } from 'toolkit/chakra/color-mode';
+import { toaster } from 'toolkit/chakra/toaster';
 import colors from 'toolkit/theme/foundations/colors';
 import { BODY_TYPEFACE } from 'toolkit/theme/foundations/typography';
 import zIndex from 'toolkit/theme/foundations/zIndex';
+import useLogout from 'ui/snippets/auth/useLogout';
 
 const feature = config.features.blockchainInteraction;
 
@@ -82,6 +91,37 @@ const ReownProvider = ({ children }: Props) => {
 };
 
 const DynamicProvider = ({ children }: Props) => {
+
+  const apiFetch = useApiFetch();
+  const queryClient = useQueryClient();
+  const csrfQuery = useGetCsrfToken();
+  const onLogout = useLogout();
+
+  const onAuthSuccess = React.useCallback(async() => {
+    // TODO @tom2drum check login via Merits button
+    // TODO @tom2drum mixpanel events
+    try {
+      const authToken = getAuthToken();
+      const response = await apiFetch<'general:auth_dynamic', UserInfo, unknown>('general:auth_dynamic', {
+        fetchParams: {
+          headers: {
+            Authorization: `Bearer ${ authToken }`,
+          },
+        },
+      });
+      if (!('name' in response)) {
+        throw Error('Something went wrong');
+      }
+      queryClient.setQueryData(getResourceKey('general:user_info'), () => response);
+      csrfQuery.refetch();
+    } catch (error) {
+      toaster.error({
+        title: 'Error',
+        description: getErrorMessage(error),
+      });
+    }
+  }, [ apiFetch, csrfQuery, queryClient ]);
+
   const settings = React.useMemo(() => {
     const environmentId = feature.isEnabled && feature.connectorType === 'dynamic' ? feature.dynamic.environmentId : undefined;
 
@@ -97,16 +137,12 @@ const DynamicProvider = ({ children }: Props) => {
       useMetamaskSdk: false,
       // TODO @tom2drum override RPC URL from dashboard
       // overrides: {},
-      // events: {
-      //   onAuthSuccess: (args) => {
-      //     console.log('onAuthSuccess was called', args);
-      //     // you can get the jwt by calling the getAuthToken helper function
-      //     const authToken = getAuthToken();
-      //     console.log('authToken', authToken);
-      //   },
-      // },
+      events: {
+        onAuthSuccess,
+        onLogout,
+      },
     };
-  }, []);
+  }, [ onAuthSuccess, onLogout ]);
 
   return (
     <WagmiProvider>

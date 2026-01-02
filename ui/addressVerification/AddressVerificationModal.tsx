@@ -115,6 +115,7 @@ const AddressVerificationModal = ({ defaultAddress, open, onOpenChange, onSubmit
           { step.title }
         </DialogHeader>
         <DialogBody mb={ 0 }>
+          { /* TODO @tom2drum check this flow with dynamic */ }
           <Web3ModalProvider>
             { step.content }
           </Web3ModalProvider>
