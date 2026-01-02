@@ -1,4 +1,4 @@
-import { DynamicConnectButton, useDynamicContext } from '@dynamic-labs/sdk-react-core';
+import { DynamicConnectButton, useAuthenticateConnectedUser } from '@dynamic-labs/sdk-react-core';
 import React from 'react';
 
 import { Button } from 'toolkit/chakra/button';
@@ -15,13 +15,7 @@ interface Props {
 
 const UserProfileDynamicPopover = ({ children, isAutoConnectDisabled }: Props) => {
 
-  const { setAuthMode } = useDynamicContext();
-
-  const handleLogin = React.useCallback(() => {
-    setAuthMode('connect-and-sign');
-  }, [ setAuthMode ]);
-
-  const handleClose = React.useCallback(() => {}, [ ]);
+  const { authenticateUser } = useAuthenticateConnectedUser();
 
   return (
     <PopoverRoot positioning={{ placement: 'bottom-end' }}>
@@ -31,9 +25,9 @@ const UserProfileDynamicPopover = ({ children, isAutoConnectDisabled }: Props) =
       <PopoverContent w="280px">
         <PopoverBody>
           { isAutoConnectDisabled && <UserWalletAutoConnectAlert/> }
-          <UserProfileContentWallet onClose={ handleClose }/>
+          <UserProfileContentWallet/>
           <DynamicConnectButton buttonClassName={ styles.button }>
-            <Button as="div" mt={ 3 } onClick={ handleLogin } size="sm" w="100%">Log in</Button>
+            <Button as="div" mt={ 3 } onClick={ authenticateUser } size="sm" w="100%" >Log in</Button>
           </DynamicConnectButton>
         </PopoverBody>
       </PopoverContent>

@@ -2,10 +2,12 @@ import { type ButtonProps } from '@chakra-ui/react';
 import { DynamicConnectButton, DynamicUserProfile, useDynamicContext, useIsLoggedIn } from '@dynamic-labs/sdk-react-core';
 import React from 'react';
 
+import { useMarketplaceContext } from 'lib/contexts/marketplace';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useWallet from 'lib/web3/useWallet';
 
 import UserProfileDynamicButton from './UserProfileDynamicButton';
+import UserProfileDynamicPopover from './UserProfileDynamicPopover';
 
 interface Props {
   buttonSize?: ButtonProps['size'];
@@ -19,6 +21,7 @@ const UserProfileDynamic = ({ buttonSize, buttonVariant = 'header' }: Props) => 
   const isLoggedIn = useIsLoggedIn();
   const { user, authMode } = useDynamicContext();
   const wallet = useWallet({ source: 'Profile dropdown' });
+  const { isAutoConnectDisabled } = useMarketplaceContext();
 
   const handleOpenModal = React.useCallback(() => {
     wallet.openModal();
@@ -43,28 +46,18 @@ const UserProfileDynamic = ({ buttonSize, buttonVariant = 'header' }: Props) => 
   if (wallet.isConnected && wallet.address) {
     return (
       <>
-        <UserProfileDynamicButton
-          address={ wallet.address }
-          email={ user?.email }
-          size={ buttonSize }
-          variant={ buttonVariant }
-          onClick={ handleOpenModal }
-          selected
-        />
+        <UserProfileDynamicPopover isAutoConnectDisabled={ isAutoConnectDisabled }>
+          <UserProfileDynamicButton
+            address={ wallet.address }
+            email={ user?.email }
+            size={ buttonSize }
+            variant={ buttonVariant }
+            selected
+          />
+        </UserProfileDynamicPopover>
         <DynamicUserProfile variant={ isMobile ? 'modal' : 'dropdown' }/>
       </>
     );
-    // return (
-    //   <UserProfileDynamicPopover isAutoConnectDisabled={ isAutoConnectDisabled }>
-    //     <UserProfileDynamicButton
-    //       address={ wallet.address }
-    //       email={ user?.email }
-    //       size={ buttonSize }
-    //       variant={ buttonVariant }
-    //       selected
-    //     />
-    //   </UserProfileDynamicPopover>
-    // );
   }
 
   return (
