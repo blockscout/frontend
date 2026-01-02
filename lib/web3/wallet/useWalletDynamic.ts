@@ -1,4 +1,4 @@
-import { useDynamicContext, useDynamicEvents, useUserWallets } from '@dynamic-labs/sdk-react-core';
+import { useDynamicContext, useDynamicEvents } from '@dynamic-labs/sdk-react-core';
 import React from 'react';
 import { useAccountEffect } from 'wagmi';
 
@@ -6,13 +6,14 @@ import type { Params, Result } from './types';
 
 import * as mixpanel from 'lib/mixpanel/index';
 
+import useAccount from '../useAccount';
+
 export default function useWalletDynamic({ source, onConnect }: Params): Result {
   const isConnectionStarted = React.useRef(false);
   const [ isOpen ] = React.useState(false);
   const [ isClientLoaded, setIsClientLoaded ] = React.useState(false);
 
-  const { setShowDynamicUserProfile, primaryWallet, setAuthMode } = useDynamicContext();
-  const userWallets = useUserWallets();
+  const { setShowDynamicUserProfile, setAuthMode } = useDynamicContext();
 
   const openModal = React.useCallback(() => {
     setShowDynamicUserProfile(true);
@@ -45,8 +46,9 @@ export default function useWalletDynamic({ source, onConnect }: Params): Result 
     setIsClientLoaded(true);
   }, []);
 
-  const address = primaryWallet?.address || userWallets[0]?.address;
-  const isConnected = isClientLoaded && Boolean(address);
+  const account = useAccount();
+  const address = account.address;
+  const isConnected = isClientLoaded && !account.isDisconnected && account.address !== undefined;
 
   return React.useMemo(() => ({
     connect: handleConnect,

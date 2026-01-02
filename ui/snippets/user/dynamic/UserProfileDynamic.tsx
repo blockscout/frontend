@@ -31,7 +31,6 @@ const UserProfileDynamic = ({ buttonSize, buttonVariant = 'header' }: Props) => 
     return (
       <>
         <UserProfileDynamicButton
-          address={ wallet.address }
           email={ user?.email }
           size={ buttonSize }
           variant={ buttonVariant }
@@ -43,12 +42,11 @@ const UserProfileDynamic = ({ buttonSize, buttonVariant = 'header' }: Props) => 
     );
   }
 
-  if (wallet.isConnected && wallet.address) {
+  if (wallet.isConnected) {
     return (
       <>
         <UserProfileDynamicPopover isAutoConnectDisabled={ isAutoConnectDisabled }>
           <UserProfileDynamicButton
-            address={ wallet.address }
             email={ user?.email }
             size={ buttonSize }
             variant={ buttonVariant }

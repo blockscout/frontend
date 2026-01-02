@@ -3,6 +3,7 @@ import React from 'react';
 
 import { useMarketplaceContext } from 'lib/contexts/marketplace';
 import shortenString from 'lib/shortenString';
+import useAccountWithDomain from 'lib/web3/useAccountWithDomain';
 import { Button, type ButtonProps } from 'toolkit/chakra/button';
 import IconSvg from 'ui/shared/IconSvg';
 
@@ -10,20 +11,22 @@ import { getUserHandle } from '../profile/utils';
 import UserIdenticon from '../UserIdenticon';
 
 interface Props extends ButtonProps {
-  address?: string;
   email?: string;
 }
 
-const UserProfileDynamicButton = ({ selected, address, email, ...rest }: Props) => {
+const UserProfileDynamicButton = ({ selected, email, ...rest }: Props) => {
   const { isAutoConnectDisabled } = useMarketplaceContext();
+  const accountWithDomain = useAccountWithDomain(true);
+
+  const isLoading = accountWithDomain.isLoading;
 
   const content = (() => {
-    if (selected) {
-      return address ? (
+    if (selected && !isLoading) {
+      return accountWithDomain.address ? (
         <HStack gap={ 2 }>
-          <UserIdenticon address={ address } isAutoConnectDisabled={ isAutoConnectDisabled }/>
-          <Box display={{ base: 'none', md: 'block' }}>
-            { shortenString(address) }
+          <UserIdenticon address={ accountWithDomain.address } isAutoConnectDisabled={ isAutoConnectDisabled }/>
+          <Box display={{ base: 'none', md: 'block' }} maxW="200px" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
+            { accountWithDomain.domain || shortenString(accountWithDomain.address) }
           </Box>
         </HStack>
       ) : (
@@ -43,6 +46,7 @@ const UserProfileDynamicButton = ({ selected, address, email, ...rest }: Props) 
       selected={ selected }
       highlighted={ isAutoConnectDisabled }
       fontWeight={ selected ? 700 : undefined }
+      loading={ isLoading }
       { ...rest }
     >
       { content }
