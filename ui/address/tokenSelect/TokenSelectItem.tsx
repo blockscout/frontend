@@ -6,6 +6,7 @@ import { route } from 'nextjs/routes';
 
 import config from 'configs/app';
 import multichainConfig from 'configs/multichain';
+import { isFungibleTokenType } from 'lib/token/tokenTypes';
 import { Link } from 'toolkit/chakra/link';
 import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
 import NativeTokenTag from 'ui/shared/celo/NativeTokenTag';
@@ -34,18 +35,21 @@ const TokenSelectItem = ({ data }: Props) => {
   }, [ data.chain_values ]);
 
   const secondRow = (() => {
-    switch (data.token.type) {
-      case 'ERC-20': {
-        const tokenDecimals = Number(data.token.decimals ?? 18);
-        const text = `${ BigNumber(data.value).dividedBy(10 ** tokenDecimals).dp(8).toFormat() } ${ data.token.symbol || '' }`;
+    const isFungibleToken = isFungibleTokenType(data.token.type);
 
-        return (
-          <>
-            <TruncatedText text={ text }/>
-            { data.token.exchange_rate && <chakra.span ml={ 2 }>@{ Number(data.token.exchange_rate).toLocaleString() }</chakra.span> }
-          </>
-        );
-      }
+    if (isFungibleToken) {
+      const tokenDecimals = Number(data.token.decimals ?? 18);
+      const text = `${ BigNumber(data.value).dividedBy(10 ** tokenDecimals).dp(8).toFormat() } ${ data.token.symbol || '' }`;
+
+      return (
+        <>
+          <TruncatedText text={ text }/>
+          { data.token.exchange_rate && <chakra.span ml={ 2 }>@{ Number(data.token.exchange_rate).toLocaleString() }</chakra.span> }
+        </>
+      );
+    }
+
+    switch (data.token.type) {
       case 'ERC-721': {
         const text = `${ BigNumber(data.value).toFormat() } ${ data.token.symbol || '' }`;
         return <TruncatedText text={ text }/>;

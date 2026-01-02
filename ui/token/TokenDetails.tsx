@@ -21,6 +21,7 @@ import AppActionButton from 'ui/shared/AppActionButton/AppActionButton';
 import useAppActionData from 'ui/shared/AppActionButton/useAppActionData';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoSponsoredItem from 'ui/shared/DetailedInfo/DetailedInfoSponsoredItem';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import AssetValue from 'ui/shared/value/AssetValue';
 
 import TokenNftMarketplaces from './TokenNftMarketplaces';
@@ -91,10 +92,27 @@ const TokenDetails = ({ tokenQuery }: Props) => {
     decimals,
     symbol,
     type,
+    zilliqa,
   } = tokenQuery.data || {};
 
   return (
     <DetailedInfo.Container>
+      { zilliqa?.zrc2_address_hash && (
+        <>
+          <DetailedInfo.ItemLabel
+            hint="ZRC-2 address of the token"
+            isLoading={ tokenQuery.isPlaceholderData }
+          >
+            ZRC-2 Address
+          </DetailedInfo.ItemLabel>
+          <DetailedInfo.ItemValue>
+            <Skeleton loading={ tokenQuery.isPlaceholderData } display="inline-block">
+              <AddressEntity address={{ hash: zilliqa.zrc2_address_hash }} isLoading={ tokenQuery.isPlaceholderData }/>
+            </Skeleton>
+          </DetailedInfo.ItemValue>
+        </>
+      ) }
+
       { exchangeRate && (
         <>
           <DetailedInfo.ItemLabel
