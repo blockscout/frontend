@@ -21,7 +21,7 @@ type Props = {
 const BeaconChainDepositsTable = ({ items, isLoading, top, view }: Props) => {
   const { cutRef, renderedItemsNum } = useLazyRenderedList(items, !isLoading);
 
-  if (!feature.isEnabled) {
+  if (!feature.isEnabled || feature.withdrawalsOnly) {
     return null;
   }
 

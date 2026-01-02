@@ -22,7 +22,7 @@ type Props = {
 };
 
 const BeaconChainDepositsListItem = ({ item, isLoading, view }: Props) => {
-  if (!feature.isEnabled) {
+  if (!feature.isEnabled || feature.withdrawalsOnly) {
     return null;
   }
 
