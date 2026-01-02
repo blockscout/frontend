@@ -1,7 +1,6 @@
 import { Box, createListCollection, HStack } from '@chakra-ui/react';
 import React from 'react';
 
-import multichainConfig from 'configs/multichain';
 import { MultichainProvider } from 'lib/contexts/multichain';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
@@ -28,16 +27,11 @@ const OpSuperchainVerifiedContracts = () => {
   const { query, type, searchTerm, sort, onSearchTermChange, onTypeChange, onSortChange } = useVerifiedContractsQuery({ isMultichain: true });
   const { isError, isPlaceholderData, data, pagination, chainValue, onChainValueChange } = query;
 
-  const chainConfig = React.useMemo(() => {
-    return multichainConfig()?.chains.find((chain) => chain.id === chainValue?.[0])?.app_config;
-  }, [ chainValue ]);
-
   const typeFilter = (
     <VerifiedContractsFilter
       onChange={ onTypeChange }
       defaultValue={ type }
       hasActiveFilter={ Boolean(type) }
-      chainConfig={ chainConfig }
     />
   );
 
