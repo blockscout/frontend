@@ -94,6 +94,9 @@ const DynamicProvider = ({ children }: Props) => {
         EthereumWalletConnectors,
       ],
       environmentId,
+      useMetamaskSdk: false,
+      // TODO @tom2drum override RPC URL from dashboard
+      // overrides: {},
       // events: {
       //   onAuthSuccess: (args) => {
       //     console.log('onAuthSuccess was called', args);

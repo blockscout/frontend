@@ -1,4 +1,4 @@
-import { useDynamicContext, useDynamicEvents } from '@dynamic-labs/sdk-react-core';
+import { useDynamicContext, useDynamicEvents, useUserWallets } from '@dynamic-labs/sdk-react-core';
 import { useAppKit, useAppKitState } from '@reown/appkit/react';
 import React from 'react';
 import { useDisconnect, useAccountEffect } from 'wagmi';
@@ -71,8 +71,8 @@ function useWalletDynamic({ source, onConnect }: Params) {
   const [ isOpen, setIsOpen ] = React.useState(false);
   const [ isClientLoaded, setIsClientLoaded ] = React.useState(false);
 
-  const { setShowDynamicUserProfile, primaryWallet } = useDynamicContext();
-  const { disconnect } = useDisconnect();
+  const { setShowDynamicUserProfile, primaryWallet, setAuthMode } = useDynamicContext();
+  const userWallets = useUserWallets();
 
   const openModal = React.useCallback(() => {
     setShowDynamicUserProfile(true);
@@ -98,9 +98,11 @@ function useWalletDynamic({ source, onConnect }: Params) {
     isConnectionStarted.current = false;
   }, [ source, onConnect ]);
 
-  const handleDisconnect = React.useCallback(() => {
-    disconnect();
-  }, [ disconnect ]);
+  const handleConnect = React.useCallback(() => {
+    // TODO @tom2drum unable to authenticate user if he connects his wallet first
+    setAuthMode('connect-only');
+    openModal();
+  }, [ setAuthMode, openModal ]);
 
   useAccountEffect({ onConnect: handleAccountConnected });
 
@@ -108,18 +110,18 @@ function useWalletDynamic({ source, onConnect }: Params) {
     setIsClientLoaded(true);
   }, []);
 
-  const address = primaryWallet?.address;
+  const address = primaryWallet?.address || userWallets[0]?.address;
   const isConnected = isClientLoaded && Boolean(address);
 
   return React.useMemo(() => ({
-    connect: () => {},
-    disconnect: handleDisconnect,
+    connect: handleConnect,
+    disconnect: openModal,
     isOpen,
     isConnected,
     isReconnecting: false,
     address,
     openModal,
-  }), [ handleDisconnect, isOpen, isConnected, address, openModal ]);
+  }), [ handleConnect, openModal, isOpen, isConnected, address ]);
 }
 
 function useWalletFallback() {

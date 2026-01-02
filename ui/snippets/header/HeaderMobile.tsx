@@ -5,6 +5,7 @@ import config from 'configs/app';
 import { useIsSticky } from 'toolkit/hooks/useIsSticky';
 import RewardsButton from 'ui/rewards/RewardsButton';
 import NetworkIcon from 'ui/snippets/networkLogo/NetworkIcon';
+import UserProfileDynamic from 'ui/snippets/user/dynamic/UserProfileDynamic';
 import UserProfileMobile from 'ui/snippets/user/profile/UserProfileMobile';
 import UserWalletMobile from 'ui/snippets/user/wallet/UserWalletMobile';
 
@@ -21,6 +22,23 @@ type Props = {
 const HeaderMobile = ({ hideSearchButton, onGoToSearchResults }: Props) => {
   const ref = React.useRef<HTMLDivElement>(null);
   const isSticky = useIsSticky(ref, 5);
+
+  const userProfile = (() => {
+    const accountFeature = config.features.account;
+    if (accountFeature.isEnabled) {
+      switch (accountFeature.authProvider) {
+        case 'auth0':
+          return <UserProfileMobile/>;
+        case 'dynamic':
+          return <UserProfileDynamic/>;
+        default:
+          return null;
+      }
+    }
+    if (config.features.blockchainInteraction.isEnabled) {
+      return <UserWalletMobile/>;
+    }
+  })();
 
   return (
     <Box
@@ -54,9 +72,7 @@ const HeaderMobile = ({ hideSearchButton, onGoToSearchResults }: Props) => {
         <Flex columnGap={ 2 }>
           { !hideSearchButton && <SearchBarMobile onGoToSearchResults={ onGoToSearchResults }/> }
           { config.features.rewards.isEnabled && <RewardsButton/> }
-          { (config.features.account.isEnabled && <UserProfileMobile/>) ||
-            (config.features.blockchainInteraction.isEnabled && <UserWalletMobile/>)
-          }
+          { userProfile }
         </Flex>
       </Flex>
     </Box>

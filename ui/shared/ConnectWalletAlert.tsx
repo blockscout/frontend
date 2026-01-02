@@ -1,4 +1,5 @@
 import { Flex } from '@chakra-ui/react';
+import { DynamicConnectButton } from '@dynamic-labs/sdk-react-core';
 import React from 'react';
 
 import config from 'configs/app';
@@ -19,19 +20,32 @@ const ConnectWalletAlert = ({ isLoading }: Props) => {
 
   const content = (() => {
     if (!web3Wallet.isConnected) {
+      const feature = config.features.blockchainInteraction;
+
+      const button = (
+        <Button
+          as={ feature.isEnabled && feature.connectorType === 'dynamic' ? 'div' : 'button' }
+          ml={ 3 }
+          onClick={ web3Wallet.connect }
+          size="sm"
+          variant="outline"
+          loading={ web3Wallet.isOpen }
+          loadingText="Connect wallet"
+        >
+          Connect wallet
+        </Button>
+      );
+
+      const content = feature.isEnabled && feature.connectorType === 'dynamic' ? (
+        <DynamicConnectButton>
+          { button }
+        </DynamicConnectButton>
+      ) : button;
+
       return (
         <>
           <span>Disconnected</span>
-          <Button
-            ml={ 3 }
-            onClick={ web3Wallet.connect }
-            size="sm"
-            variant="outline"
-            loading={ web3Wallet.isOpen }
-            loadingText="Connect wallet"
-          >
-            Connect wallet
-          </Button>
+          { content }
         </>
       );
     }
