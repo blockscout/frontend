@@ -8,7 +8,7 @@ import addressMetadata from './addressMetadata';
 const title = 'Public tag submission';
 
 const config: Feature<{}> = (() => {
-  if (app.appProfile !== 'private' && services.reCaptchaV2.siteKey && addressMetadata.isEnabled && apis.admin) {
+  if (!app.isPrivateMode && services.reCaptchaV2.siteKey && addressMetadata.isEnabled && apis.admin) {
     return Object.freeze({
       title,
       isEnabled: true,

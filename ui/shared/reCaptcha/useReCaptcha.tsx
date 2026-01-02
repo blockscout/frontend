@@ -6,7 +6,7 @@ import getErrorCauseStatusCode from 'lib/errors/getErrorCauseStatusCode';
 import getErrorObjStatusCode from 'lib/errors/getErrorObjStatusCode';
 
 export default function useReCaptcha() {
-  const isDisabled = config.app.appProfile === 'private';
+  const isDisabled = config.app.isPrivateMode;
   const ref = React.useRef<ReCAPTCHA>(null);
   const rejectCb = React.useRef<((error: Error) => void) | null>(null);
 
@@ -15,7 +15,7 @@ export default function useReCaptcha() {
 
   const executeAsync: () => Promise<string | null> = React.useCallback(async() => {
     if (isDisabled) {
-      return Promise.resolve(null);
+      throw new Error('ReCaptcha is disabled in private mode');
     }
 
     setIsOpen(true);

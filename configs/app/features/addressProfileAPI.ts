@@ -25,7 +25,7 @@ const config: Feature<{
   tagBgColor?: string;
   tagTextColor?: string;
 }> = (() => {
-  if (app.appProfile !== 'private' && value && checkApiUrlTemplate(value.api_url_template)) {
+  if (!app.isPrivateMode && value && checkApiUrlTemplate(value.api_url_template)) {
     return Object.freeze({
       title,
       isEnabled: true,

@@ -23,7 +23,7 @@ const parseKeywordsArray = (keywordsStr: string) => {
 };
 
 export function saveToRecentKeywords(value: string) {
-  if (config.app.appProfile === 'private') {
+  if (config.app.isPrivateMode) {
     return;
   }
   if (!value) {
@@ -36,7 +36,7 @@ export function saveToRecentKeywords(value: string) {
 }
 
 export function getRecentSearchKeywords(input?: string) {
-  if (!isBrowser() || config.app.appProfile === 'private') {
+  if (!isBrowser() || config.app.isPrivateMode) {
     return [];
   }
   const keywordsStr = window.localStorage.getItem(RECENT_KEYWORDS_LS_KEY) || '';

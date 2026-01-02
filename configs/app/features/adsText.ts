@@ -13,7 +13,7 @@ const provider: AdTextProviders = (() => {
 const title = 'Text ads';
 
 const config: Feature<{ provider: AdTextProviders }> = (() => {
-  if (app.appProfile !== 'private' && provider !== 'none') {
+  if (!app.isPrivateMode && provider !== 'none') {
     return Object.freeze({
       title,
       isEnabled: true,

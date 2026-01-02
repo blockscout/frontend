@@ -12,7 +12,7 @@ const ContractVerificationSourcify = () => {
   const address = watch('address');
 
   // Disable iframe in private mode to prevent tracking
-  if (config.app.appProfile === 'private') {
+  if (config.app.isPrivateMode) {
     return (
       <ContractVerificationMethod title="Contract verification via Sourcify (Solidity or Vyper)">
         <p>This feature is disabled in private mode.</p>

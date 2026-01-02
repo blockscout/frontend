@@ -18,7 +18,7 @@ const configOverrides = (() => {
 const title = 'Mixpanel analytics';
 
 const config: Feature<{ projectToken: string; configOverrides?: Partial<Config> }> = (() => {
-  if (app.appProfile !== 'private' && projectToken) {
+  if (!app.isPrivateMode && projectToken) {
     return Object.freeze({
       title,
       isEnabled: true,

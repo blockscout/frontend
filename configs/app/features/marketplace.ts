@@ -46,7 +46,7 @@ const config: Feature<(
   titles: MarketplaceTitles;
 }> = (() => {
   if (
-    app.appProfile !== 'private' &&
+    !app.isPrivateMode &&
     chain.rpcUrls.length > 0 &&
     enabled === 'true' &&
     submitFormUrl

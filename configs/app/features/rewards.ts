@@ -8,7 +8,7 @@ import blockchainInteraction from './blockchainInteraction';
 const title = 'Rewards service integration';
 
 const config: Feature<{}> = (() => {
-  if (app.appProfile !== 'private' && apis.rewards && account.isEnabled && blockchainInteraction.isEnabled) {
+  if (!app.isPrivateMode && apis.rewards && account.isEnabled && blockchainInteraction.isEnabled) {
     return Object.freeze({
       title,
       isEnabled: true,

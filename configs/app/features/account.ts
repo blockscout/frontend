@@ -9,7 +9,7 @@ const title = 'My account';
 const config: Feature<{ isEnabled: true; recaptchaSiteKey: string }> = (() => {
 
   if (
-    app.appProfile !== 'private' &&
+    !app.isPrivateMode &&
     getEnvValue('NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED') === 'true' &&
     services.reCaptchaV2.siteKey
   ) {

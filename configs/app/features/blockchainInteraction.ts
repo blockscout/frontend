@@ -25,7 +25,7 @@ const config: Feature<{ walletConnect: { projectId: string; featuredWalletIds: A
   const isOpSuperchain = opSuperchain.isEnabled;
 
   if (
-    app.appProfile !== 'private' &&
+    !app.isPrivateMode &&
     (isSingleChain || isOpSuperchain) &&
     walletConnectProjectId
   ) {

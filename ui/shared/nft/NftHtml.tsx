@@ -30,7 +30,7 @@ const NftHtml = ({ src, transport, onLoad, onError, onClick, ...rest }: Props) =
 
   React.useEffect(() => {
     // Disable iframe in private mode to prevent tracking
-    if (config.app.appProfile === 'private') {
+    if (config.app.isPrivateMode) {
       onError?.();
       return;
     }
@@ -48,7 +48,7 @@ const NftHtml = ({ src, transport, onLoad, onError, onClick, ...rest }: Props) =
   }, [ loadViaHttp, onError, transport ]);
 
   // Disable iframe in private mode to prevent tracking
-  if (config.app.appProfile === 'private') {
+  if (config.app.isPrivateMode) {
     return null;
   }
 

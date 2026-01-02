@@ -8,7 +8,7 @@ const propertyId = getEnvValue('NEXT_PUBLIC_GOOGLE_ANALYTICS_PROPERTY_ID');
 const title = 'Google analytics';
 
 const config: Feature<{ propertyId: string }> = (() => {
-  if (app.appProfile !== 'private' && propertyId) {
+  if (!app.isPrivateMode && propertyId) {
     return Object.freeze({
       title,
       isEnabled: true,

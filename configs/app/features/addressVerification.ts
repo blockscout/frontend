@@ -8,7 +8,7 @@ import verifiedTokens from './verifiedTokens';
 const title = 'Address verification in "My account"';
 
 const config: Feature<{}> = (() => {
-  if (app.appProfile !== 'private' && account.isEnabled && verifiedTokens.isEnabled && apis.admin) {
+  if (!app.isPrivateMode && account.isEnabled && verifiedTokens.isEnabled && apis.admin) {
     return Object.freeze({
       title: 'Address verification in "My account"',
       isEnabled: true,

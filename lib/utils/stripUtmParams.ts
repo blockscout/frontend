@@ -3,7 +3,7 @@ import config from 'configs/app';
 const UTM_PARAMS = [ 'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content' ];
 
 export default function stripUtmParams(url: string): string {
-  if (config.app.appProfile !== 'private') {
+  if (!config.app.isPrivateMode) {
     return url;
   }
 

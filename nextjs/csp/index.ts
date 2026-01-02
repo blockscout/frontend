@@ -36,5 +36,5 @@ export async function get(req?: NextRequest): Promise<string> {
 
   const isPrivateMode = appProfile === 'private';
 
-  return isPrivateMode ? cspPolicies!.private : cspPolicies!.default;
+  return isPrivateMode ? cspPolicies?.private || '' : cspPolicies?.default || '';
 }

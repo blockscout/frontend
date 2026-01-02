@@ -43,7 +43,7 @@ type AdsBannerFeaturePayload = AdsBannerFeatureProviderPayload & {
 };
 
 const config: Feature<AdsBannerFeaturePayload> = (() => {
-  if (app.appProfile === 'private') {
+  if (app.isPrivateMode) {
     return Object.freeze({
       title,
       isEnabled: false,

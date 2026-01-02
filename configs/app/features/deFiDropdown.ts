@@ -9,7 +9,7 @@ const items = parseEnvJson<Array<DeFiDropdownItem>>(getEnvValue('NEXT_PUBLIC_DEF
 const title = 'DeFi dropdown';
 
 const config: Feature<{ items: Array<DeFiDropdownItem> }> = (() => {
-  if (app.appProfile !== 'private' && items.length > 0) {
+  if (!app.isPrivateMode && items.length > 0) {
     return Object.freeze({
       title,
       isEnabled: true,
