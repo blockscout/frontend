@@ -5,6 +5,7 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 import minMax from 'dayjs/plugin/minMax';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import updateLocale from 'dayjs/plugin/updateLocale';
+import utc from 'dayjs/plugin/utc';
 import weekOfYear from 'dayjs/plugin/weekOfYear';
 
 import { nbsp } from 'toolkit/utils/htmlEntities';
@@ -34,6 +35,7 @@ dayjs.extend(localizedFormat);
 dayjs.extend(duration);
 dayjs.extend(weekOfYear);
 dayjs.extend(minMax);
+dayjs.extend(utc);
 
 dayjs.updateLocale('en', {
   formats: {
@@ -63,3 +65,8 @@ dayjs.updateLocale('en', {
 dayjs.locale('en');
 
 export default dayjs;
+
+export const FORMATS = {
+  // the "lll" format with seconds
+  lll_s: 'MMM D, YYYY h:mm:ss A',
+};

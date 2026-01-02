@@ -52,11 +52,10 @@ const ZetaChainCCTxsTable = ({
         <TableHeaderSticky top={ top }>
           <TableRow>
             <TableColumnHeader width="300px">
-              <Flex alignItems="center">
+              <Flex alignItems="center" columnGap={ 2 }>
                 <chakra.span lineHeight="24px" verticalAlign="middle">
                   CCTx hash
                 </chakra.span>
-                <TimeFormatToggle mr={ 2 }/>
                 <ZetaChainFilterByColumn
                   column="age"
                   columnName="Age"
@@ -64,6 +63,7 @@ const ZetaChainCCTxsTable = ({
                   handleFilterChange={ onFilterChange }
                   isLoading={ isPlaceholderData }
                 />
+                <TimeFormatToggle ml={ 0 }/>
               </Flex>
             </TableColumnHeader>
             <TableColumnHeader width="105px">

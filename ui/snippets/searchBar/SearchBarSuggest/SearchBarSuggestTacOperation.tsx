@@ -1,13 +1,13 @@
-import { Text, Flex, chakra } from '@chakra-ui/react';
+import { Flex, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ItemsProps } from './types';
 import type { SearchResultTacOperation } from 'types/api/search';
 
-import dayjs from 'lib/date/dayjs';
 import * as OperationEntity from 'ui/shared/entities/operation/OperationEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import TacOperationStatus from 'ui/shared/statusTag/TacOperationStatus';
+import Time from 'ui/shared/time/Time';
 
 const SearchBarSuggestTacOperation = ({ data, isMobile }: ItemsProps<SearchResultTacOperation>) => {
   const icon = <OperationEntity.Icon type={ data.tac_operation.type }/>;
@@ -17,7 +17,6 @@ const SearchBarSuggestTacOperation = ({ data, isMobile }: ItemsProps<SearchResul
     </chakra.mark>
   );
   const status = <TacOperationStatus status={ data.tac_operation.type }/>;
-  const date = dayjs(data.tac_operation.timestamp).format('llll');
 
   if (isMobile) {
     return (
@@ -27,7 +26,7 @@ const SearchBarSuggestTacOperation = ({ data, isMobile }: ItemsProps<SearchResul
           { hash }
           { status }
         </Flex>
-        <Text color="text.secondary">{ date }</Text>
+        <Time timestamp={ data.tac_operation.timestamp } color="text.secondary" format="lll_s"/>
       </>
     );
   }
@@ -39,7 +38,7 @@ const SearchBarSuggestTacOperation = ({ data, isMobile }: ItemsProps<SearchResul
         { hash }
         { status }
       </Flex>
-      <Text color="text.secondary" textAlign="end" flexShrink={ 0 } ml="auto">{ date }</Text>
+      <Time timestamp={ data.tac_operation.timestamp } color="text.secondary" textAlign="end" flexShrink={ 0 } ml="auto" format="lll_s"/>
     </Flex>
   );
 };

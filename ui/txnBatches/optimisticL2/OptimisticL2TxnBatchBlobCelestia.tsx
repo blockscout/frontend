@@ -3,9 +3,9 @@ import React from 'react';
 
 import type { OptimisticL2BlobTypeCelestia } from 'types/api/optimisticL2';
 
-import dayjs from 'lib/date/dayjs';
 import CeleniumLink from 'ui/shared/batch/CeleniumLink';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
+import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 
@@ -35,8 +35,8 @@ const OptimisticL2TxnBatchBlobCelestia = ({ blobs, isLoading }: Props) => {
               { blob.height }
             </GridItem>
             <GridItem fontWeight={ 600 }>Timestamp</GridItem>
-            <GridItem whiteSpace="normal" colSpan={ 2 }>
-              { dayjs(blob.l1_timestamp).fromNow() } | { dayjs(blob.l1_timestamp).format('llll') }
+            <GridItem overflow="hidden" colSpan={ 2 }>
+              <DetailedInfoTimestamp timestamp={ blob.l1_timestamp } isLoading={ isLoading } flexWrap={{ base: 'wrap', lg: 'nowrap' }}/>
             </GridItem>
             <GridItem fontWeight={ 600 }>L1 txn hash</GridItem>
             <GridItem overflow="hidden" colSpan={ 2 }>

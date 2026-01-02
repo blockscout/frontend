@@ -51,7 +51,7 @@ const TacOperationLifecycleAccordionItemContent = ({ isLast, data }: Props) => {
               alignItems="center"
               py="6px"
             >
-              <DetailedInfoTimestamp timestamp={ data.timestamp } noIcon isLoading={ false }/>
+              <DetailedInfoTimestamp timestamp={ data.timestamp } isLoading={ false } flexWrap={{ base: 'wrap', lg: 'nowrap' }}/>
             </GridItem>
           </>
         ) }

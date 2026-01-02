@@ -11,10 +11,10 @@ import type { ExcludeUndefined } from 'types/utils';
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
-import dayjs from 'lib/date/dayjs';
 import { Link } from 'toolkit/chakra/link';
 import type { TooltipProps } from 'toolkit/chakra/tooltip';
 import { Tooltip } from 'toolkit/chakra/tooltip';
+import Time from 'ui/shared/time/Time';
 
 import GasInfoTooltipRow from './GasInfoTooltipRow';
 import GasInfoUpdateTimer from './GasInfoUpdateTimer';
@@ -45,7 +45,7 @@ const GasInfoTooltip = ({ children, data, dataUpdatedAt, placement }: Props) => 
         <Flex justifyContent="space-between" alignItems="center">
           <Box color="text.secondary">Last update</Box>
           <Flex color="text.secondary" justifyContent="flex-end" alignItems="center" columnGap={ 2 } ml={ 3 }>
-            { dayjs(data.gas_price_updated_at).format('MMM DD, HH:mm:ss') }
+            <Time timestamp={ data.gas_price_updated_at } format="MMM DD, HH:mm:ss"/>
             { data.gas_prices_update_in !== 0 &&
               <GasInfoUpdateTimer key={ dataUpdatedAt } startTime={ dataUpdatedAt } duration={ data.gas_prices_update_in }/> }
           </Flex>

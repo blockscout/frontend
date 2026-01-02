@@ -7,7 +7,6 @@ import type { AddressMudRecords, AddressMudRecordsFilter, AddressMudRecordsSorti
 import { route } from 'nextjs-routes';
 
 import capitalizeFirstLetter from 'lib/capitalizeFirstLetter';
-import dayjs from 'lib/date/dayjs';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { Link } from 'toolkit/chakra/link';
 import { TableBody, TableCell, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
@@ -16,6 +15,7 @@ import { Tooltip } from 'toolkit/chakra/tooltip';
 import { middot } from 'toolkit/utils/htmlEntities';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import IconSvg from 'ui/shared/IconSvg';
+import Time from 'ui/shared/time/Time';
 
 import AddressMudRecordsKeyFilter from './AddressMudRecordsKeyFilter';
 import { getNameTypeText, getValueString } from './utils';
@@ -213,7 +213,7 @@ const AddressMudRecordsTable = ({
               { values.map((valName) =>
                 <TableCell key={ valName } { ...tdStyles }>{ getValueString(item.decoded[valName]) }</TableCell>) }
               { hasCut && !isOpened && <TableCell width={ `${ CUT_COL_WIDTH }px ` }></TableCell> }
-              <TableCell { ...tdStyles } color="text.secondary" w={ `${ colW }px` }>{ dayjs(item.timestamp).format('lll') }</TableCell>
+              <TableCell { ...tdStyles } color="text.secondary" w={ `${ colW }px` }><Time timestamp={ item.timestamp }/></TableCell>
               { hasCut && isOpened && <TableCell width={ `${ CUT_COL_WIDTH }px ` }></TableCell> }
             </TableRow>
           )) }

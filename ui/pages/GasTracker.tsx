@@ -7,7 +7,6 @@ import React from 'react';
 
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
-import dayjs from 'lib/date/dayjs';
 import { HOMEPAGE_STATS } from 'stubs/stats';
 import { Alert } from 'toolkit/chakra/alert';
 import { Heading } from 'toolkit/chakra/heading';
@@ -19,6 +18,7 @@ import GasTrackerPrices from 'ui/gasTracker/GasTrackerPrices';
 import GasInfoUpdateTimer from 'ui/shared/gas/GasInfoUpdateTimer';
 import NativeTokenIcon from 'ui/shared/NativeTokenIcon';
 import PageTitle from 'ui/shared/Page/PageTitle';
+import Time from 'ui/shared/time/Time';
 
 const GasTracker = () => {
   const { data, isPlaceholderData, isError, error, dataUpdatedAt } = useApiQuery('general:stats', {
@@ -50,7 +50,7 @@ const GasTracker = () => {
       { data?.gas_price_updated_at && (
         <Skeleton loading={ isLoading } whiteSpace="pre" display="flex" alignItems="center">
           <span>Last updated </span>
-          <chakra.span color="text.secondary">{ dayjs(data.gas_price_updated_at).format('DD MMM, HH:mm:ss') }</chakra.span>
+          <Time timestamp={ data.gas_price_updated_at } format="DD MMM, HH:mm:ss" color="text.secondary"/>
           { data.gas_prices_update_in !== 0 && (
             <GasInfoUpdateTimer
               key={ dataUpdatedAt }

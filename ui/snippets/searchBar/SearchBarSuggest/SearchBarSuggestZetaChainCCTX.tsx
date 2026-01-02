@@ -1,14 +1,14 @@
-import { Flex, Text, chakra } from '@chakra-ui/react';
+import { Flex, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { CctxListItem } from '@blockscout/zetachain-cctx-types';
 
 import { route } from 'nextjs/routes';
 
-import dayjs from 'lib/date/dayjs';
 import { SECOND } from 'toolkit/utils/consts';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import IconSvg from 'ui/shared/IconSvg';
+import Time from 'ui/shared/time/Time';
 
 import SearchBarSuggestItemLink from './SearchBarSuggestItemLink';
 
@@ -29,8 +29,6 @@ const SearchBarSuggestZetaChainCCTX = ({ data, isMobile, searchTerm, onClick }: 
     </chakra.span>
   );
 
-  const date = dayjs(Number(data.last_update_timestamp) * SECOND).format('llll');
-
   let content;
 
   if (isMobile) {
@@ -40,7 +38,7 @@ const SearchBarSuggestZetaChainCCTX = ({ data, isMobile, searchTerm, onClick }: 
           { icon }
           { hash }
         </Flex>
-        <Text color="text.secondary">{ date }</Text>
+        <Time timestamp={ Number(data.last_update_timestamp) * SECOND } color="text.secondary" format="lll_s"/>
       </>
     );
   } else {
@@ -50,7 +48,7 @@ const SearchBarSuggestZetaChainCCTX = ({ data, isMobile, searchTerm, onClick }: 
           { icon }
           { hash }
         </Flex>
-        <Text color="text.secondary" textAlign="end" flexShrink={ 0 } ml="auto">{ date }</Text>
+        <Time timestamp={ Number(data.last_update_timestamp) * SECOND } color="text.secondary" textAlign="end" flexShrink={ 0 } ml="auto" format="lll_s"/>
       </Flex>
     );
   }

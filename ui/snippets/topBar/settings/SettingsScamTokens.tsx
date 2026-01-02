@@ -1,4 +1,3 @@
-import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
@@ -27,19 +26,17 @@ const SettingsScamTokens = () => {
   }
 
   return (
-    <>
-      <Box borderColor="divider" borderTopWidth="1px" my={ 3 }/>
-      <Switch
-        id="scam-tokens"
-        checked={ isChecked }
-        onChange={ handleChange }
-        direction="rtl"
-        justifyContent="space-between"
-        w="100%"
-      >
-        Hide scam tokens
-      </Switch>
-    </>
+    <Switch
+      id="scam-tokens"
+      checked={ isChecked }
+      onChange={ handleChange }
+      direction="rtl"
+      justifyContent="space-between"
+      w="100%"
+      minH="34px"
+    >
+      Hide scam tokens
+    </Switch>
   );
 };
 

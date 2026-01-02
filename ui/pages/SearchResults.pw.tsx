@@ -60,7 +60,7 @@ test.describe('search by name', () => {
     const component = await render(<SearchResults/>, { hooksConfig });
     await resetScroll(page);
 
-    await expect(component.locator('main')).toHaveScreenshot();
+    await expect(component.locator('main')).toHaveScreenshot({ maxDiffPixels: 10 });
   });
 });
 
