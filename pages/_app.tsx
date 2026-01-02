@@ -26,7 +26,7 @@ import AppErrorBoundary from 'ui/shared/AppError/AppErrorBoundary';
 import AppErrorGlobalContainer from 'ui/shared/AppError/AppErrorGlobalContainer';
 import GoogleAnalytics from 'ui/shared/GoogleAnalytics';
 import Layout from 'ui/shared/layout/Layout';
-import Web3ModalProvider from 'ui/shared/Web3ModalProvider';
+import Web3Provider from 'ui/shared/web3/Web3Provider';
 
 import 'lib/setLocale';
 // import 'focus-visible/dist/focus-visible';
@@ -82,7 +82,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
           Container={ AppErrorGlobalContainer }
         >
           <QueryClientProvider client={ queryClient }>
-            <Web3ModalProvider>
+            <Web3Provider>
               <AppContextProvider pageProps={ pageProps }>
                 <GrowthBookProvider growthbook={ growthBook }>
                   <SocketProvider url={ socketUrl }>
@@ -98,7 +98,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
                 <ReactQueryDevtools buttonPosition="bottom-left" position="left"/>
                 <GoogleAnalytics/>
               </AppContextProvider>
-            </Web3ModalProvider>
+            </Web3Provider>
           </QueryClientProvider>
         </AppErrorBoundary>
       </RollbarProvider>

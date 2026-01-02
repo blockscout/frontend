@@ -35,7 +35,16 @@ const config: Feature<FeaturePayload> = (() => {
   if (
     (isSingleChain || isOpSuperchain)
   ) {
-    if (walletConnectProjectId) {
+    if (accountFeature.isEnabled && accountFeature.authProvider === 'dynamic' && accountFeature.dynamic?.environmentId) {
+      return Object.freeze({
+        title,
+        isEnabled: true,
+        connectorType: 'dynamic',
+        dynamic: {
+          environmentId: accountFeature.dynamic.environmentId,
+        },
+      });
+    } else if (walletConnectProjectId) {
       return Object.freeze({
         title,
         isEnabled: true,
@@ -43,15 +52,6 @@ const config: Feature<FeaturePayload> = (() => {
         reown: {
           projectId: walletConnectProjectId,
           featuredWalletIds: parseEnvJson<Array<string>>(getEnvValue('NEXT_PUBLIC_WALLET_CONNECT_FEATURED_WALLET_IDS')) ?? [],
-        },
-      });
-    } else if (accountFeature.isEnabled && accountFeature.authProvider === 'dynamic' && accountFeature.dynamic?.environmentId) {
-      return Object.freeze({
-        title,
-        isEnabled: true,
-        connectorType: 'dynamic',
-        dynamic: {
-          environmentId: accountFeature.dynamic.environmentId,
         },
       });
     }
