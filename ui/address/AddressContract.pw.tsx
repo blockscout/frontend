@@ -32,7 +32,7 @@ test.describe('ABI functionality', () => {
     const socket = await createSocket();
     await socketServer.joinChannel(socket, 'addresses:' + addressMock.contract.hash.toLowerCase());
 
-    await expect(component.getByRole('button', { name: 'Connect wallet' })).toBeVisible();
+    await expect(component.getByRole('button', { name: 'Connect your wallet' })).toBeVisible();
     await component.getByText('FLASHLOAN_PREMIUM_TOTAL').click();
     await expect(component.getByLabel('FLASHLOAN_PREMIUM_TOTAL').getByRole('button', { name: 'Read' })).toBeVisible();
   });
@@ -48,7 +48,7 @@ test.describe('ABI functionality', () => {
     const socket = await createSocket();
     await socketServer.joinChannel(socket, 'addresses:' + addressMock.contract.hash.toLowerCase());
 
-    await expect(component.getByRole('button', { name: 'Connect wallet' })).toBeHidden();
+    await expect(component.getByRole('button', { name: 'Connect your wallet' })).toBeHidden();
     await component.getByText('FLASHLOAN_PREMIUM_TOTAL').click();
     await expect(component.getByLabel('FLASHLOAN_PREMIUM_TOTAL').getByRole('button', { name: 'Read' })).toBeVisible();
   });
@@ -63,7 +63,7 @@ test.describe('ABI functionality', () => {
     const socket = await createSocket();
     await socketServer.joinChannel(socket, 'addresses:' + addressMock.contract.hash.toLowerCase());
 
-    await expect(component.getByRole('button', { name: 'Connect wallet' })).toBeVisible();
+    await expect(component.getByRole('button', { name: 'Connect your wallet' })).toBeVisible();
     await component.getByText('setReserveInterestRateStrategyAddress').click();
     await expect(component.getByLabel('9.').getByRole('button', { name: 'Simulate' })).toBeEnabled();
     await expect(component.getByLabel('9.').getByRole('button', { name: 'Write' })).toBeEnabled();
@@ -85,7 +85,7 @@ test.describe('ABI functionality', () => {
     const socket = await createSocket();
     await socketServer.joinChannel(socket, 'addresses:' + addressMock.contract.hash.toLowerCase());
 
-    await expect(component.getByRole('button', { name: 'Connect wallet' })).toBeHidden();
+    await expect(component.getByRole('button', { name: 'Connect your wallet' })).toBeHidden();
     await component.getByText('setReserveInterestRateStrategyAddress').click();
     await expect(component.getByLabel('9.').getByRole('button', { name: 'Simulate' })).toBeEnabled();
     await expect(component.getByLabel('9.').getByRole('button', { name: 'Write' })).toBeDisabled();
