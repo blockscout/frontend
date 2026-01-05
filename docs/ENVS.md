@@ -145,7 +145,7 @@ Also, be aware that if you customize the name of the currency or any of its deno
 | NEXT_PUBLIC_HOMEPAGE_CHARTS | `Array<'daily_txs' \| 'daily_operational_txs' \| 'coin_price'  \| 'secondary_coin_price' \| 'market_cap' \| 'tvl'>` | List of charts displayed on the home page | - | - | `['daily_txs','coin_price','market_cap']` | v1.0.x+ |
 | NEXT_PUBLIC_HOMEPAGE_STATS | `Array<'latest_batch' \| 'total_blocks'  \| 'average_block_time' \| 'total_txs' \| 'total_operational_txs' \| 'latest_l1_state_batch' \| 'wallet_addresses' \| 'gas_tracker' \| 'btc_locked' \| 'current_epoch'>` | List of stats widgets displayed on the home page | - | For zkSync, zkEvm and Arbitrum rollups: `['latest_batch','average_block_time','total_txs','wallet_addresses','gas_tracker']`, for other cases: `['total_blocks','average_block_time','total_txs','wallet_addresses','gas_tracker']` | `['total_blocks','total_txs','wallet_addresses']` | v1.35.x+ |
 | NEXT_PUBLIC_HOMEPAGE_HERO_BANNER_CONFIG | `HeroBannerConfig`, see details [below](#hero-banner-configuration-properties) | Configuration of hero banner appearance. | - | - | See [below](#hero-banner-configuration-properties) | v1.35.0+ |
-| NEXT_PUBLIC_HOMEPAGE_HIGHLIGHTS_CONFIG | `string` | URL of the file (in `.json` format only) that contains the configuration for banners on the application's homepage, showcasing some of its key functionality. See the full config format [below](#highlights-banner-configuration-properties). The config should contain at least 2 banners, but only 3 banners will be visible at the same time. A larger number of banners in the config allows for random banner rotation upon page load. | - | - | See [below](#highlights-banner-configuration-properties) | upcoming |
+| NEXT_PUBLIC_HOMEPAGE_HIGHLIGHTS_CONFIG | `string` | URL of the file (in `.json` format only) that contains the configuration for banners on the application's homepage, showcasing some of its key functionality. See the full config format [below](#highlights-banner-configuration-properties). The config should contain at least 2 banners, but only 3 banners will be visible at the same time. A larger number of banners in the config allows for random banner rotation upon page load. | - | - | See [below](#highlights-banner-configuration-properties) | v2.6.0+ |
 
 #### Hero banner configuration properties
 
@@ -468,7 +468,7 @@ This feature is **enabled by default**. To switch it off pass `NEXT_PUBLIC_ADVAN
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID | `string` | Project id for [Reown AppKit](https://cloud.reown.com//) integration | Required | - | `<your-secret>` | v1.0.x+ |
-| NEXT_PUBLIC_WALLET_CONNECT_FEATURED_WALLET_IDS | `Array<string>` | List of [featured wallet IDs](https://docs.reown.com/appkit/react/core/options#featuredwalletids) in the "Connect your wallet" modal. To obtain the wallet ID, please use [WalletGuild](https://walletguide.walletconnect.network). | - | - | `['c286eebc742a537cd1d6818363e9dc53b21759a1e8e5d9b263d0c03ec7703576']` | upcoming |
+| NEXT_PUBLIC_WALLET_CONNECT_FEATURED_WALLET_IDS | `Array<string>` | List of [featured wallet IDs](https://docs.reown.com/appkit/react/core/options#featuredwalletids) in the "Connect your wallet" modal. To obtain the wallet ID, please use [WalletGuild](https://walletguide.walletconnect.network). | - | - | `['c286eebc742a537cd1d6818363e9dc53b21759a1e8e5d9b263d0c03ec7703576']` | v2.6.0+ |
 | NEXT_PUBLIC_NETWORK_RPC_URL | `string` | See in [Blockchain parameters](#blockchain-parameters) section | Required | - | `https://core.poa.network` | v1.0.x+ |
 | NEXT_PUBLIC_NETWORK_NAME | `string` | See in [Blockchain parameters](#blockchain-parameters) section | Required | - | `Gnosis Chain` | v1.0.x+ |
 | NEXT_PUBLIC_NETWORK_ID | `number` | See in [Blockchain parameters](#blockchain-parameters) section | Required | -  | `99` | v1.0.x+ |
@@ -995,7 +995,7 @@ Show the page with aggregate metrics for the most popular contracts.
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_HOT_CONTRACTS_ENABLED | `boolean` | Set to true to enable the feature | Required | - | `true` | upcoming |
+| NEXT_PUBLIC_HOT_CONTRACTS_ENABLED | `boolean` | Set to true to enable the feature | Required | - | `true` | v2.6.0+ |
 
 &nbsp;
 
