@@ -82,7 +82,7 @@ const ZetaChainFilterByColumn = ({ column, filters, columnName, handleFilterChan
       );
     }
     case 'asset': {
-      let value: TokenInfo<'ERC-20'> | null = null;
+      let value: TokenInfo | null = null;
       if (filters.coin_type && castArray(filters.coin_type).includes(ZETA_CHAIN_CCTX_COIN_TYPE_FILTER)) {
         value = ZETA_NATIVE_TOKEN;
       }
@@ -94,7 +94,7 @@ const ZetaChainFilterByColumn = ({ column, filters, columnName, handleFilterChan
           decimals: '18',
           total_supply: '0',
           icon_url: null,
-          type: 'ERC-20' as const,
+          type: 'ERC-20',
           holders_count: null,
           exchange_rate: null,
           circulating_market_cap: null,
