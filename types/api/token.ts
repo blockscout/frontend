@@ -7,9 +7,9 @@ export type TokenType = string;
 
 export type TokenReputation = 'ok' | 'scam';
 
-export interface TokenInfo<T extends TokenType = TokenType> {
+export interface TokenInfo {
   address_hash: string;
-  type: T;
+  type: TokenType;
   symbol: string | null;
   name: string | null;
   decimals: string | null;

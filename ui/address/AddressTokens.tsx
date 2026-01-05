@@ -2,7 +2,6 @@ import { Box, HStack } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { TokenType } from 'types/api/token';
 import type { PaginationParams } from 'ui/shared/pagination/types';
 
 import config from 'configs/app';
@@ -51,7 +50,7 @@ const AddressTokens = ({ shouldRender = true, isQueryEnabled = true }: Props) =>
   const erc20Query = useQueryWithPages({
     resourceName: 'general:address_tokens',
     pathParams: { hash },
-    filters: { type: [ 'ERC-20', ...config.chain.additionalTokenTypes.map(item => item.id) as Array<TokenType> ] },
+    filters: { type: [ 'ERC-20', ...config.chain.additionalTokenTypes.map(item => item.id) ] },
     scrollRef,
     options: {
       enabled: isQueryEnabled && (!tab || tab === 'tokens' || tab === 'tokens_erc20'),
