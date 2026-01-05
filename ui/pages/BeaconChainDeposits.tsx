@@ -60,7 +60,7 @@ const BeaconChainDeposits = () => {
   ) : null;
 
   const text = (() => {
-    if (countersQuery.isError || !feature.isEnabled) {
+    if (countersQuery.isError || !feature.isEnabled || feature.withdrawalsOnly) {
       return null;
     }
 
