@@ -640,7 +640,7 @@ Essential dapps are built-in dapps that are displayed on the Marketplace page in
 
 | Property | Type | Description | Compulsoriness | Example value |
 | --- | --- | --- | --- | --- |
-| swap | `{ chains: Array<string>, fee: string, integrator: string }` | Swap config | - | `{'chains': ['1'], 'fee': '0.004', 'integrator': 'blockscout'}` |
+| swap | `{ url: string, chains: Array<string>, fee: string, integrator: string }` | Swap config | - | `{'url': 'https://example.com', 'chains': ['1'], 'fee': '0.004', 'integrator': 'blockscout'}` |
 | revoke | `{ chains: Array<string> }` | Revoke config | - | `{'chains': ['100']}` |
 | multisend | `{ chains: Array<string> }` | Multisend config | - | `{'chains': ['1', '10']}` |
 
