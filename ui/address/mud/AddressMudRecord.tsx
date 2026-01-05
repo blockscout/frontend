@@ -3,12 +3,12 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import dayjs from 'lib/date/dayjs';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { TableRoot, TableRow, TableCell } from 'toolkit/chakra/table';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
+import Time from 'ui/shared/time/Time';
 
 import AddressMudBreadcrumbs from './AddressMudBreadcrumbs';
 import AddressMudRecordValues from './AddressMudRecordValues';
@@ -62,7 +62,7 @@ const AddressMudRecord = ({ tableId, recordId, isQueryEnabled = true }: Props) =
               <TableCell colSpan={ 2 } fontSize="sm">
                 <Flex justifyContent="space-between">
                   <TruncatedText text={ getValueString(data.record.decoded[keyName]) } mr={ 2 }/>
-                  { index === 0 && <Box color="text.secondary">{ dayjs(data.record.timestamp).format('lll') }</Box> }
+                  { index === 0 && <Time color="text.secondary" timestamp={ data.record.timestamp }/> }
                 </Flex>
               </TableCell>
             </TableRow>
@@ -79,7 +79,7 @@ const AddressMudRecord = ({ tableId, recordId, isQueryEnabled = true }: Props) =
                 { keyName } ({ data.schema.key_types[index] })
               </Text>
               <Text wordBreak="break-word">{ getValueString(data.record.decoded[keyName]) }</Text>
-              { index === 0 && <Box color="text.secondary">{ dayjs(data.record.timestamp).format('lll') }</Box> }
+              { index === 0 && <Time color="text.secondary" timestamp={ data.record.timestamp }/> }
             </VStack>
           )) }
           <TableRoot borderRadius="8px" style={{ tableLayout: 'auto' }} width="100%" mt={ 2 } overflow="hidden">
