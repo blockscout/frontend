@@ -59,7 +59,7 @@ const ConnectWalletAlert = ({ isLoading }: Props) => {
             onClick={ handleOpenWalletClick }
             loading={ web3Wallet.isOpen }
           >
-            <IconSvg name="gear_slim"/>
+            <IconSvg name="gear"/>
           </IconButton>
         ) }
       </Flex>
