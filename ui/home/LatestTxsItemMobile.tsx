@@ -13,6 +13,7 @@ import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
+import EntityTag from 'ui/shared/EntityTags/EntityTag';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import TxFee from 'ui/shared/tx/TxFee';
@@ -29,6 +30,8 @@ type Props = {
 const LatestTxsItem = ({ tx, isLoading }: Props) => {
   const dataTo = tx.to ? tx.to : tx.created_contract;
 
+  const protocolTag = tx.to?.metadata?.tags?.find(tag => tag.tagType === 'protocol');
+
   return (
     <Box
       width="100%"
@@ -38,10 +41,11 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
       display={{ base: 'block', lg: 'none' }}
     >
       <Flex justifyContent="space-between">
-        <HStack flexWrap="wrap">
+        <HStack>
           <TxType types={ tx.transaction_types } isLoading={ isLoading }/>
           <TxStatus status={ tx.status } errorText={ tx.status === 'error' ? tx.result : undefined } isLoading={ isLoading }/>
           <TxWatchListTags tx={ tx } isLoading={ isLoading }/>
+          { protocolTag && <EntityTag data={ protocolTag } isLoading={ isLoading } minW="0"/> }
         </HStack>
         <TxAdditionalInfo tx={ tx } isMobile isLoading={ isLoading }/>
       </Flex>

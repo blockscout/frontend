@@ -1,8 +1,12 @@
+import { Box } from '@chakra-ui/react';
 import React from 'react';
+
+import type { AddressParam } from 'types/api/addressParams';
 
 import * as txMock from 'mocks/txs/tx';
 import * as socketServer from 'playwright/fixtures/socketServer';
 import { test as base, expect, devices } from 'playwright/lib';
+import * as pwConfig from 'playwright/utils/config';
 
 import LatestTxs from './LatestTxs';
 
@@ -35,6 +39,50 @@ test('default view +@dark-mode', async({ render, mockApiResponse }) => {
 
   const component = await render(<LatestTxs/>);
   await expect(component).toHaveScreenshot();
+});
+
+test.describe('small desktop', () => {
+  test.use({ viewport: pwConfig.viewport.md });
+  test('one tag', async({ render, mockApiResponse }) => {
+    await mockApiResponse('general:homepage_txs', [
+      {
+        ...txMock.withProtocolTag,
+        to: {
+          ...txMock.withProtocolTag.to,
+          metadata: {
+            tags: [ {
+              slug: 'aerodrome',
+              name: 'Very long protocol name that should be truncated',
+              tagType: 'protocol',
+              ordinal: 0,
+              meta: null,
+            } ],
+            reputation: null,
+          },
+        } as AddressParam,
+      },
+    ]);
+
+    const component = await render(
+      <Box maxW="800px">
+        <LatestTxs/>
+      </Box>,
+    );
+    await expect(component).toHaveScreenshot();
+  });
+
+  test('two or more tags', async({ render, mockApiResponse }) => {
+    await mockApiResponse('general:homepage_txs', [
+      txMock.withWatchListNames,
+    ]);
+
+    const component = await render(
+      <Box maxW="800px">
+        <LatestTxs/>
+      </Box>,
+    );
+    await expect(component).toHaveScreenshot();
+  });
 });
 
 test.describe('socket', () => {
