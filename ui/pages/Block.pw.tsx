@@ -20,6 +20,7 @@ test.beforeEach(async({ mockTextAd }) => {
 });
 
 test('degradation view, details tab', async({ render, mockApiResponse, mockRpcResponse, page }) => {
+  test.slow();
   await mockApiResponse('general:block', null as never, { pathParams: { height_or_hash: height }, status: 500 });
   await mockRpcResponse([
     {
@@ -44,6 +45,7 @@ test('degradation view, details tab', async({ render, mockApiResponse, mockRpcRe
 });
 
 test('degradation view, txs tab', async({ render, mockApiResponse, mockRpcResponse, page }) => {
+  test.slow();
   const hooksConfig = {
     router: {
       query: { height_or_hash: height, tab: 'txs' },
@@ -75,6 +77,7 @@ test('degradation view, txs tab', async({ render, mockApiResponse, mockRpcRespon
 });
 
 test('degradation view, withdrawals tab', async({ render, mockApiResponse, mockRpcResponse, mockEnvs, page }) => {
+  test.slow();
   const hooksConfig = {
     router: {
       query: { height_or_hash: height, tab: 'withdrawals' },

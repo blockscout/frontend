@@ -7,7 +7,7 @@ import { FeaturedNetwork, NETWORK_GROUPS, NetworkExplorer } from 'types/networks
 import { CustomLink, CustomLinksGroup } from 'types/footerLinks';
 import { COLOR_THEME_IDS } from 'types/settings';
 import { FontFamily } from 'types/ui';
-import { ContractCodeIde, SMART_CONTRACT_EXTRA_VERIFICATION_METHODS, SMART_CONTRACT_LANGUAGE_FILTERS, type SmartContractVerificationMethodExtra } from 'types/client/contract';
+import { ContractCodeIde, SMART_CONTRACT_EXTRA_VERIFICATION_METHODS, type SmartContractVerificationMethodExtra } from 'types/client/contract';
 import type { AddressFormat, AddressViewId } from 'types/views/address';
 import { ADDRESS_FORMATS, ADDRESS_VIEWS_IDS, IDENTICON_TYPES } from 'types/views/address';
 import { BLOCK_FIELDS_IDS } from 'types/views/block';
@@ -309,11 +309,6 @@ export const viewsSchema = yup.object({
 
           return isNoneSchema.isValidSync(data) || isArrayOfMethodsSchema.isValidSync(data);
         }),
-    NEXT_PUBLIC_VIEWS_CONTRACT_LANGUAGE_FILTERS: yup
-      .array()
-      .transform(replaceQuotes)
-      .json()
-      .of(yup.string<VerifiedContractsFilter>().oneOf(SMART_CONTRACT_LANGUAGE_FILTERS)),
 
     NEXT_PUBLIC_VIEWS_TX_HIDDEN_FIELDS: yup
       .array()
