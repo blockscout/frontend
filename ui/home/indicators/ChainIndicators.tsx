@@ -64,7 +64,8 @@ const ChainIndicators = () => {
           }
           return `Number of transactions yesterday (0:00 - 23:59 UTC). The chart displays daily transactions for the past 30 days.`;
         })(),
-        icon: <IconSvg name="transactions" boxSize={ 6 } bgColor="#56ACD1" borderRadius="base" color="white"/>,
+        // FIXME use non-navigation icon
+        icon: <IconSvg name="navigation/transactions" boxSize={ 6 } bgColor="#56ACD1" borderRadius="base" color="white"/>,
       },
       {
         id: 'daily_operational_txs' as const,
@@ -103,7 +104,8 @@ const ChainIndicators = () => {
           }
           return `Number of operational transactions yesterday (0:00 - 23:59 UTC). The chart displays daily operational transactions for the past 30 days.`;
         })(),
-        icon: <IconSvg name="transactions" boxSize={ 6 } bgColor="#56ACD1" borderRadius="base" color="white"/>,
+        // FIXME use non-navigation icon
+        icon: <IconSvg name="navigation/transactions" boxSize={ 6 } bgColor="#56ACD1" borderRadius="base" color="white"/>,
       },
       {
         id: 'coin_price' as const,

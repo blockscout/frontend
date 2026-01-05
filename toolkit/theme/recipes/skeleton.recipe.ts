@@ -21,7 +21,7 @@ export const recipe = defineRecipe({
         borderWidth: '0px',
         pointerEvents: 'none',
         userSelect: 'none',
-        '&::before, &::after, *': {
+        '& > *': {
           visibility: 'hidden',
         },
       },
@@ -33,15 +33,33 @@ export const recipe = defineRecipe({
         animationDuration: 'var(--duration, 1.2s)',
       },
       shine: {
+        opacity: 0.5,
         '--animate-from': '100%',
         '--animate-to': '-100%',
         '--start-color': 'colors.skeleton.bg.start',
         '--end-color': 'colors.skeleton.bg.end',
-        backgroundImage:
-          'linear-gradient(90deg,var(--start-color) 8%,var(--end-color) 18%,var(--start-color) 33%)',
-        backgroundColor: 'transparent',
-        backgroundSize: '200% 100%',
-        animation: 'bg-position var(--duration, 2s) linear infinite',
+        position: 'relative',
+        overflow: 'hidden',
+        backgroundColor: 'var(--start-color)',
+        animation: 'none',
+        '&::after': {
+          content: '""',
+          position: 'absolute',
+          inset: '0',
+          left: '0',
+          width: '100%',
+          pointerEvents: 'none',
+          willChange: 'transform',
+          transform: 'translateX(-100%)',
+          backgroundImage:
+            'linear-gradient(90deg, transparent 0%, transparent 32%, var(--end-color) 46%, var(--end-color) 54%, transparent 68%, transparent 100%)',
+          animation: 'skeletonShimmer var(--duration, 2s) linear infinite',
+        },
+        _motionReduce: {
+          '&::after': {
+            animation: 'none',
+          },
+        },
       },
       none: {
         animation: 'none',

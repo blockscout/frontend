@@ -16,8 +16,8 @@ import { useQueryParams } from 'lib/router/useQueryParams';
 import useWeb3Wallet from 'lib/web3/useWallet';
 import wagmiConfig from 'lib/web3/wagmiConfig';
 import { Button } from 'toolkit/chakra/button';
+import { EmptyState } from 'toolkit/chakra/empty-state';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import EmptySearchResult from 'ui/shared/EmptySearchResult';
 
 import AddressEntity from './components/AddressEntity';
 import ChainSelect from './components/ChainSelect';
@@ -117,8 +117,8 @@ const Revoke = () => {
         approvalsQuery={ approvalsQuery }
       />
     ) : (
-      <EmptySearchResult
-        text={ `The input "${ searchAddress }" is not correct. Enter a correct 0x address to search` }
+      <EmptyState
+        description={ `The input "${ searchAddress }" is not correct. Enter a correct 0x address to search` }
       />
     );
   }

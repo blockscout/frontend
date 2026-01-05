@@ -18,7 +18,6 @@ import { useClusterSearch } from 'lib/clusters/useClusterSearch';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { useQueryParams } from 'lib/router/useQueryParams';
 import { Link } from 'toolkit/chakra/link';
-import { apos } from 'toolkit/utils/htmlEntities';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 
@@ -145,9 +144,9 @@ const Clusters = () => {
       <DataListDisplay
         isError={ isError }
         itemsNum={ currentDataLength }
-        filterProps={{
-          emptyFilteredText: `Couldn${ apos }t find clusters that match your query.`,
-          hasActiveFilters,
+        hasActiveFilters={ hasActiveFilters }
+        emptyStateProps={{
+          term: 'cluster',
         }}
         actionBar={ actionBar }
       >

@@ -115,7 +115,7 @@ const Stats = () => {
     return [
       latestBatchQuery?.data !== undefined && {
         id: 'latest_batch' as const,
-        icon: 'txn_batches_slim' as const,
+        icon: 'txn_batches' as const,
         label: 'Latest batch',
         value: latestBatchQuery.data.toLocaleString(),
         href: { pathname: '/batches' as const },
@@ -123,7 +123,7 @@ const Stats = () => {
       },
       (statsData?.total_blocks?.value || apiData?.total_blocks) && {
         id: 'total_blocks' as const,
-        icon: 'block_slim' as const,
+        icon: 'block' as const,
         label: statsData?.total_blocks?.title || 'Total blocks',
         value: Number(statsData?.total_blocks?.value || apiData?.total_blocks).toLocaleString(),
         href: { pathname: '/blocks' as const },
@@ -142,7 +142,7 @@ const Stats = () => {
       },
       (statsData?.total_transactions?.value || apiData?.total_transactions) && {
         id: 'total_txs' as const,
-        icon: 'transactions_slim' as const,
+        icon: 'transactions' as const,
         label: statsData?.total_transactions?.title || 'Total transactions',
         value: Number(statsData?.total_transactions?.value || apiData?.total_transactions).toLocaleString(),
         href: { pathname: '/txs' as const },
@@ -150,7 +150,7 @@ const Stats = () => {
       },
       (isArbitrumRollup && statsData?.total_operational_transactions?.value) && {
         id: 'total_operational_txs' as const,
-        icon: 'transactions_slim' as const,
+        icon: 'transactions' as const,
         label: statsData?.total_operational_transactions?.title || 'Total operational transactions',
         value: Number(statsData?.total_operational_transactions?.value).toLocaleString(),
         href: { pathname: '/txs' as const },
@@ -158,7 +158,7 @@ const Stats = () => {
       },
       (isOptimisticRollup && statsData?.op_stack_total_operational_transactions?.value) && {
         id: 'total_operational_txs' as const,
-        icon: 'transactions_slim' as const,
+        icon: 'transactions' as const,
         label: statsData?.op_stack_total_operational_transactions?.title || 'Total operational transactions',
         value: Number(statsData?.op_stack_total_operational_transactions?.value).toLocaleString(),
         href: { pathname: '/txs' as const },
@@ -166,7 +166,7 @@ const Stats = () => {
       },
       apiData?.last_output_root_size && {
         id: 'latest_l1_state_batch' as const,
-        icon: 'txn_batches_slim' as const,
+        icon: 'txn_batches' as const,
         label: 'Latest L1 state batch',
         value: apiData?.last_output_root_size,
         href: { pathname: '/batches' as const },
@@ -196,7 +196,7 @@ const Stats = () => {
       },
       apiData?.celo && {
         id: 'current_epoch' as const,
-        icon: 'hourglass_slim' as const,
+        icon: 'hourglass' as const,
         label: 'Current epoch',
         value: `#${ apiData.celo.epoch_number }`,
         href: { pathname: '/epochs/[number]' as const, query: { number: String(apiData.celo.epoch_number) } },

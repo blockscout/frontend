@@ -15,7 +15,6 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { generateListStub } from 'stubs/utils';
 import { VALIDATOR_STABILITY } from 'stubs/validators';
-import { apos } from 'toolkit/utils/htmlEntities';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 // import { FilterInput } from 'toolkit/components/filters/FilterInput';
@@ -153,12 +152,12 @@ const ValidatorsStability = () => {
         isError={ isError }
         itemsNum={ data?.items.length }
         emptyText="There are no validators."
-        filterProps={{
-          emptyFilteredText: `Couldn${ apos }t find any validator that matches your query.`,
-          hasActiveFilters: Boolean(
-            // searchTerm ||
-            statusFilter,
-          ),
+        hasActiveFilters={ Boolean(
+          // searchTerm ||
+          statusFilter,
+        ) }
+        emptyStateProps={{
+          term: 'validator',
         }}
         actionBar={ actionBar }
       >

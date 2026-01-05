@@ -102,7 +102,7 @@ const OpSuperchainBlocks = () => {
   const rightSlot = (
     <HStack gap={ 8 } hideBelow="lg">
       <Link href={ route({ pathname: '/block/countdown' }, { chain: currentChainInfo }) }>
-        <IconSvg name="hourglass_slim" boxSize={ 5 } mr={ 2 }/>
+        <IconSvg name="hourglass" boxSize={ 5 } mr={ 2 }/>
         <span>Block countdown</span>
       </Link>
       <Pagination { ...currentQuery.pagination }/>

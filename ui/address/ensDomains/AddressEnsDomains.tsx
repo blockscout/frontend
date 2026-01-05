@@ -14,6 +14,7 @@ import { Link } from 'toolkit/chakra/link';
 import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
+import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 import IconSvg from 'ui/shared/IconSvg';
 
@@ -38,6 +39,7 @@ const DomainsGrid = ({ data }: { data: Array<bens.Domain> }) => {
 
 const AddressEnsDomains = ({ query, addressHash, mainDomainName }: Props) => {
   const { data, isPending, isError } = query;
+  const popover = useDisclosure();
 
   if (isError) {
     return null;
@@ -82,8 +84,8 @@ const AddressEnsDomains = ({ query, addressHash, mainDomainName }: Props) => {
   const totalRecords = data.items.length > 40 ? '40+' : data.items.length;
 
   return (
-    <PopoverRoot>
-      <Tooltip content="List of names resolved or owned by this address" disableOnMobile>
+    <PopoverRoot open={ popover.open } onOpenChange={ popover.onOpenChange }>
+      <Tooltip content="List of names resolved or owned by this address" disabled={ popover.open } disableOnMobile closeOnClick>
         <div>
           <PopoverTrigger>
             <Button
@@ -94,7 +96,7 @@ const AddressEnsDomains = ({ query, addressHash, mainDomainName }: Props) => {
               flexShrink={ 0 }
               columnGap={ 1 }
             >
-              <IconSvg name="ENS_slim" boxSize={ 5 }/>
+              <IconSvg name="ENS" boxSize={ 5 }/>
               <chakra.span hideBelow="xl">{ totalRecords } Domain{ data.items.length > 1 ? 's' : '' }</chakra.span>
               <chakra.span hideFrom="xl">{ totalRecords }</chakra.span>
             </Button>

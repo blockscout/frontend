@@ -34,6 +34,7 @@ import IconSvg from 'ui/shared/IconSvg';
 import type { SearchResultAppItem } from 'ui/shared/search/utils';
 import { getItemCategory, searchItemTitles } from 'ui/shared/search/utils';
 import TacOperationStatus from 'ui/shared/statusTag/TacOperationStatus';
+import Time from 'ui/shared/time/Time';
 
 import SearchResultEntityTag from './SearchResultEntityTag';
 
@@ -185,7 +186,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
           <>
             <TableCell>
               <Flex alignItems="center">
-                <IconSvg name="publictags_slim" boxSize={ 6 } mr={ 2 } color="icon.primary"/>
+                <IconSvg name="publictags" boxSize={ 6 } mr={ 2 } color="icon.primary"/>
                 <Link
                   href={ route({ pathname: '/address/[hash]', query: { hash: data.address_hash } }) }
                   fontWeight={ 700 }
@@ -290,10 +291,10 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
                 </Flex>
               ) }
             </TableCell>
-            { !isFutureBlock && (
+            { !isFutureBlock && data.timestamp && (
               <TableCell fontSize="sm" verticalAlign="middle" isNumeric>
                 <Skeleton loading={ isLoading } color="text.secondary">
-                  <span>{ dayjs(data.timestamp).format('llll') }</span>
+                  <Time timestamp={ data.timestamp } format="lll_s"/>
                 </Skeleton>
               </TableCell>
             ) }
@@ -322,7 +323,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
               </TxEntity.Container>
             </TableCell>
             <TableCell fontSize="sm" verticalAlign="middle" isNumeric>
-              <Text color="text.secondary">{ dayjs(data.timestamp).format('llll') }</Text>
+              <Time timestamp={ data.timestamp } color="text.secondary" format="lll_s"/>
             </TableCell>
           </>
         );
@@ -333,7 +334,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
           <>
             <TableCell colSpan={ 2 } fontSize="sm">
               <TxEntity.Container>
-                <IconSvg name="interop" boxSize={ 6 } marginRight={ 1 } color="text.secondary"/>
+                <IconSvg name="interop" boxSize={ 5 } marginRight={ 1 } color="text.secondary"/>
                 <TxEntity.Link
                   isLoading={ isLoading }
                   hash={ data.cctx.index }
@@ -350,7 +351,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
               </TxEntity.Container>
             </TableCell>
             <TableCell fontSize="sm" verticalAlign="middle" isNumeric>
-              <Text color="text.secondary">{ dayjs(Number(data.cctx.last_update_timestamp) * SECOND).format('llll') }</Text>
+              <Time timestamp={ Number(data.cctx.last_update_timestamp) * SECOND } color="text.secondary" format="lll_s"/>
             </TableCell>
           </>
         );
@@ -379,7 +380,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
               </OperationEntity.Container>
             </TableCell>
             <TableCell fontSize="sm" verticalAlign="middle" isNumeric>
-              <Text color="text.secondary">{ dayjs(data.tac_operation.timestamp).format('llll') }</Text>
+              <Time timestamp={ data.tac_operation.timestamp } color="text.secondary" format="lll_s"/>
             </TableCell>
           </>
         );
@@ -428,7 +429,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
               </UserOpEntity.Container>
             </TableCell>
             <TableCell fontSize="sm" verticalAlign="middle" isNumeric>
-              <Text color="text.secondary">{ dayjs(data.timestamp).format('llll') }</Text>
+              <Time timestamp={ data.timestamp } color="text.secondary" format="lll_s"/>
             </TableCell>
           </>
         );

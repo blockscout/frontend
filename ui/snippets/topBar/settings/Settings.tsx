@@ -1,4 +1,4 @@
-import { Box, Flex } from '@chakra-ui/react';
+import { Flex, Separator, VStack } from '@chakra-ui/react';
 import React from 'react';
 
 import { IconButton } from 'toolkit/chakra/icon-button';
@@ -10,6 +10,7 @@ import IconSvg from 'ui/shared/IconSvg';
 import SettingsAddressFormat from './SettingsAddressFormat';
 import SettingsColorTheme from './SettingsColorTheme';
 import SettingsIdentIcon from './SettingsIdentIcon';
+import SettingsLocalTime from './SettingsLocalTime';
 import SettingsScamTokens from './SettingsScamTokens';
 
 const Settings = () => {
@@ -44,7 +45,7 @@ const Settings = () => {
               borderRadius="sm"
               aria-label="User settings"
             >
-              <IconSvg name="gear_slim"/>
+              <IconSvg name="gear"/>
             </IconButton>
           </PopoverTrigger>
         </Flex>
@@ -52,10 +53,14 @@ const Settings = () => {
       <PopoverContent overflowY="hidden" w="auto" fontSize="sm">
         <PopoverBody>
           <SettingsColorTheme onSelect={ popover.onClose }/>
-          <Box borderColor="border.divider" borderTopWidth="1px" my={ 3 }/>
+          <Separator my={ 3 }/>
           <SettingsIdentIcon/>
           <SettingsAddressFormat/>
-          <SettingsScamTokens/>
+          <Separator my={ 3 }/>
+          <VStack gap={ 1 }>
+            <SettingsScamTokens/>
+            <SettingsLocalTime/>
+          </VStack>
         </PopoverBody>
       </PopoverContent>
     </PopoverRoot>

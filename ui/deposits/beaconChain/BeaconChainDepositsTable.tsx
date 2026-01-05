@@ -26,14 +26,14 @@ const BeaconChainDepositsTable = ({ items, isLoading, top, view }: Props) => {
   }
 
   return (
-    <TableRoot style={{ tableLayout: 'auto' }} minW="950px">
+    <TableRoot minW="1100px">
       <TableHeaderSticky top={ top }>
         <TableRow>
-          <TableColumnHeader>Transaction hash</TableColumnHeader>
+          <TableColumnHeader w="190px">Transaction hash</TableColumnHeader>
           { view !== 'block' && <TableColumnHeader>Block</TableColumnHeader> }
-          { view !== 'block' && <TableColumnHeader>Timestamp<TimeFormatToggle/></TableColumnHeader> }
+          { view !== 'block' && <TableColumnHeader w="180px">Timestamp<TimeFormatToggle/></TableColumnHeader> }
           <TableColumnHeader>{ `Value ${ feature.currency.symbol }` }</TableColumnHeader>
-          { view !== 'address' && <TableColumnHeader>From</TableColumnHeader> }
+          { view !== 'address' && <TableColumnHeader w="200px">From</TableColumnHeader> }
           <TableColumnHeader>PubKey</TableColumnHeader>
           <TableColumnHeader>Signature</TableColumnHeader>
           <TableColumnHeader>Status</TableColumnHeader>

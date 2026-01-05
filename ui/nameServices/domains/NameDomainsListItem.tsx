@@ -8,6 +8,7 @@ import NameDomainExpiryStatus from 'ui/nameDomain/NameDomainExpiryStatus';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
+import Time from 'ui/shared/time/Time';
 
 interface Props extends bens.Domain {
   isLoading: boolean;
@@ -42,7 +43,7 @@ const NameDomainsListItem = ({
           <ListItemMobileGrid.Label isLoading={ isLoading }>Registered on</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
             <Skeleton loading={ isLoading }>
-              <div>{ dayjs(registrationDate).format('lll') }</div>
+              <Time timestamp={ registrationDate }/>
               <div> { dayjs(registrationDate).fromNow() }</div>
             </Skeleton>
           </ListItemMobileGrid.Value>
@@ -54,7 +55,7 @@ const NameDomainsListItem = ({
           <ListItemMobileGrid.Label isLoading={ isLoading }>Expiration date</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
             <Skeleton loading={ isLoading } whiteSpace="pre-wrap">
-              <div>{ dayjs(expiryDate).format('lll') } </div>
+              <Time timestamp={ expiryDate } display="block"/>
               <NameDomainExpiryStatus date={ expiryDate }/>
             </Skeleton>
           </ListItemMobileGrid.Value>

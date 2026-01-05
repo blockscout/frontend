@@ -8,6 +8,7 @@ import solidityScanIcon from 'icons/brands/solidity_scan.svg';
 import useFetchReport from 'lib/solidityScan/useFetchReport';
 import { Link } from 'toolkit/chakra/link';
 import { PopoverBody, PopoverContent, PopoverRoot } from 'toolkit/chakra/popover';
+import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import SolidityscanReportButton from 'ui/shared/solidityscanReport/SolidityscanReportButton';
 import SolidityscanReportDetails from 'ui/shared/solidityscanReport/SolidityscanReportDetails';
 import SolidityscanReportScore from 'ui/shared/solidityscanReport/SolidityscanReportScore';
@@ -17,7 +18,7 @@ interface Props {
 }
 
 const SolidityscanReport = ({ hash }: Props) => {
-
+  const popover = useDisclosure();
   const { data, isPlaceholderData, isError } = useFetchReport({ hash });
 
   if (isError || !data) {
@@ -35,10 +36,11 @@ const SolidityscanReport = ({ hash }: Props) => {
   const vulnerabilitiesCount = vulnerabilitiesCounts.reduce((acc, val) => acc + val, 0);
 
   return (
-    <PopoverRoot>
+    <PopoverRoot open={ popover.open } onOpenChange={ popover.onOpenChange }>
       <SolidityscanReportButton
         score={ score }
         isLoading={ isPlaceholderData }
+        tooltipDisabled={ popover.open }
       />
       <PopoverContent w={{ base: '100vw', lg: '328px' }}>
         <PopoverBody textStyle="sm">

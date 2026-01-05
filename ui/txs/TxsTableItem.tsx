@@ -12,6 +12,7 @@ import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import BlockPendingUpdateHint from 'ui/shared/block/BlockPendingUpdateHint';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
+import EntityTag from 'ui/shared/EntityTags/EntityTag';
 import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
@@ -48,6 +49,8 @@ const TxsTableItem = ({
 }: Props) => {
   const dataTo = tx.to ? tx.to : tx.created_contract;
 
+  const protocolTag = tx.to?.metadata?.tags?.find(tag => tag.tagType === 'protocol');
+
   return (
     <TableRow key={ tx.hash } animation={ animation }>
       <TableCell textAlign="center">
@@ -77,7 +80,7 @@ const TxsTableItem = ({
         </VStack>
       </TableCell>
       <TableCell>
-        <VStack alignItems="start">
+        <VStack alignItems="stretch">
           { translationIsLoading || translationData ? (
             <TxTranslationType
               txTypes={ tx.transaction_types }
@@ -92,11 +95,14 @@ const TxsTableItem = ({
         </VStack>
       </TableCell>
       <TableCell whiteSpace="nowrap">
-        { tx.method && (
-          <Badge colorPalette={ tx.method === 'Multicall' ? 'teal' : 'gray' } loading={ isLoading } truncated>
-            <span>{ tx.method }</span>
-          </Badge>
-        ) }
+        <VStack alignItems="stretch">
+          { tx.method && (
+            <Badge colorPalette={ tx.method === 'Multicall' ? 'teal' : 'gray' } loading={ isLoading } truncated>
+              <span>{ tx.method }</span>
+            </Badge>
+          ) }
+          { protocolTag && <EntityTag data={ protocolTag } isLoading={ isLoading }/> }
+        </VStack>
       </TableCell>
       { showBlockInfo && (
         <TableCell>

@@ -8,7 +8,6 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { Tag } from 'toolkit/chakra/tag';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
-import { apos } from 'toolkit/utils/htmlEntities';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/pagination/Pagination';
@@ -149,9 +148,9 @@ const AddressMudTable = ({ tableId, isQueryEnabled = true }: Props) => {
         isError={ isError }
         itemsNum={ data?.items.length }
         emptyText={ emptyText }
-        filterProps={{
-          emptyFilteredText: `Couldn${ apos }t find records that match your filter query.`,
-          hasActiveFilters: Object.values(filters).some(Boolean),
+        hasActiveFilters={ hasActiveFilters }
+        emptyStateProps={{
+          term: 'record',
         }}
         actionBar={ actionBar }
         showActionBarIfEmpty={ !isMobile }
