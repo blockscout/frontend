@@ -14,7 +14,6 @@ interface Props {
   buttonVariant?: ButtonProps['variant'];
 }
 
-// TODO @tom2drum add ENS support
 // TODO @tom2drum restructure folder
 const UserProfileDynamic = ({ buttonSize, buttonVariant = 'header' }: Props) => {
   const isMobile = useIsMobile();

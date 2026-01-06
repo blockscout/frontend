@@ -1,6 +1,6 @@
 import { EthereumWalletConnectors } from '@dynamic-labs/ethereum';
 import type { DynamicContextProps } from '@dynamic-labs/sdk-react-core';
-import { DynamicContextProvider, getAuthToken, overrideNetworkRpcUrl } from '@dynamic-labs/sdk-react-core';
+import { DynamicContextProvider, getAuthToken } from '@dynamic-labs/sdk-react-core';
 import { DynamicWagmiConnector } from '@dynamic-labs/wagmi-connector';
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
@@ -14,6 +14,7 @@ import getErrorMessage from 'lib/errors/getErrorMessage';
 import useGetCsrfToken from 'lib/hooks/useGetCsrfToken';
 import { chains } from 'lib/web3/chains';
 import { toaster } from 'toolkit/chakra/toaster';
+import { castToString } from 'toolkit/utils/guards';
 import useLogout from 'ui/snippets/auth/useLogout';
 
 import WagmiProvider from './WagmiProvider';
@@ -25,13 +26,19 @@ const walletConnectors = [
 ];
 
 const overrides: DynamicContextProps['settings']['overrides'] = {
-  evmNetworks: (networks) => overrideNetworkRpcUrl(
-    networks,
-    chains.reduce((acc, chain) => {
-      acc[String(chain.id)] = chain.rpcUrls.default.http.slice();
-      return acc;
-    }, {} as Record<string, Array<string>>),
-  ),
+  evmNetworks: chains.map((chain) => {
+    const logoUrl = castToString(chain.custom?.logoUrl);
+    return {
+      chainId: chain.id,
+      name: chain.name,
+      rpcUrls: chain.rpcUrls.default.http.slice(),
+      nativeCurrency: chain.nativeCurrency,
+      blockExplorerUrls: chain.blockExplorers ? [ chain.blockExplorers.default.url ] : [],
+      networkId: chain.id,
+      iconUrls: logoUrl ? [ logoUrl ] : [],
+      isTestnet: chain.testnet,
+    };
+  }),
 };
 
 interface Props {
