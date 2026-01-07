@@ -1,11 +1,10 @@
 import { useAppKit, useAppKitState } from '@reown/appkit/react';
 import React from 'react';
-import { useAccountEffect, useDisconnect } from 'wagmi';
+import { useAccountEffect, useAccount, useDisconnect } from 'wagmi';
 
 import type { Params, Result } from './types';
 
 import * as mixpanel from 'lib/mixpanel/index';
-import useAccount from 'lib/web3/useAccount';
 
 export default function useWalletReown({ source, onConnect }: Params): Result {
   const { open: openModal } = useAppKit();

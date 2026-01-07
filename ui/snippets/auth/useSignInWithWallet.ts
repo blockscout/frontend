@@ -11,7 +11,7 @@ import getErrorMessage from 'lib/errors/getErrorMessage';
 import getErrorObj from 'lib/errors/getErrorObj';
 import getErrorObjPayload from 'lib/errors/getErrorObjPayload';
 import type * as mixpanel from 'lib/mixpanel';
-import useWeb3Wallet from 'lib/web3/useWallet';
+import useWalletReown from 'lib/web3/wallet/useWalletReown';
 import { toaster } from 'toolkit/chakra/toaster';
 import { YEAR } from 'toolkit/utils/consts';
 
@@ -49,7 +49,7 @@ function useSignInWithWallet({ onSuccess, onError, source = 'Login', isAuth, log
   const isConnectingWalletRef = React.useRef(false);
 
   const apiFetch = useApiFetch();
-  const web3Wallet = useWeb3Wallet({ source });
+  const web3Wallet = useWalletReown({ source });
   const { signMessageAsync } = useSignMessage();
   const { switchChainAsync } = useSwitchChain();
 

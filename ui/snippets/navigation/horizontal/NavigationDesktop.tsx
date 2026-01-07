@@ -1,14 +1,16 @@
 import { Box, chakra, Flex } from '@chakra-ui/react';
+import dynamic from 'next/dynamic';
 import React from 'react';
 
 import config from 'configs/app';
 import useNavItems, { isGroupItem } from 'lib/hooks/useNavItems';
-import RewardsButton from 'ui/rewards/RewardsButton';
 import { CONTENT_MAX_WIDTH } from 'ui/shared/layout/utils';
 import NetworkLogo from 'ui/snippets/networkLogo/NetworkLogo';
-import UserProfileDynamic from 'ui/snippets/user/dynamic/UserProfileDynamic';
-import UserProfileDesktop from 'ui/snippets/user/profile/UserProfileDesktop';
-import UserWalletDesktop from 'ui/snippets/user/wallet/UserWalletDesktop';
+
+const RewardsButton = dynamic(() => import('ui/rewards/RewardsButton'), { ssr: false });
+const UserProfileDynamic = dynamic(() => import('ui/snippets/user/dynamic/UserProfileDynamic'), { ssr: false });
+const UserProfileDesktop = dynamic(() => import('ui/snippets/user/profile/UserProfileDesktop'), { ssr: false });
+const UserWalletDesktop = dynamic(() => import('ui/snippets/user/wallet/UserWalletDesktop'), { ssr: false });
 
 import NavigationPromoBanner from '../promoBanner/NavigationPromoBanner';
 import RollupStageBadge from '../RollupStageBadge';

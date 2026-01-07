@@ -1,4 +1,5 @@
 import { chakra } from '@chakra-ui/react';
+import dynamic from 'next/dynamic';
 import React from 'react';
 
 import type { BannerFormat } from './types';
@@ -7,7 +8,7 @@ import config from 'configs/app';
 import { useAppContext } from 'lib/contexts/app';
 import * as cookies from 'lib/cookies';
 
-import AdBannerContent from './AdBannerContent';
+const AdBannerContent = dynamic(() => import('./AdBannerContent'), { ssr: false });
 
 const feature = config.features.adsBanner;
 

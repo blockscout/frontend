@@ -6,7 +6,7 @@ import type { Params, Result } from './types';
 
 import * as mixpanel from 'lib/mixpanel/index';
 
-import useAccount from '../useAccount';
+import useAccountDynamic from '../account/useAccountDynamic';
 
 export default function useWalletDynamic({ source, onConnect }: Params): Result {
   const isConnectionStarted = React.useRef(false);
@@ -54,7 +54,7 @@ export default function useWalletDynamic({ source, onConnect }: Params): Result 
     setIsClientLoaded(true);
   }, []);
 
-  const account = useAccount();
+  const account = useAccountDynamic();
   const address = account.address;
   const isConnected = isClientLoaded && !account.isDisconnected && account.address !== undefined;
 

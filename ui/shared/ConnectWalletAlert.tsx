@@ -1,5 +1,5 @@
 import { Flex } from '@chakra-ui/react';
-import { DynamicConnectButton } from '@dynamic-labs/sdk-react-core';
+import dynamic from 'next/dynamic';
 import React from 'react';
 
 import config from 'configs/app';
@@ -9,6 +9,8 @@ import { Alert } from 'toolkit/chakra/alert';
 import { Button } from 'toolkit/chakra/button';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+
+const DynamicConnectButton = dynamic(() => import('@dynamic-labs/sdk-react-core').then(module => module.DynamicConnectButton), { ssr: false });
 
 interface Props {
   isLoading?: boolean;

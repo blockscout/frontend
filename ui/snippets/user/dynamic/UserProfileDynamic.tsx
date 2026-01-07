@@ -4,7 +4,7 @@ import React from 'react';
 
 import { useMarketplaceContext } from 'lib/contexts/marketplace';
 import useIsMobile from 'lib/hooks/useIsMobile';
-import useWallet from 'lib/web3/useWallet';
+import useWalletDynamic from 'lib/web3/wallet/useWalletDynamic';
 
 import UserProfileDynamicButton from './UserProfileDynamicButton';
 import UserProfileDynamicPopover from './UserProfileDynamicPopover';
@@ -19,7 +19,7 @@ const UserProfileDynamic = ({ buttonSize, buttonVariant = 'header' }: Props) => 
   const isMobile = useIsMobile();
   const isLoggedIn = useIsLoggedIn();
   const { user, authMode } = useDynamicContext();
-  const wallet = useWallet({ source: 'Profile dropdown' });
+  const wallet = useWalletDynamic({ source: 'Profile dropdown' });
   const { isAutoConnectDisabled } = useMarketplaceContext();
 
   const handleOpenModal = React.useCallback(() => {

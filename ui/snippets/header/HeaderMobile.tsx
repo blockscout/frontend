@@ -1,13 +1,15 @@
 import { Box, Flex } from '@chakra-ui/react';
+import dynamic from 'next/dynamic';
 import React from 'react';
 
 import config from 'configs/app';
 import { useIsSticky } from 'toolkit/hooks/useIsSticky';
-import RewardsButton from 'ui/rewards/RewardsButton';
 import NetworkIcon from 'ui/snippets/networkLogo/NetworkIcon';
-import UserProfileDynamic from 'ui/snippets/user/dynamic/UserProfileDynamic';
-import UserProfileMobile from 'ui/snippets/user/profile/UserProfileMobile';
-import UserWalletMobile from 'ui/snippets/user/wallet/UserWalletMobile';
+
+const RewardsButton = dynamic(() => import('ui/rewards/RewardsButton'), { ssr: false });
+const UserProfileDynamic = dynamic(() => import('ui/snippets/user/dynamic/UserProfileDynamic'), { ssr: false });
+const UserProfileMobile = dynamic(() => import('ui/snippets/user/profile/UserProfileMobile'), { ssr: false });
+const UserWalletMobile = dynamic(() => import('ui/snippets/user/wallet/UserWalletMobile'), { ssr: false });
 
 import RollupStageBadge from '../navigation/RollupStageBadge';
 import TestnetBadge from '../navigation/TestnetBadge';
