@@ -6,16 +6,15 @@ import { useMarketplaceContext } from 'lib/contexts/marketplace';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useWalletDynamic from 'lib/web3/wallet/useWalletDynamic';
 
-import UserProfileDynamicButton from './UserProfileDynamicButton';
-import UserProfileDynamicPopover from './UserProfileDynamicPopover';
+import UserProfileButton from './UserProfileButton';
+import UserProfilePopover from './UserProfilePopover';
 
 interface Props {
   buttonSize?: ButtonProps['size'];
   buttonVariant?: ButtonProps['variant'];
 }
 
-// TODO @tom2drum restructure folder
-const UserProfileDynamic = ({ buttonSize, buttonVariant = 'header' }: Props) => {
+const UserProfile = ({ buttonSize, buttonVariant = 'header' }: Props) => {
   const isMobile = useIsMobile();
   const isLoggedIn = useIsLoggedIn();
   const { user, authMode } = useDynamicContext();
@@ -29,7 +28,7 @@ const UserProfileDynamic = ({ buttonSize, buttonVariant = 'header' }: Props) => 
   if (isLoggedIn && authMode === 'connect-and-sign') {
     return (
       <>
-        <UserProfileDynamicButton
+        <UserProfileButton
           email={ user?.email }
           size={ buttonSize }
           variant={ buttonVariant }
@@ -44,14 +43,14 @@ const UserProfileDynamic = ({ buttonSize, buttonVariant = 'header' }: Props) => 
   if (wallet.isConnected) {
     return (
       <>
-        <UserProfileDynamicPopover isAutoConnectDisabled={ isAutoConnectDisabled }>
-          <UserProfileDynamicButton
+        <UserProfilePopover isAutoConnectDisabled={ isAutoConnectDisabled }>
+          <UserProfileButton
             email={ user?.email }
             size={ buttonSize }
             variant={ buttonVariant }
             selected
           />
-        </UserProfileDynamicPopover>
+        </UserProfilePopover>
         <DynamicUserProfile variant={ isMobile ? 'modal' : 'dropdown' }/>
       </>
     );
@@ -59,7 +58,7 @@ const UserProfileDynamic = ({ buttonSize, buttonVariant = 'header' }: Props) => 
 
   return (
     <DynamicConnectButton>
-      <UserProfileDynamicButton
+      <UserProfileButton
         as="div"
         size={ buttonSize }
         variant={ buttonVariant }
@@ -68,4 +67,4 @@ const UserProfileDynamic = ({ buttonSize, buttonVariant = 'header' }: Props) => 
   );
 };
 
-export default React.memo(UserProfileDynamic);
+export default React.memo(UserProfile);

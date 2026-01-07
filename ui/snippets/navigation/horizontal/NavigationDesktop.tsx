@@ -7,16 +7,16 @@ import useNavItems, { isGroupItem } from 'lib/hooks/useNavItems';
 import { CONTENT_MAX_WIDTH } from 'ui/shared/layout/utils';
 import NetworkLogo from 'ui/snippets/networkLogo/NetworkLogo';
 
-const RewardsButton = dynamic(() => import('ui/rewards/RewardsButton'), { ssr: false });
-const UserProfileDynamic = dynamic(() => import('ui/snippets/user/dynamic/UserProfileDynamic'), { ssr: false });
-const UserProfileDesktop = dynamic(() => import('ui/snippets/user/profile/UserProfileDesktop'), { ssr: false });
-const UserWalletDesktop = dynamic(() => import('ui/snippets/user/wallet/UserWalletDesktop'), { ssr: false });
-
 import NavigationPromoBanner from '../promoBanner/NavigationPromoBanner';
 import RollupStageBadge from '../RollupStageBadge';
 import TestnetBadge from '../TestnetBadge';
 import NavLink from './NavLink';
 import NavLinkGroup from './NavLinkGroup';
+
+const RewardsButton = dynamic(() => import('ui/rewards/RewardsButton'), { ssr: false });
+const UserProfileDynamic = dynamic(() => import('ui/snippets/user/profile/dynamic/UserProfile'), { ssr: false });
+const UserProfileAuth0 = dynamic(() => import('ui/snippets/user/profile/auth0/UserProfileDesktop'), { ssr: false });
+const UserWalletDesktop = dynamic(() => import('ui/snippets/user/wallet/UserWalletDesktop'), { ssr: false });
 
 const NavigationDesktop = () => {
   const { mainNavItems } = useNavItems();
@@ -26,7 +26,7 @@ const NavigationDesktop = () => {
     if (accountFeature.isEnabled) {
       switch (accountFeature.authProvider) {
         case 'auth0':
-          return <UserProfileDesktop buttonSize="sm"/>;
+          return <UserProfileAuth0 buttonSize="sm"/>;
         case 'dynamic':
           return <UserProfileDynamic buttonSize="sm"/>;
         default:

@@ -11,8 +11,8 @@ import SearchBar from 'ui/snippets/searchBar/SearchBarDesktop';
 import SearchBarMobile from 'ui/snippets/searchBar/SearchBarMobile';
 
 const RewardsButton = dynamic(() => import('ui/rewards/RewardsButton'), { ssr: false });
-const UserProfileDynamic = dynamic(() => import('ui/snippets/user/dynamic/UserProfileDynamic'), { ssr: false });
-const UserProfileDesktop = dynamic(() => import('ui/snippets/user/profile/UserProfileDesktop'), { ssr: false });
+const UserProfileDynamic = dynamic(() => import('ui/snippets/user/profile/dynamic/UserProfile'), { ssr: false });
+const UserProfileAuth0 = dynamic(() => import('ui/snippets/user/profile/auth0/UserProfileDesktop'), { ssr: false });
 const UserWalletDesktop = dynamic(() => import('ui/snippets/user/wallet/UserWalletDesktop'), { ssr: false });
 
 export const BACKGROUND_DEFAULT =
@@ -58,7 +58,7 @@ const HeroBanner = () => {
     if (accountFeature.isEnabled) {
       switch (accountFeature.authProvider) {
         case 'auth0':
-          return <UserProfileDesktop buttonVariant="hero"/>;
+          return <UserProfileAuth0 buttonVariant="hero"/>;
         case 'dynamic':
           return <UserProfileDynamic buttonVariant="hero"/>;
       }

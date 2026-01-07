@@ -4,8 +4,8 @@ import React from 'react';
 import { Button } from 'toolkit/chakra/button';
 import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
 
-import UserProfileContentWallet from '../profile/UserProfileContentWallet';
-import UserWalletAutoConnectAlert from '../UserWalletAutoConnectAlert';
+import UserWalletAutoConnectAlert from '../../UserWalletAutoConnectAlert';
+import UserProfileContentWallet from '../common/UserProfileContentWallet';
 import styles from './UserProfileDynamicPopover.module.css';
 
 interface Props {
@@ -13,7 +13,7 @@ interface Props {
   isAutoConnectDisabled: boolean;
 }
 
-const UserProfileDynamicPopover = ({ children, isAutoConnectDisabled }: Props) => {
+const UserProfilePopover = ({ children, isAutoConnectDisabled }: Props) => {
 
   const { authenticateUser } = useAuthenticateConnectedUser();
 
@@ -35,4 +35,4 @@ const UserProfileDynamicPopover = ({ children, isAutoConnectDisabled }: Props) =
   );
 };
 
-export default React.memo(UserProfileDynamicPopover);
+export default React.memo(UserProfilePopover);

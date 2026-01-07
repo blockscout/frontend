@@ -7,14 +7,14 @@ import useAccountWithDomain from 'lib/web3/useAccountWithDomain';
 import { Button, type ButtonProps } from 'toolkit/chakra/button';
 import IconSvg from 'ui/shared/IconSvg';
 
-import { getUserHandle } from '../profile/utils';
-import UserIdenticon from '../UserIdenticon';
+import UserIdenticon from '../../UserIdenticon';
+import { getUserHandle } from '../common/utils';
 
 interface Props extends ButtonProps {
   email?: string;
 }
 
-const UserProfileDynamicButton = ({ selected, email, ...rest }: Props) => {
+const UserProfileButton = ({ selected, email, ...rest }: Props) => {
   const { isAutoConnectDisabled } = useMarketplaceContext();
   const accountWithDomain = useAccountWithDomain(true);
 
@@ -54,4 +54,4 @@ const UserProfileDynamicButton = ({ selected, email, ...rest }: Props) => {
   );
 };
 
-export default React.memo(UserProfileDynamicButton);
+export default React.memo(UserProfileButton);

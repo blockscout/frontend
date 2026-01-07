@@ -6,8 +6,8 @@ import config from 'configs/app';
 import SearchBar from 'ui/snippets/searchBar/SearchBarDesktop';
 
 const RewardsButton = dynamic(() => import('ui/rewards/RewardsButton'), { ssr: false });
-const UserProfileDynamic = dynamic(() => import('ui/snippets/user/dynamic/UserProfileDynamic'), { ssr: false });
-const UserProfileDesktop = dynamic(() => import('ui/snippets/user/profile/UserProfileDesktop'), { ssr: false });
+const UserProfileDynamic = dynamic(() => import('ui/snippets/user/profile/dynamic/UserProfile'), { ssr: false });
+const UserProfileAuth0 = dynamic(() => import('ui/snippets/user/profile/auth0/UserProfileDesktop'), { ssr: false });
 const UserWalletDesktop = dynamic(() => import('ui/snippets/user/wallet/UserWalletDesktop'), { ssr: false });
 
 type Props = {
@@ -23,7 +23,7 @@ const HeaderDesktop = ({ renderSearchBar }: Props) => {
     if (accountFeature.isEnabled) {
       switch (accountFeature.authProvider) {
         case 'auth0':
-          return <UserProfileDesktop/>;
+          return <UserProfileAuth0/>;
         case 'dynamic':
           return <UserProfileDynamic/>;
         default:

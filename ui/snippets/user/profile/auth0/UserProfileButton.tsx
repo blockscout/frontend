@@ -13,8 +13,8 @@ import { Button } from 'toolkit/chakra/button';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import IconSvg from 'ui/shared/IconSvg';
 
-import UserIdenticon from '../UserIdenticon';
-import { getUserHandle } from './utils';
+import UserIdenticon from '../../UserIdenticon';
+import { getUserHandle } from '../common/utils';
 
 interface Props {
   profileQuery: UseQueryResult<UserInfo, unknown>;
