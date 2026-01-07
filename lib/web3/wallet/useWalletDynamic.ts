@@ -1,4 +1,4 @@
-import { useDynamicContext, useDynamicEvents } from '@dynamic-labs/sdk-react-core';
+import { useDynamicContext, useDynamicEvents, useUserWallets } from '@dynamic-labs/sdk-react-core';
 import React from 'react';
 import { useAccountEffect } from 'wagmi';
 
@@ -13,10 +13,11 @@ export default function useWalletDynamic({ source, onConnect }: Params): Result 
   const [ isOpen ] = React.useState(false);
   const [ isClientLoaded, setIsClientLoaded ] = React.useState(false);
 
-  const { setShowDynamicUserProfile, setAuthMode } = useDynamicContext();
+  const { setShowDynamicUserProfile, setAuthMode, removeWallet } = useDynamicContext();
 
   const openModal = React.useCallback(() => {
     setShowDynamicUserProfile(true);
+    mixpanel.logEvent(mixpanel.EventTypes.ACCOUNT_ACCESS, { Action: 'Dropdown open' });
   }, [ setShowDynamicUserProfile ]);
 
   useDynamicEvents('authFlowOpen', async() => {
@@ -40,6 +41,13 @@ export default function useWalletDynamic({ source, onConnect }: Params): Result 
     openModal();
   }, [ setAuthMode, openModal ]);
 
+  const userWallets = useUserWallets();
+  const primaryWalletId = userWallets[0]?.id;
+
+  const handleDisconnect = React.useCallback(() => {
+    primaryWalletId && removeWallet(primaryWalletId);
+  }, [ primaryWalletId, removeWallet ]);
+
   useAccountEffect({ onConnect: handleAccountConnected });
 
   React.useEffect(() => {
@@ -52,11 +60,11 @@ export default function useWalletDynamic({ source, onConnect }: Params): Result 
 
   return React.useMemo(() => ({
     connect: handleConnect,
-    disconnect: openModal,
+    disconnect: handleDisconnect,
     isOpen,
     isConnected,
     isReconnecting: false,
     address,
     openModal,
-  }), [ handleConnect, openModal, isOpen, isConnected, address ]);
+  }), [ handleConnect, handleDisconnect, isOpen, isConnected, address, openModal ]);
 }

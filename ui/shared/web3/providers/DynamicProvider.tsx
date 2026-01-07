@@ -1,5 +1,5 @@
 import { EthereumWalletConnectors } from '@dynamic-labs/ethereum';
-import type { DynamicContextProps } from '@dynamic-labs/sdk-react-core';
+import type { DynamicContextProps, OnAuthSuccess } from '@dynamic-labs/sdk-react-core';
 import { DynamicContextProvider, getAuthToken } from '@dynamic-labs/sdk-react-core';
 import { DynamicWagmiConnector } from '@dynamic-labs/wagmi-connector';
 import { useQueryClient } from '@tanstack/react-query';
@@ -12,6 +12,7 @@ import useApiFetch from 'lib/api/useApiFetch';
 import { getResourceKey } from 'lib/api/useApiQuery';
 import getErrorMessage from 'lib/errors/getErrorMessage';
 import useGetCsrfToken from 'lib/hooks/useGetCsrfToken';
+import * as mixpanel from 'lib/mixpanel/index';
 import { chains } from 'lib/web3/chains';
 import { toaster } from 'toolkit/chakra/toaster';
 import { castToString } from 'toolkit/utils/guards';
@@ -52,7 +53,7 @@ const DynamicProvider = ({ children }: Props) => {
   const csrfQuery = useGetCsrfToken();
   const onLogout = useLogout();
 
-  const onAuthSuccess = React.useCallback(async() => {
+  const onAuthSuccess: OnAuthSuccess = React.useCallback(async({ primaryWallet }) => {
     // TODO @tom2drum check login via Merits button
     // TODO @tom2drum mixpanel events
     try {
@@ -69,6 +70,10 @@ const DynamicProvider = ({ children }: Props) => {
       }
       queryClient.setQueryData(getResourceKey('general:user_info'), () => response);
       csrfQuery.refetch();
+      mixpanel.logEvent(mixpanel.EventTypes.LOGIN, {
+        Action: 'Success',
+        Source: primaryWallet ? 'Wallet' : 'Email',
+      });
     } catch (error) {
       toaster.error({
         title: 'Error',
