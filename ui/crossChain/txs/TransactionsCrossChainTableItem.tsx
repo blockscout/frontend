@@ -133,6 +133,8 @@ const TransactionsCrossChainTableItem = ({ data, isLoading: isLoadingProp }: Pro
               chainId={ firstTransfer.source_token.chain_id }
               chains={ crossChainConfig }
               loading={ isLoading }
+              textStyle="xs"
+              color="text.secondary"
             />
           ) }
           { /* TODO @tom2drum add link to all transfers */ }
@@ -164,6 +166,8 @@ const TransactionsCrossChainTableItem = ({ data, isLoading: isLoadingProp }: Pro
               chainId={ firstTransfer.destination_token.chain_id }
               chains={ crossChainConfig }
               loading={ isLoading }
+              textStyle="xs"
+              color="text.secondary"
             />
           ) }
         </VStack>
