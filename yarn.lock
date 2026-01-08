@@ -1712,6 +1712,11 @@
   resolved "https://registry.yarnpkg.com/@blockscout/bens-types/-/bens-types-1.4.1.tgz#9182a79d9015b7fa2339edf0bfa3cd0c32045e66"
   integrity sha512-TlZ1HVdZ2Cswm/CcvNoxS+Ydiht/YGaLo//PJR/UmkmihlEFoY4HfVJvVcUnOQXi+Si7FwJ486DPii889nTJsQ==
 
+"@blockscout/interchain-indexer-types@0.0.5":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@blockscout/interchain-indexer-types/-/interchain-indexer-types-0.0.5.tgz#ad03599014aade88e8f16dce6d699177e1e2842e"
+  integrity sha512-v8nccXFcrBh0QgVZZSLdFFn+Aszp9od14UNuBNSaEFr/GSBFoVVnhn4fGwnhgeBGr7adPy6mwOdA9qTWq+OqYw==
+
 "@blockscout/multichain-aggregator-types@1.6.3-alpha.3":
   version "1.6.3-alpha.3"
   resolved "https://registry.yarnpkg.com/@blockscout/multichain-aggregator-types/-/multichain-aggregator-types-1.6.3-alpha.3.tgz#76169e8276552130a1424cc9dc24bfb31bbb7e3d"

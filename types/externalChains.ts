@@ -7,6 +7,11 @@ export interface ExternalChain {
   name: string;
   logo: string | undefined;
   explorer_url: string;
+  route_templates?: {
+    tx?: string;
+    address?: string;
+    token?: string;
+  };
 }
 
 export type ExternalChainExtended = ClusterChainConfig | EssentialDappsChainConfig;
