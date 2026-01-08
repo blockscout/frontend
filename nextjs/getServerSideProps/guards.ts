@@ -319,6 +319,14 @@ export const interopMessages: Guard = (chainConfig: typeof config) => async() =>
   }
 };
 
+export const crossChainTxs: Guard = (chainConfig: typeof config) => async() => {
+  if (!chainConfig.features.crossChainTxs.isEnabled) {
+    return {
+      notFound: true,
+    };
+  }
+};
+
 export const opSuperchain: Guard = () => async() => {
   if (!config.features.opSuperchain.isEnabled) {
     return {
