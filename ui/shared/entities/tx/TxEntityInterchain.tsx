@@ -1,4 +1,4 @@
-import { chakra } from '@chakra-ui/react';
+import type { JsxStyleProps } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ExternalChain } from 'types/externalChains';
@@ -9,7 +9,7 @@ import type { EntityProps as TxEntityProps } from './TxEntity';
 import TxEntity from './TxEntity';
 import TxEntityExternal from './TxEntityExternal';
 
-interface Props extends TxEntityProps {
+interface Props extends TxEntityProps, JsxStyleProps {
   chains: Array<ExternalChain> | undefined;
   chainId: string;
 }
@@ -25,4 +25,4 @@ const TxEntityInterchain = ({ chains, chainId, ...props }: Props) => {
   return <TxEntityExternal { ...props } chain={ chains?.find((chain) => chain.id === chainId) }/>;
 };
 
-export default chakra(TxEntityInterchain);
+export default React.memo(TxEntityInterchain);

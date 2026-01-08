@@ -14,7 +14,7 @@ interface Props extends StackProps {
   isLoading?: boolean;
 }
 
-const ChainInfo = ({ data, isLoading, ...rest }: Props) => {
+const ChainLabel = ({ data, isLoading, ...rest }: Props) => {
   if (!data) {
     return null;
   }
@@ -31,4 +31,4 @@ const ChainInfo = ({ data, isLoading, ...rest }: Props) => {
   );
 };
 
-export default React.memo(ChainInfo);
+export default React.memo(ChainLabel);

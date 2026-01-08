@@ -7,12 +7,12 @@ import AdaptiveTabs from '../AdaptiveTabs/AdaptiveTabs';
 import { getTabValue } from '../AdaptiveTabs/utils';
 import useActiveTabFromQuery from './useActiveTabFromQuery';
 
-interface Props extends AdaptiveTabsProps {
+export interface RoutedTabsProps extends AdaptiveTabsProps {
   preservedParams?: Array<string>;
   defaultTabId?: string;
 }
 
-const RoutedTabs = (props: Props) => {
+const RoutedTabs = (props: RoutedTabsProps) => {
   const { tabs, defaultTabId, onValueChange, preservedParams, ...rest } = props;
 
   const router = useRouter();

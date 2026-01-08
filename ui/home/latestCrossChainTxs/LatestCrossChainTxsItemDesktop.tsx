@@ -9,7 +9,7 @@ import { mdash } from 'toolkit/utils/htmlEntities';
 import CrossChainBridgeLink from 'ui/shared/crossChain/CrossChainBridgeLink';
 import CrossChainMessageEntity from 'ui/shared/entities/crossChainMessage/CrossChainMessageEntity';
 import TxEntityInterchain from 'ui/shared/entities/tx/TxEntityInterchain';
-import ChainInfo from 'ui/shared/externalChains/ChainInfo';
+import ChainLabel from 'ui/shared/externalChains/ChainLabel';
 import CrossChainTxsStatusTag from 'ui/shared/statusTag/CrossChainTxsStatusTag';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
@@ -50,7 +50,7 @@ const LatestCrossChainTxsItemDesktop = ({ data, isLoading: isLoadingProp }: Prop
           ) : (
             <chakra.span color="text.secondary">{ mdash }</chakra.span>
           ) }
-          <ChainInfo
+          <ChainLabel
             data={ crossChainConfig?.find((chain) => chain.id.toString() === data.source_chain_id) }
             isLoading={ isLoading }
             color="text.secondary"
@@ -74,7 +74,7 @@ const LatestCrossChainTxsItemDesktop = ({ data, isLoading: isLoadingProp }: Prop
           ) : (
             <chakra.span color="text.secondary">{ mdash }</chakra.span>
           ) }
-          <ChainInfo
+          <ChainLabel
             data={ crossChainConfig?.find((chain) => chain.id.toString() === data.destination_chain_id) }
             isLoading={ isLoading }
             color="text.secondary"

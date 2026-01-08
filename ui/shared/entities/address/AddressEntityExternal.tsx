@@ -5,14 +5,14 @@ import type { ExternalChain } from 'types/externalChains';
 
 import { stripTrailingSlash } from 'toolkit/utils/url';
 
-import type { EntityProps } from './TxEntity';
-import TxEntity from './TxEntity';
+import type { EntityProps } from './AddressEntity';
+import AddressEntity from './AddressEntity';
 
 interface Props extends EntityProps, JsxStyleProps {
   chain: ExternalChain | undefined;
 }
 
-const TxEntityExternal = ({ chain, ...props }: Props) => {
+const AddressEntityExternal = ({ chain, ...props }: Props) => {
 
   const defaultHref = (() => {
     if (!chain) {
@@ -22,7 +22,7 @@ const TxEntityExternal = ({ chain, ...props }: Props) => {
     try {
       const url = new URL(
         stripTrailingSlash(chain.explorer_url) +
-            (chain.route_templates?.tx || '/tx/{hash}').replace('{hash}', props.hash),
+            (chain.route_templates?.address || '/address/{hash}').replace('{hash}', props.address.hash),
       );
       return url.toString();
     } catch (error) {}
@@ -31,7 +31,7 @@ const TxEntityExternal = ({ chain, ...props }: Props) => {
   const href = props.href ?? defaultHref;
 
   return (
-    <TxEntity
+    <AddressEntity
       { ...props }
       href={ href }
       noLink={ props.noLink || !href }
@@ -40,4 +40,4 @@ const TxEntityExternal = ({ chain, ...props }: Props) => {
   );
 };
 
-export default React.memo(TxEntityExternal);
+export default React.memo(AddressEntityExternal);
