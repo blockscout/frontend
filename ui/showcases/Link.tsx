@@ -34,7 +34,7 @@ export const TOKEN = {
   total_supply: '76923002799740785',
   type: 'ERC-20' as const,
   reputation: 'ok' as const,
-} satisfies TokenInfo<'ERC-20'>;
+} satisfies TokenInfo;
 
 const LinkShowcase = () => {
 

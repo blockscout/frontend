@@ -6,7 +6,9 @@ import type { AddressTokensErc20Item } from './types';
 
 import config from 'configs/app';
 import multichainConfig from 'configs/multichain';
+import { getTokenTypeName } from 'lib/token/tokenTypes';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
+import { Tag } from 'toolkit/chakra/tag';
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
 import NativeTokenTag from 'ui/shared/celo/NativeTokenTag';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
@@ -15,13 +17,14 @@ import calculateUsdValue from 'ui/shared/value/calculateUsdValue';
 import SimpleValue from 'ui/shared/value/SimpleValue';
 import { DEFAULT_ACCURACY_USD } from 'ui/shared/value/utils';
 
-type Props = AddressTokensErc20Item & { isLoading: boolean };
+type Props = AddressTokensErc20Item & { isLoading: boolean; hasAdditionalTokenTypes?: boolean };
 
 const ERC20TokensTableItem = ({
   token,
   value,
   chain_values: chainValues,
   isLoading,
+  hasAdditionalTokenTypes,
 }: Props) => {
 
   const {
@@ -42,9 +45,11 @@ const ERC20TokensTableItem = ({
     return chain;
   }, [ chainValues ]);
 
+  const cellVerticalAlign = hasAdditionalTokenTypes ? 'top' : 'middle';
+
   return (
     <TableRow className="group" >
-      <TableCell verticalAlign="middle">
+      <TableCell verticalAlign={ cellVerticalAlign }>
         <HStack gap={ 2 }>
           <TokenEntity
             token={ token }
@@ -57,8 +62,9 @@ const ERC20TokensTableItem = ({
           />
           { isNativeToken && <NativeTokenTag/> }
         </HStack>
+        { hasAdditionalTokenTypes && <Tag loading={ isLoading } mt={ 2 }>{ getTokenTypeName(token.type) }</Tag> }
       </TableCell>
-      <TableCell verticalAlign="middle">
+      <TableCell verticalAlign={ cellVerticalAlign }>
         <Flex alignItems="center" width="150px" justifyContent="space-between">
           <AddressEntity
             address={{ hash: token.address_hash }}
@@ -69,7 +75,7 @@ const ERC20TokensTableItem = ({
           <AddressAddToWallet token={ token } ml={ 4 } isLoading={ isLoading } opacity="0" _groupHover={{ opacity: 1 }}/>
         </Flex>
       </TableCell>
-      <TableCell isNumeric verticalAlign="middle">
+      <TableCell isNumeric verticalAlign={ cellVerticalAlign }>
         { token.exchange_rate ? (
           <SimpleValue
             value={ BigNumber(token.exchange_rate) }
@@ -79,14 +85,14 @@ const ERC20TokensTableItem = ({
           />
         ) : null }
       </TableCell>
-      <TableCell isNumeric verticalAlign="middle">
+      <TableCell isNumeric verticalAlign={ cellVerticalAlign }>
         <SimpleValue
           value={ tokenQuantity }
           color={ isNativeToken ? 'text.secondary' : undefined }
           loading={ isLoading }
         />
       </TableCell>
-      <TableCell isNumeric verticalAlign="middle">
+      <TableCell isNumeric verticalAlign={ cellVerticalAlign }>
         { token.exchange_rate && (
           <SimpleValue
             value={ tokenValue }

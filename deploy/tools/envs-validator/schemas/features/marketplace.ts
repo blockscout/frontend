@@ -110,6 +110,7 @@ export const marketplaceSchema = yup
           const valueSchema = yup.object<EssentialDappsConfig>().transform(replaceQuotes).json().shape({
             swap: yup.lazy(value => value ?
               yup.object<EssentialDappsConfig['swap']>().shape({
+                url: yup.string().test(urlTest).required(),
                 chains: chainsSchema,
                 fee: yup.string().required(),
                 integrator: yup.string().required(),

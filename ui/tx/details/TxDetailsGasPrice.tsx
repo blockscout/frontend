@@ -8,7 +8,7 @@ import GasPriceValue from 'ui/shared/value/GasPriceValue';
 import TokenValue from 'ui/shared/value/TokenValue';
 
 interface Props {
-  gasToken?: TokenInfo<'ERC-20'> | null;
+  gasToken?: TokenInfo | null;
   gasPrice: string | null;
   isLoading?: boolean;
 }

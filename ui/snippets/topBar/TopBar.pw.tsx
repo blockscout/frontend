@@ -25,7 +25,7 @@ test('default view +@dark-mode', async({ render, mockApiResponse, page, injectMe
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1500, height: 220 } });
 
   await component.getByLabel('User settings').click();
-  await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1500, height: 400 } });
+  await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1500, height: 450 } });
 });
 
 test('default view +@mobile -@default', async({ render, mockApiResponse, page, injectMetaMaskProvider }) => {
@@ -34,7 +34,7 @@ test('default view +@mobile -@default', async({ render, mockApiResponse, page, i
   const component = await render(<TopBar/>);
 
   await component.getByLabel('User settings').click();
-  await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1500, height: 400 } });
+  await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1500, height: 450 } });
 });
 
 test('with secondary coin price +@mobile', async({ render, mockApiResponse }) => {

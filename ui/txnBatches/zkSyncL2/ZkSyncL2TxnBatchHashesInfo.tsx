@@ -1,4 +1,3 @@
-import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ZkSyncBatch } from 'types/api/zkSyncL2';
@@ -39,9 +38,7 @@ const ZkSyncL2TxnBatchHashesInfo = ({ isLoading, data }: Props) => {
               maxW="100%"
             />
             { data.commit_transaction_timestamp && (
-              <Flex alignItems="center" maxW="100%">
-                <DetailedInfoTimestamp timestamp={ data.commit_transaction_timestamp } isLoading={ isLoading }/>
-              </Flex>
+              <DetailedInfoTimestamp timestamp={ data.commit_transaction_timestamp } isLoading={ isLoading }/>
             ) }
           </>
         ) : <Skeleton loading={ isLoading }>Pending</Skeleton> }
@@ -62,9 +59,7 @@ const ZkSyncL2TxnBatchHashesInfo = ({ isLoading, data }: Props) => {
               maxW="100%"
             />
             { data.prove_transaction_timestamp && (
-              <Flex alignItems="center" maxW="100%">
-                <DetailedInfoTimestamp timestamp={ data.prove_transaction_timestamp } isLoading={ isLoading }/>
-              </Flex>
+              <DetailedInfoTimestamp timestamp={ data.prove_transaction_timestamp } isLoading={ isLoading }/>
             ) }
           </>
         ) : <Skeleton loading={ isLoading }>Pending</Skeleton> }
@@ -85,9 +80,7 @@ const ZkSyncL2TxnBatchHashesInfo = ({ isLoading, data }: Props) => {
               maxW="100%"
             />
             { data.execute_transaction_timestamp && (
-              <Flex alignItems="center" maxW="100%">
-                <DetailedInfoTimestamp timestamp={ data.execute_transaction_timestamp } isLoading={ isLoading }/>
-              </Flex>
+              <DetailedInfoTimestamp timestamp={ data.execute_transaction_timestamp } isLoading={ isLoading }/>
             ) }
           </>
         ) : <Skeleton loading={ isLoading }>Pending</Skeleton> }

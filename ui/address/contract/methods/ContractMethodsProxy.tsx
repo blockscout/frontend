@@ -3,14 +3,14 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { AddressImplementation } from 'types/api/addressParams';
-import type { SmartContractProxyType } from 'types/api/contract';
+import type { SmartContractConflictingImplementation, SmartContractProxyType } from 'types/api/contract';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import ConnectWalletAlert from 'ui/shared/ConnectWalletAlert';
 
 import ContractSourceAddressSelector from '../ContractSourceAddressSelector';
 import ContractAbi from './ContractAbi';
+import ContractMethodsAlerts from './ContractMethodsAlerts';
 import ContractMethodsContainer from './ContractMethodsContainer';
 import ContractMethodsFilters from './ContractMethodsFilters';
 import useMethodsFilters from './useMethodsFilters';
@@ -20,9 +20,10 @@ interface Props {
   implementations: Array<AddressImplementation>;
   isLoading?: boolean;
   proxyType?: SmartContractProxyType;
+  conflictingImplementations?: Array<SmartContractConflictingImplementation>;
 }
 
-const ContractMethodsProxy = ({ implementations, isLoading: isInitialLoading, proxyType }: Props) => {
+const ContractMethodsProxy = ({ implementations, isLoading: isInitialLoading, proxyType, conflictingImplementations }: Props) => {
   const router = useRouter();
   const sourceAddress = getQueryParamString(router.query.source_address);
   const tab = getQueryParamString(router.query.tab);
@@ -43,7 +44,7 @@ const ContractMethodsProxy = ({ implementations, isLoading: isInitialLoading, pr
 
   return (
     <Flex flexDir="column" rowGap={ 6 }>
-      <ConnectWalletAlert isLoading={ isInitialLoading }/>
+      <ContractMethodsAlerts isLoading={ isInitialLoading } proxyType={ proxyType } conflictingImplementations={ conflictingImplementations }/>
       <div>
         <ContractSourceAddressSelector
           items={ implementations }

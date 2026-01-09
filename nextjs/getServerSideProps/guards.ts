@@ -227,8 +227,9 @@ export const rollup: Guard = (chainConfig: typeof config) => async() => {
 const DEPOSITS_ROLLUP_TYPES: Array<RollupType> = [ 'optimistic', 'shibarium', 'zkEvm', 'arbitrum', 'scroll' ];
 export const deposits: Guard = (chainConfig: typeof config) => async() => {
   const rollupFeature = chainConfig.features.rollup;
+  const beaconChainFeature = chainConfig.features.beaconChain;
   if (
-    !chainConfig.features.beaconChain.isEnabled &&
+    (!beaconChainFeature.isEnabled || beaconChainFeature.withdrawalsOnly) &&
     !(rollupFeature.isEnabled && DEPOSITS_ROLLUP_TYPES.includes(rollupFeature.type))) {
     return {
       notFound: true,

@@ -1,6 +1,7 @@
 import type { Feature } from './types';
 import type { AuthProvider } from 'types/client/account';
 
+import app from '../app';
 import services from '../services';
 import { getEnvValue } from '../utils';
 
@@ -14,7 +15,12 @@ const config: Feature<{
     environmentId: string;
   };
 }> = (() => {
-  if (getEnvValue('NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED') === 'true' && services.reCaptchaV2.siteKey) {
+
+  if (
+    !app.isPrivateMode &&
+    getEnvValue('NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED') === 'true' &&
+    services.reCaptchaV2.siteKey
+  ) {
     const authProvider = (getEnvValue('NEXT_PUBLIC_ACCOUNT_AUTH_PROVIDER') || 'auth0') as AuthProvider;
     const dynamicEnvironmentId = getEnvValue('NEXT_PUBLIC_ACCOUNT_DYNAMIC_ENVIRONMENT_ID');
 

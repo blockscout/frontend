@@ -1,5 +1,6 @@
 import type { Feature } from './types';
 
+import app from '../app';
 import chain from '../chain';
 import { getEnvValue, parseEnvJson } from '../utils';
 import accountFeature from './account';
@@ -33,6 +34,7 @@ const config: Feature<FeaturePayload> = (() => {
   const isOpSuperchain = opSuperchain.isEnabled;
 
   if (
+    !app.isPrivateMode &&
     (isSingleChain || isOpSuperchain)
   ) {
     if (accountFeature.isEnabled && accountFeature.authProvider === 'dynamic' && accountFeature.dynamic?.environmentId) {
