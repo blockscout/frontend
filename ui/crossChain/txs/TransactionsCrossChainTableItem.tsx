@@ -3,8 +3,12 @@ import React from 'react';
 
 import type { InterchainMessage } from '@blockscout/interchain-indexer-types';
 
+import { route } from 'nextjs-routes';
+
+import config from 'configs/app';
 import useCrossChainConfig from 'lib/crossChain/useCrossChainConfig';
 import { Link } from 'toolkit/chakra/link';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { mdash } from 'toolkit/utils/htmlEntities';
 import AddressFromToIcon from 'ui/shared/address/AddressFromToIcon';
@@ -27,6 +31,19 @@ const TransactionsCrossChainTableItem = ({ data, isLoading: isLoadingProp }: Pro
   const isLoading = isLoadingProp || isPending;
 
   const firstTransfer = data.transfers[0];
+  const txHashWithTransfers = (() => {
+    if (data.transfers.length === 0) {
+      return;
+    }
+
+    if (config.chain.id === data.source_chain_id) {
+      return data.source_transaction_hash;
+    }
+
+    if (config.chain.id === data.destination_chain_id) {
+      return data.destination_transaction_hash;
+    }
+  })();
 
   return (
     <TableRow>
@@ -108,8 +125,17 @@ const TransactionsCrossChainTableItem = ({ data, isLoading: isLoadingProp }: Pro
         </VStack>
       </TableCell>
       <TableCell>
-        { /* TODO @tom2drum add link to transfers */ }
-        <Link loading={ isLoading }>{ data.transfers.length }</Link>
+        { txHashWithTransfers ? (
+          <Link
+            href={ route({ pathname: '/tx/[hash]', query: { hash: txHashWithTransfers, tab: 'token_transfers_cross_chain' } }) }
+            loading={ isLoading }
+            lineHeight="24px"
+          >
+            { data.transfers.length }
+          </Link>
+        ) : (
+          <Skeleton loading={ isLoading } color="text.secondary" lineHeight="24px">{ data.transfers.length }</Skeleton>
+        ) }
       </TableCell>
       <TableCell>
         <VStack alignItems="start">
