@@ -14,11 +14,11 @@ const CrossChainTxsStatusTag = ({ status: statusProp, mode = 'compact', ...rest 
   const { status, text } = (() => {
     switch (statusProp) {
       case 'completed':
-        return { status: 'ok' as const, text: 'Success' };
+        return { status: 'ok' as const, text: 'Completed' };
       case 'failed':
         return { status: 'error' as const, text: 'Failed' };
       case 'initiated':
-        return { status: 'pending' as const, text: 'Pending' };
+        return { status: 'pending' as const, text: 'Initiated' };
       default:
         return { status: undefined, text: undefined };
     }

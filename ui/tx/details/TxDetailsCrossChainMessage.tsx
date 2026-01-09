@@ -91,7 +91,7 @@ const TxDetailsCrossChainMessage = ({ data, isLoading: isLoadingProp }: Props) =
         ) }
         { data.recipient && (
           <DetailedInfoItemBreakdown.Row
-            label="Recipient"
+            label="Target"
           >
             <AddressEntityInterchain
               chains={ crossChainConfig }
