@@ -6,7 +6,6 @@ import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolki
 
 import UserWalletAutoConnectAlert from '../../UserWalletAutoConnectAlert';
 import UserProfileContentWallet from '../common/UserProfileContentWallet';
-import styles from './UserProfileDynamicPopover.module.css';
 
 interface Props {
   children: React.ReactNode;
@@ -23,10 +22,16 @@ const UserProfilePopover = ({ children, isAutoConnectDisabled }: Props) => {
         { children }
       </PopoverTrigger>
       <PopoverContent w="280px">
-        <PopoverBody>
+        <PopoverBody
+          css={{
+            '& .dynamic-login-button': {
+              width: '100%',
+            },
+          }}
+        >
           { isAutoConnectDisabled && <UserWalletAutoConnectAlert/> }
           <UserProfileContentWallet/>
-          <DynamicConnectButton buttonClassName={ styles.button }>
+          <DynamicConnectButton buttonClassName="dynamic-login-button">
             <Button as="div" mt={ 3 } onClick={ authenticateUser } size="sm" w="100%" >Log in</Button>
           </DynamicConnectButton>
         </PopoverBody>

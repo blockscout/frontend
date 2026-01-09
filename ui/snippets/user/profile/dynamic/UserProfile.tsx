@@ -3,7 +3,6 @@ import { DynamicConnectButton, DynamicUserProfile, useDynamicContext, useIsLogge
 import React from 'react';
 
 import { useMarketplaceContext } from 'lib/contexts/marketplace';
-import useIsMobile from 'lib/hooks/useIsMobile';
 import useWalletDynamic from 'lib/web3/wallet/useWalletDynamic';
 
 import UserProfileButton from './UserProfileButton';
@@ -15,7 +14,6 @@ interface Props {
 }
 
 const UserProfile = ({ buttonSize, buttonVariant = 'header' }: Props) => {
-  const isMobile = useIsMobile();
   const isLoggedIn = useIsLoggedIn();
   const { user, authMode } = useDynamicContext();
   const wallet = useWalletDynamic({ source: 'Profile dropdown' });
@@ -35,7 +33,7 @@ const UserProfile = ({ buttonSize, buttonVariant = 'header' }: Props) => {
           onClick={ handleOpenModal }
           selected
         />
-        <DynamicUserProfile variant={ isMobile ? 'modal' : 'dropdown' }/>
+        <DynamicUserProfile variant="modal"/>
       </>
     );
   }
@@ -51,7 +49,7 @@ const UserProfile = ({ buttonSize, buttonVariant = 'header' }: Props) => {
             selected
           />
         </UserProfilePopover>
-        <DynamicUserProfile variant={ isMobile ? 'modal' : 'dropdown' }/>
+        <DynamicUserProfile variant="modal"/>
       </>
     );
   }

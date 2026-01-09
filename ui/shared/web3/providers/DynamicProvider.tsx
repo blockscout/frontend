@@ -53,9 +53,7 @@ const DynamicProvider = ({ children }: Props) => {
   const csrfQuery = useGetCsrfToken();
   const onLogout = useLogout();
 
-  const onAuthSuccess: OnAuthSuccess = React.useCallback(async({ primaryWallet }) => {
-    // TODO @tom2drum check login via Merits button
-    // TODO @tom2drum mixpanel events
+  const onAuthSuccess: OnAuthSuccess = React.useCallback(async() => {
     try {
       const authToken = getAuthToken();
       const response = await apiFetch<'general:auth_dynamic', UserInfo, unknown>('general:auth_dynamic', {
@@ -72,7 +70,7 @@ const DynamicProvider = ({ children }: Props) => {
       csrfQuery.refetch();
       mixpanel.logEvent(mixpanel.EventTypes.LOGIN, {
         Action: 'Success',
-        Source: primaryWallet ? 'Wallet' : 'Email',
+        Source: 'Dynamic',
       });
     } catch (error) {
       toaster.error({
