@@ -44,7 +44,7 @@ const LatestCrossChainTxs = () => {
         ))) }
       </Box>
       <Box mb={ 3 } hideBelow="lg" textStyle="sm">
-        <TableRoot minWidth="1000px">
+        <TableRoot minWidth="750px">
           <TableBody>
             { data.items.slice(0, txsCount).map(((tx, index) => (
               <LatestCrossChainTxsItemDesktop

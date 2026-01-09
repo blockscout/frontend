@@ -2,13 +2,14 @@ import React from 'react';
 
 import type { BadgeProps } from 'toolkit/chakra/badge';
 
-import StatusTag from './StatusTag';
+import StatusTag, { type Props as StatusTagProps } from './StatusTag';
 
 interface Props extends BadgeProps {
   status: string;
+  mode?: StatusTagProps['mode'];
 }
 
-const CrossChainTxsStatusTag = ({ status: statusProp, ...rest }: Props) => {
+const CrossChainTxsStatusTag = ({ status: statusProp, mode = 'compact', ...rest }: Props) => {
 
   const { status, text } = (() => {
     switch (statusProp) {
@@ -27,7 +28,7 @@ const CrossChainTxsStatusTag = ({ status: statusProp, ...rest }: Props) => {
     return null;
   }
 
-  return <StatusTag type={ status } text={ text } mode="compact" { ...rest }/>;
+  return <StatusTag type={ status } text={ text } mode={ mode } { ...rest }/>;
 };
 
 export default React.memo(CrossChainTxsStatusTag);

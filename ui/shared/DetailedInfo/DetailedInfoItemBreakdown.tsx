@@ -32,7 +32,7 @@ export const Container = ({ children, ...rest }: ContainerProps) => {
 
 interface RowProps {
   label: string;
-  hint: string;
+  hint?: string;
   children: React.ReactNode;
 }
 
@@ -40,7 +40,7 @@ export const Row = ({ label, hint, children }: RowProps) => {
   return (
     <>
       <GridItem color="text.secondary" display="flex" alignItems="center">
-        <Hint label={ hint } boxSize={ 4 } mr={ 1 }/>
+        { hint && <Hint label={ hint } boxSize={ 4 } mr={ 1 }/> }
         <TruncatedText text={ label } maxW={{ base: '130px', lg: 'unset' }}/>
       </GridItem>
       { children }
