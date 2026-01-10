@@ -301,15 +301,16 @@ jobs:
           path: ./playwright
 
       - name: Run PlayWright
-        run: yarn test:pw:ci --affected=${{ github.event_name == 'pull_request' }} --pass-with-no-tests --reporter=blob
+        run: yarn test:pw:ci --affected=${{ github.event_name == 'pull_request' }} --pass-with-no-tests --reporter=blob && ls -la blob-report
         env:
           HOME: /root
           PW_PROJECT: ${{ matrix.project }}
+          PLAYWRIGHT_BLOB_OUTPUT_NAME: report-${{ matrix.project }}.zip
 
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: playwright-report-${{ matrix.project }}
-          path: playwright-report
+          path: blob-report/report-${{ matrix.project }}.zip
           retention-days: 10

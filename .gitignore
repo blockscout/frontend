@@ -55,6 +55,7 @@ yarn-error.log*
 **.decrypted~**
 /test-results/
 /playwright-report/
+/blob-report/
 /playwright/.cache/
 /playwright/.browser/
 /playwright/envs.js
