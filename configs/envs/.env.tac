@@ -29,6 +29,7 @@ NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM=https://airtable.com/appiy5yijZpMMSKjT/shr6u
 NEXT_PUBLIC_MARKETPLACE_SUGGEST_IDEAS_FORM=https://airtable.com/appiy5yijZpMMSKjT/pag3t82DUCyhGRZZO/form
 NEXT_PUBLIC_METADATA_SERVICE_API_HOST=https://metadata.services.blockscout.com
 NEXT_PUBLIC_MIXPANEL_CONFIG_OVERRIDES={"record_sessions_percent": 0.5,"record_heatmap_data": true}
+NEXT_PUBLIC_MULTICHAIN_BALANCE_PROVIDER_CONFIG=[{'name': 'octav', 'url_template': 'https://pro.octav.fi/?addresses={address}', 'logo': 'https://pro.octav.fi/icons/octav-circle.svg'}]
 NEXT_PUBLIC_NAME_SERVICE_API_HOST=https://bens.services.blockscout.com
 NEXT_PUBLIC_NAVIGATION_HIGHLIGHTED_ROUTES=['/apps']
 NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS=18
