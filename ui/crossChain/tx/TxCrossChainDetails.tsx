@@ -12,6 +12,7 @@ import RawInputData from 'ui/shared/RawInputData';
 import CrossChainTxsStatusTag from 'ui/shared/statusTag/CrossChainTxsStatusTag';
 
 import TxCrossChainDetailsLifecycle from './TxCrossChainDetailsLifecycle';
+import TxCrossChainDetailsTransfers from './TxCrossChainDetailsTransfers';
 
 interface Props {
   data: InterchainMessage | undefined;
@@ -74,6 +75,9 @@ const TxCrossChainDetails = ({ data, isLoading }: Props) => {
       <DetailedInfo.ItemValue>
         <CrossChainBridgeLink data={ data.bridge } isLoading={ isLoading }/>
       </DetailedInfo.ItemValue>
+
+      { data.transfers.length > 0 && <TxCrossChainDetailsTransfers data={ data.transfers } id={ data.message_id } isLoading={ isLoading }/> }
+
       <DetailedInfo.ItemLabel
         hint="Status of the cross-chain transaction"
         isLoading={ isLoading }

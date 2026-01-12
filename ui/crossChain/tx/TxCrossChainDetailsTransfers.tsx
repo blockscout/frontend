@@ -1,0 +1,115 @@
+import { chakra, Flex, GridItem } from '@chakra-ui/react';
+import React from 'react';
+
+import type { InterchainTransfer } from '@blockscout/interchain-indexer-types';
+
+import { route } from 'nextjs-routes';
+
+import useCrossChainConfig from 'lib/crossChain/useCrossChainConfig';
+import { Link } from 'toolkit/chakra/link';
+import AddressFromToIcon from 'ui/shared/address/AddressFromToIcon';
+import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
+import AddressEntityInterchain from 'ui/shared/entities/address/AddressEntityInterchain';
+import IconSvg from 'ui/shared/IconSvg';
+import TokenValueInterchain from 'ui/shared/value/TokenValueInterchain';
+
+const MAX_NUM = 5;
+
+interface Props {
+  data: Array<InterchainTransfer>;
+  id: string;
+  isLoading?: boolean;
+}
+
+const TxCrossChainDetailsTransfers = ({ data, id, isLoading }: Props) => {
+  const { data: crossChainConfig } = useCrossChainConfig();
+
+  return (
+    <>
+      <DetailedInfo.ItemLabel
+        hint="List of tokens transferred in the cross-chain transaction"
+      >
+        Token transferred
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue position="relative" multiRow>
+        <Flex
+          flexDirection="column"
+          alignItems="flex-start"
+          rowGap={ 1 }
+          w="100%"
+          overflow="hidden"
+        >
+          { data.slice(0, MAX_NUM).map((item, index) => {
+            return (
+              <Flex key={ index } alignItems="center" columnGap={ 2 } rowGap={ 0 } flexWrap="wrap">
+                { item.sender && item.source_token?.chain_id ? (
+                  <AddressEntityInterchain
+                    address={ item.sender }
+                    isLoading={ isLoading }
+                    chains={ crossChainConfig }
+                    chainId={ item.source_token.chain_id }
+                    noIcon
+                    truncation="constant"
+                  />
+                ) : <chakra.span color="text.secondary">Unknown</chakra.span> }
+                <AddressFromToIcon
+                  isLoading={ isLoading }
+                  type="unspecified"
+                />
+                { item.recipient && item.destination_token?.chain_id ? (
+                  <AddressEntityInterchain
+                    address={ item.recipient }
+                    isLoading={ isLoading }
+                    chains={ crossChainConfig }
+                    chainId={ item.destination_token.chain_id }
+                    noIcon
+                    truncation="constant"
+                  />
+                ) : <chakra.span color="text.secondary">Unknown</chakra.span> }
+                <chakra.span color="text.secondary">for</chakra.span>
+                { item.source_token && item.source_token.chain_id ? (
+                  <TokenValueInterchain
+                    token={ item.source_token }
+                    amount={ item.source_amount }
+                    chainId={ item.source_token.chain_id }
+                    chains={ crossChainConfig }
+                    loading={ isLoading }
+                  />
+                ) : <chakra.span color="text.secondary">Unknown</chakra.span> }
+                <AddressFromToIcon
+                  isLoading={ isLoading }
+                  type="unspecified"
+                />
+                { item.destination_token && item.destination_token.chain_id ? (
+                  <TokenValueInterchain
+                    token={ item.destination_token }
+                    amount={ item.destination_amount }
+                    chainId={ item.destination_token.chain_id }
+                    chains={ crossChainConfig }
+                    loading={ isLoading }
+                  />
+                ) : <chakra.span color="text.secondary">Unknown</chakra.span> }
+              </Flex>
+            );
+          }) }
+        </Flex>
+      </DetailedInfo.ItemValue>
+      { data.length > MAX_NUM && (
+        <>
+          <GridItem hideBelow="lg"/>
+          <GridItem fontSize="sm" alignItems="center" display="inline-flex" pl={{ base: '28px', lg: 0 }}>
+            { /* FIXME use non-navigation icon */ }
+            <IconSvg name="navigation/tokens" boxSize={ 6 }/>
+            <Link
+              href={ route({ pathname: '/cross-chain-tx/[id]', query: { id, tab: 'transfers' } }) }
+            >
+              View all
+            </Link>
+          </GridItem>
+        </>
+      ) }
+    </>
+  );
+};
+
+export default React.memo(TxCrossChainDetailsTransfers);

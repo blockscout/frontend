@@ -13,6 +13,7 @@ import CrossChainMessageEntity from 'ui/shared/entities/crossChainMessage/CrossC
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 import TxCrossChainDetails from './TxCrossChainDetails';
+import TxCrossChainTransfers from './TxCrossChainTransfers';
 
 const TxCrossChain = () => {
   const router = useRouter();
@@ -36,7 +37,7 @@ const TxCrossChain = () => {
     {
       id: 'transfers',
       title: 'Token transfers',
-      component: <>Token transfers</>,
+      component: <TxCrossChainTransfers data={ query.data?.transfers } isLoading={ query.isPlaceholderData } isError={ query.isError }/>,
     },
   ];
 
