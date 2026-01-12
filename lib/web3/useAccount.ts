@@ -1,23 +1,22 @@
-import type { UseAccountReturnType } from 'wagmi';
-import { useAccount } from 'wagmi';
+import { useAccount as useAccountWagmi } from 'wagmi';
 
 import config from 'configs/app';
 
-function useAccountFallback(): UseAccountReturnType {
-  return {
-    address: undefined,
-    addresses: undefined,
-    chain: undefined,
-    chainId: undefined,
-    connector: undefined,
-    isConnected: false,
-    isConnecting: false,
-    isDisconnected: true,
-    isReconnecting: false,
-    status: 'disconnected',
-  };
-}
+import useAccountDynamic from './account/useAccountDynamic';
+import useAccountFallback from './account/useAccountFallback';
 
-const hook = config.features.blockchainInteraction.isEnabled ? useAccount : useAccountFallback;
+const feature = config.features.blockchainInteraction;
 
-export default hook;
+const useAccount = (() => {
+  if (feature.isEnabled && feature.connectorType === 'reown') {
+    return useAccountWagmi;
+  }
+
+  if (feature.isEnabled && feature.connectorType === 'dynamic') {
+    return useAccountDynamic;
+  }
+
+  return useAccountFallback;
+})();
+
+export default useAccount;

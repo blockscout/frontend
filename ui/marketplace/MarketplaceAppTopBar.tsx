@@ -1,4 +1,5 @@
 import { chakra, Flex } from '@chakra-ui/react';
+import dynamic from 'next/dynamic';
 import React from 'react';
 
 import type { MarketplaceApp } from 'types/client/marketplace';
@@ -12,10 +13,12 @@ import * as mixpanel from 'lib/mixpanel/index';
 import { Link } from 'toolkit/chakra/link';
 import { BackToButton } from 'toolkit/components/buttons/BackToButton';
 import { makePrettyLink } from 'toolkit/utils/url';
-import RewardsButton from 'ui/rewards/RewardsButton';
 import NetworkIcon from 'ui/snippets/networkLogo/NetworkIcon';
-import UserProfileDesktop from 'ui/snippets/user/profile/UserProfileDesktop';
-import UserWalletDesktop from 'ui/snippets/user/wallet/UserWalletDesktop';
+
+const RewardsButton = dynamic(() => import('ui/rewards/RewardsButton'), { ssr: false });
+const UserProfileDynamic = dynamic(() => import('ui/snippets/user/profile/dynamic/UserProfile'), { ssr: false });
+const UserProfileAuth0 = dynamic(() => import('ui/snippets/user/profile/auth0/UserProfileDesktop'), { ssr: false });
+const UserWalletDesktop = dynamic(() => import('ui/snippets/user/wallet/UserWalletDesktop'), { ssr: false });
 
 import MarketplaceAppInfo from './MarketplaceAppInfo';
 import Rating from './Rating/Rating';
@@ -40,6 +43,21 @@ const MarketplaceAppTopBar = ({ appId, data, isLoading }: Props) => {
   const handleBackToClick = React.useCallback(() => {
     mixpanel.logEvent(mixpanel.EventTypes.BUTTON_CLICK, { Content: 'Back to', Source: mixpanel.PAGE_TYPE_DICT['/apps/[id]'] });
   }, []);
+
+  const userProfile = (() => {
+    const accountFeature = config.features.account;
+    if (accountFeature.isEnabled) {
+      switch (accountFeature.authProvider) {
+        case 'auth0':
+          return <UserProfileAuth0 buttonSize="sm"/>;
+        case 'dynamic':
+          return <UserProfileDynamic buttonSize="sm"/>;
+      }
+    }
+    if (config.features.blockchainInteraction.isEnabled) {
+      return <UserWalletDesktop buttonSize="sm"/>;
+    }
+  })();
 
   return (
     <Flex alignItems="center" mb={{ base: 3, md: 2 }} rowGap={ 3 } columnGap={ 2 }>
@@ -76,10 +94,7 @@ const MarketplaceAppTopBar = ({ appId, data, isLoading }: Props) => {
       { !isMobile && (
         <Flex ml="auto" gap={ 2 }>
           { config.features.rewards.isEnabled && <RewardsButton size="sm"/> }
-          {
-            (config.features.account.isEnabled && <UserProfileDesktop buttonSize="sm"/>) ||
-            (config.features.blockchainInteraction.isEnabled && <UserWalletDesktop buttonSize="sm"/>)
-          }
+          { userProfile }
         </Flex>
       ) }
     </Flex>

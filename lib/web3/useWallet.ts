@@ -1,63 +1,21 @@
-import { useAppKit, useAppKitState } from '@reown/appkit/react';
-import React from 'react';
-import { useDisconnect, useAccountEffect } from 'wagmi';
+import config from 'configs/app';
 
-import * as mixpanel from 'lib/mixpanel/index';
-import useAccount from 'lib/web3/useAccount';
+import useWalletDynamic from './wallet/useWalletDynamic';
+import useWalletFallback from './wallet/useWalletFallback';
+import useWalletReown from './wallet/useWalletReown';
 
-interface Params {
-  source: mixpanel.EventPayload<mixpanel.EventTypes.WALLET_CONNECT>['Source'];
-  onConnect?: () => void;
-}
+const feature = config.features.blockchainInteraction;
 
-export default function useWeb3Wallet({ source, onConnect }: Params) {
-  const { open: openModal } = useAppKit();
-  const { open: isOpen } = useAppKitState();
-  const { disconnect } = useDisconnect();
-  const [ isOpening, setIsOpening ] = React.useState(false);
-  const [ isClientLoaded, setIsClientLoaded ] = React.useState(false);
-  const isConnectionStarted = React.useRef(false);
+const useWallet = (() => {
+  if (feature.isEnabled && feature.connectorType === 'reown') {
+    return useWalletReown;
+  }
 
-  React.useEffect(() => {
-    setIsClientLoaded(true);
-  }, []);
+  if (feature.isEnabled && feature.connectorType === 'dynamic') {
+    return useWalletDynamic;
+  }
 
-  const handleConnect = React.useCallback(async() => {
-    setIsOpening(true);
-    await openModal();
-    setIsOpening(false);
-    mixpanel.logEvent(mixpanel.EventTypes.WALLET_CONNECT, { Source: source, Status: 'Started' });
-    isConnectionStarted.current = true;
-  }, [ openModal, source ]);
+  return useWalletFallback;
+})();
 
-  const handleAccountConnected = React.useCallback(({ isReconnected }: { isReconnected: boolean }) => {
-    if (!isReconnected && isConnectionStarted.current) {
-      mixpanel.logEvent(mixpanel.EventTypes.WALLET_CONNECT, { Source: source, Status: 'Connected' });
-      mixpanel.userProfile.setOnce({
-        'With Connected Wallet': true,
-      });
-      onConnect?.();
-    }
-    isConnectionStarted.current = false;
-  }, [ source, onConnect ]);
-
-  const handleDisconnect = React.useCallback(() => {
-    disconnect();
-  }, [ disconnect ]);
-
-  useAccountEffect({ onConnect: handleAccountConnected });
-
-  const account = useAccount();
-  const address = account.address;
-  const isConnected = isClientLoaded && !account.isDisconnected && account.address !== undefined;
-
-  return React.useMemo(() => ({
-    connect: handleConnect,
-    disconnect: handleDisconnect,
-    isOpen: isOpening || isOpen,
-    isConnected,
-    isReconnecting: account.isReconnecting,
-    address,
-    openModal,
-  }), [ handleConnect, handleDisconnect, isOpening, isOpen, isConnected, account.isReconnecting, address, openModal ]);
-}
+export default useWallet;

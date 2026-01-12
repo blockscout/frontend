@@ -15,4 +15,4 @@ const Page: NextPage = () => {
 
 export default Page;
 
-export { account as getServerSideProps } from 'nextjs/getServerSideProps/main';
+export { accountAuth0 as getServerSideProps } from 'nextjs/getServerSideProps/main';

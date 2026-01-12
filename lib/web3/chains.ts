@@ -4,7 +4,11 @@ import appConfig from 'configs/app';
 import essentialDappsChainsConfig from 'configs/essential-dapps-chains';
 import multichainConfig from 'configs/multichain';
 
-const getChainInfo = (config: Partial<typeof appConfig> = appConfig, contracts?: Chain['contracts']): Chain | undefined => {
+const getChainInfo = (
+  config: Partial<typeof appConfig> = appConfig,
+  contracts?: Chain['contracts'],
+  logoUrl?: string,
+): Chain | undefined => {
   if (!config.chain || !config.app) {
     return;
   }
@@ -30,6 +34,9 @@ const getChainInfo = (config: Partial<typeof appConfig> = appConfig, contracts?:
     },
     testnet: config.chain.isTestnet,
     contracts,
+    custom: {
+      logoUrl: logoUrl ?? config.UI?.navigation.icon.default,
+    },
   };
 };
 
@@ -74,7 +81,7 @@ export const clusterChains: Array<Chain> | undefined = (() => {
     return;
   }
 
-  return config.chains.map(({ app_config: config }) => getChainInfo(config)).filter(Boolean);
+  return config.chains.map(({ app_config: config, logo }) => getChainInfo(config, undefined, logo)).filter(Boolean);
 })();
 
 export const essentialDappsChains: Array<Chain> | undefined = (() => {
@@ -84,7 +91,7 @@ export const essentialDappsChains: Array<Chain> | undefined = (() => {
     return;
   }
 
-  return config.chains.map(({ app_config: config, contracts }) => getChainInfo(config, contracts)).filter(Boolean);
+  return config.chains.map(({ app_config: config, contracts, logo }) => getChainInfo(config, contracts, logo)).filter(Boolean);
 })();
 
 export const chains = (() => {

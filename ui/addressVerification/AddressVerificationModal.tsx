@@ -6,7 +6,7 @@ import type { VerifiedAddress } from 'types/api/account';
 import config from 'configs/app';
 import * as mixpanel from 'lib/mixpanel/index';
 import { DialogBody, DialogContent, DialogHeader, DialogRoot } from 'toolkit/chakra/dialog';
-import Web3ModalProvider from 'ui/shared/Web3ModalProvider';
+import Web3Provider from 'ui/shared/web3/Web3Provider';
 
 import AddressVerificationStepAddress from './steps/AddressVerificationStepAddress';
 import AddressVerificationStepSignature from './steps/AddressVerificationStepSignature';
@@ -115,9 +115,10 @@ const AddressVerificationModal = ({ defaultAddress, open, onOpenChange, onSubmit
           { step.title }
         </DialogHeader>
         <DialogBody mb={ 0 }>
-          <Web3ModalProvider>
+          { /* TODO @tom2drum check this flow with dynamic */ }
+          <Web3Provider>
             { step.content }
-          </Web3ModalProvider>
+          </Web3Provider>
         </DialogBody>
       </DialogContent>
     </DialogRoot>

@@ -58,6 +58,9 @@ export const GENERAL_API_ACCOUNT_RESOURCES = {
   auth_logout: {
     path: '/api/account/auth/logout',
   },
+  auth_dynamic: {
+    path: '/api/account/v2/authenticate_via_dynamic',
+  },
 } satisfies Record<string, ApiResource>;
 
 export type GeneralApiAccountResourceName = `general:${ keyof typeof GENERAL_API_ACCOUNT_RESOURCES }`;

@@ -36,7 +36,7 @@ const moduleExports = {
   redirects,
   headers,
   output: 'standalone',
-  productionBrowserSourceMaps: true,
+  productionBrowserSourceMaps: false,
   serverExternalPackages: ["@opentelemetry/sdk-node", "@opentelemetry/auto-instrumentations-node"],
   experimental: {
     staleTimes: {
