@@ -301,7 +301,7 @@ jobs:
           path: ./playwright
 
       - name: Run PlayWright
-        run: yarn test:pw:ci --affected=${{ github.event_name == 'pull_request' }} --pass-with-no-tests --reporter=blob && ls -la blob-report
+        run: yarn test:pw:ci --affected=${{ github.event_name == 'pull_request' }} --pass-with-no-tests --reporter=blob
         env:
           HOME: /root
           PW_PROJECT: ${{ matrix.project }}
@@ -309,8 +309,8 @@ jobs:
 
       - name: Upload test results
         if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: playwright-report-${{ matrix.project }}
-          path: blob-report/report-${{ matrix.project }}.zip
-          retention-days: 10
+        run: |
+          curl --location --request PUT '${{ secrets.PLAYWRIGHT_REPORT_URL }}/api/result/upload' \
+            --header 'Authorization: ${{ secrets.PLAYWRIGHT_REPORT_TOKEN }}' \
+            --form 'file=@"blob-report/report-${{ matrix.project }}.zip"' \
+            --form 'project="${{ matrix.project }}"'
