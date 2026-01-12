@@ -19,6 +19,7 @@ import PrevNext from 'ui/shared/PrevNext';
 
 import OptimisticL2TxnBatchBlobCallData from './OptimisticL2TxnBatchBlobCallData';
 import OptimisticL2TxnBatchBlobCelestia from './OptimisticL2TxnBatchBlobCelestia';
+import OptimisticL2TxnBatchBlobEigenda from './OptimisticL2TxnBatchBlobEigenda';
 import OptimisticL2TxnBatchBlobEip4844 from './OptimisticL2TxnBatchBlobEip4844';
 
 interface Props {
@@ -141,6 +142,8 @@ const OptimisticL2TxnBatchDetails = ({ query }: Props) => {
         ) }
         { data.batch_data_container === 'in_celestia' && data.blobs &&
           <OptimisticL2TxnBatchBlobCelestia blobs={ data.blobs } isLoading={ isPlaceholderData }/> }
+        { data.batch_data_container === 'in_eigenda' && data.blobs &&
+          <OptimisticL2TxnBatchBlobEigenda blobs={ data.blobs } isLoading={ isPlaceholderData }/> }
       </DetailedInfo.ItemValue>
     </DetailedInfo.Container>
   );
