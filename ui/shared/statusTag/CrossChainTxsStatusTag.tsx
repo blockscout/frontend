@@ -1,11 +1,13 @@
 import React from 'react';
 
+import { MessageStatus } from '@blockscout/interchain-indexer-types';
+
 import type { BadgeProps } from 'toolkit/chakra/badge';
 
 import StatusTag, { type Props as StatusTagProps } from './StatusTag';
 
 interface Props extends BadgeProps {
-  status: string;
+  status: MessageStatus;
   mode?: StatusTagProps['mode'];
 }
 
@@ -13,11 +15,11 @@ const CrossChainTxsStatusTag = ({ status: statusProp, mode = 'compact', ...rest 
 
   const { status, text } = (() => {
     switch (statusProp) {
-      case 'completed':
+      case MessageStatus.MESSAGE_STATUS_COMPLETED:
         return { status: 'ok' as const, text: 'Completed' };
-      case 'failed':
+      case MessageStatus.MESSAGE_STATUS_FAILED:
         return { status: 'error' as const, text: 'Failed' };
-      case 'initiated':
+      case MessageStatus.MESSAGE_STATUS_INITIATED:
         return { status: 'pending' as const, text: 'Initiated' };
       default:
         return { status: undefined, text: undefined };

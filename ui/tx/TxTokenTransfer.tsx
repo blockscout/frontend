@@ -12,6 +12,7 @@ import getQueryParamString from 'lib/router/getQueryParamString';
 import { TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
 import { getTokenTransfersStub } from 'stubs/token';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
+import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import TokenTransferFilter from 'ui/shared/TokenTransfer/TokenTransferFilter';
@@ -86,6 +87,7 @@ const TxTokenTransfer = ({ txQuery, tokenTransferFilter, noCrossChain }: Props) 
           txQuery={ txQuery }
           crossChainQuery={ crossChainQuery }
           isLoading={ isTabsLoading }
+          tableTop={ ACTION_BAR_HEIGHT_DESKTOP }
         />
       ),
     },

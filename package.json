@@ -42,7 +42,7 @@
   },
   "dependencies": {
     "@blockscout/bens-types": "1.4.1",
-    "@blockscout/interchain-indexer-types": "0.0.5",
+    "@blockscout/interchain-indexer-types": "0.0.5-alpha.1",
     "@blockscout/multichain-aggregator-types": "1.6.3-alpha.3",
     "@blockscout/points-types": "1.4.0-alpha.1",
     "@blockscout/stats-types": "2.11.1",

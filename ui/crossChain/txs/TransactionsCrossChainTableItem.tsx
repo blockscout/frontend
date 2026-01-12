@@ -156,15 +156,24 @@ const TransactionsCrossChainTableItem = ({ data, isLoading: isLoadingProp }: Pro
             <TokenValueInterchain
               token={ firstTransfer.source_token }
               amount={ firstTransfer.source_amount }
-              chainId={ firstTransfer.source_token.chain_id }
+              chainId={ firstTransfer.source_chain_id }
               chains={ crossChainConfig }
               loading={ isLoading }
               textStyle="xs"
               color="text.secondary"
             />
           ) }
-          { /* TODO @tom2drum add link to all transfers */ }
-          { data.transfers.length > 1 && <Link variant="secondary" mt={ 2 }>View all</Link> }
+          { data.transfers.length > 1 && (
+            <Link
+              variant="secondary"
+              textDecorationStyle="dashed"
+              textDecorationLine="underline"
+              mt={ 2 }
+              href={ route({ pathname: '/cross-chain-tx/[id]', query: { id: data.message_id, tab: 'transfers' } }) }
+            >
+              View all
+            </Link>
+          ) }
         </VStack>
       </TableCell>
       <TableCell>
@@ -189,7 +198,7 @@ const TransactionsCrossChainTableItem = ({ data, isLoading: isLoadingProp }: Pro
             <TokenValueInterchain
               token={ firstTransfer.destination_token }
               amount={ firstTransfer.destination_amount }
-              chainId={ firstTransfer.destination_token.chain_id }
+              chainId={ firstTransfer.destination_chain_id }
               chains={ crossChainConfig }
               loading={ isLoading }
               textStyle="xs"

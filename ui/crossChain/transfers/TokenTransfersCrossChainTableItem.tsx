@@ -36,17 +36,17 @@ const TokenTransfersCrossChainTableItem = ({ data, isLoading: isLoadingProp }: P
             <TokenValueInterchain
               token={ data.source_token }
               amount={ data.source_amount }
-              chainId={ data.source_token.chain_id }
+              chainId={ data.source_chain_id }
               chains={ crossChainConfig }
               loading={ isLoading }
               lineHeight="24px"
             />
           ) }
           {
-            data.sender && data.source_token ? (
+            data.sender ? (
               <AddressEntityInterchain
                 chains={ crossChainConfig }
-                chainId={ data.source_token.chain_id }
+                chainId={ data.source_chain_id }
                 address={ data.sender }
                 isLoading={ isLoading }
                 truncation="constant"
@@ -66,17 +66,17 @@ const TokenTransfersCrossChainTableItem = ({ data, isLoading: isLoadingProp }: P
             <TokenValueInterchain
               token={ data.destination_token }
               amount={ data.destination_amount }
-              chainId={ data.destination_token.chain_id }
+              chainId={ data.destination_chain_id }
               chains={ crossChainConfig }
               loading={ isLoading }
               lineHeight="24px"
             />
           ) }
           {
-            data.recipient && data.destination_token ? (
+            data.recipient ? (
               <AddressEntityInterchain
                 chains={ crossChainConfig }
-                chainId={ data.destination_token.chain_id }
+                chainId={ data.destination_chain_id }
                 address={ data.recipient }
                 isLoading={ isLoading }
                 truncation="constant"
@@ -89,10 +89,10 @@ const TokenTransfersCrossChainTableItem = ({ data, isLoading: isLoadingProp }: P
       </TableCell>
       <TableCell>
         <VStack alignItems="start">
-          { data.source_transaction_hash && data.source_token ? (
+          { data.source_transaction_hash ? (
             <TxEntityInterchain
               chains={ crossChainConfig }
-              chainId={ data.source_token.chain_id }
+              chainId={ data.source_chain_id }
               hash={ data.source_transaction_hash }
               isLoading={ isLoading }
               noIcon
@@ -104,7 +104,7 @@ const TokenTransfersCrossChainTableItem = ({ data, isLoading: isLoadingProp }: P
             <chakra.span color="text.secondary" lineHeight="24px">{ mdash }</chakra.span>
           ) }
           <ChainLabel
-            data={ crossChainConfig?.find((chain) => chain.id.toString() === data.source_token?.chain_id) }
+            data={ crossChainConfig?.find((chain) => chain.id.toString() === data.source_chain_id) }
             isLoading={ isLoading }
             color="text.secondary"
             textStyle="xs"
@@ -114,10 +114,10 @@ const TokenTransfersCrossChainTableItem = ({ data, isLoading: isLoadingProp }: P
       </TableCell>
       <TableCell>
         <VStack alignItems="start">
-          { data.destination_transaction_hash && data.destination_token ? (
+          { data.destination_transaction_hash ? (
             <TxEntityInterchain
               chains={ crossChainConfig }
-              chainId={ data.destination_token.chain_id }
+              chainId={ data.destination_chain_id }
               hash={ data.destination_transaction_hash }
               isLoading={ isLoading }
               noIcon
@@ -129,7 +129,7 @@ const TokenTransfersCrossChainTableItem = ({ data, isLoading: isLoadingProp }: P
             <chakra.span color="text.secondary" lineHeight="24px">{ mdash }</chakra.span>
           ) }
           <ChainLabel
-            data={ crossChainConfig?.find((chain) => chain.id.toString() === data.destination_token?.chain_id) }
+            data={ crossChainConfig?.find((chain) => chain.id.toString() === data.destination_chain_id) }
             isLoading={ isLoading }
             color="text.secondary"
             textStyle="xs"

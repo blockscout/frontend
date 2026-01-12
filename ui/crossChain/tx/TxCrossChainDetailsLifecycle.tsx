@@ -1,6 +1,7 @@
 import React from 'react';
 
 import type { InterchainMessage } from '@blockscout/interchain-indexer-types';
+import { MessageStatus } from '@blockscout/interchain-indexer-types';
 
 import useCrossChainConfig from 'lib/crossChain/useCrossChainConfig';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
@@ -17,17 +18,25 @@ interface Props {
 const TxCrossChainDetailsLifecycle = ({ data, isLoading }: Props) => {
   const { data: crossChainConfig } = useCrossChainConfig();
 
-  const isError = data.status === 'failed';
+  const isError = data.status === MessageStatus.MESSAGE_STATUS_FAILED;
 
   const firstStepContent = (() => {
     if (!data.source_transaction_hash) {
       return <Trigger status="unfinalized" text="Initiated" isFirst isLast isLoading={ isLoading } isDisabled/>;
     }
 
+    const isLast = isError && !data.destination_transaction_hash;
+
     return (
       <>
-        <Trigger status={ isError ? 'error' : 'success' } text="Initiated" isFirst isLast={ !data.destination_transaction_hash } isLoading={ isLoading }/>
-        <ItemContent>
+        <Trigger
+          status={ isError ? 'error' : 'success' }
+          text="Initiated"
+          isFirst
+          isLast={ isLast }
+          isLoading={ isLoading }
+        />
+        <ItemContent isLast={ isLast }>
           <ItemBody>
             <ItemRow label="Chain">
               <ChainLabel data={ crossChainConfig?.find((chain) => chain.id.toString() === data.source_chain_id) } isLoading={ isLoading } py="6px"/>
@@ -56,7 +65,10 @@ const TxCrossChainDetailsLifecycle = ({ data, isLoading }: Props) => {
 
   const secondStepContent = (() => {
     if (!data.destination_transaction_hash) {
-      return null;
+      if (isError) {
+        return null;
+      }
+      return <Trigger status="unfinalized" text="Completed" isFirst={ false } isLast isLoading={ isLoading } isDisabled/>;
     }
 
     return (

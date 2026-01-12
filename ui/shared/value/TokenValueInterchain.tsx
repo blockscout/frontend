@@ -22,13 +22,13 @@ const TokenValueInterchain = ({ token, tokenEntityProps, chainId, chains, ...res
   const tokenInfo = React.useMemo(() => {
     return {
       symbol: token.symbol ?? null,
-      address_hash: token.address,
+      address_hash: token.address_hash,
       icon_url: token.icon_url ?? null,
       name: token.name ?? null,
       type: 'ERC-20',
       reputation: null,
     };
-  }, [ token.address, token.icon_url, token.name, token.symbol ]);
+  }, [ token.address_hash, token.icon_url, token.name, token.symbol ]);
 
   const asset = (
     <TokenEntityInterchain

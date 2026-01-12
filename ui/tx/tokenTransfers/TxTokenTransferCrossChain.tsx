@@ -13,9 +13,10 @@ interface Props {
   txQuery: TxQuery;
   crossChainQuery: QueryWithPagesResult<'interchainIndexer:tx_transfers'>;
   isLoading?: boolean;
+  tableTop?: number;
 }
 
-const TxTokenTransferCrossChain = ({ txQuery, crossChainQuery, isLoading }: Props) => {
+const TxTokenTransferCrossChain = ({ txQuery, crossChainQuery, isLoading, tableTop }: Props) => {
   const content = crossChainQuery.data?.items ? (
     <>
       <Box hideFrom="lg">
@@ -28,7 +29,11 @@ const TxTokenTransferCrossChain = ({ txQuery, crossChainQuery, isLoading }: Prop
         )) }
       </Box>
       <Box hideBelow="lg">
-        <TokenTransfersCrossChainTable data={ crossChainQuery.data.items } isLoading={ isLoading || crossChainQuery.isPlaceholderData }/>
+        <TokenTransfersCrossChainTable
+          data={ crossChainQuery.data.items }
+          isLoading={ isLoading || crossChainQuery.isPlaceholderData }
+          top={ tableTop }
+        />
       </Box>
     </>
   ) : null;

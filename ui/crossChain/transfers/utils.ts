@@ -4,9 +4,9 @@ export const getItemKey = (data: InterchainTransfer, index?: number) => {
   return [
     data.message_id,
     data.sender?.hash,
-    data.source_token?.address,
+    data.source_token?.address_hash,
     data.source_amount,
-    data.source_token?.chain_id,
+    data.source_chain_id,
     index,
   ]
     .filter((item) => item !== undefined)

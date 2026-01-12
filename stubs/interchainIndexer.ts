@@ -1,4 +1,10 @@
-import type { GetCommonStatisticsResponse, GetDailyStatisticsResponse, InterchainMessage, InterchainTransfer } from '@blockscout/interchain-indexer-types';
+import type {
+  GetCommonStatisticsResponse,
+  GetDailyStatisticsResponse,
+  InterchainMessage,
+  InterchainTransfer,
+} from '@blockscout/interchain-indexer-types';
+import { MessageStatus } from '@blockscout/interchain-indexer-types';
 
 import { ADDRESS_HASH } from './addressParams';
 import { TX_HASH } from './tx';
@@ -10,29 +16,29 @@ export const INTERCHAIN_TRANSFER = {
     name: 'Avalanche ICTT',
   },
   message_id: MESSAGE_ID,
-  status: 'completed',
+  status: MessageStatus.MESSAGE_STATUS_COMPLETED,
   source_token: {
-    chain_id: '8021',
-    address: ADDRESS_HASH,
+    address_hash: ADDRESS_HASH,
     name: 'Wrapped AVAX',
     symbol: 'WAVAX',
     decimals: '18',
   },
   source_amount: '80800000000000000',
   source_transaction_hash: TX_HASH,
+  source_chain_id: '8021',
   sender: {
     hash: ADDRESS_HASH,
   },
   send_timestamp: '2026-01-07T18:41:50.000Z',
   destination_token: {
-    chain_id: '43114',
-    address: ADDRESS_HASH,
+    address_hash: ADDRESS_HASH,
     name: 'Wrapped AVAX',
     symbol: 'WAVAX',
     decimals: '18',
   },
   destination_amount: '80800000000000000',
   destination_transaction_hash: TX_HASH,
+  destination_chain_id: '43114',
   recipient: {
     hash: ADDRESS_HASH,
   },
@@ -44,7 +50,7 @@ export const INTERCHAIN_MESSAGE = {
     name: 'Avalanche ICTT',
   },
   message_id: MESSAGE_ID,
-  status: 'completed',
+  status: MessageStatus.MESSAGE_STATUS_COMPLETED,
   source_chain_id: '8021',
   send_timestamp: '2026-01-07T18:41:50.000Z',
   sender: {

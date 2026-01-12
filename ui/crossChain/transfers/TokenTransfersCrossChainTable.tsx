@@ -3,7 +3,6 @@ import React from 'react';
 import type { InterchainTransfer } from '@blockscout/interchain-indexer-types';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
-import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
 import TokenTransfersCrossChainTableItem from './TokenTransfersCrossChainTableItem';
@@ -12,12 +11,13 @@ import { getItemKey } from './utils';
 interface Props {
   data: Array<InterchainTransfer>;
   isLoading?: boolean;
+  top?: number;
 }
 
-const TokenTransfersCrossChainTable = ({ data, isLoading }: Props) => {
+const TokenTransfersCrossChainTable = ({ data, isLoading, top }: Props) => {
   return (
     <TableRoot minW="1200px">
-      <TableHeaderSticky top={ ACTION_BAR_HEIGHT_DESKTOP }>
+      <TableHeaderSticky top={ top }>
         <TableRow>
           <TableColumnHeader w="42px"/>
           <TableColumnHeader w="20%">Source token</TableColumnHeader>

@@ -5,6 +5,7 @@ import useApiQuery from 'lib/api/useApiQuery';
 import { INTERCHAIN_MESSAGE, INTERCHAIN_STATS_COMMON } from 'stubs/interchainIndexer';
 import { generateListStub } from 'stubs/utils';
 import { Skeleton } from 'toolkit/chakra/skeleton';
+import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import StickyPaginationWithText from 'ui/shared/StickyPaginationWithText';
@@ -38,7 +39,11 @@ const TransactionsCrossChain = () => {
         )) }
       </Box>
       <Box hideBelow="lg">
-        <TransactionsCrossChainTable data={ data.items } isLoading={ isPlaceholderData }/>
+        <TransactionsCrossChainTable
+          data={ data.items }
+          isLoading={ isPlaceholderData }
+          top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
+        />
       </Box>
     </>
   ) : null;
