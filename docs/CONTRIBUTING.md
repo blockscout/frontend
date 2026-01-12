@@ -26,7 +26,7 @@ Please note that we accept contributions for newly submitted issues or those lab
     cd <fork_name>
     ```
 
-3. Make sure you're running Node.js 20+ and NPM 10+; if not, upgrade it accordingly, for example using [nvm](https://github.com/nvm-sh/nvm).
+3. Make sure you're running Node.js 22+ and NPM 10+; if not, upgrade it accordingly, for example using [nvm](https://github.com/nvm-sh/nvm).
     ```sh
     node -v
     npm -v
