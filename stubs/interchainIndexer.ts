@@ -1,4 +1,4 @@
-import type { InterchainMessage, InterchainTransfer } from '@blockscout/interchain-indexer-types';
+import type { GetCommonStatisticsResponse, GetDailyStatisticsResponse, InterchainMessage, InterchainTransfer } from '@blockscout/interchain-indexer-types';
 
 import { ADDRESS_HASH } from './addressParams';
 import { TX_HASH } from './tx';
@@ -63,3 +63,15 @@ export const INTERCHAIN_MESSAGE = {
     INTERCHAIN_TRANSFER,
   ],
 } satisfies InterchainMessage;
+
+export const INTERCHAIN_STATS_DAILY = {
+  date: '2026-01-12',
+  daily_messages: 75,
+  daily_transfers: 75,
+} satisfies GetDailyStatisticsResponse;
+
+export const INTERCHAIN_STATS_COMMON = {
+  timestamp: '2026-01-12T11:49:59.380Z',
+  total_messages: 10823,
+  total_transfers: 10822,
+} satisfies GetCommonStatisticsResponse;

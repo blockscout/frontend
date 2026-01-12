@@ -1,24 +1,28 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import useIsMobile from 'lib/hooks/useIsMobile';
-import { INTERCHAIN_TRANSFER } from 'stubs/interchainIndexer';
+import useApiQuery from 'lib/api/useApiQuery';
+import { INTERCHAIN_STATS_COMMON, INTERCHAIN_TRANSFER } from 'stubs/interchainIndexer';
 import { generateListStub } from 'stubs/utils';
-import ActionBar from 'ui/shared/ActionBar';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
+import StickyPaginationWithText from 'ui/shared/StickyPaginationWithText';
 
 import TokenTransfersCrossChainListItem from './TokenTransfersCrossChainListItem';
 import TokenTransfersCrossChainTable from './TokenTransfersCrossChainTable';
 import { getItemKey } from './utils';
 
 const TokenTransfersCrossChain = () => {
-  const isMobile = useIsMobile();
   const { data, isPlaceholderData, isError, pagination } = useQueryWithPages({
     resourceName: 'interchainIndexer:transfers',
     options: {
       placeholderData: generateListStub<'interchainIndexer:transfers'>(INTERCHAIN_TRANSFER, 50, { next_page_params: { page_token: 'token' } }),
+    },
+  });
+  const statsQuery = useApiQuery('interchainIndexer:stats_common', {
+    queryOptions: {
+      placeholderData: INTERCHAIN_STATS_COMMON,
     },
   });
 
@@ -39,11 +43,13 @@ const TokenTransfersCrossChain = () => {
     </>
   ) : null;
 
-  const actionBar = (!isMobile || pagination.isVisible) && (
-    <ActionBar mt={ -6 }>
-      <Pagination ml="auto" { ...pagination }/>
-    </ActionBar>
+  const actionBarText = (
+    <Skeleton loading={ statsQuery.isPlaceholderData || isPlaceholderData }>
+      A total of { Number(statsQuery.data?.total_transfers).toLocaleString() } cross-chain token transfers found
+    </Skeleton>
   );
+
+  const actionBar = <StickyPaginationWithText text={ actionBarText } pagination={ pagination }/>;
 
   return (
     <DataListDisplay
