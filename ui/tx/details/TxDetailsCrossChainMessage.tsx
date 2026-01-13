@@ -96,7 +96,7 @@ const TxDetailsCrossChainMessage = ({ data, isLoading: isLoadingProp }: Props) =
           >
             <AddressEntityInterchain
               chains={ crossChainConfig }
-              chainId={ data.source_chain_id }
+              chainId={ data.destination_chain_id }
               address={ data.recipient }
               isLoading={ isLoading }
               noIcon

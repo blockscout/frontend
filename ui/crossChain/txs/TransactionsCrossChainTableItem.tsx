@@ -129,6 +129,7 @@ const TransactionsCrossChainTableItem = ({ data, isLoading: isLoadingProp }: Pro
             href={ route({ pathname: '/tx/[hash]', query: { hash: txHashWithTransfers, tab: 'token_transfers_cross_chain' } }) }
             loading={ isLoading }
             lineHeight="24px"
+            minW="24px"
           >
             { data.transfers.length }
           </Link>

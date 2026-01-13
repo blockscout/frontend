@@ -19,12 +19,14 @@ interface Props {
   isLoading?: boolean;
 }
 
-const TxCrossChainDetails = ({ data, isLoading }: Props) => {
-  const { data: crossChainConfig } = useCrossChainConfig();
+const TxCrossChainDetails = ({ data, isLoading: isLoadingProp }: Props) => {
+  const { data: crossChainConfig, isPending } = useCrossChainConfig();
 
   if (!data) {
     return <DataFetchAlert/>;
   }
+
+  const isLoading = isLoadingProp || isPending;
 
   return (
     <DetailedInfo.Container>
