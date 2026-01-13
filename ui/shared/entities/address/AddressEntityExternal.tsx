@@ -10,10 +10,9 @@ import AddressEntity from './AddressEntity';
 
 interface Props extends EntityProps, JsxStyleProps {
   chain: ExternalChain | undefined;
-  withShield?: boolean;
 }
 
-const AddressEntityExternal = ({ chain, withShield, ...props }: Props) => {
+const AddressEntityExternal = ({ chain, ...props }: Props) => {
 
   const defaultHref = (() => {
     if (!chain) {
@@ -37,7 +36,7 @@ const AddressEntityExternal = ({ chain, withShield, ...props }: Props) => {
       href={ href }
       noLink={ props.noLink || !href }
       link={{ external: true }}
-      chain={ withShield ? chain : undefined }
+      chain={ chain }
     />
   );
 };

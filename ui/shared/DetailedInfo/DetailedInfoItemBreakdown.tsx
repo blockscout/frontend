@@ -1,3 +1,4 @@
+import type { JsxStyleProps } from '@chakra-ui/react';
 import { Grid, GridItem } from '@chakra-ui/react';
 import React from 'react';
 
@@ -30,16 +31,16 @@ export const Container = ({ children, ...rest }: ContainerProps) => {
   );
 };
 
-interface RowProps {
+interface RowProps extends JsxStyleProps {
   label: string;
   hint?: string;
   children: React.ReactNode;
 }
 
-export const Row = ({ label, hint, children }: RowProps) => {
+export const Row = ({ label, hint, children, ...rest }: RowProps) => {
   return (
     <>
-      <GridItem color="text.secondary" display="flex" alignItems="center">
+      <GridItem color="text.secondary" display="flex" alignItems="center" { ...rest }>
         { hint && <Hint label={ hint } boxSize={ 4 } mr={ 1 }/> }
         <TruncatedText text={ label } maxW={{ base: '130px', lg: 'unset' }}/>
       </GridItem>

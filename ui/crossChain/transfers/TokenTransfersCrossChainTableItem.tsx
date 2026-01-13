@@ -25,6 +25,8 @@ const TokenTransfersCrossChainTableItem = ({ data, isLoading: isLoadingProp }: P
   const { data: crossChainConfig, isPending } = useCrossChainConfig();
   const isLoading = isLoadingProp || isPending;
 
+  const dashElement = <chakra.span color="text.secondary" lineHeight="24px">{ mdash }</chakra.span>;
+
   return (
     <TableRow>
       <TableCell w="42px">
@@ -53,7 +55,7 @@ const TokenTransfersCrossChainTableItem = ({ data, isLoading: isLoadingProp }: P
                 noIcon
                 textStyle="xs"
               />
-            ) : <chakra.span color="text.secondary" lineHeight="24px">{ mdash }</chakra.span>
+            ) : dashElement
           }
         </VStack>
       </TableCell>
@@ -83,7 +85,7 @@ const TokenTransfersCrossChainTableItem = ({ data, isLoading: isLoadingProp }: P
                 noIcon
                 textStyle="xs"
               />
-            ) : <chakra.span color="text.secondary" lineHeight="24px">{ mdash }</chakra.span>
+            ) : dashElement
           }
         </VStack>
       </TableCell>
@@ -100,9 +102,7 @@ const TokenTransfersCrossChainTableItem = ({ data, isLoading: isLoadingProp }: P
               truncation="constant"
               lineHeight="24px"
             />
-          ) : (
-            <chakra.span color="text.secondary" lineHeight="24px">{ mdash }</chakra.span>
-          ) }
+          ) : dashElement }
           <ChainLabel
             data={ crossChainConfig?.find((chain) => chain.id.toString() === data.source_chain_id) }
             isLoading={ isLoading }
@@ -125,9 +125,7 @@ const TokenTransfersCrossChainTableItem = ({ data, isLoading: isLoadingProp }: P
               truncation="constant"
               lineHeight="24px"
             />
-          ) : (
-            <chakra.span color="text.secondary" lineHeight="24px">{ mdash }</chakra.span>
-          ) }
+          ) : dashElement }
           <ChainLabel
             data={ crossChainConfig?.find((chain) => chain.id.toString() === data.destination_chain_id) }
             isLoading={ isLoading }

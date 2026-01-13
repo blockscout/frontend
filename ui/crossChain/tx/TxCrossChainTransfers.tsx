@@ -24,6 +24,13 @@ const TxCrossChainTransfers = ({ data, isLoading, isError }: Props) => {
             key={ getItemKey(item, isLoading ? index : undefined) }
             data={ item }
             isLoading={ isLoading }
+            py={ 4 }
+            textStyle="sm"
+            rowGap="14px"
+            _first={{
+              borderTopWidth: '0',
+              paddingTop: '0',
+            }}
           />
         )) }
       </Box>

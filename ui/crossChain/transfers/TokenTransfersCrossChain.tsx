@@ -35,6 +35,9 @@ const TokenTransfersCrossChain = () => {
             key={ getItemKey(item, isPlaceholderData ? index : undefined) }
             data={ item }
             isLoading={ isPlaceholderData }
+            py={ 4 }
+            textStyle="sm"
+            rowGap="14px"
           />
         )) }
       </Box>

@@ -37,6 +37,7 @@ const TxDetailsCrossChainMessage = ({ data, isLoading: isLoadingProp }: Props) =
         </DetailedInfoItemBreakdown.Row>
         <DetailedInfoItemBreakdown.Row
           label="Status"
+          alignSelf="center"
         >
           <CrossChainTxsStatusTag status={ data.status } loading={ isLoading } mode="full"/>
         </DetailedInfoItemBreakdown.Row>

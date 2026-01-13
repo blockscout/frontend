@@ -42,7 +42,6 @@ const TxCrossChainDetails = ({ data, isLoading }: Props) => {
               isLoading={ isLoading }
               chains={ crossChainConfig }
               chainId={ data.source_chain_id }
-              withShield
             />
           </DetailedInfo.ItemValue>
         </>
@@ -61,7 +60,6 @@ const TxCrossChainDetails = ({ data, isLoading }: Props) => {
               isLoading={ isLoading }
               chains={ crossChainConfig }
               chainId={ data.destination_chain_id }
-              withShield
             />
           </DetailedInfo.ItemValue>
         </>

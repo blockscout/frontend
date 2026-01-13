@@ -12,19 +12,18 @@ import AddressEntityExternal from './AddressEntityExternal';
 interface Props extends EntityProps, JsxStyleProps {
   chains: Array<ExternalChain> | undefined;
   chainId: string;
-  withShield?: boolean;
 }
 
-const AddressEntityInterchain = ({ chains, chainId, withShield, ...props }: Props) => {
+const AddressEntityInterchain = ({ chains, chainId, ...props }: Props) => {
 
   const isCurrentChain = chainId === config.chain.id;
   const chain = chains?.find((chain) => chain.id === chainId);
 
   if (isCurrentChain) {
-    return <AddressEntity { ...props } chain={ withShield ? chain : undefined }/>;
+    return <AddressEntity { ...props } chain={ chain }/>;
   }
 
-  return <AddressEntityExternal { ...props } chain={ chain } withShield={ withShield }/>;
+  return <AddressEntityExternal { ...props } chain={ chain }/>;
 };
 
 export default React.memo(AddressEntityInterchain);

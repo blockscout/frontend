@@ -36,6 +36,7 @@ const TxEntityExternal = ({ chain, ...props }: Props) => {
       href={ href }
       noLink={ props.noLink || !href }
       link={{ external: true }}
+      chain={ chain }
     />
   );
 };

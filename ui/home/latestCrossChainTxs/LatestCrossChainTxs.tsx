@@ -9,9 +9,9 @@ import { INTERCHAIN_MESSAGE } from 'stubs/interchainIndexer';
 import { generateListStub } from 'stubs/utils';
 import { Link } from 'toolkit/chakra/link';
 import { TableBody, TableRoot } from 'toolkit/chakra/table';
+import TransactionsCrossChainListItem from 'ui/crossChain/txs/TransactionsCrossChainListItem';
 
 import LatestCrossChainTxsItemDesktop from './LatestCrossChainTxsItemDesktop';
-import LatestCrossChainTxsItemMobile from './LatestCrossChainTxsItemMobile';
 
 const LatestCrossChainTxs = () => {
   const isMobile = useIsMobile();
@@ -36,10 +36,17 @@ const LatestCrossChainTxs = () => {
     <>
       <Box mb={ 3 } hideFrom="lg" textStyle="sm">
         { data.items.slice(0, txsCount).map(((tx, index) => (
-          <LatestCrossChainTxsItemMobile
+          <TransactionsCrossChainListItem
             key={ tx.message_id + (isPlaceholderData ? index : '') }
             data={ tx }
             isLoading={ isPlaceholderData }
+            py={ 4 }
+            textStyle="sm"
+            rowGap="14px"
+            _first={{
+              borderTopWidth: '0',
+              paddingTop: '4px',
+            }}
           />
         ))) }
       </Box>

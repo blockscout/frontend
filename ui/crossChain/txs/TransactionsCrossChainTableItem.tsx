@@ -45,6 +45,8 @@ const TransactionsCrossChainTableItem = ({ data, isLoading: isLoadingProp }: Pro
     }
   })();
 
+  const dashElement = <chakra.span color="text.secondary" lineHeight="24px">{ mdash }</chakra.span>;
+
   return (
     <TableRow>
       <TableCell w="42px">
@@ -57,6 +59,7 @@ const TransactionsCrossChainTableItem = ({ data, isLoading: isLoadingProp }: Pro
         <TimeWithTooltip
           timestamp={ data.send_timestamp || data.receive_timestamp }
           isLoading={ isLoading }
+          enableIncrement
           color="text.secondary"
           lineHeight="24px"
         />
@@ -72,7 +75,7 @@ const TransactionsCrossChainTableItem = ({ data, isLoading: isLoadingProp }: Pro
             noIcon
             lineHeight="24px"
           />
-        ) : <chakra.span color="text.secondary" lineHeight="24px">{ mdash }</chakra.span> }
+        ) : dashElement }
       </TableCell>
       <TableCell>
         <VStack alignItems="start">
@@ -87,9 +90,7 @@ const TransactionsCrossChainTableItem = ({ data, isLoading: isLoadingProp }: Pro
               truncation="constant"
               lineHeight="24px"
             />
-          ) : (
-            <chakra.span color="text.secondary" lineHeight="24px">{ mdash }</chakra.span>
-          ) }
+          ) : dashElement }
           <ChainLabel
             data={ crossChainConfig?.find((chain) => chain.id.toString() === data.source_chain_id) }
             isLoading={ isLoading }
@@ -112,9 +113,7 @@ const TransactionsCrossChainTableItem = ({ data, isLoading: isLoadingProp }: Pro
               truncation="constant"
               lineHeight="24px"
             />
-          ) : (
-            <chakra.span color="text.secondary" lineHeight="24px">{ mdash }</chakra.span>
-          ) }
+          ) : dashElement }
           <ChainLabel
             data={ crossChainConfig?.find((chain) => chain.id.toString() === data.destination_chain_id) }
             isLoading={ isLoading }
@@ -150,7 +149,7 @@ const TransactionsCrossChainTableItem = ({ data, isLoading: isLoadingProp }: Pro
                 noIcon
                 lineHeight="24px"
               />
-            ) : <chakra.span color="text.secondary" lineHeight="24px">{ mdash }</chakra.span>
+            ) : dashElement
           }
           { firstTransfer.source_token && (
             <TokenValueInterchain
@@ -192,7 +191,7 @@ const TransactionsCrossChainTableItem = ({ data, isLoading: isLoadingProp }: Pro
                 noIcon
                 lineHeight="24px"
               />
-            ) : <chakra.span color="text.secondary" lineHeight="24px">{ mdash }</chakra.span>
+            ) : dashElement
           }
           { firstTransfer.destination_token && (
             <TokenValueInterchain

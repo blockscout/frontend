@@ -17,12 +17,13 @@ interface Props extends TxEntityProps, JsxStyleProps {
 const TxEntityInterchain = ({ chains, chainId, ...props }: Props) => {
 
   const isCurrentChain = chainId === config.chain.id;
+  const chain = chains?.find((chain) => chain.id === chainId);
 
   if (isCurrentChain) {
-    return <TxEntity { ...props }/>;
+    return <TxEntity { ...props } chain={ chain }/>;
   }
 
-  return <TxEntityExternal { ...props } chain={ chains?.find((chain) => chain.id === chainId) }/>;
+  return <TxEntityExternal { ...props } chain={ chain }/>;
 };
 
 export default React.memo(TxEntityInterchain);
