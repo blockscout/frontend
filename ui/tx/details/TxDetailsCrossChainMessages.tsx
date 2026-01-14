@@ -42,7 +42,7 @@ const TxDetailsCrossChainMessages = ({ hash, isLoading: isLoadingProp }: Props) 
         hint="Cross-chain messages in this transaction"
         isLoading={ isLoading }
       >
-        Cross-chain message
+        Cross-chain message{ (data?.items ?? []).length > 1 ? 's' : '' }
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
         <CollapsibleList

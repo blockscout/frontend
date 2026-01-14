@@ -1,10 +1,11 @@
-import { HStack } from '@chakra-ui/react';
+import { chakra, HStack } from '@chakra-ui/react';
 import React from 'react';
 
 import type { InterchainMessage } from '@blockscout/interchain-indexer-types';
 
 import config from 'configs/app';
 import useCrossChainConfig from 'lib/crossChain/useCrossChainConfig';
+import { mdash } from 'toolkit/utils/htmlEntities';
 import * as DetailedInfoItemBreakdown from 'ui/shared/DetailedInfo/DetailedInfoItemBreakdown';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 import AddressEntityInterchain from 'ui/shared/entities/address/AddressEntityInterchain';
@@ -41,14 +42,20 @@ const TxDetailsCrossChainMessage = ({ data, isLoading: isLoadingProp }: Props) =
         >
           <CrossChainTxsStatusTag status={ data.status } loading={ isLoading } mode="full"/>
         </DetailedInfoItemBreakdown.Row>
-        <DetailedInfoItemBreakdown.Row
-          label="Source chain"
-        >
-          <ChainLabel data={ crossChainConfig?.find((chain) => chain.id.toString() === data.source_chain_id) } isLoading={ isLoading }/>
-        </DetailedInfoItemBreakdown.Row>
+        { data.source_chain_id !== config.chain.id && (
+          <DetailedInfoItemBreakdown.Row
+            label="Source chain"
+          >
+            <ChainLabel
+              data={ crossChainConfig?.find((chain) => chain.id.toString() === data.source_chain_id) }
+              isLoading={ isLoading }
+              fallback={ <chakra.span color="text.secondary">{ mdash }</chakra.span> }
+            />
+          </DetailedInfoItemBreakdown.Row>
+        ) }
         { data.source_transaction_hash && data.source_chain_id !== config.chain.id && (
           <DetailedInfoItemBreakdown.Row
-            label="Source transaction"
+            label="Source tx"
           >
             <TxEntityInterchain
               chains={ crossChainConfig }
@@ -59,14 +66,20 @@ const TxDetailsCrossChainMessage = ({ data, isLoading: isLoadingProp }: Props) =
             />
           </DetailedInfoItemBreakdown.Row>
         ) }
-        <DetailedInfoItemBreakdown.Row
-          label="Destination chain"
-        >
-          <ChainLabel data={ crossChainConfig?.find((chain) => chain.id.toString() === data.destination_chain_id) } isLoading={ isLoading }/>
-        </DetailedInfoItemBreakdown.Row>
+        { data.destination_chain_id !== config.chain.id && (
+          <DetailedInfoItemBreakdown.Row
+            label="Destination chain"
+          >
+            <ChainLabel
+              data={ crossChainConfig?.find((chain) => chain.id.toString() === data.destination_chain_id) }
+              isLoading={ isLoading }
+              fallback={ <chakra.span color="text.secondary">{ mdash }</chakra.span> }
+            />
+          </DetailedInfoItemBreakdown.Row>
+        ) }
         { data.destination_transaction_hash && data.destination_chain_id !== config.chain.id && (
           <DetailedInfoItemBreakdown.Row
-            label="Destination transaction"
+            label="Destination tx"
           >
             <TxEntityInterchain
               chains={ crossChainConfig }

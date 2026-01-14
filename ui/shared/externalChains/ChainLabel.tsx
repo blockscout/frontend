@@ -12,11 +12,12 @@ import ChainIcon from './ChainIcon';
 interface Props extends StackProps {
   data: Omit<ExternalChain, 'explorer_url'> | undefined;
   isLoading?: boolean;
+  fallback?: React.ReactNode;
 }
 
-const ChainLabel = ({ data, isLoading, ...rest }: Props) => {
+const ChainLabel = ({ data, isLoading, fallback, ...rest }: Props) => {
   if (!data) {
-    return null;
+    return fallback || null;
   }
 
   return (

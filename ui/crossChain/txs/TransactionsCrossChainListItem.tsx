@@ -60,7 +60,7 @@ const TransactionsCrossChainListItem = ({ data, isLoading: isLoadingProp, rowGap
           <Time timestamp={ timestamp } format="lll_s"/>
         </Skeleton>
       ) }
-      <Grid templateColumns="100px 1fr" columnGap={ 2 } rowGap={ rowGap }>
+      <Grid templateColumns="120px 1fr" columnGap={ 2 } rowGap={ rowGap }>
         <Skeleton loading={ isLoading }>
           Source tx
         </Skeleton>

@@ -97,6 +97,7 @@ const TransactionsCrossChainTableItem = ({ data, isLoading: isLoadingProp }: Pro
             color="text.secondary"
             textStyle="xs"
             gap={ 1 }
+            fallback={ data.source_transaction_hash ? <chakra.span color="text.secondary">{ mdash }</chakra.span> : null }
           />
         </VStack>
       </TableCell>
@@ -120,6 +121,7 @@ const TransactionsCrossChainTableItem = ({ data, isLoading: isLoadingProp }: Pro
             color="text.secondary"
             textStyle="xs"
             gap={ 1 }
+            fallback={ data.destination_transaction_hash ? <chakra.span color="text.secondary">{ mdash }</chakra.span> : null }
           />
         </VStack>
       </TableCell>
@@ -134,7 +136,11 @@ const TransactionsCrossChainTableItem = ({ data, isLoading: isLoadingProp }: Pro
             { data.transfers.length }
           </Link>
         ) : (
-          <Skeleton loading={ isLoading } color="text.secondary" lineHeight="24px">{ data.transfers.length }</Skeleton>
+          <Skeleton loading={ isLoading } color="text.secondary" lineHeight="24px">
+            <span>
+              { data.transfers.length }
+            </span>
+          </Skeleton>
         ) }
       </TableCell>
       <TableCell>
@@ -143,12 +149,13 @@ const TransactionsCrossChainTableItem = ({ data, isLoading: isLoadingProp }: Pro
             firstTransfer.sender ? (
               <AddressEntityInterchain
                 chains={ crossChainConfig }
-                chainId={ data.source_chain_id }
+                chainId={ firstTransfer.source_chain_id }
                 address={ firstTransfer.sender }
                 isLoading={ isLoading }
                 truncation="constant"
                 noIcon
                 lineHeight="24px"
+                w="100%"
               />
             ) : dashElement
           }
@@ -170,6 +177,7 @@ const TransactionsCrossChainTableItem = ({ data, isLoading: isLoadingProp }: Pro
               textDecorationLine="underline"
               mt={ 2 }
               href={ route({ pathname: '/cross-chain-tx/[id]', query: { id: data.message_id, tab: 'transfers' } }) }
+              textStyle="xs"
             >
               View all
             </Link>
@@ -185,12 +193,13 @@ const TransactionsCrossChainTableItem = ({ data, isLoading: isLoadingProp }: Pro
             firstTransfer.recipient ? (
               <AddressEntityInterchain
                 chains={ crossChainConfig }
-                chainId={ data.source_chain_id }
+                chainId={ firstTransfer.destination_chain_id }
                 address={ firstTransfer.recipient }
                 isLoading={ isLoading }
                 truncation="constant"
                 noIcon
                 lineHeight="24px"
+                w="100%"
               />
             ) : dashElement
           }
