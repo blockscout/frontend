@@ -32,7 +32,7 @@ const TransactionsCrossChainListItem = ({ data, isLoading: isLoadingProp, rowGap
   const isLoading = isLoadingProp || isPending;
 
   const timestamp = data.send_timestamp || data.receive_timestamp;
-  const firstTransfer = data.transfers[0];
+  const firstTransfer = data.transfers.length > 0 ? data.transfers[0] : null;
   const txHashWithTransfers = (() => {
     if (data.transfers.length === 0) {
       return;
@@ -113,7 +113,7 @@ const TransactionsCrossChainListItem = ({ data, isLoading: isLoadingProp, rowGap
         <Skeleton loading={ isLoading }>
           Sender
         </Skeleton>
-        { firstTransfer.sender ? (
+        { firstTransfer?.sender ? (
           <AddressEntityInterchain
             chains={ crossChainConfig }
             chainId={ data.source_chain_id }
@@ -125,7 +125,7 @@ const TransactionsCrossChainListItem = ({ data, isLoading: isLoadingProp, rowGap
         <Skeleton loading={ isLoading }>
           Source token
         </Skeleton>
-        { firstTransfer.source_token ? (
+        { firstTransfer?.source_token ? (
           <TokenValueInterchain
             token={ firstTransfer.source_token }
             amount={ firstTransfer.source_amount }
@@ -137,7 +137,7 @@ const TransactionsCrossChainListItem = ({ data, isLoading: isLoadingProp, rowGap
         <Skeleton loading={ isLoading }>
           Recipient
         </Skeleton>
-        { firstTransfer.recipient ? (
+        { firstTransfer?.recipient ? (
           <AddressEntityInterchain
             chains={ crossChainConfig }
             chainId={ data.destination_chain_id }
@@ -149,7 +149,7 @@ const TransactionsCrossChainListItem = ({ data, isLoading: isLoadingProp, rowGap
         <Skeleton loading={ isLoading }>
           Target token
         </Skeleton>
-        { firstTransfer.destination_token ? (
+        { firstTransfer?.destination_token ? (
           <TokenValueInterchain
             token={ firstTransfer.destination_token }
             amount={ firstTransfer.destination_amount }

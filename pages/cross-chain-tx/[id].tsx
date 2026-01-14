@@ -9,7 +9,7 @@ const TxCrossChain = dynamic(() => import('ui/crossChain/tx/TxCrossChain'), { ss
 
 const Page: NextPage<Props> = (props: Props) => {
   return (
-    <PageNextJs pathname="/tx/[hash]" query={ props.query }>
+    <PageNextJs pathname="/cross-chain-tx/[id]" query={ props.query }>
       <TxCrossChain/>
     </PageNextJs>
   );

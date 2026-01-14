@@ -30,7 +30,7 @@ const TransactionsCrossChainTableItem = ({ data, isLoading: isLoadingProp }: Pro
   const { data: crossChainConfig, isPending } = useCrossChainConfig();
   const isLoading = isLoadingProp || isPending;
 
-  const firstTransfer = data.transfers[0];
+  const firstTransfer = data.transfers.length > 0 ? data.transfers[0] : null;
   const txHashWithTransfers = (() => {
     if (data.transfers.length === 0) {
       return;
@@ -146,7 +146,7 @@ const TransactionsCrossChainTableItem = ({ data, isLoading: isLoadingProp }: Pro
       <TableCell>
         <VStack alignItems="start">
           {
-            firstTransfer.sender ? (
+            firstTransfer?.sender ? (
               <AddressEntityInterchain
                 chains={ crossChainConfig }
                 chainId={ firstTransfer.source_chain_id }
@@ -159,7 +159,7 @@ const TransactionsCrossChainTableItem = ({ data, isLoading: isLoadingProp }: Pro
               />
             ) : dashElement
           }
-          { firstTransfer.source_token && (
+          { firstTransfer?.source_token && (
             <TokenValueInterchain
               token={ firstTransfer.source_token }
               amount={ firstTransfer.source_amount }
@@ -190,7 +190,7 @@ const TransactionsCrossChainTableItem = ({ data, isLoading: isLoadingProp }: Pro
       <TableCell>
         <VStack alignItems="start">
           {
-            firstTransfer.recipient ? (
+            firstTransfer?.recipient ? (
               <AddressEntityInterchain
                 chains={ crossChainConfig }
                 chainId={ firstTransfer.destination_chain_id }
@@ -203,7 +203,7 @@ const TransactionsCrossChainTableItem = ({ data, isLoading: isLoadingProp }: Pro
               />
             ) : dashElement
           }
-          { firstTransfer.destination_token && (
+          { firstTransfer?.destination_token && (
             <TokenValueInterchain
               token={ firstTransfer.destination_token }
               amount={ firstTransfer.destination_amount }

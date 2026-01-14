@@ -134,7 +134,6 @@ const AddressTokenTransfers = ({ shouldRender = true, overloadCount, isQueryEnab
       size="sm"
       tabs={ tabs }
       onValueChange={ handleTabValueChange }
-      defaultTabId="txs_local"
       rightSlot={ rightSlot }
       rightSlotProps={ rightSlotProps }
       listProps={ isMobile ? undefined : TAB_LIST_PROPS }
