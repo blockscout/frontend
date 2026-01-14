@@ -10,7 +10,7 @@ import AddressTokenTransfers from './AddressTokenTransfers';
 const CURRENT_ADDRESS = '0xd789a607CEac2f0E14867de4EB15b15C9FFB5859';
 const hooksConfig = {
   router: {
-    query: { hash: CURRENT_ADDRESS },
+    query: { hash: CURRENT_ADDRESS, tab: 'token_transfers' },
   },
 };
 
@@ -91,7 +91,7 @@ test.describe('socket', () => {
   test('without overload', async({ render, mockApiResponse, createSocket, page }) => {
     const hooksConfigNoToken = {
       router: {
-        query: { hash: CURRENT_ADDRESS },
+        query: { hash: CURRENT_ADDRESS, tab: 'token_transfers' },
       },
     };
     await mockApiResponse('general:address_token_transfers', tokenTransfersWithPagination, {
@@ -124,7 +124,7 @@ test.describe('socket', () => {
   test('with overload', async({ render, mockApiResponse, page, createSocket }) => {
     const hooksConfigNoToken = {
       router: {
-        query: { hash: CURRENT_ADDRESS },
+        query: { hash: CURRENT_ADDRESS, tab: 'token_transfers' },
       },
     };
     await mockApiResponse('general:address_token_transfers', tokenTransfersWithPagination, {
@@ -160,7 +160,7 @@ test.describe('socket', () => {
   test('without overload, with filters', async({ render, mockApiResponse, page, createSocket }) => {
     const hooksConfigWithFilter = {
       router: {
-        query: { hash: CURRENT_ADDRESS, type: 'ERC-1155' },
+        query: { hash: CURRENT_ADDRESS, type: 'ERC-1155', tab: 'token_transfers' },
       },
     };
     await mockApiResponse('general:address_token_transfers', tokenTransfersWithPagination, {
@@ -194,7 +194,7 @@ test.describe('socket', () => {
   test('with overload, with filters', async({ render, mockApiResponse, page, createSocket }) => {
     const hooksConfigWithFilter = {
       router: {
-        query: { hash: CURRENT_ADDRESS, type: 'ERC-1155' },
+        query: { hash: CURRENT_ADDRESS, type: 'ERC-1155', tab: 'token_transfers' },
       },
     };
     await mockApiResponse('general:address_token_transfers', tokenTransfersWithPagination, {

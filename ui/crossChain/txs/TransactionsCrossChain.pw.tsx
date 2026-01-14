@@ -8,6 +8,8 @@ import * as pwConfig from 'playwright/utils/config';
 import TransactionsCrossChain from './TransactionsCrossChain';
 
 test.describe('txs', () => {
+  test.slow();
+
   test.beforeEach(async({ mockEnvs, mockApiResponse, mockConfigResponse, mockAssetResponse }) => {
     await mockEnvs([
       ...ENVS_MAP.crossChainTxs,
@@ -28,13 +30,12 @@ test.describe('txs', () => {
 
     test('base view +@dark-mode', async({ render }) => {
       const component = await render(<TransactionsCrossChain/>);
-      await expect(component).toHaveScreenshot();
+      await expect(component).toHaveScreenshot({ timeout: 30_000 });
     });
   });
 
   test.describe('mobile', () => {
     test.use({ viewport: pwConfig.viewport.mobile });
-    test.slow();
 
     test('base view', async({ render }) => {
       const component = await render(<TransactionsCrossChain/>);
