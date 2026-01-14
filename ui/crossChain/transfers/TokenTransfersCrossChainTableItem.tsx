@@ -139,7 +139,7 @@ const TokenTransfersCrossChainTableItem = ({ data, isLoading: isLoadingProp }: P
         <CrossChainBridgeLink data={ data.bridge } isLoading={ isLoading } lineHeight="24px"/>
       </TableCell>
       <TableCell>
-        <CrossChainMessageEntity id={ data.message_id } isLoading={ isLoading } lineHeight="24px" fontWeight={ 700 }/>
+        <CrossChainMessageEntity id={ data.message_id } isLoading={ isLoading } lineHeight="24px"/>
       </TableCell>
       <TableCell>
         <TimeWithTooltip
