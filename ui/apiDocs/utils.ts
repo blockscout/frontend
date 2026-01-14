@@ -34,9 +34,9 @@ export const REST_API_SECTIONS = [
 
         if (!req.loadSpec) {
           const newUrl = new URL(
-            req.url
-              .replace(DEFAULT_SERVER, config.apis.general.host)
-              .replace(DEFAULT_SERVER_NEW, config.apis.general.host),
+            req.url.includes(DEFAULT_SERVER) ?
+              req.url.replace(DEFAULT_SERVER, config.apis.general.host) :
+              req.url.replace(DEFAULT_SERVER_NEW, config.apis.general.host),
           );
 
           newUrl.protocol = config.apis.general.protocol + ':';

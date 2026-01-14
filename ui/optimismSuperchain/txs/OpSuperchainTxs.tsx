@@ -6,9 +6,9 @@ import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 import { MultichainProvider } from 'lib/contexts/multichain';
 import useRoutedChainSelect from 'lib/multichain/useRoutedChainSelect';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import { EmptyState } from 'toolkit/chakra/empty-state';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import ChainSelect from 'ui/optimismSuperchain/components/ChainSelect';
-import ComingSoon from 'ui/shared/ComingSoon';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 import OpSuperchainTxsLocal, { OP_SUPERCHAIN_TXS_LOCAL_TAB_IDS } from './OpSuperchainTxsLocal';
@@ -30,7 +30,7 @@ const OpSuperchainTxs = () => {
       {
         id: 'txs_cross_chain',
         title: 'Cross-chain',
-        component: <ComingSoon/>,
+        component: <EmptyState type="coming_soon"/>,
       },
       {
         id: 'txs_local',

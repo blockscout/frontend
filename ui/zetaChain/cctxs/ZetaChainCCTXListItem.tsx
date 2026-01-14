@@ -9,6 +9,7 @@ import { SECOND } from 'toolkit/utils/consts';
 import AddressEntityZetaChain from 'ui/shared/entities/address/AddressEntityZetaChain';
 import TxEntityZetaChainCC from 'ui/shared/entities/tx/TxEntityZetaChainCC';
 import TextSeparator from 'ui/shared/TextSeparator';
+import Time from 'ui/shared/time/Time';
 import ZetaChainCCTXReducedStatus from 'ui/shared/zetaChain/ZetaChainCCTXReducedStatus';
 import ZetaChainCCTXValue from 'ui/shared/zetaChain/ZetaChainCCTXValue';
 
@@ -35,9 +36,7 @@ const LatestZetaChainCCTXItem = ({ tx, isLoading, animation }: Props) => {
       <Skeleton loading={ isLoading } display="flex" color="text.secondary" gap={ 2 } justifyContent="start">
         { dayjs(Number(tx.last_update_timestamp) * SECOND).fromNow() }
         <TextSeparator mx={ 0 }/>
-        <Text flex={ 1 } minWidth={ 0 } truncate>
-          { dayjs(Number(tx.last_update_timestamp) * SECOND).format('llll') }
-        </Text>
+        <Time timestamp={ Number(tx.last_update_timestamp) * SECOND } format="lll_s"/>
       </Skeleton>
       <Grid gridTemplateColumns="100px 1fr" gap={ 2 }>
         <Text>Sender</Text>

@@ -11,7 +11,7 @@ export const recipe = defineRecipe({
     maxWidth: '100%',
     whiteSpace: 'nowrap',
     fontVariantNumeric: 'normal',
-    userSelect: 'none',
+    userSelect: 'text',
     _loading: {
       borderRadius: 'sm',
     },

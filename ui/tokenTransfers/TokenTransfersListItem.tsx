@@ -3,7 +3,7 @@ import React from 'react';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 import type { ClusterChainConfig } from 'types/multichain';
 
-import { NFT_TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
+import { hasTokenTransferValue, NFT_TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
 import { Badge } from 'toolkit/chakra/badge';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
@@ -79,7 +79,7 @@ const TokenTransfersListItem = ({ item, isLoading, chainData }: Props) => {
         </>
       ) }
 
-      { item.token && item.total && 'value' in item.total && item.total.value !== null && (item.token.type === 'ERC-20' || item.token.type === 'ERC-1155') && (
+      { item.token && item.total && 'value' in item.total && item.total.value !== null && (hasTokenTransferValue(item.token.type)) && (
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>Amount</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>

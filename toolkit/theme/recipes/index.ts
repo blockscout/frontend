@@ -7,6 +7,7 @@ import { recipe as checkmark } from './checkmark.recipe';
 import { recipe as closeButton } from './close-button.recipe';
 import { recipe as dialog } from './dialog.recipe';
 import { recipe as drawer } from './drawer.recipe';
+import { recipe as emptyState } from './empty-state.recipe';
 import { recipe as field } from './field.recipe';
 import { recipe as input } from './input.recipe';
 import { recipe as link } from './link.recipe';
@@ -52,6 +53,7 @@ export const slotRecipes = {
   checkbox,
   dialog,
   drawer,
+  emptyState,
   field,
   list,
   menu,

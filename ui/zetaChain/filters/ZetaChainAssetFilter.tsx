@@ -41,8 +41,8 @@ export const ZETA_NATIVE_TOKEN = {
   icon_url: '',
   symbol: config.chain.currency.symbol,
   address_hash: 'native',
-  type: 'ERC-20' as const,
-} as TokenInfo<'ERC-20'>;
+  type: 'ERC-20',
+} as TokenInfo;
 
 // We can't implement multivalue search here, because we have different search params for native coin and for tokens.
 type Value = TokenInfo | null;

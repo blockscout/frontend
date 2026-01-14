@@ -18,7 +18,8 @@ const SettingsAddressFormat = () => {
     <Switch
       id="address-format"
       defaultChecked={ addressFormat === 'bech32' }
-      onChange={ toggleAddressFormat } mt={ 4 }
+      onChange={ toggleAddressFormat }
+      mt={ 4 }
       direction="rtl"
       justifyContent="space-between"
       w="100%"

@@ -15,7 +15,7 @@ const PRESETS = {
   garnet: 'https://explorer.garnetchain.com',
   gnosis: 'https://gnosis.blockscout.com',
   immutable: 'https://explorer.immutable.com',
-  mega_eth: 'https://megaeth-testnet-v2.blockscout.com',
+  mega_eth: 'https://megaeth.blockscout.com',
   mekong: 'https://mekong.blockscout.com',
   neon_devnet: 'https://neon-devnet.blockscout.com',
   optimism: 'https://optimism.blockscout.com',
@@ -63,6 +63,7 @@ const IGNORED_ENVS = [
   'NEXT_PUBLIC_RE_CAPTCHA_V3_APP_SITE_KEY',
   'NEXT_PUBLIC_HOMEPAGE_PLATE_TEXT_COLOR',
   'NEXT_PUBLIC_HOMEPAGE_PLATE_BACKGROUND',
+  'NEXT_PUBLIC_VIEWS_CONTRACT_LANGUAGE_FILTERS',
 ];
 
 function parseScriptArgs() {

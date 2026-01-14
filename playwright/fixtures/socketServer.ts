@@ -60,10 +60,7 @@ export const joinChannel = async(socket: WebSocket, channelName: string) => {
 
 export function sendMessage(socket: WebSocket, channel: Channel, msg: 'coin_balance', payload: { coin_balance: AddressCoinBalanceHistoryItem }): void;
 export function sendMessage(socket: WebSocket, channel: Channel, msg: 'token_balance', payload: { block_number: number }): void;
-export function sendMessage(socket: WebSocket, channel: Channel, msg: 'updated_token_balances_erc_20', payload: AddressTokensBalancesSocketMessage): void;
-export function sendMessage(socket: WebSocket, channel: Channel, msg: 'updated_token_balances_erc_721', payload: AddressTokensBalancesSocketMessage): void;
-export function sendMessage(socket: WebSocket, channel: Channel, msg: 'updated_token_balances_erc_1155', payload: AddressTokensBalancesSocketMessage): void;
-export function sendMessage(socket: WebSocket, channel: Channel, msg: 'updated_token_balances_erc_404', payload: AddressTokensBalancesSocketMessage): void;
+export function sendMessage(socket: WebSocket, channel: Channel, msg: `updated_token_balances_${ string }`, payload: AddressTokensBalancesSocketMessage): void;
 export function sendMessage(socket: WebSocket, channel: Channel, msg: 'transaction', payload: { transaction: number }): void;
 export function sendMessage(socket: WebSocket, channel: Channel, msg: 'transaction', payload: { transactions: Array<Transaction> }): void;
 export function sendMessage(socket: WebSocket, channel: Channel, msg: 'pending_transaction', payload: { pending_transaction: number }): void;

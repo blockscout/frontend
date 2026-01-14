@@ -1,14 +1,10 @@
 import { Box, Text, chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import EmptySearchResult from 'ui/shared/EmptySearchResult';
+import type { EmptyStateProps } from 'toolkit/chakra/empty-state';
+import { EmptyState } from 'toolkit/chakra/empty-state';
 
 import DataFetchAlert from './DataFetchAlert';
-
-type FilterProps = {
-  hasActiveFilters: boolean;
-  emptyFilteredText: string;
-};
 
 type Props = {
   isError: boolean;
@@ -19,7 +15,8 @@ type Props = {
   showActionBarIfError?: boolean;
   children: React.ReactNode;
   className?: string;
-  filterProps?: FilterProps;
+  hasActiveFilters?: boolean;
+  emptyStateProps?: EmptyStateProps;
 };
 
 const DataListDisplay = (props: Props) => {
@@ -36,11 +33,11 @@ const DataListDisplay = (props: Props) => {
     return <DataFetchAlert className={ props.className }/>;
   }
 
-  if (props.filterProps?.hasActiveFilters && !props.itemsNum) {
+  if (props.hasActiveFilters && !props.itemsNum) {
     return (
       <Box className={ props.className }>
         { props.actionBar }
-        <EmptySearchResult text={ props.filterProps.emptyFilteredText }/>
+        <EmptyState { ...props.emptyStateProps }/>
       </Box>
     );
   }

@@ -2,13 +2,14 @@ import type { TokenInfoApplication } from './account';
 import type { AddressParam } from './addressParams';
 
 export type NFTTokenType = 'ERC-721' | 'ERC-1155' | 'ERC-404';
-export type TokenType = 'ERC-20' | NFTTokenType;
+// token type can come from the environment config, so it can be any string
+export type TokenType = string;
 
 export type TokenReputation = 'ok' | 'scam';
 
-export interface TokenInfo<T extends TokenType = TokenType> {
+export interface TokenInfo {
   address_hash: string;
-  type: T;
+  type: TokenType;
   symbol: string | null;
   name: string | null;
   decimals: string | null;
@@ -24,6 +25,7 @@ export interface TokenInfo<T extends TokenType = TokenType> {
   origin_chain_id?: string | null;
   foreign_address?: string | null;
   filecoin_robust_address?: string | null;
+  zilliqa?: { zrc2_address_hash?: string };
 }
 
 export interface TokenCounters {

@@ -15,7 +15,13 @@ type Props = {
 const DeFiDropdownItem = ({ item }: Props) => {
   return (
     <Link
-      href={ item.dappId ? route({ pathname: '/apps/[id]', query: { id: item.dappId, action: 'connect' } }) : item.url }
+      href={ item.dappId ?
+        route({
+          pathname: item.isEssentialDapp ? '/essential-dapps/[id]' : '/apps/[id]',
+          query: { id: item.dappId, action: 'connect' },
+        }) :
+        item.url
+      }
       external={ !item.dappId }
       w="100%"
       h="34px"

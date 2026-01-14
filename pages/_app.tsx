@@ -48,12 +48,28 @@ const ERROR_SCREEN_STYLES: HTMLChakraProps<'div'> = {
   p: { base: 4, lg: 0 },
 };
 
+const CONSOLE_SCAM_WARNING = `⚠️WARNING: Do not paste or execute any scripts here!
+Anyone asking you to run code here might be trying to scam you and steal your data.
+If you don't understand what this console is for, close it now and stay safe.`;
+
+const CONSOLE_SCAM_WARNING_DELAY_MS = 500;
+
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
 
   const growthBook = initGrowthBook(pageProps.uuid);
   useLoadFeatures(growthBook);
 
   const queryClient = useQueryClientConfig();
+
+  React.useEffect(() => {
+    // after the app is rendered/hydrated, show the console scam warning
+    const timeoutId = window.setTimeout(() => {
+      // eslint-disable-next-line no-console
+      console.warn(CONSOLE_SCAM_WARNING);
+    }, CONSOLE_SCAM_WARNING_DELAY_MS);
+
+    return () => window.clearTimeout(timeoutId);
+  }, []);
 
   const content = (() => {
     const getLayout = Component.getLayout ?? ((page) => <Layout>{ page }</Layout>);

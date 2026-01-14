@@ -5,7 +5,7 @@ import type { TokenInstance } from 'types/api/token';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 import type { ClusterChainConfig } from 'types/multichain';
 
-import { NFT_TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
+import { hasTokenTransferValue, NFT_TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
 import { Badge } from 'toolkit/chakra/badge';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
@@ -92,7 +92,7 @@ const TokenTransferTableItem = ({
           }
         </TableCell>
       ) }
-      { token && (token.type === 'ERC-20' || token.type === 'ERC-1155' || token.type === 'ERC-404') && (
+      { token && (hasTokenTransferValue(token.type)) && (
         <TableCell isNumeric verticalAlign="top">
           <AssetValue
             amount={ total && 'value' in total ? total.value : null }

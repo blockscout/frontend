@@ -5,7 +5,7 @@ import type { TokenInstance } from 'types/api/token';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 import type { ClusterChainConfig } from 'types/multichain';
 
-import { NFT_TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
+import { hasTokenTransferValue, NFT_TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
 import { Badge } from 'toolkit/chakra/badge';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
@@ -63,7 +63,7 @@ const TokenTransferListItem = ({
         w="100%"
         fontWeight="500"
       />
-      { total && 'value' in total && token && (token.type === 'ERC-20' || token.type === 'ERC-1155') && (
+      { total && 'value' in total && token && (hasTokenTransferValue(token.type)) && (
         <Flex alignItems="center" columnGap={ 2 } maxW="100%">
           <Skeleton
             display="inline-flex"
