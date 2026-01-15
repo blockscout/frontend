@@ -12,7 +12,7 @@ import { Link } from 'toolkit/chakra/link';
 import SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 import useNewTxsSocket from 'ui/txs/socket/useTxsSocketTypeAll';
 
-import LatestTxsFallback from './fallbacks/LatestTxsFallback';
+import LatestTxsDegraded from './fallbacks/LatestTxsDegraded';
 import LatestTxsItem from './LatestTxsItem';
 import LatestTxsItemMobile from './LatestTxsItemMobile';
 
@@ -30,7 +30,7 @@ const LatestTxs = () => {
   const { num, showErrorAlert } = useNewTxsSocket({ type: 'txs_home', isLoading: isPlaceholderData });
 
   if (isError) {
-    return <LatestTxsFallback/>;
+    return <LatestTxsDegraded maxNum={ txsCount }/>;
   }
 
   if (data) {
@@ -59,7 +59,7 @@ const LatestTxs = () => {
           </Box>
         </AddressHighlightProvider>
         <Flex justifyContent="center">
-          <Link textStyle="sm" href={ txsUrl }>View all transactions</Link>
+          <Link textStyle="sm" loading={ isPlaceholderData } href={ txsUrl }>View all transactions</Link>
         </Flex>
       </>
     );

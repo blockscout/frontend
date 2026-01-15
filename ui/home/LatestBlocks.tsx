@@ -23,7 +23,7 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { nbsp } from 'toolkit/utils/htmlEntities';
 
-import LatestBlocksFallback from './fallbacks/LatestBlocksFallback';
+import LatestBlocksDegraded from './fallbacks/LatestBlocksDegraded';
 import LatestBlocksItem from './LatestBlocksItem';
 
 const LatestBlocks = () => {
@@ -79,7 +79,7 @@ const LatestBlocks = () => {
 
   const content = (() => {
     if (isError) {
-      return <LatestBlocksFallback/>;
+      return <LatestBlocksDegraded maxNum={ blocksMaxCount }/>;
     }
     if (data && data.length > 0) {
       const dataToShow = data.slice(0, blocksMaxCount);
@@ -97,7 +97,7 @@ const LatestBlocks = () => {
             ))) }
           </VStack>
           <Flex justifyContent="center">
-            <Link textStyle="sm" href={ route({ pathname: '/blocks' }) }>View all blocks</Link>
+            <Link textStyle="sm" href={ route({ pathname: '/blocks' }) } loading={ isPlaceholderData }>View all blocks</Link>
           </Flex>
         </>
       );

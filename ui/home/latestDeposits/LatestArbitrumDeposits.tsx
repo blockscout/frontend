@@ -10,6 +10,7 @@ import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import { ARBITRUM_MESSAGES_ITEM } from 'stubs/arbitrumL2';
 
+import LatestTxsFallback from '../fallbacks/LatestTxsFallback';
 import LatestDeposits from './LatestDeposits';
 
 const LatestArbitrumDeposits = () => {
@@ -50,7 +51,7 @@ const LatestArbitrumDeposits = () => {
   });
 
   if (isError) {
-    return <Text mt={ 4 }>No data. Please reload the page.</Text>;
+    return <LatestTxsFallback/>;
   }
 
   if (data) {
@@ -71,7 +72,7 @@ const LatestArbitrumDeposits = () => {
     );
   }
 
-  return null;
+  return <Text>No latest deposits found.</Text>;
 };
 
 export default LatestArbitrumDeposits;

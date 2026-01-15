@@ -10,6 +10,7 @@ import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import { L2_DEPOSIT_ITEM } from 'stubs/L2';
 
+import LatestTxsFallback from '../fallbacks/LatestTxsFallback';
 import LatestDeposits from './LatestDeposits';
 
 const LatestOptimisticDeposits = () => {
@@ -50,7 +51,7 @@ const LatestOptimisticDeposits = () => {
   });
 
   if (isError) {
-    return <Text mt={ 4 }>No data. Please reload the page.</Text>;
+    return <LatestTxsFallback/>;
   }
 
   if (data) {
@@ -66,7 +67,7 @@ const LatestOptimisticDeposits = () => {
     );
   }
 
-  return null;
+  return <Text>No latest deposits found.</Text>;
 };
 
 export default LatestOptimisticDeposits;
