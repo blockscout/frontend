@@ -71,7 +71,7 @@ const TxDetailsDegraded = ({ hash, txQuery }: Props) => {
       GET_BLOCK,
     ],
     refetchOnMount: false,
-    enabled: !txQuery.isPlaceholderData,
+    enabled: txQuery.isFetchedAfterMount,
     retry: 2,
     retryDelay: 5 * SECOND,
   });
@@ -104,7 +104,7 @@ const TxDetailsDegraded = ({ hash, txQuery }: Props) => {
         <TestnetWarning isLoading={ query.isPlaceholderData }/>
         { originalError?.status !== 404 && <ServiceDegradationWarning isLoading={ query.isPlaceholderData }/> }
       </Flex>
-      <TxInfo data={ query.data } isLoading={ query.isPlaceholderData }/>
+      <TxInfo data={ query.data } isLoading={ query.isPlaceholderData } noTxActions/>
     </>
   );
 };
