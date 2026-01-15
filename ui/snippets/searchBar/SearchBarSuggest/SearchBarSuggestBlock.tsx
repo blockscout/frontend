@@ -5,11 +5,11 @@ import type { ItemsProps } from './types';
 import type * as multichain from 'types/client/multichain-aggregator';
 import type { SearchResultBlock } from 'types/client/search';
 
-import dayjs from 'lib/date/dayjs';
 import highlightText from 'lib/highlightText';
 import { Tag } from 'toolkit/chakra/tag';
 import * as BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
+import Time from 'ui/shared/time/Time';
 
 const SearchBarSuggestBlock = ({ data, isMobile, searchTerm, chainInfo }: ItemsProps<SearchResultBlock | multichain.QuickSearchResultBlock>) => {
   const icon = <BlockEntity.Icon chain={ chainInfo }/>;
@@ -57,7 +57,7 @@ const SearchBarSuggestBlock = ({ data, isMobile, searchTerm, chainInfo }: ItemsP
       <HashStringShortenDynamic hash={ data.block_hash } noTooltip/>
     </Text>
   ) : null;
-  const date = 'timestamp' in data && data.timestamp && !isFutureBlock ? dayjs(data.timestamp).format('llll') : undefined;
+  const date = 'timestamp' in data && data.timestamp && !isFutureBlock ? <Time timestamp={ data.timestamp } color="text.secondary" format="lll_s"/> : undefined;
   const futureBlockText = <Text color="text.secondary">Learn estimated time for this block to be created.</Text>;
   const blockType = 'block_type' in data ? data.block_type : undefined;
 
@@ -71,7 +71,7 @@ const SearchBarSuggestBlock = ({ data, isMobile, searchTerm, chainInfo }: ItemsP
           { blockType === 'uncle' && <Tag ml="auto">Uncle</Tag> }
         </Flex>
         { hash }
-        { isFutureBlock ? futureBlockText : <Text color="text.secondary">{ date }</Text> }
+        { isFutureBlock ? futureBlockText : date }
       </>
     );
   }

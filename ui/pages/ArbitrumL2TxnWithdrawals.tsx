@@ -8,7 +8,6 @@ import { ARBITRUM_L2_TXN_WITHDRAWALS_ITEM } from 'stubs/arbitrumL2';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import { FormFieldError } from 'toolkit/components/forms/components/FormFieldError';
 import { TRANSACTION_HASH_REGEXP } from 'toolkit/components/forms/validators/transaction';
-import { apos } from 'toolkit/utils/htmlEntities';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import ArbitrumL2TxnWithdrawalsList from 'ui/txnWithdrawals/arbitrumL2/ArbitrumL2TxnWithdrawalsList';
@@ -95,9 +94,9 @@ const ArbitrumL2TxnWithdrawals = () => {
         mt={ 6 }
         isError={ isError }
         itemsNum={ searchTerm ? data?.items.length : undefined }
-        filterProps={{
-          emptyFilteredText: `Couldn${ apos }t find any withdrawals for your transaction.`,
-          hasActiveFilters: Boolean(searchTerm),
+        hasActiveFilters={ Boolean(searchTerm) }
+        emptyStateProps={{
+          term: 'withdrawal',
         }}
       >
         { content }

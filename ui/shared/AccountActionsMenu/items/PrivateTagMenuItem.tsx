@@ -58,7 +58,8 @@ const PrivateTagMenuItem = ({ hash, entityType = 'address', type }: Props) => {
         return (
           <AuthGuard onAuthSuccess={ modal.onOpen }>
             { ({ onClick }) => (
-              <ButtonItem label="Add private tag" icon="privattags" onClick={ onClick }/>
+              // FIXME use non-navigation icon
+              <ButtonItem label="Add private tag" icon="navigation/private_tags" onClick={ onClick }/>
             ) }
           </AuthGuard>
         );
@@ -68,7 +69,8 @@ const PrivateTagMenuItem = ({ hash, entityType = 'address', type }: Props) => {
           <AuthGuard onAuthSuccess={ modal.onOpen }>
             { ({ onClick }) => (
               <MenuItem onClick={ onClick } value="add-private-tag">
-                <IconSvg name="privattags" boxSize={ 6 }/>
+                { /* FIXME use non-navigation icon */ }
+                <IconSvg name="navigation/private_tags" boxSize={ 6 }/>
                 <span>Add private tag</span>
               </MenuItem>
             ) }

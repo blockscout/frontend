@@ -16,6 +16,8 @@ interface Params {
   tab: string;
 }
 
+const beaconChainFeature = config.features.beaconChain;
+
 // No deposits data in RPC, so we use API only
 export default function useBlockDepositsQuery({ heightOrHash, blockQuery, tab }: Params): BlockDepositsQuery {
   const apiQuery = useQueryWithPages({
@@ -24,7 +26,7 @@ export default function useBlockDepositsQuery({ heightOrHash, blockQuery, tab }:
     options: {
       enabled:
         tab === 'deposits' &&
-        config.features.beaconChain.isEnabled &&
+        beaconChainFeature.isEnabled && !beaconChainFeature.withdrawalsOnly &&
         !blockQuery.isPlaceholderData && !blockQuery.isDegradedData,
       placeholderData: generateListStub<'general:block_deposits'>(DEPOSIT, 50, { next_page_params: {
         index: 5,

@@ -16,7 +16,7 @@ import { generateListStub } from './utils';
 
 export const BLOCK_HASH = '0x8fa7b9e5e5e79deeb62d608db22ba9a5cb45388c7ebb9223ae77331c6080dc70';
 
-export const TOKEN_INFO_ERC_20: TokenInfo<'ERC-20'> = {
+export const TOKEN_INFO_ERC_20: TokenInfo = {
   address_hash: ADDRESS_HASH,
   circulating_market_cap: '117629601.61913824',
   decimals: '18',
@@ -30,19 +30,19 @@ export const TOKEN_INFO_ERC_20: TokenInfo<'ERC-20'> = {
   reputation: 'ok',
 };
 
-export const TOKEN_INFO_ERC_721: TokenInfo<'ERC-721'> = {
+export const TOKEN_INFO_ERC_721: TokenInfo = {
   ...TOKEN_INFO_ERC_20,
   circulating_market_cap: null,
   type: 'ERC-721',
 };
 
-export const TOKEN_INFO_ERC_1155: TokenInfo<'ERC-1155'> = {
+export const TOKEN_INFO_ERC_1155: TokenInfo = {
   ...TOKEN_INFO_ERC_20,
   circulating_market_cap: null,
   type: 'ERC-1155',
 };
 
-export const TOKEN_INFO_ERC_404: TokenInfo<'ERC-404'> = {
+export const TOKEN_INFO_ERC_404: TokenInfo = {
   ...TOKEN_INFO_ERC_20,
   circulating_market_cap: null,
   type: 'ERC-404',
@@ -167,6 +167,7 @@ export const getTokenInstanceTransfersStub = (type?: TokenType, pagination: Toke
 };
 
 export const TOKEN_INSTANCE: TokenInstance = {
+  token: TOKEN_INFO_ERC_721,
   animation_url: null,
   external_app_url: 'https://vipsland.com/nft/collections/genesis/188882',
   id: '188882',

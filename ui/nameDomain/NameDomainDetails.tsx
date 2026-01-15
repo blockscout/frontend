@@ -8,12 +8,12 @@ import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
-import dayjs from 'lib/date/dayjs';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { stripTrailingSlash } from 'toolkit/utils/url';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
+import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import IconSvg from 'ui/shared/IconSvg';
@@ -30,7 +30,6 @@ const NameDomainDetails = ({ query }: Props) => {
   const isLoading = query.isPlaceholderData;
 
   const otherAddresses = Object.entries(query.data?.other_addresses ?? {});
-  const hasExpired = query.data?.expiry_date && dayjs(query.data.expiry_date).isBefore(dayjs());
 
   return (
     <>
@@ -45,10 +44,7 @@ const NameDomainDetails = ({ query }: Props) => {
               Registration date
             </DetailedInfo.ItemLabel>
             <DetailedInfo.ItemValue>
-              <IconSvg name="clock" boxSize={ 5 } color="icon.primary" verticalAlign="middle" isLoading={ isLoading } mr={ 2 }/>
-              <Skeleton loading={ isLoading } display="inline" whiteSpace="pre-wrap" lineHeight="20px">
-                { dayjs(query.data.registration_date).format('llll') }
-              </Skeleton>
+              <DetailedInfoTimestamp timestamp={ query.data.registration_date } isLoading={ isLoading }/>
             </DetailedInfo.ItemValue>
           </>
         ) }
@@ -63,18 +59,7 @@ const NameDomainDetails = ({ query }: Props) => {
               Expiration date
             </DetailedInfo.ItemLabel>
             <DetailedInfo.ItemValue>
-              <IconSvg name="clock" boxSize={ 5 } color="icon.primary" verticalAlign="middle" isLoading={ isLoading } mr={ 2 } mt="-2px"/>
-              { hasExpired && (
-                <>
-                  <Skeleton loading={ isLoading } display="inline" whiteSpace="pre-wrap" lineHeight="24px">
-                    { dayjs(query.data.expiry_date).fromNow() }
-                  </Skeleton>
-                  <TextSeparator/>
-                </>
-              ) }
-              <Skeleton loading={ isLoading } display="inline" whiteSpace="pre-wrap" lineHeight="24px">
-                { dayjs(query.data.expiry_date).format('llll') }
-              </Skeleton>
+              <DetailedInfoTimestamp timestamp={ query.data?.expiry_date } isLoading={ isLoading } noRelativeTime/>
               <TextSeparator/>
               <Skeleton loading={ isLoading } color="text.secondary" display="inline">
                 <NameDomainExpiryStatus date={ query.data?.expiry_date }/>
@@ -236,6 +221,7 @@ const NameDomainDetails = ({ query }: Props) => {
             <DetailedInfo.ItemValue
               flexDir="column"
               alignItems="flex-start"
+              multiRow
             >
               { otherAddresses.map(([ type, address ]) => (
                 <Flex key={ type } columnGap={ 2 } minW="0" w="100%" overflow="hidden">

@@ -1,8 +1,7 @@
-import { Center, chakra, Flex } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
-import { DappscoutIframeProvider, useDappscoutIframe } from 'dappscout-iframe';
 import { useRouter } from 'next/router';
-import React, { useCallback, useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 
 import type { MarketplaceApp } from 'types/client/marketplace';
 
@@ -17,96 +16,22 @@ import useFetch from 'lib/hooks/useFetch';
 import * as metadata from 'lib/metadata';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { useColorMode } from 'toolkit/chakra/color-mode';
-import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 import useIsAuth from 'ui/snippets/auth/useIsAuth';
 
+import MarketplaceAppIframe from '../marketplace/MarketplaceAppIframe';
 import MarketplaceAppTopBar from '../marketplace/MarketplaceAppTopBar';
 import useAutoConnectWallet from '../marketplace/useAutoConnectWallet';
-import useMarketplaceWallet from '../marketplace/useMarketplaceWallet';
 import { getAppUrl } from '../marketplace/utils';
 
 const feature = config.features.marketplace;
-
-const IFRAME_SANDBOX_ATTRIBUTE = 'allow-forms allow-orientation-lock ' +
-'allow-pointer-lock allow-popups-to-escape-sandbox ' +
-'allow-same-origin allow-scripts ' +
-'allow-top-navigation-by-user-activation allow-popups';
-
-const IFRAME_ALLOW_ATTRIBUTE = 'clipboard-read; clipboard-write;';
-
-type Props = {
-  address: string | undefined;
-  data: MarketplaceApp | undefined;
-  isPending: boolean;
-  appUrl?: string;
-};
-
-const MarketplaceAppContent = ({ address, data, isPending, appUrl }: Props) => {
-  const { iframeRef, isReady } = useDappscoutIframe();
-
-  const [ iframeKey, setIframeKey ] = useState(0);
-  const [ isFrameLoading, setIsFrameLoading ] = useState(isPending);
-  const { colorMode } = useColorMode();
-
-  useEffect(() => {
-    setIframeKey((key) => key + 1);
-  }, [ address ]);
-
-  const handleIframeLoad = useCallback(() => {
-    setIsFrameLoading(false);
-  }, []);
-
-  useEffect(() => {
-    if (data && !isFrameLoading) {
-      const message = {
-        blockscoutColorMode: colorMode,
-        blockscoutRootUrl: config.app.baseUrl + route({ pathname: '/' }),
-        blockscoutAddressExplorerUrl: config.app.baseUrl + route({ pathname: '/address/[hash]', query: { hash: '' } }),
-        blockscoutTransactionExplorerUrl: config.app.baseUrl + route({ pathname: '/tx/[hash]', query: { hash: '' } }),
-        blockscoutNetworkName: config.chain.name,
-        blockscoutNetworkId: Number(config.chain.id),
-        blockscoutNetworkCurrency: config.chain.currency,
-        blockscoutNetworkRpc: config.chain.rpcUrls[0],
-      };
-
-      iframeRef?.current?.contentWindow?.postMessage(message, data.url);
-    }
-  }, [ isFrameLoading, data, colorMode, iframeRef ]);
-
-  return (
-    <Center
-      flexGrow={ 1 }
-      mx={{ base: -4, lg: -6 }}
-    >
-      { (isFrameLoading) && (
-        <ContentLoader/>
-      ) }
-
-      { (data && isReady) && (
-        <chakra.iframe
-          key={ iframeKey }
-          allow={ IFRAME_ALLOW_ATTRIBUTE }
-          ref={ iframeRef }
-          sandbox={ IFRAME_SANDBOX_ATTRIBUTE }
-          h="100%"
-          w="100%"
-          display={ isFrameLoading ? 'none' : 'block' }
-          src={ appUrl }
-          title={ data.title }
-          onLoad={ handleIframeLoad }
-        />
-      ) }
-    </Center>
-  );
-};
 
 export default function MarketplaceApp() {
   const fetch = useFetch();
   const apiFetch = useApiFetch();
   const router = useRouter();
   const id = getQueryParamString(router.query.id);
-  const { address, sendTransaction, signMessage, signTypedData } = useMarketplaceWallet(id);
   const isAuth = useIsAuth();
+  const { colorMode } = useColorMode();
   useAutoConnectWallet();
 
   const query = useQuery<unknown, ResourceError<unknown>, MarketplaceApp>({
@@ -140,6 +65,17 @@ export default function MarketplaceApp() {
 
   const appUrl = useMemo(() => getAppUrl(data?.url, router), [ data?.url, router ]);
 
+  const message = useMemo(() => ({
+    blockscoutColorMode: colorMode,
+    blockscoutRootUrl: config.app.baseUrl + route({ pathname: '/' }),
+    blockscoutAddressExplorerUrl: config.app.baseUrl + route({ pathname: '/address/[hash]', query: { hash: '' } }),
+    blockscoutTransactionExplorerUrl: config.app.baseUrl + route({ pathname: '/tx/[hash]', query: { hash: '' } }),
+    blockscoutNetworkName: config.chain.name,
+    blockscoutNetworkId: Number(config.chain.id),
+    blockscoutNetworkCurrency: config.chain.currency,
+    blockscoutNetworkRpc: config.chain.rpcUrls[0],
+  }), [ colorMode ]);
+
   useEffect(() => {
     if (data) {
       metadata.update(
@@ -159,16 +95,12 @@ export default function MarketplaceApp() {
         data={ data }
         isLoading={ isPending }
       />
-      <DappscoutIframeProvider
-        address={ address }
+      <MarketplaceAppIframe
+        appId={ id }
         appUrl={ appUrl }
-        rpcUrl={ config.chain.rpcUrls[0] }
-        sendTransaction={ sendTransaction }
-        signMessage={ signMessage }
-        signTypedData={ signTypedData }
-      >
-        <MarketplaceAppContent address={ address } data={ data } isPending={ isPending } appUrl={ appUrl }/>
-      </DappscoutIframeProvider>
+        message={ message }
+        mx={{ base: -4, lg: -6 }}
+      />
     </Flex>
   );
 };

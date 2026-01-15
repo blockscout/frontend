@@ -10,7 +10,6 @@ import useDebounce from 'lib/hooks/useDebounce';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { ENS_DOMAIN } from 'stubs/ENS';
 import { generateListStub } from 'stubs/utils';
-import { apos } from 'toolkit/utils/htmlEntities';
 import { ADDRESS_REGEXP } from 'toolkit/utils/regexp';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
@@ -233,9 +232,9 @@ const NameDomains = () => {
       isError={ isError }
       itemsNum={ data?.items.length }
       emptyText="There are no name domains."
-      filterProps={{
-        emptyFilteredText: `Couldn${ apos }t find name domains that match your filter query.`,
-        hasActiveFilters,
+      hasActiveFilters={ hasActiveFilters }
+      emptyStateProps={{
+        term: 'name domain',
       }}
       actionBar={ actionBar }
     >

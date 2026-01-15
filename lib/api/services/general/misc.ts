@@ -7,7 +7,8 @@ import type {
 import type { Blob } from 'types/api/blobs';
 import type { Block } from 'types/api/block';
 import type { ChartMarketResponse, ChartSecondaryCoinPriceResponse, ChartTransactionResponse } from 'types/api/charts';
-import type { BackendVersionConfig, CeloConfig, CsvExportConfig } from 'types/api/configs';
+import type { BackendVersionConfig, CeloConfig, ContractLanguagesConfig, CsvExportConfig } from 'types/api/configs';
+import type { HotContractsFilters, HotContractsResponse, HotContractsSorting } from 'types/api/contracts';
 import type { DepositsResponse, DepositsCounters } from 'types/api/deposits';
 import type { CeloEpochDetails, CeloEpochElectionRewardDetailsResponse, CeloEpochListResponse } from 'types/api/epochs';
 import type { IndexingStatus } from 'types/api/indexingStatus';
@@ -74,6 +75,11 @@ export const GENERAL_API_MISC_RESOURCES = {
   },
   stats_charts_secondary_coin_price: {
     path: '/api/v2/stats/charts/secondary-coin-market',
+  },
+  stats_hot_contracts: {
+    path: '/api/v2/stats/hot-smart-contracts',
+    paginated: true,
+    filterFields: [ 'scale' as const ],
   },
 
   // HOMEPAGE
@@ -256,6 +262,9 @@ export const GENERAL_API_MISC_RESOURCES = {
   config_celo: {
     path: '/api/v2/config/celo',
   },
+  config_contract_languages: {
+    path: '/api/v2/config/smart-contracts/languages',
+  },
 
   // OTHER
   api_v2_key: {
@@ -271,6 +280,7 @@ R extends 'general:stats' ? HomeStats :
 R extends 'general:stats_charts_txs' ? ChartTransactionResponse :
 R extends 'general:stats_charts_market' ? ChartMarketResponse :
 R extends 'general:stats_charts_secondary_coin_price' ? ChartSecondaryCoinPriceResponse :
+R extends 'general:stats_hot_contracts' ? HotContractsResponse :
 R extends 'general:homepage_blocks' ? Array<Block> :
 R extends 'general:homepage_txs' ? Array<Transaction> :
 R extends 'general:homepage_txs_watchlist' ? Array<Transaction> :
@@ -288,6 +298,7 @@ R extends 'general:search_check_redirect' ? SearchRedirectResult :
 R extends 'general:config_backend_version' ? BackendVersionConfig :
 R extends 'general:config_csv_export' ? CsvExportConfig :
 R extends 'general:config_celo' ? CeloConfig :
+R extends 'general:config_contract_languages' ? ContractLanguagesConfig :
 R extends 'general:blob' ? Blob :
 R extends 'general:validators_stability' ? ValidatorsStabilityResponse :
 R extends 'general:validators_stability_counters' ? ValidatorsStabilityCountersResponse :
@@ -316,6 +327,7 @@ never;
 
 /* eslint-disable @stylistic/indent */
 export type GeneralApiMiscPaginationFilters<R extends GeneralApiMiscResourceName> =
+R extends 'general:stats_hot_contracts' ? HotContractsFilters :
 R extends 'general:search' ? SearchResultFilters :
 R extends 'general:user_ops' ? UserOpsFilters :
 R extends 'general:validators_stability' ? ValidatorsStabilityFilters :
@@ -325,6 +337,7 @@ never;
 
 /* eslint-disable @stylistic/indent */
 export type GeneralApiMiscPaginationSorting<R extends GeneralApiMiscResourceName> =
+R extends 'general:stats_hot_contracts' ? HotContractsSorting :
 R extends 'general:validators_stability' ? ValidatorsStabilitySorting :
 R extends 'general:validators_blackfort' ? ValidatorsBlackfortSorting :
 never;

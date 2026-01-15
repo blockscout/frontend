@@ -119,9 +119,9 @@ const AddressAccountHistory = ({ shouldRender = true, isQueryEnabled = true }: P
       itemsNum={ filteredData?.length }
       emptyText="There are no transactions."
       actionBar={ actionBar }
-      filterProps={{
-        hasActiveFilters: Boolean(filterValue),
-        emptyFilteredText: 'No match found for current filter',
+      hasActiveFilters={ Boolean(filterValue) }
+      emptyStateProps={{
+        description: 'No match found for current filter',
       }}
     >
       { content }

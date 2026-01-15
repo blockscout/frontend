@@ -3,6 +3,7 @@ import React from 'react';
 
 import type { TokenHolder, TokenInfo } from 'types/api/token';
 
+import { hasTokenIds } from 'lib/token/tokenTypes';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
@@ -27,7 +28,7 @@ const TokenTransferTableItem = ({ holder, token, isLoading }: Props) => {
           fontWeight="700"
         />
       </TableCell>
-      { (token.type === 'ERC-1155' || token.type === 'ERC-404') && 'token_id' in holder && (
+      { (hasTokenIds(token.type)) && 'token_id' in holder && (
         <TableCell verticalAlign="middle">
           <TruncatedText text={ holder.token_id } loading={ isLoading } w="100%"/>
         </TableCell>

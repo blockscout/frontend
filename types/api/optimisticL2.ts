@@ -37,7 +37,7 @@ export type OptimisticL2OutputRootsResponse = {
   };
 };
 
-export type OptimisticL2BatchDataContainer = 'in_blob4844' | 'in_celestia' | 'in_calldata';
+export type OptimisticL2BatchDataContainer = 'in_blob4844' | 'in_celestia' | 'in_calldata' | 'in_eigenda';
 
 export type OptimisticL2TxnBatchesItem = {
   number: number;

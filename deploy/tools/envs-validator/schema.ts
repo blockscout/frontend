@@ -56,11 +56,11 @@ const schema = yup
     NEXT_PUBLIC_APP_PROTOCOL: yup.string().oneOf(protocols),
     NEXT_PUBLIC_APP_PORT: yup.number().positive().integer(),
     NEXT_PUBLIC_APP_ENV: yup.string(),
-    NEXT_PUBLIC_APP_INSTANCE: yup.string(),    
+    NEXT_PUBLIC_APP_INSTANCE: yup.string(),
 
 
     // Features configuration
-    // NOTE: As a rule of thumb, only include features that require a single ENV variable here.  
+    // NOTE: As a rule of thumb, only include features that require a single ENV variable here.
     // Otherwise, consider placing them in the corresponding schema file in the "./schemas/features" directory.
     NEXT_PUBLIC_WEB3_WALLETS: yup
       .mixed()
@@ -146,6 +146,7 @@ const schema = yup
         return isUndefined || valueSchema.isValidSync(data);
       }),
     NEXT_PUBLIC_FLASHBLOCKS_SOCKET_URL: yup.string().test(urlTest),
+    NEXT_PUBLIC_HOT_CONTRACTS_ENABLED: yup.boolean(),
 
     // Misc
     NEXT_PUBLIC_USE_NEXT_JS_PROXY: yup.boolean(),
@@ -164,6 +165,7 @@ const schema = yup
   .concat(featuresSchemas.beaconChainSchema)
   .concat(featuresSchemas.bridgedTokensSchema)
   .concat(featuresSchemas.defiDropdownSchema)
+  .concat(featuresSchemas.highlightsConfigSchema)
   .concat(featuresSchemas.marketplaceSchema)
   .concat(featuresSchemas.megaEthSchema)
   .concat(featuresSchemas.rollupSchema)

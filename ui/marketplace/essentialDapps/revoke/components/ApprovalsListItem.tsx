@@ -11,6 +11,7 @@ import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 import NumberEntity from 'ui/shared/NumberEntity';
+import Time from 'ui/shared/time/Time';
 
 import useRevoke from '../hooks/useRevoke';
 import formatAllowance from '../lib/formatAllowance';
@@ -119,7 +120,7 @@ export default function ApprovalsListItem({
       <ListItemMobileGrid.Label isLoading={ isLoading }>Last updated</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value color="inherit">
         <Skeleton loading={ isLoading } display="flex" flexDir="column" rowGap={ 2 }>
-          <Text>{ dayjs(approval.timestamp).format('lll') }</Text>
+          <Time timestamp={ approval.timestamp }/>
           <Text>{ dayjs(approval.timestamp).fromNow() }</Text>
         </Skeleton>
       </ListItemMobileGrid.Value>

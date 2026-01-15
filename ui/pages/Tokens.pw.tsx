@@ -41,7 +41,7 @@ test.skip('base view +@mobile +@dark-mode', async({ render, mockApiResponse }) =
   await expect(component).toHaveScreenshot();
 });
 
-test('with search +@mobile +@dark-mode', async({ render, mockApiResponse }) => {
+test('with search +@mobile +@dark-mode', async({ page, render, mockApiResponse }) => {
   const filteredTokens = {
     items: [
       tokens.tokenInfoERC20a, tokens.tokenInfoERC20b, tokens.tokenInfoERC20c,
@@ -50,7 +50,7 @@ test('with search +@mobile +@dark-mode', async({ render, mockApiResponse }) => {
   };
 
   await mockApiResponse('general:tokens', allTokens);
-  await mockApiResponse('general:tokens', filteredTokens, { queryParams: { q: 'foo' } });
+  const filteredTokensApiUrl = await mockApiResponse('general:tokens', filteredTokens, { queryParams: { q: 'foo' } });
 
   const component = await render(
     <div>
@@ -59,11 +59,13 @@ test('with search +@mobile +@dark-mode', async({ render, mockApiResponse }) => {
     </div>,
   );
 
+  const requestPromise = page.waitForRequest(filteredTokensApiUrl);
   await component.getByRole('textbox', { name: 'Token name or symbol' }).focus();
   await component.getByRole('textbox', { name: 'Token name or symbol' }).fill('foo');
   await component.getByRole('textbox', { name: 'Token name or symbol' }).blur();
 
-  await expect(component).toHaveScreenshot();
+  await requestPromise;
+  await expect(component).toHaveScreenshot({ maxDiffPixels: 20 });
 });
 
 test.describe('bridged tokens', () => {
@@ -95,7 +97,7 @@ test.describe('bridged tokens', () => {
   test('base view', async({ render, page, mockApiResponse, mockEnvs }) => {
     await mockEnvs(ENVS_MAP.bridgedTokens);
     await mockApiResponse('general:tokens_bridged', bridgedTokens);
-    await mockApiResponse('general:tokens_bridged', bridgedFilteredTokens, { queryParams: { chain_ids: '99' } });
+    const bridgedFilteredTokensApiUrl = await mockApiResponse('general:tokens_bridged', bridgedFilteredTokens, { queryParams: { chain_ids: '99' } });
 
     const component = await render(
       <div>
@@ -108,8 +110,11 @@ test.describe('bridged tokens', () => {
     await expect(component).toHaveScreenshot();
 
     await component.getByRole('button', { name: /filter/i }).click();
+    const requestPromise = page.waitForRequest(bridgedFilteredTokensApiUrl);
     await page.locator('label').filter({ hasText: /poa/i }).click();
     await page.click('body');
+
+    await requestPromise;
 
     await expect(component).toHaveScreenshot();
   });

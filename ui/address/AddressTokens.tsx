@@ -51,7 +51,7 @@ const AddressTokens = ({ shouldRender = true, isQueryEnabled = true }: Props) =>
   const erc20Query = useQueryWithPages({
     resourceName: 'general:address_tokens',
     pathParams: { hash },
-    filters: { type: 'ERC-20' },
+    filters: { type: [ 'ERC-20', ...config.chain.additionalTokenTypes.map(item => item.id) ] },
     scrollRef,
     options: {
       enabled: isQueryEnabled && (!tab || tab === 'tokens' || tab === 'tokens_erc20'),
@@ -87,7 +87,10 @@ const AddressTokens = ({ shouldRender = true, isQueryEnabled = true }: Props) =>
   const tabs = [
     {
       id: 'tokens_erc20',
-      title: `${ config.chain.tokenStandard }-20`,
+      title: [
+        `${ config.chain.tokenStandard }-20`,
+        ...config.chain.additionalTokenTypes.map((item) => item.name),
+      ].join(' & '),
       component: (
         <ERC20Tokens
           items={ erc20Query.data?.items }

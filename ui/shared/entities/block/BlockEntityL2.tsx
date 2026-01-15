@@ -12,7 +12,7 @@ const BlockEntityL2 = (props: BlockEntity.EntityProps) => {
     return null;
   }
 
-  return <BlockEntity.default { ...props } icon={{ name: 'txn_batches_slim' }}/>;
+  return <BlockEntity.default { ...props } icon={{ name: 'txn_batches' }}/>;
 };
 
 export default chakra(BlockEntityL2);

@@ -34,7 +34,7 @@ export const TOKEN = {
   total_supply: '76923002799740785',
   type: 'ERC-20' as const,
   reputation: 'ok' as const,
-} satisfies TokenInfo<'ERC-20'>;
+} satisfies TokenInfo;
 
 const LinkShowcase = () => {
 
@@ -161,7 +161,7 @@ const LinkShowcase = () => {
         <SamplesStack>
           <Sample label="Default" vertical w="100%">
             <BlockEntity number={ blockMock.base.height }/>
-            <BlockEntity number={ blockMock.base.height } link={{ external: true }} icon={{ name: 'txn_batches_slim' }}/>
+            <BlockEntity number={ blockMock.base.height } link={{ external: true }} icon={{ name: 'txn_batches' }}/>
             <Box maxW="150px">
               <BlockEntity number={ 1234567890123456 }/>
             </Box>

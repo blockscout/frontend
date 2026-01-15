@@ -7,10 +7,9 @@ import type { StatsIntervalIds } from 'types/client/stats';
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import { useMultichainContext } from 'lib/contexts/multichain';
+import { EmptyState } from 'toolkit/chakra/empty-state';
 import { Heading } from 'toolkit/chakra/heading';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import { apos } from 'toolkit/utils/htmlEntities';
-import EmptySearchResult from 'ui/shared/EmptySearchResult';
 import GasInfoTooltip from 'ui/shared/gas/GasInfoTooltip';
 import IconSvg from 'ui/shared/IconSvg';
 
@@ -18,18 +17,19 @@ import ChartsLoadingErrorAlert from './ChartsLoadingErrorAlert';
 import ChartWidgetContainer from './ChartWidgetContainer';
 
 type Props = {
-  filterQuery: string;
   initialFilterQuery: string;
   isError: boolean;
   isPlaceholderData: boolean;
   charts?: Array<stats.LineChartSection>;
   interval: StatsIntervalIds;
+  sections?: Array<stats.LineChartSection>;
+  selectedSectionId: string;
 };
 
-const ChartsWidgetsList = ({ filterQuery, isError, isPlaceholderData, charts, interval, initialFilterQuery }: Props) => {
+const ChartsWidgetsList = ({ isError, isPlaceholderData, charts, interval, initialFilterQuery, sections, selectedSectionId }: Props) => {
   const [ isSomeChartLoadingError, setIsSomeChartLoadingError ] = useState(false);
-  const isAnyChartDisplayed = charts?.some((section) => section.charts.length > 0);
-  const isEmptyChartList = Boolean(filterQuery) && !isAnyChartDisplayed;
+  const hasCharts = sections?.some((section) => section.charts.length > 0);
+  const hasDisplayedCharts = charts?.some((section) => section.charts.length > 0);
   const sectionRef = React.useRef<HTMLUListElement | null>(null);
 
   const shouldScrollToSection = Boolean(initialFilterQuery);
@@ -58,8 +58,14 @@ const ChartsWidgetsList = ({ filterQuery, isError, isPlaceholderData, charts, in
     return <ChartsLoadingErrorAlert/>;
   }
 
-  if (isEmptyChartList) {
-    return <EmptySearchResult text={ `Couldn${ apos }t find a chart that matches your filter query.` }/>;
+  if (!hasDisplayedCharts) {
+    const selectedSection = sections?.find((section) => section.id === selectedSectionId);
+    return (
+      <EmptyState
+        type={ hasCharts ? 'query' : 'stats' }
+        term={ hasCharts ? 'chart' : selectedSection?.title }
+      />
+    );
   }
 
   return (

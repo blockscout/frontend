@@ -22,6 +22,7 @@ import createIcsFileBlob from 'ui/blockCountdown/createIcsFileBlob';
 import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 import IconSvg from 'ui/shared/IconSvg';
 import StatsWidget from 'ui/shared/stats/StatsWidget';
+import Time from 'ui/shared/time/Time';
 
 import CapybaraRunner from '../games/CapybaraRunner';
 
@@ -80,7 +81,7 @@ const BlockCountdown = ({ hideCapybaraRunner }: Props) => {
             </Heading>
             <Box mt={ 2 } color="text.secondary">
               <Box fontWeight={ 600 }>Estimated target date</Box>
-              <Box>{ dayjs().add(Number(data.result.EstimateTimeInSec), 's').format('llll') }</Box>
+              <Time timestamp={ dayjs().add(Number(data.result.EstimateTimeInSec), 's').valueOf() }/>
             </Box>
             <Flex columnGap={ 2 } mt={ 3 }>
               <Link
@@ -112,7 +113,7 @@ const BlockCountdown = ({ hideCapybaraRunner }: Props) => {
           </Box>
           <Box position="relative">
             <IconSvg
-              name="block_slim"
+              name="block"
               w={{ base: '65px', lg: '125px' }}
               h={{ base: '75px', lg: '140px' }}
               color={{ _light: 'gray.300', _dark: 'gray.600' }}
@@ -138,8 +139,8 @@ const BlockCountdown = ({ hideCapybaraRunner }: Props) => {
           />
         ) }
         <Grid gridTemplateColumns="repeat(2, calc(50% - 4px))" columnGap={ 2 } mt={ 2 }>
-          <StatsWidget label="Remaining blocks" value={ data.result.RemainingBlock } icon="apps_slim"/>
-          <StatsWidget label="Current block" value={ data.result.CurrentBlock } icon="block_slim"/>
+          <StatsWidget label="Remaining blocks" value={ data.result.RemainingBlock } icon="apps"/>
+          <StatsWidget label="Current block" value={ data.result.CurrentBlock } icon="block"/>
         </Grid>
         { !hideCapybaraRunner && <CapybaraRunner/> }
       </Flex>

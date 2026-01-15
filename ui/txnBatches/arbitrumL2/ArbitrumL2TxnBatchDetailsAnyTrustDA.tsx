@@ -42,7 +42,7 @@ const ArbitrumL2TxnBatchDetailsAnyTrustDA = ({ data }: Props) => {
           <DetailsTimestamp timestamp={ data.timeout }/> :
           (
             <>
-              <Text>{ dayjs(data.timeout).format('llll') }</Text>
+              <DetailsTimestamp timestamp={ data.timeout } noRelativeTime/>
               <TextSeparator/>
               <Text color="red.500">{ dayjs(data.timeout).diff(dayjs(), 'day') } days left</Text>
             </>

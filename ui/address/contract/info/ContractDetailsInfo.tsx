@@ -7,7 +7,6 @@ import type { SmartContract } from 'types/api/contract';
 import config from 'configs/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import { CONTRACT_LICENSES } from 'lib/contracts/licenses';
-import dayjs from 'lib/date/dayjs';
 import { Link } from 'toolkit/chakra/link';
 import { getGitHubOwnerAndRepo } from 'ui/contractVerification/utils';
 import ContainerWithScrollY from 'ui/shared/ContainerWithScrollY';
@@ -15,6 +14,7 @@ import ContractCertifiedLabel from 'ui/shared/ContractCertifiedLabel';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import ContractCreationStatus from 'ui/shared/statusTag/ContractCreationStatus';
+import Time from 'ui/shared/time/Time';
 
 import ContractSecurityAudits from '../audits/ContractSecurityAudits';
 import ContractDetailsInfoItem from './ContractDetailsInfoItem';
@@ -187,7 +187,7 @@ const ContractDetailsInfo = ({ data, isLoading, addressData }: Props) => {
           wordBreak="break-word"
           isLoading={ isLoading }
         >
-          { dayjs(data.verified_at).format('llll') }
+          <Time timestamp={ data.verified_at } format="lll_s"/>
         </ContractDetailsInfoItem>
       ) }
       { data.file_path && !isStylusContract && (

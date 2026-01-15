@@ -5,7 +5,7 @@ import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
 import { useMultichainContext } from 'lib/contexts/multichain';
-import { NFT_TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
+import { hasTokenIds, hasTokenTransferValue, NFT_TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
 import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
@@ -42,9 +42,9 @@ const TokenTransferTable = ({ data, top, showSocketInfo, showSocketErrorAlert, s
             <TableColumnHeader width="200px">Method</TableColumnHeader>
             <TableColumnHeader width={{ lg: '224px', xl: '380px' }}>From/To</TableColumnHeader>
             { (NFT_TOKEN_TYPE_IDS.includes(tokenType)) &&
-              <TableColumnHeader width={ tokenType === 'ERC-1155' || tokenType === 'ERC-404' ? '50%' : '100%' }>Token ID</TableColumnHeader>
+              <TableColumnHeader width={ hasTokenIds(tokenType) ? '50%' : '100%' }>Token ID</TableColumnHeader>
             }
-            { (tokenType === 'ERC-20' || tokenType === 'ERC-1155' || tokenType === 'ERC-404' || tokenType === 'ERC-7984') && (
+            { hasTokenTransferValue(tokenType) && (
               <TableColumnHeader width={ (tokenType === 'ERC-20' || tokenType === 'ERC-7984') ? '100%' : '50%' } isNumeric>
                 <TruncatedText text={ `Value ${ token?.symbol || '' }` } w="100%" verticalAlign="middle"/>
               </TableColumnHeader>

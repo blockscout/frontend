@@ -341,6 +341,7 @@
               "localhost",
               "arbitrum",
               "arbitrum_sepolia",
+              "arbitrum_nova",
               "base",
               "blackfort_testnet",
               "celo",
