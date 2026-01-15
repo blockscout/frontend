@@ -12,6 +12,7 @@ import { Link } from 'toolkit/chakra/link';
 import SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 import useNewTxsSocket from 'ui/txs/socket/useTxsSocketTypeAll';
 
+import LatestTxsFallback from './fallbacks/LatestTxsFallback';
 import LatestTxsItem from './LatestTxsItem';
 import LatestTxsItemMobile from './LatestTxsItemMobile';
 
@@ -29,7 +30,7 @@ const LatestTxs = () => {
   const { num, showErrorAlert } = useNewTxsSocket({ type: 'txs_home', isLoading: isPlaceholderData });
 
   if (isError) {
-    return <Text mt={ 4 }>No data. Please reload the page.</Text>;
+    return <LatestTxsFallback/>;
   }
 
   if (data) {
@@ -64,7 +65,7 @@ const LatestTxs = () => {
     );
   }
 
-  return null;
+  return <Text>No latest transactions found.</Text>;
 };
 
 export default LatestTxs;

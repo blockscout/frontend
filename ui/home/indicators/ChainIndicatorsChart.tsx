@@ -3,6 +3,7 @@ import React from 'react';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Hint } from 'toolkit/components/Hint/Hint';
+import FallbackChart from 'ui/shared/fallbacks/FallbackChart';
 import IconSvg from 'ui/shared/IconSvg';
 
 import ChainIndicatorChartContainer from './ChainIndicatorChartContainer';
@@ -48,6 +49,10 @@ const ChainIndicatorsChart = ({ isLoading, value, valueDiff, chartQuery, title, 
       </Skeleton>
     );
   })();
+
+  if (chartQuery.isError) {
+    return <FallbackChart term={ title } h={{ base: '144px', lg: '184px' }}/>;
+  }
 
   return (
     <Flex flexGrow={ 1 } flexDir="column">

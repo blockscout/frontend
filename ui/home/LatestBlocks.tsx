@@ -23,6 +23,7 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { nbsp } from 'toolkit/utils/htmlEntities';
 
+import LatestBlocksFallback from './fallbacks/LatestBlocksFallback';
 import LatestBlocksItem from './LatestBlocksItem';
 
 const LatestBlocks = () => {
@@ -76,33 +77,33 @@ const LatestBlocks = () => {
     handler: handleNewBlockMessage,
   });
 
-  let content;
+  const content = (() => {
+    if (isError) {
+      return <LatestBlocksFallback/>;
+    }
+    if (data && data.length > 0) {
+      const dataToShow = data.slice(0, blocksMaxCount);
 
-  if (isError) {
-    content = <Text>No data. Please reload the page.</Text>;
-  }
-
-  if (data) {
-    const dataToShow = data.slice(0, blocksMaxCount);
-
-    content = (
-      <>
-        <VStack gap={ 2 } mb={ 3 } overflow="hidden" alignItems="stretch">
-          { dataToShow.map(((block, index) => (
-            <LatestBlocksItem
-              key={ block.height + (isPlaceholderData ? String(index) : '') }
-              block={ block }
-              isLoading={ isPlaceholderData }
-              animation={ initialList.getAnimationProp(block) }
-            />
-          ))) }
-        </VStack>
-        <Flex justifyContent="center">
-          <Link textStyle="sm" href={ route({ pathname: '/blocks' }) }>View all blocks</Link>
-        </Flex>
-      </>
-    );
-  }
+      return (
+        <>
+          <VStack gap={ 2 } mb={ 3 } overflow="hidden" alignItems="stretch">
+            { dataToShow.map(((block, index) => (
+              <LatestBlocksItem
+                key={ block.height + (isPlaceholderData ? String(index) : '') }
+                block={ block }
+                isLoading={ isPlaceholderData }
+                animation={ initialList.getAnimationProp(block) }
+              />
+            ))) }
+          </VStack>
+          <Flex justifyContent="center">
+            <Link textStyle="sm" href={ route({ pathname: '/blocks' }) }>View all blocks</Link>
+          </Flex>
+        </>
+      );
+    }
+    return <Box textStyle="sm">No latest blocks found.</Box>;
+  })();
 
   const networkUtilization = getNetworkUtilizationParams(statsQueryResult.data?.network_utilization_percentage ?? 0);
 
