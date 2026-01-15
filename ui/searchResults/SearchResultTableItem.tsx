@@ -437,7 +437,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
 
       case 'ens_domain': {
         const expiresText = data.ens_info?.expiry_date ? ` expires ${ dayjs(data.ens_info.expiry_date).fromNow() }` : '';
-        const hash = data.filecoin_robust_address || (addressFormat === 'bech32' ? toBech32Address(data.address_hash) : data.address_hash);
+        const hash = data.filecoin_robust_address || (addressFormat === 'bech32' && data.address_hash ? toBech32Address(data.address_hash) : data.address_hash);
 
         return (
           <>
@@ -445,7 +445,10 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
               <EnsEntity.Container>
                 <EnsEntity.Icon protocol={ data.ens_info.protocol }/>
                 <Link
-                  href={ route({ pathname: '/address/[hash]', query: { hash: data.address_hash } }) }
+                  href={ data.address_hash ?
+                    route({ pathname: '/address/[hash]', query: { hash: data.address_hash } }) :
+                    route({ pathname: '/name-services/domains/[name]', query: { name: data.ens_info.name } })
+                  }
                   fontWeight={ 700 }
                   wordBreak="break-all"
                   loading={ isLoading }
@@ -464,9 +467,11 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
             </TableCell>
             <TableCell>
               <Flex alignItems="center" overflow="hidden">
-                <Box overflow="hidden" whiteSpace="nowrap" w={ data.is_smart_contract_verified ? 'calc(100%-28px)' : 'unset' }>
-                  <HashStringShortenDynamic hash={ hash }/>
-                </Box>
+                { hash && (
+                  <Box overflow="hidden" whiteSpace="nowrap" w={ data.is_smart_contract_verified ? 'calc(100%-28px)' : 'unset' }>
+                    <HashStringShortenDynamic hash={ hash }/>
+                  </Box>
+                ) }
                 { data.is_smart_contract_verified && <IconSvg name="status/success" boxSize="14px" color="green.500" ml={ 1 } flexShrink={ 0 }/> }
               </Flex>
             </TableCell>

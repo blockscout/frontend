@@ -44,7 +44,7 @@ export default function useApiFetch() {
     const headers = pickBy({
       'x-endpoint': isNeedProxy() ? api.endpoint : undefined,
       Authorization: [ 'admin', 'contractInfo' ].includes(apiName) ? apiToken : undefined,
-      'x-csrf-token': [ 'general', 'admin' ].includes(apiName) && withBody && csrfToken ? csrfToken : undefined,
+      'x-csrf-token': [ 'general', 'admin', 'contractInfo' ].includes(apiName) && withBody && csrfToken ? csrfToken : undefined,
       ...(apiName === 'general' ? {
         'api-v2-temp-token': apiTempToken,
         'show-scam-tokens': showScamTokens ? 'true' : undefined,
