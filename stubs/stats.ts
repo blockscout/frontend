@@ -113,10 +113,10 @@ export const HOMEPAGE_STATS_MICROSERVICE: stats.MainPageStats = {
   yesterday_operational_transactions: STATS_COUNTER,
   daily_new_transactions: {
     chart: [],
-    info: STATS_CHART_INFO,
+    info: { ...STATS_CHART_INFO, title: 'Daily transactions' },
   },
   daily_new_operational_transactions: {
     chart: [],
-    info: STATS_CHART_INFO,
+    info: { ...STATS_CHART_INFO, title: 'Daily op txns' },
   },
 };

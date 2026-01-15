@@ -18,7 +18,9 @@ interface Props {
   hint?: string;
 }
 
-const ChainIndicatorsChart = ({ isLoading, value, valueDiff, chartQuery, title, hint }: Props) => {
+const ChainIndicatorsChart = ({ isLoading: isLoadingProp, value, valueDiff, chartQuery, title, hint }: Props) => {
+  const isLoading = isLoadingProp || chartQuery.isPending;
+
   const valueTitleElement = (() => {
     if (isLoading) {
       return <Skeleton loading h="36px" w="200px"/>;
@@ -65,7 +67,7 @@ const ChainIndicatorsChart = ({ isLoading, value, valueDiff, chartQuery, title, 
         { valueDiffElement }
       </Flex>
       <Flex h={{ base: '80px', lg: '110px' }} alignItems="flex-start" flexGrow={ 1 }>
-        <ChainIndicatorChartContainer { ...chartQuery } isPending={ chartQuery.isPending || isLoading }/>
+        <ChainIndicatorChartContainer { ...chartQuery } isPending={ isLoading }/>
       </Flex>
     </Flex>
   );
