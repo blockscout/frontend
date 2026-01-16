@@ -126,8 +126,8 @@ export function RewardsContextProvider({ children }: Props) {
   const balancesQuery = useApiQuery('rewards:user_balances', { queryOptions: { enabled } });
   const dailyRewardQuery = useApiQuery('rewards:user_daily_check', { queryOptions: { enabled } });
   const referralsQuery = useApiQuery('rewards:user_referrals', { queryOptions: { enabled } });
-  const rewardsConfigQuery = useApiQuery('rewards:config', { queryOptions: { enabled } });
-  const checkUserQuery = useApiQuery('rewards:check_user', { queryOptions: { enabled }, pathParams: { address } });
+  const rewardsConfigQuery = useApiQuery('rewards:config', { queryOptions: { enabled: feature.isEnabled } });
+  const checkUserQuery = useApiQuery('rewards:check_user', { queryOptions: { enabled: feature.isEnabled }, pathParams: { address } });
 
   // Handle 401 error
   useEffect(() => {
