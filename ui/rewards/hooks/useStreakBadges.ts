@@ -9,11 +9,11 @@ import { useRewardsContext } from 'lib/contexts/rewards';
 const feature = config.features.rewards;
 
 export default function useStreakBadges() {
-  const { apiToken, dailyRewardQuery } = useRewardsContext();
+  const { isAuth, dailyRewardQuery } = useRewardsContext();
 
   const badgesQuery = useApiQuery<'rewards:user_badges', unknown, GetAvailableBadgesResponse>('rewards:user_badges', {
     queryOptions: {
-      enabled: feature.isEnabled && Boolean(apiToken),
+      enabled: feature.isEnabled && isAuth,
       select: (data) => ({
         ...data,
         items: data.items
@@ -21,7 +21,6 @@ export default function useStreakBadges() {
           .slice(0, 3), // UI limit
       }),
     },
-    fetchParams: { headers: { Authorization: `Bearer ${ apiToken }` } },
   });
 
   const nextAchievementText = useMemo(() => {

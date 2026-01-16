@@ -35,6 +35,7 @@ export default function useApiFetch() {
     { pathParams, queryParams, fetchParams, logError, chain }: Params<R> = {},
   ) => {
     const apiToken = cookies.get(cookies.NAMES.API_TOKEN);
+    const rewardsApiToken = cookies.get(cookies.NAMES.REWARDS_API_TOKEN);
     const apiTempToken = cookies.get(cookies.NAMES.API_TEMP_TOKEN);
     const showScamTokens = cookies.get(cookies.NAMES.SHOW_SCAM_TOKENS) === 'true';
 
@@ -48,6 +49,9 @@ export default function useApiFetch() {
       ...(apiName === 'general' ? {
         'api-v2-temp-token': apiTempToken,
         'show-scam-tokens': showScamTokens ? 'true' : undefined,
+      } : {}),
+      ...(apiName === 'rewards' && rewardsApiToken ? {
+        Authorization: `Bearer ${ rewardsApiToken }`,
       } : {}),
       ...resource.headers,
       ...fetchParams?.headers,

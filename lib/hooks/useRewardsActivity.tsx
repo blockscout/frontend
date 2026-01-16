@@ -20,14 +20,14 @@ type RewardsActivityEndpoint =
   'rewards:user_activity_track_usage';
 
 export default function useRewardsActivity() {
-  const { apiToken } = useRewardsContext();
+  const { isAuth } = useRewardsContext();
   const apiFetch = useApiFetch();
   const lastExploreTime = useRef<number>(0);
 
   const profileQuery = useProfileQuery();
   const checkActivityPassQuery = useApiQuery('rewards:user_check_activity_pass', {
     queryOptions: {
-      enabled: feature.isEnabled && Boolean(apiToken) && Boolean(profileQuery.data?.address_hash),
+      enabled: feature.isEnabled && isAuth && Boolean(profileQuery.data?.address_hash),
     },
     queryParams: {
       address: profileQuery.data?.address_hash ?? '',
@@ -44,7 +44,7 @@ export default function useRewardsActivity() {
   }, []);
 
   const makeRequest = useCallback(async(endpoint: RewardsActivityEndpoint, params: Record<string, string>) => {
-    if (!apiToken || !checkActivityPassQuery.data?.is_valid) {
+    if (!isAuth || !checkActivityPassQuery.data?.is_valid) {
       return;
     }
 
@@ -53,11 +53,10 @@ export default function useRewardsActivity() {
         fetchParams: {
           method: 'POST',
           body: params,
-          headers: { Authorization: `Bearer ${ apiToken }` },
         },
       });
     } catch {}
-  }, [ apiFetch, checkActivityPassQuery.data, apiToken ]);
+  }, [ apiFetch, checkActivityPassQuery.data, isAuth ]);
 
   const trackTransaction = useCallback(async(from: string, to: string, chainId?: string) => {
     return (
@@ -84,7 +83,7 @@ export default function useRewardsActivity() {
 
   const trackUsage = useCallback((action: string) => {
     // check here because this function is called on page load
-    if (!apiToken || !checkActivityPassQuery.data?.is_valid) {
+    if (!isAuth || !checkActivityPassQuery.data?.is_valid) {
       return;
     }
 
@@ -103,7 +102,7 @@ export default function useRewardsActivity() {
       action,
       chain_id: config.chain.id ?? '',
     });
-  }, [ makeRequest, apiToken, checkActivityPassQuery.data ]);
+  }, [ makeRequest, isAuth, checkActivityPassQuery.data ]);
 
   return {
     trackTransaction,

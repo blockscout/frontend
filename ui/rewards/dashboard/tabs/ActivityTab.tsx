@@ -44,7 +44,7 @@ function getMaxAmount(rewards: Record<string, string> | undefined) {
 }
 
 export default function ActivityTab() {
-  const { apiToken, rewardsConfigQuery } = useRewardsContext();
+  const { isAuth, rewardsConfigQuery } = useRewardsContext();
   const explorersModal = useDisclosure();
   const taskDetailsModal = useDisclosure();
   const isMobile = useIsMobile();
@@ -53,7 +53,7 @@ export default function ActivityTab() {
   const profileQuery = useProfileQuery();
   const checkActivityPassQuery = useApiQuery('rewards:user_check_activity_pass', {
     queryOptions: {
-      enabled: feature.isEnabled && Boolean(apiToken) && Boolean(profileQuery.data?.address_hash),
+      enabled: feature.isEnabled && isAuth && Boolean(profileQuery.data?.address_hash),
     },
     queryParams: {
       address: profileQuery.data?.address_hash ?? '',
@@ -61,10 +61,9 @@ export default function ActivityTab() {
   });
   const activityQuery = useApiQuery('rewards:user_activity', {
     queryOptions: {
-      enabled: Boolean(apiToken) && feature.isEnabled,
+      enabled: isAuth && feature.isEnabled,
       placeholderData: USER_ACTIVITY,
     },
-    fetchParams: { headers: { Authorization: `Bearer ${ apiToken }` } },
   });
   const instancesQuery = useApiQuery('rewards:instances', {
     queryOptions: { enabled: feature.isEnabled },
