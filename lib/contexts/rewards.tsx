@@ -1,8 +1,7 @@
-import type { UseQueryResult } from '@tanstack/react-query';
-import { useQueryClient } from '@tanstack/react-query';
+import { useQueryClient, type UseQueryResult } from '@tanstack/react-query';
 import { useToggle } from '@uidotdev/usehooks';
 import { useRouter } from 'next/router';
-import React, { createContext, useContext, useEffect, useMemo, useCallback } from 'react';
+import React, { createContext, useContext, useEffect, useMemo, useCallback, useState } from 'react';
 import { useSignMessage, useSwitchChain } from 'wagmi';
 
 import type * as rewards from '@blockscout/points-types';
@@ -33,13 +32,14 @@ type TRewardsContext = {
   referralsQuery: ContextQueryResult<rewards.GetReferralDataResponse>;
   rewardsConfigQuery: ContextQueryResult<rewards.GetConfigResponse>;
   checkUserQuery: ContextQueryResult<rewards.AuthUserResponse>;
-  apiToken: string | undefined;
   isInitialized: boolean;
   isLoginModalOpen: boolean;
+  isAuth: boolean;
   openLoginModal: () => void;
   closeLoginModal: () => void;
-  saveApiToken: (token: string | undefined) => void;
   login: (refCode: string) => Promise<{ isNewUser: boolean; reward?: string; invalidRefCodeError?: boolean }>;
+  onLoginSuccess: (token: string) => void;
+  logout: () => Promise<void>;
   claim: () => Promise<void>;
 };
 
@@ -58,13 +58,14 @@ const initialState = {
   referralsQuery: defaultQueryResult,
   rewardsConfigQuery: defaultQueryResult,
   checkUserQuery: defaultQueryResult,
-  apiToken: undefined,
   isInitialized: false,
   isLoginModalOpen: false,
+  isAuth: false,
   openLoginModal: () => {},
   closeLoginModal: () => {},
-  saveApiToken: () => {},
   login: async() => ({ isNewUser: false }),
+  onLoginSuccess: () => {},
+  logout: async() => {},
   claim: async() => {},
 };
 
@@ -108,73 +109,36 @@ type Props = {
 
 export function RewardsContextProvider({ children }: Props) {
   const router = useRouter();
-  const queryClient = useQueryClient();
   const apiFetch = useApiFetch();
+  const queryClient = useQueryClient();
+
   const { address } = useAccount();
   const { signMessageAsync } = useSignMessage();
   const { switchChainAsync } = useSwitchChain();
   const profileQuery = useProfileQuery();
 
   const [ isLoginModalOpen, setIsLoginModalOpen ] = useToggle(false);
-  const [ isInitialized, setIsInitialized ] = useToggle(false);
-  const [ apiToken, setApiToken ] = React.useState<string | undefined>();
+  const [ isInitialized, setIsInitialized ] = useState(false);
+  const [ isAuth, setIsAuth ] = useState(false);
 
-  // Initialize state with the API token from cookies
-  useEffect(() => {
-    if (!profileQuery.isLoading) {
-      const token = cookies.get(cookies.NAMES.REWARDS_API_TOKEN);
-      const registeredAddress = getRegisteredAddress(token || '');
-      if (registeredAddress === profileQuery.data?.address_hash) {
-        setApiToken(token);
-      }
-      setIsInitialized(true);
-    }
-  }, [ setIsInitialized, profileQuery ]);
+  const enabled = feature.isEnabled && isAuth;
 
-  // Save the API token to cookies and state
-  const saveApiToken = useCallback((token: string | undefined) => {
-    if (token) {
-      cookies.set(cookies.NAMES.REWARDS_API_TOKEN, token, { expires: 365 });
-    } else {
-      cookies.remove(cookies.NAMES.REWARDS_API_TOKEN);
-    }
-    setApiToken(token);
-  }, []);
-
-  const [ queryOptions, fetchParams ] = useMemo(() => [
-    { enabled: Boolean(apiToken) && feature.isEnabled },
-    { headers: { Authorization: `Bearer ${ apiToken }` } },
-  ], [ apiToken ]);
-
-  const balancesQuery = useApiQuery('rewards:user_balances', { queryOptions, fetchParams });
-  const dailyRewardQuery = useApiQuery('rewards:user_daily_check', { queryOptions, fetchParams });
-  const referralsQuery = useApiQuery('rewards:user_referrals', { queryOptions, fetchParams });
-  const rewardsConfigQuery = useApiQuery('rewards:config', { queryOptions: { enabled: feature.isEnabled } });
-  const checkUserQuery = useApiQuery('rewards:check_user', { queryOptions: { enabled: feature.isEnabled }, pathParams: { address } });
-
-  // Reset queries when the API token is removed
-  useEffect(() => {
-    if (isInitialized && !apiToken) {
-      queryClient.resetQueries({ queryKey: getResourceKey('rewards:user_balances'), exact: true });
-      queryClient.resetQueries({ queryKey: getResourceKey('rewards:user_daily_check'), exact: true });
-      queryClient.resetQueries({ queryKey: getResourceKey('rewards:user_referrals'), exact: true });
-    }
-  }, [ isInitialized, apiToken, queryClient ]);
+  const balancesQuery = useApiQuery('rewards:user_balances', { queryOptions: { enabled } });
+  const dailyRewardQuery = useApiQuery('rewards:user_daily_check', { queryOptions: { enabled } });
+  const referralsQuery = useApiQuery('rewards:user_referrals', { queryOptions: { enabled } });
+  const rewardsConfigQuery = useApiQuery('rewards:config', { queryOptions: { enabled } });
+  const checkUserQuery = useApiQuery('rewards:check_user', { queryOptions: { enabled }, pathParams: { address } });
 
   // Handle 401 error
   useEffect(() => {
-    if (apiToken && balancesQuery.error?.status === 401) {
-      saveApiToken(undefined);
+    if (balancesQuery.error?.status === 401) {
+      const rewardsToken = cookies.get(cookies.NAMES.REWARDS_API_TOKEN);
+      if (rewardsToken) {
+        cookies.remove(cookies.NAMES.REWARDS_API_TOKEN);
+        setIsAuth(false);
+      }
     }
-  }, [ balancesQuery.error, apiToken, saveApiToken ]);
-
-  // Check if the profile address is the same as the registered address
-  useEffect(() => {
-    const registeredAddress = getRegisteredAddress(apiToken || '');
-    if (registeredAddress && !profileQuery.isLoading && profileQuery.data?.address_hash !== registeredAddress) {
-      setApiToken(undefined);
-    }
-  }, [ apiToken, profileQuery, setApiToken ]);
+  }, [ balancesQuery.error?.status ]);
 
   // Handle referral code in the URL
   useEffect(() => {
@@ -182,11 +146,11 @@ export function RewardsContextProvider({ children }: Props) {
     if (refCode && isInitialized) {
       cookies.set(cookies.NAMES.REWARDS_REFERRAL_CODE, refCode);
       removeQueryParam(router, 'ref');
-      if (!apiToken) {
+      if (!isAuth) {
         setIsLoginModalOpen(true);
       }
     }
-  }, [ router, apiToken, isInitialized, setIsLoginModalOpen ]);
+  }, [ router, isInitialized, setIsLoginModalOpen, isAuth ]);
 
   const errorToast = useCallback((error: unknown) => {
     const apiError = getErrorObjPayload<{ message: string }>(error);
@@ -195,6 +159,41 @@ export function RewardsContextProvider({ children }: Props) {
       description: apiError?.message || getErrorMessage(error) || 'Something went wrong. Try again later.',
     });
   }, [ ]);
+
+  const onLoginSuccess = useCallback((token: string) => {
+    cookies.set(cookies.NAMES.REWARDS_API_TOKEN, token, { expires: 365 });
+    setIsAuth(true);
+  }, [ ]);
+
+  const logout = useCallback(async() => {
+    const rewardsToken = cookies.get(cookies.NAMES.REWARDS_API_TOKEN);
+    if (rewardsToken) {
+      await apiFetch('rewards:logout', { fetchParams: { method: 'POST' } });
+      queryClient.resetQueries({ queryKey: getResourceKey('rewards:user_balances'), exact: true });
+      queryClient.resetQueries({ queryKey: getResourceKey('rewards:user_daily_check'), exact: true });
+      queryClient.resetQueries({ queryKey: getResourceKey('rewards:user_referrals'), exact: true });
+
+      cookies.remove(cookies.NAMES.REWARDS_API_TOKEN);
+    }
+    setIsAuth(false);
+  }, [ apiFetch, queryClient ]);
+
+  // Initialize state with the API token from cookies
+  useEffect(() => {
+    if (!profileQuery.isLoading) {
+      const token = cookies.get(cookies.NAMES.REWARDS_API_TOKEN);
+      if (token && profileQuery.data?.address_hash) {
+        const registeredAddress = getRegisteredAddress(token);
+        if (registeredAddress === profileQuery.data.address_hash) {
+          setIsAuth(true);
+        } else {
+          // Check if the profile address is the same as the registered address
+          logout();
+        }
+      }
+      setIsInitialized(true);
+    }
+  }, [ profileQuery.isLoading, profileQuery.data?.address_hash, logout ]);
 
   // Login to the rewards program
   const login = useCallback(async(refCode: string) => {
@@ -227,7 +226,7 @@ export function RewardsContextProvider({ children }: Props) {
           },
         },
       }) as rewards.AuthLoginResponse;
-      saveApiToken(loginResponse.token);
+      onLoginSuccess(loginResponse.token);
       return {
         isNewUser: loginResponse.created,
         reward: checkCodeResponse.reward,
@@ -236,7 +235,7 @@ export function RewardsContextProvider({ children }: Props) {
       errorToast(_error);
       throw _error;
     }
-  }, [ address, apiFetch, checkUserQuery.data?.exists, switchChainAsync, signMessageAsync, saveApiToken, errorToast ]);
+  }, [ address, apiFetch, switchChainAsync, checkUserQuery.data?.exists, signMessageAsync, onLoginSuccess, errorToast ]);
 
   // Claim daily reward
   const claim = useCallback(async() => {
@@ -244,14 +243,13 @@ export function RewardsContextProvider({ children }: Props) {
       await apiFetch('rewards:user_daily_claim', {
         fetchParams: {
           method: 'POST',
-          ...fetchParams,
         },
       }) as rewards.DailyRewardClaimResponse;
     } catch (_error) {
       errorToast(_error);
       throw _error;
     }
-  }, [ apiFetch, errorToast, fetchParams ]);
+  }, [ apiFetch, errorToast ]);
 
   const openLoginModal = React.useCallback(() => {
     setIsLoginModalOpen(true);
@@ -271,19 +269,21 @@ export function RewardsContextProvider({ children }: Props) {
       referralsQuery,
       rewardsConfigQuery,
       checkUserQuery,
-      apiToken,
-      saveApiToken,
       isInitialized,
       isLoginModalOpen,
       openLoginModal,
       closeLoginModal,
       login,
+      onLoginSuccess,
+      logout,
       claim,
+      isAuth,
     };
   }, [
     balancesQuery, dailyRewardQuery, checkUserQuery,
-    apiToken, login, claim, referralsQuery, rewardsConfigQuery, isInitialized, saveApiToken,
+    login, claim, referralsQuery, rewardsConfigQuery, isInitialized,
     isLoginModalOpen, openLoginModal, closeLoginModal,
+    isAuth, logout, onLoginSuccess,
   ]);
 
   return (
