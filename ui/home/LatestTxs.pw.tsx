@@ -1,8 +1,11 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
+import type { PublicRpcSchema, RpcTransaction } from 'viem';
 
 import type { AddressParam } from 'types/api/addressParams';
 
+import config from 'configs/app';
+import * as blockMock from 'mocks/blocks/block';
 import * as txMock from 'mocks/txs/tx';
 import * as socketServer from 'playwright/fixtures/socketServer';
 import { test as base, expect, devices } from 'playwright/lib';
@@ -108,4 +111,65 @@ test.describe('socket', () => {
     socketServer.sendMessage(socket, channel, 'transaction', { transaction: 1 });
     await expect(component).toHaveScreenshot();
   });
+});
+
+test('degradation view', async({ render, mockApiResponse, mockRpcResponse, page }) => {
+  test.slow();
+
+  const txs: Array<RpcTransaction> = Array(10)
+    .fill(blockMock.rpcBlockWithTxsInfo.transactions[0])
+    .map((tx, index) => ({
+      ...tx,
+      hash: tx.hash.slice(0, -1) + index.toString(),
+    }));
+
+  await mockApiResponse('general:homepage_txs', null as never, { status: 500 });
+  await mockRpcResponse([
+    {
+      Method: 'eth_getBlockByNumber',
+      Parameters: [ 'latest', true ],
+      ReturnType: {
+        ...blockMock.rpcBlockWithTxsInfo,
+        transactions: txs,
+      },
+    },
+    ...txs.slice(0, 5).map((tx) => ({
+      Method: 'eth_getTransactionReceipt',
+      Parameters: [ tx.hash ],
+      ReturnType: {
+        ...txMock.rpcTxReceipt,
+        transactionHash: tx.hash,
+      },
+    } satisfies PublicRpcSchema[number])),
+  ]);
+
+  const component = await render(<LatestTxs/>);
+
+  await page.waitForResponse(config.chain.rpcUrls[0]);
+  // wait for receipt requests
+  await Promise.all(txs.slice(0, 5).map(() => page.waitForResponse(config.chain.rpcUrls[0])));
+
+  await expect(component).toHaveScreenshot();
+});
+
+test('error view', async({ render, mockApiResponse, mockRpcResponse, page }) => {
+  test.slow();
+  await mockApiResponse('general:homepage_txs', null as never, { status: 500 });
+  await mockRpcResponse([
+    {
+      Method: 'eth_getBlockByNumber',
+      Parameters: [ 'latest', true ],
+      ReturnType: blockMock.rpcBlockWithTxsInfo,
+      status: 500,
+    },
+  ]);
+
+  const component = await render(<LatestTxs/>);
+  // wait for first call plus 3 retries
+  await page.waitForResponse(config.chain.rpcUrls[0]);
+  await page.waitForResponse(config.chain.rpcUrls[0]);
+  await page.waitForResponse(config.chain.rpcUrls[0]);
+  await page.waitForResponse(config.chain.rpcUrls[0]);
+
+  await expect(component).toHaveScreenshot();
 });
