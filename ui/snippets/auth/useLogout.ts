@@ -42,6 +42,16 @@ export default function useLogout() {
         }
       }
 
+      mixpanel.logEvent(mixpanel.EventTypes.ACCOUNT_ACCESS, { Action: 'Logged out' }, { send_immediately: true });
+      mixpanel.reset();
+
+      if (
+        PROTECTED_ROUTES.includes(router.pathname) ||
+          (router.pathname === '/txs' && router.query.tab === 'watchlist')
+      ) {
+        await router.push({ pathname: '/' }, undefined, { shallow: true });
+      }
+
       queryClient.resetQueries({
         queryKey: getResourceKey('general:user_info'),
         exact: true,
@@ -50,16 +60,6 @@ export default function useLogout() {
         queryKey: getResourceKey('general:custom_abi'),
         exact: true,
       });
-
-      mixpanel.logEvent(mixpanel.EventTypes.ACCOUNT_ACCESS, { Action: 'Logged out' }, { send_immediately: true });
-      mixpanel.reset();
-
-      if (
-        PROTECTED_ROUTES.includes(router.pathname) ||
-          (router.pathname === '/txs' && router.query.tab === 'watchlist')
-      ) {
-        router.push({ pathname: '/' }, undefined, { shallow: true });
-      }
     } catch (error) {
       toaster.error({
         title: 'Logout failed',
