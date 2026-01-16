@@ -13,7 +13,7 @@ test.describe.configure({ mode: 'serial' });
 
 test('verified with changed byte code socket', async({ render, createSocket }) => {
   const props = {
-    data: contractMock.verified,
+    data: { ...contractMock.verified, is_partially_verified: true },
     isLoading: false,
     addressData: addressMock.contract,
   };
