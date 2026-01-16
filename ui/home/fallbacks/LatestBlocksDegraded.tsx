@@ -66,6 +66,14 @@ const LatestBlocksDegraded = ({ maxNum }: Props) => {
     enabled: Boolean(publicClient),
   });
 
+  const unwatch = query.data;
+
+  React.useEffect(() => {
+    return () => {
+      unwatch?.();
+    };
+  }, [ unwatch ]);
+
   if (query.isError || isError || !publicClient) {
     return <LatestBlocksFallback/>;
   }

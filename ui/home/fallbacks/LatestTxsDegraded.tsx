@@ -107,6 +107,14 @@ const LatestTxsDegraded = ({ maxNum }: Props) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ areReceiptsLoading ]);
 
+  const unwatch = mainQuery.data;
+
+  React.useEffect(() => {
+    return () => {
+      unwatch?.();
+    };
+  }, [ unwatch ]);
+
   if (mainQuery.isError || isError || !publicClient) {
     return <LatestTxsFallback/>;
   }
