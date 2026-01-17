@@ -1,4 +1,4 @@
-import { Box, Flex, Text, VStack } from '@chakra-ui/react';
+import { Box, Flex, VStack } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
@@ -17,6 +17,7 @@ import { Heading } from 'toolkit/chakra/heading';
 import { Link } from 'toolkit/chakra/link';
 import ZkEvmL2TxnBatchStatus from 'ui/shared/statusTag/ZkEvmL2TxnBatchStatus';
 
+import LatestBlocksFallback from '../fallbacks/LatestBlocksFallback';
 import LatestBatchItem from './LatestBatchItem';
 
 const LatestZkEvmL2Batches = () => {
@@ -58,39 +59,39 @@ const LatestZkEvmL2Batches = () => {
     handler: handleNewBatchMessage,
   });
 
-  let content;
+  const content = (() => {
+    if (isError) {
+      return <LatestBlocksFallback/>;
+    }
+    if (data && data.items.length > 0) {
+      const dataToShow = data.items.slice(0, batchesMaxCount);
 
-  if (isError) {
-    content = <Text>No data. Please reload the page.</Text>;
-  }
-
-  if (data) {
-    const dataToShow = data.items.slice(0, batchesMaxCount);
-
-    content = (
-      <>
-        <VStack gap={ 2 } mb={ 3 } overflow="hidden" alignItems="stretch">
-          { dataToShow.map(((batch, index) => {
-            const status = <ZkEvmL2TxnBatchStatus status={ batch.status } isLoading={ isPlaceholderData }/>;
-            return (
-              <LatestBatchItem
-                key={ batch.number + (isPlaceholderData ? String(index) : '') }
-                number={ batch.number }
-                txCount={ batch.transactions_count }
-                timestamp={ batch.timestamp }
-                status={ status }
-                isLoading={ isPlaceholderData }
-                animation={ initialList.getAnimationProp(batch) }
-              />
-            );
-          })) }
-        </VStack>
-        <Flex justifyContent="center">
-          <Link textStyle="sm" href={ route({ pathname: '/batches' }) }>View all batches</Link>
-        </Flex>
-      </>
-    );
-  }
+      return (
+        <>
+          <VStack gap={ 2 } mb={ 3 } overflow="hidden" alignItems="stretch">
+            { dataToShow.map(((batch, index) => {
+              const status = <ZkEvmL2TxnBatchStatus status={ batch.status } isLoading={ isPlaceholderData }/>;
+              return (
+                <LatestBatchItem
+                  key={ batch.number + (isPlaceholderData ? String(index) : '') }
+                  number={ batch.number }
+                  txCount={ batch.transactions_count }
+                  timestamp={ batch.timestamp }
+                  status={ status }
+                  isLoading={ isPlaceholderData }
+                  animation={ initialList.getAnimationProp(batch) }
+                />
+              );
+            })) }
+          </VStack>
+          <Flex justifyContent="center">
+            <Link textStyle="sm" href={ route({ pathname: '/batches' }) }>View all batches</Link>
+          </Flex>
+        </>
+      );
+    }
+    return <Box textStyle="sm">No latest batches found.</Box>;
+  })();
 
   return (
     <Box width={{ base: '100%', lg: '280px' }} flexShrink={ 0 }>
