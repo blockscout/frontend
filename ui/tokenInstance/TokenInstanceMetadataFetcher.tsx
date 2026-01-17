@@ -169,7 +169,7 @@ const TokenInstanceMetadataFetcher = ({ hash, id }: Props) => {
       closeOnInteractOutside={ false }
     >
       <DialogContent>
-        <DialogHeader fontWeight="500" textStyle="h3" mb={ 4 }>Sending request</DialogHeader>
+        <DialogHeader mb={ 4 }>Sending request</DialogHeader>
         <DialogBody mb={ 0 } minH="78px">
           { config.services.reCaptchaV2.siteKey ? (
             <>
