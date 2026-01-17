@@ -36,8 +36,8 @@ import AddressLogs from 'ui/address/AddressLogs';
 import AddressMud from 'ui/address/AddressMud';
 import AddressMultichainInfoButton from 'ui/address/AddressMultichainInfoButton';
 import AddressTokens from 'ui/address/AddressTokens';
-import AddressTokenTransfers from 'ui/address/AddressTokenTransfers';
-import AddressTxs from 'ui/address/AddressTxs';
+import AddressTokenTransfers, { ADDRESS_TOKEN_TRANSFERS_TAB_IDS } from 'ui/address/AddressTokenTransfers';
+import AddressTxs, { ADDRESS_TXS_TAB_IDS } from 'ui/address/AddressTxs';
 import AddressUserOps from 'ui/address/AddressUserOps';
 import AddressWithdrawals from 'ui/address/AddressWithdrawals';
 import AddressClusters from 'ui/address/clusters/AddressClusters';
@@ -216,6 +216,7 @@ const AddressPageContent = () => {
         title: 'Transactions',
         count: addressTabsCountersQuery.data?.transactions_count,
         component: <AddressTxs shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
+        subTabs: ADDRESS_TXS_TAB_IDS,
       },
       txInterpretation.isEnabled && txInterpretation.provider === 'noves' ?
         {
@@ -253,6 +254,7 @@ const AddressPageContent = () => {
         title: 'Token transfers',
         count: addressTabsCountersQuery.data?.token_transfers_count,
         component: <AddressTokenTransfers shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
+        subTabs: ADDRESS_TOKEN_TRANSFERS_TAB_IDS,
       },
       {
         id: 'tokens',

@@ -83,6 +83,17 @@ const contractInfoApi = (() => {
   });
 })();
 
+const interchainIndexerApi = (() => {
+  const apiHost = getEnvValue('NEXT_PUBLIC_INTERCHAIN_INDEXER_API_HOST');
+  if (!apiHost) {
+    return;
+  }
+
+  return Object.freeze({
+    endpoint: apiHost,
+  });
+})();
+
 const metadataApi = (() => {
   const apiHost = getEnvValue('NEXT_PUBLIC_METADATA_SERVICE_API_HOST');
   if (!apiHost) {
@@ -221,6 +232,7 @@ const apis: Apis = Object.freeze({
   bens: bensApi,
   clusters: clustersApi,
   contractInfo: contractInfoApi,
+  interchainIndexer: interchainIndexerApi,
   metadata: metadataApi,
   multichainAggregator: multichainAggregatorApi,
   multichainStats: multichainStatsApi,
