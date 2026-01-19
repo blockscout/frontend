@@ -1,0 +1,46 @@
+import React from 'react';
+
+import * as cookies from 'lib/cookies';
+import useFeatureValue from 'lib/growthbook/useFeatureValue';
+import * as mixpanel from 'lib/mixpanel';
+
+export default function useTableViewValue() {
+  const cookieValue = cookies.get(cookies.NAMES.TABLE_VIEW_ON_MOBILE);
+  const [ value, setValue ] = React.useState<boolean | undefined>(cookieValue ? cookieValue === 'true' : undefined);
+  const { value: featureFlag, isLoading: isFeatureLoading } = useFeatureValue('tx_table_view', false);
+
+  const onToggle = React.useCallback(() => {
+    setValue((prev) => {
+      const nextValue = !prev;
+      cookies.set(cookies.NAMES.TABLE_VIEW_ON_MOBILE, nextValue ? 'true' : 'false');
+      mixpanel.logEvent(mixpanel.EventTypes.BUTTON_CLICK, {
+        Content: nextValue ? 'On' : 'Off',
+        Source: 'Table view',
+      });
+      return nextValue;
+    });
+  }, []);
+
+  React.useEffect(() => {
+    if (!isFeatureLoading) {
+      setValue((prev) => {
+        if (prev === undefined) {
+          return featureFlag;
+        }
+        return prev;
+      });
+    }
+  }, [ featureFlag, isFeatureLoading ]);
+
+  return React.useMemo(() => {
+    if (value !== undefined) {
+      return {
+        value,
+        isLoading: false,
+        onToggle,
+      };
+    }
+
+    return { value: featureFlag, isLoading: isFeatureLoading, onToggle };
+  }, [ featureFlag, isFeatureLoading, onToggle, value ]);
+}

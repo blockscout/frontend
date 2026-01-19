@@ -7,6 +7,7 @@ import config from 'configs/app';
 import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import useInitialList from 'lib/hooks/useInitialList';
+import useIsMobile from 'lib/hooks/useIsMobile';
 import useLazyRenderedList from 'lib/hooks/useLazyRenderedList';
 import { currencyUnits } from 'lib/units';
 import { TableBody, TableColumnHeader, TableColumnHeaderSortable, TableHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
@@ -51,6 +52,7 @@ const TxsTable = ({
   });
   const multichainContext = useMultichainContext();
   const chainData = multichainContext?.chain;
+  const isMobile = useIsMobile();
 
   const feeCurrency = config.UI.views.tx.hiddenFields?.fee_currency || config.chain.hasMultipleGasCurrencies ?
     '' :
@@ -142,6 +144,7 @@ const TxsTable = ({
                 chainData={ chainData }
                 translationIsLoading={ translationQuery?.isLoading }
                 translationData={ translationQuery?.data?.find(({ txHash }) => txHash.toLowerCase() === item.hash.toLowerCase()) }
+                isMobile={ isMobile }
               />
             );
           }) }
