@@ -7,7 +7,7 @@ import { STORAGE_KEY, STORAGE_LIMIT } from './consts';
 
 export interface GrowthBookFeatures {
   test_value: string;
-  tx_table_view: boolean;
+  txns_view_exp: 'table_view' | 'list_view';
 }
 
 export const initGrowthBook = (uuid: string) => {

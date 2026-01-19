@@ -7,7 +7,7 @@ import * as mixpanel from 'lib/mixpanel';
 export default function useTableViewValue() {
   const cookieValue = cookies.get(cookies.NAMES.TABLE_VIEW_ON_MOBILE);
   const [ value, setValue ] = React.useState<boolean | undefined>(cookieValue ? cookieValue === 'true' : undefined);
-  const { value: featureFlag, isLoading: isFeatureLoading } = useFeatureValue('tx_table_view', false);
+  const { value: featureFlag, isLoading: isFeatureLoading } = useFeatureValue('txns_view_exp', 'list_view');
 
   const onToggle = React.useCallback(() => {
     setValue((prev) => {
@@ -25,7 +25,7 @@ export default function useTableViewValue() {
     if (!isFeatureLoading) {
       setValue((prev) => {
         if (prev === undefined) {
-          return featureFlag;
+          return featureFlag === 'table_view';
         }
         return prev;
       });
@@ -41,6 +41,6 @@ export default function useTableViewValue() {
       };
     }
 
-    return { value: featureFlag, isLoading: isFeatureLoading, onToggle };
+    return { value: featureFlag === 'table_view', isLoading: isFeatureLoading, onToggle };
   }, [ featureFlag, isFeatureLoading, onToggle, value ]);
 }
