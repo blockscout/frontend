@@ -183,11 +183,11 @@ export function RewardsContextProvider({ children }: Props) {
     if (!profileQuery.isLoading) {
       const token = cookies.get(cookies.NAMES.REWARDS_API_TOKEN);
       if (token && profileQuery.data?.address_hash) {
+        // Check if the profile address is the same as the registered address
         const registeredAddress = getRegisteredAddress(token);
         if (registeredAddress === profileQuery.data.address_hash) {
           setIsAuth(true);
         } else {
-          // Check if the profile address is the same as the registered address
           logout();
         }
       }
