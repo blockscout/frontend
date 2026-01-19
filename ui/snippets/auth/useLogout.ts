@@ -7,6 +7,7 @@ import type { Route } from 'nextjs-routes';
 import config from 'configs/app';
 import useApiFetch from 'lib/api/useApiFetch';
 import { getResourceKey } from 'lib/api/useApiQuery';
+import { useRewardsContext } from 'lib/contexts/rewards';
 import * as cookies from 'lib/cookies';
 import * as mixpanel from 'lib/mixpanel';
 import { toaster } from 'toolkit/chakra/toaster';
@@ -25,6 +26,7 @@ export default function useLogout() {
   const router = useRouter();
   const queryClient = useQueryClient();
   const apiFetch = useApiFetch();
+  const { logout: rewardsLogout } = useRewardsContext();
 
   return React.useCallback(async() => {
     try {
@@ -32,14 +34,7 @@ export default function useLogout() {
       cookies.remove(cookies.NAMES.API_TOKEN);
 
       if (config.features.rewards.isEnabled) {
-        const rewardsToken = cookies.get(cookies.NAMES.REWARDS_API_TOKEN);
-        if (rewardsToken) {
-          await apiFetch('rewards:logout', { fetchParams: {
-            method: 'POST',
-            headers: { Authorization: `Bearer ${ rewardsToken }` },
-          } });
-          cookies.remove(cookies.NAMES.REWARDS_API_TOKEN);
-        }
+        rewardsLogout();
       }
 
       mixpanel.logEvent(mixpanel.EventTypes.ACCOUNT_ACCESS, { Action: 'Logged out' }, { send_immediately: true });
@@ -66,5 +61,5 @@ export default function useLogout() {
         description: 'Please try again later',
       });
     }
-  }, [ apiFetch, queryClient, router ]);
+  }, [ apiFetch, rewardsLogout, queryClient, router ]);
 }
