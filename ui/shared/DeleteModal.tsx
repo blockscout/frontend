@@ -52,7 +52,7 @@ const DeleteModal: React.FC<Props> = ({
   return (
     <DialogRoot open={ open } onOpenChange={ onModalOpenChange } size={ isMobile ? 'full' : 'md' }>
       <DialogContent>
-        <DialogHeader fontWeight="500" textStyle="h3">{ title }</DialogHeader>
+        <DialogHeader>{ title }</DialogHeader>
         <DialogBody>
           { isAlertVisible && <Box mb={ 4 }><FormSubmitAlert/></Box> }
           { renderContent() }
