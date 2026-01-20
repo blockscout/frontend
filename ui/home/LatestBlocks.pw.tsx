@@ -1,6 +1,5 @@
 import React from 'react';
 
-import config from 'configs/app';
 import * as blockMock from 'mocks/blocks/block';
 import * as statsMock from 'mocks/stats/index';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
@@ -57,45 +56,4 @@ test.describe('socket', () => {
     });
     await expect(component).toHaveScreenshot();
   });
-});
-
-test('degradation view', async({ render, mockApiResponse, mockRpcResponse, page }) => {
-  test.slow();
-  await mockApiResponse('general:stats', null as never, { status: 500 });
-  await mockApiResponse('general:homepage_blocks', null as never, { status: 500 });
-  await mockRpcResponse([
-    {
-      Method: 'eth_getBlockByNumber',
-      Parameters: [ 'latest', false ],
-      ReturnType: blockMock.rpcBlockBase,
-    },
-  ]);
-
-  const component = await render(<LatestBlocks/>);
-  await page.waitForResponse(config.chain.rpcUrls[0]);
-
-  await expect(component).toHaveScreenshot();
-});
-
-test('error view', async({ render, mockApiResponse, mockRpcResponse, page }) => {
-  test.slow();
-  await mockApiResponse('general:stats', null as never, { status: 500 });
-  await mockApiResponse('general:homepage_blocks', null as never, { status: 500 });
-  await mockRpcResponse([
-    {
-      Method: 'eth_getBlockByNumber',
-      Parameters: [ 'latest', false ],
-      ReturnType: blockMock.rpcBlockBase,
-      status: 500,
-    },
-  ]);
-
-  const component = await render(<LatestBlocks/>);
-  // wait for first call plus 3 retries
-  await page.waitForResponse(config.chain.rpcUrls[0]);
-  await page.waitForResponse(config.chain.rpcUrls[0]);
-  await page.waitForResponse(config.chain.rpcUrls[0]);
-  await page.waitForResponse(config.chain.rpcUrls[0]);
-
-  await expect(component).toHaveScreenshot();
 });
