@@ -116,7 +116,7 @@ const OpSuperchainAddress = () => {
       { addressQuery.data?.domains?.[0] && (
         <EnsEntity
           domain={ addressQuery.data?.domains[0].name }
-          protocol={ domainProtocolsQuery.data?.items.find((protocol) => protocol.short_name === addressQuery.data?.domains[0].protocol) }
+          protocol={ domainProtocolsQuery.data?.items.find((protocol) => protocol.id === addressQuery.data?.domains[0].protocol_id) }
           isLoading={ isLoading }
           variant="subheading"
           noLink
@@ -143,7 +143,12 @@ const OpSuperchainAddress = () => {
       />
       <AddressQrCode hash={ checkSummedHash } isLoading={ isLoading }/>
       <Box ml="auto"/>
-      <OpSuperchainAddressEnsDomains data={ addressQuery.data?.domains } isLoading={ isLoading } protocolsQuery={ domainProtocolsQuery }/>
+      <OpSuperchainAddressEnsDomains
+        mainDomain={ addressQuery.data?.domains?.[0] }
+        protocols={ domainProtocolsQuery.data }
+        isLoading={ isLoading }
+        hash={ checkSummedHash }
+      />
       <ClusterChainsPopover addressHash={ checkSummedHash } data={ addressQuery.data } isLoading={ isLoading }/>
     </Flex>
   );

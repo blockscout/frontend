@@ -22,6 +22,7 @@ test('base view', async({ mockApiResponse, render, page, mockMultichainConfig, m
   await mockTextAd();
 
   await mockApiResponse('multichainAggregator:address', opSuperchainMock.addressA, { pathParams: { hash: CURRENT_ADDRESS } });
+  await mockApiResponse('multichainAggregator:address_domains', opSuperchainMock.addressDomainsA, { pathParams: { hash: CURRENT_ADDRESS } });
   await mockApiResponse('multichainAggregator:domain_protocols', {
     items: opSuperchainMock.domainProtocols,
   });

@@ -1,11 +1,10 @@
 import { Box, chakra, Flex, Grid } from '@chakra-ui/react';
-import type { UseQueryResult } from '@tanstack/react-query';
 import { clamp } from 'es-toolkit';
 import React from 'react';
 
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 
-import type { ResourceError } from 'lib/api/resources';
+import useApiQuery from 'lib/api/useApiQuery';
 import { Button } from 'toolkit/chakra/button';
 import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
 import { Tooltip } from 'toolkit/chakra/tooltip';
@@ -27,24 +26,33 @@ const DomainsGrid = ({ data }: { data: Array<{ name: string; protocol: multichai
 };
 
 interface Props {
-  data: Array<multichain.BasicDomainInfo> | undefined;
   isLoading: boolean;
-  protocolsQuery: UseQueryResult<multichain.ListDomainProtocolsResponse, ResourceError<unknown>>;
+  mainDomain: multichain.BasicDomainInfo | undefined;
+  protocols: multichain.ListDomainProtocolsResponse | undefined;
+  hash: string;
 }
 
-const OpSuperchainAddressEnsDomains = ({ data, isLoading, protocolsQuery }: Props) => {
+const OpSuperchainAddressEnsDomains = ({ mainDomain, isLoading: isLoadingProps, protocols, hash }: Props) => {
   const popover = useDisclosure();
 
-  if (!isLoading && (!data || data.length === 0)) {
+  const { data, isPending } = useApiQuery('multichainAggregator:address_domains', {
+    pathParams: { hash },
+  });
+
+  const isLoading = isLoadingProps || isPending;
+
+  if (!isLoading && (!data || data.items.length === 0)) {
     return null;
   }
 
-  const totalRecords = data?.length ?? 0;
-  const [ mainDomain, ...ownedDomains ] = data ?? [];
-  const ownedDomainsData = ownedDomains.map((domain) => ({
-    name: domain.name,
-    protocol: protocolsQuery.data?.items.find((protocol) => protocol.short_name === domain.protocol),
-  }));
+  const totalRecords = data?.items.length ?? 0;
+  const totalRecordsPostfix = data?.next_page_params ? '+' : '';
+  const ownedDomains = (data?.items ?? [])
+    .filter((domain) => domain.name !== mainDomain?.name)
+    .map((domain) => ({
+      name: domain.name,
+      protocol: protocols?.items.find((protocol) => protocol.id === domain.protocol?.id),
+    }));
 
   return (
     <PopoverRoot open={ popover.open } onOpenChange={ popover.onOpenChange }>
@@ -61,13 +69,13 @@ const OpSuperchainAddressEnsDomains = ({ data, isLoading, protocolsQuery }: Prop
               loadingSkeleton={ isLoading }
             >
               <IconSvg name="ENS" boxSize={ 5 }/>
-              <chakra.span hideBelow="xl">{ totalRecords } Domain{ totalRecords > 1 ? 's' : '' }</chakra.span>
-              <chakra.span hideFrom="xl">{ totalRecords }</chakra.span>
+              <chakra.span hideBelow="xl">{ totalRecords }{ totalRecordsPostfix } Domain{ totalRecords > 1 ? 's' : '' }</chakra.span>
+              <chakra.span hideFrom="xl">{ totalRecords }{ totalRecordsPostfix }</chakra.span>
             </Button>
           </PopoverTrigger>
         </div>
       </Tooltip>
-      <PopoverContent w={{ lg: '500px' }}>
+      <PopoverContent w={{ lg: '500px' }} maxH="400px" overflowY="auto">
         <PopoverBody textStyle="sm" display="flex" flexDir="column" rowGap={ 5 } alignItems="flex-start">
           { mainDomain && (
             <Box w="100%">
@@ -75,7 +83,7 @@ const OpSuperchainAddressEnsDomains = ({ data, isLoading, protocolsQuery }: Prop
               <Flex alignItems="center" textStyle="md" mt={ 2 }>
                 <EnsEntity
                   domain={ mainDomain.name }
-                  protocol={ protocolsQuery.data?.items.find((protocol) => protocol.short_name === mainDomain.protocol) }
+                  protocol={ protocols?.items.find((protocol) => protocol.id === mainDomain.protocol_id) }
                   fontWeight={ 600 }
                   noCopy
                   noLink
@@ -83,10 +91,10 @@ const OpSuperchainAddressEnsDomains = ({ data, isLoading, protocolsQuery }: Prop
               </Flex>
             </Box>
           ) }
-          { ownedDomainsData.length > 0 && (
+          { ownedDomains.length > 0 && (
             <div>
               <chakra.span color="text.secondary" textStyle="xs">Owned by this address</chakra.span>
-              <DomainsGrid data={ ownedDomainsData }/>
+              <DomainsGrid data={ ownedDomains }/>
             </div>
           ) }
           { mainDomain && (

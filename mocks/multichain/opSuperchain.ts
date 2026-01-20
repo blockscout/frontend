@@ -114,8 +114,8 @@ export const addressA: multichain.GetAddressResponse = {
   coin_balance: '35135081814718054525',
   exchange_rate: '123.455',
   domains: [
-    { name: 'ga-ga-ga.goose', protocol: 'GOOSE' },
-    { name: 'quack-quack.duck', protocol: 'DUCK' },
+    { name: 'ga-ga-ga.goose', protocol_id: 'goose' },
+    { name: 'quack-quack.duck', protocol_id: 'duck' },
   ],
 };
 
@@ -233,3 +233,11 @@ export const domainProtocols: Array<multichain.ProtocolInfo> = [
     docs_url: 'https://duck.com/docs',
   },
 ];
+
+export const addressDomainsA: multichain.LookupAddressDomainsResponse = {
+  items: [
+    { name: 'ga-ga-ga.goose', protocol: domainProtocols[0] },
+    { name: 'quack-quack.duck', protocol: domainProtocols[1] },
+  ],
+  next_page_params: undefined,
+};
