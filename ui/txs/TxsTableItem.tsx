@@ -95,13 +95,13 @@ const TxsTableItem = ({
         </VStack>
       </TableCell>
       <TableCell whiteSpace="nowrap">
-        <VStack alignItems="stretch">
+        <VStack alignItems="flex-start">
           { tx.method && (
             <Badge colorPalette={ tx.method === 'Multicall' ? 'teal' : 'gray' } loading={ isLoading } truncated>
               <span>{ tx.method }</span>
             </Badge>
           ) }
-          { protocolTag && <EntityTag data={ protocolTag } isLoading={ isLoading }/> }
+          { protocolTag && <EntityTag data={ protocolTag } isLoading={ isLoading } maxW="100%"/> }
         </VStack>
       </TableCell>
       { showBlockInfo && (

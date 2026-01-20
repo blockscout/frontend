@@ -23,7 +23,7 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 import useRedirectForInvalidAuthToken from 'ui/snippets/auth/useRedirectForInvalidAuthToken';
 
 const RewardsDashboard = () => {
-  const { balancesQuery, apiToken, referralsQuery, rewardsConfigQuery, dailyRewardQuery, isInitialized } = useRewardsContext();
+  const { balancesQuery, isAuth, referralsQuery, rewardsConfigQuery, dailyRewardQuery, isInitialized } = useRewardsContext();
   const { nextAchievementText, isLoading: isBadgesLoading, badgesQuery } = useStreakBadges();
   const streakModal = useDisclosure();
   const isMobile = useIsMobile();
@@ -33,10 +33,10 @@ const RewardsDashboard = () => {
   useRedirectForInvalidAuthToken();
 
   useEffect(() => {
-    if (!config.features.rewards.isEnabled || (isInitialized && !apiToken)) {
+    if (!config.features.rewards.isEnabled || (isInitialized && !isAuth)) {
       window.location.assign('/');
     }
-  }, [ isInitialized, apiToken ]);
+  }, [ isInitialized, isAuth ]);
 
   useEffect(() => {
     setIsError(balancesQuery.isError || referralsQuery.isError || rewardsConfigQuery.isError || dailyRewardQuery.isError);

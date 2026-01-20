@@ -18,7 +18,7 @@ const SearchBarSuggestDomain = ({ data, isMobile, searchTerm, addressFormat }: I
     if ('filecoin_robust_address' in data && data.filecoin_robust_address) {
       return data.filecoin_robust_address;
     }
-    return addressFormat === 'bech32' ? toBech32Address(data.address_hash) : data.address_hash;
+    return addressFormat === 'bech32' && data.address_hash ? toBech32Address(data.address_hash) : data.address_hash;
   })();
 
   const name = (
@@ -32,7 +32,7 @@ const SearchBarSuggestDomain = ({ data, isMobile, searchTerm, addressFormat }: I
     </Text>
   );
 
-  const address = (
+  const address = hash ? (
     <Text
       overflow="hidden"
       whiteSpace="nowrap"
@@ -40,7 +40,7 @@ const SearchBarSuggestDomain = ({ data, isMobile, searchTerm, addressFormat }: I
     >
       <HashStringShortenDynamic hash={ hash } noTooltip/>
     </Text>
-  );
+  ) : null;
 
   const isContractVerified = 'is_smart_contract_verified' in data && data.is_smart_contract_verified &&
     <IconSvg name="status/success" boxSize="14px" color="green.500" flexShrink={ 0 }/>;
