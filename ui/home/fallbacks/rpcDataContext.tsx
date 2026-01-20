@@ -33,7 +33,7 @@ export function HomeRpcDataContextProvider({ children }: { children: React.React
   const [ , setSubscriptions ] = React.useState<Array<string>>([]);
 
   const query = useQuery({
-    queryKey: [ 'RPC', 'home-rpc-data' ],
+    queryKey: [ 'RPC', 'watch-blocks' ],
     queryFn: async() => {
       if (!publicClient) {
         return null;
