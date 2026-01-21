@@ -28,11 +28,10 @@ const DomainsGrid = ({ data }: { data: Array<{ name: string; protocol: multichai
 interface Props {
   isLoading: boolean;
   mainDomain: multichain.BasicDomainInfo | undefined;
-  protocols: multichain.ListDomainProtocolsResponse | undefined;
   hash: string;
 }
 
-const OpSuperchainAddressEnsDomains = ({ mainDomain, isLoading: isLoadingProps, protocols, hash }: Props) => {
+const OpSuperchainAddressEnsDomains = ({ mainDomain, isLoading: isLoadingProps, hash }: Props) => {
   const popover = useDisclosure();
 
   const { data, isPending } = useApiQuery('multichainAggregator:address_domains', {
@@ -47,12 +46,7 @@ const OpSuperchainAddressEnsDomains = ({ mainDomain, isLoading: isLoadingProps, 
 
   const totalRecords = data?.items.length ?? 0;
   const totalRecordsPostfix = data?.next_page_params ? '+' : '';
-  const ownedDomains = (data?.items ?? [])
-    .filter((domain) => domain.name !== mainDomain?.name)
-    .map((domain) => ({
-      name: domain.name,
-      protocol: protocols?.items.find((protocol) => protocol.id === domain.protocol?.id),
-    }));
+  const ownedDomains = (data?.items ?? []).filter((domain) => domain.name !== mainDomain?.name);
 
   return (
     <PopoverRoot open={ popover.open } onOpenChange={ popover.onOpenChange }>
@@ -83,7 +77,7 @@ const OpSuperchainAddressEnsDomains = ({ mainDomain, isLoading: isLoadingProps, 
               <Flex alignItems="center" textStyle="md" mt={ 2 }>
                 <EnsEntity
                   domain={ mainDomain.name }
-                  protocol={ protocols?.items.find((protocol) => protocol.id === mainDomain.protocol_id) }
+                  protocol={ mainDomain.protocol }
                   fontWeight={ 600 }
                   noCopy
                   noLink

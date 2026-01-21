@@ -41,15 +41,9 @@ const OpSuperchainAddress = () => {
     },
   });
 
-  const domainProtocolsQuery = useApiQuery('multichainAggregator:domain_protocols', {
-    queryOptions: {
-      placeholderData: { items: [] },
-    },
-  });
-
   throwOnResourceLoadError(addressQuery);
 
-  const isLoading = addressQuery.isPlaceholderData || domainProtocolsQuery.isPlaceholderData;
+  const isLoading = addressQuery.isPlaceholderData;
   const chainData = Object.values(addressQuery.data?.chain_infos ?? {});
   const isContractSomewhere = chainData.some((chainInfo) => chainInfo.is_contract);
   const isContract = contract.isContract(addressQuery.data);
@@ -116,7 +110,7 @@ const OpSuperchainAddress = () => {
       { addressQuery.data?.domains?.[0] && (
         <EnsEntity
           domain={ addressQuery.data?.domains[0].name }
-          protocol={ domainProtocolsQuery.data?.items.find((protocol) => protocol.id === addressQuery.data?.domains[0].protocol_id) }
+          protocol={ addressQuery.data?.domains[0].protocol }
           isLoading={ isLoading }
           variant="subheading"
           noLink
@@ -145,7 +139,6 @@ const OpSuperchainAddress = () => {
       <Box ml="auto"/>
       <OpSuperchainAddressEnsDomains
         mainDomain={ addressQuery.data?.domains?.[0] }
-        protocols={ domainProtocolsQuery.data }
         isLoading={ isLoading }
         hash={ checkSummedHash }
       />
