@@ -16,7 +16,7 @@ interface Props {
 const UserProfile = ({ buttonSize, buttonVariant = 'header' }: Props) => {
   const isLoggedIn = useIsLoggedIn();
   const { user, authMode } = useDynamicContext();
-  const wallet = useWalletDynamic({ source: 'Profile dropdown' });
+  const wallet = useWalletDynamic({ source: isLoggedIn ? 'Profile dropdown' : 'Login' });
   const { isAutoConnectDisabled } = useMarketplaceContext();
 
   const handleOpenModal = React.useCallback(() => {

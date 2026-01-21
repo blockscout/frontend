@@ -21,14 +21,14 @@ const config: Feature<{
     getEnvValue('NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED') === 'true' &&
     services.reCaptchaV2.siteKey
   ) {
-    const authProvider = (getEnvValue('NEXT_PUBLIC_ACCOUNT_AUTH_PROVIDER') || 'auth0') as AuthProvider;
+    const authProvider = getEnvValue('NEXT_PUBLIC_ACCOUNT_AUTH_PROVIDER');
     const dynamicEnvironmentId = getEnvValue('NEXT_PUBLIC_ACCOUNT_DYNAMIC_ENVIRONMENT_ID');
 
     return Object.freeze({
       title,
       isEnabled: true,
       recaptchaSiteKey: services.reCaptchaV2.siteKey,
-      authProvider,
+      authProvider: authProvider === 'dynamic' && dynamicEnvironmentId ? 'dynamic' : 'auth0',
       dynamic: authProvider === 'dynamic' && dynamicEnvironmentId ? {
         environmentId: dynamicEnvironmentId,
       } : undefined,

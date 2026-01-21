@@ -21,8 +21,10 @@ export default function useWalletDynamic({ source, onConnect }: Params): Result 
   }, [ setShowDynamicUserProfile ]);
 
   useDynamicEvents('authFlowOpen', async() => {
-    mixpanel.logEvent(mixpanel.EventTypes.WALLET_CONNECT, { Source: source, Status: 'Started' });
-    isConnectionStarted.current = true;
+    if (!isConnectionStarted.current) {
+      mixpanel.logEvent(mixpanel.EventTypes.WALLET_CONNECT, { Source: source, Status: 'Started' });
+      isConnectionStarted.current = true;
+    }
   });
 
   const handleAccountConnected = React.useCallback(({ isReconnected }: { isReconnected: boolean }) => {
