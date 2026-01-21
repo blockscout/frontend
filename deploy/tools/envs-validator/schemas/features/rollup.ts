@@ -126,7 +126,7 @@ export const rollupSchema = yup
                 throw new Error('Unknown validation error');
               } catch (error: unknown) {
                 const message = getYupValidationErrorMessage(error);
-                return 'Invalid schema were provided for NEXT_PUBLIC_ROLLUP_TYPE' + (message ? `: ${ message }` : '');
+                return 'Invalid schema were provided for NEXT_PUBLIC_ROLLUP_PARENT_CHAIN' + (message ? `: ${ message }` : '');
               }
             },
             (data) => {

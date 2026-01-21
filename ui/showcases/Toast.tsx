@@ -6,6 +6,8 @@ import { toaster } from 'toolkit/chakra/toaster';
 
 import { Section, Container, SectionHeader, SamplesStack, Sample } from './parts';
 
+const LONG_TEXT = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ';
+
 const ToastShowcase = () => {
   return (
     <Container value="toast">
@@ -13,7 +15,7 @@ const ToastShowcase = () => {
         <SectionHeader>Type</SectionHeader>
         <SamplesStack>
           <Sample label="type: info">
-            <Button onClick={ () => toaster.create({ title: 'Info', description: 'Toast content', type: 'info' }) }>
+            <Button onClick={ () => toaster.create({ title: 'Info', description: LONG_TEXT, type: 'info' }) }>
               Info
             </Button>
           </Sample>
