@@ -68,6 +68,9 @@ export const MULTICHAIN_AGGREGATOR_API_RESOURCES = {
     filterFields: [ 'q' as const, 'chain_id' as const ],
     paginated: true,
   },
+  chain_metrics: {
+    path: '/chain-metrics',
+  },
 } satisfies Record<string, ApiResource>;
 
 export type MultichainAggregatorApiResourceName = `multichainAggregator:${ keyof typeof MULTICHAIN_AGGREGATOR_API_RESOURCES }`;
@@ -88,6 +91,7 @@ R extends 'multichainAggregator:search_transactions' ? multichain.SearchTransact
 R extends 'multichainAggregator:search_tokens' ? multichain.SearchTokensResponse :
 R extends 'multichainAggregator:search_nfts' ? multichain.SearchNftsResponse :
 R extends 'multichainAggregator:search_domains' ? multichain.SearchDomainsResponse :
+R extends 'multichainAggregator:chain_metrics' ? multichain.ListChainMetricsResponse :
 never;
 /* eslint-enable @stylistic/indent */
 

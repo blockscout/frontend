@@ -3,6 +3,7 @@ import type { Locator } from '@playwright/test';
 import React from 'react';
 
 import * as countersMock from 'mocks/address/counters';
+import * as chainDataMock from 'mocks/multichain/chains';
 import * as opSuperchainMock from 'mocks/multichain/opSuperchain';
 import * as tokenTransferMock from 'mocks/tokens/tokenTransfer';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
@@ -29,14 +30,14 @@ test.describe('local transfers', () => {
     await mockApiResponse(
       'general:address_token_transfers',
       { items: [ tokenTransferMock.erc20 ], next_page_params: DEFAULT_PAGINATION },
-      { pathParams: { hash: CURRENT_ADDRESS }, queryParams: { type: [] }, chainConfig: opSuperchainMock.chainDataA },
+      { pathParams: { hash: CURRENT_ADDRESS }, queryParams: { type: [] }, chainConfig: chainDataMock.chainA },
     );
     await mockApiResponse(
       'general:address_counters',
       countersMock.forAddress,
-      { pathParams: { hash: CURRENT_ADDRESS }, chainConfig: opSuperchainMock.chainDataA },
+      { pathParams: { hash: CURRENT_ADDRESS }, chainConfig: chainDataMock.chainA },
     );
-    await mockAssetResponse(opSuperchainMock.chainDataA.logo as string, './playwright/mocks/image_s.jpg');
+    await mockAssetResponse(chainDataMock.chainA.logo as string, './playwright/mocks/image_s.jpg');
 
     component = await render(
       <Box pt={{ base: '134px', lg: 6 }}>

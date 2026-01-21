@@ -27,6 +27,7 @@ const MarketplaceAppCardLink = ({ url, external, id, title, onClick, className }
       className={ className }
       external={ external }
       onClick={ handleClick }
+      noIcon
     >
       { title }
     </LinkOverlay>

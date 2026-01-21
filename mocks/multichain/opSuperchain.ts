@@ -1,108 +1,47 @@
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 import type { AddressTokenItem } from 'types/client/multichain-aggregator';
-import type { ClusterChainConfig } from 'types/multichain';
 
-export const chainDataA = {
-  slug: 'op-mainnet',
-  name: 'OP Mainnet',
-  id: '420',
-  logo: 'https://example.com/logo_s.png',
-  explorer_url: 'https://op-mainnet.com',
-  app_config: {
-    app: {
-      baseUrl: 'https://op-mainnet.com',
-    },
-    chain: {
-      currency: {
-        name: 'Ether',
-        symbol: 'ETH',
-        decimals: 18,
-      },
-      rpcUrls: [
-        'https://rpc.op-mainnet.com',
-      ],
-    },
-    apis: {
-      general: {
-        host: 'localhost',
-        protocol: 'http',
-        port: '4003',
-        endpoint: 'http://localhost:4003',
-        socketEndpoint: 'ws://localhost:3200',
-      },
-    },
-    features: {
-      csvExport: {
-        isEnabled: true,
-        reCaptcha: { siteKey: 'xxx' },
-      },
-      advancedFilter: {
-        isEnabled: true,
-      },
-    },
-  },
-} as ClusterChainConfig;
+import { chainA, chainB, chainC } from './chains';
 
-export const chainDataB = {
-  ...chainDataA,
-  id: '421',
-  name: 'OP Testnet',
-  logo: 'https://example.com/logo_md.png',
-  slug: 'op-testnet',
-  explorer_url: 'https://op-testnet.com',
-  app_config: {
-    ...chainDataA.app_config,
-    app: {
-      baseUrl: 'https://op-testnet.com',
-    },
-    apis: {
-      general: {
-        ...chainDataA.app_config?.apis?.general,
-        port: '4004',
-        endpoint: 'http://localhost:4004',
-      },
-    },
+export const domainProtocols: Array<multichain.ProtocolInfo> = [
+  {
+    id: 'goose',
+    short_name: 'GOOSE',
+    title: 'Goose Name Service',
+    description: 'The Goose Name Service is a decentralized naming system for the Goose blockchain.',
+    deployment_blockscout_base_url: 'https://blockscout.com',
+    tld_list: [ 'goose' ],
+    icon_url: 'https://goose.com/icon.jpg',
+    docs_url: 'https://goose.com/docs',
   },
-} as ClusterChainConfig;
-
-export const chainDataC = {
-  ...chainDataA,
-  id: '422',
-  name: 'OP Devnet',
-  slug: 'op-devnet',
-  explorer_url: 'https://op-devnet.com',
-  logo: undefined,
-  app_config: {
-    ...chainDataA.app_config,
-    app: {
-      baseUrl: 'https://op-devnet.com',
-    },
-    apis: {
-      general: {
-        ...chainDataA.app_config?.apis?.general,
-        port: '4005',
-        endpoint: 'http://localhost:4005',
-      },
-    },
+  {
+    id: 'duck',
+    short_name: 'DUCK',
+    title: 'Duck Name Service',
+    description: 'The Duck Name Service is a decentralized naming system for the Duck blockchain.',
+    deployment_blockscout_base_url: 'https://blockscout.com',
+    tld_list: [ 'duck', 'quack' ],
+    icon_url: 'https://duck.com/icon.jpg',
+    docs_url: 'https://duck.com/docs',
   },
-} as ClusterChainConfig;
+];
 
 export const addressA: multichain.GetAddressResponse = {
   hash: '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045',
   chain_infos: {
-    '420': {
+    [chainA.id]: {
       coin_balance: '33298149965862412288',
       is_contract: false,
       is_verified: false,
       contract_name: undefined,
     },
-    '421': {
+    [chainB.id]: {
       coin_balance: '1836931848855642237',
       is_contract: true,
       is_verified: false,
       contract_name: undefined,
     },
-    '422': {
+    [chainC.id]: {
       coin_balance: '0',
       is_contract: true,
       is_verified: true,
@@ -114,8 +53,8 @@ export const addressA: multichain.GetAddressResponse = {
   coin_balance: '35135081814718054525',
   exchange_rate: '123.455',
   domains: [
-    { name: 'ga-ga-ga.goose', protocol_id: 'goose' },
-    { name: 'quack-quack.duck', protocol_id: 'duck' },
+    { name: 'ga-ga-ga.goose', protocol: domainProtocols[0] },
+    { name: 'quack-quack.duck', protocol: domainProtocols[1] },
   ],
 };
 
@@ -132,13 +71,13 @@ export const tokenA: AddressTokenItem = {
     type: 'ERC-20',
     exchange_rate: '123.456',
     chain_infos: {
-      '420': {
+      [chainA.id]: {
         holders_count: '1250',
         total_supply: '184529257047384791',
         is_verified: true,
         contract_name: 'TestnetERC20',
       },
-      '421': {
+      [chainB.id]: {
         holders_count: '1250',
         total_supply: '100000000000000002',
         is_verified: true,
@@ -159,7 +98,7 @@ export const tokenA: AddressTokenItem = {
 export const searchAddressesA: multichain.GetAddressResponse = {
   hash: '0x0000000002C5fE54822a1eD058AE2F937Fd42769',
   chain_infos: {
-    '420': {
+    [chainA.id]: {
       coin_balance: '0',
       is_contract: false,
       is_verified: false,
@@ -176,7 +115,7 @@ export const searchAddressesA: multichain.GetAddressResponse = {
 export const searchAddressesB: multichain.GetAddressResponse = {
   hash: '0x00883b68A6EcF2ea3D47BD735E5125a0B7625B53',
   chain_infos: {
-    '420': {
+    [chainA.id]: {
       coin_balance: '0',
       is_contract: true,
       is_verified: true,
@@ -202,7 +141,7 @@ export const searchTokenA: multichain.AggregatedTokenInfo = {
   type: 'ERC-20' as multichain.TokenType,
   exchange_rate: '1.00',
   chain_infos: {
-    '420': {
+    [chainA.id]: {
       holders_count: '1148927',
       total_supply: '1000000',
       is_verified: false,
@@ -210,29 +149,6 @@ export const searchTokenA: multichain.AggregatedTokenInfo = {
     },
   },
 };
-
-export const domainProtocols: Array<multichain.ProtocolInfo> = [
-  {
-    id: 'goose',
-    short_name: 'GOOSE',
-    title: 'Goose Name Service',
-    description: 'The Goose Name Service is a decentralized naming system for the Goose blockchain.',
-    deployment_blockscout_base_url: 'https://blockscout.com',
-    tld_list: [ 'goose' ],
-    icon_url: 'https://goose.com/icon.jpg',
-    docs_url: 'https://goose.com/docs',
-  },
-  {
-    id: 'duck',
-    short_name: 'DUCK',
-    title: 'Duck Name Service',
-    description: 'The Duck Name Service is a decentralized naming system for the Duck blockchain.',
-    deployment_blockscout_base_url: 'https://blockscout.com',
-    tld_list: [ 'duck', 'quack' ],
-    icon_url: 'https://duck.com/icon.jpg',
-    docs_url: 'https://duck.com/docs',
-  },
-];
 
 export const addressDomainsA: multichain.LookupAddressDomainsResponse = {
   items: [

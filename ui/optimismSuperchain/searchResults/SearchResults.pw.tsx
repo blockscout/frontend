@@ -2,6 +2,7 @@ import React from 'react';
 
 import type { GetAddressResponse } from '@blockscout/multichain-aggregator-types';
 
+import * as chainDataMock from 'mocks/multichain/chains';
 import * as opSuperchainMock from 'mocks/multichain/opSuperchain';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';
@@ -43,7 +44,7 @@ test.beforeEach(async({ mockApiResponse, mockMultichainConfig, mockEnvs, mockAss
   await mockApiResponse('multichainAggregator:search_nfts', { items: [ ], next_page_params: undefined }, { queryParams: { q: SEARCH_TERM } });
   await mockApiResponse('multichainAggregator:search_domains', { items: [ ], next_page_params: undefined }, { queryParams: { q: SEARCH_TERM } });
 
-  await mockAssetResponse(opSuperchainMock.chainDataA.logo as string, './playwright/mocks/image_s.jpg');
+  await mockAssetResponse(chainDataMock.chainA.logo as string, './playwright/mocks/image_s.jpg');
 });
 
 test.describe('desktop', () => {

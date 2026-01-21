@@ -1,3 +1,4 @@
+import { Separator } from '@chakra-ui/react';
 import React from 'react';
 
 import type { PaginationParams } from 'ui/shared/pagination/types';
@@ -46,6 +47,7 @@ const LatestTxsLocal = () => {
         socketType="txs_home"
         stickyHeader={ false }
       />
+      <Separator orientation="horizontal" hideFrom="lg"/>
       <Link
         href={ route({ pathname: '/txs', query: { chain_id: chain?.id, tab: 'txs_local' } }) }
         w="full"

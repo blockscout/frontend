@@ -1,5 +1,6 @@
 import React from 'react';
 
+import * as chainDataMock from 'mocks/multichain/chains';
 import * as opSuperchainMock from 'mocks/multichain/opSuperchain';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';
@@ -43,8 +44,8 @@ test('base view', async({ mockApiResponse, render, page, mockMultichainConfig, m
     next_page_params: undefined,
   }, { pathParams: { hash: CURRENT_ADDRESS }, queryParams: { type: 'ERC-404' } });
 
-  await mockAssetResponse(opSuperchainMock.chainDataA.logo as string, './playwright/mocks/image_s.jpg');
-  await mockAssetResponse(opSuperchainMock.chainDataB.logo as string, './playwright/mocks/image_md.jpg');
+  await mockAssetResponse(chainDataMock.chainA.logo as string, './playwright/mocks/image_s.jpg');
+  await mockAssetResponse(chainDataMock.chainB.logo as string, './playwright/mocks/image_md.jpg');
   await mockAssetResponse(opSuperchainMock.domainProtocols[0].icon_url as string, './playwright/mocks/goose.png');
   await mockAssetResponse(opSuperchainMock.domainProtocols[1].icon_url as string, './playwright/mocks/duck.png');
 
