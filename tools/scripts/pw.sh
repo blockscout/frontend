@@ -78,7 +78,7 @@ echo "Affected flag: $affected_flag"
 echo "Files to run: $files_to_run"
 
 dotenv \
-  -v NODE_OPTIONS=\"--max-old-space-size=4096\" \
+  -v NODE_OPTIONS=\"--max-old-space-size=8192\" \
   -e $config_file \
   -- playwright test -c playwright-ct.config.ts $files_to_run $args
 
