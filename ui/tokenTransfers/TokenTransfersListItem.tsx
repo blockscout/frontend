@@ -11,6 +11,7 @@ import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
+import ConfidentialTokenValue from 'ui/shared/value/ConfidentialTokenValue';
 import TokenValue from 'ui/shared/value/TokenValue';
 
 type Props = {
@@ -20,6 +21,7 @@ type Props = {
 };
 
 const TokenTransfersListItem = ({ item, isLoading, chainData }: Props) => {
+  const isErc7984 = item.token?.type === 'ERC-7984';
 
   return (
     <ListItemMobileGrid.Container>
@@ -87,6 +89,18 @@ const TokenTransfersListItem = ({ item, isLoading, chainData }: Props) => {
               amount={ item.total.value }
               token={ item.token }
               decimals={ item.total.decimals || '0' }
+              loading={ isLoading }
+            />
+          </ListItemMobileGrid.Value>
+        </>
+      ) }
+
+      { isErc7984 && item.token && (!item.total || !('value' in item.total) || item.total.value === null) && (
+        <>
+          <ListItemMobileGrid.Label isLoading={ isLoading }>Amount</ListItemMobileGrid.Label>
+          <ListItemMobileGrid.Value>
+            <ConfidentialTokenValue
+              token={ item.token }
               loading={ isLoading }
             />
           </ListItemMobileGrid.Value>

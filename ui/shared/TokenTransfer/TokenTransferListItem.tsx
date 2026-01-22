@@ -15,6 +15,7 @@ import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import { getTokenTransferTypeText } from 'ui/shared/TokenTransfer/helpers';
 import AssetValue from 'ui/shared/value/AssetValue';
+import ConfidentialValue from 'ui/shared/value/ConfidentialValue';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
 
 type Props = TokenTransfer & {
@@ -102,6 +103,13 @@ const TokenTransferListItem = ({
             loading={ isLoading }
             color="text.secondary"
           />
+        </Flex>
+      ) }
+
+      { token?.type === 'ERC-7984' && (!total || !('value' in total) || total.value === null) && (
+        <Flex columnGap={ 2 } w="100%">
+          <Skeleton loading={ isLoading } fontWeight={ 500 } flexShrink={ 0 }>Value</Skeleton>
+          <ConfidentialValue loading={ isLoading } color="text.secondary"/>
         </Flex>
       ) }
     </ListItemMobile>

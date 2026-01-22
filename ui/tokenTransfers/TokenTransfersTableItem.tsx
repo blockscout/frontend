@@ -13,6 +13,7 @@ import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
+import ConfidentialTokenValue from 'ui/shared/value/ConfidentialTokenValue';
 import TokenValue from 'ui/shared/value/TokenValue';
 
 type Props = {
@@ -22,6 +23,34 @@ type Props = {
 };
 
 const TokenTransferTableItem = ({ item, isLoading, chainData }: Props) => {
+  const isErc7984 = item.token?.type === 'ERC-7984';
+
+  const renderValue = () => {
+    if (item.token && item.total && 'value' in item.total && item.total.value !== null) {
+      return (
+        <TokenValue
+          amount={ item.total.value }
+          token={ item.token }
+          decimals={ item.total.decimals || '0' }
+          layout="vertical"
+          loading={ isLoading }
+        />
+      );
+    }
+
+    if (isErc7984 && item.token) {
+      return (
+        <ConfidentialTokenValue
+          token={ item.token }
+          layout="vertical"
+          loading={ isLoading }
+        />
+      );
+    }
+
+    return <Skeleton loading={ isLoading }>-</Skeleton>;
+  };
+
   return (
     <TableRow>
       { chainData && (
@@ -77,18 +106,7 @@ const TokenTransferTableItem = ({ item, isLoading, chainData }: Props) => {
         ) : <Skeleton loading={ isLoading }>-</Skeleton> }
       </TableCell>
       <TableCell isNumeric verticalAlign="top">
-        { item.token && item.total && 'value' in item.total && item.total.value !== null ?
-          (
-            <TokenValue
-              amount={ item.total.value }
-              token={ item.token }
-              decimals={ item.total.decimals || '0' }
-              layout="vertical"
-              loading={ isLoading }
-            />
-          ) :
-          <Skeleton loading={ isLoading }>-</Skeleton>
-        }
+        { renderValue() }
       </TableCell>
     </TableRow>
   );
