@@ -22,10 +22,14 @@ async function fetchConfig() {
 
   const url = baseUrl + '/assets/essential-dapps/chains.json';
   const response = await fetch(url);
-  const json = await response.json();
-
-  value = json as MultichainConfig;
-  return value;
+  if (response.ok) {
+    const contentType = response.headers.get('content-type');
+    if (contentType?.includes('application/json')) {
+      const json = await response.json();
+      value = json as MultichainConfig;
+      return value;
+    }
+  }
 }
 
 export async function load() {
