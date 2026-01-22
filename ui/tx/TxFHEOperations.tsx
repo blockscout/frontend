@@ -93,8 +93,8 @@ const TxFHEOperations = ({ txQuery }: Props) => {
 
       { /* Operations Table */ }
       <AddressHighlightProvider>
-        <Box overflowX="auto">
-          <TableRoot>
+        <Box maxW="100%" overflowX="auto">
+          <TableRoot tableLayout="fixed" minWidth="900px" w="100%">
             <TableHeader>
               <TableRow>
                 <TableColumnHeader width="10%">Index</TableColumnHeader>
