@@ -13,7 +13,7 @@ export default function useWalletDynamic({ source, onConnect }: Params): Result 
   const [ isOpen ] = React.useState(false);
   const [ isClientLoaded, setIsClientLoaded ] = React.useState(false);
 
-  const { setShowDynamicUserProfile, setAuthMode, removeWallet } = useDynamicContext();
+  const { setShowDynamicUserProfile, setShowAuthFlow, setAuthMode, removeWallet } = useDynamicContext();
 
   const openModal = React.useCallback(() => {
     setShowDynamicUserProfile(true);
@@ -40,8 +40,8 @@ export default function useWalletDynamic({ source, onConnect }: Params): Result 
 
   const handleConnect = React.useCallback(() => {
     setAuthMode('connect-only');
-    openModal();
-  }, [ setAuthMode, openModal ]);
+    setShowAuthFlow(true);
+  }, [ setAuthMode, setShowAuthFlow ]);
 
   const userWallets = useUserWallets();
   const primaryWalletId = userWallets[0]?.id;
