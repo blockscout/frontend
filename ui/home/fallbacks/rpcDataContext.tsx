@@ -9,6 +9,8 @@ import formatBlockData from 'lib/web3/rpc/formatBlockData';
 import formatTxData from 'lib/web3/rpc/formatTxData';
 import { SECOND } from 'toolkit/utils/consts';
 
+export type SubscriptionId = 'latest-blocks' | 'latest-txs' | 'stats-widgets';
+
 interface HomeRpcDataContext {
   blocks: Array<Block>;
   txs: Array<Transaction>;
@@ -16,7 +18,8 @@ interface HomeRpcDataContext {
   isError: boolean;
   isLoading: boolean;
   isEnabled: boolean;
-  enable: (isEnabled: boolean, id: string) => void;
+  enable: (isEnabled: boolean, id: SubscriptionId) => void;
+  subscriptions: Array<SubscriptionId>;
 }
 
 export const HomeRpcDataContext = React.createContext<HomeRpcDataContext | null>(null);
@@ -30,7 +33,7 @@ export function HomeRpcDataContextProvider({ children }: { children: React.React
   const [ isLoading, setIsLoading ] = React.useState(true);
   const [ isError, setIsError ] = React.useState(false);
   const [ isEnabled, setIsEnabled ] = React.useState(false);
-  const [ , setSubscriptions ] = React.useState<Array<string>>([]);
+  const [ subscriptions, setSubscriptions ] = React.useState<Array<SubscriptionId>>([]);
 
   const query = useQuery({
     queryKey: [ 'RPC', 'watch-blocks' ],
@@ -125,7 +128,7 @@ export function HomeRpcDataContextProvider({ children }: { children: React.React
     };
   }, [ unwatch ]);
 
-  const enable = React.useCallback((isEnabled: boolean, id: string) => {
+  const enable = React.useCallback((isEnabled: boolean, id: SubscriptionId) => {
     if (!publicClient) {
       setIsError(true);
       setIsLoading(false);
@@ -157,7 +160,8 @@ export function HomeRpcDataContextProvider({ children }: { children: React.React
     isLoading,
     isEnabled,
     enable,
-  }), [ blocks, txs, totalTxs, isQueryError, isError, isLoading, isEnabled, enable ]);
+    subscriptions,
+  }), [ blocks, txs, totalTxs, isQueryError, isError, isLoading, isEnabled, enable, subscriptions ]);
 
   return (
     <HomeRpcDataContext.Provider value={ value }>

@@ -6,6 +6,7 @@ import React from 'react';
 import dayjs from 'lib/date/dayjs';
 import { publicClient } from 'lib/web3/client';
 import { mdash } from 'toolkit/utils/htmlEntities';
+import FallbackRpcIcon from 'ui/shared/fallbacks/FallbackRpcIcon';
 import GasPrice from 'ui/shared/gas/GasPrice';
 import StatsWidget from 'ui/shared/stats/StatsWidget';
 import { GWEI } from 'ui/shared/value/utils';
@@ -13,8 +14,6 @@ import { GWEI } from 'ui/shared/value/utils';
 import type { HomeStatsItem } from '../utils';
 import { isHomeStatsItemEnabled, sortHomeStatsItems } from '../utils';
 import { useHomeRpcDataContext } from './rpcDataContext';
-
-const ID = 'stats-widgets';
 
 const StatsDegraded = () => {
 
@@ -47,9 +46,9 @@ const StatsDegraded = () => {
   });
 
   React.useEffect(() => {
-    enable(true, ID);
+    enable(true, 'stats-widgets');
     return () => {
-      enable(false, ID);
+      enable(false, 'stats-widgets');
     };
   }, [ enable ]);
 
@@ -88,6 +87,7 @@ const StatsDegraded = () => {
         label: 'Total blocks',
         value: blocks[0] ? blocks[0].height.toLocaleString() : mdash,
         isFallback: blocks[0] === undefined,
+        hint: blocks[0] && !isLoading ? <FallbackRpcIcon/> : undefined,
       },
       {
         id: 'average_block_time' as const,
@@ -95,6 +95,7 @@ const StatsDegraded = () => {
         label: 'Average block time',
         value: averageBlockTime ? `${ averageBlockTime.toFixed(1) }s` : mdash,
         isFallback: averageBlockTime === undefined,
+        hint: averageBlockTime && !isLoading ? <FallbackRpcIcon/> : undefined,
       },
       {
         id: 'total_txs' as const,
@@ -131,6 +132,7 @@ const StatsDegraded = () => {
         value: gasPriceQuery.data ? <GasPrice data={ gasPriceQuery.data }/> : mdash,
         isFallback: !gasPriceQuery.data,
         isLoading: gasPriceQuery.isLoading,
+        hint: gasPriceQuery.data && !isLoading && !gasPriceQuery.isLoading ? <FallbackRpcIcon/> : undefined,
       },
       {
         id: 'btc_locked' as const,

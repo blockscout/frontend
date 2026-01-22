@@ -1,3 +1,4 @@
+import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
@@ -8,8 +9,10 @@ import LatestOptimisticDeposits from 'ui/home/latestDeposits/LatestOptimisticDep
 import LatestTxs from 'ui/home/LatestTxs';
 import LatestWatchlistTxs from 'ui/home/LatestWatchlistTxs';
 import LatestZetaChainCCTXs from 'ui/home/latestZetaChainCCTX/LatestZetaChainCCTXs';
+import FallbackRpcIcon from 'ui/shared/fallbacks/FallbackRpcIcon';
 import useAuth from 'ui/snippets/auth/useIsAuth';
 
+import { useHomeRpcDataContext } from './fallbacks/rpcDataContext';
 import LatestArbitrumDeposits from './latestDeposits/LatestArbitrumDeposits';
 
 const rollupFeature = config.features.rollup;
@@ -17,6 +20,10 @@ const zetachainFeature = config.features.zetachain;
 
 const Transactions = () => {
   const isAuth = useAuth();
+
+  const rpcDataContext = useHomeRpcDataContext();
+  const isRpcData = rpcDataContext.isEnabled && !rpcDataContext.isLoading && !rpcDataContext.isError && rpcDataContext.subscriptions.includes('latest-txs');
+
   if ((rollupFeature.isEnabled && (rollupFeature.type === 'optimistic' || rollupFeature.type === 'arbitrum')) || isAuth || zetachainFeature.isEnabled) {
     const tabs = [
       zetachainFeature.isEnabled && {
@@ -37,7 +44,10 @@ const Transactions = () => {
     ].filter(Boolean);
     return (
       <>
-        <Heading level="3" mb={ 3 }>Transactions</Heading>
+        <Flex alignItems="center" justifyContent="space-between" mb={ 3 }>
+          <Heading level="3" >Transactions</Heading>
+          { isRpcData && <FallbackRpcIcon/> }
+        </Flex>
         <AdaptiveTabs tabs={ tabs } unmountOnExit={ false } listProps={{ mb: 3 }}/>
       </>
     );
@@ -45,7 +55,10 @@ const Transactions = () => {
 
   return (
     <>
-      <Heading level="3" mb={ 3 }>Latest transactions</Heading>
+      <Flex alignItems="center" justifyContent="space-between" mb={ 3 }>
+        <Heading level="3" >Latest transactions</Heading>
+        { isRpcData && <FallbackRpcIcon/> }
+      </Flex>
       <LatestTxs/>
     </>
   );

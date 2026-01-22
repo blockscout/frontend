@@ -22,15 +22,13 @@ interface Props {
   maxNum: number;
 }
 
-const ID = 'latest-txs';
-
 const LatestTxsDegraded = ({ maxNum }: Props) => {
   const { txs, totalTxs, isError, isLoading, enable } = useHomeRpcDataContext();
 
   React.useEffect(() => {
-    enable(true, ID);
+    enable(true, 'latest-txs');
     return () => {
-      enable(false, ID);
+      enable(false, 'latest-txs');
     };
   }, [ enable ]);
 

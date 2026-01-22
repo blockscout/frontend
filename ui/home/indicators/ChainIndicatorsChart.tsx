@@ -3,6 +3,7 @@ import React from 'react';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Hint } from 'toolkit/components/Hint/Hint';
+import { mdash } from 'toolkit/utils/htmlEntities';
 import FallbackChart from 'ui/shared/fallbacks/FallbackChart';
 import IconSvg from 'ui/shared/IconSvg';
 
@@ -27,7 +28,7 @@ const ChainIndicatorsChart = ({ isLoading: isLoadingProp, value, valueDiff, char
     }
 
     if (value.includes('N/A')) {
-      return <Text fontWeight={ 700 } fontSize="30px" lineHeight="36px">N/A</Text>;
+      return <Text fontWeight={ 700 } fontSize="30px" lineHeight="36px" opacity="control.disabled">{ mdash }</Text>;
     }
 
     return (

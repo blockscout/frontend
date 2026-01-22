@@ -18,16 +18,14 @@ interface Props {
   maxNum: number;
 }
 
-const ID = 'latest-blocks';
-
 const LatestBlocksDegraded = ({ maxNum }: Props) => {
 
   const { blocks, isError, isLoading, enable } = useHomeRpcDataContext();
 
   React.useEffect(() => {
-    enable(true, ID);
+    enable(true, 'latest-blocks');
     return () => {
-      enable(false, ID);
+      enable(false, 'latest-blocks');
     };
   }, [ enable ]);
 
