@@ -15,18 +15,18 @@ type Props = {
 
 const NavLinkRewards = ({ isCollapsed, onClick }: Props) => {
   const router = useRouter();
-  const { openLoginModal, dailyRewardQuery, apiToken, isInitialized } = useRewardsContext();
+  const { openLoginModal, dailyRewardQuery, isAuth, isInitialized } = useRewardsContext();
 
   const pathname = '/account/merits';
   const nextRoute = { pathname } as Route;
 
   const handleClick = useCallback((e: React.MouseEvent) => {
-    if (isInitialized && !apiToken) {
+    if (isInitialized && !isAuth) {
       e.preventDefault();
       openLoginModal();
     }
     onClick?.();
-  }, [ onClick, isInitialized, apiToken, openLoginModal ]);
+  }, [ onClick, isInitialized, isAuth, openLoginModal ]);
 
   if (!config.features.rewards.isEnabled) {
     return null;

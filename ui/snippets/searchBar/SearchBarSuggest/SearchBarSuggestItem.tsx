@@ -70,7 +70,10 @@ const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick, addressForm
         return route({ pathname: '/blobs/[hash]', query: { hash: data.blob_hash } });
       }
       case 'ens_domain': {
-        return route({ pathname: '/address/[hash]', query: { hash: data.address_hash } });
+        if (data.address_hash) {
+          return route({ pathname: '/address/[hash]', query: { hash: data.address_hash } });
+        }
+        return route({ pathname: '/name-services/domains/[name]', query: { name: data.ens_info.name } });
       }
       case 'cluster': {
         return route({ pathname: '/address/[hash]', query: { hash: data.address_hash } });

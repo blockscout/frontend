@@ -90,8 +90,9 @@ export const recipe = defineSlotRecipe({
     },
     closeTrigger: {
       position: 'static',
-      alignSelf: 'center',
+      alignSelf: 'flex-start',
       color: 'closeButton.fg',
+      m: 0.5,
     },
   },
 });
