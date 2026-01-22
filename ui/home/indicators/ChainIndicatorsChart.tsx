@@ -39,7 +39,7 @@ const ChainIndicatorsChart = ({ isLoading: isLoadingProp, value, valueDiff, char
   })();
 
   const valueDiffElement = (() => {
-    if (valueDiff === undefined) {
+    if (valueDiff === undefined || (!isLoading && value.includes('N/A'))) {
       return null;
     }
 

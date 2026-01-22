@@ -1,8 +1,8 @@
 import React from 'react';
 
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import type { IconName, Props as IconSvgProps } from 'ui/shared//IconSvg';
-import IconSvg from 'ui/shared//IconSvg';
+import IconSvg from 'ui/shared/IconSvg';
+import type { IconName, Props as IconSvgProps } from 'ui/shared/IconSvg';
 
 interface Props extends Omit<IconSvgProps, 'name'> {
   name?: IconName;

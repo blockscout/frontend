@@ -31,7 +31,7 @@ const ChainIndicatorItem = ({ indicator, isSelected, onClick, isLoading }: Props
   })();
 
   const valueDiffContent = (() => {
-    if (indicator.valueDiff === undefined) {
+    if (indicator.valueDiff === undefined || (!isLoading && indicator.value.includes('N/A'))) {
       return null;
     }
 
