@@ -5,6 +5,7 @@ import React from 'react';
 import type { AxesConfigFn } from 'toolkit/components/charts/types';
 import type { UptimeHistoryFull, UptimeHistoryItem } from 'types/api/megaEth';
 
+import { useSettingsContext } from 'lib/contexts/settings';
 import { Heading } from 'toolkit/chakra/heading';
 import { ChartWidget } from 'toolkit/components/charts/ChartWidget';
 import { DAY, HOUR, SECOND } from 'toolkit/utils/consts';
@@ -21,14 +22,14 @@ type IntervalId = (typeof INTERVALS)[number]['id'];
 
 const TIME_FORMAT = '%e %b %Y, %H:%M:%S';
 
-const AXES_CONFIG_BASE: AxesConfigFn = ({ isEnlarged, isMobile }) => ({
+const AXES_CONFIG_BASE: (isLocalTime: boolean) => AxesConfigFn = (isLocalTime) => ({ isEnlarged, isMobile }) => ({
   y: {
     scale: { min: 0 },
   },
   x: {
     ticks: isEnlarged && !isMobile ? 8 : 5,
     tickFormatter: () => (d: d3.AxisDomain) => {
-      return d3.timeFormat('%H:%M')(d as Date);
+      return isLocalTime ? d3.timeFormat('%H:%M')(d as Date) : d3.utcFormat('%H:%M')(d as Date);
     },
   },
 });
@@ -80,15 +81,17 @@ const UptimeCharts = ({ historyData }: Props) => {
   const [ interval, setInterval ] = React.useState<IntervalId>('3h');
   const chartsConfig = useChartsConfig();
 
+  const { isLocalTime } = useSettingsContext() ?? { isLocalTime: true };
+
   const axesConfig = React.useMemo(() => {
     switch (interval) {
       case '3h':
       case '24h':
-        return AXES_CONFIG_BASE;
+        return AXES_CONFIG_BASE(isLocalTime);
       case '7d':
         return AXES_CONFIG_LONG;
     }
-  }, [ interval ]);
+  }, [ interval, isLocalTime ]);
 
   const tpsCharts = React.useMemo(() => {
     if (!historyData) {
@@ -111,11 +114,11 @@ const UptimeCharts = ({ historyData }: Props) => {
     const items = smoothedData
       .map(({ value, timestamp }) => {
         const date = new Date(timestamp * SECOND);
-        // Here and below,
-        // despite the other charts in the stats page, this one should display dates & time in the local timezone, not UTC.
-        // This is because it is a "time-based" chart not a "date-based" one.
-        // That is why we use d3.timeFormat() instead of dayjs.utcFormat() here.
-        return { date, value: Number(value.toFixed(0)), dateLabel: d3.timeFormat(TIME_FORMAT)(date) };
+        return {
+          date,
+          value: Number(value.toFixed(0)),
+          dateLabel: isLocalTime ? d3.timeFormat(TIME_FORMAT)(date) : d3.utcFormat(TIME_FORMAT)(date),
+        };
       })
       .filter(filterByInterval(interval, now));
 
@@ -127,7 +130,7 @@ const UptimeCharts = ({ historyData }: Props) => {
         charts: chartsConfig,
       },
     ];
-  }, [ chartsConfig, historyData, interval ]);
+  }, [ chartsConfig, historyData, interval, isLocalTime ]);
 
   const gasCharts = React.useMemo(() => {
     if (!historyData) {
@@ -152,7 +155,11 @@ const UptimeCharts = ({ historyData }: Props) => {
     const items = smoothedData
       .map(({ value, timestamp }) => {
         const date = new Date(timestamp * SECOND);
-        return { date, value: Number((value / 1_000_000).toFixed(2)), dateLabel: d3.timeFormat(TIME_FORMAT)(date) };
+        return {
+          date,
+          value: Number((value / 1_000_000).toFixed(2)),
+          dateLabel: isLocalTime ? d3.timeFormat(TIME_FORMAT)(date) : d3.utcFormat(TIME_FORMAT)(date),
+        };
       })
       .filter(filterByInterval(interval, now));
 
@@ -164,7 +171,7 @@ const UptimeCharts = ({ historyData }: Props) => {
         charts: chartsConfig,
       },
     ];
-  }, [ chartsConfig, historyData, interval ]);
+  }, [ chartsConfig, historyData, interval, isLocalTime ]);
 
   const blockIntervalCharts = React.useMemo(() => {
     if (!historyData) {
@@ -189,7 +196,11 @@ const UptimeCharts = ({ historyData }: Props) => {
     const items = smoothedData
       .map(({ value, timestamp }) => {
         const date = new Date(timestamp * SECOND);
-        return { date, value: Number(value.toFixed(1)), dateLabel: d3.timeFormat(TIME_FORMAT)(date) };
+        return {
+          date,
+          value: Number(value.toFixed(1)),
+          dateLabel: isLocalTime ? d3.timeFormat(TIME_FORMAT)(date) : d3.utcFormat(TIME_FORMAT)(date),
+        };
       })
       .filter(filterByInterval(interval, now));
 
@@ -201,7 +212,7 @@ const UptimeCharts = ({ historyData }: Props) => {
         charts: chartsConfig,
       },
     ];
-  }, [ chartsConfig, historyData, interval ]);
+  }, [ chartsConfig, historyData, interval, isLocalTime ]);
 
   const handleIntervalChange = React.useCallback((newInterval: IntervalId) => {
     setInterval(newInterval);

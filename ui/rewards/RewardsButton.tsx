@@ -16,7 +16,7 @@ type Props = {
 };
 
 const RewardsButton = ({ variant = 'header', size }: Props) => {
-  const { isInitialized, apiToken, openLoginModal, dailyRewardQuery, balancesQuery } = useRewardsContext();
+  const { isInitialized, isAuth, openLoginModal, dailyRewardQuery, balancesQuery } = useRewardsContext();
   const isMobile = useIsMobile();
   const isLoading = !isInitialized || dailyRewardQuery.isLoading || balancesQuery.isLoading;
 
@@ -28,15 +28,15 @@ const RewardsButton = ({ variant = 'header', size }: Props) => {
     <Tooltip
       content="Earn Merits for using Blockscout"
       openDelay={ 500 }
-      disabled={ isMobile || isLoading || Boolean(apiToken) }
+      disabled={ isMobile || isLoading || isAuth }
     >
       <Button
         variant={ variant }
-        selected={ !isLoading && Boolean(apiToken) }
+        selected={ !isLoading && isAuth }
         flexShrink={ 0 }
-        as={ apiToken ? 'a' : 'button' }
-        { ...(apiToken ? { href: route({ pathname: '/account/merits' }) } : {}) }
-        onClick={ apiToken ? undefined : openLoginModal }
+        as={ isAuth ? 'a' : 'button' }
+        { ...(isAuth ? { href: route({ pathname: '/account/merits' }) } : {}) }
+        onClick={ isAuth ? undefined : openLoginModal }
         onFocus={ handleFocus }
         size={ size }
         px={{ base: '10px', lg: 3 }}
@@ -52,9 +52,9 @@ const RewardsButton = ({ variant = 'header', size }: Props) => {
         />
         <chakra.span
           display={{ base: 'none', md: 'inline' }}
-          fontWeight={ apiToken ? '700' : '600' }
+          fontWeight={ isAuth ? '700' : '600' }
         >
-          { apiToken ? (balancesQuery.data?.total || 'N/A') : 'Merits' }
+          { isAuth ? (balancesQuery.data?.total || 'N/A') : 'Merits' }
         </chakra.span>
       </Button>
     </Tooltip>

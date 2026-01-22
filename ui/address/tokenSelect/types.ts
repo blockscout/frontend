@@ -1,8 +1,6 @@
-import type { TokenType } from 'types/api/token';
-
 import type { TokenEnhancedData } from 'ui/address/utils/tokenUtils';
 
-export type FormattedData = Record<TokenType, FormattedDataItem>;
+export type FormattedData = Record<string, FormattedDataItem>;
 
 export interface FormattedDataItem {
   items: Array<TokenEnhancedData>;

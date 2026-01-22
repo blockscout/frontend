@@ -1,6 +1,7 @@
 import type {
   OptimismL2TxnBatchTypeCallData,
   OptimismL2TxnBatchTypeCelestia,
+  OptimismL2TxnBatchTypeEigenda,
   OptimismL2TxnBatchTypeEip4844,
   OptimisticL2TxnBatchesResponse,
 } from 'types/api/optimisticL2';
@@ -101,4 +102,23 @@ export const txnBatchTypeEip4844: OptimismL2TxnBatchTypeEip4844 = {
   l2_end_block_number: 16291502,
   l2_start_block_number: 16291373,
   transactions_count: 704,
+};
+
+export const txnBatchTypeEigenda: OptimismL2TxnBatchTypeEigenda = {
+  number: 8930,
+  transactions_count: 9048,
+  l1_timestamp: '2022-08-23T03:59:12.000000Z',
+  l1_transaction_hashes: [
+    '0x2f4adadafec74aa938e60f26ad13fa8dc921c3a43f8760a88cf66c23064bc7ce',
+  ],
+  blobs: [
+    {
+      cert: '0x02f9083ae6a024f087e05e88e8b241b9a7818257250c22af1edda43',
+      l1_timestamp: '2026-01-12T12:46:23.000000Z',
+      l1_transaction_hash: '0x2f4adadafec74aa938e60f26ad13fa8dc921c3a43f8760a88cf66c23064bc7ce',
+    },
+  ],
+  batch_data_container: 'in_eigenda',
+  l2_end_block_number: 5424956,
+  l2_start_block_number: 5424574,
 };

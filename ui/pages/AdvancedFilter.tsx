@@ -163,7 +163,6 @@ const AdvancedFilter = () => {
                         { column.id === 'age' ? 'Timestamp' : column.name }
                       </chakra.span>
                     ) }
-                    { column.id === 'age' && <TimeFormatToggle ml={ 0 } mr={ 1 } verticalAlign="middle"/> }
                     <FilterByColumn
                       column={ column.id }
                       columnName={ column.name }
@@ -172,6 +171,7 @@ const AdvancedFilter = () => {
                       searchParams={ data?.search_params }
                       isLoading={ isPlaceholderData }
                     />
+                    { column.id === 'age' && <TimeFormatToggle ml={ 1 } verticalAlign="middle"/> }
                   </TableColumnHeader>
                 );
               }) }
@@ -270,9 +270,9 @@ const AdvancedFilter = () => {
         itemsNum={ data?.items.length }
         emptyText="There are no transactions."
         actionBar={ actionBar }
-        filterProps={{
-          hasActiveFilters: Object.values(filters).some(Boolean),
-          emptyFilteredText: 'No match found for current filter',
+        hasActiveFilters={ Object.values(filters).some(Boolean) }
+        emptyStateProps={{
+          term: 'transaction',
         }}
       >
         { content }

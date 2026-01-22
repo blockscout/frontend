@@ -25,6 +25,7 @@ export interface Props<Pathname extends Route['pathname'] = never> {
 
 export const base = async <Pathname extends Route['pathname'] = never>({ req, res, query }: GetServerSidePropsContext):
 Promise<GetServerSidePropsResult<Props<Pathname>>> => {
+  const appProfile = req.headers?.['x-app-profile'] || cookies.getFromCookieString(req.headers.cookie || '', cookies.NAMES.APP_PROFILE);
   const adBannerProvider = (() => {
     if (adBannerFeature.isEnabled) {
       if ('additionalProvider' in adBannerFeature && adBannerFeature.additionalProvider) {
@@ -39,12 +40,12 @@ Promise<GetServerSidePropsResult<Props<Pathname>>> => {
   })();
 
   let uuid = cookies.getFromCookieString(req.headers.cookie || '', cookies.NAMES.UUID);
-  if (!uuid) {
+  if (!uuid && appProfile !== 'private') {
     uuid = crypto.randomUUID();
     res.setHeader('Set-Cookie', `${ cookies.NAMES.UUID }=${ uuid }`);
   }
 
-  const isTrackingDisabled = process.env.DISABLE_TRACKING === 'true';
+  const isTrackingDisabled = process.env.DISABLE_TRACKING === 'true' || appProfile === 'private';
 
   if (!isTrackingDisabled) {
     const isRealUser = isLikelyHumanBrowser(req) && !isKnownBotRequest(req);

@@ -22,3 +22,8 @@ export interface TokenBridge {
   title: string;
   short_title: string;
 }
+
+export interface AdditionalTokenType {
+  id: string;
+  name: string;
+}

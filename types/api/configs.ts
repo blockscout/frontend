@@ -9,3 +9,7 @@ export interface CsvExportConfig {
 export interface CeloConfig {
   l2_migration_block: number;
 }
+
+export interface ContractLanguagesConfig {
+  languages: Array<string>;
+}

@@ -2,7 +2,6 @@ import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import useIsMounted from 'lib/hooks/useIsMounted';
-import { apos } from 'toolkit/utils/htmlEntities';
 import InternalTxsList from 'ui/internalTxs/InternalTxsList';
 import InternalTxsTable from 'ui/internalTxs/InternalTxsTable';
 import ActionBar from 'ui/shared/ActionBar';
@@ -60,7 +59,10 @@ const AddressInternalTxs = ({ shouldRender = true, isQueryEnabled = true }: Prop
     <DataListDisplay
       isError={ isError }
       itemsNum={ data?.items.length }
-      filterProps={{ emptyFilteredText: `Couldn${ apos }t find any transaction that matches your query.`, hasActiveFilters: Boolean(filterValue) }}
+      hasActiveFilters={ Boolean(filterValue) }
+      emptyStateProps={{
+        term: 'transaction',
+      }}
       emptyText="There are no internal transactions for this address."
       actionBar={ actionBar }
     >

@@ -34,6 +34,7 @@ import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import type { SearchResultAppItem } from 'ui/shared/search/utils';
 import { getItemCategory, searchItemTitles } from 'ui/shared/search/utils';
 import TacOperationStatus from 'ui/shared/statusTag/TacOperationStatus';
+import Time from 'ui/shared/time/Time';
 
 import SearchResultEntityTag from './SearchResultEntityTag';
 
@@ -306,7 +307,10 @@ const SearchResultListItem = ({ data, searchTerm, isLoading, addressFormat }: Pr
           <EnsEntity.Container>
             <EnsEntity.Icon protocol={ data.ens_info.protocol }/>
             <Link
-              href={ route({ pathname: '/address/[hash]', query: { hash: data.address_hash } }) }
+              href={ data.address_hash ?
+                route({ pathname: '/address/[hash]', query: { hash: data.address_hash } }) :
+                route({ pathname: '/name-services/domains/[name]', query: { name: data.ens_info.name } })
+              }
               fontWeight={ 700 }
               wordBreak="break-all"
               loading={ isLoading }
@@ -362,30 +366,30 @@ const SearchResultListItem = ({ data, searchTerm, isLoading, addressFormat }: Pr
               <HashStringShortenDynamic hash={ data.block_hash } as={ shouldHighlightHash ? 'mark' : 'span' }/>
             </Skeleton>
             <Skeleton loading={ isLoading } color="text.secondary" mr={ 2 }>
-              <span>{ dayjs(data.timestamp).format('llll') }</span>
+              <Time timestamp={ data.timestamp } format="lll_s"/>
             </Skeleton>
           </>
         );
       }
       case 'transaction': {
         return (
-          <Text color="text.secondary">{ dayjs(data.timestamp).format('llll') }</Text>
+          <Time timestamp={ data.timestamp } color="text.secondary" format="lll_s"/>
         );
       }
       case 'zetaChainCCTX': {
         return (
-          <Text color="text.secondary">{ dayjs(Number(data.cctx.last_update_timestamp) * SECOND).format('llll') }</Text>
+          <Time timestamp={ Number(data.cctx.last_update_timestamp) * SECOND } color="text.secondary" format="lll_s"/>
         );
       }
       case 'tac_operation': {
         return (
-          <Text color="text.secondary">{ dayjs(data.tac_operation.timestamp).format('llll') }</Text>
+          <Time timestamp={ data.tac_operation.timestamp } color="text.secondary" format="lll_s"/>
         );
       }
       case 'user_operation': {
 
         return (
-          <Text color="text.secondary">{ dayjs(data.timestamp).format('llll') }</Text>
+          <Time timestamp={ data.timestamp } color="text.secondary" format="lll_s"/>
         );
       }
       case 'label': {
@@ -442,13 +446,15 @@ const SearchResultListItem = ({ data, searchTerm, isLoading, addressFormat }: Pr
       }
       case 'ens_domain': {
         const expiresText = data.ens_info?.expiry_date ? ` expires ${ dayjs(data.ens_info.expiry_date).fromNow() }` : '';
-        const hash = data.filecoin_robust_address || (addressFormat === 'bech32' ? toBech32Address(data.address_hash) : data.address_hash);
+        const hash = data.filecoin_robust_address || (addressFormat === 'bech32' && data.address_hash ? toBech32Address(data.address_hash) : data.address_hash);
 
         return (
           <Flex alignItems="center" gap={ 3 }>
-            <Box overflow="hidden">
-              <HashStringShortenDynamic hash={ hash }/>
-            </Box>
+            { hash && (
+              <Box overflow="hidden">
+                <HashStringShortenDynamic hash={ hash }/>
+              </Box>
+            ) }
             {
               data.ens_info.names_count > 1 ?
                 <chakra.span color="text.secondary"> ({ data.ens_info.names_count > 39 ? '40+' : `+${ data.ens_info.names_count - 1 }` })</chakra.span> :

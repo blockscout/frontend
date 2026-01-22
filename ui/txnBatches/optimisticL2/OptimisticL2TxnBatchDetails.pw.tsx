@@ -43,3 +43,11 @@ test('EIP-4844 blob container +@mobile', async({ render }) => {
   const component = await render(<OptimisticL2TxnBatchDetails query={ query }/>, { hooksConfig });
   await expect(component).toHaveScreenshot();
 });
+
+test('Eigenda blob container +@mobile', async({ render }) => {
+  const query = {
+    data: txnBatchesMock.txnBatchTypeEigenda,
+  } as UseQueryResult<OptimismL2TxnBatch, ResourceError>;
+  const component = await render(<OptimisticL2TxnBatchDetails query={ query }/>, { hooksConfig });
+  await expect(component).toHaveScreenshot();
+});

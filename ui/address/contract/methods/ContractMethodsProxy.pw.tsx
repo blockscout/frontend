@@ -20,7 +20,7 @@ test('with one implementation +@mobile', async({ render, mockApiResponse }) => {
   ];
   await mockApiResponse('general:contract', { ...contractMock.verified, abi: methodsMock.read }, { pathParams: { hash: implementations[0].address_hash } });
 
-  const component = await render(<ContractMethodsProxy implementations={ implementations }/>, { hooksConfig });
+  const component = await render(<ContractMethodsProxy implementations={ implementations } proxyType="eip1167"/>, { hooksConfig });
   await expect(component).toHaveScreenshot();
 });
 
@@ -36,6 +36,24 @@ test('with multiple implementations +@mobile', async({ render, mockApiResponse }
   ];
   await mockApiResponse('general:contract', { ...contractMock.verified, abi: methodsMock.read }, { pathParams: { hash: implementations[0].address_hash } });
 
-  const component = await render(<ContractMethodsProxy implementations={ implementations }/>, { hooksConfig });
+  const component = await render(
+    <ContractMethodsProxy
+      implementations={ implementations }
+      proxyType="eip1167"
+      conflictingImplementations={ [
+        {
+          proxy_type: 'eip1167',
+          implementations: [
+            { address_hash: '0x2F4F4A52295940C576417d29F22EEb92B440eC89', name: 'HomeBridge' },
+          ],
+        },
+        {
+          proxy_type: 'eip1167',
+          implementations: [
+            { address_hash: '0x2F4F4A52295940C576417d29F22EEb92B440eC89', name: 'HomeBridge' },
+          ],
+        },
+      ] }
+    />, { hooksConfig });
   await expect(component).toHaveScreenshot();
 });

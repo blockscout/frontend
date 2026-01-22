@@ -7,9 +7,9 @@ import type { AdvancedFilterParams } from 'types/api/advancedFilter';
 
 import { Input } from 'toolkit/chakra/input';
 import { PopoverCloseTriggerWrapper } from 'toolkit/chakra/popover';
-import { Tag } from 'toolkit/chakra/tag';
 import { ndash } from 'toolkit/utils/htmlEntities';
 import TableColumnFilter from 'ui/shared/filters/TableColumnFilter';
+import TagGroupSelect from 'ui/shared/tagGroupSelect/TagGroupSelect';
 
 const FILTER_PARAM_FROM = 'amount_from';
 const FILTER_PARAM_TO = 'amount_to';
@@ -67,8 +67,8 @@ const AmountFilter = ({ value = {}, handleFilterChange }: Props) => {
     handleFilterChange(FILTER_PARAM_TO, currentValue.to);
   }, [ handleFilterChange, currentValue ]);
 
-  const onPresetClick = React.useCallback((event: React.SyntheticEvent) => {
-    const to = (event.currentTarget as HTMLDivElement).getAttribute('data-id') as string;
+  const onPresetChange = React.useCallback((to: string) => {
+    setCurrentValue({ from: '', to });
     handleFilterChange(FILTER_PARAM_FROM, '');
     handleFilterChange(FILTER_PARAM_TO, to);
   }, [ handleFilterChange ]);
@@ -84,16 +84,11 @@ const AmountFilter = ({ value = {}, handleFilterChange }: Props) => {
     >
       <PopoverCloseTriggerWrapper>
         <Flex gap={ 3 }>
-          { PRESETS.map(preset => (
-            <Tag
-              key={ preset.value }
-              data-id={ preset.value }
-              onClick={ onPresetClick }
-              variant="select"
-            >
-              { preset.name }
-            </Tag>
-          )) }
+          <TagGroupSelect<string>
+            items={ PRESETS.map((preset) => ({ id: preset.value, title: preset.name })) }
+            onChange={ onPresetChange }
+            value={ (!currentValue.from || currentValue.from === '0') ? PRESETS.find(preset => preset.value === currentValue.to)?.value : undefined }
+          />
         </Flex>
       </PopoverCloseTriggerWrapper>
       <Flex mt={ 3 } alignItems="center">

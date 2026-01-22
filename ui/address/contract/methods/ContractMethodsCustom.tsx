@@ -11,13 +11,12 @@ import { Button } from 'toolkit/chakra/button';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import CustomAbiModal from 'ui/customAbi/CustomAbiModal/CustomAbiModal';
-import ConnectWalletAlert from 'ui/shared/ConnectWalletAlert';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
 import AuthGuard from 'ui/snippets/auth/AuthGuard';
 import useIsAuth from 'ui/snippets/auth/useIsAuth';
 
 import ContractAbi from './ContractAbi';
-import ContractCustomAbiAlert from './ContractCustomAbiAlert';
+import ContractMethodsAlerts from './ContractMethodsAlerts';
 import ContractMethodsContainer from './ContractMethodsContainer';
 import ContractMethodsFilters from './ContractMethodsFilters';
 import useMethodsFilters from './useMethodsFilters';
@@ -76,10 +75,10 @@ const ContractMethodsCustom = ({ isLoading: isLoadingProp }: Props) => {
     <Flex flexDir="column" rowGap={ 6 }>
       { currentInfo ? (
         <>
-          <Flex flexDir="column" rowGap={ 1 }>
-            <ConnectWalletAlert isLoading={ isLoading }/>
-            <ContractCustomAbiAlert isLoading={ isLoading }/>
-          </Flex>
+          <ContractMethodsAlerts
+            isCustomAbi
+            isLoading={ isLoading }
+          />
           <RawDataSnippet
             data={ JSON.stringify(abi) }
             title="Contract ABI"

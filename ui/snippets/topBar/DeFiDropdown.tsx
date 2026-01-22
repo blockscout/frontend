@@ -59,7 +59,10 @@ const DeFiDropdown = () => {
     <Link
       href={
         items[0].dappId ?
-          route({ pathname: '/apps/[id]', query: { id: items[0].dappId, action: 'connect' } }) :
+          route({
+            pathname: items[0].isEssentialDapp ? '/essential-dapps/[id]' : '/apps/[id]',
+            query: { id: items[0].dappId, action: 'connect' },
+          }) :
           items[0].url
       }
       target={ items[0].dappId ? '_self' : '_blank' }

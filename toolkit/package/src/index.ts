@@ -10,6 +10,7 @@ export * from '../../chakra/collapsible';
 export * from '../../chakra/color-mode';
 export * from '../../chakra/dialog';
 export * from '../../chakra/drawer';
+export * from '../../chakra/empty-state';
 export * from '../../chakra/field';
 export * from '../../chakra/heading';
 export * from '../../chakra/icon-button';

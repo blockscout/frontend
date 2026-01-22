@@ -5,7 +5,6 @@ import type * as multichain from '@blockscout/multichain-aggregator-types';
 
 import multichainConfig from 'configs/multichain';
 import { MultichainProvider } from 'lib/contexts/multichain';
-import { apos } from 'toolkit/utils/htmlEntities';
 import AddressCsvExportLink from 'ui/address/AddressCsvExportLink';
 import AddressTxsFilter from 'ui/address/AddressTxsFilter';
 import useAddressInternalTxsQuery from 'ui/address/useAddressInternalTxsQuery';
@@ -83,7 +82,10 @@ const OpSuperchainAddressInternalTxs = ({ addressData, isLoading }: Props) => {
     <DataListDisplay
       isError={ isError }
       itemsNum={ data?.items.length }
-      filterProps={{ emptyFilteredText: `Couldn${ apos }t find any transaction that matches your query.`, hasActiveFilters: Boolean(filterValue) }}
+      hasActiveFilters={ Boolean(filterValue) }
+      emptyStateProps={{
+        term: 'transaction',
+      }}
       emptyText="There are no internal transactions."
       showActionBarIfEmpty
       showActionBarIfError
