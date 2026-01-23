@@ -1,4 +1,4 @@
-import { Flex } from '@chakra-ui/react';
+import { HStack } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
@@ -44,10 +44,10 @@ const Transactions = () => {
     ].filter(Boolean);
     return (
       <>
-        <Flex alignItems="center" justifyContent="space-between" mb={ 3 }>
+        <HStack mb={ 3 }>
           <Heading level="3" >Transactions</Heading>
           { isRpcData && <FallbackRpcIcon/> }
-        </Flex>
+        </HStack>
         <AdaptiveTabs tabs={ tabs } unmountOnExit={ false } listProps={{ mb: 3 }}/>
       </>
     );
@@ -55,10 +55,10 @@ const Transactions = () => {
 
   return (
     <>
-      <Flex alignItems="center" justifyContent="space-between" mb={ 3 }>
+      <HStack mb={ 3 }>
         <Heading level="3" >Latest transactions</Heading>
         { isRpcData && <FallbackRpcIcon/> }
-      </Flex>
+      </HStack>
       <LatestTxs/>
     </>
   );

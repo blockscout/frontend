@@ -1,4 +1,4 @@
-import { chakra, Box, Flex, Text, VStack } from '@chakra-ui/react';
+import { chakra, Box, Flex, Text, VStack, HStack } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { upperFirst } from 'es-toolkit';
 import React from 'react';
@@ -114,10 +114,10 @@ const LatestBlocks = () => {
 
   return (
     <Box width={{ base: '100%', lg: '280px' }} flexShrink={ 0 }>
-      <Flex alignItems="center" justifyContent="space-between">
+      <HStack alignItems="center">
         <Heading level="3">Latest blocks</Heading>
         { isRpcData && <FallbackRpcIcon/> }
-      </Flex>
+      </HStack>
       { statsQueryResult.data?.network_utilization_percentage !== undefined && (
         <Skeleton loading={ statsQueryResult.isPlaceholderData } mt={ 2 } display="inline-block" textStyle="sm">
           <Text as="span">
