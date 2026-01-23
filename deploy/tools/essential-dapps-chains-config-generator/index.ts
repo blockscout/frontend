@@ -4,11 +4,10 @@ import { dirname, resolve as resolvePath } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { Worker } from 'node:worker_threads';
 import * as viemChains from 'viem/chains';
-import { pick } from 'es-toolkit';
+import { pick, uniq, delay } from 'es-toolkit';
 
 import { EssentialDappsConfig } from 'types/client/marketplace';
 import { getEnvValue, parseEnvJson } from 'configs/app/utils';
-import { uniq, delay } from 'es-toolkit';
 import currentChainConfig from 'configs/app';
 import appConfig from 'configs/app';
 import { EssentialDappsChainConfig } from 'types/client/marketplace';
@@ -67,6 +66,7 @@ async function computeChainConfig(url: string): Promise<unknown> {
     workerData: { url },
     env: {} // Start with empty environment
   });
+  const controller = new AbortController();
 
   const configPromise = new Promise((resolve, reject) => {
     worker.on('message', (config) => {
@@ -79,13 +79,14 @@ async function computeChainConfig(url: string): Promise<unknown> {
     });
 
     worker.on('exit', (code) => {
+      controller.abort();
       reject(new Error(`Worker stopped with exit code ${ code }`));
     });
   });
 
   return Promise.race([
     configPromise,
-    delay(30_000)
+    delay(30_000, { signal: controller.signal })
   ]).finally(() => {
     worker.terminate();
   })
@@ -126,7 +127,7 @@ async function run() {
     for (const explorerUrl of explorerUrls) {
       const chainConfig = (await computeChainConfig(explorerUrl)) as typeof appConfig | undefined;
       if (!chainConfig) {
-        throw new Error(`❌ Failed to fetch chain config for ${ explorerUrl }`);
+        throw new Error(`Failed to fetch chain config for ${ explorerUrl }`);
       }
       chainConfigs.push(chainConfig);
     }
