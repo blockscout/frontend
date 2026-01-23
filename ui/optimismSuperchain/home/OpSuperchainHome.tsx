@@ -23,7 +23,7 @@ const OpSuperchainHome = () => {
       <LatestTxs/>
       { chains && chains.length > 0 && (
         <VStack rowGap={ 3 } alignItems="stretch">
-          <HStack columnGap={ 3 } w="100%" flexWrap="wrap" alignItems="stretch">
+          <HStack gap={{ base: 2, lg: 3 }} w="100%" flexWrap="wrap" alignItems="stretch">
             { chains.slice(0, 4).map((chain) => (
               <MultichainProvider key={ chain.id } chainId={ chain.id }>
                 <ChainWidget

@@ -112,11 +112,9 @@ export const LinkOverlay = React.forwardRef<HTMLAnchorElement, LinkProps>(
           href={ loading ? undefined : processedHref }
           target="_blank"
           rel="noopener noreferrer"
-          display="inline-flex"
-          alignItems="center"
           { ...rest }
         >
-          <Skeleton loading={ loading }>
+          <Skeleton display="inline-flex" alignItems="center" loading={ loading }>
             { children }
             { !noIcon && <LinkExternalIcon color={ iconColor }/> }
           </Skeleton>
@@ -125,7 +123,7 @@ export const LinkOverlay = React.forwardRef<HTMLAnchorElement, LinkProps>(
     }
 
     const content = (
-      <Skeleton loading={ loading }>
+      <Skeleton display="inline-flex" alignItems="center" loading={ loading }>
         { children }
       </Skeleton>
     );
@@ -134,8 +132,6 @@ export const LinkOverlay = React.forwardRef<HTMLAnchorElement, LinkProps>(
       <ChakraLinkOverlay
         ref={ ref }
         asChild={ Boolean(next.href) }
-        display="inline-flex"
-        alignItems="center"
         { ...rest }
       >
         { next.href ? <NextLink { ...next }>{ content }</NextLink> : content }
