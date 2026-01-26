@@ -80,6 +80,7 @@ export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/chain/[chain_slug]/token/[hash]/instance/[id]': 'Chain token NFT instance',
   '/chain/[chain_slug]/tx/[hash]': 'Chain transaction details',
   '/chain/[chain_slug]/visualize/sol2uml': 'Chain Solidity UML diagram',
+  '/ecosystems': 'Ecosystems',
 
   // service routes, added only to make typescript happy
   '/login': 'Login',

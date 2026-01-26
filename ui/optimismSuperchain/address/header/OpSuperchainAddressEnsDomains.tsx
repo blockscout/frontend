@@ -12,7 +12,7 @@ import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 import IconSvg from 'ui/shared/IconSvg';
 
-const DomainsGrid = ({ data }: { data: Array<{ name: string; protocol: multichain.ProtocolInfo | undefined }> }) => {
+const DomainsGrid = ({ data }: { data: Array<multichain.Domain> }) => {
   return (
     <Grid
       templateColumns={{ base: `repeat(${ clamp(data.length, 1, 2) }, 1fr)`, lg: `repeat(${ clamp(data.length, 1, 3) }, 1fr)` }}
