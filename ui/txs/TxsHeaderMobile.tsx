@@ -20,24 +20,26 @@ type Props = {
   showPagination?: boolean;
   filterComponent?: React.ReactNode;
   linkSlot?: React.ReactNode;
+  tableViewButton?: React.ReactNode;
 };
 
 const collection = createListCollection({
   items: SORT_OPTIONS,
 });
 
-const TxsHeaderMobile = ({ filterComponent, sorting, setSorting, paginationProps, className, showPagination = true, linkSlot }: Props) => {
+const TxsHeaderMobile = ({ filterComponent, sorting, setSorting, paginationProps, className, showPagination = true, linkSlot, tableViewButton }: Props) => {
   const handleSortValueChange = React.useCallback(({ value }: { value: Array<string> }) => {
     setSorting?.(value[0] as TransactionsSortingValue);
   }, [ setSorting ]);
 
-  if (!filterComponent && !setSorting && !linkSlot && !showPagination) {
+  if (!filterComponent && !setSorting && !linkSlot && !showPagination && !tableViewButton) {
     return null;
   }
 
   return (
     <ActionBar className={ className }>
       <HStack>
+        { tableViewButton }
         { filterComponent }
         { setSorting && (
           <Sort

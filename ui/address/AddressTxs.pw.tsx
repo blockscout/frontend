@@ -58,10 +58,10 @@ test.describe('base view', () => {
   });
 });
 
-test.describe('base view', () => {
+test.describe('mobile', () => {
   test.use({ viewport: pwConfig.viewport.mobile });
 
-  test('mobile', async({ render, mockApiResponse }) => {
+  test.beforeEach(async({ mockApiResponse }) => {
     await mockApiResponse(
       'general:address_txs',
       {
@@ -73,6 +73,20 @@ test.describe('base view', () => {
       },
       { pathParams: { hash: CURRENT_ADDRESS } },
     );
+  });
+
+  test('base view', async({ render }) => {
+    const component = await render(
+      <Box pt={{ base: '134px', lg: 6 }}>
+        <AddressTxs/>
+      </Box>,
+      { hooksConfig },
+    );
+    await expect(component).toHaveScreenshot();
+  });
+
+  test('table view', async({ render, mockFeatures }) => {
+    await mockFeatures([ [ 'txns_view_exp', 'table_view' ] ]);
     const component = await render(
       <Box pt={{ base: '134px', lg: 6 }}>
         <AddressTxs/>

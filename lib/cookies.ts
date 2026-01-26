@@ -26,6 +26,7 @@ export enum NAMES {
   UUID = 'uuid',
   SHOW_SCAM_TOKENS = 'show_scam_tokens',
   APP_PROFILE = 'app_profile',
+  TABLE_VIEW_ON_MOBILE = 'table_view_on_mobile',
 }
 
 /**
