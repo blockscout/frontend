@@ -13,9 +13,10 @@ export default function useTableViewValue() {
     setValue((prev) => {
       const nextValue = !prev;
       cookies.set(cookies.NAMES.TABLE_VIEW_ON_MOBILE, nextValue ? 'true' : 'false');
-      mixpanel.logEvent(mixpanel.EventTypes.BUTTON_CLICK, {
-        Content: nextValue ? 'On' : 'Off',
-        Source: 'Table view',
+      mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, {
+        Type: 'Txn view switch',
+        Info: nextValue ? 'Table view' : 'List view',
+        Source: 'Address page',
       });
       return nextValue;
     });
