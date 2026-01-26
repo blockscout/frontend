@@ -29,6 +29,9 @@ const globalCss: SystemConfig['globalCss'] = {
     bg: 'global.mark.bg',
     color: 'inherit',
   },
+  '::selection': {
+    bg: 'global.selection.bg',
+  },
   'svg *::selection': {
     color: 'none',
     background: 'none',
