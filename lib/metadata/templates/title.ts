@@ -86,6 +86,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/chain/[chain_slug]/token/[hash]/instance/[id]': '%network_name% token NFT instance',
   '/chain/[chain_slug]/tx/[hash]': '%network_name% transaction %hash% details',
   '/chain/[chain_slug]/visualize/sol2uml': '%network_name% Solidity UML diagram',
+  '/ecosystems': '%network_name% ecosystems',
 
   // service routes, added only to make typescript happy
   '/login': '%network_name% login',

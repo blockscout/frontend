@@ -44,7 +44,7 @@ const ChainWidget = ({ data, isLoading, metrics }: Props) => {
           <Skeleton loading={ isLoading } color="text.secondary">
             <span>Active accounts</span>
           </Skeleton>
-          <Skeleton loading={ isLoading }>{ metrics.active_accounts.current_full_week.toLocaleString() }</Skeleton>
+          <Skeleton loading={ isLoading }>{ Number(metrics.active_accounts.current_full_week).toLocaleString() }</Skeleton>
         </HStack>
       ) }
       { metrics?.tps && (

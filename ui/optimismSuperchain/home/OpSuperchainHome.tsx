@@ -1,6 +1,8 @@
 import { Box, HStack, VStack } from '@chakra-ui/react';
 import React from 'react';
 
+import { route } from 'nextjs-routes';
+
 import multichainConfig from 'configs/multichain';
 import useApiQuery from 'lib/api/useApiQuery';
 import { MultichainProvider } from 'lib/contexts/multichain';
@@ -34,7 +36,7 @@ const OpSuperchainHome = () => {
               </MultichainProvider>
             )) }
           </HStack>
-          <Link textStyle="sm" justifyContent="center">View all chains</Link>
+          <Link textStyle="sm" justifyContent="center" href={ route({ pathname: '/ecosystems' }) }>View all chains</Link>
         </VStack>
       ) }
     </Box>

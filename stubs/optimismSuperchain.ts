@@ -72,3 +72,23 @@ export const HOMEPAGE_STATS: stats.MainPageMultichainStats = {
     description: 'Number of transactions yesterday (0:00 - 23:59 UTC) across all chains in the cluste',
   },
 };
+
+export const CHAIN_METRICS: multichain.ChainMetrics = {
+  chain_id: '11155111',
+  tps: '5.32',
+  new_addresses: {
+    current_full_week: '16450',
+    previous_full_week: '156832',
+    wow_diff_percent: '-89.51',
+  },
+  daily_transactions: {
+    current_full_week: '3343480',
+    previous_full_week: '4228309',
+    wow_diff_percent: '-20.93',
+  },
+  active_accounts: {
+    current_full_week: '124564',
+    previous_full_week: '287092',
+    wow_diff_percent: '-56.61',
+  },
+};
