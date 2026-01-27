@@ -238,7 +238,7 @@ jobs:
         run: yarn test:pw:detect-affected
 
       - name: Upload result file
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: playwright-affected-tests
           path: ./playwright/affected-tests.txt
@@ -294,23 +294,73 @@ jobs:
 
       - name: Download affected tests list
         if: ${{ needs.pw_affected_tests.result == 'success' }}
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         continue-on-error: true
         with:
           name: playwright-affected-tests
           path: ./playwright
 
       - name: Run PlayWright
-        run: yarn test:pw:ci --affected=${{ github.event_name == 'pull_request' }} --pass-with-no-tests --reporter=blob
+        run: yarn test:pw:ci --affected=${{ github.event_name == 'pull_request' }} --pass-with-no-tests
         env:
           HOME: /root
           PW_PROJECT: ${{ matrix.project }}
-          PLAYWRIGHT_BLOB_OUTPUT_NAME: report-${{ matrix.project }}.zip
 
-      - name: Upload test results
-        if: always()
-        run: |
-          curl --location --request PUT '${{ secrets.PLAYWRIGHT_REPORT_URL }}/api/result/upload' \
-            --header 'Authorization: ${{ secrets.PLAYWRIGHT_REPORT_TOKEN }}' \
-            --form 'file=@"blob-report/report-${{ matrix.project }}.zip"' \
-            --form 'project="${{ matrix.project }}"'
+      - name: Upload blob report to GitHub Actions Artifacts
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v5
+        with:
+          name: blob-report-${{ matrix.project }}
+          path: blob-report
+          retention-days: 1
+
+  pw_report:
+    name: Generate Playwright report
+    runs-on: ubuntu-latest
+    needs: [ pw_tests ]
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.14.0
+          cache: 'yarn'
+
+      - name: Cache node_modules
+        uses: actions/cache@v4
+        id: cache-node-modules
+        with:
+          path: |
+            node_modules
+          key: node_modules-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+
+      - name: Install dependencies
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: yarn --frozen-lockfile
+
+      - name: Download blob reports from GitHub Actions Artifacts
+        uses: actions/download-artifact@v5
+        with:
+          path: all-blob-reports
+          pattern: blob-report-*
+          merge-multiple: true
+
+      - name: Merge into HTML Report
+        run: npx playwright merge-reports --reporter html ./all-blob-reports
+
+      - name: Upload HTML report
+        uses: actions/upload-artifact@v5
+        with:
+          name: html-report--attempt-${{ github.run_attempt }}
+          path: playwright-report
+          retention-days: 14
+
+      # - name: Upload test results
+      #   if: always()
+      #   run: |
+      #     curl --location --request PUT '${{ secrets.PLAYWRIGHT_REPORT_URL }}/api/result/upload' \
+      #       --header 'Authorization: ${{ secrets.PLAYWRIGHT_REPORT_TOKEN }}' \
+      #       --form 'file=@"blob-report/report-${{ matrix.project }}.zip"' \
+      #       --form 'project="${{ matrix.project }}"'
