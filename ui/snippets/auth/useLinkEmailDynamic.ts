@@ -4,10 +4,13 @@ import React from 'react';
 
 import type { UserInfo } from 'types/api/account';
 
+import config from 'configs/app';
 import { getResourceKey } from 'lib/api/useApiQuery';
 import * as mixpanel from 'lib/mixpanel/index';
 
-export default function useLinkEmailDynamic() {
+const feature = config.features.account;
+
+function useLinkEmailDynamic() {
   const { updateUserWithModal } = useUserUpdateRequest();
   const queryClient = useQueryClient();
 
@@ -29,3 +32,9 @@ export default function useLinkEmailDynamic() {
     });
   }, [ queryClient, updateUserWithModal ]);
 }
+
+function useLinkEmailFallback() {
+  return React.useCallback(() => {}, []);
+}
+
+export default feature.isEnabled && feature.authProvider === 'dynamic' ? useLinkEmailDynamic : useLinkEmailFallback;
