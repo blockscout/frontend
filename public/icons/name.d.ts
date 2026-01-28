@@ -112,6 +112,7 @@
 	| "navigation/custom_abi"
 	| "navigation/deposits"
 	| "navigation/dex_tracker"
+	| "navigation/ecosystems"
 	| "navigation/games"
 	| "navigation/gas_tracker"
 	| "navigation/hot_contracts"
