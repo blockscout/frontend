@@ -1,7 +1,7 @@
 import { useDynamicContext, useDynamicEvents } from '@dynamic-labs/sdk-react-core';
 import React from 'react';
 
-import useLinkEmailDynamic from '../useLinkEmailDynamic';
+import useLinkEmailDynamic from '../linkEmail/useLinkEmailDynamic';
 import useProfileQuery from '../useProfileQuery';
 
 interface InjectedProps {

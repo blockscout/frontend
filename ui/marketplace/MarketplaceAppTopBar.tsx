@@ -13,12 +13,12 @@ import * as mixpanel from 'lib/mixpanel/index';
 import { Link } from 'toolkit/chakra/link';
 import { BackToButton } from 'toolkit/components/buttons/BackToButton';
 import { makePrettyLink } from 'toolkit/utils/url';
+import RewardsButton from 'ui/rewards/RewardsButton';
 import NetworkIcon from 'ui/snippets/networkLogo/NetworkIcon';
+import UserProfileAuth0 from 'ui/snippets/user/profile/auth0/UserProfileDesktop';
+import UserWalletDesktop from 'ui/snippets/user/wallet/UserWalletDesktop';
 
-const RewardsButton = dynamic(() => import('ui/rewards/RewardsButton'), { ssr: false });
 const UserProfileDynamic = dynamic(() => import('ui/snippets/user/profile/dynamic/UserProfile'), { ssr: false });
-const UserProfileAuth0 = dynamic(() => import('ui/snippets/user/profile/auth0/UserProfileDesktop'), { ssr: false });
-const UserWalletDesktop = dynamic(() => import('ui/snippets/user/wallet/UserWalletDesktop'), { ssr: false });
 
 import MarketplaceAppInfo from './MarketplaceAppInfo';
 import Rating from './Rating/Rating';

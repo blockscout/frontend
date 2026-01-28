@@ -3,12 +3,12 @@ import dynamic from 'next/dynamic';
 import React from 'react';
 
 import config from 'configs/app';
+import RewardsButton from 'ui/rewards/RewardsButton';
 import SearchBar from 'ui/snippets/searchBar/SearchBarDesktop';
+import UserProfileAuth0 from 'ui/snippets/user/profile/auth0/UserProfileDesktop';
+import UserWalletDesktop from 'ui/snippets/user/wallet/UserWalletDesktop';
 
-const RewardsButton = dynamic(() => import('ui/rewards/RewardsButton'), { ssr: false });
 const UserProfileDynamic = dynamic(() => import('ui/snippets/user/profile/dynamic/UserProfile'), { ssr: false });
-const UserProfileAuth0 = dynamic(() => import('ui/snippets/user/profile/auth0/UserProfileDesktop'), { ssr: false });
-const UserWalletDesktop = dynamic(() => import('ui/snippets/user/wallet/UserWalletDesktop'), { ssr: false });
 
 type Props = {
   renderSearchBar?: () => React.ReactNode;

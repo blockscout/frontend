@@ -1,6 +1,5 @@
 import { Box } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
-import dynamic from 'next/dynamic';
 import React, { useCallback, useState } from 'react';
 
 import type { WatchlistAddress, WatchlistResponse } from 'types/api/account';
@@ -21,10 +20,9 @@ import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
 import useRedirectForInvalidAuthToken from 'ui/snippets/auth/useRedirectForInvalidAuthToken';
 import AddressModal from 'ui/watchlist/AddressModal/AddressModal';
 import DeleteAddressModal from 'ui/watchlist/DeleteAddressModal';
+import WatchlistEmailAlert from 'ui/watchlist/WatchlistEmailAlert';
 import WatchListItem from 'ui/watchlist/WatchlistTable/WatchListItem';
 import WatchlistTable from 'ui/watchlist/WatchlistTable/WatchlistTable';
-
-const WatchlistEmailAlert = dynamic(() => import('ui/watchlist/WatchlistEmailAlert'), { ssr: false });
 
 const WatchList: React.FC = () => {
 

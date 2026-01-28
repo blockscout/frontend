@@ -5,21 +5,21 @@ import { Alert } from 'toolkit/chakra/alert';
 import { Button } from 'toolkit/chakra/button';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import AuthModal from 'ui/snippets/auth/AuthModal';
-import useLinkEmailDynamic from 'ui/snippets/auth/useLinkEmailDynamic';
+import useLinkEmail from 'ui/snippets/auth/linkEmail/useLinkEmail';
 
 const feature = config.features.account;
 
 const VerifiedAddressesEmailAlert = () => {
   const authModal = useDisclosure();
-  const linkEmailDynamic = useLinkEmailDynamic();
+  const linkEmail = useLinkEmail();
 
   const handleButtonClick = React.useCallback(() => {
     if (feature.isEnabled && feature.authProvider === 'dynamic') {
-      linkEmailDynamic();
+      linkEmail();
     } else {
       authModal.onOpen();
     }
-  }, [ authModal, linkEmailDynamic ]);
+  }, [ authModal, linkEmail ]);
 
   return (
     <>

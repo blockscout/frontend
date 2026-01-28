@@ -4,8 +4,11 @@ import React from 'react';
 
 import config from 'configs/app';
 import useNavItems, { isGroupItem } from 'lib/hooks/useNavItems';
+import RewardsButton from 'ui/rewards/RewardsButton';
 import { CONTENT_MAX_WIDTH } from 'ui/shared/layout/utils';
 import NetworkLogo from 'ui/snippets/networkLogo/NetworkLogo';
+import UserProfileAuth0 from 'ui/snippets/user/profile/auth0/UserProfileDesktop';
+import UserWalletDesktop from 'ui/snippets/user/wallet/UserWalletDesktop';
 
 import NavigationPromoBanner from '../promoBanner/NavigationPromoBanner';
 import RollupStageBadge from '../RollupStageBadge';
@@ -13,10 +16,7 @@ import TestnetBadge from '../TestnetBadge';
 import NavLink from './NavLink';
 import NavLinkGroup from './NavLinkGroup';
 
-const RewardsButton = dynamic(() => import('ui/rewards/RewardsButton'), { ssr: false });
 const UserProfileDynamic = dynamic(() => import('ui/snippets/user/profile/dynamic/UserProfile'), { ssr: false });
-const UserProfileAuth0 = dynamic(() => import('ui/snippets/user/profile/auth0/UserProfileDesktop'), { ssr: false });
-const UserWalletDesktop = dynamic(() => import('ui/snippets/user/wallet/UserWalletDesktop'), { ssr: false });
 
 const NavigationDesktop = () => {
   const { mainNavItems } = useNavItems();

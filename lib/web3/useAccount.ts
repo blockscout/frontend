@@ -1,22 +1,12 @@
-import { useAccount as useAccountWagmi } from 'wagmi';
-
 import config from 'configs/app';
-
-import useAccountDynamic from './account/useAccountDynamic';
-import useAccountFallback from './account/useAccountFallback';
 
 const feature = config.features.blockchainInteraction;
 
-const useAccount = (() => {
-  if (feature.isEnabled && feature.connectorType === 'reown') {
-    return useAccountWagmi;
-  }
-
-  if (feature.isEnabled && feature.connectorType === 'dynamic') {
-    return useAccountDynamic;
-  }
-
-  return useAccountFallback;
-})();
+// eslint-disable-next-line no-nested-ternary
+const useAccount = (feature.isEnabled && feature.connectorType === 'dynamic') ?
+  (await import('./account/useAccountDynamic')).default :
+  (feature.isEnabled && feature.connectorType === 'reown') ?
+    (await import('wagmi')).useAccount :
+    (await import('./account/useAccountFallback')).default;
 
 export default useAccount;
