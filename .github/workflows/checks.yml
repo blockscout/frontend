@@ -357,10 +357,10 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
+          aws-region: ${{ vars.AWS_REGION }}
 
       - name: Upload HTML report
         run: |
           export "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`"
-          aws s3 cp playwright-report/ s3://${{ secrets.AWS_BUCKET_NAME }}/report-${SHORT_SHA} --recursive
-          echo "Report path is https://${{ secrets.AWS_BUCKET_NAME }}.s3.us-east-1.amazonaws.com/report-${SHORT_SHA}"
+          aws s3 cp playwright-report/ s3://${{ vars.AWS_BUCKET_NAME }}/report-${SHORT_SHA} --recursive
+          echo "Report path is https://${{ vars.AWS_BUCKET_NAME }}.s3.${{ vars.AWS_REGION }}.amazonaws.com/report-${SHORT_SHA}/index.html"
