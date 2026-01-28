@@ -362,6 +362,5 @@ jobs:
       - name: Upload HTML report
         run: |
           export "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`"
-          ls -la && ls -la playwright-report
-          aws s3 cp playwright-report/html-report--attempt-${{ github.run_attempt }} s3://${{ secrets.AWS_BUCKET_NAME }}/${SHORT_SHA} --recursive
-          echo "Report path is https://${{ secrets.AWS_BUCKET_NAME }}.s3.us-east-1.amazonaws.com/${SHORT_SHA}"
+          aws s3 cp playwright-report/ s3://${{ secrets.AWS_BUCKET_NAME }}/report-${SHORT_SHA} --recursive
+          echo "Report path is https://${{ secrets.AWS_BUCKET_NAME }}.s3.us-east-1.amazonaws.com/report-${SHORT_SHA}"
