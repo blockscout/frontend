@@ -6,11 +6,15 @@ import useApiQuery from 'lib/api/useApiQuery';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { ADDRESS, TOKEN } from 'stubs/optimismSuperchain';
 import { generateListStub } from 'stubs/utils';
-import ERC20Tokens from 'ui/address/tokens/ERC20Tokens';
+import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
+import DataListDisplay from 'ui/shared/DataListDisplay';
+import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
 import OpSuperchainAddressPortfolioCards from './OpSuperchainAddressPortfolioCards';
 import OpSuperchainAddressPortfolioNetWorth from './OpSuperchainAddressPortfolioNetWorth';
+import OpSuperchainAddressTokensListItem from './OpSuperchainAddressTokensListItem';
+import OpSuperchainAddressTokensTable from './OpSuperchainAddressTokensTable';
 
 const OpSuperchainAddressPortfolioErc20 = () => {
   const router = useRouter();
@@ -30,23 +34,51 @@ const OpSuperchainAddressPortfolioErc20 = () => {
   const tokensQuery = useQueryWithPages({
     resourceName: 'multichainAggregator:address_tokens',
     pathParams: { hash },
-    filters: chainId?.length ? { type: 'ERC-20', chain_id: chainId.includes('all') ? undefined : chainId.filter(Boolean) } : { type: 'ERC-20' },
+    filters: chainId?.length ? { type: 'ERC-20,NATIVE', chain_id: chainId.includes('all') ? undefined : chainId.filter(Boolean) } : { type: 'ERC-20,NATIVE' },
     options: {
       placeholderData: generateListStub<'multichainAggregator:address_tokens'>(TOKEN, 10, { next_page_params: undefined }),
     },
   });
 
+  const tokensContent = tokensQuery.data?.items ? (
+    <>
+      <Box hideBelow="lg">
+        <OpSuperchainAddressTokensTable
+          data={ tokensQuery.data.items }
+          top={ tokensQuery.pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 64 }
+          isLoading={ tokensQuery.isPlaceholderData }
+        />
+      </Box>
+      <Box hideFrom="lg">
+        { tokensQuery.data.items.map((item, index) => (
+          <OpSuperchainAddressTokensListItem
+            key={ item.token.address_hash + (tokensQuery.isPlaceholderData ? index : '') + (item.chain_values ? Object.keys(item.chain_values).join(',') : '') }
+            data={ item }
+            isLoading={ tokensQuery.isPlaceholderData }
+          />
+        )) }
+      </Box>
+    </>
+  ) : null;
+
+  const actionBar = tokensQuery.pagination.isVisible && (
+    <ActionBar mt={ -6 }>
+      <Pagination ml="auto" { ...tokensQuery.pagination }/>
+    </ActionBar>
+  );
+
   return (
     <Box>
       <OpSuperchainAddressPortfolioNetWorth/>
       <OpSuperchainAddressPortfolioCards isLoading={ addressQuery.isPlaceholderData }/>
-      <ERC20Tokens
-        items={ tokensQuery.data?.items }
-        isLoading={ tokensQuery.isPlaceholderData }
-        pagination={ tokensQuery.pagination }
+      <DataListDisplay
         isError={ tokensQuery.isError }
-        top={ tokensQuery.pagination.isVisible ? 68 : 0 }
-      />
+        itemsNum={ tokensQuery.data?.items?.length }
+        emptyText="There are no tokens at this address."
+        actionBar={ actionBar }
+      >
+        { tokensContent }
+      </DataListDisplay>
     </Box>
   );
 };

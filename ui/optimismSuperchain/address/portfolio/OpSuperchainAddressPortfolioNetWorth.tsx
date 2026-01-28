@@ -15,7 +15,7 @@ const OpSuperchainAddressPortfolioNetWorth = () => {
         bgColor={{ _light: 'blackAlpha.50', _dark: 'whiteAlpha.100' }}
         borderRadius="base"
       >
-        New worth
+        Net worth
       </Center>
       { !isMobile && <AdBanner format="mobile" w="fit-content"/> }
     </HStack>

@@ -25,6 +25,10 @@ const OpSuperchainAddressPortfolioCard = ({ chain, loading, selected, noneSelect
       w="full"
       bgColor={ selected ? 'selected.control.bg' : 'transparent' }
       opacity={ !selected && !noneSelected ? 0.5 : 1 }
+      _hover={{
+        borderColor: 'hover',
+        opacity: 1,
+      }}
     >
       <ChainIcon data={ chain } boxSize="30px" isLoading={ loading } noTooltip/>
       <VStack alignItems="flex-start" gap={ 1 }>

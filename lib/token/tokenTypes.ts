@@ -24,6 +24,9 @@ export const NFT_TOKEN_TYPE_IDS: Array<NFTTokenType> = Object.keys(NFT_TOKEN_TYP
 export const TOKEN_TYPE_IDS = Object.keys(TOKEN_TYPES);
 
 export function getTokenTypeName(typeId: string) {
+  if (typeId === 'NATIVE') {
+    return 'Native token';
+  }
   return TOKEN_TYPES[typeId] || typeId;
 }
 
