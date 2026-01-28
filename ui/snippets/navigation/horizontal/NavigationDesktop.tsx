@@ -1,4 +1,5 @@
 import { Box, chakra, Flex } from '@chakra-ui/react';
+import dynamic from 'next/dynamic';
 import React from 'react';
 
 import config from 'configs/app';
@@ -6,7 +7,7 @@ import useNavItems, { isGroupItem } from 'lib/hooks/useNavItems';
 import RewardsButton from 'ui/rewards/RewardsButton';
 import { CONTENT_MAX_WIDTH } from 'ui/shared/layout/utils';
 import NetworkLogo from 'ui/snippets/networkLogo/NetworkLogo';
-import UserProfileDesktop from 'ui/snippets/user/profile/UserProfileDesktop';
+import UserProfileAuth0 from 'ui/snippets/user/profile/auth0/UserProfileDesktop';
 import UserWalletDesktop from 'ui/snippets/user/wallet/UserWalletDesktop';
 
 import NavigationPromoBanner from '../promoBanner/NavigationPromoBanner';
@@ -15,8 +16,27 @@ import TestnetBadge from '../TestnetBadge';
 import NavLink from './NavLink';
 import NavLinkGroup from './NavLinkGroup';
 
+const UserProfileDynamic = dynamic(() => import('ui/snippets/user/profile/dynamic/UserProfile'), { ssr: false });
+
 const NavigationDesktop = () => {
   const { mainNavItems } = useNavItems();
+
+  const userProfile = (() => {
+    const accountFeature = config.features.account;
+    if (accountFeature.isEnabled) {
+      switch (accountFeature.authProvider) {
+        case 'auth0':
+          return <UserProfileAuth0 buttonSize="sm"/>;
+        case 'dynamic':
+          return <UserProfileDynamic buttonSize="sm"/>;
+        default:
+          return null;
+      }
+    }
+    if (config.features.blockchainInteraction.isEnabled) {
+      return <UserWalletDesktop/>;
+    }
+  })();
 
   return (
     <Box borderColor="border.divider" borderBottomWidth="1px">
@@ -45,10 +65,7 @@ const NavigationDesktop = () => {
         <Flex gap={ 2 }>
           <NavigationPromoBanner/>
           { config.features.rewards.isEnabled && <RewardsButton size="sm"/> }
-          {
-            (config.features.account.isEnabled && <UserProfileDesktop buttonSize="sm"/>) ||
-            (config.features.blockchainInteraction.isEnabled && <UserWalletDesktop buttonSize="sm"/>)
-          }
+          { userProfile }
         </Flex>
       </Flex>
     </Box>

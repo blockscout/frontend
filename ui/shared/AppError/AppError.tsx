@@ -3,7 +3,6 @@ import React from 'react';
 
 import { route } from 'nextjs-routes';
 
-import config from 'configs/app';
 import getErrorCause from 'lib/errors/getErrorCause';
 import getErrorCauseStatusCode from 'lib/errors/getErrorCauseStatusCode';
 import getErrorObjStatusCode from 'lib/errors/getErrorObjStatusCode';
@@ -11,15 +10,13 @@ import getErrorProp from 'lib/errors/getErrorProp';
 import getResourceErrorPayload from 'lib/errors/getResourceErrorPayload';
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';
-import AdBannerContent from 'ui/shared/ad/AdBannerContent';
 
+import AdBanner from '../ad/AdBanner';
 import AppErrorIcon from './AppErrorIcon';
 import AppErrorTitle from './AppErrorTitle';
 import AppErrorBlockConsensus from './custom/AppErrorBlockConsensus';
 import AppErrorTooManyRequests from './custom/AppErrorTooManyRequests';
 import AppErrorTxNotFound from './custom/AppErrorTxNotFound';
-
-const adBannerConfig = config.features.adsBanner;
 
 interface Props {
   className?: string;
@@ -91,8 +88,6 @@ const AppError = ({ error, className }: Props) => {
       default: {
         const { title, text } = ERROR_TEXTS[String(statusCode)] ?? ERROR_TEXTS[500];
 
-        const adBannerProvider = adBannerConfig.isEnabled ? adBannerConfig.provider : null;
-
         return (
           <>
             <AppErrorIcon statusCode={ statusCode }/>
@@ -109,7 +104,7 @@ const AppError = ({ error, className }: Props) => {
                 Back to home
               </Button>
             </Link>
-            { statusCode === 404 && adBannerProvider && <AdBannerContent mt={ 12 } provider={ adBannerProvider }/> }
+            { statusCode === 404 && <AdBanner mt={ 12 }/> }
           </>
         );
       }

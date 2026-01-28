@@ -13,7 +13,7 @@ import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import AddressModal from 'ui/privateTags/AddressModal/AddressModal';
 import TransactionModal from 'ui/privateTags/TransactionModal/TransactionModal';
 import IconSvg from 'ui/shared/IconSvg';
-import AuthGuard from 'ui/snippets/auth/AuthGuard';
+import AuthGuard from 'ui/snippets/auth/guard/AuthGuard';
 
 import ButtonItem from '../parts/ButtonItem';
 
