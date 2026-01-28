@@ -16,12 +16,13 @@ import OpSuperchainAddressPortfolioNetWorth from './OpSuperchainAddressPortfolio
 import OpSuperchainAddressTokensListItem from './OpSuperchainAddressTokensListItem';
 import OpSuperchainAddressTokensTable from './OpSuperchainAddressTokensTable';
 
+const TYPE_FILTER_VALUE = 'ERC-20,NATIVE';
+
 const OpSuperchainAddressPortfolioErc20 = () => {
   const router = useRouter();
 
   const hash = getQueryParamString(router.query.hash);
-
-  const chainId = [ 'all' ];
+  const chainIdParam = getQueryParamString(router.query.chain_id);
 
   const addressQuery = useApiQuery('multichainAggregator:address', {
     pathParams: { hash },
@@ -31,14 +32,45 @@ const OpSuperchainAddressPortfolioErc20 = () => {
     },
   });
 
+  const availableChainIds = React.useMemo(() => {
+    if (addressQuery.isPlaceholderData) {
+      return [];
+    }
+    return addressQuery.data?.chain_infos ? Object.keys(addressQuery.data.chain_infos) : [];
+  }, [ addressQuery.data?.chain_infos, addressQuery.isPlaceholderData ]);
+
+  const [ chainIds, setChainIds ] = React.useState<Array<string>>([]);
+
+  const isAllChains = chainIds.length === availableChainIds.length;
+
+  React.useEffect(() => {
+    if (!addressQuery.isPlaceholderData) {
+      const chainIds = chainIdParam ? chainIdParam.split(',').filter((chainId) => availableChainIds.includes(chainId)) : [];
+      setChainIds(chainIds);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ addressQuery.isPlaceholderData ]);
+
   const tokensQuery = useQueryWithPages({
     resourceName: 'multichainAggregator:address_tokens',
     pathParams: { hash },
-    filters: chainId?.length ? { type: 'ERC-20,NATIVE', chain_id: chainId.includes('all') ? undefined : chainId.filter(Boolean) } : { type: 'ERC-20,NATIVE' },
+    filters: {
+      type: TYPE_FILTER_VALUE,
+      chain_id: isAllChains ? undefined : chainIds,
+    },
     options: {
+      enabled: !addressQuery.isPlaceholderData,
       placeholderData: generateListStub<'multichainAggregator:address_tokens'>(TOKEN, 10, { next_page_params: undefined }),
     },
   });
+
+  const handleChainIdsChange = React.useCallback((nextValue: Array<string>) => {
+    setChainIds(nextValue.length === availableChainIds.length ? [] : nextValue);
+    tokensQuery.onFilterChange({
+    //   type: TYPE_FILTER_VALUE,
+      chain_id: nextValue.length === availableChainIds.length ? undefined : nextValue,
+    });
+  }, [ availableChainIds.length, tokensQuery ]);
 
   const tokensContent = tokensQuery.data?.items ? (
     <>
@@ -70,7 +102,12 @@ const OpSuperchainAddressPortfolioErc20 = () => {
   return (
     <Box>
       <OpSuperchainAddressPortfolioNetWorth/>
-      <OpSuperchainAddressPortfolioCards isLoading={ addressQuery.isPlaceholderData }/>
+      <OpSuperchainAddressPortfolioCards
+        chainIds={ availableChainIds }
+        value={ chainIds }
+        onChange={ handleChainIdsChange }
+        isLoading={ addressQuery.isPlaceholderData }
+      />
       <DataListDisplay
         isError={ tokensQuery.isError }
         itemsNum={ tokensQuery.data?.items?.length }

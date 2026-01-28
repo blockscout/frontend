@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-restricted-imports
-import { Checkbox, useCheckboxGroup } from '@chakra-ui/react';
+import { Checkbox } from '@chakra-ui/react';
 import { clamp } from 'es-toolkit';
 import React from 'react';
 
@@ -10,22 +10,19 @@ import OpSuperchainAddressPortfolioCard from './OpSuperchainAddressPortfolioCard
 
 interface Props {
   isLoading: boolean;
+  value: Array<string>;
+  onChange: (nextValue: Array<string>) => void;
+  chainIds: Array<string>;
 }
 
-const OpSuperchainAddressPortfolioCards = ({ isLoading }: Props) => {
+const OpSuperchainAddressPortfolioCards = ({ isLoading, value, onChange, chainIds }: Props) => {
   const chains = multichainConfig()?.chains;
-
-  const { value, setValue } = useCheckboxGroup();
-
-  const handleChange = React.useCallback((nextValue: Array<string>) => {
-    setValue(nextValue);
-  }, [ setValue ]);
 
   const columnNum = clamp(chains?.length || 0, 3, 5);
 
   return (
     <CheckboxGroup
-      onValueChange={ handleChange }
+      onValueChange={ onChange }
       value={ value }
       name="chains"
       orientation="horizontal"
@@ -34,24 +31,32 @@ const OpSuperchainAddressPortfolioCards = ({ isLoading }: Props) => {
       mt={ 2 }
       mb={ 6 }
     >
-      { chains?.map((chain) => (
-        <Checkbox.Root
-          key={ chain.id }
-          value={ chain.id }
-          flexBasis={{
-            base: (chains?.length || 0) > 1 ? 'calc(50% - 4px)' : '100%',
-            lg: `calc((100% - ${ (columnNum - 1) * 8 }px) / ${ columnNum })`,
-          }}
-        >
-          <Checkbox.HiddenInput/>
-          <OpSuperchainAddressPortfolioCard
-            chain={ chain }
-            loading={ isLoading }
-            selected={ value.includes(chain.id) }
-            noneSelected={ value.length === 0 }
-          />
-        </Checkbox.Root>
-      )) }
+      { chainIds.map((chainId) => {
+        const chain = chains?.find((chain) => chain.id === chainId);
+
+        if (!chain) {
+          return null;
+        }
+
+        return (
+          <Checkbox.Root
+            key={ chain.id }
+            value={ chain.id }
+            flexBasis={{
+              base: (chainIds?.length || 0) > 1 ? 'calc(50% - 4px)' : '100%',
+              lg: `calc((100% - ${ (columnNum - 1) * 8 }px) / ${ columnNum })`,
+            }}
+          >
+            <Checkbox.HiddenInput/>
+            <OpSuperchainAddressPortfolioCard
+              chain={ chain }
+              loading={ isLoading }
+              selected={ value.includes(chain.id) }
+              noneSelected={ value.length === 0 }
+            />
+          </Checkbox.Root>
+        );
+      }) }
     </CheckboxGroup>
   );
 };
