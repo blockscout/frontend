@@ -352,17 +352,15 @@ jobs:
       - name: Merge into HTML Report
         run: npx playwright merge-reports --reporter html ./all-blob-reports
 
-      - name: Upload HTML report
-        uses: actions/upload-artifact@v5
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
         with:
-          name: html-report--attempt-${{ github.run_attempt }}
-          path: playwright-report
-          retention-days: 14
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
 
-      # - name: Upload test results
-      #   if: always()
-      #   run: |
-      #     curl --location --request PUT '${{ secrets.PLAYWRIGHT_REPORT_URL }}/api/result/upload' \
-      #       --header 'Authorization: ${{ secrets.PLAYWRIGHT_REPORT_TOKEN }}' \
-      #       --form 'file=@"blob-report/report-${{ matrix.project }}.zip"' \
-      #       --form 'project="${{ matrix.project }}"'
+      - name: Upload HTML report
+        run: |
+          export "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`"
+          aws s3 playwright-report/html-report--attempt-${{ github.run_attempt }}/* s3://${{ secrets.AWS_BUCKET_NAME }}/html-report-${SHORT_SHA}
+          echo "Report path is https://${{ secrets.AWS_BUCKET_NAME }}.s3.us-east-1.amazonaws.com/html-report-${SHORT_SHA}"
