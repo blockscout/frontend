@@ -22,10 +22,9 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 import OpSuperchainAddressEnsDomains from './header/OpSuperchainAddressEnsDomains';
 import OpSuperchainAddressCoinBalanceHistory from './OpSuperchainAddressCoinBalanceHistory';
 import OpSuperchainAddressContract from './OpSuperchainAddressContract';
-import OpSuperchainAddressDetails from './OpSuperchainAddressDetails';
 import OpSuperchainAddressInternalTxs from './OpSuperchainAddressInternalTxs';
 import OpSuperchainAddressLogs from './OpSuperchainAddressLogs';
-import OpSuperchainAddressTokens, { ADDRESS_OP_SUPERCHAIN_TOKENS_TAB_IDS } from './OpSuperchainAddressTokens';
+import OpSuperchainAddressPortfolio from './OpSuperchainAddressPortfolio';
 import OpSuperchainAddressTokenTransfers, { ADDRESS_OP_SUPERCHAIN_TOKEN_TRANSFERS_TAB_IDS } from './OpSuperchainAddressTokenTransfers';
 import OpSuperchainAddressTxs, { ADDRESS_OP_SUPERCHAIN_TXS_TAB_IDS } from './OpSuperchainAddressTxs';
 
@@ -59,9 +58,9 @@ const OpSuperchainAddress = () => {
   const tabs: Array<TabItemRegular> = React.useMemo(() => {
     return [
       {
-        id: 'index',
-        title: 'Details',
-        component: <OpSuperchainAddressDetails addressHash={ checkSummedHash } data={ addressQuery.data } isLoading={ isLoading }/>,
+        id: 'portfolio',
+        title: 'Portfolio',
+        component: <OpSuperchainAddressPortfolio/>,
       },
       isContractSomewhere && {
         id: 'contract',
@@ -80,12 +79,6 @@ const OpSuperchainAddress = () => {
         title: 'Token transfers',
         component: <OpSuperchainAddressTokenTransfers addressData={ addressQuery.data } isLoading={ isLoading }/>,
         subTabs: ADDRESS_OP_SUPERCHAIN_TOKEN_TRANSFERS_TAB_IDS,
-      },
-      addressQuery.data?.has_tokens && {
-        id: 'tokens',
-        title: 'Tokens',
-        component: isLoading ? null : <OpSuperchainAddressTokens addressData={ addressQuery.data }/>,
-        subTabs: ADDRESS_OP_SUPERCHAIN_TOKENS_TAB_IDS,
       },
       {
         id: 'internal_txs',
