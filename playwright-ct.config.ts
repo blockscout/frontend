@@ -35,7 +35,7 @@ const config: PlaywrightTestConfig = defineConfig({
   workers: 1,
 
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: 'html',
+  reporter: process.env.CI ? 'blob' : 'html',
 
   expect: {
     toHaveScreenshot: {
