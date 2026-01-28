@@ -16,6 +16,7 @@ import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import { getTokenTransferTypeText } from 'ui/shared/TokenTransfer/helpers';
 import AssetValue from 'ui/shared/value/AssetValue';
+import ConfidentialValue from 'ui/shared/value/ConfidentialValue';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
 
 type Props = TokenTransfer & {
@@ -124,15 +125,19 @@ const TokenTransferTableItem = ({
         />
       </TableCell>
       <TableCell isNumeric verticalAlign="top">
-        <AssetValue
-          amount={ total && 'value' in total && total.value !== null ? total.value : null }
-          decimals={ total && 'decimals' in total ? total.decimals || '0' : '0' }
-          exchangeRate={ token?.exchange_rate }
-          loading={ isLoading }
-          layout="vertical"
-          mt="4px"
-          rowGap="10px"
-        />
+        { token?.type === 'ERC-7984' && (!total || !('value' in total) || total.value === null) ? (
+          <ConfidentialValue loading={ isLoading } mt="4px"/>
+        ) : (
+          <AssetValue
+            amount={ total && 'value' in total && total.value !== null ? total.value : null }
+            decimals={ total && 'decimals' in total ? total.decimals || '0' : '0' }
+            exchangeRate={ token?.exchange_rate }
+            loading={ isLoading }
+            layout="vertical"
+            mt="4px"
+            rowGap="10px"
+          />
+        ) }
       </TableCell>
     </TableRow>
   );

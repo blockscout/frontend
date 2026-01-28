@@ -44,6 +44,10 @@ export type TokenTransfer = (
   {
     token: TokenInfo | null;
     total: Erc404TotalPayload | null;
+  } |
+  {
+    token: TokenInfo | null;
+    total: Erc20TotalPayload | null;
   }
 ) & TokenTransferBase;
 
