@@ -1,4 +1,4 @@
-import { Box, chakra, Flex } from '@chakra-ui/react';
+import { Box, chakra, Flex, Separator } from '@chakra-ui/react';
 import dynamic from 'next/dynamic';
 import React from 'react';
 
@@ -6,6 +6,7 @@ import config from 'configs/app';
 import useNavItems, { isGroupItem } from 'lib/hooks/useNavItems';
 import RewardsButton from 'ui/rewards/RewardsButton';
 import { CONTENT_MAX_WIDTH } from 'ui/shared/layout/utils';
+import useIsAuth from 'ui/snippets/auth/useIsAuth';
 import NetworkLogo from 'ui/snippets/networkLogo/NetworkLogo';
 import UserProfileAuth0 from 'ui/snippets/user/profile/auth0/UserProfileDesktop';
 import UserWalletDesktop from 'ui/snippets/user/wallet/UserWalletDesktop';
@@ -18,11 +19,13 @@ import NavLinkGroup from './NavLinkGroup';
 
 const UserProfileDynamic = dynamic(() => import('ui/snippets/user/profile/dynamic/UserProfile'), { ssr: false });
 
+const accountFeature = config.features.account;
+
 const NavigationDesktop = () => {
-  const { mainNavItems } = useNavItems();
+  const { mainNavItems, accountNavItems } = useNavItems();
+  const isAuth = useIsAuth();
 
   const userProfile = (() => {
-    const accountFeature = config.features.account;
     if (accountFeature.isEnabled) {
       switch (accountFeature.authProvider) {
         case 'auth0':
@@ -38,6 +41,15 @@ const NavigationDesktop = () => {
     }
   })();
 
+  const accountNavGroup = React.useMemo(() => {
+    if (accountFeature.isEnabled && accountFeature.authProvider === 'dynamic' && isAuth) {
+      return {
+        text: 'Account',
+        subItems: accountNavItems,
+      };
+    }
+  }, [ accountNavItems, isAuth ]);
+
   return (
     <Box borderColor="border.divider" borderBottomWidth="1px">
       <Flex
@@ -51,8 +63,8 @@ const NavigationDesktop = () => {
         <NetworkLogo/>
         <TestnetBadge ml={ 3 }/>
         <RollupStageBadge ml={ 3 }/>
-        <chakra.nav ml="auto" mr={ config.features.account.isEnabled || config.features.blockchainInteraction.isEnabled ? 8 : 0 }>
-          <Flex as="ul" columnGap={ 3 }>
+        <chakra.nav ml="auto">
+          <Flex as="ul" columnGap={ 2 } alignItems="center">
             { mainNavItems.map((item) => {
               if (isGroupItem(item)) {
                 return <NavLinkGroup key={ item.text } item={ item }/>;
@@ -60,9 +72,15 @@ const NavigationDesktop = () => {
                 return <NavLink key={ item.text } item={ item } noIcon py={ 1.5 } w="fit-content"/>;
               }
             }) }
+            { accountNavGroup && (
+              <>
+                <Separator orientation="vertical" mx={ 0 } h={ 4 }/>
+                <NavLinkGroup key={ accountNavGroup.text } item={ accountNavGroup }/>
+              </>
+            ) }
           </Flex>
         </chakra.nav>
-        <Flex gap={ 2 }>
+        <Flex gap={ 2 } ml={ 8 } _empty={{ display: 'none' }}>
           <NavigationPromoBanner/>
           { config.features.rewards.isEnabled && <RewardsButton size="sm"/> }
           { userProfile }
