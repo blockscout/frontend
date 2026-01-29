@@ -44,8 +44,8 @@ const TxFHEOperations = ({ txQuery }: Props) => {
   if (isLoading || txQuery.isPlaceholderData || !hash) {
     return (
       <Box>
-        <Skeleton height="100px" mb={ 6 }/>
-        <Skeleton height="400px"/>
+        <Skeleton loading height="100px" mb={ 6 }/>
+        <Skeleton loading height="400px"/>
       </Box>
     );
   }
