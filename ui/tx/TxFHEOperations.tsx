@@ -1,4 +1,4 @@
-import { Box, Text } from '@chakra-ui/react';
+import { Box, Flex, Text } from '@chakra-ui/react';
 import React from 'react';
 
 import type { FheOperationType } from 'types/api/fheOperations';
@@ -10,6 +10,7 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableBody, TableCell, TableColumnHeader, TableHeader, TableRoot, TableRow } from 'toolkit/chakra/table';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import StatsWidget from 'ui/shared/stats/StatsWidget';
 import TxPendingAlert from 'ui/tx/TxPendingAlert';
 import TxSocketAlert from 'ui/tx/TxSocketAlert';
@@ -93,7 +94,7 @@ const TxFHEOperations = ({ txQuery }: Props) => {
 
       { /* Operations Table */ }
       <AddressHighlightProvider>
-        <Box maxW="100%" overflowX="auto">
+        <Box maxW="100%" overflowX="auto" hideBelow="lg">
           <TableRoot tableLayout="fixed" minWidth="900px" w="100%">
             <TableHeader>
               <TableRow>
@@ -164,6 +165,65 @@ const TxFHEOperations = ({ txQuery }: Props) => {
               }) }
             </TableBody>
           </TableRoot>
+        </Box>
+
+        <Box hideFrom="lg">
+          { items.map((op, index) => {
+            const hcuDepth = op.hcu_depth ?? op.hcu_cost;
+            return (
+              <ListItemMobile key={ op.log_index || index }>
+                <Flex direction="column" gap={ 3 } width="100%">
+                  <Flex justifyContent="space-between" alignItems="center">
+                    <Text fontFamily="mono" fontSize="md" fontWeight="bold">
+                      { op.operation }
+                    </Text>
+                    <Text fontFamily="mono" fontSize="xs" color="text.secondary">
+                      #{ op.log_index }
+                    </Text>
+                  </Flex>
+
+                  <Flex gap={ 2 } flexWrap="wrap">
+                    <Badge colorPalette={ getTypeColor(op.type) } fontSize="xs">
+                      { op.type }
+                    </Badge>
+                    <Badge colorPalette="gray" variant="outline" fontSize="xs">
+                      { op.fhe_type }
+                    </Badge>
+                    <Badge colorPalette={ op.is_scalar ? 'green' : 'blue' } fontSize="xs">
+                      { op.is_scalar ? 'Scalar' : 'Non-Scalar' }
+                    </Badge>
+                  </Flex>
+
+                  <Flex justifyContent="space-between" alignItems="center">
+                    <Text color="text.secondary" fontSize="sm">Caller</Text>
+                    { op.caller && op.caller.hash ? (
+                      <AddressEntity
+                        address={ op.caller }
+                        truncation="constant"
+                        isLoading={ isLoading }
+                      />
+                    ) : (
+                      <Text fontSize="sm" color="text.secondary">—</Text>
+                    ) }
+                  </Flex>
+
+                  <Flex justifyContent="space-between" alignItems="center">
+                    <Text color="text.secondary" fontSize="sm">HCU Cost</Text>
+                    <Text fontFamily="mono" fontSize="sm" fontWeight="medium">
+                      { op.hcu_cost.toLocaleString() }
+                    </Text>
+                  </Flex>
+
+                  <Flex justifyContent="space-between" alignItems="center">
+                    <Text color="text.secondary" fontSize="sm">HCU Depth</Text>
+                    <Text fontFamily="mono" fontSize="sm" color="text.secondary">
+                      { hcuDepth.toLocaleString() }
+                    </Text>
+                  </Flex>
+                </Flex>
+              </ListItemMobile>
+            );
+          }) }
         </Box>
       </AddressHighlightProvider>
     </Box>
