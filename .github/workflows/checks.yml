@@ -365,5 +365,7 @@ jobs:
           aws s3 cp playwright-report/ s3://${{ vars.AWS_BUCKET_NAME }}/report-${SHORT_SHA} --recursive
           echo "PLAYWRIGHT_URL=https://${{ vars.AWS_BUCKET_NAME }}.s3.${{ vars.AWS_REGION }}.amazonaws.com/report-${SHORT_SHA}/index.html" >> "$GITHUB_ENV"
 
-      - name: Add annotation to workflow
-        run: echo "::notice title='Playwrigth report URL'::${{env.PLAYWRIGHT_URL}}"
+      - name: Add link to job summary
+        run: |
+          echo "### Playwright report" >> $GITHUB_STEP_SUMMARY
+          echo "[View Playwright report](${{ env.PLAYWRIGHT_URL }})" >> $GITHUB_STEP_SUMMARY
