@@ -76,7 +76,10 @@ export const recipe = defineSlotRecipe({
       mt: '6',
     },
     title: {
-      textStyle: 'heading.lg',
+      textStyle: { base: 'heading.md', lg: 'heading.lg' },
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
       fontWeight: '500',
     },
     description: {

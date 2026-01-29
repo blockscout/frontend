@@ -7,9 +7,9 @@ import type { TokenType } from 'types/api/token';
 import { MultichainProvider } from 'lib/contexts/multichain';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import { EmptyState } from 'toolkit/chakra/empty-state';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import ChainSelect from 'ui/optimismSuperchain/components/ChainSelect';
-import ComingSoon from 'ui/shared/ComingSoon';
 import PopoverFilter from 'ui/shared/filters/PopoverFilter';
 import TokenTypeFilter from 'ui/shared/filters/TokenTypeFilter';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -45,7 +45,7 @@ const OpSuperchainTokenTransfers = () => {
       {
         id: 'index',
         title: 'Cross-chain',
-        component: <ComingSoon/>,
+        component: <EmptyState type="coming_soon"/>,
       },
       {
         id: 'local',

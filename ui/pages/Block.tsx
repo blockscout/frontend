@@ -46,6 +46,8 @@ const TAB_LIST_PROPS = {
 };
 const TABS_HEIGHT = 88;
 
+const beaconChainFeature = config.features.beaconChain;
+
 const BlockPageContent = () => {
   const router = useRouter();
   const isMobile = useIsMobile();
@@ -109,7 +111,7 @@ const BlockPageContent = () => {
           <TxsWithFrontendSorting query={ blockBlobTxsQuery } showBlockInfo={ false }/>
         ),
       } : null,
-    config.features.beaconChain.isEnabled && Boolean(blockQuery.data?.beacon_deposits_count) ?
+    beaconChainFeature.isEnabled && !beaconChainFeature.withdrawalsOnly && Boolean(blockQuery.data?.beacon_deposits_count) ?
       {
         id: 'deposits',
         title: 'Deposits',

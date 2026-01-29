@@ -82,7 +82,7 @@ export type Transaction = {
   };
   // Celo fields
   celo?: {
-    gas_token: TokenInfo<'ERC-20'> | null;
+    gas_token: TokenInfo | null;
   };
   // zkEvm fields
   zkevm_verify_hash?: string;

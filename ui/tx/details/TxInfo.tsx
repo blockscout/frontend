@@ -393,9 +393,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
             Timestamp
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue multiRow>
-            <Flex alignItems="center" maxW="100%">
-              <DetailedInfoTimestamp timestamp={ data.timestamp } isLoading={ isLoading }/>
-            </Flex>
+            <DetailedInfoTimestamp timestamp={ data.timestamp } isLoading={ isLoading }/>
             { data.confirmation_duration && (
               <Flex alignItems="center">
                 <TextSeparator hideBelow="lg"/>

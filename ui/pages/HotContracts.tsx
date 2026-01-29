@@ -8,7 +8,6 @@ import useApiQuery from 'lib/api/useApiQuery';
 import { HOT_CONTRACTS } from 'stubs/contract';
 import { HOMEPAGE_STATS } from 'stubs/stats';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import { apos } from 'toolkit/utils/htmlEntities';
 import HotContractsIntervalSelect from 'ui/hotContracts/HotContractsIntervalSelect';
 import HotContractsListItem from 'ui/hotContracts/HotContractsListItem';
 import HotContractsTable from 'ui/hotContracts/HotContractsTable';
@@ -123,9 +122,9 @@ const HotContracts = () => {
         itemsNum={ data?.items.length }
         emptyText="There are no hot contracts."
         actionBar={ actionBar }
-        filterProps={{
-          emptyFilteredText: `Couldn${ apos }t find hot contracts that matches your filter query.`,
-          hasActiveFilters: Boolean(interval),
+        hasActiveFilters={ Boolean(interval) }
+        emptyStateProps={{
+          term: 'hot contract',
         }}
       >
         { content }

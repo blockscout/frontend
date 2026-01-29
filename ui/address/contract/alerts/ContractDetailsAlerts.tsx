@@ -13,9 +13,8 @@ import { Alert } from 'toolkit/chakra/alert';
 import { Link } from 'toolkit/chakra/link';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 
-import ContractDetailsVerificationButton from '../ContractDetailsVerificationButton';
 import ContractDetailsAlertProxyPattern from './ContractDetailsAlertProxyPattern';
-import ContractDetailsAlertVerificationSource from './ContractDetailsAlertVerificationSource';
+import ContractDetailsAlertVerificationStatus from './ContractDetailsAlertVerificationStatus';
 
 export interface Props {
   data: SmartContract | undefined;
@@ -47,20 +46,14 @@ const ContractDetailsAlerts = ({ data, isLoading, addressData, channel }: Props)
           </Link>
         </Box>
       ) }
-      { data?.is_verified && (
-        <Alert status="success" loading={ isLoading } descriptionProps={{ alignItems: 'center', flexWrap: 'wrap', rowGap: 2, columnGap: 5 }}>
-          <span>Contract Source Code Verified ({ data.is_partially_verified ? 'Partial' : 'Exact' } Match)</span>
-          {
-            data.is_partially_verified ? (
-              <ContractDetailsVerificationButton
-                isLoading={ isLoading }
-                addressHash={ addressData.hash }
-              />
-            ) : null
-          }
-        </Alert>
+      <ContractDetailsAlertVerificationStatus data={ data } isLoading={ isLoading } addressData={ addressData }/>
+      { addressData.proxy_type && (
+        <ContractDetailsAlertProxyPattern
+          type={ addressData.proxy_type }
+          isLoading={ isLoading }
+          conflictingImplementations={ data?.conflicting_implementations ?? undefined }
+        />
       ) }
-      <ContractDetailsAlertVerificationSource data={ data }/>
       { (data?.is_changed_bytecode || isChangedBytecodeSocket) && (
         <Alert status="warning">
           Warning! Contract bytecode has been changed and does not match the verified one. Therefore, interaction with this smart contract may be risky.
@@ -82,7 +75,6 @@ const ContractDetailsAlerts = ({ data, isLoading, addressData, channel }: Props)
           <span> page</span>
         </Alert>
       ) }
-      { addressData.proxy_type && <ContractDetailsAlertProxyPattern type={ addressData.proxy_type } isLoading={ isLoading }/> }
     </Flex>
   );
 };

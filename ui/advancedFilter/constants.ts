@@ -1,6 +1,7 @@
 import type { TokenInfo } from 'types/api/token';
 
 import config from 'configs/app';
+import { TOKEN_TYPE_IDS, TOKEN_TYPES } from 'lib/token/tokenTypes';
 
 export type ColumnsIds = 'tx_hash' | 'type' | 'method' | 'age' | 'from' | 'or_and' | 'to' | 'amount' | 'asset' | 'fee';
 
@@ -71,22 +72,10 @@ export const ADVANCED_FILTER_TYPES = [
     id: 'coin_transfer',
     name: 'Coin Transfer',
   },
-  {
-    id: 'ERC-20',
-    name: 'ERC-20 Transfer',
-  },
-  {
-    id: 'ERC-404',
-    name: 'ERC-404 Transfer',
-  },
-  {
-    id: 'ERC-721',
-    name: 'ERC-721 Transfer',
-  },
-  {
-    id: 'ERC-1155',
-    name: 'ERC-1155 Transfer',
-  },
+  ...TOKEN_TYPE_IDS.map(id => ({
+    id,
+    name: `${ TOKEN_TYPES[id] } Transfer`,
+  })),
   {
     id: 'contract_creation',
     name: 'Contract Creation',

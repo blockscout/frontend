@@ -94,6 +94,14 @@ const SearchResultsPageContent = () => {
           }
           break;
         }
+        case 'ens_domain': {
+          const feature = config.features.nameServices;
+          if (feature.isEnabled && feature.ens.isEnabled) {
+            router.replace({ pathname: '/name-services/domains/[name]', query: { name: redirectCheckQuery.data.parameter } });
+            return;
+          }
+          break;
+        }
       }
     }
 

@@ -6,10 +6,10 @@ import { MultichainProvider } from 'lib/contexts/multichain';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useRoutedChainSelect from 'lib/multichain/useRoutedChainSelect';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import { EmptyState } from 'toolkit/chakra/empty-state';
 import { Heading } from 'toolkit/chakra/heading';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import ChainSelect from 'ui/optimismSuperchain/components/ChainSelect';
-import ComingSoon from 'ui/shared/ComingSoon';
 
 import LatestTxsLocal from './LatestTxsLocal';
 
@@ -25,7 +25,7 @@ const LatestTxs = () => {
     {
       id: 'cross_chain_txs',
       title: 'Cross-chain',
-      component: <ComingSoon/>,
+      component: <EmptyState type="coming_soon" my={ 6 }/>,
     },
     {
       id: 'txs_local',

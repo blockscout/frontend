@@ -5,6 +5,7 @@ import type { LinkProps as NextLinkProps } from 'next/link';
 import React from 'react';
 
 import ArrowIcon from 'icons/link_external.svg';
+import stripUtmParams from 'lib/utils/stripUtmParams';
 
 import { Skeleton } from './skeleton';
 
@@ -54,10 +55,13 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
     const { external, loading, href, children, disabled, noIcon, iconColor, ...rest } = chakra;
 
     if (external) {
+      // Strip UTM parameters from external links if in private mode
+      const processedHref = typeof href === 'string' ? stripUtmParams(href) : href;
+
       return (
         <Skeleton loading={ loading } ref={ ref as React.ForwardedRef<HTMLDivElement> } asChild>
           <ChakraLink
-            href={ href }
+            href={ processedHref }
             className="group"
             target="_blank"
             rel="noopener noreferrer"
@@ -96,11 +100,14 @@ export const LinkBox = ChakraLinkBox;
 export const LinkOverlay = React.forwardRef<HTMLAnchorElement, LinkProps>(
   function LinkOverlay(props, ref) {
     const { chakra, next } = splitProps(props);
-    const { children, external, ...rest } = chakra;
+    const { children, external, href, ...rest } = chakra;
 
     if (external) {
+      // Strip UTM parameters from external links if in private mode
+      const processedHref = typeof href === 'string' ? stripUtmParams(href) : href;
+
       return (
-        <ChakraLinkOverlay ref={ ref } target="_blank" rel="noopener noreferrer" { ...rest }>
+        <ChakraLinkOverlay ref={ ref } href={ processedHref } target="_blank" rel="noopener noreferrer" { ...rest }>
           { children }
         </ChakraLinkOverlay>
       );

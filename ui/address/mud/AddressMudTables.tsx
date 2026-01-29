@@ -8,7 +8,6 @@ import getQueryParamString from 'lib/router/getQueryParamString';
 import { ADDRESS_MUD_TABLE_ITEM } from 'stubs/address';
 import { generateListStub } from 'stubs/utils';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
-import { apos } from 'toolkit/utils/htmlEntities';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/pagination/Pagination';
@@ -91,9 +90,9 @@ const AddressMudTables = ({ isQueryEnabled = true }: Props) => {
       isError={ isError }
       itemsNum={ data?.items?.length }
       emptyText="There are no tables for this address."
-      filterProps={{
-        emptyFilteredText: `Couldn${ apos }t find tables that match your filter query.`,
-        hasActiveFilters: Boolean(debouncedSearchTerm),
+      hasActiveFilters={ Boolean(debouncedSearchTerm) }
+      emptyStateProps={{
+        term: 'table',
       }}
       actionBar={ actionBar }
     >

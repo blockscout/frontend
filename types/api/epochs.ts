@@ -41,7 +41,7 @@ export type CeloEpochDetails = {
     carbon_offsetting_transfer: TokenTransfer | null;
     community_transfer: TokenTransfer | null;
     transfers_total: {
-      token: TokenInfo<'ERC-20'> | null;
+      token: TokenInfo | null;
       total: Erc20TotalPayload | null;
     } | null;
   } | null;
@@ -50,7 +50,7 @@ export type CeloEpochDetails = {
 
 export interface CeloEpochElectionReward {
   count: number;
-  token: TokenInfo<'ERC-20'>;
+  token: TokenInfo;
   total: string;
 }
 

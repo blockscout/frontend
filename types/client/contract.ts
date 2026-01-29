@@ -1,5 +1,4 @@
 import type { SmartContractLicenseType, SmartContractVerificationConfigRaw, SmartContractVerificationMethodApi } from 'types/api/contract';
-import type { VerifiedContractsFilter } from 'types/api/contracts';
 
 export interface ContractCodeIde {
   title: string;
@@ -26,12 +25,3 @@ export type SmartContractVerificationMethod = SmartContractVerificationMethodApi
 export interface SmartContractVerificationConfig extends SmartContractVerificationConfigRaw {
   verification_options: Array<SmartContractVerificationMethod>;
 }
-
-export const SMART_CONTRACT_LANGUAGE_FILTERS: Array<VerifiedContractsFilter> = [
-  'solidity',
-  'vyper',
-  'yul',
-  'scilla',
-  'geas',
-  'stylus_rust',
-];
