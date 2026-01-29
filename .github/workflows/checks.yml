@@ -13,7 +13,7 @@ on:
       - 'public/**'
       - 'stub/**'
       - 'tools/**'
-      
+
 # concurrency:
 #   group: ${{ github.workflow }}__${{ github.job }}__${{ github.ref }}
 #   cancel-in-progress: true
@@ -44,7 +44,7 @@ jobs:
           path: |
             node_modules
           key: node_modules-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
-  
+
       - name: Install dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: yarn --frozen-lockfile
@@ -80,7 +80,7 @@ jobs:
           path: |
             node_modules
           key: node_modules-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
-      
+
       - name: Install project dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: yarn --frozen-lockfile
@@ -111,12 +111,12 @@ jobs:
             echo "Build failed: dist directory not found"
             exit 1
           fi
-          
+
           if [ ! -f "dist/index.js" ]; then
             echo "Build failed: dist/index.js not found"
             exit 1
           fi
-          
+
           if [ ! -f "dist/index.d.ts" ]; then
             echo "Build failed: dist/index.d.ts not found"
             exit 1
@@ -143,7 +143,7 @@ jobs:
           path: |
             node_modules
           key: node_modules-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
-    
+
       - name: Install dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: yarn --frozen-lockfile
@@ -186,7 +186,7 @@ jobs:
           path: |
             node_modules
           key: node_modules-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
-    
+
       - name: Install dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: yarn --frozen-lockfile
@@ -222,7 +222,7 @@ jobs:
           path: |
             node_modules
           key: node_modules-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
-      
+
       - name: Install dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: yarn --frozen-lockfile
@@ -231,14 +231,14 @@ jobs:
         if: steps.cache-node-modules.outputs.cache-hit == 'true'
         run: yarn chakra:typegen
 
-      - name: Install script dependencies 
+      - name: Install script dependencies
         run: cd ./deploy/tools/affected-tests && yarn --frozen-lockfile
-      
+
       - name: Run script
         run: yarn test:pw:detect-affected
 
       - name: Upload result file
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: playwright-affected-tests
           path: ./playwright/affected-tests.txt
@@ -249,9 +249,9 @@ jobs:
     needs: [ code_quality, envs_validation, pw_affected_tests ]
     if: |
       always() &&
-      needs.code_quality.result == 'success' && 
-      needs.envs_validation.result == 'success' && 
-      (needs.pw_affected_tests.result == 'success' || needs.pw_affected_tests.result == 'skipped') 
+      needs.code_quality.result == 'success' &&
+      needs.envs_validation.result == 'success' &&
+      (needs.pw_affected_tests.result == 'success' || needs.pw_affected_tests.result == 'skipped')
     runs-on: ubuntu-latest
     container:
       image: mcr.microsoft.com/playwright:v1.57.0-noble
@@ -283,7 +283,7 @@ jobs:
           path: |
             node_modules
           key: node_modules-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
-    
+
       - name: Install dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: yarn --frozen-lockfile
@@ -294,7 +294,7 @@ jobs:
 
       - name: Download affected tests list
         if: ${{ needs.pw_affected_tests.result == 'success' }}
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         continue-on-error: true
         with:
           name: playwright-affected-tests
@@ -306,10 +306,85 @@ jobs:
           HOME: /root
           PW_PROJECT: ${{ matrix.project }}
 
-      - name: Upload test results
-        if: always()
-        uses: actions/upload-artifact@v4
+      - name: Upload blob report to GitHub Actions Artifacts
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v5
         with:
-          name: playwright-report-${{ matrix.project }}
-          path: playwright-report
-          retention-days: 10
+          name: blob-report-${{ matrix.project }}
+          path: blob-report
+          retention-days: 1
+
+  pw_report:
+    name: Generate Playwright report
+    # Merge reports after pw_tests job, even if some shards have failed
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    needs: [ pw_tests ]
+    steps:
+      - name: Download blob reports from GitHub Actions Artifacts
+        id: download-reports
+        uses: actions/download-artifact@v5
+        continue-on-error: true
+        with:
+          path: ${{ runner.temp }}/all-blob-reports
+          pattern: blob-report-*
+          merge-multiple: true
+
+      - name: Check for downloaded reports
+        id: check-reports
+        run: |
+          if [ -d "$RUNNER_TEMP/all-blob-reports" ] && [ -n "$(ls -A "$RUNNER_TEMP/all-blob-reports" 2>/dev/null)" ]; then
+            echo "has_reports=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_reports=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Checkout repo
+        if: steps.check-reports.outputs.has_reports == 'true'
+        uses: actions/checkout@v4
+
+      - name: Setup node
+        if: steps.check-reports.outputs.has_reports == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.14.0
+          cache: 'yarn'
+
+      - name: Cache node_modules
+        if: steps.check-reports.outputs.has_reports == 'true'
+        uses: actions/cache@v4
+        id: cache-node-modules
+        with:
+          path: |
+            node_modules
+          key: node_modules-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+
+      - name: Install dependencies
+        if: steps.check-reports.outputs.has_reports == 'true' && steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: yarn --frozen-lockfile
+
+      - name: Merge into HTML Report
+        if: steps.check-reports.outputs.has_reports == 'true'
+        run: npx playwright merge-reports --reporter html "$RUNNER_TEMP/all-blob-reports"
+
+      - name: Configure AWS credentials
+        if: steps.check-reports.outputs.has_reports == 'true'
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Upload HTML report
+        if: steps.check-reports.outputs.has_reports == 'true'
+        run: |
+          export "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`"
+          aws s3 cp playwright-report/ s3://${{ vars.AWS_BUCKET_NAME }}/report-${SHORT_SHA} --recursive
+          echo "PLAYWRIGHT_URL=https://${{ vars.AWS_BUCKET_NAME }}.s3.${{ vars.AWS_REGION }}.amazonaws.com/report-${SHORT_SHA}/index.html" >> "$GITHUB_ENV"
+
+      - name: Add link to job summary
+        if: steps.check-reports.outputs.has_reports == 'true'
+        run: |
+          echo "### Playwright report" >> $GITHUB_STEP_SUMMARY
+          echo "[View report](${{ env.PLAYWRIGHT_URL }})" >> $GITHUB_STEP_SUMMARY
+          echo "[Read about ducks](https://animalkingdom.org/animals/ducks/)" >> $GITHUB_STEP_SUMMARY
