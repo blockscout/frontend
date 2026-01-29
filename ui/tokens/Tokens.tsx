@@ -1,9 +1,8 @@
-import { Hide, Show } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokensSortingValue } from 'types/api/tokens';
 
-import { apos } from 'lib/html-entities';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
@@ -12,9 +11,9 @@ import TokensListItem from './TokensListItem';
 import TokensTable from './TokensTable';
 
 interface Props {
-  query: QueryWithPagesResult<'tokens'> | QueryWithPagesResult<'tokens_bridged'>;
-  onSortChange: () => void;
-  sort: TokensSortingValue | undefined;
+  query: QueryWithPagesResult<'general:tokens'> | QueryWithPagesResult<'general:tokens_bridged'> | QueryWithPagesResult<'multichainAggregator:tokens'>;
+  onSortChange?: (value: TokensSortingValue) => void;
+  sort?: TokensSortingValue;
   actionBar?: React.ReactNode;
   hasActiveFilters: boolean;
   description?: React.ReactNode;
@@ -31,19 +30,23 @@ const Tokens = ({ query, onSortChange, sort, actionBar, description, hasActiveFi
 
   const content = data?.items ? (
     <>
-      <Show below="lg" ssr={ false }>
+      <Box hideFrom="lg">
         { description }
-        { data.items.map((item, index) => (
-          <TokensListItem
-            key={ item.address + (isPlaceholderData ? index : '') }
-            token={ item }
-            index={ index }
-            page={ pagination.page }
-            isLoading={ isPlaceholderData }
-          />
-        )) }
-      </Show>
-      <Hide below="lg" ssr={ false }>
+        { data.items.map((item, index) => {
+          const chainIds = 'chain_infos' in item ? Object.keys(item.chain_infos).join(',') : undefined;
+
+          return (
+            <TokensListItem
+              key={ item.address_hash + (isPlaceholderData ? index : '') + (chainIds ? chainIds : '') }
+              token={ item }
+              index={ index }
+              page={ pagination.page }
+              isLoading={ isPlaceholderData }
+            />
+          );
+        }) }
+      </Box>
+      <Box hideBelow="lg">
         { description }
         <TokensTable
           items={ data.items }
@@ -53,22 +56,23 @@ const Tokens = ({ query, onSortChange, sort, actionBar, description, hasActiveFi
           sorting={ sort }
           top={ tableTop }
         />
-      </Hide>
+      </Box>
     </>
   ) : null;
 
   return (
     <DataListDisplay
       isError={ isError }
-      items={ data?.items }
+      itemsNum={ data?.items.length }
       emptyText="There are no tokens."
-      filterProps={{
-        emptyFilteredText: `Couldn${ apos }t find token that matches your filter query.`,
-        hasActiveFilters,
+      hasActiveFilters={ hasActiveFilters }
+      emptyStateProps={{
+        term: 'token',
       }}
-      content={ content }
       actionBar={ query.pagination.isVisible || hasActiveFilters ? actionBar : null }
-    />
+    >
+      { content }
+    </DataListDisplay>
   );
 };
 

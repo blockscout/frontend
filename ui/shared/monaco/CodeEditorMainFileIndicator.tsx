@@ -1,6 +1,7 @@
-import { Box, chakra, Tooltip } from '@chakra-ui/react';
+import { Box, chakra } from '@chakra-ui/react';
 import React from 'react';
 
+import { Tooltip } from 'toolkit/chakra/tooltip';
 import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
@@ -9,7 +10,7 @@ interface Props {
 
 const CodeEditorMainFileIndicator = ({ className }: Props) => {
   return (
-    <Tooltip label="The main file containing verified contract">
+    <Tooltip content="The main file containing verified contract">
       <Box className={ className } >
         <IconSvg name="star_filled" boxSize={ 3 } display="block" color="green.500"/>
       </Box>

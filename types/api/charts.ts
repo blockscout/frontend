@@ -1,6 +1,6 @@
 export interface ChartTransactionItem {
   date: string;
-  tx_count: number | null;
+  transactions_count: number | null;
 }
 
 export interface ChartMarketItem {

@@ -1,13 +1,10 @@
-import {
-  Tr,
-  Td,
-  Box,
-  Skeleton,
-} from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 
 import type { CustomAbi } from 'types/api/account';
 
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { TableCell, TableRow } from 'toolkit/chakra/table';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TableItemActionButtons from 'ui/shared/TableItemActionButtons';
 
@@ -29,23 +26,23 @@ const CustomAbiTableItem = ({ item, isLoading, onEditClick, onDeleteClick }: Pro
   }, [ item, onDeleteClick ]);
 
   return (
-    <Tr alignItems="top" key={ item.id }>
-      <Td>
+    <TableRow alignItems="top" key={ item.id }>
+      <TableCell>
         <Box maxW="100%">
           <AddressEntity
             address={ item.contract_address }
             fontWeight="600"
             isLoading={ isLoading }
           />
-          <Skeleton fontSize="sm" color="text_secondary" mt={ 0.5 } ml={ 8 } display="inline-block" isLoaded={ !isLoading }>
+          <Skeleton textStyle="sm" color="text.secondary" mt={ 0.5 } ml={ 8 } display="inline-block" loading={ isLoading }>
             <span>{ item.name }</span>
           </Skeleton>
         </Box>
-      </Td>
-      <Td>
+      </TableCell>
+      <TableCell>
         <TableItemActionButtons onDeleteClick={ onItemDeleteClick } onEditClick={ onItemEditClick } isLoading={ isLoading }/>
-      </Td>
-    </Tr>
+      </TableCell>
+    </TableRow>
   );
 };
 

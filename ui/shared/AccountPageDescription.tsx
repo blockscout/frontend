@@ -1,5 +1,5 @@
-import { Box, useColorModeValue } from '@chakra-ui/react';
-import _debounce from 'lodash/debounce';
+import { Box } from '@chakra-ui/react';
+import { debounce } from 'es-toolkit';
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 
 const CUT_HEIGHT = 144;
@@ -25,7 +25,7 @@ const AccountPageDescription = ({ children, allowCut = true }: { children: React
     }
 
     calculateCut();
-    const resizeHandler = _debounce(calculateCut, 300);
+    const resizeHandler = debounce(calculateCut, 300);
     window.addEventListener('resize', resizeHandler);
     return function cleanup() {
       window.removeEventListener('resize', resizeHandler);
@@ -36,11 +36,6 @@ const AccountPageDescription = ({ children, allowCut = true }: { children: React
   const expand = useCallback(() => {
     setExpanded(true);
   }, []);
-
-  const gradient = useColorModeValue(
-    'linear-gradient(360deg, rgba(255, 255, 255, 0.8) 38.1%, rgba(255, 255, 255, 0) 166.67%)',
-    'linear-gradient(360deg, rgba(16, 17, 18, 0.8) 38.1%, rgba(16, 17, 18, 0) 166.67%)',
-  );
 
   return (
     <Box position="relative" marginBottom={{ base: 6, lg: 8 }}>
@@ -59,7 +54,10 @@ const AccountPageDescription = ({ children, allowCut = true }: { children: React
           left={ 0 }
           width="100%"
           height="63px"
-          style={{ background: gradient }}
+          bgGradient={{
+            _light: 'linear-gradient(360deg, rgba(255, 255, 255, 0.8) 38.1%, rgba(255, 255, 255, 0) 166.67%)',
+            _dark: 'linear-gradient(360deg, rgba(16, 17, 18, 0.8) 38.1%, rgba(16, 17, 18, 0) 166.67%)',
+          }}
           onClick={ expand }
         >
         </Box>

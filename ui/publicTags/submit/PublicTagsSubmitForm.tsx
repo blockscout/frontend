@@ -1,4 +1,4 @@
-import { Button, chakra, Grid, GridItem } from '@chakra-ui/react';
+import { chakra, Grid, GridItem } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
@@ -13,15 +13,16 @@ import useApiFetch from 'lib/api/useApiFetch';
 import getErrorObj from 'lib/errors/getErrorObj';
 import getErrorObjPayload from 'lib/errors/getErrorObjPayload';
 import useIsMobile from 'lib/hooks/useIsMobile';
-import FormFieldReCaptcha from 'ui/shared/forms/fields/FormFieldReCaptcha';
-import Hint from 'ui/shared/Hint';
+import { Button } from 'toolkit/chakra/button';
+import { Heading } from 'toolkit/chakra/heading';
+import { FormFieldEmail } from 'toolkit/components/forms/fields/FormFieldEmail';
+import { FormFieldText } from 'toolkit/components/forms/fields/FormFieldText';
+import { FormFieldUrl } from 'toolkit/components/forms/fields/FormFieldUrl';
+import { Hint } from 'toolkit/components/Hint/Hint';
+import ReCaptcha from 'ui/shared/reCaptcha/ReCaptcha';
+import useReCaptcha from 'ui/shared/reCaptcha/useReCaptcha';
 
 import PublicTagsSubmitFieldAddresses from './fields/PublicTagsSubmitFieldAddresses';
-import PublicTagsSubmitFieldCompanyName from './fields/PublicTagsSubmitFieldCompanyName';
-import PublicTagsSubmitFieldCompanyWebsite from './fields/PublicTagsSubmitFieldCompanyWebsite';
-import PublicTagsSubmitFieldDescription from './fields/PublicTagsSubmitFieldDescription';
-import PublicTagsSubmitFieldRequesterEmail from './fields/PublicTagsSubmitFieldRequesterEmail';
-import PublicTagsSubmitFieldRequesterName from './fields/PublicTagsSubmitFieldRequesterName';
 import PublicTagsSubmitFieldTags from './fields/PublicTagsSubmitFieldTags';
 import { convertFormDataToRequestsBody, getFormDefaultValues } from './utils';
 
@@ -35,6 +36,7 @@ const PublicTagsSubmitForm = ({ config, userInfo, onSubmitResult }: Props) => {
   const isMobile = useIsMobile();
   const router = useRouter();
   const apiFetch = useApiFetch();
+  const recaptcha = useReCaptcha();
 
   const formApi = useForm<FormFields>({
     mode: 'onBlur',
@@ -54,16 +56,24 @@ const PublicTagsSubmitForm = ({ config, userInfo, onSubmitResult }: Props) => {
   }, [ router ]);
 
   const onFormSubmit: SubmitHandler<FormFields> = React.useCallback(async(data) => {
+
+    const token = await recaptcha.executeAsync();
+
+    if (!token) {
+      throw new Error('ReCaptcha is not solved');
+    }
+
     const requestsBody = convertFormDataToRequestsBody(data);
 
     const result = await Promise.all(requestsBody.map(async(body) => {
-      return apiFetch<'public_tag_application', unknown, { message: string }>('public_tag_application', {
-        pathParams: { chainId: appConfig.chain.id },
-        fetchParams: {
-          method: 'POST',
-          body: { submission: body },
-        },
-      })
+      return apiFetch<'admin:public_tag_application', unknown, { message: string }>(
+        'admin:public_tag_application', {
+          pathParams: { chainId: appConfig.chain.id },
+          fetchParams: {
+            method: 'POST',
+            body: { submission: body },
+          },
+        })
         .then(() => ({ error: null, payload: body }))
         .catch((error: unknown) => {
           const errorObj = getErrorObj(error);
@@ -75,7 +85,11 @@ const PublicTagsSubmitForm = ({ config, userInfo, onSubmitResult }: Props) => {
     }));
 
     onSubmitResult(result);
-  }, [ apiFetch, onSubmitResult ]);
+  }, [ apiFetch, onSubmitResult, recaptcha ]);
+
+  if (!appConfig.services.reCaptchaV2.siteKey) {
+    return null;
+  }
 
   return (
     <FormProvider { ...formApi }>
@@ -88,39 +102,56 @@ const PublicTagsSubmitForm = ({ config, userInfo, onSubmitResult }: Props) => {
           rowGap={ 3 }
           templateColumns={{ base: '1fr', lg: '1fr 1fr minmax(0, 200px)', xl: '1fr 1fr minmax(0, 250px)' }}
         >
-          <GridItem colSpan={{ base: 1, lg: 3 }} as="h2" textStyle="h4">
-            Company info
+          <GridItem colSpan={{ base: 1, lg: 3 }}>
+            <Heading level="2">
+              Company info
+            </Heading>
           </GridItem>
-          <PublicTagsSubmitFieldRequesterName/>
-          <PublicTagsSubmitFieldRequesterEmail/>
+          <FormFieldText<FormFields> name="requesterName" required placeholder="Your name"/>
+          <FormFieldEmail<FormFields> name="requesterEmail" required/>
+
           { !isMobile && <div/> }
-          <PublicTagsSubmitFieldCompanyName/>
-          <PublicTagsSubmitFieldCompanyWebsite/>
+          <FormFieldText<FormFields> name="companyName" placeholder="Company name"/>
+          <FormFieldUrl<FormFields> name="companyWebsite" placeholder="Company website"/>
           { !isMobile && <div/> }
 
-          <GridItem colSpan={{ base: 1, lg: 3 }} as="h2" textStyle="h4" mt={{ base: 3, lg: 5 }}>
-            Public tags/labels
-            <Hint label="Submit a public tag proposal for our moderation team to review" ml={ 1 } color="link"/>
+          <GridItem colSpan={{ base: 1, lg: 3 }} mt={{ base: 3, lg: 5 }}>
+            <Heading level="2" display="flex" alignItems="center" columnGap={ 1 }>
+              Public tags/labels
+              <Hint label="Submit a public tag proposal for our moderation team to review"/>
+            </Heading>
           </GridItem>
           <PublicTagsSubmitFieldAddresses/>
           <PublicTagsSubmitFieldTags tagTypes={ config?.tagTypes }/>
           <GridItem colSpan={{ base: 1, lg: 2 }}>
-            <PublicTagsSubmitFieldDescription/>
+            <FormFieldText<FormFields>
+              name="description"
+              required
+              placeholder={
+                isMobile ?
+                  'Confirm the connection between addresses and tags' :
+                  'Provide a comment to confirm the connection between addresses and tags (max 500 characters)'
+              }
+              maxH="160px"
+              rules={{ maxLength: 500 }}
+              asComponent="Textarea"
+              size="2xl"
+            />
           </GridItem>
 
-          <GridItem colSpan={{ base: 1, lg: 3 }}>
-            <FormFieldReCaptcha/>
+          <GridItem colSpan={{ base: 1, lg: 2 }}>
+            <ReCaptcha { ...recaptcha }/>
           </GridItem>
+          { !isMobile && <div/> }
 
           <Button
             variant="solid"
-            size="lg"
             type="submit"
             mt={ 3 }
-            isDisabled={ !formApi.formState.isValid }
-            isLoading={ formApi.formState.isSubmitting }
+            loading={ formApi.formState.isSubmitting }
             loadingText="Send request"
             w="min-content"
+            disabled={ recaptcha.isInitError }
           >
             Send request
           </Button>

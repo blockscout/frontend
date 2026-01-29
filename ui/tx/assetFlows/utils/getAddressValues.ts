@@ -3,6 +3,7 @@ import type { NovesResponseData } from 'types/api/noves';
 import type { SummaryAddress, SummaryValues } from './createNovesSummaryObject';
 
 const ADDRESS_REGEXP = /(0x[\da-f]+\b)/gi;
+// eslint-disable-next-line regexp/no-unused-capturing-group
 const CONTRACT_REGEXP = /(contract 0x[\da-f]+\b)/gi;
 
 export const createAddressValues = (translateData: NovesResponseData, description: string) => {
@@ -73,7 +74,7 @@ function extractAddresses(data: NovesResponseData) {
     });
   }
 
-  const addresses = Array.from(addressesSet) as Array<{hash: string; name?: string}>; // Convert Set to an array
+  const addresses = Array.from(addressesSet) as Array<{ hash: string; name?: string }>; // Convert Set to an array
 
   // Remove empty and null values
   return addresses.filter(address => address.hash !== null && address.hash !== '' && address.hash !== undefined);

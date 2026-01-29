@@ -1,80 +1,73 @@
-import React from 'react';
+import { useQuery } from '@tanstack/react-query';
 
-import type { WalletType } from 'types/client/wallets';
-import type { WalletProvider } from 'types/web3';
+import { getFeaturePayload } from 'configs/app/features/types';
 
 import config from 'configs/app';
+import { useMultichainContext } from 'lib/contexts/multichain';
 
-const feature = config.features.web3Wallet;
+import detectWallet from './detectWallet';
+import useDetectWalletEip6963 from './useDetectWalletEip6963';
 
 export default function useProvider() {
-  const [ provider, setProvider ] = React.useState<WalletProvider>();
-  const [ wallet, setWallet ] = React.useState<WalletType>();
+  const multichainContext = useMultichainContext();
+  const feature = (multichainContext?.chain.app_config ?? config).features.web3Wallet;
+  const wallets = getFeaturePayload(feature)?.wallets;
 
-  const initializeProvider = React.useMemo(() => async() => {
-    if (!feature.isEnabled) {
-      return;
-    }
+  const { detect: detectWalletEip6963 } = useDetectWalletEip6963();
 
-    if (!('ethereum' in window && window.ethereum)) {
-      if (feature.wallets.includes('metamask') && window.navigator.userAgent.includes('Firefox')) {
-        const { WindowPostMessageStream } = (await import('@metamask/post-message-stream'));
-        const { initializeProvider } = (await import('@metamask/providers'));
-
-        // workaround for MetaMask in Firefox
-        // Firefox blocks MetaMask injection script because of our CSP for 'script-src'
-        // so we have to inject it manually while the issue is not fixed
-        // https://github.com/MetaMask/metamask-extension/issues/3133#issuecomment-1025641185
-        const metamaskStream = new WindowPostMessageStream({
-          name: 'metamask-inpage',
-          target: 'metamask-contentscript',
-        });
-
-        // this will initialize the provider and set it as window.ethereum
-        initializeProvider({
-          connectionStream: metamaskStream as never,
-          shouldShimWeb3: true,
-        });
-      } else {
+  return useQuery({
+    queryKey: [ 'web3-wallet' ],
+    queryFn: async() => {
+      if (!feature.isEnabled || !wallets) {
         return;
       }
-    }
 
-    // have to check again in case provider was not set as window.ethereum in the previous step for MM in FF
-    // and also it makes typescript happy
-    if (!('ethereum' in window && window.ethereum)) {
-      return;
-    }
+      if (!('ethereum' in window && window.ethereum)) {
+        if (wallets.includes('metamask') && window.navigator.userAgent.includes('Firefox')) {
+          const { WindowPostMessageStream } = (await import('@metamask/post-message-stream'));
+          const { initializeProvider } = (await import('@metamask/providers'));
 
-    // if user has multiple wallets installed, they all are injected in the window.ethereum.providers array
-    // if user has only one wallet, the provider is injected in the window.ethereum directly
-    const providers = Array.isArray(window.ethereum.providers) ? window.ethereum.providers : [ window.ethereum ];
+          // workaround for MetaMask in Firefox
+          // Firefox blocks MetaMask injection script because of our CSP for 'script-src'
+          // so we have to inject it manually while the issue is not fixed
+          // https://github.com/MetaMask/metamask-extension/issues/3133#issuecomment-1025641185
+          const metamaskStream = new WindowPostMessageStream({
+            name: 'metamask-inpage',
+            target: 'metamask-contentscript',
+          });
 
-    for (const wallet of feature.wallets) {
-      const provider = providers.find((provider) => {
-        return (
-          // some wallets (e.g TokenPocket, Liquality, etc) try to look like MetaMask but they are not (not even close)
-          // so we have to check in addition the presence of the provider._events property
-          // found this hack in wagmi repo
-          // https://github.com/wagmi-dev/wagmi/blob/399b9eab8cfd698b49bfaa8456598dad9b597e0e/packages/connectors/src/types.ts#L65
-          // for now it's the only way to distinguish them
-          (wallet === 'metamask' && provider.isMetaMask && Boolean(provider._events)) ||
-          (wallet === 'coinbase' && provider.isCoinbaseWallet) ||
-          (wallet === 'token_pocket' && provider.isTokenPocket)
-        );
-      });
-
-      if (provider) {
-        setProvider(provider);
-        setWallet(wallet);
-        break;
+          // this will initialize the provider and set it as window.ethereum
+          initializeProvider({
+            connectionStream: metamaskStream as never,
+            shouldShimWeb3: true,
+          });
+        } else {
+          return;
+        }
       }
-    }
-  }, []);
 
-  React.useEffect(() => {
-    initializeProvider();
-  }, [ initializeProvider ]);
+      // have to check again in case provider was not set as window.ethereum in the previous step for MM in FF
+      // and also it makes typescript happy
+      if (!('ethereum' in window && window.ethereum)) {
+        return;
+      }
 
-  return { provider, wallet };
+      for (const wallet of wallets) {
+        const detectedWalletEip6963 = await detectWalletEip6963(wallet);
+
+        if (detectedWalletEip6963) {
+          return detectedWalletEip6963;
+        }
+
+        const detectedWallet = detectWallet(wallet);
+
+        if (detectedWallet) {
+          return detectedWallet;
+        }
+      }
+    },
+    enabled: Boolean(feature.isEnabled || !wallets),
+    refetchOnMount: false,
+    staleTime: Infinity,
+  });
 }

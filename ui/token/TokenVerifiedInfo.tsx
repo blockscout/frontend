@@ -1,4 +1,3 @@
-import { Skeleton } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
@@ -6,7 +5,8 @@ import type { TokenVerifiedInfo as TTokenVerifiedInfo } from 'types/api/token';
 
 import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
-import LinkExternal from 'ui/shared/links/LinkExternal';
+import { Link } from 'toolkit/chakra/link';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 
 import TokenProjectInfo from './TokenProjectInfo';
 
@@ -26,9 +26,9 @@ const TokenVerifiedInfo = ({ verifiedInfoQuery }: Props) => {
     if (isPending) {
       return (
         <>
-          <Skeleton w="100px" h="30px" borderRadius="base"/>
-          <Skeleton w="100px" h="30px" borderRadius="base"/>
-          <Skeleton w="70px" h="30px" borderRadius="base"/>
+          <Skeleton loading w="100px" h="30px" borderRadius="base"/>
+          <Skeleton loading w="100px" h="30px" borderRadius="base"/>
+          <Skeleton loading w="70px" h="30px" borderRadius="base"/>
         </>
       );
     }
@@ -41,9 +41,9 @@ const TokenVerifiedInfo = ({ verifiedInfoQuery }: Props) => {
       try {
         const url = new URL(data.projectWebsite);
         return (
-          <LinkExternal href={ data.projectWebsite } variant="subtle" flexShrink={ 0 } fontSize="sm" lineHeight={ 5 }>
+          <Link external href={ data.projectWebsite } variant="underlaid" flexShrink={ 0 } textStyle="sm">
             { url.host }
-          </LinkExternal>
+          </Link>
         );
       } catch (error) {
         return null;

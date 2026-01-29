@@ -1,26 +1,20 @@
-import { chakra, Text, Flex } from '@chakra-ui/react';
+import { chakra, Flex } from '@chakra-ui/react';
 import React from 'react';
 
+import type { ItemsProps } from './types';
 import type { SearchResultUserOp } from 'types/api/search';
 
-import dayjs from 'lib/date/dayjs';
 import * as UserOpEntity from 'ui/shared/entities/userOp/UserOpEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
+import Time from 'ui/shared/time/Time';
 
-interface Props {
-  data: SearchResultUserOp;
-  isMobile: boolean | undefined;
-  searchTerm: string;
-}
-
-const SearchBarSuggestTx = ({ data, isMobile }: Props) => {
+const SearchBarSuggestUserOp = ({ data, isMobile }: ItemsProps<SearchResultUserOp>) => {
   const icon = <UserOpEntity.Icon/>;
   const hash = (
     <chakra.mark overflow="hidden" whiteSpace="nowrap" fontWeight={ 700 }>
-      <HashStringShortenDynamic hash={ data.user_operation_hash } isTooltipDisabled/>
+      <HashStringShortenDynamic hash={ data.user_operation_hash } noTooltip/>
     </chakra.mark>
   );
-  const date = dayjs(data.timestamp).format('llll');
 
   if (isMobile) {
     return (
@@ -29,7 +23,7 @@ const SearchBarSuggestTx = ({ data, isMobile }: Props) => {
           { icon }
           { hash }
         </Flex>
-        <Text variant="secondary">{ date }</Text>
+        <Time timestamp={ data.timestamp } color="text.secondary" format="lll_s"/>
       </>
     );
   }
@@ -40,9 +34,9 @@ const SearchBarSuggestTx = ({ data, isMobile }: Props) => {
         { icon }
         { hash }
       </Flex>
-      <Text variant="secondary" textAlign="end" flexShrink={ 0 } ml="auto">{ date }</Text>
+      <Time timestamp={ data.timestamp } color="text.secondary" textAlign="end" flexShrink={ 0 } ml="auto" format="lll_s"/>
     </Flex>
   );
 };
 
-export default React.memo(SearchBarSuggestTx);
+export default React.memo(SearchBarSuggestUserOp);

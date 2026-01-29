@@ -7,7 +7,7 @@ export type TxStateChange = (TxStateChangeCoin | TxStateChangeToken) & {
   is_miner: boolean;
   balance_before: string | null;
   balance_after: string | null;
-}
+};
 
 export interface TxStateChangeCoin {
   type: 'coin';
@@ -21,13 +21,13 @@ type ChangeDirection = 'from' | 'to';
 
 export interface TxStateChangeTokenErc20 {
   type: 'token';
-  token: TokenInfo<'ERC-20'>;
+  token: TokenInfo;
   change: string;
 }
 
 export interface TxStateChangeTokenErc721 {
   type: 'token';
-  token: TokenInfo<'ERC-721'>;
+  token: TokenInfo;
   change: Array<{
     direction: ChangeDirection;
     total: Erc721TotalPayload;
@@ -36,14 +36,14 @@ export interface TxStateChangeTokenErc721 {
 
 export interface TxStateChangeTokenErc1155 {
   type: 'token';
-  token: TokenInfo<'ERC-1155'>;
+  token: TokenInfo;
   change: string;
   token_id: string;
 }
 
 export interface TxStateChangeTokenErc404 {
   type: 'token';
-  token: TokenInfo<'ERC-404'>;
+  token: TokenInfo;
   change: string;
   token_id: string;
 }

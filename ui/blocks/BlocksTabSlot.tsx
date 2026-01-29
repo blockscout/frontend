@@ -1,37 +1,53 @@
-import { Flex, Box, Text, Skeleton } from '@chakra-ui/react';
+import { Flex, Box, Text } from '@chakra-ui/react';
+import { upperFirst } from 'es-toolkit';
 import React from 'react';
 
 import type { PaginationParams } from 'ui/shared/pagination/types';
 
+import { route } from 'nextjs-routes';
+
 import useApiQuery from 'lib/api/useApiQuery';
-import { nbsp } from 'lib/html-entities';
+import getNetworkUtilizationParams from 'lib/networks/getNetworkUtilizationParams';
 import { HOMEPAGE_STATS } from 'stubs/stats';
+import { Link } from 'toolkit/chakra/link';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { Tooltip } from 'toolkit/chakra/tooltip';
+import { nbsp } from 'toolkit/utils/htmlEntities';
+import IconSvg from 'ui/shared/IconSvg';
 import Pagination from 'ui/shared/pagination/Pagination';
 
 interface Props {
-  pagination: PaginationParams;
+  pagination: PaginationParams | null;
 }
 
 const BlocksTabSlot = ({ pagination }: Props) => {
-  const statsQuery = useApiQuery('stats', {
+  const statsQuery = useApiQuery('general:stats', {
     queryOptions: {
       placeholderData: HOMEPAGE_STATS,
     },
   });
+
+  const networkUtilization = getNetworkUtilizationParams(statsQuery.data?.network_utilization_percentage ?? 0);
 
   return (
     <Flex alignItems="center" columnGap={ 8 } display={{ base: 'none', lg: 'flex' }}>
       { statsQuery.data?.network_utilization_percentage !== undefined && (
         <Box>
           <Text as="span" fontSize="sm">
-              Network utilization (last 50 blocks):{ nbsp }
+            Network utilization (last 50 blocks):{ nbsp }
           </Text>
-          <Skeleton display="inline-block" fontSize="sm" color="blue.400" fontWeight={ 600 } isLoaded={ !statsQuery.isPlaceholderData }>
-            <span>{ statsQuery.data.network_utilization_percentage.toFixed(2) }%</span>
-          </Skeleton>
+          <Tooltip content={ `${ upperFirst(networkUtilization.load) } load` }>
+            <Skeleton display="inline-block" fontSize="sm" color={ networkUtilization.color } fontWeight={ 600 } loading={ statsQuery.isPlaceholderData }>
+              <span>{ statsQuery.data.network_utilization_percentage.toFixed(2) }%</span>
+            </Skeleton>
+          </Tooltip>
         </Box>
       ) }
-      <Pagination my={ 1 } { ...pagination }/>
+      <Link href={ route({ pathname: '/block/countdown' }) }>
+        <IconSvg name="hourglass" boxSize={ 5 } mr={ 2 }/>
+        <span>Block countdown</span>
+      </Link>
+      { pagination && <Pagination my={ 1 } { ...pagination }/> }
     </Flex>
   );
 };

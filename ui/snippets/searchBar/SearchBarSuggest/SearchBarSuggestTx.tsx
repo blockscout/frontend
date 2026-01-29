@@ -1,26 +1,22 @@
 import { chakra, Text, Flex } from '@chakra-ui/react';
 import React from 'react';
 
+import type { ItemsProps } from './types';
 import type { SearchResultTx } from 'types/api/search';
+import type * as multichain from 'types/client/multichain-aggregator';
 
-import dayjs from 'lib/date/dayjs';
 import * as TxEntity from 'ui/shared/entities/tx/TxEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
+import Time from 'ui/shared/time/Time';
 
-interface Props {
-  data: SearchResultTx;
-  isMobile: boolean | undefined;
-  searchTerm: string;
-}
-
-const SearchBarSuggestTx = ({ data, isMobile }: Props) => {
-  const icon = <TxEntity.Icon/>;
+const SearchBarSuggestTx = ({ data, isMobile, chainInfo }: ItemsProps<SearchResultTx | multichain.QuickSearchResultTransaction>) => {
+  const icon = <TxEntity.Icon chain={ chainInfo }/>;
   const hash = (
     <chakra.mark overflow="hidden" whiteSpace="nowrap" fontWeight={ 700 }>
-      <HashStringShortenDynamic hash={ data.tx_hash } isTooltipDisabled/>
+      <HashStringShortenDynamic hash={ data.transaction_hash } noTooltip/>
     </chakra.mark>
   );
-  const date = dayjs(data.timestamp).format('llll');
+  const date = 'timestamp' in data && data.timestamp ? <Time timestamp={ data.timestamp } format="lll_s"/> : undefined;
 
   if (isMobile) {
     return (
@@ -29,7 +25,7 @@ const SearchBarSuggestTx = ({ data, isMobile }: Props) => {
           { icon }
           { hash }
         </Flex>
-        <Text variant="secondary">{ date }</Text>
+        <Text color="text.secondary">{ date }</Text>
       </>
     );
   }
@@ -40,7 +36,7 @@ const SearchBarSuggestTx = ({ data, isMobile }: Props) => {
         { icon }
         { hash }
       </Flex>
-      <Text variant="secondary" textAlign="end" flexShrink={ 0 } ml="auto">{ date }</Text>
+      <Text color="text.secondary" textAlign="end" flexShrink={ 0 } ml="auto">{ date }</Text>
     </Flex>
   );
 };

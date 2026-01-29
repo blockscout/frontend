@@ -1,11 +1,8 @@
-import {
-  Tr,
-  Td,
-} from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 
 import type { ApiKey } from 'types/api/account';
 
+import { TableCell, TableRow } from 'toolkit/chakra/table';
 import ApiKeySnippet from 'ui/shared/ApiKeySnippet';
 import TableItemActionButtons from 'ui/shared/TableItemActionButtons';
 
@@ -27,14 +24,14 @@ const ApiKeyTableItem = ({ item, isLoading, onEditClick, onDeleteClick }: Props)
   }, [ item, onDeleteClick ]);
 
   return (
-    <Tr alignItems="top" key={ item.api_key }>
-      <Td>
+    <TableRow alignItems="top" key={ item.api_key }>
+      <TableCell>
         <ApiKeySnippet apiKey={ item.api_key } name={ item.name } isLoading={ isLoading }/>
-      </Td>
-      <Td>
+      </TableCell>
+      <TableCell>
         <TableItemActionButtons onDeleteClick={ onItemDeleteClick } onEditClick={ onItemEditClick } isLoading={ isLoading }/>
-      </Td>
-    </Tr>
+      </TableCell>
+    </TableRow>
   );
 };
 

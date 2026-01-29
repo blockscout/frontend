@@ -6,6 +6,7 @@ import type { TxInterpretationVariable } from 'types/api/txInterpretation';
 export const VAR_REGEXP = /\{(?:[^}]+)\}/g;
 
 export const NATIVE_COIN_SYMBOL_VAR_NAME = 'native';
+export const WEI_VAR_NAME = 'wei';
 
 export function extractVariables(templateString: string) {
 
@@ -24,7 +25,7 @@ export function checkSummary(template: string, variables: Record<string, TxInter
   const variablesNames = extractVariables(template);
   let result = true;
   for (const name of variablesNames) {
-    if (name === NATIVE_COIN_SYMBOL_VAR_NAME) {
+    if (name === NATIVE_COIN_SYMBOL_VAR_NAME || name === WEI_VAR_NAME) {
       continue;
     }
     if (!variables[name] || variables[name].value === undefined || variables[name].value === null) {

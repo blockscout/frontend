@@ -36,6 +36,7 @@ const additionalFields = (() => {
 const config = Object.freeze({
   hiddenFields,
   additionalFields,
+  groupedFees: getEnvValue('NEXT_PUBLIC_VIEWS_TX_GROUPED_FEES') === 'true',
 });
 
 export default config;

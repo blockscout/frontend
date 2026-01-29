@@ -1,12 +1,15 @@
-import { Td, Tr, Skeleton, Text, Box } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import React, { useMemo } from 'react';
 
 import type { NovesResponseData } from 'types/api/noves';
 
-import dayjs from 'lib/date/dayjs';
+import { Link } from 'toolkit/chakra/link';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { TableCell, TableRow } from 'toolkit/chakra/table';
+import { SECOND } from 'toolkit/utils/consts';
 import IconSvg from 'ui/shared/IconSvg';
-import LinkInternal from 'ui/shared/links/LinkInternal';
 import NovesFromTo from 'ui/shared/Noves/NovesFromTo';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 type Props = {
   isPlaceholderData: boolean;
@@ -23,43 +26,44 @@ const AddressAccountHistoryTableItem = (props: Props) => {
   }, [ props.tx.classificationData.description ]);
 
   return (
-    <Tr>
-      <Td px={ 3 } py="18px" fontSize="sm" >
-        <Skeleton borderRadius="sm" flexShrink={ 0 } isLoaded={ !props.isPlaceholderData }>
-          <Text as="span" color="text_secondary">
-            { dayjs(props.tx.rawTransactionData.timestamp * 1000).fromNow() }
-          </Text>
-        </Skeleton>
-      </Td>
-      <Td px={ 3 } py="18px" fontSize="sm" >
-        <Skeleton borderRadius="sm" isLoaded={ !props.isPlaceholderData }>
+    <TableRow>
+      <TableCell px={ 3 } py="18px" fontSize="sm" >
+        <TimeWithTooltip
+          timestamp={ props.tx.rawTransactionData.timestamp * SECOND }
+          isLoading={ props.isPlaceholderData }
+          color="text.secondary"
+          borderRadius="sm"
+          flexShrink={ 0 }
+        />
+      </TableCell>
+      <TableCell px={ 3 } py="18px" fontSize="sm" >
+        <Skeleton borderRadius="sm" loading={ props.isPlaceholderData }>
           <Box display="flex">
             <IconSvg
               name="lightning"
               height="5"
               width="5"
-              color="gray.500"
+              color="icon.primary"
               mr="8px"
-              _dark={{ color: 'gray.400' }}
             />
 
-            <LinkInternal
+            <Link
               href={ `/tx/${ props.tx.rawTransactionData.transactionHash }` }
               fontWeight="bold"
               whiteSpace="break-spaces"
               wordBreak="break-word"
             >
               { parsedDescription }
-            </LinkInternal>
+            </Link>
           </Box>
         </Skeleton>
-      </Td>
-      <Td px={ 3 } py="18px" fontSize="sm">
+      </TableCell>
+      <TableCell px={ 3 } py="18px" fontSize="sm">
         <Box flexShrink={ 0 } >
           <NovesFromTo txData={ props.tx } currentAddress={ props.currentAddress } isLoaded={ !props.isPlaceholderData }/>
         </Box>
-      </Td>
-    </Tr>
+      </TableCell>
+    </TableRow>
   );
 };
 

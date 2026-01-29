@@ -1,4 +1,7 @@
+import type { TokenInfo } from 'types/api/token';
 import type { TokenTransfer, TokenTransferResponse } from 'types/api/tokenTransfer';
+
+import * as tokenInstanceMock from './tokenInstance';
 
 export const erc20: TokenTransfer = {
   from: {
@@ -24,24 +27,26 @@ export const erc20: TokenTransfer = {
     ens_domain_name: 'kitty.kitty.cat.eth',
   },
   token: {
-    address: '0x55d536e4d6c1993d8ef2e2a4ef77f02088419420',
+    address_hash: '0x55d536e4d6c1993d8ef2e2a4ef77f02088419420',
     circulating_market_cap: '117629601.61913824',
     decimals: '18',
     exchange_rate: '42',
-    holders: '46554',
+    holders_count: '46554',
     name: 'ARIANEE',
     symbol: 'ARIA',
     type: 'ERC-20',
     total_supply: '0',
     icon_url: null,
+    reputation: 'ok',
   },
   total: {
     decimals: '18',
     value: '31567373703130350',
   },
-  tx_hash: '0x62d597ebcf3e8d60096dd0363bc2f0f5e2df27ba1dacd696c51aa7c9409f3193',
+  transaction_hash: '0x62d597ebcf3e8d60096dd0363bc2f0f5e2df27ba1dacd696c51aa7c9409f3193',
   type: 'token_transfer',
   timestamp: '2022-10-10T14:34:30.000000Z',
+  block_number: '12345',
   block_hash: '1',
   log_index: '1',
   method: 'updateSmartAsset',
@@ -71,23 +76,26 @@ export const erc721: TokenTransfer = {
     ens_domain_name: null,
   },
   token: {
-    address: '0x363574E6C5C71c343d7348093D84320c76d5Dd29',
+    address_hash: '0x363574E6C5C71c343d7348093D84320c76d5Dd29',
     circulating_market_cap: null,
     decimals: null,
     exchange_rate: null,
-    holders: '63090',
+    holders_count: '63090',
     name: 'Arianee Smart-Asset',
     symbol: 'AriaSA',
     type: 'ERC-721',
     total_supply: '0',
     icon_url: null,
+    reputation: 'ok',
   },
   total: {
     token_id: '875879856',
+    token_instance: tokenInstanceMock.base,
   },
-  tx_hash: '0xf13bc7afe5e02b494dd2f22078381d36a4800ef94a0ccc147431db56c301e6cc',
+  transaction_hash: '0xf13bc7afe5e02b494dd2f22078381d36a4800ef94a0ccc147431db56c301e6cc',
   type: 'token_transfer',
   timestamp: '2022-10-10T14:34:30.000000Z',
+  block_number: '12345',
   block_hash: '1',
   log_index: '1',
   method: 'updateSmartAsset',
@@ -117,25 +125,28 @@ export const erc1155A: TokenTransfer = {
     ens_domain_name: 'kitty.kitty.cat.eth',
   },
   token: {
-    address: '0xF56b7693E4212C584de4a83117f805B8E89224CB',
+    address_hash: '0xF56b7693E4212C584de4a83117f805B8E89224CB',
     circulating_market_cap: null,
     decimals: null,
     exchange_rate: null,
-    holders: '1',
+    holders_count: '1',
     name: null,
     symbol: 'MY_SYMBOL_IS_VERY_LONG',
     type: 'ERC-1155',
     total_supply: '0',
     icon_url: null,
+    reputation: 'ok',
   },
   total: {
     token_id: '123',
     value: '42',
     decimals: null,
+    token_instance: null,
   },
-  tx_hash: '0x05d6589367633c032d757a69c5fb16c0e33e3994b0d9d1483f82aeee1f05d746',
+  transaction_hash: '0x05d6589367633c032d757a69c5fb16c0e33e3994b0d9d1483f82aeee1f05d746',
   type: 'token_minting',
   timestamp: '2022-10-10T14:34:30.000000Z',
+  block_number: '12345',
   block_hash: '1',
   log_index: '1',
 };
@@ -143,31 +154,31 @@ export const erc1155A: TokenTransfer = {
 export const erc1155B: TokenTransfer = {
   ...erc1155A,
   token: {
-    ...erc1155A.token,
+    ...(erc1155A.token as TokenInfo),
     name: 'SastanaNFT',
     symbol: 'ipfs://QmUpFUfVKDCWeZQk5pvDFUxnpQP9N6eLSHhNUy49T1JVtY',
   },
-  total: { token_id: '12345678', value: '100000000000000000000', decimals: null },
+  total: { token_id: '12345678', value: '100000000000000000000', decimals: null, token_instance: null },
 };
 
 export const erc1155C: TokenTransfer = {
   ...erc1155A,
   token: {
-    ...erc1155A.token,
+    ...(erc1155A.token as TokenInfo),
     name: 'SastanaNFT',
     symbol: 'ipfs://QmUpFUfVKDCWeZQk5pvDFUxnpQP9N6eLSHhNUy49T1JVtY',
   },
-  total: { token_id: '483200961027732618117991942553110860267520', value: '200000000000000000000', decimals: null },
+  total: { token_id: '483200961027732618117991942553110860267520', value: '200000000000000000000', decimals: null, token_instance: null },
 };
 
 export const erc1155D: TokenTransfer = {
   ...erc1155A,
   token: {
-    ...erc1155A.token,
+    ...(erc1155A.token as TokenInfo),
     name: 'SastanaNFT',
     symbol: 'ipfs://QmUpFUfVKDCWeZQk5pvDFUxnpQP9N6eLSHhNUy49T1JVtY',
   },
-  total: { token_id: '456', value: '42', decimals: null },
+  total: { token_id: '456', value: '42', decimals: null, token_instance: null },
 };
 
 export const erc404A: TokenTransfer = {
@@ -194,26 +205,29 @@ export const erc404A: TokenTransfer = {
     ens_domain_name: 'kitty.kitty.cat.eth',
   },
   token: {
-    address: '0xF56b7693E4212C584de4a83117f805B8E89224CB',
+    address_hash: '0xF56b7693E4212C584de4a83117f805B8E89224CB',
     circulating_market_cap: null,
     decimals: null,
     exchange_rate: null,
-    holders: '1',
+    holders_count: '1',
     name: null,
     symbol: 'MY_SYMBOL_IS_VERY_LONG',
     type: 'ERC-404',
     total_supply: '0',
     icon_url: null,
+    reputation: 'ok',
   },
   total: {
     value: '42000000000000000000000000',
     decimals: '18',
     token_id: null,
+    token_instance: null,
   },
-  tx_hash: '0x05d6589367633c032d757a69c5fb16c0e33e3994b0d9d1483f82aeee1f05d746',
+  transaction_hash: '0x05d6589367633c032d757a69c5fb16c0e33e3994b0d9d1483f82aeee1f05d746',
   type: 'token_transfer',
   method: 'swap',
   timestamp: '2022-10-10T14:34:30.000000Z',
+  block_number: '12345',
   block_hash: '1',
   log_index: '1',
 };
@@ -221,11 +235,11 @@ export const erc404A: TokenTransfer = {
 export const erc404B: TokenTransfer = {
   ...erc404A,
   token: {
-    ...erc404A.token,
+    ...(erc404A.token as TokenInfo),
     name: 'SastanaNFT',
     symbol: 'ipfs://QmUpFUfVKDCWeZQk5pvDFUxnpQP9N6eLSHhNUy49T1JVtY',
   },
-  total: { token_id: '4625304364899952' },
+  total: { token_id: '4625304364899952', token_instance: null },
 };
 
 export const mixTokens: TokenTransferResponse = {

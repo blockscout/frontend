@@ -13,7 +13,7 @@ export default function addMainContractCodeDecoration(model: monaco.editor.IText
     return;
   }
 
-  const [ firstLineMatch ] = model.findMatches(`(^contract ${ contractName })( is .+)?\\s?\\{`, false, true, false, null, true);
+  const [ firstLineMatch ] = model.findMatches(`(^contract ${ contractName })(\\sis\\s.+(\\s?,.+)*)?((\\s?\\{)|\\n)`, false, true, false, null, true);
 
   if (!firstLineMatch) {
     return;
@@ -47,7 +47,7 @@ export default function addMainContractCodeDecoration(model: monaco.editor.IText
     .findMatches(`^\\}`, lastLineRange, true, false, null, true)
     .sort(sortByEndLineNumberAsc);
 
-  const restDecoration: monaco.editor.IModelDeltaDecoration = {
+  const restDecoration: monaco.editor.IModelDeltaDecoration | undefined = lastLineMatch ? {
     range: {
       startLineNumber: firstLineMatch.range.startLineNumber + 1,
       endLineNumber: lastLineMatch.range.startLineNumber,
@@ -59,8 +59,8 @@ export default function addMainContractCodeDecoration(model: monaco.editor.IText
       className: '.main-contract-body',
       marginClassName: '.main-contract-body',
     },
-  };
+  } : undefined;
 
   editor.updateOptions({ glyphMargin: true });
-  model.deltaDecorations([], [ firstLineDecoration, restDecoration ]);
+  model.deltaDecorations([], [ firstLineDecoration, restDecoration ].filter(Boolean));
 }

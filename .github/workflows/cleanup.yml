@@ -7,9 +7,14 @@ on:
       - merged
   workflow_dispatch:
 
+permissions:
+  contents: read
+  pull-requests: write
+  id-token: write
+
 jobs:
   cleanup_release:
-    uses: blockscout/blockscout-ci-cd/.github/workflows/cleanup_helmfile.yaml@master
+    uses: blockscout/actions/.github/workflows/cleanup_helmfile.yaml@main
     with:
       appName: review-l2-$GITHUB_REF_NAME_SLUG
       globalEnv: review
@@ -18,7 +23,7 @@ jobs:
       vaultRole: ci-dev
     secrets: inherit
   cleanup_l2_release:
-    uses: blockscout/blockscout-ci-cd/.github/workflows/cleanup_helmfile.yaml@master
+    uses: blockscout/actions/.github/workflows/cleanup_helmfile.yaml@main
     with:
       appName: review-$GITHUB_REF_NAME_SLUG
       globalEnv: review
@@ -27,7 +32,7 @@ jobs:
       vaultRole: ci-dev
     secrets: inherit
   cleanup_docker_image:
-    uses: blockscout/blockscout-ci-cd/.github/workflows/cleanup_docker.yaml@master
+    uses: blockscout/actions/.github/workflows/cleanup_docker.yaml@main
     with:
       dockerImage: review-$GITHUB_REF_NAME_SLUG
     secrets: inherit

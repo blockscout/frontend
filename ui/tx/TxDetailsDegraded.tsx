@@ -5,12 +5,12 @@ import type { Chain, GetBlockReturnType, GetTransactionReturnType, TransactionRe
 
 import type { Transaction } from 'types/api/transaction';
 
-import { SECOND } from 'lib/consts';
 import dayjs from 'lib/date/dayjs';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import hexToDecimal from 'lib/hexToDecimal';
 import { publicClient } from 'lib/web3/client';
 import { GET_BLOCK, GET_TRANSACTION, GET_TRANSACTION_RECEIPT, GET_TRANSACTION_CONFIRMATIONS } from 'stubs/RPC';
+import { SECOND } from 'toolkit/utils/consts';
 import { unknownAddress } from 'ui/shared/address/utils';
 import ServiceDegradationWarning from 'ui/shared/alerts/ServiceDegradationWarning';
 import TestnetWarning from 'ui/shared/alerts/TestnetWarning';
@@ -81,7 +81,7 @@ const TxDetailsDegraded = ({ hash, txQuery }: Props) => {
         timestamp: block?.timestamp ? dayjs.unix(Number(block.timestamp)).format() : null,
         confirmation_duration: null,
         status,
-        block: tx.blockNumber ? Number(tx.blockNumber) : null,
+        block_number: tx.blockNumber ? Number(tx.blockNumber) : null,
         value: tx.value.toString(),
         gas_price: gasPrice?.toString() ?? null,
         base_fee_per_gas: block?.baseFeePerGas?.toString() ?? null,
@@ -103,16 +103,16 @@ const TxDetailsDegraded = ({ hash, txQuery }: Props) => {
           null,
         result: '',
         priority_fee: null,
-        tx_burnt_fee: null,
+        transaction_burnt_fee: null,
         revert_reason: null,
         decoded_input: null,
-        has_error_in_internal_txs: null,
+        has_error_in_internal_transactions: null,
         token_transfers: null,
         token_transfers_overflow: false,
         exchange_rate: null,
         method: null,
-        tx_types: [],
-        tx_tag: null,
+        transaction_types: [],
+        transaction_tag: null,
         actions: [],
       };
     },
@@ -132,19 +132,19 @@ const TxDetailsDegraded = ({ hash, txQuery }: Props) => {
 
   React.useEffect(() => {
     if (!query.isPlaceholderData && hasData) {
-      txQuery.setRefetchOnError.on();
+      txQuery.setRefetchEnabled(true);
     }
   }, [ hasData, query.isPlaceholderData, txQuery ]);
 
   React.useEffect(() => {
     return () => {
-      txQuery.setRefetchOnError.off();
+      txQuery.setRefetchEnabled(false);
     };
-  }, [ txQuery.setRefetchOnError ]);
+  }, [ txQuery ]);
 
   if (!query.data) {
     if (originalError && isCustomAppError(originalError)) {
-      throwOnResourceLoadError({ resource: 'tx', error: originalError, isError: true });
+      throwOnResourceLoadError({ resource: 'general:tx', error: originalError, isError: true });
     }
 
     return <DataFetchAlert/>;
@@ -152,7 +152,7 @@ const TxDetailsDegraded = ({ hash, txQuery }: Props) => {
 
   return (
     <>
-      <Flex rowGap={ 2 } mb={ 6 } flexDir="column">
+      <Flex rowGap={{ base: 1, lg: 2 }} mb={{ base: 3, lg: 6 }} flexDir="column">
         <TestnetWarning isLoading={ query.isPlaceholderData }/>
         { originalError?.status !== 404 && <ServiceDegradationWarning isLoading={ query.isPlaceholderData }/> }
       </Flex>

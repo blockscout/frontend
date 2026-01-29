@@ -16,7 +16,7 @@ const hooksConfig = {
 test.beforeEach(async({ mockTextAd, mockApiResponse, mockEnvs }) => {
   await mockEnvs(ENVS_MAP.zkSyncRollup);
   await mockTextAd();
-  await mockApiResponse('zksync_l2_txn_batch', zkSyncTxnBatchMock.base, { pathParams: { number: batchNumber } });
+  await mockApiResponse('general:zksync_l2_txn_batch', zkSyncTxnBatchMock.base, { pathParams: { number: batchNumber } });
 });
 
 test('base view', async({ render }) => {

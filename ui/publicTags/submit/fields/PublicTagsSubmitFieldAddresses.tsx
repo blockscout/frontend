@@ -1,17 +1,17 @@
-import { FormControl, GridItem, IconButton, Input } from '@chakra-ui/react';
+import { GridItem } from '@chakra-ui/react';
 import React from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 
 import type { FormFields } from '../types';
 
-import { ADDRESS_REGEXP } from 'lib/validations/address';
-import IconSvg from 'ui/shared/IconSvg';
-import InputPlaceholder from 'ui/shared/InputPlaceholder';
+import AddButton from 'toolkit/components/buttons/AddButton';
+import RemoveButton from 'toolkit/components/buttons/RemoveButton';
+import { FormFieldAddress } from 'toolkit/components/forms/fields/FormFieldAddress';
 
 const LIMIT = 20;
 
 const PublicTagsSubmitFieldAddresses = () => {
-  const { control, formState, register } = useFormContext<FormFields>();
+  const { control, formState } = useFormContext<FormFields>();
   const { fields, insert, remove } = useFieldArray<FormFields, 'addresses'>({
     name: 'addresses',
     control,
@@ -36,42 +36,28 @@ const PublicTagsSubmitFieldAddresses = () => {
   return (
     <>
       { fields.map((field, index) => {
-        const error = formState.errors?.addresses?.[ index ]?.hash;
-
         return (
           <React.Fragment key={ field.id }>
             <GridItem colSpan={{ base: 1, lg: 2 }}>
-              <FormControl variant="floating" isRequired size={{ base: 'md', lg: 'lg' }}>
-                <Input
-                  { ...register(`addresses.${ index }.hash`, { required: true, pattern: ADDRESS_REGEXP }) }
-                  isInvalid={ Boolean(error) }
-                  isDisabled={ formState.isSubmitting }
-                  autoComplete="off"
-                />
-                <InputPlaceholder text="Smart contract / Address (0x...)" error={ error }/>
-              </FormControl>
+              <FormFieldAddress<FormFields>
+                name={ `addresses.${ index }.hash` }
+                required
+                placeholder="Smart contract / Address (0x...)"
+              />
             </GridItem>
-            <GridItem display="flex" alignItems="center" columnGap={ 5 } justifyContent={{ base: 'flex-end', lg: 'flex-start' }}>
+            <GridItem display="flex" alignItems="center" columnGap={ 3 } justifyContent={{ base: 'flex-end', lg: 'flex-start' }}>
               { fields.length < LIMIT && index === fields.length - 1 && (
-                <IconButton
-                  aria-label="add"
+                <AddButton
                   data-index={ index }
-                  variant="outline"
-                  boxSize="30px"
                   onClick={ handleAddFieldClick }
-                  icon={ <IconSvg name="plus" boxSize={ 5 }/> }
-                  isDisabled={ isDisabled }
+                  disabled={ isDisabled }
                 />
               ) }
               { fields.length > 1 && (
-                <IconButton
-                  aria-label="delete"
+                <RemoveButton
                   data-index={ index }
-                  variant="outline"
-                  boxSize="30px"
                   onClick={ handleRemoveFieldClick }
-                  icon={ <IconSvg name="minus" boxSize={ 5 }/> }
-                  isDisabled={ isDisabled }
+                  disabled={ isDisabled }
                 />
               ) }
             </GridItem>

@@ -60,9 +60,9 @@ export function AddressHighlightProvider({ children }: AddressHighlightProviderP
   );
 }
 
-export function useAddressHighlightContext() {
+export function useAddressHighlightContext(disabled?: boolean) {
   const context = React.useContext(AddressHighlightContext);
-  if (context === undefined) {
+  if (context === undefined || disabled) {
     return null;
   }
   return context;

@@ -4,43 +4,43 @@ import type { EIP1193Provider } from 'viem';
 import type { Evaluate } from './utils';
 
 type WalletProviderFlags =
-  | 'isApexWallet'
-  | 'isAvalanche'
-  | 'isBackpack'
-  | 'isBifrost'
-  | 'isBitKeep'
-  | 'isBitski'
-  | 'isBlockWallet'
-  | 'isBraveWallet'
-  | 'isCoinbaseWallet'
-  | 'isDawn'
-  | 'isEnkrypt'
-  | 'isExodus'
-  | 'isFrame'
-  | 'isFrontier'
-  | 'isGamestop'
-  | 'isHyperPay'
-  | 'isImToken'
-  | 'isKuCoinWallet'
-  | 'isMathWallet'
-  | 'isMetaMask'
-  | 'isOkxWallet'
-  | 'isOKExWallet'
-  | 'isOneInchAndroidWallet'
-  | 'isOneInchIOSWallet'
-  | 'isOpera'
-  | 'isPhantom'
-  | 'isPortal'
-  | 'isRabby'
-  | 'isRainbow'
-  | 'isStatus'
-  | 'isTally'
-  | 'isTokenPocket'
-  | 'isTokenary'
-  | 'isTrust'
-  | 'isTrustWallet'
-  | 'isXDEFI'
-  | 'isZerion'
+  'isApexWallet' |
+  'isAvalanche' |
+  'isBackpack' |
+  'isBifrost' |
+  'isBitKeep' |
+  'isBitski' |
+  'isBlockWallet' |
+  'isBraveWallet' |
+  'isCoinbaseWallet' |
+  'isDawn' |
+  'isEnkrypt' |
+  'isExodus' |
+  'isFrame' |
+  'isFrontier' |
+  'isGamestop' |
+  'isHyperPay' |
+  'isImToken' |
+  'isKuCoinWallet' |
+  'isMathWallet' |
+  'isMetaMask' |
+  'isOkxWallet' |
+  'isOKExWallet' |
+  'isOneInchAndroidWallet' |
+  'isOneInchIOSWallet' |
+  'isOpera' |
+  'isPhantom' |
+  'isPortal' |
+  'isRabby' |
+  'isRainbow' |
+  'isStatus' |
+  'isTally' |
+  'isTokenPocket' |
+  'isTokenary' |
+  'isTrust' |
+  'isTrustWallet' |
+  'isXDEFI' |
+  'isZerion';
 
 export type WalletProvider = Evaluate<
 EIP1193Provider & {
@@ -59,7 +59,7 @@ EIP1193Provider & {
     isConnected?: boolean;
     isPermanentlyDisconnected?: boolean;
     isUnlocked?: boolean;
-  }
-  | undefined;
+  } |
+  undefined;
 }
->
+>;

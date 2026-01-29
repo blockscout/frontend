@@ -1,37 +1,41 @@
-import { Skeleton, Image, chakra } from '@chakra-ui/react';
+import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import { HOMEPAGE_STATS } from 'stubs/stats';
+import { Image } from 'toolkit/chakra/image';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 
 import TokenLogoPlaceholder from './TokenLogoPlaceholder';
 
 type Props = {
   isLoading?: boolean;
   className?: string;
-}
+  type?: 'primary' | 'secondary';
+};
 
-const NativeTokenIcon = (props: Props) => {
-  const statsQueryResult = useApiQuery('stats', {
+const NativeTokenIcon = ({ isLoading, className, type }: Props) => {
+  const statsQueryResult = useApiQuery('general:stats', {
     queryOptions: {
       refetchOnMount: false,
       placeholderData: HOMEPAGE_STATS,
     },
   });
 
-  if (props.isLoading || statsQueryResult.isPlaceholderData) {
-    return <Skeleton borderRadius="base" className={ props.className }/>;
+  if (isLoading || statsQueryResult.isPlaceholderData) {
+    return <Skeleton borderRadius="base" loading className={ className }/>;
   }
+
+  const src = type === 'secondary' ? statsQueryResult.data?.secondary_coin_image : statsQueryResult.data?.coin_image;
 
   return (
     <Image
+      className={ className }
       borderRadius="base"
-      className={ props.className }
-      src={ statsQueryResult.data?.coin_image || '' }
+      src={ src || undefined }
       alt={ `${ config.chain.currency.symbol } logo` }
-      fallback={ <TokenLogoPlaceholder borderRadius="base" className={ props.className }/> }
-      fallbackStrategy={ statsQueryResult.data?.coin_image ? 'onError' : 'beforeLoadOrError' }
+      fallback={ <TokenLogoPlaceholder/> }
     />
   );
 };

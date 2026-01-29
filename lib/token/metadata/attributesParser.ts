@@ -1,8 +1,9 @@
-import _upperFirst from 'lodash/upperFirst';
+import { upperFirst } from 'es-toolkit';
 
 import type { Metadata, MetadataAttributes } from 'types/client/token';
 
 import dayjs from 'lib/date/dayjs';
+import { SECOND } from 'toolkit/utils/consts';
 
 function formatValue(value: string | number, display: string | undefined, trait: string | undefined): Pick<MetadataAttributes, 'value' | 'value_type'> {
   // https://docs.opensea.io/docs/metadata-standards#attributes
@@ -19,7 +20,7 @@ function formatValue(value: string | number, display: string | undefined, trait:
     }
     case 'date': {
       return {
-        value: dayjs(Number(value) * 1000).format('YYYY-MM-DD'),
+        value: dayjs(Number(value) * SECOND).format('YYYY-MM-DD'),
       };
     }
     default: {
@@ -72,8 +73,9 @@ export default function attributesParser(attributes: Array<unknown>): Metadata['
 
       return {
         ...formatValue(value, display, trait),
-        trait_type: _upperFirst(trait || 'property'),
+        trait_type: upperFirst(trait || 'property'),
       };
     })
+    .filter((item) => item?.value)
     .filter(Boolean);
 }

@@ -24,8 +24,8 @@ test.beforeEach(async({ mockTextAd }) => {
 });
 
 test('base view +@dark-mode', async({ render, mockApiResponse }) => {
-  await mockApiResponse('blocks', blockMock.baseListResponse, { queryParams: { type: 'block' } });
-  await mockApiResponse('stats', statsMock.base);
+  await mockApiResponse('general:blocks', blockMock.baseListResponse, { queryParams: { type: 'block' } });
+  await mockApiResponse('general:stats', statsMock.base);
 
   const component = await render(<Blocks/>, { hooksConfig });
 
@@ -33,9 +33,12 @@ test('base view +@dark-mode', async({ render, mockApiResponse }) => {
 });
 
 test('hidden fields', async({ render, mockApiResponse, mockEnvs }) => {
-  await mockEnvs(ENVS_MAP.blockHiddenFields);
-  await mockApiResponse('blocks', blockMock.baseListResponse, { queryParams: { type: 'block' } });
-  await mockApiResponse('stats', statsMock.base);
+  await mockEnvs([
+    ...ENVS_MAP.blockHiddenFields,
+    [ 'NEXT_PUBLIC_VIEWS_BLOCK_PENDING_UPDATE_ALERT_ENABLED', 'false' ],
+  ]);
+  await mockApiResponse('general:blocks', blockMock.baseListResponse, { queryParams: { type: 'block' } });
+  await mockApiResponse('general:stats', statsMock.base);
 
   const component = await render(<Blocks/>, { hooksConfig });
 
@@ -45,9 +48,9 @@ test('hidden fields', async({ render, mockApiResponse, mockEnvs }) => {
 test.describe('mobile', () => {
   test.use({ viewport: devices['iPhone 13 Pro'].viewport });
 
-  test(' base view', async({ render, mockApiResponse }) => {
-    await mockApiResponse('blocks', blockMock.baseListResponse, { queryParams: { type: 'block' } });
-    await mockApiResponse('stats', statsMock.base);
+  test('base view', async({ render, mockApiResponse }) => {
+    await mockApiResponse('general:blocks', blockMock.baseListResponse, { queryParams: { type: 'block' } });
+    await mockApiResponse('general:stats', statsMock.base);
 
     const component = await render(<Blocks/>, { hooksConfig });
 
@@ -55,9 +58,12 @@ test.describe('mobile', () => {
   });
 
   test('hidden fields', async({ render, mockApiResponse, mockEnvs }) => {
-    await mockEnvs(ENVS_MAP.blockHiddenFields);
-    await mockApiResponse('blocks', blockMock.baseListResponse, { queryParams: { type: 'block' } });
-    await mockApiResponse('stats', statsMock.base);
+    await mockEnvs([
+      ...ENVS_MAP.blockHiddenFields,
+      [ 'NEXT_PUBLIC_VIEWS_BLOCK_PENDING_UPDATE_ALERT_ENABLED', 'false' ],
+    ]);
+    await mockApiResponse('general:blocks', blockMock.baseListResponse, { queryParams: { type: 'block' } });
+    await mockApiResponse('general:stats', statsMock.base);
 
     const component = await render(<Blocks/>, { hooksConfig });
 
@@ -66,7 +72,7 @@ test.describe('mobile', () => {
 });
 
 test('new item from socket', async({ render, mockApiResponse, createSocket }) => {
-  await mockApiResponse('blocks', blockMock.baseListResponse, { queryParams: { type: 'block' } });
+  await mockApiResponse('general:blocks', blockMock.baseListResponse, { queryParams: { type: 'block' } });
 
   const component = await render(<Blocks/>, { hooksConfig }, { withSocket: true });
 
@@ -85,7 +91,7 @@ test('new item from socket', async({ render, mockApiResponse, createSocket }) =>
 });
 
 test('socket error', async({ render, mockApiResponse, createSocket }) => {
-  await mockApiResponse('blocks', blockMock.baseListResponse, { queryParams: { type: 'block' } });
+  await mockApiResponse('general:blocks', blockMock.baseListResponse, { queryParams: { type: 'block' } });
 
   const component = await render(<Blocks/>, { hooksConfig }, { withSocket: true });
 

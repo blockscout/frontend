@@ -52,7 +52,8 @@ jobs:
 
                             core.info('Done.\n');
                         }
-
+        permissions:
+            issues: write
 
     label_released_issues:
         name: Label released issues
@@ -62,6 +63,9 @@ jobs:
             label_name: ${{ github.ref_name }}
             label_description: Release ${{ github.ref_name }}
         secrets: inherit
+        permissions:
+            contents: read
+            issues: write
 
     update_project_cards:
         name: Update project tasks statuses
@@ -73,6 +77,8 @@ jobs:
             field_value: Released
             issues: ${{ needs.label_released_issues.outputs.issues }}
         secrets: inherit
+        permissions:
+            issues: read
 
     publish_image:
         name: Publish Docker image
@@ -80,12 +86,19 @@ jobs:
         secrets: inherit
         with:
             platforms: linux/amd64,linux/arm64/v8
+            # NOTE: by default the image will be built with type=ref,event=tag; so we need to specify it here
+            tags: |
+                type=raw,value=latest
+        permissions:
+            contents: read
+            packages: write
 
-    # Temporary disable this step because it is broken
-    # There is an issue with building web3modal deps
-    upload_source_maps:
-        name: Upload source maps to Sentry
-        if: false
-        needs: publish_image
-        uses: './.github/workflows/upload-source-maps.yml'
+    publish_toolkit:
+        name: Publish toolkit package to NPM
+        uses: './.github/workflows/toolkit-npm-publisher.yml'
         secrets: inherit
+        with:
+            version: ${{ github.ref_name }}
+        permissions:
+            contents: read
+            id-token: write

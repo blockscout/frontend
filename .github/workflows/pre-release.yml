@@ -11,6 +11,9 @@ jobs:
         name: Run code checks
         uses: "./.github/workflows/checks.yml"
         secrets: inherit
+        permissions:
+          contents: read
+          pull-requests: write
 
     # publish_image:
     # image will be published in e2e-tests.yml workflow
@@ -23,10 +26,13 @@ jobs:
         needs: checks
         uses: "./.github/workflows/e2e-tests.yml"
         secrets: inherit
+        permissions: write-all
 
     version:
         name: Pre-release version info
         runs-on: ubuntu-latest
+        permissions:
+          contents: read
         outputs:
             is_initial: ${{ steps.is_initial.outputs.result }}
         steps:
@@ -54,11 +60,6 @@ jobs:
             label_name: 'pre-release'
             label_description: Tasks in pre-release right now
         secrets: inherit
-
-    # Temporary disable this step because it is broken
-    # There is an issue with building web3modal deps
-    upload_source_maps:
-        name: Upload source maps to Sentry
-        if: false
-        uses: './.github/workflows/upload-source-maps.yml'
-        secrets: inherit
+        permissions:
+          contents: read
+          issues: write

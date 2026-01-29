@@ -26,7 +26,7 @@ const TxRawTrace = ({ txQuery }: Props) => {
   const router = useRouter();
   const hash = getQueryParamString(router.query.hash);
 
-  const { data, isPlaceholderData, isError } = useApiQuery('tx_raw_trace', {
+  const { data, isPlaceholderData, isError } = useApiQuery('general:tx_raw_trace', {
     pathParams: { hash },
     queryOptions: {
       enabled: Boolean(hash) && Boolean(txQuery.data?.status) && isQueryEnabled,
@@ -68,7 +68,7 @@ const TxRawTrace = ({ txQuery }: Props) => {
 
   const text = JSON.stringify(dataToDisplay, undefined, 4);
 
-  return <RawDataSnippet data={ text } isLoading={ isPlaceholderData }/>;
+  return <RawDataSnippet data={ text } isLoading={ isPlaceholderData } textareaMaxHeight={{ base: '400px', lg: '600px' }}/>;
 };
 
 export default TxRawTrace;

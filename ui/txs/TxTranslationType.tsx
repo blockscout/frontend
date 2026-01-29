@@ -2,29 +2,29 @@ import React from 'react';
 
 import type { TransactionType } from 'types/api/transaction';
 
-import Tag from 'ui/shared/chakra/Tag';
+import { Badge } from 'toolkit/chakra/badge';
 
 import { camelCaseToSentence } from './noves/utils';
 import TxType from './TxType';
 
 export interface Props {
-  types: Array<TransactionType>;
+  txTypes: Array<TransactionType>;
   isLoading?: boolean;
-  translatationType: string | undefined;
+  type: string | undefined;
 }
 
-const TxTranslationType = ({ types, isLoading, translatationType }: Props) => {
+const FILTERED_TYPES = [ 'unclassified' ];
 
-  const filteredTypes = [ 'unclassified' ];
+const TxTranslationType = ({ txTypes, isLoading, type }: Props) => {
 
-  if (!translatationType || filteredTypes.includes(translatationType)) {
-    return <TxType types={ types } isLoading={ isLoading }/>;
+  if (!type || FILTERED_TYPES.includes(type.toLowerCase())) {
+    return <TxType types={ txTypes } isLoading={ isLoading }/>;
   }
 
   return (
-    <Tag colorScheme="purple" isLoading={ isLoading }>
-      { camelCaseToSentence(translatationType) }
-    </Tag>
+    <Badge colorPalette="purple" loading={ isLoading }>
+      { camelCaseToSentence(type) }
+    </Badge>
   );
 
 };

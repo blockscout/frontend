@@ -8,16 +8,13 @@ export interface FormFields {
   addresses: Array<{ hash: string }>;
   tags: Array<FormFieldTag>;
   description: string | undefined;
-  reCaptcha: string;
 }
 
 export interface FormFieldTag {
   name: string;
-  type: {
-    label: string;
-    value: AddressMetadataTagType;
-  };
+  type: Array<AddressMetadataTagType>;
   url: string | undefined;
+  iconUrl: string | undefined;
   bgColor: string | undefined;
   textColor: string | undefined;
   tooltipDescription: string | undefined;
@@ -36,6 +33,7 @@ export interface SubmitRequestBody {
     bgColor?: string;
     textColor?: string;
     tagUrl?: string;
+    tagIcon?: string;
     tooltipDescription?: string;
   };
 }

@@ -4,7 +4,7 @@ import { ADDRESS_PARAMS } from './addressParams';
 import { TX_HASH } from './tx';
 
 export const INTERNAL_TX: InternalTransaction = {
-  block: 9006105,
+  block_number: 9006105,
   created_contract: null,
   error: null,
   from: ADDRESS_PARAMS,

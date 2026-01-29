@@ -16,8 +16,8 @@ ASSETS_DIR="$1"
 ASSETS_ENVS=(
     "NEXT_PUBLIC_MARKETPLACE_CONFIG_URL"
     "NEXT_PUBLIC_MARKETPLACE_CATEGORIES_URL"
-    "NEXT_PUBLIC_MARKETPLACE_SECURITY_REPORTS_URL"
     "NEXT_PUBLIC_MARKETPLACE_BANNER_CONTENT_URL"
+    "NEXT_PUBLIC_MARKETPLACE_GRAPH_LINKS_URL"
     "NEXT_PUBLIC_FEATURED_NETWORKS"
     "NEXT_PUBLIC_FOOTER_LINKS"
     "NEXT_PUBLIC_NETWORK_LOGO"
@@ -25,10 +25,16 @@ ASSETS_ENVS=(
     "NEXT_PUBLIC_NETWORK_ICON"
     "NEXT_PUBLIC_NETWORK_ICON_DARK"
     "NEXT_PUBLIC_OG_IMAGE_URL"
+    "NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS_CONFIG_URL"
+    "NEXT_PUBLIC_ZETACHAIN_SERVICE_CHAINS_CONFIG_URL"
+    "NEXT_PUBLIC_HOMEPAGE_HIGHLIGHTS_CONFIG"
 )
 
 # Create the assets directory if it doesn't exist
 mkdir -p "$ASSETS_DIR"
+
+# Track failed downloads
+FAILED_DOWNLOADS=0
 
 # Function to determine the target file name based on the environment variable
 get_target_filename() {
@@ -49,10 +55,14 @@ get_target_filename() {
         # Extract the extension from the filename
         local extension="${filename##*.}"
     else
-        # Remove query parameters from the URL and get the filename
-        local filename=$(basename "${url%%\?*}")
-        # Extract the extension from the filename
-        local extension="${filename##*.}"
+        if [[ "$url" == http* ]]; then
+            # Remove query parameters from the URL and get the filename
+            local filename=$(basename "${url%%\?*}")
+            # Extract the extension from the filename
+            local extension="${filename##*.}"
+        else
+            local extension="json"
+        fi
     fi
 
     # Convert the extension to lowercase
@@ -80,16 +90,35 @@ download_and_save_asset() {
         # Copy the local file to the destination
         cp "${url#file://}" "$destination"
     else
-        # Download the asset using curl
-        curl -s -o "$destination" "$url"
+        # Check if the value is a URL
+        if [[ "$url" == http* ]]; then
+            # Download the asset using curl with built-in retries
+            if ! curl -f -s --connect-timeout 10 --max-time 60 --retry 3 --retry-delay 3 --retry-max-time 180 -o "$destination" "$url"; then
+                echo "   [-] $env_var: Failed to download from $url after 3 retry attempts (timeout or connection error)"
+                FAILED_DOWNLOADS=$((FAILED_DOWNLOADS + 1))
+                return 1
+            fi
+        else
+            # Convert single-quoted JSON-like content to valid JSON
+            json_content=$(echo "${!env_var}" | sed "s/'/\"/g")
+
+            # Save the JSON content to a file
+            echo "$json_content" > "$destination"
+        fi
+    fi
+
+    if [[ "$url" == file://* ]] || [[ "$url" == http* ]]; then
+        local source_name=$url
+    else
+        local source_name="raw input"
     fi
 
     # Check if the download was successful
     if [ $? -eq 0 ]; then
-        echo "   [+] $env_var: Successfully saved file from $url to $destination."
+        echo "   [+] $env_var: Successfully saved file from $source_name to $destination."
         return 0
     else
-        echo "   [-] $env_var: Failed to save file from $url."
+        echo "   [-] $env_var: Failed to save file from $source_name."
         return 1
     fi
 }
@@ -100,6 +129,12 @@ for env_var in "${ASSETS_ENVS[@]}"; do
     filename=$(get_target_filename "$env_var")
     download_and_save_asset "$env_var" "$url" "$filename"
 done
+
+# Check if any downloads failed and exit with error code
+if [ $FAILED_DOWNLOADS -gt 0 ]; then
+    echo "🛑 Error: $FAILED_DOWNLOADS asset download(s) failed. The application cannot start."
+    exit 1
+fi
 
 echo "✅ Done."
 echo

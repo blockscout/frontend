@@ -10,6 +10,7 @@ export const finalized: ArbitrumL2TxnBatchesItem = {
     hash: '0x262e7215739d6a7e33b2c20b45a838801a0f5f080f20bec8e54eb078420c4661',
     status: 'finalized',
   },
+  batch_data_container: 'in_blob4844',
 };
 
 export const unfinalized: ArbitrumL2TxnBatchesItem = {
@@ -22,6 +23,8 @@ export const unfinalized: ArbitrumL2TxnBatchesItem = {
     hash: '0x262e7215739d6a7e33b2c20b45a838801a0f5f080f20bec8e54eb078420c4661',
     status: 'unfinalized',
   },
+  batch_data_container: null,
+
 };
 
 export const baseResponse: ArbitrumL2TxnBatchesResponse = {

@@ -3,6 +3,7 @@ import type { AdButlerConfig } from 'types/client/adButlerConfig';
 import { SUPPORTED_AD_BANNER_PROVIDERS } from 'types/client/adProviders';
 import type { AdBannerProviders, AdBannerAdditionalProviders } from 'types/client/adProviders';
 
+import app from '../app';
 import { getEnvValue, parseEnvJson } from '../utils';
 
 const provider: AdBannerProviders = (() => {
@@ -12,10 +13,11 @@ const provider: AdBannerProviders = (() => {
 })();
 
 const additionalProvider = getEnvValue('NEXT_PUBLIC_AD_BANNER_ADDITIONAL_PROVIDER') as AdBannerAdditionalProviders;
+const isSpecifyEnabled = getEnvValue('NEXT_PUBLIC_AD_BANNER_ENABLE_SPECIFY') === 'true';
 
 const title = 'Banner ads';
 
-type AdsBannerFeaturePayload = {
+type AdsBannerFeatureProviderPayload = {
   provider: Exclude<AdBannerProviders, 'adbutler' | 'none'>;
 } | {
   provider: 'adbutler';
@@ -34,9 +36,20 @@ type AdsBannerFeaturePayload = {
       mobile: AdButlerConfig;
     };
   };
-}
+};
+
+type AdsBannerFeaturePayload = AdsBannerFeatureProviderPayload & {
+  isSpecifyEnabled: boolean;
+};
 
 const config: Feature<AdsBannerFeaturePayload> = (() => {
+  if (app.isPrivateMode) {
+    return Object.freeze({
+      title,
+      isEnabled: false,
+    });
+  }
+
   if (provider === 'adbutler') {
     const desktopConfig = parseEnvJson<AdButlerConfig>(getEnvValue('NEXT_PUBLIC_AD_ADBUTLER_CONFIG_DESKTOP'));
     const mobileConfig = parseEnvJson<AdButlerConfig>(getEnvValue('NEXT_PUBLIC_AD_ADBUTLER_CONFIG_MOBILE'));
@@ -52,6 +65,7 @@ const config: Feature<AdsBannerFeaturePayload> = (() => {
             mobile: mobileConfig,
           },
         },
+        isSpecifyEnabled,
       });
     }
   } else if (provider !== 'none') {
@@ -71,12 +85,14 @@ const config: Feature<AdsBannerFeaturePayload> = (() => {
             mobile: mobileConfig,
           },
         },
+        isSpecifyEnabled,
       });
     }
     return Object.freeze({
       title,
       isEnabled: true,
       provider,
+      isSpecifyEnabled,
     });
   }
 

@@ -13,6 +13,15 @@ test('custom name tag +@dark-mode', async({ render }) => {
   await expect(component).toHaveScreenshot();
 });
 
+test('cex deposit tag', async({ render }) => {
+  const component = await render(
+    <Box w="200px">
+      <EntityTag data={ addressMetadataMock.cexDepositTag } addressHash="0x1234567890123456789012345678901234567890"/>
+    </Box>,
+  );
+  await expect(component).toHaveScreenshot();
+});
+
 test('warpcast tag', async({ render }) => {
   const component = await render(<Box w="200px"><EntityTag data={ addressMetadataMock.warpcastTag }/></Box>);
   await expect(component).toHaveScreenshot();
@@ -35,6 +44,7 @@ test('tag with link and long name +@dark-mode', async({ render }) => {
 
 test('tag with tooltip +@dark-mode', async({ render, page, mockAssetResponse }) => {
   await mockAssetResponse(addressMetadataMock.tagWithTooltip.meta?.tooltipIcon as string, './playwright/mocks/image_s.jpg');
+  await mockAssetResponse(addressMetadataMock.tagWithTooltip.meta?.tooltipAttributionIcon as string, './playwright/mocks/image_md.jpg');
   const component = await render(<EntityTag data={ addressMetadataMock.tagWithTooltip }/>);
   await component.getByText('BlockscoutHeroes').hover();
   await page.getByText('Blockscout team member').waitFor({ state: 'visible' });

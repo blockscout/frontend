@@ -1,27 +1,26 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { SmartContractVerificationMethod } from 'types/api/contract';
+import type { SmartContractVerificationMethodApi } from 'types/api/contract';
+import type { SmartContractVerificationMethod } from 'types/client/contract';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import { useAppContext } from 'lib/contexts/app';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 import ContractVerificationForm from 'ui/contractVerification/ContractVerificationForm';
 import useFormConfigQuery from 'ui/contractVerification/useFormConfigQuery';
-import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 const ContractVerificationForAddress = () => {
-  const appProps = useAppContext();
   const router = useRouter();
 
   const hash = getQueryParamString(router.query.hash);
   const method = getQueryParamString(router.query.method) as SmartContractVerificationMethod;
 
-  const contractQuery = useApiQuery('contract', {
+  const contractQuery = useApiQuery('general:contract', {
     pathParams: { hash },
     queryOptions: {
       enabled: Boolean(hash),
@@ -59,39 +58,25 @@ const ContractVerificationForAddress = () => {
 
     return (
       <ContractVerificationForm
-        method={ method && configQuery.data.verification_options.includes(method) ? method : undefined }
+        method={ method && configQuery.data.verification_options.includes(method) ? method as SmartContractVerificationMethodApi : undefined }
         config={ configQuery.data }
         hash={ hash }
       />
     );
   })();
 
-  const backLink = React.useMemo(() => {
-    const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/address');
-
-    if (!hasGoBackLink) {
-      return;
-    }
-
-    return {
-      label: 'Back to contract',
-      url: appProps.referrer,
-    };
-  }, [ appProps.referrer ]);
-
   return (
     <>
       <PageTitle
         title="New smart contract verification"
-        backLink={ backLink }
       />
       <AddressEntity
         address={{ hash, is_contract: true }}
         noLink
-        fontFamily="heading"
-        fontSize="lg"
-        fontWeight={ 500 }
+        variant="subheading"
         mb={ 12 }
+        w="min-content"
+        maxW="100%"
       />
       { content }
     </>

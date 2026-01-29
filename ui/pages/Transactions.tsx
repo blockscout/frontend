@@ -1,19 +1,22 @@
+import { Flex } from '@chakra-ui/react';
+import { capitalize } from 'es-toolkit';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { RoutedTab } from 'ui/shared/Tabs/types';
+import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
 import config from 'configs/app';
-import useHasAccount from 'lib/hooks/useHasAccount';
 import useIsMobile from 'lib/hooks/useIsMobile';
-import useNewTxsSocket from 'lib/hooks/useNewTxsSocket';
+import getNetworkValidationActionText from 'lib/networks/getNetworkValidationActionText';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { TX } from 'stubs/tx';
 import { generateListStub } from 'stubs/utils';
+import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
+import AdvancedFilterLink from 'ui/shared/links/AdvancedFilterLink';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
-import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
+import useIsAuth from 'ui/snippets/auth/useIsAuth';
 import TxsStats from 'ui/txs/TxsStats';
 import TxsWatchlist from 'ui/txs/TxsWatchlist';
 import TxsWithFrontendSorting from 'ui/txs/TxsWithFrontendSorting';
@@ -27,17 +30,17 @@ const TAB_LIST_PROPS = {
 const TABS_HEIGHT = 88;
 
 const Transactions = () => {
-  const verifiedTitle = config.chain.verificationType === 'validation' ? 'Validated' : 'Mined';
+  const verifiedTitle = capitalize(getNetworkValidationActionText());
   const router = useRouter();
   const isMobile = useIsMobile();
   const tab = getQueryParamString(router.query.tab);
 
   const txsValidatedQuery = useQueryWithPages({
-    resourceName: 'txs_validated',
+    resourceName: 'general:txs_validated',
     filters: { filter: 'validated' },
     options: {
       enabled: !tab || tab === 'validated',
-      placeholderData: generateListStub<'txs_validated'>(TX, 50, { next_page_params: {
+      placeholderData: generateListStub<'general:txs_validated'>(TX, 50, { next_page_params: {
         block_number: 9005713,
         index: 5,
         items_count: 50,
@@ -47,11 +50,11 @@ const Transactions = () => {
   });
 
   const txsPendingQuery = useQueryWithPages({
-    resourceName: 'txs_pending',
+    resourceName: 'general:txs_pending',
     filters: { filter: 'pending' },
     options: {
       enabled: tab === 'pending',
-      placeholderData: generateListStub<'txs_pending'>(TX, 50, { next_page_params: {
+      placeholderData: generateListStub<'general:txs_pending'>(TX, 50, { next_page_params: {
         inserted_at: '2024-02-05T07:04:47.749818Z',
         hash: '0x00',
         filter: 'pending',
@@ -60,11 +63,11 @@ const Transactions = () => {
   });
 
   const txsWithBlobsQuery = useQueryWithPages({
-    resourceName: 'txs_with_blobs',
+    resourceName: 'general:txs_with_blobs',
     filters: { type: 'blob_transaction' },
     options: {
       enabled: config.features.dataAvailability.isEnabled && tab === 'blob_txs',
-      placeholderData: generateListStub<'txs_with_blobs'>(TX, 50, { next_page_params: {
+      placeholderData: generateListStub<'general:txs_with_blobs'>(TX, 50, { next_page_params: {
         block_number: 10602877,
         index: 8,
         items_count: 50,
@@ -73,10 +76,10 @@ const Transactions = () => {
   });
 
   const txsWatchlistQuery = useQueryWithPages({
-    resourceName: 'txs_watchlist',
+    resourceName: 'general:txs_watchlist',
     options: {
       enabled: tab === 'watchlist',
-      placeholderData: generateListStub<'txs_watchlist'>(TX, 50, { next_page_params: {
+      placeholderData: generateListStub<'general:txs_watchlist'>(TX, 50, { next_page_params: {
         block_number: 9005713,
         index: 5,
         items_count: 50,
@@ -84,20 +87,16 @@ const Transactions = () => {
     },
   });
 
-  const { num, socketAlert } = useNewTxsSocket();
+  const isAuth = useIsAuth();
 
-  const hasAccount = useHasAccount();
-
-  const tabs: Array<RoutedTab> = [
+  const tabs: Array<TabItemRegular> = [
     {
       id: 'validated',
       title: verifiedTitle,
       component:
         <TxsWithFrontendSorting
           query={ txsValidatedQuery }
-          showSocketInfo={ txsValidatedQuery.pagination.page === 1 }
-          socketInfoNum={ num }
-          socketInfoAlert={ socketAlert }
+          socketType="txs_validated"
           top={ TABS_HEIGHT }
         /> },
     {
@@ -107,9 +106,7 @@ const Transactions = () => {
         <TxsWithFrontendSorting
           query={ txsPendingQuery }
           showBlockInfo={ false }
-          showSocketInfo={ txsPendingQuery.pagination.page === 1 }
-          socketInfoNum={ num }
-          socketInfoAlert={ socketAlert }
+          socketType="txs_pending"
           top={ TABS_HEIGHT }
         />
       ),
@@ -120,14 +117,11 @@ const Transactions = () => {
       component: (
         <TxsWithFrontendSorting
           query={ txsWithBlobsQuery }
-          showSocketInfo={ txsWithBlobsQuery.pagination.page === 1 }
-          socketInfoNum={ num }
-          socketInfoAlert={ socketAlert }
           top={ TABS_HEIGHT }
         />
       ),
     },
-    hasAccount ? {
+    isAuth ? {
       id: 'watchlist',
       title: 'Watch list',
       component: <TxsWatchlist query={ txsWatchlistQuery }/>,
@@ -143,6 +137,25 @@ const Transactions = () => {
     }
   })();
 
+  const rightSlot = (() => {
+    if (isMobile) {
+      return null;
+    }
+
+    const isAdvancedFilterEnabled = config.features.advancedFilter.isEnabled;
+
+    if (!isAdvancedFilterEnabled && !pagination.isVisible) {
+      return null;
+    }
+
+    return (
+      <Flex alignItems="center" gap={ 6 }>
+        { isAdvancedFilterEnabled && <AdvancedFilterLink/> }
+        { pagination.isVisible && <Pagination my={ 1 } { ...pagination }/> }
+      </Flex>
+    );
+  })();
+
   return (
     <>
       <PageTitle
@@ -152,10 +165,8 @@ const Transactions = () => {
       <TxsStats/>
       <RoutedTabs
         tabs={ tabs }
-        tabListProps={ isMobile ? undefined : TAB_LIST_PROPS }
-        rightSlot={ (
-          pagination.isVisible && !isMobile ? <Pagination my={ 1 } { ...pagination }/> : null
-        ) }
+        listProps={ isMobile ? undefined : TAB_LIST_PROPS }
+        rightSlot={ rightSlot }
         stickyEnabled={ !isMobile }
       />
     </>

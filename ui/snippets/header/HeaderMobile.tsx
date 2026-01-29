@@ -1,58 +1,64 @@
-import { Box, Flex, useColorModeValue } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import React from 'react';
-import { useInView } from 'react-intersection-observer';
 
 import config from 'configs/app';
-import { useScrollDirection } from 'lib/contexts/scrollDirection';
-import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
-import ProfileMenuMobile from 'ui/snippets/profileMenu/ProfileMenuMobile';
-import SearchBar from 'ui/snippets/searchBar/SearchBar';
-import WalletMenuMobile from 'ui/snippets/walletMenu/WalletMenuMobile';
+import { useIsSticky } from 'toolkit/hooks/useIsSticky';
+import RewardsButton from 'ui/rewards/RewardsButton';
+import NetworkIcon from 'ui/snippets/networkLogo/NetworkIcon';
+import UserProfileMobile from 'ui/snippets/user/profile/UserProfileMobile';
+import UserWalletMobile from 'ui/snippets/user/wallet/UserWalletMobile';
 
+import RollupStageBadge from '../navigation/RollupStageBadge';
+import TestnetBadge from '../navigation/TestnetBadge';
+import SearchBarMobile from '../searchBar/SearchBarMobile';
 import Burger from './Burger';
 
 type Props = {
-  hideSearchBar?: boolean;
-  renderSearchBar?: () => React.ReactNode;
-}
+  hideSearchButton?: boolean;
+  onGoToSearchResults?: (searchTerm: string) => void;
+};
 
-const HeaderMobile = ({ hideSearchBar, renderSearchBar }: Props) => {
-  const bgColor = useColorModeValue('white', 'black');
-  const scrollDirection = useScrollDirection();
-  const { ref, inView } = useInView({ threshold: 1 });
-
-  const searchBar = renderSearchBar ? renderSearchBar() : <SearchBar/>;
+const HeaderMobile = ({ hideSearchButton, onGoToSearchResults }: Props) => {
+  const ref = React.useRef<HTMLDivElement>(null);
+  const isSticky = useIsSticky(ref, 5);
 
   return (
     <Box
       ref={ ref }
-      bgColor={ bgColor }
+      bgColor="bg.primary"
       display={{ base: 'block', lg: 'none' }}
       position="sticky"
       top="-1px"
       left={ 0 }
       zIndex="sticky2"
       pt="1px"
+      height="56px"
     >
       <Flex
         as="header"
         paddingX={ 3 }
         paddingY={ 2 }
-        bgColor={ bgColor }
+        bgColor="bg.primary"
         width="100%"
         alignItems="center"
         transitionProperty="box-shadow"
         transitionDuration="slow"
-        boxShadow={ !inView && scrollDirection === 'down' ? 'md' : 'none' }
+        boxShadow={ isSticky ? 'md' : 'none' }
       >
         <Burger/>
-        <NetworkLogo ml={ 2 } mr="auto"/>
+        <Flex alignItems="center" flexGrow={ 1 } mx={ 2 }>
+          <NetworkIcon/>
+          <TestnetBadge ml={ 2 }/>
+          <RollupStageBadge ml={ 2 }/>
+        </Flex>
         <Flex columnGap={ 2 }>
-          { config.features.account.isEnabled ? <ProfileMenuMobile/> : <Box boxSize={ 10 }/> }
-          { config.features.blockchainInteraction.isEnabled && <WalletMenuMobile/> }
+          { !hideSearchButton && <SearchBarMobile onGoToSearchResults={ onGoToSearchResults }/> }
+          { config.features.rewards.isEnabled && <RewardsButton/> }
+          { (config.features.account.isEnabled && <UserProfileMobile/>) ||
+            (config.features.blockchainInteraction.isEnabled && <UserWalletMobile/>)
+          }
         </Flex>
       </Flex>
-      { !hideSearchBar && searchBar }
     </Box>
   );
 };

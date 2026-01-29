@@ -1,8 +1,12 @@
-import { Box, Flex, useColorMode } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import React from 'react';
 
+import type { ColorThemeId } from 'types/settings';
+
 import * as cookies from 'lib/cookies';
-import { COLOR_THEMES } from 'lib/settings/colorTheme';
+import { COLOR_THEMES, getDefaultColorTheme, getThemeHexWithOverrides } from 'lib/settings/colorTheme';
+import type { ColorMode } from 'toolkit/chakra/color-mode';
+import { useColorMode } from 'toolkit/chakra/color-mode';
 
 import SettingsSample from './SettingsSample';
 
@@ -13,26 +17,31 @@ interface Props {
 const SettingsColorTheme = ({ onSelect }: Props) => {
   const { setColorMode } = useColorMode();
 
-  const [ activeHex, setActiveHex ] = React.useState<string>();
+  const [ activeThemeId, setActiveThemeId ] = React.useState<ColorThemeId>();
 
-  const setTheme = React.useCallback((hex: string) => {
-    const nextTheme = COLOR_THEMES.find((theme) => theme.hex === hex);
+  const setTheme = React.useCallback((themeId: ColorThemeId) => {
+    const nextTheme = COLOR_THEMES.find((theme) => theme.id === themeId);
+    const varValue = getThemeHexWithOverrides(themeId);
 
-    if (!nextTheme) {
+    if (!nextTheme || !varValue) {
       return;
     }
 
     setColorMode(nextTheme.colorMode);
 
     const varName = nextTheme.colorMode === 'light' ? '--chakra-colors-white' : '--chakra-colors-black';
-    window.document.documentElement.style.setProperty(varName, hex);
+    const varNameBg = nextTheme.colorMode === 'light' ? '--chakra-colors-theme-bg-primary-_light' : '--chakra-colors-theme-bg-primary-_dark';
+    window.document.documentElement.style.setProperty(varName, varValue);
+    window.document.documentElement.style.setProperty(varNameBg, varValue);
 
-    cookies.set(cookies.NAMES.COLOR_MODE_HEX, hex);
+    cookies.set(cookies.NAMES.COLOR_MODE, nextTheme.colorMode);
+    cookies.set(cookies.NAMES.COLOR_THEME, themeId);
     window.localStorage.setItem(cookies.NAMES.COLOR_MODE, nextTheme.colorMode);
   }, [ setColorMode ]);
 
   React.useEffect(() => {
-    const cookieColorMode = cookies.get(cookies.NAMES.COLOR_MODE);
+    const cookieColorMode = cookies.get(cookies.NAMES.COLOR_MODE) as ColorMode | undefined;
+    const cookieColorTheme = cookies.get(cookies.NAMES.COLOR_THEME) as ColorThemeId | undefined;
 
     const nextColorMode = (() => {
       if (!cookieColorMode) {
@@ -42,11 +51,10 @@ const SettingsColorTheme = ({ onSelect }: Props) => {
       return cookieColorMode;
     })();
 
-    const colorModeThemes = COLOR_THEMES.filter(theme => theme.colorMode === nextColorMode);
-    const fallbackHex = colorModeThemes[colorModeThemes.length - 1].hex;
-    const cookieHex = cookies.get(cookies.NAMES.COLOR_MODE_HEX) ?? fallbackHex;
-    setTheme(cookieHex);
-    setActiveHex(cookieHex);
+    const nextColorTheme = cookieColorTheme || getDefaultColorTheme(nextColorMode);
+
+    setTheme(nextColorTheme);
+    setActiveThemeId(nextColorTheme);
   // should run only on mount
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ ]);
@@ -54,34 +62,36 @@ const SettingsColorTheme = ({ onSelect }: Props) => {
   const handleSelect = React.useCallback((event: React.MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
 
-    const hex = event.currentTarget.getAttribute('data-value');
+    const themeId = event.currentTarget.getAttribute('data-value') as ColorThemeId | null;
 
-    if (!hex) {
+    if (!themeId) {
       return;
     }
 
-    setTheme(hex);
-    setActiveHex(hex);
+    setTheme(themeId);
+    setActiveThemeId(themeId);
     onSelect?.();
   }, [ setTheme, onSelect ]);
 
-  const activeTheme = COLOR_THEMES.find((theme) => theme.hex === activeHex);
+  const activeTheme = COLOR_THEMES.find((theme) => theme.id === activeThemeId);
 
   return (
     <div>
       <Box fontWeight={ 600 }>Color theme</Box>
-      <Box color="text_secondary" mt={ 1 } mb={ 2 }>{ activeTheme?.label }</Box>
+      <Box color="text.secondary" mt={ 1 } mb={ 2 }>{ activeTheme?.label }</Box>
       <Flex>
-        { COLOR_THEMES.map((theme) => (
-          <SettingsSample
-            key={ theme.label }
-            label={ theme.label }
-            value={ theme.hex }
-            bg={ theme.sampleBg }
-            isActive={ theme.hex === activeHex }
-            onClick={ handleSelect }
-          />
-        )) }
+        { COLOR_THEMES.map((theme) => {
+          return (
+            <SettingsSample
+              key={ theme.label }
+              label={ theme.label }
+              value={ theme.id }
+              bg={ theme.sampleBg }
+              isActive={ theme.id === activeThemeId }
+              onClick={ handleSelect }
+            />
+          );
+        }) }
       </Flex>
     </div>
   );

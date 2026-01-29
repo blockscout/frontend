@@ -13,7 +13,7 @@ interface Props {
 }
 
 const PublicTagsSubmitFieldTags = ({ tagTypes }: Props) => {
-  const { control, formState, register, watch } = useFormContext<FormFields>();
+  const { control, formState, watch } = useFormContext<FormFields>();
   const { fields, insert, remove } = useFieldArray<FormFields, 'tags'>({
     name: 'tags',
     control,
@@ -24,8 +24,9 @@ const PublicTagsSubmitFieldTags = ({ tagTypes }: Props) => {
   const handleAddFieldClick = React.useCallback((index: number) => {
     insert(index + 1, {
       name: '',
-      type: { label: 'Name', value: 'name' },
+      type: [ 'name' ],
       url: undefined,
+      iconUrl: undefined,
       bgColor: undefined,
       textColor: undefined,
       tooltipDescription: undefined,
@@ -47,7 +48,6 @@ const PublicTagsSubmitFieldTags = ({ tagTypes }: Props) => {
             field={ watch(`tags.${ index }`) }
             index={ index }
             tagTypes={ tagTypes }
-            register={ register }
             errors={ errors }
             isDisabled={ isDisabled }
             onAddClick={ fields.length < LIMIT && index === fields.length - 1 ? handleAddFieldClick : undefined }

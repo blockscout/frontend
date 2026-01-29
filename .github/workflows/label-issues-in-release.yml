@@ -49,6 +49,9 @@ on:
 # concurrency:
 #   group: ${{ github.workflow }}__${{ github.job }}__${{ github.ref }}
 #   cancel-in-progress: true
+permissions:
+  contents: read
+  issues: write
 
 jobs:
     run:
@@ -57,7 +60,7 @@ jobs:
         outputs:
             issues: ${{ steps.linked_issues.outputs.result }}
         steps:
-            -   name: Getting tags of the two latestest releases
+            -   name: Getting tags of the two latest releases
                 id: tags
                 uses: actions/github-script@v7
                 env:
@@ -189,9 +192,14 @@ jobs:
                                             merged
                                             closingIssuesReferences(first: 10) {
                                                 nodes {
-                                                number
-                                                title
-                                                closed
+                                                    number
+                                                    title
+                                                    closed
+                                                    labels(first: 5) {
+                                                        nodes {
+                                                            description
+                                                        }
+                                                    }
                                                 }
                                             }
                                             }
@@ -215,6 +223,7 @@ jobs:
 
                             const issues = associatedPullRequests
                                 .nodes
+                                .filter(({ closingIssuesReferences: { nodes: issues } }) => !issues?.some(({ labels }) => labels?.nodes?.some(({ description }) => description.toLowerCase().startsWith('release'))))
                                 .map(({ closingIssuesReferences: { nodes: issues } }) => issues.map(({ number }) => number))
                                 .flat();
 

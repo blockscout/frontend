@@ -3,46 +3,52 @@ import React from 'react';
 
 import * as statsMock from 'mocks/stats/index';
 import { test, expect } from 'playwright/lib';
-import * as pwConfig from 'playwright/utils/config';
 
 import Stats from './Stats';
 
 test.describe('all items', () => {
   let component: Locator;
 
-  test.beforeEach(async({ render, mockApiResponse }) => {
-    await mockApiResponse('stats', statsMock.withBtcLocked);
+  test.beforeEach(async({ render, mockApiResponse, mockEnvs }) => {
+    await mockEnvs([
+      [ 'NEXT_PUBLIC_HOMEPAGE_STATS', '["total_blocks","average_block_time","total_txs","wallet_addresses","gas_tracker","btc_locked"]' ],
+      [ 'NEXT_PUBLIC_STATS_API_HOST', '' ],
+    ]);
+    await mockApiResponse('general:stats', statsMock.withBtcLocked);
     component = await render(<Stats/>);
   });
 
   test('+@mobile +@dark-mode', async() => {
     await expect(component).toHaveScreenshot();
   });
+});
 
-  test.describe('screen xl', () => {
-    test.use({ viewport: pwConfig.viewport.xl });
+test('no gas info', async({ render, mockApiResponse, mockEnvs }) => {
+  await mockEnvs([
+    [ 'NEXT_PUBLIC_STATS_API_HOST', '' ],
+  ]);
+  await mockApiResponse('general:stats', statsMock.withoutGasInfo);
+  const component = await render(<Stats/>);
 
-    test('', async() => {
-      await expect(component).toHaveScreenshot();
-    });
-  });
+  await expect(component).toHaveScreenshot();
 });
 
 test('4 items default view +@mobile -@default', async({ render, mockApiResponse, mockEnvs }) => {
   await mockEnvs([
-    [ 'NEXT_PUBLIC_HOMEPAGE_SHOW_AVG_BLOCK_TIME', 'false' ],
+    [ 'NEXT_PUBLIC_HOMEPAGE_STATS', '["total_txs","gas_tracker","wallet_addresses","total_blocks"]' ],
+    [ 'NEXT_PUBLIC_STATS_API_HOST', '' ],
   ]);
-  await mockApiResponse('stats', statsMock.base);
+  await mockApiResponse('general:stats', statsMock.base);
   const component = await render(<Stats/>);
   await expect(component).toHaveScreenshot();
 });
 
 test('3 items default view +@mobile -@default', async({ render, mockApiResponse, mockEnvs }) => {
   await mockEnvs([
-    [ 'NEXT_PUBLIC_HOMEPAGE_SHOW_AVG_BLOCK_TIME', 'false' ],
-    [ 'NEXT_PUBLIC_GAS_TRACKER_ENABLED', 'false' ],
+    [ 'NEXT_PUBLIC_HOMEPAGE_STATS', '["total_txs","wallet_addresses","total_blocks"]' ],
+    [ 'NEXT_PUBLIC_STATS_API_HOST', '' ],
   ]);
-  await mockApiResponse('stats', statsMock.base);
+  await mockApiResponse('general:stats', statsMock.base);
   const component = await render(<Stats/>);
   await expect(component).toHaveScreenshot();
 });

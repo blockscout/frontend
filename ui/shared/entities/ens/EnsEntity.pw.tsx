@@ -1,22 +1,23 @@
 import React from 'react';
 
 import * as domainMock from 'mocks/ens/domain';
+import { stableHover } from 'playwright/helpers/stableHover';
 import { test, expect } from 'playwright/lib';
 
 import EnsEntity from './EnsEntity';
 
 const name = 'cat.eth';
-const iconSizes = [ 'md', 'lg' ];
+const variants = [ 'subheading', 'content' ] as const;
 
 test.use({ viewport: { width: 180, height: 30 } });
 
-test.describe('icon size', () => {
-  iconSizes.forEach((size) => {
-    test(size, async({ render }) => {
+test.describe('variant', () => {
+  variants.forEach((variant) => {
+    test(`${ variant }`, async({ render }) => {
       const component = await render(
         <EnsEntity
-          name={ name }
-          iconSize={ size }
+          domain={ name }
+          variant={ variant }
         />,
       );
 
@@ -28,7 +29,7 @@ test.describe('icon size', () => {
 test('loading', async({ render }) => {
   const component = await render(
     <EnsEntity
-      name={ name }
+      domain={ name }
       isLoading
     />,
   );
@@ -39,11 +40,11 @@ test('loading', async({ render }) => {
 test('with long name', async({ render }) => {
   const component = await render(
     <EnsEntity
-      name="kitty.kitty.kitty.cat.eth"
+      domain="kitty.kitty.kitty.cat.eth"
     />,
   );
 
-  await component.getByText(name.slice(0, 4)).hover();
+  await stableHover(component.getByText(name.slice(0, 4)));
 
   await expect(component).toHaveScreenshot();
 });
@@ -51,7 +52,7 @@ test('with long name', async({ render }) => {
 test('customization', async({ render }) => {
   const component = await render(
     <EnsEntity
-      name={ name }
+      domain={ name }
       p={ 3 }
       borderWidth="1px"
       borderColor="blue.700"
@@ -61,14 +62,15 @@ test('customization', async({ render }) => {
   await expect(component).toHaveScreenshot();
 });
 
-test.describe('', () => {
+test.describe('tooltip test', () => {
   test.use({ viewport: { width: 300, height: 400 } });
+
   test('with protocol info', async({ render, page, mockAssetResponse }) => {
     await mockAssetResponse(domainMock.ensDomainA.protocol?.icon_url as string, './playwright/mocks/image_s.jpg');
 
     const component = await render(
       <EnsEntity
-        name={ name }
+        domain={ name }
         protocol={ domainMock.protocolA }
       />,
     );

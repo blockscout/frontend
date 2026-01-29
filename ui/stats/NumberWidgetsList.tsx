@@ -10,7 +10,7 @@ import DataFetchAlert from '../shared/DataFetchAlert';
 const UNITS_WITHOUT_SPACE = [ 's' ];
 
 const NumberWidgetsList = () => {
-  const { data, isPlaceholderData, isError } = useApiQuery('stats_counters', {
+  const { data, isPlaceholderData, isError } = useApiQuery('stats:counters', {
     queryOptions: {
       placeholderData: { counters: Array(10).fill(STATS_COUNTER) },
     },
@@ -22,24 +22,28 @@ const NumberWidgetsList = () => {
 
   return (
     <Grid
-      gridTemplateColumns={{ base: 'repeat(2, 1fr)', lg: 'repeat(4, 1fr)' }}
-      gridGap={ 4 }
+      gridTemplateColumns={{ base: 'repeat(2, 50%)', lg: 'repeat(4, 25%)' }}
+      gridGap={{ base: 1, lg: 2 }}
     >
       {
         data?.counters?.map(({ id, title, value, units, description }, index) => {
 
           let unitsStr = '';
-          if (UNITS_WITHOUT_SPACE.includes(units)) {
+          if (units && UNITS_WITHOUT_SPACE.includes(units)) {
             unitsStr = units;
           } else if (units) {
             unitsStr = ' ' + units;
           }
 
+          const valueNum = Number(value);
+          const maximumFractionDigits = valueNum < 10 ** -3 ? undefined : 3;
+
           return (
             <StatsWidget
               key={ id + (isPlaceholderData ? index : '') }
               label={ title }
-              value={ `${ Number(value).toLocaleString(undefined, { maximumFractionDigits: 3, notation: 'compact' }) }${ unitsStr }` }
+              value={ Number(value).toLocaleString(undefined, { maximumFractionDigits, notation: 'compact' }) }
+              valuePostfix={ unitsStr }
               isLoading={ isPlaceholderData }
               hint={ description }
             />

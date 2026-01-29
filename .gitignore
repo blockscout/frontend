@@ -13,8 +13,16 @@
 /out/
 /public/assets/envs.js
 /public/assets/configs
+/public/assets/multichain
+/public/assets/essential-dapps
 /public/icons/sprite.svg
+/public/icons/sprite.*.svg
+/public/icons/registry.json
 /public/icons/README.md
+/public/static/og_image.png
+/public/sitemap.xml
+/public/robots.txt
+/public/llms.txt
 /analyze
 
 # production
@@ -25,6 +33,7 @@
 *.pem
 .tools
 grafana
+.zed
 
 # debug
 npm-debug.log*
@@ -42,9 +51,6 @@ yarn-error.log*
 
 .eslintcache
 
-# Sentry
-.sentryclirc
-
 **.decrypted~**
 /test-results/
 /playwright-report/
@@ -54,3 +60,6 @@ yarn-error.log*
 /playwright/affected-tests.txt
 
 **.dec**
+# build outputs
+/tools/preset-sync/index.js
+/toolkit/package/dist

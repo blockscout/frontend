@@ -1,8 +1,11 @@
 import type { AddressMetadataTagApi } from './addressMetadata';
+import type { SmartContractProxyType } from './contract';
+import type { TokenReputation } from './token';
 
 export interface AddressImplementation {
-  address: string;
-  name: string | null;
+  address_hash: string;
+  filecoin_robust_address?: string | null;
+  name?: string | null;
 }
 
 export interface AddressTag {
@@ -16,6 +19,30 @@ export interface WatchlistName {
   display_name: string;
 }
 
+export type AddressFilecoinParams = {
+  actor_type?: FilecoinActorType;
+  id?: string | null;
+  robust?: string | null;
+};
+
+export type FilecoinActorType =
+  'account' |
+  'cron' |
+  'datacap' |
+  'eam' |
+  'ethaccount' |
+  'evm' |
+  'init' |
+  'market' |
+  'miner' |
+  'multisig' |
+  'paych' |
+  'placeholder' |
+  'power' |
+  'reward' |
+  'system' |
+  'verifreg';
+
 export interface UserTags {
   private_tags: Array<AddressTag> | null;
   watchlist_names: Array<WatchlistName> | null;
@@ -24,9 +51,7 @@ export interface UserTags {
 
 export type AddressParamBasic = {
   hash: string;
-  // API doesn't return hash in this model yet
-  // will be fixed in the future releases
-  implementations: Array<Omit<AddressImplementation, 'address'>> | null;
+  implementations: Array<AddressImplementation> | null;
   name: string | null;
   is_contract: boolean;
   is_verified: boolean | null;
@@ -35,6 +60,9 @@ export type AddressParamBasic = {
     reputation: number | null;
     tags: Array<AddressMetadataTagApi>;
   } | null;
-}
+  filecoin?: AddressFilecoinParams;
+  proxy_type?: SmartContractProxyType | null;
+  reputation?: TokenReputation;
+};
 
 export type AddressParam = UserTags & AddressParamBasic;

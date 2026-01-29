@@ -7,10 +7,9 @@ import { STORAGE_KEY, STORAGE_LIMIT } from './consts';
 
 export interface GrowthBookFeatures {
   test_value: string;
-  action_button_exp: boolean;
 }
 
-export const growthBook = (() => {
+export const initGrowthBook = (uuid: string) => {
   const feature = config.features.growthBook;
 
   if (!feature.isEnabled) {
@@ -22,7 +21,7 @@ export const growthBook = (() => {
     clientKey: feature.clientKey,
     enableDevMode: config.app.isDev,
     attributes: {
-      id: mixpanel.getUuid(),
+      id: uuid,
       chain_id: config.chain.id,
     },
     trackingCallback: (experiment, result) => {
@@ -38,7 +37,7 @@ export const growthBook = (() => {
       });
     },
   });
-})();
+};
 
 function getStorageValue(): Array<unknown> | undefined {
   const item = window.localStorage.getItem(STORAGE_KEY);

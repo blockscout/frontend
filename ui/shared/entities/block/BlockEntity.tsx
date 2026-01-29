@@ -1,16 +1,23 @@
 import { chakra } from '@chakra-ui/react';
-import _omit from 'lodash/omit';
 import React from 'react';
 
-import { route } from 'nextjs-routes';
+import { route } from 'nextjs/routes';
 
+import config from 'configs/app';
+import { useMultichainContext } from 'lib/contexts/multichain';
 import * as EntityBase from 'ui/shared/entities/base/components';
+import getChainTooltipText from 'ui/shared/externalChains/getChainTooltipText';
 
-type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'hash' | 'number'>;
+import { distributeEntityProps } from '../base/utils';
+
+type LinkProps = EntityBase.LinkBaseProps & Partial<Pick<EntityProps, 'hash' | 'number'>>;
 
 const Link = chakra((props: LinkProps) => {
   const heightOrHash = props.hash ?? String(props.number);
-  const defaultHref = route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: heightOrHash } });
+  const defaultHref = route(
+    { pathname: '/block/[height_or_hash]', query: { height_or_hash: heightOrHash } },
+    { chain: props.chain, external: props.external },
+  );
 
   return (
     <EntityBase.Link
@@ -22,15 +29,38 @@ const Link = chakra((props: LinkProps) => {
   );
 });
 
-type IconProps = Omit<EntityBase.IconBaseProps, 'name'> & {
-  name?: EntityBase.IconBaseProps['name'];
-};
+type IconProps = EntityBase.IconBaseProps & Pick<EntityProps, 'isPendingUpdate'>;
 
 const Icon = (props: IconProps) => {
+
+  const isPendingUpdate = props.isPendingUpdate && config.UI.views.block.pendingUpdateAlertEnabled;
+
+  const name = (() => {
+    if ('name' in props) {
+      return props.name;
+    }
+
+    return isPendingUpdate ? 'status/warning' : 'block';
+  })();
+
+  const hint = (() => {
+    if ('hint' in props) {
+      return props.hint;
+    }
+
+    if (props.chain && props.shield !== false) {
+      return getChainTooltipText(props.chain, 'Block on ');
+    }
+
+    return isPendingUpdate ? 'Block is being re-synced. Details may be incomplete until the update is finished.' : undefined;
+  })();
+
   return (
     <EntityBase.Icon
       { ...props }
-      name={ props.name ?? 'block_slim' }
+      name={ name }
+      shield={ props.shield ?? (props.chain ? { src: props.chain.logo } : undefined) }
+      hint={ hint }
     />
   );
 };
@@ -50,20 +80,21 @@ const Content = chakra((props: ContentProps) => {
 const Container = EntityBase.Container;
 
 export interface EntityProps extends EntityBase.EntityBaseProps {
-  number: number;
+  number: number | string;
   hash?: string;
+  isPendingUpdate?: boolean;
 }
 
 const BlockEntity = (props: EntityProps) => {
-  const linkProps = _omit(props, [ 'className' ]);
-  const partsProps = _omit(props, [ 'className', 'onClick' ]);
+  const multichainContext = useMultichainContext();
+  const partsProps = distributeEntityProps(props, multichainContext);
+
+  const content = <Content { ...partsProps.content }/>;
 
   return (
-    <Container className={ props.className }>
-      <Icon { ...partsProps }/>
-      <Link { ...linkProps }>
-        <Content { ...partsProps }/>
-      </Link>
+    <Container { ...partsProps.container }>
+      <Icon { ...partsProps.icon } isPendingUpdate={ props.isPendingUpdate }/>
+      { props.noLink ? content : <Link { ...partsProps.link }>{ content }</Link> }
     </Container>
   );
 };

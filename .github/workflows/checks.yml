@@ -18,6 +18,10 @@ on:
 #   group: ${{ github.workflow }}__${{ github.job }}__${{ github.ref }}
 #   cancel-in-progress: true
 
+permissions:
+  contents: read
+  pull-requests: write
+
 jobs:
   code_quality:
     name: Code quality
@@ -30,7 +34,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 20.11.0
+          node-version: 22.14.0
           cache: 'yarn'
 
       - name: Cache node_modules
@@ -43,13 +47,80 @@ jobs:
   
       - name: Install dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        run: yarn --frozen-lockfile --ignore-optional
+        run: yarn --frozen-lockfile
+
+      - name: Generate Chakra types
+        if: steps.cache-node-modules.outputs.cache-hit == 'true'
+        run: yarn chakra:typegen
 
       - name: Run ESLint
         run: yarn lint:eslint
 
       - name: Compile TypeScript
         run: yarn lint:tsc
+
+  toolkit_build_check:
+    name: Toolkit build check
+    needs: [ code_quality ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.14.0
+          cache: 'yarn'
+
+      - name: Cache node_modules
+        uses: actions/cache@v4
+        id: cache-node-modules
+        with:
+          path: |
+            node_modules
+          key: node_modules-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+      
+      - name: Install project dependencies
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: yarn --frozen-lockfile
+
+      - name: Generate Chakra types
+        if: steps.cache-node-modules.outputs.cache-hit == 'true'
+        run: yarn chakra:typegen
+
+      - name: Install package dependencies
+        run: |
+          cd ./toolkit/package
+          yarn --frozen-lockfile
+
+      - name: Type check the package
+        run: |
+          cd ./toolkit/package
+          yarn typecheck
+
+      - name: Build the package
+        run: |
+          cd ./toolkit/package
+          yarn build
+
+      - name: Verify build output
+        run: |
+          cd ./toolkit/package
+          if [ ! -d "dist" ]; then
+            echo "Build failed: dist directory not found"
+            exit 1
+          fi
+          
+          if [ ! -f "dist/index.js" ]; then
+            echo "Build failed: dist/index.js not found"
+            exit 1
+          fi
+          
+          if [ ! -f "dist/index.d.ts" ]; then
+            echo "Build failed: dist/index.d.ts not found"
+            exit 1
+          fi
 
   envs_validation:
     name: ENV variables validation
@@ -62,7 +133,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 20.11.0
+          node-version: 22.14.0
           cache: 'yarn'
 
       - name: Cache node_modules
@@ -75,10 +146,14 @@ jobs:
     
       - name: Install dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        run: yarn --frozen-lockfile --ignore-optional
+        run: yarn --frozen-lockfile
+
+      - name: Generate Chakra types
+        if: steps.cache-node-modules.outputs.cache-hit == 'true'
+        run: yarn chakra:typegen
 
       - name: Install script dependencies
-        run: cd ./deploy/tools/envs-validator && yarn --frozen-lockfile --ignore-optional
+        run: cd ./deploy/tools/envs-validator && yarn --frozen-lockfile
 
       - name: Run validation tests
         run: |
@@ -88,8 +163,8 @@ jobs:
           echo "exitcode=$exitcode" >> $GITHUB_OUTPUT
           exit "$exitcode"
 
-  jest_tests:
-    name: Jest tests
+  vitest_tests:
+    name: Unit tests
     needs: [ code_quality, envs_validation ]
     runs-on: ubuntu-latest
     steps:
@@ -101,7 +176,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 20.11.0
+          node-version: 22.14.0
           cache: 'yarn'
 
       - name: Cache node_modules
@@ -114,10 +189,14 @@ jobs:
     
       - name: Install dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        run: yarn --frozen-lockfile --ignore-optional
+        run: yarn --frozen-lockfile
 
-      - name: Run Jest
-        run: yarn test:jest ${{ github.event_name == 'pull_request' && '--changedSince=origin/main' || '' }} --passWithNoTests
+      - name: Generate Chakra types
+        if: steps.cache-node-modules.outputs.cache-hit == 'true'
+        run: yarn chakra:typegen
+
+      - name: Run Vitest
+        run: yarn test:vitest ${{ github.event_name == 'pull_request' && '--changed=origin/main' || '' }} --passWithNoTests
 
   pw_affected_tests:
     name: Resolve affected Playwright tests
@@ -133,7 +212,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 20.11.0
+          node-version: 22.14.0
           cache: 'yarn'
 
       - name: Cache node_modules
@@ -146,7 +225,11 @@ jobs:
       
       - name: Install dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        run: yarn --frozen-lockfile --ignore-optional
+        run: yarn --frozen-lockfile
+
+      - name: Generate Chakra types
+        if: steps.cache-node-modules.outputs.cache-hit == 'true'
+        run: yarn chakra:typegen
 
       - name: Install script dependencies 
         run: cd ./deploy/tools/affected-tests && yarn --frozen-lockfile
@@ -171,7 +254,7 @@ jobs:
       (needs.pw_affected_tests.result == 'success' || needs.pw_affected_tests.result == 'skipped') 
     runs-on: ubuntu-latest
     container:
-      image: mcr.microsoft.com/playwright:v1.41.1-focal
+      image: mcr.microsoft.com/playwright:v1.57.0-noble
 
     strategy:
       fail-fast: false
@@ -190,7 +273,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 20.11.0
+          node-version: 22.14.0
           cache: 'yarn'
 
       - name: Cache node_modules
@@ -203,7 +286,11 @@ jobs:
     
       - name: Install dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        run: yarn --frozen-lockfile --ignore-optional
+        run: yarn --frozen-lockfile
+
+      - name: Generate Chakra types
+        if: steps.cache-node-modules.outputs.cache-hit == 'true'
+        run: yarn chakra:typegen
 
       - name: Download affected tests list
         if: ${{ needs.pw_affected_tests.result == 'success' }}

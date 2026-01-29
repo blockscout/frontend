@@ -1,0 +1,64 @@
+name: Publish toolkit package to NPM
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Package version
+        type: string
+        required: true
+  workflow_call:
+    inputs:
+      version:
+        description: Package version
+        type: string
+        required: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    name: Publish package to NPM registry
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      # Also it will setup .npmrc file to publish to npm
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.14.0'
+          registry-url: 'https://registry.npmjs.org'
+
+      # Ensure npm 11.5.1 is installed
+      - name: Update npm
+        run: npm install -g npm@11.5.1
+
+      - name: Update package version
+        run: |
+          cd ./toolkit/package
+          npm version ${{ inputs.version }}
+    
+      - name: Build the package
+        run: |
+          yarn
+          cd ./toolkit/package
+          yarn
+          yarn build
+    
+      - name: Publish to NPM registry
+        run: |
+          cd ./toolkit/package
+          # Determine npm tag based on version
+          if [[ "${{ inputs.version }}" =~ ^v?[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            # Stable release (e.g., 1.7.2 or v1.7.2)
+            npm publish --access public --tag latest
+          else
+            # Pre-release (e.g., 1.7.2-alpha.1 or v1.7.2-alpha.1)
+            npm publish --access public --tag beta
+          fi
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

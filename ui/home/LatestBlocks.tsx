@@ -1,6 +1,6 @@
-import { Box, Heading, Flex, Text, VStack, Skeleton } from '@chakra-ui/react';
+import { chakra, Box, Flex, Text, VStack } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
-import { AnimatePresence } from 'framer-motion';
+import { upperFirst } from 'es-toolkit';
 import React from 'react';
 
 import type { SocketMessage } from 'lib/socket/types';
@@ -10,13 +10,18 @@ import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
+import useInitialList from 'lib/hooks/useInitialList';
 import useIsMobile from 'lib/hooks/useIsMobile';
-import { nbsp } from 'lib/html-entities';
+import getNetworkUtilizationParams from 'lib/networks/getNetworkUtilizationParams';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import { BLOCK } from 'stubs/block';
 import { HOMEPAGE_STATS } from 'stubs/stats';
-import LinkInternal from 'ui/shared/links/LinkInternal';
+import { Heading } from 'toolkit/chakra/heading';
+import { Link } from 'toolkit/chakra/link';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { Tooltip } from 'toolkit/chakra/tooltip';
+import { nbsp } from 'toolkit/utils/htmlEntities';
 
 import LatestBlocksItem from './LatestBlocksItem';
 
@@ -29,14 +34,19 @@ const LatestBlocks = () => {
   } else {
     blocksMaxCount = isMobile ? 2 : 3;
   }
-  const { data, isPlaceholderData, isError } = useApiQuery('homepage_blocks', {
+  const { data, isPlaceholderData, isError } = useApiQuery('general:homepage_blocks', {
     queryOptions: {
       placeholderData: Array(blocksMaxCount).fill(BLOCK),
     },
   });
+  const initialList = useInitialList({
+    data: data ?? [],
+    idFn: (block) => block.height,
+    enabled: !isPlaceholderData,
+  });
 
   const queryClient = useQueryClient();
-  const statsQueryResult = useApiQuery('stats', {
+  const statsQueryResult = useApiQuery('general:stats', {
     queryOptions: {
       refetchOnMount: false,
       placeholderData: HOMEPAGE_STATS,
@@ -44,7 +54,7 @@ const LatestBlocks = () => {
   });
 
   const handleNewBlockMessage: SocketMessage.NewBlock['handler'] = React.useCallback((payload) => {
-    queryClient.setQueryData(getResourceKey('homepage_blocks'), (prevData: Array<Block> | undefined) => {
+    queryClient.setQueryData(getResourceKey('general:homepage_blocks'), (prevData: Array<Block> | undefined) => {
 
       const newData = prevData ? [ ...prevData ] : [];
 
@@ -69,7 +79,7 @@ const LatestBlocks = () => {
   let content;
 
   if (isError) {
-    content = <Text>No data. Please reload page.</Text>;
+    content = <Text>No data. Please reload the page.</Text>;
   }
 
   if (data) {
@@ -77,36 +87,45 @@ const LatestBlocks = () => {
 
     content = (
       <>
-        <VStack spacing={ 2 } mb={ 3 } overflow="hidden" alignItems="stretch">
-          <AnimatePresence initial={ false } >
-            { dataToShow.map(((block, index) => (
-              <LatestBlocksItem
-                key={ block.height + (isPlaceholderData ? String(index) : '') }
-                block={ block }
-                isLoading={ isPlaceholderData }
-              />
-            ))) }
-          </AnimatePresence>
+        <VStack gap={ 2 } mb={ 3 } overflow="hidden" alignItems="stretch">
+          { dataToShow.map(((block, index) => (
+            <LatestBlocksItem
+              key={ block.height + (isPlaceholderData ? String(index) : '') }
+              block={ block }
+              isLoading={ isPlaceholderData }
+              animation={ initialList.getAnimationProp(block) }
+            />
+          ))) }
         </VStack>
         <Flex justifyContent="center">
-          <LinkInternal fontSize="sm" href={ route({ pathname: '/blocks' }) }>View all blocks</LinkInternal>
+          <Link textStyle="sm" href={ route({ pathname: '/blocks' }) }>View all blocks</Link>
         </Flex>
       </>
     );
   }
 
+  const networkUtilization = getNetworkUtilizationParams(statsQueryResult.data?.network_utilization_percentage ?? 0);
+
   return (
     <Box width={{ base: '100%', lg: '280px' }} flexShrink={ 0 }>
-      <Heading as="h4" size="sm">Latest blocks</Heading>
+      <Heading level="3">Latest blocks</Heading>
       { statsQueryResult.data?.network_utilization_percentage !== undefined && (
-        <Skeleton isLoaded={ !statsQueryResult.isPlaceholderData } mt={ 1 } display="inline-block">
-          <Text as="span" fontSize="sm">
-              Network utilization:{ nbsp }
+        <Skeleton loading={ statsQueryResult.isPlaceholderData } mt={ 2 } display="inline-block" textStyle="sm">
+          <Text as="span">
+            Network utilization:{ nbsp }
           </Text>
-          <Text as="span" fontSize="sm" color="blue.400" fontWeight={ 700 }>
-            { statsQueryResult.data?.network_utilization_percentage.toFixed(2) }%
-          </Text>
+          <Tooltip content={ `${ upperFirst(networkUtilization.load) } load` }>
+            <Text as="span" color={ networkUtilization.color } fontWeight={ 700 }>
+              { statsQueryResult.data?.network_utilization_percentage.toFixed(2) }%
+            </Text>
+          </Tooltip>
         </Skeleton>
+      ) }
+      { statsQueryResult.data?.celo && (
+        <Box whiteSpace="pre-wrap" textStyle="sm" mt={ 2 }>
+          <span>Current epoch: </span>
+          <chakra.span fontWeight={ 700 }>#{ statsQueryResult.data.celo.epoch_number }</chakra.span>
+        </Box>
       ) }
       <Box mt={ 3 }>
         { content }

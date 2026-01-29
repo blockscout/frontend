@@ -1,75 +1,45 @@
-import { Text, Flex, Box, Skeleton, useColorModeValue } from '@chakra-ui/react';
-import type { UseQueryResult } from '@tanstack/react-query';
+import { Text, Flex, Box } from '@chakra-ui/react';
 import React from 'react';
 
-import type { HomeStats } from 'types/api/stats';
+import type { TChainIndicator } from './types';
 import type { ChainIndicatorId } from 'types/homepage';
 
-import type { ResourceError } from 'lib/api/resources';
-import useIsMobile from 'lib/hooks/useIsMobile';
-import IconSvg from 'ui/shared/IconSvg';
-
+import { Skeleton } from 'toolkit/chakra/skeleton';
 interface Props {
-  id: ChainIndicatorId;
-  title: string;
-  value: (stats: HomeStats) => string;
-  valueDiff?: (stats?: HomeStats) => number | null | undefined;
-  icon: React.ReactNode;
+  indicator: TChainIndicator;
   isSelected: boolean;
   onClick: (id: ChainIndicatorId) => void;
-  stats: UseQueryResult<HomeStats, ResourceError<unknown>>;
+  isLoading: boolean;
 }
 
-const ChainIndicatorItem = ({ id, title, value, valueDiff, icon, isSelected, onClick, stats }: Props) => {
-  const isMobile = useIsMobile();
-
-  const activeBgColorDesktop = useColorModeValue('white', 'gray.900');
-  const activeBgColorMobile = useColorModeValue('white', 'black');
-  const activeBgColor = isMobile ? activeBgColorMobile : activeBgColorDesktop;
-
+const ChainIndicatorItem = ({ indicator, isSelected, onClick, isLoading }: Props) => {
   const handleClick = React.useCallback(() => {
-    onClick(id);
-  }, [ id, onClick ]);
+    onClick(indicator.id);
+  }, [ indicator.id, onClick ]);
 
   const valueContent = (() => {
-    if (isMobile) {
-      return null;
+    if (indicator.value.includes('N/A')) {
+      return <Text color="text.secondary" fontWeight={ 400 }>no data</Text>;
     }
 
-    if (stats.isPlaceholderData) {
-      return (
-        <Skeleton
-          h={ 3 }
-          w="70px"
-          my={ 1.5 }
-          // ssr: isMobile = undefined, isLoading = true
-          display={{ base: 'none', lg: 'block' }}
-        />
-      );
-    }
-
-    if (!stats.data) {
-      return <Text variant="secondary" fontWeight={ 400 }>no data</Text>;
-    }
-
-    return <Text variant="secondary" fontWeight={ 600 }>{ value(stats.data) }</Text>;
+    return (
+      <Skeleton loading={ isLoading } fontWeight={ 600 } minW="30px">
+        { indicator.value }
+      </Skeleton>
+    );
   })();
 
   const valueDiffContent = (() => {
-    if (isMobile || !valueDiff) {
-      return null;
-    }
-    const diff = valueDiff(stats.data);
-    if (diff === undefined || diff === null) {
+    if (indicator.valueDiff === undefined) {
       return null;
     }
 
-    const diffColor = diff >= 0 ? 'green.500' : 'red.500';
+    const diffColor = indicator.valueDiff >= 0 ? 'green.500' : 'red.500';
 
     return (
-      <Skeleton isLoaded={ !stats.isPlaceholderData } ml={ 3 } display="flex" alignItems="center" color={ diffColor }>
-        <IconSvg name="up" boxSize={ 5 } mr={ 1 } transform={ diff < 0 ? 'rotate(180deg)' : 'rotate(0)' }/>
-        <Text color={ diffColor } fontWeight={ 600 }>{ diff }%</Text>
+      <Skeleton loading={ isLoading } ml={ 1 } display="flex" alignItems="center" color={ diffColor }>
+        <span>{ indicator.valueDiff >= 0 ? '+' : '-' }</span>
+        <Text color={ diffColor } fontWeight={ 600 }>{ Math.abs(indicator.valueDiff) }%</Text>
       </Skeleton>
     );
   })();
@@ -77,25 +47,28 @@ const ChainIndicatorItem = ({ id, title, value, valueDiff, icon, isSelected, onC
   return (
     <Flex
       alignItems="center"
-      columnGap={ 3 }
-      px={ 4 }
-      py={ 2 }
+      columnGap={ 2 }
+      flexGrow={{ base: 0, lg: 1 }}
+      px={{ base: '6px', lg: 2 }}
+      py="6px"
       as="li"
-      borderRadius="md"
+      borderRadius="base"
       cursor="pointer"
+      color={ isSelected ? 'text.secondary' : 'link.primary' }
+      bgColor={ isSelected ? 'bg.primary' : undefined }
       onClick={ handleClick }
-      bgColor={ isSelected ? activeBgColor : 'inherit' }
-      boxShadow={ isSelected ? 'lg' : 'none' }
-      zIndex={ isSelected ? 1 : 'initial' }
+      fontSize="xs"
+      fontWeight={ 500 }
       _hover={{
-        activeBgColor,
+        bgColor: 'bg.primary',
+        color: isSelected ? 'text.secondary' : 'hover',
         zIndex: 1,
       }}
     >
-      { icon }
-      <Box>
-        <Text fontFamily="heading" fontWeight={ 500 }>{ title }</Text>
-        <Flex alignItems="center">
+      { indicator.icon }
+      <Box display={{ base: 'none', lg: 'block' }}>
+        <span>{ indicator.titleShort || indicator.title }</span>
+        <Flex alignItems="center" color="text.primary">
           { valueContent }
           { valueDiffContent }
         </Flex>

@@ -1,67 +1,69 @@
-import { Td, Tr, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ShibariumDepositsItem } from 'types/api/shibarium';
 
 import config from 'configs/app';
-import dayjs from 'lib/date/dayjs';
+import { TableCell, TableRow } from 'toolkit/chakra/table';
 import AddressStringOrParam from 'ui/shared/entities/address/AddressStringOrParam';
 import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 const feature = config.features.rollup;
 
- type Props = { item: ShibariumDepositsItem; isLoading?: boolean };
+type Props = { item: ShibariumDepositsItem; isLoading?: boolean };
 
 const DepositsTableItem = ({ item, isLoading }: Props) => {
-  const timeAgo = dayjs(item.timestamp).fromNow();
 
   if (!(feature.isEnabled && feature.type === 'shibarium')) {
     return null;
   }
 
   return (
-    <Tr>
-      <Td verticalAlign="middle">
+    <TableRow>
+      <TableCell verticalAlign="middle">
         <BlockEntityL1
           number={ item.l1_block_number }
           isLoading={ isLoading }
-          fontSize="sm"
-          lineHeight={ 5 }
+          textStyle="sm"
           fontWeight={ 600 }
         />
-      </Td>
-      <Td verticalAlign="middle">
+      </TableCell>
+      <TableCell verticalAlign="middle">
         <TxEntityL1
           isLoading={ isLoading }
           hash={ item.l1_transaction_hash }
           truncation="constant_long"
-          fontSize="sm"
-          lineHeight={ 5 }
+          textStyle="sm"
+          noCopy
         />
-      </Td>
-      <Td verticalAlign="middle">
+      </TableCell>
+      <TableCell verticalAlign="middle">
         <TxEntity
           isLoading={ isLoading }
           hash={ item.l2_transaction_hash }
-          fontSize="sm"
-          lineHeight={ 5 }
+          textStyle="sm"
           truncation="constant_long"
         />
-      </Td>
-      <Td verticalAlign="middle">
+      </TableCell>
+      <TableCell verticalAlign="middle">
         <AddressStringOrParam
           address={ item.user }
           isLoading={ isLoading }
           truncation="constant"
           noCopy
         />
-      </Td>
-      <Td verticalAlign="middle" pr={ 12 }>
-        <Skeleton isLoaded={ !isLoading } color="text_secondary" display="inline-block"><span>{ timeAgo }</span></Skeleton>
-      </Td>
-    </Tr>
+      </TableCell>
+      <TableCell verticalAlign="middle" pr={ 12 }>
+        <TimeWithTooltip
+          timestamp={ item.timestamp }
+          isLoading={ isLoading }
+          color="text.secondary"
+          display="inline-block"
+        />
+      </TableCell>
+    </TableRow>
   );
 };
 

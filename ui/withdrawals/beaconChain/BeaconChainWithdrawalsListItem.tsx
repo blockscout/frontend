@@ -1,4 +1,3 @@
-import { Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import type { AddressWithdrawalsItem } from 'types/api/address';
@@ -6,12 +5,12 @@ import type { BlockWithdrawalsItem } from 'types/api/block';
 import type { WithdrawalsItem } from 'types/api/withdrawals';
 
 import config from 'configs/app';
-import dayjs from 'lib/date/dayjs';
-import { currencyUnits } from 'lib/units';
-import CurrencyValue from 'ui/shared/CurrencyValue';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
+import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 const feature = config.features.beaconChain;
 
@@ -36,12 +35,12 @@ const BeaconChainWithdrawalsListItem = ({ item, isLoading, view }: Props) => {
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Index</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <Skeleton isLoaded={ !isLoading } display="inline-block">{ item.index }</Skeleton>
+        <Skeleton loading={ isLoading } display="inline-block">{ item.index }</Skeleton>
       </ListItemMobileGrid.Value>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Validator index</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <Skeleton isLoaded={ !isLoading } display="inline-block">{ item.validator_index }</Skeleton>
+        <Skeleton loading={ isLoading } display="inline-block">{ item.validator_index }</Skeleton>
       </ListItemMobileGrid.Value>
 
       { view !== 'block' && (
@@ -51,8 +50,7 @@ const BeaconChainWithdrawalsListItem = ({ item, isLoading, view }: Props) => {
             <BlockEntity
               number={ item.block_number }
               isLoading={ isLoading }
-              fontSize="sm"
-              lineHeight={ 5 }
+              textStyle="sm"
             />
           </ListItemMobileGrid.Value>
         </>
@@ -74,12 +72,16 @@ const BeaconChainWithdrawalsListItem = ({ item, isLoading, view }: Props) => {
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>Age</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
-            <Skeleton isLoaded={ !isLoading } display="inline-block">{ dayjs(item.timestamp).fromNow() }</Skeleton>
+            <TimeWithTooltip
+              timestamp={ item.timestamp }
+              isLoading={ isLoading }
+              display="inline-block"
+            />
           </ListItemMobileGrid.Value>
 
           <ListItemMobileGrid.Label isLoading={ isLoading }>Value</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
-            <CurrencyValue value={ item.amount } currency={ currencyUnits.ether } isLoading={ isLoading }/>
+            <NativeCoinValue amount={ item.amount } loading={ isLoading }/>
           </ListItemMobileGrid.Value>
         </>
       ) }

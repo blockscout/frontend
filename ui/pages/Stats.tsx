@@ -2,6 +2,7 @@ import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
+import useEtherscanRedirects from 'lib/router/useEtherscanRedirects';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 import ChartsWidgetsList from '../stats/ChartsWidgetsList';
@@ -20,9 +21,10 @@ const Stats = () => {
     handleIntervalChange,
     handleFilterChange,
     displayedCharts,
-    filterQuery,
     initialFilterQuery,
   } = useStats();
+
+  useEtherscanRedirects();
 
   return (
     <>
@@ -48,12 +50,13 @@ const Stats = () => {
       </Box>
 
       <ChartsWidgetsList
-        filterQuery={ filterQuery }
         initialFilterQuery={ initialFilterQuery }
         isError={ isError }
         isPlaceholderData={ isPlaceholderData }
         charts={ displayedCharts }
         interval={ interval }
+        sections={ sections }
+        selectedSectionId={ currentSection }
       />
     </>
   );

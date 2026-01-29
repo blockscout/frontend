@@ -1,55 +1,33 @@
-import { Link } from '@chakra-ui/react';
-import { useQueryClient } from '@tanstack/react-query';
+import { createListCollection } from '@chakra-ui/react';
 import React from 'react';
-import type { ControllerRenderProps } from 'react-hook-form';
-import { useFormContext, Controller } from 'react-hook-form';
 
 import type { FormFields } from '../types';
-import type { SmartContractVerificationConfig } from 'types/api/contract';
+import type { SmartContractVerificationConfig } from 'types/client/contract';
 
-import { getResourceKey } from 'lib/api/useApiQuery';
-import useIsMobile from 'lib/hooks/useIsMobile';
-import FancySelect from 'ui/shared/FancySelect/FancySelect';
+import { Link } from 'toolkit/chakra/link';
+import { FormFieldSelect } from 'toolkit/components/forms/fields/FormFieldSelect';
 
 import ContractVerificationFormRow from '../ContractVerificationFormRow';
 
 interface Props {
   isVyper?: boolean;
+  config: SmartContractVerificationConfig;
 }
 
-const ContractVerificationFieldEvmVersion = ({ isVyper }: Props) => {
-  const { formState, control } = useFormContext<FormFields>();
-  const isMobile = useIsMobile();
-  const queryClient = useQueryClient();
-  const config = queryClient.getQueryData<SmartContractVerificationConfig>(getResourceKey('contract_verification_config'));
+const ContractVerificationFieldEvmVersion = ({ isVyper, config }: Props) => {
+  const collection = React.useMemo(() => {
+    const items = (isVyper ? config?.vyper_evm_versions : config?.solidity_evm_versions)?.map((option) => ({ label: option, value: option })) || [];
 
-  const options = React.useMemo(() => (
-    (isVyper ? config?.vyper_evm_versions : config?.solidity_evm_versions)?.map((option) => ({ label: option, value: option })) || []
-  ), [ config?.solidity_evm_versions, config?.vyper_evm_versions, isVyper ]);
-
-  const renderControl = React.useCallback(({ field }: {field: ControllerRenderProps<FormFields, 'evm_version'>}) => {
-    const error = 'evm_version' in formState.errors ? formState.errors.evm_version : undefined;
-
-    return (
-      <FancySelect
-        { ...field }
-        options={ options }
-        size={ isMobile ? 'md' : 'lg' }
-        placeholder="EVM Version"
-        isDisabled={ formState.isSubmitting }
-        error={ error }
-        isRequired
-      />
-    );
-  }, [ formState.errors, formState.isSubmitting, isMobile, options ]);
+    return createListCollection({ items });
+  }, [ config?.solidity_evm_versions, config?.vyper_evm_versions, isVyper ]);
 
   return (
     <ContractVerificationFormRow>
-      <Controller
+      <FormFieldSelect<FormFields, 'evm_version'>
         name="evm_version"
-        control={ control }
-        render={ renderControl }
-        rules={{ required: true }}
+        placeholder="EVM Version"
+        collection={ collection }
+        required
       />
       <>
         <span>The EVM version the contract is written for. If the bytecode does not match the version, we try to verify using the latest EVM version. </span>
@@ -58,7 +36,8 @@ const ContractVerificationFieldEvmVersion = ({ isVyper }: Props) => {
             'https://docs.vyperlang.org/en/stable/compiling-a-contract.html#target-options' :
             'https://docs.soliditylang.org/en/latest/using-the-compiler.html#target-options'
           }
-          target="_blank"
+          external
+          noIcon
         >
           EVM version details
         </Link>

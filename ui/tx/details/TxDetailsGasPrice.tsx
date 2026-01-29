@@ -1,38 +1,54 @@
-import { Skeleton } from '@chakra-ui/react';
-import BigNumber from 'bignumber.js';
 import React from 'react';
 
+import type { TokenInfo } from 'types/api/token';
+
 import config from 'configs/app';
-import { WEI, WEI_IN_GWEI } from 'lib/consts';
-import { currencyUnits } from 'lib/units';
-import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
+import GasPriceValue from 'ui/shared/value/GasPriceValue';
+import TokenValue from 'ui/shared/value/TokenValue';
 
 interface Props {
+  gasToken?: TokenInfo | null;
   gasPrice: string | null;
   isLoading?: boolean;
 }
 
-const TxDetailsGasPrice = ({ gasPrice, isLoading }: Props) => {
+const TxDetailsGasPrice = ({ gasPrice, gasToken, isLoading }: Props) => {
   if (config.UI.views.tx.hiddenFields?.gas_price || !gasPrice) {
     return null;
   }
 
+  const content = (() => {
+    if (gasToken) {
+      return (
+        <TokenValue
+          amount={ gasPrice }
+          token={ gasToken }
+          loading={ isLoading }
+          accuracy={ 0 }
+        />
+      );
+    }
+
+    return (
+      <GasPriceValue
+        amount={ gasPrice }
+        loading={ isLoading }
+      />
+    );
+  })();
+
   return (
     <>
-      <DetailsInfoItem.Label
+      <DetailedInfo.ItemLabel
         hint="Price per unit of gas specified by the sender. Higher gas prices can prioritize transaction inclusion during times of high usage"
         isLoading={ isLoading }
       >
         Gas price
-      </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value>
-        <Skeleton isLoaded={ !isLoading } mr={ 1 }>
-          { BigNumber(gasPrice).dividedBy(WEI).toFixed() } { currencyUnits.ether }
-        </Skeleton>
-        <Skeleton isLoaded={ !isLoading } color="text_secondary">
-          <span>({ BigNumber(gasPrice).dividedBy(WEI_IN_GWEI).toFixed() } { currencyUnits.gwei })</span>
-        </Skeleton>
-      </DetailsInfoItem.Value>
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue multiRow>
+        { content }
+      </DetailedInfo.ItemValue>
     </>
   );
 };

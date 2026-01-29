@@ -8,17 +8,18 @@ import type { Block } from 'types/api/block';
 import type { ResourceError } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
 import { retry } from 'lib/api/useQueryClientConfig';
-import { SECOND } from 'lib/consts';
 import dayjs from 'lib/date/dayjs';
 import { publicClient } from 'lib/web3/client';
 import { BLOCK } from 'stubs/block';
 import { GET_BLOCK } from 'stubs/RPC';
+import { SECOND } from 'toolkit/utils/consts';
 import { unknownAddress } from 'ui/shared/address/utils';
 
 type RpcResponseType = GetBlockReturnType<Chain, false, 'latest'> | null;
 
 export type BlockQuery = UseQueryResult<Block, ResourceError<{ status: number }>> & {
   isDegradedData: boolean;
+  isFutureBlock: boolean;
 };
 
 interface Params {
@@ -28,7 +29,7 @@ interface Params {
 export default function useBlockQuery({ heightOrHash }: Params): BlockQuery {
   const [ isRefetchEnabled, setRefetchEnabled ] = React.useState(false);
 
-  const apiQuery = useApiQuery<'block', { status: number }>('block', {
+  const apiQuery = useApiQuery<'general:block', { status: number }>('general:block', {
     pathParams: { height_or_hash: heightOrHash },
     queryOptions: {
       enabled: Boolean(heightOrHash),
@@ -45,6 +46,17 @@ export default function useBlockQuery({ heightOrHash }: Params): BlockQuery {
         return isRefetchEnabled ? 15 * SECOND : false;
       },
     },
+  });
+
+  const latestBlockQuery = useQuery({
+    queryKey: [ 'RPC', 'block', 'latest' ],
+    queryFn: async() => {
+      if (!publicClient) {
+        return null;
+      }
+      return publicClient.getBlock({ blockTag: 'latest' });
+    },
+    enabled: publicClient !== undefined && (apiQuery.isError || apiQuery.errorUpdateCount > 0),
   });
 
   const rpcQuery = useQuery<RpcResponseType, unknown, Block | null>({
@@ -65,12 +77,13 @@ export default function useBlockQuery({ heightOrHash }: Params): BlockQuery {
       return {
         height: Number(block.number),
         timestamp: dayjs.unix(Number(block.timestamp)).format(),
-        tx_count: block.transactions.length,
+        transactions_count: block.transactions.length,
+        internal_transactions_count: 0,
         miner: { ...unknownAddress, hash: block.miner },
         size: Number(block.size),
         hash: block.hash,
         parent_hash: block.parentHash,
-        difficulty: block.difficulty.toString(),
+        difficulty: block.difficulty?.toString() ?? null,
         total_difficulty: block.totalDifficulty?.toString() ?? null,
         gas_used: block.gasUsed.toString(),
         gas_limit: block.gasLimit.toString(),
@@ -84,13 +97,13 @@ export default function useBlockQuery({ heightOrHash }: Params): BlockQuery {
         gas_used_percentage: null,
         burnt_fees_percentage: null,
         type: 'block', // we can't get this type from RPC, so it will always be a regular block
-        tx_fees: null,
+        transaction_fees: null,
         uncles_hashes: block.uncles,
         withdrawals_count: block.withdrawals?.length,
       };
     },
     placeholderData: GET_BLOCK,
-    enabled: publicClient !== undefined && (apiQuery.isError || apiQuery.errorUpdateCount > 0),
+    enabled: !latestBlockQuery.isPending,
     retry: false,
     refetchOnMount: false,
   });
@@ -119,5 +132,9 @@ export default function useBlockQuery({ heightOrHash }: Params): BlockQuery {
   return {
     ...query,
     isDegradedData: isRpcQuery,
+    isFutureBlock: Boolean(
+      !heightOrHash.startsWith('0x') &&
+      latestBlockQuery.data && Number(latestBlockQuery.data.number) < Number(heightOrHash),
+    ),
   };
 }

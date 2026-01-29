@@ -2,8 +2,10 @@
 import type { TokenInstance } from 'types/api/token';
 
 import * as addressMock from '../address/address';
+import * as tokenInfoMock from './tokenInfo';
 
 export const base: TokenInstance = {
+  token: tokenInfoMock.tokenInfoERC721a,
   animation_url: null,
   external_app_url: 'https://duck.nft/get-your-duck-today',
   id: '32925298983216553915666621415831103694597106215670571463977478984525997408266',
@@ -73,6 +75,7 @@ export const base: TokenInstance = {
     name: 'GENESIS #188848, 22a5f8bbb1602995. Blockchain pixel PFP NFT + "on music video" trait inspired by God',
   },
   owner: addressMock.withName,
+  thumbnails: null,
 };
 
 export const withRichMetadata: TokenInstance = {

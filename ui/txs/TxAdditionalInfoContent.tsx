@@ -1,48 +1,49 @@
-import { Box, Heading, Text, Flex } from '@chakra-ui/react';
+import { Box, Text, Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { Transaction } from 'types/api/transaction';
 
-import { route } from 'nextjs-routes';
+import { route } from 'nextjs/routes';
 
 import config from 'configs/app';
-import getValueWithUnit from 'lib/getValueWithUnit';
+import { useMultichainContext } from 'lib/contexts/multichain';
 import { currencyUnits } from 'lib/units';
-import CurrencyValue from 'ui/shared/CurrencyValue';
+import { Link } from 'toolkit/chakra/link';
 import BlobEntity from 'ui/shared/entities/blob/BlobEntity';
-import LinkInternal from 'ui/shared/links/LinkInternal';
 import TextSeparator from 'ui/shared/TextSeparator';
-import TxFeeStability from 'ui/shared/tx/TxFeeStability';
+import TxFee from 'ui/shared/tx/TxFee';
 import Utilization from 'ui/shared/Utilization/Utilization';
+import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 const TxAdditionalInfoContent = ({ tx }: { tx: Transaction }) => {
+  const multichainContext = useMultichainContext();
+
   const sectionProps = {
     borderBottom: '1px solid',
-    borderColor: 'divider',
+    borderColor: 'border.divider',
     paddingBottom: 4,
   };
 
   const sectionTitleProps = {
-    color: 'gray.500',
+    color: 'text.secondary',
     fontWeight: 600,
     marginBottom: 3,
   };
 
   return (
     <>
-      <Heading as="h4" size="sm" mb={ 6 }>Additional info </Heading>
       { tx.blob_versioned_hashes && tx.blob_versioned_hashes.length > 0 && (
         <Box { ...sectionProps } mb={ 4 }>
           <Flex alignItems="center" justifyContent="space-between">
             <Text { ...sectionTitleProps }>Blobs: { tx.blob_versioned_hashes.length }</Text>
             { tx.blob_versioned_hashes.length > 3 && (
-              <LinkInternal
+              <Link
                 href={ route({ pathname: '/tx/[hash]', query: { hash: tx.hash, tab: 'blobs' } }) }
                 mb={ 3 }
               >
                 view all
-              </LinkInternal>
+              </Link>
             ) }
           </Flex>
           <Flex flexDir="column" rowGap={ 3 }>
@@ -55,27 +56,18 @@ const TxAdditionalInfoContent = ({ tx }: { tx: Transaction }) => {
           </Flex>
         </Box>
       ) }
-      { !config.UI.views.tx.hiddenFields?.tx_fee && (
+      <Box { ...sectionProps } mb={ 4 }>
+        <Text { ...sectionTitleProps }>Value</Text>
+        <NativeCoinValue
+          amount={ tx.value }
+          exchangeRate={ tx.exchange_rate }
+          noTooltip
+        />
+      </Box>
+      { !config.UI.views.tx.hiddenFields?.tx_fee && (tx.stability_fee !== undefined || tx.fee.value !== null) && (
         <Box { ...sectionProps } mb={ 4 }>
-          { (tx.stability_fee !== undefined || tx.fee.value !== null) && (
-            <>
-              <Text { ...sectionTitleProps }>Transaction fee</Text>
-              { tx.stability_fee ? (
-                <TxFeeStability data={ tx.stability_fee }/>
-              ) : (
-                <Flex>
-                  <CurrencyValue
-                    value={ tx.fee.value }
-                    currency={ config.UI.views.tx.hiddenFields?.fee_currency ? '' : currencyUnits.ether }
-                    exchangeRate={ tx.exchange_rate }
-                    accuracyUsd={ 2 }
-                    flexWrap="wrap"
-                    rowGap={ 0 }
-                  />
-                </Flex>
-              ) }
-            </>
-          ) }
+          <Text { ...sectionTitleProps }>Transaction fee</Text>
+          <TxFee tx={ tx } rowGap={ 0 } noTooltip/>
         </Box>
       ) }
       { tx.gas_used !== null && (
@@ -96,19 +88,37 @@ const TxAdditionalInfoContent = ({ tx }: { tx: Transaction }) => {
           { tx.base_fee_per_gas !== null && (
             <Box>
               <Text as="span" fontWeight="500">Base: </Text>
-              <Text fontWeight="700" as="span">{ getValueWithUnit(tx.base_fee_per_gas, 'gwei').toFormat() }</Text>
+              <NativeCoinValue
+                amount={ tx.base_fee_per_gas }
+                units="gwei"
+                unitsTooltip="wei"
+                noSymbol
+                fontWeight="700"
+              />
             </Box>
           ) }
           { tx.max_fee_per_gas !== null && (
             <Box mt={ 1 }>
               <Text as="span" fontWeight="500">Max: </Text>
-              <Text fontWeight="700" as="span">{ getValueWithUnit(tx.max_fee_per_gas, 'gwei').toFormat() }</Text>
+              <NativeCoinValue
+                amount={ tx.max_fee_per_gas }
+                units="gwei"
+                unitsTooltip="wei"
+                noSymbol
+                fontWeight="700"
+              />
             </Box>
           ) }
           { tx.max_priority_fee_per_gas !== null && (
             <Box mt={ 1 }>
               <Text as="span" fontWeight="500">Max priority: </Text>
-              <Text fontWeight="700" as="span">{ getValueWithUnit(tx.max_priority_fee_per_gas, 'gwei').toFormat() }</Text>
+              <NativeCoinValue
+                amount={ tx.max_priority_fee_per_gas }
+                units="gwei"
+                unitsTooltip="wei"
+                noSymbol
+                fontWeight="700"
+              />
             </Box>
           ) }
         </Box>
@@ -119,7 +129,7 @@ const TxAdditionalInfoContent = ({ tx }: { tx: Transaction }) => {
           <Box>
             <Text as="span" fontWeight="500">Txn type: </Text>
             <Text fontWeight="600" as="span">{ tx.type }</Text>
-            { tx.type === 2 && <Text fontWeight="400" as="span" ml={ 1 } color="gray.500">(EIP-1559)</Text> }
+            { tx.type === 2 && <Text fontWeight="400" as="span" ml={ 1 } color="text.secondary">(EIP-1559)</Text> }
           </Box>
           <Box mt={ 1 }>
             <Text as="span" fontWeight="500">Nonce: </Text>
@@ -131,7 +141,7 @@ const TxAdditionalInfoContent = ({ tx }: { tx: Transaction }) => {
           </Box>
         </Box>
       ) }
-      <LinkInternal href={ route({ pathname: '/tx/[hash]', query: { hash: tx.hash } }) }>More details</LinkInternal>
+      <Link href={ route({ pathname: '/tx/[hash]', query: { hash: tx.hash } }, multichainContext) }>More details</Link>
     </>
   );
 };

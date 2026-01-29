@@ -7,12 +7,11 @@ const CANONICAL_ROUTES: Array<Route['pathname']> = [
   '/txs',
   '/ops',
   '/verified-contracts',
-  '/name-domains',
+  '/name-services',
   '/withdrawals',
   '/tokens',
   '/stats',
   '/api-docs',
-  '/graphiql',
   '/gas-tracker',
   '/apps',
 ];

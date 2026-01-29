@@ -1,13 +1,8 @@
-import {
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-} from '@chakra-ui/react';
 import React from 'react';
 
 import type { CustomAbis, CustomAbi } from 'types/api/account';
+
+import { TableBody, TableColumnHeader, TableHeader, TableRoot, TableRow } from 'toolkit/chakra/table';
 
 import CustomAbiTableItem from './CustomAbiTableItem';
 
@@ -20,25 +15,25 @@ interface Props {
 
 const CustomAbiTable = ({ data, isLoading, onDeleteClick, onEditClick }: Props) => {
   return (
-    <Table variant="simple" minWidth="600px">
-      <Thead>
-        <Tr>
-          <Th>ABI for Smart contract address (0x...)</Th>
-          <Th width="108px"></Th>
-        </Tr>
-      </Thead>
-      <Tbody>
+    <TableRoot minWidth="600px">
+      <TableHeader>
+        <TableRow>
+          <TableColumnHeader>ABI for Smart contract address (0x...)</TableColumnHeader>
+          <TableColumnHeader width="108px"></TableColumnHeader>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
         { data?.map((item, index) => (
           <CustomAbiTableItem
-            key={ item.id + (isLoading ? index : '') }
+            key={ item.id + (isLoading ? String(index) : '') }
             item={ item }
             isLoading={ isLoading }
             onDeleteClick={ onDeleteClick }
             onEditClick={ onEditClick }
           />
         )) }
-      </Tbody>
-    </Table>
+      </TableBody>
+    </TableRoot>
   );
 };
 

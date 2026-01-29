@@ -1,64 +1,27 @@
-import { Flex, FormControl, IconButton, Input, Text } from '@chakra-ui/react';
+import { Flex, Text } from '@chakra-ui/react';
 import React from 'react';
-import type { Control, ControllerRenderProps, FieldError } from 'react-hook-form';
-import { Controller } from 'react-hook-form';
 
 import type { FormFields } from '../types';
 
-import { ADDRESS_REGEXP } from 'lib/validations/address';
-import IconSvg from 'ui/shared/IconSvg';
-import InputPlaceholder from 'ui/shared/InputPlaceholder';
+import AddButton from 'toolkit/components/buttons/AddButton';
+import RemoveButton from 'toolkit/components/buttons/RemoveButton';
+import { FormFieldAddress } from 'toolkit/components/forms/fields/FormFieldAddress';
+import { FormFieldText } from 'toolkit/components/forms/fields/FormFieldText';
 
 import ContractVerificationFormRow from '../ContractVerificationFormRow';
 
 const LIMIT = 10;
 
 interface Props {
-  control: Control<FormFields>;
   index: number;
   fieldsLength: number;
-  error?: {
-    name?: FieldError;
-    address?: FieldError;
-  };
   onAddFieldClick: (index: number) => void;
   onRemoveFieldClick: (index: number) => void;
   isDisabled?: boolean;
 }
 
-const ContractVerificationFieldLibraryItem = ({ control, index, fieldsLength, onAddFieldClick, onRemoveFieldClick, error, isDisabled }: Props) => {
+const ContractVerificationFieldLibraryItem = ({ index, fieldsLength, onAddFieldClick, onRemoveFieldClick, isDisabled }: Props) => {
   const ref = React.useRef<HTMLDivElement>(null);
-
-  const renderNameControl = React.useCallback(({ field }: {field: ControllerRenderProps<FormFields, `libraries.${ number }.name`>}) => {
-    return (
-      <FormControl variant="floating" id={ field.name } isRequired size={{ base: 'md', lg: 'lg' }}>
-        <Input
-          { ...field }
-          required
-          isInvalid={ Boolean(error?.name) }
-          isDisabled={ isDisabled }
-          maxLength={ 255 }
-          autoComplete="off"
-        />
-        <InputPlaceholder text="Library name (.sol file)" error={ error?.name }/>
-      </FormControl>
-    );
-  }, [ error?.name, isDisabled ]);
-
-  const renderAddressControl = React.useCallback(({ field }: {field: ControllerRenderProps<FormFields, `libraries.${ number }.address`>}) => {
-    return (
-      <FormControl variant="floating" id={ field.name } isRequired size={{ base: 'md', lg: 'lg' }}>
-        <Input
-          { ...field }
-          isInvalid={ Boolean(error?.address) }
-          isDisabled={ isDisabled }
-          required
-          autoComplete="off"
-        />
-        <InputPlaceholder text="Library address (0x...)" error={ error?.address }/>
-      </FormControl>
-    );
-  }, [ error?.address, isDisabled ]);
 
   const handleAddButtonClick = React.useCallback(() => {
     onAddFieldClick(index);
@@ -76,39 +39,29 @@ const ContractVerificationFieldLibraryItem = ({ control, index, fieldsLength, on
     <>
       <ContractVerificationFormRow>
         <Flex alignItems="center" justifyContent="space-between" ref={ ref } mt={ index !== 0 ? 6 : 0 }>
-          <Text variant="secondary" fontSize="sm">Contract library { index + 1 }</Text>
+          <Text color="text.secondary" fontSize="sm">Contract library { index + 1 }</Text>
           <Flex columnGap={ 5 }>
             { fieldsLength > 1 && (
-              <IconButton
-                aria-label="delete"
-                variant="outline"
-                w="30px"
-                h="30px"
+              <RemoveButton
                 onClick={ handleRemoveButtonClick }
-                icon={ <IconSvg name="minus" w="20px" h="20px"/> }
-                isDisabled={ isDisabled }
+                disabled={ isDisabled }
               />
             ) }
             { fieldsLength < LIMIT && (
-              <IconButton
-                aria-label="add"
-                variant="outline"
-                w="30px"
-                h="30px"
+              <AddButton
                 onClick={ handleAddButtonClick }
-                icon={ <IconSvg name="plus" w="20px" h="20px"/> }
-                isDisabled={ isDisabled }
+                disabled={ isDisabled }
               />
             ) }
           </Flex>
         </Flex>
       </ContractVerificationFormRow>
       <ContractVerificationFormRow>
-        <Controller
+        <FormFieldText<FormFields, `libraries.${ number }.name`>
           name={ `libraries.${ index }.name` }
-          control={ control }
-          render={ renderNameControl }
-          rules={{ required: true }}
+          required
+          rules={{ maxLength: 255 }}
+          placeholder="Library name (.sol file)"
         />
         { index === 0 ? (
           <>
@@ -117,15 +70,14 @@ const ContractVerificationFieldLibraryItem = ({ control, index, fieldsLength, on
         ) : null }
       </ContractVerificationFormRow>
       <ContractVerificationFormRow>
-        <Controller
+        <FormFieldAddress<FormFields>
           name={ `libraries.${ index }.address` }
-          control={ control }
-          render={ renderAddressControl }
-          rules={{ required: true, pattern: ADDRESS_REGEXP }}
+          required
+          placeholder="Library address (0x...)"
         />
         { index === 0 ? (
           <>
-              The 0x library address. This can be found in the generated json file or Truffle output (if using truffle).
+            The 0x library address. This can be found in the generated json file or Truffle output (if using truffle).
           </>
         ) : null }
       </ContractVerificationFormRow>

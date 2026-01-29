@@ -1,55 +1,53 @@
-import { chakra, Tooltip, Hide, Skeleton, Flex } from '@chakra-ui/react';
+import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { CsvExportParams } from 'types/client/address';
+import type { ClusterChainConfig } from 'types/multichain';
 
-import { route } from 'nextjs-routes';
+import { route } from 'nextjs/routes';
 
 import config from 'configs/app';
+import { useMultichainContext } from 'lib/contexts/multichain';
 import useIsInitialLoading from 'lib/hooks/useIsInitialLoading';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import { Link } from 'toolkit/chakra/link';
+import { Tooltip } from 'toolkit/chakra/tooltip';
 import IconSvg from 'ui/shared/IconSvg';
-import LinkInternal from 'ui/shared/links/LinkInternal';
 
 interface Props {
   address: string;
   params: CsvExportParams;
   className?: string;
   isLoading?: boolean;
+  chainData?: ClusterChainConfig;
 }
 
-const AddressCsvExportLink = ({ className, address, params, isLoading }: Props) => {
+const AddressCsvExportLink = ({ className, address, params, isLoading, chainData }: Props) => {
   const isMobile = useIsMobile();
   const isInitialLoading = useIsInitialLoading(isLoading);
+  const multichainContext = useMultichainContext();
 
-  if (!config.features.csvExport.isEnabled) {
+  const chainConfig = chainData?.app_config || multichainContext?.chain.app_config || config;
+
+  if (!chainConfig.features.csvExport.isEnabled) {
     return null;
   }
 
-  if (isInitialLoading) {
-    return (
-      <Flex className={ className } flexShrink={ 0 } alignItems="center">
-        <Skeleton boxSize={{ base: '32px', lg: 6 }} borderRadius="base"/>
-        <Hide ssr={ false } below="lg">
-          <Skeleton w="112px" h={ 6 } ml={ 1 }/>
-        </Hide>
-      </Flex>
-    );
-  }
-
   return (
-    <Tooltip isDisabled={ !isMobile } label="Download CSV">
-      <LinkInternal
+    <Tooltip disabled={ !isMobile } content="Download CSV">
+      <Link
         className={ className }
-        display="inline-flex"
-        alignItems="center"
         whiteSpace="nowrap"
-        href={ route({ pathname: '/csv-export', query: { ...params, address } }) }
+        href={ route({ pathname: '/csv-export', query: { ...params, address } }, { chain: chainData ?? multichainContext?.chain }) }
         flexShrink={ 0 }
+        loading={ isInitialLoading }
+        minW={ 8 }
+        justifyContent="center"
+        textStyle="sm"
       >
-        <IconSvg name="files/csv" boxSize={{ base: '30px', lg: 6 }}/>
-        <Hide ssr={ false } below="lg"><chakra.span ml={ 1 }>Download CSV</chakra.span></Hide>
-      </LinkInternal>
+        <IconSvg name="files/csv" boxSize={ 5 }/>
+        <chakra.span ml={ 1 } hideBelow="lg">Download</chakra.span>
+      </Link>
     </Tooltip>
   );
 };

@@ -1,37 +1,47 @@
-import { Td, Tr, Text, Stat, StatHelpText, StatArrow, Skeleton } from '@chakra-ui/react';
+import { Stat } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { AddressCoinBalanceHistoryItem } from 'types/api/address';
+import type { ClusterChainConfig } from 'types/multichain';
 
-import { WEI, ZERO } from 'lib/consts';
-import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { TableCell, TableRow } from 'toolkit/chakra/table';
+import { ZERO } from 'toolkit/utils/consts';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
+import ChainIcon from 'ui/shared/externalChains/ChainIcon';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
+import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
+import SimpleValue from 'ui/shared/value/SimpleValue';
+import { WEI } from 'ui/shared/value/utils';
 
 type Props = AddressCoinBalanceHistoryItem & {
   page: number;
   isLoading: boolean;
+  chainData?: ClusterChainConfig;
 };
 
 const AddressCoinBalanceTableItem = (props: Props) => {
   const deltaBn = BigNumber(props.delta).div(WEI);
   const isPositiveDelta = deltaBn.gte(ZERO);
-  const timeAgo = useTimeAgoIncrement(props.block_timestamp, props.page === 1);
 
   return (
-    <Tr>
-      <Td>
+    <TableRow>
+      { props.chainData && (
+        <TableCell>
+          <ChainIcon data={ props.chainData } isLoading={ props.isLoading }/>
+        </TableCell>
+      ) }
+      <TableCell>
         <BlockEntity
           isLoading={ props.isLoading }
           number={ props.block_number }
           noIcon
-          fontSize="sm"
-          lineHeight={ 5 }
           fontWeight={ 700 }
         />
-      </Td>
-      <Td>
+      </TableCell>
+      <TableCell>
         { props.transaction_hash && (
           <TxEntity
             hash={ props.transaction_hash }
@@ -41,30 +51,38 @@ const AddressCoinBalanceTableItem = (props: Props) => {
             maxW="150px"
           />
         ) }
-      </Td>
-      <Td>
-        <Skeleton isLoaded={ !props.isLoading } color="text_secondary" display="inline-block">
-          <span>{ timeAgo }</span>
+      </TableCell>
+      <TableCell>
+        <TimeWithTooltip
+          timestamp={ props.block_timestamp }
+          enableIncrement={ props.page === 1 }
+          isLoading={ props.isLoading }
+          color="text.secondary"
+          display="inline-block"
+        />
+      </TableCell>
+      <TableCell isNumeric pr={ 1 }>
+        <NativeCoinValue
+          amount={ props.value }
+          noSymbol
+          loading={ props.isLoading }
+          color="text.secondary"
+        />
+      </TableCell>
+      <TableCell isNumeric display="flex" justifyContent="end">
+        <Skeleton loading={ props.isLoading }>
+          <Stat.Root flexGrow="0" size="sm" positive={ isPositiveDelta }>
+            <Stat.ValueText fontWeight={ 600 }>
+              <SimpleValue
+                value={ deltaBn }
+                loading={ props.isLoading }
+              />
+            </Stat.ValueText>
+            { isPositiveDelta ? <Stat.UpIndicator/> : <Stat.DownIndicator/> }
+          </Stat.Root>
         </Skeleton>
-      </Td>
-      <Td isNumeric pr={ 1 }>
-        <Skeleton isLoaded={ !props.isLoading } color="text_secondary" display="inline-block">
-          <span>{ BigNumber(props.value).div(WEI).dp(8).toFormat() }</span>
-        </Skeleton>
-      </Td>
-      <Td isNumeric display="flex" justifyContent="end">
-        <Skeleton isLoaded={ !props.isLoading }>
-          <Stat flexGrow="0" lineHeight={ 5 }>
-            <StatHelpText display="flex" mb={ 0 } alignItems="center">
-              <StatArrow type={ isPositiveDelta ? 'increase' : 'decrease' } mr={ 2 }/>
-              <Text as="span" color={ isPositiveDelta ? 'green.500' : 'red.500' } fontWeight={ 600 }>
-                { deltaBn.dp(8).toFormat() }
-              </Text>
-            </StatHelpText>
-          </Stat>
-        </Skeleton>
-      </Td>
-    </Tr>
+      </TableCell>
+    </TableRow>
   );
 };
 

@@ -1,24 +1,25 @@
 import {
   HStack,
   Flex,
-  Skeleton,
 } from '@chakra-ui/react';
 import React from 'react';
 
+import type { NovesDescribeTxsResponse } from 'types/api/noves';
 import type { Transaction } from 'types/api/transaction';
+import type { ClusterChainConfig } from 'types/multichain';
 
 import config from 'configs/app';
-import getValueWithUnit from 'lib/getValueWithUnit';
-import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
-import { space } from 'lib/html-entities';
-import { currencyUnits } from 'lib/units';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
+import EntityTag from 'ui/shared/EntityTags/EntityTag';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
-import TxFeeStability from 'ui/shared/tx/TxFeeStability';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
+import TxFee from 'ui/shared/tx/TxFee';
 import TxWatchListTags from 'ui/shared/tx/TxWatchListTags';
+import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
 import TxType from 'ui/txs/TxType';
 
@@ -30,23 +31,43 @@ type Props = {
   currentAddress?: string;
   enableTimeIncrement?: boolean;
   isLoading?: boolean;
-}
+  animation?: string;
+  chainData?: ClusterChainConfig;
+  translationIsLoading?: boolean;
+  translationData?: NovesDescribeTxsResponse;
+};
 
-const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeIncrement }: Props) => {
+const TxsListItem = ({
+  tx,
+  isLoading,
+  showBlockInfo,
+  currentAddress,
+  enableTimeIncrement,
+  animation,
+  chainData,
+  translationIsLoading,
+  translationData,
+}: Props) => {
   const dataTo = tx.to ? tx.to : tx.created_contract;
 
-  const timeAgo = useTimeAgoIncrement(tx.timestamp, enableTimeIncrement);
+  const protocolTag = tx.to?.metadata?.tags?.find(tag => tag.tagType === 'protocol');
 
   return (
-    <ListItemMobile display="block" width="100%" isAnimated key={ tx.hash }>
-      <Flex justifyContent="space-between" mt={ 4 }>
+    <ListItemMobile display="block" width="100%" animation={ animation } key={ tx.hash }>
+      <Flex justifyContent="space-between" alignItems="flex-start" mt={ 4 }>
         <HStack flexWrap="wrap">
-          { tx.translation ?
-            <TxTranslationType types={ tx.tx_types } isLoading={ isLoading || tx.translation.isLoading } translatationType={ tx.translation.data?.type }/> :
-            <TxType types={ tx.tx_types } isLoading={ isLoading }/>
+          { translationIsLoading || translationData ? (
+            <TxTranslationType
+              txTypes={ tx.transaction_types }
+              isLoading={ isLoading || translationIsLoading }
+              type={ translationData?.type }
+            />
+          ) :
+            <TxType types={ tx.transaction_types } isLoading={ isLoading }/>
           }
           <TxStatus status={ tx.status } errorText={ tx.status === 'error' ? tx.result : undefined } isLoading={ isLoading }/>
           <TxWatchListTags tx={ tx } isLoading={ isLoading }/>
+          { protocolTag && <EntityTag data={ protocolTag } isLoading={ isLoading }/> }
         </HStack>
         <TxAdditionalInfo tx={ tx } isMobile isLoading={ isLoading }/>
       </Flex>
@@ -56,20 +77,25 @@ const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeI
           hash={ tx.hash }
           truncation="constant_long"
           fontWeight="700"
-          iconName={ tx.tx_types.includes('blob_transaction') ? 'blob' : undefined }
+          icon={ !tx.is_pending_update && tx.transaction_types.includes('blob_transaction') ? { name: 'blob' } : undefined }
+          chain={ chainData }
+          isPendingUpdate={ tx.is_pending_update }
         />
-        { tx.timestamp && (
-          <Skeleton isLoaded={ !isLoading } color="text_secondary" fontWeight="400" fontSize="sm">
-            <span>{ timeAgo }</span>
-          </Skeleton>
-        ) }
+        <TimeWithTooltip
+          timestamp={ tx.timestamp }
+          enableIncrement={ enableTimeIncrement }
+          isLoading={ isLoading }
+          color="text.secondary"
+          fontWeight="400"
+          fontSize="sm"
+        />
       </Flex>
       { tx.method && (
         <Flex mt={ 3 }>
-          <Skeleton isLoaded={ !isLoading } display="inline-block" whiteSpace="pre">Method </Skeleton>
+          <Skeleton loading={ isLoading } display="inline-block" whiteSpace="pre">Method </Skeleton>
           <Skeleton
-            isLoaded={ !isLoading }
-            color="text_secondary"
+            loading={ isLoading }
+            color="text.secondary"
             overflow="hidden"
             whiteSpace="nowrap"
             textOverflow="ellipsis"
@@ -78,12 +104,12 @@ const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeI
           </Skeleton>
         </Flex>
       ) }
-      { showBlockInfo && tx.block !== null && (
+      { showBlockInfo && tx.block_number !== null && (
         <Flex mt={ 2 }>
-          <Skeleton isLoaded={ !isLoading } display="inline-block" whiteSpace="pre">Block </Skeleton>
+          <Skeleton loading={ isLoading } display="inline-block" whiteSpace="pre">Block </Skeleton>
           <BlockEntity
             isLoading={ isLoading }
-            number={ tx.block }
+            number={ tx.block_number }
             noIcon
           />
         </Flex>
@@ -98,27 +124,21 @@ const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeI
       />
       { !config.UI.views.tx.hiddenFields?.value && (
         <Flex mt={ 2 } columnGap={ 2 }>
-          <Skeleton isLoaded={ !isLoading } display="inline-block" whiteSpace="pre">Value</Skeleton>
-          <Skeleton isLoaded={ !isLoading } display="inline-block" variant="text_secondary" whiteSpace="pre">
-            { getValueWithUnit(tx.value).toFormat() }
-            { space }
-            { currencyUnits.ether }
-          </Skeleton>
+          <Skeleton loading={ isLoading } display="inline-block" whiteSpace="pre">Value</Skeleton>
+          <NativeCoinValue
+            amount={ tx.value }
+            exchangeRate={ tx.exchange_rate }
+            loading={ isLoading }
+            color="text.secondary"
+          />
         </Flex>
       ) }
       { !config.UI.views.tx.hiddenFields?.tx_fee && (
         <Flex mt={ 2 } mb={ 3 } columnGap={ 2 }>
           { (tx.stability_fee !== undefined || tx.fee.value !== null) && (
             <>
-              <Skeleton isLoaded={ !isLoading } display="inline-block" whiteSpace="pre">Fee</Skeleton>
-              { tx.stability_fee ? (
-                <TxFeeStability data={ tx.stability_fee } isLoading={ isLoading } hideUsd/>
-              ) : (
-                <Skeleton isLoaded={ !isLoading } display="inline-block" variant="text_secondary" whiteSpace="pre">
-                  { getValueWithUnit(tx.fee.value || 0).toFormat() }
-                  { config.UI.views.tx.hiddenFields?.fee_currency ? '' : ` ${ currencyUnits.ether }` }
-                </Skeleton>
-              ) }
+              <Skeleton loading={ isLoading } display="inline-block" whiteSpace="pre">Fee</Skeleton>
+              <TxFee tx={ tx } loading={ isLoading } color="text.secondary"/>
             </>
           ) }
         </Flex>

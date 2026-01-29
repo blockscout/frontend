@@ -1,6 +1,6 @@
-import type { SolidityscanReport } from 'types/api/contract';
+import type { SolidityScanReport } from 'lib/solidityScan/schema';
 
-export const solidityscanReportAverage: SolidityscanReport = {
+export const solidityscanReportAverage: SolidityScanReport = {
   scan_report: {
     contractname: 'foo',
     scan_status: 'scan_done',
@@ -13,17 +13,13 @@ export const solidityscanReportAverage: SolidityscanReport = {
         low: 2,
         medium: 0,
       },
-      lines_analyzed_count: 18,
-      scan_time_taken: 1,
-      score: '3.61',
       score_v2: '72.22',
-      threat_score: '94.74',
     },
     scanner_reference_url: 'https://solidityscan.com/quickscan/0xc1EF7811FF2ebFB74F80ed7423f2AdAA37454be2/blockscout/eth-goerli?ref=blockscout',
   },
 };
 
-export const solidityscanReportGreat: SolidityscanReport = {
+export const solidityscanReportGreat: SolidityScanReport = {
   scan_report: {
     contractname: 'foo',
     scan_status: 'scan_done',
@@ -36,17 +32,13 @@ export const solidityscanReportGreat: SolidityscanReport = {
         low: 0,
         medium: 0,
       },
-      lines_analyzed_count: 18,
-      scan_time_taken: 1,
-      score: '3.61',
       score_v2: '100',
-      threat_score: '94.74',
     },
     scanner_reference_url: 'https://solidityscan.com/quickscan/0xc1EF7811FF2ebFB74F80ed7423f2AdAA37454be2/blockscout/eth-goerli?ref=blockscout',
   },
 };
 
-export const solidityscanReportLow: SolidityscanReport = {
+export const solidityscanReportLow: SolidityScanReport = {
   scan_report: {
     contractname: 'foo',
     scan_status: 'scan_done',
@@ -59,11 +51,7 @@ export const solidityscanReportLow: SolidityscanReport = {
         low: 2,
         medium: 10,
       },
-      lines_analyzed_count: 18,
-      scan_time_taken: 1,
-      score: '3.61',
       score_v2: '22.22',
-      threat_score: '94.74',
     },
     scanner_reference_url: 'https://solidityscan.com/quickscan/0xc1EF7811FF2ebFB74F80ed7423f2AdAA37454be2/blockscout/eth-goerli?ref=blockscout',
   },

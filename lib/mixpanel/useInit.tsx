@@ -1,4 +1,4 @@
-import _capitalize from 'lodash/capitalize';
+import { capitalize } from 'es-toolkit';
 import type { Config } from 'mixpanel-browser';
 import mixpanel from 'mixpanel-browser';
 import { useRouter } from 'next/router';
@@ -10,8 +10,9 @@ import * as cookies from 'lib/cookies';
 import dayjs from 'lib/date/dayjs';
 import getQueryParamString from 'lib/router/getQueryParamString';
 
-import getUuid from './getUuid';
 import * as userProfile from './userProfile';
+
+const opSuperchainFeature = config.features.opSuperchain;
 
 export default function useMixpanelInit() {
   const [ isInited, setIsInited ] = React.useState(false);
@@ -28,9 +29,12 @@ export default function useMixpanelInit() {
 
     const mixpanelConfig: Partial<Config> = {
       debug: Boolean(debugFlagQuery.current || debugFlagCookie),
+      persistence: 'localStorage',
+      ...feature.configOverrides,
     };
     const isAuth = Boolean(cookies.get(cookies.NAMES.API_TOKEN));
-    const userId = getUuid();
+
+    const uuid = cookies.get(cookies.NAMES.UUID);
 
     mixpanel.init(feature.projectToken, mixpanelConfig);
     mixpanel.register({
@@ -40,12 +44,13 @@ export default function useMixpanelInit() {
       'Viewport width': window.innerWidth,
       'Viewport height': window.innerHeight,
       Language: window.navigator.language,
-      'Device type': _capitalize(deviceType),
-      'User id': userId,
+      'Device type': capitalize(deviceType),
+      'User id': uuid,
+      ...(opSuperchainFeature.isEnabled ? { 'Cluster name': opSuperchainFeature.cluster } : {}),
     });
-    mixpanel.identify(userId);
+    mixpanel.identify(uuid);
     userProfile.set({
-      'Device Type': _capitalize(deviceType),
+      'Device Type': capitalize(deviceType),
       ...(isAuth ? { 'With Account': true } : {}),
     });
     userProfile.setOnce({
@@ -56,7 +61,7 @@ export default function useMixpanelInit() {
     if (debugFlagQuery.current && !debugFlagCookie) {
       cookies.set(cookies.NAMES.MIXPANEL_DEBUG, 'true');
     }
-  }, []);
+  }, [ ]);
 
   return isInited;
 }

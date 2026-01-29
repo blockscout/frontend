@@ -1,4 +1,4 @@
-import { Skeleton, Text } from '@chakra-ui/react';
+import { Text } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ZkSyncBatchesItem } from 'types/api/zkSyncL2';
@@ -6,20 +6,18 @@ import type { ZkSyncBatchesItem } from 'types/api/zkSyncL2';
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
-import dayjs from 'lib/date/dayjs';
+import { Link } from 'toolkit/chakra/link';
 import BatchEntityL2 from 'ui/shared/entities/block/BatchEntityL2';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
-import LinkInternal from 'ui/shared/links/LinkInternal';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 import ZkSyncL2TxnBatchStatus from 'ui/shared/statusTag/ZkSyncL2TxnBatchStatus';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 const rollupFeature = config.features.rollup;
 
 type Props = { item: ZkSyncBatchesItem; isLoading?: boolean };
 
 const ZkSyncTxnBatchesListItem = ({ item, isLoading }: Props) => {
-  const timeAgo = item.timestamp ? dayjs(item.timestamp).fromNow() : 'Undefined';
-
   if (!rollupFeature.isEnabled || rollupFeature.type !== 'zkSync') {
     return null;
   }
@@ -32,8 +30,7 @@ const ZkSyncTxnBatchesListItem = ({ item, isLoading }: Props) => {
         <BatchEntityL2
           isLoading={ isLoading }
           number={ item.number }
-          fontSize="sm"
-          lineHeight={ 5 }
+          textStyle="sm"
           fontWeight={ 600 }
         />
       </ListItemMobileGrid.Value>
@@ -45,20 +42,24 @@ const ZkSyncTxnBatchesListItem = ({ item, isLoading }: Props) => {
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Age</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <Skeleton isLoaded={ !isLoading } display="inline-block">{ timeAgo }</Skeleton>
+        <TimeWithTooltip
+          timestamp={ item.timestamp }
+          fallbackText="Undefined"
+          isLoading={ isLoading }
+          display="inline-block"
+        />
       </ListItemMobileGrid.Value>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Txn count</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <LinkInternal
+        <Link
           href={ route({ pathname: '/batches/[number]', query: { number: item.number.toString(), tab: 'txs' } }) }
-          isLoading={ isLoading }
+          loading={ isLoading }
           fontWeight={ 600 }
+          minW="40px"
         >
-          <Skeleton isLoaded={ !isLoading } minW="40px">
-            { item.tx_count }
-          </Skeleton>
-        </LinkInternal>
+          { item.transactions_count }
+        </Link>
       </ListItemMobileGrid.Value>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Commit tx</ListItemMobileGrid.Label>
@@ -67,9 +68,9 @@ const ZkSyncTxnBatchesListItem = ({ item, isLoading }: Props) => {
           <TxEntityL1
             isLoading={ isLoading }
             hash={ item.commit_transaction_hash }
-            fontSize="sm"
-            lineHeight={ 5 }
+            textStyle="sm"
             truncation="constant_long"
+            noCopy
           />
         ) : <Text>Pending</Text> }
       </ListItemMobileGrid.Value>
@@ -80,9 +81,9 @@ const ZkSyncTxnBatchesListItem = ({ item, isLoading }: Props) => {
           <TxEntityL1
             isLoading={ isLoading }
             hash={ item.prove_transaction_hash }
-            fontSize="sm"
-            lineHeight={ 5 }
+            textStyle="sm"
             truncation="constant_long"
+            noCopy
           />
         ) : <Text>Pending</Text> }
       </ListItemMobileGrid.Value>

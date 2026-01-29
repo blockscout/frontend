@@ -1,13 +1,17 @@
-import { chakra, Flex, useColorModeValue } from '@chakra-ui/react';
+import { chakra, Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
-import { route } from 'nextjs-routes';
+import { route } from 'nextjs/routes';
 
-import getCurrencyValue from 'lib/getCurrencyValue';
+import config from 'configs/app';
+import multichainConfig from 'configs/multichain';
+import { isFungibleTokenType } from 'lib/token/tokenTypes';
+import { Link } from 'toolkit/chakra/link';
+import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
+import NativeTokenTag from 'ui/shared/celo/NativeTokenTag';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
-import LinkInternal from 'ui/shared/links/LinkInternal';
-import TruncatedValue from 'ui/shared/TruncatedValue';
+import calculateUsdValue from 'ui/shared/value/calculateUsdValue';
 
 import type { TokenEnhancedData } from '../utils/tokenUtils';
 
@@ -17,22 +21,38 @@ interface Props {
 
 const TokenSelectItem = ({ data }: Props) => {
 
-  const secondRow = (() => {
-    switch (data.token.type) {
-      case 'ERC-20': {
-        const tokenDecimals = Number(data.token.decimals) || 18;
-        const text = `${ BigNumber(data.value).dividedBy(10 ** tokenDecimals).dp(8).toFormat() } ${ data.token.symbol || '' }`;
+  const isNativeToken = config.UI.views.address.nativeTokenAddress &&
+    data.token.address_hash.toLowerCase() === config.UI.views.address.nativeTokenAddress.toLowerCase();
 
-        return (
-          <>
-            <TruncatedValue value={ text }/>
-            { data.token.exchange_rate && <chakra.span ml={ 2 }>@{ Number(data.token.exchange_rate).toLocaleString() }</chakra.span> }
-          </>
-        );
-      }
+  const chain = React.useMemo(() => {
+    if (!data.chain_values) {
+      return;
+    }
+
+    const chainId = Object.keys(data.chain_values)[0];
+    const chain = multichainConfig()?.chains.find((chain) => chain.id === chainId);
+    return chain;
+  }, [ data.chain_values ]);
+
+  const secondRow = (() => {
+    const isFungibleToken = isFungibleTokenType(data.token.type);
+
+    if (isFungibleToken) {
+      const tokenDecimals = Number(data.token.decimals ?? 18);
+      const text = `${ BigNumber(data.value).dividedBy(10 ** tokenDecimals).dp(8).toFormat() } ${ data.token.symbol || '' }`;
+
+      return (
+        <>
+          <TruncatedText text={ text }/>
+          { data.token.exchange_rate && <chakra.span ml={ 2 }>@{ Number(data.token.exchange_rate).toLocaleString() }</chakra.span> }
+        </>
+      );
+    }
+
+    switch (data.token.type) {
       case 'ERC-721': {
         const text = `${ BigNumber(data.value).toFormat() } ${ data.token.symbol || '' }`;
-        return <TruncatedValue value={ text }/>;
+        return <TruncatedText text={ text }/>;
       }
       case 'ERC-1155': {
         return (
@@ -57,7 +77,7 @@ const TokenSelectItem = ({ data }: Props) => {
             { data.value !== null && (
               <span>
                 { data.token.decimals ?
-                  getCurrencyValue({ value: data.value, decimals: data.token.decimals, accuracy: 2 }).valueStr :
+                  calculateUsdValue({ amount: data.value, decimals: data.token.decimals }).valueStr :
                   BigNumber(data.value).toFormat()
                 }
               </span>
@@ -68,41 +88,51 @@ const TokenSelectItem = ({ data }: Props) => {
     }
   })();
 
-  const url = route({ pathname: '/token/[hash]', query: { hash: data.token.address } });
+  const url = route({ pathname: '/token/[hash]', query: { hash: data.token.address_hash } }, { chain });
 
   return (
-    <LinkInternal
+    <Link
       px={ 1 }
       py="10px"
       display="flex"
       flexDir="column"
       rowGap={ 2 }
-      borderColor="divider"
+      borderColor="border.divider"
       borderBottomWidth="1px"
       _hover={{
-        bgColor: useColorModeValue('blue.50', 'gray.800'),
+        bgColor: { _light: 'blue.50', _dark: 'gray.800' },
       }}
       color="unset"
       fontSize="sm"
       href={ url }
     >
-      <Flex alignItems="center" w="100%" overflow="hidden">
+      <Flex alignItems="center" w="100%">
         <TokenEntity
           token={ data.token }
+          chain={ chain }
           noSymbol
           noCopy
           noLink
           fontWeight={ 700 }
+          width="auto"
           mr={ 2 }
         />
+        { isNativeToken && <NativeTokenTag mr={ 2 }/> }
         { data.usd && (
-          <TruncatedValue value={ `$${ data.usd.toFormat(2) }` } fontWeight={ 700 } minW="120px" ml="auto" textAlign="right"/>
+          <TruncatedText
+            text={ `$${ data.usd.toFormat(2) }` }
+            fontWeight={ 700 }
+            minW="120px"
+            ml="auto"
+            textAlign="right"
+            color={ isNativeToken ? 'text.secondary' : undefined }
+          />
         ) }
       </Flex>
-      <Flex alignItems="center" justifyContent="space-between" w="100%" whiteSpace="nowrap">
+      <Flex alignItems="center" justifyContent="space-between" w="100%" whiteSpace="nowrap" color={ isNativeToken ? 'text.secondary' : undefined }>
         { secondRow }
       </Flex>
-    </LinkInternal>
+    </Link>
   );
 };
 

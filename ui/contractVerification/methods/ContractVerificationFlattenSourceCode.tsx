@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { SmartContractVerificationConfig } from 'types/api/contract';
+import type { SmartContractVerificationConfig } from 'types/client/contract';
 
 import ContractVerificationMethod from '../ContractVerificationMethod';
 import ContractVerificationFieldAutodetectArgs from '../fields/ContractVerificationFieldAutodetectArgs';
@@ -17,8 +17,8 @@ const ContractVerificationFlattenSourceCode = ({ config }: { config: SmartContra
     <ContractVerificationMethod title="Contract verification via Solidity (flattened source code)">
       { !config?.is_rust_verifier_microservice_enabled && <ContractVerificationFieldName/> }
       { config?.is_rust_verifier_microservice_enabled && <ContractVerificationFieldIsYul/> }
-      <ContractVerificationFieldCompiler/>
-      <ContractVerificationFieldEvmVersion/>
+      <ContractVerificationFieldCompiler config={ config }/>
+      <ContractVerificationFieldEvmVersion config={ config }/>
       <ContractVerificationFieldOptimization/>
       <ContractVerificationFieldCode/>
       { !config?.is_rust_verifier_microservice_enabled && <ContractVerificationFieldAutodetectArgs/> }

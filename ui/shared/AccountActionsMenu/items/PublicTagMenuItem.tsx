@@ -3,39 +3,33 @@ import React from 'react';
 
 import type { ItemProps } from '../types';
 
+import { MenuItem } from 'toolkit/chakra/menu';
 import IconSvg from 'ui/shared/IconSvg';
 
 import ButtonItem from '../parts/ButtonItem';
-import MenuItem from '../parts/MenuItem';
 
-const PublicTagMenuItem = ({ className, hash, onBeforeClick, type }: ItemProps) => {
+const PublicTagMenuItem = ({ hash, type }: ItemProps) => {
   const router = useRouter();
 
   const handleClick = React.useCallback(() => {
-    if (!onBeforeClick()) {
-      return;
-    }
-
     router.push({ pathname: '/public-tags/submit', query: { addresses: [ hash ] } });
-  }, [ hash, onBeforeClick, router ]);
+  }, [ hash, router ]);
 
-  const element = (() => {
-    switch (type) {
-      case 'button': {
-        return <ButtonItem label="Add public tag" icon="publictags" onClick={ handleClick } className={ className }/>;
-      }
-      case 'menu_item': {
-        return (
-          <MenuItem className={ className } onClick={ handleClick }>
-            <IconSvg name="publictags" boxSize={ 6 } mr={ 2 }/>
-            <span>Add public tag</span>
-          </MenuItem>
-        );
-      }
+  switch (type) {
+    case 'button': {
+      // FIXME use non-navigation icon
+      return <ButtonItem label="Add public tag" icon="navigation/public_tags" onClick={ handleClick }/>;
     }
-  })();
-
-  return element;
+    case 'menu_item': {
+      return (
+        <MenuItem onClick={ handleClick } value="add-public-tag">
+          { /* FIXME use non-navigation icon */ }
+          <IconSvg name="navigation/public_tags" boxSize={ 6 }/>
+          <span>Add public tag</span>
+        </MenuItem>
+      );
+    }
+  }
 };
 
 export default React.memo(PublicTagMenuItem);

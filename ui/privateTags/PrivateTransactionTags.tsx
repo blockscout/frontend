@@ -1,9 +1,12 @@
-import { Box, Button, Skeleton, useDisclosure } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import React, { useCallback, useState } from 'react';
 
 import type { TransactionTag } from 'types/api/account';
 
 import { PRIVATE_TAG_TX } from 'stubs/account';
+import { Button } from 'toolkit/chakra/button';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
@@ -17,7 +20,7 @@ import TransactionTagTable from './TransactionTagTable/TransactionTagTable';
 
 const PrivateTransactionTags = () => {
   const { data: transactionTagsData, isPlaceholderData, isError, pagination } = useQueryWithPages({
-    resourceName: 'private_tags_tx',
+    resourceName: 'general:private_tags_tx',
     options: {
       refetchOnMount: false,
       placeholderData: { items: Array(3).fill(PRIVATE_TAG_TX), next_page_params: null },
@@ -35,9 +38,9 @@ const PrivateTransactionTags = () => {
     transactionModalProps.onOpen();
   }, [ transactionModalProps ]);
 
-  const onAddressModalClose = useCallback(() => {
-    setTransactionModalData(undefined);
-    transactionModalProps.onClose();
+  const onAddressModalOpenChange = useCallback(({ open }: { open: boolean }) => {
+    !open && setTransactionModalData(undefined);
+    transactionModalProps.onOpenChange({ open });
   }, [ transactionModalProps ]);
 
   const onDeleteClick = useCallback((data: TransactionTag) => {
@@ -45,42 +48,18 @@ const PrivateTransactionTags = () => {
     deleteModalProps.onOpen();
   }, [ deleteModalProps ]);
 
-  const onDeleteModalClose = useCallback(() => {
-    setDeleteModalData(undefined);
-    deleteModalProps.onClose();
+  const onDeleteModalOpenChange = useCallback(({ open }: { open: boolean }) => {
+    !open && setDeleteModalData(undefined);
+    deleteModalProps.onOpenChange({ open });
   }, [ deleteModalProps ]);
 
   const description = (
     <AccountPageDescription>
-        Use private transaction tags to label any transactions of interest.
-        Private tags are saved in your account and are only visible when you are logged in.
+      Use private transaction tags to label any transactions of interest.
+      Private tags are saved in your account and are only visible when you are logged in.
     </AccountPageDescription>
   );
 
-  const list = (
-    <>
-      <Box display={{ base: 'block', lg: 'none' }}>
-        { transactionTagsData?.items.map((item, index) => (
-          <TransactionTagListItem
-            key={ item.id + (isPlaceholderData ? index : '') }
-            item={ item }
-            isLoading={ isPlaceholderData }
-            onDeleteClick={ onDeleteClick }
-            onEditClick={ onEditClick }
-          />
-        )) }
-      </Box>
-      <Box display={{ base: 'none', lg: 'block' }}>
-        <TransactionTagTable
-          data={ transactionTagsData?.items }
-          isLoading={ isPlaceholderData }
-          onDeleteClick={ onDeleteClick }
-          onEditClick={ onEditClick }
-          top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
-        />
-      </Box>
-    </>
-  );
   const actionBar = pagination.isVisible ? (
     <ActionBar mt={ -6 }>
       <Pagination ml="auto" { ...pagination }/>
@@ -92,24 +71,47 @@ const PrivateTransactionTags = () => {
       { description }
       <DataListDisplay
         isError={ isError }
-        items={ transactionTagsData?.items }
+        itemsNum={ transactionTagsData?.items.length }
         emptyText=""
-        content={ list }
         actionBar={ actionBar }
-      />
-      <Skeleton mt={ 8 } isLoaded={ !isPlaceholderData } display="inline-block">
+      >
+        <Box display={{ base: 'block', lg: 'none' }}>
+          { transactionTagsData?.items.map((item, index) => (
+            <TransactionTagListItem
+              key={ item.id + (isPlaceholderData ? String(index) : '') }
+              item={ item }
+              isLoading={ isPlaceholderData }
+              onDeleteClick={ onDeleteClick }
+              onEditClick={ onEditClick }
+            />
+          )) }
+        </Box>
+        <Box display={{ base: 'none', lg: 'block' }}>
+          <TransactionTagTable
+            data={ transactionTagsData?.items }
+            isLoading={ isPlaceholderData }
+            onDeleteClick={ onDeleteClick }
+            onEditClick={ onEditClick }
+            top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
+          />
+        </Box>
+      </DataListDisplay>
+      <Skeleton mt={ 8 } loading={ isPlaceholderData } display="inline-block">
         <Button
-          size="lg"
           onClick={ transactionModalProps.onOpen }
         >
           Add transaction tag
         </Button>
       </Skeleton>
-      <TransactionModal { ...transactionModalProps } onClose={ onAddressModalClose } data={ transactionModalData }/>
+      <TransactionModal
+        { ...transactionModalProps }
+        onOpenChange={ onAddressModalOpenChange }
+        data={ transactionModalData }
+      />
       { deleteModalData && (
         <DeletePrivateTagModal
           { ...deleteModalProps }
-          onClose={ onDeleteModalClose }
+          onOpenChange={ onDeleteModalOpenChange }
           data={ deleteModalData }
           type="transaction"
         />

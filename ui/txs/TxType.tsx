@@ -2,9 +2,10 @@ import React from 'react';
 
 import type { TransactionType } from 'types/api/transaction';
 
-import Tag from 'ui/shared/chakra/Tag';
+import type { BadgeProps } from 'toolkit/chakra/badge';
+import { Badge } from 'toolkit/chakra/badge';
 
-export interface Props {
+export interface Props extends BadgeProps {
   types: Array<TransactionType>;
   isLoading?: boolean;
 }
@@ -20,55 +21,58 @@ const TYPES_ORDER: Array<TransactionType> = [
   'coin_transfer',
 ];
 
-const TxType = ({ types, isLoading }: Props) => {
+const TxType = ({ types, isLoading, ...rest }: Props) => {
   const typeToShow = types.sort((t1, t2) => TYPES_ORDER.indexOf(t1) - TYPES_ORDER.indexOf(t2))[0];
 
   let label;
-  let colorScheme;
+  let colorPalette: BadgeProps['colorPalette'];
 
   switch (typeToShow) {
     case 'contract_call':
       label = 'Contract call';
-      colorScheme = 'blue';
+      colorPalette = 'blue';
       break;
     case 'blob_transaction':
       label = 'Blob txn';
-      colorScheme = 'yellow';
+      colorPalette = 'yellow';
       break;
     case 'contract_creation':
       label = 'Contract creation';
-      colorScheme = 'blue';
+      colorPalette = 'blue';
       break;
     case 'token_transfer':
       label = 'Token transfer';
-      colorScheme = 'orange';
+      colorPalette = 'orange';
       break;
     case 'token_creation':
       label = 'Token creation';
-      colorScheme = 'orange';
+      colorPalette = 'orange';
       break;
     case 'coin_transfer':
       label = 'Coin transfer';
-      colorScheme = 'orange';
+      colorPalette = 'orange';
       break;
     case 'rootstock_remasc':
       label = 'REMASC';
-      colorScheme = 'blue';
+      colorPalette = 'blue';
       break;
     case 'rootstock_bridge':
       label = 'Bridge';
-      colorScheme = 'blue';
+      colorPalette = 'blue';
       break;
     default:
       label = 'Transaction';
-      colorScheme = 'purple';
+      colorPalette = 'purple';
+  }
 
+  if (!label) {
+    return null;
   }
 
   return (
-    <Tag colorScheme={ colorScheme } isLoading={ isLoading }>
+    <Badge colorPalette={ colorPalette } loading={ isLoading } { ...rest }>
       { label }
-    </Tag>
+    </Badge>
   );
 };
 

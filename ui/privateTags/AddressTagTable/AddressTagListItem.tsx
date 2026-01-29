@@ -1,8 +1,10 @@
-import { Tag, Flex, HStack, Text, Skeleton } from '@chakra-ui/react';
+import { Flex, HStack, Text } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 
 import type { AddressTag } from 'types/api/account';
 
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { Tag } from 'toolkit/chakra/tag';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TableItemActionButtons from 'ui/shared/TableItemActionButtons';
@@ -32,9 +34,9 @@ const AddressTagListItem = ({ item, onEditClick, onDeleteClick, isLoading }: Pro
           fontWeight="600"
           w="100%"
         />
-        <HStack spacing={ 3 } mt={ 4 }>
-          <Text fontSize="sm" fontWeight={ 500 }>Private tag</Text>
-          <Skeleton isLoaded={ !isLoading } display="inline-block" borderRadius="sm">
+        <HStack gap={ 3 } mt={ 4 }>
+          <Text textStyle="sm" fontWeight="medium">Private tag</Text>
+          <Skeleton loading={ isLoading } display="inline-block" borderRadius="sm">
             <Tag>
               { item.name }
             </Tag>

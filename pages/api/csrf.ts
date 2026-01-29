@@ -4,10 +4,17 @@ import buildUrl from 'nextjs/utils/buildUrl';
 import fetchFactory from 'nextjs/utils/fetchProxy';
 import { httpLogger } from 'nextjs/utils/logger';
 
+import isNeedProxy from 'lib/api/isNeedProxy';
+
 export default async function csrfHandler(_req: NextApiRequest, res: NextApiResponse) {
+  if (!isNeedProxy()) {
+    res.status(404).json({ error: 'Not found' });
+    return;
+  }
+
   httpLogger(_req, res);
 
-  const url = buildUrl('csrf');
+  const url = buildUrl('general:csrf');
   const response = await fetchFactory(_req)(url);
 
   if (response.status === 200) {

@@ -1,47 +1,60 @@
 import { Box, Text, chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import EmptySearchResult from 'ui/shared/EmptySearchResult';
+import type { EmptyStateProps } from 'toolkit/chakra/empty-state';
+import { EmptyState } from 'toolkit/chakra/empty-state';
 
 import DataFetchAlert from './DataFetchAlert';
 
-type FilterProps = {
-  hasActiveFilters: boolean;
-  emptyFilteredText: string;
-};
-
 type Props = {
   isError: boolean;
-  items?: Array<unknown>;
-  emptyText: string;
+  itemsNum?: number;
+  emptyText?: React.ReactNode;
   actionBar?: React.ReactNode;
-  content: React.ReactNode;
+  showActionBarIfEmpty?: boolean;
+  showActionBarIfError?: boolean;
+  children: React.ReactNode;
   className?: string;
-  filterProps?: FilterProps;
-}
+  hasActiveFilters?: boolean;
+  emptyStateProps?: EmptyStateProps;
+};
 
 const DataListDisplay = (props: Props) => {
   if (props.isError) {
+    if (props.showActionBarIfError) {
+      return (
+        <Box className={ props.className }>
+          { props.actionBar }
+          <DataFetchAlert/>
+        </Box>
+      );
+    }
+
     return <DataFetchAlert className={ props.className }/>;
   }
 
-  if (props.filterProps?.hasActiveFilters && !props.items?.length) {
+  if (props.hasActiveFilters && !props.itemsNum) {
     return (
       <Box className={ props.className }>
         { props.actionBar }
-        <EmptySearchResult text={ props.filterProps.emptyFilteredText }/>
+        <EmptyState { ...props.emptyStateProps }/>
       </Box>
     );
   }
 
-  if (!props.items?.length) {
-    return props.emptyText ? <Text className={ props.className }>{ props.emptyText }</Text> : null;
+  if (!props.itemsNum) {
+    return (
+      <>
+        { props.showActionBarIfEmpty && props.actionBar }
+        { props.emptyText && <Text className={ props.className }>{ props.emptyText }</Text> }
+      </>
+    );
   }
 
   return (
     <Box className={ props.className }>
       { props.actionBar }
-      { props.content }
+      { props.children }
     </Box>
   );
 };

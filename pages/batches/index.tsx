@@ -21,6 +21,8 @@ const Batches = dynamic(() => {
       return import('ui/pages/OptimisticL2TxnBatches');
     case 'arbitrum':
       return import('ui/pages/ArbitrumL2TxnBatches');
+    case 'scroll':
+      return import('ui/pages/ScrollL2TxnBatches');
   }
   throw new Error('Txn batches feature is not enabled.');
 }, { ssr: false });
@@ -35,4 +37,4 @@ const Page: NextPage = () => {
 
 export default Page;
 
-export { rollup as getServerSideProps } from 'nextjs/getServerSideProps';
+export { rollup as getServerSideProps } from 'nextjs/getServerSideProps/main';

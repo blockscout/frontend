@@ -1,6 +1,7 @@
 import type { ArrayElement } from 'types/utils';
 
 export const BLOCK_FIELDS_IDS = [
+  'base_fee',
   'burnt_fees',
   'total_reward',
   'nonce',

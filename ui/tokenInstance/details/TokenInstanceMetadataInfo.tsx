@@ -1,14 +1,14 @@
-import { Grid, GridItem, Skeleton, useColorModeValue } from '@chakra-ui/react';
+import { Grid, GridItem } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenInstance } from 'types/api/token';
 import type { MetadataAttributes } from 'types/client/token';
 
 import parseMetadata from 'lib/token/parseMetadata';
-import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
-import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
-import LinkExternal from 'ui/shared/links/LinkExternal';
-import TruncatedValue from 'ui/shared/TruncatedValue';
+import { Link } from 'toolkit/chakra/link';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
+import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 
 import { useMetadataUpdateContext } from '../contexts/metadataUpdate';
 
@@ -23,33 +23,31 @@ interface ItemProps {
 }
 
 const Item = ({ data, isLoading }: ItemProps) => {
-  const attributeBgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
-
   const value = (() => {
     if (data.value_type === 'URL') {
       return (
-        <LinkExternal
+        <Link
+          external
           whiteSpace="nowrap"
           display="inline-flex"
           alignItems="center"
           w="100%"
           overflow="hidden"
           href={ data.value }
-          fontSize="sm"
-          lineHeight={ 5 }
-          isLoading={ isLoading }
+          textStyle="sm"
+          loading={ isLoading }
         >
-          <TruncatedValue value={ data.value } w="calc(100% - 16px)" isLoading={ isLoading }/>
-        </LinkExternal>
+          <TruncatedText text={ data.value } w="calc(100% - 16px)" loading={ isLoading }/>
+        </Link>
       );
     }
 
-    return <TruncatedValue value={ data.value } fontSize="sm" w="100%" isLoading={ isLoading }/>;
+    return <TruncatedText text={ data.value } fontSize="sm" w="100%" loading={ isLoading }/>;
   })();
 
   return (
     <GridItem
-      bgColor={ attributeBgColor }
+      bgColor={{ _light: 'blackAlpha.50', _dark: 'whiteAlpha.50' }}
       borderRadius="md"
       px={ 4 }
       py={ 2 }
@@ -57,9 +55,15 @@ const Item = ({ data, isLoading }: ItemProps) => {
       flexDir="column"
       alignItems="flex-start"
     >
-      <Skeleton isLoaded={ !isLoading } fontSize="xs" lineHeight={ 4 } color="text_secondary" fontWeight={ 500 } mb={ 1 }>
-        <span>{ data.trait_type }</span>
-      </Skeleton>
+      <TruncatedText
+        text={ data.trait_type }
+        textStyle="xs"
+        w="100%"
+        color="text.secondary"
+        fontWeight={ 500 }
+        mb={ 1 }
+        loading={ isLoading }
+      />
       { value }
     </GridItem>
   );
@@ -79,56 +83,58 @@ const TokenInstanceMetadataInfo = ({ data, isLoading: isLoadingProp }: Props) =>
 
   return (
     <>
-      <DetailsInfoItemDivider/>
+      <DetailedInfo.ItemDivider/>
       { metadata?.name && (
         <>
-          <DetailsInfoItem.Label
+          <DetailedInfo.ItemLabel
             hint="NFT name"
             isLoading={ isLoading }
           >
             Name
-          </DetailsInfoItem.Label>
-          <DetailsInfoItem.Value
+          </DetailedInfo.ItemLabel>
+          <DetailedInfo.ItemValue
             whiteSpace="normal"
             wordBreak="break-word"
           >
-            <Skeleton isLoaded={ !isLoading }>
+            <Skeleton loading={ isLoading }>
               { metadata.name }
             </Skeleton>
-          </DetailsInfoItem.Value>
+          </DetailedInfo.ItemValue>
         </>
       ) }
       { metadata?.description && (
         <>
-          <DetailsInfoItem.Label
+          <DetailedInfo.ItemLabel
             hint="NFT description"
             isLoading={ isLoading }
           >
             Description
-          </DetailsInfoItem.Label>
-          <DetailsInfoItem.Value
+          </DetailedInfo.ItemLabel>
+          <DetailedInfo.ItemValue
             whiteSpace="normal"
             wordBreak="break-word"
           >
-            <Skeleton isLoaded={ !isLoading }>
+            <Skeleton loading={ isLoading }>
               { metadata.description }
             </Skeleton>
-          </DetailsInfoItem.Value>
+          </DetailedInfo.ItemValue>
         </>
       ) }
-      { metadata?.attributes && (
+      { metadata?.attributes && metadata.attributes.length > 0 && (
         <>
-          <DetailsInfoItem.Label
+          <DetailedInfo.ItemLabel
             hint="NFT attributes"
             isLoading={ isLoading }
           >
             Attributes
-          </DetailsInfoItem.Label>
-          <DetailsInfoItem.Value>
+          </DetailedInfo.ItemLabel>
+          <DetailedInfo.ItemValue>
             <Grid gap={ 2 } templateColumns="repeat(auto-fill,minmax(160px, 1fr))" w="100%" whiteSpace="normal">
-              { metadata.attributes.map((attribute, index) => <Item key={ index } data={ attribute } isLoading={ isLoading }/>) }
+              { metadata.attributes
+                .filter((attribute) => attribute.value)
+                .map((attribute, index) => <Item key={ index } data={ attribute } isLoading={ isLoading }/>) }
             </Grid>
-          </DetailsInfoItem.Value>
+          </DetailedInfo.ItemValue>
         </>
       ) }
     </>

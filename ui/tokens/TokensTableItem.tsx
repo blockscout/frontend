@@ -1,25 +1,30 @@
-import { Flex, Td, Tr, Skeleton } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { TokenInfo } from 'types/api/token';
+import type { AggregatedTokenInfo } from 'types/client/multichain-aggregator';
 
 import config from 'configs/app';
+import multichainConfig from 'configs/multichain';
+import getItemIndex from 'lib/getItemIndex';
 import { getTokenTypeName } from 'lib/token/tokenTypes';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { TableCell, TableRow } from 'toolkit/chakra/table';
+import { Tag } from 'toolkit/chakra/tag';
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
-import Tag from 'ui/shared/chakra/Tag';
 import type { EntityProps as AddressEntityProps } from 'ui/shared/entities/address/AddressEntity';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
+import SimpleValue from 'ui/shared/value/SimpleValue';
+import { DEFAULT_ACCURACY_USD } from 'ui/shared/value/utils';
 
 type Props = {
-  token: TokenInfo;
+  token: TokenInfo | AggregatedTokenInfo;
   index: number;
   page: number;
   isLoading?: boolean;
-}
-
-const PAGE_SIZE = 50;
+};
 
 const bridgedTokensFeature = config.features.bridgedTokens;
 
@@ -31,53 +36,64 @@ const TokensTableItem = ({
 }: Props) => {
 
   const {
-    address,
+    address_hash: addressHash,
     exchange_rate: exchangeRate,
     type,
-    holders,
+    holders_count: holdersCount,
     circulating_market_cap: marketCap,
-    origin_chain_id: originalChainId,
   } = token;
+
+  const filecoinRobustAddress = 'filecoin_robust_address' in token ? token.filecoin_robust_address : undefined;
+  const originalChainId = 'origin_chain_id' in token ? token.origin_chain_id : undefined;
+  const chainInfos = 'chain_infos' in token ? token.chain_infos : undefined;
 
   const bridgedChainTag = bridgedTokensFeature.isEnabled ?
     bridgedTokensFeature.chains.find(({ id }) => id === originalChainId)?.short_title :
     undefined;
 
   const tokenAddress: AddressEntityProps['address'] = {
-    hash: address,
+    hash: addressHash,
+    filecoin: {
+      robust: filecoinRobustAddress,
+    },
     name: '',
     is_contract: true,
     is_verified: false,
     ens_domain_name: null,
+    implementations: null,
   };
 
+  const chainInfo = React.useMemo(() => {
+    if (!chainInfos) {
+      return;
+    }
+
+    const chainId = Object.keys(chainInfos)[0];
+    const chain = multichainConfig()?.chains.find((chain) => chain.id === chainId);
+    return chain;
+  }, [ chainInfos ]);
+
   return (
-    <Tr
-      sx={{
-        '&:hover [aria-label="Add token to wallet"]': {
-          opacity: 1,
-        },
-      }}
-    >
-      <Td>
+    <TableRow className="group">
+      <TableCell>
         <Flex alignItems="flex-start">
           <Skeleton
-            isLoaded={ !isLoading }
-            fontSize="sm"
-            lineHeight="20px"
+            loading={ isLoading }
+            textStyle="sm"
             fontWeight={ 600 }
             mr={ 3 }
             minW="28px"
           >
-            { (page - 1) * PAGE_SIZE + index + 1 }
+            { getItemIndex(index, page) }
           </Skeleton>
           <Flex overflow="hidden" flexDir="column" rowGap={ 2 }>
             <TokenEntity
               token={ token }
+              chain={ chainInfo }
               isLoading={ isLoading }
               jointSymbol
               noCopy
-              fontSize="sm"
+              textStyle="sm"
               fontWeight="700"
             />
             <Flex columnGap={ 2 } py="5px" alignItems="center">
@@ -85,45 +101,54 @@ const TokensTableItem = ({
                 address={ tokenAddress }
                 isLoading={ isLoading }
                 noIcon
-                fontSize="sm"
+                textStyle="sm"
                 fontWeight={ 500 }
+                link={{ variant: 'secondary' }}
               />
               <AddressAddToWallet
                 token={ token }
                 isLoading={ isLoading }
                 iconSize={ 5 }
                 opacity={ 0 }
+                _groupHover={{ opacity: 1 }}
               />
             </Flex>
             <Flex columnGap={ 1 }>
-              <Tag isLoading={ isLoading }>{ getTokenTypeName(type) }</Tag>
-              { bridgedChainTag && <Tag isLoading={ isLoading }>{ bridgedChainTag }</Tag> }
+              <Tag loading={ isLoading }>{ getTokenTypeName(type) }</Tag>
+              { bridgedChainTag && <Tag loading={ isLoading }>{ bridgedChainTag }</Tag> }
             </Flex>
           </Flex>
         </Flex>
-      </Td>
-      <Td isNumeric>
-        <Skeleton isLoaded={ !isLoading } fontSize="sm" lineHeight="24px" fontWeight={ 500 } display="inline-block">
-          { exchangeRate && `$${ Number(exchangeRate).toLocaleString(undefined, { minimumSignificantDigits: 4 }) }` }
-        </Skeleton>
-      </Td>
-      <Td isNumeric maxWidth="300px" width="300px">
-        <Skeleton isLoaded={ !isLoading } fontSize="sm" lineHeight="24px" fontWeight={ 500 } display="inline-block">
-          { marketCap && `$${ BigNumber(marketCap).toFormat() }` }
-        </Skeleton>
-      </Td>
-      <Td isNumeric>
+      </TableCell>
+      <TableCell isNumeric>
+        { exchangeRate ? (
+          <SimpleValue
+            value={ BigNumber(exchangeRate) }
+            accuracy={ 4 }
+            loading={ isLoading }
+            prefix="$"
+          />
+        ) : null }
+      </TableCell>
+      <TableCell isNumeric>
+        { marketCap && (
+          <SimpleValue
+            value={ BigNumber(marketCap) }
+            loading={ isLoading }
+            prefix="$"
+            accuracy={ DEFAULT_ACCURACY_USD }
+          />
+        ) }
+      </TableCell>
+      <TableCell isNumeric>
         <Skeleton
-          isLoaded={ !isLoading }
-          fontSize="sm"
-          lineHeight="24px"
-          fontWeight={ 500 }
+          loading={ isLoading }
           display="inline-block"
         >
-          { Number(holders).toLocaleString() }
+          { Number(holdersCount).toLocaleString() }
         </Skeleton>
-      </Td>
-    </Tr>
+      </TableCell>
+    </TableRow>
   );
 };
 

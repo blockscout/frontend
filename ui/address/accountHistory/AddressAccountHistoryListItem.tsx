@@ -1,13 +1,15 @@
-import { Box, Flex, Skeleton, Text } from '@chakra-ui/react';
+import { Box, Flex, Text } from '@chakra-ui/react';
 import React, { useMemo } from 'react';
 
 import type { NovesResponseData } from 'types/api/noves';
 
-import dayjs from 'lib/date/dayjs';
+import { Link } from 'toolkit/chakra/link';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { SECOND } from 'toolkit/utils/consts';
 import IconSvg from 'ui/shared/IconSvg';
-import LinkInternal from 'ui/shared/links/LinkInternal';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import NovesFromTo from 'ui/shared/Noves/NovesFromTo';
+import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 type Props = {
   isPlaceholderData: boolean;
@@ -25,35 +27,37 @@ const AddressAccountHistoryListItem = (props: Props) => {
 
   return (
     <ListItemMobile rowGap={ 4 } w="full">
-      <Skeleton borderRadius="sm" isLoaded={ !props.isPlaceholderData } w="full">
+      <Skeleton borderRadius="sm" loading={ props.isPlaceholderData } w="full">
         <Flex justifyContent="space-between" w="full">
           <Flex columnGap={ 2 }>
             <IconSvg
               name="lightning"
               height="5"
               width="5"
-              color="gray.500"
-              _dark={{ color: 'gray.400' }}
+              color="icon.primary"
             />
 
             <Text fontSize="sm" fontWeight={ 500 }>
-                Action
+              Action
             </Text>
           </Flex>
-          <Text color="text_secondary" fontSize="sm" fontWeight={ 500 }>
-            { dayjs(props.tx.rawTransactionData.timestamp * 1000).fromNow() }
-          </Text>
+          <TimeWithTooltip
+            timestamp={ props.tx.rawTransactionData.timestamp * SECOND }
+            color="text.secondary"
+            borderRadius="sm"
+            fontWeight={ 500 }
+          />
         </Flex>
       </Skeleton>
-      <Skeleton borderRadius="sm" isLoaded={ !props.isPlaceholderData }>
-        <LinkInternal
+      <Skeleton borderRadius="sm" loading={ props.isPlaceholderData }>
+        <Link
           href={ `/tx/${ props.tx.rawTransactionData.transactionHash }` }
           fontWeight="bold"
           whiteSpace="break-spaces"
           wordBreak="break-word"
         >
           { parsedDescription }
-        </LinkInternal>
+        </Link>
       </Skeleton>
 
       <Box maxW="full">

@@ -41,6 +41,9 @@ on:
                 required: true
                 type: string
 
+permissions:
+  issues: read
+
 jobs:
     run:
         name: Run
@@ -97,11 +100,11 @@ jobs:
                         }
                         
                         if (projects.length > 1) {
-                            core.info(`Fould ${ projects.length } with the similar name:`);
+                            core.info(`Found ${ projects.length } with the similar name:`);
                             projects.forEach((issue) => {
                                 core.info(`    #${ projects.number } - ${ projects.title }`);
                             })
-                            core.setFailed('Fould multiple projects with the similar name. Cannot determine which one to use.');
+                            core.setFailed('Found multiple projects with the similar name. Cannot determine which one to use.');
                             return;
                         }
                         
@@ -186,8 +189,9 @@ jobs:
                             } catch (error) {
                                 if (error.status === 404) {
                                     core.info('Nothing has found.\n');
-                                    return [];
                                 }
+                                core.info(`Error: ${ error.message }\n`);
+                                return [];
                             }
                         }
 
@@ -212,8 +216,12 @@ jobs:
 
                         for (const item of items) {
                             core.info(`Changing field value for item ${ item }...`);
-                            await changeItemFieldValue(item);
-                            core.info('Done.\n');
+                            try {
+                                await changeItemFieldValue(item);
+                                core.info('Done.\n');
+                            } catch (error) {
+                                core.info(`Error: ${ error.message }\n`);
+                            }
                         }
 
                         async function changeItemFieldValue(itemId) {

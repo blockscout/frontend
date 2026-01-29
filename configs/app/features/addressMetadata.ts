@@ -1,20 +1,16 @@
 import type { Feature } from './types';
 
+import apis from '../apis';
 import { getEnvValue } from '../utils';
-
-const apiHost = getEnvValue('NEXT_PUBLIC_METADATA_SERVICE_API_HOST');
 
 const title = 'Address metadata';
 
-const config: Feature<{ api: { endpoint: string; basePath: string } }> = (() => {
-  if (apiHost) {
+const config: Feature<{ isAddressTagsUpdateEnabled: boolean }> = (() => {
+  if (apis.metadata) {
     return Object.freeze({
       title,
       isEnabled: true,
-      api: {
-        endpoint: apiHost,
-        basePath: '',
-      },
+      isAddressTagsUpdateEnabled: getEnvValue('NEXT_PUBLIC_METADATA_ADDRESS_TAGS_UPDATE_ENABLED') !== 'false',
     });
   }
 

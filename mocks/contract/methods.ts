@@ -34,6 +34,12 @@ export const write: Array<SmartContractMethodWrite> = [
     payable: true,
     stateMutability: 'payable',
     type: 'fallback',
+    inputs: [
+      { internalType: 'bytes', name: 'input', type: 'bytes' },
+    ],
+    outputs: [
+      { internalType: 'bytes', name: 'output', type: 'bytes' },
+    ],
   },
   {
     constant: false,
@@ -129,6 +135,6 @@ export const write: Array<SmartContractMethodWrite> = [
     payable: false,
     stateMutability: 'nonpayable',
     type: 'function',
-    method_id: '0x06',
+    is_invalid: true,
   },
 ];

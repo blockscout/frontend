@@ -1,10 +1,11 @@
-import { Hide, Show, Skeleton } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import { rightLineArrow, nbsp } from 'lib/html-entities';
 import { L2_DEPOSIT_ITEM } from 'stubs/L2';
 import { generateListStub } from 'stubs/utils';
+import { Skeleton } from 'toolkit/chakra/skeleton';
+import { rightLineArrow, nbsp } from 'toolkit/utils/htmlEntities';
 import OptimisticDepositsListItem from 'ui/deposits/optimisticL2/OptimisticDepositsListItem';
 import OptimisticDepositsTable from 'ui/deposits/optimisticL2/OptimisticDepositsTable';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
@@ -15,23 +16,23 @@ import StickyPaginationWithText from 'ui/shared/StickyPaginationWithText';
 
 const OptimisticL2Deposits = () => {
   const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({
-    resourceName: 'optimistic_l2_deposits',
+    resourceName: 'general:optimistic_l2_deposits',
     options: {
-      placeholderData: generateListStub<'optimistic_l2_deposits'>(
+      placeholderData: generateListStub<'general:optimistic_l2_deposits'>(
         L2_DEPOSIT_ITEM,
         50,
         {
           next_page_params: {
             items_count: 50,
             l1_block_number: 9045200,
-            tx_hash: '',
+            transaction_hash: '',
           },
         },
       ),
     },
   });
 
-  const countersQuery = useApiQuery('optimistic_l2_deposits_count', {
+  const countersQuery = useApiQuery('general:optimistic_l2_deposits_count', {
     queryOptions: {
       placeholderData: 1927029,
     },
@@ -39,18 +40,18 @@ const OptimisticL2Deposits = () => {
 
   const content = data?.items ? (
     <>
-      <Show below="lg" ssr={ false }>
+      <Box hideFrom="lg">
         { data.items.map(((item, index) => (
           <OptimisticDepositsListItem
-            key={ item.l2_tx_hash + (isPlaceholderData ? index : '') }
+            key={ item.l2_transaction_hash + (isPlaceholderData ? index : '') }
             isLoading={ isPlaceholderData }
             item={ item }
           />
         ))) }
-      </Show>
-      <Hide below="lg" ssr={ false }>
+      </Box>
+      <Box hideBelow="lg">
         <OptimisticDepositsTable items={ data.items } top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 } isLoading={ isPlaceholderData }/>
-      </Hide>
+      </Box>
     </>
   ) : null;
 
@@ -60,10 +61,7 @@ const OptimisticL2Deposits = () => {
     }
 
     return (
-      <Skeleton
-        isLoaded={ !countersQuery.isPlaceholderData }
-        display="inline-block"
-      >
+      <Skeleton loading={ countersQuery.isPlaceholderData } display="inline-block">
         A total of { countersQuery.data?.toLocaleString() } deposits found
       </Skeleton>
     );
@@ -76,11 +74,12 @@ const OptimisticL2Deposits = () => {
       <PageTitle title={ `Deposits (L1${ nbsp }${ rightLineArrow }${ nbsp }L2)` } withTextAd/>
       <DataListDisplay
         isError={ isError }
-        items={ data?.items }
+        itemsNum={ data?.items?.length }
         emptyText="There are no deposits."
-        content={ content }
         actionBar={ actionBar }
-      />
+      >
+        { content }
+      </DataListDisplay>
     </>
   );
 };

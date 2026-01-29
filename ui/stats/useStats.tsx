@@ -1,28 +1,34 @@
 import { useRouter } from 'next/router';
 import React, { useCallback, useMemo, useState } from 'react';
 
-import type { StatsChartInfo, StatsChartsSection } from 'types/api/stats';
+import type * as stats from '@blockscout/stats-types';
 import type { StatsIntervalIds } from 'types/client/stats';
+import type { ExternalChainExtended } from 'types/externalChains';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { STATS_CHARTS } from 'stubs/stats';
 
-function isSectionMatches(section: StatsChartsSection, currentSection: string): boolean {
+function isSectionMatches(section: stats.LineChartSection, currentSection: string): boolean {
   return currentSection === 'all' || section.id === currentSection;
 }
 
-function isChartNameMatches(q: string, chart: StatsChartInfo) {
+function isChartNameMatches(q: string, chart: stats.LineChartInfo) {
   return chart.title.toLowerCase().includes(q.toLowerCase());
 }
 
-export default function useStats() {
+interface Props {
+  chain?: ExternalChainExtended;
+}
+
+export default function useStats({ chain }: Props = {}) {
   const router = useRouter();
 
-  const { data, isPlaceholderData, isError } = useApiQuery('stats_lines', {
+  const { data, isPlaceholderData, isError } = useApiQuery('stats:lines', {
     queryOptions: {
       placeholderData: STATS_CHARTS,
     },
+    chain,
   });
 
   const [ currentSection, setCurrentSection ] = useState('all');

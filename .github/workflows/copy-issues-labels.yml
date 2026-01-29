@@ -22,6 +22,10 @@ on:
                 required: true
                 type: string
 
+permissions:
+  issues: read
+  pull-requests: write
+
 jobs:
     run:
         name: Run
@@ -39,11 +43,13 @@ jobs:
                     const WHITE_LISTED_LABELS = [
                         'client feature',
                         'feature',
+                        'breaking changes',
 
                         'bug',
 
                         'dependencies',
                         'performance',
+                        'design',
 
                         'chore',
                         'enhancement',

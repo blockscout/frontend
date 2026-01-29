@@ -9,7 +9,7 @@ on:
       - '.husky/**'
       - '.vscode/**'
       - 'docs/**'
-      - 'jest/**'
+      - 'vitest/**'
       - 'mocks/**'
       - 'playwright/**'
       - 'stubs/**'
@@ -20,8 +20,17 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   publish_image:
     name: Publish Docker image
     uses: './.github/workflows/publish-image.yml'
     secrets: inherit
+    with:
+      tags: |
+        type=ref,event=branch
+        type=raw,value=unstable
+      platforms: linux/amd64

@@ -1,6 +1,7 @@
 import type { PlaywrightTestConfig } from '@playwright/experimental-ct-react';
 import { devices, defineConfig } from '@playwright/experimental-ct-react';
 import react from '@vitejs/plugin-react';
+import type { Plugin } from 'esbuild';
 import svgr from 'vite-plugin-svgr';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
@@ -36,6 +37,12 @@ const config: PlaywrightTestConfig = defineConfig({
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'html',
 
+  expect: {
+    toHaveScreenshot: {
+      threshold: 0.05,
+    },
+  },
+
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     baseURL: appConfig.app.baseUrl,
@@ -50,12 +57,12 @@ const config: PlaywrightTestConfig = defineConfig({
 
     ctViteConfig: {
       plugins: [
-        tsconfigPaths(),
+        tsconfigPaths({ loose: true, ignoreConfigErrors: true }),
         react(),
         svgr({
           exportAsDefault: true,
         }),
-      ],
+      ] as unknown as Array<Plugin>,
       build: {
         // it actually frees some memory that vite needs a lot
         // https://github.com/storybookjs/builder-vite/issues/409#issuecomment-1152848986
@@ -78,10 +85,25 @@ const config: PlaywrightTestConfig = defineConfig({
           // Mock for growthbook to test feature flags
           { find: 'lib/growthbook/useFeatureValue', replacement: './playwright/mocks/lib/growthbook/useFeatureValue.js' },
 
+          // Mock for reCaptcha hook
+          { find: 'ui/shared/reCaptcha/useReCaptcha', replacement: './playwright/mocks/ui/shared/recaptcha/useReCaptcha.js' },
+
           // The createWeb3Modal() function from web3modal/wagmi/react somehow pollutes the global styles which causes the tests to fail
           // We don't call this function in TestApp and since we use useWeb3Modal() and useWeb3ModalState() hooks in the code, we have to mock the module
           // Otherwise it will complain that createWeb3Modal() is no called before the hooks are used
-          { find: /^@web3modal\/wagmi\/react$/, replacement: './playwright/mocks/modules/@web3modal/wagmi/react.js' },
+          { find: /^@reown\/appkit\/react$/, replacement: './playwright/mocks/modules/@reown/appkit/react.js' },
+
+          { find: '/playwright/index.ts', replacement: './playwright/index.ts' },
+          { find: '/playwright/envs.js', replacement: './playwright/envs.js' },
+
+          // Fix for @libp2p/utils missing merge-options export
+          { find: '@libp2p/utils/merge-options', replacement: 'merge-options' },
+
+          // Mock for @helia/verified-fetch to avoid build issues in tests
+          { find: '@helia/verified-fetch', replacement: './playwright/mocks/modules/@helia/verified-fetch.js' },
+
+          // Mock for @specify-sh/sdk to avoid build issues in tests
+          { find: '@specify-sh/sdk', replacement: './playwright/mocks/modules/@specify-sh/sdk.js' },
         ],
       },
       define: {
