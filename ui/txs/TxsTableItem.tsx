@@ -34,6 +34,7 @@ type Props = {
   chainData?: ClusterChainConfig;
   translationIsLoading?: boolean;
   translationData?: NovesDescribeTxsResponse;
+  isMobile?: boolean;
 };
 
 const TxsTableItem = ({
@@ -46,6 +47,7 @@ const TxsTableItem = ({
   chainData,
   translationIsLoading,
   translationData,
+  isMobile,
 }: Props) => {
   const dataTo = tx.to ? tx.to : tx.created_contract;
 
@@ -54,7 +56,7 @@ const TxsTableItem = ({
   return (
     <TableRow key={ tx.hash } animation={ animation }>
       <TableCell textAlign="center">
-        <TxAdditionalInfo tx={ tx } isLoading={ isLoading }/>
+        <TxAdditionalInfo tx={ tx } isMobile={ isMobile } isLoading={ isLoading }/>
       </TableCell>
       { chainData && (
         <TableCell>
