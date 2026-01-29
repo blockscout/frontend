@@ -48,13 +48,19 @@ const AddressTokens = ({ shouldRender = true, isQueryEnabled = true }: Props) =>
   const tab = getQueryParamString(router.query.tab);
   const hash = getQueryParamString(router.query.hash);
 
+  // on address details we have tokens requests for all token types, separately
+  // react query can behave unexpectedly, when it already has data for ERC-20 (string type)
+  // and we fetch it again with the array type
+  // so if it's just one token type, we heed to keep it a string for queries compatibility
+  const tokenTypesFilter = config.chain.additionalTokenTypes.length > 0 ? [ 'ERC-20', ...config.chain.additionalTokenTypes.map(item => item.id) ] : 'ERC-20';
+
   const erc20Query = useQueryWithPages({
     resourceName: 'general:address_tokens',
     pathParams: { hash },
-    filters: { type: [ 'ERC-20', ...config.chain.additionalTokenTypes.map(item => item.id) ] },
+    filters: { type: tokenTypesFilter },
     scrollRef,
     options: {
-      enabled: isQueryEnabled && (!tab || tab === 'tokens' || tab === 'tokens_erc20'),
+      enabled: isQueryEnabled && (tab === 'tokens' || tab === 'tokens_erc20'),
       refetchOnMount: false,
       placeholderData: generateListStub<'general:address_tokens'>(ADDRESS_TOKEN_BALANCE_ERC_20, 10, { next_page_params: null }),
     },
