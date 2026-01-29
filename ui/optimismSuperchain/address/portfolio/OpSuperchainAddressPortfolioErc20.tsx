@@ -101,7 +101,7 @@ const OpSuperchainAddressPortfolioErc20 = () => {
 
   return (
     <Box>
-      <OpSuperchainAddressPortfolioNetWorth/>
+      <OpSuperchainAddressPortfolioNetWorth addressHash={ hash }/>
       <OpSuperchainAddressPortfolioCards
         chainIds={ availableChainIds }
         value={ chainIds }

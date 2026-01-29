@@ -6,6 +6,8 @@ import type { ClusterChainConfig } from 'types/multichain';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 
+import { formatPercentage } from './utils';
+
 interface Props {
   chain: ClusterChainConfig;
   loading: boolean;
@@ -40,7 +42,7 @@ const OpSuperchainAddressPortfolioCard = ({ chain, loading, selected, noneSelect
             <span>$123,456.78</span>
           </Skeleton>
           <Skeleton loading={ loading } color="text.secondary">
-            <span>12.34%</span>
+            <span>{ formatPercentage(0.1234) }</span>
           </Skeleton>
         </HStack>
       </VStack>
