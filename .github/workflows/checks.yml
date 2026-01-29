@@ -321,16 +321,37 @@ jobs:
     runs-on: ubuntu-latest
     needs: [ pw_tests ]
     steps:
+      - name: Download blob reports from GitHub Actions Artifacts
+        id: download-reports
+        uses: actions/download-artifact@v5
+        continue-on-error: true
+        with:
+          path: all-blob-reports
+          pattern: blob-report-*
+          merge-multiple: true
+
+      - name: Check for downloaded reports
+        id: check-reports
+        run: |
+          if [ -d all-blob-reports ] && [ -n "$(ls -A all-blob-reports 2>/dev/null)" ]; then
+            echo "has_reports=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_reports=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Checkout repo
+        if: steps.check-reports.outputs.has_reports == 'true'
         uses: actions/checkout@v4
 
       - name: Setup node
+        if: steps.check-reports.outputs.has_reports == 'true'
         uses: actions/setup-node@v4
         with:
           node-version: 22.14.0
           cache: 'yarn'
 
       - name: Cache node_modules
+        if: steps.check-reports.outputs.has_reports == 'true'
         uses: actions/cache@v4
         id: cache-node-modules
         with:
@@ -339,20 +360,15 @@ jobs:
           key: node_modules-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
 
       - name: Install dependencies
-        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        if: steps.check-reports.outputs.has_reports == 'true' && steps.cache-node-modules.outputs.cache-hit != 'true'
         run: yarn --frozen-lockfile
 
-      - name: Download blob reports from GitHub Actions Artifacts
-        uses: actions/download-artifact@v5
-        with:
-          path: all-blob-reports
-          pattern: blob-report-*
-          merge-multiple: true
-
       - name: Merge into HTML Report
+        if: steps.check-reports.outputs.has_reports == 'true'
         run: npx playwright merge-reports --reporter html ./all-blob-reports
 
       - name: Configure AWS credentials
+        if: steps.check-reports.outputs.has_reports == 'true'
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -360,12 +376,14 @@ jobs:
           aws-region: ${{ vars.AWS_REGION }}
 
       - name: Upload HTML report
+        if: steps.check-reports.outputs.has_reports == 'true'
         run: |
           export "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`"
           aws s3 cp playwright-report/ s3://${{ vars.AWS_BUCKET_NAME }}/report-${SHORT_SHA} --recursive
           echo "PLAYWRIGHT_URL=https://${{ vars.AWS_BUCKET_NAME }}.s3.${{ vars.AWS_REGION }}.amazonaws.com/report-${SHORT_SHA}/index.html" >> "$GITHUB_ENV"
 
       - name: Add link to job summary
+        if: steps.check-reports.outputs.has_reports == 'true'
         run: |
           echo "### Playwright report" >> $GITHUB_STEP_SUMMARY
           echo "[View report](${{ env.PLAYWRIGHT_URL }}) [Read about ducks](https://animalkingdom.org/animals/ducks/)" >> $GITHUB_STEP_SUMMARY
