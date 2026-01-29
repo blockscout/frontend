@@ -71,15 +71,16 @@ export interface SearchResultMetadataTag extends SearchResultAddressData {
   metadata: AddressMetadataTagApi;
 }
 
-export interface SearchResultDomain extends SearchResultAddressData {
+export interface SearchResultDomain extends Omit<SearchResultAddressData, 'address_hash'> {
   type: 'ens_domain';
   ens_info: {
-    address_hash: string;
+    address_hash: string | null;
     expiry_date?: string;
     name: string;
     names_count: number;
     protocol?: bens.ProtocolInfo;
   };
+  address_hash: string | null;
 }
 
 export interface SearchResultCluster extends SearchResultAddressData {
@@ -168,5 +169,5 @@ export interface SearchResultFilters {
 export interface SearchRedirectResult {
   parameter: string | null;
   redirect: boolean;
-  type: 'address' | 'block' | 'transaction' | 'user_operation' | 'blob' | null;
+  type: 'address' | 'block' | 'transaction' | 'user_operation' | 'blob' | 'ens_domain' | null;
 }

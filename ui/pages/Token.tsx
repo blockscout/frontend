@@ -129,6 +129,7 @@ const TokenPageContent = () => {
 
   const hasData = (tokenQuery.data && !tokenQuery.isPlaceholderData) && (addressQuery.data && !addressQuery.isPlaceholderData);
   const hasInventoryTab = tokenQuery.data?.type && NFT_TOKEN_TYPE_IDS.includes(tokenQuery.data.type);
+  const isFirstTabTokenTransfer = !hasInventoryTab && !tab;
 
   const transfersQuery = useQueryWithPages({
     resourceName: 'general:token_transfers',
@@ -225,8 +226,7 @@ const TokenPageContent = () => {
 
   let pagination: PaginationParams | undefined;
 
-  // default tab for erc-20 is token transfers
-  if ((tokenQuery.data?.type === 'ERC-20' && !tab) || tab === 'token_transfers') {
+  if (isFirstTabTokenTransfer || tab === 'token_transfers') {
     pagination = transfersQuery.pagination;
   }
 
