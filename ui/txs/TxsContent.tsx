@@ -7,10 +7,12 @@ import type { Transaction, TransactionsSortingField, TransactionsSortingValue } 
 import type { PaginationParams } from 'ui/shared/pagination/types';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
+import useTableViewValue from 'lib/hooks/useTableViewValue';
 import AddressCsvExportLink from 'ui/address/AddressCsvExportLink';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import getNextSortValue from 'ui/shared/sort/getNextSortValue';
+import TableViewToggleButton from 'ui/shared/TableViewToggleButton';
 
 import useDescribeTxs from './noves/useDescribeTxs';
 import TxsHeaderMobile from './TxsHeaderMobile';
@@ -38,6 +40,7 @@ type Props = {
   setSorting?: (value: TransactionsSortingValue) => void;
   sort: TransactionsSortingValue;
   stickyHeader?: boolean;
+  showTableViewButton?: boolean;
 };
 
 const TxsContent = ({
@@ -55,8 +58,14 @@ const TxsContent = ({
   setSorting,
   sort,
   stickyHeader = true,
+  showTableViewButton,
 }: Props) => {
   const isMobile = useIsMobile();
+
+  const tableViewFlag = useTableViewValue();
+
+  const isTableView = isMobile ? showTableViewButton && !tableViewFlag.isLoading && tableViewFlag.value : true;
+  const isLoading = isPlaceholderData || tableViewFlag.isLoading;
 
   const onSortToggle = React.useCallback((field: TransactionsSortingField) => {
     const value = getNextSortValue<TransactionsSortingField, TransactionsSortingValue>(SORT_SEQUENCE, field)(sort);
@@ -67,18 +76,23 @@ const TxsContent = ({
 
   const content = items && items.length > 0 ? (
     <>
-      <Box hideFrom="lg">
+      <Box display={ isTableView ? 'none' : 'block' }>
         <TxsList
           showBlockInfo={ showBlockInfo }
           socketType={ socketType }
-          isLoading={ isPlaceholderData }
+          isLoading={ isLoading }
           enableTimeIncrement={ enableTimeIncrement }
           currentAddress={ currentAddress }
           items={ items }
           translationQuery={ translationQuery }
         />
       </Box>
-      <Box hideBelow="lg">
+      <Box
+        display={ isTableView ? 'block' : 'none' }
+        overflowX={ isMobile ? 'scroll' : undefined }
+        mx={ isMobile ? -3 : 0 }
+        px={ isMobile ? 3 : 0 }
+      >
         <TxsTable
           txs={ items }
           sort={ sort }
@@ -88,12 +102,20 @@ const TxsContent = ({
           top={ top || (pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0) }
           currentAddress={ currentAddress }
           enableTimeIncrement={ enableTimeIncrement }
-          isLoading={ isPlaceholderData }
-          stickyHeader={ stickyHeader }
+          isLoading={ isLoading }
+          stickyHeader={ !isMobile && stickyHeader }
           translationQuery={ translationQuery }
         />
       </Box>
     </>
+  ) : null;
+
+  const tableViewButton = isMobile && showTableViewButton ? (
+    <TableViewToggleButton
+      value={ tableViewFlag.value }
+      onClick={ tableViewFlag.onToggle }
+      loading={ isLoading }
+    />
   ) : null;
 
   const actionBar = isMobile ? (
@@ -110,8 +132,8 @@ const TxsContent = ({
           params={{ type: 'transactions', filterType: 'address', filterValue }}
           isLoading={ pagination.isLoading }
         />
-      ) : null
-      }
+      ) : null }
+      tableViewButton={ tableViewButton }
     />
   ) : null;
 
