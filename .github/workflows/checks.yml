@@ -386,4 +386,5 @@ jobs:
         if: steps.check-reports.outputs.has_reports == 'true'
         run: |
           echo "### Playwright report" >> $GITHUB_STEP_SUMMARY
-          echo "[View report](${{ env.PLAYWRIGHT_URL }}) [Read about ducks](https://animalkingdom.org/animals/ducks/)" >> $GITHUB_STEP_SUMMARY
+          echo "[View report](${{ env.PLAYWRIGHT_URL }})" >> $GITHUB_STEP_SUMMARY
+          echo "[Read about ducks](https://animalkingdom.org/animals/ducks/)" >> $GITHUB_STEP_SUMMARY
