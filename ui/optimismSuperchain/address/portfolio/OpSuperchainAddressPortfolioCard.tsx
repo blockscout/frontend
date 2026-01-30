@@ -1,21 +1,26 @@
 import { HStack, VStack } from '@chakra-ui/react';
+import type BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { ClusterChainConfig } from 'types/multichain';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import ChainIcon from 'ui/shared/externalChains/ChainIcon';
+import SimpleValue from 'ui/shared/value/SimpleValue';
+import { DEFAULT_ACCURACY_USD } from 'ui/shared/value/utils';
 
 import { formatPercentage } from './utils';
 
 interface Props {
   chain: ClusterChainConfig;
+  value: BigNumber;
+  share?: number;
   loading: boolean;
   selected: boolean;
   noneSelected: boolean;
 }
 
-const OpSuperchainAddressPortfolioCard = ({ chain, loading, selected, noneSelected }: Props) => {
+const OpSuperchainAddressPortfolioCard = ({ chain, value, share, loading, selected, noneSelected }: Props) => {
 
   return (
     <HStack
@@ -38,12 +43,12 @@ const OpSuperchainAddressPortfolioCard = ({ chain, loading, selected, noneSelect
           <span>{ chain.name }</span>
         </Skeleton>
         <HStack gap={ 1 }>
-          <Skeleton loading={ loading }>
-            <span>$123,456.78</span>
-          </Skeleton>
-          <Skeleton loading={ loading } color="text.secondary">
-            <span>{ formatPercentage(0.1234) }</span>
-          </Skeleton>
+          <SimpleValue value={ value } prefix="$" loading={ loading } noTooltip accuracy={ DEFAULT_ACCURACY_USD }/>
+          { share !== undefined && (
+            <Skeleton loading={ loading } color="text.secondary">
+              <span>{ formatPercentage(share) }</span>
+            </Skeleton>
+          ) }
         </HStack>
       </VStack>
     </HStack>

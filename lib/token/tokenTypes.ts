@@ -31,7 +31,7 @@ export function getTokenTypeName(typeId: string) {
 }
 
 export function isFungibleTokenType(typeId: TokenType): boolean {
-  return typeId === 'ERC-20' || additionalTokenTypes.some((item) => item.id === typeId);
+  return typeId === 'ERC-20' || typeId === 'NATIVE' || additionalTokenTypes.some((item) => item.id === typeId);
 }
 
 export function hasTokenTransferValue(typeId: TokenType) {

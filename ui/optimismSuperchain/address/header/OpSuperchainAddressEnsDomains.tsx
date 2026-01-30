@@ -12,6 +12,7 @@ import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 import IconSvg from 'ui/shared/IconSvg';
 
+// TODO @tom2drum lazy load all domains
 const DomainsGrid = ({ data }: { data: Array<multichain.Domain> }) => {
   return (
     <Grid

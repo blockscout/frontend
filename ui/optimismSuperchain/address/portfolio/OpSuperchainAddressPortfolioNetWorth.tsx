@@ -1,34 +1,69 @@
-import { Text, Flex, HStack, VStack, Separator, Box, Circle, chakra } from '@chakra-ui/react';
+import { Text, Flex, HStack, VStack, Separator, Box, chakra } from '@chakra-ui/react';
+import { BigNumber } from 'bignumber.js';
 import React from 'react';
 
 import config from 'configs/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import * as mixpanel from 'lib/mixpanel';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import AddressMultichainButton from 'ui/address/details/AddressMultichainButton';
 import AdBanner from 'ui/shared/ad/AdBanner';
 import IconSvg from 'ui/shared/IconSvg';
+import SimpleValue from 'ui/shared/value/SimpleValue';
+import { DEFAULT_ACCURACY_USD } from 'ui/shared/value/utils';
 
 import { formatPercentage } from './utils';
 
 const multichainBalanceFeature = config.features.multichainButton;
 
-const TOP_TOKENS = [
-  { symbol: 'USDT', share: 0.6 },
-  { symbol: 'ETH', share: 0.399 },
-  { symbol: 'Other', share: 0.001 },
-];
 const TOP_TOKENS_COLORS = [ 'purple.300', 'pink.300', '#D9D9D9' ];
 
 interface Props {
   addressHash: string;
+  netWorth?: string;
+  isLoading: boolean;
+  topTokens?: Array<{ symbol: string; share: number }>;
+  hasTokens?: boolean;
 }
 
-const OpSuperchainAddressPortfolioNetWorth = ({ addressHash }: Props) => {
+const OpSuperchainAddressPortfolioNetWorth = ({ addressHash, netWorth, isLoading, topTokens, hasTokens }: Props) => {
   const isMobile = useIsMobile();
 
   const handleMultichainClick = React.useCallback(() => {
     mixpanel.logEvent(mixpanel.EventTypes.BUTTON_CLICK, { Content: 'Multichain', Source: 'address' });
   }, []);
+
+  const topTokensContent = (() => {
+    if (!topTokens || topTokens.length === 0) {
+      return (
+        <chakra.span color="text.secondary">
+          { hasTokens ? 'Unable to calculate top tokens shares' : 'There are no tokens at this address' }
+        </chakra.span>
+      );
+    }
+
+    return (
+      <>
+        <Skeleton loading={ isLoading } w="225px" h={ 3 } display="flex" alignItems="center" borderRadius="full" overflow="hidden">
+          { topTokens.map((token, index) => (
+            <Box key={ token.symbol } h="100%" w={ `${ token.share * 100 }%` } bgColor={ TOP_TOKENS_COLORS[index] } minW="1px"/>
+          )) }
+        </Skeleton>
+        <HStack flexWrap="wrap">
+          { topTokens.map((token, index) => (
+            <HStack key={ token.symbol }>
+              <Skeleton boxSize={ 4 } borderRadius="full" loading={ isLoading } bgColor={ !isLoading ? TOP_TOKENS_COLORS[index] : undefined }/>
+              <Skeleton loading={ isLoading } fontWeight={ 600 } whiteSpace="pre">
+                <span>{ token.symbol }</span>
+                <chakra.span color="text.secondary"> { formatPercentage(token.share) }</chakra.span>
+              </Skeleton>
+            </HStack>
+          )) }
+        </HStack>
+      </>
+    );
+
+  })();
 
   return (
     <HStack alignItems="center" w="full" h={{ base: 'auto', lg: '100px' }}>
@@ -56,7 +91,14 @@ const OpSuperchainAddressPortfolioNetWorth = ({ addressHash }: Props) => {
             <Text color="text.secondary"> (without NFT)</Text>
           </Flex>
           <Flex >
-            <Text fontWeight={ 600 }>$6,170,337.69</Text>
+            <SimpleValue
+              value={ BigNumber(netWorth ?? 0) }
+              prefix="$"
+              loading={ isLoading }
+              fontWeight={ 600 }
+              accuracy={ DEFAULT_ACCURACY_USD }
+              color={ !netWorth ? 'text.secondary' : undefined }
+            />
             { multichainBalanceFeature.isEnabled && (
               <>
                 <Separator mx={ 3 } height="16px" orientation="vertical"/>
@@ -84,22 +126,7 @@ const OpSuperchainAddressPortfolioNetWorth = ({ addressHash }: Props) => {
           flexDirection={{ base: 'column', lg: 'row' }}
           textStyle="xs"
         >
-          <Flex w="225px" h={ 3 } borderRadius="full" overflow="hidden">
-            { TOP_TOKENS.map((token, index) => (
-              <Box key={ token.symbol } h="100%" w={ `${ token.share * 100 }%` } bgColor={ TOP_TOKENS_COLORS[index] } minW="1px"/>
-            )) }
-          </Flex>
-          <HStack flexWrap="wrap">
-            { TOP_TOKENS.map((token, index) => (
-              <HStack key={ token.symbol }>
-                <Circle size={ 4 } bgColor={ TOP_TOKENS_COLORS[index] }/>
-                <Text fontWeight={ 600 } whiteSpace="pre">
-                  <span>{ token.symbol }</span>
-                  <chakra.span color="text.secondary"> { formatPercentage(token.share) }</chakra.span>
-                </Text>
-              </HStack>
-            )) }
-          </HStack>
+          { topTokensContent }
         </Flex>
       </VStack>
       { !isMobile && <AdBanner format="mobile" w="fit-content"/> }

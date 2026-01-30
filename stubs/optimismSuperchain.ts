@@ -20,6 +20,18 @@ export const ADDRESS: multichain.GetAddressResponse = {
   domains: [],
 };
 
+export const ADDRESS_PORTFOLIO: multichain.GetAddressPortfolioResponse = {
+  portfolio: {
+    total_value: '370373.20',
+    chain_values: {
+      '420120000': '1000000000000000000000000',
+      '100': '9.58848343977132465600',
+      '130': '56.45557826318489510620',
+      '137': '54.3384235217602434',
+    },
+  },
+};
+
 export const TOKEN: AddressTokenItem = {
   token: {
     address_hash: ADDRESS_HASH,
