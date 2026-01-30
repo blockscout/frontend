@@ -1,6 +1,6 @@
 import type { ApiResource } from '../types';
 import type * as multichain from '@blockscout/multichain-aggregator-types';
-import type { AddressTokensResponse, TokensResponse } from 'types/client/multichain-aggregator';
+import type { AddressTokensFilter, AddressTokensResponse, TokensResponse } from 'types/client/multichain-aggregator';
 
 export const MULTICHAIN_AGGREGATOR_API_RESOURCES = {
   address: {
@@ -104,7 +104,7 @@ never;
 
 /* eslint-disable @stylistic/indent */
 export type MultichainAggregatorApiPaginationFilters<R extends MultichainAggregatorApiResourceName> =
-R extends 'multichainAggregator:address_tokens' ? Partial<multichain.ListAddressTokensRequest> :
+R extends 'multichainAggregator:address_tokens' ? AddressTokensFilter :
 R extends 'multichainAggregator:tokens' ? Partial<multichain.ListClusterTokensRequest> :
 never;
 /* eslint-enable @stylistic/indent */

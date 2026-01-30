@@ -16,7 +16,10 @@ import { formatPercentage } from './utils';
 
 const multichainBalanceFeature = config.features.multichainButton;
 
-const TOP_TOKENS_COLORS = [ 'purple.300', 'pink.300', '#D9D9D9' ];
+const TOP_TOKENS_COLORS = [
+  [ 'purple.300', 'pink.300', 'blackAlpha.300' ],
+  [ 'purple.500', 'pink.600', 'whiteAlpha.300' ],
+];
 
 interface Props {
   addressHash: string;
@@ -44,15 +47,28 @@ const OpSuperchainAddressPortfolioNetWorth = ({ addressHash, netWorth, isLoading
 
     return (
       <>
-        <Skeleton loading={ isLoading } w="225px" h={ 3 } display="flex" alignItems="center" borderRadius="full" overflow="hidden">
+        <Skeleton loading={ isLoading } w={{ base: '100%', lg: '225px' }} h={ 3 } display="flex" alignItems="center" borderRadius="full" overflow="hidden">
           { topTokens.map((token, index) => (
-            <Box key={ token.symbol } h="100%" w={ `${ token.share * 100 }%` } bgColor={ TOP_TOKENS_COLORS[index] } minW="1px"/>
+            <Box
+              key={ token.symbol }
+              h="100%"
+              w={ `${ token.share * 100 }%` }
+              bgColor={{ _light: TOP_TOKENS_COLORS[0][index], _dark: TOP_TOKENS_COLORS[1][index] }}
+              minW="1px"
+            />
           )) }
         </Skeleton>
         <HStack flexWrap="wrap">
           { topTokens.map((token, index) => (
             <HStack key={ token.symbol }>
-              <Skeleton boxSize={ 4 } borderRadius="full" loading={ isLoading } bgColor={ !isLoading ? TOP_TOKENS_COLORS[index] : undefined }/>
+              <Skeleton
+                boxSize={ 4 }
+                borderRadius="full"
+                loading={ isLoading }
+                bgColor={ !isLoading ? {
+                  _light: TOP_TOKENS_COLORS[0][index],
+                  _dark: TOP_TOKENS_COLORS[1][index],
+                } : undefined }/>
               <Skeleton loading={ isLoading } fontWeight={ 600 } whiteSpace="pre">
                 <span>{ token.symbol }</span>
                 <chakra.span color="text.secondary"> { formatPercentage(token.share) }</chakra.span>

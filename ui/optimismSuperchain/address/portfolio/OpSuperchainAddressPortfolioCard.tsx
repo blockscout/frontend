@@ -1,5 +1,6 @@
 import { HStack, VStack } from '@chakra-ui/react';
 import type BigNumber from 'bignumber.js';
+import { clamp } from 'es-toolkit';
 import React from 'react';
 
 import type { ClusterChainConfig } from 'types/multichain';
@@ -18,13 +19,25 @@ interface Props {
   loading: boolean;
   selected: boolean;
   noneSelected: boolean;
+  totalNum?: number;
+  onClick: (chainId: string) => void;
 }
 
-const OpSuperchainAddressPortfolioCard = ({ chain, value, share, loading, selected, noneSelected }: Props) => {
+const OpSuperchainAddressPortfolioCard = ({ chain, value, share, loading, selected, noneSelected, totalNum, onClick }: Props) => {
+
+  const columnNum = clamp(totalNum || 0, 3, 5);
+
+  const handleClick = React.useCallback(() => {
+    onClick(chain.id);
+  }, [ chain.id, onClick ]);
 
   return (
     <HStack
       p={ 3 }
+      flexBasis={{
+        base: (totalNum || 0) > 1 ? 'calc((100% - 8px) / 2)' : '100%',
+        lg: `calc((100% - ${ (columnNum - 1) * 8 }px) / ${ columnNum })`,
+      }}
       borderRadius="base"
       border="1px solid"
       borderColor={ selected ? 'transparent' : 'border.divider' }
@@ -36,6 +49,8 @@ const OpSuperchainAddressPortfolioCard = ({ chain, value, share, loading, select
         borderColor: 'hover',
         opacity: 1,
       }}
+      cursor="pointer"
+      onClick={ handleClick }
     >
       <ChainIcon data={ chain } boxSize="30px" isLoading={ loading } noTooltip/>
       <VStack alignItems="flex-start" gap={ 1 }>

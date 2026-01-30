@@ -16,9 +16,9 @@ import useAddressNftQuery from 'ui/address/tokens/useAddressNftQuery';
 import ChainSelect from 'ui/optimismSuperchain/components/ChainSelect';
 import Pagination from 'ui/shared/pagination/Pagination';
 
-import OpSuperchainAddressPortfolioErc20 from './portfolio/OpSuperchainAddressPortfolioErc20';
+import OpSuperchainAddressPortfolioTokens from './portfolio/OpSuperchainAddressPortfolioTokens';
 
-export const ADDRESS_OP_PORTFOLIO_TAB_IDS = [ 'portfolio_erc20' as const, 'portfolio_nfts' as const ];
+export const ADDRESS_OP_PORTFOLIO_TAB_IDS = [ 'portfolio_tokens' as const, 'portfolio_nfts' as const ];
 const TABS_RIGHT_SLOT_PROPS = {
   display: 'flex',
   justifyContent: { base: 'flex-end', lg: 'flex-start' },
@@ -89,9 +89,9 @@ const OpSuperchainAddressPortfolio = () => {
 
   const tabs: Array<TabItemRegular> = [
     {
-      id: 'portfolio_erc20',
+      id: 'portfolio_tokens',
       title: 'ERC-20',
-      component: <OpSuperchainAddressPortfolioErc20/>,
+      component: <OpSuperchainAddressPortfolioTokens/>,
     },
     {
       id: 'portfolio_nfts',

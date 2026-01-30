@@ -32,6 +32,11 @@ export interface TokensResponse extends Omit<multichain.ListClusterTokensRespons
   items: Array<AggregatedTokenInfo>;
 }
 
+export interface AddressTokensFilter {
+  type?: string;
+  chain_id?: string;
+}
+
 // types for quick search results
 export type QuickSearchResultBlock = {
   type: 'block';
