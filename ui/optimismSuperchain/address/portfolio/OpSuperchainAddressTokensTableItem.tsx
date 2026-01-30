@@ -58,7 +58,7 @@ const OpSuperchainAddressTokensTableItem = ({ data, isLoading }: Props) => {
               link={{ variant: 'secondary' }}
             />
           ) }
-          <Tag loading={ isLoading }>{ getTokenTypeName(data.token.type) }</Tag>
+          <Tag loading={ isLoading }>{ getTokenTypeName(data.token.type, chainInfo?.app_config) }</Tag>
         </VStack>
       </TableCell>
       <TableCell isNumeric>

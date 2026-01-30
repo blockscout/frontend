@@ -3,6 +3,7 @@ import React from 'react';
 
 import type { TokenType } from 'types/api/token';
 
+import { useMultichainContext } from 'lib/contexts/multichain';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import AddressAdvancedFilterLink from 'ui/address/AddressAdvancedFilterLink';
 import AddressCsvExportLink from 'ui/address/AddressCsvExportLink';
@@ -28,6 +29,7 @@ interface Props {
 const TokenTransfersLocal = ({ query, filters, addressHash, onTypeFilterChange, onAddressFilterChange }: Props) => {
   const { isError, isPlaceholderData, data, pagination } = query;
   const isMobile = useIsMobile();
+  const multichainContext = useMultichainContext();
 
   const { showSocketAlert, newItemsCount } = useAddressTokenTransfersSocket({
     filters,
@@ -84,6 +86,7 @@ const TokenTransfersLocal = ({ query, filters, addressHash, onTypeFilterChange, 
           onAddressFilterChange={ onAddressFilterChange }
           defaultAddressFilter={ filters.filter }
           isLoading={ query.isPlaceholderData }
+          chainConfig={ multichainContext?.chain?.app_config }
         />
         <AddressAdvancedFilterLink
           isLoading={ isPlaceholderData }

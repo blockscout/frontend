@@ -21,7 +21,6 @@ export const MULTICHAIN_AGGREGATOR_API_RESOURCES = {
   address_portfolio: {
     path: '/addresses/:hash/portfolio',
     pathParams: [ 'hash' as const ],
-    paginated: true,
     filterFields: [ 'chain_id' as const, 'query' as const ],
   },
   tokens: {

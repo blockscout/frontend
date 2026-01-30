@@ -1,4 +1,5 @@
 import type { NFTTokenType, TokenType } from 'types/api/token';
+import type { ClusterChainConfig } from 'types/multichain';
 
 import config from 'configs/app';
 
@@ -11,23 +12,30 @@ export const NFT_TOKEN_TYPES: Record<NFTTokenType, string> = {
   'ERC-404': `${ tokenStandardName }-404`,
 };
 
-export const TOKEN_TYPES: Record<string, string> = {
-  'ERC-20': `${ tokenStandardName }-20`,
-  ...additionalTokenTypes.reduce((result, item) => {
-    result[item.id] = item.name;
-    return result;
-  }, {} as Record<string, string>),
-  ...NFT_TOKEN_TYPES,
+// TODO @tom2drum maybe, pass an array of chain configs
+export const getTokenTypes = (nftOnly: boolean, chainConfig = config, additionalTokenTypes?: Record<string, string>) => {
+  if (nftOnly) {
+    return NFT_TOKEN_TYPES;
+  }
+  return {
+    'ERC-20': `${ tokenStandardName }-20`,
+    ...additionalTokenTypes,
+    ...chainConfig.chain.additionalTokenTypes.reduce((result, item) => {
+      result[item.id] = item.name;
+      return result;
+    }, {} as Record<string, string>),
+    ...NFT_TOKEN_TYPES,
+  };
 };
 
 export const NFT_TOKEN_TYPE_IDS: Array<NFTTokenType> = Object.keys(NFT_TOKEN_TYPES) as Array<NFTTokenType>;
-export const TOKEN_TYPE_IDS = Object.keys(TOKEN_TYPES);
 
-export function getTokenTypeName(typeId: string) {
+export function getTokenTypeName(typeId: string, chainConfig?: ClusterChainConfig['app_config']) {
   if (typeId === 'NATIVE') {
     return 'Native token';
   }
-  return TOKEN_TYPES[typeId] || typeId;
+  const tokenTypes = getTokenTypes(false, chainConfig);
+  return tokenTypes[typeId as keyof typeof tokenTypes] || typeId;
 }
 
 export function isFungibleTokenType(typeId: TokenType): boolean {

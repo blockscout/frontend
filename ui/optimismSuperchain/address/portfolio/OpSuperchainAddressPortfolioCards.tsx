@@ -1,4 +1,4 @@
-import type { LinkProps } from '@chakra-ui/react';
+import { type LinkProps } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -28,6 +28,7 @@ const OpSuperchainAddressPortfolioCards = ({ isLoading, value, onChange, data }:
   const [ initialActiveIndex, setInitialActiveIndex ] = React.useState<number | undefined>(undefined);
 
   const chains = multichainConfig()?.chains;
+
   const isMobile = useIsMobile();
 
   const cutLength = isMobile ? 6 : 10;

@@ -5,8 +5,7 @@ import React from 'react';
 import type { TokenType } from 'types/api/token';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
-import getFilterValuesFromQuery from 'lib/getFilterValuesFromQuery';
-import { TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
+import { useMultichainContext } from 'lib/contexts/multichain';
 import { getTokenTransfersStub } from 'stubs/token';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
@@ -16,12 +15,11 @@ import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import TokenTransferFilter from 'ui/shared/TokenTransfer/TokenTransferFilter';
 import TokenTransferList from 'ui/shared/TokenTransfer/TokenTransferList';
 import TokenTransferTable from 'ui/shared/TokenTransfer/TokenTransferTable';
+import { getTokenFilterValue } from 'ui/tokens/utils';
 import TxPendingAlert from 'ui/tx/TxPendingAlert';
 import TxSocketAlert from 'ui/tx/TxSocketAlert';
 
 import type { TxQuery } from './useTxQuery';
-
-const getTokenFilterValue = (getFilterValuesFromQuery<TokenType>).bind(null, TOKEN_TYPE_IDS);
 
 interface Props {
   txQuery: TxQuery;
@@ -30,8 +28,11 @@ interface Props {
 
 const TxTokenTransfer = ({ txQuery, tokenTransferFilter }: Props) => {
   const router = useRouter();
+  const multichainContext = useMultichainContext();
 
-  const [ typeFilter, setTypeFilter ] = React.useState<Array<TokenType>>(getTokenFilterValue(router.query.type) || []);
+  const [ typeFilter, setTypeFilter ] = React.useState<Array<TokenType>>(
+    getTokenFilterValue(router.query.type, multichainContext?.chain?.app_config) || [],
+  );
 
   const tokenTransferQuery = useQueryWithPages({
     resourceName: 'general:tx_token_transfers',
@@ -87,6 +88,7 @@ const TxTokenTransfer = ({ txQuery, tokenTransferFilter }: Props) => {
         onTypeFilterChange={ handleTypeFilterChange }
         appliedFiltersNum={ numActiveFilters }
         isLoading={ tokenTransferQuery.isPlaceholderData }
+        chainConfig={ multichainContext?.chain?.app_config }
       />
       <Pagination ml="auto" { ...tokenTransferQuery.pagination }/>
     </ActionBar>

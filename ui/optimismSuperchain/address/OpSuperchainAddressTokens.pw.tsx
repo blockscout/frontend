@@ -9,7 +9,7 @@ import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';
 import * as pwConfig from 'playwright/utils/config';
 
-import OpSuperchainAddressPortfolioErc20 from './portfolio/OpSuperchainAddressPortfolioErc20';
+import OpSuperchainAddressPortfolioTokens from './portfolio/OpSuperchainAddressPortfolioTokens';
 
 const CURRENT_ADDRESS = '0xd789a607CEac2f0E14867de4EB15b15C9FFB5859';
 
@@ -52,7 +52,7 @@ test.describe('tokens', () => {
     await mockAssetResponse(chainDataMock.chainB.logo as string, './playwright/mocks/image_md.jpg');
 
     component = await render(
-      <OpSuperchainAddressPortfolioErc20/>,
+      <OpSuperchainAddressPortfolioTokens/>,
       { hooksConfig },
     );
   });
@@ -96,7 +96,7 @@ test.describe('nfts', () => {
     await mockAssetResponse(chainDataMock.chainA.logo as string, './playwright/mocks/image_s.jpg');
 
     component = await render(
-      <OpSuperchainAddressPortfolioErc20/>,
+      <OpSuperchainAddressPortfolioTokens/>,
       { hooksConfig },
     );
   });

@@ -5,9 +5,11 @@ import type { AddressFromToFilter } from 'types/api/address';
 import { AddressFromToFilterValues } from 'types/api/address';
 import type { TokenType } from 'types/api/token';
 
+import multichainConfig from 'configs/multichain';
 import getFilterValueFromQuery from 'lib/getFilterValueFromQuery';
 import getFilterValuesFromQuery from 'lib/getFilterValuesFromQuery';
-import { TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
+import getQueryParamString from 'lib/router/getQueryParamString';
+import { getTokenTypes } from 'lib/token/tokenTypes';
 import { getTokenTransfersStub } from 'stubs/token';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
@@ -16,8 +18,24 @@ export type Filters = {
   filter: AddressFromToFilter | undefined;
 };
 
-const getTokenFilterValue = (getFilterValuesFromQuery<TokenType>).bind(null, TOKEN_TYPE_IDS);
 const getAddressFilterValue = (getFilterValueFromQuery<AddressFromToFilter>).bind(null, AddressFromToFilterValues);
+
+const getFilters = (query: Record<string, string | Array<string> | undefined>, chainIds?: Array<string>) => {
+  const chainIdParam = getQueryParamString(query.chain_id);
+  const filterParam = getQueryParamString(query.filter);
+  const typeParam = getQueryParamString(query.type);
+
+  const currentChainId = chainIdParam && chainIds?.includes(chainIdParam) ? chainIdParam : chainIds?.[0];
+  const chainConfig = multichainConfig()?.chains.find(chain => chain.id === currentChainId);
+
+  return {
+    filter: getAddressFilterValue(filterParam),
+    type: getFilterValuesFromQuery(
+      Object.keys(getTokenTypes(false, chainConfig?.app_config)),
+      typeParam,
+    ) || [],
+  };
+};
 
 interface Props {
   currentAddress: string;
@@ -29,12 +47,14 @@ interface Props {
 export default function useAddressTokenTransfersQuery({ currentAddress, enabled, isMultichain, chainIds }: Props) {
   const router = useRouter();
 
-  const [ filters, setFilters ] = React.useState<Filters>(
-    {
-      type: getTokenFilterValue(router.query.type) || [],
-      filter: getAddressFilterValue(router.query.filter),
-    },
-  );
+  const [ filters, setFilters ] = React.useState<Filters>(getFilters(router.query, chainIds));
+
+  React.useEffect(() => {
+    if (enabled) {
+      setFilters(getFilters(router.query, chainIds));
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ enabled ]);
 
   const query = useQueryWithPages({
     resourceName: 'general:address_token_transfers',

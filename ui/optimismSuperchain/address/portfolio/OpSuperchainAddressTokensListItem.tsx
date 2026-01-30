@@ -37,7 +37,7 @@ const OpSuperchainAddressTokensListItem = ({ data, isLoading }: Props) => {
 
   return (
     <ListItemMobile py={ 3 } rowGap={ 3 } textStyle="sm">
-      <Tag loading={ isLoading }>{ getTokenTypeName(data.token.type) }</Tag>
+      <Tag loading={ isLoading }>{ getTokenTypeName(data.token.type, chainInfo?.app_config) }</Tag>
       <TokenEntity
         token={ data.token }
         chain={ chainInfo }

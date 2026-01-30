@@ -2,6 +2,7 @@ import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { AdvancedFilterResponseItem } from 'types/api/advancedFilter';
+import type { ClusterChainConfig } from 'types/multichain';
 
 import config from 'configs/app';
 import { Badge } from 'toolkit/chakra/badge';
@@ -15,20 +16,21 @@ import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import AssetValue from 'ui/shared/value/AssetValue';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
-import { ADVANCED_FILTER_TYPES } from './constants';
+import { getAdvancedFilterTypes } from './constants';
 
 type Props = {
   item: AdvancedFilterResponseItem;
   column: ColumnsIds;
   isLoading?: boolean;
+  chainConfig?: ClusterChainConfig['app_config'];
 };
 
-const ItemByColumn = ({ item, column, isLoading }: Props) => {
+const ItemByColumn = ({ item, column, isLoading, chainConfig }: Props) => {
   switch (column) {
     case 'tx_hash':
       return <TxEntity truncation="constant" hash={ item.hash } isLoading={ isLoading } noIcon fontWeight={ 700 }/>;
     case 'type': {
-      const type = ADVANCED_FILTER_TYPES.find(t => t.id === item.type);
+      const type = getAdvancedFilterTypes(chainConfig).find(t => t.id === item.type);
       if (!type) {
         return null;
       }

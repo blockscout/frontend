@@ -4,6 +4,7 @@ import { groupBy } from 'es-toolkit';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import multichainConfig from 'configs/multichain';
 import useApiQuery from 'lib/api/useApiQuery';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { ADDRESS_PORTFOLIO, TOKEN } from 'stubs/optimismSuperchain';
@@ -20,10 +21,9 @@ import OpSuperchainAddressPortfolioNetWorth from './OpSuperchainAddressPortfolio
 import OpSuperchainAddressTokensListItem from './OpSuperchainAddressTokensListItem';
 import OpSuperchainAddressTokensTable from './OpSuperchainAddressTokensTable';
 
-const TYPE_FILTER_VALUE = 'ERC-20,NATIVE';
-
-// TODO @tom2drum add ZRC-2 tokens
 const OpSuperchainAddressPortfolioTokens = () => {
+  const config = multichainConfig();
+
   const router = useRouter();
 
   const hash = getQueryParamString(router.query.hash);
@@ -50,11 +50,19 @@ const OpSuperchainAddressPortfolioTokens = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ portfolioQuery.isPlaceholderData ]);
 
+  const typeFilter = React.useMemo(() => {
+    const additionalTypes = config?.chains
+      .filter((chain) => availableChainIds.includes(chain.id))
+      .map((chain) => chain.app_config.chain.additionalTokenTypes.map((item) => item.id))
+      .flat();
+    return [ 'ERC-20', 'NATIVE', ...(additionalTypes ?? []) ].filter(Boolean).join(',');
+  }, [ config?.chains, availableChainIds ]);
+
   const tokensQuery = useQueryWithPages({
     resourceName: 'multichainAggregator:address_tokens',
     pathParams: { hash },
     filters: {
-      type: TYPE_FILTER_VALUE,
+      type: typeFilter,
       chain_id: selectedChainId ?? undefined,
     },
     options: {
@@ -68,7 +76,6 @@ const OpSuperchainAddressPortfolioTokens = () => {
     setSelectedChainId((prev) => {
       const nextValue = chainId === prev ? null : chainId;
       tokensQuery.onFilterChange({
-        // type: TYPE_FILTER_VALUE,
         chain_id: nextValue ?? undefined,
       });
       return nextValue;
@@ -78,7 +85,7 @@ const OpSuperchainAddressPortfolioTokens = () => {
   const allTokensQuery = useApiQuery('multichainAggregator:address_tokens', {
     pathParams: { hash },
     queryParams: {
-      type: TYPE_FILTER_VALUE,
+      type: typeFilter,
       chain_id: undefined,
     },
     queryOptions: {
