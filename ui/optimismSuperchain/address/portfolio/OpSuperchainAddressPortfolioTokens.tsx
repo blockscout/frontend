@@ -1,13 +1,13 @@
 import { Box } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
-import { groupBy } from 'es-toolkit';
+import { groupBy, mapValues } from 'es-toolkit';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import multichainConfig from 'configs/multichain';
 import useApiQuery from 'lib/api/useApiQuery';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import { ADDRESS_PORTFOLIO, TOKEN } from 'stubs/optimismSuperchain';
+import { ADDRESS, ADDRESS_PORTFOLIO, TOKEN } from 'stubs/optimismSuperchain';
 import { generateListStub } from 'stubs/utils';
 import { ZERO } from 'toolkit/utils/consts';
 import { calculateUsdValue } from 'ui/address/utils/tokenUtils';
@@ -36,15 +36,26 @@ const OpSuperchainAddressPortfolioTokens = () => {
     },
   });
 
-  const availableChainIds = React.useMemo(() => {
-    return portfolioQuery.data?.portfolio?.chain_values ? Object.keys(portfolioQuery.data.portfolio.chain_values) : [];
-  }, [ portfolioQuery.data?.portfolio?.chain_values ]);
+  const addressQuery = useApiQuery('multichainAggregator:address', {
+    pathParams: { hash },
+    queryOptions: {
+      refetchOnMount: false,
+      placeholderData: ADDRESS,
+    },
+  });
+
+  const portfolioData = React.useMemo(() => {
+    return {
+      ...mapValues(addressQuery.data?.chain_infos ?? {}, () => '0'),
+      ...portfolioQuery.data?.portfolio?.chain_values,
+    };
+  }, [ addressQuery.data?.chain_infos, portfolioQuery.data?.portfolio?.chain_values ]);
 
   const [ selectedChainId, setSelectedChainId ] = React.useState<string | null>(null);
 
   React.useEffect(() => {
     if (!portfolioQuery.isPlaceholderData) {
-      const [ chainId ] = chainIdParam ? chainIdParam.split(',').filter((chainId) => availableChainIds.includes(chainId)) : [];
+      const [ chainId ] = chainIdParam ? chainIdParam.split(',').filter((chainId) => Object.keys(portfolioData).includes(chainId)) : [];
       setSelectedChainId(chainId ?? null);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -52,11 +63,11 @@ const OpSuperchainAddressPortfolioTokens = () => {
 
   const typeFilter = React.useMemo(() => {
     const additionalTypes = config?.chains
-      .filter((chain) => availableChainIds.includes(chain.id))
+      .filter((chain) => Object.keys(portfolioData).includes(chain.id))
       .map((chain) => chain.app_config.chain.additionalTokenTypes.map((item) => item.id))
       .flat();
     return [ 'ERC-20', 'NATIVE', ...(additionalTypes ?? []) ].filter(Boolean).join(',');
-  }, [ config?.chains, availableChainIds ]);
+  }, [ config?.chains, portfolioData ]);
 
   const tokensQuery = useQueryWithPages({
     resourceName: 'multichainAggregator:address_tokens',
@@ -96,9 +107,15 @@ const OpSuperchainAddressPortfolioTokens = () => {
   });
 
   const topTokens = React.useMemo(() => {
+    if (allTokensQuery.data?.items?.length === 0) {
+      return;
+    }
+
     const totalUsd = BigNumber(portfolioQuery.data?.portfolio?.total_value ?? '0');
     if (totalUsd.isZero()) {
-      return;
+      return [
+        { symbol: 'Others', share: 1 },
+      ];
     }
 
     const usdBalances = allTokensQuery.data?.items?.map((item) => ({
@@ -163,18 +180,18 @@ const OpSuperchainAddressPortfolioTokens = () => {
         netWorth={ portfolioQuery.data?.portfolio?.total_value }
         isLoading={ portfolioQuery.isPlaceholderData || allTokensQuery.isPlaceholderData }
         topTokens={ topTokens }
-        hasTokens={ (allTokensQuery.data?.items?.length ?? 0) > 0 }
       />
       <OpSuperchainAddressPortfolioCards
-        data={ portfolioQuery.data?.portfolio }
-        value={ selectedChainId }
+        chainValues={ portfolioData }
+        totalValue={ portfolioQuery.data?.portfolio?.total_value }
+        selectedChainId={ selectedChainId }
         onChange={ handleSelectedChainChange }
-        isLoading={ portfolioQuery.isPlaceholderData }
+        isLoading={ portfolioQuery.isPlaceholderData || addressQuery.isPlaceholderData }
       />
       <DataListDisplay
         isError={ tokensQuery.isError }
         itemsNum={ tokensQuery.data?.items?.length }
-        emptyText="There are no tokens at this address."
+        emptyText="There are no tokens."
         actionBar={ actionBar }
       >
         { tokensContent }

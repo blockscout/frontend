@@ -21,15 +21,21 @@ const TOP_TOKENS_COLORS = [
   [ 'purple.500', 'pink.600', 'whiteAlpha.300' ],
 ];
 
+const getBgColor = (index: number) => {
+  return {
+    _light: TOP_TOKENS_COLORS[0][index],
+    _dark: TOP_TOKENS_COLORS[1][index],
+  };
+};
+
 interface Props {
   addressHash: string;
   netWorth?: string;
   isLoading: boolean;
   topTokens?: Array<{ symbol: string; share: number }>;
-  hasTokens?: boolean;
 }
 
-const OpSuperchainAddressPortfolioNetWorth = ({ addressHash, netWorth, isLoading, topTokens, hasTokens }: Props) => {
+const OpSuperchainAddressPortfolioNetWorth = ({ addressHash, netWorth, isLoading, topTokens }: Props) => {
   const isMobile = useIsMobile();
 
   const handleMultichainClick = React.useCallback(() => {
@@ -37,11 +43,9 @@ const OpSuperchainAddressPortfolioNetWorth = ({ addressHash, netWorth, isLoading
   }, []);
 
   const topTokensContent = (() => {
-    if (!topTokens || topTokens.length === 0) {
+    if (!topTokens) {
       return (
-        <chakra.span color="text.secondary">
-          { hasTokens ? 'Unable to calculate top tokens shares' : 'There are no tokens at this address' }
-        </chakra.span>
+        <chakra.span color="text.secondary">There are no tokens at this address</chakra.span>
       );
     }
 
@@ -53,7 +57,7 @@ const OpSuperchainAddressPortfolioNetWorth = ({ addressHash, netWorth, isLoading
               key={ token.symbol }
               h="100%"
               w={ `${ token.share * 100 }%` }
-              bgColor={{ _light: TOP_TOKENS_COLORS[0][index], _dark: TOP_TOKENS_COLORS[1][index] }}
+              bgColor={ getBgColor(token.symbol === 'Others' ? 2 : index) }
               minW="1px"
             />
           )) }
@@ -65,10 +69,7 @@ const OpSuperchainAddressPortfolioNetWorth = ({ addressHash, netWorth, isLoading
                 boxSize={ 4 }
                 borderRadius="full"
                 loading={ isLoading }
-                bgColor={ !isLoading ? {
-                  _light: TOP_TOKENS_COLORS[0][index],
-                  _dark: TOP_TOKENS_COLORS[1][index],
-                } : undefined }/>
+                bgColor={ !isLoading ? getBgColor(token.symbol === 'Others' ? 2 : index) : undefined }/>
               <Skeleton loading={ isLoading } fontWeight={ 600 } whiteSpace="pre">
                 <span>{ token.symbol }</span>
                 <chakra.span color="text.secondary"> { formatPercentage(token.share) }</chakra.span>

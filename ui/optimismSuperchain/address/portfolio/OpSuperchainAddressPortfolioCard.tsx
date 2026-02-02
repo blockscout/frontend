@@ -20,7 +20,7 @@ interface Props {
   selected: boolean;
   noneSelected: boolean;
   totalNum?: number;
-  onClick: (chainId: string) => void;
+  onClick?: (chainId: string) => void;
 }
 
 const OpSuperchainAddressPortfolioCard = ({ chain, value, share, loading, selected, noneSelected, totalNum, onClick }: Props) => {
@@ -28,7 +28,7 @@ const OpSuperchainAddressPortfolioCard = ({ chain, value, share, loading, select
   const columnNum = clamp(totalNum || 0, 3, 5);
 
   const handleClick = React.useCallback(() => {
-    onClick(chain.id);
+    onClick?.(chain.id);
   }, [ chain.id, onClick ]);
 
   return (
@@ -45,11 +45,11 @@ const OpSuperchainAddressPortfolioCard = ({ chain, value, share, loading, select
       w="full"
       bgColor={ selected ? 'selected.control.bg' : 'transparent' }
       opacity={ !selected && !noneSelected ? 0.5 : 1 }
-      _hover={{
+      _hover={ onClick ? {
         borderColor: 'hover',
         opacity: 1,
-      }}
-      cursor="pointer"
+      } : undefined }
+      cursor={ onClick ? 'pointer' : 'default' }
       onClick={ handleClick }
     >
       <ChainIcon data={ chain } boxSize="30px" isLoading={ loading } noTooltip/>

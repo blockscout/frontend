@@ -18,12 +18,13 @@ const TRIGGER_PROPS: LinkProps = {
 
 interface Props {
   isLoading: boolean;
-  value: string | null;
+  selectedChainId: string | null;
   onChange: (chainId: string) => void;
-  data?: multichain.AddressPortfolio;
+  chainValues: multichain.AddressPortfolio['chain_values'];
+  totalValue?: string;
 }
 
-const OpSuperchainAddressPortfolioCards = ({ isLoading, value, onChange, data }: Props) => {
+const OpSuperchainAddressPortfolioCards = ({ isLoading, selectedChainId, onChange, chainValues, totalValue }: Props) => {
 
   const [ initialActiveIndex, setInitialActiveIndex ] = React.useState<number | undefined>(undefined);
 
@@ -34,9 +35,9 @@ const OpSuperchainAddressPortfolioCards = ({ isLoading, value, onChange, data }:
   const cutLength = isMobile ? 6 : 10;
 
   const items = React.useMemo(() => {
-    const totalValue = BigNumber(data?.total_value ?? '0');
-    return data?.chain_values ?
-      Object.entries(data.chain_values)
+    const totalValueBn = BigNumber(totalValue ?? '0');
+    return chainValues ?
+      Object.entries(chainValues)
         .map(([ chainId, value ]) => {
           const chain = chains?.find((chain) => chain.id === chainId);
           if (!chain) {
@@ -47,21 +48,21 @@ const OpSuperchainAddressPortfolioCards = ({ isLoading, value, onChange, data }:
           return {
             chain,
             value: valueBn,
-            share: totalValue.gt(0) ? valueBn.div(totalValue).toNumber() : undefined,
+            share: totalValueBn.gt(0) ? valueBn.div(totalValueBn).toNumber() : undefined,
           };
         })
         .filter(Boolean)
         .sort((a, b) => b.value.minus(a.value).toNumber()) :
       [];
-  }, [ data?.chain_values, data?.total_value, chains ]);
+  }, [ chainValues, chains, totalValue ]);
 
   React.useEffect(() => {
-    if (!isLoading && value !== null) {
-      const activeIndex = items.findIndex((item) => item.chain.id === value);
+    if (!isLoading && selectedChainId !== null) {
+      const activeIndex = items.findIndex((item) => item.chain.id === selectedChainId);
       setInitialActiveIndex((prev) => prev === undefined ? activeIndex : prev);
     }
 
-  }, [ isLoading, items, value ]);
+  }, [ isLoading, items, selectedChainId ]);
 
   const renderItem = React.useCallback((item: typeof items[number]) => {
     return (
@@ -71,13 +72,13 @@ const OpSuperchainAddressPortfolioCards = ({ isLoading, value, onChange, data }:
         value={ item.value }
         share={ item.share }
         loading={ isLoading }
-        selected={ value === item.chain.id }
-        noneSelected={ value === null }
+        selected={ selectedChainId === item.chain.id }
+        noneSelected={ selectedChainId === null }
         totalNum={ items.length }
-        onClick={ onChange }
+        onClick={ items.length > 1 ? onChange : undefined }
       />
     );
-  }, [ isLoading, value, onChange, items ]);
+  }, [ isLoading, selectedChainId, onChange, items ]);
 
   if (items.length === 0) {
     return null;
