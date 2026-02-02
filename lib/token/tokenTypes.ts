@@ -12,25 +12,29 @@ export const NFT_TOKEN_TYPES: Record<NFTTokenType, string> = {
   'ERC-404': `${ tokenStandardName }-404`,
 };
 
-// TODO @tom2drum maybe, pass an array of chain configs
-export const getTokenTypes = (nftOnly: boolean, chainConfig = config, additionalTokenTypes?: Record<string, string>) => {
+export const getTokenTypes = (nftOnly: boolean, chainConfig: Array<ClusterChainConfig['app_config']> | ClusterChainConfig['app_config'] = config) => {
   if (nftOnly) {
     return NFT_TOKEN_TYPES;
   }
+
+  const chainConfigs = Array.isArray(chainConfig) ? chainConfig : [ chainConfig ];
+
   return {
     'ERC-20': `${ tokenStandardName }-20`,
-    ...additionalTokenTypes,
-    ...chainConfig.chain.additionalTokenTypes.reduce((result, item) => {
-      result[item.id] = item.name;
-      return result;
-    }, {} as Record<string, string>),
+    ...chainConfigs
+      .map((chainConfig) => chainConfig.chain.additionalTokenTypes)
+      .flat()
+      .reduce((result, item) => {
+        result[item.id] = item.name;
+        return result;
+      }, {} as Record<string, string>),
     ...NFT_TOKEN_TYPES,
   };
 };
 
 export const NFT_TOKEN_TYPE_IDS: Array<NFTTokenType> = Object.keys(NFT_TOKEN_TYPES) as Array<NFTTokenType>;
 
-export function getTokenTypeName(typeId: string, chainConfig?: ClusterChainConfig['app_config']) {
+export function getTokenTypeName(typeId: string, chainConfig?: Array<ClusterChainConfig['app_config']> | ClusterChainConfig['app_config']) {
   if (typeId === 'NATIVE') {
     return 'Native token';
   }

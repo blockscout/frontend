@@ -18,7 +18,7 @@ interface Props {
   onAddressFilterChange?: (nextValue: string) => void;
   defaultAddressFilter?: AddressFromToFilter;
   isLoading?: boolean;
-  chainConfig?: ClusterChainConfig['app_config'];
+  chainConfig?: Array<ClusterChainConfig['app_config']> | ClusterChainConfig['app_config'];
 }
 
 const TokenTransferFilter = ({

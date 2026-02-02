@@ -18,10 +18,9 @@ export const SORT_OPTIONS: Array<SelectOption<TokensSortingValue>> = [
 
 export const getTokenFilterValue = (
   value: string | Array<string> | undefined,
-  chainConfig?: ClusterChainConfig['app_config'],
-  additionalTokenTypes?: Record<string, string>,
+  chainConfig?: Array<ClusterChainConfig['app_config']> | ClusterChainConfig['app_config'],
 ) => {
-  const tokenTypes = getTokenTypes(false, chainConfig, additionalTokenTypes);
+  const tokenTypes = getTokenTypes(false, chainConfig);
   return getFilterValuesFromQuery(Object.keys(tokenTypes), value);
 };
 

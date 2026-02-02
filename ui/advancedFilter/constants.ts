@@ -68,7 +68,7 @@ export const TABLE_COLUMNS: Array<TxTableColumn> = [
   },
 ] as const;
 
-export const getAdvancedFilterTypes = (chainConfig?: ClusterChainConfig['app_config'], withAll = false) => {
+export const getAdvancedFilterTypes = (chainConfig?: Array<ClusterChainConfig['app_config']> | ClusterChainConfig['app_config'], withAll = false) => {
   return [
     ...(withAll ? [ {
       id: 'all',
