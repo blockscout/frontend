@@ -90,7 +90,6 @@ const TokenTransfersCrossChainTableItem = ({ data, isLoading }: Props) => {
               hash={ data.source_transaction_hash }
               isLoading={ isLoading }
               noIcon
-              noCopy
               truncation="constant"
               lineHeight="24px"
             />
@@ -112,7 +111,6 @@ const TokenTransfersCrossChainTableItem = ({ data, isLoading }: Props) => {
               hash={ data.destination_transaction_hash }
               isLoading={ isLoading }
               noIcon
-              noCopy
               truncation="constant"
               lineHeight="24px"
             />

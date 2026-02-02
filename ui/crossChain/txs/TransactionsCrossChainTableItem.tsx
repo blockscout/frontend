@@ -70,6 +70,8 @@ const TransactionsCrossChainTableItem = ({ data, isLoading }: Props) => {
             truncation="constant"
             noIcon
             lineHeight="24px"
+            maxW="100%"
+            w="fit-content"
           />
         ) : dashElement }
       </TableCell>
@@ -81,7 +83,6 @@ const TransactionsCrossChainTableItem = ({ data, isLoading }: Props) => {
               hash={ data.source_transaction_hash }
               isLoading={ isLoading }
               noIcon
-              noCopy
               truncation="constant"
               lineHeight="24px"
             />
@@ -104,7 +105,6 @@ const TransactionsCrossChainTableItem = ({ data, isLoading }: Props) => {
               hash={ data.destination_transaction_hash }
               isLoading={ isLoading }
               noIcon
-              noCopy
               truncation="constant"
               lineHeight="24px"
             />
@@ -148,7 +148,7 @@ const TransactionsCrossChainTableItem = ({ data, isLoading }: Props) => {
                 truncation="constant"
                 noIcon
                 lineHeight="24px"
-                w="100%"
+                maxW="100%"
               />
             ) : dashElement
           }
@@ -190,7 +190,7 @@ const TransactionsCrossChainTableItem = ({ data, isLoading }: Props) => {
                 truncation="constant"
                 noIcon
                 lineHeight="24px"
-                w="100%"
+                maxW="100%"
               />
             ) : dashElement
           }

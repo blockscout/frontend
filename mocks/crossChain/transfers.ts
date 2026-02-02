@@ -42,7 +42,12 @@ export const transferA = {
 
 export const transferB = {
   ...transferA,
-  source_chain_id: '420', // Unknown chain
+  source_chain: {
+    id: '420',
+    name: 'Unknown chain',
+    logo: undefined,
+    explorer_url: undefined,
+  },
   source_transaction_hash: '0x866a70cb1c8c33d259c819473d7b419c0de67770755bf07dee14dd2d0c6dc800',
   source_token: {
     address_hash: '0x33a31e0f62c0ddf25090b61ef21a70d5f48725b7',
@@ -55,7 +60,7 @@ export const transferB = {
   bridge: {
     name: 'Optimism Superchain',
   },
-};
+} satisfies InterchainTransfer;
 
 export const listResponse = {
   items: [

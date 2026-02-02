@@ -49,8 +49,12 @@ export const failed = {
   ...base,
   message_id: '0x057b42bbbfbb4900e155a554ae67632cb21e6f5a64d815fcad7f33abe552c05b',
   status: MessageStatus.MESSAGE_STATUS_FAILED,
-  source_chain: config[0],
-  destination_chain: config[1],
+  source_chain: {
+    id: '420',
+    name: 'Unknown chain',
+    logo: undefined,
+    explorer_url: undefined,
+  },
   transfers: [
     transferB,
   ],

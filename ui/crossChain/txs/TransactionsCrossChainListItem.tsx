@@ -65,7 +65,6 @@ const TransactionsCrossChainListItem = ({ data, isLoading, rowGap = 3, ...rest }
             chain={ data.source_chain }
             hash={ data.source_transaction_hash }
             isLoading={ isLoading }
-            noCopy
           />
         ) : dashElement }
         <Skeleton loading={ isLoading }>
@@ -76,7 +75,6 @@ const TransactionsCrossChainListItem = ({ data, isLoading, rowGap = 3, ...rest }
             chain={ data.destination_chain }
             hash={ data.destination_transaction_hash }
             isLoading={ isLoading }
-            noCopy
           />
         ) : dashElement }
         <Skeleton loading={ isLoading }>

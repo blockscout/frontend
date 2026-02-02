@@ -1,11 +1,12 @@
 import type { StackProps } from '@chakra-ui/react';
-import { HStack } from '@chakra-ui/react';
+import { Box, Flex, HStack } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ExternalChain } from 'types/externalChains';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import { TruncatedTextTooltip } from 'toolkit/components/truncation/TruncatedTextTooltip';
+import { Tooltip } from 'toolkit/chakra/tooltip';
+import CopyToClipboard from 'ui/shared/CopyToClipboard';
 
 import ChainIcon from './ChainIcon';
 
@@ -20,14 +21,24 @@ const ChainLabel = ({ data, isLoading, fallback, ...rest }: Props) => {
     return fallback || null;
   }
 
+  const content = (
+    <>
+      <Box fontWeight={ 600 }>{ data.name }</Box>
+      <Flex alignItems="center" justifyContent="center">
+        ChainID: { data.id }
+        <CopyToClipboard text={ data.id } noTooltip/>
+      </Flex>
+    </>
+  );
+
   return (
     <HStack w="full" whiteSpace="nowrap" { ...rest }>
       <ChainIcon data={ data } isLoading={ isLoading } noTooltip/>
-      <TruncatedTextTooltip label={ data.name }>
+      <Tooltip content={ content } interactive>
         <Skeleton loading={ isLoading } overflow="hidden" textOverflow="ellipsis">
           { data.name }
         </Skeleton>
-      </TruncatedTextTooltip>
+      </Tooltip>
     </HStack>
   );
 };
