@@ -126,6 +126,12 @@ const OpSuperchainAddressPortfolioTokens = () => {
 
     const totalUsd = BigNumber(portfolioQuery.data?.portfolio?.total_value ?? '0');
     if (totalUsd.isZero()) {
+      const hasOneToken = allTokensQuery.data?.items?.length === 1;
+      if (hasOneToken) {
+        return [
+          { symbol: allTokensQuery.data?.items?.[0]?.token.symbol ?? 'Unknown', share: 1 },
+        ];
+      }
       return [
         { symbol: 'Others', share: 1 },
       ];
@@ -224,7 +230,6 @@ const OpSuperchainAddressPortfolioTokens = () => {
       <DataListDisplay
         isError={ tokensQuery.isError }
         itemsNum={ tokensQuery.data?.items?.length }
-        emptyText="There are no tokens."
         actionBar={ actionBar }
         hasActiveFilters={ Boolean(debouncedSearchTerm) || Boolean(selectedChainId) }
         emptyStateProps={{

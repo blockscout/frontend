@@ -1,4 +1,4 @@
-import { HStack, VStack } from '@chakra-ui/react';
+import { Box, HStack, VStack } from '@chakra-ui/react';
 import type BigNumber from 'bignumber.js';
 import { clamp } from 'es-toolkit';
 import React from 'react';
@@ -6,6 +6,7 @@ import React from 'react';
 import type { ClusterChainConfig } from 'types/multichain';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
+import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
 import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 import SimpleValue from 'ui/shared/value/SimpleValue';
 import { DEFAULT_ACCURACY_USD } from 'ui/shared/value/utils';
@@ -13,38 +14,44 @@ import { DEFAULT_ACCURACY_USD } from 'ui/shared/value/utils';
 import { formatPercentage } from './utils';
 
 interface Props {
-  chain: ClusterChainConfig;
+  chain: ClusterChainConfig | null;
   value: BigNumber;
   share?: number;
-  loading: boolean;
-  selected: boolean;
-  noneSelected: boolean;
+  isLoading: boolean;
+  isSelected: boolean;
+  noneIsSelected: boolean;
   totalNum?: number;
   onClick?: (chainId: string) => void;
 }
 
-const OpSuperchainAddressPortfolioCard = ({ chain, value, share, loading, selected, noneSelected, totalNum, onClick }: Props) => {
+const OpSuperchainAddressPortfolioCard = ({ chain, value, share, isLoading, isSelected, noneIsSelected, totalNum, onClick }: Props) => {
 
-  const columnNum = clamp(totalNum || 0, 3, 5);
+  const columnNumDesktop = clamp(totalNum || 0, 3, 5);
+  const cardWidth = React.useMemo(() => {
+    return {
+      base: (totalNum || 0) > 1 ? 'calc((100% - 8px) / 2)' : '100%',
+      lg: `calc((100% - ${ (columnNumDesktop - 1) * 8 }px) / ${ columnNumDesktop })`,
+    };
+  }, [ totalNum, columnNumDesktop ]);
 
   const handleClick = React.useCallback(() => {
-    onClick?.(chain.id);
-  }, [ chain.id, onClick ]);
+    chain?.id && onClick?.(chain.id);
+  }, [ chain?.id, onClick ]);
+
+  if (!chain) {
+    return <Box w={ cardWidth }/>;
+  }
 
   return (
     <HStack
       p={ 3 }
-      flexBasis={{
-        base: (totalNum || 0) > 1 ? 'calc((100% - 8px) / 2)' : '100%',
-        lg: `calc((100% - ${ (columnNum - 1) * 8 }px) / ${ columnNum })`,
-      }}
+      w={ cardWidth }
       borderRadius="base"
       border="1px solid"
-      borderColor={ selected ? 'transparent' : 'border.divider' }
+      borderColor={ isSelected ? 'transparent' : 'border.divider' }
       textStyle="xs"
-      w="full"
-      bgColor={ selected ? 'selected.control.bg' : 'transparent' }
-      opacity={ !selected && !noneSelected ? 0.5 : 1 }
+      bgColor={ isSelected ? 'selected.control.bg' : 'transparent' }
+      opacity={ !isSelected && !noneIsSelected ? 0.5 : 1 }
       _hover={ onClick ? {
         borderColor: 'hover',
         opacity: 1,
@@ -52,15 +59,13 @@ const OpSuperchainAddressPortfolioCard = ({ chain, value, share, loading, select
       cursor={ onClick ? 'pointer' : 'default' }
       onClick={ handleClick }
     >
-      <ChainIcon data={ chain } boxSize="30px" isLoading={ loading } noTooltip/>
-      <VStack alignItems="flex-start" gap={ 1 }>
-        <Skeleton loading={ loading } color="text.secondary">
-          <span>{ chain.name }</span>
-        </Skeleton>
-        <HStack gap={ 1 }>
-          <SimpleValue value={ value } prefix="$" loading={ loading } noTooltip accuracy={ DEFAULT_ACCURACY_USD }/>
-          { share !== undefined && (
-            <Skeleton loading={ loading } color="text.secondary">
+      <ChainIcon data={ chain } boxSize="30px" flexShrink={ 0 } isLoading={ isLoading } noTooltip/>
+      <VStack alignItems="flex-start" gap={ 1 } overflow="hidden">
+        <TruncatedText text={ chain.name } loading={ isLoading } color="text.secondary" maxW="100%"/>
+        <HStack gap={ 1 } maxW="100%">
+          <SimpleValue value={ value } prefix="$" loading={ isLoading } noTooltip accuracy={ DEFAULT_ACCURACY_USD }/>
+          { share !== undefined && share > 0 && (
+            <Skeleton loading={ isLoading } color="text.secondary" flexShrink={ 0 }>
               <span>{ formatPercentage(share) }</span>
             </Skeleton>
           ) }

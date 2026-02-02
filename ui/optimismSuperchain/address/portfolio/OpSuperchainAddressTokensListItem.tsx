@@ -46,6 +46,7 @@ const OpSuperchainAddressTokensListItem = ({ data, isLoading }: Props) => {
         jointSymbol
         fontWeight="600"
         width="auto"
+        maxW="100%"
         noLink={ data.token.type === 'NATIVE' }
       />
       { data.token.type !== 'NATIVE' && (
