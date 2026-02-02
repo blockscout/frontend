@@ -1,6 +1,9 @@
+import type * as multichain from '@blockscout/multichain-aggregator-types';
 import type * as stats from '@blockscout/stats-types';
 
 import { averageGasPrice } from 'mocks/stats/line';
+
+import { chainA, chainB, chainC } from './chains';
 
 export const mainPageStats: stats.MainPageMultichainStats = {
   total_multichain_txns: {
@@ -33,4 +36,37 @@ export const mainPageStats: stats.MainPageMultichainStats = {
     units: undefined,
     description: 'Number of transactions yesterday (0:00 - 23:59 UTC) across all chains in the cluster',
   },
+};
+
+export const chainMetrics: multichain.ListChainMetricsResponse = {
+  items: [
+    {
+      chain_id: chainA.id,
+      active_accounts: {
+        current_full_week: '1000',
+        previous_full_week: '900',
+        wow_diff_percent: '10',
+      },
+    },
+    {
+      chain_id: chainB.id,
+      active_accounts: undefined,
+      tps: '42',
+      new_addresses: {
+        current_full_week: '200',
+        previous_full_week: '210',
+        wow_diff_percent: '-10',
+      },
+    },
+    {
+      chain_id: chainC.id,
+      active_accounts: undefined,
+      tps: '3.21',
+      daily_transactions: {
+        current_full_week: '3343480',
+        previous_full_week: '3343480',
+        wow_diff_percent: '0',
+      },
+    },
+  ],
 };

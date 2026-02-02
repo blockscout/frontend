@@ -49,7 +49,7 @@ const OpSuperchainEcosystemsTableItem = ({ data, isLoading, chainInfo }: Props) 
     <TableRow alignItems="top">
       <TableCell verticalAlign="middle">
         <HStack gap={ 3 }>
-          { chainInfo && (
+          { chainInfo ? (
             <HStack>
               <ChainIcon data={ chainInfo } isLoading={ isLoading }/>
               <Link
@@ -62,7 +62,7 @@ const OpSuperchainEcosystemsTableItem = ({ data, isLoading, chainInfo }: Props) 
                 <TruncatedText text={ chainInfo.name } loading={ isLoading }/>
               </Link>
             </HStack>
-          ) }
+          ) : <span>Unknown chain</span> }
           <HStack gap={ 0 } flexShrink={ 0 }>
             <Skeleton loading={ isLoading } color="text.secondary"><span>{ data.chain_id }</span></Skeleton>
             <CopyToClipboard text={ String(data.chain_id) } isLoading={ isLoading }/>
@@ -123,7 +123,7 @@ const OpSuperchainEcosystemsTableItem = ({ data, isLoading, chainInfo }: Props) 
       <TableCell verticalAlign="middle">
         <HStack justifyContent="space-between">
           <Skeleton loading={ isLoading }>
-            <span>{ Number(data.tps).toLocaleString(undefined, { maximumFractionDigits: 2 }) }</span>
+            <span>{ Number(data.tps ?? 0).toLocaleString(undefined, { maximumFractionDigits: 2 }) }</span>
           </Skeleton>
           { walletIcon && (
             <Tooltip content="Add to wallet">
@@ -131,7 +131,6 @@ const OpSuperchainEcosystemsTableItem = ({ data, isLoading, chainInfo }: Props) 
                 onClick={ handleAddToWalletClick }
                 size="md"
                 variant="icon_background"
-                zIndex={ 1 }
                 bgColor={{ _light: 'blackAlpha.50', _dark: 'whiteAlpha.50' }}
                 loadingSkeleton={ isLoading }
               >

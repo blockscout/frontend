@@ -36,7 +36,7 @@ const OpSuperchainEcosystemsListItem = ({ data, chainInfo, isLoading }: Props) =
   return (
     <ListItemMobile rowGap={ 3 } py={ 4 } fontSize="sm" alignItems="stretch">
       <HStack justifyContent="space-between" fontWeight={ 600 }>
-        { chainInfo && (
+        { chainInfo ? (
           <HStack maxW="50%">
             <ChainIcon data={ chainInfo } isLoading={ isLoading }/>
             <Link
@@ -48,7 +48,7 @@ const OpSuperchainEcosystemsListItem = ({ data, chainInfo, isLoading }: Props) =
               <TruncatedText text={ chainInfo.name } loading={ isLoading }/>
             </Link>
           </HStack>
-        ) }
+        ) : <span>Unknown chain</span> }
         <HStack gap={ 0 } flexShrink={ 0 }>
           <Skeleton loading={ isLoading } color="text.secondary"><span>{ data.chain_id }</span></Skeleton>
           <CopyToClipboard text={ String(data.chain_id) } isLoading={ isLoading }/>
@@ -119,7 +119,7 @@ const OpSuperchainEcosystemsListItem = ({ data, chainInfo, isLoading }: Props) =
           <span>TPS</span>
         </Skeleton>
         <Skeleton loading={ isLoading }>
-          <span>{ Number(data.tps).toLocaleString(undefined, { maximumFractionDigits: 2 }) }</span>
+          <span>{ Number(data.tps ?? 0).toLocaleString(undefined, { maximumFractionDigits: 2 }) }</span>
         </Skeleton>
       </Grid>
     </ListItemMobile>

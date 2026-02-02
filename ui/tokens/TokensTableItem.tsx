@@ -107,6 +107,7 @@ const TokensTableItem = ({
                   fontWeight={ 500 }
                   link={{ variant: 'secondary' }}
                 />
+                { /* TODO @tom2drum fix for multichain */ }
                 <AddressAddToWallet
                   token={ token }
                   isLoading={ isLoading }
