@@ -3,12 +3,15 @@ import BigNumber from 'bignumber.js';
 import { groupBy, mapValues } from 'es-toolkit';
 import { useRouter } from 'next/router';
 import React from 'react';
+import { isMobile } from 'react-device-detect';
 
 import multichainConfig from 'configs/multichain';
 import useApiQuery from 'lib/api/useApiQuery';
+import useDebounce from 'lib/hooks/useDebounce';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { ADDRESS, ADDRESS_PORTFOLIO, TOKEN } from 'stubs/optimismSuperchain';
 import { generateListStub } from 'stubs/utils';
+import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import { ZERO } from 'toolkit/utils/consts';
 import { calculateUsdValue } from 'ui/address/utils/tokenUtils';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
@@ -23,11 +26,14 @@ import OpSuperchainAddressTokensTable from './OpSuperchainAddressTokensTable';
 
 const OpSuperchainAddressPortfolioTokens = () => {
   const config = multichainConfig();
-
   const router = useRouter();
 
   const hash = getQueryParamString(router.query.hash);
   const chainIdParam = getQueryParamString(router.query.chain_id);
+  const q = getQueryParamString(router.query.query);
+
+  const [ searchTerm, setSearchTerm ] = React.useState(q || undefined);
+  const debouncedSearchTerm = useDebounce(searchTerm || '', 300);
 
   const portfolioQuery = useApiQuery('multichainAggregator:address_portfolio', {
     pathParams: { hash },
@@ -75,6 +81,7 @@ const OpSuperchainAddressPortfolioTokens = () => {
     filters: {
       type: typeFilter,
       chain_id: selectedChainId ?? undefined,
+      query: debouncedSearchTerm,
     },
     options: {
       enabled: !portfolioQuery.isPlaceholderData,
@@ -88,9 +95,15 @@ const OpSuperchainAddressPortfolioTokens = () => {
       const nextValue = chainId === prev ? null : chainId;
       tokensQuery.onFilterChange({
         chain_id: nextValue ?? undefined,
+        query: debouncedSearchTerm,
       });
       return nextValue;
     });
+  }, [ tokensQuery, debouncedSearchTerm ]);
+
+  const handleSearchTermChange = React.useCallback((value: string) => {
+    setSearchTerm(value);
+    tokensQuery.onFilterChange({ query: value });
   }, [ tokensQuery ]);
 
   const allTokensQuery = useApiQuery('multichainAggregator:address_tokens', {
@@ -146,12 +159,22 @@ const OpSuperchainAddressPortfolioTokens = () => {
     ].filter(Boolean);
   }, [ allTokensQuery.data?.items, portfolioQuery.data?.portfolio?.total_value ]);
 
+  const searchInput = (
+    <FilterInput
+      w={{ base: '100%', lg: '350px' }}
+      size="sm"
+      onChange={ handleSearchTermChange }
+      placeholder="Search by token name or symbol"
+      initialValue={ searchTerm }
+    />
+  );
+
   const tokensContent = tokensQuery.data?.items ? (
     <>
       <Box hideBelow="lg">
         <OpSuperchainAddressTokensTable
           data={ tokensQuery.data.items }
-          top={ tokensQuery.pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 64 }
+          top={ ACTION_BAR_HEIGHT_DESKTOP }
           isLoading={ tokensQuery.isPlaceholderData }
         />
       </Box>
@@ -167,10 +190,20 @@ const OpSuperchainAddressPortfolioTokens = () => {
     </>
   ) : null;
 
-  const actionBar = tokensQuery.pagination.isVisible && (
-    <ActionBar mt={ -6 }>
-      <Pagination ml="auto" { ...tokensQuery.pagination }/>
-    </ActionBar>
+  const actionBar = (
+    <>
+      <Box hideFrom="lg" mb={ 6 }>
+        { searchInput }
+      </Box>
+      { (!isMobile || tokensQuery.pagination.isVisible) && (
+        <ActionBar mt={ -6 }>
+          <Box hideBelow="lg">
+            { searchInput }
+          </Box>
+          <Pagination ml="auto" { ...tokensQuery.pagination }/>
+        </ActionBar>
+      ) }
+    </>
   );
 
   return (
@@ -193,6 +226,10 @@ const OpSuperchainAddressPortfolioTokens = () => {
         itemsNum={ tokensQuery.data?.items?.length }
         emptyText="There are no tokens."
         actionBar={ actionBar }
+        hasActiveFilters={ Boolean(debouncedSearchTerm) || Boolean(selectedChainId) }
+        emptyStateProps={{
+          term: 'token',
+        }}
       >
         { tokensContent }
       </DataListDisplay>

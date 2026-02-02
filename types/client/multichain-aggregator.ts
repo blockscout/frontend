@@ -35,6 +35,7 @@ export interface TokensResponse extends Omit<multichain.ListClusterTokensRespons
 export interface AddressTokensFilter {
   type?: string;
   chain_id?: string;
+  query?: string;
 }
 
 // types for quick search results

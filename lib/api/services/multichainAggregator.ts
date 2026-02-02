@@ -11,7 +11,7 @@ export const MULTICHAIN_AGGREGATOR_API_RESOURCES = {
     path: '/addresses/:hash/tokens',
     pathParams: [ 'hash' as const ],
     paginated: true,
-    filterFields: [ 'chain_id' as const, 'type' as const ],
+    filterFields: [ 'chain_id' as const, 'type' as const, 'query' as const ],
   },
   address_domains: {
     path: '/addresses/:hash/domains',
