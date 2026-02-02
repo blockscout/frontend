@@ -77,6 +77,7 @@ const AddressTxs = ({ shouldRender = true, isQueryEnabled = true }: Props) => {
           top={ ACTION_BAR_HEIGHT_DESKTOP }
           sorting={ localQuery.sort }
           setSort={ localQuery.setSort }
+          showBlockInfo
         />
       ),
     },

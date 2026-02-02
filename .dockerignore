@@ -11,3 +11,4 @@ README.md
 .eslintcache
 /test-results/
 /playwright-report/
+/blob-report/

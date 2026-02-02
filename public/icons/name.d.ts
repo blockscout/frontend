@@ -85,6 +85,7 @@
 	| "lightning"
 	| "link_external"
 	| "link"
+	| "list_view"
 	| "lock"
 	| "merits_colored"
 	| "merits_with_dot"
