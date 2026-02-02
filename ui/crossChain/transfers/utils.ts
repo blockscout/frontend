@@ -6,7 +6,7 @@ export const getItemKey = (data: InterchainTransfer, index?: number) => {
     data.sender?.hash,
     data.source_token?.address_hash,
     data.source_amount,
-    data.source_chain_id,
+    data.source_chain?.id,
     index,
   ]
     .filter((item) => item !== undefined)

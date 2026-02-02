@@ -10,12 +10,11 @@ import TransactionsCrossChain from './TransactionsCrossChain';
 test.describe('txs', () => {
   test.slow();
 
-  test.beforeEach(async({ mockEnvs, mockApiResponse, mockConfigResponse, mockAssetResponse }) => {
+  test.beforeEach(async({ mockEnvs, mockApiResponse, mockAssetResponse }) => {
     await mockEnvs([
       ...ENVS_MAP.crossChainTxs,
       [ 'NEXT_PUBLIC_NETWORK_ID', crossChainConfigMock.config[0].id ],
     ]);
-    await mockConfigResponse('NEXT_PUBLIC_CROSS_CHAIN_TXS_CONFIG', 'http://localhost:3000/cross_chain_config.json', crossChainConfigMock.config);
     await mockApiResponse('interchainIndexer:messages', crossChainTxMock.listResponse);
     await mockApiResponse('interchainIndexer:stats_common', { total_messages: 100, total_transfers: 101, timestamp: '2022-01-13T12:00:00.000Z' });
     await mockApiResponse('interchainIndexer:stats_daily', { daily_messages: 42, daily_transfers: 55, date: '2022-01-13' });

@@ -3,7 +3,6 @@ import React from 'react';
 import type { InterchainMessage } from '@blockscout/interchain-indexer-types';
 import { MessageStatus } from '@blockscout/interchain-indexer-types';
 
-import useCrossChainConfig from 'lib/crossChain/useCrossChainConfig';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 import TxEntityInterchain from 'ui/shared/entities/tx/TxEntityInterchain';
 import ChainLabel from 'ui/shared/externalChains/ChainLabel';
@@ -16,7 +15,6 @@ interface Props {
 }
 
 const TxCrossChainDetailsLifecycle = ({ data, isLoading }: Props) => {
-  const { data: crossChainConfig } = useCrossChainConfig();
 
   const isError = data.status === MessageStatus.MESSAGE_STATUS_FAILED;
 
@@ -39,12 +37,11 @@ const TxCrossChainDetailsLifecycle = ({ data, isLoading }: Props) => {
         <ItemContent isLast={ isLast }>
           <ItemBody>
             <ItemRow label="Chain">
-              <ChainLabel data={ crossChainConfig?.find((chain) => chain.id.toString() === data.source_chain_id) } isLoading={ isLoading } py="6px"/>
+              <ChainLabel data={ data.source_chain } isLoading={ isLoading } py="6px"/>
             </ItemRow>
             <ItemRow label="Transaction">
               <TxEntityInterchain
-                chains={ crossChainConfig }
-                chainId={ data.source_chain_id }
+                chain={ data.source_chain }
                 hash={ data.source_transaction_hash }
                 isLoading={ isLoading }
                 noIcon
@@ -77,12 +74,11 @@ const TxCrossChainDetailsLifecycle = ({ data, isLoading }: Props) => {
         <ItemContent isLast>
           <ItemBody>
             <ItemRow label="Chain">
-              <ChainLabel data={ crossChainConfig?.find((chain) => chain.id.toString() === data.destination_chain_id) } isLoading={ isLoading } py="6px"/>
+              <ChainLabel data={ data.destination_chain } isLoading={ isLoading } py="6px"/>
             </ItemRow>
             <ItemRow label="Transaction">
               <TxEntityInterchain
-                chains={ crossChainConfig }
-                chainId={ data.destination_chain_id }
+                chain={ data.destination_chain }
                 hash={ data.destination_transaction_hash }
                 isLoading={ isLoading }
                 noIcon

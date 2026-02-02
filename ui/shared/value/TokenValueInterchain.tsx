@@ -12,12 +12,11 @@ import AssetValue from './AssetValue';
 
 interface Props extends Omit<AssetValueProps, 'asset'> {
   token: TokenInfo;
-  chainId: string;
-  chains: Array<ExternalChain> | undefined;
+  chain: ExternalChain | undefined;
   tokenEntityProps?: Omit<TokenEntityProps, 'token'> & BoxProps;
 }
 
-const TokenValueInterchain = ({ token, tokenEntityProps, chainId, chains, ...rest }: Props) => {
+const TokenValueInterchain = ({ token, tokenEntityProps, chain, ...rest }: Props) => {
 
   const tokenInfo = React.useMemo(() => {
     return {
@@ -33,8 +32,7 @@ const TokenValueInterchain = ({ token, tokenEntityProps, chainId, chains, ...res
   const asset = (
     <TokenEntityInterchain
       token={ tokenInfo }
-      chainId={ chainId }
-      chains={ chains }
+      chain={ chain }
       noCopy
       onlySymbol
       flexShrink={ 0 }

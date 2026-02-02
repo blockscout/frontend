@@ -3,7 +3,6 @@ import React from 'react';
 
 import type { InterchainMessage } from '@blockscout/interchain-indexer-types';
 
-import useCrossChainConfig from 'lib/crossChain/useCrossChainConfig';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { mdash } from 'toolkit/utils/htmlEntities';
 import CrossChainBridgeLink from 'ui/shared/crossChain/CrossChainBridgeLink';
@@ -18,10 +17,7 @@ interface Props {
   isLoading?: boolean;
 }
 
-const LatestCrossChainTxsItemDesktop = ({ data, isLoading: isLoadingProp }: Props) => {
-  const { data: crossChainConfig, isPending } = useCrossChainConfig();
-
-  const isLoading = isLoadingProp || isPending;
+const LatestCrossChainTxsItemDesktop = ({ data, isLoading }: Props) => {
 
   return (
     <TableRow>
@@ -38,8 +34,7 @@ const LatestCrossChainTxsItemDesktop = ({ data, isLoading: isLoadingProp }: Prop
         <VStack alignItems="start">
           { data.source_transaction_hash ? (
             <TxEntityInterchain
-              chains={ crossChainConfig }
-              chainId={ data.source_chain_id }
+              chain={ data.source_chain }
               hash={ data.source_transaction_hash }
               isLoading={ isLoading }
               noIcon
@@ -51,7 +46,7 @@ const LatestCrossChainTxsItemDesktop = ({ data, isLoading: isLoadingProp }: Prop
             <chakra.span color="text.secondary">{ mdash }</chakra.span>
           ) }
           <ChainLabel
-            data={ crossChainConfig?.find((chain) => chain.id.toString() === data.source_chain_id) }
+            data={ data.source_chain }
             isLoading={ isLoading }
             color="text.secondary"
             textStyle="xs"
@@ -62,8 +57,7 @@ const LatestCrossChainTxsItemDesktop = ({ data, isLoading: isLoadingProp }: Prop
         <VStack alignItems="start">
           { data.destination_transaction_hash ? (
             <TxEntityInterchain
-              chains={ crossChainConfig }
-              chainId={ data.destination_chain_id }
+              chain={ data.destination_chain }
               hash={ data.destination_transaction_hash }
               isLoading={ isLoading }
               noIcon
@@ -75,7 +69,7 @@ const LatestCrossChainTxsItemDesktop = ({ data, isLoading: isLoadingProp }: Prop
             <chakra.span color="text.secondary">{ mdash }</chakra.span>
           ) }
           <ChainLabel
-            data={ crossChainConfig?.find((chain) => chain.id.toString() === data.destination_chain_id) }
+            data={ data.destination_chain }
             isLoading={ isLoading }
             color="text.secondary"
             textStyle="xs"

@@ -10,8 +10,8 @@ export const transferA = {
   },
   message_id: '0x057b42bbbfbb4900e155a554ae67632cb21e6f5a64d815fcad7f33abe552c059',
   status: MessageStatus.MESSAGE_STATUS_COMPLETED,
-  source_chain_id: config[0].id,
-  destination_chain_id: config[1].id,
+  source_chain: config[0],
+  destination_chain: config[1],
   source_token: {
     address_hash: '0x33a31e0f62c0ddf25090b61ef21a70d5f48725b7',
     name: 'Wrapped AVAX',

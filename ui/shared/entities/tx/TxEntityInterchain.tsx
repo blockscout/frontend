@@ -10,14 +10,12 @@ import TxEntity from './TxEntity';
 import TxEntityExternal from './TxEntityExternal';
 
 interface Props extends TxEntityProps, JsxStyleProps {
-  chains: Array<ExternalChain> | undefined;
-  chainId: string;
+  chain: ExternalChain | undefined;
 }
 
-const TxEntityInterchain = ({ chains, chainId, ...props }: Props) => {
+const TxEntityInterchain = ({ chain, ...props }: Props) => {
 
-  const isCurrentChain = chainId === config.chain.id;
-  const chain = chains?.find((chain) => chain.id === chainId);
+  const isCurrentChain = chain?.id === config.chain.id;
 
   if (isCurrentChain) {
     return <TxEntity { ...props } chain={ chain }/>;

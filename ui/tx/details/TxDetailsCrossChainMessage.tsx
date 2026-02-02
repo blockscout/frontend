@@ -4,7 +4,6 @@ import React from 'react';
 import type { InterchainMessage } from '@blockscout/interchain-indexer-types';
 
 import config from 'configs/app';
-import useCrossChainConfig from 'lib/crossChain/useCrossChainConfig';
 import { mdash } from 'toolkit/utils/htmlEntities';
 import * as DetailedInfoItemBreakdown from 'ui/shared/DetailedInfo/DetailedInfoItemBreakdown';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
@@ -19,9 +18,7 @@ interface Props {
   isLoading: boolean;
 }
 
-const TxDetailsCrossChainMessage = ({ data, isLoading: isLoadingProp }: Props) => {
-  const { data: crossChainConfig, isPending } = useCrossChainConfig();
-  const isLoading = isLoadingProp || isPending;
+const TxDetailsCrossChainMessage = ({ data, isLoading }: Props) => {
 
   return (
     <HStack columnGap={ 3 } rowGap={ 0 } flexWrap="wrap">
@@ -42,48 +39,46 @@ const TxDetailsCrossChainMessage = ({ data, isLoading: isLoadingProp }: Props) =
         >
           <CrossChainTxsStatusTag status={ data.status } loading={ isLoading } mode="full"/>
         </DetailedInfoItemBreakdown.Row>
-        { data.source_chain_id !== config.chain.id && (
+        { data.source_chain && data.source_chain?.id !== config.chain.id && (
           <DetailedInfoItemBreakdown.Row
             label="Source chain"
           >
             <ChainLabel
-              data={ crossChainConfig?.find((chain) => chain.id.toString() === data.source_chain_id) }
+              data={ data.source_chain }
               isLoading={ isLoading }
               fallback={ <chakra.span color="text.secondary">{ mdash }</chakra.span> }
             />
           </DetailedInfoItemBreakdown.Row>
         ) }
-        { data.source_transaction_hash && data.source_chain_id !== config.chain.id && (
+        { data.source_transaction_hash && data.source_chain && data.source_chain?.id !== config.chain.id && (
           <DetailedInfoItemBreakdown.Row
             label="Source tx"
           >
             <TxEntityInterchain
-              chains={ crossChainConfig }
-              chainId={ data.source_chain_id }
+              chain={ data.source_chain }
               hash={ data.source_transaction_hash }
               isLoading={ isLoading }
               noIcon
             />
           </DetailedInfoItemBreakdown.Row>
         ) }
-        { data.destination_chain_id !== config.chain.id && (
+        { data.destination_chain && data.destination_chain?.id !== config.chain.id && (
           <DetailedInfoItemBreakdown.Row
             label="Destination chain"
           >
             <ChainLabel
-              data={ crossChainConfig?.find((chain) => chain.id.toString() === data.destination_chain_id) }
+              data={ data.destination_chain }
               isLoading={ isLoading }
               fallback={ <chakra.span color="text.secondary">{ mdash }</chakra.span> }
             />
           </DetailedInfoItemBreakdown.Row>
         ) }
-        { data.destination_transaction_hash && data.destination_chain_id !== config.chain.id && (
+        { data.destination_transaction_hash && data.destination_chain && data.destination_chain?.id !== config.chain.id && (
           <DetailedInfoItemBreakdown.Row
             label="Destination tx"
           >
             <TxEntityInterchain
-              chains={ crossChainConfig }
-              chainId={ data.destination_chain_id }
+              chain={ data.destination_chain }
               hash={ data.destination_transaction_hash }
               isLoading={ isLoading }
               noIcon
@@ -95,8 +90,7 @@ const TxDetailsCrossChainMessage = ({ data, isLoading: isLoadingProp }: Props) =
             label="Sender"
           >
             <AddressEntityInterchain
-              chains={ crossChainConfig }
-              chainId={ data.source_chain_id }
+              chain={ data.source_chain }
               address={ data.sender }
               isLoading={ isLoading }
               noIcon
@@ -108,8 +102,7 @@ const TxDetailsCrossChainMessage = ({ data, isLoading: isLoadingProp }: Props) =
             label="Target"
           >
             <AddressEntityInterchain
-              chains={ crossChainConfig }
-              chainId={ data.destination_chain_id }
+              chain={ data.destination_chain }
               address={ data.recipient }
               isLoading={ isLoading }
               noIcon

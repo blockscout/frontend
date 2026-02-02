@@ -12,13 +12,12 @@ const hooksConfig = {
   },
 };
 
-test('successful tx +@mobile', async({ render, mockEnvs, mockConfigResponse, mockApiResponse, mockAssetResponse, mockTextAd }) => {
+test('successful tx +@mobile', async({ render, mockEnvs, mockApiResponse, mockAssetResponse, mockTextAd }) => {
   await mockTextAd();
   await mockEnvs([
     ...ENVS_MAP.crossChainTxs,
     [ 'NEXT_PUBLIC_NETWORK_ID', crossChainConfigMock.config[0].id ],
   ]);
-  await mockConfigResponse('NEXT_PUBLIC_CROSS_CHAIN_TXS_CONFIG', 'http://localhost:3000/cross_chain_config.json', crossChainConfigMock.config);
   await mockApiResponse('interchainIndexer:message', crossChainTxMock.base, {
     pathParams: {
       id: crossChainTxMock.base.message_id,

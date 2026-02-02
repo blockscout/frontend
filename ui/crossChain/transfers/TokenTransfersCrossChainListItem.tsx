@@ -3,7 +3,6 @@ import React from 'react';
 
 import type { InterchainTransfer } from '@blockscout/interchain-indexer-types';
 
-import useCrossChainConfig from 'lib/crossChain/useCrossChainConfig';
 import dayjs from 'lib/date/dayjs';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { mdash } from 'toolkit/utils/htmlEntities';
@@ -22,9 +21,7 @@ interface Props extends JsxStyleProps {
   isLoading?: boolean;
 }
 
-const TokenTransfersCrossChainListItem = ({ data, isLoading: isLoadingProp, rowGap = 3, ...rest }: Props) => {
-  const { data: crossChainConfig, isPending } = useCrossChainConfig();
-  const isLoading = isLoadingProp || isPending;
+const TokenTransfersCrossChainListItem = ({ data, isLoading, rowGap = 3, ...rest }: Props) => {
 
   const timestamp = data.send_timestamp || data.receive_timestamp;
 
@@ -48,8 +45,7 @@ const TokenTransfersCrossChainListItem = ({ data, isLoading: isLoadingProp, rowG
           <TokenValueInterchain
             token={ data.source_token }
             amount={ data.source_amount }
-            chainId={ data.source_chain_id }
-            chains={ crossChainConfig }
+            chain={ data.source_chain }
             loading={ isLoading }
           />
         ) : dashElement }
@@ -58,8 +54,7 @@ const TokenTransfersCrossChainListItem = ({ data, isLoading: isLoadingProp, rowG
         </Skeleton>
         { data.sender ? (
           <AddressEntityInterchain
-            chains={ crossChainConfig }
-            chainId={ data.source_chain_id }
+            chain={ data.source_chain }
             address={ data.sender }
             isLoading={ isLoading }
             noIcon
@@ -72,8 +67,7 @@ const TokenTransfersCrossChainListItem = ({ data, isLoading: isLoadingProp, rowG
           <TokenValueInterchain
             token={ data.destination_token }
             amount={ data.destination_amount }
-            chainId={ data.destination_chain_id }
-            chains={ crossChainConfig }
+            chain={ data.destination_chain }
             loading={ isLoading }
           />
         ) : dashElement }
@@ -82,8 +76,7 @@ const TokenTransfersCrossChainListItem = ({ data, isLoading: isLoadingProp, rowG
         </Skeleton>
         { data.recipient ? (
           <AddressEntityInterchain
-            chains={ crossChainConfig }
-            chainId={ data.destination_chain_id }
+            chain={ data.destination_chain }
             address={ data.recipient }
             isLoading={ isLoading }
             noIcon
@@ -94,8 +87,7 @@ const TokenTransfersCrossChainListItem = ({ data, isLoading: isLoadingProp, rowG
         </Skeleton>
         { data.source_transaction_hash ? (
           <TxEntityInterchain
-            chains={ crossChainConfig }
-            chainId={ data.source_chain_id }
+            chain={ data.source_chain }
             hash={ data.source_transaction_hash }
             isLoading={ isLoading }
             noCopy
@@ -106,8 +98,7 @@ const TokenTransfersCrossChainListItem = ({ data, isLoading: isLoadingProp, rowG
         </Skeleton>
         { data.destination_transaction_hash ? (
           <TxEntityInterchain
-            chains={ crossChainConfig }
-            chainId={ data.destination_chain_id }
+            chain={ data.destination_chain }
             hash={ data.destination_transaction_hash }
             isLoading={ isLoading }
             noCopy

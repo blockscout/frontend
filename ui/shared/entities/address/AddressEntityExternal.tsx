@@ -15,7 +15,7 @@ interface Props extends EntityProps, JsxStyleProps {
 const AddressEntityExternal = ({ chain, ...props }: Props) => {
 
   const defaultHref = (() => {
-    if (!chain) {
+    if (!chain || !chain.explorer_url) {
       return;
     }
 

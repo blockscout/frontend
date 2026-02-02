@@ -12,13 +12,13 @@ export const base = {
   },
   message_id: '0x057b42bbbfbb4900e155a554ae67632cb21e6f5a64d815fcad7f33abe552c059',
   status: MessageStatus.MESSAGE_STATUS_COMPLETED,
-  source_chain_id: config[0].id,
+  source_chain: config[0],
   send_timestamp: '2022-01-13T12:06:24.000Z',
   sender: {
     hash: '0x33a31e0f62c0ddf25090b61ef21a70d5f48725b7',
   },
   source_transaction_hash: '0x866a70cb1c8c33d259c819473d7b419c0de67770755bf07dee14dd2d0c6dc8ab',
-  destination_chain_id: config[1].id,
+  destination_chain: config[1],
   receive_timestamp: '2022-02-13T12:06:30.000Z',
   recipient: {
     hash: '0x012cb6651cb29c7d5dc96173756a773f7fb87cfb',
@@ -37,8 +37,8 @@ export const pending = {
   ...base,
   message_id: '0x057b42bbbfbb4900e155a554ae67632cb21e6f5a64d815fcad7f33abe552c05a',
   status: MessageStatus.MESSAGE_STATUS_INITIATED,
-  source_chain_id: config[1].id,
-  destination_chain_id: config[2].id,
+  source_chain: config[1],
+  destination_chain: config[2],
   destination_transaction_hash: undefined,
   transfers: [
     transferA,
@@ -49,7 +49,8 @@ export const failed = {
   ...base,
   message_id: '0x057b42bbbfbb4900e155a554ae67632cb21e6f5a64d815fcad7f33abe552c05b',
   status: MessageStatus.MESSAGE_STATUS_FAILED,
-  source_chain_id: '420', // Unknown chain
+  source_chain: config[0],
+  destination_chain: config[1],
   transfers: [
     transferB,
   ],

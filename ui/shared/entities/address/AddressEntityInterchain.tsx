@@ -10,14 +10,12 @@ import AddressEntity from './AddressEntity';
 import AddressEntityExternal from './AddressEntityExternal';
 
 interface Props extends EntityProps, JsxStyleProps {
-  chains: Array<ExternalChain> | undefined;
-  chainId: string;
+  chain: ExternalChain | undefined;
 }
 
-const AddressEntityInterchain = ({ chains, chainId, ...props }: Props) => {
+const AddressEntityInterchain = ({ chain, ...props }: Props) => {
 
-  const isCurrentChain = chainId === config.chain.id;
-  const chain = chains?.find((chain) => chain.id === chainId);
+  const isCurrentChain = chain?.id === config.chain.id;
 
   if (isCurrentChain) {
     return <AddressEntity { ...props } chain={ chain }/>;

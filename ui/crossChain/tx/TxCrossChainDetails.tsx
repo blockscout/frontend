@@ -2,7 +2,6 @@ import React from 'react';
 
 import type { InterchainMessage } from '@blockscout/interchain-indexer-types';
 
-import useCrossChainConfig from 'lib/crossChain/useCrossChainConfig';
 import CrossChainBridgeLink from 'ui/shared/crossChain/CrossChainBridgeLink';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
@@ -19,14 +18,11 @@ interface Props {
   isLoading?: boolean;
 }
 
-const TxCrossChainDetails = ({ data, isLoading: isLoadingProp }: Props) => {
-  const { data: crossChainConfig, isPending } = useCrossChainConfig();
+const TxCrossChainDetails = ({ data, isLoading }: Props) => {
 
   if (!data) {
     return <DataFetchAlert/>;
   }
-
-  const isLoading = isLoadingProp || isPending;
 
   return (
     <DetailedInfo.Container>
@@ -42,8 +38,7 @@ const TxCrossChainDetails = ({ data, isLoading: isLoadingProp }: Props) => {
             <AddressEntityInterchain
               address={ data.sender }
               isLoading={ isLoading }
-              chains={ crossChainConfig }
-              chainId={ data.source_chain_id }
+              chain={ data.source_chain }
             />
           </DetailedInfo.ItemValue>
         </>
@@ -60,8 +55,7 @@ const TxCrossChainDetails = ({ data, isLoading: isLoadingProp }: Props) => {
             <AddressEntityInterchain
               address={ data.recipient }
               isLoading={ isLoading }
-              chains={ crossChainConfig }
-              chainId={ data.destination_chain_id }
+              chain={ data.destination_chain }
             />
           </DetailedInfo.ItemValue>
         </>

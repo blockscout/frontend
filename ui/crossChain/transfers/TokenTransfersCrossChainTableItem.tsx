@@ -3,7 +3,6 @@ import React from 'react';
 
 import type { InterchainTransfer } from '@blockscout/interchain-indexer-types';
 
-import useCrossChainConfig from 'lib/crossChain/useCrossChainConfig';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { mdash } from 'toolkit/utils/htmlEntities';
 import AddressFromToIcon from 'ui/shared/address/AddressFromToIcon';
@@ -21,9 +20,7 @@ interface Props {
   isLoading?: boolean;
 }
 
-const TokenTransfersCrossChainTableItem = ({ data, isLoading: isLoadingProp }: Props) => {
-  const { data: crossChainConfig, isPending } = useCrossChainConfig();
-  const isLoading = isLoadingProp || isPending;
+const TokenTransfersCrossChainTableItem = ({ data, isLoading }: Props) => {
 
   const dashElement = <chakra.span color="text.secondary" lineHeight="24px">{ mdash }</chakra.span>;
 
@@ -38,8 +35,7 @@ const TokenTransfersCrossChainTableItem = ({ data, isLoading: isLoadingProp }: P
             <TokenValueInterchain
               token={ data.source_token }
               amount={ data.source_amount }
-              chainId={ data.source_chain_id }
-              chains={ crossChainConfig }
+              chain={ data.source_chain }
               loading={ isLoading }
               lineHeight="24px"
             />
@@ -47,8 +43,7 @@ const TokenTransfersCrossChainTableItem = ({ data, isLoading: isLoadingProp }: P
           {
             data.sender ? (
               <AddressEntityInterchain
-                chains={ crossChainConfig }
-                chainId={ data.source_chain_id }
+                chain={ data.source_chain }
                 address={ data.sender }
                 isLoading={ isLoading }
                 truncation="constant"
@@ -68,8 +63,7 @@ const TokenTransfersCrossChainTableItem = ({ data, isLoading: isLoadingProp }: P
             <TokenValueInterchain
               token={ data.destination_token }
               amount={ data.destination_amount }
-              chainId={ data.destination_chain_id }
-              chains={ crossChainConfig }
+              chain={ data.destination_chain }
               loading={ isLoading }
               lineHeight="24px"
             />
@@ -77,8 +71,7 @@ const TokenTransfersCrossChainTableItem = ({ data, isLoading: isLoadingProp }: P
           {
             data.recipient ? (
               <AddressEntityInterchain
-                chains={ crossChainConfig }
-                chainId={ data.destination_chain_id }
+                chain={ data.destination_chain }
                 address={ data.recipient }
                 isLoading={ isLoading }
                 truncation="constant"
@@ -93,8 +86,7 @@ const TokenTransfersCrossChainTableItem = ({ data, isLoading: isLoadingProp }: P
         <VStack alignItems="start">
           { data.source_transaction_hash ? (
             <TxEntityInterchain
-              chains={ crossChainConfig }
-              chainId={ data.source_chain_id }
+              chain={ data.source_chain }
               hash={ data.source_transaction_hash }
               isLoading={ isLoading }
               noIcon
@@ -104,7 +96,7 @@ const TokenTransfersCrossChainTableItem = ({ data, isLoading: isLoadingProp }: P
             />
           ) : dashElement }
           <ChainLabel
-            data={ crossChainConfig?.find((chain) => chain.id.toString() === data.source_chain_id) }
+            data={ data.source_chain }
             isLoading={ isLoading }
             color="text.secondary"
             textStyle="xs"
@@ -116,8 +108,7 @@ const TokenTransfersCrossChainTableItem = ({ data, isLoading: isLoadingProp }: P
         <VStack alignItems="start">
           { data.destination_transaction_hash ? (
             <TxEntityInterchain
-              chains={ crossChainConfig }
-              chainId={ data.destination_chain_id }
+              chain={ data.destination_chain }
               hash={ data.destination_transaction_hash }
               isLoading={ isLoading }
               noIcon
@@ -127,7 +118,7 @@ const TokenTransfersCrossChainTableItem = ({ data, isLoading: isLoadingProp }: P
             />
           ) : dashElement }
           <ChainLabel
-            data={ crossChainConfig?.find((chain) => chain.id.toString() === data.destination_chain_id) }
+            data={ data.destination_chain }
             isLoading={ isLoading }
             color="text.secondary"
             textStyle="xs"

@@ -6,13 +6,11 @@ import { test, expect } from 'playwright/lib';
 
 import TxCrossChainDetailsLifecycle from './TxCrossChainDetailsLifecycle';
 
-test.beforeEach(async({ mockEnvs, mockConfigResponse, mockAssetResponse }) => {
+test.beforeEach(async({ mockEnvs, mockAssetResponse }) => {
   await mockEnvs([
     ...ENVS_MAP.crossChainTxs,
     [ 'NEXT_PUBLIC_NETWORK_ID', crossChainConfigMock.config[0].id ],
   ]);
-  await mockConfigResponse('NEXT_PUBLIC_CROSS_CHAIN_TXS_CONFIG', 'http://localhost:3000/cross_chain_config.json', crossChainConfigMock.config);
-
   await mockAssetResponse(crossChainConfigMock.config[0].logo as string, './playwright/mocks/duck.png');
   await mockAssetResponse(crossChainConfigMock.config[1].logo as string, './playwright/mocks/goose.png');
   await mockAssetResponse(crossChainTransfersMock.transferA.source_token.icon_url as string, './playwright/mocks/image_s.jpg');

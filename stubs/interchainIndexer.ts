@@ -1,4 +1,5 @@
 import type {
+  ChainInfo,
   GetCommonStatisticsResponse,
   GetDailyStatisticsResponse,
   InterchainMessage,
@@ -10,6 +11,13 @@ import { ADDRESS_HASH } from './addressParams';
 import { TX_HASH } from './tx';
 
 const MESSAGE_ID = '0xde5c33c6b3424cec51ea6f5d081f64719d531eec74f2a2408141274c117c5f44';
+
+const CHAIN = {
+  id: '8021',
+  name: 'Avalanche',
+  logo: undefined,
+  explorer_url: 'https://avalanche.blockscout.com/',
+} satisfies ChainInfo;
 
 export const INTERCHAIN_TRANSFER = {
   bridge: {
@@ -25,7 +33,7 @@ export const INTERCHAIN_TRANSFER = {
   },
   source_amount: '80800000000000000',
   source_transaction_hash: TX_HASH,
-  source_chain_id: '8021',
+  source_chain: CHAIN,
   sender: {
     hash: ADDRESS_HASH,
   },
@@ -38,7 +46,7 @@ export const INTERCHAIN_TRANSFER = {
   },
   destination_amount: '80800000000000000',
   destination_transaction_hash: TX_HASH,
-  destination_chain_id: '43114',
+  destination_chain: CHAIN,
   recipient: {
     hash: ADDRESS_HASH,
   },
@@ -51,13 +59,13 @@ export const INTERCHAIN_MESSAGE = {
   },
   message_id: MESSAGE_ID,
   status: MessageStatus.MESSAGE_STATUS_COMPLETED,
-  source_chain_id: '8021',
+  source_chain: CHAIN,
   send_timestamp: '2026-01-07T18:41:50.000Z',
   sender: {
     hash: ADDRESS_HASH,
   },
   source_transaction_hash: TX_HASH,
-  destination_chain_id: '43114',
+  destination_chain: CHAIN,
   receive_timestamp: '2026-01-07T18:41:53.000Z',
   recipient: {
     hash: ADDRESS_HASH,

@@ -9,12 +9,11 @@ import TxDetailsCrossChainMessages from './TxDetailsCrossChainMessages';
 
 const txHash = crossChainTxMock.base.source_transaction_hash;
 
-test('base view +@mobile +@dark-mode', async({ render, mockEnvs, mockConfigResponse, mockApiResponse, mockAssetResponse }) => {
+test('base view +@mobile +@dark-mode', async({ render, mockEnvs, mockApiResponse, mockAssetResponse }) => {
   await mockEnvs([
     ...ENVS_MAP.crossChainTxs,
     [ 'NEXT_PUBLIC_NETWORK_ID', crossChainConfigMock.config[0].id ],
   ]);
-  await mockConfigResponse('NEXT_PUBLIC_CROSS_CHAIN_TXS_CONFIG', 'http://localhost:3000/cross_chain_config.json', crossChainConfigMock.config);
   await mockApiResponse('interchainIndexer:tx_messages', crossChainTxMock.listResponse, {
     pathParams: { hash: txHash },
   });

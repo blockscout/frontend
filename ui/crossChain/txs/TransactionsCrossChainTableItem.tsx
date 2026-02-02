@@ -6,7 +6,6 @@ import type { InterchainMessage } from '@blockscout/interchain-indexer-types';
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
-import useCrossChainConfig from 'lib/crossChain/useCrossChainConfig';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
@@ -26,9 +25,7 @@ interface Props {
   isLoading?: boolean;
 }
 
-const TransactionsCrossChainTableItem = ({ data, isLoading: isLoadingProp }: Props) => {
-  const { data: crossChainConfig, isPending } = useCrossChainConfig();
-  const isLoading = isLoadingProp || isPending;
+const TransactionsCrossChainTableItem = ({ data, isLoading }: Props) => {
 
   const firstTransfer = data.transfers.length > 0 ? data.transfers[0] : null;
   const txHashWithTransfers = (() => {
@@ -36,11 +33,11 @@ const TransactionsCrossChainTableItem = ({ data, isLoading: isLoadingProp }: Pro
       return;
     }
 
-    if (config.chain.id === data.source_chain_id) {
+    if (config.chain.id === data.source_chain?.id) {
       return data.source_transaction_hash;
     }
 
-    if (config.chain.id === data.destination_chain_id) {
+    if (config.chain.id === data.destination_chain?.id) {
       return data.destination_transaction_hash;
     }
   })();
@@ -67,8 +64,7 @@ const TransactionsCrossChainTableItem = ({ data, isLoading: isLoadingProp }: Pro
       <TableCell>
         { data.sender ? (
           <AddressEntityInterchain
-            chains={ crossChainConfig }
-            chainId={ data.source_chain_id }
+            chain={ data.source_chain }
             address={ data.sender }
             isLoading={ isLoading }
             truncation="constant"
@@ -81,8 +77,7 @@ const TransactionsCrossChainTableItem = ({ data, isLoading: isLoadingProp }: Pro
         <VStack alignItems="start">
           { data.source_transaction_hash ? (
             <TxEntityInterchain
-              chains={ crossChainConfig }
-              chainId={ data.source_chain_id }
+              chain={ data.source_chain }
               hash={ data.source_transaction_hash }
               isLoading={ isLoading }
               noIcon
@@ -92,7 +87,7 @@ const TransactionsCrossChainTableItem = ({ data, isLoading: isLoadingProp }: Pro
             />
           ) : dashElement }
           <ChainLabel
-            data={ crossChainConfig?.find((chain) => chain.id.toString() === data.source_chain_id) }
+            data={ data.source_chain }
             isLoading={ isLoading }
             color="text.secondary"
             textStyle="xs"
@@ -105,8 +100,7 @@ const TransactionsCrossChainTableItem = ({ data, isLoading: isLoadingProp }: Pro
         <VStack alignItems="start">
           { data.destination_transaction_hash ? (
             <TxEntityInterchain
-              chains={ crossChainConfig }
-              chainId={ data.destination_chain_id }
+              chain={ data.destination_chain }
               hash={ data.destination_transaction_hash }
               isLoading={ isLoading }
               noIcon
@@ -116,7 +110,7 @@ const TransactionsCrossChainTableItem = ({ data, isLoading: isLoadingProp }: Pro
             />
           ) : dashElement }
           <ChainLabel
-            data={ crossChainConfig?.find((chain) => chain.id.toString() === data.destination_chain_id) }
+            data={ data.destination_chain }
             isLoading={ isLoading }
             color="text.secondary"
             textStyle="xs"
@@ -148,8 +142,7 @@ const TransactionsCrossChainTableItem = ({ data, isLoading: isLoadingProp }: Pro
           {
             firstTransfer?.sender ? (
               <AddressEntityInterchain
-                chains={ crossChainConfig }
-                chainId={ firstTransfer.source_chain_id }
+                chain={ firstTransfer.source_chain }
                 address={ firstTransfer.sender }
                 isLoading={ isLoading }
                 truncation="constant"
@@ -163,8 +156,7 @@ const TransactionsCrossChainTableItem = ({ data, isLoading: isLoadingProp }: Pro
             <TokenValueInterchain
               token={ firstTransfer.source_token }
               amount={ firstTransfer.source_amount }
-              chainId={ firstTransfer.source_chain_id }
-              chains={ crossChainConfig }
+              chain={ firstTransfer.source_chain }
               loading={ isLoading }
               textStyle="xs"
               color="text.secondary"
@@ -192,8 +184,7 @@ const TransactionsCrossChainTableItem = ({ data, isLoading: isLoadingProp }: Pro
           {
             firstTransfer?.recipient ? (
               <AddressEntityInterchain
-                chains={ crossChainConfig }
-                chainId={ firstTransfer.destination_chain_id }
+                chain={ firstTransfer.destination_chain }
                 address={ firstTransfer.recipient }
                 isLoading={ isLoading }
                 truncation="constant"
@@ -207,8 +198,7 @@ const TransactionsCrossChainTableItem = ({ data, isLoading: isLoadingProp }: Pro
             <TokenValueInterchain
               token={ firstTransfer.destination_token }
               amount={ firstTransfer.destination_amount }
-              chainId={ firstTransfer.destination_chain_id }
-              chains={ crossChainConfig }
+              chain={ firstTransfer.destination_chain }
               loading={ isLoading }
               textStyle="xs"
               color="text.secondary"

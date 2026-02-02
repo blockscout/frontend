@@ -10,19 +10,18 @@ import TokenEntity from './TokenEntity';
 import TokenEntityExternal from './TokenEntityExternal';
 
 interface Props extends EntityProps, JsxStyleProps {
-  chains: Array<ExternalChain> | undefined;
-  chainId: string;
+  chain: ExternalChain | undefined;
 }
 
-const TokenEntityInterchain = ({ chains, chainId, ...props }: Props) => {
+const TokenEntityInterchain = ({ chain, ...props }: Props) => {
 
-  const isCurrentChain = chainId === config.chain.id;
+  const isCurrentChain = chain?.id === config.chain.id;
 
   if (isCurrentChain) {
     return <TokenEntity { ...props }/>;
   }
 
-  return <TokenEntityExternal { ...props } chain={ chains?.find((chain) => chain.id === chainId) }/>;
+  return <TokenEntityExternal { ...props } chain={ chain }/>;
 };
 
 export default React.memo(TokenEntityInterchain);

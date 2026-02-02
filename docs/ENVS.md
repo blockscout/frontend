@@ -1078,18 +1078,8 @@ This feature enables cross-chain transaction tracking and visualization, allowin
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_CROSS_CHAIN_TXS_CONFIG | `string` | URL of the configuration file in `.json` format that contains information about the chains involved in cross-chain transactions. It should include an array of `ExternalChain` items (see the full property list [below](#cross-chain-transactions-chain-config)). | Required | - | `https://example.com/cross_chain_config.json` | upcoming |
 | NEXT_PUBLIC_INTERCHAIN_INDEXER_API_HOST | `string` | Interchain indexer API service host used to fetch cross-chain transaction data and metadata | Required | - | `https://interchain-indexer.k8s-dev.blockscout.com` | upcoming |
 
-#### Cross-chain transactions: chain config
-
-| Property | Type | Description | Compulsoriness | Default value | Example value |
-| --- | --- | --- | --- | --- | --- |
-| id | `string` | Chain id, see [https://chainlist.org](https://chainlist.org) for the reference | Required | - | `"420"` |
-| name | `string` | Full chain name | Required | - | `Duck chain` |
-| logo | `string` | URL of the chain logo image. Image should be at least 40x40 pixels | - | - | `https://example.com/logo.png` |
-| explorer_url | `string` | Base URL of the chain explorer used to build links to explorer pages (address, transaction, token, etc.). | Required | - | `https://example.com` |
-| route_templates | `{ tx?: string; address?: string; token?: string; }` | Set of route templates used to override the default behavior of the chain explorer link builder. Each route template should use the `{hash}` placeholder, which will be replaced with the actual hash value. If a route template is not provided, the default template will be used (e.g., `/tx/{hash}` for transactions). | - | `{ tx: '/tx/{hash}', address: '/address/{hash}', token: '/token/{hash}' }` | `{ address: '/wallet/{hash}' }` |
 
 &nbsp;
 

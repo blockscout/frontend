@@ -5,7 +5,6 @@ import type { InterchainTransfer } from '@blockscout/interchain-indexer-types';
 
 import { route } from 'nextjs-routes';
 
-import useCrossChainConfig from 'lib/crossChain/useCrossChainConfig';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import AddressFromToIcon from 'ui/shared/address/AddressFromToIcon';
@@ -23,8 +22,6 @@ interface Props {
 }
 
 const TxCrossChainDetailsTransfers = ({ data, id, isLoading }: Props) => {
-  const { data: crossChainConfig } = useCrossChainConfig();
-
   return (
     <>
       <DetailedInfo.ItemLabel
@@ -48,8 +45,7 @@ const TxCrossChainDetailsTransfers = ({ data, id, isLoading }: Props) => {
                   <AddressEntityInterchain
                     address={ item.sender }
                     isLoading={ isLoading }
-                    chains={ crossChainConfig }
-                    chainId={ item.source_chain_id }
+                    chain={ item.source_chain }
                     noIcon
                     truncation="constant"
                   />
@@ -62,8 +58,7 @@ const TxCrossChainDetailsTransfers = ({ data, id, isLoading }: Props) => {
                   <AddressEntityInterchain
                     address={ item.recipient }
                     isLoading={ isLoading }
-                    chains={ crossChainConfig }
-                    chainId={ item.destination_chain_id }
+                    chain={ item.destination_chain }
                     noIcon
                     truncation="constant"
                   />
@@ -75,8 +70,7 @@ const TxCrossChainDetailsTransfers = ({ data, id, isLoading }: Props) => {
                   <TokenValueInterchain
                     token={ item.source_token }
                     amount={ item.source_amount }
-                    chainId={ item.source_chain_id }
-                    chains={ crossChainConfig }
+                    chain={ item.source_chain }
                     loading={ isLoading }
                   />
                 ) : <chakra.span color="text.secondary">Unknown</chakra.span> }
@@ -88,8 +82,7 @@ const TxCrossChainDetailsTransfers = ({ data, id, isLoading }: Props) => {
                   <TokenValueInterchain
                     token={ item.destination_token }
                     amount={ item.destination_amount }
-                    chainId={ item.destination_chain_id }
-                    chains={ crossChainConfig }
+                    chain={ item.destination_chain }
                     loading={ isLoading }
                   />
                 ) : <chakra.span color="text.secondary">Unknown</chakra.span> }
