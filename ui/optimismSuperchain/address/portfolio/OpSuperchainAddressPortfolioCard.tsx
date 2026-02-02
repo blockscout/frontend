@@ -58,6 +58,7 @@ const OpSuperchainAddressPortfolioCard = ({ chain, value, share, isLoading, isSe
       } : undefined }
       cursor={ onClick ? 'pointer' : 'default' }
       onClick={ handleClick }
+      aria-label={ `${ chain.name } portfolio selector` }
     >
       <ChainIcon data={ chain } boxSize="30px" flexShrink={ 0 } isLoading={ isLoading } noTooltip/>
       <VStack alignItems="flex-start" gap={ 1 } overflow="hidden">

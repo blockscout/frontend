@@ -90,7 +90,7 @@ const OpSuperchainAddressPortfolio = () => {
   const tabs: Array<TabItemRegular> = [
     {
       id: 'portfolio_tokens',
-      title: 'ERC-20',
+      title: 'Tokens',
       component: <OpSuperchainAddressPortfolioTokens/>,
     },
     {

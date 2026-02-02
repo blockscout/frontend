@@ -3,7 +3,7 @@ import React from 'react';
 import type { GetAddressResponse } from '@blockscout/multichain-aggregator-types';
 
 import * as chainDataMock from 'mocks/multichain/chains';
-import * as opSuperchainMock from 'mocks/multichain/opSuperchain';
+import * as searchMock from 'mocks/multichain/search';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';
 import * as pwConfig from 'playwright/utils/config';
@@ -26,16 +26,16 @@ test.beforeEach(async({ mockApiResponse, mockMultichainConfig, mockEnvs, mockAss
 
   await mockApiResponse('multichainAggregator:search_addresses', {
     items: [
-      opSuperchainMock.searchAddressesA,
+      searchMock.searchAddressesA,
       ...Array(10).fill('').map((_, index) => ({
-        ...opSuperchainMock.searchAddressesB,
+        ...searchMock.searchAddressesB,
         hash: `0x00883b68A6EcF2ea3D47BD735E5125a0B7625B5${ index }`,
       })) as Array<GetAddressResponse>,
     ],
     next_page_params: undefined,
   }, { queryParams: { q: SEARCH_TERM } });
   await mockApiResponse('multichainAggregator:search_tokens', {
-    items: [ opSuperchainMock.searchTokenA ],
+    items: [ searchMock.searchTokenA ],
     next_page_params: undefined,
   }, { queryParams: { q: SEARCH_TERM } });
   await mockApiResponse('multichainAggregator:search_blocks', { items: [ ], next_page_params: undefined }, { queryParams: { q: SEARCH_TERM } });

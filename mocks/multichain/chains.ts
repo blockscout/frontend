@@ -19,6 +19,7 @@ export const chainA = {
       rpcUrls: [
         'https://rpc.op-mainnet.com',
       ],
+      additionalTokenTypes: [ ],
     },
     apis: {
       general: {
@@ -51,7 +52,7 @@ export const chainA = {
       },
     },
   },
-} as ClusterChainConfig;
+} as unknown as ClusterChainConfig;
 
 export const chainB = {
   ...chainA,
@@ -104,3 +105,17 @@ export const chainC = {
     },
   },
 } as ClusterChainConfig;
+
+export const chainD = {
+  ...chainC,
+  id: '423',
+  name: 'Yellow rubber duck quack-quack-quack chain',
+  slug: 'yellow-rubber-duck-chain',
+};
+
+export const chainE = {
+  ...chainC,
+  id: '424',
+  name: 'White goose',
+  slug: 'white-goose',
+};

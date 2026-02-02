@@ -3,8 +3,8 @@ import type { Locator } from '@playwright/test';
 import React from 'react';
 
 import * as countersMock from 'mocks/address/counters';
+import * as addressMock from 'mocks/multichain/address';
 import * as chainDataMock from 'mocks/multichain/chains';
-import * as opSuperchainMock from 'mocks/multichain/opSuperchain';
 import * as tokenTransferMock from 'mocks/tokens/tokenTransfer';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';
@@ -41,7 +41,7 @@ test.describe('local transfers', () => {
 
     component = await render(
       <Box pt={{ base: '134px', lg: 6 }}>
-        <OpSuperchainAddressTokenTransfers addressData={ opSuperchainMock.addressA } isLoading={ false }/>
+        <OpSuperchainAddressTokenTransfers addressData={ addressMock.addressA } isLoading={ false }/>
       </Box>,
       { hooksConfig },
       { withSocket: true },

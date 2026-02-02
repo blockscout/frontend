@@ -12,6 +12,8 @@ const fixture: TestFixture<MockMultichainConfigFixture, { page: Page }> = async(
           chainDataMock.chainA,
           chainDataMock.chainB,
           chainDataMock.chainC,
+          chainDataMock.chainD,
+          chainDataMock.chainE,
         ],
       };
     }, [ chainDataMock ]);
