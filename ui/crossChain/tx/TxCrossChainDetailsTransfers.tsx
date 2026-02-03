@@ -25,7 +25,7 @@ const TxCrossChainDetailsTransfers = ({ data, id, isLoading }: Props) => {
   return (
     <>
       <DetailedInfo.ItemLabel
-        hint="List of tokens transferred in the cross-chain transaction"
+        hint="Tokens moved as part of the cross-chain operation"
         isLoading={ isLoading }
       >
         Token transferred

@@ -29,7 +29,7 @@ const TxCrossChainDetails = ({ data, isLoading }: Props) => {
       { data.sender && (
         <>
           <DetailedInfo.ItemLabel
-            hint="Address that initiated the cross-chain transaction"
+            hint="Address that initiated the cross-chain operation on the source chain"
             isLoading={ isLoading }
           >
             Sender
@@ -46,7 +46,7 @@ const TxCrossChainDetails = ({ data, isLoading }: Props) => {
       { data.recipient && (
         <>
           <DetailedInfo.ItemLabel
-            hint="Address that received the cross-chain transaction"
+            hint="Recipient address on the destination chain, usually the account or contract that receives tokens or the message"
             isLoading={ isLoading }
           >
             Target
@@ -61,7 +61,7 @@ const TxCrossChainDetails = ({ data, isLoading }: Props) => {
         </>
       ) }
       <DetailedInfo.ItemLabel
-        hint="Protocol used for the cross-chain transaction"
+        hint="Cross-chain protocol used to route the message between chains (bridge or messaging layer)"
         isLoading={ isLoading }
       >
         Protocol
@@ -73,7 +73,7 @@ const TxCrossChainDetails = ({ data, isLoading }: Props) => {
       { data.transfers.length > 0 && <TxCrossChainDetailsTransfers data={ data.transfers } id={ data.message_id } isLoading={ isLoading }/> }
 
       <DetailedInfo.ItemLabel
-        hint="Status of the cross-chain transaction"
+        hint="Current state of the cross-chain operation"
         isLoading={ isLoading }
       >
         Status
@@ -82,7 +82,7 @@ const TxCrossChainDetails = ({ data, isLoading }: Props) => {
         <CrossChainTxsStatusTag status={ data.status } loading={ isLoading } mode="full"/>
       </DetailedInfo.ItemValue>
       <DetailedInfo.ItemLabel
-        hint="Timestamp of the cross-chain transaction"
+        hint="Date and time when the cross-chain operation was initiated"
         isLoading={ isLoading }
       >
         Timestamp
@@ -91,7 +91,7 @@ const TxCrossChainDetails = ({ data, isLoading }: Props) => {
         <DetailedInfoTimestamp timestamp={ data.receive_timestamp || data.send_timestamp } isLoading={ isLoading }/>
       </DetailedInfo.ItemValue>
       <DetailedInfo.ItemLabel
-        hint="Lifecycle of the cross-chain transaction"
+        hint="Source and destination transactions linked to this cross-chain operation"
         isLoading={ isLoading }
       >
         Lifecycle
@@ -102,7 +102,7 @@ const TxCrossChainDetails = ({ data, isLoading }: Props) => {
       { data.payload && (
         <>
           <DetailedInfo.ItemLabel
-            hint="Payload of the cross-chain transaction"
+            hint="Message data sent as part of the cross-chain operation"
             isLoading={ isLoading }
           >
             Payload
