@@ -1,18 +1,18 @@
-import { Box, chakra, Flex, Grid } from '@chakra-ui/react';
+import { Box, chakra, Flex, Grid, Text } from '@chakra-ui/react';
 import { clamp } from 'es-toolkit';
 import React from 'react';
 
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 
-import useApiQuery from 'lib/api/useApiQuery';
 import { Button } from 'toolkit/chakra/button';
 import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
 import { Tooltip } from 'toolkit/chakra/tooltip';
+import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 import IconSvg from 'ui/shared/IconSvg';
+import useLazyLoadedList from 'ui/shared/pagination/useLazyLoadedList';
 
-// TODO @tom2drum lazy load all domains
 const DomainsGrid = ({ data }: { data: Array<multichain.Domain> }) => {
   return (
     <Grid
@@ -32,22 +32,29 @@ interface Props {
   hash: string;
 }
 
-const OpSuperchainAddressEnsDomains = ({ mainDomain, isLoading: isLoadingProps, hash }: Props) => {
+const OpSuperchainAddressEnsDomains = ({ mainDomain, isLoading, hash }: Props) => {
+  const rootRef = React.useRef<HTMLDivElement>(null);
+
   const popover = useDisclosure();
 
-  const { data, isPending } = useApiQuery('multichainAggregator:address_domains', {
+  const { cutRef, query: { data, isFetching, isError } } = useLazyLoadedList({
+    rootRef,
+    resourceName: 'multichainAggregator:address_domains',
     pathParams: { hash },
+    queryOptions: {
+      refetchOnMount: false,
+    },
   });
 
-  const isLoading = isLoadingProps || isPending;
+  const items = data?.pages.map((page) => page.items).flat();
 
-  if (!isLoading && (!data || data.items.length === 0)) {
+  if (!isLoading && (!items || items.length === 0)) {
     return null;
   }
 
-  const totalRecords = data?.items.length ?? 0;
-  const totalRecordsPostfix = data?.next_page_params ? '+' : '';
-  const ownedDomains = (data?.items ?? []).filter((domain) => domain.name !== mainDomain?.name);
+  const totalRecords = data?.pages[0]?.items.length ?? 0;
+  const totalRecordsPostfix = data?.pages[0]?.next_page_params ? '+' : '';
+  const ownedDomains = (items ?? []).filter((domain) => domain.name !== mainDomain?.name);
 
   return (
     <PopoverRoot open={ popover.open } onOpenChange={ popover.onOpenChange }>
@@ -70,7 +77,7 @@ const OpSuperchainAddressEnsDomains = ({ mainDomain, isLoading: isLoadingProps, 
           </PopoverTrigger>
         </div>
       </Tooltip>
-      <PopoverContent w={{ lg: '500px' }} maxH="400px" overflowY="auto">
+      <PopoverContent w={{ lg: '500px' }} maxH="400px" overflowY="auto" ref={ rootRef }>
         <PopoverBody textStyle="sm" display="flex" flexDir="column" rowGap={ 5 } alignItems="flex-start">
           { mainDomain && (
             <Box w="100%">
@@ -92,6 +99,13 @@ const OpSuperchainAddressEnsDomains = ({ mainDomain, isLoading: isLoadingProps, 
               <DomainsGrid data={ ownedDomains }/>
             </div>
           ) }
+
+          { isFetching && <ContentLoader maxW="200px" mt={ 3 }/> }
+
+          { isError && <Text color="text.error" mt={ 3 }>Something went wrong. Unable to load next page.</Text> }
+
+          <Box h="0" w="100px" ref={ cutRef }/>
+
           { mainDomain && (
             <chakra.span textStyle="xs" mt={ -1 }>
               *A domain name is not necessarily held by a person popularly associated with the name
