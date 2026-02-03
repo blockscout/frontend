@@ -12,12 +12,13 @@ interface Props {
   isLoading: boolean;
   hint?: string;
   contentProps?: BoxProps;
+  labelProps?: BoxProps;
 }
 
-const ContractDetailsInfoItem = ({ label, children, className, isLoading, hint, contentProps }: Props) => {
+const ContractDetailsInfoItem = ({ label, children, className, isLoading, hint, contentProps, labelProps }: Props) => {
   return (
     <GridItem display="flex" columnGap={ 6 } wordBreak="break-all" className={ className } alignItems="baseline" maxW="100%" overflow="hidden">
-      <Skeleton loading={ isLoading } w="170px" flexShrink={ 0 } fontWeight={ 500 }>
+      <Skeleton loading={ isLoading } w="170px" flexShrink={ 0 } fontWeight={ 500 } { ...labelProps }>
         <Flex alignItems="center">
           { label }
           { hint && <Hint label={ hint } ml={ 2 }/> }

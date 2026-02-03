@@ -1,3 +1,4 @@
+import { Grid } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import type { Channel } from 'phoenix';
@@ -9,6 +10,7 @@ import type { SmartContract } from 'types/api/contract';
 
 import type { ResourceError } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
+import { useMultichainContext } from 'lib/contexts/multichain';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import * as stubs from 'stubs/contract';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
@@ -17,6 +19,8 @@ import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import ContractDetailsAlerts from './alerts/ContractDetailsAlerts';
 import ContractSourceAddressSelector from './ContractSourceAddressSelector';
 import ContractDetailsInfo from './info/ContractDetailsInfo';
+import ContractDetailsInfoCreator from './info/ContractDetailsInfoCreator';
+import ContractDetailsInfoImplementations from './info/ContractDetailsInfoImplementations';
 import useContractDetailsTabs from './useContractDetailsTabs';
 
 const TAB_LIST_PROPS = { flexWrap: 'wrap', rowGap: 2 };
@@ -31,6 +35,7 @@ type Props = {
 const ContractDetails = ({ addressData, channel, mainContractQuery }: Props) => {
   const router = useRouter();
   const sourceAddress = getQueryParamString(router.query.source_address);
+  const multichainContext = useMultichainContext();
 
   const sourceItems: Array<AddressImplementation> = React.useMemo(() => {
     const currentAddressDefaultName = addressData?.proxy_type === 'eip7702' ? 'Current address' : 'Current contract';
@@ -94,6 +99,32 @@ const ContractDetails = ({ addressData, channel, mainContractQuery }: Props) => 
           isLoading={ mainContractQuery.isPlaceholderData }
           addressData={ addressData }
         />
+      ) }
+      { !mainContractQuery.data?.is_verified && multichainContext && (
+        <Grid templateColumns={{ base: '1fr', lg: '1fr 1fr' }} rowGap={ 4 } columnGap={ 6 } mb={ 8 } _empty={{ display: 'none' }}>
+          { addressData.creator_address_hash && addressData.creation_transaction_hash && (
+            <ContractDetailsInfoCreator
+              addressHash={ addressData.creator_address_hash }
+              txHash={ addressData.creation_transaction_hash }
+              creationStatus={ addressData.creation_status }
+              isLoading={ mainContractQuery.isPlaceholderData }
+              labelProps={{
+                w: {
+                  base: addressData.implementations && addressData.implementations.length > 0 ? '130px' : '65px',
+                  lg: '130px',
+                },
+              }}
+            />
+          ) }
+          { addressData.implementations && addressData.implementations.length > 0 && (
+            <ContractDetailsInfoImplementations
+              implementations={ addressData.implementations }
+              proxyType={ addressData.proxy_type }
+              isLoading={ mainContractQuery.isPlaceholderData }
+              labelProps={{ w: '130px' }}
+            />
+          ) }
+        </Grid>
       ) }
       <RoutedTabs
         tabs={ tabs }
