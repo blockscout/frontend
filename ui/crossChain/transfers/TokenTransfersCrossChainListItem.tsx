@@ -35,7 +35,10 @@ const TokenTransfersCrossChainListItem = ({ data, isLoading, rowGap = 3, current
       <HStack>
         <CrossChainTxsStatusTag status={ data.status } loading={ isLoading } mode="full"/>
         { currentAddress && (
-          <CrossChainFromToTag type={ data.sender?.hash === currentAddress ? 'out' : 'in' } isLoading={ isLoading }/>
+          <CrossChainFromToTag
+            type={ data.sender?.hash.toLowerCase() === currentAddress.toLowerCase() && config.chain.id === data.source_chain?.id ? 'out' : 'in' }
+            isLoading={ isLoading }
+          />
         ) }
       </HStack>
       { timestamp && (
@@ -66,7 +69,7 @@ const TokenTransfersCrossChainListItem = ({ data, isLoading, rowGap = 3, current
             address={ data.sender }
             isLoading={ isLoading }
             noIcon
-            noLink={ Boolean(currentAddress && data.sender?.hash === currentAddress && config.chain.id === data.source_chain?.id) }
+            currentAddress={ currentAddress }
           />
         ) : dashElement }
         <Skeleton loading={ isLoading }>
@@ -89,7 +92,7 @@ const TokenTransfersCrossChainListItem = ({ data, isLoading, rowGap = 3, current
             address={ data.recipient }
             isLoading={ isLoading }
             noIcon
-            noLink={ Boolean(currentAddress && data.recipient?.hash === currentAddress && config.chain.id === data.destination_chain?.id) }
+            currentAddress={ currentAddress }
           />
         ) : dashElement }
         <Skeleton loading={ isLoading }>

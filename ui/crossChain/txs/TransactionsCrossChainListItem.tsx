@@ -52,7 +52,10 @@ const TransactionsCrossChainListItem = ({ data, isLoading, rowGap = 3, currentAd
       <HStack>
         <CrossChainTxsStatusTag status={ data.status } loading={ isLoading } mode="full"/>
         { currentAddress && (
-          <CrossChainFromToTag type={ data.sender?.hash === currentAddress ? 'out' : 'in' } isLoading={ isLoading }/>
+          <CrossChainFromToTag
+            type={ data.sender?.hash.toLowerCase() === currentAddress.toLowerCase() && config.chain.id === data.source_chain?.id ? 'out' : 'in' }
+            isLoading={ isLoading }
+          />
         ) }
       </HStack>
       <CrossChainMessageEntity id={ data.message_id } isLoading={ isLoading } fontWeight={ 600 } noIcon={ false } truncation="dynamic" w="100%"/>
@@ -93,7 +96,7 @@ const TransactionsCrossChainListItem = ({ data, isLoading, rowGap = 3, currentAd
             address={ data.sender }
             isLoading={ isLoading }
             noIcon
-            noLink={ Boolean(currentAddress && data.sender?.hash === currentAddress && config.chain.id === data.source_chain?.id) }
+            currentAddress={ currentAddress }
           />
         ) : dashElement }
         <Skeleton loading={ isLoading }>
@@ -118,7 +121,7 @@ const TransactionsCrossChainListItem = ({ data, isLoading, rowGap = 3, currentAd
             address={ firstTransfer.sender }
             isLoading={ isLoading }
             noIcon
-            noLink={ Boolean(currentAddress && firstTransfer.sender?.hash === currentAddress && config.chain.id === firstTransfer.source_chain?.id) }
+            currentAddress={ currentAddress }
           />
         ) : dashElement }
         <Skeleton loading={ isLoading }>
@@ -141,7 +144,7 @@ const TransactionsCrossChainListItem = ({ data, isLoading, rowGap = 3, currentAd
             address={ firstTransfer.recipient }
             isLoading={ isLoading }
             noIcon
-            noLink={ Boolean(currentAddress && firstTransfer.recipient?.hash === currentAddress && config.chain.id === firstTransfer.destination_chain?.id) }
+            currentAddress={ currentAddress }
           />
         ) : dashElement }
         <Skeleton loading={ isLoading }>

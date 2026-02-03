@@ -11,14 +11,16 @@ import AddressEntityExternal from './AddressEntityExternal';
 
 interface Props extends EntityProps, JsxStyleProps {
   chain: ExternalChain | undefined;
+  currentAddress?: string;
 }
 
-const AddressEntityInterchain = ({ chain, ...props }: Props) => {
+const AddressEntityInterchain = ({ chain, currentAddress, ...props }: Props) => {
 
   const isCurrentChain = chain?.id === config.chain.id;
+  const isCurrentAddress = isCurrentChain && currentAddress?.toLowerCase() === props.address.hash.toLowerCase();
 
   if (isCurrentChain) {
-    return <AddressEntity { ...props } chain={ chain }/>;
+    return <AddressEntity { ...props } chain={ chain } noLink={ isCurrentAddress }/>;
   }
 
   return <AddressEntityExternal { ...props } chain={ chain }/>;

@@ -53,7 +53,10 @@ const TransactionsCrossChainTableItem = ({ data, isLoading, currentAddress }: Pr
       </TableCell>
       { currentAddress && (
         <TableCell>
-          <CrossChainFromToTag type={ data.sender?.hash === currentAddress ? 'out' : 'in' } isLoading={ isLoading }/>
+          <CrossChainFromToTag
+            type={ data.sender?.hash.toLowerCase() === currentAddress.toLowerCase() && config.chain.id === data.source_chain?.id ? 'out' : 'in' }
+            isLoading={ isLoading }
+          />
         </TableCell>
       ) }
       <TableCell>
@@ -76,7 +79,7 @@ const TransactionsCrossChainTableItem = ({ data, isLoading, currentAddress }: Pr
             isLoading={ isLoading }
             truncation="constant"
             noIcon
-            noLink={ Boolean(currentAddress && data.sender?.hash === currentAddress && config.chain.id === data.source_chain?.id) }
+            currentAddress={ currentAddress }
             lineHeight="24px"
             maxW="100%"
             w="fit-content"
@@ -155,7 +158,7 @@ const TransactionsCrossChainTableItem = ({ data, isLoading, currentAddress }: Pr
                 isLoading={ isLoading }
                 truncation="constant"
                 noIcon
-                noLink={ Boolean(currentAddress && firstTransfer.sender?.hash === currentAddress && config.chain.id === firstTransfer.source_chain?.id) }
+                currentAddress={ currentAddress }
                 lineHeight="24px"
                 maxW="100%"
               />
@@ -198,11 +201,7 @@ const TransactionsCrossChainTableItem = ({ data, isLoading, currentAddress }: Pr
                 isLoading={ isLoading }
                 truncation="constant"
                 noIcon
-                noLink={ Boolean(
-                  currentAddress &&
-                  firstTransfer.recipient?.hash === currentAddress &&
-                  config.chain.id === firstTransfer.destination_chain?.id,
-                ) }
+                currentAddress={ currentAddress }
                 lineHeight="24px"
                 maxW="100%"
               />

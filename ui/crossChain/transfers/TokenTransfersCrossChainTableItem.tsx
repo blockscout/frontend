@@ -34,7 +34,10 @@ const TokenTransfersCrossChainTableItem = ({ data, isLoading, currentAddress }: 
       </TableCell>
       { currentAddress && (
         <TableCell>
-          <CrossChainFromToTag type={ data.sender?.hash === currentAddress ? 'out' : 'in' } isLoading={ isLoading }/>
+          <CrossChainFromToTag
+            type={ data.sender?.hash.toLowerCase() === currentAddress.toLowerCase() && config.chain.id === data.source_chain?.id ? 'out' : 'in' }
+            isLoading={ isLoading }
+          />
         </TableCell>
       ) }
       <TableCell>
@@ -56,7 +59,7 @@ const TokenTransfersCrossChainTableItem = ({ data, isLoading, currentAddress }: 
                 isLoading={ isLoading }
                 truncation="constant"
                 noIcon
-                noLink={ Boolean(currentAddress && data.sender?.hash === currentAddress && config.chain.id === data.source_chain?.id) }
+                currentAddress={ currentAddress }
                 textStyle="xs"
               />
             ) : dashElement
@@ -85,7 +88,7 @@ const TokenTransfersCrossChainTableItem = ({ data, isLoading, currentAddress }: 
                 isLoading={ isLoading }
                 truncation="constant"
                 noIcon
-                noLink={ Boolean(currentAddress && data.recipient?.hash === currentAddress && config.chain.id === data.destination_chain?.id) }
+                currentAddress={ currentAddress }
                 textStyle="xs"
               />
             ) : dashElement
