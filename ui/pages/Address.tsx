@@ -65,6 +65,8 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 
 const TOKEN_TABS = [ 'tokens_erc20', 'tokens_nfts', 'tokens_nfts_collection', 'tokens_nfts_list' ];
 const PREDEFINED_TAG_PRIORITY = 100;
+const FHE_TOOLTIP_DESCRIPTION = 'This contract uses Fully Homomorphic Encryption (FHE) to encrypt on-chain data. ' +
+    'Inputs and most outputs are intentionally hidden, while computations are verified on-chain.';
 
 const txInterpretation = config.features.txInterpretation;
 const addressProfileAPIFeature = config.features.addressProfileAPI;
@@ -325,7 +327,18 @@ const AddressPageContent = () => {
 
   const tags: Array<EntityTag> = React.useMemo(() => {
     return [
-      ...(addressQuery.data?.public_tags?.map((tag) => ({ slug: tag.label, name: tag.display_name, tagType: 'custom' as const, ordinal: -1 })) || []),
+      ...(addressQuery.data?.public_tags?.map((tag) => {
+        const isFhe = tag.label.toLowerCase() === 'fhe' || tag.display_name.toLowerCase() === 'fhe';
+        return {
+          slug: tag.label,
+          name: tag.display_name,
+          tagType: 'custom' as const,
+          ordinal: PREDEFINED_TAG_PRIORITY,
+          meta: isFhe ? {
+            tooltipDescription: FHE_TOOLTIP_DESCRIPTION,
+          } : undefined,
+        };
+      }) || []),
       addressQuery.data?.celo?.account ? {
         slug: 'celo-account',
         name: 'Celo account',
