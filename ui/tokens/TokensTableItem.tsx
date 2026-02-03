@@ -107,13 +107,13 @@ const TokensTableItem = ({
                   fontWeight={ 500 }
                   link={{ variant: 'secondary' }}
                 />
-                { /* TODO @tom2drum fix for multichain */ }
                 <AddressAddToWallet
                   token={ token }
                   isLoading={ isLoading }
                   iconSize={ 5 }
                   opacity={ 0 }
                   _groupHover={{ opacity: 1 }}
+                  chainConfig={ chainInfo?.app_config }
                 />
               </Flex>
             ) }
