@@ -333,7 +333,7 @@ const AddressPageContent = () => {
           slug: tag.label,
           name: tag.display_name,
           tagType: 'custom' as const,
-          ordinal: PREDEFINED_TAG_PRIORITY,
+          ordinal: -1,
           meta: isFhe ? {
             tooltipDescription: FHE_TOOLTIP_DESCRIPTION,
           } : undefined,
