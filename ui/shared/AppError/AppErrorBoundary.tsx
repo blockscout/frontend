@@ -1,8 +1,11 @@
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
+import getErrorCause from 'lib/errors/getErrorCause';
 import getErrorCauseStatusCode from 'lib/errors/getErrorCauseStatusCode';
+import getErrorMessage from 'lib/errors/getErrorMessage';
 import getErrorObjStatusCode from 'lib/errors/getErrorObjStatusCode';
+import getErrorStack from 'lib/errors/getErrorStack';
 import { useRollbar } from 'lib/rollbar';
 import ErrorBoundary from 'ui/shared/ErrorBoundary';
 
@@ -36,7 +39,10 @@ const AppErrorBoundary = ({ className, children, Container }: Props) => {
 
     // To this point, there can only be errors that lead to a page crash.
     // Therefore, we set the error level to "critical."
-    rollbar.critical(error);
+    rollbar.critical(getErrorMessage(error) ?? 'Application error', {
+      cause: getErrorCause(error),
+      stack: getErrorStack(error),
+    });
   }, [ rollbar ]);
 
   return (

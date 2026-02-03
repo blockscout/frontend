@@ -69,4 +69,6 @@ export const clientConfig: Configuration | undefined = feature.isEnabled ? {
     'cancelled navigation',
   ],
   maxItems: 10, // Max items per page load
+  captureUncaught: true,
+  captureUnhandledRejections: true,
 } : undefined;

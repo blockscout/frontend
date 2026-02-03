@@ -2,8 +2,10 @@ import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, resolve as resolvePath } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { Worker } from 'node:worker_threads';
+import { delay } from 'es-toolkit';
 
 import { ClusterChainConfig } from 'types/multichain';
+import appConfig from 'configs/app';
 
 const currentFilePath = fileURLToPath(import.meta.url);
 const currentDir = dirname(currentFilePath);
@@ -48,14 +50,15 @@ async function getChainscoutInfo(chainIds: Array<string>) {
 }
 
 async function computeChainConfig(url: string): Promise<unknown> {
-  return new Promise((resolve, reject) => {
-    const workerPath = resolvePath(currentDir, 'worker.js');
+  const workerPath = resolvePath(currentDir, 'worker.js');
 
-    const worker = new Worker(workerPath, {
-      workerData: { url },
-      env: {} // Start with empty environment
-    });
+  const worker = new Worker(workerPath, {
+    workerData: { url },
+    env: {} // Start with empty environment
+  });
+  const controller = new AbortController();
 
+  const configPromise = new Promise((resolve, reject) => {
     worker.on('message', (config) => {
       resolve(config);
     });
@@ -66,11 +69,18 @@ async function computeChainConfig(url: string): Promise<unknown> {
     });
 
     worker.on('exit', (code) => {
-      if (code !== 0) {
-        reject(new Error(`Worker stopped with exit code ${ code }`));
-      }
+      controller.abort();
+      reject(new Error(`Worker stopped with exit code ${ code }`));
     });
+
   });
+
+  return Promise.race([
+    configPromise,
+    delay(30_000, { signal: controller.signal })
+  ]).finally(() => {
+    worker.terminate();
+  })
 }
 
 async function getExplorerUrls() {
@@ -105,15 +115,27 @@ async function run() {
       throw new Error('No chains found in the cluster.');
     }
 
-    const configs = await Promise.all(explorerUrls.map(computeChainConfig));
-    const chainscoutInfo = await getChainscoutInfo(configs.map((config) => config.chain.id));
+    const configs: Array<typeof appConfig> = [];
+    for (const url of explorerUrls) {
+      const chainConfig = (await computeChainConfig(url)) as typeof appConfig | undefined;
+      if (!chainConfig) {
+        throw new Error(`Failed to fetch chain config for ${ url }`);
+      }
+      configs.push(chainConfig);
+    }
+
+    const chainscoutInfo = await getChainscoutInfo(
+      configs
+      .map((config) => config.chain.id)
+      .filter((chainId) => chainId !== undefined)
+    );
 
     const config = {
       chains: configs.map((config, index) => {
         const chainId = config.chain.id;
         const chainName = (config as { chain: { name: string } })?.chain?.name ?? `Chain ${ chainId }`;
         return {
-          id: chainId,
+          id: chainId || '',
           name: chainName,
           logo: chainscoutInfo.find((chain) => chain.id === chainId)?.logoUrl,
           explorer_url: explorerUrls[index],
