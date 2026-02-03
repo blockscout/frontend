@@ -6,9 +6,13 @@ import config from 'configs/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useIsMounted from 'lib/hooks/useIsMounted';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import { EmptyState } from 'toolkit/chakra/empty-state';
+import { INTERCHAIN_TRANSFER } from 'stubs/interchainIndexer';
+import { generateListStub } from 'stubs/utils';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
+import TokenTransfersCrossChainContent from 'ui/crossChain/transfers/TokenTransfersCrossChainContent';
+import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import Pagination from 'ui/shared/pagination/Pagination';
+import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import TokenTransferFilter from 'ui/shared/TokenTransfer/TokenTransferFilter';
 
 import AddressAdvancedFilterLink from './AddressAdvancedFilterLink';
@@ -45,6 +49,15 @@ const AddressTokenTransfers = ({ shouldRender = true, overloadCount, isQueryEnab
     enabled: isQueryEnabled && isLocalTab,
   });
 
+  const crossChainQuery = useQueryWithPages({
+    resourceName: 'interchainIndexer:address_transfers',
+    pathParams: { hash },
+    options: {
+      placeholderData: generateListStub<'interchainIndexer:address_transfers'>(INTERCHAIN_TRANSFER, 50, { next_page_params: undefined }),
+      enabled: isQueryEnabled && !isLocalTab,
+    },
+  });
+
   const handleTabValueChange = React.useCallback(({ value }: { value: string }) => {
     if (value === 'token_transfers_local') {
       localQuery.setFilters({ type: [], filter: undefined });
@@ -73,7 +86,23 @@ const AddressTokenTransfers = ({ shouldRender = true, overloadCount, isQueryEnab
     config.features.crossChainTxs.isEnabled && {
       id: 'token_transfers_cross_chain',
       title: 'Cross-chain transfers',
-      component: <EmptyState type="coming_soon"/>,
+      component: (
+        <>
+          { isMobile && crossChainQuery.pagination.isVisible && (
+            <ActionBar>
+              <Pagination ml="auto" { ...crossChainQuery.pagination }/>
+            </ActionBar>
+          ) }
+          <TokenTransfersCrossChainContent
+            items={ crossChainQuery.data?.items }
+            isLoading={ crossChainQuery.isPlaceholderData }
+            isError={ crossChainQuery.isError }
+            pagination={ crossChainQuery.pagination }
+            tableTop={ ACTION_BAR_HEIGHT_DESKTOP }
+            currentAddress={ hash }
+          />
+        </>
+      ),
     },
   ].filter(Boolean);
 
@@ -114,6 +143,13 @@ const AddressTokenTransfers = ({ shouldRender = true, overloadCount, isQueryEnab
           <Pagination ml={{ base: 'auto', lg: 8 }} { ...localQuery.query.pagination }/>
         </>
       );
+    }
+
+    if (config.features.crossChainTxs.isEnabled) {
+      if (isMobile) {
+        return null;
+      }
+      return <Pagination ml="auto" { ...crossChainQuery.pagination }/>;
     }
 
     return null;

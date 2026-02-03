@@ -1,5 +1,5 @@
 import type { JsxStyleProps } from '@chakra-ui/react';
-import { chakra, Grid } from '@chakra-ui/react';
+import { chakra, Grid, HStack } from '@chakra-ui/react';
 import React from 'react';
 
 import type { InterchainMessage } from '@blockscout/interchain-indexer-types';
@@ -12,6 +12,7 @@ import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { mdash } from 'toolkit/utils/htmlEntities';
 import CrossChainBridgeLink from 'ui/shared/crossChain/CrossChainBridgeLink';
+import CrossChainFromToTag from 'ui/shared/crossChain/CrossChainFromToTag';
 import AddressEntityInterchain from 'ui/shared/entities/address/AddressEntityInterchain';
 import CrossChainMessageEntity from 'ui/shared/entities/crossChainMessage/CrossChainMessageEntity';
 import TxEntityInterchain from 'ui/shared/entities/tx/TxEntityInterchain';
@@ -24,9 +25,10 @@ import TokenValueInterchain from 'ui/shared/value/TokenValueInterchain';
 interface Props extends JsxStyleProps {
   data: InterchainMessage;
   isLoading?: boolean;
+  currentAddress?: string;
 }
 
-const TransactionsCrossChainListItem = ({ data, isLoading, rowGap = 3, ...rest }: Props) => {
+const TransactionsCrossChainListItem = ({ data, isLoading, rowGap = 3, currentAddress, ...rest }: Props) => {
   const timestamp = data.send_timestamp || data.receive_timestamp;
   const firstTransfer = data.transfers.length > 0 ? data.transfers[0] : null;
   const txHashWithTransfers = (() => {
@@ -47,7 +49,12 @@ const TransactionsCrossChainListItem = ({ data, isLoading, rowGap = 3, ...rest }
 
   return (
     <ListItemMobile rowGap={ rowGap } { ...rest }>
-      <CrossChainTxsStatusTag status={ data.status } loading={ isLoading } mode="full"/>
+      <HStack>
+        <CrossChainTxsStatusTag status={ data.status } loading={ isLoading } mode="full"/>
+        { currentAddress && (
+          <CrossChainFromToTag type={ data.sender?.hash === currentAddress ? 'out' : 'in' } isLoading={ isLoading }/>
+        ) }
+      </HStack>
       <CrossChainMessageEntity id={ data.message_id } isLoading={ isLoading } fontWeight={ 600 } noIcon={ false } truncation="dynamic" w="100%"/>
       { timestamp && (
         <Skeleton loading={ isLoading } display="flex" alignItems="center" color="text.secondary">
@@ -86,6 +93,7 @@ const TransactionsCrossChainListItem = ({ data, isLoading, rowGap = 3, ...rest }
             address={ data.sender }
             isLoading={ isLoading }
             noIcon
+            noLink={ Boolean(currentAddress && data.sender?.hash === currentAddress && config.chain.id === data.source_chain?.id) }
           />
         ) : dashElement }
         <Skeleton loading={ isLoading }>
@@ -110,6 +118,7 @@ const TransactionsCrossChainListItem = ({ data, isLoading, rowGap = 3, ...rest }
             address={ firstTransfer.sender }
             isLoading={ isLoading }
             noIcon
+            noLink={ Boolean(currentAddress && firstTransfer.sender?.hash === currentAddress && config.chain.id === firstTransfer.source_chain?.id) }
           />
         ) : dashElement }
         <Skeleton loading={ isLoading }>
@@ -132,6 +141,7 @@ const TransactionsCrossChainListItem = ({ data, isLoading, rowGap = 3, ...rest }
             address={ firstTransfer.recipient }
             isLoading={ isLoading }
             noIcon
+            noLink={ Boolean(currentAddress && firstTransfer.recipient?.hash === currentAddress && config.chain.id === firstTransfer.destination_chain?.id) }
           />
         ) : dashElement }
         <Skeleton loading={ isLoading }>

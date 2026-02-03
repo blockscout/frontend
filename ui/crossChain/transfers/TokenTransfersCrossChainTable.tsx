@@ -13,15 +13,17 @@ interface Props {
   data: Array<InterchainTransfer>;
   isLoading?: boolean;
   top?: number;
+  currentAddress?: string;
 }
 
-const TokenTransfersCrossChainTable = ({ data, isLoading, top }: Props) => {
+const TokenTransfersCrossChainTable = ({ data, isLoading, top, currentAddress }: Props) => {
   return (
     <AddressHighlightProvider>
-      <TableRoot minW="1200px">
+      <TableRoot minW={ currentAddress ? '1250px' : '1200px' }>
         <TableHeaderSticky top={ top }>
           <TableRow>
             <TableColumnHeader w="42px"/>
+            { currentAddress && <TableColumnHeader w="44px"/> }
             <TableColumnHeader w="20%">Source token</TableColumnHeader>
             <TableColumnHeader w="32px"/>
             <TableColumnHeader w="20%">Target token</TableColumnHeader>
@@ -41,6 +43,7 @@ const TokenTransfersCrossChainTable = ({ data, isLoading, top }: Props) => {
               key={ getItemKey(item, isLoading ? index : undefined) }
               data={ item }
               isLoading={ isLoading }
+              currentAddress={ currentAddress }
             />
           )) }
         </TableBody>

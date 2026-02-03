@@ -3,10 +3,12 @@ import React from 'react';
 
 import type { InterchainTransfer } from '@blockscout/interchain-indexer-types';
 
+import config from 'configs/app';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { mdash } from 'toolkit/utils/htmlEntities';
 import AddressFromToIcon from 'ui/shared/address/AddressFromToIcon';
 import CrossChainBridgeLink from 'ui/shared/crossChain/CrossChainBridgeLink';
+import CrossChainFromToTag from 'ui/shared/crossChain/CrossChainFromToTag';
 import AddressEntityInterchain from 'ui/shared/entities/address/AddressEntityInterchain';
 import CrossChainMessageEntity from 'ui/shared/entities/crossChainMessage/CrossChainMessageEntity';
 import TxEntityInterchain from 'ui/shared/entities/tx/TxEntityInterchain';
@@ -18,9 +20,10 @@ import TokenValueInterchain from 'ui/shared/value/TokenValueInterchain';
 interface Props {
   data: InterchainTransfer;
   isLoading?: boolean;
+  currentAddress?: string;
 }
 
-const TokenTransfersCrossChainTableItem = ({ data, isLoading }: Props) => {
+const TokenTransfersCrossChainTableItem = ({ data, isLoading, currentAddress }: Props) => {
 
   const dashElement = <chakra.span color="text.secondary" lineHeight="24px">{ mdash }</chakra.span>;
 
@@ -29,6 +32,11 @@ const TokenTransfersCrossChainTableItem = ({ data, isLoading }: Props) => {
       <TableCell w="42px">
         <CrossChainTxsStatusTag status={ data.status } loading={ isLoading }/>
       </TableCell>
+      { currentAddress && (
+        <TableCell>
+          <CrossChainFromToTag type={ data.sender?.hash === currentAddress ? 'out' : 'in' } isLoading={ isLoading }/>
+        </TableCell>
+      ) }
       <TableCell>
         <VStack alignItems="start">
           { data.source_token && (
@@ -48,6 +56,7 @@ const TokenTransfersCrossChainTableItem = ({ data, isLoading }: Props) => {
                 isLoading={ isLoading }
                 truncation="constant"
                 noIcon
+                noLink={ Boolean(currentAddress && data.sender?.hash === currentAddress && config.chain.id === data.source_chain?.id) }
                 textStyle="xs"
               />
             ) : dashElement
@@ -76,6 +85,7 @@ const TokenTransfersCrossChainTableItem = ({ data, isLoading }: Props) => {
                 isLoading={ isLoading }
                 truncation="constant"
                 noIcon
+                noLink={ Boolean(currentAddress && data.recipient?.hash === currentAddress && config.chain.id === data.destination_chain?.id) }
                 textStyle="xs"
               />
             ) : dashElement

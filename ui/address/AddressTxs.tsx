@@ -6,10 +6,13 @@ import config from 'configs/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useIsMounted from 'lib/hooks/useIsMounted';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import { EmptyState } from 'toolkit/chakra/empty-state';
+import { INTERCHAIN_MESSAGE } from 'stubs/interchainIndexer';
+import { generateListStub } from 'stubs/utils';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
+import AddressTxsCrossChain from 'ui/crossChain/address/AddressTxsCrossChain';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import Pagination from 'ui/shared/pagination/Pagination';
+import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import TxsWithAPISorting from 'ui/txs/TxsWithAPISorting';
 
 import AddressCsvExportLink from './AddressCsvExportLink';
@@ -41,6 +44,15 @@ const AddressTxs = ({ shouldRender = true, isQueryEnabled = true }: Props) => {
   const localQuery = useAddressTxsQuery({
     addressHash: hash,
     enabled: isQueryEnabled && isLocalTab,
+  });
+
+  const crossChainQuery = useQueryWithPages({
+    resourceName: 'interchainIndexer:address_messages',
+    pathParams: { hash },
+    options: {
+      placeholderData: generateListStub<'interchainIndexer:address_messages'>(INTERCHAIN_MESSAGE, 50, { next_page_params: undefined }),
+      enabled: isQueryEnabled && !isLocalTab,
+    },
   });
 
   const handleTabValueChange = React.useCallback(({ value }: { value: string }) => {
@@ -78,13 +90,22 @@ const AddressTxs = ({ shouldRender = true, isQueryEnabled = true }: Props) => {
           sorting={ localQuery.sort }
           setSort={ localQuery.setSort }
           showBlockInfo
+          showTableViewButton
         />
       ),
     },
     config.features.crossChainTxs.isEnabled && {
       id: 'txs_cross_chain',
       title: 'Cross-chain txns',
-      component: <EmptyState type="coming_soon"/>,
+      component: (
+        <AddressTxsCrossChain
+          pagination={ crossChainQuery.pagination }
+          items={ crossChainQuery.data?.items }
+          isLoading={ crossChainQuery.isPlaceholderData }
+          isError={ crossChainQuery.isError }
+          currentAddress={ hash }
+        />
+      ),
     },
   ].filter(Boolean);
 
@@ -109,6 +130,13 @@ const AddressTxs = ({ shouldRender = true, isQueryEnabled = true }: Props) => {
           </HStack>
         </>
       );
+    }
+
+    if (config.features.crossChainTxs.isEnabled) {
+      if (isMobile) {
+        return null;
+      }
+      return <Pagination { ...crossChainQuery.pagination } ml="auto"/>;
     }
 
     return null;

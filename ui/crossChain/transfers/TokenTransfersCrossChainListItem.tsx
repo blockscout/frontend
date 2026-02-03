@@ -1,12 +1,14 @@
-import { chakra, Grid, type JsxStyleProps } from '@chakra-ui/react';
+import { chakra, Grid, HStack, type JsxStyleProps } from '@chakra-ui/react';
 import React from 'react';
 
 import type { InterchainTransfer } from '@blockscout/interchain-indexer-types';
 
+import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { mdash } from 'toolkit/utils/htmlEntities';
 import CrossChainBridgeLink from 'ui/shared/crossChain/CrossChainBridgeLink';
+import CrossChainFromToTag from 'ui/shared/crossChain/CrossChainFromToTag';
 import AddressEntityInterchain from 'ui/shared/entities/address/AddressEntityInterchain';
 import CrossChainMessageEntity from 'ui/shared/entities/crossChainMessage/CrossChainMessageEntity';
 import TxEntityInterchain from 'ui/shared/entities/tx/TxEntityInterchain';
@@ -19,9 +21,10 @@ import TokenValueInterchain from 'ui/shared/value/TokenValueInterchain';
 interface Props extends JsxStyleProps {
   data: InterchainTransfer;
   isLoading?: boolean;
+  currentAddress?: string;
 }
 
-const TokenTransfersCrossChainListItem = ({ data, isLoading, rowGap = 3, ...rest }: Props) => {
+const TokenTransfersCrossChainListItem = ({ data, isLoading, rowGap = 3, currentAddress, ...rest }: Props) => {
 
   const timestamp = data.send_timestamp || data.receive_timestamp;
 
@@ -29,7 +32,12 @@ const TokenTransfersCrossChainListItem = ({ data, isLoading, rowGap = 3, ...rest
 
   return (
     <ListItemMobile rowGap={ rowGap } { ...rest }>
-      <CrossChainTxsStatusTag status={ data.status } loading={ isLoading } mode="full"/>
+      <HStack>
+        <CrossChainTxsStatusTag status={ data.status } loading={ isLoading } mode="full"/>
+        { currentAddress && (
+          <CrossChainFromToTag type={ data.sender?.hash === currentAddress ? 'out' : 'in' } isLoading={ isLoading }/>
+        ) }
+      </HStack>
       { timestamp && (
         <Skeleton loading={ isLoading } display="flex" alignItems="center" color="text.secondary">
           <div>{ dayjs(timestamp).fromNow() }</div>
@@ -58,6 +66,7 @@ const TokenTransfersCrossChainListItem = ({ data, isLoading, rowGap = 3, ...rest
             address={ data.sender }
             isLoading={ isLoading }
             noIcon
+            noLink={ Boolean(currentAddress && data.sender?.hash === currentAddress && config.chain.id === data.source_chain?.id) }
           />
         ) : dashElement }
         <Skeleton loading={ isLoading }>
@@ -80,6 +89,7 @@ const TokenTransfersCrossChainListItem = ({ data, isLoading, rowGap = 3, ...rest
             address={ data.recipient }
             isLoading={ isLoading }
             noIcon
+            noLink={ Boolean(currentAddress && data.recipient?.hash === currentAddress && config.chain.id === data.destination_chain?.id) }
           />
         ) : dashElement }
         <Skeleton loading={ isLoading }>

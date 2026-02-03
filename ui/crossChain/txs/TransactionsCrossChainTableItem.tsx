@@ -12,6 +12,7 @@ import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { mdash } from 'toolkit/utils/htmlEntities';
 import AddressFromToIcon from 'ui/shared/address/AddressFromToIcon';
 import CrossChainBridgeLink from 'ui/shared/crossChain/CrossChainBridgeLink';
+import CrossChainFromToTag from 'ui/shared/crossChain/CrossChainFromToTag';
 import AddressEntityInterchain from 'ui/shared/entities/address/AddressEntityInterchain';
 import CrossChainMessageEntity from 'ui/shared/entities/crossChainMessage/CrossChainMessageEntity';
 import TxEntityInterchain from 'ui/shared/entities/tx/TxEntityInterchain';
@@ -23,9 +24,10 @@ import TokenValueInterchain from 'ui/shared/value/TokenValueInterchain';
 interface Props {
   data: InterchainMessage;
   isLoading?: boolean;
+  currentAddress?: string;
 }
 
-const TransactionsCrossChainTableItem = ({ data, isLoading }: Props) => {
+const TransactionsCrossChainTableItem = ({ data, isLoading, currentAddress }: Props) => {
 
   const firstTransfer = data.transfers.length > 0 ? data.transfers[0] : null;
   const txHashWithTransfers = (() => {
@@ -49,6 +51,11 @@ const TransactionsCrossChainTableItem = ({ data, isLoading }: Props) => {
       <TableCell w="42px">
         <CrossChainTxsStatusTag status={ data.status } loading={ isLoading }/>
       </TableCell>
+      { currentAddress && (
+        <TableCell>
+          <CrossChainFromToTag type={ data.sender?.hash === currentAddress ? 'out' : 'in' } isLoading={ isLoading }/>
+        </TableCell>
+      ) }
       <TableCell>
         <CrossChainMessageEntity id={ data.message_id } isLoading={ isLoading } lineHeight="24px" fontWeight={ 700 }/>
       </TableCell>
@@ -69,6 +76,7 @@ const TransactionsCrossChainTableItem = ({ data, isLoading }: Props) => {
             isLoading={ isLoading }
             truncation="constant"
             noIcon
+            noLink={ Boolean(currentAddress && data.sender?.hash === currentAddress && config.chain.id === data.source_chain?.id) }
             lineHeight="24px"
             maxW="100%"
             w="fit-content"
@@ -147,6 +155,7 @@ const TransactionsCrossChainTableItem = ({ data, isLoading }: Props) => {
                 isLoading={ isLoading }
                 truncation="constant"
                 noIcon
+                noLink={ Boolean(currentAddress && firstTransfer.sender?.hash === currentAddress && config.chain.id === firstTransfer.source_chain?.id) }
                 lineHeight="24px"
                 maxW="100%"
               />
@@ -189,6 +198,11 @@ const TransactionsCrossChainTableItem = ({ data, isLoading }: Props) => {
                 isLoading={ isLoading }
                 truncation="constant"
                 noIcon
+                noLink={ Boolean(
+                  currentAddress &&
+                  firstTransfer.recipient?.hash === currentAddress &&
+                  config.chain.id === firstTransfer.destination_chain?.id,
+                ) }
                 lineHeight="24px"
                 maxW="100%"
               />
