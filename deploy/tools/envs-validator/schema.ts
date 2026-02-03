@@ -147,7 +147,6 @@ const schema = yup
       }),
     NEXT_PUBLIC_FLASHBLOCKS_SOCKET_URL: yup.string().test(urlTest),
     NEXT_PUBLIC_HOT_CONTRACTS_ENABLED: yup.boolean(),
-    NEXT_PUBLIC_INTERCHAIN_INDEXER_API_HOST: yup.string().test(urlTest),
 
     // Misc
     NEXT_PUBLIC_USE_NEXT_JS_PROXY: yup.boolean(),
@@ -165,6 +164,7 @@ const schema = yup
   .concat(featuresSchemas.apiDocsSchema)
   .concat(featuresSchemas.beaconChainSchema)
   .concat(featuresSchemas.bridgedTokensSchema)
+  .concat(featuresSchemas.crossChainTxsSchema)
   .concat(featuresSchemas.defiDropdownSchema)
   .concat(featuresSchemas.highlightsConfigSchema)
   .concat(featuresSchemas.marketplaceSchema)

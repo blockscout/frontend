@@ -138,5 +138,6 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
   ],
   crossChainTxs: [
     [ 'NEXT_PUBLIC_INTERCHAIN_INDEXER_API_HOST', 'http://localhost:3014' ],
+    [ 'NEXT_PUBLIC_CROSS_CHAIN_TXS_ENABLED', 'true' ],
   ],
 };
