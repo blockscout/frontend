@@ -1,4 +1,4 @@
-import { HStack, VStack } from '@chakra-ui/react';
+import { Box, HStack, VStack } from '@chakra-ui/react';
 import React from 'react';
 
 import type * as multichain from '@blockscout/multichain-aggregator-types';
@@ -71,11 +71,13 @@ const ChainWidget = ({ data, isLoading, metrics }: Props) => {
         overflow="hidden"
       >
         <HStack justifyContent="space-between" mb={ 2 }>
-          <HStack>
+          <HStack minW="0">
             <ChainIcon data={ data } boxSize={ 5 } isLoading={ isLoading } noTooltip/>
-            <Heading textStyle="heading.sm" as="h3">
+            <Heading textStyle="heading.sm" as="h3" minW="0">
               <LinkOverlay href={ data.explorer_url } external loading={ isLoading } _groupHover={{ color: 'hover' }}>
-                { data.name }
+                <Box overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
+                  { data.name }
+                </Box>
               </LinkOverlay>
             </Heading>
           </HStack>
@@ -122,7 +124,9 @@ const ChainWidget = ({ data, isLoading, metrics }: Props) => {
       </HStack>
       <Heading my={ 3 } textStyle="heading.md" as="h3">
         <LinkOverlay href={ data.explorer_url } external loading={ isLoading } _groupHover={{ color: 'hover' }}>
-          { data.name }
+          <Box overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
+            { data.name }
+          </Box>
         </LinkOverlay>
       </Heading>
       <RollupStageBadge chainConfig={ data.app_config } isLoading={ isLoading } mb={ 2.5 }/>

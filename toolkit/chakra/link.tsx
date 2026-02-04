@@ -114,19 +114,21 @@ export const LinkOverlay = React.forwardRef<HTMLAnchorElement, LinkProps>(
           rel="noopener noreferrer"
           { ...rest }
         >
-          <Skeleton display="inline-flex" alignItems="center" loading={ loading }>
-            { children }
-            { !noIcon && <LinkExternalIcon color={ iconColor }/> }
-          </Skeleton>
+          { (children || (!noIcon && href)) && (
+            <Skeleton display="inline-flex" alignItems="center" loading={ loading } maxW="100%" h="100%">
+              { children }
+              { !noIcon && href && <LinkExternalIcon color={ iconColor }/> }
+            </Skeleton>
+          ) }
         </ChakraLinkOverlay>
       );
     }
 
-    const content = (
-      <Skeleton display="inline-flex" alignItems="center" loading={ loading }>
+    const content = children ? (
+      <Skeleton display="inline-flex" alignItems="center" loading={ loading } maxW="100%" h="100%">
         { children }
       </Skeleton>
-    );
+    ) : null;
 
     return (
       <ChakraLinkOverlay
