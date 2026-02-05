@@ -1,3 +1,4 @@
+import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { InterchainTransfer } from '@blockscout/interchain-indexer-types';
@@ -19,21 +20,23 @@ interface Props {
 const TokenTransfersCrossChainTable = ({ data, isLoading, top, currentAddress }: Props) => {
   return (
     <AddressHighlightProvider>
-      <TableRoot minW={ currentAddress ? '1250px' : '1200px' }>
+      <TableRoot tableLayout="auto">
         <TableHeaderSticky top={ top }>
           <TableRow>
             <TableColumnHeader w="42px"/>
             { currentAddress && <TableColumnHeader w="44px"/> }
-            <TableColumnHeader w="20%">Source token</TableColumnHeader>
-            <TableColumnHeader w="32px"/>
-            <TableColumnHeader w="20%">Target token</TableColumnHeader>
-            <TableColumnHeader w="20%">Source tx</TableColumnHeader>
-            <TableColumnHeader w="20%">Dest tx</TableColumnHeader>
-            <TableColumnHeader w="20%">Protocol</TableColumnHeader>
-            <TableColumnHeader w="130px">Message</TableColumnHeader>
-            <TableColumnHeader w="180px">
-              Timestamp
-              <TimeFormatToggle/>
+            <TableColumnHeader>Source token</TableColumnHeader>
+            <TableColumnHeader/>
+            <TableColumnHeader>Target token</TableColumnHeader>
+            <TableColumnHeader>Source tx</TableColumnHeader>
+            <TableColumnHeader>Dest tx</TableColumnHeader>
+            <TableColumnHeader>Protocol</TableColumnHeader>
+            <TableColumnHeader>Message</TableColumnHeader>
+            <TableColumnHeader>
+              <Flex alignItems="center" flexWrap="nowrap">
+                Timestamp
+                <TimeFormatToggle/>
+              </Flex>
             </TableColumnHeader>
           </TableRow>
         </TableHeaderSticky>

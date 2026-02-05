@@ -1,3 +1,4 @@
+import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { InterchainMessage } from '@blockscout/interchain-indexer-types';
@@ -21,24 +22,26 @@ const TransactionsCrossChainTable = ({ data, isLoading, top, stickyHeader, curre
 
   return (
     <AddressHighlightProvider>
-      <TableRoot minW="1300px">
+      <TableRoot tableLayout="auto">
         <TableHeaderComponent top={ stickyHeader ? top : undefined }>
           <TableRow>
             <TableColumnHeader w="42px"/>
             { currentAddress && <TableColumnHeader w="44px"/> }
-            <TableColumnHeader w="130px">Message</TableColumnHeader>
-            <TableColumnHeader w="180px">
-              Timestamp
-              <TimeFormatToggle/>
+            <TableColumnHeader>Message</TableColumnHeader>
+            <TableColumnHeader>
+              <Flex alignItems="center" flexWrap="nowrap">
+                Timestamp
+                <TimeFormatToggle/>
+              </Flex>
             </TableColumnHeader>
-            <TableColumnHeader w="140px">Msg sender</TableColumnHeader>
-            <TableColumnHeader w="20%">Source tx</TableColumnHeader>
-            <TableColumnHeader w="20%">Dest tx</TableColumnHeader>
-            <TableColumnHeader w="60px">Transf</TableColumnHeader>
-            <TableColumnHeader w="20%">Sender</TableColumnHeader>
-            <TableColumnHeader w="32px"/>
-            <TableColumnHeader w="20%">Recipient</TableColumnHeader>
-            <TableColumnHeader w="20%">Protocol</TableColumnHeader>
+            <TableColumnHeader>Msg sender</TableColumnHeader>
+            <TableColumnHeader>Source tx</TableColumnHeader>
+            <TableColumnHeader>Dest tx</TableColumnHeader>
+            <TableColumnHeader>Transf</TableColumnHeader>
+            <TableColumnHeader>Sender</TableColumnHeader>
+            <TableColumnHeader/>
+            <TableColumnHeader>Recipient</TableColumnHeader>
+            <TableColumnHeader>Protocol</TableColumnHeader>
           </TableRow>
         </TableHeaderComponent>
         <TableBody>

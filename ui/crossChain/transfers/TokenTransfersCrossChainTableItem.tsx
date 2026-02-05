@@ -40,7 +40,7 @@ const TokenTransfersCrossChainTableItem = ({ data, isLoading, currentAddress }: 
           />
         </TableCell>
       ) }
-      <TableCell>
+      <TableCell maxW="150px">
         <VStack alignItems="start">
           { data.source_token && (
             <TokenValueInterchain
@@ -69,7 +69,7 @@ const TokenTransfersCrossChainTableItem = ({ data, isLoading, currentAddress }: 
       <TableCell>
         <AddressFromToIcon type="unspecified" isLoading={ isLoading } mt={ 0.5 }/>
       </TableCell>
-      <TableCell>
+      <TableCell maxW="150px">
         <VStack alignItems="start">
           { data.destination_token && (
             <TokenValueInterchain
@@ -95,7 +95,7 @@ const TokenTransfersCrossChainTableItem = ({ data, isLoading, currentAddress }: 
           }
         </VStack>
       </TableCell>
-      <TableCell>
+      <TableCell maxW="150px">
         <VStack alignItems="start">
           { data.source_transaction_hash ? (
             <TxEntityInterchain
@@ -116,7 +116,7 @@ const TokenTransfersCrossChainTableItem = ({ data, isLoading, currentAddress }: 
           />
         </VStack>
       </TableCell>
-      <TableCell>
+      <TableCell maxW="150px">
         <VStack alignItems="start">
           { data.destination_transaction_hash ? (
             <TxEntityInterchain
@@ -149,6 +149,7 @@ const TokenTransfersCrossChainTableItem = ({ data, isLoading, currentAddress }: 
           isLoading={ isLoading }
           color="text.secondary"
           lineHeight="24px"
+          whiteSpace="nowrap"
         />
       </TableCell>
     </TableRow>
