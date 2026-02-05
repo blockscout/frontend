@@ -123,6 +123,7 @@ const AddressFromTo = ({
         truncation="constant"
         mr={ isOutgoing ? 4 : 2 }
         chainId={ fromChainId }
+        w="auto"
       />
       <AddressFromToIcon
         isLoading={ isLoading }
@@ -140,6 +141,7 @@ const AddressFromTo = ({
           truncation="constant"
           ml={ 3 }
           chainId={ toChainId }
+          w="auto"
         />
       ) }
     </Grid>
