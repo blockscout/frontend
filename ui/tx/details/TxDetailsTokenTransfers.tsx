@@ -50,7 +50,6 @@ const TxDetailsTokenTransfers = ({ data, txHash, isOverflow }: Props) => {
                 alignItems="flex-start"
                 rowGap={ 1 }
                 w="100%"
-                overflow="hidden"
               >
                 { items.map((item, index) => <TokenTransferSnippet key={ index } data={ item }/>) }
               </Flex>
