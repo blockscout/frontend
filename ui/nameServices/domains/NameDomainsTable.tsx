@@ -2,6 +2,7 @@ import React from 'react';
 
 import type * as bens from '@blockscout/bens-types';
 
+import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
 import { TableBody, TableColumnHeader, TableColumnHeaderSortable, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
@@ -18,31 +19,33 @@ interface Props {
 
 const NameDomainsTable = ({ data, isLoading, sort, onSortToggle }: Props) => {
   return (
-    <TableRoot>
-      <TableHeaderSticky top={ ACTION_BAR_HEIGHT_DESKTOP }>
-        <TableRow>
-          <TableColumnHeader width="25%">Domain</TableColumnHeader>
-          <TableColumnHeader width="25%">Address</TableColumnHeader>
-          <TableColumnHeaderSortable
-            width="25%"
-            pl={ 9 }
-            sortField="registration_date"
-            sortValue={ sort }
-            onSortToggle={ onSortToggle }
-            contentAfter={ <TimeFormatToggle/> }
-          >
-            Registered
-          </TableColumnHeaderSortable>
-          <TableColumnHeader width="25%">
-            Expires
-            <TimeFormatToggle/>
-          </TableColumnHeader>
-        </TableRow>
-      </TableHeaderSticky>
-      <TableBody>
-        { data?.items.map((item, index) => <NameDomainsTableItem key={ index } { ...item } isLoading={ isLoading }/>) }
-      </TableBody>
-    </TableRoot>
+    <AddressHighlightProvider>
+      <TableRoot>
+        <TableHeaderSticky top={ ACTION_BAR_HEIGHT_DESKTOP }>
+          <TableRow>
+            <TableColumnHeader width="25%">Domain</TableColumnHeader>
+            <TableColumnHeader width="25%">Address</TableColumnHeader>
+            <TableColumnHeaderSortable
+              width="25%"
+              pl={ 9 }
+              sortField="registration_date"
+              sortValue={ sort }
+              onSortToggle={ onSortToggle }
+              contentAfter={ <TimeFormatToggle/> }
+            >
+              Registered
+            </TableColumnHeaderSortable>
+            <TableColumnHeader width="25%">
+              Expires
+              <TimeFormatToggle/>
+            </TableColumnHeader>
+          </TableRow>
+        </TableHeaderSticky>
+        <TableBody>
+          { data?.items.map((item, index) => <NameDomainsTableItem key={ index } { ...item } isLoading={ isLoading }/>) }
+        </TableBody>
+      </TableRoot>
+    </AddressHighlightProvider>
   );
 };
 
