@@ -16,6 +16,7 @@ import { RewardsContextProvider } from 'lib/contexts/rewards';
 import { SettingsContextProvider } from 'lib/contexts/settings';
 import { initGrowthBook } from 'lib/growthbook/init';
 import useLoadFeatures from 'lib/growthbook/useLoadFeatures';
+import usePageViewTracking from 'lib/monitoring/usePageViewTracking';
 import { clientConfig as rollbarConfig, Provider as RollbarProvider } from 'lib/rollbar';
 import { SocketProvider } from 'lib/socket/context';
 import { Provider as ChakraProvider } from 'toolkit/chakra/provider';
@@ -58,6 +59,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
 
   const growthBook = initGrowthBook(pageProps.uuid);
   useLoadFeatures(growthBook);
+  usePageViewTracking(pageProps.referrer);
 
   const queryClient = useQueryClientConfig();
 

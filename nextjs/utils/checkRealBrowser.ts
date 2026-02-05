@@ -1,4 +1,4 @@
-import type { GetServerSidePropsContext } from 'next';
+import type { IncomingMessage } from 'http';
 
 const GENERIC_BOT_MARKERS = [
   'bot',
@@ -30,7 +30,7 @@ function isGenericBotUA(userAgent: string): boolean {
   return GENERIC_BOT_MARKERS.some((m) => ua.includes(m));
 }
 
-function hasBrowserHeuristics(req: GetServerSidePropsContext['req']): boolean {
+function hasBrowserHeuristics(req: IncomingMessage): boolean {
   const acceptLanguage = req.headers['accept-language'];
   const secChUa = req.headers['sec-ch-ua'];
   const secFetchSite = req.headers['sec-fetch-site'];
@@ -43,7 +43,7 @@ function hasBrowserHeuristics(req: GetServerSidePropsContext['req']): boolean {
   return hasLang && hasSecHeaders;
 }
 
-export function isLikelyHumanBrowser(req: GetServerSidePropsContext['req']): boolean {
+export function isLikelyHumanBrowser(req: IncomingMessage): boolean {
   const userAgent = req.headers['user-agent'];
   if (!userAgent) return false;
 
@@ -57,7 +57,7 @@ export function isLikelyHumanBrowser(req: GetServerSidePropsContext['req']): boo
   return hasEngineToken && hasKnownBrowserBrand;
 }
 
-export function isKnownBotRequest(req: GetServerSidePropsContext['req']): boolean {
+export function isKnownBotRequest(req: IncomingMessage): boolean {
   const ua = toLower(req.headers['user-agent']);
   if (!ua) return false;
 
