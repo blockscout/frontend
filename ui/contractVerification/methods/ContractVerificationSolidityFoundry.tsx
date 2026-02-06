@@ -14,11 +14,13 @@ import ContractVerificationMethod from '../ContractVerificationMethod';
 const ContractVerificationSolidityFoundry = () => {
   const { watch } = useFormContext<FormFields>();
   const address = watch('address');
+  const generalApiEndpoint = config.apis.general ?
+    `${ config.apis.general.endpoint }${ config.apis.general.basePath ?? '' }` : '';
 
   const codeSnippet = `forge verify-contract \\
-  --rpc-url ${ config.chain.rpcUrls[0] || (config.apis.general ? `${ config.apis.general.endpoint }/api/eth-rpc` : '') } \\
+  --rpc-url ${ config.chain.rpcUrls[0] || (generalApiEndpoint ? `${ generalApiEndpoint }/api/eth-rpc` : '') } \\
   --verifier blockscout \\
-  --verifier-url '${ config.apis.general ? `${ config.apis.general.endpoint }/api/` : '' }' \\
+  --verifier-url '${ generalApiEndpoint ? `${ generalApiEndpoint }/api/` : '' }' \\
   ${ address || '<address>' } \\
   [contractFile]:[contractName]`;
 
