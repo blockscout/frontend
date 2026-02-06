@@ -74,7 +74,6 @@ const LogItem = ({ address, index, topics, data, decoded, type, transaction_hash
             address={ address }
             isLoading={ isLoading }
             mr={{ base: 9, lg: 4 }}
-            w="100%"
           />
         ) }
         { /* api doesn't have find topic feature yet */ }

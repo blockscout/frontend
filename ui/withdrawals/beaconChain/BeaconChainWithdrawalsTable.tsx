@@ -5,6 +5,7 @@ import type { BlockWithdrawalsItem } from 'types/api/block';
 import type { WithdrawalsItem } from 'types/api/withdrawals';
 
 import config from 'configs/app';
+import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
 import useLazyRenderedList from 'lib/hooks/useLazyRenderedList';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
@@ -35,30 +36,32 @@ const BeaconChainWithdrawalsTable = ({ items, isLoading, top, view }: Props) => 
   }
 
   return (
-    <TableRoot style={{ tableLayout: 'auto' }} minW="950px">
-      <TableHeaderSticky top={ top }>
-        <TableRow>
-          <TableColumnHeader>Index</TableColumnHeader>
-          <TableColumnHeader>Validator index</TableColumnHeader>
-          { view !== 'block' && <TableColumnHeader>Block</TableColumnHeader> }
-          { view !== 'address' && <TableColumnHeader>To</TableColumnHeader> }
-          { view !== 'block' && <TableColumnHeader>Timestamp<TimeFormatToggle/></TableColumnHeader> }
-          <TableColumnHeader>{ `Value ${ feature.currency.symbol }` }</TableColumnHeader>
-        </TableRow>
-      </TableHeaderSticky>
-      <TableBody>
-        { view === 'list' && (items as Array<WithdrawalsItem>).slice(0, renderedItemsNum).map((item, index) => (
-          <BeaconChainWithdrawalsTableItem key={ item.index + (isLoading ? String(index) : '') } item={ item } view="list" isLoading={ isLoading }/>
-        )) }
-        { view === 'address' && (items as Array<AddressWithdrawalsItem>).slice(0, renderedItemsNum).map((item, index) => (
-          <BeaconChainWithdrawalsTableItem key={ item.index + (isLoading ? String(index) : '') } item={ item } view="address" isLoading={ isLoading }/>
-        )) }
-        { view === 'block' && (items as Array<BlockWithdrawalsItem>).slice(0, renderedItemsNum).map((item, index) => (
-          <BeaconChainWithdrawalsTableItem key={ item.index + (isLoading ? String(index) : '') } item={ item } view="block" isLoading={ isLoading }/>
-        )) }
-        <TableRow ref={ cutRef }/>
-      </TableBody>
-    </TableRoot>
+    <AddressHighlightProvider>
+      <TableRoot style={{ tableLayout: 'auto' }} minW="950px">
+        <TableHeaderSticky top={ top }>
+          <TableRow>
+            <TableColumnHeader>Index</TableColumnHeader>
+            <TableColumnHeader>Validator index</TableColumnHeader>
+            { view !== 'block' && <TableColumnHeader>Block</TableColumnHeader> }
+            { view !== 'address' && <TableColumnHeader>To</TableColumnHeader> }
+            { view !== 'block' && <TableColumnHeader>Timestamp<TimeFormatToggle/></TableColumnHeader> }
+            <TableColumnHeader>{ `Value ${ feature.currency.symbol }` }</TableColumnHeader>
+          </TableRow>
+        </TableHeaderSticky>
+        <TableBody>
+          { view === 'list' && (items as Array<WithdrawalsItem>).slice(0, renderedItemsNum).map((item, index) => (
+            <BeaconChainWithdrawalsTableItem key={ item.index + (isLoading ? String(index) : '') } item={ item } view="list" isLoading={ isLoading }/>
+          )) }
+          { view === 'address' && (items as Array<AddressWithdrawalsItem>).slice(0, renderedItemsNum).map((item, index) => (
+            <BeaconChainWithdrawalsTableItem key={ item.index + (isLoading ? String(index) : '') } item={ item } view="address" isLoading={ isLoading }/>
+          )) }
+          { view === 'block' && (items as Array<BlockWithdrawalsItem>).slice(0, renderedItemsNum).map((item, index) => (
+            <BeaconChainWithdrawalsTableItem key={ item.index + (isLoading ? String(index) : '') } item={ item } view="block" isLoading={ isLoading }/>
+          )) }
+          <TableRow ref={ cutRef }/>
+        </TableBody>
+      </TableRoot>
+    </AddressHighlightProvider>
   );
 };
 
