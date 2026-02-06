@@ -311,6 +311,7 @@ describe('useSearchWithClusters', () => {
           name: 'test-cluster',
           address_hash: '0x1234567890123456789012345678901234567890',
           is_smart_contract_verified: false,
+          is_smart_contract_address: false,
           cluster_info: {
             cluster_id: 'cluster-123',
             name: 'test-cluster',
@@ -348,6 +349,7 @@ describe('useSearchWithClusters', () => {
           name: 'simple-cluster',
           address_hash: '0xabcdefabcdefabcdefabcdefabcdefabcdefabcdef',
           is_smart_contract_verified: false,
+          is_smart_contract_address: false,
           cluster_info: {
             cluster_id: 'simple-cluster',
             name: 'simple-cluster',
@@ -385,6 +387,7 @@ describe('useSearchWithClusters', () => {
           name: 'test',
           address_hash: '0x123',
           is_smart_contract_verified: false,
+          is_smart_contract_address: false,
           cluster_info: {
             cluster_id: 'test',
             name: 'test',
@@ -458,7 +461,7 @@ describe('useSearchWithClusters', () => {
   describe('fallback to regular search', () => {
     it('should return regular search results for non-cluster queries', () => {
       const regularSearchData = [
-        { type: 'address', address_hash: '0x123', is_smart_contract_verified: true },
+        { type: 'address', address_hash: '0x123', is_smart_contract_verified: true, is_smart_contract_address: true },
       ];
 
       mockUseQuickSearchQuery.mockReturnValue({
