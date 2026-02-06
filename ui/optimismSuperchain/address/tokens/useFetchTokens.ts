@@ -74,10 +74,6 @@ export default function useFetchTokens({ hash, enabled }: Props): ReturnType {
         items: erc404Query.data?.items.map(calculateUsdValue) || [],
         isOverflow: Boolean(erc404Query.data?.next_page_params),
       },
-      'ERC-7984': {
-        items: [],
-        isOverflow: false,
-      },
     };
   }, [ erc20Query.data, erc721Query.data, erc1155Query.data, erc404Query.data ]);
 

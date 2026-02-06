@@ -1,4 +1,4 @@
-import { Flex, chakra } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type {
@@ -11,8 +11,6 @@ import type {
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
-import TokenEntity from 'ui/shared/entities/token/TokenEntity';
-import ConfidentialValue from 'ui/shared/value/ConfidentialValue';
 
 import TokenTransferSnippetFiat from './TokenTransferSnippetFiat';
 import TokenTransferSnippetNft from './TokenTransferSnippetNft';
@@ -87,22 +85,6 @@ const TokenTransferSnippet = ({ data, isLoading, noAddressIcons = true }: Props)
           return <TokenTransferSnippetFiat token={ data.token } value={ total.value } decimals={ total.decimals }/>;
         }
       }
-
-      case 'ERC-7984': {
-        return (
-          <>
-            <chakra.span color="text.secondary">for</chakra.span>
-            <ConfidentialValue loading={ false } wordBreak="break-word"/>
-            <TokenEntity
-              token={{ ...data.token, name: data.token.symbol || data.token.name }}
-              noCopy
-              noSymbol
-              w="auto"
-            />
-          </>
-        );
-      }
-
       default: {
         return null;
       }

@@ -9,7 +9,6 @@ import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 import Utilization from 'ui/shared/Utilization/Utilization';
 import AssetValue from 'ui/shared/value/AssetValue';
-import ConfidentialValue from 'ui/shared/value/ConfidentialValue';
 
 interface Props {
   holder: TokenHolder;
@@ -41,15 +40,11 @@ const TokenHoldersListItem = ({ holder, token, isLoading }: Props) => {
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Quantity</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        { token.type === 'ERC-7984' ? (
-          <ConfidentialValue loading={ isLoading }/>
-        ) : (
-          <AssetValue
-            amount={ holder.value }
-            decimals={ token.decimals ?? '0' }
-            loading={ isLoading }
-          />
-        ) }
+        <AssetValue
+          amount={ holder.value }
+          decimals={ token.decimals ?? '0' }
+          loading={ isLoading }
+        />
       </ListItemMobileGrid.Value>
 
       { token.total_supply && token.type !== 'ERC-404' && (

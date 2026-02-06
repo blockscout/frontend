@@ -144,30 +144,27 @@ const TokenDetails = ({ tokenQuery }: Props) => {
           </DetailedInfo.ItemValue>
         </>
       ) }
-      { type !== 'ERC-7984' && (
-        <>
-          <DetailedInfo.ItemLabel
-            hint="The total amount of tokens issued"
-            isLoading={ tokenQuery.isPlaceholderData }
-          >
-            Max total supply
-          </DetailedInfo.ItemLabel>
-          <DetailedInfo.ItemValue
-            alignSelf="center"
-            wordBreak="break-word"
-            whiteSpace="pre-wrap"
-          >
-            <AssetValue
-              amount={ totalSupply }
-              asset={ <chakra.span maxW="50%" overflow="hidden" textOverflow="ellipsis"> { symbol }</chakra.span> }
-              accuracy={ 3 }
-              decimals={ decimals ?? '0' }
-              loading={ tokenQuery.isPlaceholderData }
-              w="100%"
-            />
-          </DetailedInfo.ItemValue>
-        </>
-      ) }
+
+      <DetailedInfo.ItemLabel
+        hint="The total amount of tokens issued"
+        isLoading={ tokenQuery.isPlaceholderData }
+      >
+        Max total supply
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue
+        alignSelf="center"
+        wordBreak="break-word"
+        whiteSpace="pre-wrap"
+      >
+        <AssetValue
+          amount={ totalSupply }
+          asset={ <chakra.span maxW="50%" overflow="hidden" textOverflow="ellipsis"> { symbol }</chakra.span> }
+          accuracy={ 3 }
+          decimals={ decimals ?? '0' }
+          loading={ tokenQuery.isPlaceholderData }
+          w="100%"
+        />
+      </DetailedInfo.ItemValue>
 
       <DetailedInfo.ItemLabel
         hint="Number of accounts holding the token"

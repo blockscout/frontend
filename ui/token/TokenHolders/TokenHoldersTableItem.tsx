@@ -9,7 +9,6 @@ import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import Utilization from 'ui/shared/Utilization/Utilization';
 import AssetValue from 'ui/shared/value/AssetValue';
-import ConfidentialValue from 'ui/shared/value/ConfidentialValue';
 
 type Props = {
   holder: TokenHolder;
@@ -34,15 +33,11 @@ const TokenTransferTableItem = ({ holder, token, isLoading }: Props) => {
         </TableCell>
       ) }
       <TableCell verticalAlign="middle" isNumeric>
-        { token.type === 'ERC-7984' ? (
-          <ConfidentialValue loading={ isLoading } wordBreak="break-word"/>
-        ) : (
-          <AssetValue
-            amount={ holder.value }
-            decimals={ token.decimals ?? '0' }
-            loading={ isLoading }
-          />
-        ) }
+        <AssetValue
+          amount={ holder.value }
+          decimals={ token.decimals ?? '0' }
+          loading={ isLoading }
+        />
       </TableCell>
       { token.total_supply && token.type !== 'ERC-404' && (
         <TableCell verticalAlign="middle" isNumeric>

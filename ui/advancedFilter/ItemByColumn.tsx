@@ -13,7 +13,6 @@ import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import AssetValue from 'ui/shared/value/AssetValue';
-import ConfidentialValue from 'ui/shared/value/ConfidentialValue';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 import { ADVANCED_FILTER_TYPES } from './constants';
@@ -66,9 +65,6 @@ const ItemByColumn = ({ item, column, isLoading }: Props) => {
     case 'amount': {
       if (item.token?.type === 'ERC-721') {
         return <Skeleton loading={ isLoading }>1</Skeleton>;
-      }
-      if (item.token?.type === 'ERC-7984') {
-        return <ConfidentialValue loading={ isLoading }/>;
       }
       if (item.total) {
         return (

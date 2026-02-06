@@ -45,7 +45,7 @@ const TokenTransferTable = ({ data, top, showSocketInfo, showSocketErrorAlert, s
               <TableColumnHeader width={ hasTokenIds(tokenType) ? '50%' : '100%' }>Token ID</TableColumnHeader>
             }
             { hasTokenTransferValue(tokenType) && (
-              <TableColumnHeader width={ (tokenType === 'ERC-20' || tokenType === 'ERC-7984') ? '100%' : '50%' } isNumeric>
+              <TableColumnHeader width={ tokenType === 'ERC-20' ? '100%' : '50%' } isNumeric>
                 <TruncatedText text={ `Value ${ token?.symbol || '' }` } w="100%" verticalAlign="middle"/>
               </TableColumnHeader>
             ) }

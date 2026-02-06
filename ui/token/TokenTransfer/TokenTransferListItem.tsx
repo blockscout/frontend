@@ -15,7 +15,6 @@ import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import AssetValue from 'ui/shared/value/AssetValue';
-import ConfidentialValue from 'ui/shared/value/ConfidentialValue';
 
 type Props = TokenTransfer & { tokenId?: string; isLoading?: boolean; instance?: TokenInstance; chainData?: ClusterChainConfig };
 
@@ -85,30 +84,6 @@ const TokenTransferListItem = ({
             exchangeRate={ token?.exchange_rate }
             loading={ isLoading }
             color="text.secondary"
-          />
-        </Flex>
-      ) }
-      { token && token.type === 'ERC-7984' && (
-        <Flex alignItems="center" columnGap={ 2 } maxW="100%">
-          <Skeleton
-            display="inline-flex"
-            alignItems="center"
-            loading={ isLoading }
-            flexShrink={ 0 }
-            fontWeight={ 500 }
-            maxW="50%"
-            whiteSpace="pre"
-            overflow="hidden"
-          >
-            <span>Value </span>
-            { token.symbol && <TruncatedText text={ token.symbol } loading={ isLoading }/> }
-          </Skeleton>
-          <ConfidentialValue
-            loading={ isLoading }
-            color="text.secondary"
-            wordBreak="break-all"
-            overflow="hidden"
-            flexGrow={ 1 }
           />
         </Flex>
       ) }

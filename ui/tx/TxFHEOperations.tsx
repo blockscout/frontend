@@ -225,65 +225,6 @@ const TxFHEOperations = ({ txQuery }: Props) => {
             );
           }) }
         </Box>
-
-        <Box hideFrom="lg">
-          { items.map((op, index) => {
-            const hcuDepth = op.hcu_depth ?? op.hcu_cost;
-            return (
-              <ListItemMobile key={ op.log_index || index }>
-                <Flex direction="column" gap={ 3 } width="100%">
-                  <Flex justifyContent="space-between" alignItems="center">
-                    <Text fontFamily="mono" fontSize="md" fontWeight="bold">
-                      { op.operation }
-                    </Text>
-                    <Text fontFamily="mono" fontSize="xs" color="text.secondary">
-                      #{ op.log_index }
-                    </Text>
-                  </Flex>
-
-                  <Flex gap={ 2 } flexWrap="wrap">
-                    <Badge colorPalette={ getTypeColor(op.type) } fontSize="xs">
-                      { op.type }
-                    </Badge>
-                    <Badge colorPalette="gray" variant="outline" fontSize="xs">
-                      { op.fhe_type }
-                    </Badge>
-                    <Badge colorPalette={ op.is_scalar ? 'green' : 'blue' } fontSize="xs">
-                      { op.is_scalar ? 'Scalar' : 'Non-Scalar' }
-                    </Badge>
-                  </Flex>
-
-                  <Flex justifyContent="space-between" alignItems="center">
-                    <Text color="text.secondary" fontSize="sm">Caller</Text>
-                    { op.caller && op.caller.hash ? (
-                      <AddressEntity
-                        address={ op.caller }
-                        truncation="constant"
-                        isLoading={ isLoading }
-                      />
-                    ) : (
-                      <Text fontSize="sm" color="text.secondary">—</Text>
-                    ) }
-                  </Flex>
-
-                  <Flex justifyContent="space-between" alignItems="center">
-                    <Text color="text.secondary" fontSize="sm">HCU Cost</Text>
-                    <Text fontFamily="mono" fontSize="sm" fontWeight="medium">
-                      { op.hcu_cost.toLocaleString() }
-                    </Text>
-                  </Flex>
-
-                  <Flex justifyContent="space-between" alignItems="center">
-                    <Text color="text.secondary" fontSize="sm">HCU Depth</Text>
-                    <Text fontFamily="mono" fontSize="sm" color="text.secondary">
-                      { hcuDepth.toLocaleString() }
-                    </Text>
-                  </Flex>
-                </Flex>
-              </ListItemMobile>
-            );
-          }) }
-        </Box>
       </AddressHighlightProvider>
     </Box>
   );

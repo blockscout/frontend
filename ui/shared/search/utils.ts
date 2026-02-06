@@ -20,8 +20,7 @@ export type ApiCategory =
   'blob' |
   'domain' |
   'cluster' |
-  'tac_operation' |
-  'confidential_token';
+  'tac_operation';
 export type Category = ApiCategory | 'app' | 'zetaChainCCTX';
 
 export type ItemsCategoriesMap =
@@ -37,7 +36,6 @@ export type SearchResultAppItem = {
 export const searchCategories: Array<{ id: Category; title: string; tabTitle: string }> = [
   { id: 'token', title: `Tokens (${ config.chain.tokenStandard }-20)`, tabTitle: 'Tokens' },
   { id: 'nft', title: `NFTs (${ config.chain.tokenStandard }-721 & 1155)`, tabTitle: 'NFTs' },
-  { id: 'confidential_token', title: `Confidential Tokens (${ config.chain.tokenStandard }-7984)`, tabTitle: 'Confidential Tokens' },
   { id: 'address', title: 'Addresses', tabTitle: 'Addresses' },
   { id: 'public_tag', title: 'Public tags', tabTitle: 'Public tags' },
   { id: 'transaction', title: 'Transactions', tabTitle: 'Transactions' },
@@ -72,7 +70,6 @@ export const searchItemTitles: Record<Category, { itemTitle: string; itemTitleSh
   cluster: { itemTitle: 'Cluster', itemTitleShort: 'Cluster' },
   token: { itemTitle: 'Token', itemTitleShort: 'Token' },
   nft: { itemTitle: 'NFT', itemTitleShort: 'NFT' },
-  confidential_token: { itemTitle: 'Confidential Token', itemTitleShort: 'Conf. Token' },
   address: { itemTitle: 'Address', itemTitleShort: 'Address' },
   public_tag: { itemTitle: 'Public tag', itemTitleShort: 'Tag' },
   transaction: { itemTitle: 'Transaction', itemTitleShort: 'Txn' },
@@ -93,9 +90,6 @@ export function getItemCategory(item: QuickSearchResultItem | SearchResultAppIte
     case 'token': {
       if (item.token_type === 'ERC-20') {
         return 'token';
-      }
-      if (item.token_type === 'ERC-7984') {
-        return 'confidential_token';
       }
       return 'nft';
     }
