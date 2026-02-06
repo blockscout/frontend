@@ -24,6 +24,7 @@ export type Props = {
   period?: '1h' | '24h' | '30min';
   href?: Route;
   icon?: IconName;
+  isFallback?: boolean;
 };
 
 const Container = ({ href, children, className }: { href?: Route; children: React.JSX.Element; className?: string }) => {
@@ -52,6 +53,7 @@ const StatsWidget = ({
   diffFormatted,
   period,
   href,
+  isFallback,
 }: Props) => {
   return (
     <Container href={ !isLoading ? href : undefined } className={ href ? className : undefined }>
@@ -75,6 +77,7 @@ const StatsWidget = ({
             borderRadius="base"
             display={{ base: 'none', lg: 'block' }}
             flexShrink={ 0 }
+            opacity={ isFallback && !isLoading ? 'control.disabled' : 1 }
           />
         ) }
         <Box
@@ -97,6 +100,7 @@ const StatsWidget = ({
             alignItems="baseline"
             fontWeight={ 500 }
             textStyle="heading.md"
+            opacity={ isFallback && !isLoading ? 'control.disabled' : 1 }
           >
             { valuePrefix && <chakra.span whiteSpace="pre">{ valuePrefix }</chakra.span> }
             { typeof value === 'string' ? (

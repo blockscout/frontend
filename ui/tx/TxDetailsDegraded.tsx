@@ -5,13 +5,11 @@ import type { Chain, GetBlockReturnType, GetTransactionReturnType, TransactionRe
 
 import type { Transaction } from 'types/api/transaction';
 
-import dayjs from 'lib/date/dayjs';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
-import hexToDecimal from 'lib/hexToDecimal';
 import { publicClient } from 'lib/web3/client';
+import formatTxData from 'lib/web3/rpc/formatTxData';
 import { GET_BLOCK, GET_TRANSACTION, GET_TRANSACTION_RECEIPT, GET_TRANSACTION_CONFIRMATIONS } from 'stubs/RPC';
 import { SECOND } from 'toolkit/utils/consts';
-import { unknownAddress } from 'ui/shared/address/utils';
 import ServiceDegradationWarning from 'ui/shared/alerts/ServiceDegradationWarning';
 import TestnetWarning from 'ui/shared/alerts/TestnetWarning';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
@@ -64,57 +62,7 @@ const TxDetailsDegraded = ({ hash, txQuery }: Props) => {
     select: (response) => {
       const [ tx, txReceipt, txConfirmations, block ] = response;
 
-      const status = (() => {
-        if (!txReceipt) {
-          return null;
-        }
-
-        return txReceipt.status === 'success' ? 'ok' : 'error';
-      })();
-
-      const gasPrice = txReceipt?.effectiveGasPrice ?? tx.gasPrice;
-
-      return {
-        from: { ...unknownAddress, hash: tx.from as string },
-        to: tx.to ? { ...unknownAddress, hash: tx.to as string } : null,
-        hash: tx.hash as string,
-        timestamp: block?.timestamp ? dayjs.unix(Number(block.timestamp)).format() : null,
-        confirmation_duration: null,
-        status,
-        block_number: tx.blockNumber ? Number(tx.blockNumber) : null,
-        value: tx.value.toString(),
-        gas_price: gasPrice?.toString() ?? null,
-        base_fee_per_gas: block?.baseFeePerGas?.toString() ?? null,
-        max_fee_per_gas: tx.maxFeePerGas?.toString() ?? null,
-        max_priority_fee_per_gas: tx.maxPriorityFeePerGas?.toString() ?? null,
-        nonce: tx.nonce,
-        position: tx.transactionIndex,
-        type: tx.typeHex ? hexToDecimal(tx.typeHex) : null,
-        raw_input: tx.input,
-        gas_used: txReceipt?.gasUsed?.toString() ?? null,
-        gas_limit: tx.gas.toString(),
-        confirmations: txConfirmations && txConfirmations > 0 ? Number(txConfirmations) : 0,
-        fee: {
-          value: txReceipt && gasPrice ? (txReceipt.gasUsed * gasPrice).toString() : null,
-          type: 'actual',
-        },
-        created_contract: txReceipt?.contractAddress ?
-          { ...unknownAddress, hash: txReceipt.contractAddress, is_contract: true } :
-          null,
-        result: '',
-        priority_fee: null,
-        transaction_burnt_fee: null,
-        revert_reason: null,
-        decoded_input: null,
-        has_error_in_internal_transactions: null,
-        token_transfers: null,
-        token_transfers_overflow: false,
-        exchange_rate: null,
-        method: null,
-        transaction_types: [],
-        transaction_tag: null,
-        actions: [],
-      };
+      return formatTxData(tx, txReceipt, txConfirmations, block);
     },
     placeholderData: [
       GET_TRANSACTION,
@@ -123,7 +71,7 @@ const TxDetailsDegraded = ({ hash, txQuery }: Props) => {
       GET_BLOCK,
     ],
     refetchOnMount: false,
-    enabled: !txQuery.isPlaceholderData,
+    enabled: txQuery.isFetchedAfterMount,
     retry: 2,
     retryDelay: 5 * SECOND,
   });
@@ -156,7 +104,7 @@ const TxDetailsDegraded = ({ hash, txQuery }: Props) => {
         <TestnetWarning isLoading={ query.isPlaceholderData }/>
         { originalError?.status !== 404 && <ServiceDegradationWarning isLoading={ query.isPlaceholderData }/> }
       </Flex>
-      <TxInfo data={ query.data } isLoading={ query.isPlaceholderData }/>
+      <TxInfo data={ query.data } isLoading={ query.isPlaceholderData } noTxActions/>
     </>
   );
 };
