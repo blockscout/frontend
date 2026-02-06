@@ -2,6 +2,8 @@ import { Box, Flex, Grid, Text } from '@chakra-ui/react';
 import { capitalize } from 'es-toolkit';
 import React from 'react';
 
+import type { FheOperationType } from 'types/api/fheOperations';
+
 import useApiQuery from 'lib/api/useApiQuery';
 import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
 import { Badge } from 'toolkit/chakra/badge';
@@ -124,19 +126,19 @@ const TxFHEOperations = ({ txQuery }: Props) => {
                       </Text>
                     </TableCell>
                     <TableCell>
-                      <Badge colorPalette="gray" fontSize="xs">
+                      <Badge colorPalette={ getTypeColor(op.type) } fontSize="xs">
                         { capitalize(op.type) }
                       </Badge>
                     </TableCell>
                     <TableCell>
-                      <Text fontSize="sm">
+                      <Badge colorPalette="gray" fontSize="xs">
                         { op.fhe_type }
-                      </Text>
+                      </Badge>
                     </TableCell>
                     <TableCell>
-                      <Text fontSize="sm">
+                      <Badge colorPalette="gray" fontSize="xs">
                         { op.is_scalar ? 'Scalar' : 'Non-Scalar' }
-                      </Text>
+                      </Badge>
                     </TableCell>
                     <TableCell>
                       <Text fontSize="sm">
@@ -172,15 +174,15 @@ const TxFHEOperations = ({ txQuery }: Props) => {
             return (
               <ListItemMobile key={ op.log_index || index }>
                 <Flex gap={ 2 } flexWrap="wrap" mb={ 3 } alignItems="center">
-                  <Badge colorPalette="gray" fontSize="xs">
+                  <Badge colorPalette={ getTypeColor(op.type) } fontSize="xs">
                     { capitalize(op.type) }
                   </Badge>
-                  <Text fontSize="sm">
+                  <Badge colorPalette="gray" fontSize="xs">
                     { op.fhe_type }
-                  </Text>
-                  <Text fontSize="sm">
+                  </Badge>
+                  <Badge colorPalette="gray" fontSize="xs">
                     { op.is_scalar ? 'Scalar' : 'Non-Scalar' }
-                  </Text>
+                  </Badge>
                 </Flex>
 
                 <Grid templateColumns="110px 1fr" rowGap={ 3 } columnGap={ 2 }>
@@ -225,5 +227,19 @@ const TxFHEOperations = ({ txQuery }: Props) => {
     </Box>
   );
 };
+
+// Maps FHE operation types to Blockscout color palette
+function getTypeColor(type: FheOperationType): 'purple' | 'orange' | 'blue' | 'yellow' | 'teal' | 'cyan' | 'pink' | 'gray' {
+  const colors: Record<FheOperationType, 'purple' | 'orange' | 'blue' | 'yellow' | 'teal' | 'cyan' | 'pink' | 'gray'> = {
+    comparison: 'purple',
+    control: 'orange',
+    arithmetic: 'blue',
+    bitwise: 'teal',
+    encryption: 'cyan',
+    unary: 'yellow',
+    random: 'pink',
+  };
+  return colors[type] || 'gray';
+}
 
 export default React.memo(TxFHEOperations);
