@@ -11,6 +11,7 @@ import { Alert } from 'toolkit/chakra/alert';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { space } from 'toolkit/utils/htmlEntities';
+import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import LogDecodedInputData from 'ui/shared/logs/LogDecodedInputData';
@@ -33,7 +34,19 @@ const RowHeader = ({ children, isLoading }: { children: React.ReactNode; isLoadi
   </GridItem>
 );
 
-const LogItem = ({ address, index, topics, data, decoded, type, transaction_hash: txHash, isLoading, defaultDataType, chainData }: Props) => {
+const LogItem = ({
+  address,
+  index,
+  topics,
+  data,
+  decoded,
+  type,
+  transaction_hash: txHash,
+  block_timestamp: blockTimestamp,
+  isLoading,
+  defaultDataType,
+  chainData,
+}: Props) => {
 
   const hasTxInfo = type === 'address' && txHash;
 
@@ -93,6 +106,14 @@ const LogItem = ({ address, index, topics, data, decoded, type, transaction_hash
           { index }
         </LogIndex>
       </GridItem>
+      { hasTxInfo && blockTimestamp ? (
+        <>
+          <RowHeader isLoading={ isLoading }>Timestamp</RowHeader>
+          <GridItem>
+            <DetailedInfoTimestamp timestamp={ blockTimestamp } isLoading={ isLoading }/>
+          </GridItem>
+        </>
+      ) : null }
       { decoded && (
         <>
           <RowHeader isLoading={ isLoading }>Decode input data</RowHeader>
