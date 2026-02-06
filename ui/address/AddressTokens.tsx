@@ -19,6 +19,7 @@ import AddressNftDisplayTypeRadio from './tokens/AddressNftDisplayTypeRadio';
 import AddressNFTs from './tokens/AddressNFTs';
 import AddressNftTypeFilter from './tokens/AddressNftTypeFilter';
 import ERC20Tokens from './tokens/ERC20Tokens';
+import ERC7984Tokens from './tokens/ERC7984Tokens';
 import TokenBalances from './tokens/TokenBalances';
 import useAddressNftQuery from './tokens/useAddressNftQuery';
 
@@ -71,6 +72,18 @@ const AddressTokens = ({ shouldRender = true, isQueryEnabled = true }: Props) =>
     addressHash: hash,
   });
 
+  const erc7984Query = useQueryWithPages({
+    resourceName: 'general:address_tokens',
+    pathParams: { hash },
+    filters: { type: 'ERC-7984' },
+    scrollRef,
+    options: {
+      enabled: isQueryEnabled && tab === 'tokens_erc7984',
+      refetchOnMount: false,
+      placeholderData: generateListStub<'general:address_tokens'>(ADDRESS_TOKEN_BALANCE_ERC_20, 10, { next_page_params: null }),
+    },
+  });
+
   if (!isMounted || !shouldRender) {
     return null;
   }
@@ -100,12 +113,15 @@ const AddressTokens = ({ shouldRender = true, isQueryEnabled = true }: Props) =>
         <AddressNFTs tokensQuery={ nftsQuery } tokenTypes={ nftTokenTypes } onTokenTypesChange={ onTokenTypesChange }/> :
         <AddressCollections collectionsQuery={ collectionsQuery } address={ hash } tokenTypes={ nftTokenTypes } onTokenTypesChange={ onTokenTypesChange }/>,
     },
+    { id: 'tokens_erc7984', title: `${ config.chain.tokenStandard }-7984`, component: <ERC7984Tokens tokensQuery={ erc7984Query }/> },
   ];
 
   let pagination: PaginationParams | undefined;
 
   if (tab === 'tokens_nfts') {
     pagination = nftDisplayType === 'list' ? nftsQuery.pagination : collectionsQuery.pagination;
+  } else if (tab === 'tokens_erc7984') {
+    pagination = erc7984Query.pagination;
   } else {
     pagination = erc20Query.pagination;
   }
@@ -114,7 +130,7 @@ const AddressTokens = ({ shouldRender = true, isQueryEnabled = true }: Props) =>
     (!nftsQuery.isPlaceholderData && nftsQuery.data?.items.length) ||
     (!collectionsQuery.isPlaceholderData && collectionsQuery.data?.items.length);
 
-  const isNftTab = tab !== 'tokens' && tab !== 'tokens_erc20';
+  const isNftTab = tab !== 'tokens' && tab !== 'tokens_erc20' && tab !== 'tokens_erc7984';
 
   const rightSlot = (
     <>

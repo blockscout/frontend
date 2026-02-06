@@ -85,6 +85,16 @@ const TokenSelectItem = ({ data }: Props) => {
           </>
         );
       }
+      case 'ERC-7984': {
+        const text = `••••• ${ data.token.symbol || '' }`;
+
+        return (
+          <>
+            <TruncatedText text={ text }/>
+            { data.token.exchange_rate && <chakra.span ml={ 2 }>@{ Number(data.token.exchange_rate).toLocaleString() }</chakra.span> }
+          </>
+        );
+      }
     }
   })();
 
