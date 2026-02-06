@@ -1,7 +1,6 @@
-import { Box, Flex, Text } from '@chakra-ui/react';
+import { Box, Flex, Grid, Text } from '@chakra-ui/react';
+import { capitalize } from 'es-toolkit';
 import React from 'react';
-
-import type { FheOperationType } from 'types/api/fheOperations';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
@@ -57,7 +56,7 @@ const TxFHEOperations = ({ txQuery }: Props) => {
   if (!data || !data.items || data.items.length === 0 || data.operation_count === 0) {
     return (
       <Box>
-        <Text mb={ 4 }>No FHE operations found in this transaction.</Text>
+        <Text mb={ 4 }>There are no FHE Operations for this transaction.</Text>
       </Box>
     );
   }
@@ -103,8 +102,8 @@ const TxFHEOperations = ({ txQuery }: Props) => {
                 <TableColumnHeader width="12%">Type</TableColumnHeader>
                 <TableColumnHeader width="12%">FHE Type</TableColumnHeader>
                 <TableColumnHeader width="12%">Mode</TableColumnHeader>
-                <TableColumnHeader width="12%" isNumeric>HCU Cost</TableColumnHeader>
-                <TableColumnHeader width="12%" isNumeric>HCU Depth</TableColumnHeader>
+                <TableColumnHeader width="12%">HCU Cost</TableColumnHeader>
+                <TableColumnHeader width="12%">HCU Depth</TableColumnHeader>
                 <TableColumnHeader width="24%">Caller</TableColumnHeader>
               </TableRow>
             </TableHeader>
@@ -115,37 +114,37 @@ const TxFHEOperations = ({ txQuery }: Props) => {
                 return (
                   <TableRow key={ op.log_index || index }>
                     <TableCell>
-                      <Text fontFamily="mono" fontSize="sm">
+                      <Text fontSize="sm">
                         { op.log_index }
                       </Text>
                     </TableCell>
                     <TableCell>
-                      <Text fontFamily="mono" fontSize="sm" fontWeight="medium">
+                      <Text fontSize="sm" fontWeight="medium">
                         { op.operation }
                       </Text>
                     </TableCell>
                     <TableCell>
-                      <Badge colorPalette={ getTypeColor(op.type) } fontSize="xs">
-                        { op.type }
+                      <Badge colorPalette="gray" fontSize="xs">
+                        { capitalize(op.type) }
                       </Badge>
                     </TableCell>
                     <TableCell>
-                      <Text fontFamily="mono" fontSize="sm">
+                      <Text fontSize="sm">
                         { op.fhe_type }
                       </Text>
                     </TableCell>
                     <TableCell>
-                      <Badge colorPalette={ op.is_scalar ? 'green' : 'blue' } fontSize="xs">
+                      <Text fontSize="sm">
                         { op.is_scalar ? 'Scalar' : 'Non-Scalar' }
-                      </Badge>
+                      </Text>
                     </TableCell>
-                    <TableCell isNumeric>
-                      <Text fontFamily="mono" fontSize="sm" fontWeight="bold">
+                    <TableCell>
+                      <Text fontSize="sm">
                         { op.hcu_cost.toLocaleString() }
                       </Text>
                     </TableCell>
-                    <TableCell isNumeric>
-                      <Text fontFamily="mono" fontSize="sm" color="text.secondary">
+                    <TableCell>
+                      <Text fontSize="sm" color="text.secondary">
                         { hcuDepth.toLocaleString() }
                       </Text>
                     </TableCell>
@@ -172,30 +171,41 @@ const TxFHEOperations = ({ txQuery }: Props) => {
             const hcuDepth = op.hcu_depth ?? op.hcu_cost;
             return (
               <ListItemMobile key={ op.log_index || index }>
-                <Flex direction="column" gap={ 3 } width="100%">
-                  <Flex justifyContent="space-between" alignItems="center">
-                    <Text fontFamily="mono" fontSize="md" fontWeight="bold">
-                      { op.operation }
-                    </Text>
-                    <Text fontFamily="mono" fontSize="xs" color="text.secondary">
-                      #{ op.log_index }
-                    </Text>
-                  </Flex>
+                <Flex gap={ 2 } flexWrap="wrap" mb={ 3 } alignItems="center">
+                  <Badge colorPalette="gray" fontSize="xs">
+                    { capitalize(op.type) }
+                  </Badge>
+                  <Text fontSize="sm">
+                    { op.fhe_type }
+                  </Text>
+                  <Text fontSize="sm">
+                    { op.is_scalar ? 'Scalar' : 'Non-Scalar' }
+                  </Text>
+                </Flex>
 
-                  <Flex gap={ 2 } flexWrap="wrap">
-                    <Badge colorPalette={ getTypeColor(op.type) } fontSize="xs">
-                      { op.type }
-                    </Badge>
-                    <Badge colorPalette="gray" variant="outline" fontSize="xs">
-                      { op.fhe_type }
-                    </Badge>
-                    <Badge colorPalette={ op.is_scalar ? 'green' : 'blue' } fontSize="xs">
-                      { op.is_scalar ? 'Scalar' : 'Non-Scalar' }
-                    </Badge>
-                  </Flex>
+                <Grid templateColumns="110px 1fr" rowGap={ 3 } columnGap={ 2 }>
+                  <Text fontSize="md" fontWeight="medium" color="text.primary">Index</Text>
+                  <Text fontSize="md" color="text.secondary">
+                    { op.log_index }
+                  </Text>
 
-                  <Flex justifyContent="space-between" alignItems="center">
-                    <Text color="text.secondary" fontSize="sm">Caller</Text>
+                  <Text fontSize="md" fontWeight="medium" color="text.primary">Operation</Text>
+                  <Text fontSize="md" color="text.secondary">
+                    { op.operation }
+                  </Text>
+
+                  <Text fontSize="md" fontWeight="medium" color="text.primary">HCU cost</Text>
+                  <Text fontSize="md" color="text.secondary">
+                    { op.hcu_cost.toLocaleString() }
+                  </Text>
+
+                  <Text fontSize="md" fontWeight="medium" color="text.primary">HCU depth</Text>
+                  <Text fontSize="md" color="text.secondary">
+                    { hcuDepth.toLocaleString() }
+                  </Text>
+
+                  <Text fontSize="md" fontWeight="medium" color="text.primary">Caller</Text>
+                  <Box>
                     { op.caller && op.caller.hash ? (
                       <AddressEntity
                         address={ op.caller }
@@ -203,24 +213,10 @@ const TxFHEOperations = ({ txQuery }: Props) => {
                         isLoading={ isLoading }
                       />
                     ) : (
-                      <Text fontSize="sm" color="text.secondary">—</Text>
+                      <Text fontSize="md" color="text.secondary">—</Text>
                     ) }
-                  </Flex>
-
-                  <Flex justifyContent="space-between" alignItems="center">
-                    <Text color="text.secondary" fontSize="sm">HCU Cost</Text>
-                    <Text fontFamily="mono" fontSize="sm" fontWeight="medium">
-                      { op.hcu_cost.toLocaleString() }
-                    </Text>
-                  </Flex>
-
-                  <Flex justifyContent="space-between" alignItems="center">
-                    <Text color="text.secondary" fontSize="sm">HCU Depth</Text>
-                    <Text fontFamily="mono" fontSize="sm" color="text.secondary">
-                      { hcuDepth.toLocaleString() }
-                    </Text>
-                  </Flex>
-                </Flex>
+                  </Box>
+                </Grid>
               </ListItemMobile>
             );
           }) }
@@ -229,18 +225,5 @@ const TxFHEOperations = ({ txQuery }: Props) => {
     </Box>
   );
 };
-
-function getTypeColor(type: FheOperationType): 'blue' | 'purple' | 'orange' | 'green' | 'red' | 'cyan' | 'pink' | 'gray' {
-  const colors: Record<FheOperationType, 'blue' | 'purple' | 'orange' | 'green' | 'red' | 'cyan' | 'pink' | 'gray'> = {
-    arithmetic: 'blue',
-    bitwise: 'purple',
-    comparison: 'orange',
-    unary: 'green',
-    control: 'red',
-    encryption: 'cyan',
-    random: 'pink',
-  };
-  return colors[type] || 'gray';
-}
 
 export default React.memo(TxFHEOperations);
