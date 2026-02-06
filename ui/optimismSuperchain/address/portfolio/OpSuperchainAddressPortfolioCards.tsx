@@ -113,7 +113,6 @@ const OpSuperchainAddressPortfolioCards = ({ isLoading, selectedChainId, onChang
       gap={ 2 }
       flexWrap="wrap"
       mt={ 2 }
-      mb={ 6 }
     />
   );
 };

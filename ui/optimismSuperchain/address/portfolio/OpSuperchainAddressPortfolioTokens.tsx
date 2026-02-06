@@ -205,11 +205,11 @@ const OpSuperchainAddressPortfolioTokens = () => {
 
   const actionBar = (
     <>
-      <Box hideFrom="lg" mb={ 6 }>
+      <Box hideFrom="lg" mt={ 2 }>
         { searchInput }
       </Box>
       { (!isMobile || tokensQuery.pagination.isVisible) && (
-        <ActionBar mt={ -6 }>
+        <ActionBar mt={ 0 }>
           <Box hideBelow="lg">
             { searchInput }
           </Box>
