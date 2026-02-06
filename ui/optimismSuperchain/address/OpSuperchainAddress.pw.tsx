@@ -30,7 +30,7 @@ test('base view', async({ mockApiResponse, render, page, mockMultichainConfig, m
   await mockApiResponse('multichainAggregator:address_tokens', {
     items: [ tokensMock.tokenAA, tokensMock.tokenAB, tokensMock.tokenBA, tokensMock.tokenCA, tokensMock.tokenDA ],
     next_page_params: { page_token: '1', page_size: 10 },
-  }, { pathParams: { hash: CURRENT_ADDRESS }, queryParams: { type: 'ERC-20,NATIVE' } });
+  }, { pathParams: { hash: CURRENT_ADDRESS }, queryParams: { type: 'ERC-20,NATIVE', include_poor_reputation_tokens: false } });
 
   await mockAssetResponse(chainDataMock.chainA.logo as string, './playwright/mocks/image_s.jpg');
   await mockAssetResponse(chainDataMock.chainB.logo as string, './playwright/mocks/image_md.jpg');

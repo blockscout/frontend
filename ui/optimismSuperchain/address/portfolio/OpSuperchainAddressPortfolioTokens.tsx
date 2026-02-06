@@ -7,6 +7,7 @@ import { isMobile } from 'react-device-detect';
 
 import multichainConfig from 'configs/multichain';
 import useApiQuery from 'lib/api/useApiQuery';
+import * as cookies from 'lib/cookies';
 import useDebounce from 'lib/hooks/useDebounce';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { ADDRESS, ADDRESS_PORTFOLIO, TOKEN } from 'stubs/optimismSuperchain';
@@ -34,6 +35,10 @@ const OpSuperchainAddressPortfolioTokens = () => {
 
   const [ searchTerm, setSearchTerm ] = React.useState(q || undefined);
   const debouncedSearchTerm = useDebounce(searchTerm || '', 300);
+
+  const tokenReputationFilter = React.useMemo(() => {
+    return cookies.get(cookies.NAMES.SHOW_POOR_REPUTATION_TOKENS) === 'true' ? true : false;
+  }, []);
 
   const portfolioQuery = useApiQuery('multichainAggregator:address_portfolio', {
     pathParams: { hash },
@@ -82,6 +87,7 @@ const OpSuperchainAddressPortfolioTokens = () => {
       type: typeFilter,
       chain_id: selectedChainId ?? undefined,
       query: debouncedSearchTerm,
+      include_poor_reputation_tokens: tokenReputationFilter,
     },
     options: {
       enabled: !portfolioQuery.isPlaceholderData,
@@ -111,6 +117,7 @@ const OpSuperchainAddressPortfolioTokens = () => {
     queryParams: {
       type: typeFilter,
       chain_id: undefined,
+      include_poor_reputation_tokens: tokenReputationFilter,
     },
     queryOptions: {
       enabled: !portfolioQuery.isPlaceholderData,

@@ -36,6 +36,7 @@ export interface AddressTokensFilter {
   type?: string;
   chain_id?: string;
   query?: string;
+  include_poor_reputation_tokens?: boolean;
 }
 
 // types for quick search results
