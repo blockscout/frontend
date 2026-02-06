@@ -15,9 +15,9 @@ import { Hint } from 'toolkit/components/Hint/Hint';
 import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
 import useLogout from 'ui/snippets/auth/useLogout';
 
-import UserWalletAutoConnectAlert from '../UserWalletAutoConnectAlert';
+import UserWalletAutoConnectAlert from '../../UserWalletAutoConnectAlert';
+import UserProfileContentWallet from '../common/UserProfileContentWallet';
 import UserProfileContentNavLink from './UserProfileContentNavLink';
-import UserProfileContentWallet from './UserProfileContentWallet';
 
 const navLinks: Array<NavLink> = [
   {

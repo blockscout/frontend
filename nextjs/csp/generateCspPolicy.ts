@@ -6,6 +6,7 @@ function generateCspPolicy(isPrivateMode = false) {
     descriptors.app(isPrivateMode),
     // Exclude tracking/analytics sources in private mode
     isPrivateMode ? {} : descriptors.ad(),
+    isPrivateMode ? {} : descriptors.blockchainInteraction(),
     descriptors.cloudFlare(),
     descriptors.flashblocks(),
     descriptors.gasHawk(),
@@ -23,7 +24,6 @@ function generateCspPolicy(isPrivateMode = false) {
     descriptors.rollup(),
     descriptors.safe(),
     descriptors.usernameApi(),
-    isPrivateMode ? {} : descriptors.walletConnect(),
     descriptors.zetachain(),
   );
 

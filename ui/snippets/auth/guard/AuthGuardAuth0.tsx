@@ -2,8 +2,8 @@ import React from 'react';
 
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 
-import AuthModal from './AuthModal';
-import useProfileQuery from './useProfileQuery';
+import AuthModal from '../AuthModal';
+import useProfileQuery from '../useProfileQuery';
 
 interface InjectedProps {
   onClick: () => void;
@@ -15,7 +15,7 @@ interface Props {
   ensureEmail?: boolean;
 }
 
-const AuthGuard = ({ children, onAuthSuccess, ensureEmail }: Props) => {
+const AuthGuardAuth0 = ({ children, onAuthSuccess, ensureEmail }: Props) => {
   const authModal = useDisclosure();
   const profileQuery = useProfileQuery();
 
@@ -61,4 +61,4 @@ const AuthGuard = ({ children, onAuthSuccess, ensureEmail }: Props) => {
   );
 };
 
-export default React.memo(AuthGuard);
+export default React.memo(AuthGuardAuth0);
