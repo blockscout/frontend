@@ -56,9 +56,10 @@ export default function useAddressTxsQuery({ addressHash, enabled, isMultichain,
   return React.useMemo(() => ({
     query,
     filterValue,
+    setFilterValue,
     initialFilterValue,
     onFilterChange,
     sort,
     setSort,
-  }), [ query, filterValue, initialFilterValue, onFilterChange, sort ]);
+  }), [ query, filterValue, initialFilterValue, setFilterValue, onFilterChange, sort, setSort ]);
 }

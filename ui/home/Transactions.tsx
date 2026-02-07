@@ -10,13 +10,16 @@ import LatestWatchlistTxs from 'ui/home/LatestWatchlistTxs';
 import LatestZetaChainCCTXs from 'ui/home/latestZetaChainCCTX/LatestZetaChainCCTXs';
 import useAuth from 'ui/snippets/auth/useIsAuth';
 
+import LatestCrossChainTxs from './latestCrossChainTxs/LatestCrossChainTxs';
 import LatestArbitrumDeposits from './latestDeposits/LatestArbitrumDeposits';
 
 const rollupFeature = config.features.rollup;
 const zetachainFeature = config.features.zetachain;
+const crossChainTxsFeature = config.features.crossChainTxs;
 
 const Transactions = () => {
   const isAuth = useAuth();
+
   if ((rollupFeature.isEnabled && (rollupFeature.type === 'optimistic' || rollupFeature.type === 'arbitrum')) || isAuth || zetachainFeature.isEnabled) {
     const tabs = [
       zetachainFeature.isEnabled && {
@@ -38,6 +41,20 @@ const Transactions = () => {
     return (
       <>
         <Heading level="3" mb={ 3 }>Transactions</Heading>
+        <AdaptiveTabs tabs={ tabs } unmountOnExit={ false } listProps={{ mb: 3 }}/>
+      </>
+    );
+  }
+
+  if (crossChainTxsFeature.isEnabled) {
+    const tabs = [
+      { id: 'txs', title: 'Txns', component: <LatestTxs/> },
+      { id: 'cross_chain_txs', title: 'Cross-chain txns', component: <LatestCrossChainTxs/> },
+    ];
+
+    return (
+      <>
+        <Heading level="3" mb={ 3 }>Latest transactions</Heading>
         <AdaptiveTabs tabs={ tabs } unmountOnExit={ false } listProps={{ mb: 3 }}/>
       </>
     );

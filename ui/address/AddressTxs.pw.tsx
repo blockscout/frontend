@@ -13,7 +13,7 @@ const CURRENT_ADDRESS = '0xd789a607CEac2f0E14867de4EB15b15C9FFB5859';
 
 const hooksConfig = {
   router: {
-    query: { hash: CURRENT_ADDRESS },
+    query: { hash: CURRENT_ADDRESS, tab: 'txs' },
   },
 };
 const DEFAULT_PAGINATION = { block_number: 1, index: 1, items_count: 1 };
@@ -168,7 +168,7 @@ test.describe('socket', () => {
   test('without overload, with filters', async({ render, mockApiResponse, page, createSocket }) => {
     const hooksConfigWithFilter = {
       router: {
-        query: { hash: CURRENT_ADDRESS, filter: 'from' },
+        query: { hash: CURRENT_ADDRESS, filter: 'from', tab: 'txs' },
       },
     };
 
@@ -204,7 +204,7 @@ test.describe('socket', () => {
   test('with overload, with filters', async({ render, mockApiResponse, page, createSocket }) => {
     const hooksConfigWithFilter = {
       router: {
-        query: { hash: CURRENT_ADDRESS, filter: 'from' },
+        query: { hash: CURRENT_ADDRESS, filter: 'from', tab: 'txs' },
       },
     };
 
