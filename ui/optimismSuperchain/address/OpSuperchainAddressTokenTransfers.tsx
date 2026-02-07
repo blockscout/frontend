@@ -20,6 +20,7 @@ import useAddressCountersQuery from 'ui/address/utils/useAddressCountersQuery';
 import ChainSelect from 'ui/optimismSuperchain/components/ChainSelect';
 import Pagination from 'ui/shared/pagination/Pagination';
 import TokenTransferFilter from 'ui/shared/TokenTransfer/TokenTransferFilter';
+import { getTokenFilterValue } from 'ui/tokens/utils';
 
 import ListCounterText from '../components/ListCounterText';
 import getAvailableChainIds from './getAvailableChainIds';
@@ -71,6 +72,18 @@ const OpSuperchainAddressTokenTransfers = ({ addressData, isLoading }: Props) =>
     chain: chainData,
   });
 
+  const handleChainValueChange = React.useCallback(({ value }: { value: Array<string> }) => {
+    transfersQueryLocal.query.onChainValueChange({ value });
+    const chainConfig = multichainConfig()?.chains.find(chain => chain.id === value[0]);
+    const tokenTypes = getTokenFilterValue(router.query.type, chainConfig?.app_config);
+    if (tokenTypes) {
+      const chainsTokenTypes = transfersQueryLocal.filters.type.filter(type => tokenTypes.includes(type));
+      if (chainsTokenTypes.length < transfersQueryLocal.filters.type.length) {
+        transfersQueryLocal.onTypeFilterChange(chainsTokenTypes);
+      }
+    }
+  }, [ transfersQueryLocal, router.query.type ]);
+
   const countersText = (() => {
     if (isLocalTab) {
       return (
@@ -96,7 +109,7 @@ const OpSuperchainAddressTokenTransfers = ({ addressData, isLoading }: Props) =>
         <ChainSelect
           loading={ transfersQueryLocal.query.pagination.isLoading }
           value={ transfersQueryLocal.query.chainValue }
-          onValueChange={ transfersQueryLocal.query.onChainValueChange }
+          onValueChange={ handleChainValueChange }
           chainIds={ chainIds }
         />
       );
@@ -111,11 +124,12 @@ const OpSuperchainAddressTokenTransfers = ({ addressData, isLoading }: Props) =>
             <TokenTransferFilter
               defaultTypeFilters={ transfersQueryLocal.filters.type }
               onTypeFilterChange={ transfersQueryLocal.onTypeFilterChange }
-              appliedFiltersNum={ transfersQueryLocal.filters.type.length }
+              appliedFiltersNum={ transfersQueryLocal.filters.type.length + (transfersQueryLocal.filters.filter ? 1 : 0) }
               withAddressFilter
               onAddressFilterChange={ transfersQueryLocal.onAddressFilterChange }
               defaultAddressFilter={ transfersQueryLocal.filters.filter }
               isLoading={ transfersQueryLocal.query.isPlaceholderData }
+              chainConfig={ chainData?.app_config }
             />
             { chainSelect }
             { countersText }

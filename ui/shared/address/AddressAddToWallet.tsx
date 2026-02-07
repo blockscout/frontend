@@ -57,11 +57,12 @@ interface Props {
   isLoading?: boolean;
   variant?: 'icon' | 'button';
   iconSize?: number;
+  chainConfig?: typeof config;
 }
 
-const AddressAddToWallet = ({ className, token, tokenId, isLoading, variant = 'icon', iconSize = 6 }: Props) => {
+const AddressAddToWallet = ({ className, token, tokenId, isLoading, variant = 'icon', iconSize = 6, chainConfig }: Props) => {
   const { data: { wallet, provider } = {} } = useProvider();
-  const switchOrAddChain = useSwitchOrAddChain();
+  const switchOrAddChain = useSwitchOrAddChain({ chainConfig });
   const isMobile = useIsMobile();
   const { trackUsage } = useRewardsActivity();
 

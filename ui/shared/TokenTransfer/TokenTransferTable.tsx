@@ -37,7 +37,7 @@ const TokenTransferTable = ({
 
   return (
     <AddressHighlightProvider>
-      <TableRoot minW="950px">
+      <TableRoot minW={ chainData ? '1000px' : '950px' }>
         <TableHeaderSticky top={ top }>
           <TableRow>
             { showTxInfo && <TableColumnHeader width="48px"></TableColumnHeader> }

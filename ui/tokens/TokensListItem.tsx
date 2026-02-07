@@ -77,9 +77,10 @@ const TokensListItem = ({
             w="auto"
             textStyle="sm"
             fontWeight="700"
+            noLink={ type === 'NATIVE' }
           />
           <Flex ml={ 3 } flexShrink={ 0 } columnGap={ 1 }>
-            <Tag loading={ isLoading }>{ getTokenTypeName(type) }</Tag>
+            <Tag loading={ isLoading }>{ getTokenTypeName(type, chainInfo?.app_config) }</Tag>
             { bridgedChainTag && <Tag loading={ isLoading }>{ bridgedChainTag }</Tag> }
           </Flex>
           <Skeleton loading={ isLoading } textStyle="sm" ml="auto" color="text.secondary" minW="24px" textAlign="right">
@@ -87,16 +88,18 @@ const TokensListItem = ({
           </Skeleton>
         </GridItem>
       </Grid>
-      <Flex justifyContent="space-between" alignItems="center" width="150px" ml={ 7 } mt={ -2 }>
-        <AddressEntity
-          address={{ hash: addressHash, filecoin: { robust: filecoinRobustAddress } }}
-          isLoading={ isLoading }
-          truncation="constant"
-          link={{ variant: 'secondary' }}
-          noIcon
-        />
-        <AddressAddToWallet token={ token } isLoading={ isLoading }/>
-      </Flex>
+      { type !== 'NATIVE' && (
+        <Flex justifyContent="space-between" alignItems="center" width="150px" ml={ 7 } mt={ -2 }>
+          <AddressEntity
+            address={{ hash: addressHash, filecoin: { robust: filecoinRobustAddress } }}
+            isLoading={ isLoading }
+            truncation="constant"
+            link={{ variant: 'secondary' }}
+            noIcon
+          />
+          <AddressAddToWallet token={ token } isLoading={ isLoading }/>
+        </Flex>
+      ) }
       { exchangeRate && (
         <HStack gap={ 3 }>
           <Skeleton loading={ isLoading } textStyle="sm" fontWeight={ 500 }>Price</Skeleton>
@@ -123,10 +126,12 @@ const TokensListItem = ({
           />
         </HStack>
       ) }
-      <HStack gap={ 3 }>
-        <Skeleton loading={ isLoading } textStyle="sm" fontWeight={ 500 }>Holders</Skeleton>
-        <Skeleton loading={ isLoading } textStyle="sm" color="text.secondary"><span>{ Number(holdersCount).toLocaleString() }</span></Skeleton>
-      </HStack>
+      { holdersCount && (
+        <HStack gap={ 3 }>
+          <Skeleton loading={ isLoading } textStyle="sm" fontWeight={ 500 }>Holders</Skeleton>
+          <Skeleton loading={ isLoading } textStyle="sm" color="text.secondary"><span>{ Number(holdersCount).toLocaleString() }</span></Skeleton>
+        </HStack>
+      ) }
     </ListItemMobile>
   );
 };

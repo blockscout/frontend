@@ -16,6 +16,7 @@ import getContractChainIds from './getContractChainIds';
 
 const LEFT_SLOT_PROPS = {
   mr: 6,
+  flexShrink: 0,
 };
 const QUERY_PRESERVED_PARAMS = [ 'tab', 'hash' ];
 
