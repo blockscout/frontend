@@ -59,6 +59,9 @@ jobs:
       - name: Compile TypeScript
         run: yarn lint:tsc
 
+      - name: Check licenses
+        run: yarn lint:license:check
+
   toolkit_build_check:
     name: Toolkit build check
     needs: [ code_quality ]
