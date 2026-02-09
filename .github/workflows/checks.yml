@@ -371,7 +371,8 @@ jobs:
         run: npx playwright merge-reports --reporter html "$RUNNER_TEMP/all-blob-reports"
 
       - name: Upload HTML report artifact
-        if: steps.check-reports.outputs.has_reports == 'true' && github.event.pull_request.head.repo.full_name != github.repository
+        # Upload HTML report to GitHub Actions Artifacts only for pull requests from forks
+        if: steps.check-reports.outputs.has_reports == 'true' && (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository)
         uses: actions/upload-artifact@v5
         with:
           name: playwright-html-report
@@ -387,6 +388,7 @@ jobs:
           aws-region: ${{ vars.AWS_REGION }}
 
       - name: Upload HTML report to S3
+        # Upload HTML report to S3 only for pull requests from the main repository or for non-pull requests events
         if: steps.check-reports.outputs.has_reports == 'true' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
         run: |
           export "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`"
