@@ -110,6 +110,7 @@ const TxDetailsDegraded = ({ hash, txQuery }: Props) => {
         token_transfers: null,
         token_transfers_overflow: false,
         exchange_rate: null,
+        historic_exchange_rate: null,
         method: null,
         transaction_types: [],
         transaction_tag: null,

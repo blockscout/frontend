@@ -54,6 +54,7 @@ export type Transaction = {
   token_transfers: Array<TokenTransfer> | null;
   token_transfers_overflow: boolean;
   exchange_rate: string | null;
+  historic_exchange_rate: string | null;
   method: string | null;
   transaction_types: Array<TransactionType>;
   transaction_tag: string | null;

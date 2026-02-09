@@ -77,7 +77,7 @@ const TxDetailsWrapped = ({ data }: Props) => {
             Transaction fee
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue>
-            <TxFee tx={ data }/>
+            <TxFee tx={ data } hasExchangeRateToggle/>
           </DetailedInfo.ItemValue>
         </>
       ) }

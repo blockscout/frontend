@@ -20,6 +20,7 @@ export const base: Transaction = {
   created_contract: null,
   decoded_input: decodedInputDataMock.withoutIndexedFields,
   exchange_rate: '0.00254428',
+  historic_exchange_rate: '0.00254428',
   fee: {
     type: 'actual',
     value: '7143168000000000',
