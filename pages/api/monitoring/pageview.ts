@@ -16,6 +16,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
+  if (process.env.DISABLE_TRACKING === 'true') {
+    return res.status(403).json({ error: 'Forbidden' });
+  }
+
   if (!isSameOriginRequest(req)) {
     return res.status(403).json({ error: 'Forbidden' });
   }
@@ -24,15 +28,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(403).json({ error: 'Forbidden' });
   }
 
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 5000);
+
   try {
     const response = await fetch(MONITOR_ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(req.body),
+      signal: controller.signal,
     });
 
     res.status(response.status).json({ status: response.ok ? 'ok' : 'error' });
   } catch {
     res.status(500).json({ status: 'error' });
+  } finally {
+    clearTimeout(timeoutId);
   }
 }
