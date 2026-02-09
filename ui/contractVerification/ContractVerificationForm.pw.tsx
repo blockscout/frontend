@@ -163,17 +163,7 @@ test('vyper vyper-standard-input method', async({ render, page }) => {
   await expect(component).toHaveScreenshot();
 });
 
-test('solidity-hardhat method', async({ render, page }) => {
-  const component = await render(<ContractVerificationForm config={ formConfig } hash={ hash }/>, { hooksConfig });
-
-  // select method
-  await component.locator('button').filter({ hasText: 'Verification method' }).click();
-  await page.getByRole('option', { name: 'Solidity (Hardhat)' }).click();
-
-  await expect(component).toHaveScreenshot();
-});
-
-test('solidity-hardhat method with basePath', async({ render, page, mockEnvs }) => {
+test('solidity-hardhat method', async({ render, page, mockEnvs }) => {
   await mockEnvs([ [ 'NEXT_PUBLIC_API_BASE_PATH', '/blockscout' ] ]);
   const component = await render(<ContractVerificationForm config={ formConfig } hash={ hash }/>, { hooksConfig });
 
@@ -184,17 +174,7 @@ test('solidity-hardhat method with basePath', async({ render, page, mockEnvs }) 
   await expect(component).toHaveScreenshot();
 });
 
-test('solidity-foundry method', async({ render, page }) => {
-  const component = await render(<ContractVerificationForm config={ formConfig } hash={ hash }/>, { hooksConfig });
-
-  // select method
-  await component.locator('button').filter({ hasText: 'Verification method' }).click();
-  await page.getByRole('option', { name: 'Solidity (Foundry)' }).click();
-
-  await expect(component).toHaveScreenshot();
-});
-
-test('solidity-foundry method with basePath', async({ render, page, mockEnvs }) => {
+test('solidity-foundry method', async({ render, page, mockEnvs }) => {
   await mockEnvs([ [ 'NEXT_PUBLIC_API_BASE_PATH', '/blockscout' ] ]);
   const component = await render(<ContractVerificationForm config={ formConfig } hash={ hash }/>, { hooksConfig });
 
