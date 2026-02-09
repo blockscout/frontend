@@ -45,7 +45,7 @@ export default function usePageViewTracking(initialReferrer: string) {
 
     const fullUrl = window.location.href;
 
-    fetch('/api/monitoring/pageview', {
+    fetch('/node-api/monitoring/pageview', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
