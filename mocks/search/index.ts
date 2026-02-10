@@ -27,6 +27,7 @@ export const token1: SearchResultToken = {
   exchange_rate: null,
   is_verified_via_admin_panel: true,
   is_smart_contract_verified: true,
+  is_smart_contract_address: true,
   reputation: 'ok',
 };
 
@@ -43,6 +44,7 @@ export const token2: SearchResultToken = {
   exchange_rate: '1.11',
   is_verified_via_admin_panel: false,
   is_smart_contract_verified: false,
+  is_smart_contract_address: false,
   reputation: 'ok',
 };
 
@@ -77,6 +79,7 @@ export const address1: SearchResultAddressOrContract = {
   name: null,
   type: 'address' as const,
   is_smart_contract_verified: false,
+  is_smart_contract_address: false,
   url: '/address/0xb64a30399f7F6b0C154c2E7Af0a3ec7B0A5b131a',
 };
 
@@ -85,6 +88,7 @@ export const address2: SearchResultAddressOrContract = {
   name: null,
   type: 'address' as const,
   is_smart_contract_verified: false,
+  is_smart_contract_address: false,
   url: '/address/0xb64a30399f7F6b0C154c2E7Af0a3ec7B0A5b131b',
   ens_info: {
     address_hash: '0x1234567890123456789012345678901234567890',
@@ -99,6 +103,7 @@ export const contract1: SearchResultAddressOrContract = {
   name: 'Unknown contract in this network',
   type: 'contract' as const,
   is_smart_contract_verified: true,
+  is_smart_contract_address: true,
   url: '/address/0xb64a30399f7F6b0C154c2E7Af0a3ec7B0A5b131a',
 };
 
@@ -108,6 +113,7 @@ export const contract2: SearchResultAddressOrContract = {
   type: 'contract' as const,
   is_smart_contract_verified: true,
   certified: true,
+  is_smart_contract_address: true,
   url: '/address/0xb64a30399f7F6b0C154c2E7Af0a3ec7B0A5b131a',
 };
 
@@ -116,6 +122,7 @@ export const label1: SearchResultLabel = {
   name: 'utko',
   type: 'label' as const,
   is_smart_contract_verified: true,
+  is_smart_contract_address: true,
   url: '/address/0xb64a30399f7F6b0C154c2E7Af0a3ec7B0A5b131a',
 };
 
@@ -148,6 +155,7 @@ export const domain1: SearchResultDomain = {
     names_count: 1,
   },
   is_smart_contract_verified: false,
+  is_smart_contract_address: false,
   name: null,
   type: 'ens_domain',
   url: '/address/0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045',

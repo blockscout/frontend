@@ -59,6 +59,9 @@ jobs:
       - name: Compile TypeScript
         run: yarn lint:tsc
 
+      - name: Check licenses
+        run: yarn lint:license:check
+
   toolkit_build_check:
     name: Toolkit build check
     needs: [ code_quality ]
@@ -367,16 +370,26 @@ jobs:
         if: steps.check-reports.outputs.has_reports == 'true'
         run: npx playwright merge-reports --reporter html "$RUNNER_TEMP/all-blob-reports"
 
+      - name: Upload HTML report artifact
+        # Upload HTML report to GitHub Actions Artifacts only for pull requests from forks
+        if: steps.check-reports.outputs.has_reports == 'true' && (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository)
+        uses: actions/upload-artifact@v5
+        with:
+          name: playwright-html-report
+          path: playwright-report
+          retention-days: 7
+
       - name: Configure AWS credentials
-        if: steps.check-reports.outputs.has_reports == 'true'
+        if: steps.check-reports.outputs.has_reports == 'true' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ vars.AWS_REGION }}
 
-      - name: Upload HTML report
-        if: steps.check-reports.outputs.has_reports == 'true'
+      - name: Upload HTML report to S3
+        # Upload HTML report to S3 only for pull requests from the main repository or for non-pull requests events
+        if: steps.check-reports.outputs.has_reports == 'true' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
         run: |
           export "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`"
           aws s3 cp playwright-report/ s3://${{ vars.AWS_BUCKET_NAME }}/report-${SHORT_SHA} --recursive
@@ -386,5 +399,9 @@ jobs:
         if: steps.check-reports.outputs.has_reports == 'true'
         run: |
           echo "### Playwright report" >> $GITHUB_STEP_SUMMARY
-          echo "[View report](${{ env.PLAYWRIGHT_URL }})" >> $GITHUB_STEP_SUMMARY
+          if [ -n "${{ env.PLAYWRIGHT_URL }}" ]; then
+            echo "[View report (S3)](${{ env.PLAYWRIGHT_URL }})" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "Download the **playwright-html-report** artifact below to view the report (open \`index.html\` in a browser)." >> $GITHUB_STEP_SUMMARY
+          fi
           echo "[Read about ducks](https://animalkingdom.org/animals/ducks/)" >> $GITHUB_STEP_SUMMARY

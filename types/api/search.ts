@@ -34,6 +34,7 @@ export interface SearchResultToken {
   total_supply: string | null;
   is_verified_via_admin_panel: boolean;
   is_smart_contract_verified: boolean;
+  is_smart_contract_address: boolean;
   filecoin_robust_address?: string | null;
   certified?: boolean;
   reputation: TokenReputation | null;
@@ -50,6 +51,7 @@ interface SearchResultAddressData {
   name: string | null;
   address_hash: string;
   is_smart_contract_verified: boolean;
+  is_smart_contract_address: boolean;
   certified?: true;
   filecoin_robust_address?: string | null;
   url?: string; // not used by the frontend, we build the url ourselves
@@ -102,6 +104,7 @@ export interface SearchResultLabel {
   filecoin_robust_address?: string | null;
   name: string;
   is_smart_contract_verified: boolean;
+  is_smart_contract_address: boolean;
   url?: string; // not used by the frontend, we build the url ourselves
 }
 

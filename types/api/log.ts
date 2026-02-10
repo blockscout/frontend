@@ -8,6 +8,7 @@ export interface Log {
   index: number;
   decoded: DecodedInput | null;
   transaction_hash: string | null;
+  block_timestamp: string | null;
 }
 
 export interface LogsResponseTx {
