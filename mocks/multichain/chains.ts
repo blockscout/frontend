@@ -30,6 +30,11 @@ export const chainA = {
         socketEndpoint: 'ws://localhost:3200',
       },
     },
+    UI: {
+      views: {
+        address: {},
+      },
+    },
     features: {
       csvExport: {
         isEnabled: true,

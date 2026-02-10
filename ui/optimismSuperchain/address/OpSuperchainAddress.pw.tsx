@@ -26,7 +26,10 @@ test('base view', async({ mockApiResponse, render, page, mockMultichainConfig, m
 
   await mockApiResponse('multichainAggregator:address', addressMock.addressA, { pathParams: { hash: CURRENT_ADDRESS } });
   await mockApiResponse('multichainAggregator:address_domains', addressMock.addressDomainsA, { pathParams: { hash: CURRENT_ADDRESS } });
-  await mockApiResponse('multichainAggregator:address_portfolio', portfolioMock.base, { pathParams: { hash: CURRENT_ADDRESS } });
+  await mockApiResponse('multichainAggregator:address_portfolio', portfolioMock.base, {
+    pathParams: { hash: CURRENT_ADDRESS },
+    queryParams: { include_poor_reputation_tokens: false },
+  });
   await mockApiResponse('multichainAggregator:address_tokens', {
     items: [ tokensMock.tokenAA, tokensMock.tokenAB, tokensMock.tokenBA, tokensMock.tokenCA, tokensMock.tokenDA ],
     next_page_params: { page_token: '1', page_size: 10 },

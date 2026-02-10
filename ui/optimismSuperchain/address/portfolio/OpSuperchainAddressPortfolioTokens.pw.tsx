@@ -26,7 +26,10 @@ test.beforeEach(async({ mockMultichainConfig, mockAssetResponse, mockEnvs }) => 
 
 test('many chains +@mobile +@dark-mode', async({ render, mockApiResponse, page }) => {
   await mockApiResponse('multichainAggregator:address', addressMock.addressA, { pathParams: { hash: CURRENT_ADDRESS } });
-  await mockApiResponse('multichainAggregator:address_portfolio', portfolioMock.base, { pathParams: { hash: CURRENT_ADDRESS } });
+  await mockApiResponse('multichainAggregator:address_portfolio',
+    portfolioMock.base,
+    { pathParams: { hash: CURRENT_ADDRESS }, queryParams: { include_poor_reputation_tokens: false },
+    });
   await mockApiResponse('multichainAggregator:address_tokens', {
     items: [ tokensMock.tokenAA, tokensMock.tokenAB, tokensMock.tokenBA, tokensMock.tokenCA, tokensMock.tokenDA ],
     next_page_params: { page_token: '1', page_size: 10 },
@@ -64,7 +67,10 @@ test('zero net worth', async({ render, mockApiResponse, page }) => {
       },
     },
   }, { pathParams: { hash: CURRENT_ADDRESS } });
-  await mockApiResponse('multichainAggregator:address_portfolio', portfolioMock.zero, { pathParams: { hash: CURRENT_ADDRESS } });
+  await mockApiResponse('multichainAggregator:address_portfolio',
+    portfolioMock.zero,
+    { pathParams: { hash: CURRENT_ADDRESS }, queryParams: { include_poor_reputation_tokens: false },
+    });
   await mockApiResponse('multichainAggregator:address_tokens', {
     items: [ tokensMock.tokenDA ],
     next_page_params: undefined,
