@@ -39,8 +39,8 @@ dayjs.extend(utc);
 
 dayjs.updateLocale('en', {
   formats: {
-    llll: `MMM DD YYYY HH:mm:ss A (Z${ nbsp }UTC)`,
-    lll: 'MMM D, YYYY h:mm A',
+    llll: `MMM DD YYYY HH:mm:ss (Z${ nbsp }UTC)`,
+    lll: 'MMM D, YYYY H:mm',
   },
   relativeTime: {
     s: '1s',
@@ -68,5 +68,5 @@ export default dayjs;
 
 export const FORMATS = {
   // the "lll" format with seconds
-  lll_s: 'MMM D, YYYY h:mm:ss A',
+  lll_s: 'MMM D, YYYY H:mm:ss',
 };
