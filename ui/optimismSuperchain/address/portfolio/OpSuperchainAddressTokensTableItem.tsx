@@ -8,6 +8,7 @@ import multichainConfig from 'configs/multichain';
 import { getTokenTypeName } from 'lib/token/tokenTypes';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { Tag } from 'toolkit/chakra/tag';
+import NativeTokenTag from 'ui/shared/celo/NativeTokenTag';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import calculateUsdValue from 'ui/shared/value/calculateUsdValue';
@@ -36,6 +37,9 @@ const OpSuperchainAddressTokensTableItem = ({ data, isLoading }: Props) => {
     return chain;
   }, [ data.chain_values ]);
 
+  const isNativeToken = chainInfo?.app_config.UI.views.address.nativeTokenAddress &&
+    data.token.address_hash.toLowerCase() === chainInfo?.app_config.UI.views.address.nativeTokenAddress.toLowerCase();
+
   return (
     <TableRow>
       <TableCell>
@@ -58,7 +62,9 @@ const OpSuperchainAddressTokensTableItem = ({ data, isLoading }: Props) => {
               link={{ variant: 'secondary' }}
             />
           ) }
-          <Tag loading={ isLoading }>{ getTokenTypeName(data.token.type, chainInfo?.app_config) }</Tag>
+          { isNativeToken ?
+            <NativeTokenTag chainConfig={ chainInfo?.app_config }/> :
+            <Tag loading={ isLoading }>{ getTokenTypeName(data.token.type, chainInfo?.app_config) }</Tag> }
         </VStack>
       </TableCell>
       <TableCell isNumeric>
@@ -67,6 +73,7 @@ const OpSuperchainAddressTokensTableItem = ({ data, isLoading }: Props) => {
             value={ BigNumber(data.token.exchange_rate) }
             prefix="$"
             loading={ isLoading }
+            color={ isNativeToken ? 'text.secondary' : undefined }
           />
         ) : null }
       </TableCell>
@@ -74,6 +81,7 @@ const OpSuperchainAddressTokensTableItem = ({ data, isLoading }: Props) => {
         <SimpleValue
           value={ tokenQuantity }
           loading={ isLoading }
+          color={ isNativeToken ? 'text.secondary' : undefined }
         />
       </TableCell>
       <TableCell isNumeric>
@@ -83,6 +91,7 @@ const OpSuperchainAddressTokensTableItem = ({ data, isLoading }: Props) => {
             prefix="$"
             loading={ isLoading }
             accuracy={ DEFAULT_ACCURACY_USD }
+            color={ isNativeToken ? 'text.secondary' : undefined }
           />
         ) }
       </TableCell>

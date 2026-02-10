@@ -42,6 +42,9 @@ const OpSuperchainAddressPortfolioTokens = () => {
 
   const portfolioQuery = useApiQuery('multichainAggregator:address_portfolio', {
     pathParams: { hash },
+    queryParams: {
+      include_poor_reputation_tokens: tokenReputationFilter,
+    },
     queryOptions: {
       placeholderData: ADDRESS_PORTFOLIO,
     },

@@ -8,6 +8,7 @@ import multichainConfig from 'configs/multichain';
 import { getTokenTypeName } from 'lib/token/tokenTypes';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tag } from 'toolkit/chakra/tag';
+import NativeTokenTag from 'ui/shared/celo/NativeTokenTag';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
@@ -30,6 +31,9 @@ const OpSuperchainAddressTokensListItem = ({ data, isLoading }: Props) => {
     return chain;
   }, [ data.chain_values ]);
 
+  const isNativeToken = chainInfo?.app_config.UI.views.address.nativeTokenAddress &&
+    data.token.address_hash.toLowerCase() === chainInfo?.app_config.UI.views.address.nativeTokenAddress.toLowerCase();
+
   const {
     valueBn: tokenQuantity,
     usdBn: tokenValue,
@@ -37,7 +41,9 @@ const OpSuperchainAddressTokensListItem = ({ data, isLoading }: Props) => {
 
   return (
     <ListItemMobile py={ 3 } rowGap={ 3 } textStyle="sm">
-      <Tag loading={ isLoading }>{ getTokenTypeName(data.token.type, chainInfo?.app_config) }</Tag>
+      { isNativeToken ?
+        <NativeTokenTag chainConfig={ chainInfo?.app_config }/> :
+        <Tag loading={ isLoading }>{ getTokenTypeName(data.token.type, chainInfo?.app_config) }</Tag> }
       <TokenEntity
         token={ data.token }
         chain={ chainInfo }
@@ -71,6 +77,7 @@ const OpSuperchainAddressTokensListItem = ({ data, isLoading }: Props) => {
               value={ BigNumber(data.token.exchange_rate) }
               prefix="$"
               loading={ isLoading }
+              color={ isNativeToken ? 'text.secondary' : undefined }
             />
           </>
         ) : null }
@@ -80,6 +87,7 @@ const OpSuperchainAddressTokensListItem = ({ data, isLoading }: Props) => {
         <SimpleValue
           value={ tokenQuantity }
           loading={ isLoading }
+          color={ isNativeToken ? 'text.secondary' : undefined }
         />
         { data.token.exchange_rate && (
           <>
@@ -90,6 +98,7 @@ const OpSuperchainAddressTokensListItem = ({ data, isLoading }: Props) => {
               value={ tokenValue }
               prefix="$"
               loading={ isLoading }
+              color={ isNativeToken ? 'text.secondary' : undefined }
             />
           </>
         ) }
