@@ -4,7 +4,8 @@ import React from 'react';
 import config from 'configs/app';
 import * as cookies from 'lib/cookies';
 
-const ALLOWED_DOMAINS = [ 'eth.blockscout.com', 'localhost' ];
+// const ALLOWED_DOMAINS = [ 'eth.blockscout.com', 'localhost' ];
+const ALLOWED_DOMAINS = [ 'eth.blockscout.com', 'localhost', 'eth-sepolia.k8s-dev.blockscout.com' ];
 
 // Determines if a user should be tracked based on their UUID.
 // Uses the last 4 hex characters of the UUID to get a deterministic number (0-65535),
@@ -13,7 +14,9 @@ function shouldTrackUser(uuid: string): boolean {
   // Extract last 4 hex characters from UUID (e.g., "0000" from "550e8400-e29b-41d4-a716-446655440000")
   const hexPart = uuid.replace(/-/g, '').slice(-4);
   const numericValue = parseInt(hexPart, 16);
-  return (numericValue % 100) < 1;
+  // return (numericValue % 100) < 1;
+  return (numericValue % 100) < 50;
+
 }
 
 // Hook to track page views for client-side navigation.
