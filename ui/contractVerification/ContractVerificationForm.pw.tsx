@@ -163,7 +163,8 @@ test('vyper vyper-standard-input method', async({ render, page }) => {
   await expect(component).toHaveScreenshot();
 });
 
-test('solidity-hardhat method', async({ render, page }) => {
+test('solidity-hardhat method', async({ render, page, mockEnvs }) => {
+  await mockEnvs([ [ 'NEXT_PUBLIC_API_BASE_PATH', '/blockscout' ] ]);
   const component = await render(<ContractVerificationForm config={ formConfig } hash={ hash }/>, { hooksConfig });
 
   // select method
@@ -173,7 +174,8 @@ test('solidity-hardhat method', async({ render, page }) => {
   await expect(component).toHaveScreenshot();
 });
 
-test('solidity-foundry method', async({ render, page }) => {
+test('solidity-foundry method', async({ render, page, mockEnvs }) => {
+  await mockEnvs([ [ 'NEXT_PUBLIC_API_BASE_PATH', '/blockscout' ] ]);
   const component = await render(<ContractVerificationForm config={ formConfig } hash={ hash }/>, { hooksConfig });
 
   // select method

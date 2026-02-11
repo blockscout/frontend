@@ -72,6 +72,7 @@ export interface QuickSearchResultToken {
   address_hash: string;
   icon_url: string | null;
   is_smart_contract_verified: boolean;
+  is_smart_contract_address: boolean;
   chain_id: string;
   reputation: null;
   total_supply: string | null;

@@ -26,7 +26,7 @@ const SearchBarSuggestAddress = ({ data, isMobile, searchTerm, addressFormat }: 
     if ('chain_infos' in data) {
       return contract.isContract(data);
     }
-    return data.type === 'contract';
+    return data.type === 'contract' || data.is_smart_contract_address;
   })();
 
   const isVerified = (() => {
