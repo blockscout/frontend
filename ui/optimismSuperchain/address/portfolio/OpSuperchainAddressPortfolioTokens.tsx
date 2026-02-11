@@ -157,6 +157,7 @@ const OpSuperchainAddressPortfolioTokens = () => {
         symbol,
         usd: items.reduce((acc, item) => acc.plus(item.usd ?? ZERO), ZERO),
       }))
+      .filter((item) => item.usd.gt(0))
       .sort((a, b) => b.usd.minus(a.usd).toNumber())
       .slice(0, 2)
       .map((item) => ({

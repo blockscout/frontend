@@ -69,7 +69,8 @@ const OpSuperchainAddressPortfolioNetWorth = ({ addressHash, netWorth, isLoading
                 boxSize={ 4 }
                 borderRadius="full"
                 loading={ isLoading }
-                bgColor={ !isLoading ? getBgColor(token.symbol === 'Others' ? 2 : index) : undefined }/>
+                bgColor={ !isLoading ? getBgColor(token.symbol === 'Others' ? 2 : index) : undefined }
+              />
               <Skeleton loading={ isLoading } fontWeight={ 600 } whiteSpace="pre">
                 <span>{ token.symbol }</span>
                 <chakra.span color="text.secondary"> { formatPercentage(token.share) }</chakra.span>
