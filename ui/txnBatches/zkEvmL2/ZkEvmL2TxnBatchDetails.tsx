@@ -10,6 +10,7 @@ import { route } from 'nextjs-routes';
 
 import type { ResourceError } from 'lib/api/resources';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
+import { formatZkEvmL2TxnBatchStatus } from 'lib/rollups/utils';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
@@ -83,7 +84,11 @@ const ZkEvmL2TxnBatchDetails = ({ query }: Props) => {
         Status
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
-        <VerificationSteps steps={ ZKEVM_L2_TX_BATCH_STATUSES } currentStep={ data.status } isLoading={ isPlaceholderData }/>
+        <VerificationSteps
+          steps={ ZKEVM_L2_TX_BATCH_STATUSES.map(formatZkEvmL2TxnBatchStatus) }
+          currentStep={ formatZkEvmL2TxnBatchStatus(data.status) }
+          isLoading={ isPlaceholderData }
+        />
       </DetailedInfo.ItemValue>
 
       <DetailedInfo.ItemLabel

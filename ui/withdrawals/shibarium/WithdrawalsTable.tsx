@@ -2,6 +2,7 @@ import React from 'react';
 
 import type { ShibariumWithdrawalsItem } from 'types/api/shibarium';
 
+import { layerLabels } from 'lib/rollups/utils';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
@@ -18,9 +19,9 @@ const WithdrawalsTable = ({ items, top, isLoading }: Props) => {
     <TableRoot tableLayout="auto" minW="950px">
       <TableHeaderSticky top={ top }>
         <TableRow>
-          <TableColumnHeader>L2 block No</TableColumnHeader>
-          <TableColumnHeader>L2 txn hash</TableColumnHeader>
-          <TableColumnHeader>L1 txn hash</TableColumnHeader>
+          <TableColumnHeader>{ layerLabels.current } block No</TableColumnHeader>
+          <TableColumnHeader>{ layerLabels.current } txn hash</TableColumnHeader>
+          <TableColumnHeader>{ layerLabels.parent } txn hash</TableColumnHeader>
           <TableColumnHeader>User</TableColumnHeader>
           <TableColumnHeader>
             Timestamp

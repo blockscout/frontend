@@ -169,4 +169,17 @@ export const rollupSchema = yup
           value => value === undefined,
         ),
       }),
+      NEXT_PUBLIC_ROLLUP_LAYER_NUMBER: yup.number()
+        .positive()
+        .integer()
+        .min(2)
+        .when('NEXT_PUBLIC_ROLLUP_TYPE', {
+          is: (value: string) => Boolean(value),
+          then: (schema) => schema,
+          otherwise: (schema) => schema.test(
+            'not-exist',
+            'NEXT_PUBLIC_ROLLUP_LAYER_NUMBER can only be used with NEXT_PUBLIC_ROLLUP_TYPE',
+            value => value === undefined,
+          ),
+        }),
   });

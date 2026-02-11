@@ -2,6 +2,7 @@ import React from 'react';
 
 import type { ArbitrumL2TxnBatchesItem } from 'types/api/arbitrumL2';
 
+import { layerLabels } from 'lib/rollups/utils';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
@@ -19,10 +20,10 @@ const ArbitrumL2TxnBatchesTable = ({ items, top, isLoading }: Props) => {
       <TableHeaderSticky top={ top }>
         <TableRow>
           <TableColumnHeader>Batch #</TableColumnHeader>
-          <TableColumnHeader>L1 status</TableColumnHeader>
-          <TableColumnHeader>L1 block</TableColumnHeader>
+          <TableColumnHeader>{ layerLabels.parent } status</TableColumnHeader>
+          <TableColumnHeader>{ layerLabels.parent } block</TableColumnHeader>
           <TableColumnHeader>Block count</TableColumnHeader>
-          <TableColumnHeader>L1 transaction</TableColumnHeader>
+          <TableColumnHeader>{ layerLabels.parent } transaction</TableColumnHeader>
           <TableColumnHeader>
             Timestamp
             <TimeFormatToggle/>
