@@ -666,6 +666,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus, noTxActions }: P
             amount={ data.arbitrum.poster_fee }
             exchangeRate={ data.exchange_rate }
             historicExchangeRate={ data.historic_exchange_rate }
+            hasExchangeRateToggle
             loading={ isLoading }
           />
 

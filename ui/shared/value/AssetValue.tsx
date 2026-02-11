@@ -96,7 +96,19 @@ const AssetValue = ({
     <IconSvg name="clock-light" boxSize="14px" color="icon.secondary"/>
   ) : undefined;
 
-  const tooltipAdditionalContent = showHistoric ? 'Estimated value on day of txn' : 'Current value';
+  const tooltipAdditionalContent = (() => {
+    if (!amount || amount === '0') {
+      return undefined;
+    }
+
+    // for values where historic exchange rate doesn't exist, we show current value without tooltip
+    // for recent transactions, historicExchangeRate can be null, in this case we show current value with tooltip
+    if (historicExchangeRate === undefined) {
+      return undefined;
+    }
+
+    return showHistoric ? 'Estimated value on day of txn' : 'Current value';
+  })();
 
   const usdValue = hasToggle ? (
     <Tag
