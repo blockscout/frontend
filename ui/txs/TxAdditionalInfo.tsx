@@ -52,7 +52,7 @@ const TxAdditionalInfo = ({ hash, tx, isMobile, isLoading, className }: Props) =
       </PopoverTrigger>
       <PopoverContent w="330px">
         <PopoverBody>
-          <Heading level="3" mb={ 6 }>Additional info </Heading>
+          <Heading level="3" mb={ 4 }>Additional info </Heading>
           { content }
         </PopoverBody>
       </PopoverContent>
