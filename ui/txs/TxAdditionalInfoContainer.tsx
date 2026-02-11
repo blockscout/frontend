@@ -22,6 +22,7 @@ const TxAdditionalInfoContainer = ({ hash }: Props) => {
   if (isPending) {
     return (
       <Box>
+        <Skeleton loading w="80px" h="24px" borderRadius="sm" mb={ 3 }/>
         <Box>
           <Skeleton loading w="110px" h="16px" borderRadius="full" mb={ 3 }/>
           <Skeleton loading w="100%" h="16px" borderRadius="full"/>

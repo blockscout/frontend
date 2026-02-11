@@ -40,11 +40,11 @@ const InternalTxsTableItem = ({
     <TableRow alignItems="top">
       { chainData && (
         <TableCell>
-          <ChainIcon data={ chainData } isLoading={ isLoading } my="3px"/>
+          <ChainIcon data={ chainData } isLoading={ isLoading } my="2px"/>
         </TableCell>
       ) }
-      <TableCell verticalAlign="middle">
-        <Flex rowGap={ 3 } flexDir="column">
+      <TableCell>
+        <Flex rowGap={ 3 } flexDir="column" my="2px">
           <TxEntity
             hash={ txnHash }
             isLoading={ isLoading }
@@ -63,41 +63,43 @@ const InternalTxsTableItem = ({
           />
         </Flex>
       </TableCell>
-      <TableCell verticalAlign="middle">
-        <Flex rowGap={ 3 } flexDir="column">
+      <TableCell>
+        <Flex rowGap={ 2 } flexDir="column">
           { typeTitle && (
             <Badge colorPalette="cyan" loading={ isLoading }>{ typeTitle }</Badge>
           ) }
-          <TxStatus status={ success ? 'ok' : 'error' } errorText={ error } isLoading={ isLoading }/>
+          { !success && <TxStatus status="error" errorText={ error } isLoading={ isLoading }/> }
         </Flex>
       </TableCell>
       { showBlockInfo && (
-        <TableCell verticalAlign="middle">
+        <TableCell>
           <BlockEntity
             isLoading={ isLoading }
             number={ blockNumber }
             noIcon
             textStyle="sm"
             fontWeight={ 500 }
+            my="2px"
           />
         </TableCell>
       ) }
-      <TableCell verticalAlign="middle">
+      <TableCell>
         <AddressFromTo
           from={ from }
           to={ toData }
           current={ currentAddress }
           isLoading={ isLoading }
+          my="2px"
         />
       </TableCell>
-      <TableCell isNumeric verticalAlign="middle">
+      <TableCell isNumeric>
         <NativeCoinValue
           amount={ value }
           noSymbol
           accuracy={ 0 }
           loading={ isLoading }
           minW={ 6 }
-          verticalAlign="middle"
+          my="2px"
         />
       </TableCell>
     </TableRow>
