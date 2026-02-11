@@ -25,7 +25,6 @@ test.beforeEach(async({ mockMultichainConfig, mockAssetResponse, mockEnvs }) => 
 });
 
 test('many chains +@mobile +@dark-mode', async({ render, mockApiResponse, page }) => {
-  await mockApiResponse('multichainAggregator:address', addressMock.addressA, { pathParams: { hash: CURRENT_ADDRESS } });
   await mockApiResponse('multichainAggregator:address_portfolio',
     portfolioMock.base,
     { pathParams: { hash: CURRENT_ADDRESS }, queryParams: { include_poor_reputation_tokens: false },
@@ -43,7 +42,7 @@ test('many chains +@mobile +@dark-mode', async({ render, mockApiResponse, page }
   });
 
   const component = await render(
-    <OpSuperchainAddressPortfolioTokens/>,
+    <OpSuperchainAddressPortfolioTokens addressData={ addressMock.addressA } isLoading={ false }/>,
     { hooksConfig },
   );
   await expect(component).toHaveScreenshot({
@@ -59,14 +58,14 @@ test('many chains +@mobile +@dark-mode', async({ render, mockApiResponse, page }
 });
 
 test('zero net worth', async({ render, mockApiResponse, page }) => {
-  await mockApiResponse('multichainAggregator:address', {
+  const addressData = {
     ...addressMock.addressA,
     chain_infos: {
       [chainDataMock.chainD.id]: {
         ...addressMock.addressA.chain_infos[chainDataMock.chainD.id],
       },
     },
-  }, { pathParams: { hash: CURRENT_ADDRESS } });
+  };
   await mockApiResponse('multichainAggregator:address_portfolio',
     portfolioMock.zero,
     { pathParams: { hash: CURRENT_ADDRESS }, queryParams: { include_poor_reputation_tokens: false },
@@ -77,7 +76,7 @@ test('zero net worth', async({ render, mockApiResponse, page }) => {
   }, { pathParams: { hash: CURRENT_ADDRESS }, queryParams: { type: 'ERC-20,NATIVE', include_poor_reputation_tokens: false } });
 
   const component = await render(
-    <OpSuperchainAddressPortfolioTokens/>,
+    <OpSuperchainAddressPortfolioTokens addressData={ addressData } isLoading={ false }/>,
     { hooksConfig },
   );
   await expect(component).toHaveScreenshot({

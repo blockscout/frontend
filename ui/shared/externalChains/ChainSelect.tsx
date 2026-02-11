@@ -59,7 +59,7 @@ const ChainSelect = ({ loading, mode, chainsConfig, chainIds, withAllOption, ...
   }, [ inputValue ]);
 
   const contentHeader = allItems.length > 10 ? (
-    <Box px="4" mb={ 2 }>
+    <Box px="4" pt={ 4 } pb={ 2 } position="sticky" top={ 0 } zIndex={ 1 } bgColor="popover.bg">
       <FilterInput
         placeholder="Find chain"
         initialValue={ inputValue }
@@ -82,6 +82,7 @@ const ChainSelect = ({ loading, mode, chainsConfig, chainIds, withAllOption, ...
       w="fit-content"
       flexShrink={ 0 }
       contentHeader={ contentHeader }
+      contentProps={ contentHeader ? { pt: 0 } : undefined }
       itemFilter={ itemFilter }
       { ...props }
     />

@@ -2,6 +2,7 @@ import { Box, HStack } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type * as multichain from '@blockscout/multichain-aggregator-types';
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
 import { MultichainProvider } from 'lib/contexts/multichain';
@@ -16,6 +17,7 @@ import useAddressNftQuery from 'ui/address/tokens/useAddressNftQuery';
 import ChainSelect from 'ui/optimismSuperchain/components/ChainSelect';
 import Pagination from 'ui/shared/pagination/Pagination';
 
+import getAvailableChainIds from './getAvailableChainIds';
 import OpSuperchainAddressPortfolioTokens from './portfolio/OpSuperchainAddressPortfolioTokens';
 
 export const ADDRESS_OP_PORTFOLIO_TAB_IDS = [ 'portfolio_tokens' as const, 'portfolio_nfts' as const ];
@@ -32,7 +34,12 @@ const TAB_LIST_PROPS = {
   marginTop: -6,
 };
 
-const OpSuperchainAddressPortfolio = () => {
+interface Props {
+  addressData: multichain.GetAddressResponse | undefined;
+  isLoading: boolean;
+}
+
+const OpSuperchainAddressPortfolio = ({ addressData, isLoading }: Props) => {
   const scrollRef = React.useRef<HTMLDivElement>(null);
 
   const isMobile = useIsMobile();
@@ -40,12 +47,14 @@ const OpSuperchainAddressPortfolio = () => {
 
   const tab = getQueryParamString(router.query.tab) as typeof ADDRESS_OP_PORTFOLIO_TAB_IDS[number] | 'portfolio' | undefined;
   const hash = getQueryParamString(router.query.hash);
+  const chainIds = React.useMemo(() => getAvailableChainIds(addressData), [ addressData ]);
 
   const { nftsQuery, collectionsQuery, displayType: nftDisplayType, tokenTypes: nftTokenTypes, onDisplayTypeChange, onTokenTypesChange } = useAddressNftQuery({
     scrollRef,
-    enabled: tab === 'portfolio_nfts',
+    enabled: !isLoading && tab === 'portfolio_nfts' && chainIds.length > 0,
     addressHash: hash,
     isMultichain: true,
+    chainIds,
   });
 
   const hasActiveFilters = (() => {
@@ -64,6 +73,7 @@ const OpSuperchainAddressPortfolio = () => {
           loading={ query.pagination.isLoading }
           value={ query.chainValue }
           onValueChange={ query.onChainValueChange }
+          chainIds={ chainIds }
         />
       );
 
@@ -91,7 +101,7 @@ const OpSuperchainAddressPortfolio = () => {
     {
       id: 'portfolio_tokens',
       title: 'Tokens',
-      component: <OpSuperchainAddressPortfolioTokens/>,
+      component: <OpSuperchainAddressPortfolioTokens addressData={ addressData } isLoading={ isLoading }/>,
     },
     {
       id: 'portfolio_nfts',

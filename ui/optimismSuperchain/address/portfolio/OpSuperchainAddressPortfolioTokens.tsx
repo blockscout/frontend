@@ -5,12 +5,14 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import { isMobile } from 'react-device-detect';
 
+import type * as multichain from '@blockscout/multichain-aggregator-types';
+
 import multichainConfig from 'configs/multichain';
 import useApiQuery from 'lib/api/useApiQuery';
 import * as cookies from 'lib/cookies';
 import useDebounce from 'lib/hooks/useDebounce';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import { ADDRESS, ADDRESS_PORTFOLIO, TOKEN } from 'stubs/optimismSuperchain';
+import { ADDRESS_PORTFOLIO, TOKEN } from 'stubs/optimismSuperchain';
 import { generateListStub } from 'stubs/utils';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import { ZERO } from 'toolkit/utils/consts';
@@ -25,7 +27,12 @@ import OpSuperchainAddressPortfolioNetWorth from './OpSuperchainAddressPortfolio
 import OpSuperchainAddressTokensListItem from './OpSuperchainAddressTokensListItem';
 import OpSuperchainAddressTokensTable from './OpSuperchainAddressTokensTable';
 
-const OpSuperchainAddressPortfolioTokens = () => {
+interface Props {
+  addressData: multichain.GetAddressResponse | undefined;
+  isLoading: boolean;
+}
+
+const OpSuperchainAddressPortfolioTokens = ({ addressData, isLoading }: Props) => {
   const config = multichainConfig();
   const router = useRouter();
 
@@ -50,20 +57,12 @@ const OpSuperchainAddressPortfolioTokens = () => {
     },
   });
 
-  const addressQuery = useApiQuery('multichainAggregator:address', {
-    pathParams: { hash },
-    queryOptions: {
-      refetchOnMount: false,
-      placeholderData: ADDRESS,
-    },
-  });
-
   const portfolioData = React.useMemo(() => {
     return {
-      ...mapValues(addressQuery.data?.chain_infos ?? {}, () => '0'),
+      ...mapValues(addressData?.chain_infos ?? {}, () => '0'),
       ...portfolioQuery.data?.portfolio?.chain_values,
     };
-  }, [ addressQuery.data?.chain_infos, portfolioQuery.data?.portfolio?.chain_values ]);
+  }, [ addressData?.chain_infos, portfolioQuery.data?.portfolio?.chain_values ]);
 
   const [ selectedChainId, setSelectedChainId ] = React.useState<string | null>(null);
 
@@ -228,7 +227,7 @@ const OpSuperchainAddressPortfolioTokens = () => {
       <OpSuperchainAddressPortfolioNetWorth
         addressHash={ hash }
         netWorth={ portfolioQuery.data?.portfolio?.total_value }
-        isLoading={ portfolioQuery.isPlaceholderData || allTokensQuery.isPlaceholderData }
+        isLoading={ portfolioQuery.isPlaceholderData || allTokensQuery.isPlaceholderData || isLoading }
         topTokens={ topTokens }
       />
       <OpSuperchainAddressPortfolioCards
@@ -236,7 +235,7 @@ const OpSuperchainAddressPortfolioTokens = () => {
         totalValue={ portfolioQuery.data?.portfolio?.total_value }
         selectedChainId={ selectedChainId }
         onChange={ handleSelectedChainChange }
-        isLoading={ portfolioQuery.isPlaceholderData || addressQuery.isPlaceholderData }
+        isLoading={ portfolioQuery.isPlaceholderData || isLoading }
       />
       <DataListDisplay
         isError={ tokensQuery.isError }

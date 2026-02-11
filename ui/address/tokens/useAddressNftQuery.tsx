@@ -21,9 +21,10 @@ interface Props {
   enabled?: boolean;
   addressHash: string;
   isMultichain?: boolean;
+  chainIds?: Array<string>;
 }
 
-export default function useAddressNftQuery({ scrollRef, enabled = true, addressHash, isMultichain }: Props) {
+export default function useAddressNftQuery({ scrollRef, enabled = true, addressHash, isMultichain, chainIds }: Props) {
   const router = useRouter();
 
   const displayTypeCookie = cookies.get(cookies.NAMES.ADDRESS_NFT_DISPLAY_TYPE, useAppContext().cookies);
@@ -40,6 +41,7 @@ export default function useAddressNftQuery({ scrollRef, enabled = true, addressH
     },
     filters: { type: tokenTypes },
     isMultichain,
+    chainIds,
   });
 
   const nftsQuery = useQueryWithPages({
@@ -52,6 +54,7 @@ export default function useAddressNftQuery({ scrollRef, enabled = true, addressH
     },
     filters: { type: tokenTypes },
     isMultichain,
+    chainIds,
   });
 
   const onDisplayTypeChange = React.useCallback((val: string) => {

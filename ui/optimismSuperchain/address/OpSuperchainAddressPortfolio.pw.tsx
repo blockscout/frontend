@@ -13,8 +13,7 @@ import OpSuperchainAddressPortfolio from './OpSuperchainAddressPortfolio';
 
 const CURRENT_ADDRESS = '0xd789a607CEac2f0E14867de4EB15b15C9FFB5859';
 
-test.beforeEach(async({ mockApiResponse, mockMultichainConfig, mockEnvs }) => {
-  await mockApiResponse('multichainAggregator:address', addressMock.addressA, { pathParams: { hash: CURRENT_ADDRESS } });
+test.beforeEach(async({ mockMultichainConfig, mockEnvs }) => {
   await mockMultichainConfig();
   await mockEnvs(ENVS_MAP.opSuperchain);
 });
@@ -37,7 +36,7 @@ test.describe('nfts', () => {
 
     component = await render(
       <Box pt={{ base: 0, lg: '30px' }}>
-        <OpSuperchainAddressPortfolio/>
+        <OpSuperchainAddressPortfolio addressData={ addressMock.addressA } isLoading={ false }/>
       </Box>,
       { hooksConfig },
     );

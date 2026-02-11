@@ -60,7 +60,7 @@ const OpSuperchainAddress = () => {
       {
         id: 'portfolio',
         title: 'Portfolio',
-        component: <OpSuperchainAddressPortfolio/>,
+        component: <OpSuperchainAddressPortfolio addressData={ addressQuery.data } isLoading={ isLoading }/>,
       },
       isContractSomewhere && {
         id: 'contract',
