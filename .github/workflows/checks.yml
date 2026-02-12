@@ -63,7 +63,7 @@ jobs:
         run: yarn lint:license:check
 
       - name: Check spelling
-        run: yarn lint:cspell
+        run: yarn lint:cspell --no-progress
 
   toolkit_build_check:
     name: Toolkit build check
