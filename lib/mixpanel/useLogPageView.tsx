@@ -15,7 +15,7 @@ import getTabName from './getTabName';
 import logEvent from './logEvent';
 import { EventTypes } from './utils';
 
-export default function useLogPageView(isInited: boolean) {
+export default function useLogPageView(isInitialized: boolean) {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -25,7 +25,7 @@ export default function useLogPageView(isInited: boolean) {
   const { colorMode } = useColorMode();
 
   React.useEffect(() => {
-    if (!config.features.mixpanel.isEnabled || !isInited) {
+    if (!config.features.mixpanel.isEnabled || !isInitialized) {
       return;
     }
 
@@ -44,5 +44,5 @@ export default function useLogPageView(isInited: boolean) {
     // but we still want to log page view
     // so we use pathname from 'next/navigation' instead of router.pathname from 'next/router' as deps
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ isInited, page, pathname, tab, colorMode ]);
+  }, [ isInitialized, page, pathname, tab, colorMode ]);
 }

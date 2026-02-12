@@ -24,8 +24,8 @@ const PageNextJs = <Pathname extends Route['pathname']>(props: Props<Pathname>) 
   useAdblockDetect();
   useNotifyOnNavigation();
 
-  const isMixpanelInited = mixpanel.useInit();
-  mixpanel.useLogPageView(isMixpanelInited);
+  const isMixPanelInitialized = mixpanel.useInit();
+  mixpanel.useLogPageView(isMixPanelInitialized);
 
   return (
     <>
