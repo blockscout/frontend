@@ -80,7 +80,7 @@ const Footer = () => {
       text: 'llms.txt',
       url: `${ config.app.baseUrl }/llms.txt`,
     },
-  ];
+  ].filter(Boolean);
 
   const frontendLink = (() => {
     if (config.UI.footer.frontendVersion) {

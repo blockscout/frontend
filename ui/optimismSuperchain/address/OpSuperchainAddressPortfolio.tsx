@@ -33,6 +33,7 @@ const TAB_LIST_PROPS = {
   pb: 2,
   marginTop: -6,
 };
+const TABS_PRESERVED_PARAMS = [ 'chain_id' ];
 
 interface Props {
   addressData: multichain.GetAddressResponse | undefined;
@@ -56,6 +57,12 @@ const OpSuperchainAddressPortfolio = ({ addressData, isLoading }: Props) => {
     isMultichain: true,
     chainIds,
   });
+
+  const handleChainChange = React.useCallback((chainId: string | null) => {
+    const chainValue = chainId ? [ chainId ] : [ chainIds[0] ];
+    nftsQuery.onChainValueChange({ value: chainValue });
+    collectionsQuery.onChainValueChange({ value: chainValue });
+  }, [ nftsQuery, collectionsQuery, chainIds ]);
 
   const hasActiveFilters = (() => {
     if (tab === 'portfolio_nfts') {
@@ -101,7 +108,7 @@ const OpSuperchainAddressPortfolio = ({ addressData, isLoading }: Props) => {
     {
       id: 'portfolio_tokens',
       title: 'Tokens',
-      component: <OpSuperchainAddressPortfolioTokens addressData={ addressData } isLoading={ isLoading }/>,
+      component: <OpSuperchainAddressPortfolioTokens addressData={ addressData } isLoading={ isLoading } onChainChange={ handleChainChange }/>,
     },
     {
       id: 'portfolio_nfts',
@@ -129,6 +136,7 @@ const OpSuperchainAddressPortfolio = ({ addressData, isLoading }: Props) => {
         rightSlotProps={ TABS_RIGHT_SLOT_PROPS }
         listProps={ isMobile ? undefined : TAB_LIST_PROPS }
         stickyEnabled={ !isMobile }
+        preservedParams={ TABS_PRESERVED_PARAMS }
       />
     </>
   );

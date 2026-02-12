@@ -44,7 +44,7 @@ const VerifiedContractsTableItem = ({ data, isLoading, chainData }: Props) => {
           <AddressEntity
             address={ data.address }
             isLoading={ isLoading }
-            query={{ tab: 'contract' }}
+            query={{ tab: 'contract', ...(chainData ? { chain_id: chainData.id } : {}) }}
             noCopy
           />
           { data.certified && <ContractCertifiedLabel iconSize={ 5 } boxSize={ 5 } ml={ 2 }/> }

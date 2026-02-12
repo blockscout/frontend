@@ -30,9 +30,10 @@ import OpSuperchainAddressTokensTable from './OpSuperchainAddressTokensTable';
 interface Props {
   addressData: multichain.GetAddressResponse | undefined;
   isLoading: boolean;
+  onChainChange?: (chainId: string | null) => void;
 }
 
-const OpSuperchainAddressPortfolioTokens = ({ addressData, isLoading }: Props) => {
+const OpSuperchainAddressPortfolioTokens = ({ addressData, isLoading, onChainChange }: Props) => {
   const config = multichainConfig();
   const router = useRouter();
 
@@ -105,9 +106,10 @@ const OpSuperchainAddressPortfolioTokens = ({ addressData, isLoading }: Props) =
         chain_id: nextValue ?? undefined,
         query: debouncedSearchTerm,
       });
+      onChainChange?.(nextValue);
       return nextValue;
     });
-  }, [ tokensQuery, debouncedSearchTerm ]);
+  }, [ tokensQuery, debouncedSearchTerm, onChainChange ]);
 
   const handleSearchTermChange = React.useCallback((value: string) => {
     setSearchTerm(value);

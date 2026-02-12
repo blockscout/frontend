@@ -12,7 +12,7 @@ import { ADDRESS_INFO } from 'stubs/address';
 import AddressContract from 'ui/address/AddressContract';
 import ChainSelect from 'ui/optimismSuperchain/components/ChainSelect';
 
-import getContractChainIds from './getContractChainIds';
+import getAvailableChainIds from './getAvailableChainIds';
 
 const LEFT_SLOT_PROPS = {
   mr: 6,
@@ -27,7 +27,7 @@ interface Props {
 }
 
 const OpSuperchainAddressContract = ({ addressHash, isLoading, data }: Props) => {
-  const chainIds = React.useMemo(() => getContractChainIds(data), [ data ]);
+  const chainIds = React.useMemo(() => getAvailableChainIds(data), [ data ]);
   const chainSelect = useRoutedChainSelect({ persistedParams: QUERY_PRESERVED_PARAMS, isLoading, chainIds });
 
   const chain = React.useMemo(() => {

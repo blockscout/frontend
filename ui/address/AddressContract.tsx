@@ -52,7 +52,7 @@ const AddressContract = ({ addressData, isLoading = false, hasMudTab, ...rest }:
 
   const contractTabs = useContractTabs({
     addressData,
-    isEnabled: isQueryEnabled,
+    isEnabled: isQueryEnabled && !isLoading,
     hasMudTab,
     channel,
   });
@@ -81,10 +81,6 @@ const AddressContract = ({ addressData, isLoading = false, hasMudTab, ...rest }:
   useSocketMessage({ channel, event: 'eth_bytecode_db_lookup_started', handler: handleLookupStartedMessage });
   useSocketMessage({ channel, event: 'smart_contract_was_verified', handler: handleContractWasVerifiedMessage });
   useSocketMessage({ channel, event: 'smart_contract_was_not_verified', handler: handleContractWasNotVerifiedMessage });
-
-  if (isLoading) {
-    return null;
-  }
 
   const rightSlot = autoVerificationStatus && !contractTabs.isPartiallyVerified ?
     <ContractAutoVerificationStatus status={ autoVerificationStatus } mode={ isMobile && contractTabs.tabs.length > 1 ? 'tooltip' : 'inline' }/> :

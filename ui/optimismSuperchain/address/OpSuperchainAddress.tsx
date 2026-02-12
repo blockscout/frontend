@@ -28,6 +28,8 @@ import OpSuperchainAddressPortfolio from './OpSuperchainAddressPortfolio';
 import OpSuperchainAddressTokenTransfers, { ADDRESS_OP_SUPERCHAIN_TOKEN_TRANSFERS_TAB_IDS } from './OpSuperchainAddressTokenTransfers';
 import OpSuperchainAddressTxs, { ADDRESS_OP_SUPERCHAIN_TXS_TAB_IDS } from './OpSuperchainAddressTxs';
 
+const TABS_PRESERVED_PARAMS = [ 'chain_id' ];
+
 const OpSuperchainAddress = () => {
   const router = useRouter();
 
@@ -147,7 +149,7 @@ const OpSuperchainAddress = () => {
         isLoading={ isLoading }
         secondRow={ titleSecondRow }
       />
-      <RoutedTabs tabs={ tabs } isLoading={ isLoading }/>
+      <RoutedTabs tabs={ tabs } isLoading={ isLoading } preservedParams={ TABS_PRESERVED_PARAMS }/>
     </>
   );
 };
