@@ -110,7 +110,7 @@ export default function useFetchTokens({ hash, enabled }: Props) {
 
   const handleTokenBalancesErc20Message: SocketMessage.AddressTokenBalancesErc20['handler'] = React.useCallback((payload) => {
     updateTokensData('ERC-20', payload);
-    // udpate ERC-20 & additional token types query, that is used on the address tokens list
+    // update ERC-20 & additional token types query, that is used on the address tokens list
     updateTokensData([ 'ERC-20', ...additionalTokenTypesIds ], payload);
   }, [ updateTokensData, additionalTokenTypesIds ]);
 
