@@ -1,6 +1,5 @@
 const styles = {
   '.address-entity': {
-    width: 'fit-content',
     '&.address-entity_highlighted': {
       _before: {
         content: `" "`,

@@ -11,7 +11,6 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableBody, TableCell, TableColumnHeader, TableHeader, TableRoot, TableRow } from 'toolkit/chakra/table';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
-import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import StatsWidget from 'ui/shared/stats/StatsWidget';
 import TxPendingAlert from 'ui/tx/TxPendingAlert';
 import TxSocketAlert from 'ui/tx/TxSocketAlert';
@@ -154,7 +153,7 @@ const TxFHEOperations = ({ txQuery }: Props) => {
                       { op.caller && op.caller.hash ? (
                         <AddressEntity
                           address={ op.caller }
-                          truncation="constant"
+                          truncation="dynamic"
                           isLoading={ isLoading }
                         />
                       ) : (
@@ -172,8 +171,19 @@ const TxFHEOperations = ({ txQuery }: Props) => {
           { items.map((op, index) => {
             const hcuDepth = op.hcu_depth ?? op.hcu_cost;
             return (
-              <ListItemMobile key={ op.log_index || index } className="fhe-ops-mobile-item">
-                <Flex gap={ 2 } flexWrap="wrap" mb={ 3 } alignItems="center">
+              <Flex
+                key={ op.log_index || index }
+                rowGap={ 3 }
+                alignItems="flex-start"
+                flexDirection="column"
+                paddingY={ 4 }
+                borderColor="border.divider"
+                borderTopWidth="1px"
+                _last={{ borderBottomWidth: '1px' }}
+                fontSize="16px"
+                lineHeight="20px"
+              >
+                <Flex gap={ 2 } flexWrap="wrap" alignItems="center">
                   <Badge colorPalette={ getTypeColor(op.type) } fontSize="sm" fontFamily="body">
                     { capitalize(op.type) }
                   </Badge>
@@ -207,11 +217,11 @@ const TxFHEOperations = ({ txQuery }: Props) => {
                   </Text>
 
                   <Text fontSize={{ base: 'sm', sm: 'md' }} fontWeight="medium" color="text.primary">Caller</Text>
-                  <Box>
+                  <Box minW={ 0 }>
                     { op.caller && op.caller.hash ? (
                       <AddressEntity
                         address={ op.caller }
-                        truncation="constant"
+                        truncation="dynamic"
                         isLoading={ isLoading }
                       />
                     ) : (
@@ -219,7 +229,7 @@ const TxFHEOperations = ({ txQuery }: Props) => {
                     ) }
                   </Box>
                 </Grid>
-              </ListItemMobile>
+              </Flex>
             );
           }) }
         </Box>
