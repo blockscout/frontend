@@ -23,6 +23,7 @@ import useApiQuery from 'lib/api/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import * as arbitrum from 'lib/rollups/arbitrum';
+import { formatZkEvmTxStatus, formatZkSyncL2TxnBatchStatus, layerLabels } from 'lib/rollups/utils';
 import getConfirmationDuration from 'lib/tx/getConfirmationDuration';
 import { currencyUnits } from 'lib/units';
 import { Badge } from 'toolkit/chakra/badge';
@@ -197,7 +198,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
         {
           rollupFeature.isEnabled &&
           (rollupFeature.type === 'zkEvm' || rollupFeature.type === 'zkSync' || rollupFeature.type === 'arbitrum' || rollupFeature.type === 'scroll') ?
-            'L2 status and method' :
+            `${ layerLabels.current } status and method` :
             'Status and method'
         }
       </DetailedInfo.ItemLabel>
@@ -244,13 +245,17 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
       { data.zkevm_status && !config.UI.views.tx.hiddenFields?.L1_status && (
         <>
           <DetailedInfo.ItemLabel
-            hint="Status of the transaction confirmation path to L1"
+            hint={ `Status of the transaction confirmation path to ${ layerLabels.parent }` }
             isLoading={ isLoading }
           >
             Confirmation status
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue>
-            <VerificationSteps currentStep={ data.zkevm_status } steps={ ZKEVM_L2_TX_STATUSES } isLoading={ isLoading }/>
+            <VerificationSteps
+              currentStep={ formatZkEvmTxStatus(data.zkevm_status) }
+              steps={ ZKEVM_L2_TX_STATUSES.map(formatZkEvmTxStatus) }
+              isLoading={ isLoading }
+            />
           </DetailedInfo.ItemValue>
         </>
       ) }
@@ -258,10 +263,10 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
       { data.arbitrum?.status && !config.UI.views.tx.hiddenFields?.L1_status && (
         <>
           <DetailedInfo.ItemLabel
-            hint="Status of the transaction confirmation path to L1"
+            hint={ `Status of the transaction confirmation path to ${ layerLabels.parent }` }
             isLoading={ isLoading }
           >
-            L1 status
+            { layerLabels.parent } status
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue>
             <VerificationSteps
@@ -293,10 +298,14 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
             hint="Status is the short interpretation of the batch lifecycle"
             isLoading={ isLoading }
           >
-            L1 status
+            { layerLabels.parent } status
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue>
-            <VerificationSteps steps={ ZKSYNC_L2_TX_BATCH_STATUSES } currentStep={ data.zksync.status } isLoading={ isLoading }/>
+            <VerificationSteps
+              steps={ ZKSYNC_L2_TX_BATCH_STATUSES.map(formatZkSyncL2TxnBatchStatus) }
+              currentStep={ formatZkSyncL2TxnBatchStatus(data.zksync.status) }
+              isLoading={ isLoading }
+            />
           </DetailedInfo.ItemValue>
         </>
       ) }
@@ -537,7 +546,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
           { data.arbitrum?.commitment_transaction.hash && (
             <>
               <DetailedInfo.ItemLabel
-                hint="L1 transaction containing this batch commitment"
+                hint={ `${ layerLabels.parent } transaction containing this batch commitment` }
                 isLoading={ isLoading }
               >
                 Commitment tx
@@ -551,7 +560,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
           { data.arbitrum?.confirmation_transaction.hash && (
             <>
               <DetailedInfo.ItemLabel
-                hint="L1 transaction containing confirmation of this batch"
+                hint={ `${ layerLabels.parent } transaction containing confirmation of this batch` }
                 isLoading={ isLoading }
               >
                 Confirmation tx
@@ -637,7 +646,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
       { rollupFeature.isEnabled && rollupFeature.type === 'arbitrum' && data.arbitrum && (
         <>
           <DetailedInfo.ItemLabel
-            hint="Fee paid to the poster for L1 resources"
+            hint={ `Fee paid to the poster for ${ layerLabels.parent } resources` }
             isLoading={ isLoading }
           >
             Poster fee
@@ -649,7 +658,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
           />
 
           <DetailedInfo.ItemLabel
-            hint="Fee paid to the network for L2 resources"
+            hint={ `Fee paid to the network for ${ layerLabels.current } resources` }
             isLoading={ isLoading }
           >
             Network fee
@@ -671,10 +680,10 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
       { rollupFeature.isEnabled && rollupFeature.type === 'arbitrum' && data.arbitrum && data.gas_used && (
         <>
           <DetailedInfo.ItemLabel
-            hint="L2 gas set aside for L1 data charges"
+            hint={ `${ layerLabels.current } gas set aside for ${ layerLabels.parent } data charges` }
             isLoading={ isLoading }
           >
-            Gas used for L1
+            Gas used for { layerLabels.parent }
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue>
             <Skeleton loading={ isLoading }>{ BigNumber(data.arbitrum.gas_used_for_l1 || 0).toFormat() }</Skeleton>
@@ -687,10 +696,10 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
           </DetailedInfo.ItemValue>
 
           <DetailedInfo.ItemLabel
-            hint="L2 gas spent on L2 resources"
+            hint={ `${ layerLabels.current } gas spent on ${ layerLabels.current } resources` }
             isLoading={ isLoading }
           >
-            Gas used for L2
+            Gas used for { layerLabels.current }
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue>
             <Skeleton loading={ isLoading }>{ BigNumber(data.arbitrum.gas_used_for_l2 || 0).toFormat() }</Skeleton>
@@ -707,10 +716,10 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
       { data.scroll?.l1_gas_used !== undefined && (
         <>
           <DetailedInfo.ItemLabel
-            hint="Total gas used on L1"
+            hint={ `Total gas used on ${ layerLabels.parent }` }
             isLoading={ isLoading }
           >
-            L1 Gas used
+            { layerLabels.parent } Gas used
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue>
             <Skeleton loading={ isLoading }>{ BigNumber(data.scroll?.l1_gas_used || 0).toFormat() }</Skeleton>
@@ -775,10 +784,10 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
           { data.l1_gas_used && (
             <>
               <DetailedInfo.ItemLabel
-                hint="L1 gas used by transaction"
+                hint={ `${ layerLabels.parent } gas used by transaction` }
                 isLoading={ isLoading }
               >
-                L1 gas used by txn
+                { layerLabels.parent } gas used by txn
               </DetailedInfo.ItemLabel>
               <DetailedInfo.ItemValue>
                 <Text>{ BigNumber(data.l1_gas_used).toFormat() }</Text>
@@ -789,10 +798,10 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
           { data.l1_gas_price && (
             <>
               <DetailedInfo.ItemLabel
-                hint="L1 gas price"
+                hint={ `${ layerLabels.parent } gas price` }
                 isLoading={ isLoading }
               >
-                L1 gas price
+                { layerLabels.parent } gas price
               </DetailedInfo.ItemLabel>
               <GasPriceValue
                 amount={ data.l1_gas_price }
@@ -806,10 +815,10 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
             <>
               <DetailedInfo.ItemLabel
                 // eslint-disable-next-line max-len
-                hint={ `L1 Data Fee which is used to cover the L1 "security" cost from the batch submission mechanism. In combination with L2 execution fee, L1 fee makes the total amount of fees that a transaction pays.` }
+                hint={ `${ layerLabels.parent } Data Fee which is used to cover the ${ layerLabels.parent } "security" cost from the batch submission mechanism. In combination with ${ layerLabels.current } execution fee, ${ layerLabels.parent } fee makes the total amount of fees that a transaction pays.` }
                 isLoading={ isLoading }
               >
-                L1 fee
+                { layerLabels.parent } fee
               </DetailedInfo.ItemLabel>
               <DetailedInfoNativeCoinValue
                 amount={ data.l1_fee }
@@ -824,10 +833,10 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
           { data.l1_fee_scalar && (
             <>
               <DetailedInfo.ItemLabel
-                hint="A Dynamic overhead (fee scalar) premium, which serves as a buffer in case L1 prices rapidly increase."
+                hint={ `A Dynamic overhead (fee scalar) premium, which serves as a buffer in case ${ layerLabels.parent } prices rapidly increase.` }
                 isLoading={ isLoading }
               >
-                L1 fee scalar
+                { layerLabels.parent } fee scalar
               </DetailedInfo.ItemLabel>
               <DetailedInfo.ItemValue>
                 <Text>{ data.l1_fee_scalar }</Text>

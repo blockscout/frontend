@@ -2,6 +2,7 @@ import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
+import { layerLabels } from 'lib/rollups/utils';
 import { ARBITRUM_MESSAGES_ITEM } from 'stubs/arbitrumL2';
 import { generateListStub } from 'stubs/utils';
 import { Skeleton } from 'toolkit/chakra/skeleton';
@@ -85,8 +86,8 @@ const ArbitrumL2Messages = ({ direction }: Props) => {
     <>
       <PageTitle
         title={ direction === 'from-rollup' ?
-          `Withdrawals (L2${ nbsp }${ rightLineArrow }${ nbsp }L1)` :
-          `Deposits (L1${ nbsp }${ rightLineArrow }${ nbsp }L2)` }
+          `Withdrawals (${ layerLabels.current }${ nbsp }${ rightLineArrow }${ nbsp }${ layerLabels.parent })` :
+          `Deposits (${ layerLabels.parent }${ nbsp }${ rightLineArrow }${ nbsp }${ layerLabels.current })` }
         withTextAd
       />
       <DataListDisplay

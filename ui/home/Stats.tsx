@@ -4,6 +4,7 @@ import React from 'react';
 
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
+import { layerLabels } from 'lib/rollups/utils';
 import { HOMEPAGE_STATS, HOMEPAGE_STATS_MICROSERVICE } from 'stubs/stats';
 import GasInfoTooltip from 'ui/shared/gas/GasInfoTooltip';
 import GasPrice from 'ui/shared/gas/GasPrice';
@@ -167,7 +168,7 @@ const Stats = () => {
       apiData?.last_output_root_size && {
         id: 'latest_l1_state_batch' as const,
         icon: 'txn_batches' as const,
-        label: 'Latest L1 state batch',
+        label: `Latest ${ layerLabels.parent } state batch`,
         value: apiData?.last_output_root_size,
         href: { pathname: '/batches' as const },
         isLoading,

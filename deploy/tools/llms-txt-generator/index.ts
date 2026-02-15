@@ -3,6 +3,7 @@ import { writeFileSync } from 'node:fs';
 import { dirname, resolve as resolvePath } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import dedent from 'dedent';
+import { layerLabels } from 'lib/rollups/utils';
 
 const currentFilePath = fileURLToPath(import.meta.url);
 const currentDir = dirname(currentFilePath);
@@ -20,6 +21,8 @@ function run() {
 
         const rollupFeature = config.features.rollup;
         const parentChainUrl = rollupFeature.isEnabled ? rollupFeature.parentChain.baseUrl : undefined;
+        const currentToParentLayerLabel = rollupFeature.isEnabled ? layerLabels.current + '→' + layerLabels.parent : undefined;
+        const parentToCurrentLayerLabel = rollupFeature.isEnabled ? layerLabels.parent + '→' + layerLabels.current : undefined;
         
         const validatorsFeature = config.features.validators;
 
@@ -106,19 +109,19 @@ function run() {
             curl --request GET --url '${ generalApiUrl }/api/v2/blocks/arbitrum-batch/{batch_number}'
             \`\`\`
                             
-            ### Get L1→L2 messages
+            ### Get ${ parentToCurrentLayerLabel } messages
                             
             \`\`\`bash
             curl --request GET --url '${ generalApiUrl }/api/v2/arbitrum/messages/to-rollup'
             \`\`\`
                             
-            ### Get L2→L1 messages
+            ### Get ${ currentToParentLayerLabel } messages
                             
             \`\`\`bash
             curl --request GET --url '${ generalApiUrl }/api/v2/arbitrum/messages/from-rollup'
             \`\`\`
                             
-            ### L2→L1 messages by transaction:
+            ### ${ currentToParentLayerLabel } messages by transaction:
                             
             \`\`\`bash
             curl --request GET --url '${ generalApiUrl }/api/v2/arbitrum/messages/withdrawals/{transactions_hash}'
@@ -150,13 +153,13 @@ function run() {
             curl --request GET --url '${ generalApiUrl }/api/v2/optimism/games'
             \`\`\`
                 
-            ### Get L1→L2 messages
+            ### Get ${ parentToCurrentLayerLabel } messages
                 
             \`\`\`bash
             curl --request GET --url '${ generalApiUrl }/api/v2/optimism/deposits'
             \`\`\`
                 
-            ### Get L2→L1 messages
+            ### Get ${ currentToParentLayerLabel } messages
                 
             \`\`\`bash
             curl --request GET --url '${ generalApiUrl }/api/v2/optimism/withdrawals'
@@ -294,13 +297,13 @@ function run() {
             curl --request GET --url '${ generalApiUrl }/api/v2/blocks/scroll-batch/{batch_number}'
             \`\`\`
                 
-            ### Deposits (L1→L2)
+            ### Deposits (${ parentToCurrentLayerLabel })
                 
             \`\`\`bash
             curl --request GET --url '${ generalApiUrl }/api/v2/scroll/deposits'
             \`\`\`
                 
-            ### Withdrawals (L2→L1)
+            ### Withdrawals (${ currentToParentLayerLabel })
                 
             \`\`\`bash
             curl --request GET --url '${ generalApiUrl }/api/v2/scroll/withdrawals'
@@ -308,13 +311,13 @@ function run() {
         ` : undefined;
 
         const SHIBARIUM_CHAIN_TEMPLATE = rollupFeature.isEnabled && rollupFeature.type === 'shibarium' ? `
-            ### Deposits (L1→L2)
+            ### Deposits (${ parentToCurrentLayerLabel })
                 
             \`\`\`bash
             curl --request GET --url '${ generalApiUrl }/api/v2/shibarium/deposits'
             \`\`\`
                 
-            ### Withdrawals (L2→L1)
+            ### Withdrawals (${ currentToParentLayerLabel })
                 
             \`\`\`bash
             curl --request GET --url '${ generalApiUrl }/api/v2/shibarium/withdrawals'

@@ -2,6 +2,7 @@ import React from 'react';
 
 import type { OptimisticL2WithdrawalsItem } from 'types/api/optimisticL2';
 
+import { layerLabels } from 'lib/rollups/utils';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
@@ -20,13 +21,13 @@ const OptimisticL2WithdrawalsTable = ({ items, top, isLoading }: Props) => {
         <TableRow>
           <TableColumnHeader>Msg nonce</TableColumnHeader>
           <TableColumnHeader>From</TableColumnHeader>
-          <TableColumnHeader>L2 txn hash</TableColumnHeader>
+          <TableColumnHeader>{ layerLabels.current } txn hash</TableColumnHeader>
           <TableColumnHeader>
             Timestamp
             <TimeFormatToggle/>
           </TableColumnHeader>
           <TableColumnHeader>Status</TableColumnHeader>
-          <TableColumnHeader>L1 txn hash</TableColumnHeader>
+          <TableColumnHeader>{ layerLabels.parent } txn hash</TableColumnHeader>
           <TableColumnHeader>Time left</TableColumnHeader>
         </TableRow>
       </TableHeaderSticky>

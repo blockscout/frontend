@@ -2,6 +2,7 @@ import React from 'react';
 
 import type { ArbitrumL2MessagesItem } from 'types/api/arbitrumL2';
 
+import { layerLabels } from 'lib/rollups/utils';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
@@ -20,16 +21,16 @@ const ArbitrumL2MessagesTable = ({ items, direction, top, isLoading }: Props) =>
     <TableRoot tableLayout="auto" minW="950px">
       <TableHeaderSticky top={ top }>
         <TableRow>
-          { direction === 'to-rollup' && <TableColumnHeader>L1 block</TableColumnHeader> }
+          { direction === 'to-rollup' && <TableColumnHeader>{ layerLabels.parent } block</TableColumnHeader> }
           { direction === 'from-rollup' && <TableColumnHeader>From</TableColumnHeader> }
           <TableColumnHeader>Message #</TableColumnHeader>
-          <TableColumnHeader>L2 transaction</TableColumnHeader>
+          <TableColumnHeader>{ layerLabels.current } transaction</TableColumnHeader>
           <TableColumnHeader>
             Timestamp
             <TimeFormatToggle/>
           </TableColumnHeader>
           <TableColumnHeader>Status</TableColumnHeader>
-          <TableColumnHeader>L1 transaction</TableColumnHeader>
+          <TableColumnHeader>{ layerLabels.parent } transaction</TableColumnHeader>
         </TableRow>
       </TableHeaderSticky>
       <TableBody>

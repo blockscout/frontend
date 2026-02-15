@@ -6,6 +6,7 @@ import type { ArbitrumL2MessagesItem } from 'types/api/arbitrumL2';
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
+import { layerLabels } from 'lib/rollups/utils';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
@@ -35,7 +36,7 @@ const ArbitrumL2MessagesListItem = ({ item, isLoading, direction }: Props) => {
 
       { direction === 'to-rollup' && (
         <>
-          <ListItemMobileGrid.Label isLoading={ isLoading }>L1 block</ListItemMobileGrid.Label>
+          <ListItemMobileGrid.Label isLoading={ isLoading }>{ layerLabels.parent } block</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
             { item.origination_transaction_block_number ? (
               <BlockEntityL1
@@ -69,7 +70,7 @@ const ArbitrumL2MessagesListItem = ({ item, isLoading, direction }: Props) => {
         </Skeleton>
       </ListItemMobileGrid.Value>
 
-      <ListItemMobileGrid.Label isLoading={ isLoading }>L2 transaction</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Label isLoading={ isLoading }>{ layerLabels.current } transaction</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
         { l2TxHash ? (
           <TxEntity
@@ -104,7 +105,7 @@ const ArbitrumL2MessagesListItem = ({ item, isLoading, direction }: Props) => {
           <ArbitrumL2MessageStatus status={ item.status } isLoading={ isLoading }/> }
       </ListItemMobileGrid.Value>
 
-      <ListItemMobileGrid.Label isLoading={ isLoading }>L1 transaction</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Label isLoading={ isLoading }>{ layerLabels.parent } transaction</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
         { l1TxHash ? (
           <TxEntityL1

@@ -13,6 +13,7 @@ import getBlockReward from 'lib/block/getBlockReward';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import * as arbitrum from 'lib/rollups/arbitrum';
+import { formatZkSyncL2TxnBatchStatus, layerLabels } from 'lib/rollups/utils';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
 import { Link } from 'toolkit/chakra/link';
@@ -174,10 +175,10 @@ const BlockDetails = ({ query }: Props) => {
       { rollupFeature.isEnabled && rollupFeature.type === 'arbitrum' && data.arbitrum && (
         <>
           <DetailedInfo.ItemLabel
-            hint="The most recent L1 block height as of this L2 block"
+            hint={ `The most recent ${ layerLabels.parent } block height as of this ${ layerLabels.current } block` }
             isLoading={ isPlaceholderData }
           >
-            L1 block height
+            { layerLabels.parent } block height
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue>
             <BlockEntityL1 isLoading={ isPlaceholderData } number={ data.arbitrum.l1_block_number }/>
@@ -305,8 +306,13 @@ const BlockDetails = ({ query }: Props) => {
             Status
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue>
-            { rollupFeature.type === 'zkSync' && data.zksync &&
-              <VerificationSteps steps={ ZKSYNC_L2_TX_BATCH_STATUSES } currentStep={ data.zksync.status } isLoading={ isPlaceholderData }/> }
+            { rollupFeature.type === 'zkSync' && data.zksync && (
+              <VerificationSteps
+                steps={ ZKSYNC_L2_TX_BATCH_STATUSES.map(formatZkSyncL2TxnBatchStatus) }
+                currentStep={ formatZkSyncL2TxnBatchStatus(data.zksync.status) }
+                isLoading={ isPlaceholderData }
+              />
+            ) }
             { rollupFeature.type === 'arbitrum' && data.arbitrum && (
               <VerificationSteps
                 steps={ arbitrum.verificationSteps }
@@ -344,7 +350,7 @@ const BlockDetails = ({ query }: Props) => {
           { data.arbitrum?.commitment_transaction.hash && (
             <>
               <DetailedInfo.ItemLabel
-                hint="L1 transaction containing this batch commitment"
+                hint={ `${ layerLabels.parent } transaction containing this batch commitment` }
                 isLoading={ isPlaceholderData }
               >
                 Commitment tx
@@ -358,7 +364,7 @@ const BlockDetails = ({ query }: Props) => {
           { data.arbitrum?.confirmation_transaction.hash && (
             <>
               <DetailedInfo.ItemLabel
-                hint="L1 transaction containing confirmation of this batch"
+                hint={ `${ layerLabels.parent } transaction containing confirmation of this batch` }
                 isLoading={ isPlaceholderData }
               >
                 Confirmation tx
@@ -684,7 +690,7 @@ const BlockDetails = ({ query }: Props) => {
         { rollupFeature.isEnabled && rollupFeature.type === 'arbitrum' && data.arbitrum && data.arbitrum.send_count && (
           <>
             <DetailedInfo.ItemLabel
-              hint="The cumulative number of L2 to L1 transactions as of this block"
+              hint={ `The cumulative number of ${ layerLabels.current } to ${ layerLabels.parent } transactions as of this block` }
               isLoading={ isPlaceholderData }
             >
               Send count
@@ -694,7 +700,7 @@ const BlockDetails = ({ query }: Props) => {
             </DetailedInfo.ItemValue>
 
             <DetailedInfo.ItemLabel
-              hint="The root of the Merkle accumulator representing all L2 to L1 transactions as of this block"
+              hint={ `The root of the Merkle accumulator representing all ${ layerLabels.current } to ${ layerLabels.parent } transactions as of this block` }
               isLoading={ isPlaceholderData }
             >
               Send root
@@ -704,7 +710,7 @@ const BlockDetails = ({ query }: Props) => {
             </DetailedInfo.ItemValue>
 
             <DetailedInfo.ItemLabel
-              hint="The number of delayed L1 to L2 messages read as of this block"
+              hint={ `The number of delayed ${ layerLabels.parent } to ${ layerLabels.current } messages read as of this block` }
               isLoading={ isPlaceholderData }
             >
               Delayed messages

@@ -5,6 +5,7 @@ import type { ArbitrumTransactionMessageStatus, Transaction } from 'types/api/tr
 
 import { route } from 'nextjs-routes';
 
+import { layerLabels } from 'lib/rollups/utils';
 import { Link } from 'toolkit/chakra/link';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
@@ -85,7 +86,7 @@ const TxDetailsWithdrawalStatusArbitrum = ({ data }: Props) => {
       <DetailedInfo.ItemLabel
         hint="The hash of the transaction that originated the message from the base layer"
       >
-        Originating L1 txn hash
+        Originating { layerLabels.parent } txn hash
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
         { data.arbitrum.message_related_info.associated_l1_transaction_hash ?

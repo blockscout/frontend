@@ -2,6 +2,7 @@ import React from 'react';
 
 import type { ZkEvmL2WithdrawalsItem } from 'types/api/zkEvmL2';
 
+import { layerLabels } from 'lib/rollups/utils';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
@@ -20,12 +21,12 @@ const ZkEvmL2WithdrawalsTable = ({ items, top, isLoading }: Props) => {
         <TableRow>
           <TableColumnHeader>Block</TableColumnHeader>
           <TableColumnHeader>Index</TableColumnHeader>
-          <TableColumnHeader>L2 txn hash</TableColumnHeader>
+          <TableColumnHeader>{ layerLabels.current } txn hash</TableColumnHeader>
           <TableColumnHeader>
             Timestamp
             <TimeFormatToggle/>
           </TableColumnHeader>
-          <TableColumnHeader>L1 txn hash</TableColumnHeader>
+          <TableColumnHeader>{ layerLabels.parent } txn hash</TableColumnHeader>
           <TableColumnHeader isNumeric>Value</TableColumnHeader>
           <TableColumnHeader>Token</TableColumnHeader>
         </TableRow>

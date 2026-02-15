@@ -2,6 +2,7 @@ import React from 'react';
 
 import type { ZkEvmL2DepositsItem } from 'types/api/zkEvmL2';
 
+import { layerLabels } from 'lib/rollups/utils';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
@@ -18,14 +19,14 @@ const ZkEvmL2DepositsTable = ({ items, top, isLoading }: Props) => {
     <TableRoot tableLayout="auto" minW="950px">
       <TableHeaderSticky top={ top }>
         <TableRow>
-          <TableColumnHeader>L1 block</TableColumnHeader>
+          <TableColumnHeader>{ layerLabels.parent } block</TableColumnHeader>
           <TableColumnHeader>Index</TableColumnHeader>
-          <TableColumnHeader>L1 txn hash</TableColumnHeader>
+          <TableColumnHeader>{ layerLabels.parent } txn hash</TableColumnHeader>
           <TableColumnHeader>
             Timestamp
             <TimeFormatToggle/>
           </TableColumnHeader>
-          <TableColumnHeader>L2 txn hash</TableColumnHeader>
+          <TableColumnHeader>{ layerLabels.current } txn hash</TableColumnHeader>
           <TableColumnHeader isNumeric>Value</TableColumnHeader>
           <TableColumnHeader>Token</TableColumnHeader>
         </TableRow>
