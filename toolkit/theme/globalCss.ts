@@ -54,6 +54,10 @@ const globalCss: SystemConfig['globalCss'] = {
   ...scrollbar,
   ...entity,
   ...addressEntity,
+  '.fhe-ops-mobile-item': {
+    paddingTop: 4,
+    paddingBottom: 4,
+  },
 };
 
 export default globalCss;

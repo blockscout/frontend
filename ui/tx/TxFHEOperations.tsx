@@ -126,17 +126,17 @@ const TxFHEOperations = ({ txQuery }: Props) => {
                       </Text>
                     </TableCell>
                     <TableCell>
-                      <Badge colorPalette={ getTypeColor(op.type) } fontSize="xs">
+                      <Badge colorPalette={ getTypeColor(op.type) } fontSize="sm" fontFamily="body">
                         { capitalize(op.type) }
                       </Badge>
                     </TableCell>
                     <TableCell>
-                      <Badge colorPalette="gray" fontSize="xs">
+                      <Badge colorPalette="gray" fontSize="sm" fontFamily="body">
                         { op.fhe_type }
                       </Badge>
                     </TableCell>
                     <TableCell>
-                      <Badge colorPalette="gray" fontSize="xs">
+                      <Badge colorPalette="gray" fontSize="sm" fontFamily="body">
                         { op.is_scalar ? 'Scalar' : 'Non-Scalar' }
                       </Badge>
                     </TableCell>
@@ -172,41 +172,41 @@ const TxFHEOperations = ({ txQuery }: Props) => {
           { items.map((op, index) => {
             const hcuDepth = op.hcu_depth ?? op.hcu_cost;
             return (
-              <ListItemMobile key={ op.log_index || index }>
+              <ListItemMobile key={ op.log_index || index } className="fhe-ops-mobile-item">
                 <Flex gap={ 2 } flexWrap="wrap" mb={ 3 } alignItems="center">
-                  <Badge colorPalette={ getTypeColor(op.type) } fontSize="xs">
+                  <Badge colorPalette={ getTypeColor(op.type) } fontSize="sm" fontFamily="body">
                     { capitalize(op.type) }
                   </Badge>
-                  <Badge colorPalette="gray" fontSize="xs">
+                  <Badge colorPalette="gray" fontSize="sm" fontFamily="body">
                     { op.fhe_type }
                   </Badge>
-                  <Badge colorPalette="gray" fontSize="xs">
+                  <Badge colorPalette="gray" fontSize="sm" fontFamily="body">
                     { op.is_scalar ? 'Scalar' : 'Non-Scalar' }
                   </Badge>
                 </Flex>
 
-                <Grid templateColumns="110px 1fr" rowGap={ 3 } columnGap={ 2 }>
-                  <Text fontSize="md" fontWeight="medium" color="text.primary">Index</Text>
-                  <Text fontSize="md" color="text.secondary">
+                <Grid templateColumns="110px 1fr" rowGap={{ base: 2, sm: 3 }} columnGap={ 2 }>
+                  <Text fontSize={{ base: 'sm', sm: 'md' }} fontWeight="medium" color="text.primary">Index</Text>
+                  <Text fontSize={{ base: 'sm', sm: 'md' }} color="text.secondary">
                     { op.log_index }
                   </Text>
 
-                  <Text fontSize="md" fontWeight="medium" color="text.primary">Operation</Text>
-                  <Text fontSize="md" color="text.secondary">
+                  <Text fontSize={{ base: 'sm', sm: 'md' }} fontWeight="medium" color="text.primary">Operation</Text>
+                  <Text fontSize={{ base: 'sm', sm: 'md' }} color="text.secondary">
                     { op.operation }
                   </Text>
 
-                  <Text fontSize="md" fontWeight="medium" color="text.primary">HCU cost</Text>
-                  <Text fontSize="md" color="text.secondary">
+                  <Text fontSize={{ base: 'sm', sm: 'md' }} fontWeight="medium" color="text.primary">HCU cost</Text>
+                  <Text fontSize={{ base: 'sm', sm: 'md' }} color="text.secondary">
                     { op.hcu_cost.toLocaleString() }
                   </Text>
 
-                  <Text fontSize="md" fontWeight="medium" color="text.primary">HCU depth</Text>
-                  <Text fontSize="md" color="text.secondary">
+                  <Text fontSize={{ base: 'sm', sm: 'md' }} fontWeight="medium" color="text.primary">HCU depth</Text>
+                  <Text fontSize={{ base: 'sm', sm: 'md' }} color="text.secondary">
                     { hcuDepth.toLocaleString() }
                   </Text>
 
-                  <Text fontSize="md" fontWeight="medium" color="text.primary">Caller</Text>
+                  <Text fontSize={{ base: 'sm', sm: 'md' }} fontWeight="medium" color="text.primary">Caller</Text>
                   <Box>
                     { op.caller && op.caller.hash ? (
                       <AddressEntity
@@ -215,7 +215,7 @@ const TxFHEOperations = ({ txQuery }: Props) => {
                         isLoading={ isLoading }
                       />
                     ) : (
-                      <Text fontSize="md" color="text.secondary">—</Text>
+                      <Text fontSize={{ base: 'sm', sm: 'md' }} color="text.secondary">—</Text>
                     ) }
                   </Box>
                 </Grid>
