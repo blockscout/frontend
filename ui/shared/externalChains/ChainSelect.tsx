@@ -36,7 +36,7 @@ const ChainSelect = ({ loading, mode, chainsConfig, chainIds, withAllOption, ...
 
   const allItems = React.useMemo(() => {
     const chainItems = chainsConfig
-      .filter((chain) => !chainIds || chainIds.includes(chain.id))
+      .filter((chain) => !chainIds || isInitialLoading || chainIds.includes(chain.id))
       .map((chain) => ({
         value: chain.id,
         label: chain.name || `Chain ${ chain.id }`,
@@ -44,7 +44,7 @@ const ChainSelect = ({ loading, mode, chainsConfig, chainIds, withAllOption, ...
       })) || [];
 
     return [ withAllOption ? ALL_OPTION : undefined, ...chainItems ].filter(Boolean);
-  }, [ chainsConfig, chainIds, withAllOption ]);
+  }, [ chainsConfig, chainIds, withAllOption, isInitialLoading ]);
 
   const collection = React.useMemo(() => {
     return createListCollection<SelectOption>({ items: allItems });
