@@ -101,27 +101,19 @@ const ContractDetails = ({ addressData, channel, mainContractQuery }: Props) => 
         />
       ) }
       { !mainContractQuery.data?.is_verified && multichainContext && (
-        <Grid templateColumns={{ base: '1fr', lg: '1fr 1fr' }} rowGap={ 4 } columnGap={ 6 } mb={ 8 } _empty={{ display: 'none' }}>
+        <Grid templateColumns={{ base: 'auto 1fr', lg: 'auto 1fr auto 1fr' }} rowGap={ 4 } columnGap={ 3 } mb={ 8 } _empty={{ display: 'none' }}>
           { addressData.creator_address_hash && addressData.creation_transaction_hash && (
             <ContractDetailsInfoCreator
               addressHash={ addressData.creator_address_hash }
               txHash={ addressData.creation_transaction_hash }
               creationStatus={ addressData.creation_status }
               isLoading={ mainContractQuery.isPlaceholderData }
-              labelProps={{
-                w: {
-                  base: addressData.implementations && addressData.implementations.length > 0 ? '130px' : '65px',
-                  lg: '130px',
-                },
-              }}
             />
           ) }
-          { addressData.implementations && addressData.implementations.length > 0 && (
+          { addressData.implementations && addressData.implementations.length > 0 && !mainContractQuery.isPlaceholderData && (
             <ContractDetailsInfoImplementations
               implementations={ addressData.implementations }
               proxyType={ addressData.proxy_type }
-              isLoading={ mainContractQuery.isPlaceholderData }
-              labelProps={{ w: '130px' }}
             />
           ) }
         </Grid>

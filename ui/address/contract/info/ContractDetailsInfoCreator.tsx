@@ -1,4 +1,3 @@
-import type { BoxProps } from '@chakra-ui/react';
 import { Text, Flex } from '@chakra-ui/react';
 import React from 'react';
 
@@ -15,25 +14,24 @@ interface Props {
   txHash: string;
   creationStatus: SmartContractCreationStatus | null;
   isLoading: boolean;
-  labelProps?: BoxProps;
 }
 
-const ContractDetailsInfoCreator = ({ addressHash, txHash, creationStatus, isLoading, labelProps }: Props) => {
+const ContractDetailsInfoCreator = ({ addressHash, txHash, creationStatus, isLoading }: Props) => {
   return (
     <ContractDetailsInfoItem
       label="Creator"
       isLoading={ isLoading }
-      labelProps={ labelProps }
+      contentProps={{ gridColumn: { lg: '2 / span 3' } }}
     >
-      <Flex alignItems="center" flexWrap="wrap">
+      <Flex alignItems="center" flexWrap="wrap" columnGap={ 2 } rowGap={ 2 }>
         <AddressEntity
           address={{ hash: addressHash }}
           truncation="constant"
           noIcon
         />
-        <Text whiteSpace="pre" color="text.secondary"> at txn </Text>
+        <Text whiteSpace="pre" color="text.secondary">at txn</Text>
         <TxEntity hash={ txHash } truncation="constant" noIcon/>
-        { creationStatus && <ContractCreationStatus status={ creationStatus } ml={{ base: 0, lg: 2 }}/> }
+        { creationStatus && <ContractCreationStatus status={ creationStatus }/> }
       </Flex>
     </ContractDetailsInfoItem>
   );

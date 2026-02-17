@@ -1,4 +1,3 @@
-import type { BoxProps } from '@chakra-ui/react';
 import React from 'react';
 
 import type { AddressImplementation } from 'types/api/addressParams';
@@ -12,19 +11,15 @@ import ContractDetailsInfoItem from './ContractDetailsInfoItem';
 interface Props {
   implementations: Array<AddressImplementation>;
   proxyType?: SmartContractProxyType;
-  isLoading: boolean;
-  labelProps?: BoxProps;
 }
 
-const ContractDetailsInfoImplementations = ({ implementations, proxyType, isLoading, labelProps }: Props) => {
+const ContractDetailsInfoImplementations = ({ implementations, proxyType }: Props) => {
   return (
     <ContractDetailsInfoItem
       label={ `${ proxyType === 'eip7702' ? 'Delegated to' : `Implementation${ implementations.length > 1 ? 's' : '' }` }` }
-      isLoading={ isLoading }
-      labelProps={ labelProps }
-      contentProps={{ maxW: 'calc(100% - 194px)', position: 'relative' }}
+      contentProps={{ gridColumn: { lg: '2 / span 3' }, position: 'relative' }}
     >
-      <ContainerWithScrollY gradientHeight={ 48 } maxH="200px">
+      <ContainerWithScrollY gradientHeight={ 48 } maxH="200px" w="100%">
         { implementations.map((item) => (
           <AddressEntity
             key={ item.address_hash }
@@ -34,7 +29,6 @@ const ContractDetailsInfoImplementations = ({ implementations, proxyType, isLoad
               name: item.name,
               is_contract: true,
             }}
-            isLoading={ isLoading }
             noIcon
           />
         )) }

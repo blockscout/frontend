@@ -72,16 +72,8 @@ const ContractDetailsInfo = ({ data, isLoading, addressData }: Props) => {
   const isStylusContract = data.language === 'stylus_rust';
 
   return (
-    <Grid templateColumns={{ base: '1fr', lg: '1fr 1fr' }} rowGap={ 4 } columnGap={ 6 } mb={ 8 }>
-      { data.name && (
-        <ContractDetailsInfoItem
-          label="Contract name"
-          isLoading={ isLoading }
-        >
-          { contractNameWithCertifiedIcon }
-        </ContractDetailsInfoItem>
-      ) }
-      { multichainContext && addressData.creator_address_hash && addressData.creation_transaction_hash && (
+    <Grid templateColumns={{ base: 'auto 1fr', lg: 'auto 1fr auto 1fr' }} rowGap={ 4 } columnGap={ 3 } mb={ 8 }>
+      { addressData.creator_address_hash && addressData.creation_transaction_hash && multichainContext && (
         <ContractDetailsInfoCreator
           addressHash={ addressData.creator_address_hash }
           txHash={ addressData.creation_transaction_hash }
@@ -89,12 +81,19 @@ const ContractDetailsInfo = ({ data, isLoading, addressData }: Props) => {
           isLoading={ isLoading }
         />
       ) }
-      { !isLoading && multichainContext && addressData.implementations && addressData.implementations.length > 0 && (
+      { addressData.implementations && addressData.implementations.length > 0 && multichainContext && !isLoading && (
         <ContractDetailsInfoImplementations
           implementations={ addressData.implementations }
           proxyType={ addressData.proxy_type }
-          isLoading={ isLoading }
         />
+      ) }
+      { data.name && (
+        <ContractDetailsInfoItem
+          label="Contract name"
+          isLoading={ isLoading }
+        >
+          { contractNameWithCertifiedIcon }
+        </ContractDetailsInfoItem>
       ) }
       { data.compiler_version && (
         <ContractDetailsInfoItem
