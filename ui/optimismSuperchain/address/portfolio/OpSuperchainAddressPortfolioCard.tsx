@@ -24,7 +24,9 @@ interface Props {
   onClick?: (chainId: string) => void;
 }
 
-const OpSuperchainAddressPortfolioCard = ({ chain, value, share, isLoading, isSelected, noneIsSelected, totalNum, onClick }: Props) => {
+const OpSuperchainAddressPortfolioCard = ({ chain, value, share, isLoading, isSelected: isSelectedProp, noneIsSelected, totalNum, onClick }: Props) => {
+
+  const isSelected = isSelectedProp || totalNum === 1;
 
   const columnNumDesktop = clamp(totalNum || 0, 3, 5);
   const cardWidth = React.useMemo(() => {

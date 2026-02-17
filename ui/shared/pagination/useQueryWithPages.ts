@@ -257,6 +257,12 @@ export default function useQueryWithPages<Resource extends PaginatedResourceName
   }, [ router, scrollToTop ]);
 
   const onChainValueChange = useCallback(({ value }: { value: Array<string> }) => {
+
+    if (!options?.enabled) {
+      setChainValue(value);
+      return;
+    }
+
     if (page !== 1) {
       resetPage({ chainValue: value });
     } else {
@@ -268,7 +274,7 @@ export default function useQueryWithPages<Resource extends PaginatedResourceName
       setChainValue(value);
       router.push({ pathname: router.pathname, query: nextPageQuery }, undefined, { shallow: true });
     }
-  }, [ page, resetPage, router ]);
+  }, [ page, resetPage, router, options?.enabled ]);
 
   let hasNextPage = false;
   if (nextPageParams) {

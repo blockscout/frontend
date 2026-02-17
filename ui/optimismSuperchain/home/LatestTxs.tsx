@@ -1,20 +1,16 @@
-import { Box } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import { MultichainProvider } from 'lib/contexts/multichain';
-import useIsMobile from 'lib/hooks/useIsMobile';
 import useRoutedChainSelect from 'lib/multichain/useRoutedChainSelect';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { EmptyState } from 'toolkit/chakra/empty-state';
-import { Heading } from 'toolkit/chakra/heading';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import ChainSelect from 'ui/optimismSuperchain/components/ChainSelect';
 
 import LatestTxsLocal from './LatestTxsLocal';
 
 const LatestTxs = () => {
-  const isMobile = useIsMobile();
   const router = useRouter();
   const tab = getQueryParamString(router.query.tab);
   const chainSelect = useRoutedChainSelect();
@@ -24,12 +20,12 @@ const LatestTxs = () => {
   const tabs = [
     {
       id: 'cross_chain_txs',
-      title: 'Cross-chain',
+      title: 'Cross-chain txns',
       component: <EmptyState type="coming_soon" my={ 6 }/>,
     },
     {
       id: 'txs_local',
-      title: 'Local',
+      title: 'Local txns',
       component: chainSelect.value ? (
         <MultichainProvider chainId={ chainSelect.value[0] }>
           <LatestTxsLocal/>
@@ -37,8 +33,6 @@ const LatestTxs = () => {
       ) : null,
     },
   ];
-
-  const heading = <Heading level="3" mb={{ base: 3, lg: 0 }}>Latest transactions</Heading>;
 
   const rightSlot = isLocalTab ? (
     <ChainSelect
@@ -49,18 +43,15 @@ const LatestTxs = () => {
   ) : null;
 
   return (
-    <Box as="section" my={ 8 }>
-      { isMobile && heading }
-      <RoutedTabs
-        tabs={ tabs }
-        defaultTabId="txs_local"
-        listProps={{ mb: 3 }}
-        leftSlot={ !isMobile ? heading : null }
-        leftSlotProps={{ mr: 6 }}
-        rightSlot={ rightSlot }
-        rightSlotProps={{ ml: { base: 'auto', lg: 6 } }}
-      />
-    </Box>
+    <RoutedTabs
+      tabs={ tabs }
+      defaultTabId="txs_local"
+      listProps={{ mb: 3 }}
+      leftSlotProps={{ mr: 6 }}
+      rightSlot={ rightSlot }
+      rightSlotProps={{ ml: { base: 'auto', lg: 6 } }}
+      my={ 8 }
+    />
   );
 };
 

@@ -182,7 +182,7 @@ const OpSuperchainAddressPortfolioTokens = ({ addressData, isLoading, onChainCha
       w={{ base: '100%', lg: '350px' }}
       size="sm"
       onChange={ handleSearchTermChange }
-      placeholder="Search by token name or symbol"
+      placeholder="Filter by token name or symbol"
       initialValue={ searchTerm }
     />
   );
@@ -210,11 +210,11 @@ const OpSuperchainAddressPortfolioTokens = ({ addressData, isLoading, onChainCha
 
   const actionBar = (
     <>
-      <Box hideFrom="lg" mt={ 2 }>
+      <Box hideFrom="lg" my={ 6 }>
         { searchInput }
       </Box>
       { (!isMobile || tokensQuery.pagination.isVisible) && (
-        <ActionBar mt={ 0 }>
+        <ActionBar mt={{ base: -6, lg: 0 }}>
           <Box hideBelow="lg">
             { searchInput }
           </Box>
