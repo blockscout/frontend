@@ -52,19 +52,3 @@ export interface FheOperationsResponse {
   max_depth_hcu: number;
   operation_count: number;
 }
-
-export interface FheOperationSummary {
-  operation: string;
-  count: number;
-  total_hcu: number;
-  avg_hcu: number;
-}
-
-export interface FheFeesResponse {
-  total_hcu: number;
-  max_depth_hcu: number;
-  operation_count: number;
-  by_operation: Array<FheOperationSummary>;
-  by_operation_type: Record<FheOperationType, number>;
-  by_fhe_type: Record<FheType, number>;
-}

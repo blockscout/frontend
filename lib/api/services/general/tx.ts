@@ -4,7 +4,7 @@ import type { FheOperationsResponse } from 'types/api/fheOperations';
 import type { InternalTransactionFilters, InternalTransactionsResponse } from 'types/api/internalTransaction';
 import type { LogsResponseTx } from 'types/api/log';
 import type { RawTracesResponse } from 'types/api/rawTrace';
-import type { TokenTransferFilters } from 'types/api/tokenTransfer';
+import type { TokenTransferResponse, TokenTransferFilters } from 'types/api/tokenTransfer';
 import type {
   TransactionsResponseValidated,
   TransactionsResponsePending,
@@ -117,6 +117,7 @@ R extends 'general:txs_execution_node' ? TransactionsResponseValidated :
 R extends 'general:tx_internal_txs' ? InternalTransactionsResponse :
 R extends 'general:tx' ? Transaction :
 R extends 'general:tx_logs' ? LogsResponseTx :
+R extends 'general:tx_token_transfers' ? TokenTransferResponse :
 R extends 'general:tx_fhe_operations' ? FheOperationsResponse :
 R extends 'general:tx_raw_trace' ? RawTracesResponse :
 R extends 'general:tx_state_changes' ? TxStateChanges :
