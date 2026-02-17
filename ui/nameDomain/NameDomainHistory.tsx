@@ -14,6 +14,9 @@ import NameDomainHistoryListItem from './history/NameDomainHistoryListItem';
 import NameDomainHistoryTable from './history/NameDomainHistoryTable';
 import { getNextSortValue, type Sort, type SortField } from './history/utils';
 
+const feature = config.features.nameServices;
+const availableProtocols = feature.isEnabled && feature.ens.isEnabled ? feature.ens.protocols : [];
+
 interface Props {
   domain: bens.DetailedDomain | undefined;
 }
@@ -21,11 +24,15 @@ interface Props {
 const NameDomainHistory = ({ domain }: Props) => {
   const router = useRouter();
   const domainName = getQueryParamString(router.query.name);
+  const protocolId = getQueryParamString(router.query.protocol_id) || availableProtocols[0];
 
   const [ sort, setSort ] = React.useState<Sort>('default');
 
   const { isPlaceholderData, isError, data } = useApiQuery('bens:domain_events', {
-    pathParams: { name: domainName, chainId: config.chain.id },
+    pathParams: { name: domainName },
+    queryParams: {
+      protocol_id: protocolId,
+    },
     queryOptions: {
       placeholderData: { items: Array(4).fill(ENS_DOMAIN_EVENT) },
     },

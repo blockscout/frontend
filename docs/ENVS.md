@@ -709,6 +709,7 @@ This feature allows resolving blockchain addresses using human-readable domain n
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_NAME_SERVICE_API_HOST | `string` | Name Service API endpoint url | Required | - | `https://bens.services.blockscout.com` | v1.22.0+ |
+| NEXT_PUBLIC_NAME_SERVICE_PROTOCOLS | `Array<string>` | List of the protocols used by the chain. The protocol ids can be obtained from [/api/v1/protocols](https://bens.services.blockscout.com/api/v1/protocols) resource. | - | `['ens']` | `['rns']` | upcoming |
 
 &nbsp;
 

@@ -1,6 +1,5 @@
 import React from 'react';
 
-import config from 'configs/app';
 import { clustersDirectoryMock } from 'mocks/clusters/directory';
 import { clustersLeaderboardMock } from 'mocks/clusters/leaderboard';
 import * as ensDomainMock from 'mocks/ens/domain';
@@ -37,13 +36,10 @@ test.describe('domains', () => {
         page_size: 50,
       },
     }, {
-      pathParams: { chainId: config.chain.id },
-      queryParams: { only_active: true },
+      queryParams: { only_active: true, protocols: [ ensDomainMock.protocolA.id, ensDomainMock.protocolB.id ] },
     });
-    await mockApiResponse('bens:domain_protocols', {
+    await mockApiResponse('bens:protocols', {
       items: [ ensDomainMock.protocolA, ensDomainMock.protocolB ],
-    }, {
-      pathParams: { chainId: config.chain.id },
     });
   });
 
