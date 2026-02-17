@@ -26,7 +26,7 @@ jobs:
         with:
             project_name: ${{ vars.PROJECT_NAME }}
             field_name: Status
-            field_value: Ready For Realease
+            field_value: Ready For Release
             issues: "[${{ github.event.issue.number }}]"
         secrets: inherit
         permissions:

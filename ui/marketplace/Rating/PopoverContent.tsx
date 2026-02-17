@@ -50,7 +50,7 @@ const PopoverContent = ({ appId, userRating, source }: Props) => {
       );
     } catch (error) {
       toaster.error({
-        title: 'Ooops! Something went wrong',
+        title: 'Oops! Something went wrong',
         description: 'Please try again later',
       });
     }

@@ -81,7 +81,7 @@ export const HOMEPAGE_STATS: stats.MainPageMultichainStats = {
     value: '1026175',
     title: 'Yesterday txns',
     units: undefined,
-    description: 'Number of transactions yesterday (0:00 - 23:59 UTC) across all chains in the cluste',
+    description: 'Number of transactions yesterday (0:00 - 23:59 UTC) across all chains in the cluster',
   },
 };
 
