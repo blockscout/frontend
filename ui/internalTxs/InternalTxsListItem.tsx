@@ -41,7 +41,7 @@ const InternalTxsListItem = ({
     <ListItemMobile rowGap={ 3 }>
       <Flex columnGap={ 2 }>
         { typeTitle && <Badge colorPalette="cyan" loading={ isLoading }>{ typeTitle }</Badge> }
-        <TxStatus status={ success ? 'ok' : 'error' } errorText={ error } isLoading={ isLoading }/>
+        { !success && <TxStatus status="error" errorText={ error } isLoading={ isLoading }/> }
       </Flex>
       <Flex justifyContent="space-between" width="100%">
         <TxEntity

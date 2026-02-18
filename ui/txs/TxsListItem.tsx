@@ -65,7 +65,7 @@ const TxsListItem = ({
           ) :
             <TxType types={ tx.transaction_types } isLoading={ isLoading }/>
           }
-          <TxStatus status={ tx.status } errorText={ tx.status === 'error' ? tx.result : undefined } isLoading={ isLoading }/>
+          { tx.status !== 'ok' && <TxStatus status={ tx.status } errorText={ tx.status === 'error' ? tx.result : undefined } isLoading={ isLoading }/> }
           <TxWatchListTags tx={ tx } isLoading={ isLoading }/>
           { protocolTag && <EntityTag data={ protocolTag } isLoading={ isLoading }/> }
         </HStack>

@@ -32,6 +32,9 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
       scrollbar: {
         thumb: { value: { _light: '{colors.blackAlpha.300}', _dark: '{colors.whiteAlpha.300}' } },
       },
+      selection: {
+        bg: { value: { _light: '#E3CFE7', _dark: '#754B7D' } },
+      },
     },
 
     // FOUNDATIONS

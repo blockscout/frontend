@@ -40,6 +40,7 @@ function transformClusterToSearchResult(cluster: {
     name: cluster.name,
     address_hash: ownerAddress,
     is_smart_contract_verified: false,
+    is_smart_contract_address: false,
     cluster_info: {
       cluster_id: cluster.clusterId || cluster.name,
       name: cluster.name,

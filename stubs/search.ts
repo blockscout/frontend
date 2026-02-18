@@ -12,6 +12,7 @@ export const SEARCH_RESULT_ITEM: SearchResultItem = {
   icon_url: null,
   is_verified_via_admin_panel: false,
   is_smart_contract_verified: false,
+  is_smart_contract_address: false,
   exchange_rate: '1.11',
   total_supply: null,
   token_type: 'ERC-20',

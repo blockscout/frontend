@@ -4,11 +4,10 @@ import { dirname, resolve as resolvePath } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { Worker } from 'node:worker_threads';
 import * as viemChains from 'viem/chains';
-import { pick } from 'es-toolkit';
+import { pick, uniq, delay } from 'es-toolkit';
 
 import { EssentialDappsConfig } from 'types/client/marketplace';
 import { getEnvValue, parseEnvJson } from 'configs/app/utils';
-import { uniq } from 'es-toolkit';
 import currentChainConfig from 'configs/app';
 import appConfig from 'configs/app';
 import { EssentialDappsChainConfig } from 'types/client/marketplace';
@@ -61,14 +60,15 @@ function trimChainConfig(config: typeof appConfig, logoUrl: string | undefined) 
 }
 
 async function computeChainConfig(url: string): Promise<unknown> {
-  return new Promise((resolve, reject) => {
-    const workerPath = resolvePath(currentDir, 'worker.js');
+  const workerPath = resolvePath(currentDir, 'worker.js');
 
-    const worker = new Worker(workerPath, {
-      workerData: { url },
-      env: {} // Start with empty environment
-    });
+  const worker = new Worker(workerPath, {
+    workerData: { url },
+    env: {} // Start with empty environment
+  });
+  const controller = new AbortController();
 
+  const configPromise = new Promise((resolve, reject) => {
     worker.on('message', (config) => {
       resolve(config);
     });
@@ -79,11 +79,17 @@ async function computeChainConfig(url: string): Promise<unknown> {
     });
 
     worker.on('exit', (code) => {
-      if (code !== 0) {
-        reject(new Error(`Worker stopped with exit code ${ code }`));
-      }
+      controller.abort();
+      reject(new Error(`Worker stopped with exit code ${ code }`));
     });
   });
+
+  return Promise.race([
+    configPromise,
+    delay(30_000, { signal: controller.signal })
+  ]).finally(() => {
+    worker.terminate();
+  })
 }
 
 async function run() {
@@ -116,7 +122,15 @@ async function run() {
     const explorerUrls = chainscoutInfo.externals.map(({ explorerUrl }) => explorerUrl).filter(Boolean);
     console.log(`ℹ️  For ${ explorerUrls.length } chains explorer url was found in static config. Fetching parameters for each chain...`);
 
-    const chainConfigs = await Promise.all(explorerUrls.map(computeChainConfig)) as Array<typeof appConfig>;
+    const chainConfigs: Array<typeof appConfig> = [];
+
+    for (const explorerUrl of explorerUrls) {
+      const chainConfig = (await computeChainConfig(explorerUrl)) as typeof appConfig | undefined;
+      if (!chainConfig) {
+        throw new Error(`Failed to fetch chain config for ${ explorerUrl }`);
+      }
+      chainConfigs.push(chainConfig);
+    }
 
     const result = {
       chains: [ currentChainConfig, ...chainConfigs ].map((config) => {

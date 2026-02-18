@@ -1,19 +1,20 @@
 name: Deploy from main branch
 
 on:
-  push:
-    branches:
-      - main
-    paths-ignore:
-      - '.github/ISSUE_TEMPLATE/**'
-      - '.husky/**'
-      - '.vscode/**'
-      - 'docs/**'
-      - 'vitest/**'
-      - 'mocks/**'
-      - 'playwright/**'
-      - 'stubs/**'
-      - 'tools/**'
+  # NOTE: Currently disabled to avoid unnecessary deployments since we only publish private images and do not use unstable builds in our internal pipelines.
+  # push:
+  #   branches:
+  #     - main
+  #   paths-ignore:
+  #     - '.github/ISSUE_TEMPLATE/**'
+  #     - '.husky/**'
+  #     - '.vscode/**'
+  #     - 'docs/**'
+  #     - 'vitest/**'
+  #     - 'mocks/**'
+  #     - 'playwright/**'
+  #     - 'stubs/**'
+  #     - 'tools/**'
   workflow_dispatch:
 
 concurrency:
