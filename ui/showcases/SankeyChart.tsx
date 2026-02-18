@@ -118,7 +118,7 @@ const SankeyChartShowcase = () => {
       </Section>
       <Section>
         <SectionHeader>One source, many targets (linkColorMode=&quot;target&quot;)</SectionHeader>
-        <Box h="350px" w="100%" borderWidth="1px" borderColor="border.divider" borderRadius="lg" p={ 4 }>
+        <Box h="700px" w="100%" borderWidth="1px" borderColor="border.divider" borderRadius="lg" p={ 4 }>
           <SankeyChart
             data={ MOCK_DATA_ONE_TO_MANY }
             linkColorMode="target"
@@ -128,21 +128,9 @@ const SankeyChartShowcase = () => {
       </Section>
       <Section>
         <SectionHeader>Many sources, one target</SectionHeader>
-        <Box h="350px" w="100%" borderWidth="1px" borderColor="border.divider" borderRadius="lg" p={ 4 }>
+        <Box h="700px" w="100%" borderWidth="1px" borderColor="border.divider" borderRadius="lg" p={ 4 }>
           <SankeyChart
             data={ MOCK_DATA_MANY_TO_ONE }
-            valueFormatter={ valueFormatter }
-          />
-        </Box>
-      </Section>
-      <Section>
-        <SectionHeader>Custom margins and node sizing</SectionHeader>
-        <Box h="400px" w="100%" borderWidth="1px" borderColor="border.divider" borderRadius="lg" p={ 4 }>
-          <SankeyChart
-            data={ MOCK_DATA }
-            margin={{ top: 16, right: 120, bottom: 16, left: 120 }}
-            nodeWidth={ 12 }
-            nodePadding={ 24 }
             valueFormatter={ valueFormatter }
           />
         </Box>
