@@ -57,7 +57,7 @@ const wagmi = (() => {
       },
       ssr: true,
       batch: { multicall: { wait: 100, batchSize: 5 } },
-      multiInjectedProviderDiscovery: feature.isEnabled && feature.connectorType === 'dynamic' ? true : false,
+      multiInjectedProviderDiscovery: feature.isEnabled && feature.connectorType === 'dynamic' ? false : true,
     });
 
     return { config: wagmiConfig, adapter: null };

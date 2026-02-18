@@ -1,7 +1,6 @@
 // we use custom heading size for hero banner
 // eslint-disable-next-line no-restricted-imports
 import { Box, Flex, Heading } from '@chakra-ui/react';
-import dynamic from 'next/dynamic';
 import React from 'react';
 
 import config from 'configs/app';
@@ -10,10 +9,7 @@ import RewardsButton from 'ui/rewards/RewardsButton';
 import AdBanner from 'ui/shared/ad/AdBanner';
 import SearchBar from 'ui/snippets/searchBar/SearchBarDesktop';
 import SearchBarMobile from 'ui/snippets/searchBar/SearchBarMobile';
-import UserProfileAuth0 from 'ui/snippets/user/profile/auth0/UserProfileDesktop';
-import UserWalletDesktop from 'ui/snippets/user/wallet/UserWalletDesktop';
-
-const UserProfileDynamic = dynamic(() => import('ui/snippets/user/profile/dynamic/UserProfile'), { ssr: false });
+import UserProfileDesktop from 'ui/snippets/user/UserProfileDesktop';
 
 export const BACKGROUND_DEFAULT =
   'radial-gradient(103.03% 103.03% at 0% 0%, rgba(183, 148, 244, 0.8) 0%, rgba(0, 163, 196, 0.8) 100%), var(--chakra-colors-blue-400)';
@@ -53,21 +49,6 @@ const HeroBanner = () => {
       config.UI.homepage.heroBanner?.border?.[1] || config.UI.homepage.heroBanner?.border?.[0] || BORDER_DEFAULT,
   };
 
-  const userProfileButton = (() => {
-    const accountFeature = config.features.account;
-    if (accountFeature.isEnabled) {
-      switch (accountFeature.authProvider) {
-        case 'auth0':
-          return <UserProfileAuth0 buttonVariant="hero"/>;
-        case 'dynamic':
-          return <UserProfileDynamic buttonVariant="hero"/>;
-      }
-    }
-    if (config.features.blockchainInteraction.isEnabled) {
-      return <UserWalletDesktop buttonVariant="hero"/>;
-    }
-  })();
-
   return (
     <Flex
       w="100%"
@@ -96,7 +77,7 @@ const HeroBanner = () => {
           { config.UI.navigation.layout === 'vertical' && (
             <Box display={{ base: 'none', lg: 'flex' }} gap={ 2 }>
               { config.features.rewards.isEnabled && <RewardsButton variant="hero"/> }
-              { userProfileButton }
+              <UserProfileDesktop buttonVariant="hero"/>
             </Box>
           ) }
         </Flex>

@@ -100,15 +100,15 @@ const DynamicProvider = ({ children }: Props) => {
   }, [ onAuthSuccess, onLogout ]);
 
   return (
-    <WagmiProvider>
-      <DynamicContextProvider
-        settings={ settings }
-      >
+    <DynamicContextProvider
+      settings={ settings }
+    >
+      <WagmiProvider>
         <DynamicWagmiConnector>
           { children }
         </DynamicWagmiConnector>
-      </DynamicContextProvider>
-    </WagmiProvider>
+      </WagmiProvider>
+    </DynamicContextProvider>
   );
 };
 

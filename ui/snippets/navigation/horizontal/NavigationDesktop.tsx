@@ -1,5 +1,4 @@
 import { Box, chakra, Flex, Separator } from '@chakra-ui/react';
-import dynamic from 'next/dynamic';
 import React from 'react';
 
 import config from 'configs/app';
@@ -8,8 +7,7 @@ import RewardsButton from 'ui/rewards/RewardsButton';
 import { CONTENT_MAX_WIDTH } from 'ui/shared/layout/utils';
 import useIsAuth from 'ui/snippets/auth/useIsAuth';
 import NetworkLogo from 'ui/snippets/networkLogo/NetworkLogo';
-import UserProfileAuth0 from 'ui/snippets/user/profile/auth0/UserProfileDesktop';
-import UserWalletDesktop from 'ui/snippets/user/wallet/UserWalletDesktop';
+import UserProfileDesktop from 'ui/snippets/user/UserProfileDesktop';
 
 import NavigationPromoBanner from '../promoBanner/NavigationPromoBanner';
 import RollupStageBadge from '../RollupStageBadge';
@@ -17,29 +15,11 @@ import TestnetBadge from '../TestnetBadge';
 import NavLink from './NavLink';
 import NavLinkGroup from './NavLinkGroup';
 
-const UserProfileDynamic = dynamic(() => import('ui/snippets/user/profile/dynamic/UserProfile'), { ssr: false });
-
 const accountFeature = config.features.account;
 
 const NavigationDesktop = () => {
   const { mainNavItems, accountNavItems } = useNavItems();
   const isAuth = useIsAuth();
-
-  const userProfile = (() => {
-    if (accountFeature.isEnabled) {
-      switch (accountFeature.authProvider) {
-        case 'auth0':
-          return <UserProfileAuth0 buttonSize="sm"/>;
-        case 'dynamic':
-          return <UserProfileDynamic buttonSize="sm"/>;
-        default:
-          return null;
-      }
-    }
-    if (config.features.blockchainInteraction.isEnabled) {
-      return <UserWalletDesktop/>;
-    }
-  })();
 
   const accountNavGroup = React.useMemo(() => {
     if (accountFeature.isEnabled && accountFeature.authProvider === 'dynamic' && isAuth) {
@@ -83,7 +63,7 @@ const NavigationDesktop = () => {
         <Flex gap={ 2 } ml={ 8 } _empty={{ display: 'none' }}>
           <NavigationPromoBanner/>
           { config.features.rewards.isEnabled && <RewardsButton size="sm"/> }
-          { userProfile }
+          <UserProfileDesktop buttonSize="sm"/>
         </Flex>
       </Flex>
     </Box>
