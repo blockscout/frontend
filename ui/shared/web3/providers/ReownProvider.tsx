@@ -1,8 +1,6 @@
-/* eslint-disable consistent-default-export-name/default-export-match-filename */
 import type { AppKitNetwork } from '@reown/appkit/networks';
 import { createAppKit, useAppKitTheme } from '@reown/appkit/react';
 import React from 'react';
-import { WagmiProvider } from 'wagmi';
 
 import config from 'configs/app';
 import { chains } from 'lib/web3/chains';
@@ -12,11 +10,13 @@ import colors from 'toolkit/theme/foundations/colors';
 import { BODY_TYPEFACE } from 'toolkit/theme/foundations/typography';
 import zIndex from 'toolkit/theme/foundations/zIndex';
 
+import WagmiProvider from './WagmiProvider';
+
 const feature = config.features.blockchainInteraction;
 
-const init = () => {
+const initReown = () => {
   try {
-    if (!feature.isEnabled || !wagmiConfig.adapter) {
+    if (!feature.isEnabled || !wagmiConfig.adapter || feature.connectorType === 'dynamic') {
       return;
     }
 
@@ -29,7 +29,7 @@ const init = () => {
         url: config.app.baseUrl,
         icons: [ config.UI.navigation.icon.default ].filter(Boolean),
       },
-      projectId: feature.walletConnect.projectId,
+      projectId: feature.reown.projectId,
       features: {
         analytics: false,
         email: false,
@@ -43,27 +43,19 @@ const init = () => {
         '--w3m-border-radius-master': '2px',
         '--w3m-z-index': zIndex?.modal2?.value,
       },
-      featuredWalletIds: feature.walletConnect.featuredWalletIds,
+      featuredWalletIds: feature.reown.featuredWalletIds,
       allowUnsupportedChain: true,
     });
   } catch (error) {}
 };
 
-init();
+initReown();
 
 interface Props {
   children: React.ReactNode;
 }
 
-const DefaultProvider = ({ children }: Props) => {
-  return (
-    <WagmiProvider config={ wagmiConfig.config }>
-      { children }
-    </WagmiProvider>
-  );
-};
-
-const Web3ModalProvider = ({ children }: Props) => {
+const ReownProvider = ({ children }: Props) => {
   const { colorMode } = useColorMode();
   const { setThemeMode } = useAppKitTheme();
 
@@ -72,12 +64,10 @@ const Web3ModalProvider = ({ children }: Props) => {
   }, [ colorMode, setThemeMode ]);
 
   return (
-    <DefaultProvider>
+    <WagmiProvider>
       { children }
-    </DefaultProvider>
+    </WagmiProvider>
   );
 };
 
-const Provider = feature.isEnabled ? Web3ModalProvider : DefaultProvider;
-
-export default Provider;
+export default React.memo(ReownProvider);

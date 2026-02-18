@@ -78,7 +78,7 @@ const GraphQL = () => {
     url: graphqlUrl,
     // graphql ws implementation with absinthe plugin is incompatible with graphiql-ws protocol
     // or the older one subscriptions-transport-ws
-    // so we (isstuev & vbaranov) decided to configure playground without subscriptions
+    // so we (@isstuev & @vbaranov) decided to configure playground without subscriptions
     // in case of any complaint consider reconfigure the graphql ws server with absinthe_graphql_ws package
     // subscriptionUrl: `wss://${config.app.host}/socket/`,
   });

@@ -1,18 +1,25 @@
+import dynamic from 'next/dynamic';
 import React from 'react';
 
 import type { AddressVerificationFormFirstStepFields, AddressCheckStatusSuccess } from './types';
 import type { VerifiedAddress } from 'types/api/account';
 
 import config from 'configs/app';
+import { FallbackProvider } from 'lib/contexts/fallback';
 import * as mixpanel from 'lib/mixpanel/index';
 import { DialogBody, DialogContent, DialogHeader, DialogRoot } from 'toolkit/chakra/dialog';
-import Web3ModalProvider from 'ui/shared/Web3ModalProvider';
+
+const Web3ProviderBase = dynamic(() => import('ui/shared/web3/Web3Provider'), { ssr: false });
 
 import AddressVerificationStepAddress from './steps/AddressVerificationStepAddress';
 import AddressVerificationStepSignature from './steps/AddressVerificationStepSignature';
 import AddressVerificationStepSuccess from './steps/AddressVerificationStepSuccess';
 
 type StateData = AddressVerificationFormFirstStepFields & AddressCheckStatusSuccess & { isToken?: boolean };
+
+const feature = config.features.blockchainInteraction;
+// Dynamic providers cannot be nested, so a dummy provider is used here
+const Web3Provider = feature.isEnabled && feature.connectorType === 'dynamic' ? FallbackProvider : Web3ProviderBase;
 
 interface Props {
   open: boolean;
@@ -115,9 +122,9 @@ const AddressVerificationModal = ({ defaultAddress, open, onOpenChange, onSubmit
           { step.title }
         </DialogHeader>
         <DialogBody mb={ 0 }>
-          <Web3ModalProvider>
+          <Web3Provider>
             { step.content }
-          </Web3ModalProvider>
+          </Web3Provider>
         </DialogBody>
       </DialogContent>
     </DialogRoot>
