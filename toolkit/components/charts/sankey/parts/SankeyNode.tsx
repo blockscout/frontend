@@ -2,6 +2,8 @@ import React from 'react';
 
 import type { SankeyNodeExtended } from '../types';
 
+const OUTER_CORNER_RADIUS = 4;
+
 export interface SankeyNodeProps {
   node: SankeyNodeExtended;
   color: string;
@@ -18,23 +20,56 @@ export const SankeyNode = React.memo(({ node, color, onMouseEnter, onMouseLeave 
     onMouseEnter?.(node, event);
   }, [ node, onMouseEnter ]);
 
+  const hasIncoming = (node as SankeyNodeExtended & { targetLinks?: Array<unknown> }).targetLinks?.length;
+  const hasOutgoing = (node as SankeyNodeExtended & { sourceLinks?: Array<unknown> }).sourceLinks?.length;
+  const isMiddle = Boolean(hasIncoming && hasOutgoing);
+
+  const path = React.useMemo(() => {
+    if (width <= 0 || height <= 0 || isMiddle) {
+      return null;
+    }
+    const r = Math.min(OUTER_CORNER_RADIUS, width / 2, height / 2);
+
+    if (hasIncoming) {
+      return (
+        `M ${ x0 },${ y0 } L ${ x1 - r },${ y0 } Q ${ x1 },${ y0 } ${ x1 },${ y0 + r } ` +
+        `L ${ x1 },${ y1 - r } Q ${ x1 },${ y1 } ${ x1 - r },${ y1 } L ${ x0 },${ y1 } L ${ x0 },${ y0 } Z`
+      );
+    }
+    return (
+      `M ${ x1 },${ y0 } L ${ x0 + r },${ y0 } Q ${ x0 },${ y0 } ${ x0 },${ y0 + r } ` +
+      `L ${ x0 },${ y1 - r } Q ${ x0 },${ y1 } ${ x0 + r },${ y1 } L ${ x1 },${ y1 } L ${ x1 },${ y0 } Z`
+    );
+  }, [ x0, x1, y0, y1, width, height, isMiddle, hasIncoming ]);
+
   if (width <= 0 || height <= 0) {
     return null;
   }
 
+  if (isMiddle) {
+    return (
+      <rect
+        x={ x0 }
+        y={ y0 }
+        width={ width }
+        height={ height }
+        fill={ color }
+        onMouseEnter={ handleMouseEnter }
+        onMouseLeave={ onMouseLeave }
+      >
+        <title>{ `${ node.name }: ${ node.value }` }</title>
+      </rect>
+    );
+  }
+
   return (
-    <rect
-      x={ x0 }
-      y={ y0 }
-      width={ width }
-      height={ height }
+    <path
+      d={ path! }
       fill={ color }
-      rx={ 4 }
-      ry={ 4 }
       onMouseEnter={ handleMouseEnter }
       onMouseLeave={ onMouseLeave }
     >
       <title>{ `${ node.name }: ${ node.value }` }</title>
-    </rect>
+    </path>
   );
 });
