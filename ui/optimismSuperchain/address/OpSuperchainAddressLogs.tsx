@@ -57,13 +57,15 @@ const OpSuperchainAddressLogs = ({ addressData, isLoading }: Props) => {
         chainIds={ chainIds }
         loading={ isLoading }
       />
-      <AddressCsvExportLink
-        address={ hash }
-        isLoading={ pagination.isLoading }
-        params={{ type: 'logs' }}
-        ml={{ base: 2, lg: 'auto' }}
-        chainData={ chainData }
-      />
+      { (data?.items.length ?? 0) > 0 && (
+        <AddressCsvExportLink
+          address={ hash }
+          isLoading={ pagination.isLoading }
+          params={{ type: 'logs' }}
+          ml={{ base: 2, lg: 'auto' }}
+          chainData={ chainData }
+        />
+      ) }
       <Pagination ml={{ base: 'auto', lg: 8 }} { ...pagination }/>
     </ActionBar>
   );
