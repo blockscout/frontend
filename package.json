@@ -22,7 +22,7 @@
     "lint:eslint": "eslint .",
     "lint:eslint:fix": "eslint . --fix",
     "lint:tsc": "tsc -p ./tsconfig.json",
-    "lint:cspell": "cspell .",
+    "lint:cspell": "cspell . --no-must-find-files",
     "lint:license:check": "license-report > ./license.json && license-report-check --source=./license.json --output=table --forbidden=n/a",
     "lint:envs-validator:test": "cd ./deploy/tools/envs-validator && ./test.sh",
     "prepare": "husky install",
