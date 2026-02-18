@@ -8,7 +8,7 @@ import blockchainInteraction from './blockchainInteraction';
 const title = 'Rewards service integration';
 
 const config: Feature<{}> = (() => {
-  // @0xdeval: as of now, we won't support rewards programs with dyninamic auth provider
+  // @0xdeval: as of now, we won't support rewards programs with dynamic auth provider
   if (!app.isPrivateMode && apis.rewards && account.isEnabled && account.authProvider === 'auth0' && blockchainInteraction.isEnabled) {
     return Object.freeze({
       title,
