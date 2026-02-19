@@ -39,6 +39,7 @@ const HotContractsTableItem = ({
             isLoading={ isLoading }
             tags={ protocolTags }
             mt="10px"
+            noColors
           />
         ) }
       </TableCell>

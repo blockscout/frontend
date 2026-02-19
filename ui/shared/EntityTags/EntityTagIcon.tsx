@@ -8,14 +8,14 @@ import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   data: EntityTag;
-  ignoreColor?: boolean;
+  noColors?: boolean;
 }
 
-const EntityTagIcon = ({ data, ignoreColor }: Props) => {
+const EntityTagIcon = ({ data, noColors }: Props) => {
 
-  const iconColor = data.meta?.textColor && !ignoreColor ? data.meta.textColor : 'icon.secondary';
+  const iconColor = (!noColors && data.meta?.textColor) || 'icon.secondary';
 
-  if (data.meta?.tagIcon) {
+  if (data.meta?.tagIcon && !noColors) {
     return <Image boxSize={ 3 } src={ data.meta.tagIcon } alt={ `${ data.name } icon` }/>;
   }
 

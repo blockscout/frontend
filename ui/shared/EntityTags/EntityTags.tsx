@@ -15,9 +15,10 @@ interface Props {
   tags: Array<TEntityTag>;
   addressHash?: string;
   isLoading?: boolean;
+  noColors?: boolean;
 }
 
-const EntityTags = ({ tags, addressHash, className, isLoading }: Props) => {
+const EntityTags = ({ tags, addressHash, className, isLoading, noColors }: Props) => {
   const isMobile = useIsMobile();
   const visibleNum = isMobile ? 2 : 3;
 
@@ -51,6 +52,7 @@ const EntityTags = ({ tags, addressHash, className, isLoading }: Props) => {
               addressHash={ addressHash }
               isLoading={ isLoading }
               maxW={ tagMaxW }
+              noColors={ noColors }
             />
           )) }
           { metaSuitesPlaceholder }
@@ -63,7 +65,7 @@ const EntityTags = ({ tags, addressHash, className, isLoading }: Props) => {
             <PopoverContent maxW="300px" w="fit-content">
               <PopoverBody>
                 <Flex columnGap={ 2 } rowGap={ 2 } flexWrap="wrap">
-                  { tags.slice(visibleNum).map((tag) => <EntityTag key={ tag.slug } data={ tag } addressHash={ addressHash }/>) }
+                  { tags.slice(visibleNum).map((tag) => <EntityTag key={ tag.slug } data={ tag } addressHash={ addressHash } noColors={ noColors }/>) }
                 </Flex>
               </PopoverBody>
             </PopoverContent>
@@ -74,7 +76,16 @@ const EntityTags = ({ tags, addressHash, className, isLoading }: Props) => {
 
     return (
       <>
-        { tags.map((tag) => <EntityTag key={ tag.slug } data={ tag } addressHash={ addressHash } isLoading={ isLoading } maxW={ tagMaxW }/>) }
+        { tags.map((tag) => (
+          <EntityTag
+            key={ tag.slug }
+            data={ tag }
+            addressHash={ addressHash }
+            isLoading={ isLoading }
+            maxW={ tagMaxW }
+            noColors={ noColors }
+          />
+        )) }
         { metaSuitesPlaceholder }
       </>
     );
