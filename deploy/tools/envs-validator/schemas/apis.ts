@@ -16,11 +16,6 @@ export default yup.object({
 
     NEXT_PUBLIC_CONTRACT_INFO_API_HOST: yup.string().test(urlTest),
 
-    NEXT_PUBLIC_NAME_SERVICE_API_HOST: yup.string().test(urlTest),
-
-    NEXT_PUBLIC_CLUSTERS_API_HOST: yup.string().test(urlTest),
-    NEXT_PUBLIC_CLUSTERS_CDN_URL: yup.string().test(urlTest),
-
     NEXT_PUBLIC_ADMIN_SERVICE_API_HOST: yup.string().test(urlTest),
 
     NEXT_PUBLIC_REWARDS_SERVICE_API_HOST: yup.string().test(urlTest),

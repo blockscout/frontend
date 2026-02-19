@@ -22,12 +22,19 @@ import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 import IconSvg from 'ui/shared/IconSvg';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
+const feature = config.features.nameServices;
+const availableProtocols = feature.isEnabled && feature.ens.isEnabled ? feature.ens.protocols : [];
+
 const NameDomain = () => {
   const router = useRouter();
   const domainName = getQueryParamString(router.query.name);
+  const protocolId = getQueryParamString(router.query.protocol_id) || availableProtocols[0];
 
   const infoQuery = useApiQuery('bens:domain_info', {
-    pathParams: { name: domainName, chainId: config.chain.id },
+    pathParams: { name: domainName },
+    queryParams: {
+      protocol_id: protocolId,
+    },
     queryOptions: {
       placeholderData: ENS_DOMAIN,
     },

@@ -163,6 +163,5 @@ export const b: PaginatedResourceName = 'general:addresses';
 export const c: PaginatedResourceResponseItems<'general:addresses'> = [];
 
 export const d: ResourcePathParams<'bens:address_domain'> = {
-  chainId: '1',
   address: '123',
 };
