@@ -5,6 +5,7 @@ import type * as multichain from '@blockscout/multichain-aggregator-types';
 
 import multichainConfig from 'configs/multichain';
 import { MultichainProvider } from 'lib/contexts/multichain';
+import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { LOG } from 'stubs/log';
 import { generateListStub } from 'stubs/utils';
@@ -26,6 +27,7 @@ interface Props {
 const OpSuperchainAddressLogs = ({ addressData, isLoading }: Props) => {
   const router = useRouter();
   const chainIds = React.useMemo(() => getAvailableChainIds(addressData), [ addressData ]);
+  const isMobile = useIsMobile();
 
   const hash = getQueryParamString(router.query.hash);
   const { data, isPlaceholderData, isError, pagination, chainValue, onChainValueChange } = useQueryWithPages({
@@ -50,12 +52,13 @@ const OpSuperchainAddressLogs = ({ addressData, isLoading }: Props) => {
   }, [ chainValue ]);
 
   const actionBar = (
-    <ActionBar mt={ -6 } showShadow>
+    <ActionBar mt={ -6 }>
       <ChainSelect
         value={ chainValue }
         onValueChange={ onChainValueChange }
         chainIds={ chainIds }
         loading={ isLoading }
+        mode={ isMobile ? 'compact' : 'default' }
       />
       { (data?.items.length ?? 0) > 0 && (
         <AddressCsvExportLink
@@ -86,6 +89,7 @@ const OpSuperchainAddressLogs = ({ addressData, isLoading }: Props) => {
       itemsNum={ data?.items?.length }
       emptyText="There are no logs for this address."
       showActionBarIfEmpty
+      showActionBarIfError
       actionBar={ actionBar }
     >
       <MultichainProvider chainId={ chainValue?.[0] }>
