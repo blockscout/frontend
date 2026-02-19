@@ -82,7 +82,7 @@ const TxCrossChainDetails = ({ data, isLoading }: Props) => {
         <CrossChainTxsStatusTag status={ data.status } loading={ isLoading } mode="full"/>
       </DetailedInfo.ItemValue>
       <DetailedInfo.ItemLabel
-        hint="Date and time when the cross-chain operation was initiated"
+        hint="Date and time when the cross-chain operation was completed or initiated"
         isLoading={ isLoading }
       >
         Timestamp
