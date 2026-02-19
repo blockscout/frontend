@@ -15,6 +15,7 @@ import { EmptyState } from 'toolkit/chakra/empty-state';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import AddressAdvancedFilterLink from 'ui/address/AddressAdvancedFilterLink';
 import AddressCsvExportLink from 'ui/address/AddressCsvExportLink';
+import AddressTokenTransfersLocal from 'ui/address/AddressTokenTransfersLocal';
 import useAddressTokenTransfersQuery from 'ui/address/useAddressTokenTransfersQuery';
 import useAddressCountersQuery from 'ui/address/utils/useAddressCountersQuery';
 import ChainSelect from 'ui/optimismSuperchain/components/ChainSelect';
@@ -24,7 +25,6 @@ import { getTokenFilterValue } from 'ui/tokens/utils';
 
 import ListCounterText from '../components/ListCounterText';
 import getAvailableChainIds from './getAvailableChainIds';
-import TokenTransfersLocal from './tokenTransfers/TokenTransfersLocal';
 
 export const ADDRESS_OP_SUPERCHAIN_TOKEN_TRANSFERS_TAB_IDS = [ 'token_transfers_cross_chain' as const, 'token_transfers_local' as const ];
 const TABS_RIGHT_SLOT_PROPS = {
@@ -170,7 +170,7 @@ const OpSuperchainAddressTokenTransfers = ({ addressData, isLoading }: Props) =>
         <MultichainProvider chainId={ transfersQueryLocal.query.chainValue?.[0] }>
           <SocketProvider url={ getSocketUrl(chainData?.app_config) }>
             { isMobile && countersText }
-            <TokenTransfersLocal
+            <AddressTokenTransfersLocal
               query={ transfersQueryLocal.query }
               filters={ transfersQueryLocal.filters }
               onTypeFilterChange={ transfersQueryLocal.onTypeFilterChange }

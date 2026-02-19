@@ -64,6 +64,8 @@ import TxExternalTxs from 'ui/tx/TxExternalTxs';
 import TxSocketAlert from 'ui/tx/TxSocketAlert';
 import ZkSyncL2TxnBatchHashesInfo from 'ui/txnBatches/zkSyncL2/ZkSyncL2TxnBatchHashesInfo';
 
+import TxDetailsCrossChainMessages from './TxDetailsCrossChainMessages';
+import TxDetailsCrossChainTransfers from './TxDetailsCrossChainTransfers';
 import TxDetailsGasUsage from './TxDetailsGasUsage';
 import TxDetailsInterop from './TxDetailsInterop';
 import TxDetailsSetMaxGasLimit from './TxDetailsSetMaxGasLimit';
@@ -161,6 +163,8 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
       { data.op_interop_messages ? data.op_interop_messages.map((message) => (
         <TxDetailsInterop key={ message.nonce } data={ message } isLoading={ isLoading }/>
       )) : null }
+
+      { config.features.crossChainTxs.isEnabled && <TxDetailsCrossChainMessages hash={ data.hash } isLoading={ isLoading }/> }
 
       <DetailedInfo.ItemLabel
         hint="Unique character string (TxID) assigned to every verified transaction"
@@ -498,6 +502,8 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
       </DetailedInfo.ItemValue>
 
       { data.token_transfers && <TxDetailsTokenTransfers data={ data.token_transfers } txHash={ data.hash } isOverflow={ data.token_transfers_overflow }/> }
+
+      { config.features.crossChainTxs.isEnabled && <TxDetailsCrossChainTransfers hash={ data.hash } isLoading={ isLoading }/> }
 
       { hasInterop && data.op_interop_messages?.some(message => message.target_address_hash) && (
         <>

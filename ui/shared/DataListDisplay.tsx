@@ -6,7 +6,7 @@ import { EmptyState } from 'toolkit/chakra/empty-state';
 
 import DataFetchAlert from './DataFetchAlert';
 
-type Props = {
+export type Props = {
   isError: boolean;
   itemsNum?: number;
   emptyText?: React.ReactNode;

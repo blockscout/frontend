@@ -195,7 +195,7 @@ const IconShield = (props: IconShieldProps) => {
 };
 
 export interface ContentBaseProps extends Pick<
-  EntityBaseProps, 'className' | 'isLoading' | 'truncation' | 'tailLength' | 'noTooltip' | 'variant' | 'truncationMaxSymbols'
+  EntityBaseProps, 'className' | 'isLoading' | 'truncation' | 'tailLength' | 'noTooltip' | 'variant' | 'truncationMaxSymbols' | 'noLink'
 > {
   asProp?: React.ElementType;
   text: string;
@@ -213,6 +213,7 @@ const Content = chakra(({
   variant,
   noTooltip,
   tooltipInteractive,
+  noLink,
 }: ContentBaseProps) => {
   const styles = getContentProps(variant);
 
@@ -272,7 +273,7 @@ const Content = chakra(({
       loading={ isLoading }
       overflow="hidden"
       whiteSpace="nowrap"
-      w="100%"
+      w={ !noLink ? '100%' : undefined }
       { ...styles }
     >
       { children }

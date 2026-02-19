@@ -33,10 +33,11 @@ export default function useNetworkMenu() {
       const multichainData: Array<FeaturedNetwork> = (() => {
         if (config.features.opSuperchain.isEnabled) {
           return multichainConfig()?.chains
-            .filter((chain) => !configData.some((configNetwork) => configNetwork.url.includes(chain.explorer_url)))
+            .filter((chain) => chain?.explorer_url)
+            .filter((chain) => !configData.some((configNetwork) => configNetwork.url.includes(chain.explorer_url ?? '')))
             .map((chain) => ({
               title: chain.name,
-              url: chain.explorer_url,
+              url: chain.explorer_url ?? '',
               group: chain.app_config.chain.isTestnet ? 'Testnets' : 'Mainnets',
               icon: chain.logo,
               invertIconInDarkMode: false,

@@ -25,7 +25,9 @@
         // Specify publisher key
         "spk_\\w+",
         // Posthog project key
-        "phc_\\w+"
+        "phc_\\w+",
+        // GitHub account names
+        "@(\\w|-)+"
     ],
     // words - list of words to be always considered correct
     "words": [
@@ -105,7 +107,6 @@
         "explorable",
         "facebookexternalhit",
         "favicons",
-        "fedoseev",
         "filecoin",
         "flashblock",
         "flashblocks",
@@ -124,6 +125,7 @@
         "healthz",
         "helia",
         "hyfi",
+        "ICTT",
         "identicons",
         "IERC",
         "Ihnatsyeu",
@@ -131,7 +133,6 @@
         "inpage",
         "internaltx",
         "ipfs",
-        "isstuev",
         "iszero",
         "jazzicon",
         "jfif",
@@ -168,6 +169,7 @@
         "noopener",
         "noreferrer",
         "noves",
+        "numine",
         "nums",
         "okex",
         "okhttp",
@@ -252,7 +254,6 @@
         "utka",
         "utko",
         "UUPS",
-        "vbaranov",
         "VCALENDAR",
         "vercel",
         "verifreg",

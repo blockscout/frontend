@@ -55,11 +55,21 @@ const Icon = (props: IconProps) => {
       undefined;
   })();
 
+  const shield = (() => {
+    if ('shield' in props) {
+      return props.shield;
+    }
+
+    if (props.chain) {
+      return props.chain.logo ? { src: props.chain.logo } : { name: 'networks/icon-placeholder' as const };
+    }
+  })();
+
   return (
     <EntityBase.Icon
       { ...props }
       name={ name }
-      shield={ props.shield ?? (props.chain ? { src: props.chain.logo } : undefined) }
+      shield={ shield }
       hint={ hint }
     />
   );

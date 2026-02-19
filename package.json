@@ -22,7 +22,7 @@
     "lint:eslint": "eslint .",
     "lint:eslint:fix": "eslint . --fix",
     "lint:tsc": "tsc -p ./tsconfig.json",
-    "lint:cspell": "cspell .",
+    "lint:cspell": "cspell . --no-must-find-files",
     "lint:license:check": "license-report > ./license.json && license-report-check --source=./license.json --output=table --forbidden=n/a",
     "lint:envs-validator:test": "cd ./deploy/tools/envs-validator && ./test.sh",
     "prepare": "husky install",
@@ -44,6 +44,7 @@
   },
   "dependencies": {
     "@blockscout/bens-types": "1.4.1",
+    "@blockscout/interchain-indexer-types": "0.0.10",
     "@blockscout/multichain-aggregator-types": "2.1.2-alpha",
     "@blockscout/points-types": "1.4.0-alpha.1",
     "@blockscout/stats-types": "2.11.1",
@@ -51,6 +52,9 @@
     "@blockscout/visualizer-types": "0.2.0",
     "@blockscout/zetachain-cctx-types": "^1.0.0-rc.6",
     "@chakra-ui/react": "3.15.0",
+    "@dynamic-labs/ethereum": "4.52.2",
+    "@dynamic-labs/sdk-react-core": "4.52.2",
+    "@dynamic-labs/wagmi-connector": "4.52.2",
     "@emotion/react": "11.14.0",
     "@growthbook/growthbook-react": "0.21.0",
     "@helia/verified-fetch": "2.6.12",
@@ -208,7 +212,9 @@
     "@reown/appkit-adapter-wagmi/**/node-forge": "1.3.2",
     "eslint/**/brace-expansion": "1.1.12",
     "swagger-ui-react/**/js-yaml": "4.1.1",
-    "dappscout-iframe/**/ws": "8.17.1"
+    "dappscout-iframe/**/ws": "8.17.1",
+    "viem/**/@noble/hashes": "1.8.0",
+    "@walletconnect/ethereum-provider/**/@reown/appkit/**/@noble/hashes": "1.8.0"
   },
   "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }
