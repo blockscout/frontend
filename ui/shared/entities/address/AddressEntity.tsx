@@ -49,8 +49,16 @@ const Icon = (props: IconProps) => {
     return null;
   }
 
-  const shield = props.shield ?? (props.chain ? { src: props.chain.logo } : undefined);
-  const hintPostfix: string = props.hintPostfix ?? (props.chain && props.shield !== false ? getChainTooltipText(props.chain, ' on') : '');
+  const shield = (() => {
+    if ('shield' in props) {
+      return props.shield;
+    }
+
+    if (props.chain) {
+      return props.chain.logo ? { src: props.chain.logo } : { name: 'networks/icon-placeholder' as const };
+    }
+  })();
+  const hintPostfix: string = props.hintPostfix ?? (props.chain && props.shield !== false ? getChainTooltipText(props.chain, ' on ') : '');
 
   const styles = getIconProps(props, Boolean(shield));
 

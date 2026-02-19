@@ -126,10 +126,10 @@ const LinkShowcase = () => {
           <Sample label="With info" vertical w="100%">
             <TokenEntity token={ TOKEN }/>
             <Box maxW="200px">
-              <TokenEntity token={{ ...TOKEN, name: 'Very looooooooong name' }} noSymbol/>
+              <TokenEntity token={{ ...TOKEN, name: 'Token with very very very long name' }} noSymbol/>
             </Box>
             <Box maxW="300px">
-              <TokenEntity token={{ ...TOKEN, symbol: 'Very looooooooong symbol' }}/>
+              <TokenEntity token={{ ...TOKEN, symbol: 'Token with very very very long symbol' }}/>
             </Box>
             <TokenEntity token={ TOKEN } jointSymbol/>
             <TokenEntity token={ TOKEN } onlySymbol/>

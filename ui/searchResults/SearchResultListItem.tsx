@@ -100,7 +100,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading, addressFormat }: Pr
           filecoin: {
             robust: data.filecoin_robust_address,
           },
-          is_contract: data.type === 'contract',
+          is_contract: data.type === 'contract' || data.is_smart_contract_address,
           is_verified: data.is_smart_contract_verified,
           name: null,
           implementations: null,

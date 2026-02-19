@@ -43,7 +43,7 @@ const Row = ({ name, type, indexed, value, isLoading }: ArrayElement<DecodedInpu
     if (typeof value === 'object') {
       const text = JSON.stringify(value, undefined, 4);
       return (
-        <Flex alignItems="flex-start" justifyContent="space-between" whiteSpace="normal" wordBreak="break-all">
+        <Flex alignItems="flex-start" whiteSpace="normal" wordBreak="break-all">
           <TruncatedText text={ text } loading={ isLoading }/>
           <CopyToClipboard text={ text } isLoading={ isLoading }/>
         </Flex>
@@ -51,7 +51,7 @@ const Row = ({ name, type, indexed, value, isLoading }: ArrayElement<DecodedInpu
     }
 
     return (
-      <Flex alignItems="flex-start" justifyContent="space-between" whiteSpace="normal" wordBreak="break-all">
+      <Flex alignItems="flex-start" whiteSpace="normal" wordBreak="break-all">
         <TruncatedText text={ value } loading={ isLoading }/>
         <CopyToClipboard text={ value } isLoading={ isLoading }/>
       </Flex>

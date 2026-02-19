@@ -30,7 +30,7 @@
             "command": "yarn dev:preset:sync --name=${input:dev_config_preset}",
             "problemMatcher": [],
             "label": "dev preset sync",
-            "detail": "syncronize dev preset",
+            "detail": "synchronize dev preset",
             "presentation": {
                 "reveal": "always",
                 "panel": "shared",
@@ -355,6 +355,7 @@
               "mega_eth",
               "mekong",
               "neon_devnet",
+              "numine",
               "optimism",
               "optimism_interop_0",
               "optimism_sepolia",

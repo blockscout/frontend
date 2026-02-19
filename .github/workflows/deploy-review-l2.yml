@@ -24,6 +24,7 @@ on:
             - immutable
             - mega_eth
             - neon_devnet
+            - numine
             - optimism
             - optimism_sepolia
             - optimism_superchain

@@ -20,7 +20,7 @@ const SearchResultEntityTag = ({ metadata, searchTerm, addressHash, ...rest }: P
   return (
     <Tag
       { ...rest }
-      startElement={ <EntityTagIcon data={ metadata } ignoreColor/> }
+      startElement={ <EntityTagIcon data={ metadata } noColors/> }
     >
       <span dangerouslySetInnerHTML={{ __html: highlightText(name, searchTerm) }}/>
     </Tag>
