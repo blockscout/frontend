@@ -1,17 +1,20 @@
 import { Box, Flex } from '@chakra-ui/react';
+import dynamic from 'next/dynamic';
 import React from 'react';
 
 import config from 'configs/app';
 import { useIsSticky } from 'toolkit/hooks/useIsSticky';
 import RewardsButton from 'ui/rewards/RewardsButton';
 import NetworkIcon from 'ui/snippets/networkLogo/NetworkIcon';
-import UserProfileMobile from 'ui/snippets/user/profile/UserProfileMobile';
+import UserProfileAuth0 from 'ui/snippets/user/profile/auth0/UserProfileMobile';
 import UserWalletMobile from 'ui/snippets/user/wallet/UserWalletMobile';
 
 import RollupStageBadge from '../navigation/RollupStageBadge';
 import TestnetBadge from '../navigation/TestnetBadge';
 import SearchBarMobile from '../searchBar/SearchBarMobile';
 import Burger from './Burger';
+
+const UserProfileDynamic = dynamic(() => import('ui/snippets/user/profile/dynamic/UserProfile'), { ssr: false });
 
 type Props = {
   hideSearchButton?: boolean;
@@ -21,6 +24,23 @@ type Props = {
 const HeaderMobile = ({ hideSearchButton, onGoToSearchResults }: Props) => {
   const ref = React.useRef<HTMLDivElement>(null);
   const isSticky = useIsSticky(ref, 5);
+
+  const userProfile = (() => {
+    const accountFeature = config.features.account;
+    if (accountFeature.isEnabled) {
+      switch (accountFeature.authProvider) {
+        case 'auth0':
+          return <UserProfileAuth0/>;
+        case 'dynamic':
+          return <UserProfileDynamic/>;
+        default:
+          return null;
+      }
+    }
+    if (config.features.blockchainInteraction.isEnabled) {
+      return <UserWalletMobile/>;
+    }
+  })();
 
   return (
     <Box
@@ -54,9 +74,7 @@ const HeaderMobile = ({ hideSearchButton, onGoToSearchResults }: Props) => {
         <Flex columnGap={ 2 }>
           { !hideSearchButton && <SearchBarMobile onGoToSearchResults={ onGoToSearchResults }/> }
           { config.features.rewards.isEnabled && <RewardsButton/> }
-          { (config.features.account.isEnabled && <UserProfileMobile/>) ||
-            (config.features.blockchainInteraction.isEnabled && <UserWalletMobile/>)
-          }
+          { userProfile }
         </Flex>
       </Flex>
     </Box>

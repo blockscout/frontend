@@ -16,7 +16,7 @@ export default function useBlockBlobTxsQuery({ heightOrHash, blockQuery, tab }: 
     pathParams: { height_or_hash: heightOrHash },
     filters: { type: 'blob_transaction' },
     options: {
-      enabled: Boolean(tab === 'blob_txs' && !blockQuery.isPlaceholderData && blockQuery.data?.blob_transaction_count),
+      enabled: Boolean(tab === 'blob_txs' && !blockQuery.isPlaceholderData && blockQuery.data?.blob_transactions_count),
       placeholderData: generateListStub<'general:block_txs'>(TX, 3, { next_page_params: null }),
       refetchOnMount: false,
     },

@@ -51,7 +51,7 @@ const TokenInstanceMetadata = ({ data, isPlaceholderData }: Props) => {
   return (
     <Box>
       { refetchStatus === 'ERROR' && (
-        <Alert status="warning" mb={ 6 } title="Ooops!" display={{ base: 'block', lg: 'flex' }}>
+        <Alert status="warning" mb={ 6 } title="Oops!" display={{ base: 'block', lg: 'flex' }}>
           <span>We { `couldn't` } refresh metadata. Please try again now or later.</span>
         </Alert>
       ) }

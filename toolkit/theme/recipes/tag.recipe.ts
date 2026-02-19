@@ -88,6 +88,7 @@ export const recipe = defineSlotRecipe({
           px: '6px',
           py: '6px',
           minH: '8',
+          minW: '8',
           gap: '1',
           '--tag-avatar-size': 'spacing.4',
           '--tag-element-size': 'spacing.3',

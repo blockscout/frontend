@@ -3,6 +3,7 @@
   export type IconName =
 	| "ABI"
 	| "advanced-filter"
+	| "AI"
 	| "API"
 	| "apps_list"
 	| "apps"
@@ -47,7 +48,6 @@
 	| "cross"
 	| "delete"
 	| "docs"
-	| "donate"
 	| "dots"
 	| "edit"
 	| "email"

@@ -13,8 +13,8 @@ import { Button } from 'toolkit/chakra/button';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import IconSvg from 'ui/shared/IconSvg';
 
-import UserIdenticon from '../UserIdenticon';
-import { getUserHandle } from './utils';
+import UserIdenticon from '../../UserIdenticon';
+import { getUserHandle } from '../common/utils';
 
 interface Props {
   profileQuery: UseQueryResult<UserInfo, unknown>;
@@ -50,7 +50,7 @@ const UserProfileButton = ({ profileQuery, size, variant, onClick, isPending, ..
       return (
         <HStack gap={ 2 }>
           <UserIdenticon address={ web3AccountWithDomain.address } isAutoConnectDisabled={ isAutoConnectDisabled }/>
-          <Box display={{ base: 'none', md: 'block' }}>
+          <Box display={{ base: 'none', md: 'block' }} maxW="200px" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
             { web3AccountWithDomain.domain || shortenString(web3AccountWithDomain.address) }
           </Box>
         </HStack>

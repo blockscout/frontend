@@ -14,8 +14,7 @@ import { BackToButton } from 'toolkit/components/buttons/BackToButton';
 import { makePrettyLink } from 'toolkit/utils/url';
 import RewardsButton from 'ui/rewards/RewardsButton';
 import NetworkIcon from 'ui/snippets/networkLogo/NetworkIcon';
-import UserProfileDesktop from 'ui/snippets/user/profile/UserProfileDesktop';
-import UserWalletDesktop from 'ui/snippets/user/wallet/UserWalletDesktop';
+import UserProfileDesktop from 'ui/snippets/user/UserProfileDesktop';
 
 import MarketplaceAppInfo from './MarketplaceAppInfo';
 import Rating from './Rating/Rating';
@@ -76,10 +75,7 @@ const MarketplaceAppTopBar = ({ appId, data, isLoading }: Props) => {
       { !isMobile && (
         <Flex ml="auto" gap={ 2 }>
           { config.features.rewards.isEnabled && <RewardsButton size="sm"/> }
-          {
-            (config.features.account.isEnabled && <UserProfileDesktop buttonSize="sm"/>) ||
-            (config.features.blockchainInteraction.isEnabled && <UserWalletDesktop buttonSize="sm"/>)
-          }
+          <UserProfileDesktop buttonSize="sm"/>
         </Flex>
       ) }
     </Flex>

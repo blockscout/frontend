@@ -1,3 +1,4 @@
+export * from './account';
 export * from './address3rdPartyWidgets';
 export * from './ads';
 export * from './apiDocs';
