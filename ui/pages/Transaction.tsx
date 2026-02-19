@@ -71,7 +71,12 @@ const TransactionPageContent = () => {
       config.features.suave.isEnabled && data?.wrapped ?
         { id: 'wrapped', title: 'Regular tx details', component: <TxDetailsWrapped data={ data.wrapped }/> } :
         undefined,
-      { id: 'token_transfers', title: 'Token transfers', component: <TxTokenTransfer txQuery={ txQuery }/> },
+      {
+        id: 'token_transfers',
+        title: 'Token transfers',
+        component: <TxTokenTransfer txQuery={ txQuery }/>,
+        subTabs: [ 'token_transfers', 'token_transfers_cross_chain' ],
+      },
       config.features.userOps.isEnabled ?
         { id: 'user_ops', title: 'User operations', component: <TxUserOps txQuery={ txQuery }/> } :
         undefined,

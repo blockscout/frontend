@@ -4,10 +4,6 @@ import React from 'react';
 import type { TokenType } from 'types/api/token';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
-import AddressAdvancedFilterLink from 'ui/address/AddressAdvancedFilterLink';
-import AddressCsvExportLink from 'ui/address/AddressCsvExportLink';
-import type { Filters } from 'ui/address/useAddressTokenTransfersQuery';
-import useAddressTokenTransfersSocket from 'ui/address/useAddressTokenTransfersSocket';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/pagination/Pagination';
@@ -17,15 +13,22 @@ import TokenTransferFilter from 'ui/shared/TokenTransfer/TokenTransferFilter';
 import TokenTransferList from 'ui/shared/TokenTransfer/TokenTransferList';
 import TokenTransferTable from 'ui/shared/TokenTransfer/TokenTransferTable';
 
+import AddressAdvancedFilterLink from './AddressAdvancedFilterLink';
+import AddressCsvExportLink from './AddressCsvExportLink';
+import type { Filters } from './useAddressTokenTransfersQuery';
+import useAddressTokenTransfersSocket from './useAddressTokenTransfersSocket';
+
 interface Props {
   query: QueryWithPagesResult<'general:address_token_transfers'>;
   filters: Filters;
   addressHash: string;
   onTypeFilterChange: (type: Array<TokenType>) => void;
   onAddressFilterChange: (filter: string) => void;
+  // for tests only
+  overloadCount?: number;
 }
 
-const TokenTransfersLocal = ({ query, filters, addressHash, onTypeFilterChange, onAddressFilterChange }: Props) => {
+const TokenTransfersLocal = ({ query, filters, addressHash, onTypeFilterChange, onAddressFilterChange, overloadCount }: Props) => {
   const { isError, isPlaceholderData, data, pagination } = query;
   const isMobile = useIsMobile();
 
@@ -33,6 +36,7 @@ const TokenTransfersLocal = ({ query, filters, addressHash, onTypeFilterChange, 
     filters,
     addressHash,
     data,
+    overloadCount,
     enabled: pagination.page === 1,
   });
 
@@ -79,7 +83,7 @@ const TokenTransfersLocal = ({ query, filters, addressHash, onTypeFilterChange, 
         <TokenTransferFilter
           defaultTypeFilters={ filters.type }
           onTypeFilterChange={ onTypeFilterChange }
-          appliedFiltersNum={ filters.type.length }
+          appliedFiltersNum={ numActiveFilters }
           withAddressFilter
           onAddressFilterChange={ onAddressFilterChange }
           defaultAddressFilter={ filters.filter }

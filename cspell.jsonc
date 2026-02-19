@@ -27,7 +27,7 @@
         // Posthog project key
         "phc_\\w+",
         // GitHub account names
-        "@(\\w|-)+",
+        "@(\\w|-)+"
     ],
     // words - list of words to be always considered correct
     "words": [
@@ -125,6 +125,7 @@
         "healthz",
         "helia",
         "hyfi",
+        "ICTT",
         "identicons",
         "IERC",
         "Ihnatsyeu",
@@ -168,6 +169,7 @@
         "noopener",
         "noreferrer",
         "noves",
+        "numine",
         "nums",
         "okex",
         "okhttp",
