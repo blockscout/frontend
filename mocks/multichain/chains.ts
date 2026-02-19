@@ -34,6 +34,9 @@ export const chainA = {
       views: {
         address: {},
       },
+      navigation: {
+        icon: {},
+      },
     },
     features: {
       csvExport: {
