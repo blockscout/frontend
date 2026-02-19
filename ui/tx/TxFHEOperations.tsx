@@ -21,7 +21,7 @@ const TxFHEOperations = ({ txQuery }: Props) => {
   const hash = txQuery.data?.hash || '';
   const isEnabled = Boolean(hash) && Boolean(txQuery.data?.status) && !txQuery.isPlaceholderData;
 
-  const { data, isLoading, isError, isPlaceholderData } = useApiQuery('general:tx_fhe_operations', {
+  const { data, isError, isPlaceholderData } = useApiQuery('general:tx_fhe_operations', {
     pathParams: { hash },
     queryOptions: {
       enabled: isEnabled,
@@ -34,30 +34,21 @@ const TxFHEOperations = ({ txQuery }: Props) => {
     return txQuery.socketStatus ? <TxSocketAlert status={ txQuery.socketStatus }/> : <TxPendingAlert/>;
   }
 
-  if (txQuery.isError) {
+  if (txQuery.isError || isError) {
     return <DataFetchAlert/>;
   }
 
-  const isLoadingState = isLoading || txQuery.isPlaceholderData || !hash;
-  const displayData = data || (isLoadingState ? FHE_OPERATIONS_RESPONSE : null);
-  const showLoadingSkeletons = isLoadingState || isPlaceholderData;
-
-  if (isError) {
-    return <DataFetchAlert/>;
-  }
-
-  const content = displayData ? (
+  const content = data ? (
     <>
       <TxFHEOperationsStats
-        totalHcu={ displayData.total_hcu }
-        maxDepthHcu={ displayData.max_depth_hcu }
-        operationCount={ displayData.operation_count }
-        itemsCount={ displayData.items.length }
-        isLoading={ showLoadingSkeletons }
+        totalHcu={ data.total_hcu }
+        maxDepthHcu={ data.max_depth_hcu }
+        operationCount={ data.operation_count }
+        isLoading={ isPlaceholderData }
       />
       <Box>
-        <TxFHEOperationsTable data={ displayData.items } isLoading={ showLoadingSkeletons }/>
-        <TxFHEOperationsList data={ displayData.items } isLoading={ showLoadingSkeletons }/>
+        <TxFHEOperationsTable data={ data.items } isLoading={ isPlaceholderData }/>
+        <TxFHEOperationsList data={ data.items } isLoading={ isPlaceholderData }/>
       </Box>
     </>
   ) : null;
@@ -65,8 +56,8 @@ const TxFHEOperations = ({ txQuery }: Props) => {
   return (
     <DataListDisplay
       isError={ isError }
-      itemsNum={ displayData?.items?.length ?? 0 }
-      emptyText="There are no FHE Operations for this transaction."
+      itemsNum={ data?.items?.length ?? 0 }
+      emptyText="There are no FHE operations for this transaction."
     >
       { content }
     </DataListDisplay>

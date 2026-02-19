@@ -7,11 +7,10 @@ interface Props {
   totalHcu: number;
   maxDepthHcu: number;
   operationCount: number;
-  itemsCount: number;
   isLoading?: boolean;
 }
 
-const TxFHEOperationsStats = ({ totalHcu, maxDepthHcu, operationCount, itemsCount, isLoading }: Props) => {
+const TxFHEOperationsStats = ({ totalHcu, maxDepthHcu, operationCount, isLoading }: Props) => {
   return (
     <Box
       display="grid"
@@ -34,7 +33,7 @@ const TxFHEOperationsStats = ({ totalHcu, maxDepthHcu, operationCount, itemsCoun
       <StatsWidget
         label="Operations"
         hint="Total number of FHE operations executed in this transaction"
-        value={ (operationCount || itemsCount).toLocaleString() }
+        value={ operationCount.toLocaleString() }
         isLoading={ isLoading }
       />
     </Box>

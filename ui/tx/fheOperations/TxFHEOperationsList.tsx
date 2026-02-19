@@ -13,9 +13,9 @@ interface Props {
 const TxFHEOperationsList = ({ data, isLoading }: Props) => {
   return (
     <Box hideFrom="lg">
-      { data.map((op, index) => (
+      { data.map((op) => (
         <TxFHEOperationsListItem
-          key={ op.log_index || index }
+          key={ op.log_index }
           { ...op }
           isLoading={ isLoading }
         />

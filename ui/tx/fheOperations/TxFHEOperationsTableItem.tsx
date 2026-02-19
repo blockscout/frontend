@@ -14,42 +14,42 @@ type Props = FheOperation & { isLoading?: boolean };
 
 const TxFHEOperationsTableItem = (props: Props) => {
   const { log_index: logIndex, operation, type, fhe_type: fheType, is_scalar: isScalar, hcu_cost: hcuCost, hcu_depth: hcuDepth, caller, isLoading } = props;
-  const hcuDepthValue = hcuDepth ?? hcuCost;
+  const hcuDepthValue = hcuDepth;
 
   return (
     <TableRow>
       <TableCell verticalAlign="middle">
-        <Skeleton loading={ isLoading } fontSize="sm">
+        <Skeleton loading={ isLoading }>
           { logIndex }
         </Skeleton>
       </TableCell>
       <TableCell verticalAlign="middle">
-        <Skeleton loading={ isLoading } fontSize="sm" fontWeight="medium">
+        <Skeleton loading={ isLoading }>
           { operation }
         </Skeleton>
       </TableCell>
       <TableCell verticalAlign="middle">
-        <Badge colorPalette={ getTypeColor(type) } fontSize="sm" loading={ isLoading }>
+        <Badge colorPalette={ getTypeColor(type) } loading={ isLoading }>
           { capitalize(type) }
         </Badge>
       </TableCell>
       <TableCell verticalAlign="middle">
-        <Badge colorPalette="gray" fontSize="sm" loading={ isLoading }>
+        <Badge colorPalette="gray" loading={ isLoading }>
           { fheType }
         </Badge>
       </TableCell>
       <TableCell verticalAlign="middle">
-        <Badge colorPalette="gray" fontSize="sm" loading={ isLoading }>
+        <Badge colorPalette="gray" loading={ isLoading }>
           { isScalar ? 'Scalar' : 'Non-scalar' }
         </Badge>
       </TableCell>
       <TableCell verticalAlign="middle">
-        <Skeleton loading={ isLoading } fontSize="sm">
+        <Skeleton loading={ isLoading }>
           { hcuCost.toLocaleString() }
         </Skeleton>
       </TableCell>
       <TableCell verticalAlign="middle">
-        <Skeleton loading={ isLoading } fontSize="sm" color="text.secondary">
+        <Skeleton loading={ isLoading } color="text.secondary">
           { hcuDepthValue.toLocaleString() }
         </Skeleton>
       </TableCell>
@@ -61,7 +61,7 @@ const TxFHEOperationsTableItem = (props: Props) => {
             isLoading={ isLoading }
           />
         ) : (
-          <Text fontSize="sm" color="text.secondary">—</Text>
+          <Text color="text.secondary">—</Text>
         ) }
       </TableCell>
     </TableRow>

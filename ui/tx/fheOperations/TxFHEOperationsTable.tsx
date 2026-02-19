@@ -30,9 +30,9 @@ const TxFHEOperationsTable = ({ data, isLoading }: Props) => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            { data.map((op, index) => (
+            { data.map((op) => (
               <TxFHEOperationsTableItem
-                key={ op.log_index || index }
+                key={ op.log_index }
                 { ...op }
                 isLoading={ isLoading }
               />
