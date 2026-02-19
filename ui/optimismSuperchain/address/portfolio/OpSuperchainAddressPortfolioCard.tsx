@@ -1,4 +1,4 @@
-import { Box, HStack, VStack } from '@chakra-ui/react';
+import { HStack, VStack } from '@chakra-ui/react';
 import type BigNumber from 'bignumber.js';
 import { clamp } from 'es-toolkit';
 import React from 'react';
@@ -14,7 +14,7 @@ import { DEFAULT_ACCURACY_USD } from 'ui/shared/value/utils';
 import { formatPercentage } from './utils';
 
 interface Props {
-  chain: ClusterChainConfig | null;
+  chain: ClusterChainConfig;
   value: BigNumber;
   share?: number;
   isLoading: boolean;
@@ -37,12 +37,8 @@ const OpSuperchainAddressPortfolioCard = ({ chain, value, share, isLoading, isSe
   }, [ totalNum, columnNumDesktop ]);
 
   const handleClick = React.useCallback(() => {
-    chain?.id && onClick?.(chain.id);
-  }, [ chain?.id, onClick ]);
-
-  if (!chain) {
-    return <Box w={ cardWidth }/>;
-  }
+    chain.id && onClick?.(chain.id);
+  }, [ chain.id, onClick ]);
 
   return (
     <HStack

@@ -68,12 +68,12 @@ const OpSuperchainAddressPortfolioTokens = ({ addressData, isLoading, onChainCha
   const [ selectedChainId, setSelectedChainId ] = React.useState<string | null>(null);
 
   React.useEffect(() => {
-    if (!portfolioQuery.isPlaceholderData) {
+    if (!portfolioQuery.isPlaceholderData && !isLoading) {
       const [ chainId ] = chainIdParam ? chainIdParam.split(',').filter((chainId) => Object.keys(portfolioData).includes(chainId)) : [];
       setSelectedChainId(chainId ?? null);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ portfolioQuery.isPlaceholderData ]);
+  }, [ portfolioQuery.isPlaceholderData, isLoading ]);
 
   const typeFilter = React.useMemo(() => {
     const additionalTypes = config?.chains

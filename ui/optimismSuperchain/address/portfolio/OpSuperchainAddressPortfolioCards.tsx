@@ -1,5 +1,6 @@
 import { type LinkProps } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
+import { clamp } from 'es-toolkit';
 import React from 'react';
 
 import type * as multichain from '@blockscout/multichain-aggregator-types';
@@ -8,13 +9,14 @@ import type { ClusterChainConfig } from 'types/multichain';
 import multichainConfig from 'configs/multichain';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { CollapsibleList } from 'toolkit/chakra/collapsible';
-import { ZERO } from 'toolkit/utils/consts';
 
 import OpSuperchainAddressPortfolioCard from './OpSuperchainAddressPortfolioCard';
 
 const TRIGGER_TEXT: [string, string] = [ '+ show more', '- show less' ];
 const TRIGGER_PROPS: LinkProps = {
   variant: 'secondary',
+  textStyle: { base: 'xs', lg: 'sm' },
+  py: { base: 1, lg: '2px' },
 };
 
 interface Props {
@@ -33,11 +35,9 @@ const OpSuperchainAddressPortfolioCards = ({ isLoading, selectedChainId, onChang
 
   const isMobile = useIsMobile();
 
-  const cutLength = isMobile ? 6 : 10;
-
   const items = React.useMemo(() => {
     const totalValueBn = BigNumber(totalValue ?? '0');
-    const result: Array<{ chain: ClusterChainConfig | null; value: BigNumber; share: number | undefined }> = chainValues ?
+    const result: Array<{ chain: ClusterChainConfig; value: BigNumber; share: number | undefined }> = chainValues ?
       Object.entries(chainValues)
         .map(([ chainId, value ]) => {
           const chain = chains?.find((chain) => chain.id === chainId);
@@ -56,34 +56,22 @@ const OpSuperchainAddressPortfolioCards = ({ isLoading, selectedChainId, onChang
         .sort((a, b) => b.value.minus(a.value).toNumber()) :
       [];
 
-    if (result.length > cutLength) {
-      const COLUMN_NUM = isMobile ? 2 : 5;
-      const remainder = result.length % COLUMN_NUM;
-      // add some dummy items to ensure the "show more" button is always in the new row.
-      if (remainder > 0) {
-        result.push(...Array.from({ length: COLUMN_NUM - remainder }).map(() => ({
-          chain: null,
-          value: ZERO,
-          share: undefined,
-        })));
-      }
-    }
-
     return result;
-  }, [ chainValues, chains, cutLength, isMobile, totalValue ]);
+  }, [ chainValues, chains, totalValue ]);
+
+  const cutLength = clamp(items.filter(({ share }) => share).length, 0, isMobile ? 6 : 10);
 
   React.useEffect(() => {
     if (!isLoading && selectedChainId !== null) {
       const activeIndex = items.findIndex((item) => item.chain?.id === selectedChainId);
       setInitialActiveIndex((prev) => prev === undefined ? activeIndex : prev);
     }
-
   }, [ isLoading, items, selectedChainId ]);
 
-  const renderItem = React.useCallback((item: typeof items[number], index: number) => {
+  const renderItem = React.useCallback((item: typeof items[number]) => {
     return (
       <OpSuperchainAddressPortfolioCard
-        key={ item.chain?.id ?? index }
+        key={ item.chain.id }
         chain={ item.chain }
         value={ item.value }
         share={ item.share }
