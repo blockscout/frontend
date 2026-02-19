@@ -77,12 +77,13 @@ interface Props {
   tacOperations?: Array<tac.OperationDetails>;
   isLoading: boolean;
   socketStatus?: 'close' | 'error';
+  noTxActions?: boolean;
 }
 
 const externalTxFeature = config.features.externalTxs;
 const rollupFeature = config.features.rollup;
 
-const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
+const TxInfo = ({ data, tacOperations, isLoading, socketStatus, noTxActions }: Props) => {
   const [ isExpanded, setIsExpanded ] = React.useState(false);
 
   const isMobile = useIsMobile();
@@ -431,7 +432,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
 
       <DetailedInfo.ItemDivider/>
 
-      <TxDetailsActions hash={ data.hash } actions={ data.actions } isTxDataLoading={ isLoading }/>
+      { !noTxActions && <TxDetailsActions hash={ data.hash } actions={ data.actions } isTxDataLoading={ isLoading }/> }
 
       <DetailedInfo.ItemLabel
         hint="Address (external or contract) sending the transaction"

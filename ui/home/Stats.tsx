@@ -11,6 +11,7 @@ import IconSvg from 'ui/shared/IconSvg';
 import StatsWidget from 'ui/shared/stats/StatsWidget';
 import { WEI } from 'ui/shared/value/utils';
 
+import StatsDegraded from './fallbacks/StatsDegraded';
 import type { HomeStatsItem } from './utils';
 import { isHomeStatsItemEnabled, sortHomeStatsItems } from './utils';
 
@@ -85,7 +86,7 @@ const Stats = () => {
   })();
 
   if (apiQuery.isError || statsQuery.isError || latestBatchQuery?.isError) {
-    return null;
+    return <StatsDegraded/>;
   }
 
   const isLoading = isPlaceholderData || latestBatchQuery?.isPlaceholderData;
