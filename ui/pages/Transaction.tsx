@@ -21,6 +21,7 @@ import TxBlobs from 'ui/tx/TxBlobs';
 import TxDetails from 'ui/tx/TxDetails';
 import TxDetailsDegraded from 'ui/tx/TxDetailsDegraded';
 import TxDetailsWrapped from 'ui/tx/TxDetailsWrapped';
+import TxFHEOperations from 'ui/tx/TxFHEOperations';
 import TxInternals from 'ui/tx/TxInternals';
 import TxLogs from 'ui/tx/TxLogs';
 import TxRawTrace from 'ui/tx/TxRawTrace';
@@ -87,6 +88,9 @@ const TransactionPageContent = () => {
       { id: 'logs', title: 'Logs', component: <TxLogs txQuery={ txQuery }/> },
       { id: 'state', title: 'State', component: <TxState txQuery={ txQuery }/> },
       { id: 'raw_trace', title: 'Raw trace', component: <TxRawTrace txQuery={ txQuery }/> },
+      txQuery.data?.fhe_operations_count && txQuery.data.fhe_operations_count > 0 ?
+        { id: 'fhe_operations', title: 'FHE operations', component: <TxFHEOperations txQuery={ txQuery }/> } :
+        undefined,
       txQuery.data?.authorization_list?.length ?
         { id: 'authorizations', title: 'Authorizations', component: <TxAuthorizations txQuery={ txQuery }/> } :
         undefined,
