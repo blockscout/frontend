@@ -13,6 +13,7 @@ import useApiQuery from 'lib/api/useApiQuery';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useIsMounted from 'lib/hooks/useIsMounted';
+import { isConfidentialTokenType } from 'lib/token/tokenTypes';
 import { TOKEN_COUNTERS } from 'stubs/token';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
@@ -144,7 +145,7 @@ const TokenDetails = ({ tokenQuery }: Props) => {
           </DetailedInfo.ItemValue>
         </>
       ) }
-      { type !== 'ERC-7984' && (
+      { type && !isConfidentialTokenType(type) && (
         <>
           <DetailedInfo.ItemLabel
             hint="The total amount of tokens issued"

@@ -13,7 +13,6 @@ export const NFT_TOKEN_TYPES: Record<NFTTokenType, string> = {
 
 export const TOKEN_TYPES: Record<string, string> = {
   'ERC-20': `${ tokenStandardName }-20`,
-  'ERC-7984': `${ tokenStandardName }-7984`,
   ...additionalTokenTypes.reduce((result, item) => {
     result[item.id] = item.name;
     return result;
@@ -33,10 +32,14 @@ export function isFungibleTokenType(typeId: TokenType): boolean {
 }
 
 export function hasTokenTransferValue(typeId: TokenType) {
-  if (typeId === 'ERC-20' || typeId === 'ERC-1155' || typeId === 'ERC-404' || typeId === 'ERC-7984') {
+  if (typeId === 'ERC-20' || typeId === 'ERC-1155' || typeId === 'ERC-404') {
     return true;
   }
   return additionalTokenTypes.some((item) => item.id === typeId);
+}
+
+export function isConfidentialTokenType(typeId: TokenType): boolean {
+  return typeId === 'ERC-7984';
 }
 
 export function hasTokenIds(typeId: TokenType) {

@@ -54,12 +54,6 @@ export default function useFetchTokens({ hash, enabled }: Props) {
     queryParams: { type: 'ERC-404' },
     queryOptions: { enabled: Boolean(hash) && enabled, refetchOnMount: false },
   });
-  const erc7984query = useApiQuery('general:address_tokens', {
-    pathParams: { hash },
-    queryParams: { type: 'ERC-7984' },
-    queryOptions: { enabled: Boolean(hash) && enabled, refetchOnMount: false },
-  });
-
   const apiFetch = useApiFetch();
   const multichainContext = useMultichainContext();
   const chain = multichainContext?.chain;
@@ -131,10 +125,6 @@ export default function useFetchTokens({ hash, enabled }: Props) {
     updateTokensData('ERC-404', payload);
   }, [ updateTokensData ]);
 
-  const handleTokenBalancesErc7984Message: SocketMessage.AddressTokenBalancesErc7984['handler'] = React.useCallback((payload) => {
-    updateTokensData('ERC-7984', payload);
-  }, [ updateTokensData ]);
-
   const channel = useSocketChannel({
     topic: `addresses:${ hash?.toLowerCase() }`,
     isDisabled:
@@ -142,8 +132,7 @@ export default function useFetchTokens({ hash, enabled }: Props) {
       (erc20query.isPlaceholderData ||
         erc721query.isPlaceholderData ||
         erc1155query.isPlaceholderData ||
-        erc404query.isPlaceholderData ||
-        erc7984query.isPlaceholderData),
+        erc404query.isPlaceholderData),
   });
 
   useSocketMessage({
@@ -166,12 +155,6 @@ export default function useFetchTokens({ hash, enabled }: Props) {
     event: 'updated_token_balances_erc_404',
     handler: handleTokenBalancesErc404Message,
   });
-  useSocketMessage({
-    channel,
-    event: 'updated_token_balances_erc_7984',
-    handler: handleTokenBalancesErc7984Message,
-  });
-
   React.useEffect(() => {
     if (!channel || additionalTokenTypes.length === 0) {
       return;
@@ -222,20 +205,15 @@ export default function useFetchTokens({ hash, enabled }: Props) {
         items: erc404query.data?.items.map(calculateUsdValue) || [],
         isOverflow: Boolean(erc404query.data?.next_page_params),
       },
-      'ERC-7984': {
-        items: erc7984query.data?.items.map(calculateUsdValue) || [],
-        isOverflow: Boolean(erc7984query.data?.next_page_params),
-      },
       ...additionalGroups,
     };
-  }, [ additionalTokenQueries, erc1155query.data, erc20query.data, erc721query.data, erc404query.data, erc7984query.data ]);
+  }, [ additionalTokenQueries, erc1155query.data, erc20query.data, erc721query.data, erc404query.data ]);
 
   const isPending =
     erc20query.isPending ||
     erc721query.isPending ||
     erc1155query.isPending ||
     erc404query.isPending ||
-    erc7984query.isPending ||
     additionalTokenQueries.some((query) => query.isPending);
 
   const isError =
@@ -243,7 +221,6 @@ export default function useFetchTokens({ hash, enabled }: Props) {
     erc721query.isError ||
     erc1155query.isError ||
     erc404query.isError ||
-    erc7984query.isError ||
     additionalTokenQueries.some((query) => query.isError);
 
   return {

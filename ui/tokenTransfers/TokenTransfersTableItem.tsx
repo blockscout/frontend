@@ -3,7 +3,7 @@ import React from 'react';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 import type { ClusterChainConfig } from 'types/multichain';
 
-import { NFT_TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
+import { isConfidentialTokenType, NFT_TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
 import { Badge } from 'toolkit/chakra/badge';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
@@ -23,7 +23,7 @@ type Props = {
 };
 
 const TokenTransferTableItem = ({ item, isLoading, chainData }: Props) => {
-  const isErc7984 = item.token?.type === 'ERC-7984';
+  const isConfidential = item.token ? isConfidentialTokenType(item.token.type) : false;
 
   const renderValue = () => {
     if (item.token && item.total && 'value' in item.total && item.total.value !== null) {
@@ -38,7 +38,7 @@ const TokenTransferTableItem = ({ item, isLoading, chainData }: Props) => {
       );
     }
 
-    if (isErc7984 && item.token) {
+    if (isConfidential && item.token) {
       return (
         <ConfidentialTokenValue
           token={ item.token }

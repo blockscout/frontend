@@ -1,9 +1,11 @@
 import type { CctxListItem } from '@blockscout/zetachain-cctx-types';
 import { getFeaturePayload } from 'configs/app/features/types';
+import type { TokenType } from 'types/api/token';
 import type { MarketplaceApp } from 'types/client/marketplace';
 import type { QuickSearchResultItem } from 'types/client/search';
 
 import config from 'configs/app';
+import { isConfidentialTokenType } from 'lib/token/tokenTypes';
 
 const nameServicesFeature = config.features.nameServices;
 
@@ -34,10 +36,14 @@ export type SearchResultAppItem = {
   app: MarketplaceApp;
 };
 
+const hasConfidentialTokenType = config.chain.additionalTokenTypes.some((item) => isConfidentialTokenType(item.id as TokenType));
+
 export const searchCategories: Array<{ id: Category; title: string; tabTitle: string }> = [
   { id: 'token', title: `Tokens (${ config.chain.tokenStandard }-20)`, tabTitle: 'Tokens' },
   { id: 'nft', title: `NFTs (${ config.chain.tokenStandard }-721 & 1155)`, tabTitle: 'NFTs' },
-  { id: 'confidential_token', title: `Confidential Tokens (${ config.chain.tokenStandard }-7984)`, tabTitle: 'Confidential Tokens' },
+  ...(hasConfidentialTokenType ? [
+    { id: 'confidential_token' as const, title: `Confidential Tokens (${ config.chain.tokenStandard }-7984)`, tabTitle: 'Confidential Tokens' },
+  ] : []),
   { id: 'address', title: 'Addresses', tabTitle: 'Addresses' },
   { id: 'public_tag', title: 'Public tags', tabTitle: 'Public tags' },
   { id: 'transaction', title: 'Transactions', tabTitle: 'Transactions' },
@@ -94,7 +100,7 @@ export function getItemCategory(item: QuickSearchResultItem | SearchResultAppIte
       if (item.token_type === 'ERC-20') {
         return 'token';
       }
-      if (item.token_type === 'ERC-7984') {
+      if (hasConfidentialTokenType && isConfidentialTokenType(item.token_type as TokenType)) {
         return 'confidential_token';
       }
       return 'nft';

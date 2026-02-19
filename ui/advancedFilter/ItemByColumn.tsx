@@ -4,6 +4,7 @@ import React from 'react';
 import type { AdvancedFilterResponseItem } from 'types/api/advancedFilter';
 
 import config from 'configs/app';
+import { isConfidentialTokenType } from 'lib/token/tokenTypes';
 import { Badge } from 'toolkit/chakra/badge';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import type { ColumnsIds } from 'ui/advancedFilter/constants';
@@ -67,7 +68,7 @@ const ItemByColumn = ({ item, column, isLoading }: Props) => {
       if (item.token?.type === 'ERC-721') {
         return <Skeleton loading={ isLoading }>1</Skeleton>;
       }
-      if (item.token?.type === 'ERC-7984') {
+      if (item.token && isConfidentialTokenType(item.token.type)) {
         return <ConfidentialValue loading={ isLoading }/>;
       }
       if (item.total) {

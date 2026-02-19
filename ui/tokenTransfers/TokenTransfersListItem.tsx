@@ -3,7 +3,7 @@ import React from 'react';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 import type { ClusterChainConfig } from 'types/multichain';
 
-import { hasTokenTransferValue, NFT_TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
+import { hasTokenTransferValue, isConfidentialTokenType, NFT_TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
 import { Badge } from 'toolkit/chakra/badge';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
@@ -21,7 +21,7 @@ type Props = {
 };
 
 const TokenTransfersListItem = ({ item, isLoading, chainData }: Props) => {
-  const isErc7984 = item.token?.type === 'ERC-7984';
+  const isConfidential = item.token ? isConfidentialTokenType(item.token.type) : false;
 
   return (
     <ListItemMobileGrid.Container>
@@ -95,7 +95,7 @@ const TokenTransfersListItem = ({ item, isLoading, chainData }: Props) => {
         </>
       ) }
 
-      { isErc7984 && item.token && (!item.total || !('value' in item.total) || item.total.value === null) && (
+      { isConfidential && item.token && (!item.total || !('value' in item.total) || item.total.value === null) && (
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>Amount</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>

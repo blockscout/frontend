@@ -4,7 +4,7 @@ import React from 'react';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 import type { ClusterChainConfig } from 'types/multichain';
 
-import { getTokenTypeName } from 'lib/token/tokenTypes';
+import { getTokenTypeName, isConfidentialTokenType } from 'lib/token/tokenTypes';
 import { Badge } from 'toolkit/chakra/badge';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
@@ -125,7 +125,7 @@ const TokenTransferTableItem = ({
         />
       </TableCell>
       <TableCell isNumeric verticalAlign="top">
-        { token?.type === 'ERC-7984' && (!total || !('value' in total) || total.value === null) ? (
+        { token && isConfidentialTokenType(token.type) && (!total || !('value' in total) || total.value === null) ? (
           <ConfidentialValue loading={ isLoading } mt="4px"/>
         ) : (
           <AssetValue

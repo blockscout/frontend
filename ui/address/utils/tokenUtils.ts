@@ -28,7 +28,7 @@ export interface TokenSelectDataItem {
 
 type TokenGroup = [string, TokenSelectDataItem];
 
-const NFT_TOKEN_GROUPS_ORDER = [ 'ERC-721', 'ERC-1155', 'ERC-404', 'ERC-7984' ] as const;
+const NFT_TOKEN_GROUPS_ORDER = [ 'ERC-721', 'ERC-1155', 'ERC-404' ] as const;
 
 export const sortTokenGroups = (groupA: TokenGroup, groupB: TokenGroup) => {
   const additionalTypeIds = config.chain.additionalTokenTypes.map((item) => item.id);
@@ -85,14 +85,11 @@ const sortErc20Tokens = (sort: Sort) => (dataA: TokenEnhancedData, dataB: TokenE
 
 const sortErc721Tokens = () => () => 0;
 
-const sortErc7984Tokens = () => () => 0;
-
 export const sortingFns = {
   'ERC-20': sortErc20Tokens,
   'ERC-721': sortErc721Tokens,
   'ERC-1155': sortErc1155or404Tokens,
   'ERC-404': sortErc1155or404Tokens,
-  'ERC-7984': sortErc7984Tokens,
 };
 
 export const getSortingFn = (typeId: string) => {

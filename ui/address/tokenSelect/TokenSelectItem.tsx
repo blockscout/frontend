@@ -6,7 +6,7 @@ import { route } from 'nextjs/routes';
 
 import config from 'configs/app';
 import multichainConfig from 'configs/multichain';
-import { isFungibleTokenType } from 'lib/token/tokenTypes';
+import { isConfidentialTokenType, isFungibleTokenType } from 'lib/token/tokenTypes';
 import { Link } from 'toolkit/chakra/link';
 import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
 import NativeTokenTag from 'ui/shared/celo/NativeTokenTag';
@@ -35,6 +35,17 @@ const TokenSelectItem = ({ data }: Props) => {
   }, [ data.chain_values ]);
 
   const secondRow = (() => {
+    if (isConfidentialTokenType(data.token.type)) {
+      const text = `••••• ${ data.token.symbol || '' }`;
+
+      return (
+        <>
+          <TruncatedText text={ text }/>
+          { data.token.exchange_rate && <chakra.span ml={ 2 }>@{ Number(data.token.exchange_rate).toLocaleString() }</chakra.span> }
+        </>
+      );
+    }
+
     const isFungibleToken = isFungibleTokenType(data.token.type);
 
     if (isFungibleToken) {
@@ -82,16 +93,6 @@ const TokenSelectItem = ({ data }: Props) => {
                 }
               </span>
             ) }
-          </>
-        );
-      }
-      case 'ERC-7984': {
-        const text = `••••• ${ data.token.symbol || '' }`;
-
-        return (
-          <>
-            <TruncatedText text={ text }/>
-            { data.token.exchange_rate && <chakra.span ml={ 2 }>@{ Number(data.token.exchange_rate).toLocaleString() }</chakra.span> }
           </>
         );
       }

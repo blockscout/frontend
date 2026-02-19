@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { TokenHolder, TokenInfo } from 'types/api/token';
 
-import { hasTokenIds } from 'lib/token/tokenTypes';
+import { hasTokenIds, isConfidentialTokenType } from 'lib/token/tokenTypes';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
@@ -34,7 +34,7 @@ const TokenTransferTableItem = ({ holder, token, isLoading }: Props) => {
         </TableCell>
       ) }
       <TableCell verticalAlign="middle" isNumeric>
-        { token.type === 'ERC-7984' ? (
+        { isConfidentialTokenType(token.type) ? (
           <ConfidentialValue loading={ isLoading } wordBreak="break-word"/>
         ) : (
           <AssetValue
@@ -44,7 +44,7 @@ const TokenTransferTableItem = ({ holder, token, isLoading }: Props) => {
           />
         ) }
       </TableCell>
-      { token.total_supply && token.type !== 'ERC-404' && (
+      { token.total_supply && token.type !== 'ERC-404' && !isConfidentialTokenType(token.type) && (
         <TableCell verticalAlign="middle" isNumeric>
           <Utilization
             value={ BigNumber(holder.value).div(BigNumber(token.total_supply)).dp(4).toNumber() }
