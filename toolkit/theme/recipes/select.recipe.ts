@@ -67,10 +67,6 @@ export const recipe = defineSlotRecipe({
         color: 'hover',
       },
     },
-    positioner: {
-      background: 'popover.bg',
-      borderRadius: 'md',
-    },
     content: {
       background: 'popover.bg',
       display: 'flex',
