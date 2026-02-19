@@ -84,7 +84,7 @@ const TransactionPageContent = () => {
       { id: 'state', title: 'State', component: <TxState txQuery={ txQuery }/> },
       { id: 'raw_trace', title: 'Raw trace', component: <TxRawTrace txQuery={ txQuery }/> },
       txQuery.data?.fhe_operations_count && txQuery.data.fhe_operations_count > 0 ?
-        { id: 'fhe_operations', title: 'FHE Operations', component: <TxFHEOperations txQuery={ txQuery }/> } :
+        { id: 'fhe_operations', title: 'FHE operations', component: <TxFHEOperations txQuery={ txQuery }/> } :
         undefined,
       txQuery.data?.authorization_list?.length ?
         { id: 'authorizations', title: 'Authorizations', component: <TxAuthorizations txQuery={ txQuery }/> } :
