@@ -11,6 +11,7 @@ import TokenValue from 'ui/shared/value/TokenValue';
 interface Props extends BoxProps {
   loading?: boolean;
   tx: Transaction | Pick<Transaction, WrappedTransactionFields>;
+  hasExchangeRateToggle?: boolean;
   accuracy?: number;
   accuracyUsd?: number;
   noTooltip?: boolean;
@@ -19,7 +20,7 @@ interface Props extends BoxProps {
   layout?: 'horizontal' | 'vertical';
 }
 
-const TxFee = ({ tx, accuracy, accuracyUsd, loading, noSymbol: noSymbolProp, noUsd, noTooltip, ...rest }: Props) => {
+const TxFee = ({ tx, accuracy, accuracyUsd, loading, noSymbol: noSymbolProp, noUsd, noTooltip, hasExchangeRateToggle, ...rest }: Props) => {
 
   if ('celo' in tx && tx.celo?.gas_token) {
     return (
@@ -48,12 +49,16 @@ const TxFee = ({ tx, accuracy, accuracyUsd, loading, noSymbol: noSymbolProp, noU
   }
 
   const noSymbol = noSymbolProp || config.UI.views.tx.hiddenFields?.fee_currency;
+  const exchangeRate = 'exchange_rate' in tx ? tx.exchange_rate : null;
+  const historicExchangeRate = 'historic_exchange_rate' in tx ? tx.historic_exchange_rate : null;
 
   return (
     <NativeCoinValue
       amount={ tx.fee.value || '0' }
       noSymbol={ noSymbol }
-      exchangeRate={ !noUsd && 'exchange_rate' in tx ? tx.exchange_rate : null }
+      exchangeRate={ noUsd ? null : exchangeRate }
+      historicExchangeRate={ noUsd ? null : historicExchangeRate }
+      hasExchangeRateToggle={ hasExchangeRateToggle }
       accuracy={ accuracy }
       accuracyUsd={ accuracyUsd }
       loading={ loading }

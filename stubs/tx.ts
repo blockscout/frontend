@@ -20,6 +20,7 @@ export const TX: Transaction = {
   confirmations: 71,
   type: 0,
   exchange_rate: '1828.71',
+  historic_exchange_rate: null,
   to: ADDRESS_PARAMS,
   transaction_burnt_fee: null,
   max_fee_per_gas: null,

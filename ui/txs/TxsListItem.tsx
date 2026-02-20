@@ -128,6 +128,7 @@ const TxsListItem = ({
           <NativeCoinValue
             amount={ tx.value }
             exchangeRate={ tx.exchange_rate }
+            historicExchangeRate={ tx.historic_exchange_rate }
             loading={ isLoading }
             color="text.secondary"
           />

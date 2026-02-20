@@ -139,6 +139,7 @@ const TxsTableItem = ({
             noSymbol
             loading={ isLoading }
             exchangeRate={ tx.exchange_rate }
+            historicExchangeRate={ tx.historic_exchange_rate }
             layout="vertical"
             rowGap={ 3 }
           />
