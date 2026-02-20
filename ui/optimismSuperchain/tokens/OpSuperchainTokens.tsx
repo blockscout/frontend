@@ -4,6 +4,7 @@ import React from 'react';
 
 import type { TokenType } from 'types/api/token';
 
+import multichainConfig from 'configs/multichain';
 import useDebounce from 'lib/hooks/useDebounce';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
@@ -28,12 +29,18 @@ const OpSuperchainTokens = () => {
   const router = useRouter();
   const isMobile = useIsMobile();
 
+  const chainConfigs = React.useMemo(() => {
+    return multichainConfig()?.chains.map((chain) => chain.app_config);
+  }, []);
+
   const q = getQueryParamString(router.query.query);
   const chainIdParam = getQueryParamString(router.query.chain_id);
 
   const [ chainIds, setChainIds ] = React.useState<Array<string>>(chainIdParam ? [ chainIdParam ] : [ 'all' ]);
   const [ searchTerm, setSearchTerm ] = React.useState<string>(q ?? '');
-  const [ tokenTypes, setTokenTypes ] = React.useState<Array<TokenType> | undefined>(getTokenFilterValue(router.query.type));
+  const [ tokenTypes, setTokenTypes ] = React.useState<Array<TokenType> | undefined>(
+    getTokenFilterValue(router.query.type, chainConfigs),
+  );
 
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
@@ -88,6 +95,7 @@ const OpSuperchainTokens = () => {
         onChange={ handleTokenTypesChange }
         defaultValue={ tokenTypes }
         nftOnly={ false }
+        chainConfig={ chainConfigs }
       />
     </PopoverFilter>
   );

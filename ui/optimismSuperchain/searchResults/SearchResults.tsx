@@ -4,6 +4,7 @@ import React from 'react';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useRoutedChainSelect from 'lib/multichain/useRoutedChainSelect';
 import { Skeleton } from 'toolkit/chakra/skeleton';
+import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import ChainSelect from 'ui/optimismSuperchain/components/ChainSelect';
 import SearchResultsInput from 'ui/searchResults/SearchResultsInput';
@@ -16,6 +17,7 @@ import HeaderMobile from 'ui/snippets/header/HeaderMobile';
 
 import SearchResultTabContent from './SearchResultTabContent';
 import useSearchQuery from './useSearchQuery';
+import useSearchRedirect from './useSearchRedirect';
 import type { QueryType } from './utils';
 import { SEARCH_TABS_IDS, SEARCH_TABS_NAMES } from './utils';
 
@@ -36,9 +38,10 @@ const SearchResults = () => {
     persistedParams: [ 'q', 'tab' ],
   });
   const chainId = chainSelect.value?.[0];
-  const { searchTerm, debouncedSearchTerm, handleSearchTermChange, handleSubmit, queries } = useSearchQuery({
+  const { searchTerm, debouncedSearchTerm, handleSearchTermChange, handleSubmit, queries, checkRedirectQuery } = useSearchQuery({
     chainId: chainId === 'all' ? undefined : chainId,
   });
+  const showContent = useSearchRedirect({ checkRedirectQuery, hasSearchTerm: debouncedSearchTerm.trim().length > 0 });
 
   const isLoading = Object.values(queries).some((query) => query.isPending);
 
@@ -117,6 +120,26 @@ const SearchResults = () => {
     ...detailedTabs,
   ];
 
+  const pageContent = !showContent ?
+    <ContentLoader/> :
+    (
+      <>
+        <PageTitle title="Search results"/>
+        <Skeleton loading={ totalResults === undefined } mb={ 6 } w="fit-content">
+          Found <chakra.span fontWeight={ 700 }>{ totalResults?.num }{ totalResults?.isOverflow ? '+' : '' }</chakra.span> matching results
+        </Skeleton>
+        <RoutedTabs
+          tabs={ tabs }
+          variant="secondary"
+          size="sm"
+          preservedParams={ PRESERVED_PARAMS }
+          listProps={ isMobile ? undefined : TAB_LIST_PROPS }
+          rightSlot={ isMobile ? undefined : chainSelectElement }
+          stickyEnabled={ !isMobile }
+        />
+      </>
+    );
+
   return (
     <>
       <HeaderMobile onGoToSearchResults={ handleNavigateToResults }/>
@@ -127,19 +150,7 @@ const SearchResults = () => {
           <HeaderDesktop renderSearchBar={ renderSearchBar }/>
           <AppErrorBoundary>
             <Layout.Content>
-              <PageTitle title="Search results"/>
-              <Skeleton loading={ totalResults === undefined } mb={ 6 } w="fit-content">
-                Found <chakra.span fontWeight={ 700 }>{ totalResults?.num }{ totalResults?.isOverflow ? '+' : '' }</chakra.span> matching results
-              </Skeleton>
-              <RoutedTabs
-                tabs={ tabs }
-                variant="secondary"
-                size="sm"
-                preservedParams={ PRESERVED_PARAMS }
-                listProps={ isMobile ? undefined : TAB_LIST_PROPS }
-                rightSlot={ isMobile ? undefined : chainSelectElement }
-                stickyEnabled={ !isMobile }
-              />
+              { pageContent }
             </Layout.Content>
           </AppErrorBoundary>
         </Layout.MainColumn>

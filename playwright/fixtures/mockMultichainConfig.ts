@@ -1,20 +1,22 @@
 import type { TestFixture, Page } from '@playwright/test';
 
-import * as opSuperchainMock from 'mocks/multichain/opSuperchain';
+import * as chainDataMock from 'mocks/multichain/chains';
 
 export type MockMultichainConfigFixture = () => Promise<void>;
 
 const fixture: TestFixture<MockMultichainConfigFixture, { page: Page }> = async({ page }, use) => {
   await use(async() => {
-    await page.evaluate(([ opSuperchainMock ]) => {
+    await page.evaluate(([ chainDataMock ]) => {
       window.__multichainConfig = {
         chains: [
-          opSuperchainMock.chainDataA,
-          opSuperchainMock.chainDataB,
-          opSuperchainMock.chainDataC,
+          chainDataMock.chainA,
+          chainDataMock.chainB,
+          chainDataMock.chainC,
+          chainDataMock.chainD,
+          chainDataMock.chainE,
         ],
       };
-    }, [ opSuperchainMock ]);
+    }, [ chainDataMock ]);
   });
 };
 

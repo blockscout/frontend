@@ -32,6 +32,7 @@ export interface Params<Resource extends PaginatedResourceName> {
   hasNextPageFn?: (nextPageParams: NextPageParams) => boolean;
   isMultichain?: boolean;
   chainIds?: Array<string>;
+  noScroll?: boolean;
 }
 
 const INITIAL_PAGE_PARAMS = { '1': {} };
@@ -76,6 +77,7 @@ export default function useQueryWithPages<Resource extends PaginatedResourceName
   pathParams,
   queryParams: queryParamsFromProps,
   scrollRef,
+  noScroll,
   hasNextPageFn,
   isMultichain,
   chainIds,
@@ -114,8 +116,11 @@ export default function useQueryWithPages<Resource extends PaginatedResourceName
   const queryParams = { ...pageParams[page], ...filters, ...sorting, ...queryParamsFromProps };
 
   const scrollToTop = useCallback(() => {
+    if (noScroll) {
+      return;
+    }
     scrollRef?.current ? scrollRef.current.scrollIntoView(true) : animateScroll.scrollToTop({ duration: 0 });
-  }, [ scrollRef ]);
+  }, [ scrollRef, noScroll ]);
 
   const queryResult = useApiQuery(resourceName, {
     pathParams,
@@ -252,6 +257,12 @@ export default function useQueryWithPages<Resource extends PaginatedResourceName
   }, [ router, scrollToTop ]);
 
   const onChainValueChange = useCallback(({ value }: { value: Array<string> }) => {
+
+    if (!options?.enabled) {
+      setChainValue(value);
+      return;
+    }
+
     if (page !== 1) {
       resetPage({ chainValue: value });
     } else {
@@ -263,7 +274,7 @@ export default function useQueryWithPages<Resource extends PaginatedResourceName
       setChainValue(value);
       router.push({ pathname: router.pathname, query: nextPageQuery }, undefined, { shallow: true });
     }
-  }, [ page, resetPage, router ]);
+  }, [ page, resetPage, router, options?.enabled ]);
 
   let hasNextPage = false;
   if (nextPageParams) {

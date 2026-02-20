@@ -1,5 +1,4 @@
 import BigNumber from 'bignumber.js';
-import { mapValues } from 'es-toolkit';
 
 import type { AddressTokenBalance } from 'types/api/address';
 
@@ -141,19 +140,6 @@ export const getTokensTotalInfo = (data: TokenSelectData): TokensTotalInfo => {
   const isOverflow = Object.values(data).some(({ isOverflow }) => isOverflow);
 
   return { usd, num, isOverflow };
-};
-
-export const getTokensTotalInfoByChain = (data: TokenSelectData, chainIds: Array<string>) => {
-  return chainIds.reduce((result, chainId) => {
-    const filteredData = mapValues(data, (item) => ({
-      ...item,
-      items: item.items.filter((item) => item.chain_values?.[chainId]),
-    }));
-
-    result[chainId] = getTokensTotalInfo(filteredData);
-
-    return result;
-  }, {} as Record<string, TokensTotalInfo>);
 };
 
 const usdValueReducer = (result: BigNumber, item: TokenEnhancedData) => !item.usd ? result : result.plus(BigNumber(item.usd));

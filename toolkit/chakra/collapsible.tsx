@@ -66,14 +66,19 @@ interface CollapsibleListProps<T> extends FlexProps {
   triggerProps?: LinkProps;
   cutLength?: number;
   text?: [string, string];
+  defaultExpanded?: boolean;
 }
 
 export const CollapsibleList = <T,>(props: CollapsibleListProps<T>) => {
   const CUT_LENGTH = 3;
 
-  const { items, renderItem, triggerProps, cutLength = CUT_LENGTH, text: textProp, ...rest } = props;
+  const { items, renderItem, triggerProps, cutLength = CUT_LENGTH, text: textProp, defaultExpanded = false, ...rest } = props;
 
-  const [ isExpanded, setIsExpanded ] = React.useState(false);
+  const [ isExpanded, setIsExpanded ] = React.useState(defaultExpanded);
+
+  React.useEffect(() => {
+    setIsExpanded(defaultExpanded);
+  }, [ defaultExpanded ]);
 
   const handleToggle = React.useCallback(() => {
     setIsExpanded((flag) => !flag);

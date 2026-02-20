@@ -49,7 +49,7 @@ const TopBar = () => {
         maxW={ `${ CONTENT_MAX_WIDTH }px` }
       >
         <HStack gap={ 0 } fontSize="xs">
-          { Boolean(config.UI.featuredNetworks.items) && <NetworkMenu/> }
+          { Boolean(config.UI.featuredNetworks.items || config.features.opSuperchain.isEnabled) && <NetworkMenu/> }
           { !config.features.opSuperchain.isEnabled ? <TopBarStats/> : <div/> }
         </HStack>
         <HStack

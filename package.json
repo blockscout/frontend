@@ -45,7 +45,7 @@
   "dependencies": {
     "@blockscout/bens-types": "1.4.1",
     "@blockscout/interchain-indexer-types": "0.0.10",
-    "@blockscout/multichain-aggregator-types": "1.6.3-alpha.3",
+    "@blockscout/multichain-aggregator-types": "2.1.2-alpha",
     "@blockscout/points-types": "1.4.0-alpha.1",
     "@blockscout/stats-types": "2.11.1",
     "@blockscout/tac-operation-lifecycle-types": "0.0.1-alpha.6",

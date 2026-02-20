@@ -1,11 +1,12 @@
 import { castArray } from 'es-toolkit/compat';
 
 import type { AdvancedFilterAge, AdvancedFilterParams } from 'types/api/advancedFilter';
+import type { ClusterChainConfig } from 'types/multichain';
 
 import dayjs from 'lib/date/dayjs';
 import { HOUR, DAY, MONTH } from 'toolkit/utils/consts';
 
-import { ADVANCED_FILTER_TYPES } from './constants';
+import { getAdvancedFilterTypes } from './constants';
 
 export function getDurationFromAge(age: AdvancedFilterAge) {
   switch (age) {
@@ -55,7 +56,7 @@ const filterParamNames: Record<keyof AdvancedFilterParams, string> = {
   transaction_types: 'Type',
 };
 
-export function getFilterTags(filters: AdvancedFilterParams) {
+export function getFilterTags(filters: AdvancedFilterParams, chainConfig?: ClusterChainConfig['app_config']) {
   const filtersToShow = { ...filters };
   if (filtersToShow.age) {
     filtersToShow.age_from = undefined;
@@ -77,7 +78,8 @@ export function getFilterTags(filters: AdvancedFilterParams) {
         break;
       }
       case 'transaction_types': {
-        valueStr = castArray(value).map(i => ADVANCED_FILTER_TYPES.find(t => t.id === i)?.name).filter(Boolean).join(', ');
+        const advancedFilterTypes = getAdvancedFilterTypes(chainConfig);
+        valueStr = castArray(value).map(i => advancedFilterTypes.find(t => t.id === i)?.name).filter(Boolean).join(', ');
         break;
       }
       case 'token_contract_address_hashes_to_exclude': {

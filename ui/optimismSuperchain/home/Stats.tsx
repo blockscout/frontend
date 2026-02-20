@@ -24,12 +24,14 @@ const Stats = () => {
         label: statsQuery.data.total_multichain_txns.title,
         value: Number(statsQuery.data.total_multichain_txns.value).toLocaleString(),
         icon: 'transactions' as const,
+        hint: statsQuery.data.total_multichain_txns.description,
       },
       statsQuery.data?.total_multichain_addresses && {
         id: 'wallet_addresses' as const,
         label: statsQuery.data.total_multichain_addresses.title,
         value: Number(statsQuery.data.total_multichain_addresses.value).toLocaleString(),
         icon: 'wallet' as const,
+        hint: statsQuery.data.total_multichain_addresses.description,
       },
     ]
       .filter(Boolean)
@@ -42,7 +44,14 @@ const Stats = () => {
       { items.length > 0 && (
         <Flex gap={ 2 } flexDirection={{ base: 'row', lg: 'column' }} w={{ base: '100%', lg: '270px' }}>
           { items.map((item) => (
-            <StatsWidget key={ item.id } label={ item.label } value={ item.value } icon={ item.icon } isLoading={ statsQuery.isPlaceholderData }/>
+            <StatsWidget
+              key={ item.id }
+              label={ item.label }
+              value={ item.value }
+              icon={ item.icon }
+              isLoading={ statsQuery.isPlaceholderData }
+              hint={ item.hint }
+            />
           )) }
         </Flex>
       ) }

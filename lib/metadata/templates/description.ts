@@ -86,6 +86,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/chain/[chain_slug]/token/[hash]/instance/[id]': DEFAULT_TEMPLATE,
   '/chain/[chain_slug]/tx/[hash]': DEFAULT_TEMPLATE,
   '/chain/[chain_slug]/visualize/sol2uml': DEFAULT_TEMPLATE,
+  '/ecosystems': DEFAULT_TEMPLATE,
 
   // service routes, added only to make typescript happy
   '/login': DEFAULT_TEMPLATE,

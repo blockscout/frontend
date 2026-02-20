@@ -58,7 +58,7 @@ const Address3rdPartyWidgetCard = ({ name, config, address, isLoading }: Props) 
     </>
   ) : (
     <>
-      <LinkOverlay href={ url } external onClick={ handleClick }/>
+      <LinkOverlay href={ url } external onClick={ handleClick } noIcon/>
       <Skeleton loading={ isDataLoading } minW="88px" alignSelf="flex-start">
         { data ? (
           <Text

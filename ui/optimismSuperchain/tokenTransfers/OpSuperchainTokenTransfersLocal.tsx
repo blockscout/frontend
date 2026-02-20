@@ -31,7 +31,12 @@ const OpSuperchainTokenTransfersLocal = ({ query, typeFilter, onTokenTypesChange
   const actionBar = isMobile && (
     <ActionBar mt={ -6 }>
       <PopoverFilter contentProps={{ w: '200px' }} appliedFiltersNum={ typeFilter.length }>
-        <TokenTypeFilter<TokenType> onChange={ onTokenTypesChange } defaultValue={ typeFilter } nftOnly={ false }/>
+        <TokenTypeFilter<TokenType>
+          onChange={ onTokenTypesChange }
+          defaultValue={ typeFilter }
+          nftOnly={ false }
+          chainConfig={ chainData?.app_config }
+        />
       </PopoverFilter>
       <Pagination { ...query.pagination }/>
     </ActionBar>

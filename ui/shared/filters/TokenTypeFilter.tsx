@@ -2,8 +2,9 @@ import { Text, Flex, useCheckboxGroup, Fieldset } from '@chakra-ui/react';
 import React from 'react';
 
 import type { NFTTokenType, TokenType } from 'types/api/token';
+import type { ClusterChainConfig } from 'types/multichain';
 
-import { TOKEN_TYPES, TOKEN_TYPE_IDS, NFT_TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
+import { getTokenTypes } from 'lib/token/tokenTypes';
 import { Button } from 'toolkit/chakra/button';
 import { Checkbox, CheckboxGroup } from 'toolkit/chakra/checkbox';
 
@@ -11,8 +12,9 @@ type Props<T extends TokenType | NFTTokenType> = {
   onChange: (nextValue: Array<T>) => void;
   defaultValue?: Array<T>;
   nftOnly: T extends NFTTokenType ? true : false;
+  chainConfig?: Array<ClusterChainConfig['app_config']> | ClusterChainConfig['app_config'];
 };
-const TokenTypeFilter = <T extends TokenType | NFTTokenType>({ nftOnly, onChange, defaultValue }: Props<T>) => {
+const TokenTypeFilter = <T extends TokenType | NFTTokenType>({ nftOnly, onChange, defaultValue, chainConfig }: Props<T>) => {
   const { value, setValue } = useCheckboxGroup({ defaultValue });
 
   const handleReset = React.useCallback(() => {
@@ -27,6 +29,10 @@ const TokenTypeFilter = <T extends TokenType | NFTTokenType>({ nftOnly, onChange
     setValue(nextValue as Array<T>);
     onChange(nextValue as Array<T>);
   }, [ onChange, setValue ]);
+
+  const tokenTypes = React.useMemo(() => {
+    return getTokenTypes(nftOnly, chainConfig);
+  }, [ chainConfig, nftOnly ]);
 
   return (
     <>
@@ -44,9 +50,9 @@ const TokenTypeFilter = <T extends TokenType | NFTTokenType>({ nftOnly, onChange
       <Fieldset.Root>
         <CheckboxGroup defaultValue={ defaultValue } onValueChange={ handleChange } value={ value } name="token_type">
           <Fieldset.Content>
-            { (nftOnly ? NFT_TOKEN_TYPE_IDS : TOKEN_TYPE_IDS).map((id) => (
+            { Object.keys(tokenTypes).map((id) => (
               <Checkbox key={ id } value={ id }>
-                { TOKEN_TYPES[id] }
+                { tokenTypes[id as keyof typeof tokenTypes] }
               </Checkbox>
             )) }
           </Fieldset.Content>

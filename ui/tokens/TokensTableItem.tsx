@@ -95,26 +95,30 @@ const TokensTableItem = ({
               noCopy
               textStyle="sm"
               fontWeight="700"
+              noLink={ type === 'NATIVE' }
             />
-            <Flex columnGap={ 2 } py="5px" alignItems="center">
-              <AddressEntity
-                address={ tokenAddress }
-                isLoading={ isLoading }
-                noIcon
-                textStyle="sm"
-                fontWeight={ 500 }
-                link={{ variant: 'secondary' }}
-              />
-              <AddressAddToWallet
-                token={ token }
-                isLoading={ isLoading }
-                iconSize={ 5 }
-                opacity={ 0 }
-                _groupHover={{ opacity: 1 }}
-              />
-            </Flex>
+            { type !== 'NATIVE' && (
+              <Flex columnGap={ 2 } py="5px" alignItems="center">
+                <AddressEntity
+                  address={ tokenAddress }
+                  isLoading={ isLoading }
+                  noIcon
+                  textStyle="sm"
+                  fontWeight={ 500 }
+                  link={{ variant: 'secondary' }}
+                />
+                <AddressAddToWallet
+                  token={ token }
+                  isLoading={ isLoading }
+                  iconSize={ 5 }
+                  opacity={ 0 }
+                  _groupHover={{ opacity: 1 }}
+                  chainConfig={ chainInfo?.app_config }
+                />
+              </Flex>
+            ) }
             <Flex columnGap={ 1 }>
-              <Tag loading={ isLoading }>{ getTokenTypeName(type) }</Tag>
+              <Tag loading={ isLoading }>{ getTokenTypeName(type, chainInfo?.app_config) }</Tag>
               { bridgedChainTag && <Tag loading={ isLoading }>{ bridgedChainTag }</Tag> }
             </Flex>
           </Flex>

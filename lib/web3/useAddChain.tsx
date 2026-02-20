@@ -27,12 +27,16 @@ function getParams(chainConfig: typeof config): AddEthereumChainParameter {
   };
 }
 
-export default function useAddChain() {
+interface Params {
+  chainConfig?: typeof config;
+}
+
+export default function useAddChain(params?: Params) {
   const { data: { wallet, provider } = {} } = useProvider();
   const { trackUsage } = useRewardsActivity();
   const multichainContext = useMultichainContext();
 
-  const chainConfig = multichainContext?.chain.app_config || config;
+  const chainConfig = params?.chainConfig || multichainContext?.chain.app_config || config;
 
   return React.useCallback(async() => {
     if (!wallet || !provider) {

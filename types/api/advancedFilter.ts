@@ -1,7 +1,5 @@
-import { TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
-
 import type { AddressParam } from './addressParams';
-import type { TokenInfo } from './token';
+import type { TokenInfo, TokenType } from './token';
 
 export const ADVANCED_FILTER_ADDRESS_RELATION = [ 'or', 'and' ] as const;
 export type AddressRelation = typeof ADVANCED_FILTER_ADDRESS_RELATION[number];
@@ -26,8 +24,7 @@ export type AdvancedFilterParams = {
   token_contract_symbols_to_exclude?: Array<string>;
 };
 
-export const ADVANCED_FILTER_TYPES = [ 'coin_transfer', ...TOKEN_TYPE_IDS, 'contract_creation', 'contract_interaction' ] as const;
-export type AdvancedFilterType = typeof ADVANCED_FILTER_TYPES[number];
+export type AdvancedFilterType = 'coin_transfer' | 'contract_creation' | 'contract_interaction' | TokenType;
 
 export const ADVANCED_FILTER_AGES = [ '1h', '24h', '7d', '1m', '3m', '6m' ] as const;
 export type AdvancedFilterAge = typeof ADVANCED_FILTER_AGES[number];

@@ -56,7 +56,7 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, verifiedInfoQuery, hash }: P
     return [
       tokenQuery.data ? {
         slug: tokenQuery.data?.type,
-        name: getTokenTypeName(tokenQuery.data.type),
+        name: getTokenTypeName(tokenQuery.data.type, multichainContext?.chain?.app_config),
         tagType: 'custom' as const,
         ordinal: PREDEFINED_TAG_PRIORITY,
       } : undefined,
@@ -83,6 +83,7 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, verifiedInfoQuery, hash }: P
     tokenQuery.data,
     verifiedInfoQuery.data?.projectSector,
     hash,
+    multichainContext?.chain?.app_config,
   ]);
 
   const contentAfter = (

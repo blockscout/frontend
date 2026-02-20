@@ -62,8 +62,7 @@ export const TruncatedTextTooltip = React.memo(({ children, label, placement, in
     onMouseEnter?: () => void;
     onMouseLeave?: () => void;
   };
-  const handleClick = React.useCallback((event: React.MouseEvent) => {
-    event.stopPropagation();
+  const handleClick = React.useCallback(() => {
     onToggle();
   }, [ onToggle ]);
 
