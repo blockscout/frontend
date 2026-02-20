@@ -29,7 +29,6 @@ const TxStateTableItem = ({ data, isLoading }: Props) => {
           isLoading={ isLoading }
           truncation="constant"
           my="7px"
-          w="100%"
         />
       </TableCell>
       <TableCell isNumeric><Box py="7px">{ before }</Box></TableCell>

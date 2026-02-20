@@ -66,6 +66,10 @@ const Icon = (props: IconProps) => {
     return <Skeleton { ...styles } loading borderRadius="full" flexShrink={ 0 }/>;
   }
 
+  if ('src' in props || 'name' in props) {
+    return <EntityBase.Icon { ...props } shield={ shield }/>;
+  }
+
   const isDelegatedAddress = props.address.proxy_type === 'eip7702';
 
   if (props.address.is_contract && !isDelegatedAddress) {
@@ -228,6 +232,8 @@ const AddressEntity = (props: EntityProps) => {
       onMouseLeave={ highlightContext?.onMouseLeave }
       position="relative"
       zIndex={ 0 }
+      w="fit-content"
+      maxW="100%"
     >
       <Icon { ...partsProps.icon } tooltipInteractive={ Boolean(highlightContext) }/>
       { props.noLink ? content : <Link { ...partsProps.link }>{ content }</Link> }

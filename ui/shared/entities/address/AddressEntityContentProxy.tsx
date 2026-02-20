@@ -32,6 +32,7 @@ const AddressEntityContentProxy = (props: ContentProps) => {
         noHighlight
         noTooltip
         justifyContent="center"
+        w="100%"
       />
       <Box fontWeight={ 600 } mt={ 2 }>
         Implementation{ implementations.length > 1 ? 's' : '' }

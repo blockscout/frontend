@@ -6,6 +6,7 @@ import type { EntityTag as TEntityTag } from 'ui/shared/EntityTags/types';
 
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
+import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import useEtherscanRedirects from 'lib/router/useEtherscanRedirects';
@@ -126,7 +127,7 @@ const TransactionPageContent = () => {
   }
 
   return (
-    <>
+    <AddressHighlightProvider>
       <TextAd mb={ 6 }/>
       <PageTitle
         title="Transaction details"
@@ -134,7 +135,7 @@ const TransactionPageContent = () => {
         secondRow={ titleSecondRow }
       />
       <RoutedTabs tabs={ tabs } isLoading={ isPlaceholderData }/>
-    </>
+    </AddressHighlightProvider>
   );
 };
 

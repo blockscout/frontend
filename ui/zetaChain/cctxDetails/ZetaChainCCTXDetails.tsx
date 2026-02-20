@@ -292,6 +292,7 @@ const ZetaChainCCTXDetails = ({ data, isLoading }: Props) => {
                 address={{ hash: data.revert_options.abort_address }}
                 chainId={ data.outbound_params[0].receiver_chain_id?.toString() }
                 isLoading={ isLoading }
+                w="100%"
               />
               <Text fontWeight="medium" color="text.secondary">Call</Text>
               <Skeleton loading={ isLoading }>{ data.revert_options.call_on_revert.toString() }</Skeleton>
@@ -300,6 +301,7 @@ const ZetaChainCCTXDetails = ({ data, isLoading }: Props) => {
                 address={{ hash: data.revert_options.revert_address }}
                 chainId={ data.outbound_params[1]?.receiver_chain_id?.toString() }
                 isLoading={ isLoading }
+                w="100%"
               />
               { data.revert_options.revert_message && (
                 <>
