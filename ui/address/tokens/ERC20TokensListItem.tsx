@@ -6,7 +6,7 @@ import type { AddressTokensErc20Item } from './types';
 
 import config from 'configs/app';
 import multichainConfig from 'configs/multichain';
-import { getTokenTypeName } from 'lib/token/tokenTypes';
+import { getTokenTypeName, isConfidentialTokenType } from 'lib/token/tokenTypes';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tag } from 'toolkit/chakra/tag';
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
@@ -15,6 +15,7 @@ import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import calculateUsdValue from 'ui/shared/value/calculateUsdValue';
+import ConfidentialValue from 'ui/shared/value/ConfidentialValue';
 import SimpleValue from 'ui/shared/value/SimpleValue';
 import { DEFAULT_ACCURACY_USD } from 'ui/shared/value/utils';
 
@@ -83,14 +84,24 @@ const ERC20TokensListItem = ({
       ) }
       <HStack gap={ 3 } alignItems="baseline">
         <Skeleton loading={ isLoading } fontSize="sm" fontWeight={ 500 }>Quantity</Skeleton>
-        <SimpleValue
-          value={ tokenQuantity }
-          loading={ isLoading }
-          fontSize="sm"
-          color="text.secondary"
-        />
+        { isConfidentialTokenType(token.type) ? (
+          <ConfidentialValue loading={ isLoading }/>
+        ) : (
+          <SimpleValue
+            value={ tokenQuantity }
+            loading={ isLoading }
+            fontSize="sm"
+            color="text.secondary"
+          />
+        ) }
       </HStack>
-      { token.exchange_rate && (
+      { isConfidentialTokenType(token.type) && (
+        <HStack gap={ 3 } alignItems="baseline">
+          <Skeleton loading={ isLoading } fontSize="sm" fontWeight={ 500 }>Value</Skeleton>
+          <ConfidentialValue loading={ isLoading }/>
+        </HStack>
+      ) }
+      { !isConfidentialTokenType(token.type) && token.exchange_rate && (
         <HStack gap={ 3 } alignItems="baseline">
           <Skeleton loading={ isLoading } fontSize="sm" fontWeight={ 500 }>Value</Skeleton>
           <SimpleValue

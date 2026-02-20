@@ -5,7 +5,7 @@ import type { TokenInstance } from 'types/api/token';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 import type { ClusterChainConfig } from 'types/multichain';
 
-import { hasTokenTransferValue, NFT_TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
+import { hasTokenTransferValue, isConfidentialTokenType, NFT_TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
 import { Badge } from 'toolkit/chakra/badge';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
@@ -15,6 +15,7 @@ import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import AssetValue from 'ui/shared/value/AssetValue';
+import ConfidentialValue from 'ui/shared/value/ConfidentialValue';
 
 type Props = TokenTransfer & { tokenId?: string; isLoading?: boolean; instance?: TokenInstance; chainData?: ClusterChainConfig };
 
@@ -63,7 +64,7 @@ const TokenTransferListItem = ({
         w="100%"
         fontWeight="500"
       />
-      { total && 'value' in total && token && (hasTokenTransferValue(token.type)) && (
+      { total && 'value' in total && token && (hasTokenTransferValue(token.type)) && !isConfidentialTokenType(token.type) && (
         <Flex alignItems="center" columnGap={ 2 } maxW="100%">
           <Skeleton
             display="inline-flex"
@@ -84,6 +85,30 @@ const TokenTransferListItem = ({
             exchangeRate={ token?.exchange_rate }
             loading={ isLoading }
             color="text.secondary"
+          />
+        </Flex>
+      ) }
+      { token && isConfidentialTokenType(token.type) && (
+        <Flex alignItems="center" columnGap={ 2 } maxW="100%">
+          <Skeleton
+            display="inline-flex"
+            alignItems="center"
+            loading={ isLoading }
+            flexShrink={ 0 }
+            fontWeight={ 500 }
+            maxW="50%"
+            whiteSpace="pre"
+            overflow="hidden"
+          >
+            <span>Value </span>
+            { token.symbol && <TruncatedText text={ token.symbol } loading={ isLoading }/> }
+          </Skeleton>
+          <ConfidentialValue
+            loading={ isLoading }
+            color="text.secondary"
+            wordBreak="break-all"
+            overflow="hidden"
+            flexGrow={ 1 }
           />
         </Flex>
       ) }

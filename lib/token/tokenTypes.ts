@@ -38,6 +38,10 @@ export function hasTokenTransferValue(typeId: TokenType) {
   return additionalTokenTypes.some((item) => item.id === typeId);
 }
 
+export function isConfidentialTokenType(typeId: TokenType): boolean {
+  return typeId === 'ERC-7984';
+}
+
 export function hasTokenIds(typeId: TokenType) {
   return typeId === 'ERC-1155' || typeId === 'ERC-404';
 }

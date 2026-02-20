@@ -9,8 +9,10 @@ import type {
   Erc404TotalPayload,
 } from 'types/api/tokenTransfer';
 
+import { isConfidentialTokenType } from 'lib/token/tokenTypes';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
+import ConfidentialTokenValue from 'ui/shared/value/ConfidentialTokenValue';
 
 import TokenTransferSnippetFiat from './TokenTransferSnippetFiat';
 import TokenTransferSnippetNft from './TokenTransferSnippetNft';
@@ -27,6 +29,10 @@ const TokenTransferSnippet = ({ data, isLoading, noAddressIcons = true }: Props)
 
     if (isLoading) {
       return <Skeleton loading w="250px" h={ 6 }/>;
+    }
+
+    if (data.token && isConfidentialTokenType(data.token.type)) {
+      return <ConfidentialTokenValue token={ data.token } loading={ false }/>;
     }
 
     switch (data.token?.type) {
@@ -85,6 +91,7 @@ const TokenTransferSnippet = ({ data, isLoading, noAddressIcons = true }: Props)
           return <TokenTransferSnippetFiat token={ data.token } value={ total.value } decimals={ total.decimals }/>;
         }
       }
+
       default: {
         return null;
       }
