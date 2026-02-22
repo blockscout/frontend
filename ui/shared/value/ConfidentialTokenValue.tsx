@@ -12,14 +12,13 @@ interface Props extends Omit<FlexProps, 'children'> {
   token: TokenInfo;
   tokenEntityProps?: Omit<TokenEntityProps, 'token'>;
   loading?: boolean;
-  layout?: 'horizontal' | 'vertical';
 }
 
-const ConfidentialTokenValue = ({ token, tokenEntityProps, loading, layout = 'horizontal', ...rest }: Props) => {
+const ConfidentialTokenValue = ({ token, tokenEntityProps, loading, ...rest }: Props) => {
   return (
     <Flex
-      flexDirection={ layout === 'vertical' ? 'column' : 'row' }
-      alignItems={ layout === 'vertical' ? 'flex-end' : 'center' }
+      display="inline-flex"
+      alignItems="center"
       { ...rest }
     >
       <ConfidentialValue loading={ loading }/>

@@ -42,7 +42,6 @@ const TokenTransferTableItem = ({ item, isLoading, chainData }: Props) => {
       return (
         <ConfidentialTokenValue
           token={ item.token }
-          layout="vertical"
           loading={ isLoading }
         />
       );
