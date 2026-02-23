@@ -1,3 +1,4 @@
+/* cSpell:disable */
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
@@ -49,26 +50,33 @@ const MOCK_DATA_SIMPLE: SankeyData = {
     { source: 'source_b', target: 'target_y', value: 80 },
   ],
 };
-
-const MOCK_DATA_ONE_TO_MANY: SankeyData = {
+const MOCK_DATA_ONE_TO_MANY = {
   nodes: [
-    { id: 'total_supply', name: 'Total Supply' },
-    { id: 'validators', name: 'Validators' },
-    { id: 'defi', name: 'DeFi Protocols' },
-    { id: 'bridges', name: 'Bridges' },
-    { id: 'cex', name: 'CEX Wallets' },
-    { id: 'dao', name: 'DAO Treasury' },
-    { id: 'nft', name: 'NFT Contracts' },
-    { id: 'dust', name: 'Dust Accounts' },
+    { id: 'numine', name: 'Numine' },
+    { id: 'aibtrust_mainnet', name: 'AIBTRUST Mainnet' },
+    { id: 'andromeda', name: 'Andromeda' },
+    { id: 'artery', name: 'Artery' },
+    { id: 'beam_l1', name: 'Beam L1' },
+    { id: 'blaze', name: 'Blaze' },
+    { id: 'blitz_l1', name: 'Blitz L1' },
+    { id: 'blockticity', name: 'Blockticity' },
+    { id: 'cx_chain', name: 'CX Chain' },
+    { id: 'cloudverse_l1', name: 'Cloudverse L1' },
+    { id: 'dfk_l1', name: 'DFK L1' },
+    { id: 'dos_l1', name: 'DOS L1' },
   ],
   links: [
-    { source: 'total_supply', target: 'validators', value: 12500 },
-    { source: 'total_supply', target: 'defi', value: 8400 },
-    { source: 'total_supply', target: 'bridges', value: 6200 },
-    { source: 'total_supply', target: 'cex', value: 5100 },
-    { source: 'total_supply', target: 'dao', value: 3300 },
-    { source: 'total_supply', target: 'nft', value: 1800 },
-    { source: 'total_supply', target: 'dust', value: 700 },
+    { source: 'numine', target: 'aibtrust_mainnet', value: 4820 },
+    { source: 'numine', target: 'andromeda', value: 1670 },
+    { source: 'numine', target: 'artery', value: 2910 },
+    { source: 'numine', target: 'beam_l1', value: 5380 },
+    { source: 'numine', target: 'blaze', value: 2240 },
+    { source: 'numine', target: 'blitz_l1', value: 3560 },
+    { source: 'numine', target: 'blockticity', value: 1980 },
+    { source: 'numine', target: 'cx_chain', value: 6210 },
+    { source: 'numine', target: 'cloudverse_l1', value: 2740 },
+    { source: 'numine', target: 'dfk_l1', value: 4130 },
+    { source: 'numine', target: 'dos_l1', value: 1490 },
   ],
 };
 
@@ -94,7 +102,7 @@ const MOCK_DATA_MANY_TO_ONE: SankeyData = {
   ],
 };
 
-const valueFormatter = (value: number) => `${ value.toLocaleString() } txns`;
+const valueFormatter = (value: number) => `${ value.toLocaleString() } transfers`;
 
 const SankeyChartShowcase = () => {
   return (
