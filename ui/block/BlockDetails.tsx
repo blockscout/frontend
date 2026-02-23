@@ -119,11 +119,11 @@ const BlockDetails = ({ query }: Props) => {
       </Link>
     );
 
-    const blockBlobTxsNum = (config.features.dataAvailability.isEnabled && data.blob_transaction_count) ? (
+    const blockBlobTxsNum = (config.features.dataAvailability.isEnabled && data.blob_transactions_count) ? (
       <>
         <span> including </span>
         <Link href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: heightOrHash, tab: 'blob_txs' } }, multichainContext) }>
-          { data.blob_transaction_count } blob txn{ data.blob_transaction_count === 1 ? '' : 's' }
+          { data.blob_transactions_count } blob txn{ data.blob_transactions_count === 1 ? '' : 's' }
         </Link>
       </>
     ) : null;

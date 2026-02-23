@@ -66,7 +66,8 @@ export default function useAddressTokenTransfersQuery({ currentAddress, enabled,
   return React.useMemo(() => ({
     query,
     filters,
+    setFilters,
     onTypeFilterChange,
     onAddressFilterChange,
-  }), [ query, filters, onTypeFilterChange, onAddressFilterChange ]);
+  }), [ query, filters, setFilters, onTypeFilterChange, onAddressFilterChange ]);
 }

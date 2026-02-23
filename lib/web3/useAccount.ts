@@ -1,23 +1,12 @@
-import type { UseAccountReturnType } from 'wagmi';
-import { useAccount } from 'wagmi';
-
 import config from 'configs/app';
 
-function useAccountFallback(): UseAccountReturnType {
-  return {
-    address: undefined,
-    addresses: undefined,
-    chain: undefined,
-    chainId: undefined,
-    connector: undefined,
-    isConnected: false,
-    isConnecting: false,
-    isDisconnected: true,
-    isReconnecting: false,
-    status: 'disconnected',
-  };
-}
+const feature = config.features.blockchainInteraction;
 
-const hook = config.features.blockchainInteraction.isEnabled ? useAccount : useAccountFallback;
+// eslint-disable-next-line no-nested-ternary
+const useAccount = (feature.isEnabled && feature.connectorType === 'dynamic') ?
+  (await import('./account/useAccountDynamic')).default :
+  (feature.isEnabled && feature.connectorType === 'reown') ?
+    (await import('wagmi')).useAccount :
+    (await import('./account/useAccountFallback')).default;
 
-export default hook;
+export default useAccount;

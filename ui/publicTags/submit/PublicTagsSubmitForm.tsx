@@ -72,6 +72,9 @@ const PublicTagsSubmitForm = ({ config, userInfo, onSubmitResult }: Props) => {
           fetchParams: {
             method: 'POST',
             body: { submission: body },
+            headers: {
+              'recaptcha-v2-response': token,
+            },
           },
         })
         .then(() => ({ error: null, payload: body }))

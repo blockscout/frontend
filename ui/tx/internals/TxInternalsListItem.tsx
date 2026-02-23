@@ -22,7 +22,7 @@ const TxInternalsListItem = ({ type, from, to, value, success, error, gas_limit:
     <ListItemMobile rowGap={ 3 }>
       <Flex columnGap={ 2 }>
         { typeTitle && <Badge colorPalette="cyan" loading={ isLoading }>{ typeTitle }</Badge> }
-        <TxStatus status={ success ? 'ok' : 'error' } errorText={ error } isLoading={ isLoading }/>
+        { !success && <TxStatus status="error" errorText={ error } isLoading={ isLoading }/> }
       </Flex>
       <AddressFromTo
         from={ from }

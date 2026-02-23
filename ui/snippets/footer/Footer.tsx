@@ -52,7 +52,7 @@ const Footer = () => {
     },
     {
       icon: 'social/twitter' as const,
-      iconSize: '18px',
+      iconSize: '24px',
       text: 'X (ex-Twitter)',
       url: 'https://x.com/blockscout',
     },
@@ -69,10 +69,16 @@ const Footer = () => {
       url: 'https://www.blockscout.com/chains-and-projects',
     },
     {
-      icon: 'donate' as const,
+      icon: 'docs' as const,
       iconSize: '20px',
-      text: 'Donate',
-      url: 'https://eth.blockscout.com/address/0xfB4aF6A8592041E9BcE186E5aC4BDbd2B137aD11',
+      text: 'Docs',
+      url: 'https://docs.blockscout.com',
+    },
+    {
+      icon: 'AI' as const,
+      iconSize: '20px',
+      text: 'llms.txt',
+      url: `${ config.app.baseUrl }/llms.txt`,
     },
   ];
 

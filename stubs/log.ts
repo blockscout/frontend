@@ -32,4 +32,5 @@ export const LOG: Log = {
     null,
   ],
   transaction_hash: TX_HASH,
+  block_timestamp: '2022-02-02T12:00:00Z',
 };

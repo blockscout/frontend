@@ -93,7 +93,7 @@ const TokenTransferSnippet = ({ data, isLoading, noAddressIcons = true }: Props)
 
   return (
     <Flex
-      alignItems="flex-start"
+      alignItems="center"
       flexWrap="wrap"
       columnGap={ 2 }
       rowGap={ 0 }
@@ -106,6 +106,7 @@ const TokenTransferSnippet = ({ data, isLoading, noAddressIcons = true }: Props)
         truncation="constant"
         noIcon={ noAddressIcons }
         isLoading={ isLoading }
+        lineHeight={{ lg: '24px' }}
       />
       { content }
     </Flex>

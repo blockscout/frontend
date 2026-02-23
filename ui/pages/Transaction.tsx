@@ -6,6 +6,7 @@ import type { EntityTag as TEntityTag } from 'ui/shared/EntityTags/types';
 
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
+import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import useEtherscanRedirects from 'lib/router/useEtherscanRedirects';
@@ -71,7 +72,12 @@ const TransactionPageContent = () => {
       config.features.suave.isEnabled && data?.wrapped ?
         { id: 'wrapped', title: 'Regular tx details', component: <TxDetailsWrapped data={ data.wrapped }/> } :
         undefined,
-      { id: 'token_transfers', title: 'Token transfers', component: <TxTokenTransfer txQuery={ txQuery }/> },
+      {
+        id: 'token_transfers',
+        title: 'Token transfers',
+        component: <TxTokenTransfer txQuery={ txQuery }/>,
+        subTabs: [ 'token_transfers', 'token_transfers_cross_chain' ],
+      },
       config.features.userOps.isEnabled ?
         { id: 'user_ops', title: 'User operations', component: <TxUserOps txQuery={ txQuery }/> } :
         undefined,
@@ -121,7 +127,7 @@ const TransactionPageContent = () => {
   }
 
   return (
-    <>
+    <AddressHighlightProvider>
       <TextAd mb={ 6 }/>
       <PageTitle
         title="Transaction details"
@@ -129,7 +135,7 @@ const TransactionPageContent = () => {
         secondRow={ titleSecondRow }
       />
       <RoutedTabs tabs={ tabs } isLoading={ !txQuery.isFetchedAfterMount }/>
-    </>
+    </AddressHighlightProvider>
   );
 };
 

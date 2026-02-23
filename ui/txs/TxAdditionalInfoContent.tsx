@@ -11,6 +11,7 @@ import { useMultichainContext } from 'lib/contexts/multichain';
 import { currencyUnits } from 'lib/units';
 import { Link } from 'toolkit/chakra/link';
 import BlobEntity from 'ui/shared/entities/blob/BlobEntity';
+import TxStatus from 'ui/shared/statusTag/TxStatus';
 import TextSeparator from 'ui/shared/TextSeparator';
 import TxFee from 'ui/shared/tx/TxFee';
 import Utilization from 'ui/shared/Utilization/Utilization';
@@ -33,6 +34,7 @@ const TxAdditionalInfoContent = ({ tx }: { tx: Transaction }) => {
 
   return (
     <>
+      <TxStatus status={ tx.status } errorText={ tx.status === 'error' ? tx.result : undefined } mb={ 3 }/>
       { tx.blob_versioned_hashes && tx.blob_versioned_hashes.length > 0 && (
         <Box { ...sectionProps } mb={ 4 }>
           <Flex alignItems="center" justifyContent="space-between">

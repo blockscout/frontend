@@ -13,16 +13,17 @@ import FallbackRpcIcon from 'ui/shared/fallbacks/FallbackRpcIcon';
 import useAuth from 'ui/snippets/auth/useIsAuth';
 
 import { useHomeRpcDataContext } from './fallbacks/rpcDataContext';
+import LatestCrossChainTxs from './latestCrossChainTxs/LatestCrossChainTxs';
 import LatestArbitrumDeposits from './latestDeposits/LatestArbitrumDeposits';
 
 const rollupFeature = config.features.rollup;
 const zetachainFeature = config.features.zetachain;
+const crossChainTxsFeature = config.features.crossChainTxs;
 
 const Transactions = () => {
-  const isAuth = useAuth();
 
-  const rpcDataContext = useHomeRpcDataContext();
-  const isRpcData = rpcDataContext.isEnabled && !rpcDataContext.isLoading && !rpcDataContext.isError && rpcDataContext.subscriptions.includes('latest-txs');
+  const isRpcData = useHomeRpcDataContext();
+  const isAuth = useAuth();
 
   if ((rollupFeature.isEnabled && (rollupFeature.type === 'optimistic' || rollupFeature.type === 'arbitrum')) || isAuth || zetachainFeature.isEnabled) {
     const tabs = [
@@ -46,6 +47,23 @@ const Transactions = () => {
       <>
         <HStack mb={ 3 }>
           <Heading level="3" >Transactions</Heading>
+          { isRpcData && <FallbackRpcIcon/> }
+        </HStack>
+        <AdaptiveTabs tabs={ tabs } unmountOnExit={ false } listProps={{ mb: 3 }}/>
+      </>
+    );
+  }
+
+  if (crossChainTxsFeature.isEnabled) {
+    const tabs = [
+      { id: 'txs', title: 'Txns', component: <LatestTxs/> },
+      { id: 'cross_chain_txs', title: 'Cross-chain txns', component: <LatestCrossChainTxs/> },
+    ];
+
+    return (
+      <>
+        <HStack mb={ 3 }>
+          <Heading level="3" >Latest transactions</Heading>
           { isRpcData && <FallbackRpcIcon/> }
         </HStack>
         <AdaptiveTabs tabs={ tabs } unmountOnExit={ false } listProps={{ mb: 3 }}/>

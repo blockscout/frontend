@@ -27,7 +27,7 @@ const TxInternalTableItem = ({ type, from, to, value, success, error, gas_limit:
               <Badge colorPalette="cyan" mr={ 5 } loading={ isLoading }>{ typeTitle }</Badge>
             </Box>
           ) }
-          <TxStatus status={ success ? 'ok' : 'error' } errorText={ error } isLoading={ isLoading }/>
+          { !success && <TxStatus status="error" errorText={ error } isLoading={ isLoading }/> }
         </Flex>
       </TableCell>
       <TableCell verticalAlign="middle">

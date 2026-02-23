@@ -11,7 +11,7 @@ import { IconButton } from 'toolkit/chakra/icon-button';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import IconSvg from 'ui/shared/IconSvg';
-import AuthGuard from 'ui/snippets/auth/AuthGuard';
+import AuthGuard from 'ui/snippets/auth/guard/AuthGuard';
 import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
 import WatchlistAddModal from 'ui/watchlist/AddressModal/AddressModal';
 import DeleteAddressModal from 'ui/watchlist/DeleteAddressModal';

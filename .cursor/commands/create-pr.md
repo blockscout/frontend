@@ -21,7 +21,7 @@ _Note_ in the command output, format all URLs as clickable Markdown links: `[Lin
      - If found, fetch the issue details using `gh issue view [issue_number]`
      - Include "Resolves #[issue_number]" at the very beginning of the description (in the "Description and Related Issue(s)" section)
    - Summarize the changes clearly and concisely, using no more than two paragraphs. If necessary, use bullet points to highlight the main changes in the codebase. Be precise, this description should not be very long.
-   - List any changes in the enviroment variables (look at the `./docs/ENVS.md` file) in a separate section, describe purpose of each variable change
+   - List any changes in the environment variables (look at the `./docs/ENVS.md` file) in a separate section, describe purpose of each variable change
       - Bad example: "Added `NEXT_PUBLIC_VIEWS_TX_GROUPED_FEES` environment variable to the documentation"
       - Good example: "Added `NEXT_PUBLIC_VIEWS_TX_GROUPED_FEES` to group transaction fees into one section on the transaction page"
       - Good example: "Extended possible values for `NEXT_PUBLIC_VIEWS_TX_ADDITIONAL_FIELDS` with set_max_gas_limit to display the maximum gas price set by the transaction sender"

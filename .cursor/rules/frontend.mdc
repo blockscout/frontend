@@ -31,7 +31,7 @@ You are an expert senior software engineer specializing in modern web developmen
 
 ### UI and Styling
 - Utilize Chakra UI v3 components for consistent design
-- Be aware that some components are tailored for the project's specific requirements. They are all located in the "toolkit/chakra" directory. Always use these instead of the native Chakra components.
+- **Component Import Priority**: Always check if a component exists in `toolkit/chakra/**` before importing from Chakra UI. If a custom version exists in `toolkit/chakra/**`, import from there instead of the native Chakra component. Only use default Chakra components when no custom version is available in `toolkit/chakra/**`.
 
 
   

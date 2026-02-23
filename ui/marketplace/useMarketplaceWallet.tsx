@@ -53,14 +53,21 @@ export default function useMarketplaceWallet(appId: string, isEssentialDapp = fa
 
   const sendTransaction = useCallback(async(transaction: SendTransactionArgs) => {
     await checkAndSwitchChain();
-    const activityResponse = await trackTransaction(address ?? '', transaction.to ?? '');
+    const activityResponse = await trackTransaction(
+      address ?? '',
+      transaction.to ?? '',
+      isEssentialDapp ? String(chainId) : undefined,
+    );
     const tx = await sendTransactionAsync(transaction);
     if (activityResponse?.token) {
       await trackTransactionConfirm(tx, activityResponse.token);
     }
     logEvent('Send Transaction');
     return tx;
-  }, [ sendTransactionAsync, logEvent, trackTransaction, trackTransactionConfirm, address, checkAndSwitchChain ]);
+  }, [
+    sendTransactionAsync, logEvent, trackTransaction, trackTransactionConfirm,
+    address, checkAndSwitchChain, chainId, isEssentialDapp,
+  ]);
 
   const signMessage = useCallback(async(message: string) => {
     await checkAndSwitchChain();

@@ -3,6 +3,7 @@
   export type IconName =
 	| "ABI"
 	| "advanced-filter"
+	| "AI"
 	| "API"
 	| "apps_list"
 	| "apps"
@@ -47,7 +48,6 @@
 	| "cross"
 	| "delete"
 	| "docs"
-	| "donate"
 	| "dots"
 	| "edit"
 	| "email"
@@ -85,6 +85,7 @@
 	| "lightning"
 	| "link_external"
 	| "link"
+	| "list_view"
 	| "lock"
 	| "merits_colored"
 	| "merits_with_dot"

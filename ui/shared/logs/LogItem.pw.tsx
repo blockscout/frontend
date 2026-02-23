@@ -24,6 +24,7 @@ test('with decoded input data +@mobile +@dark-mode', async({ render }) => {
       data={ DATA }
       type="transaction"
       transaction_hash={ null }
+      block_timestamp={ null }
     />,
   );
   await expect(component).toHaveScreenshot();
@@ -39,6 +40,7 @@ test('without decoded input data +@mobile', async({ render }) => {
       data={ DATA }
       type="transaction"
       transaction_hash={ null }
+      block_timestamp={ null }
     />,
   );
   await expect(component).toHaveScreenshot();
@@ -54,6 +56,7 @@ test('with default data type', async({ render }) => {
       data="0x6475636b"
       type="address"
       transaction_hash="0x404bd417203769f968aacb1d66211510db86b81303b0c68283b4eb4572e6845c"
+      block_timestamp="2022-02-02T12:00:00Z"
       defaultDataType="UTF-8"
     />,
   );

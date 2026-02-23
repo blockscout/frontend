@@ -73,7 +73,7 @@ Type extends EventTypes.LOGIN ? (
     Source: 'Email';
   } | {
     Action: 'Success';
-    Source: 'Email' | 'Wallet';
+    Source: 'Email' | 'Wallet' | 'Dynamic';
   }
 ) :
 Type extends EventTypes.ACCOUNT_LINK_INFO ? {
@@ -147,6 +147,10 @@ Type extends EventTypes.PAGE_WIDGET ? (
     Type: 'Chain switch';
     Info: string;
     Source: 'Revoke essential dapp';
+  } | {
+    Type: 'Txn view switch';
+    Info: 'Table view' | 'List view';
+    Source: 'Address page';
   }
 ) :
 Type extends EventTypes.TX_INTERPRETATION_INTERACTION ? {

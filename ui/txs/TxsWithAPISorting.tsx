@@ -21,6 +21,7 @@ type Props = {
   top?: number;
   sorting: TransactionsSortingValue;
   setSort: (value: TransactionsSortingValue) => void;
+  showTableViewButton?: boolean;
 };
 
 const TxsWithAPISorting = ({
@@ -34,6 +35,7 @@ const TxsWithAPISorting = ({
   top,
   sorting,
   setSort,
+  showTableViewButton,
 }: Props) => {
 
   const handleSortChange = React.useCallback((value: TransactionsSortingValue) => {
@@ -56,6 +58,7 @@ const TxsWithAPISorting = ({
       setSorting={ handleSortChange }
       sort={ sorting }
       pagination={ query.pagination }
+      showTableViewButton={ showTableViewButton }
     />
   );
 };

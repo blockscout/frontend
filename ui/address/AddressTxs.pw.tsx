@@ -13,7 +13,7 @@ const CURRENT_ADDRESS = '0xd789a607CEac2f0E14867de4EB15b15C9FFB5859';
 
 const hooksConfig = {
   router: {
-    query: { hash: CURRENT_ADDRESS },
+    query: { hash: CURRENT_ADDRESS, tab: 'txs' },
   },
 };
 const DEFAULT_PAGINATION = { block_number: 1, index: 1, items_count: 1 };
@@ -58,10 +58,10 @@ test.describe('base view', () => {
   });
 });
 
-test.describe('base view', () => {
+test.describe('mobile', () => {
   test.use({ viewport: pwConfig.viewport.mobile });
 
-  test('mobile', async({ render, mockApiResponse }) => {
+  test.beforeEach(async({ mockApiResponse }) => {
     await mockApiResponse(
       'general:address_txs',
       {
@@ -73,6 +73,20 @@ test.describe('base view', () => {
       },
       { pathParams: { hash: CURRENT_ADDRESS } },
     );
+  });
+
+  test('base view', async({ render }) => {
+    const component = await render(
+      <Box pt={{ base: '134px', lg: 6 }}>
+        <AddressTxs/>
+      </Box>,
+      { hooksConfig },
+    );
+    await expect(component).toHaveScreenshot();
+  });
+
+  test('table view', async({ render, mockFeatures }) => {
+    await mockFeatures([ [ 'txns_view_exp', 'table_view' ] ]);
     const component = await render(
       <Box pt={{ base: '134px', lg: 6 }}>
         <AddressTxs/>
@@ -154,7 +168,7 @@ test.describe('socket', () => {
   test('without overload, with filters', async({ render, mockApiResponse, page, createSocket }) => {
     const hooksConfigWithFilter = {
       router: {
-        query: { hash: CURRENT_ADDRESS, filter: 'from' },
+        query: { hash: CURRENT_ADDRESS, filter: 'from', tab: 'txs' },
       },
     };
 
@@ -190,7 +204,7 @@ test.describe('socket', () => {
   test('with overload, with filters', async({ render, mockApiResponse, page, createSocket }) => {
     const hooksConfigWithFilter = {
       router: {
-        query: { hash: CURRENT_ADDRESS, filter: 'from' },
+        query: { hash: CURRENT_ADDRESS, filter: 'from', tab: 'txs' },
       },
     };
 

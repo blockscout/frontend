@@ -49,13 +49,25 @@ const Icon = (props: IconProps) => {
     return null;
   }
 
-  const shield = props.shield ?? (props.chain ? { src: props.chain.logo } : undefined);
-  const hintPostfix: string = props.hintPostfix ?? (props.chain && props.shield !== false ? getChainTooltipText(props.chain, ' on') : '');
+  const shield = (() => {
+    if ('shield' in props) {
+      return props.shield;
+    }
+
+    if (props.chain) {
+      return props.chain.logo ? { src: props.chain.logo } : { name: 'networks/icon-placeholder' as const };
+    }
+  })();
+  const hintPostfix: string = props.hintPostfix ?? (props.chain && props.shield !== false ? getChainTooltipText(props.chain, ' on ') : '');
 
   const styles = getIconProps(props, Boolean(shield));
 
   if (props.isLoading) {
     return <Skeleton { ...styles } loading borderRadius="full" flexShrink={ 0 }/>;
+  }
+
+  if ('src' in props || 'name' in props) {
+    return <EntityBase.Icon { ...props } shield={ shield }/>;
   }
 
   const isDelegatedAddress = props.address.proxy_type === 'eip7702';
@@ -220,6 +232,8 @@ const AddressEntity = (props: EntityProps) => {
       onMouseLeave={ highlightContext?.onMouseLeave }
       position="relative"
       zIndex={ 0 }
+      w="fit-content"
+      maxW="100%"
     >
       <Icon { ...partsProps.icon } tooltipInteractive={ Boolean(highlightContext) }/>
       { props.noLink ? content : <Link { ...partsProps.link }>{ content }</Link> }

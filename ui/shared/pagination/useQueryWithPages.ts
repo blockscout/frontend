@@ -162,7 +162,7 @@ export default function useQueryWithPages<Resource extends PaginatedResourceName
 
   const onPrevPageClick = useCallback(() => {
     // returning to the first page
-    // we dont have pagination params for the first page
+    // we don't have pagination params for the first page
     let nextPageQuery: typeof router.query = { ...router.query };
     if (page === 2) {
       nextPageQuery = omit(router.query, [ 'next_page_params', 'page' ]);

@@ -26,12 +26,12 @@ export interface FlashblockItemApiOptimism {
 }
 
 export interface FlashblockItemApiMegaEth {
-  block_number: number;
-  index: number;
-  gas_used: number;
-  gas_offset: number;
-  timestamp: string;
+  block_number: string;
+  block_timestamp: string;
+  gas_used: string;
+  index: string;
+  mini_block_number: number;
+  mini_block_timestamp: string;
+  receipts: Array<unknown>;
   transactions: Array<unknown>;
-  log_offset: number;
-  tx_offset: number;
 }

@@ -13,7 +13,7 @@ export interface RouteParams {
 export const route = (route: Route, params?: RouteParams | null) => {
   const generatedRoute = nextjsRoute(routeParams(route, params));
 
-  if (params && params.chain && params.external) {
+  if (params && params.chain && params.external && params.chain.explorer_url) {
     return stripTrailingSlash(params.chain.explorer_url) + generatedRoute;
   }
 

@@ -26,7 +26,7 @@ const HotContractsTableItem = ({
 
   return (
     <TableRow>
-      <TableCell verticalAlign="middle">
+      <TableCell>
         <HStack>
           <AddressEntity
             address={ data.contract_address }
@@ -39,16 +39,17 @@ const HotContractsTableItem = ({
             isLoading={ isLoading }
             tags={ protocolTags }
             mt="10px"
+            noColors
           />
         ) }
       </TableCell>
-      <TableCell isNumeric verticalAlign="middle">
+      <TableCell isNumeric>
         <TruncatedText text={ Number(data.transactions_count).toLocaleString() } loading={ isLoading } maxW="100%"/>
       </TableCell>
-      <TableCell isNumeric verticalAlign="middle">
+      <TableCell isNumeric>
         <TruncatedText text={ BigNumber(data.total_gas_used || 0).toFormat() } loading={ isLoading } maxW="100%"/>
       </TableCell>
-      <TableCell isNumeric verticalAlign="middle">
+      <TableCell isNumeric>
         <NativeCoinValue
           amount={ data.balance }
           loading={ isLoading }

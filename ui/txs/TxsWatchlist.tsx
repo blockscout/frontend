@@ -6,11 +6,12 @@ import TxsWithFrontendSorting from 'ui/txs/TxsWithFrontendSorting';
 
 type Props = {
   query: QueryWithPagesResult<'general:txs_watchlist'>;
+  top?: number;
 };
 
-const TxsWatchlist = ({ query }: Props) => {
+const TxsWatchlist = ({ query, top }: Props) => {
   useRedirectForInvalidAuthToken();
-  return <TxsWithFrontendSorting query={ query } top={ 88 }/>;
+  return <TxsWithFrontendSorting query={ query } top={ top }/>;
 };
 
 export default TxsWatchlist;

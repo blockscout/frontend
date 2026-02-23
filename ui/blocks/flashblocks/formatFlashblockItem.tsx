@@ -23,10 +23,10 @@ export function formatFlashblockItemOptimism(item: FlashblockItemApiOptimism): F
 
 export function formatFlashblockItemMegaEth(item: FlashblockItemApiMegaEth): FlashblockItem {
   return {
-    block_number: item.block_number,
-    index: item.index,
+    block_number: Number.parseInt(item.block_number, 16),
+    index: Number(item.index),
     transactions_count: item.transactions.length,
-    gas_used: item.gas_used,
-    timestamp: item.timestamp,
+    gas_used: Number(item.gas_used),
+    timestamp: new Date(Math.round(Number.parseInt(item.mini_block_timestamp, 16) / 1000)).toISOString(),
   };
 }

@@ -79,7 +79,7 @@ const AdaptiveTabsList = (props: Props) => {
     return [ ...tabs, menuButton ];
   }, [ tabs ]);
 
-  const { tabsCut, tabsRefs, listRef, rightSlotRef, leftSlotRef } = useAdaptiveTabs(tabsList, isLoading || isMobile);
+  const { tabsCut, tabsRefs, listRef, rightSlotRef, leftSlotRef } = useAdaptiveTabs(tabsList, isLoading || isMobile || tabs.length === 1);
   const isSticky = useIsSticky(listRef, 5, stickyEnabled);
   const activeTabIndex = tabsList.findIndex((tab) => getTabValue(tab) === activeTab) ?? 0;
   useScrollToActiveTab({ activeTabIndex, listRef, tabsRefs, isMobile, isLoading });
@@ -130,6 +130,7 @@ const AdaptiveTabsList = (props: Props) => {
           ref={ leftSlotRef }
           { ...leftSlotProps }
           flexGrow={ leftSlotProps?.widthAllocation === 'available' && tabsCut !== undefined ? 1 : undefined }
+          opacity={ tabsCut !== undefined ? 1 : 0 }
         >
           { leftSlot }
         </Box>
@@ -193,6 +194,7 @@ const AdaptiveTabsList = (props: Props) => {
             ml="auto"
             { ...rightSlotProps }
             flexGrow={ rightSlotProps?.widthAllocation === 'available' && tabsCut !== undefined ? 1 : undefined }
+            opacity={ tabsCut !== undefined ? 1 : 0 }
           >
             { rightSlot }
           </Box>

@@ -26,7 +26,7 @@ import { getFieldLabel, matchArray, transformFormDataToMethodArgs } from './util
 import type { ContractMethodFormFields } from './utils';
 
 // eslint-disable-next-line max-len
-const NO_WALLET_CLIENT_TEXT = 'Blockchain interaction is not available at the moment since WalletConnect is not configured for this application. Please contact the service maintainer to make necessary changes in the service configuration.';
+const NO_WALLET_CLIENT_TEXT = 'Blockchain interaction is not available at the moment since a wallet connector is not configured for this application. Please contact the service maintainer to make necessary changes in the service configuration.';
 
 interface Props {
   data: SmartContractMethod;

@@ -46,7 +46,7 @@ const DetailedInfoTimestamp = ({ timestamp, isLoading, noRelativeTime, ...rest }
     }
 
     if (format.includes('utc')) {
-      return dayjs(timestamp).utc().format('MMM DD YYYY HH:mm:ss A');
+      return dayjs(timestamp).utc().format('MMM DD YYYY HH:mm:ss');
     }
 
     return dayjs(timestamp).unix().toString();
