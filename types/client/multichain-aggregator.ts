@@ -96,3 +96,12 @@ QuickSearchResultTransaction |
 QuickSearchResultAddress |
 QuickSearchResultToken |
 QuickSearchResultDomain;
+
+export interface ChainMetricsSorting {
+  sort: 'active_accounts' | 'daily_transactions' | 'new_addresses' | 'tps';
+  order: 'asc' | 'desc';
+}
+
+export type ChainMetricsSortingField = ChainMetricsSorting['sort'];
+
+export type ChainMetricsSortingValue = `${ ChainMetricsSortingField }-${ ChainMetricsSorting['order'] }` | 'default';
