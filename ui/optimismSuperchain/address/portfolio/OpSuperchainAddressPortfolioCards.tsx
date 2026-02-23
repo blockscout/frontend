@@ -9,10 +9,10 @@ import type { ClusterChainConfig } from 'types/multichain';
 import multichainConfig from 'configs/multichain';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { CollapsibleList } from 'toolkit/chakra/collapsible';
+import IconSvg from 'ui/shared/IconSvg';
 
 import OpSuperchainAddressPortfolioCard from './OpSuperchainAddressPortfolioCard';
 
-const TRIGGER_TEXT: [string, string] = [ '+ show more', '- show less' ];
 const TRIGGER_PROPS: LinkProps = {
   variant: 'secondary',
   textStyle: { base: 'xs', lg: 'sm' },
@@ -88,12 +88,23 @@ const OpSuperchainAddressPortfolioCards = ({ isLoading, selectedChainId, onChang
     return null;
   }
 
+  const text: [React.ReactNode, React.ReactNode] = [
+    <>
+      <IconSvg name="plus" boxSize={{ base: '8px', lg: '10px' }} mr={ 0.5 }/>
+      <span>show more</span>
+    </>,
+    <>
+      <IconSvg name="minus" boxSize={{ base: '8px', lg: '10px' }} mr={ 0.5 }/>
+      <span>show less</span>
+    </>,
+  ];
+
   return (
     <CollapsibleList
       items={ items }
       renderItem={ renderItem }
       cutLength={ cutLength }
-      text={ TRIGGER_TEXT }
+      text={ text }
       triggerProps={ TRIGGER_PROPS }
       defaultExpanded={ initialActiveIndex !== undefined ? initialActiveIndex > cutLength : undefined }
       flexDir="row"

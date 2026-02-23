@@ -103,6 +103,7 @@ const OpSuperchainTokens = () => {
   const searchInput = (
     <FilterInput
       w={{ base: '100%', lg: '360px' }}
+      minW={{ base: 'auto', lg: '250px' }}
       size="sm"
       onChange={ handleSearchTermChange }
       placeholder="Token name or symbol"

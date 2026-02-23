@@ -65,7 +65,7 @@ interface CollapsibleListProps<T> extends FlexProps {
   renderItem: (item: T, index: number) => React.ReactNode;
   triggerProps?: LinkProps;
   cutLength?: number;
-  text?: [string, string];
+  text?: [React.ReactNode, React.ReactNode];
   defaultExpanded?: boolean;
 }
 

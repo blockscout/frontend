@@ -39,6 +39,7 @@ const LatestTxs = () => {
       loading={ false }
       value={ chainSelect.value }
       onValueChange={ chainSelect.onValueChange }
+      w="max-content"
     />
   ) : null;
 
@@ -49,7 +50,7 @@ const LatestTxs = () => {
       listProps={{ mb: 3 }}
       leftSlotProps={{ mr: 6 }}
       rightSlot={ rightSlot }
-      rightSlotProps={{ ml: { base: 'auto', lg: 6 } }}
+      rightSlotProps={{ ml: 6 }}
       my={ 8 }
     />
   );
