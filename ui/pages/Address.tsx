@@ -120,9 +120,9 @@ const AddressPageContent = () => {
   const userPropfileApiQuery = useAddressProfileApiQuery(hash, addressProfileAPIFeature.isEnabled && areQueriesEnabled);
 
   const addressEnsDomainsQuery = useApiQuery('bens:addresses_lookup', {
-    pathParams: { chainId: config.chain.id },
     queryParams: {
       address: hash,
+      protocols: nameServicesFeature.isEnabled && nameServicesFeature.ens.isEnabled ? nameServicesFeature.ens.protocols : undefined,
       resolved_to: true,
       owned_by: true,
       only_active: true,

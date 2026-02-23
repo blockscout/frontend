@@ -14,8 +14,10 @@ export default function useAccountWithDomain(isEnabled: boolean) {
 
   const domainQuery = useApiQuery('bens:address_domain', {
     pathParams: {
-      chainId: config.chain.id,
       address,
+    },
+    queryParams: {
+      protocols: feature.isEnabled && feature.ens.isEnabled ? feature.ens.protocols : undefined,
     },
     queryOptions: {
       enabled: isQueryEnabled,

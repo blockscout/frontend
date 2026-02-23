@@ -22,6 +22,9 @@ import NameDomainsTable from './NameDomainsTable';
 import type { Sort, SortField } from './utils';
 import { SORT_OPTIONS, getNextSortValue } from './utils';
 
+const feature = config.features.nameServices;
+const availableProtocols = feature.isEnabled && feature.ens.isEnabled ? feature.ens.protocols : [];
+
 const NameDomains = () => {
   const router = useRouter();
 
@@ -29,7 +32,21 @@ const NameDomains = () => {
   const ownedBy = getQueryParamString(router.query.owned_by);
   const resolvedTo = getQueryParamString(router.query.resolved_to);
   const onlyActive = getQueryParamString(router.query.only_active);
-  const protocols = Array.isArray(router.query.protocols) ? router.query.protocols : (router.query.protocols ?? '').split(',').filter(Boolean);
+
+  const protocols = (() => {
+    if (router.query.protocols) {
+      const valueFromQuery = getQueryParamString(router.query.protocols)
+        .split(',')
+        .filter(Boolean)
+        .filter((protocol) => availableProtocols.includes(protocol));
+
+      if (valueFromQuery.length > 0) {
+        return valueFromQuery;
+      }
+    }
+
+    return [];
+  })();
 
   const initialFilters: EnsDomainLookupFiltersOptions = [
     ownedBy === 'true' ? 'owned_by' as const : undefined,
@@ -49,13 +66,12 @@ const NameDomains = () => {
 
   const addressesLookupQuery = useQueryWithPages({
     resourceName: 'bens:addresses_lookup',
-    pathParams: { chainId: config.chain.id },
     filters: {
       address: debouncedSearchTerm,
       resolved_to: filterValue.includes('resolved_to'),
       owned_by: filterValue.includes('owned_by'),
       only_active: !filterValue.includes('with_inactive'),
-      protocols: protocolsFilter.length > 0 ? protocolsFilter : undefined,
+      protocols: protocolsFilter.length > 0 ? protocolsFilter : availableProtocols,
     },
     sorting: sortParams,
     options: {
@@ -66,11 +82,10 @@ const NameDomains = () => {
 
   const domainsLookupQuery = useQueryWithPages({
     resourceName: 'bens:domains_lookup',
-    pathParams: { chainId: config.chain.id },
     filters: {
       name: debouncedSearchTerm,
       only_active: !filterValue.includes('with_inactive'),
-      protocols: protocolsFilter.length > 0 ? protocolsFilter : undefined,
+      protocols: protocolsFilter.length > 0 ? protocolsFilter : availableProtocols,
     },
     sorting: sortParams,
     options: {
@@ -79,9 +94,7 @@ const NameDomains = () => {
     },
   });
 
-  const protocolsQuery = useApiQuery('bens:domain_protocols', {
-    pathParams: { chainId: config.chain.id },
-  });
+  const protocolsQuery = useApiQuery('bens:protocols');
 
   const query = isAddressSearch ? addressesLookupQuery : domainsLookupQuery;
   const { data, isError, isPlaceholderData: isLoading, onFilterChange, onSortingChange } = query;
@@ -186,7 +199,7 @@ const NameDomains = () => {
   }, [ debouncedSearchTerm, filterValue, onFilterChange ]);
 
   const hasActiveFilters = Boolean(debouncedSearchTerm) || filterValue.length > 0 ||
-    (protocolsQuery.data && protocolsQuery.data.items.length > 1 ? protocolsFilter.length > 0 : false);
+    (protocolsQuery.data && availableProtocols.length > 1 ? protocolsFilter.length > 0 : false);
 
   const content = (
     <>
@@ -210,6 +223,10 @@ const NameDomains = () => {
     </>
   );
 
+  const protocolsData = React.useMemo(() => {
+    return protocolsQuery.data?.items?.filter((item) => availableProtocols.includes(item.id));
+  }, [ protocolsQuery.data?.items ]);
+
   const actionBar = (
     <NameDomainsActionBar
       isLoading={ isLoading }
@@ -217,7 +234,7 @@ const NameDomains = () => {
       onSearchChange={ handleSearchTermChange }
       filterValue={ filterValue }
       onFilterValueChange={ handleFilterValueChange }
-      protocolsData={ protocolsQuery.data?.items }
+      protocolsData={ protocolsData }
       protocolsFilterValue={ protocolsFilter }
       onProtocolsFilterChange={ handleProtocolsFilterChange }
       sort={ sort }
