@@ -22,8 +22,9 @@ const crossChainTxsFeature = config.features.crossChainTxs;
 
 const Transactions = () => {
 
-  const isRpcData = useHomeRpcDataContext();
   const isAuth = useAuth();
+  const rpcDataContext = useHomeRpcDataContext();
+  const isRpcData = rpcDataContext.isEnabled && !rpcDataContext.isLoading && !rpcDataContext.isError && rpcDataContext.subscriptions.includes('latest-txs');
 
   if ((rollupFeature.isEnabled && (rollupFeature.type === 'optimistic' || rollupFeature.type === 'arbitrum')) || isAuth || zetachainFeature.isEnabled) {
     const tabs = [
