@@ -49,7 +49,7 @@ export const recipe = defineSlotRecipe({
       'true': {
         label: {
           pos: 'absolute',
-          bg: 'bg',
+          bg: 'bg.primary',
           top: '2px',
           left: '2px',
           color: 'input.placeholder',

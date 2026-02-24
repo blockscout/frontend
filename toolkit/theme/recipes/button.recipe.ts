@@ -15,14 +15,14 @@ export const recipe = defineRecipe({
     variant: {
       solid: {
         bg: 'button.solid.bg',
-        color: 'white',
+        color: 'button.solid.text',
         _hover: {
           bg: 'hover',
         },
         _loading: {
           opacity: 1,
           '& .chakra-spinner': {
-            borderColor: 'gray.200',
+            borderColor: 'button.solid.text',
             borderBottomColor: 'spinner.track',
             borderInlineStartColor: 'spinner.track',
           },
