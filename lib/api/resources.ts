@@ -62,9 +62,6 @@ export const RESOURCES = {
   // external API resources
   // there is no type definition for them, use valibot to parse the response
   external: {
-    gas_hawk_saving_potential: {
-      path: '/api/v2/gas-hawk-saving-potential',
-    },
     safe_transaction_api: {
       path: '',
     },
