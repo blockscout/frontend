@@ -131,7 +131,10 @@ test('degradation view', async({ render, mockApiResponse, mockRpcResponse, page 
     await page.waitForResponse(url);
   }
 
-  await expect(component).toHaveScreenshot();
+  await expect(component).toHaveScreenshot({
+    mask: [ page.locator(pwConfig.adsBannerSelector) ],
+    maskColor: pwConfig.maskColor,
+  });
 });
 
 test('error view', async({ render, mockApiResponse, mockRpcResponse, page }) => {
@@ -162,5 +165,8 @@ test('error view', async({ render, mockApiResponse, mockRpcResponse, page }) => 
     await page.waitForResponse(url);
   }
 
-  await expect(component).toHaveScreenshot();
+  await expect(component).toHaveScreenshot({
+    mask: [ page.locator(pwConfig.adsBannerSelector) ],
+    maskColor: pwConfig.maskColor,
+  });
 });
