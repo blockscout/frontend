@@ -59,7 +59,7 @@ const OpSuperchainAddressPortfolioCards = ({ isLoading, selectedChainId, onChang
     return result;
   }, [ chainValues, chains, totalValue ]);
 
-  const cutLength = clamp(items.filter(({ share }) => share).length, 0, isMobile ? 6 : 10);
+  const cutLength = clamp(items.filter(({ share }) => share).length, 0, isMobile ? 6 : 10) || items.length;
 
   React.useEffect(() => {
     if (!isLoading && selectedChainId !== null) {

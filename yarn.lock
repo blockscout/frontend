@@ -1744,10 +1744,10 @@
   resolved "https://registry.yarnpkg.com/@blockscout/interchain-indexer-types/-/interchain-indexer-types-0.0.10.tgz#503c3e6b0d40148c61b83c16733a709aee7ab7ef"
   integrity sha512-VxdTHLZ+x+rNQqYZxqm+hSqIwFiOEB4lgWY9gXQKVb2aRrGESHPxM+E9XdpKu3SDAoXYTwL/y4QHR/A6PVV8ng==
 
-"@blockscout/multichain-aggregator-types@2.1.2-alpha.1":
-  version "2.1.2-alpha.1"
-  resolved "https://registry.yarnpkg.com/@blockscout/multichain-aggregator-types/-/multichain-aggregator-types-2.1.2-alpha.1.tgz#0e4616358c224aac8b9cc9b71abec83604ad94a7"
-  integrity sha512-+R9LLfNf8BqgYHFia//JKxXSYdXMoShKH9BL7qXCN90tHwyrZYg3AlfhD5hNbp97iPHUht68mW8UTIjX+3dgdw==
+"@blockscout/multichain-aggregator-types@2.1.2":
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/@blockscout/multichain-aggregator-types/-/multichain-aggregator-types-2.1.2.tgz#3e3cfe3ebd2602073e9edfcb7355aba4cdf3defe"
+  integrity sha512-Eo5iCIsrfzTbPgfJfZT4TzuIU5FXxB2/thbc+3lkfUCUuSPP/VZPxDEXai773iSra+ctX4LGobFF8osPKZGy5g==
 
 "@blockscout/points-types@1.4.0-alpha.1":
   version "1.4.0-alpha.1"
