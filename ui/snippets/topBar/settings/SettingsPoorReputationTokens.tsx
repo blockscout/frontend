@@ -13,13 +13,11 @@ const SettingsPoorReputationTokens = () => {
   const [ isChecked, setIsChecked ] = React.useState(initialValue !== 'true');
 
   const handleChange = React.useCallback(() => {
-    setIsChecked(prev => {
-      const nextValue = !prev;
-      cookies.set(cookies.NAMES.SHOW_POOR_REPUTATION_TOKENS, nextValue ? 'false' : 'true');
-      return nextValue;
-    });
+    setIsChecked(prev => !prev);
+    const nextValue = !isChecked;
+    cookies.set(cookies.NAMES.SHOW_POOR_REPUTATION_TOKENS, nextValue ? 'false' : 'true');
     window.location.reload();
-  }, []);
+  }, [ isChecked ]);
 
   if (!config.features.opSuperchain.isEnabled) {
     return null;

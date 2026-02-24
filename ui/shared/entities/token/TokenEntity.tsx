@@ -49,7 +49,7 @@ const Icon = (props: IconProps) => {
   };
 
   const shield = (() => {
-    if (props.shield) {
+    if ('shield' in props) {
       return props.shield;
     }
 

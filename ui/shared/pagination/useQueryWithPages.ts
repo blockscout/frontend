@@ -258,7 +258,7 @@ export default function useQueryWithPages<Resource extends PaginatedResourceName
 
   const onChainValueChange = useCallback(({ value }: { value: Array<string> }) => {
 
-    if (!options?.enabled) {
+    if (options?.enabled === false) {
       setChainValue(value);
       return;
     }

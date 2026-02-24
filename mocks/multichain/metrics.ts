@@ -9,13 +9,13 @@ export const chainMetrics: multichain.ListChainMetricsResponse = {
       active_accounts: {
         current_full_week: '1000',
         previous_full_week: '900',
-        wow_diff_percent: '10%',
+        wow_diff_percent: '10',
       },
       tps: '1000',
       new_addresses: {
         current_full_week: '500',
         previous_full_week: '600',
-        wow_diff_percent: '-20%',
+        wow_diff_percent: '-20',
       },
     },
     {
@@ -25,7 +25,7 @@ export const chainMetrics: multichain.ListChainMetricsResponse = {
       new_addresses: {
         current_full_week: '200',
         previous_full_week: '10',
-        wow_diff_percent: '900%',
+        wow_diff_percent: '900',
       },
     },
     {
@@ -33,7 +33,7 @@ export const chainMetrics: multichain.ListChainMetricsResponse = {
       active_accounts: {
         current_full_week: '100',
         previous_full_week: '100',
-        wow_diff_percent: '0%',
+        wow_diff_percent: '0',
       },
     },
   ],

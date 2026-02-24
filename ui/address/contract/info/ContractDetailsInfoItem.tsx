@@ -22,7 +22,7 @@ const ContractDetailsInfoItem = ({ label, children, isLoading, hint, contentProp
           { hint && <Hint label={ hint } ml={ 2 }/> }
         </Flex>
       </Skeleton>
-      <Skeleton loading={ isLoading } { ...contentProps } wordBreak="break-all" maxW="100%" overflow="hidden">{ children }</Skeleton>
+      <Skeleton loading={ isLoading } wordBreak="break-all" maxW="100%" overflow="hidden" { ...contentProps }>{ children }</Skeleton>
     </>
   );
 };

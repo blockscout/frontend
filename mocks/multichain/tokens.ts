@@ -79,6 +79,7 @@ export const tokenBA: AddressTokenItem = {
   chain_values: {
     [chainB.id]: '42042000',
   },
+  value: '42042000',
 };
 
 export const tokenCA: AddressTokenItem = {
