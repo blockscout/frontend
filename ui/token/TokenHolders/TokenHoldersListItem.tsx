@@ -3,12 +3,13 @@ import React from 'react';
 
 import type { TokenHolder, TokenInfo } from 'types/api/token';
 
-import { hasTokenIds } from 'lib/token/tokenTypes';
+import { hasTokenIds, isConfidentialTokenType } from 'lib/token/tokenTypes';
 import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 import Utilization from 'ui/shared/Utilization/Utilization';
 import AssetValue from 'ui/shared/value/AssetValue';
+import ConfidentialValue from 'ui/shared/value/ConfidentialValue';
 
 interface Props {
   holder: TokenHolder;
@@ -40,14 +41,18 @@ const TokenHoldersListItem = ({ holder, token, isLoading }: Props) => {
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Quantity</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <AssetValue
-          amount={ holder.value }
-          decimals={ token.decimals ?? '0' }
-          loading={ isLoading }
-        />
+        { isConfidentialTokenType(token.type) ? (
+          <ConfidentialValue loading={ isLoading }/>
+        ) : (
+          <AssetValue
+            amount={ holder.value }
+            decimals={ token.decimals ?? '0' }
+            loading={ isLoading }
+          />
+        ) }
       </ListItemMobileGrid.Value>
 
-      { token.total_supply && token.type !== 'ERC-404' && (
+      { token.total_supply && token.type !== 'ERC-404' && !isConfidentialTokenType(token.type) && (
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>Percentage</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
