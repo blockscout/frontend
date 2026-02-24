@@ -272,7 +272,7 @@ export const erc7984: TokenTransfer = {
     exchange_rate: null,
     holders_count: '1200',
     name: 'Confidential Token',
-    symbol: 'CFHE',
+    symbol: 'ARIA',
     type: 'ERC-7984',
     total_supply: '0',
     icon_url: null,
