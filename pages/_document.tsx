@@ -9,6 +9,7 @@ import config from 'configs/app';
 import * as svgSprite from 'ui/shared/IconSvg';
 
 const marketplaceFeature = config.features.marketplace;
+const usercentricsFeature = config.features.usercentrics;
 
 class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
@@ -67,6 +68,13 @@ class MyDocument extends Document {
           <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon-180x180.png"/>
           <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon/android-chrome-192x192.png"/>
           <link rel="preload" as="image" href={ svgSprite.href }/>
+
+          { /* USERCENTRICS */ }
+          { usercentricsFeature.isEnabled && (
+          // <script id="usercentrics-cmp" src={ usercentricsFeature.scriptUrl } data-settings-id={ usercentricsFeature.rulesetId } async />
+            <script id="usercentrics-cmp" src={ usercentricsFeature.scriptUrl } data-settings-id={ usercentricsFeature.rulesetId } async data-draft="true"/>
+          ) }
+
         </Head>
         <body>
           <Main/>
