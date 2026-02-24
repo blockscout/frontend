@@ -1,4 +1,4 @@
-import { HStack, Stat } from '@chakra-ui/react';
+import { Box, HStack, Stat } from '@chakra-ui/react';
 import React from 'react';
 
 import type * as multichain from '@blockscout/multichain-aggregator-types';
@@ -49,20 +49,18 @@ const OpSuperchainEcosystemsTableItem = ({ data, isLoading, chainInfo }: Props) 
     <TableRow alignItems="top">
       <TableCell verticalAlign="middle">
         <HStack gap={ 3 }>
-          { chainInfo ? (
-            <HStack>
-              <ChainIcon data={ chainInfo } isLoading={ isLoading }/>
-              <Link
-                href={ chainInfo.explorer_url }
-                fontWeight={ 700 }
-                external
-                loading={ isLoading }
-                maxW="calc(100% - 28px)"
-              >
-                <TruncatedText text={ chainInfo.name } loading={ isLoading }/>
-              </Link>
-            </HStack>
-          ) : <span>Unknown chain</span> }
+          <HStack>
+            <ChainIcon data={ chainInfo } isLoading={ isLoading }/>
+            <Link
+              href={ chainInfo?.explorer_url }
+              fontWeight={ 700 }
+              external
+              loading={ isLoading }
+              maxW="calc(100% - 28px)"
+            >
+              <TruncatedText text={ chainInfo?.name ?? 'Unknown chain' } loading={ isLoading }/>
+            </Link>
+          </HStack>
           <HStack gap={ 0 } flexShrink={ 0 }>
             <Skeleton loading={ isLoading } color="text.secondary"><span>{ data.chain_id }</span></Skeleton>
             <CopyToClipboard text={ String(data.chain_id) } isLoading={ isLoading }/>
@@ -125,7 +123,7 @@ const OpSuperchainEcosystemsTableItem = ({ data, isLoading, chainInfo }: Props) 
           <Skeleton loading={ isLoading }>
             <span>{ Number(data.tps ?? 0).toLocaleString(undefined, { maximumFractionDigits: 2 }) }</span>
           </Skeleton>
-          { walletIcon && (
+          { walletIcon ? (
             <Tooltip content="Add to wallet">
               <IconButton
                 onClick={ handleAddToWalletClick }
@@ -137,7 +135,7 @@ const OpSuperchainEcosystemsTableItem = ({ data, isLoading, chainInfo }: Props) 
                 <IconSvg name={ walletIcon } boxSize={ 5 }/>
               </IconButton>
             </Tooltip>
-          ) }
+          ) : <Box boxSize={ 8 }/> }
         </HStack>
       </TableCell>
     </TableRow>
