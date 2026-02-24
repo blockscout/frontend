@@ -9,6 +9,16 @@ import config from 'configs/app';
 import * as svgSprite from 'ui/shared/IconSvg';
 
 const marketplaceFeature = config.features.marketplace;
+const usercentricsFeature = config.features.usercentrics;
+const googleAnalyticsFeature = config.features.googleAnalytics;
+
+// Inline GA config script; hash is used in CSP policy (nextjs/csp/policies/googleAnalytics.ts)
+const GA_INLINE_SCRIPT = `
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', window.__envs.NEXT_PUBLIC_GOOGLE_ANALYTICS_PROPERTY_ID);
+        `;
 
 class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
@@ -67,6 +77,28 @@ class MyDocument extends Document {
           <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon-180x180.png"/>
           <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon/android-chrome-192x192.png"/>
           <link rel="preload" as="image" href={ svgSprite.href }/>
+
+          { /* USERCENTRICS */ }
+          { usercentricsFeature.isEnabled && (
+            <script id="usercentrics-cmp" src={ usercentricsFeature.scriptUrl } data-settings-id={ usercentricsFeature.rulesetId } async/>
+          ) }
+
+          { /* GOOGLE ANALYTICS */ }
+          { googleAnalyticsFeature.isEnabled && (
+            <>
+              <script
+                { ...(usercentricsFeature.isEnabled ? { type: 'text/plain', 'data-usercentrics': 'Google Analytics' } : {}) }
+                async
+                src={ `https://www.googletagmanager.com/gtag/js?id=${ googleAnalyticsFeature.propertyId }` }
+              />
+              { }
+              <script
+                { ...(usercentricsFeature.isEnabled ? { type: 'text/plain', 'data-usercentrics': 'Google Analytics' } : {}) }
+                dangerouslySetInnerHTML={{ __html: GA_INLINE_SCRIPT }}
+              />
+            </>
+          ) }
+
         </Head>
         <body>
           <Main/>

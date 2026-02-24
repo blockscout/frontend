@@ -15,7 +15,7 @@ export function googleAnalytics(): CspDev.DirectiveDescriptor {
       'https://stats.g.doubleclick.net',
     ],
     'script-src': [
-      // inline script hash, see ui/shared/GoogleAnalytics.tsx
+      // inline script hash, see GA_INLINE_SCRIPT in pages/_document.tsx
       '\'sha256-WXRwCtfSfMoCPzPUIOUAosSaADdGgct0/Lhmnbm7MCA=\'',
       'https://www.googletagmanager.com',
       '*.google-analytics.com',

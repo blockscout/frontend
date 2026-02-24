@@ -19,11 +19,11 @@ import { initGrowthBook } from 'lib/growthbook/init';
 import useLoadFeatures from 'lib/growthbook/useLoadFeatures';
 import { clientConfig as rollbarConfig, Provider as RollbarProvider } from 'lib/rollbar';
 import { SocketProvider } from 'lib/socket/context';
+import useUsercentricsMarketingConsent from 'lib/usercentrics/useConsent';
 import { Provider as ChakraProvider } from 'toolkit/chakra/provider';
 import { Toaster } from 'toolkit/chakra/toaster';
 import AppErrorBoundary from 'ui/shared/AppError/AppErrorBoundary';
 import AppErrorGlobalContainer from 'ui/shared/AppError/AppErrorGlobalContainer';
-import GoogleAnalytics from 'ui/shared/GoogleAnalytics';
 import Layout from 'ui/shared/layout/Layout';
 import Web3Provider from 'ui/shared/web3/Web3Provider';
 
@@ -63,6 +63,13 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   useLoadFeatures(growthBook);
 
   const queryClient = useQueryClientConfig();
+  const analyticsConsent = useUsercentricsMarketingConsent();
+  const effectiveRollbarConfig = React.useMemo(() => {
+    if (!config.features.usercentrics.isEnabled || !rollbarConfig) {
+      return rollbarConfig;
+    }
+    return analyticsConsent ? rollbarConfig : { ...rollbarConfig, enabled: false };
+  }, [ analyticsConsent ]);
 
   React.useEffect(() => {
     // after the app is rendered/hydrated, show the console scam warning
@@ -97,7 +104,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
 
   return (
     <ChakraProvider>
-      <RollbarProvider config={ rollbarConfig }>
+      <RollbarProvider config={ effectiveRollbarConfig }>
         <AppErrorBoundary
           { ...ERROR_SCREEN_STYLES }
           Container={ AppErrorGlobalContainer }
@@ -117,7 +124,6 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
                   </SocketProvider>
                 </GrowthBookProvider>
                 <ReactQueryDevtools buttonPosition="bottom-left" position="left"/>
-                <GoogleAnalytics/>
               </AppContextProvider>
             </Web3Provider>
           </QueryClientProvider>

@@ -24,6 +24,12 @@ declare global {
     __envs: Record<string, string>;
     __multichainConfig?: MultichainConfig;
     __essentialDappsChains?: { chains: Array<EssentialDappsChainConfig> };
+    __ucCmp?: {
+      getConsentDetails(): Promise<{
+        consent?: { status?: string };
+        categories?: Record<string, { state?: string }>;
+      }>;
+    };
   }
 
   namespace NodeJS {

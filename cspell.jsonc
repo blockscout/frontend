@@ -14,7 +14,8 @@
         "playwright/fixtures/rewards.ts",
         "public/static/capybara/index.js",
         "ui/showcases/utils.ts",
-        "ui/tx/TxExternalTxs.pw.tsx"
+        "ui/tx/TxExternalTxs.pw.tsx",
+        "configs/envs/**"
     ],
     "enableGlobDot": true,
     "ignoreRandomStrings": true,
@@ -250,6 +251,7 @@
         "unparse",
         "unstaked",
         "usehooks",
+        "usercentrics",
         "utia",
         "utka",
         "utko",

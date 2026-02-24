@@ -46,6 +46,7 @@ All json-like values should be single-quoted. If it contains a hash (`#`) or a d
   - [Export data to CSV file](#export-data-to-csv-file)
   - [Google analytics](#google-analytics)
   - [Mixpanel analytics](#mixpanel-analytics)
+  - [Usercentrics CMP](#usercentrics-cmp)
   - [GrowthBook feature flagging and A/B testing](#growthbook-feature-flagging-and-ab-testing)
   - [GraphQL API documentation](#graphql-api-documentation)
   - [API documentation](#api-documentation)
@@ -578,6 +579,14 @@ Ads are enabled by default on all self-hosted instances. If you would like to di
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN | `string` | Project token for [Mixpanel](https://mixpanel.com/) analytics service | true | - | `<your-secret>` | v1.1.0+ |
 | NEXT_PUBLIC_MIXPANEL_CONFIG_OVERRIDES | `string` | Pass a JSON-like string that represents a subset of the [Mixpanel SDK configuration](https://docs.mixpanel.com/docs/tracking-methods/sdks/javascript#library-configuration) to override the project's default properties. | - | - | `{"record_sessions_percent": 0.5}` | v2.3.0+ |
+
+&nbsp;
+
+### Usercentrics CMP
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
+| --- | --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_USERCENTRICS_CONFIG | `object` | JSON config for [Usercentrics](https://usercentrics.com/) Consent Management Platform. When set, the UC script is injected and all analytics (Google Analytics, Mixpanel, Rollbar) are gated behind user consent. Disabled in private mode. | true | - | `{'scriptUrl':'https://your-cdn.com/uc.js','rulesetId':'<your-ruleset-id>'}` | v1.37.x+ |
 
 &nbsp;
 
