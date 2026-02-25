@@ -2,6 +2,7 @@ import { Box, Text } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
+import { layerLabels } from 'lib/rollups/utils';
 import { L2_OUTPUT_ROOTS_ITEM } from 'stubs/L2';
 import { generateListStub } from 'stubs/utils';
 import { Skeleton } from 'toolkit/chakra/skeleton';
@@ -60,7 +61,7 @@ const OptimisticL2OutputRoots = () => {
 
     return (
       <Skeleton loading={ countersQuery.isPlaceholderData || isPlaceholderData } display="flex" flexWrap="wrap">
-        L2 output index
+        { layerLabels.current } output index
         <Text fontWeight={ 600 } whiteSpace="pre"> #{ data.items[0].l2_output_index } </Text>to
         <Text fontWeight={ 600 } whiteSpace="pre"> #{ data.items[data.items.length - 1].l2_output_index } </Text>
         (total of { countersQuery.data?.toLocaleString() } roots)

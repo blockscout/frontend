@@ -5,6 +5,7 @@ import type { OptimisticL2TxnBatchesItem } from 'types/api/optimisticL2';
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
+import { layerLabels } from 'lib/rollups/utils';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import OptimisticL2TxnBatchDA from 'ui/shared/batch/OptimisticL2TxnBatchDA';
@@ -49,14 +50,14 @@ const OptimisticL2TxnBatchesListItem = ({ item, isLoading }: Props) => {
         />
       </ListItemMobileGrid.Value>
 
-      <ListItemMobileGrid.Label isLoading={ isLoading }>L1 txn count</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Label isLoading={ isLoading }>{ layerLabels.parent } txn count</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
         <Skeleton loading={ isLoading } minW="40px">
           { item.l1_transaction_hashes.length }
         </Skeleton>
       </ListItemMobileGrid.Value>
 
-      <ListItemMobileGrid.Label isLoading={ isLoading }>L2 blocks</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Label isLoading={ isLoading }>{ layerLabels.current } blocks</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
         <Link
           href={ route({ pathname: '/batches/[number]', query: { number: item.number.toString(), tab: 'blocks' } }) }

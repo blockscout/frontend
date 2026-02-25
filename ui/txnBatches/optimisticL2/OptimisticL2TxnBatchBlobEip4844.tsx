@@ -3,6 +3,7 @@ import React from 'react';
 
 import type { OptimisticL2BlobTypeEip4844 } from 'types/api/optimisticL2';
 
+import { layerLabels } from 'lib/rollups/utils';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 import BlobEntityL1 from 'ui/shared/entities/blob/BlobEntityL1';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
@@ -28,7 +29,7 @@ const OptimisticL2TxnBatchBlobEip4844 = ({ blobs, isLoading }: Props) => {
             <GridItem overflow="hidden">
               <DetailedInfoTimestamp timestamp={ blob.l1_timestamp } isLoading={ isLoading } flexWrap={{ base: 'wrap', lg: 'nowrap' }}/>
             </GridItem>
-            <GridItem fontWeight={ 600 }>L1 txn hash</GridItem>
+            <GridItem fontWeight={ 600 }>{ layerLabels.parent } txn hash</GridItem>
             <GridItem overflow="hidden">
               <TxEntityL1 hash={ blob.l1_transaction_hash } noIcon/>
             </GridItem>

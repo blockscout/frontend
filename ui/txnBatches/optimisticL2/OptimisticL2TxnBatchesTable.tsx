@@ -2,6 +2,7 @@ import React from 'react';
 
 import type { OptimisticL2TxnBatchesItem } from 'types/api/optimisticL2';
 
+import { layerLabels } from 'lib/rollups/utils';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
@@ -24,8 +25,8 @@ const OptimisticL2TxnBatchesTable = ({ items, top, isLoading }: Props) => {
             Timestamp
             <TimeFormatToggle/>
           </TableColumnHeader>
-          <TableColumnHeader isNumeric>L1 txn count</TableColumnHeader>
-          <TableColumnHeader isNumeric>L2 blocks</TableColumnHeader>
+          <TableColumnHeader isNumeric>{ layerLabels.parent } txn count</TableColumnHeader>
+          <TableColumnHeader isNumeric>{ layerLabels.current } blocks</TableColumnHeader>
           <TableColumnHeader isNumeric>Txn</TableColumnHeader>
         </TableRow>
       </TableHeaderSticky>

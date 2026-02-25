@@ -4,6 +4,7 @@ import React from 'react';
 import type { OptimisticL2DepositsItem } from 'types/api/optimisticL2';
 
 import config from 'configs/app';
+import { layerLabels } from 'lib/rollups/utils';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import AddressEntityL1 from 'ui/shared/entities/address/AddressEntityL1';
 import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
@@ -24,7 +25,7 @@ const OptimisticDepositsListItem = ({ item, isLoading }: Props) => {
   return (
     <ListItemMobileGrid.Container>
 
-      <ListItemMobileGrid.Label isLoading={ isLoading }>L1 block No</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Label isLoading={ isLoading }>{ layerLabels.parent } block No</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
         <BlockEntityL1
           number={ item.l1_block_number }
@@ -33,7 +34,7 @@ const OptimisticDepositsListItem = ({ item, isLoading }: Props) => {
         />
       </ListItemMobileGrid.Value>
 
-      <ListItemMobileGrid.Label isLoading={ isLoading }>L2 txn hash</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Label isLoading={ isLoading }>{ layerLabels.current } txn hash</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
         <TxEntity
           isLoading={ isLoading }
@@ -51,7 +52,7 @@ const OptimisticDepositsListItem = ({ item, isLoading }: Props) => {
         />
       </ListItemMobileGrid.Value>
 
-      <ListItemMobileGrid.Label isLoading={ isLoading }>L1 txn hash</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Label isLoading={ isLoading }>{ layerLabels.parent } txn hash</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
         <TxEntityL1
           isLoading={ isLoading }
@@ -61,7 +62,7 @@ const OptimisticDepositsListItem = ({ item, isLoading }: Props) => {
         />
       </ListItemMobileGrid.Value>
 
-      <ListItemMobileGrid.Label isLoading={ isLoading }>L1 txn origin</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Label isLoading={ isLoading }>{ layerLabels.parent } txn origin</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
         <AddressEntityL1
           address={{ hash: item.l1_transaction_origin, name: '', is_contract: false, is_verified: false, ens_domain_name: null, implementations: null }}

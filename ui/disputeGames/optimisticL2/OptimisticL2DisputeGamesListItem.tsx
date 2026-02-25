@@ -3,6 +3,7 @@ import React from 'react';
 import type { OptimisticL2DisputeGamesItem } from 'types/api/optimisticL2';
 
 import config from 'configs/app';
+import { layerLabels } from 'lib/rollups/utils';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import BlockEntityL2 from 'ui/shared/entities/block/BlockEntityL2';
@@ -40,7 +41,7 @@ const OptimisticL2DisputeGamesListItem = ({ item, isLoading }: Props) => {
         </Skeleton>
       </ListItemMobileGrid.Value>
 
-      <ListItemMobileGrid.Label isLoading={ isLoading }>L2 block #</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Label isLoading={ isLoading }>{ layerLabels.current } block #</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
         <BlockEntityL2
           isLoading={ isLoading }

@@ -4,6 +4,7 @@ import React from 'react';
 import type { OptimisticL2OutputRootsItem } from 'types/api/optimisticL2';
 
 import config from 'configs/app';
+import { layerLabels } from 'lib/rollups/utils';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import BlockEntityL2 from 'ui/shared/entities/block/BlockEntityL2';
@@ -24,7 +25,7 @@ const OptimisticL2OutputRootsListItem = ({ item, isLoading }: Props) => {
   return (
     <ListItemMobileGrid.Container>
 
-      <ListItemMobileGrid.Label isLoading={ isLoading }>L2 output index</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Label isLoading={ isLoading }>{ layerLabels.current } output index</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value fontWeight={ 600 } color="text.primary">
         <Skeleton loading={ isLoading } display="inline-block">{ item.l2_output_index }</Skeleton>
       </ListItemMobileGrid.Value>
@@ -38,7 +39,7 @@ const OptimisticL2OutputRootsListItem = ({ item, isLoading }: Props) => {
         />
       </ListItemMobileGrid.Value>
 
-      <ListItemMobileGrid.Label isLoading={ isLoading }>L2 block #</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Label isLoading={ isLoading }>{ layerLabels.current } block #</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
         <BlockEntityL2
           isLoading={ isLoading }
@@ -47,7 +48,7 @@ const OptimisticL2OutputRootsListItem = ({ item, isLoading }: Props) => {
         />
       </ListItemMobileGrid.Value>
 
-      <ListItemMobileGrid.Label isLoading={ isLoading }>L1 txn hash</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Label isLoading={ isLoading }>{ layerLabels.parent } txn hash</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value py="3px">
         <TxEntityL1
           isLoading={ isLoading }

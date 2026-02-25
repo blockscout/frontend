@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
+import { layerLabels } from 'lib/rollups/utils';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { ARBITRUM_L2_TXN_WITHDRAWALS_ITEM } from 'stubs/arbitrumL2';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
@@ -75,7 +76,9 @@ const ArbitrumL2TxnWithdrawals = () => {
   return (
     <>
       <PageTitle title="Transaction withdrawals" withTextAd/>
-      <Text>L2 to L1 message relayer: search for your L2 transaction to execute a manual withdrawal.</Text>
+      <Text>
+        { layerLabels.current } to { layerLabels.parent } message relayer: search for your { layerLabels.current } transaction to execute a manual withdrawal.
+      </Text>
       <chakra.form onSubmit={ handleSubmit } noValidate>
         <FilterInput
           name="tx_hash"

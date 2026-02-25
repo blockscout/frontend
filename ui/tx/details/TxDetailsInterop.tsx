@@ -4,6 +4,7 @@ import React from 'react';
 import type { InteropTransactionInfo } from 'types/api/transaction';
 
 import config from 'configs/app';
+import { layerLabels } from 'lib/rollups/utils';
 import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
 import InteropMessageDestinationTx from 'ui/interopMessages/InteropMessageDestinationTx';
 import InteropMessageSourceTx from 'ui/interopMessages/InteropMessageSourceTx';
@@ -86,7 +87,7 @@ const TxDetailsInterop = ({ data, isLoading }: Props) => {
     return (
       <>
         <DetailedInfo.ItemLabel
-          hint="The originating transaction that initiated the cross-L2 message on the source chain"
+          hint={ `The originating transaction that initiated the cross-${ layerLabels.current } message on the source chain` }
           isLoading={ isLoading }
         >
           Interop source tx
@@ -105,7 +106,7 @@ const TxDetailsInterop = ({ data, isLoading }: Props) => {
     return (
       <>
         <DetailedInfo.ItemLabel
-          hint="The transaction that relays the cross-L2 message to its destination chain"
+          hint={ `The transaction that relays the cross-${ layerLabels.current } message to its destination chain` }
           isLoading={ isLoading }
         >
           Interop relay tx

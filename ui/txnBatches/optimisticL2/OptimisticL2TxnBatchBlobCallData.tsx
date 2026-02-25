@@ -1,6 +1,7 @@
 import { GridItem } from '@chakra-ui/react';
 import React from 'react';
 
+import { layerLabels } from 'lib/rollups/utils';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 
@@ -19,7 +20,7 @@ const OptimisticL2TxnBatchBlobCallData = ({ l1TxHashes, l1Timestamp, isLoading }
       <GridItem overflow="hidden">
         <DetailedInfoTimestamp timestamp={ l1Timestamp } isLoading={ isLoading } flexWrap={{ base: 'wrap', lg: 'nowrap' }}/>
       </GridItem>
-      <GridItem fontWeight={ 600 }>L1 txn hash{ l1TxHashes.length > 1 ? 'es' : '' }</GridItem>
+      <GridItem fontWeight={ 600 }>{ layerLabels.parent } txn hash{ l1TxHashes.length > 1 ? 'es' : '' }</GridItem>
       <GridItem overflow="hidden" display="flex" flexDir="column" rowGap={ 2 }>
         { l1TxHashes.map((hash) => <TxEntityL1 key={ hash } hash={ hash } noIcon/>) }
       </GridItem>

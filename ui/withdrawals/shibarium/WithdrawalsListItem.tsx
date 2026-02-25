@@ -3,6 +3,7 @@ import React from 'react';
 import type { ShibariumWithdrawalsItem } from 'types/api/shibarium';
 
 import config from 'configs/app';
+import { layerLabels } from 'lib/rollups/utils';
 import AddressStringOrParam from 'ui/shared/entities/address/AddressStringOrParam';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
@@ -22,7 +23,7 @@ const WithdrawalsListItem = ({ item, isLoading }: Props) => {
   return (
     <ListItemMobileGrid.Container>
 
-      <ListItemMobileGrid.Label isLoading={ isLoading }>L2 block No</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Label isLoading={ isLoading }>{ layerLabels.current } block No</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
         <BlockEntity
           number={ item.l2_block_number }
@@ -32,7 +33,7 @@ const WithdrawalsListItem = ({ item, isLoading }: Props) => {
         />
       </ListItemMobileGrid.Value>
 
-      <ListItemMobileGrid.Label isLoading={ isLoading }>L2 txn hash</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Label isLoading={ isLoading }>{ layerLabels.current } txn hash</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
         <TxEntity
           isLoading={ isLoading }
@@ -42,7 +43,7 @@ const WithdrawalsListItem = ({ item, isLoading }: Props) => {
         />
       </ListItemMobileGrid.Value>
 
-      <ListItemMobileGrid.Label isLoading={ isLoading }>L1 txn hash</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Label isLoading={ isLoading }>{ layerLabels.parent } txn hash</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
         <TxEntityL1
           isLoading={ isLoading }
