@@ -26,7 +26,7 @@ test.describe('local transfers', () => {
 
   test.beforeEach(async({ render, mockMultichainConfig, mockEnvs, mockApiResponse, mockAssetResponse, createSocket }) => {
     await mockMultichainConfig();
-    await mockEnvs(ENVS_MAP.opSuperchain);
+    await mockEnvs(ENVS_MAP.multichain);
     await mockApiResponse(
       'general:address_token_transfers',
       { items: [ tokenTransferMock.erc20 ], next_page_params: DEFAULT_PAGINATION },

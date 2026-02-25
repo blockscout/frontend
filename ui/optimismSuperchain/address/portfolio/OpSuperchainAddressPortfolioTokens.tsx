@@ -12,7 +12,7 @@ import useApiQuery from 'lib/api/useApiQuery';
 import * as cookies from 'lib/cookies';
 import useDebounce from 'lib/hooks/useDebounce';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import { ADDRESS_PORTFOLIO, TOKEN } from 'stubs/optimismSuperchain';
+import { ADDRESS_PORTFOLIO, TOKEN } from 'stubs/multichain';
 import { generateListStub } from 'stubs/utils';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import { ZERO } from 'toolkit/utils/consts';

@@ -8,7 +8,7 @@ import multichainConfig from 'configs/multichain';
 import useDebounce from 'lib/hooks/useDebounce';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import { TOKEN } from 'stubs/optimismSuperchain';
+import { TOKEN } from 'stubs/multichain';
 import { generateListStub } from 'stubs/utils';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import ChainSelect from 'ui/optimismSuperchain/components/ChainSelect';

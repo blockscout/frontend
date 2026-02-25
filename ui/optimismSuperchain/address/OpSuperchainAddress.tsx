@@ -9,7 +9,7 @@ import useApiQuery from 'lib/api/useApiQuery';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import * as contract from 'lib/multichain/contract';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import { ADDRESS } from 'stubs/optimismSuperchain';
+import { ADDRESS } from 'stubs/multichain';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import { CONTRACT_TAB_IDS } from 'ui/address/contract/utils';
 import AddressQrCode from 'ui/address/details/AddressQrCode';

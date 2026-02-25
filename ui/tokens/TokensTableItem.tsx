@@ -3,7 +3,7 @@ import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { TokenInfo } from 'types/api/token';
-import type { AggregatedTokenInfo } from 'types/client/multichain-aggregator';
+import type { AggregatedTokenInfo } from 'types/client/multichainAggregator';
 
 import config from 'configs/app';
 import multichainConfig from 'configs/multichain';

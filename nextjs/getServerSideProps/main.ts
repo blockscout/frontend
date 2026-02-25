@@ -2,9 +2,9 @@ import * as guards from './guards';
 import { factory } from './utils';
 
 export const base = factory([ ]);
-export const block = factory([ guards.notOpSuperchain ]);
-export const tx = factory([ guards.notOpSuperchain ]);
-export const token = factory([ guards.notOpSuperchain ]);
+export const block = factory([ guards.notMultichain ]);
+export const tx = factory([ guards.notMultichain ]);
+export const token = factory([ guards.notMultichain ]);
 export const account = factory([ guards.account ]);
 export const accountAuth0 = factory([ guards.accountAuth0 ]);
 export const verifiedAddresses = factory([ guards.account, guards.verifiedAddresses ]);
@@ -32,7 +32,7 @@ export const publicTagsSubmit = factory([ guards.publicTagsSubmit ]);
 export const pools = factory([ guards.pools ]);
 export const megaEth = factory([ guards.megaEth ]);
 export const zetaChainCCTX = factory([ guards.zetaChainCCTX ]);
-export const crossChainTxs = factory([ guards.notOpSuperchain, guards.crossChainTxs ]);
+export const crossChainTxs = factory([ guards.notMultichain, guards.crossChainTxs ]);
 
 // ROLLUPS
 export const rollup = factory([ guards.rollup ]);
@@ -47,4 +47,4 @@ export const mud = factory([ guards.mud ]);
 export const tac = factory([ guards.tac ]);
 export const celo = factory([ guards.celo ]);
 export const interopMessages = factory([ guards.interopMessages ]);
-export const opSuperchain = factory([ guards.opSuperchain ]);
+export const multichain = factory([ guards.multichain ]);

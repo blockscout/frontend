@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import type { ChartMarketResponse } from 'types/api/charts';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import { HOMEPAGE_STATS } from 'stubs/optimismSuperchain';
+import { HOMEPAGE_STATS } from 'stubs/multichain';
 import { getChartData } from 'ui/home/indicators/utils/chart';
 
 import useFetchParentChainApi from './useFetchParentChainApi';

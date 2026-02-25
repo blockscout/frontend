@@ -13,7 +13,7 @@ import OpSuperchainHome from './OpSuperchainHome';
 
 test('base view +@mobile +@dark-mode', async({ mockApiResponse, render, page, mockMultichainConfig, mockEnvs, mockAssetResponse, injectMetaMaskProvider }) => {
   await mockMultichainConfig();
-  await mockEnvs(ENVS_MAP.opSuperchain);
+  await mockEnvs(ENVS_MAP.multichain);
   await mockAssetResponse(chainStatsMock.base.coin_image as string, './playwright/mocks/image_s.jpg');
   await mockAssetResponse(chainDataMock.chainA.logo as string, './playwright/mocks/goose.png');
   await mockAssetResponse(chainDataMock.chainB.logo as string, './playwright/mocks/duck.png');

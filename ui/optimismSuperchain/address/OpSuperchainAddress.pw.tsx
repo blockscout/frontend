@@ -21,7 +21,7 @@ const hooksConfig = {
 test('base view', async({ mockApiResponse, render, page, mockMultichainConfig, mockEnvs, mockAssetResponse, mockTextAd }) => {
 
   await mockMultichainConfig();
-  await mockEnvs(ENVS_MAP.opSuperchain);
+  await mockEnvs(ENVS_MAP.multichain);
   await mockTextAd();
 
   await mockApiResponse('multichainAggregator:address', addressMock.addressA, { pathParams: { hash: CURRENT_ADDRESS } });

@@ -26,7 +26,7 @@ test.describe('local txs', () => {
 
   test.beforeEach(async({ render, mockMultichainConfig, mockEnvs, mockApiResponse, mockAssetResponse, createSocket }) => {
     await mockMultichainConfig();
-    await mockEnvs(ENVS_MAP.opSuperchain);
+    await mockEnvs(ENVS_MAP.multichain);
     await mockApiResponse(
       'general:address_txs',
       { items: [ txMock.base ], next_page_params: DEFAULT_PAGINATION },

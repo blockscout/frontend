@@ -2,11 +2,11 @@ import { Box, createListCollection } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { ChainMetricsSorting, ChainMetricsSortingField, ChainMetricsSortingValue } from 'types/client/multichain-aggregator';
+import type { ChainMetricsSorting, ChainMetricsSortingField, ChainMetricsSortingValue } from 'types/client/multichainAggregator';
 
 import multichainConfig from 'configs/multichain';
 import useApiQuery from 'lib/api/useApiQuery';
-import { CHAIN_METRICS } from 'stubs/optimismSuperchain';
+import { CHAIN_METRICS } from 'stubs/multichain';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';

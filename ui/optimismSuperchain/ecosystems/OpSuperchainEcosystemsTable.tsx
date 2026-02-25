@@ -2,7 +2,7 @@ import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type * as multichain from '@blockscout/multichain-aggregator-types';
-import type { ChainMetricsSortingField, ChainMetricsSortingValue } from 'types/client/multichain-aggregator';
+import type { ChainMetricsSortingField, ChainMetricsSortingValue } from 'types/client/multichainAggregator';
 
 import multichainConfig from 'configs/multichain';
 import { MultichainProvider } from 'lib/contexts/multichain';

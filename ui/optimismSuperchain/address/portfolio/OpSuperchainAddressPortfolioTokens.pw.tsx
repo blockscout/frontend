@@ -19,7 +19,7 @@ const hooksConfig = {
 
 test.beforeEach(async({ mockMultichainConfig, mockAssetResponse, mockEnvs }) => {
   await mockMultichainConfig();
-  await mockEnvs(ENVS_MAP.opSuperchain);
+  await mockEnvs(ENVS_MAP.multichain);
   await mockAssetResponse(chainDataMock.chainA.logo as string, './playwright/mocks/duck.png');
   await mockAssetResponse(chainDataMock.chainB.logo as string, './playwright/mocks/goose.png');
 });

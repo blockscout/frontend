@@ -1,4 +1,4 @@
-import type { ChainMetricsSortingField, ChainMetricsSortingValue } from 'types/client/multichain-aggregator';
+import type { ChainMetricsSortingField, ChainMetricsSortingValue } from 'types/client/multichainAggregator';
 
 import type { SelectOption } from 'toolkit/chakra/select';
 

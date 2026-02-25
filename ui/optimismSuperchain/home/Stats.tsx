@@ -2,7 +2,7 @@ import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import { HOMEPAGE_STATS } from 'stubs/optimismSuperchain';
+import { HOMEPAGE_STATS } from 'stubs/multichain';
 import type { HomeStatsItem } from 'ui/home/utils';
 import { sortHomeStatsItems, isHomeStatsItemEnabled } from 'ui/home/utils';
 import StatsWidget from 'ui/shared/stats/StatsWidget';

@@ -5,7 +5,7 @@ import type { HomeStats } from 'types/api/stats';
 import type { TChainIndicator } from 'ui/home/indicators/types';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import { HOMEPAGE_STATS } from 'stubs/optimismSuperchain';
+import { HOMEPAGE_STATS } from 'stubs/multichain';
 import ChainIndicatorsChart from 'ui/home/indicators/ChainIndicatorsChart';
 import ChainIndicatorsContainer from 'ui/home/indicators/ChainIndicatorsContainer';
 import ChainIndicatorsList from 'ui/home/indicators/ChainIndicatorsList';
