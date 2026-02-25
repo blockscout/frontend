@@ -25,11 +25,12 @@ on:
             - main
             - mega_eth
             - mekong
+            - multichain_dev
+            - multichain_prod
             - neon_devnet
             - numine
             - optimism
             - optimism_sepolia
-            - optimism_superchain
             - polygon
             - rari_testnet
             - rootstock
