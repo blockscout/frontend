@@ -14,7 +14,7 @@ export interface Props extends SelectRootProps {
 
 const Sort = (props: Props) => {
   const { collection, isLoading, ...rest } = props;
-  const isMobile = useIsMobile(false);
+  const isMobile = useIsMobile();
   const isInitialLoading = useIsInitialLoading(isLoading);
 
   const trigger = (() => {

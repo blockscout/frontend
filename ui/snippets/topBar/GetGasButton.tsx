@@ -11,7 +11,7 @@ import { Link } from 'toolkit/chakra/link';
 const getGasFeature = config.features.getGasButton;
 
 const GetGasButton = () => {
-  const isMobile = useIsMobile(false);
+  const isMobile = useIsMobile();
 
   const onGetGasClick = React.useCallback(() => {
     mixpanel.logEvent(mixpanel.EventTypes.BUTTON_CLICK, { Content: 'Get gas', Source: 'address' });
