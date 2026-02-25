@@ -2,7 +2,7 @@ import { Text, Flex, Grid, Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ItemsProps } from './types';
-import type * as multichain from 'types/client/multichain-aggregator';
+import type * as multichain from 'types/client/multichainAggregator';
 import type { SearchResultBlock } from 'types/client/search';
 
 import highlightText from 'lib/highlightText';

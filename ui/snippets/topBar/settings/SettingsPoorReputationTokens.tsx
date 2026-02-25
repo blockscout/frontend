@@ -19,7 +19,7 @@ const SettingsPoorReputationTokens = () => {
     window.location.reload();
   }, [ isChecked ]);
 
-  if (!config.features.opSuperchain.isEnabled) {
+  if (!config.features.multichain.isEnabled) {
     return null;
   }
 

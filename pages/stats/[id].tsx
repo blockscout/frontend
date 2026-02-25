@@ -21,7 +21,7 @@ const pathname: Route['pathname'] = '/stats/[id]';
 const Page: NextPage<Props<typeof pathname>> = (props: Props<typeof pathname>) => {
   return (
     <PageNextJs pathname={ pathname } query={ props.query } apiData={ props.apiData }>
-      { config.features.opSuperchain.isEnabled ? (
+      { config.features.multichain.isEnabled ? (
         <MultichainProvider chainId={ getQueryParamString(props.query?.chain_id) }>
           <Chart/>
         </MultichainProvider>

@@ -26,7 +26,7 @@ dotenv \
   -- bash -c './deploy/scripts/download_assets.sh ./public/assets/configs'
 
 # generate multichain config (adjust condition accordingly)
-if [[ "$preset_name" == "optimism_superchain" ]]; then
+if [[ "$preset_name" =~ "multichain_" ]]; then
   dotenv \
     -e $config_file \
     -- bash -c 'cd deploy/tools/multichain-config-generator && yarn install --silent && yarn build && yarn generate' || exit 1

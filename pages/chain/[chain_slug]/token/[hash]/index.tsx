@@ -6,14 +6,14 @@ import type { Route } from 'nextjs-routes';
 import type { Props } from 'nextjs/getServerSideProps/handlers';
 import PageNextJs from 'nextjs/PageNextJs';
 
-const OpSuperchainToken = dynamic(() => import('ui/optimismSuperchain/token/OpSuperchainToken'), { ssr: false });
+const MultichainToken = dynamic(() => import('ui/multichain/token/MultichainToken'), { ssr: false });
 
 const pathname: Route['pathname'] = '/token/[hash]';
 
 const Page: NextPage<Props<typeof pathname>> = (props: Props<typeof pathname>) => {
   return (
     <PageNextJs pathname={ pathname } query={ props.query } apiData={ props.apiData }>
-      <OpSuperchainToken/>
+      <MultichainToken/>
     </PageNextJs>
   );
 };

@@ -10,8 +10,8 @@ import config from 'configs/app';
 import LayoutSearchResults from 'ui/shared/layout/LayoutSearchResults';
 
 const SearchResults = dynamic(() => {
-  if (config.features.opSuperchain.isEnabled) {
-    return import('ui/optimismSuperchain/searchResults/SearchResults');
+  if (config.features.multichain.isEnabled) {
+    return import('ui/multichain/searchResults/SearchResults');
   }
 
   return import('ui/pages/SearchResults');

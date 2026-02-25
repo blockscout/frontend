@@ -7,8 +7,8 @@ import PageNextJs from 'nextjs/PageNextJs';
 import config from 'configs/app';
 
 const UserOps = dynamic(() => {
-  if (config.features.opSuperchain.isEnabled) {
-    return import('ui/optimismSuperchain/userOps/OpSuperchainUserOps');
+  if (config.features.multichain.isEnabled) {
+    return import('ui/multichain/userOps/MultichainUserOps');
   }
 
   return import('ui/pages/UserOps');

@@ -4,13 +4,13 @@ import React from 'react';
 import PageNextJs from 'nextjs/PageNextJs';
 
 import config from 'configs/app';
-import OpSuperchainStats from 'ui/optimismSuperchain/stats/OpSuperchainStats';
+import MultichainStats from 'ui/multichain/stats/MultichainStats';
 import Stats from 'ui/pages/Stats';
 
 const Page: NextPage = () => {
   return (
     <PageNextJs pathname="/stats">
-      { config.features.opSuperchain.isEnabled ? <OpSuperchainStats/> : <Stats/> }
+      { config.features.multichain.isEnabled ? <MultichainStats/> : <Stats/> }
     </PageNextJs>
   );
 };

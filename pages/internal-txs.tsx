@@ -7,8 +7,8 @@ import PageNextJs from 'nextjs/PageNextJs';
 import config from 'configs/app';
 
 const InternalTxs = dynamic(() => {
-  if (config.features.opSuperchain.isEnabled) {
-    return import('ui/optimismSuperchain/internalTxs/OpSuperchainInternalTxs');
+  if (config.features.multichain.isEnabled) {
+    return import('ui/multichain/internalTxs/MultichainInternalTxs');
   }
 
   return import('ui/pages/InternalTxs');

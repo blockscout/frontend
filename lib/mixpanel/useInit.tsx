@@ -12,7 +12,7 @@ import getQueryParamString from 'lib/router/getQueryParamString';
 
 import * as userProfile from './userProfile';
 
-const opSuperchainFeature = config.features.opSuperchain;
+const multichainFeature = config.features.multichain;
 
 export default function useMixpanelInit() {
   const [ isInitialized, setIsInitialized ] = React.useState(false);
@@ -46,7 +46,7 @@ export default function useMixpanelInit() {
       Language: window.navigator.language,
       'Device type': capitalize(deviceType),
       'User id': uuid,
-      ...(opSuperchainFeature.isEnabled ? { 'Cluster name': opSuperchainFeature.cluster } : {}),
+      ...(multichainFeature.isEnabled ? { 'Cluster name': multichainFeature.cluster } : {}),
     });
     mixpanel.identify(uuid);
     userProfile.set({

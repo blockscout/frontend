@@ -27,7 +27,7 @@ const TopBar = () => {
     web3.data?.wallet &&
     config.chain.rpcUrls.length &&
     config.features.web3Wallet.isEnabled &&
-    !config.features.opSuperchain.isEnabled &&
+    !config.features.multichain.isEnabled &&
     !isMobile,
   );
   const hasDeFiDropdown = Boolean(config.features.deFiDropdown.isEnabled);
@@ -49,8 +49,8 @@ const TopBar = () => {
         maxW={ `${ CONTENT_MAX_WIDTH }px` }
       >
         <HStack gap={ 0 } fontSize="xs">
-          { Boolean(config.UI.featuredNetworks.items || config.features.opSuperchain.isEnabled) && <NetworkMenu/> }
-          { !config.features.opSuperchain.isEnabled ? <TopBarStats/> : <div/> }
+          { Boolean(config.UI.featuredNetworks.items || config.features.multichain.isEnabled) && <NetworkMenu/> }
+          { !config.features.multichain.isEnabled ? <TopBarStats/> : <div/> }
         </HStack>
         <HStack
           alignItems="center"

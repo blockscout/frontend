@@ -7,8 +7,8 @@ import PageNextJs from 'nextjs/PageNextJs';
 import config from 'configs/app';
 
 const Blocks = dynamic(() => {
-  if (config.features.opSuperchain.isEnabled) {
-    return import('ui/optimismSuperchain/blocks/OpSuperchainBlocks');
+  if (config.features.multichain.isEnabled) {
+    return import('ui/multichain/blocks/MultichainBlocks');
   }
 
   return import('ui/pages/Blocks');

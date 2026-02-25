@@ -1,4 +1,4 @@
-import type { AddressTokenItem } from 'types/client/multichain-aggregator';
+import type { AddressTokenItem } from 'types/client/multichainAggregator';
 
 import { chainA, chainB, chainC } from './chains';
 

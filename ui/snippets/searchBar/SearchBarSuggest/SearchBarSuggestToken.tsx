@@ -4,7 +4,7 @@ import React from 'react';
 
 import type { ItemsProps } from './types';
 import type { SearchResultToken } from 'types/api/search';
-import type * as multichain from 'types/client/multichain-aggregator';
+import type * as multichain from 'types/client/multichainAggregator';
 
 import { toBech32Address } from 'lib/address/bech32';
 import highlightText from 'lib/highlightText';

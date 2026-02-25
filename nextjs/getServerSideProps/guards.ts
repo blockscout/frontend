@@ -336,16 +336,16 @@ export const crossChainTxs: Guard = (chainConfig: typeof config) => async() => {
   }
 };
 
-export const opSuperchain: Guard = () => async() => {
-  if (!config.features.opSuperchain.isEnabled) {
+export const multichain: Guard = () => async() => {
+  if (!config.features.multichain.isEnabled) {
     return {
       notFound: true,
     };
   }
 };
 
-export const notOpSuperchain: Guard = () => async() => {
-  if (config.features.opSuperchain.isEnabled) {
+export const notMultichain: Guard = () => async() => {
+  if (config.features.multichain.isEnabled) {
     return {
       notFound: true,
     };

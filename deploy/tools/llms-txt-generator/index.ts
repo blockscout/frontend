@@ -12,7 +12,7 @@ const outputFile = resolvePath(outputDir, 'llms.txt');
 
 function run() {
     try {
-        if(config.features.opSuperchain.isEnabled){
+        if(config.features.multichain.isEnabled){
             console.log('⏭️ Skipping llms.txt generation for multichain explorer');
             return;
         }

@@ -27,7 +27,7 @@ export default Page;
 export const getServerSideProps: GetServerSideProps<Props<typeof pathname>> = async(ctx) => {
   const baseResponse = await gSSP.token<typeof pathname>(ctx);
 
-  if ('props' in baseResponse && !config.features.opSuperchain.isEnabled) {
+  if ('props' in baseResponse && !config.features.multichain.isEnabled) {
     if (
       config.meta.seo.enhancedDataEnabled ||
       (config.meta.og.enhancedDataEnabled && detectBotRequest(ctx.req)?.type === 'social_preview')
