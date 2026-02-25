@@ -5,14 +5,14 @@ import type { NextPageWithLayout } from 'nextjs/types';
 import PageNextJs from 'nextjs/PageNextJs';
 
 import config from 'configs/app';
-import OpSuperchainHome from 'ui/optimismSuperchain/home/OpSuperchainHome';
+import MultichainHome from 'ui/multichain/home/MultichainHome';
 import Home from 'ui/pages/Home';
 import LayoutHome from 'ui/shared/layout/LayoutHome';
 
 const Page: NextPageWithLayout = () => {
   return (
     <PageNextJs pathname="/">
-      { config.features.multichain.isEnabled ? <OpSuperchainHome/> : <Home/> }
+      { config.features.multichain.isEnabled ? <MultichainHome/> : <Home/> }
     </PageNextJs>
   );
 };

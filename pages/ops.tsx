@@ -8,7 +8,7 @@ import config from 'configs/app';
 
 const UserOps = dynamic(() => {
   if (config.features.multichain.isEnabled) {
-    return import('ui/optimismSuperchain/userOps/OpSuperchainUserOps');
+    return import('ui/multichain/userOps/MultichainUserOps');
   }
 
   return import('ui/pages/UserOps');

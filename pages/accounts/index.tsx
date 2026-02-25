@@ -8,7 +8,7 @@ import config from 'configs/app';
 
 const Accounts = dynamic(() => {
   if (config.features.multichain.isEnabled) {
-    return import('ui/optimismSuperchain/accounts/OpSuperchainAccounts');
+    return import('ui/multichain/accounts/MultichainAccounts');
   }
 
   return import('ui/pages/Accounts');

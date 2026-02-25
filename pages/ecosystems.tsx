@@ -4,12 +4,12 @@ import React from 'react';
 
 import PageNextJs from 'nextjs/PageNextJs';
 
-const OpSuperchainEcosystems = dynamic(() => import('ui/optimismSuperchain/ecosystems/OpSuperchainEcosystems'), { ssr: false });
+const MultichainEcosystems = dynamic(() => import('ui/multichain/ecosystems/MultichainEcosystems'), { ssr: false });
 
 const Page: NextPage = () => {
   return (
     <PageNextJs pathname="/ecosystems">
-      <OpSuperchainEcosystems/>
+      <MultichainEcosystems/>
     </PageNextJs>
   );
 };

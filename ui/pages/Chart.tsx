@@ -22,7 +22,7 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import { ChartWidgetContent, useChartZoom } from 'toolkit/components/charts';
 import ChartMenu from 'toolkit/components/charts/parts/ChartMenu';
 import { isBrowser } from 'toolkit/utils/isBrowser';
-import ChainSelect from 'ui/optimismSuperchain/components/ChainSelect';
+import ChainSelect from 'ui/multichain/components/ChainSelect';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
 import ChartIntervalSelect from 'ui/shared/chart/ChartIntervalSelect';
 import { useChartsConfig } from 'ui/shared/chart/config';

@@ -8,7 +8,7 @@ import config from 'configs/app';
 
 const TokenTransfers = dynamic(() => {
   if (config.features.multichain.isEnabled) {
-    return import('ui/optimismSuperchain/tokenTransfers/OpSuperchainTokenTransfers');
+    return import('ui/multichain/tokenTransfers/MultichainTokenTransfers');
   }
 
   return import('ui/pages/TokenTransfers');

@@ -8,7 +8,7 @@ import config from 'configs/app';
 
 const InternalTxs = dynamic(() => {
   if (config.features.multichain.isEnabled) {
-    return import('ui/optimismSuperchain/internalTxs/OpSuperchainInternalTxs');
+    return import('ui/multichain/internalTxs/MultichainInternalTxs');
   }
 
   return import('ui/pages/InternalTxs');

@@ -8,7 +8,7 @@ import config from 'configs/app';
 
 const Blocks = dynamic(() => {
   if (config.features.multichain.isEnabled) {
-    return import('ui/optimismSuperchain/blocks/OpSuperchainBlocks');
+    return import('ui/multichain/blocks/MultichainBlocks');
   }
 
   return import('ui/pages/Blocks');

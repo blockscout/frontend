@@ -8,7 +8,7 @@ import config from 'configs/app';
 
 const Tokens = dynamic(() => {
   if (config.features.multichain.isEnabled) {
-    return import('ui/optimismSuperchain/tokens/OpSuperchainTokens');
+    return import('ui/multichain/tokens/MultichainTokens');
   }
 
   return import('ui/pages/Tokens');

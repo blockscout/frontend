@@ -8,7 +8,7 @@ import config from 'configs/app';
 
 const Transactions = dynamic(() => {
   if (config.features.multichain.isEnabled) {
-    return import('ui/optimismSuperchain/txs/OpSuperchainTxs');
+    return import('ui/multichain/txs/MultichainTxs');
   }
 
   if (config.features.zetachain.isEnabled) {
