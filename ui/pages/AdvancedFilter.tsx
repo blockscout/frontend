@@ -10,7 +10,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { AdvancedFilterParams } from 'types/api/advancedFilter';
-import { ADVANCED_FILTER_TYPES, ADVANCED_FILTER_AGES, ADVANCED_FILTER_ADDRESS_RELATION } from 'types/api/advancedFilter';
+import { ADVANCED_FILTER_AGES, ADVANCED_FILTER_ADDRESS_RELATION } from 'types/api/advancedFilter';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
@@ -27,7 +27,7 @@ import { TableBody, TableCell, TableColumnHeader, TableHeaderSticky, TableRoot, 
 import { Tag } from 'toolkit/chakra/tag';
 import ColumnsButton from 'ui/advancedFilter/ColumnsButton';
 import type { ColumnsIds } from 'ui/advancedFilter/constants';
-import { TABLE_COLUMNS } from 'ui/advancedFilter/constants';
+import { getAdvancedFilterTypes, TABLE_COLUMNS } from 'ui/advancedFilter/constants';
 import ExportCSV from 'ui/advancedFilter/ExportCSV';
 import FilterByColumn from 'ui/advancedFilter/FilterByColumn';
 import ItemByColumn from 'ui/advancedFilter/ItemByColumn';
@@ -52,7 +52,10 @@ const AdvancedFilter = () => {
     const age = getFilterValueFromQuery(ADVANCED_FILTER_AGES, router.query.age);
     const addressRelation = getFilterValueFromQuery(ADVANCED_FILTER_ADDRESS_RELATION, router.query.address_relation);
     return {
-      transaction_types: getFilterValuesFromQuery(ADVANCED_FILTER_TYPES, router.query.transaction_types),
+      transaction_types: getFilterValuesFromQuery(
+        getAdvancedFilterTypes(multichainContext?.chain?.app_config).map(t => t.id),
+        router.query.transaction_types,
+      ),
       methods: getValuesArrayFromQuery(router.query.methods),
       methods_names: getValuesArrayFromQuery(router.query.methods_names),
       amount_from: getQueryParamString(router.query.amount_from),
@@ -139,7 +142,7 @@ const AdvancedFilter = () => {
     return null;
   }
 
-  const filterTags = getFilterTags(filters);
+  const filterTags = getFilterTags(filters, multichainContext?.chain?.app_config);
 
   const content = (
     <AddressHighlightProvider>
@@ -208,7 +211,12 @@ const AdvancedFilter = () => {
                       overflow="hidden"
                       textAlign={ textAlign }
                     >
-                      <ItemByColumn item={ item } column={ column.id } isLoading={ isPlaceholderData }/>
+                      <ItemByColumn
+                        item={ item }
+                        column={ column.id }
+                        isLoading={ isPlaceholderData }
+                        chainConfig={ multichainContext?.chain?.app_config }
+                      />
                     </TableCell>
                   );
                 }) }

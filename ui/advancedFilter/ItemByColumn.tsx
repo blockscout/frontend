@@ -2,8 +2,10 @@ import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { AdvancedFilterResponseItem } from 'types/api/advancedFilter';
+import type { ClusterChainConfig } from 'types/multichain';
 
 import config from 'configs/app';
+import { isConfidentialTokenType } from 'lib/token/tokenTypes';
 import { Badge } from 'toolkit/chakra/badge';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import type { ColumnsIds } from 'ui/advancedFilter/constants';
@@ -13,22 +15,24 @@ import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import AssetValue from 'ui/shared/value/AssetValue';
+import ConfidentialValue from 'ui/shared/value/ConfidentialValue';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
-import { ADVANCED_FILTER_TYPES } from './constants';
+import { getAdvancedFilterTypes } from './constants';
 
 type Props = {
   item: AdvancedFilterResponseItem;
   column: ColumnsIds;
   isLoading?: boolean;
+  chainConfig?: ClusterChainConfig['app_config'];
 };
 
-const ItemByColumn = ({ item, column, isLoading }: Props) => {
+const ItemByColumn = ({ item, column, isLoading, chainConfig }: Props) => {
   switch (column) {
     case 'tx_hash':
       return <TxEntity truncation="constant" hash={ item.hash } isLoading={ isLoading } noIcon fontWeight={ 700 }/>;
     case 'type': {
-      const type = ADVANCED_FILTER_TYPES.find(t => t.id === item.type);
+      const type = getAdvancedFilterTypes(chainConfig).find(t => t.id === item.type);
       if (!type) {
         return null;
       }
@@ -65,6 +69,9 @@ const ItemByColumn = ({ item, column, isLoading }: Props) => {
     case 'amount': {
       if (item.token?.type === 'ERC-721') {
         return <Skeleton loading={ isLoading }>1</Skeleton>;
+      }
+      if (item.token && isConfidentialTokenType(item.token.type)) {
+        return <ConfidentialValue loading={ isLoading }/>;
       }
       if (item.total) {
         return (

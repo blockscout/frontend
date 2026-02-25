@@ -39,7 +39,6 @@ export default function useQueryClientConfig() {
             'general:noves_describe_txs',
             // these resources are not proxied by the backend
             'external:safe_transaction_api',
-            'external:gas_hawk_saving_potential',
           ];
           const isExternalApiResource = EXTERNAL_API_RESOURCES.some((resource) => query.queryKey[0] === resource);
 

@@ -6,7 +6,7 @@ import type { AddressTokensErc20Item } from './types';
 
 import config from 'configs/app';
 import multichainConfig from 'configs/multichain';
-import { getTokenTypeName } from 'lib/token/tokenTypes';
+import { getTokenTypeName, isConfidentialTokenType } from 'lib/token/tokenTypes';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { Tag } from 'toolkit/chakra/tag';
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
@@ -14,6 +14,7 @@ import NativeTokenTag from 'ui/shared/celo/NativeTokenTag';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import calculateUsdValue from 'ui/shared/value/calculateUsdValue';
+import ConfidentialValue from 'ui/shared/value/ConfidentialValue';
 import SimpleValue from 'ui/shared/value/SimpleValue';
 import { DEFAULT_ACCURACY_USD } from 'ui/shared/value/utils';
 
@@ -86,14 +87,21 @@ const ERC20TokensTableItem = ({
         ) : null }
       </TableCell>
       <TableCell isNumeric verticalAlign={ cellVerticalAlign }>
-        <SimpleValue
-          value={ tokenQuantity }
-          color={ isNativeToken ? 'text.secondary' : undefined }
-          loading={ isLoading }
-        />
+        { isConfidentialTokenType(token.type) ? (
+          <ConfidentialValue loading={ isLoading }/>
+        ) : (
+          <SimpleValue
+            value={ tokenQuantity }
+            color={ isNativeToken ? 'text.secondary' : undefined }
+            loading={ isLoading }
+          />
+        ) }
       </TableCell>
       <TableCell isNumeric verticalAlign={ cellVerticalAlign }>
-        { token.exchange_rate && (
+        { isConfidentialTokenType(token.type) && (
+          <ConfidentialValue loading={ isLoading }/>
+        ) }
+        { !isConfidentialTokenType(token.type) && token.exchange_rate && (
           <SimpleValue
             value={ tokenValue }
             prefix="$"

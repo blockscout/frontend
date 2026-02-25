@@ -20,6 +20,7 @@ import { Link } from 'toolkit/chakra/link';
 import SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 import ZetaChainCCTXListItem from 'ui/zetaChain/cctxs/ZetaChainCCTXListItem';
 
+import LatestTxsFallback from '../fallbacks/LatestTxsFallback';
 import LatestZetaChainCCTXItem from './LatestZetaChainCCTXItem';
 
 const LatestZetaChainCCTXs = () => {
@@ -110,7 +111,7 @@ const LatestZetaChainCCTXs = () => {
   });
 
   if (isError) {
-    return <Text mt={ 4 }>No data. Please reload the page.</Text>;
+    return <LatestTxsFallback/>;
   }
 
   if (data) {
@@ -152,7 +153,7 @@ const LatestZetaChainCCTXs = () => {
     );
   }
 
-  return null;
+  return <Text>No latest cross chain transactions found.</Text>;
 };
 
 export default LatestZetaChainCCTXs;

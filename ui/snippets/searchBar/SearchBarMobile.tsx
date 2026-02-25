@@ -41,9 +41,9 @@ const SearchBarMobile = ({ isHeroBanner, onGoToSearchResults }: Props) => {
   const { searchTerm, debouncedSearchTerm, handleSearchTermChange, query, zetaChainCCTXQuery, externalSearchItem } = useQuickSearchQuery();
   const recentSearchKeywords = getRecentSearchKeywords();
 
-  const navigateToResults = React.useCallback(() => {
+  const navigateToResults = React.useCallback((redirect: boolean) => {
     if (searchTerm) {
-      const resultRoute: Route = { pathname: '/search-results', query: { q: searchTerm, redirect: 'true' } };
+      const resultRoute: Route = { pathname: '/search-results', query: { q: searchTerm, redirect: redirect ? 'true' : 'false' } };
       const url = route(resultRoute);
       mixpanel.logEvent(mixpanel.EventTypes.SEARCH_QUERY, {
         'Search query': searchTerm,
@@ -59,7 +59,11 @@ const SearchBarMobile = ({ isHeroBanner, onGoToSearchResults }: Props) => {
 
   const handleSubmit = React.useCallback((event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    navigateToResults();
+    navigateToResults(true);
+  }, [ navigateToResults ]);
+
+  const handleViewAllResultsClick = React.useCallback(() => {
+    navigateToResults(false);
   }, [ navigateToResults ]);
 
   const onTriggerClick = React.useCallback((event: React.MouseEvent) => {
@@ -168,7 +172,7 @@ const SearchBarMobile = ({ isHeroBanner, onGoToSearchResults }: Props) => {
             justifyContent="center"
           >
             <Link
-              onClick={ navigateToResults }
+              onClick={ handleViewAllResultsClick }
               textStyle="sm"
             >
               View all results

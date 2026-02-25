@@ -54,7 +54,6 @@ export default function useFetchTokens({ hash, enabled }: Props) {
     queryParams: { type: 'ERC-404' },
     queryOptions: { enabled: Boolean(hash) && enabled, refetchOnMount: false },
   });
-
   const apiFetch = useApiFetch();
   const multichainContext = useMultichainContext();
   const chain = multichainContext?.chain;
@@ -128,7 +127,12 @@ export default function useFetchTokens({ hash, enabled }: Props) {
 
   const channel = useSocketChannel({
     topic: `addresses:${ hash?.toLowerCase() }`,
-    isDisabled: Boolean(hash) && (erc20query.isPlaceholderData || erc721query.isPlaceholderData || erc1155query.isPlaceholderData),
+    isDisabled:
+      Boolean(hash) &&
+      (erc20query.isPlaceholderData ||
+        erc721query.isPlaceholderData ||
+        erc1155query.isPlaceholderData ||
+        erc404query.isPlaceholderData),
   });
 
   useSocketMessage({
@@ -151,7 +155,6 @@ export default function useFetchTokens({ hash, enabled }: Props) {
     event: 'updated_token_balances_erc_404',
     handler: handleTokenBalancesErc404Message,
   });
-
   React.useEffect(() => {
     if (!channel || additionalTokenTypes.length === 0) {
       return;

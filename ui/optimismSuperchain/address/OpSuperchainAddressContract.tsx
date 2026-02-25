@@ -6,16 +6,18 @@ import multichainConfig from 'configs/multichain';
 import getSocketUrl from 'lib/api/getSocketUrl';
 import useApiQuery from 'lib/api/useApiQuery';
 import { MultichainProvider } from 'lib/contexts/multichain';
+import useIsMobile from 'lib/hooks/useIsMobile';
 import useRoutedChainSelect from 'lib/multichain/useRoutedChainSelect';
 import { SocketProvider } from 'lib/socket/context';
 import { ADDRESS_INFO } from 'stubs/address';
 import AddressContract from 'ui/address/AddressContract';
 import ChainSelect from 'ui/optimismSuperchain/components/ChainSelect';
 
-import getContractChainIds from './getContractChainIds';
+import getAvailableChainIds from './getAvailableChainIds';
 
 const LEFT_SLOT_PROPS = {
   mr: 6,
+  flexShrink: 0,
 };
 const QUERY_PRESERVED_PARAMS = [ 'tab', 'hash' ];
 
@@ -26,8 +28,9 @@ interface Props {
 }
 
 const OpSuperchainAddressContract = ({ addressHash, isLoading, data }: Props) => {
-  const chainIds = React.useMemo(() => getContractChainIds(data), [ data ]);
+  const chainIds = React.useMemo(() => getAvailableChainIds(data), [ data ]);
   const chainSelect = useRoutedChainSelect({ persistedParams: QUERY_PRESERVED_PARAMS, isLoading, chainIds });
+  const isMobile = useIsMobile();
 
   const chain = React.useMemo(() => {
     return multichainConfig()?.chains.find(({ id }) => id === chainSelect.value?.[0]);
@@ -48,11 +51,12 @@ const OpSuperchainAddressContract = ({ addressHash, isLoading, data }: Props) =>
       onValueChange={ chainSelect.onValueChange }
       loading={ isLoading }
       chainIds={ chainIds }
+      mode={ isMobile ? 'compact' : 'default' }
     />
   );
 
   return (
-    <MultichainProvider chainId={ chainSelect.value?.[0] }>
+    <MultichainProvider key={ chainSelect.value?.[0] } chainId={ chainSelect.value?.[0] }>
       <SocketProvider url={ getSocketUrl(chain?.app_config) }>
         <AddressContract
           addressData={ addressQuery.data }

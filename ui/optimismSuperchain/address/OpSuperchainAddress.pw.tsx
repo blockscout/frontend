@@ -1,13 +1,16 @@
 import React from 'react';
 
-import * as opSuperchainMock from 'mocks/multichain/opSuperchain';
+import * as addressMock from 'mocks/multichain/address';
+import * as chainDataMock from 'mocks/multichain/chains';
+import * as portfolioMock from 'mocks/multichain/portfolio';
+import * as tokensMock from 'mocks/multichain/tokens';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';
 import * as pwConfig from 'playwright/utils/config';
 
 import OpSuperchainAddress from './OpSuperchainAddress';
 
-const CURRENT_ADDRESS = opSuperchainMock.addressA.hash;
+const CURRENT_ADDRESS = addressMock.addressA.hash;
 
 const hooksConfig = {
   router: {
@@ -21,26 +24,21 @@ test('base view', async({ mockApiResponse, render, page, mockMultichainConfig, m
   await mockEnvs(ENVS_MAP.opSuperchain);
   await mockTextAd();
 
-  await mockApiResponse('multichainAggregator:address', opSuperchainMock.addressA, { pathParams: { hash: CURRENT_ADDRESS } });
+  await mockApiResponse('multichainAggregator:address', addressMock.addressA, { pathParams: { hash: CURRENT_ADDRESS } });
+  await mockApiResponse('multichainAggregator:address_domains', addressMock.addressDomainsA, { pathParams: { hash: CURRENT_ADDRESS } });
+  await mockApiResponse('multichainAggregator:address_portfolio', portfolioMock.base, {
+    pathParams: { hash: CURRENT_ADDRESS },
+    queryParams: { include_poor_reputation_tokens: false },
+  });
   await mockApiResponse('multichainAggregator:address_tokens', {
-    items: [ opSuperchainMock.tokenA ],
-    next_page_params: undefined,
-  }, { pathParams: { hash: CURRENT_ADDRESS }, queryParams: { type: 'ERC-20' } });
-  await mockApiResponse('multichainAggregator:address_tokens', {
-    items: [ ],
-    next_page_params: undefined,
-  }, { pathParams: { hash: CURRENT_ADDRESS }, queryParams: { type: 'ERC-721' } });
-  await mockApiResponse('multichainAggregator:address_tokens', {
-    items: [ ],
-    next_page_params: undefined,
-  }, { pathParams: { hash: CURRENT_ADDRESS }, queryParams: { type: 'ERC-1155' } });
-  await mockApiResponse('multichainAggregator:address_tokens', {
-    items: [ ],
-    next_page_params: undefined,
-  }, { pathParams: { hash: CURRENT_ADDRESS }, queryParams: { type: 'ERC-404' } });
+    items: [ tokensMock.tokenAA, tokensMock.tokenAB, tokensMock.tokenBA, tokensMock.tokenCA, tokensMock.tokenDA ],
+    next_page_params: { page_token: '1', page_size: 10 },
+  }, { pathParams: { hash: CURRENT_ADDRESS }, queryParams: { type: 'ERC-20,NATIVE', include_poor_reputation_tokens: false } });
 
-  await mockAssetResponse(opSuperchainMock.chainDataA.logo as string, './playwright/mocks/image_s.jpg');
-  await mockAssetResponse(opSuperchainMock.chainDataB.logo as string, './playwright/mocks/image_md.jpg');
+  await mockAssetResponse(chainDataMock.chainA.logo as string, './playwright/mocks/image_s.jpg');
+  await mockAssetResponse(chainDataMock.chainB.logo as string, './playwright/mocks/image_md.jpg');
+  await mockAssetResponse(addressMock.domainProtocols[0].icon_url as string, './playwright/mocks/goose.png');
+  await mockAssetResponse(addressMock.domainProtocols[1].icon_url as string, './playwright/mocks/duck.png');
 
   const component = await render(
     <OpSuperchainAddress/>,
@@ -51,10 +49,4 @@ test('base view', async({ mockApiResponse, render, page, mockMultichainConfig, m
     mask: [ page.locator(pwConfig.adsBannerSelector) ],
     maskColor: pwConfig.maskColor,
   });
-
-  await component.getByText('By chain').nth(0).click();
-  await expect(page.locator('div[data-scope="popover"][data-part="content"]').nth(0)).toHaveScreenshot();
-
-  await component.getByText('By chain').nth(1).click();
-  await expect(page.locator('div[data-scope="popover"][data-part="content"]').nth(0)).toHaveScreenshot();
 });

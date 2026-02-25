@@ -6,7 +6,7 @@ import config from 'configs/app';
 import { ABSENT_PARAM_ERROR_MESSAGE } from 'lib/errors/throwOnAbsentParamError';
 import { RESOURCE_LOAD_ERROR_MESSAGE } from 'lib/errors/throwOnResourceLoadError';
 
-import { isBot, isHeadlessBrowser, isNextJsChunkError, getRequestInfo, getExceptionClass } from './utils';
+import { isBot, isHeadlessBrowser, isNextJsChunkError, getRequestInfo, getExceptionClass, getExceptionOriginFileName } from './utils';
 
 const feature = config.features.rollbar;
 
@@ -44,9 +44,20 @@ export const clientConfig: Configuration | undefined = feature.isEnabled ? {
       // one of the examples - https://github.com/facebook/react/issues/11538
       // we can ignore them for now
       'NotFoundError',
+
+      'AbortError',
     ];
 
     if (exceptionClass && IGNORED_EXCEPTION_CLASSES.includes(exceptionClass)) {
+      return true;
+    }
+
+    const originFileName = getExceptionOriginFileName(item);
+    const IGNORED_ORIGIN_FILE_NAMES_CHUNKS = [
+      '/node_modules/@walletconnect',
+    ];
+
+    if (originFileName && IGNORED_ORIGIN_FILE_NAMES_CHUNKS.some((chunk) => originFileName.includes(chunk))) {
       return true;
     }
 

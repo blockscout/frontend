@@ -46,7 +46,9 @@ const ChainIndicators = () => {
         if (statsQuery.data.new_txns_multichain_window) {
           const lastDay = statsQuery.data.new_txns_multichain_window.chart[statsQuery.data.new_txns_multichain_window.chart.length - 1].value;
           const secondLastDay = statsQuery.data.new_txns_multichain_window.chart[statsQuery.data.new_txns_multichain_window.chart.length - 2].value;
-          return Number(((Number(lastDay) - Number(secondLastDay)) / Number(secondLastDay) * 100).toFixed(2));
+          if (Number(secondLastDay) !== 0) {
+            return Number(((Number(lastDay) - Number(secondLastDay)) / Number(secondLastDay) * 100).toFixed(2));
+          }
         }
         return undefined;
       })(),

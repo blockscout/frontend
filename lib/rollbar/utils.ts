@@ -1,6 +1,8 @@
 import { get } from 'es-toolkit/compat';
 import type { Dictionary } from 'rollbar';
 
+import { castToString } from 'toolkit/utils/guards';
+
 export function isBot(userAgent: string | undefined) {
   if (!userAgent) return false;
 
@@ -61,5 +63,11 @@ export function getRequestInfo(item: Dictionary): { url: string } | undefined {
 export function getExceptionClass(item: Dictionary) {
   const exceptionClass = get(item, 'body.trace.exception.class');
 
-  return typeof exceptionClass === 'string' ? exceptionClass : undefined;
+  return castToString(exceptionClass);
+}
+
+export function getExceptionOriginFileName(item: Dictionary) {
+  const originFileName = get(item, 'body.trace.frames[0].filename');
+
+  return castToString(originFileName);
 }

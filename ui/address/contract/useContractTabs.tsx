@@ -42,7 +42,7 @@ export default function useContractTabs({ addressData, isEnabled, hasMudTab, cha
   const contractQuery = useApiQuery('general:contract', {
     pathParams: { hash: addressData?.hash },
     queryOptions: {
-      enabled: isEnabled,
+      enabled: isEnabled && addressData?.is_contract,
       refetchOnMount: false,
       placeholderData: addressData?.is_verified ? stubs.CONTRACT_CODE_VERIFIED : stubs.CONTRACT_CODE_UNVERIFIED,
     },
@@ -52,7 +52,7 @@ export default function useContractTabs({ addressData, isEnabled, hasMudTab, cha
   const mudSystemsQuery = useApiQuery('general:mud_systems', {
     pathParams: { hash: addressData?.hash },
     queryOptions: {
-      enabled: Boolean(isEnabled && hasMudTab),
+      enabled: Boolean(isEnabled && hasMudTab && addressData?.is_contract),
       refetchOnMount: false,
       placeholderData: stubs.MUD_SYSTEMS,
     },
@@ -63,6 +63,21 @@ export default function useContractTabs({ addressData, isEnabled, hasMudTab, cha
   }, [ addressData?.hash, addressData?.implementations ]);
 
   return React.useMemo(() => {
+
+    if (!addressData?.is_contract) {
+      return {
+        tabs: [
+          {
+            id: 'contract_code' as const,
+            title: 'Code',
+            component: <p>This address is not a contract on this chain.</p>,
+          },
+        ],
+        isLoading: false,
+        isPartiallyVerified: undefined,
+      };
+    }
+
     return {
       tabs: [
         addressData && {

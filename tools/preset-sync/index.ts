@@ -20,7 +20,7 @@ const PRESETS = {
   neon_devnet: 'https://neon-devnet.blockscout.com',
   numine: 'https://numine.blockscout.com',
   optimism: 'https://optimism.blockscout.com',
-  optimism_interop_0: 'https://optimism-interop-alpha-0.blockscout.com',
+  optimism_superchain: 'https://superchain.k8s-dev.blockscout.com',
   optimism_sepolia: 'https://optimism-sepolia.blockscout.com',
   polygon: 'https://polygon.blockscout.com',
   rari_testnet: 'https://rari-testnet.cloud.blockscout.com',

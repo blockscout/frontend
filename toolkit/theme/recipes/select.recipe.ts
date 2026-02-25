@@ -1,7 +1,21 @@
 import { defineSlotRecipe } from '@chakra-ui/react';
 
 export const recipe = defineSlotRecipe({
-  slots: [ 'root', 'trigger', 'indicatorGroup', 'indicator', 'content', 'item', 'control', 'itemText', 'itemGroup', 'itemGroupLabel', 'label', 'valueText' ],
+  slots: [
+    'root',
+    'trigger',
+    'indicatorGroup',
+    'indicator',
+    'content',
+    'item',
+    'control',
+    'itemText',
+    'itemGroup',
+    'itemGroupLabel',
+    'label',
+    'valueText',
+    'positioner',
+  ],
   base: {
     root: {
       display: 'flex',

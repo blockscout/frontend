@@ -1,7 +1,7 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import * as opSuperchainMock from 'mocks/multichain/opSuperchain';
+import * as chainDataMock from 'mocks/multichain/chains';
 import * as tokenMock from 'mocks/tokens/tokenInfo';
 import { stableHover } from 'playwright/helpers/stableHover';
 import { test, expect } from 'playwright/lib';
@@ -27,7 +27,7 @@ test.describe('variant', () => {
 
     test(`${ variant } with chain data`, async({ render, mockAssetResponse }) => {
       const LOGO_URL = 'https://example.com/logo.png';
-      const chainLogoUrl = opSuperchainMock.chainDataA.logo;
+      const chainLogoUrl = chainDataMock.chainA.logo;
       await mockAssetResponse(LOGO_URL, './playwright/mocks/image_s.jpg');
       await mockAssetResponse(chainLogoUrl as string, './playwright/mocks/image_svg.svg');
 
@@ -41,7 +41,7 @@ test.describe('variant', () => {
             icon_url: LOGO_URL,
             reputation: 'ok',
           }}
-          chain={ opSuperchainMock.chainDataA }
+          chain={ chainDataMock.chainA }
         />,
       );
 
@@ -51,7 +51,7 @@ test.describe('variant', () => {
 });
 
 test('icon in heading variant', async({ render, mockAssetResponse }) => {
-  const chainLogoUrl = opSuperchainMock.chainDataA.logo;
+  const chainLogoUrl = chainDataMock.chainA.logo;
   await mockAssetResponse(tokenMock.tokenInfo.icon_url as string, './playwright/mocks/image_s.jpg');
   await mockAssetResponse(chainLogoUrl as string, './playwright/mocks/image_svg.svg');
 
@@ -59,7 +59,7 @@ test('icon in heading variant', async({ render, mockAssetResponse }) => {
     <Icon
       token={ tokenMock.tokenInfo }
       variant="heading"
-      chain={ opSuperchainMock.chainDataA }
+      chain={ chainDataMock.chainA }
     />,
   );
 

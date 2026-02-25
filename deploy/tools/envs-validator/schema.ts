@@ -113,7 +113,6 @@ const schema = yup
           value => value === undefined,
         ),
       }),
-    NEXT_PUBLIC_SAVE_ON_GAS_ENABLED: yup.boolean(),
     NEXT_PUBLIC_ADDRESS_USERNAME_TAG: yup
       .mixed()
       .test('shape', 'Invalid schema were provided for NEXT_PUBLIC_ADDRESS_USERNAME_TAG, it should have api_url_template', (data) => {

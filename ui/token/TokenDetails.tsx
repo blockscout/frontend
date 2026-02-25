@@ -13,6 +13,7 @@ import useApiQuery from 'lib/api/useApiQuery';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useIsMounted from 'lib/hooks/useIsMounted';
+import { isConfidentialTokenType } from 'lib/token/tokenTypes';
 import { TOKEN_COUNTERS } from 'stubs/token';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
@@ -144,27 +145,30 @@ const TokenDetails = ({ tokenQuery }: Props) => {
           </DetailedInfo.ItemValue>
         </>
       ) }
-
-      <DetailedInfo.ItemLabel
-        hint="The total amount of tokens issued"
-        isLoading={ tokenQuery.isPlaceholderData }
-      >
-        Max total supply
-      </DetailedInfo.ItemLabel>
-      <DetailedInfo.ItemValue
-        alignSelf="center"
-        wordBreak="break-word"
-        whiteSpace="pre-wrap"
-      >
-        <AssetValue
-          amount={ totalSupply }
-          asset={ <chakra.span maxW="50%" overflow="hidden" textOverflow="ellipsis"> { symbol }</chakra.span> }
-          accuracy={ 3 }
-          decimals={ decimals ?? '0' }
-          loading={ tokenQuery.isPlaceholderData }
-          w="100%"
-        />
-      </DetailedInfo.ItemValue>
+      { type && !isConfidentialTokenType(type) && (
+        <>
+          <DetailedInfo.ItemLabel
+            hint="The total amount of tokens issued"
+            isLoading={ tokenQuery.isPlaceholderData }
+          >
+            Max total supply
+          </DetailedInfo.ItemLabel>
+          <DetailedInfo.ItemValue
+            alignSelf="center"
+            wordBreak="break-word"
+            whiteSpace="pre-wrap"
+          >
+            <AssetValue
+              amount={ totalSupply }
+              asset={ <chakra.span maxW="50%" overflow="hidden" textOverflow="ellipsis"> { symbol }</chakra.span> }
+              accuracy={ 3 }
+              decimals={ decimals ?? '0' }
+              loading={ tokenQuery.isPlaceholderData }
+              w="100%"
+            />
+          </DetailedInfo.ItemValue>
+        </>
+      ) }
 
       <DetailedInfo.ItemLabel
         hint="Number of accounts holding the token"

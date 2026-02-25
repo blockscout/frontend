@@ -36,7 +36,7 @@ export default function useDetectWalletEip6963() {
       .find(([ , rdns ]) => rdns === event.detail.info.rdns)?.[0] as WalletType | undefined;
 
     if (wallet && !DETECTED_PROVIDERS[wallet]) {
-      DETECTED_PROVIDERS[wallet] = event.detail.provider;
+      DETECTED_PROVIDERS[wallet] = event.detail?.provider;
     }
   }, []);
 
