@@ -47,6 +47,8 @@ import BlockDetailsBlobInfo from './details/BlockDetailsBlobInfo';
 import BlockDetailsZilliqaQuorumCertificate from './details/BlockDetailsZilliqaQuorumCertificate';
 import type { BlockQuery } from './useBlockQuery';
 
+const zkSyncVerificationSteps = ZKSYNC_L2_TX_BATCH_STATUSES.map(formatZkSyncL2TxnBatchStatus);
+
 interface Props {
   query: BlockQuery;
 }
@@ -308,7 +310,7 @@ const BlockDetails = ({ query }: Props) => {
           <DetailedInfo.ItemValue>
             { rollupFeature.type === 'zkSync' && data.zksync && (
               <VerificationSteps
-                steps={ ZKSYNC_L2_TX_BATCH_STATUSES.map(formatZkSyncL2TxnBatchStatus) }
+                steps={ zkSyncVerificationSteps }
                 currentStep={ formatZkSyncL2TxnBatchStatus(data.zksync.status) }
                 isLoading={ isPlaceholderData }
               />

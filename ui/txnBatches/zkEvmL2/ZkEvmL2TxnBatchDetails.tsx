@@ -23,6 +23,8 @@ import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import PrevNext from 'ui/shared/PrevNext';
 import VerificationSteps from 'ui/shared/verificationSteps/VerificationSteps';
 
+const verificationSteps = ZKEVM_L2_TX_BATCH_STATUSES.map(formatZkEvmL2TxnBatchStatus);
+
 interface Props {
   query: UseQueryResult<ZkEvmL2TxnBatch, ResourceError>;
 }
@@ -85,7 +87,7 @@ const ZkEvmL2TxnBatchDetails = ({ query }: Props) => {
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
         <VerificationSteps
-          steps={ ZKEVM_L2_TX_BATCH_STATUSES.map(formatZkEvmL2TxnBatchStatus) }
+          steps={ verificationSteps }
           currentStep={ formatZkEvmL2TxnBatchStatus(data.status) }
           isLoading={ isPlaceholderData }
         />

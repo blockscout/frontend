@@ -139,7 +139,7 @@ const ArbitrumL2TxnBatchDetails = ({ query }: Props) => {
 
       <DetailedInfo.ItemLabel
         isLoading={ isPlaceholderData }
-        hint={ `Heigh of ${ layerLabels.parent } block which includes ${ layerLabels.parent } transactions` }
+        hint={ `Height of ${ layerLabels.parent } block which includes ${ layerLabels.parent } transactions` }
       >
         { layerLabels.parent } block
       </DetailedInfo.ItemLabel>

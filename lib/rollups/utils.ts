@@ -33,5 +33,5 @@ export const formatZkEvmL2TxnBatchStatus = (status: typeof ZKEVM_L2_TX_BATCH_STA
 };
 
 export const formatZkSyncL2TxnBatchStatus = (status: typeof ZKSYNC_L2_TX_BATCH_STATUSES[number]) => {
-  return status.replace('L1', layerLabels.parent).replace('L2', layerLabels.current);
+  return status.replace('L2', layerLabels.current).replace('L1', layerLabels.parent);
 };

@@ -26,8 +26,8 @@ function run() {
 
         const rollupFeature = config.features.rollup;
         const parentChainUrl = rollupFeature.isEnabled ? rollupFeature.parentChain.baseUrl : undefined;
-        const currentToParentLayerLabel = rollupFeature.isEnabled ? layerLabels.current + '→' + layerLabels.parent : undefined;
-        const parentToCurrentLayerLabel = rollupFeature.isEnabled ? layerLabels.parent + '→' + layerLabels.current : undefined;
+        const currentToParentLayerLabel = layerLabels.current + '→' + layerLabels.parent;
+        const parentToCurrentLayerLabel = layerLabels.parent + '→' + layerLabels.current;
         
         const validatorsFeature = config.features.validators;
 
