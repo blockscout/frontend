@@ -49,7 +49,7 @@ const AddressMudRecordsTable = ({
   hash,
 }: Props) => {
   const totalColsCut = data.schema.key_names.length + data.schema.value_names.length;
-  const isMobile = useIsMobile(false);
+  const isMobile = useIsMobile();
   const [ colsCutCount, setColsCutCount ] = React.useState<number>(isMobile ? MIN_CUT_COUNT : 0);
   const [ isOpened, setIsOpened ] = React.useState(false);
   const [ hasCut, setHasCut ] = React.useState(isMobile ? totalColsCut > MIN_CUT_COUNT : true);
