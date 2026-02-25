@@ -272,7 +272,7 @@ export default function useNavItems(): ReturnType {
           icon: 'navigation/chain_stats',
           isActive: pathname.startsWith('/stats'),
         },
-        config.features.opSuperchain.isEnabled && {
+        config.features.multichain.isEnabled && {
           text: 'Ecosystems',
           nextRoute: { pathname: '/ecosystems' as const },
           icon: 'navigation/ecosystems',
@@ -319,7 +319,7 @@ export default function useNavItems(): ReturnType {
     } : null;
 
     const otherNavItems: Array<NavItem> | Array<Array<NavItem>> = [
-      config.features.opSuperchain.isEnabled ? {
+      config.features.multichain.isEnabled ? {
         text: 'Verify contract',
         url: 'https://vera.blockscout.com',
       } : {

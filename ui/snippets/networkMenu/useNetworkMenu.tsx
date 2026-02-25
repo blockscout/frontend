@@ -31,7 +31,7 @@ export default function useNetworkMenu() {
       })();
 
       const multichainData: Array<FeaturedNetwork> = (() => {
-        if (config.features.opSuperchain.isEnabled) {
+        if (config.features.multichain.isEnabled) {
           return multichainConfig()?.chains
             .filter((chain) => chain?.explorer_url)
             .filter((chain) => !configData.some((configNetwork) => configNetwork.url.includes(chain.explorer_url ?? '')))
@@ -48,7 +48,7 @@ export default function useNetworkMenu() {
 
       return [ ...configData, ...multichainData ];
     },
-    enabled: Boolean(config.UI.featuredNetworks.items || config.features.opSuperchain.isEnabled) && open,
+    enabled: Boolean(config.UI.featuredNetworks.items || config.features.multichain.isEnabled) && open,
     staleTime: Infinity,
   });
 

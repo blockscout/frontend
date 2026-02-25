@@ -64,7 +64,7 @@ if (config.features.marketplace.isEnabled) {
   searchCategories.unshift({ id: 'app', title: `${ dappEntityName }s`, tabTitle: `${ dappEntityName }s` });
 }
 
-if ((nameServicesFeature.isEnabled && nameServicesFeature.ens.isEnabled) || config.features.opSuperchain.isEnabled) {
+if ((nameServicesFeature.isEnabled && nameServicesFeature.ens.isEnabled) || config.features.multichain.isEnabled) {
   searchCategories.unshift({ id: 'domain', title: 'Names', tabTitle: 'Names' });
 }
 

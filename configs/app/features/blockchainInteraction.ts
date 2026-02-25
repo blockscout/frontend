@@ -4,7 +4,7 @@ import app from '../app';
 import chain from '../chain';
 import { getEnvValue, parseEnvJson } from '../utils';
 import accountFeature from './account';
-import opSuperchain from './opSuperchain';
+import multichain from './multichain';
 
 const walletConnectProjectId = getEnvValue('NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID');
 
@@ -31,11 +31,11 @@ const config: Feature<FeaturePayload> = (() => {
     chain.rpcUrls.length > 0,
   );
 
-  const isOpSuperchain = opSuperchain.isEnabled;
+  const isMultichain = multichain.isEnabled;
 
   if (
     !app.isPrivateMode &&
-    (isSingleChain || isOpSuperchain)
+    (isSingleChain || isMultichain)
   ) {
     if (accountFeature.isEnabled && accountFeature.authProvider === 'dynamic' && accountFeature.dynamic?.environmentId) {
       return Object.freeze({

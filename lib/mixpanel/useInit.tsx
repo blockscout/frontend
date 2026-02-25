@@ -12,7 +12,7 @@ import getQueryParamString from 'lib/router/getQueryParamString';
 
 import * as userProfile from './userProfile';
 
-const opSuperchainFeature = config.features.opSuperchain;
+const opSuperchainFeature = config.features.multichain;
 
 export default function useMixpanelInit() {
   const [ isInitialized, setIsInitialized ] = React.useState(false);

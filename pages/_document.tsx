@@ -46,7 +46,7 @@ class MyDocument extends Document {
 
           { /* eslint-disable-next-line @next/next/no-sync-scripts */ }
           <script src="/assets/envs.js"/>
-          { config.features.opSuperchain.isEnabled && (
+          { config.features.multichain.isEnabled && (
             <>
               { /* eslint-disable-next-line @next/next/no-sync-scripts */ }
               <script src="/assets/multichain/config.js"/>

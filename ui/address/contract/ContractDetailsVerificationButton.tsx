@@ -29,7 +29,7 @@ const ContractDetailsVerificationButton = ({ isLoading, addressHash, ...rest }: 
   return (
     <Link
       href={ href }
-      target={ config.features.opSuperchain.isEnabled ? '_blank' : undefined }
+      target={ config.features.multichain.isEnabled ? '_blank' : undefined }
       flexShrink={ 0 }
       asChild
       { ...rest }

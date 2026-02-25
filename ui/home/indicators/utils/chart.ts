@@ -14,7 +14,7 @@ const CHART_ITEMS: Record<ChainIndicatorId, Pick<TimeChartDataItem, 'name' | 'va
     valueFormatter: (x: number) => x.toLocaleString(undefined, { maximumFractionDigits: 2, notation: 'compact' }),
   },
   coin_price: {
-    name: `${ config.features.opSuperchain.isEnabled ? 'ETH' : config.chain.currency.symbol } price`,
+    name: `${ config.features.multichain.isEnabled ? 'ETH' : config.chain.currency.symbol } price`,
     valueFormatter: (x: number) => '$' + x.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 }),
   },
   secondary_coin_price: {

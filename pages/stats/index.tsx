@@ -10,7 +10,7 @@ import Stats from 'ui/pages/Stats';
 const Page: NextPage = () => {
   return (
     <PageNextJs pathname="/stats">
-      { config.features.opSuperchain.isEnabled ? <OpSuperchainStats/> : <Stats/> }
+      { config.features.multichain.isEnabled ? <OpSuperchainStats/> : <Stats/> }
     </PageNextJs>
   );
 };

@@ -1,12 +1,12 @@
 import type { Feature } from './types';
 
 import apis from '../apis';
-import opSuperchain from './opSuperchain';
+import multichain from './multichain';
 
 const title = 'Blockchain statistics';
 
 const config: Feature<{}> = (() => {
-  if (apis.stats || opSuperchain.isEnabled) {
+  if (apis.stats || multichain.isEnabled) {
     return Object.freeze({
       title,
       isEnabled: true,

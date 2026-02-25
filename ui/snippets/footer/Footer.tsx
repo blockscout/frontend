@@ -31,7 +31,7 @@ const Footer = () => {
   const { data: backendVersionData } = useApiQuery('general:config_backend_version', {
     queryOptions: {
       staleTime: Infinity,
-      enabled: !config.features.opSuperchain.isEnabled,
+      enabled: !config.features.multichain.isEnabled,
     },
   });
   const apiVersionUrl = getApiVersionUrl(backendVersionData?.backend_version);
@@ -74,7 +74,7 @@ const Footer = () => {
       text: 'Docs',
       url: 'https://docs.blockscout.com',
     },
-    !config.features.opSuperchain.isEnabled && {
+    !config.features.multichain.isEnabled && {
       icon: 'AI' as const,
       iconSize: '20px',
       text: 'llms.txt',
@@ -119,7 +119,7 @@ const Footer = () => {
         _empty={{ display: 'none' }}
       >
         { !config.UI.indexingAlert.intTxs.isHidden && <IntTxsIndexingStatus/> }
-        { !config.features.opSuperchain.isEnabled && <NetworkAddToWallet source="Footer"/> }
+        { !config.features.multichain.isEnabled && <NetworkAddToWallet source="Footer"/> }
       </Flex>
     );
   }, []);

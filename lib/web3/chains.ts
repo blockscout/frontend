@@ -40,7 +40,7 @@ const getChainInfo = (
   };
 };
 
-export const currentChain: Chain | undefined = !appConfig.features.opSuperchain.isEnabled ? getChainInfo() : undefined;
+export const currentChain: Chain | undefined = !appConfig.features.multichain.isEnabled ? getChainInfo() : undefined;
 
 export const parentChain: Chain | undefined = (() => {
   const rollupFeature = appConfig.features.rollup;

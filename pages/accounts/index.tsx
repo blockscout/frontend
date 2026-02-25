@@ -7,7 +7,7 @@ import PageNextJs from 'nextjs/PageNextJs';
 import config from 'configs/app';
 
 const Accounts = dynamic(() => {
-  if (config.features.opSuperchain.isEnabled) {
+  if (config.features.multichain.isEnabled) {
     return import('ui/optimismSuperchain/accounts/OpSuperchainAccounts');
   }
 
