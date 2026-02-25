@@ -36,9 +36,9 @@ const SearchBarDesktop = ({ isHeroBanner }: Props) => {
 
   const { searchTerm, debouncedSearchTerm, handleSearchTermChange, query, zetaChainCCTXQuery, externalSearchItem } = useSearchWithClusters();
 
-  const navigateToResults = React.useCallback(() => {
+  const navigateToResults = React.useCallback((redirect: boolean) => {
     if (searchTerm) {
-      const resultRoute: Route = { pathname: '/search-results', query: { q: searchTerm, redirect: 'true' } };
+      const resultRoute: Route = { pathname: '/search-results', query: { q: searchTerm, redirect: redirect ? 'true' : 'false' } };
       const url = route(resultRoute);
       mixpanel.logEvent(mixpanel.EventTypes.SEARCH_QUERY, {
         'Search query': searchTerm,
@@ -52,7 +52,11 @@ const SearchBarDesktop = ({ isHeroBanner }: Props) => {
 
   const handleSubmit = React.useCallback((event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    navigateToResults();
+    navigateToResults(true);
+  }, [ navigateToResults ]);
+
+  const handleViewAllResultsClick = React.useCallback(() => {
+    navigateToResults(false);
   }, [ navigateToResults ]);
 
   const handleFocus = React.useCallback(() => {
@@ -192,7 +196,7 @@ const SearchBarDesktop = ({ isHeroBanner }: Props) => {
             <PopoverFooter pt={ 2 } borderTopWidth={ 1 } borderColor="border.divider">
               <Link
                 textStyle="sm"
-                onClick={ navigateToResults }
+                onClick={ handleViewAllResultsClick }
               >
                 View all results
               </Link>

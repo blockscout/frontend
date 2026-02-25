@@ -121,7 +121,7 @@ const StatsWidget = ({
           </Skeleton>
         </Box>
         { typeof hint === 'string' ? (
-          <Skeleton loading={ isLoading } alignSelf="center" borderRadius="base">
+          <Skeleton loading={ isLoading } alignSelf="center" borderRadius="base" flexShrink={ 0 }>
             <Hint label={ hint } boxSize={ 5 } color="icon.secondary"/>
           </Skeleton>
         ) : hint }

@@ -19,6 +19,7 @@ export interface SelectOption<Value extends string = string> {
   renderLabel?: () => React.ReactNode;
   value: Value;
   icon?: React.ReactNode;
+  afterElement?: React.ReactNode;
 };
 
 export interface SelectControlProps extends ChakraSelect.ControlProps {
@@ -241,11 +242,13 @@ export interface SelectProps extends SelectRootProps {
   loading?: boolean;
   errorText?: string;
   contentProps?: SelectContentProps;
+  contentHeader?: React.ReactNode;
+  itemFilter?: (item: SelectOption) => boolean;
   mode?: ViewMode;
 }
 
 export const Select = React.forwardRef<HTMLDivElement, SelectProps>((props, ref) => {
-  const { collection, placeholder, portalled = true, loading, errorText, contentProps, mode, ...rest } = props;
+  const { collection, placeholder, portalled = true, loading, errorText, contentProps, contentHeader, itemFilter, mode, ...rest } = props;
   return (
     <SelectRoot
       ref={ ref }
@@ -263,11 +266,17 @@ export const Select = React.forwardRef<HTMLDivElement, SelectProps>((props, ref)
         />
       </SelectControl>
       <SelectContent portalled={ portalled } { ...contentProps }>
-        { collection.items.map((item: SelectOption) => (
-          <SelectItem item={ item } key={ item.value }>
-            { item.renderLabel ? item.renderLabel() : item.label }
-          </SelectItem>
-        )) }
+        { contentHeader }
+        { collection.items
+          .filter(itemFilter ?? (() => true))
+          .map((item: SelectOption) => (
+            <React.Fragment key={ item.value }>
+              <SelectItem item={ item }>
+                { item.renderLabel ? item.renderLabel() : item.label }
+              </SelectItem>
+              { item.afterElement }
+            </React.Fragment>
+          )) }
       </SelectContent>
     </SelectRoot>
   );

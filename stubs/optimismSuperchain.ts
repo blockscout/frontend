@@ -17,6 +17,19 @@ export const ADDRESS: multichain.GetAddressResponse = {
   has_interop_message_transfers: false,
   coin_balance: '1000000000000000000000000',
   exchange_rate: '123.456',
+  domains: [],
+};
+
+export const ADDRESS_PORTFOLIO: multichain.GetAddressPortfolioResponse = {
+  portfolio: {
+    total_value: '370373.20',
+    chain_values: {
+      '420120000': '1000000000000000000000000',
+      '100': '9.58848343977132465600',
+      '130': '56.45557826318489510620',
+      '137': '54.3384235217602434',
+    },
+  },
 };
 
 export const TOKEN: AddressTokenItem = {
@@ -69,5 +82,25 @@ export const HOMEPAGE_STATS: stats.MainPageMultichainStats = {
     title: 'Yesterday txns',
     units: undefined,
     description: 'Number of transactions yesterday (0:00 - 23:59 UTC) across all chains in the cluster',
+  },
+};
+
+export const CHAIN_METRICS: multichain.ChainMetrics = {
+  chain_id: '11155111',
+  tps: '5.32',
+  new_addresses: {
+    current_full_week: '16450',
+    previous_full_week: '156832',
+    wow_diff_percent: '-89.51',
+  },
+  daily_transactions: {
+    current_full_week: '3343480',
+    previous_full_week: '4228309',
+    wow_diff_percent: '-20.93',
+  },
+  active_accounts: {
+    current_full_week: '124564',
+    previous_full_week: '287092',
+    wow_diff_percent: '-56.61',
   },
 };

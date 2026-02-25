@@ -16,6 +16,7 @@ const SearchResultListItem = ({ children, ...rest }: Props) => {
       alignItems={{ base: 'flex-start', lg: 'center' }}
       flexDir={{ base: 'column', lg: 'row' }}
       rowGap={{ base: 3, lg: 0 }}
+      columnGap={ 3 }
       pl={ 1 }
       pr={ 4 }
       py={ 3 }

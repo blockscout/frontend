@@ -5,17 +5,17 @@ import type { TokenType } from 'types/api/token';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import config from 'configs/app';
-import getFilterValuesFromQuery from 'lib/getFilterValuesFromQuery';
+import { useMultichainContext } from 'lib/contexts/multichain';
 import useIsInitialLoading from 'lib/hooks/useIsInitialLoading';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import { TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
 import { getTokenTransfersStub } from 'stubs/token';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import TokenTransferFilter from 'ui/shared/TokenTransfer/TokenTransferFilter';
+import { getTokenFilterValue } from 'ui/tokens/utils';
 import TxPendingAlert from 'ui/tx/TxPendingAlert';
 import TxSocketAlert from 'ui/tx/TxSocketAlert';
 
@@ -23,8 +23,6 @@ import TxTokenTransferCrossChain from './tokenTransfers/TxTokenTransferCrossChai
 import TxTokenTransferLocal from './tokenTransfers/TxTokenTransferLocal';
 import useTxCrossChainTransfersQuery from './useTxCrossChainTransfersQuery';
 import type { TxQuery } from './useTxQuery';
-
-const getTokenFilterValue = (getFilterValuesFromQuery<TokenType>).bind(null, TOKEN_TYPE_IDS);
 
 interface Props {
   txQuery: TxQuery;
@@ -34,12 +32,15 @@ interface Props {
 
 const TxTokenTransfer = ({ txQuery, tokenTransferFilter, noCrossChain }: Props) => {
   const router = useRouter();
+  const multichainContext = useMultichainContext();
   const isMobile = useIsMobile();
   const tab = getQueryParamString(router.query.tab);
 
   const areQueriesEnabled = !txQuery.isPlaceholderData && Boolean(txQuery.data?.status && txQuery.data?.hash);
 
-  const [ typeFilter, setTypeFilter ] = React.useState<Array<TokenType>>(getTokenFilterValue(router.query.type) || []);
+  const [ typeFilter, setTypeFilter ] = React.useState<Array<TokenType>>(
+    getTokenFilterValue(router.query.type, multichainContext?.chain?.app_config) || [],
+  );
 
   const localQuery = useQueryWithPages({
     resourceName: 'general:tx_token_transfers',
@@ -137,6 +138,7 @@ const TxTokenTransfer = ({ txQuery, tokenTransferFilter, noCrossChain }: Props) 
             onTypeFilterChange={ handleTypeFilterChange }
             appliedFiltersNum={ typeFilter.length }
             isLoading={ txQuery.isPlaceholderData || localQuery.isPlaceholderData }
+            chainConfig={ multichainContext?.chain?.app_config }
           />
           <Pagination ml="auto" { ...localQuery.pagination }/>
         </>

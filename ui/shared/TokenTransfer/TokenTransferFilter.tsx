@@ -3,6 +3,7 @@ import React from 'react';
 
 import type { AddressFromToFilter } from 'types/api/address';
 import type { TokenType } from 'types/api/token';
+import type { ClusterChainConfig } from 'types/multichain';
 
 import useIsInitialLoading from 'lib/hooks/useIsInitialLoading';
 import { Radio, RadioGroup } from 'toolkit/chakra/radio';
@@ -17,6 +18,7 @@ interface Props {
   onAddressFilterChange?: (nextValue: string) => void;
   defaultAddressFilter?: AddressFromToFilter;
   isLoading?: boolean;
+  chainConfig?: Array<ClusterChainConfig['app_config']> | ClusterChainConfig['app_config'];
 }
 
 const TokenTransferFilter = ({
@@ -27,6 +29,7 @@ const TokenTransferFilter = ({
   onAddressFilterChange,
   defaultAddressFilter,
   isLoading,
+  chainConfig,
 }: Props) => {
   const isInitialLoading = useIsInitialLoading(isLoading);
 
@@ -59,7 +62,12 @@ const TokenTransferFilter = ({
           </RadioGroup>
         </>
       ) }
-      <TokenTypeFilter<TokenType> onChange={ onTypeFilterChange } defaultValue={ defaultTypeFilters } nftOnly={ false }/>
+      <TokenTypeFilter<TokenType>
+        onChange={ onTypeFilterChange }
+        defaultValue={ defaultTypeFilters }
+        nftOnly={ false }
+        chainConfig={ chainConfig }
+      />
     </PopoverFilter>
   );
 };
