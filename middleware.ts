@@ -23,6 +23,7 @@ export async function middleware(req: NextRequest) {
   middlewares.colorTheme(req, res);
   middlewares.addressFormat(req, res);
   middlewares.scamTokens(req, res);
+  middlewares.poorReputationTokens(req, res);
 
   const end = Date.now();
 

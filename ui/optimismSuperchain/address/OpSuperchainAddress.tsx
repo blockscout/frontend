@@ -16,16 +16,19 @@ import AddressQrCode from 'ui/address/details/AddressQrCode';
 import ClusterChainsPopover from 'ui/optimismSuperchain/components/ClusterChainsPopover';
 import TextAd from 'ui/shared/ad/TextAd';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
+import OpSuperchainAddressEnsDomains from './header/OpSuperchainAddressEnsDomains';
 import OpSuperchainAddressCoinBalanceHistory from './OpSuperchainAddressCoinBalanceHistory';
 import OpSuperchainAddressContract from './OpSuperchainAddressContract';
-import OpSuperchainAddressDetails from './OpSuperchainAddressDetails';
 import OpSuperchainAddressInternalTxs from './OpSuperchainAddressInternalTxs';
 import OpSuperchainAddressLogs from './OpSuperchainAddressLogs';
-import OpSuperchainAddressTokens, { ADDRESS_OP_SUPERCHAIN_TOKENS_TAB_IDS } from './OpSuperchainAddressTokens';
+import OpSuperchainAddressPortfolio from './OpSuperchainAddressPortfolio';
 import OpSuperchainAddressTokenTransfers, { ADDRESS_OP_SUPERCHAIN_TOKEN_TRANSFERS_TAB_IDS } from './OpSuperchainAddressTokenTransfers';
 import OpSuperchainAddressTxs, { ADDRESS_OP_SUPERCHAIN_TXS_TAB_IDS } from './OpSuperchainAddressTxs';
+
+const TABS_PRESERVED_PARAMS = [ 'chain_id' ];
 
 const OpSuperchainAddress = () => {
   const router = useRouter();
@@ -57,9 +60,9 @@ const OpSuperchainAddress = () => {
   const tabs: Array<TabItemRegular> = React.useMemo(() => {
     return [
       {
-        id: 'index',
-        title: 'Details',
-        component: <OpSuperchainAddressDetails addressHash={ checkSummedHash } data={ addressQuery.data } isLoading={ isLoading }/>,
+        id: 'portfolio',
+        title: 'Portfolio',
+        component: <OpSuperchainAddressPortfolio addressData={ addressQuery.data } isLoading={ isLoading }/>,
       },
       isContractSomewhere && {
         id: 'contract',
@@ -78,12 +81,6 @@ const OpSuperchainAddress = () => {
         title: 'Token transfers',
         component: <OpSuperchainAddressTokenTransfers addressData={ addressQuery.data } isLoading={ isLoading }/>,
         subTabs: ADDRESS_OP_SUPERCHAIN_TOKEN_TRANSFERS_TAB_IDS,
-      },
-      addressQuery.data?.has_tokens && {
-        id: 'tokens',
-        title: 'Tokens',
-        component: isLoading ? null : <OpSuperchainAddressTokens addressData={ addressQuery.data }/>,
-        subTabs: ADDRESS_OP_SUPERCHAIN_TOKENS_TAB_IDS,
       },
       {
         id: 'internal_txs',
@@ -105,6 +102,17 @@ const OpSuperchainAddress = () => {
 
   const titleSecondRow = (
     <Flex alignItems="center" w="100%" columnGap={ 2 } rowGap={ 2 } flexWrap={{ base: 'wrap', lg: 'nowrap' }}>
+      { addressQuery.data?.domains?.[0] && (
+        <EnsEntity
+          domain={ addressQuery.data?.domains[0].name }
+          protocol={ addressQuery.data?.domains[0].protocol }
+          isLoading={ isLoading }
+          variant="subheading"
+          noLink
+          mr={ 1 }
+          maxW="300px"
+        />
+      ) }
       <AddressEntity
         address={{
           ...addressQuery.data,
@@ -124,6 +132,11 @@ const OpSuperchainAddress = () => {
       />
       <AddressQrCode hash={ checkSummedHash } isLoading={ isLoading }/>
       <Box ml="auto"/>
+      <OpSuperchainAddressEnsDomains
+        mainDomain={ addressQuery.data?.domains?.[0] }
+        isLoading={ isLoading }
+        hash={ checkSummedHash }
+      />
       <ClusterChainsPopover addressHash={ checkSummedHash } data={ addressQuery.data } isLoading={ isLoading }/>
     </Flex>
   );
@@ -136,7 +149,7 @@ const OpSuperchainAddress = () => {
         isLoading={ isLoading }
         secondRow={ titleSecondRow }
       />
-      <RoutedTabs tabs={ tabs } isLoading={ isLoading }/>
+      <RoutedTabs tabs={ tabs } isLoading={ isLoading } preservedParams={ TABS_PRESERVED_PARAMS }/>
     </>
   );
 };

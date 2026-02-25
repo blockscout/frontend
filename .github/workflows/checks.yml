@@ -62,6 +62,9 @@ jobs:
       - name: Check licenses
         run: yarn lint:license:check
 
+      - name: Check spelling
+        run: yarn lint:cspell --no-progress
+
   toolkit_build_check:
     name: Toolkit build check
     needs: [ code_quality ]

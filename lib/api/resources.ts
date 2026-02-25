@@ -10,6 +10,12 @@ import { CONTRACT_INFO_API_RESOURCES } from './services/contractInfo';
 import type { ContractInfoApiPaginationFilters, ContractInfoApiResourceName, ContractInfoApiResourcePayload } from './services/contractInfo';
 import { GENERAL_API_RESOURCES } from './services/general';
 import type { GeneralApiResourceName, GeneralApiResourcePayload, GeneralApiPaginationFilters, GeneralApiPaginationSorting } from './services/general';
+import type {
+  InterchainIndexerApiPaginationFilters,
+  InterchainIndexerApiResourceName,
+  InterchainIndexerApiResourcePayload,
+} from './services/interchainIndexer';
+import { INTERCHAIN_INDEXER_API_RESOURCES } from './services/interchainIndexer';
 import type { MetadataApiResourceName, MetadataApiResourcePayload } from './services/metadata';
 import { METADATA_API_RESOURCES } from './services/metadata';
 import type {
@@ -43,6 +49,7 @@ export const RESOURCES = {
   clusters: CLUSTERS_API_RESOURCES,
   contractInfo: CONTRACT_INFO_API_RESOURCES,
   general: GENERAL_API_RESOURCES,
+  interchainIndexer: INTERCHAIN_INDEXER_API_RESOURCES,
   metadata: METADATA_API_RESOURCES,
   multichainAggregator: MULTICHAIN_AGGREGATOR_API_RESOURCES,
   multichainStats: MULTICHAIN_STATS_API_RESOURCES,
@@ -55,9 +62,6 @@ export const RESOURCES = {
   // external API resources
   // there is no type definition for them, use valibot to parse the response
   external: {
-    gas_hawk_saving_potential: {
-      path: '/api/v2/gas-hawk-saving-potential',
-    },
     safe_transaction_api: {
       path: '',
     },
@@ -79,6 +83,7 @@ R extends BensApiResourceName ? BensApiResourcePayload<R> :
 R extends ClustersApiResourceName ? ClustersApiResourcePayload<R> :
 R extends ContractInfoApiResourceName ? ContractInfoApiResourcePayload<R> :
 R extends GeneralApiResourceName ? GeneralApiResourcePayload<R> :
+R extends InterchainIndexerApiResourceName ? InterchainIndexerApiResourcePayload<R> :
 R extends MetadataApiResourceName ? MetadataApiResourcePayload<R> :
 R extends MultichainAggregatorApiResourceName ? MultichainAggregatorApiResourcePayload<R> :
 R extends MultichainStatsApiResourceName ? MultichainStatsApiResourcePayload<R> :
@@ -118,6 +123,7 @@ R extends BensApiResourceName ? BensApiPaginationFilters<R> :
 R extends ClustersApiResourceName ? ClustersApiPaginationFilters :
 R extends GeneralApiResourceName ? GeneralApiPaginationFilters<R> :
 R extends ContractInfoApiResourceName ? ContractInfoApiPaginationFilters<R> :
+R extends InterchainIndexerApiResourceName ? InterchainIndexerApiPaginationFilters<R> :
 R extends MultichainAggregatorApiResourceName ? MultichainAggregatorApiPaginationFilters<R> :
 R extends TacOperationLifecycleApiResourceName ? TacOperationLifecycleApiPaginationFilters<R> :
 R extends ZetaChainApiResourceName ? ZetaChainApiPaginationFilters<R> :
@@ -163,6 +169,5 @@ export const b: PaginatedResourceName = 'general:addresses';
 export const c: PaginatedResourceResponseItems<'general:addresses'> = [];
 
 export const d: ResourcePathParams<'bens:address_domain'> = {
-  chainId: '1',
   address: '123',
 };

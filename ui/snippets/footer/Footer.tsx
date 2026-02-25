@@ -74,13 +74,13 @@ const Footer = () => {
       text: 'Docs',
       url: 'https://docs.blockscout.com',
     },
-    {
+    !config.features.opSuperchain.isEnabled && {
       icon: 'AI' as const,
       iconSize: '20px',
       text: 'llms.txt',
       url: `${ config.app.baseUrl }/llms.txt`,
     },
-  ];
+  ].filter(Boolean);
 
   const frontendLink = (() => {
     if (config.UI.footer.frontendVersion) {

@@ -51,7 +51,7 @@ const TxsTableItem = ({
 }: Props) => {
   const dataTo = tx.to ? tx.to : tx.created_contract;
 
-  const protocolTag = tx.to?.metadata?.tags?.find(tag => tag.tagType === 'protocol');
+  const protocolTag = tx.to?.hash !== currentAddress && tx.to?.metadata?.tags?.find(tag => tag.tagType === 'protocol');
 
   return (
     <TableRow key={ tx.hash } animation={ animation }>
@@ -103,7 +103,7 @@ const TxsTableItem = ({
               <span>{ tx.method }</span>
             </Badge>
           ) }
-          { protocolTag && <EntityTag data={ protocolTag } isLoading={ isLoading } maxW="100%"/> }
+          { protocolTag && <EntityTag data={ protocolTag } isLoading={ isLoading } maxW="100%" noColors/> }
         </VStack>
       </TableCell>
       { showBlockInfo && (

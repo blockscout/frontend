@@ -73,7 +73,7 @@ Type extends EventTypes.LOGIN ? (
     Source: 'Email';
   } | {
     Action: 'Success';
-    Source: 'Email' | 'Wallet';
+    Source: 'Email' | 'Wallet' | 'Dynamic';
   }
 ) :
 Type extends EventTypes.ACCOUNT_LINK_INFO ? {

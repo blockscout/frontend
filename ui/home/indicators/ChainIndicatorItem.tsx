@@ -5,6 +5,7 @@ import type { TChainIndicator } from './types';
 import type { ChainIndicatorId } from 'types/homepage';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
+import { mdash } from 'toolkit/utils/htmlEntities';
 interface Props {
   indicator: TChainIndicator;
   isSelected: boolean;
@@ -19,7 +20,7 @@ const ChainIndicatorItem = ({ indicator, isSelected, onClick, isLoading }: Props
 
   const valueContent = (() => {
     if (indicator.value.includes('N/A')) {
-      return <Text color="text.secondary" fontWeight={ 400 }>no data</Text>;
+      return <Text opacity="control.disabled" fontWeight={ 400 }>{ mdash }</Text>;
     }
 
     return (
@@ -30,7 +31,7 @@ const ChainIndicatorItem = ({ indicator, isSelected, onClick, isLoading }: Props
   })();
 
   const valueDiffContent = (() => {
-    if (indicator.valueDiff === undefined) {
+    if (indicator.valueDiff === undefined || (!isLoading && indicator.value.includes('N/A'))) {
       return null;
     }
 

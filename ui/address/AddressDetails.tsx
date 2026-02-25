@@ -27,7 +27,6 @@ import AddressCeloAccount from './details/AddressCeloAccount';
 import AddressImplementations from './details/AddressImplementations';
 import AddressNameInfo from './details/AddressNameInfo';
 import AddressNetWorth from './details/AddressNetWorth';
-import AddressSaveOnGas from './details/AddressSaveOnGas';
 import FilecoinActorTag from './filecoin/FilecoinActorTag';
 import TokenSelect from './tokenSelect/TokenSelect';
 import type { AddressCountersQuery } from './utils/useAddressCountersQuery';
@@ -263,12 +262,6 @@ const AddressDetails = ({ addressQuery, countersQuery, isLoading }: Props) => {
                 />
               ) :
                 0 }
-              { !countersQuery.isPlaceholderData && countersQuery.data?.gas_usage_count && (
-                <AddressSaveOnGas
-                  gasUsed={ countersQuery.data.gas_usage_count }
-                  address={ data.hash }
-                />
-              ) }
             </DetailedInfo.ItemValue>
           </>
         ) }

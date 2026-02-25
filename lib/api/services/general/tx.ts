@@ -1,5 +1,6 @@
 import type { ApiResource } from '../../types';
 import type { TxBlobs } from 'types/api/blobs';
+import type { FheOperationsResponse } from 'types/api/fheOperations';
 import type { InternalTransactionFilters, InternalTransactionsResponse } from 'types/api/internalTransaction';
 import type { LogsResponseTx } from 'types/api/log';
 import type { RawTracesResponse } from 'types/api/rawTrace';
@@ -62,6 +63,11 @@ export const GENERAL_API_TX_RESOURCES = {
     filterFields: [ ],
     paginated: true,
   },
+  tx_fhe_operations: {
+    path: '/api/v2/transactions/:hash/fhe-operations',
+    pathParams: [ 'hash' as const ],
+  },
+
   tx_token_transfers: {
     path: '/api/v2/transactions/:hash/token-transfers',
     pathParams: [ 'hash' as const ],
@@ -112,6 +118,7 @@ R extends 'general:tx_internal_txs' ? InternalTransactionsResponse :
 R extends 'general:tx' ? Transaction :
 R extends 'general:tx_logs' ? LogsResponseTx :
 R extends 'general:tx_token_transfers' ? TokenTransferResponse :
+R extends 'general:tx_fhe_operations' ? FheOperationsResponse :
 R extends 'general:tx_raw_trace' ? RawTracesResponse :
 R extends 'general:tx_state_changes' ? TxStateChanges :
 R extends 'general:tx_blobs' ? TxBlobs :

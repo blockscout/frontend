@@ -3,13 +3,22 @@ import type { Feature } from './types';
 import app from '../app';
 import chain from '../chain';
 import { getEnvValue, parseEnvJson } from '../utils';
+import accountFeature from './account';
 import opSuperchain from './opSuperchain';
 
 const walletConnectProjectId = getEnvValue('NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID');
 
 const title = 'Blockchain interaction (writing to contract, etc.)';
 
-const config: Feature<{ walletConnect: { projectId: string; featuredWalletIds: Array<string> } }> = (() => {
+type FeaturePayload = {
+  connectorType: 'reown';
+  reown: { projectId: string; featuredWalletIds: Array<string> };
+} | {
+  connectorType: 'dynamic';
+  dynamic: { environmentId: string };
+};
+
+const config: Feature<FeaturePayload> = (() => {
 
   // all chain parameters are required for wagmi provider
   // @wagmi/chains/dist/index.d.ts
@@ -26,17 +35,28 @@ const config: Feature<{ walletConnect: { projectId: string; featuredWalletIds: A
 
   if (
     !app.isPrivateMode &&
-    (isSingleChain || isOpSuperchain) &&
-    walletConnectProjectId
+    (isSingleChain || isOpSuperchain)
   ) {
-    return Object.freeze({
-      title,
-      isEnabled: true,
-      walletConnect: {
-        projectId: walletConnectProjectId,
-        featuredWalletIds: parseEnvJson<Array<string>>(getEnvValue('NEXT_PUBLIC_WALLET_CONNECT_FEATURED_WALLET_IDS')) ?? [],
-      },
-    });
+    if (accountFeature.isEnabled && accountFeature.authProvider === 'dynamic' && accountFeature.dynamic?.environmentId) {
+      return Object.freeze({
+        title,
+        isEnabled: true,
+        connectorType: 'dynamic',
+        dynamic: {
+          environmentId: accountFeature.dynamic.environmentId,
+        },
+      });
+    } else if (walletConnectProjectId) {
+      return Object.freeze({
+        title,
+        isEnabled: true,
+        connectorType: 'reown',
+        reown: {
+          projectId: walletConnectProjectId,
+          featuredWalletIds: parseEnvJson<Array<string>>(getEnvValue('NEXT_PUBLIC_WALLET_CONNECT_FEATURED_WALLET_IDS')) ?? [],
+        },
+      });
+    }
   }
 
   return Object.freeze({

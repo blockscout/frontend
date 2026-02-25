@@ -6,6 +6,7 @@ import type { EntityTag as TEntityTag } from 'ui/shared/EntityTags/types';
 
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
+import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import useEtherscanRedirects from 'lib/router/useEtherscanRedirects';
@@ -21,6 +22,7 @@ import TxBlobs from 'ui/tx/TxBlobs';
 import TxDetails from 'ui/tx/TxDetails';
 import TxDetailsDegraded from 'ui/tx/TxDetailsDegraded';
 import TxDetailsWrapped from 'ui/tx/TxDetailsWrapped';
+import TxFHEOperations from 'ui/tx/TxFHEOperations';
 import TxInternals from 'ui/tx/TxInternals';
 import TxLogs from 'ui/tx/TxLogs';
 import TxRawTrace from 'ui/tx/TxRawTrace';
@@ -71,7 +73,12 @@ const TransactionPageContent = () => {
       config.features.suave.isEnabled && data?.wrapped ?
         { id: 'wrapped', title: 'Regular tx details', component: <TxDetailsWrapped data={ data.wrapped }/> } :
         undefined,
-      { id: 'token_transfers', title: 'Token transfers', component: <TxTokenTransfer txQuery={ txQuery }/> },
+      {
+        id: 'token_transfers',
+        title: 'Token transfers',
+        component: <TxTokenTransfer txQuery={ txQuery }/>,
+        subTabs: [ 'token_transfers', 'token_transfers_cross_chain' ],
+      },
       config.features.userOps.isEnabled ?
         { id: 'user_ops', title: 'User operations', component: <TxUserOps txQuery={ txQuery }/> } :
         undefined,
@@ -82,6 +89,9 @@ const TransactionPageContent = () => {
       { id: 'logs', title: 'Logs', component: <TxLogs txQuery={ txQuery }/> },
       { id: 'state', title: 'State', component: <TxState txQuery={ txQuery }/> },
       { id: 'raw_trace', title: 'Raw trace', component: <TxRawTrace txQuery={ txQuery }/> },
+      txQuery.data?.fhe_operations_count && txQuery.data.fhe_operations_count > 0 ?
+        { id: 'fhe_operations', title: 'FHE operations', component: <TxFHEOperations txQuery={ txQuery }/> } :
+        undefined,
       txQuery.data?.authorization_list?.length ?
         { id: 'authorizations', title: 'Authorizations', component: <TxAuthorizations txQuery={ txQuery }/> } :
         undefined,
@@ -107,7 +117,7 @@ const TransactionPageContent = () => {
 
   const tags = (
     <EntityTags
-      isLoading={ isPlaceholderData || (tacFeature.isEnabled && tacOperationQuery.isPlaceholderData) }
+      isLoading={ !txQuery.isFetchedAfterMount || (tacFeature.isEnabled && tacOperationQuery.isPlaceholderData) }
       tags={ txTags }
     />
   );
@@ -121,15 +131,15 @@ const TransactionPageContent = () => {
   }
 
   return (
-    <>
+    <AddressHighlightProvider>
       <TextAd mb={ 6 }/>
       <PageTitle
         title="Transaction details"
         contentAfter={ tags }
         secondRow={ titleSecondRow }
       />
-      <RoutedTabs tabs={ tabs } isLoading={ isPlaceholderData }/>
-    </>
+      <RoutedTabs tabs={ tabs } isLoading={ !txQuery.isFetchedAfterMount }/>
+    </AddressHighlightProvider>
   );
 };
 

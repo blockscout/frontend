@@ -15,6 +15,10 @@ const Transactions = dynamic(() => {
     return import('ui/pages/TransactionsZetaChain');
   }
 
+  if (config.features.crossChainTxs.isEnabled) {
+    return import('ui/crossChain/txs/Transactions');
+  }
+
   return import('ui/pages/Transactions');
 }, { ssr: false });
 

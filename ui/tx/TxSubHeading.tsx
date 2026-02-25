@@ -96,7 +96,7 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
           <Link href={ `#${ TX_ACTIONS_BLOCK_ID }` }>View all</Link> }
         </Flex>
       );
-    } else if (hasInterpretationFeature && txQuery.data?.method && txQuery.data?.from && txQuery.data?.to) {
+    } else if (hasInterpretationFeature && txQuery.data?.method && txQuery.data?.from && txQuery.data?.to && !txQuery.isPlaceholderData) {
       return (
         <TxInterpretation
           summary={{
@@ -116,7 +116,6 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
               },
             },
           }}
-          isLoading={ txQuery.isPlaceholderData }
           fontSize="lg"
           mr={{ base: 0, lg: 2 }}
           chainData={ multichainContext?.chain }

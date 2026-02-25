@@ -51,7 +51,7 @@ const ClusterChainsPopover = ({ addressHash, data, isLoading }: Props) => {
           </Button>
         </PopoverTrigger>
       </Box>
-      <PopoverContent w="auto">
+      <PopoverContent w="auto" maxH="400px" overflowY="auto">
         <PopoverBody >
           <chakra.span color="text.secondary" textStyle="xs">Chains this address has interacted with</chakra.span>
           <VStack gap={ 2 } mt={ 1 } alignItems="flex-start">

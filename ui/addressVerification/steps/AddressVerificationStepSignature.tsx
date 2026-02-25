@@ -1,5 +1,4 @@
 import { Box, chakra, Flex } from '@chakra-ui/react';
-import { useAppKit } from '@reown/appkit/react';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -18,6 +17,7 @@ import type { VerifiedAddress } from 'types/api/account';
 import config from 'configs/app';
 import useApiFetch from 'lib/api/useApiFetch';
 import shortenString from 'lib/shortenString';
+import useWallet from 'lib/web3/useWallet';
 import { Alert } from 'toolkit/chakra/alert';
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';
@@ -39,8 +39,8 @@ interface Props extends AddressVerificationFormFirstStepFields, AddressCheckStat
 const AddressVerificationStepSignature = ({ address, signingMessage, contractCreator, contractOwner, onContinue, noWeb3Provider }: Props) => {
   const [ signMethod, setSignMethod ] = React.useState<SignMethod>(noWeb3Provider ? 'manual' : 'wallet');
 
-  const { open: openWeb3Modal } = useAppKit();
   const { isConnected } = useAccount();
+  const { openModal: openWeb3Modal } = useWallet({ source: 'Smart contracts' });
 
   const formApi = useForm<Fields>({
     mode: 'onBlur',

@@ -33,6 +33,7 @@ const HotContractsListItem = ({ data, isLoading, exchangeRate }: Props) => {
         <EntityTags
           isLoading={ isLoading }
           tags={ protocolTags }
+          noColors
         />
       ) }
       <HStack>

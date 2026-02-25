@@ -91,4 +91,12 @@ export const REST_API_SECTIONS = [
       requestInterceptor: microserviceRequestInterceptorFactory(config.apis.zetachain),
     },
   },
+  config.apis.interchainIndexer && {
+    id: 'interchain-indexer-api',
+    title: 'Interchain indexer API',
+    swagger: {
+      url: getMicroserviceSwaggerUrl(config.apis.interchainIndexer),
+      requestInterceptor: microserviceRequestInterceptorFactory(config.apis.interchainIndexer),
+    },
+  },
 ].filter(Boolean);

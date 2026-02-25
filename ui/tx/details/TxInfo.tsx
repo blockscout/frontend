@@ -65,6 +65,8 @@ import TxExternalTxs from 'ui/tx/TxExternalTxs';
 import TxSocketAlert from 'ui/tx/TxSocketAlert';
 import ZkSyncL2TxnBatchHashesInfo from 'ui/txnBatches/zkSyncL2/ZkSyncL2TxnBatchHashesInfo';
 
+import TxDetailsCrossChainMessages from './TxDetailsCrossChainMessages';
+import TxDetailsCrossChainTransfers from './TxDetailsCrossChainTransfers';
 import TxDetailsGasUsage from './TxDetailsGasUsage';
 import TxDetailsInterop from './TxDetailsInterop';
 import TxDetailsSetMaxGasLimit from './TxDetailsSetMaxGasLimit';
@@ -78,12 +80,13 @@ interface Props {
   tacOperations?: Array<tac.OperationDetails>;
   isLoading: boolean;
   socketStatus?: 'close' | 'error';
+  noTxActions?: boolean;
 }
 
 const externalTxFeature = config.features.externalTxs;
 const rollupFeature = config.features.rollup;
 
-const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
+const TxInfo = ({ data, tacOperations, isLoading, socketStatus, noTxActions }: Props) => {
   const [ isExpanded, setIsExpanded ] = React.useState(false);
 
   const isMobile = useIsMobile();
@@ -162,6 +165,8 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
       { data.op_interop_messages ? data.op_interop_messages.map((message) => (
         <TxDetailsInterop key={ message.nonce } data={ message } isLoading={ isLoading }/>
       )) : null }
+
+      { config.features.crossChainTxs.isEnabled && <TxDetailsCrossChainMessages hash={ data.hash } isLoading={ isLoading }/> }
 
       <DetailedInfo.ItemLabel
         hint="Unique character string (TxID) assigned to every verified transaction"
@@ -440,7 +445,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
 
       <DetailedInfo.ItemDivider/>
 
-      <TxDetailsActions hash={ data.hash } actions={ data.actions } isTxDataLoading={ isLoading }/>
+      { !noTxActions && <TxDetailsActions hash={ data.hash } actions={ data.actions } isTxDataLoading={ isLoading }/> }
 
       <DetailedInfo.ItemLabel
         hint="Address (external or contract) sending the transaction"
@@ -507,6 +512,8 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
       </DetailedInfo.ItemValue>
 
       { data.token_transfers && <TxDetailsTokenTransfers data={ data.token_transfers } txHash={ data.hash } isOverflow={ data.token_transfers_overflow }/> }
+
+      { config.features.crossChainTxs.isEnabled && <TxDetailsCrossChainTransfers hash={ data.hash } isLoading={ isLoading }/> }
 
       { hasInterop && data.op_interop_messages?.some(message => message.target_address_hash) && (
         <>

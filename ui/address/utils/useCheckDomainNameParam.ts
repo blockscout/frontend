@@ -15,9 +15,9 @@ export default function useCheckDomainNameParam(hashOrDomainName: string) {
   const [ isLoading, setIsLoading ] = React.useState(isQueryEnabled);
 
   const domainLookupQuery = useApiQuery('bens:domains_lookup', {
-    pathParams: { chainId: config.chain.id },
     queryParams: {
       name: hashOrDomainName,
+      protocols: feature.isEnabled && feature.ens.isEnabled ? feature.ens.protocols : undefined,
       only_active: false,
     },
     queryOptions: {

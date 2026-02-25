@@ -74,7 +74,6 @@ All json-like values should be single-quoted. If it contains a hash (`#`) or a d
   - [DeFi dropdown](#defi-dropdown)
   - [Multichain balance button](#multichain-balance-button)
   - [Get gas button](#get-gas-button)
-  - [Save on gas with GasHawk](#save-on-gas-with-gashawk)
   - [Rewards service API](#rewards-service-api)
   - [DEX pools](#dex-pools)
   - [Flashblocks](#flashblocks)
@@ -112,7 +111,7 @@ Also, be aware that if you customize the name of the currency or any of its deno
 | NEXT_PUBLIC_NETWORK_RPC_URL | `string \| Array<string>` | Chain public RPC server url, see [https://chainlist.org](https://chainlist.org) for the reference. Can contain a single string value, or an array of urls. | - | - | `https://core.poa.network` | v1.0.x+ |
 | NEXT_PUBLIC_NETWORK_CURRENCY_NAME | `string` | Network currency name | - | - | `Ether` | v1.0.x+ |
 | NEXT_PUBLIC_NETWORK_CURRENCY_WEI_NAME | `string` | Name of the smallest unit of the native currency (e.g., 'wei' for Ethereum, where 1 ETH = 10^18 wei). Used for displaying gas prices and transaction fees in the smallest denomination. | - | `wei` | `duck` | v1.23.0+ |
-| NEXT_PUBLIC_NETWORK_CURRENCY_GWEI_NAME | `string` | Name of the giga-unit of the native currency (e.g., 'gwei' for Ethereum, where 1 gwei = 10^9 of the smallest unit). Used for displaying gas prices in a more readable format throughout the UI. | - | `gwei` | `gduck` | v2.5.0+ |
+| NEXT_PUBLIC_NETWORK_CURRENCY_GWEI_NAME | `string` | Name of the giga-unit of the native currency (e.g., 'gwei' for Ethereum, where 1 gwei = 10^9 of the smallest unit). Used for displaying gas prices in a more readable format throughout the UI. | - | `gwei` | `gDuck` | v2.5.0+ |
 | NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL | `string` | Network currency symbol | - | - | `ETH` | v1.0.x+ |
 | NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS | `string` | Network currency decimals | - | `18` | `6` | v1.0.x+ |
 | NEXT_PUBLIC_NETWORK_SECONDARY_COIN_SYMBOL | `string` | Network secondary coin symbol.  | - | - | `GNO` | v1.29.0+ |
@@ -428,7 +427,9 @@ Settings for meta tags, OG tags and SEO
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED | `boolean` | Set to true if network has account feature | Required | - | `true` | v1.0.x+ |
-| NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY | `boolean` | See [below](#google-recaptcha) | Required | - | `<your-secret>` | v1.0.x+ |
+| NEXT_PUBLIC_ACCOUNT_AUTH_PROVIDER | `auth0 \| dynamic` | Auth provider that enables basic user authentication.  | - | `auth0` | `dynamic` | upcoming |
+| NEXT_PUBLIC_ACCOUNT_DYNAMIC_ENVIRONMENT_ID | `string` | Environment ID of the Dynamic project.  | Required, if provider is `dynamic` | - | `<your-secret>` | upcoming |
+| NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY | `boolean` | See [below](#google-recaptcha) | Required, if provided is `auth0` | - | `<your-secret>` | v1.0.x+ |
 
 &nbsp;
 
@@ -538,7 +539,7 @@ Ads are enabled by default on all self-hosted instances. If you would like to di
 | NEXT_PUBLIC_ROLLUP_HOMEPAGE_SHOW_LATEST_BLOCKS | `boolean` | Set to `true` to display "Latest blocks" widget instead of "Latest batches" on the home page | - | - | `true` | v1.36.0+ |
 | NEXT_PUBLIC_ROLLUP_OUTPUT_ROOTS_ENABLED | `boolean` | Enables "Output roots" page (Optimistic stack only)  | - | `false` | `true` | v1.37.0+ |
 | NEXT_PUBLIC_ROLLUP_PARENT_CHAIN | `ParentChain`, see details [below](#parent-chain-configuration-properties) | Configuration parameters for the parent chain. | - | - | `{'baseUrl':'https://explorer.duckchain.io'}` | v1.38.0+ |
-| NEXT_PUBLIC_ROLLUP_DA_CELESTIA_NAMESPACE | `string` | Hex-string for creating a link to the transaction batch on the Seleneium explorer. "0x"-format and 60 symbol length. Available only for Arbitrum roll-ups. | - | - | `0x00000000000000000000000000000000000000ca1de12a9905be97beaf` | v1.38.0+ |
+| NEXT_PUBLIC_ROLLUP_DA_CELESTIA_NAMESPACE | `string` | Hex-string for creating a link to the transaction batch on the [Celenium explorer](https://celenium.io). "0x"-format and 60 symbol length. Available only for Arbitrum roll-ups. | - | - | `0x00000000000000000000000000000000000000ca1de12a9905be97beaf` | v1.38.0+ |
 | NEXT_PUBLIC_ROLLUP_DA_CELESTIA_CELENIUM_URL | `string` | URL for the Selenium explorer. It is used to create links to the Data Availability Blobs page. The URL should contain the full path without any search parameters related to the blob, as these will be constructed at runtime for each blob separately. Available only for Optimistic or Arbitrum roll-ups. | - | - | `https://mocha.celenium.io/blob` | v2.0.2+ |
 
 #### Parent chain configuration properties
@@ -710,6 +711,7 @@ This feature allows resolving blockchain addresses using human-readable domain n
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_NAME_SERVICE_API_HOST | `string` | Name Service API endpoint url | Required | - | `https://bens.services.blockscout.com` | v1.22.0+ |
+| NEXT_PUBLIC_NAME_SERVICE_PROTOCOLS | `Array<string>` | List of the protocols used by the chain. The protocol ids can be obtained from [/api/v1/protocols](https://bens.services.blockscout.com/api/v1/protocols) resource. | - | `['ens']` | `['rns']` | upcoming |
 
 &nbsp;
 
@@ -962,16 +964,6 @@ If the feature is enabled, a Get gas button will be displayed in the top bar, wh
 
 &nbsp;
 
-### Save on gas with GasHawk
-
-The feature enables a "Save with GasHawk" button next to the "Gas used" value on the address page.
-
-| Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
-| --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_SAVE_ON_GAS_ENABLED | `boolean` | Set to "true" to enable the feature | - | - | `true` | v1.35.0+ |
-
-&nbsp;
-
 ### Rewards service API
 
 This feature enables Blockscout Merits program. It requires that the [My account](#my-account) and [Blockchain interaction](#blockchain-interaction-writing-to-contract-etc) features are also enabled.
@@ -1071,6 +1063,18 @@ This feature enables the application to act as an explorer of multiple blockchai
 | NEXT_PUBLIC_MULTICHAIN_CLUSTER | `string` | Chain's cluster name; used to construct the full URL for requests to the aggregator API service | Required | - | `interop` | v2.5.0+ |
 | NEXT_PUBLIC_MULTICHAIN_AGGREGATOR_API_HOST | `string` | Multichain aggregator API service host | Required | - | `https://multichain-aggregator.k8s-dev.blockscout.com` | v2.5.0+ |
 | NEXT_PUBLIC_MULTICHAIN_STATS_API_HOST | `string` | Multichain statistics API service host | Required | - | `http://multichain-search-stats.k8s-dev.blockscout.com` | v2.5.0+ |
+
+&nbsp;
+
+### Cross-chain transactions
+
+This feature enables cross-chain transaction tracking and visualization, allowing users to view transactions that span multiple blockchains. It provides detailed information about cross-chain operations and links to related transactions on different chains.
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
+| --- | --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_CROSS_CHAIN_TXS_ENABLED | `boolean` | The flag that enables the feature | Required | - | `true` | upcoming |
+| NEXT_PUBLIC_INTERCHAIN_INDEXER_API_HOST | `string` | Interchain indexer API service host used to fetch cross-chain transaction data and metadata | Required | - | `https://interchain-indexer.k8s-dev.blockscout.com` | upcoming |
+
 
 &nbsp;
 

@@ -15,7 +15,7 @@ import * as userProfile from './userProfile';
 const opSuperchainFeature = config.features.opSuperchain;
 
 export default function useMixpanelInit() {
-  const [ isInited, setIsInited ] = React.useState(false);
+  const [ isInitialized, setIsInitialized ] = React.useState(false);
   const router = useRouter();
   const debugFlagQuery = React.useRef(getQueryParamString(router.query._mixpanel_debug));
 
@@ -57,11 +57,11 @@ export default function useMixpanelInit() {
       'First Time Join': dayjs().toISOString(),
     });
 
-    setIsInited(true);
+    setIsInitialized(true);
     if (debugFlagQuery.current && !debugFlagCookie) {
       cookies.set(cookies.NAMES.MIXPANEL_DEBUG, 'true');
     }
   }, [ ]);
 
-  return isInited;
+  return isInitialized;
 }

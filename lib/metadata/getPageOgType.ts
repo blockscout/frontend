@@ -69,6 +69,7 @@ const OG_TYPE_DICT: Record<Route['pathname'], OGPageType> = {
   '/operations': 'Root page',
   '/operation/[id]': 'Regular page',
   '/cc/tx/[hash]': 'Regular page',
+  '/cross-chain-tx/[id]': 'Regular page',
 
   // multichain routes
   '/chain/[chain_slug]/accounts/label/[slug]': 'Root page',
@@ -82,6 +83,7 @@ const OG_TYPE_DICT: Record<Route['pathname'], OGPageType> = {
   '/chain/[chain_slug]/token/[hash]/instance/[id]': 'Regular page',
   '/chain/[chain_slug]/tx/[hash]': 'Regular page',
   '/chain/[chain_slug]/visualize/sol2uml': 'Regular page',
+  '/ecosystems': 'Root page',
 
   // service routes, added only to make typescript happy
   '/login': 'Regular page',

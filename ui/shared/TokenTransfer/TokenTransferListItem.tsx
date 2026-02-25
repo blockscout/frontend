@@ -4,7 +4,7 @@ import React from 'react';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 import type { ClusterChainConfig } from 'types/multichain';
 
-import { getTokenTypeName } from 'lib/token/tokenTypes';
+import { getTokenTypeName, isConfidentialTokenType } from 'lib/token/tokenTypes';
 import { Badge } from 'toolkit/chakra/badge';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
@@ -15,6 +15,7 @@ import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import { getTokenTransferTypeText } from 'ui/shared/TokenTransfer/helpers';
 import AssetValue from 'ui/shared/value/AssetValue';
+import ConfidentialValue from 'ui/shared/value/ConfidentialValue';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
 
 type Props = TokenTransfer & {
@@ -52,7 +53,7 @@ const TokenTransferListItem = ({
                 noCopy
                 w="auto"
               />
-              <Badge flexShrink={ 0 } loading={ isLoading }>{ getTokenTypeName(token.type) }</Badge>
+              <Badge flexShrink={ 0 } loading={ isLoading }>{ getTokenTypeName(token.type, chainData?.app_config) }</Badge>
             </>
           ) }
           <Badge colorPalette="orange" loading={ isLoading }>{ getTokenTransferTypeText(type) }</Badge>
@@ -102,6 +103,13 @@ const TokenTransferListItem = ({
             loading={ isLoading }
             color="text.secondary"
           />
+        </Flex>
+      ) }
+
+      { token && isConfidentialTokenType(token.type) && (!total || !('value' in total) || total.value === null) && (
+        <Flex columnGap={ 2 } w="100%">
+          <Skeleton loading={ isLoading } fontWeight={ 500 } flexShrink={ 0 }>Value</Skeleton>
+          <ConfidentialValue loading={ isLoading } color="text.secondary"/>
         </Flex>
       ) }
     </ListItemMobile>

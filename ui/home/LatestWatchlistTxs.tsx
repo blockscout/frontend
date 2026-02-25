@@ -9,6 +9,7 @@ import { TX } from 'stubs/tx';
 import { Link } from 'toolkit/chakra/link';
 import useRedirectForInvalidAuthToken from 'ui/snippets/auth/useRedirectForInvalidAuthToken';
 
+import LatestTxsFallback from './fallbacks/LatestTxsFallback';
 import LatestTxsItem from './LatestTxsItem';
 import LatestTxsItemMobile from './LatestTxsItemMobile';
 
@@ -23,11 +24,11 @@ const LatestWatchlistTxs = () => {
   });
 
   if (isError) {
-    return <Text mt={ 4 }>No data. Please reload the page.</Text>;
+    return <LatestTxsFallback/>;
   }
 
   if (!data?.length) {
-    return <Text mt={ 4 }>There are no transactions.</Text>;
+    return <Text>No latest transactions found.</Text>;
   }
 
   if (data) {

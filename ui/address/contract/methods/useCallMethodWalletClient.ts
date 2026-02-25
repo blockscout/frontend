@@ -1,6 +1,6 @@
 import React from 'react';
-import { getAddress, type Abi } from 'viem';
-import { useAccount, useWalletClient, useSwitchChain } from 'wagmi';
+import { encodeFunctionData, getAddress, type Abi } from 'viem';
+import { useAccount, useWalletClient, useSwitchChain, usePublicClient } from 'wagmi';
 
 import type { FormSubmitResult, SmartContractMethod } from './types';
 
@@ -9,6 +9,8 @@ import { useMultichainContext } from 'lib/contexts/multichain';
 import useRewardsActivity from 'lib/hooks/useRewardsActivity';
 
 import { getNativeCoinValue } from './utils';
+
+const feature = config.features.blockchainInteraction;
 
 interface Params {
   item: SmartContractMethod;
@@ -19,8 +21,10 @@ interface Params {
 export default function useCallMethodWalletClient(): (params: Params) => Promise<FormSubmitResult> {
   const multichainContext = useMultichainContext();
   const chainConfig = (multichainContext?.chain.app_config ?? config).chain;
+  const targetChainId = chainConfig?.id ? Number(chainConfig.id) : undefined;
 
-  const { data: walletClient } = useWalletClient({ chainId: Number(chainConfig?.id) });
+  const { data: walletClient } = useWalletClient({ chainId: targetChainId });
+  const publicClient = usePublicClient({ chainId: targetChainId });
   const { isConnected, chainId, address: account } = useAccount();
   const { switchChainAsync } = useSwitchChain();
   const { trackTransaction, trackTransactionConfirm } = useRewardsActivity();
@@ -34,8 +38,8 @@ export default function useCallMethodWalletClient(): (params: Params) => Promise
       throw new Error('Wallet Client is not defined');
     }
 
-    if (chainId && String(chainId) !== chainConfig?.id) {
-      await switchChainAsync({ chainId: Number(chainConfig?.id) });
+    if (chainId && targetChainId && chainId !== targetChainId) {
+      await switchChainAsync({ chainId: targetChainId });
     }
 
     const address = getAddress(addressHash);
@@ -50,9 +54,20 @@ export default function useCallMethodWalletClient(): (params: Params) => Promise
       // if the fallback method acts as a read method, it can only have one input of type bytes
       // so we pass the input value as data without encoding it
       const data = typeof _args[0] === 'string' && _args[0].startsWith('0x') ? _args[0] as `0x${ string }` : undefined;
+
+      // seems like Dynamic WaaS (assigned when user signed up with email) does not estimate gas for transactions
+      // so we have to do it manually
+      const estimatedGas = feature.isEnabled && feature.connectorType === 'dynamic' ? await publicClient?.estimateGas({
+        account,
+        to: address,
+        value,
+        data: item.type === 'fallback' ? data : undefined,
+      }) : undefined;
+
       const hash = await walletClient.sendTransaction({
         to: address,
         value,
+        gas: estimatedGas,
         ...(data ? { data } : {}),
       });
 
@@ -69,6 +84,19 @@ export default function useCallMethodWalletClient(): (params: Params) => Promise
       throw new Error('Method name is not defined');
     }
 
+    // seems like Dynamic WaaS (assigned when user signed up with email) does not estimate gas for transactions
+    // so we have to do it manually
+    const estimatedGas = feature.isEnabled && feature.connectorType === 'dynamic' ? await publicClient?.estimateGas({
+      account,
+      to: address,
+      value,
+      data: encodeFunctionData({
+        abi: [ item ],
+        functionName: methodName,
+        args: _args,
+      }),
+    }) : undefined;
+
     const hash = await walletClient.writeContract({
       args: _args,
       // Here we provide the ABI as an array containing only one item from the submitted form.
@@ -83,6 +111,7 @@ export default function useCallMethodWalletClient(): (params: Params) => Promise
       address,
       value,
       account,
+      gas: estimatedGas,
     });
 
     if (activityResponse?.token) {
@@ -90,5 +119,5 @@ export default function useCallMethodWalletClient(): (params: Params) => Promise
     }
 
     return { source: 'wallet_client', data: { hash } };
-  }, [ chainId, chainConfig, isConnected, switchChainAsync, walletClient, account, trackTransaction, trackTransactionConfirm ]);
+  }, [ isConnected, walletClient, chainId, targetChainId, trackTransaction, account, publicClient, switchChainAsync, trackTransactionConfirm ]);
 }

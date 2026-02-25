@@ -7,7 +7,6 @@ import consistentDefaultExportNamePlugin from 'eslint-plugin-consistent-default-
 import importPlugin from 'eslint-plugin-import';
 import importHelpersPlugin from 'eslint-plugin-import-helpers';
 import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
-import noCyrillicStringPlugin from 'eslint-plugin-no-cyrillic-string';
 import playwrightPlugin from 'eslint-plugin-playwright';
 import reactPlugin from 'eslint-plugin-react';
 import reactHooksPlugin from 'eslint-plugin-react-hooks';
@@ -322,15 +321,6 @@ export default tseslint.config(
           alphabetize: { order: 'asc', ignoreCase: true },
         },
       ],
-    },
-  },
-
-  {
-    plugins: {
-      'no-cyrillic-string': noCyrillicStringPlugin,
-    },
-    rules: {
-      'no-cyrillic-string/no-cyrillic-string': 'error',
     },
   },
 

@@ -18,8 +18,8 @@ type Props = {
   item: MultichainProviderConfigParsed;
   addressHash: string;
   onClick?: () => void;
-  isFirst: boolean;
-  isLast: boolean;
+  isFirst?: boolean;
+  isLast?: boolean;
 };
 
 const AddressMultichainButton = ({ item, addressHash, onClick, isFirst, isLast }: Props) => {

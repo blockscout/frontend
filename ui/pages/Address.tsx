@@ -36,8 +36,8 @@ import AddressLogs from 'ui/address/AddressLogs';
 import AddressMud from 'ui/address/AddressMud';
 import AddressMultichainInfoButton from 'ui/address/AddressMultichainInfoButton';
 import AddressTokens from 'ui/address/AddressTokens';
-import AddressTokenTransfers from 'ui/address/AddressTokenTransfers';
-import AddressTxs from 'ui/address/AddressTxs';
+import AddressTokenTransfers, { ADDRESS_TOKEN_TRANSFERS_TAB_IDS } from 'ui/address/AddressTokenTransfers';
+import AddressTxs, { ADDRESS_TXS_TAB_IDS } from 'ui/address/AddressTxs';
 import AddressUserOps from 'ui/address/AddressUserOps';
 import AddressWithdrawals from 'ui/address/AddressWithdrawals';
 import AddressClusters from 'ui/address/clusters/AddressClusters';
@@ -65,6 +65,8 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 
 const TOKEN_TABS = [ 'tokens_erc20', 'tokens_nfts', 'tokens_nfts_collection', 'tokens_nfts_list' ];
 const PREDEFINED_TAG_PRIORITY = 100;
+const FHE_TOOLTIP_DESCRIPTION = 'This contract uses Fully Homomorphic Encryption (FHE) to encrypt on-chain data. ' +
+    'Inputs and most outputs are intentionally hidden, while computations are verified on-chain.';
 
 const txInterpretation = config.features.txInterpretation;
 const addressProfileAPIFeature = config.features.addressProfileAPI;
@@ -120,9 +122,9 @@ const AddressPageContent = () => {
   const userPropfileApiQuery = useAddressProfileApiQuery(hash, addressProfileAPIFeature.isEnabled && areQueriesEnabled);
 
   const addressEnsDomainsQuery = useApiQuery('bens:addresses_lookup', {
-    pathParams: { chainId: config.chain.id },
     queryParams: {
       address: hash,
+      protocols: nameServicesFeature.isEnabled && nameServicesFeature.ens.isEnabled ? nameServicesFeature.ens.protocols : undefined,
       resolved_to: true,
       owned_by: true,
       only_active: true,
@@ -216,6 +218,7 @@ const AddressPageContent = () => {
         title: 'Transactions',
         count: addressTabsCountersQuery.data?.transactions_count,
         component: <AddressTxs shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
+        subTabs: ADDRESS_TXS_TAB_IDS,
       },
       txInterpretation.isEnabled && txInterpretation.provider === 'noves' ?
         {
@@ -253,6 +256,7 @@ const AddressPageContent = () => {
         title: 'Token transfers',
         count: addressTabsCountersQuery.data?.token_transfers_count,
         component: <AddressTokenTransfers shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
+        subTabs: ADDRESS_TOKEN_TRANSFERS_TAB_IDS,
       },
       {
         id: 'tokens',
@@ -325,7 +329,18 @@ const AddressPageContent = () => {
 
   const tags: Array<EntityTag> = React.useMemo(() => {
     return [
-      ...(addressQuery.data?.public_tags?.map((tag) => ({ slug: tag.label, name: tag.display_name, tagType: 'custom' as const, ordinal: -1 })) || []),
+      ...(addressQuery.data?.public_tags?.map((tag) => {
+        const isFhe = tag.label.toLowerCase() === 'fhe' || tag.display_name.toLowerCase() === 'fhe';
+        return {
+          slug: tag.label,
+          name: tag.display_name,
+          tagType: 'custom' as const,
+          ordinal: -1,
+          meta: isFhe ? {
+            tooltipDescription: FHE_TOOLTIP_DESCRIPTION,
+          } : undefined,
+        };
+      }) || []),
       addressQuery.data?.celo?.account ? {
         slug: 'celo-account',
         name: 'Celo account',

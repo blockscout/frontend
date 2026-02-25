@@ -50,7 +50,7 @@ const TxsListItem = ({
 }: Props) => {
   const dataTo = tx.to ? tx.to : tx.created_contract;
 
-  const protocolTag = tx.to?.metadata?.tags?.find(tag => tag.tagType === 'protocol');
+  const protocolTag = tx.to?.hash !== currentAddress && tx.to?.metadata?.tags?.find(tag => tag.tagType === 'protocol');
 
   return (
     <ListItemMobile display="block" width="100%" animation={ animation } key={ tx.hash }>
@@ -67,7 +67,7 @@ const TxsListItem = ({
           }
           { tx.status !== 'ok' && <TxStatus status={ tx.status } errorText={ tx.status === 'error' ? tx.result : undefined } isLoading={ isLoading }/> }
           <TxWatchListTags tx={ tx } isLoading={ isLoading }/>
-          { protocolTag && <EntityTag data={ protocolTag } isLoading={ isLoading }/> }
+          { protocolTag && <EntityTag data={ protocolTag } isLoading={ isLoading } noColors/> }
         </HStack>
         <TxAdditionalInfo tx={ tx } isMobile isLoading={ isLoading }/>
       </Flex>

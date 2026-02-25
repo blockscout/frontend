@@ -5,7 +5,7 @@ import type { TokenInstance } from 'types/api/token';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 import type { ClusterChainConfig } from 'types/multichain';
 
-import { hasTokenTransferValue, NFT_TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
+import { hasTokenTransferValue, isConfidentialTokenType, NFT_TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
 import { Badge } from 'toolkit/chakra/badge';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
@@ -15,6 +15,7 @@ import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import AssetValue from 'ui/shared/value/AssetValue';
+import ConfidentialValue from 'ui/shared/value/ConfidentialValue';
 
 type Props = TokenTransfer & { tokenId?: string; isLoading?: boolean; instance?: TokenInstance; chainData?: ClusterChainConfig };
 
@@ -94,15 +95,19 @@ const TokenTransferTableItem = ({
       ) }
       { token && (hasTokenTransferValue(token.type)) && (
         <TableCell isNumeric verticalAlign="top">
-          <AssetValue
-            amount={ total && 'value' in total ? total.value : null }
-            decimals={ total && 'decimals' in total ? total.decimals || '0' : '0' }
-            exchangeRate={ token?.exchange_rate }
-            loading={ isLoading }
-            layout="vertical"
-            mt="7px"
-            rowGap="10px"
-          />
+          { isConfidentialTokenType(token.type) ? (
+            <ConfidentialValue loading={ isLoading } mt="7px" wordBreak="break-all"/>
+          ) : (
+            <AssetValue
+              amount={ total && 'value' in total ? total.value : null }
+              decimals={ total && 'decimals' in total ? total.decimals || '0' : '0' }
+              exchangeRate={ token?.exchange_rate }
+              loading={ isLoading }
+              layout="vertical"
+              mt="7px"
+              rowGap="10px"
+            />
+          ) }
         </TableCell>
       ) }
     </TableRow>

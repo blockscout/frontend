@@ -72,6 +72,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/operations': DEFAULT_TEMPLATE,
   '/operation/[id]': DEFAULT_TEMPLATE,
   '/cc/tx/[hash]': DEFAULT_TEMPLATE,
+  '/cross-chain-tx/[id]': DEFAULT_TEMPLATE,
 
   // multichain routes
   '/chain/[chain_slug]/accounts/label/[slug]': DEFAULT_TEMPLATE,
@@ -85,6 +86,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/chain/[chain_slug]/token/[hash]/instance/[id]': DEFAULT_TEMPLATE,
   '/chain/[chain_slug]/tx/[hash]': DEFAULT_TEMPLATE,
   '/chain/[chain_slug]/visualize/sol2uml': DEFAULT_TEMPLATE,
+  '/ecosystems': DEFAULT_TEMPLATE,
 
   // service routes, added only to make typescript happy
   '/login': DEFAULT_TEMPLATE,

@@ -67,6 +67,7 @@ export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/operations': 'Operations',
   '/operation/[id]': 'Operation details',
   '/cc/tx/[hash]': 'Cross-chain transaction details',
+  '/cross-chain-tx/[id]': 'Cross-chain transaction details',
 
   // multichain routes
   '/chain/[chain_slug]/accounts/label/[slug]': 'Chain addresses search by label',
@@ -80,6 +81,7 @@ export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/chain/[chain_slug]/token/[hash]/instance/[id]': 'Chain token NFT instance',
   '/chain/[chain_slug]/tx/[hash]': 'Chain transaction details',
   '/chain/[chain_slug]/visualize/sol2uml': 'Chain Solidity UML diagram',
+  '/ecosystems': 'Ecosystems',
 
   // service routes, added only to make typescript happy
   '/login': 'Login',
