@@ -9,7 +9,7 @@ interface Props extends Omit<IconButtonProps, 'type'> {
   type: 'add' | 'remove';
 }
 
-const ContractMethodArrayButton = ({ type, index, onClick, ...props }: Props) => {
+const ArrayButton = ({ type, index, onClick, ...props }: Props) => {
 
   const handleClick = React.useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
@@ -30,4 +30,4 @@ const ContractMethodArrayButton = ({ type, index, onClick, ...props }: Props) =>
   );
 };
 
-export default React.memo(ContractMethodArrayButton);
+export default React.memo(ArrayButton);
