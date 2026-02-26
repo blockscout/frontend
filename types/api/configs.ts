@@ -1,3 +1,8 @@
+export interface BackendConfig {
+  chain_type: string;
+  openapi_spec_folder_name: string;
+}
+
 export interface BackendVersionConfig {
   backend_version: string;
 }

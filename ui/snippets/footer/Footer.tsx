@@ -32,6 +32,7 @@ const Footer = () => {
     queryOptions: {
       staleTime: Infinity,
       enabled: !config.features.multichain.isEnabled,
+      refetchOnMount: false,
     },
   });
   const apiVersionUrl = getApiVersionUrl(backendVersionData?.backend_version);
