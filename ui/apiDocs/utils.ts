@@ -32,26 +32,27 @@ export const REST_API_SECTIONS = [
           const newUrl = (() => {
             try {
               const DEFAULT_SERVER = 'blockscout.com/poa/core';
-              const DEFAULT_SERVER_NEW = 'http://localhost';
+              const DEFAULT_SERVER_NEW = 'http://localhost/api';
 
               if (req.url.includes(DEFAULT_SERVER)) {
-                return new URL(req.url.replace(DEFAULT_SERVER, config.apis.general.host));
+                const url = new URL(req.url.replace(DEFAULT_SERVER, config.apis.general.host));
+
+                url.protocol = config.apis.general.protocol + ':';
+
+                if (config.apis.general.port) {
+                  url.port = config.apis.general.port;
+                }
+                return url;
               }
 
               if (req.url.includes(DEFAULT_SERVER_NEW)) {
-                return new URL(req.url.replace(DEFAULT_SERVER_NEW, `${ config.apis.general.protocol }://${ config.apis.general.host }`));
+                return new URL(req.url.replace(DEFAULT_SERVER_NEW, `${ config.apis.general.endpoint }${ config.apis.general.basePath }/api`));
               }
 
             } catch (error) {}
           })();
 
           if (newUrl) {
-            newUrl.protocol = config.apis.general.protocol + ':';
-
-            if (config.apis.general.port) {
-              newUrl.port = config.apis.general.port;
-            }
-
             req.url = newUrl.toString();
           }
 
