@@ -49,7 +49,7 @@ export function useSankeyController({ data, margin, nodeWidth, nodePadding }: Pr
     };
   }, [ data, innerWidth, innerHeight, nodeWidth, nodePadding ]);
 
-  const linkPathGenerator = React.useMemo(() => sankeyLinkHorizontal(), []);
+  const linkPathGenerator: (link: SankeyLinkExtended) => string | null = React.useMemo(() => sankeyLinkHorizontal(), []);
 
   return React.useMemo(() => ({
     ref,

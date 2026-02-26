@@ -28,7 +28,6 @@ import ProgressShowcase from 'ui/showcases/Progress';
 import ProgressCircleShowcase from 'ui/showcases/ProgressCircle';
 import RadioShowcase from 'ui/showcases/Radio';
 import RatingShowcase from 'ui/showcases/Rating';
-import SankeyChartShowcase from 'ui/showcases/SankeyChart';
 import SelectShowcase from 'ui/showcases/Select';
 import SkeletonShowcase from 'ui/showcases/Skeleton';
 import SpinnerShowcase from 'ui/showcases/Spinner';
@@ -65,7 +64,6 @@ const tabs = [
   { label: 'Rating', value: 'rating', component: <RatingShowcase/> },
   { label: 'Pin input', value: 'pin-input', component: <PinInputShowcase/> },
   { label: 'Popover', value: 'popover', component: <PopoverShowcase/> },
-  { label: 'Sankey chart', value: 'sankey-chart', component: <SankeyChartShowcase/> },
   { label: 'Select', value: 'select', component: <SelectShowcase/> },
   { label: 'Skeleton', value: 'skeleton', component: <SkeletonShowcase/> },
   { label: 'Spinner', value: 'spinner', component: <SpinnerShowcase/> },
