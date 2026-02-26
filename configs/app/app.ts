@@ -21,7 +21,7 @@ const app = Object.freeze({
   isDev,
   isReview,
   isPw,
-  protocol: appSchema,
+  protocol: appSchema || 'https',
   host: appHost,
   port: appPort,
   baseUrl,

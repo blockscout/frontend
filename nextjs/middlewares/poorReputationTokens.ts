@@ -8,7 +8,7 @@ export default function poorReputationTokensMiddleware(req: NextRequest, res: Ne
     const showPoorReputationTokensCookie = req.cookies.get(cookiesLib.NAMES.SHOW_POOR_REPUTATION_TOKENS);
 
     if (!showPoorReputationTokensCookie) {
-      res.cookies.set(cookiesLib.NAMES.SHOW_POOR_REPUTATION_TOKENS, 'false', { path: '/' });
+      res.cookies.set(cookiesLib.NAMES.SHOW_POOR_REPUTATION_TOKENS, 'false', cookiesLib.getDefaultAttributes());
     }
   }
 }

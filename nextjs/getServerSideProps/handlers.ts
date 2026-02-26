@@ -42,7 +42,7 @@ Promise<GetServerSidePropsResult<Props<Pathname>>> => {
   let uuid = cookies.getFromCookieString(req.headers.cookie || '', cookies.NAMES.UUID);
   if (!uuid && appProfile !== 'private') {
     uuid = crypto.randomUUID();
-    res.setHeader('Set-Cookie', `${ cookies.NAMES.UUID }=${ uuid }`);
+    res.setHeader('Set-Cookie', `${ cookies.NAMES.UUID }=${ uuid }; Path=/${ config.app.protocol === 'https' ? '; Secure' : '' }`);
   }
 
   const isTrackingDisabled = process.env.DISABLE_TRACKING === 'true' || appProfile === 'private';

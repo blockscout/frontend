@@ -8,7 +8,7 @@ export default function scamTokensMiddleware(req: NextRequest, res: NextResponse
     const showScamTokensCookie = req.cookies.get(cookiesLib.NAMES.SHOW_SCAM_TOKENS);
 
     if (!showScamTokensCookie) {
-      res.cookies.set(cookiesLib.NAMES.SHOW_SCAM_TOKENS, 'false', { path: '/' });
+      res.cookies.set(cookiesLib.NAMES.SHOW_SCAM_TOKENS, 'false', cookiesLib.getDefaultAttributes());
     }
   }
 }
