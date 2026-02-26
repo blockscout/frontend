@@ -7,7 +7,7 @@ import type {
 import type { Blob } from 'types/api/blobs';
 import type { Block } from 'types/api/block';
 import type { ChartMarketResponse, ChartSecondaryCoinPriceResponse, ChartTransactionResponse } from 'types/api/charts';
-import type { BackendVersionConfig, CeloConfig, ContractLanguagesConfig, CsvExportConfig } from 'types/api/configs';
+import type { BackendConfig, BackendVersionConfig, CeloConfig, ContractLanguagesConfig, CsvExportConfig } from 'types/api/configs';
 import type { HotContractsFilters, HotContractsResponse, HotContractsSorting } from 'types/api/contracts';
 import type { DepositsResponse, DepositsCounters } from 'types/api/deposits';
 import type { CeloEpochDetails, CeloEpochElectionRewardDetailsResponse, CeloEpochListResponse } from 'types/api/epochs';
@@ -253,6 +253,9 @@ export const GENERAL_API_MISC_RESOURCES = {
   },
 
   // CONFIGS
+  config_backend: {
+    path: '/api/v2/config/backend',
+  },
   config_backend_version: {
     path: '/api/v2/config/backend-version',
   },
@@ -295,6 +298,7 @@ R extends 'general:homepage_arbitrum_latest_batch' ? number :
 R extends 'general:quick_search' ? Array<SearchResultItem> :
 R extends 'general:search' ? SearchResult :
 R extends 'general:search_check_redirect' ? SearchRedirectResult :
+R extends 'general:config_backend' ? BackendConfig :
 R extends 'general:config_backend_version' ? BackendVersionConfig :
 R extends 'general:config_csv_export' ? CsvExportConfig :
 R extends 'general:config_celo' ? CeloConfig :
