@@ -1,5 +1,6 @@
 import Cookies from 'js-cookie';
 
+import config from 'configs/app';
 import { isBrowser } from 'toolkit/utils/isBrowser';
 
 /**
@@ -40,6 +41,11 @@ export const PRIVATE_MODE_DISALLOWED: ReadonlyArray<NAMES> = [
   NAMES.MIXPANEL_DEBUG,
 ];
 
+export const getDefaultAttributes = () => ({
+  path: '/',
+  secure: config.app.protocol === 'https',
+});
+
 export function get(name?: NAMES | undefined | null, serverCookie?: string) {
   if (!isBrowser()) {
     return serverCookie ? getFromCookieString(serverCookie, name) : undefined;
@@ -72,13 +78,11 @@ export function set(name: NAMES, value: string, attributes: Cookies.CookieAttrib
     return;
   }
 
-  attributes.path = '/';
-
-  return Cookies.set(name, value, attributes);
+  return Cookies.set(name, value, { ...getDefaultAttributes(), ...attributes });
 }
 
 export function remove(name: NAMES, attributes: Cookies.CookieAttributes = {}) {
-  return Cookies.remove(name, attributes);
+  return Cookies.remove(name, { ...getDefaultAttributes(), ...attributes });
 }
 
 export function getFromCookieString(cookieString: string, name?: NAMES | undefined | null) {

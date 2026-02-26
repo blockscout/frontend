@@ -13,7 +13,7 @@ export default function appProfileMiddleware(req: NextRequest, res: NextResponse
 
   const profileValue = headerValue || queryValue;
   if (profileValue === PRIVATE_PROFILE_VALUE) {
-    res.cookies.set(cookiesLib.NAMES.APP_PROFILE, PRIVATE_PROFILE_VALUE, { path: '/' });
+    res.cookies.set(cookiesLib.NAMES.APP_PROFILE, PRIVATE_PROFILE_VALUE, cookiesLib.getDefaultAttributes());
   } else {
     res.cookies.delete(cookiesLib.NAMES.APP_PROFILE);
   }

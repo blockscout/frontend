@@ -12,9 +12,9 @@ export default function addressFormatMiddleware(req: NextRequest, res: NextRespo
   if (addressFormatCookie) {
     const isValidCookie = config.UI.views.address.hashFormat.availableFormats.includes(addressFormatCookie.value as AddressFormat);
     if (!isValidCookie) {
-      res.cookies.set(cookiesLib.NAMES.ADDRESS_FORMAT, defaultFormat, { path: '/' });
+      res.cookies.set(cookiesLib.NAMES.ADDRESS_FORMAT, defaultFormat, cookiesLib.getDefaultAttributes());
     }
   } else {
-    res.cookies.set(cookiesLib.NAMES.ADDRESS_FORMAT, defaultFormat, { path: '/' });
+    res.cookies.set(cookiesLib.NAMES.ADDRESS_FORMAT, defaultFormat, cookiesLib.getDefaultAttributes());
   }
 }
