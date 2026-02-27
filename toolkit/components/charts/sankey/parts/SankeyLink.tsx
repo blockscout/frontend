@@ -1,4 +1,5 @@
-import * as d3 from 'd3';
+import { select } from 'd3-selection';
+import 'd3-transition';
 import React from 'react';
 
 import type { SankeyLinkExtended, SankeyNodeDatum } from '../types';
@@ -39,14 +40,14 @@ export const SankeyLink = React.memo(({
 
   const handleMouseEnter = React.useCallback((event: React.MouseEvent) => {
     if (ref.current) {
-      d3.select(ref.current).transition().duration(200).attr('stroke-opacity', hoverOpacity);
+      select(ref.current).transition().duration(200).attr('stroke-opacity', hoverOpacity);
     }
     onMouseEnter?.(link, event);
   }, [ link, hoverOpacity, onMouseEnter ]);
 
   const handleMouseLeave = React.useCallback(() => {
     if (ref.current) {
-      d3.select(ref.current).transition().duration(200).attr('stroke-opacity', opacity);
+      select(ref.current).transition().duration(200).attr('stroke-opacity', opacity);
     }
     onMouseLeave?.();
   }, [ opacity, onMouseLeave ]);

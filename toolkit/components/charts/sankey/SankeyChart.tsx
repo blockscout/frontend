@@ -32,6 +32,8 @@ export interface SankeyChartProps {
 
 const DEFAULT_CHART_MARGIN: ChartMargin = { top: 40, right: 8, bottom: 8, left: 8 };
 const LABEL_Y_GAP = 4;
+const LABEL_LINE_HEIGHT = 16;
+const LABEL_LINE_GAP = 2;
 
 export const SankeyChart = React.memo(({
   data,
@@ -118,12 +120,10 @@ export const SankeyChart = React.memo(({
           const nodeName = (node as SankeyNodeDatum).name;
           const valueStr = node.value !== undefined ? formatValue(node.value) : '';
 
-          const LINE_H = 16;
-          const LINE_GAP = 2;
-          const blockHeight = LINE_H + (valueStr ? LINE_GAP + LINE_H : 0);
+          const blockHeight = LABEL_LINE_HEIGHT + (valueStr ? LABEL_LINE_GAP + LABEL_LINE_HEIGHT : 0);
           const blockTop = (y0 || 0) - LABEL_Y_GAP - blockHeight;
-          const nameCenterY = blockTop + LINE_H / 2;
-          const valueCenterY = blockTop + LINE_H + LINE_GAP + LINE_H / 2;
+          const nameCenterY = blockTop + LABEL_LINE_HEIGHT / 2;
+          const valueCenterY = blockTop + LABEL_LINE_HEIGHT + LABEL_LINE_GAP + LABEL_LINE_HEIGHT / 2;
 
           const labelX = isSource ? (x0 || 0) : (x1 || 0);
           const anchor = isSource ? 'start' : 'end';

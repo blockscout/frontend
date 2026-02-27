@@ -1,4 +1,5 @@
 import { sankey, sankeyLinkHorizontal, sankeyJustify } from 'd3-sankey';
+import type { LegacyRef } from 'react';
 import React from 'react';
 
 import type { ChartMargin } from '../types';
@@ -21,7 +22,17 @@ interface SankeyLayout {
   links: Array<SankeyLinkExtended>;
 }
 
-export function useSankeyController({ data, margin, nodeWidth, nodePadding }: Props) {
+interface UseSankeyControllerResult {
+  readonly ref: LegacyRef<SVGSVGElement> | undefined;
+  readonly rect: DOMRect | null;
+  readonly innerWidth: number;
+  readonly innerHeight: number;
+  readonly nodes: Array<SankeyNodeExtended>;
+  readonly links: Array<SankeyLinkExtended>;
+  readonly linkPathGenerator: (link: SankeyLinkExtended) => string | null;
+}
+
+export function useSankeyController({ data, margin, nodeWidth, nodePadding }: Props): UseSankeyControllerResult {
   const [ rect, ref ] = useClientRect<React.ComponentRef<'svg'>>();
 
   const { innerWidth, innerHeight } = calculateInnerSize(rect, margin);

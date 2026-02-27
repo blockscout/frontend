@@ -20,6 +20,8 @@ export const SankeyNode = React.memo(({ node, color, onMouseEnter, onMouseLeave 
     onMouseEnter?.(node, event);
   }, [ node, onMouseEnter ]);
 
+  // d3-sankey mutates nodes at runtime to add targetLinks and sourceLinks during layout computation.
+  // These properties are not in the base type definitions, so the assertions below are intentional and safe.
   const hasIncoming = (node as SankeyNodeExtended & { targetLinks?: Array<unknown> }).targetLinks?.length;
   const hasOutgoing = (node as SankeyNodeExtended & { sourceLinks?: Array<unknown> }).sourceLinks?.length;
   const isMiddle = Boolean(hasIncoming && hasOutgoing);

@@ -1,19 +1,19 @@
 import type { SankeyNode, SankeyLink } from 'd3-sankey';
 
 export interface SankeyNodeDatum {
-  id: string;
-  name: string;
+  readonly id: string;
+  readonly name: string;
 }
 
 export interface SankeyLinkDatum {
-  source: string;
-  target: string;
-  value: number;
+  readonly source: string;
+  readonly target: string;
+  readonly value: number;
 }
 
 export interface SankeyData {
-  nodes: Array<SankeyNodeDatum>;
-  links: Array<SankeyLinkDatum>;
+  readonly nodes: ReadonlyArray<SankeyNodeDatum>;
+  readonly links: ReadonlyArray<SankeyLinkDatum>;
 }
 
 export type SankeyNodeExtended = SankeyNode<SankeyNodeDatum, SankeyLinkDatum>;
