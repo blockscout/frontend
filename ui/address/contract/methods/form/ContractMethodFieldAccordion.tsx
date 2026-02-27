@@ -2,8 +2,7 @@ import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import { AccordionItem, AccordionItemContent, AccordionItemTrigger, AccordionRoot } from 'toolkit/chakra/accordion';
-
-import ContractMethodArrayButton from './ContractMethodArrayButton';
+import ArrayButton from 'ui/shared/forms/ArrayButton';
 
 export interface Props {
   label: string;
@@ -33,8 +32,8 @@ const ContractMethodFieldAccordion = ({ label, level, children, onAddClick, onRe
           <Box textStyle="sm" fontWeight={ 700 } mr="auto" color={ isInvalid ? 'text.error' : undefined }>
             { label }
           </Box>
-          { onRemoveClick && index !== undefined && <ContractMethodArrayButton index={ index } onClick={ onRemoveClick } type="remove"/> }
-          { onAddClick && index !== undefined && <ContractMethodArrayButton index={ index } onClick={ onAddClick } type="add" ml={ 1 }/> }
+          { onRemoveClick && index !== undefined && <ArrayButton index={ index } onClick={ onRemoveClick } type="remove"/> }
+          { onAddClick && index !== undefined && <ArrayButton index={ index } onClick={ onAddClick } type="add" ml={ 1 }/> }
         </AccordionItemTrigger>
         <AccordionItemContent display="flex" flexDir="column" rowGap={ 1 } pl="18px" pr="6px">
           { children }

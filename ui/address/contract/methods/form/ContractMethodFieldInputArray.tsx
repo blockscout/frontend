@@ -4,7 +4,8 @@ import { useFormContext } from 'react-hook-form';
 
 import type { ContractAbiItemInput } from '../types';
 
-import ContractMethodArrayButton from './ContractMethodArrayButton';
+import ArrayButton from 'ui/shared/forms/ArrayButton';
+
 import type { Props as AccordionProps } from './ContractMethodFieldAccordion';
 import ContractMethodFieldAccordion from './ContractMethodFieldAccordion';
 import ContractMethodFieldInput from './ContractMethodFieldInput';
@@ -151,9 +152,9 @@ const ContractMethodFieldInputArray = ({
                 isOptional={ registeredIndices.length === 1 }
               />
               { !hasFixedSize && registeredIndices.length > 1 &&
-                <ContractMethodArrayButton index={ registeredIndex } onClick={ handleRemoveButtonClick } type="remove" my="6px"/> }
+                <ArrayButton index={ registeredIndex } onClick={ handleRemoveButtonClick } type="remove" my="6px"/> }
               { !hasFixedSize && index === registeredIndices.length - 1 &&
-                <ContractMethodArrayButton index={ registeredIndex } onClick={ handleAddButtonClick } type="add" my="6px"/> }
+                <ArrayButton index={ registeredIndex } onClick={ handleAddButtonClick } type="add" my="6px"/> }
             </Flex>
           );
         }) }
