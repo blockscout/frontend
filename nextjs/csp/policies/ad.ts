@@ -20,6 +20,9 @@ export function ad(): CspDev.DirectiveDescriptor {
 
       // specify
       'app.specify.sh',
+
+      // sevio
+      '*.adx.ws',
     ],
     'frame-src': [
       // coinzilla
@@ -37,6 +40,9 @@ export function ad(): CspDev.DirectiveDescriptor {
 
       // slise
       '*.slise.xyz',
+
+      // sevio
+      'cdn.adx.ws',
     ],
     'img-src': [
       // coinzilla
@@ -44,6 +50,9 @@ export function ad(): CspDev.DirectiveDescriptor {
 
       // adbutler
       'servedbyadbutler.com',
+
+      // sevio
+      '*.adx.ws',
     ],
     'font-src': [
       // coinzilla

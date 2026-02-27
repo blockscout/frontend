@@ -59,6 +59,9 @@ class MyDocument extends Document {
             </>
           ) }
 
+          { /* ADS */ }
+          { config.features.adsText.isEnabled && <script async src="https://cdn.adx.ws/scripts/loader.js"/> }
+
           { /* FAVICON */ }
           <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png"/>
           <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png"/>
