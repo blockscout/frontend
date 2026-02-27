@@ -9,6 +9,7 @@ import config from 'configs/app';
 import * as cookies from 'lib/cookies';
 import dayjs from 'lib/date/dayjs';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import useUsercentricsConsent from 'lib/usercentrics/useConsent';
 
 import * as userProfile from './userProfile';
 
@@ -17,11 +18,12 @@ const multichainFeature = config.features.multichain;
 export default function useMixpanelInit() {
   const [ isInitialized, setIsInitialized ] = React.useState(false);
   const router = useRouter();
+  const hasConsent = useUsercentricsConsent();
   const debugFlagQuery = React.useRef(getQueryParamString(router.query._mixpanel_debug));
 
   React.useEffect(() => {
     const feature = config.features.mixpanel;
-    if (!feature.isEnabled) {
+    if (!feature.isEnabled || !hasConsent) {
       return;
     }
 
@@ -61,7 +63,7 @@ export default function useMixpanelInit() {
     if (debugFlagQuery.current && !debugFlagCookie) {
       cookies.set(cookies.NAMES.MIXPANEL_DEBUG, 'true');
     }
-  }, [ ]);
+  }, [ hasConsent ]);
 
   return isInitialized;
 }

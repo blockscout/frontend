@@ -20,6 +20,7 @@ function generateCspPolicy(isPrivateMode = false) {
     descriptors.monaco(),
     descriptors.multichain(),
     isPrivateMode ? {} : descriptors.rollbar(),
+    isPrivateMode ? {} : descriptors.usercentrics(),
     descriptors.rollup(),
     descriptors.safe(),
     descriptors.usernameApi(),

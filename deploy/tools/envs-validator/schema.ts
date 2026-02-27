@@ -145,6 +145,16 @@ const schema = yup
       }),
     NEXT_PUBLIC_FLASHBLOCKS_SOCKET_URL: yup.string().test(urlTest),
     NEXT_PUBLIC_HOT_CONTRACTS_ENABLED: yup.boolean(),
+    NEXT_PUBLIC_USERCENTRICS_CONFIG: yup
+      .mixed()
+      .test('shape', 'Invalid schema for NEXT_PUBLIC_USERCENTRICS_CONFIG, it should have scriptUrl and rulesetId', (data) => {
+        const isUndefined = data === undefined;
+        const valueSchema = yup.object().transform(replaceQuotes).json().shape({
+          scriptUrl: yup.string().test(urlTest).required(),
+          rulesetId: yup.string().required(),
+        });
+        return isUndefined || valueSchema.isValidSync(data);
+      }),
 
     // Misc
     NEXT_PUBLIC_USE_NEXT_JS_PROXY: yup.boolean(),
