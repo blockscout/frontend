@@ -50,7 +50,7 @@ export const SankeyChart = React.memo(({
 
   const colorTokens = useColorModeValue(SANKEY_NODE_COLOR_TOKENS_LIGHT, SANKEY_NODE_COLOR_TOKENS_DARK);
   const resolvedDefaultColors = useToken('colors', colorTokens as Array<string>);
-  const colors = colorsProp ?? resolvedDefaultColors;
+  const colors = colorsProp && colorsProp.length > 0 ? colorsProp : resolvedDefaultColors;
 
   const [ labelColor ] = useToken('colors', [ 'text.secondary' ]);
   const [ labelFontSize ] = useToken('fontSizes', [ 'xs' ]);

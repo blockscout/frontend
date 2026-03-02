@@ -62,7 +62,7 @@ export const SankeyLink = React.memo(({
 
   const useGradient = sourceColor != null && targetColor != null && sourceColor !== targetColor;
   const gradientId = useGradient ?
-    `sankey-link-${ source.id }-${ target.id }-${ gradientIdSuffix ?? '' }` :
+    `sankey-link-${ source.id.replace(/[^\w-]/g, '_') }-${ target.id.replace(/[^\w-]/g, '_') }-${ gradientIdSuffix ?? '' }` :
     undefined;
 
   const strokeColor = useGradient && gradientId ?
