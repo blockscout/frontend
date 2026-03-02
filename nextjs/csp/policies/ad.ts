@@ -12,6 +12,9 @@ export function ad(): CspDev.DirectiveDescriptor {
       '*.coinzilla.com',
       'https://request-global.czilladx.com',
 
+      // sevio (coinzilla text ad)
+      '*.adx.ws',
+
       // adbutler
       'servedbyadbutler.com',
 
@@ -20,9 +23,6 @@ export function ad(): CspDev.DirectiveDescriptor {
 
       // specify
       'app.specify.sh',
-
-      // sevio
-      '*.adx.ws',
     ],
     'frame-src': [
       // coinzilla
