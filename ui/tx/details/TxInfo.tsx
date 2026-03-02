@@ -628,7 +628,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus, noTxActions }: P
           <DetailedInfoNativeCoinValue
             amount={ data.value }
             exchangeRate={ data.exchange_rate }
-            historicExchangeRate={ data.historic_exchange_rate }
+            historicalExchangeRate={ data.historic_exchange_rate }
             hasExchangeRateToggle
             loading={ isLoading }
           />
@@ -647,7 +647,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus, noTxActions }: P
           <DetailedInfoNativeCoinValue
             amount={ data.operator_fee }
             exchangeRate={ data.exchange_rate }
-            historicExchangeRate={ data.historic_exchange_rate }
+            historicalExchangeRate={ data.historic_exchange_rate }
             hasExchangeRateToggle
             loading={ isLoading }
           />
@@ -665,7 +665,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus, noTxActions }: P
           <DetailedInfoNativeCoinValue
             amount={ data.arbitrum.poster_fee }
             exchangeRate={ data.exchange_rate }
-            historicExchangeRate={ data.historic_exchange_rate }
+            historicalExchangeRate={ data.historic_exchange_rate }
             hasExchangeRateToggle
             loading={ isLoading }
           />
@@ -679,7 +679,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus, noTxActions }: P
           <DetailedInfoNativeCoinValue
             amount={ data.arbitrum.network_fee }
             exchangeRate={ data.exchange_rate }
-            historicExchangeRate={ data.historic_exchange_rate }
+            historicalExchangeRate={ data.historic_exchange_rate }
             hasExchangeRateToggle
             loading={ isLoading }
           />
@@ -840,7 +840,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus, noTxActions }: P
                 asset={ rollupFeature.parentChain.currency?.symbol || currencyUnits.ether }
                 decimals={ rollupFeature.parentChain.currency?.decimals ?? config.chain.currency.decimals }
                 exchangeRate={ data.exchange_rate }
-                historicExchangeRate={ data.historic_exchange_rate }
+                historicalExchangeRate={ data.historic_exchange_rate }
                 hasExchangeRateToggle
                 loading={ isLoading }
               />
@@ -884,7 +884,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus, noTxActions }: P
                   amount={ BigNumber(data.blob_gas_used).multipliedBy(data.blob_gas_price).toString() }
                   noSymbol={ config.UI.views.tx.hiddenFields?.fee_currency }
                   exchangeRate={ data.exchange_rate }
-                  historicExchangeRate={ data.historic_exchange_rate }
+                  historicalExchangeRate={ data.historic_exchange_rate }
                   hasExchangeRateToggle
                   loading={ isLoading }
                 />

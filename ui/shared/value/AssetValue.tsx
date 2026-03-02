@@ -1,5 +1,5 @@
 import type { BoxProps } from '@chakra-ui/react';
-import { chakra } from '@chakra-ui/react';
+import { Box, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import { Tag } from 'toolkit/chakra/tag';
@@ -20,7 +20,7 @@ export interface Props extends Omit<BoxProps, 'prefix' | 'suffix'>, Omit<Calcula
   loading?: boolean;
   layout?: 'horizontal' | 'vertical';
   tooltipContent?: React.ReactNode;
-  historicExchangeRate?: string | null;
+  historicalExchangeRate?: string | null;
   hasExchangeRateToggle?: boolean;
 }
 
@@ -35,27 +35,27 @@ const AssetValue = ({
   noTooltip,
   loading,
   exchangeRate,
-  historicExchangeRate,
+  historicalExchangeRate,
   hasExchangeRateToggle,
   layout = 'horizontal',
   tooltipContent,
   ...rest
 }: Props) => {
-  const hasHistoric = Boolean(historicExchangeRate);
+  const hasHistorical = Boolean(historicalExchangeRate);
   const hasCurrent = Boolean(exchangeRate);
-  const hasToggle = hasHistoric && hasCurrent && hasExchangeRateToggle && amount !== '0';
+  const hasToggle = hasHistorical && hasCurrent && hasExchangeRateToggle && amount !== '0';
 
-  const [ showHistoric, setShowHistoric ] = React.useState(hasHistoric);
+  const [ showHistorical, setShowHistorical ] = React.useState(hasHistorical);
 
   React.useEffect(() => {
-    setShowHistoric(hasHistoric);
-  }, [ hasHistoric ]);
+    setShowHistorical(hasHistorical);
+  }, [ hasHistorical ]);
 
-  const activeExchangeRate = showHistoric ? historicExchangeRate : exchangeRate;
+  const activeExchangeRate = showHistorical ? historicalExchangeRate : exchangeRate;
 
   const handleToggle = React.useCallback(() => {
     if (hasToggle) {
-      setShowHistoric(prev => !prev);
+      setShowHistorical(prev => !prev);
     }
   }, [ hasToggle ]);
 
@@ -92,22 +92,22 @@ const AssetValue = ({
     />
   );
 
-  const clockIcon = showHistoric ? (
+  const clockIcon = showHistorical ? (
     <IconSvg name="clock-light" boxSize="14px" color="icon.secondary"/>
   ) : undefined;
 
-  const tooltipAdditionalContent = (() => {
+  const tooltipContentBefore = (() => {
     if (!amount || amount === '0') {
       return undefined;
     }
 
     // for values where historic exchange rate doesn't exist, we show current value without tooltip
     // for recent transactions, historicExchangeRate can be null, in this case we show current value with tooltip
-    if (historicExchangeRate === undefined) {
+    if (historicalExchangeRate === undefined) {
       return undefined;
     }
 
-    return showHistoric ? 'Estimated value on day of txn' : 'Current value';
+    return <Box>{ showHistorical ? 'Estimated value on day of txn' : 'Current value' }</Box>;
   })();
 
   const usdValue = hasToggle ? (
@@ -122,7 +122,7 @@ const AssetValue = ({
         value={ usdBn }
         accuracy={ accuracyUsd }
         prefix="$"
-        tooltipAdditionalContent={ tooltipAdditionalContent }
+        tooltipContentBefore={ tooltipContentBefore }
       />
     </Tag>
   ) : (
@@ -132,7 +132,7 @@ const AssetValue = ({
       startElement={ layout === 'horizontal' ? <span>(</span> : undefined }
       prefix="$"
       endElement={ layout === 'horizontal' ? <span>)</span> : undefined }
-      tooltipAdditionalContent={ tooltipAdditionalContent }
+      tooltipContentBefore={ tooltipContentBefore }
       loading={ loading }
       color="text.secondary"
     />

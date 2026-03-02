@@ -34,14 +34,14 @@ const TxDetailsTxFee = ({ isLoading, data }: Props) => {
     }
 
     const exchangeRate = 'exchange_rate' in data ? data.exchange_rate : null;
-    const historicExchangeRate = 'historic_exchange_rate' in data ? data.historic_exchange_rate : null;
+    const historicalExchangeRate = 'historic_exchange_rate' in data ? data.historic_exchange_rate : null;
 
     return (
       <>
         <NativeCoinValue
           amount={ data.fee.value }
           exchangeRate={ exchangeRate }
-          historicExchangeRate={ historicExchangeRate }
+          historicalExchangeRate={ historicalExchangeRate }
           hasExchangeRateToggle
           loading={ isLoading }
           unitsTooltip="gwei"
@@ -59,7 +59,7 @@ const TxDetailsTxFee = ({ isLoading, data }: Props) => {
             <NativeCoinValue
               amount={ BigNumber(data.base_fee_per_gas || 0).multipliedBy(data.gas_used || 0).toString() }
               exchangeRate={ exchangeRate }
-              historicExchangeRate={ historicExchangeRate }
+              historicalExchangeRate={ historicalExchangeRate }
               hasExchangeRateToggle
               accuracy={ 0 }
               unitsTooltip="gwei"
@@ -76,7 +76,7 @@ const TxDetailsTxFee = ({ isLoading, data }: Props) => {
             <NativeCoinValue
               amount={ data.priority_fee || '0' }
               exchangeRate={ exchangeRate }
-              historicExchangeRate={ historicExchangeRate }
+              historicalExchangeRate={ historicalExchangeRate }
               hasExchangeRateToggle
               accuracy={ 0 }
               unitsTooltip="gwei"

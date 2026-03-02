@@ -30,7 +30,7 @@ const TxDetailsSetMaxGasLimit = ({ data }: Props) => {
       <DetailedInfoNativeCoinValue
         amount={ maxGasLimit.toString() }
         exchangeRate={ 'exchange_rate' in data ? data.exchange_rate : null }
-        historicExchangeRate={ 'historic_exchange_rate' in data ? data.historic_exchange_rate : null }
+        historicalExchangeRate={ 'historic_exchange_rate' in data ? data.historic_exchange_rate : null }
         hasExchangeRateToggle
         unitsTooltip="gwei"
         copyOriginalValue

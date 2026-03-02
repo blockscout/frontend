@@ -45,7 +45,7 @@ test('current + historic, default shows historic with tag', async({ render }) =>
       amount="12345678901234567890"
       decimals="18"
       exchangeRate="1234.56"
-      historicExchangeRate="1100.00"
+      historicalExchangeRate="1100.00"
       hasExchangeRateToggle
     />,
   );
@@ -58,7 +58,7 @@ test('current + historic, tooltip shows historic label', async({ render, page })
       amount="12345678901234567890"
       decimals="18"
       exchangeRate="1234.56"
-      historicExchangeRate="1100.00"
+      historicalExchangeRate="1100.00"
       hasExchangeRateToggle
     />,
   );
@@ -75,7 +75,7 @@ test('current + historic, toggle to current', async({ render, page }) => {
       amount="12345678901234567890"
       decimals="18"
       exchangeRate="1234.56"
-      historicExchangeRate="1100.00"
+      historicalExchangeRate="1100.00"
       hasExchangeRateToggle
     />,
   );
@@ -95,7 +95,7 @@ test('zero value, no tag shown', async({ render }) => {
       amount="0"
       decimals="18"
       exchangeRate="1234.56"
-      historicExchangeRate="1100.00"
+      historicalExchangeRate="1100.00"
       hasExchangeRateToggle
     />,
   );

@@ -50,14 +50,14 @@ const TxFee = ({ tx, accuracy, accuracyUsd, loading, noSymbol: noSymbolProp, noU
 
   const noSymbol = noSymbolProp || config.UI.views.tx.hiddenFields?.fee_currency;
   const exchangeRate = 'exchange_rate' in tx ? tx.exchange_rate : null;
-  const historicExchangeRate = 'historic_exchange_rate' in tx ? tx.historic_exchange_rate : null;
+  const historicalExchangeRate = 'historic_exchange_rate' in tx ? tx.historic_exchange_rate : null;
 
   return (
     <NativeCoinValue
       amount={ tx.fee.value || '0' }
       noSymbol={ noSymbol }
       exchangeRate={ noUsd ? null : exchangeRate }
-      historicExchangeRate={ noUsd ? null : historicExchangeRate }
+      historicalExchangeRate={ noUsd ? null : historicalExchangeRate }
       hasExchangeRateToggle={ hasExchangeRateToggle }
       accuracy={ accuracy }
       accuracyUsd={ accuracyUsd }

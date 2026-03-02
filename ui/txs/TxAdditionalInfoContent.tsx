@@ -63,7 +63,7 @@ const TxAdditionalInfoContent = ({ tx }: { tx: Transaction }) => {
         <NativeCoinValue
           amount={ tx.value }
           exchangeRate={ tx.exchange_rate }
-          historicExchangeRate={ tx.historic_exchange_rate }
+          historicalExchangeRate={ tx.historic_exchange_rate }
           noTooltip
         />
       </Box>
