@@ -20,10 +20,8 @@ export const SankeyNode = React.memo(({ node, color, onMouseEnter, onMouseLeave 
     onMouseEnter?.(node, event);
   }, [ node, onMouseEnter ]);
 
-  // d3-sankey mutates nodes at runtime to add targetLinks and sourceLinks during layout computation.
-  // These properties are not in the base type definitions, so the assertions below are intentional and safe.
-  const hasIncoming = (node as SankeyNodeExtended & { targetLinks?: Array<unknown> }).targetLinks?.length;
-  const hasOutgoing = (node as SankeyNodeExtended & { sourceLinks?: Array<unknown> }).sourceLinks?.length;
+  const hasIncoming = node.targetLinks?.length;
+  const hasOutgoing = node.sourceLinks?.length;
   const isMiddle = Boolean(hasIncoming && hasOutgoing);
 
   const path = React.useMemo(() => {
@@ -44,29 +42,28 @@ export const SankeyNode = React.memo(({ node, color, onMouseEnter, onMouseLeave 
     );
   }, [ x0, x1, y0, y1, width, height, isMiddle, hasIncoming ]);
 
-  if (width <= 0 || height <= 0) {
+  if (!path) {
+    if (isMiddle) {
+      return (
+        <rect
+          x={ x0 }
+          y={ y0 }
+          width={ width }
+          height={ height }
+          fill={ color }
+          onMouseEnter={ handleMouseEnter }
+          onMouseLeave={ onMouseLeave }
+        >
+          <title>{ `${ node.name }: ${ node.value }` }</title>
+        </rect>
+      );
+    }
     return null;
-  }
-
-  if (isMiddle) {
-    return (
-      <rect
-        x={ x0 }
-        y={ y0 }
-        width={ width }
-        height={ height }
-        fill={ color }
-        onMouseEnter={ handleMouseEnter }
-        onMouseLeave={ onMouseLeave }
-      >
-        <title>{ `${ node.name }: ${ node.value }` }</title>
-      </rect>
-    );
   }
 
   return (
     <path
-      d={ path! }
+      d={ path }
       fill={ color }
       onMouseEnter={ handleMouseEnter }
       onMouseLeave={ onMouseLeave }

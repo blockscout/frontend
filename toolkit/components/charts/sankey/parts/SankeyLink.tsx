@@ -2,7 +2,7 @@ import { select } from 'd3-selection';
 import 'd3-transition';
 import React from 'react';
 
-import type { SankeyLinkExtended, SankeyNodeDatum } from '../types';
+import type { SankeyLinkExtended } from '../types';
 
 export interface SankeyLinkProps {
   link: SankeyLinkExtended;
@@ -52,29 +52,28 @@ export const SankeyLink = React.memo(({
     onMouseLeave?.();
   }, [ opacity, onMouseLeave ]);
 
-  const source = link.source as SankeyNodeDatum;
-  const target = link.target as SankeyNodeDatum;
+  const source = link.source;
+  const target = link.target;
 
   const d = pathGenerator(link);
   if (!d) {
     return null;
   }
 
+  const sanitizeSvgId = (value: string | number): string => String(value).replace(/[^\w-]/g, '_');
   const useGradient = sourceColor != null && targetColor != null && sourceColor !== targetColor;
   const gradientId = useGradient ?
-    `sankey-link-${ source.id.replace(/[^\w-]/g, '_') }-${ target.id.replace(/[^\w-]/g, '_') }-${ gradientIdSuffix ?? '' }` :
+    `sankey-link-${ sanitizeSvgId(source.id) }-${ sanitizeSvgId(target.id) }-${ sanitizeSvgId(gradientIdSuffix ?? '') }` :
     undefined;
 
   const strokeColor = useGradient && gradientId ?
     `url(#${ gradientId })` :
     color;
 
-  const sourceBounds = source as SankeyNodeDatum & { x0?: number; x1?: number; y0?: number; y1?: number };
-  const targetBounds = target as SankeyNodeDatum & { x0?: number; x1?: number; y0?: number; y1?: number };
-  const sourceX = sourceBounds.x1 ?? 0;
-  const sourceY = ((sourceBounds.y0 ?? 0) + (sourceBounds.y1 ?? 0)) / 2;
-  const targetX = targetBounds.x0 ?? 0;
-  const targetY = ((targetBounds.y0 ?? 0) + (targetBounds.y1 ?? 0)) / 2;
+  const sourceX = source.x1 ?? 0;
+  const sourceY = ((source.y0 ?? 0) + (source.y1 ?? 0)) / 2;
+  const targetX = target.x0 ?? 0;
+  const targetY = ((target.y0 ?? 0) + (target.y1 ?? 0)) / 2;
 
   return (
     <>

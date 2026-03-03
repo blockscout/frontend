@@ -1,5 +1,4 @@
 import { sankey, sankeyLinkHorizontal, sankeyJustify } from 'd3-sankey';
-import type { LegacyRef } from 'react';
 import React from 'react';
 
 import type { ChartMargin } from '../types';
@@ -23,7 +22,7 @@ interface SankeyLayout {
 }
 
 interface UseSankeyControllerResult {
-  readonly ref: LegacyRef<SVGSVGElement> | undefined;
+  ref: React.Ref<SVGSVGElement> | undefined;
   readonly rect: DOMRect | null;
   readonly innerWidth: number;
   readonly innerHeight: number;
@@ -33,7 +32,7 @@ interface UseSankeyControllerResult {
 }
 
 export function useSankeyController({ data, margin, nodeWidth, nodePadding }: Props): UseSankeyControllerResult {
-  const [ rect, ref ] = useClientRect<React.ComponentRef<'svg'>>();
+  const [ rect, ref ] = useClientRect<SVGSVGElement>();
 
   const { innerWidth, innerHeight } = calculateInnerSize(rect, margin);
 
@@ -54,10 +53,8 @@ export function useSankeyController({ data, margin, nodeWidth, nodePadding }: Pr
       links: data.links.map((d) => ({ ...d })),
     });
 
-    return {
-      nodes: nodes,
-      links: links,
-    };
+    // After layout, source/target on each link are resolved node objects, not ids.
+    return { nodes: nodes as Array<SankeyNodeExtended>, links: links as unknown as Array<SankeyLinkExtended> };
   }, [ data, innerWidth, innerHeight, nodeWidth, nodePadding ]);
 
   const linkPathGenerator: (link: SankeyLinkExtended) => string | null = React.useMemo(() => sankeyLinkHorizontal(), []);

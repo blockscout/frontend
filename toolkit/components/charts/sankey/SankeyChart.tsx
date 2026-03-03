@@ -2,7 +2,7 @@ import { useToken } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ChartMargin } from '../types';
-import type { SankeyData, SankeyNodeDatum } from './types';
+import type { SankeyData, SankeyNodeExtended } from './types';
 
 import { useColorModeValue } from 'toolkit/chakra/color-mode';
 
@@ -49,11 +49,11 @@ export const SankeyChart = React.memo(({
   const margin: ChartMargin = React.useMemo(() => ({ ...DEFAULT_CHART_MARGIN, ...marginProps }), [ marginProps ]);
 
   const colorTokens = useColorModeValue(SANKEY_NODE_COLOR_TOKENS_LIGHT, SANKEY_NODE_COLOR_TOKENS_DARK);
-  const resolvedDefaultColors = useToken('colors', colorTokens as Array<string>);
+  const resolvedDefaultColors = useToken('colors', colorTokens);
   const colors = colorsProp && colorsProp.length > 0 ? colorsProp : resolvedDefaultColors;
 
-  const [ labelColor ] = useToken('colors', [ 'text.secondary' ]);
-  const [ labelFontSize ] = useToken('fontSizes', [ 'xs' ]);
+  const [ labelColor ] = useToken('colors', 'text.secondary');
+  const [ labelFontSize ] = useToken('fontSizes', 'xs');
 
   const {
     ref,
@@ -72,12 +72,12 @@ export const SankeyChart = React.memo(({
   const nodeColorMap = React.useMemo(() => {
     const map = new Map<string, string>();
     nodes.forEach((node, index) => {
-      map.set((node as SankeyNodeDatum).id, colors[index % colors.length]);
+      map.set(node.id, colors[index % colors.length]);
     });
     return map;
   }, [ nodes, colors ]);
 
-  const getNodeColor = React.useCallback((node: SankeyNodeDatum) => {
+  const getNodeColor = React.useCallback((node: SankeyNodeExtended) => {
     return nodeColorMap.get(node.id) || colors[0];
   }, [ nodeColorMap, colors ]);
 
@@ -95,9 +95,9 @@ export const SankeyChart = React.memo(({
           <SankeyLink
             key={ `link-${ index }` }
             link={ link }
-            color={ getNodeColor(linkColorMode === 'target' ? link.target as SankeyNodeDatum : link.source as SankeyNodeDatum) }
-            sourceColor={ getNodeColor(link.source as SankeyNodeDatum) }
-            targetColor={ getNodeColor(link.target as SankeyNodeDatum) }
+            color={ getNodeColor(linkColorMode === 'target' ? link.target : link.source) }
+            sourceColor={ getNodeColor(link.source) }
+            targetColor={ getNodeColor(link.target) }
             gradientIdSuffix={ index }
             opacity={ linkOpacity }
             hoverOpacity={ linkHoverOpacity }
@@ -107,17 +107,17 @@ export const SankeyChart = React.memo(({
 
         { nodes.map((node) => (
           <SankeyNode
-            key={ (node as SankeyNodeDatum).id }
+            key={ node.id }
             node={ node }
-            color={ getNodeColor(node as SankeyNodeDatum) }
+            color={ getNodeColor(node) }
           />
         )) }
 
         { nodes.map((node) => {
           const { x0 = 0, x1 = 0, y0 = 0 } = node;
           const isSource = (x0 || 0) <= innerWidth / 2;
-          const nodeId = (node as SankeyNodeDatum).id;
-          const nodeName = (node as SankeyNodeDatum).name;
+          const nodeId = node.id;
+          const nodeName = node.name;
           const valueStr = node.value !== undefined ? formatValue(node.value) : '';
 
           const blockHeight = LABEL_LINE_HEIGHT + (valueStr ? LABEL_LINE_GAP + LABEL_LINE_HEIGHT : 0);
