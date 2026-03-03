@@ -24,6 +24,7 @@ import useRedirectForInvalidAuthToken from 'ui/snippets/auth/useRedirectForInval
 const DATA_LIMIT = 3;
 
 const apiKeysAlertHtml = config.UI.apiKeysAlert.message;
+const feature = config.features.account;
 
 const ApiKeysPage: React.FC = () => {
   const apiKeyModalProps = useDisclosure();
@@ -100,6 +101,29 @@ const ApiKeysPage: React.FC = () => {
 
     const alert = apiKeysAlertHtml ? <AlertWithExternalHtml html={ apiKeysAlertHtml } status="warning" mb={ 6 }/> : null;
 
+    const button = (() => {
+      if (!feature.isEnabled || feature.apiKeysButton === false) {
+        return null;
+      }
+
+      if (typeof feature.apiKeysButton === 'string') {
+        return (
+          <Link href={ feature.apiKeysButton } external noIcon>
+            <Button>Add API key</Button>
+          </Link>
+        );
+      }
+
+      return (
+        <Button
+          onClick={ apiKeyModalProps.onOpen }
+          disabled={ !canAdd }
+        >
+          Add API key
+        </Button>
+      );
+    })();
+
     return (
       <>
         { description }
@@ -114,12 +138,7 @@ const ApiKeysPage: React.FC = () => {
           columnGap={ 5 }
           rowGap={ 5 }
         >
-          <Button
-            onClick={ apiKeyModalProps.onOpen }
-            disabled={ !canAdd }
-          >
-            Add API key
-          </Button>
+          { button }
           { !canAdd && (
             <Text fontSize="sm" color="text.secondary">
               { `You have added the maximum number of API keys (${ DATA_LIMIT }). Contact us to request additional keys.` }
