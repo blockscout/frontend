@@ -17,15 +17,16 @@ const fixture: TestFixture<MockTextAdFixture, { page: Page }> = async({ page }, 
     ].join('');
 
     await page.evaluate((html) => {
+      const queue: Array<Array<Record<string, string>>> = [];
+      queue.push = () => {
+        const container = document.querySelector('.sevioads');
+        if (container) {
+          container.innerHTML = html;
+        }
+        return queue.length;
+      };
       Object.defineProperty(window, 'sevioads', {
-        value: {
-          push: () => {
-            const container = document.querySelector('.sevioads');
-            if (container) {
-              container.innerHTML = html;
-            }
-          },
-        },
+        value: queue,
         writable: true,
         configurable: true,
       });

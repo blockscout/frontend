@@ -1,4 +1,5 @@
 import { Box, chakra } from '@chakra-ui/react';
+import Script from 'next/script';
 import React, { useEffect } from 'react';
 
 import config from 'configs/app';
@@ -46,6 +47,7 @@ const SevioTextAd = ({ className }: { className?: string }) => {
         },
       }}
     >
+      <Script strategy="lazyOnload" src="https://cdn.adx.ws/scripts/loader.js"/>
       <div className="sevioads" data-zone={ zone }/>
     </Box>
   );
