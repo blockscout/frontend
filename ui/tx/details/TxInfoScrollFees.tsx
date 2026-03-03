@@ -30,6 +30,8 @@ export const TxInfoScrollFees = ({ data, isLoading }: Props) => {
           <DetailedInfoNativeCoinValue
             amount={ data.scroll?.l1_fee }
             exchangeRate={ data.exchange_rate }
+            historicalExchangeRate={ data.historic_exchange_rate }
+            hasExchangeRateToggle
             loading={ isLoading }
           />
         </>
@@ -46,6 +48,8 @@ export const TxInfoScrollFees = ({ data, isLoading }: Props) => {
           <DetailedInfoNativeCoinValue
             amount={ data.scroll?.l2_fee.value }
             exchangeRate={ data.exchange_rate }
+            historicalExchangeRate={ data.historic_exchange_rate }
+            hasExchangeRateToggle
             loading={ isLoading }
           />
         </>
@@ -62,6 +66,8 @@ export const TxInfoScrollFees = ({ data, isLoading }: Props) => {
           <DetailedInfoNativeCoinValue
             amount={ String(data.scroll?.l1_fee_commit_scalar) }
             exchangeRate={ data.exchange_rate }
+            historicalExchangeRate={ data.historic_exchange_rate }
+            hasExchangeRateToggle
             loading={ isLoading }
           />
         </>
@@ -78,6 +84,8 @@ export const TxInfoScrollFees = ({ data, isLoading }: Props) => {
           <DetailedInfoNativeCoinValue
             amount={ String(data.scroll?.l1_fee_overhead) }
             exchangeRate={ data.exchange_rate }
+            historicalExchangeRate={ data.historic_exchange_rate }
+            hasExchangeRateToggle
             loading={ isLoading }
           />
         </>
