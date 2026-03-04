@@ -49,6 +49,11 @@ const SevioTextAd = ({ className }: { className?: string }) => {
 
     return () => {
       observer.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    return () => {
       clearTimeout(timeoutRef.current);
     };
   }, []);
