@@ -15,12 +15,14 @@ const title = 'API documentation';
 
 const config: Feature<{
   tabs: Array<ApiDocsTabId>;
+  alertMessage: string | undefined;
 }> = (() => {
   if (tabs) {
     return Object.freeze({
       title,
       isEnabled: true,
       tabs,
+      alertMessage: getEnvValue('NEXT_PUBLIC_API_DOCS_ALERT_MESSAGE'),
     });
   }
 
