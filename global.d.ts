@@ -13,6 +13,7 @@ declare global {
   export interface Window {
     ethereum?: WalletProvider | undefined;
     coinzilla_display: Array<CPreferences>;
+    sevioads: Array<Array<Record<string, string>>> | undefined;
     ga?: {
       getAll: () => Array<{ get: (prop: string) => string }>;
     };
