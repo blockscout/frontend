@@ -43,12 +43,28 @@ const ButtonShowcase = () => {
             <Button variant="solid" loadingSkeleton>Loading Skeleton</Button>
           </Sample>
 
+          <Sample label="variant: solid_danger">
+            <Button variant="solid_danger">Default</Button>
+            <Button variant="solid_danger" data-hover>Hovered</Button>
+            <Button variant="solid_danger" disabled>Disabled</Button>
+            <Button variant="solid_danger" loading>Loading</Button>
+            <Button variant="solid_danger" loadingSkeleton>Loading Skeleton</Button>
+          </Sample>
+
           <Sample label="variant: outline">
             <Button variant="outline">Default</Button>
             <Button variant="outline" data-hover>Hovered</Button>
             <Button variant="outline" disabled>Disabled</Button>
             <Button variant="outline" loading>Loading</Button>
             <Button variant="outline" loadingSkeleton>Loading Skeleton</Button>
+          </Sample>
+
+          <Sample label="variant: outline_danger">
+            <Button variant="outline_danger">Default</Button>
+            <Button variant="outline_danger" data-hover>Hovered</Button>
+            <Button variant="outline_danger" disabled>Disabled</Button>
+            <Button variant="outline_danger" loading>Loading</Button>
+            <Button variant="outline_danger" loadingSkeleton>Loading Skeleton</Button>
           </Sample>
 
           <Sample label="variant: link">
