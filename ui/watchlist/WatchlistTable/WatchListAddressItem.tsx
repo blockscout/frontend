@@ -26,7 +26,13 @@ const WatchListAddressItem = ({ item, isLoading }: { item: WatchlistAddress; isL
     reputation: null,
   }), [ ]);
 
-  const { usdBn: usdNative } = calculateUsdValue({ amount: item.address_balance, exchangeRate: item.exchange_rate });
+  const { usdBn: usdNative } = calculateUsdValue(
+    {
+      amount: item.address_balance,
+      exchangeRate: item.exchange_rate,
+      decimals: String(config.chain.currency.decimals),
+    },
+  );
 
   return (
     <VStack gap={ 3 } align="stretch" fontWeight={ 500 }>
