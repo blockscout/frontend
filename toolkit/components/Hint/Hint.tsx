@@ -8,14 +8,14 @@ import { IconButton } from '../../chakra/icon-button';
 import type { TooltipProps } from '../../chakra/tooltip';
 import { Tooltip } from '../../chakra/tooltip';
 
-interface Props extends IconButtonProps {
+export interface HintProps extends IconButtonProps {
   label: string | React.ReactNode;
   tooltipProps?: Partial<TooltipProps>;
   isLoading?: boolean;
   as?: React.ElementType;
 }
 
-export const Hint = React.memo(({ label, tooltipProps, isLoading, boxSize = 5, ...rest }: Props) => {
+export const Hint = React.memo(({ label, tooltipProps, isLoading, boxSize = 5, ...rest }: HintProps) => {
   return (
     <Tooltip
       content={ label }
