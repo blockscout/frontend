@@ -16,7 +16,7 @@ export type ViewMode = 'default' | 'compact';
 
 export interface SelectOption<Value extends string = string> {
   label: string;
-  renderLabel?: () => React.ReactNode;
+  renderLabel?: (place: 'item' | 'value-text') => React.ReactNode;
   value: Value;
   icon?: React.ReactNode;
   afterElement?: React.ReactNode;
@@ -166,7 +166,7 @@ export const SelectValueText = React.forwardRef<
                 WebkitBoxOrient: 'vertical',
                 display: '-webkit-box',
               }}>
-                { item.renderLabel ? item.renderLabel() : context.collection.stringifyItem(item) }
+                { item.renderLabel ? item.renderLabel('value-text') : context.collection.stringifyItem(item) }
               </span>
             ) }
           </Flex>
@@ -272,7 +272,7 @@ export const Select = React.forwardRef<HTMLDivElement, SelectProps>((props, ref)
           .map((item: SelectOption) => (
             <React.Fragment key={ item.value }>
               <SelectItem item={ item }>
-                { item.renderLabel ? item.renderLabel() : item.label }
+                { item.renderLabel ? item.renderLabel('item') : item.label }
               </SelectItem>
               { item.afterElement }
             </React.Fragment>
@@ -292,7 +292,7 @@ export interface SelectAsyncProps extends Omit<SelectProps, 'collection'> {
 }
 
 export const SelectAsync = React.forwardRef<HTMLDivElement, SelectAsyncProps>((props, ref) => {
-  const { placeholder, portalled = true, loading, loadOptions, extraControls, onValueChange, errorText, mode, ...rest } = props;
+  const { placeholder, portalled = true, loading, loadOptions, extraControls, onValueChange, errorText, mode, contentHeader, ...rest } = props;
 
   const [ collection, setCollection ] = React.useState<ListCollection<SelectOption>>(createListCollection<SelectOption>({ items: [] }));
   const [ inputValue, setInputValue ] = React.useState('');
@@ -340,9 +340,10 @@ export const SelectAsync = React.forwardRef<HTMLDivElement, SelectAsyncProps>((p
           />
           { extraControls }
         </Box>
+        { contentHeader }
         { collection.items.map((item) => (
           <SelectItem item={ item } key={ item.value }>
-            { item.renderLabel ? item.renderLabel() : item.label }
+            { item.renderLabel ? item.renderLabel('item') : item.label }
           </SelectItem>
         )) }
       </SelectContent>
