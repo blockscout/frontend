@@ -48,7 +48,7 @@ const TokenTransfersCrossChainListItem = ({ data, isLoading, rowGap = 3, current
           <Time timestamp={ timestamp } format="lll_s"/>
         </Skeleton>
       ) }
-      <Grid templateColumns="100px 1fr" columnGap={ 2 } rowGap={ rowGap }>
+      <Grid templateColumns="100px minmax(0, 1fr)" columnGap={ 2 } rowGap={ rowGap }>
         <Skeleton loading={ isLoading }>
           Source token
         </Skeleton>
