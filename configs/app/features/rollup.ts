@@ -15,15 +15,13 @@ const L2WithdrawalUrl = getEnvValue('NEXT_PUBLIC_ROLLUP_L2_WITHDRAWAL_URL');
 
 const parentChain: ParentChain | undefined = (() => {
   const envValue = parseEnvJson<ParentChain>(getEnvValue('NEXT_PUBLIC_ROLLUP_PARENT_CHAIN'));
-  const baseUrl = stripTrailingSlash(getEnvValue('NEXT_PUBLIC_ROLLUP_L1_BASE_URL') || '');
-
-  if (!baseUrl && !envValue?.baseUrl) {
+  if (!envValue?.baseUrl) {
     return;
   }
 
   return {
     ...envValue,
-    baseUrl: baseUrl || envValue?.baseUrl || '',
+    baseUrl: stripTrailingSlash(envValue.baseUrl),
   };
 })();
 
