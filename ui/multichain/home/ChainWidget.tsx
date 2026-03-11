@@ -98,7 +98,7 @@ const ChainWidget = ({ data, isLoading, metrics }: Props) => {
       borderColor={{ _light: 'blackAlpha.200', _dark: 'whiteAlpha.200' }}
       _hover={ !isLoading ? {
         bgColor: { _light: 'gray.50', _dark: 'whiteAlpha.100' },
-        borderColor: { _light: 'blue.100', _dark: 'blue.700' },
+        borderColor: 'hover',
       } : undefined }
       p={ 6 }
       flexBasis="calc((100% - 3 * 12px) / 4)"
