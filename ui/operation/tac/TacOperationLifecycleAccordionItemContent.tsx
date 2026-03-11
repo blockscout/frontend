@@ -28,26 +28,28 @@ const TacOperationLifecycleAccordionItemContent = ({ isLast, data }: Props) => {
           </ItemRow>
         ) }
 
-        <ItemRow label="Transactions">
-          <Box
-            display="flex"
-            flexDirection="column"
-            rowGap={ 3 }
-            py="6px"
-            width="100%"
-            overflow="hidden"
-          >
-            {
-              data.transactions.map((tx) => {
-                if (tx.type === tac.BlockchainType.TON) {
-                  return <TxEntityTon key={ tx.hash } hash={ tx.hash }/>;
-                }
+        { data.transactions.length > 0 && (
+          <ItemRow label="Transactions">
+            <Box
+              display="flex"
+              flexDirection="column"
+              rowGap={ 3 }
+              py="6px"
+              width="100%"
+              overflow="hidden"
+            >
+              {
+                data.transactions.map((tx) => {
+                  if (tx.type === tac.BlockchainType.TON) {
+                    return <TxEntityTon key={ tx.hash } hash={ tx.hash }/>;
+                  }
 
-                return <TxEntity key={ tx.hash } hash={ tx.hash } icon={{ name: 'brands/tac' }}/>;
-              })
-            }
-          </Box>
-        </ItemRow>
+                  return <TxEntity key={ tx.hash } hash={ tx.hash } icon={{ name: 'brands/tac' }}/>;
+                })
+              }
+            </Box>
+          </ItemRow>
+        ) }
 
         { data.note && (
           <ItemRow label="Note">

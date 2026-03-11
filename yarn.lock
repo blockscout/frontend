@@ -1770,10 +1770,10 @@
   resolved "https://registry.yarnpkg.com/@blockscout/stats-types/-/stats-types-2.11.1.tgz#686e387ee4d8f21db1c800279cc9209ef915e0b5"
   integrity sha512-Ti9RbekRfLR7dUnOp2dWU0VBu7uRkutnkFqKphvfxvbrY9fiXUJ/tT6Qg+OTNewK3RbuQ0O1ZPxbqMX5eRr0OQ==
 
-"@blockscout/tac-operation-lifecycle-types@0.0.1-alpha.6":
-  version "0.0.1-alpha.6"
-  resolved "https://registry.yarnpkg.com/@blockscout/tac-operation-lifecycle-types/-/tac-operation-lifecycle-types-0.0.1-alpha.6.tgz#a1ce110888259689ee605ad99fd711d587a9949e"
-  integrity sha512-29kFc+TQXW9tw//L5JNXBbQjC/Q/2PpJPHJMsOfyzuG0GjEH1T2nCMgROz76JPM0C5Sh2kG5LzJvl/15QqwO2g==
+"@blockscout/tac-operation-lifecycle-types@1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@blockscout/tac-operation-lifecycle-types/-/tac-operation-lifecycle-types-1.1.0.tgz#d2cb1c0587461ae97c10299c516b709846af1561"
+  integrity sha512-DwbfBiOEyAqy6cR3iH/842JhVhlM5eHI341S5AwwsmZSBzg/mtGwQgoN0BTUR74XydzuwmKYKa7bcIrIuZguSA==
 
 "@blockscout/visualizer-types@0.2.0":
   version "0.2.0"
