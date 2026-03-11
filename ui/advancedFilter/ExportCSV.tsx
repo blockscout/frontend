@@ -25,10 +25,7 @@ const ExportCSV = ({ filters }: Props) => {
   const [ isLoading, setIsLoading ] = React.useState(false);
 
   const apiFetchFactory = React.useCallback(async(recaptchaToken?: string) => {
-    const url = buildUrl('general:advanced_filter_csv', undefined, {
-      ...filters,
-      recaptcha_response: recaptchaToken,
-    }, undefined, multichainContext?.chain);
+    const url = buildUrl('general:advanced_filter_csv', undefined, filters, undefined, multichainContext?.chain);
 
     const response = await fetch(url, {
       headers: {
