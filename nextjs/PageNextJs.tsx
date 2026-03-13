@@ -2,7 +2,6 @@ import React from 'react';
 
 import type { Route } from 'nextjs-routes';
 import type { Props as PageProps } from 'nextjs/getServerSideProps/handlers';
-import PageMetadata from 'nextjs/PageMetadata';
 
 import useAdblockDetect from 'lib/hooks/useAdblockDetect';
 import useGetCsrfToken from 'lib/hooks/useGetCsrfToken';
@@ -27,12 +26,7 @@ const PageNextJs = <Pathname extends Route['pathname']>(props: Props<Pathname>) 
   const isMixPanelInitialized = mixpanel.useInit();
   mixpanel.useLogPageView(isMixPanelInitialized);
 
-  return (
-    <>
-      <PageMetadata pathname={ props.pathname } query={ props.query } apiData={ props.apiData }/>
-      { isMounted ? props.children : null }
-    </>
-  );
+  return isMounted ? props.children : null;
 };
 
 export default React.memo(PageNextJs);
