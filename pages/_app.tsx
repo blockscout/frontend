@@ -8,6 +8,9 @@ import React from 'react';
 
 import type { NextPageWithLayout } from 'nextjs/types';
 
+import type { Route } from 'nextjs-routes';
+import PageMetadata from 'nextjs/PageMetadata';
+
 import config from 'configs/app';
 import getSocketUrl from 'lib/api/getSocketUrl';
 import useQueryClientConfig from 'lib/api/useQueryClientConfig';
@@ -57,7 +60,7 @@ If you don't understand what this console is for, close it now and stay safe.`;
 
 const CONSOLE_SCAM_WARNING_DELAY_MS = 500;
 
-function MyApp({ Component, pageProps }: AppPropsWithLayout) {
+function MyApp({ Component, pageProps, router }: AppPropsWithLayout) {
 
   const growthBook = initGrowthBook(pageProps.uuid);
   useLoadFeatures(growthBook);
@@ -96,34 +99,37 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const socketUrl = !config.features.multichain.isEnabled ? getSocketUrl() : undefined;
 
   return (
-    <ChakraProvider>
-      <RollbarProvider config={ rollbarConfig }>
-        <AppErrorBoundary
-          { ...ERROR_SCREEN_STYLES }
-          Container={ AppErrorGlobalContainer }
-        >
-          <QueryClientProvider client={ queryClient }>
-            <Web3Provider>
-              <AppContextProvider pageProps={ pageProps }>
-                <GrowthBookProvider growthbook={ growthBook }>
-                  <SocketProvider url={ socketUrl }>
-                    <RewardsProvider>
-                      <MarketplaceContextProvider>
-                        <SettingsContextProvider>
-                          { content }
-                        </SettingsContextProvider>
-                      </MarketplaceContextProvider>
-                    </RewardsProvider>
-                  </SocketProvider>
-                </GrowthBookProvider>
-                <ReactQueryDevtools buttonPosition="bottom-left" position="left"/>
-                <GoogleAnalytics/>
-              </AppContextProvider>
-            </Web3Provider>
-          </QueryClientProvider>
-        </AppErrorBoundary>
-      </RollbarProvider>
-    </ChakraProvider>
+    <>
+      <PageMetadata pathname={ router.pathname as Route['pathname'] } query={ pageProps.query } apiData={ pageProps.apiData }/>
+      <ChakraProvider>
+        <RollbarProvider config={ rollbarConfig }>
+          <AppErrorBoundary
+            { ...ERROR_SCREEN_STYLES }
+            Container={ AppErrorGlobalContainer }
+          >
+            <QueryClientProvider client={ queryClient }>
+              <Web3Provider>
+                <AppContextProvider pageProps={ pageProps }>
+                  <GrowthBookProvider growthbook={ growthBook }>
+                    <SocketProvider url={ socketUrl }>
+                      <RewardsProvider>
+                        <MarketplaceContextProvider>
+                          <SettingsContextProvider>
+                            { content }
+                          </SettingsContextProvider>
+                        </MarketplaceContextProvider>
+                      </RewardsProvider>
+                    </SocketProvider>
+                  </GrowthBookProvider>
+                  <ReactQueryDevtools buttonPosition="bottom-left" position="left"/>
+                  <GoogleAnalytics/>
+                </AppContextProvider>
+              </Web3Provider>
+            </QueryClientProvider>
+          </AppErrorBoundary>
+        </RollbarProvider>
+      </ChakraProvider>
+    </>
   );
 }
 

@@ -9,6 +9,7 @@ export * from './defiDropdown';
 export * from './highlights';
 export * from './marketplace';
 export * from './megaEth';
+export * from './multichainButton';
 export * from './nameServices';
 export * from './rollup';
 export * from './tac';
