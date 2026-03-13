@@ -12,6 +12,7 @@ import * as uiSchemas from './schemas/ui';
 import * as featuresSchemas from './schemas/features';
 import servicesSchemas from './schemas/services';
 import { replaceQuotes } from 'configs/app/utils';
+import { IDENTICON_TYPES } from 'types/views/address';
 
 const schema = yup
   .object()
@@ -37,6 +38,10 @@ const schema = yup
     NEXT_PUBLIC_NETWORK_NAME: yup.string().required(),
     NEXT_PUBLIC_NETWORK_SHORT_NAME: yup.string(),
     NEXT_PUBLIC_IS_TESTNET: yup.boolean(),
+
+    // 3. UI views configuration
+    // Some settings that we actually support in multichain mode
+    NEXT_PUBLIC_VIEWS_ADDRESS_IDENTICON_TYPE: yup.string().oneOf(IDENTICON_TYPES),
 
     // 5. Features configuration
     // NOTE!: Not all features are supported in multichain mode, and some of them not relevant or enabled per chain basis
