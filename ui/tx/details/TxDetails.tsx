@@ -10,7 +10,6 @@ import {
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
-import type * as tac from '@blockscout/tac-operation-lifecycle-types';
 import { SCROLL_L2_BLOCK_STATUSES } from 'types/api/scrollL2';
 import type { Transaction } from 'types/api/transaction';
 import { ZKEVM_L2_TX_STATUSES } from 'types/api/transaction';
@@ -77,7 +76,6 @@ import TxInfoScrollFees from './TxInfoScrollFees';
 
 interface Props {
   data: Transaction | undefined;
-  tacOperations?: Array<tac.OperationDetails>;
   isLoading: boolean;
   socketStatus?: 'close' | 'error';
   noTxActions?: boolean;
@@ -86,7 +84,7 @@ interface Props {
 const externalTxFeature = config.features.externalTxs;
 const rollupFeature = config.features.rollup;
 
-const TxDetails = ({ data, tacOperations, isLoading, socketStatus, noTxActions }: Props) => {
+const TxDetails = ({ data, isLoading, socketStatus, noTxActions }: Props) => {
   const [ isExpanded, setIsExpanded ] = React.useState(false);
 
   const isMobile = useIsMobile();
@@ -160,7 +158,7 @@ const TxDetails = ({ data, tacOperations, isLoading, socketStatus, noTxActions }
         </GridItem>
       ) }
 
-      { tacOperations && tacOperations.length > 0 && <TxDetailsTacOperation tacOperations={ tacOperations } isLoading={ isLoading } txHash={ data.hash }/> }
+      { config.features.tac.isEnabled && <TxDetailsTacOperation isLoading={ isLoading } txHash={ data.hash }/> }
 
       { data.op_interop_messages ? data.op_interop_messages.map((message) => (
         <TxDetailsInterop key={ message.nonce } data={ message } isLoading={ isLoading }/>
