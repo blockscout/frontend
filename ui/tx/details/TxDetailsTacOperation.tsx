@@ -1,29 +1,44 @@
 import { HStack } from '@chakra-ui/react';
 import React from 'react';
 
-import type * as tac from '@blockscout/tac-operation-lifecycle-types';
-
+import config from 'configs/app';
+import useApiQuery from 'lib/api/useApiQuery';
 import { getTacOperationStage } from 'lib/operations/tac';
+import { TAC_OPERATION_DETAILS } from 'stubs/operations';
 import { Tag } from 'toolkit/chakra/tag';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import OperationEntity from 'ui/shared/entities/operation/OperationEntity';
 import TacOperationStatus from 'ui/shared/statusTag/TacOperationStatus';
 
 interface Props {
-  tacOperations: Array<tac.OperationDetails>;
   isLoading: boolean;
   txHash: string;
 }
 
-const TxDetailsTacOperation = ({ tacOperations, isLoading, txHash }: Props) => {
-  const hasManyItems = tacOperations.length > 1;
+const TxDetailsTacOperation = ({ isLoading, txHash }: Props) => {
   const [ hasScroll, setHasScroll ] = React.useState(false);
+
+  const { data, isPlaceholderData } = useApiQuery('tac:operation_by_tx_hash', {
+    pathParams: { tx_hash: txHash },
+    queryOptions: {
+      enabled: config.features.tac.isEnabled && !isLoading,
+      placeholderData: {
+        items: [ TAC_OPERATION_DETAILS ],
+      },
+    },
+  });
+
+  if (!config.features.tac.isEnabled || !data) {
+    return null;
+  }
+
+  const hasManyItems = data?.items.length > 1;
 
   return (
     <>
       <DetailedInfo.ItemLabel
         hint={ `Hash${ hasManyItems ? 'es' : '' } of the cross‑chain operation${ hasManyItems ? 's' : '' } that this transaction is part of` }
-        isLoading={ isLoading }
+        isLoading={ isPlaceholderData }
         hasScroll={ hasScroll }
       >
         Source operation{ hasManyItems ? 's' : '' }
@@ -34,7 +49,7 @@ const TxDetailsTacOperation = ({ tacOperations, isLoading, txHash }: Props) => {
         rowGap={ 3 }
         maxH="200px"
       >
-        { tacOperations.map((tacOperation) => {
+        { data.items.map((tacOperation) => {
           const tags = [
             ...(getTacOperationStage(tacOperation, txHash) || []),
           ];
@@ -44,13 +59,13 @@ const TxDetailsTacOperation = ({ tacOperations, isLoading, txHash }: Props) => {
               <OperationEntity
                 id={ tacOperation.operation_id }
                 type={ tacOperation.type }
-                isLoading={ isLoading }
+                isLoading={ isPlaceholderData }
                 my={{ base: '5px', lg: 0 }}
               />
               { tags.length > 0 && (
                 <HStack flexShrink={ 0 } flexWrap="wrap" my={{ base: '3px', lg: 0 }}>
-                  <TacOperationStatus status={ tacOperation.type } isLoading={ isLoading }/>
-                  { tags.map((tag) => <Tag key={ tag } loading={ isLoading } flexShrink={ 0 }>{ tag }</Tag>) }
+                  <TacOperationStatus status={ tacOperation.type } isLoading={ isPlaceholderData }/>
+                  { tags.map((tag) => <Tag key={ tag } loading={ isPlaceholderData } flexShrink={ 0 }>{ tag }</Tag>) }
                 </HStack>
               ) }
             </HStack>

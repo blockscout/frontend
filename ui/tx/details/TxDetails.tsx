@@ -2,7 +2,6 @@ import {
   Box,
   GridItem,
   Text,
-  Spinner,
   Flex,
   chakra,
   VStack,
@@ -10,7 +9,6 @@ import {
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
-import type * as tac from '@blockscout/tac-operation-lifecycle-types';
 import { SCROLL_L2_BLOCK_STATUSES } from 'types/api/scrollL2';
 import type { Transaction } from 'types/api/transaction';
 import { ZKEVM_L2_TX_STATUSES } from 'types/api/transaction';
@@ -19,8 +17,6 @@ import { ZKSYNC_L2_TX_BATCH_STATUSES } from 'types/api/zkSyncL2';
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
-import useApiQuery from 'lib/api/useApiQuery';
-import useIsMobile from 'lib/hooks/useIsMobile';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import * as arbitrum from 'lib/rollups/arbitrum';
 import { formatZkEvmTxStatus, formatZkSyncL2TxnBatchStatus, layerLabels } from 'lib/rollups/utils';
@@ -61,7 +57,6 @@ import TxDetailsTokenTransfers from 'ui/tx/details/TxDetailsTokenTransfers';
 import TxDetailsWithdrawalStatusOptimistic from 'ui/tx/details/TxDetailsWithdrawalStatusOptimistic';
 import TxRevertReason from 'ui/tx/details/TxRevertReason';
 import TxAllowedPeekers from 'ui/tx/TxAllowedPeekers';
-import TxExternalTxs from 'ui/tx/TxExternalTxs';
 import TxSocketAlert from 'ui/tx/TxSocketAlert';
 import ZkSyncL2TxnBatchHashesInfo from 'ui/txnBatches/zkSyncL2/ZkSyncL2TxnBatchHashesInfo';
 
@@ -73,33 +68,20 @@ import TxDetailsSetMaxGasLimit from './TxDetailsSetMaxGasLimit';
 import TxDetailsTacOperation from './TxDetailsTacOperation';
 import TxDetailsTxFee from './TxDetailsTxFee';
 import TxDetailsWithdrawalStatusArbitrum from './TxDetailsWithdrawalStatusArbitrum';
+import TxHash from './TxHash';
 import TxInfoScrollFees from './TxInfoScrollFees';
 
 interface Props {
   data: Transaction | undefined;
-  tacOperations?: Array<tac.OperationDetails>;
   isLoading: boolean;
   socketStatus?: 'close' | 'error';
   noTxActions?: boolean;
 }
 
-const externalTxFeature = config.features.externalTxs;
 const rollupFeature = config.features.rollup;
 
-const TxInfo = ({ data, tacOperations, isLoading, socketStatus, noTxActions }: Props) => {
+const TxDetails = ({ data, isLoading, socketStatus, noTxActions }: Props) => {
   const [ isExpanded, setIsExpanded ] = React.useState(false);
-
-  const isMobile = useIsMobile();
-
-  const externalTxsQuery = useApiQuery('general:tx_external_transactions', {
-    pathParams: {
-      hash: data?.hash,
-    },
-    queryOptions: {
-      enabled: externalTxFeature.isEnabled,
-      placeholderData: [ '1', '2', '3' ],
-    },
-  });
 
   const handleCutLinkClick = React.useCallback(() => {
     setIsExpanded((flag) => !flag);
@@ -133,6 +115,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus, noTxActions }: P
       </chakra.span>
     </Tooltip>
   ) : null;
+
   const executionFailedBadge = toAddress?.is_contract && Boolean(data.status) && data.result !== 'success' ? (
     <Tooltip content="Error occurred during contract execution">
       <chakra.span display="inline-flex" ml={ 2 } mr={ 1 }>
@@ -160,7 +143,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus, noTxActions }: P
         </GridItem>
       ) }
 
-      { tacOperations && tacOperations.length > 0 && <TxDetailsTacOperation tacOperations={ tacOperations } isLoading={ isLoading } txHash={ data.hash }/> }
+      { config.features.tac.isEnabled && <TxDetailsTacOperation isLoading={ isLoading } txHash={ data.hash }/> }
 
       { data.op_interop_messages ? data.op_interop_messages.map((message) => (
         <TxDetailsInterop key={ message.nonce } data={ message } isLoading={ isLoading }/>
@@ -168,33 +151,7 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus, noTxActions }: P
 
       { config.features.crossChainTxs.isEnabled && <TxDetailsCrossChainMessages hash={ data.hash } isLoading={ isLoading }/> }
 
-      <DetailedInfo.ItemLabel
-        hint="Unique character string (TxID) assigned to every verified transaction"
-        isLoading={ isLoading }
-      >
-        Transaction hash
-      </DetailedInfo.ItemLabel>
-      <DetailedInfo.ItemValue multiRow={ config.features.externalTxs.isEnabled && externalTxsQuery.data && externalTxsQuery.data.length > 0 }>
-        <Flex flexWrap="nowrap" alignItems="center" overflow="hidden">
-          { data.status === null && <Spinner mr={ 2 } size="sm" flexShrink={ 0 }/> }
-          <Skeleton loading={ isLoading } overflow="hidden">
-            <HashStringShortenDynamic hash={ data.hash }/>
-          </Skeleton>
-          <CopyToClipboard text={ data.hash } isLoading={ isLoading }/>
-          { config.features.metasuites.isEnabled && (
-            <>
-              <TextSeparator flexShrink={ 0 } display="none" id="meta-suites__tx-explorer-separator"/>
-              <Box display="none" flexShrink={ 0 } id="meta-suites__tx-explorer-link"/>
-            </>
-          ) }
-        </Flex>
-        { config.features.externalTxs.isEnabled && externalTxsQuery.data && externalTxsQuery.data.length > 0 && (
-          <Skeleton loading={ isLoading || externalTxsQuery.isPlaceholderData } display={{ base: 'block', lg: 'inline-flex' }} alignItems="center">
-            { !isMobile && <TextSeparator flexShrink={ 0 }/> }
-            <TxExternalTxs data={ externalTxsQuery.data }/>
-          </Skeleton>
-        ) }
-      </DetailedInfo.ItemValue>
+      <TxHash hash={ data.hash } isLoading={ isLoading } status={ data.status }/>
 
       <DetailedInfo.ItemLabel
         hint="Current transaction state: Success, Failed (Error), or Pending (In Process)"
@@ -972,4 +929,4 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus, noTxActions }: P
   );
 };
 
-export default TxInfo;
+export default TxDetails;

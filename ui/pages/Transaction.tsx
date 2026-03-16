@@ -5,7 +5,6 @@ import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 import type { EntityTag as TEntityTag } from 'ui/shared/EntityTags/types';
 
 import config from 'configs/app';
-import useApiQuery from 'lib/api/useApiQuery';
 import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getQueryParamString from 'lib/router/getQueryParamString';
@@ -19,8 +18,8 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 import TxAssetFlows from 'ui/tx/TxAssetFlows';
 import TxAuthorizations from 'ui/tx/TxAuthorizations';
 import TxBlobs from 'ui/tx/TxBlobs';
-import TxDetails from 'ui/tx/TxDetails';
-import TxDetailsDegraded from 'ui/tx/TxDetailsDegraded';
+import TxDetailsApi from 'ui/tx/TxDetailsApi';
+import TxDetailsRpc from 'ui/tx/TxDetailsRpc';
 import TxDetailsWrapped from 'ui/tx/TxDetailsWrapped';
 import TxFHEOperations from 'ui/tx/TxFHEOperations';
 import TxInternals from 'ui/tx/TxInternals';
@@ -34,7 +33,6 @@ import useTxQuery from 'ui/tx/useTxQuery';
 
 const txInterpretation = config.features.txInterpretation;
 const rollupFeature = config.features.rollup;
-const tacFeature = config.features.tac;
 
 const TransactionPageContent = () => {
   const router = useRouter();
@@ -45,21 +43,14 @@ const TransactionPageContent = () => {
 
   const txQuery = useTxQuery();
 
-  const tacOperationQuery = useApiQuery('tac:operation_by_tx_hash', {
-    pathParams: { tx_hash: hash },
-    queryOptions: {
-      enabled: tacFeature.isEnabled,
-    },
-  });
-
   const { data, isPlaceholderData, isError, error, errorUpdateCount } = txQuery;
 
   const showDegradedView = publicClient && ((isError && error.status !== 422) || isPlaceholderData) && errorUpdateCount > 0;
 
   const tabs: Array<TabItemRegular> = (() => {
     const detailsComponent = showDegradedView ?
-      <TxDetailsDegraded hash={ hash } txQuery={ txQuery }/> :
-      <TxDetails txQuery={ txQuery } tacOperationQuery={ tacFeature.isEnabled ? tacOperationQuery : undefined }/>;
+      <TxDetailsRpc hash={ hash } txQuery={ txQuery }/> :
+      <TxDetailsApi txQuery={ txQuery }/>;
 
     return [
       {
@@ -117,7 +108,7 @@ const TransactionPageContent = () => {
 
   const tags = (
     <EntityTags
-      isLoading={ !txQuery.isFetchedAfterMount || (tacFeature.isEnabled && tacOperationQuery.isPlaceholderData) }
+      isLoading={ !txQuery.isFetchedAfterMount }
       tags={ txTags }
     />
   );
