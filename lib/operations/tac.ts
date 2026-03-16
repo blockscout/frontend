@@ -14,6 +14,8 @@ export function getTacOperationStatus(type: tac.OperationType) {
       return 'Error';
     case tac.OperationType.ROLLBACK:
       return 'Rollback';
+    case tac.OperationType.INSUFFICIENT_FEE:
+      return 'Insufficient fee';
     case tac.OperationType.PENDING:
       return 'Pending';
     default:

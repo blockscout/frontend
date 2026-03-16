@@ -51,7 +51,6 @@ const CsvExportForm = ({ hash, resource, filterType, filterValue, fileNameTempla
         to_period: exportType !== 'holders' ? dayjs(data.to).toISOString() : null,
         filter_type: filterType,
         filter_value: filterValue,
-        recaptcha_response: recaptchaToken,
       }, undefined, multichainContext?.chain);
 
       const response = await fetch(url, {

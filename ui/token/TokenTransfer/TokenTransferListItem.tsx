@@ -65,7 +65,7 @@ const TokenTransferListItem = ({
         fontWeight="500"
       />
       { total && 'value' in total && token && (hasTokenTransferValue(token.type)) && !isConfidentialTokenType(token.type) && (
-        <Flex alignItems="center" columnGap={ 2 } maxW="100%">
+        <Flex alignItems="center" columnGap={ 2 } maxW="100%" w="full">
           <Skeleton
             display="inline-flex"
             alignItems="center"
@@ -89,7 +89,7 @@ const TokenTransferListItem = ({
         </Flex>
       ) }
       { token && isConfidentialTokenType(token.type) && (
-        <Flex alignItems="center" columnGap={ 2 } maxW="100%">
+        <Flex alignItems="center" columnGap={ 2 } maxW="100%" w="full">
           <Skeleton
             display="inline-flex"
             alignItems="center"

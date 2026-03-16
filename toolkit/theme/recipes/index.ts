@@ -5,6 +5,7 @@ import { recipe as button } from './button.recipe';
 import { recipe as checkbox } from './checkbox.recipe';
 import { recipe as checkmark } from './checkmark.recipe';
 import { recipe as closeButton } from './close-button.recipe';
+import { recipe as code } from './code.recipe';
 import { recipe as dialog } from './dialog.recipe';
 import { recipe as drawer } from './drawer.recipe';
 import { recipe as emptyState } from './empty-state.recipe';
@@ -36,6 +37,7 @@ import { recipe as tooltip } from './tooltip.recipe';
 export const recipes = {
   badge,
   button,
+  code,
   checkmark,
   closeButton,
   input,
