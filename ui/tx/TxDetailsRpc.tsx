@@ -15,7 +15,7 @@ import TestnetWarning from 'ui/shared/alerts/TestnetWarning';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
-import TxInfo from './details/TxInfo';
+import TxDetails from './details/TxDetails';
 import type { TxQuery } from './useTxQuery';
 
 type RpcResponseType = [
@@ -30,7 +30,7 @@ interface Props {
   txQuery: TxQuery;
 }
 
-const TxDetailsDegraded = ({ hash, txQuery }: Props) => {
+const TxDetailsRpc = ({ hash, txQuery }: Props) => {
 
   const [ originalError ] = React.useState(txQuery.error);
 
@@ -104,9 +104,9 @@ const TxDetailsDegraded = ({ hash, txQuery }: Props) => {
         <TestnetWarning isLoading={ query.isPlaceholderData }/>
         { originalError?.status !== 404 && <ServiceDegradationWarning isLoading={ query.isPlaceholderData }/> }
       </Flex>
-      <TxInfo data={ query.data } isLoading={ query.isPlaceholderData } noTxActions/>
+      <TxDetails data={ query.data } isLoading={ query.isPlaceholderData } noTxActions/>
     </>
   );
 };
 
-export default React.memo(TxDetailsDegraded);
+export default React.memo(TxDetailsRpc);

@@ -19,8 +19,8 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 import TxAssetFlows from 'ui/tx/TxAssetFlows';
 import TxAuthorizations from 'ui/tx/TxAuthorizations';
 import TxBlobs from 'ui/tx/TxBlobs';
-import TxDetails from 'ui/tx/TxDetails';
-import TxDetailsDegraded from 'ui/tx/TxDetailsDegraded';
+import TxDetailsApi from 'ui/tx/TxDetailsApi';
+import TxDetailsRpc from 'ui/tx/TxDetailsRpc';
 import TxDetailsWrapped from 'ui/tx/TxDetailsWrapped';
 import TxFHEOperations from 'ui/tx/TxFHEOperations';
 import TxInternals from 'ui/tx/TxInternals';
@@ -58,8 +58,8 @@ const TransactionPageContent = () => {
 
   const tabs: Array<TabItemRegular> = (() => {
     const detailsComponent = showDegradedView ?
-      <TxDetailsDegraded hash={ hash } txQuery={ txQuery }/> :
-      <TxDetails txQuery={ txQuery } tacOperationQuery={ tacFeature.isEnabled ? tacOperationQuery : undefined }/>;
+      <TxDetailsRpc hash={ hash } txQuery={ txQuery }/> :
+      <TxDetailsApi txQuery={ txQuery } tacOperationQuery={ tacFeature.isEnabled ? tacOperationQuery : undefined }/>;
 
     return [
       {

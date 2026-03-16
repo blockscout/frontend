@@ -86,7 +86,7 @@ interface Props {
 const externalTxFeature = config.features.externalTxs;
 const rollupFeature = config.features.rollup;
 
-const TxInfo = ({ data, tacOperations, isLoading, socketStatus, noTxActions }: Props) => {
+const TxDetails = ({ data, tacOperations, isLoading, socketStatus, noTxActions }: Props) => {
   const [ isExpanded, setIsExpanded ] = React.useState(false);
 
   const isMobile = useIsMobile();
@@ -972,4 +972,4 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus, noTxActions }: P
   );
 };
 
-export default TxInfo;
+export default TxDetails;

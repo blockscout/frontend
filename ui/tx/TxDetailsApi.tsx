@@ -9,7 +9,7 @@ import TestnetWarning from 'ui/shared/alerts/TestnetWarning';
 import BlockPendingUpdateAlert from 'ui/shared/block/BlockPendingUpdateAlert';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
-import TxInfo from './details/TxInfo';
+import TxDetails from './details/TxDetails';
 import type { TxQuery } from './useTxQuery';
 
 interface Props {
@@ -17,7 +17,7 @@ interface Props {
   tacOperationQuery?: UseQueryResult<tac.OperationsFullResponse, ResourceError>;
 }
 
-const TxDetails = ({ txQuery, tacOperationQuery }: Props) => {
+const TxDetailsApi = ({ txQuery, tacOperationQuery }: Props) => {
   if (txQuery.isError) {
     return <DataFetchAlert/>;
   }
@@ -28,7 +28,7 @@ const TxDetails = ({ txQuery, tacOperationQuery }: Props) => {
         <TestnetWarning isLoading={ txQuery.isPlaceholderData }/>
         { txQuery.data?.is_pending_update && <BlockPendingUpdateAlert view="tx"/> }
       </Flex>
-      <TxInfo
+      <TxDetails
         data={ txQuery.data }
         tacOperations={ tacOperationQuery?.data?.items }
         isLoading={ txQuery.isPlaceholderData || (tacOperationQuery?.isPlaceholderData ?? false) }
@@ -38,4 +38,4 @@ const TxDetails = ({ txQuery, tacOperationQuery }: Props) => {
   );
 };
 
-export default React.memo(TxDetails);
+export default React.memo(TxDetailsApi);
