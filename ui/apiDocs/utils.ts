@@ -42,6 +42,11 @@ export const REST_API_SECTIONS = [
                 if (config.apis.general.port) {
                   url.port = config.apis.general.port;
                 }
+
+                if (config.apis.general.basePath && !url.pathname.includes(config.apis.general.basePath)) {
+                  url.pathname = config.apis.general.basePath + url.pathname;
+                }
+
                 return url;
               }
 
