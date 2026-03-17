@@ -16,6 +16,22 @@ const moduleExports = {
     'react-syntax-highlighter',
   ],
   reactStrictMode: true,
+  // Turbopack config (Next.js 16 default bundler) – mirrors webpack customizations below
+  turbopack: {
+    rules: {
+      '*.svg': {
+        loaders: [ '@svgr/webpack' ],
+        as: '*.js',
+      },
+    },
+    // Stub Node built-ins only in browser bundles; Node (SSR, instrumentation) keeps real modules
+    resolveAlias: {
+      fs: { browser: './nextjs/empty-module.js' },
+      net: { browser: './nextjs/empty-module.js' },
+      tls: { browser: './nextjs/empty-module.js' },
+    },
+  },
+  // Used when BUNDLE_ANALYZER=true (run: next build --webpack) or for custom webpack tooling
   webpack(config) {
     config.module.rules.push(
       {
@@ -45,7 +61,13 @@ const moduleExports = {
   headers,
   output: 'standalone',
   productionBrowserSourceMaps: false,
-  serverExternalPackages: ["@opentelemetry/sdk-node", "@opentelemetry/auto-instrumentations-node"],
+  serverExternalPackages: [
+    '@opentelemetry/sdk-node',
+    '@opentelemetry/auto-instrumentations-node',
+    'pino-pretty',
+    'lokijs',
+    'encoding',
+  ],
   experimental: {
     staleTimes: {
       dynamic: 30,

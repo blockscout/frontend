@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server';
 import * as csp from 'nextjs/csp/index';
 import * as middlewares from 'nextjs/middlewares/index';
 
-export async function middleware(req: NextRequest) {
+export async function proxy(req: NextRequest) {
   const isPageRequest = req.headers.get('accept')?.includes('text/html');
   const start = Date.now();
 
@@ -37,7 +37,7 @@ export async function middleware(req: NextRequest) {
 }
 
 /**
- * Configure which routes should pass through the Middleware.
+ * Configure which routes should pass through the proxy.
  */
 export const config = {
   matcher: [ '/', '/:notunderscore((?!_next).+)' ],
