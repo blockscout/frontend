@@ -39,7 +39,7 @@ Ensure you have the following peer dependencies installed:
     "dayjs": ">=1.11.5",
     "dom-to-image": ">=2.6.0",
     "es-toolkit": ">=1.39.10",
-    "next": ">=15.2.3",
+    "next": ">=16.1.7",
     "next-themes": ">=0.4.4",
     "react": ">=18.3.1",
     "react-dom": ">=18.3.1",
