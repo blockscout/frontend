@@ -6,7 +6,7 @@
         // DEV SERVER
         {
             "type": "shell",
-            "command": "yarn dev:preset ${input:dev_config_preset}",
+            "command": "pnpm dev:preset ${input:dev_config_preset}",
             "problemMatcher": [],
             "label": "dev server",
             "detail": "start local dev server",
@@ -27,7 +27,7 @@
         },
         {
             "type": "shell",
-            "command": "yarn dev:preset:sync --name=${input:dev_config_preset}",
+            "command": "pnpm dev:preset:sync --name=${input:dev_config_preset}",
             "problemMatcher": [],
             "label": "dev preset sync",
             "detail": "synchronize dev preset",
@@ -94,7 +94,7 @@
         // PW TESTS
         {
             "type": "shell",
-            "command": "${input:pwDebugFlag} yarn test:pw:local ${relativeFileDirname}/${fileBasename} ${input:pwArgs}",
+            "command": "${input:pwDebugFlag} pnpm test:pw:local ${relativeFileDirname}/${fileBasename} ${input:pwArgs}",
             "problemMatcher": [],
             "label": "pw: local",
             "detail": "run visual components tests for current file",
@@ -115,7 +115,7 @@
         },
         {
             "type": "shell",
-            "command": "yarn test:pw:docker ${relativeFileDirname}/${fileBasename} ${input:pwArgs}",
+            "command": "pnpm test:pw:docker ${relativeFileDirname}/${fileBasename} ${input:pwArgs}",
             "problemMatcher": [],
             "label": "pw: docker",
             "detail": "run visual components tests for current file",
@@ -136,7 +136,7 @@
         },
         {
             "type": "shell",
-            "command": "yarn test:pw:docker ${input:pwArgs}",
+            "command": "pnpm test:pw:docker ${input:pwArgs}",
             "problemMatcher": [],
             "label": "pw: docker all",
             "detail": "run visual components tests",
@@ -178,7 +178,7 @@
         },
         {
             "type": "shell",
-            "command": "yarn test:pw:detect-affected",
+            "command": "pnpm test:pw:detect-affected",
             "problemMatcher": [],
             "label": "pw: detect affected",
             "detail": "detect PW tests affected by changes in current branch",
@@ -222,7 +222,7 @@
         },
         {
             "type": "shell",
-            "command": "yarn test:vitest ${relativeFileDirname}/${fileBasename}",
+            "command": "pnpm test:vitest ${relativeFileDirname}/${fileBasename}",
             "problemMatcher": [],
             "label": "vitest: file",
             "detail": "run unit tests for current file",
@@ -265,7 +265,7 @@
         },
         {
             "type": "shell",
-            "command": "yarn start:docker:preset ${input:dev_config_preset}",
+            "command": "pnpm start:docker:preset ${input:dev_config_preset}",
             "problemMatcher": [],
             "label": "docker: run",
             "detail": "run docker container with env preset",

@@ -9,4 +9,4 @@ fi
 
 dotenv \
   -e $config_file \
-  -- bash -c 'yarn build && yarn generate'
+  -- bash -c 'pnpm build && pnpm generate'

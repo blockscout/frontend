@@ -5,63 +5,13 @@ FROM node:22.14.0-alpine AS deps
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
 RUN apk add --no-cache libc6-compat python3 make g++
 RUN ln -sf /usr/bin/python3 /usr/bin/python
+RUN corepack enable && corepack prepare pnpm@9.15.0 --activate
 
-### APP
-# Install dependencies
+### Install all workspace dependencies in one place
 WORKDIR /app
-COPY package.json yarn.lock tsconfig.json ./
-COPY types ./types
-COPY lib ./lib
-COPY configs/app ./configs/app
-COPY toolkit/theme ./toolkit/theme
-COPY toolkit/utils ./toolkit/utils
-COPY toolkit/components/forms/validators/url.ts ./toolkit/components/forms/validators/url.ts
 RUN apk add git
-RUN yarn --frozen-lockfile --network-timeout 100000
-
-
-### FEATURE REPORTER
-# Install dependencies
-WORKDIR /feature-reporter
-COPY ./deploy/tools/feature-reporter/package.json ./deploy/tools/feature-reporter/yarn.lock ./
-RUN yarn --frozen-lockfile --network-timeout 100000
-
-
-### ENV VARIABLES CHECKER
-# Install dependencies
-WORKDIR /envs-validator
-COPY ./deploy/tools/envs-validator/package.json ./deploy/tools/envs-validator/yarn.lock ./
-RUN yarn --frozen-lockfile --network-timeout 100000
-
-### FAVICON GENERATOR
-# Install dependencies
-WORKDIR /favicon-generator
-COPY ./deploy/tools/favicon-generator/package.json ./deploy/tools/favicon-generator/yarn.lock ./
-RUN yarn --frozen-lockfile --network-timeout 100000
-
-### SITEMAP GENERATOR
-# Install dependencies
-WORKDIR /sitemap-generator
-COPY ./deploy/tools/sitemap-generator/package.json ./deploy/tools/sitemap-generator/yarn.lock ./
-RUN yarn --frozen-lockfile --network-timeout 100000
-
-### MULTICHAIN CONFIG GENERATOR
-# Install dependencies
-WORKDIR /multichain-config-generator
-COPY ./deploy/tools/multichain-config-generator/package.json ./deploy/tools/multichain-config-generator/yarn.lock ./
-RUN yarn --frozen-lockfile --network-timeout 100000
-
-### ESSENTIAL DAPPS CHAINS CONFIG GENERATOR
-# Install dependencies
-WORKDIR /essential-dapps-chains-config-generator
-COPY ./deploy/tools/essential-dapps-chains-config-generator/package.json ./
-RUN yarn --frozen-lockfile --network-timeout 100000
-
-### llms.txt GENERATOR
-# Install dependencies
-WORKDIR /llms-txt-generator
-COPY ./deploy/tools/llms-txt-generator/package.json ./deploy/tools/llms-txt-generator/yarn.lock ./
-RUN yarn --frozen-lockfile --network-timeout 100000
+COPY . .
+RUN pnpm install --frozen-lockfile
 
 
 # *****************************
@@ -69,6 +19,7 @@ RUN yarn --frozen-lockfile --network-timeout 100000
 # *****************************
 FROM node:22.14.0-alpine AS builder
 RUN apk add --no-cache --upgrade libc6-compat bash jq
+RUN corepack enable && corepack prepare pnpm@9.15.0 --activate
 
 # pass build args to env variables
 ARG GIT_COMMIT_SHA
@@ -81,10 +32,9 @@ ENV NEXT_OPEN_TELEMETRY_ENABLED=$NEXT_OPEN_TELEMETRY_ENABLED
 ENV NODE_ENV production
 
 ### APP
-# Copy dependencies and source code
+# Copy dependencies and source code from deps stage
 WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
-COPY . .
+COPY --from=deps /app ./
 
 # Build SVG sprite and generate .env.registry with ENVs list and save build args into .env file
 RUN set -a && \
@@ -99,45 +49,32 @@ RUN set -a && \
 
 # Build app for production
 ENV NODE_OPTIONS="--max-old-space-size=8192"
-RUN yarn build
+RUN pnpm run build
 
 
 ### FEATURE REPORTER
-# Copy dependencies and source code, then build
-COPY --from=deps /feature-reporter/node_modules ./deploy/tools/feature-reporter/node_modules
-RUN cd ./deploy/tools/feature-reporter && yarn compile_config
-RUN cd ./deploy/tools/feature-reporter && yarn build
+RUN cd ./deploy/tools/feature-reporter && pnpm run compile_config
+RUN cd ./deploy/tools/feature-reporter && pnpm run build
 
 
 ### ENV VARIABLES CHECKER
-# Copy dependencies and source code, then build
-COPY --from=deps /envs-validator/node_modules ./deploy/tools/envs-validator/node_modules
-RUN cd ./deploy/tools/envs-validator && yarn build
+RUN cd ./deploy/tools/envs-validator && pnpm run build
 
 
 ### FAVICON GENERATOR
-# Copy dependencies and source code
-COPY --from=deps /favicon-generator/node_modules ./deploy/tools/favicon-generator/node_modules
-
+# Dependencies already in workspace (no build step)
 
 ### SITEMAP GENERATOR
-# Copy dependencies and source code
-COPY --from=deps /sitemap-generator/node_modules ./deploy/tools/sitemap-generator/node_modules
+# Dependencies already in workspace (no build step)
 
 ### MULTICHAIN CONFIG GENERATOR
-# Copy dependencies and source code, then build
-COPY --from=deps /multichain-config-generator/node_modules ./deploy/tools/multichain-config-generator/node_modules
-RUN cd ./deploy/tools/multichain-config-generator && yarn build
+RUN cd ./deploy/tools/multichain-config-generator && pnpm run build
 
 ### ESSENTIAL DAPPS CHAINS CONFIG GENERATOR
-# Copy dependencies and source code, then build
-COPY --from=deps /essential-dapps-chains-config-generator/node_modules ./deploy/tools/essential-dapps-chains-config-generator/node_modules
-RUN cd ./deploy/tools/essential-dapps-chains-config-generator && yarn build
+RUN cd ./deploy/tools/essential-dapps-chains-config-generator && pnpm run build
 
 ### llms.txt GENERATOR
-# Copy dependencies and source code, then build
-COPY --from=deps /llms-txt-generator/node_modules ./deploy/tools/llms-txt-generator/node_modules
-RUN cd ./deploy/tools/llms-txt-generator && yarn build
+RUN cd ./deploy/tools/llms-txt-generator && pnpm run build
 
 
 # *****************************

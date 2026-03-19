@@ -13,7 +13,7 @@ mkdir -p "./public/assets/configs"
 cp -r ${test_folder}/assets ./public/
 
 # Build validator script
-yarn build
+pnpm run build
 
 validate_file() {
     local test_file="$1"
@@ -23,9 +23,9 @@ validate_file() {
     echo "🧿 Validating file '$test_file'..."
 
     if [ "$with_common" = "true" ]; then
-        dotenv -e "$test_file" -e "$common_file" yarn run validate -- --silent
+        dotenv -e "$test_file" -e "$common_file" pnpm run validate -- --silent
     else
-        dotenv -e "$test_file" yarn run validate -- --silent
+        dotenv -e "$test_file" pnpm run validate -- --silent
     fi
 
     if [ $? -eq 0 ]; then

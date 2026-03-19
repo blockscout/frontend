@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "yarn build && yarn generate:dev",
+    "dev": "pnpm run build && pnpm run generate:dev",
     "build": "vite build --logLevel error",
     "generate": "node dist/index.js",
     "generate:dev": "dotenv -e ../../../configs/envs/.env.eth -- node dist/index.js"

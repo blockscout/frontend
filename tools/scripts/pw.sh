@@ -10,7 +10,7 @@ dotenv \
 
 # Important to set this variable here, so the sprite will be built correctly
 export NEXT_PUBLIC_APP_ENV=pw
-yarn svg:build-sprite
+pnpm svg:build-sprite
 
 # Check if the "--affected" argument is present in the script args
 check_affected_flag() {
