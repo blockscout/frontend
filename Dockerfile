@@ -5,7 +5,7 @@ FROM node:22.14.0-alpine AS deps
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
 RUN apk add --no-cache libc6-compat python3 make g++
 RUN ln -sf /usr/bin/python3 /usr/bin/python
-RUN corepack enable && corepack prepare pnpm@9.15.0 --activate
+RUN corepack enable && corepack prepare pnpm@10.32.1 --activate
 
 ### Install all workspace dependencies in one place
 WORKDIR /app
@@ -19,7 +19,7 @@ RUN pnpm install --frozen-lockfile
 # *****************************
 FROM node:22.14.0-alpine AS builder
 RUN apk add --no-cache --upgrade libc6-compat bash jq
-RUN corepack enable && corepack prepare pnpm@9.15.0 --activate
+RUN corepack enable && corepack prepare pnpm@10.32.1 --activate
 
 # pass build args to env variables
 ARG GIT_COMMIT_SHA
