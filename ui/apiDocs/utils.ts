@@ -27,7 +27,7 @@ export const coreApiRequestInterceptorFactory = (api: ApiPropsFull) => (req: Swa
         }
 
         if (req.url.includes(DEFAULT_SERVER_NEW)) {
-          return new URL(req.url.replace(DEFAULT_SERVER_NEW, `${ api.endpoint }${ api.basePath }/api`));
+          return new URL(req.url.replace(DEFAULT_SERVER_NEW, `${ api.endpoint }${ api.basePath ?? '' }/api`));
         }
 
       } catch (error) {}
