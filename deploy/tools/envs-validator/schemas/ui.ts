@@ -211,7 +211,21 @@ export const miscSchema = yup.object({
     NEXT_PUBLIC_HIDE_INDEXING_ALERT_BLOCKS: yup.boolean(),
     NEXT_PUBLIC_HIDE_INDEXING_ALERT_INT_TXS: yup.boolean(),
     NEXT_PUBLIC_HIDE_NATIVE_COIN_PRICE: yup.boolean(),
-    NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE: yup.string(),
+    NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE: yup
+    .mixed()
+    .test(
+      'shape',
+      'Invalid schema were provided for NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE, it should be either an array of strings or a string',
+      (data) => {
+        const isStringSchema = yup.string();
+        const isArrayOfStringsSchema = yup
+          .array()
+          .transform(replaceQuotes)
+          .json()
+          .of(yup.string());
+
+        return isStringSchema.isValidSync(data) || isArrayOfStringsSchema.isValidSync(data);
+      }),
     NEXT_PUBLIC_COLOR_THEME_DEFAULT: yup.string().oneOf(COLOR_THEME_IDS),
     NEXT_PUBLIC_COLOR_THEME_OVERRIDES: yup.object().transform(replaceQuotes).json(),
     NEXT_PUBLIC_FONT_FAMILY_HEADING: yup
