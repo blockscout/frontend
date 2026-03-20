@@ -28,6 +28,5 @@ export default defineConfig({
       toolkit: resolve(__dirname, '../../../toolkit'),
       types: resolve(__dirname, '../../../types'),
     },
-    preserveSymlinks: true,
   },
 });

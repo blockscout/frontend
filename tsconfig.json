@@ -39,7 +39,8 @@
     "./deploy/tools/favicon-generator",
     "./deploy/tools/multichain-config-generator",
     "./deploy/tools/essential-dapps-chains-config-generator",
+    "./deploy/tools/llms-txt-generator",
+    "./deploy/tools/feature-reporter",
     "./toolkit/package",
-    "./deploy/tools/llms-txt-generator"
   ]
 }

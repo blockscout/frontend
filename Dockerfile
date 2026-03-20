@@ -53,7 +53,6 @@ RUN pnpm run build
 
 
 ### FEATURE REPORTER
-RUN cd ./deploy/tools/feature-reporter && pnpm run compile_config
 RUN cd ./deploy/tools/feature-reporter && pnpm run build
 
 
@@ -103,7 +102,7 @@ COPY --from=builder /app/package.json ./package.json
 
 # Copy tools
 COPY --from=builder /app/deploy/tools/envs-validator/dist/index.js ./envs-validator/index.js
-COPY --from=builder /app/deploy/tools/feature-reporter/index.js ./feature-reporter.js
+COPY --from=builder /app/deploy/tools/feature-reporter/dist/index.js ./feature-reporter.js
 COPY --from=builder /app/deploy/tools/multichain-config-generator/dist ./deploy/tools/multichain-config-generator/dist
 COPY --from=builder /app/deploy/tools/llms-txt-generator/dist ./deploy/tools/llms-txt-generator/dist
 COPY --from=builder /app/deploy/tools/essential-dapps-chains-config-generator/dist ./deploy/tools/essential-dapps-chains-config-generator/dist

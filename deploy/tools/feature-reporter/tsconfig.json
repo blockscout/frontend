@@ -1,17 +1,30 @@
 {
-  "extends": "../../../tsconfig.json",
   "compilerOptions": {
-    "noEmit": false,
-    "module": "CommonJS",
-    "moduleResolution": "node",
-    "outDir": "./build",
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "esModuleInterop": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "./dist",
+    "baseUrl": ".",
     "paths": {
-      "nextjs-routes": ["./nextjs/nextjs-routes.d.ts"],
-    }
+      "configs/*": ["../../../configs/*"],
+      "lib/*": ["../../../lib/*"],
+      "toolkit/*": ["../../../toolkit/*"],
+      "types/*": ["../../../types/*"]
+    },
+    "types": ["node"],
+    "allowImportingTsExtensions": true,
+    "noEmit": true
   },
-  "include": [ "../../../configs/app/index.ts", "../../../global.d.ts" ],
-  "tsc-alias": {
-    "verbose": true,
-    "resolveFullPaths": true,
-  }
+  "include": [
+    "index.ts",
+    "vite.config.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }
