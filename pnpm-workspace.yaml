@@ -8,3 +8,8 @@ packages:
   - 'deploy/tools/essential-dapps-chains-config-generator'
   - 'deploy/tools/llms-txt-generator'
   - 'deploy/tools/affected-tests'
+
+# pnpm 10+: allowlisted dependency install scripts (required for native addons such as @ipshipyard/node-datachannel).
+onlyBuiltDependencies:
+  - '@ipshipyard/node-datachannel'
+  - 'sharp'

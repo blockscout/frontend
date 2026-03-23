@@ -13,8 +13,7 @@ async function generateFavicons() {
       throw new Error('FAVICON_MASTER_URL or NEXT_PUBLIC_NETWORK_ICON must be set');
     }
 
-    const fetch = await import('node-fetch');
-    const response = await fetch.default(masterUrl);
+    const response = await fetch(masterUrl);
     const buffer = await response.arrayBuffer();
     const source = Buffer.from(buffer);
 

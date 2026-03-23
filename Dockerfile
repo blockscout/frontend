@@ -61,10 +61,11 @@ RUN cd ./deploy/tools/envs-validator && pnpm run build
 
 
 ### FAVICON GENERATOR
-# Dependencies already in workspace (no build step)
+# Portable bundle for the runtime image (self-contained node_modules)
+RUN pnpm --filter favicon-generator deploy --prod /app/favicon-generator-bundle
 
 ### SITEMAP GENERATOR
-# Dependencies already in workspace (no build step)
+RUN pnpm --filter sitemap-generator deploy --prod /app/sitemap-generator-bundle
 
 ### MULTICHAIN CONFIG GENERATOR
 RUN cd ./deploy/tools/multichain-config-generator && pnpm run build
@@ -119,12 +120,12 @@ COPY --chmod=755 ./deploy/scripts/download_assets.sh .
 COPY ./deploy/scripts/og_image_generator.js .
 ## Favicon generator
 COPY --chmod=755 ./deploy/scripts/favicon_generator.sh .
-COPY --from=builder /app/deploy/tools/favicon-generator ./deploy/tools/favicon-generator
+COPY --from=builder /app/favicon-generator-bundle ./deploy/tools/favicon-generator
 RUN ["chmod", "-R", "777", "./deploy/tools/favicon-generator"]
 RUN ["chmod", "-R", "777", "./public"]
 ## Sitemap generator
 COPY --chmod=755 ./deploy/scripts/sitemap_generator.sh .
-COPY --from=builder /app/deploy/tools/sitemap-generator ./deploy/tools/sitemap-generator
+COPY --from=builder /app/sitemap-generator-bundle ./deploy/tools/sitemap-generator
 
 # Copy ENVs files
 COPY --from=builder /app/.env.registry .
