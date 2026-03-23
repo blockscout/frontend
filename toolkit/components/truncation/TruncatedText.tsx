@@ -6,7 +6,8 @@ import type { ExcludeUndefined } from 'types/utils';
 
 import type { SkeletonTextProps } from '../../chakra/skeleton';
 import { Skeleton } from '../../chakra/skeleton';
-import { Tooltip, type TooltipProps } from '../../chakra/tooltip';
+import type { TooltipProps } from '../../chakra/tooltip';
+import { Tooltip } from '../../chakra/tooltip';
 import { TruncatedTextTooltip } from './TruncatedTextTooltip';
 
 export interface TruncatedTextProps extends Omit<SkeletonTextProps, 'loading'> {

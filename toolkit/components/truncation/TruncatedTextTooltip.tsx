@@ -4,7 +4,8 @@ import useFontFaceObserver from 'use-font-face-observer';
 
 import type { ExcludeUndefined } from 'types/utils';
 
-import { Tooltip, type TooltipProps } from '../../chakra/tooltip';
+import type { TooltipProps } from '../../chakra/tooltip';
+import { Tooltip } from '../../chakra/tooltip';
 import { useDisclosure } from '../../hooks/useDisclosure';
 import { BODY_TYPEFACE } from '../../theme/foundations/typography';
 

@@ -18,4 +18,4 @@ export npm_config_build_from_source=false
 export npm_config_prefer_offline=true
 export NODE_PATH=$(pwd)/node_modules_linux
 
-pnpm install --modules-folder node_modules_linux
+pnpm install --modules-dir node_modules_linux

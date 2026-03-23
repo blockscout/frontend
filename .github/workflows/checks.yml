@@ -22,6 +22,11 @@ permissions:
   contents: read
   pull-requests: write
 
+# pnpm deps: rely on actions/setup-node cache: pnpm (content-addressable store, keyed on
+# pnpm-lock.yaml). Always run pnpm install --frozen-lockfile in each job — with a warm store
+# it is mostly linking. Caching only the repo-root node_modules tarball omits workspace
+# package node_modules symlinks and breaks tsc/vite in toolkit and deploy/tools/* packages.
+
 jobs:
   code_quality:
     name: Code quality
@@ -35,6 +40,7 @@ jobs:
         uses: pnpm/action-setup@v4
         with:
           version: 10.32.1
+          cache: true
 
       - name: Setup node
         uses: actions/setup-node@v4
@@ -42,21 +48,8 @@ jobs:
           node-version: 22.14.0
           cache: 'pnpm'
 
-      - name: Cache node_modules
-        uses: actions/cache@v4
-        id: cache-node-modules
-        with:
-          path: |
-            node_modules
-          key: node_modules-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
-
       - name: Install dependencies
-        if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: pnpm install --frozen-lockfile
-
-      - name: Generate Chakra types
-        if: steps.cache-node-modules.outputs.cache-hit == 'true'
-        run: pnpm chakra:typegen
 
       - name: Run ESLint
         run: pnpm lint:eslint
@@ -82,6 +75,7 @@ jobs:
         uses: pnpm/action-setup@v4
         with:
           version: 10.32.1
+          cache: true
 
       - name: Setup node
         uses: actions/setup-node@v4
@@ -89,21 +83,8 @@ jobs:
           node-version: 22.14.0
           cache: 'pnpm'
 
-      - name: Cache node_modules
-        uses: actions/cache@v4
-        id: cache-node-modules
-        with:
-          path: |
-            node_modules
-          key: node_modules-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
-
       - name: Install project dependencies
-        if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: pnpm install --frozen-lockfile
-
-      - name: Generate Chakra types
-        if: steps.cache-node-modules.outputs.cache-hit == 'true'
-        run: pnpm chakra:typegen
 
       - name: Type check the package
         run: pnpm --filter @blockscout/ui-toolkit typecheck
@@ -141,6 +122,7 @@ jobs:
         uses: pnpm/action-setup@v4
         with:
           version: 10.32.1
+          cache: true
 
       - name: Setup node
         uses: actions/setup-node@v4
@@ -148,29 +130,11 @@ jobs:
           node-version: 22.14.0
           cache: 'pnpm'
 
-      - name: Cache node_modules
-        uses: actions/cache@v4
-        id: cache-node-modules
-        with:
-          path: |
-            node_modules
-          key: node_modules-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
-
       - name: Install dependencies
-        if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: pnpm install --frozen-lockfile
 
-      - name: Generate Chakra types
-        if: steps.cache-node-modules.outputs.cache-hit == 'true'
-        run: pnpm chakra:typegen
-
       - name: Run validation tests
-        run: |
-          set +e
-          pnpm --filter envs-validator test
-          exitcode="$?"
-          echo "exitcode=$exitcode" >> $GITHUB_OUTPUT
-          exit "$exitcode"
+        run: pnpm --filter envs-validator test
 
   vitest_tests:
     name: Unit tests
@@ -186,6 +150,7 @@ jobs:
         uses: pnpm/action-setup@v4
         with:
           version: 10.32.1
+          cache: true
 
       - name: Setup node
         uses: actions/setup-node@v4
@@ -193,21 +158,8 @@ jobs:
           node-version: 22.14.0
           cache: 'pnpm'
 
-      - name: Cache node_modules
-        uses: actions/cache@v4
-        id: cache-node-modules
-        with:
-          path: |
-            node_modules
-          key: node_modules-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
-
       - name: Install dependencies
-        if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: pnpm install --frozen-lockfile
-
-      - name: Generate Chakra types
-        if: steps.cache-node-modules.outputs.cache-hit == 'true'
-        run: pnpm chakra:typegen
 
       - name: Run Vitest
         run: pnpm test:vitest ${{ github.event_name == 'pull_request' && '--changed=origin/main' || '' }} --passWithNoTests
@@ -227,6 +179,7 @@ jobs:
         uses: pnpm/action-setup@v4
         with:
           version: 10.32.1
+          cache: true
 
       - name: Setup node
         uses: actions/setup-node@v4
@@ -234,21 +187,8 @@ jobs:
           node-version: 22.14.0
           cache: 'pnpm'
 
-      - name: Cache node_modules
-        uses: actions/cache@v4
-        id: cache-node-modules
-        with:
-          path: |
-            node_modules
-          key: node_modules-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
-
       - name: Install dependencies
-        if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: pnpm install --frozen-lockfile
-
-      - name: Generate Chakra types
-        if: steps.cache-node-modules.outputs.cache-hit == 'true'
-        run: pnpm chakra:typegen
 
       - name: Run script
         run: pnpm test:pw:detect-affected
@@ -290,6 +230,7 @@ jobs:
         uses: pnpm/action-setup@v4
         with:
           version: 10.32.1
+          cache: true
 
       - name: Setup node
         uses: actions/setup-node@v4
@@ -297,21 +238,8 @@ jobs:
           node-version: 22.14.0
           cache: 'pnpm'
 
-      - name: Cache node_modules
-        uses: actions/cache@v4
-        id: cache-node-modules
-        with:
-          path: |
-            node_modules
-          key: node_modules-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
-
       - name: Install dependencies
-        if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: pnpm install --frozen-lockfile
-
-      - name: Generate Chakra types
-        if: steps.cache-node-modules.outputs.cache-hit == 'true'
-        run: pnpm chakra:typegen
 
       - name: Download affected tests list
         if: ${{ needs.pw_affected_tests.result == 'success' }}
@@ -369,6 +297,7 @@ jobs:
         uses: pnpm/action-setup@v4
         with:
           version: 10.32.1
+          cache: true
 
       - name: Setup node
         if: steps.check-reports.outputs.has_reports == 'true'
@@ -377,17 +306,8 @@ jobs:
           node-version: 22.14.0
           cache: 'pnpm'
 
-      - name: Cache node_modules
-        if: steps.check-reports.outputs.has_reports == 'true'
-        uses: actions/cache@v4
-        id: cache-node-modules
-        with:
-          path: |
-            node_modules
-          key: node_modules-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
-
       - name: Install dependencies
-        if: steps.check-reports.outputs.has_reports == 'true' && steps.cache-node-modules.outputs.cache-hit != 'true'
+        if: steps.check-reports.outputs.has_reports == 'true'
         run: pnpm install --frozen-lockfile
 
       - name: Merge into HTML Report
