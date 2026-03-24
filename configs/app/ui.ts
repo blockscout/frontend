@@ -42,6 +42,23 @@ const navigationPromoBanner = (() => {
   return envValue || undefined;
 })();
 
+const maintenanceAlertMessage = (() => {
+  const envValue = getEnvValue('NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE');
+  const parsedValue = envValue ? parseEnvJson<Array<string>>(envValue) : undefined;
+
+  if (!parsedValue || !Array.isArray(parsedValue)) {
+    return envValue;
+  }
+
+  if (parsedValue.length < 2) {
+    return parsedValue[0];
+  }
+
+  const index = Math.floor(Math.random() * parsedValue.length);
+
+  return parsedValue[index];
+})();
+
 const UI = Object.freeze({
   navigation: {
     logo: {
@@ -83,7 +100,7 @@ const UI = Object.freeze({
     },
   },
   maintenanceAlert: {
-    message: getEnvValue('NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE'),
+    message: maintenanceAlertMessage,
   },
   apiKeysAlert: {
     message: getEnvValue('NEXT_PUBLIC_API_KEYS_ALERT_MESSAGE'),
