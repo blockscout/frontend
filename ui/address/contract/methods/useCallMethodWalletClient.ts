@@ -23,11 +23,14 @@ export default function useCallMethodWalletClient(): (params: Params) => Promise
   const chainConfig = (multichainContext?.chain.app_config ?? config).chain;
   const targetChainId = chainConfig?.id ? Number(chainConfig.id) : undefined;
 
-  const { data: walletClient } = useWalletClient({ chainId: targetChainId });
+  const { data: walletClient, error } = useWalletClient({ chainId: targetChainId });
   const publicClient = usePublicClient({ chainId: targetChainId });
   const { isConnected, chainId, address: account } = useAccount();
   const { switchChainAsync } = useSwitchChain();
   const { trackTransaction, trackTransactionConfirm } = useRewardsActivity();
+
+  // eslint-disable-next-line no-console
+  console.log('useWalletClient debug:', { walletClient, error, targetChainId, chainId });
 
   return React.useCallback(async({ args, item, addressHash }) => {
     if (!isConnected) {

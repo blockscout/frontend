@@ -30,7 +30,7 @@ on:
             - optimism
             - optimism_sepolia
             - polygon
-            - rootstock
+            - rootstock_testnet
             - scroll_sepolia
             - shibarium
             - stability

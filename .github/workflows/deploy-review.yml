@@ -33,7 +33,7 @@ on:
             - optimism_sepolia
             - polygon
             - rari_testnet
-            - rootstock
+            - rootstock_testnet
             - shibarium
             - scroll_sepolia
             - stability
