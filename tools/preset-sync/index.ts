@@ -107,7 +107,7 @@ function updateFileContent(envsEntries: Array<[ string, string ]>, presetId: key
   const content =
     `# Set of ENVs for ${ chainName } network explorer\n` +
     '# ' + explorerUrl + '\n' +
-    `# This is an auto-generated file. To update all values, run "yarn dev:preset:sync --name=${ presetId }"\n` +
+    `# This is an auto-generated file. To update all values, run "pnpm dev:preset:sync --name=${ presetId }"\n` +
     '\n' +
     '# Local ENVs\n' +
     localEnvsContent + '\n' +

@@ -3,8 +3,10 @@
 # dependencies
 /node_modules
 /node_modules_linux
+/**/node_modules_linux
 /.pnp
 .pnp.js
+.pnpm-store
 
 # testing
 /coverage
@@ -38,8 +40,6 @@ grafana
 
 # debug
 npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
 .pnpm-debug.log*
 
 # local env files

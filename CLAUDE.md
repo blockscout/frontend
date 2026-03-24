@@ -6,28 +6,28 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ```bash
 # Development
-yarn dev                    # Start dev server
-yarn build                  # Production build (Next.js only)
-yarn build:next             # Full build with asset downloading and sprite building
+pnpm dev                    # Start dev server
+pnpm build                  # Production build (Next.js only)
+pnpm build:next             # Full build with asset downloading and sprite building
 
 # Linting
-yarn lint:eslint            # ESLint check
-yarn lint:eslint:fix        # ESLint auto-fix
-yarn lint:tsc               # TypeScript type check
-yarn lint:cspell            # Spell check
-yarn lint:envs-validator:test  # Validate environment variable schemas
+pnpm lint:eslint            # ESLint check
+pnpm lint:eslint:fix        # ESLint auto-fix
+pnpm lint:tsc               # TypeScript type check
+pnpm lint:cspell            # Spell check
+pnpm lint:envs-validator:test  # Validate environment variable schemas
 
 # Testing
-yarn test:vitest            # Unit tests (Vitest, matches **/*.spec.ts(x))
-yarn test:pw                # Playwright component/E2E tests (matches *.pw.tsx)
-yarn test:pw:docker         # Playwright tests in Docker
+pnpm test:vitest            # Unit tests (Vitest, matches **/*.spec.ts(x))
+pnpm test:pw                # Playwright component/E2E tests (matches *.pw.tsx)
+pnpm test:pw:docker         # Playwright tests in Docker
 
 # Assets
-yarn svg:build-sprite       # Rebuild SVG sprite
-yarn chakra:typegen         # Regenerate Chakra UI types
+pnpm svg:build-sprite       # Rebuild SVG sprite
+pnpm chakra:typegen         # Regenerate Chakra UI types
 ```
 
-**Requirements:** Node >=22.14.0, npm >=10.9.0
+**Requirements:** Node >=22.14.0, pnpm (see `package.json` `engines` / `packageManager`)
 
 ## Architecture
 
@@ -93,7 +93,7 @@ When adding, renaming, or removing an environment variable, all of the following
 
 ## Testing
 
-**Vitest** (unit): Files named `*.spec.ts` / `*.spec.tsx`. Run a single file with `yarn test:vitest path/to/file.spec.ts`.
+**Vitest** (unit): Files named `*.spec.ts` / `*.spec.tsx`. Run a single file with `pnpm test:vitest path/to/file.spec.ts`.
 
 **Playwright** (component/E2E): Files named `*.pw.tsx`. Three test projects run against each test: `default` (desktop Chrome 1200×750), `mobile` (iPhone 13 Pro), `dark-color-mode`. Tag tests with `@mobile` or `@dark-mode` to target specific projects; use `-@default` to exclude desktop.
 

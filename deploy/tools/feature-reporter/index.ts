@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-const config = require('./build/configs/app').default;
+import config from 'configs/app';
 
 run();
 

@@ -1,8 +1,10 @@
-import type { Placement } from '@floating-ui/dom';
 import { debounce } from 'es-toolkit';
 import React from 'react';
 import useFontFaceObserver from 'use-font-face-observer';
 
+import type { ExcludeUndefined } from 'types/utils';
+
+import type { TooltipProps } from '../../chakra/tooltip';
 import { Tooltip } from '../../chakra/tooltip';
 import { useDisclosure } from '../../hooks/useDisclosure';
 import { BODY_TYPEFACE } from '../../theme/foundations/typography';
@@ -10,7 +12,7 @@ import { BODY_TYPEFACE } from '../../theme/foundations/typography';
 export interface TruncatedTextTooltipProps {
   children: React.ReactNode;
   label: React.ReactNode;
-  placement?: Placement;
+  placement?: ExcludeUndefined<TooltipProps['positioning']>['placement'];
   interactive?: boolean;
 }
 

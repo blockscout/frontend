@@ -1,10 +1,9 @@
 import { Flex, Text } from '@chakra-ui/react';
-import { getEnsAddress } from '@wagmi/core';
 import { useRouter } from 'next/router';
 import React, { useMemo, useCallback, useEffect, useState } from 'react';
 import { isAddress } from 'viem';
 import { mainnet } from 'viem/chains';
-import { normalize } from 'viem/ens';
+import { getEnsAddress, normalize } from 'viem/ens';
 import { useAccount } from 'wagmi';
 
 import config from 'configs/app';
@@ -14,7 +13,6 @@ import * as mixpanel from 'lib/mixpanel';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { useQueryParams } from 'lib/router/useQueryParams';
 import useWeb3Wallet from 'lib/web3/useWallet';
-import wagmiConfig from 'lib/web3/wagmiConfig';
 import { Button } from 'toolkit/chakra/button';
 import { EmptyState } from 'toolkit/chakra/empty-state';
 import { Tooltip } from 'toolkit/chakra/tooltip';
@@ -26,6 +24,7 @@ import SearchInput from './components/SearchInput';
 import StartScreen from './components/StartScreen';
 import useApprovalsQuery from './hooks/useApprovalsQuery';
 import useCoinBalanceQuery from './hooks/useCoinBalanceQuery';
+import createPublicClient from './lib/createPublicClient';
 
 const feature = config.features.marketplace;
 const dappConfig = feature.isEnabled ? feature.essentialDapps?.revoke : undefined;
@@ -63,6 +62,11 @@ const Revoke = () => {
     [ searchAddress, connectedAddress ],
   );
 
+  const publicClient = useMemo(
+    () => createPublicClient(String(mainnet.id)),
+    [],
+  );
+
   const handleChainValueChange = useCallback(({ value }: { value: Array<string> }) => {
     setSelectedChainId(value);
     mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, {
@@ -74,10 +78,9 @@ const Revoke = () => {
   }, [ updateQuery ]);
 
   const handleSearch = useCallback(async(address: string) => {
-    if (address.endsWith('.eth')) {
+    if (address.endsWith('.eth') && publicClient) {
       try {
-        const ensAddress = await getEnsAddress(wagmiConfig.config, {
-          chainId: mainnet.id,
+        const ensAddress = await getEnsAddress(publicClient, {
           name: normalize(address),
         });
         if (ensAddress) {
@@ -90,7 +93,7 @@ const Revoke = () => {
     if (isAddress(address.toLowerCase())) {
       updateQuery({ address }, true);
     }
-  }, [ updateQuery ]);
+  }, [ updateQuery, publicClient ]);
 
   const handleAddressClick = useCallback(
     (address: string) => () => {

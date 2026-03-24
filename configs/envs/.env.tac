@@ -1,6 +1,6 @@
 # Set of ENVs for TAC network explorer
 # https://explorer.tac.build
-# This is an auto-generated file. To update all values, run "yarn dev:preset:sync --name=tac"
+# This is an auto-generated file. To update all values, run "pnpm dev:preset:sync --name=tac"
 
 # Local ENVs
 NEXT_PUBLIC_APP_PROTOCOL=http

@@ -20,8 +20,8 @@ Install the package using your preferred package manager:
 # Using npm
 npm install @blockscout/ui-toolkit
 
-# Using yarn
-yarn add @blockscout/ui-toolkit
+# Using pnpm
+pnpm add @blockscout/ui-toolkit
 ```
 
 ### Required Dependencies
@@ -125,17 +125,17 @@ Add the following script to your `package.json` to generate Chakra UI type defin
 
 1. Clone the repository and install dependencies:
 ```bash
-yarn
+pnpm
 ```
 
 2. Start the development server:
 ```bash
-yarn dev
+pnpm dev
 ```
 
 3. Build the package:
 ```bash
-yarn build
+pnpm build
 ```
 
 ### Publishing

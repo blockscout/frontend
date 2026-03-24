@@ -3,7 +3,7 @@ master_url="https://raw.githubusercontent.com/blockscout/frontend/main/tools/scr
 
 dotenv \
   -v MASTER_URL=$master_url \
-  -- bash -c 'cd ./deploy/tools/favicon-generator && yarn install --frozen-lockfile && node "$(pwd)/index.js"'
+  -- bash -c 'cd ./deploy/tools/favicon-generator && node "$(pwd)/index.js"'
 
 if [ -d "$favicon_folder" ]; then
   rm -r "$favicon_folder"

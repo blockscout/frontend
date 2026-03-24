@@ -26,12 +26,18 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.32.1
+
       # Also it will setup .npmrc file to publish to npm
       - name: Setup node
         uses: actions/setup-node@v4
         with:
           node-version: '22.14.0'
           registry-url: 'https://registry.npmjs.org'
+          cache: 'pnpm'
 
       # Ensure npm 11.5.1 is installed
       - name: Update npm
@@ -41,13 +47,11 @@ jobs:
         run: |
           cd ./toolkit/package
           npm version ${{ inputs.version }}
-    
-      - name: Build the package
+
+      - name: Install dependencies and build the package
         run: |
-          yarn
-          cd ./toolkit/package
-          yarn
-          yarn build
+          pnpm install --frozen-lockfile
+          pnpm --filter @blockscout/ui-toolkit build
     
       - name: Publish to NPM registry
         run: |

@@ -1,15 +1,16 @@
 import ERC20Artifact from '@openzeppelin/contracts/build/contracts/ERC20.json';
 import NftArtifact from '@openzeppelin/contracts/build/contracts/ERC721.json';
-import { waitForTransactionReceipt } from '@wagmi/core';
 import { useCallback } from 'react';
+import { waitForTransactionReceipt } from 'viem/actions';
 import { useAccount, useWriteContract, useSwitchChain } from 'wagmi';
 
 import type { AllowanceType } from 'types/client/revoke';
 
 import useRewardsActivity from 'lib/hooks/useRewardsActivity';
 import * as mixpanel from 'lib/mixpanel/index';
-import wagmiConfig from 'lib/web3/wagmiConfig';
 import { toaster } from 'toolkit/chakra/toaster';
+
+import createPublicClient from '../lib/createPublicClient';
 
 export default function useRevoke() {
   const { address: userAddress } = useAccount();
@@ -48,7 +49,12 @@ export default function useRevoke() {
         await trackTransactionConfirm(hash, activityResponse.token);
       }
 
-      const receipt = await waitForTransactionReceipt(wagmiConfig.config, { hash, chainId });
+      const publicClient = createPublicClient(String(chainId));
+      if (!publicClient) {
+        throw new Error('Public client not found');
+      }
+
+      const receipt = await waitForTransactionReceipt(publicClient, { hash });
 
       if (receipt.status === 'reverted') {
         throw new Error('Failed to revoke approval.');

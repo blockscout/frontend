@@ -2,9 +2,8 @@ import { GrowthBookProvider } from '@growthbook/growthbook-react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React from 'react';
 import { http } from 'viem';
-import { WagmiProvider, createConfig } from 'wagmi';
+import { WagmiProvider, createConfig, mock } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
-import { mock } from 'wagmi/connectors';
 
 import type { Props as PageProps } from 'nextjs/getServerSideProps/handlers';
 

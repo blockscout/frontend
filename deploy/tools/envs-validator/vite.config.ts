@@ -28,6 +28,5 @@ export default defineConfig({
       types: resolve(__dirname, '../../../types'),
       public: resolve(__dirname, '../../../public'),
     },
-    preserveSymlinks: true,
   },
 });

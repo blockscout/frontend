@@ -3,7 +3,7 @@
     "hooks": {
         "afterFileEdit": [
             {
-                "command": "yarn eslint --fix ${file}",
+                "command": "pnpm eslint --fix ${file}",
                 "filter": {
                     "include": ["**/*.{ts,tsx,js,jsx}"]
                 }
