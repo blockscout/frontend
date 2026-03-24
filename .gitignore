@@ -3,8 +3,10 @@
 # dependencies
 /node_modules
 /node_modules_linux
+/**/node_modules_linux
 /.pnp
 .pnp.js
+.pnpm-store
 
 # testing
 /coverage
