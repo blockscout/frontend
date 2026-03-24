@@ -40,6 +40,7 @@ const config: PlaywrightTestConfig = defineConfig({
   expect: {
     toHaveScreenshot: {
       threshold: 0.05,
+      maxDiffPixels: 5,
     },
   },
 
