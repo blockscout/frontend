@@ -1,12 +1,13 @@
 import React from 'react';
-import { encodeFunctionData, getAddress, type Abi } from 'viem';
-import { useAccount, useWalletClient, useSwitchChain, usePublicClient } from 'wagmi';
+import { getAddress, type Abi } from 'viem';
+import { useAccount, useWalletClient, useSwitchChain } from 'wagmi';
 
 import type { FormSubmitResult, SmartContractMethod } from './types';
 
 import config from 'configs/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import useRewardsActivity from 'lib/hooks/useRewardsActivity';
+import useWallet from 'lib/web3/useWallet';
 
 import { getNativeCoinValue } from './utils';
 
@@ -24,10 +25,11 @@ export default function useCallMethodWalletClient(): (params: Params) => Promise
   const targetChainId = chainConfig?.id ? Number(chainConfig.id) : undefined;
 
   const { data: walletClient, error } = useWalletClient({ chainId: targetChainId });
-  const publicClient = usePublicClient({ chainId: targetChainId });
   const { isConnected, chainId, address: account } = useAccount();
   const { switchChainAsync } = useSwitchChain();
   const { trackTransaction, trackTransactionConfirm } = useRewardsActivity();
+
+  const { type: walletType } = useWallet({ source: 'Smart contracts' });
 
   // eslint-disable-next-line no-console
   console.log('useWalletClient debug:', { walletClient, error, targetChainId, chainId });
@@ -59,13 +61,9 @@ export default function useCallMethodWalletClient(): (params: Params) => Promise
       const data = typeof _args[0] === 'string' && _args[0].startsWith('0x') ? _args[0] as `0x${ string }` : undefined;
 
       // seems like Dynamic WaaS (assigned when user signed up with email) does not estimate gas for transactions
-      // so we have to do it manually
-      const estimatedGas = feature.isEnabled && feature.connectorType === 'dynamic' ? await publicClient?.estimateGas({
-        account,
-        to: address,
-        value,
-        data: item.type === 'fallback' ? data : undefined,
-      }) : undefined;
+      // so we pass 0 as gas here
+      const estimatedGas = feature.isEnabled && feature.connectorType === 'dynamic' && walletType === 'dynamicwaas' ?
+        BigInt(0) : undefined;
 
       const hash = await walletClient.sendTransaction({
         to: address,
@@ -88,17 +86,9 @@ export default function useCallMethodWalletClient(): (params: Params) => Promise
     }
 
     // seems like Dynamic WaaS (assigned when user signed up with email) does not estimate gas for transactions
-    // so we have to do it manually
-    const estimatedGas = feature.isEnabled && feature.connectorType === 'dynamic' ? await publicClient?.estimateGas({
-      account,
-      to: address,
-      value,
-      data: encodeFunctionData({
-        abi: [ item ],
-        functionName: methodName,
-        args: _args,
-      }),
-    }) : undefined;
+    // so we pass 0 as gas here
+    const estimatedGas = feature.isEnabled && feature.connectorType === 'dynamic' && walletType === 'dynamicwaas' ?
+      BigInt(0) : undefined;
 
     const hash = await walletClient.writeContract({
       args: _args,
@@ -122,5 +112,5 @@ export default function useCallMethodWalletClient(): (params: Params) => Promise
     }
 
     return { source: 'wallet_client', data: { hash } };
-  }, [ isConnected, walletClient, chainId, targetChainId, trackTransaction, account, publicClient, switchChainAsync, trackTransactionConfirm ]);
+  }, [ isConnected, walletClient, chainId, targetChainId, trackTransaction, account, walletType, switchChainAsync, trackTransactionConfirm ]);
 }
