@@ -36,8 +36,14 @@
             return;
           }
 
-          window.document.querySelector('iframe').src = data.src;
-          window.parent.postMessage({ type: 'nft-html-embed-loaded', src: data.src }, window.location.origin);
+          const iframe = window.document.querySelector('iframe');
+          if (!iframe) {
+            return;
+          }
+          iframe.src = data.src;
+          iframe.onload = () => {
+            window.parent.postMessage({ type: 'nft-html-embed-loaded', src: data.src }, window.location.origin);
+          };
       });
     })();
   </script>
