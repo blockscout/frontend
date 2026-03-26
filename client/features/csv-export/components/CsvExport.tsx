@@ -1,3 +1,5 @@
+import type { JsxStyleProps } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import { mapValues } from 'es-toolkit';
 import React from 'react';
 
@@ -15,9 +17,9 @@ import { useMultichainContext } from 'lib/contexts/multichain';
 import dayjs from 'lib/date/dayjs';
 import useIsInitialLoading from 'lib/hooks/useIsInitialLoading';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import type { IconButtonProps } from 'toolkit/chakra/icon-button';
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { toaster } from 'toolkit/chakra/toaster';
+import { Tooltip } from 'toolkit/chakra/tooltip';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import { downloadBlob } from 'toolkit/utils/file';
 import IconSvg from 'ui/shared/IconSvg';
@@ -28,14 +30,16 @@ import getFileName from '../utils/getFileName';
 import CsvExportDialog from './dialog/CsvExportDialog';
 import CsvExportDialogDescription from './dialog/CsvExportDialogDescription';
 
-interface Props<R extends ResourceName> extends Omit<IconButtonProps, 'type'> {
+interface Props<R extends ResourceName> extends JsxStyleProps {
   type: CsvExportType;
   resourceName: R;
-  pathParams: ResourcePathParams<R>;
-  queryParams?: Record<string, NextJsQueryParam>;
+  pathParams?: ResourcePathParams<R>;
+  queryParams?: Record<string, NextJsQueryParam | null>;
   extraParams?: Record<string, string>;
   chainData?: ClusterChainConfig;
   loadingInitial?: boolean;
+  loadingSkeleton?: boolean;
+  periodFilter?: boolean;
 }
 
 const CsvExport = <R extends ResourceName>({
@@ -47,8 +51,11 @@ const CsvExport = <R extends ResourceName>({
   pathParams,
   queryParams,
   extraParams,
+  periodFilter = true,
   ...rest
 }: Props<R>) => {
+
+  const [ isPending, setIsPending ] = React.useState(false);
 
   const abortControllerRef = React.useRef<AbortController | null>(null);
 
@@ -69,24 +76,28 @@ const CsvExport = <R extends ResourceName>({
   const mergedParams: Record<string, string> = React.useMemo(() => {
     return {
       ...pathParams,
-      ...mapValues(queryParams || {}, (value) => getQueryParamString(value)),
+      ...mapValues(queryParams || {}, (value) => getQueryParamString(value ?? undefined)),
       ...extraParams,
     };
   }, [ pathParams, queryParams, extraParams ]);
 
   const fetchFactorySync = React.useCallback((data?: FormFields) => {
     return async(recaptchaToken?: string) => {
+      const chain = chainData || multichainContext?.chain;
       const url = buildUrl(resourceName, pathParams, {
         ...mapValues(data || {}, (value) => dayjs(value).toISOString()),
         ...queryParams,
-      }, undefined, multichainContext?.chain);
+      }, undefined, chain);
+
+      abortControllerRef.current = new AbortController();
 
       const response = await fetch(url, {
         headers: {
           'content-type': 'application/octet-stream',
           ...(recaptchaToken && { 'recaptcha-v2-response': recaptchaToken }),
-          ...(isNeedProxy() && multichainContext?.chain ? { 'x-endpoint': multichainContext.chain.app_config.apis.general?.endpoint } : {}),
+          ...(isNeedProxy() && chain ? { 'x-endpoint': chain.app_config.apis.general?.endpoint } : {}),
         },
+        signal: abortControllerRef.current?.signal,
       });
 
       if (!response.ok) {
@@ -99,10 +110,11 @@ const CsvExport = <R extends ResourceName>({
 
       return response;
     };
-  }, [ resourceName, pathParams, queryParams, multichainContext?.chain ]);
+  }, [ resourceName, pathParams, queryParams, chainData, multichainContext?.chain ]);
 
   const downloadFileSync = React.useCallback(async(data?: FormFields) => {
     try {
+      setIsPending(true);
       const response = await recaptcha.fetchProtectedResource<Response>(fetchFactorySync(data));
       const blob = await response.blob();
       downloadBlob(
@@ -120,12 +132,18 @@ const CsvExport = <R extends ResourceName>({
         title: 'Error',
         description: (error as Error)?.message || 'Something went wrong. Try again later.',
       });
+    } finally {
+      setIsPending(false);
     }
   }, [ chainConfig, fetchFactorySync, mergedParams, recaptcha, type ]);
 
   const handleButtonClick = React.useCallback(() => {
-    dialog.onOpen();
-  }, [ dialog ]);
+    if (periodFilter) {
+      dialog.onOpen();
+    } else {
+      downloadFileSync();
+    }
+  }, [ dialog, downloadFileSync, periodFilter ]);
 
   const handleFormSubmit = React.useCallback(async(data: FormFields) => {
     const isSuccess = await downloadFileSync(data);
@@ -144,17 +162,24 @@ const CsvExport = <R extends ResourceName>({
   }
 
   return (
-    <>
-      <IconButton
-        size="md"
-        variant="icon_background"
-        aria-label="Download CSV"
-        loadingSkeleton={ isInitialLoading || loadingSkeleton }
-        onClick={ handleButtonClick }
-        { ...rest }
+    <Box { ...rest }>
+      <Tooltip
+        content="This feature is not available due to a reCAPTCHA initialization error. Please contact the project team on Discord to report this issue."
+        disabled={ !recaptcha.isInitError }
       >
-        <IconSvg name="files/csv" boxSize={ 5 }/>
-      </IconButton>
+        <IconButton
+          size="md"
+          variant="icon_background"
+          aria-label="Download CSV"
+          //   TODO @tom2drum icon button loading state
+          loading={ isPending }
+          loadingSkeleton={ isInitialLoading || loadingSkeleton }
+          onClick={ handleButtonClick }
+          disabled={ recaptcha.isInitError }
+        >
+          <IconSvg name="files/csv" boxSize={ 5 }/>
+        </IconButton>
+      </Tooltip>
       <CsvExportDialog
         open={ dialog.open }
         onOpenChange={ dialog.onOpenChange }
@@ -168,8 +193,8 @@ const CsvExport = <R extends ResourceName>({
           recordsLimit={ recordsLimit }
         />
       </CsvExportDialog>
-      <ReCaptcha { ...recaptcha }/>
-    </>
+      <ReCaptcha { ...recaptcha } hideWarning/>
+    </Box>
   );
 };
 

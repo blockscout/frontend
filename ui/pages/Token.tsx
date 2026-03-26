@@ -8,6 +8,7 @@ import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 import type { TokenInfo } from 'types/api/token';
 import type { PaginationParams } from 'ui/shared/pagination/types';
 
+import CsvExport from 'client/features/csv-export/components/CsvExport';
 import config from 'configs/app';
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -25,7 +26,6 @@ import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import Address3rdPartyWidgets from 'ui/address/Address3rdPartyWidgets';
 import useAddress3rdPartyWidgets from 'ui/address/address3rdPartyWidgets/useAddress3rdPartyWidgets';
 import AddressContract from 'ui/address/AddressContract';
-import AddressCsvExportLink from 'ui/address/AddressCsvExportLink';
 import { CONTRACT_TAB_IDS } from 'ui/address/contract/utils';
 import TextAd from 'ui/shared/ad/TextAd';
 import IconSvg from 'ui/shared/IconSvg';
@@ -44,7 +44,6 @@ export type TokenTabs = 'token_transfers' | 'holders' | 'inventory';
 const TABS_RIGHT_SLOT_PROPS = {
   display: 'flex',
   alignItems: 'center',
-  columnGap: 4,
 };
 
 const TokenPageContent = () => {
@@ -262,14 +261,18 @@ const TokenPageContent = () => {
           <TokenAdvancedFilterLink token={ tokenQuery.data } ml={ 6 }/>
         ) }
         { tab === 'holders' && (
-          <AddressCsvExportLink
-            address={ hashString }
-            params={{ type: 'holders' }}
-            isLoading={ pagination?.isLoading }
+          <CsvExport
+            type="token_holders"
+            resourceName="general:token_csv_export_holders"
+            pathParams={{ hash: hashString }}
+            queryParams={{ from_period: null, to_period: null }}
+            extraParams={{ token_name: tokenQuery.data?.name || 'Unknown token' }}
+            periodFilter={ false }
+            loadingInitial={ pagination?.isLoading }
             ml={ 6 }
           />
         ) }
-        { pagination?.isVisible && <Pagination { ...pagination }/> }
+        { pagination?.isVisible && <Pagination ml={ 6 } { ...pagination }/> }
       </>
     );
   }, [ hashString, isMobile, pagination, tab, tokenQuery.data ]);

@@ -3,13 +3,13 @@ import React from 'react';
 
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 
+import CsvExport from 'client/features/csv-export/components/CsvExport';
 import multichainConfig from 'configs/multichain';
 import { MultichainProvider } from 'lib/contexts/multichain';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { LOG } from 'stubs/log';
 import { generateListStub } from 'stubs/utils';
-import AddressCsvExportLink from 'ui/address/AddressCsvExportLink';
 import ChainSelect from 'ui/multichain/components/ChainSelect';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
@@ -61,12 +61,13 @@ const MultichainAddressLogs = ({ addressData, isLoading }: Props) => {
         mode={ isMobile ? 'compact' : 'default' }
       />
       { (data?.items.length ?? 0) > 0 && (
-        <AddressCsvExportLink
-          address={ hash }
-          isLoading={ pagination.isLoading }
-          params={{ type: 'logs' }}
-          ml={{ base: 2, lg: 'auto' }}
+        <CsvExport
+          type="address_logs"
+          resourceName="general:address_csv_export_logs"
+          pathParams={{ hash }}
+          loadingInitial={ pagination.isLoading }
           chainData={ chainData }
+          ml={{ base: 2, lg: 'auto' }}
         />
       ) }
       <Pagination ml={{ base: 'auto', lg: 8 }} { ...pagination }/>

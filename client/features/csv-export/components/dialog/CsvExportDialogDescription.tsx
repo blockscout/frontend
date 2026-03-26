@@ -16,9 +16,9 @@ interface Props {
 
 const CsvExportDialogDescription = ({ type, params, chainInfo, recordsLimit }: Props) => {
   const chainInfoElement = chainInfo ? (
-    <Flex display="inline-flex" alignItems="center" columnGap={ 2 }>
-      <span>on</span>
-      <ChainIcon data={ chainInfo }/>
+    <Flex display="inline-flex" alignItems="center" whiteSpace="pre">
+      <span> on </span>
+      <ChainIcon data={ chainInfo } mr={ 1 }/>
       <span>{ chainInfo.app_config.chain.name }</span>
     </Flex>
   ) : null;
@@ -38,15 +38,16 @@ const CsvExportDialogDescription = ({ type, params, chainInfo, recordsLimit }: P
   }
 
   if (type.startsWith('address_')) {
+    const entityText = type.replace('address_', '').replace('_', ' ');
     return (
-      <Text>
-        <span>Export { type.replace('address_', '').replace('_', ' ') } for address </span>
+      <Text as="div">
+        <span>Export { entityText } for address </span>
         { params?.hash && <chakra.span fontWeight="700">{ shortenString(params.hash) }</chakra.span> }
         { params?.filter_type && params?.filter_value &&
             <span> with applied filter by { params.filter_type } ({ params.filter_value })</span> }
         { chainInfoElement }
         <span> to CSV file. </span>
-        <span>Limited to the last { limitText } { type.replace('address_', '') }.</span>
+        <span>Limited to the last { limitText } { entityText }.</span>
       </Text>
     );
   }

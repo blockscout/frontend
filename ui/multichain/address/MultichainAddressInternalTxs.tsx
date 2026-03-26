@@ -3,9 +3,9 @@ import React from 'react';
 
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 
+import CsvExport from 'client/features/csv-export/components/CsvExport';
 import multichainConfig from 'configs/multichain';
 import { MultichainProvider } from 'lib/contexts/multichain';
-import AddressCsvExportLink from 'ui/address/AddressCsvExportLink';
 import AddressTxsFilter from 'ui/address/AddressTxsFilter';
 import useAddressInternalTxsQuery from 'ui/address/useAddressInternalTxsQuery';
 import InternalTxsList from 'ui/internalTxs/InternalTxsList';
@@ -67,12 +67,17 @@ const MultichainAddressInternalTxs = ({ addressData, isLoading }: Props) => {
         chainIds={ chainIds }
         ml={ 2 }
       />
-      <AddressCsvExportLink
-        address={ hash }
-        isLoading={ pagination.isLoading }
-        params={{ type: 'internal-transactions', filterType: 'address', filterValue }}
-        ml={{ base: 2, lg: 'auto' }}
+      <CsvExport
+        type="address_internal_transactions"
+        resourceName="general:address_csv_export_internal_txs"
+        pathParams={{ hash }}
+        queryParams={ filterValue ? {
+          filter_type: 'address',
+          filter_value: filterValue,
+        } : undefined }
+        loadingInitial={ pagination.isLoading }
         chainData={ chainData }
+        ml={{ base: 2, lg: 'auto' }}
       />
       <Pagination ml={{ base: 'auto', lg: 8 }} { ...pagination }/>
     </ActionBar>

@@ -1,6 +1,7 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
+import CsvExport from 'client/features/csv-export/components/CsvExport';
 import useIsMounted from 'lib/hooks/useIsMounted';
 import InternalTxsList from 'ui/internalTxs/InternalTxsList';
 import InternalTxsTable from 'ui/internalTxs/InternalTxsTable';
@@ -8,7 +9,6 @@ import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/pagination/Pagination';
 
-import AddressCsvExportLink from './AddressCsvExportLink';
 import AddressTxsFilter from './AddressTxsFilter';
 import useAddressInternalTxsQuery from './useAddressInternalTxsQuery';
 
@@ -45,13 +45,18 @@ const AddressInternalTxs = ({ shouldRender = true, isQueryEnabled = true }: Prop
         hasActiveFilter={ Boolean(filterValue) }
         isLoading={ pagination.isLoading }
       />
-      <AddressCsvExportLink
-        address={ hash }
-        isLoading={ pagination.isLoading }
-        params={{ type: 'internal-transactions', filterType: 'address', filterValue }}
-        ml={{ base: 2, lg: 'auto' }}
+      <CsvExport
+        type="address_internal_transactions"
+        resourceName="general:address_csv_export_internal_txs"
+        pathParams={{ hash }}
+        queryParams={ filterValue ? {
+          filter_type: 'address',
+          filter_value: filterValue,
+        } : undefined }
+        loadingInitial={ pagination.isLoading }
+        ml={{ base: 2, lg: 3 }}
       />
-      <Pagination ml={{ base: 'auto', lg: 8 }} { ...pagination }/>
+      <Pagination ml="auto" { ...pagination }/>
     </ActionBar>
   );
 

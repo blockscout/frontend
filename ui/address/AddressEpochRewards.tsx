@@ -2,6 +2,7 @@ import { Box } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import CsvExport from 'client/features/csv-export/components/CsvExport';
 import useIsMounted from 'lib/hooks/useIsMounted';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { EPOCH_REWARD_ITEM } from 'stubs/address';
@@ -12,7 +13,6 @@ import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
-import AddressCsvExportLink from './AddressCsvExportLink';
 import AddressEpochRewardsListItem from './epochRewards/AddressEpochRewardsListItem';
 
 type Props = {
@@ -70,11 +70,11 @@ const AddressEpochRewards = ({ shouldRender = true, isQueryEnabled = true }: Pro
 
   const actionBar = (
     <ActionBar mt={ -6 }>
-      <AddressCsvExportLink
-        address={ hash }
-        isLoading={ rewardsQuery.pagination.isLoading }
-        params={{ type: 'epoch-rewards' }}
-        ml={{ lg: 'auto' }}
+      <CsvExport
+        type="address_epoch_rewards"
+        resourceName="general:address_csv_export_celo_election_rewards"
+        pathParams={{ hash }}
+        loadingInitial={ rewardsQuery.pagination.isLoading }
       />
       { rewardsQuery.pagination.isVisible && (
         <Pagination

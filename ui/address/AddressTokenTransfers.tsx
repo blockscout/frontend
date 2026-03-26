@@ -2,6 +2,7 @@ import { HStack } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import CsvExport from 'client/features/csv-export/components/CsvExport';
 import config from 'configs/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useIsMounted from 'lib/hooks/useIsMounted';
@@ -16,7 +17,6 @@ import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import TokenTransferFilter from 'ui/shared/TokenTransfer/TokenTransferFilter';
 
 import AddressAdvancedFilterLink from './AddressAdvancedFilterLink';
-import AddressCsvExportLink from './AddressCsvExportLink';
 import AddressTokenTransfersLocal from './AddressTokenTransfersLocal';
 import useAddressTokenTransfersQuery from './useAddressTokenTransfersQuery';
 
@@ -116,7 +116,7 @@ const AddressTokenTransfers = ({ shouldRender = true, overloadCount, isQueryEnab
 
       return (
         <>
-          <HStack gap={ 2 }>
+          <HStack gap={ 3 }>
             <TokenTransferFilter
               defaultTypeFilters={ localQuery.filters.type }
               onTypeFilterChange={ localQuery.onTypeFilterChange }
@@ -126,6 +126,16 @@ const AddressTokenTransfers = ({ shouldRender = true, overloadCount, isQueryEnab
               defaultAddressFilter={ localQuery.filters.filter }
               isLoading={ localQuery.query.isPlaceholderData }
             />
+            <CsvExport
+              type="address_token_transfers"
+              resourceName="general:address_csv_export_token_transfers"
+              pathParams={{ hash }}
+              queryParams={ localQuery.filters.filter ? {
+                filter_type: 'address',
+                filter_value: localQuery.filters.filter,
+              } : undefined }
+              loadingInitial={ localQuery.query.isPlaceholderData }
+            />
           </HStack>
           <HStack gap={{ base: 2, lg: 6 }} ml={{ base: 2, lg: 'auto' }} _empty={{ display: 'none' }}>
             <AddressAdvancedFilterLink
@@ -133,11 +143,6 @@ const AddressTokenTransfers = ({ shouldRender = true, overloadCount, isQueryEnab
               address={ hash }
               typeFilter={ localQuery.filters.type }
               directionFilter={ localQuery.filters.filter }
-            />
-            <AddressCsvExportLink
-              address={ hash }
-              params={{ type: 'token-transfers', filterType: 'address', filterValue: localQuery.filters.filter }}
-              isLoading={ localQuery.query.isPlaceholderData }
             />
           </HStack>
           <Pagination ml={{ base: 'auto', lg: 8 }} { ...localQuery.query.pagination }/>

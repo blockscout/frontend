@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import CsvExport from 'client/features/csv-export/components/CsvExport';
 import useIsMounted from 'lib/hooks/useIsMounted';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { LOG } from 'stubs/log';
@@ -11,7 +12,6 @@ import LogItem from 'ui/shared/logs/LogItem';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
-import AddressCsvExportLink from './AddressCsvExportLink';
 import useAddressQuery from './utils/useAddressQuery';
 
 type Props = {
@@ -42,12 +42,13 @@ const AddressLogs = ({ shouldRender = true, isQueryEnabled = true }: Props) => {
 
   const actionBar = (
     <ActionBar mt={ -6 } showShadow justifyContent={{ base: 'space-between', lg: 'end' }}>
-      <AddressCsvExportLink
-        address={ hash }
-        isLoading={ pagination.isLoading }
-        params={{ type: 'logs' }}
+      <CsvExport
+        type="address_logs"
+        resourceName="general:address_csv_export_logs"
+        pathParams={{ hash }}
+        loadingInitial={ pagination.isLoading }
       />
-      <Pagination ml={{ base: 0, lg: 8 }} { ...pagination }/>
+      <Pagination ml="auto" { ...pagination }/>
     </ActionBar>
   );
 

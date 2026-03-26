@@ -5,6 +5,7 @@ import React from 'react';
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
+import CsvExport from 'client/features/csv-export/components/CsvExport';
 import multichainConfig from 'configs/multichain';
 import getSocketUrl from 'lib/api/getSocketUrl';
 import { MultichainProvider } from 'lib/contexts/multichain';
@@ -14,7 +15,6 @@ import { SocketProvider } from 'lib/socket/context';
 import { EmptyState } from 'toolkit/chakra/empty-state';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import AddressAdvancedFilterLink from 'ui/address/AddressAdvancedFilterLink';
-import AddressCsvExportLink from 'ui/address/AddressCsvExportLink';
 import AddressTokenTransfersLocal from 'ui/address/AddressTokenTransfersLocal';
 import useAddressTokenTransfersQuery from 'ui/address/useAddressTokenTransfersQuery';
 import useAddressCountersQuery from 'ui/address/utils/useAddressCountersQuery';
@@ -142,11 +142,16 @@ const MultichainAddressTokenTransfers = ({ addressData, isLoading }: Props) => {
               directionFilter={ transfersQueryLocal.filters.filter }
               chainData={ chainData }
             />
-            <AddressCsvExportLink
-              address={ hash }
-              params={{ type: 'token-transfers', filterType: 'address', filterValue: transfersQueryLocal.filters.filter }}
-              isLoading={ transfersQueryLocal.query.pagination.isLoading }
+            <CsvExport
+              type="address_token_transfers"
+              resourceName="general:address_csv_export_token_transfers"
+              pathParams={{ hash }}
+              queryParams={ transfersQueryLocal.filters.filter ? {
+                filter_type: 'address',
+                filter_value: transfersQueryLocal.filters.filter,
+              } : undefined }
               chainData={ chainData }
+              loadingInitial={ transfersQueryLocal.query.pagination.isLoading }
             />
             <Pagination { ...transfersQueryLocal.query.pagination }/>
           </HStack>

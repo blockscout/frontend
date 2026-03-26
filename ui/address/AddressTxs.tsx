@@ -117,7 +117,7 @@ const AddressTxs = ({ shouldRender = true, isQueryEnabled = true }: Props) => {
 
       return (
         <>
-          <HStack gap={ 2 }>
+          <HStack gap={ 3 }>
             { txsLocalFilter }
             <CsvExport
               type="address_transactions"
