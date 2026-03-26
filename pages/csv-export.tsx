@@ -5,6 +5,7 @@ import PageNextJs from 'nextjs/PageNextJs';
 
 import CsvExport from 'ui/pages/CsvExport';
 
+// TODO @tom2drum remove page and component
 const Page: NextPage = () => {
   return (
     <PageNextJs pathname="/csv-export">
@@ -14,5 +15,3 @@ const Page: NextPage = () => {
 };
 
 export default Page;
-
-export { csvExport as getServerSideProps } from 'nextjs/getServerSideProps/main';

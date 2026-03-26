@@ -6,9 +6,9 @@ import type { AddressFromToFilter } from 'types/api/address';
 import type { Transaction, TransactionsSortingField, TransactionsSortingValue } from 'types/api/transaction';
 import type { PaginationParams } from 'ui/shared/pagination/types';
 
+import CsvExport from 'client/features/csv-export/components/CsvExport';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useTableViewValue from 'lib/hooks/useTableViewValue';
-import AddressCsvExportLink from 'ui/address/AddressCsvExportLink';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import getNextSortValue from 'ui/shared/sort/getNextSortValue';
@@ -127,10 +127,15 @@ const TxsContent = ({
       showPagination={ pagination.isVisible }
       filterComponent={ filter }
       linkSlot={ currentAddress ? (
-        <AddressCsvExportLink
-          address={ currentAddress }
-          params={{ type: 'transactions', filterType: 'address', filterValue }}
-          isLoading={ pagination.isLoading }
+        <CsvExport
+          type="address_transactions"
+          resourceName="general:address_csv_export_txs"
+          pathParams={{ hash: currentAddress }}
+          queryParams={ filterValue ? {
+            filter_type: 'address',
+            filter_value: filterValue,
+          } : undefined }
+          loadingInitial={ pagination.isLoading }
         />
       ) : null }
       tableViewButton={ tableViewButton }

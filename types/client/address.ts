@@ -1,5 +1,6 @@
 import type { AddressFromToFilter } from 'types/api/address';
 
+// TODO @tom2drum remove this
 export type CsvExportParams = {
   type: 'transactions' | 'internal-transactions' | 'token-transfers';
   filterType?: 'address';

@@ -2,6 +2,7 @@ import { HStack } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import CsvExport from 'client/features/csv-export/components/CsvExport';
 import config from 'configs/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useIsMounted from 'lib/hooks/useIsMounted';
@@ -15,7 +16,6 @@ import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import TxsWithAPISorting from 'ui/txs/TxsWithAPISorting';
 
-import AddressCsvExportLink from './AddressCsvExportLink';
 import AddressTxsFilter from './AddressTxsFilter';
 import useAddressTxsQuery from './useAddressTxsQuery';
 
@@ -119,13 +119,18 @@ const AddressTxs = ({ shouldRender = true, isQueryEnabled = true }: Props) => {
         <>
           <HStack gap={ 2 }>
             { txsLocalFilter }
+            <CsvExport
+              type="address_transactions"
+              resourceName="general:address_csv_export_txs"
+              pathParams={{ hash }}
+              queryParams={ localQuery.filterValue ? {
+                filter_type: 'address',
+                filter_value: localQuery.filterValue,
+              } : undefined }
+              loadingInitial={ localQuery.query.pagination.isLoading }
+            />
           </HStack>
           <HStack gap={ 6 }>
-            <AddressCsvExportLink
-              address={ hash }
-              params={{ type: 'transactions', filterType: 'address', filterValue: localQuery.filterValue }}
-              isLoading={ localQuery.query.pagination.isLoading }
-            />
             <Pagination { ...localQuery.query.pagination }/>
           </HStack>
         </>

@@ -68,14 +68,6 @@ export const apiDocs: Guard = (chainConfig: typeof config) => async() => {
   }
 };
 
-export const csvExport: Guard = (chainConfig: typeof config) => async() => {
-  if (!chainConfig.features.csvExport.isEnabled) {
-    return {
-      notFound: true,
-    };
-  }
-};
-
 export const stats: Guard = (chainConfig: typeof config) => async() => {
   if (!chainConfig.features.stats.isEnabled) {
     return {

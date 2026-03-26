@@ -302,6 +302,7 @@ export default tseslint.config(
             '/types/',
             [ '/^nextjs/' ],
             [
+              '/^client/',
               '/^configs/',
               '/^data/',
               '/^deploy/',
