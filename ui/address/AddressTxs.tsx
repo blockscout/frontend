@@ -120,7 +120,7 @@ const AddressTxs = ({ shouldRender = true, isQueryEnabled = true }: Props) => {
           <HStack gap={ 3 }>
             { txsLocalFilter }
             <CsvExport
-              type="address_transactions"
+              type="address_txs"
               resourceName="general:address_csv_export_txs"
               pathParams={{ hash }}
               queryParams={ localQuery.filterValue ? {

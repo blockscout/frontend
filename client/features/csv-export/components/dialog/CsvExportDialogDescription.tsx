@@ -7,6 +7,8 @@ import type { ClusterChainConfig } from 'types/multichain';
 import shortenString from 'lib/shortenString';
 import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 
+import getPrefixByFilter from '../../utils/getPrefixByFilter';
+
 interface Props {
   type: CsvExportType;
   params?: Record<string, string>;
@@ -39,12 +41,11 @@ const CsvExportDialogDescription = ({ type, params, chainInfo, recordsLimit }: P
 
   if (type.startsWith('address_')) {
     const entityText = type.replace('address_', '').replace('_', ' ');
+    const entityPrefix = getPrefixByFilter(params?.filter_type, params?.filter_value);
     return (
       <Text as="div">
-        <span>Export { entityText } for address </span>
+        <span>Export { entityPrefix ? `${ entityPrefix } ` : '' }{ entityText } for address </span>
         { params?.hash && <chakra.span fontWeight="700">{ shortenString(params.hash) }</chakra.span> }
-        { params?.filter_type && params?.filter_value &&
-            <span> with applied filter by { params.filter_type } ({ params.filter_value })</span> }
         { chainInfoElement }
         <span> to CSV file. </span>
         <span>Limited to the last { limitText } { entityText }.</span>

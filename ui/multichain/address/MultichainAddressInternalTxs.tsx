@@ -68,7 +68,7 @@ const MultichainAddressInternalTxs = ({ addressData, isLoading }: Props) => {
         ml={ 2 }
       />
       <CsvExport
-        type="address_internal_transactions"
+        type="address_internal_txs"
         resourceName="general:address_csv_export_internal_txs"
         pathParams={{ hash }}
         queryParams={ filterValue ? {

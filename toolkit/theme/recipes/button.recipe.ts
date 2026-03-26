@@ -318,6 +318,14 @@ export const recipe = defineRecipe({
         _expanded: {
           color: 'hover',
         },
+        _loading: {
+          opacity: 1,
+          '& .chakra-spinner': {
+            borderColor: 'selected.option.bg',
+            borderBottomColor: 'spinner.track',
+            borderInlineStartColor: 'spinner.track',
+          },
+        },
       },
       pagination: {
         borderWidth: '2px',

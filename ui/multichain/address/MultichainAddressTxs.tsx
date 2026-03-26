@@ -123,7 +123,7 @@ const MultichainAddressTxs = ({ addressData, isLoading }: Props) => {
           </HStack>
           <HStack gap={ 6 }>
             <CsvExport
-              type="address_transactions"
+              type="address_txs"
               resourceName="general:address_csv_export_txs"
               pathParams={{ hash }}
               queryParams={ txsQueryLocal.filterValue ? {

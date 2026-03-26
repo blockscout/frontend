@@ -53,6 +53,12 @@ const IconButtonShowcase = () => {
             <IconButton size="md" variant="icon_background" selected disabled>
               <IconSvg name="heart_filled"/>
             </IconButton>
+            <IconButton size="md" variant="icon_background" loading>
+              <IconSvg name="heart_filled"/>
+            </IconButton>
+            <IconButton size="md" variant="icon_background" loadingSkeleton>
+              <IconSvg name="heart_filled"/>
+            </IconButton>
           </Sample>
 
           <Sample label="variant: dropdown">

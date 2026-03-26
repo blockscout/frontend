@@ -171,7 +171,6 @@ const CsvExport = <R extends ResourceName>({
           size="md"
           variant="icon_background"
           aria-label="Download CSV"
-          //   TODO @tom2drum icon button loading state
           loading={ isPending }
           loadingSkeleton={ isInitialLoading || loadingSkeleton }
           onClick={ handleButtonClick }

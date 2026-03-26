@@ -46,7 +46,7 @@ const AddressInternalTxs = ({ shouldRender = true, isQueryEnabled = true }: Prop
         isLoading={ pagination.isLoading }
       />
       <CsvExport
-        type="address_internal_transactions"
+        type="address_internal_txs"
         resourceName="general:address_csv_export_internal_txs"
         pathParams={{ hash }}
         queryParams={ filterValue ? {
