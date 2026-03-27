@@ -46,13 +46,13 @@ const MultichainAddressPortfolioCard = ({ chain, value, share, isLoading, isSele
       w={ cardWidth }
       borderRadius="base"
       border="1px solid"
-      borderColor={ isSelected ? 'transparent' : 'border.divider' }
+      borderColor={ isSelected ? { _light: 'blackAlpha.100', _dark: 'whiteAlpha.200' } : 'border.divider' }
       textStyle="xs"
-      bgColor={ isSelected ? 'selected.control.bg' : 'transparent' }
+      bgColor={ isSelected ? { _light: 'blackAlpha.50', _dark: 'whiteAlpha.100' } : 'transparent' }
       opacity={ !isSelected && !noneIsSelected ? 0.5 : 1 }
       _hover={ onClick ? {
-        borderColor: 'hover',
         opacity: 1,
+        ...(isSelected ? {} : { borderColor: 'hover' }),
       } : undefined }
       cursor={ onClick ? 'pointer' : 'default' }
       onClick={ handleClick }
