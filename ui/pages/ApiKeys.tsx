@@ -10,7 +10,6 @@ import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
-import { space } from 'toolkit/utils/htmlEntities';
 import ApiKeyModal from 'ui/apiKey/ApiKeyModal/ApiKeyModal';
 import ApiKeyListItem from 'ui/apiKey/ApiKeyTable/ApiKeyListItem';
 import ApiKeyTable from 'ui/apiKey/ApiKeyTable/ApiKeyTable';
@@ -24,6 +23,7 @@ import useRedirectForInvalidAuthToken from 'ui/snippets/auth/useRedirectForInval
 const DATA_LIMIT = 3;
 
 const apiKeysAlertHtml = config.UI.apiKeysAlert.message;
+const apiKeysInstructionHtml = config.UI.apiKeysInstruction?.trim();
 const feature = config.features.account;
 
 const ApiKeysPage: React.FC = () => {
@@ -60,12 +60,21 @@ const ApiKeysPage: React.FC = () => {
     deleteModalProps.onOpenChange({ open });
   }, [ deleteModalProps ]);
 
-  const description = (
+  const description = apiKeysInstructionHtml ? (
     <AccountPageDescription>
-      Create API keys to use for your RPC and EthRPC API requests. For more information, see { space }
-      <Link href="https://docs.blockscout.com/using-blockscout/my-account/api-keys#api-keys" external noIcon>"How to use a Blockscout API key"</Link>.
+      <Box
+        dangerouslySetInnerHTML={{ __html: apiKeysInstructionHtml }}
+        css={{
+          '& a': {
+            color: 'link.primary',
+            _hover: {
+              color: 'link.primary.hover',
+            },
+          },
+        }}
+      />
     </AccountPageDescription>
-  );
+  ) : null;
 
   const content = (() => {
     if (isError) {
