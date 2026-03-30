@@ -11,6 +11,7 @@ import type { NextPageWithLayout } from 'nextjs/types';
 import type { Route } from 'nextjs-routes';
 import PageMetadata from 'nextjs/PageMetadata';
 
+import { CsvExportContextProvider } from 'client/features/csv-export/utils/context';
 import config from 'configs/app';
 import getSocketUrl from 'lib/api/getSocketUrl';
 import useQueryClientConfig from 'lib/api/useQueryClientConfig';
@@ -115,7 +116,9 @@ function MyApp({ Component, pageProps, router }: AppPropsWithLayout) {
                       <RewardsProvider>
                         <MarketplaceContextProvider>
                           <SettingsContextProvider>
-                            { content }
+                            <CsvExportContextProvider>
+                              { content }
+                            </CsvExportContextProvider>
                           </SettingsContextProvider>
                         </MarketplaceContextProvider>
                       </RewardsProvider>

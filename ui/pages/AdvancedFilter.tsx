@@ -235,6 +235,9 @@ const AdvancedFilter = () => {
         type="advanced_filters"
         resourceName="general:advanced_filter_csv"
         queryParams={ filters }
+        extraParams={{
+          created_at: dayjs().toISOString(),
+        }}
         periodFilter={ false }
         ml={ 3 }
       />

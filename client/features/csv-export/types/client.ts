@@ -1,3 +1,5 @@
+import type { CsvExportItemStatus } from './api';
+
 export type CsvExportType =
     'address_txs' |
     'address_internal_txs' |
@@ -6,3 +8,5 @@ export type CsvExportType =
     'token_holders' |
     'address_epoch_rewards' |
     'advanced_filters';
+
+export type CsvExportDownloadStatus = CsvExportItemStatus | 'expired';

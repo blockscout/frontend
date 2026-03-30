@@ -3,6 +3,7 @@ import { Box } from '@chakra-ui/react';
 import { mapValues } from 'es-toolkit';
 import React from 'react';
 
+import type { CsvExportDownloadResponse } from '../types/api';
 import type { CsvExportType } from '../types/client';
 import type { FormFields } from './dialog/types';
 import type { NextJsQueryParam } from 'lib/router/types';
@@ -12,6 +13,7 @@ import config from 'configs/app';
 import buildUrl from 'lib/api/buildUrl';
 import isNeedProxy from 'lib/api/isNeedProxy';
 import type { ResourceName, ResourcePathParams } from 'lib/api/resources';
+import useApiFetch from 'lib/api/useApiFetch';
 import useApiQuery from 'lib/api/useApiQuery';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import dayjs from 'lib/date/dayjs';
@@ -26,7 +28,9 @@ import IconSvg from 'ui/shared/IconSvg';
 import ReCaptcha from 'ui/shared/reCaptcha/ReCaptcha';
 import useReCaptcha from 'ui/shared/reCaptcha/useReCaptcha';
 
+import { useCsvExportContext } from '../utils/context';
 import getFileName from '../utils/getFileName';
+import type { StorageItem } from '../utils/storage';
 import CsvExportDialog from './dialog/CsvExportDialog';
 import CsvExportDialogDescription from './dialog/CsvExportDialogDescription';
 
@@ -63,6 +67,8 @@ const CsvExport = <R extends ResourceName>({
   const multichainContext = useMultichainContext();
   const dialog = useDisclosure();
   const recaptcha = useReCaptcha();
+  const csvExportContext = useCsvExportContext();
+  const apiFetch = useApiFetch();
 
   const configQuery = useApiQuery('general:config_csv_export', {
     queryOptions: {
@@ -112,6 +118,28 @@ const CsvExport = <R extends ResourceName>({
     };
   }, [ resourceName, pathParams, queryParams, chainData, multichainContext?.chain ]);
 
+  const fetchFactoryAsync = React.useCallback((data?: FormFields) => {
+    return async(recaptchaToken?: string) => {
+      const chain = chainData || multichainContext?.chain;
+      abortControllerRef.current = new AbortController();
+
+      return apiFetch<typeof resourceName>(resourceName, {
+        pathParams,
+        queryParams: {
+          ...mapValues(data || {}, (value) => dayjs(value).toISOString()),
+          ...queryParams,
+        },
+        chain,
+        fetchParams: {
+          headers: {
+            ...(recaptchaToken && { 'recaptcha-v2-response': recaptchaToken }),
+          },
+          signal: abortControllerRef.current?.signal,
+        },
+      }) as Promise<CsvExportDownloadResponse>;
+    };
+  }, [ apiFetch, chainData, multichainContext?.chain, pathParams, queryParams, resourceName ]);
+
   const downloadFileSync = React.useCallback(async(data?: FormFields) => {
     try {
       setIsPending(true);
@@ -127,7 +155,6 @@ const CsvExport = <R extends ResourceName>({
       );
       return true;
     } catch (error) {
-      // TODO @tom2drum handle 409 error
       toaster.error({
         title: 'Error',
         description: (error as Error)?.message || 'Something went wrong. Try again later.',
@@ -137,20 +164,54 @@ const CsvExport = <R extends ResourceName>({
     }
   }, [ chainConfig, fetchFactorySync, mergedParams, recaptcha, type ]);
 
+  const downloadFileAsync = React.useCallback(async(data?: FormFields) => {
+    try {
+      setIsPending(true);
+      const downloadResponse = await recaptcha.fetchProtectedResource<CsvExportDownloadResponse>(fetchFactoryAsync(data));
+      if ('request_id' in downloadResponse) {
+        const newItem: StorageItem = {
+          id: downloadResponse.request_id,
+          expires_at: null,
+          status: 'pending',
+          type,
+          params: {
+            ...mapValues(data || {}, (value) => dayjs(value).toISOString()),
+            ...mergedParams,
+          },
+        };
+        csvExportContext.addItems([ newItem ]);
+        csvExportContext.onDialogOpenChange({ open: true });
+        return true;
+      }
+
+      throw new Error('Something went wrong. Try again later.');
+    } catch (error) {
+      // TODO @tom2drum handle 409 error
+      toaster.error({
+        title: 'Error',
+        description: (error as Error)?.message || 'Something went wrong. Try again later.',
+      });
+    } finally {
+      setIsPending(false);
+    }
+  }, [ csvExportContext, fetchFactoryAsync, mergedParams, recaptcha, type ]);
+
   const handleButtonClick = React.useCallback(() => {
     if (periodFilter) {
       dialog.onOpen();
     } else {
-      downloadFileSync();
+      const downloadFn = configQuery.data?.async_enabled ? downloadFileAsync : downloadFileSync;
+      downloadFn();
     }
-  }, [ dialog, downloadFileSync, periodFilter ]);
+  }, [ configQuery.data?.async_enabled, periodFilter, dialog, downloadFileAsync, downloadFileSync ]);
 
   const handleFormSubmit = React.useCallback(async(data: FormFields) => {
-    const isSuccess = await downloadFileSync(data);
+    const downloadFn = configQuery.data?.async_enabled ? downloadFileAsync : downloadFileSync;
+    const isSuccess = await downloadFn(data);
     if (isSuccess) {
       dialog.onClose();
     }
-  }, [ downloadFileSync, dialog ]);
+  }, [ configQuery.data?.async_enabled, downloadFileAsync, downloadFileSync, dialog ]);
 
   const handleDownloadCancel = React.useCallback(() => {
     abortControllerRef.current?.abort();
@@ -172,11 +233,11 @@ const CsvExport = <R extends ResourceName>({
           variant="icon_background"
           aria-label="Download CSV"
           loading={ isPending }
-          loadingSkeleton={ isInitialLoading || loadingSkeleton }
+          loadingSkeleton={ isInitialLoading || loadingSkeleton || configQuery.isPending }
           onClick={ handleButtonClick }
           disabled={ recaptcha.isInitError }
         >
-          <IconSvg name="files/csv" boxSize={ 5 }/>
+          <IconSvg name="files/csv"/>
         </IconButton>
       </Tooltip>
       <CsvExportDialog
