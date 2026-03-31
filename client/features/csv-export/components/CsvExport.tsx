@@ -179,6 +179,7 @@ const CsvExport = <R extends ResourceName>({
             ...mapValues(data || {}, (value) => dayjs(value).toISOString()),
             ...mergedParams,
           }, (value) => value !== '' && value !== undefined && value !== null),
+          is_highlighted: false,
         };
         csvExportContext.addItems([ newItem ]);
         csvExportContext.onDialogOpenChange({ open: true });

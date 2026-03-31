@@ -18,6 +18,7 @@ export const itemSchema = v.object({
     v.literal('advanced_filters'),
   ]),
   params: v.record(v.string(), v.string()),
+  is_highlighted: v.optional(v.boolean()),
 });
 
 export type StorageItem = v.InferOutput<typeof itemSchema>;

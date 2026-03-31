@@ -28,7 +28,6 @@ export interface TCsvExportContext {
 
 export const CsvExportContext = React.createContext<TCsvExportContext | null>(null);
 
-// TODO @tom2drum when to remove failed / expired items
 export function CsvExportContextProvider({ children }: CsvExportContextProviderProps) {
   const dialog = useDisclosure();
   const apiFetch = useApiFetch();
@@ -48,6 +47,7 @@ export function CsvExportContextProvider({ children }: CsvExportContextProviderP
                 status: response.status,
                 expires_at: response.expires_at,
                 file_id: response.file_id,
+                is_highlighted: true,
               };
               storage.updateItems([ newItem ]);
               return newItem;
@@ -58,7 +58,8 @@ export function CsvExportContextProvider({ children }: CsvExportContextProviderP
           if (isExpired) {
             const newItem = {
               ...item,
-              status: 'completed' as const,
+              status: 'expired' as const,
+              is_highlighted: true,
             };
             storage.updateItems([ newItem ]);
             return newItem;
@@ -70,6 +71,7 @@ export function CsvExportContextProvider({ children }: CsvExportContextProviderP
             const newItem = {
               ...item,
               status: 'expired' as const,
+              is_highlighted: true,
             };
             storage.updateItems([ newItem ]);
             return newItem;

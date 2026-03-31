@@ -26,6 +26,7 @@ import { recipe as separator } from './separator.recipe';
 import { recipe as skeleton } from './skeleton.recipe';
 import { recipe as spinner } from './spinner.recipe';
 import { recipe as stat } from './stat.recipe';
+import { recipe as status } from './status.recipe';
 import { recipe as switchRecipe } from './switch.recipe';
 import { recipe as table } from './table.recipe';
 import { recipe as tabs } from './tabs.recipe';
@@ -67,6 +68,7 @@ export const slotRecipes = {
   ratingGroup,
   select,
   stat,
+  status,
   'switch': switchRecipe,
   table,
   tabs,
