@@ -34,9 +34,9 @@ const CsvExportDialog = ({ open, onOpenChange, onFormSubmit, onCancel, children 
     if (formState.isSubmitting && !open) {
       const confirm = window.confirm('Are you sure you want to close the dialog? The export will be cancelled.');
       if (!confirm) {
-        onCancel();
         return;
       }
+      onCancel();
     }
     onOpenChange({ open });
   }, [ onOpenChange, formState.isSubmitting, onCancel ]);
