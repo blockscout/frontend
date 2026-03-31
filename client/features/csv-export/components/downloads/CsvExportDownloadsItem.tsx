@@ -56,7 +56,7 @@ const CsvExportDownloadsItem = ({ index, data }: Props) => {
       window.clearInterval(intervalId);
     };
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- queryClient is intentionally omitted to avoid restarting interval on client identity changes
   }, [ data.expires_at, data.status ]);
 
   const markItemAsViewed = React.useCallback(() => {

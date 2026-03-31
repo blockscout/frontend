@@ -34,8 +34,8 @@ export function CsvExportContextProvider({ children }: CsvExportContextProviderP
 
   const [ items, setItems ] = React.useState<Array<StorageItem>>(isBrowser() ? storage.getItems() : []);
 
-  const queries = useQueries<Array<UseQueryOptions<StorageItem | undefined, Error, StorageItem | undefined>>>({
-    queries: items.map((item) => ({
+  const queryOptions = React.useMemo(() => (
+    items.map((item) => ({
       queryKey: [ 'general:csv_exports_item', item.request_id ],
       queryFn: async() => {
         try {
@@ -64,7 +64,6 @@ export function CsvExportContextProvider({ children }: CsvExportContextProviderP
             storage.updateItems([ newItem ]);
             return newItem;
           }
-
         } catch (error) {
           const statusCode = getErrorObjStatusCode(error);
           if (statusCode === 404) {
@@ -85,7 +84,14 @@ export function CsvExportContextProvider({ children }: CsvExportContextProviderP
         return status === 'pending' ? 10 * SECOND : false;
       },
       refetchOnMount: false,
-    })),
+    })) satisfies Array<UseQueryOptions<StorageItem | undefined, Error, StorageItem | undefined>>
+  ), [ items, apiFetch ]);
+
+  const queriedItems = useQueries({
+    queries: queryOptions,
+    combine: React.useCallback((results) => {
+      return results.map(({ data }) => data).filter((item): item is StorageItem => Boolean(item));
+    }, [ ]),
   });
 
   const addItems = React.useCallback((items: Array<StorageItem>) => {
@@ -94,14 +100,13 @@ export function CsvExportContextProvider({ children }: CsvExportContextProviderP
   }, [ ]);
 
   const value = React.useMemo(() => {
-    const items = queries.map(({ data }) => data).filter(Boolean);
     return {
       dialogOpen: dialog.open,
       onDialogOpenChange: dialog.onOpenChange,
-      items,
+      items: queriedItems,
       addItems,
     };
-  }, [ queries, dialog.open, dialog.onOpenChange, addItems ]);
+  }, [ queriedItems, dialog.open, dialog.onOpenChange, addItems ]);
 
   return (
     <CsvExportContext.Provider value={ value }>
