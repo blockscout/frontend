@@ -17,6 +17,8 @@ import useApiFetch from 'lib/api/useApiFetch';
 import useApiQuery from 'lib/api/useApiQuery';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import dayjs from 'lib/date/dayjs';
+import getErrorMessage from 'lib/errors/getErrorMessage';
+import getErrorObjStatusCode from 'lib/errors/getErrorObjStatusCode';
 import useIsInitialLoading from 'lib/hooks/useIsInitialLoading';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { IconButton } from 'toolkit/chakra/icon-button';
@@ -193,10 +195,17 @@ const CsvExport = <R extends ResourceName>({
 
       throw new Error('Something went wrong. Try again later.');
     } catch (error) {
-      // TODO @tom2drum handle 409 error
+      const statusCode = getErrorObjStatusCode(error);
+      if (statusCode === 409) {
+        toaster.warning({
+          description: 'You cannot start a new export, please wait until the current exports finish.',
+        });
+        return;
+      }
+
       toaster.error({
         title: 'Error',
-        description: (error as Error)?.message || 'Something went wrong. Try again later.',
+        description: getErrorMessage(error) || 'Something went wrong. Try again later.',
       });
     } finally {
       setIsPending(false);

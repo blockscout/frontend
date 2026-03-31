@@ -66,8 +66,8 @@ export function CsvExportContextProvider({ children }: CsvExportContextProviderP
           }
 
         } catch (error) {
-          const status = getErrorObjStatusCode(error);
-          if (status === 404) {
+          const statusCode = getErrorObjStatusCode(error);
+          if (statusCode === 404) {
             const newItem = {
               ...item,
               status: 'expired' as const,
