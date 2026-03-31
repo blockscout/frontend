@@ -5,6 +5,7 @@ import React from 'react';
 import { useInView } from 'react-intersection-observer';
 
 import config from 'configs/app';
+import multichainConfig from 'configs/multichain';
 import isNeedProxy from 'lib/api/isNeedProxy';
 import dayjs from 'lib/date/dayjs';
 import shortenString from 'lib/shortenString';
@@ -23,6 +24,7 @@ interface Props {
   data: StorageItem;
 }
 
+// TODO @tom2drum check downloads on multichain
 const CsvExportDownloadsItem = ({ index, data }: Props) => {
 
   const viewItemTimeoutRef = React.useRef<number>(null);
@@ -32,6 +34,7 @@ const CsvExportDownloadsItem = ({ index, data }: Props) => {
   );
 
   const queryClient = useQueryClient();
+  const chainData = data.params.chain_id ? multichainConfig()?.chains.find(({ id }) => id === data.params.chain_id) : undefined;
 
   React.useEffect(() => {
     if (data.status !== 'completed' || !data.expires_at) {
@@ -124,8 +127,7 @@ const CsvExportDownloadsItem = ({ index, data }: Props) => {
   })();
 
   const exportDetailsText = (() => {
-    // TODO @tom2drum add chain id to params and check downloads on multichain
-    const chainText = 'chain_name' in data.params ? `on ${ data.params.chain_name }` : undefined;
+    const chainText = chainData ? `on ${ chainData.name }` : undefined;
     const periodText = data.params.from_period && data.params.to_period ?
       `from ${ dayjs(data.params.from_period).format('lll') } to ${ dayjs(data.params.to_period).format('lll') }` :
       undefined;
@@ -168,7 +170,7 @@ const CsvExportDownloadsItem = ({ index, data }: Props) => {
     }
 
     if (isNeedProxy()) {
-      return `${ config.apis.general?.endpoint ?? '' }/downloadFile?id=${ data.file_id }`;
+      return `${ (chainData?.app_config || config).apis.general?.endpoint ?? '' }/downloadFile?id=${ data.file_id }`;
     }
 
     return `/downloadFile?id=${ data.file_id }`;

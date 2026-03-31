@@ -1,4 +1,4 @@
-import { Flex, Separator, Box, HStack } from '@chakra-ui/react';
+import { Flex, Box, HStack } from '@chakra-ui/react';
 import React from 'react';
 
 import CsvExportDownloads from 'client/features/csv-export/components/downloads/CsvExportDownloads';
@@ -63,7 +63,7 @@ const TopBar = () => {
               { hasDeFiDropdown && <DeFiDropdown/> }
             </HStack>
           ) }
-          <HStack separator={ <Separator mx={ 2 } height={ 4 }/> }>
+          <HStack gap={ 0 }>
             <CsvExportDownloads/>
             <Settings/>
           </HStack>

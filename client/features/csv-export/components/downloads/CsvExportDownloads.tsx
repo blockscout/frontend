@@ -19,24 +19,27 @@ const CsvExportDownloads = () => {
   return (
     <PopoverRoot open={ dialogOpen } onOpenChange={ onDialogOpenChange }>
       <PopoverTrigger>
-        <Flex position="relative">
-          <IconButton
-            aria-label="Open list of downloads"
-            variant="link"
-            size="2xs"
-            borderRadius="none"
-          >
-            <IconSvg name="download"/>
-          </IconButton>
-          { items.some((item) => item.is_highlighted) && (
-            <Status
-              size="xs"
-              position="absolute"
-              top="0"
-              right="0"
-              borderColor={{ _light: 'theme.topbar.bg._light', _dark: 'theme.topbar.bg._dark' }}
-            />
-          ) }
+        <Flex alignItems="center">
+          <Flex position="relative">
+            <IconButton
+              aria-label="Open list of downloads"
+              variant="link"
+              size="2xs"
+              borderRadius="none"
+            >
+              <IconSvg name="download"/>
+            </IconButton>
+            { items.some((item) => item.is_highlighted) && (
+              <Status
+                size="xs"
+                position="absolute"
+                top="0"
+                right="0"
+                borderColor={{ _light: 'theme.topbar.bg._light', _dark: 'theme.topbar.bg._dark' }}
+              />
+            ) }
+          </Flex>
+          <Separator orientation="vertical" mx={ 2 } h={ 4 }/>
         </Flex>
       </PopoverTrigger>
       <PopoverContent w="300px" maxH="400px" overflowY="auto">

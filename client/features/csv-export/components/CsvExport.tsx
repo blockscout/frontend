@@ -74,6 +74,7 @@ const CsvExport = <R extends ResourceName>({
     queryOptions: {
       refetchOnMount: false,
     },
+    chain: chainData || multichainContext?.chain,
   });
 
   const chainConfig = chainData?.app_config || multichainContext?.chain.app_config || config;
@@ -167,8 +168,10 @@ const CsvExport = <R extends ResourceName>({
   const downloadFileAsync = React.useCallback(async(data?: FormFields) => {
     try {
       setIsPending(true);
+      const chain = chainData || multichainContext?.chain;
       const downloadResponse = await recaptcha.fetchProtectedResource<CsvExportDownloadResponse>(fetchFactoryAsync(data));
-      if ('request_id' in downloadResponse) {
+
+      if (downloadResponse && 'request_id' in downloadResponse) {
         const newItem: StorageItem = {
           request_id: downloadResponse.request_id,
           file_id: null,
@@ -178,9 +181,11 @@ const CsvExport = <R extends ResourceName>({
           params: pickBy({
             ...mapValues(data || {}, (value) => dayjs(value).toISOString()),
             ...mergedParams,
+            chain_id: chain?.id,
           }, (value) => value !== '' && value !== undefined && value !== null),
           is_highlighted: false,
         };
+
         csvExportContext.addItems([ newItem ]);
         csvExportContext.onDialogOpenChange({ open: true });
         return true;
@@ -196,7 +201,7 @@ const CsvExport = <R extends ResourceName>({
     } finally {
       setIsPending(false);
     }
-  }, [ csvExportContext, fetchFactoryAsync, mergedParams, recaptcha, type ]);
+  }, [ chainData, csvExportContext, fetchFactoryAsync, mergedParams, multichainContext?.chain, recaptcha, type ]);
 
   const handleButtonClick = React.useCallback(() => {
     if (periodFilter) {
