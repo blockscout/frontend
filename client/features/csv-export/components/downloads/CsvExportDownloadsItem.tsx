@@ -2,26 +2,36 @@ import { Text, HStack, VStack, Spinner } from '@chakra-ui/react';
 import { upperFirst } from 'es-toolkit';
 import React from 'react';
 
-import type { CsvExportDownloadStatus, CsvExportType } from '../../types/client';
-
+import config from 'configs/app';
+import isNeedProxy from 'lib/api/isNeedProxy';
 import dayjs from 'lib/date/dayjs';
 import shortenString from 'lib/shortenString';
 import { Button } from 'toolkit/chakra/button';
+import { Link } from 'toolkit/chakra/link';
 import IconSvg from 'ui/shared/IconSvg';
 
 import getPrefixByFilter from '../../utils/getPrefixByFilter';
+import * as storage from '../../utils/storage';
+import type { StorageItem } from '../../utils/storage';
 
 interface Props {
   index: number;
-  status: CsvExportDownloadStatus;
-  params: Record<string, string>;
-  type: CsvExportType;
+  data: StorageItem;
 }
 
-const CsvExportDownloadsItem = ({ index, status, params, type }: Props) => {
+// TODO @tom2drum interval for updating expires_at time
+
+const CsvExportDownloadsItem = ({ index, data }: Props) => {
+
+  const [ isDownloaded, setIsDownloaded ] = React.useState(false);
+
+  const handleDownloadClick = React.useCallback(() => {
+    setIsDownloaded(true);
+    storage.removeItem(data.request_id);
+  }, [ data.request_id, setIsDownloaded ]);
 
   const { title, color, description } = (() => {
-    switch (status) {
+    switch (data.status) {
       case 'pending': {
         return {
           title: `Export #${ index } in progress...`,
@@ -33,7 +43,7 @@ const CsvExportDownloadsItem = ({ index, status, params, type }: Props) => {
         return {
           title: `CSV file #${ index } is ready`,
           color: 'green.500',
-          description: 'The file will expire in 3 hours. It will be deleted after download.',
+          description: `The file will expire ${ data.expires_at ? dayjs(data.expires_at).fromNow() : 'soon' }. It will be deleted after download.`,
         };
       }
       case 'failed': {
@@ -54,46 +64,59 @@ const CsvExportDownloadsItem = ({ index, status, params, type }: Props) => {
   })();
 
   const exportDetailsText = (() => {
-    const chainText = 'chain_name' in params ? `on ${ params.chain_name }` : undefined;
-    const periodText = params.from_period && params.to_period ?
-      `from ${ dayjs(params.from_period).format('lll') } to ${ dayjs(params.to_period).format('lll') }` :
+    // TODO @tom2drum add chain id to params and check downloads on multichain
+    const chainText = 'chain_name' in data.params ? `on ${ data.params.chain_name }` : undefined;
+    const periodText = data.params.from_period && data.params.to_period ?
+      `from ${ dayjs(data.params.from_period).format('lll') } to ${ dayjs(data.params.to_period).format('lll') }` :
       undefined;
 
-    if (type === 'token_holders') {
+    if (data.type === 'token_holders') {
       return [
         'Token holders for token',
-        params.token_name,
+        data.params.token_name,
         chainText,
         periodText,
       ].filter(Boolean).join(' ');
     }
 
-    if (type.startsWith('address_')) {
-      const entityPrefix = getPrefixByFilter(params?.filter_type, params?.filter_value);
+    if (data.type.startsWith('address_')) {
+      const entityPrefix = getPrefixByFilter(data.params?.filter_type, data.params?.filter_value);
 
       return upperFirst([
         entityPrefix,
-        type.replace('address_', '').replace('_', ' '),
+        data.type.replace('address_', '').replace('_', ' '),
         'for',
-        shortenString(params.hash),
+        shortenString(data.params.hash),
         chainText,
         periodText,
       ].filter(Boolean).join(' '));
     }
 
-    if (type === 'advanced_filters') {
-      const dateText = params.created_at ? `at ${ dayjs(params.created_at).format('lll') }` : undefined;
+    if (data.type === 'advanced_filters') {
+      const dateText = data.params.created_at ? `at ${ dayjs(data.params.created_at).format('lll') }` : undefined;
       return [
-        'Filtered transactions',
+        'Filtered txs',
         chainText,
         dateText,
       ].filter(Boolean).join(' ');
     }
   })();
 
+  const downloadLink = (() => {
+    if (data.status !== 'completed' || !data.file_id) {
+      return;
+    }
+
+    if (isNeedProxy()) {
+      return `${ config.apis.general?.endpoint ?? '' }/downloadFile?id=${ data.file_id }`;
+    }
+
+    return `/downloadFile?id=${ data.file_id }`;
+  })();
+
   return (
     <HStack alignItems="flex-start">
-      { status === 'pending' ? <Spinner flexShrink={ 0 }/> : <IconSvg name="files/csv" boxSize={ 5 } color={ color }/> }
+      { data.status === 'pending' ? <Spinner flexShrink={ 0 }/> : <IconSvg name="files/csv" boxSize={ 5 } color={ color }/> }
       <VStack alignItems="flex-start">
         <Text fontWeight={ 600 } color={ color }>
           { title }
@@ -106,14 +129,21 @@ const CsvExportDownloadsItem = ({ index, status, params, type }: Props) => {
             { exportDetailsText }
           </Text>
         ) }
-        { status === 'completed' && (
-          <Button
-            variant="outline"
-            size="sm"
-            mt={ 2 }
+        { data.status === 'completed' && !isDownloaded && (
+          <Link
+            href={ downloadLink }
+            external
+            noIcon
           >
-            Download CSV
-          </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              mt={ 2 }
+              onClick={ handleDownloadClick }
+            >
+              Download CSV
+            </Button>
+          </Link>
         ) }
       </VStack>
     </HStack>

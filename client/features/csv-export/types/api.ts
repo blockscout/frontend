@@ -1,9 +1,9 @@
 export type CsvExportItemStatus = 'pending' | 'completed' | 'failed';
 
 export interface CsvExportItemResponse {
-  file_id: string;
+  file_id: string | null;
   status: CsvExportItemStatus;
-  expires_at: string;
+  expires_at: string | null;
 }
 
 export interface CsvExportDownloadResponse {

@@ -1,9 +1,11 @@
 import * as v from 'valibot';
 
 const STORAGE_KEY = 'csv_export_downloads';
+const ITEMS_LIMIT = 20;
 
 export const itemSchema = v.object({
-  id: v.string(),
+  request_id: v.string(),
+  file_id: v.nullable(v.string()),
   status: v.union([ v.literal('pending'), v.literal('completed'), v.literal('failed'), v.literal('expired') ]),
   expires_at: v.nullable(v.string()),
   type: v.union([
@@ -34,12 +36,30 @@ export function getItems() {
 
 export function addItems(items: Array<StorageItem>) {
   const currentItems = getItems();
-  const newItems = [ ...items, ...currentItems ];
+  const newItems = [ ...items, ...currentItems ].slice(0, ITEMS_LIMIT);
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(newItems));
+}
+
+export function updateItems(items: Array<StorageItem>) {
+  if (items.length === 0) {
+    return;
+  }
+  const currentItems = getItems();
+  const newItems = currentItems.map((item) => {
+    const itemToUpdate = items.find((itemToUpdate) => itemToUpdate.request_id === item.request_id);
+    if (itemToUpdate) {
+      return {
+        ...item,
+        ...itemToUpdate,
+      };
+    }
+    return item;
+  });
   localStorage.setItem(STORAGE_KEY, JSON.stringify(newItems));
 }
 
 export function removeItem(id: string) {
   const items = getItems();
-  const newItems = items.filter((item) => item.id !== id);
+  const newItems = items.filter((item) => item.request_id !== id);
   localStorage.setItem(STORAGE_KEY, JSON.stringify(newItems));
 }

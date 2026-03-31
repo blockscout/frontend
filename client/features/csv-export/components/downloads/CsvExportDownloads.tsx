@@ -7,6 +7,8 @@ import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolki
 import { useCsvExportContext } from '../../utils/context';
 import CsvExportDownloadsItem from './CsvExportDownloadsItem';
 
+// TODO @tom2drum new item indicator
+
 const CsvExportDownloads = () => {
   const { dialogOpen, onDialogOpenChange, items } = useCsvExportContext();
 
@@ -32,7 +34,7 @@ const CsvExportDownloads = () => {
           </svg>
         </IconButton>
       </PopoverTrigger>
-      <PopoverContent w="300px">
+      <PopoverContent w="300px" maxH="400px" overflowY="auto">
         <PopoverBody textStyle="sm">
           <VStack
             separator={ <Separator orientation="horizontal"/> }
@@ -41,11 +43,9 @@ const CsvExportDownloads = () => {
           >
             { items.map((item, index) => (
               <CsvExportDownloadsItem
-                key={ item.id }
-                index={ index + 1 }
-                type={ item.type }
-                status={ item.status }
-                params={ item.params }
+                key={ item.request_id }
+                index={ items.length - index }
+                data={ item }
               />
             )) }
           </VStack>

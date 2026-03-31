@@ -1,6 +1,6 @@
 import type { JsxStyleProps } from '@chakra-ui/react';
 import { Box } from '@chakra-ui/react';
-import { mapValues } from 'es-toolkit';
+import { mapValues, pickBy } from 'es-toolkit';
 import React from 'react';
 
 import type { CsvExportDownloadResponse } from '../types/api';
@@ -170,14 +170,15 @@ const CsvExport = <R extends ResourceName>({
       const downloadResponse = await recaptcha.fetchProtectedResource<CsvExportDownloadResponse>(fetchFactoryAsync(data));
       if ('request_id' in downloadResponse) {
         const newItem: StorageItem = {
-          id: downloadResponse.request_id,
+          request_id: downloadResponse.request_id,
+          file_id: null,
           expires_at: null,
           status: 'pending',
           type,
-          params: {
+          params: pickBy({
             ...mapValues(data || {}, (value) => dayjs(value).toISOString()),
             ...mergedParams,
-          },
+          }, (value) => value !== '' && value !== undefined && value !== null),
         };
         csvExportContext.addItems([ newItem ]);
         csvExportContext.onDialogOpenChange({ open: true });
