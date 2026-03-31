@@ -77,9 +77,9 @@ const MultichainAddressInternalTxs = ({ addressData, isLoading }: Props) => {
         } : undefined }
         loadingInitial={ pagination.isLoading }
         chainData={ chainData }
-        ml={{ base: 2, lg: 'auto' }}
+        ml={ 2 }
       />
-      <Pagination ml={{ base: 'auto', lg: 8 }} { ...pagination }/>
+      <Pagination ml="auto" { ...pagination }/>
     </ActionBar>
   );
 

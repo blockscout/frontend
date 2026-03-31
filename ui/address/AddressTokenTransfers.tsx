@@ -136,8 +136,6 @@ const AddressTokenTransfers = ({ shouldRender = true, overloadCount, isQueryEnab
               } : undefined }
               loadingInitial={ localQuery.query.isPlaceholderData }
             />
-          </HStack>
-          <HStack gap={{ base: 2, lg: 6 }} ml={{ base: 2, lg: 'auto' }} _empty={{ display: 'none' }}>
             <AddressAdvancedFilterLink
               isLoading={ localQuery.query.isPlaceholderData }
               address={ hash }
@@ -145,7 +143,7 @@ const AddressTokenTransfers = ({ shouldRender = true, overloadCount, isQueryEnab
               directionFilter={ localQuery.filters.filter }
             />
           </HStack>
-          <Pagination ml={{ base: 'auto', lg: 8 }} { ...localQuery.query.pagination }/>
+          <Pagination ml="auto" { ...localQuery.query.pagination }/>
         </>
       );
     }

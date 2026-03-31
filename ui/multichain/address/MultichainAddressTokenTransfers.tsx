@@ -30,6 +30,7 @@ export const ADDRESS_MULTICHAIN_TOKEN_TRANSFERS_TAB_IDS = [ 'token_transfers_cro
 const TABS_RIGHT_SLOT_PROPS = {
   display: 'flex',
   justifyContent: { base: 'flex-end', lg: 'space-between' },
+  alignItems: 'center',
   ml: { base: 0, lg: 8 },
   widthAllocation: 'available' as const,
 };
@@ -132,16 +133,6 @@ const MultichainAddressTokenTransfers = ({ addressData, isLoading }: Props) => {
               chainConfig={ chainData?.app_config }
             />
             { chainSelect }
-            { countersText }
-          </HStack>
-          <HStack gap={ 6 }>
-            <AddressAdvancedFilterLink
-              isLoading={ transfersQueryLocal.query.isPlaceholderData }
-              address={ hash }
-              typeFilter={ transfersQueryLocal.filters.type }
-              directionFilter={ transfersQueryLocal.filters.filter }
-              chainData={ chainData }
-            />
             <CsvExport
               type="address_token_transfers"
               resourceName="general:address_csv_export_token_transfers"
@@ -153,8 +144,16 @@ const MultichainAddressTokenTransfers = ({ addressData, isLoading }: Props) => {
               chainData={ chainData }
               loadingInitial={ transfersQueryLocal.query.pagination.isLoading }
             />
-            <Pagination { ...transfersQueryLocal.query.pagination }/>
+            <AddressAdvancedFilterLink
+              isLoading={ transfersQueryLocal.query.isPlaceholderData }
+              address={ hash }
+              typeFilter={ transfersQueryLocal.filters.type }
+              directionFilter={ transfersQueryLocal.filters.filter }
+              chainData={ chainData }
+            />
           </HStack>
+          { countersText }
+          <Pagination ml="auto" { ...transfersQueryLocal.query.pagination }/>
         </>
       );
     }

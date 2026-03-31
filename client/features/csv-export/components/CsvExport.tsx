@@ -246,7 +246,7 @@ const CsvExport = <R extends ResourceName>({
       >
         <IconButton
           size="md"
-          variant="icon_background"
+          variant="dropdown"
           aria-label="Download CSV"
           loading={ isPending }
           loadingSkeleton={ isInitialLoading || loadingSkeleton || configQuery.isPending }

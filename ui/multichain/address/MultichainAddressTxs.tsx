@@ -35,6 +35,7 @@ const TAB_LIST_PROPS = {
 const TABS_RIGHT_SLOT_PROPS = {
   display: 'flex',
   justifyContent: { base: 'flex-end', lg: 'space-between' },
+  alignItems: 'center',
   ml: { base: 0, lg: 8 },
   widthAllocation: 'available' as const,
 };
@@ -119,9 +120,6 @@ const MultichainAddressTxs = ({ addressData, isLoading }: Props) => {
           <HStack gap={ 2 }>
             { txsLocalFilter }
             { chainSelect }
-            { countersText }
-          </HStack>
-          <HStack gap={ 6 }>
             <CsvExport
               type="address_txs"
               resourceName="general:address_csv_export_txs"
@@ -133,8 +131,9 @@ const MultichainAddressTxs = ({ addressData, isLoading }: Props) => {
               chainData={ chainData }
               loadingInitial={ txsQueryLocal.query.pagination.isLoading }
             />
-            <Pagination { ...txsQueryLocal.query.pagination }/>
           </HStack>
+          { countersText }
+          <Pagination ml="auto" { ...txsQueryLocal.query.pagination }/>
         </>
       );
     }
