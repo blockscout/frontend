@@ -59,6 +59,11 @@ export const chainA = {
         },
       },
     },
+    services: {
+      reCaptchaV2: {
+        siteKey: 'xxx',
+      },
+    },
   },
 } as unknown as ClusterChainConfig;
 
