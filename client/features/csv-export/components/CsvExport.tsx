@@ -216,13 +216,13 @@ const CsvExport = <R extends ResourceName>({
     if (periodFilter) {
       dialog.onOpen();
     } else {
-      const downloadFn = configQuery.data?.async_enabled ? downloadFileAsync : downloadFileSync;
+      const downloadFn = configQuery.data?.async_enabled && !config.features.multichain.isEnabled ? downloadFileAsync : downloadFileSync;
       downloadFn();
     }
   }, [ configQuery.data?.async_enabled, periodFilter, dialog, downloadFileAsync, downloadFileSync ]);
 
   const handleFormSubmit = React.useCallback(async(data: FormFields) => {
-    const downloadFn = configQuery.data?.async_enabled ? downloadFileAsync : downloadFileSync;
+    const downloadFn = configQuery.data?.async_enabled && !config.features.multichain.isEnabled ? downloadFileAsync : downloadFileSync;
     const isSuccess = await downloadFn(data);
     if (isSuccess) {
       dialog.onClose();
