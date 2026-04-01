@@ -50,6 +50,7 @@
 	| "delete"
 	| "docs"
 	| "dots"
+	| "download"
 	| "edit"
 	| "email"
 	| "ENS"

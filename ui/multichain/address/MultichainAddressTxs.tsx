@@ -5,6 +5,7 @@ import React from 'react';
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
+import CsvExport from 'client/features/csv-export/components/CsvExport';
 import multichainConfig from 'configs/multichain';
 import getSocketUrl from 'lib/api/getSocketUrl';
 import { MultichainProvider } from 'lib/contexts/multichain';
@@ -13,7 +14,6 @@ import getQueryParamString from 'lib/router/getQueryParamString';
 import { SocketProvider } from 'lib/socket/context';
 import { EmptyState } from 'toolkit/chakra/empty-state';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import AddressCsvExportLink from 'ui/address/AddressCsvExportLink';
 import AddressTxsFilter from 'ui/address/AddressTxsFilter';
 import useAddressTxsQuery from 'ui/address/useAddressTxsQuery';
 import useAddressCountersQuery from 'ui/address/utils/useAddressCountersQuery';
@@ -35,6 +35,7 @@ const TAB_LIST_PROPS = {
 const TABS_RIGHT_SLOT_PROPS = {
   display: 'flex',
   justifyContent: { base: 'flex-end', lg: 'space-between' },
+  alignItems: 'center',
   ml: { base: 0, lg: 8 },
   widthAllocation: 'available' as const,
 };
@@ -119,17 +120,20 @@ const MultichainAddressTxs = ({ addressData, isLoading }: Props) => {
           <HStack gap={ 2 }>
             { txsLocalFilter }
             { chainSelect }
-            { countersText }
-          </HStack>
-          <HStack gap={ 6 }>
-            <AddressCsvExportLink
-              address={ hash }
-              params={{ type: 'transactions', filterType: 'address', filterValue: txsQueryLocal.filterValue }}
-              isLoading={ txsQueryLocal.query.pagination.isLoading }
+            <CsvExport
+              type="address_txs"
+              resourceName="general:address_csv_export_txs"
+              pathParams={{ hash }}
+              queryParams={ txsQueryLocal.filterValue ? {
+                filter_type: 'address',
+                filter_value: txsQueryLocal.filterValue,
+              } : undefined }
               chainData={ chainData }
+              loadingInitial={ txsQueryLocal.query.pagination.isLoading }
             />
-            <Pagination { ...txsQueryLocal.query.pagination }/>
           </HStack>
+          { countersText }
+          <Pagination ml="auto" { ...txsQueryLocal.query.pagination }/>
         </>
       );
     }

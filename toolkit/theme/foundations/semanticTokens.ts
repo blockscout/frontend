@@ -283,7 +283,7 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
       bg: {
         DEFAULT: { value: '{colors.alert.bg.info}' },
         info: { value: { _light: '{colors.blue.100}', _dark: '{colors.blue.900}' } },
-        warning: { value: '{colors.alert.bg.warning}' },
+        warning: { value: { _light: '{colors.orange.100}', _dark: '{colors.orange.900}' } },
         success: { value: '{colors.alert.bg.success}' },
         error: { value: '{colors.alert.bg.error}' },
         loading: { value: { _light: '{colors.blue.100}', _dark: '{colors.blue.900}' } },

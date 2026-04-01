@@ -3,9 +3,9 @@ import React from 'react';
 
 import type { TokenInfo } from 'types/api/token';
 
+import CsvExport from 'client/features/csv-export/components/CsvExport';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useIsMounted from 'lib/hooks/useIsMounted';
-import AddressCsvExportLink from 'ui/address/AddressCsvExportLink';
 import ActionBar from 'ui/shared/ActionBar';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DataListDisplay from 'ui/shared/DataListDisplay';
@@ -36,13 +36,16 @@ const TokenHolders = ({ holdersQuery, token, shouldRender = true, tabsHeight = T
     return <DataFetchAlert/>;
   }
 
-  const actionBar = isMobile && holdersQuery.pagination.isVisible && (
+  const actionBar = isMobile && (
     <ActionBar mt={ -6 }>
       { token && (
-        <AddressCsvExportLink
-          address={ token.address_hash }
-          params={{ type: 'holders' }}
-          isLoading={ holdersQuery.pagination.isLoading }
+        <CsvExport
+          type="token_holders"
+          resourceName="general:token_csv_export_holders"
+          pathParams={{ hash: token.address_hash }}
+          extraParams={{ token_name: token.name || 'Unknown token' }}
+          periodFilter={ false }
+          loadingInitial={ holdersQuery.pagination.isLoading }
         />
       ) }
       <Pagination ml="auto" { ...holdersQuery.pagination }/>

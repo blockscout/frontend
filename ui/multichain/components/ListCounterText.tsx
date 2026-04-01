@@ -25,7 +25,7 @@ const ListCounterText = ({ isLoading, value, type }: Props) => {
       loading={ isInitialLoading }
       textStyle={{ base: 'md', lg: 'sm' }}
       color="text.secondary"
-      ml={{ base: 0, lg: 4 }}
+      ml={{ base: 0, lg: 6 }}
       mr={{ base: 0, lg: 8 }}
       mb={{ base: 4, lg: 0 }}
     />

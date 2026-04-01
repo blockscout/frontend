@@ -12,6 +12,7 @@ import React from 'react';
 import type { AdvancedFilterParams } from 'types/api/advancedFilter';
 import { ADVANCED_FILTER_AGES, ADVANCED_FILTER_ADDRESS_RELATION } from 'types/api/advancedFilter';
 
+import CsvExport from 'client/features/csv-export/components/CsvExport';
 import useApiQuery from 'lib/api/useApiQuery';
 import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
 import { useMultichainContext } from 'lib/contexts/multichain';
@@ -28,7 +29,6 @@ import { Tag } from 'toolkit/chakra/tag';
 import ColumnsButton from 'ui/advancedFilter/ColumnsButton';
 import type { ColumnsIds } from 'ui/advancedFilter/constants';
 import { getAdvancedFilterTypes, TABLE_COLUMNS } from 'ui/advancedFilter/constants';
-import ExportCSV from 'ui/advancedFilter/ExportCSV';
 import FilterByColumn from 'ui/advancedFilter/FilterByColumn';
 import ItemByColumn from 'ui/advancedFilter/ItemByColumn';
 import { getDurationFromAge, getFilterTags } from 'ui/advancedFilter/lib';
@@ -230,8 +230,17 @@ const AdvancedFilter = () => {
 
   const actionBar = (
     <ActionBar mt={ -6 }>
-      <ExportCSV filters={ filters }/>
       <ColumnsButton columns={ columns } onChange={ setColumns }/>
+      <CsvExport
+        type="advanced_filters"
+        resourceName="general:advanced_filter_csv"
+        queryParams={ filters }
+        extraParams={{
+          created_at: dayjs().toISOString(),
+        }}
+        periodFilter={ false }
+        ml={ 3 }
+      />
       <Pagination ml="auto" { ...pagination }/>
     </ActionBar>
   );

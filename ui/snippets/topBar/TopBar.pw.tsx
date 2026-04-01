@@ -1,5 +1,8 @@
 import React from 'react';
 
+import * as csvExportStorageMock from 'client/features/csv-export/mocks/storage';
+import type { StorageItem } from 'client/features/csv-export/utils/storage';
+import { STORAGE_KEY } from 'client/features/csv-export/utils/storage';
 import * as statsMock from 'mocks/stats/index';
 import { test, expect } from 'playwright/lib';
 
@@ -72,4 +75,36 @@ test('with Get gas button', async({ render, mockApiResponse, mockEnvs, mockAsset
 
   const component = await render(<TopBar/>);
   await expect(component).toHaveScreenshot();
+});
+
+test('with csv downloads', async({ render, mockApiResponse, page, injectMetaMaskProvider }) => {
+  await injectMetaMaskProvider();
+  await mockApiResponse('general:stats', statsMock.base);
+
+  const downloadsStorateValue: Array<StorageItem> = [
+    csvExportStorageMock.itemCompleted,
+    csvExportStorageMock.itemPending,
+    csvExportStorageMock.itemExpired,
+    csvExportStorageMock.itemFailed,
+  ];
+  await page.evaluate(({ name, value }) => {
+    window.localStorage.setItem(name, value);
+  }, { name: STORAGE_KEY, value: JSON.stringify(downloadsStorateValue) });
+
+  await mockApiResponse('general:csv_exports_item', csvExportStorageMock.itemPending, {
+    pathParams: {
+      id: csvExportStorageMock.itemPending.request_id,
+    },
+  });
+  await mockApiResponse('general:csv_exports_item', { status: 404 } as never, {
+    pathParams: {
+      id: csvExportStorageMock.itemExpired.request_id,
+    },
+    status: 404,
+  });
+
+  const component = await render(<TopBar/>);
+
+  await component.getByLabel('Open list of downloads').click();
+  await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1500, height: 450 } });
 });
