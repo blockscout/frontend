@@ -75,8 +75,8 @@ importers:
         specifier: ^10.2.1
         version: 10.2.1
       '@monaco-editor/react':
-        specifier: ^4.7.0
-        version: 4.7.0(monaco-editor@0.34.1)(react-dom@19.1.4(react@19.1.4))(react@19.1.4)
+        specifier: 4.7.0
+        version: 4.7.0(monaco-editor@0.52.2)(react-dom@19.1.4(react@19.1.4))(react@19.1.4)
       '@multisender.app/multisender-react-widget':
         specifier: 0.2.3
         version: 0.2.3(75cca8bf91576fd15aab39089e230044)
@@ -231,8 +231,8 @@ importers:
         specifier: 2.67.0
         version: 2.67.0
       monaco-editor:
-        specifier: ^0.34.1
-        version: 0.34.1
+        specifier: 0.52.2
+        version: 0.52.2
       next:
         specifier: 16.1.7
         version: 16.1.7(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.57.0)(react-dom@19.1.4(react@19.1.4))(react@19.1.4)
@@ -10400,8 +10400,8 @@ packages:
     engines: {node: '>=14'}
     hasBin: true
 
-  monaco-editor@0.34.1:
-    resolution: {integrity: sha512-FKc80TyiMaruhJKKPz5SpJPIjL+dflGvz4CpuThaPMc94AyN7SeC9HQ8hrvaxX7EyHdJcUY5i4D0gNyJj1vSZQ==}
+  monaco-editor@0.52.2:
+    resolution: {integrity: sha512-GEQWEZmfkOGLdd3XK8ryrfWz3AIP8YymVXiPHEdewrUq7mh0qrKrfHLNCXcbB6sTnMLnOZ3ztSiKcciFUkIJwQ==}
 
   mortice@3.3.1:
     resolution: {integrity: sha512-t3oESfijIPGsmsdLEKjF+grHfrbnKSXflJtgb1wY14cjxZpS6GnhHRXTxxzCAoCCnq1YYfpEPwY3gjiCPhOufQ==}
@@ -17468,10 +17468,10 @@ snapshots:
     dependencies:
       state-local: 1.0.7
 
-  '@monaco-editor/react@4.7.0(monaco-editor@0.34.1)(react-dom@19.1.4(react@19.1.4))(react@19.1.4)':
+  '@monaco-editor/react@4.7.0(monaco-editor@0.52.2)(react-dom@19.1.4(react@19.1.4))(react@19.1.4)':
     dependencies:
       '@monaco-editor/loader': 1.7.0
-      monaco-editor: 0.34.1
+      monaco-editor: 0.52.2
       react: 19.1.4
       react-dom: 19.1.4(react@19.1.4)
 
@@ -28129,7 +28129,7 @@ snapshots:
       requirejs: 2.3.8
       requirejs-config-file: 4.0.0
 
-  monaco-editor@0.34.1: {}
+  monaco-editor@0.52.2: {}
 
   mortice@3.3.1:
     dependencies:

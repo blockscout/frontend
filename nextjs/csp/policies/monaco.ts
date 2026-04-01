@@ -7,7 +7,9 @@ export function monaco(): CspDev.DirectiveDescriptor {
     'script-src': [
       KEY_WORDS.BLOB,
       'https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs/loader.js',
+      'https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs/loader.js.map',
       'https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs/editor/editor.main.js',
+      'https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs/editor/editor.main.js.map',
       'https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs/editor/editor.main.nls.js',
       'https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs/basic-languages/solidity/solidity.js',
       'https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs/basic-languages/elixir/elixir.js',
@@ -19,6 +21,10 @@ export function monaco(): CspDev.DirectiveDescriptor {
       'https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs/language/typescript/tsMode.js',
       'https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs/language/typescript/tsWorker.js',
       'https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs/base/worker/workerMain.js',
+    ],
+    'connect-src': [
+      'https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min-maps/vs/loader.js.map',
+      'https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min-maps/vs/editor/editor.main.js.map',
     ],
     'style-src': [
       'https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs/editor/editor.main.css',
