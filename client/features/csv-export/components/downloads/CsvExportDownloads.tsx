@@ -17,7 +17,7 @@ const CsvExportDownloads = () => {
   }
 
   return (
-    <PopoverRoot open={ dialogOpen } onOpenChange={ onDialogOpenChange }>
+    <PopoverRoot open={ dialogOpen } onOpenChange={ onDialogOpenChange } positioning={{ placement: 'bottom-end' }}>
       <PopoverTrigger>
         <Flex alignItems="center">
           <Flex position="relative">

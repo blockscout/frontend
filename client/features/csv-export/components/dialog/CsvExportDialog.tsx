@@ -17,9 +17,10 @@ interface Props {
   onOpenChange: OnOpenChangeHandler;
   onFormSubmit: (data: FormFields) => Promise<void>;
   onCancel: () => void;
+  isAsyncDownload?: boolean;
 }
 
-const CsvExportDialog = ({ open, onOpenChange, onFormSubmit, onCancel, children }: Props) => {
+const CsvExportDialog = ({ open, onOpenChange, onFormSubmit, onCancel, children, isAsyncDownload }: Props) => {
   const formApi = useForm<FormFields>({
     mode: 'onBlur',
     defaultValues: {
@@ -72,7 +73,7 @@ const CsvExportDialog = ({ open, onOpenChange, onFormSubmit, onCancel, children 
                 loading={ formState.isSubmitting }
                 disabled={ Boolean(formState.errors.from_period || formState.errors.to_period) }
               >
-                Download
+                { isAsyncDownload ? 'Generate CSV' : 'Download' }
               </Button>
             </DialogBody>
           </chakra.form>

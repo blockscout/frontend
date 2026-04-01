@@ -1,6 +1,6 @@
 import type { JsxStyleProps } from '@chakra-ui/react';
 import { Box } from '@chakra-ui/react';
-import { mapValues, pickBy } from 'es-toolkit';
+import { delay, mapValues, pickBy } from 'es-toolkit';
 import React from 'react';
 
 import type { CsvExportDownloadResponse } from '../types/api';
@@ -81,6 +81,7 @@ const CsvExport = <R extends ResourceName>({
 
   const chainConfig = chainData?.app_config || multichainContext?.chain.app_config || config;
   const recordsLimit = configQuery.data?.limit || 10_000;
+  const isAsyncDownload = configQuery.data?.async_enabled && !config.features.multichain.isEnabled;
 
   const mergedParams: Record<string, string> = React.useMemo(() => {
     return {
@@ -189,6 +190,8 @@ const CsvExport = <R extends ResourceName>({
         };
 
         csvExportContext.addItems([ newItem ]);
+        // we have to wait a little bit to let new item to be added to the list before opening the popup
+        await delay(200);
         csvExportContext.onDialogOpenChange({ open: true });
         return true;
       }
@@ -216,18 +219,18 @@ const CsvExport = <R extends ResourceName>({
     if (periodFilter) {
       dialog.onOpen();
     } else {
-      const downloadFn = configQuery.data?.async_enabled && !config.features.multichain.isEnabled ? downloadFileAsync : downloadFileSync;
+      const downloadFn = isAsyncDownload ? downloadFileAsync : downloadFileSync;
       downloadFn();
     }
-  }, [ configQuery.data?.async_enabled, periodFilter, dialog, downloadFileAsync, downloadFileSync ]);
+  }, [ isAsyncDownload, periodFilter, dialog, downloadFileAsync, downloadFileSync ]);
 
   const handleFormSubmit = React.useCallback(async(data: FormFields) => {
-    const downloadFn = configQuery.data?.async_enabled && !config.features.multichain.isEnabled ? downloadFileAsync : downloadFileSync;
+    const downloadFn = isAsyncDownload ? downloadFileAsync : downloadFileSync;
     const isSuccess = await downloadFn(data);
     if (isSuccess) {
       dialog.onClose();
     }
-  }, [ configQuery.data?.async_enabled, downloadFileAsync, downloadFileSync, dialog ]);
+  }, [ isAsyncDownload, downloadFileAsync, downloadFileSync, dialog ]);
 
   const handleDownloadCancel = React.useCallback(() => {
     abortControllerRef.current?.abort();
@@ -261,6 +264,7 @@ const CsvExport = <R extends ResourceName>({
         onOpenChange={ dialog.onOpenChange }
         onFormSubmit={ handleFormSubmit }
         onCancel={ handleDownloadCancel }
+        isAsyncDownload={ isAsyncDownload }
       >
         <CsvExportDialogDescription
           type={ type }

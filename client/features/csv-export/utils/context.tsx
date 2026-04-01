@@ -1,5 +1,5 @@
-import type { UseQueryOptions } from '@tanstack/react-query';
-import { useQueries } from '@tanstack/react-query';
+import type { UseQueryResult } from '@tanstack/react-query';
+import { queryOptions, useQueries } from '@tanstack/react-query';
 import React from 'react';
 
 import type { CsvExportItemResponse } from '../types/api';
@@ -34,13 +34,16 @@ export function CsvExportContextProvider({ children }: CsvExportContextProviderP
 
   const [ items, setItems ] = React.useState<Array<StorageItem>>(isBrowser() ? storage.getItems() : []);
 
-  const queryOptions = React.useMemo(() => (
-    items.map((item) => ({
+  const queriesOptions = React.useMemo(() => {
+    return items.map((item) => (queryOptions({
       queryKey: [ 'general:csv_exports_item', item.request_id ],
-      queryFn: async() => {
+      queryFn: async({ signal }) => {
         try {
           if (item.status === 'pending') {
-            const response = await (apiFetch('general:csv_exports_item', { pathParams: { id: item.request_id } }) as Promise<CsvExportItemResponse>);
+            const response = await (apiFetch('general:csv_exports_item', {
+              pathParams: { id: item.request_id },
+              fetchParams: { signal },
+            }) as Promise<CsvExportItemResponse>);
             if (response.status !== 'pending') {
               const newItem = {
                 ...item,
@@ -84,14 +87,16 @@ export function CsvExportContextProvider({ children }: CsvExportContextProviderP
         return status === 'pending' ? 10 * SECOND : false;
       },
       refetchOnMount: false,
-    })) satisfies Array<UseQueryOptions<StorageItem | undefined, Error, StorageItem | undefined>>
-  ), [ items, apiFetch ]);
+    })));
+  }, [ items, apiFetch ]);
 
-  const queriedItems = useQueries({
-    queries: queryOptions,
-    combine: React.useCallback((results) => {
-      return results.map(({ data }) => data).filter((item): item is StorageItem => Boolean(item));
-    }, [ ]),
+  const combineQueriesResult = React.useCallback((results: Array<UseQueryResult<StorageItem | undefined, Error>>) => {
+    return results.map(({ data }) => data).filter(Boolean);
+  }, []);
+
+  const queriesResult = useQueries({
+    queries: queriesOptions,
+    combine: combineQueriesResult,
   });
 
   const addItems = React.useCallback((items: Array<StorageItem>) => {
@@ -103,10 +108,10 @@ export function CsvExportContextProvider({ children }: CsvExportContextProviderP
     return {
       dialogOpen: dialog.open,
       onDialogOpenChange: dialog.onOpenChange,
-      items: queriedItems,
+      items: queriesResult,
       addItems,
     };
-  }, [ queriedItems, dialog.open, dialog.onOpenChange, addItems ]);
+  }, [ dialog.open, dialog.onOpenChange, queriesResult, addItems ]);
 
   return (
     <CsvExportContext.Provider value={ value }>

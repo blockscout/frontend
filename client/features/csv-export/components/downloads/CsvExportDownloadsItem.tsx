@@ -111,14 +111,14 @@ const CsvExportDownloadsItem = ({ index, data }: Props) => {
       }
       case 'failed': {
         return {
-          title: `Export #${ index } failed`,
+          title: `Export #${ index } has failed`,
           color: 'red.600',
           description: 'The export failed. Please try again.',
         };
       }
       case 'expired': {
         return {
-          title: `Export #${ index } expired`,
+          title: `Export #${ index } has expired`,
           color: 'red.600',
           description: 'The file storage time has expired. Try generating the report again.',
         };

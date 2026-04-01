@@ -1,6 +1,6 @@
 import * as v from 'valibot';
 
-const STORAGE_KEY = 'csv_export_downloads';
+export const STORAGE_KEY = 'csv_export_downloads';
 const ITEMS_LIMIT = 20;
 
 export const itemSchema = v.object({
