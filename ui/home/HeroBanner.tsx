@@ -49,6 +49,16 @@ const HeroBanner = () => {
       config.UI.homepage.heroBanner?.border?.[1] || config.UI.homepage.heroBanner?.border?.[0] || BORDER_DEFAULT,
   };
 
+  const text = (() => {
+    if (config.UI.homepage.heroBanner?.text) {
+      return config.UI.homepage.heroBanner.text;
+    }
+
+    return config.meta.seo.enhancedDataEnabled ?
+      `${ config.chain.name } blockchain explorer` :
+      `${ config.chain.name } explorer`;
+  })();
+
   return (
     <Flex
       w="100%"
@@ -68,11 +78,7 @@ const HeroBanner = () => {
             fontWeight={{ base: 500, lg: 700 }}
             color={ textColor }
           >
-            {
-              config.meta.seo.enhancedDataEnabled ?
-                `${ config.chain.name } blockchain explorer` :
-                `${ config.chain.name } explorer`
-            }
+            { text }
           </Heading>
           { config.UI.navigation.layout === 'vertical' && (
             <Box display={{ base: 'none', lg: 'flex' }} gap={ 2 }>
