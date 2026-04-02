@@ -12,15 +12,18 @@ type Props = {
   isOpen: boolean;
   onClose: () => void;
   appId: string;
+  external?: boolean;
+  url: string;
 };
 
-const MarketplaceDisclaimerModal = ({ isOpen, onClose, appId }: Props) => {
+const MarketplaceDisclaimerModal = ({ isOpen, onClose, appId, external, url }: Props) => {
 
   const isMobile = useIsMobile();
 
   const handleContinueClick = React.useCallback(() => {
     window.localStorage.setItem('marketplace-disclaimer-shown', 'true');
-  }, [ ]);
+    onClose();
+  }, [ onClose ]);
 
   return (
     <DialogRoot
@@ -47,7 +50,7 @@ const MarketplaceDisclaimerModal = ({ isOpen, onClose, appId }: Props) => {
           flexDirection="row"
           alignItems="center"
         >
-          <Link href={ route({ pathname: '/apps/[id]', query: { id: appId } }) } asChild>
+          <Link href={ external ? url : route({ pathname: '/apps/[id]', query: { id: appId } }) } external={ external } noIcon>
             <Button onClick={ handleContinueClick } >
               Continue to app
             </Button>
