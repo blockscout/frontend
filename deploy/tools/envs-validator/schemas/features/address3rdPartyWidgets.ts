@@ -21,6 +21,7 @@ export const address3rdPartyWidgetsConfigSchema = yup
                 title: yup.string().required(),
                 hint: yup.string().optional(),
                 valuePath: yup.string().required(),
+                valueTitlePath: yup.string().optional(),
                 pages: yup.array().of(yup.string().oneOf(ADDRESS_3RD_PARTY_WIDGET_PAGES)).required(),
                 chainIds: yup.object<Record<string, string>>().optional(),
               }),
