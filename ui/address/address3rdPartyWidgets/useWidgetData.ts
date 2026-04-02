@@ -21,6 +21,14 @@ const formatValue = (value: unknown): string | undefined => {
   return String(value);
 };
 
+const formatValueTitle = (valueTitle: unknown): string | undefined => {
+  if (typeof valueTitle !== 'string' || typeof valueTitle !== 'number' || typeof valueTitle !== 'boolean') {
+    return;
+  }
+
+  return valueTitle;
+};
+
 interface Props {
   name: string;
   valuePath?: string;
@@ -45,7 +53,7 @@ export default function useWidgetData({ name, valuePath, valueTitlePath, address
           const valueTitle = valueTitlePath ? get(response, valueTitlePath) : undefined;
           return {
             value: formatValue(value),
-            valueTitle,
+            valueTitle: formatValueTitle(valueTitle),
           };
         } catch {
           return undefined;

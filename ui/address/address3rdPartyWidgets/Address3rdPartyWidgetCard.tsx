@@ -90,7 +90,7 @@ const Address3rdPartyWidgetCard = ({ name, config, address, isLoading }: Props) 
       </Skeleton>
       <Flex alignItems="center" gap={ 1 } mt={ 1 }>
         <Text textStyle="sm" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
-          { config.title }{ data?.valueTitle ? `: ${ data.valueTitle }` : '' }
+          { config.title }{ data?.valueTitle !== undefined ? `: ${ data.valueTitle }` : '' }
         </Text>
         { config.hint && (
           <Hint
