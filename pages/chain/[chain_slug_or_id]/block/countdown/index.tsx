@@ -5,12 +5,16 @@ import React from 'react';
 import type { Props } from 'nextjs/getServerSideProps/handlers';
 import PageNextJs from 'nextjs/PageNextJs';
 
-const MultichainTx = dynamic(() => import('ui/multichain/tx/MultichainTx'), { ssr: false });
+import { MultichainProvider } from 'lib/contexts/multichain';
+
+const BlockCountdownIndex = dynamic(() => import('ui/pages/BlockCountdownIndex'), { ssr: false });
 
 const Page: NextPage<Props> = (props: Props) => {
   return (
-    <PageNextJs pathname="/chain/[chain_slug]/tx/[hash]" query={ props.query }>
-      <MultichainTx/>
+    <PageNextJs pathname="/chain/[chain_slug_or_id]/block/countdown" query={ props.query }>
+      <MultichainProvider>
+        <BlockCountdownIndex/>
+      </MultichainProvider>
     </PageNextJs>
   );
 };

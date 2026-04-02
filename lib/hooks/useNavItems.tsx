@@ -42,7 +42,7 @@ export default function useNavItems(): ReturnType {
       text: 'Blocks',
       nextRoute: { pathname: '/blocks' as const },
       icon: 'navigation/block',
-      isActive: pathname === '/blocks' || pathname === '/block/[height_or_hash]' || pathname === '/chain/[chain_slug]/block/[height_or_hash]',
+      isActive: pathname === '/blocks' || pathname === '/block/[height_or_hash]' || pathname === '/chain/[chain_slug_or_id]/block/[height_or_hash]',
     };
     const txs: NavItem | null = {
       text: 'Transactions',
@@ -52,7 +52,7 @@ export default function useNavItems(): ReturnType {
         // sorry, but this is how it was designed
         (pathname === '/txs' && (!config.features.zetachain.isEnabled || !tab || !tab.includes('cctx'))) ||
         pathname === '/tx/[hash]' ||
-        pathname === '/chain/[chain_slug]/tx/[hash]',
+        pathname === '/chain/[chain_slug_or_id]/tx/[hash]',
     };
     const cctxs: NavItem | null = config.features.zetachain.isEnabled ? {
       text: 'Cross-chain transactions',
@@ -76,7 +76,7 @@ export default function useNavItems(): ReturnType {
       text: 'User operations',
       nextRoute: { pathname: '/ops' as const },
       icon: 'navigation/user_op',
-      isActive: pathname === '/ops' || pathname === '/op/[hash]' || pathname === '/chain/[chain_slug]/op/[hash]',
+      isActive: pathname === '/ops' || pathname === '/op/[hash]' || pathname === '/chain/[chain_slug_or_id]/op/[hash]',
     } : null;
 
     const verifiedContracts: NavItem | null =
