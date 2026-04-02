@@ -22,11 +22,11 @@ const formatValue = (value: unknown): string | undefined => {
 };
 
 const formatValueTitle = (valueTitle: unknown): string | undefined => {
-  if (typeof valueTitle !== 'string' || typeof valueTitle !== 'number' || typeof valueTitle !== 'boolean') {
+  if (typeof valueTitle !== 'string' && typeof valueTitle !== 'number' && typeof valueTitle !== 'boolean') {
     return;
   }
 
-  return valueTitle;
+  return String(valueTitle);
 };
 
 interface Props {
