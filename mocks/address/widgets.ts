@@ -23,6 +23,7 @@ export const config: Record<string, Address3rdPartyWidget> = {
     title: 'Value',
     hint: 'Hint',
     valuePath: 'value',
+    valueTitlePath: 'valueTitle',
   },
   'widget-2': {
     name: 'Widget 2',

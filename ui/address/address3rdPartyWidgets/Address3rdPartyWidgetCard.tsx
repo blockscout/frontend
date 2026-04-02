@@ -28,7 +28,13 @@ function formatUrl(tpl: string, ctx: Record<string, string>) {
 }
 
 const Address3rdPartyWidgetCard = ({ name, config, address, isLoading }: Props) => {
-  const { data, isLoading: isDataLoading } = useWidgetData(name, config?.valuePath, address, isLoading);
+  const { data, isLoading: isDataLoading } = useWidgetData({
+    name,
+    valuePath: config?.valuePath,
+    valueTitlePath: config?.valueTitlePath,
+    address,
+    isLoading,
+  });
 
   const handleClick = useCallback(() => {
     mixpanel.logEvent(mixpanel.EventTypes.ADDRESS_WIDGET, { Name: name });
@@ -44,7 +50,7 @@ const Address3rdPartyWidgetCard = ({ name, config, address, isLoading }: Props) 
     chainId: config.chainIds?.[chainId] ?? chainId,
   });
 
-  const [ integer, decimal ] = data?.split('.') || [];
+  const [ integer, decimal ] = data?.value?.split('.') || [];
 
   const content = isLoading ? (
     <>
@@ -60,7 +66,7 @@ const Address3rdPartyWidgetCard = ({ name, config, address, isLoading }: Props) 
     <>
       <LinkOverlay href={ url } external onClick={ handleClick } noIcon/>
       <Skeleton loading={ isDataLoading } minW="88px" alignSelf="flex-start">
-        { data ? (
+        { data?.value ? (
           <Text
             textStyle="heading.xl"
             color={ integer === '0' && !decimal ? 'text.secondary' : 'text.primary' }
@@ -83,7 +89,9 @@ const Address3rdPartyWidgetCard = ({ name, config, address, isLoading }: Props) 
         ) }
       </Skeleton>
       <Flex alignItems="center" gap={ 1 } mt={ 1 }>
-        <Text textStyle="sm">{ config.title }</Text>
+        <Text textStyle="sm" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
+          { config.title }{ data?.valueTitle !== undefined ? `: ${ data.valueTitle }` : '' }
+        </Text>
         { config.hint && (
           <Hint
             label={ config.hint }

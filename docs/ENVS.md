@@ -1023,6 +1023,7 @@ This feature allows to display widgets on the address page with data from 3rd pa
 | title | `string` | Title of displayed data | Required | - | `'Multichain balance'` |
 | hint | `string` | Hint for displayed data | - | - | `'Widget hint'` |
 | valuePath | `string` | Path to the field in the API response that contains the value to be displayed | Required | - | `'result.balance'` |
+| valueTitlePath | `string` | Path in the API response that contains the text to display next to the widget title | - | - | `'result.risk.status'` |
 | pages | `Array<'eoa' \| 'contract' \| 'token'>` | List of pages where the widget should be displayed | Required | - | `['eoa']` |
 | chainIds | `Record<string, string>` | Mapping of chain IDs to custom values that will be used in `url` template | - | - | `{'1': 'eth', '10': 'op'}` |
 
