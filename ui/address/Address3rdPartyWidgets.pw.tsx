@@ -26,7 +26,7 @@ const testFn = (isMobile: boolean) => async({ render, mockConfigResponse, mockAs
   await Promise.all(widgetsMock.widgets.map((widget, i) =>
     mockApiResponse(
       'general:address_3rd_party_info',
-      { value: widgetsMock.values[i] },
+      { value: widgetsMock.values[i], valueTitle: 'Duck' },
       { pathParams: { name: widget }, queryParams: { address: ADDRESS_HASH, chain_id: '1' } },
     ),
   ));
