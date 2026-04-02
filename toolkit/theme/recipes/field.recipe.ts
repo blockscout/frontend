@@ -115,14 +115,14 @@ export const recipe = defineSlotRecipe({
           whiteSpace: 'nowrap',
           overflow: 'hidden',
           textOverflow: 'ellipsis',
-          padding: '10px 16px 0px 16px',
+          padding: '8px 16px 0px 16px',
           textStyle: 'xs',
           _peerPlaceholderShown: {
             padding: '16px',
             textStyle: 'md',
           },
           _peerFocusVisible: {
-            padding: '10px 16px 0px 16px',
+            padding: '8px 16px 0px 16px',
             textStyle: 'xs',
           },
           _readOnly: {
