@@ -13,4 +13,5 @@ export interface Result {
   isReconnecting: boolean;
   address: string | undefined;
   openModal: () => void;
+  type?: 'dynamicwaas';
 }
