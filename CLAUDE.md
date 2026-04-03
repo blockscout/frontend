@@ -33,6 +33,8 @@ pnpm chakra:typegen         # Regenerate Chakra UI types
 
 **Stack:** Next.js 15 (Pages Router, not App Router), React 19, Chakra UI v3, React Query 5, Wagmi 2 / Viem 2, Valibot for schema validation, Vitest + Playwright for testing.
 
+**Domain terminology:** Product and feature codenames used in this codebase are defined in `docs/GLOSSARY.md`. Consult it when you encounter an unfamiliar term (e.g. `tac`, `bens`, `cctx`, `kettle`, `epoch`).
+
 **Key directories:**
 - `pages/` — Next.js page components (require default exports)
 - `ui/` — React UI components organized by feature (~65 subdirectories)

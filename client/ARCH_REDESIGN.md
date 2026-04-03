@@ -351,7 +351,7 @@ client/slices/tx/
 - [x] ~~**Storybook / toolkit**~~ — project does not use Storybook. Topic closed.
 - [x] ~~**`lib/hooks/` full audit**~~ — all hooks explicitly placed; see §6 migration map.
 - [x] ~~**`lib/api/services/general/` audit**~~ — all files stay under `general/` (General API namespace). No splits needed beyond existing file boundaries.
-- [ ] **Project glossary** — a `GLOSSARY.md` (or section in CONTRIBUTING) mapping internal codenames to their product/feature meaning (e.g. `tac` → Ton Application Chain, `blobs`/`data-availability`, `cctx` → cross-chain transactions, `epochs` → Celo epoch pages). Aids both engineers and agents navigating the codebase.
+- [x] ~~**Project glossary**~~ — a `GLOSSARY.md` (or section in CONTRIBUTING) mapping internal codenames to their product/feature meaning (e.g. `tac` → Ton Application Chain, `blobs`/`data-availability`, `cctx` → cross-chain transactions, `epochs` → Celo epoch pages). Aids both engineers and agents navigating the codebase.
 
 ---
 
