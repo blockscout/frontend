@@ -15,7 +15,7 @@ import { Status } from 'toolkit/chakra/status';
 import { SECOND } from 'toolkit/utils/consts';
 import IconSvg from 'ui/shared/IconSvg';
 
-import getPrefixByFilter from '../../utils/getPrefixByFilter';
+import getPrefixByFilter from '../../utils/get-prefix-by-filter';
 import * as storage from '../../utils/storage';
 import type { StorageItem } from '../../utils/storage';
 

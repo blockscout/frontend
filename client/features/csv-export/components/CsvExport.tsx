@@ -31,7 +31,7 @@ import ReCaptcha from 'ui/shared/reCaptcha/ReCaptcha';
 import useReCaptcha from 'ui/shared/reCaptcha/useReCaptcha';
 
 import { useCsvExportContext } from '../utils/context';
-import getFileName from '../utils/getFileName';
+import getFileName from '../utils/get-file-name';
 import type { StorageItem } from '../utils/storage';
 import CsvExportDialog from './dialog/CsvExportDialog';
 import CsvExportDialogDescription from './dialog/CsvExportDialogDescription';
