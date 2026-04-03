@@ -51,7 +51,7 @@ const TokenDetails = ({ tokenQuery }: Props) => {
 
     router.push(
       chainSlug ?
-        { pathname: '/chain/[chain_slug]/token/[hash]', query: { hash: hash || '', tab, chain_slug: chainSlug } } :
+        { pathname: '/chain/[chain_slug_or_id]/token/[hash]', query: { hash: hash || '', tab, chain_slug_or_id: chainSlug } } :
         { pathname: '/token/[hash]', query: { hash: hash || '', tab } },
       undefined,
       { shallow: true },

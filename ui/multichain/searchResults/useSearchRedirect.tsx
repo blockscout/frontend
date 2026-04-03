@@ -36,8 +36,8 @@ export default function useSearchRedirect({ checkRedirectQuery, hasSearchTerm }:
           const chainInfo = multichainConfig()?.chains.find((chain) => chain.id === checkRedirectQuery.data.chain_id);
           if (chainInfo) {
             router.replace({
-              pathname: '/chain/[chain_slug]/block/[height_or_hash]',
-              query: { height_or_hash: checkRedirectQuery.data.parameter, chain_slug: chainInfo?.slug },
+              pathname: '/chain/[chain_slug_or_id]/block/[height_or_hash]',
+              query: { height_or_hash: checkRedirectQuery.data.parameter, chain_slug_or_id: chainInfo.slug },
             });
             return;
           }
@@ -51,10 +51,10 @@ export default function useSearchRedirect({ checkRedirectQuery, hasSearchTerm }:
           const chainInfo = multichainConfig()?.chains.find((chain) => chain.id === checkRedirectQuery.data.chain_id);
           if (chainInfo) {
             router.replace({
-              pathname: '/chain/[chain_slug]/tx/[hash]',
+              pathname: '/chain/[chain_slug_or_id]/tx/[hash]',
               query: {
                 hash: checkRedirectQuery.data.parameter,
-                chain_slug: chainInfo?.slug,
+                chain_slug_or_id: chainInfo.slug,
               },
             });
             return;

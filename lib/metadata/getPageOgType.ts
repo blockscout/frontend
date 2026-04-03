@@ -72,17 +72,17 @@ const OG_TYPE_DICT: Record<Route['pathname'], OGPageType> = {
   '/cross-chain-tx/[id]': 'Regular page',
 
   // multichain routes
-  '/chain/[chain_slug]/accounts/label/[slug]': 'Root page',
-  '/chain/[chain_slug]/advanced-filter': 'Regular page',
-  '/chain/[chain_slug]/block/[height_or_hash]': 'Regular page',
-  '/chain/[chain_slug]/block/countdown': 'Regular page',
-  '/chain/[chain_slug]/block/countdown/[height]': 'Regular page',
-  '/chain/[chain_slug]/csv-export': 'Regular page',
-  '/chain/[chain_slug]/op/[hash]': 'Regular page',
-  '/chain/[chain_slug]/token/[hash]': 'Regular page',
-  '/chain/[chain_slug]/token/[hash]/instance/[id]': 'Regular page',
-  '/chain/[chain_slug]/tx/[hash]': 'Regular page',
-  '/chain/[chain_slug]/visualize/sol2uml': 'Regular page',
+  '/chain/[chain_slug_or_id]/accounts/label/[slug]': 'Root page',
+  '/chain/[chain_slug_or_id]/advanced-filter': 'Regular page',
+  '/chain/[chain_slug_or_id]/block/[height_or_hash]': 'Regular page',
+  '/chain/[chain_slug_or_id]/block/countdown': 'Regular page',
+  '/chain/[chain_slug_or_id]/block/countdown/[height]': 'Regular page',
+  '/chain/[chain_slug_or_id]/csv-export': 'Regular page',
+  '/chain/[chain_slug_or_id]/op/[hash]': 'Regular page',
+  '/chain/[chain_slug_or_id]/token/[hash]': 'Regular page',
+  '/chain/[chain_slug_or_id]/token/[hash]/instance/[id]': 'Regular page',
+  '/chain/[chain_slug_or_id]/tx/[hash]': 'Regular page',
+  '/chain/[chain_slug_or_id]/visualize/sol2uml': 'Regular page',
   '/ecosystems': 'Root page',
 
   // service routes, added only to make typescript happy

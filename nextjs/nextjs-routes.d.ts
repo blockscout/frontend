@@ -45,17 +45,17 @@ declare module "nextjs-routes" {
     | DynamicRoute<"/block/countdown/[height]", { "height": string }>
     | StaticRoute<"/blocks">
     | DynamicRoute<"/cc/tx/[hash]", { "hash": string }>
-    | DynamicRoute<"/chain/[chain_slug]/accounts/label/[slug]", { "chain_slug": string; "slug": string }>
-    | DynamicRoute<"/chain/[chain_slug]/advanced-filter", { "chain_slug": string }>
-    | DynamicRoute<"/chain/[chain_slug]/block/[height_or_hash]", { "chain_slug": string; "height_or_hash": string }>
-    | DynamicRoute<"/chain/[chain_slug]/block/countdown", { "chain_slug": string }>
-    | DynamicRoute<"/chain/[chain_slug]/block/countdown/[height]", { "chain_slug": string; "height": string }>
-    | DynamicRoute<"/chain/[chain_slug]/csv-export", { "chain_slug": string }>
-    | DynamicRoute<"/chain/[chain_slug]/op/[hash]", { "chain_slug": string; "hash": string }>
-    | DynamicRoute<"/chain/[chain_slug]/token/[hash]", { "chain_slug": string; "hash": string }>
-    | DynamicRoute<"/chain/[chain_slug]/token/[hash]/instance/[id]", { "chain_slug": string; "hash": string; "id": string }>
-    | DynamicRoute<"/chain/[chain_slug]/tx/[hash]", { "chain_slug": string; "hash": string }>
-    | DynamicRoute<"/chain/[chain_slug]/visualize/sol2uml", { "chain_slug": string }>
+    | DynamicRoute<"/chain/[chain_slug_or_id]/accounts/label/[slug]", { "chain_slug_or_id": string; "slug": string }>
+    | DynamicRoute<"/chain/[chain_slug_or_id]/advanced-filter", { "chain_slug_or_id": string }>
+    | DynamicRoute<"/chain/[chain_slug_or_id]/block/[height_or_hash]", { "chain_slug_or_id": string; "height_or_hash": string }>
+    | DynamicRoute<"/chain/[chain_slug_or_id]/block/countdown", { "chain_slug_or_id": string }>
+    | DynamicRoute<"/chain/[chain_slug_or_id]/block/countdown/[height]", { "chain_slug_or_id": string; "height": string }>
+    | DynamicRoute<"/chain/[chain_slug_or_id]/csv-export", { "chain_slug_or_id": string }>
+    | DynamicRoute<"/chain/[chain_slug_or_id]/op/[hash]", { "chain_slug_or_id": string; "hash": string }>
+    | DynamicRoute<"/chain/[chain_slug_or_id]/token/[hash]", { "chain_slug_or_id": string; "hash": string }>
+    | DynamicRoute<"/chain/[chain_slug_or_id]/token/[hash]/instance/[id]", { "chain_slug_or_id": string; "hash": string; "id": string }>
+    | DynamicRoute<"/chain/[chain_slug_or_id]/tx/[hash]", { "chain_slug_or_id": string; "hash": string }>
+    | DynamicRoute<"/chain/[chain_slug_or_id]/visualize/sol2uml", { "chain_slug_or_id": string }>
     | StaticRoute<"/chakra">
     | StaticRoute<"/contract-verification">
     | DynamicRoute<"/cross-chain-tx/[id]", { "id": string }>

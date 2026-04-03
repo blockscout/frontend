@@ -5,12 +5,12 @@ import React from 'react';
 import type { Props } from 'nextjs/getServerSideProps/handlers';
 import PageNextJs from 'nextjs/PageNextJs';
 
-const MultichainBlock = dynamic(() => import('ui/multichain/block/MultichainBlock'), { ssr: false });
+const MultichainTx = dynamic(() => import('ui/multichain/tx/MultichainTx'), { ssr: false });
 
 const Page: NextPage<Props> = (props: Props) => {
   return (
-    <PageNextJs pathname="/chain/[chain_slug]/block/[height_or_hash]" query={ props.query }>
-      <MultichainBlock/>
+    <PageNextJs pathname="/chain/[chain_slug_or_id]/tx/[hash]" query={ props.query }>
+      <MultichainTx/>
     </PageNextJs>
   );
 };

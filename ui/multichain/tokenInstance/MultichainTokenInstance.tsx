@@ -10,8 +10,8 @@ import TokenInstance from 'ui/pages/TokenInstance';
 
 const MultichainTokenInstance = () => {
   const router = useRouter();
-  const chainSlug = getQueryParamString(router.query.chain_slug);
-  const chainData = multichainConfig()?.chains.find(chain => chain.slug === chainSlug);
+  const chainSlugOrId = getQueryParamString(router.query.chain_slug_or_id);
+  const chainData = multichainConfig()?.chains.find(chain => chain.slug === chainSlugOrId || chain.id === chainSlugOrId);
 
   return (
     <MultichainProvider chainId={ chainData?.id }>

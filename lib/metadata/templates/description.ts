@@ -75,17 +75,17 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/cross-chain-tx/[id]': DEFAULT_TEMPLATE,
 
   // multichain routes
-  '/chain/[chain_slug]/accounts/label/[slug]': DEFAULT_TEMPLATE,
-  '/chain/[chain_slug]/advanced-filter': DEFAULT_TEMPLATE,
-  '/chain/[chain_slug]/block/[height_or_hash]': DEFAULT_TEMPLATE,
-  '/chain/[chain_slug]/block/countdown': DEFAULT_TEMPLATE,
-  '/chain/[chain_slug]/block/countdown/[height]': DEFAULT_TEMPLATE,
-  '/chain/[chain_slug]/csv-export': DEFAULT_TEMPLATE,
-  '/chain/[chain_slug]/op/[hash]': DEFAULT_TEMPLATE,
-  '/chain/[chain_slug]/token/[hash]': DEFAULT_TEMPLATE,
-  '/chain/[chain_slug]/token/[hash]/instance/[id]': DEFAULT_TEMPLATE,
-  '/chain/[chain_slug]/tx/[hash]': DEFAULT_TEMPLATE,
-  '/chain/[chain_slug]/visualize/sol2uml': DEFAULT_TEMPLATE,
+  '/chain/[chain_slug_or_id]/accounts/label/[slug]': DEFAULT_TEMPLATE,
+  '/chain/[chain_slug_or_id]/advanced-filter': DEFAULT_TEMPLATE,
+  '/chain/[chain_slug_or_id]/block/[height_or_hash]': DEFAULT_TEMPLATE,
+  '/chain/[chain_slug_or_id]/block/countdown': DEFAULT_TEMPLATE,
+  '/chain/[chain_slug_or_id]/block/countdown/[height]': DEFAULT_TEMPLATE,
+  '/chain/[chain_slug_or_id]/csv-export': DEFAULT_TEMPLATE,
+  '/chain/[chain_slug_or_id]/op/[hash]': DEFAULT_TEMPLATE,
+  '/chain/[chain_slug_or_id]/token/[hash]': DEFAULT_TEMPLATE,
+  '/chain/[chain_slug_or_id]/token/[hash]/instance/[id]': DEFAULT_TEMPLATE,
+  '/chain/[chain_slug_or_id]/tx/[hash]': DEFAULT_TEMPLATE,
+  '/chain/[chain_slug_or_id]/visualize/sol2uml': DEFAULT_TEMPLATE,
   '/ecosystems': DEFAULT_TEMPLATE,
 
   // service routes, added only to make typescript happy
