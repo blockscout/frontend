@@ -39,7 +39,7 @@ configs/app/    Runtime app configuration; must not import from client/
 nextjs/         Next.js config utilities: headers, rewrites, redirects, type-safe routes
 mocks/          Shared mock data for tests → being co-located under client/ slices/features
 deploy/         Docker scripts, env validator, build tools
-docs/           ENVS.md, GLOSSARY.md, CONTRIBUTING.md, MIGRATION_TASKS.md
+docs/           ENVS.md, GLOSSARY.md, CONTRIBUTING.md
 ```
 
 ## Data flow
@@ -56,7 +56,7 @@ docs/           ENVS.md, GLOSSARY.md, CONTRIBUTING.md, MIGRATION_TASKS.md
 The codebase is being progressively restructured. The long-term target moves all product code from `ui/` and `lib/` into a new `client/` directory with a clear domain-based layout.
 
 **Blueprint:** `client/ARCH_REDESIGN.md`
-**Task backlog and current status:** `docs/MIGRATION_TASKS.md`
+**Task backlog and current status:** `client/MIGRATION_TASKS.md`
 
 ### Target layout inside `client/`
 
@@ -81,4 +81,4 @@ The codebase is being progressively restructured. The long-term target moves all
 - **`pages/` files are thin wrappers** — a dynamic import and optionally `getServerSideProps`; no UI components or business logic inline.
 - **Naming:** kebab-case for directories and non-component modules; `PascalCase.tsx` for React components; `useCamelCase.ts` for hooks.
 - **Types:** each slice/feature owns its API response types in `<slice|feature>/types/api.ts`. Do not import from deeper internal paths across domain boundaries.
-- **When editing legacy `lib/` or `ui/` code:** check `docs/MIGRATION_TASKS.md` to see if that area has a migration task in progress or planned. If so, note the target destination in your PR description.
+- **When editing legacy `lib/` or `ui/` code:** check `client/MIGRATION_TASKS.md` to see if that area has a migration task in progress or planned. If so, note the target destination in your PR description.
