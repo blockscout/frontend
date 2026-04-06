@@ -1,6 +1,4 @@
-# Client architecture blueprint (draft — round 3)
-
-Living document: extend after further design rounds. Intended for **human engineers and agents** implementing the migration.
+# Client architecture blueprint
 
 ---
 
@@ -397,5 +395,3 @@ client/
 ```
 
 ---
-
-*End of round 3 blueprint.*

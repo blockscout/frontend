@@ -1,0 +1,84 @@
+---
+description: Project overview, tech stack, directory layout, data flow, and ongoing client/ architecture migration
+globs:
+alwaysApply: true
+---
+# Project Architecture
+
+## What this is
+
+Blockscout frontend — a blockchain explorer UI. Distributed as a Docker image; configured entirely via environment variables at runtime (see `.agents/rules/env-vars.mdc`).
+
+## Tech stack
+
+| Layer | Technology |
+|---|---|
+| Framework | Next.js 16 — **Pages Router only** (not App Router) |
+| UI | React 19 |
+| Component library | Chakra UI v3 (see `.agents/rules/design-system.mdc`) |
+| Server state | React Query 5 |
+| Web3 | Wagmi 2 / Viem 2 |
+| Schema validation | Valibot |
+| Unit tests | Vitest |
+| Visual tests | Playwright |
+| Package manager | pnpm (Node >=22.14.0) |
+
+## Domain terminology
+
+Feature and product codenames used throughout the codebase are defined in `docs/GLOSSARY.md`. Consult it whenever you encounter an unfamiliar term — e.g. `tac`, `bens`, `cctx`, `kettle`, `epoch`, `blobs`.
+
+## Directory layout
+
+```
+pages/          Next.js file-based routes — thin wrappers only (dynamic import + getServerSideProps)
+ui/             Legacy React UI components organized by feature (~65 subdirectories) → being migrated to client/
+lib/            Legacy business logic, API utilities, custom hooks, context providers → being migrated to client/
+client/         New home for all product code (see Migration section below)
+toolkit/        Design system — Chakra wrappers, theme tokens, shared hooks/components (stays here permanently)
+configs/app/    Runtime app configuration; must not import from client/
+nextjs/         Next.js config utilities: headers, rewrites, redirects, type-safe routes
+mocks/          Shared mock data for tests → being co-located under client/ slices/features
+deploy/         Docker scripts, env validator, build tools
+docs/           ENVS.md, GLOSSARY.md, CONTRIBUTING.md, MIGRATION_TASKS.md
+```
+
+## Data flow
+
+- **Getting data:** pages fetch data via React Query. Query keys and fetcher functions live in `lib/api/` (moving to `client/api/`).
+- **Global UI state:** React Context providers initialized in `pages/_app.tsx` — `AppContextProvider`, `SettingsContextProvider`, `MarketplaceContextProvider`, etc.
+- **Real-time data:** WebSocket via `SocketProvider` (moving to `client/api/socket/`).
+- **App config:** always read via `configs/app/` (which reads `window.__envs` at runtime) — never `process.env.*` directly in component code.
+
+---
+
+## Ongoing migration: `client/` architecture
+
+The codebase is being progressively restructured. The long-term target moves all product code from `ui/` and `lib/` into a new `client/` directory with a clear domain-based layout.
+
+**Blueprint:** `client/ARCH_REDESIGN.md`
+**Task backlog and current status:** `docs/MIGRATION_TASKS.md`
+
+### Target layout inside `client/`
+
+| Directory | Contents |
+|---|---|
+| `client/shell/` | App chrome: layout, header, footer, navigation, top-bar, root contexts |
+| `client/api/` | API transport, fetch utilities, query client, WebSocket; migrated from `lib/api/` and `lib/socket/` |
+| `client/slices/` | Core explorer entities always present on any EVM chain (tx, block, address, token, contract, search, …) |
+| `client/features/` | Optional / config-gated areas: rollups, chain variants, account, rewards, marketplace, stats, … |
+| `client/shared/` | Cross-cutting utilities with no single domain owner (analytics, errors, hooks, router helpers, text utils, …) |
+
+### Slice vs feature
+
+- **Slice** — present on every vanilla EVM chain, no feature flag required. Examples: `tx`, `block`, `address`, `token`, `contract`.
+- **Feature** — config-gated or chain-specific. Examples: `rollup/optimism`, `chain-variants/celo`, `account`, `stats`, `gas-tracker`.
+
+### Key rules for migrated code
+
+- **No barrel `index.ts` files** inside `client/` unless the file defines a genuine public facade (not just `export * from ...`).
+- **`client/api` must not have runtime imports** from `client/slices/*` or `client/features/*`; `import type` is allowed.
+- **`configs/` never imports `client/`.**
+- **`pages/` files are thin wrappers** — a dynamic import and optionally `getServerSideProps`; no UI components or business logic inline.
+- **Naming:** kebab-case for directories and non-component modules; `PascalCase.tsx` for React components; `useCamelCase.ts` for hooks.
+- **Types:** each slice/feature owns its API response types in `<slice|feature>/types/api.ts`. Do not import from deeper internal paths across domain boundaries.
+- **When editing legacy `lib/` or `ui/` code:** check `docs/MIGRATION_TASKS.md` to see if that area has a migration task in progress or planned. If so, note the target destination in your PR description.

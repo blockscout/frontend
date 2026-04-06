@@ -1,0 +1,83 @@
+---
+description: Environment variables — where they live, how they're delivered at runtime, validated, and how to add or deprecate them
+globs:
+alwaysApply: false
+---
+# Environment Variables
+
+## Reference
+
+All environment variables are documented in `docs/ENVS.md`. This is the authoritative list — every variable must be present there.
+
+## Runtime delivery (not build-time)
+
+Almost all variables are injected at **runtime**, not baked into the Next.js build. Only three variables are true build-time constants, compiled into the image via Docker `ARG`: `NEXT_PUBLIC_GIT_COMMIT_SHA`, `NEXT_PUBLIC_GIT_TAG`, `NEXT_OPEN_TELEMETRY_ENABLED`.
+
+Everything else follows this pipeline:
+
+**1. Build time — `deploy/scripts/collect_envs.sh`**
+
+Scans `docs/ENVS.md` for every `NEXT_PUBLIC_*` name and writes `.env.registry` (a list of expected variable names with placeholder values). This registry is copied into the Docker image and tells the runtime which variables the app expects. **If a variable is not in `docs/ENVS.md`, it will not appear in the registry and will not be delivered to the browser.**
+
+**2. Container startup — `deploy/scripts/entrypoint.sh`**
+
+Runs in sequence:
+1. Optionally loads a named preset from `configs/envs/`
+2. Downloads external asset files (images, JSON configs) via `download_assets.sh`
+3. Validates environment values against the schema (`validate_envs.sh` → `deploy/tools/envs-validator/`)
+4. Writes `public/assets/envs.js` via `make_envs_script.sh`:
+   ```js
+   window.__envs = {
+     NEXT_PUBLIC_API_HOST: "...",
+     ...
+   }
+   ```
+
+**3. In the app — `configs/app/utils.ts` `getEnvValue()`**
+
+Reads `window.__envs` when running in the browser, and `process.env` during SSR / build-time evaluation.
+
+## Accessing variables in code
+
+Never read `process.env.NEXT_PUBLIC_*` directly in component or library code. Always go through `configs/app/`, which exposes a frozen, typed config object. The config is split into sections:
+
+| Section | Purpose |
+|---|---|
+| `app` | App-level settings (host, protocol, env flags) |
+| `apis` | Main API and related service endpoints |
+| `chain` | Blockchain parameters |
+| `UI` | Visual customizations (colors, fonts, layout) |
+| `features` | Feature flags |
+| `services` | Third-party service integrations |
+| `meta` | SEO and meta-tag settings |
+
+## Validation
+
+At container startup, `deploy/tools/envs-validator/` validates the current environment against a [Valibot](https://valibot.dev/) schema defined in `deploy/tools/envs-validator/schema.ts`. The app will not start if validation fails (unless `SKIP_ENVS_VALIDATION=true`).
+
+For complex config shapes, define a **separate sub-schema** (see `tacSchema`, `beaconChainSchema` for examples) rather than inlining everything.
+
+## How to add a new variable
+
+Follow all steps — skipping any one of them will cause the variable to be missing at runtime or fail CI validation.
+
+1. **`docs/ENVS.md`** — document the variable: name, expected type, required/optional, default value, example value. This step is mandatory; without it the runtime script will not deliver the value to the browser.
+
+2. **`configs/app/`** — add a property in the appropriate section file (`app.ts`, `apis.ts`, `chain.ts`, `ui.ts`, `features/`, `services.ts`, `meta.ts`). Read the value via `getEnvValue('NEXT_PUBLIC_...')`. Never use the env var name directly outside `configs/app/`.
+
+3. **`deploy/tools/envs-validator/schema.ts`** — add or update the validation rule. For complex structures, create a dedicated sub-schema.
+
+4. **`deploy/tools/envs-validator/test/.env.base`** — add the variable to the base test preset. If the variable supports alternative configurations, add examples to `.env.alt` as well. Verify locally:
+   ```bash
+   cd deploy/tools/envs-validator && pnpm test
+   ```
+
+5. **CSP** (if the variable holds an external non-asset URL) — add the domain to the appropriate policy in `nextjs/csp/policies/`. Only add the policy when the relevant config option is enabled.
+
+6. **`deploy/scripts/download_assets.sh`** (if the variable holds an asset URL — image or JSON config) — extend the `ASSETS_ENVS` array with the variable name.
+
+7. **JSON config URL only** — add an example file to `deploy/tools/envs-validator/test/assets/configs/` (filename derived by stripping `NEXT_PUBLIC_` prefix and `_URL` suffix, lowercased — e.g. `NEXT_PUBLIC_MARKETPLACE_CONFIG_URL` → `marketplace_config.json`) and add the variable name to the `envsWithJsonConfig` array in `deploy/tools/envs-validator/index.ts`.
+
+## TBD: Deprecating a variable
+
+> This section is not yet defined. Topics to cover: how to announce deprecation, the grace period before removal, how to update `docs/ENVS.md` and `schema.ts`, and how to handle backwards compatibility for existing deployments.

@@ -8,7 +8,6 @@ alwaysApply: false
 - Use TypeScript for all code
 - Prefer interfaces over types
 - Implement proper type safety and inference
-- Use `satisfies` operator for type validation
 
 
 ## Import types
@@ -80,7 +79,21 @@ const youSayGoodbyeISayHello = <
 };
 ```
 
-Outside of generic functions, use `any` extremely sparingly.
+Outside of generic functions, use `any` extremely sparingly. Prefer `unknown` with proper narrowing instead:
+
+```ts
+// BAD
+function process(value: any) {
+  return value.name;
+}
+
+// GOOD
+function process(value: unknown) {
+  if (typeof value === 'object' && value !== null && 'name' in value) {
+    return (value as { name: string }).name;
+  }
+}
+```
 
 
 ## Default exports
@@ -443,4 +456,55 @@ if (result.ok) {
 } else {
   console.error(result.error);
 }
+```
+
+
+## Type assertions and satisfies
+
+Prefer `satisfies` over `as` assertions for type validation. `as` silently widens or narrows the type; `satisfies` validates without losing inference.
+
+```ts
+// BAD
+const items = response.data as MyType[];
+
+// GOOD
+const items = response.data satisfies Array<MyType>;
+```
+
+Avoid double-cast coercions (`as unknown as MyType`). If a cast is unavoidable, add a comment explaining why it is safe:
+
+```ts
+// BAD
+const el = ref.current as unknown as HTMLInputElement;
+
+// GOOD — explain why the double cast is safe
+// The portal always renders an <input>, so this cast is guaranteed at runtime.
+const el = ref.current as unknown as HTMLInputElement;
+```
+
+
+## Window globals
+
+Never access third-party globals via `(window as any)`. Declare the property inside the existing `declare global { interface Window { ... } }` block in `global.d.ts`:
+
+```ts
+// BAD
+const analytics = (window as any).analytics;
+
+// GOOD — in global.d.ts
+declare global {
+  interface Window {
+    analytics: SegmentAnalytics.AnalyticsJS;
+  }
+}
+```
+
+
+## Module type declarations
+
+Use `decs.d.ts` exclusively for untyped third-party module declarations. Do not put other type definitions there.
+
+```ts
+// decs.d.ts
+declare module 'some-untyped-package';
 ```
