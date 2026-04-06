@@ -1,7 +1,6 @@
 ---
 name: create-pr
 description: Create a well-structured pull request with proper description, labels, and reviewers
-disable-model-invocation: true
 ---
 # Create PR
 
