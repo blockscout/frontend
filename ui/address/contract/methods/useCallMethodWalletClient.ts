@@ -1,6 +1,6 @@
 import React from 'react';
 import { getAddress, type Abi } from 'viem';
-import { useAccount, useWalletClient, useSwitchChain } from 'wagmi';
+import { useAccount, useSwitchChain, useWriteContract, useSendTransaction } from 'wagmi';
 
 import type { FormSubmitResult, SmartContractMethod } from './types';
 
@@ -24,23 +24,17 @@ export default function useCallMethodWalletClient(): (params: Params) => Promise
   const chainConfig = (multichainContext?.chain.app_config ?? config).chain;
   const targetChainId = chainConfig?.id ? Number(chainConfig.id) : undefined;
 
-  const { data: walletClient, error } = useWalletClient({ chainId: targetChainId });
   const { isConnected, chainId, address: account } = useAccount();
   const { switchChainAsync } = useSwitchChain();
   const { trackTransaction, trackTransactionConfirm } = useRewardsActivity();
+  const { writeContractAsync } = useWriteContract();
+  const { sendTransactionAsync } = useSendTransaction();
 
   const { type: walletType } = useWallet({ source: 'Smart contracts' });
-
-  // eslint-disable-next-line no-console
-  console.log('useWalletClient debug:', { walletClient, error, targetChainId, chainId });
 
   return React.useCallback(async({ args, item, addressHash }) => {
     if (!isConnected) {
       throw new Error('Wallet is not connected');
-    }
-
-    if (!walletClient) {
-      throw new Error('Wallet Client is not defined');
     }
 
     if (chainId && targetChainId && chainId !== targetChainId) {
@@ -65,10 +59,11 @@ export default function useCallMethodWalletClient(): (params: Params) => Promise
       const estimatedGas = feature.isEnabled && feature.connectorType === 'dynamic' && walletType === 'dynamicwaas' ?
         BigInt(0) : undefined;
 
-      const hash = await walletClient.sendTransaction({
+      const hash = await sendTransactionAsync({
         to: address,
         value,
         gas: estimatedGas,
+        chainId: targetChainId,
         ...(data ? { data } : {}),
       });
 
@@ -90,7 +85,7 @@ export default function useCallMethodWalletClient(): (params: Params) => Promise
     const estimatedGas = feature.isEnabled && feature.connectorType === 'dynamic' && walletType === 'dynamicwaas' ?
       BigInt(0) : undefined;
 
-    const hash = await walletClient.writeContract({
+    const hash = await writeContractAsync({
       args: _args,
       // Here we provide the ABI as an array containing only one item from the submitted form.
       // This is a workaround for the issue with the "viem" library.
@@ -105,6 +100,7 @@ export default function useCallMethodWalletClient(): (params: Params) => Promise
       value,
       account,
       gas: estimatedGas,
+      chainId: targetChainId,
     });
 
     if (activityResponse?.token) {
@@ -112,5 +108,16 @@ export default function useCallMethodWalletClient(): (params: Params) => Promise
     }
 
     return { source: 'wallet_client', data: { hash } };
-  }, [ isConnected, walletClient, chainId, targetChainId, trackTransaction, account, walletType, switchChainAsync, trackTransactionConfirm ]);
+  }, [
+    isConnected,
+    chainId,
+    targetChainId,
+    trackTransaction,
+    account,
+    walletType,
+    writeContractAsync,
+    switchChainAsync,
+    sendTransactionAsync,
+    trackTransactionConfirm,
+  ]);
 }

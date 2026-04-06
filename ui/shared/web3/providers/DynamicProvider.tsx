@@ -96,7 +96,6 @@ const DynamicProvider = ({ children }: Props) => {
         onAuthSuccess,
         onLogout,
       },
-      networkValidationMode: 'always',
     };
   }, [ onAuthSuccess, onLogout ]);
 
