@@ -1,6 +1,6 @@
 ---
-name: migrate
-description: Execute the next architecture migration task through to a PR, or fix review comments on an existing migration PR. Follows the blueprint in client/ARCH_REDESIGN.md and the task backlog in docs/MIGRATION_TASKS.md. Use for /migrate (start next task), /migrate <task-id> (start a specific task), or /migrate fix <pr> (address review comments).
+name: arch-migrate
+description: Execute the next architecture migration task through to a PR, or fix review comments on an existing migration PR. Follows the blueprint in client/ARCH_REDESIGN.md and the task backlog in docs/MIGRATION_TASKS.md. Use for /arch-migrate (start next task), /arch-migrate <task-id> (start a specific task), or /arch-migrate fix <pr> (address review comments).
 ---
 
 You are executing a step of the Blockscout frontend client architecture migration.
@@ -13,11 +13,11 @@ You are executing a step of the Blockscout frontend client architecture migratio
 
 ## Mode
 
-**No arguments** (`/migrate`): find the first task in `docs/MIGRATION_TASKS.md` with status `[ ]`. That is the task to execute.
+**No arguments** (`/arch-migrate`): find the first task in `docs/MIGRATION_TASKS.md` with status `[ ]`. That is the task to execute.
 
-**Task ID given** (e.g. `/migrate 2-1`): execute that specific task.
+**Task ID given** (e.g. `/arch-migrate 2-1`): execute that specific task.
 
-**Fix mode** (e.g. `/migrate fix 42` or `/migrate fix https://github.com/.../pull/42`): address open review comments on that PR.
+**Fix mode** (e.g. `/arch-migrate fix 42` or `/arch-migrate fix https://github.com/.../pull/42`): address open review comments on that PR.
 - Fetch review threads via `gh api graphql` and filter to threads where `isResolved: false` only.
 - Do not touch threads already marked as resolved — the reviewer resolves threads that are no longer relevant.
 - Address each unresolved comment, push the fixes to the existing branch, and summarise which threads were resolved.
