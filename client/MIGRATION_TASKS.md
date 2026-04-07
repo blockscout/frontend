@@ -18,7 +18,7 @@ Adding tasks to a stage: append the next index; no renumbering needed.
 
 ## Stage 0 — Pre-migration
 
-### 0-1 · [ ] Rename `configs/app/features/` files to kebab-case
+### 0-1 · [~] Rename `configs/app/features/` files to kebab-case · [#3345](https://github.com/blockscout/frontend/issues/3345)
 
 **Scope:** Rename every `.ts` file under `configs/app/features/` from camelCase to kebab-case
 (e.g. `userOps.ts` → `user-ops.ts`, `adsBanner.ts` → `ads-banner.ts`).
