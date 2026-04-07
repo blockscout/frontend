@@ -35,8 +35,8 @@ export const factory = (guards: Array<Guard | Array<Guard>>, chainConfig = confi
 
 export const factoryMultichain = (guards: Array<Guard>) => {
   return async(context: GetServerSidePropsContext) => {
-    const chainSlug = context.params?.chain_slug;
-    const chain = multichainConfig()?.chains.find((chain) => chain.slug === chainSlug);
+    const chainSlugOrId = context.params?.chain_slug_or_id;
+    const chain = multichainConfig()?.chains.find((chain) => chain.slug === chainSlugOrId || chain.id === chainSlugOrId);
 
     if (!chain?.app_config) {
       return {

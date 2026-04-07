@@ -1,7 +1,7 @@
 import type { SystemStyleObject } from '@chakra-ui/react';
 import { Box, Flex, useToken, Center } from '@chakra-ui/react';
 import type { EditorProps } from '@monaco-editor/react';
-import MonacoEditor from '@monaco-editor/react';
+import MonacoEditor, { loader as monacoLoader } from '@monaco-editor/react';
 import type * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import React from 'react';
 
@@ -26,6 +26,14 @@ import { defScilla, configScilla } from './utils/defScilla';
 import getFullPathOfImportedFile from './utils/getFullPathOfImportedFile';
 import * as themes from './utils/themes';
 import useThemeColors from './utils/useThemeColors';
+
+// Loader defaults to a jsdelivr monaco-editor version bundled in @monaco-editor/loader, not the app dependency.
+monacoLoader.config({
+  paths: {
+    vs: 'https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs',
+  },
+});
+
 const EDITOR_OPTIONS: EditorProps['options'] = {
   readOnly: true,
   minimap: { enabled: false },

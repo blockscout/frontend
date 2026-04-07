@@ -8,7 +8,7 @@ import AdvancedFilter from 'ui/pages/AdvancedFilter';
 
 const Page: NextPage = () => {
   return (
-    <PageNextJs pathname="/chain/[chain_slug]/advanced-filter">
+    <PageNextJs pathname="/chain/[chain_slug_or_id]/advanced-filter">
       <MultichainProvider>
         <AdvancedFilter/>
       </MultichainProvider>

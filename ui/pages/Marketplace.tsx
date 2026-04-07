@@ -263,6 +263,8 @@ const Marketplace = () => {
           isOpen={ isDisclaimerModalOpen }
           onClose={ clearSelectedAppId }
           appId={ selectedApp.id }
+          external={ selectedApp.external }
+          url={ selectedApp.url }
         />
       ) }
     </>

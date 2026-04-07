@@ -74,6 +74,9 @@ const moduleExports = {
       'static': 180,
     },
   },
+
+  // workaround for passing outDir to nextjs-routes CLI
+  outDir: 'nextjs',
 };
 
 module.exports = withBundleAnalyzer(withRoutes(moduleExports));

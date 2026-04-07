@@ -410,6 +410,9 @@ export default tseslint.config(
       '@stylistic/template-curly-spacing': [ 'error', 'always' ],
       '@stylistic/wrap-iife': [ 'error', 'inside' ],
     },
+    ignores: [
+      'next-env.d.ts',
+    ],
   },
 
   {

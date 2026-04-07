@@ -28,6 +28,7 @@ export type Address3rdPartyWidget = {
   title: string;
   hint?: string;
   valuePath: string;
+  valueTitlePath?: string;
   pages: Array<typeof ADDRESS_3RD_PARTY_WIDGET_PAGES[number]>;
   chainIds?: Record<string, string>;
 };

@@ -38,6 +38,7 @@ const heroBannerSchema: yup.ObjectSchema<HeroBannerConfig> = yup.object()
       search: yup.object({
         border_width: yup.array().max(2).of(yup.string()),
       }),
+      text: yup.string(),
     });
 
 export const homepageSchema = yup.object({

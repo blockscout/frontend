@@ -76,16 +76,16 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/cross-chain-tx/[id]': '%network_name% cross-chain transaction %id% details',
 
   // multichain routes
-  '/chain/[chain_slug]/accounts/label/[slug]': '%network_name% addresses search by label',
-  '/chain/[chain_slug]/advanced-filter': '%network_name% advanced filter',
-  '/chain/[chain_slug]/block/[height_or_hash]': '%network_name% block %height_or_hash% details',
-  '/chain/[chain_slug]/block/countdown': '%network_name% block countdown index',
-  '/chain/[chain_slug]/block/countdown/[height]': '%network_name% block %height% countdown',
-  '/chain/[chain_slug]/op/[hash]': '%network_name% user operation %hash% details',
-  '/chain/[chain_slug]/token/[hash]': '%network_name% token details',
-  '/chain/[chain_slug]/token/[hash]/instance/[id]': '%network_name% token NFT instance',
-  '/chain/[chain_slug]/tx/[hash]': '%network_name% transaction %hash% details',
-  '/chain/[chain_slug]/visualize/sol2uml': '%network_name% Solidity UML diagram',
+  '/chain/[chain_slug_or_id]/accounts/label/[slug]': '%network_name% addresses search by label',
+  '/chain/[chain_slug_or_id]/advanced-filter': '%network_name% advanced filter',
+  '/chain/[chain_slug_or_id]/block/[height_or_hash]': '%network_name% block %height_or_hash% details',
+  '/chain/[chain_slug_or_id]/block/countdown': '%network_name% block countdown index',
+  '/chain/[chain_slug_or_id]/block/countdown/[height]': '%network_name% block %height% countdown',
+  '/chain/[chain_slug_or_id]/op/[hash]': '%network_name% user operation %hash% details',
+  '/chain/[chain_slug_or_id]/token/[hash]': '%network_name% token details',
+  '/chain/[chain_slug_or_id]/token/[hash]/instance/[id]': '%network_name% token NFT instance',
+  '/chain/[chain_slug_or_id]/tx/[hash]': '%network_name% transaction %hash% details',
+  '/chain/[chain_slug_or_id]/visualize/sol2uml': '%network_name% Solidity UML diagram',
   '/ecosystems': '%network_name% ecosystems',
 
   // service routes, added only to make typescript happy

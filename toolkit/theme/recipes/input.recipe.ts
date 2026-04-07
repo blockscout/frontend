@@ -119,7 +119,7 @@ export const recipe = defineRecipe({
       size: 'lg',
       floating: true,
       css: {
-        padding: '26px 10px 10px 16px',
+        padding: '24px 10px 8px 16px',
       },
     },
   ],

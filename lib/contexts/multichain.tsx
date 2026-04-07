@@ -4,7 +4,7 @@ import React from 'react';
 import type { ClusterChainConfig } from 'types/multichain';
 
 import multichainConfig from 'configs/multichain';
-import getChainIdFromSlug from 'lib/multichain/getChainIdFromSlug';
+import getChainIdFromSlugOrId from 'lib/multichain/getChainIdFromSlugOrId';
 import getQueryParamString from 'lib/router/getQueryParamString';
 
 interface MultichainProviderProps {
@@ -20,13 +20,13 @@ export const MultichainContext = React.createContext<TMultichainContext | null>(
 
 export function MultichainProvider({ children, chainId: chainIdProp }: MultichainProviderProps) {
   const router = useRouter();
-  const chainSlugQueryParam = router.pathname.includes('chain_slug') ? getQueryParamString(router.query.chain_slug) : undefined;
+  const chainSlugOrIdQueryParam = router.pathname.includes('chain_slug_or_id') ? getQueryParamString(router.query.chain_slug_or_id) : undefined;
   const chainIdQueryParam = router.query.chain_id ? getQueryParamString(router.query.chain_id) : undefined;
 
   const [ chainId, setChainId ] = React.useState<string | undefined>(
     chainIdProp ??
     chainIdQueryParam ??
-    (chainSlugQueryParam ? getChainIdFromSlug(chainSlugQueryParam) : undefined),
+    (chainSlugOrIdQueryParam ? getChainIdFromSlugOrId(chainSlugOrIdQueryParam) : undefined),
   );
 
   React.useEffect(() => {
