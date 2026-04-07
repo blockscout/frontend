@@ -27,7 +27,7 @@ Update all import paths repo-wide. Named exports inside files are unchanged — 
 
 ---
 
-### 0-2 · [ ] Enable ESLint `import/no-cycle` + `boundaries` rules
+### 0-2 · [~] Enable ESLint `import/no-cycle` + `boundaries` rules · [#3348](https://github.com/blockscout/frontend/issues/3348)
 
 **Scope:** Add `eslint-plugin-boundaries` (if not already installed). Configure rules so that:
 - Imports within `client/` emit **errors** on violations.
