@@ -1,7 +1,7 @@
 import type { Feature } from './types';
 
 import { getEnvValue } from '../utils';
-import megaEthFeature from './megaEth';
+import megaEthFeature from './mega-eth';
 
 const title = 'Flashblocks';
 
