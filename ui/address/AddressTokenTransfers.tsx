@@ -114,6 +114,10 @@ const AddressTokenTransfers = ({ shouldRender = true, overloadCount, isQueryEnab
 
       const numActiveFilters = (localQuery.filters.type?.length || 0) + (localQuery.filters.filter ? 1 : 0);
 
+      if (!localQuery.query.data?.items.length && !numActiveFilters) {
+        return null;
+      }
+
       return (
         <>
           <HStack gap={ 3 }>

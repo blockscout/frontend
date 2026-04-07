@@ -115,6 +115,10 @@ const AddressTxs = ({ shouldRender = true, isQueryEnabled = true }: Props) => {
         return null;
       }
 
+      if (!localQuery.query.data?.items.length && !localQuery.filterValue) {
+        return null;
+      }
+
       return (
         <>
           <HStack gap={ 3 }>
