@@ -21,15 +21,40 @@ const formatValue = (value: unknown): string | undefined => {
   return String(value);
 };
 
-export default function useWidgetData(name: string, valuePath: string | undefined, address: string, isLoading: boolean) {
-  const query = useApiQuery<typeof RESOURCE_NAME, unknown, string | undefined>(RESOURCE_NAME, {
+const formatValueTitle = (valueTitle: unknown): string | undefined => {
+  if (typeof valueTitle !== 'string' && typeof valueTitle !== 'number' && typeof valueTitle !== 'boolean') {
+    return;
+  }
+
+  return String(valueTitle);
+};
+
+interface Props {
+  name: string;
+  valuePath?: string;
+  valueTitlePath?: string;
+  address: string;
+  isLoading: boolean;
+}
+
+interface Response {
+  value: string | undefined;
+  valueTitle: string | undefined;
+}
+
+export default function useWidgetData({ name, valuePath, valueTitlePath, address, isLoading }: Props) {
+  const query = useApiQuery<typeof RESOURCE_NAME, unknown, Response | undefined>(RESOURCE_NAME, {
     pathParams: { name },
     queryParams: { address, chain_id: config.chain.id },
     queryOptions: {
       select: (response) => {
         try {
-          const value = get(response, valuePath || '');
-          return formatValue(value);
+          const value = valuePath ? get(response, valuePath) : undefined;
+          const valueTitle = valueTitlePath ? get(response, valueTitlePath) : undefined;
+          return {
+            value: formatValue(value),
+            valueTitle: formatValueTitle(valueTitle),
+          };
         } catch {
           return undefined;
         }

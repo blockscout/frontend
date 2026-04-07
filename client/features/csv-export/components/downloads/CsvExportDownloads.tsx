@@ -31,11 +31,10 @@ const CsvExportDownloads = () => {
             </IconButton>
             { items.some((item) => item.is_highlighted) && (
               <Status
-                size="xs"
+                size="sm"
                 position="absolute"
                 top="0"
                 right="0"
-                borderColor={{ _light: 'theme.topbar.bg._light', _dark: 'theme.topbar.bg._dark' }}
               />
             ) }
           </Flex>

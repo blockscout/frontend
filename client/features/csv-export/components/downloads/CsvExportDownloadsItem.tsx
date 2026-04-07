@@ -15,7 +15,7 @@ import { Status } from 'toolkit/chakra/status';
 import { SECOND } from 'toolkit/utils/consts';
 import IconSvg from 'ui/shared/IconSvg';
 
-import getPrefixByFilter from '../../utils/getPrefixByFilter';
+import getPrefixByFilter from '../../utils/get-prefix-by-filter';
 import * as storage from '../../utils/storage';
 import type { StorageItem } from '../../utils/storage';
 
@@ -105,7 +105,7 @@ const CsvExportDownloadsItem = ({ index, data }: Props) => {
       case 'completed': {
         return {
           title: `CSV file #${ index } is ${ !data.is_highlighted ? 'downloaded' : 'ready' }`,
-          color: 'green.500',
+          color: data.is_highlighted ? 'green.500' : undefined,
           description: data.is_highlighted ? `The file will expire ${ expiresText }. It will be deleted after download.` : undefined,
         };
       }
@@ -192,7 +192,11 @@ const CsvExportDownloadsItem = ({ index, data }: Props) => {
           </Text>
         ) }
         { exportDetailsText && (
-          <Text color="text.secondary" fontWeight={ 600 }>
+          <Text
+            color="text.secondary"
+            fontWeight={ 600 }
+            opacity={ data.status === 'completed' && !data.is_highlighted ? 0.3 : 1 }
+          >
             { exportDetailsText }
           </Text>
         ) }

@@ -6,6 +6,7 @@
     "title": "Widget 1",
     "hint": "Widget 1 hint",
     "valuePath": "result.value",
+    "valueTitlePath": "result.valueTitle",
     "pages": [ "eoa", "contract", "token" ]
   },
   "widget-2": {

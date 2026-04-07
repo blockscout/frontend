@@ -49,6 +49,7 @@ RUN set -a && \
 
 # Build app for production
 ENV NODE_OPTIONS="--max-old-space-size=8192"
+RUN pnpm routes:generate
 RUN pnpm run build
 
 

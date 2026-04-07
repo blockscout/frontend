@@ -7,7 +7,7 @@ import type { ClusterChainConfig } from 'types/multichain';
 import shortenString from 'lib/shortenString';
 import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 
-import getPrefixByFilter from '../../utils/getPrefixByFilter';
+import getPrefixByFilter from '../../utils/get-prefix-by-filter';
 
 interface Props {
   type: CsvExportType;

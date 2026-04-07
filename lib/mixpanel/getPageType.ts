@@ -69,16 +69,16 @@ export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/cross-chain-tx/[id]': 'Cross-chain transaction details',
 
   // multichain routes
-  '/chain/[chain_slug]/accounts/label/[slug]': 'Chain addresses search by label',
-  '/chain/[chain_slug]/advanced-filter': 'Chain advanced filter',
-  '/chain/[chain_slug]/block/[height_or_hash]': 'Chain block details',
-  '/chain/[chain_slug]/block/countdown': 'Chain block countdown index',
-  '/chain/[chain_slug]/block/countdown/[height]': 'Chain block countdown',
-  '/chain/[chain_slug]/op/[hash]': 'Chain user operation details',
-  '/chain/[chain_slug]/token/[hash]': 'Chain token details',
-  '/chain/[chain_slug]/token/[hash]/instance/[id]': 'Chain token NFT instance',
-  '/chain/[chain_slug]/tx/[hash]': 'Chain transaction details',
-  '/chain/[chain_slug]/visualize/sol2uml': 'Chain Solidity UML diagram',
+  '/chain/[chain_slug_or_id]/accounts/label/[slug]': 'Chain addresses search by label',
+  '/chain/[chain_slug_or_id]/advanced-filter': 'Chain advanced filter',
+  '/chain/[chain_slug_or_id]/block/[height_or_hash]': 'Chain block details',
+  '/chain/[chain_slug_or_id]/block/countdown': 'Chain block countdown index',
+  '/chain/[chain_slug_or_id]/block/countdown/[height]': 'Chain block countdown',
+  '/chain/[chain_slug_or_id]/op/[hash]': 'Chain user operation details',
+  '/chain/[chain_slug_or_id]/token/[hash]': 'Chain token details',
+  '/chain/[chain_slug_or_id]/token/[hash]/instance/[id]': 'Chain token NFT instance',
+  '/chain/[chain_slug_or_id]/tx/[hash]': 'Chain transaction details',
+  '/chain/[chain_slug_or_id]/visualize/sol2uml': 'Chain Solidity UML diagram',
   '/ecosystems': 'Ecosystems',
 
   // service routes, added only to make typescript happy

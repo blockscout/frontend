@@ -16,6 +16,10 @@ dotenv \
 source ./deploy/scripts/build_sprite.sh
 echo ""
 
+# generate routes
+pnpm routes:generate
+echo ""
+
 # generate envs.js file and run the app
 dotenv \
   -v NEXT_PUBLIC_GIT_COMMIT_SHA=$(git rev-parse --short HEAD) \

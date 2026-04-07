@@ -23,7 +23,7 @@ if (process.env.NEXT_PUBLIC_OG_IMAGE_URL) {
   try {
     const bannerConfig = JSON.parse(process.env.NEXT_PUBLIC_HOMEPAGE_HERO_BANNER_CONFIG?.replaceAll('\'', '"') || '{}');
     const data = {
-      title: `${ process.env.NEXT_PUBLIC_NETWORK_NAME } explorer`,
+      title: bannerConfig.text || `${ process.env.NEXT_PUBLIC_NETWORK_NAME } explorer`,
       logo_url: process.env.NEXT_PUBLIC_NETWORK_LOGO_DARK ?? process.env.NEXT_PUBLIC_NETWORK_LOGO,
       background: bannerConfig.background?.[0],
       title_color: bannerConfig.text_color?.[0],
