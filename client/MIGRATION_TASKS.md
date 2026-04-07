@@ -7,10 +7,12 @@ Blueprint: `client/ARCH_REDESIGN.md`. Terminology: `docs/GLOSSARY.md`.
 Adding tasks to a stage: append the next index; no renumbering needed.
 
 **Status:** `[ ]` to do · `[~]` in progress · `[x]` done  
-**Base branch:** `main` — each task branches from `main`; PRs target `main`.
+**Base branch:** `main` — each task branches from `main`; PRs target `main`.  
+**Parent issue:** [`blockscout/frontend#3341`](https://github.com/blockscout/frontend/issues/3341)
 
-> Update status and PR link in the same commit that opens the PR.  
-> Change `[~]` → `[x]` (and verify PR link) after the PR is merged.
+> `/arch-research <task-id>` creates the sub-issue and marks the task `[~]`.  
+> `/arch-migrate <issue>` executes the task and opens a PR.  
+> Change `[~]` → `[x]` after the PR is merged.
 
 ---
 
