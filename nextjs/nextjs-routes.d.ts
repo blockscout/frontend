@@ -50,7 +50,6 @@ declare module "nextjs-routes" {
     | DynamicRoute<"/chain/[chain_slug_or_id]/block/[height_or_hash]", { "chain_slug_or_id": string; "height_or_hash": string }>
     | DynamicRoute<"/chain/[chain_slug_or_id]/block/countdown", { "chain_slug_or_id": string }>
     | DynamicRoute<"/chain/[chain_slug_or_id]/block/countdown/[height]", { "chain_slug_or_id": string; "height": string }>
-    | DynamicRoute<"/chain/[chain_slug_or_id]/csv-export", { "chain_slug_or_id": string }>
     | DynamicRoute<"/chain/[chain_slug_or_id]/op/[hash]", { "chain_slug_or_id": string; "hash": string }>
     | DynamicRoute<"/chain/[chain_slug_or_id]/token/[hash]", { "chain_slug_or_id": string; "hash": string }>
     | DynamicRoute<"/chain/[chain_slug_or_id]/token/[hash]/instance/[id]", { "chain_slug_or_id": string; "hash": string; "id": string }>
@@ -59,7 +58,6 @@ declare module "nextjs-routes" {
     | StaticRoute<"/chakra">
     | StaticRoute<"/contract-verification">
     | DynamicRoute<"/cross-chain-tx/[id]", { "id": string }>
-    | StaticRoute<"/csv-export">
     | StaticRoute<"/deposits">
     | StaticRoute<"/dispute-games">
     | StaticRoute<"/ecosystems">

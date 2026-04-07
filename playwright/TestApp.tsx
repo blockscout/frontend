@@ -7,6 +7,7 @@ import { mainnet } from 'wagmi/chains';
 
 import type { Props as PageProps } from 'nextjs/getServerSideProps/handlers';
 
+import { CsvExportContextProvider } from 'client/features/csv-export/utils/context';
 import config from 'configs/app';
 import { AppContextProvider } from 'lib/contexts/app';
 import { MarketplaceContext } from 'lib/contexts/marketplace';
@@ -81,7 +82,9 @@ const TestApp = ({ children, withSocket, appContext = defaultAppContext, marketp
                 <GrowthBookProvider>
                   <WagmiProvider config={ wagmiConfig! }>
                     <RewardsContextProvider>
-                      { children }
+                      <CsvExportContextProvider>
+                        { children }
+                      </CsvExportContextProvider>
                     </RewardsContextProvider>
                   </WagmiProvider>
                 </GrowthBookProvider>

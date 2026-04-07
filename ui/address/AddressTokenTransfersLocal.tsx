@@ -3,6 +3,7 @@ import React from 'react';
 
 import type { TokenType } from 'types/api/token';
 
+import CsvExport from 'client/features/csv-export/components/CsvExport';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
@@ -15,7 +16,6 @@ import TokenTransferList from 'ui/shared/TokenTransfer/TokenTransferList';
 import TokenTransferTable from 'ui/shared/TokenTransfer/TokenTransferTable';
 
 import AddressAdvancedFilterLink from './AddressAdvancedFilterLink';
-import AddressCsvExportLink from './AddressCsvExportLink';
 import type { Filters } from './useAddressTokenTransfersQuery';
 import useAddressTokenTransfersSocket from './useAddressTokenTransfersSocket';
 
@@ -92,16 +92,21 @@ const TokenTransfersLocal = ({ query, filters, addressHash, onTypeFilterChange, 
           isLoading={ query.isPlaceholderData }
           chainConfig={ multichainContext?.chain?.app_config }
         />
+        <CsvExport
+          type="address_token_transfers"
+          resourceName="general:address_csv_export_token_transfers"
+          pathParams={{ hash: addressHash }}
+          queryParams={ filters.filter ? {
+            filter_type: 'address',
+            filter_value: filters.filter,
+          } : undefined }
+          loadingInitial={ isPlaceholderData }
+        />
         <AddressAdvancedFilterLink
           isLoading={ isPlaceholderData }
           address={ addressHash }
           typeFilter={ filters.type }
           directionFilter={ filters.filter }
-        />
-        <AddressCsvExportLink
-          address={ addressHash }
-          params={{ type: 'token-transfers', filterType: 'address', filterValue: filters.filter }}
-          isLoading={ isPlaceholderData }
         />
       </HStack>
       <Pagination ml="auto" { ...pagination }/>

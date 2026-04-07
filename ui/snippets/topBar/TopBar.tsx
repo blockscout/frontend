@@ -1,6 +1,7 @@
-import { Flex, Separator, Box, HStack } from '@chakra-ui/react';
+import { Flex, Box, HStack } from '@chakra-ui/react';
 import React from 'react';
 
+import CsvExportDownloads from 'client/features/csv-export/components/downloads/CsvExportDownloads';
 import config from 'configs/app';
 import { useAppContext } from 'lib/contexts/app';
 import * as cookies from 'lib/cookies';
@@ -54,7 +55,7 @@ const TopBar = () => {
         </HStack>
         <HStack
           alignItems="center"
-          separator={ <Separator mx={{ base: 2, lg: 3 }} height={ 4 }/> }
+          gap={ 3 }
         >
           { (hasAddChainButton || hasDeFiDropdown) && (
             <HStack>
@@ -62,7 +63,10 @@ const TopBar = () => {
               { hasDeFiDropdown && <DeFiDropdown/> }
             </HStack>
           ) }
-          <Settings/>
+          <HStack gap={ 0 }>
+            <CsvExportDownloads/>
+            <Settings/>
+          </HStack>
         </HStack>
       </Flex>
     </Box>

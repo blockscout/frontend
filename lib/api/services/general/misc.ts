@@ -1,4 +1,5 @@
 import type { ApiResource } from '../../types';
+import type { CsvExportItemResponse, CsvExportConfig } from 'client/features/csv-export/types/api';
 import type { AdvancedFilterParams, AdvancedFilterResponse, AdvancedFilterMethodsResponse } from 'types/api/advancedFilter';
 import type {
   ArbitrumL2TxnBatchesItem,
@@ -7,7 +8,7 @@ import type {
 import type { Blob } from 'types/api/blobs';
 import type { Block } from 'types/api/block';
 import type { ChartMarketResponse, ChartSecondaryCoinPriceResponse, ChartTransactionResponse } from 'types/api/charts';
-import type { BackendConfig, BackendVersionConfig, CeloConfig, ContractLanguagesConfig, CsvExportConfig } from 'types/api/configs';
+import type { BackendConfig, BackendVersionConfig, CeloConfig, ContractLanguagesConfig } from 'types/api/configs';
 import type { HotContractsFilters, HotContractsResponse, HotContractsSorting } from 'types/api/contracts';
 import type { DepositsResponse, DepositsCounters } from 'types/api/deposits';
 import type { CeloEpochDetails, CeloEpochElectionRewardDetailsResponse, CeloEpochListResponse } from 'types/api/epochs';
@@ -252,6 +253,12 @@ export const GENERAL_API_MISC_RESOURCES = {
     path: '/api/v2/advanced-filters/csv',
   },
 
+  // CSV EXPORT
+  csv_exports_item: {
+    path: '/api/v2/csv-exports/:id',
+    pathParams: [ 'id' as const ],
+  },
+
   // CONFIGS
   config_backend: {
     path: '/api/v2/config/backend',
@@ -326,6 +333,7 @@ R extends 'general:deposits' ? DepositsResponse :
 R extends 'general:deposits_counters' ? DepositsCounters :
 R extends 'general:advanced_filter' ? AdvancedFilterResponse :
 R extends 'general:advanced_filter_methods' ? AdvancedFilterMethodsResponse :
+R extends 'general:csv_exports_item' ? CsvExportItemResponse :
 never;
 /* eslint-enable @stylistic/indent */
 

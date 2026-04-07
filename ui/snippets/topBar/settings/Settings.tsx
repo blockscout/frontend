@@ -31,7 +31,7 @@ const Settings = () => {
 
   return (
     <PopoverRoot
-      positioning={{ placement: 'bottom-start' }}
+      positioning={{ placement: 'bottom-end' }}
       open={ popover.open }
       onOpenChange={ handlePopoverOpenChange }
       // should be false to enable auto-switch to default color theme
