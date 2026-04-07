@@ -1,0 +1,136 @@
+---
+description: Code quality rules for the Blockscout frontend
+globs: *.tsx,*.ts
+alwaysApply: false
+---
+# Code Quality
+
+We use ESLint, cSpell and Typescript to maintain code quality and consistency across the project.
+In order to check code quality run the following commands:
+```bash
+pnpm lint:eslint:fix
+pnpm lint:tsc
+pnpm lint:cspell
+```
+
+Moreover, please find below the general sense rules that linters do not cover.
+
+## Code Style and Structure
+
+### General Principles
+
+- Write concise, readable TypeScript code
+- Use functional and declarative programming patterns; avoid classes
+- Prefer iteration and modularization over code duplication
+- Implement early returns for better readability
+- Structure components logically: exports, subcomponents, helpers, types
+
+### Naming Conventions
+
+- Prefer descriptive names with auxiliary verbs (isLoading, hasError)
+- Prefix event handlers with "handle" (handleClick, handleSubmit)
+- Favor default exports for React components
+
+Names should be specific and self-documenting. Vague names hide intent and make the codebase harder to navigate.
+
+
+```ts
+// BAD
+const useWidgets = () => { ... };
+
+// GOOD
+const useAddress3rdPartyWidgets = () => { ... };
+```
+
+This applies to hooks, components, functions, and variables alike..
+
+## Specific rules
+
+### Magic numbers
+
+Extract magic numbers into named `UPPER_SNAKE_CASE` constants, placed above the component or function that uses them. This makes intent clear and avoids silent duplication.
+
+```ts
+// BAD
+const visibleItems = items.slice(0, 4);
+
+// GOOD
+const MAX_VISIBLE_ITEMS = 4;
+const visibleItems = items.slice(0, MAX_VISIBLE_ITEMS);
+```
+
+The same applies to magic strings used as discriminators, keys, or thresholds. In tests, unexplained magic values should also be extracted into named constants so their meaning is clear.
+
+### Static empty defaults
+
+Never define empty arrays or objects inline as default values — a new reference is created on every render, causing unnecessary re-renders or stale hook dependencies.
+
+```ts
+// BAD
+const items = data ?? [];
+
+// GOOD
+const EMPTY_ITEMS: Array<Item> = [];
+const items = data ?? EMPTY_ITEMS;
+```
+
+Define the constant outside the component or hook.
+
+### useMemo for derived arrays
+
+Wrap `.filter()`, `.map()`, or `.reduce()` results in `useMemo` when the result is passed as a prop or used as a hook dependency. Without memoisation, a new array reference is produced on every render.
+
+```ts
+// BAD
+const filtered = items.filter(isActive);
+return <List items={filtered} />;
+
+// GOOD
+const filtered = useMemo(() => items.filter(isActive), [items]);
+return <List items={filtered} />;
+```
+
+### eslint-disable comments
+
+Every `eslint-disable` comment must include an explanation. Without one, the reason for the suppression is lost and the comment becomes a maintenance hazard.
+
+```ts
+// BAD
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+
+// GOOD
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- API response shape is dynamic and validated at runtime
+```
+
+### File path string interpolation
+
+Prefer explicit file names over template literals in asset paths. Explicit names are easier to locate with search tools and eliminate accidental runtime errors.
+
+```ts
+// BAD
+const src = `streak_${days}.png`;
+
+// GOOD — map variants explicitly
+const STREAK_IMAGES: Record<number, string> = {
+  30: 'streak_30.png',
+  60: 'streak_60.png',
+};
+```
+
+### Prefer es-toolkit utilities
+
+Before writing custom utility logic (clamping, deep cloning, grouping, etc.), check whether `es-toolkit` already provides it. Prefer the library function over a manual implementation. Documentation: https://es-toolkit.dev/llms-full.txt
+
+### Commented-out code
+
+Remove commented-out code blocks. The git history preserves anything that might be needed later. TODOs are acceptable only when paired with a clear follow-up plan or issue reference.
+
+### Links
+
+- Use `toolkit/chakra/link` instead of `next/link`. Never import `Link` from `next/link` directly.
+- When links to **application pages** are constructed, verify that `nextjs-routes` or `nextjs/routes` utilities are used instead of string concatenation or template literals. The full list of application routes is available in `nextjs/nextjs-routes.d.ts`.
+
+### Date and time
+
+- Import `dayjs` only via `lib/date/dayjs.ts` — never directly from the `dayjs` package.
+- Render all dates and times through the shared `Time` or `TimeWithTooltip` components. Do not format timestamps inline.
