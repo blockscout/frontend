@@ -2,15 +2,15 @@ import type { Feature } from './types';
 
 import apis from '../apis';
 import app from '../app';
-import account from './account';
-import verifiedTokens from './verifiedTokens';
+import services from '../services';
+import addressMetadata from './address-metadata';
 
-const title = 'Address verification in "My account"';
+const title = 'Public tag submission';
 
 const config: Feature<{}> = (() => {
-  if (!app.isPrivateMode && account.isEnabled && verifiedTokens.isEnabled && apis.admin) {
+  if (!app.isPrivateMode && services.reCaptchaV2.siteKey && addressMetadata.isEnabled && apis.admin) {
     return Object.freeze({
-      title: 'Address verification in "My account"',
+      title,
       isEnabled: true,
     });
   }
