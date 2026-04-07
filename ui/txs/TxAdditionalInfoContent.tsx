@@ -1,4 +1,4 @@
-import { Box, Text, Flex } from '@chakra-ui/react';
+import { Box, Flex, VStack, Separator, HStack, chakra } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -10,6 +10,7 @@ import config from 'configs/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import { currencyUnits } from 'lib/units';
 import { Link } from 'toolkit/chakra/link';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 import BlobEntity from 'ui/shared/entities/blob/BlobEntity';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
 import TextSeparator from 'ui/shared/TextSeparator';
@@ -17,134 +18,171 @@ import TxFee from 'ui/shared/tx/TxFee';
 import Utilization from 'ui/shared/Utilization/Utilization';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
-const TxAdditionalInfoContent = ({ tx }: { tx: Transaction }) => {
+const TxAdditionalInfoContent = ({ tx, isLoading }: { tx: Transaction; isLoading?: boolean }) => {
   const multichainContext = useMultichainContext();
-
-  const sectionProps = {
-    borderBottom: '1px solid',
-    borderColor: 'border.divider',
-    paddingBottom: 4,
-  };
 
   const sectionTitleProps = {
     color: 'text.secondary',
     fontWeight: 600,
-    marginBottom: 3,
+    marginBottom: 1,
   };
 
   return (
     <>
-      <TxStatus status={ tx.status } errorText={ tx.status === 'error' ? tx.result : undefined } mb={ 3 }/>
-      { tx.blob_versioned_hashes && tx.blob_versioned_hashes.length > 0 && (
-        <Box { ...sectionProps } mb={ 4 }>
-          <Flex alignItems="center" justifyContent="space-between">
-            <Text { ...sectionTitleProps }>Blobs: { tx.blob_versioned_hashes.length }</Text>
-            { tx.blob_versioned_hashes.length > 3 && (
-              <Link
-                href={ route({ pathname: '/tx/[hash]', query: { hash: tx.hash, tab: 'blobs' } }) }
-                mb={ 3 }
-              >
-                view all
-              </Link>
-            ) }
-          </Flex>
-          <Flex flexDir="column" rowGap={ 3 }>
-            { tx.blob_versioned_hashes.slice(0, 3).map((hash, index) => (
-              <Flex key={ hash } columnGap={ 2 }>
-                <Box fontWeight={ 500 }>{ index + 1 }</Box>
-                <BlobEntity hash={ hash } noIcon/>
-              </Flex>
-            )) }
-          </Flex>
-        </Box>
-      ) }
-      <Box { ...sectionProps } mb={ 4 }>
-        <Text { ...sectionTitleProps }>Value</Text>
-        <NativeCoinValue
-          amount={ tx.value }
-          exchangeRate={ tx.exchange_rate }
-          historicalExchangeRate={ tx.historic_exchange_rate }
-          noTooltip
-        />
-      </Box>
-      { !config.UI.views.tx.hiddenFields?.tx_fee && (tx.stability_fee !== undefined || tx.fee.value !== null) && (
-        <Box { ...sectionProps } mb={ 4 }>
-          <Text { ...sectionTitleProps }>Transaction fee</Text>
-          <TxFee tx={ tx } rowGap={ 0 } noTooltip/>
-        </Box>
-      ) }
-      { tx.gas_used !== null && (
-        <Box { ...sectionProps } mb={ 4 }>
-          <Text { ...sectionTitleProps }>Gas limit & usage by transaction</Text>
-          <Flex>
-            <Text>{ BigNumber(tx.gas_used).toFormat() }</Text>
-            <TextSeparator/>
-            <Text>{ BigNumber(tx.gas_limit).toFormat() }</Text>
-            <Utilization ml={ 4 } value={ Number(BigNumber(tx.gas_used).dividedBy(BigNumber(tx.gas_limit)).toFixed(2)) }/>
-          </Flex>
-        </Box>
-      ) }
-      { !config.UI.views.tx.hiddenFields?.gas_fees &&
-        (tx.base_fee_per_gas !== null || tx.max_fee_per_gas !== null || tx.max_priority_fee_per_gas !== null) && (
-        <Box { ...sectionProps } mb={ 4 }>
-          <Text { ...sectionTitleProps }>Gas fees ({ currencyUnits.gwei })</Text>
-          { tx.base_fee_per_gas !== null && (
-            <Box>
-              <Text as="span" fontWeight="500">Base: </Text>
-              <NativeCoinValue
-                amount={ tx.base_fee_per_gas }
-                units="gwei"
-                unitsTooltip="wei"
-                noSymbol
-                fontWeight="700"
-              />
-            </Box>
-          ) }
-          { tx.max_fee_per_gas !== null && (
-            <Box mt={ 1 }>
-              <Text as="span" fontWeight="500">Max: </Text>
-              <NativeCoinValue
-                amount={ tx.max_fee_per_gas }
-                units="gwei"
-                unitsTooltip="wei"
-                noSymbol
-                fontWeight="700"
-              />
-            </Box>
-          ) }
-          { tx.max_priority_fee_per_gas !== null && (
-            <Box mt={ 1 }>
-              <Text as="span" fontWeight="500">Max priority: </Text>
-              <NativeCoinValue
-                amount={ tx.max_priority_fee_per_gas }
-                units="gwei"
-                unitsTooltip="wei"
-                noSymbol
-                fontWeight="700"
-              />
-            </Box>
-          ) }
-        </Box>
-      ) }
-      { !(tx.blob_versioned_hashes && tx.blob_versioned_hashes.length > 0) && (
-        <Box { ...sectionProps } mb={ 4 }>
-          <Text { ...sectionTitleProps }>Others</Text>
+      <TxStatus
+        status={ tx.status }
+        errorText={ tx.status === 'error' ? tx.result : undefined }
+        mb={ 3 }
+        isLoading={ isLoading }
+      />
+      <VStack
+        alignItems="stretch"
+        separator={ <Separator orientation="horizontal"/> }
+        gap={ 3 }
+      >
+        { tx.blob_versioned_hashes && tx.blob_versioned_hashes.length > 0 && (
           <Box>
-            <Text as="span" fontWeight="500">Txn type: </Text>
-            <Text fontWeight="600" as="span">{ tx.type }</Text>
-            { tx.type === 2 && <Text fontWeight="400" as="span" ml={ 1 } color="text.secondary">(EIP-1559)</Text> }
+            <VStack alignItems="stretch" gap={ 1 }>
+              <Flex alignItems="center" justifyContent="space-between">
+                <Skeleton loading={ isLoading } { ...sectionTitleProps }>Blobs: { tx.blob_versioned_hashes.length }</Skeleton>
+                { tx.blob_versioned_hashes.length > 3 && (
+                  <Link
+                    href={ route({ pathname: '/tx/[hash]', query: { hash: tx.hash, tab: 'blobs' } }) }
+                    loading={ isLoading }
+                    variant="secondary"
+                  >
+                    view all
+                  </Link>
+                ) }
+              </Flex>
+              <VStack alignItems="stretch" gap={ 1 }>
+                { tx.blob_versioned_hashes.slice(0, 3).map((hash, index) => (
+                  <Flex key={ hash } columnGap={ 2 } py={ 0.5 } w="full">
+                    <Skeleton loading={ isLoading } fontWeight={ 500 }>{ index + 1 }</Skeleton>
+                    <BlobEntity hash={ hash } noIcon isLoading={ isLoading }/>
+                  </Flex>
+                )) }
+              </VStack>
+            </VStack>
           </Box>
-          <Box mt={ 1 }>
-            <Text as="span" fontWeight="500">Nonce: </Text>
-            <Text fontWeight="600" as="span">{ tx.nonce }</Text>
-          </Box>
-          <Box mt={ 1 }>
-            <Text as="span" fontWeight="500">Position: </Text>
-            <Text fontWeight="600" as="span">{ tx.position }</Text>
-          </Box>
-        </Box>
-      ) }
-      <Link href={ route({ pathname: '/tx/[hash]', query: { hash: tx.hash } }, multichainContext) }>More details</Link>
+        ) }
+
+        <VStack alignItems="stretch" gap={ 1 }>
+          <Skeleton loading={ isLoading } { ...sectionTitleProps }>
+            <span>Value</span>
+          </Skeleton>
+          <NativeCoinValue
+            amount={ tx.value }
+            exchangeRate={ tx.exchange_rate }
+            historicalExchangeRate={ tx.historic_exchange_rate }
+            noTooltip
+            loading={ isLoading }
+          />
+        </VStack>
+
+        { !config.UI.views.tx.hiddenFields?.tx_fee && (tx.stability_fee !== undefined || tx.fee.value !== null) && (
+          <VStack alignItems="stretch" gap={ 1 }>
+            <Skeleton loading={ isLoading } { ...sectionTitleProps }>
+              <span>Transaction fee</span>
+            </Skeleton>
+            <TxFee tx={ tx } rowGap={ 0 } noTooltip loading={ isLoading }/>
+          </VStack>
+        ) }
+
+        { tx.gas_used !== null && (
+          <VStack alignItems="stretch" gap={ 1 }>
+            <Skeleton loading={ isLoading } { ...sectionTitleProps }>
+              <span>Gas limit & usage by transaction</span>
+            </Skeleton>
+            <Flex>
+              <Skeleton loading={ isLoading }>{ BigNumber(tx.gas_used).toFormat() }</Skeleton>
+              <TextSeparator/>
+              <Skeleton loading={ isLoading }>{ BigNumber(tx.gas_limit).toFormat() }</Skeleton>
+              <Utilization ml={ 4 } value={ Number(BigNumber(tx.gas_used).dividedBy(BigNumber(tx.gas_limit)).toFixed(2)) } isLoading={ isLoading }/>
+            </Flex>
+          </VStack>
+        ) }
+
+        { !config.UI.views.tx.hiddenFields?.gas_fees &&
+          (tx.base_fee_per_gas !== null || tx.max_fee_per_gas !== null || tx.max_priority_fee_per_gas !== null) && (
+          <VStack alignItems="stretch" gap={ 1 }>
+            <Skeleton loading={ isLoading } { ...sectionTitleProps }>
+              <span>Gas fees ({ currencyUnits.gwei })</span>
+            </Skeleton>
+            <VStack gap={ 0 } alignItems="flex-start">
+              { tx.base_fee_per_gas !== null && (
+                <HStack gap={ 1 }>
+                  <Skeleton loading={ isLoading }><span>Base:</span></Skeleton>
+                  <NativeCoinValue
+                    amount={ tx.base_fee_per_gas }
+                    units="gwei"
+                    unitsTooltip="wei"
+                    noSymbol
+                    fontWeight="700"
+                    loading={ isLoading }
+                  />
+                </HStack>
+              ) }
+              { tx.max_fee_per_gas !== null && (
+                <HStack gap={ 1 }>
+                  <Skeleton loading={ isLoading }><span>Max:</span></Skeleton>
+                  <NativeCoinValue
+                    amount={ tx.max_fee_per_gas }
+                    units="gwei"
+                    unitsTooltip="wei"
+                    noSymbol
+                    fontWeight="700"
+                    loading={ isLoading }
+                  />
+                </HStack>
+              ) }
+              { tx.max_priority_fee_per_gas !== null && (
+                <HStack gap={ 1 }>
+                  <Skeleton loading={ isLoading }><span>Max priority:</span></Skeleton>
+                  <NativeCoinValue
+                    amount={ tx.max_priority_fee_per_gas }
+                    units="gwei"
+                    unitsTooltip="wei"
+                    noSymbol
+                    fontWeight="700"
+                    loading={ isLoading }
+                  />
+                </HStack>
+              ) }
+            </VStack>
+          </VStack>
+        ) }
+        { !(tx.blob_versioned_hashes && tx.blob_versioned_hashes.length > 0) && (
+          <VStack alignItems="stretch" gap={ 1 }>
+            <Skeleton loading={ isLoading } { ...sectionTitleProps }>
+              <span>Others</span>
+            </Skeleton>
+            <VStack alignItems="flex-start" gap={ 0 }>
+              <Skeleton loading={ isLoading } display="flex" alignItems="center" gap={ 1 }>
+                <span>Txn type: </span>
+                <chakra.span fontWeight="700">{ tx.type }</chakra.span>
+                { tx.type === 2 && <chakra.span color="text.secondary"><span>(EIP-1559)</span></chakra.span> }
+              </Skeleton>
+              <Skeleton loading={ isLoading } display="flex" alignItems="center" gap={ 1 }>
+                <span>Nonce:</span>
+                <chakra.span fontWeight="700">{ tx.nonce }</chakra.span>
+              </Skeleton>
+              <Skeleton loading={ isLoading } display="flex" alignItems="center" gap={ 1 }>
+                <span>Position:</span>
+                <chakra.span fontWeight="700">{ tx.position }</chakra.span>
+              </Skeleton>
+            </VStack>
+          </VStack>
+        ) }
+        <Link
+          href={ route({ pathname: '/tx/[hash]', query: { hash: tx.hash } }, multichainContext) }
+          loading={ isLoading }
+          mt={ 1 }
+          w="fit-content"
+        >
+          More details
+        </Link>
+      </VStack>
     </>
   );
 };
