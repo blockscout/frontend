@@ -1,6 +1,11 @@
 import type { ApiResource } from '../types';
 import type * as interchainIndexer from '@blockscout/interchain-indexer-types';
-import type { CrossChainMessageFilters, CrossChainTransferFilters } from 'types/api/interchainIndexer';
+import type {
+  CrossChainChainsStatsFilters,
+  CrossChainChainsStatsSorting,
+  CrossChainMessageFilters,
+  CrossChainTransferFilters,
+} from 'client/features/cross-chain-txs/types/api';
 
 export const INTERCHAIN_INDEXER_API_RESOURCES = {
   messages: {
@@ -45,6 +50,10 @@ export const INTERCHAIN_INDEXER_API_RESOURCES = {
   stats_common: {
     path: '/api/v1/stats/common',
   },
+  stats_chains: {
+    path: '/api/v1/stats/chains',
+    paginated: true,
+  },
 } satisfies Record<string, ApiResource>;
 
 export type InterchainIndexerApiResourceName = `interchainIndexer:${ keyof typeof INTERCHAIN_INDEXER_API_RESOURCES }`;
@@ -60,6 +69,7 @@ R extends 'interchainIndexer:tx_transfers' ? interchainIndexer.GetTransfersRespo
 R extends 'interchainIndexer:address_transfers' ? interchainIndexer.GetTransfersResponse :
 R extends 'interchainIndexer:stats_daily' ? interchainIndexer.GetDailyStatisticsResponse :
 R extends 'interchainIndexer:stats_common' ? interchainIndexer.GetCommonStatisticsResponse :
+R extends 'interchainIndexer:stats_chains' ? interchainIndexer.GetChainsStatsResponse :
 never;
 /* eslint-enable @stylistic/indent */
 
@@ -67,5 +77,12 @@ never;
 export type InterchainIndexerApiPaginationFilters<R extends InterchainIndexerApiResourceName> =
 R extends 'interchainIndexer:messages' ? CrossChainMessageFilters :
 R extends 'interchainIndexer:transfers' ? CrossChainTransferFilters :
+R extends 'interchainIndexer:stats_chains' ? CrossChainChainsStatsFilters :
+never;
+/* eslint-enable @stylistic/indent */
+
+/* eslint-disable @stylistic/indent */
+export type InterchainIndexerApiPaginationSorting<R extends InterchainIndexerApiResourceName> =
+R extends 'interchainIndexer:stats_chains' ? CrossChainChainsStatsSorting :
 never;
 /* eslint-enable @stylistic/indent */

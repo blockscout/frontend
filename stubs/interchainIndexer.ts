@@ -4,6 +4,7 @@ import type {
   GetDailyStatisticsResponse,
   InterchainMessage,
   InterchainTransfer,
+  StatsChainRow,
 } from '@blockscout/interchain-indexer-types';
 import { MessageStatus } from '@blockscout/interchain-indexer-types';
 
@@ -89,3 +90,11 @@ export const INTERCHAIN_STATS_COMMON = {
   total_messages: 10823,
   total_transfers: 10822,
 } satisfies GetCommonStatisticsResponse;
+
+export const INTERCHAIN_STATS_CHAINS = {
+  chain_id: 8021,
+  name: 'NUMINE Mainnet',
+  icon_url: undefined,
+  explorer_url: 'https://subnets.avax.network/numi',
+  unique_transfer_users_count: 2544,
+} satisfies StatsChainRow;

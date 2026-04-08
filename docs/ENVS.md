@@ -1075,7 +1075,7 @@ This feature enables cross-chain transaction tracking and visualization, allowin
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_CROSS_CHAIN_TXS_ENABLED | `boolean` | The flag that enables the feature | Required | - | `true` | v2.7.0+ |
-| NEXT_PUBLIC_INTERCHAIN_INDEXER_API_HOST | `string` | Interchain indexer API service host used to fetch cross-chain transaction data and metadata | Required | - | `https://interchain-indexer.k8s-dev.blockscout.com` | v2.7.0+ |
+| NEXT_PUBLIC_INTERCHAIN_INDEXER_API_HOST | `string` | Interchain indexer API service host used to fetch cross-chain transaction data and metadata | Required | - | `https://bridge-indexer.k8s-dev.blockscout.com` | v2.7.0+ |
 
 
 &nbsp;

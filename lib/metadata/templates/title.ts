@@ -74,6 +74,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/operation/[id]': '%network_name% operation %id%',
   '/cc/tx/[hash]': '%network_name% cross-chain transaction %hash% details',
   '/cross-chain-tx/[id]': '%network_name% cross-chain transaction %id% details',
+  '/ictt-users': '%network_name% ICTT users',
 
   // multichain routes
   '/chain/[chain_slug_or_id]/accounts/label/[slug]': '%network_name% addresses search by label',
