@@ -302,6 +302,12 @@ export default function useNavItems(): ReturnType {
           icon: 'navigation/ictt_users',
           isActive: pathname.startsWith('/ictt-users'),
         },
+        config.features.crossChainTxs.isEnabled && {
+          text: 'Bridged tokens',
+          nextRoute: { pathname: '/bridged-tokens' as const },
+          icon: 'navigation/bridged_tokens',
+          isActive: pathname.startsWith('/bridged-tokens'),
+        },
       ].filter(Boolean);
 
       if (items.length === 0) {

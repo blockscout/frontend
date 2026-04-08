@@ -5,7 +5,7 @@ import React from 'react';
 import type { CrossChainChainsStatsSorting, CrossChainChainsStatsSortingField, CrossChainChainsStatsSortingValue } from '../../types/api';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
-import { INTERCHAIN_STATS_CHAINS } from 'stubs/interchainIndexer';
+import { INTERCHAIN_STATS_CHAINS_ITEM } from 'stubs/interchainIndexer';
 import { generateListStub } from 'stubs/utils';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
@@ -36,7 +36,7 @@ const IcttUsers = () => {
     resourceName: 'interchainIndexer:stats_chains',
     sorting: getSortParamsFromValue<CrossChainChainsStatsSortingValue, CrossChainChainsStatsSortingField, CrossChainChainsStatsSorting['order']>(sort),
     options: {
-      placeholderData: generateListStub<'interchainIndexer:stats_chains'>(INTERCHAIN_STATS_CHAINS, 50, { next_page_params: { page_token: 'token' } }),
+      placeholderData: generateListStub<'interchainIndexer:stats_chains'>(INTERCHAIN_STATS_CHAINS_ITEM, 50, { next_page_params: { page_token: 'token' } }),
     },
   });
 

@@ -28,7 +28,7 @@ const IcttUsersTableItem = ({ data, isLoading }: Props) => {
         <ChainSnippetList data={ chainInfo } isLoading={ isLoading }/>
       </TableCell>
       <TableCell isNumeric>
-        <Skeleton loading={ isLoading }>
+        <Skeleton loading={ isLoading } w="fit-content" ml="auto">
           <span>
             { data.unique_transfer_users_count }
           </span>

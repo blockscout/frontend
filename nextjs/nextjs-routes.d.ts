@@ -44,6 +44,7 @@ declare module "nextjs-routes" {
     | StaticRoute<"/block/countdown">
     | DynamicRoute<"/block/countdown/[height]", { "height": string }>
     | StaticRoute<"/blocks">
+    | StaticRoute<"/bridged-tokens">
     | DynamicRoute<"/cc/tx/[hash]", { "hash": string }>
     | DynamicRoute<"/chain/[chain_slug_or_id]/accounts/label/[slug]", { "chain_slug_or_id": string; "slug": string }>
     | DynamicRoute<"/chain/[chain_slug_or_id]/advanced-filter", { "chain_slug_or_id": string }>
