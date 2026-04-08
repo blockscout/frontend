@@ -14,6 +14,8 @@ import { Skeleton } from './skeleton';
 
 export type ViewMode = 'default' | 'compact';
 
+export type OnValueChangeHandler = (details: { value: Array<string> }) => void;
+
 export interface SelectOption<Value extends string = string> {
   label: string;
   renderLabel?: (place: 'item' | 'value-text') => React.ReactNode;

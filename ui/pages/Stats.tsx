@@ -32,11 +32,11 @@ const Stats = () => {
         title={ config.meta.seo.enhancedDataEnabled ? `${ config.chain.name } statistic & data` : `${ config.chain.name } stats` }
       />
 
-      <Box mb={{ base: 6, sm: 8 }}>
+      <Box mb={{ base: 6, lg: 8 }}>
         <NumberWidgetsList/>
       </Box>
 
-      <Box mb={{ base: 6, sm: 8 }}>
+      <Box mb={{ base: 6, lg: 8 }}>
         <StatsFilters
           isLoading={ isPlaceholderData }
           initialFilterValue={ initialFilterQuery }

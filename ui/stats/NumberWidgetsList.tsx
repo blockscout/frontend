@@ -22,7 +22,7 @@ const NumberWidgetsList = () => {
 
   return (
     <Grid
-      gridTemplateColumns={{ base: 'repeat(2, 50%)', lg: 'repeat(4, 25%)' }}
+      gridTemplateColumns={{ base: 'repeat(2, calc((100% - 4px) / 2))', lg: 'repeat(4, calc((100% - 3 * 8px) / 4))' }}
       gridGap={{ base: 1, lg: 2 }}
     >
       {

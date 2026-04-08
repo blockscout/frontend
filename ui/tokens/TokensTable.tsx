@@ -4,6 +4,7 @@ import type { TokenInfo } from 'types/api/token';
 import type { TokensSortingField, TokensSortingValue } from 'types/api/tokens';
 import type { AggregatedTokenInfo } from 'types/client/multichainAggregator';
 
+import type { OnValueChangeHandler } from 'toolkit/chakra/select';
 import { TableBody, TableColumnHeader, TableColumnHeaderSortable, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import { default as getNextSortValueShared } from 'ui/shared/sort/getNextSortValue';
@@ -22,7 +23,7 @@ type Props = {
   items: Array<TokenInfo> | Array<AggregatedTokenInfo>;
   page: number;
   sorting?: TokensSortingValue;
-  setSorting?: (value: TokensSortingValue) => void;
+  setSorting?: OnValueChangeHandler;
   isLoading?: boolean;
   top?: number;
 };
@@ -36,7 +37,7 @@ const TokensTable = ({ items, page, isLoading, sorting, setSorting, top }: Props
       return;
     }
     const value = getNextSortValue(field)(sorting);
-    setSorting(value);
+    setSorting({ value: [ value ] });
   }, [ sorting, setSorting, hasSorting ]);
 
   return (
