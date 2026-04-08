@@ -60,6 +60,7 @@ const NftMediaFullscreenModal = ({ open, onOpenChange, data, allowedTypes, field
             onError={ handleMediaLoadError }
             w="90vw"
             h="90vh"
+            fullscreen
           />
         );
       case 'image':
@@ -71,7 +72,8 @@ const NftMediaFullscreenModal = ({ open, onOpenChange, data, allowedTypes, field
             onError={ handleMediaLoadError }
             maxW="90vw"
             maxH="90vh"
-            objectFit="contain"/>
+            objectFit="contain"
+          />
         );
       default:
         return null;
