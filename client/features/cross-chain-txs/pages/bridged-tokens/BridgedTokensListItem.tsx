@@ -40,7 +40,7 @@ const BridgedTokensListItem = ({ data, token, index, page, isLoading }: Props) =
   }, [ token ]);
 
   return (
-    <ListItemMobile rowGap={ 3 } py={ 4 } fontSize="sm" alignItems="stretch">
+    <ListItemMobile rowGap={ 3 } alignItems="stretch">
 
       <HStack justifyContent="space-between">
         { tokenInfo ? (
@@ -69,23 +69,23 @@ const BridgedTokensListItem = ({ data, token, index, page, isLoading }: Props) =
         />
       ) }
 
-      <Grid gridTemplateColumns="120px 1fr" columnGap={ 2 } rowGap={ 3 }>
+      <Grid gridTemplateColumns="120px 1fr" columnGap={ 2 } rowGap={ 3 } textStyle="sm">
         <Skeleton loading={ isLoading } fontWeight={ 500 }>
           <span>Out transfers</span>
         </Skeleton>
-        <Skeleton loading={ isLoading }>
+        <Skeleton loading={ isLoading } color="text.secondary">
           <span>{ Number(data.output_transfers_count).toLocaleString() }</span>
         </Skeleton>
         <Skeleton loading={ isLoading } fontWeight={ 500 }>
           <span>In transfers</span>
         </Skeleton>
-        <Skeleton loading={ isLoading }>
+        <Skeleton loading={ isLoading } color="text.secondary">
           <span>{ Number(data.input_transfers_count).toLocaleString() }</span>
         </Skeleton>
         <Skeleton loading={ isLoading } fontWeight={ 500 }>
           <span>Total transfers</span>
         </Skeleton>
-        <Skeleton loading={ isLoading }>
+        <Skeleton loading={ isLoading } color="text.secondary">
           <span>{ Number(data.total_transfers_count).toLocaleString() }</span>
         </Skeleton>
       </Grid>

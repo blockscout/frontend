@@ -6,7 +6,6 @@ import { BridgedTokensSort } from '@blockscout/interchain-indexer-types';
 
 import config from 'configs/app';
 import { TableBody, TableColumnHeader, TableColumnHeaderSortable, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
-import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import getNextSortValue from 'ui/shared/sort/getNextSortValue';
 
 import { BRIDGED_TOKENS_SORT_SEQUENCE } from '../../utils/bridged-tokens-sort';
@@ -18,9 +17,10 @@ interface Props {
   sort: CrossChainBridgedTokensSortingValue;
   setSorting: ({ value }: { value: Array<string> }) => void;
   page: number;
+  top?: number;
 }
 
-const BridgedTokensTable = ({ data, isLoading, sort, setSorting, page }: Props) => {
+const BridgedTokensTable = ({ data, isLoading, sort, setSorting, page, top }: Props) => {
 
   const onSortToggle = React.useCallback((field: CrossChainBridgedTokensSortingField) => {
     const value = getNextSortValue<CrossChainBridgedTokensSortingField, CrossChainBridgedTokensSortingValue>(BRIDGED_TOKENS_SORT_SEQUENCE, field)(sort);
@@ -29,7 +29,7 @@ const BridgedTokensTable = ({ data, isLoading, sort, setSorting, page }: Props) 
 
   return (
     <TableRoot minW="1100px">
-      <TableHeaderSticky top={ ACTION_BAR_HEIGHT_DESKTOP }>
+      <TableHeaderSticky top={ top }>
         <TableRow>
           <TableColumnHeader>Token</TableColumnHeader>
           <TableColumnHeaderSortable

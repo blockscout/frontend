@@ -110,7 +110,6 @@
 	| "navigation/apps"
 	| "navigation/block"
 	| "navigation/blockchain"
-	| "navigation/bridged_tokens"
 	| "navigation/chain_stats"
 	| "navigation/cross_chain_txs"
 	| "navigation/custom_abi"

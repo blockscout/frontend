@@ -1,3 +1,5 @@
+import { createListCollection } from '@chakra-ui/react';
+
 import type { CrossChainBridgedTokensSortingField, CrossChainBridgedTokensSortingValue } from '../types/api';
 import * as interchainIndexer from '@blockscout/interchain-indexer-types';
 
@@ -21,3 +23,7 @@ export const BRIDGED_TOKENS_SORT_OPTIONS: Array<SelectOption<CrossChainBridgedTo
   { label: 'Name descending', value: 'NAME-DESC' },
   { label: 'Name ascending', value: 'NAME-ASC' },
 ];
+
+export const BRIDGED_TOKENS_SORT_COLLECTION = createListCollection({
+  items: BRIDGED_TOKENS_SORT_OPTIONS,
+});
