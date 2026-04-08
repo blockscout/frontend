@@ -179,6 +179,7 @@
     "dotenv-cli": "^6.0.0",
     "eslint": "9.39.2",
     "eslint-config-next": "16.1.7",
+    "eslint-plugin-boundaries": "^4.2.2",
     "eslint-plugin-consistent-default-export-name": "^0.0.15",
     "eslint-plugin-import": "2.31.0",
     "eslint-plugin-import-helpers": "2.0.1",
