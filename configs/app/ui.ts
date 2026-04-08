@@ -105,6 +105,7 @@ const UI = Object.freeze({
   apiKeysAlert: {
     message: getEnvValue('NEXT_PUBLIC_API_KEYS_ALERT_MESSAGE'),
   },
+  apiKeysInstruction: getEnvValue('NEXT_PUBLIC_API_KEYS_INSTRUCTION'),
   explorers: {
     items: parseEnvJson<Array<NetworkExplorer>>(getEnvValue('NEXT_PUBLIC_NETWORK_EXPLORERS')) || [],
   },

@@ -135,6 +135,7 @@ const schema = yup
     // Misc
     NEXT_PUBLIC_USE_NEXT_JS_PROXY: yup.boolean(),
     NEXT_PUBLIC_API_KEYS_ALERT_MESSAGE: yup.string(),
+    NEXT_PUBLIC_API_KEYS_INSTRUCTION: yup.string(),
     NEXT_PUBLIC_API_DOCS_ALERT_MESSAGE: yup.string(),
   })
   .concat(apisSchema)
