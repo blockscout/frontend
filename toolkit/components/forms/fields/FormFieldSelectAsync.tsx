@@ -23,7 +23,7 @@ const FormFieldSelectAsyncContent = <
   const { field, fieldState, formState } = useController<FormFields, typeof name>({
     control,
     name,
-    rules,
+    rules: { ...rules, required: rest.required },
     ...controllerProps,
   });
 
