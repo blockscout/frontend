@@ -47,6 +47,7 @@ const AppErrorTooManyRequests = ({ bypassOptions, reset }: Props) => {
         method: 'POST',
         body: JSON.stringify({ recaptcha_response: token }),
         headers: {
+          'Content-Type': 'application/json',
           'recaptcha-v2-response': token,
         },
       });
