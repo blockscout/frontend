@@ -84,7 +84,7 @@ const StatsDegraded = () => {
       {
         id: 'total_blocks' as const,
         icon: 'block' as const,
-        label: 'Total blocks',
+        label: 'Latest block',
         value: blocks[0] ? blocks[0].height.toLocaleString() : mdash,
         isFallback: blocks[0] === undefined,
         hint: blocks[0] && !isLoading ? <FallbackRpcIcon/> : undefined,
