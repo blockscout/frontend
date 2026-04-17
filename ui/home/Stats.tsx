@@ -4,7 +4,6 @@ import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { SocketMessage } from 'lib/socket/types';
-import type { Block } from 'types/api/block';
 
 import config from 'configs/app';
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
@@ -53,13 +52,16 @@ const Stats = () => {
     },
   });
 
-  const blocksQuery = useApiQuery('general:homepage_blocks', {
+  const latestBlockQueryKey = React.useMemo(() => [ ...getResourceKey('general:homepage_blocks'), 'stats_latest_block' ], []);
+  const latestBlockQuery = useApiQuery('general:homepage_blocks', {
     queryOptions: {
+      queryKey: latestBlockQueryKey,
       placeholderData: [ BLOCK ],
+      select: (data) => data?.[0]?.height,
     },
   });
 
-  const isPlaceholderData = statsQuery.isPlaceholderData || apiQuery.isPlaceholderData || blocksQuery.isPlaceholderData;
+  const isPlaceholderData = statsQuery.isPlaceholderData || apiQuery.isPlaceholderData || latestBlockQuery.isPlaceholderData;
 
   React.useEffect(() => {
     if (!isPlaceholderData && !apiQuery.data?.gas_prices?.average) {
@@ -121,7 +123,7 @@ const Stats = () => {
     }
   })();
 
-  const hasStatsError = apiQuery.isError || statsQuery.isError || blocksQuery.isError || Boolean(latestBatchQuery?.isError);
+  const hasStatsError = apiQuery.isError || statsQuery.isError || latestBlockQuery.isError || Boolean(latestBatchQuery?.isError);
 
   const blocksSocketDisabled = isPlaceholderData || hasStatsError;
   const latestBatchSocketDisabled =
@@ -131,15 +133,14 @@ const Stats = () => {
     latestBatchQuery?.data === undefined;
 
   const handleNewBlockMessage: SocketMessage.NewBlock['handler'] = React.useCallback((payload) => {
-    queryClient.setQueryData(getResourceKey('general:homepage_blocks'), (prevData: Array<Block> | undefined) => {
-      const newData = prevData ? [ ...prevData ] : [];
-      if (newData.some((block) => block.height === payload.block.height)) {
-        return newData;
+    queryClient.setQueryData(latestBlockQueryKey, (prevData: Array<typeof payload.block> | undefined) => {
+      const prevBlock = prevData?.[0];
+      if (!prevBlock || payload.block.height > prevBlock.height) {
+        return [ payload.block ];
       }
-      const maxCount = newData.length || 1;
-      return [ payload.block, ...newData ].sort((b1, b2) => b2.height - b1.height).slice(0, maxCount);
+      return [ prevBlock ];
     });
-  }, [ queryClient ]);
+  }, [ queryClient, latestBlockQueryKey ]);
 
   const handleNewLatestBatchMessage = React.useCallback((payload: LatestBatchPayload) => {
     if (!latestBatchSocketConfig) {
@@ -211,11 +212,11 @@ const Stats = () => {
         href: { pathname: '/batches' as const },
         isLoading,
       },
-      (blocksQuery.data?.[0]?.height || statsData?.total_blocks?.value || apiData?.total_blocks) && {
+      (latestBlockQuery.data || statsData?.total_blocks?.value || apiData?.total_blocks) && {
         id: 'total_blocks' as const,
         icon: 'block' as const,
         label: 'Latest block',
-        value: Number(blocksQuery.data?.[0]?.height || statsData?.total_blocks?.value || apiData?.total_blocks).toLocaleString(),
+        value: Number(latestBlockQuery.data || statsData?.total_blocks?.value || apiData?.total_blocks).toLocaleString(),
         href: { pathname: '/blocks' as const },
         isLoading,
       },
