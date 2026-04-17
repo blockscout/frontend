@@ -1,6 +1,7 @@
 import type { Locator } from '@playwright/test';
 import React from 'react';
 
+import * as blockMock from 'mocks/blocks/block';
 import * as statsMock from 'mocks/stats/index';
 import { test, expect } from 'playwright/lib';
 
@@ -15,6 +16,7 @@ test.describe('all items', () => {
       [ 'NEXT_PUBLIC_STATS_API_HOST', '' ],
     ]);
     await mockApiResponse('general:stats', statsMock.withBtcLocked);
+    await mockApiResponse('general:homepage_blocks', [ blockMock.base, blockMock.base2 ]);
     component = await render(<Stats/>);
   });
 
@@ -28,6 +30,7 @@ test('no gas info', async({ render, mockApiResponse, mockEnvs }) => {
     [ 'NEXT_PUBLIC_STATS_API_HOST', '' ],
   ]);
   await mockApiResponse('general:stats', statsMock.withoutGasInfo);
+  await mockApiResponse('general:homepage_blocks', [ blockMock.base, blockMock.base2 ]);
   const component = await render(<Stats/>);
 
   await expect(component).toHaveScreenshot();
@@ -39,6 +42,7 @@ test('4 items default view +@mobile -@default', async({ render, mockApiResponse,
     [ 'NEXT_PUBLIC_STATS_API_HOST', '' ],
   ]);
   await mockApiResponse('general:stats', statsMock.base);
+  await mockApiResponse('general:homepage_blocks', [ blockMock.base, blockMock.base2 ]);
   const component = await render(<Stats/>);
   await expect(component).toHaveScreenshot();
 });
@@ -49,6 +53,7 @@ test('3 items default view +@mobile -@default', async({ render, mockApiResponse,
     [ 'NEXT_PUBLIC_STATS_API_HOST', '' ],
   ]);
   await mockApiResponse('general:stats', statsMock.base);
+  await mockApiResponse('general:homepage_blocks', [ blockMock.base, blockMock.base2 ]);
   const component = await render(<Stats/>);
   await expect(component).toHaveScreenshot();
 });
