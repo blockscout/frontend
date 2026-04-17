@@ -1,10 +1,17 @@
 import { Grid } from '@chakra-ui/react';
+import { useQueryClient } from '@tanstack/react-query';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
+import type { SocketMessage } from 'lib/socket/types';
+import type { Block } from 'types/api/block';
+
 import config from 'configs/app';
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 import { layerLabels } from 'lib/rollups/utils';
+import useSocketChannel from 'lib/socket/useSocketChannel';
+import useSocketMessage from 'lib/socket/useSocketMessage';
+import { BLOCK } from 'stubs/block';
 import { HOMEPAGE_STATS, HOMEPAGE_STATS_MICROSERVICE } from 'stubs/stats';
 import GasInfoTooltip from 'ui/shared/gas/GasInfoTooltip';
 import GasPrice from 'ui/shared/gas/GasPrice';
@@ -21,8 +28,14 @@ const isOptimisticRollup = rollupFeature.isEnabled && rollupFeature.type === 'op
 const isArbitrumRollup = rollupFeature.isEnabled && rollupFeature.type === 'arbitrum';
 const isStatsFeatureEnabled = config.features.stats.isEnabled;
 
+type LatestBatchSocketEventMessage = SocketMessage.NewArbitrumL2Batch | SocketMessage.NewZkEvmL2Batch;
+type LatestBatchPayload = Parameters<LatestBatchSocketEventMessage['handler']>[0];
+type LatestBatchHandler = LatestBatchSocketEventMessage['handler'];
+type LatestBatchSocketMessage = LatestBatchSocketEventMessage | SocketMessage.Unknown;
+
 const Stats = () => {
   const [ hasGasTracker, setHasGasTracker ] = React.useState(config.features.gasTracker.isEnabled);
+  const queryClient = useQueryClient();
 
   // data from stats microservice is prioritized over data from stats api
   const statsQuery = useApiQuery('stats:pages_main', {
@@ -40,7 +53,13 @@ const Stats = () => {
     },
   });
 
-  const isPlaceholderData = statsQuery.isPlaceholderData || apiQuery.isPlaceholderData;
+  const blocksQuery = useApiQuery('general:homepage_blocks', {
+    queryOptions: {
+      placeholderData: [ BLOCK ],
+    },
+  });
+
+  const isPlaceholderData = statsQuery.isPlaceholderData || apiQuery.isPlaceholderData || blocksQuery.isPlaceholderData;
 
   React.useEffect(() => {
     if (!isPlaceholderData && !apiQuery.data?.gas_prices?.average) {
@@ -71,22 +90,91 @@ const Stats = () => {
     },
   });
 
-  const latestBatchQuery = (() => {
+  const [ latestBatchQuery, latestBatchSocketConfig ] = (() => {
     if (!rollupFeature.isEnabled || !config.UI.homepage.stats.includes('latest_batch')) {
-      return;
+      return [ undefined, undefined ] as const;
     }
 
     switch (rollupFeature.type) {
       case 'zkEvm':
-        return zkEvmLatestBatchQuery;
+        return [
+          zkEvmLatestBatchQuery,
+          {
+            topic: 'zkevm_batches:new_zkevm_confirmed_batch',
+            event: 'new_zkevm_confirmed_batch',
+            resource: 'general:homepage_zkevm_latest_batch',
+          },
+        ] as const;
       case 'zkSync':
-        return zkSyncLatestBatchQuery;
+        return [ zkSyncLatestBatchQuery, undefined ] as const;
       case 'arbitrum':
-        return arbitrumLatestBatchQuery;
+        return [
+          arbitrumLatestBatchQuery,
+          {
+            topic: 'arbitrum:new_batch',
+            event: 'new_arbitrum_batch',
+            resource: 'general:homepage_arbitrum_latest_batch',
+          },
+        ] as const;
+      default:
+        return [ undefined, undefined ] as const;
     }
   })();
 
-  if (apiQuery.isError || statsQuery.isError || latestBatchQuery?.isError) {
+  const hasStatsError = apiQuery.isError || statsQuery.isError || blocksQuery.isError || Boolean(latestBatchQuery?.isError);
+
+  const blocksSocketDisabled = isPlaceholderData || hasStatsError;
+  const latestBatchSocketDisabled =
+    !latestBatchSocketConfig ||
+    latestBatchQuery?.isError ||
+    latestBatchQuery?.isPlaceholderData ||
+    latestBatchQuery?.data === undefined;
+
+  const handleNewBlockMessage: SocketMessage.NewBlock['handler'] = React.useCallback((payload) => {
+    queryClient.setQueryData(getResourceKey('general:homepage_blocks'), (prevData: Array<Block> | undefined) => {
+      const newData = prevData ? [ ...prevData ] : [];
+      if (newData.some((block) => block.height === payload.block.height)) {
+        return newData;
+      }
+      const maxCount = newData.length || 1;
+      return [ payload.block, ...newData ].sort((b1, b2) => b2.height - b1.height).slice(0, maxCount);
+    });
+  }, [ queryClient ]);
+
+  const handleNewLatestBatchMessage = React.useCallback((payload: LatestBatchPayload) => {
+    if (!latestBatchSocketConfig) {
+      return;
+    }
+    queryClient.setQueryData(getResourceKey(latestBatchSocketConfig.resource), (prev: number | undefined) => {
+      const nextBatchNumber = payload.batch.number;
+      if (prev === undefined) {
+        return nextBatchNumber;
+      }
+      return Math.max(prev, nextBatchNumber);
+    });
+  }, [ queryClient, latestBatchSocketConfig ]);
+
+  const blocksChannel = useSocketChannel({
+    topic: 'blocks:new_block',
+    isDisabled: blocksSocketDisabled,
+  });
+  useSocketMessage({
+    channel: blocksChannel,
+    event: 'new_block',
+    handler: handleNewBlockMessage,
+  });
+
+  const latestBatchChannel = useSocketChannel({
+    topic: latestBatchSocketConfig?.topic,
+    isDisabled: Boolean(latestBatchSocketDisabled),
+  });
+  useSocketMessage({
+    channel: latestBatchChannel,
+    event: latestBatchSocketConfig?.event,
+    handler: handleNewLatestBatchMessage as LatestBatchHandler,
+  } as LatestBatchSocketMessage);
+
+  if (hasStatsError) {
     return <StatsDegraded/>;
   }
 
@@ -123,11 +211,11 @@ const Stats = () => {
         href: { pathname: '/batches' as const },
         isLoading,
       },
-      (statsData?.total_blocks?.value || apiData?.total_blocks) && {
+      (blocksQuery.data?.[0]?.height || statsData?.total_blocks?.value || apiData?.total_blocks) && {
         id: 'total_blocks' as const,
         icon: 'block' as const,
-        label: statsData?.total_blocks?.title || 'Total blocks',
-        value: Number(statsData?.total_blocks?.value || apiData?.total_blocks).toLocaleString(),
+        label: 'Latest block',
+        value: Number(blocksQuery.data?.[0]?.height || statsData?.total_blocks?.value || apiData?.total_blocks).toLocaleString(),
         href: { pathname: '/blocks' as const },
         isLoading,
       },
