@@ -1,15 +1,15 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
+import useChainStats from 'client/features/chain-stats/hooks/useChainStats';
+import ChainStatsCounters from 'client/features/chain-stats/pages/index/ChainStatsCounters';
+import ChainStatsFilters from 'client/features/chain-stats/pages/index/ChainStatsFilters';
+import ChainStatsSections from 'client/features/chain-stats/pages/index/ChainStatsSections';
 import multichainConfig from 'configs/multichain';
 import { MultichainProvider } from 'lib/contexts/multichain';
 import useRoutedChainSelect from 'lib/multichain/useRoutedChainSelect';
 import useEtherscanRedirects from 'lib/router/useEtherscanRedirects';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import ChartsWidgetsList from 'ui/stats/ChartsWidgetsList';
-import NumberWidgetsList from 'ui/stats/NumberWidgetsList';
-import StatsFilters from 'ui/stats/StatsFilters';
-import useStats from 'ui/stats/useStats';
 
 import ChainSelect from '../components/ChainSelect';
 
@@ -29,17 +29,17 @@ const MultichainStats = () => {
   }, [ chainSelect.value ]);
 
   const {
-    isPlaceholderData,
+    isLoading,
     isError,
     sections,
-    currentSection,
-    handleSectionChange,
+    sectionId,
     interval,
-    handleIntervalChange,
-    handleFilterChange,
-    displayedCharts,
+    onSectionChange,
+    onIntervalChange,
+    onFilterChange,
+    displayedSections,
     initialFilterQuery,
-  } = useStats({ chain });
+  } = useChainStats({ chain });
 
   return (
     <>
@@ -53,31 +53,32 @@ const MultichainStats = () => {
       />
       <MultichainProvider chainId={ chainSelect.value?.[0] }>
         <Box mb={{ base: 6, sm: 8 }}>
-          <NumberWidgetsList/>
+          <ChainStatsCounters/>
         </Box>
 
         <Box mb={{ base: 6, sm: 8 }}>
-          <StatsFilters
-            isLoading={ isPlaceholderData }
+          <ChainStatsFilters
+            isLoading={ isLoading }
             initialFilterValue={ initialFilterQuery }
             sections={ sections }
-            currentSection={ currentSection }
-            onSectionChange={ handleSectionChange }
+            sectionId={ sectionId }
+            onSectionChange={ onSectionChange }
             interval={ interval }
-            onIntervalChange={ handleIntervalChange }
-            onFilterInputChange={ handleFilterChange }
+            onIntervalChange={ onIntervalChange }
+            onFilterChange={ onFilterChange }
           />
         </Box>
 
-        <ChartsWidgetsList
-          initialFilterQuery={ initialFilterQuery }
-          isError={ isError }
-          isPlaceholderData={ isPlaceholderData }
-          charts={ displayedCharts }
-          interval={ interval }
+        <ChainStatsSections
           sections={ sections }
-          selectedSectionId={ currentSection }
+          displayedSections={ displayedSections }
+          isError={ isError }
+          isLoading={ isLoading }
+          interval={ interval }
+          initialFilterQuery={ initialFilterQuery }
+          sectionId={ sectionId }
         />
+
       </MultichainProvider>
 
     </>

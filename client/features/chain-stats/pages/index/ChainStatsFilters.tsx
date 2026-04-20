@@ -1,31 +1,31 @@
 import { createListCollection, Grid, GridItem } from '@chakra-ui/react';
 import React from 'react';
 
-import type * as stats from '@blockscout/stats-types';
-import type { StatsIntervalIds } from 'types/client/stats';
+import type { ChainStatsSection, StatsIntervalIds } from '../../types/client';
 
 import { Select } from 'toolkit/chakra/select';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
-import ChartIntervalSelect from 'ui/shared/chart/ChartIntervalSelect';
 
-type Props = {
-  sections?: Array<stats.LineChartSection>;
-  currentSection: string;
-  onSectionChange: (newSection: string) => void;
+import ChartIntervalSelect from '../../components/ChartIntervalSelect';
+
+interface Props {
+  sections?: Array<ChainStatsSection>;
+  sectionId: string;
   interval: StatsIntervalIds;
-  onIntervalChange: (newInterval: StatsIntervalIds) => void;
-  onFilterInputChange: (q: string) => void;
   isLoading: boolean;
   initialFilterValue: string;
+  onSectionChange: (newSection: string) => void;
+  onIntervalChange: (newInterval: StatsIntervalIds) => void;
+  onFilterChange: (q: string) => void;
 };
 
-const StatsFilters = ({
+const ChainStatsFilters = ({
   sections,
-  currentSection,
+  sectionId,
   onSectionChange,
   interval,
   onIntervalChange,
-  onFilterInputChange,
+  onFilterChange,
   isLoading,
   initialFilterValue,
 }: Props) => {
@@ -61,7 +61,7 @@ const StatsFilters = ({
         <Select
           collection={ collection }
           placeholder="Select section"
-          defaultValue={ [ currentSection ] }
+          defaultValue={ [ sectionId ] }
           onValueChange={ handleItemSelect }
           w={{ base: '100%', lg: '136px' }}
           loading={ isLoading }
@@ -82,7 +82,7 @@ const StatsFilters = ({
         <FilterInput
           key={ initialFilterValue }
           loading={ isLoading }
-          onChange={ onFilterInputChange }
+          onChange={ onFilterChange }
           placeholder="Find chart, metric..."
           initialValue={ initialFilterValue }
           size="sm"
@@ -92,4 +92,4 @@ const StatsFilters = ({
   );
 };
 
-export default StatsFilters;
+export default ChainStatsFilters;

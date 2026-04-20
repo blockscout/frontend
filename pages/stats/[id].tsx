@@ -14,7 +14,7 @@ import { MultichainProvider } from 'lib/contexts/multichain';
 import dayjs from 'lib/date/dayjs';
 import getQueryParamString from 'lib/router/getQueryParamString';
 
-const Chart = dynamic(() => import('ui/pages/Chart'), { ssr: false });
+const ChainStatsDetails = dynamic(() => import('client/features/chain-stats/pages/details/ChainStatsDetails'), { ssr: false });
 
 const pathname: Route['pathname'] = '/stats/[id]';
 
@@ -23,10 +23,10 @@ const Page: NextPage<Props<typeof pathname>> = (props: Props<typeof pathname>) =
     <PageNextJs pathname={ pathname } query={ props.query } apiData={ props.apiData }>
       { config.features.multichain.isEnabled ? (
         <MultichainProvider chainId={ getQueryParamString(props.query?.chain_id) }>
-          <Chart/>
+          <ChainStatsDetails/>
         </MultichainProvider>
       ) : (
-        <Chart/>
+        <ChainStatsDetails/>
       ) }
     </PageNextJs>
   );

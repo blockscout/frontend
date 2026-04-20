@@ -5,7 +5,7 @@ import { Alert } from 'toolkit/chakra/alert';
 import { Link } from 'toolkit/chakra/link';
 import { apos } from 'toolkit/utils/htmlEntities';
 
-function ChartsLoadingErrorAlert() {
+function ChainStatsErrorAlert() {
   return (
     <Alert status="warning" mb={ 4 } closable>
       <Text mr={ 2 }>
@@ -16,4 +16,4 @@ function ChartsLoadingErrorAlert() {
   );
 }
 
-export default ChartsLoadingErrorAlert;
+export default ChainStatsErrorAlert;

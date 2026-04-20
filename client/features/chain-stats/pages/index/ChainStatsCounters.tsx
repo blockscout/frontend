@@ -2,17 +2,17 @@ import { Grid } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import { STATS_COUNTER } from 'stubs/stats';
+import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import StatsWidget from 'ui/shared/stats/StatsWidget';
 
-import DataFetchAlert from '../shared/DataFetchAlert';
+import { CHAIN_STATS_COUNTER } from '../../stubs/counters';
 
 const UNITS_WITHOUT_SPACE = [ 's' ];
 
-const NumberWidgetsList = () => {
+const ChainStatsCounters = () => {
   const { data, isPlaceholderData, isError } = useApiQuery('stats:counters', {
     queryOptions: {
-      placeholderData: { counters: Array(10).fill(STATS_COUNTER) },
+      placeholderData: { counters: Array(10).fill(CHAIN_STATS_COUNTER) },
     },
   });
 
@@ -54,4 +54,4 @@ const NumberWidgetsList = () => {
   );
 };
 
-export default NumberWidgetsList;
+export default ChainStatsCounters;

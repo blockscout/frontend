@@ -53,6 +53,14 @@ export const INTERCHAIN_INDEXER_API_RESOURCES = {
     path: '/api/v1/stats/chains',
     paginated: true,
   },
+  stats_chain_messages_sent: {
+    path: '/api/v1/stats/chain/:chainId/messages-paths/sent',
+    pathParams: [ 'chainId' as const ],
+  },
+  stats_chain_messages_received: {
+    path: '/api/v1/stats/chain/:chainId/messages-paths/received',
+    pathParams: [ 'chainId' as const ],
+  },
   bridged_tokens: {
     path: '/api/v1/stats/chain/:chainId/bridged-tokens',
     pathParams: [ 'chainId' as const ],
@@ -75,6 +83,8 @@ R extends 'interchainIndexer:stats_daily' ? interchainIndexer.GetDailyStatistics
 R extends 'interchainIndexer:stats_common' ? interchainIndexer.GetCommonStatisticsResponse :
 R extends 'interchainIndexer:stats_chains' ? interchainIndexer.GetChainsStatsResponse :
 R extends 'interchainIndexer:bridged_tokens' ? interchainIndexer.GetBridgedTokensResponse :
+R extends 'interchainIndexer:stats_chain_messages_sent' ? interchainIndexer.GetMessagePathsResponse :
+R extends 'interchainIndexer:stats_chain_messages_received' ? interchainIndexer.GetMessagePathsResponse :
 never;
 /* eslint-enable @stylistic/indent */
 

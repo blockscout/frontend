@@ -4,7 +4,7 @@ import * as statsLineMock from 'mocks/stats/line';
 import { test, expect } from 'playwright/lib';
 import { formatDate } from 'ui/shared/chart/utils';
 
-import Chart from './Chart';
+import ChainStatsDetails from './ChainStatsDetails';
 
 const CHART_ID = 'averageGasPrice';
 
@@ -35,7 +35,7 @@ test('base view +@dark-mode +@mobile', async({ render, mockApiResponse, page }) 
     },
   );
 
-  const component = await render(<Chart/>, { hooksConfig });
+  const component = await render(<ChainStatsDetails/>, { hooksConfig });
   await page.waitForResponse(chartApiUrl);
   await page.waitForFunction(() => {
     return document.querySelector('path[data-name="chart-fullscreen"]')?.getAttribute('opacity') === '1';

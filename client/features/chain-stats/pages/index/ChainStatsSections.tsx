@@ -1,8 +1,7 @@
 import { Box, Grid } from '@chakra-ui/react';
-import React, { useCallback, useState } from 'react';
+import React from 'react';
 
-import type * as stats from '@blockscout/stats-types';
-import type { StatsIntervalIds } from 'types/client/stats';
+import type { ChainStatsSection, StatsIntervalIds } from '../../types/client';
 
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
@@ -13,23 +12,24 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import GasInfoTooltip from 'ui/shared/gas/GasInfoTooltip';
 import IconSvg from 'ui/shared/IconSvg';
 
-import ChartsLoadingErrorAlert from './ChartsLoadingErrorAlert';
-import ChartWidgetContainer from './ChartWidgetContainer';
+import ChartWidgetContainer from '../../components/ChartWidgetContainer';
+import ChainStatsErrorAlert from './ChainStatsErrorAlert';
 
-type Props = {
-  initialFilterQuery: string;
+interface Props {
+  sections?: Array<ChainStatsSection>;
+  displayedSections?: Array<ChainStatsSection>;
+  sectionId: string;
   isError: boolean;
-  isPlaceholderData: boolean;
-  charts?: Array<stats.LineChartSection>;
+  isLoading: boolean;
+  initialFilterQuery: string;
   interval: StatsIntervalIds;
-  sections?: Array<stats.LineChartSection>;
-  selectedSectionId: string;
 };
 
-const ChartsWidgetsList = ({ isError, isPlaceholderData, charts, interval, initialFilterQuery, sections, selectedSectionId }: Props) => {
-  const [ isSomeChartLoadingError, setIsSomeChartLoadingError ] = useState(false);
+const ChainStatsSections = ({ isError, isLoading, displayedSections, interval, initialFilterQuery, sections, sectionId }: Props) => {
+  const [ isSomeChartLoadingError, setIsSomeChartLoadingError ] = React.useState(false);
+
   const hasCharts = sections?.some((section) => section.charts.length > 0);
-  const hasDisplayedCharts = charts?.some((section) => section.charts.length > 0);
+  const hasDisplayedCharts = displayedSections?.some((section) => section.charts.length > 0);
   const sectionRef = React.useRef<HTMLUListElement | null>(null);
 
   const shouldScrollToSection = Boolean(initialFilterQuery);
@@ -50,16 +50,16 @@ const ChartsWidgetsList = ({ isError, isPlaceholderData, charts, interval, initi
     },
   });
 
-  const handleChartLoadingError = useCallback(
+  const handleChartLoadingError = React.useCallback(
     () => setIsSomeChartLoadingError(true),
     [ setIsSomeChartLoadingError ]);
 
   if (isError) {
-    return <ChartsLoadingErrorAlert/>;
+    return <ChainStatsErrorAlert/>;
   }
 
   if (!hasDisplayedCharts) {
-    const selectedSection = sections?.find((section) => section.id === selectedSectionId);
+    const selectedSection = sections?.find((section) => section.id === sectionId);
     return (
       <EmptyState
         type={ hasCharts ? 'query' : 'stats' }
@@ -71,12 +71,12 @@ const ChartsWidgetsList = ({ isError, isPlaceholderData, charts, interval, initi
   return (
     <Box>
       { isSomeChartLoadingError && (
-        <ChartsLoadingErrorAlert/>
+        <ChainStatsErrorAlert/>
       ) }
 
       <section ref={ sectionRef }>
         {
-          charts?.map((section) => (
+          displayedSections?.map((section) => (
             <Box
               key={ section.id }
               mb={{ base: 6, lg: 8 }}
@@ -84,7 +84,7 @@ const ChartsWidgetsList = ({ isError, isPlaceholderData, charts, interval, initi
                 marginBottom: 0,
               }}
             >
-              <Skeleton loading={ isPlaceholderData } mb={{ base: 3, lg: 4 }} display="inline-flex" alignItems="center" columnGap={ 2 } id={ section.id }>
+              <Skeleton loading={ isLoading } mb={{ base: 3, lg: 4 }} display="inline-flex" alignItems="center" columnGap={ 2 } id={ section.id }>
                 <Heading level="2" id={ section.id }>
                   { section.title }
                 </Heading>
@@ -106,7 +106,7 @@ const ChartsWidgetsList = ({ isError, isPlaceholderData, charts, interval, initi
                     title={ chart.title }
                     description={ chart.description }
                     interval={ interval }
-                    isPlaceholderData={ isPlaceholderData }
+                    isLoading={ isLoading }
                     onLoadingError={ handleChartLoadingError }
                     href={{ pathname: '/stats/[id]', query: { id: chart.id, ...(chain?.id ? { chain_id: chain.id } : {}) } }}
                   />
@@ -120,4 +120,4 @@ const ChartsWidgetsList = ({ isError, isPlaceholderData, charts, interval, initi
   );
 };
 
-export default ChartsWidgetsList;
+export default ChainStatsSections;

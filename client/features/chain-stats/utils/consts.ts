@@ -1,5 +1,7 @@
+import type { StatsIntervalIds } from '../types/client';
 import { Resolution } from '@blockscout/stats-types';
-import type { StatsIntervalIds } from 'types/client/stats';
+
+export const DEFAULT_RESOLUTION = Resolution.DAY;
 
 export const STATS_RESOLUTIONS: Array<{ id: Resolution; title: string }> = [
   {

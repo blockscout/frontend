@@ -3,12 +3,12 @@ import React from 'react';
 
 import { route } from 'nextjs-routes';
 
+import ChartWidgetContainer from 'client/features/chain-stats/components/ChartWidgetContainer';
+import { CHAIN_STATS_CHARTS_SECTION_GAS } from 'client/features/chain-stats/stubs/charts';
 import useApiQuery from 'lib/api/useApiQuery';
-import { STATS_CHARTS_SECTION_GAS } from 'stubs/stats';
 import { Link } from 'toolkit/chakra/link';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import ChartWidgetContainer from 'ui/stats/ChartWidgetContainer';
 
 const GAS_PRICE_CHART_ID = 'averageGasPrice';
 
@@ -17,7 +17,7 @@ const GasTrackerChart = () => {
   const { data, isPlaceholderData, isError } = useApiQuery('stats:lines', {
     queryOptions: {
       placeholderData: {
-        sections: [ STATS_CHARTS_SECTION_GAS ],
+        sections: [ CHAIN_STATS_CHARTS_SECTION_GAS ],
       },
     },
   });
@@ -47,7 +47,7 @@ const GasTrackerChart = () => {
         title={ chart.title }
         description={ chart.description }
         interval="oneMonth"
-        isPlaceholderData={ isPlaceholderData }
+        isLoading={ isPlaceholderData }
         onLoadingError={ handleLoadingError }
         h="320px"
       />

@@ -1,0 +1,44 @@
+import type { LineChartInfo, LineChartSection } from '@blockscout/stats-types';
+import type { SankeyData } from 'toolkit/components/charts/sankey/types';
+import type { TimeChartItem } from 'toolkit/components/charts/types';
+
+export type ChartType = 'line' | 'sankey';
+
+export interface ChainStatsChart extends LineChartInfo {
+  resourceName?: 'interchainIndexer:stats_chain_messages_sent' | 'interchainIndexer:stats_chain_messages_received';
+  type?: ChartType;
+}
+
+export interface ChainStatsSection extends Omit<LineChartSection, 'charts'> {
+  charts: Array<ChainStatsChart>;
+}
+
+export interface ChainStatsPayload {
+  sections: Array<ChainStatsSection>;
+}
+
+export type ChartData = {
+  info?: LineChartInfo;
+} & (ChartDataPayloadLine | ChartDataPayloadSankey);
+
+export interface ChartDataPayloadLine {
+  type: 'line';
+  data: Array<TimeChartItem>;
+}
+
+export interface ChartDataPayloadSankey {
+  type: 'sankey';
+  data: SankeyData;
+}
+
+export type StatsInterval = { id: StatsIntervalIds; title: string };
+
+export type StatsIntervalIds = keyof typeof StatsIntervalId;
+
+export enum StatsIntervalId {
+  all,
+  oneMonth,
+  threeMonths,
+  sixMonths,
+  oneYear,
+}
