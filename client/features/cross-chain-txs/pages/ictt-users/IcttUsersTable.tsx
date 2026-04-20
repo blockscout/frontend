@@ -44,7 +44,7 @@ const IcttUsersTable = ({ data, isLoading, sort, setSorting }: Props) => {
       <TableBody>
         { data.map((item, index) => (
           <IcttUsersTableItem
-            key={ String(item.chain_id) + (isLoading ? index : '') }
+            key={ String(item.id) + (isLoading ? index : '') }
             data={ item }
             isLoading={ isLoading }
           />

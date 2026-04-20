@@ -16,11 +16,11 @@ const IcttUsersTableItem = ({ data, isLoading }: Props) => {
   const chainInfo = React.useMemo(() => {
     return {
       name: data.name,
-      id: String(data.chain_id),
-      logo: data.icon_url,
+      id: String(data.id),
+      logo: data.logo,
       explorer_url: data.explorer_url,
     };
-  }, [ data.name, data.chain_id, data.icon_url, data.explorer_url ]);
+  }, [ data.name, data.id, data.logo, data.explorer_url ]);
 
   return (
     <TableRow>

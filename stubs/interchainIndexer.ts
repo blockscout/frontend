@@ -90,15 +90,15 @@ export const INTERCHAIN_STATS_COMMON = {
 } satisfies GetCommonStatisticsResponse;
 
 export const INTERCHAIN_STATS_CHAINS_ITEM = {
-  chain_id: 8021,
+  id: '8021',
   name: 'NUMINE Mainnet',
-  icon_url: undefined,
+  logo: undefined,
   explorer_url: 'https://subnets.avax.network/numi',
   unique_transfer_users_count: 2544,
 } satisfies StatsChainRow;
 
 export const INTERCHAIN_BRIDGED_TOKEN_ITEM = {
-  stats_asset_id: 1,
+  stats_asset_id: '1',
   name: 'Wrapped AVAX',
   symbol: 'WAVAX',
   icon_url: undefined,
@@ -107,7 +107,7 @@ export const INTERCHAIN_BRIDGED_TOKEN_ITEM = {
   total_transfers_count: 11814,
   tokens: [
     {
-      chain_id: Number(CHAIN.id),
+      chain_id: CHAIN.id,
       token_address: ADDRESS_HASH,
       name: 'Wrapped AVAX',
       symbol: 'WAVAX',

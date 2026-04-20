@@ -80,7 +80,7 @@ const IcttUsers = () => {
           <>
             <Box hideFrom="lg">
               { data.items.map((item, index) => (
-                <IcttUsersListItem key={ String(item.chain_id) + (isPlaceholderData ? index : '') } data={ item } isLoading={ isPlaceholderData }/>
+                <IcttUsersListItem key={ String(item.id) + (isPlaceholderData ? index : '') } data={ item } isLoading={ isPlaceholderData }/>
               )) }
             </Box>
             <Box hideBelow="lg">
