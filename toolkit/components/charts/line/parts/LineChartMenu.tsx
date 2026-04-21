@@ -7,7 +7,7 @@ import type { LineChartData } from '../types';
 import { useDisclosure } from '../../../../hooks/useDisclosure';
 import type { ChartMenuProps } from '../../components/ChartMenu';
 import { ChartMenu } from '../../components/ChartMenu';
-import LineChartFullscreenDialog from '../LineChartFullscreenDialog';
+import LineChartModal from '../LineChartModal';
 
 export interface Props extends Omit<ChartMenuProps, 'csvData' | 'onFullscreenOpen'> {
   charts: LineChartData;
@@ -31,11 +31,11 @@ const LineChartMenu = ({
   handleZoomReset,
   onShare,
 }: Props) => {
-  const fullscreenDialog = useDisclosure();
+  const modal = useDisclosure();
 
-  const showChartFullscreen = React.useCallback(() => {
-    fullscreenDialog.onOpenChange({ open: true });
-  }, [ fullscreenDialog ]);
+  const handleModalOpen = React.useCallback(() => {
+    modal.onOpenChange({ open: true });
+  }, [ modal ]);
 
   const csvData = React.useMemo(() => {
     const headerRows = [
@@ -58,12 +58,12 @@ const LineChartMenu = ({
         chartUrl={ chartUrl }
         isLoading={ isLoading }
         chartRef={ chartRef }
-        onFullscreenOpen={ showChartFullscreen }
+        onFullscreenOpen={ handleModalOpen }
         onShare={ onShare }
       />
-      <LineChartFullscreenDialog
-        open={ fullscreenDialog.open }
-        onOpenChange={ fullscreenDialog.onOpenChange }
+      <LineChartModal
+        open={ modal.open }
+        onOpenChange={ modal.onOpenChange }
         charts={ charts }
         title={ title }
         description={ description }

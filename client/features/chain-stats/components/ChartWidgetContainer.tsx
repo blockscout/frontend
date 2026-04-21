@@ -7,7 +7,7 @@ import { route, type Route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import { ChartResolution } from 'toolkit/components/charts';
-import { SankeyChart } from 'toolkit/components/charts/sankey/SankeyChart';
+import { SankeyChartWidget } from 'toolkit/components/charts/sankey/SankeyChartWidget';
 
 import useChartQuery from '../hooks/useChartQuery';
 import ChartWidgetContainerLine from './ChartWidgetContainerLine';
@@ -41,6 +41,8 @@ const ChartWidgetContainer = ({
     }
   }, [ query.isError, onLoadingError ]);
 
+  const chartUrl = href ? `${ config.app.baseUrl }${ route(href) }` : undefined;
+
   if (query.data?.type === 'line') {
     return (
       <ChartWidgetContainerLine
@@ -54,16 +56,22 @@ const ChartWidgetContainer = ({
         minH="230px"
         className={ className }
         href={ href ? route(href) : undefined }
-        chartUrl={ href ? `${ config.app.baseUrl }${ route(href) }` : undefined }
+        chartUrl={ chartUrl }
       />
     );
   }
 
   if (query.data?.type === 'sankey') {
     return (
-      <SankeyChart
-        key={ id }
+      <SankeyChartWidget
         data={ query.data.data }
+        title={ title }
+        description={ description }
+        isLoading={ query.isPlaceholderData }
+        isError={ query.isError }
+        href={ href ? route(href) : undefined }
+        chartUrl={ chartUrl }
+        containerProps={{ minH: '230px', className }}
       />
     );
   }

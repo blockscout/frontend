@@ -2,10 +2,10 @@ import { select } from 'd3-selection';
 import 'd3-transition';
 import React from 'react';
 
-import type { SankeyLinkExtended } from '../types';
+import type { SankeyChartLinkExtended } from '../types';
 
-export interface SankeyLinkProps {
-  link: SankeyLinkExtended;
+export interface SankeyChartLinkProps {
+  link: SankeyChartLinkExtended;
 
   /** Single color when gradient is not used */
   color?: string;
@@ -19,12 +19,12 @@ export interface SankeyLinkProps {
   opacity: number;
   hoverOpacity: number;
 
-  pathGenerator: (link: SankeyLinkExtended, ...args: Array<any>) => string | null;
-  onMouseEnter?: (link: SankeyLinkExtended, event: React.MouseEvent) => void;
+  pathGenerator: (link: SankeyChartLinkExtended, ...args: Array<any>) => string | null;
+  onMouseEnter?: (link: SankeyChartLinkExtended, event: React.MouseEvent) => void;
   onMouseLeave?: () => void;
 }
 
-export const SankeyLink = React.memo(({
+export const SankeyChartLink = React.memo(({
   link,
   color,
   sourceColor,
@@ -35,7 +35,7 @@ export const SankeyLink = React.memo(({
   pathGenerator,
   onMouseEnter,
   onMouseLeave,
-}: SankeyLinkProps) => {
+}: SankeyChartLinkProps) => {
   const ref = React.useRef<SVGPathElement>(null);
 
   const handleMouseEnter = React.useCallback((event: React.MouseEvent) => {
@@ -102,7 +102,7 @@ export const SankeyLink = React.memo(({
         onMouseEnter={ handleMouseEnter }
         onMouseLeave={ handleMouseLeave }
       >
-        <title>{ `${ source.name } → ${ target.name }: ${ link.value }` }</title>
+        <title>{ `${ source.name } → ${ target.name }: ${ Number(link.value).toLocaleString() }` }</title>
       </path>
     </>
   );

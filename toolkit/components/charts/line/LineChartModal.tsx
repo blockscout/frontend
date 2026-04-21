@@ -16,7 +16,7 @@ interface Props extends Omit<ChartDialogProps, 'children' | 'headerRightSlot'> {
   handleZoomReset: () => void;
 };
 
-const LineChartFullscreenDialog = ({
+const LineChartModal = ({
   charts,
   open,
   onOpenChange,
@@ -55,4 +55,4 @@ const LineChartFullscreenDialog = ({
   );
 };
 
-export default LineChartFullscreenDialog;
+export default LineChartModal;

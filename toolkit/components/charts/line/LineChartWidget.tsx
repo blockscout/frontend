@@ -86,12 +86,11 @@ export const LineChartWidget = React.memo(({
   })();
 
   return (
-    <ChartWidgetRoot { ...rest }>
+    <ChartWidgetRoot { ...rest } ref={ ref }>
       <Flex columnGap={ 6 } mb={ 2 } alignItems="flex-start">
         <ChartWidgetHeader href={ href } title={ title } description={ description } isLoading={ isLoading }/>
         <Flex ml="auto" columnGap={ 2 }>
           <ChartResetZoomButton range={ zoomRange } onClick={ handleZoomReset }/>
-
           { hasMenu && (
             <LineChartMenu
               charts={ charts }
@@ -113,7 +112,7 @@ export const LineChartWidget = React.memo(({
         charts={ displayedCharts }
         isError={ isError }
         isLoading={ isLoading }
-        isEmpty={ !hasNonEmptyCharts }
+        isEmpty={ !hasNonEmptyCharts || displayedCharts.length === 0 }
         emptyText={ emptyText }
         onZoom={ handleZoom }
         zoomRange={ zoomRange }

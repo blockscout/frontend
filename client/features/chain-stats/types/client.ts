@@ -1,6 +1,6 @@
 import type { LineChartInfo, LineChartSection } from '@blockscout/stats-types';
 import type { LineChartItem } from 'toolkit/components/charts/line/types';
-import type { SankeyData } from 'toolkit/components/charts/sankey/types';
+import type { SankeyChartData } from 'toolkit/components/charts/sankey/types';
 
 export type ChartType = 'line' | 'sankey';
 
@@ -28,7 +28,7 @@ export interface ChartDataPayloadLine {
 
 export interface ChartDataPayloadSankey {
   type: 'sankey';
-  data: SankeyData;
+  data: SankeyChartData;
 }
 
 export type StatsInterval = { id: StatsIntervalIds; title: string };

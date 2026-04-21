@@ -1,17 +1,17 @@
 import React from 'react';
 
-import type { SankeyNodeExtended } from '../types';
+import type { SankeyChartNodeExtended } from '../types';
 
 const OUTER_CORNER_RADIUS = 4;
 
-export interface SankeyNodeProps {
-  node: SankeyNodeExtended;
+export interface SankeyChartNodeProps {
+  node: SankeyChartNodeExtended;
   color: string;
-  onMouseEnter?: (node: SankeyNodeExtended, event: React.MouseEvent) => void;
+  onMouseEnter?: (node: SankeyChartNodeExtended, event: React.MouseEvent) => void;
   onMouseLeave?: () => void;
 }
 
-export const SankeyNode = React.memo(({ node, color, onMouseEnter, onMouseLeave }: SankeyNodeProps) => {
+export const SankeyChartNode = React.memo(({ node, color, onMouseEnter, onMouseLeave }: SankeyChartNodeProps) => {
   const { x0 = 0, x1 = 0, y0 = 0, y1 = 0 } = node;
   const width = x1 - x0;
   const height = y1 - y0;
@@ -54,7 +54,7 @@ export const SankeyNode = React.memo(({ node, color, onMouseEnter, onMouseLeave 
           onMouseEnter={ handleMouseEnter }
           onMouseLeave={ onMouseLeave }
         >
-          <title>{ `${ node.name }: ${ node.value }` }</title>
+          <title>{ `${ node.name }: ${ Number(node.value).toLocaleString() }` }</title>
         </rect>
       );
     }
@@ -68,7 +68,7 @@ export const SankeyNode = React.memo(({ node, color, onMouseEnter, onMouseLeave 
       onMouseEnter={ handleMouseEnter }
       onMouseLeave={ onMouseLeave }
     >
-      <title>{ `${ node.name }: ${ node.value }` }</title>
+      <title>{ `${ node.name }: ${ Number(node.value).toLocaleString() }` }</title>
     </path>
   );
 });

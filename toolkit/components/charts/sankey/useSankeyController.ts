@@ -2,22 +2,22 @@ import { sankey, sankeyLinkHorizontal, sankeyJustify } from 'd3-sankey';
 import React from 'react';
 
 import type { ChartMargin } from '../types';
-import type { SankeyData, SankeyLinkExtended, SankeyNodeExtended } from './types';
+import type { SankeyChartData, SankeyChartLinkExtended, SankeyChartNodeExtended } from './types';
 
 import { useClientRect } from '../../../hooks/useClientRect';
 import { calculateInnerSize } from '../utils/calculateInnerSize';
 import { SANKEY_NODE_DEFAULT_PADDING, SANKEY_NODE_DEFAULT_WIDTH } from './constants';
 
 interface Props {
-  data: SankeyData;
+  data: SankeyChartData;
   margin?: ChartMargin;
   nodeWidth?: number;
   nodePadding?: number;
 }
 
 interface SankeyLayout {
-  nodes: Array<SankeyNodeExtended>;
-  links: Array<SankeyLinkExtended>;
+  nodes: Array<SankeyChartNodeExtended>;
+  links: Array<SankeyChartLinkExtended>;
 }
 
 interface UseSankeyControllerResult {
@@ -25,9 +25,9 @@ interface UseSankeyControllerResult {
   readonly rect: DOMRect | null;
   readonly innerWidth: number;
   readonly innerHeight: number;
-  readonly nodes: Array<SankeyNodeExtended>;
-  readonly links: Array<SankeyLinkExtended>;
-  readonly linkPathGenerator: (link: SankeyLinkExtended) => string | null;
+  readonly nodes: Array<SankeyChartNodeExtended>;
+  readonly links: Array<SankeyChartLinkExtended>;
+  readonly linkPathGenerator: (link: SankeyChartLinkExtended) => string | null;
 }
 
 export function useSankeyController({ data, margin, nodeWidth, nodePadding }: Props): UseSankeyControllerResult {
@@ -40,7 +40,7 @@ export function useSankeyController({ data, margin, nodeWidth, nodePadding }: Pr
       return { nodes: [], links: [] };
     }
 
-    const sankeyGenerator = sankey<SankeyData['nodes'][number], SankeyData['links'][number]>()
+    const sankeyGenerator = sankey<SankeyChartData['nodes'][number], SankeyChartData['links'][number]>()
       .nodeId((d) => d.id)
       .nodeWidth(nodeWidth ?? SANKEY_NODE_DEFAULT_WIDTH)
       .nodePadding(nodePadding ?? SANKEY_NODE_DEFAULT_PADDING)
@@ -53,10 +53,10 @@ export function useSankeyController({ data, margin, nodeWidth, nodePadding }: Pr
     });
 
     // After layout, source/target on each link are resolved node objects, not ids.
-    return { nodes: nodes as Array<SankeyNodeExtended>, links: links as unknown as Array<SankeyLinkExtended> };
+    return { nodes: nodes as Array<SankeyChartNodeExtended>, links: links as unknown as Array<SankeyChartLinkExtended> };
   }, [ data, innerWidth, innerHeight, nodeWidth, nodePadding ]);
 
-  const linkPathGenerator: (link: SankeyLinkExtended) => string | null = React.useMemo(() => sankeyLinkHorizontal(), []);
+  const linkPathGenerator: (link: SankeyChartLinkExtended) => string | null = React.useMemo(() => sankeyLinkHorizontal(), []);
 
   return React.useMemo(() => ({
     ref,

@@ -34,7 +34,7 @@ export interface ChartMenuProps {
   items?: Array<ChartMenuItemId>;
   csvData: Array<Array<string>>;
   chartUrl?: string;
-  isLoading: boolean;
+  isLoading?: boolean;
   chartRef: React.RefObject<HTMLDivElement | null>;
   onShare?: () => void;
   onFullscreenOpen?: () => void;
