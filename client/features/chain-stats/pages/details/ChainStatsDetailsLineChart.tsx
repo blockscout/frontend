@@ -1,5 +1,4 @@
 import { Text, createListCollection, Flex } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { StatsIntervalIds } from '../../types/client';
@@ -7,23 +6,19 @@ import type { LineChartInfo } from '@blockscout/stats-types';
 import type { LineChartItem } from 'toolkit/components/charts/line/types';
 import { CHART_RESOLUTION_LABELS, type ChartResolution } from 'toolkit/components/charts/types';
 
-import config from 'configs/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import * as mixpanel from 'lib/mixpanel/index';
 import useRoutedChainSelect from 'lib/multichain/useRoutedChainSelect';
-import { Button } from 'toolkit/chakra/button';
 import type { OnValueChangeHandler, SelectOption } from 'toolkit/chakra/select';
 import { Select } from 'toolkit/chakra/select';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import { LineChartWidgetContent } from 'toolkit/components/charts/line/LineChartWidgetContent';
+import { ChartResetZoomButton } from 'toolkit/components/charts/components/ChartResetZoomButton';
+import { LineChartContent } from 'toolkit/components/charts/line/LineChartContent';
 import LineChartMenu from 'toolkit/components/charts/line/parts/LineChartMenu';
 import { useLineChartZoom } from 'toolkit/components/charts/line/utils/useLineChartZoom';
-import { isBrowser } from 'toolkit/utils/isBrowser';
 import ChainSelect from 'ui/multichain/components/ChainSelect';
 import { useChartsConfig } from 'ui/shared/chart/config';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
-import IconSvg from 'ui/shared/IconSvg';
 
 import ChartIntervalSelect from '../../components/ChartIntervalSelect';
 import { DEFAULT_RESOLUTION } from '../../utils/consts';
@@ -58,10 +53,8 @@ const ChainStatsDetailsLineChart = ({
 
   const chartsConfig = useChartsConfig();
   const isMobile = useIsMobile();
-  const isInBrowser = isBrowser();
   const chainSelect = useRoutedChainSelect();
   const multichainContext = useMultichainContext();
-  const router = useRouter();
 
   const { zoomRange, handleZoom, handleZoomReset: onZoomReset } = useLineChartZoom();
 
@@ -72,27 +65,7 @@ const ChainStatsDetailsLineChart = ({
 
   const handleShare = React.useCallback(async() => {
     mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'Share chart', Info: id });
-    try {
-      await window.navigator.share({
-        title: info?.title,
-        text: info?.description,
-        url: window.location.href,
-      });
-    } catch (error) {}
-  }, [ id, info?.description, info?.title ]);
-
-  const shareButton = (
-    <Button
-      size="sm"
-      variant="outline"
-      onClick={ handleShare }
-      ml={ 6 }
-      loadingSkeleton={ isLoading }
-    >
-      <IconSvg name="share" w={ 4 } h={ 4 }/>
-      Share
-    </Button>
-  );
+  }, [ id ]);
 
   const resolutionCollection = React.useMemo(() => {
     const resolutions = info?.resolutions || [];
@@ -152,36 +125,12 @@ const ChainStatsDetailsLineChart = ({
               />
             </Flex>
           ) }
-          { (Boolean(zoomRange)) && (
-            <Button
-              variant="link"
-              onClick={ handleZoomReset }
-              display="flex"
-              alignItems="center"
-              gap={ 2 }
-            >
-              <IconSvg name="repeat" w={ 5 } h={ 5 }/>
-              { !isMobile && 'Reset' }
-            </Button>
-          ) }
         </Flex>
         <Flex alignItems="center" gap={ 3 }>
-          { /* TS thinks window.navigator.share can't be undefined, but it can */ }
-          { /* eslint-disable-next-line @typescript-eslint/no-explicit-any */ }
-          { !isMobile && (isInBrowser && ((window.navigator.share as any) ?
-            shareButton :
-            (
-              <CopyToClipboard
-                text={ config.app.baseUrl + router.asPath }
-                type="link"
-                ml={ 0 }
-                borderRadius="base"
-                variant="icon_background"
-                size="md"
-                boxSize={ 8 }
-              />
-            )
-          )) }
+          <ChartResetZoomButton
+            range={ zoomRange }
+            onClick={ handleZoomReset }
+          />
           { (hasItems || isLoading) && (
             <LineChartMenu
               charts={ charts }
@@ -193,7 +142,8 @@ const ChainStatsDetailsLineChart = ({
               zoomRange={ zoomRange }
               handleZoom={ handleZoom }
               handleZoomReset={ handleZoomReset }
-              chartUrl={ isMobile ? window.location.href : undefined }
+              chartUrl={ window.location.href }
+              onShare={ handleShare }
             />
           ) }
         </Flex>
@@ -205,14 +155,14 @@ const ChainStatsDetailsLineChart = ({
         mt={ 3 }
         position="relative"
       >
-        <LineChartWidgetContent
+        <LineChartContent
           isError={ isError }
           charts={ charts }
           isEnlarged
           isLoading={ isLoading }
           zoomRange={ zoomRange }
-          handleZoom={ handleZoom }
-          empty={ !hasNonEmptyCharts }
+          onZoom={ handleZoom }
+          isEmpty={ !hasNonEmptyCharts }
           emptyText="No data for the selected resolution & interval."
           resolution={ resolution }
         />

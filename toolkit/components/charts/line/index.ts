@@ -1,6 +1,6 @@
 export * from './LineChart';
 export * from './LineChartWidget';
-export * from './LineChartWidgetContent';
+export * from './LineChartContent';
 export * from './parts/LineChartArea';
 export * from './parts/LineChartAxis';
 export * from './parts/LineChartGridLine';

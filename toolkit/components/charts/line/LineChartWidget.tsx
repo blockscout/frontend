@@ -1,19 +1,15 @@
 import type { FlexProps } from '@chakra-ui/react';
-import { Flex, Icon } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import { range } from 'es-toolkit';
 import React, { useRef } from 'react';
 
 import type { LineChartAxesConfigFn, LineChartData } from './types';
 
-import RepeatIcon from 'icons/repeat.svg';
-
-import { IconButton } from '../../../chakra/icon-button';
-import { Link } from '../../../chakra/link';
-import { Skeleton } from '../../../chakra/skeleton';
-import { Tooltip } from '../../../chakra/tooltip';
-import { LineChartWidgetContent } from './LineChartWidgetContent';
+import type { ChartMenuItemId } from '../components/ChartMenu';
+import { ChartResetZoomButton } from '../components/ChartResetZoomButton';
+import { ChartWidgetRoot, ChartWidgetHeader } from '../components/ChartWidget';
+import { LineChartContent } from './LineChartContent';
 import { LineChartLegend } from './parts/LineChartLegend';
-import type { ChartMenuItemId } from './parts/LineChartMenu';
 import LineChartMenu from './parts/LineChartMenu';
 import { useLineChartZoom } from './utils/useLineChartZoom';
 
@@ -28,7 +24,7 @@ export interface LineChartWidgetProps extends FlexProps {
   href?: string;
   chartUrl?: string;
   axesConfig?: LineChartAxesConfigFn;
-  menuItemIds?: Array<ChartMenuItemId>;
+  menuItems?: Array<ChartMenuItemId>;
   noWatermark?: boolean;
 };
 
@@ -43,7 +39,7 @@ export const LineChartWidget = React.memo(({
   href,
   chartUrl,
   axesConfig,
-  menuItemIds,
+  menuItems,
   noWatermark,
   ...rest
 }: LineChartWidgetProps) => {
@@ -76,7 +72,7 @@ export const LineChartWidget = React.memo(({
 
   const hasNonEmptyCharts = charts.some(({ items }) => items && items.length > 2);
   const hasMenu = (() => {
-    const hasIds = !(menuItemIds && menuItemIds.length === 0);
+    const hasIds = !(menuItems && menuItems.length === 0);
     if (!hasIds) {
       return false;
     }
@@ -89,84 +85,17 @@ export const LineChartWidget = React.memo(({
     return true;
   })();
 
-  const content = (
-    <LineChartWidgetContent
-      charts={ displayedCharts }
-      isError={ isError }
-      isLoading={ isLoading }
-      empty={ !hasNonEmptyCharts }
-      emptyText={ emptyText }
-      handleZoom={ handleZoom }
-      zoomRange={ zoomRange }
-      noAnimation={ noAnimation }
-      axesConfig={ axesConfig }
-      noWatermark={ noWatermark }
-    />
-  );
-
-  const chartHeader = (
-    <Flex
-      flexGrow={ 1 }
-      flexDir="column"
-      alignItems="flex-start"
-      cursor={ href ? 'pointer' : 'default' }
-      _hover={ href ? { color: 'link.primary.hovered' } : {} }
-    >
-      <Skeleton
-        loading={ isLoading }
-        fontWeight={ 600 }
-        textStyle="md"
-      >
-        <span>{ title }</span>
-      </Skeleton>
-
-      { description && (
-        <Skeleton
-          loading={ isLoading }
-          color="text.secondary"
-          textStyle="xs"
-          mt={ 1 }
-        >
-          <span>{ description }</span>
-        </Skeleton>
-      ) }
-    </Flex>
-  );
-
   return (
-    <Flex
-      height="100%"
-      ref={ ref }
-      flexDir="column"
-      padding={{ base: 3, lg: 4 }}
-      borderRadius="lg"
-      borderWidth="1px"
-      borderColor={{ _light: 'gray.200', _dark: 'gray.600' }}
-      { ...rest }
-    >
+    <ChartWidgetRoot { ...rest }>
       <Flex columnGap={ 6 } mb={ 2 } alignItems="flex-start">
-        { href ? (
-          <Link href={ href }>
-            { chartHeader }
-          </Link>
-        ) : chartHeader }
+        <ChartWidgetHeader href={ href } title={ title } description={ description } isLoading={ isLoading }/>
         <Flex ml="auto" columnGap={ 2 }>
-          <Tooltip content="Reset zoom">
-            <IconButton
-              hidden={ !zoomRange }
-              aria-label="Reset zoom"
-              size="md"
-              variant="icon_background"
-              onClick={ handleZoomReset }
-            >
-              <Icon><RepeatIcon/></Icon>
-            </IconButton>
-          </Tooltip>
+          <ChartResetZoomButton range={ zoomRange } onClick={ handleZoomReset }/>
 
           { hasMenu && (
             <LineChartMenu
               charts={ charts }
-              itemIds={ menuItemIds }
+              items={ menuItems }
               title={ title }
               description={ description }
               chartUrl={ chartUrl }
@@ -180,7 +109,18 @@ export const LineChartWidget = React.memo(({
         </Flex>
       </Flex>
 
-      { content }
+      <LineChartContent
+        charts={ displayedCharts }
+        isError={ isError }
+        isLoading={ isLoading }
+        isEmpty={ !hasNonEmptyCharts }
+        emptyText={ emptyText }
+        onZoom={ handleZoom }
+        zoomRange={ zoomRange }
+        noAnimation={ noAnimation }
+        axesConfig={ axesConfig }
+        noWatermark={ noWatermark }
+      />
 
       { charts.length > 1 && (
         <LineChartLegend
@@ -189,6 +129,6 @@ export const LineChartWidget = React.memo(({
           onItemClick={ handleLegendItemClick }
         />
       ) }
-    </Flex>
+    </ChartWidgetRoot>
   );
 });
