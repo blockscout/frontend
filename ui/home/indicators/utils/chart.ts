@@ -1,10 +1,10 @@
-import type { TimeChartData, TimeChartDataItem, TimeChartItemRaw, TimeChartItem } from 'toolkit/components/charts/types';
 import type { ChainIndicatorId } from 'types/homepage';
 
 import config from 'configs/app';
+import type { LineChartData, LineChartDataItem, LineChartItemRaw, LineChartItem } from 'toolkit/components/charts/line';
 import { sortByDateDesc } from 'ui/shared/chart/utils';
 
-const CHART_ITEMS: Record<ChainIndicatorId, Pick<TimeChartDataItem, 'name' | 'valueFormatter'>> = {
+const CHART_ITEMS: Record<ChainIndicatorId, Pick<LineChartDataItem, 'name' | 'valueFormatter'>> = {
   daily_txs: {
     name: 'Tx/day',
     valueFormatter: (x: number) => x.toLocaleString(undefined, { maximumFractionDigits: 2, notation: 'compact' }),
@@ -31,7 +31,7 @@ const CHART_ITEMS: Record<ChainIndicatorId, Pick<TimeChartDataItem, 'name' | 'va
   },
 };
 
-const nonNullTailReducer = (result: Array<TimeChartItemRaw>, item: TimeChartItemRaw) => {
+const nonNullTailReducer = (result: Array<LineChartItemRaw>, item: LineChartItemRaw) => {
   if (item.value === null && result.length === 0) {
     return result;
   }
@@ -39,16 +39,16 @@ const nonNullTailReducer = (result: Array<TimeChartItemRaw>, item: TimeChartItem
   return result;
 };
 
-const mapNullToZero: (item: TimeChartItemRaw) => TimeChartItem = (item) => ({ ...item, value: Number(item.value) });
+const mapNullToZero: (item: LineChartItemRaw) => LineChartItem = (item) => ({ ...item, value: Number(item.value) });
 
-export function prepareChartItems(items: Array<TimeChartItemRaw>) {
+export function prepareChartItems(items: Array<LineChartItemRaw>) {
   return items
     .sort(sortByDateDesc)
-    .reduceRight(nonNullTailReducer, [] as Array<TimeChartItemRaw>)
+    .reduceRight(nonNullTailReducer, [] as Array<LineChartItemRaw>)
     .map(mapNullToZero);
 }
 
-export function getChartData(indicatorId: ChainIndicatorId, data: Array<TimeChartItemRaw>): TimeChartData {
+export function getChartData(indicatorId: ChainIndicatorId, data: Array<LineChartItemRaw>): LineChartData {
   return [ {
     id: indicatorId.replace(' ', '_'),
     charts: [],

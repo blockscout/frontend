@@ -1,12 +1,12 @@
 import React from 'react';
 
-import type { TimeChartItem } from 'toolkit/components/charts/types';
+import type { LineChartItem } from 'toolkit/components/charts/line/types';
 
-import { ChartWidget, type ChartWidgetProps } from 'toolkit/components/charts/ChartWidget';
+import { LineChartWidget, type LineChartWidgetProps } from 'toolkit/components/charts/line/LineChartWidget';
 import { useChartsConfig } from 'ui/shared/chart/config';
 
-interface Props extends Omit<ChartWidgetProps, 'charts'> {
-  data: Array<TimeChartItem>;
+interface Props extends Omit<LineChartWidgetProps, 'charts'> {
+  data: Array<LineChartItem>;
   id: string;
   units?: string;
 }
@@ -30,7 +30,7 @@ const ChartWidgetContainerLine = ({ data, id, units, ...rest }: Props) => {
     ];
   }, [ id, units, data, chartsConfig ]);
 
-  return <ChartWidget { ...rest } charts={ charts }/>;
+  return <LineChartWidget { ...rest } charts={ charts }/>;
 };
 
 export default React.memo(ChartWidgetContainerLine);

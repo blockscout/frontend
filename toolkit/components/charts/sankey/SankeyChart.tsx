@@ -4,11 +4,10 @@ import React from 'react';
 import type { ChartMargin } from '../types';
 import type { SankeyData, SankeyNodeExtended } from './types';
 
-import { useColorModeValue } from 'toolkit/chakra/color-mode';
-
+import { useColorModeValue } from '../../../chakra/color-mode';
 import {
-  DEFAULT_SANKEY_LINK_HOVER_OPACITY,
-  DEFAULT_SANKEY_LINK_OPACITY,
+  SANKEY_LINK_DEFAULT_HOVER_OPACITY,
+  SANKEY_LINK_DEFAULT_OPACITY,
   SANKEY_NODE_COLOR_TOKENS_DARK,
   SANKEY_NODE_COLOR_TOKENS_LIGHT,
 } from './constants';
@@ -40,8 +39,8 @@ export const SankeyChart = React.memo(({
   margin: marginProps,
   nodeWidth,
   nodePadding,
-  linkOpacity = DEFAULT_SANKEY_LINK_OPACITY,
-  linkHoverOpacity = DEFAULT_SANKEY_LINK_HOVER_OPACITY,
+  linkOpacity = SANKEY_LINK_DEFAULT_OPACITY,
+  linkHoverOpacity = SANKEY_LINK_DEFAULT_HOVER_OPACITY,
   linkColorMode = 'source',
   colors: colorsProp,
   valueFormatter,

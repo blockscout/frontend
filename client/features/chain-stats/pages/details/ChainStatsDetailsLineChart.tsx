@@ -3,8 +3,9 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { StatsIntervalIds } from '../../types/client';
-import type { LineChartInfo, Resolution } from '@blockscout/stats-types';
-import type { TimeChartItem } from 'toolkit/components/charts/types';
+import type { LineChartInfo } from '@blockscout/stats-types';
+import type { LineChartItem } from 'toolkit/components/charts/line/types';
+import { CHART_RESOLUTION_LABELS, type ChartResolution } from 'toolkit/components/charts/types';
 
 import config from 'configs/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
@@ -15,9 +16,9 @@ import { Button } from 'toolkit/chakra/button';
 import type { OnValueChangeHandler, SelectOption } from 'toolkit/chakra/select';
 import { Select } from 'toolkit/chakra/select';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import { ChartWidgetContent } from 'toolkit/components/charts/ChartWidgetContent';
-import ChartMenu from 'toolkit/components/charts/parts/ChartMenu';
-import { useChartZoom } from 'toolkit/components/charts/utils/useChartZoom';
+import { LineChartWidgetContent } from 'toolkit/components/charts/line/LineChartWidgetContent';
+import LineChartMenu from 'toolkit/components/charts/line/parts/LineChartMenu';
+import { useLineChartZoom } from 'toolkit/components/charts/line/utils/useLineChartZoom';
 import { isBrowser } from 'toolkit/utils/isBrowser';
 import ChainSelect from 'ui/multichain/components/ChainSelect';
 import { useChartsConfig } from 'ui/shared/chart/config';
@@ -25,17 +26,17 @@ import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import IconSvg from 'ui/shared/IconSvg';
 
 import ChartIntervalSelect from '../../components/ChartIntervalSelect';
-import { STATS_RESOLUTIONS, DEFAULT_RESOLUTION } from '../../utils/consts';
+import { DEFAULT_RESOLUTION } from '../../utils/consts';
 
 interface Props {
   id: string;
   info?: LineChartInfo;
-  data?: Array<TimeChartItem>;
+  data?: Array<LineChartItem>;
   isLoading: boolean;
   isError: boolean;
   isInitialLoading: boolean;
   interval: StatsIntervalIds;
-  resolution: Resolution;
+  resolution: ChartResolution;
   onIntervalChange: (interval: StatsIntervalIds) => void;
   onResolutionChange: OnValueChangeHandler;
 }
@@ -62,7 +63,7 @@ const ChainStatsDetailsLineChart = ({
   const multichainContext = useMultichainContext();
   const router = useRouter();
 
-  const { zoomRange, handleZoom, handleZoomReset: onZoomReset } = useChartZoom();
+  const { zoomRange, handleZoom, handleZoomReset: onZoomReset } = useLineChartZoom();
 
   const handleZoomReset = React.useCallback(() => {
     onZoomReset();
@@ -95,7 +96,7 @@ const ChainStatsDetailsLineChart = ({
 
   const resolutionCollection = React.useMemo(() => {
     const resolutions = info?.resolutions || [];
-    const items = STATS_RESOLUTIONS
+    const items = CHART_RESOLUTION_LABELS
       .filter((resolution) => resolutions.includes(resolution.id))
       .map((resolution) => ({ value: resolution.id, label: resolution.title }));
 
@@ -182,7 +183,7 @@ const ChainStatsDetailsLineChart = ({
             )
           )) }
           { (hasItems || isLoading) && (
-            <ChartMenu
+            <LineChartMenu
               charts={ charts }
               title={ info?.title || '' }
               description={ info?.description || '' }
@@ -204,7 +205,7 @@ const ChainStatsDetailsLineChart = ({
         mt={ 3 }
         position="relative"
       >
-        <ChartWidgetContent
+        <LineChartWidgetContent
           isError={ isError }
           charts={ charts }
           isEnlarged

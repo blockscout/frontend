@@ -3,7 +3,8 @@ import React from 'react';
 
 import type { ChartData, StatsIntervalIds } from '../types/client';
 import type { GetMessagePathsResponse } from '@blockscout/interchain-indexer-types';
-import type { LineChart, Resolution } from '@blockscout/stats-types';
+import type { LineChart } from '@blockscout/stats-types';
+import type { ChartResolution } from 'toolkit/components/charts/types';
 
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
@@ -29,7 +30,7 @@ const isMessagePathsResponse = (data: unknown): data is GetMessagePathsResponse 
 
 interface Props {
   id: string;
-  resolution: Resolution;
+  resolution: ChartResolution;
   interval: StatsIntervalIds;
   enabled?: boolean;
 }

@@ -1,11 +1,11 @@
 import React from 'react';
 
-import type { ChartWidgetProps } from 'toolkit/components/charts/ChartWidget';
-import { ChartWidget } from 'toolkit/components/charts/ChartWidget';
+import type { LineChartWidgetProps } from 'toolkit/components/charts/line';
+import { LineChartWidget } from 'toolkit/components/charts/line';
 
 import { useChartsConfig } from './config';
 
-const ChartWidgetPwStory = ({ charts, ...props }: ChartWidgetProps) => {
+const ChartWidgetPwStory = ({ charts, ...props }: LineChartWidgetProps) => {
   const chartsConfig = useChartsConfig();
 
   const modifiedCharts = React.useMemo(() => {
@@ -20,7 +20,7 @@ const ChartWidgetPwStory = ({ charts, ...props }: ChartWidgetProps) => {
     });
   }, [ charts, chartsConfig ]);
 
-  return <ChartWidget { ...props } charts={ modifiedCharts }/>;
+  return <LineChartWidget { ...props } charts={ modifiedCharts }/>;
 };
 
 export default React.memo(ChartWidgetPwStory);

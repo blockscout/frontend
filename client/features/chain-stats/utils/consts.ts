@@ -1,26 +1,7 @@
 import type { StatsIntervalIds } from '../types/client';
-import { Resolution } from '@blockscout/stats-types';
+import { ChartResolution } from 'toolkit/components/charts/types';
 
-export const DEFAULT_RESOLUTION = Resolution.DAY;
-
-export const STATS_RESOLUTIONS: Array<{ id: Resolution; title: string }> = [
-  {
-    id: Resolution.DAY,
-    title: 'Day',
-  },
-  {
-    id: Resolution.WEEK,
-    title: 'Week',
-  },
-  {
-    id: Resolution.MONTH,
-    title: 'Month',
-  },
-  {
-    id: Resolution.YEAR,
-    title: 'Year',
-  },
-];
+export const DEFAULT_RESOLUTION = ChartResolution.DAY;
 
 export const STATS_INTERVALS: { [key in StatsIntervalIds]: { title: string; shortTitle: string; start?: Date } } = {
   all: {

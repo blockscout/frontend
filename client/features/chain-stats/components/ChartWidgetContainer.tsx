@@ -2,11 +2,11 @@ import { chakra } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 
 import type { StatsIntervalIds } from '../types/client';
-import { Resolution } from '@blockscout/stats-types';
 
 import { route, type Route } from 'nextjs-routes';
 
 import config from 'configs/app';
+import { ChartResolution } from 'toolkit/components/charts';
 import { SankeyChart } from 'toolkit/components/charts/sankey/SankeyChart';
 
 import useChartQuery from '../hooks/useChartQuery';
@@ -33,7 +33,7 @@ const ChartWidgetContainer = ({
   className,
   href,
 }: Props) => {
-  const { query } = useChartQuery({ id, resolution: Resolution.DAY, interval, enabled: !isLoading });
+  const { query } = useChartQuery({ id, resolution: ChartResolution.DAY, interval, enabled: !isLoading });
 
   useEffect(() => {
     if (query.isError) {

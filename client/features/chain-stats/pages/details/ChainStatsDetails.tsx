@@ -4,7 +4,7 @@ import React from 'react';
 
 import type { StatsIntervalIds } from '../../types/client';
 import { StatsIntervalId } from '../../types/client';
-import { Resolution } from '@blockscout/stats-types';
+import { ChartResolution } from 'toolkit/components/charts/types';
 
 import useChartQuery from 'client/features/chain-stats/hooks/useChartQuery';
 import config from 'configs/app';
@@ -18,15 +18,15 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 import { DEFAULT_RESOLUTION } from '../../utils/consts';
 import ChainStatsDetailsLineChart from './ChainStatsDetailsLineChart';
 
-const getIntervalByResolution = (resolution: Resolution): StatsIntervalIds => {
+const getIntervalByResolution = (resolution: ChartResolution): StatsIntervalIds => {
   switch (resolution) {
-    case 'DAY':
+    case ChartResolution.DAY:
       return 'oneMonth';
-    case 'WEEK':
+    case ChartResolution.WEEK:
       return 'oneMonth';
-    case 'MONTH':
+    case ChartResolution.MONTH:
       return 'oneYear';
-    case 'YEAR':
+    case ChartResolution.YEAR:
       return 'all';
     default:
       return 'oneMonth';
@@ -44,13 +44,13 @@ const getIntervalFromQuery = (router: NextRouter): StatsIntervalIds | undefined 
 };
 
 const getResolutionFromQuery = (router: NextRouter) => {
-  const resolutionFromQuery = getQueryParamString(router.query.resolution);
+  const resolutionFromQuery = getQueryParamString(router.query.resolution) as (keyof typeof ChartResolution | undefined);
 
-  if (!resolutionFromQuery || !Resolution[resolutionFromQuery as keyof typeof Resolution]) {
+  if (!resolutionFromQuery || !ChartResolution[resolutionFromQuery]) {
     return DEFAULT_RESOLUTION;
   }
 
-  return resolutionFromQuery as Resolution;
+  return resolutionFromQuery as ChartResolution;
 };
 
 const ChainStatsDetails = () => {
@@ -61,7 +61,7 @@ const ChainStatsDetails = () => {
   const defaultResolution = resolutionFromQuery || DEFAULT_RESOLUTION;
 
   const [ intervalState, setIntervalState ] = React.useState<StatsIntervalIds | undefined>(intervalFromQuery);
-  const [ resolution, setResolution ] = React.useState<Resolution>(defaultResolution);
+  const [ resolution, setResolution ] = React.useState<ChartResolution>(defaultResolution);
 
   const interval = intervalState || getIntervalByResolution(resolution);
 
@@ -81,7 +81,7 @@ const ChainStatsDetails = () => {
   }, [ setIntervalState, router ]);
 
   const handleResolutionChange = React.useCallback(({ value }: { value: Array<string> }) => {
-    setResolution(value[0] as Resolution);
+    setResolution(value[0] as ChartResolution);
     router.push({
       pathname: router.pathname,
       query: { ...router.query, resolution: value[0] },
