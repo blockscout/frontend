@@ -6,7 +6,7 @@
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "license": "GPL-3.0-only",
+  "license": "SEE LICENSE IN https://raw.githubusercontent.com/blockscout/frontend/refs/heads/main/LICENSE",
   "author": "Blockscout Team",
   "repository": {
     "type": "git",

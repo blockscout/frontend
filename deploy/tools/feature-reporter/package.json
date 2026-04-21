@@ -4,7 +4,6 @@
   "private": true,
   "type": "module",
   "main": "dist/index.js",
-  "license": "MIT",
   "scripts": {
     "build": "vite build --logLevel error",
     "print_report": "node ./dist/index.js",
