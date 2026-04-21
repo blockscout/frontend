@@ -5,6 +5,7 @@ import * as blockMock from 'mocks/blocks/block';
 import * as statsMock from 'mocks/stats/index';
 import { test, expect } from 'playwright/lib';
 
+import { HomeBlocksDataContextProvider } from './blocksDataContext';
 import Stats from './Stats';
 
 test.describe('all items', () => {
@@ -17,7 +18,11 @@ test.describe('all items', () => {
     ]);
     await mockApiResponse('general:stats', statsMock.withBtcLocked);
     await mockApiResponse('general:homepage_blocks', [ blockMock.base, blockMock.base2 ]);
-    component = await render(<Stats/>);
+    component = await render(
+      <HomeBlocksDataContextProvider>
+        <Stats/>
+      </HomeBlocksDataContextProvider>,
+    );
   });
 
   test('+@mobile +@dark-mode', async() => {
@@ -31,7 +36,11 @@ test('no gas info', async({ render, mockApiResponse, mockEnvs }) => {
   ]);
   await mockApiResponse('general:stats', statsMock.withoutGasInfo);
   await mockApiResponse('general:homepage_blocks', [ blockMock.base, blockMock.base2 ]);
-  const component = await render(<Stats/>);
+  const component = await render(
+    <HomeBlocksDataContextProvider>
+      <Stats/>
+    </HomeBlocksDataContextProvider>,
+  );
 
   await expect(component).toHaveScreenshot();
 });
@@ -43,7 +52,11 @@ test('4 items default view +@mobile -@default', async({ render, mockApiResponse,
   ]);
   await mockApiResponse('general:stats', statsMock.base);
   await mockApiResponse('general:homepage_blocks', [ blockMock.base, blockMock.base2 ]);
-  const component = await render(<Stats/>);
+  const component = await render(
+    <HomeBlocksDataContextProvider>
+      <Stats/>
+    </HomeBlocksDataContextProvider>,
+  );
   await expect(component).toHaveScreenshot();
 });
 
@@ -54,6 +67,10 @@ test('3 items default view +@mobile -@default', async({ render, mockApiResponse,
   ]);
   await mockApiResponse('general:stats', statsMock.base);
   await mockApiResponse('general:homepage_blocks', [ blockMock.base, blockMock.base2 ]);
-  const component = await render(<Stats/>);
+  const component = await render(
+    <HomeBlocksDataContextProvider>
+      <Stats/>
+    </HomeBlocksDataContextProvider>,
+  );
   await expect(component).toHaveScreenshot();
 });

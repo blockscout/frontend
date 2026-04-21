@@ -10,7 +10,6 @@ import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 import { layerLabels } from 'lib/rollups/utils';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
-import { BLOCK } from 'stubs/block';
 import { HOMEPAGE_STATS, HOMEPAGE_STATS_MICROSERVICE } from 'stubs/stats';
 import GasInfoTooltip from 'ui/shared/gas/GasInfoTooltip';
 import GasPrice from 'ui/shared/gas/GasPrice';
@@ -18,6 +17,7 @@ import IconSvg from 'ui/shared/IconSvg';
 import StatsWidget from 'ui/shared/stats/StatsWidget';
 import { WEI } from 'ui/shared/value/utils';
 
+import { useHomeBlocksQuery } from './blocksDataContext';
 import StatsDegraded from './fallbacks/StatsDegraded';
 import type { HomeStatsItem } from './utils';
 import { isHomeStatsItemEnabled, sortHomeStatsItems } from './utils';
@@ -35,6 +35,7 @@ type LatestBatchSocketMessage = LatestBatchSocketEventMessage | SocketMessage.Un
 const Stats = () => {
   const [ hasGasTracker, setHasGasTracker ] = React.useState(config.features.gasTracker.isEnabled);
   const queryClient = useQueryClient();
+  const blocksQuery = useHomeBlocksQuery();
 
   // data from stats microservice is prioritized over data from stats api
   const statsQuery = useApiQuery('stats:pages_main', {
@@ -52,16 +53,7 @@ const Stats = () => {
     },
   });
 
-  const latestBlockQueryKey = React.useMemo(() => [ ...getResourceKey('general:homepage_blocks'), 'stats_latest_block' ], []);
-  const latestBlockQuery = useApiQuery('general:homepage_blocks', {
-    queryOptions: {
-      queryKey: latestBlockQueryKey,
-      placeholderData: [ BLOCK ],
-      select: (data) => data?.[0]?.height,
-    },
-  });
-
-  const isPlaceholderData = statsQuery.isPlaceholderData || apiQuery.isPlaceholderData || latestBlockQuery.isPlaceholderData;
+  const isPlaceholderData = statsQuery.isPlaceholderData || apiQuery.isPlaceholderData || blocksQuery.isPlaceholderData;
 
   React.useEffect(() => {
     if (!isPlaceholderData && !apiQuery.data?.gas_prices?.average) {
@@ -123,24 +115,13 @@ const Stats = () => {
     }
   })();
 
-  const hasStatsError = apiQuery.isError || statsQuery.isError || latestBlockQuery.isError || Boolean(latestBatchQuery?.isError);
+  const hasStatsError = apiQuery.isError || statsQuery.isError || blocksQuery.isError || Boolean(latestBatchQuery?.isError);
 
-  const blocksSocketDisabled = isPlaceholderData || hasStatsError;
   const latestBatchSocketDisabled =
     !latestBatchSocketConfig ||
     latestBatchQuery?.isError ||
     latestBatchQuery?.isPlaceholderData ||
     latestBatchQuery?.data === undefined;
-
-  const handleNewBlockMessage: SocketMessage.NewBlock['handler'] = React.useCallback((payload) => {
-    queryClient.setQueryData(latestBlockQueryKey, (prevData: Array<typeof payload.block> | undefined) => {
-      const prevBlock = prevData?.[0];
-      if (!prevBlock || payload.block.height > prevBlock.height) {
-        return [ payload.block ];
-      }
-      return [ prevBlock ];
-    });
-  }, [ queryClient, latestBlockQueryKey ]);
 
   const handleNewLatestBatchMessage = React.useCallback((payload: LatestBatchPayload) => {
     if (!latestBatchSocketConfig) {
@@ -154,16 +135,6 @@ const Stats = () => {
       return Math.max(prev, nextBatchNumber);
     });
   }, [ queryClient, latestBatchSocketConfig ]);
-
-  const blocksChannel = useSocketChannel({
-    topic: 'blocks:new_block',
-    isDisabled: blocksSocketDisabled,
-  });
-  useSocketMessage({
-    channel: blocksChannel,
-    event: 'new_block',
-    handler: handleNewBlockMessage,
-  });
 
   const latestBatchChannel = useSocketChannel({
     topic: latestBatchSocketConfig?.topic,
@@ -212,11 +183,11 @@ const Stats = () => {
         href: { pathname: '/batches' as const },
         isLoading,
       },
-      (latestBlockQuery.data || statsData?.total_blocks?.value || apiData?.total_blocks) && {
+      (blocksQuery.data?.[0]?.height ?? statsData?.total_blocks?.value ?? apiData?.total_blocks) && {
         id: 'total_blocks' as const,
         icon: 'block' as const,
         label: 'Latest block',
-        value: Number(latestBlockQuery.data || statsData?.total_blocks?.value || apiData?.total_blocks).toLocaleString(),
+        value: Number(blocksQuery.data?.[0]?.height ?? statsData?.total_blocks?.value ?? apiData?.total_blocks).toLocaleString(),
         href: { pathname: '/blocks' as const },
         isLoading,
       },
