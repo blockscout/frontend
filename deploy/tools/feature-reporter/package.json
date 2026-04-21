@@ -2,7 +2,6 @@
   "name": "feature-reporter",
   "version": "1.0.0",
   "main": "index.js",
-  "license": "MIT",
   "scripts": {
     "compile_config": "yarn tsc -p ./tsconfig.json && yarn tsc-alias -p ./tsconfig.json",
     "build": "yarn webpack-cli -c ./webpack.config.js",

@@ -4,7 +4,6 @@
   "main": "index.js",
   "keywords": [],
   "author": "",
-  "license": "ISC",
   "description": "",
   "dependencies": {
     "favicons": "^7.2.0",
