@@ -15,7 +15,9 @@ import getQueryParamString from 'lib/router/getQueryParamString';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
+import { CROSS_CHAIN_TXS_CHARTS } from '../../utils/additional-charts';
 import { DEFAULT_RESOLUTION } from '../../utils/consts';
+import ChainStatsDetailsCrossChainTxsPaths from './ChainStatsDetailsCrossChainTxsPaths';
 import ChainStatsDetailsLineChart from './ChainStatsDetailsLineChart';
 
 const getIntervalByResolution = (resolution: ChartResolution): StatsIntervalIds => {
@@ -122,6 +124,22 @@ const ChainStatsDetails = () => {
         />
       );
     }
+
+    const crossChainTxsPathsChart = CROSS_CHAIN_TXS_CHARTS.find((chart) => chart.id === id);
+    if (crossChainTxsPathsChart) {
+      return (
+        <ChainStatsDetailsCrossChainTxsPaths
+          chart={ crossChainTxsPathsChart }
+          data={ query.data?.data }
+          isLoading={ query.isPlaceholderData }
+          isError={ query.isError }
+          isInitialLoading={ isInitialLoading }
+          interval={ interval }
+          onIntervalChange={ handleIntervalChange }
+        />
+      );
+    }
+
     return null;
   })();
 

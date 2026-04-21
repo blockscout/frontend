@@ -7,8 +7,8 @@ import { ChartContent } from '../components/ChartContent';
 import type { SankeyChartProps } from './SankeyChart';
 import { SankeyChart } from './SankeyChart';
 
-export interface SankeyChartContentProps extends Omit<ChartContentProps, 'children'>, SankeyChartProps {
-  data: SankeyChartData;
+export interface SankeyChartContentProps extends Omit<ChartContentProps, 'children'>, Omit<SankeyChartProps, 'data'> {
+  data?: SankeyChartData;
 }
 
 export const SankeyChartContent = React.memo(({ data, isError, isLoading, isEmpty, emptyText, noWatermark, ...rest }: SankeyChartContentProps) => {
@@ -20,7 +20,7 @@ export const SankeyChartContent = React.memo(({ data, isError, isLoading, isEmpt
       emptyText={ emptyText }
       noWatermark={ noWatermark }
     >
-      <SankeyChart data={ data } { ...rest }/>
+      { data && <SankeyChart data={ data } { ...rest }/> }
     </ChartContent>
   );
 });

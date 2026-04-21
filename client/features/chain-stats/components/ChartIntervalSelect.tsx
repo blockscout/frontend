@@ -29,7 +29,7 @@ type Props = {
   selectTagSize?: TagProps['size'];
 };
 
-const ChartIntervalSelect = ({ interval, onIntervalChange, isLoading, selectTagSize }: Props) => {
+const ChartIntervalSelect = ({ interval, onIntervalChange, isLoading, selectTagSize = 'lg' }: Props) => {
 
   const handleItemSelect = React.useCallback(({ value }: { value: Array<string> }) => {
     onIntervalChange(value[0] as StatsIntervalIds);

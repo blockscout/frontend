@@ -84,7 +84,7 @@ export const SankeyChart = React.memo(({
     if (value === undefined) {
       return '';
     }
-    return valueFormatter ? valueFormatter(value) : String(value);
+    return valueFormatter ? valueFormatter(value) : Number(value).toLocaleString();
   }, [ valueFormatter ]);
 
   return (

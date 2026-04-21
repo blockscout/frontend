@@ -1,4 +1,4 @@
-import { Text, createListCollection, Flex } from '@chakra-ui/react';
+import { createListCollection, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { StatsIntervalIds } from '../../types/client';
@@ -7,7 +7,6 @@ import type { LineChartItem } from 'toolkit/components/charts/line/types';
 import { CHART_RESOLUTION_LABELS, type ChartResolution } from 'toolkit/components/charts/types';
 
 import { useMultichainContext } from 'lib/contexts/multichain';
-import useIsMobile from 'lib/hooks/useIsMobile';
 import * as mixpanel from 'lib/mixpanel/index';
 import useRoutedChainSelect from 'lib/multichain/useRoutedChainSelect';
 import type { OnValueChangeHandler, SelectOption } from 'toolkit/chakra/select';
@@ -52,7 +51,6 @@ const ChainStatsDetailsLineChart = ({
   const ref = React.useRef<HTMLDivElement>(null);
 
   const chartsConfig = useChartsConfig();
-  const isMobile = useIsMobile();
   const chainSelect = useRoutedChainSelect();
   const multichainContext = useMultichainContext();
 
@@ -98,7 +96,7 @@ const ChainStatsDetailsLineChart = ({
   return (
     <>
       <Flex alignItems="center" justifyContent="space-between">
-        <Flex alignItems="center" gap={{ base: 3, lg: 6 }} maxW="100%">
+        <Flex alignItems="center" gap={{ base: 3, lg: 6 }} maxW="100%" textStyle="sm">
           { multichainContext?.chain && (
             <ChainSelect
               value={ chainSelect.value }
@@ -106,21 +104,18 @@ const ChainStatsDetailsLineChart = ({
               loading={ isInitialLoading }
             />
           ) }
-          <Flex alignItems="center" gap={ 3 }>
-            { !isMobile && <Text>Period</Text> }
-            <ChartIntervalSelect interval={ interval } onIntervalChange={ onIntervalChange }/>
-          </Flex>
+          <ChartIntervalSelect interval={ interval } onIntervalChange={ onIntervalChange } isLoading={ isInitialLoading }/>
           { (info?.resolutions && info?.resolutions.length > 1) && (
             <Flex alignItems="center" gap={ 3 }>
               <Skeleton loading={ isInitialLoading }>
-                { isMobile ? 'Res.' : 'Resolution' }
+                <span>Res</span>
               </Skeleton>
               <Select
                 collection={ resolutionCollection }
                 placeholder="Select resolution"
                 defaultValue={ [ resolution ] }
                 onValueChange={ onResolutionChange }
-                w={{ base: 'fit-content', lg: '160px' }}
+                w={{ base: 'max-content', lg: '160px' }}
                 loading={ isInitialLoading }
               />
             </Flex>

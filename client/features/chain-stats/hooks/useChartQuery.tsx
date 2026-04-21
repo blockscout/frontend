@@ -11,6 +11,7 @@ import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
 import { formatDate } from 'ui/shared/chart/utils';
 
+import { CHAIN_STATS_CROSS_CHAIN_TXS_PATHS_CHART, CHAIN_STATS_LINE_CHART } from '../stubs/charts';
 import { CROSS_CHAIN_TXS_CHARTS } from '../utils/additional-charts';
 import { STATS_INTERVALS } from '../utils/consts';
 
@@ -45,8 +46,8 @@ export default function useChartQuery({ id, resolution, interval, enabled = true
 
   const [ info, setInfo ] = React.useState<LineChart['info']>(apiData || undefined);
 
-  const additionalChart = CROSS_CHAIN_TXS_CHARTS.find((chart) => chart.id === id);
-  const resourceName = additionalChart?.resourceName ? additionalChart.resourceName : 'stats:line';
+  const crossChainTxsPathsChart = CROSS_CHAIN_TXS_CHARTS.find((chart) => chart.id === id);
+  const resourceName = crossChainTxsPathsChart?.resourceName ? crossChainTxsPathsChart.resourceName : 'stats:line';
 
   const query = useApiQuery<typeof resourceName, unknown, ChartData | undefined>(resourceName, {
     pathParams: { id, chainId: config.chain.id },
@@ -58,16 +59,7 @@ export default function useChartQuery({ id, resolution, interval, enabled = true
     queryOptions: {
       enabled: enabled,
       refetchOnMount: false,
-      placeholderData: {
-        info: {
-          title: 'Chart title placeholder',
-          description: 'Chart placeholder description chart placeholder description',
-          resolutions: [ 'DAY', 'WEEK', 'MONTH', 'YEAR' ],
-          id: 'placeholder',
-          units: undefined,
-        },
-        chart: [],
-      },
+      placeholderData: crossChainTxsPathsChart ? CHAIN_STATS_CROSS_CHAIN_TXS_PATHS_CHART : CHAIN_STATS_LINE_CHART,
       select: (data) => {
         if (isLineChartResponse(data)) {
           return {
@@ -83,14 +75,14 @@ export default function useChartQuery({ id, resolution, interval, enabled = true
             }),
           };
         }
-        if (isMessagePathsResponse(data) && additionalChart) {
+        if (isMessagePathsResponse(data) && crossChainTxsPathsChart) {
 
           const chains = uniqBy(data.items.flatMap((item) => [ item.source_chain, item.destination_chain ]).filter(Boolean), (chain) => chain?.id);
 
           return {
             info: {
-              title: additionalChart.title,
-              description: additionalChart.description,
+              title: crossChainTxsPathsChart.title,
+              description: crossChainTxsPathsChart.description,
               id: id,
               resolutions: [],
             },

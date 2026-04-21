@@ -72,7 +72,7 @@ const ChainStatsFilters = ({
         w={{ base: '100%', lg: 'auto' }}
         area="interval"
       >
-        <ChartIntervalSelect interval={ interval } onIntervalChange={ onIntervalChange } isLoading={ isLoading } selectTagSize="md"/>
+        <ChartIntervalSelect interval={ interval } onIntervalChange={ onIntervalChange } isLoading={ isLoading }/>
       </GridItem>
 
       <GridItem
