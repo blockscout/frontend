@@ -5,7 +5,7 @@ export interface CrossChainFilters {
 }
 
 export interface CrossChainChainsStatsSorting {
-  sort: 'unique_transfer_users_count';
+  sort: Exclude<interchainIndexer.StatsChainsSort, interchainIndexer.StatsChainsSort.UNRECOGNIZED>;
   order: Exclude<interchainIndexer.SortOrder, interchainIndexer.SortOrder.UNRECOGNIZED>;
 }
 

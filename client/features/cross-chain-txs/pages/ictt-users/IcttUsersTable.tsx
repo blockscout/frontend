@@ -1,6 +1,7 @@
 import React from 'react';
 
 import type { CrossChainChainsStatsSortingField, CrossChainChainsStatsSortingValue } from '../../types/api';
+import { StatsChainsSort } from '@blockscout/interchain-indexer-types';
 import type { StatsChainRow } from '@blockscout/interchain-indexer-types';
 
 import { TableBody, TableColumnHeader, TableColumnHeaderSortable, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
@@ -32,7 +33,7 @@ const IcttUsersTable = ({ data, isLoading, sort, setSorting }: Props) => {
           <TableColumnHeaderSortable
             width="50%"
             isNumeric
-            sortField="unique_transfer_users_count"
+            sortField={ StatsChainsSort.UNIQUE_TRANSFER_USERS_COUNT }
             sortValue={ sort }
             onSortToggle={ onSortToggle }
             disabled={ isLoading }

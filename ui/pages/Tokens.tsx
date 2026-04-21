@@ -96,7 +96,16 @@ const Tokens = () => {
   const searchInput = (() => {
     if (tab === 'bridged') {
       if (crossChainTxsFeature.isEnabled) {
-        return null;
+        return (
+          <FilterInput
+            key="bridged-search-input"
+            w={{ base: '100%', lg: '360px' }}
+            size="sm"
+            onChange={ bridgedTokensQueryCrossChain.onSearchTermChange }
+            placeholder="Token name or symbol"
+            initialValue={ bridgedTokensQueryCrossChain.searchTerm }
+          />
+        );
       }
 
       return (
@@ -272,7 +281,7 @@ const Tokens = () => {
           sort={ bridgedTokensQueryCrossChain.sort }
           onSortChange={ bridgedTokensQueryCrossChain.onSortChange }
           actionBar={ actionBar }
-          hasActiveFilters={ false }
+          hasActiveFilters={ Boolean(bridgedTokensQueryCrossChain.searchTerm) }
           tableTop={ TABS_HEIGHT }
         />
       ),
