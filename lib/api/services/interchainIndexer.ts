@@ -7,6 +7,9 @@ import type {
 } from 'client/features/cross-chain-txs/types/api';
 
 export const INTERCHAIN_INDEXER_API_RESOURCES = {
+  chains: {
+    path: '/api/v1/interchain/chains',
+  },
   messages: {
     path: '/api/v1/interchain/messages',
     filterFields: [ 'q' as const ],
@@ -72,6 +75,7 @@ export type InterchainIndexerApiResourceName = `interchainIndexer:${ keyof typeo
 
 /* eslint-disable @stylistic/indent */
 export type InterchainIndexerApiResourcePayload<R extends InterchainIndexerApiResourceName> =
+R extends 'interchainIndexer:chains' ? interchainIndexer.GetChainsResponse :
 R extends 'interchainIndexer:messages' ? interchainIndexer.GetMessagesResponse :
 R extends 'interchainIndexer:message' ? interchainIndexer.InterchainMessage :
 R extends 'interchainIndexer:tx_messages' ? interchainIndexer.GetMessagesResponse :
