@@ -30,14 +30,16 @@ const ChainStatsDetails = () => {
   const id = getQueryParamString(router.query.id);
   const intervalFromQuery = getIntervalFromQuery(router);
   const resolutionFromQuery = getResolutionFromQuery(router);
-  const counterPartyChainIdsFromQuery = getQueryParamString(router.query.counterparty_chain_ids);
+  const counterPartyChainIdsFromQuery = Array.isArray(router.query.counterparty_chain_ids) ?
+    router.query.counterparty_chain_ids :
+    [ router.query.counterparty_chain_ids ].filter(Boolean);
 
   const defaultResolution = resolutionFromQuery || DEFAULT_RESOLUTION;
 
   const [ resolution, setResolution ] = React.useState<ChartResolution>(defaultResolution);
   const [ interval, setInterval ] = React.useState<StatsIntervalIds>(intervalFromQuery ?? getIntervalByResolution(resolution));
   const [ counterPartyChainIds, setCounterPartyChainIds ] = React.useState<Array<string>>(
-    counterPartyChainIdsFromQuery ? [ counterPartyChainIdsFromQuery ] : [ ALL_OPTION.value ],
+    counterPartyChainIdsFromQuery.length > 0 ? counterPartyChainIdsFromQuery : [ ALL_OPTION.value ],
   );
 
   const crossChainTxsChart = config.features.crossChainTxs.isEnabled ? CROSS_CHAIN_TXS_CHARTS.find((chart) => chart.id === id) : undefined;

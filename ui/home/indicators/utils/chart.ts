@@ -2,7 +2,7 @@ import type { ChainIndicatorId } from 'types/homepage';
 
 import config from 'configs/app';
 import type { LineChartData, LineChartDataItem, LineChartItemRaw, LineChartItem } from 'toolkit/components/charts/line';
-import { sortByDateDesc } from 'ui/shared/chart/utils';
+import { sortByDateAsc } from 'ui/shared/chart/utils';
 
 const CHART_ITEMS: Record<ChainIndicatorId, Pick<LineChartDataItem, 'name' | 'valueFormatter'>> = {
   daily_txs: {
@@ -43,7 +43,7 @@ const mapNullToZero: (item: LineChartItemRaw) => LineChartItem = (item) => ({ ..
 
 export function prepareChartItems(items: Array<LineChartItemRaw>) {
   return items
-    .sort(sortByDateDesc)
+    .sort(sortByDateAsc)
     .reduceRight(nonNullTailReducer, [] as Array<LineChartItemRaw>)
     .map(mapNullToZero);
 }
