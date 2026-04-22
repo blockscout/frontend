@@ -11,7 +11,7 @@ import GasPrice from 'ui/shared/gas/GasPrice';
 import StatsWidget from 'ui/shared/stats/StatsWidget';
 import { GWEI } from 'ui/shared/value/utils';
 
-import type { HomeStatsItem } from '../utils';
+import type { HomeStatsWidgetItem } from '../utils';
 import { isHomeStatsItemEnabled, sortHomeStatsItems } from '../utils';
 import { useHomeRpcDataContext } from './rpcDataContext';
 
@@ -72,7 +72,7 @@ const StatsDegraded = () => {
     }
   }, [ blocks ]);
 
-  const items: Array<HomeStatsItem> = (() => {
+  const items: Array<HomeStatsWidgetItem> = (() => {
     return [
       {
         id: 'latest_batch' as const,

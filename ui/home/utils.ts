@@ -5,9 +5,10 @@ import type { HomeStatsWidgetId } from 'types/homepage';
 import config from 'configs/app';
 import type { Props as StatsWidgetProps } from 'ui/shared/stats/StatsWidget';
 
-export type HomeStatsItem =
-  | ({ id: HomeStatsWidgetId; component: ReactElement }) |
-  (StatsWidgetProps & { id: HomeStatsWidgetId; component?: undefined });
+export type HomeStatsComponentItem = { id: HomeStatsWidgetId; component: ReactElement };
+export type HomeStatsWidgetItem = StatsWidgetProps & { id: HomeStatsWidgetId; component?: undefined };
+
+export type HomeStatsItem = HomeStatsComponentItem | HomeStatsWidgetItem;
 
 export const isHomeStatsItemEnabled = <T extends { id: HomeStatsWidgetId }>(item: T) => config.UI.homepage.stats.includes(item.id);
 
