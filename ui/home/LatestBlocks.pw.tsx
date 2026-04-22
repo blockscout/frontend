@@ -6,19 +6,19 @@ import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import * as socketServer from 'playwright/fixtures/socketServer';
 import { test, expect } from 'playwright/lib';
 
-import { HomeBlocksDataContextProvider } from './blocksDataContext';
 import { HomeRpcDataContextProvider } from './fallbacks/rpcDataContext';
+import { HomeDataContextProvider } from './homeDataContext';
 import LatestBlocks from './LatestBlocks';
 
 test('default view +@mobile +@dark-mode', async({ render, mockApiResponse }) => {
   await mockApiResponse('general:stats', statsMock.base);
   await mockApiResponse('general:homepage_blocks', [ blockMock.base, blockMock.base2 ]);
   const component = await render(
-    <HomeBlocksDataContextProvider>
+    <HomeDataContextProvider>
       <HomeRpcDataContextProvider>
         <LatestBlocks/>
       </HomeRpcDataContextProvider>
-    </HomeBlocksDataContextProvider>,
+    </HomeDataContextProvider>,
   );
   await expect(component).toHaveScreenshot();
 });
@@ -28,11 +28,11 @@ test('L2 view', async({ render, mockEnvs, mockApiResponse }) => {
   await mockApiResponse('general:stats', statsMock.base);
   await mockApiResponse('general:homepage_blocks', [ blockMock.base, blockMock.base2 ]);
   const component = await render(
-    <HomeBlocksDataContextProvider>
+    <HomeDataContextProvider>
       <HomeRpcDataContextProvider>
         <LatestBlocks/>
       </HomeRpcDataContextProvider>
-    </HomeBlocksDataContextProvider>,
+    </HomeDataContextProvider>,
   );
   await expect(component).toHaveScreenshot();
 });
@@ -42,11 +42,11 @@ test('no reward view', async({ render, mockEnvs, mockApiResponse }) => {
   await mockApiResponse('general:stats', statsMock.base);
   await mockApiResponse('general:homepage_blocks', [ blockMock.base, blockMock.base2 ]);
   const component = await render(
-    <HomeBlocksDataContextProvider>
+    <HomeDataContextProvider>
       <HomeRpcDataContextProvider>
         <LatestBlocks/>
       </HomeRpcDataContextProvider>
-    </HomeBlocksDataContextProvider>,
+    </HomeDataContextProvider>,
   );
   await expect(component).toHaveScreenshot();
 });
@@ -55,11 +55,11 @@ test('with long block height', async({ render, mockApiResponse }) => {
   await mockApiResponse('general:stats', statsMock.base);
   await mockApiResponse('general:homepage_blocks', [ { ...blockMock.base, height: 123456789012345 } ]);
   const component = await render(
-    <HomeBlocksDataContextProvider>
+    <HomeDataContextProvider>
       <HomeRpcDataContextProvider>
         <LatestBlocks/>
       </HomeRpcDataContextProvider>
-    </HomeBlocksDataContextProvider>,
+    </HomeDataContextProvider>,
   );
   await expect(component).toHaveScreenshot();
 });
@@ -70,11 +70,11 @@ test.describe('socket', () => {
     await mockApiResponse('general:stats', statsMock.base);
     await mockApiResponse('general:homepage_blocks', [ blockMock.base, blockMock.base2 ]);
     const component = await render(
-      <HomeBlocksDataContextProvider>
+      <HomeDataContextProvider>
         <HomeRpcDataContextProvider>
           <LatestBlocks/>
         </HomeRpcDataContextProvider>
-      </HomeBlocksDataContextProvider>,
+      </HomeDataContextProvider>,
       undefined,
       { withSocket: true },
     );

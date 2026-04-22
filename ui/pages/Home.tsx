@@ -3,10 +3,10 @@ import React from 'react';
 
 import config from 'configs/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
-import { HomeBlocksDataContextProvider } from 'ui/home/blocksDataContext';
 import { HomeRpcDataContextProvider } from 'ui/home/fallbacks/rpcDataContext';
 import HeroBanner from 'ui/home/HeroBanner';
 import Highlights from 'ui/home/Highlights';
+import { HomeDataContextProvider } from 'ui/home/homeDataContext';
 import ChainIndicators from 'ui/home/indicators/ChainIndicators';
 import LatestArbitrumL2Batches from 'ui/home/latestBatches/LatestArbitrumL2Batches';
 import LatestZkEvmL2Batches from 'ui/home/latestBatches/LatestZkEvmL2Batches';
@@ -34,7 +34,7 @@ const Home = () => {
   })();
 
   return (
-    <HomeBlocksDataContextProvider>
+    <HomeDataContextProvider>
       <HomeRpcDataContextProvider>
         <Box as="main">
           <HeroBanner/>
@@ -52,7 +52,7 @@ const Home = () => {
           </Flex>
         </Box>
       </HomeRpcDataContextProvider>
-    </HomeBlocksDataContextProvider>
+    </HomeDataContextProvider>
   );
 };
 

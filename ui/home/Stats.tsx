@@ -1,15 +1,10 @@
 import { Grid } from '@chakra-ui/react';
-import { useQueryClient } from '@tanstack/react-query';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
-import type { SocketMessage } from 'lib/socket/types';
-
 import config from 'configs/app';
-import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
+import useApiQuery from 'lib/api/useApiQuery';
 import { layerLabels } from 'lib/rollups/utils';
-import useSocketChannel from 'lib/socket/useSocketChannel';
-import useSocketMessage from 'lib/socket/useSocketMessage';
 import { HOMEPAGE_STATS, HOMEPAGE_STATS_MICROSERVICE } from 'stubs/stats';
 import GasInfoTooltip from 'ui/shared/gas/GasInfoTooltip';
 import GasPrice from 'ui/shared/gas/GasPrice';
@@ -17,8 +12,10 @@ import IconSvg from 'ui/shared/IconSvg';
 import StatsWidget from 'ui/shared/stats/StatsWidget';
 import { WEI } from 'ui/shared/value/utils';
 
-import { useHomeBlocksQuery } from './blocksDataContext';
 import StatsDegraded from './fallbacks/StatsDegraded';
+import { useHomeDataContext } from './homeDataContext';
+import LatestBatchStatsWidget from './LatestBatchStatsWidget';
+import LatestBlockStatsWidget from './LatestBlockStatsWidget';
 import type { HomeStatsItem } from './utils';
 import { isHomeStatsItemEnabled, sortHomeStatsItems } from './utils';
 
@@ -27,15 +24,9 @@ const isOptimisticRollup = rollupFeature.isEnabled && rollupFeature.type === 'op
 const isArbitrumRollup = rollupFeature.isEnabled && rollupFeature.type === 'arbitrum';
 const isStatsFeatureEnabled = config.features.stats.isEnabled;
 
-type LatestBatchSocketEventMessage = SocketMessage.NewArbitrumL2Batch | SocketMessage.NewZkEvmL2Batch;
-type LatestBatchPayload = Parameters<LatestBatchSocketEventMessage['handler']>[0];
-type LatestBatchHandler = LatestBatchSocketEventMessage['handler'];
-type LatestBatchSocketMessage = LatestBatchSocketEventMessage | SocketMessage.Unknown;
-
 const Stats = () => {
   const [ hasGasTracker, setHasGasTracker ] = React.useState(config.features.gasTracker.isEnabled);
-  const queryClient = useQueryClient();
-  const blocksQuery = useHomeBlocksQuery();
+  const { blocksQuery, latestBatchQuery } = useHomeDataContext();
 
   // data from stats microservice is prioritized over data from stats api
   const statsQuery = useApiQuery('stats:pages_main', {
@@ -63,88 +54,7 @@ const Stats = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ isPlaceholderData ]);
 
-  const zkEvmLatestBatchQuery = useApiQuery('general:homepage_zkevm_latest_batch', {
-    queryOptions: {
-      placeholderData: 12345,
-      enabled: rollupFeature.isEnabled && rollupFeature.type === 'zkEvm' && config.UI.homepage.stats.includes('latest_batch'),
-    },
-  });
-
-  const zkSyncLatestBatchQuery = useApiQuery('general:homepage_zksync_latest_batch', {
-    queryOptions: {
-      placeholderData: 12345,
-      enabled: rollupFeature.isEnabled && rollupFeature.type === 'zkSync' && config.UI.homepage.stats.includes('latest_batch'),
-    },
-  });
-
-  const arbitrumLatestBatchQuery = useApiQuery('general:homepage_arbitrum_latest_batch', {
-    queryOptions: {
-      placeholderData: 12345,
-      enabled: rollupFeature.isEnabled && rollupFeature.type === 'arbitrum' && config.UI.homepage.stats.includes('latest_batch'),
-    },
-  });
-
-  const [ latestBatchQuery, latestBatchSocketConfig ] = (() => {
-    if (!rollupFeature.isEnabled || !config.UI.homepage.stats.includes('latest_batch')) {
-      return [ undefined, undefined ] as const;
-    }
-
-    switch (rollupFeature.type) {
-      case 'zkEvm':
-        return [
-          zkEvmLatestBatchQuery,
-          {
-            topic: 'zkevm_batches:new_zkevm_confirmed_batch',
-            event: 'new_zkevm_confirmed_batch',
-            resource: 'general:homepage_zkevm_latest_batch',
-          },
-        ] as const;
-      case 'zkSync':
-        return [ zkSyncLatestBatchQuery, undefined ] as const;
-      case 'arbitrum':
-        return [
-          arbitrumLatestBatchQuery,
-          {
-            topic: 'arbitrum:new_batch',
-            event: 'new_arbitrum_batch',
-            resource: 'general:homepage_arbitrum_latest_batch',
-          },
-        ] as const;
-      default:
-        return [ undefined, undefined ] as const;
-    }
-  })();
-
   const hasStatsError = apiQuery.isError || statsQuery.isError || blocksQuery.isError || Boolean(latestBatchQuery?.isError);
-
-  const latestBatchSocketDisabled =
-    !latestBatchSocketConfig ||
-    latestBatchQuery?.isError ||
-    latestBatchQuery?.isPlaceholderData ||
-    latestBatchQuery?.data === undefined;
-
-  const handleNewLatestBatchMessage = React.useCallback((payload: LatestBatchPayload) => {
-    if (!latestBatchSocketConfig) {
-      return;
-    }
-    queryClient.setQueryData(getResourceKey(latestBatchSocketConfig.resource), (prev: number | undefined) => {
-      const nextBatchNumber = payload.batch.number;
-      if (prev === undefined) {
-        return nextBatchNumber;
-      }
-      return Math.max(prev, nextBatchNumber);
-    });
-  }, [ queryClient, latestBatchSocketConfig ]);
-
-  const latestBatchChannel = useSocketChannel({
-    topic: latestBatchSocketConfig?.topic,
-    isDisabled: Boolean(latestBatchSocketDisabled),
-  });
-  useSocketMessage({
-    channel: latestBatchChannel,
-    event: latestBatchSocketConfig?.event,
-    handler: handleNewLatestBatchMessage as LatestBatchHandler,
-  } as LatestBatchSocketMessage);
 
   if (hasStatsError) {
     return <StatsDegraded/>;
@@ -177,19 +87,16 @@ const Stats = () => {
     return [
       latestBatchQuery?.data !== undefined && {
         id: 'latest_batch' as const,
-        icon: 'txn_batches' as const,
-        label: 'Latest batch',
-        value: latestBatchQuery.data.toLocaleString(),
-        href: { pathname: '/batches' as const },
-        isLoading,
+        component: <LatestBatchStatsWidget isLoading={ Boolean(isLoading) }/>,
       },
       (blocksQuery.data?.[0]?.height ?? statsData?.total_blocks?.value ?? apiData?.total_blocks) && {
         id: 'total_blocks' as const,
-        icon: 'block' as const,
-        label: 'Latest block',
-        value: Number(blocksQuery.data?.[0]?.height ?? statsData?.total_blocks?.value ?? apiData?.total_blocks).toLocaleString(),
-        href: { pathname: '/blocks' as const },
-        isLoading,
+        component: (
+          <LatestBlockStatsWidget
+            isLoading={ Boolean(isLoading) }
+            fallbackValue={ statsData?.total_blocks?.value ?? apiData?.total_blocks }
+          />
+        ),
       },
       (statsData?.average_block_time?.value || apiData?.average_block_time) && {
         id: 'average_block_time' as const,
@@ -281,14 +188,22 @@ const Stats = () => {
       flexBasis="50%"
       flexGrow={ 1 }
     >
-      { items.map((item, index) => (
-        <StatsWidget
-          key={ item.id }
-          { ...item }
-          isLoading={ isLoading }
-          _last={ items.length % 2 === 1 && index === items.length - 1 ? { gridColumn: 'span 2' } : undefined }/>
-      ),
-      ) }
+      { items.map((item, index) => {
+        const _last = items.length % 2 === 1 && index === items.length - 1 ? { gridColumn: 'span 2' } : undefined;
+
+        if ('component' in item) {
+          return React.cloneElement(item.component as React.ReactElement<{ _last?: { gridColumn?: string } }>, { key: item.id, _last });
+        }
+
+        return (
+          <StatsWidget
+            key={ item.id }
+            { ...item }
+            isLoading={ isLoading }
+            _last={ _last }
+          />
+        );
+      }) }
     </Grid>
 
   );
