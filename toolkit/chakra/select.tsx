@@ -124,19 +124,32 @@ interface SelectValueTextProps extends Omit<ChakraSelect.ValueTextProps, 'childr
   invalid?: boolean;
   errorText?: string;
   mode?: ViewMode;
+  multipleConfig?: {
+    term?: string;
+    icon?: React.ReactNode;
+  };
 }
 
 export const SelectValueText = React.forwardRef<
   HTMLSpanElement,
   SelectValueTextProps
 >(function SelectValueText(props, ref) {
-  const { children, size, required, invalid, errorText, mode, ...rest } = props;
+  const { children, size, required, invalid, errorText, mode, multipleConfig, ...rest } = props;
   const context = useSelectContext();
 
   const content = (() => {
     const items = context.selectedItems;
 
     const placeholder = `${ props.placeholder }${ required ? '*' : '' }${ invalid && errorText ? ` - ${ errorText }` : '' }`;
+    const label = size === 'lg' ? (
+      <Box
+        textStyle="xs"
+        color={ invalid ? 'field.placeholder.error' : 'field.placeholder' }
+        display="-webkit-box"
+      >
+        { placeholder }
+      </Box>
+    ) : null;
 
     if (items.length === 0) return placeholder;
 
@@ -146,16 +159,6 @@ export const SelectValueText = React.forwardRef<
       const item = items[0] as SelectOption;
 
       if (!item) return placeholder;
-
-      const label = size === 'lg' ? (
-        <Box
-          textStyle="xs"
-          color={ invalid ? 'field.placeholder.error' : 'field.placeholder' }
-          display="-webkit-box"
-        >
-          { placeholder }
-        </Box>
-      ) : null;
 
       return (
         <>
@@ -176,8 +179,21 @@ export const SelectValueText = React.forwardRef<
       );
     }
 
-    // FIXME: we don't have multiple selection in the select yet
-    return `${ items.length } selected`;
+    return (
+      <>
+        { label }
+        <Flex display="inline-flex" alignItems="center" flexWrap="nowrap" gap={ 1 }>
+          { multipleConfig?.icon }
+          <span style={{
+            WebkitLineClamp: 1,
+            WebkitBoxOrient: 'vertical',
+            display: '-webkit-box',
+          }}>
+            { `${ items.length } ${ multipleConfig?.term ?? 'selected' }` }
+          </span>
+        </Flex>
+      </>
+    );
   })();
 
   return (
@@ -245,12 +261,13 @@ export interface SelectProps extends SelectRootProps {
   errorText?: string;
   contentProps?: SelectContentProps;
   contentHeader?: React.ReactNode;
+  multipleConfig?: SelectValueTextProps['multipleConfig'];
   itemFilter?: (item: SelectOption) => boolean;
   mode?: ViewMode;
 }
 
 export const Select = React.forwardRef<HTMLDivElement, SelectProps>((props, ref) => {
-  const { collection, placeholder, portalled = true, loading, errorText, contentProps, contentHeader, itemFilter, mode, ...rest } = props;
+  const { collection, placeholder, portalled = true, loading, errorText, contentProps, contentHeader, itemFilter, mode, multipleConfig, ...rest } = props;
   return (
     <SelectRoot
       ref={ ref }
@@ -265,6 +282,7 @@ export const Select = React.forwardRef<HTMLDivElement, SelectProps>((props, ref)
           invalid={ props.invalid }
           errorText={ errorText }
           mode={ mode }
+          multipleConfig={ multipleConfig }
         />
       </SelectControl>
       <SelectContent portalled={ portalled } { ...contentProps }>

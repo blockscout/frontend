@@ -149,6 +149,9 @@ importers:
       '@types/d3-selection':
         specifier: 3.0.11
         version: 3.0.11
+      '@types/d3-transition':
+        specifier: 3.0.9
+        version: 3.0.9
       '@types/papaparse':
         specifier: ^5.3.5
         version: 5.5.2
@@ -188,6 +191,9 @@ importers:
       d3-selection:
         specifier: 3.0.0
         version: 3.0.0
+      d3-transition:
+        specifier: 3.0.1
+        version: 3.0.1(d3-selection@3.0.0)
       dappscout-iframe:
         specifier: 0.4.0
         version: 0.4.0(react-dom@19.1.4(react@19.1.4))(react@19.1.4)(viem@2.41.2(bufferutil@4.1.0)(typescript@5.9.2)(utf-8-validate@6.0.6)(zod@4.3.6))

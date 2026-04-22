@@ -12,7 +12,10 @@ import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useIsInitialLoading from 'lib/hooks/useIsInitialLoading';
 import * as metadata from 'lib/metadata';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import { useQueryParams } from 'lib/router/useQueryParams';
+import type { OnValueChangeHandler } from 'toolkit/chakra/select';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
+import { ALL_OPTION, isAllOption } from 'ui/shared/externalChains/ChainSelect';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 import { CROSS_CHAIN_TXS_CHARTS } from '../../utils/additional-charts';
@@ -57,41 +60,40 @@ const getResolutionFromQuery = (router: NextRouter) => {
 
 const ChainStatsDetails = () => {
   const router = useRouter();
+  const { updateQuery } = useQueryParams();
+
   const id = getQueryParamString(router.query.id);
   const intervalFromQuery = getIntervalFromQuery(router);
   const resolutionFromQuery = getResolutionFromQuery(router);
+  const counterPartyChainIdsFromQuery = getQueryParamString(router.query.counterparty_chain_ids);
+
   const defaultResolution = resolutionFromQuery || DEFAULT_RESOLUTION;
 
   const [ intervalState, setIntervalState ] = React.useState<StatsIntervalIds | undefined>(intervalFromQuery);
   const [ resolution, setResolution ] = React.useState<ChartResolution>(defaultResolution);
+  const [ counterPartyChainIds, setCounterPartyChainIds ] = React.useState<Array<string>>(
+    counterPartyChainIdsFromQuery ? [ counterPartyChainIdsFromQuery ] : [ ALL_OPTION.value ],
+  );
 
   const interval = intervalState || getIntervalByResolution(resolution);
 
-  const { info, query } = useChartQuery({ id, resolution, interval });
+  const { info, query } = useChartQuery({ id, resolution, interval, counterPartyChainIds });
   const isInitialLoading = useIsInitialLoading(query.isPlaceholderData);
 
   const handleIntervalChange = React.useCallback((interval: StatsIntervalIds) => {
     setIntervalState(interval);
-    router.push(
-      {
-        pathname: router.pathname,
-        query: { ...router.query, interval },
-      },
-      undefined,
-      { shallow: true },
-    );
-  }, [ setIntervalState, router ]);
+    updateQuery({ interval });
+  }, [ setIntervalState, updateQuery ]);
 
   const handleResolutionChange = React.useCallback(({ value }: { value: Array<string> }) => {
     setResolution(value[0] as ChartResolution);
-    router.push({
-      pathname: router.pathname,
-      query: { ...router.query, resolution: value[0] },
-    },
-    undefined,
-    { shallow: true },
-    );
-  }, [ setResolution, router ]);
+    updateQuery({ resolution: value[0] });
+  }, [ setResolution, updateQuery ]);
+
+  const handleCounterPartyChainIdsChange: OnValueChangeHandler = React.useCallback(({ value }) => {
+    setCounterPartyChainIds(value);
+    updateQuery({ counterparty_chain_ids: isAllOption(value) ? undefined : value });
+  }, [ updateQuery ]);
 
   React.useEffect(() => {
     if (info && !config.meta.seo.enhancedDataEnabled) {
@@ -114,7 +116,7 @@ const ChainStatsDetails = () => {
           id={ id }
           info={ chartInfo }
           data={ query.data?.data }
-          isLoading={ query.isPlaceholderData }
+          isLoading={ query.isPending }
           isError={ query.isError }
           isInitialLoading={ isInitialLoading }
           interval={ interval }
@@ -131,11 +133,13 @@ const ChainStatsDetails = () => {
         <ChainStatsDetailsCrossChainTxsPaths
           chart={ crossChainTxsPathsChart }
           data={ query.data?.data }
-          isLoading={ query.isPlaceholderData }
+          isLoading={ query.isPending }
           isError={ query.isError }
           isInitialLoading={ isInitialLoading }
           interval={ interval }
           onIntervalChange={ handleIntervalChange }
+          counterPartyChainIds={ counterPartyChainIds }
+          onCounterPartyChainIdsChange={ handleCounterPartyChainIdsChange }
         />
       );
     }

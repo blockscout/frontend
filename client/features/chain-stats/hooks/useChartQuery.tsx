@@ -1,4 +1,4 @@
-import { uniqBy } from 'es-toolkit';
+import { pickBy, uniqBy } from 'es-toolkit';
 import React from 'react';
 
 import type { ChartData, StatsIntervalIds } from '../types/client';
@@ -10,6 +10,7 @@ import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
 import { formatDate } from 'ui/shared/chart/utils';
+import { isAllOption } from 'ui/shared/externalChains/ChainSelect';
 
 import { CHAIN_STATS_CROSS_CHAIN_TXS_PATHS_CHART, CHAIN_STATS_LINE_CHART } from '../stubs/charts';
 import { CROSS_CHAIN_TXS_CHARTS } from '../utils/additional-charts';
@@ -34,9 +35,10 @@ interface Props {
   resolution: ChartResolution;
   interval: StatsIntervalIds;
   enabled?: boolean;
+  counterPartyChainIds?: Array<string>;
 }
 
-export default function useChartQuery({ id, resolution, interval, enabled = true }: Props) {
+export default function useChartQuery({ id, resolution, interval, enabled = true, counterPartyChainIds }: Props) {
   const { apiData } = useAppContext<'/stats/[id]'>();
 
   const selectedInterval = STATS_INTERVALS[interval];
@@ -51,11 +53,12 @@ export default function useChartQuery({ id, resolution, interval, enabled = true
 
   const query = useApiQuery<typeof resourceName, unknown, ChartData | undefined>(resourceName, {
     pathParams: { id, chainId: config.chain.id },
-    queryParams: {
+    queryParams: pickBy({
       from: startDate,
       to: endDate,
       resolution,
-    },
+      counterparty_chain_ids: isAllOption(counterPartyChainIds) ? undefined : counterPartyChainIds,
+    }, (value) => value !== undefined),
     queryOptions: {
       enabled: enabled,
       refetchOnMount: false,
