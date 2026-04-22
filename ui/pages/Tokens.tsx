@@ -171,18 +171,9 @@ const Tokens = () => {
 
   const actionBar = (() => {
     if (isMobile) {
-      if (crossChainTxsFeature.isEnabled) {
-        return (
-          <ActionBar>
-            { sortButton }
-            <Pagination { ...pagination } ml="auto"/>
-          </ActionBar>
-        );
-      }
-
       return (
         <>
-          <HStack gap={ 3 }>
+          <HStack gap={ 3 } mb={ pagination.isVisible ? 0 : 6 }>
             { filter }
             { sortButton }
             { searchInput }
