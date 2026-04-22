@@ -1,12 +1,13 @@
-import type { NextRouter } from 'next/router';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { StatsIntervalIds } from '../../types/client';
-import { StatsIntervalId } from '../../types/client';
-import { ChartResolution } from 'toolkit/components/charts/types';
+import type { ChartResolution } from 'toolkit/components/charts/types';
 
 import useChartQuery from 'client/features/chain-stats/hooks/useChartQuery';
+import ChainStatsDetailsCrossChainTxs from 'client/features/cross-chain-txs/components/ChainStatsDetailsCrossChainTxs';
+import useCrossChainChartQuery from 'client/features/cross-chain-txs/hooks/useCrossChainChartQuery';
+import { CROSS_CHAIN_TXS_CHARTS } from 'client/features/cross-chain-txs/utils/chain-stats';
 import config from 'configs/app';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useIsInitialLoading from 'lib/hooks/useIsInitialLoading';
@@ -18,45 +19,9 @@ import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
 import { ALL_OPTION, isAllOption } from 'ui/shared/externalChains/ChainSelect';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
-import { CROSS_CHAIN_TXS_CHARTS } from '../../utils/additional-charts';
-import { DEFAULT_RESOLUTION } from '../../utils/consts';
-import ChainStatsDetailsCrossChainTxsPaths from './ChainStatsDetailsCrossChainTxsPaths';
+import { getIntervalByResolution, getIntervalFromQuery } from '../../utils/interval';
+import { DEFAULT_RESOLUTION, getResolutionFromQuery } from '../../utils/resolution';
 import ChainStatsDetailsLineChart from './ChainStatsDetailsLineChart';
-
-const getIntervalByResolution = (resolution: ChartResolution): StatsIntervalIds => {
-  switch (resolution) {
-    case ChartResolution.DAY:
-      return 'oneMonth';
-    case ChartResolution.WEEK:
-      return 'oneMonth';
-    case ChartResolution.MONTH:
-      return 'oneYear';
-    case ChartResolution.YEAR:
-      return 'all';
-    default:
-      return 'oneMonth';
-  }
-};
-
-const getIntervalFromQuery = (router: NextRouter): StatsIntervalIds | undefined => {
-  const intervalFromQuery = getQueryParamString(router.query.interval);
-
-  if (!intervalFromQuery || !Object.values(StatsIntervalId).includes(intervalFromQuery as StatsIntervalIds)) {
-    return undefined;
-  }
-
-  return intervalFromQuery as StatsIntervalIds;
-};
-
-const getResolutionFromQuery = (router: NextRouter) => {
-  const resolutionFromQuery = getQueryParamString(router.query.resolution) as (keyof typeof ChartResolution | undefined);
-
-  if (!resolutionFromQuery || !ChartResolution[resolutionFromQuery]) {
-    return DEFAULT_RESOLUTION;
-  }
-
-  return resolutionFromQuery as ChartResolution;
-};
 
 const ChainStatsDetails = () => {
   const router = useRouter();
@@ -69,26 +34,29 @@ const ChainStatsDetails = () => {
 
   const defaultResolution = resolutionFromQuery || DEFAULT_RESOLUTION;
 
-  const [ intervalState, setIntervalState ] = React.useState<StatsIntervalIds | undefined>(intervalFromQuery);
   const [ resolution, setResolution ] = React.useState<ChartResolution>(defaultResolution);
+  const [ interval, setInterval ] = React.useState<StatsIntervalIds>(intervalFromQuery ?? getIntervalByResolution(resolution));
   const [ counterPartyChainIds, setCounterPartyChainIds ] = React.useState<Array<string>>(
     counterPartyChainIdsFromQuery ? [ counterPartyChainIdsFromQuery ] : [ ALL_OPTION.value ],
   );
 
-  const interval = intervalState || getIntervalByResolution(resolution);
+  const crossChainTxsChart = config.features.crossChainTxs.isEnabled ? CROSS_CHAIN_TXS_CHARTS.find((chart) => chart.id === id) : undefined;
 
-  const { info, query } = useChartQuery({ id, resolution, interval, counterPartyChainIds });
+  const queryBase = useChartQuery({ id, resolution, interval, enabled: !crossChainTxsChart });
+  const queryCrossChain = useCrossChainChartQuery({ id, interval, counterPartyChainIds, enabled: Boolean(crossChainTxsChart) });
+
+  const query = crossChainTxsChart ? queryCrossChain : queryBase;
   const isInitialLoading = useIsInitialLoading(query.isPlaceholderData);
 
   const handleIntervalChange = React.useCallback((interval: StatsIntervalIds) => {
-    setIntervalState(interval);
+    setInterval(interval);
     updateQuery({ interval });
-  }, [ setIntervalState, updateQuery ]);
+  }, [ updateQuery ]);
 
   const handleResolutionChange = React.useCallback(({ value }: { value: Array<string> }) => {
     setResolution(value[0] as ChartResolution);
     updateQuery({ resolution: value[0] });
-  }, [ setResolution, updateQuery ]);
+  }, [ updateQuery ]);
 
   const handleCounterPartyChainIdsChange: OnValueChangeHandler = React.useCallback(({ value }) => {
     setCounterPartyChainIds(value);
@@ -96,10 +64,11 @@ const ChainStatsDetails = () => {
   }, [ updateQuery ]);
 
   React.useEffect(() => {
-    if (info && !config.meta.seo.enhancedDataEnabled) {
-      metadata.update({ pathname: '/stats/[id]', query: { id } }, info);
+    if (!isInitialLoading && query.data?.info && !config.meta.seo.enhancedDataEnabled) {
+      metadata.update({ pathname: '/stats/[id]', query: { id } }, query.data.info);
     }
-  }, [ info, id ]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ isInitialLoading ]);
 
   if (query.isError) {
     if (isCustomAppError(query.error)) {
@@ -107,7 +76,7 @@ const ChainStatsDetails = () => {
     }
   }
 
-  const chartInfo = info || query.data?.info;
+  const chartInfo = query.data?.info;
 
   const content = (() => {
     if (query.data?.type === 'line') {
@@ -116,7 +85,7 @@ const ChainStatsDetails = () => {
           id={ id }
           info={ chartInfo }
           data={ query.data?.data }
-          isLoading={ query.isPending }
+          isLoading={ query.isPlaceholderData }
           isError={ query.isError }
           isInitialLoading={ isInitialLoading }
           interval={ interval }
@@ -127,13 +96,12 @@ const ChainStatsDetails = () => {
       );
     }
 
-    const crossChainTxsPathsChart = CROSS_CHAIN_TXS_CHARTS.find((chart) => chart.id === id);
-    if (crossChainTxsPathsChart) {
+    if (crossChainTxsChart) {
       return (
-        <ChainStatsDetailsCrossChainTxsPaths
-          chart={ crossChainTxsPathsChart }
+        <ChainStatsDetailsCrossChainTxs
+          chart={ crossChainTxsChart }
           data={ query.data?.data }
-          isLoading={ query.isPending }
+          isLoading={ query.isPlaceholderData }
           isError={ query.isError }
           isInitialLoading={ isInitialLoading }
           interval={ interval }

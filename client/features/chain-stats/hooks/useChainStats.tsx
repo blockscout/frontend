@@ -5,12 +5,12 @@ import React from 'react';
 import type { ChainStatsChart, ChainStatsPayload, ChainStatsSection, StatsIntervalIds } from '../types/client';
 import type { ClusterChainConfig } from 'types/multichain';
 
+import { CROSS_CHAIN_TXS_SECTIONS } from 'client/features/cross-chain-txs/utils/chain-stats';
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import getQueryParamString from 'lib/router/getQueryParamString';
 
 import { CHAIN_STATS_CHARTS } from '../stubs/charts';
-import { CROSS_CHAIN_TXS_SECTIONS } from '../utils/additional-charts';
 
 function isSectionMatches(section: ChainStatsSection, currentSection: string): boolean {
   return currentSection === 'all' || section.id === currentSection;

@@ -3,6 +3,8 @@ import React from 'react';
 
 import type { ChainStatsSection, StatsIntervalIds } from '../../types/client';
 
+import ChartWidgetContainerCrossChain from 'client/features/cross-chain-txs/components/ChartWidgetContainerCrossChain';
+import { CROSS_CHAIN_TXS_CHARTS } from 'client/features/cross-chain-txs/utils/chain-stats';
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import { useMultichainContext } from 'lib/contexts/multichain';
@@ -99,18 +101,37 @@ const ChainStatsSections = ({ isError, isLoading, displayedSections, interval, i
                 templateColumns={{ lg: 'repeat(2, minmax(0, 1fr))' }}
                 gap={{ base: 3, lg: 4 }}
               >
-                { section.charts.map((chart) => (
-                  <ChartWidgetContainer
-                    key={ chart.id }
-                    id={ chart.id }
-                    title={ chart.title }
-                    description={ chart.description }
-                    interval={ interval }
-                    isLoading={ isLoading }
-                    onLoadingError={ handleChartLoadingError }
-                    href={{ pathname: '/stats/[id]', query: { id: chart.id, ...(chain?.id ? { chain_id: chain.id } : {}) } }}
-                  />
-                )) }
+                { section.charts.map((chart) => {
+
+                  const crossChainTxsChart = CROSS_CHAIN_TXS_CHARTS.find(({ id }) => id === chart.id);
+                  if (crossChainTxsChart) {
+                    return (
+                      <ChartWidgetContainerCrossChain
+                        key={ crossChainTxsChart.id }
+                        id={ crossChainTxsChart.id }
+                        title={ crossChainTxsChart.title }
+                        description={ crossChainTxsChart.description }
+                        interval={ interval }
+                        isLoading={ isLoading }
+                        onLoadingError={ handleChartLoadingError }
+                        href={{ pathname: '/stats/[id]', query: { id: crossChainTxsChart.id, ...(chain?.id ? { chain_id: chain.id } : {}) } }}
+                      />
+                    );
+                  }
+
+                  return (
+                    <ChartWidgetContainer
+                      key={ chart.id }
+                      id={ chart.id }
+                      title={ chart.title }
+                      description={ chart.description }
+                      interval={ interval }
+                      isLoading={ isLoading }
+                      onLoadingError={ handleChartLoadingError }
+                      href={{ pathname: '/stats/[id]', query: { id: chart.id, ...(chain?.id ? { chain_id: chain.id } : {}) } }}
+                    />
+                  );
+                }) }
               </Grid>
             </Box>
           ))

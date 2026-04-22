@@ -17,17 +17,17 @@ export interface ChainStatsPayload {
   sections: Array<ChainStatsSection>;
 }
 
-export type ChartData = {
-  info?: LineChartInfo;
-} & (ChartDataPayloadLine | ChartDataPayloadSankey);
+export type ChartData = ChartDataPayloadLine | ChartDataPayloadSankey;
 
 export interface ChartDataPayloadLine {
   type: 'line';
+  info: LineChartInfo;
   data: Array<LineChartItem>;
 }
 
 export interface ChartDataPayloadSankey {
   type: 'sankey';
+  info: LineChartInfo;
   data: SankeyChartData;
 }
 
@@ -36,9 +36,9 @@ export type StatsInterval = { id: StatsIntervalIds; title: string };
 export type StatsIntervalIds = keyof typeof StatsIntervalId;
 
 export enum StatsIntervalId {
-  all,
-  oneMonth,
-  threeMonths,
-  sixMonths,
-  oneYear,
+  all = 'all',
+  oneMonth = 'oneMonth',
+  threeMonths = 'threeMonths',
+  sixMonths = 'sixMonths',
+  oneYear = 'oneYear',
 }

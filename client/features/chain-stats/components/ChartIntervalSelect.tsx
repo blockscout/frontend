@@ -8,7 +8,7 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import type { TagProps } from 'toolkit/chakra/tag';
 import TagGroupSelect from 'ui/shared/tagGroupSelect/TagGroupSelect';
 
-import { STATS_INTERVALS } from '../utils/consts';
+import { STATS_INTERVALS } from '../utils/interval';
 
 const intervalCollection = createListCollection({
   items: Object.keys(STATS_INTERVALS).map((id: string) => ({

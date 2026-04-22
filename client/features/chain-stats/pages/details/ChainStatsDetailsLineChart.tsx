@@ -20,7 +20,7 @@ import ChainSelect from 'ui/multichain/components/ChainSelect';
 import { useChartsConfig } from 'ui/shared/chart/config';
 
 import ChartIntervalSelect from '../../components/ChartIntervalSelect';
-import { DEFAULT_RESOLUTION } from '../../utils/consts';
+import { DEFAULT_RESOLUTION } from '../../utils/resolution';
 
 interface Props {
   id: string;
@@ -91,7 +91,7 @@ const ChainStatsDetailsLineChart = ({
   }, [ chartsConfig, data, info ]);
 
   const hasNonEmptyCharts = charts.some((chart) => chart.items.length > 2);
-  const hasItems = (data && data.length > 2) || isLoading;
+  const hasItems = (data && data.length > 2) || isLoading || isInitialLoading;
 
   return (
     <>
@@ -126,12 +126,12 @@ const ChainStatsDetailsLineChart = ({
             range={ zoomRange }
             onClick={ handleZoomReset }
           />
-          { (hasItems || isLoading) && (
+          { (hasItems || isInitialLoading || isLoading) && (
             <LineChartMenu
               charts={ charts }
               title={ info?.title || '' }
               description={ info?.description || '' }
-              isLoading={ isLoading }
+              isLoading={ isInitialLoading || isLoading }
               chartRef={ ref }
               resolution={ resolution }
               zoomRange={ zoomRange }
@@ -154,7 +154,7 @@ const ChainStatsDetailsLineChart = ({
           isError={ isError }
           charts={ charts }
           isEnlarged
-          isLoading={ isLoading }
+          isLoading={ isInitialLoading || isLoading }
           zoomRange={ zoomRange }
           onZoom={ handleZoom }
           isEmpty={ !hasNonEmptyCharts }

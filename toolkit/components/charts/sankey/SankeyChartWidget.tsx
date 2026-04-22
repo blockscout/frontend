@@ -2,13 +2,16 @@ import type { FlexProps } from '@chakra-ui/react';
 import { Box, Flex } from '@chakra-ui/react';
 import React from 'react';
 
+import type { SankeyChartData } from './types';
+
 import type { ChartContentProps } from '../components/ChartContent';
 import { ChartWidgetRoot, ChartWidgetHeader } from '../components/ChartWidget';
 import { SankeyChartMenu } from './parts/SankeyChartMenu';
 import type { SankeyChartProps } from './SankeyChart';
 import { SankeyChartContent } from './SankeyChartContent';
 
-export interface SankeyChartWidgetProps extends Omit<ChartContentProps, 'children'>, SankeyChartProps {
+export interface SankeyChartWidgetProps extends Omit<ChartContentProps, 'children'>, Omit<SankeyChartProps, 'data'> {
+  data?: SankeyChartData;
   title: string;
   description?: string;
   href?: string;

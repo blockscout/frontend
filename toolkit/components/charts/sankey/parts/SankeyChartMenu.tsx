@@ -8,7 +8,7 @@ import { ChartMenu } from '../../components/ChartMenu';
 import { SankeyChartModal } from '../SankeyChartModal';
 
 export interface SankeyChartMenuProps extends Omit<ChartMenuProps, 'csvData' | 'onFullscreenOpen'> {
-  data: SankeyChartData;
+  data?: SankeyChartData;
 }
 
 export const SankeyChartMenu = React.memo(({ data, ...rest }: SankeyChartMenuProps) => {
@@ -19,6 +19,9 @@ export const SankeyChartMenu = React.memo(({ data, ...rest }: SankeyChartMenuPro
   }, [ modal ]);
 
   const csvData = React.useMemo(() => {
+    if (!data) {
+      return [];
+    }
     const headerRows = [ 'Source', 'Target', 'Value' ];
     const dataRows = data.links.map((link) => {
       const source = data.nodes.find((node) => node.id === link.source)?.name;

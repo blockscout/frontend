@@ -1,5 +1,4 @@
 import type { ChainStatsChart, ChainStatsSection } from '../types/client';
-import type { GetMessagePathsResponse } from '@blockscout/interchain-indexer-types';
 import type { LineChart } from '@blockscout/stats-types';
 
 export const CHAIN_STATS_CHART_INFO: ChainStatsChart = {
@@ -58,8 +57,4 @@ export const CHAIN_STATS_CHARTS = {
 export const CHAIN_STATS_LINE_CHART: LineChart = {
   info: CHAIN_STATS_CHART_INFO,
   chart: [],
-};
-
-export const CHAIN_STATS_CROSS_CHAIN_TXS_PATHS_CHART: GetMessagePathsResponse = {
-  items: [],
 };

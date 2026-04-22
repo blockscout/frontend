@@ -2,17 +2,14 @@ import React from 'react';
 
 import { ChartResolution } from 'toolkit/components/charts/types';
 
+import { CROSS_CHAIN_TXS_CHARTS } from 'client/features/cross-chain-txs/utils/chain-stats';
 import * as chainsMock from 'mocks/multichain/chains';
+import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';
 
 import * as crossChainTxsPathsMock from '../../mocks/cross-chain-txs-paths';
 import * as statsLineMock from '../../mocks/line';
-import { CROSS_CHAIN_TXS_CHARTS } from '../../utils/additional-charts';
 import ChainStatsDetails from './ChainStatsDetails';
-
-const queryParams = {
-  resolution: ChartResolution.DAY,
-};
 
 test.beforeEach(async({ mockTextAd }) => {
   await mockTextAd();
@@ -32,7 +29,9 @@ test('base view +@dark-mode +@mobile', async({ render, mockApiResponse, page }) 
     statsLineMock.averageGasPrice,
     {
       pathParams: { id: CHART_ID },
-      queryParams,
+      queryParams: {
+        resolution: ChartResolution.DAY,
+      },
     },
   );
 
@@ -53,6 +52,7 @@ test('cross-chain txs paths view +@dark-mode +@mobile', async({ render, mockApiR
   };
 
   await mockEnvs([
+    ...ENVS_MAP.crossChainTxs,
     [ 'NEXT_PUBLIC_NETWORK_NAME', chainsMock.chainA.name ],
     [ 'NEXT_PUBLIC_NETWORK_ID', chainsMock.chainA.id ],
   ]);
@@ -62,7 +62,6 @@ test('cross-chain txs paths view +@dark-mode +@mobile', async({ render, mockApiR
     crossChainTxsPathsMock.incomingMessagesPaths,
     {
       pathParams: { chainId: chainsMock.chainA.id },
-      queryParams,
     },
   );
 

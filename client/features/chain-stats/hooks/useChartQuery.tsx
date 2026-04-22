@@ -1,121 +1,55 @@
-import { pickBy, uniqBy } from 'es-toolkit';
-import React from 'react';
-
-import type { ChartData, StatsIntervalIds } from '../types/client';
-import type { GetMessagePathsResponse } from '@blockscout/interchain-indexer-types';
-import type { LineChart } from '@blockscout/stats-types';
+import type { ChartDataPayloadLine, StatsIntervalIds } from '../types/client';
 import type { ChartResolution } from 'toolkit/components/charts/types';
 
-import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
-import { useAppContext } from 'lib/contexts/app';
-import { formatDate } from 'ui/shared/chart/utils';
-import { isAllOption } from 'ui/shared/externalChains/ChainSelect';
 
-import { CHAIN_STATS_CROSS_CHAIN_TXS_PATHS_CHART, CHAIN_STATS_LINE_CHART } from '../stubs/charts';
-import { CROSS_CHAIN_TXS_CHARTS } from '../utils/additional-charts';
-import { STATS_INTERVALS } from '../utils/consts';
-
-const isLineChartResponse = (data: unknown): data is LineChart => {
-  if (typeof data !== 'object' || data === null) {
-    return false;
-  }
-  return Boolean('info' in data && data.info && 'chart' in data && data.chart);
-};
-
-const isMessagePathsResponse = (data: unknown): data is GetMessagePathsResponse => {
-  if (typeof data !== 'object' || data === null) {
-    return false;
-  }
-  return Boolean('items' in data && Array.isArray(data.items) && data.items.length > 0);
-};
+import { CHAIN_STATS_LINE_CHART } from '../stubs/charts';
+import { getDatesFromInterval } from '../utils/interval';
 
 interface Props {
   id: string;
   resolution: ChartResolution;
   interval: StatsIntervalIds;
   enabled?: boolean;
-  counterPartyChainIds?: Array<string>;
 }
 
-export default function useChartQuery({ id, resolution, interval, enabled = true, counterPartyChainIds }: Props) {
-  const { apiData } = useAppContext<'/stats/[id]'>();
+export default function useChartQuery({ id, resolution, interval, enabled = true }: Props) {
 
-  const selectedInterval = STATS_INTERVALS[interval];
+  const { start: startDate, end: endDate } = getDatesFromInterval(interval);
+  const resourceName = 'stats:line';
 
-  const endDate = selectedInterval.start ? formatDate(new Date()) : undefined;
-  const startDate = selectedInterval.start ? formatDate(selectedInterval.start) : undefined;
-
-  const [ info, setInfo ] = React.useState<LineChart['info']>(apiData || undefined);
-
-  const crossChainTxsPathsChart = CROSS_CHAIN_TXS_CHARTS.find((chart) => chart.id === id);
-  const resourceName = crossChainTxsPathsChart?.resourceName ? crossChainTxsPathsChart.resourceName : 'stats:line';
-
-  const query = useApiQuery<typeof resourceName, unknown, ChartData | undefined>(resourceName, {
-    pathParams: { id, chainId: config.chain.id },
-    queryParams: pickBy({
+  return useApiQuery<typeof resourceName, unknown, ChartDataPayloadLine | undefined>(resourceName, {
+    pathParams: { id },
+    queryParams: {
       from: startDate,
       to: endDate,
       resolution,
-      counterparty_chain_ids: isAllOption(counterPartyChainIds) ? undefined : counterPartyChainIds,
-    }, (value) => value !== undefined),
+    },
     queryOptions: {
       enabled: enabled,
       refetchOnMount: false,
-      placeholderData: crossChainTxsPathsChart ? CHAIN_STATS_CROSS_CHAIN_TXS_PATHS_CHART : CHAIN_STATS_LINE_CHART,
+      placeholderData: (prevData) => {
+        return prevData ?? CHAIN_STATS_LINE_CHART;
+      },
       select: (data) => {
-        if (isLineChartResponse(data)) {
-          return {
-            type: 'line',
-            info: data.info,
-            data: data.chart.map((item) => {
-              return {
-                date: new Date(item.date),
-                date_to: new Date(item.date_to),
-                value: Number(item.value),
-                isApproximate: item.is_approximate,
-              };
-            }),
-          };
-        }
-        if (isMessagePathsResponse(data) && crossChainTxsPathsChart) {
-
-          const chains = uniqBy(data.items.flatMap((item) => [ item.source_chain, item.destination_chain ]).filter(Boolean), (chain) => chain?.id);
-
-          return {
-            info: {
-              title: crossChainTxsPathsChart.title,
-              description: crossChainTxsPathsChart.description,
-              id: id,
-              resolutions: [],
-            },
-            type: 'sankey',
-            data: {
-              nodes: chains.map((chain) => ({ id: chain.id, name: chain.name })),
-              links: data.items
-                .map((item) => {
-                  if (!item.source_chain?.id || !item.destination_chain?.id) {
-                    return null;
-                  }
-                  return { source: item.source_chain.id, target: item.destination_chain.id, value: item.messages_count };
-                })
-                .filter(Boolean),
-            },
-          };
-        }
+        return {
+          type: 'line',
+          info: data.info ?? {
+            id: id,
+            title: 'Chart title',
+            description: 'Chart description',
+            resolutions: [ ],
+          },
+          data: data.chart.map((item) => {
+            return {
+              date: new Date(item.date),
+              date_to: new Date(item.date_to),
+              value: Number(item.value),
+              isApproximate: item.is_approximate,
+            };
+          }),
+        };
       },
     },
   });
-
-  React.useEffect(() => {
-    if (!info && query.data?.info && !query.isPlaceholderData) {
-      // save info to keep title and description when change query params
-      setInfo(query.data?.info);
-    }
-  }, [ info, query.data?.info, query.isPlaceholderData ]);
-
-  return {
-    info,
-    query,
-  };
 }

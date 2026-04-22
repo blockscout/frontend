@@ -1,18 +1,18 @@
-import { Flex, HStack, VStack, chakra, Text } from '@chakra-ui/react';
+import { Flex, HStack, VStack, chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import type { ChainStatsChart, StatsIntervalIds } from '../../types/client';
+import type { ChainStatsChart, StatsIntervalIds } from 'client/features/chain-stats/types/client';
 import type { SankeyChartData } from 'toolkit/components/charts/sankey/types';
 
+import ChartIntervalSelect from 'client/features/chain-stats/components/ChartIntervalSelect';
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
+import * as mixpanel from 'lib/mixpanel/index';
 import type { OnValueChangeHandler } from 'toolkit/chakra/select';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { SankeyChartMenu } from 'toolkit/components/charts/sankey/parts/SankeyChartMenu';
 import { SankeyChartContent } from 'toolkit/components/charts/sankey/SankeyChartContent';
 import ChainSelect, { isAllOption } from 'ui/shared/externalChains/ChainSelect';
-
-import ChartIntervalSelect from '../../components/ChartIntervalSelect';
 
 interface Props {
   chart: ChainStatsChart;
@@ -26,7 +26,7 @@ interface Props {
   onCounterPartyChainIdsChange: OnValueChangeHandler;
 }
 
-const ChainStatsDetailsCrossChainTxsPaths = ({
+const ChainStatsDetailsCrossChainTxs = ({
   chart,
   data,
   isLoading,
@@ -40,6 +40,10 @@ const ChainStatsDetailsCrossChainTxsPaths = ({
   const ref = React.useRef<HTMLDivElement>(null);
 
   const chainsQuery = useApiQuery('interchainIndexer:chains');
+
+  const handleShare = React.useCallback(async() => {
+    mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'Share chart', Info: chart.id });
+  }, [ chart.id ]);
 
   const chainsConfig = React.useMemo(() => {
     return chainsQuery.data?.items
@@ -68,7 +72,7 @@ const ChainStatsDetailsCrossChainTxsPaths = ({
     if (chart.id === 'outgoing-messages-paths') {
       return (
         <HStack>
-          <span>From { chainNameElement } to</span>
+          <Skeleton loading={ isInitialLoading }><span>From { chainNameElement } to</span></Skeleton>
           { chainSelect }
         </HStack>
       );
@@ -78,7 +82,7 @@ const ChainStatsDetailsCrossChainTxsPaths = ({
       return (
         <HStack>
           { chainSelect }
-          <span>to { chainNameElement }</span>
+          <Skeleton loading={ isInitialLoading }><span>to { chainNameElement }</span></Skeleton>
         </HStack>
       );
     }
@@ -111,22 +115,23 @@ const ChainStatsDetailsCrossChainTxsPaths = ({
             data={ data }
             title={ chart.title }
             description={ chart.description }
-            isLoading={ isLoading }
+            isLoading={ isInitialLoading || isLoading }
             chartRef={ ref }
             chartUrl={ window.location.href }
+            onShare={ handleShare }
           />
         ) }
       </Flex>
       <VStack gap={ 1 } color="text.secondary" textStyle="xs" alignItems="flex-start" mt={{ base: 3, lg: 6 }}>
-        <Text>
+        <Skeleton loading={ isInitialLoading }>
           <chakra.span fontWeight="semibold">Source </chakra.span>
           <span>{ isOutgoing ? config.chain.name : counterPartyChainNames }</span>
-        </Text>
-        <Text>
+        </Skeleton>
+        <Skeleton loading={ isInitialLoading }>
           <chakra.span fontWeight="semibold">Destination </chakra.span>
           <span>{ isOutgoing ? counterPartyChainNames : config.chain.name }</span>
-        </Text>
-        <Skeleton loading={ isLoading }>
+        </Skeleton>
+        <Skeleton loading={ isInitialLoading || isLoading }>
           <chakra.span fontWeight="semibold">Txns { isOutgoing ? 'sent' : 'received' } </chakra.span>
           <span>{ Number(txnsCount).toLocaleString() }</span>
         </Skeleton>
@@ -140,7 +145,7 @@ const ChainStatsDetailsCrossChainTxsPaths = ({
       >
         <SankeyChartContent
           data={ data }
-          isLoading={ isLoading }
+          isLoading={ isInitialLoading || isLoading }
           isError={ isError }
         />
       </Flex>
@@ -148,4 +153,4 @@ const ChainStatsDetailsCrossChainTxsPaths = ({
   );
 };
 
-export default React.memo(ChainStatsDetailsCrossChainTxsPaths);
+export default React.memo(ChainStatsDetailsCrossChainTxs);
