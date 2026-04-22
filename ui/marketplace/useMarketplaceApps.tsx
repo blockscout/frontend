@@ -82,7 +82,7 @@ export default function useMarketplaceApps(
       } else if ('configUrl' in feature) {
         return fetch<Array<MarketplaceApp>, unknown>(feature.configUrl, undefined, { resource: 'marketplace-dapps' });
       } else {
-        return apiFetch('admin:marketplace_dapps', { pathParams: { chainId: config.chain.id } });
+        return apiFetch('admin:marketplace_dapps', { pathParams: { instanceId: config.apis.admin?.instanceId } });
       }
     },
     select: (data) => sortApps(data as Array<MarketplaceApp>, snapshotFavoriteApps),

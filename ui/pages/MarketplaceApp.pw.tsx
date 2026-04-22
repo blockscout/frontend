@@ -20,7 +20,7 @@ const testFn = async({ render, mockAssetResponse, mockEnvs, mockRpcResponse, moc
   await mockEnvs([
     [ 'NEXT_PUBLIC_MARKETPLACE_ENABLED', 'true' ],
   ]);
-  await mockApiResponse('admin:marketplace_dapp', appsMock[0], { pathParams: { chainId: config.chain.id, dappId: appsMock[0].id } });
+  await mockApiResponse('admin:marketplace_dapp', appsMock[0], { pathParams: { instanceId: config.apis.admin?.instanceId, dappId: appsMock[0].id } });
   await mockAssetResponse(appsMock[0].url, './mocks/apps/app.html');
   await mockRpcResponse([ {
     Method: 'eth_chainId',
