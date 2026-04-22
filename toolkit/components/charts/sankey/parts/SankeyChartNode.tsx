@@ -43,22 +43,19 @@ export const SankeyChartNode = React.memo(({ node, color, onMouseEnter, onMouseL
   }, [ x0, x1, y0, y1, width, height, isMiddle, hasIncoming ]);
 
   if (!path) {
-    if (isMiddle) {
-      return (
-        <rect
-          x={ x0 }
-          y={ y0 }
-          width={ width }
-          height={ height }
-          fill={ color }
-          onMouseEnter={ handleMouseEnter }
-          onMouseLeave={ onMouseLeave }
-        >
-          <title>{ `${ node.name }: ${ Number(node.value).toLocaleString() }` }</title>
-        </rect>
-      );
-    }
-    return null;
+    return (
+      <rect
+        x={ x0 }
+        y={ isMiddle ? y0 : y0 - 1 }
+        width={ width }
+        height={ isMiddle ? height : 1 }
+        fill={ color }
+        onMouseEnter={ handleMouseEnter }
+        onMouseLeave={ onMouseLeave }
+      >
+        <title>{ `${ node.name }: ${ Number(node.value).toLocaleString() }` }</title>
+      </rect>
+    );
   }
 
   return (
