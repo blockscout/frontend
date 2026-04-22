@@ -1,6 +1,6 @@
 import type * as stats from '@blockscout/stats-types';
 
-import { averageGasPrice } from './line';
+import { averageGasPrice } from 'client/features/chain-stats/mocks/line';
 
 export const base: stats.MainPageStats = {
   average_block_time: {

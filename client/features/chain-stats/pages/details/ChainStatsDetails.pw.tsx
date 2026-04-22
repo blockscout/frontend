@@ -1,37 +1,38 @@
 import React from 'react';
 
-import * as statsLineMock from 'mocks/stats/line';
-import { test, expect } from 'playwright/lib';
-import { formatDate } from 'ui/shared/chart/utils';
+import { ChartResolution } from 'toolkit/components/charts/types';
 
+import * as chainsMock from 'mocks/multichain/chains';
+import { test, expect } from 'playwright/lib';
+
+import * as crossChainTxsPathsMock from '../../mocks/cross-chain-txs-paths';
+import * as statsLineMock from '../../mocks/line';
+import { CROSS_CHAIN_TXS_CHARTS } from '../../utils/additional-charts';
 import ChainStatsDetails from './ChainStatsDetails';
 
-const CHART_ID = 'averageGasPrice';
+const queryParams = {
+  resolution: ChartResolution.DAY,
+};
 
 test.beforeEach(async({ mockTextAd }) => {
   await mockTextAd();
 });
 
-const hooksConfig = {
-  router: {
-    query: { id: CHART_ID },
-  },
-};
-
 test('base view +@dark-mode +@mobile', async({ render, mockApiResponse, page }) => {
-  const date = new Date();
-  date.setMonth(date.getMonth() - 1);
+
+  const CHART_ID = 'averageGasPrice';
+  const hooksConfig = {
+    router: {
+      query: { id: CHART_ID, interval: 'all' },
+    },
+  };
 
   const chartApiUrl = await mockApiResponse(
     'stats:line',
     statsLineMock.averageGasPrice,
     {
       pathParams: { id: CHART_ID },
-      queryParams: {
-        from: formatDate(date),
-        to: '2022-11-11',
-        resolution: 'DAY',
-      },
+      queryParams,
     },
   );
 
@@ -40,5 +41,31 @@ test('base view +@dark-mode +@mobile', async({ render, mockApiResponse, page }) 
   await page.waitForFunction(() => {
     return document.querySelector('path[data-name="chart-fullscreen"]')?.getAttribute('opacity') === '1';
   });
+  await expect(component).toHaveScreenshot();
+});
+
+test('cross-chain txs paths view +@dark-mode +@mobile', async({ render, mockApiResponse, mockEnvs }) => {
+  const CHART = CROSS_CHAIN_TXS_CHARTS[0];
+  const hooksConfig = {
+    router: {
+      query: { id: CHART.id, interval: 'all' },
+    },
+  };
+
+  await mockEnvs([
+    [ 'NEXT_PUBLIC_NETWORK_NAME', chainsMock.chainA.name ],
+    [ 'NEXT_PUBLIC_NETWORK_ID', chainsMock.chainA.id ],
+  ]);
+  await mockApiResponse('interchainIndexer:chains', { items: [ chainsMock.chainA, chainsMock.chainB, chainsMock.chainC, chainsMock.chainD ] });
+  await mockApiResponse(
+    CHART.resourceName!,
+    crossChainTxsPathsMock.incomingMessagesPaths,
+    {
+      pathParams: { chainId: chainsMock.chainA.id },
+      queryParams,
+    },
+  );
+
+  const component = await render(<ChainStatsDetails/>, { hooksConfig });
   await expect(component).toHaveScreenshot();
 });

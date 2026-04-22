@@ -1,8 +1,8 @@
 import React from 'react';
 
+import * as statsLineMock from 'client/features/chain-stats/mocks/line';
+import * as statsLinesMock from 'client/features/chain-stats/mocks/lines';
 import * as statsMock from 'mocks/stats/index';
-import * as statsLineMock from 'mocks/stats/line';
-import * as statsLinesMock from 'mocks/stats/lines';
 import { test, expect } from 'playwright/lib';
 
 import GasTracker from './GasTracker';

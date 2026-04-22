@@ -1,7 +1,7 @@
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 import type * as stats from '@blockscout/stats-types';
 
-import { averageGasPrice } from 'mocks/stats/line';
+import { averageGasPrice } from 'client/features/chain-stats/mocks/line';
 
 import { chainA, chainB, chainC } from './chains';
 
