@@ -1,6 +1,7 @@
 import { Box, Center, Flex, Text } from '@chakra-ui/react';
 import React from 'react';
 
+import { EmptyState } from '../../../chakra/empty-state';
 import { Link } from '../../../chakra/link';
 import { Skeleton } from '../../../chakra/skeleton';
 import { apos } from '../../../utils/htmlEntities';
@@ -43,7 +44,7 @@ export const ChartContent = ({ isError, isLoading, isEmpty, emptyText, noWaterma
   if (isEmpty) {
     return (
       <Center flexGrow={ 1 }>
-        <Text color="text.secondary" fontSize="sm">{ emptyText || 'No data' }</Text>
+        <EmptyState type="stats" description={ emptyText } mt={ 0 }/>
       </Center>
     );
   }

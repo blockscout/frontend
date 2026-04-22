@@ -73,6 +73,15 @@ const ChainSelect = ({ loading, mode, chainsConfig, chainIds, withAllOption, val
     // for controlled multi-selects we need to handle the "all option" selection/deselection manually
     if (value && withAllOption && multiple) {
       const newValue = details.value;
+
+      if (newValue.length === 0) {
+        onValueChange?.({
+          items: collection.items,
+          value: [ ALL_OPTION.value ],
+        });
+        return;
+      }
+
       if (newValue.includes(ALL_OPTION.value) && !value.includes(ALL_OPTION.value)) {
         onValueChange?.({
           items: collection.items,

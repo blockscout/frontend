@@ -68,10 +68,10 @@ const ChainStatsDetailsCrossChainTxs = ({
   );
 
   const chainFilter = (() => {
-    const chainNameElement = <chakra.span fontWeight="medium">{ config.chain.name }</chakra.span>;
+    const chainNameElement = <chakra.span fontWeight="medium" color="text.primary">{ config.chain.name }</chakra.span>;
     if (chart.id === 'outgoing-messages-paths') {
       return (
-        <HStack>
+        <HStack color="text.secondary">
           <Skeleton loading={ isInitialLoading }><span>From { chainNameElement } to</span></Skeleton>
           { chainSelect }
         </HStack>
@@ -80,7 +80,7 @@ const ChainStatsDetailsCrossChainTxs = ({
 
     if (chart.id === 'incoming-messages-paths') {
       return (
-        <HStack>
+        <HStack color="text.secondary">
           { chainSelect }
           <Skeleton loading={ isInitialLoading }><span>to { chainNameElement }</span></Skeleton>
         </HStack>
