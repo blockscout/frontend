@@ -14,6 +14,7 @@ import type {
   InterchainIndexerApiPaginationFilters,
   InterchainIndexerApiResourceName,
   InterchainIndexerApiResourcePayload,
+  InterchainIndexerApiPaginationSorting,
 } from './services/interchainIndexer';
 import { INTERCHAIN_INDEXER_API_RESOURCES } from './services/interchainIndexer';
 import type { MetadataApiResourceName, MetadataApiResourcePayload } from './services/metadata';
@@ -137,6 +138,7 @@ export type PaginationSorting<R extends ResourceName> =
 R extends BensApiResourceName ? BensApiPaginationSorting<R> :
 R extends ClustersApiResourceName ? ClustersApiPaginationSorting :
 R extends GeneralApiResourceName ? GeneralApiPaginationSorting<R> :
+R extends InterchainIndexerApiResourceName ? InterchainIndexerApiPaginationSorting<R> :
 never;
 /* eslint-enable @stylistic/indent */
 

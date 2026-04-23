@@ -2,24 +2,23 @@ import { useToken } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ChartMargin } from '../types';
-import type { SankeyData, SankeyNodeExtended } from './types';
+import type { SankeyChartData, SankeyChartNodeExtended } from './types';
 
-import { useColorModeValue } from 'toolkit/chakra/color-mode';
-
+import { useColorModeValue } from '../../../chakra/color-mode';
 import {
-  DEFAULT_SANKEY_LINK_HOVER_OPACITY,
-  DEFAULT_SANKEY_LINK_OPACITY,
+  SANKEY_LINK_DEFAULT_HOVER_OPACITY,
+  SANKEY_LINK_DEFAULT_OPACITY,
   SANKEY_NODE_COLOR_TOKENS_DARK,
   SANKEY_NODE_COLOR_TOKENS_LIGHT,
 } from './constants';
-import { SankeyLink } from './parts/SankeyLink';
-import { SankeyNode } from './parts/SankeyNode';
+import { SankeyChartLink } from './parts/SankeyChartLink';
+import { SankeyChartNode } from './parts/SankeyChartNode';
 import { useSankeyController } from './useSankeyController';
 
 export type SankeyLinkColorMode = 'source' | 'target';
 
 export interface SankeyChartProps {
-  data: SankeyData;
+  data: SankeyChartData;
   margin?: ChartMargin;
   nodeWidth?: number;
   nodePadding?: number;
@@ -30,7 +29,7 @@ export interface SankeyChartProps {
   valueFormatter?: (value: number) => string;
 }
 
-const DEFAULT_CHART_MARGIN: ChartMargin = { top: 40, right: 8, bottom: 8, left: 8 };
+const DEFAULT_CHART_MARGIN: ChartMargin = { top: 40, right: 0, bottom: 0, left: 0 };
 const LABEL_Y_GAP = 4;
 const LABEL_LINE_HEIGHT = 16;
 const LABEL_LINE_GAP = 2;
@@ -40,8 +39,8 @@ export const SankeyChart = React.memo(({
   margin: marginProps,
   nodeWidth,
   nodePadding,
-  linkOpacity = DEFAULT_SANKEY_LINK_OPACITY,
-  linkHoverOpacity = DEFAULT_SANKEY_LINK_HOVER_OPACITY,
+  linkOpacity = SANKEY_LINK_DEFAULT_OPACITY,
+  linkHoverOpacity = SANKEY_LINK_DEFAULT_HOVER_OPACITY,
   linkColorMode = 'source',
   colors: colorsProp,
   valueFormatter,
@@ -77,7 +76,7 @@ export const SankeyChart = React.memo(({
     return map;
   }, [ nodes, colors ]);
 
-  const getNodeColor = React.useCallback((node: SankeyNodeExtended) => {
+  const getNodeColor = React.useCallback((node: SankeyChartNodeExtended) => {
     return nodeColorMap.get(node.id) || colors[0];
   }, [ nodeColorMap, colors ]);
 
@@ -85,14 +84,14 @@ export const SankeyChart = React.memo(({
     if (value === undefined) {
       return '';
     }
-    return valueFormatter ? valueFormatter(value) : String(value);
+    return valueFormatter ? valueFormatter(value) : Number(value).toLocaleString();
   }, [ valueFormatter ]);
 
   return (
     <svg width="100%" height="100%" ref={ ref } opacity={ rect ? 1 : 0 }>
       <g transform={ `translate(${ margin.left || 0 },${ margin.top || 0 })` }>
         { links.map((link, index) => (
-          <SankeyLink
+          <SankeyChartLink
             key={ `link-${ index }` }
             link={ link }
             color={ getNodeColor(linkColorMode === 'target' ? link.target : link.source) }
@@ -106,7 +105,7 @@ export const SankeyChart = React.memo(({
         )) }
 
         { nodes.map((node) => (
-          <SankeyNode
+          <SankeyChartNode
             key={ node.id }
             node={ node }
             color={ getNodeColor(node) }

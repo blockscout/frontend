@@ -11,11 +11,8 @@ export function downloadBlob(blob: Blob, filename: string) {
   URL.revokeObjectURL(url);
 }
 
-export function saveAsCsv(headerRows: Array<string>, dataRows: Array<Array<string>>, filename: string) {
-  const csv = unparse([
-    headerRows,
-    ...dataRows,
-  ]);
+export function saveAsCsv(data: Array<Array<string>>, filename: string) {
+  const csv = unparse(data);
 
   const blob = new Blob([ csv ], { type: 'text/csv;charset=utf-8;' });
 

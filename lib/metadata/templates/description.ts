@@ -72,6 +72,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/operation/[id]': DEFAULT_TEMPLATE,
   '/cc/tx/[hash]': DEFAULT_TEMPLATE,
   '/cross-chain-tx/[id]': DEFAULT_TEMPLATE,
+  '/ictt-users': DEFAULT_TEMPLATE,
 
   // multichain routes
   '/chain/[chain_slug_or_id]/accounts/label/[slug]': DEFAULT_TEMPLATE,

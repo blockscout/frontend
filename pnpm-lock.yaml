@@ -24,8 +24,8 @@ importers:
         specifier: 1.4.1
         version: 1.4.1
       '@blockscout/interchain-indexer-types':
-        specifier: 0.0.10
-        version: 0.0.10
+        specifier: 1.3.0
+        version: 1.3.0
       '@blockscout/multichain-aggregator-types':
         specifier: 2.1.2
         version: 2.1.2
@@ -149,6 +149,9 @@ importers:
       '@types/d3-selection':
         specifier: 3.0.11
         version: 3.0.11
+      '@types/d3-transition':
+        specifier: 3.0.9
+        version: 3.0.9
       '@types/papaparse':
         specifier: ^5.3.5
         version: 5.5.2
@@ -188,6 +191,9 @@ importers:
       d3-selection:
         specifier: 3.0.0
         version: 3.0.0
+      d3-transition:
+        specifier: 3.0.1
+        version: 3.0.1(d3-selection@3.0.0)
       dappscout-iframe:
         specifier: 0.4.0
         version: 0.4.0(react-dom@19.1.4(react@19.1.4))(react@19.1.4)(viem@2.41.2(bufferutil@4.1.0)(typescript@5.9.2)(utf-8-validate@6.0.6)(zod@4.3.6))
@@ -1366,8 +1372,8 @@ packages:
   '@blockscout/bens-types@1.4.1':
     resolution: {integrity: sha512-TlZ1HVdZ2Cswm/CcvNoxS+Ydiht/YGaLo//PJR/UmkmihlEFoY4HfVJvVcUnOQXi+Si7FwJ486DPii889nTJsQ==}
 
-  '@blockscout/interchain-indexer-types@0.0.10':
-    resolution: {integrity: sha512-VxdTHLZ+x+rNQqYZxqm+hSqIwFiOEB4lgWY9gXQKVb2aRrGESHPxM+E9XdpKu3SDAoXYTwL/y4QHR/A6PVV8ng==}
+  '@blockscout/interchain-indexer-types@1.3.0':
+    resolution: {integrity: sha512-S+nbsMJ4g10yjwf+BnJ5JL1jlvVHRGsCCpCEx57wQs5sw+odo22iVcZ2LmHNv8Vdh7Tn1+2tJonJQ0nKwadrig==}
 
   '@blockscout/multichain-aggregator-types@2.1.2':
     resolution: {integrity: sha512-Eo5iCIsrfzTbPgfJfZT4TzuIU5FXxB2/thbc+3lkfUCUuSPP/VZPxDEXai773iSra+ctX4LGobFF8osPKZGy5g==}
@@ -14533,7 +14539,7 @@ snapshots:
 
   '@blockscout/bens-types@1.4.1': {}
 
-  '@blockscout/interchain-indexer-types@0.0.10': {}
+  '@blockscout/interchain-indexer-types@1.3.0': {}
 
   '@blockscout/multichain-aggregator-types@2.1.2': {}
 

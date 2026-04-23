@@ -67,6 +67,7 @@ export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/operation/[id]': 'Operation details',
   '/cc/tx/[hash]': 'Cross-chain transaction details',
   '/cross-chain-tx/[id]': 'Cross-chain transaction details',
+  '/ictt-users': 'ICTT users',
 
   // multichain routes
   '/chain/[chain_slug_or_id]/accounts/label/[slug]': 'Chain addresses search by label',

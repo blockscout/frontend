@@ -1,13 +1,13 @@
 import React from 'react';
 
 import { test, expect } from 'playwright/lib';
-import type { ChartWidgetProps } from 'toolkit/components/charts/ChartWidget';
+import type { LineChartWidgetProps } from 'toolkit/components/charts/line';
 
 import ChartWidget from './ChartWidget.pwstory';
 
 test.use({ viewport: { width: 400, height: 300 } });
 
-const props: ChartWidgetProps = {
+const props: LineChartWidgetProps = {
   charts: [
     {
       id: 'native-coin-circulating-supply',
@@ -156,7 +156,7 @@ test('incomplete day', async({ render, page }) => {
 });
 
 test('multiple charts', async({ render, page }) => {
-  const modifiedProps: ChartWidgetProps = {
+  const modifiedProps: LineChartWidgetProps = {
     ...props,
     charts: [
       {

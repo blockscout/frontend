@@ -66,6 +66,7 @@ declare module "nextjs-routes" {
     | DynamicRoute<"/essential-dapps/[id]", { "id": string }>
     | StaticRoute<"/gas-tracker">
     | StaticRoute<"/hot-contracts">
+    | StaticRoute<"/ictt-users">
     | StaticRoute<"/internal-txs">
     | StaticRoute<"/interop-messages">
     | StaticRoute<"/login">

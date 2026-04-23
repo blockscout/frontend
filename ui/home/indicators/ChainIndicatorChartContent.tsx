@@ -1,12 +1,12 @@
 import React from 'react';
 
-import type { TimeChartData } from 'toolkit/components/charts/types';
+import type { LineChartData } from 'toolkit/components/charts/line/types';
 
-import { ChartArea, ChartLine, ChartOverlay, ChartTooltip, useTimeChartController } from 'toolkit/components/charts';
+import { LineChartArea, LineChartLine, LineChartOverlay, LineChartTooltip, useLineChartController } from 'toolkit/components/charts/line';
 import { useDefaultGradient, useDefaultLineColor } from 'ui/shared/chart/config';
 
 interface Props {
-  data: TimeChartData;
+  data: LineChartData;
   caption?: string;
 }
 
@@ -24,7 +24,7 @@ const ChainIndicatorChartContent = ({ data }: Props) => {
     };
   }, [ ]);
 
-  const { rect, ref, axes, innerWidth, innerHeight, chartMargin } = useTimeChartController({
+  const { rect, ref, axes, innerWidth, innerHeight, chartMargin } = useLineChartController({
     data,
     margin: CHART_MARGIN,
     axesConfig,
@@ -33,14 +33,14 @@ const ChainIndicatorChartContent = ({ data }: Props) => {
   return (
     <svg width="100%" height="100%" ref={ ref } cursor="pointer">
       <g transform={ `translate(${ chartMargin.left || 0 },${ chartMargin.top || 0 })` } opacity={ rect ? 1 : 0 }>
-        <ChartArea
+        <LineChartArea
           id={ data[0].id }
           data={ data[0].items }
           xScale={ axes.x.scale }
           yScale={ axes.y.scale }
           gradient={ gradient }
         />
-        <ChartLine
+        <LineChartLine
           data={ data[0].items }
           xScale={ axes.x.scale }
           yScale={ axes.y.scale }
@@ -48,8 +48,8 @@ const ChainIndicatorChartContent = ({ data }: Props) => {
           strokeWidth={ 3 }
           animation="left"
         />
-        <ChartOverlay ref={ overlayRef } width={ innerWidth } height={ innerHeight }>
-          <ChartTooltip
+        <LineChartOverlay ref={ overlayRef } width={ innerWidth } height={ innerHeight }>
+          <LineChartTooltip
             anchorEl={ overlayRef.current }
             width={ innerWidth }
             height={ innerHeight }
@@ -57,7 +57,7 @@ const ChainIndicatorChartContent = ({ data }: Props) => {
             yScale={ axes.y.scale }
             data={ data }
           />
-        </ChartOverlay>
+        </LineChartOverlay>
       </g>
     </svg>
   );

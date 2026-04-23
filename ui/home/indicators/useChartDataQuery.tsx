@@ -1,4 +1,4 @@
-import type { TimeChartData } from 'toolkit/components/charts/types';
+import type { LineChartData } from 'toolkit/components/charts/line/types';
 import type { ChainIndicatorId } from 'types/homepage';
 
 import config from 'configs/app';
@@ -15,7 +15,7 @@ const isStatsFeatureEnabled = config.features.stats.isEnabled;
 export type UseFetchChartDataResult = {
   isError: boolean;
   isPending: boolean;
-  data: TimeChartData;
+  data: LineChartData;
 };
 
 export default function useChartDataQuery(indicatorId: ChainIndicatorId): UseFetchChartDataResult {
