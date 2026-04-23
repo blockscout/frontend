@@ -1,21 +1,14 @@
 import { chakra, Box, Flex, Text, VStack, HStack } from '@chakra-ui/react';
-import { useQueryClient } from '@tanstack/react-query';
 import { upperFirst } from 'es-toolkit';
 import React from 'react';
-
-import type { SocketMessage } from 'lib/socket/types';
-import type { Block } from 'types/api/block';
 
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
-import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
+import useApiQuery from 'lib/api/useApiQuery';
 import useInitialList from 'lib/hooks/useInitialList';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import getNetworkUtilizationParams from 'lib/networks/getNetworkUtilizationParams';
-import useSocketChannel from 'lib/socket/useSocketChannel';
-import useSocketMessage from 'lib/socket/useSocketMessage';
-import { BLOCK } from 'stubs/block';
 import { HOMEPAGE_STATS } from 'stubs/stats';
 import { Heading } from 'toolkit/chakra/heading';
 import { Link } from 'toolkit/chakra/link';
@@ -26,6 +19,7 @@ import FallbackRpcIcon from 'ui/shared/fallbacks/FallbackRpcIcon';
 
 import LatestBlocksDegraded from './fallbacks/LatestBlocksDegraded';
 import { useHomeRpcDataContext } from './fallbacks/rpcDataContext';
+import { useHomeBlocksQuery } from './homeDataContext';
 import LatestBlocksItem from './LatestBlocksItem';
 
 const LatestBlocks = () => {
@@ -37,18 +31,13 @@ const LatestBlocks = () => {
   } else {
     blocksMaxCount = isMobile ? 2 : 3;
   }
-  const { data, isPlaceholderData, isError } = useApiQuery('general:homepage_blocks', {
-    queryOptions: {
-      placeholderData: Array(blocksMaxCount).fill(BLOCK),
-    },
-  });
+  const { data, isPlaceholderData, isError } = useHomeBlocksQuery();
   const initialList = useInitialList({
     data: data ?? [],
     idFn: (block) => block.height,
     enabled: !isPlaceholderData,
   });
 
-  const queryClient = useQueryClient();
   const statsQueryResult = useApiQuery('general:stats', {
     queryOptions: {
       refetchOnMount: false,
@@ -58,29 +47,6 @@ const LatestBlocks = () => {
 
   const rpcDataContext = useHomeRpcDataContext();
   const isRpcData = rpcDataContext.isEnabled && !rpcDataContext.isLoading && !rpcDataContext.isError && rpcDataContext.subscriptions.includes('latest-blocks');
-
-  const handleNewBlockMessage: SocketMessage.NewBlock['handler'] = React.useCallback((payload) => {
-    queryClient.setQueryData(getResourceKey('general:homepage_blocks'), (prevData: Array<Block> | undefined) => {
-
-      const newData = prevData ? [ ...prevData ] : [];
-
-      if (newData.some((block => block.height === payload.block.height))) {
-        return newData;
-      }
-
-      return [ payload.block, ...newData ].sort((b1, b2) => b2.height - b1.height).slice(0, blocksMaxCount);
-    });
-  }, [ queryClient, blocksMaxCount ]);
-
-  const channel = useSocketChannel({
-    topic: 'blocks:new_block',
-    isDisabled: isPlaceholderData || isError,
-  });
-  useSocketMessage({
-    channel,
-    event: 'new_block',
-    handler: handleNewBlockMessage,
-  });
 
   const content = (() => {
     if (isError) {
