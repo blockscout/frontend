@@ -5,26 +5,26 @@ import type { TokenVerifiedInfo } from 'types/api/token';
 
 export const CONTRACT_INFO_API_RESOURCES = {
   address_verification: {
-    path: '/api/v1/chains/:chainId/verified-addresses:type',
-    pathParams: [ 'chainId' as const, 'type' as const ],
+    path: '/api/v1/chains/:instanceId/verified-addresses:type',
+    pathParams: [ 'instanceId' as const, 'type' as const ],
   },
   verified_addresses: {
-    path: '/api/v1/chains/:chainId/verified-addresses',
-    pathParams: [ 'chainId' as const ],
+    path: '/api/v1/chains/:instanceId/verified-addresses',
+    pathParams: [ 'instanceId' as const ],
   },
   token_verified_info: {
-    path: '/api/v1/chains/:chainId/token-infos/:hash',
-    pathParams: [ 'chainId' as const, 'hash' as const ],
+    path: '/api/v1/chains/:instanceId/token-infos/:hash',
+    pathParams: [ 'instanceId' as const, 'hash' as const ],
   },
   pools: {
-    path: '/api/v1/chains/:chainId/pools',
-    pathParams: [ 'chainId' as const ],
+    path: '/api/v1/chains/:instanceId/pools',
+    pathParams: [ 'instanceId' as const ],
     filterFields: [ 'query' as const ],
     paginated: true,
   },
   pool: {
-    path: '/api/v1/chains/:chainId/pools/:hash',
-    pathParams: [ 'chainId' as const, 'hash' as const ],
+    path: '/api/v1/chains/:instanceId/pools/:hash',
+    pathParams: [ 'instanceId' as const, 'hash' as const ],
   },
 } satisfies Record<string, ApiResource>;
 

@@ -69,7 +69,7 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
         'contractInfo:address_verification',
         {
           fetchParams: { method: 'POST', body },
-          pathParams: { chainId: config.chain.id, type: ':verify' },
+          pathParams: { instanceId: config.apis.contractInfo?.instanceId, type: ':verify' },
         },
       );
 

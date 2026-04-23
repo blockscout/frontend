@@ -12,7 +12,6 @@ import * as pwConfig from 'playwright/utils/config';
 import Token from './Token';
 
 const hash = tokenInfo.address_hash;
-const chainId = config.chain.id;
 
 const hooksConfig = {
   router: {
@@ -47,7 +46,11 @@ test('base view', async({ render, page, createSocket }) => {
 
 test('with verified info', async({ render, page, createSocket, mockApiResponse, mockAssetResponse }) => {
   test.slow();
-  await mockApiResponse('contractInfo:token_verified_info', verifiedAddressesMocks.TOKEN_INFO_APPLICATION.APPROVED, { pathParams: { chainId, hash } });
+  await mockApiResponse(
+    'contractInfo:token_verified_info',
+    verifiedAddressesMocks.TOKEN_INFO_APPLICATION.APPROVED,
+    { pathParams: { instanceId: config.apis.contractInfo?.instanceId, hash } },
+  );
   await mockAssetResponse(tokenInfo.icon_url as string, './playwright/mocks/image_s.jpg');
 
   const component = await render(<Token/>, { hooksConfig }, { withSocket: true });
@@ -78,7 +81,11 @@ test('bridged token', async({ render, page, createSocket, mockApiResponse, mockA
   await mockApiResponse('general:address', contract, { pathParams: { hash } });
   await mockApiResponse('general:token_counters', tokenCounters, { pathParams: { hash } });
   await mockApiResponse('general:token_transfers', { items: [], next_page_params: null }, { pathParams: { hash } });
-  await mockApiResponse('contractInfo:token_verified_info', verifiedAddressesMocks.TOKEN_INFO_APPLICATION.APPROVED, { pathParams: { chainId, hash } });
+  await mockApiResponse(
+    'contractInfo:token_verified_info',
+    verifiedAddressesMocks.TOKEN_INFO_APPLICATION.APPROVED,
+    { pathParams: { instanceId: config.apis.contractInfo?.instanceId, hash } },
+  );
   await mockAssetResponse(tokenInfo.icon_url as string, './playwright/mocks/image_s.jpg');
 
   const component = await render(<Token/>, { hooksConfig }, { withSocket: true });
@@ -127,7 +134,11 @@ test.describe('mobile', () => {
 
   test('with verified info', async({ render, page, createSocket, mockApiResponse, mockAssetResponse }) => {
     test.slow();
-    await mockApiResponse('contractInfo:token_verified_info', verifiedAddressesMocks.TOKEN_INFO_APPLICATION.APPROVED, { pathParams: { chainId, hash } });
+    await mockApiResponse(
+      'contractInfo:token_verified_info',
+      verifiedAddressesMocks.TOKEN_INFO_APPLICATION.APPROVED,
+      { pathParams: { instanceId: config.apis.contractInfo?.instanceId, hash } },
+    );
     await mockAssetResponse(tokenInfo.icon_url as string, './playwright/mocks/image_s.jpg');
 
     const component = await render(<Token/>, { hooksConfig }, { withSocket: true });

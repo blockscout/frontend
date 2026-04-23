@@ -30,7 +30,7 @@ const Pool = () => {
   const hash = getQueryParamString(router.query.hash);
 
   const { data, isPlaceholderData, isError, error } = useApiQuery('contractInfo:pool', {
-    pathParams: { hash, chainId: config.chain.id },
+    pathParams: { hash, instanceId: config.apis.contractInfo?.instanceId },
     queryOptions: {
       placeholderData: POOL,
       refetchOnMount: false,

@@ -463,7 +463,9 @@ This feature is **enabled by default**. To switch it off pass `NEXT_PUBLIC_ADVAN
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_CONTRACT_INFO_API_HOST | `string` | Contract Info API endpoint url | Required | - | `https://contracts-info.services.blockscout.com` | v1.1.0+ |
+| NEXT_PUBLIC_CONTRACT_INFO_INSTANCE_ID | `string` | Instance ID to use in the service resource paths | - | same as `NEXT_PUBLIC_NETWORK_ID` | `420:duck` | <upcoming> |
 | NEXT_PUBLIC_ADMIN_SERVICE_API_HOST | `string` | Admin Service API endpoint url | Required | - | `https://admin-rs.services.blockscout.com` | v1.1.0+ |
+| NEXT_PUBLIC_ADMIN_RS_INSTANCE_ID | `string` | Instance ID to use in the service resource paths | - | same as `NEXT_PUBLIC_NETWORK_ID` | `420:duck` | <upcoming> |
 
 &nbsp;
 
@@ -606,6 +608,7 @@ Ads are enabled by default on all self-hosted instances. If you would like to di
 | NEXT_PUBLIC_MARKETPLACE_ENABLED | `boolean` | `true` means that the marketplace page will be enabled | Required | - | `true` | v1.24.1+ |
 | NEXT_PUBLIC_MARKETPLACE_CONFIG_URL | `string` | URL of configuration file (`.json` format only) which contains list of apps that will be shown on the marketplace page. See [below](#marketplace-app-configuration-properties) list of available properties for an app. Can be replaced with NEXT_PUBLIC_ADMIN_SERVICE_API_HOST | Required | - | `https://example.com/marketplace_config.json` | v1.0.x+ |
 | NEXT_PUBLIC_ADMIN_SERVICE_API_HOST | `string` | Admin Service API endpoint url. Can be used instead of NEXT_PUBLIC_MARKETPLACE_CONFIG_URL | - | - | `https://admin-rs.services.blockscout.com` | v1.1.0+ |
+| NEXT_PUBLIC_ADMIN_RS_INSTANCE_ID | `string` | Instance ID to use in the service resource paths | - | same as `NEXT_PUBLIC_NETWORK_ID` | `420:duck` | <upcoming> |
 | NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM | `string` | Link to form where authors can submit their dapps to the marketplace | Required | - | `https://airtable.com/shrqUAcjgGJ4jU88C` | v1.0.x+ |
 | NEXT_PUBLIC_MARKETPLACE_SUGGEST_IDEAS_FORM | `string` | Link to form where users can suggest ideas for the marketplace | - | - | `https://airtable.com/appiy5yijZpMMSKjT/pag3t82DUCyhGRZZO/form` | v1.24.0+ |
 | NEXT_PUBLIC_NETWORK_RPC_URL | `string` | See in [Blockchain parameters](#blockchain-parameters) section | Required | - | `https://core.poa.network` | v1.0.x+ |
@@ -702,6 +705,7 @@ This feature is **enabled by default** with the `['metamask']` value. To switch 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_CONTRACT_INFO_API_HOST | `string` | Contract Info API endpoint url | Required | - | `https://contracts-info.services.blockscout.com` | v1.0.x+ |
+| NEXT_PUBLIC_CONTRACT_INFO_INSTANCE_ID | `string` | Instance ID to use in the service resource paths | - | same as `NEXT_PUBLIC_NETWORK_ID` | `420:duck` | <upcoming> |
 
 &nbsp;
 
@@ -746,6 +750,7 @@ This feature allows you to submit an application with a public address tag.
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_METADATA_SERVICE_API_HOST | `string` | Metadata Service API endpoint url | Required | - | `https://metadata.services.blockscout.com` | v1.30.0+ |
 | NEXT_PUBLIC_ADMIN_SERVICE_API_HOST | `string` | Admin Service API endpoint url | Required | - | `https://admin-rs.services.blockscout.com` | v1.1.0+ |
+| NEXT_PUBLIC_ADMIN_RS_INSTANCE_ID | `string` | Instance ID to use in the service resource paths | - | same as `NEXT_PUBLIC_NETWORK_ID` | `420:duck` | <upcoming> |
 | NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY | `string` | See [below](#google-recaptcha) | true | - | `<your-secret>` | v1.0.x+ |
 
 &nbsp;
@@ -981,6 +986,7 @@ This feature enables Blockscout Merits program. It requires that the [My account
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_DEX_POOLS_ENABLED | `boolean` | Set to true to enable the feature | Required | - | `true` | v1.37.0+ |
 | NEXT_PUBLIC_CONTRACT_INFO_API_HOST | `string` | Contract Info API endpoint url | Required | - | `https://contracts-info.services.blockscout.com` | v1.0.x+ |
+| NEXT_PUBLIC_CONTRACT_INFO_INSTANCE_ID | `string` | Instance ID to use in the service resource paths | - | same as `NEXT_PUBLIC_NETWORK_ID` | `420:duck` | <upcoming> |
 
 &nbsp;
 

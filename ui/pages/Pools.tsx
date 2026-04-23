@@ -24,7 +24,7 @@ const Pools = () => {
 
   const poolsQuery = useQueryWithPages({
     resourceName: 'contractInfo:pools',
-    pathParams: { chainId: config.chain.id },
+    pathParams: { instanceId: config.apis.contractInfo?.instanceId },
     filters: { query: debouncedSearchTerm },
     options: {
       placeholderData: { items: Array(50).fill(POOL), next_page_params: { page_token: 'a', page_size: 50 } },
