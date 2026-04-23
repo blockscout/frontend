@@ -58,6 +58,15 @@ test('with DeFi dropdown +@dark-mode +@mobile', async({ render, page, mockApiRes
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1500, height: 220 } });
 });
 
+test('keeps gas slot visible when stats omit gas prices', async({ render, mockApiResponse, page }) => {
+  await mockApiResponse('general:stats', statsMock.withoutGasInfo);
+  await render(<TopBar/>);
+
+  const gasLabel = page.getByText(/Gas\b/).first();
+  await expect(gasLabel).toBeVisible();
+  await expect(page.getByText(/Gas\s*—/)).toBeVisible();
+});
+
 test('with Get gas button', async({ render, mockApiResponse, mockEnvs, mockAssetResponse }) => {
   const ICON_URL = 'https://localhost:3000/my-icon.png';
 

@@ -50,7 +50,11 @@ const TopBarStats = () => {
 
   const hasNativeCoinPrice = data?.coin_price && !config.UI.nativeCoinPrice.isHidden;
   const hasSecondaryCoinPrice = data?.secondary_coin_price && config.chain.secondaryCoin.symbol && (hasNativeCoinPrice ? !isMobile : true);
-  const hasGasInfo = enrichedData?.gas_prices && enrichedData.gas_prices.average !== null && config.features.gasTracker.isEnabled && !isMobile;
+  // Keep the gas slot visible whenever the gas-tracker feature is enabled and we're on desktop,
+  // even if the stats API returns an empty/null payload. Missing values are rendered as "—" below
+  // so the top bar never flickers or disappears on transient nulls or partial responses.
+  const hasGasSlot = config.features.gasTracker.isEnabled && !isMobile;
+  const hasGasPriceValue = Boolean(enrichedData?.gas_prices && enrichedData.gas_prices.average !== null);
 
   return (
     <>
@@ -82,18 +86,22 @@ const TopBarStats = () => {
             </Skeleton>
           </Flex>
         ) }
-        { (hasNativeCoinPrice || hasSecondaryCoinPrice) && hasGasInfo && <TextSeparator/> }
-        { hasGasInfo && enrichedData && (
+        { (hasNativeCoinPrice || hasSecondaryCoinPrice) && hasGasSlot && <TextSeparator/> }
+        { hasGasSlot && (
           <>
             <Skeleton loading={ isPlaceholderData } whiteSpace="pre-wrap">
               <chakra.span color="text.secondary">Gas </chakra.span>
-              <GasInfoTooltip data={ enrichedData } dataUpdatedAt={ dataUpdatedAt } placement={ !data?.coin_price ? 'bottom-start' : undefined }>
-                <Link>
-                  <GasPrice data={ enrichedData.gas_prices?.average ?? null }/>
-                </Link>
-              </GasInfoTooltip>
+              { hasGasPriceValue && enrichedData ? (
+                <GasInfoTooltip data={ enrichedData } dataUpdatedAt={ dataUpdatedAt } placement={ !data?.coin_price ? 'bottom-start' : undefined }>
+                  <Link>
+                    <GasPrice data={ enrichedData.gas_prices?.average ?? null }/>
+                  </Link>
+                </GasInfoTooltip>
+              ) : (
+                <chakra.span>—</chakra.span>
+              ) }
             </Skeleton>
-            { !isPlaceholderData && <GetGasButton/> }
+            { !isPlaceholderData && hasGasPriceValue && <GetGasButton/> }
           </>
         ) }
       </Flex>
