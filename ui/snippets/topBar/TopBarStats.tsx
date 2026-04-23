@@ -48,11 +48,14 @@ const TopBarStats = () => {
 
   const enrichedData = data ? enrichGasStats(data, dataUpdatedAt) : data;
 
-  const hasNativeCoinPrice = data?.coin_price && !config.UI.nativeCoinPrice.isHidden;
-  const hasSecondaryCoinPrice = data?.secondary_coin_price && config.chain.secondaryCoin.symbol && (hasNativeCoinPrice ? !isMobile : true);
-  // Keep the gas slot visible whenever the gas-tracker feature is enabled and we're on desktop,
+  // Keep the coin-price slots visible whenever their feature flag + viewport preconditions hold,
   // even if the stats API returns an empty/null payload. Missing values are rendered as "—" below
-  // so the top bar never flickers or disappears on transient nulls or partial responses.
+  // so the top bar never flickers or collapses on transient nulls or partial responses.
+  const hasNativeCoinSlot = !config.UI.nativeCoinPrice.isHidden;
+  const hasNativeCoinPriceValue = Boolean(data?.coin_price);
+  const hasSecondaryCoinSlot = Boolean(config.chain.secondaryCoin.symbol) && (hasNativeCoinSlot ? !isMobile : true);
+  const hasSecondaryCoinPriceValue = Boolean(data?.secondary_coin_price);
+  // Same decouple for the gas slot: slot visibility tracks feature flag + viewport only.
   const hasGasSlot = config.features.gasTracker.isEnabled && !isMobile;
   const hasGasPriceValue = Boolean(enrichedData?.gas_prices && enrichedData.gas_prices.average !== null);
 
@@ -63,13 +66,17 @@ const TopBarStats = () => {
         alignItems="center"
         fontWeight={ 500 }
       >
-        { hasNativeCoinPrice && (
+        { hasNativeCoinSlot && (
           <Flex columnGap={ 1 }>
             <Skeleton loading={ isPlaceholderData }>
               <chakra.span color="text.secondary">{ config.chain.currency.symbol } </chakra.span>
-              <span>${ Number(data.coin_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 }) }</span>
+              { hasNativeCoinPriceValue && data ? (
+                <span>${ Number(data.coin_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 }) }</span>
+              ) : (
+                <chakra.span>—</chakra.span>
+              ) }
             </Skeleton>
-            { data.coin_price_change_percentage && !(isMobile && Boolean(config.UI.featuredNetworks.items)) && (
+            { hasNativeCoinPriceValue && data?.coin_price_change_percentage && !(isMobile && Boolean(config.UI.featuredNetworks.items)) && (
               <Skeleton loading={ isPlaceholderData }>
                 <chakra.span color={ Number(data.coin_price_change_percentage) >= 0 ? 'green.500' : 'red.500' }>
                   { Number(data.coin_price_change_percentage).toFixed(2) }%
@@ -78,15 +85,19 @@ const TopBarStats = () => {
             ) }
           </Flex>
         ) }
-        { hasSecondaryCoinPrice && (
-          <Flex columnGap={ 1 } ml={ data?.coin_price ? 3 : 0 }>
+        { hasSecondaryCoinSlot && (
+          <Flex columnGap={ 1 } ml={ hasNativeCoinPriceValue ? 3 : 0 }>
             <Skeleton loading={ isPlaceholderData }>
               <chakra.span color="text.secondary">{ config.chain.secondaryCoin.symbol } </chakra.span>
-              <span>${ Number(data.secondary_coin_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 }) }</span>
+              { hasSecondaryCoinPriceValue && data ? (
+                <span>${ Number(data.secondary_coin_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 }) }</span>
+              ) : (
+                <chakra.span>—</chakra.span>
+              ) }
             </Skeleton>
           </Flex>
         ) }
-        { (hasNativeCoinPrice || hasSecondaryCoinPrice) && hasGasSlot && <TextSeparator/> }
+        { (hasNativeCoinSlot || hasSecondaryCoinSlot) && hasGasSlot && <TextSeparator/> }
         { hasGasSlot && (
           <>
             <Skeleton loading={ isPlaceholderData } whiteSpace="pre-wrap">

@@ -67,6 +67,51 @@ test('keeps gas slot visible when stats omit gas prices', async({ render, mockAp
   await expect(page.getByText(/Gas\s*—/)).toBeVisible();
 });
 
+test('keeps native coin slot visible when coin price is null', async({ render, mockApiResponse, page }) => {
+  await mockApiResponse('general:stats', {
+    ...statsMock.base,
+    coin_price: null,
+    coin_price_change_percentage: null,
+  });
+  await render(<TopBar/>);
+
+  // Em-dash fallback rendered in place of the missing price — slot did not collapse,
+  // and no NaN artifacts leaked into the DOM.
+  await expect(page.getByText('—').first()).toBeVisible();
+  await expect(page.getByText(/\$NaN/)).toHaveCount(0);
+  await expect(page.getByText(/NaN%/)).toHaveCount(0);
+});
+
+test('keeps secondary coin slot visible when only native price is present', async({ render, mockApiResponse, mockEnvs, page }) => {
+  // Enable the secondary coin symbol via env so the slot is gated on.
+  await mockEnvs([
+    [ 'NEXT_PUBLIC_NETWORK_SECONDARY_COIN_SYMBOL', 'DUCK' ],
+  ]);
+  await mockApiResponse('general:stats', {
+    ...statsMock.base,
+    secondary_coin_price: null,
+  });
+  await render(<TopBar/>);
+
+  // Secondary symbol label "DUCK" still rendered even though its price is null,
+  // and its value falls back to "—" rather than "$NaN".
+  await expect(page.getByText(/DUCK/)).toBeVisible();
+  await expect(page.getByText(/\$NaN/)).toHaveCount(0);
+});
+
+test('renders price without NaN percentage on partial coin-price payload', async({ render, mockApiResponse, page }) => {
+  await mockApiResponse('general:stats', {
+    ...statsMock.base,
+    coin_price: '0.05',
+    coin_price_change_percentage: null,
+  });
+  await render(<TopBar/>);
+
+  // Price itself still renders ($0.05), and no NaN-percentage span is emitted.
+  await expect(page.getByText(/\$0\.05/).first()).toBeVisible();
+  await expect(page.getByText(/NaN%/)).toHaveCount(0);
+});
+
 test('with Get gas button', async({ render, mockApiResponse, mockEnvs, mockAssetResponse }) => {
   const ICON_URL = 'https://localhost:3000/my-icon.png';
 
