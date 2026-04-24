@@ -15,7 +15,7 @@
     "jsx": "preserve",
     "incremental": true,
     "baseUrl": ".",
-    "ignoreDeprecations": "6.0",
+    "ignoreDeprecations": "5.0",
     "types": ["node"],
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.node.ts", "**/*.tsx", "**/*.pw.tsx", "decs.d.ts", "global.d.ts"],
