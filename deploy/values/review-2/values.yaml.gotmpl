@@ -4,16 +4,16 @@ imagePullSecrets:
   - name: regcred
 config:
   network:
-    id: 420
-    name: "Base"
-    shortname: Base
+    id: 11155111
+    name: Blockscout
+    shortname: Blockscout
     currency:
       name: Ether
       symbol: ETH
       decimals: 18
   account:
     enabled: true
-  testnet: true
+  testnet: false
 blockscout:
   enabled: false
 stats:
@@ -23,7 +23,7 @@ frontend:
   replicaCount: 1
   image:
     repository: ghcr.io/blockscout/frontend-private
-    tag: review-{{ requiredEnv "GITHUB_REF_NAME_SLUG" }}
+    tag: review-2-{{ requiredEnv "GITHUB_REF_NAME_SLUG" }}
     pullPolicy: Always
   ingress:
     enabled: true
@@ -38,7 +38,7 @@ frontend:
       nginx.ingress.kubernetes.io/proxy-buffer-size: "128k"
       nginx.ingress.kubernetes.io/proxy-buffers-number: "8"
       cert-manager.io/cluster-issuer: "zerossl-prod"
-    hostname: review-l2-{{ requiredEnv "GITHUB_REF_NAME_SLUG" }}.k8s-dev.blockscout.com
+    hostname: review-2-{{ requiredEnv "GITHUB_REF_NAME_SLUG" }}.k8s-dev.blockscout.com
 
   resources:
     limits:
@@ -52,6 +52,9 @@ frontend:
     NEXT_PUBLIC_USE_NEXT_JS_PROXY: true
     SKIP_ENVS_VALIDATION: true
   envFromSecret:
-    NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID: ref+vault://deployment-values/blockscout/dev/review-l2?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID
-    NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY: ref+vault://deployment-values/blockscout/eth-sepolia/testnet?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/RE_CAPTCHA_CLIENT_KEY
+    NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID: ref+vault://deployment-values/blockscout/dev/review?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID
+    NEXT_PUBLIC_GOOGLE_ANALYTICS_PROPERTY_ID: ref+vault://deployment-values/blockscout/dev/review?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_GOOGLE_ANALYTICS_PROPERTY_ID
+    NEXT_PUBLIC_GROWTH_BOOK_CLIENT_KEY: ref+vault://deployment-values/blockscout/dev/review?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_GROWTH_BOOK_CLIENT_KEY
     NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN: ref+vault://deployment-values/blockscout/common?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN
+    NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY: ref+vault://deployment-values/blockscout/eth-sepolia/testnet?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/RE_CAPTCHA_CLIENT_KEY
+    NEXT_PUBLIC_ROLLBAR_CLIENT_TOKEN: ref+vault://deployment-values/blockscout/common?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_ROLLBAR_CLIENT_TOKEN

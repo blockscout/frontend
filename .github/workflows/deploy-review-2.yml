@@ -1,4 +1,4 @@
-name: Deploy review environment (L2)
+name: Deploy review environment (2)
 
 on:
   workflow_dispatch:
@@ -67,17 +67,17 @@ jobs:
     uses: './.github/workflows/publish-image.yml'
     with:
         tags: |
-          type=raw,value=review-${{ needs.make_slug.outputs.REF_SLUG }}
+          type=raw,value=review-2-${{ needs.make_slug.outputs.REF_SLUG }}
         build_args: ENVS_PRESET=${{ inputs.envs_preset }}
         platforms: linux/amd64
     secrets: inherit
 
-  deploy_review_l2:
-    name: Deploy frontend (L2)
+  deploy_review:
+    name: Deploy frontend
     needs: [ make_slug, publish_image ]
     uses: blockscout/actions/.github/workflows/deploy_helmfile.yaml@main
     with:
-      appName: review-l2-${{ needs.make_slug.outputs.REF_SLUG }}
+      appName: review-2-${{ needs.make_slug.outputs.REF_SLUG }}
       globalEnv: review
       helmfileDir: deploy
       kubeConfigSecret: ci/data/dev/kubeconfig/k8s-dev

@@ -13,19 +13,19 @@ permissions:
   id-token: write
 
 jobs:
-  cleanup_release:
+  cleanup_deployment:
     uses: blockscout/actions/.github/workflows/cleanup_helmfile.yaml@main
     with:
-      appName: review-l2-$GITHUB_REF_NAME_SLUG
+      appName: review-$GITHUB_REF_NAME_SLUG
       globalEnv: review
       helmfileDir: deploy
       kubeConfigSecret: ci/data/dev/kubeconfig/k8s-dev
       vaultRole: ci-dev
     secrets: inherit
-  cleanup_l2_release:
+  cleanup_deployment_2:
     uses: blockscout/actions/.github/workflows/cleanup_helmfile.yaml@main
     with:
-      appName: review-$GITHUB_REF_NAME_SLUG
+      appName: review-2-$GITHUB_REF_NAME_SLUG
       globalEnv: review
       helmfileDir: deploy
       kubeConfigSecret: ci/data/dev/kubeconfig/k8s-dev
@@ -35,4 +35,9 @@ jobs:
     uses: blockscout/actions/.github/workflows/cleanup_docker.yaml@main
     with:
       dockerImage: review-$GITHUB_REF_NAME_SLUG
+    secrets: inherit
+  cleanup_docker_image_2:
+    uses: blockscout/actions/.github/workflows/cleanup_docker.yaml@main
+    with:
+      dockerImage: review-2-$GITHUB_REF_NAME_SLUG
     secrets: inherit

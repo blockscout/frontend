@@ -15,18 +15,18 @@ repositories:
 
 ---
 releases:
-  # Deploy review L2
+  # Deploy demo 2 - for case when ENVs validator needs to be disabled (for example, multichain)
   - name: bs-stack
     chart: blockscout/blockscout-stack
     version: 1.*.*
-    namespace: review-l2-{{ requiredEnv "GITHUB_REF_NAME_SLUG" }}
+    namespace: review-2-{{ requiredEnv "GITHUB_REF_NAME_SLUG" }}
     labels:
-      app: review-l2-{{ requiredEnv "GITHUB_REF_NAME_SLUG" }}
+      app: review-2-{{ requiredEnv "GITHUB_REF_NAME_SLUG" }}
     values:
-    - values/review-l2/values.yaml.gotmpl
+    - values/review-2/values.yaml.gotmpl
     - global:
         env: "review"
-  # Deploy review
+  # Deploy demo
   - name: bs-stack
     chart: blockscout/blockscout-stack
     version: 1.*.*
