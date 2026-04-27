@@ -120,6 +120,7 @@
 	| "navigation/gas_tracker"
 	| "navigation/hot_contracts"
 	| "navigation/hourglass"
+	| "navigation/ictt_users"
 	| "navigation/internal_txns"
 	| "navigation/merits_with_dot"
 	| "navigation/merits"

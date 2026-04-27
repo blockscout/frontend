@@ -108,7 +108,7 @@ const TokenPageContent = () => {
   });
 
   const verifiedInfoQuery = useApiQuery('contractInfo:token_verified_info', {
-    pathParams: { hash: tokenQuery.data?.address_hash, chainId: config.chain.id },
+    pathParams: { hash: tokenQuery.data?.address_hash, instanceId: config.apis.contractInfo?.instanceId },
     queryOptions: { enabled: Boolean(tokenQuery.data) && !tokenQuery.isPlaceholderData && config.features.verifiedTokens.isEnabled },
   });
 

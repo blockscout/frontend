@@ -34,5 +34,5 @@ export const getIntervalValueFromQuery = (query: string | Array<string> | undefi
     }
   }
 
-  return INTERVAL_ITEMS[0].id;
+  return '1d';
 };

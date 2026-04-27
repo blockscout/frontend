@@ -40,6 +40,6 @@ test('builds URL with array-like query parameters', () => {
 });
 
 test('builds URL for resource with custom API endpoint', () => {
-  const url = buildUrl('contractInfo:token_verified_info', { chainId: '42', hash: '0x11' });
+  const url = buildUrl('contractInfo:token_verified_info', { instanceId: '42', hash: '0x11' });
   expect(url).toBe('https://localhost:3005/api/v1/chains/42/token-infos/0x11');
 });

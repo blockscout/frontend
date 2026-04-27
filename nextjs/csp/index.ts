@@ -1,8 +1,12 @@
 import type { NextRequest } from 'next/server';
 
 import generateCspPolicy from './generateCspPolicy';
+import generateNftHtmlEmbedCspPolicy from './generateNftHtmlEmbedCspPolicy';
+
+const NFT_HTML_EMBED_PATH = '/nft-html-embed.html';
 
 let cspPolicies: { 'private': string; 'default': string } | undefined = undefined;
+let nftHtmlEmbedCsp: string | undefined = undefined;
 
 async function initializeCspPolicies() {
   if (!cspPolicies) {
@@ -25,6 +29,14 @@ export async function get(req?: NextRequest): Promise<string> {
   ) : undefined;
 
   const isPrivateMode = appProfile === 'private';
+
+  if (req?.nextUrl.pathname === NFT_HTML_EMBED_PATH && !isPrivateMode) {
+    if (!nftHtmlEmbedCsp) {
+      nftHtmlEmbedCsp = generateNftHtmlEmbedCspPolicy();
+    }
+
+    return nftHtmlEmbedCsp;
+  }
 
   return isPrivateMode ? cspPolicies?.private || '' : cspPolicies?.default || '';
 }

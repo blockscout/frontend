@@ -50,7 +50,7 @@ export default function MarketplaceApp() {
         }
         return item;
       } else {
-        return apiFetch('admin:marketplace_dapp', { pathParams: { chainId: config.chain.id, dappId: id } });
+        return apiFetch('admin:marketplace_dapp', { pathParams: { instanceId: config.apis.admin?.instanceId, dappId: id } });
       }
     },
     enabled: feature.isEnabled,

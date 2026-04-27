@@ -4,11 +4,8 @@ import React from 'react';
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 import type { ClusterChainConfig } from 'types/multichain';
 
-import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
-import ChainIcon from 'ui/shared/externalChains/ChainIcon';
+import ChainSnippetList from 'ui/shared/externalChains/ChainSnippetList';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 
 interface Props {
@@ -35,23 +32,7 @@ const MultichainEcosystemsListItem = ({ data, chainInfo, isLoading }: Props) => 
 
   return (
     <ListItemMobile rowGap={ 3 } py={ 4 } fontSize="sm" alignItems="stretch">
-      <HStack justifyContent="space-between" fontWeight={ 600 }>
-        <HStack maxW="50%">
-          <ChainIcon data={ chainInfo } isLoading={ isLoading }/>
-          <Link
-            href={ chainInfo?.explorer_url }
-            external
-            loading={ isLoading }
-            maxW="100%"
-          >
-            <TruncatedText text={ chainInfo?.name ?? 'Unknown chain' } loading={ isLoading }/>
-          </Link>
-        </HStack>
-        <HStack gap={ 0 } flexShrink={ 0 }>
-          <Skeleton loading={ isLoading } color="text.secondary"><span>{ data.chain_id }</span></Skeleton>
-          <CopyToClipboard text={ String(data.chain_id) } isLoading={ isLoading }/>
-        </HStack>
-      </HStack>
+      { chainInfo && <ChainSnippetList data={ chainInfo } isLoading={ isLoading }/> }
       <Grid gridTemplateColumns="140px 1fr" columnGap={ 2 } rowGap={ 3 }>
         <Skeleton loading={ isLoading } fontWeight={ 500 }>
           <span>Active addresses</span>

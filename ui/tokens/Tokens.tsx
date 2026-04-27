@@ -3,6 +3,7 @@ import React from 'react';
 
 import type { TokensSortingValue } from 'types/api/tokens';
 
+import type { OnValueChangeHandler } from 'toolkit/chakra/select';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
@@ -12,7 +13,7 @@ import TokensTable from './TokensTable';
 
 interface Props {
   query: QueryWithPagesResult<'general:tokens'> | QueryWithPagesResult<'general:tokens_bridged'> | QueryWithPagesResult<'multichainAggregator:tokens'>;
-  onSortChange?: (value: TokensSortingValue) => void;
+  onSortChange?: OnValueChangeHandler;
   sort?: TokensSortingValue;
   actionBar?: React.ReactNode;
   hasActiveFilters: boolean;
@@ -69,7 +70,7 @@ const Tokens = ({ query, onSortChange, sort, actionBar, description, hasActiveFi
       emptyStateProps={{
         term: 'token',
       }}
-      actionBar={ query.pagination.isVisible || hasActiveFilters ? actionBar : null }
+      actionBar={ actionBar }
     >
       { content }
     </DataListDisplay>

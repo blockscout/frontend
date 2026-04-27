@@ -4,7 +4,7 @@ import React from 'react';
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import { currencyUnits } from 'lib/units';
-import { ChartWidget } from 'toolkit/components/charts/ChartWidget';
+import { LineChartWidget } from 'toolkit/components/charts/line/LineChartWidget';
 import { useChartsConfig } from 'ui/shared/chart/config';
 
 interface Props {
@@ -37,7 +37,7 @@ const AddressCoinBalanceChart = ({ addressHash }: Props) => {
   }, [ chartsConfig, data ]);
 
   return (
-    <ChartWidget
+    <LineChartWidget
       isError={ isError }
       title="Balances"
       charts={ charts }

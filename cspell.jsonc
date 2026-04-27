@@ -2,7 +2,7 @@
     // Version of the setting file.  Always 0.2
     "version": "0.2",
     // language - current active spelling language
-    "language": "en",
+    "language": "en,en-GB",
     "useGitignore": true,
     "ignorePaths": [
         "**/*.svg",
@@ -102,6 +102,7 @@
         "DRPC",
         "DTEND",
         "duckduckgo",
+        "dynamicwaas",
         "eamodio",
         "Eigenda",
         "Emelyanov",
@@ -144,6 +145,7 @@
         "Kiryl",
         "labelable",
         "laquo",
+        "LCIA",
         "libc",
         "libp",
         "Liquality",
@@ -173,6 +175,7 @@
         "noves",
         "numine",
         "nums",
+        "octav",
         "okex",
         "okhttp",
         "opblock",

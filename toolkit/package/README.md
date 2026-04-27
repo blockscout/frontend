@@ -176,4 +176,4 @@ For issues, feature requests, or questions, please open an issue in the reposito
 
 ## License
 
-This project is licensed under the GNU General Public License v3.
+This project is licensed under the Blockscout Software Licence. See the [LICENSE](https://raw.githubusercontent.com/blockscout/frontend/refs/heads/main/LICENSE) file for full terms.

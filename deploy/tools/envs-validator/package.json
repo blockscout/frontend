@@ -3,7 +3,6 @@
   "type": "module",
   "version": "1.0.0",
   "main": "dist/index.js",
-  "license": "MIT",
   "scripts": {
     "build": "vite build --logLevel error",
     "validate": "node ./dist/index.js",

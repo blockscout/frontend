@@ -21,7 +21,7 @@ test.beforeEach(async({ mockEnvs, mockAssetResponse, mockApiResponse }) => {
   await mockEnvs([
     [ 'NEXT_PUBLIC_MARKETPLACE_ENABLED', 'true' ],
   ]);
-  await mockApiResponse('admin:marketplace_dapps', appsMock, { pathParams: { chainId: config.chain.id } });
+  await mockApiResponse('admin:marketplace_dapps', appsMock, { pathParams: { instanceId: config.apis.admin?.instanceId } });
   await Promise.all(appsMock.map(app => mockAssetResponse(app.logo, './playwright/mocks/image_s.jpg')));
 });
 

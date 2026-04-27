@@ -1,14 +1,17 @@
+import { Flex, Text } from '@chakra-ui/react';
 import ERC20Artifact from '@openzeppelin/contracts/build/contracts/ERC20.json';
 import NftArtifact from '@openzeppelin/contracts/build/contracts/ERC721.json';
 import { useCallback } from 'react';
 import { waitForTransactionReceipt } from 'viem/actions';
 import { useAccount, useWriteContract, useSwitchChain } from 'wagmi';
 
+import type { EssentialDappsChainConfig } from 'types/client/marketplace';
 import type { AllowanceType } from 'types/client/revoke';
 
 import useRewardsActivity from 'lib/hooks/useRewardsActivity';
 import * as mixpanel from 'lib/mixpanel/index';
 import { toaster } from 'toolkit/chakra/toaster';
+import TxEntity from 'ui/shared/entities/tx/TxEntity';
 
 import createPublicClient from '../lib/createPublicClient';
 
@@ -18,13 +21,13 @@ export default function useRevoke() {
   const { writeContractAsync } = useWriteContract();
   const { trackTransaction, trackTransactionConfirm } = useRewardsActivity();
 
-  return useCallback(async(approval: AllowanceType, chainId: number) => {
+  return useCallback(async(approval: AllowanceType, chain?: EssentialDappsChainConfig) => {
     try {
       if (!userAddress) return;
 
-      await switchChainAsync({ chainId });
+      await switchChainAsync({ chainId: Number(chain?.id) });
 
-      const activityResponse = await trackTransaction(userAddress, approval.address, String(chainId));
+      const activityResponse = await trackTransaction(userAddress, approval.address, chain?.id);
 
       const isErc20 = approval.type === 'ERC-20';
 
@@ -34,7 +37,7 @@ export default function useRevoke() {
         abi: isErc20 ? ERC20Artifact.abi : NftArtifact.abi,
         functionName: isErc20 ? 'approve' : 'setApprovalForAll',
         args: [ approval.spender, isErc20 ? 0 : false ],
-        chainId,
+        chainId: Number(chain?.id),
       });
 
       mixpanel.logEvent(mixpanel.EventTypes.WALLET_ACTION, {
@@ -42,14 +45,14 @@ export default function useRevoke() {
         Address: userAddress,
         AppId: 'revoke',
         Source: 'Essential dapps',
-        ChainId: String(chainId),
+        ChainId: chain?.id,
       });
 
       if (activityResponse?.token) {
         await trackTransactionConfirm(hash, activityResponse.token);
       }
 
-      const publicClient = createPublicClient(String(chainId));
+      const publicClient = createPublicClient(chain?.id);
       if (!publicClient) {
         throw new Error('Public client not found');
       }
@@ -62,7 +65,21 @@ export default function useRevoke() {
 
       toaster.success({
         title: 'Success',
-        description: 'Approval revoked successfully.',
+        meta: {
+          renderDescription: () => (
+            <Flex direction="column">
+              <Text>Approval revoked successfully.</Text>
+              <TxEntity
+                hash={ hash }
+                text="View transaction"
+                link={{ external: true }}
+                noCopy
+                noIcon
+                chain={ chain }
+              />
+            </Flex>
+          ),
+        },
       });
 
       return true;
@@ -70,7 +87,10 @@ export default function useRevoke() {
     } catch (error) {
       toaster.error({
         title: 'Error',
-        description: (error as Error)?.message || 'Something went wrong. Try again later.',
+        description:
+          (error as { shortMessage?: string })?.shortMessage ||
+          (error as Error)?.message ||
+          'Something went wrong. Try again later.',
       });
 
       return false;

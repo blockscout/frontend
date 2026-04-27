@@ -13,7 +13,7 @@ export default function useWalletDynamic({ source, onConnect }: Params): Result 
   const [ isOpen ] = React.useState(false);
   const [ isClientLoaded, setIsClientLoaded ] = React.useState(false);
 
-  const { setShowDynamicUserProfile, setShowAuthFlow, setAuthMode, removeWallet } = useDynamicContext();
+  const { setShowDynamicUserProfile, setShowAuthFlow, setAuthMode, removeWallet, primaryWallet } = useDynamicContext();
 
   const openModal = React.useCallback(() => {
     setShowDynamicUserProfile(true);
@@ -59,6 +59,7 @@ export default function useWalletDynamic({ source, onConnect }: Params): Result 
   const account = useAccountDynamic();
   const address = account.address;
   const isConnected = isClientLoaded && !account.isDisconnected && account.address !== undefined;
+  const isDynamicWaaS = primaryWallet?.key === 'dynamicwaas';
 
   return React.useMemo(() => ({
     connect: handleConnect,
@@ -68,5 +69,6 @@ export default function useWalletDynamic({ source, onConnect }: Params): Result 
     isReconnecting: false,
     address,
     openModal,
-  }), [ handleConnect, handleDisconnect, isOpen, isConnected, address, openModal ]);
+    type: isDynamicWaaS ? 'dynamicwaas' : undefined,
+  }), [ handleConnect, handleDisconnect, isOpen, isConnected, address, openModal, isDynamicWaaS ]);
 }

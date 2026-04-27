@@ -29,7 +29,7 @@ const PopoverContent = ({ appId, userRating, source }: Props) => {
 
     try {
       await apiFetch('admin:marketplace_rate_dapp', {
-        pathParams: { chainId: config.chain.id, dappId: appId },
+        pathParams: { instanceId: config.apis.admin?.instanceId, dappId: appId },
         fetchParams: {
           method: 'POST',
           body: { rating: value },

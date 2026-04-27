@@ -22,19 +22,19 @@ const TokenInfoMenuItem = ({ hash, type }: ItemProps) => {
   const isAuth = useIsAuth();
 
   const verifiedAddressesQuery = useApiQuery('contractInfo:verified_addresses', {
-    pathParams: { chainId: config.chain.id },
+    pathParams: { instanceId: config.apis.contractInfo?.instanceId },
     queryOptions: {
       enabled: isAuth,
     },
   });
   const applicationsQuery = useApiQuery('admin:token_info_applications', {
-    pathParams: { chainId: config.chain.id, id: undefined },
+    pathParams: { instanceId: config.apis.admin?.instanceId, id: undefined },
     queryOptions: {
       enabled: isAuth,
     },
   });
   const tokenInfoQuery = useApiQuery('contractInfo:token_verified_info', {
-    pathParams: { hash, chainId: config.chain.id },
+    pathParams: { hash, instanceId: config.apis.contractInfo?.instanceId },
     queryOptions: {
       refetchOnMount: false,
     },

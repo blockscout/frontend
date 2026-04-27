@@ -45,7 +45,7 @@ const TokenInfoForm = ({ address, tokenName, application, onSubmit }: Props) => 
   const apiFetch = useApiFetch();
 
   const configQuery = useApiQuery('admin:token_info_applications_config', {
-    pathParams: { chainId: config.chain.id },
+    pathParams: { instanceId: config.apis.admin?.instanceId },
   });
 
   const formApi = useForm<Fields>({
@@ -67,7 +67,7 @@ const TokenInfoForm = ({ address, tokenName, application, onSubmit }: Props) => 
       const isNewApplication = !application?.id || [ 'REJECTED', 'APPROVED' ].includes(application.status);
 
       const result = await apiFetch<'admin:token_info_applications', TokenInfoApplication, { message: string }>('admin:token_info_applications', {
-        pathParams: { chainId: config.chain.id, id: !isNewApplication ? application.id : undefined },
+        pathParams: { instanceId: config.apis.admin?.instanceId, id: !isNewApplication ? application.id : undefined },
         fetchParams: {
           method: isNewApplication ? 'POST' : 'PUT',
           body: { submission },

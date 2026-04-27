@@ -68,7 +68,7 @@ const PublicTagsSubmitForm = ({ config, userInfo, onSubmitResult }: Props) => {
     const result = await Promise.all(requestsBody.map(async(body) => {
       return apiFetch<'admin:public_tag_application', unknown, { message: string }>(
         'admin:public_tag_application', {
-          pathParams: { chainId: appConfig.chain.id },
+          pathParams: { instanceId: appConfig.apis.admin?.instanceId },
           fetchParams: {
             method: 'POST',
             body: { submission: body },

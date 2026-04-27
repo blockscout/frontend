@@ -4,6 +4,8 @@ import type {
   GetDailyStatisticsResponse,
   InterchainMessage,
   InterchainTransfer,
+  StatsBridgedTokenRow,
+  StatsChainRow,
 } from '@blockscout/interchain-indexer-types';
 import { MessageStatus } from '@blockscout/interchain-indexer-types';
 
@@ -11,6 +13,13 @@ import { ADDRESS_HASH } from './addressParams';
 import { TX_HASH } from './tx';
 
 const MESSAGE_ID = '0xde5c33c6b3424cec51ea6f5d081f64719d531eec74f2a2408141274c117c5f44';
+
+const TOKEN = {
+  address_hash: ADDRESS_HASH,
+  name: 'Wrapped AVAX',
+  symbol: 'WAVAX',
+  decimals: '18',
+};
 
 const CHAIN = {
   id: '8021',
@@ -25,12 +34,7 @@ export const INTERCHAIN_TRANSFER = {
   },
   message_id: MESSAGE_ID,
   status: MessageStatus.MESSAGE_STATUS_COMPLETED,
-  source_token: {
-    address_hash: ADDRESS_HASH,
-    name: 'Wrapped AVAX',
-    symbol: 'WAVAX',
-    decimals: '18',
-  },
+  source_token: TOKEN,
   source_amount: '80800000000000000',
   source_transaction_hash: TX_HASH,
   source_chain: CHAIN,
@@ -38,12 +42,7 @@ export const INTERCHAIN_TRANSFER = {
     hash: ADDRESS_HASH,
   },
   send_timestamp: '2026-01-07T18:41:50.000Z',
-  destination_token: {
-    address_hash: ADDRESS_HASH,
-    name: 'Wrapped AVAX',
-    symbol: 'WAVAX',
-    decimals: '18',
-  },
+  destination_token: TOKEN,
   destination_amount: '80800000000000000',
   destination_transaction_hash: TX_HASH,
   destination_chain: CHAIN,
@@ -89,3 +88,31 @@ export const INTERCHAIN_STATS_COMMON = {
   total_messages: 10823,
   total_transfers: 10822,
 } satisfies GetCommonStatisticsResponse;
+
+export const INTERCHAIN_STATS_CHAINS_ITEM = {
+  id: '8021',
+  name: 'NUMINE Mainnet',
+  logo: undefined,
+  explorer_url: 'https://subnets.avax.network/numi',
+  unique_transfer_users_count: 2544,
+} satisfies StatsChainRow;
+
+export const INTERCHAIN_BRIDGED_TOKEN_ITEM = {
+  stats_asset_id: '1',
+  name: 'Wrapped AVAX',
+  symbol: 'WAVAX',
+  icon_url: undefined,
+  input_transfers_count: 4906,
+  output_transfers_count: 6908,
+  total_transfers_count: 11814,
+  tokens: [
+    {
+      chain_id: CHAIN.id,
+      token_address: ADDRESS_HASH,
+      name: 'Wrapped AVAX',
+      symbol: 'WAVAX',
+      icon_url: undefined,
+      decimals: 18,
+    },
+  ],
+} satisfies StatsBridgedTokenRow;

@@ -1,3 +1,5 @@
+import { createListCollection } from '@chakra-ui/react';
+
 import type { TokensSortingValue } from 'types/api/tokens';
 import type { ClusterChainConfig } from 'types/multichain';
 
@@ -15,6 +17,10 @@ export const SORT_OPTIONS: Array<SelectOption<TokensSortingValue>> = [
   { label: 'On-chain market cap ascending', value: 'circulating_market_cap-asc' },
   { label: 'On-chain market cap descending', value: 'circulating_market_cap-desc' },
 ];
+
+export const TOKENS_SORT_COLLECTION = createListCollection({
+  items: SORT_OPTIONS,
+});
 
 export const getTokenFilterValue = (
   value: string | Array<string> | undefined,
