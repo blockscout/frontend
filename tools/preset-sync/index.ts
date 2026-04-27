@@ -18,7 +18,7 @@ const PRESETS = {
   mega_eth: 'https://megaeth.blockscout.com',
   mekong: 'https://mekong.blockscout.com',
   multichain_dev: 'https://superchain.k8s-dev.blockscout.com',
-  // multichain_prod: 'https://multichain.blockscout.com',
+  multichain_prod: 'https://explorer.blockscout.com',
   neon_devnet: 'https://neon-devnet.blockscout.com',
   numine: 'https://numine.blockscout.com',
   optimism: 'https://optimism.blockscout.com',
