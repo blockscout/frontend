@@ -35,7 +35,7 @@ export function getAxesParams(data: Data, axesConfig?: AxesConfig) {
 function getAxisParamsX(data: Data) {
   const min = d3.min(data, ({ items }) => d3.min(items, ({ date }) => date)) ?? new Date();
   const max = d3.max(data, ({ items }) => d3.max(items, ({ date }) => date)) ?? new Date();
-  const scale = d3.scaleTime().domain([ min, max ]);
+  const scale = d3.scaleUtc().domain([ min, max ]);
 
   return { min, max, scale };
 }
