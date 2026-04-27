@@ -53,9 +53,9 @@ export default function useChartQuery(id: string, resolution: Resolution, interv
 
   const items = React.useMemo(() => lineQuery.data?.chart?.map((item) => {
     const date = new Date(item.date);
-    const dateTo = new Date(item.date_to);
+    const dateTo = item.date_to ? new Date(item.date_to) : undefined;
     // For resolution greater than day, we have to use the date_to field to display X labels correctly
-    const dateFormatted = resolution === Resolution.DAY ? date : new Date(item.date_to ?? item.date);
+    const dateFormatted = resolution === Resolution.DAY ? date : dateTo ?? date;
     return {
       date_to: dateTo,
       value: Number(item.value),
