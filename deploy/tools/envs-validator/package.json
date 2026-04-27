@@ -11,7 +11,7 @@
   "devDependencies": {
     "dotenv-cli": "^7.2.1",
     "typescript": "5.4.2",
-    "vite": "6.4.1",
+    "vite": "6.4.2",
     "yup": "^1.2.0"
   }
 }
