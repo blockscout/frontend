@@ -35,9 +35,11 @@ jobs:
     uses: blockscout/actions/.github/workflows/cleanup_docker.yaml@main
     with:
       dockerImage: review-$GITHUB_REF_NAME_SLUG
+      imageName: frontend-private
     secrets: inherit
   cleanup_docker_image_2:
     uses: blockscout/actions/.github/workflows/cleanup_docker.yaml@main
     with:
       dockerImage: review-2-$GITHUB_REF_NAME_SLUG
+      imageName: frontend-private
     secrets: inherit
