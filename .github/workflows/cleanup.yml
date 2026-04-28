@@ -17,6 +17,7 @@ jobs:
     uses: blockscout/actions/.github/workflows/cleanup_helmfile.yaml@main
     with:
       appName: review-$GITHUB_REF_NAME_SLUG
+      namespace: review-$GITHUB_REF_NAME_SLUG
       globalEnv: review
       helmfileDir: deploy
       kubeConfigSecret: ci/data/dev/kubeconfig/k8s-dev
@@ -26,6 +27,7 @@ jobs:
     uses: blockscout/actions/.github/workflows/cleanup_helmfile.yaml@main
     with:
       appName: review-2-$GITHUB_REF_NAME_SLUG
+      namespace: review-2-$GITHUB_REF_NAME_SLUG
       globalEnv: review
       helmfileDir: deploy
       kubeConfigSecret: ci/data/dev/kubeconfig/k8s-dev
