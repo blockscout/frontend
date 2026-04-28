@@ -3,7 +3,7 @@ import React from 'react';
 
 import StatsWidget from 'ui/shared/stats/StatsWidget';
 
-import { useHomeLatestBatchQuery } from './homeDataContext';
+import { useHomeDataContext } from './homeDataContext';
 
 type Props = {
   className?: string;
@@ -11,7 +11,7 @@ type Props = {
 };
 
 const LatestBatchStatsWidget = ({ className, isLoading }: Props) => {
-  const latestBatchQuery = useHomeLatestBatchQuery();
+  const { latestBatchQuery } = useHomeDataContext();
 
   if (latestBatchQuery?.data === undefined) {
     return null;

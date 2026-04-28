@@ -10,9 +10,17 @@ export type HomeStatsWidgetItem = StatsWidgetProps & { id: HomeStatsWidgetId; co
 
 export type HomeStatsItem = HomeStatsComponentItem | HomeStatsWidgetItem;
 
-export const isHomeStatsItemEnabled = <T extends { id: HomeStatsWidgetId }>(item: T) => config.UI.homepage.stats.includes(item.id);
+export const homeStatsWidgetCommonStyles = {
+  _odd: {
+    _last: {
+      gridColumn: 'span 2',
+    },
+  },
+} as const;
 
-export const sortHomeStatsItems = <T extends { id: HomeStatsWidgetId }>(a: T, b: T) => {
+export const isHomeStatsItemEnabled = (item: { id: HomeStatsWidgetId }) => config.UI.homepage.stats.includes(item.id);
+
+export const sortHomeStatsItems = (a: { id: HomeStatsWidgetId }, b: { id: HomeStatsWidgetId }) => {
   const indexA = config.UI.homepage.stats.indexOf(a.id);
   const indexB = config.UI.homepage.stats.indexOf(b.id);
   if (indexA > indexB) {

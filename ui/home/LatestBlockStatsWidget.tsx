@@ -3,7 +3,7 @@ import React from 'react';
 
 import StatsWidget from 'ui/shared/stats/StatsWidget';
 
-import { useHomeBlocksQuery } from './homeDataContext';
+import { useHomeDataContext } from './homeDataContext';
 
 type Props = {
   className?: string;
@@ -12,10 +12,10 @@ type Props = {
 };
 
 const LatestBlockStatsWidget = ({ className, isLoading, fallbackValue }: Props) => {
-  const blocksQuery = useHomeBlocksQuery();
+  const { blocksQuery } = useHomeDataContext();
 
   const value = blocksQuery.data?.[0]?.height ?? fallbackValue;
-  if (!value) {
+  if (value == null) {
     return null;
   }
 

@@ -17,7 +17,7 @@ import { useHomeDataContext } from './homeDataContext';
 import LatestBatchStatsWidget from './LatestBatchStatsWidget';
 import LatestBlockStatsWidget from './LatestBlockStatsWidget';
 import type { HomeStatsItem } from './utils';
-import { isHomeStatsItemEnabled, sortHomeStatsItems } from './utils';
+import { homeStatsWidgetCommonStyles, isHomeStatsItemEnabled, sortHomeStatsItems } from './utils';
 
 const rollupFeature = config.features.rollup;
 const isOptimisticRollup = rollupFeature.isEnabled && rollupFeature.type === 'optimistic';
@@ -87,7 +87,7 @@ const Stats = () => {
     return [
       latestBatchQuery?.data !== undefined && {
         id: 'latest_batch' as const,
-        component: <LatestBatchStatsWidget isLoading={ Boolean(isLoading) }/>,
+        component: <LatestBatchStatsWidget isLoading={ Boolean(isLoading) } { ...homeStatsWidgetCommonStyles }/>,
       },
       (blocksQuery.data?.[0]?.height ?? statsData?.total_blocks?.value ?? apiData?.total_blocks) && {
         id: 'total_blocks' as const,
@@ -95,6 +95,7 @@ const Stats = () => {
           <LatestBlockStatsWidget
             isLoading={ Boolean(isLoading) }
             fallbackValue={ statsData?.total_blocks?.value ?? apiData?.total_blocks }
+            { ...homeStatsWidgetCommonStyles }
           />
         ),
       },
@@ -188,24 +189,21 @@ const Stats = () => {
       flexBasis="50%"
       flexGrow={ 1 }
     >
-      { items.map((item, index) => {
-        const _last = items.length % 2 === 1 && index === items.length - 1 ? { gridColumn: 'span 2' } : undefined;
-
+      { items.map((item) => {
         if ('component' in item) {
-          return React.cloneElement(item.component as React.ReactElement<{ _last?: { gridColumn?: string } }>, { key: item.id, _last });
+          return <React.Fragment key={ item.id }>{ item.component }</React.Fragment>;
         }
 
         return (
           <StatsWidget
             key={ item.id }
             { ...item }
+            { ...homeStatsWidgetCommonStyles }
             isLoading={ isLoading }
-            _last={ _last }
           />
         );
       }) }
     </Grid>
-
   );
 };
 

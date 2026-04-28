@@ -19,7 +19,7 @@ import FallbackRpcIcon from 'ui/shared/fallbacks/FallbackRpcIcon';
 
 import LatestBlocksDegraded from './fallbacks/LatestBlocksDegraded';
 import { useHomeRpcDataContext } from './fallbacks/rpcDataContext';
-import { useHomeBlocksQuery } from './homeDataContext';
+import { useHomeDataContext } from './homeDataContext';
 import LatestBlocksItem from './LatestBlocksItem';
 
 const LatestBlocks = () => {
@@ -31,7 +31,8 @@ const LatestBlocks = () => {
   } else {
     blocksMaxCount = isMobile ? 2 : 3;
   }
-  const { data, isPlaceholderData, isError } = useHomeBlocksQuery();
+  const { blocksQuery } = useHomeDataContext();
+  const { data, isPlaceholderData, isError } = blocksQuery;
   const initialList = useInitialList({
     data: data ?? [],
     idFn: (block) => block.height,
