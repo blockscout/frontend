@@ -132,7 +132,7 @@ const TxsStats = (props: Props) => {
           isLoading={ isLoading }
         />
       ) }
-      { txFeeSum24h != null && (
+      { !Object.is(txFeeSum24h, NaN) && (
         <StatsWidget
           label={ txsStatsQuery.data?.transactions_fee_24h?.title ?
             getStatsLabelFromTitle(txsStatsQuery.data?.transactions_fee_24h?.title) :

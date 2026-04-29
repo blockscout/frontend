@@ -61,7 +61,7 @@ export const SankeyChartLink = React.memo(({
   }
 
   const sanitizeSvgId = (value: string | number): string => String(value).replace(/[^\w-]/g, '_');
-  const useGradient = sourceColor != null && targetColor != null && sourceColor !== targetColor;
+  const useGradient = sourceColor !== undefined && targetColor !== undefined && sourceColor !== targetColor;
   const gradientId = useGradient ?
     `sankey-link-${ sanitizeSvgId(source.id) }-${ sanitizeSvgId(target.id) }-${ sanitizeSvgId(gradientIdSuffix ?? '') }` :
     undefined;

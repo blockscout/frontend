@@ -543,7 +543,7 @@ export default tseslint.config(
       'no-redeclare': 'off',
 
       // rules customizations
-      eqeqeq: [ 'error', 'allow-null' ],
+      eqeqeq: [ 'error' ],
       'id-match': [ 'error', '^[\\w$]+$' ],
       'max-len': [ 'error', 160, 4 ],
       'no-console': 'error',
