@@ -134,3 +134,19 @@ Remove commented-out code blocks. The git history preserves anything that might 
 
 - Import `dayjs` only via `lib/date/dayjs.ts` — never directly from the `dayjs` package.
 - Render all dates and times through the shared `Time` or `TimeWithTooltip` components. Do not format timestamps inline.
+
+### Strict comparison
+
+Use strict equality (`===`, `!==`) only — never loose equality (`==`, `!=`). Strict operators avoid type coercion surprises and align with TypeScript expectations.
+
+```ts
+// BAD
+if (count == 0) { ... }
+if (status != 'ok') { ... }
+
+// GOOD
+if (count === 0) { ... }
+if (status !== 'ok') { ... }
+```
+
+When you need to treat both `null` and `undefined` as missing, write `value === null || value === undefined` instead of `value == null`.
