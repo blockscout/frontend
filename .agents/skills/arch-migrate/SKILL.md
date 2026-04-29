@@ -55,8 +55,8 @@ Read all source files listed in the issue **Scope**. Understand what they export
 
 ### 6. Run checks
 ```
-pnpm lint:tsc      # must pass
-pnpm lint:eslint   # must pass within client/; legacy warnings acceptable
+pnpm lint:tsc           # must pass
+pnpm lint:eslint:fix    # must pass; legacy warnings acceptable
 ```
 
 ### 7. Cross-slice dependencies left at old paths
