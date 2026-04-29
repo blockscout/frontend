@@ -7,7 +7,7 @@ import type * as bens from '@blockscout/bens-types';
 
 import { route } from 'nextjs-routes';
 
-import type { ResourceError } from 'lib/api/resources';
+import type { ResourceError } from 'client/api/resources';
 import dayjs from 'lib/date/dayjs';
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';

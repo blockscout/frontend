@@ -5,7 +5,7 @@ import React from 'react';
 import type { AdvancedFilterParams } from 'types/api/advancedFilter';
 import type { TokenInfo } from 'types/api/token';
 
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import useDebounce from 'lib/hooks/useDebounce';
 import { Checkbox, CheckboxGroup } from 'toolkit/chakra/checkbox';
 import { Select } from 'toolkit/chakra/select';

@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-import type { SocketMessageParams } from 'lib/socket/types';
+import type { SocketMessageParams } from './types';
 
 export default function useSocketMessage({ channel, event, handler }: SocketMessageParams) {
   const handlerRef = useRef(handler);

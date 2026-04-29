@@ -6,7 +6,7 @@ import type { ItemProps } from '../types';
 import type { Address } from 'types/api/address';
 import type { Transaction } from 'types/api/transaction';
 
-import { getResourceKey } from 'lib/api/useApiQuery';
+import { getResourceKey } from 'client/api/hooks/useApiQuery';
 import getPageType from 'lib/mixpanel/getPageType';
 import { MenuItem } from 'toolkit/chakra/menu';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';

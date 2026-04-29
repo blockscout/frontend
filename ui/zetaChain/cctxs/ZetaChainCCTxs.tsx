@@ -3,15 +3,15 @@ import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
 import { CctxStatusReduced, type CctxListItem, type ListCctxsResponse } from '@blockscout/zetachain-cctx-types';
-import type { SocketMessage } from 'lib/socket/types';
+import type { SocketMessage } from 'client/api/socket/types';
 import type { ZetaChainCCTXFilterParams } from 'types/client/zetaChain';
 import type { PaginationParams } from 'ui/shared/pagination/types';
 
-import { getResourceKey } from 'lib/api/useApiQuery';
+import { getResourceKey } from 'client/api/hooks/useApiQuery';
+import useSocketChannel from 'client/api/socket/useSocketChannel';
+import useSocketMessage from 'client/api/socket/useSocketMessage';
 import useInitialList from 'lib/hooks/useInitialList';
 import useIsMobile from 'lib/hooks/useIsMobile';
-import useSocketChannel from 'lib/socket/useSocketChannel';
-import useSocketMessage from 'lib/socket/useSocketMessage';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/pagination/Pagination';

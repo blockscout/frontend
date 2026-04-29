@@ -4,8 +4,8 @@ import React from 'react';
 
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import getCheckedSummedAddress from 'lib/address/getCheckedSummedAddress';
-import useApiQuery from 'lib/api/useApiQuery';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import * as contract from 'lib/multichain/contract';
 import getQueryParamString from 'lib/router/getQueryParamString';

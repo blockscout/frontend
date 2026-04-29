@@ -2,9 +2,9 @@ import { useQuery } from '@tanstack/react-query';
 
 import type { Address3rdPartyWidget } from 'types/views/address';
 
+import useApiFetch from 'client/api/hooks/useFetch';
+import type { ResourceError } from 'client/api/resources';
 import config from 'configs/app';
-import type { ResourceError } from 'lib/api/resources';
-import useApiFetch from 'lib/hooks/useFetch';
 import { WIDGET_CONFIG } from 'stubs/address3rdPartyWidgets';
 
 const feature = config.features.address3rdPartyWidgets;

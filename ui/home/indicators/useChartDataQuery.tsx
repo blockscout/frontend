@@ -1,8 +1,8 @@
 import type { LineChartData } from 'toolkit/components/charts/line/types';
 import type { ChainIndicatorId } from 'types/homepage';
 
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import config from 'configs/app';
-import useApiQuery from 'lib/api/useApiQuery';
 
 import { getChartData } from './utils/chart';
 

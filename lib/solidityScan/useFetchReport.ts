@@ -1,8 +1,8 @@
 import React from 'react';
 import * as v from 'valibot';
 
-import buildUrl from 'lib/api/buildUrl';
-import useApiQuery from 'lib/api/useApiQuery';
+import buildUrl from 'client/api/build-url';
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import { SOLIDITY_SCAN_REPORT } from 'stubs/contract';
 
 import { SolidityScanSchema } from './schema';

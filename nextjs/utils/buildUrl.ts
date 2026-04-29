@@ -1,7 +1,7 @@
 import { compile } from 'path-to-regexp';
 
-import getResourceParams from 'lib/api/getResourceParams';
-import type { ResourceName } from 'lib/api/resources';
+import getResourceParams from 'client/api/get-resource-params';
+import type { ResourceName } from 'client/api/resources';
 
 export default function buildUrl(
   _resource: ResourceName,

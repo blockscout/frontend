@@ -6,9 +6,9 @@ import type { Address } from 'types/api/address';
 import type { TokenInfo, TokenVerifiedInfo as TTokenVerifiedInfo } from 'types/api/token';
 import type { EntityTag } from 'ui/shared/EntityTags/types';
 
+import type { ResourceError } from 'client/api/resources';
 import config from 'configs/app';
 import useAddressMetadataInfoQuery from 'lib/address/useAddressMetadataInfoQuery';
-import type { ResourceError } from 'lib/api/resources';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import { getTokenTypeName } from 'lib/token/tokenTypes';
 import { Tooltip } from 'toolkit/chakra/tooltip';

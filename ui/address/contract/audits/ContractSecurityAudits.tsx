@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { SmartContractSecurityAuditSubmission } from 'types/api/contract';
 
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import dayjs from 'lib/date/dayjs';
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';

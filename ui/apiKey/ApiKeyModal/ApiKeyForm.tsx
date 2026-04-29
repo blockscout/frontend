@@ -6,9 +6,9 @@ import { useForm, FormProvider } from 'react-hook-form';
 
 import type { ApiKey, ApiKeys, ApiKeyErrors } from 'types/api/account';
 
-import type { ResourceErrorAccount } from 'lib/api/resources';
-import { resourceKey } from 'lib/api/resources';
-import useApiFetch from 'lib/api/useApiFetch';
+import useApiFetch from 'client/api/hooks/useApiFetch';
+import type { ResourceErrorAccount } from 'client/api/resources';
+import { resourceKey } from 'client/api/resources';
 import getErrorMessage from 'lib/getErrorMessage';
 import { Button } from 'toolkit/chakra/button';
 import { FormFieldText } from 'toolkit/components/forms/fields/FormFieldText';

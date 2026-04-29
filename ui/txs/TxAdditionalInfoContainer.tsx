@@ -1,6 +1,6 @@
 import React from 'react';
 
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import { TX } from 'stubs/tx';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 

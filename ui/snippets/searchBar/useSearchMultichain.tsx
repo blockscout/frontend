@@ -2,7 +2,7 @@ import type * as bens from '@blockscout/bens-types';
 import type { QuickSearchResultBlock, QuickSearchResultToken } from 'types/client/multichainAggregator';
 import type { QuickSearchResultItem } from 'types/client/search';
 
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery from 'client/api/hooks/useApiQuery';
 
 interface Props {
   searchTerm: string;

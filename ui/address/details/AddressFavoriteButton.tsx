@@ -3,8 +3,8 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import { getResourceKey } from 'client/api/hooks/useApiQuery';
 import config from 'configs/app';
-import { getResourceKey } from 'lib/api/useApiQuery';
 import usePreventFocusAfterModalClosing from 'lib/hooks/usePreventFocusAfterModalClosing';
 import * as mixpanel from 'lib/mixpanel/index';
 import { IconButton } from 'toolkit/chakra/icon-button';

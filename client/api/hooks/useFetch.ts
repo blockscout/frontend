@@ -1,8 +1,9 @@
 import React from 'react';
 
-import isBodyAllowed from 'lib/api/isBodyAllowed';
-import type { ResourceError, ResourcePath } from 'lib/api/resources';
 import { useRollbar } from 'lib/rollbar';
+
+import isBodyAllowed from '../is-body-allowed';
+import type { ResourceError, ResourcePath } from '../resources';
 
 export interface Params {
   method?: RequestInit['method'];

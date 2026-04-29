@@ -8,8 +8,8 @@ import type { FormFields, FormSubmitResult } from './types';
 import type { UserInfo } from 'types/api/account';
 import type { PublicTagTypesResponse } from 'types/api/addressMetadata';
 
+import useApiFetch from 'client/api/hooks/useApiFetch';
 import appConfig from 'configs/app';
-import useApiFetch from 'lib/api/useApiFetch';
 import getErrorObj from 'lib/errors/getErrorObj';
 import getErrorObjPayload from 'lib/errors/getErrorObjPayload';
 import useIsMobile from 'lib/hooks/useIsMobile';

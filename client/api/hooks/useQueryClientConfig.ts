@@ -4,7 +4,7 @@ import React from 'react';
 import getErrorObjPayload from 'lib/errors/getErrorObjPayload';
 import getErrorObjStatusCode from 'lib/errors/getErrorObjStatusCode';
 
-import type { ResourceName } from './resources';
+import type { ResourceName } from '../resources';
 
 export const retry = (failureCount: number, error: unknown) => {
   const errorPayload = getErrorObjPayload<{ status: number }>(error);

@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { OptimismL2TxnBatch } from 'types/api/optimisticL2';
 
-import type { ResourceError } from 'lib/api/resources';
+import type { ResourceError } from 'client/api/resources';
 import * as txnBatchesMock from 'mocks/optimism/txnBatches';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';

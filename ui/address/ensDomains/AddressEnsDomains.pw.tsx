@@ -3,7 +3,7 @@ import React from 'react';
 
 import type * as bens from '@blockscout/bens-types';
 
-import type { ResourceError } from 'lib/api/resources';
+import type { ResourceError } from 'client/api/resources';
 import * as ensDomainMock from 'mocks/ens/domain';
 import { test, expect } from 'playwright/lib';
 

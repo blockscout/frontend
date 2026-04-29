@@ -1,10 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import type { ApiName } from 'lib/api/types';
+import type { ApiName } from 'client/api/types';
 
 import { httpLogger } from 'nextjs/utils/logger';
 
-import { RESOURCES } from 'lib/api/resources';
+import { RESOURCES } from 'client/api/resources';
 import getErrorMessage from 'lib/errors/getErrorMessage';
 import metrics from 'lib/monitoring/metrics';
 

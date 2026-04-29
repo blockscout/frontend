@@ -4,9 +4,9 @@ import React from 'react';
 
 import type { Route } from 'nextjs-routes';
 
+import useApiFetch from 'client/api/hooks/useApiFetch';
+import { getResourceKey } from 'client/api/hooks/useApiQuery';
 import config from 'configs/app';
-import useApiFetch from 'lib/api/useApiFetch';
-import { getResourceKey } from 'lib/api/useApiQuery';
 import { useRewardsContext } from 'lib/contexts/rewards';
 import * as cookies from 'lib/cookies';
 import * as mixpanel from 'lib/mixpanel';

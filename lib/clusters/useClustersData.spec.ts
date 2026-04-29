@@ -2,14 +2,14 @@
 
 import { renderHook } from '@testing-library/react';
 
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import { detectInputType } from 'lib/clusters/detectInputType';
 import type { Mock } from 'vitest';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 import { useClustersData } from './useClustersData';
 
-vi.mock('lib/api/useApiQuery');
+vi.mock('client/api/hooks/useApiQuery');
 const mockUseApiQuery = useApiQuery as Mock<typeof useApiQuery>;
 
 type MockQueryResult = ReturnType<typeof useApiQuery>;

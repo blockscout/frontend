@@ -8,7 +8,7 @@ import type { ZkEvmL2TxnBatch } from 'types/api/zkEvmL2';
 
 import { route } from 'nextjs-routes';
 
-import type { ResourceError } from 'lib/api/resources';
+import type { ResourceError } from 'client/api/resources';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import { formatZkEvmL2TxnBatchStatus } from 'lib/rollups/utils';
 import { Link } from 'toolkit/chakra/link';

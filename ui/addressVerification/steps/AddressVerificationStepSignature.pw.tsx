@@ -1,7 +1,7 @@
 import React from 'react';
 
+import buildUrl from 'client/api/build-url';
 import config from 'configs/app';
-import buildUrl from 'lib/api/buildUrl';
 import * as mocks from 'mocks/account/verifiedAddresses';
 import { test, expect } from 'playwright/lib';
 

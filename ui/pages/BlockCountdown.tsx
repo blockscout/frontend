@@ -4,7 +4,7 @@ import React from 'react';
 
 import { route } from 'nextjs/routes';
 
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import dayjs from 'lib/date/dayjs';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';

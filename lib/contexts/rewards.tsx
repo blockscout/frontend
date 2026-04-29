@@ -6,10 +6,10 @@ import { useSignMessage, useSwitchChain } from 'wagmi';
 
 import type * as rewards from '@blockscout/points-types';
 
+import useApiFetch from 'client/api/hooks/useApiFetch';
+import useApiQuery, { getResourceKey } from 'client/api/hooks/useApiQuery';
+import type { ResourceError } from 'client/api/resources';
 import config from 'configs/app';
-import type { ResourceError } from 'lib/api/resources';
-import useApiFetch from 'lib/api/useApiFetch';
-import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 import * as cookies from 'lib/cookies';
 import decodeJWT from 'lib/decodeJWT';
 import getErrorMessage from 'lib/errors/getErrorMessage';

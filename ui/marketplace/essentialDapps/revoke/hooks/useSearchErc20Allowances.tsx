@@ -9,7 +9,7 @@ import type { TokenInfo } from 'types/api/token';
 import type { EssentialDappsChainConfig } from 'types/client/marketplace';
 import type { AllowanceType, ContractAllowanceType } from 'types/client/revoke';
 
-import useApiFetch from 'lib/api/useApiFetch';
+import useApiFetch from 'client/api/hooks/useApiFetch';
 
 import useGetBlockTimestamp from './useGetBlockTimestamp';
 

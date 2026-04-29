@@ -2,14 +2,14 @@ import { useQueryClient } from '@tanstack/react-query';
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
-import type { SocketMessage } from 'lib/socket/types';
+import type { SocketMessage } from 'client/api/socket/types';
 import type { Block } from 'types/api/block';
 
+import useApiQuery, { getResourceKey } from 'client/api/hooks/useApiQuery';
+import type { ResourceError, ResourcePayload } from 'client/api/resources';
+import useSocketChannel from 'client/api/socket/useSocketChannel';
+import useSocketMessage from 'client/api/socket/useSocketMessage';
 import config from 'configs/app';
-import type { ResourceError, ResourcePayload } from 'lib/api/resources';
-import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
-import useSocketChannel from 'lib/socket/useSocketChannel';
-import useSocketMessage from 'lib/socket/useSocketMessage';
 import { BLOCK } from 'stubs/block';
 
 /** Max blocks kept in React Query cache for `general:homepage_blocks` (fetch + socket). */

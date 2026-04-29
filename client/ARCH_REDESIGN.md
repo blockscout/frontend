@@ -88,6 +88,7 @@ Keep the current organization largely intact. Do not flatten everything into a 1
 
 ```text
 client/api/
+  hooks/              ← React hooks for data fetching (useApiFetch, useApiQuery, useFetch, …)
   services/
     general/          ← Blockscout General API namespace; only split files inside where genuinely needed
       tx.ts
@@ -104,6 +105,8 @@ client/api/
   types.ts            ← shared API types incl. IsPaginated (absorbs services/utils.ts)
   socket/             ← migrated from lib/socket/
 ```
+
+> **Decision note — `hooks/` subfolder:** React hooks that wire transport/query-client logic (`useApiFetch`, `useApiQuery`, `useApiInfiniteQuery`, `useApiQueries`, `useQueryClientConfig`, `useFetch`) live under `client/api/hooks/` rather than at the `client/api/` root. This keeps the root flat (utilities + config) and the hooks discoverable as a group, without introducing an extra barrel file.
 
 ### 4.3 `client/slices`
 
@@ -247,7 +250,7 @@ client/slices/tx/
 | `lib/hooks/useInitialList` | `client/shared/lists/` |
 | `lib/hooks/useRewardsActivity` | `client/features/rewards/` |
 | `lib/hooks/useAddressProfileApiQuery` | `client/slices/address/` |
-| `lib/hooks/useFetch` | `client/api/` |
+| `lib/hooks/useFetch` | `client/api/hooks/` |
 | `lib/hooks/useGetCsrfToken` | `client/features/account/` |
 | `lib/hooks/useGraphLinks` | `client/features/marketplace/` |
 | `lib/hooks/useAdblockDetect` | `client/features/ad-banner/` |

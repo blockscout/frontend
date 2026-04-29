@@ -5,7 +5,7 @@ import React from 'react';
 import type { AddressCoinBalanceHistoryResponse } from 'types/api/address';
 import type { PaginationParams } from 'ui/shared/pagination/types';
 
-import type { ResourceError } from 'lib/api/resources';
+import type { ResourceError } from 'client/api/resources';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import { currencyUnits } from 'lib/units';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';

@@ -4,10 +4,10 @@ import React from 'react';
 import type { MarketplaceApp } from 'types/client/marketplace';
 import { MarketplaceCategory } from 'types/client/marketplace';
 
+import useApiFetch from 'client/api/hooks/useApiFetch';
+import useFetch from 'client/api/hooks/useFetch';
+import type { ResourceError } from 'client/api/resources';
 import config from 'configs/app';
-import type { ResourceError } from 'lib/api/resources';
-import useApiFetch from 'lib/api/useApiFetch';
-import useFetch from 'lib/hooks/useFetch';
 import { MARKETPLACE_APP } from 'stubs/marketplace';
 import useIsAuth from 'ui/snippets/auth/useIsAuth';
 

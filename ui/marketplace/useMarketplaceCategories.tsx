@@ -3,9 +3,9 @@ import React from 'react';
 
 import type { MarketplaceApp } from 'types/client/marketplace';
 
+import useApiFetch from 'client/api/hooks/useFetch';
+import type { ResourceError } from 'client/api/resources';
 import config from 'configs/app';
-import type { ResourceError } from 'lib/api/resources';
-import useApiFetch from 'lib/hooks/useFetch';
 import { CATEGORIES } from 'stubs/marketplace';
 
 const feature = config.features.marketplace;

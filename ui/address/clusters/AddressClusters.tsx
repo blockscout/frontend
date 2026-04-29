@@ -6,7 +6,7 @@ import type { ClustersByAddressResponse } from 'types/api/clusters';
 
 import { route } from 'nextjs-routes';
 
-import type { ResourceError } from 'lib/api/resources';
+import type { ResourceError } from 'client/api/resources';
 import {
   filterOwnedClusters,
   getTotalRecordsDisplay,

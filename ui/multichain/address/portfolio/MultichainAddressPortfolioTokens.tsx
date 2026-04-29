@@ -7,8 +7,8 @@ import { isMobile } from 'react-device-detect';
 
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import multichainConfig from 'configs/multichain';
-import useApiQuery from 'lib/api/useApiQuery';
 import * as cookies from 'lib/cookies';
 import useDebounce from 'lib/hooks/useDebounce';
 import getQueryParamString from 'lib/router/getQueryParamString';

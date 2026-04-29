@@ -2,9 +2,9 @@ import { pickBy, uniqBy } from 'es-toolkit';
 
 import type { ChartDataPayloadSankey, StatsIntervalIds } from 'client/features/chain-stats/types/client';
 
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import { getDatesFromInterval } from 'client/features/chain-stats/utils/interval';
 import config from 'configs/app';
-import useApiQuery from 'lib/api/useApiQuery';
 import { isAllOption } from 'ui/shared/externalChains/ChainSelect';
 
 import { CROSS_CHAIN_TXS_CHART } from '../stubs/chain-stats';

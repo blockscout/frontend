@@ -4,7 +4,7 @@ import React from 'react';
 
 import type { HotContractsInterval, HotContractsSorting, HotContractsSortingField, HotContractsSortingValue } from 'types/api/contracts';
 
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import { HOT_CONTRACTS } from 'stubs/contract';
 import { HOMEPAGE_STATS } from 'stubs/stats';
 import { Skeleton } from 'toolkit/chakra/skeleton';

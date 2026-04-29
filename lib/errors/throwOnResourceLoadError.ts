@@ -1,4 +1,4 @@
-import type { ResourceError, ResourceName } from 'lib/api/resources';
+import type { ResourceError, ResourceName } from 'client/api/resources';
 
 type Params = ({
   isError: true;

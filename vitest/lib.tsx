@@ -4,8 +4,8 @@ import type { RenderOptions } from '@testing-library/react';
 import { render } from '@testing-library/react';
 import React from 'react';
 
+import { SocketProvider } from 'client/api/socket/context';
 import { AppContextProvider } from 'lib/contexts/app';
-import { SocketProvider } from 'lib/socket/context';
 
 import 'lib/setLocale';
 

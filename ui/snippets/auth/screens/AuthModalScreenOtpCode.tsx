@@ -6,7 +6,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import type { OtpCodeFormFields, ScreenSuccess } from '../types';
 import type { UserInfo } from 'types/api/account';
 
-import useApiFetch from 'lib/api/useApiFetch';
+import useApiFetch from 'client/api/hooks/useApiFetch';
 import getErrorMessage from 'lib/errors/getErrorMessage';
 import getErrorObjPayload from 'lib/errors/getErrorObjPayload';
 import { Button } from 'toolkit/chakra/button';
