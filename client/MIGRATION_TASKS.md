@@ -50,7 +50,7 @@ Update all repo-wide imports. Verify `client/api` has no runtime imports from `c
 
 ---
 
-### 1-2 · [ ] Migrate `client/shared/`
+### 1-2 · [~] Migrate `client/shared/` · [#3371](https://github.com/blockscout/frontend/issues/3371)
 
 **Scope:** Move all cross-cutting utilities from `lib/` to `client/shared/<subfolder>/`.
 Key moves (see `ARCH_REDESIGN.md §6` for full list):
