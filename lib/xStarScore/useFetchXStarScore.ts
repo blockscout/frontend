@@ -1,9 +1,9 @@
 import React from 'react';
 import * as v from 'valibot';
 
-import config from 'configs/app';
 import buildUrl from 'client/api/build-url';
 import useApiQuery from 'client/api/hooks/useApiQuery';
+import config from 'configs/app';
 
 interface Params {
   hash: string;

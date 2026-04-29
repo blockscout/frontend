@@ -7,13 +7,13 @@ import { mainnet } from 'wagmi/chains';
 
 import type { Props as PageProps } from 'nextjs/getServerSideProps/handlers';
 
+import { SocketProvider } from 'client/api/socket/context';
 import { CsvExportContextProvider } from 'client/features/csv-export/utils/context';
 import config from 'configs/app';
 import { AppContextProvider } from 'lib/contexts/app';
 import { MarketplaceContext } from 'lib/contexts/marketplace';
 import { RewardsContextProvider } from 'lib/contexts/rewards';
 import { SettingsContextProvider } from 'lib/contexts/settings';
-import { SocketProvider } from 'client/api/socket/context';
 import { currentChain } from 'lib/web3/chains';
 import { Provider as ChakraProvider } from 'toolkit/chakra/provider';
 

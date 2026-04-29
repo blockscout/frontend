@@ -2,8 +2,8 @@ import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import getSocketUrl from 'client/api/get-socket-url';
-import { useMultichainContext } from 'lib/contexts/multichain';
 import { SocketProvider } from 'client/api/socket/context';
+import { useMultichainContext } from 'lib/contexts/multichain';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import TxsStats from 'ui/txs/TxsStats';
 import TxsTabs, { getTabId } from 'ui/txs/TxsTabs';

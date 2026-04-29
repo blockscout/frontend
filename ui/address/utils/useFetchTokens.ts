@@ -5,12 +5,12 @@ import type { SocketMessage } from 'client/api/socket/types';
 import type { AddressTokenBalance, AddressTokensBalancesSocketMessage, AddressTokensResponse } from 'types/api/address';
 import type { TokenType } from 'types/api/token';
 
-import config from 'configs/app';
 import useApiFetch from 'client/api/hooks/useApiFetch';
 import useApiQuery, { getResourceKey } from 'client/api/hooks/useApiQuery';
-import { useMultichainContext } from 'lib/contexts/multichain';
 import useSocketChannel from 'client/api/socket/useSocketChannel';
 import useSocketMessage from 'client/api/socket/useSocketMessage';
+import config from 'configs/app';
+import { useMultichainContext } from 'lib/contexts/multichain';
 
 import type { TokenEnhancedData } from './tokenUtils';
 import { calculateUsdValue } from './tokenUtils';

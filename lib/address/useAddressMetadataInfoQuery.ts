@@ -1,7 +1,7 @@
 import type { AddressMetadataInfoFormatted, AddressMetadataTagFormatted } from 'types/client/addressMetadata';
 
-import config from 'configs/app';
 import useApiQuery from 'client/api/hooks/useApiQuery';
+import config from 'configs/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
 
 import parseMetaPayload from './parseMetaPayload';

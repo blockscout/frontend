@@ -8,10 +8,10 @@ import type { BlockType, BlocksResponse } from 'types/api/block';
 import { route } from 'nextjs/routes';
 
 import { getResourceKey } from 'client/api/hooks/useApiQuery';
-import { useMultichainContext } from 'lib/contexts/multichain';
-import useIsMobile from 'lib/hooks/useIsMobile';
 import useSocketChannel from 'client/api/socket/useSocketChannel';
 import useSocketMessage from 'client/api/socket/useSocketMessage';
+import { useMultichainContext } from 'lib/contexts/multichain';
+import useIsMobile from 'lib/hooks/useIsMobile';
 import { Link } from 'toolkit/chakra/link';
 import BlocksList from 'ui/blocks/BlocksList';
 import BlocksTable from 'ui/blocks/BlocksTable';

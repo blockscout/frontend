@@ -4,8 +4,8 @@ import { useFormContext } from 'react-hook-form';
 
 import type { FormFields } from '../types';
 
-import delay from 'lib/delay';
 import useFetch from 'client/api/hooks/useFetch';
+import delay from 'lib/delay';
 import { Link } from 'toolkit/chakra/link';
 import { FormFieldText } from 'toolkit/components/forms/fields/FormFieldText';
 

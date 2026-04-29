@@ -7,8 +7,8 @@ import { FormProvider, useForm } from 'react-hook-form';
 import type { FormFields } from './types';
 import type { UserInfo } from 'types/api/account';
 
-import config from 'configs/app';
 import useApiFetch from 'client/api/hooks/useApiFetch';
+import config from 'configs/app';
 import getErrorMessage from 'lib/errors/getErrorMessage';
 import getErrorObjPayload from 'lib/errors/getErrorObjPayload';
 import * as mixpanel from 'lib/mixpanel';

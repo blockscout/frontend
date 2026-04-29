@@ -8,8 +8,8 @@ import type { Address } from 'types/api/address';
 import type { AddressImplementation } from 'types/api/addressParams';
 import type { SmartContract } from 'types/api/contract';
 
-import type { ResourceError } from 'client/api/resources';
 import useApiQuery from 'client/api/hooks/useApiQuery';
+import type { ResourceError } from 'client/api/resources';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import * as stubs from 'stubs/contract';

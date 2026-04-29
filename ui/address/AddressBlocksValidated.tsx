@@ -6,11 +6,11 @@ import React from 'react';
 import type { SocketMessage } from 'client/api/socket/types';
 import type { AddressBlocksValidatedResponse } from 'types/api/address';
 
-import config from 'configs/app';
 import { getResourceKey } from 'client/api/hooks/useApiQuery';
-import useIsMounted from 'lib/hooks/useIsMounted';
 import useSocketChannel from 'client/api/socket/useSocketChannel';
 import useSocketMessage from 'client/api/socket/useSocketMessage';
+import config from 'configs/app';
+import useIsMounted from 'lib/hooks/useIsMounted';
 import { currencyUnits } from 'lib/units';
 import { BLOCK } from 'stubs/block';
 import { generateListStub } from 'stubs/utils';

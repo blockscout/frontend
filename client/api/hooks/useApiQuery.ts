@@ -4,10 +4,10 @@ import { useQuery } from '@tanstack/react-query';
 import type { ExternalChainExtended } from 'types/externalChains';
 
 import { useMultichainContext } from 'lib/contexts/multichain';
-import type { Params as FetchParams } from './useFetch';
 
 import type { ResourceError, ResourceName, ResourcePathParams, ResourcePayload } from '../resources';
 import useApiFetch from './useApiFetch';
+import type { Params as FetchParams } from './useFetch';
 
 export interface Params<R extends ResourceName, E = unknown, D = ResourcePayload<R>> {
   pathParams?: ResourcePathParams<R>;

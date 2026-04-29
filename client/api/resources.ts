@@ -1,4 +1,4 @@
-import type { ApiName, ApiResource } from './types';
+import type { ApiName, ApiResource, IsPaginated } from './types';
 
 import type { AdminApiResourceName, AdminApiResourcePayload } from './services/admin';
 import { ADMIN_API_RESOURCES } from './services/admin';
@@ -38,7 +38,6 @@ import type {
   TacOperationLifecycleApiResourcePayload,
 } from './services/tac-operation-lifecycle';
 import { USER_OPS_API_RESOURCES } from './services/user-ops';
-import type { IsPaginated } from './types';
 import { VISUALIZE_API_RESOURCES } from './services/visualize';
 import type { VisualizeApiResourceName, VisualizeApiResourcePayload } from './services/visualize';
 import { ZETA_CHAIN_API_RESOURCES } from './services/zeta-chain';

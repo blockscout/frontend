@@ -6,10 +6,10 @@ import { FormProvider, useForm } from 'react-hook-form';
 import type { Fields } from './types';
 import type { TokenInfoApplication } from 'types/api/account';
 
-import config from 'configs/app';
-import type { ResourceError } from 'client/api/resources';
 import useApiFetch from 'client/api/hooks/useApiFetch';
 import useApiQuery from 'client/api/hooks/useApiQuery';
+import type { ResourceError } from 'client/api/resources';
+import config from 'configs/app';
 import * as mixpanel from 'lib/mixpanel/index';
 import { Button } from 'toolkit/chakra/button';
 import { toaster } from 'toolkit/chakra/toaster';

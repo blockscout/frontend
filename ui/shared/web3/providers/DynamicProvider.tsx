@@ -7,9 +7,9 @@ import React from 'react';
 
 import type { UserInfo } from 'types/api/account';
 
-import config from 'configs/app';
 import useApiFetch from 'client/api/hooks/useApiFetch';
 import { getResourceKey } from 'client/api/hooks/useApiQuery';
+import config from 'configs/app';
 import getErrorMessage from 'lib/errors/getErrorMessage';
 import useGetCsrfToken from 'lib/hooks/useGetCsrfToken';
 import * as mixpanel from 'lib/mixpanel/index';

@@ -2,11 +2,11 @@ import React from 'react';
 
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 
-import multichainConfig from 'configs/multichain';
 import getSocketUrl from 'client/api/get-socket-url';
+import { SocketProvider } from 'client/api/socket/context';
+import multichainConfig from 'configs/multichain';
 import { MultichainProvider } from 'lib/contexts/multichain';
 import useRoutedChainSelect from 'lib/multichain/useRoutedChainSelect';
-import { SocketProvider } from 'client/api/socket/context';
 import AddressCoinBalance from 'ui/address/AddressCoinBalance';
 import ChainSelect from 'ui/multichain/components/ChainSelect';
 

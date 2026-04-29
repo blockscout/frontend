@@ -11,13 +11,13 @@ import type { SmartContractVerificationConfig } from 'types/client/contract';
 import { route } from 'nextjs-routes';
 
 import useApiFetch from 'client/api/hooks/useApiFetch';
+import useSocketChannel from 'client/api/socket/useSocketChannel';
+import useSocketMessage from 'client/api/socket/useSocketMessage';
 import capitalizeFirstLetter from 'lib/capitalizeFirstLetter';
 import delay from 'lib/delay';
 import getErrorObjStatusCode from 'lib/errors/getErrorObjStatusCode';
 import useRewardsActivity from 'lib/hooks/useRewardsActivity';
 import * as mixpanel from 'lib/mixpanel/index';
-import useSocketChannel from 'client/api/socket/useSocketChannel';
-import useSocketMessage from 'client/api/socket/useSocketMessage';
 import { Button } from 'toolkit/chakra/button';
 import { toaster } from 'toolkit/chakra/toaster';
 import { useUpdateEffect } from 'toolkit/hooks/useUpdateEffect';

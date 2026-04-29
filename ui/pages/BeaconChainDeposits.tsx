@@ -2,8 +2,8 @@ import { Box, Text } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
-import config from 'configs/app';
 import useApiQuery from 'client/api/hooks/useApiQuery';
+import config from 'configs/app';
 import { DEPOSIT } from 'stubs/deposits';
 import { generateListStub } from 'stubs/utils';
 import { Skeleton } from 'toolkit/chakra/skeleton';

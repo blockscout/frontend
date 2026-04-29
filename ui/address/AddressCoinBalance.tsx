@@ -6,10 +6,10 @@ import type { SocketMessage } from 'client/api/socket/types';
 import type { AddressCoinBalanceHistoryResponse } from 'types/api/address';
 
 import { getResourceKey } from 'client/api/hooks/useApiQuery';
-import useIsMounted from 'lib/hooks/useIsMounted';
-import getQueryParamString from 'lib/router/getQueryParamString';
 import useSocketChannel from 'client/api/socket/useSocketChannel';
 import useSocketMessage from 'client/api/socket/useSocketMessage';
+import useIsMounted from 'lib/hooks/useIsMounted';
+import getQueryParamString from 'lib/router/getQueryParamString';
 import { ADDRESS_COIN_BALANCE } from 'stubs/address';
 import { generateListStub } from 'stubs/utils';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';

@@ -8,10 +8,10 @@ import type { ZkEvmL2TxnBatchesItem } from 'types/api/zkEvmL2';
 import { route } from 'nextjs-routes';
 
 import useApiQuery, { getResourceKey } from 'client/api/hooks/useApiQuery';
-import useInitialList from 'lib/hooks/useInitialList';
-import useIsMobile from 'lib/hooks/useIsMobile';
 import useSocketChannel from 'client/api/socket/useSocketChannel';
 import useSocketMessage from 'client/api/socket/useSocketMessage';
+import useInitialList from 'lib/hooks/useInitialList';
+import useIsMobile from 'lib/hooks/useIsMobile';
 import { ZKEVM_L2_TXN_BATCHES_ITEM } from 'stubs/zkEvmL2';
 import { Heading } from 'toolkit/chakra/heading';
 import { Link } from 'toolkit/chakra/link';

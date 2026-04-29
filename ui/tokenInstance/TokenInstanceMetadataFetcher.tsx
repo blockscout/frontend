@@ -5,12 +5,12 @@ import React from 'react';
 import type { SocketMessage } from 'client/api/socket/types';
 import type { TokenInstance } from 'types/api/token';
 
-import config from 'configs/app';
 import useApiFetch from 'client/api/hooks/useApiFetch';
 import { getResourceKey } from 'client/api/hooks/useApiQuery';
-import getErrorMessage from 'lib/errors/getErrorMessage';
 import useSocketChannel from 'client/api/socket/useSocketChannel';
 import useSocketMessage from 'client/api/socket/useSocketMessage';
+import config from 'configs/app';
+import getErrorMessage from 'lib/errors/getErrorMessage';
 import { Alert } from 'toolkit/chakra/alert';
 import { DialogBody, DialogContent, DialogHeader, DialogRoot } from 'toolkit/chakra/dialog';
 import { toaster } from 'toolkit/chakra/toaster';

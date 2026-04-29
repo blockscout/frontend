@@ -3,10 +3,10 @@ import React from 'react';
 
 import type { TxsSocketType } from './types';
 
-import useGradualIncrement from 'lib/hooks/useGradualIncrement';
-import getQueryParamString from 'lib/router/getQueryParamString';
 import useSocketChannel from 'client/api/socket/useSocketChannel';
 import useSocketMessage from 'client/api/socket/useSocketMessage';
+import useGradualIncrement from 'lib/hooks/useGradualIncrement';
+import getQueryParamString from 'lib/router/getQueryParamString';
 
 function getSocketParams(type: TxsSocketType, page: string) {
 

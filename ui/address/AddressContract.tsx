@@ -6,11 +6,11 @@ import type { SocketMessage } from 'client/api/socket/types';
 import type { Address } from 'types/api/address';
 
 import { getResourceKey } from 'client/api/hooks/useApiQuery';
+import useSocketChannel from 'client/api/socket/useSocketChannel';
+import useSocketMessage from 'client/api/socket/useSocketMessage';
 import delay from 'lib/delay';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import useSocketChannel from 'client/api/socket/useSocketChannel';
-import useSocketMessage from 'client/api/socket/useSocketMessage';
 import type { Props as RoutedTabsProps } from 'toolkit/components/AdaptiveTabs/AdaptiveTabs';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import { SECOND } from 'toolkit/utils/consts';

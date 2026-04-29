@@ -5,8 +5,8 @@ import type { AddressParam } from 'types/api/addressParams';
 import type { OptimisticL2WithdrawalStatus } from 'types/api/optimisticL2';
 import type { OpWithdrawal, Transaction } from 'types/api/transaction';
 
-import config from 'configs/app';
 import { getResourceKey } from 'client/api/hooks/useApiQuery';
+import config from 'configs/app';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import VerificationSteps from 'ui/shared/verificationSteps/VerificationSteps';
 import OptimisticL2ClaimButton, { canClaimDirectlyGuard } from 'ui/withdrawals/optimisticL2/OptimisticL2ClaimButton';

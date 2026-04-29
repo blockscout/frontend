@@ -4,10 +4,10 @@ import React from 'react';
 import type { SocketMessage } from 'client/api/socket/types';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
-import useGradualIncrement from 'lib/hooks/useGradualIncrement';
-import useIsMobile from 'lib/hooks/useIsMobile';
 import useSocketChannel from 'client/api/socket/useSocketChannel';
 import useSocketMessage from 'client/api/socket/useSocketMessage';
+import useGradualIncrement from 'lib/hooks/useGradualIncrement';
+import useIsMobile from 'lib/hooks/useIsMobile';
 import { L2_DEPOSIT_ITEM } from 'stubs/L2';
 
 import LatestTxsFallback from '../fallbacks/LatestTxsFallback';

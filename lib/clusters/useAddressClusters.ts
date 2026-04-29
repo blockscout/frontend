@@ -1,5 +1,5 @@
-import config from 'configs/app';
 import useApiQuery from 'client/api/hooks/useApiQuery';
+import config from 'configs/app';
 
 const feature = config.features.nameServices;
 

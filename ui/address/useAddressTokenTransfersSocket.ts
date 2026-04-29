@@ -5,13 +5,13 @@ import type { SocketMessage } from 'client/api/socket/types';
 import type { AddressTokenTransferResponse } from 'types/api/address';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
-import config from 'configs/app';
 import { getResourceKey } from 'client/api/hooks/useApiQuery';
+import useSocketChannel from 'client/api/socket/useSocketChannel';
+import useSocketMessage from 'client/api/socket/useSocketMessage';
+import config from 'configs/app';
 import { useAppContext } from 'lib/contexts/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import * as cookies from 'lib/cookies';
-import useSocketChannel from 'client/api/socket/useSocketChannel';
-import useSocketMessage from 'client/api/socket/useSocketMessage';
 
 import type { Filters } from './useAddressTokenTransfersQuery';
 

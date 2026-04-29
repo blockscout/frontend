@@ -2,8 +2,8 @@ import type { BoxProps } from '@chakra-ui/react';
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import config from 'configs/app';
 import useApiQuery from 'client/api/hooks/useApiQuery';
+import config from 'configs/app';
 import getStatsLabelFromTitle from 'lib/stats/getStatsLabelFromTitle';
 import { TXS_STATS_MICROSERVICE } from 'stubs/tx';
 import StatsWidget from 'ui/shared/stats/StatsWidget';

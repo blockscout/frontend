@@ -1,8 +1,8 @@
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import config from 'configs/app';
 import useApiQuery from 'client/api/hooks/useApiQuery';
+import config from 'configs/app';
 import { HOMEPAGE_STATS } from 'stubs/stats';
 import { Image } from 'toolkit/chakra/image';
 import { Skeleton } from 'toolkit/chakra/skeleton';

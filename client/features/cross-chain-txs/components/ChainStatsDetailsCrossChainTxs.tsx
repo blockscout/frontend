@@ -4,9 +4,9 @@ import React from 'react';
 import type { ChainStatsChart, StatsIntervalIds } from 'client/features/chain-stats/types/client';
 import type { SankeyChartData } from 'toolkit/components/charts/sankey/types';
 
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import ChartIntervalSelect from 'client/features/chain-stats/components/ChartIntervalSelect';
 import config from 'configs/app';
-import useApiQuery from 'client/api/hooks/useApiQuery';
 import * as mixpanel from 'lib/mixpanel/index';
 import type { OnValueChangeHandler } from 'toolkit/chakra/select';
 import { Skeleton } from 'toolkit/chakra/skeleton';

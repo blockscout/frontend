@@ -4,8 +4,8 @@ import React from 'react';
 import type * as visualizer from '@blockscout/visualizer-types';
 import type { SmartContract } from 'types/api/contract';
 
-import type { ResourceError } from 'client/api/resources';
 import useApiQuery from 'client/api/hooks/useApiQuery';
+import type { ResourceError } from 'client/api/resources';
 import throwOnAbsentParamError from 'lib/errors/throwOnAbsentParamError';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import { Tooltip } from 'toolkit/chakra/tooltip';

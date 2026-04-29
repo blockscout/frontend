@@ -6,8 +6,8 @@ import type { Block } from 'types/api/block';
 
 import { route } from 'nextjs-routes';
 
-import config from 'configs/app';
 import useApiQuery from 'client/api/hooks/useApiQuery';
+import config from 'configs/app';
 import useInitialList from 'lib/hooks/useInitialList';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import getNetworkUtilizationParams from 'lib/networks/getNetworkUtilizationParams';

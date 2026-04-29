@@ -5,10 +5,10 @@ import React from 'react';
 import type { SocketMessage } from 'client/api/socket/types';
 import type { IndexingStatus } from 'types/api/indexingStatus';
 
-import config from 'configs/app';
 import useApiQuery, { getResourceKey } from 'client/api/hooks/useApiQuery';
 import useSocketChannel from 'client/api/socket/useSocketChannel';
 import useSocketMessage from 'client/api/socket/useSocketMessage';
+import config from 'configs/app';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { apos, nbsp, ndash } from 'toolkit/utils/htmlEntities';
 import IconSvg from 'ui/shared/IconSvg';

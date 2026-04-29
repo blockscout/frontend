@@ -5,8 +5,8 @@ import { FormProvider, useForm } from 'react-hook-form';
 
 import type { AddressTag, AddressTagErrors } from 'types/api/account';
 
-import type { ResourceErrorAccount } from 'client/api/resources';
 import useApiFetch from 'client/api/hooks/useApiFetch';
+import type { ResourceErrorAccount } from 'client/api/resources';
 import getErrorMessage from 'lib/getErrorMessage';
 import { Button } from 'toolkit/chakra/button';
 import { FormFieldAddress } from 'toolkit/components/forms/fields/FormFieldAddress';

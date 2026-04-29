@@ -3,9 +3,9 @@ import React from 'react';
 
 import { route } from 'nextjs-routes';
 
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import ChartWidgetContainer from 'client/features/chain-stats/components/ChartWidgetContainer';
 import { CHAIN_STATS_CHARTS_SECTION_GAS } from 'client/features/chain-stats/stubs/charts';
-import useApiQuery from 'client/api/hooks/useApiQuery';
 import { Link } from 'toolkit/chakra/link';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';

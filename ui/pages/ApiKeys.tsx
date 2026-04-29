@@ -3,8 +3,8 @@ import React, { useCallback, useState } from 'react';
 
 import type { ApiKey } from 'types/api/account';
 
-import config from 'configs/app';
 import useApiQuery from 'client/api/hooks/useApiQuery';
+import config from 'configs/app';
 import { API_KEY } from 'stubs/account';
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';

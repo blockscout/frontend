@@ -2,9 +2,9 @@ import type { InfiniteData, UseInfiniteQueryResult } from '@tanstack/react-query
 import React from 'react';
 import { useInView } from 'react-intersection-observer';
 
-import type { PaginatedResourceName, ResourceError, ResourcePayload } from 'client/api/resources';
 import type { Params as ApiInfiniteQueryParams } from 'client/api/hooks/useApiInfiniteQuery';
 import useApiInfiniteQuery from 'client/api/hooks/useApiInfiniteQuery';
+import type { PaginatedResourceName, ResourceError, ResourcePayload } from 'client/api/resources';
 
 interface Params<Resource extends PaginatedResourceName> extends ApiInfiniteQueryParams<Resource> {
   rootRef: React.RefObject<HTMLElement | null>;

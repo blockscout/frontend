@@ -3,9 +3,9 @@ import React from 'react';
 
 import type { ZetaChainChainsConfigEnv, ZetaChainExternalChainConfig } from 'types/client/zetaChain';
 
-import config from 'configs/app';
-import type { ResourceError } from 'client/api/resources';
 import useFetch from 'client/api/hooks/useFetch';
+import type { ResourceError } from 'client/api/resources';
+import config from 'configs/app';
 
 const zetachainFeature = config.features.zetachain;
 
