@@ -29,7 +29,7 @@ export type HomeBlocksQueryResult = UseQueryResult<
   ResourceError<unknown>
 >;
 
-export default function useHomeBlocksData(): HomeBlocksQueryResult {
+export default function useHomeBlocksData(): HomeBlocksQueryResult | undefined {
   const queryClient = useQueryClient();
 
   const blocksQuery = useApiQuery('general:homepage_blocks', {
@@ -61,5 +61,5 @@ export default function useHomeBlocksData(): HomeBlocksQueryResult {
     handler: handleNewBlockMessage,
   });
 
-  return blocksQuery;
+  return isHomepageBlocksDataEnabled ? blocksQuery : undefined;
 }

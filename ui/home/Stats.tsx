@@ -44,7 +44,7 @@ const Stats = () => {
     },
   });
 
-  const isPlaceholderData = statsQuery.isPlaceholderData || apiQuery.isPlaceholderData || blocksQuery.isPlaceholderData;
+  const isPlaceholderData = statsQuery.isPlaceholderData || apiQuery.isPlaceholderData || blocksQuery?.isPlaceholderData;
 
   React.useEffect(() => {
     if (!isPlaceholderData && !apiQuery.data?.gas_prices?.average) {
@@ -54,7 +54,7 @@ const Stats = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ isPlaceholderData ]);
 
-  const hasStatsError = apiQuery.isError || statsQuery.isError || blocksQuery.isError || Boolean(latestBatchQuery?.isError);
+  const hasStatsError = apiQuery.isError || statsQuery.isError || blocksQuery?.isError || latestBatchQuery?.isError;
 
   if (hasStatsError) {
     return <StatsDegraded/>;
@@ -89,7 +89,7 @@ const Stats = () => {
         id: 'latest_batch' as const,
         component: <LatestBatchStatsWidget isLoading={ Boolean(isLoading) } { ...homeStatsWidgetCommonStyles }/>,
       },
-      (blocksQuery.data?.[0]?.height ?? statsData?.total_blocks?.value ?? apiData?.total_blocks) && {
+      (blocksQuery?.data?.[0]?.height ?? statsData?.total_blocks?.value ?? apiData?.total_blocks) && {
         id: 'total_blocks' as const,
         component: (
           <LatestBlockStatsWidget

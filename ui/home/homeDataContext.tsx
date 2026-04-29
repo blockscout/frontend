@@ -4,7 +4,7 @@ import useHomeBlocksData, { type HomeBlocksQueryResult } from './useHomeBlocksDa
 import useHomeLatestBatchData, { type HomeLatestBatchQueryResult } from './useHomeLatestBatchData';
 
 type HomeDataContextValue = {
-  blocksQuery: HomeBlocksQueryResult;
+  blocksQuery: HomeBlocksQueryResult | undefined;
   latestBatchQuery: HomeLatestBatchQueryResult | undefined;
 };
 

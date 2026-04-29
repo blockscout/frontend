@@ -14,8 +14,8 @@ type Props = {
 const LatestBlockStatsWidget = ({ className, isLoading, fallbackValue }: Props) => {
   const { blocksQuery } = useHomeDataContext();
 
-  const value = blocksQuery.data?.[0]?.height ?? fallbackValue;
-  if (value == null) {
+  const value = blocksQuery?.data?.[0]?.height ?? fallbackValue;
+  if (value === undefined) {
     return null;
   }
 
