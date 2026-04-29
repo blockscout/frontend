@@ -8,10 +8,10 @@ import type { ClusterChainConfig } from 'types/multichain';
 
 import { route } from 'nextjs-routes';
 
-import config from 'configs/app';
-import getBlockTotalReward from 'lib/block/getBlockTotalReward';
 import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-title';
 import { currencyUnits } from 'client/shared/chain/units';
+import config from 'configs/app';
+import getBlockTotalReward from 'lib/block/getBlockTotalReward';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';

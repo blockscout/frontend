@@ -4,10 +4,10 @@ import React from 'react';
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 import type { TokenType } from 'types/api/token';
 
-import multichainConfig from 'configs/multichain';
-import { MultichainProvider } from 'lib/contexts/multichain';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
+import multichainConfig from 'configs/multichain';
+import { MultichainProvider } from 'lib/contexts/multichain';
 import { EmptyState } from 'toolkit/chakra/empty-state';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import ChainSelect from 'ui/multichain/components/ChainSelect';

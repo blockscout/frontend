@@ -9,10 +9,10 @@ import type {
   ValidatorsStabilitySortingValue,
 } from 'types/api/validators';
 
-import config from 'configs/app';
 // import useDebounce from 'client/shared/hooks/useDebounce';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
+import config from 'configs/app';
 import { generateListStub } from 'stubs/utils';
 import { VALIDATOR_STABILITY } from 'stubs/validators';
 import ActionBar from 'ui/shared/ActionBar';

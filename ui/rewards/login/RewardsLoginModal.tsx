@@ -2,8 +2,8 @@ import React, { useCallback, useEffect } from 'react';
 
 import type { Screen } from 'ui/snippets/auth/types';
 
-import { useRewardsContext } from 'lib/contexts/rewards';
 import useWallet from 'client/shared/web3/useWallet';
+import { useRewardsContext } from 'lib/contexts/rewards';
 import { DialogBody, DialogContent, DialogRoot, DialogHeader } from 'toolkit/chakra/dialog';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import AuthModal from 'ui/snippets/auth/AuthModal';

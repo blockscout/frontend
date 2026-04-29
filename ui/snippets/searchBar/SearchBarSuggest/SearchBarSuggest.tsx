@@ -7,10 +7,10 @@ import type { ListCctxsResponse } from '@blockscout/zetachain-cctx-types';
 import type { QuickSearchResultItem } from 'types/client/search';
 
 import type { ResourceError } from 'client/api/resources';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
 import config from 'configs/app';
 import multichainConfig from 'configs/multichain';
 import { useSettingsContext } from 'lib/contexts/settings';
-import useIsMobile from 'client/shared/hooks/useIsMobile';
 import type { ExternalSearchItem as ExternalSearchItemType } from 'lib/search/externalSearch';
 import AdaptiveTabs from 'toolkit/components/AdaptiveTabs/AdaptiveTabs';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';

@@ -4,9 +4,9 @@ import React from 'react';
 
 import type { Screen } from 'ui/snippets/auth/types';
 
-import config from 'configs/app';
 import * as mixpanel from 'client/shared/analytics';
 import useAccount from 'client/shared/web3/useAccount';
+import config from 'configs/app';
 import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import AuthModal from 'ui/snippets/auth/AuthModal';

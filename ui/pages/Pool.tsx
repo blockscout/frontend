@@ -3,11 +3,11 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
-import config from 'configs/app';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
+import config from 'configs/app';
 import getPoolLinks from 'lib/pools/getPoolLinks';
 import { getPoolTitle } from 'lib/pools/getPoolTitle';
-import getQueryParamString from 'client/shared/router/get-query-param-string';
 import * as addressStubs from 'stubs/address';
 import { POOL } from 'stubs/pools';
 import { Image } from 'toolkit/chakra/image';

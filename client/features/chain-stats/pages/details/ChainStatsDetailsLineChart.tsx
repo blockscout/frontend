@@ -6,8 +6,8 @@ import type { LineChartInfo } from '@blockscout/stats-types';
 import type { LineChartItem } from 'toolkit/components/charts/line/types';
 import { CHART_RESOLUTION_LABELS, type ChartResolution } from 'toolkit/components/charts/types';
 
-import { useMultichainContext } from 'lib/contexts/multichain';
 import * as mixpanel from 'client/shared/analytics';
+import { useMultichainContext } from 'lib/contexts/multichain';
 import useRoutedChainSelect from 'lib/multichain/useRoutedChainSelect';
 import type { OnValueChangeHandler, SelectOption } from 'toolkit/chakra/select';
 import { Select } from 'toolkit/chakra/select';

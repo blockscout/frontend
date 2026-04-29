@@ -1,7 +1,7 @@
 import React from 'react';
 
-import config from 'configs/app';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import config from 'configs/app';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import TxsStats from 'ui/txs/TxsStats';
 import TxsTabs from 'ui/txs/TxsTabs';

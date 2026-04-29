@@ -6,8 +6,8 @@ import type { SankeyChartData } from 'toolkit/components/charts/sankey/types';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 import ChartIntervalSelect from 'client/features/chain-stats/components/ChartIntervalSelect';
-import config from 'configs/app';
 import * as mixpanel from 'client/shared/analytics';
+import config from 'configs/app';
 import type { OnValueChangeHandler } from 'toolkit/chakra/select';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { SankeyChartMenu } from 'toolkit/components/charts/sankey/parts/SankeyChartMenu';

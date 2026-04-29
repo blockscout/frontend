@@ -8,12 +8,12 @@ import { ADVANCED_FILTER_AGES, type AdvancedFilterAge } from 'types/api/advanced
 import { ZETA_CHAIN_CCTX_COIN_TYPE_FILTER, ZETA_CHAIN_CCTX_STATUS_REDUCED_FILTERS } from 'types/client/zetaChain';
 import type { CoinTypeFilter, StatusReducedFilters, ZetaChainCCTXFilterParams } from 'types/client/zetaChain';
 
-import dayjs from 'lib/date/dayjs';
-import getFilterValueFromQuery from 'client/shared/router/get-filter-value-from-query';
-import getValuesArrayFromQuery from 'client/shared/router/get-values-array-from-query';
-import useIsMobile from 'client/shared/hooks/useIsMobile';
 import getChainValidationActionText from 'client/shared/chain/get-chain-validation-action-text';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+import getFilterValueFromQuery from 'client/shared/router/get-filter-value-from-query';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
+import getValuesArrayFromQuery from 'client/shared/router/get-values-array-from-query';
+import dayjs from 'lib/date/dayjs';
 import { ZETA_CHAIN_CCTX_LIST_ITEM } from 'stubs/zetaChainCCTX';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import { getDurationFromAge } from 'ui/advancedFilter/lib';

@@ -4,11 +4,11 @@ import React from 'react';
 import type { TokenType } from 'types/api/token';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
-import config from 'configs/app';
-import { useMultichainContext } from 'lib/contexts/multichain';
 import useIsInitialLoading from 'client/shared/hooks/useIsInitialLoading';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
+import config from 'configs/app';
+import { useMultichainContext } from 'lib/contexts/multichain';
 import { getTokenTransfersStub } from 'stubs/token';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';

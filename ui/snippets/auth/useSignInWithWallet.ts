@@ -5,13 +5,13 @@ import type * as rewards from '@blockscout/points-types';
 import type { UserInfo } from 'types/api/account';
 
 import useApiFetch from 'client/api/hooks/useApiFetch';
-import config from 'configs/app';
-import * as cookies from 'client/shared/storage/cookies';
+import type * as mixpanel from 'client/shared/analytics';
 import getErrorMessage from 'client/shared/errors/get-error-message';
 import getErrorObj from 'client/shared/errors/get-error-obj';
 import getErrorObjPayload from 'client/shared/errors/get-error-obj-payload';
-import type * as mixpanel from 'client/shared/analytics';
+import * as cookies from 'client/shared/storage/cookies';
 import useWalletReown from 'client/shared/web3/wallet/useWalletReown';
+import config from 'configs/app';
 import { toaster } from 'toolkit/chakra/toaster';
 import { YEAR } from 'toolkit/utils/consts';
 

@@ -4,9 +4,9 @@ import React from 'react';
 import { route } from 'nextjs-routes';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
 import config from 'configs/app';
 import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
-import useIsMobile from 'client/shared/hooks/useIsMobile';
 import { TX } from 'stubs/tx';
 import { Link } from 'toolkit/chakra/link';
 import SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';

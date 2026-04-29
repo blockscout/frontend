@@ -5,10 +5,10 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import { deviceType } from 'react-device-detect';
 
-import config from 'configs/app';
-import * as cookies from 'client/shared/storage/cookies';
-import dayjs from 'lib/date/dayjs';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
+import * as cookies from 'client/shared/storage/cookies';
+import config from 'configs/app';
+import dayjs from 'lib/date/dayjs';
 
 import * as userProfile from './user-profile';
 

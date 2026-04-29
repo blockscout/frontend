@@ -3,8 +3,8 @@ import { Box, Text, Flex } from '@chakra-ui/react';
 import Script from 'next/script';
 import React from 'react';
 
-import config from 'configs/app';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import config from 'configs/app';
 import { Button } from 'toolkit/chakra/button';
 import { Heading } from 'toolkit/chakra/heading';
 import { Link } from 'toolkit/chakra/link';

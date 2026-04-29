@@ -4,9 +4,9 @@ import React from 'react';
 import type { ItemsProps } from './types';
 import type { SearchResultCluster } from 'types/api/search';
 
+import highlightText from 'client/shared/text/highlight-text';
 import { toBech32Address } from 'lib/address/bech32';
 import { isEvmAddress } from 'lib/address/isEvmAddress';
-import highlightText from 'client/shared/text/highlight-text';
 import ClusterIcon from 'ui/shared/ClusterIcon';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 

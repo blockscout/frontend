@@ -3,8 +3,8 @@ import React from 'react';
 
 import { MarketplaceCategory } from 'types/client/marketplace';
 
-import useDebounce from 'client/shared/hooks/useDebounce';
 import * as mixpanel from 'client/shared/analytics';
+import useDebounce from 'client/shared/hooks/useDebounce';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import removeQueryParam from 'client/shared/router/remove-query-param';
 

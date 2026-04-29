@@ -2,9 +2,9 @@ import React from 'react';
 
 import type { TokenInfo } from 'types/api/token';
 
+import useIsInitialLoading from 'client/shared/hooks/useIsInitialLoading';
 import config from 'configs/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
-import useIsInitialLoading from 'client/shared/hooks/useIsInitialLoading';
 import type { LinkProps } from 'toolkit/chakra/link';
 import AdvancedFilterLink from 'ui/shared/links/AdvancedFilterLink';
 

@@ -4,10 +4,10 @@ import React from 'react';
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 
 import CsvExport from 'client/features/csv-export/components/CsvExport';
-import multichainConfig from 'configs/multichain';
-import { MultichainProvider } from 'lib/contexts/multichain';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
+import multichainConfig from 'configs/multichain';
+import { MultichainProvider } from 'lib/contexts/multichain';
 import { LOG } from 'stubs/log';
 import { generateListStub } from 'stubs/utils';
 import ChainSelect from 'ui/multichain/components/ChainSelect';

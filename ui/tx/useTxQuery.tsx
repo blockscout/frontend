@@ -11,9 +11,9 @@ import { retry } from 'client/api/hooks/useQueryClientConfig';
 import type { ResourceError } from 'client/api/resources';
 import useSocketChannel from 'client/api/socket/useSocketChannel';
 import useSocketMessage from 'client/api/socket/useSocketMessage';
-import config from 'configs/app';
-import delay from 'client/shared/utils/delay';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
+import delay from 'client/shared/utils/delay';
+import config from 'configs/app';
 import { TX, TX_ZKEVM_L2 } from 'stubs/tx';
 import { SECOND } from 'toolkit/utils/consts';
 

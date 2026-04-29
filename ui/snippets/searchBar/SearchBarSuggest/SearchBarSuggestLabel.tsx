@@ -4,8 +4,8 @@ import React from 'react';
 import type { ItemsProps } from './types';
 import type { SearchResultLabel } from 'types/api/search';
 
-import { toBech32Address } from 'lib/address/bech32';
 import highlightText from 'client/shared/text/highlight-text';
+import { toBech32Address } from 'lib/address/bech32';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import IconSvg from 'ui/shared/IconSvg';
 

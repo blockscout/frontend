@@ -1,9 +1,9 @@
 import React from 'react';
 
-import config from 'configs/app';
 import useAddChainClick from 'client/shared/web3/useAddChainClick';
 import useProvider from 'client/shared/web3/useProvider';
 import { WALLETS_INFO } from 'client/shared/web3/wallets';
+import config from 'configs/app';
 import { Button } from 'toolkit/chakra/button';
 import IconSvg from 'ui/shared/IconSvg';
 

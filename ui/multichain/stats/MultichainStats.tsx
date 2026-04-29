@@ -5,10 +5,10 @@ import useChainStats from 'client/features/chain-stats/hooks/useChainStats';
 import ChainStatsCounters from 'client/features/chain-stats/pages/index/ChainStatsCounters';
 import ChainStatsFilters from 'client/features/chain-stats/pages/index/ChainStatsFilters';
 import ChainStatsSections from 'client/features/chain-stats/pages/index/ChainStatsSections';
+import useEtherscanRedirects from 'client/shared/router/useEtherscanRedirects';
 import multichainConfig from 'configs/multichain';
 import { MultichainProvider } from 'lib/contexts/multichain';
 import useRoutedChainSelect from 'lib/multichain/useRoutedChainSelect';
-import useEtherscanRedirects from 'client/shared/router/useEtherscanRedirects';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 import ChainSelect from '../components/ChainSelect';

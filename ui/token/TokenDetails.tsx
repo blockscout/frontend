@@ -9,10 +9,10 @@ import type { TokenInfo } from 'types/api/token';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 import type { ResourceError } from 'client/api/resources';
-import config from 'configs/app';
-import { useMultichainContext } from 'lib/contexts/multichain';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import useIsMounted from 'client/shared/hooks/useIsMounted';
+import config from 'configs/app';
+import { useMultichainContext } from 'lib/contexts/multichain';
 import { isConfidentialTokenType } from 'lib/token/tokenTypes';
 import { TOKEN_COUNTERS } from 'stubs/token';
 import { Link } from 'toolkit/chakra/link';

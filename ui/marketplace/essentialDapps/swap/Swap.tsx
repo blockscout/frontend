@@ -3,9 +3,9 @@ import React, { useMemo } from 'react';
 
 import { getFeaturePayload } from 'configs/app/features/types';
 
+import useIsMobile from 'client/shared/hooks/useIsMobile';
 import config from 'configs/app';
 import essentialDappsChainsConfig from 'configs/essential-dapps-chains';
-import useIsMobile from 'client/shared/hooks/useIsMobile';
 import { useColorMode } from 'toolkit/chakra/color-mode';
 import { BODY_TYPEFACE } from 'toolkit/theme/foundations/typography';
 import MarketplaceAppIframe from 'ui/marketplace/MarketplaceAppIframe';

@@ -3,8 +3,8 @@ import React from 'react';
 import type { AddressParam } from 'types/api/addressParams';
 import type { OptimisticL2WithdrawalClaimInfo } from 'types/api/optimisticL2';
 
-import config from 'configs/app';
 import { parentChain } from 'client/shared/web3/chains';
+import config from 'configs/app';
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';

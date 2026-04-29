@@ -2,8 +2,8 @@ import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
-import config from 'configs/app';
 import { currencyUnits } from 'client/shared/chain/units';
+import config from 'configs/app';
 import { LineChartWidget } from 'toolkit/components/charts/line/LineChartWidget';
 import { useChartsConfig } from 'ui/shared/chart/config';
 

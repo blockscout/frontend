@@ -2,6 +2,8 @@ import { Box, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React, { useCallback } from 'react';
 
+import getQueryParamString from 'client/shared/router/get-query-param-string';
+import { useQueryParams } from 'client/shared/router/useQueryParams';
 import { detectInputType } from 'lib/clusters/detectInputType';
 import {
   shouldShowDirectoryView,
@@ -15,8 +17,6 @@ import type { ViewMode } from 'lib/clusters/pageUtils';
 import { useClusterPagination } from 'lib/clusters/useClusterPagination';
 import { useClustersData } from 'lib/clusters/useClustersData';
 import { useClusterSearch } from 'lib/clusters/useClusterSearch';
-import getQueryParamString from 'client/shared/router/get-query-param-string';
-import { useQueryParams } from 'client/shared/router/useQueryParams';
 import { Link } from 'toolkit/chakra/link';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';

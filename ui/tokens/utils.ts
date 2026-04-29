@@ -3,8 +3,8 @@ import { createListCollection } from '@chakra-ui/react';
 import type { TokensSortingValue } from 'types/api/tokens';
 import type { ClusterChainConfig } from 'types/multichain';
 
-import config from 'configs/app';
 import getFilterValuesFromQuery from 'client/shared/router/get-filter-values-from-query';
+import config from 'configs/app';
 import { getTokenTypes } from 'lib/token/tokenTypes';
 import type { SelectOption } from 'toolkit/chakra/select';
 

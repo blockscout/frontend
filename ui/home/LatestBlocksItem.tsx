@@ -4,10 +4,10 @@ import React from 'react';
 
 import type { Block } from 'types/api/block';
 
-import config from 'configs/app';
-import getBlockTotalReward from 'lib/block/getBlockTotalReward';
 import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-title';
 import { currencyUnits } from 'client/shared/chain/units';
+import config from 'configs/app';
+import getBlockTotalReward from 'lib/block/getBlockTotalReward';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { thinsp } from 'toolkit/utils/htmlEntities';

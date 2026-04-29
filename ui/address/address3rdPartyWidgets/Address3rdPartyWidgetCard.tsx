@@ -3,8 +3,8 @@ import { useCallback } from 'react';
 
 import type { Address3rdPartyWidget } from 'types/views/address';
 
-import config from 'configs/app';
 import * as mixpanel from 'client/shared/analytics';
+import config from 'configs/app';
 import { Image } from 'toolkit/chakra/image';
 import { LinkBox, LinkOverlay } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';

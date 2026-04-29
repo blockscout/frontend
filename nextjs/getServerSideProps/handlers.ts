@@ -4,9 +4,9 @@ import type { AdBannerProviders } from 'types/client/adProviders';
 
 import type { Route } from 'nextjs-routes';
 
-import config from 'configs/app';
-import * as cookies from 'client/shared/storage/cookies';
 import type * as metadata from 'client/shared/metadata';
+import * as cookies from 'client/shared/storage/cookies';
+import config from 'configs/app';
 
 import { isLikelyHumanBrowser, isKnownBotRequest } from '../utils/checkRealBrowser';
 

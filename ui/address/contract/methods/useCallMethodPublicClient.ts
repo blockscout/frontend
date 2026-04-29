@@ -4,9 +4,9 @@ import { usePublicClient } from 'wagmi';
 
 import type { FormSubmitResult, MethodCallStrategy, SmartContractMethod } from './types';
 
+import useAccount from 'client/shared/web3/useAccount';
 import config from 'configs/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
-import useAccount from 'client/shared/web3/useAccount';
 
 import { getNativeCoinValue } from './utils';
 

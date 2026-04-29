@@ -4,9 +4,9 @@ import React from 'react';
 
 import type { TxStateChange } from 'types/api/txStateChanges';
 
-import config from 'configs/app';
 import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-title';
 import { currencyUnits } from 'client/shared/chain/units';
+import config from 'configs/app';
 import { Badge } from 'toolkit/chakra/badge';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';

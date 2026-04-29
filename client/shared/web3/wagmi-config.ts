@@ -4,10 +4,10 @@ import type { Chain, Transport } from 'viem';
 import { fallback, http } from 'viem';
 import { createConfig } from 'wagmi';
 
+import { chains, parentChain } from 'client/shared/web3/chains';
 import appConfig from 'configs/app';
 import essentialDappsChainsConfig from 'configs/essential-dapps-chains';
 import multichainConfig from 'configs/multichain';
-import { chains, parentChain } from 'client/shared/web3/chains';
 
 const feature = appConfig.features.blockchainInteraction;
 

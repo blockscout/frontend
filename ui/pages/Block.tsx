@@ -8,13 +8,13 @@ import type { PaginationParams } from 'ui/shared/pagination/types';
 
 import { routeParams } from 'nextjs/routes';
 
-import config from 'configs/app';
-import { useMultichainContext } from 'lib/contexts/multichain';
+import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-title';
 import throwOnAbsentParamError from 'client/shared/errors/throw-on-absent-param-error';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
-import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-title';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
+import config from 'configs/app';
+import { useMultichainContext } from 'lib/contexts/multichain';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import BlockCeloEpochTag from 'ui/block/BlockCeloEpochTag';

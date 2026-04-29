@@ -2,8 +2,8 @@ import { Tooltip as ChakraTooltip, Portal } from '@chakra-ui/react';
 import { useClickAway } from '@uidotdev/usehooks';
 import * as React from 'react';
 
-import config from 'configs/app';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import config from 'configs/app';
 
 export interface TooltipProps extends ChakraTooltip.RootProps {
   selected?: boolean;

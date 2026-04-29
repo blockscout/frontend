@@ -2,11 +2,11 @@ import { Box, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import config from 'configs/app';
-import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import getChainValidationActionText from 'client/shared/chain/get-chain-validation-action-text';
 import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-title';
+import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
+import config from 'configs/app';
 import AddressCounterItem from 'ui/address/details/AddressCounterItem';
 import ServiceDegradationWarning from 'ui/shared/alerts/ServiceDegradationWarning';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';

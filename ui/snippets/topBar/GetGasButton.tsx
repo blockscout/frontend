@@ -3,9 +3,9 @@ import React from 'react';
 
 import { route } from 'nextjs-routes';
 
-import config from 'configs/app';
-import useIsMobile from 'client/shared/hooks/useIsMobile';
 import * as mixpanel from 'client/shared/analytics';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+import config from 'configs/app';
 import { Image } from 'toolkit/chakra/image';
 import { Link } from 'toolkit/chakra/link';
 const getGasFeature = config.features.getGasButton;

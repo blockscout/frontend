@@ -8,13 +8,13 @@ import { ZKSYNC_L2_TX_BATCH_STATUSES } from 'types/api/zkSyncL2';
 
 import { route, routeParams } from 'nextjs/routes';
 
+import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-title';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 import config from 'configs/app';
 import getBlockReward from 'lib/block/getBlockReward';
 import { useMultichainContext } from 'lib/contexts/multichain';
-import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-title';
 import * as arbitrum from 'lib/rollups/arbitrum';
 import { formatZkSyncL2TxnBatchStatus, layerLabels } from 'lib/rollups/utils';
-import getQueryParamString from 'client/shared/router/get-query-param-string';
 import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';

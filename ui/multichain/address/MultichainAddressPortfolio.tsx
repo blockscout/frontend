@@ -5,9 +5,9 @@ import React from 'react';
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
-import { MultichainProvider } from 'lib/contexts/multichain';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
+import { MultichainProvider } from 'lib/contexts/multichain';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import AddressCollections from 'ui/address/tokens/AddressCollections';
 import AddressNftDisplayTypeRadio from 'ui/address/tokens/AddressNftDisplayTypeRadio';

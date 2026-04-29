@@ -5,12 +5,12 @@ import React from 'react';
 
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
-import config from 'configs/app';
-import { useMultichainContext } from 'lib/contexts/multichain';
+import getChainValidationActionText from 'client/shared/chain/get-chain-validation-action-text';
 import useIsInitialLoading from 'client/shared/hooks/useIsInitialLoading';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
-import getChainValidationActionText from 'client/shared/chain/get-chain-validation-action-text';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
+import config from 'configs/app';
+import { useMultichainContext } from 'lib/contexts/multichain';
 import { TX } from 'stubs/tx';
 import { generateListStub } from 'stubs/utils';
 import type { RoutedTabsProps } from 'toolkit/components/RoutedTabs/RoutedTabs';

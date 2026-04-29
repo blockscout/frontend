@@ -1,8 +1,8 @@
 import React from 'react';
 
-import * as cookies from 'client/shared/storage/cookies';
-import useFeatureValue from 'client/shared/feature-flags/useFeatureValue';
 import * as mixpanel from 'client/shared/analytics';
+import useFeatureValue from 'client/shared/feature-flags/useFeatureValue';
+import * as cookies from 'client/shared/storage/cookies';
 
 export default function useTableViewValue() {
   const cookieValue = cookies.get(cookies.NAMES.TABLE_VIEW_ON_MOBILE);

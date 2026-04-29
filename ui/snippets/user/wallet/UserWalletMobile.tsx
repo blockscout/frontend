@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { useMarketplaceContext } from 'lib/contexts/marketplace';
 import useWeb3AccountWithDomain from 'client/shared/web3/useAccountWithDomain';
 import useWeb3Wallet from 'client/shared/web3/useWallet';
+import { useMarketplaceContext } from 'lib/contexts/marketplace';
 import { DrawerTrigger, DrawerRoot, DrawerContent, DrawerBody } from 'toolkit/chakra/drawer';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 

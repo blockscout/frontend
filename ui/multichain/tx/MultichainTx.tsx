@@ -1,9 +1,9 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 import multichainConfig from 'configs/multichain';
 import { MultichainProvider } from 'lib/contexts/multichain';
-import getQueryParamString from 'client/shared/router/get-query-param-string';
 import Transaction from 'ui/pages/Transaction';
 
 const MultichainTx = () => {

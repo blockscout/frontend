@@ -3,8 +3,8 @@ import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
-import config from 'configs/app';
 import { currencyUnits } from 'client/shared/chain/units';
+import config from 'configs/app';
 import { generateListStub } from 'stubs/utils';
 import { WITHDRAWAL } from 'stubs/withdrawals';
 import { Skeleton } from 'toolkit/chakra/skeleton';

@@ -5,9 +5,9 @@ import type { ItemsProps } from './types';
 import type { SearchResultDomain } from 'types/api/search';
 import type * as multichain from 'types/client/multichainAggregator';
 
+import highlightText from 'client/shared/text/highlight-text';
 import { toBech32Address } from 'lib/address/bech32';
 import dayjs from 'lib/date/dayjs';
-import highlightText from 'client/shared/text/highlight-text';
 import * as EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import IconSvg from 'ui/shared/IconSvg';

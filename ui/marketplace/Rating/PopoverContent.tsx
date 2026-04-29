@@ -3,9 +3,9 @@ import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
 import useApiFetch from 'client/api/hooks/useApiFetch';
-import config from 'configs/app';
 import type { EventTypes, EventPayload } from 'client/shared/analytics';
 import * as mixpanel from 'client/shared/analytics';
+import config from 'configs/app';
 import { Rating } from 'toolkit/chakra/rating';
 import { toaster } from 'toolkit/chakra/toaster';
 import IconSvg from 'ui/shared/IconSvg';

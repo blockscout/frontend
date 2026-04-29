@@ -3,8 +3,8 @@ import { useRouter } from 'next/router';
 import QRCode from 'qrcode';
 import React from 'react';
 
-import getPageType from 'client/shared/analytics/get-page-type';
 import * as mixpanel from 'client/shared/analytics';
+import getPageType from 'client/shared/analytics/get-page-type';
 import { useRollbar } from 'client/shared/monitoring/rollbar';
 import { Alert } from 'toolkit/chakra/alert';
 import { DialogBody, DialogContent, DialogHeader, DialogRoot } from 'toolkit/chakra/dialog';

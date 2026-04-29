@@ -5,8 +5,8 @@ import React from 'react';
 import type * as bens from '@blockscout/bens-types';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
-import config from 'configs/app';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
+import config from 'configs/app';
 import { ENS_DOMAIN_EVENT } from 'stubs/ENS';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 

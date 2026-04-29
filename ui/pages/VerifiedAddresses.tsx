@@ -6,9 +6,9 @@ import React from 'react';
 import type { VerifiedAddress, TokenInfoApplication, TokenInfoApplications, VerifiedAddressResponse } from 'types/api/account';
 
 import useApiQuery, { getResourceKey } from 'client/api/hooks/useApiQuery';
-import config from 'configs/app';
 import { PAGE_TYPE_DICT } from 'client/shared/analytics/get-page-type';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
+import config from 'configs/app';
 import { TOKEN_INFO_APPLICATION, VERIFIED_ADDRESS } from 'stubs/account';
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';

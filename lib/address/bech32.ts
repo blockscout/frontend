@@ -1,8 +1,8 @@
 import { bech32 } from '@scure/base';
 
-import config from 'configs/app';
 import bytesToHex from 'client/shared/transformers/bytes-to-hex';
 import hexToBytes from 'client/shared/transformers/hex-to-bytes';
+import config from 'configs/app';
 
 export const DATA_PART_REGEXP = /^[\da-z]{38}$/;
 export const BECH_32_SEPARATOR = '1'; // https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki#bech32

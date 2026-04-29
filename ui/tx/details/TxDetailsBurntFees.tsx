@@ -3,8 +3,8 @@ import React from 'react';
 
 import type { Transaction } from 'types/api/transaction';
 
-import config from 'configs/app';
 import { currencyUnits } from 'client/shared/chain/units';
+import config from 'configs/app';
 import { ZERO } from 'toolkit/utils/consts';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoNativeCoinValue from 'ui/shared/DetailedInfo/DetailedInfoNativeCoinValue';

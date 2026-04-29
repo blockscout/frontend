@@ -9,10 +9,10 @@ import type { UserInfo } from 'types/api/account';
 import type { PublicTagTypesResponse } from 'types/api/addressMetadata';
 
 import useApiFetch from 'client/api/hooks/useApiFetch';
-import appConfig from 'configs/app';
 import getErrorObj from 'client/shared/errors/get-error-obj';
 import getErrorObjPayload from 'client/shared/errors/get-error-obj-payload';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import appConfig from 'configs/app';
 import { Button } from 'toolkit/chakra/button';
 import { Heading } from 'toolkit/chakra/heading';
 import { FormFieldEmail } from 'toolkit/components/forms/fields/FormFieldEmail';

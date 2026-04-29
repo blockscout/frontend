@@ -5,8 +5,8 @@ import type { TokenInfo, TokenInstance } from 'types/api/token';
 
 import { route } from 'nextjs/routes';
 
-import { useMultichainContext } from 'lib/contexts/multichain';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import { useMultichainContext } from 'lib/contexts/multichain';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TruncatedTextTooltip } from 'toolkit/components/truncation/TruncatedTextTooltip';

@@ -1,8 +1,8 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import config from 'configs/app';
 import { currencyUnits } from 'client/shared/chain/units';
+import config from 'configs/app';
 import { AccordionRoot } from 'toolkit/chakra/accordion';
 import { Heading } from 'toolkit/chakra/heading';
 

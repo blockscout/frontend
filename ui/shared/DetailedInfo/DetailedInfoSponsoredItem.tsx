@@ -1,7 +1,7 @@
 import React from 'react';
 
-import config from 'configs/app';
 import * as cookies from 'client/shared/storage/cookies';
+import config from 'configs/app';
 import AdBanner from 'ui/shared/ad/AdBanner';
 
 import * as DetailedInfo from './DetailedInfo';
