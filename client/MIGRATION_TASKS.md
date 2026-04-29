@@ -39,7 +39,7 @@ Fix all pre-existing errors (there should be none in `client/` yet). Confirm war
 
 ## Stage 1 — Foundation
 
-### 1-1 · [ ] Migrate `client/api/`
+### 1-1 · [~] Migrate `client/api/` · [#3369](https://github.com/blockscout/frontend/issues/3369)
 
 **Scope:** Move `lib/api/**` → `client/api/**` (preserve `services/` structure).
 Additional moves in the same PR:
