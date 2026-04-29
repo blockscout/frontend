@@ -6,7 +6,7 @@ import { useInView } from 'react-intersection-observer';
 
 import config from 'configs/app';
 import multichainConfig from 'configs/multichain';
-import isNeedProxy from 'lib/api/isNeedProxy';
+import isNeedProxy from 'client/api/is-need-proxy';
 import dayjs from 'lib/date/dayjs';
 import shortenString from 'lib/shortenString';
 import { Button } from 'toolkit/chakra/button';

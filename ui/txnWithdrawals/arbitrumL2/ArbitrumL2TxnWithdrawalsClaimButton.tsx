@@ -5,9 +5,9 @@ import { useSendTransaction, useSwitchChain } from 'wagmi';
 import type { ArbitrumL2MessageClaimResponse, ArbitrumL2TxnWithdrawalsResponse } from 'types/api/arbitrumL2';
 
 import config from 'configs/app';
-import type { ResourceError } from 'lib/api/resources';
-import useApiFetch from 'lib/api/useApiFetch';
-import { getResourceKey } from 'lib/api/useApiQuery';
+import type { ResourceError } from 'client/api/resources';
+import useApiFetch from 'client/api/hooks/useApiFetch';
+import { getResourceKey } from 'client/api/hooks/useApiQuery';
 import capitalizeFirstLetter from 'lib/capitalizeFirstLetter';
 import getErrorMessage from 'lib/errors/getErrorMessage';
 import getErrorObjPayload from 'lib/errors/getErrorObjPayload';

@@ -2,13 +2,13 @@ import { useQueryClient } from '@tanstack/react-query';
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
-import type { SocketMessage } from 'lib/socket/types';
+import type { SocketMessage } from 'client/api/socket/types';
 
 import config from 'configs/app';
-import type { ResourceError } from 'lib/api/resources';
-import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
-import useSocketChannel from 'lib/socket/useSocketChannel';
-import useSocketMessage from 'lib/socket/useSocketMessage';
+import type { ResourceError } from 'client/api/resources';
+import useApiQuery, { getResourceKey } from 'client/api/hooks/useApiQuery';
+import useSocketChannel from 'client/api/socket/useSocketChannel';
+import useSocketMessage from 'client/api/socket/useSocketMessage';
 
 export type HomeLatestBatchQueryResult = UseQueryResult<number, ResourceError<unknown>>;
 

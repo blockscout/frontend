@@ -3,7 +3,7 @@ import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import getStatsLabelFromTitle from 'lib/stats/getStatsLabelFromTitle';
 import { HOMEPAGE_STATS } from 'stubs/stats';

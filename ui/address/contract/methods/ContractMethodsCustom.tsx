@@ -5,7 +5,7 @@ import React from 'react';
 
 import type { SmartContract } from 'types/api/contract';
 
-import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
+import useApiQuery, { getResourceKey } from 'client/api/hooks/useApiQuery';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { Button } from 'toolkit/chakra/button';
 import { Skeleton } from 'toolkit/chakra/skeleton';

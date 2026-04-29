@@ -6,7 +6,7 @@ import type { ScrollL2TxnBatch } from 'types/api/scrollL2';
 
 import { route } from 'nextjs-routes';
 
-import type { ResourceError } from 'lib/api/resources';
+import type { ResourceError } from 'client/api/resources';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import { layerLabels } from 'lib/rollups/utils';
 import { Link } from 'toolkit/chakra/link';

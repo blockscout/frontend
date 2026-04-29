@@ -5,7 +5,7 @@ import { route } from 'nextjs-routes';
 
 import ChartWidgetContainer from 'client/features/chain-stats/components/ChartWidgetContainer';
 import { CHAIN_STATS_CHARTS_SECTION_GAS } from 'client/features/chain-stats/stubs/charts';
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import { Link } from 'toolkit/chakra/link';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';

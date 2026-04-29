@@ -5,16 +5,16 @@ import React from 'react';
 import type { CsrfData } from 'types/client/account';
 import type { ExternalChainExtended } from 'types/externalChains';
 
-import isBodyAllowed from 'lib/api/isBodyAllowed';
-import isNeedProxy from 'lib/api/isNeedProxy';
-import { getResourceKey } from 'lib/api/useApiQuery';
+import isBodyAllowed from '../is-body-allowed';
+import isNeedProxy from '../is-need-proxy';
+import { getResourceKey } from './useApiQuery';
 import * as cookies from 'lib/cookies';
-import type { Params as FetchParams } from 'lib/hooks/useFetch';
-import useFetch from 'lib/hooks/useFetch';
+import type { Params as FetchParams } from './useFetch';
+import useFetch from './useFetch';
 
-import buildUrl from './buildUrl';
-import getResourceParams from './getResourceParams';
-import type { ResourceName, ResourcePathParams } from './resources';
+import buildUrl from '../build-url';
+import getResourceParams from '../get-resource-params';
+import type { ResourceName, ResourcePathParams } from '../resources';
 
 export interface Params<R extends ResourceName> {
   pathParams?: ResourcePathParams<R>;

@@ -6,7 +6,7 @@ import React from 'react';
 import type { VerifiedAddress, TokenInfoApplication, TokenInfoApplications, VerifiedAddressResponse } from 'types/api/account';
 
 import config from 'configs/app';
-import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
+import useApiQuery, { getResourceKey } from 'client/api/hooks/useApiQuery';
 import { PAGE_TYPE_DICT } from 'lib/mixpanel/getPageType';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { TOKEN_INFO_APPLICATION, VERIFIED_ADDRESS } from 'stubs/account';

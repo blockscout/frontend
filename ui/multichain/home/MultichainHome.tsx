@@ -4,7 +4,7 @@ import React from 'react';
 import { route } from 'nextjs-routes';
 
 import multichainConfig from 'configs/multichain';
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import { MultichainProvider } from 'lib/contexts/multichain';
 import { Link } from 'toolkit/chakra/link';
 import HeroBanner from 'ui/home/HeroBanner';

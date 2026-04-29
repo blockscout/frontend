@@ -4,7 +4,7 @@ import type { ChartDataPayloadSankey, StatsIntervalIds } from 'client/features/c
 
 import { getDatesFromInterval } from 'client/features/chain-stats/utils/interval';
 import config from 'configs/app';
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import { isAllOption } from 'ui/shared/externalChains/ChainSelect';
 
 import { CROSS_CHAIN_TXS_CHART } from '../stubs/chain-stats';

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import { INTERCHAIN_STATS_COMMON, INTERCHAIN_TRANSFER } from 'stubs/interchainIndexer';
 import { generateListStub } from 'stubs/utils';
 import { Skeleton } from 'toolkit/chakra/skeleton';

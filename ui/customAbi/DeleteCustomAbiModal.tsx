@@ -4,8 +4,8 @@ import React, { useCallback } from 'react';
 
 import type { CustomAbi, CustomAbis } from 'types/api/account';
 
-import { resourceKey } from 'lib/api/resources';
-import useApiFetch from 'lib/api/useApiFetch';
+import { resourceKey } from 'client/api/resources';
+import useApiFetch from 'client/api/hooks/useApiFetch';
 import DeleteModal from 'ui/shared/DeleteModal';
 
 type Props = {

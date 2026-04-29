@@ -3,7 +3,7 @@ import { formatUnits } from 'viem';
 
 import type { EssentialDappsChainConfig } from 'types/client/marketplace';
 
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery from 'client/api/hooks/useApiQuery';
 
 const PLACEHOLDER_DATA = {
   balance: '10000',

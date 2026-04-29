@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import config from 'configs/app';
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import { currencyUnits } from 'lib/units';
 import { ZERO } from 'toolkit/utils/consts';
 import { thinsp } from 'toolkit/utils/htmlEntities';

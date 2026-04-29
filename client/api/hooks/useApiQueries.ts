@@ -1,7 +1,7 @@
 import type { UseQueryOptions } from '@tanstack/react-query';
 import { useQueries } from '@tanstack/react-query';
 
-import type { ResourceError, ResourceName, ResourcePayload } from './resources';
+import type { ResourceError, ResourceName, ResourcePayload } from '../resources';
 import useApiFetch from './useApiFetch';
 import type { Params as ApiQueryParams } from './useApiQuery';
 import { getResourceKey } from './useApiQuery';

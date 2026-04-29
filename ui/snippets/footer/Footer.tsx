@@ -6,9 +6,9 @@ import React from 'react';
 import type { CustomLinksGroup } from 'types/footerLinks';
 
 import config from 'configs/app';
-import type { ResourceError } from 'lib/api/resources';
-import useApiQuery from 'lib/api/useApiQuery';
-import useFetch from 'lib/hooks/useFetch';
+import type { ResourceError } from 'client/api/resources';
+import useApiQuery from 'client/api/hooks/useApiQuery';
+import useFetch from 'client/api/hooks/useFetch';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { copy } from 'toolkit/utils/htmlEntities';

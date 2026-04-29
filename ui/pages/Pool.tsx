@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import config from 'configs/app';
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getPoolLinks from 'lib/pools/getPoolLinks';
 import { getPoolTitle } from 'lib/pools/getPoolTitle';

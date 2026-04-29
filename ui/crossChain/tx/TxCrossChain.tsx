@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { INTERCHAIN_MESSAGE } from 'stubs/interchainIndexer';

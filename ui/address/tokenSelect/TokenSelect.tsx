@@ -8,7 +8,7 @@ import type { Address } from 'types/api/address';
 
 import { route } from 'nextjs/routes';
 
-import { getResourceKey } from 'lib/api/useApiQuery';
+import { getResourceKey } from 'client/api/hooks/useApiQuery';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import * as mixpanel from 'lib/mixpanel/index';

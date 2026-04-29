@@ -2,7 +2,7 @@ import React from 'react';
 
 import { route } from 'nextjs-routes';
 
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';

@@ -3,7 +3,7 @@ import React from 'react';
 
 import config from 'configs/app';
 import { layerLabels } from 'lib/rollups/utils';
-import { SocketProvider } from 'lib/socket/context';
+import { SocketProvider } from 'client/api/socket/context';
 import { Heading } from 'toolkit/chakra/heading';
 import AdaptiveTabs from 'toolkit/components/AdaptiveTabs/AdaptiveTabs';
 import LatestOptimisticDeposits from 'ui/home/latestDeposits/LatestOptimisticDeposits';

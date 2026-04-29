@@ -5,7 +5,7 @@ import React from 'react';
 import type { AddressImplementation } from 'types/api/addressParams';
 import type { SmartContractConflictingImplementation, SmartContractProxyType } from 'types/api/contract';
 
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import getQueryParamString from 'lib/router/getQueryParamString';
 
 import ContractSourceAddressSelector from '../ContractSourceAddressSelector';

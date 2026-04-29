@@ -2,13 +2,13 @@ import { Flex, Text } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
-import type { SocketMessage } from 'lib/socket/types';
+import type { SocketMessage } from 'client/api/socket/types';
 import type { IndexingStatus } from 'types/api/indexingStatus';
 
 import config from 'configs/app';
-import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
-import useSocketChannel from 'lib/socket/useSocketChannel';
-import useSocketMessage from 'lib/socket/useSocketMessage';
+import useApiQuery, { getResourceKey } from 'client/api/hooks/useApiQuery';
+import useSocketChannel from 'client/api/socket/useSocketChannel';
+import useSocketMessage from 'client/api/socket/useSocketMessage';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { apos, nbsp, ndash } from 'toolkit/utils/htmlEntities';
 import IconSvg from 'ui/shared/IconSvg';

@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import config from 'configs/app';
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery from 'client/api/hooks/useApiQuery';
 
 const DOMAIN_NAME_REGEXP = /.\../;
 

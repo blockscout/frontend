@@ -2,7 +2,7 @@ import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import config from 'configs/app';
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import { currencyUnits } from 'lib/units';
 import { LineChartWidget } from 'toolkit/components/charts/line/LineChartWidget';
 import { useChartsConfig } from 'ui/shared/chart/config';

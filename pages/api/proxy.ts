@@ -4,7 +4,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import fetchFactory from 'nextjs/utils/fetchProxy';
 
 import appConfig from 'configs/app';
-import isNeedProxy from 'lib/api/isNeedProxy';
+import isNeedProxy from 'client/api/is-need-proxy';
 
 const handler = async(nextReq: NextApiRequest, nextRes: NextApiResponse) => {
 

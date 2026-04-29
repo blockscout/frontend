@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { ARBITRUM_L2_TXN_BATCH } from 'stubs/arbitrumL2';
 

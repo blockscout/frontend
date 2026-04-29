@@ -5,8 +5,8 @@ import React from 'react';
 // import type { UserOp } from 'types/api/userOps';
 
 import config from 'configs/app';
-// import type { ResourceError } from 'lib/api/resources';
-import useApiQuery from 'lib/api/useApiQuery';
+// import type { ResourceError } from 'client/api/resources';
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import { TX_INTERPRETATION } from 'stubs/txInterpretation';
 import { Link } from 'toolkit/chakra/link';

@@ -6,8 +6,8 @@ import { BENS_API_RESOURCES } from './services/bens';
 import type { BensApiResourceName, BensApiResourcePayload, BensApiPaginationFilters, BensApiPaginationSorting } from './services/bens';
 import { CLUSTERS_API_RESOURCES } from './services/clusters';
 import type { ClustersApiResourceName, ClustersApiResourcePayload, ClustersApiPaginationFilters, ClustersApiPaginationSorting } from './services/clusters';
-import { CONTRACT_INFO_API_RESOURCES } from './services/contractInfo';
-import type { ContractInfoApiPaginationFilters, ContractInfoApiResourceName, ContractInfoApiResourcePayload } from './services/contractInfo';
+import { CONTRACT_INFO_API_RESOURCES } from './services/contract-info';
+import type { ContractInfoApiPaginationFilters, ContractInfoApiResourceName, ContractInfoApiResourcePayload } from './services/contract-info';
 import { GENERAL_API_RESOURCES } from './services/general';
 import type { GeneralApiResourceName, GeneralApiResourcePayload, GeneralApiPaginationFilters, GeneralApiPaginationSorting } from './services/general';
 import type {
@@ -15,18 +15,18 @@ import type {
   InterchainIndexerApiResourceName,
   InterchainIndexerApiResourcePayload,
   InterchainIndexerApiPaginationSorting,
-} from './services/interchainIndexer';
-import { INTERCHAIN_INDEXER_API_RESOURCES } from './services/interchainIndexer';
+} from './services/interchain-indexer';
+import { INTERCHAIN_INDEXER_API_RESOURCES } from './services/interchain-indexer';
 import type { MetadataApiResourceName, MetadataApiResourcePayload } from './services/metadata';
 import { METADATA_API_RESOURCES } from './services/metadata';
 import type {
   MultichainAggregatorApiPaginationFilters,
   MultichainAggregatorApiResourceName,
   MultichainAggregatorApiResourcePayload,
-} from './services/multichainAggregator';
-import { MULTICHAIN_AGGREGATOR_API_RESOURCES } from './services/multichainAggregator';
-import type { MultichainStatsApiResourcePayload, MultichainStatsApiResourceName } from './services/multichainStats';
-import { MULTICHAIN_STATS_API_RESOURCES } from './services/multichainStats';
+} from './services/multichain-aggregator';
+import { MULTICHAIN_AGGREGATOR_API_RESOURCES } from './services/multichain-aggregator';
+import type { MultichainStatsApiResourcePayload, MultichainStatsApiResourceName } from './services/multichain-stats';
+import { MULTICHAIN_STATS_API_RESOURCES } from './services/multichain-stats';
 import type { RewardsApiResourceName, RewardsApiResourcePayload } from './services/rewards';
 import { REWARDS_API_RESOURCES } from './services/rewards';
 import type { StatsApiResourceName, StatsApiResourcePayload } from './services/stats';
@@ -37,12 +37,12 @@ import type {
   TacOperationLifecycleApiResourceName,
   TacOperationLifecycleApiResourcePayload,
 } from './services/tac-operation-lifecycle';
-import { USER_OPS_API_RESOURCES } from './services/userOps';
-import type { IsPaginated } from './services/utils';
+import { USER_OPS_API_RESOURCES } from './services/user-ops';
+import type { IsPaginated } from './types';
 import { VISUALIZE_API_RESOURCES } from './services/visualize';
 import type { VisualizeApiResourceName, VisualizeApiResourcePayload } from './services/visualize';
-import { ZETA_CHAIN_API_RESOURCES } from './services/zetaChain';
-import type { ZetaChainApiPaginationFilters, ZetaChainApiResourceName, ZetaChainApiResourcePayload } from './services/zetaChain';
+import { ZETA_CHAIN_API_RESOURCES } from './services/zeta-chain';
+import type { ZetaChainApiPaginationFilters, ZetaChainApiResourceName, ZetaChainApiResourcePayload } from './services/zeta-chain';
 
 export const RESOURCES = {
   admin: ADMIN_API_RESOURCES,

@@ -4,7 +4,7 @@ import React from 'react';
 import type { AddressParam } from 'types/api/addressParams';
 
 import config from 'configs/app';
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import { NOVES_TRANSLATE } from 'stubs/noves/NovesTranslate';
 import { TX_INTERPRETATION } from 'stubs/txInterpretation';

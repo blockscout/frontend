@@ -2,7 +2,7 @@ import type { LineChartData } from 'toolkit/components/charts/line/types';
 import type { ChainIndicatorId } from 'types/homepage';
 
 import config from 'configs/app';
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery from 'client/api/hooks/useApiQuery';
 
 import { getChartData } from './utils/chart';
 

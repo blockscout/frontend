@@ -4,9 +4,9 @@ import React from 'react';
 import type { SearchResultCluster } from 'types/api/search';
 
 import config from 'configs/app';
-import type { ResourcePayload, ResourceError } from 'lib/api/resources';
-import useApiFetch from 'lib/api/useApiFetch';
-import { getResourceKey } from 'lib/api/useApiQuery';
+import type { ResourcePayload, ResourceError } from 'client/api/resources';
+import useApiFetch from 'client/api/hooks/useApiFetch';
+import { getResourceKey } from 'client/api/hooks/useApiQuery';
 
 import useQuickSearchQuery from './useQuickSearchQuery';
 

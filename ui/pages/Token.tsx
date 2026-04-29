@@ -3,20 +3,20 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
-import type { SocketMessage } from 'lib/socket/types';
+import type { SocketMessage } from 'client/api/socket/types';
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 import type { TokenInfo } from 'types/api/token';
 import type { PaginationParams } from 'ui/shared/pagination/types';
 
 import CsvExport from 'client/features/csv-export/components/CsvExport';
 import config from 'configs/app';
-import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
+import useApiQuery, { getResourceKey } from 'client/api/hooks/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import * as metadata from 'lib/metadata';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import useEtherscanRedirects from 'lib/router/useEtherscanRedirects';
-import useSocketChannel from 'lib/socket/useSocketChannel';
-import useSocketMessage from 'lib/socket/useSocketMessage';
+import useSocketChannel from 'client/api/socket/useSocketChannel';
+import useSocketMessage from 'client/api/socket/useSocketMessage';
 import { NFT_TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
 import * as addressStubs from 'stubs/address';
 import * as tokenStubs from 'stubs/token';

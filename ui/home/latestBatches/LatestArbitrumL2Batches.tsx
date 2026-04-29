@@ -3,16 +3,16 @@ import { useQueryClient } from '@tanstack/react-query';
 // import { AnimatePresence } from 'framer-motion';
 import React from 'react';
 
-import type { SocketMessage } from 'lib/socket/types';
+import type { SocketMessage } from 'client/api/socket/types';
 import type { ArbitrumL2TxnBatchesItem } from 'types/api/arbitrumL2';
 
 import { route } from 'nextjs-routes';
 
-import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
+import useApiQuery, { getResourceKey } from 'client/api/hooks/useApiQuery';
 import useInitialList from 'lib/hooks/useInitialList';
 import useIsMobile from 'lib/hooks/useIsMobile';
-import useSocketChannel from 'lib/socket/useSocketChannel';
-import useSocketMessage from 'lib/socket/useSocketMessage';
+import useSocketChannel from 'client/api/socket/useSocketChannel';
+import useSocketMessage from 'client/api/socket/useSocketMessage';
 import { ARBITRUM_L2_TXN_BATCHES_ITEM } from 'stubs/arbitrumL2';
 import { Heading } from 'toolkit/chakra/heading';
 import { Link } from 'toolkit/chakra/link';

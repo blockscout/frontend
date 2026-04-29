@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import type { GetAvailableBadgesResponse } from '@blockscout/points-types';
 
 import config from 'configs/app';
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import { useRewardsContext } from 'lib/contexts/rewards';
 
 const feature = config.features.rewards;

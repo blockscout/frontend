@@ -8,7 +8,7 @@ import type { FormFields } from './types';
 import type { UserInfo } from 'types/api/account';
 
 import config from 'configs/app';
-import useApiFetch from 'lib/api/useApiFetch';
+import useApiFetch from 'client/api/hooks/useApiFetch';
 import getErrorMessage from 'lib/errors/getErrorMessage';
 import getErrorObjPayload from 'lib/errors/getErrorObjPayload';
 import * as mixpanel from 'lib/mixpanel';

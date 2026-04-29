@@ -1,4 +1,4 @@
-import type { ResourceError } from 'lib/api/resources';
+import type { ResourceError } from 'client/api/resources';
 
 import getErrorCause from './getErrorCause';
 

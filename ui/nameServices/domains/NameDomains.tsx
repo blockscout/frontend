@@ -5,7 +5,7 @@ import React from 'react';
 import type { EnsDomainLookupFiltersOptions, EnsLookupSorting } from 'types/api/ens';
 
 import config from 'configs/app';
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import useDebounce from 'lib/hooks/useDebounce';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { ENS_DOMAIN } from 'stubs/ENS';

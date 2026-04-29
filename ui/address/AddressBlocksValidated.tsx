@@ -3,14 +3,14 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { SocketMessage } from 'lib/socket/types';
+import type { SocketMessage } from 'client/api/socket/types';
 import type { AddressBlocksValidatedResponse } from 'types/api/address';
 
 import config from 'configs/app';
-import { getResourceKey } from 'lib/api/useApiQuery';
+import { getResourceKey } from 'client/api/hooks/useApiQuery';
 import useIsMounted from 'lib/hooks/useIsMounted';
-import useSocketChannel from 'lib/socket/useSocketChannel';
-import useSocketMessage from 'lib/socket/useSocketMessage';
+import useSocketChannel from 'client/api/socket/useSocketChannel';
+import useSocketMessage from 'client/api/socket/useSocketMessage';
 import { currencyUnits } from 'lib/units';
 import { BLOCK } from 'stubs/block';
 import { generateListStub } from 'stubs/utils';

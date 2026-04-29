@@ -2,7 +2,7 @@ import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import { VERIFIED_CONTRACTS_COUNTERS, VERIFIED_CONTRACTS_COUNTERS_MICROSERVICE } from 'stubs/contract';
 import StatsWidget from 'ui/shared/stats/StatsWidget';

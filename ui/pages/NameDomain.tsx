@@ -7,7 +7,7 @@ import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { ENS_DOMAIN } from 'stubs/ENS';

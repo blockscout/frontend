@@ -6,7 +6,7 @@ import type { SankeyChartData } from 'toolkit/components/charts/sankey/types';
 
 import ChartIntervalSelect from 'client/features/chain-stats/components/ChartIntervalSelect';
 import config from 'configs/app';
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import * as mixpanel from 'lib/mixpanel/index';
 import type { OnValueChangeHandler } from 'toolkit/chakra/select';
 import { Skeleton } from 'toolkit/chakra/skeleton';

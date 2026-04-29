@@ -3,7 +3,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
 import config from 'configs/app';
-import useApiFetch from 'lib/api/useApiFetch';
+import useApiFetch from 'client/api/hooks/useApiFetch';
 import type { EventTypes, EventPayload } from 'lib/mixpanel/index';
 import * as mixpanel from 'lib/mixpanel/index';
 import { Rating } from 'toolkit/chakra/rating';

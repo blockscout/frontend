@@ -5,7 +5,7 @@ import React from 'react';
 import type * as bens from '@blockscout/bens-types';
 
 import config from 'configs/app';
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { ENS_DOMAIN_EVENT } from 'stubs/ENS';
 import DataListDisplay from 'ui/shared/DataListDisplay';

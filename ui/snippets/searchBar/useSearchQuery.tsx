@@ -3,7 +3,7 @@ import React from 'react';
 
 import config from 'configs/app';
 import { fromBech32Address, isBech32Address } from 'lib/address/bech32';
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import useDebounce from 'lib/hooks/useDebounce';
 import useUpdateValueEffect from 'lib/hooks/useUpdateValueEffect';
 import getQueryParamString from 'lib/router/getQueryParamString';

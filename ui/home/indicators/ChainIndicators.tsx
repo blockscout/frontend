@@ -3,7 +3,7 @@ import React from 'react';
 import type { TChainIndicator } from './types';
 
 import config from 'configs/app';
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import { HOMEPAGE_STATS, HOMEPAGE_STATS_MICROSERVICE } from 'stubs/stats';
 import IconSvg from 'ui/shared/IconSvg';
 import NativeTokenIcon from 'ui/shared/NativeTokenIcon';

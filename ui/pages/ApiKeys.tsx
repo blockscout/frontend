@@ -4,7 +4,7 @@ import React, { useCallback, useState } from 'react';
 import type { ApiKey } from 'types/api/account';
 
 import config from 'configs/app';
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import { API_KEY } from 'stubs/account';
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';

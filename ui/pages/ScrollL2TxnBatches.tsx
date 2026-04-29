@@ -1,7 +1,7 @@
 import { Box, Text } from '@chakra-ui/react';
 import React from 'react';
 
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import { SCROLL_L2_TXN_BATCH } from 'stubs/scrollL2';
 import { generateListStub } from 'stubs/utils';
 import { Skeleton } from 'toolkit/chakra/skeleton';

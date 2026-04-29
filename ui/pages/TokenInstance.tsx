@@ -5,7 +5,7 @@ import React from 'react';
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 import type { PaginationParams } from 'ui/shared/pagination/types';
 
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import * as metadata from 'lib/metadata';

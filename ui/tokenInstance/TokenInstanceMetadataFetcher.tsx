@@ -2,15 +2,15 @@ import { Spinner, Center } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
-import type { SocketMessage } from 'lib/socket/types';
+import type { SocketMessage } from 'client/api/socket/types';
 import type { TokenInstance } from 'types/api/token';
 
 import config from 'configs/app';
-import useApiFetch from 'lib/api/useApiFetch';
-import { getResourceKey } from 'lib/api/useApiQuery';
+import useApiFetch from 'client/api/hooks/useApiFetch';
+import { getResourceKey } from 'client/api/hooks/useApiQuery';
 import getErrorMessage from 'lib/errors/getErrorMessage';
-import useSocketChannel from 'lib/socket/useSocketChannel';
-import useSocketMessage from 'lib/socket/useSocketMessage';
+import useSocketChannel from 'client/api/socket/useSocketChannel';
+import useSocketMessage from 'client/api/socket/useSocketMessage';
 import { Alert } from 'toolkit/chakra/alert';
 import { DialogBody, DialogContent, DialogHeader, DialogRoot } from 'toolkit/chakra/dialog';
 import { toaster } from 'toolkit/chakra/toaster';

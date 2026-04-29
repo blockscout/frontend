@@ -4,8 +4,8 @@ import React, { useCallback } from 'react';
 
 import type { AddressTag, TransactionTag, AddressTagsResponse, TransactionTagsResponse } from 'types/api/account';
 
-import useApiFetch from 'lib/api/useApiFetch';
-import { getResourceKey } from 'lib/api/useApiQuery';
+import useApiFetch from 'client/api/hooks/useApiFetch';
+import { getResourceKey } from 'client/api/hooks/useApiQuery';
 import DeleteModal from 'ui/shared/DeleteModal';
 
 type Props = {

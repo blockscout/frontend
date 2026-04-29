@@ -2,7 +2,7 @@ import React from 'react';
 
 import type { FormSubmitResult } from 'ui/publicTags/submit/types';
 
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 import PublicTagsSubmitForm from 'ui/publicTags/submit/PublicTagsSubmitForm';
 import PublicTagsSubmitResult from 'ui/publicTags/submit/PublicTagsSubmitResult';

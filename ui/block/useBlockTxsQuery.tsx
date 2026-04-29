@@ -5,8 +5,8 @@ import type { Chain, GetBlockReturnType } from 'viem';
 
 import type { BlockTransactionsResponse } from 'types/api/block';
 
-import type { ResourceError } from 'lib/api/resources';
-import { retry } from 'lib/api/useQueryClientConfig';
+import type { ResourceError } from 'client/api/resources';
+import { retry } from 'client/api/hooks/useQueryClientConfig';
 import dayjs from 'lib/date/dayjs';
 import hexToDecimal from 'lib/hexToDecimal';
 import { publicClient } from 'lib/web3/client';

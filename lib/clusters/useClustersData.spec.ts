@@ -2,7 +2,7 @@
 
 import { renderHook } from '@testing-library/react';
 
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import { detectInputType } from 'lib/clusters/detectInputType';
 import type { Mock } from 'vitest';
 import { describe, it, expect, beforeEach, vi } from 'vitest';

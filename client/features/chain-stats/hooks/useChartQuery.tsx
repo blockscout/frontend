@@ -1,7 +1,7 @@
 import type { ChartDataPayloadLine, StatsIntervalIds } from '../types/client';
 import { ChartResolution } from 'toolkit/components/charts/types';
 
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import { getDateLabel } from 'toolkit/components/charts/line/utils/getDateLabel';
 
 import { CHAIN_STATS_LINE_CHART } from '../stubs/charts';

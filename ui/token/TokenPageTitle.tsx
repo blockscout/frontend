@@ -8,7 +8,7 @@ import type { EntityTag } from 'ui/shared/EntityTags/types';
 
 import config from 'configs/app';
 import useAddressMetadataInfoQuery from 'lib/address/useAddressMetadataInfoQuery';
-import type { ResourceError } from 'lib/api/resources';
+import type { ResourceError } from 'client/api/resources';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import { getTokenTypeName } from 'lib/token/tokenTypes';
 import { Tooltip } from 'toolkit/chakra/tooltip';

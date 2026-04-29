@@ -1,6 +1,6 @@
 import React from 'react';
 
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import { ADDRESS_INFO } from 'stubs/address';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';

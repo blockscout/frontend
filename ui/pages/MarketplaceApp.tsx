@@ -8,11 +8,11 @@ import type { MarketplaceApp } from 'types/client/marketplace';
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
-import type { ResourceError } from 'lib/api/resources';
-import useApiFetch from 'lib/api/useApiFetch';
+import type { ResourceError } from 'client/api/resources';
+import useApiFetch from 'client/api/hooks/useApiFetch';
 import { useMarketplaceContext } from 'lib/contexts/marketplace';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
-import useFetch from 'lib/hooks/useFetch';
+import useFetch from 'client/api/hooks/useFetch';
 import * as metadata from 'lib/metadata';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { useColorMode } from 'toolkit/chakra/color-mode';

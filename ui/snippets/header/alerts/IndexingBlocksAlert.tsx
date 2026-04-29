@@ -1,15 +1,15 @@
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
-import type { SocketMessage } from 'lib/socket/types';
+import type { SocketMessage } from 'client/api/socket/types';
 import type { IndexingStatus } from 'types/api/indexingStatus';
 
 import config from 'configs/app';
-import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
+import useApiQuery, { getResourceKey } from 'client/api/hooks/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
 import * as cookies from 'lib/cookies';
-import useSocketChannel from 'lib/socket/useSocketChannel';
-import useSocketMessage from 'lib/socket/useSocketMessage';
+import useSocketChannel from 'client/api/socket/useSocketChannel';
+import useSocketMessage from 'client/api/socket/useSocketMessage';
 import { Alert } from 'toolkit/chakra/alert';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { nbsp, ndash } from 'toolkit/utils/htmlEntities';

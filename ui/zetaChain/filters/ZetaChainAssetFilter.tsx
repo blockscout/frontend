@@ -7,7 +7,7 @@ import type { TokenInfo } from 'types/api/token';
 import { ZETA_CHAIN_CCTX_COIN_TYPE_FILTER, type ZetaChainCCTXFilterParams } from 'types/client/zetaChain';
 
 import config from 'configs/app';
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import useDebounce from 'lib/hooks/useDebounce';
 import { PopoverCloseTriggerWrapper } from 'toolkit/chakra/popover';
 import { Tag } from 'toolkit/chakra/tag';

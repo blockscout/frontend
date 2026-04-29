@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import config from 'configs/app';
-import { getResourceKey } from 'lib/api/useApiQuery';
+import { getResourceKey } from 'client/api/hooks/useApiQuery';
 import usePreventFocusAfterModalClosing from 'lib/hooks/usePreventFocusAfterModalClosing';
 import * as mixpanel from 'lib/mixpanel/index';
 import { IconButton } from 'toolkit/chakra/icon-button';

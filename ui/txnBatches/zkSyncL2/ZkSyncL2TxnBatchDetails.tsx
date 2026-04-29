@@ -8,7 +8,7 @@ import { ZKSYNC_L2_TX_BATCH_STATUSES, type ZkSyncBatch } from 'types/api/zkSyncL
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
-import type { ResourceError } from 'lib/api/resources';
+import type { ResourceError } from 'client/api/resources';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import { formatZkSyncL2TxnBatchStatus, layerLabels } from 'lib/rollups/utils';
 import { currencyUnits } from 'lib/units';

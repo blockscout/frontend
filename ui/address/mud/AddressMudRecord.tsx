@@ -2,7 +2,7 @@ import { Box, Flex, Separator, Text, VStack } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { TableRoot, TableRow, TableCell } from 'toolkit/chakra/table';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';

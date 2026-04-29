@@ -1,6 +1,6 @@
 import React from 'react';
 
-import buildUrl from 'lib/api/buildUrl';
+import buildUrl from 'client/api/build-url';
 import * as mocks from 'mocks/account/verifiedAddresses';
 import { test, expect } from 'playwright/lib';
 

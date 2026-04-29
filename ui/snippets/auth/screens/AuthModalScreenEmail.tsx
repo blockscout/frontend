@@ -5,7 +5,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 
 import type { EmailFormFields, Screen } from '../types';
 
-import useApiFetch from 'lib/api/useApiFetch';
+import useApiFetch from 'client/api/hooks/useApiFetch';
 import getErrorMessage from 'lib/errors/getErrorMessage';
 import getErrorObjPayload from 'lib/errors/getErrorObjPayload';
 import * as mixpanel from 'lib/mixpanel';

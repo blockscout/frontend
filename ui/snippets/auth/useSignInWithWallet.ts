@@ -5,7 +5,7 @@ import type * as rewards from '@blockscout/points-types';
 import type { UserInfo } from 'types/api/account';
 
 import config from 'configs/app';
-import useApiFetch from 'lib/api/useApiFetch';
+import useApiFetch from 'client/api/hooks/useApiFetch';
 import * as cookies from 'lib/cookies';
 import getErrorMessage from 'lib/errors/getErrorMessage';
 import getErrorObj from 'lib/errors/getErrorObj';

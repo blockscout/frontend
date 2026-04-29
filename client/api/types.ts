@@ -10,3 +10,5 @@ export interface ApiResource {
   paginated?: boolean;
   headers?: RequestInit['headers'];
 }
+
+export type IsPaginated<R extends ApiResource> = R extends { paginated: true } ? true : false;

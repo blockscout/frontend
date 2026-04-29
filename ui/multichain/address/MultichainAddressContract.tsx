@@ -3,12 +3,12 @@ import React from 'react';
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 
 import multichainConfig from 'configs/multichain';
-import getSocketUrl from 'lib/api/getSocketUrl';
-import useApiQuery from 'lib/api/useApiQuery';
+import getSocketUrl from 'client/api/get-socket-url';
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import { MultichainProvider } from 'lib/contexts/multichain';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useRoutedChainSelect from 'lib/multichain/useRoutedChainSelect';
-import { SocketProvider } from 'lib/socket/context';
+import { SocketProvider } from 'client/api/socket/context';
 import { ADDRESS_INFO } from 'stubs/address';
 import AddressContract from 'ui/address/AddressContract';
 import ChainSelect from 'ui/multichain/components/ChainSelect';

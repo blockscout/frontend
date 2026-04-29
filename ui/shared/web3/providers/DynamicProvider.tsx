@@ -8,8 +8,8 @@ import React from 'react';
 import type { UserInfo } from 'types/api/account';
 
 import config from 'configs/app';
-import useApiFetch from 'lib/api/useApiFetch';
-import { getResourceKey } from 'lib/api/useApiQuery';
+import useApiFetch from 'client/api/hooks/useApiFetch';
+import { getResourceKey } from 'client/api/hooks/useApiQuery';
 import getErrorMessage from 'lib/errors/getErrorMessage';
 import useGetCsrfToken from 'lib/hooks/useGetCsrfToken';
 import * as mixpanel from 'lib/mixpanel/index';

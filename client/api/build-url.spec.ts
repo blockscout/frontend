@@ -1,6 +1,6 @@
 import { expect, test, describe } from 'vitest';
 
-import buildUrl from './buildUrl';
+import buildUrl from './build-url';
 
 test('builds URL for resource without path params', () => {
   const url = buildUrl('general:config_backend_version');

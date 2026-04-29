@@ -1,7 +1,7 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import { layerLabels } from 'lib/rollups/utils';
 import { SHIBARIUM_DEPOSIT_ITEM } from 'stubs/shibarium';
 import { generateListStub } from 'stubs/utils';

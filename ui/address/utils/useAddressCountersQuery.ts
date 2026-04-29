@@ -4,8 +4,8 @@ import { useQuery } from '@tanstack/react-query';
 import type { AddressCounters } from 'types/api/address';
 import type { ClusterChainConfig } from 'types/multichain';
 
-import type { ResourceError } from 'lib/api/resources';
-import useApiQuery from 'lib/api/useApiQuery';
+import type { ResourceError } from 'client/api/resources';
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import { publicClient } from 'lib/web3/client';
 import { ADDRESS_COUNTERS } from 'stubs/address';
 import { GET_TRANSACTIONS_COUNT } from 'stubs/RPC';

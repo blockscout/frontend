@@ -2,14 +2,14 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { SocketMessage } from 'lib/socket/types';
+import type { SocketMessage } from 'client/api/socket/types';
 import type { AddressCoinBalanceHistoryResponse } from 'types/api/address';
 
-import { getResourceKey } from 'lib/api/useApiQuery';
+import { getResourceKey } from 'client/api/hooks/useApiQuery';
 import useIsMounted from 'lib/hooks/useIsMounted';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import useSocketChannel from 'lib/socket/useSocketChannel';
-import useSocketMessage from 'lib/socket/useSocketMessage';
+import useSocketChannel from 'client/api/socket/useSocketChannel';
+import useSocketMessage from 'client/api/socket/useSocketMessage';
 import { ADDRESS_COIN_BALANCE } from 'stubs/address';
 import { generateListStub } from 'stubs/utils';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';

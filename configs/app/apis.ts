@@ -1,4 +1,4 @@
-import type { ApiName } from 'lib/api/types';
+import type { ApiName } from 'client/api/types';
 
 import { stripTrailingSlash } from 'toolkit/utils/url';
 

@@ -7,11 +7,11 @@ import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
 import CsvExport from 'client/features/csv-export/components/CsvExport';
 import multichainConfig from 'configs/multichain';
-import getSocketUrl from 'lib/api/getSocketUrl';
+import getSocketUrl from 'client/api/get-socket-url';
 import { MultichainProvider } from 'lib/contexts/multichain';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import { SocketProvider } from 'lib/socket/context';
+import { SocketProvider } from 'client/api/socket/context';
 import { EmptyState } from 'toolkit/chakra/empty-state';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import AddressTxsFilter from 'ui/address/AddressTxsFilter';

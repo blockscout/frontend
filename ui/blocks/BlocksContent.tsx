@@ -2,16 +2,16 @@ import { Box } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
-import type { SocketMessage } from 'lib/socket/types';
+import type { SocketMessage } from 'client/api/socket/types';
 import type { BlockType, BlocksResponse } from 'types/api/block';
 
 import { route } from 'nextjs/routes';
 
-import { getResourceKey } from 'lib/api/useApiQuery';
+import { getResourceKey } from 'client/api/hooks/useApiQuery';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import useIsMobile from 'lib/hooks/useIsMobile';
-import useSocketChannel from 'lib/socket/useSocketChannel';
-import useSocketMessage from 'lib/socket/useSocketMessage';
+import useSocketChannel from 'client/api/socket/useSocketChannel';
+import useSocketMessage from 'client/api/socket/useSocketMessage';
 import { Link } from 'toolkit/chakra/link';
 import BlocksList from 'ui/blocks/BlocksList';
 import BlocksTable from 'ui/blocks/BlocksTable';

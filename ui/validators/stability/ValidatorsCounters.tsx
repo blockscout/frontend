@@ -2,7 +2,7 @@ import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import { VALIDATORS_STABILITY_COUNTERS } from 'stubs/validators';
 import StatsWidget from 'ui/shared/stats/StatsWidget';
 

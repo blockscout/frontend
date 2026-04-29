@@ -4,7 +4,7 @@ import React from 'react';
 
 import type { AdvancedFilterMethodInfo, AdvancedFilterParams } from 'types/api/advancedFilter';
 
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import useDebounce from 'lib/hooks/useDebounce';
 import { Badge } from 'toolkit/chakra/badge';
 import { Checkbox, CheckboxGroup } from 'toolkit/chakra/checkbox';

@@ -3,7 +3,7 @@ import React from 'react';
 import type { AddressCounters } from 'types/api/address';
 
 import config from 'configs/app';
-import useApiFetch from 'lib/api/useApiFetch';
+import useApiFetch from 'client/api/hooks/useApiFetch';
 
 const feature = config.features.addressMetadata;
 

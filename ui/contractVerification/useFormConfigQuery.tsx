@@ -1,5 +1,5 @@
 import config from 'configs/app';
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery from 'client/api/hooks/useApiQuery';
 
 import { isValidVerificationMethod, sortVerificationMethods } from './utils';
 

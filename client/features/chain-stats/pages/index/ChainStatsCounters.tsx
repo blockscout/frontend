@@ -1,7 +1,7 @@
 import { Grid } from '@chakra-ui/react';
 import React from 'react';
 
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import StatsWidget from 'ui/shared/stats/StatsWidget';
 

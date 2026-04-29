@@ -4,9 +4,9 @@ import { GraphiQL } from 'graphiql';
 import React from 'react';
 
 import config from 'configs/app';
-import buildUrl from 'lib/api/buildUrl';
+import buildUrl from 'client/api/build-url';
 import 'graphiql/graphiql.css';
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import { useColorMode } from 'toolkit/chakra/color-mode';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 import { ZERO_ADDRESS } from 'toolkit/utils/consts';

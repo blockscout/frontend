@@ -6,8 +6,8 @@ import { useForm, FormProvider } from 'react-hook-form';
 
 import type { WatchlistAddress, WatchlistErrors } from 'types/api/account';
 
-import type { ResourceErrorAccount } from 'lib/api/resources';
-import useApiFetch from 'lib/api/useApiFetch';
+import type { ResourceErrorAccount } from 'client/api/resources';
+import useApiFetch from 'client/api/hooks/useApiFetch';
 import getErrorMessage from 'lib/getErrorMessage';
 import { Alert } from 'toolkit/chakra/alert';
 import { Button } from 'toolkit/chakra/button';

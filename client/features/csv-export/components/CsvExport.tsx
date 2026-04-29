@@ -10,11 +10,11 @@ import type { NextJsQueryParam } from 'lib/router/types';
 import type { ClusterChainConfig } from 'types/multichain';
 
 import config from 'configs/app';
-import buildUrl from 'lib/api/buildUrl';
-import isNeedProxy from 'lib/api/isNeedProxy';
-import type { ResourceName, ResourcePathParams } from 'lib/api/resources';
-import useApiFetch from 'lib/api/useApiFetch';
-import useApiQuery from 'lib/api/useApiQuery';
+import buildUrl from 'client/api/build-url';
+import isNeedProxy from 'client/api/is-need-proxy';
+import type { ResourceName, ResourcePathParams } from 'client/api/resources';
+import useApiFetch from 'client/api/hooks/useApiFetch';
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import dayjs from 'lib/date/dayjs';
 import getErrorMessage from 'lib/errors/getErrorMessage';

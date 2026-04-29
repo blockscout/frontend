@@ -4,7 +4,7 @@ import React from 'react';
 import type { HomeStats } from 'types/api/stats';
 import type { TChainIndicator } from 'ui/home/indicators/types';
 
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import { HOMEPAGE_STATS } from 'stubs/multichain';
 import ChainIndicatorsChart from 'ui/home/indicators/ChainIndicatorsChart';
 import ChainIndicatorsContainer from 'ui/home/indicators/ChainIndicatorsContainer';

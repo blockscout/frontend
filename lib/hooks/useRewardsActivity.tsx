@@ -3,8 +3,8 @@ import { useCallback, useRef, useEffect } from 'react';
 import type { PreSubmitTransactionResponse } from '@blockscout/points-types';
 
 import config from 'configs/app';
-import useApiFetch from 'lib/api/useApiFetch';
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiFetch from 'client/api/hooks/useApiFetch';
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import { useRewardsContext } from 'lib/contexts/rewards';
 import { MINUTE } from 'toolkit/utils/consts';
 import useProfileQuery from 'ui/snippets/auth/useProfileQuery';

@@ -13,7 +13,7 @@ import type { AdvancedFilterParams } from 'types/api/advancedFilter';
 import { ADVANCED_FILTER_AGES, ADVANCED_FILTER_ADDRESS_RELATION } from 'types/api/advancedFilter';
 
 import CsvExport from 'client/features/csv-export/components/CsvExport';
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import dayjs from 'lib/date/dayjs';

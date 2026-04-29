@@ -4,20 +4,20 @@ import type { SubmitHandler } from 'react-hook-form';
 import { useForm, FormProvider } from 'react-hook-form';
 
 import type { FormFields } from './types';
-import type { SocketMessage } from 'lib/socket/types';
+import type { SocketMessage } from 'client/api/socket/types';
 import type { SmartContract, SmartContractVerificationMethodApi } from 'types/api/contract';
 import type { SmartContractVerificationConfig } from 'types/client/contract';
 
 import { route } from 'nextjs-routes';
 
-import useApiFetch from 'lib/api/useApiFetch';
+import useApiFetch from 'client/api/hooks/useApiFetch';
 import capitalizeFirstLetter from 'lib/capitalizeFirstLetter';
 import delay from 'lib/delay';
 import getErrorObjStatusCode from 'lib/errors/getErrorObjStatusCode';
 import useRewardsActivity from 'lib/hooks/useRewardsActivity';
 import * as mixpanel from 'lib/mixpanel/index';
-import useSocketChannel from 'lib/socket/useSocketChannel';
-import useSocketMessage from 'lib/socket/useSocketMessage';
+import useSocketChannel from 'client/api/socket/useSocketChannel';
+import useSocketMessage from 'client/api/socket/useSocketMessage';
 import { Button } from 'toolkit/chakra/button';
 import { toaster } from 'toolkit/chakra/toaster';
 import { useUpdateEffect } from 'toolkit/hooks/useUpdateEffect';

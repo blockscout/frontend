@@ -9,7 +9,7 @@ import type { UserInfo } from 'types/api/account';
 import type { PublicTagTypesResponse } from 'types/api/addressMetadata';
 
 import appConfig from 'configs/app';
-import useApiFetch from 'lib/api/useApiFetch';
+import useApiFetch from 'client/api/hooks/useApiFetch';
 import getErrorObj from 'lib/errors/getErrorObj';
 import getErrorObjPayload from 'lib/errors/getErrorObjPayload';
 import useIsMobile from 'lib/hooks/useIsMobile';

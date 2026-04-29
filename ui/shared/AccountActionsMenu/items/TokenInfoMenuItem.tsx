@@ -5,7 +5,7 @@ import React from 'react';
 import type { ItemProps } from '../types';
 
 import config from 'configs/app';
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import { PAGE_TYPE_DICT } from 'lib/mixpanel/getPageType';
 import { MenuItem } from 'toolkit/chakra/menu';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
