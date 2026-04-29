@@ -2,6 +2,8 @@ import { chakra, Box, Flex, Text, VStack, HStack } from '@chakra-ui/react';
 import { upperFirst } from 'es-toolkit';
 import React from 'react';
 
+import type { Block } from 'types/api/block';
+
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
@@ -32,11 +34,10 @@ const LatestBlocks = () => {
     blocksMaxCount = isMobile ? 2 : 3;
   }
   const { blocksQuery } = useHomeDataContext();
-  const { data, isPlaceholderData, isError } = blocksQuery;
-  const initialList = useInitialList({
-    data: data ?? [],
+  const initialList = useInitialList<Block>({
+    data: blocksQuery?.data ?? [],
     idFn: (block) => block.height,
-    enabled: !isPlaceholderData,
+    enabled: Boolean(blocksQuery && !blocksQuery.isPlaceholderData),
   });
 
   const statsQueryResult = useApiQuery('general:stats', {
@@ -50,26 +51,26 @@ const LatestBlocks = () => {
   const isRpcData = rpcDataContext.isEnabled && !rpcDataContext.isLoading && !rpcDataContext.isError && rpcDataContext.subscriptions.includes('latest-blocks');
 
   const content = (() => {
-    if (isError) {
+    if (blocksQuery?.isError) {
       return <LatestBlocksDegraded maxNum={ blocksMaxCount }/>;
     }
-    if (data && data.length > 0) {
-      const dataToShow = data.slice(0, blocksMaxCount);
+    if (blocksQuery?.data && blocksQuery.data.length > 0) {
+      const dataToShow = blocksQuery.data.slice(0, blocksMaxCount);
 
       return (
         <>
           <VStack gap={ 2 } mb={ 3 } overflow="hidden" alignItems="stretch">
             { dataToShow.map(((block, index) => (
               <LatestBlocksItem
-                key={ block.height + (isPlaceholderData ? String(index) : '') }
+                key={ block.height + (blocksQuery.isPlaceholderData ? String(index) : '') }
                 block={ block }
-                isLoading={ isPlaceholderData }
+                isLoading={ blocksQuery.isPlaceholderData }
                 animation={ initialList.getAnimationProp(block) }
               />
             ))) }
           </VStack>
           <Flex justifyContent="center">
-            <Link textStyle="sm" href={ route({ pathname: '/blocks' }) } loading={ isPlaceholderData }>View all blocks</Link>
+            <Link textStyle="sm" href={ route({ pathname: '/blocks' }) } loading={ blocksQuery.isPlaceholderData }>View all blocks</Link>
           </Flex>
         </>
       );
