@@ -18,6 +18,7 @@
     "declarationDir": "./dist",
     "baseUrl": "..",
     "paths": {
+      "client/*": ["../client/*"],
       "configs/*": ["../configs/*"],
       "lib/*": ["../lib/*"],
       "types/*": ["../types/*"],

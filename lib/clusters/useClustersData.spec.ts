@@ -9,7 +9,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 import { useClustersData } from './useClustersData';
 
-vi.mock('lib/api/useApiQuery');
+vi.mock('client/api/hooks/useApiQuery');
 const mockUseApiQuery = useApiQuery as Mock<typeof useApiQuery>;
 
 type MockQueryResult = ReturnType<typeof useApiQuery>;

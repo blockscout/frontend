@@ -20,7 +20,7 @@ const mockUseQuery = useQuery as Mock<typeof useQuery>;
 type MockQuickSearchQuery = ReturnType<typeof useQuickSearchQuery>;
 type MockApiQuery = ReturnType<typeof useApiFetch>;
 
-vi.mock('lib/api/useApiFetch', () => ({
+vi.mock('client/api/hooks/useApiFetch', () => ({
   'default': vi.fn(),
 }));
 const mockUseApiFetch = useApiFetch as Mock<typeof useApiFetch>;
