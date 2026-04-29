@@ -7,7 +7,7 @@ import {
   getSearchPlaceholder,
   shouldShowActionBar,
 } from 'lib/clusters/actionBarUtils';
-import useIsInitialLoading from 'lib/hooks/useIsInitialLoading';
+import useIsInitialLoading from 'client/shared/hooks/useIsInitialLoading';
 import { Button, ButtonGroupRadio } from 'toolkit/chakra/button';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import ActionBar from 'ui/shared/ActionBar';

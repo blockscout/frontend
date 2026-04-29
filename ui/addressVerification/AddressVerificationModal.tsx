@@ -6,7 +6,7 @@ import type { VerifiedAddress } from 'types/api/account';
 
 import config from 'configs/app';
 import { FallbackProvider } from 'lib/contexts/fallback';
-import * as mixpanel from 'lib/mixpanel/index';
+import * as mixpanel from 'client/shared/analytics';
 import { DialogBody, DialogContent, DialogHeader, DialogRoot } from 'toolkit/chakra/dialog';
 
 const Web3ProviderBase = dynamic(() => import('ui/shared/web3/Web3Provider'), { ssr: false });

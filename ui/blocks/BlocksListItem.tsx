@@ -10,8 +10,8 @@ import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import getBlockTotalReward from 'lib/block/getBlockTotalReward';
-import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
-import { currencyUnits } from 'lib/units';
+import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-title';
+import { currencyUnits } from 'client/shared/chain/units';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
@@ -77,7 +77,7 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement, animation, chain
       ) }
       { !config.UI.views.block.hiddenFields?.miner && (
         <Flex columnGap={ 2 } w="100%">
-          <Text fontWeight={ 500 }>{ capitalize(getNetworkValidatorTitle()) }</Text>
+          <Text fontWeight={ 500 }>{ capitalize(getChainValidatorTitle()) }</Text>
           <AddressEntity
             address={ data.miner }
             isLoading={ isLoading }

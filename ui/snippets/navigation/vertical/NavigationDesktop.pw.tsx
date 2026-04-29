@@ -3,7 +3,7 @@ import type { BrowserContext, Locator } from '@playwright/test';
 import React from 'react';
 
 import config from 'configs/app';
-import * as cookies from 'lib/cookies';
+import * as cookies from 'client/shared/storage/cookies';
 import { contextWithAuth } from 'playwright/fixtures/auth';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';

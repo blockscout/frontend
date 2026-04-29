@@ -11,7 +11,7 @@ import useSocketMessage from 'client/api/socket/useSocketMessage';
 import config from 'configs/app';
 import { useAppContext } from 'lib/contexts/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
-import * as cookies from 'lib/cookies';
+import * as cookies from 'client/shared/storage/cookies';
 
 import type { Filters } from './useAddressTokenTransfersQuery';
 

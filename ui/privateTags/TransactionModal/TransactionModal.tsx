@@ -2,8 +2,8 @@ import React, { useCallback, useState } from 'react';
 
 import type { TransactionTag } from 'types/api/account';
 
-import { PAGE_TYPE_DICT } from 'lib/mixpanel/getPageType';
-import * as mixpanel from 'lib/mixpanel/index';
+import { PAGE_TYPE_DICT } from 'client/shared/analytics/get-page-type';
+import * as mixpanel from 'client/shared/analytics';
 import FormModal from 'ui/shared/FormModal';
 
 import TransactionForm from './TransactionForm';

@@ -4,7 +4,7 @@ import React from 'react';
 
 import type { TabItemRegular } from './types';
 
-import useIsMobile from 'lib/hooks/useIsMobile';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
 
 import { Skeleton } from '../../chakra/skeleton';
 import type { TabsProps } from '../../chakra/tabs';

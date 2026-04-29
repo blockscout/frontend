@@ -4,7 +4,7 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 import config from 'configs/app';
 import multichainConfig from 'configs/multichain';
 import { isBech32Address, fromBech32Address } from 'lib/address/bech32';
-import useDebounce from 'lib/hooks/useDebounce';
+import useDebounce from 'client/shared/hooks/useDebounce';
 import { getExternalSearchItem } from 'lib/search/externalSearch';
 
 import useSearchMultichain from './useSearchMultichain';

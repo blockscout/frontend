@@ -1,7 +1,7 @@
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import getNetworkUtilizationParams from 'lib/networks/getNetworkUtilizationParams';
+import getChainUtilizationParams from 'client/shared/chain/get-chain-utilization-params';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { mdash } from 'toolkit/utils/htmlEntities';
 
@@ -11,7 +11,7 @@ interface Props {
 }
 
 const GasTrackerNetworkUtilization = ({ percentage, isLoading }: Props) => {
-  const { load, color } = getNetworkUtilizationParams(percentage);
+  const { load, color } = getChainUtilizationParams(percentage);
 
   return (
     <Skeleton loading={ isLoading } whiteSpace="pre-wrap">

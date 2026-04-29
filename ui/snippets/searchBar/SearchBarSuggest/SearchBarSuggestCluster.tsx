@@ -6,7 +6,7 @@ import type { SearchResultCluster } from 'types/api/search';
 
 import { toBech32Address } from 'lib/address/bech32';
 import { isEvmAddress } from 'lib/address/isEvmAddress';
-import highlightText from 'lib/highlightText';
+import highlightText from 'client/shared/text/highlight-text';
 import ClusterIcon from 'ui/shared/ClusterIcon';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 

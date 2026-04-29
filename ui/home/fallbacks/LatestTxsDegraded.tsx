@@ -6,7 +6,7 @@ import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
-import { publicClient } from 'lib/web3/client';
+import { publicClient } from 'client/shared/web3/client';
 import { TX } from 'stubs/tx';
 import { Link } from 'toolkit/chakra/link';
 

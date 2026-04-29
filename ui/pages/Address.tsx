@@ -15,9 +15,9 @@ import useAddressMetadataInitUpdate from 'lib/address/useAddressMetadataInitUpda
 import { useAddressClusters } from 'lib/clusters/useAddressClusters';
 import useAddressProfileApiQuery from 'lib/hooks/useAddressProfileApiQuery';
 import useIsSafeAddress from 'lib/hooks/useIsSafeAddress';
-import getNetworkValidationActionText from 'lib/networks/getNetworkValidationActionText';
-import getQueryParamString from 'lib/router/getQueryParamString';
-import useEtherscanRedirects from 'lib/router/useEtherscanRedirects';
+import getChainValidationActionText from 'client/shared/chain/get-chain-validation-action-text';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
+import useEtherscanRedirects from 'client/shared/router/useEtherscanRedirects';
 import useFetchXStarScore from 'lib/xStarScore/useFetchXStarScore';
 import { ADDRESS_TABS_COUNTERS } from 'stubs/address';
 import { USER_OPS_ACCOUNT } from 'stubs/userOps';
@@ -285,7 +285,7 @@ const AddressPageContent = () => {
       addressTabsCountersQuery.data?.validations_count ?
         {
           id: 'blocks_validated',
-          title: `Blocks ${ getNetworkValidationActionText() }`,
+          title: `Blocks ${ getChainValidationActionText() }`,
           count: addressTabsCountersQuery.data?.validations_count,
           component: <AddressBlocksValidated shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
         } :

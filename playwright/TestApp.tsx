@@ -14,7 +14,7 @@ import { AppContextProvider } from 'lib/contexts/app';
 import { MarketplaceContext } from 'lib/contexts/marketplace';
 import { RewardsContextProvider } from 'lib/contexts/rewards';
 import { SettingsContextProvider } from 'lib/contexts/settings';
-import { currentChain } from 'lib/web3/chains';
+import { currentChain } from 'client/shared/web3/chains';
 import { Provider as ChakraProvider } from 'toolkit/chakra/provider';
 
 import { port as socketPort } from './utils/socket';

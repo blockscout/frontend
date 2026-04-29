@@ -7,7 +7,7 @@ import type { AggregatedTokenInfo } from 'types/client/multichainAggregator';
 
 import config from 'configs/app';
 import multichainConfig from 'configs/multichain';
-import getItemIndex from 'lib/getItemIndex';
+import getItemIndex from 'client/shared/lists/get-item-index';
 import { getTokenTypeName } from 'lib/token/tokenTypes';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import useIsMounted from 'lib/hooks/useIsMounted';
+import useIsMounted from 'client/shared/hooks/useIsMounted';
 
 interface Props {
   children: React.ReactNode;

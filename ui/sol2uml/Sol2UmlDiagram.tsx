@@ -6,8 +6,8 @@ import type { SmartContract } from 'types/api/contract';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 import type { ResourceError } from 'client/api/resources';
-import throwOnAbsentParamError from 'lib/errors/throwOnAbsentParamError';
-import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
+import throwOnAbsentParamError from 'client/shared/errors/throw-on-absent-param-error';
+import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 

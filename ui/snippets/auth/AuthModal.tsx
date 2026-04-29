@@ -8,7 +8,7 @@ import { getResourceKey } from 'client/api/hooks/useApiQuery';
 import config from 'configs/app';
 import { useRewardsContext } from 'lib/contexts/rewards';
 import useGetCsrfToken from 'lib/hooks/useGetCsrfToken';
-import * as mixpanel from 'lib/mixpanel';
+import * as mixpanel from 'client/shared/analytics';
 import { DialogBody, DialogContent, DialogHeader, DialogRoot } from 'toolkit/chakra/dialog';
 
 import AuthModalScreenConnectWallet from './screens/AuthModalScreenConnectWallet';

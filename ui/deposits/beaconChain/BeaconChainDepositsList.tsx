@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { DepositsItem } from 'types/api/deposits';
 
-import useLazyRenderedList from 'lib/hooks/useLazyRenderedList';
+import useLazyRenderedList from 'client/shared/lists/useLazyRenderedList';
 
 import BeaconChainDepositsListItem from './BeaconChainDepositsListItem';
 

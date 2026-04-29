@@ -4,7 +4,7 @@ import React, { useCallback } from 'react';
 import { route } from 'nextjs-routes';
 
 import { useRewardsContext } from 'lib/contexts/rewards';
-import useIsMobile from 'lib/hooks/useIsMobile';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
 import type { ButtonProps } from 'toolkit/chakra/button';
 import { Button } from 'toolkit/chakra/button';
 import { Tooltip } from 'toolkit/chakra/tooltip';

@@ -3,7 +3,7 @@ import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 import config from 'configs/app';
-import { currencyUnits } from 'lib/units';
+import { currencyUnits } from 'client/shared/chain/units';
 import { LineChartWidget } from 'toolkit/components/charts/line/LineChartWidget';
 import { useChartsConfig } from 'ui/shared/chart/config';
 

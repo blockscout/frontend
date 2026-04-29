@@ -6,7 +6,7 @@ import React from 'react';
 import type { SmartContract } from 'types/api/contract';
 
 import useApiQuery, { getResourceKey } from 'client/api/hooks/useApiQuery';
-import getQueryParamString from 'lib/router/getQueryParamString';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 import { Button } from 'toolkit/chakra/button';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';

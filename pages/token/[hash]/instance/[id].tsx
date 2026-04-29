@@ -9,7 +9,7 @@ import detectBotRequest from 'nextjs/utils/detectBotRequest';
 import fetchApi from 'nextjs/utils/fetchApi';
 
 import config from 'configs/app';
-import getQueryParamString from 'lib/router/getQueryParamString';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 import TokenInstance from 'ui/pages/TokenInstance';
 
 const pathname: Route['pathname'] = '/token/[hash]/instance/[id]';

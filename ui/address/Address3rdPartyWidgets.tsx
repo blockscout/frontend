@@ -6,8 +6,8 @@ import type { Address3rdPartyWidget } from 'types/views/address';
 
 import { route } from 'nextjs-routes';
 
-import useIsMounted from 'lib/hooks/useIsMounted';
-import getQueryParamString from 'lib/router/getQueryParamString';
+import useIsMounted from 'client/shared/hooks/useIsMounted';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 import { Link } from 'toolkit/chakra/link';
 
 import Address3rdPartyWidgetCard from './address3rdPartyWidgets/Address3rdPartyWidgetCard';

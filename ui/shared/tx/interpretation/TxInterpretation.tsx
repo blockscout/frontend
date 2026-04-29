@@ -15,8 +15,8 @@ import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';
-import * as mixpanel from 'lib/mixpanel/index';
-import { currencyUnits } from 'lib/units';
+import * as mixpanel from 'client/shared/analytics';
+import { currencyUnits } from 'client/shared/chain/units';
 import { Badge } from 'toolkit/chakra/badge';
 import { useColorModeValue } from 'toolkit/chakra/color-mode';
 import { Image } from 'toolkit/chakra/image';

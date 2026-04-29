@@ -5,9 +5,9 @@ import React from 'react';
 import type { NovesHistoryFilterValue } from 'types/api/noves';
 import { NovesHistoryFilterValues } from 'types/api/noves';
 
-import getFilterValueFromQuery from 'lib/getFilterValueFromQuery';
-import useIsMounted from 'lib/hooks/useIsMounted';
-import getQueryParamString from 'lib/router/getQueryParamString';
+import getFilterValueFromQuery from 'client/shared/router/get-filter-value-from-query';
+import useIsMounted from 'client/shared/hooks/useIsMounted';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 import { NOVES_TRANSLATE } from 'stubs/noves/NovesTranslate';
 import { generateListStub } from 'stubs/utils';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';

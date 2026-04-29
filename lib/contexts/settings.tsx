@@ -3,7 +3,7 @@ import React from 'react';
 import type { TimeFormat } from 'types/settings';
 import { ADDRESS_FORMATS, type AddressFormat } from 'types/views/address';
 
-import * as cookies from 'lib/cookies';
+import * as cookies from 'client/shared/storage/cookies';
 
 import { useAppContext } from './app';
 

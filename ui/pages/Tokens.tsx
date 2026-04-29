@@ -9,8 +9,8 @@ import useBridgedTokensQueryCrossChain from 'client/features/cross-chain-txs/hoo
 import BridgedTokensIndex from 'client/features/cross-chain-txs/pages/bridged-tokens/BridgedTokensIndex';
 import { BRIDGED_TOKENS_SORT_COLLECTION } from 'client/features/cross-chain-txs/utils/bridged-tokens-sort';
 import config from 'configs/app';
-import useIsMobile from 'lib/hooks/useIsMobile';
-import getQueryParamString from 'lib/router/getQueryParamString';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 import type { SlotProps } from 'toolkit/components/AdaptiveTabs/AdaptiveTabsList';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';

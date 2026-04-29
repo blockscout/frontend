@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 
-import useDebounce from 'lib/hooks/useDebounce';
-import getQueryParamString from 'lib/router/getQueryParamString';
+import useDebounce from 'client/shared/hooks/useDebounce';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 export function useClusterSearch() {
   const router = useRouter();

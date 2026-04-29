@@ -5,7 +5,7 @@ import type { BannerFormat } from './types';
 import type { AdBannerProviders } from 'types/client/adProviders';
 
 import config from 'configs/app';
-import useAccount from 'lib/web3/useAccount';
+import useAccount from 'client/shared/web3/useAccount';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
 

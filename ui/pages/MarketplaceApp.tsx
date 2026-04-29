@@ -12,9 +12,9 @@ import useFetch from 'client/api/hooks/useFetch';
 import type { ResourceError } from 'client/api/resources';
 import config from 'configs/app';
 import { useMarketplaceContext } from 'lib/contexts/marketplace';
-import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
-import * as metadata from 'lib/metadata';
-import getQueryParamString from 'lib/router/getQueryParamString';
+import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
+import * as metadata from 'client/shared/metadata';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 import { useColorMode } from 'toolkit/chakra/color-mode';
 import useIsAuth from 'ui/snippets/auth/useIsAuth';
 

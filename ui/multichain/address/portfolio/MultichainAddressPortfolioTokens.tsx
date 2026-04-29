@@ -9,9 +9,9 @@ import type * as multichain from '@blockscout/multichain-aggregator-types';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 import multichainConfig from 'configs/multichain';
-import * as cookies from 'lib/cookies';
-import useDebounce from 'lib/hooks/useDebounce';
-import getQueryParamString from 'lib/router/getQueryParamString';
+import * as cookies from 'client/shared/storage/cookies';
+import useDebounce from 'client/shared/hooks/useDebounce';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 import { ADDRESS_PORTFOLIO, TOKEN } from 'stubs/multichain';
 import { generateListStub } from 'stubs/utils';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';

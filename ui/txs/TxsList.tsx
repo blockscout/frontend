@@ -5,8 +5,8 @@ import type { TxsSocketType } from './socket/types';
 import type { Transaction } from 'types/api/transaction';
 
 import { useMultichainContext } from 'lib/contexts/multichain';
-import useInitialList from 'lib/hooks/useInitialList';
-import useLazyRenderedList from 'lib/hooks/useLazyRenderedList';
+import useInitialList from 'client/shared/lists/useInitialList';
+import useLazyRenderedList from 'client/shared/lists/useLazyRenderedList';
 
 import type { TxsTranslationQuery } from './noves/useDescribeTxs';
 import TxsSocketNotice from './socket/TxsSocketNotice';

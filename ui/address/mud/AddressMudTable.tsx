@@ -4,8 +4,8 @@ import React from 'react';
 
 import type { AddressMudRecordsFilter, AddressMudRecordsSorting } from 'types/api/address';
 
-import useIsMobile from 'lib/hooks/useIsMobile';
-import getQueryParamString from 'lib/router/getQueryParamString';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 import { Tag } from 'toolkit/chakra/tag';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';

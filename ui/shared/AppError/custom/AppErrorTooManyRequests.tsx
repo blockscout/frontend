@@ -3,7 +3,7 @@ import React from 'react';
 
 import buildUrl from 'client/api/build-url';
 import config from 'configs/app';
-import * as cookies from 'lib/cookies';
+import * as cookies from 'client/shared/storage/cookies';
 import { Button } from 'toolkit/chakra/button';
 import { toaster } from 'toolkit/chakra/toaster';
 import { DAY, SECOND } from 'toolkit/utils/consts';

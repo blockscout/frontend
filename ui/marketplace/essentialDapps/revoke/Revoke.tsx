@@ -8,11 +8,11 @@ import { useAccount } from 'wagmi';
 
 import config from 'configs/app';
 import essentialDappsChainsConfig from 'configs/essential-dapps-chains';
-import useIsMobile from 'lib/hooks/useIsMobile';
-import * as mixpanel from 'lib/mixpanel';
-import getQueryParamString from 'lib/router/getQueryParamString';
-import { useQueryParams } from 'lib/router/useQueryParams';
-import useWeb3Wallet from 'lib/web3/useWallet';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+import * as mixpanel from 'client/shared/analytics';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
+import { useQueryParams } from 'client/shared/router/useQueryParams';
+import useWeb3Wallet from 'client/shared/web3/useWallet';
 import { Button } from 'toolkit/chakra/button';
 import { EmptyState } from 'toolkit/chakra/empty-state';
 import { Tooltip } from 'toolkit/chakra/tooltip';

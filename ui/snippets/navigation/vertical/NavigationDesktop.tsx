@@ -2,7 +2,7 @@ import { Flex, Box, VStack } from '@chakra-ui/react';
 import React from 'react';
 
 import { useAppContext } from 'lib/contexts/app';
-import * as cookies from 'lib/cookies';
+import * as cookies from 'client/shared/storage/cookies';
 import useNavItems, { isGroupItem } from 'lib/hooks/useNavItems';
 import IconSvg from 'ui/shared/IconSvg';
 import useIsAuth from 'ui/snippets/auth/useIsAuth';

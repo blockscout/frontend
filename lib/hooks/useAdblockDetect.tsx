@@ -4,7 +4,7 @@ import type { AdBannerProviders } from 'types/client/adProviders';
 
 import config from 'configs/app';
 import { useAppContext } from 'lib/contexts/app';
-import * as cookies from 'lib/cookies';
+import * as cookies from 'client/shared/storage/cookies';
 import { isBrowser } from 'toolkit/utils/isBrowser';
 
 const DEFAULT_URL = 'https://request-global.czilladx.com';

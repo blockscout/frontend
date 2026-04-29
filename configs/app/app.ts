@@ -1,4 +1,4 @@
-import * as cookies from 'lib/cookies';
+import * as cookies from 'client/shared/storage/cookies';
 
 import { getEnvValue } from './utils';
 

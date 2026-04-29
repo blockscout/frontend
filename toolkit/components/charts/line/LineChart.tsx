@@ -5,7 +5,7 @@ import type { ChartMargin } from '../types';
 import { ChartResolution } from '../types';
 import type { LineChartAxesConfigFn, LineChartData } from './types';
 
-import useIsMobile from 'lib/hooks/useIsMobile';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
 
 import { LineChartArea } from './parts/LineChartArea';
 import { LineChartAxis } from './parts/LineChartAxis';

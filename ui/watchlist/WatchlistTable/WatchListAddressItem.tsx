@@ -5,7 +5,7 @@ import React from 'react';
 import type { WatchlistAddress } from 'types/api/account';
 
 import config from 'configs/app';
-import { currencyUnits } from 'lib/units';
+import { currencyUnits } from 'client/shared/chain/units';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { nbsp } from 'toolkit/utils/htmlEntities';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';

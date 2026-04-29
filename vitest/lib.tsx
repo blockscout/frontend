@@ -7,7 +7,7 @@ import React from 'react';
 import { SocketProvider } from 'client/api/socket/context';
 import { AppContextProvider } from 'lib/contexts/app';
 
-import 'lib/setLocale';
+import 'client/shared/i18n/set-locale';
 
 const PAGE_PROPS = {
   cookies: '',

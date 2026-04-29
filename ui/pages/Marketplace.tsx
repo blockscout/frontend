@@ -6,9 +6,9 @@ import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 import { MarketplaceCategory } from 'types/client/marketplace';
 
 import config from 'configs/app';
-import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
+import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import useGraphLinks from 'lib/hooks/useGraphLinks';
-import useIsMobile from 'lib/hooks/useIsMobile';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
 import { Heading } from 'toolkit/chakra/heading';
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { Link } from 'toolkit/chakra/link';

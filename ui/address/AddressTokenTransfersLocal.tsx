@@ -5,7 +5,7 @@ import type { TokenType } from 'types/api/token';
 
 import CsvExport from 'client/features/csv-export/components/CsvExport';
 import { useMultichainContext } from 'lib/contexts/multichain';
-import useIsMobile from 'lib/hooks/useIsMobile';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/pagination/Pagination';

@@ -6,8 +6,8 @@ import type { Block } from 'types/api/block';
 
 import config from 'configs/app';
 import getBlockTotalReward from 'lib/block/getBlockTotalReward';
-import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
-import { currencyUnits } from 'lib/units';
+import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-title';
+import { currencyUnits } from 'client/shared/chain/units';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { thinsp } from 'toolkit/utils/htmlEntities';
@@ -77,7 +77,7 @@ const LatestBlocksItem = ({ block, isLoading, animation }: Props) => {
 
         { !config.features.rollup.isEnabled && !config.UI.views.block.hiddenFields?.miner && (
           <>
-            <Skeleton loading={ isLoading }>{ capitalize(getNetworkValidatorTitle()) }</Skeleton>
+            <Skeleton loading={ isLoading }>{ capitalize(getChainValidatorTitle()) }</Skeleton>
             <AddressEntity
               address={ block.miner }
               isLoading={ isLoading }

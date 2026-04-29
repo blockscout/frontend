@@ -9,8 +9,8 @@ import { route } from 'nextjs-routes';
 
 import { toBech32Address } from 'lib/address/bech32';
 import dayjs from 'lib/date/dayjs';
-import highlightText from 'lib/highlightText';
-import * as mixpanel from 'lib/mixpanel/index';
+import highlightText from 'client/shared/text/highlight-text';
+import * as mixpanel from 'client/shared/analytics';
 import { saveToRecentKeywords } from 'lib/recentSearchKeywords';
 import { useColorMode } from 'toolkit/chakra/color-mode';
 import { Image } from 'toolkit/chakra/image';

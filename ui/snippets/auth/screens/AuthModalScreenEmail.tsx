@@ -6,9 +6,9 @@ import { FormProvider, useForm } from 'react-hook-form';
 import type { EmailFormFields, Screen } from '../types';
 
 import useApiFetch from 'client/api/hooks/useApiFetch';
-import getErrorMessage from 'lib/errors/getErrorMessage';
-import getErrorObjPayload from 'lib/errors/getErrorObjPayload';
-import * as mixpanel from 'lib/mixpanel';
+import getErrorMessage from 'client/shared/errors/get-error-message';
+import getErrorObjPayload from 'client/shared/errors/get-error-obj-payload';
+import * as mixpanel from 'client/shared/analytics';
 import { Button } from 'toolkit/chakra/button';
 import { toaster } from 'toolkit/chakra/toaster';
 import { FormFieldEmail } from 'toolkit/components/forms/fields/FormFieldEmail';

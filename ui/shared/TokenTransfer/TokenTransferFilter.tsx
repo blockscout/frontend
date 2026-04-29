@@ -5,7 +5,7 @@ import type { AddressFromToFilter } from 'types/api/address';
 import type { TokenType } from 'types/api/token';
 import type { ClusterChainConfig } from 'types/multichain';
 
-import useIsInitialLoading from 'lib/hooks/useIsInitialLoading';
+import useIsInitialLoading from 'client/shared/hooks/useIsInitialLoading';
 import { Radio, RadioGroup } from 'toolkit/chakra/radio';
 import PopoverFilter from 'ui/shared/filters/PopoverFilter';
 import TokenTypeFilter from 'ui/shared/filters/TokenTypeFilter';

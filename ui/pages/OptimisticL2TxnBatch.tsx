@@ -3,10 +3,10 @@ import React from 'react';
 
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
-import throwOnAbsentParamError from 'lib/errors/throwOnAbsentParamError';
-import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
-import useIsMobile from 'lib/hooks/useIsMobile';
-import getQueryParamString from 'lib/router/getQueryParamString';
+import throwOnAbsentParamError from 'client/shared/errors/throw-on-absent-param-error';
+import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 import { BLOCK } from 'stubs/block';
 import { TX } from 'stubs/tx';
 import { generateListStub } from 'stubs/utils';

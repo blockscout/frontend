@@ -5,7 +5,7 @@ import React from 'react';
 import type { CsrfData } from 'types/client/account';
 import type { ExternalChainExtended } from 'types/externalChains';
 
-import * as cookies from 'lib/cookies';
+import * as cookies from 'client/shared/storage/cookies';
 
 import buildUrl from '../build-url';
 import getResourceParams from '../get-resource-params';

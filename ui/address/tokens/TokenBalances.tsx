@@ -4,7 +4,7 @@ import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 import config from 'configs/app';
-import { currencyUnits } from 'lib/units';
+import { currencyUnits } from 'client/shared/chain/units';
 import { ZERO } from 'toolkit/utils/consts';
 import { thinsp } from 'toolkit/utils/htmlEntities';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';

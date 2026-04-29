@@ -5,9 +5,9 @@ import type { Chain, GetBlockReturnType, GetTransactionReturnType, TransactionRe
 
 import type { Transaction } from 'types/api/transaction';
 
-import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
-import { publicClient } from 'lib/web3/client';
-import formatTxData from 'lib/web3/rpc/formatTxData';
+import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
+import { publicClient } from 'client/shared/web3/client';
+import formatTxData from 'client/shared/web3/rpc/format-tx-data';
 import { GET_BLOCK, GET_TRANSACTION, GET_TRANSACTION_RECEIPT, GET_TRANSACTION_CONFIRMATIONS } from 'stubs/RPC';
 import { SECOND } from 'toolkit/utils/consts';
 import ServiceDegradationWarning from 'ui/shared/alerts/ServiceDegradationWarning';

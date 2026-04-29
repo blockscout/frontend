@@ -8,7 +8,7 @@ import { ZETA_CHAIN_CCTX_COIN_TYPE_FILTER, type ZetaChainCCTXFilterParams } from
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 import config from 'configs/app';
-import useDebounce from 'lib/hooks/useDebounce';
+import useDebounce from 'client/shared/hooks/useDebounce';
 import { PopoverCloseTriggerWrapper } from 'toolkit/chakra/popover';
 import { Tag } from 'toolkit/chakra/tag';
 import { ClearButton } from 'toolkit/components/buttons/ClearButton';

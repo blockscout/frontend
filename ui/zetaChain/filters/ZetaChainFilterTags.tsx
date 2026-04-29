@@ -6,7 +6,7 @@ import type { ZetaChainCCTXFilterParams } from 'types/client/zetaChain';
 
 import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';
-import shortenString from 'lib/shortenString';
+import shortenString from 'client/shared/text/shorten-string';
 import { Link } from 'toolkit/chakra/link';
 import { Tag } from 'toolkit/chakra/tag';
 import { SECOND } from 'toolkit/utils/consts';

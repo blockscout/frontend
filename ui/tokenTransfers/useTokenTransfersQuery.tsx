@@ -4,7 +4,7 @@ import React from 'react';
 import type { TokenType } from 'types/api/token';
 
 import multichainConfig from 'configs/multichain';
-import getQueryParamString from 'lib/router/getQueryParamString';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 import { getTokenTransfersStub } from 'stubs/token';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import { getTokenFilterValue } from 'ui/tokens/utils';

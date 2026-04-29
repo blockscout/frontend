@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 
 import config from 'configs/app';
 import { useRewardsContext } from 'lib/contexts/rewards';
-import useIsMobile from 'lib/hooks/useIsMobile';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
 import { Alert } from 'toolkit/chakra/alert';
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';

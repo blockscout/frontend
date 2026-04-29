@@ -7,9 +7,9 @@ import type { Log } from 'types/api/log';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
-import throwOnAbsentParamError from 'lib/errors/throwOnAbsentParamError';
-import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
-import getQueryParamString from 'lib/router/getQueryParamString';
+import throwOnAbsentParamError from 'client/shared/errors/throw-on-absent-param-error';
+import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 import { USER_OP } from 'stubs/userOps';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import TextAd from 'ui/shared/ad/TextAd';

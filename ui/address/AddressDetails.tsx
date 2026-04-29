@@ -3,10 +3,10 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import config from 'configs/app';
-import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
-import getNetworkValidationActionText from 'lib/networks/getNetworkValidationActionText';
-import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
-import getQueryParamString from 'lib/router/getQueryParamString';
+import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
+import getChainValidationActionText from 'client/shared/chain/get-chain-validation-action-text';
+import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-title';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 import AddressCounterItem from 'ui/address/details/AddressCounterItem';
 import ServiceDegradationWarning from 'ui/shared/alerts/ServiceDegradationWarning';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
@@ -269,10 +269,10 @@ const AddressDetails = ({ addressQuery, countersQuery, isLoading }: Props) => {
         { data.has_validated_blocks && (
           <>
             <DetailedInfo.ItemLabel
-              hint={ `Number of blocks ${ getNetworkValidationActionText() } by this ${ getNetworkValidatorTitle() }` }
+              hint={ `Number of blocks ${ getChainValidationActionText() } by this ${ getChainValidatorTitle() }` }
               isLoading={ isLoading || countersQuery.isPlaceholderData }
             >
-              { `Blocks ${ getNetworkValidationActionText() }` }
+              { `Blocks ${ getChainValidationActionText() }` }
             </DetailedInfo.ItemLabel>
             <DetailedInfo.ItemValue>
               { addressQuery.data ? (

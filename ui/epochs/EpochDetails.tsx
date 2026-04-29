@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { CeloEpochDetails } from 'types/api/epochs';
 
-import useIsMobile from 'lib/hooks/useIsMobile';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';

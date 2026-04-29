@@ -3,8 +3,8 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import CsvExport from 'client/features/csv-export/components/CsvExport';
-import useIsMounted from 'lib/hooks/useIsMounted';
-import getQueryParamString from 'lib/router/getQueryParamString';
+import useIsMounted from 'client/shared/hooks/useIsMounted';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 import { EPOCH_REWARD_ITEM } from 'stubs/address';
 import { generateListStub } from 'stubs/utils';
 import AddressEpochRewardsTable from 'ui/address/epochRewards/AddressEpochRewardsTable';

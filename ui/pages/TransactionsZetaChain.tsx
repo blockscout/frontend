@@ -5,8 +5,8 @@ import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
 import { SocketProvider } from 'client/api/socket/context';
 import config from 'configs/app';
-import useIsMobile from 'lib/hooks/useIsMobile';
-import getQueryParamString from 'lib/router/getQueryParamString';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 import { TX } from 'stubs/tx';
 import { generateListStub } from 'stubs/utils';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';

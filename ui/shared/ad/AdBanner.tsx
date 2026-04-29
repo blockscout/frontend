@@ -5,7 +5,7 @@ import type { BannerFormat } from './types';
 
 import config from 'configs/app';
 import { useAppContext } from 'lib/contexts/app';
-import * as cookies from 'lib/cookies';
+import * as cookies from 'client/shared/storage/cookies';
 
 import AdBannerContent from './AdBannerContent';
 

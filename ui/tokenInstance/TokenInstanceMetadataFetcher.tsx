@@ -10,7 +10,7 @@ import { getResourceKey } from 'client/api/hooks/useApiQuery';
 import useSocketChannel from 'client/api/socket/useSocketChannel';
 import useSocketMessage from 'client/api/socket/useSocketMessage';
 import config from 'configs/app';
-import getErrorMessage from 'lib/errors/getErrorMessage';
+import getErrorMessage from 'client/shared/errors/get-error-message';
 import { Alert } from 'toolkit/chakra/alert';
 import { DialogBody, DialogContent, DialogHeader, DialogRoot } from 'toolkit/chakra/dialog';
 import { toaster } from 'toolkit/chakra/toaster';

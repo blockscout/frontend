@@ -6,8 +6,8 @@ import type { EnsDomainLookupFiltersOptions, EnsLookupSorting } from 'types/api/
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 import config from 'configs/app';
-import useDebounce from 'lib/hooks/useDebounce';
-import getQueryParamString from 'lib/router/getQueryParamString';
+import useDebounce from 'client/shared/hooks/useDebounce';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 import { ENS_DOMAIN } from 'stubs/ENS';
 import { generateListStub } from 'stubs/utils';
 import { ADDRESS_REGEXP } from 'toolkit/utils/regexp';

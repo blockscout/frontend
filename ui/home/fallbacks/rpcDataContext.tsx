@@ -4,9 +4,9 @@ import React from 'react';
 import type { Block } from 'types/api/block';
 import type { Transaction } from 'types/api/transaction';
 
-import { publicClient } from 'lib/web3/client';
-import formatBlockData from 'lib/web3/rpc/formatBlockData';
-import formatTxData from 'lib/web3/rpc/formatTxData';
+import { publicClient } from 'client/shared/web3/client';
+import formatBlockData from 'client/shared/web3/rpc/format-block-data';
+import formatTxData from 'client/shared/web3/rpc/format-tx-data';
 import { SECOND } from 'toolkit/utils/consts';
 
 export type SubscriptionId = 'latest-blocks' | 'latest-txs' | 'stats-widgets';

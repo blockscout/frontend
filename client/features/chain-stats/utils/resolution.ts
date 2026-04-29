@@ -2,7 +2,7 @@ import type { NextRouter } from 'next/router';
 
 import { ChartResolution } from 'toolkit/components/charts/types';
 
-import getQueryParamString from 'lib/router/getQueryParamString';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 export const DEFAULT_RESOLUTION = ChartResolution.DAY;
 

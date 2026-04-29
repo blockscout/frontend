@@ -6,10 +6,10 @@ import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 import type { PaginationParams } from 'ui/shared/pagination/types';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
-import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
-import useIsMobile from 'lib/hooks/useIsMobile';
-import * as metadata from 'lib/metadata';
-import getQueryParamString from 'lib/router/getQueryParamString';
+import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+import * as metadata from 'client/shared/metadata';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 import {
   TOKEN_INSTANCE,
   TOKEN_INFO_ERC_1155,

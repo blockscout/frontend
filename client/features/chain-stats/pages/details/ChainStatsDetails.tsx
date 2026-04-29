@@ -9,11 +9,11 @@ import ChainStatsDetailsCrossChainTxs from 'client/features/cross-chain-txs/comp
 import useCrossChainChartQuery from 'client/features/cross-chain-txs/hooks/useCrossChainChartQuery';
 import { CROSS_CHAIN_TXS_CHARTS } from 'client/features/cross-chain-txs/utils/chain-stats';
 import config from 'configs/app';
-import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
-import useIsInitialLoading from 'lib/hooks/useIsInitialLoading';
-import * as metadata from 'lib/metadata';
-import getQueryParamString from 'lib/router/getQueryParamString';
-import { useQueryParams } from 'lib/router/useQueryParams';
+import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
+import useIsInitialLoading from 'client/shared/hooks/useIsInitialLoading';
+import * as metadata from 'client/shared/metadata';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
+import { useQueryParams } from 'client/shared/router/useQueryParams';
 import type { OnValueChangeHandler } from 'toolkit/chakra/select';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
 import { ALL_OPTION, isAllOption } from 'ui/shared/externalChains/ChainSelect';

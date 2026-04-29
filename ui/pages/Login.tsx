@@ -4,10 +4,10 @@ import type { ChangeEvent } from 'react';
 import React from 'react';
 
 import config from 'configs/app';
-import * as cookies from 'lib/cookies';
-import useFeatureValue from 'lib/growthbook/useFeatureValue';
-import useGradualIncrement from 'lib/hooks/useGradualIncrement';
-import { useRollbar } from 'lib/rollbar';
+import * as cookies from 'client/shared/storage/cookies';
+import useFeatureValue from 'client/shared/feature-flags/useFeatureValue';
+import useGradualIncrement from 'client/shared/hooks/useGradualIncrement';
+import { useRollbar } from 'client/shared/monitoring/rollbar';
 import { Alert } from 'toolkit/chakra/alert';
 import { Button } from 'toolkit/chakra/button';
 import { Textarea } from 'toolkit/chakra/textarea';

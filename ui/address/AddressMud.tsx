@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import useIsMounted from 'lib/hooks/useIsMounted';
+import useIsMounted from 'client/shared/hooks/useIsMounted';
 
 import AddressMudRecord from './mud/AddressMudRecord';
 import AddressMudTable from './mud/AddressMudTable';

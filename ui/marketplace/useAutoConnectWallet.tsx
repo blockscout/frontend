@@ -1,9 +1,9 @@
 import { useRouter } from 'next/router';
 import { useEffect, useRef } from 'react';
 
-import removeQueryParam from 'lib/router/removeQueryParam';
-import updateQueryParam from 'lib/router/updateQueryParam';
-import useWeb3Wallet from 'lib/web3/useWallet';
+import removeQueryParam from 'client/shared/router/remove-query-param';
+import updateQueryParam from 'client/shared/router/update-query-param';
+import useWeb3Wallet from 'client/shared/web3/useWallet';
 
 export default function useAutoConnectWallet() {
   const router = useRouter();

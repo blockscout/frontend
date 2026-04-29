@@ -5,8 +5,8 @@ import React from 'react';
 import type { TxStateChange } from 'types/api/txStateChanges';
 
 import config from 'configs/app';
-import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
-import { currencyUnits } from 'lib/units';
+import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-title';
+import { currencyUnits } from 'client/shared/chain/units';
 import { Badge } from 'toolkit/chakra/badge';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
@@ -23,7 +23,7 @@ export function getStateElements(data: TxStateChange, isLoading?: boolean) {
       return (
         <Tooltip content="A block producer who successfully included the block into the blockchain">
           <Badge textTransform="capitalize" colorPalette="yellow" loading={ isLoading }>
-            { getNetworkValidatorTitle() }
+            { getChainValidatorTitle() }
           </Badge>
         </Tooltip>
       );

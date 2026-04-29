@@ -6,7 +6,7 @@ import type { AllowanceType } from 'types/client/revoke';
 
 import { route } from 'nextjs/routes';
 
-import useIsMobile from 'lib/hooks/useIsMobile';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
 import { Badge } from 'toolkit/chakra/badge';
 import { Heading } from 'toolkit/chakra/heading';
 import { Image } from 'toolkit/chakra/image';

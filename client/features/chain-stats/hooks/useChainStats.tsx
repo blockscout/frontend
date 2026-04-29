@@ -8,7 +8,7 @@ import type { ClusterChainConfig } from 'types/multichain';
 import useApiQuery from 'client/api/hooks/useApiQuery';
 import { CROSS_CHAIN_TXS_SECTIONS } from 'client/features/cross-chain-txs/utils/chain-stats';
 import config from 'configs/app';
-import getQueryParamString from 'lib/router/getQueryParamString';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import { CHAIN_STATS_CHARTS } from '../stubs/charts';
 

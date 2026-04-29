@@ -14,7 +14,7 @@ import detectBotRequest from 'nextjs/utils/detectBotRequest';
 import fetchApi from 'nextjs/utils/fetchApi';
 
 import config from 'configs/app';
-import getQueryParamString from 'lib/router/getQueryParamString';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 import LayoutApp from 'ui/shared/layout/LayoutApp';
 
 const MarketplaceAppPage = dynamic(() => import('ui/pages/MarketplaceApp'), { ssr: false });

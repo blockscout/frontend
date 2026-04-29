@@ -7,7 +7,7 @@ import type * as multichain from 'types/client/multichainAggregator';
 
 import { toBech32Address } from 'lib/address/bech32';
 import dayjs from 'lib/date/dayjs';
-import highlightText from 'lib/highlightText';
+import highlightText from 'client/shared/text/highlight-text';
 import * as contract from 'lib/multichain/contract';
 import { ADDRESS_REGEXP } from 'toolkit/utils/regexp';
 import SearchResultEntityTag from 'ui/searchResults/SearchResultEntityTag';

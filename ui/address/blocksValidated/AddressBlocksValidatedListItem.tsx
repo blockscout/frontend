@@ -6,7 +6,7 @@ import type { Block } from 'types/api/block';
 
 import config from 'configs/app';
 import getBlockTotalReward from 'lib/block/getBlockTotalReward';
-import { currencyUnits } from 'lib/units';
+import { currencyUnits } from 'client/shared/chain/units';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import BlockGasUsed from 'ui/shared/block/BlockGasUsed';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';

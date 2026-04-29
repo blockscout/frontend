@@ -6,7 +6,7 @@ import type { ItemProps } from '../types';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 import config from 'configs/app';
-import { PAGE_TYPE_DICT } from 'lib/mixpanel/getPageType';
+import { PAGE_TYPE_DICT } from 'client/shared/analytics/get-page-type';
 import { MenuItem } from 'toolkit/chakra/menu';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import AddressVerificationModal from 'ui/addressVerification/AddressVerificationModal';

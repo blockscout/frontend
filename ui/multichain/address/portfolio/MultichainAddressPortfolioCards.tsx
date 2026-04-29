@@ -7,7 +7,7 @@ import type * as multichain from '@blockscout/multichain-aggregator-types';
 import type { ClusterChainConfig } from 'types/multichain';
 
 import multichainConfig from 'configs/multichain';
-import useIsMobile from 'lib/hooks/useIsMobile';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
 import { CollapsibleList } from 'toolkit/chakra/collapsible';
 import IconSvg from 'ui/shared/IconSvg';
 

@@ -6,7 +6,7 @@ import type { CsvExportItemResponse } from '../types/api';
 
 import useApiFetch from 'client/api/hooks/useApiFetch';
 import dayjs from 'lib/date/dayjs';
-import getErrorObjStatusCode from 'lib/errors/getErrorObjStatusCode';
+import getErrorObjStatusCode from 'client/shared/errors/get-error-obj-status-code';
 import type { OnOpenChangeHandler } from 'toolkit/hooks/useDisclosure';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import { SECOND } from 'toolkit/utils/consts';

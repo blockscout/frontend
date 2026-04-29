@@ -5,9 +5,9 @@ import React from 'react';
 import type { PaginationParams } from 'ui/shared/pagination/types';
 
 import config from 'configs/app';
-import useIsMobile from 'lib/hooks/useIsMobile';
-import useIsMounted from 'lib/hooks/useIsMounted';
-import getQueryParamString from 'lib/router/getQueryParamString';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+import useIsMounted from 'client/shared/hooks/useIsMounted';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 import { ADDRESS_TOKEN_BALANCE_ERC_20 } from 'stubs/address';
 import { generateListStub } from 'stubs/utils';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';

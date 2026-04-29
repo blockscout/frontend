@@ -4,7 +4,7 @@ import React from 'react';
 import type { Address } from 'types/api/address';
 
 import config from 'configs/app';
-import * as mixpanel from 'lib/mixpanel/index';
+import * as mixpanel from 'client/shared/analytics';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import TextSeparator from 'ui/shared/TextSeparator';
 import calculateUsdValue from 'ui/shared/value/calculateUsdValue';

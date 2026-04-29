@@ -3,7 +3,7 @@ import React, { useCallback, useState } from 'react';
 
 import type { AddressTag } from 'types/api/account';
 
-import { PAGE_TYPE_DICT } from 'lib/mixpanel/getPageType';
+import { PAGE_TYPE_DICT } from 'client/shared/analytics/get-page-type';
 import { PRIVATE_TAG_ADDRESS } from 'stubs/account';
 import { Button } from 'toolkit/chakra/button';
 import { Skeleton } from 'toolkit/chakra/skeleton';

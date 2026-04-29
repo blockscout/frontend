@@ -4,7 +4,7 @@ import React from 'react';
 import type { StatsBridgedTokenItem, StatsBridgedTokenRow } from '@blockscout/interchain-indexer-types';
 import type { TokenInfo } from 'types/api/token';
 
-import getItemIndex from 'lib/getItemIndex';
+import getItemIndex from 'client/shared/lists/get-item-index';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';

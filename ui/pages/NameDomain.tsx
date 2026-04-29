@@ -8,8 +8,8 @@ import { route } from 'nextjs-routes';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 import config from 'configs/app';
-import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
-import getQueryParamString from 'lib/router/getQueryParamString';
+import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 import { ENS_DOMAIN } from 'stubs/ENS';
 import { Link } from 'toolkit/chakra/link';
 import { Tooltip } from 'toolkit/chakra/tooltip';

@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useState, useMemo } from 'react';
 
 import config from 'configs/app';
 import essentialDappsChainsConfig from 'configs/essential-dapps-chains';
-import useWeb3Wallet from 'lib/web3/useWallet';
+import useWeb3Wallet from 'client/shared/web3/useWallet';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 
 import useMarketplaceWallet from '../marketplace/useMarketplaceWallet';

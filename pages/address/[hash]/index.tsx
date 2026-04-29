@@ -9,7 +9,7 @@ import detectBotRequest from 'nextjs/utils/detectBotRequest';
 import fetchApi from 'nextjs/utils/fetchApi';
 
 import config from 'configs/app';
-import getQueryParamString from 'lib/router/getQueryParamString';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 import MultichainAddress from 'ui/multichain/address/MultichainAddress';
 import Address from 'ui/pages/Address';
 

@@ -1,7 +1,7 @@
 import type { NextRequest, NextResponse } from 'next/server';
 
 import config from 'configs/app';
-import * as cookiesLib from 'lib/cookies';
+import * as cookiesLib from 'client/shared/storage/cookies';
 
 export default function poorReputationTokensMiddleware(req: NextRequest, res: NextResponse) {
   if (config.features.multichain.isEnabled) {

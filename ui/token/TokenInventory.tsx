@@ -6,8 +6,8 @@ import type { TokenInfo } from 'types/api/token';
 
 import type { ResourceError } from 'client/api/resources';
 import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
-import useIsMobile from 'lib/hooks/useIsMobile';
-import useIsMounted from 'lib/hooks/useIsMounted';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+import useIsMounted from 'client/shared/hooks/useIsMounted';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';

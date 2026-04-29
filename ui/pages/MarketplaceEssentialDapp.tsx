@@ -5,7 +5,7 @@ import React from 'react';
 import type { EssentialDappsConfig } from 'types/client/marketplace';
 
 import config from 'configs/app';
-import getQueryParamString from 'lib/router/getQueryParamString';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 import Multisend from 'ui/marketplace/essentialDapps/multisend/Multisend';
 import Revoke from 'ui/marketplace/essentialDapps/revoke/Revoke';
 import Swap from 'ui/marketplace/essentialDapps/swap/Swap';

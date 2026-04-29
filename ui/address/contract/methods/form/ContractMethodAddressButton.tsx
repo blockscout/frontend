@@ -1,6 +1,6 @@
 import React from 'react';
 
-import useAccount from 'lib/web3/useAccount';
+import useAccount from 'client/shared/web3/useAccount';
 import { Button } from 'toolkit/chakra/button';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 

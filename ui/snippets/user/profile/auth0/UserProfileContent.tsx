@@ -8,7 +8,7 @@ import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import { useMarketplaceContext } from 'lib/contexts/marketplace';
-import shortenString from 'lib/shortenString';
+import shortenString from 'client/shared/text/shorten-string';
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';
 import { Hint } from 'toolkit/components/Hint/Hint';

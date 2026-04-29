@@ -4,9 +4,9 @@ import React from 'react';
 import CsvExportDownloads from 'client/features/csv-export/components/downloads/CsvExportDownloads';
 import config from 'configs/app';
 import { useAppContext } from 'lib/contexts/app';
-import * as cookies from 'lib/cookies';
-import useIsMobile from 'lib/hooks/useIsMobile';
-import useProvider from 'lib/web3/useProvider';
+import * as cookies from 'client/shared/storage/cookies';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+import useProvider from 'client/shared/web3/useProvider';
 import { CONTENT_MAX_WIDTH } from 'ui/shared/layout/utils';
 import NetworkAddToWallet from 'ui/shared/NetworkAddToWallet';
 

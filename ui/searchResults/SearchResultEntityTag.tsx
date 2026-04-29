@@ -2,7 +2,7 @@ import React from 'react';
 
 import type { AddressMetadataTagApi } from 'types/api/addressMetadata';
 
-import highlightText from 'lib/highlightText';
+import highlightText from 'client/shared/text/highlight-text';
 import type { TagProps } from 'toolkit/chakra/tag';
 import { Tag } from 'toolkit/chakra/tag';
 import EntityTagIcon from 'ui/shared/EntityTags/EntityTagIcon';

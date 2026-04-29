@@ -1,7 +1,7 @@
 import type { GasPriceInfo } from 'types/api/stats';
 import type { GasUnit } from 'types/client/gasTracker';
 
-import { currencyUnits } from 'lib/units';
+import { currencyUnits } from 'client/shared/chain/units';
 
 export default function formatGasValue(data: GasPriceInfo, unit: GasUnit) {
   switch (unit) {

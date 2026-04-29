@@ -3,8 +3,8 @@ import { createAppKit, useAppKitTheme } from '@reown/appkit/react';
 import React from 'react';
 
 import config from 'configs/app';
-import { chains } from 'lib/web3/chains';
-import wagmiConfig from 'lib/web3/wagmiConfig';
+import { chains } from 'client/shared/web3/chains';
+import wagmiConfig from 'client/shared/web3/wagmi-config';
 import { useColorMode } from 'toolkit/chakra/color-mode';
 import colors from 'toolkit/theme/foundations/colors';
 import { BODY_TYPEFACE } from 'toolkit/theme/foundations/typography';

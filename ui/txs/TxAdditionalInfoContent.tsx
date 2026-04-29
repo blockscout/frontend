@@ -8,7 +8,7 @@ import { route } from 'nextjs/routes';
 
 import config from 'configs/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
-import { currencyUnits } from 'lib/units';
+import { currencyUnits } from 'client/shared/chain/units';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import BlobEntity from 'ui/shared/entities/blob/BlobEntity';

@@ -9,7 +9,7 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 import config from 'configs/app';
 import { useRewardsContext } from 'lib/contexts/rewards';
 import dayjs from 'lib/date/dayjs';
-import useIsMobile from 'lib/hooks/useIsMobile';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
 import { USER_ACTIVITY } from 'stubs/rewards';
 import { Button } from 'toolkit/chakra/button';
 import { Heading } from 'toolkit/chakra/heading';

@@ -7,7 +7,7 @@ import type { Address } from 'types/api/address';
 import type { Transaction } from 'types/api/transaction';
 
 import { getResourceKey } from 'client/api/hooks/useApiQuery';
-import getPageType from 'lib/mixpanel/getPageType';
+import getPageType from 'client/shared/analytics/get-page-type';
 import { MenuItem } from 'toolkit/chakra/menu';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import AddressModal from 'ui/privateTags/AddressModal/AddressModal';

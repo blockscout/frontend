@@ -4,7 +4,7 @@ import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 import config from 'configs/app';
-import { currencyUnits } from 'lib/units';
+import { currencyUnits } from 'client/shared/chain/units';
 import { generateListStub } from 'stubs/utils';
 import { WITHDRAWAL } from 'stubs/withdrawals';
 import { Skeleton } from 'toolkit/chakra/skeleton';

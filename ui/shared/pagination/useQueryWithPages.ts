@@ -17,7 +17,7 @@ import { SORTING_FIELDS } from 'client/api/resources';
 import multichainConfig from 'configs/multichain';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import getChainValueFromQuery from 'lib/multichain/getChainValueFromQuery';
-import getQueryParamString from 'lib/router/getQueryParamString';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 type NextPageParams = Record<string, unknown>;
 

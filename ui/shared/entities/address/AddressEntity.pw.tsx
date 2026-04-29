@@ -4,7 +4,7 @@ import React from 'react';
 
 import config from 'configs/app';
 import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
-import * as cookies from 'lib/cookies';
+import * as cookies from 'client/shared/storage/cookies';
 import * as addressMock from 'mocks/address/address';
 import * as implementationsMock from 'mocks/address/implementations';
 import * as metadataMock from 'mocks/metadata/address';

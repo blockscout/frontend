@@ -1,7 +1,7 @@
 import React from 'react';
 
-import * as cookies from 'lib/cookies';
-import { useRollbar } from 'lib/rollbar';
+import * as cookies from 'client/shared/storage/cookies';
+import { useRollbar } from 'client/shared/monitoring/rollbar';
 import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
 
 export default function useRedirectForInvalidAuthToken() {

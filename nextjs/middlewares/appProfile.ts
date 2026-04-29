@@ -1,6 +1,6 @@
 import type { NextRequest, NextResponse } from 'next/server';
 
-import * as cookiesLib from 'lib/cookies';
+import * as cookiesLib from 'client/shared/storage/cookies';
 
 const APP_PROFILE_HEADER = 'x-app-profile';
 const APP_PROFILE_QUERY_PARAM = 'app-profile';

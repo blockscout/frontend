@@ -4,8 +4,8 @@ import type { ChangeEvent } from 'react';
 import React from 'react';
 
 import { useRewardsContext } from 'lib/contexts/rewards';
-import * as cookies from 'lib/cookies';
-import useWallet from 'lib/web3/useWallet';
+import * as cookies from 'client/shared/storage/cookies';
+import useWallet from 'client/shared/web3/useWallet';
 import { Alert } from 'toolkit/chakra/alert';
 import { Button } from 'toolkit/chakra/button';
 import { Field } from 'toolkit/chakra/field';

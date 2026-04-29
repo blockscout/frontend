@@ -1,6 +1,6 @@
 import useApiQuery from 'client/api/hooks/useApiQuery';
 import config from 'configs/app';
-import * as cookies from 'lib/cookies';
+import * as cookies from 'client/shared/storage/cookies';
 
 export default function useProfileQuery() {
   return useApiQuery('general:user_info', {

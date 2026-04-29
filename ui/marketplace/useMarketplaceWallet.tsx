@@ -5,7 +5,7 @@ import { useAccount, useSendTransaction, useSwitchChain, useSignMessage, useSign
 
 import config from 'configs/app';
 import useRewardsActivity from 'lib/hooks/useRewardsActivity';
-import * as mixpanel from 'lib/mixpanel/index';
+import * as mixpanel from 'client/shared/analytics';
 
 type SendTransactionArgs = {
   chainId?: number;

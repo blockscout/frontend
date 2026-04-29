@@ -3,8 +3,8 @@ import { BigNumber } from 'bignumber.js';
 import React from 'react';
 
 import config from 'configs/app';
-import useIsMobile from 'lib/hooks/useIsMobile';
-import * as mixpanel from 'lib/mixpanel';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+import * as mixpanel from 'client/shared/analytics';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import AddressMultichainButton from 'ui/address/details/AddressMultichainButton';
 import AdBanner from 'ui/shared/ad/AdBanner';

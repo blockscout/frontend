@@ -6,7 +6,7 @@ import type { FormSubmitResult, MethodCallStrategy, SmartContractMethod } from '
 
 import config from 'configs/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
-import useAccount from 'lib/web3/useAccount';
+import useAccount from 'client/shared/web3/useAccount';
 
 import { getNativeCoinValue } from './utils';
 

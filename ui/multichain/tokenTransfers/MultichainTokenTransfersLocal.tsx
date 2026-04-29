@@ -4,7 +4,7 @@ import React from 'react';
 import type { TokenType } from 'types/api/token';
 
 import { useMultichainContext } from 'lib/contexts/multichain';
-import useIsMobile from 'lib/hooks/useIsMobile';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PopoverFilter from 'ui/shared/filters/PopoverFilter';

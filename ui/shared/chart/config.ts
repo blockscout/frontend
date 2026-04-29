@@ -1,7 +1,7 @@
 import { useToken } from '@chakra-ui/react';
 import React from 'react';
 
-import useIsMobile from 'lib/hooks/useIsMobile';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
 import { useColorModeValue } from 'toolkit/chakra/color-mode';
 import type { LineChartConfig } from 'toolkit/components/charts/line';
 

@@ -3,10 +3,10 @@ import React from 'react';
 
 import * as blobUtils from 'lib/blob';
 import removeNonSignificantZeroBytes from 'lib/blob/removeNonSignificantZeroBytes';
-import bytesToBase64 from 'lib/bytesToBase64';
-import hexToBase64 from 'lib/hexToBase64';
-import hexToBytes from 'lib/hexToBytes';
-import hexToUtf8 from 'lib/hexToUtf8';
+import bytesToBase64 from 'client/shared/transformers/bytes-to-base64';
+import hexToBase64 from 'client/shared/transformers/hex-to-base64';
+import hexToBytes from 'client/shared/transformers/hex-to-bytes';
+import hexToUtf8 from 'client/shared/transformers/hex-to-utf8';
 import { Button } from 'toolkit/chakra/button';
 import type { SelectOption } from 'toolkit/chakra/select';
 import { Select } from 'toolkit/chakra/select';

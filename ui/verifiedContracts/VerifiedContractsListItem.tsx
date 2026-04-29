@@ -5,7 +5,7 @@ import type { VerifiedContract } from 'types/api/contracts';
 
 import formatLanguageName from 'lib/contracts/formatLanguageName';
 import { CONTRACT_LICENSES } from 'lib/contracts/licenses';
-import { currencyUnits } from 'lib/units';
+import { currencyUnits } from 'client/shared/chain/units';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import ContractCertifiedLabel from 'ui/shared/ContractCertifiedLabel';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';

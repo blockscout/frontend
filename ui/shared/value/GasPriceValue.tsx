@@ -3,7 +3,7 @@ import { chakra } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
-import { currencyUnits } from 'lib/units';
+import { currencyUnits } from 'client/shared/chain/units';
 import { thinsp } from 'toolkit/utils/htmlEntities';
 
 import SimpleValue from './SimpleValue';

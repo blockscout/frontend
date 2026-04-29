@@ -9,9 +9,9 @@ import { route } from 'nextjs-routes';
 
 import type { ResourceError } from 'client/api/resources';
 import config from 'configs/app';
-import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
+import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import { formatZkSyncL2TxnBatchStatus, layerLabels } from 'lib/rollups/utils';
-import { currencyUnits } from 'lib/units';
+import { currencyUnits } from 'client/shared/chain/units';
 import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';

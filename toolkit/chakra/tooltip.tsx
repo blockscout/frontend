@@ -3,7 +3,7 @@ import { useClickAway } from '@uidotdev/usehooks';
 import * as React from 'react';
 
 import config from 'configs/app';
-import useIsMobile from 'lib/hooks/useIsMobile';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
 
 export interface TooltipProps extends ChakraTooltip.RootProps {
   selected?: boolean;

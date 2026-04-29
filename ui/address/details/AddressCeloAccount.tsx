@@ -4,7 +4,7 @@ import React from 'react';
 import type { Address } from 'types/api/address';
 import type { ExcludeNull, ExcludeUndefined } from 'types/utils';
 
-import { currencyUnits } from 'lib/units';
+import { currencyUnits } from 'client/shared/chain/units';
 import { Link } from 'toolkit/chakra/link';
 import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';

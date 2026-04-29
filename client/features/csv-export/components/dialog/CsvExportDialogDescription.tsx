@@ -4,7 +4,7 @@ import React from 'react';
 import type { CsvExportType } from '../../types/client';
 import type { ClusterChainConfig } from 'types/multichain';
 
-import shortenString from 'lib/shortenString';
+import shortenString from 'client/shared/text/shorten-string';
 import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 
 import getPrefixByFilter from '../../utils/get-prefix-by-filter';

@@ -5,7 +5,7 @@ import type { ClusterChainConfig } from 'types/multichain';
 
 import multichainConfig from 'configs/multichain';
 import getChainIdFromSlugOrId from 'lib/multichain/getChainIdFromSlugOrId';
-import getQueryParamString from 'lib/router/getQueryParamString';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 interface MultichainProviderProps {
   children: React.ReactNode;

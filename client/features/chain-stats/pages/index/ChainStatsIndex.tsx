@@ -2,7 +2,7 @@ import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
-import useEtherscanRedirects from 'lib/router/useEtherscanRedirects';
+import useEtherscanRedirects from 'client/shared/router/useEtherscanRedirects';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 import useChainStats from '../../hooks/useChainStats';

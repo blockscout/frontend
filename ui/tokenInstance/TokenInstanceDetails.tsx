@@ -4,7 +4,7 @@ import React from 'react';
 import type { TokenInfo, TokenInstance } from 'types/api/token';
 
 import config from 'configs/app';
-import useIsMounted from 'lib/hooks/useIsMounted';
+import useIsMounted from 'client/shared/hooks/useIsMounted';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import AppActionButton from 'ui/shared/AppActionButton/AppActionButton';
 import useAppActionData from 'ui/shared/AppActionButton/useAppActionData';

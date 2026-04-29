@@ -5,8 +5,8 @@ import React from 'react';
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
-import getPageType from 'lib/mixpanel/getPageType';
-import * as mixpanel from 'lib/mixpanel/index';
+import getPageType from 'client/shared/analytics/get-page-type';
+import * as mixpanel from 'client/shared/analytics';
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';
 import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';

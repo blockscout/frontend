@@ -3,7 +3,7 @@ import React from 'react';
 import type { InternalTransaction } from 'types/api/internalTransaction';
 
 import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
-import { currencyUnits } from 'lib/units';
+import { currencyUnits } from 'client/shared/chain/units';
 import { TableBody, TableColumnHeader, TableColumnHeaderSortable, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import TxInternalsTableItem from 'ui/tx/internals/TxInternalsTableItem';
 import type { Sort, SortField } from 'ui/tx/internals/utils';

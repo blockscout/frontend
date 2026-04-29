@@ -2,8 +2,8 @@ import { createListCollection, Flex } from '@chakra-ui/react';
 import { capitalize } from 'es-toolkit';
 import React from 'react';
 
-import hexToAddress from 'lib/hexToAddress';
-import hexToUtf8 from 'lib/hexToUtf8';
+import hexToAddress from 'client/shared/transformers/hex-to-address';
+import hexToUtf8 from 'client/shared/transformers/hex-to-utf8';
 import { SelectContent, SelectControl, SelectItem, SelectRoot, SelectValueText } from 'toolkit/chakra/select';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';

@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { TransactionRevertReason } from 'types/api/transaction';
 
-import hexToUtf8 from 'lib/hexToUtf8';
+import hexToUtf8 from 'client/shared/transformers/hex-to-utf8';
 import { HEX_REGEXP } from 'toolkit/utils/regexp';
 import LogDecodedInputData from 'ui/shared/logs/LogDecodedInputData';
 

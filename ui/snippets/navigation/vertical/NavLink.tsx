@@ -5,7 +5,7 @@ import type { NavItem } from 'types/client/navigation';
 
 import { route } from 'nextjs-routes';
 
-import useIsMobile from 'lib/hooks/useIsMobile';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
 import { isInternalItem } from 'lib/hooks/useNavItems';
 import { Link } from 'toolkit/chakra/link';
 import { Tooltip } from 'toolkit/chakra/tooltip';

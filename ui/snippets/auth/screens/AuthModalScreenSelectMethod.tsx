@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { Screen } from '../types';
 
-import * as mixpanel from 'lib/mixpanel';
+import * as mixpanel from 'client/shared/analytics';
 import { Button } from 'toolkit/chakra/button';
 
 interface Props {

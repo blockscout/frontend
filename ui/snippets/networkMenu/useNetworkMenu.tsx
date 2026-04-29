@@ -8,7 +8,7 @@ import useFetch from 'client/api/hooks/useFetch';
 import type { ResourceError } from 'client/api/resources';
 import config from 'configs/app';
 import multichainConfig from 'configs/multichain';
-import * as mixpanel from 'lib/mixpanel/index';
+import * as mixpanel from 'client/shared/analytics';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 
 export default function useNetworkMenu() {

@@ -7,7 +7,7 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 import { SocketProvider } from 'client/api/socket/context';
 import multichainConfig from 'configs/multichain';
 import { MultichainProvider } from 'lib/contexts/multichain';
-import useIsMobile from 'lib/hooks/useIsMobile';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
 import useRoutedChainSelect from 'lib/multichain/useRoutedChainSelect';
 import { ADDRESS_INFO } from 'stubs/address';
 import AddressContract from 'ui/address/AddressContract';

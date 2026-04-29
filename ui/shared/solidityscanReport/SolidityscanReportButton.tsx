@@ -1,7 +1,7 @@
 import { Spinner, Box } from '@chakra-ui/react';
 import React from 'react';
 
-import usePreventFocusAfterModalClosing from 'lib/hooks/usePreventFocusAfterModalClosing';
+import usePreventFocusAfterModalClosing from 'client/shared/hooks/usePreventFocusAfterModalClosing';
 import type { ButtonProps } from 'toolkit/chakra/button';
 import { Button } from 'toolkit/chakra/button';
 import { PopoverTrigger } from 'toolkit/chakra/popover';

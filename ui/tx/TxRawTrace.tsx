@@ -7,7 +7,7 @@ import type { RawTracesResponse } from 'types/api/rawTrace';
 import useApiQuery from 'client/api/hooks/useApiQuery';
 import useSocketChannel from 'client/api/socket/useSocketChannel';
 import useSocketMessage from 'client/api/socket/useSocketMessage';
-import getQueryParamString from 'lib/router/getQueryParamString';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 import { TX_RAW_TRACE } from 'stubs/tx';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';

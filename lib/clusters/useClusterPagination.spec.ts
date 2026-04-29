@@ -2,8 +2,8 @@
 
 import { useRouter } from 'next/router';
 
-import getQueryParamString from 'lib/router/getQueryParamString';
-import { useQueryParams } from 'lib/router/useQueryParams';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
+import { useQueryParams } from 'client/shared/router/useQueryParams';
 import type { Mock } from 'vitest';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { renderHook, act } from 'vitest/lib';
@@ -13,8 +13,8 @@ import { useClusterPagination } from '../clusters/useClusterPagination';
 vi.mock('next/router', () => ({
   useRouter: vi.fn(),
 }));
-vi.mock('lib/router/useQueryParams');
-vi.mock('lib/router/getQueryParamString');
+vi.mock('client/shared/router/useQueryParams');
+vi.mock('client/shared/router/get-query-param-string');
 
 const mockUseRouter = useRouter as Mock<typeof useRouter>;
 const mockUseQueryParams = useQueryParams as Mock<typeof useQueryParams>;

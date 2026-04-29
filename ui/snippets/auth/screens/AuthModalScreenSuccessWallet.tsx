@@ -5,7 +5,7 @@ import type { Screen } from '../types';
 import type { UserInfo } from 'types/api/account';
 
 import config from 'configs/app';
-import shortenString from 'lib/shortenString';
+import shortenString from 'client/shared/text/shorten-string';
 import { Button } from 'toolkit/chakra/button';
 import { apos } from 'toolkit/utils/htmlEntities';
 

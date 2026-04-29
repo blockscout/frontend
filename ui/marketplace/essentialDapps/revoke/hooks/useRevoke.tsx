@@ -9,7 +9,7 @@ import type { EssentialDappsChainConfig } from 'types/client/marketplace';
 import type { AllowanceType } from 'types/client/revoke';
 
 import useRewardsActivity from 'lib/hooks/useRewardsActivity';
-import * as mixpanel from 'lib/mixpanel/index';
+import * as mixpanel from 'client/shared/analytics';
 import { toaster } from 'toolkit/chakra/toaster';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 

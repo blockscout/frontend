@@ -12,7 +12,7 @@ import fetchApi from 'nextjs/utils/fetchApi';
 import config from 'configs/app';
 import { MultichainProvider } from 'lib/contexts/multichain';
 import dayjs from 'lib/date/dayjs';
-import getQueryParamString from 'lib/router/getQueryParamString';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 const ChainStatsDetails = dynamic(() => import('client/features/chain-stats/pages/details/ChainStatsDetails'), { ssr: false });
 

@@ -1,7 +1,7 @@
 import { chakra, GridItem } from '@chakra-ui/react';
 import React from 'react';
 
-import useIsMobile from 'lib/hooks/useIsMobile';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
 
 interface Props {
   children: [React.JSX.Element, React.JSX.Element | null] | (React.JSX.Element | null);

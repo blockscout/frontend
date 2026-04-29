@@ -4,7 +4,7 @@ import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 import { layerLabels } from 'lib/rollups/utils';
-import getQueryParamString from 'lib/router/getQueryParamString';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 import { ARBITRUM_L2_TXN_WITHDRAWALS_ITEM } from 'stubs/arbitrumL2';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import { FormFieldError } from 'toolkit/components/forms/components/FormFieldError';

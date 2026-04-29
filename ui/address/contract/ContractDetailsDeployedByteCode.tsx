@@ -4,7 +4,7 @@ import React from 'react';
 import type { Address } from 'types/api/address';
 
 import config from 'configs/app';
-import hexToUtf8 from 'lib/hexToUtf8';
+import hexToUtf8 from 'client/shared/transformers/hex-to-utf8';
 import type { SelectOption } from 'toolkit/chakra/select';
 import { Select } from 'toolkit/chakra/select';
 import { Skeleton } from 'toolkit/chakra/skeleton';

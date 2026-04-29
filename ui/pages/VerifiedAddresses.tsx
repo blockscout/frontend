@@ -7,8 +7,8 @@ import type { VerifiedAddress, TokenInfoApplication, TokenInfoApplications, Veri
 
 import useApiQuery, { getResourceKey } from 'client/api/hooks/useApiQuery';
 import config from 'configs/app';
-import { PAGE_TYPE_DICT } from 'lib/mixpanel/getPageType';
-import getQueryParamString from 'lib/router/getQueryParamString';
+import { PAGE_TYPE_DICT } from 'client/shared/analytics/get-page-type';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 import { TOKEN_INFO_APPLICATION, VERIFIED_ADDRESS } from 'stubs/account';
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';

@@ -6,7 +6,7 @@ import React from 'react';
 import type { Route } from 'nextjs-routes';
 import { route } from 'nextjs-routes';
 
-import * as mixpanel from 'lib/mixpanel/index';
+import * as mixpanel from 'client/shared/analytics';
 import { getRecentSearchKeywords, saveToRecentKeywords } from 'lib/recentSearchKeywords';
 import { Button } from 'toolkit/chakra/button';
 import {

@@ -1,6 +1,6 @@
 import type { HotContractsSortingValue, HotContractsSortingField, HotContractsInterval } from 'types/api/contracts';
 
-import getQueryParamString from 'lib/router/getQueryParamString';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 import type { SelectOption } from 'toolkit/chakra/select';
 
 export const SORT_OPTIONS: Array<SelectOption<HotContractsSortingValue>> = [

@@ -6,7 +6,7 @@ import type { ClusterChainConfig } from 'types/multichain';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 import type { ResourceError } from 'client/api/resources';
-import { publicClient } from 'lib/web3/client';
+import { publicClient } from 'client/shared/web3/client';
 import { ADDRESS_COUNTERS } from 'stubs/address';
 import { GET_TRANSACTIONS_COUNT } from 'stubs/RPC';
 
