@@ -1,9 +1,12 @@
 ---
 name: arch-migrate
-description: Execute a migration task from a GitHub issue through to a PR, or fix unresolved review comments on an existing migration PR. Reads scope and acceptance criteria from the issue body. Use: /arch-migrate <issue-number> (execute) or /arch-migrate fix <pr-number> (fix review comments).
+description: Execute a migration task from a GitHub issue through to a PR, or fix unresolved review comments on an existing migration PR. Reads scope and acceptance criteria from the issue body.
 ---
 
 You are executing a step of the Blockscout frontend client architecture migration.
+
+## Invocation
+The skill can **ONLY** be invoked as: `/arch-migrate <issue-number> ("execute" mode)` or `/arch-migrate fix <pr-number> ("fix review comments" mode)`.
 
 ## Prerequisites
 
@@ -72,6 +75,7 @@ If a dependency is not yet migrated, leave its import at the old path and list i
   - Any codemods run (include the script or command used)
   - Cross-slice deps left at legacy paths (list file + old import path)
   - Checklist: `pnpm lint:tsc` passing, `pnpm lint:eslint` clean within `client/`
+- PR labels: `refactoring`
 
 ---
 

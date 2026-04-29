@@ -1,9 +1,12 @@
 ---
 name: arch-research
-description: Research a migration task, create a GitHub sub-issue with scope and acceptance criteria, and update the task backlog. Takes a task ID from docs/MIGRATION_TASKS.md, explores the codebase, creates an issue in blockscout/frontend, links it to the parent migration issue, and commits the status update. Use: /arch-research <task-id> (e.g. /arch-research 1-1)
+description: Research a migration task, create a GitHub sub-issue with scope and acceptance criteria, and update the task backlog. Takes a task ID from docs/MIGRATION_TASKS.md, explores the codebase, creates an issue in blockscout/frontend, links it to the parent migration issue, and commits the status update.
 ---
 
 You are preparing a migration task for execution by exploring the codebase and producing a well-scoped GitHub issue.
+
+## Invocation
+The skill can **ONLY** be invoked as: `/arch-research <task-id>` (e.g. `/arch-research 1-1`)
 
 ## Prerequisites
 
