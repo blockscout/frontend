@@ -55,7 +55,7 @@ If no issues were found, write: "No conflicts or extractions identified — stra
 - [ ] All import paths updated repo-wide (no references to old paths remain)
 - [ ] Extracted types live in their new slice/feature `types/api.ts`
 - [ ] `pnpm lint:tsc` passes
-- [ ] `pnpm lint:eslint` clean within `client/` (warnings in legacy paths acceptable)
+- [ ] `pnpm lint:eslint:fix` clean within `client/` (warnings in legacy paths acceptable)
 - [ ] Cross-slice deps left at old paths are explicitly listed in the PR description
 ```
 
