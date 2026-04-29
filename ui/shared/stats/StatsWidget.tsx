@@ -29,13 +29,13 @@ export type Props = {
 
 const Container = ({ href, children, className }: { href?: Route; children: React.JSX.Element; className?: string }) => {
   const content = href ? (
-    <Link href={ route(href) } variant="plain" w="full">
+    <Link href={ route(href) } variant="plain" w="full" h="full" display="flex">
       { children }
     </Link>
   ) : children;
 
   return (
-    <Box className={ className }>
+    <Box className={ className } display="flex" h="100%">
       { content }
     </Box>
   );
