@@ -77,6 +77,7 @@ const TxTokenTransfer = ({ txQuery, tokenTransferFilter, noCrossChain }: Props) 
           tokenTransferFilter={ tokenTransferFilter }
           tokenTransferQuery={ localQuery }
           numActiveFilters={ typeFilter.length }
+          tableTop={ hasCrossChainTab ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
         />
       ),
     },

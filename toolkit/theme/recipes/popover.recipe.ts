@@ -40,6 +40,7 @@ export const recipe = defineSlotRecipe({
     body: {
       padding: 'var(--popover-padding)',
       flex: '1',
+      overflowY: 'auto',
     },
     footer: {
       display: 'flex',

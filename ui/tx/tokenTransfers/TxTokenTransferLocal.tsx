@@ -16,9 +16,10 @@ interface Props {
   tokenTransferQuery: QueryWithPagesResult<'general:tx_token_transfers'>;
   tokenTransferFilter?: (data: TokenTransfer) => boolean;
   numActiveFilters: number;
+  tableTop?: number;
 }
 
-const TxTokenTransferLocal = ({ txQuery, tokenTransferQuery, tokenTransferFilter, numActiveFilters }: Props) => {
+const TxTokenTransferLocal = ({ txQuery, tokenTransferQuery, tokenTransferFilter, numActiveFilters, tableTop }: Props) => {
 
   let items: Array<TokenTransfer> = [];
 
@@ -33,7 +34,7 @@ const TxTokenTransferLocal = ({ txQuery, tokenTransferQuery, tokenTransferFilter
   const content = tokenTransferQuery.data?.items ? (
     <>
       <Box hideBelow="lg">
-        <TokenTransferTable data={ items } top={ ACTION_BAR_HEIGHT_DESKTOP } isLoading={ tokenTransferQuery.isPlaceholderData }/>
+        <TokenTransferTable data={ items } top={ tableTop ?? ACTION_BAR_HEIGHT_DESKTOP } isLoading={ tokenTransferQuery.isPlaceholderData }/>
       </Box>
       <Box hideFrom="lg">
         <TokenTransferList data={ items } isLoading={ tokenTransferQuery.isPlaceholderData }/>
