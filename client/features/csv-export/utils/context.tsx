@@ -5,7 +5,9 @@ import React from 'react';
 import type { CsvExportItemResponse } from '../types/api';
 
 import useApiFetch from 'client/api/hooks/useApiFetch';
+import { getResourceKey } from 'client/api/hooks/useApiQuery';
 import getErrorObjStatusCode from 'client/shared/errors/get-error-obj-status-code';
+import multichainConfig from 'configs/multichain';
 import dayjs from 'lib/date/dayjs';
 import type { OnOpenChangeHandler } from 'toolkit/hooks/useDisclosure';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
@@ -35,21 +37,49 @@ export function CsvExportContextProvider({ children }: CsvExportContextProviderP
   const [ items, setItems ] = React.useState<Array<StorageItem>>(isBrowser() ? storage.getItems() : []);
 
   const queriesOptions = React.useMemo(() => {
-    return items.map((item) => (queryOptions({
-      queryKey: [ 'general:csv_exports_item', item.request_id ],
-      queryFn: async({ signal }) => {
-        try {
-          if (item.status === 'pending') {
-            const response = await (apiFetch('general:csv_exports_item', {
-              pathParams: { id: item.request_id },
-              fetchParams: { signal },
-            }) as Promise<CsvExportItemResponse>);
-            if (response.status !== 'pending') {
+    const multichain = multichainConfig();
+    return items.map((item) => {
+      const chain = item.params.chain_id ? multichain?.chains.find(({ id }) => id === item.params.chain_id) : undefined;
+
+      return queryOptions({
+        queryKey: getResourceKey('general:csv_exports_item', { pathParams: { id: item.request_id }, chainId: chain?.id }),
+        queryFn: async({ signal }) => {
+          try {
+            if (item.status === 'pending') {
+              const response = await (apiFetch('general:csv_exports_item', {
+                pathParams: { id: item.request_id },
+                fetchParams: { signal },
+                chain,
+              }) as Promise<CsvExportItemResponse>);
+              if (response.status !== 'pending') {
+                const newItem = {
+                  ...item,
+                  status: response.status,
+                  expires_at: response.expires_at,
+                  file_id: response.file_id,
+                  is_highlighted: true,
+                };
+                storage.updateItems([ newItem ]);
+                return newItem;
+              }
+            }
+
+            const isExpired = item.status !== 'expired' && item.expires_at && dayjs().isAfter(dayjs(item.expires_at));
+            if (isExpired) {
               const newItem = {
                 ...item,
-                status: response.status,
-                expires_at: response.expires_at,
-                file_id: response.file_id,
+                status: 'expired' as const,
+                is_highlighted: true,
+              };
+              storage.updateItems([ newItem ]);
+              return newItem;
+            }
+          } catch (error) {
+            const statusCode = getErrorObjStatusCode(error);
+            if (statusCode === 404) {
+              const newItem = {
+                ...item,
+                status: 'expired' as const,
                 is_highlighted: true,
               };
               storage.updateItems([ newItem ]);
@@ -57,37 +87,15 @@ export function CsvExportContextProvider({ children }: CsvExportContextProviderP
             }
           }
 
-          const isExpired = item.status !== 'expired' && item.expires_at && dayjs().isAfter(dayjs(item.expires_at));
-          if (isExpired) {
-            const newItem = {
-              ...item,
-              status: 'expired' as const,
-              is_highlighted: true,
-            };
-            storage.updateItems([ newItem ]);
-            return newItem;
-          }
-        } catch (error) {
-          const statusCode = getErrorObjStatusCode(error);
-          if (statusCode === 404) {
-            const newItem = {
-              ...item,
-              status: 'expired' as const,
-              is_highlighted: true,
-            };
-            storage.updateItems([ newItem ]);
-            return newItem;
-          }
-        }
-
-        return item;
-      },
-      refetchInterval: (query) => {
-        const status = query.state.data?.status;
-        return status === 'pending' ? 10 * SECOND : false;
-      },
-      refetchOnMount: false,
-    })));
+          return item;
+        },
+        refetchInterval: (query) => {
+          const status = query.state.data?.status;
+          return status === 'pending' ? 10 * SECOND : false;
+        },
+        refetchOnMount: false,
+      });
+    });
   }, [ items, apiFetch ]);
 
   const combineQueriesResult = React.useCallback((results: Array<UseQueryResult<StorageItem | undefined, Error>>) => {
