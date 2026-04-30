@@ -2,7 +2,7 @@
 
 # use this script for testing the og image generator
 
-config_file="./configs/envs/.env.zkevm"
+config_file="./configs/envs/.env.eth"
 
 dotenv \
   -e $config_file \

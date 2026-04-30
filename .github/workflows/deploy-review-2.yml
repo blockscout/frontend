@@ -37,7 +37,6 @@ on:
             - stability
             - zetachain
             - zetachain_testnet
-            - zkevm 
             - zilliqa
             - zksync
             - zora
