@@ -13,11 +13,8 @@ import useSocketChannel from 'client/api/socket/useSocketChannel';
 import useSocketMessage from 'client/api/socket/useSocketMessage';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import delay from 'client/shared/utils/delay';
-import config from 'configs/app';
-import { TX, TX_ZKEVM_L2 } from 'stubs/tx';
+import { TX } from 'stubs/tx';
 import { SECOND } from 'toolkit/utils/consts';
-
-const rollupFeature = config.features.rollup;
 
 export type TxQuery = UseQueryResult<Transaction, ResourceError<{ status: number }>> & {
   socketStatus: 'close' | 'error' | undefined;
@@ -43,7 +40,7 @@ export default function useTxQuery(params?: Params): TxQuery {
     queryOptions: {
       enabled: Boolean(hash) && params?.isEnabled !== false,
       refetchOnMount: false,
-      placeholderData: rollupFeature.isEnabled && rollupFeature.type === 'zkEvm' ? TX_ZKEVM_L2 : TX,
+      placeholderData: TX,
       retry: (failureCount, error) => {
         if (isRefetchEnabled) {
           return false;

@@ -21,10 +21,6 @@ const Withdrawals = dynamic(() => {
     return import('ui/pages/ShibariumWithdrawals');
   }
 
-  if (rollupFeature.isEnabled && rollupFeature.type === 'zkEvm') {
-    return import('ui/pages/ZkEvmL2Withdrawals');
-  }
-
   if (rollupFeature.isEnabled && rollupFeature.type === 'scroll') {
     return import('ui/pages/ScrollL2Withdrawals');
   }

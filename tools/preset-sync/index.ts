@@ -34,7 +34,6 @@ const PRESETS = {
   tac_spb: 'https://spb.explorer.tac.build',
   zetachain: 'https://zetascan.com',
   zetachain_testnet: 'https://testnet.zetascan.com',
-  zkevm: 'https://polygon-cdk-stavanger.blockscout.com',
   zksync: 'https://zksync.blockscout.com',
   zilliqa: 'https://zilliqa.blockscout.com',
   zora: 'https://explorer.zora.energy',

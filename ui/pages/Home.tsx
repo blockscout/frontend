@@ -9,7 +9,6 @@ import Highlights from 'ui/home/Highlights';
 import { HomeDataContextProvider } from 'ui/home/homeDataContext';
 import ChainIndicators from 'ui/home/indicators/ChainIndicators';
 import LatestArbitrumL2Batches from 'ui/home/latestBatches/LatestArbitrumL2Batches';
-import LatestZkEvmL2Batches from 'ui/home/latestBatches/LatestZkEvmL2Batches';
 import LatestBlocks from 'ui/home/LatestBlocks';
 import Stats from 'ui/home/Stats';
 import Transactions from 'ui/home/Transactions';
@@ -23,8 +22,6 @@ const Home = () => {
   const leftWidget = (() => {
     if (rollupFeature.isEnabled && !rollupFeature.homepage.showLatestBlocks) {
       switch (rollupFeature.type) {
-        case 'zkEvm':
-          return <LatestZkEvmL2Batches/>;
         case 'arbitrum':
           return <LatestArbitrumL2Batches/>;
       }

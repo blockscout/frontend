@@ -40,17 +40,9 @@ import type {
   ScrollL2MessagesResponse,
 } from 'types/api/scrollL2';
 import type { ShibariumWithdrawalsResponse, ShibariumDepositsResponse } from 'types/api/shibarium';
-import type {
-  ZkEvmL2DepositsResponse,
-  ZkEvmL2TxnBatch,
-  ZkEvmL2TxnBatchesResponse,
-  ZkEvmL2TxnBatchTxs,
-  ZkEvmL2WithdrawalsResponse,
-} from 'types/api/zkEvmL2';
 import type { ZkSyncBatch, ZkSyncBatchesResponse, ZkSyncBatchTxs } from 'types/api/zkSyncL2';
 
 export const GENERAL_API_ROLLUP_RESOURCES = {
-  // OPTIMISTIC
   optimistic_l2_deposits: {
     path: '/api/v2/optimism/deposits',
     filterFields: [],
@@ -227,42 +219,6 @@ export const GENERAL_API_ROLLUP_RESOURCES = {
     paginated: true,
   },
 
-  // zkEvm
-  zkevm_l2_deposits: {
-    path: '/api/v2/zkevm/deposits',
-    filterFields: [],
-    paginated: true,
-  },
-  zkevm_l2_deposits_count: {
-    path: '/api/v2/zkevm/deposits/count',
-  },
-  zkevm_l2_withdrawals: {
-    path: '/api/v2/zkevm/withdrawals',
-    filterFields: [],
-    paginated: true,
-  },
-  zkevm_l2_withdrawals_count: {
-    path: '/api/v2/zkevm/withdrawals/count',
-  },
-  zkevm_l2_txn_batches: {
-    path: '/api/v2/zkevm/batches',
-    filterFields: [],
-    paginated: true,
-  },
-  zkevm_l2_txn_batches_count: {
-    path: '/api/v2/zkevm/batches/count',
-  },
-  zkevm_l2_txn_batch: {
-    path: '/api/v2/zkevm/batches/:number',
-    pathParams: [ 'number' as const ],
-  },
-  zkevm_l2_txn_batch_txs: {
-    path: '/api/v2/transactions/zkevm-batch/:number',
-    pathParams: [ 'number' as const ],
-    filterFields: [],
-    paginated: true,
-  },
-
   // SHIBARIUM
   shibarium_deposits: {
     path: '/api/v2/shibarium/deposits',
@@ -358,14 +314,6 @@ R extends 'general:arbitrum_l2_txn_batch_txs' ? ArbitrumL2BatchTxs :
 R extends 'general:arbitrum_l2_txn_batch_blocks' ? ArbitrumL2BatchBlocks :
 R extends 'general:arbitrum_l2_txn_withdrawals' ? ArbitrumL2TxnWithdrawalsResponse :
 R extends 'general:arbitrum_l2_message_claim' ? ArbitrumL2MessageClaimResponse :
-R extends 'general:zkevm_l2_deposits' ? ZkEvmL2DepositsResponse :
-R extends 'general:zkevm_l2_deposits_count' ? number :
-R extends 'general:zkevm_l2_withdrawals' ? ZkEvmL2WithdrawalsResponse :
-R extends 'general:zkevm_l2_withdrawals_count' ? number :
-R extends 'general:zkevm_l2_txn_batches' ? ZkEvmL2TxnBatchesResponse :
-R extends 'general:zkevm_l2_txn_batches_count' ? number :
-R extends 'general:zkevm_l2_txn_batch' ? ZkEvmL2TxnBatch :
-R extends 'general:zkevm_l2_txn_batch_txs' ? ZkEvmL2TxnBatchTxs :
 R extends 'general:zksync_l2_txn_batches' ? ZkSyncBatchesResponse :
 R extends 'general:zksync_l2_txn_batches_count' ? number :
 R extends 'general:zksync_l2_txn_batch' ? ZkSyncBatch :
