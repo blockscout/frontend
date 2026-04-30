@@ -72,16 +72,18 @@ const CsvExport = <R extends ResourceName>({
   const csvExportContext = useCsvExportContext();
   const apiFetch = useApiFetch();
 
+  const chain = chainData || multichainContext?.chain;
+
   const configQuery = useApiQuery('general:config_csv_export', {
     queryOptions: {
       refetchOnMount: false,
     },
-    chain: chainData || multichainContext?.chain,
+    chain,
   });
 
-  const chainConfig = chainData?.app_config || multichainContext?.chain.app_config || config;
+  const chainConfig = chain?.app_config || config;
   const recordsLimit = configQuery.data?.limit || 10_000;
-  const isAsyncDownload = configQuery.data?.async_enabled && !config.features.multichain.isEnabled;
+  const isAsyncDownload = configQuery.data?.async_enabled;
 
   const mergedParams: Record<string, string> = React.useMemo(() => {
     return {
@@ -93,7 +95,6 @@ const CsvExport = <R extends ResourceName>({
 
   const fetchFactorySync = React.useCallback((data?: FormFields) => {
     return async(recaptchaToken?: string) => {
-      const chain = chainData || multichainContext?.chain;
       const url = buildUrl(resourceName, pathParams, {
         ...mapValues(data || {}, (value) => dayjs(value).toISOString()),
         ...queryParams,
@@ -120,11 +121,10 @@ const CsvExport = <R extends ResourceName>({
 
       return response;
     };
-  }, [ resourceName, pathParams, queryParams, chainData, multichainContext?.chain ]);
+  }, [ resourceName, pathParams, queryParams, chain ]);
 
   const fetchFactoryAsync = React.useCallback((data?: FormFields) => {
     return async(recaptchaToken?: string) => {
-      const chain = chainData || multichainContext?.chain;
       abortControllerRef.current = new AbortController();
 
       return apiFetch<typeof resourceName>(resourceName, {
@@ -142,7 +142,7 @@ const CsvExport = <R extends ResourceName>({
         },
       }) as Promise<CsvExportDownloadResponse>;
     };
-  }, [ apiFetch, chainData, multichainContext?.chain, pathParams, queryParams, resourceName ]);
+  }, [ apiFetch, chain, pathParams, queryParams, resourceName ]);
 
   const downloadFileSync = React.useCallback(async(data?: FormFields) => {
     try {
@@ -171,7 +171,6 @@ const CsvExport = <R extends ResourceName>({
   const downloadFileAsync = React.useCallback(async(data?: FormFields) => {
     try {
       setIsPending(true);
-      const chain = chainData || multichainContext?.chain;
       const downloadResponse = await recaptcha.fetchProtectedResource<CsvExportDownloadResponse>(fetchFactoryAsync(data));
 
       if (downloadResponse && 'request_id' in downloadResponse) {
@@ -213,7 +212,7 @@ const CsvExport = <R extends ResourceName>({
     } finally {
       setIsPending(false);
     }
-  }, [ chainData, csvExportContext, fetchFactoryAsync, mergedParams, multichainContext?.chain, recaptcha, type ]);
+  }, [ chain, csvExportContext, fetchFactoryAsync, mergedParams, recaptcha, type ]);
 
   const handleButtonClick = React.useCallback(() => {
     if (periodFilter) {
@@ -269,7 +268,7 @@ const CsvExport = <R extends ResourceName>({
         <CsvExportDialogDescription
           type={ type }
           params={ mergedParams }
-          chainInfo={ chainData }
+          chainInfo={ chain }
           recordsLimit={ recordsLimit }
         />
       </CsvExportDialog>
