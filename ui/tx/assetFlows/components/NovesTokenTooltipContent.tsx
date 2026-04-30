@@ -4,6 +4,7 @@ import React from 'react';
 
 import type { NovesNft, NovesToken } from 'types/api/noves';
 
+import shortenString from 'client/shared/text/shorten-string';
 import { HEX_REGEXP } from 'toolkit/utils/regexp';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 
@@ -21,7 +22,7 @@ const NovesTokenTooltipContent: FC<Props> = ({ token, amount }) => {
   const showTokenAddress = HEX_REGEXP.test(token.address);
 
   return (
-    <Box color={{ _light: 'white', _dark: 'blackAlpha.900' }} display="flex" flexDir="column" alignItems="center" gap={ 1 }>
+    <Box display="flex" flexDir="column" alignItems="center" gap={ 1 }>
       <Text as="p" color="inherit" fontWeight="semibold">
         <Text color="inherit" as="span">
           { amount }
@@ -40,9 +41,9 @@ const NovesTokenTooltipContent: FC<Props> = ({ token, amount }) => {
       { showTokenAddress && (
         <Box display="flex" alignItems="center">
           <Text color="inherit" fontWeight="normal">
-            { token.address }
+            { shortenString(token.address) }
           </Text>
-          <CopyToClipboard text={ token.address }/>
+          <CopyToClipboard text={ token.address } noTooltip/>
         </Box>
       ) }
 
