@@ -1,7 +1,7 @@
 import React from 'react';
 
+import * as txMock from 'client/slices/tx/mocks/tx';
 import * as tokenInstanceMock from 'mocks/tokens/tokenInstance';
-import * as txMock from 'mocks/txs/tx';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';
 import * as pwConfig from 'playwright/utils/config';

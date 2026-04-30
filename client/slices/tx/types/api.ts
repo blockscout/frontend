@@ -68,6 +68,27 @@ export interface LogsResponseAddress {
   } | null;
 }
 
+export interface TxRawTrace {
+  action: {
+    callType: string;
+    from: string;
+    gas: string;
+    input: string;
+    to: string;
+    value: string;
+  };
+  result: {
+    gasUsed: string;
+    output: string;
+  };
+  error: string | null;
+  subtraces: number;
+  traceAddress: Array<number>;
+  type: string;
+}
+
+export type TxRawTracesResponse = Array<TxRawTrace>;
+
 export type TransactionType = 'rootstock_remasc' |
 'rootstock_bridge' |
 'token_transfer' |

@@ -1,7 +1,7 @@
 import React from 'react';
 
+import * as txMock from 'client/slices/tx/mocks/tx';
 import * as internalTxsMock from 'mocks/txs/internalTxs';
-import * as txMock from 'mocks/txs/tx';
 import { test, expect } from 'playwright/lib';
 
 import TxInternals from './TxInternals';

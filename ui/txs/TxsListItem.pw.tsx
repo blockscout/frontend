@@ -1,6 +1,6 @@
 import React from 'react';
 
-import * as txMock from 'mocks/txs/tx';
+import * as txMock from 'client/slices/tx/mocks/tx';
 import { test, expect, devices } from 'playwright/lib';
 
 import TxsListItem from './TxsListItem';

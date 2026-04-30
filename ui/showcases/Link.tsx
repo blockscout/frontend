@@ -3,13 +3,13 @@ import React from 'react';
 
 import type { TokenInfo } from 'types/api/token';
 
+import * as txMock from 'client/slices/tx/mocks/tx';
 import * as addressMock from 'mocks/address/address';
 import * as implementationsMock from 'mocks/address/implementations';
 import * as blobsMock from 'mocks/blobs/blobs';
 import * as blockMock from 'mocks/blocks/block';
 import * as ensMock from 'mocks/ens/domain';
 import * as poolMock from 'mocks/pools/pool';
-import * as txMock from 'mocks/txs/tx';
 import { Link, LinkBox, LinkOverlay } from 'toolkit/chakra/link';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlobEntity from 'ui/shared/entities/blob/BlobEntity';

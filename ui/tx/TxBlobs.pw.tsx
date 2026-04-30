@@ -1,7 +1,7 @@
 import React from 'react';
 
+import * as txMock from 'client/slices/tx/mocks/tx';
 import * as blobsMock from 'mocks/blobs/blobs';
-import * as txMock from 'mocks/txs/tx';
 import { test, expect } from 'playwright/lib';
 
 import TxBlobs from './TxBlobs';

@@ -9,11 +9,11 @@ import type {
   TransactionsStats,
   TxsFilters,
   TxStateChanges,
+  TxRawTracesResponse,
 } from 'client/slices/tx/types/api';
 import type { TxBlobs } from 'types/api/blobs';
 import type { FheOperationsResponse } from 'types/api/fheOperations';
 import type { InternalTransactionFilters, InternalTransactionsResponse } from 'types/api/internalTransaction';
-import type { RawTracesResponse } from 'types/api/rawTrace';
 import type { TokenTransferResponse, TokenTransferFilters } from 'types/api/tokenTransfer';
 import type { TxInterpretationResponse } from 'types/api/txInterpretation';
 
@@ -119,7 +119,7 @@ R extends 'general:tx' ? Transaction :
 R extends 'general:tx_logs' ? LogsResponseTx :
 R extends 'general:tx_token_transfers' ? TokenTransferResponse :
 R extends 'general:tx_fhe_operations' ? FheOperationsResponse :
-R extends 'general:tx_raw_trace' ? RawTracesResponse :
+R extends 'general:tx_raw_trace' ? TxRawTracesResponse :
 R extends 'general:tx_state_changes' ? TxStateChanges :
 R extends 'general:tx_blobs' ? TxBlobs :
 R extends 'general:tx_interpretation' ? TxInterpretationResponse :

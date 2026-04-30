@@ -2,11 +2,11 @@ import React from 'react';
 
 import type { AddressMetadataInfo, AddressMetadataTagApi } from 'types/api/addressMetadata';
 
+import * as txMock from 'client/slices/tx/mocks/tx';
 import config from 'configs/app';
 import * as addressMock from 'mocks/address/address';
 import { protocolTagWithMeta } from 'mocks/metadata/address';
 import { transaction as novesTransaction } from 'mocks/noves/transaction';
-import * as txMock from 'mocks/txs/tx';
 import { txInterpretation } from 'mocks/txs/txInterpretation';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';

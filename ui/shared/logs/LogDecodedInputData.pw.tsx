@@ -1,6 +1,6 @@
 import React from 'react';
 
-import * as mocks from 'mocks/txs/decodedInputData';
+import * as mocks from 'client/slices/tx/mocks/decoded-input';
 import { test, expect } from 'playwright/lib';
 
 import LogDecodedInputData from './LogDecodedInputData';

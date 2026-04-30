@@ -9,7 +9,8 @@ import { publicTag, privateTag, watchlistName } from 'mocks/address/tag';
 import * as interopMock from 'mocks/interop/interop';
 import { protocolTag } from 'mocks/metadata/address';
 import * as tokenTransferMock from 'mocks/tokens/tokenTransfer';
-import * as decodedInputDataMock from 'mocks/txs/decodedInputData';
+
+import * as decodedInputDataMock from './decoded-input';
 
 export const base: Transaction = {
   base_fee_per_gas: '10000000000',

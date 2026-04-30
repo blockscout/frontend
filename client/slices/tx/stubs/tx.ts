@@ -1,6 +1,6 @@
+import type { TxRawTracesResponse } from '../types/api';
 import type * as stats from '@blockscout/stats-types';
 import type { Transaction, TransactionsStats } from 'client/slices/tx/types/api';
-import type { RawTracesResponse } from 'types/api/rawTrace';
 
 import { CHAIN_STATS_COUNTER } from 'client/features/chain-stats/stubs/counters';
 import { ADDRESS_PARAMS } from 'stubs/addressParams';
@@ -53,7 +53,7 @@ export const TX: Transaction = {
   transaction_tag: null,
 };
 
-export const TX_RAW_TRACE: RawTracesResponse = [];
+export const TX_RAW_TRACE: TxRawTracesResponse = [];
 
 export const TXS_STATS: TransactionsStats = {
   pending_transactions_count: '4200',

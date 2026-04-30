@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { SocketMessage } from 'client/api/socket/types';
-import type { RawTracesResponse } from 'types/api/rawTrace';
+import type { TxRawTracesResponse } from 'client/slices/tx/types/api';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 import useSocketChannel from 'client/api/socket/useSocketChannel';
@@ -22,7 +22,7 @@ interface Props {
 
 const TxRawTrace = ({ txQuery }: Props) => {
   const [ isQueryEnabled, setIsQueryEnabled ] = React.useState(false);
-  const [ rawTraces, setRawTraces ] = React.useState<RawTracesResponse>();
+  const [ rawTraces, setRawTraces ] = React.useState<TxRawTracesResponse>();
   const router = useRouter();
   const hash = getQueryParamString(router.query.hash);
 
