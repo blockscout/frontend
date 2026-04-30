@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { InternalTransaction } from 'types/api/internalTransaction';
 
-import { currencyUnits } from 'lib/units';
+import { currencyUnits } from 'client/shared/chain/units';
 import { Badge } from 'toolkit/chakra/badge';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';

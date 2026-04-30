@@ -7,8 +7,8 @@ import type { Transaction, TransactionsSortingField, TransactionsSortingValue } 
 import type { PaginationParams } from 'ui/shared/pagination/types';
 
 import CsvExport from 'client/features/csv-export/components/CsvExport';
-import useIsMobile from 'lib/hooks/useIsMobile';
-import useTableViewValue from 'lib/hooks/useTableViewValue';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+import useTableViewValue from 'client/shared/hooks/useTableViewValue';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import getNextSortValue from 'ui/shared/sort/getNextSortValue';

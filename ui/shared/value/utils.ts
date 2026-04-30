@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js';
 
+import { currencyUnits } from 'client/shared/chain/units';
 import config from 'configs/app';
-import { currencyUnits } from 'lib/units';
 import { ZERO } from 'toolkit/utils/consts';
 import { thinsp } from 'toolkit/utils/htmlEntities';
 

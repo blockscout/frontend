@@ -7,9 +7,9 @@ import type { BlockTransactionsResponse } from 'types/api/block';
 
 import { retry } from 'client/api/hooks/useQueryClientConfig';
 import type { ResourceError } from 'client/api/resources';
+import { publicClient } from 'client/features/connect-wallet/utils/public-client';
+import hexToDecimal from 'client/shared/transformers/hex-to-decimal';
 import dayjs from 'lib/date/dayjs';
-import hexToDecimal from 'lib/hexToDecimal';
-import { publicClient } from 'lib/web3/client';
 import { GET_BLOCK_WITH_TRANSACTIONS } from 'stubs/RPC';
 import { TX } from 'stubs/tx';
 import { generateListStub } from 'stubs/utils';

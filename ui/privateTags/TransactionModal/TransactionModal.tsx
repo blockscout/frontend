@@ -2,8 +2,7 @@ import React, { useCallback, useState } from 'react';
 
 import type { TransactionTag } from 'types/api/account';
 
-import { PAGE_TYPE_DICT } from 'lib/mixpanel/getPageType';
-import * as mixpanel from 'lib/mixpanel/index';
+import * as mixpanel from 'client/shared/analytics/mixpanel';
 import FormModal from 'ui/shared/FormModal';
 
 import TransactionForm from './TransactionForm';
@@ -24,7 +23,7 @@ const TransactionModal: React.FC<Props> = ({ open, onOpenChange, onSuccess, data
   React.useEffect(() => {
     open && !data?.id && mixpanel.logEvent(
       mixpanel.EventTypes.PRIVATE_TAG,
-      { Action: 'Form opened', 'Page type': PAGE_TYPE_DICT['/account/tag-address'], 'Tag type': 'Tx' },
+      { Action: 'Form opened', 'Page type': mixpanel.getPageType('/account/tag-address'), 'Tag type': 'Tx' },
     );
   }, [ data?.id, open ]);
 
@@ -33,7 +32,7 @@ const TransactionModal: React.FC<Props> = ({ open, onOpenChange, onSuccess, data
     if (!data?.id) {
       mixpanel.logEvent(
         mixpanel.EventTypes.PRIVATE_TAG,
-        { Action: 'Submit', 'Page type': PAGE_TYPE_DICT['/account/tag-address'], 'Tag type': 'Tx' },
+        { Action: 'Submit', 'Page type': mixpanel.getPageType('/account/tag-address'), 'Tag type': 'Tx' },
       );
     }
   }, [ data?.id, onSuccess ]);

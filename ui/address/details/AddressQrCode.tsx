@@ -3,9 +3,8 @@ import { useRouter } from 'next/router';
 import QRCode from 'qrcode';
 import React from 'react';
 
-import getPageType from 'lib/mixpanel/getPageType';
-import * as mixpanel from 'lib/mixpanel/index';
-import { useRollbar } from 'lib/rollbar';
+import * as mixpanel from 'client/shared/analytics/mixpanel';
+import { useRollbar } from 'client/shared/monitoring/rollbar';
 import { Alert } from 'toolkit/chakra/alert';
 import { DialogBody, DialogContent, DialogHeader, DialogRoot } from 'toolkit/chakra/dialog';
 import { IconButton } from 'toolkit/chakra/icon-button';
@@ -34,7 +33,7 @@ const AddressQrCode = ({ hash, className, isLoading }: Props) => {
   const [ qr, setQr ] = React.useState('');
   const [ error, setError ] = React.useState('');
 
-  const pageType = getPageType(router.pathname);
+  const pageType = mixpanel.getPageType(router.pathname);
 
   React.useEffect(() => {
     if (open) {

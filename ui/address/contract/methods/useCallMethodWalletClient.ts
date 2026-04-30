@@ -4,10 +4,10 @@ import { useAccount, useSwitchChain, useWriteContract, useSendTransaction } from
 
 import type { FormSubmitResult, SmartContractMethod } from './types';
 
+import useWallet from 'client/features/connect-wallet/hooks/useWallet';
 import config from 'configs/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import useRewardsActivity from 'lib/hooks/useRewardsActivity';
-import useWallet from 'lib/web3/useWallet';
 
 import { getNativeCoinValue } from './utils';
 

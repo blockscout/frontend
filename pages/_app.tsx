@@ -15,14 +15,14 @@ import getSocketUrl from 'client/api/get-socket-url';
 import useQueryClientConfig from 'client/api/hooks/useQueryClientConfig';
 import { SocketProvider } from 'client/api/socket/context';
 import { CsvExportContextProvider } from 'client/features/csv-export/utils/context';
+import { initGrowthBook } from 'client/shared/feature-flags/init';
+import useLoadFeatures from 'client/shared/feature-flags/useLoadFeatures';
+import { clientConfig as rollbarConfig, Provider as RollbarProvider } from 'client/shared/monitoring/rollbar';
 import config from 'configs/app';
 import { AppContextProvider } from 'lib/contexts/app';
 import { FallbackProvider } from 'lib/contexts/fallback';
 import { MarketplaceContextProvider } from 'lib/contexts/marketplace';
 import { SettingsContextProvider } from 'lib/contexts/settings';
-import { initGrowthBook } from 'lib/growthbook/init';
-import useLoadFeatures from 'lib/growthbook/useLoadFeatures';
-import { clientConfig as rollbarConfig, Provider as RollbarProvider } from 'lib/rollbar';
 import { Provider as ChakraProvider } from 'toolkit/chakra/provider';
 import { Toaster } from 'toolkit/chakra/toaster';
 import AppErrorBoundary from 'ui/shared/AppError/AppErrorBoundary';
@@ -35,7 +35,7 @@ const RewardsContextProvider = dynamic(() => import('lib/contexts/rewards').then
 const RewardsLoginModal = dynamic(() => import('ui/rewards/login/RewardsLoginModal'), { ssr: false });
 const RewardsActivityTracker = dynamic(() => import('ui/rewards/RewardsActivityTracker'), { ssr: false });
 
-import 'lib/setLocale';
+import 'client/shared/i18n/set-locale';
 // import 'focus-visible/dist/focus-visible';
 import 'nextjs/global.css';
 

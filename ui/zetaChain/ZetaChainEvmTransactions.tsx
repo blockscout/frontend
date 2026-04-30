@@ -5,10 +5,10 @@ import React from 'react';
 
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
+import getChainValidationActionText from 'client/shared/chain/get-chain-validation-action-text';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 import config from 'configs/app';
-import useIsMobile from 'lib/hooks/useIsMobile';
-import getNetworkValidationActionText from 'lib/networks/getNetworkValidationActionText';
-import getQueryParamString from 'lib/router/getQueryParamString';
 import { TX } from 'stubs/tx';
 import { generateListStub } from 'stubs/utils';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
@@ -58,7 +58,7 @@ const ZetaChainEvmTransactions = () => {
     },
   });
 
-  const verifiedTitle = capitalize(getNetworkValidationActionText());
+  const verifiedTitle = capitalize(getChainValidationActionText());
 
   const tabs: Array<TabItemRegular> = [
     {

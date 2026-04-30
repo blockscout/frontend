@@ -5,7 +5,7 @@ import { type FieldError, type FieldErrorsImpl, type Merge } from 'react-hook-fo
 import type { FormFields, FormFieldTag } from '../types';
 import type { PublicTagType } from 'types/api/addressMetadata';
 
-import useIsMobile from 'lib/hooks/useIsMobile';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
 import AddButton from 'toolkit/components/buttons/AddButton';
 import RemoveButton from 'toolkit/components/buttons/RemoveButton';
 import { FormFieldColor } from 'toolkit/components/forms/fields/FormFieldColor';

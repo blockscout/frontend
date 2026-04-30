@@ -4,7 +4,7 @@ import React from 'react';
 
 import type { CrossChainChainsStatsSorting, CrossChainChainsStatsSortingField, CrossChainChainsStatsSortingValue } from '../../types/api';
 
-import useIsMobile from 'lib/hooks/useIsMobile';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
 import { INTERCHAIN_STATS_CHAINS_ITEM } from 'stubs/interchainIndexer';
 import { generateListStub } from 'stubs/utils';
 import ActionBar from 'ui/shared/ActionBar';

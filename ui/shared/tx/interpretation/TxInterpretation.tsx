@@ -13,10 +13,10 @@ import type { ClusterChainConfig } from 'types/multichain';
 
 import { route } from 'nextjs-routes';
 
+import * as mixpanel from 'client/shared/analytics/mixpanel';
+import { currencyUnits } from 'client/shared/chain/units';
 import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';
-import * as mixpanel from 'lib/mixpanel/index';
-import { currencyUnits } from 'lib/units';
 import { Badge } from 'toolkit/chakra/badge';
 import { useColorModeValue } from 'toolkit/chakra/color-mode';
 import { Image } from 'toolkit/chakra/image';

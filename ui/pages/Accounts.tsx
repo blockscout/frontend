@@ -2,7 +2,7 @@ import { Box } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
-import getItemIndex from 'lib/getItemIndex';
+import getItemIndex from 'client/shared/lists/get-item-index';
 import { TOP_ADDRESS } from 'stubs/address';
 import { generateListStub } from 'stubs/utils';
 import AddressesListItem from 'ui/addresses/AddressesListItem';

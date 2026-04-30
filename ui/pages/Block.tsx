@@ -8,13 +8,13 @@ import type { PaginationParams } from 'ui/shared/pagination/types';
 
 import { routeParams } from 'nextjs/routes';
 
+import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-title';
+import throwOnAbsentParamError from 'client/shared/errors/throw-on-absent-param-error';
+import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 import config from 'configs/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
-import throwOnAbsentParamError from 'lib/errors/throwOnAbsentParamError';
-import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
-import useIsMobile from 'lib/hooks/useIsMobile';
-import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
-import getQueryParamString from 'lib/router/getQueryParamString';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import BlockCeloEpochTag from 'ui/block/BlockCeloEpochTag';
@@ -188,7 +188,7 @@ const BlockPageContent = () => {
           fontWeight={ 500 }
         >
           <chakra.span flexShrink={ 0 }>
-            { capitalize(getNetworkValidatorTitle()) }
+            { capitalize(getChainValidatorTitle()) }
           </chakra.span>
           <AddressEntity address={ blockQuery.data.miner }/>
         </Skeleton>

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import useIsInitialLoading from 'lib/hooks/useIsInitialLoading';
+import useIsInitialLoading from 'client/shared/hooks/useIsInitialLoading';
 import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
 
 interface Props {

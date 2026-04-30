@@ -2,8 +2,8 @@ import { Box } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import useIsMounted from 'lib/hooks/useIsMounted';
-import getQueryParamString from 'lib/router/getQueryParamString';
+import useIsMounted from 'client/shared/hooks/useIsMounted';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 import { generateListStub } from 'stubs/utils';
 import { WITHDRAWAL } from 'stubs/withdrawals';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';

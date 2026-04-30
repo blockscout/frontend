@@ -3,13 +3,13 @@ import React from 'react';
 import type { TxsSocketType } from './socket/types';
 import type { Transaction, TransactionsSortingField, TransactionsSortingValue } from 'types/api/transaction';
 
+import { currencyUnits } from 'client/shared/chain/units';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+import useInitialList from 'client/shared/lists/useInitialList';
+import useLazyRenderedList from 'client/shared/lists/useLazyRenderedList';
 import config from 'configs/app';
 import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
 import { useMultichainContext } from 'lib/contexts/multichain';
-import useInitialList from 'lib/hooks/useInitialList';
-import useIsMobile from 'lib/hooks/useIsMobile';
-import useLazyRenderedList from 'lib/hooks/useLazyRenderedList';
-import { currencyUnits } from 'lib/units';
 import { TableBody, TableColumnHeader, TableColumnHeaderSortable, TableHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 

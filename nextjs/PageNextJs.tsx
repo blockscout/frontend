@@ -3,11 +3,11 @@ import React from 'react';
 import type { Route } from 'nextjs-routes';
 import type { Props as PageProps } from 'nextjs/getServerSideProps/handlers';
 
+import * as mixpanel from 'client/shared/analytics/mixpanel';
+import useIsMounted from 'client/shared/hooks/useIsMounted';
 import useAdblockDetect from 'lib/hooks/useAdblockDetect';
 import useGetCsrfToken from 'lib/hooks/useGetCsrfToken';
-import useIsMounted from 'lib/hooks/useIsMounted';
 import useNotifyOnNavigation from 'lib/hooks/useNotifyOnNavigation';
-import * as mixpanel from 'lib/mixpanel';
 
 interface Props<Pathname extends Route['pathname']> {
   pathname: Pathname;

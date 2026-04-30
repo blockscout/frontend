@@ -1,7 +1,7 @@
 import { Box, Flex, Spinner, Text } from '@chakra-ui/react';
 import React from 'react';
 
-import delay from 'lib/delay';
+import delay from 'client/shared/utils/delay';
 import { Button } from 'toolkit/chakra/button';
 import { IconButton } from 'toolkit/chakra/icon-button';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';

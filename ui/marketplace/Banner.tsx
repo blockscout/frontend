@@ -4,8 +4,8 @@ import React from 'react';
 
 import type { MarketplaceApp } from 'types/client/marketplace';
 
+import useIsMobile from 'client/shared/hooks/useIsMobile';
 import config from 'configs/app';
-import useIsMobile from 'lib/hooks/useIsMobile';
 import { apps as appsMock } from 'mocks/apps/apps';
 import AdBanner from 'ui/shared/ad/AdBanner';
 

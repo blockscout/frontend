@@ -247,6 +247,9 @@ migrated to `client/shared/` in 1-2 and do not appear here.
 ### 6-27 · [ ] Feature: `web3-wallet`
 **Scope:** Includes `blockchainInteraction.ts` config.  
 
+### 6-28 · [ ] Feature: `alternative-explorers`
+**Scope:** The "Verify with other explorers" menu shown on tx, block, address, and token pages. Move `ui/shared/NetworkExplorers.tsx` (and its `.pw.tsx` test) → `client/features/alternative-explorers/`. The util `client/features/alternative-explorers/utils/explorers.ts` already exists (landed in 1-2). Config-gated via `NEXT_PUBLIC_NETWORK_EXPLORERS`.  
+
 > Other small features (`externalTxs`, `xStarScore`, `deFiDropdown`, `getGasButton`, `easterEgg*`, `apiDocs`, `verifiedTokens`, `multichainButton`) — enumerate as separate tasks or group with related features when this stage begins.
 
 ---

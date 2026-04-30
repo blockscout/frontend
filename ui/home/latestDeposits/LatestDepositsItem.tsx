@@ -5,7 +5,7 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 
-import useIsMobile from 'lib/hooks/useIsMobile';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
 import { layerLabels } from 'lib/rollups/utils';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';

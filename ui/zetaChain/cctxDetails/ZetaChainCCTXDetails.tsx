@@ -4,7 +4,7 @@ import React from 'react';
 import type { CrossChainTx } from '@blockscout/zetachain-cctx-types';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
-import base64ToHex from 'lib/base64ToHex';
+import base64ToHex from 'client/shared/transformers/base64-to-hex';
 import { HOMEPAGE_STATS } from 'stubs/stats';
 import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
 import { Skeleton } from 'toolkit/chakra/skeleton';

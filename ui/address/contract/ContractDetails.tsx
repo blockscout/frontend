@@ -10,8 +10,8 @@ import type { SmartContract } from 'types/api/contract';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 import type { ResourceError } from 'client/api/resources';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 import { useMultichainContext } from 'lib/contexts/multichain';
-import getQueryParamString from 'lib/router/getQueryParamString';
 import * as stubs from 'stubs/contract';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';

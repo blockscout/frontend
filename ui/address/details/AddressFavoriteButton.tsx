@@ -4,9 +4,9 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import { getResourceKey } from 'client/api/hooks/useApiQuery';
+import * as mixpanel from 'client/shared/analytics/mixpanel';
+import usePreventFocusAfterModalClosing from 'client/shared/hooks/usePreventFocusAfterModalClosing';
 import config from 'configs/app';
-import usePreventFocusAfterModalClosing from 'lib/hooks/usePreventFocusAfterModalClosing';
-import * as mixpanel from 'lib/mixpanel/index';
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';

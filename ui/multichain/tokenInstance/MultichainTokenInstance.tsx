@@ -3,9 +3,9 @@ import React from 'react';
 
 import getSocketUrl from 'client/api/get-socket-url';
 import { SocketProvider } from 'client/api/socket/context';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 import multichainConfig from 'configs/multichain';
 import { MultichainProvider } from 'lib/contexts/multichain';
-import getQueryParamString from 'lib/router/getQueryParamString';
 import TokenInstance from 'ui/pages/TokenInstance';
 
 const MultichainTokenInstance = () => {

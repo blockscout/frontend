@@ -4,9 +4,9 @@ import React from 'react';
 
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 import config from 'configs/app';
-import useIsMobile from 'lib/hooks/useIsMobile';
-import getQueryParamString from 'lib/router/getQueryParamString';
 import { BLOCK } from 'stubs/block';
 import { generateListStub } from 'stubs/utils';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';

@@ -4,9 +4,8 @@ import React from 'react';
 
 import { route } from 'nextjs-routes';
 
+import * as mixpanel from 'client/shared/analytics/mixpanel';
 import config from 'configs/app';
-import getPageType from 'lib/mixpanel/getPageType';
-import * as mixpanel from 'lib/mixpanel/index';
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';
 import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
@@ -19,7 +18,7 @@ const feature = config.features.deFiDropdown;
 
 const DeFiDropdown = () => {
   const router = useRouter();
-  const source = getPageType(router.pathname);
+  const source = mixpanel.getPageType(router.pathname);
 
   const handleClick = React.useCallback((content: string) => {
     mixpanel.logEvent(mixpanel.EventTypes.BUTTON_CLICK, { Content: `DeFi button: ${ content }`, Source: source });

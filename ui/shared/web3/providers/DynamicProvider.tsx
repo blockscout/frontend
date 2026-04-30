@@ -9,11 +9,11 @@ import type { UserInfo } from 'types/api/account';
 
 import useApiFetch from 'client/api/hooks/useApiFetch';
 import { getResourceKey } from 'client/api/hooks/useApiQuery';
+import { chains } from 'client/features/connect-wallet/utils/chains';
+import * as mixpanel from 'client/shared/analytics/mixpanel';
+import getErrorMessage from 'client/shared/errors/get-error-message';
 import config from 'configs/app';
-import getErrorMessage from 'lib/errors/getErrorMessage';
 import useGetCsrfToken from 'lib/hooks/useGetCsrfToken';
-import * as mixpanel from 'lib/mixpanel/index';
-import { chains } from 'lib/web3/chains';
 import { toaster } from 'toolkit/chakra/toaster';
 import { castToString } from 'toolkit/utils/guards';
 import useLogout from 'ui/snippets/auth/useLogout';

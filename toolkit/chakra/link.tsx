@@ -4,8 +4,8 @@ import NextLink from 'next/link';
 import type { LinkProps as NextLinkProps } from 'next/link';
 import React from 'react';
 
+import stripUtmParams from 'client/shared/links/utils/strip-utm-params';
 import ArrowIcon from 'icons/link_external.svg';
-import stripUtmParams from 'lib/utils/stripUtmParams';
 
 import { Skeleton } from './skeleton';
 

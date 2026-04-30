@@ -1,8 +1,8 @@
 import { Box, Flex } from '@chakra-ui/react';
 import React from 'react';
 
+import * as cookies from 'client/shared/storage/cookies';
 import config from 'configs/app';
-import * as cookies from 'lib/cookies';
 import { IDENTICONS } from 'lib/settings/identIcon';
 
 import SettingsSample from './SettingsSample';

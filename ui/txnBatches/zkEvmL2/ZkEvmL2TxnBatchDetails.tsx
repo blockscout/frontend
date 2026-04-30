@@ -9,7 +9,7 @@ import type { ZkEvmL2TxnBatch } from 'types/api/zkEvmL2';
 import { route } from 'nextjs-routes';
 
 import type { ResourceError } from 'client/api/resources';
-import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
+import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import { formatZkEvmL2TxnBatchStatus } from 'lib/rollups/utils';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';

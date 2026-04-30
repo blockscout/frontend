@@ -42,6 +42,7 @@ Optional product areas and their backing services. Each corresponds to a folder 
 | Term | Definition |
 |------|------------|
 | **Advanced Filter** | A UI feature for filtering transactions using complex multi-criteria queries (address, method, token, amount ranges, etc.). Distinct from the basic filter controls present on most list pages. Config-gated via `NEXT_PUBLIC_ADVANCED_FILTER_ENABLED`. |
+| **Alternative Explorers** | A feature that adds a "Verify with other explorers" menu to transaction, block, address, and token pages, linking to third-party explorers (e.g. Etherscan). The set of explorers is configured via `NEXT_PUBLIC_NETWORK_EXPLORERS`. Lives under `client/features/alternative-explorers/`. |
 | **Beacon Chain** | The Ethereum Proof-of-Stake consensus layer. When enabled, exposes beacon chain deposits and withdrawals alongside regular transactions. Not a rollup — it is the Ethereum L1 consensus mechanism. |
 | **BENS (Blockscout Name Service)** | Blockscout's own address naming service, chain-agnostic and operated by Blockscout. Distinct from ENS (which is Ethereum-specific). In the codebase also referred to as `name-services` or `name-domains`. |
 | **Clusters** | An address identity and grouping service. Aggregates multiple addresses under a named cluster (individual, protocol, organization). Exposes a directory, leaderboard, and per-address lookup. Backed by the Clusters API (`NEXT_PUBLIC_CLUSTERS_API_HOST`). |

@@ -8,8 +8,8 @@ import PageNextJs from 'nextjs/PageNextJs';
 import detectBotRequest from 'nextjs/utils/detectBotRequest';
 import fetchApi from 'nextjs/utils/fetchApi';
 
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 import config from 'configs/app';
-import getQueryParamString from 'lib/router/getQueryParamString';
 import Token from 'ui/pages/Token';
 
 const pathname: Route['pathname'] = '/token/[hash]';

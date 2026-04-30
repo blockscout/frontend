@@ -2,8 +2,8 @@ import React from 'react';
 
 import type { ClusterByNameResponse } from 'types/api/clusters';
 
+import { currencyUnits } from 'client/shared/chain/units';
 import { isEvmAddress } from 'lib/address/isEvmAddress';
-import { currencyUnits } from 'lib/units';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';

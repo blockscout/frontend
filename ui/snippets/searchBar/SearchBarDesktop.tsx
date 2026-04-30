@@ -7,8 +7,8 @@ import React from 'react';
 import type { Route } from 'nextjs-routes';
 import { route } from 'nextjs-routes';
 
-import useIsMobile from 'lib/hooks/useIsMobile';
-import * as mixpanel from 'lib/mixpanel/index';
+import * as mixpanel from 'client/shared/analytics/mixpanel';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
 import { getRecentSearchKeywords, saveToRecentKeywords } from 'lib/recentSearchKeywords';
 import { Link } from 'toolkit/chakra/link';
 import { PopoverBody, PopoverContent, PopoverFooter, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';

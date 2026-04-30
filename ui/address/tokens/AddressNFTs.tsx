@@ -3,8 +3,8 @@ import React from 'react';
 
 import type { NFTTokenType } from 'types/api/token';
 
+import useIsMobile from 'client/shared/hooks/useIsMobile';
 import { useMultichainContext } from 'lib/contexts/multichain';
-import useIsMobile from 'lib/hooks/useIsMobile';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/pagination/Pagination';

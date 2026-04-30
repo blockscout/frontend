@@ -2,9 +2,9 @@ import type { AppKitNetwork } from '@reown/appkit/networks';
 import { createAppKit, useAppKitTheme } from '@reown/appkit/react';
 import React from 'react';
 
+import { chains } from 'client/features/connect-wallet/utils/chains';
+import wagmiConfig from 'client/features/connect-wallet/utils/wagmi-config';
 import config from 'configs/app';
-import { chains } from 'lib/web3/chains';
-import wagmiConfig from 'lib/web3/wagmiConfig';
 import { useColorMode } from 'toolkit/chakra/color-mode';
 import colors from 'toolkit/theme/foundations/colors';
 import { BODY_TYPEFACE } from 'toolkit/theme/foundations/typography';

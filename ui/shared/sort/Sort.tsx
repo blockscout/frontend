@@ -1,8 +1,8 @@
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import useIsInitialLoading from 'lib/hooks/useIsInitialLoading';
-import useIsMobile from 'lib/hooks/useIsMobile';
+import useIsInitialLoading from 'client/shared/hooks/useIsInitialLoading';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
 import { IconButton } from 'toolkit/chakra/icon-button';
 import type { SelectRootProps } from 'toolkit/chakra/select';
 import { SelectContent, SelectItem, SelectRoot, SelectControl, SelectValueText } from 'toolkit/chakra/select';

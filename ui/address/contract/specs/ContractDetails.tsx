@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 import useSocketChannel from 'client/api/socket/useSocketChannel';
-import getQueryParamString from 'lib/router/getQueryParamString';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import useContractTabs from '../useContractTabs';
 

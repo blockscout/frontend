@@ -5,7 +5,7 @@ import type * as bens from '@blockscout/bens-types';
 import type { EnsDomainLookupFiltersOptions } from 'types/api/ens';
 import type { PaginationParams } from 'ui/shared/pagination/types';
 
-import useIsInitialLoading from 'lib/hooks/useIsInitialLoading';
+import useIsInitialLoading from 'client/shared/hooks/useIsInitialLoading';
 import { Button } from 'toolkit/chakra/button';
 import { Checkbox, CheckboxGroup } from 'toolkit/chakra/checkbox';
 import { Image } from 'toolkit/chakra/image';

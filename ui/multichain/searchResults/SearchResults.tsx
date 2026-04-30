@@ -1,7 +1,7 @@
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import useIsMobile from 'lib/hooks/useIsMobile';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
 import useRoutedChainSelect from 'lib/multichain/useRoutedChainSelect';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';

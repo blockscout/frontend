@@ -5,9 +5,9 @@ import type { AddressFromToFilter } from 'types/api/address';
 import type { TokenType } from 'types/api/token';
 import type { ClusterChainConfig } from 'types/multichain';
 
+import useIsInitialLoading from 'client/shared/hooks/useIsInitialLoading';
 import config from 'configs/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
-import useIsInitialLoading from 'lib/hooks/useIsInitialLoading';
 import { getAdvancedFilterTypes } from 'ui/advancedFilter/constants';
 import AdvancedFilterLink from 'ui/shared/links/AdvancedFilterLink';
 

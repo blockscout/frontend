@@ -2,8 +2,8 @@ import { Box } from '@chakra-ui/react';
 import dynamic from 'next/dynamic';
 import React from 'react';
 
+import * as cookies from 'client/shared/storage/cookies';
 import config from 'configs/app';
-import * as cookies from 'lib/cookies';
 import { Image } from 'toolkit/chakra/image';
 import IdenticonGithub from 'ui/shared/IdenticonGithub';
 

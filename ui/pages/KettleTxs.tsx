@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import getQueryParamString from 'lib/router/getQueryParamString';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 import { TX } from 'stubs/tx';
 import { generateListStub } from 'stubs/utils';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';

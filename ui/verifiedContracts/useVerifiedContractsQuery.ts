@@ -4,8 +4,8 @@ import React from 'react';
 import type { VerifiedContractsFilters } from 'types/api/contracts';
 import type { VerifiedContractsSorting, VerifiedContractsSortingField, VerifiedContractsSortingValue } from 'types/api/verifiedContracts';
 
-import useDebounce from 'lib/hooks/useDebounce';
-import getQueryParamString from 'lib/router/getQueryParamString';
+import useDebounce from 'client/shared/hooks/useDebounce';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 import { VERIFIED_CONTRACT_INFO } from 'stubs/contract';
 import { generateListStub } from 'stubs/utils';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';

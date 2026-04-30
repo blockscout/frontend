@@ -5,7 +5,7 @@ import type { AddressFromToFilter } from 'types/api/address';
 import { AddressFromToFilterValues } from 'types/api/address';
 import type { TransactionsSorting, TransactionsSortingField, TransactionsSortingValue } from 'types/api/transaction';
 
-import getFilterValueFromQuery from 'lib/getFilterValueFromQuery';
+import getFilterValueFromQuery from 'client/shared/router/get-filter-value-from-query';
 import { TX } from 'stubs/tx';
 import { generateListStub } from 'stubs/utils';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';

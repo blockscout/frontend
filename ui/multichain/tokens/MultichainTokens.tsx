@@ -4,10 +4,10 @@ import React from 'react';
 
 import type { TokenType } from 'types/api/token';
 
+import useDebounce from 'client/shared/hooks/useDebounce';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 import multichainConfig from 'configs/multichain';
-import useDebounce from 'lib/hooks/useDebounce';
-import useIsMobile from 'lib/hooks/useIsMobile';
-import getQueryParamString from 'lib/router/getQueryParamString';
 import { TOKEN } from 'stubs/multichain';
 import { generateListStub } from 'stubs/utils';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';

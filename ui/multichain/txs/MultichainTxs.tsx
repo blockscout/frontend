@@ -3,9 +3,9 @@ import React from 'react';
 
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 import { MultichainProvider } from 'lib/contexts/multichain';
 import useRoutedChainSelect from 'lib/multichain/useRoutedChainSelect';
-import getQueryParamString from 'lib/router/getQueryParamString';
 import { EmptyState } from 'toolkit/chakra/empty-state';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import ChainSelect from 'ui/multichain/components/ChainSelect';

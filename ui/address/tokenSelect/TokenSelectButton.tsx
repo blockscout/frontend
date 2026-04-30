@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { FormattedData } from './types';
 
-import * as mixpanel from 'lib/mixpanel/index';
+import * as mixpanel from 'client/shared/analytics/mixpanel';
 import { Button } from 'toolkit/chakra/button';
 import { space, thinsp } from 'toolkit/utils/htmlEntities';
 import IconSvg from 'ui/shared/IconSvg';

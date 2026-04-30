@@ -1,6 +1,6 @@
 import React from 'react';
 
-import useIsMobile from 'lib/hooks/useIsMobile';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
 import { useColorMode } from 'toolkit/chakra/color-mode';
 import { Switch } from 'toolkit/chakra/switch';
 import { TabsList, TabsRoot, TabsTrigger } from 'toolkit/chakra/tabs';

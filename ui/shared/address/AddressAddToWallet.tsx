@@ -4,13 +4,13 @@ import type { WatchAssetParams } from 'viem';
 
 import type { TokenInfo } from 'types/api/token';
 
+import * as mixpanel from 'client/shared/analytics/mixpanel';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+import useProvider from 'client/shared/web3/useProvider';
+import useSwitchOrAddChain from 'client/shared/web3/useSwitchOrAddChain';
+import { WALLETS_INFO } from 'client/shared/web3/wallets';
 import config from 'configs/app';
-import useIsMobile from 'lib/hooks/useIsMobile';
 import useRewardsActivity from 'lib/hooks/useRewardsActivity';
-import * as mixpanel from 'lib/mixpanel/index';
-import useProvider from 'lib/web3/useProvider';
-import useSwitchOrAddChain from 'lib/web3/useSwitchOrAddChain';
-import { WALLETS_INFO } from 'lib/web3/wallets';
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { toaster } from 'toolkit/chakra/toaster';

@@ -4,7 +4,7 @@ import React from 'react';
 
 import type { Block } from 'types/api/block';
 
-import { currencyUnits } from 'lib/units';
+import { currencyUnits } from 'client/shared/chain/units';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { ZERO } from 'toolkit/utils/consts';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';

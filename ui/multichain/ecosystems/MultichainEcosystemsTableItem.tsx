@@ -4,9 +4,9 @@ import React from 'react';
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 import type { ClusterChainConfig } from 'types/multichain';
 
-import useAddChainClick from 'lib/web3/useAddChainClick';
-import useProvider from 'lib/web3/useProvider';
-import { WALLETS_INFO } from 'lib/web3/wallets';
+import useAddChainClick from 'client/shared/web3/useAddChainClick';
+import useProvider from 'client/shared/web3/useProvider';
+import { WALLETS_INFO } from 'client/shared/web3/wallets';
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';

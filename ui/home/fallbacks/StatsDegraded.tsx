@@ -3,8 +3,8 @@ import { useQuery } from '@tanstack/react-query';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
+import { publicClient } from 'client/features/connect-wallet/utils/public-client';
 import dayjs from 'lib/date/dayjs';
-import { publicClient } from 'lib/web3/client';
 import { mdash } from 'toolkit/utils/htmlEntities';
 import FallbackRpcIcon from 'ui/shared/fallbacks/FallbackRpcIcon';
 import GasPrice from 'ui/shared/gas/GasPrice';

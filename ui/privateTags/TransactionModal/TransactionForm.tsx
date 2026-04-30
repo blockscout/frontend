@@ -9,7 +9,7 @@ import type { TransactionTag, TransactionTagErrors } from 'types/api/account';
 import useApiFetch from 'client/api/hooks/useApiFetch';
 import type { ResourceErrorAccount } from 'client/api/resources';
 import { resourceKey } from 'client/api/resources';
-import getErrorMessage from 'lib/getErrorMessage';
+import getErrorMessage from 'client/features/account/utils/get-api-error-text';
 import { Button } from 'toolkit/chakra/button';
 import { FormFieldText } from 'toolkit/components/forms/fields/FormFieldText';
 import { TRANSACTION_HASH_LENGTH, TRANSACTION_HASH_REGEXP } from 'toolkit/components/forms/validators/transaction';

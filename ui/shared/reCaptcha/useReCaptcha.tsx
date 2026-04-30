@@ -1,9 +1,9 @@
 import React from 'react';
 import type ReCAPTCHA from 'react-google-recaptcha';
 
+import getErrorCauseStatusCode from 'client/shared/errors/get-error-cause-status-code';
+import getErrorObjStatusCode from 'client/shared/errors/get-error-obj-status-code';
 import config from 'configs/app';
-import getErrorCauseStatusCode from 'lib/errors/getErrorCauseStatusCode';
-import getErrorObjStatusCode from 'lib/errors/getErrorObjStatusCode';
 
 export default function useReCaptcha() {
   const isDisabled = config.app.isPrivateMode;

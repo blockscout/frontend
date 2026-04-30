@@ -5,7 +5,7 @@ import type { ApiName } from 'client/api/types';
 import { httpLogger } from 'nextjs/utils/logger';
 
 import { RESOURCES } from 'client/api/resources';
-import getErrorMessage from 'lib/errors/getErrorMessage';
+import getErrorMessage from 'client/shared/errors/get-error-message';
 import metrics from 'lib/monitoring/metrics';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {

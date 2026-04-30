@@ -3,8 +3,8 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
+import { currencyUnits } from 'client/shared/chain/units';
 import config from 'configs/app';
-import { currencyUnits } from 'lib/units';
 import { ZERO } from 'toolkit/utils/consts';
 import { thinsp } from 'toolkit/utils/htmlEntities';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';

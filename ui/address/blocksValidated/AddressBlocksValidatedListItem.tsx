@@ -4,9 +4,9 @@ import React from 'react';
 
 import type { Block } from 'types/api/block';
 
+import { currencyUnits } from 'client/shared/chain/units';
 import config from 'configs/app';
 import getBlockTotalReward from 'lib/block/getBlockTotalReward';
-import { currencyUnits } from 'lib/units';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import BlockGasUsed from 'ui/shared/block/BlockGasUsed';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';

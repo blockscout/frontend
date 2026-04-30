@@ -4,7 +4,7 @@ import React from 'react';
 
 import type { MethodType, SmartContractMethod } from './types';
 
-import getQueryParamString from 'lib/router/getQueryParamString';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import type { CONTRACT_MAIN_TAB_IDS } from '../utils';
 import { TYPE_FILTER_OPTIONS, isReadMethod, isWriteMethod } from './utils';

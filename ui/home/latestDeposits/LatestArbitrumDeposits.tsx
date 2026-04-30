@@ -6,8 +6,8 @@ import type { SocketMessage } from 'client/api/socket/types';
 import useApiQuery from 'client/api/hooks/useApiQuery';
 import useSocketChannel from 'client/api/socket/useSocketChannel';
 import useSocketMessage from 'client/api/socket/useSocketMessage';
-import useGradualIncrement from 'lib/hooks/useGradualIncrement';
-import useIsMobile from 'lib/hooks/useIsMobile';
+import useGradualIncrement from 'client/shared/hooks/useGradualIncrement';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
 import { ARBITRUM_MESSAGES_ITEM } from 'stubs/arbitrumL2';
 
 import LatestTxsFallback from '../fallbacks/LatestTxsFallback';

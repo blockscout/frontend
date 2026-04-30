@@ -25,7 +25,7 @@ vi.mock('client/api/hooks/useApiFetch', () => ({
 }));
 const mockUseApiFetch = useApiFetch as Mock<typeof useApiFetch>;
 vi.mock('./useQuickSearchQuery');
-vi.mock('lib/hooks/useDebounce', () => ({
+vi.mock('client/shared/hooks/useDebounce', () => ({
   'default': (value: unknown) => value,
 }));
 

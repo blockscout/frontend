@@ -3,8 +3,8 @@ import React from 'react';
 
 import useApiInfiniteQuery from 'client/api/hooks/useApiInfiniteQuery';
 import useApiQuery from 'client/api/hooks/useApiQuery';
-import useDebounce from 'lib/hooks/useDebounce';
-import getQueryParamString from 'lib/router/getQueryParamString';
+import useDebounce from 'client/shared/hooks/useDebounce';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 interface Props {
   chainId: string | undefined;

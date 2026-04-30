@@ -4,11 +4,11 @@ import React from 'react';
 import type { Block } from 'types/api/block';
 import type { ClusterChainConfig } from 'types/multichain';
 
+import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-title';
+import { currencyUnits } from 'client/shared/chain/units';
+import useInitialList from 'client/shared/lists/useInitialList';
 import config from 'configs/app';
 import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
-import useInitialList from 'lib/hooks/useInitialList';
-import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
-import { currencyUnits } from 'lib/units';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import BlocksTableItem from 'ui/blocks/BlocksTableItem';
 import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
@@ -58,7 +58,7 @@ const BlocksTable = ({ data, isLoading, top, page, showSocketInfo, socketInfoNum
             <TableColumnHeader width="120px">Size, bytes</TableColumnHeader>
             { !config.UI.views.block.hiddenFields?.miner && (
               <TableColumnHeader width={ `${ VALIDATOR_COL_WEIGHT / widthBase * 100 }%` } minW="160px">
-                { capitalize(getNetworkValidatorTitle()) }
+                { capitalize(getChainValidatorTitle()) }
               </TableColumnHeader>
             ) }
             <TableColumnHeader width="64px" isNumeric>Txn</TableColumnHeader>

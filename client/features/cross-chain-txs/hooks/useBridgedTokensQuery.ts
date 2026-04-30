@@ -3,9 +3,9 @@ import React from 'react';
 
 import type { CrossChainBridgedTokensSorting, CrossChainBridgedTokensSortingField, CrossChainBridgedTokensSortingValue } from '../types/api';
 
+import useDebounce from 'client/shared/hooks/useDebounce';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 import config from 'configs/app';
-import useDebounce from 'lib/hooks/useDebounce';
-import getQueryParamString from 'lib/router/getQueryParamString';
 import { INTERCHAIN_BRIDGED_TOKEN_ITEM } from 'stubs/interchainIndexer';
 import { generateListStub } from 'stubs/utils';
 import type { OnValueChangeHandler } from 'toolkit/chakra/select';

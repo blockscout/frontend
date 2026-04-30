@@ -5,10 +5,10 @@ import React from 'react';
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
+import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 import getCheckedSummedAddress from 'lib/address/getCheckedSummedAddress';
-import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import * as contract from 'lib/multichain/contract';
-import getQueryParamString from 'lib/router/getQueryParamString';
 import { ADDRESS } from 'stubs/multichain';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import { CONTRACT_TAB_IDS } from 'ui/address/contract/utils';

@@ -4,9 +4,9 @@ import React from 'react';
 
 import type { ItemProps } from './types';
 
+import * as mixpanel from 'client/shared/analytics/mixpanel';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 import config from 'configs/app';
-import * as mixpanel from 'lib/mixpanel/index';
-import getQueryParamString from 'lib/router/getQueryParamString';
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { MenuContent, MenuRoot, MenuTrigger } from 'toolkit/chakra/menu';
 import { Skeleton } from 'toolkit/chakra/skeleton';

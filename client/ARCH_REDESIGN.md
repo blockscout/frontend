@@ -241,7 +241,7 @@ client/slices/tx/
 | `lib/router/` | `client/shared/router/` |
 | `lib/web3/` | `client/shared/web3/` |
 | `lib/errors/` | `client/shared/errors/` |
-| `lib/mixpanel/` | `client/shared/analytics/` |
+| `lib/mixpanel/` | `client/shared/analytics/mixpanel` |
 | `lib/growthbook/` | `client/shared/feature-flags/` |
 | `lib/networks/` + `lib/units.ts` | `client/shared/chain/` (rename `network` → `chain` throughout) |
 | `lib/hooks/useNavItems` | `client/shell/` |

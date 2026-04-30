@@ -7,7 +7,7 @@ import type { Address } from 'types/api/address';
 import type { Transaction } from 'types/api/transaction';
 
 import { getResourceKey } from 'client/api/hooks/useApiQuery';
-import getPageType from 'lib/mixpanel/getPageType';
+import * as mixpanel from 'client/shared/analytics/mixpanel';
 import { MenuItem } from 'toolkit/chakra/menu';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import AddressModal from 'ui/privateTags/AddressModal/AddressModal';
@@ -44,7 +44,7 @@ const PrivateTagMenuItem = ({ hash, entityType = 'address', type }: Props) => {
     return null;
   }
 
-  const pageType = getPageType(router.pathname);
+  const pageType = mixpanel.getPageType(router.pathname);
   const modalProps = {
     open: modal.open,
     onOpenChange: modal.onOpenChange,

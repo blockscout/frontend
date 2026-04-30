@@ -5,7 +5,7 @@ import { useFormContext } from 'react-hook-form';
 import type { FormFields } from '../types';
 
 import useFetch from 'client/api/hooks/useFetch';
-import delay from 'lib/delay';
+import delay from 'client/shared/utils/delay';
 import { FormFieldUrl } from 'toolkit/components/forms/fields/FormFieldUrl';
 
 import ContractVerificationFormRow from '../ContractVerificationFormRow';

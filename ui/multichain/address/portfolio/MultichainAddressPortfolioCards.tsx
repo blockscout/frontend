@@ -6,8 +6,8 @@ import React from 'react';
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 import type { ClusterChainConfig } from 'types/multichain';
 
+import useIsMobile from 'client/shared/hooks/useIsMobile';
 import multichainConfig from 'configs/multichain';
-import useIsMobile from 'lib/hooks/useIsMobile';
 import { CollapsibleList } from 'toolkit/chakra/collapsible';
 import IconSvg from 'ui/shared/IconSvg';
 

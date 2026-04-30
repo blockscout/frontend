@@ -5,12 +5,12 @@ import React from 'react';
 
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
+import getChainValidationActionText from 'client/shared/chain/get-chain-validation-action-text';
+import useIsInitialLoading from 'client/shared/hooks/useIsInitialLoading';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 import config from 'configs/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
-import useIsInitialLoading from 'lib/hooks/useIsInitialLoading';
-import useIsMobile from 'lib/hooks/useIsMobile';
-import getNetworkValidationActionText from 'lib/networks/getNetworkValidationActionText';
-import getQueryParamString from 'lib/router/getQueryParamString';
 import { TX } from 'stubs/tx';
 import { generateListStub } from 'stubs/utils';
 import type { RoutedTabsProps } from 'toolkit/components/RoutedTabs/RoutedTabs';
@@ -96,7 +96,7 @@ const TxsTabs = ({ parentTab, tabsHeight, ...rest }: Props) => {
     },
   });
 
-  const verifiedTitle = capitalize(getNetworkValidationActionText(chainConfig));
+  const verifiedTitle = capitalize(getChainValidationActionText(chainConfig));
 
   const tabs: Array<TabItemRegular> = [
     {

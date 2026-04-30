@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import type { Abi } from 'viem';
 
-import getQueryParamString from 'lib/router/getQueryParamString';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import ContractAbi from './ContractAbi';
 import ContractMethodsAlerts from './ContractMethodsAlerts';

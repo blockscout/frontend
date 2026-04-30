@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
-import getQueryParamString from 'lib/router/getQueryParamString';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 import { TableRoot, TableRow, TableCell } from 'toolkit/chakra/table';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';

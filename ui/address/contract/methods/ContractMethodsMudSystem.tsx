@@ -5,7 +5,7 @@ import React from 'react';
 import type { SmartContractMudSystemItem } from 'types/api/contract';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
-import getQueryParamString from 'lib/router/getQueryParamString';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import type { Item } from '../ContractSourceAddressSelector';
 import ContractSourceAddressSelector from '../ContractSourceAddressSelector';

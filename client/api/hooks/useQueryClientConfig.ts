@@ -1,8 +1,8 @@
 import { QueryClient } from '@tanstack/react-query';
 import React from 'react';
 
-import getErrorObjPayload from 'lib/errors/getErrorObjPayload';
-import getErrorObjStatusCode from 'lib/errors/getErrorObjStatusCode';
+import getErrorObjPayload from 'client/shared/errors/get-error-obj-payload';
+import getErrorObjStatusCode from 'client/shared/errors/get-error-obj-status-code';
 
 import type { ResourceName } from '../resources';
 

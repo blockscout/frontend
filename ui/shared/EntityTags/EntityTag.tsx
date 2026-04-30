@@ -3,8 +3,8 @@ import React from 'react';
 
 import type { EntityTag as TEntityTag } from './types';
 
+import * as mixpanel from 'client/shared/analytics/mixpanel';
 import { useMultichainContext } from 'lib/contexts/multichain';
-import * as mixpanel from 'lib/mixpanel/index';
 import { Link, LinkExternalIcon } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tag } from 'toolkit/chakra/tag';

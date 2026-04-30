@@ -4,9 +4,9 @@ import type { AddressWithdrawalsItem } from 'types/api/address';
 import type { BlockWithdrawalsItem } from 'types/api/block';
 import type { WithdrawalsItem } from 'types/api/withdrawals';
 
+import useLazyRenderedList from 'client/shared/lists/useLazyRenderedList';
 import config from 'configs/app';
 import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
-import useLazyRenderedList from 'lib/hooks/useLazyRenderedList';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 

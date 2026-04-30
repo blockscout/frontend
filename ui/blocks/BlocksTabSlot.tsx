@@ -7,7 +7,7 @@ import type { PaginationParams } from 'ui/shared/pagination/types';
 import { route } from 'nextjs-routes';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
-import getNetworkUtilizationParams from 'lib/networks/getNetworkUtilizationParams';
+import getChainUtilizationParams from 'client/shared/chain/get-chain-utilization-params';
 import { HOMEPAGE_STATS } from 'stubs/stats';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
@@ -27,7 +27,7 @@ const BlocksTabSlot = ({ pagination }: Props) => {
     },
   });
 
-  const networkUtilization = getNetworkUtilizationParams(statsQuery.data?.network_utilization_percentage ?? 0);
+  const networkUtilization = getChainUtilizationParams(statsQuery.data?.network_utilization_percentage ?? 0);
 
   return (
     <Flex alignItems="center" columnGap={ 8 } display={{ base: 'none', lg: 'flex' }}>

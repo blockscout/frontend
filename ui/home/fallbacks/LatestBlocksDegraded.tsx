@@ -5,8 +5,8 @@ import type { Block } from 'types/api/block';
 
 import { route } from 'nextjs-routes';
 
-import useInitialList from 'lib/hooks/useInitialList';
-import { publicClient } from 'lib/web3/client';
+import { publicClient } from 'client/features/connect-wallet/utils/public-client';
+import useInitialList from 'client/shared/lists/useInitialList';
 import { BLOCK } from 'stubs/block';
 import { Link } from 'toolkit/chakra/link';
 

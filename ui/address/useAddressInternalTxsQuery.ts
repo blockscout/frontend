@@ -3,8 +3,8 @@ import React from 'react';
 
 import { AddressFromToFilterValues, type AddressFromToFilter } from 'types/api/address';
 
-import getFilterValueFromQuery from 'lib/getFilterValueFromQuery';
-import getQueryParamString from 'lib/router/getQueryParamString';
+import getFilterValueFromQuery from 'client/shared/router/get-filter-value-from-query';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 import { INTERNAL_TX } from 'stubs/internalTx';
 import { generateListStub } from 'stubs/utils';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';

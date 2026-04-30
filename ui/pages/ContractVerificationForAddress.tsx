@@ -5,8 +5,8 @@ import type { SmartContractVerificationMethodApi } from 'types/api/contract';
 import type { SmartContractVerificationMethod } from 'types/client/contract';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
-import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
-import getQueryParamString from 'lib/router/getQueryParamString';
+import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 import ContractVerificationForm from 'ui/contractVerification/ContractVerificationForm';
 import useFormConfigQuery from 'ui/contractVerification/useFormConfigQuery';

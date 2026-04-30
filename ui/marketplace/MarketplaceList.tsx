@@ -5,8 +5,8 @@ import type { MouseEvent } from 'react';
 
 import type { MarketplaceApp } from 'types/client/marketplace';
 
-import useLazyRenderedList from 'lib/hooks/useLazyRenderedList';
-import * as mixpanel from 'lib/mixpanel/index';
+import * as mixpanel from 'client/shared/analytics/mixpanel';
+import useLazyRenderedList from 'client/shared/lists/useLazyRenderedList';
 
 import EmptySearchResult from './EmptySearchResult';
 import MarketplaceAppCard from './MarketplaceAppCard';

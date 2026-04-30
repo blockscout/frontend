@@ -1,9 +1,9 @@
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
+import * as cookies from 'client/shared/storage/cookies';
 import config from 'configs/app';
 import { useAppContext } from 'lib/contexts/app';
-import * as cookies from 'lib/cookies';
 
 import SevioTextAd from './SevioTextAd';
 

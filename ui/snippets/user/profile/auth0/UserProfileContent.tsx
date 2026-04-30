@@ -6,9 +6,9 @@ import type { UserInfo } from 'types/api/account';
 
 import { route } from 'nextjs-routes';
 
+import shortenString from 'client/shared/text/shorten-string';
 import config from 'configs/app';
 import { useMarketplaceContext } from 'lib/contexts/marketplace';
-import shortenString from 'lib/shortenString';
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';
 import { Hint } from 'toolkit/components/Hint/Hint';

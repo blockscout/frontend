@@ -1,8 +1,8 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
+import useIsMobile from 'client/shared/hooks/useIsMobile';
 import { MultichainProvider } from 'lib/contexts/multichain';
-import useIsMobile from 'lib/hooks/useIsMobile';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import InternalTxsList from 'ui/internalTxs/InternalTxsList';
 import InternalTxsTable from 'ui/internalTxs/InternalTxsTable';

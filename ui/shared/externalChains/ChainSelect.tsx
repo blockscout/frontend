@@ -3,8 +3,8 @@ import React from 'react';
 
 import type { ExternalChain } from 'types/externalChains';
 
-import useIsInitialLoading from 'lib/hooks/useIsInitialLoading';
-import useIsMobile from 'lib/hooks/useIsMobile';
+import useIsInitialLoading from 'client/shared/hooks/useIsInitialLoading';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
 import type { OnValueChangeHandler, SelectOption, SelectProps, ViewMode } from 'toolkit/chakra/select';
 import { Select } from 'toolkit/chakra/select';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';

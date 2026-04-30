@@ -16,12 +16,12 @@ import { ZKSYNC_L2_TX_BATCH_STATUSES } from 'types/api/zkSyncL2';
 
 import { route } from 'nextjs-routes';
 
+import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-title';
+import { currencyUnits } from 'client/shared/chain/units';
 import config from 'configs/app';
-import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import * as arbitrum from 'lib/rollups/arbitrum';
 import { formatZkEvmTxStatus, formatZkSyncL2TxnBatchStatus, layerLabels } from 'lib/rollups/utils';
 import getConfirmationDuration from 'lib/tx/getConfirmationDuration';
-import { currencyUnits } from 'lib/units';
 import { Badge } from 'toolkit/chakra/badge';
 import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
 import { Link } from 'toolkit/chakra/link';
@@ -706,7 +706,7 @@ const TxDetails = ({ data, isLoading, socketStatus, noTxActions }: Props) => {
             hint={ `
             Base Fee refers to the network Base Fee at the time of the block, 
             while Max Fee & Max Priority Fee refer to the max amount a user is willing to pay 
-            for their tx & to give to the ${ getNetworkValidatorTitle() } respectively
+            for their tx & to give to the ${ getChainValidatorTitle() } respectively
           ` }
             isLoading={ isLoading }
           >

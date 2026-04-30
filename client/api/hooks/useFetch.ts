@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useRollbar } from 'lib/rollbar';
+import { useRollbar } from 'client/shared/monitoring/rollbar';
 
 import isBodyAllowed from '../is-body-allowed';
 import type { ResourceError, ResourcePath } from '../resources';

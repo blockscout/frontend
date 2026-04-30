@@ -5,7 +5,7 @@ import type { AddressWithdrawalsItem } from 'types/api/address';
 import type { BlockWithdrawalsItem } from 'types/api/block';
 import type { WithdrawalsItem } from 'types/api/withdrawals';
 
-import useLazyRenderedList from 'lib/hooks/useLazyRenderedList';
+import useLazyRenderedList from 'client/shared/lists/useLazyRenderedList';
 
 import BeaconChainWithdrawalsListItem from './BeaconChainWithdrawalsListItem';
 

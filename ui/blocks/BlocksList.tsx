@@ -4,7 +4,7 @@ import React from 'react';
 import type { Block } from 'types/api/block';
 import type { ClusterChainConfig } from 'types/multichain';
 
-import useInitialList from 'lib/hooks/useInitialList';
+import useInitialList from 'client/shared/lists/useInitialList';
 import BlocksListItem from 'ui/blocks/BlocksListItem';
 
 interface Props {

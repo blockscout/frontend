@@ -45,7 +45,7 @@ Read all source files listed in the issue **Scope**. Understand what they export
 
 ### 4. Update all imports in the same PR
 - Update every import path across the entire repo.
-- For high-fanout files, use a codemod script as a dedicated commit within the branch.
+- For high-fanout files, write a codemod script, run it, then **delete the script** — do not commit it to the repo. Commit only the resulting file changes.
 - No re-export shims. No long-lived compatibility aliases.
 
 ### 5. Verify dependency rules
@@ -72,7 +72,7 @@ If a dependency is not yet migrated, leave its import at the old path and list i
 - PR body must include:
   - `Closes #<issue-number>` — on the first line, so GitHub auto-closes the issue on merge
   - What moved and where
-  - Any codemods run (include the script or command used)
+  - Any codemods run (include the command / script body used, but do not commit the script itself)
   - Cross-slice deps left at legacy paths (list file + old import path)
   - Checklist: `pnpm lint:tsc` passing, `pnpm lint:eslint` clean within `client/`
 - PR labels: `refactoring`

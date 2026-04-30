@@ -3,7 +3,7 @@ import { Flex, chakra } from '@chakra-ui/react';
 import { debounce } from 'es-toolkit';
 import React from 'react';
 
-import useIsMobile from 'lib/hooks/useIsMobile';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
 import { Heading } from 'toolkit/chakra/heading';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';

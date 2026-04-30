@@ -5,10 +5,10 @@ import type { AddressFromToFilter } from 'types/api/address';
 import { AddressFromToFilterValues } from 'types/api/address';
 import type { TokenType } from 'types/api/token';
 
+import getFilterValueFromQuery from 'client/shared/router/get-filter-value-from-query';
+import getFilterValuesFromQuery from 'client/shared/router/get-filter-values-from-query';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 import multichainConfig from 'configs/multichain';
-import getFilterValueFromQuery from 'lib/getFilterValueFromQuery';
-import getFilterValuesFromQuery from 'lib/getFilterValuesFromQuery';
-import getQueryParamString from 'lib/router/getQueryParamString';
 import { getTokenTypes } from 'lib/token/tokenTypes';
 import { getTokenTransfersStub } from 'stubs/token';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';

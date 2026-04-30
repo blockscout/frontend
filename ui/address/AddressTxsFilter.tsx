@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { AddressFromToFilter } from 'types/api/address';
 
-import useIsInitialLoading from 'lib/hooks/useIsInitialLoading';
+import useIsInitialLoading from 'client/shared/hooks/useIsInitialLoading';
 import PopoverFilterRadio from 'ui/shared/filters/PopoverFilterRadio';
 
 const OPTIONS = [

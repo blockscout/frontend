@@ -8,8 +8,8 @@ import type { Block } from 'types/api/block';
 import useApiQuery from 'client/api/hooks/useApiQuery';
 import { retry } from 'client/api/hooks/useQueryClientConfig';
 import type { ResourceError } from 'client/api/resources';
-import { publicClient } from 'lib/web3/client';
-import formatBlockData from 'lib/web3/rpc/formatBlockData';
+import { publicClient } from 'client/features/connect-wallet/utils/public-client';
+import formatRpcData from 'client/slices/block/utils/format-rpc-data';
 import { BLOCK } from 'stubs/block';
 import { GET_BLOCK } from 'stubs/RPC';
 import { SECOND } from 'toolkit/utils/consts';
@@ -69,7 +69,7 @@ export default function useBlockQuery({ heightOrHash }: Params): BlockQuery {
       return publicClient.getBlock(blockParams).catch(() => null);
     },
     select: (block) => {
-      return formatBlockData(block);
+      return formatRpcData(block);
     },
     placeholderData: GET_BLOCK,
     enabled: !latestBlockQuery.isPending,

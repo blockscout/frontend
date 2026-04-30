@@ -7,7 +7,7 @@ import type { Address } from 'types/api/address';
 import { getResourceKey } from 'client/api/hooks/useApiQuery';
 import useSocketChannel from 'client/api/socket/useSocketChannel';
 import useSocketMessage from 'client/api/socket/useSocketMessage';
-import { currencyUnits } from 'lib/units';
+import { currencyUnits } from 'client/shared/chain/units';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import NativeTokenIcon from 'ui/shared/NativeTokenIcon';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';

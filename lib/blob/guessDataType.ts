@@ -1,6 +1,6 @@
 import filetype from 'magic-bytes.js';
 
-import hexToBytes from 'lib/hexToBytes';
+import hexToBytes from 'client/shared/transformers/hex-to-bytes';
 
 import removeNonSignificantZeroBytes from './removeNonSignificantZeroBytes';
 

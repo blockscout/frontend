@@ -5,10 +5,10 @@ import React from 'react';
 import { route } from 'nextjs/routes';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
+import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import dayjs from 'lib/date/dayjs';
-import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
-import getQueryParamString from 'lib/router/getQueryParamString';
 import { Button } from 'toolkit/chakra/button';
 import { Heading } from 'toolkit/chakra/heading';
 import { Image } from 'toolkit/chakra/image';

@@ -4,8 +4,8 @@ import { useInView } from 'react-intersection-observer';
 
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 
+import useIsMobile from 'client/shared/hooks/useIsMobile';
 import multichainConfig from 'configs/multichain';
-import useIsMobile from 'lib/hooks/useIsMobile';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 
 import SearchResultItemAddress from './items/SearchResultItemAddress';

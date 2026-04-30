@@ -5,9 +5,9 @@ import type { Chain, GetBlockReturnType, GetTransactionReturnType, TransactionRe
 
 import type { Transaction } from 'types/api/transaction';
 
-import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
-import { publicClient } from 'lib/web3/client';
-import formatTxData from 'lib/web3/rpc/formatTxData';
+import { publicClient } from 'client/features/connect-wallet/utils/public-client';
+import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
+import formatRpcData from 'client/slices/tx/utils/format-rpc-data';
 import { GET_BLOCK, GET_TRANSACTION, GET_TRANSACTION_RECEIPT, GET_TRANSACTION_CONFIRMATIONS } from 'stubs/RPC';
 import { SECOND } from 'toolkit/utils/consts';
 import ServiceDegradationWarning from 'ui/shared/alerts/ServiceDegradationWarning';
@@ -62,7 +62,7 @@ const TxDetailsRpc = ({ hash, txQuery }: Props) => {
     select: (response) => {
       const [ tx, txReceipt, txConfirmations, block ] = response;
 
-      return formatTxData(tx, txReceipt, txConfirmations, block);
+      return formatRpcData(tx, txReceipt, txConfirmations, block);
     },
     placeholderData: [
       GET_TRANSACTION,

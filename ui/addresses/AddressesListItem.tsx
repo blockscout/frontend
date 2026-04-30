@@ -4,8 +4,8 @@ import React from 'react';
 
 import type { AddressesItem } from 'types/api/addresses';
 
+import { currencyUnits } from 'client/shared/chain/units';
 import config from 'configs/app';
-import { currencyUnits } from 'lib/units';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tag } from 'toolkit/chakra/tag';
 import { ZERO } from 'toolkit/utils/consts';

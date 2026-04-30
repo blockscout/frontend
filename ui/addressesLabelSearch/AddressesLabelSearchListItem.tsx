@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { AddressesItem } from 'types/api/addresses';
 
-import { currencyUnits } from 'lib/units';
+import { currencyUnits } from 'client/shared/chain/units';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';

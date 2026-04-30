@@ -7,10 +7,10 @@ import type { Block } from 'types/api/block';
 import { route } from 'nextjs-routes';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
+import getChainUtilizationParams from 'client/shared/chain/get-chain-utilization-params';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+import useInitialList from 'client/shared/lists/useInitialList';
 import config from 'configs/app';
-import useInitialList from 'lib/hooks/useInitialList';
-import useIsMobile from 'lib/hooks/useIsMobile';
-import getNetworkUtilizationParams from 'lib/networks/getNetworkUtilizationParams';
 import { HOMEPAGE_STATS } from 'stubs/stats';
 import { Heading } from 'toolkit/chakra/heading';
 import { Link } from 'toolkit/chakra/link';
@@ -78,7 +78,7 @@ const LatestBlocks = () => {
     return <Box textStyle="sm">No latest blocks found.</Box>;
   })();
 
-  const networkUtilization = getNetworkUtilizationParams(statsQueryResult.data?.network_utilization_percentage ?? 0);
+  const networkUtilization = getChainUtilizationParams(statsQueryResult.data?.network_utilization_percentage ?? 0);
 
   return (
     <Box width={{ base: '100%', lg: '280px' }} flexShrink={ 0 }>
