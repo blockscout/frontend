@@ -4,6 +4,7 @@ import { upperFirst } from 'es-toolkit';
 import React from 'react';
 import { useInView } from 'react-intersection-observer';
 
+import { getResourceKey } from 'client/api/hooks/useApiQuery';
 import isNeedProxy from 'client/api/is-need-proxy';
 import config from 'configs/app';
 import multichainConfig from 'configs/multichain';
@@ -46,7 +47,7 @@ const CsvExportDownloadsItem = ({ index, data }: Props) => {
       if (isExpired) {
         window.clearInterval(intervalId);
         queryClient.fetchQuery({
-          queryKey: [ 'general:csv_exports_item', data.request_id ],
+          queryKey: getResourceKey('general:csv_exports_item', { pathParams: { id: data.request_id }, chainId: chainData?.id }),
         });
       }
       setExpiresText(dayjs(data.expires_at).fromNow());
@@ -61,16 +62,20 @@ const CsvExportDownloadsItem = ({ index, data }: Props) => {
 
   const markItemAsViewed = React.useCallback(() => {
     storage.removeItem(data.request_id);
-    queryClient.setQueryData<StorageItem>([ 'general:csv_exports_item', data.request_id ], (prevData) => {
-      if (!prevData) {
-        return;
-      }
-      return {
-        ...prevData,
-        is_highlighted: false,
-      };
-    });
-  }, [ data.request_id, queryClient ]);
+    queryClient.setQueryData<StorageItem>(
+      getResourceKey('general:csv_exports_item', {
+        pathParams: { id: data.request_id },
+        chainId: chainData?.id,
+      }), (prevData) => {
+        if (!prevData) {
+          return;
+        }
+        return {
+          ...prevData,
+          is_highlighted: false,
+        };
+      });
+  }, [ data.request_id, queryClient, chainData?.id ]);
 
   const handleInViewChange = React.useCallback((inView: boolean) => {
     if (inView) {
