@@ -26,5 +26,5 @@ export interface NetworkExplorer {
 }
 
 export type NetworkVerificationTypeEnvs = 'mining' | 'validation' | 'fee reception';
-export type NetworkVerificationTypeComputed = 'posting' | 'sequencing';
+export type NetworkVerificationTypeComputed = 'posting';
 export type NetworkVerificationType = NetworkVerificationTypeEnvs | NetworkVerificationTypeComputed;

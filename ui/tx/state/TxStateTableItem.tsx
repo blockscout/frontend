@@ -1,7 +1,7 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TxStateChange } from 'types/api/txStateChanges';
+import type { TxStateChange } from 'client/slices/tx/types/api';
 
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';

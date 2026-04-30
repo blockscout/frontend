@@ -33,10 +33,6 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
     [ 'NEXT_PUBLIC_ROLLUP_TYPE', 'shibarium' ],
     [ 'NEXT_PUBLIC_ROLLUP_PARENT_CHAIN', '{"baseUrl":"https://localhost:3101"}' ],
   ],
-  zkEvmRollup: [
-    [ 'NEXT_PUBLIC_ROLLUP_TYPE', 'zkEvm' ],
-    [ 'NEXT_PUBLIC_ROLLUP_PARENT_CHAIN', '{"baseUrl":"https://localhost:3101"}' ],
-  ],
   zkSyncRollup: [
     [ 'NEXT_PUBLIC_ROLLUP_TYPE', 'zkSync' ],
     [ 'NEXT_PUBLIC_ROLLUP_PARENT_CHAIN', '{"baseUrl":"https://localhost:3101"}' ],

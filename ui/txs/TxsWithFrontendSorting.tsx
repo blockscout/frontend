@@ -11,8 +11,7 @@ import useTxsSort from './useTxsSort';
 type Props = {
   query: QueryWithPagesResult<'general:txs_validated' | 'general:txs_pending'> |
     QueryWithPagesResult<'general:txs_watchlist'> |
-    QueryWithPagesResult<'general:block_txs'> |
-    QueryWithPagesResult<'general:zkevm_l2_txn_batch_txs'>;
+    QueryWithPagesResult<'general:block_txs'>;
   showBlockInfo?: boolean;
   socketType?: TxsSocketType;
   currentAddress?: string;

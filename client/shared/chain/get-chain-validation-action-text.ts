@@ -11,9 +11,6 @@ export default function getChainValidationActionText(chainConfig = config) {
     case 'posting': {
       return 'posted';
     }
-    case 'sequencing': {
-      return 'sequenced';
-    }
     case 'fee reception': {
       return 'validated';
     }

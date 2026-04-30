@@ -245,14 +245,6 @@ const OLD_UI_URLS = [
     destination: '/batches',
   },
   {
-    source: '/zkevm-l2-txn-batches',
-    destination: '/batches',
-  },
-  {
-    source: '/zkevm-l2-txn-batch/:path*',
-    destination: '/batches/:path*',
-  },
-  {
     source: '/l2-deposits',
     destination: '/deposits',
   },

@@ -19,7 +19,7 @@ const isHomepageBlocksDataEnabled = (() => {
   const rollupFeature = config.features.rollup;
   const isLatestBlocksReplacedByBatches = rollupFeature.isEnabled &&
     !rollupFeature.homepage.showLatestBlocks &&
-    [ 'zkEvm', 'arbitrum' ].includes(rollupFeature.type);
+    [ 'arbitrum' ].includes(rollupFeature.type);
 
   return !isLatestBlocksReplacedByBatches || config.UI.homepage.stats.includes('total_blocks');
 })();

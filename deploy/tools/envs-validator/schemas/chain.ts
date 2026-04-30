@@ -33,10 +33,10 @@ export default yup.object({
     NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE: yup
       .string<NetworkVerificationTypeEnvs>().oneOf([ 'validation', 'mining', 'fee reception' ])
       .when('NEXT_PUBLIC_ROLLUP_TYPE', {
-        is: (value: string) => value === 'arbitrum' || value === 'zkEvm',
+        is: (value: string) => value === 'arbitrum',
         then: (schema) => schema.test(
           'not-exist',
-          'NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE can not be set for Arbitrum and ZkEVM rollups',
+          'NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE can not be set for Arbitrum rollups',
           value => value === undefined,
         ),
         otherwise: (schema) => schema,

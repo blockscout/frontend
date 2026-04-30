@@ -10,7 +10,6 @@ import type { SmartContractVerificationResponse } from 'types/api/contract';
 import type { RawTracesResponse } from 'types/api/rawTrace';
 import type { TokenInstanceMetadataSocketMessage } from 'types/api/token';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
-import type { NewZkEvmBatchSocketResponse } from 'types/api/zkEvmL2';
 
 export type SocketMessageParams = SocketMessage.NewBlock |
 SocketMessage.NewBlockMultichain |
@@ -43,7 +42,6 @@ SocketMessage.TokenTransfers |
 SocketMessage.TokenTotalSupply |
 SocketMessage.TokenInstanceMetadataFetched |
 SocketMessage.ContractVerification |
-SocketMessage.NewZkEvmL2Batch |
 SocketMessage.NewArbitrumL2Batch |
 SocketMessage.NewZetaChainCCTXs |
 SocketMessage.Unknown;
@@ -87,7 +85,6 @@ export namespace SocketMessage {
   export type TokenTotalSupply = SocketMessageParamsGeneric<'total_supply', { total_supply: number }>;
   export type TokenInstanceMetadataFetched = SocketMessageParamsGeneric<'fetched_token_instance_metadata', TokenInstanceMetadataSocketMessage>;
   export type ContractVerification = SocketMessageParamsGeneric<'verification_result', SmartContractVerificationResponse>;
-  export type NewZkEvmL2Batch = SocketMessageParamsGeneric<'new_zkevm_confirmed_batch', NewZkEvmBatchSocketResponse>;
   export type NewArbitrumL2Batch = SocketMessageParamsGeneric<'new_arbitrum_batch', NewArbitrumBatchSocketResponse>;
   export type NewZetaChainCCTXs = SocketMessageParamsGeneric<'new_cctxs', Array<zetaChainCCTXType.CctxListItem>>;
   export type Unknown = SocketMessageParamsGeneric<undefined, unknown>;

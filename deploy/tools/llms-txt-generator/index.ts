@@ -217,32 +217,6 @@ function run() {
             \`\`\`
         ` : undefined;
 
-        const ZKEVM_CHAIN_TEMPLATE = rollupFeature.isEnabled && rollupFeature.type === 'zkEvm' ? `
-            ### Latest Committed Batch Number (top of)
-                
-            \`\`\`bash
-            curl --request GET --url '${ generalApiUrl }/api/v2/zkevm/batches/confirmed'
-            \`\`\`
-                
-            ### Batch Info
-
-            \`\`\`bash
-            curl --request GET --url '${ generalApiUrl }/api/v2/zkevm/batches/{batch_number}'
-            \`\`\`
-                
-            ### Deposits
-                
-            \`\`\`bash
-            curl --request GET --url '${ generalApiUrl }/api/v2/zkevm/deposits'
-            \`\`\`
-                
-            ### Withdrawals
-                
-            \`\`\`bash
-            curl --request GET --url '${ generalApiUrl }/api/v2/zkevm/withdrawals'
-            \`\`\`
-        ` : undefined;
-
         const TAC_CHAIN_TEMPLATE = config.features.tac.isEnabled && config.apis.tac ? `
             ### TAC Operations:
                 
@@ -357,7 +331,6 @@ function run() {
             OPTIMISM_CHAIN_TEMPLATE,
             CELO_CHAIN_TEMPLATE,
             ZKSYNC_CHAIN_TEMPLATE,
-            ZKEVM_CHAIN_TEMPLATE,
             TAC_CHAIN_TEMPLATE,
             REDSTONE_CHAIN_TEMPLATE,
             SCROLL_CHAIN_TEMPLATE,

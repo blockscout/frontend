@@ -42,7 +42,6 @@ on:
             - tac_spb
             - zetachain
             - zetachain_testnet
-            - zkevm
             - zilliqa
             - zksync
             - zora
