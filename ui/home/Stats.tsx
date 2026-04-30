@@ -23,9 +23,14 @@ const Stats = () => {
   const [ hasGasTracker, setHasGasTracker ] = React.useState(config.features.gasTracker.isEnabled);
 
   // data from stats microservice is prioritized over data from stats api
+  // VinuChain: poll every 10s so the home-page stats card matches the live
+  // chain tip without requiring a manual page refresh. Both stats backends
+  // are configured to recompute their counters on the same cadence — see
+  // VinuChain ops.md "Blockscout Stats Counter Cadence Override".
   const statsQuery = useApiQuery('stats:pages_main', {
     queryOptions: {
       refetchOnMount: false,
+      refetchInterval: 10_000,
       placeholderData: isStatsFeatureEnabled ? HOMEPAGE_STATS_MICROSERVICE : undefined,
       enabled: isStatsFeatureEnabled,
     },
@@ -34,6 +39,7 @@ const Stats = () => {
   const apiQuery = useApiQuery('general:stats', {
     queryOptions: {
       refetchOnMount: false,
+      refetchInterval: 10_000,
       placeholderData: HOMEPAGE_STATS,
     },
   });
@@ -125,7 +131,12 @@ const Stats = () => {
         id: 'total_blocks' as const,
         icon: 'block_slim' as const,
         label: statsData?.total_blocks?.title || 'Total blocks',
-        value: Number(statsData?.total_blocks?.value || apiData?.total_blocks).toLocaleString(),
+        // VinuChain: subtract 1 so the displayed value matches the latest block
+        // height (eth_blockNumber) on the same page. Both backends compute this
+        // counter as COUNT(*) FROM blocks WHERE consensus = true, which counts
+        // block 0 (genesis) too — yielding tip+1. We display it as MAX(number)
+        // = tip to avoid the visual mismatch with the "Latest blocks" widget.
+        value: Math.max(0, Number(statsData?.total_blocks?.value || apiData?.total_blocks) - 1).toLocaleString(),
         href: { pathname: '/blocks' as const },
         isLoading,
       },
