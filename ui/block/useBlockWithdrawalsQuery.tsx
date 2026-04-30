@@ -5,9 +5,9 @@ import type { Chain, GetBlockReturnType } from 'viem';
 
 import type { BlockWithdrawalsResponse } from 'types/api/block';
 
+import { retry } from 'client/api/hooks/useQueryClientConfig';
+import type { ResourceError } from 'client/api/resources';
 import config from 'configs/app';
-import type { ResourceError } from 'lib/api/resources';
-import { retry } from 'lib/api/useQueryClientConfig';
 import hexToDecimal from 'lib/hexToDecimal';
 import { publicClient } from 'lib/web3/client';
 import { GET_BLOCK } from 'stubs/RPC';

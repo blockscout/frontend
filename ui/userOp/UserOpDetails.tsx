@@ -5,8 +5,8 @@ import React from 'react';
 
 import type { UserOp } from 'types/api/userOps';
 
+import type { ResourceError } from 'client/api/resources';
 import config from 'configs/app';
-import type { ResourceError } from 'lib/api/resources';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
 import { Skeleton } from 'toolkit/chakra/skeleton';

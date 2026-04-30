@@ -28,15 +28,17 @@ export type Props = {
 };
 
 const Container = ({ href, children, className }: { href?: Route; children: React.JSX.Element; className?: string }) => {
-  if (href) {
-    return (
-      <Link href={ route(href) } variant="plain" className={ className }>
-        { children }
-      </Link>
-    );
-  }
+  const content = href ? (
+    <Link href={ route(href) } variant="plain" w="full" h="full" display="flex">
+      { children }
+    </Link>
+  ) : children;
 
-  return children;
+  return (
+    <Box className={ className } display="flex" h="100%">
+      { content }
+    </Box>
+  );
 };
 
 const StatsWidget = ({
@@ -56,9 +58,8 @@ const StatsWidget = ({
   isFallback,
 }: Props) => {
   return (
-    <Container href={ !isLoading ? href : undefined } className={ href ? className : undefined }>
+    <Container href={ !isLoading ? href : undefined } className={ className }>
       <Flex
-        className={ href ? undefined : className }
         alignItems="center"
         bgColor={ isLoading ? { _light: 'blackAlpha.50', _dark: 'whiteAlpha.50' } : { _light: 'theme.stats.bg._light', _dark: 'theme.stats.bg._dark' } }
         p={ 3 }

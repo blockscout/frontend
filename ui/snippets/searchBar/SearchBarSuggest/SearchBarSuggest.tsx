@@ -6,9 +6,9 @@ import React from 'react';
 import type { ListCctxsResponse } from '@blockscout/zetachain-cctx-types';
 import type { QuickSearchResultItem } from 'types/client/search';
 
+import type { ResourceError } from 'client/api/resources';
 import config from 'configs/app';
 import multichainConfig from 'configs/multichain';
-import type { ResourceError } from 'lib/api/resources';
 import { useSettingsContext } from 'lib/contexts/settings';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import type { ExternalSearchItem as ExternalSearchItemType } from 'lib/search/externalSearch';

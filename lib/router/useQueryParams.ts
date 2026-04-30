@@ -4,7 +4,7 @@ import { useCallback } from 'react';
 export function useQueryParams() {
   const router = useRouter();
 
-  const updateQuery = useCallback((updates: Record<string, string | undefined>, replace = false) => {
+  const updateQuery = useCallback((updates: Record<string, string | undefined | Array<string>>, replace = false) => {
     const newQuery = { ...router.query };
 
     Object.entries(updates).forEach(([ key, value ]) => {

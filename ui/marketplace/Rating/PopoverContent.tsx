@@ -2,8 +2,8 @@ import { Text, Flex, Spinner } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
+import useApiFetch from 'client/api/hooks/useApiFetch';
 import config from 'configs/app';
-import useApiFetch from 'lib/api/useApiFetch';
 import type { EventTypes, EventPayload } from 'lib/mixpanel/index';
 import * as mixpanel from 'lib/mixpanel/index';
 import { Rating } from 'toolkit/chakra/rating';

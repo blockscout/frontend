@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import type { ChartMarketResponse } from 'types/api/charts';
 
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import { HOMEPAGE_STATS } from 'stubs/multichain';
 import { getChartData } from 'ui/home/indicators/utils/chart';
 

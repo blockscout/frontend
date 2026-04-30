@@ -308,25 +308,30 @@ export default tseslint.config(
     },
   },
 
-  {
-    files: [ 'client/**' ],
-    plugins: {
-      'import': importPlugin,
-    },
-    rules: {
-      'import/no-cycle': [ 'error', { maxDepth: 10 } ],
-    },
-  },
-
-  {
-    files: [ 'lib/**', 'ui/**' ],
-    plugins: {
-      'import': importPlugin,
-    },
-    rules: {
-      'import/no-cycle': 'warn',
-    },
-  },
+  // I have to disable this rule because of performance issues:
+  //    https://github.com/import-js/eslint-plugin-import/issues/3060
+  // Examples in our CI:
+  //    before: 1m15s - https://github.com/blockscout/frontend/actions/runs/23210591334/job/67457992864
+  //    after: 4m27s - https://github.com/blockscout/frontend/actions/runs/25108323146/job/73585871924
+  //
+  // {
+  //   files: [ 'client/**' ],
+  //   plugins: {
+  //     'import': importPlugin,
+  //   },
+  //   rules: {
+  //     'import/no-cycle': [ 'error', { maxDepth: 10 } ],
+  //   },
+  // },
+  // {
+  //   files: [ 'lib/**', 'ui/**' ],
+  //   plugins: {
+  //     'import': importPlugin,
+  //   },
+  //   rules: {
+  //     'import/no-cycle': 'warn',
+  //   },
+  // },
 
   /*
    * ARCH_REDESIGN.md §10 — public type surface: consumers should import slice/feature types only from
@@ -543,7 +548,7 @@ export default tseslint.config(
       'no-redeclare': 'off',
 
       // rules customizations
-      eqeqeq: [ 'error', 'allow-null' ],
+      eqeqeq: [ 'error' ],
       'id-match': [ 'error', '^[\\w$]+$' ],
       'max-len': [ 'error', 160, 4 ],
       'no-console': 'error',

@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 import * as v from 'valibot';
 
+import useFetch from 'client/api/hooks/useFetch';
+import type { ResourceError } from 'client/api/resources';
 import config from 'configs/app';
-import type { ResourceError } from 'lib/api/resources';
-import useFetch from 'lib/hooks/useFetch';
 
 const feature = config.features.addressProfileAPI;
 

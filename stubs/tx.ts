@@ -2,8 +2,9 @@ import type * as stats from '@blockscout/stats-types';
 import type { RawTracesResponse } from 'types/api/rawTrace';
 import type { Transaction, TransactionsStats } from 'types/api/transaction';
 
+import { CHAIN_STATS_COUNTER } from 'client/features/chain-stats/stubs/counters';
+
 import { ADDRESS_PARAMS } from './addressParams';
-import { STATS_COUNTER } from './stats';
 
 export const TX_HASH = '0x3ed9d81e7c1001bdda1caa1dc62c0acbbe3d2c671cdc20dc1e65efdaa4186967';
 
@@ -71,9 +72,9 @@ export const TXS_STATS: TransactionsStats = {
 };
 
 export const TXS_STATS_MICROSERVICE: stats.TransactionsPageStats = {
-  pending_transactions_30m: STATS_COUNTER,
-  transactions_24h: STATS_COUNTER,
-  operational_transactions_24h: STATS_COUNTER,
-  transactions_fee_24h: STATS_COUNTER,
-  average_transactions_fee_24h: STATS_COUNTER,
+  pending_transactions_30m: CHAIN_STATS_COUNTER,
+  transactions_24h: CHAIN_STATS_COUNTER,
+  operational_transactions_24h: CHAIN_STATS_COUNTER,
+  transactions_fee_24h: CHAIN_STATS_COUNTER,
+  average_transactions_fee_24h: CHAIN_STATS_COUNTER,
 };

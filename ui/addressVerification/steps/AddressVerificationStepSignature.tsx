@@ -14,8 +14,8 @@ import type {
 } from '../types';
 import type { VerifiedAddress } from 'types/api/account';
 
+import useApiFetch from 'client/api/hooks/useApiFetch';
 import config from 'configs/app';
-import useApiFetch from 'lib/api/useApiFetch';
 import shortenString from 'lib/shortenString';
 import useWallet from 'lib/web3/useWallet';
 import { Alert } from 'toolkit/chakra/alert';

@@ -3,7 +3,7 @@ import React, { useCallback } from 'react';
 
 import type { WatchlistAddress } from 'types/api/account';
 
-import useApiFetch from 'lib/api/useApiFetch';
+import useApiFetch from 'client/api/hooks/useApiFetch';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import DeleteModal from 'ui/shared/DeleteModal';
 

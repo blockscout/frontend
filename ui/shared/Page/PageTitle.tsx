@@ -1,3 +1,4 @@
+import type { JsxStyleProps } from '@chakra-ui/react';
 import { Flex, chakra } from '@chakra-ui/react';
 import { debounce } from 'es-toolkit';
 import React from 'react';
@@ -16,13 +17,14 @@ type Props = {
   afterTitle?: React.ReactNode;
   contentAfter?: React.ReactNode;
   secondRow?: React.ReactNode;
+  secondRowProps?: JsxStyleProps;
   isLoading?: boolean;
   withTextAd?: boolean;
 };
 
 const TEXT_MAX_LINES = 1;
 
-const PageTitle = ({ title, contentAfter, withTextAd, className, isLoading = false, afterTitle, beforeTitle, secondRow }: Props) => {
+const PageTitle = ({ title, contentAfter, withTextAd, className, isLoading = false, afterTitle, beforeTitle, secondRow, secondRowProps }: Props) => {
   const tooltip = useDisclosure();
   const isMobile = useIsMobile();
   const [ isTextTruncated, setIsTextTruncated ] = React.useState(false);
@@ -118,7 +120,7 @@ const PageTitle = ({ title, contentAfter, withTextAd, className, isLoading = fal
         { withTextAd && <TextAd order={{ base: -1, lg: 100 }} mb={{ base: 6, lg: 0 }} ml="auto" w={{ base: '100%', lg: 'auto' }}/> }
       </Flex>
       { secondRow && (
-        <Skeleton loading={ isLoading } alignItems="center" minH={ 10 } overflow="hidden" display="flex" _empty={{ display: 'none' }}>
+        <Skeleton loading={ isLoading } alignItems="center" minH={ 10 } overflow="hidden" display="flex" _empty={{ display: 'none' }} { ...secondRowProps }>
           { secondRow }
         </Skeleton>
       ) }

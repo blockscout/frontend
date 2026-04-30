@@ -2,8 +2,8 @@ import type { BoxProps } from '@chakra-ui/react';
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import config from 'configs/app';
-import useApiQuery from 'lib/api/useApiQuery';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import getStatsLabelFromTitle from 'lib/stats/getStatsLabelFromTitle';
 import { HOMEPAGE_STATS } from 'stubs/stats';
@@ -132,7 +132,7 @@ const TxsStats = (props: Props) => {
           isLoading={ isLoading }
         />
       ) }
-      { txFeeSum24h != null && (
+      { !Object.is(txFeeSum24h, NaN) && (
         <StatsWidget
           label={ txsStatsQuery.data?.transactions_fee_24h?.title ?
             getStatsLabelFromTitle(txsStatsQuery.data?.transactions_fee_24h?.title) :

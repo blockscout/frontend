@@ -1,9 +1,11 @@
 import type { Locator } from '@playwright/test';
 import React from 'react';
 
+import * as blockMock from 'mocks/blocks/block';
 import * as statsMock from 'mocks/stats/index';
 import { test, expect } from 'playwright/lib';
 
+import { HomeDataContextProvider } from './homeDataContext';
 import Stats from './Stats';
 
 test.describe('all items', () => {
@@ -15,7 +17,12 @@ test.describe('all items', () => {
       [ 'NEXT_PUBLIC_STATS_API_HOST', '' ],
     ]);
     await mockApiResponse('general:stats', statsMock.withBtcLocked);
-    component = await render(<Stats/>);
+    await mockApiResponse('general:homepage_blocks', [ blockMock.base, blockMock.base2 ]);
+    component = await render(
+      <HomeDataContextProvider>
+        <Stats/>
+      </HomeDataContextProvider>,
+    );
   });
 
   test('+@mobile +@dark-mode', async() => {
@@ -28,7 +35,12 @@ test('no gas info', async({ render, mockApiResponse, mockEnvs }) => {
     [ 'NEXT_PUBLIC_STATS_API_HOST', '' ],
   ]);
   await mockApiResponse('general:stats', statsMock.withoutGasInfo);
-  const component = await render(<Stats/>);
+  await mockApiResponse('general:homepage_blocks', [ blockMock.base, blockMock.base2 ]);
+  const component = await render(
+    <HomeDataContextProvider>
+      <Stats/>
+    </HomeDataContextProvider>,
+  );
 
   await expect(component).toHaveScreenshot();
 });
@@ -39,7 +51,12 @@ test('4 items default view +@mobile -@default', async({ render, mockApiResponse,
     [ 'NEXT_PUBLIC_STATS_API_HOST', '' ],
   ]);
   await mockApiResponse('general:stats', statsMock.base);
-  const component = await render(<Stats/>);
+  await mockApiResponse('general:homepage_blocks', [ blockMock.base, blockMock.base2 ]);
+  const component = await render(
+    <HomeDataContextProvider>
+      <Stats/>
+    </HomeDataContextProvider>,
+  );
   await expect(component).toHaveScreenshot();
 });
 
@@ -49,6 +66,11 @@ test('3 items default view +@mobile -@default', async({ render, mockApiResponse,
     [ 'NEXT_PUBLIC_STATS_API_HOST', '' ],
   ]);
   await mockApiResponse('general:stats', statsMock.base);
-  const component = await render(<Stats/>);
+  await mockApiResponse('general:homepage_blocks', [ blockMock.base, blockMock.base2 ]);
+  const component = await render(
+    <HomeDataContextProvider>
+      <Stats/>
+    </HomeDataContextProvider>,
+  );
   await expect(component).toHaveScreenshot();
 });

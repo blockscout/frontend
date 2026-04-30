@@ -1,11 +1,11 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import getSocketUrl from 'client/api/get-socket-url';
+import { SocketProvider } from 'client/api/socket/context';
 import multichainConfig from 'configs/multichain';
-import getSocketUrl from 'lib/api/getSocketUrl';
 import { MultichainProvider } from 'lib/contexts/multichain';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import { SocketProvider } from 'lib/socket/context';
 import TokenInstance from 'ui/pages/TokenInstance';
 
 const MultichainTokenInstance = () => {

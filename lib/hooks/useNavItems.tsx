@@ -296,6 +296,12 @@ export default function useNavItems(): ReturnType {
           icon: 'navigation/gas_tracker',
           isActive: pathname.startsWith('/gas-tracker'),
         },
+        config.features.crossChainTxs.isEnabled && {
+          text: 'ICTT users',
+          nextRoute: { pathname: '/ictt-users' as const },
+          icon: 'navigation/ictt_users',
+          isActive: pathname.startsWith('/ictt-users'),
+        },
       ].filter(Boolean);
 
       if (items.length === 0) {

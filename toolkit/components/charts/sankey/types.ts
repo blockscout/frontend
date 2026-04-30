@@ -11,16 +11,16 @@ export interface SankeyLinkDatum {
   readonly value: number;
 }
 
-export interface SankeyData {
+export interface SankeyChartData {
   readonly nodes: ReadonlyArray<SankeyNodeDatum>;
   readonly links: ReadonlyArray<SankeyLinkDatum>;
 }
 
 // After d3-sankey layout, nodes are the input datum merged with the layout properties.
-export type SankeyNodeExtended = SankeyNodeDatum & SankeyNode<SankeyNodeDatum, SankeyLinkDatum>;
+export type SankeyChartNodeExtended = SankeyNodeDatum & SankeyNode<SankeyNodeDatum, SankeyLinkDatum>;
 
 // After d3-sankey layout, source/target are always resolved node objects, not ids.
-export type SankeyLinkExtended = Omit<SankeyLink<SankeyNodeDatum, SankeyLinkDatum>, 'source' | 'target'> & {
-  source: SankeyNodeExtended;
-  target: SankeyNodeExtended;
+export type SankeyChartLinkExtended = Omit<SankeyLink<SankeyNodeDatum, SankeyLinkDatum>, 'source' | 'target'> & {
+  source: SankeyChartNodeExtended;
+  target: SankeyChartNodeExtended;
 };

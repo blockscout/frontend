@@ -1,8 +1,8 @@
 import { Text } from '@chakra-ui/react';
 import React from 'react';
 
+import buildUrl from 'client/api/build-url';
 import config from 'configs/app';
-import buildUrl from 'lib/api/buildUrl';
 import * as cookies from 'lib/cookies';
 import { Button } from 'toolkit/chakra/button';
 import { toaster } from 'toolkit/chakra/toaster';

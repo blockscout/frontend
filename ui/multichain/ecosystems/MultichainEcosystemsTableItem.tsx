@@ -8,13 +8,10 @@ import useAddChainClick from 'lib/web3/useAddChainClick';
 import useProvider from 'lib/web3/useProvider';
 import { WALLETS_INFO } from 'lib/web3/wallets';
 import { IconButton } from 'toolkit/chakra/icon-button';
-import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
-import ChainIcon from 'ui/shared/externalChains/ChainIcon';
+import ChainSnippetList from 'ui/shared/externalChains/ChainSnippetList';
 import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
@@ -48,24 +45,7 @@ const MultichainEcosystemsTableItem = ({ data, isLoading, chainInfo }: Props) =>
   return (
     <TableRow alignItems="top">
       <TableCell verticalAlign="middle">
-        <HStack gap={ 3 }>
-          <HStack>
-            <ChainIcon data={ chainInfo } isLoading={ isLoading }/>
-            <Link
-              href={ chainInfo?.explorer_url }
-              fontWeight={ 700 }
-              external
-              loading={ isLoading }
-              maxW="calc(100% - 28px)"
-            >
-              <TruncatedText text={ chainInfo?.name ?? 'Unknown chain' } loading={ isLoading }/>
-            </Link>
-          </HStack>
-          <HStack gap={ 0 } flexShrink={ 0 }>
-            <Skeleton loading={ isLoading } color="text.secondary"><span>{ data.chain_id }</span></Skeleton>
-            <CopyToClipboard text={ String(data.chain_id) } isLoading={ isLoading }/>
-          </HStack>
-        </HStack>
+        { chainInfo && <ChainSnippetList data={ chainInfo } isLoading={ isLoading }/> }
       </TableCell>
       <TableCell verticalAlign="middle">
         <HStack>

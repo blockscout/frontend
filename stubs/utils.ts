@@ -1,6 +1,6 @@
 import type { ArrayElement } from 'types/utils';
 
-import type { PaginatedResourceName, PaginatedResourceResponse, PaginatedResourceResponseItems } from 'lib/api/resources';
+import type { PaginatedResourceName, PaginatedResourceResponse, PaginatedResourceResponseItems } from 'client/api/resources';
 
 export function generateListStub<Resource extends PaginatedResourceName>(
   stub: ArrayElement<PaginatedResourceResponseItems<Resource>>,

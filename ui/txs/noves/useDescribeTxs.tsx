@@ -3,9 +3,9 @@ import React from 'react';
 
 import type { Transaction } from 'types/api/transaction';
 
+import type { ReturnType } from 'client/api/hooks/useApiQueries';
+import useApiQueries from 'client/api/hooks/useApiQueries';
 import config from 'configs/app';
-import type { ReturnType } from 'lib/api/useApiQueries';
-import useApiQueries from 'lib/api/useApiQueries';
 
 const feature = config.features.txInterpretation;
 

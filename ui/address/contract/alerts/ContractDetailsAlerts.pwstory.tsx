@@ -1,6 +1,6 @@
 import React from 'react';
 
-import useSocketChannel from 'lib/socket/useSocketChannel';
+import useSocketChannel from 'client/api/socket/useSocketChannel';
 
 import type { Props } from './ContractDetailsAlerts';
 import ContractDetailsAlerts from './ContractDetailsAlerts';

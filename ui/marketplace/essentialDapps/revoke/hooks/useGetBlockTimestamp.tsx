@@ -3,7 +3,7 @@ import { useCallback, useEffect } from 'react';
 import type { Block } from 'types/api/block';
 import type { EssentialDappsChainConfig } from 'types/client/marketplace';
 
-import useApiFetch from 'lib/api/useApiFetch';
+import useApiFetch from 'client/api/hooks/useApiFetch';
 
 // Cache for block timestamp requests across the session
 const timestampCache = new Map<string, Promise<number>>();

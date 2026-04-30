@@ -2,12 +2,12 @@ import { Box, Flex, Grid, GridItem } from '@chakra-ui/react';
 import * as d3 from 'd3';
 import React from 'react';
 
-import type { AxesConfigFn } from 'toolkit/components/charts/types';
+import type { LineChartAxesConfigFn } from 'toolkit/components/charts/line/types';
 import type { UptimeHistoryFull, UptimeHistoryItem } from 'types/api/megaEth';
 
 import { useSettingsContext } from 'lib/contexts/settings';
 import { Heading } from 'toolkit/chakra/heading';
-import { ChartWidget } from 'toolkit/components/charts/ChartWidget';
+import { LineChartWidget } from 'toolkit/components/charts/line';
 import { DAY, HOUR, SECOND } from 'toolkit/utils/consts';
 import { useChartsConfig } from 'ui/shared/chart/config';
 import TagGroupSelect from 'ui/shared/tagGroupSelect/TagGroupSelect';
@@ -22,7 +22,7 @@ type IntervalId = (typeof INTERVALS)[number]['id'];
 
 const TIME_FORMAT = '%e %b %Y, %H:%M:%S';
 
-const AXES_CONFIG_BASE: (isLocalTime: boolean) => AxesConfigFn = (isLocalTime) => ({ isEnlarged, isMobile }) => ({
+const AXES_CONFIG_BASE: (isLocalTime: boolean) => LineChartAxesConfigFn = (isLocalTime) => ({ isEnlarged, isMobile }) => ({
   y: {
     scale: { min: 0 },
   },
@@ -34,7 +34,7 @@ const AXES_CONFIG_BASE: (isLocalTime: boolean) => AxesConfigFn = (isLocalTime) =
   },
 });
 
-const AXES_CONFIG_LONG: AxesConfigFn = () => ({
+const AXES_CONFIG_LONG: LineChartAxesConfigFn = () => ({
   y: {
     scale: { min: 0 },
   },
@@ -233,7 +233,7 @@ const UptimeCharts = ({ historyData }: Props) => {
         gap={ 4 }
       >
         <GridItem colSpan={{ base: 1, lg: 2 }} minH={{ base: '220px', lg: '320px' }}>
-          <ChartWidget
+          <LineChartWidget
             title="TPS"
             charts={ tpsCharts }
             isLoading={ false }
@@ -242,7 +242,7 @@ const UptimeCharts = ({ historyData }: Props) => {
           />
         </GridItem>
         <GridItem minH={{ base: '220px', lg: '320px' }}>
-          <ChartWidget
+          <LineChartWidget
             title="MGas/s"
             charts={ gasCharts }
             isLoading={ false }
@@ -251,7 +251,7 @@ const UptimeCharts = ({ historyData }: Props) => {
           />
         </GridItem>
         <GridItem minH={{ base: '220px', lg: '320px' }}>
-          <ChartWidget
+          <LineChartWidget
             title="Block time (ms)"
             charts={ blockIntervalCharts }
             isLoading={ false }

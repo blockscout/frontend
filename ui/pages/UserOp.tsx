@@ -6,7 +6,7 @@ import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 import type { Log } from 'types/api/log';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import throwOnAbsentParamError from 'lib/errors/throwOnAbsentParamError';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getQueryParamString from 'lib/router/getQueryParamString';

@@ -4,8 +4,8 @@ import React from 'react';
 
 import type { Screen, ScreenSuccess } from './types';
 
+import { getResourceKey } from 'client/api/hooks/useApiQuery';
 import config from 'configs/app';
-import { getResourceKey } from 'lib/api/useApiQuery';
 import { useRewardsContext } from 'lib/contexts/rewards';
 import useGetCsrfToken from 'lib/hooks/useGetCsrfToken';
 import * as mixpanel from 'lib/mixpanel';

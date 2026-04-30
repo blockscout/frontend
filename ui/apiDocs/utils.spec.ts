@@ -74,6 +74,30 @@ describe('coreApiRequestInterceptorFactory', () => {
       const result = interceptor(req);
       expect(result.url).toBe('https://example.com/api/v2/search');
     });
+
+    test('does not produce double /api segment', () => {
+      const interceptor = coreApiRequestInterceptorFactory(api);
+      const req = { url: 'http://localhost/api/v2/tokens' };
+      const result = interceptor(req);
+      expect(result.url).toBe('https://example.com/blockscout/api/v2/tokens');
+      expect(result.url).not.toContain('/api/api/');
+    });
+  });
+
+  describe('DEFAULT_SERVER_NEW_BASE (http://localhost)', () => {
+    test('replaces localhost with endpoint + basePath for non-api paths', () => {
+      const interceptor = coreApiRequestInterceptorFactory(api);
+      const req = { url: 'http://localhost/v2/search?q=test' };
+      const result = interceptor(req);
+      expect(result.url).toBe('https://example.com/blockscout/v2/search?q=test');
+    });
+
+    test('works without basePath for non-api paths', () => {
+      const interceptor = coreApiRequestInterceptorFactory(apiWithoutBasePath);
+      const req = { url: 'http://localhost/v2/search' };
+      const result = interceptor(req);
+      expect(result.url).toBe('https://example.com/v2/search');
+    });
   });
 
   test('does not modify loadSpec requests', () => {

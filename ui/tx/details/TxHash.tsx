@@ -3,8 +3,8 @@ import React from 'react';
 
 import type { Transaction } from 'types/api/transaction';
 
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import config from 'configs/app';
-import useApiQuery from 'lib/api/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';

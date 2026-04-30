@@ -2,8 +2,8 @@ import { Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import config from 'configs/app';
-import useApiQuery from 'lib/api/useApiQuery';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getPoolLinks from 'lib/pools/getPoolLinks';
 import { getPoolTitle } from 'lib/pools/getPoolTitle';

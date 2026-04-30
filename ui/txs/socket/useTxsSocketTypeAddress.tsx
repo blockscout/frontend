@@ -2,16 +2,16 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { SocketMessage } from 'lib/socket/types';
+import type { SocketMessage } from 'client/api/socket/types';
 import type { AddressFromToFilter, AddressTransactionsResponse } from 'types/api/address';
 import type { Transaction, TransactionsSortingValue } from 'types/api/transaction';
 
+import { getResourceKey } from 'client/api/hooks/useApiQuery';
+import useSocketChannel from 'client/api/socket/useSocketChannel';
+import useSocketMessage from 'client/api/socket/useSocketMessage';
 import config from 'configs/app';
-import { getResourceKey } from 'lib/api/useApiQuery';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import useSocketChannel from 'lib/socket/useSocketChannel';
-import useSocketMessage from 'lib/socket/useSocketMessage';
 import getSortValueFromQuery from 'ui/shared/sort/getSortValueFromQuery';
 
 import { sortTxsFromSocket } from '../sortTxs';

@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { TransactionsSortingValue, TxsResponse } from 'types/api/transaction';
 
-import type { ResourceError } from 'lib/api/resources';
+import type { ResourceError } from 'client/api/resources';
 import * as cookies from 'lib/cookies';
 import type { SelectOption } from 'toolkit/chakra/select';
 

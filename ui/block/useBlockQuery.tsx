@@ -5,9 +5,9 @@ import type { Chain, GetBlockReturnType } from 'viem';
 
 import type { Block } from 'types/api/block';
 
-import type { ResourceError } from 'lib/api/resources';
-import useApiQuery from 'lib/api/useApiQuery';
-import { retry } from 'lib/api/useQueryClientConfig';
+import useApiQuery from 'client/api/hooks/useApiQuery';
+import { retry } from 'client/api/hooks/useQueryClientConfig';
+import type { ResourceError } from 'client/api/resources';
 import { publicClient } from 'lib/web3/client';
 import formatBlockData from 'lib/web3/rpc/formatBlockData';
 import { BLOCK } from 'stubs/block';

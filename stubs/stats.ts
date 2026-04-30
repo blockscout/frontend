@@ -1,6 +1,9 @@
 import type * as stats from '@blockscout/stats-types';
 import type { HomeStats } from 'types/api/stats';
 
+import { CHAIN_STATS_CHART_INFO } from 'client/features/chain-stats/stubs/charts';
+import { CHAIN_STATS_COUNTER } from 'client/features/chain-stats/stubs/counters';
+
 export const HOMEPAGE_STATS: HomeStats = {
   average_block_time: 14346,
   coin_price: '1807.68',
@@ -42,81 +45,20 @@ export const HOMEPAGE_STATS: HomeStats = {
   tvl: '1767425.102766552',
 };
 
-const STATS_CHART_INFO: stats.LineChartInfo = {
-  id: 'chart_0',
-  title: 'Average transaction fee',
-  description: 'The average amount in ETH spent per transaction',
-  units: 'ETH',
-  resolutions: [ 'DAY', 'MONTH' ],
-};
-
-export const STATS_CHARTS_SECTION: stats.LineChartSection = {
-  id: 'placeholder',
-  title: 'Placeholder',
-  charts: [
-    STATS_CHART_INFO,
-    {
-      id: 'chart_1',
-      title: 'Transactions fees',
-      description: 'Amount of tokens paid as fees',
-      units: 'ETH',
-      resolutions: [ 'DAY', 'MONTH' ],
-    },
-    {
-      id: 'chart_2',
-      title: 'New transactions',
-      description: 'New transactions number',
-      units: undefined,
-      resolutions: [ 'DAY', 'MONTH' ],
-    },
-    {
-      id: 'chart_3',
-      title: 'Transactions growth',
-      description: 'Cumulative transactions number',
-      units: undefined,
-      resolutions: [ 'DAY', 'MONTH' ],
-    },
-  ],
-};
-
-export const STATS_CHARTS_SECTION_GAS: stats.LineChartSection = {
-  id: 'gas',
-  title: 'Gas',
-  charts: [ {
-    id: 'averageGasPrice',
-    title: 'Average gas price',
-    description: 'Average gas price',
-    units: 'ETH',
-    resolutions: [ 'DAY', 'MONTH' ],
-  } ],
-};
-
-export const STATS_CHARTS = {
-  sections: [ STATS_CHARTS_SECTION ],
-};
-
-export const STATS_COUNTER: stats.Counter = {
-  id: 'stub',
-  value: '9074405',
-  title: 'Placeholder Counter',
-  description: 'Placeholder description',
-  units: '',
-};
-
 export const HOMEPAGE_STATS_MICROSERVICE: stats.MainPageStats = {
-  average_block_time: STATS_COUNTER,
-  total_addresses: STATS_COUNTER,
-  total_blocks: STATS_COUNTER,
-  total_transactions: STATS_COUNTER,
-  yesterday_transactions: STATS_COUNTER,
-  total_operational_transactions: STATS_COUNTER,
-  yesterday_operational_transactions: STATS_COUNTER,
+  average_block_time: CHAIN_STATS_COUNTER,
+  total_addresses: CHAIN_STATS_COUNTER,
+  total_blocks: CHAIN_STATS_COUNTER,
+  total_transactions: CHAIN_STATS_COUNTER,
+  yesterday_transactions: CHAIN_STATS_COUNTER,
+  total_operational_transactions: CHAIN_STATS_COUNTER,
+  yesterday_operational_transactions: CHAIN_STATS_COUNTER,
   daily_new_transactions: {
     chart: [],
-    info: { ...STATS_CHART_INFO, title: 'Daily transactions' },
+    info: { ...CHAIN_STATS_CHART_INFO, title: 'Daily transactions' },
   },
   daily_new_operational_transactions: {
     chart: [],
-    info: { ...STATS_CHART_INFO, title: 'Daily op txns' },
+    info: { ...CHAIN_STATS_CHART_INFO, title: 'Daily op txns' },
   },
 };

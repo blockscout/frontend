@@ -6,7 +6,7 @@ import type { PaginationParams } from 'ui/shared/pagination/types';
 
 import { route } from 'nextjs-routes';
 
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery from 'client/api/hooks/useApiQuery';
 import getNetworkUtilizationParams from 'lib/networks/getNetworkUtilizationParams';
 import { HOMEPAGE_STATS } from 'stubs/stats';
 import { Link } from 'toolkit/chakra/link';

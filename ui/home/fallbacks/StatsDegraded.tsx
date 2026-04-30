@@ -11,8 +11,8 @@ import GasPrice from 'ui/shared/gas/GasPrice';
 import StatsWidget from 'ui/shared/stats/StatsWidget';
 import { GWEI } from 'ui/shared/value/utils';
 
-import type { HomeStatsItem } from '../utils';
-import { isHomeStatsItemEnabled, sortHomeStatsItems } from '../utils';
+import type { HomeStatsWidgetItem } from '../utils';
+import { homeStatsWidgetCommonStyles, isHomeStatsItemEnabled, sortHomeStatsItems } from '../utils';
 import { useHomeRpcDataContext } from './rpcDataContext';
 
 const StatsDegraded = () => {
@@ -72,7 +72,7 @@ const StatsDegraded = () => {
     }
   }, [ blocks ]);
 
-  const items: Array<HomeStatsItem> = (() => {
+  const items: Array<HomeStatsWidgetItem> = (() => {
     return [
       {
         id: 'latest_batch' as const,
@@ -84,7 +84,7 @@ const StatsDegraded = () => {
       {
         id: 'total_blocks' as const,
         icon: 'block' as const,
-        label: 'Total blocks',
+        label: 'Latest block',
         value: blocks[0] ? blocks[0].height.toLocaleString() : mdash,
         isFallback: blocks[0] === undefined,
         hint: blocks[0] && !isLoading ? <FallbackRpcIcon/> : undefined,
@@ -165,12 +165,12 @@ const StatsDegraded = () => {
       flexBasis="50%"
       flexGrow={ 1 }
     >
-      { items.map((item, index) => (
+      { items.map((item) => (
         <StatsWidget
           key={ item.id }
           { ...item }
           isLoading={ isLoading || item.isLoading }
-          _last={ items.length % 2 === 1 && index === items.length - 1 ? { gridColumn: 'span 2' } : undefined }/>
+          { ...homeStatsWidgetCommonStyles }/>
       ),
       ) }
     </Grid>

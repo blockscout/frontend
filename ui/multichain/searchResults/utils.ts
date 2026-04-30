@@ -1,4 +1,4 @@
-import type { ReturnType } from 'lib/api/useApiInfiniteQuery';
+import type { ReturnType } from 'client/api/hooks/useApiInfiniteQuery';
 
 export interface SearchQueries {
   addresses: ReturnType<'multichainAggregator:search_addresses'>;

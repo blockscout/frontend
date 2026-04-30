@@ -4,7 +4,7 @@ import React from 'react';
 
 import type { UserInfo } from 'types/api/account';
 
-import { getResourceKey } from 'lib/api/useApiQuery';
+import { getResourceKey } from 'client/api/hooks/useApiQuery';
 import * as mixpanel from 'lib/mixpanel/index';
 
 export default function useLinkEmailDynamic(): () => void {

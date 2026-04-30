@@ -4,9 +4,9 @@ import React from 'react';
 
 import type { Address } from 'types/api/address';
 
-import type { ResourceError } from 'lib/api/resources';
-import useApiQuery from 'lib/api/useApiQuery';
-import { retry } from 'lib/api/useQueryClientConfig';
+import useApiQuery from 'client/api/hooks/useApiQuery';
+import { retry } from 'client/api/hooks/useQueryClientConfig';
+import type { ResourceError } from 'client/api/resources';
 import { publicClient } from 'lib/web3/client';
 import { ADDRESS_INFO } from 'stubs/address';
 import { GET_BALANCE } from 'stubs/RPC';

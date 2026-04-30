@@ -3,17 +3,17 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { SocketMessage } from 'lib/socket/types';
+import type { SocketMessage } from 'client/api/socket/types';
 import type { Transaction } from 'types/api/transaction';
 
+import useApiQuery, { getResourceKey } from 'client/api/hooks/useApiQuery';
+import { retry } from 'client/api/hooks/useQueryClientConfig';
+import type { ResourceError } from 'client/api/resources';
+import useSocketChannel from 'client/api/socket/useSocketChannel';
+import useSocketMessage from 'client/api/socket/useSocketMessage';
 import config from 'configs/app';
-import type { ResourceError } from 'lib/api/resources';
-import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
-import { retry } from 'lib/api/useQueryClientConfig';
 import delay from 'lib/delay';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import useSocketChannel from 'lib/socket/useSocketChannel';
-import useSocketMessage from 'lib/socket/useSocketMessage';
 import { TX, TX_ZKEVM_L2 } from 'stubs/tx';
 import { SECOND } from 'toolkit/utils/consts';
 

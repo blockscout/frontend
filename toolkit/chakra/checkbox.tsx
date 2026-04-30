@@ -17,7 +17,7 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
         <ChakraCheckbox.Control>
           { icon || <ChakraCheckbox.Indicator/> }
         </ChakraCheckbox.Control>
-        { children != null && (
+        { children !== undefined && children !== null && (
           <ChakraCheckbox.Label>{ children }</ChakraCheckbox.Label>
         ) }
       </ChakraCheckbox.Root>
