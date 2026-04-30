@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import getQueryParamString from './getQueryParamString';
+import getQueryParamString from './get-query-param-string';
 
 export default function useEtherscanRedirects() {
   const router = useRouter();
