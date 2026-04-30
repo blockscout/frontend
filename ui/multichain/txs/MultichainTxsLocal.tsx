@@ -3,10 +3,10 @@ import React from 'react';
 
 import getSocketUrl from 'client/api/get-socket-url';
 import { SocketProvider } from 'client/api/socket/context';
+import TxsTabs, { getTabId } from 'client/slices/tx/pages/index/list/TxsTabs';
+import TxsStats from 'client/slices/tx/pages/index/stats/TxsStats';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import TxsStats from 'ui/txs/TxsStats';
-import TxsTabs, { getTabId } from 'ui/txs/TxsTabs';
 
 const PARENT_TAB = 'txs_local';
 export const MULTICHAIN_TXS_LOCAL_TAB_IDS = [ getTabId('validated', PARENT_TAB), getTabId('pending', PARENT_TAB), getTabId('blob_txs', PARENT_TAB) ];

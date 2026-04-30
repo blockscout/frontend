@@ -9,6 +9,8 @@ import React from 'react';
 
 import type { Transaction } from 'client/slices/tx/types/api';
 
+import TxAdditionalInfo from 'client/slices/tx/components/TxAdditionalInfo';
+import TxType from 'client/slices/tx/components/TxType';
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
@@ -19,10 +21,8 @@ import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import TxFee from 'ui/shared/tx/TxFee';
 import TxWatchListTags from 'ui/shared/tx/TxWatchListTags';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
-import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
-import TxType from 'ui/txs/TxType';
 
-type Props = {
+interface Props {
   tx: Transaction;
   isLoading?: boolean;
 };

@@ -8,6 +8,7 @@ import throwOnAbsentParamError from 'client/shared/errors/throw-on-absent-param-
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
+import TxsWithFrontendSorting from 'client/slices/tx/pages/index/list/TxsWithFrontendSorting';
 import { TX } from 'client/slices/tx/stubs/tx';
 import { generateListStub } from 'stubs/utils';
 import { ZKSYNC_L2_TXN_BATCH } from 'stubs/zkSyncL2';
@@ -17,7 +18,6 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import ZkSyncL2TxnBatchDetails from 'ui/txnBatches/zkSyncL2/ZkSyncL2TxnBatchDetails';
-import TxsWithFrontendSorting from 'ui/txs/TxsWithFrontendSorting';
 
 const TAB_LIST_PROPS = {
   marginBottom: 0,

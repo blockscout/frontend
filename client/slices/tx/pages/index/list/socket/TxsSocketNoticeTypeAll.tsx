@@ -1,13 +1,12 @@
 import React from 'react';
 
-import type { TxsSocketNoticePlace, TxsSocketType } from './types';
+import type { TxsSocketNoticePlace, TxsSocketType } from 'client/slices/tx/types/socket';
 
 import { route } from 'nextjs/routes';
 
+import useNewTxsSocketTypeAll from 'client/slices/tx/hooks/useTxsSocketTypeAll';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
-
-import useNewTxsSocketTypeAll from './useTxsSocketTypeAll';
 
 interface Props {
   type: TxsSocketType;

@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { TxsSocketType } from './types';
+import type { TxsSocketType } from '../types/socket';
 
 import useSocketChannel from 'client/api/socket/useSocketChannel';
 import useSocketMessage from 'client/api/socket/useSocketMessage';

@@ -6,11 +6,10 @@ import type { PaginationParams } from 'ui/shared/pagination/types';
 
 // import { FilterInput } from 'toolkit/components/filters/FilterInput';
 
+import { SORT_OPTIONS } from 'client/slices/tx/hooks/useTxsSort';
 import ActionBar from 'ui/shared/ActionBar';
 import Pagination from 'ui/shared/pagination/Pagination';
 import Sort from 'ui/shared/sort/Sort';
-
-import { SORT_OPTIONS } from './useTxsSort';
 
 type Props = {
   sorting: TransactionsSortingValue;

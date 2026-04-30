@@ -7,7 +7,7 @@ import type { ResourceError } from 'client/api/resources';
 import * as cookies from 'client/shared/storage/cookies';
 import type { SelectOption } from 'toolkit/chakra/select';
 
-import sortTxs from './sortTxs';
+import sortTxs from '../utils/sort-txs';
 
 export const SORT_OPTIONS: Array<SelectOption<TransactionsSortingValue>> = [
   { label: 'Default', value: 'default' },

@@ -5,12 +5,12 @@ import { route } from 'nextjs-routes';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import useNewTxsSocket from 'client/slices/tx/hooks/useTxsSocketTypeAll';
 import { TX } from 'client/slices/tx/stubs/tx';
 import config from 'configs/app';
 import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
 import { Link } from 'toolkit/chakra/link';
 import SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
-import useNewTxsSocket from 'ui/txs/socket/useTxsSocketTypeAll';
 
 import LatestTxsDegraded from './fallbacks/LatestTxsDegraded';
 import LatestTxsItem from './LatestTxsItem';

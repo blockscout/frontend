@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { TxsSocketNoticePlace, TxsSocketType } from './types';
+import type { TxsSocketNoticePlace, TxsSocketType } from 'client/slices/tx/types/socket';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 

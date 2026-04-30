@@ -1,12 +1,13 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TxsSocketType } from './socket/types';
 import type { Transaction, TransactionsSortingField, TransactionsSortingValue } from 'client/slices/tx/types/api';
+import type { TxsSocketType } from 'client/slices/tx/types/socket';
 import type { AddressFromToFilter } from 'types/api/address';
 import type { PaginationParams } from 'ui/shared/pagination/types';
 
 import CsvExport from 'client/features/csv-export/components/CsvExport';
+import useDescribeTxs from 'client/features/tx-interpretation/noves/hooks/useDescribeTxs';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import useTableViewValue from 'client/shared/hooks/useTableViewValue';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
@@ -14,7 +15,6 @@ import DataListDisplay from 'ui/shared/DataListDisplay';
 import getNextSortValue from 'ui/shared/sort/getNextSortValue';
 import TableViewToggleButton from 'ui/shared/TableViewToggleButton';
 
-import useDescribeTxs from './noves/useDescribeTxs';
 import TxsHeaderMobile from './TxsHeaderMobile';
 import TxsList from './TxsList';
 import TxsTable from './TxsTable';

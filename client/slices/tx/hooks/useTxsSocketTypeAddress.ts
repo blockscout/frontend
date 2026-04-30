@@ -14,8 +14,8 @@ import config from 'configs/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import getSortValueFromQuery from 'ui/shared/sort/getSortValueFromQuery';
 
-import { sortTxsFromSocket } from '../sortTxs';
-import { SORT_OPTIONS } from '../useTxsSort';
+import { sortTxsFromSocket } from '../utils/sort-txs';
+import { SORT_OPTIONS } from './useTxsSort';
 
 const matchFilter = (filterValue: AddressFromToFilter, transaction: Transaction, address?: string) => {
   if (!filterValue) {

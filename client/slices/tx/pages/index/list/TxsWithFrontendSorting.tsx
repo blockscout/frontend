@@ -1,17 +1,17 @@
 import React from 'react';
 
-import type { TxsSocketType } from './socket/types';
-import type { TransactionsSortingValue } from 'client/slices/tx/types/api';
+import type { TxsSocketType } from 'client/slices/tx/types/socket';
 import type { AddressFromToFilter } from 'types/api/address';
 
+import useTxsSort from 'client/slices/tx/hooks/useTxsSort';
 import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
-import getSortParamsFromValue from 'ui/shared/sort/getSortParamsFromValue';
 
 import TxsContent from './TxsContent';
 
 type Props = {
-
-  query: QueryWithPagesResult<'general:address_txs'>;
+  query: QueryWithPagesResult<'general:txs_validated' | 'general:txs_pending'> |
+    QueryWithPagesResult<'general:txs_watchlist'> |
+    QueryWithPagesResult<'general:block_txs'>;
   showBlockInfo?: boolean;
   socketType?: TxsSocketType;
   currentAddress?: string;
@@ -19,12 +19,9 @@ type Props = {
   filterValue?: AddressFromToFilter;
   enableTimeIncrement?: boolean;
   top?: number;
-  sorting: TransactionsSortingValue;
-  setSort: (value: TransactionsSortingValue) => void;
-  showTableViewButton?: boolean;
 };
 
-const TxsWithAPISorting = ({
+const TxsWithFrontendSorting = ({
   filter,
   filterValue,
   query,
@@ -33,15 +30,8 @@ const TxsWithAPISorting = ({
   currentAddress,
   enableTimeIncrement,
   top,
-  sorting,
-  setSort,
-  showTableViewButton,
 }: Props) => {
-
-  const handleSortChange = React.useCallback((value: TransactionsSortingValue) => {
-    setSort(value);
-    query.onSortingChange(getSortParamsFromValue(value));
-  }, [ setSort, query ]);
+  const { data, isPlaceholderData, isError, setSortByValue, sorting } = useTxsSort(query);
 
   return (
     <TxsContent
@@ -52,15 +42,14 @@ const TxsWithAPISorting = ({
       currentAddress={ currentAddress }
       enableTimeIncrement={ enableTimeIncrement }
       top={ top }
-      items={ query.data?.items }
-      isPlaceholderData={ query.isPlaceholderData }
-      isError={ query.isError }
-      setSorting={ handleSortChange }
+      items={ data?.items }
+      isPlaceholderData={ isPlaceholderData }
+      isError={ isError }
+      setSorting={ setSortByValue }
       sort={ sorting }
       pagination={ query.pagination }
-      showTableViewButton={ showTableViewButton }
     />
   );
 };
 
-export default TxsWithAPISorting;
+export default TxsWithFrontendSorting;

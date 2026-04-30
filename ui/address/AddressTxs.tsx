@@ -6,6 +6,7 @@ import CsvExport from 'client/features/csv-export/components/CsvExport';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import useIsMounted from 'client/shared/hooks/useIsMounted';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
+import TxsWithApiSorting from 'client/slices/tx/pages/index/list/TxsWithApiSorting';
 import config from 'configs/app';
 import { INTERCHAIN_MESSAGE } from 'stubs/interchainIndexer';
 import { generateListStub } from 'stubs/utils';
@@ -14,7 +15,6 @@ import AddressTxsCrossChain from 'ui/crossChain/address/AddressTxsCrossChain';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
-import TxsWithAPISorting from 'ui/txs/TxsWithAPISorting';
 
 import AddressTxsFilter from './AddressTxsFilter';
 import useAddressTxsQuery from './useAddressTxsQuery';
@@ -79,7 +79,7 @@ const AddressTxs = ({ shouldRender = true, isQueryEnabled = true }: Props) => {
       id: [ 'txs_local', 'txs' ],
       title: 'Txns',
       component: (
-        <TxsWithAPISorting
+        <TxsWithApiSorting
           filter={ txsLocalFilter }
           filterValue={ localQuery.filterValue }
           query={ localQuery.query }

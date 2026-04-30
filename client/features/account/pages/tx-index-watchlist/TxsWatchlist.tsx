@@ -1,8 +1,8 @@
 import React from 'react';
 
+import TxsWithFrontendSorting from 'client/slices/tx/pages/index/list/TxsWithFrontendSorting';
 import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
 import useRedirectForInvalidAuthToken from 'ui/snippets/auth/useRedirectForInvalidAuthToken';
-import TxsWithFrontendSorting from 'ui/txs/TxsWithFrontendSorting';
 
 type Props = {
   query: QueryWithPagesResult<'general:txs_watchlist'>;

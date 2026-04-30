@@ -1,14 +1,14 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TxsSocketType } from './socket/types';
 import type { Transaction } from 'client/slices/tx/types/api';
+import type { TxsSocketType } from 'client/slices/tx/types/socket';
 
+import type { TxsTranslationQuery } from 'client/features/tx-interpretation/noves/hooks/useDescribeTxs';
 import useInitialList from 'client/shared/lists/useInitialList';
 import useLazyRenderedList from 'client/shared/lists/useLazyRenderedList';
 import { useMultichainContext } from 'lib/contexts/multichain';
 
-import type { TxsTranslationQuery } from './noves/useDescribeTxs';
 import TxsSocketNotice from './socket/TxsSocketNotice';
 import TxsListItem from './TxsListItem';
 

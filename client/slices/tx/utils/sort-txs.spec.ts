@@ -2,7 +2,7 @@ import type { Transaction } from 'client/slices/tx/types/api';
 
 import { describe, it, expect } from 'vitest';
 
-import sortTxs, { sortTxsFromSocket } from './sortTxs';
+import sortTxs, { sortTxsFromSocket } from './sort-txs';
 
 describe('sortTxs', () => {
   it('should sort transactions by value in descending order', () => {

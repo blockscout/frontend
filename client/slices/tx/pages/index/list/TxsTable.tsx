@@ -1,8 +1,9 @@
 import React from 'react';
 
-import type { TxsSocketType } from './socket/types';
 import type { Transaction, TransactionsSortingField, TransactionsSortingValue } from 'client/slices/tx/types/api';
+import type { TxsSocketType } from 'client/slices/tx/types/socket';
 
+import type { TxsTranslationQuery } from 'client/features/tx-interpretation/noves/hooks/useDescribeTxs';
 import { currencyUnits } from 'client/shared/chain/units';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import useInitialList from 'client/shared/lists/useInitialList';
@@ -13,7 +14,6 @@ import { useMultichainContext } from 'lib/contexts/multichain';
 import { TableBody, TableColumnHeader, TableColumnHeaderSortable, TableHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
-import type { TxsTranslationQuery } from './noves/useDescribeTxs';
 import TxsSocketNotice from './socket/TxsSocketNotice';
 import TxsTableItem from './TxsTableItem';
 
