@@ -1,7 +1,7 @@
 import React from 'react';
 
-import type { FormSubmitResult } from 'ui/publicTags/submit/types';
 import type { PublicTagType } from 'types/api/addressMetadata';
+import type { FormSubmitResult } from 'ui/publicTags/submit/types';
 
 import appConfig from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';

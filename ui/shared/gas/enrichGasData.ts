@@ -30,7 +30,7 @@ export function enrichGasStats(data: HomeStats, dataUpdatedAt: number): HomeStat
   const blockTime = data.average_block_time ?? 6_000; // ms; fallback to 6 s
 
   const enrichedGasPrices: GasPrices = {
-    fast: enrichGasTier(data.gas_prices.fast, coinPrice, Math.round(blockTime * 1)),
+    fast: enrichGasTier(data.gas_prices.fast, coinPrice, Math.round(blockTime)),
     average: enrichGasTier(data.gas_prices.average, coinPrice, Math.round(blockTime * 3)),
     slow: enrichGasTier(data.gas_prices.slow, coinPrice, Math.round(blockTime * 5)),
   };

@@ -14,10 +14,10 @@ import { Tag } from 'toolkit/chakra/tag';
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
-import TokenSocialLinks from 'ui/token/TokenSocialLinks';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import SimpleValue from 'ui/shared/value/SimpleValue';
 import { DEFAULT_ACCURACY_USD } from 'ui/shared/value/utils';
+import TokenSocialLinks from 'ui/token/TokenSocialLinks';
 
 type Props = {
   token: TokenInfo | AggregatedTokenInfo;

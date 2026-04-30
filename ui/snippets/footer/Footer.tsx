@@ -24,7 +24,6 @@ const BLOCKSCOUT_UPSTREAM_URL = `https://github.com/blockscout/blockscout/tree/$
 
 const MAX_LINKS_COLUMNS = 4;
 
-
 const Footer = () => {
 
   const { data: backendVersionData } = useApiQuery('general:config_backend_version', {
@@ -72,8 +71,8 @@ const Footer = () => {
   const fetch = useFetch();
 
   const { isPlaceholderData, data: linksData } = useQuery<unknown, ResourceError<unknown>, Array<CustomLinksGroup>>({
-    queryKey: ['footer-links'],
-    queryFn: async () => fetch(config.UI.footer.links || '', undefined, { resource: 'footer-links' }),
+    queryKey: [ 'footer-links' ],
+    queryFn: async() => fetch(config.UI.footer.links || '', undefined, { resource: 'footer-links' }),
     enabled: Boolean(config.UI.footer.links),
     staleTime: Infinity,
     placeholderData: [],
@@ -85,16 +84,16 @@ const Footer = () => {
     return (
       <Flex
         alignItems="center"
-        gridArea={gridArea}
+        gridArea={ gridArea }
         flexWrap="wrap"
         justifyContent="flex-start"
-        columnGap={3}
-        rowGap={2}
+        columnGap={ 3 }
+        rowGap={ 2 }
         mb={{ base: 5, lg: 10 }}
         _empty={{ display: 'none' }}
       >
-        {!config.UI.indexingAlert.intTxs.isHidden && <IntTxsIndexingStatus />}
-        {!config.features.opSuperchain.isEnabled && <NetworkAddToWallet source="Footer" />}
+        { !config.UI.indexingAlert.intTxs.isHidden && <IntTxsIndexingStatus/> }
+        { !config.features.opSuperchain.isEnabled && <NetworkAddToWallet source="Footer"/> }
       </Flex>
     );
   }, []);
@@ -103,38 +102,38 @@ const Footer = () => {
     const logoColor = { base: 'blue.600', _dark: 'white' };
 
     return (
-      <Box gridArea={gridArea}>
-        <Flex columnGap={2} textStyle="xs" alignItems="center">
+      <Box gridArea={ gridArea }>
+        <Flex columnGap={ 2 } textStyle="xs" alignItems="center">
           <span>Made with</span>
-          <Link href="https://www.blockscout.com" external noIcon display="inline-flex" color={logoColor} _hover={{ color: logoColor }}>
+          <Link href="https://www.blockscout.com" external noIcon display="inline-flex" color={ logoColor } _hover={{ color: logoColor }}>
             <IconSvg
               name="networks/logo-placeholder"
               width="80px"
-              height={4}
+              height={ 4 }
             />
           </Link>
         </Flex>
-        <Text mt={3} fontSize="xs">
+        <Text mt={ 3 } fontSize="xs">
           VinuExplorer is the official scanner for VinuChain, the world’s first determinably feeless, EVM L1.
         </Text>
-        <Box mt={6} alignItems="start" textStyle="xs">
+        <Box mt={ 6 } alignItems="start" textStyle="xs">
           <Text>
-            Blockscout: <Link href={BLOCKSCOUT_UPSTREAM_URL} external noIcon>{ BLOCKSCOUT_UPSTREAM_VERSION }</Link>
+            Blockscout: <Link href={ BLOCKSCOUT_UPSTREAM_URL } external noIcon>{ BLOCKSCOUT_UPSTREAM_VERSION }</Link>
           </Text>
-          {frontendSha && (
+          { frontendSha && (
             <Text>
               Frontend: { frontendSha }
             </Text>
-          )}
-          {backendSha && (
+          ) }
+          { backendSha && (
             <Text>
               Backend: { backendSha }
             </Text>
-          )}
+          ) }
         </Box>
       </Box>
     );
-  }, [backendSha, frontendSha]);
+  }, [ backendSha, frontendSha ]);
 
   const containerProps: HTMLChakraProps<'div'> = {
     as: 'footer',
@@ -147,17 +146,17 @@ const Footer = () => {
     py: { base: 4, lg: 8 },
     gridTemplateColumns: { base: '1fr', lg: 'minmax(auto, 470px) 1fr' },
     columnGap: { lg: '32px', xl: '100px' },
-    maxW: `${CONTENT_MAX_WIDTH}px`,
+    maxW: `${ CONTENT_MAX_WIDTH }px`,
     m: '0 auto',
   };
 
   const renderRecaptcha = (gridArea?: GridProps['gridArea']) => {
     if (!config.services.reCaptchaV2.siteKey) {
-      return <Box gridArea={gridArea} />;
+      return <Box gridArea={ gridArea }/>;
     }
 
     return (
-      <Box gridArea={gridArea} textStyle="xs" mt={6}>
+      <Box gridArea={ gridArea } textStyle="xs" mt={ 6 }>
         <span>This site is protected by reCAPTCHA and the Google </span>
         <Link href="https://policies.google.com/privacy" external noIcon>Privacy Policy</Link>
         <span> and </span>
@@ -169,20 +168,20 @@ const Footer = () => {
 
   if (config.UI.footer.links) {
     return (
-      <Box {...containerProps}>
-        <Grid {...contentProps}>
+      <Box { ...containerProps }>
+        <Grid { ...contentProps }>
           <div>
-            {renderNetworkInfo()}
-            {renderProjectInfo()}
-            {renderRecaptcha()}
+            { renderNetworkInfo() }
+            { renderProjectInfo() }
+            { renderRecaptcha() }
           </div>
 
           <Grid
             gap={{ base: 6, lg: colNum === MAX_LINKS_COLUMNS + 1 ? 2 : 8, xl: 12 }}
             gridTemplateColumns={{
               base: 'repeat(auto-fill, 160px)',
-              lg: `repeat(${colNum}, 135px)`,
-              xl: `repeat(${colNum}, 160px)`,
+              lg: `repeat(${ colNum }, 135px)`,
+              xl: `repeat(${ colNum }, 160px)`,
             }}
             justifyContent={{ lg: 'flex-end' }}
             mt={{ base: 8, lg: 0 }}
@@ -194,10 +193,10 @@ const Footer = () => {
               ])
                 .slice(0, colNum)
                 .map(linkGroup => (
-                  <Box key={linkGroup.title}>
-                    <Skeleton fontWeight={500} mb={3} display="inline-block" loading={isPlaceholderData}>{linkGroup.title}</Skeleton>
-                    <VStack gap={1} alignItems="start">
-                      {linkGroup.links.map(link => <FooterLinkItem {...link} key={link.text} isLoading={isPlaceholderData} />)}
+                  <Box key={ linkGroup.title }>
+                    <Skeleton fontWeight={ 500 } mb={ 3 } display="inline-block" loading={ isPlaceholderData }>{ linkGroup.title }</Skeleton>
+                    <VStack gap={ 1 } alignItems="start">
+                      { linkGroup.links.map(link => <FooterLinkItem { ...link } key={ link.text } isLoading={ isPlaceholderData }/>) }
                     </VStack>
                   </Box>
                 ))
@@ -209,9 +208,9 @@ const Footer = () => {
   }
 
   return (
-    <Box {...containerProps}>
+    <Box { ...containerProps }>
       <Grid
-        {...contentProps}
+        { ...contentProps }
         gridTemplateAreas={{
           lg: `
           "network links-top"
@@ -221,13 +220,13 @@ const Footer = () => {
         }}
       >
 
-        {renderNetworkInfo({ lg: 'network' })}
-        {renderProjectInfo({ lg: 'info' })}
-        {renderRecaptcha({ lg: 'recaptcha' })}
+        { renderNetworkInfo({ lg: 'network' }) }
+        { renderProjectInfo({ lg: 'info' }) }
+        { renderRecaptcha({ lg: 'recaptcha' }) }
 
         <Grid
           gridArea={{ lg: 'links-bottom' }}
-          gap={1}
+          gap={ 1 }
           gridTemplateColumns={{
             base: 'repeat(auto-fill, 160px)',
             lg: 'repeat(2, 160px)',
@@ -243,7 +242,7 @@ const Footer = () => {
           justifyContent={{ lg: 'flex-end' }}
           mt={{ base: 8, lg: 0 }}
         >
-          {BLOCKSCOUT_LINKS.map(link => <FooterLinkItem {...link} key={link.text} />)}
+          { BLOCKSCOUT_LINKS.map(link => <FooterLinkItem { ...link } key={ link.text }/>) }
         </Grid>
       </Grid>
     </Box>

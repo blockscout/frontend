@@ -69,7 +69,7 @@ const HeroBanner = () => {
             fontWeight={{ base: 500, lg: 700 }}
             color={ textColor }
           >
-	    Welcome to VinuExplorer, the official explorer for VinuChain
+            Welcome to VinuExplorer, the official explorer for VinuChain
           </Heading>
           { config.UI.navigation.layout === 'vertical' && (
             <Box display={{ base: 'none', lg: 'flex' }} gap={ 2 }>

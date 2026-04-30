@@ -16,9 +16,9 @@ import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
 import type { EntityProps as AddressEntityProps } from 'ui/shared/entities/address/AddressEntity';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
-import TokenSocialLinks from 'ui/token/TokenSocialLinks';
 import SimpleValue from 'ui/shared/value/SimpleValue';
 import { DEFAULT_ACCURACY_USD } from 'ui/shared/value/utils';
+import TokenSocialLinks from 'ui/token/TokenSocialLinks';
 
 type Props = {
   token: TokenInfo | AggregatedTokenInfo;

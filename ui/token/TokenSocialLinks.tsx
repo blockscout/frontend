@@ -1,8 +1,8 @@
 import { Flex } from '@chakra-ui/react';
+import type { IconName } from 'public/icons/name';
 import React from 'react';
 
 import type { TokenSocials } from 'types/api/token';
-import type { IconName } from 'public/icons/name';
 
 import { Link } from 'toolkit/chakra/link';
 import { Tooltip } from 'toolkit/chakra/tooltip';
@@ -18,8 +18,8 @@ type SocialEntry = {
   key: keyof TokenSocials;
   label: string;
 } & (
-  | { icon: IconName }
-  | { icon: null }
+  | { icon: IconName } |
+  { icon: null }
 );
 
 const SOCIAL_CONFIG: Array<SocialEntry> = [

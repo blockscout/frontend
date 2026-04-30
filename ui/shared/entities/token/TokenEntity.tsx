@@ -48,7 +48,9 @@ const Icon = (props: IconProps) => {
     borderRadius: props.token.type === 'ERC-20' ? 'full' : 'base',
   };
 
-  const vinuchainListsUrl = `https://raw.githubusercontent.com/VinuChain/vinuchain-lists/main/tokens/${ props.token.address_hash }/${ props.token.address_hash }.png`;
+  const addressHash = props.token.address_hash;
+  const vinuchainListsUrl =
+    `https://raw.githubusercontent.com/VinuChain/vinuchain-lists/main/tokens/${ addressHash }/${ addressHash }.png`;
   const iconSrc = props.token.icon_url ?? vinuchainListsUrl;
 
   return (
