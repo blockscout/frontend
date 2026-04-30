@@ -90,7 +90,6 @@ const NovesActionSnippet: FC<Props> = ({ item, isLoaded }) => {
             jointSymbol
             noLink={ !validTokenAddress }
             fontWeight="500"
-            color="link.primary"
             w="fit-content"
           />
         </Box>
