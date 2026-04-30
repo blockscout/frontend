@@ -1,6 +1,6 @@
 import type { ZkEvmL2DepositsItem, ZkEvmL2TxnBatch, ZkEvmL2TxnBatchesItem, ZkEvmL2WithdrawalsItem } from 'types/api/zkEvmL2';
 
-import { TX_HASH } from './tx';
+import { TX_HASH } from 'client/slices/tx/stubs/tx';
 
 export const ZKEVM_DEPOSITS_ITEM: ZkEvmL2DepositsItem = {
   block_number: 19674901,

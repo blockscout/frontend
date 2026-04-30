@@ -16,3 +16,7 @@ export interface TransactionsResponseWithBlobs {
     items_count: number;
   } | null;
 }
+
+export type TxsWithBlobsFilters = {
+  type: 'blob_transaction';
+};

@@ -9,9 +9,9 @@ import getChainValidationActionText from 'client/shared/chain/get-chain-validati
 import useIsInitialLoading from 'client/shared/hooks/useIsInitialLoading';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
+import { TX } from 'client/slices/tx/stubs/tx';
 import config from 'configs/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
-import { TX } from 'stubs/tx';
 import { generateListStub } from 'stubs/utils';
 import type { RoutedTabsProps } from 'toolkit/components/RoutedTabs/RoutedTabs';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';

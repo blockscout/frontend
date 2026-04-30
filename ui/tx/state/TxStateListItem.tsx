@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { TxStateChange } from 'types/api/txStateChanges';
+import type { TxStateChange } from 'client/slices/tx/types/api';
 
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';

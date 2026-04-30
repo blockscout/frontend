@@ -7,8 +7,8 @@ import throwOnAbsentParamError from 'client/shared/errors/throw-on-absent-param-
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
+import { TX } from 'client/slices/tx/stubs/tx';
 import { BLOCK } from 'stubs/block';
-import { TX } from 'stubs/tx';
 import { generateListStub } from 'stubs/utils';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import BlocksContent from 'ui/blocks/BlocksContent';

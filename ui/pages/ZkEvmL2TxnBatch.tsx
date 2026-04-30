@@ -7,7 +7,7 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 import throwOnAbsentParamError from 'client/shared/errors/throw-on-absent-param-error';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
-import { TX_ZKEVM_L2 } from 'stubs/tx';
+import { TX_ZKEVM_L2 } from 'client/slices/tx/stubs/tx';
 import { generateListStub } from 'stubs/utils';
 import { ZKEVM_L2_TXN_BATCH } from 'stubs/zkEvmL2';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';

@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import getQueryParamString from 'client/shared/router/get-query-param-string';
-import { TX } from 'stubs/tx';
+import { TX } from 'client/slices/tx/stubs/tx';
 import { generateListStub } from 'stubs/utils';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import PageTitle from 'ui/shared/Page/PageTitle';

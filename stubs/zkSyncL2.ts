@@ -1,6 +1,6 @@
 import type { ZkSyncBatch, ZkSyncBatchesItem } from 'types/api/zkSyncL2';
 
-import { TX_HASH } from './tx';
+import { TX_HASH } from 'client/slices/tx/stubs/tx';
 
 export const ZKSYNC_L2_TXN_BATCHES_ITEM: ZkSyncBatchesItem = {
   commit_transaction_hash: TX_HASH,

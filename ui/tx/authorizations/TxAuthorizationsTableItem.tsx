@@ -1,7 +1,7 @@
 import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TxAuthorization } from 'client/slices/tx/types/api';
+import type { TxAuthorization } from 'client/features/tx-authorization/types/api';
 
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';

@@ -2,7 +2,7 @@ import { Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
-import type { TxStateChange } from 'types/api/txStateChanges';
+import type { TxStateChange } from 'client/slices/tx/types/api';
 
 import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-title';
 import { currencyUnits } from 'client/shared/chain/units';

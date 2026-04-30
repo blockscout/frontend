@@ -1,4 +1,4 @@
-import type { TxStateChange, TxStateChanges } from 'types/api/txStateChanges';
+import type { TxStateChange, TxStateChanges } from 'client/slices/tx/types/api';
 
 export const mintToken: TxStateChange = {
   address: {

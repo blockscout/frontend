@@ -1,7 +1,7 @@
 import { Flex, Grid } from '@chakra-ui/react';
 import React from 'react';
 
-import type { DecodedInput } from 'types/api/decodedInput';
+import type { DecodedInput } from 'client/slices/tx/types/api';
 import type { ArrayElement } from 'types/utils';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';

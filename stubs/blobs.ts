@@ -1,6 +1,6 @@
 import type { Blob, TxBlob } from 'types/api/blobs';
 
-import { TX_HASH } from './tx';
+import { TX_HASH } from 'client/slices/tx/stubs/tx';
 
 const BLOB_HASH = '0x0137cd898a9aaa92bbe94999d2a98241f5eabc829d9354160061789963f85995';
 const BLOB_PROOF = '0x82683d5d6e58a76f2a607b8712cad113621d46cb86a6bcfcffb1e274a70c7308b3243c6075ee22d904fecf8d4c147c6f';

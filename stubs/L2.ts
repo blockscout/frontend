@@ -7,8 +7,9 @@ import type {
   OptimisticL2WithdrawalsItem,
 } from 'types/api/optimisticL2';
 
+import { TX_HASH } from 'client/slices/tx/stubs/tx';
+
 import { ADDRESS_HASH, ADDRESS_PARAMS } from './addressParams';
-import { TX_HASH } from './tx';
 
 export const L2_DEPOSIT_ITEM: OptimisticL2DepositsItem = {
   l1_block_number: 9045233,

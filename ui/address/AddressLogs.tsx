@@ -4,7 +4,7 @@ import React from 'react';
 import CsvExport from 'client/features/csv-export/components/CsvExport';
 import useIsMounted from 'client/shared/hooks/useIsMounted';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
-import { LOG } from 'stubs/log';
+import { LOG } from 'client/slices/tx/stubs/log';
 import { generateListStub } from 'stubs/utils';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';

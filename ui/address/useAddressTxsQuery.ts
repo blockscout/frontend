@@ -6,7 +6,7 @@ import type { AddressFromToFilter } from 'types/api/address';
 import { AddressFromToFilterValues } from 'types/api/address';
 
 import getFilterValueFromQuery from 'client/shared/router/get-filter-value-from-query';
-import { TX } from 'stubs/tx';
+import { TX } from 'client/slices/tx/stubs/tx';
 import { generateListStub } from 'stubs/utils';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import getSortParamsFromValue from 'ui/shared/sort/getSortParamsFromValue';

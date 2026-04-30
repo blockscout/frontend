@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { TxStateChange } from 'types/api/txStateChanges';
+import type { TxStateChange } from 'client/slices/tx/types/api';
 
 import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';

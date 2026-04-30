@@ -1,7 +1,7 @@
 import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
-import { TX } from 'stubs/tx';
+import { TX } from 'client/slices/tx/stubs/tx';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
 import TxAdditionalInfoContent from './TxAdditionalInfoContent';

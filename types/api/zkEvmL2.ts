@@ -1,4 +1,4 @@
-import type { Transaction } from './transaction';
+import type { Transaction } from 'client/slices/tx/types/api';
 
 export type ZkEvmL2DepositsItem = {
   block_number: number;

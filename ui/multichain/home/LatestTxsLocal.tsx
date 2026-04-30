@@ -8,8 +8,8 @@ import { route } from 'nextjs/routes';
 import getSocketUrl from 'client/api/get-socket-url';
 import useApiQuery from 'client/api/hooks/useApiQuery';
 import { SocketProvider } from 'client/api/socket/context';
+import { TX } from 'client/slices/tx/stubs/tx';
 import { useMultichainContext } from 'lib/contexts/multichain';
-import { TX } from 'stubs/tx';
 import { Link } from 'toolkit/chakra/link';
 import TxsContent from 'ui/txs/TxsContent';
 

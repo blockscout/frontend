@@ -13,8 +13,8 @@ import useSocketChannel from 'client/api/socket/useSocketChannel';
 import useSocketMessage from 'client/api/socket/useSocketMessage';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import delay from 'client/shared/utils/delay';
+import { TX, TX_ZKEVM_L2 } from 'client/slices/tx/stubs/tx';
 import config from 'configs/app';
-import { TX, TX_ZKEVM_L2 } from 'stubs/tx';
 import { SECOND } from 'toolkit/utils/consts';
 
 const rollupFeature = config.features.rollup;

@@ -14,7 +14,8 @@ import type { TransactionActions } from 'client/features/tx-actions/types/api';
 import type { TransactionAuthorization } from 'client/features/tx-authorization/types/api';
 import type { AddressParam } from 'types/api/addressParams';
 import type { BlockTransactionsResponse } from 'types/api/block';
-import type { TokenTransfer } from 'types/api/tokenTransfer';
+import type { TokenInfo } from 'types/api/token';
+import type { Erc721TotalPayload, TokenTransfer } from 'types/api/tokenTransfer';
 
 export interface DecodedInput {
   method_call: string;
@@ -66,6 +67,15 @@ export interface LogsResponseAddress {
     block_number: number;
   } | null;
 }
+
+export type TransactionType = 'rootstock_remasc' |
+'rootstock_bridge' |
+'token_transfer' |
+'contract_creation' |
+'contract_call' |
+'token_creation' |
+'coin_transfer' |
+'blob_transaction';
 
 export interface Transaction extends
   TransactionRollup,
@@ -127,6 +137,8 @@ export interface TransactionsStats {
   transactions_count_24h: string;
 }
 
+// INDEX
+
 export type TransactionsResponse = TransactionsResponseValidated | TransactionsResponsePending;
 
 export interface TransactionsResponseValidated {
@@ -148,15 +160,6 @@ export interface TransactionsResponsePending {
   } | null;
 }
 
-export type TransactionType = 'rootstock_remasc' |
-'rootstock_bridge' |
-'token_transfer' |
-'contract_creation' |
-'contract_call' |
-'token_creation' |
-'coin_transfer' |
-'blob_transaction';
-
 export type TxsResponse = TransactionsResponseValidated | TransactionsResponsePending | BlockTransactionsResponse;
 
 export interface TransactionsSorting {
@@ -167,3 +170,68 @@ export interface TransactionsSorting {
 export type TransactionsSortingField = TransactionsSorting['sort'];
 
 export type TransactionsSortingValue = `${ TransactionsSortingField }-${ TransactionsSorting['order'] }` | 'default';
+
+export type TxsTypeFilter = 'token_transfer' | 'contract_creation' | 'contract_call' | 'coin_transfer' | 'token_creation' | 'blob_transaction';
+
+export type TxsMethodFilter = 'approve' | 'transfer' | 'multicall' | 'mint' | 'commit';
+
+export type TxsFilters = {
+  filter: 'pending' | 'validated';
+  type?: Array<TxsTypeFilter>;
+  method?: Array<TxsMethodFilter>;
+};
+
+// STATE CHANGES
+export type TxStateChange = (TxStateChangeCoin | TxStateChangeToken) & {
+  address: AddressParam;
+  is_miner: boolean;
+  balance_before: string | null;
+  balance_after: string | null;
+};
+
+export interface TxStateChangeCoin {
+  type: 'coin';
+  change: string;
+  token: null;
+}
+
+export type TxStateChangeToken = TxStateChangeTokenErc20 | TxStateChangeTokenErc721 | TxStateChangeTokenErc1155;
+
+type TxStateChangeDirection = 'from' | 'to';
+
+export interface TxStateChangeTokenErc20 {
+  type: 'token';
+  token: TokenInfo;
+  change: string;
+}
+
+export interface TxStateChangeTokenErc721 {
+  type: 'token';
+  token: TokenInfo;
+  change: Array<{
+    direction: TxStateChangeDirection;
+    total: Erc721TotalPayload;
+  }>;
+}
+
+export interface TxStateChangeTokenErc1155 {
+  type: 'token';
+  token: TokenInfo;
+  change: string;
+  token_id: string;
+}
+
+export interface TxStateChangeTokenErc404 {
+  type: 'token';
+  token: TokenInfo;
+  change: string;
+  token_id: string;
+}
+
+export type TxStateChanges = {
+  items: Array<TxStateChange>;
+  next_page_params: {
+    items_count: number;
+    state_changes: null;
+  };
+};

@@ -1,7 +1,7 @@
-import type { TxStateChange } from 'types/api/txStateChanges';
+import type { TxStateChange } from 'client/slices/tx/types/api';
 
-import { ADDRESS_PARAMS } from './addressParams';
-import { TOKEN_INFO_ERC_721 } from './token';
+import { ADDRESS_PARAMS } from 'stubs/addressParams';
+import { TOKEN_INFO_ERC_721 } from 'stubs/token';
 
 export const STATE_CHANGE_MINER: TxStateChange = {
   address: ADDRESS_PARAMS,
