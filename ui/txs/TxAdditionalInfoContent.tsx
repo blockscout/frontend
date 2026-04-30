@@ -2,7 +2,7 @@ import { Box, Flex, VStack, Separator, HStack, chakra } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
-import type { Transaction } from 'types/api/transaction';
+import type { Transaction } from 'client/slices/tx/types/api';
 
 import { route } from 'nextjs/routes';
 

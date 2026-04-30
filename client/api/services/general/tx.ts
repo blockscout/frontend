@@ -1,10 +1,4 @@
 import type { ApiResource } from '../../types';
-import type { TxBlobs } from 'types/api/blobs';
-import type { FheOperationsResponse } from 'types/api/fheOperations';
-import type { InternalTransactionFilters, InternalTransactionsResponse } from 'types/api/internalTransaction';
-import type { LogsResponseTx } from 'types/api/log';
-import type { RawTracesResponse } from 'types/api/rawTrace';
-import type { TokenTransferResponse, TokenTransferFilters } from 'types/api/tokenTransfer';
 import type {
   TransactionsResponseValidated,
   TransactionsResponsePending,
@@ -12,7 +6,13 @@ import type {
   TransactionsResponseWatchlist,
   TransactionsResponseWithBlobs,
   TransactionsStats,
-} from 'types/api/transaction';
+} from 'client/slices/tx/types/api';
+import type { TxBlobs } from 'types/api/blobs';
+import type { FheOperationsResponse } from 'types/api/fheOperations';
+import type { InternalTransactionFilters, InternalTransactionsResponse } from 'types/api/internalTransaction';
+import type { LogsResponseTx } from 'types/api/log';
+import type { RawTracesResponse } from 'types/api/rawTrace';
+import type { TokenTransferResponse, TokenTransferFilters } from 'types/api/tokenTransfer';
 import type { TxInterpretationResponse } from 'types/api/txInterpretation';
 import type { TTxsFilters, TTxsWithBlobsFilters } from 'types/api/txsFilters';
 import type { TxStateChanges } from 'types/api/txStateChanges';

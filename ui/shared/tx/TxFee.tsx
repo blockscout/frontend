@@ -2,7 +2,8 @@ import type { BoxProps } from '@chakra-ui/react';
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import type { Transaction, WrappedTransactionFields } from 'types/api/transaction';
+import type { WrappedTransactionFields } from 'client/features/chain-variants/suave/types/api';
+import type { Transaction } from 'client/slices/tx/types/api';
 
 import config from 'configs/app';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';

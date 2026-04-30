@@ -1,7 +1,7 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TxAuthorization } from 'types/api/transaction';
+import type { TxAuthorization } from 'client/features/tx-authorization/types/api';
 
 import TxAuthorizationsListItem from './TxAuthorizationsListItem';
 

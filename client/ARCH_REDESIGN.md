@@ -126,11 +126,11 @@ client/api/
 ```text
 client/slices/tx/
   pages/
-    tx-index/           # kebab-case folder = one "screen" / route target
+    index/           # kebab-case folder = one "screen" / route target
       TxIndex.tsx
       TxIndexTable.tsx
       ...
-    tx-details/
+    details/
       TxDetails.tsx
       ...
   components/

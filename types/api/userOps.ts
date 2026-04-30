@@ -1,5 +1,6 @@
+import type { DecodedInput } from 'client/slices/tx/types/api';
+
 import type { AddressParamBasic } from './addressParams';
-import type { DecodedInput } from './decodedInput';
 
 export type UserOpsItem = {
   hash: string;

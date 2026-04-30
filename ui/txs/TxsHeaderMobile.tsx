@@ -1,7 +1,7 @@
 import { HStack, chakra, createListCollection } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TransactionsSortingValue } from 'types/api/transaction';
+import type { TransactionsSortingValue } from 'client/slices/tx/types/api';
 import type { PaginationParams } from 'ui/shared/pagination/types';
 
 // import { FilterInput } from 'toolkit/components/filters/FilterInput';

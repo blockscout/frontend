@@ -1,7 +1,7 @@
 import { Box, Flex, Spinner } from '@chakra-ui/react';
 import React from 'react';
 
-import type { Transaction } from 'types/api/transaction';
+import type { Transaction } from 'client/slices/tx/types/api';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 import useIsMobile from 'client/shared/hooks/useIsMobile';

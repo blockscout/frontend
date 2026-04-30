@@ -1,8 +1,8 @@
 import { Flex, VStack } from '@chakra-ui/react';
 import React from 'react';
 
+import type { Transaction } from 'client/slices/tx/types/api';
 import type { NovesDescribeTxsResponse } from 'types/api/noves';
-import type { Transaction } from 'types/api/transaction';
 import type { ClusterChainConfig } from 'types/multichain';
 
 import config from 'configs/app';

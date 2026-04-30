@@ -2,6 +2,7 @@ import type { Channel } from 'phoenix';
 
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 import type * as zetaChainCCTXType from '@blockscout/zetachain-cctx-types';
+import type { Transaction } from 'client/slices/tx/types/api';
 import type { AddressCoinBalanceHistoryItem, AddressTokensBalancesSocketMessage } from 'types/api/address';
 import type { NewArbitrumBatchSocketResponse } from 'types/api/arbitrumL2';
 import type { NewBlockSocketResponse } from 'types/api/block';
@@ -9,7 +10,6 @@ import type { SmartContractVerificationResponse } from 'types/api/contract';
 import type { RawTracesResponse } from 'types/api/rawTrace';
 import type { TokenInstanceMetadataSocketMessage } from 'types/api/token';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
-import type { Transaction } from 'types/api/transaction';
 import type { NewZkEvmBatchSocketResponse } from 'types/api/zkEvmL2';
 
 export type SocketMessageParams = SocketMessage.NewBlock |

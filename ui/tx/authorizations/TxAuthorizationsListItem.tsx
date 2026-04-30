@@ -1,7 +1,7 @@
 import { HStack } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TxAuthorization } from 'types/api/transaction';
+import type { TxAuthorization } from 'client/slices/tx/types/api';
 
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';

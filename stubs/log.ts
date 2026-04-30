@@ -1,9 +1,9 @@
-import type { Log } from 'types/api/log';
+import type { TransactionLog } from 'client/slices/tx/types/api';
 
 import { ADDRESS_PARAMS } from './addressParams';
 import { TX_HASH } from './tx';
 
-export const LOG: Log = {
+export const LOG: TransactionLog = {
   address: ADDRESS_PARAMS,
   data: '0x000000000000000000000000000000000000000000000000000000d75e4be200',
   decoded: {

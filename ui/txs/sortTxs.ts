@@ -1,4 +1,4 @@
-import type { Transaction, TransactionsSortingValue } from 'types/api/transaction';
+import type { Transaction, TransactionsSortingValue } from 'client/slices/tx/types/api';
 
 import compareBns from 'lib/bigint/compareBns';
 

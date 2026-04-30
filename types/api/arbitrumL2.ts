@@ -1,5 +1,6 @@
+import type { Transaction } from 'client/slices/tx/types/api';
+
 import type { Block } from './block';
-import type { Transaction } from './transaction';
 
 export interface ArbitrumLatestDepositsItem {
   completion_transaction_hash: string;

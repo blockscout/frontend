@@ -9,19 +9,19 @@ import {
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
+import type { Transaction } from 'client/slices/tx/types/api';
+import { ZKEVM_L2_TX_STATUSES } from 'client/slices/tx/types/api';
 import { SCROLL_L2_BLOCK_STATUSES } from 'types/api/scrollL2';
-import type { Transaction } from 'types/api/transaction';
-import { ZKEVM_L2_TX_STATUSES } from 'types/api/transaction';
 import { ZKSYNC_L2_TX_BATCH_STATUSES } from 'types/api/zkSyncL2';
 
 import { route } from 'nextjs-routes';
 
 import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-title';
 import { currencyUnits } from 'client/shared/chain/units';
+import getConfirmationDuration from 'client/slices/tx/utils/get-confirmation-duration';
 import config from 'configs/app';
 import * as arbitrum from 'lib/rollups/arbitrum';
 import { formatZkEvmTxStatus, formatZkSyncL2TxnBatchStatus, layerLabels } from 'lib/rollups/utils';
-import getConfirmationDuration from 'lib/tx/getConfirmationDuration';
 import { Badge } from 'toolkit/chakra/badge';
 import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
 import { Link } from 'toolkit/chakra/link';

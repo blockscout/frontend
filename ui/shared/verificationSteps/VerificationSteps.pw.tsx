@@ -1,7 +1,7 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import { ZKEVM_L2_TX_STATUSES } from 'types/api/transaction';
+import { ZKEVM_L2_TX_STATUSES } from 'client/slices/tx/types/api';
 
 import { test, expect } from 'playwright/lib';
 

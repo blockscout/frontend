@@ -1,7 +1,7 @@
 import { Grid, GridItem } from '@chakra-ui/react';
 import React from 'react';
 
-import type { Log } from 'types/api/log';
+import type { TransactionLog } from 'client/slices/tx/types/api';
 import type { ClusterChainConfig } from 'types/multichain';
 
 import { route } from 'nextjs-routes';
@@ -21,7 +21,7 @@ import RawInputData from 'ui/shared/RawInputData';
 
 import LogIndex from './LogIndex';
 
-type Props = Log & {
+type Props = TransactionLog & {
   type: 'address' | 'transaction';
   isLoading?: boolean;
   defaultDataType?: DataType;

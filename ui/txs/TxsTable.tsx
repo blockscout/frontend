@@ -1,7 +1,7 @@
 import React from 'react';
 
 import type { TxsSocketType } from './socket/types';
-import type { Transaction, TransactionsSortingField, TransactionsSortingValue } from 'types/api/transaction';
+import type { Transaction, TransactionsSortingField, TransactionsSortingValue } from 'client/slices/tx/types/api';
 
 import { currencyUnits } from 'client/shared/chain/units';
 import useIsMobile from 'client/shared/hooks/useIsMobile';

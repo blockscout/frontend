@@ -1,7 +1,7 @@
 import { Grid, Text, Flex, Box } from '@chakra-ui/react';
 import React from 'react';
 
-import type { InteropTransactionInfo } from 'types/api/transaction';
+import type { InteropTransactionInfo } from 'client/features/op-interop/types/api';
 
 import config from 'configs/app';
 import { layerLabels } from 'lib/rollups/utils';

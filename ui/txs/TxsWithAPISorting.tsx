@@ -1,8 +1,8 @@
 import React from 'react';
 
 import type { TxsSocketType } from './socket/types';
+import type { TransactionsSortingValue } from 'client/slices/tx/types/api';
 import type { AddressFromToFilter } from 'types/api/address';
-import type { TransactionsSortingValue } from 'types/api/transaction';
 
 import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
 import getSortParamsFromValue from 'ui/shared/sort/getSortParamsFromValue';

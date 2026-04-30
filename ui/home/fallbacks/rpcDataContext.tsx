@@ -1,8 +1,8 @@
 import { useQueries, useQuery } from '@tanstack/react-query';
 import React from 'react';
 
+import type { Transaction } from 'client/slices/tx/types/api';
 import type { Block } from 'types/api/block';
-import type { Transaction } from 'types/api/transaction';
 
 import { publicClient } from 'client/features/connect-wallet/utils/public-client';
 import formatBlockRpcData from 'client/slices/block/utils/format-rpc-data';

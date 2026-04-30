@@ -1,7 +1,7 @@
 import { Grid, GridItem, Text } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TransactionRevertReason } from 'types/api/transaction';
+import type { TransactionRevertReason } from 'client/slices/tx/types/api';
 
 import hexToUtf8 from 'client/shared/transformers/hex-to-utf8';
 import { HEX_REGEXP } from 'toolkit/utils/regexp';

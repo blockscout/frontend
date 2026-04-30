@@ -1,4 +1,4 @@
-import type { TransactionsStats } from 'types/api/transaction';
+import type { TransactionsStats } from 'client/slices/tx/types/api';
 
 export const base: TransactionsStats = {
   pending_transactions_count: '4200',

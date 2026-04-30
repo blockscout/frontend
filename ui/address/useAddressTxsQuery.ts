@@ -1,9 +1,9 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { TransactionsSorting, TransactionsSortingField, TransactionsSortingValue } from 'client/slices/tx/types/api';
 import type { AddressFromToFilter } from 'types/api/address';
 import { AddressFromToFilterValues } from 'types/api/address';
-import type { TransactionsSorting, TransactionsSortingField, TransactionsSortingValue } from 'types/api/transaction';
 
 import getFilterValueFromQuery from 'client/shared/router/get-filter-value-from-query';
 import { TX } from 'stubs/tx';

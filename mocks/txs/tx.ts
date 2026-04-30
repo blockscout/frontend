@@ -1,8 +1,8 @@
 /* eslint-disable max-len */
 import type { RpcTransactionReceipt } from 'viem';
 
+import type { Transaction } from 'client/slices/tx/types/api';
 import type { AddressParam } from 'types/api/addressParams';
-import type { Transaction } from 'types/api/transaction';
 
 import * as addressMock from 'mocks/address/address';
 import { publicTag, privateTag, watchlistName } from 'mocks/address/tag';

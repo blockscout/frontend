@@ -1,4 +1,4 @@
-import type { ZKEVM_L2_TX_STATUSES } from 'types/api/transaction';
+import type { ZKEVM_L2_TX_STATUSES } from 'client/slices/tx/types/api';
 import type { ZKEVM_L2_TX_BATCH_STATUSES } from 'types/api/zkEvmL2';
 import type { ZKSYNC_L2_TX_BATCH_STATUSES } from 'types/api/zkSyncL2';
 

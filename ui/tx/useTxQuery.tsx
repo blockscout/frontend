@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { SocketMessage } from 'client/api/socket/types';
-import type { Transaction } from 'types/api/transaction';
+import type { Transaction } from 'client/slices/tx/types/api';
 
 import useApiQuery, { getResourceKey } from 'client/api/hooks/useApiQuery';
 import { retry } from 'client/api/hooks/useQueryClientConfig';

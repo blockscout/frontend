@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
-import type { Transaction } from 'types/api/transaction';
+import type { Transaction } from 'client/slices/tx/types/api';
 
 import { currencyUnits } from 'client/shared/chain/units';
 import config from 'configs/app';

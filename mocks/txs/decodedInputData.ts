@@ -1,4 +1,4 @@
-import type { DecodedInput } from 'types/api/decodedInput';
+import type { DecodedInput } from 'client/slices/tx/types/api';
 
 export const withoutIndexedFields: DecodedInput = {
   method_call: 'CreditSpended(uint256 _type, uint256 _quantity)',

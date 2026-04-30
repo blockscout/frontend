@@ -1,7 +1,7 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import type { OpWithdrawal } from 'types/api/transaction';
+import type { OpWithdrawal } from 'client/features/rollup/optimistic/types/api';
 
 import * as addressMock from 'mocks/address/address';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';

@@ -2,8 +2,8 @@ import { inRange } from 'es-toolkit';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { TransactionLog } from 'client/slices/tx/types/api';
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
-import type { Log } from 'types/api/log';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
@@ -53,7 +53,7 @@ const UserOp = () => {
     }
   }, [ userOpQuery.data ]);
 
-  const filterLogsByLogIndex = React.useCallback((log: Log) => {
+  const filterLogsByLogIndex = React.useCallback((log: TransactionLog) => {
     if (!userOpQuery.data) {
       return true;
     } else {

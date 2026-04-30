@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { Transaction } from 'types/api/transaction';
+import type { Transaction } from 'client/slices/tx/types/api';
 
 import type { BadgeProps } from 'toolkit/chakra/badge';
 

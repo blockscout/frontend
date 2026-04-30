@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import type { Chain, GetBlockReturnType, GetTransactionReturnType, TransactionReceipt } from 'viem';
 
-import type { Transaction } from 'types/api/transaction';
+import type { Transaction } from 'client/slices/tx/types/api';
 
 import { publicClient } from 'client/features/connect-wallet/utils/public-client';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';

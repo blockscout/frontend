@@ -1,7 +1,7 @@
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
-import type { TransactionsSortingValue, TxsResponse } from 'types/api/transaction';
+import type { TransactionsSortingValue, TxsResponse } from 'client/slices/tx/types/api';
 
 import type { ResourceError } from 'client/api/resources';
 import * as cookies from 'client/shared/storage/cookies';

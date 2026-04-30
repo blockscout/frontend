@@ -1,6 +1,6 @@
 import type * as stats from '@blockscout/stats-types';
+import type { Transaction, TransactionsStats } from 'client/slices/tx/types/api';
 import type { RawTracesResponse } from 'types/api/rawTrace';
-import type { Transaction, TransactionsStats } from 'types/api/transaction';
 
 import { CHAIN_STATS_COUNTER } from 'client/features/chain-stats/stubs/counters';
 

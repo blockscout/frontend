@@ -1,9 +1,9 @@
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
+import type { OpWithdrawal, Transaction } from 'client/slices/tx/types/api';
 import type { AddressParam } from 'types/api/addressParams';
 import type { OptimisticL2WithdrawalStatus } from 'types/api/optimisticL2';
-import type { OpWithdrawal, Transaction } from 'types/api/transaction';
 
 import { getResourceKey } from 'client/api/hooks/useApiQuery';
 import config from 'configs/app';

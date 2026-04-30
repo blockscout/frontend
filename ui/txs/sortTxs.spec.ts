@@ -1,4 +1,4 @@
-import type { Transaction } from 'types/api/transaction';
+import type { Transaction } from 'client/slices/tx/types/api';
 
 import { describe, it, expect } from 'vitest';
 
