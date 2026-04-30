@@ -5,7 +5,7 @@ import type { MouseEvent } from 'react';
 
 import type { MarketplaceApp } from 'types/client/marketplace';
 
-import * as mixpanel from 'client/shared/analytics';
+import * as mixpanel from 'client/shared/analytics/mixpanel';
 import useLazyRenderedList from 'client/shared/lists/useLazyRenderedList';
 
 import EmptySearchResult from './EmptySearchResult';

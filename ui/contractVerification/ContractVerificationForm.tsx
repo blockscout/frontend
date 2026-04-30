@@ -13,7 +13,7 @@ import { route } from 'nextjs-routes';
 import useApiFetch from 'client/api/hooks/useApiFetch';
 import useSocketChannel from 'client/api/socket/useSocketChannel';
 import useSocketMessage from 'client/api/socket/useSocketMessage';
-import * as mixpanel from 'client/shared/analytics';
+import * as mixpanel from 'client/shared/analytics/mixpanel';
 import getErrorObjStatusCode from 'client/shared/errors/get-error-obj-status-code';
 import capitalizeFirstLetter from 'client/shared/text/capitalize-first-letter';
 import delay from 'client/shared/utils/delay';

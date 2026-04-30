@@ -6,7 +6,7 @@ import hexToDecimal from 'client/shared/transformers/hex-to-decimal';
 import dayjs from 'lib/date/dayjs';
 import { unknownAddress } from 'ui/shared/address/utils';
 
-export default function formatTxData(
+export default function formatRpcData(
   tx: GetTransactionReturnType<Chain, 'latest'>,
   receipt: TransactionReceipt | null,
   confirmations: bigint | null,

@@ -5,7 +5,7 @@ import React from 'react';
 import type { Screen, ScreenSuccess } from './types';
 
 import { getResourceKey } from 'client/api/hooks/useApiQuery';
-import * as mixpanel from 'client/shared/analytics';
+import * as mixpanel from 'client/shared/analytics/mixpanel';
 import config from 'configs/app';
 import { useRewardsContext } from 'lib/contexts/rewards';
 import useGetCsrfToken from 'lib/hooks/useGetCsrfToken';

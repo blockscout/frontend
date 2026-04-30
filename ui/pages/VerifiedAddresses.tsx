@@ -6,7 +6,7 @@ import React from 'react';
 import type { VerifiedAddress, TokenInfoApplication, TokenInfoApplications, VerifiedAddressResponse } from 'types/api/account';
 
 import useApiQuery, { getResourceKey } from 'client/api/hooks/useApiQuery';
-import { PAGE_TYPE_DICT } from 'client/shared/analytics/get-page-type';
+import * as mixpanel from 'client/shared/analytics/mixpanel';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import config from 'configs/app';
 import { TOKEN_INFO_APPLICATION, VERIFIED_ADDRESS } from 'stubs/account';
@@ -220,7 +220,7 @@ const VerifiedAddresses = () => {
       </DataListDisplay>
       { addButton }
       <AddressVerificationModal
-        pageType={ PAGE_TYPE_DICT['/account/verified-addresses'] }
+        pageType={ mixpanel.getPageType('/account/verified-addresses') }
         open={ modalProps.open }
         onOpenChange={ modalProps.onOpenChange }
         onSubmit={ handleAddressSubmit }

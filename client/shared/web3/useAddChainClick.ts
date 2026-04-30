@@ -1,6 +1,6 @@
 import React from 'react';
 
-import * as mixpanel from 'client/shared/analytics';
+import * as mixpanel from 'client/shared/analytics/mixpanel';
 import { toaster } from 'toolkit/chakra/toaster';
 
 import useAddChain from './useAddChain';

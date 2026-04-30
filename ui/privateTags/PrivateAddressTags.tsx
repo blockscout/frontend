@@ -3,7 +3,7 @@ import React, { useCallback, useState } from 'react';
 
 import type { AddressTag } from 'types/api/account';
 
-import { PAGE_TYPE_DICT } from 'client/shared/analytics/get-page-type';
+import * as mixpanel from 'client/shared/analytics/mixpanel';
 import { PRIVATE_TAG_ADDRESS } from 'stubs/account';
 import { Button } from 'toolkit/chakra/button';
 import { Skeleton } from 'toolkit/chakra/skeleton';
@@ -107,7 +107,7 @@ const PrivateAddressTags = () => {
       <AddressModal
         { ...addressModalProps }
         data={ addressModalData }
-        pageType={ PAGE_TYPE_DICT['/account/tag-address'] }
+        pageType={ mixpanel.getPageType('/account/tag-address') }
         onOpenChange={ onAddressModalOpenChange }
         onSuccess={ onAddOrEditSuccess }
       />

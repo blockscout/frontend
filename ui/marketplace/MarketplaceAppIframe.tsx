@@ -2,7 +2,7 @@ import { Center, chakra } from '@chakra-ui/react';
 import { DappscoutIframeProvider, useDappscoutIframe } from 'dappscout-iframe';
 import React, { useCallback, useEffect, useState, useMemo } from 'react';
 
-import useWeb3Wallet from 'client/shared/web3/useWallet';
+import useWeb3Wallet from 'client/features/connect-wallet/hooks/useWallet';
 import config from 'configs/app';
 import essentialDappsChainsConfig from 'configs/essential-dapps-chains';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';

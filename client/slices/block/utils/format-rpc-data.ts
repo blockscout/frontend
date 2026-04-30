@@ -5,7 +5,7 @@ import type { Block } from 'types/api/block';
 import dayjs from 'lib/date/dayjs';
 import { unknownAddress } from 'ui/shared/address/utils';
 
-export default function formatBlockData(block: GetBlockReturnType<Chain, false, 'latest'> | null): Block | null {
+export default function formatRpcData(block: GetBlockReturnType<Chain, false, 'latest'> | null): Block | null {
   if (!block) {
     return null;
   }

@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { Address } from 'types/api/address';
 
-import * as mixpanel from 'client/shared/analytics';
+import * as mixpanel from 'client/shared/analytics/mixpanel';
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import TextSeparator from 'ui/shared/TextSeparator';

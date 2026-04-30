@@ -1,4 +1,4 @@
-import type * as mixpanel from 'client/shared/analytics';
+import type * as mixpanel from 'client/shared/analytics/mixpanel';
 
 export interface Params {
   source: mixpanel.EventPayload<mixpanel.EventTypes.WALLET_CONNECT>['Source'];

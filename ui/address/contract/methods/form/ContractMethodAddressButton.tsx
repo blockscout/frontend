@@ -1,6 +1,6 @@
 import React from 'react';
 
-import useAccount from 'client/shared/web3/useAccount';
+import useAccount from 'client/features/connect-wallet/hooks/useAccount';
 import { Button } from 'toolkit/chakra/button';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 

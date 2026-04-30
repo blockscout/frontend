@@ -1,7 +1,7 @@
 import { Text } from '@chakra-ui/react';
 import React from 'react';
 
-import type { EventTypes, EventPayload } from 'client/shared/analytics';
+import type { EventTypes, EventPayload } from 'client/shared/analytics/mixpanel';
 import config from 'configs/app';
 import type { PopoverContentProps } from 'toolkit/chakra/popover';
 import { PopoverBody, PopoverContent, PopoverRoot } from 'toolkit/chakra/popover';

@@ -5,7 +5,7 @@ import type { AddressMetadataTagFormatted } from 'types/client/addressMetadata';
 
 import { route } from 'nextjs-routes';
 
-import * as mixpanel from 'client/shared/analytics';
+import * as mixpanel from 'client/shared/analytics/mixpanel';
 import config from 'configs/app';
 import { Image } from 'toolkit/chakra/image';
 import { Link } from 'toolkit/chakra/link';

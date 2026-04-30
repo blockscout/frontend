@@ -1,6 +1,6 @@
 import React from 'react';
 
-import * as mixpanel from 'client/shared/analytics';
+import * as mixpanel from 'client/shared/analytics/mixpanel';
 import useFeatureValue from 'client/shared/feature-flags/useFeatureValue';
 import * as cookies from 'client/shared/storage/cookies';
 

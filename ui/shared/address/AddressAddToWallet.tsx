@@ -4,7 +4,7 @@ import type { WatchAssetParams } from 'viem';
 
 import type { TokenInfo } from 'types/api/token';
 
-import * as mixpanel from 'client/shared/analytics';
+import * as mixpanel from 'client/shared/analytics/mixpanel';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import useProvider from 'client/shared/web3/useProvider';
 import useSwitchOrAddChain from 'client/shared/web3/useSwitchOrAddChain';

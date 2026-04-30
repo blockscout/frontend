@@ -4,7 +4,7 @@ import React from 'react';
 
 import type { ItemProps } from './types';
 
-import * as mixpanel from 'client/shared/analytics';
+import * as mixpanel from 'client/shared/analytics/mixpanel';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import config from 'configs/app';
 import { IconButton } from 'toolkit/chakra/icon-button';

@@ -2,8 +2,8 @@ import type { AppKitNetwork } from '@reown/appkit/networks';
 import { createAppKit, useAppKitTheme } from '@reown/appkit/react';
 import React from 'react';
 
-import { chains } from 'client/shared/web3/chains';
-import wagmiConfig from 'client/shared/web3/wagmi-config';
+import { chains } from 'client/features/connect-wallet/utils/chains';
+import wagmiConfig from 'client/features/connect-wallet/utils/wagmi-config';
 import config from 'configs/app';
 import { useColorMode } from 'toolkit/chakra/color-mode';
 import colors from 'toolkit/theme/foundations/colors';

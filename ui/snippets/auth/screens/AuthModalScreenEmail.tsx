@@ -6,7 +6,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import type { EmailFormFields, Screen } from '../types';
 
 import useApiFetch from 'client/api/hooks/useApiFetch';
-import * as mixpanel from 'client/shared/analytics';
+import * as mixpanel from 'client/shared/analytics/mixpanel';
 import getErrorMessage from 'client/shared/errors/get-error-message';
 import getErrorObjPayload from 'client/shared/errors/get-error-obj-payload';
 import { Button } from 'toolkit/chakra/button';

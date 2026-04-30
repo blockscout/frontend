@@ -13,7 +13,7 @@ import type { ClusterChainConfig } from 'types/multichain';
 
 import { route } from 'nextjs-routes';
 
-import * as mixpanel from 'client/shared/analytics';
+import * as mixpanel from 'client/shared/analytics/mixpanel';
 import { currencyUnits } from 'client/shared/chain/units';
 import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';

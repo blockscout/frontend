@@ -5,7 +5,7 @@ import React from 'react';
 import type { ItemProps } from '../types';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
-import { PAGE_TYPE_DICT } from 'client/shared/analytics/get-page-type';
+import * as mixpanel from 'client/shared/analytics/mixpanel';
 import config from 'configs/app';
 import { MenuItem } from 'toolkit/chakra/menu';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
@@ -101,7 +101,7 @@ const TokenInfoMenuItem = ({ hash, type }: ItemProps) => {
       { element }
       <AddressVerificationModal
         defaultAddress={ hash }
-        pageType={ PAGE_TYPE_DICT['/token/[hash]'] }
+        pageType={ mixpanel.getPageType('/token/[hash]') }
         open={ modal.open }
         onOpenChange={ modal.onOpenChange }
         onSubmit={ handleVerifiedAddressSubmit }
