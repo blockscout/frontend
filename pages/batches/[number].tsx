@@ -19,8 +19,6 @@ const Batch = dynamic(() => {
       return import('ui/pages/ArbitrumL2TxnBatch');
     case 'optimistic':
       return import('ui/pages/OptimisticL2TxnBatch');
-    case 'zkEvm':
-      return import('ui/pages/ZkEvmL2TxnBatch');
     case 'zkSync':
       return import('ui/pages/ZkSyncL2TxnBatch');
     case 'scroll':

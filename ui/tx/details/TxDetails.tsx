@@ -11,7 +11,6 @@ import React from 'react';
 
 import { SCROLL_L2_BLOCK_STATUSES } from 'types/api/scrollL2';
 import type { Transaction } from 'types/api/transaction';
-import { ZKEVM_L2_TX_STATUSES } from 'types/api/transaction';
 import { ZKSYNC_L2_TX_BATCH_STATUSES } from 'types/api/zkSyncL2';
 
 import { route } from 'nextjs-routes';
@@ -20,14 +19,13 @@ import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-titl
 import { currencyUnits } from 'client/shared/chain/units';
 import config from 'configs/app';
 import * as arbitrum from 'lib/rollups/arbitrum';
-import { formatZkEvmTxStatus, formatZkSyncL2TxnBatchStatus, layerLabels } from 'lib/rollups/utils';
+import { formatZkSyncL2TxnBatchStatus, layerLabels } from 'lib/rollups/utils';
 import getConfirmationDuration from 'lib/tx/getConfirmationDuration';
 import { Badge } from 'toolkit/chakra/badge';
 import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoNativeCoinValue from 'ui/shared/DetailedInfo/DetailedInfoNativeCoinValue';
 import DetailedInfoSponsoredItem from 'ui/shared/DetailedInfo/DetailedInfoSponsoredItem';
@@ -37,7 +35,6 @@ import AddressEntityInterop from 'ui/shared/entities/address/AddressEntityIntero
 import BatchEntityL2 from 'ui/shared/entities/block/BatchEntityL2';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
-import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import IconSvg from 'ui/shared/IconSvg';
 import LogDecodedInputData from 'ui/shared/logs/LogDecodedInputData';
 import RawInputData from 'ui/shared/RawInputData';
@@ -159,7 +156,7 @@ const TxDetails = ({ data, isLoading, socketStatus, noTxActions }: Props) => {
       >
         {
           rollupFeature.isEnabled &&
-          (rollupFeature.type === 'zkEvm' || rollupFeature.type === 'zkSync' || rollupFeature.type === 'arbitrum' || rollupFeature.type === 'scroll') ?
+          (rollupFeature.type === 'zkSync' || rollupFeature.type === 'arbitrum' || rollupFeature.type === 'scroll') ?
             `${ layerLabels.current } status and method` :
             'Status and method'
         }
@@ -200,24 +197,6 @@ const TxDetails = ({ data, isLoading, socketStatus, noTxActions }: Props) => {
                 </Box>
               )) }
             </Flex>
-          </DetailedInfo.ItemValue>
-        </>
-      ) }
-
-      { data.zkevm_status && !config.UI.views.tx.hiddenFields?.L1_status && (
-        <>
-          <DetailedInfo.ItemLabel
-            hint={ `Status of the transaction confirmation path to ${ layerLabels.parent }` }
-            isLoading={ isLoading }
-          >
-            Confirmation status
-          </DetailedInfo.ItemLabel>
-          <DetailedInfo.ItemValue>
-            <VerificationSteps
-              currentStep={ formatZkEvmTxStatus(data.zkevm_status) }
-              steps={ ZKEVM_L2_TX_STATUSES.map(formatZkEvmTxStatus) }
-              isLoading={ isLoading }
-            />
           </DetailedInfo.ItemValue>
         </>
       ) }
@@ -302,23 +281,6 @@ const TxDetails = ({ data, isLoading, socketStatus, noTxActions }: Props) => {
           </>
         ) }
       </DetailedInfo.ItemValue>
-
-      { data.zkevm_batch_number && !config.UI.views.tx.hiddenFields?.batch && (
-        <>
-          <DetailedInfo.ItemLabel
-            hint="Batch index for this transaction"
-            isLoading={ isLoading }
-          >
-            Txn batch
-          </DetailedInfo.ItemLabel>
-          <DetailedInfo.ItemValue>
-            <BatchEntityL2
-              isLoading={ isLoading }
-              number={ data.zkevm_batch_number }
-            />
-          </DetailedInfo.ItemValue>
-        </>
-      ) }
 
       { data.zksync && !config.UI.views.tx.hiddenFields?.batch && (
         <>
@@ -538,41 +500,6 @@ const TxDetails = ({ data, isLoading, socketStatus, noTxActions }: Props) => {
           <DetailedInfo.ItemDivider/>
         </>
       ) }
-
-      { data.zkevm_sequence_hash && (
-        <>
-          <DetailedInfo.ItemLabel
-            isLoading={ isLoading }
-          >
-            Sequence tx hash
-          </DetailedInfo.ItemLabel>
-          <DetailedInfo.ItemValue flexWrap="nowrap">
-            <Skeleton loading={ isLoading } overflow="hidden">
-              <HashStringShortenDynamic hash={ data.zkevm_sequence_hash }/>
-            </Skeleton>
-            <CopyToClipboard text={ data.zkevm_sequence_hash } isLoading={ isLoading }/>
-          </DetailedInfo.ItemValue>
-        </>
-
-      ) }
-
-      { data.zkevm_verify_hash && (
-        <>
-          <DetailedInfo.ItemLabel
-            isLoading={ isLoading }
-          >
-            Verify tx hash
-          </DetailedInfo.ItemLabel>
-          <DetailedInfo.ItemValue flexWrap="nowrap">
-            <Skeleton loading={ isLoading } overflow="hidden">
-              <HashStringShortenDynamic hash={ data.zkevm_verify_hash }/>
-            </Skeleton>
-            <CopyToClipboard text={ data.zkevm_verify_hash } isLoading={ isLoading }/>
-          </DetailedInfo.ItemValue>
-        </>
-      ) }
-
-      { (data.zkevm_batch_number || data.zkevm_verify_hash) && <DetailedInfo.ItemDivider/> }
 
       { !config.UI.views.tx.hiddenFields?.value && (
         <>

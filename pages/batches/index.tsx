@@ -13,8 +13,6 @@ const Batches = dynamic(() => {
   }
 
   switch (rollupFeature.type) {
-    case 'zkEvm':
-      return import('ui/pages/ZkEvmL2TxnBatches');
     case 'zkSync':
       return import('ui/pages/ZkSyncL2TxnBatches');
     case 'optimistic':

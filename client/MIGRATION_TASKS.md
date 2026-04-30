@@ -145,7 +145,7 @@ One PR per rollup type. Each goes under `client/features/rollup/<type>/`.
 **Scope:** All Arbitrum-specific UI, hooks, utils, types → `client/features/rollup/arbitrum/`  
 
 ### 4-3 · [ ] Feature: `rollup/zk-sync`
-**Scope:** zkSync-specific UI, hooks, utils, types → `client/features/rollup/zk-sync/`. Check for other zk-based rollup types (scroll, polygon-zk-evm, etc.) and add tasks if needed.  
+**Scope:** zkSync-specific UI, hooks, utils, types → `client/features/rollup/zk-sync/`. Check for other zk-based rollup types (scroll, etc.) and add tasks if needed.  
 
 ---
 

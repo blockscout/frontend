@@ -36,9 +36,6 @@ import type {
   ValidatorZilliqa,
 } from 'types/api/validators';
 import type { WithdrawalsResponse, WithdrawalsCounters } from 'types/api/withdrawals';
-import type {
-  ZkEvmL2TxnBatchesItem,
-} from 'types/api/zkEvmL2';
 
 export const GENERAL_API_MISC_RESOURCES = {
   // WITHDRAWALS
@@ -96,9 +93,6 @@ export const GENERAL_API_MISC_RESOURCES = {
   homepage_txs: {
     path: '/api/v2/main-page/transactions',
   },
-  homepage_zkevm_l2_batches: {
-    path: '/api/v2/main-page/zkevm/batches/confirmed',
-  },
   homepage_arbitrum_l2_batches: {
     path: '/api/v2/main-page/arbitrum/batches/committed',
   },
@@ -107,9 +101,6 @@ export const GENERAL_API_MISC_RESOURCES = {
   },
   homepage_indexing_status: {
     path: '/api/v2/main-page/indexing-status',
-  },
-  homepage_zkevm_latest_batch: {
-    path: '/api/v2/main-page/zkevm/batches/latest-number',
   },
   homepage_zksync_latest_batch: {
     path: '/api/v2/main-page/zksync/batches/latest-number',
@@ -296,10 +287,8 @@ R extends 'general:homepage_txs' ? Array<Transaction> :
 R extends 'general:homepage_txs_watchlist' ? Array<Transaction> :
 R extends 'general:homepage_optimistic_deposits' ? Array<OptimisticL2DepositsItem> :
 R extends 'general:homepage_arbitrum_deposits' ? ArbitrumLatestDepositsResponse :
-R extends 'general:homepage_zkevm_l2_batches' ? { items: Array<ZkEvmL2TxnBatchesItem> } :
 R extends 'general:homepage_arbitrum_l2_batches' ? { items: Array<ArbitrumL2TxnBatchesItem> } :
 R extends 'general:homepage_indexing_status' ? IndexingStatus :
-R extends 'general:homepage_zkevm_latest_batch' ? number :
 R extends 'general:homepage_zksync_latest_batch' ? number :
 R extends 'general:homepage_arbitrum_latest_batch' ? number :
 R extends 'general:quick_search' ? Array<SearchResultItem> :

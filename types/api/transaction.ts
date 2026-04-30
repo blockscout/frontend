@@ -85,11 +85,6 @@ export type Transaction = {
   celo?: {
     gas_token: TokenInfo | null;
   };
-  // zkEvm fields
-  zkevm_verify_hash?: string;
-  zkevm_batch_number?: number;
-  zkevm_status?: typeof ZKEVM_L2_TX_STATUSES[number];
-  zkevm_sequence_hash?: string;
   // zkSync FIELDS
   zksync?: Omit<ZkSyncBatchesItem, 'number' | 'transactions_count' | 'timestamp'> & {
     batch_number: number | null;
@@ -131,8 +126,6 @@ type ArbitrumTransactionData = {
 };
 
 export type ArbitrumTransactionMessageStatus = 'Relayed' | 'Syncing with base layer' | 'Waiting for confirmation' | 'Ready for relay' | 'Settlement pending';
-
-export const ZKEVM_L2_TX_STATUSES = [ 'Confirmed by Sequencer', 'L1 Confirmed' ];
 
 export interface TransactionsStats {
   pending_transactions_count: string;

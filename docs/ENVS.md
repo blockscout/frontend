@@ -116,7 +116,7 @@ Also, be aware that if you customize the name of the currency or any of its deno
 | NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS | `string` | Network currency decimals | - | `18` | `6` | v1.0.x+ |
 | NEXT_PUBLIC_NETWORK_SECONDARY_COIN_SYMBOL | `string` | Network secondary coin symbol.  | - | - | `GNO` | v1.29.0+ |
 | NEXT_PUBLIC_NETWORK_MULTIPLE_GAS_CURRENCIES | `boolean` | Set to `true` for networks where users can pay transaction fees in either the native coin or ERC-20 tokens.  | - | `false` | `true` | v1.33.0+ |
-| NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE | `validation` \| `mining` \| 'fee reception' | Verification type in the network. Irrelevant for Arbitrum (verification type is always `posting`) and ZkEvm (verification type is always `sequencing`) L2s | - | `mining` | `validation` | v1.0.x+ |
+| NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE | `validation` \| `mining` \| 'fee reception' | Verification type in the network. Irrelevant for Arbitrum (verification type is always `posting`) L2s | - | `mining` | `validation` | v1.0.x+ |
 | NEXT_PUBLIC_NETWORK_TOKEN_STANDARD_NAME | `string` | Name of the standard for creating tokens | - | `ERC` | `BEP` | v1.31.0+ |
 | NEXT_PUBLIC_NETWORK_ADDITIONAL_TOKEN_TYPES | `Array<{id: string; name: string;}>` | List of additional **ERC-20-like (fungible)** token types supported by the explorer UI (extends token type filters/labels). *Note: the token type id must also be supported by the backend API responses and filters.* | - | `[]` | `'[{"id":"ERC-777","name":"ERC-777"}]'` | v2.6.0+ |
 | NEXT_PUBLIC_IS_TESTNET | `boolean`| Set to true if network is testnet | - | `false` | `true` | v1.0.x+ |
@@ -142,7 +142,7 @@ Also, be aware that if you customize the name of the currency or any of its deno
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_HOMEPAGE_CHARTS | `Array<'daily_txs' \| 'daily_operational_txs' \| 'coin_price'  \| 'secondary_coin_price' \| 'market_cap' \| 'tvl'>` | List of charts displayed on the home page | - | - | `['daily_txs','coin_price','market_cap']` | v1.0.x+ |
-| NEXT_PUBLIC_HOMEPAGE_STATS | `Array<'latest_batch' \| 'total_blocks'  \| 'average_block_time' \| 'total_txs' \| 'total_operational_txs' \| 'latest_l1_state_batch' \| 'wallet_addresses' \| 'gas_tracker' \| 'btc_locked' \| 'current_epoch'>` | List of stats widgets displayed on the home page | - | For zkSync, zkEvm and Arbitrum rollups: `['latest_batch','average_block_time','total_txs','wallet_addresses','gas_tracker']`, for other cases: `['total_blocks','average_block_time','total_txs','wallet_addresses','gas_tracker']` | `['total_blocks','total_txs','wallet_addresses']` | v1.35.x+ |
+| NEXT_PUBLIC_HOMEPAGE_STATS | `Array<'latest_batch' \| 'total_blocks'  \| 'average_block_time' \| 'total_txs' \| 'total_operational_txs' \| 'latest_l1_state_batch' \| 'wallet_addresses' \| 'gas_tracker' \| 'btc_locked' \| 'current_epoch'>` | List of stats widgets displayed on the home page | - | For zkSync and Arbitrum rollups: `['latest_batch','average_block_time','total_txs','wallet_addresses','gas_tracker']`, for other cases: `['total_blocks','average_block_time','total_txs','wallet_addresses','gas_tracker']` | `['total_blocks','total_txs','wallet_addresses']` | v1.35.x+ |
 | NEXT_PUBLIC_HOMEPAGE_HERO_BANNER_CONFIG | `HeroBannerConfig`, see details [below](#hero-banner-configuration-properties) | Configuration of hero banner appearance. | - | - | See [below](#hero-banner-configuration-properties) | v1.35.0+ |
 | NEXT_PUBLIC_HOMEPAGE_HIGHLIGHTS_CONFIG | `string` | URL of the file (in `.json` format only) that contains the configuration for banners on the application's homepage, showcasing some of its key functionality. See the full config format [below](#highlights-banner-configuration-properties). The config should contain at least 2 banners, but only 3 banners will be visible at the same time. A larger number of banners in the config allows for random banner rotation upon page load. | - | - | See [below](#highlights-banner-configuration-properties) | v2.6.0+ |
 
@@ -532,7 +532,7 @@ Ads are enabled by default on all self-hosted instances. If you would like to di
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_ROLLUP_TYPE | `'optimistic' \| 'arbitrum' \| 'shibarium' \| 'zkEvm' \| 'zkSync' \| 'scroll'` | Rollup chain type | Required | - | `'optimistic'` | v1.24.0+ |
+| NEXT_PUBLIC_ROLLUP_TYPE | `'optimistic' \| 'arbitrum' \| 'shibarium' \| 'zkSync' \| 'scroll'` | Rollup chain type | Required | - | `'optimistic'` | v1.24.0+ |
 | NEXT_PUBLIC_ROLLUP_PARENT_CHAIN | `ParentChain`, see details [below](#parent-chain-configuration-properties) | Configuration parameters for the parent chain. | Required | - | `{'baseUrl':'https://explorer.duckchain.io'}` | v1.38.0+ |
 | NEXT_PUBLIC_ROLLUP_L2_WITHDRAWAL_URL | `string` | URL for rollup to parent chain withdrawals (Optimistic stack only) | - | - | `https://app.optimism.io/bridge/withdraw` | v1.24.0+ |
 | NEXT_PUBLIC_ROLLUP_LAYER_NUMBER | `number` | Layer number of the rollup | - | `2` | `3` | v2.7.0+ |

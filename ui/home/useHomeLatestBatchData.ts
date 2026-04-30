@@ -12,7 +12,7 @@ import config from 'configs/app';
 
 export type HomeLatestBatchQueryResult = UseQueryResult<number, ResourceError<unknown>>;
 
-type LatestBatchSocketEventMessage = SocketMessage.NewArbitrumL2Batch | SocketMessage.NewZkEvmL2Batch;
+type LatestBatchSocketEventMessage = SocketMessage.NewArbitrumL2Batch;
 type LatestBatchPayload = Parameters<LatestBatchSocketEventMessage['handler']>[0];
 type LatestBatchSocketMessage = LatestBatchSocketEventMessage | SocketMessage.Unknown;
 
@@ -21,13 +21,6 @@ const shouldShowLatestBatchStat = config.UI.homepage.stats.includes('latest_batc
 export default function useHomeLatestBatchData(): HomeLatestBatchQueryResult | undefined {
   const queryClient = useQueryClient();
   const rollupFeature = config.features.rollup;
-
-  const zkEvmLatestBatchQuery = useApiQuery('general:homepage_zkevm_latest_batch', {
-    queryOptions: {
-      placeholderData: 12345,
-      enabled: rollupFeature.isEnabled && rollupFeature.type === 'zkEvm' && shouldShowLatestBatchStat,
-    },
-  });
 
   const zkSyncLatestBatchQuery = useApiQuery('general:homepage_zksync_latest_batch', {
     queryOptions: {
@@ -49,15 +42,6 @@ export default function useHomeLatestBatchData(): HomeLatestBatchQueryResult | u
     }
 
     switch (rollupFeature.type) {
-      case 'zkEvm':
-        return [
-          zkEvmLatestBatchQuery,
-          {
-            topic: 'zkevm_batches:new_zkevm_confirmed_batch',
-            event: 'new_zkevm_confirmed_batch',
-            resource: 'general:homepage_zkevm_latest_batch',
-          },
-        ] as const;
       case 'zkSync':
         return [ zkSyncLatestBatchQuery, undefined ] as const;
       case 'arbitrum':

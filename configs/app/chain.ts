@@ -14,9 +14,6 @@ const verificationType: NetworkVerificationType = (() => {
   if (rollupType === 'arbitrum') {
     return 'posting';
   }
-  if (rollupType === 'zkEvm') {
-    return 'sequencing';
-  }
   return getEnvValue('NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE') as NetworkVerificationTypeEnvs || 'mining';
 })();
 
