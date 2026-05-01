@@ -50,7 +50,7 @@ Update all repo-wide imports. Verify `client/api` has no runtime imports from `c
 
 ---
 
-### 1-2 · [~] Migrate `client/shared/` · [#3371](https://github.com/blockscout/frontend/issues/3371)
+### 1-2 · [x] Migrate `client/shared/` · [#3371](https://github.com/blockscout/frontend/issues/3371)
 
 **Scope:** Move all cross-cutting utilities from `lib/` to `client/shared/<subfolder>/`.
 Key moves (see `ARCH_REDESIGN.md §6` for full list):
@@ -82,7 +82,7 @@ Note: `lib/monitoring/` (server-side) → `nextjs/`, not `client/shared/`.
 
 ## Stage 2 — Pilot slice
 
-### 2-1 · [ ] Pilot: migrate `slices/tx` end-to-end
+### 2-1 · [x] Pilot: migrate `slices/tx` end-to-end
 
 **Scope:** Full migration of the `tx` slice. Canonical template for all subsequent slices.
 - `lib/tx/` → `client/slices/tx/utils/`
