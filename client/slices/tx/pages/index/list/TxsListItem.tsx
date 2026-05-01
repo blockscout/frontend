@@ -9,13 +9,13 @@ import type { NovesDescribeTxsResponse } from 'types/api/noves';
 import type { ClusterChainConfig } from 'types/multichain';
 
 import TxTranslationType from 'client/features/tx-interpretation/noves/components/TxTranslationType';
+import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import TxAdditionalInfo from 'client/slices/tx/components/TxAdditionalInfo';
 import TxType from 'client/slices/tx/components/TxType';
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
-import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import EntityTag from 'ui/shared/EntityTags/EntityTag';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TxStatus from 'ui/shared/statusTag/TxStatus';

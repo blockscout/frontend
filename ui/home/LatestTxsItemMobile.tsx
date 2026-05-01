@@ -9,12 +9,12 @@ import React from 'react';
 
 import type { Transaction } from 'client/slices/tx/types/api';
 
+import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import TxAdditionalInfo from 'client/slices/tx/components/TxAdditionalInfo';
 import TxType from 'client/slices/tx/components/TxType';
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
-import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import EntityTag from 'ui/shared/EntityTags/EntityTag';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';

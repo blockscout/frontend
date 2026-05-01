@@ -3,11 +3,11 @@ import React from 'react';
 
 import type { InterchainMessage } from '@blockscout/interchain-indexer-types';
 
+import TxEntityInterchain from 'client/slices/tx/components/entity/TxEntityInterchain';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { mdash } from 'toolkit/utils/htmlEntities';
 import CrossChainBridgeLink from 'ui/shared/crossChain/CrossChainBridgeLink';
 import CrossChainMessageEntity from 'ui/shared/entities/crossChainMessage/CrossChainMessageEntity';
-import TxEntityInterchain from 'ui/shared/entities/tx/TxEntityInterchain';
 import ChainLabel from 'ui/shared/externalChains/ChainLabel';
 import CrossChainTxsStatusTag from 'ui/shared/statusTag/CrossChainTxsStatusTag';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';

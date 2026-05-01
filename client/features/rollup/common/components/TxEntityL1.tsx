@@ -3,9 +3,8 @@ import React from 'react';
 
 import { route } from 'nextjs-routes';
 
+import * as TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import config from 'configs/app';
-
-import * as TxEntity from './TxEntity';
 
 const rollupFeature = config.features.rollup;
 

@@ -3,13 +3,13 @@ import React from 'react';
 
 import type { InterchainMessage } from '@blockscout/interchain-indexer-types';
 
+import TxEntityInterchain from 'client/slices/tx/components/entity/TxEntityInterchain';
 import config from 'configs/app';
 import { mdash } from 'toolkit/utils/htmlEntities';
 import * as DetailedInfoItemBreakdown from 'ui/shared/DetailedInfo/DetailedInfoItemBreakdown';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 import AddressEntityInterchain from 'ui/shared/entities/address/AddressEntityInterchain';
 import CrossChainMessageEntity from 'ui/shared/entities/crossChainMessage/CrossChainMessageEntity';
-import TxEntityInterchain from 'ui/shared/entities/tx/TxEntityInterchain';
 import ChainLabel from 'ui/shared/externalChains/ChainLabel';
 import CrossChainTxsStatusTag from 'ui/shared/statusTag/CrossChainTxsStatusTag';
 

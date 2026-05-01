@@ -5,14 +5,14 @@ import type { ArbitrumL2MessagesItem } from 'types/api/arbitrumL2';
 
 import { route } from 'nextjs-routes';
 
+import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
+import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
-import TxEntity from 'ui/shared/entities/tx/TxEntity';
-import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import ArbitrumL2MessageStatus from 'ui/shared/statusTag/ArbitrumL2MessageStatus';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 

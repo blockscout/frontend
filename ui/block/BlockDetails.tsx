@@ -8,6 +8,7 @@ import { ZKSYNC_L2_TX_BATCH_STATUSES } from 'types/api/zkSyncL2';
 
 import { route, routeParams } from 'nextjs/routes';
 
+import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
 import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-title';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import config from 'configs/app';
@@ -29,7 +30,6 @@ import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp'
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BatchEntityL2 from 'ui/shared/entities/block/BatchEntityL2';
 import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
-import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import IconSvg from 'ui/shared/IconSvg';
 import PrevNext from 'ui/shared/PrevNext';

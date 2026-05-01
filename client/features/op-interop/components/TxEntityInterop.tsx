@@ -5,14 +5,13 @@ import type { ChainInfo } from 'types/api/interop';
 
 import { route } from 'nextjs-routes';
 
+import * as TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import { Image } from 'toolkit/chakra/image';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { stripTrailingSlash } from 'toolkit/utils/url';
+import { distributeEntityProps } from 'ui/shared/entities/base/utils';
 import IconSvg from 'ui/shared/IconSvg';
-
-import { distributeEntityProps } from '../base/utils';
-import * as TxEntity from './TxEntity';
 
 type Props = {
   chain?: ChainInfo | null;

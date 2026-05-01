@@ -1,11 +1,11 @@
 import { Box, Flex } from '@chakra-ui/react';
 import React from 'react';
 
+import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import config from 'configs/app';
 import { Image } from 'toolkit/chakra/image';
 import { Link } from 'toolkit/chakra/link';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import TxEntity from 'ui/shared/entities/tx/TxEntity';
 
 const externalTxFeature = config.features.externalTxs;
 

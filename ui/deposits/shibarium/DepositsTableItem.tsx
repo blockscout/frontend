@@ -2,12 +2,12 @@ import React from 'react';
 
 import type { ShibariumDepositsItem } from 'types/api/shibarium';
 
+import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
+import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import config from 'configs/app';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import AddressStringOrParam from 'ui/shared/entities/address/AddressStringOrParam';
 import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
-import TxEntity from 'ui/shared/entities/tx/TxEntity';
-import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 const feature = config.features.rollup;

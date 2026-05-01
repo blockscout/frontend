@@ -3,6 +3,7 @@ import React from 'react';
 
 import type { TokenInfo } from 'types/api/token';
 
+import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import * as txMock from 'client/slices/tx/mocks/tx';
 import * as addressMock from 'mocks/address/address';
 import * as implementationsMock from 'mocks/address/implementations';
@@ -18,7 +19,6 @@ import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import PoolEntity from 'ui/shared/entities/pool/PoolEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
-import TxEntity from 'ui/shared/entities/tx/TxEntity';
 
 import { Section, Container, SectionHeader, SamplesStack, Sample, SectionSubHeader } from './parts';
 

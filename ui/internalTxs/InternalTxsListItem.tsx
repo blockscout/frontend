@@ -6,11 +6,11 @@ import type { ClusterChainConfig } from 'types/multichain';
 
 import { currencyUnits } from 'client/shared/chain/units';
 import { TX_INTERNALS_ITEMS } from 'client/slices/internal-txs/utils/utils';
+import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import { Badge } from 'toolkit/chakra/badge';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
-import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';

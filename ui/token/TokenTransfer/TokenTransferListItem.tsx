@@ -5,13 +5,13 @@ import type { TokenInstance } from 'types/api/token';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 import type { ClusterChainConfig } from 'types/multichain';
 
+import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import { hasTokenTransferValue, isConfidentialTokenType, NFT_TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
 import { Badge } from 'toolkit/chakra/badge';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
-import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import AssetValue from 'ui/shared/value/AssetValue';

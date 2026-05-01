@@ -3,12 +3,12 @@ import React from 'react';
 
 import type { Blob } from 'types/api/blobs';
 
+import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import { Alert } from 'toolkit/chakra/alert';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoSponsoredItem from 'ui/shared/DetailedInfo/DetailedInfoSponsoredItem';
-import TxEntity from 'ui/shared/entities/tx/TxEntity';
 
 import BlobData from './BlobData';
 

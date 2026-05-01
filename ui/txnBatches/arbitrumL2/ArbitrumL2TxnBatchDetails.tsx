@@ -8,6 +8,7 @@ import type { ArbitrumL2TxnBatch } from 'types/api/arbitrumL2';
 import { route } from 'nextjs-routes';
 
 import type { ResourceError } from 'client/api/resources';
+import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import { layerLabels } from 'lib/rollups/utils';
 import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
@@ -20,7 +21,6 @@ import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
-import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import PrevNext from 'ui/shared/PrevNext';
 

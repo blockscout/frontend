@@ -7,13 +7,13 @@ import type { ClusterChainConfig } from 'types/multichain';
 import { route } from 'nextjs-routes';
 
 // import searchIcon from 'icons/search.svg';
+import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import { Alert } from 'toolkit/chakra/alert';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { space } from 'toolkit/utils/htmlEntities';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
-import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import LogDecodedInputData from 'ui/shared/logs/LogDecodedInputData';
 import LogTopic from 'ui/shared/logs/LogTopic';
 import type { DataType } from 'ui/shared/RawInputData';

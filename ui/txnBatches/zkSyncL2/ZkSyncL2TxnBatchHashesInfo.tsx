@@ -2,11 +2,11 @@ import React from 'react';
 
 import type { ZkSyncBatch } from 'types/api/zkSyncL2';
 
+import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
 import { layerLabels } from 'lib/rollups/utils';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
-import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 
 interface Props {
   isLoading: boolean;

@@ -4,12 +4,12 @@ import type * as bens from '@blockscout/bens-types';
 
 import { route } from 'nextjs-routes';
 
+import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import config from 'configs/app';
 import { Badge } from 'toolkit/chakra/badge';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { stripTrailingSlash } from 'toolkit/utils/url';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
-import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 interface Props {
