@@ -1,6 +1,6 @@
 import React from 'react';
 
-// TODO: replace with useDebounce from es-toolkit
+// REFACTOR: replace with useDebounce from es-toolkit
 export default function useDebounce(value: string, delay: number) {
   const [ debouncedValue, setDebouncedValue ] = React.useState(value);
   React.useEffect(

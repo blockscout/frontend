@@ -4,10 +4,19 @@ import React from 'react';
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 import type { EntityTag as TEntityTag } from 'ui/shared/EntityTags/types';
 
+import TxDetailsWrapped from 'client/features/chain-variants/suave/pages/tx/TxDetailsWrapped';
 import { publicClient } from 'client/features/connect-wallet/utils/public-client';
+import TxBlobs from 'client/features/data-availability/pages/tx/TxBlobs';
+import TxFheOperations from 'client/features/fhe-operations/pages/tx/TxFheOperations';
+import TxAuthorizations from 'client/features/tx-authorization/pages/tx/TxAuthorizations';
+import TxAssetFlows from 'client/features/tx-interpretation/noves/pages/tx-asset-flows/TxAssetFlows';
+import TxUserOps from 'client/features/user-ops/pages/tx/TxUserOps';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import useEtherscanRedirects from 'client/shared/router/useEtherscanRedirects';
+import TxInternals from 'client/slices/internal-txs/pages/tx/TxInternals';
+import TxTokenTransfer from 'client/slices/tokens-transfers/pages/tx/TxTokenTransfer';
+import useTxQuery from 'client/slices/tx/hooks/useTxQuery';
 import config from 'configs/app';
 import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
@@ -15,21 +24,13 @@ import TextAd from 'ui/shared/ad/TextAd';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
 import EntityTags from 'ui/shared/EntityTags/EntityTags';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import TxAssetFlows from 'ui/tx/TxAssetFlows';
-import TxAuthorizations from 'ui/tx/TxAuthorizations';
-import TxBlobs from 'ui/tx/TxBlobs';
-import TxDetailsApi from 'ui/tx/TxDetailsApi';
-import TxDetailsRpc from 'ui/tx/TxDetailsRpc';
-import TxDetailsWrapped from 'ui/tx/TxDetailsWrapped';
-import TxFHEOperations from 'ui/tx/TxFHEOperations';
-import TxInternals from 'ui/tx/TxInternals';
-import TxLogs from 'ui/tx/TxLogs';
-import TxRawTrace from 'ui/tx/TxRawTrace';
-import TxState from 'ui/tx/TxState';
-import TxSubHeading from 'ui/tx/TxSubHeading';
-import TxTokenTransfer from 'ui/tx/TxTokenTransfer';
-import TxUserOps from 'ui/tx/TxUserOps';
-import useTxQuery from 'ui/tx/useTxQuery';
+
+import TxDetailsApi from './info/TxDetailsApi';
+import TxDetailsRpc from './info/TxDetailsRpc';
+import TxLogs from './logs/TxLogs';
+import TxRawTrace from './raw-trace/TxRawTrace';
+import TxState from './state/TxState';
+import TxSubHeading from './TxSubHeading';
 
 const txInterpretation = config.features.txInterpretation;
 const rollupFeature = config.features.rollup;
@@ -81,7 +82,7 @@ const TransactionPageContent = () => {
       { id: 'state', title: 'State', component: <TxState txQuery={ txQuery }/> },
       { id: 'raw_trace', title: 'Raw trace', component: <TxRawTrace txQuery={ txQuery }/> },
       txQuery.data?.fhe_operations_count && txQuery.data.fhe_operations_count > 0 ?
-        { id: 'fhe_operations', title: 'FHE operations', component: <TxFHEOperations txQuery={ txQuery }/> } :
+        { id: 'fhe_operations', title: 'FHE operations', component: <TxFheOperations txQuery={ txQuery }/> } :
         undefined,
       txQuery.data?.authorization_list?.length ?
         { id: 'authorizations', title: 'Authorizations', component: <TxAuthorizations txQuery={ txQuery }/> } :

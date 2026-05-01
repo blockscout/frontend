@@ -1,5 +1,6 @@
 import type { ApiResource } from '../../types';
-import type { TransactionsSorting, LogsResponseAddress } from 'client/slices/tx/types/api';
+import type { LogsResponseAddress } from 'client/slices/logs/types/api';
+import type { TransactionsSorting } from 'client/slices/tx/types/api';
 import type {
   AddressCounters,
   AddressBlocksValidatedResponse,

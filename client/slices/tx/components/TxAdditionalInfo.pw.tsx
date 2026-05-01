@@ -1,5 +1,6 @@
 import React from 'react';
 
+import * as txMockBlob from 'client/features/data-availability/mocks/tx';
 import * as txMock from 'client/slices/tx/mocks/tx';
 import { test, expect } from 'playwright/lib';
 
@@ -18,7 +19,7 @@ test('regular transaction +@mobile -@default', async({ render, page }) => {
 });
 
 test('blob transaction', async({ render, page }) => {
-  const component = await render(<TxAdditionalInfo tx={ txMock.withBlob }/>);
+  const component = await render(<TxAdditionalInfo tx={ txMockBlob.withBlob }/>);
   await component.getByLabel('Transaction info').click();
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 400, height: 650 } });
 });

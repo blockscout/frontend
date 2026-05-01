@@ -128,7 +128,10 @@ Each slice follows the template established in 2-1.
 **Scope:** `ui/accounts/**`, related types/mocks/stubs → `client/slices/accounts/`  
 
 ### 3-10 · [ ] Slice: `token-instance`
-**Scope:** `ui/tokenInstance/**`, related types/mocks/stubs → `client/slices/token-instance/`  
+**Scope:** `ui/tokenInstance/**`, related types/mocks/stubs → `client/slices/token-instance/` 
+
+### 3-11 · [ ] Slice: `logs`
+**Scope:** `ui/shared/logs/**`, related types/mocks/stubs → `client/slices/logs/`  
 
 ---
 

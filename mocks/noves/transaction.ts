@@ -1,6 +1,6 @@
 import type { NovesResponseData } from 'types/api/noves';
 
-import type { TokensData } from 'ui/tx/assetFlows/utils/getTokensData';
+import type { TokensData } from 'client/features/tx-interpretation/noves/utils/getTokensData';
 
 export const hash = '0x380400d04ebb4179a35b1d7fdef260776915f015e978f8587ef2704b843d4e53';
 

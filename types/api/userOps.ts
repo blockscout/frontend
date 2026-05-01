@@ -1,4 +1,4 @@
-import type { DecodedInput } from 'client/slices/tx/types/api';
+import type { DecodedInput } from 'client/slices/logs/types/api';
 
 import type { AddressParamBasic } from './addressParams';
 

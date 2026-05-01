@@ -1,7 +1,7 @@
 import { Grid, GridItem } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TransactionLog } from 'client/slices/tx/types/api';
+import type { TransactionLog } from 'client/slices/logs/types/api';
 import type { ClusterChainConfig } from 'types/multichain';
 
 import { route } from 'nextjs-routes';

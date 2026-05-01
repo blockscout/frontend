@@ -1,5 +1,7 @@
 import React from 'react';
 
+import * as txMockCelo from 'client/features/chain-variants/celo/mocks/tx';
+import * as txMockStability from 'client/features/chain-variants/stability/mocks/tx';
 import * as txMock from 'client/slices/tx/mocks/tx';
 import { test, expect } from 'playwright/lib';
 
@@ -18,13 +20,13 @@ test('no usd value', async({ render }) => {
 });
 
 test('celo gas token', async({ render, mockAssetResponse }) => {
-  await mockAssetResponse(txMock.celoTxn.celo?.gas_token?.icon_url as string, './playwright/mocks/image_svg.svg');
-  const component = await render(<TxFee tx={ txMock.celoTxn }/>);
+  await mockAssetResponse(txMockCelo.celoTxn.celo?.gas_token?.icon_url as string, './playwright/mocks/image_svg.svg');
+  const component = await render(<TxFee tx={ txMockCelo.celoTxn }/>);
   await expect(component).toHaveScreenshot();
 });
 
 test('stability token', async({ render, mockAssetResponse }) => {
-  await mockAssetResponse(txMock.stabilityTx.stability_fee?.token.icon_url as string, './playwright/mocks/image_svg.svg');
-  const component = await render(<TxFee tx={ txMock.stabilityTx }/>);
+  await mockAssetResponse(txMockStability.stabilityTx.stability_fee?.token.icon_url as string, './playwright/mocks/image_svg.svg');
+  const component = await render(<TxFee tx={ txMockStability.stabilityTx }/>);
   await expect(component).toHaveScreenshot();
 });
