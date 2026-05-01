@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { AddressParam } from 'types/api/addressParams';
 
-import * as txMock from 'mocks/txs/tx';
+import * as txMock from 'client/slices/tx/mocks/tx';
 import * as socketServer from 'playwright/fixtures/socketServer';
 import { test as base, expect, devices } from 'playwright/lib';
 import * as pwConfig from 'playwright/utils/config';

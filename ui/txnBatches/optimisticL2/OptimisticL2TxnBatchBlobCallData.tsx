@@ -1,9 +1,9 @@
 import { GridItem } from '@chakra-ui/react';
 import React from 'react';
 
+import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
 import { layerLabels } from 'lib/rollups/utils';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
-import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 
 import OptimisticL2TxnBatchBlobWrapper from './OptimisticL2TxnBatchBlobWrapper';
 

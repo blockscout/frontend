@@ -10,6 +10,7 @@ import { SocketProvider } from 'client/api/socket/context';
 import CsvExport from 'client/features/csv-export/components/CsvExport';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
+import TxsWithApiSorting from 'client/slices/tx/pages/index/list/TxsWithApiSorting';
 import multichainConfig from 'configs/multichain';
 import { MultichainProvider } from 'lib/contexts/multichain';
 import { EmptyState } from 'toolkit/chakra/empty-state';
@@ -20,7 +21,6 @@ import useAddressCountersQuery from 'ui/address/utils/useAddressCountersQuery';
 import ChainSelect from 'ui/multichain/components/ChainSelect';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import Pagination from 'ui/shared/pagination/Pagination';
-import TxsWithAPISorting from 'ui/txs/TxsWithAPISorting';
 
 import ListCounterText from '../components/ListCounterText';
 import getAvailableChainIds from './getAvailableChainIds';
@@ -154,7 +154,7 @@ const MultichainAddressTxs = ({ addressData, isLoading }: Props) => {
         <SocketProvider url={ getSocketUrl(chainData?.app_config) }>
           <MultichainProvider chainId={ chainId }>
             { isMobile && countersText }
-            <TxsWithAPISorting
+            <TxsWithApiSorting
               filter={ txsLocalFilter }
               filterValue={ txsQueryLocal.filterValue }
               query={ txsQueryLocal.query }

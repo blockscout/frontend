@@ -1,21 +1,21 @@
 import type { ApiResource } from '../../types';
-import type { TxBlobs } from 'types/api/blobs';
-import type { FheOperationsResponse } from 'types/api/fheOperations';
-import type { InternalTransactionFilters, InternalTransactionsResponse } from 'types/api/internalTransaction';
-import type { LogsResponseTx } from 'types/api/log';
-import type { RawTracesResponse } from 'types/api/rawTrace';
-import type { TokenTransferResponse, TokenTransferFilters } from 'types/api/tokenTransfer';
+import type { TransactionsResponseWatchlist } from 'client/features/account/types/api';
+import type { TransactionsResponseWithBlobs, TxsWithBlobsFilters } from 'client/features/data-availability/types/api';
+import type { LogsResponseTx } from 'client/slices/logs/types/api';
 import type {
   TransactionsResponseValidated,
   TransactionsResponsePending,
   Transaction,
-  TransactionsResponseWatchlist,
-  TransactionsResponseWithBlobs,
   TransactionsStats,
-} from 'types/api/transaction';
+  TxsFilters,
+  TxStateChanges,
+  TxRawTracesResponse,
+} from 'client/slices/tx/types/api';
+import type { TxBlobs } from 'types/api/blobs';
+import type { FheOperationsResponse } from 'types/api/fheOperations';
+import type { InternalTransactionFilters, InternalTransactionsResponse } from 'types/api/internalTransaction';
+import type { TokenTransferResponse, TokenTransferFilters } from 'types/api/tokenTransfer';
 import type { TxInterpretationResponse } from 'types/api/txInterpretation';
-import type { TTxsFilters, TTxsWithBlobsFilters } from 'types/api/txsFilters';
-import type { TxStateChanges } from 'types/api/txStateChanges';
 
 export const GENERAL_API_TX_RESOURCES = {
   txs_stats: {
@@ -119,7 +119,7 @@ R extends 'general:tx' ? Transaction :
 R extends 'general:tx_logs' ? LogsResponseTx :
 R extends 'general:tx_token_transfers' ? TokenTransferResponse :
 R extends 'general:tx_fhe_operations' ? FheOperationsResponse :
-R extends 'general:tx_raw_trace' ? RawTracesResponse :
+R extends 'general:tx_raw_trace' ? TxRawTracesResponse :
 R extends 'general:tx_state_changes' ? TxStateChanges :
 R extends 'general:tx_blobs' ? TxBlobs :
 R extends 'general:tx_interpretation' ? TxInterpretationResponse :
@@ -130,8 +130,8 @@ never;
 
 /* eslint-disable @stylistic/indent */
 export type GeneralApiTxPaginationFilters<R extends GeneralApiTxResourceName> =
-R extends 'general:txs_validated' | 'general:txs_pending' ? TTxsFilters :
-R extends 'general:txs_with_blobs' ? TTxsWithBlobsFilters :
+R extends 'general:txs_validated' | 'general:txs_pending' ? TxsFilters :
+R extends 'general:txs_with_blobs' ? TxsWithBlobsFilters :
 R extends 'general:tx_token_transfers' ? TokenTransferFilters :
 R extends 'general:internal_txs' ? InternalTransactionFilters :
 never;

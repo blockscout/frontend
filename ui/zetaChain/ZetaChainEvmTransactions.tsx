@@ -8,15 +8,15 @@ import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 import getChainValidationActionText from 'client/shared/chain/get-chain-validation-action-text';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
+import TxsWithFrontendSorting from 'client/slices/tx/pages/index/list/TxsWithFrontendSorting';
+import TxsStats from 'client/slices/tx/pages/index/stats/TxsStats';
+import { TX } from 'client/slices/tx/stubs/tx';
 import config from 'configs/app';
-import { TX } from 'stubs/tx';
 import { generateListStub } from 'stubs/utils';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import AdvancedFilterLink from 'ui/shared/links/AdvancedFilterLink';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
-import TxsStats from 'ui/txs/TxsStats';
-import TxsWithFrontendSorting from 'ui/txs/TxsWithFrontendSorting';
 
 const TAB_LIST_PROPS = {
   marginBottom: 0,

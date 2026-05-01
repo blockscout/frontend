@@ -5,12 +5,12 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 
+import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import { layerLabels } from 'lib/rollups/utils';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
-import TxEntity from 'ui/shared/entities/tx/TxEntity';
-import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 type Props = {

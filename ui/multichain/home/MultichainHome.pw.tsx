@@ -1,10 +1,10 @@
 import React from 'react';
 
+import * as txMock from 'client/slices/tx/mocks/tx';
 import * as chainDataMock from 'mocks/multichain/chains';
 import * as metricsMock from 'mocks/multichain/metrics';
 import * as statsMock from 'mocks/multichain/stats';
 import * as chainStatsMock from 'mocks/stats/index';
-import * as txMock from 'mocks/txs/tx';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';
 import * as pwConfig from 'playwright/utils/config';

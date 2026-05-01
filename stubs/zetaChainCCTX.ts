@@ -1,8 +1,9 @@
 import * as zetaChainCCTXType from '@blockscout/zetachain-cctx-types';
 
+import { TX_HASH } from 'client/slices/tx/stubs/tx';
+
 import { ADDRESS_HASH } from './addressParams';
 import { BLOCK_HASH } from './block';
-import { TX_HASH } from './tx';
 
 export const ZETA_CHAIN_CCTX: zetaChainCCTXType.CrossChainTx = {
   creator: ADDRESS_HASH,

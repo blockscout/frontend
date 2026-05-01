@@ -1,7 +1,8 @@
 import type { AddressTag, TransactionTag, ApiKey, CustomAbi, VerifiedAddress, TokenInfoApplication, WatchlistAddress } from 'types/api/account';
 
+import { TX_HASH } from 'client/slices/tx/stubs/tx';
+
 import { ADDRESS_PARAMS, ADDRESS_HASH } from './addressParams';
-import { TX_HASH } from './tx';
 
 export const PRIVATE_TAG_ADDRESS: AddressTag = {
   address: ADDRESS_PARAMS,

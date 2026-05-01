@@ -7,8 +7,9 @@ import throwOnAbsentParamError from 'client/shared/errors/throw-on-absent-param-
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
+import TxsWithFrontendSorting from 'client/slices/tx/pages/index/list/TxsWithFrontendSorting';
+import { TX } from 'client/slices/tx/stubs/tx';
 import { BLOCK } from 'stubs/block';
-import { TX } from 'stubs/tx';
 import { generateListStub } from 'stubs/utils';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import BlocksContent from 'ui/blocks/BlocksContent';
@@ -18,7 +19,6 @@ import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import ArbitrumL2TxnBatchDetails from 'ui/txnBatches/arbitrumL2/ArbitrumL2TxnBatchDetails';
 import useBatchQuery from 'ui/txnBatches/arbitrumL2/useBatchQuery';
-import TxsWithFrontendSorting from 'ui/txs/TxsWithFrontendSorting';
 
 const TAB_LIST_PROPS = {
   marginBottom: 0,

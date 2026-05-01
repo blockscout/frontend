@@ -11,10 +11,11 @@ import type {
 } from 'types/api/address';
 import type { AddressesItem } from 'types/api/addresses';
 
+import { TX_HASH } from 'client/slices/tx/stubs/tx';
+
 import { ADDRESS_HASH, ADDRESS_PARAMS } from './addressParams';
 import { MUD_SCHEMA, MUD_TABLE } from './mud';
 import { TOKEN_INFO_ERC_1155, TOKEN_INFO_ERC_20, TOKEN_INFO_ERC_721, TOKEN_INFO_ERC_404, TOKEN_INSTANCE } from './token';
-import { TX_HASH } from './tx';
 
 export const ADDRESS_INFO: Address = {
   block_number_balance_updated_at: 8774377,

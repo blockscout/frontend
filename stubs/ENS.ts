@@ -1,7 +1,8 @@
 import * as bens from '@blockscout/bens-types';
 
+import { TX_HASH } from 'client/slices/tx/stubs/tx';
+
 import { ADDRESS_PARAMS, ADDRESS_HASH } from './addressParams';
-import { TX_HASH } from './tx';
 
 export const ENS_DOMAIN: bens.DetailedDomain = {
   id: '0x126d74db13895f8d3a1d362410212731d1e1d9be8add83e388385f93d84c8c84',

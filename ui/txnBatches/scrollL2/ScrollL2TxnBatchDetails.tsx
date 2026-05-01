@@ -7,6 +7,7 @@ import type { ScrollL2TxnBatch } from 'types/api/scrollL2';
 import { route } from 'nextjs-routes';
 
 import type { ResourceError } from 'client/api/resources';
+import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import { layerLabels } from 'lib/rollups/utils';
 import { Link } from 'toolkit/chakra/link';
@@ -17,7 +18,6 @@ import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
-import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import PrevNext from 'ui/shared/PrevNext';
 import ScrollL2TxnBatchStatus from 'ui/shared/statusTag/ScrollL2TxnBatchStatus';
 interface Props {

@@ -4,6 +4,7 @@ import React from 'react';
 import type { CrossChainTx } from '@blockscout/zetachain-cctx-types';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
+import TxEntityZetaChainCC from 'client/features/chain-variants/zeta-chain/TxEntityZetaChainCC';
 import base64ToHex from 'client/shared/transformers/base64-to-hex';
 import { HOMEPAGE_STATS } from 'stubs/stats';
 import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
@@ -14,7 +15,6 @@ import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoNativeCoinValue from 'ui/shared/DetailedInfo/DetailedInfoNativeCoinValue';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 import AddressEntityZetaChain from 'ui/shared/entities/address/AddressEntityZetaChain';
-import TxEntityZetaChainCC from 'ui/shared/entities/tx/TxEntityZetaChainCC';
 import IconSvg from 'ui/shared/IconSvg';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
 import ZetaChainCCTXReducedStatus from 'ui/shared/zetaChain/ZetaChainCCTXReducedStatus';

@@ -3,13 +3,13 @@ import React from 'react';
 
 import type { OptimisticL2DepositsItem } from 'types/api/optimisticL2';
 
+import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
+import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import config from 'configs/app';
 import { layerLabels } from 'lib/rollups/utils';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import AddressEntityL1 from 'ui/shared/entities/address/AddressEntityL1';
 import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
-import TxEntity from 'ui/shared/entities/tx/TxEntity';
-import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 

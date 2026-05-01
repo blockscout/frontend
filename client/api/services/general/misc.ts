@@ -1,5 +1,8 @@
 import type { ApiResource } from '../../types';
 import type { CsvExportItemResponse, CsvExportConfig } from 'client/features/csv-export/types/api';
+import type {
+  Transaction,
+} from 'client/slices/tx/types/api';
 import type { AdvancedFilterParams, AdvancedFilterResponse, AdvancedFilterMethodsResponse } from 'types/api/advancedFilter';
 import type {
   ArbitrumL2TxnBatchesItem,
@@ -19,9 +22,6 @@ import type {
 } from 'types/api/optimisticL2';
 import type { SearchRedirectResult, SearchResult, SearchResultFilters, SearchResultItem } from 'types/api/search';
 import type { HomeStats } from 'types/api/stats';
-import type {
-  Transaction,
-} from 'types/api/transaction';
 import type { TxInterpretationResponse } from 'types/api/txInterpretation';
 import type { UserOpsResponse, UserOp, UserOpsFilters, UserOpsAccount } from 'types/api/userOps';
 import type {

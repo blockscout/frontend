@@ -1,4 +1,4 @@
-import { TX } from 'stubs/tx';
+import { TX } from 'client/slices/tx/stubs/tx';
 import { generateListStub } from 'stubs/utils';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 

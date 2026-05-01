@@ -1,7 +1,8 @@
 import type { ArbitrumL2TxnBatchesItem, ArbitrumL2TxnBatch, ArbitrumL2MessagesItem, ArbitrumL2TxnWithdrawalsItem } from 'types/api/arbitrumL2';
 
+import { TX_HASH } from 'client/slices/tx/stubs/tx';
+
 import { ADDRESS_HASH } from './addressParams';
-import { TX_HASH } from './tx';
 
 export const ARBITRUM_MESSAGES_ITEM: ArbitrumL2MessagesItem = {
   completion_transaction_hash: TX_HASH,

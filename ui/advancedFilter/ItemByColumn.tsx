@@ -4,6 +4,7 @@ import React from 'react';
 import type { AdvancedFilterResponseItem } from 'types/api/advancedFilter';
 import type { ClusterChainConfig } from 'types/multichain';
 
+import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import config from 'configs/app';
 import { isConfidentialTokenType } from 'lib/token/tokenTypes';
 import { Badge } from 'toolkit/chakra/badge';
@@ -12,7 +13,6 @@ import type { ColumnsIds } from 'ui/advancedFilter/constants';
 import AddressFromToIcon from 'ui/shared/address/AddressFromToIcon';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
-import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import AssetValue from 'ui/shared/value/AssetValue';
 import ConfidentialValue from 'ui/shared/value/ConfidentialValue';

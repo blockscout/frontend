@@ -7,6 +7,7 @@ import type { UserOp } from 'types/api/userOps';
 
 import type { ResourceError } from 'client/api/resources';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
+import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import config from 'configs/app';
 import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
 import { Skeleton } from 'toolkit/chakra/skeleton';
@@ -18,7 +19,6 @@ import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp'
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import AddressStringOrParam from 'ui/shared/entities/address/AddressStringOrParam';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
-import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import UserOpEntity from 'ui/shared/entities/userOp/UserOpEntity';
 import UserOpSponsorType from 'ui/shared/userOps/UserOpSponsorType';
 import UserOpStatus from 'ui/shared/userOps/UserOpStatus';

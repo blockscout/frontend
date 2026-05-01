@@ -1,7 +1,7 @@
 import { upperFirst } from 'es-toolkit';
 import React from 'react';
 
-import type { TxAuthorization } from 'types/api/transaction';
+import type { TxAuthorization } from 'client/features/tx-authorization/types/api';
 
 import type { BadgeProps } from 'toolkit/chakra/badge';
 

@@ -5,6 +5,7 @@ import React from 'react';
 // import type { UserOp } from 'types/api/userOps';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
+import TxInterpretation from 'client/features/tx-interpretation/common/components/TxInterpretation';
 import config from 'configs/app';
 // import type { ResourceError } from 'client/api/resources';
 import { useMultichainContext } from 'lib/contexts/multichain';
@@ -12,7 +13,6 @@ import { TX_INTERPRETATION } from 'stubs/txInterpretation';
 import { Link } from 'toolkit/chakra/link';
 import { TX_ACTIONS_BLOCK_ID } from 'ui/shared/DetailedInfo/DetailedInfoActionsWrapper';
 import UserOpEntity from 'ui/shared/entities/userOp/UserOpEntity';
-import TxInterpretation from 'ui/shared/tx/interpretation/TxInterpretation';
 
 type Props = {
   hash: string;

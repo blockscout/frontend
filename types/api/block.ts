@@ -1,6 +1,6 @@
+import type { Transaction } from 'client/slices/tx/types/api';
 import type { AddressParam } from 'types/api/addressParams';
 import type { Reward } from 'types/api/reward';
-import type { Transaction } from 'types/api/transaction';
 
 import type { ArbitrumBatchStatus, ArbitrumL2TxData } from './arbitrumL2';
 import type { InternalTransaction } from './internalTransaction';

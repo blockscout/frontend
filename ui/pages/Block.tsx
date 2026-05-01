@@ -13,6 +13,7 @@ import throwOnAbsentParamError from 'client/shared/errors/throw-on-absent-param-
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
+import TxsWithFrontendSorting from 'client/slices/tx/pages/index/list/TxsWithFrontendSorting';
 import config from 'configs/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import { Skeleton } from 'toolkit/chakra/skeleton';
@@ -36,7 +37,6 @@ import * as BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
-import TxsWithFrontendSorting from 'ui/txs/TxsWithFrontendSorting';
 
 const TAB_LIST_PROPS = {
   marginBottom: 0,

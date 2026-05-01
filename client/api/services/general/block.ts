@@ -1,4 +1,5 @@
 import type { ApiResource } from '../../types';
+import type { TxsWithBlobsFilters } from 'client/features/data-availability/types/api';
 import type {
   BlocksResponse,
   BlockTransactionsResponse,
@@ -9,7 +10,6 @@ import type {
   BlockInternalTransactionsResponse,
 } from 'types/api/block';
 import type { DepositsResponse } from 'types/api/deposits';
-import type { TTxsWithBlobsFilters } from 'types/api/txsFilters';
 
 export const GENERAL_API_BLOCK_RESOURCES = {
   blocks: {
@@ -63,6 +63,6 @@ never;
 /* eslint-disable @stylistic/indent */
 export type GeneralApiBlockPaginationFilters<R extends GeneralApiBlockResourceName> =
 R extends 'general:blocks' ? BlockFilters :
-R extends 'general:block_txs' ? TTxsWithBlobsFilters :
+R extends 'general:block_txs' ? TxsWithBlobsFilters :
 never;
 /* eslint-enable @stylistic/indent */

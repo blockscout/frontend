@@ -2,14 +2,13 @@ import type { Channel } from 'phoenix';
 
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 import type * as zetaChainCCTXType from '@blockscout/zetachain-cctx-types';
+import type { Transaction, TxRawTracesResponse } from 'client/slices/tx/types/api';
 import type { AddressCoinBalanceHistoryItem, AddressTokensBalancesSocketMessage } from 'types/api/address';
 import type { NewArbitrumBatchSocketResponse } from 'types/api/arbitrumL2';
 import type { NewBlockSocketResponse } from 'types/api/block';
 import type { SmartContractVerificationResponse } from 'types/api/contract';
-import type { RawTracesResponse } from 'types/api/rawTrace';
 import type { TokenInstanceMetadataSocketMessage } from 'types/api/token';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
-import type { Transaction } from 'types/api/transaction';
 
 export type SocketMessageParams = SocketMessage.NewBlock |
 SocketMessage.NewBlockMultichain |
@@ -58,7 +57,7 @@ export namespace SocketMessage {
   export type BlocksIndexStatus = SocketMessageParamsGeneric<'index_status', { finished: boolean; ratio: string }>;
   export type InternalTxsIndexStatus = SocketMessageParamsGeneric<'index_status', { finished: boolean; ratio: string }>;
   export type TxStatusUpdate = SocketMessageParamsGeneric<'collated', NewBlockSocketResponse>;
-  export type TxRawTrace = SocketMessageParamsGeneric<'raw_trace', RawTracesResponse>;
+  export type TxRawTrace = SocketMessageParamsGeneric<'raw_trace', TxRawTracesResponse>;
   export type NewTx = SocketMessageParamsGeneric<'transaction', { transaction: number }>;
   export type NewInteropMessage = SocketMessageParamsGeneric<'new_messages', Array<multichain.InteropMessage>>;
   export type NewPendingTx = SocketMessageParamsGeneric<'pending_transaction', { pending_transaction: number }>;

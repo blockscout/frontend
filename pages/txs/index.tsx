@@ -19,7 +19,7 @@ const Transactions = dynamic(() => {
     return import('ui/crossChain/txs/Transactions');
   }
 
-  return import('ui/pages/Transactions');
+  return import('client/slices/tx/pages/index/TxIndex');
 }, { ssr: false });
 
 const Page: NextPage = () => {

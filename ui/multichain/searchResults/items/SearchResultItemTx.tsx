@@ -5,7 +5,7 @@ import type { ClusterChainConfig } from 'types/multichain';
 
 import { route } from 'nextjs/routes';
 
-import TxEntity from 'ui/shared/entities/tx/TxEntity';
+import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 
 import SearchResultListItem from '../SearchResultListItem';
 

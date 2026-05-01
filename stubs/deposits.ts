@@ -1,7 +1,8 @@
 import type { DepositsItem } from 'types/api/deposits';
 
+import { TX_HASH } from 'client/slices/tx/stubs/tx';
+
 import { ADDRESS_PARAMS } from './addressParams';
-import { TX_HASH } from './tx';
 
 export const DEPOSIT: DepositsItem = {
   amount: '12565723',

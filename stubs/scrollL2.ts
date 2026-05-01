@@ -1,6 +1,6 @@
 import type { ScrollL2MessageItem, ScrollL2TxnBatch } from 'types/api/scrollL2';
 
-import { TX_HASH } from './tx';
+import { TX_HASH } from 'client/slices/tx/stubs/tx';
 
 export const SCROLL_L2_TXN_BATCH: ScrollL2TxnBatch = {
   commitment_transaction: {

@@ -1,4 +1,4 @@
-import type { Transaction } from './transaction';
+import type { Transaction } from 'client/slices/tx/types/api';
 
 export const ZKSYNC_L2_TX_BATCH_STATUSES = [
   'Processed on L2' as const,

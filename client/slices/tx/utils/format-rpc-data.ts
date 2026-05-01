@@ -1,6 +1,6 @@
 import type { Chain, GetTransactionReturnType, TransactionReceipt } from 'viem';
 
-import type { Transaction } from 'types/api/transaction';
+import type { Transaction } from 'client/slices/tx/types/api';
 
 import hexToDecimal from 'client/shared/transformers/hex-to-decimal';
 import dayjs from 'lib/date/dayjs';

@@ -9,6 +9,7 @@ import { route } from 'nextjs-routes';
 
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 import highlightText from 'client/shared/text/highlight-text';
+import * as TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import { toBech32Address } from 'lib/address/bech32';
 import dayjs from 'lib/date/dayjs';
 import { saveToRecentKeywords } from 'lib/recentSearchKeywords';
@@ -26,7 +27,6 @@ import * as BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import * as EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 import * as OperationEntity from 'ui/shared/entities/operation/OperationEntity';
 import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
-import * as TxEntity from 'ui/shared/entities/tx/TxEntity';
 import * as UserOpEntity from 'ui/shared/entities/userOp/UserOpEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import IconSvg from 'ui/shared/IconSvg';

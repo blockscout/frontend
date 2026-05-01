@@ -1,4 +1,6 @@
 import type { ApiResource } from '../../types';
+import type { LogsResponseAddress } from 'client/slices/logs/types/api';
+import type { TransactionsSorting } from 'client/slices/tx/types/api';
 import type {
   AddressCounters,
   AddressBlocksValidatedResponse,
@@ -23,8 +25,6 @@ import type {
 } from 'types/api/address';
 import type { AddressesMetadataSearchFilters, AddressesMetadataSearchResult, AddressesResponse } from 'types/api/addresses';
 import type { DepositsResponse } from 'types/api/deposits';
-import type { LogsResponseAddress } from 'types/api/log';
-import type { TransactionsSorting } from 'types/api/transaction';
 
 export const GENERAL_API_ADDRESS_RESOURCES = {
   // ADDRESSES
