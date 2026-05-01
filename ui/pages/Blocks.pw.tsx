@@ -1,6 +1,6 @@
 import React from 'react';
 
-import * as blockMock from 'mocks/blocks/block';
+import * as blockMock from 'client/slices/block/mocks/block';
 import * as statsMock from 'mocks/stats/index';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import * as socketServer from 'playwright/fixtures/socketServer';

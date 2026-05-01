@@ -3,18 +3,18 @@ import React from 'react';
 
 import type { TokenInfo } from 'types/api/token';
 
+import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
+import * as blockMock from 'client/slices/block/mocks/block';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import * as txMock from 'client/slices/tx/mocks/tx';
 import * as addressMock from 'mocks/address/address';
 import * as implementationsMock from 'mocks/address/implementations';
 import * as blobsMock from 'mocks/blobs/blobs';
-import * as blockMock from 'mocks/blocks/block';
 import * as ensMock from 'mocks/ens/domain';
 import * as poolMock from 'mocks/pools/pool';
 import { Link, LinkBox, LinkOverlay } from 'toolkit/chakra/link';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlobEntity from 'ui/shared/entities/blob/BlobEntity';
-import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import PoolEntity from 'ui/shared/entities/pool/PoolEntity';

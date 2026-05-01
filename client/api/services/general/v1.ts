@@ -1,5 +1,5 @@
 import type { ApiResource } from '../../types';
-import type { BlockCountdownResponse } from 'types/api/block';
+import type { BlockCountdownResponse } from 'client/slices/block/types/api';
 
 export const GENERAL_API_V1_RESOURCES = {
   graphql: {

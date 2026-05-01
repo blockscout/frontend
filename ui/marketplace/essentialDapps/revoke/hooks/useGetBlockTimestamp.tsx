@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react';
 
-import type { Block } from 'types/api/block';
+import type { Block } from 'client/slices/block/types/api';
 import type { EssentialDappsChainConfig } from 'types/client/marketplace';
 
 import useApiFetch from 'client/api/hooks/useApiFetch';

@@ -7,6 +7,8 @@ import type { ClusterChainConfig } from 'types/multichain';
 
 import TxWatchListTags from 'client/features/account/components/TxWatchListTags';
 import TxTranslationType from 'client/features/tx-interpretation/noves/components/TxTranslationType';
+import BlockPendingUpdateHint from 'client/slices/block/components/BlockPendingUpdateHint';
+import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import TxAdditionalInfo from 'client/slices/tx/components/TxAdditionalInfo';
 import TxFee from 'client/slices/tx/components/TxFee';
@@ -16,8 +18,6 @@ import config from 'configs/app';
 import { Badge } from 'toolkit/chakra/badge';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
-import BlockPendingUpdateHint from 'ui/shared/block/BlockPendingUpdateHint';
-import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import EntityTag from 'ui/shared/EntityTags/EntityTag';
 import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';

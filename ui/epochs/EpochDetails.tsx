@@ -4,9 +4,9 @@ import React from 'react';
 import type { CeloEpochDetails } from 'types/api/epochs';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
-import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import CeloEpochStatus from 'ui/shared/statusTag/CeloEpochStatus';
 import TokenTransferSnippet from 'ui/shared/TokenTransferSnippet/TokenTransferSnippet';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';

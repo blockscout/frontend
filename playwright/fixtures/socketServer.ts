@@ -2,9 +2,9 @@ import type { TestFixture, Page } from '@playwright/test';
 import type { WebSocket } from 'ws';
 import { WebSocketServer } from 'ws';
 
+import type { NewBlockSocketResponse } from 'client/slices/block/types/api';
 import type { Transaction } from 'client/slices/tx/types/api';
 import type { AddressCoinBalanceHistoryItem, AddressTokensBalancesSocketMessage } from 'types/api/address';
-import type { NewBlockSocketResponse } from 'types/api/block';
 import type { SmartContractVerificationResponse } from 'types/api/contract';
 import type { TokenInstanceMetadataSocketMessage } from 'types/api/token';
 import type { TokenTransfer } from 'types/api/tokenTransfer';

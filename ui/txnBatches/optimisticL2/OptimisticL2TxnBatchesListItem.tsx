@@ -4,12 +4,12 @@ import type { OptimisticL2TxnBatchesItem } from 'types/api/optimisticL2';
 
 import { route } from 'nextjs-routes';
 
+import BatchEntityL2 from 'client/features/rollup/common/components/BatchEntityL2';
 import config from 'configs/app';
 import { layerLabels } from 'lib/rollups/utils';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import OptimisticL2TxnBatchDA from 'ui/shared/batch/OptimisticL2TxnBatchDA';
-import BatchEntityL2 from 'ui/shared/entities/block/BatchEntityL2';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 

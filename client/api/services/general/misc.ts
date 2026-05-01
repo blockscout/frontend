@@ -1,5 +1,6 @@
 import type { ApiResource } from '../../types';
 import type { CsvExportItemResponse, CsvExportConfig } from 'client/features/csv-export/types/api';
+import type { Block } from 'client/slices/block/types/api';
 import type {
   Transaction,
 } from 'client/slices/tx/types/api';
@@ -9,7 +10,6 @@ import type {
   ArbitrumLatestDepositsResponse,
 } from 'types/api/arbitrumL2';
 import type { Blob } from 'types/api/blobs';
-import type { Block } from 'types/api/block';
 import type { ChartMarketResponse, ChartSecondaryCoinPriceResponse, ChartTransactionResponse } from 'types/api/charts';
 import type { BackendConfig, BackendVersionConfig, CeloConfig, ContractLanguagesConfig } from 'types/api/configs';
 import type { HotContractsFilters, HotContractsResponse, HotContractsSorting } from 'types/api/contracts';

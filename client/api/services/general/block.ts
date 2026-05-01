@@ -8,7 +8,7 @@ import type {
   BlockWithdrawalsResponse,
   BlockCountdownResponse,
   BlockInternalTransactionsResponse,
-} from 'types/api/block';
+} from 'client/slices/block/types/api';
 import type { DepositsResponse } from 'types/api/deposits';
 
 export const GENERAL_API_BLOCK_RESOURCES = {

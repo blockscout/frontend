@@ -85,3 +85,5 @@ export interface BlockCountdownResponse {
     RemainingBlock: string;
   } | null;
 }
+
+export type { BlockWithdrawalsResponse, BlockWithdrawalsItem } from 'client/features/chain-variants/beacon-chain/types/api';
