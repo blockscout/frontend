@@ -4,14 +4,14 @@ import type { ScrollL2TxnBatch } from 'types/api/scrollL2';
 
 import { route } from 'nextjs-routes';
 
+import BatchEntityL2 from 'client/features/rollup/common/components/BatchEntityL2';
+import BlockEntityL1 from 'client/features/rollup/common/components/BlockEntityL1';
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
 import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import ScrollL2TxnBatchDA from 'ui/shared/batch/ScrollL2TxnBatchDA';
-import BatchEntityL2 from 'ui/shared/entities/block/BatchEntityL2';
-import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
 import ScrollL2TxnBatchStatus from 'ui/shared/statusTag/ScrollL2TxnBatchStatus';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 

@@ -8,13 +8,13 @@ import React from 'react';
 
 import { route } from 'nextjs-routes';
 
+import BlockEntityL1 from 'client/features/rollup/common/components/BlockEntityL1';
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import { layerLabels } from 'lib/rollups/utils';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
 import SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 

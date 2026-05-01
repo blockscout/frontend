@@ -1,13 +1,13 @@
 import React from 'react';
 
+import type { BlockWithdrawalsItem } from 'client/slices/block/types/api';
 import type { AddressWithdrawalsItem } from 'types/api/address';
-import type { BlockWithdrawalsItem } from 'types/api/block';
 import type { WithdrawalsItem } from 'types/api/withdrawals';
 
+import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
-import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';

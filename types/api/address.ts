@@ -1,7 +1,7 @@
+import type { Block } from 'client/slices/block/types/api';
 import type { Transaction } from 'client/slices/tx/types/api';
 
 import type { UserTags, AddressImplementation, AddressParam, AddressFilecoinParams } from './addressParams';
-import type { Block } from './block';
 import type { SmartContractCreationStatus, SmartContractProxyType } from './contract';
 import type { CeloEpochRewardsType } from './epochs';
 import type { InternalTransaction } from './internalTransaction';

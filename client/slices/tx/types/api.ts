@@ -12,9 +12,9 @@ import type { TransactionScroll } from 'client/features/rollup/scroll/types/api'
 import type { TransactionZkSync } from 'client/features/rollup/zk-sync/types/api';
 import type { TransactionActions } from 'client/features/tx-actions/types/api';
 import type { TransactionAuthorization } from 'client/features/tx-authorization/types/api';
+import type { BlockTransactionsResponse } from 'client/slices/block/types/api';
 import type { DecodedInput } from 'client/slices/logs/types/api';
 import type { AddressParam } from 'types/api/addressParams';
-import type { BlockTransactionsResponse } from 'types/api/block';
 import type { TokenInfo } from 'types/api/token';
 import type { Erc721TotalPayload, TokenTransfer } from 'types/api/tokenTransfer';
 

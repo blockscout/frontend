@@ -20,6 +20,7 @@ import TxDetailsCrossChainMessages from 'client/features/cross-chain-txs/pages/t
 import TxDetailsCrossChainTransfers from 'client/features/cross-chain-txs/pages/tx/TxDetailsCrossChainTransfers';
 import TxDetailsInterop from 'client/features/op-interop/pages/tx/TxDetailsInterop';
 import TxDetailsWithdrawalStatusArbitrum from 'client/features/rollup/arbitrum/pages/tx/TxDetailsWithdrawalStatusArbitrum';
+import BatchEntityL2 from 'client/features/rollup/common/components/BatchEntityL2';
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
 import TxDetailsWithdrawalStatusOptimistic from 'client/features/rollup/optimistic/pages/tx/TxDetailsWithdrawalStatusOptimistic';
 import TxInfoScrollFees from 'client/features/rollup/scroll/pages/tx/TxInfoScrollFees';
@@ -27,6 +28,7 @@ import TxDetailsTacOperation from 'client/features/tac/pages/tx/TxDetailsTacOper
 import TxDetailsActions from 'client/features/tx-actions/pages/tx/TxDetailsActions';
 import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-title';
 import { currencyUnits } from 'client/shared/chain/units';
+import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
 import TxSocketAlert from 'client/slices/tx/components/TxSocketAlert';
 import TxStatus from 'client/slices/tx/components/TxStatus';
 import getConfirmationDuration from 'client/slices/tx/utils/get-confirmation-duration';
@@ -44,8 +46,6 @@ import DetailedInfoSponsoredItem from 'ui/shared/DetailedInfo/DetailedInfoSponso
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import AddressEntityInterop from 'ui/shared/entities/address/AddressEntityInterop';
-import BatchEntityL2 from 'ui/shared/entities/block/BatchEntityL2';
-import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import IconSvg from 'ui/shared/IconSvg';
 import LogDecodedInputData from 'ui/shared/logs/LogDecodedInputData';
 import RawInputData from 'ui/shared/RawInputData';

@@ -1,9 +1,9 @@
 import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
+import BlockPendingUpdateAlert from 'client/slices/block/components/BlockPendingUpdateAlert';
 import type { TxQuery } from 'client/slices/tx/hooks/useTxQuery';
 import TestnetWarning from 'ui/shared/alerts/TestnetWarning';
-import BlockPendingUpdateAlert from 'ui/shared/block/BlockPendingUpdateAlert';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
 import TxDetails from './TxDetails';

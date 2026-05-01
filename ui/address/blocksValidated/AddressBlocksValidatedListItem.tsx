@@ -2,14 +2,14 @@ import { Text, Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
-import type { Block } from 'types/api/block';
+import type { Block } from 'client/slices/block/types/api';
 
 import { currencyUnits } from 'client/shared/chain/units';
+import BlockGasUsed from 'client/slices/block/components/BlockGasUsed';
+import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
+import getBlockTotalReward from 'client/slices/block/utils/get-block-total-reward';
 import config from 'configs/app';
-import getBlockTotalReward from 'lib/block/getBlockTotalReward';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import BlockGasUsed from 'ui/shared/block/BlockGasUsed';
-import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import SimpleValue from 'ui/shared/value/SimpleValue';

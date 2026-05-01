@@ -8,8 +8,8 @@ import { route } from 'nextjs/routes';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
+import { BLOCK } from 'client/slices/block/stubs/block';
 import multichainConfig from 'configs/multichain';
-import { BLOCK } from 'stubs/block';
 import { generateListStub } from 'stubs/utils';
 import { Link } from 'toolkit/chakra/link';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';

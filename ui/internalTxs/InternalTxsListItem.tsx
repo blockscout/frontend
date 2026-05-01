@@ -5,13 +5,13 @@ import type { InternalTransaction } from 'types/api/internalTransaction';
 import type { ClusterChainConfig } from 'types/multichain';
 
 import { currencyUnits } from 'client/shared/chain/units';
+import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
 import { TX_INTERNALS_ITEMS } from 'client/slices/internal-txs/utils/utils';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import TxStatus from 'client/slices/tx/components/TxStatus';
 import { Badge } from 'toolkit/chakra/badge';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
-import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';

@@ -1,6 +1,6 @@
 import type { Chain, GetBlockReturnType } from 'viem';
 
-import type { Block } from 'types/api/block';
+import type { Block } from 'client/slices/block/types/api';
 
 import dayjs from 'lib/date/dayjs';
 import { unknownAddress } from 'ui/shared/address/utils';
