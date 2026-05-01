@@ -5,3 +5,7 @@ export interface TransactionZkSync {
     batch_number: number | null;
   };
 }
+
+export interface BlockZkSync {
+  zksync?: Omit<ZkSyncBatchesItem, 'number' | 'transactions_count' | 'timestamp'> & { batch_number: number | null };
+}

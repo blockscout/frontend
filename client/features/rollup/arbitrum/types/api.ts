@@ -19,3 +19,18 @@ export interface TransactionArbitrum {
     };
   };
 }
+
+export interface BlockArbitrum {
+  arbitrum?: ArbitrumBlockData;
+}
+
+export type ArbitrumBlockData = {
+  batch_number: number;
+  commitment_transaction: ArbitrumL2TxData;
+  confirmation_transaction: ArbitrumL2TxData;
+  delayed_messages: number;
+  l1_block_number: number;
+  send_count: number | null;
+  send_root: string;
+  status: ArbitrumBatchStatus;
+};
