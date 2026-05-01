@@ -2,7 +2,7 @@ import { Flex } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import React, { useCallback, useEffect, useMemo } from 'react';
 
-import splitSecondsInPeriods from 'client/slices/block/pages/countdown/split-seconds-in-periods';
+import splitSecondsInPeriods from 'client/slices/block/pages/countdown-details/split-seconds-in-periods';
 import { useRewardsContext } from 'lib/contexts/rewards';
 import { Button } from 'toolkit/chakra/button';
 import { SECOND } from 'toolkit/utils/consts';

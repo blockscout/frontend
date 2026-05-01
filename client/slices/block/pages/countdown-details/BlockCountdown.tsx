@@ -7,9 +7,6 @@ import { route } from 'nextjs/routes';
 import useApiQuery from 'client/api/hooks/useApiQuery';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
-import BlockCountdownTimer from 'client/slices/block/pages/countdown/BlockCountdownTimer';
-import createGoogleCalendarLink from 'client/slices/block/pages/countdown/create-google-calendar-link';
-import createIcsFileBlob from 'client/slices/block/pages/countdown/create-ics-file-blob';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import dayjs from 'lib/date/dayjs';
 import { Button } from 'toolkit/chakra/button';
@@ -24,6 +21,10 @@ import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 import IconSvg from 'ui/shared/IconSvg';
 import StatsWidget from 'ui/shared/stats/StatsWidget';
 import Time from 'ui/shared/time/Time';
+
+import BlockCountdownTimer from './BlockCountdownTimer';
+import createGoogleCalendarLink from './create-google-calendar-link';
+import createIcsFileBlob from './create-ics-file-blob';
 
 type Props = {
   hideCapybaraRunner?: boolean;

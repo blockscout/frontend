@@ -5,7 +5,7 @@ import React from 'react';
 import type { Props } from 'nextjs/getServerSideProps/handlers';
 import PageNextJs from 'nextjs/PageNextJs';
 
-const BlockCountdownIndex = dynamic(() => import('client/slices/block/pages/countdown/BlockCountdownIndex'), { ssr: false });
+const BlockCountdownIndex = dynamic(() => import('client/slices/block/pages/countdown-index/BlockCountdownIndex'), { ssr: false });
 
 const Page: NextPage<Props> = (props: Props) => {
   return (
