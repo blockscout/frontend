@@ -33,6 +33,16 @@ For each source path in the task Scope:
 - **Classify each file: move or create.** Files that don't yet exist at the destination and aren't in the source need to be created (e.g. a new `types/api.ts` aggregating types from several source files).
 - **Flag type extractions.** Look for type definitions or interfaces inside the source files that logically belong to a *different* slice or feature — these must be extracted into the new owner's `types/api.ts` rather than simply moved. Example: a chain-specific sub-type (`arbitrum?`, `scroll?`) embedded in a shared `Transaction` type needs to move to `features/rollup/<type>/types/api.ts`.
 
+**Additional sweeps (run for every slice or feature migration):**
+
+- **`ui/shared/` sweep.** Search `ui/shared/` for components whose filename begins with the slice entity prefix (e.g., `Tx*` for the tx slice, `Block*` for block). These are slice-owned components that ended up in the shared bucket and must be included in the move scope.
+
+- **Type decomposition map.** Find the monolithic entity type file (e.g., `types/api/transaction.ts`). For each optional field group that maps to a feature (e.g., `arbitrum?`, `scroll?`, `celo?`), identify the owning feature path and check whether `client/features/<name>/types/api.ts` already exists. List each feature whose `types/api.ts` needs to be created or merged into. The slice's own `types/api.ts` should compose them via `interface Entity extends FeatureTypeA, FeatureTypeB, ...`.
+
+- **Mocks and stubs decomposition.** Find the monolithic mocks and stubs files for the entity (e.g., `mocks/transaction.ts`, `stubs/transaction.ts`). Identify which entries are feature-specific. For each feature with specific mock/stub data, list `client/features/<name>/mocks/<slice>.ts` (or `stubs/<slice>.ts`) as a file to create or merge into — the file is named after the *slice*, not the feature. The slice itself keeps only entity-core mock and stub data.
+
+- **Feature impact inventory.** Enumerate all features that will be touched as a side effect of migrating this slice: features that own type extensions, components under `ui/*/TxXxx.tsx`, or mock data for the entity. List each one explicitly — this becomes the `## Feature impact` section of the issue.
+
 ### 3. Draft the issue body
 
 ```markdown
@@ -40,11 +50,21 @@ For each source path in the task Scope:
 
 [Exact source → destination file mappings. One line per file or directory.]
 
+## Feature impact
+
+[For each feature that needs a `types/api.ts` created or merged into, and/or a `mocks/<slice>.ts` / `stubs/<slice>.ts` created or merged into, list:
+  - Feature path (e.g. `client/features/rollup/arbitrum/`)
+  - Files to create or merge (`types/api.ts`, `mocks/tx.ts`, etc.)
+  - What each file should contain (type names, or description of mock data)
+
+If no features are affected, write: "No feature-side files required."]
+
 ## Findings
 
 [Destination conflicts, if any.]
 [Files to create rather than move, and what they should contain.]
 [Types or interfaces that need extraction — name the type, its current location, and where it belongs after migration.]
+[`ui/shared/` components claimed by this slice, if any.]
 [Any other non-obvious work discovered during exploration.]
 
 If no issues were found, write: "No conflicts or extractions identified — straightforward move."
