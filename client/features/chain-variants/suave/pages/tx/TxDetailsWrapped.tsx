@@ -6,6 +6,7 @@ import type { Transaction } from 'client/slices/tx/types/api';
 import type { ExcludeUndefined } from 'types/utils';
 
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
+import TxFee from 'client/slices/tx/components/TxFee';
 import TxDetailsGasPrice from 'client/slices/tx/pages/details/info/parts/TxDetailsGasPrice';
 import TxDetailsOther from 'client/slices/tx/pages/details/info/parts/TxDetailsOther';
 import { Badge } from 'toolkit/chakra/badge';
@@ -14,7 +15,6 @@ import DetailedInfoNativeCoinValue from 'ui/shared/DetailedInfo/DetailedInfoNati
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import LogDecodedInputData from 'ui/shared/logs/LogDecodedInputData';
 import RawInputData from 'ui/shared/RawInputData';
-import TxFee from 'ui/shared/tx/TxFee';
 
 interface Props {
   data: ExcludeUndefined<Transaction['wrapped']>;

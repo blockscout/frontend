@@ -28,6 +28,7 @@ import TxDetailsActions from 'client/features/tx-actions/pages/tx/TxDetailsActio
 import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-title';
 import { currencyUnits } from 'client/shared/chain/units';
 import TxSocketAlert from 'client/slices/tx/components/TxSocketAlert';
+import TxStatus from 'client/slices/tx/components/TxStatus';
 import getConfirmationDuration from 'client/slices/tx/utils/get-confirmation-duration';
 import config from 'configs/app';
 import * as arbitrum from 'lib/rollups/arbitrum';
@@ -49,7 +50,6 @@ import IconSvg from 'ui/shared/IconSvg';
 import LogDecodedInputData from 'ui/shared/logs/LogDecodedInputData';
 import RawInputData from 'ui/shared/RawInputData';
 import StatusTag from 'ui/shared/statusTag/StatusTag';
-import TxStatus from 'ui/shared/statusTag/TxStatus';
 import TextSeparator from 'ui/shared/TextSeparator';
 import Utilization from 'ui/shared/Utilization/Utilization';
 import GasPriceValue from 'ui/shared/value/GasPriceValue';

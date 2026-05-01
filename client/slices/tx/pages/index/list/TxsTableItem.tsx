@@ -5,9 +5,12 @@ import type { Transaction } from 'client/slices/tx/types/api';
 import type { NovesDescribeTxsResponse } from 'types/api/noves';
 import type { ClusterChainConfig } from 'types/multichain';
 
+import TxWatchListTags from 'client/features/account/components/TxWatchListTags';
 import TxTranslationType from 'client/features/tx-interpretation/noves/components/TxTranslationType';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import TxAdditionalInfo from 'client/slices/tx/components/TxAdditionalInfo';
+import TxFee from 'client/slices/tx/components/TxFee';
+import TxStatus from 'client/slices/tx/components/TxStatus';
 import TxType from 'client/slices/tx/components/TxType';
 import config from 'configs/app';
 import { Badge } from 'toolkit/chakra/badge';
@@ -17,10 +20,7 @@ import BlockPendingUpdateHint from 'ui/shared/block/BlockPendingUpdateHint';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import EntityTag from 'ui/shared/EntityTags/EntityTag';
 import ChainIcon from 'ui/shared/externalChains/ChainIcon';
-import TxStatus from 'ui/shared/statusTag/TxStatus';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
-import TxFee from 'ui/shared/tx/TxFee';
-import TxWatchListTags from 'ui/shared/tx/TxWatchListTags';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 interface Props {

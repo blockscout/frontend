@@ -38,7 +38,7 @@ import {
   checkSummary,
   NATIVE_COIN_SYMBOL_VAR_NAME,
   WEI_VAR_NAME,
-} from './utils';
+} from '../utils/utils';
 
 const nameServicesFeature = config.features.nameServices;
 

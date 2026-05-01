@@ -4,6 +4,7 @@ import React from 'react';
 import type { AddressParam } from 'types/api/addressParams';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
+import TxInterpretation from 'client/features/tx-interpretation/common/components/TxInterpretation';
 import { createNovesSummaryObject } from 'client/features/tx-interpretation/noves/utils/createNovesSummaryObject';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import type { TxQuery } from 'client/slices/tx/hooks/useTxQuery';
@@ -17,7 +18,6 @@ import AppActionButton from 'ui/shared/AppActionButton/AppActionButton';
 import useAppActionData from 'ui/shared/AppActionButton/useAppActionData';
 import { TX_ACTIONS_BLOCK_ID } from 'ui/shared/DetailedInfo/DetailedInfoActionsWrapper';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
-import TxInterpretation from 'ui/shared/tx/interpretation/TxInterpretation';
 
 type Props = {
   hash: string;

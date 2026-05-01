@@ -1,10 +1,10 @@
 import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
+import TxInterpretation from 'client/features/tx-interpretation/common/components/TxInterpretation';
 import { TX_INTERPRETATION } from 'stubs/txInterpretation';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoActionsWrapper from 'ui/shared/DetailedInfo/DetailedInfoActionsWrapper';
-import TxInterpretation from 'ui/shared/tx/interpretation/TxInterpretation';
 
 interface Props {
   hash?: string;
