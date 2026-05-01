@@ -19,12 +19,11 @@ import { Link } from 'toolkit/chakra/link';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
 import { downloadBlob } from 'toolkit/utils/file';
+import CapybaraRunner from 'ui/games/CapybaraRunner';
 import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 import IconSvg from 'ui/shared/IconSvg';
 import StatsWidget from 'ui/shared/stats/StatsWidget';
 import Time from 'ui/shared/time/Time';
-
-import CapybaraRunner from '../games/CapybaraRunner';
 
 type Props = {
   hideCapybaraRunner?: boolean;

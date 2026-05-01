@@ -11,7 +11,7 @@ const Blocks = dynamic(() => {
     return import('ui/multichain/blocks/MultichainBlocks');
   }
 
-  return import('ui/pages/Blocks');
+  return import('client/slices/block/pages/index/Blocks');
 }, { ssr: false });
 
 const Page: NextPage = () => {

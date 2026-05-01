@@ -2,9 +2,9 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import getQueryParamString from 'client/shared/router/get-query-param-string';
+import Block from 'client/slices/block/pages/details/Block';
 import multichainConfig from 'configs/multichain';
 import { MultichainProvider } from 'lib/contexts/multichain';
-import Block from 'ui/pages/Block';
 
 const MultichainBlock = () => {
   const router = useRouter();
