@@ -100,7 +100,7 @@ after this PR — note each as an explicit follow-up in the PR description.
 
 Each slice follows the template established in 2-1.
 
-### 3-1 · [ ] Slice: `block`
+### 3-1 · [~] Slice: `block` · [#3378](https://github.com/blockscout/frontend/issues/3378)
 **Scope:** `lib/block/` (if any), `ui/block/**`, related `types/api/`, `mocks/`, `stubs/` → `client/slices/block/`  
 
 ### 3-2 · [ ] Slice: `address`
