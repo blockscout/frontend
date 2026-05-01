@@ -13,7 +13,7 @@ import BlockWithdrawals from 'client/features/chain-variants/beacon-chain/pages/
 import useBlockDepositsQuery from 'client/features/chain-variants/beacon-chain/pages/block/useBlockDepositsQuery';
 import useBlockWithdrawalsQuery from 'client/features/chain-variants/beacon-chain/pages/block/useBlockWithdrawalsQuery';
 import BlockCeloEpochTag from 'client/features/chain-variants/celo/pages/block/BlockCeloEpochTag';
-import useBlockBlobTxsQuery from 'client/features/data-availability/pages/block/useBlockBlobTxsQuery';
+import useBlockBlobTxsQuery from 'client/features/data-availability/hooks/useBlockBlobTxsQuery';
 import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-title';
 import throwOnAbsentParamError from 'client/shared/errors/throw-on-absent-param-error';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
