@@ -37,6 +37,15 @@ For each source path in the task Scope:
 
 - **`ui/shared/` sweep.** Search `ui/shared/` for components whose filename begins with the slice entity prefix (e.g., `Tx*` for the tx slice, `Block*` for block). These are slice-owned components that ended up in the shared bucket and must be included in the move scope.
 
+- **`ui/pages/` sweep.** Search `ui/pages/` for root page components whose filename begins with the slice entity prefix (e.g., `Block.tsx`, `Blocks.tsx`, `BlockCountdown.tsx`). For every matched component, the scope must also list:
+  - Its sibling `.pw.tsx` visual test file (e.g., `Block.pw.tsx`)
+  - Its screenshots under `ui/pages/__screenshots__/<ComponentName>.pw.tsx_*.png`
+  - The Next.js entry file(s) under `pages/` (and `pages/chain/[chain_slug_or_id]/` for multichain variants) that load the component via `dynamic(() => import('ui/pages/<Name>'))` — these import paths must be updated in the same PR.
+
+- **Feature hooks placement.** When a hook file is being extracted into a feature directory, its destination must be `client/features/<name>/hooks/` — never inside `client/features/<name>/pages/<subdir>/`. Only UI component files belong under `pages/`. Apply this correction to any hook destination in the scope before writing the issue.
+
+- **Visual tests and screenshots co-location.** For every component file anywhere in the scope (not just `ui/pages/`) that has a sibling `.pw.tsx` file or `__screenshots__/` directory, include those siblings explicitly in the scope mapping. They must move alongside their component; omitting them causes test infrastructure to break silently.
+
 - **Type decomposition map.** Find the monolithic entity type file (e.g., `types/api/transaction.ts`). For each optional field group that maps to a feature (e.g., `arbitrum?`, `scroll?`, `celo?`), identify the owning feature path and check whether `client/features/<name>/types/api.ts` already exists. List each feature whose `types/api.ts` needs to be created or merged into. The slice's own `types/api.ts` should compose them via `interface Entity extends FeatureTypeA, FeatureTypeB, ...`.
 
 - **Mocks and stubs decomposition.** Find the monolithic mocks and stubs files for the entity (e.g., `mocks/transaction.ts`, `stubs/transaction.ts`). Identify which entries are feature-specific. For each feature with specific mock/stub data, list `client/features/<name>/mocks/<slice>.ts` (or `stubs/<slice>.ts`) as a file to create or merge into — the file is named after the *slice*, not the feature. The slice itself keeps only entity-core mock and stub data.
