@@ -3,7 +3,7 @@ import React from 'react';
 import type { UserOpsItem } from 'types/api/userOps';
 
 import config from 'configs/app';
-import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
+import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';

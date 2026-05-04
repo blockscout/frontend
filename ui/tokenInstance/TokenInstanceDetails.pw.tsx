@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { AddressMetadataInfo, AddressMetadataTagApi } from 'types/api/addressMetadata';
+import type { AddressMetadataInfo, AddressMetadataTagApi } from 'client/features/address-metadata/types/api';
 
 import config from 'configs/app';
 import * as addressMock from 'mocks/address/address';

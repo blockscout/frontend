@@ -6,7 +6,7 @@ import type {
   AddressMudRecordsFilter,
   AddressMudRecordsSorting,
   AddressMudRecord,
-} from 'types/api/address';
+} from 'client/slices/address/types/api';
 import type {
   ArbitrumL2MessagesResponse,
   ArbitrumL2TxnBatch,

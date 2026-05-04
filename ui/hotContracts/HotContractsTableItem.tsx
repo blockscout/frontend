@@ -6,7 +6,7 @@ import type { HotContract } from 'types/api/contracts';
 
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import { Reputation } from 'ui/shared/entities/token/TokenEntity';
 import EntityTags from 'ui/shared/EntityTags/EntityTags';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';

@@ -12,7 +12,7 @@ import TxDetailsOther from 'client/slices/tx/pages/details/info/parts/TxDetailsO
 import { Badge } from 'toolkit/chakra/badge';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoNativeCoinValue from 'ui/shared/DetailedInfo/DetailedInfoNativeCoinValue';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import LogDecodedInputData from 'ui/shared/logs/LogDecodedInputData';
 import RawInputData from 'ui/shared/RawInputData';
 

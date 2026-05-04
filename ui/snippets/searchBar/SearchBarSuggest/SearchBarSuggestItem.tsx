@@ -1,7 +1,7 @@
 import React from 'react';
 
 import type { QuickSearchResultItem } from 'types/client/search';
-import type { AddressFormat } from 'types/views/address';
+import type { AddressFormat } from 'client/slices/address/types/view';
 
 import { route } from 'nextjs/routes';
 

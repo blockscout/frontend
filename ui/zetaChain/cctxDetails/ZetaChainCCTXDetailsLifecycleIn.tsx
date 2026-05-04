@@ -9,7 +9,7 @@ import TxEntityZetaChainExternal from 'client/features/chain-variants/zeta-chain
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import AddressEntityZetaChain from 'ui/shared/entities/address/AddressEntityZetaChain';
+import AddressEntityZetaChain from 'client/features/chain-variants/zeta-chain/components/AddressEntityZetaChain';
 import IconSvg from 'ui/shared/IconSvg';
 import StatusTag from 'ui/shared/statusTag/StatusTag';
 import ZetaChainCCTXValue from 'ui/shared/zetaChain/ZetaChainCCTXValue';

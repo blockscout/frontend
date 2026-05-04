@@ -6,7 +6,7 @@ import type { TxAuthorization } from 'client/features/tx-authorization/types/api
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableRow, TableCell } from 'toolkit/chakra/table';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import TxAuthorizationStatus from 'ui/shared/statusTag/TxAuthorizationStatus';
 
 interface Props extends TxAuthorization {

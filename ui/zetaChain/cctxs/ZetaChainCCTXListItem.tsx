@@ -7,7 +7,7 @@ import TxEntityZetaChainCC from 'client/features/chain-variants/zeta-chain/TxEnt
 import dayjs from 'lib/date/dayjs';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { SECOND } from 'toolkit/utils/consts';
-import AddressEntityZetaChain from 'ui/shared/entities/address/AddressEntityZetaChain';
+import AddressEntityZetaChain from 'client/features/chain-variants/zeta-chain/components/AddressEntityZetaChain';
 import TextSeparator from 'ui/shared/TextSeparator';
 import Time from 'ui/shared/time/Time';
 import ZetaChainCCTXReducedStatus from 'ui/shared/zetaChain/ZetaChainCCTXReducedStatus';

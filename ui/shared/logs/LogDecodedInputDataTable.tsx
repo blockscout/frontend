@@ -7,7 +7,7 @@ import type { ArrayElement } from 'types/utils';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 
 interface Props {
   data: DecodedInput['parameters'];

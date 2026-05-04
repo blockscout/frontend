@@ -5,7 +5,7 @@ import type * as bens from '@blockscout/bens-types';
 import dayjs from 'lib/date/dayjs';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import NameDomainExpiryStatus from 'ui/nameDomain/NameDomainExpiryStatus';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 import Time from 'ui/shared/time/Time';

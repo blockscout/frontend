@@ -1,5 +1,5 @@
 import type { Transaction } from 'client/slices/tx/types/api';
-import type { AddressParam } from 'types/api/addressParams';
+import type { AddressParam } from 'client/slices/address/types/api';
 
 export type WrappedTransactionFields = 'decoded_input' | 'fee' | 'gas_limit' | 'gas_price' | 'hash' | 'max_fee_per_gas' |
 'max_priority_fee_per_gas' | 'method' | 'nonce' | 'raw_input' | 'to' | 'type' | 'value';

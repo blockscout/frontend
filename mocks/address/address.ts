@@ -1,5 +1,5 @@
-import type { Address } from 'types/api/address';
-import type { AddressParam } from 'types/api/addressParams';
+import type { Address } from 'client/slices/address/types/api';
+import type { AddressParam } from 'client/slices/address/types/api';
 
 import { publicTag, privateTag, watchlistName } from 'mocks/address/tag';
 import { tokenInfo } from 'mocks/tokens/tokenInfo';

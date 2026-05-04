@@ -9,7 +9,7 @@ import useIsMobile from 'client/shared/hooks/useIsMobile';
 import useInitialList from 'client/shared/lists/useInitialList';
 import useLazyRenderedList from 'client/shared/lists/useLazyRenderedList';
 import config from 'configs/app';
-import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
+import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import { TableBody, TableColumnHeader, TableColumnHeaderSortable, TableHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';

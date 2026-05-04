@@ -16,7 +16,7 @@ import { ADDRESS_PORTFOLIO, TOKEN } from 'stubs/multichain';
 import { generateListStub } from 'stubs/utils';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import { ZERO } from 'toolkit/utils/consts';
-import { calculateUsdValue } from 'ui/address/utils/tokenUtils';
+import { calculateUsdValue } from 'client/slices/address/pages/details/tokens/token-utils';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/pagination/Pagination';

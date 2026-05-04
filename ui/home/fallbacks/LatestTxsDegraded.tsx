@@ -7,7 +7,7 @@ import { route } from 'nextjs-routes';
 import { publicClient } from 'client/features/connect-wallet/utils/public-client';
 import { TX } from 'client/slices/tx/stubs/tx';
 import config from 'configs/app';
-import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
+import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
 import { Link } from 'toolkit/chakra/link';
 
 import LatestTxsItem from '../LatestTxsItem';

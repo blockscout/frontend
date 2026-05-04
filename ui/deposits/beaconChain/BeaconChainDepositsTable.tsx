@@ -4,7 +4,7 @@ import type { DepositsItem } from 'types/api/deposits';
 
 import useLazyRenderedList from 'client/shared/lists/useLazyRenderedList';
 import config from 'configs/app';
-import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
+import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 

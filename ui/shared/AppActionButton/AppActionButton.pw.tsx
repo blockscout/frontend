@@ -1,7 +1,7 @@
 import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
-import type { AddressMetadataTagFormatted } from 'types/client/addressMetadata';
+import type { AddressMetadataTagFormatted } from 'client/features/address-metadata/types/view';
 
 import * as actionButtonMetadataMock from 'mocks/metadata/appActionButton';
 import { test, expect } from 'playwright/lib';

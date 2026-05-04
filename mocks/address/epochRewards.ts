@@ -1,4 +1,4 @@
-import type { AddressEpochRewardsResponse } from 'types/api/address';
+import type { AddressEpochRewardsResponse } from 'client/slices/address/types/api';
 
 import { tokenInfo } from 'mocks/tokens/tokenInfo';
 

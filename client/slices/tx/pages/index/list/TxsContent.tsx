@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { Transaction, TransactionsSortingField, TransactionsSortingValue } from 'client/slices/tx/types/api';
 import type { TxsSocketType } from 'client/slices/tx/types/socket';
-import type { AddressFromToFilter } from 'types/api/address';
+import type { AddressFromToFilter } from 'client/slices/address/types/api';
 import type { PaginationParams } from 'ui/shared/pagination/types';
 
 import CsvExport from 'client/features/csv-export/components/CsvExport';

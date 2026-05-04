@@ -8,7 +8,7 @@ import useIsMobile from 'client/shared/hooks/useIsMobile';
 import useNewTxsSocket from 'client/slices/tx/hooks/useTxsSocketTypeAll';
 import { TX } from 'client/slices/tx/stubs/tx';
 import config from 'configs/app';
-import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
+import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
 import { Link } from 'toolkit/chakra/link';
 import SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 

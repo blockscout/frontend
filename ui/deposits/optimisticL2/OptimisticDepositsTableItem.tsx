@@ -9,7 +9,7 @@ import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
-import AddressEntityL1 from 'ui/shared/entities/address/AddressEntityL1';
+import AddressEntityL1 from 'client/features/rollup/common/components/AddressEntityL1';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 const rollupFeature = config.features.rollup;

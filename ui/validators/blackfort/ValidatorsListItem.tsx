@@ -5,7 +5,7 @@ import type { ValidatorBlackfort } from 'types/api/validators';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 

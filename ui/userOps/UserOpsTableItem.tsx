@@ -7,7 +7,7 @@ import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import config from 'configs/app';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
-import AddressStringOrParam from 'ui/shared/entities/address/AddressStringOrParam';
+import AddressStringOrParam from 'client/slices/address/components/entity/AddressStringOrParam';
 import UserOpEntity from 'ui/shared/entities/userOp/UserOpEntity';
 import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';

@@ -2,7 +2,7 @@ import React from 'react';
 
 import type { TransactionsSortingValue } from 'client/slices/tx/types/api';
 import type { TxsSocketType } from 'client/slices/tx/types/socket';
-import type { AddressFromToFilter } from 'types/api/address';
+import type { AddressFromToFilter } from 'client/slices/address/types/api';
 
 import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
 import getSortParamsFromValue from 'ui/shared/sort/getSortParamsFromValue';

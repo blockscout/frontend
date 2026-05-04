@@ -1,7 +1,7 @@
 import type { SmartContractVerificationMethodExtra } from 'types/client/contract';
 import { SMART_CONTRACT_EXTRA_VERIFICATION_METHODS } from 'types/client/contract';
-import type { AddressFormat, AddressViewId, IdenticonType } from 'types/views/address';
-import { ADDRESS_FORMATS, ADDRESS_VIEWS_IDS, IDENTICON_TYPES } from 'types/views/address';
+import type { AddressFormat, AddressViewId, IdenticonType } from 'client/slices/address/types/view';
+import { ADDRESS_FORMATS, ADDRESS_VIEWS_IDS, IDENTICON_TYPES } from 'client/slices/address/types/view';
 
 import { getEnvValue, parseEnvJson } from 'configs/app/utils';
 

@@ -12,10 +12,10 @@ import * as contract from 'lib/multichain/contract';
 import { ADDRESS } from 'stubs/multichain';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import { CONTRACT_TAB_IDS } from 'ui/address/contract/utils';
-import AddressQrCode from 'ui/address/details/AddressQrCode';
+import AddressQrCode from 'client/slices/address/pages/details/info/AddressQrCode';
 import ClusterChainsPopover from 'ui/multichain/components/ClusterChainsPopover';
 import TextAd from 'ui/shared/ad/TextAd';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 import PageTitle from 'ui/shared/Page/PageTitle';
 

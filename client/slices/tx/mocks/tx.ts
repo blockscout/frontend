@@ -2,7 +2,7 @@
 import type { RpcTransactionReceipt } from 'viem';
 
 import type { Transaction } from 'client/slices/tx/types/api';
-import type { AddressParam } from 'types/api/addressParams';
+import type { AddressParam } from 'client/slices/address/types/api';
 
 import * as decodedInputDataMock from 'client/slices/logs/mocks/decoded-input';
 import * as addressMock from 'mocks/address/address';

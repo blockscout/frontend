@@ -5,7 +5,7 @@ import type { TxAuthorization } from 'client/features/tx-authorization/types/api
 
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TxAuthorizationStatus from 'ui/shared/statusTag/TxAuthorizationStatus';
 

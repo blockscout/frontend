@@ -1,4 +1,4 @@
-import type { AddressCoinBalanceHistoryItem, AddressCoinBalanceHistoryResponse, AddressCoinBalanceHistoryChart } from 'types/api/address';
+import type { AddressCoinBalanceHistoryItem, AddressCoinBalanceHistoryResponse, AddressCoinBalanceHistoryChart } from 'client/slices/address/types/api';
 
 export const base: AddressCoinBalanceHistoryItem = {
   block_number: 30367643,

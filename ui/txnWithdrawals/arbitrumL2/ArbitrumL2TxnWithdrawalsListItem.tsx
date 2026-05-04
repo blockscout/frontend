@@ -4,7 +4,7 @@ import type { ArbitrumL2TxnWithdrawalsItem } from 'types/api/arbitrumL2';
 
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import AddressEntityL1 from 'ui/shared/entities/address/AddressEntityL1';
+import AddressEntityL1 from 'client/features/rollup/common/components/AddressEntityL1';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 import ArbitrumL2MessageStatus from 'ui/shared/statusTag/ArbitrumL2MessageStatus';
 

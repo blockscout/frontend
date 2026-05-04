@@ -11,7 +11,7 @@ import { Badge } from 'toolkit/chakra/badge';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import type { ColumnsIds } from 'ui/advancedFilter/constants';
 import AddressFromToIcon from 'ui/shared/address/AddressFromToIcon';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import AssetValue from 'ui/shared/value/AssetValue';

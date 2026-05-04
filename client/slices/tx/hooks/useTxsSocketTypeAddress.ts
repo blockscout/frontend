@@ -4,7 +4,7 @@ import React from 'react';
 
 import type { SocketMessage } from 'client/api/socket/types';
 import type { Transaction, TransactionsSortingValue } from 'client/slices/tx/types/api';
-import type { AddressFromToFilter, AddressTransactionsResponse } from 'types/api/address';
+import type { AddressFromToFilter, AddressTransactionsResponse } from 'client/slices/address/types/api';
 
 import { getResourceKey } from 'client/api/hooks/useApiQuery';
 import useSocketChannel from 'client/api/socket/useSocketChannel';

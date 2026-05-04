@@ -7,7 +7,7 @@ import { SocketProvider } from 'client/api/socket/context';
 import multichainConfig from 'configs/multichain';
 import { MultichainProvider } from 'lib/contexts/multichain';
 import useRoutedChainSelect from 'lib/multichain/useRoutedChainSelect';
-import AddressCoinBalance from 'ui/address/AddressCoinBalance';
+import AddressCoinBalance from 'client/slices/address/pages/details/coin-balance/AddressCoinBalance';
 import ChainSelect from 'ui/multichain/components/ChainSelect';
 
 import getAvailableChainIds from './getAvailableChainIds';

@@ -9,7 +9,7 @@ import useIsMobile from 'client/shared/hooks/useIsMobile';
 import multichainConfig from 'configs/multichain';
 import { MultichainProvider } from 'lib/contexts/multichain';
 import useRoutedChainSelect from 'lib/multichain/useRoutedChainSelect';
-import { ADDRESS_INFO } from 'stubs/address';
+import { ADDRESS_INFO } from 'client/slices/address/stubs/address';
 import AddressContract from 'ui/address/AddressContract';
 import ChainSelect from 'ui/multichain/components/ChainSelect';
 

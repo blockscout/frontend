@@ -1,4 +1,4 @@
-import type { AddressTabsCounters } from 'types/api/address';
+import type { AddressTabsCounters } from 'client/slices/address/types/api';
 
 export const base: AddressTabsCounters = {
   internal_transactions_count: 13,

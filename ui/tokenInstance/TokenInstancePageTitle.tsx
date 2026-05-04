@@ -8,7 +8,7 @@ import { getTokenTypeName } from 'lib/token/tokenTypes';
 import { Link } from 'toolkit/chakra/link';
 import { Tag } from 'toolkit/chakra/tag';
 import * as regexp from 'toolkit/utils/regexp';
-import AddressQrCode from 'ui/address/details/AddressQrCode';
+import AddressQrCode from 'client/slices/address/pages/details/info/AddressQrCode';
 import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu';
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';

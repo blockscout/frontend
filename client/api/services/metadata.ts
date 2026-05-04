@@ -1,5 +1,5 @@
 import type { ApiResource } from '../types';
-import type { AddressMetadataInfo, PublicTagTypesResponse } from 'types/api/addressMetadata';
+import type { AddressMetadataInfo, PublicTagTypesResponse } from 'client/features/address-metadata/types/api';
 
 export const METADATA_API_RESOURCES = {
   info: {

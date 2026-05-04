@@ -1,7 +1,7 @@
 import { Box, Flex } from '@chakra-ui/react';
 import React from 'react';
 
-import type { AddressParam } from 'types/api/addressParams';
+import type { AddressParam } from 'client/slices/address/types/api';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 import TxInterpretation from 'client/features/tx-interpretation/common/components/TxInterpretation';

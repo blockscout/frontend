@@ -10,8 +10,8 @@ import InteropMessageDestinationTx from 'ui/interopMessages/InteropMessageDestin
 import InteropMessageSourceTx from 'ui/interopMessages/InteropMessageSourceTx';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
-import AddressEntityInterop from 'ui/shared/entities/address/AddressEntityInterop';
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+import AddressEntityInterop from 'client/features/op-interop/components/AddressEntityInterop';
 import InteropMessageStatus from 'ui/shared/statusTag/InteropMessageStatus';
 
 const rollupFeature = config.features.rollup;

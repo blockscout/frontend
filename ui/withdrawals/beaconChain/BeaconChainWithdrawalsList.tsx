@@ -2,7 +2,7 @@ import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type { BlockWithdrawalsItem } from 'client/slices/block/types/api';
-import type { AddressWithdrawalsItem } from 'types/api/address';
+import type { AddressWithdrawalsItem } from 'client/slices/address/types/api';
 import type { WithdrawalsItem } from 'types/api/withdrawals';
 
 import useLazyRenderedList from 'client/shared/lists/useLazyRenderedList';

@@ -8,7 +8,7 @@ import config from 'configs/app';
 import { Button } from 'toolkit/chakra/button';
 import { Heading } from 'toolkit/chakra/heading';
 import { Link } from 'toolkit/chakra/link';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 
 interface Props {
   profileQuery: UseQueryResult<UserInfo, unknown>;

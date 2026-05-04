@@ -5,7 +5,7 @@ import type * as tac from '@blockscout/tac-operation-lifecycle-types';
 import { sortStatusHistory } from 'lib/operations/tac';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
-import AddressEntityTacTon from 'ui/shared/entities/address/AddressEntityTacTon';
+import AddressEntityTacTon from 'client/features/chain-variants/tac/components/AddressEntityTacTon';
 import TacOperationStatus from 'ui/shared/statusTag/TacOperationStatus';
 
 import TacOperationLifecycleAccordion from './TacOperationLifecycleAccordion';

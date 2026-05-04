@@ -1,4 +1,4 @@
-import type { Address3rdPartyWidget } from 'types/views/address';
+import type { Address3rdPartyWidget } from 'client/slices/address/types/view';
 
 export const widgets = [
   'widget-1',

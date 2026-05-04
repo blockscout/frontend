@@ -4,7 +4,7 @@ import React from 'react';
 
 import type { ItemProps } from '../types';
 import type { Transaction } from 'client/slices/tx/types/api';
-import type { Address } from 'types/api/address';
+import type { Address } from 'client/slices/address/types/api';
 
 import { getResourceKey } from 'client/api/hooks/useApiQuery';
 import * as mixpanel from 'client/shared/analytics/mixpanel';

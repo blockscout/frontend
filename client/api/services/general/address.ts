@@ -22,8 +22,9 @@ import type {
   AddressTokensFilter,
   AddressNFTTokensFilter,
   AddressTokenBalancesResponse,
-} from 'types/api/address';
-import type { AddressesMetadataSearchFilters, AddressesMetadataSearchResult, AddressesResponse } from 'types/api/addresses';
+} from 'client/slices/address/types/api';
+import type { AddressesResponse } from 'client/slices/address/types/api'
+import type { AddressesMetadataSearchFilters, AddressesMetadataSearchResult } from 'client/features/address-metadata/types/api';
 import type { DepositsResponse } from 'types/api/deposits';
 
 export const GENERAL_API_ADDRESS_RESOURCES = {

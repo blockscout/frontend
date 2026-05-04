@@ -8,7 +8,7 @@ import config from 'configs/app';
 import { mdash } from 'toolkit/utils/htmlEntities';
 import * as DetailedInfoItemBreakdown from 'ui/shared/DetailedInfo/DetailedInfoItemBreakdown';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
-import AddressEntityInterchain from 'ui/shared/entities/address/AddressEntityInterchain';
+import AddressEntityInterchain from 'client/slices/address/components/entity/AddressEntityInterchain';
 import CrossChainMessageEntity from 'ui/shared/entities/crossChainMessage/CrossChainMessageEntity';
 import ChainLabel from 'ui/shared/externalChains/ChainLabel';
 import CrossChainTxsStatusTag from 'ui/shared/statusTag/CrossChainTxsStatusTag';

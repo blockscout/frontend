@@ -14,7 +14,7 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import { mdash } from 'toolkit/utils/htmlEntities';
 import CrossChainBridgeLink from 'ui/shared/crossChain/CrossChainBridgeLink';
 import CrossChainFromToTag from 'ui/shared/crossChain/CrossChainFromToTag';
-import AddressEntityInterchain from 'ui/shared/entities/address/AddressEntityInterchain';
+import AddressEntityInterchain from 'client/slices/address/components/entity/AddressEntityInterchain';
 import CrossChainMessageEntity from 'ui/shared/entities/crossChainMessage/CrossChainMessageEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import CrossChainTxsStatusTag from 'ui/shared/statusTag/CrossChainTxsStatusTag';

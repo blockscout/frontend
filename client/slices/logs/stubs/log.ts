@@ -1,7 +1,7 @@
 import type { TransactionLog } from '../types/api';
 
 import { TX_HASH } from 'client/slices/tx/stubs/tx';
-import { ADDRESS_PARAMS } from 'stubs/addressParams';
+import { ADDRESS_PARAMS } from 'client/slices/address/stubs/address-params';
 
 export const LOG: TransactionLog = {
   address: ADDRESS_PARAMS,

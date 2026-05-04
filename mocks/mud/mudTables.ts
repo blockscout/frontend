@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import type { AddressMudRecord, AddressMudRecords, AddressMudRecordsItem, AddressMudTables } from 'types/api/address';
+import type { AddressMudRecord, AddressMudRecords, AddressMudRecordsItem, AddressMudTables } from 'client/slices/address/types/api';
 import type { MudWorldSchema, MudWorldTable } from 'types/api/mudWorlds';
 
 export const table1: MudWorldTable = {

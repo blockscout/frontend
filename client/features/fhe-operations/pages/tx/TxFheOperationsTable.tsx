@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { FheOperation } from 'types/api/fheOperations';
 
-import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
+import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
 import { TableBody, TableColumnHeader, TableHeader, TableRoot, TableRow } from 'toolkit/chakra/table';
 
 import TxFHEOperationsTableItem from './TxFheOperationsTableItem';

@@ -12,7 +12,7 @@ import * as contract from 'lib/multichain/contract';
 import { ADDRESS_REGEXP } from 'toolkit/utils/regexp';
 import SearchResultEntityTag from 'ui/searchResults/SearchResultEntityTag';
 import ContractCertifiedLabel from 'ui/shared/ContractCertifiedLabel';
-import * as AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import * as AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 
 type Props = ItemsProps<SearchResultAddressOrContract | SearchResultMetadataTag | multichain.QuickSearchResultAddress>;

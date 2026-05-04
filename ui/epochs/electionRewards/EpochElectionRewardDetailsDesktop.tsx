@@ -7,7 +7,7 @@ import type { TokenInfo } from 'types/api/token';
 
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import useLazyLoadedList from 'ui/shared/pagination/useLazyLoadedList';
 import AssetValue from 'ui/shared/value/AssetValue';
 

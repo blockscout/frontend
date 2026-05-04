@@ -4,7 +4,7 @@ import { useCallback } from 'react';
 import { getAddress, formatUnits, slice } from 'viem';
 import type { PublicClient, Log } from 'viem';
 
-import type { AddressTokenBalancesResponse } from 'types/api/address';
+import type { AddressTokenBalancesResponse } from 'client/slices/address/types/api';
 import type { TokenInfo } from 'types/api/token';
 import type { EssentialDappsChainConfig } from 'types/client/marketplace';
 import type { AllowanceType, ContractAllowanceType } from 'types/client/revoke';

@@ -14,7 +14,7 @@ import type { TransactionActions } from 'client/features/tx-actions/types/api';
 import type { TransactionAuthorization } from 'client/features/tx-authorization/types/api';
 import type { BlockTransactionsResponse } from 'client/slices/block/types/api';
 import type { DecodedInput } from 'client/slices/logs/types/api';
-import type { AddressParam } from 'types/api/addressParams';
+import type { AddressParam } from 'client/slices/address/types/api';
 import type { TokenInfo } from 'types/api/token';
 import type { Erc721TotalPayload, TokenTransfer } from 'types/api/tokenTransfer';
 

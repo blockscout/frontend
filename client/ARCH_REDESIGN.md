@@ -66,7 +66,7 @@ Application **chrome**: layout, error UI, header, footer, page title, top-bar, a
 | `multichain.tsx` | `client/features/multichain/` |
 | `rewards.tsx` | `client/features/rewards/` |
 | `marketplace.tsx` | `client/features/marketplace/` |
-| `addressHighlight.tsx` | `client/slices/address/` |
+| `addressHighlight.tsx` | `client/slices/address/contexts/address-highlight.tsx` |
 
 **Hooks from `lib/hooks/`:**
 
@@ -262,7 +262,7 @@ client/slices/tx/
 | `lib/contexts/multichain.tsx` | `client/features/multichain/` |
 | `lib/contexts/rewards.tsx` | `client/features/rewards/` |
 | `lib/contexts/marketplace.tsx` | `client/features/marketplace/` |
-| `lib/contexts/addressHighlight.tsx` | `client/slices/address/` |
+| `lib/contexts/addressHighlight.tsx` | `client/slices/address/contexts/address-highlight.tsx` |
 | `lib/tx/` | `client/slices/tx/utils/` |
 | `lib/token/` | `client/slices/token/` |
 | `lib/address/` | `client/slices/address/` |

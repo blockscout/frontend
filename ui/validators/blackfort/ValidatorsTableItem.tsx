@@ -6,7 +6,7 @@ import type { ValidatorBlackfort } from 'types/api/validators';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 interface Props {

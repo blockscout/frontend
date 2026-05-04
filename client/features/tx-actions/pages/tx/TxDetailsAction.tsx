@@ -5,7 +5,7 @@ import React from 'react';
 import type { TxAction, TxActionGeneral } from 'types/api/txAction';
 
 import config from 'configs/app';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import IconSvg from 'ui/shared/IconSvg';

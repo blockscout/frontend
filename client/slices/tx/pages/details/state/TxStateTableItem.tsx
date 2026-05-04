@@ -4,7 +4,7 @@ import React from 'react';
 import type { TxStateChange } from 'client/slices/tx/types/api';
 
 import { TableCell, TableRow } from 'toolkit/chakra/table';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 
 import { getStateElements } from './utils';
 

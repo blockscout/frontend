@@ -7,7 +7,7 @@ import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import config from 'configs/app';
 import { layerLabels } from 'lib/rollups/utils';
-import AddressStringOrParam from 'ui/shared/entities/address/AddressStringOrParam';
+import AddressStringOrParam from 'client/slices/address/components/entity/AddressStringOrParam';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 

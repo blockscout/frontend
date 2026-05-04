@@ -2,7 +2,7 @@ import React from 'react';
 
 import { CollapsibleList } from 'toolkit/chakra/collapsible';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 
 interface Props {
   items: Array<string>;

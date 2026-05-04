@@ -8,7 +8,7 @@ import { currencyUnits } from 'client/shared/chain/units';
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { nbsp } from 'toolkit/utils/htmlEntities';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import IconSvg from 'ui/shared/IconSvg';
 import calculateUsdValue from 'ui/shared/value/calculateUsdValue';

@@ -14,7 +14,7 @@ import dayjs from 'lib/date/dayjs';
 import { GET_BLOCK_WITH_TRANSACTIONS } from 'stubs/RPC';
 import { generateListStub } from 'stubs/utils';
 import { SECOND } from 'toolkit/utils/consts';
-import { unknownAddress } from 'ui/shared/address/utils';
+import { unknownAddress } from 'client/slices/address/utils/consts';
 import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import { emptyPagination } from 'ui/shared/pagination/utils';

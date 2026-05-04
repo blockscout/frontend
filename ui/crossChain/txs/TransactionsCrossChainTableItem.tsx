@@ -14,7 +14,7 @@ import { mdash } from 'toolkit/utils/htmlEntities';
 import AddressFromToIcon from 'ui/shared/address/AddressFromToIcon';
 import CrossChainBridgeLink from 'ui/shared/crossChain/CrossChainBridgeLink';
 import CrossChainFromToTag from 'ui/shared/crossChain/CrossChainFromToTag';
-import AddressEntityInterchain from 'ui/shared/entities/address/AddressEntityInterchain';
+import AddressEntityInterchain from 'client/slices/address/components/entity/AddressEntityInterchain';
 import CrossChainMessageEntity from 'ui/shared/entities/crossChainMessage/CrossChainMessageEntity';
 import ChainLabel from 'ui/shared/externalChains/ChainLabel';
 import CrossChainTxsStatusTag from 'ui/shared/statusTag/CrossChainTxsStatusTag';

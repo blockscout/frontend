@@ -9,7 +9,7 @@ import config from 'configs/app';
 import { Badge } from 'toolkit/chakra/badge';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { stripTrailingSlash } from 'toolkit/utils/url';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 interface Props {

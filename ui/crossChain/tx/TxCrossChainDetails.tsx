@@ -6,7 +6,7 @@ import CrossChainBridgeLink from 'ui/shared/crossChain/CrossChainBridgeLink';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
-import AddressEntityInterchain from 'ui/shared/entities/address/AddressEntityInterchain';
+import AddressEntityInterchain from 'client/slices/address/components/entity/AddressEntityInterchain';
 import RawInputData from 'ui/shared/RawInputData';
 import CrossChainTxsStatusTag from 'ui/shared/statusTag/CrossChainTxsStatusTag';
 

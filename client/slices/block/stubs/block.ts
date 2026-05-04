@@ -1,6 +1,6 @@
 import type { Block } from 'client/slices/block/types/api';
 
-import { ADDRESS_PARAMS } from 'stubs/addressParams';
+import { ADDRESS_PARAMS } from 'client/slices/address/stubs/address-params';
 
 export const BLOCK_HASH = '0x8fa7b9e5e5e79deeb62d608db22ba9a5cb45388c7ebb9223ae77331c6080dc70';
 

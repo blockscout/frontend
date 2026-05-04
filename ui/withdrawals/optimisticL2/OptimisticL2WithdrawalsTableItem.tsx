@@ -8,7 +8,7 @@ import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 import OptimisticL2WithdrawalsItemStatus from './OptimisticL2WithdrawalsItemStatus';

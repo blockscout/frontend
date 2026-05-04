@@ -5,7 +5,7 @@ import getQueryParamString from 'client/shared/router/get-query-param-string';
 import TxsWithFrontendSorting from 'client/slices/tx/pages/index/list/TxsWithFrontendSorting';
 import { TX } from 'client/slices/tx/stubs/tx';
 import { generateListStub } from 'stubs/utils';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 

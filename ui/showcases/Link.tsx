@@ -13,7 +13,7 @@ import * as blobsMock from 'mocks/blobs/blobs';
 import * as ensMock from 'mocks/ens/domain';
 import * as poolMock from 'mocks/pools/pool';
 import { Link, LinkBox, LinkOverlay } from 'toolkit/chakra/link';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import BlobEntity from 'ui/shared/entities/blob/BlobEntity';
 import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';

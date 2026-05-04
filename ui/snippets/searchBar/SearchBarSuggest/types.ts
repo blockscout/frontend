@@ -1,5 +1,5 @@
 import type { ClusterChainConfig } from 'types/multichain';
-import type { AddressFormat } from 'types/views/address';
+import type { AddressFormat } from 'client/slices/address/types/view';
 
 export interface ItemsProps<Data> {
   data: Data;
