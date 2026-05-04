@@ -60,9 +60,9 @@ test('with search +@mobile +@dark-mode', async({ page, render, mockApiResponse }
   );
 
   const requestPromise = page.waitForRequest(filteredTokensApiUrl);
-  await component.getByRole('textbox', { name: 'Token name or symbol' }).focus();
-  await component.getByRole('textbox', { name: 'Token name or symbol' }).fill('foo');
-  await component.getByRole('textbox', { name: 'Token name or symbol' }).blur();
+  await component.getByRole('textbox', { name: 'Token name, address or symbol' }).focus();
+  await component.getByRole('textbox', { name: 'Token name, address or symbol' }).fill('foo');
+  await component.getByRole('textbox', { name: 'Token name, address or symbol' }).blur();
 
   await requestPromise;
   await expect(component).toHaveScreenshot({ maxDiffPixels: 20 });
