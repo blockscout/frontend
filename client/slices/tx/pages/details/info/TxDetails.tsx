@@ -16,6 +16,7 @@ import { ZKSYNC_L2_TX_BATCH_STATUSES } from 'types/api/zkSyncL2';
 import { route } from 'nextjs-routes';
 
 import TxAllowedPeekers from 'client/features/chain-variants/suave/pages/tx/TxAllowedPeekers';
+import TxDetailsTacOperation from 'client/features/chain-variants/tac/pages/tx/TxDetailsTacOperation';
 import TxDetailsCrossChainMessages from 'client/features/cross-chain-txs/pages/tx/TxDetailsCrossChainMessages';
 import TxDetailsCrossChainTransfers from 'client/features/cross-chain-txs/pages/tx/TxDetailsCrossChainTransfers';
 import TxDetailsInterop from 'client/features/op-interop/pages/tx/TxDetailsInterop';
@@ -24,7 +25,6 @@ import BatchEntityL2 from 'client/features/rollup/common/components/BatchEntityL
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
 import TxDetailsWithdrawalStatusOptimistic from 'client/features/rollup/optimistic/pages/tx/TxDetailsWithdrawalStatusOptimistic';
 import TxInfoScrollFees from 'client/features/rollup/scroll/pages/tx/TxInfoScrollFees';
-import TxDetailsTacOperation from 'client/features/tac/pages/tx/TxDetailsTacOperation';
 import TxDetailsActions from 'client/features/tx-actions/pages/tx/TxDetailsActions';
 import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-title';
 import { currencyUnits } from 'client/shared/chain/units';
