@@ -10,8 +10,8 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
 
 import AdbutlerBanner from './AdbutlerBanner';
-import CoinzillaBanner from './CoinzillaBanner';
 import { DESKTOP_BANNER_WIDTH, MOBILE_BANNER_WIDTH } from './consts';
+import SevioBanner from './SevioBanner';
 import SliseBanner from './SliseBanner';
 import SpecifyBanner from './SpecifyBanner';
 
@@ -44,8 +44,8 @@ const AdBannerContent = ({ className, isLoading, provider, format }: Props) => {
     switch (provider) {
       case 'adbutler':
         return <AdbutlerBanner format={ format }/>;
-      case 'coinzilla':
-        return <CoinzillaBanner format={ format }/>;
+      case 'sevio':
+        return <SevioBanner format={ format }/>;
       case 'slise':
         return <SliseBanner format={ format }/>;
     }

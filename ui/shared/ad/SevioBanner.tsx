@@ -5,6 +5,7 @@ import React from 'react';
 import type { BannerProps } from './types';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import config from 'configs/app';
 import { isBrowser } from 'toolkit/utils/isBrowser';
 
 import {
@@ -14,7 +15,9 @@ import {
   MOBILE_BANNER_HEIGHT,
 } from './consts';
 
-const CoinzillaBanner = ({ className, format = 'responsive' }: BannerProps) => {
+const adsBannerFeature = config.features.adsBanner;
+
+const SevioBanner = ({ className, format = 'responsive' }: BannerProps) => {
   const isInBrowser = isBrowser();
   const isMobileViewport = useIsMobile();
   const isMobile = format === 'mobile' || (format === 'responsive' && isMobileViewport);
@@ -26,17 +29,26 @@ const CoinzillaBanner = ({ className, format = 'responsive' }: BannerProps) => {
     return { width: DESKTOP_BANNER_WIDTH, height: DESKTOP_BANNER_HEIGHT };
   })();
 
+  const sevio = adsBannerFeature.isEnabled && 'sevio' in adsBannerFeature ? adsBannerFeature.sevio : null;
+
+  let zone = '';
+  if (sevio) {
+    zone = isMobile ? sevio.zoneMobile : sevio.zoneDesktop;
+  }
+
   React.useEffect(() => {
-    if (isInBrowser) {
-      window.coinzilla_display = window.coinzilla_display || [];
-      const cDisplayPreferences = {
-        zone: '26660bf627543e46851',
-        width: width.toString(),
-        height: height.toString(),
-      };
-      window.coinzilla_display.push(cDisplayPreferences);
+    if (!isInBrowser || !sevio) {
+      return;
     }
-  }, [ isInBrowser, width, height ]);
+
+    const { adType, inventoryId, accountId } = sevio;
+    window.sevioads = window.sevioads || [];
+    window.sevioads.push([ { zone, adType, inventoryId, accountId } ]);
+  }, [ isInBrowser, sevio, zone ]);
+
+  if (!sevio) {
+    return null;
+  }
 
   return (
     <Flex
@@ -45,10 +57,10 @@ const CoinzillaBanner = ({ className, format = 'responsive' }: BannerProps) => {
       h={ height ? `${ height }px` : { base: `${ MOBILE_BANNER_HEIGHT }px`, lg: `${ DESKTOP_BANNER_HEIGHT }px` } }
       w={ width ? `${ width }px` : undefined }
     >
-      <Script strategy="lazyOnload" src="https://coinzillatag.com/lib/display.js"/>
-      <div className="coinzilla" data-zone="C-26660bf627543e46851"></div>
+      <Script strategy="lazyOnload" src="https://cdn.adx.ws/scripts/loader.js"/>
+      <div className="sevioads" data-zone={ zone }></div>
     </Flex>
   );
 };
 
-export default chakra(CoinzillaBanner);
+export default chakra(SevioBanner);

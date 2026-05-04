@@ -1,5 +1,12 @@
-export type AdButlerConfig = {
+export type AdButlerDeviceConfig = {
   id: string;
   width: string;
   height: string;
+};
+
+export type AdButlerConfig = {
+  config: {
+    desktop: AdButlerDeviceConfig;
+    mobile: AdButlerDeviceConfig;
+  };
 };
