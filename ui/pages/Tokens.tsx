@@ -126,7 +126,7 @@ const Tokens = () => {
         w={{ base: '100%', lg: '360px' }}
         size="sm"
         onChange={ allTokensQuery.onSearchTermChange }
-        placeholder="Token name or symbol"
+        placeholder="Token name, address or symbol"
         initialValue={ allTokensQuery.searchTerm }
       />
     );
