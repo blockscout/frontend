@@ -12,7 +12,7 @@ export type FormFieldSwitchProps<
   Name extends Path<FormFields>,
 > = Pick<
   FormFieldPropsBase<FormFields, Name>,
-  'name' | 'placeholder' | 'rules' | 'controllerProps'
+  'name' | 'rules' | 'controllerProps'
 > &
   SwitchProps;
 
@@ -21,11 +21,11 @@ const FormFieldSwitchContent = <
   Name extends Path<FormFields>,
 >({
   name,
-  placeholder,
   onCheckedChange,
   rules,
   controllerProps,
   disabled,
+  children,
   ...rest
 }: FormFieldSwitchProps<FormFields, Name>) => {
   const { control } = useFormContext<FormFields>();
@@ -51,7 +51,7 @@ const FormFieldSwitchContent = <
       inputProps={{ onBlur: field.onBlur }}
       { ...rest }
     >
-      { placeholder }
+      { children }
     </Switch>
   );
 };
