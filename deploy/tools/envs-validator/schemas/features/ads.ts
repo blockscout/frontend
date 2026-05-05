@@ -36,7 +36,7 @@ const sevioZonesSchema = yup
   .of(yup.string().required())
   .when('NEXT_PUBLIC_AD_BANNER_PROVIDER', {
     is: (value: AdBannerProviders) => value === 'sevio',
-    then: (schema) => schema.length(2).required(),
+    then: (schema) => schema.length(2),
   });
 
 export const adsSchema = yup.object({
