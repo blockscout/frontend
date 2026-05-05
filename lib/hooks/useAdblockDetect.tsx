@@ -13,7 +13,7 @@ const DEFAULT_URL = 'https://request-global.czilladx.com';
 // but we see some false-positive results in certain browsers
 const TEST_URLS: Record<AdBannerProviders, string> = {
   slise: 'https://v1.slise.xyz/serve',
-  coinzilla: 'https://request-global.czilladx.com',
+  sevio: 'https://request-global.czilladx.com',
   adbutler: 'https://servedbyadbutler.com/app.js',
   none: DEFAULT_URL,
 };

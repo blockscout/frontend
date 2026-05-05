@@ -490,8 +490,9 @@ Ads are enabled by default on all self-hosted instances. If you would like to di
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_AD_BANNER_PROVIDER | `slise` \| `adbutler` \| `coinzilla` \| `none` | Ads provider  | - | `slise` | `coinzilla` | v1.0.x+ |
+| NEXT_PUBLIC_AD_BANNER_PROVIDER | `slise` \| `adbutler` \| `sevio` \| `none` | Ads provider | - | `slise` | `sevio` | v1.0.x+ |
 | NEXT_PUBLIC_AD_BANNER_ADDITIONAL_PROVIDER | `adbutler` | Additional ads provider to mix with the main one | - | - | `adbutler` | v1.28.0+ |
+| NEXT_PUBLIC_AD_BANNER_SEVIO_ZONES | `Array<string>` | Optional Sevio banner zone overrides in `[mobileZone, desktopZone]` format | - | `['52909312-7ebb-4bd5-9006-5e4f7041ed63','07cabd45-77f1-4203-8081-868bae776981']` | `['52909312-7ebb-4bd5-9006-5e4f7041ed63','07cabd45-77f1-4203-8081-868bae776981']` | v2.9.0+ |
 | NEXT_PUBLIC_AD_ADBUTLER_CONFIG_DESKTOP | `{ id: string; width: string; height: string }` | Placement config for desktop Adbutler banner | - | - | `{'id':'123456','width':'728','height':'90'}` | v1.3.0+ |
 | NEXT_PUBLIC_AD_ADBUTLER_CONFIG_MOBILE | `{ id: string; width: number; height: number }` | Placement config for mobile Adbutler banner | - | - | `{'id':'654321','width':'300','height':'100'}` | v1.3.0+ |
 | NEXT_PUBLIC_AD_BANNER_ENABLE_SPECIFY | `boolean` | Enables Specify ads in addition to the main ad banner provider | - | - | `true` | v2.4.0+ |
@@ -504,7 +505,7 @@ Ads are enabled by default on all self-hosted instances. If you would like to di
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_AD_TEXT_PROVIDER | `coinzilla` \| `none` | Ads provider | - | `coinzilla` | `none` | v1.0.x+ |
+| NEXT_PUBLIC_AD_TEXT_PROVIDER | `sevio` \| `none` | Ads provider | - | `sevio` | `none` | v1.0.x+ |
 
 &nbsp;
 

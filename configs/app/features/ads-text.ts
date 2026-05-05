@@ -19,7 +19,7 @@ interface SevioConfig {
 
 const provider: AdTextProviders = (() => {
   const envValue = getEnvValue('NEXT_PUBLIC_AD_TEXT_PROVIDER') as AdTextProviders;
-  return envValue && SUPPORTED_AD_TEXT_PROVIDERS.includes(envValue) ? envValue : 'coinzilla';
+  return envValue && SUPPORTED_AD_TEXT_PROVIDERS.includes(envValue) ? envValue : 'sevio';
 })();
 
 const title = 'Text ads';
