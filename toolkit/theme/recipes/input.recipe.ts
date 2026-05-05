@@ -16,6 +16,7 @@ export const recipe = defineRecipe({
       textAlign: 'left',
     },
 
+    textOverflow: 'ellipsis',
     textAlign: 'start',
     borderRadius: 'base',
     height: 'var(--input-height)',
