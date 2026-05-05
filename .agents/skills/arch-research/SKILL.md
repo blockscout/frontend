@@ -24,78 +24,120 @@ Also read:
 - `client/ARCH_REDESIGN.md` — conventions and migration map (§2, §4, §6)
 - `docs/GLOSSARY.md` — domain terminology
 
-### 2. Explore the codebase
+### 2. Plan the areas
 
-For each source path in the task Scope:
+Do a quick top-level scan of the task Scope and the standard source directories to understand what exists. Then present the user with the list of areas you will cover, in order, with a one-line description of what each contains for this specific task. Skip any area where you found nothing relevant.
 
-- **Verify the path exists.** If a path is missing, note it — the task description may need correction.
-- **Check the destination for conflicts.** Does `client/<target-path>` already contain files that would clash?
-- **Classify each file: move or create.** Files that don't yet exist at the destination and aren't in the source need to be created (e.g. a new `types/api.ts` aggregating types from several source files).
-- **Flag type extractions.** Look for type definitions or interfaces inside the source files that logically belong to a *different* slice or feature — these must be extracted into the new owner's `types/api.ts` rather than simply moved. Example: a chain-specific sub-type (`arbitrum?`, `scroll?`) embedded in a shared `Transaction` type needs to move to `features/rollup/<type>/types/api.ts`.
+**Standard areas (always in this order):**
 
-**Additional sweeps (run for every slice or feature migration):**
+1. **Types** — `types/api/<entity>*.ts`, `types/client/<entity>*.ts`, `types/views/<entity>*.ts`, and any related param/shared type files
+2. **Stubs and mocks** — `stubs/<entity>*.ts`, `mocks/<entity>*.ts`
+3. **Hooks, utilities, and contexts** — `lib/hooks/`, `lib/<entity>/`, `lib/contexts/`, and any `utils/` files within `ui/<entity>/`
+4. **Shared components** — `ui/shared/entities/<entity>/`, `ui/shared/<entity>/`
+5. **Pages** — `ui/pages/<Entity>*.tsx`, `ui/<entity>/` (the detail page and all its tabs, plus any index/list pages)
+6. **Feature impact** — all features identified as affected across the previous areas
 
-- **`ui/shared/` sweep.** Search `ui/shared/` for components whose filename begins with the slice entity prefix (e.g., `Tx*` for the tx slice, `Block*` for block). These are slice-owned components that ended up in the shared bucket and must be included in the move scope.
+Present as a short numbered list. For each area, note the rough file count or key directories found. End with: *"I'll work through them one at a time. Let me know if you want to skip or reorder any, otherwise I'll start with Area 1."*
 
-- **`ui/pages/` sweep.** Search `ui/pages/` for root page components whose filename begins with the slice entity prefix (e.g., `Block.tsx`, `Blocks.tsx`, `BlockCountdown.tsx`). For every matched component, the scope must also list:
-  - Its sibling `.pw.tsx` visual test file (e.g., `Block.pw.tsx`)
-  - Its screenshots under `ui/pages/__screenshots__/<ComponentName>.pw.tsx_*.png`
-  - The Next.js entry file(s) under `pages/` (and `pages/chain/[chain_slug_or_id]/` for multichain variants) that load the component via `dynamic(() => import('ui/pages/<Name>'))` — these import paths must be updated in the same PR.
+Wait for a go-ahead (or redirect) before proceeding.
 
-- **Feature hooks placement.** When a hook file is being extracted into a feature directory, its destination must be `client/features/<name>/hooks/` — never inside `client/features/<name>/pages/<subdir>/`. Only UI component files belong under `pages/`. Apply this correction to any hook destination in the scope before writing the issue.
+### 3. Analyze each area, one at a time
 
-- **Visual tests and screenshots co-location.** For every component file anywhere in the scope (not just `ui/pages/`) that has a sibling `.pw.tsx` file or `__screenshots__/` directory, include those siblings explicitly in the scope mapping. They must move alongside their component; omitting them causes test infrastructure to break silently.
+Work through each area in sequence. For each one:
 
-- **Type decomposition map.** Find the monolithic entity type file (e.g., `types/api/transaction.ts`). For each optional field group that maps to a feature (e.g., `arbitrum?`, `scroll?`, `celo?`), identify the owning feature path and check whether `client/features/<name>/types/api.ts` already exists. List each feature whose `types/api.ts` needs to be created or merged into. The slice's own `types/api.ts` should compose them via `interface Entity extends FeatureTypeA, FeatureTypeB, ...`.
+**a. Analyze** — read the relevant files and apply the rules below that apply to this area.
 
-- **Mocks and stubs decomposition.** Find the monolithic mocks and stubs files for the entity (e.g., `mocks/transaction.ts`, `stubs/transaction.ts`). Identify which entries are feature-specific. For each feature with specific mock/stub data, list `client/features/<name>/mocks/<slice>.ts` (or `stubs/<slice>.ts`) as a file to create or merge into — the file is named after the *slice*, not the feature. The slice itself keeps only entity-core mock and stub data.
+**b. Present a mini-plan** in this format:
 
-- **Feature impact inventory.** Enumerate all features that will be touched as a side effect of migrating this slice: features that own type extensions, components under `ui/*/TxXxx.tsx`, or mock data for the entity. List each one explicitly — this becomes the `## Feature impact` section of the issue.
+```
+### Area [N/total]: [Name]
 
-### 3. Draft the issue body
+[One sentence describing what this area covers for this task.]
+
+**Plan**
+| Source | Destination |
+|--------|-------------|
+| ...    | ...         |
+
+**Findings**
+- [extractions, splits, mixed-concern files, conflicts, or "None."]
+```
+
+**c. Wait for explicit approval.** End each area with: *"Any corrections, or shall I move to Area [N+1]: [name]?"*
+
+Apply any corrections. If the changes are significant, re-show the updated mini-plan before proceeding. Do not move to the next area until the user approves the current one.
+
+---
+
+**Rules to apply per area:**
+
+**Types (Area 1)**
+- Two strictly separate type layers:
+  - `types/api.ts` destination: API/DTO shapes from `types/api/<entity>*.ts`. For each optional field group that maps to a feature (e.g. `celo?`, `arbitrum?`), extract it to `client/features/<name>/types/api.ts`. The slice's own `types/api.ts` composes them via `interface Entity extends FeatureTypeA, FeatureTypeB, ...`.
+  - `types/client.ts` destination: frontend-only derived types from `types/client/<entity>*.ts` and `types/views/<entity>*.ts`. Same feature decomposition applies — feature-specific client types go to `client/features/<name>/types/client.ts`. Never mix API shapes and client types in the same file.
+- Verify the path exists for each source file; note any missing files.
+- Check whether destination `types/api.ts` / `types/client.ts` already exists in `client/` (conflict check).
+
+**Stubs and mocks (Area 2)**
+- Identify which stubs entries are feature-specific vs. entity-core. Feature-specific entries go to `client/features/<name>/stubs/<slice>.ts` (named after the slice, not the feature). Slice keeps only entity-core entries.
+- Flag any high-fanout stub constants (e.g. `ENTITY_HASH`, `ENTITY_PARAMS`) that are imported across many test files — these require a codemod; note this in Findings.
+
+**Hooks, utilities, and contexts (Area 3)**
+- For each hook file: check if it reads `config.features.<featureName>`. If yes → `client/features/<featureName>/hooks/`. If no → `client/slices/<name>/hooks/` (or wherever the slice keeps its hooks).
+- `lib/contexts/` scan: look for files whose name contains the entity name. Destination is `client/slices/<name>/contexts/` or `client/features/<name>/contexts/` — a dedicated sub-folder, not the root.
+- Mixed-concern utility files: open any `utils.ts` in scope and check if it mixes logic from different domains. If yes, split rather than move; list what each new file should contain.
+
+**Shared components (Area 4)**
+- `ui/shared/` sweep: search for components whose filename begins with the slice entity prefix. These are slice-owned components that ended up in the shared bucket.
+- For each component file with a sibling `.pw.tsx` or `__screenshots__/` directory, include those siblings in the mapping.
+- Classify each component: core slice → `client/slices/<name>/components/`; feature/chain-specific → `client/features/<chain-or-feature>/components/`.
+
+**Pages (Area 5)**
+- `ui/pages/` sweep: search for page components whose filename begins with the entity prefix. **Also** scan the Next.js `pages/` directory for entries that `dynamic(() => import('ui/pages/<Name>'))` a component related to the entity — page filenames may not match the route (e.g. `Accounts.tsx` → `/accounts`).
+- For a tabbed detail page, each tab becomes a named sub-folder under `pages/details/` (e.g. `info/`, `txs/`, `token-transfers/`). Feature-owned tab components go to `client/features/<name>/pages/<slice>/` — never as sub-folders inside the slice's `pages/` tree.
+- For index/list pages, all related list-item and table components go flat into `pages/index/`.
+- Include `.pw.tsx` siblings and `__screenshots__/` directories for every page component.
+- For each Next.js entry file, note the import path update required (the entry file itself stays in `pages/`).
+
+**Feature impact (Area 6)**
+- Compile all features identified in Areas 1–5.
+- For each feature, list: feature path, files to create or merge (`types/api.ts`, `types/client.ts`, `stubs/<slice>.ts`, page components), and what each file should contain.
+- If no features are affected, state that explicitly.
+
+### 4. Compile and confirm
+
+Once all areas are approved, assemble the full issue body:
 
 ```markdown
 ## Scope
 
-[Exact source → destination file mappings. One line per file or directory.]
+[All approved source → destination file mappings, organised by slice and feature. One mapping table per section.]
 
 ## Feature impact
 
-[For each feature that needs a `types/api.ts` created or merged into, and/or a `mocks/<slice>.ts` / `stubs/<slice>.ts` created or merged into, list:
-  - Feature path (e.g. `client/features/rollup/arbitrum/`)
-  - Files to create or merge (`types/api.ts`, `mocks/tx.ts`, etc.)
-  - What each file should contain (type names, or description of mock data)
-
-If no features are affected, write: "No feature-side files required."]
+[For each affected feature:
+  - Feature path
+  - Files to create or merge, and what they should contain
+If none: "No feature-side files required."]
 
 ## Findings
 
-[Destination conflicts, if any.]
-[Files to create rather than move, and what they should contain.]
-[Types or interfaces that need extraction — name the type, its current location, and where it belongs after migration.]
-[`ui/shared/` components claimed by this slice, if any.]
-[Any other non-obvious work discovered during exploration.]
+[All Findings from the individual areas, consolidated. Remove duplicates.]
 
-If no issues were found, write: "No conflicts or extractions identified — straightforward move."
+If nothing non-obvious was found: "No conflicts or extractions identified — straightforward move."
 
 ## Acceptance criteria
 
 - [ ] All files moved to target paths per `ARCH_REDESIGN.md §6`
 - [ ] All import paths updated repo-wide (no references to old paths remain)
-- [ ] Extracted types live in their new slice/feature `types/api.ts`
+- [ ] Extracted API types live in their new slice/feature `types/api.ts`
+- [ ] Extracted client/UI types live in their new slice/feature `types/client.ts`
 - [ ] `pnpm lint:tsc` passes
 - [ ] `pnpm lint:eslint:fix` clean within `client/` (warnings in legacy paths acceptable)
 - [ ] Cross-slice deps left at old paths are explicitly listed in the PR description
 ```
 
-### 4. Confirm with the user
-
-Before creating anything, present the full draft to the user:
-
-- **Issue title:** `[Migration] <task-id>: <task title>`
-- **Issue body:** the complete markdown from step 3
-
-Ask: *"Shall I create this issue? You can request changes before I proceed."*
+Present the full draft with the issue title (`[Migration] <task-id>: <task title>`) and ask: *"Shall I create this issue? You can request changes before I proceed."*
 
 Wait for explicit confirmation. Apply any requested edits and re-confirm if the changes are significant. Do not proceed to step 5 until the user approves.
 

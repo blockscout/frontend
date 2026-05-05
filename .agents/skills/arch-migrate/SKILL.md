@@ -41,7 +41,8 @@ Read all source files listed in the issue **Scope**. Understand what they export
 - Destination comes from the issue Scope and `ARCH_REDESIGN.md §6` migration map.
 - Rename files to kebab-case **at move time** — no separate rename PR.
 - Component files stay PascalCase. Hook files stay `useCamelCase.ts`. Everything else: kebab-case.
-- Extract types/interfaces flagged in the issue **Findings** section into their new `types/api.ts` homes.
+- Extract types/interfaces flagged in the issue **Findings** section into their new homes.
+
 
 ### 4. Update all imports in the same PR
 - Update every import path across the entire repo.

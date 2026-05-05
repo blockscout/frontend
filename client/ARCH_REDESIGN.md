@@ -138,6 +138,7 @@ client/slices/tx/
   utils/                 # kebab-case .ts files
   types/
     api.ts               # response / DTO types owned by this slice
+    client.ts            # frontend-only types (client types or types derived from API responses)
   mocks.ts
   stubs.ts
 ```
