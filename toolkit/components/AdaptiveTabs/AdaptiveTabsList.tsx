@@ -7,7 +7,7 @@ import type { TabItemRegular } from './types';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
 import { Skeleton } from '../../chakra/skeleton';
-import type { TabsProps } from '../../chakra/tabs';
+import type { TabsProps, TabsTriggerProps } from '../../chakra/tabs';
 import { TabsCounter, TabsList, TabsTrigger } from '../../chakra/tabs';
 import { useIsSticky } from '../../hooks/useIsSticky';
 import AdaptiveTabsMenu from './AdaptiveTabsMenu';
@@ -22,6 +22,8 @@ export interface SlotProps extends HTMLChakraProps<'div'> {
 export interface BaseProps {
   tabs: Array<TabItemRegular>;
   listProps?: HTMLChakraProps<'div'> | (({ isSticky, activeTab }: { isSticky: boolean; activeTab: string }) => HTMLChakraProps<'div'>);
+  listItemProps?: Partial<TabsTriggerProps> |
+    (({ index, isActive, value }: { index: number; isActive: boolean; value: string }) => Partial<TabsTriggerProps> | undefined);
   rightSlot?: React.ReactNode;
   rightSlotProps?: SlotProps;
   leftSlot?: React.ReactNode;
@@ -64,6 +66,7 @@ const AdaptiveTabsList = (props: Props) => {
     tabs,
     activeTab,
     listProps,
+    listItemProps,
     rightSlot,
     rightSlotProps,
     leftSlot,
@@ -161,6 +164,7 @@ const AdaptiveTabsList = (props: Props) => {
             scrollSnapAlign="start"
             flexShrink={ 0 }
             { ...getItemStyles(index, tabsCut, isLoading) }
+            { ...(typeof listItemProps === 'function' ? listItemProps({ index, isActive: activeTabIndex === index, value }) : listItemProps) }
           >
             { typeof tab.title === 'function' ? tab.title() : tab.title }
             <TabsCounter count={ tab.count }/>
