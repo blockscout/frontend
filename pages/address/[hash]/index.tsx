@@ -9,9 +9,9 @@ import detectBotRequest from 'nextjs/utils/detectBotRequest';
 import fetchApi from 'nextjs/utils/fetchApi';
 
 import getQueryParamString from 'client/shared/router/get-query-param-string';
+import Address from 'client/slices/address/pages/details/Address';
 import config from 'configs/app';
 import MultichainAddress from 'ui/multichain/address/MultichainAddress';
-import Address from 'ui/pages/Address';
 
 const pathname: Route['pathname'] = '/address/[hash]';
 
