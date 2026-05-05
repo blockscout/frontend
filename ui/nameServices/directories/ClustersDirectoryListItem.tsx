@@ -2,10 +2,10 @@ import React from 'react';
 
 import type { ClustersDirectoryObject } from 'types/api/clusters';
 
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import { isEvmAddress } from 'lib/address/isEvmAddress';
 import dayjs from 'lib/date/dayjs';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import ClustersEntity from 'ui/shared/entities/clusters/ClustersEntity';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 import Time from 'ui/shared/time/Time';

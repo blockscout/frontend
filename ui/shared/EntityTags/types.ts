@@ -1,5 +1,5 @@
-import type { AddressMetadataTagType } from 'types/api/addressMetadata';
-import type { AddressMetadataTagFormatted } from 'types/client/addressMetadata';
+import type { AddressMetadataTagType } from 'client/features/address-metadata/types/api';
+import type { AddressMetadataTagFormatted } from 'client/features/address-metadata/types/view';
 
 export type EntityTagType = AddressMetadataTagType | 'custom' | 'watchlist' | 'private_tag';
 

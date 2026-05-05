@@ -2,13 +2,13 @@ import React from 'react';
 
 import type { TokenInfoApplication, VerifiedAddress } from 'types/api/account';
 
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import dayjs from 'lib/date/dayjs';
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import IconSvg from 'ui/shared/IconSvg';
 

@@ -6,6 +6,7 @@ import getChainValidationActionText from 'client/shared/chain/get-chain-validati
 import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-title';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import config from 'configs/app';
@@ -16,7 +17,6 @@ import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoSponsoredItem from 'ui/shared/DetailedInfo/DetailedInfoSponsoredItem';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import ContractCreationStatus from 'ui/shared/statusTag/ContractCreationStatus';
 
 import Address3rdPartyWidgets from './Address3rdPartyWidgets';

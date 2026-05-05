@@ -4,12 +4,12 @@ import React from 'react';
 
 import type { AddressTokensErc20Item } from 'ui/address/tokens/types';
 
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import multichainConfig from 'configs/multichain';
 import { getTokenTypeName } from 'lib/token/tokenTypes';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { Tag } from 'toolkit/chakra/tag';
 import NativeTokenTag from 'ui/shared/celo/NativeTokenTag';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import calculateUsdValue from 'ui/shared/value/calculateUsdValue';
 import SimpleValue from 'ui/shared/value/SimpleValue';

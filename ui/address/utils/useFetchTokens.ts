@@ -2,7 +2,7 @@ import { useQueries, useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
 import type { SocketMessage } from 'client/api/socket/types';
-import type { AddressTokenBalance, AddressTokensBalancesSocketMessage, AddressTokensResponse } from 'types/api/address';
+import type { AddressTokenBalance, AddressTokensBalancesSocketMessage, AddressTokensResponse } from 'client/slices/address/types/api';
 import type { TokenType } from 'types/api/token';
 
 import useApiFetch from 'client/api/hooks/useApiFetch';

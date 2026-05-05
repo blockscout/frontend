@@ -2,13 +2,13 @@ import type { ConditionalValue } from '@chakra-ui/react';
 import { Flex, Grid, chakra, useBreakpointValue } from '@chakra-ui/react';
 import React from 'react';
 
-import type { EntityProps } from 'ui/shared/entities/address/AddressEntity';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
-import AddressEntityWithTokenFilter from 'ui/shared/entities/address/AddressEntityWithTokenFilter';
+import AddressEntityZetaChain from 'client/features/chain-variants/zeta-chain/components/AddressEntityZetaChain';
+import type { EntityProps } from 'client/slices/address/components/entity/AddressEntity';
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+import AddressEntityWithTokenFilter from 'client/slices/address/components/entity/AddressEntityWithTokenFilter';
+import { getTxCourseType } from 'client/slices/address/utils/tx';
 
-import AddressEntityZetaChain from '../entities/address/AddressEntityZetaChain';
 import AddressFromToIcon from './AddressFromToIcon';
-import { getTxCourseType } from './utils';
 
 type Mode = 'compact' | 'long';
 

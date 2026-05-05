@@ -9,7 +9,13 @@ declare module 'yup' {
 
 import * as yup from 'yup';
 
-import type { AddressProfileAPIConfig } from 'types/client/addressProfileAPIConfig';
+type AddressProfileAPIConfig = {
+  api_url_template: string;
+  tag_link_template?: string;
+  tag_icon?: string;
+  tag_bg_color?: string;
+  tag_text_color?: string;
+};
 import type { GasRefuelProviderConfig } from 'types/client/gasRefuelProviderConfig';
 import { GAS_UNITS } from 'types/client/gasTracker';
 import type { GasUnit } from 'types/client/gasTracker';

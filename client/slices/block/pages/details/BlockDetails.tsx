@@ -16,6 +16,7 @@ import BlockEntityL1 from 'client/features/rollup/common/components/BlockEntityL
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
 import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-title';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import BlockGasUsed from 'client/slices/block/components/BlockGasUsed';
 import type { BlockQuery } from 'client/slices/block/hooks/useBlockQuery';
 import getBlockReward from 'client/slices/block/utils/get-block-reward';
@@ -33,7 +34,6 @@ import OptimisticL2TxnBatchDA from 'ui/shared/batch/OptimisticL2TxnBatchDA';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import IconSvg from 'ui/shared/IconSvg';
 import PrevNext from 'ui/shared/PrevNext';

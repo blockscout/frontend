@@ -4,7 +4,7 @@ import { sumBy } from 'es-toolkit';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { Address } from 'types/api/address';
+import type { Address } from 'client/slices/address/types/api';
 
 import { route } from 'nextjs/routes';
 

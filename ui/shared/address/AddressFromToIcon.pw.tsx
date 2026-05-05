@@ -1,10 +1,10 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
+import type { TxCourseType } from 'client/slices/address/utils/tx';
 import { test, expect } from 'playwright/lib';
 
 import AddressFromToIcon from './AddressFromToIcon';
-import type { TxCourseType } from './utils';
 
 test.use({ viewport: { width: 36, height: 36 } });
 

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { AddressMetadataInfo, AddressMetadataTagApi } from 'types/api/addressMetadata';
+import type { AddressMetadataInfo, AddressMetadataTagApi } from 'client/features/address-metadata/types/api';
 
 import type { TxQuery } from 'client/slices/tx/hooks/useTxQuery';
 import * as txMock from 'client/slices/tx/mocks/tx';

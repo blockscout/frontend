@@ -3,9 +3,8 @@ import type { SmartContract, SmartContractMudSystemsResponse } from 'types/api/c
 import type { HotContract, VerifiedContract, VerifiedContractsCounters } from 'types/api/contracts';
 
 import { CHAIN_STATS_COUNTER } from 'client/features/chain-stats/stubs/counters';
+import { ADDRESS_PARAMS, ADDRESS_HASH } from 'client/slices/address/stubs/address-params';
 import type { SolidityScanReport } from 'lib/solidityScan/schema';
-
-import { ADDRESS_PARAMS, ADDRESS_HASH } from './addressParams';
 
 export const CONTRACT_CODE_UNVERIFIED = {
   creation_bytecode: '0x60806040526e',

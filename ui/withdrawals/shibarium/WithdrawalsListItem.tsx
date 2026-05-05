@@ -3,11 +3,11 @@ import React from 'react';
 import type { ShibariumWithdrawalsItem } from 'types/api/shibarium';
 
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
+import AddressStringOrParam from 'client/slices/address/components/entity/AddressStringOrParam';
 import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import config from 'configs/app';
 import { layerLabels } from 'lib/rollups/utils';
-import AddressStringOrParam from 'ui/shared/entities/address/AddressStringOrParam';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 

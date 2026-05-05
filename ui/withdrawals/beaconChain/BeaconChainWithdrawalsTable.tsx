@@ -1,12 +1,12 @@
 import React from 'react';
 
+import type { AddressWithdrawalsItem } from 'client/slices/address/types/api';
 import type { BlockWithdrawalsItem } from 'client/slices/block/types/api';
-import type { AddressWithdrawalsItem } from 'types/api/address';
 import type { WithdrawalsItem } from 'types/api/withdrawals';
 
 import useLazyRenderedList from 'client/shared/lists/useLazyRenderedList';
+import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
 import config from 'configs/app';
-import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 

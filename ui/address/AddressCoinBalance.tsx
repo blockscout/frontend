@@ -3,14 +3,14 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { SocketMessage } from 'client/api/socket/types';
-import type { AddressCoinBalanceHistoryResponse } from 'types/api/address';
+import type { AddressCoinBalanceHistoryResponse } from 'client/slices/address/types/api';
 
 import { getResourceKey } from 'client/api/hooks/useApiQuery';
 import useSocketChannel from 'client/api/socket/useSocketChannel';
 import useSocketMessage from 'client/api/socket/useSocketMessage';
 import useIsMounted from 'client/shared/hooks/useIsMounted';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
-import { ADDRESS_COIN_BALANCE } from 'stubs/address';
+import { ADDRESS_COIN_BALANCE } from 'client/slices/address/stubs/address';
 import { generateListStub } from 'stubs/utils';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import SocketAlert from 'ui/shared/SocketAlert';

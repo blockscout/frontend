@@ -7,6 +7,7 @@ import * as bens from '@blockscout/bens-types';
 import { route } from 'nextjs-routes';
 
 import type { ResourceError } from 'client/api/resources';
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
@@ -14,7 +15,6 @@ import { Tooltip } from 'toolkit/chakra/tooltip';
 import { stripTrailingSlash } from 'toolkit/utils/url';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import IconSvg from 'ui/shared/IconSvg';
 import TextSeparator from 'ui/shared/TextSeparator';

@@ -2,10 +2,10 @@ import React from 'react';
 
 import type { ClustersDirectoryObject } from 'types/api/clusters';
 
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import { isEvmAddress } from 'lib/address/isEvmAddress';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import ClustersEntity from 'ui/shared/entities/clusters/ClustersEntity';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 

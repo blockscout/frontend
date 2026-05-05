@@ -7,6 +7,8 @@ import type { UserOp } from 'types/api/userOps';
 
 import type { ResourceError } from 'client/api/resources';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+import AddressStringOrParam from 'client/slices/address/components/entity/AddressStringOrParam';
 import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import config from 'configs/app';
@@ -17,8 +19,6 @@ import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoNativeCoinValue from 'ui/shared/DetailedInfo/DetailedInfoNativeCoinValue';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
-import AddressStringOrParam from 'ui/shared/entities/address/AddressStringOrParam';
 import UserOpEntity from 'ui/shared/entities/userOp/UserOpEntity';
 import UserOpSponsorType from 'ui/shared/userOps/UserOpSponsorType';
 import UserOpStatus from 'ui/shared/userOps/UserOpStatus';

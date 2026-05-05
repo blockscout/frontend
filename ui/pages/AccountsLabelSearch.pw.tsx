@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { AddressesMetadataSearchResult } from 'types/api/addresses';
+import type { AddressesMetadataSearchResult } from 'client/features/address-metadata/types/api';
 
 import * as addressMocks from 'mocks/address/address';
 import { test, expect } from 'playwright/lib';

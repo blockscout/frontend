@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { AddressMetadataTagApi } from 'types/api/addressMetadata';
+import type { AddressMetadataTagApi } from 'client/features/address-metadata/types/api';
 
 import highlightText from 'client/shared/text/highlight-text';
 import type { TagProps } from 'toolkit/chakra/tag';

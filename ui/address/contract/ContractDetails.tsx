@@ -4,8 +4,7 @@ import { useRouter } from 'next/router';
 import type { Channel } from 'phoenix';
 import React from 'react';
 
-import type { Address } from 'types/api/address';
-import type { AddressImplementation } from 'types/api/addressParams';
+import type { Address, AddressImplementation } from 'client/slices/address/types/api';
 import type { SmartContract } from 'types/api/contract';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';

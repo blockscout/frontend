@@ -1,6 +1,6 @@
 import * as tac from '@blockscout/tac-operation-lifecycle-types';
 
-import { ADDRESS_HASH } from './addressParams';
+import { ADDRESS_HASH } from 'client/slices/address/stubs/address-params';
 
 export const TAC_OPERATION: tac.OperationBriefDetails = {
   operation_id: '0x4d3d36b7fcab0a2f93f24bf313ebfe9cc0b2c7157d2aef7e7f7d5835528428c6',

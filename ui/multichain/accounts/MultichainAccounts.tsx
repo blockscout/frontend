@@ -3,8 +3,8 @@ import { BigNumber } from 'bignumber.js';
 import React from 'react';
 
 import getItemIndex from 'client/shared/lists/get-item-index';
+import { TOP_ADDRESS } from 'client/slices/address/stubs/address';
 import { MultichainProvider } from 'lib/contexts/multichain';
-import { TOP_ADDRESS } from 'stubs/address';
 import { generateListStub } from 'stubs/utils';
 import AddressesListItem from 'ui/addresses/AddressesListItem';
 import AddressesTable from 'ui/addresses/AddressesTable';

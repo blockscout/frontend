@@ -5,11 +5,11 @@ import type { InterchainTransfer } from '@blockscout/interchain-indexer-types';
 
 import { route } from 'nextjs-routes';
 
+import AddressEntityInterchain from 'client/slices/address/components/entity/AddressEntityInterchain';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import AddressFromToIcon from 'ui/shared/address/AddressFromToIcon';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import AddressEntityInterchain from 'ui/shared/entities/address/AddressEntityInterchain';
 import IconSvg from 'ui/shared/IconSvg';
 import TokenValueInterchain from 'ui/shared/value/TokenValueInterchain';
 

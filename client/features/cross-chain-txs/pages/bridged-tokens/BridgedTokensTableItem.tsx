@@ -5,10 +5,10 @@ import type { StatsBridgedTokenItem, StatsBridgedTokenRow } from '@blockscout/in
 import type { TokenInfo } from 'types/api/token';
 
 import getItemIndex from 'client/shared/lists/get-item-index';
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 
 interface Props {

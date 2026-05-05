@@ -11,6 +11,7 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 import type { ResourceError } from 'client/api/resources';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import useIsMounted from 'client/shared/hooks/useIsMounted';
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import config from 'configs/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import { isConfidentialTokenType } from 'lib/token/tokenTypes';
@@ -22,7 +23,6 @@ import AppActionButton from 'ui/shared/AppActionButton/AppActionButton';
 import useAppActionData from 'ui/shared/AppActionButton/useAppActionData';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoSponsoredItem from 'ui/shared/DetailedInfo/DetailedInfoSponsoredItem';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import AssetValue from 'ui/shared/value/AssetValue';
 
 import TokenNftMarketplaces from './TokenNftMarketplaces';

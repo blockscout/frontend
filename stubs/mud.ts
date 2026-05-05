@@ -1,6 +1,6 @@
 import type { MudWorldItem, MudWorldSchema, MudWorldTable } from 'types/api/mudWorlds';
 
-import { ADDRESS_PARAMS } from './addressParams';
+import { ADDRESS_PARAMS } from 'client/slices/address/stubs/address-params';
 
 export const MUD_TABLE: MudWorldTable = {
   table_full_name: 'ot.Match',

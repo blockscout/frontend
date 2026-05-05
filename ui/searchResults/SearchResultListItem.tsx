@@ -2,13 +2,14 @@ import { chakra, Flex, Grid, Box, Text } from '@chakra-ui/react';
 import React from 'react';
 import xss from 'xss';
 
+import type { AddressFormat } from 'client/slices/address/types/view';
 import type { SearchResultItem } from 'types/client/search';
-import type { AddressFormat } from 'types/views/address';
 
 import { route } from 'nextjs-routes';
 
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 import highlightText from 'client/shared/text/highlight-text';
+import * as AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import * as BlockEntity from 'client/slices/block/components/entity/BlockEntity';
 import * as TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import { toBech32Address } from 'lib/address/bech32';
@@ -22,7 +23,6 @@ import { Tag } from 'toolkit/chakra/tag';
 import { SECOND } from 'toolkit/utils/consts';
 import { ADDRESS_REGEXP } from 'toolkit/utils/regexp';
 import ContractCertifiedLabel from 'ui/shared/ContractCertifiedLabel';
-import * as AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import * as BlobEntity from 'ui/shared/entities/blob/BlobEntity';
 import * as EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 import * as OperationEntity from 'ui/shared/entities/operation/OperationEntity';

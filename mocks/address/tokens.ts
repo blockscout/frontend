@@ -1,4 +1,4 @@
-import type { AddressCollectionsResponse, AddressNFTsResponse, AddressTokenBalance, AddressTokensResponse } from 'types/api/address';
+import type { AddressCollectionsResponse, AddressNFTsResponse, AddressTokenBalance, AddressTokensResponse } from 'client/slices/address/types/api';
 
 import * as tokens from 'mocks/tokens/tokenInfo';
 import * as tokenInstance from 'mocks/tokens/tokenInstance';

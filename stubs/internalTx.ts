@@ -1,8 +1,7 @@
 import type { InternalTransaction } from 'types/api/internalTransaction';
 
+import { ADDRESS_PARAMS } from 'client/slices/address/stubs/address-params';
 import { TX_HASH } from 'client/slices/tx/stubs/tx';
-
-import { ADDRESS_PARAMS } from './addressParams';
 
 export const INTERNAL_TX: InternalTransaction = {
   block_number: 9006105,

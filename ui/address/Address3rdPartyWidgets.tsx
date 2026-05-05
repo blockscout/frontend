@@ -2,7 +2,7 @@ import { Grid, Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { useMemo } from 'react';
 
-import type { Address3rdPartyWidget } from 'types/views/address';
+import type { Address3rdPartyWidget } from 'client/features/address-3rd-party-widgets/types/view';
 
 import { route } from 'nextjs-routes';
 

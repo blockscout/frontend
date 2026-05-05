@@ -6,6 +6,8 @@ import type { TokenInfo } from 'types/api/token';
 import type { AggregatedTokenInfo } from 'types/client/multichainAggregator';
 
 import getItemIndex from 'client/shared/lists/get-item-index';
+import type { EntityProps as AddressEntityProps } from 'client/slices/address/components/entity/AddressEntity';
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import config from 'configs/app';
 import multichainConfig from 'configs/multichain';
 import { getTokenTypeName } from 'lib/token/tokenTypes';
@@ -13,8 +15,6 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { Tag } from 'toolkit/chakra/tag';
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
-import type { EntityProps as AddressEntityProps } from 'ui/shared/entities/address/AddressEntity';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import SimpleValue from 'ui/shared/value/SimpleValue';
 import { DEFAULT_ACCURACY_USD } from 'ui/shared/value/utils';

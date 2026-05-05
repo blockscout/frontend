@@ -5,10 +5,10 @@ import { route } from 'nextjs-routes';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
 import useNewTxsSocket from 'client/slices/tx/hooks/useTxsSocketTypeAll';
 import { TX } from 'client/slices/tx/stubs/tx';
 import config from 'configs/app';
-import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
 import { Link } from 'toolkit/chakra/link';
 import SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 

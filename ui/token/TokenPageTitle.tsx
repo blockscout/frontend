@@ -2,13 +2,14 @@ import { Flex, useToken } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
-import type { Address } from 'types/api/address';
+import type { Address } from 'client/slices/address/types/api';
 import type { TokenInfo, TokenVerifiedInfo as TTokenVerifiedInfo } from 'types/api/token';
 import type { EntityTag } from 'ui/shared/EntityTags/types';
 
 import type { ResourceError } from 'client/api/resources';
+import useAddressMetadataInfoQuery from 'client/features/address-metadata/hooks/useAddressMetadataInfoQuery';
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import config from 'configs/app';
-import useAddressMetadataInfoQuery from 'lib/address/useAddressMetadataInfoQuery';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import { getTokenTypeName } from 'lib/token/tokenTypes';
 import { Tooltip } from 'toolkit/chakra/tooltip';
@@ -16,7 +17,6 @@ import AddressAlerts from 'ui/address/details/AddressAlerts';
 import AddressQrCode from 'ui/address/details/AddressQrCode';
 import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu';
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import EntityTags from 'ui/shared/EntityTags/EntityTags';
 import formatUserTags from 'ui/shared/EntityTags/formatUserTags';
