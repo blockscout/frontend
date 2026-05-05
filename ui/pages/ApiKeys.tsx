@@ -60,7 +60,12 @@ const ApiKeysPage: React.FC = () => {
     deleteModalProps.onOpenChange({ open });
   }, [ deleteModalProps ]);
 
-  const description = (
+  const description = feature.isEnabled && feature.apiKeysButton === false ? (
+    <AccountPageDescription>
+      Blockscout APIs require a key. Create a <Link href="https://dev.blockscout.com" external noIcon>
+        free PRO API key</Link> to access all multichain endpoints.
+    </AccountPageDescription>
+  ) : (
     <AccountPageDescription>
       Create API keys to use for your RPC and EthRPC API requests. For more information, see { space }
       <Link href="https://docs.blockscout.com/using-blockscout/my-account/api-keys#api-keys" external noIcon>"How to use a Blockscout API key"</Link>.
