@@ -68,3 +68,5 @@ npm-debug.log*
 /toolkit/package/dist
 license.json
 release-prs-data.json
+
+.ai
