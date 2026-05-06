@@ -21,6 +21,7 @@ import AddressMultichainInfoButton from 'client/features/multichain-button/pages
 import AddressClusters from 'client/features/name-services/clusters/pages/address/AddressClusters';
 import useCheckDomainNameParam from 'client/features/name-services/domains/hooks/useCheckDomainNameParam';
 import AddressEnsDomains from 'client/features/name-services/domains/pages/address/AddressEnsDomains';
+import SolidityscanReport from 'client/features/solidity-scan/components/SolidityscanReport';
 import AddressAccountHistory from 'client/features/tx-interpretation/noves/pages/address/AddressAccountHistory';
 import AddressUserOps from 'client/features/user-ops/pages/address/AddressUserOps';
 import TokenAddToWallet from 'client/features/web3-wallet/components/TokenAddToWallet';
@@ -52,7 +53,6 @@ import { USER_OPS_ACCOUNT } from 'stubs/userOps';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import AddressContract from 'ui/address/AddressContract';
 import { CONTRACT_TAB_IDS } from 'ui/address/contract/utils';
-import SolidityscanReport from 'ui/address/SolidityscanReport';
 import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu';
 import TextAd from 'ui/shared/ad/TextAd';
 import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
