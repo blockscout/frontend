@@ -10,6 +10,8 @@ const currentDir = dirname(currentFilePath);
 const outputDir = resolvePath(currentDir, '../../../../public');
 const outputFile = resolvePath(outputDir, 'llms.txt');
 
+const PRO_API_URL = 'https://api.blockscout.com';
+
 function run() {
     try {
         if(config.features.multichain.isEnabled){
@@ -18,80 +20,74 @@ function run() {
         }
 
         console.log('🌀 Generating llms.txt...');
-            
+
         const chainName = config.chain.name ?? '';
         const chainId = config.chain.id ?? '';
-        const generalApiUrl = config.apis.general? config.apis.general.endpoint + config.apis.general.basePath : '';
-        const statsApiUrl = config.apis.stats ? config.apis.stats.endpoint + config.apis.stats.basePath : undefined;
 
         const rollupFeature = config.features.rollup;
         const parentChainUrl = rollupFeature.isEnabled ? rollupFeature.parentChain.baseUrl : undefined;
         const currentToParentLayerLabel = layerLabels.current + '→' + layerLabels.parent;
         const parentToCurrentLayerLabel = layerLabels.parent + '→' + layerLabels.current;
-        
+
         const validatorsFeature = config.features.validators;
 
-        const MCP_SERVER_URL = 'https://mcp.blockscout.com';
-
-        const GENERAL_COUNTERS_TEMPLATE = statsApiUrl ? `
+        const GENERAL_COUNTERS_TEMPLATE = chainId ? `
             ### General Counters
 
             \`\`\`bash
-            curl --request GET --url '${statsApiUrl}/api/v1/counters'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/stats-service/api/v1/counters'
             \`\`\`
         ` : '{blank}';
 
         const USER_OPS_TEMPLATE = config.features.userOps.isEnabled ? `
-            <!-- START:Account-Abstraction -->
             ### Account Abstraction info
 
             \`\`\`bash
-            curl --request GET --url '${ generalApiUrl }/api/v2/proxy/account-abstraction/accounts/{account_address}'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/proxy/account-abstraction/accounts/{account_address}'
             \`\`\`
 
             ### User Operations by Address
 
             \`\`\`bash
-            curl --request GET --url '${ generalApiUrl }/api/v2/proxy/account-abstraction/operations?sender={account_address}'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/proxy/account-abstraction/operations?sender={account_address}'
             \`\`\`
 
             ### User Operations by Transaction
 
             \`\`\`bash
-            curl --request GET --url '${ generalApiUrl }/api/v2/proxy/account-abstraction/operations?transaction_hash={transaction_hash}'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/proxy/account-abstraction/operations?transaction_hash={transaction_hash}'
             \`\`\`
 
             ### User Operation Details
 
             \`\`\`bash
-            curl --request GET --url '${ generalApiUrl }/api/v2/proxy/account-abstraction/operations/{user_operation_hash}'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/proxy/account-abstraction/operations/{user_operation_hash}'
             \`\`\`
-            <!-- END:Account-Abstraction -->
         ` : '{blank}';
 
         const BEACON_CHAIN_TEMPLATE = config.features.beaconChain.isEnabled ? `
             ### Deposits by Address
-                
+
             \`\`\`bash
-            curl --request GET --url '${ generalApiUrl }/api/v2/addresses/{account_address}/beacon/deposits'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/addresses/{account_address}/beacon/deposits'
             \`\`\`
-                
+
             ### Deposits by Block
-                
+
             \`\`\`bash
-            curl --request GET --url '${ generalApiUrl }/api/v2/block/{block_number}/beacon/deposits'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/blocks/{block_hash_or_number}/beacon/deposits'
             \`\`\`
 
             ### Withdrawals by Address
 
             \`\`\`bash
-            curl --request GET --url '${ generalApiUrl }/api/v2/addresses/{account_address}/withdrawals'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/addresses/{account_address}/withdrawals'
             \`\`\`
 
             ### Withdrawals by Block
 
             \`\`\`bash
-            curl --request GET --url '${ generalApiUrl }/api/v2/blocks/{block_number}/withdrawals'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/blocks/{block_hash_or_number}/withdrawals'
             \`\`\`
         ` : undefined;
 
@@ -99,229 +95,233 @@ function run() {
             ### Latest Committed Batch Number
 
             \`\`\`bash
-            curl --request GET --url '${ generalApiUrl }/api/v2/main-page/arbitrum/batches/latest-number'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/main-page/arbitrum/batches/latest-number'
             \`\`\`
 
             ### Batch Info
-                            
+
             \`\`\`bash
-            curl --request GET --url '${ generalApiUrl }/api/v2/arbitrum/batches/{batch_number}'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/arbitrum/batches/{batch_number}'
             \`\`\`
-                            
+
             ### Blocks By Batch
-                            
+
             \`\`\`bash
-            curl --request GET --url '${ generalApiUrl }/api/v2/blocks/arbitrum-batch/{batch_number}'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/blocks/arbitrum-batch/{batch_number}'
             \`\`\`
-                            
-            ### Get ${ parentToCurrentLayerLabel } messages
-                            
+
+            ### Get ${parentToCurrentLayerLabel} messages
+
             \`\`\`bash
-            curl --request GET --url '${ generalApiUrl }/api/v2/arbitrum/messages/to-rollup'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/arbitrum/messages/to-rollup'
             \`\`\`
-                            
-            ### Get ${ currentToParentLayerLabel } messages
-                            
+
+            ### Get ${currentToParentLayerLabel} messages
+
             \`\`\`bash
-            curl --request GET --url '${ generalApiUrl }/api/v2/arbitrum/messages/from-rollup'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/arbitrum/messages/from-rollup'
             \`\`\`
-                            
-            ### ${ currentToParentLayerLabel } messages by transaction:
-                            
+
+            ### ${currentToParentLayerLabel} messages by transaction:
+
             \`\`\`bash
-            curl --request GET --url '${ generalApiUrl }/api/v2/arbitrum/messages/withdrawals/{transactions_hash}'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/arbitrum/messages/withdrawals/{transactions_hash}'
             \`\`\`
         ` : undefined;
 
         const OPTIMISM_CHAIN_TEMPLATE = rollupFeature.isEnabled && rollupFeature.type === 'optimistic' ? `
             ### Latest Committed Batch Number (top of)
-                
+
             \`\`\`bash
-            curl --request GET --url '${ generalApiUrl }/api/v2/optimism/batches'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/optimism/batches'
             \`\`\`
-                
+
             ### Batch Info
-                
+
             \`\`\`bash
-            curl --request GET --url '${ generalApiUrl }/api/v2/optimism/batches/{batch_number}'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/optimism/batches/{batch_number}'
             \`\`\`
-                
+
             ### Blocks By Batch (TODO: not needed if the batch returns blocks range)
-                
+
             \`\`\`bash
-            curl --request GET --url '${ generalApiUrl }/api/v2/blocks/optimism-batch/{batch_number}'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/blocks/optimism-batch/{batch_number}'
             \`\`\`
-                
+
             ### Dispute Games
-                
+
             \`\`\`bash
-            curl --request GET --url '${ generalApiUrl }/api/v2/optimism/games'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/optimism/games'
             \`\`\`
-                
-            ### Get ${ parentToCurrentLayerLabel } messages
-                
+
+            ### Get ${parentToCurrentLayerLabel} messages
+
             \`\`\`bash
-            curl --request GET --url '${ generalApiUrl }/api/v2/optimism/deposits'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/optimism/deposits'
             \`\`\`
-                
-            ### Get ${ currentToParentLayerLabel } messages
-                
+
+            ### Get ${currentToParentLayerLabel} messages
+
             \`\`\`bash
-            curl --request GET --url '${ generalApiUrl }/api/v2/optimism/withdrawals'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/optimism/withdrawals'
             \`\`\`
         ` : undefined;
 
         const CELO_CHAIN_TEMPLATE = config.features.celo.isEnabled ? `
             ### Latest Finalized Epoch (top of)
-                
+
             \`\`\`bash
-            curl --request GET --url '${ generalApiUrl }/api/v2/celo/epochs'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/celo/epochs'
             \`\`\`
-                
+
             ### Get Epoch Information
-                
+
             \`\`\`bash
-            curl --request GET --url '${ generalApiUrl }/api/v2/celo/epochs/{epoch_number}'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/celo/epochs/{epoch_number}'
             \`\`\`
-                
+
             ### Validator Group Reward by Epoch
-                
+
             \`\`\`bash
-            curl --request GET --url '${ generalApiUrl }/api/v2/celo/epochs/{epoch_number}/election-rewards/group'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/celo/epochs/{epoch_number}/election-rewards/group'
             \`\`\`
-                
+
             ### Validator Rewards by Epoch
-                
+
             \`\`\`bash
-            curl --request GET --url '${ generalApiUrl }/api/v2/celo/epochs/{epoch_number}/election-rewards/validator'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/celo/epochs/{epoch_number}/election-rewards/validator'
             \`\`\`
-                
+
             ### Voting Rewards by Epoch
-                
+
             \`\`\`bash
-            curl --request GET --url '${ generalApiUrl }/api/v2/celo/epochs/{epoch_number}/election-rewards/voter'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/celo/epochs/{epoch_number}/election-rewards/voter'
             \`\`\`
         ` : undefined;
 
         const ZKSYNC_CHAIN_TEMPLATE = rollupFeature.isEnabled && rollupFeature.type === 'zkSync' ? `
             ### Latest Committed Batch Number
-                
+
             \`\`\`bash
-            curl --request GET --url '${ generalApiUrl }/api/v2/main-page/zksync/batches/latest-number'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/main-page/zksync/batches/latest-number'
             \`\`\`
-                
+
             ### Batch info
-                
+
             \`\`\`bash
-            curl --request GET --url '${ generalApiUrl }/api/v2/zksync/batches/{batch_number}'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/zksync/batches/{batch_number}'
             \`\`\`
         ` : undefined;
 
         const TAC_CHAIN_TEMPLATE = config.features.tac.isEnabled && config.apis.tac ? `
+            > **Note:** TAC operations endpoints below are served by a separate microservice and are **not** part of the Blockscout PRO API. The \`Authorization: Bearer {api_key}\` requirement stated in the introduction does not apply here.
+
             ### TAC Operations:
-                
+
             \`\`\`bash
-            curl --request GET --url '${config.apis.tac.endpoint }/api/v1/tac/operations'
+            curl --request GET --url '${config.apis.tac.endpoint}/api/v1/tac/operations'
             \`\`\`
-                
+
             ### TAC Operation Info:
-                
+
             \`\`\`bash
-            curl --request GET --url '${config.apis.tac.endpoint }/api/v1/tac/operations/{operation_id}'
+            curl --request GET --url '${config.apis.tac.endpoint}/api/v1/tac/operations/{operation_id}'
             \`\`\`
         ` : undefined;
 
         const REDSTONE_CHAIN_TEMPLATE = config.features.mudFramework.isEnabled ? `
             ### MUD Worlds
-                
+
             \`\`\`bash
-            curl --request GET --url '${ generalApiUrl }/api/v2/mud/worlds'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/mud/worlds'
             \`\`\`
-                
+
             ### MUD World Tables
-                
+
             \`\`\`bash
-            curl --request GET --url '${ generalApiUrl }/api/v2/mud/worlds/{contract_address}/tables'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/mud/worlds/{contract_address}/tables'
             \`\`\`
-                
+
             ### MUD World Table Records
-                
+
             \`\`\`bash
-            curl --request GET --url '${ generalApiUrl }/api/v2/mud/worlds/{contract_address}/tables/{table_id}/records'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/mud/worlds/{contract_address}/tables/{table_id}/records'
             \`\`\`
-                
+
             ### MUD World Table Record
-                
+
             \`\`\`bash
-            curl --request GET --url '${ generalApiUrl }/api/v2/mud/worlds/{contract_address}/tables/{table_id}/records/{record_id}'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/mud/worlds/{contract_address}/tables/{table_id}/records/{record_id}'
             \`\`\`
         ` : undefined;
 
         const SCROLL_CHAIN_TEMPLATE = rollupFeature.isEnabled && rollupFeature.type === 'scroll' ? `
             ### Latest Committed Batch Number (top of)
-                
+
             \`\`\`bash
-            curl --request GET --url '${ generalApiUrl }/api/v2/scroll/batches'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/scroll/batches'
             \`\`\`
-                
+
             ### Batch Info
-                
+
             \`\`\`bash
-            curl --request GET --url '${ generalApiUrl }/api/v2/scroll/batches/{batch_number}'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/scroll/batches/{batch_number}'
             \`\`\`
-                
+
             ### Blocks By Batch
-                
+
             \`\`\`bash
-            curl --request GET --url '${ generalApiUrl }/api/v2/blocks/scroll-batch/{batch_number}'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/blocks/scroll-batch/{batch_number}'
             \`\`\`
-                
-            ### Deposits (${ parentToCurrentLayerLabel })
-                
+
+            ### Deposits (${parentToCurrentLayerLabel})
+
             \`\`\`bash
-            curl --request GET --url '${ generalApiUrl }/api/v2/scroll/deposits'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/scroll/deposits'
             \`\`\`
-                
-            ### Withdrawals (${ currentToParentLayerLabel })
-                
+
+            ### Withdrawals (${currentToParentLayerLabel})
+
             \`\`\`bash
-            curl --request GET --url '${ generalApiUrl }/api/v2/scroll/withdrawals'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/scroll/withdrawals'
             \`\`\`
         ` : undefined;
 
+        // Shibarium endpoints are not yet listed in the PRO API index (tracked in blockscout/blockscout#14322); the indexer exposes them and the OpenAPI listing is forthcoming.
         const SHIBARIUM_CHAIN_TEMPLATE = rollupFeature.isEnabled && rollupFeature.type === 'shibarium' ? `
-            ### Deposits (${ parentToCurrentLayerLabel })
-                
+            ### Deposits (${parentToCurrentLayerLabel})
+
             \`\`\`bash
-            curl --request GET --url '${ generalApiUrl }/api/v2/shibarium/deposits'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/shibarium/deposits'
             \`\`\`
-                
-            ### Withdrawals (${ currentToParentLayerLabel })
-                
+
+            ### Withdrawals (${currentToParentLayerLabel})
+
             \`\`\`bash
-            curl --request GET --url '${ generalApiUrl }/api/v2/shibarium/withdrawals'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/shibarium/withdrawals'
             \`\`\`
         ` : undefined;
 
         const ZILLIQA_CHAIN_TEMPLATE = validatorsFeature.isEnabled && validatorsFeature.chainType === 'zilliqa' ? `
             ### Validators list:
-                
+
             \`\`\`bash
-            curl --request GET --url '${ generalApiUrl }/api/v2/validators/zilliqa'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/validators/zilliqa'
             \`\`\`
-                
+
             ### Validator Info:
-                
+
             \`\`\`bash
-            curl --request GET --url '${ generalApiUrl }/api/v2/validators/zilliqa/{validator_public_key}'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/validators/zilliqa/{validator_public_key}'
             \`\`\`
         ` : undefined;
 
+        // Stability validators endpoint is not yet listed in the PRO API index (tracked in blockscout/blockscout#14323); the indexer exposes it and the OpenAPI listing is forthcoming.
         const STABILITY_CHAIN_TEMPLATE = validatorsFeature.isEnabled && validatorsFeature.chainType === 'stability' ? `
             ### Validators list:
-                
+
             \`\`\`bash
-            curl --request GET --url '${ generalApiUrl }/api/v2/validators/stability'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/validators/stability'
             \`\`\`
         ` : undefined;
 
@@ -340,202 +340,187 @@ function run() {
         ].filter(Boolean);
 
         const CHAIN_SPECIFIC_TEMPLATE = CHAIN_SPECIFIC_DATA.length > 0 ? `
-            <!-- START:Chain-Specific-Data -->
             ## Chain-Specific Data
             ${ CHAIN_SPECIFIC_DATA.join('\n') }
-            <!-- END:Chain-Specific--Data -->
         ` : '{blank}';
 
         const MAIN_TEMPLATE = dedent`
-            # Blockscout - ${ chainName }
+            # Blockscout - ${chainName}
 
-            <!-- START:Blockscout-Common-Intro -->
-            Blockscout is a human-friendly blockchain explorer for EVM-compatible networks. It lets users browse blocks, transactions, addresses, tokens (ERC-20/721/1155), logs, contract ABIs, and decoded contract interactions. While the site is primarily designed for people, all rendered information is backed by API endpoints that machines can consume. Large Language Models should prefer the LLM-ready endpoints listed below to retrieve precise, structured data.
-            <!-- END:Blockscout-Common-Intro -->
+            Blockscout is a human-friendly blockchain explorer for EVM-compatible networks. It lets users browse blocks, transactions, addresses, tokens (ERC-20/721/1155), logs, contract ABIs, and decoded contract interactions. While the site is primarily designed for people, all rendered information is backed by API endpoints that machines can consume.
 
-            <!-- START:Blockscout-Instance-Info -->
-            Chain name: ${ chainName }
-            Chain ID: ${ chainId }
-            ${ parentChainUrl ? `Settlement layer Blockscout URL: ${ parentChainUrl }` : '{blank}' }
-            <!-- END:Blockscout-Instance-Info -->
+            All endpoint examples below target the **Blockscout PRO API** at \`${PRO_API_URL}\` — a single HTTP API spanning 100+ EVM chains. Every request requires the header \`Authorization: Bearer {api_key}\`; for brevity it is omitted from the individual \`curl\` examples and must be added by the caller. Generate an API key at the Blockscout developer portal: \`https://dev.blockscout.com\` (free tier, no credit card required). For the full set of conventions (additional headers, response shape, pagination, plan limits) consult the public \`web3-dev\` agent skill linked from the "Additional Info" section at the bottom of this document.
 
-            <!-- START:General-LLM-Ready-Blockchain-Data -->
-            ## General LLM-ready Data
+            Chain name: ${chainName}
+            Chain ID: ${chainId}
+            ${parentChainUrl ? `Settlement layer Blockscout URL: ${parentChainUrl}` : '{blank}'}
 
-            The links below lead to the REST API of the Blockscout MCP server, they are considered as LLM-ready. More detail: https://github.com/blockscout/mcp-server/blob/main/API.md
+            ## General Blockchain Data
 
-            <!-- START:General-Data-Blocks -->
             ### Specific Block Info
 
             \`\`\`bash
-            curl --request GET --url '${ MCP_SERVER_URL }/v1/get_block_info?chain_id=${ chainId }&number_or_hash={block_number_or_hash}&include_transactions=false'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/blocks/{block_hash_or_number}'
             \`\`\`
-            <!-- END:General-Data-Blocks -->
 
-            <!-- START:General-Data-Transactions -->
             ### Specific Transaction Info
 
             \`\`\`bash
-            curl --request GET --url '${ MCP_SERVER_URL }/v1/get_transaction_info?chain_id=${ chainId }&transaction_hash={transaction_hash}'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/transactions/{transaction_hash}'
             \`\`\`
 
             ### Get Transaction Logs
 
             \`\`\`bash
-            curl --request GET --url '${ MCP_SERVER_URL }/v1/get_transaction_logs?chain_id=${ chainId }&transaction_hash={transaction_hash}'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/transactions/{transaction_hash}/logs'
             \`\`\`
 
             ### Transaction Summary
 
             \`\`\`bash
-            curl --request GET --url '${ MCP_SERVER_URL }/v1/transaction_summary?chain_id=${ chainId }&transaction_hash={transaction_hash}'
-            \`\`\`
-            <!-- END:General-Data-Transactions -->
-
-            <!-- START:General-Data-Addresses -->
-            ### Specific Account info
-
-            \`\`\`bash
-            curl --request GET --url '${ MCP_SERVER_URL }/v1/get_address_info?chain_id=${ chainId }&address={account_address}'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/transactions/{transaction_hash}/summary'
             \`\`\`
 
-            ### Get Address by ENS name
+            ### Specific Account Info
 
             \`\`\`bash
-            curl --request GET --url '${ MCP_SERVER_URL }/v1/get_address_by_ens_name?name={ens_name}'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/addresses/{account_address}'
+            \`\`\`
+
+            ### Get Address by ENS Name
+
+            Cross-chain ENS resolution is served by the multichain aggregator service; the path intentionally has no \`{chain_id}\` segment.
+
+            \`\`\`bash
+            curl --request GET --url '${PRO_API_URL}/services/multichain/api/v1/search:quick?q={ens_name}'
             \`\`\`
 
             ### Get Transactions By Address
 
+            Use the \`advanced-filters\` endpoint with \`address_relation=or\` to match the address on either side of a transaction.
+
             \`\`\`bash
-            curl --request GET --url '${ MCP_SERVER_URL }/v1/get_transactions_by_address?chain_id=${ chainId }&address={account_address}&age_from={YYYY-MM-DDTHH:MM:SS.00Z}&age_to={YYYY-MM-DDTHH:MM:SS.00Z}&methods={4_bytes_method_signature_optional}'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/advanced-filters?from_address_hashes_to_include={account_address}&to_address_hashes_to_include={account_address}&address_relation=or&transaction_types=COIN_TRANSFER,CONTRACT_INTERACTION,CONTRACT_CREATION&age_from={YYYY-MM-DDTHH:MM:SSZ}&age_to={YYYY-MM-DDTHH:MM:SSZ}&methods={comma_separated_4byte_selectors_optional}'
             \`\`\`
 
             ### Get Token Transfers by Address
 
-            \`\`\`bash
-            curl --request GET --url '${ MCP_SERVER_URL }/v1/get_token_transfers_by_address?chain_id=${ chainId }&address={account_address}&age_from={YYYY-MM-DDTHH:MM:SS.00Z}&age_to={YYYY-MM-DDTHH:MM:SS.00Z}&token={token_contract_address_optional}'
-            \`\`\`
-            <!-- END:General-Data-Addresses -->
+            Use the \`advanced-filters\` endpoint with token-flavoured \`transaction_types\` and \`address_relation=or\`.
 
-            <!-- START:General-Data-Tokens -->
+            \`\`\`bash
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/advanced-filters?from_address_hashes_to_include={account_address}&to_address_hashes_to_include={account_address}&address_relation=or&transaction_types=ERC-20,ERC-721,ERC-1155&age_from={YYYY-MM-DDTHH:MM:SSZ}&age_to={YYYY-MM-DDTHH:MM:SSZ}&token_contract_address_hashes_to_include={token_contract_address_optional}'
+            \`\`\`
+
             ### Get ERC20 Tokens By Address
 
             \`\`\`bash
-            curl --request GET --url '${ MCP_SERVER_URL }/v1/get_tokens_by_address?chain_id=${ chainId }&address={account_address}'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/addresses/{account_address}/tokens'
             \`\`\`
 
             ### Get NFT Tokens By Address
 
             \`\`\`bash
-            curl --request GET --url '${ MCP_SERVER_URL }/v1/nft_tokens_by_address?chain_id=${ chainId }&address={account_address}'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/addresses/{account_address}/nft'
             \`\`\`
 
             ### Lookup Token By Symbol
 
             \`\`\`bash
-            curl --request GET --url '${ MCP_SERVER_URL }/v1/lookup_token_by_symbol?chain_id=${ chainId }&symbol={token_symbol}'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/search/quick?q={token_symbol}'
             \`\`\`
-            <!-- END:General-Data-Tokens -->
 
-            <!-- START:General-Data-Contracts -->
             ### Get Contract ABI
 
+            The verified-contract response includes the ABI as a field; no separate ABI-only endpoint is needed.
+
             \`\`\`bash
-            curl --request GET --url '${ MCP_SERVER_URL }/v1/get_contract_abi?chain_id=${ chainId }&address={contract_address}'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/smart-contracts/{contract_address}'
             \`\`\`
 
             ### Read Contract Data
 
-            \`\`\`bash
-            curl --request GET --url '${ MCP_SERVER_URL }/v1/read_contract?chain_id=${ chainId }&address={contract_address}&abi={string_encoded_function_abi}&function_name={function_name}&args={string_encoded_arguments_list}'
-            \`\`\`
-            
-            ### Get Source Files Tree of Verified Contract
-            
-            \`\`\`bash
-            curl --request GET --url '${ MCP_SERVER_URL }/v1/inspect_contract_code?chain_id=${ chainId }&address={contract_address}'
-            \`\`\`
-            
-            ### Inspect Specific Source File of Verified Contract
-            
-            \`\`\`bash
-            curl --request GET --url '${ MCP_SERVER_URL }/v1/inspect_contract_code?chain_id=${ chainId }&address={contract_address}&file_name={file_name}'
-            \`\`\`
-            <!-- END:General-Data-Contracts -->
+            Read calls go through the JSON-RPC gateway as \`eth_call\`. This is the only example in this document that uses \`POST\`.
 
-            <!-- END:General-LLM-Ready-Blockchain-Data -->
+            \`\`\`bash
+            curl --request POST --url '${PRO_API_URL}/${chainId}/json-rpc' --header 'Content-Type: application/json' --data '{"jsonrpc":"2.0","id":1,"method":"eth_call","params":[{"to":"{contract_address}","data":"{encoded_calldata}"},"latest"]}'
+            \`\`\`
 
-            <!-- START:Miscellaneous-Blockchain-Data -->
+            ### Inspect Source Tree of Verified Contract
+
+            \`\`\`bash
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/smart-contracts/{contract_address}'
+            \`\`\`
+
             ## Miscellaneous Blockchain Data
 
-            <!-- START:Stats -->
-            ${ GENERAL_COUNTERS_TEMPLATE }
+            ${GENERAL_COUNTERS_TEMPLATE}
             ### Gas Tracker
 
             \`\`\`bash
-            curl --request GET --url '${ generalApiUrl }/api/v2/stats'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/stats'
             \`\`\`
-            <!-- END:Stats -->
 
-            <!-- START:Addresses -->
             ### Coin Balance History by Address
 
             \`\`\`bash
-            curl --request GET --url '${ generalApiUrl }/api/v2/addresses/{account_address}/coin-balance-history-by-day'
-            curl --request GET --url '${ generalApiUrl }/api/v2/addresses/{account_address}/coin-balance-history'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/addresses/{account_address}/coin-balance-history-by-day'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/addresses/{account_address}/coin-balance-history'
             \`\`\`
 
             ### Logs Emitted by Address
 
             \`\`\`bash
-            curl --request GET --url '${ generalApiUrl }/api/v2/addresses/{account_address}/logs'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/addresses/{account_address}/logs'
             \`\`\`
 
             ### Blocks Validated by Address
 
             \`\`\`bash
-            curl --request GET --url '${ generalApiUrl }/api/v2/addresses/{account_address}/blocks-validated'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/addresses/{account_address}/blocks-validated'
             \`\`\`
-            <!-- END:Addresses -->
             ${USER_OPS_TEMPLATE}
-            <!-- START:Tokens -->
             ### Holders By Token Address
 
             \`\`\`bash
-            curl --request GET --url '${ generalApiUrl }/api/v2/tokens/{token_contract_address}/holders'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/tokens/{token_contract_address}/holders'
             \`\`\`
 
             ### NFT Inventory By Token Address
 
             \`\`\`bash
-            curl --request GET --url '${ generalApiUrl }/api/v2/tokens/{token_contract_address}/instances'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/tokens/{token_contract_address}/instances'
             \`\`\`
 
             ### NFT Instance Info
 
             \`\`\`bash
-            curl --request GET --url '${ generalApiUrl }/api/v2/tokens/{token_contract_address}/instances/{instance_id}'
-            curl --request GET --url '${ generalApiUrl }/api/v2/tokens/{token_contract_address}/instances/{instance_id}/transfers'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/tokens/{token_contract_address}/instances/{instance_id}'
+            curl --request GET --url '${PRO_API_URL}/${chainId}/api/v2/tokens/{token_contract_address}/instances/{instance_id}/transfers'
             \`\`\`
-            <!-- END:Tokens -->
-
-            <!-- END:Miscellaneous-Blockchain-Data -->
-            ${ CHAIN_SPECIFIC_TEMPLATE }
-            <!-- START:Additional-Info -->
+            ${CHAIN_SPECIFIC_TEMPLATE}
             ## Additional Info
 
-            **Recommendation**: For programmatic access and LLM workflows, prefer the MCP Server endpoints (HTTP, not SSE).
+            ### Blockscout PRO API — deterministic workflow construction
 
-            - MCP landing: [${ MCP_SERVER_URL }](${ MCP_SERVER_URL })
-            - MCP server root: [${ MCP_SERVER_URL }/mcp/](${ MCP_SERVER_URL }/mcp/)
+            The Blockscout PRO API is the recommended surface for building repeatable services, tools, and automations on top of indexed blockchain data. A single HTTP API spans 100+ EVM chains; one Bearer token authenticates every call.
 
-            ### Other Blockscout instances (lookup by chain id or name):
+            - Generate an API key at the Blockscout developer portal: https://dev.blockscout.com (free tier, no credit card).
+            - For AI agents, install the \`web3-dev\` skill — it encodes the conventions, headers, pagination, and pre-flight checks needed to call the PRO API correctly. Installation instructions: https://raw.githubusercontent.com/blockscout/agent-skills/refs/heads/main/README.md
+
+            ### Blockscout MCP server — ad-hoc agent interaction
+
+            The Blockscout MCP server is for open-ended, exploratory interaction with chains: ask, inspect, follow clues, explain findings. Use it when an agent needs to reason over data on the fly rather than encode a fixed workflow.
+
+            - MCP endpoint: https://mcp.blockscout.com/mcp/
+            - For AI agents, install the \`blockscout-analysis\` skill — it provides the architectural rules, REST API conventions for scripts, endpoint reference files, and response-transformation guidance the MCP surface assumes. Installation instructions: https://raw.githubusercontent.com/blockscout/agent-skills/refs/heads/main/README.md
+
+            ### Other Blockscout instances (chain registry)
+
+            Look up other Blockscout instances by chain id or name:
 
             \`\`\`bash
             curl --request GET --url 'https://chains.blockscout.com/api/chains'
             \`\`\`
-            <!-- END:Additional-Info -->
         `;
 
         const content = MAIN_TEMPLATE.replace('{blank}\n', '');
