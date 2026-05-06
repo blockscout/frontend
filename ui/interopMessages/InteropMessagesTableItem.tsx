@@ -4,9 +4,9 @@ import type { InteropMessage } from 'types/api/interop';
 
 import AddressEntityInterop from 'client/features/op-interop/components/AddressEntityInterop';
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+import AddressFromToIcon from 'client/slices/address/components/from-to/AddressFromToIcon';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
-import AddressFromToIcon from 'ui/shared/address/AddressFromToIcon';
 import InteropMessageStatus from 'ui/shared/statusTag/InteropMessageStatus';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 

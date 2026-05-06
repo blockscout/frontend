@@ -58,7 +58,7 @@ interface Props {
   chainConfig?: typeof config;
 }
 
-const AddressAddToWallet = ({ className, token, tokenId, isLoading, variant = 'icon', iconSize = 6, chainConfig }: Props) => {
+const TokenAddToWallet = ({ className, token, tokenId, isLoading, variant = 'icon', iconSize = 6, chainConfig }: Props) => {
   const { data: { wallet, provider } = {} } = useProvider();
   const switchOrAddChain = useSwitchOrAddChain({ chainConfig });
   const isMobile = useIsMobile();
@@ -154,4 +154,4 @@ const AddressAddToWallet = ({ className, token, tokenId, isLoading, variant = 'i
   );
 };
 
-export default React.memo(chakra(AddressAddToWallet));
+export default React.memo(chakra(TokenAddToWallet));

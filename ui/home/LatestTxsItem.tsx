@@ -10,6 +10,7 @@ import React from 'react';
 import type { Transaction } from 'client/slices/tx/types/api';
 
 import TxWatchListTags from 'client/features/account/components/TxWatchListTags';
+import AddressFromTo from 'client/slices/address/components/from-to/AddressFromTo';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import TxAdditionalInfo from 'client/slices/tx/components/TxAdditionalInfo';
 import TxFee from 'client/slices/tx/components/TxFee';
@@ -17,7 +18,6 @@ import TxStatus from 'client/slices/tx/components/TxStatus';
 import TxType from 'client/slices/tx/components/TxType';
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import EntityTag from 'ui/shared/EntityTags/EntityTag';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';

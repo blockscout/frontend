@@ -7,7 +7,7 @@ import { Image } from 'toolkit/chakra/image';
 
 const { palette } = ImageData;
 
-interface NounsIdenticonProps {
+interface Props {
   hash: string;
   size: number;
 }
@@ -35,7 +35,7 @@ export const getNumberFromString = (input: string): number => {
   return sum * str.length;
 };
 
-const NounsIdenticon: React.FC<NounsIdenticonProps> = ({ hash, size }) => {
+const AddressIdenticonNouns: React.FC<Props> = ({ hash, size }) => {
   const id = getNumberFromString(hash);
   const seed = getNounSeedFromBlockHash(id, MAGIC_HASH);
 
@@ -56,4 +56,4 @@ const NounsIdenticon: React.FC<NounsIdenticonProps> = ({ hash, size }) => {
   );
 };
 
-export default React.memo(NounsIdenticon);
+export default React.memo(AddressIdenticonNouns);

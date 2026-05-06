@@ -9,9 +9,9 @@ import type {
   Erc404TotalPayload,
 } from 'types/api/tokenTransfer';
 
+import AddressFromTo from 'client/slices/address/components/from-to/AddressFromTo';
 import { isConfidentialTokenType } from 'lib/token/tokenTypes';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import ConfidentialTokenValue from 'ui/shared/value/ConfidentialTokenValue';
 
 import TokenTransferSnippetFiat from './TokenTransferSnippetFiat';

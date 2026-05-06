@@ -6,7 +6,7 @@ import type { AddressParam } from 'client/slices/address/types/api';
 import { route } from 'nextjs/routes';
 
 import { useAddressHighlightContext } from 'client/slices/address/contexts/address-highlight';
-import { toBech32Address } from 'lib/address/bech32';
+import { toBech32Address } from 'client/slices/address/utils/bech32';
 import { useSettingsContext } from 'lib/contexts/settings';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
@@ -16,9 +16,9 @@ import { getTagName } from 'ui/shared/EntityTags/utils';
 import getChainTooltipText from 'ui/shared/externalChains/getChainTooltipText';
 import type { IconName } from 'ui/shared/IconSvg';
 
+import AddressIconDelegated from '../icon/AddressIconDelegated';
+import AddressIdenticon from '../icon/AddressIdenticon';
 import AddressEntityContentProxy from './AddressEntityContentProxy';
-import AddressIconDelegated from './AddressIconDelegated';
-import AddressIdenticon from './AddressIdenticon';
 
 type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'address'>;
 

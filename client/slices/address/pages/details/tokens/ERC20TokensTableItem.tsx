@@ -4,13 +4,13 @@ import React from 'react';
 
 import type { AddressTokensErc20Item } from './types';
 
+import TokenAddToWallet from 'client/features/web3-wallet/components/TokenAddToWallet';
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import config from 'configs/app';
 import multichainConfig from 'configs/multichain';
 import { getTokenTypeName, isConfidentialTokenType } from 'lib/token/tokenTypes';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { Tag } from 'toolkit/chakra/tag';
-import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
 import NativeTokenTag from 'ui/shared/celo/NativeTokenTag';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import calculateUsdValue from 'ui/shared/value/calculateUsdValue';
@@ -73,7 +73,7 @@ const ERC20TokensTableItem = ({
             truncation="constant"
             noIcon
           />
-          <AddressAddToWallet token={ token } ml={ 4 } isLoading={ isLoading } opacity="0" _groupHover={{ opacity: 1 }}/>
+          <TokenAddToWallet token={ token } ml={ 4 } isLoading={ isLoading } opacity="0" _groupHover={{ opacity: 1 }}/>
         </Flex>
       </TableCell>
       <TableCell isNumeric verticalAlign={ cellVerticalAlign }>

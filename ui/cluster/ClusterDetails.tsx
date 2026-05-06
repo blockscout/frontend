@@ -4,7 +4,7 @@ import type { ClusterByNameResponse } from 'types/api/clusters';
 
 import { currencyUnits } from 'client/shared/chain/units';
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
-import { isEvmAddress } from 'lib/address/isEvmAddress';
+import { isEvmAddress } from 'client/slices/address/utils/is-evm-address';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';

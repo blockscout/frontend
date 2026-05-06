@@ -4,9 +4,9 @@ import React from 'react';
 import type { CctxListItem } from '@blockscout/zetachain-cctx-types';
 
 import TxEntityZetaChainCC from 'client/features/chain-variants/zeta-chain/TxEntityZetaChainCC';
+import AddressFromTo from 'client/slices/address/components/from-to/AddressFromTo';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { SECOND } from 'toolkit/utils/consts';
-import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import ZetaChainCCTXReducedStatus from 'ui/shared/zetaChain/ZetaChainCCTXReducedStatus';
 import ZetaChainCCTXValue from 'ui/shared/zetaChain/ZetaChainCCTXValue';

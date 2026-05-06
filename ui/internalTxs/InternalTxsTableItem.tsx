@@ -4,13 +4,13 @@ import React from 'react';
 import type { InternalTransaction } from 'types/api/internalTransaction';
 import type { ClusterChainConfig } from 'types/multichain';
 
+import AddressFromTo from 'client/slices/address/components/from-to/AddressFromTo';
 import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
 import { TX_INTERNALS_ITEMS } from 'client/slices/internal-txs/utils/utils';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import TxStatus from 'client/slices/tx/components/TxStatus';
 import { Badge } from 'toolkit/chakra/badge';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
-import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';

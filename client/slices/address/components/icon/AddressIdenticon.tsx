@@ -5,7 +5,8 @@ import React from 'react';
 import * as cookies from 'client/shared/storage/cookies';
 import config from 'configs/app';
 import { Image } from 'toolkit/chakra/image';
-import IdenticonGithub from 'ui/shared/IdenticonGithub';
+
+import AddressIdenticonGithub from './AddressIdenticonGithub';
 
 interface IconProps {
   hash: string;
@@ -18,7 +19,7 @@ const Icon = dynamic(
     switch (type) {
       case 'github': {
 
-        return (props: IconProps) => <IdenticonGithub iconSize={ props.size } seed={ props.hash }/>;
+        return (props: IconProps) => <AddressIdenticonGithub iconSize={ props.size } seed={ props.hash }/>;
       }
 
       case 'blockie': {
@@ -58,7 +59,7 @@ const Icon = dynamic(
       }
 
       case 'nouns': {
-        const NounsIdenticon = (await import('./NounsIdenticon')).default;
+        const NounsIdenticon = (await import('./AddressIdenticonNouns')).default;
 
         return (props: IconProps) => {
           return <NounsIdenticon hash={ props.hash } size={ props.size }/>;

@@ -9,7 +9,7 @@ import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-loa
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import AddressQrCode from 'client/slices/address/pages/details/info/AddressQrCode';
-import getCheckedSummedAddress from 'lib/address/getCheckedSummedAddress';
+import getCheckedSummedAddress from 'client/slices/address/utils/get-checked-summed-address';
 import * as contract from 'lib/multichain/contract';
 import { ADDRESS } from 'stubs/multichain';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';

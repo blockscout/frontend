@@ -4,13 +4,13 @@ import React from 'react';
 
 import type { AddressTokensErc20Item } from './types';
 
+import TokenAddToWallet from 'client/features/web3-wallet/components/TokenAddToWallet';
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import config from 'configs/app';
 import multichainConfig from 'configs/multichain';
 import { getTokenTypeName, isConfidentialTokenType } from 'lib/token/tokenTypes';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tag } from 'toolkit/chakra/tag';
-import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
 import NativeTokenTag from 'ui/shared/celo/NativeTokenTag';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
@@ -68,7 +68,7 @@ const ERC20TokensListItem = ({
           truncation="constant"
           noIcon
         />
-        <AddressAddToWallet token={ token } ml={ 2 } isLoading={ isLoading }/>
+        <TokenAddToWallet token={ token } ml={ 2 } isLoading={ isLoading }/>
       </Flex>
       { token.exchange_rate !== undefined && token.exchange_rate !== null && (
         <HStack gap={ 3 }>

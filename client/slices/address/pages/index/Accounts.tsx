@@ -5,13 +5,14 @@ import React from 'react';
 import getItemIndex from 'client/shared/lists/get-item-index';
 import { TOP_ADDRESS } from 'client/slices/address/stubs/address';
 import { generateListStub } from 'stubs/utils';
-import AddressesListItem from 'ui/addresses/AddressesListItem';
-import AddressesTable from 'ui/addresses/AddressesTable';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
+
+import AddressesListItem from './AddressesListItem';
+import AddressesTable from './AddressesTable';
 
 const Accounts = () => {
   const { isError, isPlaceholderData, data, pagination } = useQueryWithPages({

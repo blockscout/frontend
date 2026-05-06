@@ -4,11 +4,11 @@ import React from 'react';
 import type { StatsBridgedTokenItem, StatsBridgedTokenRow } from '@blockscout/interchain-indexer-types';
 import type { TokenInfo } from 'types/api/token';
 
+import TokenAddToWallet from 'client/features/web3-wallet/components/TokenAddToWallet';
 import getItemIndex from 'client/shared/lists/get-item-index';
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
-import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 
 interface Props {
@@ -73,7 +73,7 @@ const BridgedTokensTableItem = ({ data, token, index, page, isLoading }: Props) 
                   fontWeight={ 500 }
                   link={{ variant: 'secondary' }}
                 />
-                <AddressAddToWallet
+                <TokenAddToWallet
                   token={ tokenInfo }
                   isLoading={ isLoading }
                   iconSize={ 5 }

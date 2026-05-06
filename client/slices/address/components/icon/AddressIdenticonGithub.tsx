@@ -21,7 +21,7 @@ interface Props {
   seed: string;
 }
 
-const IdenticonGithub = ({ iconSize, seed }: Props) => {
+const AddressIdenticonGithub = ({ iconSize, seed }: Props) => {
   return (
     <Box
       boxSize={ `${ iconSize * 2 }px` }
@@ -41,4 +41,4 @@ const IdenticonGithub = ({ iconSize, seed }: Props) => {
   );
 };
 
-export default React.memo(chakra(IdenticonGithub));
+export default React.memo(chakra(AddressIdenticonGithub));

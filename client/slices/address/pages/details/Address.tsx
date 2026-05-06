@@ -23,6 +23,7 @@ import useCheckDomainNameParam from 'client/features/name-services/domains/hooks
 import AddressEnsDomains from 'client/features/name-services/domains/pages/address/AddressEnsDomains';
 import AddressAccountHistory from 'client/features/tx-interpretation/noves/pages/address/AddressAccountHistory';
 import AddressUserOps from 'client/features/user-ops/pages/address/AddressUserOps';
+import TokenAddToWallet from 'client/features/web3-wallet/components/TokenAddToWallet';
 import getChainValidationActionText from 'client/shared/chain/get-chain-validation-action-text';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import useEtherscanRedirects from 'client/shared/router/useEtherscanRedirects';
@@ -42,8 +43,8 @@ import AddressTokens from 'client/slices/address/pages/details/tokens/AddressTok
 import AddressTxs, { ADDRESS_TXS_TAB_IDS } from 'client/slices/address/pages/details/txs/AddressTxs';
 import AddressWithdrawals from 'client/slices/address/pages/details/withdrawals/AddressWithdrawals';
 import { ADDRESS_TABS_COUNTERS } from 'client/slices/address/stubs/address';
+import getCheckedSummedAddress from 'client/slices/address/utils/get-checked-summed-address';
 import config from 'configs/app';
-import getCheckedSummedAddress from 'lib/address/getCheckedSummedAddress';
 import { useAddressClusters } from 'lib/clusters/useAddressClusters';
 import useIsSafeAddress from 'lib/hooks/useIsSafeAddress';
 import useFetchXStarScore from 'lib/xStarScore/useFetchXStarScore';
@@ -54,7 +55,6 @@ import { CONTRACT_TAB_IDS } from 'ui/address/contract/utils';
 import SolidityscanReport from 'ui/address/SolidityscanReport';
 import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu';
 import TextAd from 'ui/shared/ad/TextAd';
-import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
 import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 import EntityTags from 'ui/shared/EntityTags/EntityTags';
 import formatUserTags from 'ui/shared/EntityTags/formatUserTags';
@@ -459,7 +459,7 @@ const AddressPageContent = () => {
         icon={{ color: isSafeAddress ? { _light: 'black', _dark: 'white' } : undefined }}
       />
       { !isLoading && addressQuery.data?.is_contract && addressQuery.data.token &&
-        <AddressAddToWallet token={ addressQuery.data.token } variant="button"/> }
+        <TokenAddToWallet token={ addressQuery.data.token } variant="button"/> }
       { !isLoading && !addressQuery.data?.is_contract && config.features.account.isEnabled && (
         <AddressFavoriteButton hash={ hash } watchListId={ addressQuery.data?.watchlist_address_id }/>
       ) }
