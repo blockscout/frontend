@@ -146,7 +146,7 @@ export const recipe = defineSlotRecipe({
           // 20px = scrollbar width
           // 4px = border width
           width: 'calc(100% - 4px - 20px)',
-          padding: '16px 16px 0px 16px',
+          padding: '16px 0px 0px 16px',
           textStyle: 'xs',
           borderTopRightRadius: '0px',
           borderBottomRightRadius: '0px',

@@ -1,4 +1,4 @@
-import * as cookies from 'client/shared/storage/cookies';
+import { isPrivateMode } from 'client/shared/storage/cookies';
 
 import { getEnvValue } from './utils';
 
@@ -15,7 +15,6 @@ const isDev = getEnvValue('NEXT_PUBLIC_APP_ENV') === 'development';
 const isReview = getEnvValue('NEXT_PUBLIC_APP_ENV') === 'review';
 const isPw = getEnvValue('NEXT_PUBLIC_APP_INSTANCE') === 'pw';
 const spriteHash = getEnvValue('NEXT_PUBLIC_ICON_SPRITE_HASH');
-const isPrivateMode = cookies.get(cookies.NAMES.APP_PROFILE) === 'private';
 
 const app = Object.freeze({
   isDev,
@@ -27,7 +26,7 @@ const app = Object.freeze({
   baseUrl,
   useProxy: getEnvValue('NEXT_PUBLIC_USE_NEXT_JS_PROXY') === 'true',
   spriteHash,
-  isPrivateMode,
+  isPrivateMode: isPrivateMode(),
 });
 
 export default app;
