@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { AddressTokensErc20Item } from 'ui/address/tokens/types';
+import type { AddressTokensErc20Item } from 'client/slices/address/pages/details/tokens/types';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 

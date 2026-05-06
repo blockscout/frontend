@@ -1,12 +1,11 @@
 import type { ApiResource } from '../../types';
-import type { LogsResponseAddress } from 'client/slices/logs/types/api';
-import type { TransactionsSorting } from 'client/slices/tx/types/api';
+import type { AddressesMetadataSearchFilters, AddressesMetadataSearchResult } from 'client/features/address-metadata/types/api';
+import type { AddressEpochRewardsResponse } from 'client/features/chain-variants/celo/types/api';
 import type {
   AddressCounters,
   AddressBlocksValidatedResponse,
   AddressTokensResponse,
   AddressCollectionsResponse,
-  AddressEpochRewardsResponse,
   AddressNFTsResponse,
   AddressWithdrawalsResponse,
   AddressXStarResponse,
@@ -22,8 +21,9 @@ import type {
   AddressTokensFilter,
   AddressNFTTokensFilter,
   AddressTokenBalancesResponse,
-} from 'types/api/address';
-import type { AddressesMetadataSearchFilters, AddressesMetadataSearchResult, AddressesResponse } from 'types/api/addresses';
+  AddressesResponse } from 'client/slices/address/types/api';
+import type { LogsResponseAddress } from 'client/slices/logs/types/api';
+import type { TransactionsSorting } from 'client/slices/tx/types/api';
 import type { DepositsResponse } from 'types/api/deposits';
 
 export const GENERAL_API_ADDRESS_RESOURCES = {

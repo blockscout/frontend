@@ -1,6 +1,6 @@
 import type { Abi } from 'viem';
 
-import type { AddressParam } from './addressParams';
+import type { AddressParam } from 'client/slices/address/types/api';
 export interface AddressTag {
   address_hash: string;
   address: AddressParam;

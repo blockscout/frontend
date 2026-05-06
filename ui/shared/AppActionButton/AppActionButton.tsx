@@ -1,7 +1,7 @@
 import { Text, chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import type { AddressMetadataTagFormatted } from 'types/client/addressMetadata';
+import type { AddressMetadataTagFormatted } from 'client/features/address-metadata/types/view';
 
 import { route } from 'nextjs-routes';
 

@@ -4,8 +4,8 @@ import React from 'react';
 
 import type { HotContract } from 'types/api/contracts';
 
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import { Reputation } from 'ui/shared/entities/token/TokenEntity';
 import EntityTags from 'ui/shared/EntityTags/EntityTags';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';

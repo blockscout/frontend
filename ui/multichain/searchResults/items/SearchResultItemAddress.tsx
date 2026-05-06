@@ -5,8 +5,8 @@ import type * as multichain from '@blockscout/multichain-aggregator-types';
 
 import { route } from 'nextjs/routes';
 
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import * as contract from 'lib/multichain/contract';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 
 import SearchResultListItem from '../SearchResultListItem';
 

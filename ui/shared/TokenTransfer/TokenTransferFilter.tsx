@@ -1,7 +1,7 @@
 import { Text, Stack } from '@chakra-ui/react';
 import React from 'react';
 
-import type { AddressFromToFilter } from 'types/api/address';
+import type { AddressFromToFilter } from 'client/slices/address/types/api';
 import type { TokenType } from 'types/api/token';
 import type { ClusterChainConfig } from 'types/multichain';
 

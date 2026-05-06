@@ -1,4 +1,4 @@
-import type { AddressParam } from 'types/api/addressParams';
+import type { AddressParam } from 'client/slices/address/types/api';
 import type { DepositsResponse } from 'types/api/deposits';
 
 export const data: DepositsResponse = {

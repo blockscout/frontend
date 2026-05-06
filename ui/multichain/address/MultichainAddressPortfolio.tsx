@@ -7,13 +7,13 @@ import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
+import AddressCollections from 'client/slices/address/pages/details/tokens/AddressCollections';
+import AddressNftDisplayTypeRadio from 'client/slices/address/pages/details/tokens/AddressNftDisplayTypeRadio';
+import AddressNFTs from 'client/slices/address/pages/details/tokens/AddressNFTs';
+import AddressNftTypeFilter from 'client/slices/address/pages/details/tokens/AddressNftTypeFilter';
+import useAddressNftQuery from 'client/slices/address/pages/details/tokens/useAddressNftQuery';
 import { MultichainProvider } from 'lib/contexts/multichain';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import AddressCollections from 'ui/address/tokens/AddressCollections';
-import AddressNftDisplayTypeRadio from 'ui/address/tokens/AddressNftDisplayTypeRadio';
-import AddressNFTs from 'ui/address/tokens/AddressNFTs';
-import AddressNftTypeFilter from 'ui/address/tokens/AddressNftTypeFilter';
-import useAddressNftQuery from 'ui/address/tokens/useAddressNftQuery';
 import ChainSelect from 'ui/multichain/components/ChainSelect';
 import Pagination from 'ui/shared/pagination/Pagination';
 

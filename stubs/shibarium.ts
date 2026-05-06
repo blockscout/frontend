@@ -1,8 +1,7 @@
 import type { ShibariumDepositsItem, ShibariumWithdrawalsItem } from 'types/api/shibarium';
 
+import { ADDRESS_PARAMS } from 'client/slices/address/stubs/address-params';
 import { TX_HASH } from 'client/slices/tx/stubs/tx';
-
-import { ADDRESS_PARAMS } from './addressParams';
 
 export const SHIBARIUM_DEPOSIT_ITEM: ShibariumDepositsItem = {
   l1_block_number: 9045233,

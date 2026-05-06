@@ -1,8 +1,7 @@
 import type * as bens from '@blockscout/bens-types';
 import type * as tac from '@blockscout/tac-operation-lifecycle-types';
+import type { AddressMetadataTagApi } from 'client/features/address-metadata/types/api';
 import type { TokenReputation, TokenType } from 'types/api/token';
-
-import type { AddressMetadataTagApi } from './addressMetadata';
 
 export const SEARCH_RESULT_TYPES = {
   token: 'token',

@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { SocketMessage } from 'client/api/socket/types';
-import type { Address } from 'types/api/address';
+import type { Address } from 'client/slices/address/types/api';
 
 import { getResourceKey } from 'client/api/hooks/useApiQuery';
 import useSocketChannel from 'client/api/socket/useSocketChannel';

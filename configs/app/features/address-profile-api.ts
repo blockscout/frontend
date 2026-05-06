@@ -1,8 +1,15 @@
 import type { Feature } from './types';
-import type { AddressProfileAPIConfig } from 'types/client/addressProfileAPIConfig';
 
 import app from '../app';
 import { getEnvValue, parseEnvJson } from '../utils';
+
+type AddressProfileAPIConfig = {
+  api_url_template: string;
+  tag_link_template?: string;
+  tag_icon?: string;
+  tag_bg_color?: string;
+  tag_text_color?: string;
+};
 
 const value = parseEnvJson<AddressProfileAPIConfig>(getEnvValue('NEXT_PUBLIC_ADDRESS_USERNAME_TAG'));
 

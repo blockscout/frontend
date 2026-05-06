@@ -1,5 +1,5 @@
 import type { EntityTag } from './types';
-import type { UserTags } from 'types/api/addressParams';
+import type { UserTags } from 'client/slices/address/types/api';
 
 export default function formatUserTags(data: UserTags | undefined): Array<EntityTag> {
   return [

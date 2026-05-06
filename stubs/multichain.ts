@@ -2,7 +2,7 @@ import type * as multichain from '@blockscout/multichain-aggregator-types';
 import type * as stats from '@blockscout/stats-types';
 import type { AddressTokenItem } from 'types/client/multichainAggregator';
 
-import { ADDRESS_HASH } from './addressParams';
+import { ADDRESS_HASH } from 'client/slices/address/stubs/address-params';
 
 export const ADDRESS: multichain.GetAddressResponse = {
   hash: ADDRESS_HASH,

@@ -1,10 +1,10 @@
 import React from 'react';
 
-import type { AddressImplementation } from 'types/api/addressParams';
+import type { AddressImplementation } from 'client/slices/address/types/api';
 import type { SmartContractProxyType } from 'types/api/contract';
 
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import ContainerWithScrollY from 'ui/shared/ContainerWithScrollY';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 
 import ContractDetailsInfoItem from './ContractDetailsInfoItem';
 

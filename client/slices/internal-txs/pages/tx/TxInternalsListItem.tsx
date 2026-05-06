@@ -4,10 +4,10 @@ import React from 'react';
 import type { InternalTransaction } from 'types/api/internalTransaction';
 
 import { currencyUnits } from 'client/shared/chain/units';
+import AddressFromTo from 'client/slices/address/components/from-to/AddressFromTo';
 import TxStatus from 'client/slices/tx/components/TxStatus';
 import { Badge } from 'toolkit/chakra/badge';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 

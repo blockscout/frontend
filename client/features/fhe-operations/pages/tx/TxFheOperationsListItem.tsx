@@ -4,9 +4,9 @@ import React from 'react';
 
 import type { FheOperation } from 'types/api/fheOperations';
 
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import { Badge } from 'toolkit/chakra/badge';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 
 import { getTypeColor } from '../../utils/utils';

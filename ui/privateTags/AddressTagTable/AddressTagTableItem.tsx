@@ -2,9 +2,9 @@ import React, { useCallback } from 'react';
 
 import type { AddressTag } from 'types/api/account';
 
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { Tag } from 'toolkit/chakra/tag';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TableItemActionButtons from 'ui/shared/TableItemActionButtons';
 
 interface Props {

@@ -2,11 +2,11 @@ import { Text, Flex, HStack, VStack, Separator, Box, chakra } from '@chakra-ui/r
 import { BigNumber } from 'bignumber.js';
 import React from 'react';
 
+import AddressMultichainButton from 'client/features/multichain-button/pages/address/AddressMultichainButton';
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import AddressMultichainButton from 'ui/address/details/AddressMultichainButton';
 import AdBanner from 'ui/shared/ad/AdBanner';
 import IconSvg from 'ui/shared/IconSvg';
 import SimpleValue from 'ui/shared/value/SimpleValue';

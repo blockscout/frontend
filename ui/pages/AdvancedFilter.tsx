@@ -18,7 +18,7 @@ import getFilterValueFromQuery from 'client/shared/router/get-filter-value-from-
 import getFilterValuesFromQuery from 'client/shared/router/get-filter-values-from-query';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import getValuesArrayFromQuery from 'client/shared/router/get-values-array-from-query';
-import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
+import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import dayjs from 'lib/date/dayjs';
 import { ADVANCED_FILTER_ITEM } from 'stubs/advancedFilter';

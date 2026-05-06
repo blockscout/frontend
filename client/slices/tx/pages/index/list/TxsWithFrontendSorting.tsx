@@ -1,7 +1,7 @@
 import React from 'react';
 
+import type { AddressFromToFilter } from 'client/slices/address/types/api';
 import type { TxsSocketType } from 'client/slices/tx/types/socket';
-import type { AddressFromToFilter } from 'types/api/address';
 
 import useTxsSort from 'client/slices/tx/hooks/useTxsSort';
 import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';

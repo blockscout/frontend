@@ -1,4 +1,4 @@
-import type { AddressCounters } from 'types/api/address';
+import type { AddressCounters } from 'client/slices/address/types/api';
 
 export const forAddress: AddressCounters = {
   gas_usage_count: '319340525',

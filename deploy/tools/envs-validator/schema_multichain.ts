@@ -12,7 +12,7 @@ import * as uiSchemas from './schemas/ui';
 import * as featuresSchemas from './schemas/features';
 import servicesSchemas from './schemas/services';
 import { replaceQuotes } from 'configs/app/utils';
-import { IDENTICON_TYPES } from 'types/views/address';
+import { IDENTICON_TYPES } from 'client/slices/address/types/view';
 
 const schema = yup
   .object()

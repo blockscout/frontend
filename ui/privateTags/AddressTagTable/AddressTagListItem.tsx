@@ -3,9 +3,9 @@ import React, { useCallback } from 'react';
 
 import type { AddressTag } from 'types/api/account';
 
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tag } from 'toolkit/chakra/tag';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TableItemActionButtons from 'ui/shared/TableItemActionButtons';
 

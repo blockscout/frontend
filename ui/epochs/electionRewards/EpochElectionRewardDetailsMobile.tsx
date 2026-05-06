@@ -6,8 +6,8 @@ import type { CeloEpochDetails } from 'types/api/epochs';
 import type { TokenInfo } from 'types/api/token';
 
 import getQueryParamString from 'client/shared/router/get-query-param-string';
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import useLazyLoadedList from 'ui/shared/pagination/useLazyLoadedList';
 import TokenValue from 'ui/shared/value/TokenValue';
 

@@ -19,6 +19,7 @@ import throwOnAbsentParamError from 'client/shared/errors/throw-on-absent-param-
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import BlockPendingUpdateAlert from 'client/slices/block/components/BlockPendingUpdateAlert';
 import * as BlockEntity from 'client/slices/block/components/entity/BlockEntity';
 import useBlockInternalTxsQuery from 'client/slices/block/hooks/useBlockInternalTxsQuery';
@@ -33,7 +34,6 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import TextAd from 'ui/shared/ad/TextAd';
 import ServiceDegradationWarning from 'ui/shared/alerts/ServiceDegradationWarning';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';

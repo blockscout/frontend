@@ -3,8 +3,8 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { ItemProps } from '../types';
+import type { Address } from 'client/slices/address/types/api';
 import type { Transaction } from 'client/slices/tx/types/api';
-import type { Address } from 'types/api/address';
 
 import { getResourceKey } from 'client/api/hooks/useApiQuery';
 import * as mixpanel from 'client/shared/analytics/mixpanel';

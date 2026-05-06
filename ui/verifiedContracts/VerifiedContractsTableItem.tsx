@@ -4,13 +4,13 @@ import React from 'react';
 import type { VerifiedContract } from 'types/api/contracts';
 import type { ClusterChainConfig } from 'types/multichain';
 
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import formatLanguageName from 'lib/contracts/formatLanguageName';
 import { CONTRACT_LICENSES } from 'lib/contracts/licenses';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import ContractCertifiedLabel from 'ui/shared/ContractCertifiedLabel';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 import IconSvg from 'ui/shared/IconSvg';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';

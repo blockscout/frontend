@@ -3,10 +3,10 @@ import React from 'react';
 
 import type { SmartContractConflictingImplementation } from 'types/api/contract';
 
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import { Button } from 'toolkit/chakra/button';
 import { DialogActionTrigger, DialogBody, DialogContent, DialogHeader, DialogRoot, DialogTrigger } from 'toolkit/chakra/dialog';
 import { Link } from 'toolkit/chakra/link';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 
 import { PROXY_TYPES } from './utils';
 

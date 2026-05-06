@@ -1,4 +1,5 @@
-import type { AddressParam } from './addressParams';
+import type { AddressParam } from 'client/slices/address/types/api';
+
 import type { TokenInfo, TokenType } from './token';
 
 export const ADVANCED_FILTER_ADDRESS_RELATION = [ 'or', 'and' ] as const;

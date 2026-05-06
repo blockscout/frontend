@@ -7,15 +7,15 @@ import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 import useApiQuery from 'client/api/hooks/useApiQuery';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
-import getCheckedSummedAddress from 'lib/address/getCheckedSummedAddress';
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+import AddressQrCode from 'client/slices/address/pages/details/info/AddressQrCode';
+import getCheckedSummedAddress from 'client/slices/address/utils/get-checked-summed-address';
 import * as contract from 'lib/multichain/contract';
 import { ADDRESS } from 'stubs/multichain';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import { CONTRACT_TAB_IDS } from 'ui/address/contract/utils';
-import AddressQrCode from 'ui/address/details/AddressQrCode';
 import ClusterChainsPopover from 'ui/multichain/components/ClusterChainsPopover';
 import TextAd from 'ui/shared/ad/TextAd';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 import PageTitle from 'ui/shared/Page/PageTitle';
 

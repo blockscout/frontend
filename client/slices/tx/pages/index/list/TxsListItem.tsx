@@ -10,6 +10,7 @@ import type { ClusterChainConfig } from 'types/multichain';
 
 import TxWatchListTags from 'client/features/account/components/TxWatchListTags';
 import TxTranslationType from 'client/features/tx-interpretation/noves/components/TxTranslationType';
+import AddressFromTo from 'client/slices/address/components/from-to/AddressFromTo';
 import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import TxAdditionalInfo from 'client/slices/tx/components/TxAdditionalInfo';
@@ -18,7 +19,6 @@ import TxStatus from 'client/slices/tx/components/TxStatus';
 import TxType from 'client/slices/tx/components/TxType';
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import EntityTag from 'ui/shared/EntityTags/EntityTag';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';

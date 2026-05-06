@@ -1,4 +1,4 @@
-import type { AddressTag, WatchlistName } from 'types/api/addressParams';
+import type { AddressTag, WatchlistName } from 'client/slices/address/types/api';
 
 export const privateTag: AddressTag = {
   label: 'my-private-tag',

@@ -3,7 +3,7 @@ import { Box, chakra } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
-import type { AddressParam } from 'types/api/addressParams';
+import type { AddressParam } from 'client/slices/address/types/api';
 import type {
   TxInterpretationSummary,
   TxInterpretationVariable,
@@ -15,6 +15,7 @@ import { route } from 'nextjs-routes';
 
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 import { currencyUnits } from 'client/shared/chain/units';
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';
 import { Badge } from 'toolkit/chakra/badge';
@@ -24,7 +25,6 @@ import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { SECOND } from 'toolkit/utils/consts';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import ChainIcon from 'ui/shared/externalChains/ChainIcon';

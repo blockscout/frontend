@@ -1,4 +1,5 @@
-import type { AddressParam } from './addressParams';
+import type { AddressParam } from 'client/slices/address/types/api';
+
 import type { SmartContractLicenseType } from './contract';
 
 export type VerifiedContractsLanguage = 'solidity' | 'vyper' | 'yul' | 'scilla' | 'stylus_rust' | 'geas';
