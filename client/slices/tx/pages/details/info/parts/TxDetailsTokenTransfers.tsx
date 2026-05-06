@@ -3,12 +3,14 @@ import React from 'react';
 
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
-import { route } from 'nextjs-routes';
+import { route } from 'nextjs/routes';
 
+import { useMultichainContext } from 'lib/contexts/multichain';
 import { Link } from 'toolkit/chakra/link';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import IconSvg from 'ui/shared/IconSvg';
 import TokenTransferSnippet from 'ui/shared/TokenTransferSnippet/TokenTransferSnippet';
+
 interface Props {
   data: Array<TokenTransfer>;
   txHash: string;
@@ -23,7 +25,11 @@ const TOKEN_TRANSFERS_TYPES = [
 ];
 
 const TxDetailsTokenTransfers = ({ data, txHash, isOverflow }: Props) => {
-  const viewAllUrl = route({ pathname: '/tx/[hash]', query: { hash: txHash, tab: 'token_transfers' } });
+  const multichainContext = useMultichainContext();
+  const viewAllUrl = route({
+    pathname: '/tx/[hash]',
+    query: { hash: txHash, tab: 'token_transfers' },
+  }, { chain: multichainContext?.chain });
 
   const transferGroups = TOKEN_TRANSFERS_TYPES.map((group) => ({
     ...group,
