@@ -1,4 +1,4 @@
-import type { AddressParam } from './addressParams';
+import type { AddressParam } from 'client/slices/address/types/api';
 
 export type TxInternalsType = 'call' | 'delegatecall' | 'staticcall' | 'create' | 'create2' | 'selfdestruct' | 'reward';
 

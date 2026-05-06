@@ -10,9 +10,9 @@ import type {
 import type { TokenInstanceTransferPagination, TokenInstanceTransferResponse } from 'types/api/tokens';
 import type { Erc20TotalPayload, TokenTransfer, TokenTransferPagination, TokenTransferResponse } from 'types/api/tokenTransfer';
 
+import { ADDRESS_PARAMS, ADDRESS_HASH } from 'client/slices/address/stubs/address-params';
 import { TX_HASH } from 'client/slices/tx/stubs/tx';
 
-import { ADDRESS_PARAMS, ADDRESS_HASH } from './addressParams';
 import { generateListStub } from './utils';
 
 export const BLOCK_HASH = '0x8fa7b9e5e5e79deeb62d608db22ba9a5cb45388c7ebb9223ae77331c6080dc70';

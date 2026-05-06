@@ -3,12 +3,12 @@ import React from 'react';
 import type { OptimisticL2WithdrawalsItem } from 'types/api/optimisticL2';
 
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 import OptimisticL2WithdrawalsItemStatus from './OptimisticL2WithdrawalsItemStatus';

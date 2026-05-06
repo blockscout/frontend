@@ -1,6 +1,6 @@
 import type { WithdrawalsItem } from 'types/api/withdrawals';
 
-import { ADDRESS_PARAMS } from './addressParams';
+import { ADDRESS_PARAMS } from 'client/slices/address/stubs/address-params';
 
 export const WITHDRAWAL: WithdrawalsItem = {
   amount: '12565723',

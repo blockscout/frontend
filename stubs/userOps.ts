@@ -1,9 +1,8 @@
 import type { UserOpsItem, UserOp, UserOpsAccount } from 'types/api/userOps';
 
+import { ADDRESS_HASH } from 'client/slices/address/stubs/address-params';
 import { BLOCK_HASH } from 'client/slices/block/stubs/block';
 import { TX_HASH } from 'client/slices/tx/stubs/tx';
-
-import { ADDRESS_HASH } from './addressParams';
 
 const USER_OP_HASH = '0xb94fab8f31f83001a23e20b2ce3cdcfb284c57a64b9a073e0e09c018bc701978';
 

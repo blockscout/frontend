@@ -1,7 +1,7 @@
 import type { Channel } from 'phoenix';
 import React from 'react';
 
-import type { Address } from 'types/api/address';
+import type { Address } from 'client/slices/address/types/api';
 import type { ClusterChainConfig } from 'types/multichain';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';

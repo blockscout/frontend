@@ -1,12 +1,12 @@
 import React from 'react';
 
+import type { AddressFormat } from 'client/slices/address/types/view';
 import type { QuickSearchResultItem } from 'types/client/search';
-import type { AddressFormat } from 'types/views/address';
 
 import { route } from 'nextjs/routes';
 
+import { isEvmAddress } from 'client/slices/address/utils/is-evm-address';
 import multichainConfig from 'configs/multichain';
-import { isEvmAddress } from 'lib/address/isEvmAddress';
 
 import SearchBarSuggestAddress from './SearchBarSuggestAddress';
 import SearchBarSuggestBlob from './SearchBarSuggestBlob';

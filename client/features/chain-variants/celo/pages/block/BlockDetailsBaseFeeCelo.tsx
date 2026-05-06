@@ -2,14 +2,14 @@ import { Box, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { BlockBaseFeeCelo } from 'client/features/chain-variants/celo/types/api';
-import type { AddressParam } from 'types/api/addressParams';
+import type { AddressParam } from 'client/slices/address/types/api';
 import type { TokenInfo } from 'types/api/token';
 
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+import AddressFromTo from 'client/slices/address/components/from-to/AddressFromTo';
 import { Link } from 'toolkit/chakra/link';
 import { ZERO_ADDRESS } from 'toolkit/utils/consts';
-import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import IconSvg from 'ui/shared/IconSvg';
 import TokenValue from 'ui/shared/value/TokenValue';
 

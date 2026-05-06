@@ -5,6 +5,7 @@ import React from 'react';
 import type { Transaction } from 'client/slices/tx/types/api';
 import type { ExcludeUndefined } from 'types/utils';
 
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import TxFee from 'client/slices/tx/components/TxFee';
 import TxDetailsGasPrice from 'client/slices/tx/pages/details/info/parts/TxDetailsGasPrice';
@@ -12,7 +13,6 @@ import TxDetailsOther from 'client/slices/tx/pages/details/info/parts/TxDetailsO
 import { Badge } from 'toolkit/chakra/badge';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoNativeCoinValue from 'ui/shared/DetailedInfo/DetailedInfoNativeCoinValue';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import LogDecodedInputData from 'ui/shared/logs/LogDecodedInputData';
 import RawInputData from 'ui/shared/RawInputData';
 

@@ -4,10 +4,10 @@ import type * as multichain from '@blockscout/multichain-aggregator-types';
 
 import getSocketUrl from 'client/api/get-socket-url';
 import { SocketProvider } from 'client/api/socket/context';
+import AddressCoinBalance from 'client/slices/address/pages/details/coin-balance/AddressCoinBalance';
 import multichainConfig from 'configs/multichain';
 import { MultichainProvider } from 'lib/contexts/multichain';
 import useRoutedChainSelect from 'lib/multichain/useRoutedChainSelect';
-import AddressCoinBalance from 'ui/address/AddressCoinBalance';
 import ChainSelect from 'ui/multichain/components/ChainSelect';
 
 import getAvailableChainIds from './getAvailableChainIds';

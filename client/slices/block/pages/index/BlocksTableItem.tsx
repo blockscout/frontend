@@ -7,6 +7,7 @@ import type { ClusterChainConfig } from 'types/multichain';
 
 import { route } from 'nextjs-routes';
 
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import BlockGasUsed from 'client/slices/block/components/BlockGasUsed';
 import BlockPendingUpdateHint from 'client/slices/block/components/BlockPendingUpdateHint';
 import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
@@ -16,7 +17,6 @@ import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 import IconSvg from 'ui/shared/IconSvg';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';

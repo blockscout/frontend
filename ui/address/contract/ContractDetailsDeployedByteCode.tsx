@@ -1,7 +1,7 @@
 import { Flex, createListCollection } from '@chakra-ui/react';
 import React from 'react';
 
-import type { Address } from 'types/api/address';
+import type { Address } from 'client/slices/address/types/api';
 
 import hexToUtf8 from 'client/shared/transformers/hex-to-utf8';
 import config from 'configs/app';

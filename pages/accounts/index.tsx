@@ -11,7 +11,7 @@ const Accounts = dynamic(() => {
     return import('ui/multichain/accounts/MultichainAccounts');
   }
 
-  return import('ui/pages/Accounts');
+  return import('client/slices/address/pages/index/Accounts');
 }, { ssr: false });
 
 const Page: NextPage = () => {

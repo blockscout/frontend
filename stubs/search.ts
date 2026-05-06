@@ -1,6 +1,6 @@
 import type { SearchResult, SearchResultItem } from 'types/api/search';
 
-import { ADDRESS_HASH } from './addressParams';
+import { ADDRESS_HASH } from 'client/slices/address/stubs/address-params';
 
 export const SEARCH_RESULT_ITEM: SearchResultItem = {
   address_hash: ADDRESS_HASH,

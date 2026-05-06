@@ -2,7 +2,7 @@ import { Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { AddressImplementation } from 'types/api/addressParams';
+import type { AddressImplementation } from 'client/slices/address/types/api';
 import type { SmartContractConflictingImplementation, SmartContractProxyType } from 'types/api/contract';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';

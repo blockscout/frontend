@@ -1,11 +1,11 @@
 import { HStack } from '@chakra-ui/react';
 import React from 'react';
 
-import type { AddressesItem } from 'types/api/addresses';
+import type { AddressesItem } from 'client/slices/address/types/api';
 
 import { currencyUnits } from 'client/shared/chain/units';
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 

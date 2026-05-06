@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 
+import useAddressMetadataInfoQuery from 'client/features/address-metadata/hooks/useAddressMetadataInfoQuery';
 import config from 'configs/app';
-import useAddressMetadataInfoQuery from 'lib/address/useAddressMetadataInfoQuery';
 
 export default function useAppActionData(address: string | undefined = '', isEnabled = true) {
   const memoizedArray = useMemo(() => address ? [ address ] : [], [ address ]);

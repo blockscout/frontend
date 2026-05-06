@@ -1,6 +1,6 @@
 import type { Abi, AbiType } from 'abitype';
 
-import type { AddressImplementation } from './addressParams';
+import type { AddressImplementation } from 'client/slices/address/types/api';
 
 export type SmartContractMethodArgType = AbiType;
 export type SmartContractMethodStateMutability = 'view' | 'nonpayable' | 'payable';

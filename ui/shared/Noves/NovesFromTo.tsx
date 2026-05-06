@@ -5,10 +5,10 @@ import React from 'react';
 import type { NovesResponseData } from 'types/api/noves';
 
 import type { NovesFlowViewItem } from 'client/features/tx-interpretation/noves/utils/generateFlowViewData';
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import { Badge } from 'toolkit/chakra/badge';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 
-import AddressEntity from '../entities/address/AddressEntity';
 import { getActionFromTo, getFromTo } from './utils';
 
 interface Props {

@@ -3,10 +3,10 @@ import React from 'react';
 
 import type { InternalTransaction } from 'types/api/internalTransaction';
 
+import AddressFromTo from 'client/slices/address/components/from-to/AddressFromTo';
 import TxStatus from 'client/slices/tx/components/TxStatus';
 import { Badge } from 'toolkit/chakra/badge';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
-import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 import { TX_INTERNALS_ITEMS } from '../../utils/utils';

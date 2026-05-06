@@ -5,10 +5,10 @@ import React from 'react';
 import type { WatchlistAddress } from 'types/api/account';
 
 import { currencyUnits } from 'client/shared/chain/units';
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { nbsp } from 'toolkit/utils/htmlEntities';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import IconSvg from 'ui/shared/IconSvg';
 import calculateUsdValue from 'ui/shared/value/calculateUsdValue';

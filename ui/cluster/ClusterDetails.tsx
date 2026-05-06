@@ -3,11 +3,11 @@ import React from 'react';
 import type { ClusterByNameResponse } from 'types/api/clusters';
 
 import { currencyUnits } from 'client/shared/chain/units';
-import { isEvmAddress } from 'lib/address/isEvmAddress';
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+import { isEvmAddress } from 'client/slices/address/utils/is-evm-address';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import ClustersEntity from 'ui/shared/entities/clusters/ClustersEntity';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 

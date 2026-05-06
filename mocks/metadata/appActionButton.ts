@@ -1,4 +1,4 @@
-import type { AddressMetadataTagApi } from 'types/api/addressMetadata';
+import type { AddressMetadataTagApi } from 'client/features/address-metadata/types/api';
 
 const appID = 'uniswap';
 const appMarketplaceURL = 'https://example.com';

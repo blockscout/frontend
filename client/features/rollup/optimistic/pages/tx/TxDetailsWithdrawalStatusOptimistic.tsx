@@ -2,8 +2,8 @@ import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
 import type { OpWithdrawal } from 'client/features/rollup/optimistic/types/api';
+import type { AddressParam } from 'client/slices/address/types/api';
 import type { Transaction } from 'client/slices/tx/types/api';
-import type { AddressParam } from 'types/api/addressParams';
 import type { OptimisticL2WithdrawalStatus } from 'types/api/optimisticL2';
 
 import { getResourceKey } from 'client/api/hooks/useApiQuery';

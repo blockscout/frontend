@@ -1,6 +1,6 @@
 import type { FheOperation, FheOperationsResponse } from 'types/api/fheOperations';
 
-import { ADDRESS_PARAMS } from './addressParams';
+import { ADDRESS_PARAMS } from 'client/slices/address/stubs/address-params';
 
 export const FHE_OPERATION: FheOperation = {
   log_index: 0,

@@ -3,12 +3,12 @@ import React from 'react';
 
 import useWeb3Wallet from 'client/features/connect-wallet/hooks/useWallet';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import config from 'configs/app';
 import { Alert } from 'toolkit/chakra/alert';
 import { Button } from 'toolkit/chakra/button';
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {

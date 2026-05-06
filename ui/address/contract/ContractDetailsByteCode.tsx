@@ -1,7 +1,7 @@
 import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
-import type { Address } from 'types/api/address';
+import type { Address } from 'client/slices/address/types/api';
 import type { SmartContract } from 'types/api/contract';
 
 import { Alert } from 'toolkit/chakra/alert';

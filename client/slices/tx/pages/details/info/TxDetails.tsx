@@ -19,6 +19,7 @@ import TxAllowedPeekers from 'client/features/chain-variants/suave/pages/tx/TxAl
 import TxDetailsTacOperation from 'client/features/chain-variants/tac/pages/tx/TxDetailsTacOperation';
 import TxDetailsCrossChainMessages from 'client/features/cross-chain-txs/pages/tx/TxDetailsCrossChainMessages';
 import TxDetailsCrossChainTransfers from 'client/features/cross-chain-txs/pages/tx/TxDetailsCrossChainTransfers';
+import AddressEntityInterop from 'client/features/op-interop/components/AddressEntityInterop';
 import TxDetailsInterop from 'client/features/op-interop/pages/tx/TxDetailsInterop';
 import TxDetailsWithdrawalStatusArbitrum from 'client/features/rollup/arbitrum/pages/tx/TxDetailsWithdrawalStatusArbitrum';
 import BatchEntityL2 from 'client/features/rollup/common/components/BatchEntityL2';
@@ -28,6 +29,7 @@ import TxInfoScrollFees from 'client/features/rollup/scroll/pages/tx/TxInfoScrol
 import TxDetailsActions from 'client/features/tx-actions/pages/tx/TxDetailsActions';
 import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-title';
 import { currencyUnits } from 'client/shared/chain/units';
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
 import TxSocketAlert from 'client/slices/tx/components/TxSocketAlert';
 import TxStatus from 'client/slices/tx/components/TxStatus';
@@ -44,8 +46,6 @@ import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoNativeCoinValue from 'ui/shared/DetailedInfo/DetailedInfoNativeCoinValue';
 import DetailedInfoSponsoredItem from 'ui/shared/DetailedInfo/DetailedInfoSponsoredItem';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
-import AddressEntityInterop from 'ui/shared/entities/address/AddressEntityInterop';
 import IconSvg from 'ui/shared/IconSvg';
 import LogDecodedInputData from 'ui/shared/logs/LogDecodedInputData';
 import RawInputData from 'ui/shared/RawInputData';
