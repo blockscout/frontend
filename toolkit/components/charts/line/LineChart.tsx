@@ -46,10 +46,10 @@ export const LineChart = React.memo(({
 
   const range = React.useMemo(
     () =>
-      zoomRange || [
+      zoomRange || charts[0] ? [
         charts[0].items[0].date,
         charts[0].items[charts[0].items.length - 1].date,
-      ],
+      ] : [],
     [ zoomRange, charts ],
   );
 

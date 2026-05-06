@@ -11,7 +11,16 @@ export interface SankeyChartContentProps extends Omit<ChartContentProps, 'childr
   data?: SankeyChartData;
 }
 
-export const SankeyChartContent = React.memo(({ data, isError, isLoading, isEmpty, emptyText, noWatermark, ...rest }: SankeyChartContentProps) => {
+export const SankeyChartContent = React.memo(({
+  data,
+  isError,
+  isLoading,
+  isEmpty,
+  emptyText,
+  noWatermark,
+  noEmptyStateIcon,
+  ...rest
+}: SankeyChartContentProps) => {
   return (
     <ChartContent
       isError={ isError }
@@ -19,6 +28,7 @@ export const SankeyChartContent = React.memo(({ data, isError, isLoading, isEmpt
       isEmpty={ isEmpty !== undefined ? isEmpty : !data?.nodes?.length || !data?.links?.length }
       emptyText={ emptyText }
       noWatermark={ noWatermark }
+      noEmptyStateIcon={ noEmptyStateIcon }
     >
       { data && <SankeyChart data={ data } { ...rest }/> }
     </ChartContent>

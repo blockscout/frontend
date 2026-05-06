@@ -74,6 +74,7 @@ const ChartWidgetContainer = ({
       className={ className }
       href={ href ? route(href) : undefined }
       chartUrl={ getChartUrl(href) }
+      noEmptyStateIcon
     />
   );
 };

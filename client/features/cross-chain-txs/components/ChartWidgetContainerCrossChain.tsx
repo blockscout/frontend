@@ -34,6 +34,7 @@ const ChartWidgetContainerCrossChain = ({ id, interval, isLoading, onLoadingErro
       href={ href ? route(href) : undefined }
       chartUrl={ getChartUrl(href) }
       containerProps={{ minH: '230px', className }}
+      noEmptyStateIcon
     />
   );
 };
