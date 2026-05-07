@@ -1,7 +1,7 @@
 import { Flex, Grid } from '@chakra-ui/react';
 import React from 'react';
 
-import type { DecodedInput } from 'client/slices/logs/types/api';
+import type { DecodedInput } from 'client/slices/log/types/api';
 import type { ArrayElement } from 'types/utils';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';

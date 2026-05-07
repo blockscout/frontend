@@ -6,7 +6,7 @@ import type * as multichain from '@blockscout/multichain-aggregator-types';
 import CsvExport from 'client/features/csv-export/components/CsvExport';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
-import { LOG } from 'client/slices/logs/stubs/log';
+import { LOG } from 'client/slices/log/stubs/log';
 import multichainConfig from 'configs/multichain';
 import { MultichainProvider } from 'lib/contexts/multichain';
 import { generateListStub } from 'stubs/utils';

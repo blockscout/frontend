@@ -7,7 +7,7 @@ import type { ClusterChainConfig } from 'types/multichain';
 import { currencyUnits } from 'client/shared/chain/units';
 import AddressFromTo from 'client/slices/address/components/from-to/AddressFromTo';
 import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
-import { TX_INTERNALS_ITEMS } from 'client/slices/internal-txs/utils/utils';
+import { TX_INTERNALS_ITEMS } from 'client/slices/internal-tx/utils/utils';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import TxStatus from 'client/slices/tx/components/TxStatus';
 import { Badge } from 'toolkit/chakra/badge';

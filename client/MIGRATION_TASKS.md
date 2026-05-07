@@ -100,10 +100,10 @@ after this PR — note each as an explicit follow-up in the PR description.
 
 Each slice follows the template established in 2-1.
 
-### 3-1 · [~] Slice: `block` · [#3378](https://github.com/blockscout/frontend/issues/3378)
+### 3-1 · [x] Slice: `block` · [#3378](https://github.com/blockscout/frontend/issues/3378)
 **Scope:** `lib/block/` (if any), `ui/block/**`, related `types/api/`, `mocks/`, `stubs/` → `client/slices/block/`  
 
-### 3-2 · [~] Slice: `address` · [#3380](https://github.com/blockscout/frontend/issues/3380)
+### 3-2 · [x] Slice: `address` · [#3380](https://github.com/blockscout/frontend/issues/3380)
 **Scope:** `lib/address/`, `ui/address/**`, related types/mocks/stubs, `lib/hooks/useAddressProfileApiQuery`, `lib/contexts/addressHighlight.tsx` → `client/slices/address/`  
 
 ### 3-3 · [ ] Slice: `search`
@@ -124,14 +124,11 @@ Each slice follows the template established in 2-1.
 ### 3-8 · [ ] Slice: `tokens` (token list)
 **Scope:** `ui/tokens/**`, related types/mocks/stubs → `client/slices/tokens/`  
 
-### 3-9 · [ ] Slice: `accounts`
-**Scope:** `ui/accounts/**`, related types/mocks/stubs → `client/slices/accounts/`  
+### 3-9 · [ ] Slice: `token-instance`
+**Scope:** `ui/tokenInstance/**`, related types/mocks/stubs → `client/slices/nft/` 
 
-### 3-10 · [ ] Slice: `token-instance`
-**Scope:** `ui/tokenInstance/**`, related types/mocks/stubs → `client/slices/token-instance/` 
-
-### 3-11 · [ ] Slice: `logs`
-**Scope:** `ui/shared/logs/**`, related types/mocks/stubs → `client/slices/logs/`  
+### 3-10 · [ ] Slice: `log`
+**Scope:** `ui/shared/log/**`, related types/mocks/stubs → `client/slices/log/`  
 
 ---
 

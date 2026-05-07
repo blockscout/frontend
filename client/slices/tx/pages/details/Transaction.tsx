@@ -15,8 +15,8 @@ import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-loa
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import useEtherscanRedirects from 'client/shared/router/useEtherscanRedirects';
 import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
-import TxInternals from 'client/slices/internal-txs/pages/tx/TxInternals';
-import TxTokenTransfer from 'client/slices/tokens-transfers/pages/tx/TxTokenTransfer';
+import TxInternals from 'client/slices/internal-tx/pages/tx/TxInternals';
+import TxTokenTransfer from 'client/slices/tokens-transfer/pages/tx/TxTokenTransfer';
 import useTxQuery from 'client/slices/tx/hooks/useTxQuery';
 import config from 'configs/app';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';

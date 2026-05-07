@@ -2,7 +2,7 @@ import { inRange } from 'es-toolkit';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { TransactionLog } from 'client/slices/logs/types/api';
+import type { TransactionLog } from 'client/slices/log/types/api';
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
@@ -10,7 +10,7 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 import throwOnAbsentParamError from 'client/shared/errors/throw-on-absent-param-error';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
-import TxTokenTransfer from 'client/slices/tokens-transfers/pages/tx/TxTokenTransfer';
+import TxTokenTransfer from 'client/slices/tokens-transfer/pages/tx/TxTokenTransfer';
 import useTxQuery from 'client/slices/tx/hooks/useTxQuery';
 import TxLogs from 'client/slices/tx/pages/details/logs/TxLogs';
 import { USER_OP } from 'stubs/userOps';

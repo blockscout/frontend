@@ -1,7 +1,7 @@
 import type { ApiResource } from '../../types';
 import type { TransactionsResponseWatchlist } from 'client/features/account/types/api';
 import type { TransactionsResponseWithBlobs, TxsWithBlobsFilters } from 'client/features/data-availability/types/api';
-import type { LogsResponseTx } from 'client/slices/logs/types/api';
+import type { LogsResponseTx } from 'client/slices/log/types/api';
 import type {
   TransactionsResponseValidated,
   TransactionsResponsePending,
