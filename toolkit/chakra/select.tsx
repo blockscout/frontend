@@ -260,6 +260,7 @@ export interface SelectProps extends SelectRootProps {
   loading?: boolean;
   errorText?: string;
   contentProps?: SelectContentProps;
+  controlProps?: SelectControlProps;
   contentHeader?: React.ReactNode;
   multipleConfig?: SelectValueTextProps['multipleConfig'];
   itemFilter?: (item: SelectOption) => boolean;
@@ -267,14 +268,27 @@ export interface SelectProps extends SelectRootProps {
 }
 
 export const Select = React.forwardRef<HTMLDivElement, SelectProps>((props, ref) => {
-  const { collection, placeholder, portalled = true, loading, errorText, contentProps, contentHeader, itemFilter, mode, multipleConfig, ...rest } = props;
+  const {
+    collection,
+    placeholder,
+    portalled = true,
+    loading,
+    errorText,
+    contentProps,
+    controlProps,
+    contentHeader,
+    itemFilter,
+    mode,
+    multipleConfig,
+    ...rest
+  } = props;
   return (
     <SelectRoot
       ref={ ref }
       collection={ collection }
       { ...rest }
     >
-      <SelectControl loading={ loading }>
+      <SelectControl loading={ loading } { ...controlProps }>
         <SelectValueText
           placeholder={ placeholder }
           size={ props.size }
