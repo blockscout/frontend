@@ -3,10 +3,9 @@ import React from 'react';
 
 import type { AdvancedFilterResponseItem } from 'types/api/advancedFilter';
 
-import config from 'configs/app';
 import { Badge } from 'toolkit/chakra/badge';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import type { ColumnsIds } from 'ui/advancedFilter/constants';
+import { NATIVE_TOKEN, type ColumnsIds } from 'ui/advancedFilter/constants';
 import AddressFromToIcon from 'ui/shared/address/AddressFromToIcon';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
@@ -89,7 +88,7 @@ const ItemByColumn = ({ item, column, isLoading }: Props) => {
     case 'asset':
       return item.token ?
         <TokenEntity token={ item.token } isLoading={ isLoading } fontWeight={ 700 } onlySymbol noCopy/> :
-        <Skeleton loading={ isLoading } fontWeight={ 700 }>{ config.chain.currency.symbol }</Skeleton>;
+        <TokenEntity token={ NATIVE_TOKEN } isLoading={ isLoading } fontWeight={ 700 } onlySymbol noCopy noLink/>;
     case 'fee':
       return (
         <NativeCoinValue
