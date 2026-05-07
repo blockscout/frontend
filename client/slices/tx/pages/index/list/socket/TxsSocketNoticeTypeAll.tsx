@@ -5,6 +5,7 @@ import type { TxsSocketNoticePlace, TxsSocketType } from 'client/slices/tx/types
 import { route } from 'nextjs/routes';
 
 import useNewTxsSocketTypeAll from 'client/slices/tx/hooks/useTxsSocketTypeAll';
+
 import { useMultichainContext } from 'lib/contexts/multichain';
 import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 

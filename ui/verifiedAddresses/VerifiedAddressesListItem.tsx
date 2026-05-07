@@ -3,6 +3,7 @@ import React from 'react';
 import type { TokenInfoApplication, VerifiedAddress } from 'types/api/account';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+
 import dayjs from 'lib/date/dayjs';
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { Link } from 'toolkit/chakra/link';

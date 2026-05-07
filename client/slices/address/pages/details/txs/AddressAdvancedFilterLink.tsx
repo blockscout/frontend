@@ -6,6 +6,7 @@ import type { TokenType } from 'types/api/token';
 import type { ClusterChainConfig } from 'types/multichain';
 
 import useIsInitialLoading from 'client/shared/hooks/useIsInitialLoading';
+
 import config from 'configs/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import { getAdvancedFilterTypes } from 'ui/advancedFilter/constants';

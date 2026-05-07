@@ -1,6 +1,7 @@
 import type { Transaction } from 'client/slices/tx/types/api';
 
 import { base } from 'client/slices/tx/mocks/tx';
+
 import * as addressMock from 'mocks/address/address';
 import * as interopMock from 'mocks/interop/interop';
 

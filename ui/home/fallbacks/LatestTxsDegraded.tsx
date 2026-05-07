@@ -4,9 +4,11 @@ import React from 'react';
 
 import { route } from 'nextjs-routes';
 
-import { publicClient } from 'client/features/connect-wallet/utils/public-client';
 import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
 import { TX } from 'client/slices/tx/stubs/tx';
+
+import { publicClient } from 'client/features/connect-wallet/utils/public-client';
+
 import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
 

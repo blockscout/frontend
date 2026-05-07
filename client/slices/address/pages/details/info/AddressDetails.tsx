@@ -2,19 +2,22 @@ import { Box, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import Address3rdPartyWidgets from 'client/features/address-3rd-party-widgets/pages/address/Address3rdPartyWidgets';
-import useAddress3rdPartyWidgets from 'client/features/address-3rd-party-widgets/pages/address/useAddress3rdPartyWidgets';
-import AddressCeloAccount from 'client/features/chain-variants/celo/pages/address/AddressCeloAccount';
-import FilecoinActorTag from 'client/features/chain-variants/filecoin/pages/address/FilecoinActorTag';
-import getChainValidationActionText from 'client/shared/chain/get-chain-validation-action-text';
-import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-title';
-import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
-import getQueryParamString from 'client/shared/router/get-query-param-string';
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import type { AddressCountersQuery } from 'client/slices/address/hooks/useAddressCountersQuery';
 import type { AddressQuery } from 'client/slices/address/hooks/useAddressQuery';
 import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
+
+import Address3rdPartyWidgets from 'client/features/address-3rd-party-widgets/pages/address/Address3rdPartyWidgets';
+import useAddress3rdPartyWidgets from 'client/features/address-3rd-party-widgets/pages/address/useAddress3rdPartyWidgets';
+import AddressCeloAccount from 'client/features/chain-variants/celo/pages/address/AddressCeloAccount';
+import FilecoinActorTag from 'client/features/chain-variants/filecoin/pages/address/FilecoinActorTag';
+
+import getChainValidationActionText from 'client/shared/chain/get-chain-validation-action-text';
+import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-title';
+import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
+
 import config from 'configs/app';
 import ServiceDegradationWarning from 'ui/shared/alerts/ServiceDegradationWarning';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';

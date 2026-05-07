@@ -5,6 +5,7 @@ import type { ScreenSuccess } from '../types';
 import type { UserInfo } from 'types/api/account';
 
 import type * as mixpanel from 'client/shared/analytics/mixpanel';
+
 import ReCaptcha from 'ui/shared/reCaptcha/ReCaptcha';
 import useReCaptcha from 'ui/shared/reCaptcha/useReCaptcha';
 

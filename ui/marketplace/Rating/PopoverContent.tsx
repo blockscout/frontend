@@ -3,8 +3,10 @@ import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
 import useApiFetch from 'client/api/hooks/useApiFetch';
+
 import type { EventTypes, EventPayload } from 'client/shared/analytics/mixpanel';
 import * as mixpanel from 'client/shared/analytics/mixpanel';
+
 import config from 'configs/app';
 import { Rating } from 'toolkit/chakra/rating';
 import { toaster } from 'toolkit/chakra/toaster';

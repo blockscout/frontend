@@ -4,6 +4,7 @@ import type { FlashblockItem } from 'types/client/flashblocks';
 
 import { formatFlashblockItemMegaEth, formatFlashblockItemOptimism } from 'client/features/flashblocks/utils/format-flashblock-item';
 import { parseSocketEventDataMegaEth, parseSocketEventDataOptimism } from 'client/features/flashblocks/utils/parse-socket-event-data';
+
 import config from 'configs/app';
 import { SECOND } from 'toolkit/utils/consts';
 

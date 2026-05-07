@@ -2,6 +2,7 @@ import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import shortenString from 'client/shared/text/shorten-string';
+
 import { Tooltip } from 'toolkit/chakra/tooltip';
 
 interface Props {

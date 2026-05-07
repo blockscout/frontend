@@ -3,6 +3,7 @@ import type { Chain, GetBlockReturnType } from 'viem';
 import type { Block } from 'client/slices/block/types/api';
 
 import { unknownAddress } from 'client/slices/address/utils/consts';
+
 import dayjs from 'lib/date/dayjs';
 
 export default function formatRpcData(block: GetBlockReturnType<Chain, false, 'latest'> | null): Block | null {

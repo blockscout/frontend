@@ -6,6 +6,7 @@ import type { FormFields, FormFieldTag } from '../types';
 import type { PublicTagType } from 'client/features/address-metadata/types/api';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+
 import AddButton from 'toolkit/components/buttons/AddButton';
 import RemoveButton from 'toolkit/components/buttons/RemoveButton';
 import { FormFieldColor } from 'toolkit/components/forms/fields/FormFieldColor';

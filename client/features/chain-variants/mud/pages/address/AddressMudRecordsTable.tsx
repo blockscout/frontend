@@ -8,6 +8,7 @@ import { route } from 'nextjs-routes';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import capitalizeFirstLetter from 'client/shared/text/capitalize-first-letter';
+
 import { Link } from 'toolkit/chakra/link';
 import { TableBody, TableCell, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import type { TableColumnHeaderProps } from 'toolkit/chakra/table';

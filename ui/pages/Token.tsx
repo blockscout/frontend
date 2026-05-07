@@ -11,14 +11,18 @@ import type { PaginationParams } from 'ui/shared/pagination/types';
 import useApiQuery, { getResourceKey } from 'client/api/hooks/useApiQuery';
 import useSocketChannel from 'client/api/socket/useSocketChannel';
 import useSocketMessage from 'client/api/socket/useSocketMessage';
+
+import * as addressStubs from 'client/slices/address/stubs/address';
+
 import Address3rdPartyWidgets from 'client/features/address-3rd-party-widgets/pages/address/Address3rdPartyWidgets';
 import useAddress3rdPartyWidgets from 'client/features/address-3rd-party-widgets/pages/address/useAddress3rdPartyWidgets';
 import CsvExport from 'client/features/csv-export/components/CsvExport';
+
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import * as metadata from 'client/shared/metadata';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import useEtherscanRedirects from 'client/shared/router/useEtherscanRedirects';
-import * as addressStubs from 'client/slices/address/stubs/address';
+
 import config from 'configs/app';
 import { NFT_TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
 import * as tokenStubs from 'stubs/token';

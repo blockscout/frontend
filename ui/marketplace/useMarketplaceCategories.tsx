@@ -5,6 +5,7 @@ import type { MarketplaceApp } from 'types/client/marketplace';
 
 import useApiFetch from 'client/api/hooks/useFetch';
 import type { ResourceError } from 'client/api/resources';
+
 import config from 'configs/app';
 import { CATEGORIES } from 'stubs/marketplace';
 

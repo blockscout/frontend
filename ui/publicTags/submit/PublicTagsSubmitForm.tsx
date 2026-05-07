@@ -9,9 +9,11 @@ import type { PublicTagTypesResponse } from 'client/features/address-metadata/ty
 import type { UserInfo } from 'types/api/account';
 
 import useApiFetch from 'client/api/hooks/useApiFetch';
+
 import getErrorObj from 'client/shared/errors/get-error-obj';
 import getErrorObjPayload from 'client/shared/errors/get-error-obj-payload';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+
 import appConfig from 'configs/app';
 import { Button } from 'toolkit/chakra/button';
 import { Heading } from 'toolkit/chakra/heading';

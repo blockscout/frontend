@@ -4,6 +4,7 @@ import type { AddressParam } from 'client/slices/address/types/api';
 import type { OptimisticL2WithdrawalClaimInfo } from 'types/api/optimisticL2';
 
 import { parentChain } from 'client/features/connect-wallet/utils/chains';
+
 import config from 'configs/app';
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';

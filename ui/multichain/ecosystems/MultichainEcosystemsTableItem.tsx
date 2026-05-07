@@ -7,6 +7,7 @@ import type { ClusterChainConfig } from 'types/multichain';
 import useAddChainClick from 'client/shared/web3/useAddChainClick';
 import useProvider from 'client/shared/web3/useProvider';
 import { WALLETS_INFO } from 'client/shared/web3/wallets';
+
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';

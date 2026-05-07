@@ -5,12 +5,15 @@ import React from 'react';
 
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
+import { TX } from 'client/slices/tx/stubs/tx';
+
 import TxsWatchlist from 'client/features/account/pages/tx-index-watchlist/TxsWatchlist';
+
 import getChainValidationActionText from 'client/shared/chain/get-chain-validation-action-text';
 import useIsInitialLoading from 'client/shared/hooks/useIsInitialLoading';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
-import { TX } from 'client/slices/tx/stubs/tx';
+
 import config from 'configs/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import { generateListStub } from 'stubs/utils';

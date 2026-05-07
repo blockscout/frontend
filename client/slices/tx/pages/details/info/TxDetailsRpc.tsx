@@ -5,10 +5,13 @@ import type { Chain, GetBlockReturnType, GetTransactionReturnType, TransactionRe
 
 import type { Transaction } from 'client/slices/tx/types/api';
 
-import { publicClient } from 'client/features/connect-wallet/utils/public-client';
-import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import type { TxQuery } from 'client/slices/tx/hooks/useTxQuery';
 import formatRpcData from 'client/slices/tx/utils/format-rpc-data';
+
+import { publicClient } from 'client/features/connect-wallet/utils/public-client';
+
+import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
+
 import { GET_BLOCK, GET_TRANSACTION, GET_TRANSACTION_RECEIPT, GET_TRANSACTION_CONFIRMATIONS } from 'stubs/RPC';
 import { SECOND } from 'toolkit/utils/consts';
 import ServiceDegradationWarning from 'ui/shared/alerts/ServiceDegradationWarning';

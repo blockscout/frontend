@@ -8,6 +8,7 @@ import { route } from 'nextjs/routes';
 import type * as AddressEntityBase from 'client/slices/address/components/entity/AddressEntity';
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import { unknownAddress } from 'client/slices/address/utils/consts';
+
 import config from 'configs/app';
 import { useColorModeValue } from 'toolkit/chakra/color-mode';
 import getChainTooltipText from 'ui/shared/externalChains/getChainTooltipText';

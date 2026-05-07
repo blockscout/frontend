@@ -6,6 +6,7 @@ import type { InternalTransaction } from 'types/api/internalTransaction';
 import TxPendingAlert from 'client/slices/tx/components/TxPendingAlert';
 import TxSocketAlert from 'client/slices/tx/components/TxSocketAlert';
 import type { TxQuery } from 'client/slices/tx/hooks/useTxQuery';
+
 import compareBns from 'lib/bigint/compareBns';
 // import { apos } from 'toolkit/utils/htmlEntities';
 import { INTERNAL_TX } from 'stubs/internalTx';

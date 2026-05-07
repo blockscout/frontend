@@ -1,10 +1,13 @@
 import { chakra, Box, Flex, Spinner } from '@chakra-ui/react';
 import React from 'react';
 
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+
 import useWeb3AccountWithDomain from 'client/features/connect-wallet/hooks/useAccountWithDomain';
 import useWeb3Wallet from 'client/features/connect-wallet/hooks/useWallet';
+
 import delay from 'client/shared/utils/delay';
-import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+
 import { Button } from 'toolkit/chakra/button';
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { Hint } from 'toolkit/components/Hint/Hint';

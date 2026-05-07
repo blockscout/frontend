@@ -8,8 +8,10 @@ import { ZKSYNC_L2_TX_BATCH_STATUSES, type ZkSyncBatch } from 'types/api/zkSyncL
 import { route } from 'nextjs-routes';
 
 import type { ResourceError } from 'client/api/resources';
+
 import { currencyUnits } from 'client/shared/chain/units';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
+
 import config from 'configs/app';
 import { formatZkSyncL2TxnBatchStatus, layerLabels } from 'lib/rollups/utils';
 import { CollapsibleDetails } from 'toolkit/chakra/collapsible';

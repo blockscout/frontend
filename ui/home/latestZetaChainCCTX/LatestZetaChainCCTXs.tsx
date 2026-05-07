@@ -11,9 +11,12 @@ import { route } from 'nextjs-routes';
 import useApiQuery, { getResourceKey } from 'client/api/hooks/useApiQuery';
 import useSocketChannel from 'client/api/socket/useSocketChannel';
 import useSocketMessage from 'client/api/socket/useSocketMessage';
+
+import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
+
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import useInitialList from 'client/shared/lists/useInitialList';
-import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
+
 import { generateListStub } from 'stubs/utils';
 import { ZETA_CHAIN_CCTX_LIST_ITEM } from 'stubs/zetaChainCCTX';
 import { Link } from 'toolkit/chakra/link';

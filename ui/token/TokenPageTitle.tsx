@@ -7,11 +7,14 @@ import type { TokenInfo, TokenVerifiedInfo as TTokenVerifiedInfo } from 'types/a
 import type { EntityTag } from 'ui/shared/EntityTags/types';
 
 import type { ResourceError } from 'client/api/resources';
-import useAddressMetadataInfoQuery from 'client/features/address-metadata/hooks/useAddressMetadataInfoQuery';
-import TokenAddToWallet from 'client/features/web3-wallet/components/TokenAddToWallet';
+
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import AddressAlerts from 'client/slices/address/pages/details/info/AddressAlerts';
 import AddressQrCode from 'client/slices/address/pages/details/info/AddressQrCode';
+
+import useAddressMetadataInfoQuery from 'client/features/address-metadata/hooks/useAddressMetadataInfoQuery';
+import TokenAddToWallet from 'client/features/web3-wallet/components/TokenAddToWallet';
+
 import config from 'configs/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import { getTokenTypeName } from 'lib/token/tokenTypes';

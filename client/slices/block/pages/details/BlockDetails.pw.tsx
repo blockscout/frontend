@@ -2,6 +2,7 @@ import React from 'react';
 
 import type { BlockQuery } from 'client/slices/block/hooks/useBlockQuery';
 import * as blockMock from 'client/slices/block/mocks/block';
+
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';
 

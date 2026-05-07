@@ -3,6 +3,7 @@ import React from 'react';
 import type { TxsSocketNoticePlace } from 'client/slices/tx/types/socket';
 
 import useTxsSocketTypeAddress from 'client/slices/tx/hooks/useTxsSocketTypeAddress';
+
 import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 
 interface Props {

@@ -3,8 +3,10 @@ import React from 'react';
 
 import type { CctxListItem } from '@blockscout/zetachain-cctx-types';
 
-import TxEntityZetaChainCC from 'client/features/chain-variants/zeta-chain/TxEntityZetaChainCC';
 import AddressFromTo from 'client/slices/address/components/from-to/AddressFromTo';
+
+import TxEntityZetaChainCC from 'client/features/chain-variants/zeta-chain/TxEntityZetaChainCC';
+
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { SECOND } from 'toolkit/utils/consts';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';

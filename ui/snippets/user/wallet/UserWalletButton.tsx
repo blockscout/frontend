@@ -4,6 +4,7 @@ import React from 'react';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import shortenString from 'client/shared/text/shorten-string';
+
 import { Button } from 'toolkit/chakra/button';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 

@@ -4,6 +4,7 @@ import type { ClustersDirectoryObject } from 'types/api/clusters';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import { isEvmAddress } from 'client/slices/address/utils/is-evm-address';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import ClustersEntity from 'ui/shared/entities/clusters/ClustersEntity';

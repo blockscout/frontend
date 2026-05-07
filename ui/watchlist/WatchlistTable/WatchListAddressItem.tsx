@@ -4,8 +4,10 @@ import React from 'react';
 
 import type { WatchlistAddress } from 'types/api/account';
 
-import { currencyUnits } from 'client/shared/chain/units';
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+
+import { currencyUnits } from 'client/shared/chain/units';
+
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { nbsp } from 'toolkit/utils/htmlEntities';

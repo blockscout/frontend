@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic';
 import React from 'react';
 
 import * as cookies from 'client/shared/storage/cookies';
+
 import config from 'configs/app';
 import { Image } from 'toolkit/chakra/image';
 

@@ -4,10 +4,12 @@ import React from 'react';
 
 import type { Block } from 'client/slices/block/types/api';
 
-import { currencyUnits } from 'client/shared/chain/units';
 import BlockGasUsed from 'client/slices/block/components/BlockGasUsed';
 import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
 import getBlockTotalReward from 'client/slices/block/utils/get-block-total-reward';
+
+import { currencyUnits } from 'client/shared/chain/units';
+
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';

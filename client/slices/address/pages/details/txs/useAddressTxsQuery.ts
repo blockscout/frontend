@@ -5,9 +5,11 @@ import type { AddressFromToFilter } from 'client/slices/address/types/api';
 import { AddressFromToFilterValues } from 'client/slices/address/types/api';
 import type { TransactionsSorting, TransactionsSortingField, TransactionsSortingValue } from 'client/slices/tx/types/api';
 
-import getFilterValueFromQuery from 'client/shared/router/get-filter-value-from-query';
 import { SORT_OPTIONS } from 'client/slices/tx/hooks/useTxsSort';
 import { TX } from 'client/slices/tx/stubs/tx';
+
+import getFilterValueFromQuery from 'client/shared/router/get-filter-value-from-query';
+
 import { generateListStub } from 'stubs/utils';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import getSortParamsFromValue from 'ui/shared/sort/getSortParamsFromValue';

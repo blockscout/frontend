@@ -1,6 +1,7 @@
 import React from 'react';
 
 import * as mocks from 'client/slices/log/mocks/decoded-input';
+
 import { test, expect } from 'playwright/lib';
 
 import LogDecodedInputData from './LogDecodedInputData';

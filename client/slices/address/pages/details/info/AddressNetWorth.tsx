@@ -3,10 +3,13 @@ import React from 'react';
 
 import type { Address } from 'client/slices/address/types/api';
 
-import AddressMultichainButton from 'client/features/multichain-button/pages/address/AddressMultichainButton';
-import * as mixpanel from 'client/shared/analytics/mixpanel';
 import useFetchTokens from 'client/slices/token/pages/address/useFetchTokens';
 import { getTokensTotalInfo } from 'client/slices/token/pages/address/utils';
+
+import AddressMultichainButton from 'client/features/multichain-button/pages/address/AddressMultichainButton';
+
+import * as mixpanel from 'client/shared/analytics/mixpanel';
+
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import TextSeparator from 'ui/shared/TextSeparator';

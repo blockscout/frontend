@@ -5,6 +5,7 @@ import type { AddressParam } from 'client/slices/address/types/api';
 import type { Transaction } from 'client/slices/tx/types/api';
 
 import * as decodedInputDataMock from 'client/slices/log/mocks/decoded-input';
+
 import * as addressMock from 'mocks/address/address';
 import { publicTag, privateTag, watchlistName } from 'mocks/address/tag';
 import { protocolTag } from 'mocks/metadata/address';

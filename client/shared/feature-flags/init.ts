@@ -1,6 +1,7 @@
 import { GrowthBook } from '@growthbook/growthbook-react';
 
 import * as mixpanel from 'client/shared/analytics/mixpanel';
+
 import config from 'configs/app';
 
 import { STORAGE_KEY, STORAGE_LIMIT } from './consts';

@@ -5,8 +5,10 @@ import React from 'react';
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 
 import type { ResourceError } from 'client/api/resources';
+
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import removeQueryParam from 'client/shared/router/remove-query-param';
+
 import multichainConfig from 'configs/multichain';
 
 interface Params {

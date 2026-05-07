@@ -1,6 +1,7 @@
 import type { AddressEpochRewardsItem } from 'client/features/chain-variants/celo/types/api';
 
 import { ADDRESS_PARAMS } from 'client/slices/address/stubs/address-params';
+
 import { TOKEN_INFO_ERC_20 } from 'stubs/token';
 
 export const EPOCH_REWARD_ITEM: AddressEpochRewardsItem = {

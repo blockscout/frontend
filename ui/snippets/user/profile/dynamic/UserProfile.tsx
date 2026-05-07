@@ -3,6 +3,7 @@ import { DynamicConnectButton, DynamicUserProfile, useDynamicContext, useIsLogge
 import React from 'react';
 
 import useWalletDynamic from 'client/features/connect-wallet/hooks/wallet/useWalletDynamic';
+
 import { useMarketplaceContext } from 'lib/contexts/marketplace';
 
 import UserProfileButton from './UserProfileButton';

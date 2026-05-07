@@ -5,6 +5,7 @@ import type { Route } from 'nextjs-routes';
 import type { Props as PageProps } from 'nextjs/getServerSideProps/handlers';
 
 import * as metadata from 'client/shared/metadata';
+
 import config from 'configs/app';
 
 interface Props<Pathname extends Route['pathname']> {

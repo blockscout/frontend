@@ -4,6 +4,7 @@ import React from 'react';
 import type { TransactionRevertReason } from 'client/slices/tx/types/api';
 
 import hexToUtf8 from 'client/shared/transformers/hex-to-utf8';
+
 import { HEX_REGEXP } from 'toolkit/utils/regexp';
 import LogDecodedInputData from 'ui/shared/logs/LogDecodedInputData';
 

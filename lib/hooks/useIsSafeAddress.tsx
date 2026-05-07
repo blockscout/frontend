@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 
 import useFetch from 'client/api/hooks/useFetch';
+
 import config from 'configs/app';
 
 const feature = config.features.safe;

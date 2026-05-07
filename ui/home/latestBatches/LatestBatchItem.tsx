@@ -4,6 +4,7 @@ import React from 'react';
 import { route } from 'nextjs-routes';
 
 import BatchEntityL2 from 'client/features/rollup/common/components/BatchEntityL2';
+
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';

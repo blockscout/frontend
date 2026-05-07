@@ -4,6 +4,7 @@ import React from 'react';
 import type { InterchainMessage } from '@blockscout/interchain-indexer-types';
 
 import TxEntityInterchain from 'client/slices/tx/components/entity/TxEntityInterchain';
+
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { mdash } from 'toolkit/utils/htmlEntities';
 import CrossChainBridgeLink from 'ui/shared/crossChain/CrossChainBridgeLink';

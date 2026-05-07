@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import useFetch from 'client/api/hooks/useFetch';
 import type { ResourceError } from 'client/api/resources';
+
 import config from 'configs/app';
 
 const feature = config.features.marketplace;

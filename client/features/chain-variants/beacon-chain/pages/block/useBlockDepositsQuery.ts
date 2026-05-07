@@ -1,4 +1,5 @@
 import type { BlockQuery } from 'client/slices/block/hooks/useBlockQuery';
+
 import config from 'configs/app';
 import { DEPOSIT } from 'stubs/deposits';
 import { generateListStub } from 'stubs/utils';

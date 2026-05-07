@@ -4,8 +4,10 @@ import React from 'react';
 
 import type { AddressTokensErc20Item } from './types';
 
-import TokenAddToWallet from 'client/features/web3-wallet/components/TokenAddToWallet';
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+
+import TokenAddToWallet from 'client/features/web3-wallet/components/TokenAddToWallet';
+
 import config from 'configs/app';
 import multichainConfig from 'configs/multichain';
 import { getTokenTypeName, isConfidentialTokenType } from 'lib/token/tokenTypes';

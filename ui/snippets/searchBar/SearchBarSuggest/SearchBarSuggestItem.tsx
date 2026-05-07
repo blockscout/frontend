@@ -6,6 +6,7 @@ import type { QuickSearchResultItem } from 'types/client/search';
 import { route } from 'nextjs/routes';
 
 import { isEvmAddress } from 'client/slices/address/utils/is-evm-address';
+
 import multichainConfig from 'configs/multichain';
 
 import SearchBarSuggestAddress from './SearchBarSuggestAddress';

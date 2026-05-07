@@ -3,8 +3,10 @@ import React from 'react';
 
 import type { CeloEpochDetails } from 'types/api/epochs';
 
-import useIsMobile from 'client/shared/hooks/useIsMobile';
 import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
+
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 import CeloEpochStatus from 'ui/shared/statusTag/CeloEpochStatus';

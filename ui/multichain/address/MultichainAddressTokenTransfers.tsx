@@ -7,13 +7,17 @@ import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
 import getSocketUrl from 'client/api/get-socket-url';
 import { SocketProvider } from 'client/api/socket/context';
-import CsvExport from 'client/features/csv-export/components/CsvExport';
-import useIsMobile from 'client/shared/hooks/useIsMobile';
-import getQueryParamString from 'client/shared/router/get-query-param-string';
+
 import useAddressCountersQuery from 'client/slices/address/hooks/useAddressCountersQuery';
 import AddressTokenTransfersLocal from 'client/slices/address/pages/details/token-transfers/AddressTokenTransfersLocal';
 import useAddressTokenTransfersQuery from 'client/slices/address/pages/details/token-transfers/useAddressTokenTransfersQuery';
 import AddressAdvancedFilterLink from 'client/slices/address/pages/details/txs/AddressAdvancedFilterLink';
+
+import CsvExport from 'client/features/csv-export/components/CsvExport';
+
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
+
 import multichainConfig from 'configs/multichain';
 import { MultichainProvider } from 'lib/contexts/multichain';
 import { EmptyState } from 'toolkit/chakra/empty-state';

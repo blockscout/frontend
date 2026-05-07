@@ -2,6 +2,7 @@ import { Box, HStack } from '@chakra-ui/react';
 import React from 'react';
 
 import useFlashblocksSocketData from 'client/features/flashblocks/hooks/useFlashblocksSocketData';
+
 import config from 'configs/app';
 import { Switch } from 'toolkit/chakra/switch';
 import { Hint } from 'toolkit/components/Hint/Hint';

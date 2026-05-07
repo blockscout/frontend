@@ -4,6 +4,7 @@ import React from 'react';
 import type { Screen } from '../types';
 
 import * as mixpanel from 'client/shared/analytics/mixpanel';
+
 import { Button } from 'toolkit/chakra/button';
 
 interface Props {

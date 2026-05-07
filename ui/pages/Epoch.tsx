@@ -3,10 +3,13 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
+
+import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
+
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
-import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
+
 import { CELO_EPOCH } from 'stubs/epoch';
 import { Tag } from 'toolkit/chakra/tag';
 import { Tooltip } from 'toolkit/chakra/tooltip';

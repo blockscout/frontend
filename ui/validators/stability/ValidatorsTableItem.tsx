@@ -3,6 +3,7 @@ import React from 'react';
 import type { ValidatorStability } from 'types/api/validators';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import ValidatorStatus from 'ui/shared/statusTag/ValidatorStabilityStatus';

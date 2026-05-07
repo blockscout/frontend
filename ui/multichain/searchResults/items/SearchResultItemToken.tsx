@@ -9,6 +9,7 @@ import type { ClusterChainConfig } from 'types/multichain';
 import { route } from 'nextjs/routes';
 
 import shortenString from 'client/shared/text/shorten-string';
+
 import * as contract from 'lib/multichain/contract';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';

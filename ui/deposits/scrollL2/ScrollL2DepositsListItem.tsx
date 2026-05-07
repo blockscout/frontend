@@ -3,9 +3,11 @@ import React from 'react';
 
 import type { ScrollL2MessageItem } from 'types/api/scrollL2';
 
+import TxEntity from 'client/slices/tx/components/entity/TxEntity';
+
 import BlockEntityL1 from 'client/features/rollup/common/components/BlockEntityL1';
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
-import TxEntity from 'client/slices/tx/components/entity/TxEntity';
+
 import config from 'configs/app';
 import { layerLabels } from 'lib/rollups/utils';
 import { Skeleton } from 'toolkit/chakra/skeleton';

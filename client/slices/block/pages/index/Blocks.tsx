@@ -4,12 +4,15 @@ import React from 'react';
 
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
-import Flashblocks from 'client/features/flashblocks/pages/index/Flashblocks';
-import useIsMobile from 'client/shared/hooks/useIsMobile';
-import getQueryParamString from 'client/shared/router/get-query-param-string';
 import BlocksContent from 'client/slices/block/pages/index/BlocksContent';
 import BlocksTabSlot from 'client/slices/block/pages/index/BlocksTabSlot';
 import { BLOCK } from 'client/slices/block/stubs/block';
+
+import Flashblocks from 'client/features/flashblocks/pages/index/Flashblocks';
+
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
+
 import config from 'configs/app';
 import { generateListStub } from 'stubs/utils';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';

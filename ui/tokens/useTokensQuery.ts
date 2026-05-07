@@ -6,6 +6,7 @@ import type { TokensSortingValue, TokensSortingField, TokensSorting } from 'type
 
 import useDebounce from 'client/shared/hooks/useDebounce';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
+
 import { TOKEN_INFO_ERC_20 } from 'stubs/token';
 import { generateListStub } from 'stubs/utils';
 import type { OnValueChangeHandler } from 'toolkit/chakra/select';

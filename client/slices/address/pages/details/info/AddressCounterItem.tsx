@@ -7,6 +7,7 @@ import type { AddressCounters } from 'client/slices/address/types/api';
 import { route } from 'nextjs/routes';
 
 import type { ResourceError } from 'client/api/resources';
+
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 

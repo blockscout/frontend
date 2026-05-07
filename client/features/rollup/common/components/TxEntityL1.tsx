@@ -4,6 +4,7 @@ import React from 'react';
 import { route } from 'nextjs-routes';
 
 import * as TxEntity from 'client/slices/tx/components/entity/TxEntity';
+
 import config from 'configs/app';
 
 const rollupFeature = config.features.rollup;

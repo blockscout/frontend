@@ -6,8 +6,10 @@ import React, { useCallback, useState } from 'react';
 import type { UserInfo } from 'types/api/account';
 
 import useWeb3AccountWithDomain from 'client/features/connect-wallet/hooks/useAccountWithDomain';
+
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import shortenString from 'client/shared/text/shorten-string';
+
 import { useMarketplaceContext } from 'lib/contexts/marketplace';
 import { Button } from 'toolkit/chakra/button';
 import { Tooltip } from 'toolkit/chakra/tooltip';

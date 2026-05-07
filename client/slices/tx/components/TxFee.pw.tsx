@@ -1,8 +1,10 @@
 import React from 'react';
 
+import * as txMock from 'client/slices/tx/mocks/tx';
+
 import * as txMockCelo from 'client/features/chain-variants/celo/mocks/tx';
 import * as txMockStability from 'client/features/chain-variants/stability/mocks/tx';
-import * as txMock from 'client/slices/tx/mocks/tx';
+
 import { test, expect } from 'playwright/lib';
 
 import TxFee from './TxFee';

@@ -8,8 +8,10 @@ import { useAccount, useWriteContract, useSwitchChain } from 'wagmi';
 import type { EssentialDappsChainConfig } from 'types/client/marketplace';
 import type { AllowanceType } from 'types/client/revoke';
 
-import * as mixpanel from 'client/shared/analytics/mixpanel';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
+
+import * as mixpanel from 'client/shared/analytics/mixpanel';
+
 import useRewardsActivity from 'lib/hooks/useRewardsActivity';
 import { toaster } from 'toolkit/chakra/toaster';
 

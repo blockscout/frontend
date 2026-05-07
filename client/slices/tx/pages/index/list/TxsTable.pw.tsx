@@ -1,6 +1,7 @@
 import React from 'react';
 
 import * as txMock from 'client/slices/tx/mocks/tx';
+
 import { test, expect } from 'playwright/lib';
 import * as pwConfig from 'playwright/utils/config';
 

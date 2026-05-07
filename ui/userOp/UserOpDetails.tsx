@@ -6,11 +6,14 @@ import React from 'react';
 import type { UserOp } from 'types/api/userOps';
 
 import type { ResourceError } from 'client/api/resources';
-import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
+
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import AddressStringOrParam from 'client/slices/address/components/entity/AddressStringOrParam';
 import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
+
+import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
+
 import config from 'configs/app';
 import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
 import { Skeleton } from 'toolkit/chakra/skeleton';

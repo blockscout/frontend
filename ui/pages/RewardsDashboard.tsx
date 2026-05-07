@@ -2,6 +2,7 @@ import { Flex } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+
 import config from 'configs/app';
 import { useRewardsContext } from 'lib/contexts/rewards';
 import { Alert } from 'toolkit/chakra/alert';

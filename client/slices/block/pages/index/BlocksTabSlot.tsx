@@ -7,7 +7,9 @@ import type { PaginationParams } from 'ui/shared/pagination/types';
 import { route } from 'nextjs-routes';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
+
 import getChainUtilizationParams from 'client/shared/chain/get-chain-utilization-params';
+
 import { HOMEPAGE_STATS } from 'stubs/stats';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';

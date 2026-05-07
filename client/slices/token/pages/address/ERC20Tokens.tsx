@@ -5,6 +5,7 @@ import type { AddressTokenBalance } from 'client/slices/address/types/api';
 import type { PaginationParams } from 'ui/shared/pagination/types';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+
 import config from 'configs/app';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';

@@ -3,8 +3,10 @@ import React from 'react';
 
 import type { InteropTransactionInfo } from 'client/features/op-interop/types/api';
 
-import AddressEntityInterop from 'client/features/op-interop/components/AddressEntityInterop';
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+
+import AddressEntityInterop from 'client/features/op-interop/components/AddressEntityInterop';
+
 import config from 'configs/app';
 import { layerLabels } from 'lib/rollups/utils';
 import { CollapsibleDetails } from 'toolkit/chakra/collapsible';

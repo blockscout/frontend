@@ -6,6 +6,7 @@ import type { ChainInfo } from 'types/api/interop';
 import { route } from 'nextjs-routes';
 
 import * as AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+
 import { Image } from 'toolkit/chakra/image';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { distributeEntityProps } from 'ui/shared/entities/base/utils';

@@ -2,6 +2,7 @@ import { createPublicClient as createPublicClientDefault, http } from 'viem';
 import type { PublicClient } from 'viem';
 
 import { chains } from 'client/features/connect-wallet/utils/chains';
+
 import essentialDappsChainsConfig from 'configs/essential-dapps-chains';
 
 export default function createPublicClient(chainId: string | undefined): PublicClient | undefined {

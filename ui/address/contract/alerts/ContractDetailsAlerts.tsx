@@ -9,7 +9,9 @@ import type { SmartContract } from 'types/api/contract';
 import { route } from 'nextjs-routes';
 
 import useSocketMessage from 'client/api/socket/useSocketMessage';
+
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+
 import { Alert } from 'toolkit/chakra/alert';
 import { Link } from 'toolkit/chakra/link';
 

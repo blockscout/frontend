@@ -4,6 +4,7 @@ import type { InterchainMessage } from '@blockscout/interchain-indexer-types';
 import { MessageStatus } from '@blockscout/interchain-indexer-types';
 
 import TxEntityInterchain from 'client/slices/tx/components/entity/TxEntityInterchain';
+
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 import ChainLabel from 'ui/shared/externalChains/ChainLabel';
 import { Root, Item, Trigger, ItemContent, ItemBody, ItemRow } from 'ui/shared/lifecycle/LifecycleAccordion';

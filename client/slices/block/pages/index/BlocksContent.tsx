@@ -10,9 +10,12 @@ import { route } from 'nextjs/routes';
 import { getResourceKey } from 'client/api/hooks/useApiQuery';
 import useSocketChannel from 'client/api/socket/useSocketChannel';
 import useSocketMessage from 'client/api/socket/useSocketMessage';
-import useIsMobile from 'client/shared/hooks/useIsMobile';
+
 import BlocksList from 'client/slices/block/pages/index/BlocksList';
 import BlocksTable from 'client/slices/block/pages/index/BlocksTable';
+
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+
 import { useMultichainContext } from 'lib/contexts/multichain';
 import { Link } from 'toolkit/chakra/link';
 import ActionBar from 'ui/shared/ActionBar';

@@ -4,6 +4,7 @@ import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
 import TxsTabs, { getTabId } from 'client/slices/tx/pages/index/list/TxsTabs';
 import TxsStats from 'client/slices/tx/pages/index/stats/TxsStats';
+
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import PageTitle from 'ui/shared/Page/PageTitle';

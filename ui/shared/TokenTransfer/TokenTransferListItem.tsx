@@ -7,6 +7,7 @@ import type { ClusterChainConfig } from 'types/multichain';
 import AddressFromTo from 'client/slices/address/components/from-to/AddressFromTo';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import TxAdditionalInfo from 'client/slices/tx/components/TxAdditionalInfo';
+
 import { getTokenTypeName, isConfidentialTokenType } from 'lib/token/tokenTypes';
 import { Badge } from 'toolkit/chakra/badge';
 import { Skeleton } from 'toolkit/chakra/skeleton';

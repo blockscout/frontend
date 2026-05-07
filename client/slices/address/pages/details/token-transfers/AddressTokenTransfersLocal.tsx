@@ -4,7 +4,9 @@ import React from 'react';
 import type { TokenType } from 'types/api/token';
 
 import CsvExport from 'client/features/csv-export/components/CsvExport';
+
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+
 import { useMultichainContext } from 'lib/contexts/multichain';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';

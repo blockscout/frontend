@@ -4,6 +4,7 @@ import React from 'react';
 import type { OptimisticL2BlobTypeCelestia } from 'types/api/optimisticL2';
 
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
+
 import { layerLabels } from 'lib/rollups/utils';
 import CeleniumLink from 'ui/shared/batch/CeleniumLink';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';

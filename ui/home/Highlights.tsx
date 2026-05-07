@@ -7,6 +7,7 @@ import React from 'react';
 import type { HighlightsBannerConfig } from 'types/homepage';
 
 import useFetch from 'client/api/hooks/useFetch';
+
 import config from 'configs/app';
 import { HOMEPAGE_HIGHLIGHTS_BANNER } from 'stubs/homepage';
 

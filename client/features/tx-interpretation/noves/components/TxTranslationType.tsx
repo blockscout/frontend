@@ -3,6 +3,7 @@ import React from 'react';
 import type { TransactionType } from 'client/slices/tx/types/api';
 
 import TxType from 'client/slices/tx/components/TxType';
+
 import { Badge } from 'toolkit/chakra/badge';
 
 import { camelCaseToSentence } from '../utils/translation';

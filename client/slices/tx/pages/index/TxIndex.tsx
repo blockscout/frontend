@@ -1,6 +1,7 @@
 import React from 'react';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+
 import config from 'configs/app';
 import PageTitle from 'ui/shared/Page/PageTitle';
 

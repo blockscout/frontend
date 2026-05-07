@@ -4,9 +4,6 @@ import React from 'react';
 
 import type { PaginationParams } from 'ui/shared/pagination/types';
 
-import useIsMobile from 'client/shared/hooks/useIsMobile';
-import useIsMounted from 'client/shared/hooks/useIsMounted';
-import getQueryParamString from 'client/shared/router/get-query-param-string';
 import { ADDRESS_TOKEN_BALANCE_ERC_20 } from 'client/slices/address/stubs/address';
 import AddressCollections from 'client/slices/token/pages/address/AddressCollections';
 import AddressNftDisplayTypeRadio from 'client/slices/token/pages/address/AddressNftDisplayTypeRadio';
@@ -15,6 +12,11 @@ import AddressNftTypeFilter from 'client/slices/token/pages/address/AddressNftTy
 import ERC20Tokens from 'client/slices/token/pages/address/ERC20Tokens';
 import TokenBalances from 'client/slices/token/pages/address/TokenBalances';
 import useAddressNftQuery from 'client/slices/token/pages/address/useAddressNftQuery';
+
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+import useIsMounted from 'client/shared/hooks/useIsMounted';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
+
 import config from 'configs/app';
 import { generateListStub } from 'stubs/utils';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';

@@ -7,12 +7,15 @@ import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
-import throwOnAbsentParamError from 'client/shared/errors/throw-on-absent-param-error';
-import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
-import getQueryParamString from 'client/shared/router/get-query-param-string';
+
 import TxTokenTransfer from 'client/slices/tokens-transfer/pages/tx/TxTokenTransfer';
 import useTxQuery from 'client/slices/tx/hooks/useTxQuery';
 import TxLogs from 'client/slices/tx/pages/details/logs/TxLogs';
+
+import throwOnAbsentParamError from 'client/shared/errors/throw-on-absent-param-error';
+import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
+
 import { USER_OP } from 'stubs/userOps';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import TextAd from 'ui/shared/ad/TextAd';

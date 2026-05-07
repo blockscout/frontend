@@ -4,6 +4,7 @@ import type { Configuration } from 'rollbar';
 
 import { ABSENT_PARAM_ERROR_MESSAGE } from 'client/shared/errors/throw-on-absent-param-error';
 import { RESOURCE_LOAD_ERROR_MESSAGE } from 'client/shared/errors/throw-on-resource-load-error';
+
 import config from 'configs/app';
 
 import { isBot, isHeadlessBrowser, isNextJsChunkError, getRequestInfo, getExceptionClass, getExceptionOriginFileName } from './utils';

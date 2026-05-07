@@ -3,6 +3,7 @@ import React, { useCallback, useEffect } from 'react';
 import type { Screen } from 'ui/snippets/auth/types';
 
 import useWallet from 'client/features/connect-wallet/hooks/useWallet';
+
 import { useRewardsContext } from 'lib/contexts/rewards';
 import { DialogBody, DialogContent, DialogRoot, DialogHeader } from 'toolkit/chakra/dialog';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';

@@ -4,6 +4,7 @@ import React from 'react';
 import type { TokenHolder, TokenInfo } from 'types/api/token';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+
 import { hasTokenIds, isConfidentialTokenType } from 'lib/token/tokenTypes';
 import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';

@@ -5,11 +5,14 @@ import React from 'react';
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
-import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
-import getQueryParamString from 'client/shared/router/get-query-param-string';
+
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import AddressQrCode from 'client/slices/address/pages/details/info/AddressQrCode';
 import getCheckedSummedAddress from 'client/slices/address/utils/get-checked-summed-address';
+
+import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
+
 import * as contract from 'lib/multichain/contract';
 import { ADDRESS } from 'stubs/multichain';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';

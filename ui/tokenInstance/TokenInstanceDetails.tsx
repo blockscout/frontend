@@ -3,8 +3,10 @@ import React from 'react';
 
 import type { TokenInfo, TokenInstance } from 'types/api/token';
 
-import useIsMounted from 'client/shared/hooks/useIsMounted';
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+
+import useIsMounted from 'client/shared/hooks/useIsMounted';
+
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import AppActionButton from 'ui/shared/AppActionButton/AppActionButton';

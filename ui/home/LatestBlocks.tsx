@@ -7,9 +7,11 @@ import type { Block } from 'client/slices/block/types/api';
 import { route } from 'nextjs-routes';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
+
 import getChainUtilizationParams from 'client/shared/chain/get-chain-utilization-params';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import useInitialList from 'client/shared/lists/useInitialList';
+
 import config from 'configs/app';
 import { HOMEPAGE_STATS } from 'stubs/stats';
 import { Heading } from 'toolkit/chakra/heading';

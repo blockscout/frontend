@@ -4,6 +4,7 @@ import React from 'react';
 import PageNextJs from 'nextjs/PageNextJs';
 
 import ChainStatsIndex from 'client/features/chain-stats/pages/index/ChainStatsIndex';
+
 import config from 'configs/app';
 import MultichainStats from 'ui/multichain/stats/MultichainStats';
 

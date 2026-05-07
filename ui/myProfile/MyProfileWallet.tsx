@@ -5,6 +5,7 @@ import React from 'react';
 import type { UserInfo } from 'types/api/account';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+
 import config from 'configs/app';
 import { Button } from 'toolkit/chakra/button';
 import { Heading } from 'toolkit/chakra/heading';

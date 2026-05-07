@@ -4,6 +4,7 @@ import buildUrl from 'client/api/build-url';
 import { getResourceKey } from 'client/api/hooks/useApiQuery';
 import useFetch from 'client/api/hooks/useFetch';
 import isNeedProxy from 'client/api/is-need-proxy';
+
 import * as cookies from 'client/shared/storage/cookies';
 
 export default function useGetCsrfToken() {

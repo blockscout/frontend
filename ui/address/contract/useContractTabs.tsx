@@ -5,6 +5,7 @@ import type { Address } from 'client/slices/address/types/api';
 import type { ClusterChainConfig } from 'types/multichain';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
+
 import config from 'configs/app';
 import * as stubs from 'stubs/contract';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';

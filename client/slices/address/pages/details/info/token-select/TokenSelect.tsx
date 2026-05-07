@@ -9,10 +9,13 @@ import type { Address } from 'client/slices/address/types/api';
 import { route } from 'nextjs/routes';
 
 import { getResourceKey } from 'client/api/hooks/useApiQuery';
+
+import useFetchTokens from 'client/slices/token/pages/address/useFetchTokens';
+
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
-import useFetchTokens from 'client/slices/token/pages/address/useFetchTokens';
+
 import { useMultichainContext } from 'lib/contexts/multichain';
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { Link } from 'toolkit/chakra/link';

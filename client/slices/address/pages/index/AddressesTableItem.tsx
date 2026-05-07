@@ -5,6 +5,7 @@ import React from 'react';
 import type { AddressesItem } from 'client/slices/address/types/api';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';

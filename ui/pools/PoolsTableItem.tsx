@@ -3,8 +3,10 @@ import React from 'react';
 
 import type { Pool } from 'types/api/pools';
 
-import getItemIndex from 'client/shared/lists/get-item-index';
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+
+import getItemIndex from 'client/shared/lists/get-item-index';
+
 import getPoolLinks from 'lib/pools/getPoolLinks';
 import { Image } from 'toolkit/chakra/image';
 import { Link } from 'toolkit/chakra/link';

@@ -1,6 +1,7 @@
 import React from 'react';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+
 import { CollapsibleList } from 'toolkit/chakra/collapsible';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 

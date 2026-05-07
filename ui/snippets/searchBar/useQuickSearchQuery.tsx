@@ -1,8 +1,11 @@
 import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
-import useDebounce from 'client/shared/hooks/useDebounce';
+
 import { isBech32Address, fromBech32Address } from 'client/slices/address/utils/bech32';
+
+import useDebounce from 'client/shared/hooks/useDebounce';
+
 import config from 'configs/app';
 import multichainConfig from 'configs/multichain';
 import { getExternalSearchItem } from 'lib/search/externalSearch';

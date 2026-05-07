@@ -2,6 +2,7 @@ import type { Locator } from '@playwright/test';
 import React from 'react';
 
 import * as blockMock from 'client/slices/block/mocks/block';
+
 import * as statsMock from 'mocks/stats/index';
 import { test, expect } from 'playwright/lib';
 

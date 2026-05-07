@@ -6,6 +6,7 @@ import type { FormattedData } from './types';
 
 import type { Sort } from 'client/slices/token/pages/address/utils';
 import { getSortingFn, sortTokenGroups } from 'client/slices/token/pages/address/utils';
+
 import { getTokenTypeName } from 'lib/token/tokenTypes';
 import { Link } from 'toolkit/chakra/link';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';

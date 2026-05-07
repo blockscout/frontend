@@ -5,6 +5,7 @@ import type { Props as PageProps } from 'nextjs/getServerSideProps/handlers';
 
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 import useIsMounted from 'client/shared/hooks/useIsMounted';
+
 import useAdblockDetect from 'lib/hooks/useAdblockDetect';
 import useGetCsrfToken from 'lib/hooks/useGetCsrfToken';
 import useNotifyOnNavigation from 'lib/hooks/useNotifyOnNavigation';

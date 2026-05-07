@@ -3,9 +3,11 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import { ADDRESS_MUD_TABLE_ITEM } from 'client/features/chain-variants/mud/stubs/address';
+
 import useDebounce from 'client/shared/hooks/useDebounce';
 import useIsInitialLoading from 'client/shared/hooks/useIsInitialLoading';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
+
 import { generateListStub } from 'stubs/utils';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';

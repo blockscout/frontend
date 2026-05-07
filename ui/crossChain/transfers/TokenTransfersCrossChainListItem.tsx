@@ -5,6 +5,7 @@ import type { InterchainTransfer } from '@blockscout/interchain-indexer-types';
 
 import AddressEntityInterchain from 'client/slices/address/components/entity/AddressEntityInterchain';
 import TxEntityInterchain from 'client/slices/tx/components/entity/TxEntityInterchain';
+
 import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';
 import { Skeleton } from 'toolkit/chakra/skeleton';

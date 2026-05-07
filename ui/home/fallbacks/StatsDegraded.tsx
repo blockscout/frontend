@@ -4,6 +4,7 @@ import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import { publicClient } from 'client/features/connect-wallet/utils/public-client';
+
 import dayjs from 'lib/date/dayjs';
 import { mdash } from 'toolkit/utils/htmlEntities';
 import FallbackRpcIcon from 'ui/shared/fallbacks/FallbackRpcIcon';

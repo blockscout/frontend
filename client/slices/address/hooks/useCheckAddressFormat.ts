@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import { fromBech32Address, isBech32Address } from 'client/slices/address/utils/bech32';
+
 import config from 'configs/app';
 
 export default function useCheckAddressFormat(hash: string) {

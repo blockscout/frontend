@@ -5,6 +5,7 @@ import React from 'react';
 import type { ZetaChainCCTXFilterParams } from 'types/client/zetaChain';
 
 import shortenString from 'client/shared/text/shorten-string';
+
 import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';
 import { Link } from 'toolkit/chakra/link';

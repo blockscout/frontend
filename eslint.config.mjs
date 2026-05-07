@@ -420,8 +420,11 @@ export default tseslint.config(
             'module',
             '/types/',
             [ '/^nextjs/' ],
+            [ '/^client/api/' ],
+            [ '/^client/slices/' ],
+            [ '/^client/features/' ],
+            [ '/^client/shared/' ],
             [
-              '/^client/',
               '/^configs/',
               '/^data/',
               '/^deploy/',

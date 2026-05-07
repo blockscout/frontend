@@ -9,6 +9,7 @@ import { route } from 'nextjs-routes';
 // import searchIcon from 'icons/search.svg';
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
+
 import { Alert } from 'toolkit/chakra/alert';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';

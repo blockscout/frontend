@@ -7,10 +7,14 @@ import type { BlockWithdrawalsResponse } from 'client/features/chain-variants/be
 
 import { retry } from 'client/api/hooks/useQueryClientConfig';
 import type { ResourceError } from 'client/api/resources';
-import { publicClient } from 'client/features/connect-wallet/utils/public-client';
-import hexToDecimal from 'client/shared/transformers/hex-to-decimal';
+
 import { unknownAddress } from 'client/slices/address/utils/consts';
 import type { BlockQuery } from 'client/slices/block/hooks/useBlockQuery';
+
+import { publicClient } from 'client/features/connect-wallet/utils/public-client';
+
+import hexToDecimal from 'client/shared/transformers/hex-to-decimal';
+
 import config from 'configs/app';
 import { GET_BLOCK } from 'stubs/RPC';
 import { generateListStub } from 'stubs/utils';

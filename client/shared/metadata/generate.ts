@@ -5,6 +5,7 @@ import type { Route } from 'nextjs-routes';
 
 import getChainTitle from 'client/shared/chain/get-chain-title';
 import { currencyUnits } from 'client/shared/chain/units';
+
 import config from 'configs/app';
 
 import compileValue from './compile-value';

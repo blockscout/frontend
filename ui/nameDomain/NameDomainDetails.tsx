@@ -7,7 +7,9 @@ import * as bens from '@blockscout/bens-types';
 import { route } from 'nextjs-routes';
 
 import type { ResourceError } from 'client/api/resources';
+
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+
 import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';

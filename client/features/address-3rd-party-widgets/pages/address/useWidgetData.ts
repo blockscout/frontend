@@ -1,6 +1,7 @@
 import { get } from 'es-toolkit/compat';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
+
 import config from 'configs/app';
 
 const RESOURCE_NAME = 'general:address_3rd_party_info';

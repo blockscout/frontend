@@ -4,6 +4,7 @@ import React from 'react';
 import type { VerifiedContractsFilter as TVerifiedContractsFilter } from 'types/api/contracts';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
+
 import formatLanguageName from 'lib/contracts/formatLanguageName';
 import type { SelectOption } from 'toolkit/chakra/select';
 import PopoverFilterRadio from 'ui/shared/filters/PopoverFilterRadio';

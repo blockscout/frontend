@@ -4,8 +4,10 @@ import React from 'react';
 import type { StatsBridgedTokenItem, StatsBridgedTokenRow } from '@blockscout/interchain-indexer-types';
 import type { TokenInfo } from 'types/api/token';
 
-import getItemIndex from 'client/shared/lists/get-item-index';
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+
+import getItemIndex from 'client/shared/lists/get-item-index';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';

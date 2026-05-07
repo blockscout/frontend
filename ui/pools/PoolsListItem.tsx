@@ -3,6 +3,7 @@ import React from 'react';
 import type { Pool } from 'types/api/pools';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+
 import getPoolLinks from 'lib/pools/getPoolLinks';
 import { Image } from 'toolkit/chakra/image';
 import { Link } from 'toolkit/chakra/link';

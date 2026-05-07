@@ -7,12 +7,14 @@ import type { SearchResultItem } from 'types/client/search';
 
 import { route } from 'nextjs-routes';
 
-import * as mixpanel from 'client/shared/analytics/mixpanel';
-import highlightText from 'client/shared/text/highlight-text';
 import * as AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import { toBech32Address } from 'client/slices/address/utils/bech32';
 import * as BlockEntity from 'client/slices/block/components/entity/BlockEntity';
 import * as TxEntity from 'client/slices/tx/components/entity/TxEntity';
+
+import * as mixpanel from 'client/shared/analytics/mixpanel';
+import highlightText from 'client/shared/text/highlight-text';
+
 import dayjs from 'lib/date/dayjs';
 import { saveToRecentKeywords } from 'lib/recentSearchKeywords';
 import { useColorMode } from 'toolkit/chakra/color-mode';

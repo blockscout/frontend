@@ -4,8 +4,10 @@ import React from 'react';
 import type { CctxListItem } from '@blockscout/zetachain-cctx-types';
 import type { ZetaChainCCTXFilterParams } from 'types/client/zetaChain';
 
-import useInitialList from 'client/shared/lists/useInitialList';
 import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
+
+import useInitialList from 'client/shared/lists/useInitialList';
+
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';

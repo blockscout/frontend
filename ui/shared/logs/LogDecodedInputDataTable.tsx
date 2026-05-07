@@ -5,6 +5,7 @@ import type { DecodedInput } from 'client/slices/log/types/api';
 import type { ArrayElement } from 'types/utils';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';

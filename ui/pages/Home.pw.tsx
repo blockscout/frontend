@@ -4,6 +4,7 @@ import type { PublicRpcSchema, RpcTransaction } from 'viem';
 
 import * as blockMock from 'client/slices/block/mocks/block';
 import * as txMock from 'client/slices/tx/mocks/tx';
+
 import config from 'configs/app';
 import * as dailyTxsMock from 'mocks/stats/daily_txs';
 import * as statsMock from 'mocks/stats/index';

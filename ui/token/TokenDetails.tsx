@@ -9,9 +9,12 @@ import type { TokenInfo } from 'types/api/token';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 import type { ResourceError } from 'client/api/resources';
+
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import useIsMounted from 'client/shared/hooks/useIsMounted';
-import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+
 import config from 'configs/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import { isConfidentialTokenType } from 'lib/token/tokenTypes';

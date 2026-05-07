@@ -6,7 +6,9 @@ import { NETWORK_GROUPS } from 'types/networks';
 
 import useFetch from 'client/api/hooks/useFetch';
 import type { ResourceError } from 'client/api/resources';
+
 import * as mixpanel from 'client/shared/analytics/mixpanel';
+
 import config from 'configs/app';
 import multichainConfig from 'configs/multichain';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';

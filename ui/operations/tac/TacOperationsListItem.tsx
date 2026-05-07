@@ -3,6 +3,7 @@ import React from 'react';
 import type * as tac from '@blockscout/tac-operation-lifecycle-types';
 
 import AddressEntityTacTon from 'client/features/chain-variants/tac/components/AddressEntityTacTon';
+
 import OperationEntity from 'ui/shared/entities/operation/OperationEntity';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 import TacOperationStatus from 'ui/shared/statusTag/TacOperationStatus';

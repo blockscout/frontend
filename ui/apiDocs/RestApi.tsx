@@ -3,6 +3,7 @@ import React from 'react';
 import { route } from 'nextjs-routes';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
+
 import config from 'configs/app';
 import { AccordionItem, AccordionItemContent, AccordionItemTrigger, AccordionRoot, useAccordion } from 'toolkit/chakra/accordion';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';

@@ -7,6 +7,7 @@ import type { TokenType } from 'types/api/token';
 import useDebounce from 'client/shared/hooks/useDebounce';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
+
 import multichainConfig from 'configs/multichain';
 import { TOKEN } from 'stubs/multichain';
 import { generateListStub } from 'stubs/utils';

@@ -2,11 +2,14 @@ import { HStack } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import TxsWithApiSorting from 'client/slices/tx/pages/index/list/TxsWithApiSorting';
+
 import CsvExport from 'client/features/csv-export/components/CsvExport';
+
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import useIsMounted from 'client/shared/hooks/useIsMounted';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
-import TxsWithApiSorting from 'client/slices/tx/pages/index/list/TxsWithApiSorting';
+
 import config from 'configs/app';
 import { INTERCHAIN_MESSAGE } from 'stubs/interchainIndexer';
 import { generateListStub } from 'stubs/utils';

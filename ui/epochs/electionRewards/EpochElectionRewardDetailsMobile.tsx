@@ -5,8 +5,10 @@ import React from 'react';
 import type { CeloEpochDetails } from 'types/api/epochs';
 import type { TokenInfo } from 'types/api/token';
 
-import getQueryParamString from 'client/shared/router/get-query-param-string';
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+
+import getQueryParamString from 'client/shared/router/get-query-param-string';
+
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 import useLazyLoadedList from 'ui/shared/pagination/useLazyLoadedList';
 import TokenValue from 'ui/shared/value/TokenValue';

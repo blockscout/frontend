@@ -3,6 +3,7 @@ import React from 'react';
 import type * as tac from '@blockscout/tac-operation-lifecycle-types';
 
 import AddressEntityTacTon from 'client/features/chain-variants/tac/components/AddressEntityTacTon';
+
 import { sortStatusHistory } from 'lib/operations/tac';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';

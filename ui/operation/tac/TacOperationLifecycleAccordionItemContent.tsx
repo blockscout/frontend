@@ -3,8 +3,10 @@ import React from 'react';
 
 import * as tac from '@blockscout/tac-operation-lifecycle-types';
 
-import TxEntityTon from 'client/features/chain-variants/tac/components/TxEntityTon';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
+
+import TxEntityTon from 'client/features/chain-variants/tac/components/TxEntityTon';
+
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 import { ItemContent, ItemBody, ItemRow } from 'ui/shared/lifecycle/LifecycleAccordion';
 import StatusTag from 'ui/shared/statusTag/StatusTag';

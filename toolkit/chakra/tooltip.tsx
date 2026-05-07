@@ -3,6 +3,7 @@ import { useClickAway } from '@uidotdev/usehooks';
 import * as React from 'react';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+
 import config from 'configs/app';
 
 export interface TooltipProps extends ChakraTooltip.RootProps {

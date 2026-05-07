@@ -6,6 +6,7 @@ import type { InterchainTransfer } from '@blockscout/interchain-indexer-types';
 import AddressEntityInterchain from 'client/slices/address/components/entity/AddressEntityInterchain';
 import AddressFromToIcon from 'client/slices/address/components/from-to/AddressFromToIcon';
 import TxEntityInterchain from 'client/slices/tx/components/entity/TxEntityInterchain';
+
 import config from 'configs/app';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { mdash } from 'toolkit/utils/htmlEntities';

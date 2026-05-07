@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import getQueryParamString from 'client/shared/router/get-query-param-string';
+
 import config from 'configs/app';
 
 export default function useNotifyOnNavigation() {

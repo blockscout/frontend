@@ -4,6 +4,7 @@ import React from 'react';
 import type { Transaction } from 'client/slices/tx/types/api';
 
 import { currencyUnits } from 'client/shared/chain/units';
+
 import config from 'configs/app';
 import { ZERO } from 'toolkit/utils/consts';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';

@@ -7,7 +7,9 @@ import type { OptimismL2TxnBatch } from 'types/api/optimisticL2';
 import { route } from 'nextjs-routes';
 
 import type { ResourceError } from 'client/api/resources';
+
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
+
 import { layerLabels } from 'lib/rollups/utils';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';

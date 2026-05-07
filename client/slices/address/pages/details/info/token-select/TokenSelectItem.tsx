@@ -5,6 +5,7 @@ import React from 'react';
 import { route } from 'nextjs/routes';
 
 import type { TokenEnhancedData } from 'client/slices/token/pages/address/utils';
+
 import config from 'configs/app';
 import multichainConfig from 'configs/multichain';
 import { isConfidentialTokenType, isFungibleTokenType } from 'lib/token/tokenTypes';

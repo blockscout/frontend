@@ -3,10 +3,13 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
-import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
-import getQueryParamString from 'client/shared/router/get-query-param-string';
+
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import * as addressStubs from 'client/slices/address/stubs/address';
+
+import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
+
 import config from 'configs/app';
 import getPoolLinks from 'lib/pools/getPoolLinks';
 import { getPoolTitle } from 'lib/pools/getPoolTitle';

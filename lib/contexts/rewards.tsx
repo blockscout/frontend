@@ -9,13 +9,16 @@ import type * as rewards from '@blockscout/points-types';
 import useApiFetch from 'client/api/hooks/useApiFetch';
 import useApiQuery, { getResourceKey } from 'client/api/hooks/useApiQuery';
 import type { ResourceError } from 'client/api/resources';
+
 import useAccount from 'client/features/connect-wallet/hooks/useAccount';
+
 import decodeJWT from 'client/shared/auth/decode-jwt';
 import getErrorMessage from 'client/shared/errors/get-error-message';
 import getErrorObjPayload from 'client/shared/errors/get-error-obj-payload';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import removeQueryParam from 'client/shared/router/remove-query-param';
 import * as cookies from 'client/shared/storage/cookies';
+
 import config from 'configs/app';
 import { toaster } from 'toolkit/chakra/toaster';
 import { YEAR } from 'toolkit/utils/consts';

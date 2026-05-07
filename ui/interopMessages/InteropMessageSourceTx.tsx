@@ -2,9 +2,10 @@ import React from 'react';
 
 import type { ChainInfo } from 'types/api/interop';
 
-import TxEntityInterop from 'client/features/op-interop/components/TxEntityInterop';
 import type { EntityProps } from 'client/slices/tx/components/entity/TxEntity';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
+
+import TxEntityInterop from 'client/features/op-interop/components/TxEntityInterop';
 
 type Props = {
   init_transaction_hash?: string | null;

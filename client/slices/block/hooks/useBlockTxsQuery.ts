@@ -7,10 +7,14 @@ import type { BlockTransactionsResponse } from 'client/slices/block/types/api';
 
 import { retry } from 'client/api/hooks/useQueryClientConfig';
 import type { ResourceError } from 'client/api/resources';
-import { publicClient } from 'client/features/connect-wallet/utils/public-client';
-import hexToDecimal from 'client/shared/transformers/hex-to-decimal';
+
 import { unknownAddress } from 'client/slices/address/utils/consts';
 import { TX } from 'client/slices/tx/stubs/tx';
+
+import { publicClient } from 'client/features/connect-wallet/utils/public-client';
+
+import hexToDecimal from 'client/shared/transformers/hex-to-decimal';
+
 import dayjs from 'lib/date/dayjs';
 import { GET_BLOCK_WITH_TRANSACTIONS } from 'stubs/RPC';
 import { generateListStub } from 'stubs/utils';

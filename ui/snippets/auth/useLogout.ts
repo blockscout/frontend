@@ -6,8 +6,10 @@ import type { Route } from 'nextjs-routes';
 
 import useApiFetch from 'client/api/hooks/useApiFetch';
 import { getResourceKey } from 'client/api/hooks/useApiQuery';
+
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 import * as cookies from 'client/shared/storage/cookies';
+
 import config from 'configs/app';
 import { useRewardsContext } from 'lib/contexts/rewards';
 import { toaster } from 'toolkit/chakra/toaster';

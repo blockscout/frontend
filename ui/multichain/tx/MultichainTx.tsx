@@ -1,8 +1,10 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import getQueryParamString from 'client/shared/router/get-query-param-string';
 import Transaction from 'client/slices/tx/pages/details/Transaction';
+
+import getQueryParamString from 'client/shared/router/get-query-param-string';
+
 import multichainConfig from 'configs/multichain';
 import { MultichainProvider } from 'lib/contexts/multichain';
 

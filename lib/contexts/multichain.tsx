@@ -4,6 +4,7 @@ import React from 'react';
 import type { ClusterChainConfig } from 'types/multichain';
 
 import getQueryParamString from 'client/shared/router/get-query-param-string';
+
 import multichainConfig from 'configs/multichain';
 import getChainIdFromSlugOrId from 'lib/multichain/getChainIdFromSlugOrId';
 

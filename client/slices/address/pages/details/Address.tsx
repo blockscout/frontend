@@ -8,26 +8,7 @@ import type { EntityTag } from 'ui/shared/EntityTags/types';
 import useApiQuery from 'client/api/hooks/useApiQuery';
 import useSocketChannel from 'client/api/socket/useSocketChannel';
 import useSocketMessage from 'client/api/socket/useSocketMessage';
-import AddressFavoriteButton from 'client/features/account/pages/address/AddressFavoriteButton';
-import Address3rdPartyWidgets from 'client/features/address-3rd-party-widgets/pages/address/Address3rdPartyWidgets';
-import useAddress3rdPartyWidgets from 'client/features/address-3rd-party-widgets/pages/address/useAddress3rdPartyWidgets';
-import useAddressMetadataInfoQuery from 'client/features/address-metadata/hooks/useAddressMetadataInfoQuery';
-import useAddressMetadataInitUpdate from 'client/features/address-metadata/hooks/useAddressMetadataInitUpdate';
-import useAddressProfileApiQuery from 'client/features/address-profile-api/hooks/useAddressProfileApiQuery';
-import AddressDeposits from 'client/features/chain-variants/beacon-chain/pages/address/AddressDeposits';
-import AddressEpochRewards from 'client/features/chain-variants/celo/pages/address/AddressEpochRewards';
-import AddressMud from 'client/features/chain-variants/mud/pages/address/AddressMud';
-import AddressMultichainInfoButton from 'client/features/multichain-button/pages/address/AddressMultichainInfoButton';
-import AddressClusters from 'client/features/name-services/clusters/pages/address/AddressClusters';
-import useCheckDomainNameParam from 'client/features/name-services/domains/hooks/useCheckDomainNameParam';
-import AddressEnsDomains from 'client/features/name-services/domains/pages/address/AddressEnsDomains';
-import SolidityscanReport from 'client/features/solidity-scan/components/SolidityscanReport';
-import AddressAccountHistory from 'client/features/tx-interpretation/noves/pages/address/AddressAccountHistory';
-import AddressUserOps from 'client/features/user-ops/pages/address/AddressUserOps';
-import TokenAddToWallet from 'client/features/web3-wallet/components/TokenAddToWallet';
-import getChainValidationActionText from 'client/shared/chain/get-chain-validation-action-text';
-import getQueryParamString from 'client/shared/router/get-query-param-string';
-import useEtherscanRedirects from 'client/shared/router/useEtherscanRedirects';
+
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import useAddressCountersQuery from 'client/slices/address/hooks/useAddressCountersQuery';
 import useAddressQuery from 'client/slices/address/hooks/useAddressQuery';
@@ -45,6 +26,29 @@ import AddressTxs, { ADDRESS_TXS_TAB_IDS } from 'client/slices/address/pages/det
 import AddressWithdrawals from 'client/slices/address/pages/details/withdrawals/AddressWithdrawals';
 import { ADDRESS_TABS_COUNTERS } from 'client/slices/address/stubs/address';
 import getCheckedSummedAddress from 'client/slices/address/utils/get-checked-summed-address';
+
+import AddressFavoriteButton from 'client/features/account/pages/address/AddressFavoriteButton';
+import Address3rdPartyWidgets from 'client/features/address-3rd-party-widgets/pages/address/Address3rdPartyWidgets';
+import useAddress3rdPartyWidgets from 'client/features/address-3rd-party-widgets/pages/address/useAddress3rdPartyWidgets';
+import useAddressMetadataInfoQuery from 'client/features/address-metadata/hooks/useAddressMetadataInfoQuery';
+import useAddressMetadataInitUpdate from 'client/features/address-metadata/hooks/useAddressMetadataInitUpdate';
+import useAddressProfileApiQuery from 'client/features/address-profile-api/hooks/useAddressProfileApiQuery';
+import AddressDeposits from 'client/features/chain-variants/beacon-chain/pages/address/AddressDeposits';
+import AddressEpochRewards from 'client/features/chain-variants/celo/pages/address/AddressEpochRewards';
+import AddressMud from 'client/features/chain-variants/mud/pages/address/AddressMud';
+import AddressMultichainInfoButton from 'client/features/multichain-button/pages/address/AddressMultichainInfoButton';
+import AddressClusters from 'client/features/name-services/clusters/pages/address/AddressClusters';
+import useCheckDomainNameParam from 'client/features/name-services/domains/hooks/useCheckDomainNameParam';
+import AddressEnsDomains from 'client/features/name-services/domains/pages/address/AddressEnsDomains';
+import SolidityscanReport from 'client/features/solidity-scan/components/SolidityscanReport';
+import AddressAccountHistory from 'client/features/tx-interpretation/noves/pages/address/AddressAccountHistory';
+import AddressUserOps from 'client/features/user-ops/pages/address/AddressUserOps';
+import TokenAddToWallet from 'client/features/web3-wallet/components/TokenAddToWallet';
+
+import getChainValidationActionText from 'client/shared/chain/get-chain-validation-action-text';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
+import useEtherscanRedirects from 'client/shared/router/useEtherscanRedirects';
+
 import config from 'configs/app';
 import { useAddressClusters } from 'lib/clusters/useAddressClusters';
 import useIsSafeAddress from 'lib/hooks/useIsSafeAddress';

@@ -12,6 +12,7 @@ import BlockGasUsed from 'client/slices/block/components/BlockGasUsed';
 import BlockPendingUpdateHint from 'client/slices/block/components/BlockPendingUpdateHint';
 import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
 import getBlockTotalReward from 'client/slices/block/utils/get-block-total-reward';
+
 import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';

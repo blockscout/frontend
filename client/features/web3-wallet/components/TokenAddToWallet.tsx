@@ -9,6 +9,7 @@ import useIsMobile from 'client/shared/hooks/useIsMobile';
 import useProvider from 'client/shared/web3/useProvider';
 import useSwitchOrAddChain from 'client/shared/web3/useSwitchOrAddChain';
 import { WALLETS_INFO } from 'client/shared/web3/wallets';
+
 import config from 'configs/app';
 import useRewardsActivity from 'lib/hooks/useRewardsActivity';
 import { IconButton } from 'toolkit/chakra/icon-button';

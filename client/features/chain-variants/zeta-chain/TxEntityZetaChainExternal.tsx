@@ -6,6 +6,7 @@ import type { ExternalChain } from 'types/externalChains';
 import { route } from 'nextjs/routes';
 
 import * as TxEntity from 'client/slices/tx/components/entity/TxEntity';
+
 import useZetaChainConfig from 'ui/zetaChain/useZetaChainConfig';
 
 type Props = {

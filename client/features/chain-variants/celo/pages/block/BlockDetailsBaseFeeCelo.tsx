@@ -7,6 +7,7 @@ import type { TokenInfo } from 'types/api/token';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import AddressFromTo from 'client/slices/address/components/from-to/AddressFromTo';
+
 import { Link } from 'toolkit/chakra/link';
 import { ZERO_ADDRESS } from 'toolkit/utils/consts';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
