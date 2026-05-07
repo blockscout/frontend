@@ -12,9 +12,9 @@ import IconSvg from 'ui/shared/IconSvg';
 import NativeTokenIcon from 'ui/shared/NativeTokenIcon';
 import calculateUsdValue from 'ui/shared/value/calculateUsdValue';
 
-import { getTokensTotalInfo } from './token-utils';
 import TokenBalancesItem from './TokenBalancesItem';
 import useFetchTokens from './useFetchTokens';
+import { getTokensTotalInfo } from './utils';
 
 const TokenBalances = () => {
   const router = useRouter();

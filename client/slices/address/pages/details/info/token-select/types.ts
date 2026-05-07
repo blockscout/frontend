@@ -1,4 +1,4 @@
-import type { TokenEnhancedData } from '../../tokens/token-utils';
+import type { TokenEnhancedData } from 'client/slices/token/pages/address/utils';
 
 export type FormattedData = Record<string, FormattedDataItem>;
 

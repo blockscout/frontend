@@ -8,19 +8,18 @@ import useIsMobile from 'client/shared/hooks/useIsMobile';
 import useIsMounted from 'client/shared/hooks/useIsMounted';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import { ADDRESS_TOKEN_BALANCE_ERC_20 } from 'client/slices/address/stubs/address';
+import AddressCollections from 'client/slices/token/pages/address/AddressCollections';
+import AddressNftDisplayTypeRadio from 'client/slices/token/pages/address/AddressNftDisplayTypeRadio';
+import AddressNFTs from 'client/slices/token/pages/address/AddressNFTs';
+import AddressNftTypeFilter from 'client/slices/token/pages/address/AddressNftTypeFilter';
+import ERC20Tokens from 'client/slices/token/pages/address/ERC20Tokens';
+import TokenBalances from 'client/slices/token/pages/address/TokenBalances';
+import useAddressNftQuery from 'client/slices/token/pages/address/useAddressNftQuery';
 import config from 'configs/app';
 import { generateListStub } from 'stubs/utils';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
-
-import AddressCollections from './AddressCollections';
-import AddressNftDisplayTypeRadio from './AddressNftDisplayTypeRadio';
-import AddressNFTs from './AddressNFTs';
-import AddressNftTypeFilter from './AddressNftTypeFilter';
-import ERC20Tokens from './ERC20Tokens';
-import TokenBalances from './TokenBalances';
-import useAddressNftQuery from './useAddressNftQuery';
 
 const TAB_LIST_PROPS = {
   mt: 1,

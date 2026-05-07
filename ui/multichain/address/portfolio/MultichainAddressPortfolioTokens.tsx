@@ -11,7 +11,7 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 import useDebounce from 'client/shared/hooks/useDebounce';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import * as cookies from 'client/shared/storage/cookies';
-import { calculateUsdValue } from 'client/slices/address/pages/details/tokens/token-utils';
+import { calculateUsdValue } from 'client/slices/token/pages/address/utils';
 import multichainConfig from 'configs/multichain';
 import { ADDRESS_PORTFOLIO, TOKEN } from 'stubs/multichain';
 import { generateListStub } from 'stubs/utils';

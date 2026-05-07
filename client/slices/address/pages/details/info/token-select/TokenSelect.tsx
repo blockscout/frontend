@@ -12,6 +12,7 @@ import { getResourceKey } from 'client/api/hooks/useApiQuery';
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
+import useFetchTokens from 'client/slices/token/pages/address/useFetchTokens';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { Link } from 'toolkit/chakra/link';
@@ -19,7 +20,6 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import IconSvg from 'ui/shared/IconSvg';
 
-import useFetchTokens from '../../tokens/useFetchTokens';
 import TokenSelectDesktop from './TokenSelectDesktop';
 import TokenSelectMobile from './TokenSelectMobile';
 

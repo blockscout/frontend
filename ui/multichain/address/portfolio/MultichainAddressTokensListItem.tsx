@@ -2,7 +2,7 @@ import { Grid } from '@chakra-ui/react';
 import { BigNumber } from 'bignumber.js';
 import React from 'react';
 
-import type { AddressTokensErc20Item } from 'client/slices/address/pages/details/tokens/types';
+import type { AddressTokensErc20Item } from 'client/slices/token/pages/address/types';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import multichainConfig from 'configs/multichain';
