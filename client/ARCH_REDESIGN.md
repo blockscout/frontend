@@ -114,7 +114,7 @@ client/api/
 
 **Classification criterion:** *"Can this area exist on a vanilla EVM chain with no feature flag?"* Yes → slice. No (requires a `configs/app/features` flag) → feature.
 
-**Confirmed slices (non-exhaustive):** `tx`, `block`, `search`, `token`, `address`, `contract`, `internal-tx`, `home`, `token`,  `token-instance` (rename to `nft`), `log` …
+**Confirmed slices (non-exhaustive):** `tx`, `block`, `search`, `token`, `address`, `contract`, `internal-tx`, `home`, `token`, `token-transfer`, `log` …
 
 - **`contract` (slice):** **Contract verification** and **SolidityScan** (`lib/solidityScan/`) are **slice** concerns (available on any chain).
 - **`internal-tx` (slice):** Own slice; **`tx`** composes **internal-tx** components (e.g. tab content). Prefer **no imports** from `internal-tx` back into `tx` to avoid cycles; share via **`client/shared`** or a **thin types-only surface** if needed.

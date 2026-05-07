@@ -8,7 +8,7 @@ import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
-import TxTokenTransfer from 'client/slices/tokens-transfer/pages/tx/TxTokenTransfer';
+import TxTokenTransfer from 'client/slices/token-transfer/pages/tx/TxTokenTransfer';
 import useTxQuery from 'client/slices/tx/hooks/useTxQuery';
 import TxLogs from 'client/slices/tx/pages/details/logs/TxLogs';
 

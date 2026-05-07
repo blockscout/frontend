@@ -110,7 +110,7 @@ Each slice follows the template established in 2-1.
 **Scope:** `lib/search/`, `ui/snippets/searchBar/`, `lib/recentSearchKeywords.ts`, related types/mocks/stubs → `client/slices/search/`  
 
 ### 3-4 · [ ] Slice: `token`
-**Scope:** `lib/token/`, `ui/token/**`, related types/mocks/stubs → `client/slices/token/`  
+**Scope:** `lib/token/`, `ui/token/**`, `ui/tokens/**`, `ui/tokenInstance/**`, related types/mocks/stubs → `client/slices/token/`  
 
 ### 3-5 · [ ] Slice: `contract`
 **Scope:** `lib/contracts/`, `lib/solidityScan/`, `ui/contract/**`, related types/mocks/stubs → `client/slices/contract/`  
@@ -121,14 +121,11 @@ Each slice follows the template established in 2-1.
 ### 3-7 · [ ] Slice: `home`
 **Scope:** `ui/home/**`, related types/mocks/stubs → `client/slices/home/`  
 
-### 3-8 · [ ] Slice: `tokens` (token list)
-**Scope:** `ui/tokens/**`, related types/mocks/stubs → `client/slices/tokens/`  
+### 3-8 · [ ] Slice: `log`
+**Scope:** `ui/shared/log/**`, related types/mocks/stubs → `client/slices/log/`
 
-### 3-9 · [ ] Slice: `token-instance`
-**Scope:** `ui/tokenInstance/**`, related types/mocks/stubs → `client/slices/nft/` 
-
-### 3-10 · [ ] Slice: `log`
-**Scope:** `ui/shared/log/**`, related types/mocks/stubs → `client/slices/log/`  
+### 3-8 · [ ] Slice: `token-transfer`
+**Scope:** TBD
 
 ---
 

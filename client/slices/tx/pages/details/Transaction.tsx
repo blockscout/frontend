@@ -6,7 +6,7 @@ import type { EntityTag as TEntityTag } from 'ui/shared/EntityTags/types';
 
 import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
 import TxInternals from 'client/slices/internal-tx/pages/tx/TxInternals';
-import TxTokenTransfer from 'client/slices/tokens-transfer/pages/tx/TxTokenTransfer';
+import TxTokenTransfer from 'client/slices/token-transfer/pages/tx/TxTokenTransfer';
 import useTxQuery from 'client/slices/tx/hooks/useTxQuery';
 
 import TxDetailsWrapped from 'client/features/chain-variants/suave/pages/tx/TxDetailsWrapped';

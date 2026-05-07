@@ -3,6 +3,7 @@ import React from 'react';
 
 import type { TokenType } from 'types/api/token';
 
+import AddressAdvancedFilterLink from 'client/features/advanced-filter/components/AddressAdvancedFilterLink';
 import CsvExport from 'client/features/csv-export/components/CsvExport';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
@@ -17,7 +18,6 @@ import TokenTransferFilter from 'ui/shared/TokenTransfer/TokenTransferFilter';
 import TokenTransferList from 'ui/shared/TokenTransfer/TokenTransferList';
 import TokenTransferTable from 'ui/shared/TokenTransfer/TokenTransferTable';
 
-import AddressAdvancedFilterLink from '../txs/AddressAdvancedFilterLink';
 import type { Filters } from './useAddressTokenTransfersQuery';
 import useAddressTokenTransfersSocket from './useAddressTokenTransfersSocket';
 

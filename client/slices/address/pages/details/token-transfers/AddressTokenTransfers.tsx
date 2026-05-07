@@ -2,6 +2,7 @@ import { HStack } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import AddressAdvancedFilterLink from 'client/features/advanced-filter/components/AddressAdvancedFilterLink';
 import CsvExport from 'client/features/csv-export/components/CsvExport';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
@@ -18,7 +19,6 @@ import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import TokenTransferFilter from 'ui/shared/TokenTransfer/TokenTransferFilter';
 
-import AddressAdvancedFilterLink from '../txs/AddressAdvancedFilterLink';
 import AddressTokenTransfersLocal from './AddressTokenTransfersLocal';
 import useAddressTokenTransfersQuery from './useAddressTokenTransfersQuery';
 
