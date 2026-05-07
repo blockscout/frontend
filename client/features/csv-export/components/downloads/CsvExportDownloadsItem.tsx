@@ -27,7 +27,6 @@ interface Props {
   data: StorageItem;
 }
 
-// TODO @tom2drum check downloads on multichain
 const CsvExportDownloadsItem = ({ index, data }: Props) => {
 
   const viewItemTimeoutRef = React.useRef<number>(null);

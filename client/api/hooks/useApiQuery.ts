@@ -23,7 +23,7 @@ export interface GetResourceKeyParams<R extends ResourceName, E = unknown, D = R
   chainId?: string;
 }
 
-// TODO @tom2drum extract to a separate file
+// REFACTOR: extract to a separate file
 export function getResourceKey<R extends ResourceName>(resource: R, { pathParams, queryParams, chainId }: GetResourceKeyParams<R> = {}) {
   if (pathParams || queryParams) {
     return [ resource, chainId, { ...pathParams, ...queryParams } ].filter(Boolean);
