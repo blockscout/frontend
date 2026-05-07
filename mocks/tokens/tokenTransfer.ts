@@ -1,4 +1,4 @@
-import type { TokenInfo } from 'types/api/token';
+import type { TokenInfo } from 'client/slices/token/types/api';
 import type { TokenTransfer, TokenTransferResponse } from 'types/api/tokenTransfer';
 
 import * as tokenInstanceMock from './tokenInstance';

@@ -1,11 +1,12 @@
 import type { BoxProps } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TokenInfo } from 'types/api/token';
+import type { TokenInfo } from 'client/slices/token/types/api';
 
-import type { EntityProps as TokenEntityProps } from 'ui/shared/entities/token/TokenEntity';
-import TokenEntity from 'ui/shared/entities/token/TokenEntity';
-import TokenEntityL1 from 'ui/shared/entities/token/TokenEntityL1';
+import type { EntityProps as TokenEntityProps } from 'client/slices/token/components/entity/TokenEntity';
+import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
+
+import TokenEntityL1 from 'client/features/rollup/common/components/TokenEntityL1';
 
 import type { Props as AssetValueProps } from './AssetValue';
 import AssetValue from './AssetValue';

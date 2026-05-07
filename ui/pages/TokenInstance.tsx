@@ -7,17 +7,18 @@ import type { PaginationParams } from 'ui/shared/pagination/types';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import {
+  TOKEN_INSTANCE,
+  TOKEN_INFO_ERC_1155,
+  getTokenInstanceHoldersStub,
+} from 'client/slices/token/stubs';
+
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import * as metadata from 'client/shared/metadata';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
-import {
-  TOKEN_INSTANCE,
-  TOKEN_INFO_ERC_1155,
-  getTokenInstanceTransfersStub,
-  getTokenInstanceHoldersStub,
-} from 'stubs/token';
+import { getTokenInstanceTransfersStub } from 'stubs/token';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import TextAd from 'ui/shared/ad/TextAd';
 import Pagination from 'ui/shared/pagination/Pagination';

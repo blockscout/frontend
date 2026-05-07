@@ -1,7 +1,7 @@
 import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TokenInfo, TokenInstance } from 'types/api/token';
+import type { TokenInfo, TokenInstance } from 'client/slices/token/types/api';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 

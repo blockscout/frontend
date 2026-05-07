@@ -1,7 +1,7 @@
 import { groupBy, mapValues } from 'es-toolkit';
 
+import type { TokenInfo } from 'client/slices/token/types/api';
 import type { NovesResponseData } from 'types/api/noves';
-import type { TokenInfo } from 'types/api/token';
 
 import { HEX_REGEXP } from 'toolkit/utils/regexp';
 

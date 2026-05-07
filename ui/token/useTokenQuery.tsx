@@ -1,7 +1,8 @@
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import * as tokenStubs from 'client/slices/token/stubs';
+
 import { useAppContext } from 'lib/contexts/app';
-import * as tokenStubs from 'stubs/token';
 
 export default function useTokenQuery(hash: string) {
   const { apiData } = useAppContext<'/token/[hash]'>();

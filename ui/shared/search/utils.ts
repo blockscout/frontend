@@ -1,11 +1,11 @@
 import type { CctxListItem } from '@blockscout/zetachain-cctx-types';
+import type { TokenType } from 'client/slices/token/types/api';
+import { isConfidentialTokenType } from 'client/slices/token/utils/token-types';
 import { getFeaturePayload } from 'configs/app/features/types';
-import type { TokenType } from 'types/api/token';
 import type { MarketplaceApp } from 'types/client/marketplace';
 import type { QuickSearchResultItem } from 'types/client/search';
 
 import config from 'configs/app';
-import { isConfidentialTokenType } from 'lib/token/tokenTypes';
 
 const nameServicesFeature = config.features.nameServices;
 

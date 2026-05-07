@@ -1,7 +1,8 @@
 import type { Address, AddressParam } from 'client/slices/address/types/api';
 
+import { tokenInfo } from 'client/slices/token/mocks/info';
+
 import { publicTag, privateTag, watchlistName } from 'mocks/address/tag';
-import { tokenInfo } from 'mocks/tokens/tokenInfo';
 
 export const hash = '0xd789a607CEac2f0E14867de4EB15b15C9FFB5859';
 

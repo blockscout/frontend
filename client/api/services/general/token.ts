@@ -7,8 +7,7 @@ import type {
   TokenInstance,
   TokenInstanceTransfersCount,
   TokenInventoryFilters,
-} from 'types/api/token';
-import type { TokensResponse, TokensFilters, TokensSorting, TokenInstanceTransferResponse, TokensBridgedFilters } from 'types/api/tokens';
+  TokensResponse, TokensFilters, TokensSorting, TokenInstanceTransferResponse, TokensBridgedFilters } from 'client/slices/token/types/api';
 import type { TokenTransferResponse, TokenTransferFilters } from 'types/api/tokenTransfer';
 
 export const GENERAL_API_TOKEN_RESOURCES = {

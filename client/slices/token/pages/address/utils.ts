@@ -1,10 +1,10 @@
 import BigNumber from 'bignumber.js';
 
 import type { AddressTokenBalance } from 'client/slices/address/types/api';
+import { isFungibleTokenType } from 'client/slices/token/utils/token-types';
 
 import config from 'configs/app';
 import sumBnReducer from 'lib/bigint/sumBnReducer';
-import { isFungibleTokenType } from 'lib/token/tokenTypes';
 import { ZERO } from 'toolkit/utils/consts';
 
 const isNativeToken = (token: TokenEnhancedData) =>

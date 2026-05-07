@@ -2,10 +2,10 @@ import type { AddressMetadataTagApi } from 'client/features/address-metadata/typ
 import type { AddressFilecoinParams } from 'client/features/chain-variants/filecoin/types/api';
 import type { AddressZilliqaParams } from 'client/features/chain-variants/zilliqa/types/api';
 import type { Block } from 'client/slices/block/types/api';
+import type { NFTTokenType, TokenInfo, TokenInstance, TokenReputation, TokenType } from 'client/slices/token/types/api';
 import type { Transaction } from 'client/slices/tx/types/api';
 import type { SmartContractCreationStatus, SmartContractProxyType } from 'types/api/contract';
 import type { InternalTransaction } from 'types/api/internalTransaction';
-import type { NFTTokenType, TokenInfo, TokenInstance, TokenReputation, TokenType } from 'types/api/token';
 import type { TokenTransfer, TokenTransferPagination } from 'types/api/tokenTransfer';
 
 export interface AddressImplementation {

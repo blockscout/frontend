@@ -2,7 +2,7 @@ import { pickBy } from 'es-toolkit';
 import React from 'react';
 
 import type { AddressFromToFilter } from 'client/slices/address/types/api';
-import type { TokenType } from 'types/api/token';
+import type { TokenType } from 'client/slices/token/types/api';
 import type { ClusterChainConfig } from 'types/multichain';
 
 import useIsInitialLoading from 'client/shared/hooks/useIsInitialLoading';

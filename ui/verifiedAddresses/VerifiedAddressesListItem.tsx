@@ -3,13 +3,13 @@ import React from 'react';
 import type { TokenInfoApplication, VerifiedAddress } from 'types/api/account';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 
 import dayjs from 'lib/date/dayjs';
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import IconSvg from 'ui/shared/IconSvg';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 

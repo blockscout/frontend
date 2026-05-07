@@ -1,5 +1,5 @@
 import type { LineChart } from '@blockscout/stats-types';
-import type { TokenInfo } from 'types/api/token';
+import type { TokenInfo } from 'client/slices/token/types/api';
 
 import type { Route } from 'nextjs-routes';
 

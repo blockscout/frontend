@@ -1,7 +1,7 @@
 import * as yup from 'yup';
 import { urlTest } from '../../utils';
 import { replaceQuotes } from 'configs/app/utils';
-import type { BridgedTokenChain, TokenBridge } from 'types/client/token';
+import type { BridgedTokenChain, TokenBridge } from 'client/slices/token/types/client';
 
 const bridgedTokenChainSchema: yup.ObjectSchema<BridgedTokenChain> = yup
   .object({

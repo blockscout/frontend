@@ -1,7 +1,7 @@
 import { Box, Flex, chakra, createListCollection } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TokenInstance } from 'types/api/token';
+import type { TokenInstance } from 'client/slices/token/types/api';
 
 import { Alert } from 'toolkit/chakra/alert';
 import type { SelectOption } from 'toolkit/chakra/select';

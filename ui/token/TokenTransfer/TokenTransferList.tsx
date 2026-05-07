@@ -1,7 +1,7 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TokenInstance } from 'types/api/token';
+import type { TokenInstance } from 'client/slices/token/types/api';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import { useMultichainContext } from 'lib/contexts/multichain';

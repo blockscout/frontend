@@ -1,8 +1,8 @@
 import React from 'react';
 
-import type { TokenHolder, TokenInfo } from 'types/api/token';
+import type { TokenHolder, TokenInfo } from 'client/slices/token/types/api';
+import { hasTokenIds, isConfidentialTokenType } from 'client/slices/token/utils/token-types';
 
-import { hasTokenIds, isConfidentialTokenType } from 'lib/token/tokenTypes';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import TokenHoldersTableItem from 'ui/token/TokenHolders/TokenHoldersTableItem';
 

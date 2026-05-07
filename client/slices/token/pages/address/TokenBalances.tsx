@@ -4,6 +4,8 @@ import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import NativeTokenIcon from 'client/slices/token/components/icon/TokenIconNative';
+
 import { currencyUnits } from 'client/shared/chain/units';
 
 import config from 'configs/app';
@@ -11,7 +13,6 @@ import { ZERO } from 'toolkit/utils/consts';
 import { thinsp } from 'toolkit/utils/htmlEntities';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import IconSvg from 'ui/shared/IconSvg';
-import NativeTokenIcon from 'ui/shared/NativeTokenIcon';
 import calculateUsdValue from 'ui/shared/value/calculateUsdValue';
 
 import TokenBalancesItem from './TokenBalancesItem';

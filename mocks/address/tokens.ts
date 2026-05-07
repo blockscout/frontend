@@ -1,7 +1,7 @@
 import type { AddressCollectionsResponse, AddressNFTsResponse, AddressTokenBalance, AddressTokensResponse } from 'client/slices/address/types/api';
 
-import * as tokens from 'mocks/tokens/tokenInfo';
-import * as tokenInstance from 'mocks/tokens/tokenInstance';
+import * as tokens from 'client/slices/token/mocks/info';
+import * as tokenInstance from 'client/slices/token/mocks/instance';
 
 export const erc20a: AddressTokenBalance = {
   token: tokens.tokenInfoERC20a,

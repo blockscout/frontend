@@ -6,6 +6,8 @@ import type { AllowanceType } from 'types/client/revoke';
 
 import { route } from 'nextjs/routes';
 
+import TokenLogoPlaceholder from 'client/slices/token/components/icon/TokenIconPlaceholder';
+
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
 import { Badge } from 'toolkit/chakra/badge';
@@ -14,7 +16,6 @@ import { Image } from 'toolkit/chakra/image';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import TokenLogoPlaceholder from 'ui/shared/TokenLogoPlaceholder';
 
 import type useApprovalsQuery from '../hooks/useApprovalsQuery';
 import type useCoinBalanceQuery from '../hooks/useCoinBalanceQuery';

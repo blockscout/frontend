@@ -10,6 +10,7 @@ import { route } from 'nextjs-routes';
 import * as AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import { toBech32Address } from 'client/slices/address/utils/bech32';
 import * as BlockEntity from 'client/slices/block/components/entity/BlockEntity';
+import * as TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 import * as TxEntity from 'client/slices/tx/components/entity/TxEntity';
 
 import * as mixpanel from 'client/shared/analytics/mixpanel';
@@ -29,7 +30,6 @@ import ContractCertifiedLabel from 'ui/shared/ContractCertifiedLabel';
 import * as BlobEntity from 'ui/shared/entities/blob/BlobEntity';
 import * as EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 import * as OperationEntity from 'ui/shared/entities/operation/OperationEntity';
-import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import * as UserOpEntity from 'ui/shared/entities/userOp/UserOpEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import IconSvg from 'ui/shared/IconSvg';

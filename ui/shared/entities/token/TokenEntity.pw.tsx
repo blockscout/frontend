@@ -1,8 +1,9 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
+import * as tokenMock from 'client/slices/token/mocks/info';
+
 import * as chainDataMock from 'mocks/multichain/chains';
-import * as tokenMock from 'mocks/tokens/tokenInfo';
 import { stableHover } from 'playwright/helpers/stableHover';
 import { test, expect } from 'playwright/lib';
 

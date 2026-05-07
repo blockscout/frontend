@@ -4,8 +4,9 @@ import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
 import type { SocketMessage } from 'client/api/socket/types';
+import type { TokenInfo } from 'client/slices/token/types/api';
+import { NFT_TOKEN_TYPE_IDS } from 'client/slices/token/utils/token-types';
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
-import type { TokenInfo } from 'types/api/token';
 import type { PaginationParams } from 'ui/shared/pagination/types';
 
 import useApiQuery, { getResourceKey } from 'client/api/hooks/useApiQuery';
@@ -13,9 +14,13 @@ import useSocketChannel from 'client/api/socket/useSocketChannel';
 import useSocketMessage from 'client/api/socket/useSocketMessage';
 
 import * as addressStubs from 'client/slices/address/stubs/address';
+import useTokenQuery from 'client/slices/token/hooks/useTokenQuery';
+import * as tokenStubs from 'client/slices/token/stubs';
+import { getTokenHoldersStub } from 'client/slices/token/stubs';
 
 import Address3rdPartyWidgets from 'client/features/address-3rd-party-widgets/pages/address/Address3rdPartyWidgets';
 import useAddress3rdPartyWidgets from 'client/features/address-3rd-party-widgets/pages/address/useAddress3rdPartyWidgets';
+import TokenAdvancedFilterLink from 'client/features/advanced-filter/pages/token/TokenAdvancedFilterLink';
 import CsvExport from 'client/features/csv-export/components/CsvExport';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
@@ -24,9 +29,7 @@ import getQueryParamString from 'client/shared/router/get-query-param-string';
 import useEtherscanRedirects from 'client/shared/router/useEtherscanRedirects';
 
 import config from 'configs/app';
-import { NFT_TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
-import * as tokenStubs from 'stubs/token';
-import { getTokenHoldersStub } from 'stubs/token';
+import { getTokenTransfersStub } from 'stubs/token';
 import { generateListStub } from 'stubs/utils';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import AddressContract from 'ui/address/AddressContract';
@@ -35,13 +38,11 @@ import TextAd from 'ui/shared/ad/TextAd';
 import IconSvg from 'ui/shared/IconSvg';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
-import TokenAdvancedFilterLink from 'ui/token/TokenAdvancedFilterLink';
 import TokenDetails from 'ui/token/TokenDetails';
 import TokenHolders from 'ui/token/TokenHolders/TokenHolders';
 import TokenInventory from 'ui/token/TokenInventory';
 import TokenPageTitle from 'ui/token/TokenPageTitle';
 import TokenTransfer from 'ui/token/TokenTransfer/TokenTransfer';
-import useTokenQuery from 'ui/token/useTokenQuery';
 
 export type TokenTabs = 'token_transfers' | 'holders' | 'inventory';
 
@@ -147,7 +148,7 @@ const TokenPageContent = () => {
           tab === 'token_transfers'
         ),
       ),
-      placeholderData: tokenStubs.getTokenTransfersStub(tokenQuery.data?.type),
+      placeholderData: getTokenTransfersStub(tokenQuery.data?.type),
     },
   });
 

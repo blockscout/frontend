@@ -2,7 +2,9 @@ import { HStack } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { TokenType } from 'types/api/token';
+import type { TokenType } from 'client/slices/token/types/api';
+
+import TokenTypeFilter from 'client/slices/token/components/TokenTypeFilter';
 
 import useDebounce from 'client/shared/hooks/useDebounce';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
@@ -15,7 +17,6 @@ import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import ChainSelect from 'ui/multichain/components/ChainSelect';
 import ActionBar from 'ui/shared/ActionBar';
 import PopoverFilter from 'ui/shared/filters/PopoverFilter';
-import TokenTypeFilter from 'ui/shared/filters/TokenTypeFilter';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';

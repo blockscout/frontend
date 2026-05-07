@@ -2,8 +2,10 @@ import { Flex, useToken } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
+import type { TokenVerifiedInfo as TTokenVerifiedInfo } from 'client/features/verified-tokens/types/api';
 import type { Address } from 'client/slices/address/types/api';
-import type { TokenInfo, TokenVerifiedInfo as TTokenVerifiedInfo } from 'types/api/token';
+import type { TokenInfo } from 'client/slices/token/types/api';
+import { getTokenTypeName } from 'client/slices/token/utils/token-types';
 import type { EntityTag } from 'ui/shared/EntityTags/types';
 
 import type { ResourceError } from 'client/api/resources';
@@ -11,16 +13,15 @@ import type { ResourceError } from 'client/api/resources';
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import AddressAlerts from 'client/slices/address/pages/details/info/AddressAlerts';
 import AddressQrCode from 'client/slices/address/pages/details/info/AddressQrCode';
+import * as TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 
 import useAddressMetadataInfoQuery from 'client/features/address-metadata/hooks/useAddressMetadataInfoQuery';
 import TokenAddToWallet from 'client/features/web3-wallet/components/TokenAddToWallet';
 
 import config from 'configs/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
-import { getTokenTypeName } from 'lib/token/tokenTypes';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu';
-import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import EntityTags from 'ui/shared/EntityTags/EntityTags';
 import formatUserTags from 'ui/shared/EntityTags/formatUserTags';
 import sortEntityTags from 'ui/shared/EntityTags/sortEntityTags';

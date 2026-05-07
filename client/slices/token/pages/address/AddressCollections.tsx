@@ -1,9 +1,11 @@
 import { Box, Flex, Text, Grid, HStack } from '@chakra-ui/react';
 import React from 'react';
 
-import type { NFTTokenType } from 'types/api/token';
+import type { NFTTokenType } from 'client/slices/token/types/api';
 
 import { route } from 'nextjs/routes';
+
+import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
@@ -12,7 +14,6 @@ import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import NftFallback from 'ui/shared/nft/NftFallback';
 import Pagination from 'ui/shared/pagination/Pagination';
 import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';

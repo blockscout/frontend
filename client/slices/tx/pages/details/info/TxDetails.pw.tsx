@@ -1,5 +1,6 @@
 import React from 'react';
 
+import * as tokenInstanceMock from 'client/slices/token/mocks/instance';
 import * as txMock from 'client/slices/tx/mocks/tx';
 
 import { stabilityTx } from 'client/features/chain-variants/stability/mocks/tx';
@@ -9,7 +10,6 @@ import { arbitrumTxn } from 'client/features/rollup/arbitrum/mocks/tx';
 import { l2tx } from 'client/features/rollup/common/mocks/tx';
 import { withActionsUniswap } from 'client/features/tx-actions/mocks/tx';
 
-import * as tokenInstanceMock from 'mocks/tokens/tokenInstance';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';
 import * as pwConfig from 'playwright/utils/config';

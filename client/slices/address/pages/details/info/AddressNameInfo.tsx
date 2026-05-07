@@ -2,9 +2,10 @@ import React from 'react';
 
 import type { Address } from 'client/slices/address/types/api';
 
+import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 
 interface Props {
   data: Pick<Address, 'name' | 'token' | 'is_contract'>;

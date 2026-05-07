@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { TokenVerifiedInfo } from 'types/api/token';
+import type { TokenVerifiedInfo } from 'client/features/verified-tokens/types/api';
 
 import InfoButton from 'ui/shared/InfoButton';
 

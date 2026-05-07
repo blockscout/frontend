@@ -2,14 +2,15 @@ import { Text, Stack } from '@chakra-ui/react';
 import React from 'react';
 
 import type { AddressFromToFilter } from 'client/slices/address/types/api';
-import type { TokenType } from 'types/api/token';
+import type { TokenType } from 'client/slices/token/types/api';
 import type { ClusterChainConfig } from 'types/multichain';
+
+import TokenTypeFilter from 'client/slices/token/components/TokenTypeFilter';
 
 import useIsInitialLoading from 'client/shared/hooks/useIsInitialLoading';
 
 import { Radio, RadioGroup } from 'toolkit/chakra/radio';
 import PopoverFilter from 'ui/shared/filters/PopoverFilter';
-import TokenTypeFilter from 'ui/shared/filters/TokenTypeFilter';
 
 interface Props {
   appliedFiltersNum?: number;

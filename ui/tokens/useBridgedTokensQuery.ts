@@ -1,12 +1,13 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { TokensSortingValue, TokensSortingField, TokensSorting } from 'types/api/tokens';
+import type { TokensSortingValue, TokensSortingField, TokensSorting } from 'client/slices/token/types/api';
+
+import { TOKEN_INFO_ERC_20 } from 'client/slices/token/stubs';
 
 import useDebounce from 'client/shared/hooks/useDebounce';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
-import { TOKEN_INFO_ERC_20 } from 'stubs/token';
 import { generateListStub } from 'stubs/utils';
 import type { OnValueChangeHandler } from 'toolkit/chakra/select';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';

@@ -1,5 +1,5 @@
-import type { TokenInstance } from 'types/api/token';
-import type { Metadata } from 'types/client/token';
+import type { TokenInstance } from 'client/slices/token/types/api';
+import type { Metadata } from 'client/slices/token/types/client';
 
 import attributesParser from './metadata/attributesParser';
 

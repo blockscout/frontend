@@ -5,20 +5,20 @@ import { useRouter } from 'next/router';
 import React, { useCallback } from 'react';
 import { scroller } from 'react-scroll';
 
-import type { TokenInfo } from 'types/api/token';
+import type { TokenInfo } from 'client/slices/token/types/api';
+import { isConfidentialTokenType } from 'client/slices/token/utils/token-types';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 import type { ResourceError } from 'client/api/resources';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+import { TOKEN_COUNTERS } from 'client/slices/token/stubs';
 
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import useIsMounted from 'client/shared/hooks/useIsMounted';
 
 import config from 'configs/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
-import { isConfidentialTokenType } from 'lib/token/tokenTypes';
-import { TOKEN_COUNTERS } from 'stubs/token';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import type { TokenTabs } from 'ui/pages/Token';

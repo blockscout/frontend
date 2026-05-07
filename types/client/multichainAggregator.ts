@@ -1,6 +1,6 @@
 import type * as bens from '@blockscout/bens-types';
 import type * as multichain from '@blockscout/multichain-aggregator-types';
-import type { TokenType } from 'types/api/token';
+import type { TokenType } from 'client/slices/token/types/api';
 
 // ts-proto generates the wrong token types for AggregatedTokenInfo
 // moreover, the default values of the fields (= undefined) cannot be stripped off from the generated types

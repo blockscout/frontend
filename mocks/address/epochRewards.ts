@@ -1,6 +1,6 @@
 import type { AddressEpochRewardsResponse } from 'client/features/chain-variants/celo/types/api';
 
-import { tokenInfo } from 'mocks/tokens/tokenInfo';
+import { tokenInfo } from 'client/slices/token/mocks/info';
 
 import { withEns, withName, withoutName } from './address';
 

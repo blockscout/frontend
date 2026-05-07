@@ -2,16 +2,17 @@ import { Flex, Text } from '@chakra-ui/react';
 import React from 'react';
 
 import type { AddressNFT } from 'client/slices/address/types/api';
+import { getTokenTypeName } from 'client/slices/token/utils/token-types';
 import type { ClusterChainConfig } from 'types/multichain';
 
 import { route } from 'nextjs/routes';
 
-import { getTokenTypeName } from 'lib/token/tokenTypes';
+import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
+
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tag } from 'toolkit/chakra/tag';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
-import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import NftMedia from 'ui/shared/nft/NftMedia';
 import calculateUsdValue from 'ui/shared/value/calculateUsdValue';
 

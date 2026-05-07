@@ -1,7 +1,8 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { NFTTokenType } from 'types/api/token';
+import type { NFTTokenType } from 'client/slices/token/types/api';
+import { NFT_TOKEN_TYPE_IDS } from 'client/slices/token/utils/token-types';
 
 import { ADDRESS_COLLECTION, ADDRESS_NFT_1155 } from 'client/slices/address/stubs/address';
 
@@ -9,7 +10,6 @@ import getFilterValuesFromQuery from 'client/shared/router/get-filter-values-fro
 import * as cookies from 'client/shared/storage/cookies';
 
 import { useAppContext } from 'lib/contexts/app';
-import { NFT_TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
 import { generateListStub } from 'stubs/utils';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 

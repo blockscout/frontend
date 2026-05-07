@@ -4,11 +4,13 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { SocketMessage } from 'client/api/socket/types';
-import type { TokenInfo, TokenInstance } from 'types/api/token';
+import type { TokenInfo, TokenInstance } from 'client/slices/token/types/api';
 
 import type { ResourceError } from 'client/api/resources';
 import useSocketChannel from 'client/api/socket/useSocketChannel';
 import useSocketMessage from 'client/api/socket/useSocketMessage';
+
+import TokenAdvancedFilterLink from 'client/features/advanced-filter/pages/token/TokenAdvancedFilterLink';
 
 import useGradualIncrement from 'client/shared/hooks/useGradualIncrement';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
@@ -19,7 +21,6 @@ import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/pagination/Pagination';
 import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
 import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
-import TokenAdvancedFilterLink from 'ui/token/TokenAdvancedFilterLink';
 import TokenTransferList from 'ui/token/TokenTransfer/TokenTransferList';
 import TokenTransferTable from 'ui/token/TokenTransfer/TokenTransferTable';
 

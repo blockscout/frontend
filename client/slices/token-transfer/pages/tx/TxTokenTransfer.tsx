@@ -1,9 +1,10 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { TokenType } from 'types/api/token';
+import type { TokenType } from 'client/slices/token/types/api';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
+import { getTokenFilterValue } from 'client/slices/token/utils/list-utils';
 import TxPendingAlert from 'client/slices/tx/components/TxPendingAlert';
 import TxSocketAlert from 'client/slices/tx/components/TxSocketAlert';
 import type { TxQuery } from 'client/slices/tx/hooks/useTxQuery';
@@ -23,7 +24,6 @@ import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import TokenTransferFilter from 'ui/shared/TokenTransfer/TokenTransferFilter';
-import { getTokenFilterValue } from 'ui/tokens/utils';
 
 import TxTokenTransferLocal from './TxTokenTransferLocal';
 

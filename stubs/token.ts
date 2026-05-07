@@ -6,8 +6,7 @@ import type {
   TokenInfo,
   TokenInstance,
   TokenType,
-} from 'types/api/token';
-import type { TokenInstanceTransferPagination, TokenInstanceTransferResponse } from 'types/api/tokens';
+  TokenInstanceTransferPagination, TokenInstanceTransferResponse } from 'client/slices/token/types/api';
 import type { Erc20TotalPayload, TokenTransfer, TokenTransferPagination, TokenTransferResponse } from 'types/api/tokenTransfer';
 
 import { ADDRESS_PARAMS, ADDRESS_HASH } from 'client/slices/address/stubs/address-params';

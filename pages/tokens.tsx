@@ -11,7 +11,7 @@ const Tokens = dynamic(() => {
     return import('ui/multichain/tokens/MultichainTokens');
   }
 
-  return import('ui/pages/Tokens');
+  return import('client/slices/token/pages/index/Tokens');
 }, { ssr: false });
 
 const Page: NextPage = () => {

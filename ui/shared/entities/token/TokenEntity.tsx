@@ -2,9 +2,11 @@ import type { BoxProps } from '@chakra-ui/react';
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TokenInfo } from 'types/api/token';
+import type { TokenInfo } from 'client/slices/token/types/api';
 
 import { route } from 'nextjs/routes';
+
+import TokenLogoPlaceholder from 'client/slices/token/components/icon/TokenIconPlaceholder';
 
 import config from 'configs/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
@@ -14,7 +16,6 @@ import { TruncatedTextTooltip } from 'toolkit/components/truncation/TruncatedTex
 import * as EntityBase from 'ui/shared/entities/base/components';
 import getChainTooltipText from 'ui/shared/externalChains/getChainTooltipText';
 import IconSvg from 'ui/shared/IconSvg';
-import TokenLogoPlaceholder from 'ui/shared/TokenLogoPlaceholder';
 
 import { distributeEntityProps, getIconProps } from '../base/utils';
 

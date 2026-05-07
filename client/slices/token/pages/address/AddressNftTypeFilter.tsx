@@ -1,9 +1,10 @@
 import React from 'react';
 
-import type { NFTTokenType } from 'types/api/token';
+import type { NFTTokenType } from 'client/slices/token/types/api';
+
+import TokenTypeFilter from 'client/slices/token/components/TokenTypeFilter';
 
 import PopoverFilter from 'ui/shared/filters/PopoverFilter';
-import TokenTypeFilter from 'ui/shared/filters/TokenTypeFilter';
 
 interface Props {
   value: Array<NFTTokenType> | undefined;

@@ -1,4 +1,4 @@
-import type { TokenReputation } from 'types/api/token';
+import type { TokenReputation } from 'client/slices/token/types/api';
 
 export interface ContractAllowanceType {
   transactionId: `0x${ string }` | null;

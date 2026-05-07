@@ -9,9 +9,8 @@ import type {
   AddressesItem,
 } from 'client/slices/address/types/api';
 
+import { TOKEN_INFO_ERC_1155, TOKEN_INFO_ERC_20, TOKEN_INFO_ERC_721, TOKEN_INFO_ERC_404, TOKEN_INSTANCE } from 'client/slices/token/stubs';
 import { TX_HASH } from 'client/slices/tx/stubs/tx';
-
-import { TOKEN_INFO_ERC_1155, TOKEN_INFO_ERC_20, TOKEN_INFO_ERC_721, TOKEN_INFO_ERC_404, TOKEN_INSTANCE } from 'stubs/token';
 
 import { ADDRESS_HASH } from './address-params';
 

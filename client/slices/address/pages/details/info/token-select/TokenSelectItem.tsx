@@ -2,17 +2,18 @@ import { chakra, Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
+import { isConfidentialTokenType, isFungibleTokenType } from 'client/slices/token/utils/token-types';
+
 import { route } from 'nextjs/routes';
 
+import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 import type { TokenEnhancedData } from 'client/slices/token/pages/address/utils';
 
 import config from 'configs/app';
 import multichainConfig from 'configs/multichain';
-import { isConfidentialTokenType, isFungibleTokenType } from 'lib/token/tokenTypes';
 import { Link } from 'toolkit/chakra/link';
 import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
 import NativeTokenTag from 'ui/shared/celo/NativeTokenTag';
-import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import calculateUsdValue from 'ui/shared/value/calculateUsdValue';
 
 interface Props {

@@ -1,10 +1,11 @@
 import { Grid, GridItem } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TokenInstance } from 'types/api/token';
-import type { MetadataAttributes } from 'types/client/token';
+import type { TokenInstance } from 'client/slices/token/types/api';
+import type { MetadataAttributes } from 'client/slices/token/types/client';
 
-import parseMetadata from 'lib/token/parseMetadata';
+import parseMetadata from 'client/slices/token/utils/parse-metadata';
+
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';

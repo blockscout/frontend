@@ -1,5 +1,5 @@
 import type { AddressParam } from 'client/slices/address/types/api';
-import type { TokenInfo } from 'types/api/token';
+import type { TokenInfo } from 'client/slices/token/types/api';
 
 export interface TransactionStability {
   stability_fee?: {

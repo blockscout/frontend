@@ -1,7 +1,7 @@
 import type { ApiResource } from '../types';
+import type { TokenVerifiedInfo } from 'client/features/verified-tokens/types/api';
 import type { VerifiedAddressResponse } from 'types/api/account';
 import type { Pool, PoolsResponse } from 'types/api/pools';
-import type { TokenVerifiedInfo } from 'types/api/token';
 
 export const CONTRACT_INFO_API_RESOURCES = {
   address_verification: {

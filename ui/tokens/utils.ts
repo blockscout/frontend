@@ -1,12 +1,12 @@
 import { createListCollection } from '@chakra-ui/react';
 
-import type { TokensSortingValue } from 'types/api/tokens';
+import type { TokensSortingValue } from 'client/slices/token/types/api';
+import { getTokenTypes } from 'client/slices/token/utils/token-types';
 import type { ClusterChainConfig } from 'types/multichain';
 
 import getFilterValuesFromQuery from 'client/shared/router/get-filter-values-from-query';
 
 import config from 'configs/app';
-import { getTokenTypes } from 'lib/token/tokenTypes';
 import type { SelectOption } from 'toolkit/chakra/select';
 
 export const SORT_OPTIONS: Array<SelectOption<TokensSortingValue>> = [

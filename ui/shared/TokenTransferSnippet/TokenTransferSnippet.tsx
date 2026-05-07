@@ -1,6 +1,7 @@
 import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
+import { isConfidentialTokenType } from 'client/slices/token/utils/token-types';
 import type {
   TokenTransfer,
   Erc20TotalPayload,
@@ -11,7 +12,6 @@ import type {
 
 import AddressFromTo from 'client/slices/address/components/from-to/AddressFromTo';
 
-import { isConfidentialTokenType } from 'lib/token/tokenTypes';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import ConfidentialTokenValue from 'ui/shared/value/ConfidentialTokenValue';
 

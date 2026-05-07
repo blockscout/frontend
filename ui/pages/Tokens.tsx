@@ -2,9 +2,14 @@ import { Box, HStack } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { TokenType } from 'client/slices/token/types/api';
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
-import type { TokenType } from 'types/api/token';
 
+import TokenTypeFilter from 'client/slices/token/components/TokenTypeFilter';
+import useTokensQuery from 'client/slices/token/hooks/useTokensQuery';
+
+import TokensBridgedChainsFilter from 'client/features/bridged-tokens/components/TokensBridgedChainsFilter';
+import useBridgedTokensQuery from 'client/features/bridged-tokens/hooks/useBridgedTokensQuery';
 import useBridgedTokensQueryCrossChain from 'client/features/cross-chain-txs/hooks/useBridgedTokensQuery';
 import BridgedTokensIndex from 'client/features/cross-chain-txs/pages/bridged-tokens/BridgedTokensIndex';
 import { BRIDGED_TOKENS_SORT_COLLECTION } from 'client/features/cross-chain-txs/utils/bridged-tokens-sort';
@@ -18,14 +23,10 @@ import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import ActionBar from 'ui/shared/ActionBar';
 import PopoverFilter from 'ui/shared/filters/PopoverFilter';
-import TokenTypeFilter from 'ui/shared/filters/TokenTypeFilter';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 import Sort from 'ui/shared/sort/Sort';
 import TokensList from 'ui/tokens/Tokens';
-import TokensBridgedChainsFilter from 'ui/tokens/TokensBridgedChainsFilter';
-import useBridgedTokensQuery from 'ui/tokens/useBridgedTokensQuery';
-import useTokensQuery from 'ui/tokens/useTokensQuery';
 import { TOKENS_SORT_COLLECTION } from 'ui/tokens/utils';
 
 const TAB_LIST_PROPS = {

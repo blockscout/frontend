@@ -1,5 +1,5 @@
+import type { AdditionalTokenType } from 'client/slices/token/types/client';
 import type { RollupType } from 'types/client/rollup';
-import type { AdditionalTokenType } from 'types/client/token';
 import type { NetworkVerificationType, NetworkVerificationTypeEnvs } from 'types/networks';
 
 import { urlValidator } from 'toolkit/components/forms/validators/url';

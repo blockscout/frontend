@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import type { TokenInstance } from 'types/api/token';
+import type { TokenInstance } from 'client/slices/token/types/api';
 
 import * as addressMock from '../address/address';
 import * as tokenInfoMock from './tokenInfo';

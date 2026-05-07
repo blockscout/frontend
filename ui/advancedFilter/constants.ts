@@ -1,8 +1,8 @@
-import type { TokenInfo } from 'types/api/token';
+import type { TokenInfo } from 'client/slices/token/types/api';
+import { getTokenTypes } from 'client/slices/token/utils/token-types';
 import type { ClusterChainConfig } from 'types/multichain';
 
 import config from 'configs/app';
-import { getTokenTypes } from 'lib/token/tokenTypes';
 
 export type ColumnsIds = 'tx_hash' | 'type' | 'method' | 'age' | 'from' | 'or_and' | 'to' | 'amount' | 'asset' | 'fee';
 
