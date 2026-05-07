@@ -109,7 +109,7 @@ Each slice follows the template established in 2-1.
 ### 3-3 · [ ] Slice: `search`
 **Scope:** `lib/search/`, `ui/snippets/searchBar/`, `lib/recentSearchKeywords.ts`, related types/mocks/stubs → `client/slices/search/`  
 
-### 3-4 · [ ] Slice: `token`
+### 3-4 · [~] Slice: `token` · [#3393](https://github.com/blockscout/frontend/issues/3393)
 **Scope:** `lib/token/`, `ui/token/**`, `ui/tokens/**`, `ui/tokenInstance/**`, related types/mocks/stubs → `client/slices/token/`  
 
 ### 3-5 · [ ] Slice: `contract`
