@@ -5,6 +5,7 @@ import React from 'react';
 import type { NovesNft, NovesToken } from 'types/api/noves';
 
 import shortenString from 'client/shared/text/shorten-string';
+
 import { HEX_REGEXP } from 'toolkit/utils/regexp';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 

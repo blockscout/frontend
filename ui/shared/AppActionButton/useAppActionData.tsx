@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 
 import useAddressMetadataInfoQuery from 'client/features/address-metadata/hooks/useAddressMetadataInfoQuery';
+
 import config from 'configs/app';
 
 export default function useAppActionData(address: string | undefined = '', isEnabled = true) {

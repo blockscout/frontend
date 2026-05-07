@@ -7,6 +7,7 @@ import {
 import React from 'react';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+
 import { Link } from 'toolkit/chakra/link';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import IconSvg from 'ui/shared/IconSvg';

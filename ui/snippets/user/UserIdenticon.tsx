@@ -2,6 +2,7 @@ import { Box, Center } from '@chakra-ui/react';
 import React from 'react';
 
 import AddressIdenticon from 'client/slices/address/components/icon/AddressIdenticon';
+
 import IconSvg from 'ui/shared/IconSvg';
 
 type Props = {

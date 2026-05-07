@@ -2,6 +2,7 @@ import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TxCourseType } from 'client/slices/address/utils/tx';
+
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import IconSvg from 'ui/shared/IconSvg';
 

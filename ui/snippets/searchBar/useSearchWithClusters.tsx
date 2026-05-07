@@ -6,6 +6,7 @@ import type { SearchResultCluster } from 'types/api/search';
 import useApiFetch from 'client/api/hooks/useApiFetch';
 import { getResourceKey } from 'client/api/hooks/useApiQuery';
 import type { ResourcePayload, ResourceError } from 'client/api/resources';
+
 import config from 'configs/app';
 
 import useQuickSearchQuery from './useQuickSearchQuery';

@@ -7,8 +7,11 @@ import type { Address } from 'client/slices/address/types/api';
 import useApiQuery from 'client/api/hooks/useApiQuery';
 import { retry } from 'client/api/hooks/useQueryClientConfig';
 import type { ResourceError } from 'client/api/resources';
-import { publicClient } from 'client/features/connect-wallet/utils/public-client';
+
 import { ADDRESS_INFO } from 'client/slices/address/stubs/address';
+
+import { publicClient } from 'client/features/connect-wallet/utils/public-client';
+
 import { GET_BALANCE } from 'stubs/RPC';
 import { SECOND } from 'toolkit/utils/consts';
 

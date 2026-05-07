@@ -3,8 +3,10 @@ import React from 'react';
 
 import type { MudWorldItem } from 'types/api/mudWorlds';
 
-import { currencyUnits } from 'client/shared/chain/units';
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+
+import { currencyUnits } from 'client/shared/chain/units';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';

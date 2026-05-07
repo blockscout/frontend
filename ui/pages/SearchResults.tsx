@@ -8,6 +8,7 @@ import type { SearchResultItem } from 'types/client/search';
 
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import removeQueryParam from 'client/shared/router/remove-query-param';
+
 import config from 'configs/app';
 import { useSettingsContext } from 'lib/contexts/settings';
 import { Skeleton } from 'toolkit/chakra/skeleton';

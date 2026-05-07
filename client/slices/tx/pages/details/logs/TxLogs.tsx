@@ -1,12 +1,13 @@
 import { Box, Text } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TransactionLog } from 'client/slices/logs/types/api';
+import type { TransactionLog } from 'client/slices/log/types/api';
 
-import { LOG } from 'client/slices/logs/stubs/log';
+import { LOG } from 'client/slices/log/stubs/log';
 import TxPendingAlert from 'client/slices/tx/components/TxPendingAlert';
 import TxSocketAlert from 'client/slices/tx/components/TxSocketAlert';
 import type { TxQuery } from 'client/slices/tx/hooks/useTxQuery';
+
 import { generateListStub } from 'stubs/utils';
 import ActionBar from 'ui/shared/ActionBar';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';

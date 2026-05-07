@@ -1,4 +1,5 @@
 import type { NovesFlowViewItem } from 'client/features/tx-interpretation/noves/utils/generateFlowViewData';
+
 import * as transactionMock from 'mocks/noves/transaction';
 import { it, expect } from 'vitest';
 

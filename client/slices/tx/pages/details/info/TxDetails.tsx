@@ -15,6 +15,12 @@ import { ZKSYNC_L2_TX_BATCH_STATUSES } from 'types/api/zkSyncL2';
 
 import { route } from 'nextjs-routes';
 
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
+import TxSocketAlert from 'client/slices/tx/components/TxSocketAlert';
+import TxStatus from 'client/slices/tx/components/TxStatus';
+import getConfirmationDuration from 'client/slices/tx/utils/get-confirmation-duration';
+
 import TxAllowedPeekers from 'client/features/chain-variants/suave/pages/tx/TxAllowedPeekers';
 import TxDetailsTacOperation from 'client/features/chain-variants/tac/pages/tx/TxDetailsTacOperation';
 import TxDetailsCrossChainMessages from 'client/features/cross-chain-txs/pages/tx/TxDetailsCrossChainMessages';
@@ -27,13 +33,10 @@ import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
 import TxDetailsWithdrawalStatusOptimistic from 'client/features/rollup/optimistic/pages/tx/TxDetailsWithdrawalStatusOptimistic';
 import TxInfoScrollFees from 'client/features/rollup/scroll/pages/tx/TxInfoScrollFees';
 import TxDetailsActions from 'client/features/tx-actions/pages/tx/TxDetailsActions';
+
 import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-title';
 import { currencyUnits } from 'client/shared/chain/units';
-import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
-import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
-import TxSocketAlert from 'client/slices/tx/components/TxSocketAlert';
-import TxStatus from 'client/slices/tx/components/TxStatus';
-import getConfirmationDuration from 'client/slices/tx/utils/get-confirmation-duration';
+
 import config from 'configs/app';
 import * as arbitrum from 'lib/rollups/arbitrum';
 import { formatZkSyncL2TxnBatchStatus, layerLabels } from 'lib/rollups/utils';

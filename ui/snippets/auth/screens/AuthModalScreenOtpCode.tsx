@@ -7,8 +7,10 @@ import type { OtpCodeFormFields, ScreenSuccess } from '../types';
 import type { UserInfo } from 'types/api/account';
 
 import useApiFetch from 'client/api/hooks/useApiFetch';
+
 import getErrorMessage from 'client/shared/errors/get-error-message';
 import getErrorObjPayload from 'client/shared/errors/get-error-obj-payload';
+
 import { Button } from 'toolkit/chakra/button';
 import { toaster } from 'toolkit/chakra/toaster';
 import IconSvg from 'ui/shared/IconSvg';

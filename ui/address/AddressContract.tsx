@@ -8,9 +8,11 @@ import type { Address } from 'client/slices/address/types/api';
 import { getResourceKey } from 'client/api/hooks/useApiQuery';
 import useSocketChannel from 'client/api/socket/useSocketChannel';
 import useSocketMessage from 'client/api/socket/useSocketMessage';
+
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import delay from 'client/shared/utils/delay';
+
 import type { Props as RoutedTabsProps } from 'toolkit/components/AdaptiveTabs/AdaptiveTabs';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import { SECOND } from 'toolkit/utils/consts';

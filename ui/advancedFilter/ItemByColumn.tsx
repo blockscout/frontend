@@ -7,6 +7,7 @@ import type { ClusterChainConfig } from 'types/multichain';
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import AddressFromToIcon from 'client/slices/address/components/from-to/AddressFromToIcon';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
+
 import config from 'configs/app';
 import { isConfidentialTokenType } from 'lib/token/tokenTypes';
 import { Badge } from 'toolkit/chakra/badge';

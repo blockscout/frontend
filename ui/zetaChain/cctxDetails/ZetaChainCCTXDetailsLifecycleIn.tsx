@@ -4,10 +4,12 @@ import React from 'react';
 import type { CrossChainTx } from '@blockscout/zetachain-cctx-types';
 import { InboundStatus } from '@blockscout/zetachain-cctx-types';
 
+import TxEntity from 'client/slices/tx/components/entity/TxEntity';
+
 import AddressEntityZetaChain from 'client/features/chain-variants/zeta-chain/components/AddressEntityZetaChain';
 import TxEntityZetaChainCC from 'client/features/chain-variants/zeta-chain/TxEntityZetaChainCC';
 import TxEntityZetaChainExternal from 'client/features/chain-variants/zeta-chain/TxEntityZetaChainExternal';
-import TxEntity from 'client/slices/tx/components/entity/TxEntity';
+
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import IconSvg from 'ui/shared/IconSvg';

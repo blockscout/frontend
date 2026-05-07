@@ -5,6 +5,7 @@ import type { InterchainMessage } from '@blockscout/interchain-indexer-types';
 
 import AddressEntityInterchain from 'client/slices/address/components/entity/AddressEntityInterchain';
 import TxEntityInterchain from 'client/slices/tx/components/entity/TxEntityInterchain';
+
 import config from 'configs/app';
 import { mdash } from 'toolkit/utils/htmlEntities';
 import * as DetailedInfoItemBreakdown from 'ui/shared/DetailedInfo/DetailedInfoItemBreakdown';

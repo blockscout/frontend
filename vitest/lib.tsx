@@ -5,6 +5,7 @@ import { render } from '@testing-library/react';
 import React from 'react';
 
 import { SocketProvider } from 'client/api/socket/context';
+
 import { AppContextProvider } from 'lib/contexts/app';
 
 import 'client/shared/i18n/set-locale';

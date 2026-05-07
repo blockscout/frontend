@@ -4,6 +4,7 @@ import React from 'react';
 import type { SmartContract } from 'types/api/contract';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+
 import type { Truncation } from 'ui/shared/entities/base/components';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
 

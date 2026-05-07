@@ -1,6 +1,7 @@
 import type { BrowserContext, TestFixture } from '@playwright/test';
 
 import * as cookies from 'client/shared/storage/cookies';
+
 import config from 'configs/app';
 
 export function authenticateUser(context: BrowserContext) {

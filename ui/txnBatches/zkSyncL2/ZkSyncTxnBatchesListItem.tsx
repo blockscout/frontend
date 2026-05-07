@@ -7,6 +7,7 @@ import { route } from 'nextjs-routes';
 
 import BatchEntityL2 from 'client/features/rollup/common/components/BatchEntityL2';
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
+
 import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';

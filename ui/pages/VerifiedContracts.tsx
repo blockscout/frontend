@@ -2,6 +2,7 @@ import { Box, createListCollection, HStack } from '@chakra-ui/react';
 import React from 'react';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+
 import config from 'configs/app';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import ActionBar from 'ui/shared/ActionBar';

@@ -4,6 +4,7 @@ import { Box, Flex, Heading } from '@chakra-ui/react';
 import React from 'react';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+
 import config from 'configs/app';
 import RewardsButton from 'ui/rewards/RewardsButton';
 import AdBanner from 'ui/shared/ad/AdBanner';

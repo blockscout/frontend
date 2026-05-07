@@ -4,6 +4,7 @@ import React from 'react';
 import type { TokenVerifiedInfo as TTokenVerifiedInfo } from 'types/api/token';
 
 import type { ResourceError } from 'client/api/resources';
+
 import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';

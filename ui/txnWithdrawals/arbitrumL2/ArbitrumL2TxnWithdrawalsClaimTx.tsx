@@ -3,6 +3,7 @@ import React from 'react';
 import { useWaitForTransactionReceipt } from 'wagmi';
 
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
+
 import config from 'configs/app';
 
 const rollupFeature = config.features.rollup;

@@ -3,7 +3,9 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
+
 import { currencyUnits } from 'client/shared/chain/units';
+
 import config from 'configs/app';
 import { ZERO } from 'toolkit/utils/consts';
 import { thinsp } from 'toolkit/utils/htmlEntities';
@@ -12,9 +14,9 @@ import IconSvg from 'ui/shared/IconSvg';
 import NativeTokenIcon from 'ui/shared/NativeTokenIcon';
 import calculateUsdValue from 'ui/shared/value/calculateUsdValue';
 
-import { getTokensTotalInfo } from './token-utils';
 import TokenBalancesItem from './TokenBalancesItem';
 import useFetchTokens from './useFetchTokens';
+import { getTokensTotalInfo } from './utils';
 
 const TokenBalances = () => {
   const router = useRouter();

@@ -8,6 +8,7 @@ import type { CustomLinksGroup } from 'types/footerLinks';
 import useApiQuery from 'client/api/hooks/useApiQuery';
 import useFetch from 'client/api/hooks/useFetch';
 import type { ResourceError } from 'client/api/resources';
+
 import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';

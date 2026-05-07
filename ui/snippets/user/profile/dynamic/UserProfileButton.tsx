@@ -2,7 +2,9 @@ import { Box, HStack } from '@chakra-ui/react';
 import React from 'react';
 
 import useAccountWithDomain from 'client/features/connect-wallet/hooks/useAccountWithDomain';
+
 import shortenString from 'client/shared/text/shorten-string';
+
 import { useMarketplaceContext } from 'lib/contexts/marketplace';
 import { Button, type ButtonProps } from 'toolkit/chakra/button';
 import IconSvg from 'ui/shared/IconSvg';

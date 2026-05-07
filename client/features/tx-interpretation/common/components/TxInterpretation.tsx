@@ -13,9 +13,11 @@ import type { ClusterChainConfig } from 'types/multichain';
 
 import { route } from 'nextjs-routes';
 
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 import { currencyUnits } from 'client/shared/chain/units';
-import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+
 import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';
 import { Badge } from 'toolkit/chakra/badge';

@@ -8,17 +8,6 @@ import type { PaginationParams } from 'ui/shared/pagination/types';
 
 import { routeParams } from 'nextjs/routes';
 
-import BlockDeposits from 'client/features/chain-variants/beacon-chain/pages/block/BlockDeposits';
-import BlockWithdrawals from 'client/features/chain-variants/beacon-chain/pages/block/BlockWithdrawals';
-import useBlockDepositsQuery from 'client/features/chain-variants/beacon-chain/pages/block/useBlockDepositsQuery';
-import useBlockWithdrawalsQuery from 'client/features/chain-variants/beacon-chain/pages/block/useBlockWithdrawalsQuery';
-import BlockCeloEpochTag from 'client/features/chain-variants/celo/pages/block/BlockCeloEpochTag';
-import useBlockBlobTxsQuery from 'client/features/data-availability/hooks/useBlockBlobTxsQuery';
-import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-title';
-import throwOnAbsentParamError from 'client/shared/errors/throw-on-absent-param-error';
-import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
-import useIsMobile from 'client/shared/hooks/useIsMobile';
-import getQueryParamString from 'client/shared/router/get-query-param-string';
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import BlockPendingUpdateAlert from 'client/slices/block/components/BlockPendingUpdateAlert';
 import * as BlockEntity from 'client/slices/block/components/entity/BlockEntity';
@@ -28,6 +17,20 @@ import useBlockTxsQuery from 'client/slices/block/hooks/useBlockTxsQuery';
 import BlockDetails from 'client/slices/block/pages/details/BlockDetails';
 import BlockInternalTxs from 'client/slices/block/pages/details/BlockInternalTxs';
 import TxsWithFrontendSorting from 'client/slices/tx/pages/index/list/TxsWithFrontendSorting';
+
+import BlockDeposits from 'client/features/chain-variants/beacon-chain/pages/block/BlockDeposits';
+import BlockWithdrawals from 'client/features/chain-variants/beacon-chain/pages/block/BlockWithdrawals';
+import useBlockDepositsQuery from 'client/features/chain-variants/beacon-chain/pages/block/useBlockDepositsQuery';
+import useBlockWithdrawalsQuery from 'client/features/chain-variants/beacon-chain/pages/block/useBlockWithdrawalsQuery';
+import BlockCeloEpochTag from 'client/features/chain-variants/celo/pages/block/BlockCeloEpochTag';
+import useBlockBlobTxsQuery from 'client/features/data-availability/hooks/useBlockBlobTxsQuery';
+
+import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-title';
+import throwOnAbsentParamError from 'client/shared/errors/throw-on-absent-param-error';
+import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
+
 import config from 'configs/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import { Skeleton } from 'toolkit/chakra/skeleton';

@@ -4,6 +4,7 @@ import React, { useCallback, useState } from 'react';
 import type { WatchlistAddress } from 'types/api/account';
 
 import useApiFetch from 'client/api/hooks/useApiFetch';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Switch } from 'toolkit/chakra/switch';
 import { TableCell, TableRow } from 'toolkit/chakra/table';

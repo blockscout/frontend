@@ -1,6 +1,7 @@
 import type { NextRequest, NextResponse } from 'next/server';
 
 import * as cookiesLib from 'client/shared/storage/cookies';
+
 import appConfig from 'configs/app';
 
 export default function colorThemeMiddleware(req: NextRequest, res: NextResponse) {

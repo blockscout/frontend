@@ -9,9 +9,12 @@ import type { AddressBlocksValidatedResponse } from 'client/slices/address/types
 import { getResourceKey } from 'client/api/hooks/useApiQuery';
 import useSocketChannel from 'client/api/socket/useSocketChannel';
 import useSocketMessage from 'client/api/socket/useSocketMessage';
+
+import { BLOCK } from 'client/slices/block/stubs/block';
+
 import { currencyUnits } from 'client/shared/chain/units';
 import useIsMounted from 'client/shared/hooks/useIsMounted';
-import { BLOCK } from 'client/slices/block/stubs/block';
+
 import config from 'configs/app';
 import { generateListStub } from 'stubs/utils';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';

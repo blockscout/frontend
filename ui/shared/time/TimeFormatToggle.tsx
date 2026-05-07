@@ -3,6 +3,7 @@ import { chakra, HStack } from '@chakra-ui/react';
 import React from 'react';
 
 import * as mixpanel from 'client/shared/analytics/mixpanel';
+
 import { useSettingsContext } from 'lib/contexts/settings';
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { Tooltip } from 'toolkit/chakra/tooltip';

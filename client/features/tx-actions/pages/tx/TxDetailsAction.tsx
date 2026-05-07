@@ -5,6 +5,7 @@ import React from 'react';
 import type { TxAction, TxActionGeneral } from 'types/api/txAction';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+
 import config from 'configs/app';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';

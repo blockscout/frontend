@@ -4,6 +4,7 @@ import type { PreSubmitTransactionResponse } from '@blockscout/points-types';
 
 import useApiFetch from 'client/api/hooks/useApiFetch';
 import useApiQuery from 'client/api/hooks/useApiQuery';
+
 import config from 'configs/app';
 import { useRewardsContext } from 'lib/contexts/rewards';
 import { MINUTE } from 'toolkit/utils/consts';

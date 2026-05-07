@@ -2,6 +2,7 @@ import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
+
 import { HOMEPAGE_STATS } from 'stubs/multichain';
 import type { HomeStatsWidgetItem } from 'ui/home/utils';
 import { sortHomeStatsItems, isHomeStatsItemEnabled } from 'ui/home/utils';

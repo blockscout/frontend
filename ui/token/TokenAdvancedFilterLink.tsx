@@ -3,6 +3,7 @@ import React from 'react';
 import type { TokenInfo } from 'types/api/token';
 
 import useIsInitialLoading from 'client/shared/hooks/useIsInitialLoading';
+
 import config from 'configs/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import type { LinkProps } from 'toolkit/chakra/link';

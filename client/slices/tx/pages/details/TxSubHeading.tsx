@@ -4,10 +4,13 @@ import React from 'react';
 import type { AddressParam } from 'client/slices/address/types/api';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
-import TxInterpretation from 'client/features/tx-interpretation/common/components/TxInterpretation';
-import { createNovesSummaryObject } from 'client/features/tx-interpretation/noves/utils/createNovesSummaryObject';
+
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import type { TxQuery } from 'client/slices/tx/hooks/useTxQuery';
+
+import TxInterpretation from 'client/features/tx-interpretation/common/components/TxInterpretation';
+import { createNovesSummaryObject } from 'client/features/tx-interpretation/noves/utils/createNovesSummaryObject';
+
 import config from 'configs/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import { NOVES_TRANSLATE } from 'stubs/noves/NovesTranslate';

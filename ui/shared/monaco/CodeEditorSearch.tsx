@@ -6,6 +6,7 @@ import React from 'react';
 import type { File, Monaco, SearchResult } from './types';
 
 import useDebounce from 'client/shared/hooks/useDebounce';
+
 import { AccordionRoot } from 'toolkit/chakra/accordion';
 import { Input } from 'toolkit/chakra/input';
 import { InputGroup } from 'toolkit/chakra/input-group';

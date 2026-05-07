@@ -1,6 +1,7 @@
 import React from 'react';
 
 import capitalizeFirstLetter from 'client/shared/text/capitalize-first-letter';
+
 import type { BadgeProps } from 'toolkit/chakra/badge';
 import { Badge } from 'toolkit/chakra/badge';
 import { Tooltip } from 'toolkit/chakra/tooltip';

@@ -4,6 +4,7 @@ import React from 'react';
 
 import useDebounce from 'client/shared/hooks/useDebounce';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
+
 import config from 'configs/app';
 import { POOL } from 'stubs/pools';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';

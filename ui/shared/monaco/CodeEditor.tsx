@@ -10,6 +10,7 @@ import type { SmartContractExternalLibrary } from 'types/api/contract';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import isMetaKey from 'client/shared/utils/is-meta-key';
+
 import { useColorMode } from 'toolkit/chakra/color-mode';
 import { useClientRect } from 'toolkit/hooks/useClientRect';
 import ErrorBoundary from 'ui/shared/ErrorBoundary';

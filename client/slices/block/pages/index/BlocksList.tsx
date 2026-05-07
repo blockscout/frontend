@@ -4,8 +4,9 @@ import React from 'react';
 import type { Block } from 'client/slices/block/types/api';
 import type { ClusterChainConfig } from 'types/multichain';
 
-import useInitialList from 'client/shared/lists/useInitialList';
 import BlocksListItem from 'client/slices/block/pages/index/BlocksListItem';
+
+import useInitialList from 'client/shared/lists/useInitialList';
 
 interface Props {
   data: Array<Block>;

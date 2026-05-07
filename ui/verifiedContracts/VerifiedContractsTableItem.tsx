@@ -5,6 +5,7 @@ import type { VerifiedContract } from 'types/api/contracts';
 import type { ClusterChainConfig } from 'types/multichain';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+
 import formatLanguageName from 'lib/contracts/formatLanguageName';
 import { CONTRACT_LICENSES } from 'lib/contracts/licenses';
 import { Skeleton } from 'toolkit/chakra/skeleton';

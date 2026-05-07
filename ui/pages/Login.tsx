@@ -7,6 +7,7 @@ import useFeatureValue from 'client/shared/feature-flags/useFeatureValue';
 import useGradualIncrement from 'client/shared/hooks/useGradualIncrement';
 import { useRollbar } from 'client/shared/monitoring/rollbar';
 import * as cookies from 'client/shared/storage/cookies';
+
 import config from 'configs/app';
 import { Alert } from 'toolkit/chakra/alert';
 import { Button } from 'toolkit/chakra/button';

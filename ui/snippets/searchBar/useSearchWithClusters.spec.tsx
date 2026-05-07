@@ -4,6 +4,7 @@ import type { UseQueryResult } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
 
 import useApiFetch from 'client/api/hooks/useApiFetch';
+
 import type { Mock } from 'vitest';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { renderHook } from 'vitest/lib';

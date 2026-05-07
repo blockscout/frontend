@@ -4,6 +4,7 @@ import React from 'react';
 import type { OptimisticL2DisputeGamesItem } from 'types/api/optimisticL2';
 
 import BlockEntityL2 from 'client/features/rollup/common/components/BlockEntityL2';
+
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';

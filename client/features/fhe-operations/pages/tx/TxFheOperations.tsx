@@ -2,9 +2,11 @@ import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
+
 import TxPendingAlert from 'client/slices/tx/components/TxPendingAlert';
 import TxSocketAlert from 'client/slices/tx/components/TxSocketAlert';
 import type { TxQuery } from 'client/slices/tx/hooks/useTxQuery';
+
 import { FHE_OPERATIONS_RESPONSE } from 'stubs/fheOperations';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DataListDisplay from 'ui/shared/DataListDisplay';

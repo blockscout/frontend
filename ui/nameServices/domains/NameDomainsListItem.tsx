@@ -3,6 +3,7 @@ import React from 'react';
 import type * as bens from '@blockscout/bens-types';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+
 import dayjs from 'lib/date/dayjs';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import NameDomainExpiryStatus from 'ui/nameDomain/NameDomainExpiryStatus';

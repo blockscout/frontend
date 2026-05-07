@@ -3,6 +3,7 @@ import React from 'react';
 import type * as bens from '@blockscout/bens-types';
 
 import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
+
 import { TableBody, TableColumnHeader, TableColumnHeaderSortable, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';

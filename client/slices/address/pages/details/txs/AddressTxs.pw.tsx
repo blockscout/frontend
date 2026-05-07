@@ -3,6 +3,7 @@ import type { Locator } from '@playwright/test';
 import React from 'react';
 
 import * as txMock from 'client/slices/tx/mocks/tx';
+
 import * as socketServer from 'playwright/fixtures/socketServer';
 import { test, expect } from 'playwright/lib';
 import * as pwConfig from 'playwright/utils/config';

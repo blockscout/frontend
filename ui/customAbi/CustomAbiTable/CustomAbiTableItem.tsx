@@ -4,6 +4,7 @@ import React, { useCallback } from 'react';
 import type { CustomAbi } from 'types/api/account';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import TableItemActionButtons from 'ui/shared/TableItemActionButtons';

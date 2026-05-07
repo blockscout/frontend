@@ -3,10 +3,12 @@ import React from 'react';
 
 import type { OptimisticL2DepositsItem } from 'types/api/optimisticL2';
 
+import TxEntity from 'client/slices/tx/components/entity/TxEntity';
+
 import AddressEntityL1 from 'client/features/rollup/common/components/AddressEntityL1';
 import BlockEntityL1 from 'client/features/rollup/common/components/BlockEntityL1';
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
-import TxEntity from 'client/slices/tx/components/entity/TxEntity';
+
 import config from 'configs/app';
 import { layerLabels } from 'lib/rollups/utils';
 import { Skeleton } from 'toolkit/chakra/skeleton';

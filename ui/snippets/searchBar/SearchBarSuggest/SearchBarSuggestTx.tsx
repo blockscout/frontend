@@ -6,6 +6,7 @@ import type { SearchResultTx } from 'types/api/search';
 import type * as multichain from 'types/client/multichainAggregator';
 
 import * as TxEntity from 'client/slices/tx/components/entity/TxEntity';
+
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import Time from 'ui/shared/time/Time';
 

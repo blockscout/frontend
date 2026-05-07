@@ -4,6 +4,7 @@ import React, { useCallback } from 'react';
 import type { TransactionTag } from 'types/api/account';
 
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
+
 import { Tag } from 'toolkit/chakra/tag';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TableItemActionButtons from 'ui/shared/TableItemActionButtons';

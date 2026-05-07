@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { DecodedInput } from 'client/slices/logs/types/api';
+import type { DecodedInput } from 'client/slices/log/types/api';
 
 import LogDecodedInputDataHeader from './LogDecodedInputDataHeader';
 import LogDecodedInputDataTable from './LogDecodedInputDataTable';

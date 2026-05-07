@@ -8,6 +8,7 @@ import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
 import * as blockMock from 'client/slices/block/mocks/block';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import * as txMock from 'client/slices/tx/mocks/tx';
+
 import * as addressMock from 'mocks/address/address';
 import * as implementationsMock from 'mocks/address/implementations';
 import * as blobsMock from 'mocks/blobs/blobs';

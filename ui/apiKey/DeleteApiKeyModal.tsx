@@ -6,6 +6,7 @@ import type { ApiKey, ApiKeys } from 'types/api/account';
 
 import useApiFetch from 'client/api/hooks/useApiFetch';
 import { resourceKey } from 'client/api/resources';
+
 import DeleteModal from 'ui/shared/DeleteModal';
 
 type Props = {

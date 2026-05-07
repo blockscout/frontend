@@ -5,8 +5,11 @@ import type * as multichain from '@blockscout/multichain-aggregator-types';
 import getSocketUrl from 'client/api/get-socket-url';
 import useApiQuery from 'client/api/hooks/useApiQuery';
 import { SocketProvider } from 'client/api/socket/context';
-import useIsMobile from 'client/shared/hooks/useIsMobile';
+
 import { ADDRESS_INFO } from 'client/slices/address/stubs/address';
+
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+
 import multichainConfig from 'configs/multichain';
 import { MultichainProvider } from 'lib/contexts/multichain';
 import useRoutedChainSelect from 'lib/multichain/useRoutedChainSelect';

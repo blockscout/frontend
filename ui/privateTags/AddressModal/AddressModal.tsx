@@ -3,6 +3,7 @@ import React, { useCallback, useState } from 'react';
 import type { AddressTag } from 'types/api/account';
 
 import * as mixpanel from 'client/shared/analytics/mixpanel';
+
 import FormModal from 'ui/shared/FormModal';
 
 import AddressForm from './AddressForm';

@@ -7,7 +7,9 @@ import type { Transaction } from 'client/slices/tx/types/api';
 import type { OptimisticL2WithdrawalStatus } from 'types/api/optimisticL2';
 
 import { getResourceKey } from 'client/api/hooks/useApiQuery';
+
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
+
 import config from 'configs/app';
 import VerificationSteps from 'ui/shared/verificationSteps/VerificationSteps';
 import OptimisticL2ClaimButton, { canClaimDirectlyGuard } from 'ui/withdrawals/optimisticL2/OptimisticL2ClaimButton';

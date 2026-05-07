@@ -4,7 +4,9 @@ import React from 'react';
 import type { TransactionsSortingValue, TxsResponse } from 'client/slices/tx/types/api';
 
 import type { ResourceError } from 'client/api/resources';
+
 import * as cookies from 'client/shared/storage/cookies';
+
 import type { SelectOption } from 'toolkit/chakra/select';
 
 import sortTxs from '../utils/sort-txs';

@@ -4,6 +4,8 @@ import React from 'react';
 
 import { route } from 'nextjs/routes';
 
+import type { TokenEnhancedData } from 'client/slices/token/pages/address/utils';
+
 import config from 'configs/app';
 import multichainConfig from 'configs/multichain';
 import { isConfidentialTokenType, isFungibleTokenType } from 'lib/token/tokenTypes';
@@ -12,8 +14,6 @@ import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
 import NativeTokenTag from 'ui/shared/celo/NativeTokenTag';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import calculateUsdValue from 'ui/shared/value/calculateUsdValue';
-
-import type { TokenEnhancedData } from '../../tokens/token-utils';
 
 interface Props {
   data: TokenEnhancedData;

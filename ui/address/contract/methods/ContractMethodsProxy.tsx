@@ -6,6 +6,7 @@ import type { AddressImplementation } from 'client/slices/address/types/api';
 import type { SmartContractConflictingImplementation, SmartContractProxyType } from 'types/api/contract';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
+
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import ContractSourceAddressSelector from '../ContractSourceAddressSelector';

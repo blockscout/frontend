@@ -3,12 +3,13 @@ import React from 'react';
 
 import type { FormattedData } from './types';
 
+import { getTokensTotalInfo } from 'client/slices/token/pages/address/utils';
+
 import * as mixpanel from 'client/shared/analytics/mixpanel';
+
 import { Button } from 'toolkit/chakra/button';
 import { space, thinsp } from 'toolkit/utils/htmlEntities';
 import IconSvg from 'ui/shared/IconSvg';
-
-import { getTokensTotalInfo } from '../../tokens/token-utils';
 
 interface Props {
   isOpen: boolean;

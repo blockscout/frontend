@@ -3,8 +3,8 @@ import React from 'react';
 
 import type { FormattedData } from './types';
 
-import type { Sort } from '../../tokens/token-utils';
-import { filterTokens } from '../../tokens/token-utils';
+import type { Sort } from 'client/slices/token/pages/address/utils';
+import { filterTokens } from 'client/slices/token/pages/address/utils';
 
 export default function useTokenSelect(data: FormattedData) {
   const [ searchTerm, setSearchTerm ] = React.useState('');

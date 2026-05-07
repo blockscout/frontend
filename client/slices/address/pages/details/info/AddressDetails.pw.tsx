@@ -2,6 +2,7 @@ import React from 'react';
 
 import type { AddressCountersQuery } from 'client/slices/address/hooks/useAddressCountersQuery';
 import type { AddressQuery } from 'client/slices/address/hooks/useAddressQuery';
+
 import * as addressMock from 'mocks/address/address';
 import * as countersMock from 'mocks/address/counters';
 import * as tokensMock from 'mocks/address/tokens';

@@ -4,6 +4,7 @@ import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import { currencyUnits } from 'client/shared/chain/units';
+
 import { thinsp } from 'toolkit/utils/htmlEntities';
 
 import SimpleValue from './SimpleValue';

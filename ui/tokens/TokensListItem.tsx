@@ -5,9 +5,12 @@ import React from 'react';
 import type { TokenInfo } from 'types/api/token';
 import type { AggregatedTokenInfo } from 'types/client/multichainAggregator';
 
-import TokenAddToWallet from 'client/features/web3-wallet/components/TokenAddToWallet';
-import getItemIndex from 'client/shared/lists/get-item-index';
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+
+import TokenAddToWallet from 'client/features/web3-wallet/components/TokenAddToWallet';
+
+import getItemIndex from 'client/shared/lists/get-item-index';
+
 import config from 'configs/app';
 import multichainConfig from 'configs/multichain';
 import { getTokenTypeName } from 'lib/token/tokenTypes';

@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+
 import { useMultichainContext } from 'lib/contexts/multichain';
 import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 import PageTitle from 'ui/shared/Page/PageTitle';

@@ -4,6 +4,7 @@ import type { AddressFromToFilter } from 'client/slices/address/types/api';
 import type { TxsSocketType } from 'client/slices/tx/types/socket';
 
 import useTxsSort from 'client/slices/tx/hooks/useTxsSort';
+
 import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
 
 import TxsContent from './TxsContent';

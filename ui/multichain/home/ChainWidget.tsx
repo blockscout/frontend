@@ -8,6 +8,7 @@ import useIsMobile from 'client/shared/hooks/useIsMobile';
 import useAddChainClick from 'client/shared/web3/useAddChainClick';
 import useProvider from 'client/shared/web3/useProvider';
 import { WALLETS_INFO } from 'client/shared/web3/wallets';
+
 import { Heading } from 'toolkit/chakra/heading';
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { LinkBox, LinkOverlay } from 'toolkit/chakra/link';

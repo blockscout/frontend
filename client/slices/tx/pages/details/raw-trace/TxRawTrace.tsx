@@ -7,11 +7,14 @@ import type { TxRawTracesResponse } from 'client/slices/tx/types/api';
 import useApiQuery from 'client/api/hooks/useApiQuery';
 import useSocketChannel from 'client/api/socket/useSocketChannel';
 import useSocketMessage from 'client/api/socket/useSocketMessage';
-import getQueryParamString from 'client/shared/router/get-query-param-string';
+
 import TxPendingAlert from 'client/slices/tx/components/TxPendingAlert';
 import TxSocketAlert from 'client/slices/tx/components/TxSocketAlert';
 import type { TxQuery } from 'client/slices/tx/hooks/useTxQuery';
 import { TX_RAW_TRACE } from 'client/slices/tx/stubs/tx';
+
+import getQueryParamString from 'client/shared/router/get-query-param-string';
+
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
 

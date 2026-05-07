@@ -7,6 +7,7 @@ import type { Block } from 'client/slices/block/types/api';
 import BlockGasUsed from 'client/slices/block/components/BlockGasUsed';
 import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
 import getBlockTotalReward from 'client/slices/block/utils/get-block-total-reward';
+
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';

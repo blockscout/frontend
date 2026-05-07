@@ -2,6 +2,7 @@ import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TxQuery } from 'client/slices/tx/hooks/useTxQuery';
+
 import TokenTransfersCrossChainListItem from 'ui/crossChain/transfers/TokenTransfersCrossChainListItem';
 import TokenTransfersCrossChainTable from 'ui/crossChain/transfers/TokenTransfersCrossChainTable';
 import { getItemKey } from 'ui/crossChain/transfers/utils';

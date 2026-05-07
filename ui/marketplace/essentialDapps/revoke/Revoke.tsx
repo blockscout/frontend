@@ -7,10 +7,12 @@ import { getEnsAddress, normalize } from 'viem/ens';
 import { useAccount } from 'wagmi';
 
 import useWeb3Wallet from 'client/features/connect-wallet/hooks/useWallet';
+
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import { useQueryParams } from 'client/shared/router/useQueryParams';
+
 import config from 'configs/app';
 import essentialDappsChainsConfig from 'configs/essential-dapps-chains';
 import { Button } from 'toolkit/chakra/button';

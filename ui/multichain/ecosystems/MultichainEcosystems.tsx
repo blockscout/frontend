@@ -5,6 +5,7 @@ import React from 'react';
 import type { ChainMetricsSorting, ChainMetricsSortingField, ChainMetricsSortingValue } from 'types/client/multichainAggregator';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
+
 import multichainConfig from 'configs/multichain';
 import { CHAIN_METRICS } from 'stubs/multichain';
 import ActionBar from 'ui/shared/ActionBar';

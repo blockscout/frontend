@@ -6,6 +6,7 @@ import type { AddressTag, TransactionTag, AddressTagsResponse, TransactionTagsRe
 
 import useApiFetch from 'client/api/hooks/useApiFetch';
 import { getResourceKey } from 'client/api/hooks/useApiQuery';
+
 import DeleteModal from 'ui/shared/DeleteModal';
 
 type Props = {

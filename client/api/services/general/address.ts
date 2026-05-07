@@ -22,7 +22,7 @@ import type {
   AddressNFTTokensFilter,
   AddressTokenBalancesResponse,
   AddressesResponse } from 'client/slices/address/types/api';
-import type { LogsResponseAddress } from 'client/slices/logs/types/api';
+import type { LogsResponseAddress } from 'client/slices/log/types/api';
 import type { TransactionsSorting } from 'client/slices/tx/types/api';
 import type { DepositsResponse } from 'types/api/deposits';
 

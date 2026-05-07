@@ -4,6 +4,7 @@ import React from 'react';
 import type { OptimisticL2BlobTypeEigenda } from 'types/api/optimisticL2';
 
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
+
 import { layerLabels } from 'lib/rollups/utils';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';

@@ -2,10 +2,13 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
+
+import { fromBech32Address, isBech32Address } from 'client/slices/address/utils/bech32';
+
 import useDebounce from 'client/shared/hooks/useDebounce';
 import useUpdateValueEffect from 'client/shared/hooks/useUpdateValueEffect';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
-import { fromBech32Address, isBech32Address } from 'client/slices/address/utils/bech32';
+
 import config from 'configs/app';
 import { getExternalSearchItem } from 'lib/search/externalSearch';
 import { SEARCH_RESULT_ITEM, SEARCH_RESULT_NEXT_PAGE_PARAMS } from 'stubs/search';

@@ -1,5 +1,6 @@
 import type { BlockQuery } from 'client/slices/block/hooks/useBlockQuery';
 import { TX } from 'client/slices/tx/stubs/tx';
+
 import { generateListStub } from 'stubs/utils';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 

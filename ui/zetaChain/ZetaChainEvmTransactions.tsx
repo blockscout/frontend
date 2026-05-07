@@ -5,12 +5,14 @@ import React from 'react';
 
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
-import getChainValidationActionText from 'client/shared/chain/get-chain-validation-action-text';
-import useIsMobile from 'client/shared/hooks/useIsMobile';
-import getQueryParamString from 'client/shared/router/get-query-param-string';
 import TxsWithFrontendSorting from 'client/slices/tx/pages/index/list/TxsWithFrontendSorting';
 import TxsStats from 'client/slices/tx/pages/index/stats/TxsStats';
 import { TX } from 'client/slices/tx/stubs/tx';
+
+import getChainValidationActionText from 'client/shared/chain/get-chain-validation-action-text';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
+
 import config from 'configs/app';
 import { generateListStub } from 'stubs/utils';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';

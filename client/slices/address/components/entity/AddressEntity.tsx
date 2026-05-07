@@ -7,6 +7,7 @@ import { route } from 'nextjs/routes';
 
 import { useAddressHighlightContext } from 'client/slices/address/contexts/address-highlight';
 import { toBech32Address } from 'client/slices/address/utils/bech32';
+
 import { useSettingsContext } from 'lib/contexts/settings';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';

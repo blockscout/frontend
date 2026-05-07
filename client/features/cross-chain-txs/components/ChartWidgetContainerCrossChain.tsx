@@ -5,6 +5,7 @@ import { route } from 'nextjs-routes';
 
 import type { Props as ChartWidgetContainerProps } from 'client/features/chain-stats/components/ChartWidgetContainer';
 import { getChartUrl } from 'client/features/chain-stats/utils/chart';
+
 import { SankeyChartWidget } from 'toolkit/components/charts/sankey/SankeyChartWidget';
 
 import useCrossChainChartQuery from '../hooks/useCrossChainChartQuery';

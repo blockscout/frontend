@@ -5,6 +5,7 @@ import type { AddressVerificationFormFirstStepFields, AddressCheckStatusSuccess 
 import type { VerifiedAddress } from 'types/api/account';
 
 import * as mixpanel from 'client/shared/analytics/mixpanel';
+
 import config from 'configs/app';
 import { FallbackProvider } from 'lib/contexts/fallback';
 import { DialogBody, DialogContent, DialogHeader, DialogRoot } from 'toolkit/chakra/dialog';

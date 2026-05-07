@@ -5,6 +5,7 @@ import type { DepositsItem } from 'types/api/deposits';
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
+
 import config from 'configs/app';
 import BeaconChainDepositSignature from 'ui/shared/beacon/BeaconChainDepositSignature';
 import BeaconChainDepositStatusTag from 'ui/shared/beacon/BeaconChainDepositStatusTag';

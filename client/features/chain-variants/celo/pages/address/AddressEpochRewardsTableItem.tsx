@@ -6,6 +6,7 @@ import type { AddressEpochRewardsItem } from 'client/features/chain-variants/cel
 import { route } from 'nextjs-routes';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+
 import { Link } from 'toolkit/chakra/link';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import EpochRewardTypeTag from 'ui/shared/EpochRewardTypeTag';

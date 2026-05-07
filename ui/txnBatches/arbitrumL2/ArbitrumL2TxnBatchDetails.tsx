@@ -8,9 +8,12 @@ import type { ArbitrumL2TxnBatch } from 'types/api/arbitrumL2';
 import { route } from 'nextjs-routes';
 
 import type { ResourceError } from 'client/api/resources';
+
 import BlockEntityL1 from 'client/features/rollup/common/components/BlockEntityL1';
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
+
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
+
 import { layerLabels } from 'lib/rollups/utils';
 import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
 import { Link } from 'toolkit/chakra/link';

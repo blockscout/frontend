@@ -1,10 +1,12 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import getQueryParamString from 'client/shared/router/get-query-param-string';
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import TxsWithFrontendSorting from 'client/slices/tx/pages/index/list/TxsWithFrontendSorting';
 import { TX } from 'client/slices/tx/stubs/tx';
+
+import getQueryParamString from 'client/shared/router/get-query-param-string';
+
 import { generateListStub } from 'stubs/utils';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';

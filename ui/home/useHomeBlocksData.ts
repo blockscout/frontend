@@ -9,7 +9,9 @@ import useApiQuery, { getResourceKey } from 'client/api/hooks/useApiQuery';
 import type { ResourceError, ResourcePayload } from 'client/api/resources';
 import useSocketChannel from 'client/api/socket/useSocketChannel';
 import useSocketMessage from 'client/api/socket/useSocketMessage';
+
 import { BLOCK } from 'client/slices/block/stubs/block';
+
 import config from 'configs/app';
 
 /** Max blocks kept in React Query cache for `general:homepage_blocks` (fetch + socket). */

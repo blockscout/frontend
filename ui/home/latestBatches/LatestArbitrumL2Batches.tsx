@@ -11,8 +11,10 @@ import { route } from 'nextjs-routes';
 import useApiQuery, { getResourceKey } from 'client/api/hooks/useApiQuery';
 import useSocketChannel from 'client/api/socket/useSocketChannel';
 import useSocketMessage from 'client/api/socket/useSocketMessage';
+
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import useInitialList from 'client/shared/lists/useInitialList';
+
 import { ARBITRUM_L2_TXN_BATCHES_ITEM } from 'stubs/arbitrumL2';
 import { Heading } from 'toolkit/chakra/heading';
 import { Link } from 'toolkit/chakra/link';

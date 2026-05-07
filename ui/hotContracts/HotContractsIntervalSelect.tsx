@@ -4,6 +4,7 @@ import React from 'react';
 import type { HotContractsInterval } from 'types/api/contracts';
 
 import useIsInitialLoading from 'client/shared/hooks/useIsInitialLoading';
+
 import type { SelectOption } from 'toolkit/chakra/select';
 import { Select } from 'toolkit/chakra/select';
 import TagGroupSelect from 'ui/shared/tagGroupSelect/TagGroupSelect';

@@ -2,7 +2,9 @@ import { Text } from '@chakra-ui/react';
 import React from 'react';
 
 import buildUrl from 'client/api/build-url';
+
 import * as cookies from 'client/shared/storage/cookies';
+
 import config from 'configs/app';
 import { Button } from 'toolkit/chakra/button';
 import { toaster } from 'toolkit/chakra/toaster';

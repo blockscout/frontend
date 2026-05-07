@@ -2,6 +2,7 @@ import { chakra } from '@chakra-ui/react';
 import React, { useCallback, useState } from 'react';
 
 import * as mixpanel from 'client/shared/analytics/mixpanel';
+
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 

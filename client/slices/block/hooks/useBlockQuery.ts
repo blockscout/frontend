@@ -8,9 +8,12 @@ import type { Block } from 'client/slices/block/types/api';
 import useApiQuery from 'client/api/hooks/useApiQuery';
 import { retry } from 'client/api/hooks/useQueryClientConfig';
 import type { ResourceError } from 'client/api/resources';
-import { publicClient } from 'client/features/connect-wallet/utils/public-client';
+
 import { BLOCK } from 'client/slices/block/stubs/block';
 import formatRpcData from 'client/slices/block/utils/format-rpc-data';
+
+import { publicClient } from 'client/features/connect-wallet/utils/public-client';
+
 import { GET_BLOCK } from 'stubs/RPC';
 import { SECOND } from 'toolkit/utils/consts';
 

@@ -1,6 +1,7 @@
 import type { Router } from 'next/router';
 
 import getQueryParamString from 'client/shared/router/get-query-param-string';
+
 import multichainConfig from 'configs/multichain';
 
 export default function getChainValueFromQuery(

@@ -3,7 +3,9 @@ import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
+
 import { TXS_STATS, TXS_STATS_MICROSERVICE } from 'client/slices/tx/stubs/tx';
+
 import config from 'configs/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import getStatsLabelFromTitle from 'lib/stats/getStatsLabelFromTitle';

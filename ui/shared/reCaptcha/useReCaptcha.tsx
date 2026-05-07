@@ -3,6 +3,7 @@ import type ReCAPTCHA from 'react-google-recaptcha';
 
 import getErrorCauseStatusCode from 'client/shared/errors/get-error-cause-status-code';
 import getErrorObjStatusCode from 'client/shared/errors/get-error-obj-status-code';
+
 import config from 'configs/app';
 
 export default function useReCaptcha() {

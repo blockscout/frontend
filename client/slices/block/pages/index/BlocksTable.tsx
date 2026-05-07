@@ -4,11 +4,13 @@ import React from 'react';
 import type { Block } from 'client/slices/block/types/api';
 import type { ClusterChainConfig } from 'types/multichain';
 
+import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
+import BlocksTableItem from 'client/slices/block/pages/index/BlocksTableItem';
+
 import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-title';
 import { currencyUnits } from 'client/shared/chain/units';
 import useInitialList from 'client/shared/lists/useInitialList';
-import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
-import BlocksTableItem from 'client/slices/block/pages/index/BlocksTableItem';
+
 import config from 'configs/app';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';

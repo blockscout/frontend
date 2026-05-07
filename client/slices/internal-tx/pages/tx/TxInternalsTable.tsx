@@ -2,8 +2,10 @@ import React from 'react';
 
 import type { InternalTransaction } from 'types/api/internalTransaction';
 
-import { currencyUnits } from 'client/shared/chain/units';
 import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
+
+import { currencyUnits } from 'client/shared/chain/units';
+
 import { TableBody, TableColumnHeader, TableColumnHeaderSortable, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 
 import type { Sort, SortField } from '../../utils/utils';

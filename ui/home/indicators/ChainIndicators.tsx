@@ -3,6 +3,7 @@ import React from 'react';
 import type { TChainIndicator } from './types';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
+
 import config from 'configs/app';
 import { HOMEPAGE_STATS, HOMEPAGE_STATS_MICROSERVICE } from 'stubs/stats';
 import IconSvg from 'ui/shared/IconSvg';

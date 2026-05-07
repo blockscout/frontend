@@ -2,10 +2,12 @@ import React from 'react';
 
 import type { ShibariumDepositsItem } from 'types/api/shibarium';
 
-import BlockEntityL1 from 'client/features/rollup/common/components/BlockEntityL1';
-import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
 import AddressStringOrParam from 'client/slices/address/components/entity/AddressStringOrParam';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
+
+import BlockEntityL1 from 'client/features/rollup/common/components/BlockEntityL1';
+import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
+
 import config from 'configs/app';
 import { layerLabels } from 'lib/rollups/utils';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';

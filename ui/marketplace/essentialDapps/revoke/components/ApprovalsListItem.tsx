@@ -5,6 +5,7 @@ import type { EssentialDappsChainConfig } from 'types/client/marketplace';
 import type { AllowanceType } from 'types/client/revoke';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+
 import dayjs from 'lib/date/dayjs';
 import { Button } from 'toolkit/chakra/button';
 import { Skeleton } from 'toolkit/chakra/skeleton';

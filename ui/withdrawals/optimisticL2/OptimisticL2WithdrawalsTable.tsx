@@ -3,6 +3,7 @@ import React from 'react';
 import type { OptimisticL2WithdrawalsItem } from 'types/api/optimisticL2';
 
 import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
+
 import { layerLabels } from 'lib/rollups/utils';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';

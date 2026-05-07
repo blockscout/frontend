@@ -6,8 +6,11 @@ import type { ClusterChainConfig } from 'types/multichain';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 import type { ResourceError } from 'client/api/resources';
-import { publicClient } from 'client/features/connect-wallet/utils/public-client';
+
 import { ADDRESS_COUNTERS } from 'client/slices/address/stubs/address';
+
+import { publicClient } from 'client/features/connect-wallet/utils/public-client';
+
 import { GET_TRANSACTIONS_COUNT } from 'stubs/RPC';
 
 type RpcResponseType = [

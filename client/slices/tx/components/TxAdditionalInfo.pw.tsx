@@ -1,7 +1,9 @@
 import React from 'react';
 
-import * as txMockBlob from 'client/features/data-availability/mocks/tx';
 import * as txMock from 'client/slices/tx/mocks/tx';
+
+import * as txMockBlob from 'client/features/data-availability/mocks/tx';
+
 import { test, expect } from 'playwright/lib';
 
 import TxAdditionalInfo from './TxAdditionalInfo';

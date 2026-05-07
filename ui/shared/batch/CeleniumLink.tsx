@@ -2,6 +2,7 @@ import { Flex, Icon } from '@chakra-ui/react';
 import React from 'react';
 
 import hexToBase64 from 'client/shared/transformers/hex-to-base64';
+
 import config from 'configs/app';
 // eslint-disable-next-line no-restricted-imports
 import celeniumIcon from 'icons/brands/celenium.svg';

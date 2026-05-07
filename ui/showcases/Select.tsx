@@ -3,6 +3,7 @@ import { noop } from 'es-toolkit';
 import React from 'react';
 
 import { SORT_OPTIONS } from 'client/slices/tx/hooks/useTxsSort';
+
 import { Checkbox } from 'toolkit/chakra/checkbox';
 import type { SelectOption } from 'toolkit/chakra/select';
 import { Select, SelectAsync } from 'toolkit/chakra/select';

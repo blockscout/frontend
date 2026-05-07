@@ -8,6 +8,7 @@ import useApiQuery, { getResourceKey } from 'client/api/hooks/useApiQuery';
 import type { ResourceError } from 'client/api/resources';
 import useSocketChannel from 'client/api/socket/useSocketChannel';
 import useSocketMessage from 'client/api/socket/useSocketMessage';
+
 import config from 'configs/app';
 
 export type HomeLatestBatchQueryResult = UseQueryResult<number, ResourceError<unknown>>;

@@ -5,9 +5,12 @@ import type { Block } from 'client/slices/block/types/api';
 
 import { route } from 'nextjs-routes';
 
-import { publicClient } from 'client/features/connect-wallet/utils/public-client';
-import useInitialList from 'client/shared/lists/useInitialList';
 import { BLOCK } from 'client/slices/block/stubs/block';
+
+import { publicClient } from 'client/features/connect-wallet/utils/public-client';
+
+import useInitialList from 'client/shared/lists/useInitialList';
+
 import { Link } from 'toolkit/chakra/link';
 
 import LatestBlocksItem from '../LatestBlocksItem';

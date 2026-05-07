@@ -6,6 +6,7 @@ import * as tac from '@blockscout/tac-operation-lifecycle-types';
 import { route } from 'nextjs-routes';
 
 import * as AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+
 import config from 'configs/app';
 
 const tacFeature = config.features.tac;

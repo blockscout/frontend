@@ -4,6 +4,7 @@ import React from 'react';
 
 import useIsMounted from 'client/shared/hooks/useIsMounted';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
+
 import { DEPOSIT } from 'stubs/deposits';
 import { generateListStub } from 'stubs/utils';
 import BeaconChainDepositsListItem from 'ui/deposits/beaconChain/BeaconChainDepositsListItem';

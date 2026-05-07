@@ -5,6 +5,7 @@ import type { OptimisticL2OutputRootsItem } from 'types/api/optimisticL2';
 
 import BlockEntityL2 from 'client/features/rollup/common/components/BlockEntityL2';
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
+
 import config from 'configs/app';
 import { layerLabels } from 'lib/rollups/utils';
 import { Skeleton } from 'toolkit/chakra/skeleton';

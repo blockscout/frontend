@@ -10,6 +10,7 @@ import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import TxFee from 'client/slices/tx/components/TxFee';
 import TxDetailsGasPrice from 'client/slices/tx/pages/details/info/parts/TxDetailsGasPrice';
 import TxDetailsOther from 'client/slices/tx/pages/details/info/parts/TxDetailsOther';
+
 import { Badge } from 'toolkit/chakra/badge';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoNativeCoinValue from 'ui/shared/DetailedInfo/DetailedInfoNativeCoinValue';

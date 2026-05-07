@@ -4,6 +4,7 @@ import React from 'react';
 import { type RelatedCctx, CctxStatusReduced } from '@blockscout/zetachain-cctx-types';
 
 import TxEntityZetaChainCC from 'client/features/chain-variants/zeta-chain/TxEntityZetaChainCC';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 import IconSvg from 'ui/shared/IconSvg';

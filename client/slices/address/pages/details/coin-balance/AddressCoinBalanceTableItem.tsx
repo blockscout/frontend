@@ -7,6 +7,7 @@ import type { ClusterChainConfig } from 'types/multichain';
 
 import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { ZERO } from 'toolkit/utils/consts';

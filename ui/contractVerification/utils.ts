@@ -19,6 +19,7 @@ import type {
 import type { SmartContractVerificationConfig, SmartContractVerificationMethod } from 'types/client/contract';
 
 import type { Params as FetchParams } from 'client/api/hooks/useFetch';
+
 import { stripLeadingSlash } from 'toolkit/utils/url';
 
 export const SUPPORTED_VERIFICATION_METHODS: Array<SmartContractVerificationMethod> = [

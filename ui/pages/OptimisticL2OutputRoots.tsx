@@ -2,6 +2,7 @@ import { Box, Text } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
+
 import { layerLabels } from 'lib/rollups/utils';
 import { L2_OUTPUT_ROOTS_ITEM } from 'stubs/L2';
 import { generateListStub } from 'stubs/utils';

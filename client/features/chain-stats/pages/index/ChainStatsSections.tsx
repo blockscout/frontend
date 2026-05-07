@@ -4,8 +4,10 @@ import React from 'react';
 import type { ChainStatsSection, StatsIntervalIds } from '../../types/client';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
+
 import ChartWidgetContainerCrossChain from 'client/features/cross-chain-txs/components/ChartWidgetContainerCrossChain';
 import { CROSS_CHAIN_TXS_CHARTS } from 'client/features/cross-chain-txs/utils/chain-stats';
+
 import config from 'configs/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import { EmptyState } from 'toolkit/chakra/empty-state';

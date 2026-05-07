@@ -7,6 +7,7 @@ import { route } from 'nextjs-routes';
 
 import AddressEntityInterchain from 'client/slices/address/components/entity/AddressEntityInterchain';
 import AddressFromToIcon from 'client/slices/address/components/from-to/AddressFromToIcon';
+
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';

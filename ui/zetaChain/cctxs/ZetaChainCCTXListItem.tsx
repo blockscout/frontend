@@ -5,6 +5,7 @@ import type { CctxListItem } from '@blockscout/zetachain-cctx-types';
 
 import AddressEntityZetaChain from 'client/features/chain-variants/zeta-chain/components/AddressEntityZetaChain';
 import TxEntityZetaChainCC from 'client/features/chain-variants/zeta-chain/TxEntityZetaChainCC';
+
 import dayjs from 'lib/date/dayjs';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { SECOND } from 'toolkit/utils/consts';

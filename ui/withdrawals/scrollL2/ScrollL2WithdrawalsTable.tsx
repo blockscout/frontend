@@ -3,6 +3,7 @@ import React from 'react';
 import type { ScrollL2MessageItem } from 'types/api/scrollL2';
 
 import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
+
 import config from 'configs/app';
 import { layerLabels } from 'lib/rollups/utils';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';

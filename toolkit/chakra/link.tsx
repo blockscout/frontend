@@ -5,6 +5,7 @@ import type { LinkProps as NextLinkProps } from 'next/link';
 import React from 'react';
 
 import stripUtmParams from 'client/shared/links/utils/strip-utm-params';
+
 import ArrowIcon from 'icons/link_external.svg';
 
 import { Skeleton } from './skeleton';

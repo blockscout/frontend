@@ -5,6 +5,7 @@ import type { Transaction } from 'client/slices/tx/types/api';
 
 import type { ReturnType } from 'client/api/hooks/useApiQueries';
 import useApiQueries from 'client/api/hooks/useApiQueries';
+
 import config from 'configs/app';
 
 const feature = config.features.txInterpretation;

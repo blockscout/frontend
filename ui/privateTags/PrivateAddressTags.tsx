@@ -4,6 +4,7 @@ import React, { useCallback, useState } from 'react';
 import type { AddressTag } from 'types/api/account';
 
 import * as mixpanel from 'client/shared/analytics/mixpanel';
+
 import { PRIVATE_TAG_ADDRESS } from 'stubs/account';
 import { Button } from 'toolkit/chakra/button';
 import { Skeleton } from 'toolkit/chakra/skeleton';

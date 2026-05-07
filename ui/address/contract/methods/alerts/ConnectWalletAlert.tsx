@@ -1,9 +1,12 @@
 import { Flex, Spinner } from '@chakra-ui/react';
 import React from 'react';
 
-import useWeb3Wallet from 'client/features/connect-wallet/hooks/useWallet';
-import useIsMobile from 'client/shared/hooks/useIsMobile';
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+
+import useWeb3Wallet from 'client/features/connect-wallet/hooks/useWallet';
+
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+
 import config from 'configs/app';
 import { Alert } from 'toolkit/chakra/alert';
 import { Button } from 'toolkit/chakra/button';

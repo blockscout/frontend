@@ -5,6 +5,7 @@ import bytesToBase64 from 'client/shared/transformers/bytes-to-base64';
 import hexToBase64 from 'client/shared/transformers/hex-to-base64';
 import hexToBytes from 'client/shared/transformers/hex-to-bytes';
 import hexToUtf8 from 'client/shared/transformers/hex-to-utf8';
+
 import * as blobUtils from 'lib/blob';
 import removeNonSignificantZeroBytes from 'lib/blob/removeNonSignificantZeroBytes';
 import { Button } from 'toolkit/chakra/button';

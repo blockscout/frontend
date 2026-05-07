@@ -2,9 +2,10 @@ import React from 'react';
 
 import type { ChainInfo } from 'types/api/interop';
 
-import TxEntityInterop from 'client/features/op-interop/components/TxEntityInterop';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import type { EntityProps } from 'client/slices/tx/components/entity/TxEntity';
+
+import TxEntityInterop from 'client/features/op-interop/components/TxEntityInterop';
 
 type Props = {
   relay_transaction_hash?: string | null;

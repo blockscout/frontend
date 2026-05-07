@@ -4,6 +4,7 @@ import type { VerifiedContract } from 'types/api/contracts';
 import type { VerifiedContractsSortingField, VerifiedContractsSortingValue } from 'types/api/verifiedContracts';
 
 import { currencyUnits } from 'client/shared/chain/units';
+
 import { useMultichainContext } from 'lib/contexts/multichain';
 import { TableBody, TableColumnHeader, TableColumnHeaderSortable, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';

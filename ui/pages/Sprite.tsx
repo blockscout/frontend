@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
 import useFetch from 'client/api/hooks/useFetch';
+
 import { EmptyState } from 'toolkit/chakra/empty-state';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';

@@ -2,8 +2,10 @@ import { Box } from '@chakra-ui/react';
 import type { BrowserContext } from '@playwright/test';
 import React from 'react';
 
-import * as cookies from 'client/shared/storage/cookies';
 import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
+
+import * as cookies from 'client/shared/storage/cookies';
+
 import config from 'configs/app';
 import * as addressMock from 'mocks/address/address';
 import * as implementationsMock from 'mocks/address/implementations';

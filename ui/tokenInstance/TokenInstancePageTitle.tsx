@@ -3,8 +3,10 @@ import React from 'react';
 
 import type { TokenInfo, TokenInstance } from 'types/api/token';
 
-import TokenAddToWallet from 'client/features/web3-wallet/components/TokenAddToWallet';
 import AddressQrCode from 'client/slices/address/pages/details/info/AddressQrCode';
+
+import TokenAddToWallet from 'client/features/web3-wallet/components/TokenAddToWallet';
+
 import { useMultichainContext } from 'lib/contexts/multichain';
 import { getTokenTypeName } from 'lib/token/tokenTypes';
 import { Link } from 'toolkit/chakra/link';

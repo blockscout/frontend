@@ -2,6 +2,7 @@ import { Box, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+
 import config from 'configs/app';
 import { HomeRpcDataContextProvider } from 'ui/home/fallbacks/rpcDataContext';
 import HeroBanner from 'ui/home/HeroBanner';

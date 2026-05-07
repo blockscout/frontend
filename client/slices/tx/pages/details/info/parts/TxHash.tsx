@@ -4,8 +4,11 @@ import React from 'react';
 import type { Transaction } from 'client/slices/tx/types/api';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
+
 import TxExternalTxs from 'client/features/external-txs/components/TxExternalTxs';
+
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';

@@ -4,6 +4,7 @@ import type { AddressImplementation } from 'client/slices/address/types/api';
 import type { SmartContractProxyType } from 'types/api/contract';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+
 import ContainerWithScrollY from 'ui/shared/ContainerWithScrollY';
 
 import ContractDetailsInfoItem from './ContractDetailsInfoItem';

@@ -6,9 +6,11 @@ import type { Transaction } from 'client/slices/tx/types/api';
 
 import { route } from 'nextjs/routes';
 
-import { currencyUnits } from 'client/shared/chain/units';
 import TxFee from 'client/slices/tx/components/TxFee';
 import TxStatus from 'client/slices/tx/components/TxStatus';
+
+import { currencyUnits } from 'client/shared/chain/units';
+
 import config from 'configs/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import { Link } from 'toolkit/chakra/link';

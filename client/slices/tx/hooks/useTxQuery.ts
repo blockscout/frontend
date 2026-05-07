@@ -11,9 +11,12 @@ import { retry } from 'client/api/hooks/useQueryClientConfig';
 import type { ResourceError } from 'client/api/resources';
 import useSocketChannel from 'client/api/socket/useSocketChannel';
 import useSocketMessage from 'client/api/socket/useSocketMessage';
+
+import { TX } from 'client/slices/tx/stubs/tx';
+
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import delay from 'client/shared/utils/delay';
-import { TX } from 'client/slices/tx/stubs/tx';
+
 import { SECOND } from 'toolkit/utils/consts';
 
 export type TxQuery = UseQueryResult<Transaction, ResourceError<{ status: number }>> & {

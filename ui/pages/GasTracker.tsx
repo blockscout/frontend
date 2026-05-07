@@ -6,6 +6,7 @@ import {
 import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
+
 import config from 'configs/app';
 import { HOMEPAGE_STATS } from 'stubs/stats';
 import { Alert } from 'toolkit/chakra/alert';

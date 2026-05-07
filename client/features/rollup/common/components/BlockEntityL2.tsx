@@ -2,6 +2,7 @@ import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import * as BlockEntity from 'client/slices/block/components/entity/BlockEntity';
+
 import config from 'configs/app';
 
 const rollupFeature = config.features.rollup;

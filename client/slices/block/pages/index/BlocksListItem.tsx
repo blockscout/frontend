@@ -8,12 +8,14 @@ import type { ClusterChainConfig } from 'types/multichain';
 
 import { route } from 'nextjs-routes';
 
-import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-title';
-import { currencyUnits } from 'client/shared/chain/units';
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import BlockGasUsed from 'client/slices/block/components/BlockGasUsed';
 import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
 import getBlockTotalReward from 'client/slices/block/utils/get-block-total-reward';
+
+import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-title';
+import { currencyUnits } from 'client/shared/chain/units';
+
 import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';

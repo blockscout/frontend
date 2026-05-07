@@ -7,6 +7,7 @@ import type { SmartContractSecurityAuditSubmission } from 'types/api/contract';
 
 import useApiFetch from 'client/api/hooks/useApiFetch';
 import type { ResourceError } from 'client/api/resources';
+
 import dayjs from 'lib/date/dayjs';
 import { Button } from 'toolkit/chakra/button';
 import { toaster } from 'toolkit/chakra/toaster';

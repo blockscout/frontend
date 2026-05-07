@@ -4,11 +4,13 @@ import React from 'react';
 
 import type { Block } from 'client/slices/block/types/api';
 
-import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-title';
-import { currencyUnits } from 'client/shared/chain/units';
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
 import getBlockTotalReward from 'client/slices/block/utils/get-block-total-reward';
+
+import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-title';
+import { currencyUnits } from 'client/shared/chain/units';
+
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';

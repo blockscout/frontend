@@ -8,18 +8,21 @@ import { ZKSYNC_L2_TX_BATCH_STATUSES } from 'types/api/zkSyncL2';
 
 import { route, routeParams } from 'nextjs/routes';
 
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+import BlockGasUsed from 'client/slices/block/components/BlockGasUsed';
+import type { BlockQuery } from 'client/slices/block/hooks/useBlockQuery';
+import getBlockReward from 'client/slices/block/utils/get-block-reward';
+
 import BlockDetailsBaseFeeCelo from 'client/features/chain-variants/celo/pages/block/BlockDetailsBaseFeeCelo';
 import BlockDetailsZilliqaQuorumCertificate from 'client/features/chain-variants/zilliqa/pages/block/BlockDetailsZilliqaQuorumCertificate';
 import BlockDetailsBlobInfo from 'client/features/data-availability/pages/block/BlockDetailsBlobInfo';
 import BatchEntityL2 from 'client/features/rollup/common/components/BatchEntityL2';
 import BlockEntityL1 from 'client/features/rollup/common/components/BlockEntityL1';
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
+
 import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-title';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
-import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
-import BlockGasUsed from 'client/slices/block/components/BlockGasUsed';
-import type { BlockQuery } from 'client/slices/block/hooks/useBlockQuery';
-import getBlockReward from 'client/slices/block/utils/get-block-reward';
+
 import config from 'configs/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import * as arbitrum from 'lib/rollups/arbitrum';

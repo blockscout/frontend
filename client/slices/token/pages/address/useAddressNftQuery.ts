@@ -3,9 +3,11 @@ import React from 'react';
 
 import type { NFTTokenType } from 'types/api/token';
 
+import { ADDRESS_COLLECTION, ADDRESS_NFT_1155 } from 'client/slices/address/stubs/address';
+
 import getFilterValuesFromQuery from 'client/shared/router/get-filter-values-from-query';
 import * as cookies from 'client/shared/storage/cookies';
-import { ADDRESS_COLLECTION, ADDRESS_NFT_1155 } from 'client/slices/address/stubs/address';
+
 import { useAppContext } from 'lib/contexts/app';
 import { NFT_TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
 import { generateListStub } from 'stubs/utils';

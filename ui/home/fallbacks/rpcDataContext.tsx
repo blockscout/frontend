@@ -4,9 +4,11 @@ import React from 'react';
 import type { Block } from 'client/slices/block/types/api';
 import type { Transaction } from 'client/slices/tx/types/api';
 
-import { publicClient } from 'client/features/connect-wallet/utils/public-client';
 import formatBlockRpcData from 'client/slices/block/utils/format-rpc-data';
 import formatTxRpcData from 'client/slices/tx/utils/format-rpc-data';
+
+import { publicClient } from 'client/features/connect-wallet/utils/public-client';
+
 import { SECOND } from 'toolkit/utils/consts';
 
 export type SubscriptionId = 'latest-blocks' | 'latest-txs' | 'stats-widgets';

@@ -4,6 +4,7 @@ import React from 'react';
 import type { ChangeEvent, FormEvent, FocusEvent } from 'react';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+
 import config from 'configs/app';
 import { useColorModeValue } from 'toolkit/chakra/color-mode';
 import { Input } from 'toolkit/chakra/input';

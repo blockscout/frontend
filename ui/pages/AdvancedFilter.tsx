@@ -13,12 +13,16 @@ import type { AdvancedFilterParams } from 'types/api/advancedFilter';
 import { ADVANCED_FILTER_AGES, ADVANCED_FILTER_ADDRESS_RELATION } from 'types/api/advancedFilter';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
+
+import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
+
 import CsvExport from 'client/features/csv-export/components/CsvExport';
+
 import getFilterValueFromQuery from 'client/shared/router/get-filter-value-from-query';
 import getFilterValuesFromQuery from 'client/shared/router/get-filter-values-from-query';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import getValuesArrayFromQuery from 'client/shared/router/get-values-array-from-query';
-import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
+
 import { useMultichainContext } from 'lib/contexts/multichain';
 import dayjs from 'lib/date/dayjs';
 import { ADVANCED_FILTER_ITEM } from 'stubs/advancedFilter';

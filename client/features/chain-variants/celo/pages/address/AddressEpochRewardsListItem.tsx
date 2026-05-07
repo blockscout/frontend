@@ -3,6 +3,7 @@ import React from 'react';
 import type { AddressEpochRewardsItem } from 'client/features/chain-variants/celo/types/api';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+
 import EpochEntity from 'ui/shared/entities/epoch/EpochEntity';
 import EpochRewardTypeTag from 'ui/shared/EpochRewardTypeTag';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';

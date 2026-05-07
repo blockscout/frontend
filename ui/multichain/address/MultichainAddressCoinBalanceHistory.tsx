@@ -4,7 +4,9 @@ import type * as multichain from '@blockscout/multichain-aggregator-types';
 
 import getSocketUrl from 'client/api/get-socket-url';
 import { SocketProvider } from 'client/api/socket/context';
+
 import AddressCoinBalance from 'client/slices/address/pages/details/coin-balance/AddressCoinBalance';
+
 import multichainConfig from 'configs/multichain';
 import { MultichainProvider } from 'lib/contexts/multichain';
 import useRoutedChainSelect from 'lib/multichain/useRoutedChainSelect';

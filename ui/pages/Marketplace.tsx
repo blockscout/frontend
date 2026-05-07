@@ -7,6 +7,7 @@ import { MarketplaceCategory } from 'types/client/marketplace';
 
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+
 import config from 'configs/app';
 import useGraphLinks from 'lib/hooks/useGraphLinks';
 import { Heading } from 'toolkit/chakra/heading';

@@ -4,14 +4,15 @@ import React from 'react';
 
 import type { FormattedData } from './types';
 
+import type { Sort } from 'client/slices/token/pages/address/utils';
+import { getSortingFn, sortTokenGroups } from 'client/slices/token/pages/address/utils';
+
 import { getTokenTypeName } from 'lib/token/tokenTypes';
 import { Link } from 'toolkit/chakra/link';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import { thinsp } from 'toolkit/utils/htmlEntities';
 import IconSvg from 'ui/shared/IconSvg';
 
-import type { Sort } from '../../tokens/token-utils';
-import { getSortingFn, sortTokenGroups } from '../../tokens/token-utils';
 import TokenSelectItem from './TokenSelectItem';
 
 interface Props {

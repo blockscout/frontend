@@ -3,8 +3,10 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
+
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
+
 import { VALIDATOR_ZILLIQA } from 'stubs/validators';
 import TextAd from 'ui/shared/ad/TextAd';
 import ValidatorEntity from 'ui/shared/entities/validator/ValidatorEntity';

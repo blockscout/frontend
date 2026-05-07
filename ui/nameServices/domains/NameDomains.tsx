@@ -5,8 +5,10 @@ import React from 'react';
 import type { EnsDomainLookupFiltersOptions, EnsLookupSorting } from 'types/api/ens';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
+
 import useDebounce from 'client/shared/hooks/useDebounce';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
+
 import config from 'configs/app';
 import { ENS_DOMAIN } from 'stubs/ENS';
 import { generateListStub } from 'stubs/utils';

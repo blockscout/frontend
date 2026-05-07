@@ -5,10 +5,13 @@ import React from 'react';
 import type { TokenInfo } from 'types/api/token';
 
 import type { ResourceError } from 'client/api/resources';
-import useIsMobile from 'client/shared/hooks/useIsMobile';
-import useIsMounted from 'client/shared/hooks/useIsMounted';
+
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
+
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+import useIsMounted from 'client/shared/hooks/useIsMounted';
+
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/pagination/Pagination';

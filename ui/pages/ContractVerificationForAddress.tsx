@@ -5,9 +5,12 @@ import type { SmartContractVerificationMethodApi } from 'types/api/contract';
 import type { SmartContractVerificationMethod } from 'types/client/contract';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
+
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
-import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 import ContractVerificationForm from 'ui/contractVerification/ContractVerificationForm';
 import useFormConfigQuery from 'ui/contractVerification/useFormConfigQuery';

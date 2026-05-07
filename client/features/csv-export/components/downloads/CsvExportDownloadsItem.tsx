@@ -6,7 +6,9 @@ import { useInView } from 'react-intersection-observer';
 
 import { getResourceKey } from 'client/api/hooks/useApiQuery';
 import isNeedProxy from 'client/api/is-need-proxy';
+
 import shortenString from 'client/shared/text/shorten-string';
+
 import config from 'configs/app';
 import multichainConfig from 'configs/multichain';
 import dayjs from 'lib/date/dayjs';

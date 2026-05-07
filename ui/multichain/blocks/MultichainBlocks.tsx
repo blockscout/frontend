@@ -6,9 +6,11 @@ import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
 import { route } from 'nextjs/routes';
 
+import { BLOCK } from 'client/slices/block/stubs/block';
+
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
-import { BLOCK } from 'client/slices/block/stubs/block';
+
 import multichainConfig from 'configs/multichain';
 import { generateListStub } from 'stubs/utils';
 import { Link } from 'toolkit/chakra/link';

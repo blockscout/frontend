@@ -3,9 +3,11 @@ import React from 'react';
 
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 
-import CsvExport from 'client/features/csv-export/components/CsvExport';
 import useAddressInternalTxsQuery from 'client/slices/address/pages/details/internal-txs/useAddressInternalTxsQuery';
 import AddressTxsFilter from 'client/slices/address/pages/details/txs/AddressTxsFilter';
+
+import CsvExport from 'client/features/csv-export/components/CsvExport';
+
 import multichainConfig from 'configs/multichain';
 import { MultichainProvider } from 'lib/contexts/multichain';
 import InternalTxsList from 'ui/internalTxs/InternalTxsList';

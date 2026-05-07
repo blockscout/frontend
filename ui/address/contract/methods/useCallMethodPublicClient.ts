@@ -5,6 +5,7 @@ import { usePublicClient } from 'wagmi';
 import type { FormSubmitResult, MethodCallStrategy, SmartContractMethod } from './types';
 
 import useAccount from 'client/features/connect-wallet/hooks/useAccount';
+
 import config from 'configs/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
 

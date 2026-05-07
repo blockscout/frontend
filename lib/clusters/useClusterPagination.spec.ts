@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import { useQueryParams } from 'client/shared/router/useQueryParams';
+
 import type { Mock } from 'vitest';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { renderHook, act } from 'vitest/lib';

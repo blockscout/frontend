@@ -3,6 +3,7 @@ import React from 'react';
 import type { TxStateChange } from 'client/slices/tx/types/api';
 
 import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
+
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 
 import TxStateTableItem from './TxStateTableItem';

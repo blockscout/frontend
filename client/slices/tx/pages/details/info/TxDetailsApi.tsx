@@ -3,6 +3,7 @@ import React from 'react';
 
 import BlockPendingUpdateAlert from 'client/slices/block/components/BlockPendingUpdateAlert';
 import type { TxQuery } from 'client/slices/tx/hooks/useTxQuery';
+
 import TestnetWarning from 'ui/shared/alerts/TestnetWarning';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 

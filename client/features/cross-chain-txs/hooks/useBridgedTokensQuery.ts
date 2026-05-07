@@ -5,6 +5,7 @@ import type { CrossChainBridgedTokensSorting, CrossChainBridgedTokensSortingFiel
 
 import useDebounce from 'client/shared/hooks/useDebounce';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
+
 import config from 'configs/app';
 import { INTERCHAIN_BRIDGED_TOKEN_ITEM } from 'stubs/interchainIndexer';
 import { generateListStub } from 'stubs/utils';

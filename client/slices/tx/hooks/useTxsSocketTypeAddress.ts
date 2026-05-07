@@ -9,7 +9,9 @@ import type { Transaction, TransactionsSortingValue } from 'client/slices/tx/typ
 import { getResourceKey } from 'client/api/hooks/useApiQuery';
 import useSocketChannel from 'client/api/socket/useSocketChannel';
 import useSocketMessage from 'client/api/socket/useSocketMessage';
+
 import getQueryParamString from 'client/shared/router/get-query-param-string';
+
 import config from 'configs/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import getSortValueFromQuery from 'ui/shared/sort/getSortValueFromQuery';

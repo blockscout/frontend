@@ -5,6 +5,7 @@ import React from 'react';
 import type { EssentialDappsConfig } from 'types/client/marketplace';
 
 import getQueryParamString from 'client/shared/router/get-query-param-string';
+
 import config from 'configs/app';
 import Multisend from 'ui/marketplace/essentialDapps/multisend/Multisend';
 import Revoke from 'ui/marketplace/essentialDapps/revoke/Revoke';

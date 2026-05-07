@@ -6,6 +6,7 @@ import type { ChainInfo } from 'types/api/interop';
 import { route } from 'nextjs-routes';
 
 import * as TxEntity from 'client/slices/tx/components/entity/TxEntity';
+
 import { Image } from 'toolkit/chakra/image';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';

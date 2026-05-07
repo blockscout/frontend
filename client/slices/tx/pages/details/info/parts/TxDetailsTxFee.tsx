@@ -4,6 +4,7 @@ import React from 'react';
 import type { Transaction } from 'client/slices/tx/types/api';
 
 import TxFee from 'client/slices/tx/components/TxFee';
+
 import config from 'configs/app';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import * as DetailedInfoItemBreakdown from 'ui/shared/DetailedInfo/DetailedInfoItemBreakdown';

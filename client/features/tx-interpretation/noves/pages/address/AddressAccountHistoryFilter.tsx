@@ -4,6 +4,7 @@ import React from 'react';
 import type { NovesHistoryFilterValue } from 'types/api/noves';
 
 import useIsInitialLoading from 'client/shared/hooks/useIsInitialLoading';
+
 import PopoverFilterRadio from 'ui/shared/filters/PopoverFilterRadio';
 
 const OPTIONS = [

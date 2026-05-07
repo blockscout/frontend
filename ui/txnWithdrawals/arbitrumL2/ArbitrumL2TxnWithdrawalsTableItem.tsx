@@ -4,6 +4,7 @@ import React from 'react';
 import type { ArbitrumL2TxnWithdrawalsItem } from 'types/api/arbitrumL2';
 
 import AddressEntityL1 from 'client/features/rollup/common/components/AddressEntityL1';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import ArbitrumL2MessageStatus from 'ui/shared/statusTag/ArbitrumL2MessageStatus';

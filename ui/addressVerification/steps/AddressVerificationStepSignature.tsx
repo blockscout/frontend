@@ -15,8 +15,11 @@ import type {
 import type { VerifiedAddress } from 'types/api/account';
 
 import useApiFetch from 'client/api/hooks/useApiFetch';
+
 import useWallet from 'client/features/connect-wallet/hooks/useWallet';
+
 import shortenString from 'client/shared/text/shorten-string';
+
 import config from 'configs/app';
 import { Alert } from 'toolkit/chakra/alert';
 import { Button } from 'toolkit/chakra/button';

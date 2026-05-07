@@ -4,6 +4,7 @@ import React from 'react';
 import type { PaginationParams } from 'ui/shared/pagination/types';
 
 import useIsInitialLoading from 'client/shared/hooks/useIsInitialLoading';
+
 import {
   getSearchPlaceholder,
   shouldShowActionBar,

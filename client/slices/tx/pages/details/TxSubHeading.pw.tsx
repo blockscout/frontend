@@ -4,6 +4,7 @@ import type { AddressMetadataInfo, AddressMetadataTagApi } from 'client/features
 
 import type { TxQuery } from 'client/slices/tx/hooks/useTxQuery';
 import * as txMock from 'client/slices/tx/mocks/tx';
+
 import config from 'configs/app';
 import * as addressMock from 'mocks/address/address';
 import { protocolTagWithMeta } from 'mocks/metadata/address';

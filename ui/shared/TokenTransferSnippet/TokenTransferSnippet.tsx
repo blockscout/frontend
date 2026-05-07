@@ -10,6 +10,7 @@ import type {
 } from 'types/api/tokenTransfer';
 
 import AddressFromTo from 'client/slices/address/components/from-to/AddressFromTo';
+
 import { isConfidentialTokenType } from 'lib/token/tokenTypes';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import ConfidentialTokenValue from 'ui/shared/value/ConfidentialTokenValue';

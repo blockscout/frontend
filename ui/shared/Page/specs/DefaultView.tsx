@@ -3,6 +3,7 @@ import React from 'react';
 import type { TokenInfo } from 'types/api/token';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+
 import * as addressMock from 'mocks/address/address';
 import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import EntityTags from 'ui/shared/EntityTags/EntityTags';

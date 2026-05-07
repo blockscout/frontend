@@ -8,8 +8,10 @@ import type { TokenType } from 'types/api/token';
 import useBridgedTokensQueryCrossChain from 'client/features/cross-chain-txs/hooks/useBridgedTokensQuery';
 import BridgedTokensIndex from 'client/features/cross-chain-txs/pages/bridged-tokens/BridgedTokensIndex';
 import { BRIDGED_TOKENS_SORT_COLLECTION } from 'client/features/cross-chain-txs/utils/bridged-tokens-sort';
+
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
+
 import config from 'configs/app';
 import type { SlotProps } from 'toolkit/components/AdaptiveTabs/AdaptiveTabsList';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';

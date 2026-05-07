@@ -4,6 +4,11 @@ import React from 'react';
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 import type { EntityTag as TEntityTag } from 'ui/shared/EntityTags/types';
 
+import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
+import TxInternals from 'client/slices/internal-tx/pages/tx/TxInternals';
+import TxTokenTransfer from 'client/slices/tokens-transfer/pages/tx/TxTokenTransfer';
+import useTxQuery from 'client/slices/tx/hooks/useTxQuery';
+
 import TxDetailsWrapped from 'client/features/chain-variants/suave/pages/tx/TxDetailsWrapped';
 import { publicClient } from 'client/features/connect-wallet/utils/public-client';
 import TxBlobs from 'client/features/data-availability/pages/tx/TxBlobs';
@@ -11,13 +16,11 @@ import TxFheOperations from 'client/features/fhe-operations/pages/tx/TxFheOperat
 import TxAuthorizations from 'client/features/tx-authorization/pages/tx/TxAuthorizations';
 import TxAssetFlows from 'client/features/tx-interpretation/noves/pages/tx-asset-flows/TxAssetFlows';
 import TxUserOps from 'client/features/user-ops/pages/tx/TxUserOps';
+
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import useEtherscanRedirects from 'client/shared/router/useEtherscanRedirects';
-import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
-import TxInternals from 'client/slices/internal-txs/pages/tx/TxInternals';
-import TxTokenTransfer from 'client/slices/tokens-transfers/pages/tx/TxTokenTransfer';
-import useTxQuery from 'client/slices/tx/hooks/useTxQuery';
+
 import config from 'configs/app';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import TextAd from 'ui/shared/ad/TextAd';

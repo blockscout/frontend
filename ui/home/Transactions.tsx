@@ -2,6 +2,7 @@ import { HStack } from '@chakra-ui/react';
 import React from 'react';
 
 import { SocketProvider } from 'client/api/socket/context';
+
 import config from 'configs/app';
 import { layerLabels } from 'lib/rollups/utils';
 import { Heading } from 'toolkit/chakra/heading';

@@ -6,6 +6,7 @@ import type { ColorThemeId } from 'types/settings';
 
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import * as cookies from 'client/shared/storage/cookies';
+
 import config from 'configs/app';
 import { getDefaultColorTheme } from 'lib/settings/colorTheme';
 import { useColorMode } from 'toolkit/chakra/color-mode';

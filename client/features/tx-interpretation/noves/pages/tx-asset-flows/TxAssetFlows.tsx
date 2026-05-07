@@ -5,7 +5,9 @@ import React, { useMemo, useState } from 'react';
 import type { PaginationParams } from 'ui/shared/pagination/types';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
+
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+
 import { NOVES_TRANSLATE } from 'stubs/noves/NovesTranslate';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';

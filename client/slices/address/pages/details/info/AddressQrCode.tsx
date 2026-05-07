@@ -3,9 +3,11 @@ import { useRouter } from 'next/router';
 import QRCode from 'qrcode';
 import React from 'react';
 
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 import { useRollbar } from 'client/shared/monitoring/rollbar';
-import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+
 import { Alert } from 'toolkit/chakra/alert';
 import { DialogBody, DialogContent, DialogHeader, DialogRoot } from 'toolkit/chakra/dialog';
 import { IconButton } from 'toolkit/chakra/icon-button';

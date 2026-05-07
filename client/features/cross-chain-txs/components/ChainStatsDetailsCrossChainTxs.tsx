@@ -5,8 +5,11 @@ import type { ChainStatsChart, StatsIntervalIds } from 'client/features/chain-st
 import type { SankeyChartData } from 'toolkit/components/charts/sankey/types';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
+
 import ChartIntervalSelect from 'client/features/chain-stats/components/ChartIntervalSelect';
+
 import * as mixpanel from 'client/shared/analytics/mixpanel';
+
 import config from 'configs/app';
 import type { OnValueChangeHandler } from 'toolkit/chakra/select';
 import { Skeleton } from 'toolkit/chakra/skeleton';

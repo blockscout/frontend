@@ -7,6 +7,7 @@ import getErrorMessage from 'client/shared/errors/get-error-message';
 import getErrorObjStatusCode from 'client/shared/errors/get-error-obj-status-code';
 import getErrorStack from 'client/shared/errors/get-error-stack';
 import { useRollbar } from 'client/shared/monitoring/rollbar';
+
 import ErrorBoundary from 'ui/shared/ErrorBoundary';
 
 import AppError from './AppError';

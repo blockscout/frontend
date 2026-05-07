@@ -5,6 +5,7 @@ import React from 'react';
 import type { HotContract } from 'types/api/contracts';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
 import { Reputation } from 'ui/shared/entities/token/TokenEntity';

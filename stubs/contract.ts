@@ -2,8 +2,10 @@ import type * as stats from '@blockscout/stats-types';
 import type { SmartContract, SmartContractMudSystemsResponse } from 'types/api/contract';
 import type { HotContract, VerifiedContract, VerifiedContractsCounters } from 'types/api/contracts';
 
-import { CHAIN_STATS_COUNTER } from 'client/features/chain-stats/stubs/counters';
 import { ADDRESS_PARAMS, ADDRESS_HASH } from 'client/slices/address/stubs/address-params';
+
+import { CHAIN_STATS_COUNTER } from 'client/features/chain-stats/stubs/counters';
+
 import type { SolidityScanReport } from 'lib/solidityScan/schema';
 
 export const CONTRACT_CODE_UNVERIFIED = {

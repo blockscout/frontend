@@ -6,6 +6,7 @@ import type { NFTTokenType } from 'types/api/token';
 import { route } from 'nextjs/routes';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+
 import { useMultichainContext } from 'lib/contexts/multichain';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
