@@ -151,7 +151,7 @@ export const LineChartTooltip = React.memo(({
     };
   }, [ anchorEl, createPointerTracker, draw, hideContent, showContent ]);
 
-  const lastItemDateString = data[0].items[data[0].items.length - 1]?.date?.toISOString();
+  const lastItemDateString = data[0]?.items[data[0].items.length - 1]?.date?.toISOString();
 
   React.useEffect(() => {
     if (trackerId.current) {

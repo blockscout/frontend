@@ -18,7 +18,7 @@ const Uptime = () => {
         contentAfter={ <UptimeStatus status={ status } onReconnect={ onReconnect }/> }
       />
       <UptimeStats realtimeData={ realtimeData }/>
-      <UptimeCharts historyData={ historyData }/>
+      <UptimeCharts historyData={ historyData } isLoading={ status === 'initial' }/>
     </>
   );
 };

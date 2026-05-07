@@ -75,9 +75,10 @@ const smoothData = (data: Array<UptimeHistoryItem>, windowSize: number): Array<U
 
 interface Props {
   historyData: UptimeHistoryFull | null;
+  isLoading: boolean;
 }
 
-const UptimeCharts = ({ historyData }: Props) => {
+const UptimeCharts = ({ historyData, isLoading }: Props) => {
   const [ interval, setInterval ] = React.useState<IntervalId>('3h');
   const chartsConfig = useChartsConfig();
 
@@ -236,27 +237,30 @@ const UptimeCharts = ({ historyData }: Props) => {
           <LineChartWidget
             title="TPS"
             charts={ tpsCharts }
-            isLoading={ false }
+            isLoading={ isLoading }
             isError={ false }
             axesConfig={ axesConfig }
+            noEmptyStateIcon
           />
         </GridItem>
         <GridItem minH={{ base: '220px', lg: '320px' }}>
           <LineChartWidget
             title="MGas/s"
             charts={ gasCharts }
-            isLoading={ false }
+            isLoading={ isLoading }
             isError={ false }
             axesConfig={ axesConfig }
+            noEmptyStateIcon
           />
         </GridItem>
         <GridItem minH={{ base: '220px', lg: '320px' }}>
           <LineChartWidget
             title="Block time (ms)"
             charts={ blockIntervalCharts }
-            isLoading={ false }
+            isLoading={ isLoading }
             isError={ false }
             axesConfig={ axesConfig }
+            noEmptyStateIcon
           />
         </GridItem>
       </Grid>

@@ -35,6 +35,11 @@ export const recipe = defineSlotRecipe({
 
   variants: {
     size: {
+      sm: {
+        root: { gap: '2' },
+        label: { textStyle: 'sm' },
+        control: checkmarkRecipe.variants?.size?.md,
+      },
       md: {
         root: { gap: '2' },
         label: { textStyle: 'md' },

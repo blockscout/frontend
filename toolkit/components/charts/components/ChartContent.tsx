@@ -11,12 +11,14 @@ export interface ChartContentProps {
   isError?: boolean;
   isLoading?: boolean;
   isEmpty?: boolean;
+  isFiltered?: boolean;
   emptyText?: string;
+  noEmptyStateIcon?: boolean;
   noWatermark?: boolean;
   children: React.ReactNode;
 }
 
-export const ChartContent = ({ isError, isLoading, isEmpty, emptyText, noWatermark, children }: ChartContentProps) => {
+export const ChartContent = ({ isError, isLoading, isEmpty, isFiltered, noEmptyStateIcon, emptyText, noWatermark, children }: ChartContentProps) => {
   if (isError) {
     return (
       <Flex
@@ -42,9 +44,17 @@ export const ChartContent = ({ isError, isLoading, isEmpty, emptyText, noWaterma
   }
 
   if (isEmpty) {
+    if (isFiltered) {
+      return (
+        <Center flexGrow={ 1 }>
+          <span>No charts selected</span>
+        </Center>
+      );
+    }
+
     return (
       <Center flexGrow={ 1 }>
-        <EmptyState type="stats" description={ emptyText } mt={ 0 }/>
+        <EmptyState type="stats" description={ emptyText } noIcon={ noEmptyStateIcon } mt={ 0 }/>
       </Center>
     );
   }

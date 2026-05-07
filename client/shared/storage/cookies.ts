@@ -66,7 +66,7 @@ function isDisallowedInPrivateMode(name: NAMES): boolean {
 /**
  * Checks if the app is currently in private mode by reading the APP_PROFILE cookie.
  */
-function isPrivateMode(serverCookie?: string): boolean {
+export function isPrivateMode(serverCookie?: string): boolean {
   const appProfile = get(NAMES.APP_PROFILE, serverCookie);
   return appProfile === 'private';
 }

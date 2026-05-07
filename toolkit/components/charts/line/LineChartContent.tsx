@@ -11,8 +11,10 @@ export const LineChartContent = React.memo(({
   isLoading,
   isError,
   isEmpty,
+  isFiltered,
   emptyText,
   noWatermark,
+  noEmptyStateIcon,
   ...rest
 }: LineChartContentProps) => {
   return (
@@ -20,8 +22,10 @@ export const LineChartContent = React.memo(({
       isError={ isError }
       isLoading={ isLoading }
       isEmpty={ isEmpty }
+      isFiltered={ isFiltered }
       emptyText={ emptyText }
       noWatermark={ noWatermark }
+      noEmptyStateIcon={ noEmptyStateIcon }
     >
       <LineChart { ...rest }/>
     </ChartContent>

@@ -26,6 +26,7 @@ export interface LineChartWidgetProps extends FlexProps {
   axesConfig?: LineChartAxesConfigFn;
   menuItems?: Array<ChartMenuItemId>;
   noWatermark?: boolean;
+  noEmptyStateIcon?: boolean;
 };
 
 export const LineChartWidget = React.memo(({
@@ -41,14 +42,15 @@ export const LineChartWidget = React.memo(({
   axesConfig,
   menuItems,
   noWatermark,
+  noEmptyStateIcon,
   ...rest
 }: LineChartWidgetProps) => {
   const ref = useRef<HTMLDivElement>(null);
 
   const { zoomRange, handleZoom, handleZoomReset } = useLineChartZoom();
 
-  const [ selectedCharts, setSelectedCharts ] = React.useState<Array<number>>(
-    range(charts.length),
+  const [ selectedCharts, setSelectedCharts ] = React.useState<Array<number> | undefined>(
+    isLoading ? undefined : range(charts.length),
   );
 
   React.useEffect(() => {
@@ -59,15 +61,15 @@ export const LineChartWidget = React.memo(({
 
   const handleLegendItemClick = React.useCallback((index: number) => {
     setSelectedCharts((prev) => {
-      if (prev.includes(index)) {
+      if (prev?.includes(index)) {
         return prev.filter((item) => item !== index);
       }
-      return [ ...prev, index ];
+      return [ ...(prev || []), index ];
     });
   }, []);
 
   const displayedCharts = React.useMemo(() => {
-    return charts.filter((_, index) => selectedCharts.includes(index));
+    return charts.filter((_, index) => selectedCharts?.includes(index));
   }, [ charts, selectedCharts ]);
 
   const hasNonEmptyCharts = charts.some(({ items }) => items && items.length > 2);
@@ -112,13 +114,15 @@ export const LineChartWidget = React.memo(({
         charts={ displayedCharts }
         isError={ isError }
         isLoading={ isLoading }
-        isEmpty={ !hasNonEmptyCharts || displayedCharts.length === 0 }
+        isEmpty={ !hasNonEmptyCharts || (selectedCharts && displayedCharts.length === 0) }
+        isFiltered={ selectedCharts && displayedCharts.length < charts.length }
         emptyText={ emptyText }
         onZoom={ handleZoom }
         zoomRange={ zoomRange }
         noAnimation={ noAnimation }
         axesConfig={ axesConfig }
         noWatermark={ noWatermark }
+        noEmptyStateIcon={ noEmptyStateIcon }
       />
 
       { charts.length > 1 && (

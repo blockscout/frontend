@@ -21,6 +21,10 @@ const CheckboxShowcase = () => {
       <Section>
         <SectionHeader>Size</SectionHeader>
         <SamplesStack>
+          <Sample label="size: sm">
+            <Checkbox size="sm">Option 1</Checkbox>
+            <Checkbox size="sm">Option 2</Checkbox>
+          </Sample>
           <Sample label="size: md">
             <Checkbox size="md">Option 1</Checkbox>
             <Checkbox size="md">Option 2</Checkbox>
