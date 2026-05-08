@@ -124,7 +124,7 @@ Each slice follows the template established in 2-1.
 ### 3-8 · [ ] Slice: `log`
 **Scope:** `ui/shared/log/**`, related types/mocks/stubs → `client/slices/log/`
 
-### 3-8 · [ ] Slice: `token-transfer`
+### 3-9 · [~] Slice: `token-transfer` · [#3399](https://github.com/blockscout/frontend/issues/3399)
 **Scope:** TBD
 
 ---
