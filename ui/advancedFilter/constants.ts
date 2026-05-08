@@ -2,13 +2,7 @@ import type { TokenInfo } from 'types/api/token';
 
 import config from 'configs/app';
 
-const NATIVE_TOKEN_CONTRACT = '0xEd8c5530a0A086a12f57275728128a60DFf04230';
-
-export const NATIVE_TOKEN_ICON_URL = [
-  'https://raw.githubusercontent.com/VinuChain/vinuchain-lists/main/tokens',
-  NATIVE_TOKEN_CONTRACT,
-  `${ NATIVE_TOKEN_CONTRACT }.png`,
-].join('/');
+export const NATIVE_TOKEN_ICON_URL = 'https://raw.githubusercontent.com/VinuChain/Media/master/icon_black.svg';
 
 export type ColumnsIds = 'tx_hash' | 'type' | 'method' | 'age' | 'from' | 'or_and' | 'to' | 'amount' | 'asset' | 'fee';
 
