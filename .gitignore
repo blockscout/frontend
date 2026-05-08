@@ -37,6 +37,7 @@
 .tools
 grafana
 .zed
+.sbx
 
 # debug
 npm-debug.log*
