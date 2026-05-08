@@ -115,7 +115,7 @@ Each slice follows the template established in 2-1.
 ### 3-5 · [ ] Slice: `contract`
 **Scope:** `lib/contracts/`, `lib/solidityScan/`, `ui/contract/**`, related types/mocks/stubs → `client/slices/contract/`  
 
-### 3-6 · [ ] Slice: `internal-tx`
+### 3-6 · [~] Slice: `internal-tx` · [#3396](https://github.com/blockscout/frontend/issues/3396)
 **Scope:** `ui/internalTxs/**` (and any `lib/` counterparts), related types/mocks/stubs → `client/slices/internal-tx/`  
 
 ### 3-7 · [ ] Slice: `home`
