@@ -32,7 +32,9 @@ const AddressCoinBalanceTableItem = (props: Props) => {
   const deltaBn = BigNumber(props.delta).div(BigNumber(10).pow(decimals));
   const isPositiveDelta = deltaBn.gte(ZERO);
   const ticker = props.token?.symbol || currencyUnits.ether;
-  const nativeAssetName = config.chain.currency.name || currencyUnits.ether;
+  const nativeAssetName = config.chain.currency.name && config.chain.currency.name !== ticker ?
+    config.chain.currency.name :
+    config.chain.name || currencyUnits.ether;
   const nativeAssetLabel = nativeAssetName === ticker ? nativeAssetName : `${ nativeAssetName } (${ ticker })`;
   const asset = props.token ? (
     <TokenEntity
