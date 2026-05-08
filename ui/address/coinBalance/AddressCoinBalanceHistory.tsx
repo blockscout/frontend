@@ -7,7 +7,6 @@ import type { PaginationParams } from 'ui/shared/pagination/types';
 
 import type { ResourceError } from 'lib/api/resources';
 import { useMultichainContext } from 'lib/contexts/multichain';
-import { currencyUnits } from 'lib/units';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
@@ -34,20 +33,26 @@ const AddressCoinBalanceHistory = ({ query }: Props) => {
           <TableHeaderSticky top={ query.pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }>
             <TableRow>
               { chainData && <TableColumnHeader width="38px"/> }
-              <TableColumnHeader width="20%">Block</TableColumnHeader>
-              <TableColumnHeader width="20%">Txn</TableColumnHeader>
-              <TableColumnHeader width="20%">
+              <TableColumnHeader width="16%">Block</TableColumnHeader>
+              <TableColumnHeader width="18%">Txn</TableColumnHeader>
+              <TableColumnHeader width="18%">Asset</TableColumnHeader>
+              <TableColumnHeader width="18%">
                 Timestamp
                 <TimeFormatToggle/>
               </TableColumnHeader>
-              <TableColumnHeader width="20%" isNumeric pr={ 1 }>Balance { currencyUnits.ether }</TableColumnHeader>
-              <TableColumnHeader width="20%" isNumeric>Delta</TableColumnHeader>
+              <TableColumnHeader width="15%" isNumeric pr={ 1 }>Balance</TableColumnHeader>
+              <TableColumnHeader width="15%" isNumeric>Delta</TableColumnHeader>
             </TableRow>
           </TableHeaderSticky>
           <TableBody>
             { query.data.items.map((item, index) => (
               <AddressCoinBalanceTableItem
-                key={ item.block_number + (query.isPlaceholderData ? String(index) : '') }
+                key={ [
+                  item.block_number,
+                  item.token?.address_hash || 'native',
+                  item.token_id,
+                  query.isPlaceholderData ? String(index) : '',
+                ].join(':') }
                 { ...item }
                 page={ query.pagination.page }
                 isLoading={ query.isPlaceholderData }
@@ -60,7 +65,12 @@ const AddressCoinBalanceHistory = ({ query }: Props) => {
       <Box hideFrom="lg">
         { query.data.items.map((item, index) => (
           <AddressCoinBalanceListItem
-            key={ item.block_number + (query.isPlaceholderData ? String(index) : '') }
+            key={ [
+              item.block_number,
+              item.token?.address_hash || 'native',
+              item.token_id,
+              query.isPlaceholderData ? String(index) : '',
+            ].join(':') }
             { ...item }
             page={ query.pagination.page }
             isLoading={ query.isPlaceholderData }

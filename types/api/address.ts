@@ -155,6 +155,9 @@ export interface AddressCoinBalanceHistoryItem {
   block_number: number;
   block_timestamp: string;
   delta: string;
+  token?: TokenInfo | null;
+  token_id?: string | null;
+  token_type?: TokenType | 'native' | null;
   transaction_hash: string | null;
   value: string;
 }
@@ -173,6 +176,10 @@ export type AddressCoinBalanceHistoryChart = {
     value: string;
   }>;
   days: number;
+};
+
+export type AddressCoinBalanceHistoryFilter = {
+  token_contract_address_hash?: string;
 };
 
 export interface AddressBlocksValidatedResponse {

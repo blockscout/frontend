@@ -5,7 +5,7 @@ import React from 'react';
 import type { SocketMessage } from 'lib/socket/types';
 import type { AddressCoinBalanceHistoryResponse } from 'types/api/address';
 
-import { getResourceKey } from 'lib/api/useApiQuery';
+import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 import useIsMounted from 'lib/hooks/useIsMounted';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import useSocketChannel from 'lib/socket/useSocketChannel';
@@ -16,6 +16,13 @@ import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import SocketAlert from 'ui/shared/SocketAlert';
 
 import AddressCoinBalanceChart from './coinBalance/AddressCoinBalanceChart';
+import AddressCoinBalanceFilter, {
+  ALL_ASSETS_FILTER,
+  NATIVE_ASSET_FILTER,
+  getCoinBalanceFilterValue,
+  getUniqueBalanceTokens,
+  type AddressCoinBalanceFilterValue,
+} from './coinBalance/AddressCoinBalanceFilter';
 import AddressCoinBalanceHistory from './coinBalance/AddressCoinBalanceHistory';
 
 type Props = {
@@ -32,9 +39,17 @@ const AddressCoinBalance = ({ shouldRender = true, isQueryEnabled = true }: Prop
   const scrollRef = React.useRef<HTMLDivElement>(null);
 
   const addressHash = getQueryParamString(router.query.hash);
+  const [ tokenFilter, setTokenFilter ] = React.useState<AddressCoinBalanceFilterValue>(
+    getCoinBalanceFilterValue(getQueryParamString(router.query.token_contract_address_hash)),
+  );
+  const filters = React.useMemo(
+    () => tokenFilter === ALL_ASSETS_FILTER ? undefined : { token_contract_address_hash: tokenFilter },
+    [ tokenFilter ],
+  );
   const coinBalanceQuery = useQueryWithPages({
     resourceName: 'general:address_coin_balance',
     pathParams: { hash: addressHash },
+    filters,
     scrollRef,
     options: {
       enabled: isQueryEnabled,
@@ -50,6 +65,28 @@ const AddressCoinBalance = ({ shouldRender = true, isQueryEnabled = true }: Prop
       ),
     },
   });
+  const tokenBalancesQuery = useApiQuery('general:address_token_balances', {
+    pathParams: { hash: addressHash },
+    queryOptions: {
+      enabled: isQueryEnabled,
+      placeholderData: [],
+    },
+  });
+  const selectedToken = React.useMemo(() => {
+    if (tokenFilter === ALL_ASSETS_FILTER || tokenFilter === NATIVE_ASSET_FILTER) {
+      return;
+    }
+
+    return getUniqueBalanceTokens(tokenBalancesQuery.data).find((token) => token.address_hash.toLowerCase() === tokenFilter.toLowerCase());
+  }, [ tokenBalancesQuery.data, tokenFilter ]);
+
+  const handleTokenFilterChange = React.useCallback((nextValue: AddressCoinBalanceFilterValue) => {
+    setTokenFilter(nextValue);
+
+    coinBalanceQuery.onFilterChange(
+      nextValue === ALL_ASSETS_FILTER ? {} : { token_contract_address_hash: nextValue },
+    );
+  }, [ coinBalanceQuery ]);
 
   const handleSocketError = React.useCallback(() => {
     setSocketAlert(true);
@@ -58,8 +95,15 @@ const AddressCoinBalance = ({ shouldRender = true, isQueryEnabled = true }: Prop
   const handleNewSocketMessage: SocketMessage.AddressCoinBalance['handler'] = React.useCallback((payload) => {
     setSocketAlert(false);
 
+    if (tokenFilter !== ALL_ASSETS_FILTER && tokenFilter !== NATIVE_ASSET_FILTER) {
+      return;
+    }
+
     queryClient.setQueryData(
-      getResourceKey('general:address_coin_balance', { pathParams: { hash: addressHash } }),
+      getResourceKey('general:address_coin_balance', {
+        pathParams: { hash: addressHash },
+        queryParams: filters,
+      }),
       (prevData: AddressCoinBalanceHistoryResponse | undefined) => {
         if (!prevData) {
           return;
@@ -73,7 +117,7 @@ const AddressCoinBalance = ({ shouldRender = true, isQueryEnabled = true }: Prop
           ],
         };
       });
-  }, [ addressHash, queryClient ]);
+  }, [ addressHash, filters, queryClient, tokenFilter ]);
 
   const channel = useSocketChannel({
     topic: `addresses:${ addressHash.toLowerCase() }`,
@@ -94,7 +138,15 @@ const AddressCoinBalance = ({ shouldRender = true, isQueryEnabled = true }: Prop
   return (
     <>
       { socketAlert && <SocketAlert mb={ 6 }/> }
-      <AddressCoinBalanceChart addressHash={ addressHash }/>
+      <AddressCoinBalanceFilter
+        value={ tokenFilter }
+        tokenBalances={ tokenBalancesQuery.data }
+        isLoading={ tokenBalancesQuery.isPlaceholderData }
+        onChange={ handleTokenFilterChange }
+      />
+      { tokenFilter !== ALL_ASSETS_FILTER && (
+        <AddressCoinBalanceChart addressHash={ addressHash } tokenFilter={ tokenFilter } token={ selectedToken }/>
+      ) }
       <div ref={ scrollRef }></div>
       <AddressCoinBalanceHistory query={ coinBalanceQuery }/>
     </>

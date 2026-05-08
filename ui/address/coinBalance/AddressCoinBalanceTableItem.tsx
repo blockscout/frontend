@@ -1,20 +1,24 @@
-import { Stat } from '@chakra-ui/react';
+import { Flex, Stat } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { AddressCoinBalanceHistoryItem } from 'types/api/address';
 import type { ClusterChainConfig } from 'types/multichain';
 
+import { currencyUnits } from 'lib/units';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { ZERO } from 'toolkit/utils/consts';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
+import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import ChainIcon from 'ui/shared/externalChains/ChainIcon';
+import NativeTokenIcon from 'ui/shared/NativeTokenIcon';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
+import AssetValue from 'ui/shared/value/AssetValue';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 import SimpleValue from 'ui/shared/value/SimpleValue';
-import { WEI } from 'ui/shared/value/utils';
+import { WEI_DECIMALS } from 'ui/shared/value/utils';
 
 type Props = AddressCoinBalanceHistoryItem & {
   page: number;
@@ -23,8 +27,40 @@ type Props = AddressCoinBalanceHistoryItem & {
 };
 
 const AddressCoinBalanceTableItem = (props: Props) => {
-  const deltaBn = BigNumber(props.delta).div(WEI);
+  const decimals = Number(props.token?.decimals ?? WEI_DECIMALS);
+  const deltaBn = BigNumber(props.delta).div(BigNumber(10).pow(decimals));
   const isPositiveDelta = deltaBn.gte(ZERO);
+  const asset = props.token ? (
+    <TokenEntity
+      token={ props.token }
+      isLoading={ props.isLoading }
+      fontWeight={ 700 }
+      maxW="160px"
+    />
+  ) : (
+    <Flex alignItems="center" columnGap={ 2 }>
+      <NativeTokenIcon boxSize={ 5 } isLoading={ props.isLoading }/>
+      <Skeleton loading={ props.isLoading } fontWeight={ 700 }>
+        { currencyUnits.ether }
+      </Skeleton>
+    </Flex>
+  );
+  const value = props.token ? (
+    <AssetValue
+      amount={ props.value }
+      decimals={ props.token.decimals }
+      exchangeRate={ props.token.exchange_rate }
+      loading={ props.isLoading }
+      color="text.secondary"
+    />
+  ) : (
+    <NativeCoinValue
+      amount={ props.value }
+      noSymbol
+      loading={ props.isLoading }
+      color="text.secondary"
+    />
+  );
 
   return (
     <TableRow>
@@ -53,6 +89,9 @@ const AddressCoinBalanceTableItem = (props: Props) => {
         ) }
       </TableCell>
       <TableCell>
+        { asset }
+      </TableCell>
+      <TableCell>
         <TimeWithTooltip
           timestamp={ props.block_timestamp }
           enableIncrement={ props.page === 1 }
@@ -62,16 +101,11 @@ const AddressCoinBalanceTableItem = (props: Props) => {
         />
       </TableCell>
       <TableCell isNumeric pr={ 1 }>
-        <NativeCoinValue
-          amount={ props.value }
-          noSymbol
-          loading={ props.isLoading }
-          color="text.secondary"
-        />
+        { value }
       </TableCell>
       <TableCell isNumeric display="flex" justifyContent="end">
         <Skeleton loading={ props.isLoading }>
-          <Stat.Root flexGrow="0" size="sm" positive={ isPositiveDelta }>
+          <Stat.Root flexGrow="0" colorPalette={ isPositiveDelta ? 'green' : 'red' } size="sm">
             <Stat.ValueText fontWeight={ 600 }>
               <SimpleValue
                 value={ deltaBn }

@@ -5,7 +5,7 @@ import type { AdvancedFilterParams, AdvancedFiltersSearchParams } from 'types/ap
 import type { ColumnsIds } from 'ui/advancedFilter/constants';
 import TableColumnFilterWrapper from 'ui/shared/filters/TableColumnFilterWrapper';
 
-import { NATIVE_TOKEN } from './constants';
+import { getAdvancedFilterTokenAddressHash, isNativeToken, NATIVE_TOKEN, normalizeAdvancedFilterToken } from './constants';
 import type { AddressFilterMode } from './filters/AddressFilter';
 import AddressFilter from './filters/AddressFilter';
 import AddressRelationFilter from './filters/AddressRelationFilter';
@@ -129,11 +129,23 @@ const FilterByColumn = ({ column, filters, columnName, handleFilterChange, searc
       const tokens = searchParams?.tokens;
 
       const value = tokens ?
-        Object.entries(tokens).map(([ address, token ]) => {
+        Object.entries(tokens).flatMap(([ address, token ]) => {
+          const normalizedToken = normalizeAdvancedFilterToken({
+            ...token,
+            address_hash: token.address_hash || address,
+          });
+          if (isNativeToken(normalizedToken)) {
+            return [];
+          }
+
+          const addressHash = getAdvancedFilterTokenAddressHash(normalizedToken);
           const mode = filters.token_contract_address_hashes_to_include?.find(i => i.toLowerCase() === address.toLowerCase()) ?
             'include' as AssetFilterMode :
             'exclude' as AssetFilterMode;
-          return ({ token, mode });
+          const normalizedMode = filters.token_contract_address_hashes_to_include?.find(i => i.toLowerCase() === addressHash.toLowerCase()) ?
+            'include' as AssetFilterMode :
+            mode;
+          return ({ token: normalizedToken, mode: normalizedMode });
         }) : [];
       if (filters.token_contract_address_hashes_to_include?.includes('native')) {
         value.unshift({ token: NATIVE_TOKEN, mode: 'include' });

@@ -9,6 +9,7 @@ import type {
   AddressWithdrawalsResponse,
   AddressXStarResponse,
   AddressCoinBalanceHistoryChart,
+  AddressCoinBalanceHistoryFilter,
   AddressCoinBalanceHistoryResponse,
   AddressTokenTransferResponse,
   AddressInternalTxsResponse,
@@ -79,7 +80,7 @@ export const GENERAL_API_ADDRESS_RESOURCES = {
   address_coin_balance: {
     path: '/api/v2/addresses/:hash/coin-balance-history',
     pathParams: [ 'hash' as const ],
-    filterFields: [ ],
+    filterFields: [ 'token_contract_address_hash' as const ],
     paginated: true,
   },
   address_coin_balance_chart: {
@@ -200,6 +201,7 @@ export type GeneralApiAddressPaginationFilters<R extends GeneralApiAddressResour
 R extends 'general:addresses_metadata_search' ? AddressesMetadataSearchFilters :
 R extends 'general:address_txs' | 'general:address_internal_txs' ? AddressTxsFilters :
 R extends 'general:address_token_transfers' ? AddressTokenTransferFilters :
+R extends 'general:address_coin_balance' ? AddressCoinBalanceHistoryFilter :
 R extends 'general:address_tokens' ? AddressTokensFilter :
 R extends 'general:address_nfts' ? AddressNFTTokensFilter :
 R extends 'general:address_collections' ? AddressNFTTokensFilter :

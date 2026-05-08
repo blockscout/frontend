@@ -2,6 +2,7 @@ import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { AddressCoinBalanceHistoryChart } from 'types/api/address';
+import type { TokenInfo } from 'types/api/token';
 
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
@@ -11,11 +12,14 @@ import { useChartsConfig } from 'ui/shared/chart/config';
 
 interface Props {
   addressHash: string;
+  tokenFilter: string;
+  token?: TokenInfo;
 }
 
-const AddressCoinBalanceChart = ({ addressHash }: Props) => {
+const AddressCoinBalanceChart = ({ addressHash, tokenFilter, token }: Props) => {
   const { data, isPending, isError } = useApiQuery('general:address_coin_balance_chart', {
     pathParams: { hash: addressHash },
+    queryParams: { token_contract_address_hash: tokenFilter },
   });
   const chartsConfig = useChartsConfig();
 
@@ -27,6 +31,8 @@ const AddressCoinBalanceChart = ({ addressHash }: Props) => {
     const items: AddressCoinBalanceHistoryChart['items'] = Array.isArray(data) ?
       data as AddressCoinBalanceHistoryChart['items'] :
       data.items;
+    const decimals = Number(token?.decimals ?? config.chain.currency.decimals);
+    const units = token?.symbol || currencyUnits.ether;
 
     return [
       {
@@ -34,13 +40,13 @@ const AddressCoinBalanceChart = ({ addressHash }: Props) => {
         name: 'Value',
         items: items.map(({ date, value }) => ({
           date: new Date(date),
-          value: BigNumber(value).div(10 ** config.chain.currency.decimals).toNumber(),
+          value: BigNumber(value).div(BigNumber(10).pow(decimals)).toNumber(),
         })),
         charts: chartsConfig,
-        units: currencyUnits.ether,
+        units,
       },
     ];
-  }, [ chartsConfig, data ]);
+  }, [ chartsConfig, data, token ]);
 
   return (
     <ChartWidget

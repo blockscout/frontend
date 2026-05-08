@@ -120,3 +120,36 @@ export const NATIVE_TOKEN = {
   address_hash: 'native',
   type: 'ERC-20' as const,
 } as TokenInfo;
+
+export type AdvancedFilterTokenInfo = TokenInfo & {
+  address?: string;
+};
+
+export function getAdvancedFilterTokenAddressHash(token: AdvancedFilterTokenInfo) {
+  return token.address_hash || token.address || '';
+}
+
+export function isNativeToken(token: AdvancedFilterTokenInfo | null | undefined) {
+  return token ? getAdvancedFilterTokenAddressHash(token).toLowerCase() === NATIVE_TOKEN.address_hash : false;
+}
+
+export function normalizeAdvancedFilterToken(token: AdvancedFilterTokenInfo): TokenInfo {
+  const addressHash = getAdvancedFilterTokenAddressHash(token);
+
+  if (addressHash.toLowerCase() === NATIVE_TOKEN.address_hash) {
+    return {
+      ...NATIVE_TOKEN,
+      ...token,
+      address_hash: NATIVE_TOKEN.address_hash,
+      icon_url: token.icon_url || NATIVE_TOKEN.icon_url,
+      name: token.name || NATIVE_TOKEN.name,
+      symbol: token.symbol || NATIVE_TOKEN.symbol,
+      type: token.type || NATIVE_TOKEN.type,
+    };
+  }
+
+  return {
+    ...token,
+    address_hash: addressHash,
+  };
+}
