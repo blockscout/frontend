@@ -3,12 +3,13 @@ import React from 'react';
 
 import type { TokenType } from 'client/slices/token/types/api';
 
+import { getTokenFilterValue } from 'client/slices/token/utils/list-utils';
+
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import multichainConfig from 'configs/multichain';
 import { getTokenTransfersStub } from 'stubs/token';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
-import { getTokenFilterValue } from 'ui/tokens/utils';
 
 const getFilters = (query: Record<string, string | Array<string> | undefined>) => {
   const chainIdParam = getQueryParamString(query.chain_id);

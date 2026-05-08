@@ -5,6 +5,8 @@ import React from 'react';
 import type { TokenType } from 'client/slices/token/types/api';
 
 import TokenTypeFilter from 'client/slices/token/components/TokenTypeFilter';
+import Tokens from 'client/slices/token/pages/index/TokensList';
+import { getTokenFilterValue } from 'client/slices/token/utils/list-utils';
 
 import useDebounce from 'client/shared/hooks/useDebounce';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
@@ -20,8 +22,6 @@ import PopoverFilter from 'ui/shared/filters/PopoverFilter';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
-import Tokens from 'ui/tokens/Tokens';
-import { getTokenFilterValue } from 'ui/tokens/utils';
 
 const getChainIdFilterValue = (chainIds: Array<string>) => {
   return chainIds.includes('all') ? undefined : chainIds.filter(Boolean);

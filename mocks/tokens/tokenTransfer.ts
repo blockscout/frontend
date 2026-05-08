@@ -1,7 +1,7 @@
 import type { TokenInfo } from 'client/slices/token/types/api';
 import type { TokenTransfer, TokenTransferResponse } from 'types/api/tokenTransfer';
 
-import * as tokenInstanceMock from './tokenInstance';
+import * as tokenInstanceMock from 'client/slices/token/mocks/instance';
 
 export const erc20: TokenTransfer = {
   from: {

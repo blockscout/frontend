@@ -5,6 +5,7 @@ import type { TokenType } from 'client/slices/token/types/api';
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
 import TokenTypeFilter from 'client/slices/token/components/TokenTypeFilter';
+import { getTokenFilterValue } from 'client/slices/token/utils/list-utils';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
@@ -17,7 +18,6 @@ import ChainSelect from 'ui/multichain/components/ChainSelect';
 import PopoverFilter from 'ui/shared/filters/PopoverFilter';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
-import { getTokenFilterValue } from 'ui/tokens/utils';
 import useTokenTransfersQuery from 'ui/tokenTransfers/useTokenTransfersQuery';
 
 import MultichainTokenTransfersLocal from './MultichainTokenTransfersLocal';
