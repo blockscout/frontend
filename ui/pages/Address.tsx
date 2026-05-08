@@ -275,7 +275,13 @@ const AddressPageContent = () => {
       {
         id: 'coin_balance_history',
         title: 'Coin balance history',
-        component: <AddressCoinBalance shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
+        component: (
+          <AddressCoinBalance
+            shouldRender={ !isTabsLoading }
+            isQueryEnabled={ areQueriesEnabled }
+            nativeExchangeRate={ addressQuery.data?.exchange_rate }
+          />
+        ),
       },
       addressTabsCountersQuery.data?.validations_count ?
         {

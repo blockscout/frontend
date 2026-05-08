@@ -24,6 +24,7 @@ type Props = AddressCoinBalanceHistoryItem & {
   page: number;
   isLoading: boolean;
   chainData?: ClusterChainConfig;
+  nativeExchangeRate?: string | null;
 };
 
 const AddressCoinBalanceListItem = (props: Props) => {
@@ -31,16 +32,8 @@ const AddressCoinBalanceListItem = (props: Props) => {
   const deltaBn = BigNumber(props.delta).div(BigNumber(10).pow(decimals));
   const isPositiveDelta = deltaBn.gte(ZERO);
   const ticker = props.token?.symbol || currencyUnits.ether;
-  const price = props.token?.exchange_rate ? (
-    <SimpleValue
-      value={ BigNumber(props.token.exchange_rate) }
-      prefix="$"
-      loading={ props.isLoading }
-      maxW="100%"
-    />
-  ) : (
-    <Skeleton loading={ props.isLoading }>-</Skeleton>
-  );
+  const nativeAssetName = config.chain.currency.name || currencyUnits.ether;
+  const nativeAssetLabel = nativeAssetName === ticker ? nativeAssetName : `${ nativeAssetName } (${ ticker })`;
   const asset = props.token ? (
     <TokenEntity
       token={ props.token }
@@ -53,7 +46,7 @@ const AddressCoinBalanceListItem = (props: Props) => {
     <Flex alignItems="center" columnGap={ 2 } minW={ 0 }>
       <NativeTokenIcon boxSize={ 5 } isLoading={ props.isLoading }/>
       <Skeleton loading={ props.isLoading } fontWeight={ 700 } overflow="hidden" textOverflow="ellipsis">
-        { config.chain.currency.name || currencyUnits.ether }
+        { nativeAssetLabel }
       </Skeleton>
     </Flex>
   );
@@ -72,6 +65,7 @@ const AddressCoinBalanceListItem = (props: Props) => {
     <NativeCoinValue
       amount={ props.value }
       asset={ ticker }
+      exchangeRate={ props.nativeExchangeRate }
       loading={ props.isLoading }
       maxW="100%"
     />
@@ -108,14 +102,8 @@ const AddressCoinBalanceListItem = (props: Props) => {
           { asset }
         </Flex>
       </Flex>
-      <Flex columnGap={ 2 } w="100%" minW={ 0 }>
-        <Skeleton loading={ props.isLoading } fontWeight={ 500 } flexShrink={ 0 }>Price</Skeleton>
-        <Flex minW={ 0 } flex="1">
-          { price }
-        </Flex>
-      </Flex>
       <Flex columnGap={ 2 } w="100%" alignItems="flex-start" minW={ 0 }>
-        <Skeleton loading={ props.isLoading } fontWeight={ 500 } flexShrink={ 0 }>Total balance</Skeleton>
+        <Skeleton loading={ props.isLoading } fontWeight={ 500 } flexShrink={ 0 }>Balance</Skeleton>
         <Flex minW={ 0 } flex="1">
           { totalBalance }
         </Flex>

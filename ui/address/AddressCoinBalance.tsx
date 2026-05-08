@@ -28,9 +28,10 @@ import AddressCoinBalanceHistory from './coinBalance/AddressCoinBalanceHistory';
 type Props = {
   shouldRender?: boolean;
   isQueryEnabled?: boolean;
+  nativeExchangeRate?: string | null;
 };
 
-const AddressCoinBalance = ({ shouldRender = true, isQueryEnabled = true }: Props) => {
+const AddressCoinBalance = ({ shouldRender = true, isQueryEnabled = true, nativeExchangeRate }: Props) => {
   const [ socketAlert, setSocketAlert ] = React.useState(false);
   const queryClient = useQueryClient();
   const router = useRouter();
@@ -148,7 +149,7 @@ const AddressCoinBalance = ({ shouldRender = true, isQueryEnabled = true }: Prop
         <AddressCoinBalanceChart addressHash={ addressHash } tokenFilter={ tokenFilter } token={ selectedToken }/>
       ) }
       <div ref={ scrollRef }></div>
-      <AddressCoinBalanceHistory query={ coinBalanceQuery }/>
+      <AddressCoinBalanceHistory query={ coinBalanceQuery } nativeExchangeRate={ nativeExchangeRate }/>
     </>
   );
 };
