@@ -25,23 +25,24 @@ interface Props {
 const AddressCoinBalanceHistory = ({ query }: Props) => {
   const multichainContext = useMultichainContext();
   const chainData = multichainContext?.chain;
+  const tableMinWidth = chainData ? '1120px' : '1080px';
 
   const content = query.data?.items ? (
     <>
-      <Box hideBelow="lg">
-        <TableRoot>
+      <Box hideBelow="lg" maxW="100%" overflowX="auto">
+        <TableRoot minW={ tableMinWidth } tableLayout="fixed" w="100%">
           <TableHeaderSticky top={ query.pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }>
             <TableRow>
-              { chainData && <TableColumnHeader width="38px"/> }
-              <TableColumnHeader width="16%">Block</TableColumnHeader>
-              <TableColumnHeader width="18%">Txn</TableColumnHeader>
-              <TableColumnHeader width="18%">Asset</TableColumnHeader>
-              <TableColumnHeader width="18%">
+              { chainData && <TableColumnHeader width="38px" px={ 2 }/> }
+              <TableColumnHeader width="118px">Block</TableColumnHeader>
+              <TableColumnHeader width="170px">Txn</TableColumnHeader>
+              <TableColumnHeader width="180px">Asset</TableColumnHeader>
+              <TableColumnHeader width="190px">
                 Timestamp
                 <TimeFormatToggle/>
               </TableColumnHeader>
-              <TableColumnHeader width="15%" isNumeric pr={ 1 }>Balance</TableColumnHeader>
-              <TableColumnHeader width="15%" isNumeric>Delta</TableColumnHeader>
+              <TableColumnHeader width="250px" isNumeric pr={ 1 }>Balance</TableColumnHeader>
+              <TableColumnHeader width="170px" isNumeric>Delta</TableColumnHeader>
             </TableRow>
           </TableHeaderSticky>
           <TableBody>

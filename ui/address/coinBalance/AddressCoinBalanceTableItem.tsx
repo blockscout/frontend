@@ -38,9 +38,9 @@ const AddressCoinBalanceTableItem = (props: Props) => {
       maxW="160px"
     />
   ) : (
-    <Flex alignItems="center" columnGap={ 2 }>
+    <Flex alignItems="center" columnGap={ 2 } minW={ 0 }>
       <NativeTokenIcon boxSize={ 5 } isLoading={ props.isLoading }/>
-      <Skeleton loading={ props.isLoading } fontWeight={ 700 }>
+      <Skeleton loading={ props.isLoading } fontWeight={ 700 } overflow="hidden" textOverflow="ellipsis">
         { currencyUnits.ether }
       </Skeleton>
     </Flex>
@@ -52,6 +52,9 @@ const AddressCoinBalanceTableItem = (props: Props) => {
       exchangeRate={ props.token.exchange_rate }
       loading={ props.isLoading }
       color="text.secondary"
+      layout="vertical"
+      maxW="230px"
+      ml="auto"
     />
   ) : (
     <NativeCoinValue
@@ -59,17 +62,19 @@ const AddressCoinBalanceTableItem = (props: Props) => {
       noSymbol
       loading={ props.isLoading }
       color="text.secondary"
+      maxW="230px"
+      ml="auto"
     />
   );
 
   return (
     <TableRow>
       { props.chainData && (
-        <TableCell>
+        <TableCell px={ 2 }>
           <ChainIcon data={ props.chainData } isLoading={ props.isLoading }/>
         </TableCell>
       ) }
-      <TableCell>
+      <TableCell overflow="hidden">
         <BlockEntity
           isLoading={ props.isLoading }
           number={ props.block_number }
@@ -77,7 +82,7 @@ const AddressCoinBalanceTableItem = (props: Props) => {
           fontWeight={ 700 }
         />
       </TableCell>
-      <TableCell>
+      <TableCell overflow="hidden">
         { props.transaction_hash && (
           <TxEntity
             hash={ props.transaction_hash }
@@ -88,10 +93,10 @@ const AddressCoinBalanceTableItem = (props: Props) => {
           />
         ) }
       </TableCell>
-      <TableCell>
+      <TableCell overflow="hidden">
         { asset }
       </TableCell>
-      <TableCell>
+      <TableCell overflow="hidden">
         <TimeWithTooltip
           timestamp={ props.block_timestamp }
           enableIncrement={ props.page === 1 }
@@ -100,21 +105,32 @@ const AddressCoinBalanceTableItem = (props: Props) => {
           display="inline-block"
         />
       </TableCell>
-      <TableCell isNumeric pr={ 1 }>
-        { value }
+      <TableCell isNumeric pr={ 1 } overflow="hidden">
+        <Flex justifyContent="flex-end" maxW="100%" minW={ 0 }>
+          { value }
+        </Flex>
       </TableCell>
-      <TableCell isNumeric display="flex" justifyContent="end">
-        <Skeleton loading={ props.isLoading }>
-          <Stat.Root flexGrow="0" colorPalette={ isPositiveDelta ? 'green' : 'red' } size="sm">
-            <Stat.ValueText fontWeight={ 600 }>
-              <SimpleValue
-                value={ deltaBn }
-                loading={ props.isLoading }
-              />
-            </Stat.ValueText>
-            { isPositiveDelta ? <Stat.UpIndicator/> : <Stat.DownIndicator/> }
-          </Stat.Root>
-        </Skeleton>
+      <TableCell isNumeric overflow="hidden">
+        <Flex justifyContent="flex-end" maxW="100%" minW={ 0 }>
+          <Skeleton loading={ props.isLoading } maxW="100%" overflow="hidden">
+            <Stat.Root
+              display="inline-flex"
+              alignItems="center"
+              maxW="100%"
+              flexGrow="0"
+              colorPalette={ isPositiveDelta ? 'green' : 'red' }
+              size="sm"
+            >
+              <Stat.ValueText fontWeight={ 600 } maxW="140px" overflow="hidden">
+                <SimpleValue
+                  value={ deltaBn }
+                  loading={ props.isLoading }
+                />
+              </Stat.ValueText>
+              { isPositiveDelta ? <Stat.UpIndicator/> : <Stat.DownIndicator/> }
+            </Stat.Root>
+          </Skeleton>
+        </Flex>
       </TableCell>
     </TableRow>
   );

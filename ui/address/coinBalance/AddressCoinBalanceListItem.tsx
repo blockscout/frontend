@@ -35,12 +35,14 @@ const AddressCoinBalanceListItem = (props: Props) => {
       amount={ props.value }
       loading={ props.isLoading }
       fontWeight={ 600 }
+      maxW="100%"
     />
   ) : (
     <NativeCoinValue
       amount={ props.value }
       loading={ props.isLoading }
       fontWeight={ 600 }
+      maxW="100%"
     />
   );
   const asset = props.token ? (
@@ -51,9 +53,9 @@ const AddressCoinBalanceListItem = (props: Props) => {
       maxW="180px"
     />
   ) : (
-    <Flex alignItems="center" columnGap={ 2 }>
+    <Flex alignItems="center" columnGap={ 2 } minW={ 0 }>
       <NativeTokenIcon boxSize={ 5 } isLoading={ props.isLoading }/>
-      <Skeleton loading={ props.isLoading } fontWeight={ 700 }>
+      <Skeleton loading={ props.isLoading } fontWeight={ 700 } overflow="hidden" textOverflow="ellipsis">
         { currencyUnits.ether }
       </Skeleton>
     </Flex>
@@ -61,23 +63,36 @@ const AddressCoinBalanceListItem = (props: Props) => {
 
   return (
     <ListItemMobile rowGap={ 2 }>
-      <Flex justifyContent="space-between" w="100%">
-        { value }
-        <Skeleton loading={ props.isLoading }>
-          <Stat.Root flexGrow="0" colorPalette={ isPositiveDelta ? 'green' : 'red' } size="sm">
-            <Stat.ValueText fontWeight={ 600 }>
-              <SimpleValue
-                value={ deltaBn }
-                loading={ props.isLoading }
-              />
-            </Stat.ValueText>
-            { isPositiveDelta ? <Stat.UpIndicator/> : <Stat.DownIndicator/> }
-          </Stat.Root>
-        </Skeleton>
+      <Flex justifyContent="space-between" w="100%" columnGap={ 3 } alignItems="flex-start">
+        <Flex minW={ 0 } maxW="64%">
+          { value }
+        </Flex>
+        <Flex flexShrink={ 0 } maxW="36%" justifyContent="flex-end">
+          <Skeleton loading={ props.isLoading } maxW="100%" overflow="hidden">
+            <Stat.Root
+              display="inline-flex"
+              alignItems="center"
+              maxW="100%"
+              flexGrow="0"
+              colorPalette={ isPositiveDelta ? 'green' : 'red' }
+              size="sm"
+            >
+              <Stat.ValueText fontWeight={ 600 } maxW="100%" overflow="hidden">
+                <SimpleValue
+                  value={ deltaBn }
+                  loading={ props.isLoading }
+                />
+              </Stat.ValueText>
+              { isPositiveDelta ? <Stat.UpIndicator/> : <Stat.DownIndicator/> }
+            </Stat.Root>
+          </Skeleton>
+        </Flex>
       </Flex>
-      <Flex columnGap={ 2 } w="100%" alignItems="center">
+      <Flex columnGap={ 2 } w="100%" alignItems="center" minW={ 0 }>
         <Skeleton loading={ props.isLoading } fontWeight={ 500 } flexShrink={ 0 }>Asset</Skeleton>
-        { asset }
+        <Flex minW={ 0 }>
+          { asset }
+        </Flex>
       </Flex>
       <Flex columnGap={ 2 } w="100%">
         <Skeleton loading={ props.isLoading } fontWeight={ 500 } flexShrink={ 0 }>Block</Skeleton>
@@ -90,7 +105,7 @@ const AddressCoinBalanceListItem = (props: Props) => {
         />
       </Flex>
       { props.transaction_hash && (
-        <Flex columnGap={ 2 } w="100%">
+        <Flex columnGap={ 2 } w="100%" minW={ 0 }>
           <Skeleton loading={ props.isLoading } fontWeight={ 500 } flexShrink={ 0 }>Txs</Skeleton>
           <TxEntity
             hash={ props.transaction_hash }
