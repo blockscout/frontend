@@ -1,6 +1,7 @@
 import type { ApiResource } from '../../types';
 import type { TransactionsResponseWatchlist } from 'client/features/account/types/api';
 import type { TransactionsResponseWithBlobs, TxsWithBlobsFilters } from 'client/features/data-availability/types/api';
+import type { InternalTransactionFilters, InternalTransactionsResponse } from 'client/slices/internal-tx/types/api';
 import type { LogsResponseTx } from 'client/slices/log/types/api';
 import type {
   TransactionsResponseValidated,
@@ -13,7 +14,6 @@ import type {
 } from 'client/slices/tx/types/api';
 import type { TxBlobs } from 'types/api/blobs';
 import type { FheOperationsResponse } from 'types/api/fheOperations';
-import type { InternalTransactionFilters, InternalTransactionsResponse } from 'types/api/internalTransaction';
 import type { TokenTransferResponse, TokenTransferFilters } from 'types/api/tokenTransfer';
 import type { TxInterpretationResponse } from 'types/api/txInterpretation';
 

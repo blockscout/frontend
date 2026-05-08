@@ -1,4 +1,4 @@
-import type { InternalTransaction, InternalTransactionsResponse } from 'types/api/internalTransaction';
+import type { InternalTransaction, InternalTransactionsResponse } from 'client/slices/internal-tx/types/api';
 
 export const base: InternalTransaction = {
   block_number: 29611822,

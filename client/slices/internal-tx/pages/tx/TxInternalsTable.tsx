@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { InternalTransaction } from 'types/api/internalTransaction';
+import type { InternalTransaction } from 'client/slices/internal-tx/types/api';
 
 import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
 

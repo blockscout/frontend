@@ -1,4 +1,5 @@
-import { INTERNAL_TX } from 'stubs/internalTx';
+import { INTERNAL_TX } from 'client/slices/internal-tx/stubs';
+
 import { generateListStub } from 'stubs/utils';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 

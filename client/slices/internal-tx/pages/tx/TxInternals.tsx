@@ -1,15 +1,15 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import type { InternalTransaction } from 'types/api/internalTransaction';
+import type { InternalTransaction } from 'client/slices/internal-tx/types/api';
 
+import { INTERNAL_TX } from 'client/slices/internal-tx/stubs';
 import TxPendingAlert from 'client/slices/tx/components/TxPendingAlert';
 import TxSocketAlert from 'client/slices/tx/components/TxSocketAlert';
 import type { TxQuery } from 'client/slices/tx/hooks/useTxQuery';
 
 import compareBns from 'lib/bigint/compareBns';
 // import { apos } from 'toolkit/utils/htmlEntities';
-import { INTERNAL_TX } from 'stubs/internalTx';
 import { generateListStub } from 'stubs/utils';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';

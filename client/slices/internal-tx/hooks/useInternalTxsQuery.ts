@@ -1,10 +1,11 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import { INTERNAL_TX } from 'client/slices/internal-tx/stubs';
+
 import useDebounce from 'client/shared/hooks/useDebounce';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
-import { INTERNAL_TX } from 'stubs/internalTx';
 import { generateListStub } from 'stubs/utils';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
