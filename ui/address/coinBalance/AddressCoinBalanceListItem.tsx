@@ -59,7 +59,6 @@ const AddressCoinBalanceListItem = (props: Props) => {
       exchangeRate={ props.token.exchange_rate }
       asset={ ticker }
       loading={ props.isLoading }
-      layout="vertical"
       alignItems="flex-start"
       maxW="100%"
     />

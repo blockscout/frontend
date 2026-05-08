@@ -59,7 +59,6 @@ const AddressCoinBalanceTableItem = (props: Props) => {
       asset={ ticker }
       loading={ props.isLoading }
       color="text.secondary"
-      layout="vertical"
       maxW="230px"
       ml="auto"
     />
