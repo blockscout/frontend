@@ -11,7 +11,7 @@ const TokenTransfers = dynamic(() => {
     return import('ui/multichain/tokenTransfers/MultichainTokenTransfers');
   }
 
-  return import('ui/pages/TokenTransfers');
+  return import('client/slices/token-transfer/pages/index/TokenTransfers');
 }, { ssr: false });
 
 const Page: NextPage = () => {

@@ -1,5 +1,5 @@
+import type { TokenTransfer, TokenTransferResponse } from 'client/slices/token-transfer/types/api';
 import type { TokenInfo } from 'client/slices/token/types/api';
-import type { TokenTransfer, TokenTransferResponse } from 'types/api/tokenTransfer';
 
 import * as tokenInstanceMock from 'client/slices/token/mocks/instance';
 

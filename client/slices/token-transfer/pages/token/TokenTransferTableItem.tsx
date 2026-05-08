@@ -1,9 +1,9 @@
 import { Flex, Box } from '@chakra-ui/react';
 import React from 'react';
 
+import type { TokenTransfer } from 'client/slices/token-transfer/types/api';
 import type { TokenInstance } from 'client/slices/token/types/api';
 import { hasTokenTransferValue, isConfidentialTokenType, NFT_TOKEN_TYPE_IDS } from 'client/slices/token/utils/token-types';
-import type { TokenTransfer } from 'types/api/tokenTransfer';
 import type { ClusterChainConfig } from 'types/multichain';
 
 import AddressFromTo from 'client/slices/address/components/from-to/AddressFromTo';

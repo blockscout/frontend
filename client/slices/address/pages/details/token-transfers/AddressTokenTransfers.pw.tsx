@@ -1,7 +1,8 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import * as tokenTransferMock from 'mocks/tokens/tokenTransfer';
+import * as tokenTransferMock from 'client/slices/token-transfer/mocks';
+
 import * as socketServer from 'playwright/fixtures/socketServer';
 import { test, expect, devices } from 'playwright/lib';
 

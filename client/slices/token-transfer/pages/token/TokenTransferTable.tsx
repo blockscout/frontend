@@ -1,8 +1,8 @@
 import React from 'react';
 
+import type { TokenTransfer } from 'client/slices/token-transfer/types/api';
 import type { TokenInfo, TokenInstance } from 'client/slices/token/types/api';
 import { hasTokenIds, hasTokenTransferValue, isConfidentialTokenType, isFungibleTokenType, NFT_TOKEN_TYPE_IDS } from 'client/slices/token/utils/token-types';
-import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
 import TokenTransferTableItem from 'client/slices/token-transfer/pages/token/TokenTransferTableItem';

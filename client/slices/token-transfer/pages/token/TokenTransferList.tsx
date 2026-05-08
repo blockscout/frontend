@@ -1,8 +1,8 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
+import type { TokenTransfer } from 'client/slices/token-transfer/types/api';
 import type { TokenInstance } from 'client/slices/token/types/api';
-import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import TokenTransferListItem from 'client/slices/token-transfer/pages/token/TokenTransferListItem';
 

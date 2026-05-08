@@ -1,10 +1,10 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
+import * as tokenTransferMock from 'client/slices/token-transfer/mocks';
 import { tokenInfoERC20a, tokenInfoERC721a, tokenInfoERC1155a } from 'client/slices/token/mocks/info';
 import * as tokenInstanceMock from 'client/slices/token/mocks/instance';
 
-import * as tokenTransferMock from 'mocks/tokens/tokenTransfer';
 import { test, expect } from 'playwright/lib';
 
 import TokenTransfer from './TokenTransfer';

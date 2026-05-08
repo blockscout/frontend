@@ -1,4 +1,4 @@
-import type { TokenTransfer } from 'types/api/tokenTransfer';
+import type { TokenTransfer } from 'client/slices/token-transfer/types/api';
 
 export const getTokenTransferTypeText = (type: TokenTransfer['type']) => {
   switch (type) {

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { TokenTransfer } from 'types/api/tokenTransfer';
+import type { TokenTransfer } from 'client/slices/token-transfer/types/api';
 
 import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
 
@@ -8,7 +8,8 @@ import { useMultichainContext } from 'lib/contexts/multichain';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
-import TokenTransferTableItem from 'ui/shared/TokenTransfer/TokenTransferTableItem';
+
+import TokenTransferTableItem from './TokenTransferTableItem';
 
 interface Props {
   data: Array<TokenTransfer>;

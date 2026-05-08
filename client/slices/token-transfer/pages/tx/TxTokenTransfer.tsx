@@ -1,9 +1,11 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { TokenTransfer } from 'client/slices/token-transfer/types/api';
 import type { TokenType } from 'client/slices/token/types/api';
-import type { TokenTransfer } from 'types/api/tokenTransfer';
 
+import TokenTransferFilter from 'client/slices/token-transfer/components/TokenTransferFilter';
+import { getTokenTransfersStub } from 'client/slices/token-transfer/stubs';
 import { getTokenFilterValue } from 'client/slices/token/utils/list-utils';
 import TxPendingAlert from 'client/slices/tx/components/TxPendingAlert';
 import TxSocketAlert from 'client/slices/tx/components/TxSocketAlert';
@@ -18,12 +20,10 @@ import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import config from 'configs/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
-import { getTokenTransfersStub } from 'stubs/token';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
-import TokenTransferFilter from 'ui/shared/TokenTransfer/TokenTransferFilter';
 
 import TxTokenTransferLocal from './TxTokenTransferLocal';
 

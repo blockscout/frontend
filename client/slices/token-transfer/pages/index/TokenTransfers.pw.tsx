@@ -1,8 +1,8 @@
 import React from 'react';
 
+import { mixTokens } from 'client/slices/token-transfer/mocks';
 import * as tokenInstanceMock from 'client/slices/token/mocks/instance';
 
-import { mixTokens } from 'mocks/tokens/tokenTransfer';
 import { test, expect } from 'playwright/lib';
 
 import TokenTransfers from './TokenTransfers';

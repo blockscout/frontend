@@ -2,10 +2,11 @@ import { Box } from '@chakra-ui/react';
 import type { Locator } from '@playwright/test';
 import React from 'react';
 
+import * as tokenTransferMock from 'client/slices/token-transfer/mocks';
+
 import * as countersMock from 'mocks/address/counters';
 import * as addressMock from 'mocks/multichain/address';
 import * as chainDataMock from 'mocks/multichain/chains';
-import * as tokenTransferMock from 'mocks/tokens/tokenTransfer';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';
 import * as pwConfig from 'playwright/utils/config';

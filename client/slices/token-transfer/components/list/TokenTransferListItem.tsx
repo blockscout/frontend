@@ -1,8 +1,8 @@
 import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
+import type { TokenTransfer } from 'client/slices/token-transfer/types/api';
 import { getTokenTypeName, isConfidentialTokenType } from 'client/slices/token/utils/token-types';
-import type { TokenTransfer } from 'types/api/tokenTransfer';
 import type { ClusterChainConfig } from 'types/multichain';
 
 import AddressFromTo from 'client/slices/address/components/from-to/AddressFromTo';
@@ -15,9 +15,10 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
-import { getTokenTransferTypeText } from 'ui/shared/TokenTransfer/helpers';
 import AssetValue from 'ui/shared/value/AssetValue';
 import ConfidentialValue from 'ui/shared/value/ConfidentialValue';
+
+import { getTokenTransferTypeText } from '../../utils/transfer-type';
 
 type Props = TokenTransfer & {
   baseAddress?: string;

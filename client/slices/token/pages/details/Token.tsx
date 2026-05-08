@@ -15,6 +15,7 @@ import useSocketMessage from 'client/api/socket/useSocketMessage';
 
 import * as addressStubs from 'client/slices/address/stubs/address';
 import TokenTransfer from 'client/slices/token-transfer/pages/token/TokenTransfer';
+import { getTokenTransfersStub } from 'client/slices/token-transfer/stubs';
 import useTokenQuery from 'client/slices/token/hooks/useTokenQuery';
 import TokenHolders from 'client/slices/token/pages/details/holders/TokenHolders';
 import TokenDetails from 'client/slices/token/pages/details/info/TokenDetails';
@@ -34,7 +35,6 @@ import getQueryParamString from 'client/shared/router/get-query-param-string';
 import useEtherscanRedirects from 'client/shared/router/useEtherscanRedirects';
 
 import config from 'configs/app';
-import { getTokenTransfersStub } from 'stubs/token';
 import { generateListStub } from 'stubs/utils';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import AddressContract from 'ui/address/AddressContract';

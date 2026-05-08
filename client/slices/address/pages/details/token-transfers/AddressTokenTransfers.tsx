@@ -2,6 +2,8 @@ import { HStack } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import TokenTransferFilter from 'client/slices/token-transfer/components/TokenTransferFilter';
+
 import AddressAdvancedFilterLink from 'client/features/advanced-filter/components/AddressAdvancedFilterLink';
 import CsvExport from 'client/features/csv-export/components/CsvExport';
 
@@ -17,7 +19,6 @@ import TokenTransfersCrossChainContent from 'ui/crossChain/transfers/TokenTransf
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
-import TokenTransferFilter from 'ui/shared/TokenTransfer/TokenTransferFilter';
 
 import AddressTokenTransfersLocal from './AddressTokenTransfersLocal';
 import useAddressTokenTransfersQuery from './useAddressTokenTransfersQuery';

@@ -2,6 +2,7 @@ import { Box, createListCollection } from '@chakra-ui/react';
 import { noop } from 'es-toolkit';
 import React from 'react';
 
+import TokenTransferFilter from 'client/slices/token-transfer/components/TokenTransferFilter';
 import { SORT_OPTIONS } from 'client/slices/tx/hooks/useTxsSort';
 
 import { Checkbox } from 'toolkit/chakra/checkbox';
@@ -10,7 +11,6 @@ import { Select, SelectAsync } from 'toolkit/chakra/select';
 import PopoverFilterRadio from 'ui/shared/filters/PopoverFilterRadio';
 import IconSvg from 'ui/shared/IconSvg';
 import Sort from 'ui/shared/sort/Sort';
-import TokenTransferFilter from 'ui/shared/TokenTransfer/TokenTransferFilter';
 
 import { Section, Container, SectionHeader, SamplesStack, Sample, SectionSubHeader } from './parts';
 

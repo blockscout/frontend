@@ -6,7 +6,8 @@ import config from 'configs/app';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import TokenTransfersCrossChain from 'ui/crossChain/transfers/TokenTransfersCrossChain';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import TokenTransfersLocal from 'ui/tokenTransfers/TokenTransfersLocal';
+
+import TokenTransfersLocal from './TokenTransfersLocal';
 
 const TokenTransfers = () => {
 

@@ -3,8 +3,8 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { TransactionLog } from 'client/slices/log/types/api';
+import type { TokenTransfer } from 'client/slices/token-transfer/types/api';
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
-import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 

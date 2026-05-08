@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { SocketMessage } from 'client/api/socket/types';
 import type { AddressTokenTransferResponse } from 'client/slices/address/types/api';
-import type { TokenTransfer } from 'types/api/tokenTransfer';
+import type { TokenTransfer } from 'client/slices/token-transfer/types/api';
 
 import { getResourceKey } from 'client/api/hooks/useApiQuery';
 import useSocketChannel from 'client/api/socket/useSocketChannel';

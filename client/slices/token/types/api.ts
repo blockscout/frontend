@@ -1,5 +1,5 @@
 import type { AddressParam } from 'client/slices/address/types/api';
-import type { TokenTransfer } from 'types/api/tokenTransfer';
+import type { TokenTransfer } from 'client/slices/token-transfer/types/api';
 
 export type NFTTokenType = 'ERC-721' | 'ERC-1155' | 'ERC-404';
 // token type can come from the environment config, so it can be any string
