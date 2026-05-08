@@ -18,7 +18,21 @@
     "isolatedModules": true,
     "jsx": "react-jsx",
     "incremental": true,
-    "baseUrl": ".",
+    "paths": {
+      "client/*": ["./client/*"],
+      "configs/*": ["./configs/*"],
+      "icons/*": ["./icons/*"],
+      "lib/*": ["./lib/*"],
+      "mocks/*": ["./mocks/*"],
+      "nextjs/*": ["./nextjs/*"],
+      "public/*": ["./public/*"],
+      "playwright/*": ["./playwright/*"],
+      "stubs/*": ["./stubs/*"],
+      "toolkit/*": ["./toolkit/*"],
+      "types/*": ["./types/*"],
+      "ui/*": ["./ui/*"],
+      "vitest/*": ["./vitest/*"]
+    },
     "types": [
       "node"
     ]
