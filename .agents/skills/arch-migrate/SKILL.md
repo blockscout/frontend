@@ -37,33 +37,31 @@ The issue body contains the **Scope**, **Findings**, and **Acceptance criteria**
 ### 2. Explore before touching
 Read all source files listed in the issue **Scope**. Understand what they export and what tests exist.
 
-### 3. Move files
+### 3. Move and delete files
 - Destination comes from the issue Scope and `ARCH_REDESIGN.md §6` migration map.
 - Rename files to kebab-case **at move time** — no separate rename PR.
 - Component files stay PascalCase. Hook files stay `useCamelCase.ts`. Everything else: kebab-case.
 - Extract types/interfaces flagged in the issue **Findings** section into their new homes.
-
+- **After writing each file at its destination, delete the source.** Use the `## Files to delete` list in the issue as your checklist — work through it item by item. If an entry is a folder, delete the entire folder (`rm -rf`). If an entry is a file, delete that file.
+- **Verify deletions before moving on.** Once all moves are done, check that every path listed under `## Files to delete` is gone. For any that still exist, delete them now.
 
 ### 4. Update all imports in the same PR
 - Update every import path across the entire repo.
 - For high-fanout files, write a codemod script, run it, then **delete the script** — do not commit it to the repo. Commit only the resulting file changes.
 - No re-export shims. No long-lived compatibility aliases.
 
-### 5. Verify dependency rules
-- `client/api` must not have runtime imports from `client/slices/*` or `client/features/*`. `import type` is allowed.
-- No new import cycles within `client/`. Fix all ESLint errors inside `client/`.
-- Warnings in legacy `lib/` and `ui/` paths are expected and do not block the PR.
-
-### 6. Run checks
+### 5. Run checks
 ```
 pnpm lint:tsc           # must pass
-pnpm lint:eslint:fix    # must pass; legacy warnings acceptable
+pnpm lint:eslint:fix    # must pass
 ```
 
-### 7. Cross-slice dependencies left at old paths
+Fix errors if any (warnings are acceptable).
+
+### 6. Cross-slice dependencies left at old paths
 If a dependency is not yet migrated, leave its import at the old path and list it explicitly in the PR description as a follow-up for the relevant future task.
 
-## Branch and PR
+### 7. Branch and PR
 
 - Extract the task ID from the issue title (format: `[Migration] <task-id>: ...`).
 - Branch name: `migration/<task-id>-<short-slug>` (e.g. `migration/1-1-client-api`)
@@ -75,7 +73,7 @@ If a dependency is not yet migrated, leave its import at the old path and list i
   - What moved and where
   - Any codemods run (include the command / script body used, but do not commit the script itself)
   - Cross-slice deps left at legacy paths (list file + old import path)
-  - Checklist: `pnpm lint:tsc` passing, `pnpm lint:eslint` clean within `client/`
+  - Checklist: `pnpm lint:tsc` passing, `pnpm lint:eslint` clean within `client/`, all source files/folders deleted from old paths
 - PR labels: `refactoring`
 
 ---

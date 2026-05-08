@@ -126,6 +126,10 @@ If none: "No feature-side files required."]
 
 If nothing non-obvious was found: "No conflicts or extractions identified — straightforward move."
 
+## Files to delete
+
+[Flat list of every source path that must be removed once its contents have been moved. Use a folder path when the entire folder moves; list individual files only when part of the folder stays. Paths that stay in place (e.g. Next.js `pages/` entry files) must NOT appear here.]
+
 ## Acceptance criteria
 
 - [ ] All files moved to target paths per `ARCH_REDESIGN.md §6`
@@ -134,6 +138,7 @@ If nothing non-obvious was found: "No conflicts or extractions identified — st
 - [ ] Extracted client/UI types live in their new slice/feature `types/client.ts`
 - [ ] `pnpm lint:tsc` passes
 - [ ] `pnpm lint:eslint:fix` clean within `client/` (warnings in legacy paths acceptable)
+- [ ] All source files/folders deleted from old paths (none remain)
 - [ ] Cross-slice deps left at old paths are explicitly listed in the PR description
 ```
 
