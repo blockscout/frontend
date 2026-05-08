@@ -1,9 +1,8 @@
 import type { CeloEpochListItem, CeloEpochDetails, CeloEpochElectionReward } from 'types/api/epochs';
 
 import { BLOCK_HASH } from 'client/slices/block/stubs/block';
+import { TOKEN_TRANSFER_ERC_20, TOKEN_TRANSFER_ERC_20_TOTAL } from 'client/slices/token-transfer/stubs';
 import { TOKEN_INFO_ERC_20 } from 'client/slices/token/stubs';
-
-import { TOKEN_TRANSFER_ERC_20, TOKEN_TRANSFER_ERC_20_TOTAL } from './token';
 
 export const CELO_EPOCH_ITEM: CeloEpochListItem = {
   timestamp: '2025-06-10T01:27:52.000000Z',

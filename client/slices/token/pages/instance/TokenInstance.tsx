@@ -8,6 +8,7 @@ import type { PaginationParams } from 'ui/shared/pagination/types';
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
 import TokenTransfer from 'client/slices/token-transfer/pages/token/TokenTransfer';
+import { getTokenInstanceTransfersStub } from 'client/slices/token-transfer/stubs';
 import TokenHolders from 'client/slices/token/pages/details/holders/TokenHolders';
 import TokenInstanceDetails from 'client/slices/token/pages/instance/info/TokenInstanceDetails';
 import { MetadataUpdateProvider } from 'client/slices/token/pages/instance/metadata-update-context';
@@ -25,7 +26,6 @@ import useIsMobile from 'client/shared/hooks/useIsMobile';
 import * as metadata from 'client/shared/metadata';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
-import { getTokenInstanceTransfersStub } from 'stubs/token';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import TextAd from 'ui/shared/ad/TextAd';
 import Pagination from 'ui/shared/pagination/Pagination';

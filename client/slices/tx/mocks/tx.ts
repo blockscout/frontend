@@ -5,11 +5,11 @@ import type { AddressParam } from 'client/slices/address/types/api';
 import type { Transaction } from 'client/slices/tx/types/api';
 
 import * as decodedInputDataMock from 'client/slices/log/mocks/decoded-input';
+import * as tokenTransferMock from 'client/slices/token-transfer/mocks';
 
 import * as addressMock from 'mocks/address/address';
 import { publicTag, privateTag, watchlistName } from 'mocks/address/tag';
 import { protocolTag } from 'mocks/metadata/address';
-import * as tokenTransferMock from 'mocks/tokens/tokenTransfer';
 
 export const base: Transaction = {
   base_fee_per_gas: '10000000000',

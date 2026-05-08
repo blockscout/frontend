@@ -1,5 +1,5 @@
+import type { Erc20TotalPayload, TokenTransfer, TokenTransferPagination, TokenTransferResponse } from 'client/slices/token-transfer/types/api';
 import type { TokenType, TokenInstanceTransferPagination, TokenInstanceTransferResponse } from 'client/slices/token/types/api';
-import type { Erc20TotalPayload, TokenTransfer, TokenTransferPagination, TokenTransferResponse } from 'types/api/tokenTransfer';
 
 import { ADDRESS_PARAMS } from 'client/slices/address/stubs/address-params';
 import {
@@ -11,7 +11,7 @@ import {
 } from 'client/slices/token/stubs';
 import { TX_HASH } from 'client/slices/tx/stubs/tx';
 
-import { generateListStub } from './utils';
+import { generateListStub } from 'stubs/utils';
 
 export const TOKEN_TRANSFER_ERC_20_TOTAL: Erc20TotalPayload = {
   decimals: '18',

@@ -15,8 +15,8 @@ import type { TransactionAuthorization } from 'client/features/tx-authorization/
 import type { AddressParam } from 'client/slices/address/types/api';
 import type { BlockTransactionsResponse } from 'client/slices/block/types/api';
 import type { DecodedInput } from 'client/slices/log/types/api';
+import type { Erc721TotalPayload, TokenTransfer } from 'client/slices/token-transfer/types/api';
 import type { TokenInfo } from 'client/slices/token/types/api';
-import type { Erc721TotalPayload, TokenTransfer } from 'types/api/tokenTransfer';
 
 export type TransactionRevertReason = {
   raw: string;

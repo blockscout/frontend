@@ -6,12 +6,13 @@ import { AddressFromToFilterValues } from 'client/slices/address/types/api';
 import type { TokenType } from 'client/slices/token/types/api';
 import { getTokenTypes } from 'client/slices/token/utils/token-types';
 
+import { getTokenTransfersStub } from 'client/slices/token-transfer/stubs';
+
 import getFilterValueFromQuery from 'client/shared/router/get-filter-value-from-query';
 import getFilterValuesFromQuery from 'client/shared/router/get-filter-values-from-query';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import multichainConfig from 'configs/multichain';
-import { getTokenTransfersStub } from 'stubs/token';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
 export type Filters = {

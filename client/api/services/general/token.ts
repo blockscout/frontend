@@ -1,4 +1,5 @@
 import type { ApiResource } from '../../types';
+import type { TokenTransferResponse, TokenTransferFilters } from 'client/slices/token-transfer/types/api';
 import type {
   TokenCounters,
   TokenInfo,
@@ -8,7 +9,6 @@ import type {
   TokenInstanceTransfersCount,
   TokenInventoryFilters,
   TokensResponse, TokensFilters, TokensSorting, TokenInstanceTransferResponse, TokensBridgedFilters } from 'client/slices/token/types/api';
-import type { TokenTransferResponse, TokenTransferFilters } from 'types/api/tokenTransfer';
 
 export const GENERAL_API_TOKEN_RESOURCES = {
   // TOKEN

@@ -1,15 +1,16 @@
 import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TokenTransfer } from 'types/api/tokenTransfer';
+import type { TokenTransfer } from 'client/slices/token-transfer/types/api';
 
 import { route } from 'nextjs/routes';
+
+import TokenTransferSnippet from 'client/slices/token-transfer/components/snippet/TokenTransferSnippet';
 
 import { useMultichainContext } from 'lib/contexts/multichain';
 import { Link } from 'toolkit/chakra/link';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import IconSvg from 'ui/shared/IconSvg';
-import TokenTransferSnippet from 'ui/shared/TokenTransferSnippet/TokenTransferSnippet';
 
 interface Props {
   data: Array<TokenTransfer>;

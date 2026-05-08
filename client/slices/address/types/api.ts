@@ -3,10 +3,10 @@ import type { AddressFilecoinParams } from 'client/features/chain-variants/filec
 import type { AddressZilliqaParams } from 'client/features/chain-variants/zilliqa/types/api';
 import type { Block } from 'client/slices/block/types/api';
 import type { InternalTransaction } from 'client/slices/internal-tx/types/api';
+import type { TokenTransfer, TokenTransferPagination } from 'client/slices/token-transfer/types/api';
 import type { NFTTokenType, TokenInfo, TokenInstance, TokenReputation, TokenType } from 'client/slices/token/types/api';
 import type { Transaction } from 'client/slices/tx/types/api';
 import type { SmartContractCreationStatus, SmartContractProxyType } from 'types/api/contract';
-import type { TokenTransfer, TokenTransferPagination } from 'types/api/tokenTransfer';
 
 export interface AddressImplementation {
   address_hash: string;

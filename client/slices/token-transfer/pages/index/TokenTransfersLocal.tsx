@@ -10,9 +10,9 @@ import DataListDisplay from 'ui/shared/DataListDisplay';
 import PopoverFilter from 'ui/shared/filters/PopoverFilter';
 import Pagination from 'ui/shared/pagination/Pagination';
 
+import useTokenTransfersQuery from '../../hooks/useTokenTransfersQuery';
 import TokenTransfersListItem from './TokenTransfersListItem';
 import TokenTransfersTable from './TokenTransfersTable';
-import useTokenTransfersQuery from './useTokenTransfersQuery';
 
 const TokenTransfersLocal = () => {
   const { query, typeFilter, onTokenTypesChange } = useTokenTransfersQuery({ enabled: true });

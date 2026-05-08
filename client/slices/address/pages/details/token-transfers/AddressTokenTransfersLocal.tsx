@@ -3,6 +3,10 @@ import React from 'react';
 
 import type { TokenType } from 'client/slices/token/types/api';
 
+import TokenTransferList from 'client/slices/token-transfer/components/list/TokenTransferList';
+import TokenTransferTable from 'client/slices/token-transfer/components/list/TokenTransferTable';
+import TokenTransferFilter from 'client/slices/token-transfer/components/TokenTransferFilter';
+
 import AddressAdvancedFilterLink from 'client/features/advanced-filter/components/AddressAdvancedFilterLink';
 import CsvExport from 'client/features/csv-export/components/CsvExport';
 
@@ -14,9 +18,6 @@ import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/pagination/Pagination';
 import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
 import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
-import TokenTransferFilter from 'ui/shared/TokenTransfer/TokenTransferFilter';
-import TokenTransferList from 'ui/shared/TokenTransfer/TokenTransferList';
-import TokenTransferTable from 'ui/shared/TokenTransfer/TokenTransferTable';
 
 import type { Filters } from './useAddressTokenTransfersQuery';
 import useAddressTokenTransfersSocket from './useAddressTokenTransfersSocket';

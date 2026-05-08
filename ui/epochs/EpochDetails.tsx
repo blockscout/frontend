@@ -4,13 +4,13 @@ import React from 'react';
 import type { CeloEpochDetails } from 'types/api/epochs';
 
 import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
+import TokenTransferSnippet from 'client/slices/token-transfer/components/snippet/TokenTransferSnippet';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 import CeloEpochStatus from 'ui/shared/statusTag/CeloEpochStatus';
-import TokenTransferSnippet from 'ui/shared/TokenTransferSnippet/TokenTransferSnippet';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 import TokenValue from 'ui/shared/value/TokenValue';
 

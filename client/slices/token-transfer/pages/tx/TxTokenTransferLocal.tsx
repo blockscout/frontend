@@ -1,15 +1,15 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TokenTransfer } from 'types/api/tokenTransfer';
+import type { TokenTransfer } from 'client/slices/token-transfer/types/api';
 
+import TokenTransferList from 'client/slices/token-transfer/components/list/TokenTransferList';
+import TokenTransferTable from 'client/slices/token-transfer/components/list/TokenTransferTable';
 import type { TxQuery } from 'client/slices/tx/hooks/useTxQuery';
 
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
-import TokenTransferList from 'ui/shared/TokenTransfer/TokenTransferList';
-import TokenTransferTable from 'ui/shared/TokenTransfer/TokenTransferTable';
 
 interface Props {
   txQuery: TxQuery;

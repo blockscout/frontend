@@ -1,10 +1,11 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TokenTransfer } from 'types/api/tokenTransfer';
+import type { TokenTransfer } from 'client/slices/token-transfer/types/api';
 
 import { useMultichainContext } from 'lib/contexts/multichain';
-import TokenTransferListItem from 'ui/shared/TokenTransfer/TokenTransferListItem';
+
+import TokenTransferListItem from './TokenTransferListItem';
 
 interface Props {
   data: Array<TokenTransfer>;

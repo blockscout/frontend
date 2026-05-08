@@ -3,12 +3,12 @@ import React from 'react';
 
 import type { TokenType } from 'client/slices/token/types/api';
 
+import { getTokenTransfersStub } from 'client/slices/token-transfer/stubs';
 import { getTokenFilterValue } from 'client/slices/token/utils/list-utils';
 
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import multichainConfig from 'configs/multichain';
-import { getTokenTransfersStub } from 'stubs/token';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
 const getFilters = (query: Record<string, string | Array<string> | undefined>) => {
