@@ -8,7 +8,7 @@ import type { PaginationParams } from 'ui/shared/pagination/types';
 import type { ResourceError } from 'lib/api/resources';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
-import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
+import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/pagination/Pagination';
 import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
@@ -41,7 +41,7 @@ const AddressCoinBalanceHistory = ({ query }: Props) => {
             <col style={{ width: '230px' }}/>
             <col style={{ width: '170px' }}/>
           </colgroup>
-          <TableHeaderSticky top={ query.pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }>
+          <TableHeaderSticky top={ 0 }>
             <TableRow>
               { chainData && <TableColumnHeader width="38px" px={ 2 }/> }
               <TableColumnHeader width="112px">Block</TableColumnHeader>
