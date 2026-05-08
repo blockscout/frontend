@@ -1,7 +1,8 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import * as internalTxsMock from 'mocks/txs/internalTxs';
+import * as internalTxsMock from 'client/slices/internal-tx/mocks';
+
 import { test, expect } from 'playwright/lib';
 
 import AddressInternalTxs from './AddressInternalTxs';

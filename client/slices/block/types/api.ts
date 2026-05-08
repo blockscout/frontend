@@ -6,8 +6,8 @@ import type { BlockArbitrum } from 'client/features/rollup/arbitrum/types/api';
 import type { BlockOptimism } from 'client/features/rollup/optimistic/types/api';
 import type { BlockZkSync } from 'client/features/rollup/zk-sync/types/api';
 import type { AddressParam } from 'client/slices/address/types/api';
+import type { InternalTransaction } from 'client/slices/internal-tx/types/api';
 import type { Transaction } from 'client/slices/tx/types/api';
-import type { InternalTransaction } from 'types/api/internalTransaction';
 import type { Reward } from 'types/api/reward';
 
 export type BlockType = 'block' | 'reorg' | 'uncle';

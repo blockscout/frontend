@@ -1,12 +1,13 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
+import InternalTxsList from 'client/slices/internal-tx/components/InternalTxsList';
+import InternalTxsTable from 'client/slices/internal-tx/components/InternalTxsTable';
+import useInternalTxsQuery from 'client/slices/internal-tx/hooks/useInternalTxsQuery';
+
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
-import InternalTxsList from 'ui/internalTxs/InternalTxsList';
-import InternalTxsTable from 'ui/internalTxs/InternalTxsTable';
-import useInternalTxsQuery from 'ui/internalTxs/useInternalTxsQuery';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';

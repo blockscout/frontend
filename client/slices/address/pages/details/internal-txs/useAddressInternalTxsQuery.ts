@@ -3,10 +3,11 @@ import React from 'react';
 
 import { AddressFromToFilterValues, type AddressFromToFilter } from 'client/slices/address/types/api';
 
+import { INTERNAL_TX } from 'client/slices/internal-tx/stubs';
+
 import getFilterValueFromQuery from 'client/shared/router/get-filter-value-from-query';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
-import { INTERNAL_TX } from 'stubs/internalTx';
 import { generateListStub } from 'stubs/utils';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 

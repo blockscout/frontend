@@ -1,12 +1,13 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
+import InternalTxsList from 'client/slices/internal-tx/components/InternalTxsList';
+import InternalTxsTable from 'client/slices/internal-tx/components/InternalTxsTable';
+
 import CsvExport from 'client/features/csv-export/components/CsvExport';
 
 import useIsMounted from 'client/shared/hooks/useIsMounted';
 
-import InternalTxsList from 'ui/internalTxs/InternalTxsList';
-import InternalTxsTable from 'ui/internalTxs/InternalTxsTable';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/pagination/Pagination';

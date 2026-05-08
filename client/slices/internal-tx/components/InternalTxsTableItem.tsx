@@ -1,7 +1,7 @@
 import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
-import type { InternalTransaction } from 'types/api/internalTransaction';
+import type { InternalTransaction } from 'client/slices/internal-tx/types/api';
 import type { ClusterChainConfig } from 'types/multichain';
 
 import AddressFromTo from 'client/slices/address/components/from-to/AddressFromTo';

@@ -1,8 +1,9 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import InternalTxsList from 'ui/internalTxs/InternalTxsList';
-import InternalTxsTable from 'ui/internalTxs/InternalTxsTable';
+import InternalTxsList from 'client/slices/internal-tx/components/InternalTxsList';
+import InternalTxsTable from 'client/slices/internal-tx/components/InternalTxsTable';
+
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
 

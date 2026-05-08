@@ -1,4 +1,4 @@
-import type { InternalTransaction } from 'types/api/internalTransaction';
+import type { InternalTransaction } from 'client/slices/internal-tx/types/api';
 
 import { ADDRESS_PARAMS } from 'client/slices/address/stubs/address-params';
 import { TX_HASH } from 'client/slices/tx/stubs/tx';
