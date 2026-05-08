@@ -4,6 +4,8 @@ import React from 'react';
 
 import type { TxStateChange } from 'client/slices/tx/types/api';
 
+import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
+
 import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-title';
 import { currencyUnits } from 'client/shared/chain/units';
 
@@ -14,7 +16,6 @@ import { Tooltip } from 'toolkit/chakra/tooltip';
 import { ZERO_ADDRESS } from 'toolkit/utils/consts';
 import { nbsp, space } from 'toolkit/utils/htmlEntities';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
-import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 
 import TxStateTokenIdList from './TxStateTokenIdList';
 

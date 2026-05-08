@@ -5,11 +5,11 @@ import type { EssentialDappsChainConfig } from 'types/client/marketplace';
 import type { AllowanceType } from 'types/client/revoke';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 
 import dayjs from 'lib/date/dayjs';
 import { Button } from 'toolkit/chakra/button';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 import NumberEntity from 'ui/shared/NumberEntity';
 import Time from 'ui/shared/time/Time';

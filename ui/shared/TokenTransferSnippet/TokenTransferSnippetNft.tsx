@@ -1,10 +1,11 @@
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TokenInfo, TokenInstance } from 'types/api/token';
+import type { TokenInfo, TokenInstance } from 'client/slices/token/types/api';
+
+import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
-import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 
 interface Props {
   token: TokenInfo;

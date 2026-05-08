@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { SocketMessage } from 'client/api/socket/types';
 import type { AddressTokenBalance, AddressTokensBalancesSocketMessage, AddressTokensResponse } from 'client/slices/address/types/api';
-import type { TokenType } from 'types/api/token';
+import type { TokenType } from 'client/slices/token/types/api';
 
 import useApiFetch from 'client/api/hooks/useApiFetch';
 import useApiQuery, { getResourceKey } from 'client/api/hooks/useApiQuery';

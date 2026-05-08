@@ -3,15 +3,15 @@ import { BigNumber } from 'bignumber.js';
 import React from 'react';
 
 import type { AddressTokensErc20Item } from 'client/slices/token/pages/address/types';
+import { getTokenTypeName } from 'client/slices/token/utils/token-types';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 
 import multichainConfig from 'configs/multichain';
-import { getTokenTypeName } from 'lib/token/tokenTypes';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tag } from 'toolkit/chakra/tag';
 import NativeTokenTag from 'ui/shared/celo/NativeTokenTag';
-import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import calculateUsdValue from 'ui/shared/value/calculateUsdValue';
 import SimpleValue from 'ui/shared/value/SimpleValue';

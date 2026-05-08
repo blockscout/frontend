@@ -5,13 +5,13 @@ import React from 'react';
 import type { WatchlistAddress } from 'types/api/account';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+import * as TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 
 import { currencyUnits } from 'client/shared/chain/units';
 
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { nbsp } from 'toolkit/utils/htmlEntities';
-import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import IconSvg from 'ui/shared/IconSvg';
 import calculateUsdValue from 'ui/shared/value/calculateUsdValue';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';

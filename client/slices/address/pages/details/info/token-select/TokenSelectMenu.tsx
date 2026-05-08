@@ -3,11 +3,11 @@ import { sumBy } from 'es-toolkit';
 import React from 'react';
 
 import type { FormattedData } from './types';
+import { getTokenTypeName } from 'client/slices/token/utils/token-types';
 
 import type { Sort } from 'client/slices/token/pages/address/utils';
 import { getSortingFn, sortTokenGroups } from 'client/slices/token/pages/address/utils';
 
-import { getTokenTypeName } from 'lib/token/tokenTypes';
 import { Link } from 'toolkit/chakra/link';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import { thinsp } from 'toolkit/utils/htmlEntities';

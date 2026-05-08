@@ -4,10 +4,10 @@ import type * as multichain from '@blockscout/multichain-aggregator-types';
 import type * as zetaChainCCTXType from '@blockscout/zetachain-cctx-types';
 import type { AddressCoinBalanceHistoryItem, AddressTokensBalancesSocketMessage } from 'client/slices/address/types/api';
 import type { NewBlockSocketResponse } from 'client/slices/block/types/api';
+import type { TokenInstanceMetadataSocketMessage } from 'client/slices/token/types/api';
 import type { Transaction, TxRawTracesResponse } from 'client/slices/tx/types/api';
 import type { NewArbitrumBatchSocketResponse } from 'types/api/arbitrumL2';
 import type { SmartContractVerificationResponse } from 'types/api/contract';
-import type { TokenInstanceMetadataSocketMessage } from 'types/api/token';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 export type SocketMessageParams = SocketMessage.NewBlock |

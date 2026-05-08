@@ -11,6 +11,7 @@ import { SocketProvider } from 'client/api/socket/context';
 import useAddressCountersQuery from 'client/slices/address/hooks/useAddressCountersQuery';
 import AddressTokenTransfersLocal from 'client/slices/address/pages/details/token-transfers/AddressTokenTransfersLocal';
 import useAddressTokenTransfersQuery from 'client/slices/address/pages/details/token-transfers/useAddressTokenTransfersQuery';
+import { getTokenFilterValue } from 'client/slices/token/utils/list-utils';
 
 import AddressAdvancedFilterLink from 'client/features/advanced-filter/components/AddressAdvancedFilterLink';
 import CsvExport from 'client/features/csv-export/components/CsvExport';
@@ -25,7 +26,6 @@ import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import ChainSelect from 'ui/multichain/components/ChainSelect';
 import Pagination from 'ui/shared/pagination/Pagination';
 import TokenTransferFilter from 'ui/shared/TokenTransfer/TokenTransferFilter';
-import { getTokenFilterValue } from 'ui/tokens/utils';
 
 import ListCounterText from '../components/ListCounterText';
 import getAvailableChainIds from './getAvailableChainIds';

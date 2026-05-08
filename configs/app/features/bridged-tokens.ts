@@ -1,5 +1,5 @@
 import type { Feature } from './types';
-import type { BridgedTokenChain, TokenBridge } from 'types/client/token';
+import type { BridgedTokenChain, TokenBridge } from 'client/features/bridged-tokens/types/client';
 
 import { getEnvValue, parseEnvJson } from '../utils';
 

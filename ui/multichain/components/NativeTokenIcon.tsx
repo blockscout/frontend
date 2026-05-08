@@ -4,9 +4,10 @@ import React from 'react';
 
 import type { HomeStats } from 'types/api/stats';
 
+import TokenLogoPlaceholder from 'client/slices/token/components/icon/TokenIconPlaceholder';
+
 import { Image } from 'toolkit/chakra/image';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import TokenLogoPlaceholder from 'ui/shared/TokenLogoPlaceholder';
 
 import useFetchParentChainApi from '../home/useFetchParentChainApi';
 

@@ -2,10 +2,11 @@ import { Box, Text } from '@chakra-ui/react';
 import type { FC } from 'react';
 import React from 'react';
 
+import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { HEX_REGEXP } from 'toolkit/utils/regexp';
-import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import IconSvg from 'ui/shared/IconSvg';
 
 import type { NovesFlowViewItem } from '../utils/generateFlowViewData';

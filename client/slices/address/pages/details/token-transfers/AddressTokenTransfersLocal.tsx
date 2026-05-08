@@ -1,7 +1,7 @@
 import { Box, HStack } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TokenType } from 'types/api/token';
+import type { TokenType } from 'client/slices/token/types/api';
 
 import AddressAdvancedFilterLink from 'client/features/advanced-filter/components/AddressAdvancedFilterLink';
 import CsvExport from 'client/features/csv-export/components/CsvExport';

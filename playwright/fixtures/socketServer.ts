@@ -4,9 +4,9 @@ import { WebSocketServer } from 'ws';
 
 import type { AddressCoinBalanceHistoryItem, AddressTokensBalancesSocketMessage } from 'client/slices/address/types/api';
 import type { NewBlockSocketResponse } from 'client/slices/block/types/api';
+import type { TokenInstanceMetadataSocketMessage } from 'client/slices/token/types/api';
 import type { Transaction } from 'client/slices/tx/types/api';
 import type { SmartContractVerificationResponse } from 'types/api/contract';
-import type { TokenInstanceMetadataSocketMessage } from 'types/api/token';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import { port as socketPort } from '../utils/socket';

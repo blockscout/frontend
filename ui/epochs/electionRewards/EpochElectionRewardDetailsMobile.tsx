@@ -2,8 +2,8 @@ import { Box, Flex, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { TokenInfo } from 'client/slices/token/types/api';
 import type { CeloEpochDetails } from 'types/api/epochs';
-import type { TokenInfo } from 'types/api/token';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 

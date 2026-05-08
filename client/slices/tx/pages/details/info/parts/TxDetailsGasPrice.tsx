@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { TokenInfo } from 'types/api/token';
+import type { TokenInfo } from 'client/slices/token/types/api';
 
 import config from 'configs/app';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';

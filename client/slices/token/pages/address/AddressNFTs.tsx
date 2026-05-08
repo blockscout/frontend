@@ -1,7 +1,7 @@
 import { Grid } from '@chakra-ui/react';
 import React from 'react';
 
-import type { NFTTokenType } from 'types/api/token';
+import type { NFTTokenType } from 'client/slices/token/types/api';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 

@@ -2,14 +2,14 @@ import { Grid, HStack } from '@chakra-ui/react';
 import React from 'react';
 
 import type { StatsBridgedTokenItem, StatsBridgedTokenRow } from '@blockscout/interchain-indexer-types';
-import type { TokenInfo } from 'types/api/token';
+import type { TokenInfo } from 'client/slices/token/types/api';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 
 import getItemIndex from 'client/shared/lists/get-item-index';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 
 interface Props {

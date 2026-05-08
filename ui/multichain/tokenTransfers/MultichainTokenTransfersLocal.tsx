@@ -1,7 +1,9 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TokenType } from 'types/api/token';
+import type { TokenType } from 'client/slices/token/types/api';
+
+import TokenTypeFilter from 'client/slices/token/components/TokenTypeFilter';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
@@ -9,7 +11,6 @@ import { useMultichainContext } from 'lib/contexts/multichain';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PopoverFilter from 'ui/shared/filters/PopoverFilter';
-import TokenTypeFilter from 'ui/shared/filters/TokenTypeFilter';
 import Pagination from 'ui/shared/pagination/Pagination';
 import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
 import TokenTransfersListItem from 'ui/tokenTransfers/TokenTransfersListItem';

@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { BlockBaseFeeCelo } from 'client/features/chain-variants/celo/types/api';
 import type { AddressParam } from 'client/slices/address/types/api';
-import type { TokenInfo } from 'types/api/token';
+import type { TokenInfo } from 'client/slices/token/types/api';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import AddressFromTo from 'client/slices/address/components/from-to/AddressFromTo';

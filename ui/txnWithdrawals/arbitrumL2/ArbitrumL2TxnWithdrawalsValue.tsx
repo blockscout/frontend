@@ -1,7 +1,7 @@
 import React from 'react';
 
+import type { TokenInfo } from 'client/slices/token/types/api';
 import type { ArbitrumL2TxnWithdrawalsItem } from 'types/api/arbitrumL2';
-import type { TokenInfo } from 'types/api/token';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
