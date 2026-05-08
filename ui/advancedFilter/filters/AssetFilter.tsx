@@ -1,4 +1,4 @@
-import { Flex, Text, Spinner, createListCollection } from '@chakra-ui/react';
+import { Box, Flex, Text, Spinner, createListCollection } from '@chakra-ui/react';
 import { isEqual } from 'es-toolkit';
 import React from 'react';
 
@@ -42,9 +42,15 @@ type Props = {
   isLoading?: boolean;
 };
 
+const isVerifiedAsset = (token: TokenInfo) => (
+  token.address_hash === NATIVE_TOKEN.address_hash ||
+  Boolean(token.is_in_registry || token.is_verified_via_admin_panel)
+);
+
 const AssetFilter = ({ value = [], handleFilterChange }: Props) => {
   const [ currentValue, setCurrentValue ] = React.useState<Value>([ ...value ]);
   const [ searchTerm, setSearchTerm ] = React.useState<string>('');
+  const [ includeUnverified, setIncludeUnverified ] = React.useState(false);
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
   const onSearchChange = React.useCallback((value: string) => {
@@ -73,11 +79,31 @@ const AssetFilter = ({ value = [], handleFilterChange }: Props) => {
     },
   });
 
+  const tokens = tokensQuery.data?.items ?? [];
+  const visibleTokens = includeUnverified ? tokens : tokens.filter(isVerifiedAsset);
+  const hasHiddenUnverifiedResults = !includeUnverified && tokens.length > visibleTokens.length;
+
   const onTokenClick = React.useCallback((token: TokenInfo) => () => {
     setCurrentValue(prev => prev.findIndex(i => i.token.address_hash === token.address_hash) > -1 ? prev : [ { token, mode: 'include' }, ...prev ]);
   }, []);
 
+  const onTokenCheckChange = React.useCallback((token: TokenInfo) => () => {
+    setCurrentValue(prev => {
+      const index = prev.findIndex(i => i.token.address_hash === token.address_hash);
+
+      if (index > -1) {
+        return prev.filter((_, itemIndex) => itemIndex !== index);
+      }
+
+      return [ { token, mode: 'include' }, ...prev ];
+    });
+  }, []);
+
   const onReset = React.useCallback(() => setCurrentValue([]), []);
+
+  const onUnverifiedToggle = React.useCallback(() => {
+    setIncludeUnverified(prev => !prev);
+  }, []);
 
   const onFilter = React.useCallback(() => {
     setSearchTerm('');
@@ -103,58 +129,85 @@ const AssetFilter = ({ value = [], handleFilterChange }: Props) => {
         placeholder="Token name or symbol"
         initialValue={ searchTerm }
       />
-      { !searchTerm && currentValue.map((item, index) => (
-        <Flex key={ item.token.address_hash } alignItems="center">
-          <Select
-            collection={ collection }
-            placeholder="Select mode"
-            defaultValue={ [ item.mode || 'include' ] }
-            onValueChange={ handleModeSelectChange(index) }
-            portalled={ false }
-            w="105px"
-            minW="105px"
-            mr={ 3 }
-          />
-          <TokenEntity.default token={ item.token } noLink noCopy flexGrow={ 1 }/>
-          <ClearButton onClick={ handleRemove(index) }/>
-        </Flex>
-      )) }
+      <Checkbox
+        checked={ includeUnverified }
+        onCheckedChange={ onUnverifiedToggle }
+        size="sm"
+        mt={ 3 }
+      >
+        Search unverified tokens
+      </Checkbox>
+      { !searchTerm && Boolean(currentValue.length) && (
+        <Box maxH="220px" overflowY="auto" overflowX="hidden" mt={ 3 } pr={ 1 }>
+          <Flex flexDir="column" rowGap={ 2 }>
+            { currentValue.map((item, index) => (
+              <Flex key={ item.token.address_hash } alignItems="center" minW={ 0 } w="100%" columnGap={ 2 }>
+                <Select
+                  collection={ collection }
+                  placeholder="Select mode"
+                  defaultValue={ [ item.mode || 'include' ] }
+                  onValueChange={ handleModeSelectChange(index) }
+                  portalled={ false }
+                  w="98px"
+                  minW="98px"
+                />
+                <TokenEntity.default token={ item.token } noLink noCopy flex="1" minW={ 0 } maxW="100%"/>
+                <ClearButton onClick={ handleRemove(index) } flexShrink={ 0 }/>
+              </Flex>
+            )) }
+          </Flex>
+        </Box>
+      ) }
       { tokensQuery.isLoading && <Spinner display="block" mt={ 3 }/> }
       { tokensQuery.data && !searchTerm && (
         <>
           <Text color="text.secondary" fontWeight="600" mt={ 3 }>Popular</Text>
-          <Flex rowGap={ 3 } flexWrap="wrap" gap={ 3 } mb={ 2 }>
-            { [ NATIVE_TOKEN, ...tokensQuery.data.items ].map(token => (
-              <Tag
-                key={ token.address_hash }
-                data-id={ token.address_hash }
-                onClick={ onTokenClick(token) }
-                variant="select"
-              >
-                <Flex flexGrow={ 1 } alignItems="center">
-                  { token.address_hash === NATIVE_TOKEN.address_hash ? <NativeTokenIcon boxSize={ 5 } mr={ 2 }/> : <TokenEntity.Icon token={ token }/> }
-                  { token.symbol || token.name || token.address_hash }
-                </Flex>
-              </Tag>
-            )) }
-          </Flex>
+          <Box maxH="220px" overflowY="auto" overflowX="hidden" mb={ 2 } pr={ 1 }>
+            <Flex rowGap={ 3 } flexWrap="wrap" gap={ 3 }>
+              { [ NATIVE_TOKEN, ...visibleTokens ].map(token => (
+                <Tag
+                  key={ token.address_hash }
+                  data-id={ token.address_hash }
+                  onClick={ onTokenClick(token) }
+                  variant="select"
+                  maxW="100%"
+                  minW={ 0 }
+                >
+                  <Flex flexGrow={ 1 } alignItems="center" minW={ 0 } maxW="100%">
+                    { token.address_hash === NATIVE_TOKEN.address_hash ? (
+                      <NativeTokenIcon boxSize={ 5 } mr={ 2 } flexShrink={ 0 }/>
+                    ) : (
+                      <TokenEntity.Icon token={ token } flexShrink={ 0 }/>
+                    ) }
+                    <Text as="span" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
+                      { token.symbol || token.name || token.address_hash }
+                    </Text>
+                  </Flex>
+                </Tag>
+              )) }
+            </Flex>
+          </Box>
         </>
       ) }
-      { searchTerm && tokensQuery.data && !tokensQuery.data?.items.length && <Text>No tokens found</Text> }
-      { searchTerm && tokensQuery.data && Boolean(tokensQuery.data?.items.length) && (
-        <Flex display="flex" flexDir="column" rowGap={ 3 } maxH="250px" overflowY="scroll" mt={ 3 } ml="-4px">
+      { searchTerm && tokensQuery.data && !visibleTokens.length && (
+        <Text mt={ 3 }>{ hasHiddenUnverifiedResults ? 'No verified tokens found' : 'No tokens found' }</Text>
+      ) }
+      { searchTerm && tokensQuery.data && Boolean(visibleTokens.length) && (
+        <Flex display="flex" flexDir="column" rowGap={ 3 } maxH="250px" overflowY="auto" overflowX="hidden" mt={ 3 } ml="-4px">
           <CheckboxGroup value={ currentValue.map(i => i.token.address_hash) } orientation="vertical">
-            { tokensQuery.data.items.map(token => (
+            { visibleTokens.map(token => (
               <Checkbox
                 key={ token.address_hash }
                 value={ token.address_hash }
                 id={ token.address_hash }
-                onChange={ onTokenClick(token) }
+                onChange={ onTokenCheckChange(token) }
                 overflow="hidden"
                 w="100%"
                 pl={ 1 }
               >
-                <TokenEntity.default token={ token } noLink noCopy/>
+                <Flex minW={ 0 } w="100%">
+                  <TokenEntity.default token={ token } noLink noCopy minW={ 0 } maxW="100%"/>
+                </Flex>
               </Checkbox>
             )) }
           </CheckboxGroup>

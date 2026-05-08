@@ -25,23 +25,34 @@ interface Props {
 const AddressCoinBalanceHistory = ({ query }: Props) => {
   const multichainContext = useMultichainContext();
   const chainData = multichainContext?.chain;
-  const tableMinWidth = chainData ? '1120px' : '1080px';
+  const tableMinWidth = chainData ? '1230px' : '1192px';
 
   const content = query.data?.items ? (
     <>
       <Box hideBelow="lg" maxW="100%" overflowX="auto">
         <TableRoot minW={ tableMinWidth } tableLayout="fixed" w="100%">
+          <colgroup>
+            { chainData && <col style={{ width: '38px' }}/> }
+            <col style={{ width: '112px' }}/>
+            <col style={{ width: '158px' }}/>
+            <col style={{ width: '230px' }}/>
+            <col style={{ width: '172px' }}/>
+            <col style={{ width: '120px' }}/>
+            <col style={{ width: '230px' }}/>
+            <col style={{ width: '170px' }}/>
+          </colgroup>
           <TableHeaderSticky top={ query.pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }>
             <TableRow>
               { chainData && <TableColumnHeader width="38px" px={ 2 }/> }
-              <TableColumnHeader width="118px">Block</TableColumnHeader>
-              <TableColumnHeader width="170px">Txn</TableColumnHeader>
-              <TableColumnHeader width="180px">Asset</TableColumnHeader>
-              <TableColumnHeader width="190px">
+              <TableColumnHeader width="112px">Block</TableColumnHeader>
+              <TableColumnHeader width="158px">Txid</TableColumnHeader>
+              <TableColumnHeader width="230px">Asset</TableColumnHeader>
+              <TableColumnHeader width="172px">
                 Timestamp
                 <TimeFormatToggle/>
               </TableColumnHeader>
-              <TableColumnHeader width="250px" isNumeric pr={ 1 }>Balance</TableColumnHeader>
+              <TableColumnHeader width="120px" isNumeric>Price</TableColumnHeader>
+              <TableColumnHeader width="230px" isNumeric pr={ 1 }>Total balance</TableColumnHeader>
               <TableColumnHeader width="170px" isNumeric>Delta</TableColumnHeader>
             </TableRow>
           </TableHeaderSticky>

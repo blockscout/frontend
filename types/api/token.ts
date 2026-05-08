@@ -16,6 +16,8 @@ export interface TokenInfo<T extends TokenType = TokenType> {
   exchange_rate: string | null;
   total_supply: string | null;
   icon_url: string | null;
+  is_verified_via_admin_panel?: boolean | null;
+  is_in_registry?: boolean | null;
   circulating_market_cap: string | null;
   reputation: TokenReputation | null;
   socials?: TokenSocials | null;
