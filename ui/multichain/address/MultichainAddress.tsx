@@ -9,6 +9,7 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import AddressQrCode from 'client/slices/address/pages/details/info/AddressQrCode';
 import getCheckedSummedAddress from 'client/slices/address/utils/get-checked-summed-address';
+import { CONTRACT_TAB_IDS } from 'client/slices/contract/utils/tabs';
 
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
@@ -16,7 +17,6 @@ import getQueryParamString from 'client/shared/router/get-query-param-string';
 import * as contract from 'lib/multichain/contract';
 import { ADDRESS } from 'stubs/multichain';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import { CONTRACT_TAB_IDS } from 'ui/address/contract/utils';
 import ClusterChainsPopover from 'ui/multichain/components/ClusterChainsPopover';
 import TextAd from 'ui/shared/ad/TextAd';
 import EnsEntity from 'ui/shared/entities/ens/EnsEntity';

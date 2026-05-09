@@ -1,9 +1,10 @@
 import React from 'react';
 import type { Abi } from 'viem';
 
+import * as contractInfoMock from 'client/slices/contract/mocks/info';
+import * as contractMethodsMock from 'client/slices/contract/mocks/methods';
+
 import * as addressMock from 'mocks/address/address';
-import * as contractInfoMock from 'mocks/contract/info';
-import * as contractMethodsMock from 'mocks/contract/methods';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import * as socketServer from 'playwright/fixtures/socketServer';
 import { test, expect } from 'playwright/lib';

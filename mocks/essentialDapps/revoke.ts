@@ -1,6 +1,6 @@
 import type { AllowanceType } from 'types/client/revoke';
 
-import * as contractsMock from 'mocks/contracts';
+import * as contractsMock from 'client/slices/contract/mocks/list';
 
 export const allowances: Array<AllowanceType> = [
   {

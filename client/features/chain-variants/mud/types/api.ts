@@ -1,3 +1,5 @@
+import type { Abi } from 'abitype';
+
 import type { MudWorldSchema, MudWorldTable } from 'types/api/mudWorlds';
 
 export type AddressMudTableItem = {
@@ -51,3 +53,17 @@ export type AddressMudRecord = {
   schema: MudWorldSchema;
   table: MudWorldTable;
 };
+
+export interface SmartContractMudSystemsResponse {
+  items: Array<SmartContractMudSystemItem>;
+}
+
+export interface SmartContractMudSystemItem {
+  address_hash: string;
+  name: string;
+}
+
+export interface SmartContractMudSystemInfo {
+  name: string;
+  abi: Abi;
+}

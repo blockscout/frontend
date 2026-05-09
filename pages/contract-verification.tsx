@@ -4,7 +4,7 @@ import React from 'react';
 import type { Props } from 'nextjs/getServerSideProps/handlers';
 import PageNextJs from 'nextjs/PageNextJs';
 
-import ContractVerification from 'ui/pages/ContractVerification';
+import ContractVerification from 'client/slices/contract/pages/contract-verification/ContractVerification';
 
 const Page: NextPage<Props> = (props: Props) => {
   return (

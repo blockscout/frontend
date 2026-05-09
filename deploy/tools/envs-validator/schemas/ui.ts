@@ -7,14 +7,15 @@ import { FeaturedNetwork, NETWORK_GROUPS, NetworkExplorer } from 'types/networks
 import { CustomLink, CustomLinksGroup } from 'types/footerLinks';
 import { COLOR_THEME_IDS } from 'types/settings';
 import { FontFamily } from 'types/ui';
-import { ContractCodeIde, SMART_CONTRACT_EXTRA_VERIFICATION_METHODS, type SmartContractVerificationMethodExtra } from 'types/client/contract';
+import type { ContractCodeIde } from 'client/slices/contract/types/client';
+import { SMART_CONTRACT_EXTRA_VERIFICATION_METHODS, type SmartContractVerificationMethodExtra } from 'client/slices/contract/utils/verification';
 import type { AddressFormat, AddressViewId } from 'client/slices/address/types/view';
 import { ADDRESS_FORMATS, ADDRESS_VIEWS_IDS, IDENTICON_TYPES } from 'client/slices/address/types/view';
 import { BLOCK_FIELDS_IDS } from 'types/views/block';
 import type { BlockFieldId } from 'types/views/block';
 import type { TxAdditionalFieldsId, TxFieldsId } from 'types/views/tx';
 import { TX_ADDITIONAL_FIELDS_IDS, TX_FIELDS_IDS } from 'types/views/tx';
-import type { VerifiedContractsFilter } from 'types/api/contracts';
+import type { VerifiedContractsFilter } from 'client/slices/contract/types/api';
 import * as regexp from 'toolkit/utils/regexp';
 import { NftMarketplaceItem } from 'types/views/nft';
 

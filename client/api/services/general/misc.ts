@@ -1,5 +1,6 @@
 import type { ApiResource } from '../../types';
 import type { CsvExportItemResponse, CsvExportConfig } from 'client/features/csv-export/types/api';
+import type { HotContractsFilters, HotContractsResponse, HotContractsSorting } from 'client/features/hot-contracts/types/api';
 import type { Block } from 'client/slices/block/types/api';
 import type {
   Transaction,
@@ -12,7 +13,6 @@ import type {
 import type { Blob } from 'types/api/blobs';
 import type { ChartMarketResponse, ChartSecondaryCoinPriceResponse, ChartTransactionResponse } from 'types/api/charts';
 import type { BackendConfig, BackendVersionConfig, CeloConfig, ContractLanguagesConfig } from 'types/api/configs';
-import type { HotContractsFilters, HotContractsResponse, HotContractsSorting } from 'types/api/contracts';
 import type { DepositsResponse, DepositsCounters } from 'types/api/deposits';
 import type { CeloEpochDetails, CeloEpochElectionRewardDetailsResponse, CeloEpochListResponse } from 'types/api/epochs';
 import type { IndexingStatus } from 'types/api/indexingStatus';

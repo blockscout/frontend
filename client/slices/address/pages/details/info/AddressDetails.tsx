@@ -6,6 +6,7 @@ import AddressEntity from 'client/slices/address/components/entity/AddressEntity
 import type { AddressCountersQuery } from 'client/slices/address/hooks/useAddressCountersQuery';
 import type { AddressQuery } from 'client/slices/address/hooks/useAddressQuery';
 import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
+import ContractCreationStatus from 'client/slices/contract/components/ContractCreationStatus';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 
 import Address3rdPartyWidgets from 'client/features/address-3rd-party-widgets/pages/address/Address3rdPartyWidgets';
@@ -25,7 +26,6 @@ import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoSponsoredItem from 'ui/shared/DetailedInfo/DetailedInfoSponsoredItem';
-import ContractCreationStatus from 'ui/shared/statusTag/ContractCreationStatus';
 
 import AddressAlternativeFormat from './AddressAlternativeFormat';
 import AddressBalance from './AddressBalance';

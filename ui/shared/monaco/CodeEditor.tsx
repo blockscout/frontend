@@ -6,7 +6,7 @@ import type * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import React from 'react';
 
 import type { File, Monaco } from './types';
-import type { SmartContractExternalLibrary } from 'types/api/contract';
+import type { SmartContractExternalLibrary } from 'client/slices/contract/types/api';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import isMetaKey from 'client/shared/utils/is-meta-key';

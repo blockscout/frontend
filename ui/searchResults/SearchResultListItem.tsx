@@ -10,6 +10,7 @@ import { route } from 'nextjs-routes';
 import * as AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import { toBech32Address } from 'client/slices/address/utils/bech32';
 import * as BlockEntity from 'client/slices/block/components/entity/BlockEntity';
+import ContractCertifiedLabel from 'client/slices/contract/components/ContractCertifiedLabel';
 import * as TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 import * as TxEntity from 'client/slices/tx/components/entity/TxEntity';
 
@@ -25,7 +26,6 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tag } from 'toolkit/chakra/tag';
 import { SECOND } from 'toolkit/utils/consts';
 import { ADDRESS_REGEXP } from 'toolkit/utils/regexp';
-import ContractCertifiedLabel from 'ui/shared/ContractCertifiedLabel';
 import * as BlobEntity from 'ui/shared/entities/blob/BlobEntity';
 import * as EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 import * as OperationEntity from 'ui/shared/entities/operation/OperationEntity';

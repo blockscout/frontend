@@ -1,11 +1,9 @@
 import type { ApiResource } from '../../types';
+import type { SmartContractSecurityAudits } from 'client/features/contract-audit-reports/types/api';
 import type {
   SmartContract,
-  SmartContractSecurityAudits,
   SmartContractVerificationConfigRaw,
-} from 'types/api/contract';
-import type { VerifiedContractsResponse, VerifiedContractsCounters, VerifiedContractsFilters } from 'types/api/contracts';
-import type { VerifiedContractsSorting } from 'types/api/verifiedContracts';
+  VerifiedContractsResponse, VerifiedContractsCounters, VerifiedContractsFilters, VerifiedContractsSorting } from 'client/slices/contract/types/api';
 
 export const GENERAL_API_CONTRACT_RESOURCES = {
   contract: {

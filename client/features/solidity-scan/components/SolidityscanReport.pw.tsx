@@ -1,6 +1,7 @@
 import React from 'react';
 
-import * as solidityscanReportMock from 'mocks/contract/solidityscanReport';
+import * as solidityscanReportMock from 'client/features/solidity-scan/mocks';
+
 import { test, expect } from 'playwright/lib';
 
 import SolidityscanReport from './SolidityscanReport';
