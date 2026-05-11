@@ -3,6 +3,7 @@ import React from 'react';
 
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 
+import LogItem from 'client/slices/log/components/LogItem';
 import { LOG } from 'client/slices/log/stubs/log';
 
 import CsvExport from 'client/features/csv-export/components/CsvExport';
@@ -16,7 +17,6 @@ import { generateListStub } from 'stubs/utils';
 import ChainSelect from 'ui/multichain/components/ChainSelect';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import LogItem from 'ui/shared/logs/LogItem';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 

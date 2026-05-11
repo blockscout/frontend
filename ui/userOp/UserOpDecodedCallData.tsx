@@ -3,10 +3,11 @@ import React from 'react';
 
 import type { UserOp } from 'types/api/userOps';
 
+import LogDecodedInputData from 'client/slices/log/components/LogDecodedInputData';
+
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import LogDecodedInputData from 'ui/shared/logs/LogDecodedInputData';
 
 import UserOpCallDataSwitch from './UserOpCallDataSwitch';
 

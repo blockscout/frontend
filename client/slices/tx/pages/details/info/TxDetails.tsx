@@ -17,6 +17,7 @@ import { route } from 'nextjs-routes';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
+import LogDecodedInputData from 'client/slices/log/components/LogDecodedInputData';
 import TxSocketAlert from 'client/slices/tx/components/TxSocketAlert';
 import TxStatus from 'client/slices/tx/components/TxStatus';
 import getConfirmationDuration from 'client/slices/tx/utils/get-confirmation-duration';
@@ -50,7 +51,6 @@ import DetailedInfoNativeCoinValue from 'ui/shared/DetailedInfo/DetailedInfoNati
 import DetailedInfoSponsoredItem from 'ui/shared/DetailedInfo/DetailedInfoSponsoredItem';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 import IconSvg from 'ui/shared/IconSvg';
-import LogDecodedInputData from 'ui/shared/logs/LogDecodedInputData';
 import RawInputData from 'ui/shared/RawInputData';
 import StatusTag from 'ui/shared/statusTag/StatusTag';
 import TextSeparator from 'ui/shared/TextSeparator';
