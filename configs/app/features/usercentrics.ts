@@ -4,24 +4,24 @@ import app from '../app';
 import { getEnvValue, parseEnvJson } from '../utils';
 
 interface UsercentricsConfig {
-  readonly scriptUrl: string;
-  readonly rulesetId: string;
+  readonly settingsId?: string;
+  readonly rulesetId?: string;
 }
 
 const title = 'Usercentrics CMP';
 
-const config: Feature<{ scriptUrl: string; rulesetId: string }> = (() => {
+const config: Feature<{ settingsId?: string; rulesetId?: string }> = (() => {
   if (app.isPrivateMode) {
     return Object.freeze({ title, isEnabled: false as const });
   }
 
   const rawConfig = parseEnvJson<UsercentricsConfig>(getEnvValue('NEXT_PUBLIC_USERCENTRICS_CONFIG') ?? '');
 
-  if (rawConfig?.scriptUrl && rawConfig?.rulesetId) {
+  if (rawConfig?.settingsId || rawConfig?.rulesetId) {
     return Object.freeze({
       title,
       isEnabled: true as const,
-      scriptUrl: rawConfig.scriptUrl,
+      settingsId: rawConfig.settingsId,
       rulesetId: rawConfig.rulesetId,
     });
   }

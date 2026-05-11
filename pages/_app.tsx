@@ -19,14 +19,13 @@ import { CsvExportContextProvider } from 'client/features/csv-export/utils/conte
 
 import { initGrowthBook } from 'client/shared/feature-flags/init';
 import useLoadFeatures from 'client/shared/feature-flags/useLoadFeatures';
-import { clientConfig as rollbarConfig, Provider as RollbarProvider } from 'client/shared/monitoring/rollbar';
+import { Provider as RollbarProvider, useRollbarConfig } from 'client/shared/monitoring/rollbar';
 
 import config from 'configs/app';
 import { AppContextProvider } from 'lib/contexts/app';
 import { FallbackProvider } from 'lib/contexts/fallback';
 import { MarketplaceContextProvider } from 'lib/contexts/marketplace';
 import { SettingsContextProvider } from 'lib/contexts/settings';
-import useUsercentricsMarketingConsent from 'lib/usercentrics/useConsent';
 import { Provider as ChakraProvider } from 'toolkit/chakra/provider';
 import { Toaster } from 'toolkit/chakra/toaster';
 import AppErrorBoundary from 'ui/shared/AppError/AppErrorBoundary';
@@ -70,13 +69,7 @@ function MyApp({ Component, pageProps, router }: AppPropsWithLayout) {
   useLoadFeatures(growthBook);
 
   const queryClient = useQueryClientConfig();
-  const analyticsConsent = useUsercentricsMarketingConsent();
-  const effectiveRollbarConfig = React.useMemo(() => {
-    if (!config.features.usercentrics.isEnabled || !rollbarConfig) {
-      return rollbarConfig;
-    }
-    return analyticsConsent ? rollbarConfig : { ...rollbarConfig, enabled: false };
-  }, [ analyticsConsent ]);
+  const rollbarConfig = useRollbarConfig();
 
   React.useEffect(() => {
     // after the app is rendered/hydrated, show the console scam warning
@@ -113,7 +106,7 @@ function MyApp({ Component, pageProps, router }: AppPropsWithLayout) {
     <>
       <PageMetadata pathname={ router.pathname as Route['pathname'] } query={ pageProps.query } apiData={ pageProps.apiData }/>
       <ChakraProvider>
-        <RollbarProvider config={ effectiveRollbarConfig }>
+        <RollbarProvider config={ rollbarConfig }>
           <AppErrorBoundary
             { ...ERROR_SCREEN_STYLES }
             Container={ AppErrorGlobalContainer }

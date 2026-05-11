@@ -5,12 +5,12 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import { deviceType } from 'react-device-detect';
 
+import useUsercentricsConsent from 'client/shared/analytics/usercentrics/useUsercentricsConsent';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import * as cookies from 'client/shared/storage/cookies';
 
 import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';
-import useUsercentricsMarketingConsent from 'lib/usercentrics/useConsent';
 
 import * as userProfile from './user-profile';
 
@@ -19,28 +19,25 @@ const multichainFeature = config.features.multichain;
 export default function useMixpanelInit() {
   const [ isInitialized, setIsInitialized ] = React.useState(false);
   const router = useRouter();
-  const hasConsent = useUsercentricsMarketingConsent();
+  const hasUsercentricsConsent = useUsercentricsConsent();
   const debugFlagQuery = React.useRef(getQueryParamString(router.query._mixpanel_debug));
-  const isInitializedRef = React.useRef(false);
+
+  React.useEffect(() => {
+    if (!hasUsercentricsConsent && isInitialized) {
+      setIsInitialized(false);
+      try {
+        mixpanel.opt_out_tracking();
+      } catch {
+        // opt_out_tracking can throw if called before Mixpanel's internal state is ready
+        mixpanel.disable();
+      }
+    }
+
+  }, [ hasUsercentricsConsent, isInitialized ]);
 
   React.useEffect(() => {
     const feature = config.features.mixpanel;
-    if (!feature.isEnabled) {
-      return;
-    }
-
-    if (!hasConsent) {
-      if (isInitializedRef.current) {
-        // Consent was withdrawn after Mixpanel was already running — stop all tracking
-        isInitializedRef.current = false;
-        setIsInitialized(false);
-        try {
-          mixpanel.opt_out_tracking();
-        } catch {
-          // opt_out_tracking can throw if called before Mixpanel's internal state is ready
-          mixpanel.disable();
-        }
-      }
+    if (!feature.isEnabled || !hasUsercentricsConsent) {
       return;
     }
 
@@ -76,12 +73,11 @@ export default function useMixpanelInit() {
       'First Time Join': dayjs().toISOString(),
     });
 
-    isInitializedRef.current = true;
     setIsInitialized(true);
     if (debugFlagQuery.current && !debugFlagCookie) {
       cookies.set(cookies.NAMES.MIXPANEL_DEBUG, 'true');
     }
-  }, [ hasConsent ]);
+  }, [ hasUsercentricsConsent ]);
 
   return isInitialized;
 }

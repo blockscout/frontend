@@ -142,8 +142,8 @@ const schema = yup
       .test('shape', 'Invalid schema for NEXT_PUBLIC_USERCENTRICS_CONFIG, it should have scriptUrl and rulesetId', (data) => {
         const isUndefined = data === undefined;
         const valueSchema = yup.object().transform(replaceQuotes).json().shape({
-          scriptUrl: yup.string().test(urlTest).required(),
-          rulesetId: yup.string().required(),
+          settingsId: yup.string(),
+          rulesetId: yup.string(),
         });
         return isUndefined || valueSchema.isValidSync(data);
       }),

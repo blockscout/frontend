@@ -2,6 +2,14 @@ import React from 'react';
 
 import config from 'configs/app';
 
+// SERVICES TO CHECK
+// - mixpanel
+// - google analytics
+// - rollbar
+// - adbutler
+// - sevioads
+// - text ads
+
 async function checkMarketingConsent(): Promise<boolean> {
   if (!window.__ucCmp) {
     return false;
@@ -10,7 +18,7 @@ async function checkMarketingConsent(): Promise<boolean> {
   return details.categories?.marketing?.state === 'ALL_ACCEPTED';
 }
 
-export default function useUsercentricsMarketingConsent(): boolean {
+export default function useUsercentricsConsent(): boolean {
   const [ hasConsent, setHasConsent ] = React.useState<boolean>(!config.features.usercentrics.isEnabled);
 
   React.useEffect(() => {

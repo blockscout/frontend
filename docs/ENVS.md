@@ -588,9 +588,11 @@ Ads are enabled by default on all self-hosted instances. If you would like to di
 
 ### Usercentrics CMP
 
+Integrates [Usercentrics](https://usercentrics.com/) as the Consent Management Platform (CMP). When configured, Blockscout loads the Usercentrics script and waits for marketing consent before enabling analytics providers.
+
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_USERCENTRICS_CONFIG | `object` | JSON config for [Usercentrics](https://usercentrics.com/) Consent Management Platform. When set, the UC script is injected and all analytics (Google Analytics, Mixpanel, Rollbar) are gated behind user consent. Disabled in private mode. | true | - | `{'scriptUrl':'https://your-cdn.com/uc.js','rulesetId':'<your-ruleset-id>'}` | v1.37.x+ |
+| NEXT_PUBLIC_USERCENTRICS_CONFIG | `{settingsId?: string,rulesetId?:string}` | Usercentrics configuration with `settingsId` or `rulesetId`. When set, Blockscout injects the CMP script and gates Google Analytics, Mixpanel, and Rollbar behind marketing consent. The feature is disabled in private mode. | true | - | `{'scriptUrl':'https://your-cdn.com/uc.js','rulesetId':'<your-ruleset-id>'}` | upcoming |
 
 &nbsp;
 
