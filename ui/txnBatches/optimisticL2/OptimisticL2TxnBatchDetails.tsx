@@ -6,8 +6,11 @@ import type { OptimismL2TxnBatch } from 'types/api/optimisticL2';
 
 import { route } from 'nextjs-routes';
 
-import type { ResourceError } from 'lib/api/resources';
-import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
+import type { ResourceError } from 'client/api/resources';
+
+import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
+
+import { layerLabels } from 'lib/rollups/utils';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
@@ -62,7 +65,7 @@ const OptimisticL2TxnBatchDetails = ({ query }: Props) => {
     >
       <DetailedInfo.ItemLabel
         isLoading={ isPlaceholderData }
-        hint="Batch ID indicates the length of batches produced by grouping L2 blocks to be proven on L1"
+        hint={ `Batch ID indicates the length of batches produced by grouping ${ layerLabels.current } blocks to be proven on ${ layerLabels.parent }` }
       >
         Batch ID
       </DetailedInfo.ItemLabel>
@@ -82,7 +85,7 @@ const OptimisticL2TxnBatchDetails = ({ query }: Props) => {
 
       <DetailedInfo.ItemLabel
         isLoading={ isPlaceholderData }
-        hint="Date and time at which batch is submitted to L1"
+        hint={ `Date and time at which batch is submitted to ${ layerLabels.parent }` }
       >
         Timestamp
       </DetailedInfo.ItemLabel>
@@ -110,7 +113,7 @@ const OptimisticL2TxnBatchDetails = ({ query }: Props) => {
 
       <DetailedInfo.ItemLabel
         isLoading={ isPlaceholderData }
-        hint="Number of L2 blocks in this batch"
+        hint={ `Number of ${ layerLabels.current } blocks in this batch` }
       >
         Blocks
       </DetailedInfo.ItemLabel>

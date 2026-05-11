@@ -1,7 +1,7 @@
 import { chakra, Box } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TimeChartData } from 'toolkit/components/charts/types';
+import type { LineChartData } from 'toolkit/components/charts/line/types';
 
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
@@ -9,7 +9,7 @@ import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import ChainIndicatorChartContent from './ChainIndicatorChartContent';
 
 type Props = {
-  data: TimeChartData;
+  data: LineChartData;
   isError: boolean;
   isPending: boolean;
 };

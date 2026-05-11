@@ -9,7 +9,7 @@ const { mockUseApiQuery } = vi.hoisted(() => ({
   mockUseApiQuery: vi.fn(),
 }));
 
-vi.mock('lib/api/useApiQuery', () => ({
+vi.mock('client/api/hooks/useApiQuery', () => ({
   'default': mockUseApiQuery,
 }));
 

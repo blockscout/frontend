@@ -4,22 +4,26 @@ import React from 'react';
 
 import { Direction } from '@blockscout/zetachain-cctx-types';
 import type { ListCctxsResponse } from '@blockscout/zetachain-cctx-types';
-import type { SocketMessage } from 'lib/socket/types';
+import type { SocketMessage } from 'client/api/socket/types';
 
 import { route } from 'nextjs-routes';
 
-import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
-import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
-import useInitialList from 'lib/hooks/useInitialList';
-import useIsMobile from 'lib/hooks/useIsMobile';
-import useSocketChannel from 'lib/socket/useSocketChannel';
-import useSocketMessage from 'lib/socket/useSocketMessage';
+import useApiQuery, { getResourceKey } from 'client/api/hooks/useApiQuery';
+import useSocketChannel from 'client/api/socket/useSocketChannel';
+import useSocketMessage from 'client/api/socket/useSocketMessage';
+
+import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
+
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+import useInitialList from 'client/shared/lists/useInitialList';
+
 import { generateListStub } from 'stubs/utils';
 import { ZETA_CHAIN_CCTX_LIST_ITEM } from 'stubs/zetaChainCCTX';
 import { Link } from 'toolkit/chakra/link';
 import SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 import ZetaChainCCTXListItem from 'ui/zetaChain/cctxs/ZetaChainCCTXListItem';
 
+import LatestTxsFallback from '../fallbacks/LatestTxsFallback';
 import LatestZetaChainCCTXItem from './LatestZetaChainCCTXItem';
 
 const LatestZetaChainCCTXs = () => {
@@ -110,7 +114,7 @@ const LatestZetaChainCCTXs = () => {
   });
 
   if (isError) {
-    return <Text mt={ 4 }>No data. Please reload the page.</Text>;
+    return <LatestTxsFallback/>;
   }
 
   if (data) {
@@ -152,7 +156,7 @@ const LatestZetaChainCCTXs = () => {
     );
   }
 
-  return null;
+  return <Text>No latest cross chain transactions found.</Text>;
 };
 
 export default LatestZetaChainCCTXs;

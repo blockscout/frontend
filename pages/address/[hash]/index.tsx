@@ -8,17 +8,19 @@ import PageNextJs from 'nextjs/PageNextJs';
 import detectBotRequest from 'nextjs/utils/detectBotRequest';
 import fetchApi from 'nextjs/utils/fetchApi';
 
+import Address from 'client/slices/address/pages/details/Address';
+
+import getQueryParamString from 'client/shared/router/get-query-param-string';
+
 import config from 'configs/app';
-import getQueryParamString from 'lib/router/getQueryParamString';
-import OpSuperchainAddress from 'ui/optimismSuperchain/address/OpSuperchainAddress';
-import Address from 'ui/pages/Address';
+import MultichainAddress from 'ui/multichain/address/MultichainAddress';
 
 const pathname: Route['pathname'] = '/address/[hash]';
 
 const Page: NextPage<Props<typeof pathname>> = (props: Props<typeof pathname>) => {
   return (
     <PageNextJs pathname={ pathname } query={ props.query } apiData={ props.apiData }>
-      { config.features.opSuperchain.isEnabled ? <OpSuperchainAddress/> : <Address/> }
+      { config.features.multichain.isEnabled ? <MultichainAddress/> : <Address/> }
     </PageNextJs>
   );
 };
@@ -28,7 +30,7 @@ export default Page;
 export const getServerSideProps: GetServerSideProps<Props<typeof pathname>> = async(ctx) => {
   const baseResponse = await gSSP.base<typeof pathname>(ctx);
 
-  if (config.meta.og.enhancedDataEnabled && 'props' in baseResponse && !config.features.opSuperchain.isEnabled) {
+  if (config.meta.og.enhancedDataEnabled && 'props' in baseResponse && !config.features.multichain.isEnabled) {
     const botInfo = detectBotRequest(ctx.req);
 
     if (botInfo?.type === 'social_preview') {

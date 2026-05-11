@@ -1,9 +1,11 @@
 import { Text } from '@chakra-ui/react';
 import React from 'react';
 
+import buildUrl from 'client/api/build-url';
+
+import * as cookies from 'client/shared/storage/cookies';
+
 import config from 'configs/app';
-import buildUrl from 'lib/api/buildUrl';
-import * as cookies from 'lib/cookies';
 import { Button } from 'toolkit/chakra/button';
 import { toaster } from 'toolkit/chakra/toaster';
 import { DAY, SECOND } from 'toolkit/utils/consts';
@@ -47,6 +49,7 @@ const AppErrorTooManyRequests = ({ bypassOptions, reset }: Props) => {
         method: 'POST',
         body: JSON.stringify({ recaptcha_response: token }),
         headers: {
+          'Content-Type': 'application/json',
           'recaptcha-v2-response': token,
         },
       });

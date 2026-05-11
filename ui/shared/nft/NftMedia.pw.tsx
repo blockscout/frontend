@@ -1,9 +1,10 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TokenInstance } from 'types/api/token';
+import type { TokenInstance } from 'client/slices/token/types/api';
 
-import * as tokenInfoMock from 'mocks/tokens/tokenInfo';
+import * as tokenInfoMock from 'client/slices/token/mocks/info';
+
 import { test, expect } from 'playwright/lib';
 
 import NftMedia from './NftMedia';

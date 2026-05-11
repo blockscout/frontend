@@ -5,8 +5,11 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 
+import useApiQuery from 'client/api/hooks/useApiQuery';
+
+import NativeTokenIcon from 'client/slices/token/components/icon/TokenIconNative';
+
 import config from 'configs/app';
-import useApiQuery from 'lib/api/useApiQuery';
 import { HOMEPAGE_STATS } from 'stubs/stats';
 import { Alert } from 'toolkit/chakra/alert';
 import { Heading } from 'toolkit/chakra/heading';
@@ -16,7 +19,6 @@ import GasTrackerFaq from 'ui/gasTracker/GasTrackerFaq';
 import GasTrackerNetworkUtilization from 'ui/gasTracker/GasTrackerNetworkUtilization';
 import GasTrackerPrices from 'ui/gasTracker/GasTrackerPrices';
 import GasInfoUpdateTimer from 'ui/shared/gas/GasInfoUpdateTimer';
-import NativeTokenIcon from 'ui/shared/NativeTokenIcon';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Time from 'ui/shared/time/Time';
 

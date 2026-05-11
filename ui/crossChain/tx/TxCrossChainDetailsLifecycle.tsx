@@ -3,11 +3,11 @@ import React from 'react';
 import type { InterchainMessage } from '@blockscout/interchain-indexer-types';
 import { MessageStatus } from '@blockscout/interchain-indexer-types';
 
+import TxEntityInterchain from 'client/slices/tx/components/entity/TxEntityInterchain';
+
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
-import TxEntityInterchain from 'ui/shared/entities/tx/TxEntityInterchain';
 import ChainLabel from 'ui/shared/externalChains/ChainLabel';
 import { Root, Item, Trigger, ItemContent, ItemBody, ItemRow } from 'ui/shared/lifecycle/LifecycleAccordion';
-import TxStatus from 'ui/shared/statusTag/TxStatus';
 
 interface Props {
   data: InterchainMessage;
@@ -28,7 +28,7 @@ const TxCrossChainDetailsLifecycle = ({ data, isLoading }: Props) => {
     return (
       <>
         <Trigger
-          status={ isError ? 'error' : 'success' }
+          status={ isLast && isError ? 'error' : 'success' }
           text="Initiated"
           isFirst
           isLast={ isLast }
@@ -51,9 +51,6 @@ const TxCrossChainDetailsLifecycle = ({ data, isLoading }: Props) => {
             <ItemRow label="Timestamp">
               <DetailedInfoTimestamp timestamp={ data.send_timestamp } isLoading={ isLoading } flexWrap={{ base: 'wrap', lg: 'nowrap' }} py="6px"/>
             </ItemRow>
-            <ItemRow label="Status">
-              <TxStatus status={ isError ? 'error' : 'ok' } isLoading={ isLoading } my="4px"/>
-            </ItemRow>
           </ItemBody>
         </ItemContent>
       </>
@@ -70,7 +67,13 @@ const TxCrossChainDetailsLifecycle = ({ data, isLoading }: Props) => {
 
     return (
       <>
-        <Trigger status="success" text="Completed" isFirst={ false } isLast isLoading={ isLoading }/>
+        <Trigger
+          status={ isError ? 'error' : 'success' }
+          text="Completed"
+          isFirst={ false }
+          isLast
+          isLoading={ isLoading }
+        />
         <ItemContent isLast>
           <ItemBody>
             <ItemRow label="Chain">
@@ -90,9 +93,6 @@ const TxCrossChainDetailsLifecycle = ({ data, isLoading }: Props) => {
                 <DetailedInfoTimestamp timestamp={ data.receive_timestamp } isLoading={ isLoading } flexWrap={{ base: 'wrap', lg: 'nowrap' }} py="6px"/>
               </ItemRow>
             ) }
-            <ItemRow label="Status">
-              <TxStatus status={ isError ? 'error' : 'ok' } isLoading={ isLoading } my="4px"/>
-            </ItemRow>
           </ItemBody>
         </ItemContent>
       </>

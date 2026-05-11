@@ -2,10 +2,12 @@ import React from 'react';
 
 import type { ZkSyncBatch } from 'types/api/zkSyncL2';
 
+import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
+
+import { layerLabels } from 'lib/rollups/utils';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
-import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 
 interface Props {
   isLoading: boolean;
@@ -24,7 +26,7 @@ const ZkSyncL2TxnBatchHashesInfo = ({ isLoading, data }: Props) => {
   return (
     <>
       <DetailedInfo.ItemLabel
-        hint="Hash of L1 tx on which the batch was committed"
+        hint={ `Hash of ${ layerLabels.parent } tx on which the batch was committed` }
         isLoading={ isLoading }
       >
         Commit tx hash
@@ -45,7 +47,7 @@ const ZkSyncL2TxnBatchHashesInfo = ({ isLoading, data }: Props) => {
       </DetailedInfo.ItemValue>
 
       <DetailedInfo.ItemLabel
-        hint="Hash of L1 tx on which the batch was proven"
+        hint={ `Hash of ${ layerLabels.parent } tx on which the batch was proven` }
         isLoading={ isLoading }
       >
         Prove tx hash
@@ -66,7 +68,7 @@ const ZkSyncL2TxnBatchHashesInfo = ({ isLoading, data }: Props) => {
       </DetailedInfo.ItemValue>
 
       <DetailedInfo.ItemLabel
-        hint="Hash of L1 tx on which the batch was executed and finalized"
+        hint={ `Hash of ${ layerLabels.parent } tx on which the batch was executed and finalized` }
         isLoading={ isLoading }
       >
         Execute tx hash

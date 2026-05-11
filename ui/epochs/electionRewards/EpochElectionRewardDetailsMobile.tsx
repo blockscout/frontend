@@ -2,12 +2,14 @@ import { Box, Flex, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { TokenInfo } from 'client/slices/token/types/api';
 import type { CeloEpochDetails } from 'types/api/epochs';
-import type { TokenInfo } from 'types/api/token';
 
-import getQueryParamString from 'lib/router/getQueryParamString';
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+
+import getQueryParamString from 'client/shared/router/get-query-param-string';
+
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import useLazyLoadedList from 'ui/shared/pagination/useLazyLoadedList';
 import TokenValue from 'ui/shared/value/TokenValue';
 

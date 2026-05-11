@@ -5,13 +5,14 @@ import type { Pool } from 'types/api/pools';
 
 import { route } from 'nextjs-routes';
 
+import * as TokenEntity from 'client/slices/token/components/entity/TokenEntity';
+
 import { getPoolTitle } from 'lib/pools/getPoolTitle';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TruncatedTextTooltip } from 'toolkit/components/truncation/TruncatedTextTooltip';
 import * as EntityBase from 'ui/shared/entities/base/components';
 
 import { distributeEntityProps } from '../base/utils';
-import * as TokenEntity from '../token/TokenEntity';
 
 type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'pool'>;
 

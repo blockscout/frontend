@@ -6,7 +6,7 @@ import type { Props } from 'nextjs/getServerSideProps/handlers';
 import PageNextJs from 'nextjs/PageNextJs';
 
 const Transaction = dynamic(() => {
-  return import('ui/pages/Transaction');
+  return import('client/slices/tx/pages/details/Transaction');
 }, { ssr: false });
 
 const Page: NextPage<Props> = (props: Props) => {

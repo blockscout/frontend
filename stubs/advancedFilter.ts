@@ -1,7 +1,7 @@
 import type { AdvancedFilterResponseItem } from 'types/api/advancedFilter';
 
-import { ADDRESS_PARAMS } from './addressParams';
-import { TX_HASH } from './tx';
+import { ADDRESS_PARAMS } from 'client/slices/address/stubs/address-params';
+import { TX_HASH } from 'client/slices/tx/stubs/tx';
 
 export const ADVANCED_FILTER_ITEM: AdvancedFilterResponseItem = {
   fee: '215504444616317',

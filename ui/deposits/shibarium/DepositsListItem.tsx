@@ -2,11 +2,14 @@ import React from 'react';
 
 import type { ShibariumDepositsItem } from 'types/api/shibarium';
 
+import AddressStringOrParam from 'client/slices/address/components/entity/AddressStringOrParam';
+import TxEntity from 'client/slices/tx/components/entity/TxEntity';
+
+import BlockEntityL1 from 'client/features/rollup/common/components/BlockEntityL1';
+import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
+
 import config from 'configs/app';
-import AddressStringOrParam from 'ui/shared/entities/address/AddressStringOrParam';
-import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
-import TxEntity from 'ui/shared/entities/tx/TxEntity';
-import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
+import { layerLabels } from 'lib/rollups/utils';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
@@ -22,7 +25,7 @@ const DepositsListItem = ({ item, isLoading }: Props) => {
   return (
     <ListItemMobileGrid.Container>
 
-      <ListItemMobileGrid.Label isLoading={ isLoading }>L1 block No</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Label isLoading={ isLoading }>{ layerLabels.parent } block No</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
         <BlockEntityL1
           number={ item.l1_block_number }
@@ -32,7 +35,7 @@ const DepositsListItem = ({ item, isLoading }: Props) => {
         />
       </ListItemMobileGrid.Value>
 
-      <ListItemMobileGrid.Label isLoading={ isLoading }>L1 txn hash</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Label isLoading={ isLoading }>{ layerLabels.parent } txn hash</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
         <TxEntityL1
           isLoading={ isLoading }
@@ -43,7 +46,7 @@ const DepositsListItem = ({ item, isLoading }: Props) => {
         />
       </ListItemMobileGrid.Value>
 
-      <ListItemMobileGrid.Label isLoading={ isLoading }>L2 txn hash</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Label isLoading={ isLoading }>{ layerLabels.current } txn hash</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
         <TxEntity
           isLoading={ isLoading }

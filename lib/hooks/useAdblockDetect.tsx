@@ -2,9 +2,10 @@ import { useEffect } from 'react';
 
 import type { AdBannerProviders } from 'types/client/adProviders';
 
+import * as cookies from 'client/shared/storage/cookies';
+
 import config from 'configs/app';
 import { useAppContext } from 'lib/contexts/app';
-import * as cookies from 'lib/cookies';
 import { isBrowser } from 'toolkit/utils/isBrowser';
 
 const DEFAULT_URL = 'https://request-global.czilladx.com';
@@ -13,7 +14,7 @@ const DEFAULT_URL = 'https://request-global.czilladx.com';
 // but we see some false-positive results in certain browsers
 const TEST_URLS: Record<AdBannerProviders, string> = {
   slise: 'https://v1.slise.xyz/serve',
-  coinzilla: 'https://request-global.czilladx.com',
+  sevio: 'https://request-global.czilladx.com',
   adbutler: 'https://servedbyadbutler.com/app.js',
   none: DEFAULT_URL,
 };

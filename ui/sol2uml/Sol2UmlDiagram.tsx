@@ -2,12 +2,14 @@ import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type * as visualizer from '@blockscout/visualizer-types';
-import type { SmartContract } from 'types/api/contract';
+import type { SmartContract } from 'client/slices/contract/types/api';
 
-import type { ResourceError } from 'lib/api/resources';
-import useApiQuery from 'lib/api/useApiQuery';
-import throwOnAbsentParamError from 'lib/errors/throwOnAbsentParamError';
-import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
+import useApiQuery from 'client/api/hooks/useApiQuery';
+import type { ResourceError } from 'client/api/resources';
+
+import throwOnAbsentParamError from 'client/shared/errors/throw-on-absent-param-error';
+import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
+
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 

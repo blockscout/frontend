@@ -13,9 +13,10 @@ import type {
 
 import { route } from 'nextjs-routes';
 
+import useApiFetch from 'client/api/hooks/useApiFetch';
+import type { ResourceError } from 'client/api/resources';
+
 import config from 'configs/app';
-import type { ResourceError } from 'lib/api/resources';
-import useApiFetch from 'lib/api/useApiFetch';
 import { Alert } from 'toolkit/chakra/alert';
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';
@@ -54,7 +55,7 @@ const AddressVerificationStepAddress = ({ defaultAddress, onContinue }: Props) =
         'contractInfo:address_verification',
         {
           fetchParams: { method: 'POST', body },
-          pathParams: { chainId: config.chain.id, type: ':prepare' },
+          pathParams: { instanceId: config.apis.contractInfo?.instanceId, type: ':prepare' },
         },
       );
 

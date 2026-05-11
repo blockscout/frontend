@@ -4,8 +4,8 @@ import React from 'react';
 import type { TokenInfo } from '@blockscout/interchain-indexer-types';
 import type { ExternalChain } from 'types/externalChains';
 
-import type { EntityProps as TokenEntityProps } from 'ui/shared/entities/token/TokenEntity';
-import TokenEntityInterchain from 'ui/shared/entities/token/TokenEntityInterchain';
+import type { EntityProps as TokenEntityProps } from 'client/slices/token/components/entity/TokenEntity';
+import TokenEntityInterchain from 'client/slices/token/components/entity/TokenEntityInterchain';
 
 import type { Props as AssetValueProps } from './AssetValue';
 import AssetValue from './AssetValue';

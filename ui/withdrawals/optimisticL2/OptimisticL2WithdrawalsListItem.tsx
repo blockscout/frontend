@@ -2,12 +2,15 @@ import React from 'react';
 
 import type { OptimisticL2WithdrawalsItem } from 'types/api/optimisticL2';
 
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+import TxEntity from 'client/slices/tx/components/entity/TxEntity';
+
+import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
+
 import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';
+import { layerLabels } from 'lib/rollups/utils';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
-import TxEntity from 'ui/shared/entities/tx/TxEntity';
-import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
@@ -47,7 +50,7 @@ const OptimisticL2WithdrawalsListItem = ({ item, isLoading }: Props) => {
         </>
       ) }
 
-      <ListItemMobileGrid.Label isLoading={ isLoading }>L2 txn hash</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Label isLoading={ isLoading }>{ layerLabels.current } txn hash</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
         <TxEntity
           isLoading={ isLoading }
@@ -76,7 +79,7 @@ const OptimisticL2WithdrawalsListItem = ({ item, isLoading }: Props) => {
 
       { item.l1_transaction_hash && (
         <>
-          <ListItemMobileGrid.Label isLoading={ isLoading }>L1 txn hash</ListItemMobileGrid.Label>
+          <ListItemMobileGrid.Label isLoading={ isLoading }>{ layerLabels.parent } txn hash</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
             <TxEntityL1
               isLoading={ isLoading }

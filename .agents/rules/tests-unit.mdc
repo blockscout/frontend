@@ -1,0 +1,75 @@
+---
+description: Vitest unit tests — purpose, setup, utilities, and conventions
+globs: "*.spec.ts,*.spec.tsx"
+alwaysApply: false
+---
+# Unit Tests (Vitest)
+
+## Purpose
+
+Unit tests cover logic that is independent of visual presentation: utility functions, custom hooks, and component behavior (state transitions, conditional rendering, event handling). If a change has no visual output to verify, prefer a Vitest test over a Playwright one — it is faster and cheaper.
+
+## File naming and location
+
+Test files must be named `*.spec.ts` or `*.spec.tsx` and placed alongside the code they test. Run all tests:
+
+```bash
+pnpm test:vitest
+```
+
+Run a single file:
+
+```bash
+pnpm test:vitest path/to/file.spec.ts
+```
+
+## Setup
+
+`vitest/setup.ts` runs before each test file and provides:
+- **Environment variables** — loaded from `.env.vitest` via dotenv; accessible as `window.__envs` in test code.
+- **Fetch mocking** — `vitest-fetch-mock` is initialized globally; all `fetch` calls are interceptable.
+
+`vitest/global-setup.ts` runs once before the entire test suite and loads `.env.vitest`.
+
+## Rendering components
+
+**Never import from `@testing-library/react` directly.** Use the project's custom wrapper instead:
+
+```tsx
+import { render, screen } from 'vitest/lib';
+```
+
+`vitest/lib.tsx` re-exports everything from `@testing-library/react` and replaces `render` with a custom version that wraps the component in the full app context:
+- `QueryClientProvider` (no retry, no window-focus refetch)
+- `AppContextProvider`
+- `GrowthBookProvider`
+- `SocketProvider`
+
+The `wrapper` export is also available if you need to pass it separately to RTL hooks:
+
+```tsx
+import { wrapper } from 'vitest/lib';
+const { result } = renderHook(() => useMyHook(), { wrapper });
+```
+
+## Utilities
+
+**`vitest/utils/flushPromises.ts`** — call after an action that triggers async effects (e.g. a state update followed by a data fetch) to flush all pending microtasks before asserting:
+
+```tsx
+import flushPromises from 'vitest/utils/flushPromises';
+
+await userEvent.click(button);
+await flushPromises();
+expect(screen.getByText('Loaded')).toBeInTheDocument();
+```
+
+## Mocking fetch responses
+
+`vitest-fetch-mock` is active globally. Mock responses before the code under test runs:
+
+```tsx
+fetchMock.mockResponseOnce(JSON.stringify({ data: 'value' }));
+```
+
+Reset mocks between tests using `beforeEach` / `afterEach` if needed.

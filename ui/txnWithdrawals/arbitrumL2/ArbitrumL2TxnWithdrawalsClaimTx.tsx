@@ -2,8 +2,9 @@ import { HStack, Spinner } from '@chakra-ui/react';
 import React from 'react';
 import { useWaitForTransactionReceipt } from 'wagmi';
 
+import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
+
 import config from 'configs/app';
-import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 
 const rollupFeature = config.features.rollup;
 

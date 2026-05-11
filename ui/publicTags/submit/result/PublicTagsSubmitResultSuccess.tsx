@@ -3,7 +3,8 @@ import React from 'react';
 
 import type { FormSubmitResultGrouped } from '../types';
 
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+
 import EntityTag from 'ui/shared/EntityTags/EntityTag';
 
 interface Props {

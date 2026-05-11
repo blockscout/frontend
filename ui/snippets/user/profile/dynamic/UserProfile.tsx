@@ -2,8 +2,9 @@ import { type ButtonProps } from '@chakra-ui/react';
 import { DynamicConnectButton, DynamicUserProfile, useDynamicContext, useIsLoggedIn } from '@dynamic-labs/sdk-react-core';
 import React from 'react';
 
+import useWalletDynamic from 'client/features/connect-wallet/hooks/wallet/useWalletDynamic';
+
 import { useMarketplaceContext } from 'lib/contexts/marketplace';
-import useWalletDynamic from 'lib/web3/wallet/useWalletDynamic';
 
 import UserProfileButton from './UserProfileButton';
 import UserProfilePopover from './UserProfilePopover';

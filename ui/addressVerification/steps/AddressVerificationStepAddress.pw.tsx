@@ -1,12 +1,13 @@
 import React from 'react';
 
-import buildUrl from 'lib/api/buildUrl';
+import buildUrl from 'client/api/build-url';
+
 import * as mocks from 'mocks/account/verifiedAddresses';
 import { test, expect } from 'playwright/lib';
 
 import AddressVerificationStepAddress from './AddressVerificationStepAddress';
 
-const CHECK_ADDRESS_URL = buildUrl('contractInfo:address_verification', { chainId: '1', type: ':prepare' });
+const CHECK_ADDRESS_URL = buildUrl('contractInfo:address_verification', { instanceId: '1', type: ':prepare' });
 
 test('base view', async({ render, page }) => {
   await page.route(CHECK_ADDRESS_URL, (route) => route.fulfill({

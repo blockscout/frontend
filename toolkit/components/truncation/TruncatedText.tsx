@@ -1,10 +1,12 @@
 // Arbitrary text that will be truncated if there is not enough space in the container
 
-import type { Placement } from '@floating-ui/dom';
 import React from 'react';
+
+import type { ExcludeUndefined } from 'types/utils';
 
 import type { SkeletonTextProps } from '../../chakra/skeleton';
 import { Skeleton } from '../../chakra/skeleton';
+import type { TooltipProps } from '../../chakra/tooltip';
 import { Tooltip } from '../../chakra/tooltip';
 import { TruncatedTextTooltip } from './TruncatedTextTooltip';
 
@@ -13,7 +15,7 @@ export interface TruncatedTextProps extends Omit<SkeletonTextProps, 'loading'> {
   loading?: boolean;
   // tooltipContent is used to display the tooltip value different from the truncated value
   tooltipContent?: string;
-  tooltipPlacement?: Placement;
+  tooltipPlacement?: ExcludeUndefined<TooltipProps['positioning']>['placement'];
   tooltipInteractive?: boolean;
 }
 

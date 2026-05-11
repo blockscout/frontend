@@ -3,7 +3,10 @@ import React from 'react';
 
 import type { Pool } from 'types/api/pools';
 
-import getItemIndex from 'lib/getItemIndex';
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+
+import getItemIndex from 'client/shared/lists/get-item-index';
+
 import getPoolLinks from 'lib/pools/getPoolLinks';
 import { Image } from 'toolkit/chakra/image';
 import { Link } from 'toolkit/chakra/link';
@@ -11,7 +14,6 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import PoolEntity from 'ui/shared/entities/pool/PoolEntity';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 

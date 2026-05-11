@@ -20,8 +20,8 @@ Install the package using your preferred package manager:
 # Using npm
 npm install @blockscout/ui-toolkit
 
-# Using yarn
-yarn add @blockscout/ui-toolkit
+# Using pnpm
+pnpm add @blockscout/ui-toolkit
 ```
 
 ### Required Dependencies
@@ -32,21 +32,21 @@ Ensure you have the following peer dependencies installed:
 {
   "dependencies": {
     "@blockscout/ui-toolkit": "latest",
-    "@chakra-ui/react": ">=3.15.0",
+    "@chakra-ui/react": ">=3.33.0",
     "@emotion/react": ">=11.14.0",
     "@uidotdev/usehooks": ">=2.4.1",
     "d3": ">=7.6.1",
     "dayjs": ">=1.11.5",
     "dom-to-image": ">=2.6.0",
     "es-toolkit": ">=1.39.10",
-    "next": ">=15.2.3",
+    "next": ">=16.2.4",
     "next-themes": ">=0.4.4",
     "react": ">=18.3.1",
     "react-dom": ">=18.3.1",
     "react-hook-form": ">=7.52.1"
   },
   "devDependencies": {
-    "@chakra-ui/cli": ">=3.15.0",
+    "@chakra-ui/cli": ">=3.33.0",
     "@types/node": "^20",
     "@types/react": "18.3.12",
     "@types/react-dom": "18.3.1",
@@ -125,17 +125,17 @@ Add the following script to your `package.json` to generate Chakra UI type defin
 
 1. Clone the repository and install dependencies:
 ```bash
-yarn
+pnpm
 ```
 
 2. Start the development server:
 ```bash
-yarn dev
+pnpm dev
 ```
 
 3. Build the package:
 ```bash
-yarn build
+pnpm build
 ```
 
 ### Publishing
@@ -176,4 +176,4 @@ For issues, feature requests, or questions, please open an issue in the reposito
 
 ## License
 
-This project is licensed under the GNU General Public License v3.
+This project is licensed under the Blockscout Software Licence. See the [LICENSE](https://raw.githubusercontent.com/blockscout/frontend/refs/heads/main/LICENSE) file for full terms.

@@ -1,6 +1,6 @@
 import type { Query } from 'nextjs-routes';
 
-import getQueryParamString from 'lib/router/getQueryParamString';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 export default function getSortParamsFromQuery<T>(query: Query, sortOptions: Record<string, Array<string | undefined>>) {
   if (!query.sort || !query.order) {

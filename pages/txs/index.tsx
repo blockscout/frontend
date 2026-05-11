@@ -7,8 +7,8 @@ import PageNextJs from 'nextjs/PageNextJs';
 import config from 'configs/app';
 
 const Transactions = dynamic(() => {
-  if (config.features.opSuperchain.isEnabled) {
-    return import('ui/optimismSuperchain/txs/OpSuperchainTxs');
+  if (config.features.multichain.isEnabled) {
+    return import('ui/multichain/txs/MultichainTxs');
   }
 
   if (config.features.zetachain.isEnabled) {
@@ -19,7 +19,7 @@ const Transactions = dynamic(() => {
     return import('ui/crossChain/txs/Transactions');
   }
 
-  return import('ui/pages/Transactions');
+  return import('client/slices/tx/pages/index/TxIndex');
 }, { ssr: false });
 
 const Page: NextPage = () => {

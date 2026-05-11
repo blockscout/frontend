@@ -3,8 +3,9 @@ import { chakra, Center } from '@chakra-ui/react';
 import React from 'react';
 import type { ChangeEvent, FormEvent, FocusEvent } from 'react';
 
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+
 import config from 'configs/app';
-import useIsMobile from 'lib/hooks/useIsMobile';
 import { useColorModeValue } from 'toolkit/chakra/color-mode';
 import { Input } from 'toolkit/chakra/input';
 import { InputGroup } from 'toolkit/chakra/input-group';

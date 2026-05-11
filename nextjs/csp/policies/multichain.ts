@@ -1,9 +1,9 @@
 import type CspDev from 'csp-dev';
 
-import * as multichainConfig from 'configs/multichain/config.edge';
+import multichainConfig from 'configs/multichain';
 
 export function multichain(): CspDev.DirectiveDescriptor {
-  const value = multichainConfig.getValue();
+  const value = multichainConfig();
   if (!value) {
     return {};
   }

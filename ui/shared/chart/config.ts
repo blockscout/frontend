@@ -1,12 +1,12 @@
 import { useToken } from '@chakra-ui/react';
 import React from 'react';
 
-import type { ChartConfig } from 'toolkit/components/charts/types';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
 
-import useIsMobile from 'lib/hooks/useIsMobile';
 import { useColorModeValue } from 'toolkit/chakra/color-mode';
+import type { LineChartConfig } from 'toolkit/components/charts/line';
 
-export function useChartsConfig(): Array<ChartConfig> {
+export function useChartsConfig(): Array<LineChartConfig> {
   const lineColor = useDefaultLineColor();
   const gradient = useDefaultGradient();
   const isMobile = useIsMobile();

@@ -1,12 +1,13 @@
 import { Text, chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import type { AddressMetadataTagFormatted } from 'types/client/addressMetadata';
+import type { AddressMetadataTagFormatted } from 'client/features/address-metadata/types/view';
 
 import { route } from 'nextjs-routes';
 
+import * as mixpanel from 'client/shared/analytics/mixpanel';
+
 import config from 'configs/app';
-import * as mixpanel from 'lib/mixpanel/index';
 import { Image } from 'toolkit/chakra/image';
 import { Link } from 'toolkit/chakra/link';
 

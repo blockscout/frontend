@@ -3,19 +3,22 @@ import { isEqual } from 'es-toolkit';
 import React from 'react';
 
 import type { Token } from '@blockscout/zetachain-cctx-types';
-import type { TokenInfo } from 'types/api/token';
+import type { TokenInfo } from 'client/slices/token/types/api';
 import { ZETA_CHAIN_CCTX_COIN_TYPE_FILTER, type ZetaChainCCTXFilterParams } from 'types/client/zetaChain';
 
+import useApiQuery from 'client/api/hooks/useApiQuery';
+
+import * as TokenEntity from 'client/slices/token/components/entity/TokenEntity';
+import NativeTokenIcon from 'client/slices/token/components/icon/TokenIconNative';
+
+import useDebounce from 'client/shared/hooks/useDebounce';
+
 import config from 'configs/app';
-import useApiQuery from 'lib/api/useApiQuery';
-import useDebounce from 'lib/hooks/useDebounce';
 import { PopoverCloseTriggerWrapper } from 'toolkit/chakra/popover';
 import { Tag } from 'toolkit/chakra/tag';
 import { ClearButton } from 'toolkit/components/buttons/ClearButton';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
-import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import TableColumnFilter from 'ui/shared/filters/TableColumnFilter';
-import NativeTokenIcon from 'ui/shared/NativeTokenIcon';
 
 const FILTER_PARAM_SYMBOL = 'token_symbol';
 const FILTER_PARAM_COIN_TYPE = 'coin_type';

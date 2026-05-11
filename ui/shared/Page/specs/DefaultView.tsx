@@ -1,10 +1,11 @@
 import React from 'react';
 
-import type { TokenInfo } from 'types/api/token';
+import type { TokenInfo } from 'client/slices/token/types/api';
 
-import * as addressMock from 'mocks/address/address';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
-import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+import * as addressMock from 'client/slices/address/mocks/address';
+import * as TokenEntity from 'client/slices/token/components/entity/TokenEntity';
+
 import EntityTags from 'ui/shared/EntityTags/EntityTags';
 import IconSvg from 'ui/shared/IconSvg';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';

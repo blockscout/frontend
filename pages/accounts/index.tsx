@@ -7,11 +7,11 @@ import PageNextJs from 'nextjs/PageNextJs';
 import config from 'configs/app';
 
 const Accounts = dynamic(() => {
-  if (config.features.opSuperchain.isEnabled) {
-    return import('ui/optimismSuperchain/accounts/OpSuperchainAccounts');
+  if (config.features.multichain.isEnabled) {
+    return import('ui/multichain/accounts/MultichainAccounts');
   }
 
-  return import('ui/pages/Accounts');
+  return import('client/slices/address/pages/index/Accounts');
 }, { ssr: false });
 
 const Page: NextPage = () => {

@@ -5,7 +5,8 @@ import React from 'react';
 
 import type { BannerProps } from './types';
 
-import useIsMobile from 'lib/hooks/useIsMobile';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+
 import { Image } from 'toolkit/chakra/image';
 
 import {

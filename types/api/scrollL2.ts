@@ -1,5 +1,5 @@
-import type { Block } from './block';
-import type { Transaction } from './transaction';
+import type { Block } from 'client/slices/block/types/api';
+import type { Transaction } from 'client/slices/tx/types/api';
 
 export interface ScrollL2BatchesResponse {
   items: Array<ScrollL2TxnBatch>;

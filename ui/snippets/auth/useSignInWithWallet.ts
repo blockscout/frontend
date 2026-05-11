@@ -4,14 +4,17 @@ import { useSignMessage, useSwitchChain } from 'wagmi';
 import type * as rewards from '@blockscout/points-types';
 import type { UserInfo } from 'types/api/account';
 
+import useApiFetch from 'client/api/hooks/useApiFetch';
+
+import useWalletReown from 'client/features/connect-wallet/hooks/wallet/useWalletReown';
+
+import type * as mixpanel from 'client/shared/analytics/mixpanel';
+import getErrorMessage from 'client/shared/errors/get-error-message';
+import getErrorObj from 'client/shared/errors/get-error-obj';
+import getErrorObjPayload from 'client/shared/errors/get-error-obj-payload';
+import * as cookies from 'client/shared/storage/cookies';
+
 import config from 'configs/app';
-import useApiFetch from 'lib/api/useApiFetch';
-import * as cookies from 'lib/cookies';
-import getErrorMessage from 'lib/errors/getErrorMessage';
-import getErrorObj from 'lib/errors/getErrorObj';
-import getErrorObjPayload from 'lib/errors/getErrorObjPayload';
-import type * as mixpanel from 'lib/mixpanel';
-import useWalletReown from 'lib/web3/wallet/useWalletReown';
 import { toaster } from 'toolkit/chakra/toaster';
 import { YEAR } from 'toolkit/utils/consts';
 

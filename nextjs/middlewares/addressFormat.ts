@@ -1,9 +1,10 @@
 import type { NextRequest, NextResponse } from 'next/server';
 
-import type { AddressFormat } from 'types/views/address';
+import type { AddressFormat } from 'client/slices/address/types/view';
+
+import * as cookiesLib from 'client/shared/storage/cookies';
 
 import config from 'configs/app';
-import * as cookiesLib from 'lib/cookies';
 
 export default function addressFormatMiddleware(req: NextRequest, res: NextResponse) {
   const addressFormatCookie = req.cookies.get(cookiesLib.NAMES.ADDRESS_FORMAT);
@@ -12,9 +13,9 @@ export default function addressFormatMiddleware(req: NextRequest, res: NextRespo
   if (addressFormatCookie) {
     const isValidCookie = config.UI.views.address.hashFormat.availableFormats.includes(addressFormatCookie.value as AddressFormat);
     if (!isValidCookie) {
-      res.cookies.set(cookiesLib.NAMES.ADDRESS_FORMAT, defaultFormat, { path: '/' });
+      res.cookies.set(cookiesLib.NAMES.ADDRESS_FORMAT, defaultFormat, cookiesLib.getDefaultAttributes());
     }
   } else {
-    res.cookies.set(cookiesLib.NAMES.ADDRESS_FORMAT, defaultFormat, { path: '/' });
+    res.cookies.set(cookiesLib.NAMES.ADDRESS_FORMAT, defaultFormat, cookiesLib.getDefaultAttributes());
   }
 }

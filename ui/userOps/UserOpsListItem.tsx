@@ -3,11 +3,12 @@ import React from 'react';
 import type { UserOpsItem } from 'types/api/userOps';
 import type { ClusterChainConfig } from 'types/multichain';
 
+import AddressStringOrParam from 'client/slices/address/components/entity/AddressStringOrParam';
+import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
+import TxEntity from 'client/slices/tx/components/entity/TxEntity';
+
 import config from 'configs/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
-import AddressStringOrParam from 'ui/shared/entities/address/AddressStringOrParam';
-import BlockEntity from 'ui/shared/entities/block/BlockEntity';
-import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import UserOpEntity from 'ui/shared/entities/userOp/UserOpEntity';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';

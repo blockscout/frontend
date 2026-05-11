@@ -6,9 +6,11 @@ import { FormProvider, useForm } from 'react-hook-form';
 import type { OtpCodeFormFields, ScreenSuccess } from '../types';
 import type { UserInfo } from 'types/api/account';
 
-import useApiFetch from 'lib/api/useApiFetch';
-import getErrorMessage from 'lib/errors/getErrorMessage';
-import getErrorObjPayload from 'lib/errors/getErrorObjPayload';
+import useApiFetch from 'client/api/hooks/useApiFetch';
+
+import getErrorMessage from 'client/shared/errors/get-error-message';
+import getErrorObjPayload from 'client/shared/errors/get-error-obj-payload';
+
 import { Button } from 'toolkit/chakra/button';
 import { toaster } from 'toolkit/chakra/toaster';
 import IconSvg from 'ui/shared/IconSvg';

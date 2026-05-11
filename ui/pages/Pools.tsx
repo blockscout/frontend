@@ -2,9 +2,10 @@ import { Box, Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import useDebounce from 'client/shared/hooks/useDebounce';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
+
 import config from 'configs/app';
-import useDebounce from 'lib/hooks/useDebounce';
-import getQueryParamString from 'lib/router/getQueryParamString';
 import { POOL } from 'stubs/pools';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import PoolsListItem from 'ui/pools/PoolsListItem';
@@ -24,7 +25,7 @@ const Pools = () => {
 
   const poolsQuery = useQueryWithPages({
     resourceName: 'contractInfo:pools',
-    pathParams: { chainId: config.chain.id },
+    pathParams: { instanceId: config.apis.contractInfo?.instanceId },
     filters: { query: debouncedSearchTerm },
     options: {
       placeholderData: { items: Array(50).fill(POOL), next_page_params: { page_token: 'a', page_size: 50 } },

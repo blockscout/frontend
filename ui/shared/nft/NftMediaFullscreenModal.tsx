@@ -2,7 +2,7 @@
 import { Dialog as ChakraDialog } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TokenInstance } from 'types/api/token';
+import type { TokenInstance } from 'client/slices/token/types/api';
 
 import { DialogContent, DialogRoot, DialogCloseTrigger } from 'toolkit/chakra/dialog';
 
@@ -60,6 +60,7 @@ const NftMediaFullscreenModal = ({ open, onOpenChange, data, allowedTypes, field
             onError={ handleMediaLoadError }
             w="90vw"
             h="90vh"
+            fullscreen
           />
         );
       case 'image':
@@ -71,7 +72,8 @@ const NftMediaFullscreenModal = ({ open, onOpenChange, data, allowedTypes, field
             onError={ handleMediaLoadError }
             maxW="90vw"
             maxH="90vh"
-            objectFit="contain"/>
+            objectFit="contain"
+          />
         );
       default:
         return null;

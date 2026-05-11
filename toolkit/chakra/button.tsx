@@ -1,10 +1,7 @@
 import type { ButtonProps as ChakraButtonProps, ButtonGroupProps as ChakraButtonGroupProps } from '@chakra-ui/react';
 import {
-  AbsoluteCenter,
   Button as ChakraButton,
   ButtonGroup as ChakraButtonGroup,
-  Span,
-  Spinner,
 } from '@chakra-ui/react';
 import * as React from 'react';
 
@@ -24,31 +21,7 @@ export interface ButtonProps extends ChakraButtonProps, ButtonLoadingProps {
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   function Button(props, ref) {
-    const { loading, disabled, loadingText, children, expanded, selected, highlighted, loadingSkeleton = false, ...rest } = props;
-
-    const content = (() => {
-      if (loading && !loadingText) {
-        return (
-          <>
-            <AbsoluteCenter display="inline-flex">
-              <Spinner size="inherit" color="inherit"/>
-            </AbsoluteCenter>
-            <Span opacity={ 0 }>{ children }</Span>
-          </>
-        );
-      }
-
-      if (loading && loadingText) {
-        return (
-          <>
-            <Spinner size="inherit" color="inherit"/>
-            { loadingText }
-          </>
-        );
-      }
-
-      return children;
-    })();
+    const { loading, disabled, children, expanded, selected, highlighted, loadingSkeleton = false, ...rest } = props;
 
     return (
       <Skeleton loading={ loadingSkeleton } asChild ref={ ref as React.ForwardedRef<HTMLDivElement> }>
@@ -56,12 +29,12 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           { ...(expanded ? { 'data-expanded': true } : {}) }
           { ...(selected ? { 'data-selected': true } : {}) }
           { ...(highlighted ? { 'data-highlighted': true } : {}) }
-          { ...(loading ? { 'data-loading': true } : {}) }
           { ...(loadingSkeleton ? { 'data-loading-skeleton': true } : {}) }
           disabled={ !loadingSkeleton && (loading || disabled) }
+          loading={ loading }
           { ...rest }
         >
-          { content }
+          { children }
         </ChakraButton>
       </Skeleton>
     );

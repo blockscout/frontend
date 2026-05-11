@@ -5,11 +5,13 @@ import { getFeaturePayload } from 'configs/app/features/types';
 
 import { route } from 'nextjs-routes';
 
+import useApiQuery from 'client/api/hooks/useApiQuery';
+
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+
 import config from 'configs/app';
-import useApiQuery from 'lib/api/useApiQuery';
 import { useRewardsContext } from 'lib/contexts/rewards';
 import dayjs from 'lib/date/dayjs';
-import useIsMobile from 'lib/hooks/useIsMobile';
 import { USER_ACTIVITY } from 'stubs/rewards';
 import { Button } from 'toolkit/chakra/button';
 import { Heading } from 'toolkit/chakra/heading';

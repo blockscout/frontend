@@ -6,7 +6,8 @@ import type {
   ValidatorsBlackfortSortingValue,
 } from 'types/api/validators';
 
-import { currencyUnits } from 'lib/units';
+import { currencyUnits } from 'client/shared/chain/units';
+
 import { TableBody, TableColumnHeader, TableColumnHeaderSortable, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import getNextSortValue from 'ui/shared/sort/getNextSortValue';
 

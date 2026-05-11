@@ -3,10 +3,12 @@ import React from 'react';
 
 import type { OptimisticL2BlobTypeCelestia } from 'types/api/optimisticL2';
 
+import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
+
+import { layerLabels } from 'lib/rollups/utils';
 import CeleniumLink from 'ui/shared/batch/CeleniumLink';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
-import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 
 import OptimisticL2TxnBatchBlobWrapper from './OptimisticL2TxnBatchBlobWrapper';
@@ -38,7 +40,7 @@ const OptimisticL2TxnBatchBlobCelestia = ({ blobs, isLoading }: Props) => {
             <GridItem overflow="hidden" colSpan={ 2 }>
               <DetailedInfoTimestamp timestamp={ blob.l1_timestamp } isLoading={ isLoading } flexWrap={{ base: 'wrap', lg: 'nowrap' }}/>
             </GridItem>
-            <GridItem fontWeight={ 600 }>L1 txn hash</GridItem>
+            <GridItem fontWeight={ 600 }>{ layerLabels.parent } txn hash</GridItem>
             <GridItem overflow="hidden" colSpan={ 2 }>
               <TxEntityL1 hash={ blob.l1_transaction_hash } noIcon/>
             </GridItem>

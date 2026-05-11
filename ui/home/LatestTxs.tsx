@@ -3,15 +3,19 @@ import React from 'react';
 
 import { route } from 'nextjs-routes';
 
+import useApiQuery from 'client/api/hooks/useApiQuery';
+
+import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
+import useNewTxsSocket from 'client/slices/tx/hooks/useTxsSocketTypeAll';
+import { TX } from 'client/slices/tx/stubs/tx';
+
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+
 import config from 'configs/app';
-import useApiQuery from 'lib/api/useApiQuery';
-import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
-import useIsMobile from 'lib/hooks/useIsMobile';
-import { TX } from 'stubs/tx';
 import { Link } from 'toolkit/chakra/link';
 import SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
-import useNewTxsSocket from 'ui/txs/socket/useTxsSocketTypeAll';
 
+import LatestTxsDegraded from './fallbacks/LatestTxsDegraded';
 import LatestTxsItem from './LatestTxsItem';
 import LatestTxsItemMobile from './LatestTxsItemMobile';
 
@@ -29,7 +33,7 @@ const LatestTxs = () => {
   const { num, showErrorAlert } = useNewTxsSocket({ type: 'txs_home', isLoading: isPlaceholderData });
 
   if (isError) {
-    return <Text mt={ 4 }>No data. Please reload the page.</Text>;
+    return <LatestTxsDegraded maxNum={ txsCount }/>;
   }
 
   if (data) {
@@ -58,13 +62,13 @@ const LatestTxs = () => {
           </Box>
         </AddressHighlightProvider>
         <Flex justifyContent="center">
-          <Link textStyle="sm" href={ txsUrl }>View all transactions</Link>
+          <Link textStyle="sm" loading={ isPlaceholderData } href={ txsUrl }>View all transactions</Link>
         </Flex>
       </>
     );
   }
 
-  return null;
+  return <Text>No latest transactions found.</Text>;
 };
 
 export default LatestTxs;

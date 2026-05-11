@@ -1,0 +1,20 @@
+import type { SolidityScanReport } from './utils/schema';
+
+export const SOLIDITY_SCAN_REPORT: SolidityScanReport = {
+  scan_report: {
+    contractname: 'BullRunners',
+    scan_status: 'scan_done',
+    scan_summary: {
+      issue_severity_distribution: {
+        critical: 0,
+        gas: 1,
+        high: 0,
+        informational: 0,
+        low: 2,
+        medium: 0,
+      },
+      score_v2: '72.22',
+    },
+    scanner_reference_url: 'https://solidityscan.com/quickscan/0xc1EF7811FF2ebFB74F80ed7423f2AdAA37454be2/blockscout/eth-goerli?ref=blockscout',
+  },
+};

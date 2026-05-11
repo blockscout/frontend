@@ -4,11 +4,12 @@ import { useCallback, useState } from 'react';
 import type { EssentialDappsChainConfig } from 'types/client/marketplace';
 import type { AllowanceType } from 'types/client/revoke';
 
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
+
 import { Button } from 'toolkit/chakra/button';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableRow, TableCell } from 'toolkit/chakra/table';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
-import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import NumberEntity from 'ui/shared/NumberEntity';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
@@ -37,12 +38,12 @@ export default function ApprovalsTableItem({
 
   const handleRevoke = useCallback(async() => {
     setIsPending(true);
-    const success = await revoke(approval, Number(selectedChain?.id));
+    const success = await revoke(approval, selectedChain);
     if (success) {
       hideApproval(approval);
     }
     setIsPending(false);
-  }, [ revoke, hideApproval, approval, selectedChain?.id ]);
+  }, [ revoke, hideApproval, approval, selectedChain ]);
 
   return (
     <TableRow fontWeight="500">

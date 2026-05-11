@@ -1,7 +1,8 @@
 import React from 'react';
 
+import { BECH_32_SEPARATOR } from 'client/slices/address/utils/bech32';
+
 import config from 'configs/app';
-import { BECH_32_SEPARATOR } from 'lib/address/bech32';
 import { useSettingsContext } from 'lib/contexts/settings';
 import { Switch } from 'toolkit/chakra/switch';
 

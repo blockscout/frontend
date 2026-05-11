@@ -1,7 +1,7 @@
 import type { TestFixture, Page } from '@playwright/test';
 
-import buildUrl from 'lib/api/buildUrl';
-import type { ResourceName, ResourcePayload } from 'lib/api/resources';
+import buildUrl from 'client/api/build-url';
+import type { ResourceName, ResourcePayload } from 'client/api/resources';
 
 interface Options<R extends ResourceName> {
   pathParams?: Parameters<typeof buildUrl<R>>[1];

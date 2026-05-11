@@ -2,9 +2,10 @@ import React, { useCallback } from 'react';
 
 import type { TransactionTag } from 'types/api/account';
 
+import TxEntity from 'client/slices/tx/components/entity/TxEntity';
+
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { Tag } from 'toolkit/chakra/tag';
-import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TableItemActionButtons from 'ui/shared/TableItemActionButtons';
 
 interface Props {

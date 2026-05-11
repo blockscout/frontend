@@ -9,15 +9,17 @@ import type { PaginationParams } from './types';
 
 import type { Route } from 'nextjs-routes';
 
+import getResourceParams from 'client/api/get-resource-params';
+import type { Params as UseApiQueryParams } from 'client/api/hooks/useApiQuery';
+import useApiQuery from 'client/api/hooks/useApiQuery';
+import type { PaginatedResourceName, PaginationFilters, PaginationSorting, ResourceError, ResourcePayload } from 'client/api/resources';
+import { SORTING_FIELDS } from 'client/api/resources';
+
+import getQueryParamString from 'client/shared/router/get-query-param-string';
+
 import multichainConfig from 'configs/multichain';
-import getResourceParams from 'lib/api/getResourceParams';
-import type { PaginatedResourceName, PaginationFilters, PaginationSorting, ResourceError, ResourcePayload } from 'lib/api/resources';
-import { SORTING_FIELDS } from 'lib/api/resources';
-import type { Params as UseApiQueryParams } from 'lib/api/useApiQuery';
-import useApiQuery from 'lib/api/useApiQuery';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import getChainValueFromQuery from 'lib/multichain/getChainValueFromQuery';
-import getQueryParamString from 'lib/router/getQueryParamString';
 
 type NextPageParams = Record<string, unknown>;
 
@@ -32,6 +34,7 @@ export interface Params<Resource extends PaginatedResourceName> {
   hasNextPageFn?: (nextPageParams: NextPageParams) => boolean;
   isMultichain?: boolean;
   chainIds?: Array<string>;
+  noScroll?: boolean;
 }
 
 const INITIAL_PAGE_PARAMS = { '1': {} };
@@ -76,6 +79,7 @@ export default function useQueryWithPages<Resource extends PaginatedResourceName
   pathParams,
   queryParams: queryParamsFromProps,
   scrollRef,
+  noScroll,
   hasNextPageFn,
   isMultichain,
   chainIds,
@@ -114,8 +118,11 @@ export default function useQueryWithPages<Resource extends PaginatedResourceName
   const queryParams = { ...pageParams[page], ...filters, ...sorting, ...queryParamsFromProps };
 
   const scrollToTop = useCallback(() => {
+    if (noScroll) {
+      return;
+    }
     scrollRef?.current ? scrollRef.current.scrollIntoView(true) : animateScroll.scrollToTop({ duration: 0 });
-  }, [ scrollRef ]);
+  }, [ scrollRef, noScroll ]);
 
   const queryResult = useApiQuery(resourceName, {
     pathParams,
@@ -252,6 +259,12 @@ export default function useQueryWithPages<Resource extends PaginatedResourceName
   }, [ router, scrollToTop ]);
 
   const onChainValueChange = useCallback(({ value }: { value: Array<string> }) => {
+
+    if (options?.enabled === false) {
+      setChainValue(value);
+      return;
+    }
+
     if (page !== 1) {
       resetPage({ chainValue: value });
     } else {
@@ -263,7 +276,7 @@ export default function useQueryWithPages<Resource extends PaginatedResourceName
       setChainValue(value);
       router.push({ pathname: router.pathname, query: nextPageQuery }, undefined, { shallow: true });
     }
-  }, [ page, resetPage, router ]);
+  }, [ page, resetPage, router, options?.enabled ]);
 
   let hasNextPage = false;
   if (nextPageParams) {

@@ -6,10 +6,12 @@ import type { FormSubmitResultGrouped } from '../types';
 
 import { route } from 'nextjs-routes';
 
-import useIsMobile from 'lib/hooks/useIsMobile';
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import EntityTag from 'ui/shared/EntityTags/EntityTag';
 interface Props {
   data: FormSubmitResultGrouped;

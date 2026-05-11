@@ -39,6 +39,8 @@ export function blockchainInteraction(): CspDev.DirectiveDescriptor {
           'https://dynamic-static-assets.com',
           'https://app.dynamicauth.com',
           'https://logs.dynamicauth.com',
+          'wss://relay.walletconnect.com',
+          'wss://relay.walletconnect.org',
         ],
         'font-src': [
           'https://cdn.jsdelivr.net/npm/@fontsource/dm-sans/files/dm-sans-latin-400-normal.woff2',
@@ -56,6 +58,9 @@ export function blockchainInteraction(): CspDev.DirectiveDescriptor {
         ],
         'style-src': [
           'https://app.dynamic.xyz',
+        ],
+        'img-src': [
+          '*.walletconnect.com',
         ],
       };
     }

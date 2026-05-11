@@ -22,6 +22,11 @@ permissions:
   contents: read
   pull-requests: write
 
+# pnpm deps: rely on actions/setup-node cache: pnpm (content-addressable store, keyed on
+# pnpm-lock.yaml). Always run pnpm install --frozen-lockfile in each job — with a warm store
+# it is mostly linking. Caching only the repo-root node_modules tarball omits workspace
+# package node_modules symlinks and breaks tsc/vite in toolkit and deploy/tools/* packages.
+
 jobs:
   code_quality:
     name: Code quality
@@ -31,39 +36,32 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.32.1
+          cache: true
+
       - name: Setup node
         uses: actions/setup-node@v4
         with:
           node-version: 22.14.0
-          cache: 'yarn'
-
-      - name: Cache node_modules
-        uses: actions/cache@v4
-        id: cache-node-modules
-        with:
-          path: |
-            node_modules
-          key: node_modules-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+          cache: 'pnpm'
 
       - name: Install dependencies
-        if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        run: yarn --frozen-lockfile
-
-      - name: Generate Chakra types
-        if: steps.cache-node-modules.outputs.cache-hit == 'true'
-        run: yarn chakra:typegen
+        run: pnpm install --frozen-lockfile
 
       - name: Run ESLint
-        run: yarn lint:eslint
+        run: pnpm lint:eslint
 
       - name: Compile TypeScript
-        run: yarn lint:tsc
+        run: pnpm lint:tsc
 
       - name: Check licenses
-        run: yarn lint:license:check
+        run: pnpm lint:license:check
 
       - name: Check spelling
-        run: yarn lint:cspell --no-progress
+        run: pnpm lint:cspell --no-progress
 
   toolkit_build_check:
     name: Toolkit build check
@@ -73,42 +71,26 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.32.1
+          cache: true
+
       - name: Setup node
         uses: actions/setup-node@v4
         with:
           node-version: 22.14.0
-          cache: 'yarn'
-
-      - name: Cache node_modules
-        uses: actions/cache@v4
-        id: cache-node-modules
-        with:
-          path: |
-            node_modules
-          key: node_modules-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+          cache: 'pnpm'
 
       - name: Install project dependencies
-        if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        run: yarn --frozen-lockfile
-
-      - name: Generate Chakra types
-        if: steps.cache-node-modules.outputs.cache-hit == 'true'
-        run: yarn chakra:typegen
-
-      - name: Install package dependencies
-        run: |
-          cd ./toolkit/package
-          yarn --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Type check the package
-        run: |
-          cd ./toolkit/package
-          yarn typecheck
+        run: pnpm --filter @blockscout/ui-toolkit typecheck
 
       - name: Build the package
-        run: |
-          cd ./toolkit/package
-          yarn build
+        run: pnpm --filter @blockscout/ui-toolkit build
 
       - name: Verify build output
         run: |
@@ -136,38 +118,23 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.32.1
+          cache: true
+
       - name: Setup node
         uses: actions/setup-node@v4
         with:
           node-version: 22.14.0
-          cache: 'yarn'
-
-      - name: Cache node_modules
-        uses: actions/cache@v4
-        id: cache-node-modules
-        with:
-          path: |
-            node_modules
-          key: node_modules-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+          cache: 'pnpm'
 
       - name: Install dependencies
-        if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        run: yarn --frozen-lockfile
-
-      - name: Generate Chakra types
-        if: steps.cache-node-modules.outputs.cache-hit == 'true'
-        run: yarn chakra:typegen
-
-      - name: Install script dependencies
-        run: cd ./deploy/tools/envs-validator && yarn --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Run validation tests
-        run: |
-          set +e
-          cd ./deploy/tools/envs-validator && yarn test
-          exitcode="$?"
-          echo "exitcode=$exitcode" >> $GITHUB_OUTPUT
-          exit "$exitcode"
+        run: pnpm --filter envs-validator test
 
   vitest_tests:
     name: Unit tests
@@ -179,30 +146,23 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.32.1
+          cache: true
+
       - name: Setup node
         uses: actions/setup-node@v4
         with:
           node-version: 22.14.0
-          cache: 'yarn'
-
-      - name: Cache node_modules
-        uses: actions/cache@v4
-        id: cache-node-modules
-        with:
-          path: |
-            node_modules
-          key: node_modules-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+          cache: 'pnpm'
 
       - name: Install dependencies
-        if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        run: yarn --frozen-lockfile
-
-      - name: Generate Chakra types
-        if: steps.cache-node-modules.outputs.cache-hit == 'true'
-        run: yarn chakra:typegen
+        run: pnpm install --frozen-lockfile
 
       - name: Run Vitest
-        run: yarn test:vitest ${{ github.event_name == 'pull_request' && '--changed=origin/main' || '' }} --passWithNoTests
+        run: pnpm test:vitest ${{ github.event_name == 'pull_request' && '--changed=origin/main' || '' }} --passWithNoTests
 
   pw_affected_tests:
     name: Resolve affected Playwright tests
@@ -215,33 +175,23 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.32.1
+          cache: true
+
       - name: Setup node
         uses: actions/setup-node@v4
         with:
           node-version: 22.14.0
-          cache: 'yarn'
-
-      - name: Cache node_modules
-        uses: actions/cache@v4
-        id: cache-node-modules
-        with:
-          path: |
-            node_modules
-          key: node_modules-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+          cache: 'pnpm'
 
       - name: Install dependencies
-        if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        run: yarn --frozen-lockfile
-
-      - name: Generate Chakra types
-        if: steps.cache-node-modules.outputs.cache-hit == 'true'
-        run: yarn chakra:typegen
-
-      - name: Install script dependencies
-        run: cd ./deploy/tools/affected-tests && yarn --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Run script
-        run: yarn test:pw:detect-affected
+        run: pnpm test:pw:detect-affected
 
       - name: Upload result file
         uses: actions/upload-artifact@v5
@@ -276,27 +226,20 @@ jobs:
         with:
           lfs: 'true'
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.32.1
+          cache: true
+
       - name: Setup node
         uses: actions/setup-node@v4
         with:
           node-version: 22.14.0
-          cache: 'yarn'
-
-      - name: Cache node_modules
-        uses: actions/cache@v4
-        id: cache-node-modules
-        with:
-          path: |
-            node_modules
-          key: node_modules-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+          cache: 'pnpm'
 
       - name: Install dependencies
-        if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        run: yarn --frozen-lockfile
-
-      - name: Generate Chakra types
-        if: steps.cache-node-modules.outputs.cache-hit == 'true'
-        run: yarn chakra:typegen
+        run: pnpm install --frozen-lockfile
 
       - name: Download affected tests list
         if: ${{ needs.pw_affected_tests.result == 'success' }}
@@ -307,7 +250,7 @@ jobs:
           path: ./playwright
 
       - name: Run PlayWright
-        run: yarn test:pw:ci --affected=${{ github.event_name == 'pull_request' }} --pass-with-no-tests
+        run: pnpm test:pw:ci --affected=${{ github.event_name == 'pull_request' }} --pass-with-no-tests
         env:
           HOME: /root
           PW_PROJECT: ${{ matrix.project }}
@@ -349,25 +292,23 @@ jobs:
         if: steps.check-reports.outputs.has_reports == 'true'
         uses: actions/checkout@v4
 
+      - name: Install pnpm
+        if: steps.check-reports.outputs.has_reports == 'true'
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.32.1
+          cache: true
+
       - name: Setup node
         if: steps.check-reports.outputs.has_reports == 'true'
         uses: actions/setup-node@v4
         with:
           node-version: 22.14.0
-          cache: 'yarn'
-
-      - name: Cache node_modules
-        if: steps.check-reports.outputs.has_reports == 'true'
-        uses: actions/cache@v4
-        id: cache-node-modules
-        with:
-          path: |
-            node_modules
-          key: node_modules-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+          cache: 'pnpm'
 
       - name: Install dependencies
-        if: steps.check-reports.outputs.has_reports == 'true' && steps.cache-node-modules.outputs.cache-hit != 'true'
-        run: yarn --frozen-lockfile
+        if: steps.check-reports.outputs.has_reports == 'true'
+        run: pnpm install --frozen-lockfile
 
       - name: Merge into HTML Report
         if: steps.check-reports.outputs.has_reports == 'true'

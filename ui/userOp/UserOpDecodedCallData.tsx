@@ -3,7 +3,8 @@ import React from 'react';
 
 import type { UserOp } from 'types/api/userOps';
 
-import useIsMobile from 'lib/hooks/useIsMobile';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import LogDecodedInputData from 'ui/shared/logs/LogDecodedInputData';
 

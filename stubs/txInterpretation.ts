@@ -1,6 +1,6 @@
 import type { TxInterpretationResponse } from 'types/api/txInterpretation';
 
-import { TOKEN_INFO_ERC_20 } from './token';
+import { TOKEN_INFO_ERC_20 } from 'client/slices/token/stubs';
 
 export const TX_INTERPRETATION: TxInterpretationResponse = {
   data: {

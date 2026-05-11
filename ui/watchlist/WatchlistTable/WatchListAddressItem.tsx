@@ -4,12 +4,14 @@ import React from 'react';
 
 import type { WatchlistAddress } from 'types/api/account';
 
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+import * as TokenEntity from 'client/slices/token/components/entity/TokenEntity';
+
+import { currencyUnits } from 'client/shared/chain/units';
+
 import config from 'configs/app';
-import { currencyUnits } from 'lib/units';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { nbsp } from 'toolkit/utils/htmlEntities';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
-import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import IconSvg from 'ui/shared/IconSvg';
 import calculateUsdValue from 'ui/shared/value/calculateUsdValue';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
@@ -26,7 +28,13 @@ const WatchListAddressItem = ({ item, isLoading }: { item: WatchlistAddress; isL
     reputation: null,
   }), [ ]);
 
-  const { usdBn: usdNative } = calculateUsdValue({ amount: item.address_balance, exchangeRate: item.exchange_rate });
+  const { usdBn: usdNative } = calculateUsdValue(
+    {
+      amount: item.address_balance,
+      exchangeRate: item.exchange_rate,
+      decimals: String(config.chain.currency.decimals),
+    },
+  );
 
   return (
     <VStack gap={ 3 } align="stretch" fontWeight={ 500 }>

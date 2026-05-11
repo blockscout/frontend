@@ -4,10 +4,11 @@ import React from 'react';
 import type { MarketplaceApp } from 'types/client/marketplace';
 import { MarketplaceCategory } from 'types/client/marketplace';
 
+import useApiFetch from 'client/api/hooks/useApiFetch';
+import useFetch from 'client/api/hooks/useFetch';
+import type { ResourceError } from 'client/api/resources';
+
 import config from 'configs/app';
-import type { ResourceError } from 'lib/api/resources';
-import useApiFetch from 'lib/api/useApiFetch';
-import useFetch from 'lib/hooks/useFetch';
 import { MARKETPLACE_APP } from 'stubs/marketplace';
 import useIsAuth from 'ui/snippets/auth/useIsAuth';
 
@@ -82,7 +83,7 @@ export default function useMarketplaceApps(
       } else if ('configUrl' in feature) {
         return fetch<Array<MarketplaceApp>, unknown>(feature.configUrl, undefined, { resource: 'marketplace-dapps' });
       } else {
-        return apiFetch('admin:marketplace_dapps', { pathParams: { chainId: config.chain.id } });
+        return apiFetch('admin:marketplace_dapps', { pathParams: { instanceId: config.apis.admin?.instanceId } });
       }
     },
     select: (data) => sortApps(data as Array<MarketplaceApp>, snapshotFavoriteApps),

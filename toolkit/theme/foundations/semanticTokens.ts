@@ -73,6 +73,9 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
         bg: {
           DEFAULT: { value: { _light: '{colors.theme.button.primary._light}', _dark: '{colors.theme.button.primary._dark}' } },
         },
+        text: {
+          DEFAULT: { value: { _light: '{colors.theme.button.primary.text._light}', _dark: '{colors.theme.button.primary.text._dark}' } },
+        },
       },
       outline: {
         fg: {
@@ -280,7 +283,7 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
       bg: {
         DEFAULT: { value: '{colors.alert.bg.info}' },
         info: { value: { _light: '{colors.blue.100}', _dark: '{colors.blue.900}' } },
-        warning: { value: '{colors.alert.bg.warning}' },
+        warning: { value: { _light: '{colors.orange.100}', _dark: '{colors.orange.900}' } },
         success: { value: '{colors.alert.bg.success}' },
         error: { value: '{colors.alert.bg.error}' },
         loading: { value: { _light: '{colors.blue.100}', _dark: '{colors.blue.900}' } },
@@ -292,7 +295,7 @@ const semanticTokens: ThemingConfig['semanticTokens'] = {
         error: { value: '{colors.text.error}' },
       },
       bg: {
-        DEFAULT: { value: { _light: '{colors.white}', _dark: '{colors.black}' } },
+        DEFAULT: { value: '{colors.bg.primary}' },
         readOnly: { value: { _light: '{colors.gray.200}', _dark: '{colors.gray.800}' } },
       },
       border: {

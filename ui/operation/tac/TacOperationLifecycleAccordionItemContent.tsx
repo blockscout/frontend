@@ -3,9 +3,11 @@ import React from 'react';
 
 import * as tac from '@blockscout/tac-operation-lifecycle-types';
 
+import TxEntity from 'client/slices/tx/components/entity/TxEntity';
+
+import TxEntityTon from 'client/features/chain-variants/tac/components/TxEntityTon';
+
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
-import TxEntity from 'ui/shared/entities/tx/TxEntity';
-import TxEntityTon from 'ui/shared/entities/tx/TxEntityTon';
 import { ItemContent, ItemBody, ItemRow } from 'ui/shared/lifecycle/LifecycleAccordion';
 import StatusTag from 'ui/shared/statusTag/StatusTag';
 
@@ -28,26 +30,28 @@ const TacOperationLifecycleAccordionItemContent = ({ isLast, data }: Props) => {
           </ItemRow>
         ) }
 
-        <ItemRow label="Transactions">
-          <Box
-            display="flex"
-            flexDirection="column"
-            rowGap={ 3 }
-            py="6px"
-            width="100%"
-            overflow="hidden"
-          >
-            {
-              data.transactions.map((tx) => {
-                if (tx.type === tac.BlockchainType.TON) {
-                  return <TxEntityTon key={ tx.hash } hash={ tx.hash }/>;
-                }
+        { data.transactions.length > 0 && (
+          <ItemRow label="Transactions">
+            <Box
+              display="flex"
+              flexDirection="column"
+              rowGap={ 3 }
+              py="6px"
+              width="100%"
+              overflow="hidden"
+            >
+              {
+                data.transactions.map((tx) => {
+                  if (tx.type === tac.BlockchainType.TON) {
+                    return <TxEntityTon key={ tx.hash } hash={ tx.hash }/>;
+                  }
 
-                return <TxEntity key={ tx.hash } hash={ tx.hash } icon={{ name: 'brands/tac' }}/>;
-              })
-            }
-          </Box>
-        </ItemRow>
+                  return <TxEntity key={ tx.hash } hash={ tx.hash } icon={{ name: 'brands/tac' }}/>;
+                })
+              }
+            </Box>
+          </ItemRow>
+        ) }
 
         { data.note && (
           <ItemRow label="Note">

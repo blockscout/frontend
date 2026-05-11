@@ -1,7 +1,7 @@
 import React from 'react';
 import { WagmiProvider as WagmiProviderCore } from 'wagmi';
 
-import wagmiConfig from 'lib/web3/wagmiConfig';
+import wagmiConfig from 'client/features/connect-wallet/utils/wagmi-config';
 
 interface Props {
   children: React.ReactNode;

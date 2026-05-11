@@ -2,6 +2,7 @@ import React from 'react';
 
 import type { OptimisticL2DisputeGamesItem } from 'types/api/optimisticL2';
 
+import { layerLabels } from 'lib/rollups/utils';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
@@ -21,7 +22,7 @@ const OptimisticL2DisputeGamesTable = ({ items, top, isLoading }: Props) => {
           <TableColumnHeader>Index</TableColumnHeader>
           <TableColumnHeader>Game type</TableColumnHeader>
           <TableColumnHeader>Address</TableColumnHeader>
-          <TableColumnHeader>L2 block #</TableColumnHeader>
+          <TableColumnHeader>{ layerLabels.current } block #</TableColumnHeader>
           <TableColumnHeader>
             Timestamp
             <TimeFormatToggle/>

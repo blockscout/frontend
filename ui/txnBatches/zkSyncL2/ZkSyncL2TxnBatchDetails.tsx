@@ -7,10 +7,13 @@ import { ZKSYNC_L2_TX_BATCH_STATUSES, type ZkSyncBatch } from 'types/api/zkSyncL
 
 import { route } from 'nextjs-routes';
 
+import type { ResourceError } from 'client/api/resources';
+
+import { currencyUnits } from 'client/shared/chain/units';
+import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
+
 import config from 'configs/app';
-import type { ResourceError } from 'lib/api/resources';
-import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
-import { currencyUnits } from 'lib/units';
+import { formatZkSyncL2TxnBatchStatus, layerLabels } from 'lib/rollups/utils';
 import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
@@ -68,7 +71,7 @@ const ZkSyncL2TxnBatchDetails = ({ query }: Props) => {
       templateColumns={{ base: 'minmax(0, 1fr)', lg: 'minmax(min-content, 200px) minmax(0, 1fr)' }}
     >
       <DetailedInfo.ItemLabel
-        hint="Batch number indicates the length of batches produced by grouping L2 blocks to be proven on Ethereum."
+        hint={ `Batch number indicates the length of batches produced by grouping ${ layerLabels.current } blocks to be proven on ${ layerLabels.parent }.` }
         isLoading={ isPlaceholderData }
       >
         Txn batch number
@@ -94,7 +97,11 @@ const ZkSyncL2TxnBatchDetails = ({ query }: Props) => {
         Status
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
-        <VerificationSteps steps={ ZKSYNC_L2_TX_BATCH_STATUSES.slice(1) } currentStep={ data.status } isLoading={ isPlaceholderData }/>
+        <VerificationSteps
+          steps={ ZKSYNC_L2_TX_BATCH_STATUSES.slice(1).map(formatZkSyncL2TxnBatchStatus) }
+          currentStep={ formatZkSyncL2TxnBatchStatus(data.status) }
+          isLoading={ isPlaceholderData }
+        />
       </DetailedInfo.ItemValue>
 
       <DetailedInfo.ItemLabel
@@ -129,7 +136,7 @@ const ZkSyncL2TxnBatchDetails = ({ query }: Props) => {
         <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 4 }}/>
 
         <DetailedInfo.ItemLabel
-          hint="L1 batch root is a hash that summarizes batch data and submitted to the L1"
+          hint={ `${ layerLabels.parent } batch root is a hash that summarizes batch data and submitted to ${ layerLabels.parent }` }
         >
           Root hash
         </DetailedInfo.ItemLabel>
@@ -142,9 +149,9 @@ const ZkSyncL2TxnBatchDetails = ({ query }: Props) => {
         </DetailedInfo.ItemValue>
 
         <DetailedInfo.ItemLabel
-          hint="Gas price for the batch settlement transaction on L1"
+          hint={ `Gas price for the batch settlement transaction on ${ layerLabels.parent }` }
         >
-          L1 gas price
+          { layerLabels.parent } gas price
         </DetailedInfo.ItemLabel>
         <DetailedInfo.ItemValue multiRow>
           <GasPriceValue
@@ -157,7 +164,7 @@ const ZkSyncL2TxnBatchDetails = ({ query }: Props) => {
         <DetailedInfo.ItemLabel
           hint='The gas price below which the "baseFee" of the batch should not fall'
         >
-          L2 fair gas price
+          { layerLabels.current } fair gas price
         </DetailedInfo.ItemLabel>
         <DetailedInfo.ItemValue multiRow>
           <GasPriceValue

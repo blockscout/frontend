@@ -1,7 +1,8 @@
 import type { Router } from 'next/router';
 
+import getQueryParamString from 'client/shared/router/get-query-param-string';
+
 import multichainConfig from 'configs/multichain';
-import getQueryParamString from 'lib/router/getQueryParamString';
 
 export default function getChainValueFromQuery(
   query: Router['query'],
@@ -14,7 +15,7 @@ export default function getChainValueFromQuery(
   }
 
   const chainId = getQueryParamString(query.chain_id);
-  const chainSlug = getQueryParamString(query.chain_slug);
+  const chainSlugOrId = getQueryParamString(query.chain_slug_or_id);
 
   if (chainId) {
     if (config.chains.some((chain) => chain.id === chainId)) {
@@ -22,8 +23,8 @@ export default function getChainValueFromQuery(
     }
   }
 
-  if (chainSlug) {
-    const chain = config.chains.find((chain) => chain.slug === chainSlug);
+  if (chainSlugOrId) {
+    const chain = config.chains.find((chain) => chain.slug === chainSlugOrId || chain.id === chainSlugOrId);
     if (chain) {
       return chain.id;
     }

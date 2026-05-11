@@ -22,6 +22,7 @@ export interface Props extends Omit<BoxProps, 'prefix' | 'postfix'> {
   noTooltip?: boolean;
   loading?: boolean;
   overflowed?: boolean;
+  tooltipContentBefore?: React.ReactNode;
 }
 
 const SimpleValue = ({
@@ -32,6 +33,7 @@ const SimpleValue = ({
   startElement,
   endElement,
   tooltipContent: tooltipContentProp,
+  tooltipContentBefore,
   noTooltip,
   loading,
   overflowed,
@@ -40,12 +42,15 @@ const SimpleValue = ({
 
   const tooltipContent = React.useMemo(() => {
     return (
-      <Box display="inline" whiteSpace="wrap" wordBreak="break-all">
-        { prefix ?? '' }{ value.toFormat() }{ postfix ?? '' }
-        <CopyToClipboard text={ value.toFixed() } verticalAlign="bottom" noTooltip/>
-      </Box>
+      <>
+        { tooltipContentBefore }
+        <Box display="inline" whiteSpace="wrap" wordBreak="break-all">
+          { prefix ?? '' }{ value.toFormat() }{ postfix ?? '' }
+          <CopyToClipboard text={ value.toFixed() } verticalAlign="bottom" noTooltip/>
+        </Box>
+      </>
     );
-  }, [ postfix, prefix, value ]);
+  }, [ postfix, prefix, value, tooltipContentBefore ]);
 
   return (
     <Skeleton loading={ loading } display="inline-flex" alignItems="center" whiteSpace="pre" maxW="100%" overflow="hidden" { ...rest }>

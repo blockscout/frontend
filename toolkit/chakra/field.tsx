@@ -1,4 +1,4 @@
-import { Field as ChakraField } from '@chakra-ui/react';
+import { Field as ChakraField, chakra } from '@chakra-ui/react';
 import * as React from 'react';
 
 import getComponentDisplayName from '../utils/getComponentDisplayName';
@@ -33,7 +33,9 @@ export const Field = React.forwardRef<HTMLDivElement, FieldProps>(
 
       const labelElement = (
         <ChakraField.Label bgColor={ rest.bgColor }>
-          { label }
+          <chakra.span overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
+            { label }
+          </chakra.span>
           <ChakraField.RequiredIndicator fallback={ optionalText }/>
           { errorText && (
             <ChakraField.ErrorText ml="2px">-{ space }{ errorText }</ChakraField.ErrorText>

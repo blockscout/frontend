@@ -4,8 +4,9 @@ import React, { useCallback } from 'react';
 
 import type { MarketplaceApp } from 'types/client/marketplace';
 
-import useIsMobile from 'lib/hooks/useIsMobile';
-import * as mixpanel from 'lib/mixpanel/index';
+import * as mixpanel from 'client/shared/analytics/mixpanel';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+
 import { useColorModeValue } from 'toolkit/chakra/color-mode';
 import { Heading } from 'toolkit/chakra/heading';
 import { IconButton } from 'toolkit/chakra/icon-button';

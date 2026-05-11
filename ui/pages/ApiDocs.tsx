@@ -9,6 +9,7 @@ import EthRpcApi from 'ui/apiDocs/EthRpcApi';
 import GraphQL from 'ui/apiDocs/GraphQL';
 import RestApi from 'ui/apiDocs/RestApi';
 import RpcApi from 'ui/apiDocs/RpcApi';
+import AlertWithExternalHtml from 'ui/shared/alerts/AlertWithExternalHtml';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 const feature = config.features.apiDocs;
@@ -27,6 +28,7 @@ const ApiDocs = () => {
       <PageTitle
         title={ config.meta.seo.enhancedDataEnabled ? `${ config.chain.name } API documentation` : 'API documentation' }
       />
+      { feature.isEnabled && feature.alertMessage ? <AlertWithExternalHtml html={ feature.alertMessage } status="info" showIcon mb={ 6 }/> : null }
       { tabs.length > 0 ? <RoutedTabs tabs={ tabs }/> : <Text>No API documentation available</Text> }
     </>
   );

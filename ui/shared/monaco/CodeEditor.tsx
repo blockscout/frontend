@@ -1,15 +1,16 @@
 import type { SystemStyleObject } from '@chakra-ui/react';
 import { Box, Flex, useToken, Center } from '@chakra-ui/react';
 import type { EditorProps } from '@monaco-editor/react';
-import MonacoEditor from '@monaco-editor/react';
+import MonacoEditor, { loader as monacoLoader } from '@monaco-editor/react';
 import type * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import React from 'react';
 
 import type { File, Monaco } from './types';
-import type { SmartContractExternalLibrary } from 'types/api/contract';
+import type { SmartContractExternalLibrary } from 'client/slices/contract/types/api';
 
-import useIsMobile from 'lib/hooks/useIsMobile';
-import isMetaKey from 'lib/isMetaKey';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+import isMetaKey from 'client/shared/utils/is-meta-key';
+
 import { useColorMode } from 'toolkit/chakra/color-mode';
 import { useClientRect } from 'toolkit/hooks/useClientRect';
 import ErrorBoundary from 'ui/shared/ErrorBoundary';
@@ -26,6 +27,14 @@ import { defScilla, configScilla } from './utils/defScilla';
 import getFullPathOfImportedFile from './utils/getFullPathOfImportedFile';
 import * as themes from './utils/themes';
 import useThemeColors from './utils/useThemeColors';
+
+// Loader defaults to a jsdelivr monaco-editor version bundled in @monaco-editor/loader, not the app dependency.
+monacoLoader.config({
+  paths: {
+    vs: 'https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs',
+  },
+});
+
 const EDITOR_OPTIONS: EditorProps['options'] = {
   readOnly: true,
   minimap: { enabled: false },

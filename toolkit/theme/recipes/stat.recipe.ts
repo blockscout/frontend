@@ -29,7 +29,7 @@ export const recipe = defineSlotRecipe({
     },
     valueText: {
       verticalAlign: 'baseline',
-      fontWeight: 'semibold',
+      fontWeight: '500',
       letterSpacing: 'normal',
       fontFeatureSettings: 'initial',
       fontVariantNumeric: 'initial',
@@ -95,7 +95,7 @@ export const recipe = defineSlotRecipe({
   },
 
   defaultVariants: {
-    size: 'md',
+    size: 'sm',
     orientation: 'horizontal',
   },
 });

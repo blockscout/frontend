@@ -2,8 +2,10 @@ import { Grid } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
+import useApiQuery from 'client/api/hooks/useApiQuery';
+
 import config from 'configs/app';
-import useApiQuery from 'lib/api/useApiQuery';
+import { layerLabels } from 'lib/rollups/utils';
 import { HOMEPAGE_STATS, HOMEPAGE_STATS_MICROSERVICE } from 'stubs/stats';
 import GasInfoTooltip from 'ui/shared/gas/GasInfoTooltip';
 import GasPrice from 'ui/shared/gas/GasPrice';
@@ -11,8 +13,12 @@ import IconSvg from 'ui/shared/IconSvg';
 import StatsWidget from 'ui/shared/stats/StatsWidget';
 import { WEI } from 'ui/shared/value/utils';
 
+import StatsDegraded from './fallbacks/StatsDegraded';
+import { useHomeDataContext } from './homeDataContext';
+import LatestBatchStatsWidget from './LatestBatchStatsWidget';
+import LatestBlockStatsWidget from './LatestBlockStatsWidget';
 import type { HomeStatsItem } from './utils';
-import { isHomeStatsItemEnabled, sortHomeStatsItems } from './utils';
+import { homeStatsWidgetCommonStyles, isHomeStatsItemEnabled, sortHomeStatsItems } from './utils';
 
 const rollupFeature = config.features.rollup;
 const isOptimisticRollup = rollupFeature.isEnabled && rollupFeature.type === 'optimistic';
@@ -21,6 +27,7 @@ const isStatsFeatureEnabled = config.features.stats.isEnabled;
 
 const Stats = () => {
   const [ hasGasTracker, setHasGasTracker ] = React.useState(config.features.gasTracker.isEnabled);
+  const { blocksQuery, latestBatchQuery } = useHomeDataContext();
 
   // data from stats microservice is prioritized over data from stats api
   const statsQuery = useApiQuery('stats:pages_main', {
@@ -38,7 +45,7 @@ const Stats = () => {
     },
   });
 
-  const isPlaceholderData = statsQuery.isPlaceholderData || apiQuery.isPlaceholderData;
+  const isPlaceholderData = statsQuery.isPlaceholderData || apiQuery.isPlaceholderData || blocksQuery?.isPlaceholderData;
 
   React.useEffect(() => {
     if (!isPlaceholderData && !apiQuery.data?.gas_prices?.average) {
@@ -48,44 +55,10 @@ const Stats = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ isPlaceholderData ]);
 
-  const zkEvmLatestBatchQuery = useApiQuery('general:homepage_zkevm_latest_batch', {
-    queryOptions: {
-      placeholderData: 12345,
-      enabled: rollupFeature.isEnabled && rollupFeature.type === 'zkEvm' && config.UI.homepage.stats.includes('latest_batch'),
-    },
-  });
+  const hasStatsError = apiQuery.isError || statsQuery.isError || blocksQuery?.isError || latestBatchQuery?.isError;
 
-  const zkSyncLatestBatchQuery = useApiQuery('general:homepage_zksync_latest_batch', {
-    queryOptions: {
-      placeholderData: 12345,
-      enabled: rollupFeature.isEnabled && rollupFeature.type === 'zkSync' && config.UI.homepage.stats.includes('latest_batch'),
-    },
-  });
-
-  const arbitrumLatestBatchQuery = useApiQuery('general:homepage_arbitrum_latest_batch', {
-    queryOptions: {
-      placeholderData: 12345,
-      enabled: rollupFeature.isEnabled && rollupFeature.type === 'arbitrum' && config.UI.homepage.stats.includes('latest_batch'),
-    },
-  });
-
-  const latestBatchQuery = (() => {
-    if (!rollupFeature.isEnabled || !config.UI.homepage.stats.includes('latest_batch')) {
-      return;
-    }
-
-    switch (rollupFeature.type) {
-      case 'zkEvm':
-        return zkEvmLatestBatchQuery;
-      case 'zkSync':
-        return zkSyncLatestBatchQuery;
-      case 'arbitrum':
-        return arbitrumLatestBatchQuery;
-    }
-  })();
-
-  if (apiQuery.isError || statsQuery.isError || latestBatchQuery?.isError) {
-    return null;
+  if (hasStatsError) {
+    return <StatsDegraded/>;
   }
 
   const isLoading = isPlaceholderData || latestBatchQuery?.isPlaceholderData;
@@ -115,19 +88,17 @@ const Stats = () => {
     return [
       latestBatchQuery?.data !== undefined && {
         id: 'latest_batch' as const,
-        icon: 'txn_batches' as const,
-        label: 'Latest batch',
-        value: latestBatchQuery.data.toLocaleString(),
-        href: { pathname: '/batches' as const },
-        isLoading,
+        component: <LatestBatchStatsWidget isLoading={ Boolean(isLoading) } { ...homeStatsWidgetCommonStyles }/>,
       },
-      (statsData?.total_blocks?.value || apiData?.total_blocks) && {
+      (blocksQuery?.data?.[0]?.height ?? statsData?.total_blocks?.value ?? apiData?.total_blocks) && {
         id: 'total_blocks' as const,
-        icon: 'block' as const,
-        label: statsData?.total_blocks?.title || 'Total blocks',
-        value: Number(statsData?.total_blocks?.value || apiData?.total_blocks).toLocaleString(),
-        href: { pathname: '/blocks' as const },
-        isLoading,
+        component: (
+          <LatestBlockStatsWidget
+            isLoading={ Boolean(isLoading) }
+            fallbackValue={ statsData?.total_blocks?.value ?? apiData?.total_blocks }
+            { ...homeStatsWidgetCommonStyles }
+          />
+        ),
       },
       (statsData?.average_block_time?.value || apiData?.average_block_time) && {
         id: 'average_block_time' as const,
@@ -167,7 +138,7 @@ const Stats = () => {
       apiData?.last_output_root_size && {
         id: 'latest_l1_state_batch' as const,
         icon: 'txn_batches' as const,
-        label: 'Latest L1 state batch',
+        label: `Latest ${ layerLabels.parent } state batch`,
         value: apiData?.last_output_root_size,
         href: { pathname: '/batches' as const },
         isLoading,
@@ -219,16 +190,21 @@ const Stats = () => {
       flexBasis="50%"
       flexGrow={ 1 }
     >
-      { items.map((item, index) => (
-        <StatsWidget
-          key={ item.id }
-          { ...item }
-          isLoading={ isLoading }
-          _last={ items.length % 2 === 1 && index === items.length - 1 ? { gridColumn: 'span 2' } : undefined }/>
-      ),
-      ) }
-    </Grid>
+      { items.map((item) => {
+        if ('component' in item) {
+          return <React.Fragment key={ item.id }>{ item.component }</React.Fragment>;
+        }
 
+        return (
+          <StatsWidget
+            key={ item.id }
+            { ...item }
+            { ...homeStatsWidgetCommonStyles }
+            isLoading={ isLoading }
+          />
+        );
+      }) }
+    </Grid>
   );
 };
 

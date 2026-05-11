@@ -1,6 +1,6 @@
-import type { AddressParam } from './addressParams';
-import type { TokenInfo } from './token';
-import type { Erc20TotalPayload, TokenTransfer } from './tokenTransfer';
+import type { AddressParam } from 'client/slices/address/types/api';
+import type { Erc20TotalPayload, TokenTransfer } from 'client/slices/token-transfer/types/api';
+import type { TokenInfo } from 'client/slices/token/types/api';
 
 export type CeloEpochType = 'L1' | 'L2';
 

@@ -1,2 +1,2 @@
 cd ./deploy/tools/sitemap-generator
-yarn next-sitemap
+node ./node_modules/next-sitemap/bin/next-sitemap.mjs

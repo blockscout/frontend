@@ -3,9 +3,10 @@ import React from 'react';
 
 import type { ItemsProps } from './types';
 import type { SearchResultTx } from 'types/api/search';
-import type * as multichain from 'types/client/multichain-aggregator';
+import type * as multichain from 'types/client/multichainAggregator';
 
-import * as TxEntity from 'ui/shared/entities/tx/TxEntity';
+import * as TxEntity from 'client/slices/tx/components/entity/TxEntity';
+
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import Time from 'ui/shared/time/Time';
 

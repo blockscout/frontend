@@ -8,17 +8,24 @@ import React from 'react';
 
 import type { NextPageWithLayout } from 'nextjs/types';
 
+import type { Route } from 'nextjs-routes';
+import PageMetadata from 'nextjs/PageMetadata';
+
+import getSocketUrl from 'client/api/get-socket-url';
+import useQueryClientConfig from 'client/api/hooks/useQueryClientConfig';
+import { SocketProvider } from 'client/api/socket/context';
+
+import { CsvExportContextProvider } from 'client/features/csv-export/utils/context';
+
+import { initGrowthBook } from 'client/shared/feature-flags/init';
+import useLoadFeatures from 'client/shared/feature-flags/useLoadFeatures';
+import { clientConfig as rollbarConfig, Provider as RollbarProvider } from 'client/shared/monitoring/rollbar';
+
 import config from 'configs/app';
-import getSocketUrl from 'lib/api/getSocketUrl';
-import useQueryClientConfig from 'lib/api/useQueryClientConfig';
 import { AppContextProvider } from 'lib/contexts/app';
 import { FallbackProvider } from 'lib/contexts/fallback';
 import { MarketplaceContextProvider } from 'lib/contexts/marketplace';
 import { SettingsContextProvider } from 'lib/contexts/settings';
-import { initGrowthBook } from 'lib/growthbook/init';
-import useLoadFeatures from 'lib/growthbook/useLoadFeatures';
-import { clientConfig as rollbarConfig, Provider as RollbarProvider } from 'lib/rollbar';
-import { SocketProvider } from 'lib/socket/context';
 import useUsercentricsMarketingConsent from 'lib/usercentrics/useConsent';
 import { Provider as ChakraProvider } from 'toolkit/chakra/provider';
 import { Toaster } from 'toolkit/chakra/toaster';
@@ -31,7 +38,7 @@ const RewardsContextProvider = dynamic(() => import('lib/contexts/rewards').then
 const RewardsLoginModal = dynamic(() => import('ui/rewards/login/RewardsLoginModal'), { ssr: false });
 const RewardsActivityTracker = dynamic(() => import('ui/rewards/RewardsActivityTracker'), { ssr: false });
 
-import 'lib/setLocale';
+import 'client/shared/i18n/set-locale';
 // import 'focus-visible/dist/focus-visible';
 import 'nextjs/global.css';
 
@@ -57,7 +64,7 @@ If you don't understand what this console is for, close it now and stay safe.`;
 
 const CONSOLE_SCAM_WARNING_DELAY_MS = 500;
 
-function MyApp({ Component, pageProps }: AppPropsWithLayout) {
+function MyApp({ Component, pageProps, router }: AppPropsWithLayout) {
 
   const growthBook = initGrowthBook(pageProps.uuid);
   useLoadFeatures(growthBook);
@@ -100,36 +107,41 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
 
   const RewardsProvider = config.features.rewards.isEnabled ? RewardsContextProvider : FallbackProvider;
 
-  const socketUrl = !config.features.opSuperchain.isEnabled ? getSocketUrl() : undefined;
+  const socketUrl = !config.features.multichain.isEnabled ? getSocketUrl() : undefined;
 
   return (
-    <ChakraProvider>
-      <RollbarProvider config={ effectiveRollbarConfig }>
-        <AppErrorBoundary
-          { ...ERROR_SCREEN_STYLES }
-          Container={ AppErrorGlobalContainer }
-        >
-          <QueryClientProvider client={ queryClient }>
-            <Web3Provider>
-              <AppContextProvider pageProps={ pageProps }>
-                <GrowthBookProvider growthbook={ growthBook }>
-                  <SocketProvider url={ socketUrl }>
-                    <RewardsProvider>
-                      <MarketplaceContextProvider>
-                        <SettingsContextProvider>
-                          { content }
-                        </SettingsContextProvider>
-                      </MarketplaceContextProvider>
-                    </RewardsProvider>
-                  </SocketProvider>
-                </GrowthBookProvider>
-                <ReactQueryDevtools buttonPosition="bottom-left" position="left"/>
-              </AppContextProvider>
-            </Web3Provider>
-          </QueryClientProvider>
-        </AppErrorBoundary>
-      </RollbarProvider>
-    </ChakraProvider>
+    <>
+      <PageMetadata pathname={ router.pathname as Route['pathname'] } query={ pageProps.query } apiData={ pageProps.apiData }/>
+      <ChakraProvider>
+        <RollbarProvider config={ effectiveRollbarConfig }>
+          <AppErrorBoundary
+            { ...ERROR_SCREEN_STYLES }
+            Container={ AppErrorGlobalContainer }
+          >
+            <QueryClientProvider client={ queryClient }>
+              <Web3Provider>
+                <AppContextProvider pageProps={ pageProps }>
+                  <GrowthBookProvider growthbook={ growthBook }>
+                    <SocketProvider url={ socketUrl }>
+                      <RewardsProvider>
+                        <MarketplaceContextProvider>
+                          <SettingsContextProvider>
+                            <CsvExportContextProvider>
+                              { content }
+                            </CsvExportContextProvider>
+                          </SettingsContextProvider>
+                        </MarketplaceContextProvider>
+                      </RewardsProvider>
+                    </SocketProvider>
+                  </GrowthBookProvider>
+                  <ReactQueryDevtools buttonPosition="bottom-left" position="left"/>
+                </AppContextProvider>
+              </Web3Provider>
+            </QueryClientProvider>
+          </AppErrorBoundary>
+        </RollbarProvider>
+      </ChakraProvider>
+    </>
   );
 }
 

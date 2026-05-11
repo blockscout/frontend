@@ -4,6 +4,7 @@ import React from 'react';
 import type { NavItemInternal, NavItem, NavGroupItem } from 'types/client/navigation';
 
 import config from 'configs/app';
+import { layerLabels } from 'lib/rollups/utils';
 import { rightLineArrow } from 'toolkit/utils/htmlEntities';
 
 const marketplaceFeature = config.features.marketplace;
@@ -41,7 +42,7 @@ export default function useNavItems(): ReturnType {
       text: 'Blocks',
       nextRoute: { pathname: '/blocks' as const },
       icon: 'navigation/block',
-      isActive: pathname === '/blocks' || pathname === '/block/[height_or_hash]' || pathname === '/chain/[chain_slug]/block/[height_or_hash]',
+      isActive: pathname === '/blocks' || pathname === '/block/[height_or_hash]' || pathname === '/chain/[chain_slug_or_id]/block/[height_or_hash]',
     };
     const txs: NavItem | null = {
       text: 'Transactions',
@@ -51,7 +52,7 @@ export default function useNavItems(): ReturnType {
         // sorry, but this is how it was designed
         (pathname === '/txs' && (!config.features.zetachain.isEnabled || !tab || !tab.includes('cctx'))) ||
         pathname === '/tx/[hash]' ||
-        pathname === '/chain/[chain_slug]/tx/[hash]',
+        pathname === '/chain/[chain_slug_or_id]/tx/[hash]',
     };
     const cctxs: NavItem | null = config.features.zetachain.isEnabled ? {
       text: 'Cross-chain transactions',
@@ -75,7 +76,7 @@ export default function useNavItems(): ReturnType {
       text: 'User operations',
       nextRoute: { pathname: '/ops' as const },
       icon: 'navigation/user_op',
-      isActive: pathname === '/ops' || pathname === '/op/[hash]' || pathname === '/chain/[chain_slug]/op/[hash]',
+      isActive: pathname === '/ops' || pathname === '/op/[hash]' || pathname === '/chain/[chain_slug_or_id]/op/[hash]',
     } : null;
 
     const verifiedContracts: NavItem | null =
@@ -98,13 +99,13 @@ export default function useNavItems(): ReturnType {
       isActive: pathname === '/validators' || pathname === '/validators/[id]',
     } : null;
     const rollupDeposits = {
-      text: `Deposits (L1${ rightLineArrow }L2)`,
+      text: `Deposits (${ layerLabels.parent }${ rightLineArrow }${ layerLabels.current })`,
       nextRoute: { pathname: '/deposits' as const },
       icon: 'navigation/deposits',
       isActive: pathname === '/deposits',
     };
     const rollupWithdrawals = {
-      text: `Withdrawals (L2${ rightLineArrow }L1)`,
+      text: `Withdrawals (${ layerLabels.current }${ rightLineArrow }${ layerLabels.parent })`,
       nextRoute: { pathname: '/withdrawals' as const },
       icon: 'navigation/withdrawals',
       isActive: pathname === '/withdrawals',
@@ -152,7 +153,6 @@ export default function useNavItems(): ReturnType {
     if (rollupFeature.isEnabled && (
       rollupFeature.type === 'optimistic' ||
       rollupFeature.type === 'arbitrum' ||
-      rollupFeature.type === 'zkEvm' ||
       rollupFeature.type === 'scroll'
     )) {
       blockchainNavItems = [
@@ -271,6 +271,12 @@ export default function useNavItems(): ReturnType {
           icon: 'navigation/chain_stats',
           isActive: pathname.startsWith('/stats'),
         },
+        config.features.multichain.isEnabled && {
+          text: 'Ecosystems',
+          nextRoute: { pathname: '/ecosystems' as const },
+          icon: 'navigation/ecosystems',
+          isActive: pathname.startsWith('/ecosystems'),
+        },
         megaEthFeature.isEnabled && megaEthFeature.socketUrl.metrics && {
           text: 'Uptime',
           nextRoute: { pathname: '/uptime' as const },
@@ -288,6 +294,12 @@ export default function useNavItems(): ReturnType {
           nextRoute: { pathname: '/gas-tracker' as const },
           icon: 'navigation/gas_tracker',
           isActive: pathname.startsWith('/gas-tracker'),
+        },
+        config.features.crossChainTxs.isEnabled && {
+          text: 'ICTT users',
+          nextRoute: { pathname: '/ictt-users' as const },
+          icon: 'navigation/ictt_users',
+          isActive: pathname.startsWith('/ictt-users'),
         },
       ].filter(Boolean);
 
@@ -312,7 +324,7 @@ export default function useNavItems(): ReturnType {
     } : null;
 
     const otherNavItems: Array<NavItem> | Array<Array<NavItem>> = [
-      config.features.opSuperchain.isEnabled ? {
+      config.features.multichain.isEnabled ? {
         text: 'Verify contract',
         url: 'https://vera.blockscout.com',
       } : {

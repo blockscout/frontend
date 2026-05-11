@@ -1,6 +1,6 @@
 import type { CctxListItem } from '@blockscout/zetachain-cctx-types';
 import type * as api from 'types/api/search';
-import type * as multichain from 'types/client/multichain-aggregator';
+import type * as multichain from 'types/client/multichainAggregator';
 
 export interface SearchResultFutureBlock {
   type: 'block';

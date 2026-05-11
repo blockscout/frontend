@@ -4,8 +4,10 @@ import React from 'react';
 
 import type { EntityTag as TEntityTag, EntityTagType } from 'ui/shared/EntityTags/types';
 
-import getQueryParamString from 'lib/router/getQueryParamString';
-import { TOP_ADDRESS } from 'stubs/address';
+import { TOP_ADDRESS } from 'client/slices/address/stubs/address';
+
+import getQueryParamString from 'client/shared/router/get-query-param-string';
+
 import { generateListStub } from 'stubs/utils';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import AddressesLabelSearchListItem from 'ui/addressesLabelSearch/AddressesLabelSearchListItem';

@@ -1,11 +1,14 @@
-import { Flex, Separator, Box, HStack } from '@chakra-ui/react';
+import { Flex, Box, HStack } from '@chakra-ui/react';
 import React from 'react';
+
+import CsvExportDownloads from 'client/features/csv-export/components/downloads/CsvExportDownloads';
+
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+import * as cookies from 'client/shared/storage/cookies';
+import useProvider from 'client/shared/web3/useProvider';
 
 import config from 'configs/app';
 import { useAppContext } from 'lib/contexts/app';
-import * as cookies from 'lib/cookies';
-import useIsMobile from 'lib/hooks/useIsMobile';
-import useProvider from 'lib/web3/useProvider';
 import { CONTENT_MAX_WIDTH } from 'ui/shared/layout/utils';
 import NetworkAddToWallet from 'ui/shared/NetworkAddToWallet';
 
@@ -27,7 +30,7 @@ const TopBar = () => {
     web3.data?.wallet &&
     config.chain.rpcUrls.length &&
     config.features.web3Wallet.isEnabled &&
-    !config.features.opSuperchain.isEnabled &&
+    !config.features.multichain.isEnabled &&
     !isMobile,
   );
   const hasDeFiDropdown = Boolean(config.features.deFiDropdown.isEnabled);
@@ -49,12 +52,12 @@ const TopBar = () => {
         maxW={ `${ CONTENT_MAX_WIDTH }px` }
       >
         <HStack gap={ 0 } fontSize="xs">
-          { Boolean(config.UI.featuredNetworks.items) && <NetworkMenu/> }
-          { !config.features.opSuperchain.isEnabled ? <TopBarStats/> : <div/> }
+          { Boolean(config.UI.featuredNetworks.items || config.features.multichain.isEnabled) && <NetworkMenu/> }
+          { !config.features.multichain.isEnabled ? <TopBarStats/> : <div/> }
         </HStack>
         <HStack
           alignItems="center"
-          separator={ <Separator mx={{ base: 2, lg: 3 }} height={ 4 }/> }
+          gap={ 3 }
         >
           { (hasAddChainButton || hasDeFiDropdown) && (
             <HStack>
@@ -62,7 +65,10 @@ const TopBar = () => {
               { hasDeFiDropdown && <DeFiDropdown/> }
             </HStack>
           ) }
-          <Settings/>
+          <HStack gap={ 0 }>
+            <CsvExportDownloads/>
+            <Settings/>
+          </HStack>
         </HStack>
       </Flex>
     </Box>

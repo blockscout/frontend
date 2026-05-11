@@ -23,11 +23,11 @@ export default defineConfig({
   },
   resolve: {
     alias: {
+      client: resolve(__dirname, '../../../client'),
       configs: resolve(__dirname, '../../../configs'),
       lib: resolve(__dirname, '../../../lib'),
       toolkit: resolve(__dirname, '../../../toolkit'),
       types: resolve(__dirname, '../../../types'),
     },
-    preserveSymlinks: true,
   },
 });

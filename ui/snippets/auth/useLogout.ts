@@ -4,12 +4,14 @@ import React from 'react';
 
 import type { Route } from 'nextjs-routes';
 
+import useApiFetch from 'client/api/hooks/useApiFetch';
+import { getResourceKey } from 'client/api/hooks/useApiQuery';
+
+import * as mixpanel from 'client/shared/analytics/mixpanel';
+import * as cookies from 'client/shared/storage/cookies';
+
 import config from 'configs/app';
-import useApiFetch from 'lib/api/useApiFetch';
-import { getResourceKey } from 'lib/api/useApiQuery';
 import { useRewardsContext } from 'lib/contexts/rewards';
-import * as cookies from 'lib/cookies';
-import * as mixpanel from 'lib/mixpanel';
 import { toaster } from 'toolkit/chakra/toaster';
 
 const PROTECTED_ROUTES: Array<Route['pathname']> = [

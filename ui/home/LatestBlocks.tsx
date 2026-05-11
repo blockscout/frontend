@@ -1,28 +1,29 @@
-import { chakra, Box, Flex, Text, VStack } from '@chakra-ui/react';
-import { useQueryClient } from '@tanstack/react-query';
+import { chakra, Box, Flex, Text, VStack, HStack } from '@chakra-ui/react';
 import { upperFirst } from 'es-toolkit';
 import React from 'react';
 
-import type { SocketMessage } from 'lib/socket/types';
-import type { Block } from 'types/api/block';
+import type { Block } from 'client/slices/block/types/api';
 
 import { route } from 'nextjs-routes';
 
+import useApiQuery from 'client/api/hooks/useApiQuery';
+
+import getChainUtilizationParams from 'client/shared/chain/get-chain-utilization-params';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+import useInitialList from 'client/shared/lists/useInitialList';
+
 import config from 'configs/app';
-import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
-import useInitialList from 'lib/hooks/useInitialList';
-import useIsMobile from 'lib/hooks/useIsMobile';
-import getNetworkUtilizationParams from 'lib/networks/getNetworkUtilizationParams';
-import useSocketChannel from 'lib/socket/useSocketChannel';
-import useSocketMessage from 'lib/socket/useSocketMessage';
-import { BLOCK } from 'stubs/block';
 import { HOMEPAGE_STATS } from 'stubs/stats';
 import { Heading } from 'toolkit/chakra/heading';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { nbsp } from 'toolkit/utils/htmlEntities';
+import FallbackRpcIcon from 'ui/shared/fallbacks/FallbackRpcIcon';
 
+import LatestBlocksDegraded from './fallbacks/LatestBlocksDegraded';
+import { useHomeRpcDataContext } from './fallbacks/rpcDataContext';
+import { useHomeDataContext } from './homeDataContext';
 import LatestBlocksItem from './LatestBlocksItem';
 
 const LatestBlocks = () => {
@@ -34,18 +35,13 @@ const LatestBlocks = () => {
   } else {
     blocksMaxCount = isMobile ? 2 : 3;
   }
-  const { data, isPlaceholderData, isError } = useApiQuery('general:homepage_blocks', {
-    queryOptions: {
-      placeholderData: Array(blocksMaxCount).fill(BLOCK),
-    },
-  });
-  const initialList = useInitialList({
-    data: data ?? [],
+  const { blocksQuery } = useHomeDataContext();
+  const initialList = useInitialList<Block>({
+    data: blocksQuery?.data ?? [],
     idFn: (block) => block.height,
-    enabled: !isPlaceholderData,
+    enabled: Boolean(blocksQuery && !blocksQuery.isPlaceholderData),
   });
 
-  const queryClient = useQueryClient();
   const statsQueryResult = useApiQuery('general:stats', {
     queryOptions: {
       refetchOnMount: false,
@@ -53,62 +49,45 @@ const LatestBlocks = () => {
     },
   });
 
-  const handleNewBlockMessage: SocketMessage.NewBlock['handler'] = React.useCallback((payload) => {
-    queryClient.setQueryData(getResourceKey('general:homepage_blocks'), (prevData: Array<Block> | undefined) => {
+  const rpcDataContext = useHomeRpcDataContext();
+  const isRpcData = rpcDataContext.isEnabled && !rpcDataContext.isLoading && !rpcDataContext.isError && rpcDataContext.subscriptions.includes('latest-blocks');
 
-      const newData = prevData ? [ ...prevData ] : [];
+  const content = (() => {
+    if (blocksQuery?.isError) {
+      return <LatestBlocksDegraded maxNum={ blocksMaxCount }/>;
+    }
+    if (blocksQuery?.data && blocksQuery.data.length > 0) {
+      const dataToShow = blocksQuery.data.slice(0, blocksMaxCount);
 
-      if (newData.some((block => block.height === payload.block.height))) {
-        return newData;
-      }
+      return (
+        <>
+          <VStack gap={ 2 } mb={ 3 } overflow="hidden" alignItems="stretch">
+            { dataToShow.map(((block, index) => (
+              <LatestBlocksItem
+                key={ block.height + (blocksQuery.isPlaceholderData ? String(index) : '') }
+                block={ block }
+                isLoading={ blocksQuery.isPlaceholderData }
+                animation={ initialList.getAnimationProp(block) }
+              />
+            ))) }
+          </VStack>
+          <Flex justifyContent="center">
+            <Link textStyle="sm" href={ route({ pathname: '/blocks' }) } loading={ blocksQuery.isPlaceholderData }>View all blocks</Link>
+          </Flex>
+        </>
+      );
+    }
+    return <Box textStyle="sm">No latest blocks found.</Box>;
+  })();
 
-      return [ payload.block, ...newData ].sort((b1, b2) => b2.height - b1.height).slice(0, blocksMaxCount);
-    });
-  }, [ queryClient, blocksMaxCount ]);
-
-  const channel = useSocketChannel({
-    topic: 'blocks:new_block',
-    isDisabled: isPlaceholderData || isError,
-  });
-  useSocketMessage({
-    channel,
-    event: 'new_block',
-    handler: handleNewBlockMessage,
-  });
-
-  let content;
-
-  if (isError) {
-    content = <Text>No data. Please reload the page.</Text>;
-  }
-
-  if (data) {
-    const dataToShow = data.slice(0, blocksMaxCount);
-
-    content = (
-      <>
-        <VStack gap={ 2 } mb={ 3 } overflow="hidden" alignItems="stretch">
-          { dataToShow.map(((block, index) => (
-            <LatestBlocksItem
-              key={ block.height + (isPlaceholderData ? String(index) : '') }
-              block={ block }
-              isLoading={ isPlaceholderData }
-              animation={ initialList.getAnimationProp(block) }
-            />
-          ))) }
-        </VStack>
-        <Flex justifyContent="center">
-          <Link textStyle="sm" href={ route({ pathname: '/blocks' }) }>View all blocks</Link>
-        </Flex>
-      </>
-    );
-  }
-
-  const networkUtilization = getNetworkUtilizationParams(statsQueryResult.data?.network_utilization_percentage ?? 0);
+  const networkUtilization = getChainUtilizationParams(statsQueryResult.data?.network_utilization_percentage ?? 0);
 
   return (
     <Box width={{ base: '100%', lg: '280px' }} flexShrink={ 0 }>
-      <Heading level="3">Latest blocks</Heading>
+      <HStack alignItems="center">
+        <Heading level="3">Latest blocks</Heading>
+        { isRpcData && <FallbackRpcIcon/> }
+      </HStack>
       { statsQueryResult.data?.network_utilization_percentage !== undefined && (
         <Skeleton loading={ statsQueryResult.isPlaceholderData } mt={ 2 } display="inline-block" textStyle="sm">
           <Text as="span">

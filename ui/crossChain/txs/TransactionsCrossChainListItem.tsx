@@ -6,6 +6,9 @@ import type { InterchainMessage } from '@blockscout/interchain-indexer-types';
 
 import { route } from 'nextjs-routes';
 
+import AddressEntityInterchain from 'client/slices/address/components/entity/AddressEntityInterchain';
+import TxEntityInterchain from 'client/slices/tx/components/entity/TxEntityInterchain';
+
 import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';
 import { Link } from 'toolkit/chakra/link';
@@ -13,9 +16,7 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import { mdash } from 'toolkit/utils/htmlEntities';
 import CrossChainBridgeLink from 'ui/shared/crossChain/CrossChainBridgeLink';
 import CrossChainFromToTag from 'ui/shared/crossChain/CrossChainFromToTag';
-import AddressEntityInterchain from 'ui/shared/entities/address/AddressEntityInterchain';
 import CrossChainMessageEntity from 'ui/shared/entities/crossChainMessage/CrossChainMessageEntity';
-import TxEntityInterchain from 'ui/shared/entities/tx/TxEntityInterchain';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import CrossChainTxsStatusTag from 'ui/shared/statusTag/CrossChainTxsStatusTag';
 import TextSeparator from 'ui/shared/TextSeparator';
@@ -66,7 +67,7 @@ const TransactionsCrossChainListItem = ({ data, isLoading, rowGap = 3, currentAd
           <Time timestamp={ timestamp } format="lll_s"/>
         </Skeleton>
       ) }
-      <Grid templateColumns="120px 1fr" columnGap={ 2 } rowGap={ rowGap }>
+      <Grid templateColumns="120px minmax(0, 1fr)" columnGap={ 2 } rowGap={ rowGap }>
         <Skeleton loading={ isLoading }>
           Source tx
         </Skeleton>

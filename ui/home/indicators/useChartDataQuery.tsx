@@ -1,8 +1,9 @@
-import type { TimeChartData } from 'toolkit/components/charts/types';
+import type { LineChartData } from 'toolkit/components/charts/line/types';
 import type { ChainIndicatorId } from 'types/homepage';
 
+import useApiQuery from 'client/api/hooks/useApiQuery';
+
 import config from 'configs/app';
-import useApiQuery from 'lib/api/useApiQuery';
 
 import { getChartData } from './utils/chart';
 
@@ -15,7 +16,7 @@ const isStatsFeatureEnabled = config.features.stats.isEnabled;
 export type UseFetchChartDataResult = {
   isError: boolean;
   isPending: boolean;
-  data: TimeChartData;
+  data: LineChartData;
 };
 
 export default function useChartDataQuery(indicatorId: ChainIndicatorId): UseFetchChartDataResult {

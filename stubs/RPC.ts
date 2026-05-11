@@ -1,8 +1,8 @@
 import type { Chain, GetBlockReturnType, GetTransactionReturnType, TransactionReceipt, Withdrawal } from 'viem';
 
-import { ADDRESS_HASH } from './addressParams';
-import { BLOCK_HASH } from './block';
-import { TX_HASH } from './tx';
+import { ADDRESS_HASH } from 'client/slices/address/stubs/address-params';
+import { BLOCK_HASH } from 'client/slices/block/stubs/block';
+import { TX_HASH } from 'client/slices/tx/stubs/tx';
 
 export const WITHDRAWAL: Withdrawal = {
   index: '0x1af95d9',

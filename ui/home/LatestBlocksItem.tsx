@@ -2,17 +2,19 @@ import { Box, Flex, Grid } from '@chakra-ui/react';
 import { capitalize } from 'es-toolkit';
 import React from 'react';
 
-import type { Block } from 'types/api/block';
+import type { Block } from 'client/slices/block/types/api';
+
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
+import getBlockTotalReward from 'client/slices/block/utils/get-block-total-reward';
+
+import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-title';
+import { currencyUnits } from 'client/shared/chain/units';
 
 import config from 'configs/app';
-import getBlockTotalReward from 'lib/block/getBlockTotalReward';
-import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
-import { currencyUnits } from 'lib/units';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { thinsp } from 'toolkit/utils/htmlEntities';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
-import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import IconSvg from 'ui/shared/IconSvg';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import SimpleValue from 'ui/shared/value/SimpleValue';
@@ -77,7 +79,7 @@ const LatestBlocksItem = ({ block, isLoading, animation }: Props) => {
 
         { !config.features.rollup.isEnabled && !config.UI.views.block.hiddenFields?.miner && (
           <>
-            <Skeleton loading={ isLoading }>{ capitalize(getNetworkValidatorTitle()) }</Skeleton>
+            <Skeleton loading={ isLoading }>{ capitalize(getChainValidatorTitle()) }</Skeleton>
             <AddressEntity
               address={ block.miner }
               isLoading={ isLoading }

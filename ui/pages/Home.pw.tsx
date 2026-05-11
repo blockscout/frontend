@@ -1,11 +1,14 @@
 import type { Locator } from '@playwright/test';
 import React from 'react';
+import type { PublicRpcSchema, RpcTransaction } from 'viem';
 
-import * as blockMock from 'mocks/blocks/block';
+import * as blockMock from 'client/slices/block/mocks/block';
+import * as txMock from 'client/slices/tx/mocks/tx';
+
+import config from 'configs/app';
 import * as dailyTxsMock from 'mocks/stats/daily_txs';
 import * as statsMock from 'mocks/stats/index';
 import * as statsMainMock from 'mocks/stats/main';
-import * as txMock from 'mocks/txs/tx';
 import { test, expect, devices } from 'playwright/lib';
 import * as pwConfig from 'playwright/utils/config';
 
@@ -77,5 +80,94 @@ test.describe('mobile', () => {
       mask: [ page.locator(pwConfig.adsBannerSelector) ],
       maskColor: pwConfig.maskColor,
     });
+  });
+});
+
+test('degradation view', async({ render, mockApiResponse, mockRpcResponse, page }) => {
+  test.slow();
+
+  const txs: Array<RpcTransaction> = Array(10)
+    .fill(blockMock.rpcBlockWithTxsInfo.transactions[0])
+    .map((tx, index) => ({
+      ...tx,
+      hash: tx.hash.slice(0, -1) + index.toString(),
+    }));
+
+  await mockApiResponse('stats:pages_main', null as never, { status: 500 });
+  await mockApiResponse('general:stats', null as never, { status: 500 });
+  await mockApiResponse('general:homepage_blocks', null as never, { status: 500 });
+  await mockApiResponse('general:homepage_txs', null as never, { status: 500 });
+  await mockApiResponse('general:stats_charts_txs', null as never, { status: 500 });
+
+  await mockRpcResponse([
+    {
+      Method: 'eth_getBlockByNumber',
+      Parameters: [ 'latest', true ],
+      ReturnType: {
+        ...blockMock.rpcBlockWithTxsInfo,
+        transactions: txs,
+      },
+    },
+    {
+      Method: 'eth_gasPrice',
+      ReturnType: '0x3f011adb',
+    },
+    ...txs.slice(0, 5).map((tx) => ({
+      Method: 'eth_getTransactionReceipt',
+      Parameters: [ tx.hash ],
+      ReturnType: {
+        ...txMock.rpcTxReceipt,
+        transactionHash: tx.hash,
+      },
+    } satisfies PublicRpcSchema[number])),
+  ]);
+
+  const component = await render(<Home/>);
+
+  await page.waitForResponse(config.chain.rpcUrls[0]);
+  await page.waitForResponse(config.chain.rpcUrls[0]);
+
+  // wait for receipt requests
+  for (const url of Array(5).fill(config.chain.rpcUrls[0])) {
+    await page.waitForResponse(url);
+  }
+
+  await expect(component).toHaveScreenshot({
+    mask: [ page.locator(pwConfig.adsBannerSelector) ],
+    maskColor: pwConfig.maskColor,
+  });
+});
+
+test('error view', async({ render, mockApiResponse, mockRpcResponse, page }) => {
+  test.slow();
+  await mockApiResponse('stats:pages_main', null as never, { status: 500 });
+  await mockApiResponse('general:stats', null as never, { status: 500 });
+  await mockApiResponse('general:homepage_blocks', null as never, { status: 500 });
+  await mockApiResponse('general:homepage_txs', null as never, { status: 500 });
+  await mockApiResponse('general:stats_charts_txs', null as never, { status: 500 });
+  await mockRpcResponse([
+    {
+      Method: 'eth_getBlockByNumber',
+      Parameters: [ 'latest', true ],
+      ReturnType: blockMock.rpcBlockBase,
+      status: 500,
+    },
+    {
+      Method: 'eth_gasPrice',
+      ReturnType: '0x3f011adb',
+      status: 500,
+    },
+  ]);
+
+  const component = await render(<Home/>);
+  // wait for all RPC requests
+  // (1 initial request + 3 retries) * 2 resources = 8 requests
+  for (const url of Array(8).fill(config.chain.rpcUrls[0])) {
+    await page.waitForResponse(url);
+  }
+
+  await expect(component).toHaveScreenshot({
+    mask: [ page.locator(pwConfig.adsBannerSelector) ],
+    maskColor: pwConfig.maskColor,
   });
 });

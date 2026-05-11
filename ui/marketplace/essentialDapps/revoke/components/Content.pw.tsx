@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { hash as addressHash } from 'mocks/address/address';
+import { hash as addressHash } from 'client/slices/address/mocks/address';
+
 import * as revokeMock from 'mocks/essentialDapps/revoke';
-import * as opSuperchainMock from 'mocks/multichain/opSuperchain';
+import * as chainDataMock from 'mocks/multichain/chains';
 import type { TestFnArgs } from 'playwright/lib';
 import { test, expect } from 'playwright/lib';
 
@@ -11,7 +12,7 @@ import Content from './Content';
 
 test('base view +@dark-mode +@mobile', async({ render, mockAssetResponse }: TestFnArgs) => {
   const props = {
-    selectedChain: opSuperchainMock.chainDataA,
+    selectedChain: chainDataMock.chainA,
     searchAddress: addressHash,
     isAddressMatch: false,
     coinBalanceQuery: {
@@ -23,7 +24,7 @@ test('base view +@dark-mode +@mobile', async({ render, mockAssetResponse }: Test
   };
 
   await mockAssetResponse(revokeMock.allowances[0].tokenIcon as string, './playwright/mocks/image_s.jpg');
-  await mockAssetResponse(opSuperchainMock.chainDataA.logo as string, './playwright/mocks/image_md.jpg');
+  await mockAssetResponse(chainDataMock.chainA.logo as string, './playwright/mocks/image_md.jpg');
 
   const component = await render(<Content { ...props }/>);
 

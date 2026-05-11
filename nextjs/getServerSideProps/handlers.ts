@@ -4,9 +4,10 @@ import type { AdBannerProviders } from 'types/client/adProviders';
 
 import type { Route } from 'nextjs-routes';
 
+import type * as metadata from 'client/shared/metadata';
+import * as cookies from 'client/shared/storage/cookies';
+
 import config from 'configs/app';
-import * as cookies from 'lib/cookies';
-import type * as metadata from 'lib/metadata';
 
 import { isLikelyHumanBrowser, isKnownBotRequest } from '../utils/checkRealBrowser';
 
@@ -42,7 +43,7 @@ Promise<GetServerSidePropsResult<Props<Pathname>>> => {
   let uuid = cookies.getFromCookieString(req.headers.cookie || '', cookies.NAMES.UUID);
   if (!uuid && appProfile !== 'private') {
     uuid = crypto.randomUUID();
-    res.setHeader('Set-Cookie', `${ cookies.NAMES.UUID }=${ uuid }`);
+    res.setHeader('Set-Cookie', `${ cookies.NAMES.UUID }=${ uuid }; Path=/${ config.app.protocol === 'https' ? '; Secure' : '' }`);
   }
 
   const isTrackingDisabled = process.env.DISABLE_TRACKING === 'true' || appProfile === 'private';

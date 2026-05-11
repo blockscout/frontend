@@ -6,7 +6,7 @@ export const FOOTER_LINKS: Array<CustomLinksGroup> = [
     links: [
       {
         text: 'Advertise',
-        url: 'https://coinzilla.com/',
+        url: 'https://sevio.com/',
       },
       {
         text: 'Staking',

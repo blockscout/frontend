@@ -7,11 +7,11 @@ import PageNextJs from 'nextjs/PageNextJs';
 import config from 'configs/app';
 
 const Tokens = dynamic(() => {
-  if (config.features.opSuperchain.isEnabled) {
-    return import('ui/optimismSuperchain/tokens/OpSuperchainTokens');
+  if (config.features.multichain.isEnabled) {
+    return import('ui/multichain/tokens/MultichainTokens');
   }
 
-  return import('ui/pages/Tokens');
+  return import('client/slices/token/pages/index/Tokens');
 }, { ssr: false });
 
 const Page: NextPage = () => {

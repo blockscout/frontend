@@ -2,8 +2,11 @@ import { Box, chakra, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import useApiQuery from 'lib/api/useApiQuery';
-import getQueryParamString from 'lib/router/getQueryParamString';
+import useApiQuery from 'client/api/hooks/useApiQuery';
+
+import getQueryParamString from 'client/shared/router/get-query-param-string';
+
+import { layerLabels } from 'lib/rollups/utils';
 import { ARBITRUM_L2_TXN_WITHDRAWALS_ITEM } from 'stubs/arbitrumL2';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import { FormFieldError } from 'toolkit/components/forms/components/FormFieldError';
@@ -75,7 +78,9 @@ const ArbitrumL2TxnWithdrawals = () => {
   return (
     <>
       <PageTitle title="Transaction withdrawals" withTextAd/>
-      <Text>L2 to L1 message relayer: search for your L2 transaction to execute a manual withdrawal.</Text>
+      <Text>
+        { layerLabels.current } to { layerLabels.parent } message relayer: search for your { layerLabels.current } transaction to execute a manual withdrawal.
+      </Text>
       <chakra.form onSubmit={ handleSubmit } noValidate>
         <FilterInput
           name="tx_hash"

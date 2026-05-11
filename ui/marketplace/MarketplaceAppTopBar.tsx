@@ -5,10 +5,11 @@ import type { MarketplaceApp } from 'types/client/marketplace';
 
 import { route } from 'nextjs-routes';
 
+import * as mixpanel from 'client/shared/analytics/mixpanel';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+
 import config from 'configs/app';
 import { useAppContext } from 'lib/contexts/app';
-import useIsMobile from 'lib/hooks/useIsMobile';
-import * as mixpanel from 'lib/mixpanel/index';
 import { Link } from 'toolkit/chakra/link';
 import { BackToButton } from 'toolkit/components/buttons/BackToButton';
 import { makePrettyLink } from 'toolkit/utils/url';

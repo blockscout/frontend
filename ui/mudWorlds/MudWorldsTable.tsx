@@ -2,7 +2,8 @@ import React from 'react';
 
 import type { MudWorldItem } from 'types/api/mudWorlds';
 
-import { currencyUnits } from 'lib/units';
+import { currencyUnits } from 'client/shared/chain/units';
+
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 
 import MudWorldsTableItem from './MudWorldsTableItem';

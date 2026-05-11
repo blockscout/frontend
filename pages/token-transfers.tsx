@@ -7,11 +7,11 @@ import PageNextJs from 'nextjs/PageNextJs';
 import config from 'configs/app';
 
 const TokenTransfers = dynamic(() => {
-  if (config.features.opSuperchain.isEnabled) {
-    return import('ui/optimismSuperchain/tokenTransfers/OpSuperchainTokenTransfers');
+  if (config.features.multichain.isEnabled) {
+    return import('ui/multichain/tokenTransfers/MultichainTokenTransfers');
   }
 
-  return import('ui/pages/TokenTransfers');
+  return import('client/slices/token-transfer/pages/index/TokenTransfers');
 }, { ssr: false });
 
 const Page: NextPage = () => {

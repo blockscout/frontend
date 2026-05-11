@@ -1,10 +1,12 @@
 /* eslint-disable max-len */
 import React from 'react';
 
-import type { TokenInfo } from 'types/api/token';
+import type { TokenInfo } from 'client/slices/token/types/api';
 
-import { publicTag, privateTag, watchlistName } from 'mocks/address/tag';
-import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
+import * as TokenEntity from 'client/slices/token/components/entity/TokenEntity';
+
+import { publicTag, privateTag, watchlistName } from 'client/features/account/mocks/address-tags';
+
 import EntityTags from 'ui/shared/EntityTags/EntityTags';
 import formatUserTags from 'ui/shared/EntityTags/formatUserTags';
 import IconSvg from 'ui/shared/IconSvg';

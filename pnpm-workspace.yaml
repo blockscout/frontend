@@ -1,0 +1,15 @@
+packages:
+  - 'toolkit/package'
+  - 'deploy/tools/envs-validator'
+  - 'deploy/tools/feature-reporter'
+  - 'deploy/tools/favicon-generator'
+  - 'deploy/tools/sitemap-generator'
+  - 'deploy/tools/multichain-config-generator'
+  - 'deploy/tools/essential-dapps-chains-config-generator'
+  - 'deploy/tools/llms-txt-generator'
+  - 'deploy/tools/affected-tests'
+
+# pnpm 10+: allowlisted dependency install scripts (required for native addons such as @ipshipyard/node-datachannel).
+onlyBuiltDependencies:
+  - '@ipshipyard/node-datachannel'
+  - 'sharp'

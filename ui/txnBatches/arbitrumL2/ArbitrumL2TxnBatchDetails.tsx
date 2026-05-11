@@ -7,8 +7,14 @@ import type { ArbitrumL2TxnBatch } from 'types/api/arbitrumL2';
 
 import { route } from 'nextjs-routes';
 
-import type { ResourceError } from 'lib/api/resources';
-import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
+import type { ResourceError } from 'client/api/resources';
+
+import BlockEntityL1 from 'client/features/rollup/common/components/BlockEntityL1';
+import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
+
+import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
+
+import { layerLabels } from 'lib/rollups/utils';
 import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
@@ -18,8 +24,6 @@ import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
-import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
-import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import PrevNext from 'ui/shared/PrevNext';
 
@@ -66,7 +70,7 @@ const ArbitrumL2TxnBatchDetails = ({ query }: Props) => {
     >
       <DetailedInfo.ItemLabel
         isLoading={ isPlaceholderData }
-        hint="Batch number indicates the length of batches produced by grouping L2 blocks to be proven on L1"
+        hint={ `Batch number indicates the length of batches produced by grouping ${ layerLabels.current } blocks to be proven on ${ layerLabels.parent }` }
       >
         Txn batch number
       </DetailedInfo.ItemLabel>
@@ -86,7 +90,7 @@ const ArbitrumL2TxnBatchDetails = ({ query }: Props) => {
 
       <DetailedInfo.ItemLabel
         isLoading={ isPlaceholderData }
-        hint="Date and time at which batch is submitted to L1"
+        hint={ `Date and time at which batch is submitted to ${ layerLabels.parent }` }
       >
         Timestamp
       </DetailedInfo.ItemLabel>
@@ -111,7 +115,7 @@ const ArbitrumL2TxnBatchDetails = ({ query }: Props) => {
 
       <DetailedInfo.ItemLabel
         isLoading={ isPlaceholderData }
-        hint="Number of L2 blocks in this batch"
+        hint={ `Number of ${ layerLabels.current } blocks in this batch` }
       >
         Blocks
       </DetailedInfo.ItemLabel>
@@ -123,9 +127,9 @@ const ArbitrumL2TxnBatchDetails = ({ query }: Props) => {
 
       <DetailedInfo.ItemLabel
         isLoading={ isPlaceholderData }
-        hint="Hash of L1 transaction in which transactions was committed"
+        hint={ `Hash of ${ layerLabels.parent } transaction in which transactions was committed` }
       >
-        L1 transaction hash
+        { layerLabels.parent } transaction hash
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
         <TxEntityL1
@@ -138,9 +142,9 @@ const ArbitrumL2TxnBatchDetails = ({ query }: Props) => {
 
       <DetailedInfo.ItemLabel
         isLoading={ isPlaceholderData }
-        hint="Heigh of L1 block which includes L1 transactions"
+        hint={ `Height of ${ layerLabels.parent } block which includes ${ layerLabels.parent } transactions` }
       >
-        L1 block
+        { layerLabels.parent } block
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
         <BlockEntityL1

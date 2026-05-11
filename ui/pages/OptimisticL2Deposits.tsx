@@ -1,7 +1,9 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery from 'client/api/hooks/useApiQuery';
+
+import { layerLabels } from 'lib/rollups/utils';
 import { L2_DEPOSIT_ITEM } from 'stubs/L2';
 import { generateListStub } from 'stubs/utils';
 import { Skeleton } from 'toolkit/chakra/skeleton';
@@ -71,7 +73,7 @@ const OptimisticL2Deposits = () => {
 
   return (
     <>
-      <PageTitle title={ `Deposits (L1${ nbsp }${ rightLineArrow }${ nbsp }L2)` } withTextAd/>
+      <PageTitle title={ `Deposits (${ layerLabels.parent }${ nbsp }${ rightLineArrow }${ nbsp }${ layerLabels.current })` } withTextAd/>
       <DataListDisplay
         isError={ isError }
         itemsNum={ data?.items?.length }

@@ -3,8 +3,10 @@ import React, { useCallback } from 'react';
 
 import type { WatchlistAddress } from 'types/api/account';
 
-import useApiFetch from 'lib/api/useApiFetch';
-import useIsMobile from 'lib/hooks/useIsMobile';
+import useApiFetch from 'client/api/hooks/useApiFetch';
+
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+
 import DeleteModal from 'ui/shared/DeleteModal';
 
 type Props = {

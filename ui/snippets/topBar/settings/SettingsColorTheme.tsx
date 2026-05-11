@@ -3,7 +3,8 @@ import React from 'react';
 
 import type { ColorThemeId } from 'types/settings';
 
-import * as cookies from 'lib/cookies';
+import * as cookies from 'client/shared/storage/cookies';
+
 import { COLOR_THEMES, getDefaultColorTheme, getThemeHexWithOverrides } from 'lib/settings/colorTheme';
 import type { ColorMode } from 'toolkit/chakra/color-mode';
 import { useColorMode } from 'toolkit/chakra/color-mode';

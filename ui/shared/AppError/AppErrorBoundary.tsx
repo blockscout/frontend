@@ -1,12 +1,13 @@
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import getErrorCause from 'lib/errors/getErrorCause';
-import getErrorCauseStatusCode from 'lib/errors/getErrorCauseStatusCode';
-import getErrorMessage from 'lib/errors/getErrorMessage';
-import getErrorObjStatusCode from 'lib/errors/getErrorObjStatusCode';
-import getErrorStack from 'lib/errors/getErrorStack';
-import { useRollbar } from 'lib/rollbar';
+import getErrorCause from 'client/shared/errors/get-error-cause';
+import getErrorCauseStatusCode from 'client/shared/errors/get-error-cause-status-code';
+import getErrorMessage from 'client/shared/errors/get-error-message';
+import getErrorObjStatusCode from 'client/shared/errors/get-error-obj-status-code';
+import getErrorStack from 'client/shared/errors/get-error-stack';
+import { useRollbar } from 'client/shared/monitoring/rollbar';
+
 import ErrorBoundary from 'ui/shared/ErrorBoundary';
 
 import AppError from './AppError';

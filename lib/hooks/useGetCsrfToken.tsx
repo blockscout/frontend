@@ -1,10 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 
-import buildUrl from 'lib/api/buildUrl';
-import isNeedProxy from 'lib/api/isNeedProxy';
-import { getResourceKey } from 'lib/api/useApiQuery';
-import * as cookies from 'lib/cookies';
-import useFetch from 'lib/hooks/useFetch';
+import buildUrl from 'client/api/build-url';
+import { getResourceKey } from 'client/api/hooks/useApiQuery';
+import useFetch from 'client/api/hooks/useFetch';
+import isNeedProxy from 'client/api/is-need-proxy';
+
+import * as cookies from 'client/shared/storage/cookies';
 
 export default function useGetCsrfToken() {
   const nodeApiFetch = useFetch();

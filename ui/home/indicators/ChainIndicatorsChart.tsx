@@ -3,6 +3,8 @@ import React from 'react';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Hint } from 'toolkit/components/Hint/Hint';
+import { mdash } from 'toolkit/utils/htmlEntities';
+import FallbackChart from 'ui/shared/fallbacks/FallbackChart';
 import IconSvg from 'ui/shared/IconSvg';
 
 import ChainIndicatorChartContainer from './ChainIndicatorChartContainer';
@@ -17,14 +19,16 @@ interface Props {
   hint?: string;
 }
 
-const ChainIndicatorsChart = ({ isLoading, value, valueDiff, chartQuery, title, hint }: Props) => {
+const ChainIndicatorsChart = ({ isLoading: isLoadingProp, value, valueDiff, chartQuery, title, hint }: Props) => {
+  const isLoading = isLoadingProp || chartQuery.isPending;
+
   const valueTitleElement = (() => {
     if (isLoading) {
       return <Skeleton loading h="36px" w="200px"/>;
     }
 
     if (value.includes('N/A')) {
-      return <Text fontWeight={ 700 } fontSize="30px" lineHeight="36px">N/A</Text>;
+      return <Text fontWeight={ 700 } fontSize="30px" lineHeight="36px" opacity="control.disabled">{ mdash }</Text>;
     }
 
     return (
@@ -35,7 +39,7 @@ const ChainIndicatorsChart = ({ isLoading, value, valueDiff, chartQuery, title, 
   })();
 
   const valueDiffElement = (() => {
-    if (valueDiff === undefined) {
+    if (valueDiff === undefined || (!isLoading && value.includes('N/A'))) {
       return null;
     }
 
@@ -49,6 +53,10 @@ const ChainIndicatorsChart = ({ isLoading, value, valueDiff, chartQuery, title, 
     );
   })();
 
+  if (chartQuery.isError) {
+    return <FallbackChart term={ title } h={{ base: '144px', lg: '184px' }}/>;
+  }
+
   return (
     <Flex flexGrow={ 1 } flexDir="column">
       <Skeleton loading={ isLoading } display="flex" alignItems="center" w="fit-content" columnGap={ 1 }>
@@ -60,7 +68,7 @@ const ChainIndicatorsChart = ({ isLoading, value, valueDiff, chartQuery, title, 
         { valueDiffElement }
       </Flex>
       <Flex h={{ base: '80px', lg: '110px' }} alignItems="flex-start" flexGrow={ 1 }>
-        <ChainIndicatorChartContainer { ...chartQuery } isPending={ chartQuery.isPending || isLoading }/>
+        <ChainIndicatorChartContainer { ...chartQuery } isPending={ isLoading }/>
       </Flex>
     </Flex>
   );

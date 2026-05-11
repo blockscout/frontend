@@ -152,12 +152,7 @@ function getEnvsPlaceholders(filePath: string): Promise<Array<string>> {
 }
 
 function printDeprecationWarning(envsMap: Record<string, string>) {
-  if (
-    envsMap.NEXT_PUBLIC_ROLLUP_L1_BASE_URL
-  ) {
-    // eslint-disable-next-line max-len
-    console.warn('❗ The NEXT_PUBLIC_ROLLUP_L1_BASE_URL variables are now deprecated and will be removed in the next release. Please migrate to the NEXT_PUBLIC_ROLLUP_PARENT_CHAIN variable.');
-  }
+  
 }
 
 function checkDeprecatedEnvs(envsMap: Record<string, string>) {

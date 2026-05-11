@@ -2,19 +2,22 @@ import { Flex, Text, Spinner, createListCollection } from '@chakra-ui/react';
 import { isEqual } from 'es-toolkit';
 import React from 'react';
 
+import type { TokenInfo } from 'client/slices/token/types/api';
 import type { AdvancedFilterParams } from 'types/api/advancedFilter';
-import type { TokenInfo } from 'types/api/token';
 
-import useApiQuery from 'lib/api/useApiQuery';
-import useDebounce from 'lib/hooks/useDebounce';
+import useApiQuery from 'client/api/hooks/useApiQuery';
+
+import * as TokenEntity from 'client/slices/token/components/entity/TokenEntity';
+import NativeTokenIcon from 'client/slices/token/components/icon/TokenIconNative';
+
+import useDebounce from 'client/shared/hooks/useDebounce';
+
 import { Checkbox, CheckboxGroup } from 'toolkit/chakra/checkbox';
 import { Select } from 'toolkit/chakra/select';
 import { Tag } from 'toolkit/chakra/tag';
 import { ClearButton } from 'toolkit/components/buttons/ClearButton';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
-import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import TableColumnFilter from 'ui/shared/filters/TableColumnFilter';
-import NativeTokenIcon from 'ui/shared/NativeTokenIcon';
 
 import { NATIVE_TOKEN } from '../constants';
 

@@ -7,7 +7,7 @@ import type {
   ValidatorZilliqa,
 } from 'types/api/validators';
 
-import { ADDRESS_PARAMS } from './addressParams';
+import { ADDRESS_PARAMS } from 'client/slices/address/stubs/address-params';
 
 export const VALIDATOR_STABILITY: ValidatorStability = {
   address: ADDRESS_PARAMS,

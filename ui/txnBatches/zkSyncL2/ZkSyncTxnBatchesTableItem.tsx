@@ -5,11 +5,12 @@ import type { ZkSyncBatchesItem } from 'types/api/zkSyncL2';
 
 import { route } from 'nextjs-routes';
 
+import BatchEntityL2 from 'client/features/rollup/common/components/BatchEntityL2';
+import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
+
 import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
-import BatchEntityL2 from 'ui/shared/entities/block/BatchEntityL2';
-import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import ZkSyncL2TxnBatchStatus from 'ui/shared/statusTag/ZkSyncL2TxnBatchStatus';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 

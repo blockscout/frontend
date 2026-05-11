@@ -3,9 +3,10 @@ import React from 'react';
 
 import type { ValidatorBlackfort } from 'types/api/validators';
 
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 

@@ -2,13 +2,17 @@ import { Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import useApiQuery from 'client/api/hooks/useApiQuery';
+
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+import * as addressStubs from 'client/slices/address/stubs/address';
+
+import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
+
 import config from 'configs/app';
-import useApiQuery from 'lib/api/useApiQuery';
-import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getPoolLinks from 'lib/pools/getPoolLinks';
 import { getPoolTitle } from 'lib/pools/getPoolTitle';
-import getQueryParamString from 'lib/router/getQueryParamString';
-import * as addressStubs from 'stubs/address';
 import { POOL } from 'stubs/pools';
 import { Image } from 'toolkit/chakra/image';
 import { Link } from 'toolkit/chakra/link';
@@ -18,7 +22,6 @@ import PoolInfo from 'ui/pool/PoolInfo';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import * as PoolEntity from 'ui/shared/entities/pool/PoolEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import InfoButton from 'ui/shared/InfoButton';
@@ -30,7 +33,7 @@ const Pool = () => {
   const hash = getQueryParamString(router.query.hash);
 
   const { data, isPlaceholderData, isError, error } = useApiQuery('contractInfo:pool', {
-    pathParams: { hash, chainId: config.chain.id },
+    pathParams: { hash, instanceId: config.apis.contractInfo?.instanceId },
     queryOptions: {
       placeholderData: POOL,
       refetchOnMount: false,

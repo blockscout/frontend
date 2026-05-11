@@ -1,5 +1,7 @@
 'use client';
 
+import type {
+  CreateToasterReturn } from '@chakra-ui/react';
 import {
   Toaster as ChakraToaster,
   Portal,
@@ -12,7 +14,7 @@ import {
 import { SECOND } from '../utils/consts';
 import { CloseButton } from './close-button';
 
-export const toaster = createToaster({
+export const toaster: CreateToasterReturn = createToaster({
   placement: 'top-end',
   pauseOnPageIdle: true,
   duration: 10 * SECOND,

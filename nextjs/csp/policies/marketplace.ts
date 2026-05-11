@@ -1,7 +1,7 @@
 import type CspDev from 'csp-dev';
 
 import config from 'configs/app';
-import * as essentialDappsChains from 'configs/essential-dapps-chains/config.edge';
+import essentialDappsChains from 'configs/essential-dapps-chains';
 
 const feature = config.features.marketplace;
 
@@ -10,7 +10,7 @@ export function marketplace(): CspDev.DirectiveDescriptor {
     return {};
   }
 
-  const chainsConfig = feature.essentialDapps && essentialDappsChains.getValue();
+  const chainsConfig = essentialDappsChains();
   const externalApiEndpoints = chainsConfig?.chains.map((chain) => chain.app_config?.apis?.general?.endpoint).filter(Boolean);
   const defaultRpcUrls = chainsConfig?.chains.map((chain) => chain.app_config?.chain?.rpcUrls).flat().filter(Boolean);
 

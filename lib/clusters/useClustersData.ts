@@ -3,7 +3,8 @@ import React from 'react';
 import type { ClustersByAddressObject } from 'types/api/clusters';
 import { ClustersOrderBy } from 'types/api/clusters';
 
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery from 'client/api/hooks/useApiQuery';
+
 import { detectInputType } from 'lib/clusters/detectInputType';
 import { CLUSTER_ITEM } from 'stubs/clusters';
 

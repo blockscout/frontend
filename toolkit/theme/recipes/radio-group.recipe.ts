@@ -41,8 +41,14 @@ export const recipe = defineSlotRecipe({
     },
 
     size: {
+      sm: {
+        item: { gap: '2' },
+        itemText: { textStyle: 'sm' },
+        itemControl: radiomarkRecipe.variants?.size?.md,
+      },
       md: {
-        item: { textStyle: 'md', gap: '2' },
+        item: { gap: '2' },
+        itemText: { textStyle: 'md' },
         itemControl: radiomarkRecipe.variants?.size?.md,
       },
     },

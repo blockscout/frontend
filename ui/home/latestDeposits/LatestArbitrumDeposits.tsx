@@ -1,15 +1,18 @@
 import { Text } from '@chakra-ui/react';
 import React from 'react';
 
-import type { SocketMessage } from 'lib/socket/types';
+import type { SocketMessage } from 'client/api/socket/types';
 
-import useApiQuery from 'lib/api/useApiQuery';
-import useGradualIncrement from 'lib/hooks/useGradualIncrement';
-import useIsMobile from 'lib/hooks/useIsMobile';
-import useSocketChannel from 'lib/socket/useSocketChannel';
-import useSocketMessage from 'lib/socket/useSocketMessage';
+import useApiQuery from 'client/api/hooks/useApiQuery';
+import useSocketChannel from 'client/api/socket/useSocketChannel';
+import useSocketMessage from 'client/api/socket/useSocketMessage';
+
+import useGradualIncrement from 'client/shared/hooks/useGradualIncrement';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+
 import { ARBITRUM_MESSAGES_ITEM } from 'stubs/arbitrumL2';
 
+import LatestTxsFallback from '../fallbacks/LatestTxsFallback';
 import LatestDeposits from './LatestDeposits';
 
 const LatestArbitrumDeposits = () => {
@@ -50,7 +53,7 @@ const LatestArbitrumDeposits = () => {
   });
 
   if (isError) {
-    return <Text mt={ 4 }>No data. Please reload the page.</Text>;
+    return <LatestTxsFallback/>;
   }
 
   if (data) {
@@ -71,7 +74,7 @@ const LatestArbitrumDeposits = () => {
     );
   }
 
-  return null;
+  return <Text>No latest deposits found.</Text>;
 };
 
 export default LatestArbitrumDeposits;

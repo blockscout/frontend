@@ -7,6 +7,16 @@ export const recipe = defineRecipe({
     outline: '0',
     position: 'relative',
     appearance: 'textfield',
+
+    // fix for datetime-local input in mobile Safari
+    '&[type="datetime-local"]': {
+      appearance: 'none',
+    },
+    '&::-webkit-date-and-time-value': {
+      textAlign: 'left',
+    },
+
+    textOverflow: 'ellipsis',
     textAlign: 'start',
     borderRadius: 'base',
     height: 'var(--input-height)',
@@ -110,7 +120,7 @@ export const recipe = defineRecipe({
       size: 'lg',
       floating: true,
       css: {
-        padding: '26px 10px 10px 16px',
+        padding: '24px 10px 8px 16px',
       },
     },
   ],

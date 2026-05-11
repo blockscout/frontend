@@ -1,4 +1,4 @@
-import type { ContractCodeIde } from 'types/client/contract';
+import type { ContractCodeIde } from 'client/slices/contract/types/client';
 import { type NavItemExternal, type NavigationLayout, type NavigationPromoBannerConfig } from 'types/client/navigation';
 import { HOME_STATS_WIDGET_IDS, type ChainIndicatorId, type HeroBannerConfig, type HomeStatsWidgetId } from 'types/homepage';
 import type { NetworkExplorer } from 'types/networks';
@@ -17,7 +17,7 @@ const homePageStats: Array<HomeStatsWidgetId> = (() => {
   if (!Array.isArray(parsedValue)) {
     const rollupFeature = features.rollup;
 
-    if (rollupFeature.isEnabled && [ 'zkEvm', 'zkSync', 'arbitrum' ].includes(rollupFeature.type)) {
+    if (rollupFeature.isEnabled && [ 'zkSync', 'arbitrum' ].includes(rollupFeature.type)) {
       return [ 'latest_batch', 'average_block_time', 'total_txs', 'wallet_addresses', 'gas_tracker' ];
     }
 
@@ -40,6 +40,23 @@ const defaultColorTheme = (() => {
 const navigationPromoBanner = (() => {
   const envValue = parseEnvJson<NavigationPromoBannerConfig>(getEnvValue('NEXT_PUBLIC_NAVIGATION_PROMO_BANNER_CONFIG'));
   return envValue || undefined;
+})();
+
+const maintenanceAlertMessage = (() => {
+  const envValue = getEnvValue('NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE');
+  const parsedValue = envValue ? parseEnvJson<Array<string>>(envValue) : undefined;
+
+  if (!parsedValue || !Array.isArray(parsedValue)) {
+    return envValue;
+  }
+
+  if (parsedValue.length < 2) {
+    return parsedValue[0];
+  }
+
+  const index = Math.floor(Math.random() * parsedValue.length);
+
+  return parsedValue[index];
 })();
 
 const UI = Object.freeze({
@@ -83,7 +100,7 @@ const UI = Object.freeze({
     },
   },
   maintenanceAlert: {
-    message: getEnvValue('NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE'),
+    message: maintenanceAlertMessage,
   },
   apiKeysAlert: {
     message: getEnvValue('NEXT_PUBLIC_API_KEYS_ALERT_MESSAGE'),

@@ -1,10 +1,11 @@
 import React from 'react';
 
-import type { AddressesItem } from 'types/api/addresses';
+import type { AddressesItem } from 'client/slices/address/types/api';
+
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 type Props = {

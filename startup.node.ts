@@ -5,6 +5,6 @@ import * as multichainConfig from 'configs/multichain/config.nodejs';
 const marketplaceFeature = config.features.marketplace;
 
 (async() => {
-  config.features.opSuperchain.isEnabled && await multichainConfig.load();
+  config.features.multichain.isEnabled && await multichainConfig.load();
   marketplaceFeature.isEnabled && marketplaceFeature.essentialDapps && await essentialDappsChainsConfig.load();
 })();

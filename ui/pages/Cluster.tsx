@@ -1,8 +1,10 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import useApiQuery from 'lib/api/useApiQuery';
-import getQueryParamString from 'lib/router/getQueryParamString';
+import useApiQuery from 'client/api/hooks/useApiQuery';
+
+import getQueryParamString from 'client/shared/router/get-query-param-string';
+
 import ClusterDetails from 'ui/cluster/ClusterDetails';
 import TextAd from 'ui/shared/ad/TextAd';
 import PageTitle from 'ui/shared/Page/PageTitle';

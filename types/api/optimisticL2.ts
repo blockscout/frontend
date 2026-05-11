@@ -1,6 +1,6 @@
-import type { AddressParam } from './addressParams';
-import type { Block } from './block';
-import type { Transaction } from './transaction';
+import type { AddressParam } from 'client/slices/address/types/api';
+import type { Block } from 'client/slices/block/types/api';
+import type { Transaction } from 'client/slices/tx/types/api';
 
 export type OptimisticL2DepositsItem = {
   l1_block_number: number;

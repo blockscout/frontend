@@ -2,10 +2,12 @@ import { Text, Flex, Spinner } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
+import useApiFetch from 'client/api/hooks/useApiFetch';
+
+import type { EventTypes, EventPayload } from 'client/shared/analytics/mixpanel';
+import * as mixpanel from 'client/shared/analytics/mixpanel';
+
 import config from 'configs/app';
-import useApiFetch from 'lib/api/useApiFetch';
-import type { EventTypes, EventPayload } from 'lib/mixpanel/index';
-import * as mixpanel from 'lib/mixpanel/index';
 import { Rating } from 'toolkit/chakra/rating';
 import { toaster } from 'toolkit/chakra/toaster';
 import IconSvg from 'ui/shared/IconSvg';
@@ -29,7 +31,7 @@ const PopoverContent = ({ appId, userRating, source }: Props) => {
 
     try {
       await apiFetch('admin:marketplace_rate_dapp', {
-        pathParams: { chainId: config.chain.id, dappId: appId },
+        pathParams: { instanceId: config.apis.admin?.instanceId, dappId: appId },
         fetchParams: {
           method: 'POST',
           body: { rating: value },

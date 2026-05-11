@@ -5,6 +5,7 @@ import { recipe as button } from './button.recipe';
 import { recipe as checkbox } from './checkbox.recipe';
 import { recipe as checkmark } from './checkmark.recipe';
 import { recipe as closeButton } from './close-button.recipe';
+import { recipe as code } from './code.recipe';
 import { recipe as dialog } from './dialog.recipe';
 import { recipe as drawer } from './drawer.recipe';
 import { recipe as emptyState } from './empty-state.recipe';
@@ -25,6 +26,7 @@ import { recipe as separator } from './separator.recipe';
 import { recipe as skeleton } from './skeleton.recipe';
 import { recipe as spinner } from './spinner.recipe';
 import { recipe as stat } from './stat.recipe';
+import { recipe as status } from './status.recipe';
 import { recipe as switchRecipe } from './switch.recipe';
 import { recipe as table } from './table.recipe';
 import { recipe as tabs } from './tabs.recipe';
@@ -36,6 +38,7 @@ import { recipe as tooltip } from './tooltip.recipe';
 export const recipes = {
   badge,
   button,
+  code,
   checkmark,
   closeButton,
   input,
@@ -65,6 +68,7 @@ export const slotRecipes = {
   ratingGroup,
   select,
   stat,
+  status,
   'switch': switchRecipe,
   table,
   tabs,

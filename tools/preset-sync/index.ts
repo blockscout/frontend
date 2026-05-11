@@ -17,13 +17,15 @@ const PRESETS = {
   immutable: 'https://explorer.immutable.com',
   mega_eth: 'https://megaeth.blockscout.com',
   mekong: 'https://mekong.blockscout.com',
+  multichain_dev: 'https://superchain.k8s-dev.blockscout.com',
+  multichain_prod: 'https://explorer.blockscout.com',
   neon_devnet: 'https://neon-devnet.blockscout.com',
   numine: 'https://numine.blockscout.com',
   optimism: 'https://optimism.blockscout.com',
-  optimism_interop_0: 'https://optimism-interop-alpha-0.blockscout.com',
   optimism_sepolia: 'https://optimism-sepolia.blockscout.com',
   polygon: 'https://polygon.blockscout.com',
   rari_testnet: 'https://rari-testnet.cloud.blockscout.com',
+  rootstock: 'https://rootstock.blockscout.com',
   rootstock_testnet: 'https://rootstock-testnet.blockscout.com',
   scroll_sepolia: 'https://scroll-sepolia.blockscout.com',
   shibarium: 'https://www.shibariumscan.io',
@@ -32,7 +34,6 @@ const PRESETS = {
   tac_spb: 'https://spb.explorer.tac.build',
   zetachain: 'https://zetascan.com',
   zetachain_testnet: 'https://testnet.zetascan.com',
-  zkevm: 'https://polygon-cdk-stavanger.blockscout.com',
   zksync: 'https://zksync.blockscout.com',
   zilliqa: 'https://zilliqa.blockscout.com',
   zora: 'https://explorer.zora.energy',
@@ -65,6 +66,9 @@ const IGNORED_ENVS = [
   'NEXT_PUBLIC_HOMEPAGE_PLATE_TEXT_COLOR',
   'NEXT_PUBLIC_HOMEPAGE_PLATE_BACKGROUND',
   'NEXT_PUBLIC_VIEWS_CONTRACT_LANGUAGE_FILTERS',
+
+  'NEXT_PUBLIC_API_SPEC_URL',
+  'NEXT_PUBLIC_ROLLUP_L1_BASE_URL',
 ];
 
 function parseScriptArgs() {
@@ -103,7 +107,7 @@ function updateFileContent(envsEntries: Array<[ string, string ]>, presetId: key
   const content =
     `# Set of ENVs for ${ chainName } network explorer\n` +
     '# ' + explorerUrl + '\n' +
-    `# This is an auto-generated file. To update all values, run "yarn dev:preset:sync --name=${ presetId }"\n` +
+    `# This is an auto-generated file. To update all values, run "pnpm dev:preset:sync --name=${ presetId }"\n` +
     '\n' +
     '# Local ENVs\n' +
     localEnvsContent + '\n' +

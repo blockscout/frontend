@@ -31,12 +31,13 @@ export const recipe = defineSlotRecipe({
       },
     },
     errorText: {
-      display: 'inline-flex',
-      alignItems: 'center',
+      display: 'block',
       fontWeight: 'medium',
-      gap: '1',
       color: 'input.fg.error',
       textStyle: 'sm',
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
     },
     helperText: {
       color: 'fg.muted',
@@ -49,7 +50,7 @@ export const recipe = defineSlotRecipe({
       'true': {
         label: {
           pos: 'absolute',
-          bg: 'bg',
+          bg: 'bg.primary',
           top: '2px',
           left: '2px',
           color: 'input.placeholder',
@@ -112,17 +113,16 @@ export const recipe = defineSlotRecipe({
       floating: true,
       css: {
         label: {
-          whiteSpace: 'nowrap',
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          padding: '10px 16px 0px 16px',
+          // 4px = border width
+          width: 'calc(100% - var(--group-end-element-width, 0px) - 4px)',
+          padding: '8px var(--input-label-padding-end, 16px) 0px var(--input-label-padding-start, 16px)',
           textStyle: 'xs',
           _peerPlaceholderShown: {
-            padding: '16px',
+            padding: '16px var(--input-label-padding-end, 16px) 0px var(--input-label-padding-start, 16px)',
             textStyle: 'md',
           },
           _peerFocusVisible: {
-            padding: '10px 16px 0px 16px',
+            padding: '8px var(--input-label-padding-end, 16px) 0px var(--input-label-padding-start, 16px)',
             textStyle: 'xs',
           },
           _readOnly: {
@@ -146,7 +146,7 @@ export const recipe = defineSlotRecipe({
           // 20px = scrollbar width
           // 4px = border width
           width: 'calc(100% - 4px - 20px)',
-          padding: '16px 16px 0px 16px',
+          padding: '16px 0px 0px 16px',
           textStyle: 'xs',
           borderTopRightRadius: '0px',
           borderBottomRightRadius: '0px',

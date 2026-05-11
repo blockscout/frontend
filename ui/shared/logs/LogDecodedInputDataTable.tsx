@@ -1,13 +1,14 @@
 import { Flex, Grid } from '@chakra-ui/react';
 import React from 'react';
 
-import type { DecodedInput } from 'types/api/decodedInput';
+import type { DecodedInput } from 'client/slices/log/types/api';
 import type { ArrayElement } from 'types/utils';
+
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 
 interface Props {
   data: DecodedInput['parameters'];

@@ -2,16 +2,19 @@ import { Box, HStack } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import useApiQuery from 'lib/api/useApiQuery';
-import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
-import useIsMobile from 'lib/hooks/useIsMobile';
-import getQueryParamString from 'lib/router/getQueryParamString';
+import useApiQuery from 'client/api/hooks/useApiQuery';
+
+import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
+
+import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
+
 import { CELO_EPOCH } from 'stubs/epoch';
 import { Tag } from 'toolkit/chakra/tag';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import EpochDetails from 'ui/epochs/EpochDetails';
 import TextAd from 'ui/shared/ad/TextAd';
-import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 const EpochPageContent = () => {

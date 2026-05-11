@@ -3,7 +3,8 @@ import React, { useCallback, useState } from 'react';
 
 import type { CustomAbi } from 'types/api/account';
 
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery from 'client/api/hooks/useApiQuery';
+
 import { CUSTOM_ABI } from 'stubs/account';
 import { Button } from 'toolkit/chakra/button';
 import { Skeleton } from 'toolkit/chakra/skeleton';

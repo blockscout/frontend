@@ -6,11 +6,13 @@ import { FormProvider, useForm } from 'react-hook-form';
 import type { Fields } from './types';
 import type { TokenInfoApplication } from 'types/api/account';
 
+import useApiFetch from 'client/api/hooks/useApiFetch';
+import useApiQuery from 'client/api/hooks/useApiQuery';
+import type { ResourceError } from 'client/api/resources';
+
+import * as mixpanel from 'client/shared/analytics/mixpanel';
+
 import config from 'configs/app';
-import type { ResourceError } from 'lib/api/resources';
-import useApiFetch from 'lib/api/useApiFetch';
-import useApiQuery from 'lib/api/useApiQuery';
-import * as mixpanel from 'lib/mixpanel/index';
 import { Button } from 'toolkit/chakra/button';
 import { toaster } from 'toolkit/chakra/toaster';
 import { FormFieldAddress } from 'toolkit/components/forms/fields/FormFieldAddress';
@@ -45,7 +47,7 @@ const TokenInfoForm = ({ address, tokenName, application, onSubmit }: Props) => 
   const apiFetch = useApiFetch();
 
   const configQuery = useApiQuery('admin:token_info_applications_config', {
-    pathParams: { chainId: config.chain.id },
+    pathParams: { instanceId: config.apis.admin?.instanceId },
   });
 
   const formApi = useForm<Fields>({
@@ -67,7 +69,7 @@ const TokenInfoForm = ({ address, tokenName, application, onSubmit }: Props) => 
       const isNewApplication = !application?.id || [ 'REJECTED', 'APPROVED' ].includes(application.status);
 
       const result = await apiFetch<'admin:token_info_applications', TokenInfoApplication, { message: string }>('admin:token_info_applications', {
-        pathParams: { chainId: config.chain.id, id: !isNewApplication ? application.id : undefined },
+        pathParams: { instanceId: config.apis.admin?.instanceId, id: !isNewApplication ? application.id : undefined },
         fetchParams: {
           method: isNewApplication ? 'POST' : 'PUT',
           body: { submission },

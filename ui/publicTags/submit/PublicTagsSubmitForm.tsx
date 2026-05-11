@@ -5,14 +5,16 @@ import type { SubmitHandler } from 'react-hook-form';
 import { useForm, FormProvider } from 'react-hook-form';
 
 import type { FormFields, FormSubmitResult } from './types';
+import type { PublicTagTypesResponse } from 'client/features/address-metadata/types/api';
 import type { UserInfo } from 'types/api/account';
-import type { PublicTagTypesResponse } from 'types/api/addressMetadata';
+
+import useApiFetch from 'client/api/hooks/useApiFetch';
+
+import getErrorObj from 'client/shared/errors/get-error-obj';
+import getErrorObjPayload from 'client/shared/errors/get-error-obj-payload';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
 
 import appConfig from 'configs/app';
-import useApiFetch from 'lib/api/useApiFetch';
-import getErrorObj from 'lib/errors/getErrorObj';
-import getErrorObjPayload from 'lib/errors/getErrorObjPayload';
-import useIsMobile from 'lib/hooks/useIsMobile';
 import { Button } from 'toolkit/chakra/button';
 import { Heading } from 'toolkit/chakra/heading';
 import { FormFieldEmail } from 'toolkit/components/forms/fields/FormFieldEmail';
@@ -68,7 +70,7 @@ const PublicTagsSubmitForm = ({ config, userInfo, onSubmitResult }: Props) => {
     const result = await Promise.all(requestsBody.map(async(body) => {
       return apiFetch<'admin:public_tag_application', unknown, { message: string }>(
         'admin:public_tag_application', {
-          pathParams: { chainId: appConfig.chain.id },
+          pathParams: { instanceId: appConfig.apis.admin?.instanceId },
           fetchParams: {
             method: 'POST',
             body: { submission: body },

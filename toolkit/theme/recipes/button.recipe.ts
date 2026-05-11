@@ -15,20 +15,38 @@ export const recipe = defineRecipe({
     variant: {
       solid: {
         bg: 'button.solid.bg',
-        color: 'white',
+        color: 'button.solid.text',
         _hover: {
           bg: 'hover',
         },
         _loading: {
           opacity: 1,
           '& .chakra-spinner': {
-            borderColor: 'gray.200',
+            borderColor: 'button.solid.text',
             borderBottomColor: 'spinner.track',
             borderInlineStartColor: 'spinner.track',
           },
         },
         _expanded: {
           bg: 'hover',
+        },
+      },
+      solid_danger: {
+        bg: 'red.600',
+        color: 'white',
+        _hover: {
+          bg: 'red.500',
+        },
+        _loading: {
+          opacity: 1,
+          '& .chakra-spinner': {
+            borderColor: 'white',
+            borderBottomColor: 'spinner.track',
+            borderInlineStartColor: 'spinner.track',
+          },
+        },
+        _expanded: {
+          bg: 'red.500',
         },
       },
       outline: {
@@ -46,6 +64,26 @@ export const recipe = defineRecipe({
           opacity: 1,
           '& .chakra-spinner': {
             borderColor: 'button.outline.fg',
+            borderBottomColor: 'spinner.track',
+            borderInlineStartColor: 'spinner.track',
+          },
+        },
+      },
+      outline_danger: {
+        borderWidth: '2px',
+        borderStyle: 'solid',
+        bg: 'transparent',
+        color: 'red.600',
+        borderColor: 'red.600',
+        _hover: {
+          bg: 'transparent',
+          color: 'red.500',
+          borderColor: 'red.500',
+        },
+        _loading: {
+          opacity: 1,
+          '& .chakra-spinner': {
+            borderColor: 'red.600',
             borderBottomColor: 'spinner.track',
             borderInlineStartColor: 'spinner.track',
           },
@@ -279,6 +317,14 @@ export const recipe = defineRecipe({
         },
         _expanded: {
           color: 'hover',
+        },
+        _loading: {
+          opacity: 1,
+          '& .chakra-spinner': {
+            borderColor: 'selected.option.bg',
+            borderBottomColor: 'spinner.track',
+            borderInlineStartColor: 'spinner.track',
+          },
         },
       },
       pagination: {

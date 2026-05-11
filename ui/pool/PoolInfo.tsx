@@ -2,10 +2,11 @@ import React from 'react';
 
 import type { Pool } from 'types/api/pools';
 
+import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoSponsoredItem from 'ui/shared/DetailedInfo/DetailedInfoSponsoredItem';
-import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 
 type Props = {
   data: Pool;

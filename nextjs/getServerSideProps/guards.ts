@@ -68,14 +68,6 @@ export const apiDocs: Guard = (chainConfig: typeof config) => async() => {
   }
 };
 
-export const csvExport: Guard = (chainConfig: typeof config) => async() => {
-  if (!chainConfig.features.csvExport.isEnabled) {
-    return {
-      notFound: true,
-    };
-  }
-};
-
 export const stats: Guard = (chainConfig: typeof config) => async() => {
   if (!chainConfig.features.stats.isEnabled) {
     return {
@@ -224,7 +216,7 @@ export const rollup: Guard = (chainConfig: typeof config) => async() => {
   }
 };
 
-const DEPOSITS_ROLLUP_TYPES: Array<RollupType> = [ 'optimistic', 'shibarium', 'zkEvm', 'arbitrum', 'scroll' ];
+const DEPOSITS_ROLLUP_TYPES: Array<RollupType> = [ 'optimistic', 'shibarium', 'arbitrum', 'scroll' ];
 export const deposits: Guard = (chainConfig: typeof config) => async() => {
   const rollupFeature = chainConfig.features.rollup;
   const beaconChainFeature = chainConfig.features.beaconChain;
@@ -237,7 +229,7 @@ export const deposits: Guard = (chainConfig: typeof config) => async() => {
   }
 };
 
-const WITHDRAWALS_ROLLUP_TYPES: Array<RollupType> = [ 'optimistic', 'shibarium', 'zkEvm', 'arbitrum', 'scroll' ];
+const WITHDRAWALS_ROLLUP_TYPES: Array<RollupType> = [ 'optimistic', 'shibarium', 'arbitrum', 'scroll' ];
 export const withdrawals: Guard = (chainConfig: typeof config) => async() => {
   const rollupFeature = chainConfig.features.rollup;
   if (
@@ -250,7 +242,7 @@ export const withdrawals: Guard = (chainConfig: typeof config) => async() => {
   }
 };
 
-const BATCH_ROLLUP_TYPES: Array<RollupType> = [ 'zkEvm', 'zkSync', 'arbitrum', 'optimistic', 'scroll' ];
+const BATCH_ROLLUP_TYPES: Array<RollupType> = [ 'zkSync', 'arbitrum', 'optimistic', 'scroll' ];
 export const batch: Guard = (chainConfig: typeof config) => async() => {
   const rollupFeature = chainConfig.features.rollup;
   if (!(rollupFeature.isEnabled && BATCH_ROLLUP_TYPES.includes(rollupFeature.type))) {
@@ -336,16 +328,16 @@ export const crossChainTxs: Guard = (chainConfig: typeof config) => async() => {
   }
 };
 
-export const opSuperchain: Guard = () => async() => {
-  if (!config.features.opSuperchain.isEnabled) {
+export const multichain: Guard = () => async() => {
+  if (!config.features.multichain.isEnabled) {
     return {
       notFound: true,
     };
   }
 };
 
-export const notOpSuperchain: Guard = () => async() => {
-  if (config.features.opSuperchain.isEnabled) {
+export const notMultichain: Guard = () => async() => {
+  if (config.features.multichain.isEnabled) {
     return {
       notFound: true,
     };

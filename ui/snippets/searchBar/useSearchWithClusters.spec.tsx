@@ -3,7 +3,8 @@
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
 
-import useApiFetch from 'lib/api/useApiFetch';
+import useApiFetch from 'client/api/hooks/useApiFetch';
+
 import type { Mock } from 'vitest';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { renderHook } from 'vitest/lib';
@@ -20,12 +21,12 @@ const mockUseQuery = useQuery as Mock<typeof useQuery>;
 type MockQuickSearchQuery = ReturnType<typeof useQuickSearchQuery>;
 type MockApiQuery = ReturnType<typeof useApiFetch>;
 
-vi.mock('lib/api/useApiFetch', () => ({
+vi.mock('client/api/hooks/useApiFetch', () => ({
   'default': vi.fn(),
 }));
 const mockUseApiFetch = useApiFetch as Mock<typeof useApiFetch>;
 vi.mock('./useQuickSearchQuery');
-vi.mock('lib/hooks/useDebounce', () => ({
+vi.mock('client/shared/hooks/useDebounce', () => ({
   'default': (value: unknown) => value,
 }));
 

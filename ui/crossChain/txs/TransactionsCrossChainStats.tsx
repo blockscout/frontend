@@ -1,7 +1,8 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery from 'client/api/hooks/useApiQuery';
+
 import { INTERCHAIN_STATS_DAILY } from 'stubs/interchainIndexer';
 import StatsWidget from 'ui/shared/stats/StatsWidget';
 

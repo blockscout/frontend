@@ -1,6 +1,6 @@
 import type { TxInterpretationResponse } from 'types/api/txInterpretation';
 
-import { hash } from 'mocks/address/address';
+import { hash } from 'client/slices/address/mocks/address';
 
 export const txInterpretation: TxInterpretationResponse = {
   data: {

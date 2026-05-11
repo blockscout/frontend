@@ -3,11 +3,12 @@ import React from 'react';
 
 import { route } from 'nextjs-routes';
 
-import getErrorCause from 'lib/errors/getErrorCause';
-import getErrorCauseStatusCode from 'lib/errors/getErrorCauseStatusCode';
-import getErrorObjStatusCode from 'lib/errors/getErrorObjStatusCode';
-import getErrorProp from 'lib/errors/getErrorProp';
-import getResourceErrorPayload from 'lib/errors/getResourceErrorPayload';
+import getErrorCause from 'client/shared/errors/get-error-cause';
+import getErrorCauseStatusCode from 'client/shared/errors/get-error-cause-status-code';
+import getErrorObjStatusCode from 'client/shared/errors/get-error-obj-status-code';
+import getErrorProp from 'client/shared/errors/get-error-prop';
+import getResourceErrorPayload from 'client/shared/errors/get-resource-error-payload';
+
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';
 

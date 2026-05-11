@@ -43,7 +43,7 @@ export const recipe = defineSlotRecipe({
           borderColor: 'border.divider',
         },
         row: {
-          bg: 'bg',
+          bg: 'bg.primary',
         },
       },
     },

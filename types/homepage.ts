@@ -32,6 +32,7 @@ export interface HeroBannerConfig {
   search?: {
     border_width?: Array<string | undefined>;
   };
+  text?: string;
 }
 
 export interface HighlightsBannerConfig {

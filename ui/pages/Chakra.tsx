@@ -1,6 +1,7 @@
 import React from 'react';
 
-import useIsMobile from 'lib/hooks/useIsMobile';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+
 import { useColorMode } from 'toolkit/chakra/color-mode';
 import { Switch } from 'toolkit/chakra/switch';
 import { TabsList, TabsRoot, TabsTrigger } from 'toolkit/chakra/tabs';
@@ -31,6 +32,7 @@ import RatingShowcase from 'ui/showcases/Rating';
 import SelectShowcase from 'ui/showcases/Select';
 import SkeletonShowcase from 'ui/showcases/Skeleton';
 import SpinnerShowcase from 'ui/showcases/Spinner';
+import StatusShowcase from 'ui/showcases/Status';
 import SwitchShowcase from 'ui/showcases/Switch';
 import TableShowcase from 'ui/showcases/Table';
 import TabsShowcase from 'ui/showcases/Tabs';
@@ -67,6 +69,7 @@ const tabs = [
   { label: 'Select', value: 'select', component: <SelectShowcase/> },
   { label: 'Skeleton', value: 'skeleton', component: <SkeletonShowcase/> },
   { label: 'Spinner', value: 'spinner', component: <SpinnerShowcase/> },
+  { label: 'Status', value: 'status', component: <StatusShowcase/> },
   { label: 'Switch', value: 'switch', component: <SwitchShowcase/> },
   { label: 'Table', value: 'table', component: <TableShowcase/> },
   { label: 'Tabs', value: 'tabs', component: <TabsShowcase/> },

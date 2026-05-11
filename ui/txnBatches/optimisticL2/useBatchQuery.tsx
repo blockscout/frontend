@@ -1,7 +1,9 @@
 import { useRouter } from 'next/router';
 
-import useApiQuery from 'lib/api/useApiQuery';
-import getQueryParamString from 'lib/router/getQueryParamString';
+import useApiQuery from 'client/api/hooks/useApiQuery';
+
+import getQueryParamString from 'client/shared/router/get-query-param-string';
+
 import { L2_TXN_BATCH } from 'stubs/L2';
 
 export default function useBatchQuery() {

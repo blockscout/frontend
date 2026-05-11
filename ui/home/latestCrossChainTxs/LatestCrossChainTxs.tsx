@@ -3,8 +3,10 @@ import React from 'react';
 
 import { route } from 'nextjs-routes';
 
-import useApiQuery from 'lib/api/useApiQuery';
-import useIsMobile from 'lib/hooks/useIsMobile';
+import useApiQuery from 'client/api/hooks/useApiQuery';
+
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+
 import { INTERCHAIN_MESSAGE } from 'stubs/interchainIndexer';
 import { generateListStub } from 'stubs/utils';
 import { Link } from 'toolkit/chakra/link';

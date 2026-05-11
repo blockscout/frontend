@@ -5,8 +5,9 @@ import Rollbar from 'rollbar';
 
 import type { Props as ServerSidePropsCommon } from 'nextjs/getServerSideProps/handlers';
 
+import * as cookies from 'client/shared/storage/cookies';
+
 import config from 'configs/app';
-import * as cookies from 'lib/cookies';
 
 const rollbarFeature = config.features.rollbar;
 const rollbar = rollbarFeature.isEnabled ? new Rollbar({

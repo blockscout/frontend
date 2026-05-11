@@ -4,15 +4,18 @@ import { useSendTransaction, useSwitchChain } from 'wagmi';
 
 import type { ArbitrumL2MessageClaimResponse, ArbitrumL2TxnWithdrawalsResponse } from 'types/api/arbitrumL2';
 
+import useApiFetch from 'client/api/hooks/useApiFetch';
+import { getResourceKey } from 'client/api/hooks/useApiQuery';
+import type { ResourceError } from 'client/api/resources';
+
+import useWallet from 'client/features/connect-wallet/hooks/useWallet';
+
+import getErrorMessage from 'client/shared/errors/get-error-message';
+import getErrorObjPayload from 'client/shared/errors/get-error-obj-payload';
+import getErrorProp from 'client/shared/errors/get-error-prop';
+import capitalizeFirstLetter from 'client/shared/text/capitalize-first-letter';
+
 import config from 'configs/app';
-import type { ResourceError } from 'lib/api/resources';
-import useApiFetch from 'lib/api/useApiFetch';
-import { getResourceKey } from 'lib/api/useApiQuery';
-import capitalizeFirstLetter from 'lib/capitalizeFirstLetter';
-import getErrorMessage from 'lib/errors/getErrorMessage';
-import getErrorObjPayload from 'lib/errors/getErrorObjPayload';
-import getErrorProp from 'lib/errors/getErrorProp';
-import useWallet from 'lib/web3/useWallet';
 import { Button } from 'toolkit/chakra/button';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { toaster } from 'toolkit/chakra/toaster';

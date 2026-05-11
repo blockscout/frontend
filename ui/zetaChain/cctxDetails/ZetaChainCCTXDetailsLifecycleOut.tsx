@@ -4,12 +4,14 @@ import React from 'react';
 
 import { type OutboundParams, type CrossChainTx, CctxStatus } from '@blockscout/zetachain-cctx-types';
 
+import TxEntity from 'client/slices/tx/components/entity/TxEntity';
+
+import AddressEntityZetaChain from 'client/features/chain-variants/zeta-chain/components/AddressEntityZetaChain';
+import TxEntityZetaChainCC from 'client/features/chain-variants/zeta-chain/TxEntityZetaChainCC';
+import TxEntityZetaChainExternal from 'client/features/chain-variants/zeta-chain/TxEntityZetaChainExternal';
+
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import AddressEntityZetaChain from 'ui/shared/entities/address/AddressEntityZetaChain';
-import TxEntity from 'ui/shared/entities/tx/TxEntity';
-import TxEntityZetaChainCC from 'ui/shared/entities/tx/TxEntityZetaChainCC';
-import TxEntityZetaChainExternal from 'ui/shared/entities/tx/TxEntityZetaChainExternal';
 import IconSvg from 'ui/shared/IconSvg';
 import StatusTag from 'ui/shared/statusTag/StatusTag';
 import ZetaChainCCTXValue from 'ui/shared/zetaChain/ZetaChainCCTXValue';

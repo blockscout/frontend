@@ -5,7 +5,7 @@ import type { UserInfo } from 'types/api/account';
 
 import type { Route } from 'nextjs-routes';
 
-import getQueryParamString from 'lib/router/getQueryParamString';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 export function convertFormDataToRequestsBody(data: FormFields): Array<SubmitRequestBody> {
   const result: Array<SubmitRequestBody> = [];

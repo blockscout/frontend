@@ -24,7 +24,7 @@ authTest('customization +@dark-mode', async({ render, page, mockEnvs, mockApiRes
   await mockEnvs([
     ...ENVS_MAP.rewardsService,
     // eslint-disable-next-line max-len
-    [ 'NEXT_PUBLIC_HOMEPAGE_HERO_BANNER_CONFIG', `{"background":["lightpink","no-repeat center/cover url(${ IMAGE_URL })"],"text_color":["deepskyblue","white"],"border":["3px solid green","3px dashed yellow"],"button":{"_default":{"background":["deeppink"],"text_color":["white"]},"_selected":{"background":["lime"]}}}` ],
+    [ 'NEXT_PUBLIC_HOMEPAGE_HERO_BANNER_CONFIG', `{"text": "Duck migration observer","background":["lightpink","no-repeat center/cover url(${ IMAGE_URL })"],"text_color":["deepskyblue","white"],"border":["3px solid green","3px dashed yellow"],"button":{"_default":{"background":["deeppink"],"text_color":["white"]},"_selected":{"background":["lime"]}}}` ],
   ]);
 
   await page.route(IMAGE_URL, (route) => {

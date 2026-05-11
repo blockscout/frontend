@@ -4,8 +4,9 @@ import React, { useCallback, useState } from 'react';
 
 import type { WatchlistAddress, WatchlistResponse } from 'types/api/account';
 
-import { resourceKey } from 'lib/api/resources';
-import { getResourceKey } from 'lib/api/useApiQuery';
+import { getResourceKey } from 'client/api/hooks/useApiQuery';
+import { resourceKey } from 'client/api/resources';
+
 import { WATCH_LIST_ITEM_WITH_TOKEN_INFO } from 'stubs/account';
 import { Button } from 'toolkit/chakra/button';
 import { Skeleton } from 'toolkit/chakra/skeleton';

@@ -2,7 +2,8 @@ import { debounce } from 'es-toolkit';
 import type { FormEvent, FocusEvent } from 'react';
 import React from 'react';
 
-import useIsMobile from 'lib/hooks/useIsMobile';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+
 import { getRecentSearchKeywords } from 'lib/recentSearchKeywords';
 import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';

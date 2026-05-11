@@ -3,11 +3,12 @@ import React from 'react';
 
 import type { CctxListItem } from '@blockscout/zetachain-cctx-types';
 
+import AddressEntityZetaChain from 'client/features/chain-variants/zeta-chain/components/AddressEntityZetaChain';
+import TxEntityZetaChainCC from 'client/features/chain-variants/zeta-chain/TxEntityZetaChainCC';
+
 import dayjs from 'lib/date/dayjs';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { SECOND } from 'toolkit/utils/consts';
-import AddressEntityZetaChain from 'ui/shared/entities/address/AddressEntityZetaChain';
-import TxEntityZetaChainCC from 'ui/shared/entities/tx/TxEntityZetaChainCC';
 import TextSeparator from 'ui/shared/TextSeparator';
 import Time from 'ui/shared/time/Time';
 import ZetaChainCCTXReducedStatus from 'ui/shared/zetaChain/ZetaChainCCTXReducedStatus';

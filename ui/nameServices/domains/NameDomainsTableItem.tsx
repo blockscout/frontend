@@ -2,9 +2,10 @@ import React from 'react';
 
 import type * as bens from '@blockscout/bens-types';
 
+import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+
 import dayjs from 'lib/date/dayjs';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 

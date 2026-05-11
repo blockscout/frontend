@@ -5,10 +5,12 @@ import React from 'react';
 
 import type { VerifiedAddress, TokenInfoApplication, TokenInfoApplications, VerifiedAddressResponse } from 'types/api/account';
 
+import useApiQuery, { getResourceKey } from 'client/api/hooks/useApiQuery';
+
+import * as mixpanel from 'client/shared/analytics/mixpanel';
+import getQueryParamString from 'client/shared/router/get-query-param-string';
+
 import config from 'configs/app';
-import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
-import { PAGE_TYPE_DICT } from 'lib/mixpanel/getPageType';
-import getQueryParamString from 'lib/router/getQueryParamString';
 import { TOKEN_INFO_APPLICATION, VERIFIED_ADDRESS } from 'stubs/account';
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';
@@ -46,14 +48,14 @@ const VerifiedAddresses = () => {
   const profileQuery = useProfileQuery();
 
   const addressesQuery = useApiQuery('contractInfo:verified_addresses', {
-    pathParams: { chainId: config.chain.id },
+    pathParams: { instanceId: config.apis.contractInfo?.instanceId },
     queryOptions: {
       placeholderData: { verifiedAddresses: Array(3).fill(VERIFIED_ADDRESS) },
       enabled: Boolean(profileQuery.data?.email),
     },
   });
   const applicationsQuery = useApiQuery('admin:token_info_applications', {
-    pathParams: { chainId: config.chain.id, id: undefined },
+    pathParams: { instanceId: config.apis.admin?.instanceId, id: undefined },
     queryOptions: {
       placeholderData: { submissions: Array(3).fill(TOKEN_INFO_APPLICATION) },
       enabled: Boolean(profileQuery.data?.email),
@@ -82,7 +84,7 @@ const VerifiedAddresses = () => {
 
   const handleAddressSubmit = React.useCallback((newItem: VerifiedAddress) => {
     queryClient.setQueryData(
-      getResourceKey('contractInfo:verified_addresses', { pathParams: { chainId: config.chain.id } }),
+      getResourceKey('contractInfo:verified_addresses', { pathParams: { instanceId: config.apis.contractInfo?.instanceId } }),
       (prevData: VerifiedAddressResponse | undefined) => {
         if (!prevData) {
           return { verifiedAddresses: [ newItem ] };
@@ -97,7 +99,7 @@ const VerifiedAddresses = () => {
   const handleApplicationSubmit = React.useCallback((newItem: TokenInfoApplication) => {
     setSelectedAddress(undefined);
     queryClient.setQueryData(
-      getResourceKey('admin:token_info_applications', { pathParams: { chainId: config.chain.id, id: undefined } }),
+      getResourceKey('admin:token_info_applications', { pathParams: { instanceId: config.apis.admin?.instanceId, id: undefined } }),
       (prevData: TokenInfoApplications | undefined) => {
         if (!prevData) {
           return { submissions: [ newItem ] };
@@ -220,7 +222,7 @@ const VerifiedAddresses = () => {
       </DataListDisplay>
       { addButton }
       <AddressVerificationModal
-        pageType={ PAGE_TYPE_DICT['/account/verified-addresses'] }
+        pageType={ mixpanel.getPageType('/account/verified-addresses') }
         open={ modalProps.open }
         onOpenChange={ modalProps.onOpenChange }
         onSubmit={ handleAddressSubmit }

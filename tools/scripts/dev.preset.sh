@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ "$#" -ne 1 ]; then
-  echo "Usage: yarn dev:preset <preset_name>"
+  echo "Usage: pnpm dev:preset <preset_name>"
   exit 1
 fi
 
@@ -26,18 +26,22 @@ dotenv \
   -- bash -c './deploy/scripts/download_assets.sh ./public/assets/configs'
 
 # generate multichain config (adjust condition accordingly)
-if [[ "$preset_name" == "optimism_superchain" ]]; then
+if [[ "$preset_name" =~ "multichain_" ]]; then
   dotenv \
     -e $config_file \
-    -- bash -c 'cd deploy/tools/multichain-config-generator && yarn install --silent && yarn build && yarn generate' || exit 1
+    -- bash -c 'cd deploy/tools/multichain-config-generator && pnpm build && pnpm generate' || exit 1
 fi
 
 # generate essential dapps chains config if marketplace essential dapps enabled
 dotenv \
   -e $config_file \
-  -- bash -c 'cd deploy/tools/essential-dapps-chains-config-generator && yarn install --silent && yarn build && yarn generate' || exit 1
+  -- bash -c 'cd deploy/tools/essential-dapps-chains-config-generator && pnpm build && pnpm generate' || exit 1
 
 source ./deploy/scripts/build_sprite.sh
+echo ""
+
+# generate routes
+pnpm routes:generate
 echo ""
 
 # generate envs.js file and run the app

@@ -3,12 +3,14 @@ import React from 'react';
 
 import type { ScrollL2MessageItem } from 'types/api/scrollL2';
 
+import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
+import TxEntity from 'client/slices/tx/components/entity/TxEntity';
+
+import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
+
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
-import BlockEntity from 'ui/shared/entities/block/BlockEntity';
-import TxEntity from 'ui/shared/entities/tx/TxEntity';
-import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 

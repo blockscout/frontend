@@ -13,8 +13,9 @@ import PageNextJs from 'nextjs/PageNextJs';
 import detectBotRequest from 'nextjs/utils/detectBotRequest';
 import fetchApi from 'nextjs/utils/fetchApi';
 
+import getQueryParamString from 'client/shared/router/get-query-param-string';
+
 import config from 'configs/app';
-import getQueryParamString from 'lib/router/getQueryParamString';
 import LayoutApp from 'ui/shared/layout/LayoutApp';
 
 const MarketplaceAppPage = dynamic(() => import('ui/pages/MarketplaceApp'), { ssr: false });
@@ -69,7 +70,7 @@ export const getServerSideProps: GetServerSideProps<Props<typeof pathname>> = as
         } else {
           return await fetchApi({
             resource: 'admin:marketplace_dapp',
-            pathParams: { dappId: getQueryParamString(ctx.query.id), chainId: config.chain.id },
+            pathParams: { dappId: getQueryParamString(ctx.query.id), instanceId: config.apis.admin?.instanceId },
             timeout: 1_000,
           });
         }

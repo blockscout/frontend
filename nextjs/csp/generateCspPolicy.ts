@@ -9,7 +9,6 @@ function generateCspPolicy(isPrivateMode = false) {
     isPrivateMode ? {} : descriptors.blockchainInteraction(),
     descriptors.cloudFlare(),
     descriptors.flashblocks(),
-    descriptors.gasHawk(),
     isPrivateMode ? {} : descriptors.googleAnalytics(),
     descriptors.googleFonts(),
     descriptors.googleReCaptcha(),

@@ -7,20 +7,22 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 
-import type { Transaction } from 'types/api/transaction';
+import type { Transaction } from 'client/slices/tx/types/api';
+
+import AddressFromTo from 'client/slices/address/components/from-to/AddressFromTo';
+import TxEntity from 'client/slices/tx/components/entity/TxEntity';
+import TxAdditionalInfo from 'client/slices/tx/components/TxAdditionalInfo';
+import TxFee from 'client/slices/tx/components/TxFee';
+import TxStatus from 'client/slices/tx/components/TxStatus';
+import TxType from 'client/slices/tx/components/TxType';
+
+import TxWatchListTags from 'client/features/account/components/TxWatchListTags';
 
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import AddressFromTo from 'ui/shared/address/AddressFromTo';
-import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import EntityTag from 'ui/shared/EntityTags/EntityTag';
-import TxStatus from 'ui/shared/statusTag/TxStatus';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
-import TxFee from 'ui/shared/tx/TxFee';
-import TxWatchListTags from 'ui/shared/tx/TxWatchListTags';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
-import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
-import TxType from 'ui/txs/TxType';
 
 type Props = {
   tx: Transaction;

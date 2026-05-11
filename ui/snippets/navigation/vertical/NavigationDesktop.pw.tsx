@@ -2,8 +2,9 @@ import { Box, Flex } from '@chakra-ui/react';
 import type { BrowserContext, Locator } from '@playwright/test';
 import React from 'react';
 
+import * as cookies from 'client/shared/storage/cookies';
+
 import config from 'configs/app';
-import * as cookies from 'lib/cookies';
 import { contextWithAuth } from 'playwright/fixtures/auth';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';

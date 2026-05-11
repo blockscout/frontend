@@ -8,7 +8,7 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 export default defineConfig({
   plugins: [
     react(),
-    tsconfigPaths(),
+    tsconfigPaths({ ignoreConfigErrors: true }),
     svgr({
       include: '**/*.svg',
       exclude: '',

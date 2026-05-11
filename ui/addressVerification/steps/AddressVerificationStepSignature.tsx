@@ -14,10 +14,13 @@ import type {
 } from '../types';
 import type { VerifiedAddress } from 'types/api/account';
 
+import useApiFetch from 'client/api/hooks/useApiFetch';
+
+import useWallet from 'client/features/connect-wallet/hooks/useWallet';
+
+import shortenString from 'client/shared/text/shorten-string';
+
 import config from 'configs/app';
-import useApiFetch from 'lib/api/useApiFetch';
-import shortenString from 'lib/shortenString';
-import useWallet from 'lib/web3/useWallet';
 import { Alert } from 'toolkit/chakra/alert';
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';
@@ -69,7 +72,7 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
         'contractInfo:address_verification',
         {
           fetchParams: { method: 'POST', body },
-          pathParams: { chainId: config.chain.id, type: ':verify' },
+          pathParams: { instanceId: config.apis.contractInfo?.instanceId, type: ':verify' },
         },
       );
 

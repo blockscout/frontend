@@ -7,12 +7,24 @@ import { getEnvValue } from '../utils';
 
 const title = 'My account';
 
+const apiKeysButton = (() => {
+  const value = getEnvValue('NEXT_PUBLIC_ACCOUNT_API_KEYS_BUTTON');
+  if (value === undefined || value === 'true') {
+    return true;
+  }
+  if (value === 'false') {
+    return false;
+  }
+  return value;
+})();
+
 const config: Feature<{
   isEnabled: true;
   authProvider: AuthProvider;
   dynamic?: {
     environmentId: string;
   };
+  apiKeysButton: boolean | string;
 }> = (() => {
 
   if (
@@ -30,6 +42,7 @@ const config: Feature<{
         dynamic: {
           environmentId: dynamicEnvironmentId,
         },
+        apiKeysButton,
       });
     }
 
@@ -38,6 +51,7 @@ const config: Feature<{
         title,
         isEnabled: true,
         authProvider: 'auth0',
+        apiKeysButton,
       });
     }
   }

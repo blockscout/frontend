@@ -7,9 +7,10 @@ import { connectAdbutler, placeAd } from 'ui/shared/ad/adbutlerScript';
 export function ad(): CspDev.DirectiveDescriptor {
   return {
     'connect-src': [
-      // coinzilla
-      'coinzilla.com',
-      '*.coinzilla.com',
+      // sevio
+      '*.adx.ws',
+      'https://id5-sync.com',
+      'https://lb.eu-1-id5-sync.com/lb/v1',
       'https://request-global.czilladx.com',
 
       // adbutler
@@ -22,13 +23,10 @@ export function ad(): CspDev.DirectiveDescriptor {
       'app.specify.sh',
     ],
     'frame-src': [
-      // coinzilla
+      // sevio
       'https://request-global.czilladx.com',
     ],
     'script-src': [
-      // coinzilla
-      'coinzillatag.com',
-
       // adbutler
       'servedbyadbutler.com',
       `'sha256-${ Base64.stringify(sha256(connectAdbutler)) }'`,
@@ -37,17 +35,18 @@ export function ad(): CspDev.DirectiveDescriptor {
 
       // slise
       '*.slise.xyz',
+
+      // sevio
+      'cdn.adx.ws',
     ],
     'img-src': [
-      // coinzilla
-      'cdn.coinzilla.io',
-
       // adbutler
       'servedbyadbutler.com',
-    ],
-    'font-src': [
-      // coinzilla
+
+      // sevio
+      '*.adx.ws',
       'https://request-global.czilladx.com',
     ],
+    'font-src': [],
   };
 }

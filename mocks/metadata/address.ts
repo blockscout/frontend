@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import type { AddressMetadataTagApi } from 'types/api/addressMetadata';
+import type { AddressMetadataTagApi } from 'client/features/address-metadata/types/api';
 
 export const nameTag: AddressMetadataTagApi = {
   slug: 'quack-quack',

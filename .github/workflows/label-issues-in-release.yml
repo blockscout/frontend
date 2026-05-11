@@ -223,7 +223,7 @@ jobs:
 
                             const issues = associatedPullRequests
                                 .nodes
-                                .filter(({ closingIssuesReferences: { nodes: issues } }) => !issues?.some(({ labels }) => labels?.nodes?.some(({ description }) => description.toLowerCase().startsWith('release'))))
+                                .filter(({ closingIssuesReferences: { nodes: issues } }) => !issues?.some(({ labels }) => labels?.nodes?.some(({ description }) => description?.toLowerCase().startsWith('release'))))
                                 .map(({ closingIssuesReferences: { nodes: issues } }) => issues.map(({ number }) => number))
                                 .flat();
 

@@ -1,6 +1,6 @@
 import type { MudWorldsResponse } from 'types/api/mudWorlds';
 
-import { withName, withoutName } from 'mocks/address/address';
+import { withName, withoutName } from 'client/slices/address/mocks/address';
 
 export const mudWorlds: MudWorldsResponse = {
   items: [

@@ -2,11 +2,13 @@ import React from 'react';
 
 import type { TChainIndicator } from './types';
 
+import useApiQuery from 'client/api/hooks/useApiQuery';
+
+import NativeTokenIcon from 'client/slices/token/components/icon/TokenIconNative';
+
 import config from 'configs/app';
-import useApiQuery from 'lib/api/useApiQuery';
 import { HOMEPAGE_STATS, HOMEPAGE_STATS_MICROSERVICE } from 'stubs/stats';
 import IconSvg from 'ui/shared/IconSvg';
-import NativeTokenIcon from 'ui/shared/NativeTokenIcon';
 
 import ChainIndicatorsChart from './ChainIndicatorsChart';
 import ChainIndicatorsContainer from './ChainIndicatorsContainer';

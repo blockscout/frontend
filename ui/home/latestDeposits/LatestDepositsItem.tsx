@@ -5,11 +5,15 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 
-import useIsMobile from 'lib/hooks/useIsMobile';
+import TxEntity from 'client/slices/tx/components/entity/TxEntity';
+
+import BlockEntityL1 from 'client/features/rollup/common/components/BlockEntityL1';
+import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
+
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+
+import { layerLabels } from 'lib/rollups/utils';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
-import TxEntity from 'ui/shared/entities/tx/TxEntity';
-import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 type Props = {
@@ -68,11 +72,11 @@ const LatestDepositsItem = ({ l1BlockNumber, l1TxHash, l2TxHash, timestamp, isLo
           </Flex>
           <Grid gridTemplateColumns="56px auto">
             <Skeleton loading={ isLoading } my="5px" w="fit-content">
-              L1 txn
+              { layerLabels.parent } txn
             </Skeleton>
             { l1TxLink }
             <Skeleton loading={ isLoading } my="3px" w="fit-content">
-              L2 txn
+              { layerLabels.current } txn
             </Skeleton>
             { l2TxLink }
           </Grid>
@@ -84,7 +88,7 @@ const LatestDepositsItem = ({ l1BlockNumber, l1TxHash, l2TxHash, timestamp, isLo
       <Grid width="100%" columnGap={ 4 } rowGap={ 2 } templateColumns="max-content max-content auto" w="100%">
         { l1BlockLink }
         <Skeleton loading={ isLoading } w="fit-content" h="fit-content" my="5px">
-          L1 txn
+          { layerLabels.parent } txn
         </Skeleton>
         { l1TxLink }
         <TimeWithTooltip
@@ -97,7 +101,7 @@ const LatestDepositsItem = ({ l1BlockNumber, l1TxHash, l2TxHash, timestamp, isLo
           my="2px"
         />
         <Skeleton loading={ isLoading } w="fit-content" h="fit-content" my="2px">
-          L2 txn
+          { layerLabels.current } txn
         </Skeleton>
         { l2TxLink }
       </Grid>

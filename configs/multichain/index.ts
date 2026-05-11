@@ -1,11 +1,12 @@
 import type { MultichainConfig } from 'types/multichain';
 
 import config from 'configs/app';
-import * as multichainConfigNodejs from 'configs/multichain/config.nodejs';
 import { isBrowser } from 'toolkit/utils/isBrowser';
 
+import * as multichainConfigNodejs from './config.nodejs';
+
 const multichainConfig: () => MultichainConfig | undefined = () => {
-  if (!config.features.opSuperchain.isEnabled) {
+  if (!config.features.multichain.isEnabled) {
     return;
   }
 

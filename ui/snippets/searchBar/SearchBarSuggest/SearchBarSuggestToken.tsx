@@ -4,13 +4,15 @@ import React from 'react';
 
 import type { ItemsProps } from './types';
 import type { SearchResultToken } from 'types/api/search';
-import type * as multichain from 'types/client/multichain-aggregator';
+import type * as multichain from 'types/client/multichainAggregator';
 
-import { toBech32Address } from 'lib/address/bech32';
-import highlightText from 'lib/highlightText';
+import { toBech32Address } from 'client/slices/address/utils/bech32';
+import ContractCertifiedLabel from 'client/slices/contract/components/ContractCertifiedLabel';
+import * as TokenEntity from 'client/slices/token/components/entity/TokenEntity';
+
+import highlightText from 'client/shared/text/highlight-text';
+
 import * as contract from 'lib/multichain/contract';
-import ContractCertifiedLabel from 'ui/shared/ContractCertifiedLabel';
-import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import IconSvg from 'ui/shared/IconSvg';
 

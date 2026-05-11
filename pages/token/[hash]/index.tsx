@@ -8,9 +8,11 @@ import PageNextJs from 'nextjs/PageNextJs';
 import detectBotRequest from 'nextjs/utils/detectBotRequest';
 import fetchApi from 'nextjs/utils/fetchApi';
 
+import Token from 'client/slices/token/pages/details/Token';
+
+import getQueryParamString from 'client/shared/router/get-query-param-string';
+
 import config from 'configs/app';
-import getQueryParamString from 'lib/router/getQueryParamString';
-import Token from 'ui/pages/Token';
 
 const pathname: Route['pathname'] = '/token/[hash]';
 
@@ -27,7 +29,7 @@ export default Page;
 export const getServerSideProps: GetServerSideProps<Props<typeof pathname>> = async(ctx) => {
   const baseResponse = await gSSP.token<typeof pathname>(ctx);
 
-  if ('props' in baseResponse && !config.features.opSuperchain.isEnabled) {
+  if ('props' in baseResponse && !config.features.multichain.isEnabled) {
     if (
       config.meta.seo.enhancedDataEnabled ||
       (config.meta.og.enhancedDataEnabled && detectBotRequest(ctx.req)?.type === 'social_preview')

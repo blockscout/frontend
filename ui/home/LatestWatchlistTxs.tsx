@@ -3,12 +3,16 @@ import React from 'react';
 
 import { route } from 'nextjs-routes';
 
-import useApiQuery from 'lib/api/useApiQuery';
-import useIsMobile from 'lib/hooks/useIsMobile';
-import { TX } from 'stubs/tx';
+import useApiQuery from 'client/api/hooks/useApiQuery';
+
+import { TX } from 'client/slices/tx/stubs/tx';
+
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+
 import { Link } from 'toolkit/chakra/link';
 import useRedirectForInvalidAuthToken from 'ui/snippets/auth/useRedirectForInvalidAuthToken';
 
+import LatestTxsFallback from './fallbacks/LatestTxsFallback';
 import LatestTxsItem from './LatestTxsItem';
 import LatestTxsItemMobile from './LatestTxsItemMobile';
 
@@ -23,11 +27,11 @@ const LatestWatchlistTxs = () => {
   });
 
   if (isError) {
-    return <Text mt={ 4 }>No data. Please reload the page.</Text>;
+    return <LatestTxsFallback/>;
   }
 
   if (!data?.length) {
-    return <Text mt={ 4 }>There are no transactions.</Text>;
+    return <Text>No latest transactions found.</Text>;
   }
 
   if (data) {

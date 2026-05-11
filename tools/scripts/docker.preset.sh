@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ "$#" -ne 1 ]; then
-  echo "Usage: yarn start:docker:preset <preset_name>"
+  echo "Usage: pnpm start:docker:preset <preset_name>"
   exit 1
 fi
 

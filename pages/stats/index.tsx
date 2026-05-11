@@ -3,14 +3,15 @@ import React from 'react';
 
 import PageNextJs from 'nextjs/PageNextJs';
 
+import ChainStatsIndex from 'client/features/chain-stats/pages/index/ChainStatsIndex';
+
 import config from 'configs/app';
-import OpSuperchainStats from 'ui/optimismSuperchain/stats/OpSuperchainStats';
-import Stats from 'ui/pages/Stats';
+import MultichainStats from 'ui/multichain/stats/MultichainStats';
 
 const Page: NextPage = () => {
   return (
     <PageNextJs pathname="/stats">
-      { config.features.opSuperchain.isEnabled ? <OpSuperchainStats/> : <Stats/> }
+      { config.features.multichain.isEnabled ? <MultichainStats/> : <ChainStatsIndex/> }
     </PageNextJs>
   );
 };

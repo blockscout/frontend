@@ -4,8 +4,9 @@ import React, { useCallback } from 'react';
 
 import type { ApiKey, ApiKeys } from 'types/api/account';
 
-import { resourceKey } from 'lib/api/resources';
-import useApiFetch from 'lib/api/useApiFetch';
+import useApiFetch from 'client/api/hooks/useApiFetch';
+import { resourceKey } from 'client/api/resources';
+
 import DeleteModal from 'ui/shared/DeleteModal';
 
 type Props = {

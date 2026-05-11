@@ -7,14 +7,14 @@ import { FeaturedNetwork, NETWORK_GROUPS, NetworkExplorer } from 'types/networks
 import { CustomLink, CustomLinksGroup } from 'types/footerLinks';
 import { COLOR_THEME_IDS } from 'types/settings';
 import { FontFamily } from 'types/ui';
-import { ContractCodeIde, SMART_CONTRACT_EXTRA_VERIFICATION_METHODS, type SmartContractVerificationMethodExtra } from 'types/client/contract';
-import type { AddressFormat, AddressViewId } from 'types/views/address';
-import { ADDRESS_FORMATS, ADDRESS_VIEWS_IDS, IDENTICON_TYPES } from 'types/views/address';
+import type { ContractCodeIde } from 'client/slices/contract/types/client';
+import { SMART_CONTRACT_EXTRA_VERIFICATION_METHODS, type SmartContractVerificationMethodExtra } from 'client/slices/contract/pages/contract-verification/utils';
+import type { AddressFormat, AddressViewId } from 'client/slices/address/types/view';
+import { ADDRESS_FORMATS, ADDRESS_VIEWS_IDS, IDENTICON_TYPES } from 'client/slices/address/types/view';
 import { BLOCK_FIELDS_IDS } from 'types/views/block';
 import type { BlockFieldId } from 'types/views/block';
 import type { TxAdditionalFieldsId, TxFieldsId } from 'types/views/tx';
 import { TX_ADDITIONAL_FIELDS_IDS, TX_FIELDS_IDS } from 'types/views/tx';
-import type { VerifiedContractsFilter } from 'types/api/contracts';
 import * as regexp from 'toolkit/utils/regexp';
 import { NftMarketplaceItem } from 'types/views/nft';
 
@@ -38,6 +38,7 @@ const heroBannerSchema: yup.ObjectSchema<HeroBannerConfig> = yup.object()
       search: yup.object({
         border_width: yup.array().max(2).of(yup.string()),
       }),
+      text: yup.string(),
     });
 
 export const homepageSchema = yup.object({
@@ -211,7 +212,21 @@ export const miscSchema = yup.object({
     NEXT_PUBLIC_HIDE_INDEXING_ALERT_BLOCKS: yup.boolean(),
     NEXT_PUBLIC_HIDE_INDEXING_ALERT_INT_TXS: yup.boolean(),
     NEXT_PUBLIC_HIDE_NATIVE_COIN_PRICE: yup.boolean(),
-    NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE: yup.string(),
+    NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE: yup
+    .mixed()
+    .test(
+      'shape',
+      'Invalid schema were provided for NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE, it should be either an array of strings or a string',
+      (data) => {
+        const isStringSchema = yup.string();
+        const isArrayOfStringsSchema = yup
+          .array()
+          .transform(replaceQuotes)
+          .json()
+          .of(yup.string());
+
+        return isStringSchema.isValidSync(data) || isArrayOfStringsSchema.isValidSync(data);
+      }),
     NEXT_PUBLIC_COLOR_THEME_DEFAULT: yup.string().oneOf(COLOR_THEME_IDS),
     NEXT_PUBLIC_COLOR_THEME_OVERRIDES: yup.object().transform(replaceQuotes).json(),
     NEXT_PUBLIC_FONT_FAMILY_HEADING: yup

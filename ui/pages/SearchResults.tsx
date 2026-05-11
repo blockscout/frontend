@@ -6,10 +6,11 @@ import React from 'react';
 import { SEARCH_RESULT_TYPES } from 'types/api/search';
 import type { SearchResultItem } from 'types/client/search';
 
+import getQueryParamString from 'client/shared/router/get-query-param-string';
+import removeQueryParam from 'client/shared/router/remove-query-param';
+
 import config from 'configs/app';
 import { useSettingsContext } from 'lib/contexts/settings';
-import getQueryParamString from 'lib/router/getQueryParamString';
-import removeQueryParam from 'lib/router/removeQueryParam';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';

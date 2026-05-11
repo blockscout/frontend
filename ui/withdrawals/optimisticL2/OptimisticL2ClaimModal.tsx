@@ -7,12 +7,14 @@ import { useSwitchChain, useWaitForTransactionReceipt, useWalletClient } from 'w
 
 import type { OptimisticL2WithdrawalClaimInfo } from 'types/api/optimisticL2';
 
+import useWeb3Wallet from 'client/features/connect-wallet/hooks/useWallet';
+
+import getErrorMessage from 'client/shared/errors/get-error-message';
+import getErrorObjPayload from 'client/shared/errors/get-error-obj-payload';
+import getErrorProp from 'client/shared/errors/get-error-prop';
+import capitalizeFirstLetter from 'client/shared/text/capitalize-first-letter';
+
 import config from 'configs/app';
-import capitalizeFirstLetter from 'lib/capitalizeFirstLetter';
-import getErrorMessage from 'lib/errors/getErrorMessage';
-import getErrorObjPayload from 'lib/errors/getErrorObjPayload';
-import getErrorProp from 'lib/errors/getErrorProp';
-import useWeb3Wallet from 'lib/web3/useWallet';
 import { Button } from 'toolkit/chakra/button';
 import { DialogBody, DialogContent, DialogHeader, DialogRoot } from 'toolkit/chakra/dialog';
 import { toaster } from 'toolkit/chakra/toaster';
