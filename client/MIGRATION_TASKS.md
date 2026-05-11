@@ -121,7 +121,7 @@ Each slice follows the template established in 2-1.
 ### 3-7 · [ ] Slice: `home`
 **Scope:** `ui/home/**`, related types/mocks/stubs → `client/slices/home/`  
 
-### 3-8 · [ ] Slice: `log`
+### 3-8 · [~] Slice: `log` · [#3403](https://github.com/blockscout/frontend/issues/3403)
 **Scope:** `ui/shared/log/**`, related types/mocks/stubs → `client/slices/log/`
 
 ### 3-9 · [~] Slice: `token-transfer` · [#3399](https://github.com/blockscout/frontend/issues/3399)
