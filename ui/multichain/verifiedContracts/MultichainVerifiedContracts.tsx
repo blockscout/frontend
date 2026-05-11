@@ -1,6 +1,13 @@
 import { Box, createListCollection, HStack } from '@chakra-ui/react';
 import React from 'react';
 
+import useVerifiedContractsQuery from 'client/slices/contract/hooks/useVerifiedContractsQuery';
+import { SORT_OPTIONS } from 'client/slices/contract/pages/index/sort';
+import VerifiedContractsCounters from 'client/slices/contract/pages/index/VerifiedContractsCounters';
+import VerifiedContractsFilter from 'client/slices/contract/pages/index/VerifiedContractsFilter';
+import VerifiedContractsList from 'client/slices/contract/pages/index/VerifiedContractsList';
+import VerifiedContractsTable from 'client/slices/contract/pages/index/VerifiedContractsTable';
+
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
 import { MultichainProvider } from 'lib/contexts/multichain';
@@ -11,12 +18,6 @@ import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 import Sort from 'ui/shared/sort/Sort';
-import useVerifiedContractsQuery from 'ui/verifiedContracts/useVerifiedContractsQuery';
-import { SORT_OPTIONS } from 'ui/verifiedContracts/utils';
-import VerifiedContractsCounters from 'ui/verifiedContracts/VerifiedContractsCounters';
-import VerifiedContractsFilter from 'ui/verifiedContracts/VerifiedContractsFilter';
-import VerifiedContractsList from 'ui/verifiedContracts/VerifiedContractsList';
-import VerifiedContractsTable from 'ui/verifiedContracts/VerifiedContractsTable';
 
 const sortCollection = createListCollection({
   items: SORT_OPTIONS,

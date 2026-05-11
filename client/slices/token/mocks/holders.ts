@@ -1,6 +1,6 @@
 import type { TokenHolders } from 'client/slices/token/types/api';
 
-import { withName, withoutName } from 'mocks/address/address';
+import { withName, withoutName } from 'client/slices/address/mocks/address';
 
 export const tokenHoldersERC20: TokenHolders = {
   items: [

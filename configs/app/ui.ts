@@ -1,4 +1,4 @@
-import type { ContractCodeIde } from 'types/client/contract';
+import type { ContractCodeIde } from 'client/slices/contract/types/client';
 import { type NavItemExternal, type NavigationLayout, type NavigationPromoBannerConfig } from 'types/client/navigation';
 import { HOME_STATS_WIDGET_IDS, type ChainIndicatorId, type HeroBannerConfig, type HomeStatsWidgetId } from 'types/homepage';
 import type { NetworkExplorer } from 'types/networks';

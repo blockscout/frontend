@@ -4,7 +4,7 @@ import type {
   ValidatorsBlackfortResponse,
 } from 'types/api/validators';
 
-import * as addressMock from '../address/address';
+import * as addressMock from 'client/slices/address/mocks/address';
 
 export const validator1: ValidatorBlackfort = {
   address: addressMock.withName,

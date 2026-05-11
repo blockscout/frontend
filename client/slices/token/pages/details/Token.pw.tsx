@@ -1,10 +1,10 @@
 import React from 'react';
 
+import { token as contract } from 'client/slices/address/mocks/address';
 import { tokenInfo, tokenCounters, bridgedTokenA } from 'client/slices/token/mocks/info';
 
 import config from 'configs/app';
 import * as verifiedAddressesMocks from 'mocks/account/verifiedAddresses';
-import { token as contract } from 'mocks/address/address';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import * as socketServer from 'playwright/fixtures/socketServer';
 import { test, expect, devices } from 'playwright/lib';

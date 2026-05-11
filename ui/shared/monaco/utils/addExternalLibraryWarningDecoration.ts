@@ -1,6 +1,6 @@
 import type * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 
-import type { SmartContractExternalLibrary } from 'types/api/contract';
+import type { SmartContractExternalLibrary } from 'client/slices/contract/types/api';
 
 import sortByEndLineNumberAsc from './sortByEndLineNumberAsc';
 

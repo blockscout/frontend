@@ -7,6 +7,7 @@ import type * as multichain from 'types/client/multichainAggregator';
 
 import * as AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import { toBech32Address } from 'client/slices/address/utils/bech32';
+import ContractCertifiedLabel from 'client/slices/contract/components/ContractCertifiedLabel';
 
 import highlightText from 'client/shared/text/highlight-text';
 
@@ -14,7 +15,6 @@ import dayjs from 'lib/date/dayjs';
 import * as contract from 'lib/multichain/contract';
 import { ADDRESS_REGEXP } from 'toolkit/utils/regexp';
 import SearchResultEntityTag from 'ui/searchResults/SearchResultEntityTag';
-import ContractCertifiedLabel from 'ui/shared/ContractCertifiedLabel';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 
 type Props = ItemsProps<SearchResultAddressOrContract | SearchResultMetadataTag | multichain.QuickSearchResultAddress>;

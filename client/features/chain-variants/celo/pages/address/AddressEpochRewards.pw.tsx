@@ -1,7 +1,8 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import { epochRewards } from 'mocks/address/epochRewards';
+import { epochRewards } from 'client/features/chain-variants/celo/mocks/epoch-rewards';
+
 import { test, expect } from 'playwright/lib';
 
 import AddressEpochRewards from './AddressEpochRewards';

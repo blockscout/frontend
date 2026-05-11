@@ -2,9 +2,9 @@ import { Box } from '@chakra-ui/react';
 import type { Locator } from '@playwright/test';
 import React from 'react';
 
+import * as countersMock from 'client/slices/address/mocks/counters';
 import * as txMock from 'client/slices/tx/mocks/tx';
 
-import * as countersMock from 'mocks/address/counters';
 import * as addressMock from 'mocks/multichain/address';
 import * as chainDataMock from 'mocks/multichain/chains';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';

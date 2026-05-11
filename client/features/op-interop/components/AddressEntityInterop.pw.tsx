@@ -1,6 +1,7 @@
 import React from 'react';
 
-import * as addressMock from 'mocks/address/address';
+import * as addressMock from 'client/slices/address/mocks/address';
+
 import * as interopMock from 'mocks/interop/interop';
 import { test, expect } from 'playwright/lib';
 

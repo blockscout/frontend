@@ -1,8 +1,8 @@
 import React from 'react';
 
+import * as addressMocks from 'client/slices/address/mocks/address';
 import * as inputDataMocks from 'client/slices/log/mocks/decoded-input';
 
-import * as addressMocks from 'mocks/address/address';
 import { test, expect } from 'playwright/lib';
 
 import LogItem from './LogItem';

@@ -3,7 +3,8 @@
 import { useRouter } from 'next/router';
 import type React from 'react';
 
-import * as addressMock from 'mocks/address/address';
+import * as addressMock from 'client/slices/address/mocks/address';
+
 import type { Mock } from 'vitest';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { renderHook, wrapper, act } from 'vitest/lib';

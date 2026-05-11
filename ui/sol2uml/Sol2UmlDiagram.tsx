@@ -2,7 +2,7 @@ import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type * as visualizer from '@blockscout/visualizer-types';
-import type { SmartContract } from 'types/api/contract';
+import type { SmartContract } from 'client/slices/contract/types/api';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 import type { ResourceError } from 'client/api/resources';

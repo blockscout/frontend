@@ -1,7 +1,7 @@
 import React from 'react';
 
 import type { AddressImplementation } from 'client/slices/address/types/api';
-import type { SmartContractProxyType } from 'types/api/contract';
+import type { SmartContractProxyType } from 'client/slices/contract/types/api';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 

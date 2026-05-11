@@ -3,9 +3,9 @@ import React from 'react';
 import type { TokenInfo } from 'client/slices/token/types/api';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+import * as addressMock from 'client/slices/address/mocks/address';
 import * as TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 
-import * as addressMock from 'mocks/address/address';
 import EntityTags from 'ui/shared/EntityTags/EntityTags';
 import IconSvg from 'ui/shared/IconSvg';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';

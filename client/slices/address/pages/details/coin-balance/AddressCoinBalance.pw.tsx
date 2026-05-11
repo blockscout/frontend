@@ -1,6 +1,7 @@
 import React from 'react';
 
-import * as balanceHistoryMock from 'mocks/address/coinBalanceHistory';
+import * as balanceHistoryMock from 'client/slices/address/mocks/coin-balance-history';
+
 import { test, expect, devices } from 'playwright/lib';
 
 import AddressCoinBalance from './AddressCoinBalance';

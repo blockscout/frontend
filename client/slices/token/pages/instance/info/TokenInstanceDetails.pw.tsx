@@ -2,12 +2,12 @@ import React from 'react';
 
 import type { AddressMetadataInfo, AddressMetadataTagApi } from 'client/features/address-metadata/types/api';
 
+import * as addressMock from 'client/slices/address/mocks/address';
 import { tokenInfoERC721a } from 'client/slices/token/mocks/info';
 import * as tokenInstanceMock from 'client/slices/token/mocks/instance';
 import { MetadataUpdateProvider } from 'client/slices/token/pages/instance/metadata-update-context';
 
 import config from 'configs/app';
-import * as addressMock from 'mocks/address/address';
 import { protocolTagWithMeta } from 'mocks/metadata/address';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect, devices } from 'playwright/lib';

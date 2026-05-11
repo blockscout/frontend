@@ -3,15 +3,17 @@ import React from 'react';
 
 // This icon doesn't work properly when it is in the sprite
 // Probably because of the gradient
+
+import SolidityscanReportButton from 'client/features/solidity-scan/components/SolidityscanReportButton';
+import SolidityscanReportDetails from 'client/features/solidity-scan/components/SolidityscanReportDetails';
+import SolidityscanReportScore from 'client/features/solidity-scan/components/SolidityscanReportScore';
+import useFetchReport from 'client/features/solidity-scan/hooks/useFetchReport';
+
 // eslint-disable-next-line no-restricted-imports
 import solidityScanIcon from 'icons/brands/solidity_scan.svg';
-import useFetchReport from 'lib/solidityScan/useFetchReport';
 import { Link } from 'toolkit/chakra/link';
 import { PopoverBody, PopoverContent, PopoverRoot } from 'toolkit/chakra/popover';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
-import SolidityscanReportButton from 'ui/shared/solidityscanReport/SolidityscanReportButton';
-import SolidityscanReportDetails from 'ui/shared/solidityscanReport/SolidityscanReportDetails';
-import SolidityscanReportScore from 'ui/shared/solidityscanReport/SolidityscanReportScore';
 
 interface Props {
   hash: string;

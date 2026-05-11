@@ -6,7 +6,7 @@ import type {
   AddressMudRecordsFilter,
   AddressMudRecordsSorting,
   AddressMudRecord,
-} from 'client/features/chain-variants/mud/types/api';
+  SmartContractMudSystemsResponse, SmartContractMudSystemInfo } from 'client/features/chain-variants/mud/types/api';
 import type {
   ArbitrumL2MessagesResponse,
   ArbitrumL2TxnBatch,
@@ -16,10 +16,6 @@ import type {
   ArbitrumL2TxnWithdrawalsResponse,
   ArbitrumL2MessageClaimResponse,
 } from 'types/api/arbitrumL2';
-import type {
-  SmartContractMudSystemsResponse,
-  SmartContractMudSystemInfo,
-} from 'types/api/contract';
 import type { InteropMessageListResponse } from 'types/api/interop';
 import type { MudWorldsResponse } from 'types/api/mudWorlds';
 import type {

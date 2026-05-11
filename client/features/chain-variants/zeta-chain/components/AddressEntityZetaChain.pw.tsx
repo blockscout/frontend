@@ -1,6 +1,7 @@
 import React from 'react';
 
-import * as addressMock from 'mocks/address/address';
+import * as addressMock from 'client/slices/address/mocks/address';
+
 import { zetaChainCCTXConfig } from 'mocks/zetaChain/zetaChainCCTXConfig';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';

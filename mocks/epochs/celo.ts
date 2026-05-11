@@ -2,10 +2,9 @@ import { padStart } from 'es-toolkit/compat';
 
 import type { CeloEpochDetails, CeloEpochElectionRewardDetails, CeloEpochElectionRewardDetailsResponse, CeloEpochListResponse } from 'types/api/epochs';
 
+import * as addressMock from 'client/slices/address/mocks/address';
 import * as tokenTransferMock from 'client/slices/token-transfer/mocks';
 import * as tokenMock from 'client/slices/token/mocks/info';
-
-import * as addressMock from '../address/address';
 
 export const epoch1: CeloEpochDetails = {
   number: 1739,
