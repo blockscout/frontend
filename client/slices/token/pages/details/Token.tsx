@@ -14,6 +14,7 @@ import useSocketChannel from 'client/api/socket/useSocketChannel';
 import useSocketMessage from 'client/api/socket/useSocketMessage';
 
 import * as addressStubs from 'client/slices/address/stubs/address';
+import Contract from 'client/slices/contract/pages/details/Contract';
 import { CONTRACT_TAB_IDS } from 'client/slices/contract/utils/tabs';
 import TokenTransfer from 'client/slices/token-transfer/pages/token/TokenTransfer';
 import { getTokenTransfersStub } from 'client/slices/token-transfer/stubs';
@@ -38,7 +39,6 @@ import useEtherscanRedirects from 'client/shared/router/useEtherscanRedirects';
 import config from 'configs/app';
 import { generateListStub } from 'stubs/utils';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import AddressContract from 'ui/address/AddressContract';
 import TextAd from 'ui/shared/ad/TextAd';
 import IconSvg from 'ui/shared/IconSvg';
 import Pagination from 'ui/shared/pagination/Pagination';
@@ -217,7 +217,7 @@ const TokenPageContent = () => {
 
         return 'Contract';
       },
-      component: <AddressContract addressData={ addressQuery.data } isLoading={ isLoading }/>,
+      component: <Contract addressData={ addressQuery.data } isLoading={ isLoading }/>,
       subTabs: CONTRACT_TAB_IDS,
     } : undefined,
     (address3rdPartyWidgets.isEnabled && address3rdPartyWidgets.items.length > 0) ? {

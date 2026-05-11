@@ -4,9 +4,9 @@ import type { RpcBlock } from 'viem';
 import type { ZilliqaBlockData } from 'client/features/chain-variants/zilliqa/types/api';
 import type { Block, BlocksResponse } from 'client/slices/block/types/api';
 
+import * as addressMock from 'client/slices/address/mocks/address';
 import * as tokenMock from 'client/slices/token/mocks/info';
 
-import * as addressMock from 'mocks/address/address';
 import { ZERO_ADDRESS } from 'toolkit/utils/consts';
 
 export const base: Block = {

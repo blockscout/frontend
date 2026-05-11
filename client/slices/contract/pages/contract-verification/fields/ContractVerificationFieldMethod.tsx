@@ -7,7 +7,7 @@ import React from 'react';
 
 import type { FormFields } from '../types';
 
-import type { SmartContractVerificationMethod, SmartContractVerificationConfig } from 'client/slices/contract/utils/verification';
+import type { SmartContractVerificationMethod, SmartContractVerificationConfig } from 'client/slices/contract/pages/contract-verification/utils';
 
 import { Heading } from 'toolkit/chakra/heading';
 import { Link } from 'toolkit/chakra/link';

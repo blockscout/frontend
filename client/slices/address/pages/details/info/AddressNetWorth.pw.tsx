@@ -1,8 +1,9 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import * as addressMock from 'mocks/address/address';
-import * as tokensMock from 'mocks/address/tokens';
+import * as addressMock from 'client/slices/address/mocks/address';
+import * as tokensMock from 'client/slices/token/mocks/address-tokens';
+
 import { test, expect } from 'playwright/lib';
 
 import AddressNetWorth from './AddressNetWorth';

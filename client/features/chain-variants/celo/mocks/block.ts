@@ -1,9 +1,9 @@
 import type { Block } from 'client/slices/block/types/api';
 
+import * as addressMock from 'client/slices/address/mocks/address';
 import { base } from 'client/slices/block/mocks/block';
 import * as tokenMock from 'client/slices/token/mocks/info';
 
-import * as addressMock from 'mocks/address/address';
 import { ZERO_ADDRESS } from 'toolkit/utils/consts';
 
 export const celo: Block = {

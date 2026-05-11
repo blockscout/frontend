@@ -8,6 +8,7 @@ import type {
   VerifiedContractsSortingValue,
 } from 'client/slices/contract/types/api';
 
+import { SORT_OPTIONS } from 'client/slices/contract/pages/index/sort';
 import { VERIFIED_CONTRACT_INFO } from 'client/slices/contract/stubs';
 
 import useDebounce from 'client/shared/hooks/useDebounce';
@@ -17,8 +18,6 @@ import { generateListStub } from 'stubs/utils';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import getSortParamsFromValue from 'ui/shared/sort/getSortParamsFromValue';
 import getSortValueFromQuery from 'ui/shared/sort/getSortValueFromQuery';
-
-import { SORT_OPTIONS } from '../utils/verified-contracts';
 
 interface Props {
   isMultichain?: boolean;

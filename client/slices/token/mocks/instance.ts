@@ -1,9 +1,8 @@
 /* eslint-disable max-len */
 import type { TokenInstance } from 'client/slices/token/types/api';
 
+import * as addressMock from 'client/slices/address/mocks/address';
 import * as tokenInfoMock from 'client/slices/token/mocks/info';
-
-import * as addressMock from 'mocks/address/address';
 
 export const base: TokenInstance = {
   token: tokenInfoMock.tokenInfoERC721a,

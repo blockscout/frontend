@@ -2,11 +2,12 @@ import React from 'react';
 
 import type { AddressCountersQuery } from 'client/slices/address/hooks/useAddressCountersQuery';
 import type { AddressQuery } from 'client/slices/address/hooks/useAddressQuery';
+import * as addressMock from 'client/slices/address/mocks/address';
+import * as countersMock from 'client/slices/address/mocks/counters';
+import * as tokensMock from 'client/slices/token/mocks/address-tokens';
 
-import * as addressMock from 'mocks/address/address';
-import * as countersMock from 'mocks/address/counters';
-import * as tokensMock from 'mocks/address/tokens';
-import * as widgetsMock from 'mocks/address/widgets';
+import * as widgetsMock from 'client/features/address-3rd-party-widgets/mocks';
+
 import type { TestFnArgs } from 'playwright/lib';
 import { test, expect, devices } from 'playwright/lib';
 import * as pwConfig from 'playwright/utils/config';

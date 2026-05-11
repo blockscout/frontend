@@ -4,7 +4,7 @@ import { useFormContext } from 'react-hook-form';
 
 import type { FormFields } from '../types';
 
-import type { SmartContractVerificationConfig } from 'client/slices/contract/utils/verification';
+import type { SmartContractVerificationConfig } from 'client/slices/contract/pages/contract-verification/utils';
 
 import { Checkbox } from 'toolkit/chakra/checkbox';
 import { FormFieldSelectAsync } from 'toolkit/components/forms/fields/FormFieldSelectAsync';

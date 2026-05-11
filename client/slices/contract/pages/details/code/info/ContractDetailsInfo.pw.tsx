@@ -1,10 +1,10 @@
 import React from 'react';
 
+import * as addressMock from 'client/slices/address/mocks/address';
 import * as contractMock from 'client/slices/contract/mocks/info';
 
 import { contractAudits } from 'client/features/contract-audit-reports/mocks';
 
-import * as addressMock from 'mocks/address/address';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';
 

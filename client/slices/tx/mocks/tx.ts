@@ -4,11 +4,12 @@ import type { RpcTransactionReceipt } from 'viem';
 import type { AddressParam } from 'client/slices/address/types/api';
 import type { Transaction } from 'client/slices/tx/types/api';
 
+import * as addressMock from 'client/slices/address/mocks/address';
 import * as decodedInputDataMock from 'client/slices/log/mocks/decoded-input';
 import * as tokenTransferMock from 'client/slices/token-transfer/mocks';
 
-import * as addressMock from 'mocks/address/address';
-import { publicTag, privateTag, watchlistName } from 'mocks/address/tag';
+import { publicTag, privateTag, watchlistName } from 'client/features/account/mocks/address-tags';
+
 import { protocolTag } from 'mocks/metadata/address';
 
 export const base: Transaction = {

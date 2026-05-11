@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { hash as addressHash } from 'mocks/address/address';
+import { hash as addressHash } from 'client/slices/address/mocks/address';
+
 import * as revokeMock from 'mocks/essentialDapps/revoke';
 import * as chainDataMock from 'mocks/multichain/chains';
 import type { TestFnArgs } from 'playwright/lib';

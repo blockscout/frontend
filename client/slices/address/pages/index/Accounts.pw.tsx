@@ -2,7 +2,8 @@ import React from 'react';
 
 import type { AddressesResponse } from 'client/slices/address/types/api';
 
-import * as addressMocks from 'mocks/address/address';
+import * as addressMocks from 'client/slices/address/mocks/address';
+
 import { test, expect } from 'playwright/lib';
 
 import Accounts from './Accounts';

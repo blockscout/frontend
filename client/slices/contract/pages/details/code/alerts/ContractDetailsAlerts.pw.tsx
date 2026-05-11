@@ -1,8 +1,8 @@
 import React from 'react';
 
+import * as addressMock from 'client/slices/address/mocks/address';
 import * as contractMock from 'client/slices/contract/mocks/info';
 
-import * as addressMock from 'mocks/address/address';
 import * as socketServer from 'playwright/fixtures/socketServer';
 import { test, expect } from 'playwright/lib';
 

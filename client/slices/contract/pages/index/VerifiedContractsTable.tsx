@@ -2,7 +2,7 @@ import React from 'react';
 
 import type { VerifiedContract, VerifiedContractsSortingField, VerifiedContractsSortingValue } from 'client/slices/contract/types/api';
 
-import { SORT_SEQUENCE } from 'client/slices/contract/utils/verified-contracts';
+import { SORT_SEQUENCE } from 'client/slices/contract/pages/index/sort';
 
 import { currencyUnits } from 'client/shared/chain/units';
 

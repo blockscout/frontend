@@ -15,11 +15,11 @@ import type {
 import type {
   SmartContractVerificationError,
   SmartContractLicenseType,
+  SmartContractVerificationMethodApi,
+  SmartContractVerificationConfigRaw,
 } from 'client/slices/contract/types/api';
 
 import type { Params as FetchParams } from 'client/api/hooks/useFetch';
-
-import type { SmartContractVerificationConfig, SmartContractVerificationMethod } from 'client/slices/contract/utils/verification';
 
 import { stripLeadingSlash } from 'toolkit/utils/url';
 
@@ -35,6 +35,19 @@ export const SUPPORTED_VERIFICATION_METHODS: Array<SmartContractVerificationMeth
   'vyper-standard-input',
   'stylus-github-repository',
 ];
+
+export const SMART_CONTRACT_EXTRA_VERIFICATION_METHODS = [
+  'solidity-hardhat' as const,
+  'solidity-foundry' as const,
+];
+
+export type SmartContractVerificationMethodExtra = (typeof SMART_CONTRACT_EXTRA_VERIFICATION_METHODS)[number];
+
+export type SmartContractVerificationMethod = SmartContractVerificationMethodApi | SmartContractVerificationMethodExtra;
+
+export interface SmartContractVerificationConfig extends SmartContractVerificationConfigRaw {
+  verification_options: Array<SmartContractVerificationMethod>;
+}
 
 export const METHOD_LABELS: Record<SmartContractVerificationMethod, string> = {
   'flattened-code': 'Solidity (Single file)',

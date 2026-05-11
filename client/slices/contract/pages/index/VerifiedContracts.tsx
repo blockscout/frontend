@@ -6,7 +6,6 @@ import VerifiedContractsCounters from 'client/slices/contract/pages/index/Verifi
 import VerifiedContractsFilter from 'client/slices/contract/pages/index/VerifiedContractsFilter';
 import VerifiedContractsList from 'client/slices/contract/pages/index/VerifiedContractsList';
 import VerifiedContractsTable from 'client/slices/contract/pages/index/VerifiedContractsTable';
-import { SORT_OPTIONS } from 'client/slices/contract/utils/verified-contracts';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
@@ -17,6 +16,8 @@ import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 import Sort from 'ui/shared/sort/Sort';
+
+import { SORT_OPTIONS } from './sort';
 
 const sortCollection = createListCollection({
   items: SORT_OPTIONS,

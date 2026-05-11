@@ -26,6 +26,7 @@ import AddressTxs, { ADDRESS_TXS_TAB_IDS } from 'client/slices/address/pages/det
 import AddressWithdrawals from 'client/slices/address/pages/details/withdrawals/AddressWithdrawals';
 import { ADDRESS_TABS_COUNTERS } from 'client/slices/address/stubs/address';
 import getCheckedSummedAddress from 'client/slices/address/utils/get-checked-summed-address';
+import Contract from 'client/slices/contract/pages/details/Contract';
 import { CONTRACT_TAB_IDS } from 'client/slices/contract/utils/tabs';
 
 import AddressFavoriteButton from 'client/features/account/pages/address/AddressFavoriteButton';
@@ -56,7 +57,6 @@ import useIsSafeAddress from 'lib/hooks/useIsSafeAddress';
 import useFetchXStarScore from 'lib/xStarScore/useFetchXStarScore';
 import { USER_OPS_ACCOUNT } from 'stubs/userOps';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import AddressContract from 'ui/address/AddressContract';
 import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu';
 import TextAd from 'ui/shared/ad/TextAd';
 import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
@@ -203,7 +203,7 @@ const AddressPageContent = () => {
           return tabName;
         },
         component: (
-          <AddressContract
+          <Contract
             addressData={ addressQuery.data }
             isLoading={ isTabsLoading }
             hasMudTab={ Boolean(config.features.mudFramework.isEnabled && mudTablesCountQuery.data && mudTablesCountQuery.data > 0) }

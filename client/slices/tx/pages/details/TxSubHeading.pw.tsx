@@ -2,11 +2,11 @@ import React from 'react';
 
 import type { AddressMetadataInfo, AddressMetadataTagApi } from 'client/features/address-metadata/types/api';
 
+import * as addressMock from 'client/slices/address/mocks/address';
 import type { TxQuery } from 'client/slices/tx/hooks/useTxQuery';
 import * as txMock from 'client/slices/tx/mocks/tx';
 
 import config from 'configs/app';
-import * as addressMock from 'mocks/address/address';
 import { protocolTagWithMeta } from 'mocks/metadata/address';
 import { transaction as novesTransaction } from 'mocks/noves/transaction';
 import { txInterpretation } from 'mocks/txs/txInterpretation';

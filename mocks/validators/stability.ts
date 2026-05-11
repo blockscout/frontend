@@ -4,7 +4,7 @@ import type {
   ValidatorsStabilityResponse,
 } from 'types/api/validators';
 
-import * as addressMock from '../address/address';
+import * as addressMock from 'client/slices/address/mocks/address';
 
 export const validator1: ValidatorStability = {
   address: addressMock.withName,

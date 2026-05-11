@@ -1,6 +1,7 @@
 import React from 'react';
 
-import * as addressMock from 'mocks/address/address';
+import * as addressMock from 'client/slices/address/mocks/address';
+
 import { test, expect } from 'playwright/lib';
 
 import ContractDetailsDeployedByteCode from './ContractDetailsDeployedByteCode';

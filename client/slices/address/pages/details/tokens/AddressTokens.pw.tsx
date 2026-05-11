@@ -3,11 +3,11 @@ import React from 'react';
 
 import type { AddressTokenBalance, AddressTokensResponse } from 'client/slices/address/types/api';
 
+import * as addressMock from 'client/slices/address/mocks/address';
+import * as tokensMock from 'client/slices/token/mocks/address-tokens';
 import * as tokenInfo from 'client/slices/token/mocks/info';
 import * as tokenInstance from 'client/slices/token/mocks/instance';
 
-import * as addressMock from 'mocks/address/address';
-import * as tokensMock from 'mocks/address/tokens';
 import * as socketServer from 'playwright/fixtures/socketServer';
 import { test, expect, devices } from 'playwright/lib';
 

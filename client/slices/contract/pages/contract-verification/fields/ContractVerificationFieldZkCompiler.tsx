@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { FormFields } from '../types';
 
-import type { SmartContractVerificationConfig } from 'client/slices/contract/utils/verification';
+import type { SmartContractVerificationConfig } from 'client/slices/contract/pages/contract-verification/utils';
 
 import { Link } from 'toolkit/chakra/link';
 import { FormFieldSelectAsync } from 'toolkit/components/forms/fields/FormFieldSelectAsync';

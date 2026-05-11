@@ -2,9 +2,9 @@ import type { BrowserContext } from '@playwright/test';
 import React from 'react';
 import type { Abi } from 'viem';
 
+import * as addressMock from 'client/slices/address/mocks/address';
 import * as methodsMock from 'client/slices/contract/mocks/methods';
 
-import * as addressMock from 'mocks/address/address';
 import { contextWithAuth } from 'playwright/fixtures/auth';
 import { test, expect } from 'playwright/lib';
 

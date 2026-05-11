@@ -2,11 +2,11 @@ import { Box, createListCollection, HStack } from '@chakra-ui/react';
 import React from 'react';
 
 import useVerifiedContractsQuery from 'client/slices/contract/hooks/useVerifiedContractsQuery';
+import { SORT_OPTIONS } from 'client/slices/contract/pages/index/sort';
 import VerifiedContractsCounters from 'client/slices/contract/pages/index/VerifiedContractsCounters';
 import VerifiedContractsFilter from 'client/slices/contract/pages/index/VerifiedContractsFilter';
 import VerifiedContractsList from 'client/slices/contract/pages/index/VerifiedContractsList';
 import VerifiedContractsTable from 'client/slices/contract/pages/index/VerifiedContractsTable';
-import { SORT_OPTIONS } from 'client/slices/contract/utils/verified-contracts';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 

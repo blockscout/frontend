@@ -8,7 +8,7 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import ContractVerificationForm from 'client/slices/contract/pages/contract-verification/ContractVerificationForm';
 import useFormConfigQuery from 'client/slices/contract/pages/contract-verification/useFormConfigQuery';
-import type { SmartContractVerificationMethod } from 'client/slices/contract/utils/verification';
+import type { SmartContractVerificationMethod } from 'client/slices/contract/pages/contract-verification/utils';
 
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import getQueryParamString from 'client/shared/router/get-query-param-string';

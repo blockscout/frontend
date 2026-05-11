@@ -1,10 +1,10 @@
 import React from 'react';
 
+import * as addressMock from 'client/slices/address/mocks/address';
 import * as tokenMock from 'client/slices/token/mocks/info';
 import * as tokenInstanceMock from 'client/slices/token/mocks/instance';
 
 import config from 'configs/app';
-import * as addressMock from 'mocks/address/address';
 import * as socketServer from 'playwright/fixtures/socketServer';
 import { test, expect } from 'playwright/lib';
 import * as pwConfig from 'playwright/utils/config';

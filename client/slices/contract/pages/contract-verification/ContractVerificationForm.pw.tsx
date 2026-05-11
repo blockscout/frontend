@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { SmartContractVerificationConfig } from 'client/slices/contract/utils/verification';
+import type { SmartContractVerificationConfig } from 'client/slices/contract/pages/contract-verification/utils';
 
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';

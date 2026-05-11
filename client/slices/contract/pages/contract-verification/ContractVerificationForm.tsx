@@ -13,7 +13,7 @@ import useApiFetch from 'client/api/hooks/useApiFetch';
 import useSocketChannel from 'client/api/socket/useSocketChannel';
 import useSocketMessage from 'client/api/socket/useSocketMessage';
 
-import type { SmartContractVerificationConfig } from 'client/slices/contract/utils/verification';
+import type { SmartContractVerificationConfig } from 'client/slices/contract/pages/contract-verification/utils';
 
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 import getErrorObjStatusCode from 'client/shared/errors/get-error-obj-status-code';

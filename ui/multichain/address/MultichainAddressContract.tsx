@@ -7,13 +7,13 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 import { SocketProvider } from 'client/api/socket/context';
 
 import { ADDRESS_INFO } from 'client/slices/address/stubs/address';
+import Contract from 'client/slices/contract/pages/details/Contract';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
 import multichainConfig from 'configs/multichain';
 import { MultichainProvider } from 'lib/contexts/multichain';
 import useRoutedChainSelect from 'lib/multichain/useRoutedChainSelect';
-import AddressContract from 'ui/address/AddressContract';
 import ChainSelect from 'ui/multichain/components/ChainSelect';
 
 import getAvailableChainIds from './getAvailableChainIds';
@@ -61,7 +61,7 @@ const MultichainAddressContract = ({ addressHash, isLoading, data }: Props) => {
   return (
     <MultichainProvider key={ chainSelect.value?.[0] } chainId={ chainSelect.value?.[0] }>
       <SocketProvider url={ getSocketUrl(chain?.app_config) }>
-        <AddressContract
+        <Contract
           addressData={ addressQuery.data }
           isLoading={ isLoading || addressQuery.isPlaceholderData }
           hasMudTab={ false }

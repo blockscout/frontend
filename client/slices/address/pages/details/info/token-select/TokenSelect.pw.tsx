@@ -1,11 +1,11 @@
 import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
+import * as addressMock from 'client/slices/address/mocks/address';
 import MockAddressPage from 'client/slices/address/pages/details/AddressPageMock';
+import * as tokensMock from 'client/slices/token/mocks/address-tokens';
 import { tokenInfoERC20c, tokenInfoERC20a } from 'client/slices/token/mocks/info';
 
-import * as addressMock from 'mocks/address/address';
-import * as tokensMock from 'mocks/address/tokens';
 import { test, expect, devices } from 'playwright/lib';
 
 import TokenSelect from './TokenSelect';

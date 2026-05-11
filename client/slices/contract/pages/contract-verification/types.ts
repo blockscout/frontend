@@ -1,6 +1,6 @@
 import type { SmartContractLicenseType } from 'client/slices/contract/types/api';
 
-import type { SmartContractVerificationMethod } from 'client/slices/contract/utils/verification';
+import type { SmartContractVerificationMethod } from 'client/slices/contract/pages/contract-verification/utils';
 
 import type { SelectOption } from 'toolkit/chakra/select';
 

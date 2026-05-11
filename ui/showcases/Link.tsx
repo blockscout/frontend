@@ -4,14 +4,14 @@ import React from 'react';
 import type { TokenInfo } from 'client/slices/token/types/api';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+import * as addressMock from 'client/slices/address/mocks/address';
+import * as implementationsMock from 'client/slices/address/mocks/implementations';
 import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
 import * as blockMock from 'client/slices/block/mocks/block';
 import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import * as txMock from 'client/slices/tx/mocks/tx';
 
-import * as addressMock from 'mocks/address/address';
-import * as implementationsMock from 'mocks/address/implementations';
 import * as blobsMock from 'mocks/blobs/blobs';
 import * as ensMock from 'mocks/ens/domain';
 import * as poolMock from 'mocks/pools/pool';

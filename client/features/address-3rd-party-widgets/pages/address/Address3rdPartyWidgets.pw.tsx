@@ -1,7 +1,9 @@
 import React from 'react';
 
-import * as addressMock from 'mocks/address/address';
-import * as widgetsMock from 'mocks/address/widgets';
+import * as addressMock from 'client/slices/address/mocks/address';
+
+import * as widgetsMock from 'client/features/address-3rd-party-widgets/mocks';
+
 import type { TestFnArgs } from 'playwright/lib';
 import { test, expect, devices } from 'playwright/lib';
 import * as pwConfig from 'playwright/utils/config';

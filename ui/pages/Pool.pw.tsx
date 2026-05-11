@@ -1,7 +1,8 @@
 import React from 'react';
 
+import * as addressMock from 'client/slices/address/mocks/address';
+
 import config from 'configs/app';
-import * as addressMock from 'mocks/address/address';
 import * as poolMock from 'mocks/pools/pool';
 import { test, expect } from 'playwright/lib';
 import * as pwConfig from 'playwright/utils/config';

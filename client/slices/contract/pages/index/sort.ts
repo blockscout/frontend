@@ -1,4 +1,4 @@
-import type { VerifiedContractsSortingValue, VerifiedContractsSortingField } from '../types/api';
+import type { VerifiedContractsSortingValue, VerifiedContractsSortingField } from 'client/slices/contract/types/api';
 
 import type { SelectOption } from 'toolkit/chakra/select';
 

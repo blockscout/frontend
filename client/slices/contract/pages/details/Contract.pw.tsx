@@ -1,15 +1,15 @@
 import React from 'react';
 import type { Abi } from 'viem';
 
+import * as addressMock from 'client/slices/address/mocks/address';
 import * as contractInfoMock from 'client/slices/contract/mocks/info';
 import * as contractMethodsMock from 'client/slices/contract/mocks/methods';
 
-import * as addressMock from 'mocks/address/address';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import * as socketServer from 'playwright/fixtures/socketServer';
 import { test, expect } from 'playwright/lib';
 
-import AddressContract from './AddressContract';
+import Contract from './Contract';
 
 const hash = addressMock.contract.hash;
 
@@ -29,7 +29,7 @@ test.describe('ABI functionality', () => {
         query: { hash, tab: 'read_contract' },
       },
     };
-    const component = await render(<AddressContract addressData={ addressMock.contract }/>, { hooksConfig }, { withSocket: true });
+    const component = await render(<Contract addressData={ addressMock.contract }/>, { hooksConfig }, { withSocket: true });
     const socket = await createSocket();
     await socketServer.joinChannel(socket, 'addresses:' + addressMock.contract.hash.toLowerCase());
 
@@ -45,7 +45,7 @@ test.describe('ABI functionality', () => {
       },
     };
     await mockEnvs(ENVS_MAP.noWalletClient);
-    const component = await render(<AddressContract addressData={ addressMock.contract }/>, { hooksConfig }, { withSocket: true });
+    const component = await render(<Contract addressData={ addressMock.contract }/>, { hooksConfig }, { withSocket: true });
     const socket = await createSocket();
     await socketServer.joinChannel(socket, 'addresses:' + addressMock.contract.hash.toLowerCase());
 
@@ -60,7 +60,7 @@ test.describe('ABI functionality', () => {
         query: { hash, tab: 'write_contract' },
       },
     };
-    const component = await render(<AddressContract addressData={ addressMock.contract }/>, { hooksConfig }, { withSocket: true });
+    const component = await render(<Contract addressData={ addressMock.contract }/>, { hooksConfig }, { withSocket: true });
     const socket = await createSocket();
     await socketServer.joinChannel(socket, 'addresses:' + addressMock.contract.hash.toLowerCase());
 
@@ -82,7 +82,7 @@ test.describe('ABI functionality', () => {
     };
     await mockEnvs(ENVS_MAP.noWalletClient);
 
-    const component = await render(<AddressContract addressData={ addressMock.contract }/>, { hooksConfig }, { withSocket: true });
+    const component = await render(<Contract addressData={ addressMock.contract }/>, { hooksConfig }, { withSocket: true });
     const socket = await createSocket();
     await socketServer.joinChannel(socket, 'addresses:' + addressMock.contract.hash.toLowerCase());
 
@@ -112,7 +112,7 @@ test.describe('auto verification status', () => {
         query: { hash, tab: 'contract' },
       },
     };
-    const component = await render(<AddressContract addressData={ addressData }/>, { hooksConfig }, { withSocket: true });
+    const component = await render(<Contract addressData={ addressData }/>, { hooksConfig }, { withSocket: true });
 
     const socket = await createSocket();
     const channel = await socketServer.joinChannel(socket, 'addresses:' + addressData.hash.toLowerCase());
@@ -128,7 +128,7 @@ test.describe('auto verification status', () => {
         query: { hash, tab: 'contract' },
       },
     };
-    await render(<AddressContract addressData={ addressData }/>, { hooksConfig }, { withSocket: true });
+    await render(<Contract addressData={ addressData }/>, { hooksConfig }, { withSocket: true });
 
     const socket = await createSocket();
     const channel = await socketServer.joinChannel(socket, 'addresses:' + addressData.hash.toLowerCase());
@@ -148,7 +148,7 @@ test.describe('auto verification status', () => {
     await mockEnvs([
       [ 'NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED', 'false' ],
     ]);
-    const component = await render(<AddressContract addressData={ addressData }/>, { hooksConfig }, { withSocket: true });
+    const component = await render(<Contract addressData={ addressData }/>, { hooksConfig }, { withSocket: true });
 
     const socket = await createSocket();
     const channel = await socketServer.joinChannel(socket, 'addresses:' + addressData.hash.toLowerCase());

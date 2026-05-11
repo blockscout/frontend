@@ -1,9 +1,9 @@
 import React from 'react';
 import type { Abi, AbiFunction } from 'viem';
 
+import * as addressMock from 'client/slices/address/mocks/address';
 import * as methodsMock from 'client/slices/contract/mocks/methods';
 
-import * as addressMock from 'mocks/address/address';
 import { test, expect } from 'playwright/lib';
 import * as pwConfig from 'playwright/utils/config';
 
