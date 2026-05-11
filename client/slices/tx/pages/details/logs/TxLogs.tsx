@@ -3,6 +3,7 @@ import React from 'react';
 
 import type { TransactionLog } from 'client/slices/log/types/api';
 
+import LogItem from 'client/slices/log/components/LogItem';
 import { LOG } from 'client/slices/log/stubs/log';
 import TxPendingAlert from 'client/slices/tx/components/TxPendingAlert';
 import TxSocketAlert from 'client/slices/tx/components/TxSocketAlert';
@@ -11,7 +12,6 @@ import type { TxQuery } from 'client/slices/tx/hooks/useTxQuery';
 import { generateListStub } from 'stubs/utils';
 import ActionBar from 'ui/shared/ActionBar';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import LogItem from 'ui/shared/logs/LogItem';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 

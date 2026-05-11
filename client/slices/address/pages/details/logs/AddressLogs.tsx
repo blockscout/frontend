@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import useAddressQuery from 'client/slices/address/hooks/useAddressQuery';
+import LogItem from 'client/slices/log/components/LogItem';
 import { LOG } from 'client/slices/log/stubs/log';
 
 import CsvExport from 'client/features/csv-export/components/CsvExport';
@@ -12,7 +13,6 @@ import getQueryParamString from 'client/shared/router/get-query-param-string';
 import { generateListStub } from 'stubs/utils';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import LogItem from 'ui/shared/logs/LogItem';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
