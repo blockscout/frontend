@@ -8,9 +8,9 @@ import config from 'configs/app';
 const feature = config.features.googleAnalytics;
 
 const GoogleAnalytics = () => {
-  const hasUsercentricsConsent = useUsercentricsConsent();
+  const usercentricsConsent = useUsercentricsConsent();
 
-  if (!feature.isEnabled || !hasUsercentricsConsent) {
+  if (!feature.isEnabled || !usercentricsConsent?.googleAnalytics) {
     return null;
   }
 

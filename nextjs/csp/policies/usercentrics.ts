@@ -14,6 +14,12 @@ export function usercentrics(): CspDev.DirectiveDescriptor {
     ],
     'connect-src': [
       'https://v1.api.service.cmp.usercentrics.eu/',
+      'https://consent-api.service.consent.usercentrics.eu/',
+      'https://consent-rt-ret.service.consent.usercentrics.eu',
+      'https://graphql.usercentrics.eu',
+    ],
+    'frame-src': [
+      'https://web.cmp.usercentrics.eu',
     ],
   };
 }

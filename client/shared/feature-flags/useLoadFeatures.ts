@@ -1,11 +1,18 @@
-import type { GrowthBook } from '@growthbook/growthbook-react';
 import React from 'react';
 
 import { SECOND } from 'toolkit/utils/consts';
 
-export default function useLoadFeatures(growthBook: GrowthBook | undefined) {
+import useUsercentricsConsent from '../analytics/usercentrics/useUsercentricsConsent';
+import { initGrowthBook } from './init';
+
+export default function useLoadFeatures(uuid: string) {
+
+  const [ growthBook ] = React.useState(initGrowthBook(uuid));
+
+  const usercentricsConsent = useUsercentricsConsent();
+
   React.useEffect(() => {
-    if (!growthBook) {
+    if (!growthBook || !usercentricsConsent?.growthBook) {
       return;
     }
 
@@ -16,5 +23,13 @@ export default function useLoadFeatures(growthBook: GrowthBook | undefined) {
     });
 
     growthBook.loadFeatures({ timeout: SECOND });
-  }, [ growthBook ]);
+  }, [ usercentricsConsent?.growthBook, growthBook ]);
+
+  return React.useMemo(() => {
+    if (!growthBook || !usercentricsConsent?.growthBook) {
+      return;
+    }
+
+    return growthBook;
+  }, [ growthBook, usercentricsConsent?.growthBook ]);
 }

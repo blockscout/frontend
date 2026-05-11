@@ -17,7 +17,6 @@ import { SocketProvider } from 'client/api/socket/context';
 
 import { CsvExportContextProvider } from 'client/features/csv-export/utils/context';
 
-import { initGrowthBook } from 'client/shared/feature-flags/init';
 import useLoadFeatures from 'client/shared/feature-flags/useLoadFeatures';
 import { Provider as RollbarProvider, useRollbarConfig } from 'client/shared/monitoring/rollbar';
 
@@ -65,11 +64,9 @@ const CONSOLE_SCAM_WARNING_DELAY_MS = 500;
 
 function MyApp({ Component, pageProps, router }: AppPropsWithLayout) {
 
-  const growthBook = initGrowthBook(pageProps.uuid);
-  useLoadFeatures(growthBook);
-
   const queryClient = useQueryClientConfig();
   const rollbarConfig = useRollbarConfig();
+  const growthBook = useLoadFeatures(pageProps);
 
   React.useEffect(() => {
     // after the app is rendered/hydrated, show the console scam warning

@@ -2,24 +2,20 @@ import React from 'react';
 
 import config from 'configs/app';
 
-// SERVICES TO CHECK
-// - mixpanel
-// - google analytics
-// - rollbar
-// - adbutler
-// - sevioads
-// - text ads
+import getConsentStatus from './get-consent-status';
+import type { ServiceId } from './services';
 
-async function checkMarketingConsent(): Promise<boolean> {
-  if (!window.__ucCmp) {
-    return false;
-  }
-  const details = await window.__ucCmp.getConsentDetails();
-  return details.categories?.marketing?.state === 'ALL_ACCEPTED';
-}
+export type ConsentStatus = Record<ServiceId, boolean>;
 
-export default function useUsercentricsConsent(): boolean {
-  const [ hasConsent, setHasConsent ] = React.useState<boolean>(!config.features.usercentrics.isEnabled);
+export default function useUsercentricsConsent(): ConsentStatus | undefined {
+  const [ consentStatus, setConsentStatus ] = React.useState<ConsentStatus | undefined>(
+    !config.features.usercentrics.isEnabled ? {
+      mixpanel: true,
+      googleAnalytics: true,
+      rollbar: true,
+      growthBook: true,
+    } : undefined,
+  );
 
   React.useEffect(() => {
     if (!config.features.usercentrics.isEnabled) {
@@ -27,7 +23,7 @@ export default function useUsercentricsConsent(): boolean {
     }
 
     const updateConsent = async() => {
-      setHasConsent(await checkMarketingConsent());
+      setConsentStatus(await getConsentStatus());
     };
 
     // Get initial consent state
@@ -43,5 +39,5 @@ export default function useUsercentricsConsent(): boolean {
     };
   }, []);
 
-  return hasConsent;
+  return consentStatus;
 }

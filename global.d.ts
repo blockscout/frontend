@@ -20,8 +20,12 @@ declare global {
     __essentialDappsChains?: { chains: Array<EssentialDappsChainConfig> };
     __ucCmp?: {
       getConsentDetails(): Promise<{
-        consent?: { status?: string };
+        consent?: {
+          status?: string;
+          serviceIds?: Array<string>;
+        };
         categories?: Record<string, { state?: string }>;
+        services?: Record<string, { name?: string; consent?: { given?: boolean; status?: string } }>;
       }>;
     };
   }
