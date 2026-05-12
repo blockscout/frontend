@@ -1,4 +1,4 @@
-import { SERVICES_NAMES, type ServiceId } from './services';
+import { SERVICES, SERVICES_NAMES, type ServiceId } from './services';
 import type { ConsentStatus } from './useUsercentricsConsent';
 
 export default async function getConsentStatus(): Promise<ConsentStatus | undefined> {
@@ -10,6 +10,20 @@ export default async function getConsentStatus(): Promise<ConsentStatus | undefi
 
     const serviceIds = details.consent?.serviceIds ?? [];
 
+    // eslint-disable-next-line no-console
+    console.log('__>__ getConsentStatus:', {
+      details,
+      serviceIds,
+      a: serviceIds
+        .map((id) => {
+          return {
+            name: details.services?.[id]?.name,
+            given: details.services?.[id]?.consent?.given ?? false,
+          };
+        }),
+      SERVICES_NAMES,
+    });
+
     const result = serviceIds
       .map((id) => {
         return {
@@ -19,7 +33,10 @@ export default async function getConsentStatus(): Promise<ConsentStatus | undefi
       })
       .filter(({ name }) => name && SERVICES_NAMES.includes(name))
       .reduce((result, item) => {
-        result[item.name as ServiceId] = item.given;
+        const id = Object.keys(SERVICES).find((key) => SERVICES[key as ServiceId].name === item.name) as keyof typeof SERVICES | undefined;
+        if (id) {
+          result[id] = item.given;
+        }
         return result;
       }, {} as ConsentStatus);
 
