@@ -29,6 +29,7 @@ import { Provider as ChakraProvider } from 'toolkit/chakra/provider';
 import { Toaster } from 'toolkit/chakra/toaster';
 import AppErrorBoundary from 'ui/shared/AppError/AppErrorBoundary';
 import AppErrorGlobalContainer from 'ui/shared/AppError/AppErrorGlobalContainer';
+import GoogleAnalytics from 'ui/shared/GoogleAnalytics';
 import Layout from 'ui/shared/layout/Layout';
 import Web3Provider from 'ui/shared/web3/Web3Provider';
 
@@ -125,6 +126,7 @@ function MyApp({ Component, pageProps, router }: AppPropsWithLayout) {
                     </SocketProvider>
                   </GrowthBookProvider>
                   <ReactQueryDevtools buttonPosition="bottom-left" position="left"/>
+                  <GoogleAnalytics/>
                 </AppContextProvider>
               </Web3Provider>
             </QueryClientProvider>

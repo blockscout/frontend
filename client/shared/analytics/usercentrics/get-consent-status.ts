@@ -8,27 +8,17 @@ export default async function getConsentStatus(): Promise<ConsentStatus | undefi
   try {
     const details = await window.__ucCmp.getConsentDetails();
 
-    const serviceIds = details.consent?.serviceIds ?? [];
-
     // eslint-disable-next-line no-console
     console.log('__>__ getConsentStatus:', {
       details,
-      serviceIds,
-      a: serviceIds
-        .map((id) => {
-          return {
-            name: details.services?.[id]?.name,
-            given: details.services?.[id]?.consent?.given ?? false,
-          };
-        }),
       SERVICES_NAMES,
     });
 
-    const result = serviceIds
-      .map((id) => {
+    const result = Object.values(details?.services || {})
+      .map(({ name, consent }) => {
         return {
-          name: details.services?.[id]?.name,
-          given: details.services?.[id]?.consent?.given ?? false,
+          name,
+          given: consent?.given ?? false,
         };
       })
       .filter(({ name }) => name && SERVICES_NAMES.includes(name))
