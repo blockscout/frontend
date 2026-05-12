@@ -4,6 +4,7 @@ import type { Route } from 'nextjs-routes';
 import type { Props as PageProps } from 'nextjs/getServerSideProps/handlers';
 
 import * as mixpanel from 'client/shared/analytics/mixpanel';
+import useUpdateUsercentricsConsent from 'client/shared/analytics/usercentrics/useUpdateUsercentricsConsent';
 import useIsMounted from 'client/shared/hooks/useIsMounted';
 
 import useAdblockDetect from 'lib/hooks/useAdblockDetect';
@@ -23,6 +24,7 @@ const PageNextJs = <Pathname extends Route['pathname']>(props: Props<Pathname>) 
   useGetCsrfToken();
   useAdblockDetect();
   useNotifyOnNavigation();
+  useUpdateUsercentricsConsent();
 
   const isMixPanelInitialized = mixpanel.useInit();
   mixpanel.useLogPageView(isMixPanelInitialized);

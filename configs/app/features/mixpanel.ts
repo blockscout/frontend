@@ -4,6 +4,7 @@ import type { Feature } from './types';
 
 import app from '../app';
 import { getEnvValue, parseEnvJson } from '../utils';
+import usercentricsFeature from './usercentrics';
 
 const projectToken = getEnvValue('NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN');
 const configOverrides = (() => {
@@ -18,7 +19,7 @@ const configOverrides = (() => {
 const title = 'Mixpanel analytics';
 
 const config: Feature<{ projectToken: string; configOverrides?: Partial<Config> }> = (() => {
-  if (!app.isPrivateMode && projectToken) {
+  if (!app.isPrivateMode && !(usercentricsFeature.isEnabled && !usercentricsFeature.consent?.mixpanel) && projectToken) {
     return Object.freeze({
       title,
       isEnabled: true,

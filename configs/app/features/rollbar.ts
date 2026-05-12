@@ -2,6 +2,7 @@ import type { Feature } from './types';
 
 import app from '../app';
 import { getEnvValue } from '../utils';
+import usercentricsFeature from './usercentrics';
 
 const clientToken = getEnvValue('NEXT_PUBLIC_ROLLBAR_CLIENT_TOKEN');
 const instance = (() => {
@@ -23,7 +24,7 @@ const config: Feature<{
   instance: string | undefined;
   codeVersion: string | undefined;
 }> = (() => {
-  if (!app.isPrivateMode && clientToken) {
+  if (!app.isPrivateMode && !(usercentricsFeature.isEnabled && !usercentricsFeature.consent?.rollbar) && clientToken) {
     return Object.freeze({
       title,
       isEnabled: true,

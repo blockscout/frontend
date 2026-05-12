@@ -1,7 +1,13 @@
 import type { Feature } from './types';
 
+import type { UsercentricsConsent } from 'client/shared/analytics/usercentrics/storage';
+
+import { isBrowser } from 'toolkit/utils/isBrowser';
+
 import app from '../app';
 import { getEnvValue, parseEnvJson } from '../utils';
+
+export const STORAGE_KEY = 'usercentrics-consent';
 
 interface UsercentricsConfig {
   readonly settingsId?: string;
@@ -10,7 +16,22 @@ interface UsercentricsConfig {
 
 const title = 'Usercentrics CMP';
 
-const config: Feature<{ settingsId?: string; rulesetId?: string }> = (() => {
+const consent = (() => {
+  if (!isBrowser()) {
+    return;
+  }
+  const consent = localStorage.getItem(STORAGE_KEY);
+  if (!consent) {
+    return;
+  }
+  try {
+    return JSON.parse(consent) as UsercentricsConsent;
+  } catch {
+    return;
+  }
+})();
+
+const config: Feature<{ settingsId?: string; rulesetId?: string; consent?: UsercentricsConsent }> = (() => {
   if (app.isPrivateMode) {
     return Object.freeze({ title, isEnabled: false as const });
   }
@@ -23,6 +44,7 @@ const config: Feature<{ settingsId?: string; rulesetId?: string }> = (() => {
       isEnabled: true as const,
       settingsId: rawConfig.settingsId,
       rulesetId: rawConfig.rulesetId,
+      consent,
     });
   }
 
