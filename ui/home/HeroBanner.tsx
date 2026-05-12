@@ -3,13 +3,14 @@
 import { Box, Flex, Heading } from '@chakra-ui/react';
 import React from 'react';
 
+import SearchBar from 'client/slices/search/components/search-bar/SearchBarDesktop';
+import SearchBarMobile from 'client/slices/search/components/search-bar/SearchBarMobile';
+
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
 import config from 'configs/app';
 import RewardsButton from 'ui/rewards/RewardsButton';
 import AdBanner from 'ui/shared/ad/AdBanner';
-import SearchBar from 'ui/snippets/searchBar/SearchBarDesktop';
-import SearchBarMobile from 'ui/snippets/searchBar/SearchBarMobile';
 import UserProfileDesktop from 'ui/snippets/user/UserProfileDesktop';
 
 export const BACKGROUND_DEFAULT =

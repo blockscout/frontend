@@ -11,10 +11,10 @@ import LayoutSearchResults from 'ui/shared/layout/LayoutSearchResults';
 
 const SearchResults = dynamic(() => {
   if (config.features.multichain.isEnabled) {
-    return import('ui/multichain/searchResults/SearchResults');
+    return import('client/features/multichain/pages/search-results/SearchResults');
   }
 
-  return import('ui/pages/SearchResults');
+  return import('client/slices/search/pages/search-results/SearchResults');
 }, { ssr: false });
 
 const Page: NextPageWithLayout<Props> = (props: Props) => {
