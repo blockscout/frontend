@@ -39,5 +39,8 @@ export default function useUsercentricsConsent(): ConsentStatus | undefined {
     };
   }, []);
 
+  // eslint-disable-next-line no-console
+  console.log('__>__ consentStatus:', consentStatus);
+
   return consentStatus;
 }

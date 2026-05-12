@@ -19,4 +19,6 @@ export const SERVICES = {
 // SPECIFY
 // TEXT ADS
 
+export const SERVICES_NAMES = Object.values(SERVICES).map(({ name }) => name);
+
 export type ServiceId = keyof typeof SERVICES;

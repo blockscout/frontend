@@ -1,4 +1,4 @@
-import { SERVICES, type ServiceId } from './services';
+import { SERVICES_NAMES, type ServiceId } from './services';
 import type { ConsentStatus } from './useUsercentricsConsent';
 
 export default async function getConsentStatus(): Promise<ConsentStatus | undefined> {
@@ -11,13 +11,13 @@ export default async function getConsentStatus(): Promise<ConsentStatus | undefi
     const serviceIds = details.consent?.serviceIds ?? [];
 
     const result = serviceIds
-      .map((id) => SERVICES[id as ServiceId].name)
-      .map((name) => {
+      .map((id) => {
         return {
-          name,
-          given: details.services?.[name]?.consent?.given ?? false,
+          name: details.services?.[id]?.name,
+          given: details.services?.[id]?.consent?.given ?? false,
         };
       })
+      .filter(({ name }) => name && SERVICES_NAMES.includes(name))
       .reduce((result, item) => {
         result[item.name as ServiceId] = item.given;
         return result;
