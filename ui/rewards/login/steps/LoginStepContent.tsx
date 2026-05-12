@@ -39,8 +39,8 @@ const LoginStepContent = ({ goNext, closeModal, openAuthModal }: Props) => {
   const isAddressMismatch = React.useMemo(() =>
     Boolean(address) &&
     Boolean(profileQuery.data?.address_hash) &&
-    profileQuery.data?.address_hash !== address,
-  [ address, profileQuery.data ]);
+    profileQuery.data?.address_hash?.toLowerCase() !== address?.toLowerCase(),
+  [ address, profileQuery.data?.address_hash ]);
 
   const isLoggedIntoAccountWithWallet = React.useMemo(() =>
     !profileQuery.isLoading && profileQuery.data?.address_hash,
