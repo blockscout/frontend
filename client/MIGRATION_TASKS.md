@@ -106,7 +106,7 @@ Each slice follows the template established in 2-1.
 ### 3-2 · [x] Slice: `address` · [#3380](https://github.com/blockscout/frontend/issues/3380)
 **Scope:** `lib/address/`, `ui/address/**`, related types/mocks/stubs, `lib/hooks/useAddressProfileApiQuery`, `lib/contexts/addressHighlight.tsx` → `client/slices/address/`  
 
-### 3-3 · [ ] Slice: `search`
+### 3-3 · [~] Slice: `search` · [#3405](https://github.com/blockscout/frontend/issues/3405)
 **Scope:** `lib/search/`, `ui/snippets/searchBar/`, `lib/recentSearchKeywords.ts`, related types/mocks/stubs → `client/slices/search/`  
 
 ### 3-4 · [~] Slice: `token` · [#3393](https://github.com/blockscout/frontend/issues/3393)
