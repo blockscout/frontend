@@ -2,6 +2,8 @@ import { Box, Flex } from '@chakra-ui/react';
 import dynamic from 'next/dynamic';
 import React from 'react';
 
+import SearchBarMobile from 'client/slices/search/components/search-bar/SearchBarMobile';
+
 import config from 'configs/app';
 import { useIsSticky } from 'toolkit/hooks/useIsSticky';
 import RewardsButton from 'ui/rewards/RewardsButton';
@@ -11,7 +13,6 @@ import UserWalletMobile from 'ui/snippets/user/wallet/UserWalletMobile';
 
 import RollupStageBadge from '../navigation/RollupStageBadge';
 import TestnetBadge from '../navigation/TestnetBadge';
-import SearchBarMobile from '../searchBar/SearchBarMobile';
 import Burger from './Burger';
 
 const UserProfileDynamic = dynamic(() => import('ui/snippets/user/profile/dynamic/UserProfile'), { ssr: false });

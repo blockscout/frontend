@@ -1,9 +1,10 @@
 import { HStack, Box } from '@chakra-ui/react';
 import React from 'react';
 
+import SearchBar from 'client/slices/search/components/search-bar/SearchBarDesktop';
+
 import config from 'configs/app';
 import RewardsButton from 'ui/rewards/RewardsButton';
-import SearchBar from 'ui/snippets/searchBar/SearchBarDesktop';
 import UserProfileDesktop from 'ui/snippets/user/UserProfileDesktop';
 
 type Props = {
