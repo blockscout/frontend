@@ -1,11 +1,9 @@
 import React from 'react';
 
-import type { ServiceId } from './services';
+import type { UsercentricsConsent } from './types';
 
-export type ConsentStatus = Record<ServiceId, boolean>;
-
-export default function useUsercentricsConsent(): ConsentStatus | undefined {
-  const [ consentStatus ] = React.useState<ConsentStatus | undefined>({
+export default function useUsercentricsConsent(): UsercentricsConsent | undefined {
+  const [ consentStatus ] = React.useState<UsercentricsConsent | undefined>({
     mixpanel: true,
     googleAnalytics: true,
     rollbar: true,

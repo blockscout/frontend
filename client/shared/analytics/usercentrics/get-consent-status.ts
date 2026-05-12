@@ -1,7 +1,8 @@
-import { SERVICES, SERVICES_NAMES, type ServiceId } from './services';
-import type { ConsentStatus } from './useUsercentricsConsent';
+import type { ServiceId, UsercentricsConsent } from './types';
 
-export default async function getConsentStatus(): Promise<ConsentStatus | undefined> {
+import { SERVICES, SERVICES_NAMES } from './services';
+
+export default async function getConsentStatus(): Promise<UsercentricsConsent | undefined> {
   if (!window.__ucCmp) {
     return;
   }
@@ -28,7 +29,7 @@ export default async function getConsentStatus(): Promise<ConsentStatus | undefi
           result[id] = item.given;
         }
         return result;
-      }, {} as ConsentStatus);
+      }, {} as UsercentricsConsent);
 
     return result;
   } catch {

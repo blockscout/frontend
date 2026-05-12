@@ -1,6 +1,5 @@
 import type { Feature } from './types';
-
-import type { UsercentricsConsent } from 'client/shared/analytics/usercentrics/storage';
+import type { UsercentricsConsent } from 'client/shared/analytics/usercentrics/types';
 
 import { isBrowser } from 'toolkit/utils/isBrowser';
 
