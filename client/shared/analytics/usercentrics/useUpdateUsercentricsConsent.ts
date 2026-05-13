@@ -1,6 +1,8 @@
+import { isEqual } from 'es-toolkit';
 import React from 'react';
 
 import type { ConsentDetails } from './lib-types';
+import type { UsercentricsConsentResult } from './types';
 
 import config from 'configs/app';
 import { STORAGE_KEY } from 'configs/app/features/usercentrics';
@@ -26,8 +28,14 @@ export default function useUpdateUsercentricsConsent() {
         // eslint-disable-next-line no-console
         console.log('__>__ updateConsent:', consent);
         if (consent) {
-          window.localStorage.setItem(STORAGE_KEY, JSON.stringify(consent));
-          window.location.reload();
+          const currentConsent = window.localStorage.getItem(STORAGE_KEY);
+          if (currentConsent) {
+            const parsedConsent = JSON.parse(currentConsent) as UsercentricsConsentResult;
+            if (!isEqual(parsedConsent, consent)) {
+              window.localStorage.setItem(STORAGE_KEY, JSON.stringify(consent));
+              window.location.reload();
+            }
+          }
         }
       } catch (error) {}
     };
