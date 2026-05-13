@@ -35,6 +35,8 @@ class MyDocument extends Document {
       <Html lang="en">
         <Head>
           { /* FONTS */ }
+          { /* Instruct browsers to preconnect to fonts.gstatic.com for speeding up font loading */ }
+          { !(config.UI.fonts.heading?.url && config.UI.fonts.body?.url) && <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous"/> }
           <link
             href={ config.UI.fonts.heading?.url ?? 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap' }
             rel="stylesheet"
