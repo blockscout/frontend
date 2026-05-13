@@ -8,18 +8,24 @@ export const SERVICES = {
     name: 'Google Tag Manager',
   },
   rollbar: {
-    // TODO @tom2drum fix name if needed
     name: 'Rollbar',
   },
   growthBook: {
-    // TODO @tom2drum fix name if needed
     name: 'GrowthBook',
   },
+  adbutler: {
+    name: 'AdButler',
+  },
+  slise: {
+    name: 'Slise',
+  },
+  sevio: {
+    name: 'Sevio',
+  },
+  specify: {
+    name: 'Specify',
+  },
 };
-// ADBUTLER
-// SEVIOADS
-// SPECIFY
-// TEXT ADS
 
 export const SERVICES_NAMES = Object.values(SERVICES).map(({ name }) => name);
 
@@ -28,4 +34,8 @@ export const CONSENT_RESULT_ALL_ACCEPTED: UsercentricsConsentResult = {
   googleAnalytics: true,
   rollbar: true,
   growthBook: true,
+  adbutler: true,
+  slise: true,
+  sevio: true,
+  specify: true,
 };

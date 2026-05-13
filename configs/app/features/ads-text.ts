@@ -4,6 +4,7 @@ import type { AdTextProviders } from 'types/client/adProviders';
 
 import app from '../app';
 import { getEnvValue } from '../utils';
+import usercentricsFeature from './usercentrics';
 
 const SEVIO_ZONE = '179b0a0e-19b0-4b2a-ad15-7446870bf189';
 const SEVIO_INVENTORY_ID = '65597ae2-67b8-404b-ac28-43d5029389da';
@@ -25,7 +26,7 @@ const provider: AdTextProviders = (() => {
 const title = 'Text ads';
 
 const config: Feature<{ provider: AdTextProviders; sevio: SevioConfig }> = (() => {
-  if (!app.isPrivateMode && provider !== 'none') {
+  if (!app.isPrivateMode && !(usercentricsFeature.isEnabled && !usercentricsFeature.consent?.sevio) && provider !== 'none') {
     return Object.freeze({
       title,
       isEnabled: true,

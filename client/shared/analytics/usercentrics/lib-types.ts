@@ -1,4 +1,4 @@
-// USERCENTRICS LIB TYPES - https://usercentrics.com/docs/web/features/api/interfaces/#consentdetails
+// USERCENTRICS LIB TYPES - https://usercentrics.com/docs/web/features/api/interfaces
 
 type ConsentActionType = 'onAcceptAllServices' |
     'onDenyAllServices' |

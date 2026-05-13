@@ -5,6 +5,7 @@ import type { AdBannerProviders, AdBannerAdditionalProviders } from 'types/clien
 
 import app from '../app';
 import { getEnvValue, parseEnvJson } from '../utils';
+import usercentricsFeature from './usercentrics';
 
 const SEVIO_ZONE_MOBILE = '52909312-7ebb-4bd5-9006-5e4f7041ed63';
 const SEVIO_ZONE_DESKTOP = '07cabd45-77f1-4203-8081-868bae776981';
@@ -21,12 +22,35 @@ interface SevioConfig {
 }
 
 const provider: AdBannerProviders = (() => {
-  const envValue = getEnvValue('NEXT_PUBLIC_AD_BANNER_PROVIDER') as AdBannerProviders;
-  return envValue && SUPPORTED_AD_BANNER_PROVIDERS.includes(envValue) ? envValue : 'slise';
+  const envValue = (getEnvValue('NEXT_PUBLIC_AD_BANNER_PROVIDER') ?? 'slise') as AdBannerProviders;
+  const consentKey = envValue !== 'none' ? envValue : undefined;
+
+  if (consentKey && usercentricsFeature.isEnabled && !usercentricsFeature.consent?.[consentKey]) {
+    return 'none';
+  }
+
+  if (SUPPORTED_AD_BANNER_PROVIDERS.includes(envValue)) {
+    return envValue;
+  }
+
+  // should never happen, make typescript happy
+  return 'none';
 })();
 
-const additionalProvider = getEnvValue('NEXT_PUBLIC_AD_BANNER_ADDITIONAL_PROVIDER') as AdBannerAdditionalProviders;
-const isSpecifyEnabled = getEnvValue('NEXT_PUBLIC_AD_BANNER_ENABLE_SPECIFY') === 'true';
+const additionalProvider = (() => {
+  const envValue = getEnvValue('NEXT_PUBLIC_AD_BANNER_ADDITIONAL_PROVIDER') as AdBannerAdditionalProviders;
+  if (!envValue) {
+    return;
+  }
+
+  if (usercentricsFeature.isEnabled && !usercentricsFeature.consent?.[envValue]) {
+    return;
+  }
+
+  return envValue;
+})();
+const isSpecifyEnabled = getEnvValue('NEXT_PUBLIC_AD_BANNER_ENABLE_SPECIFY') === 'true' &&
+  !(usercentricsFeature.isEnabled && !usercentricsFeature.consent?.specify);
 
 const sevioZones = parseEnvJson<Array<string>>(getEnvValue('NEXT_PUBLIC_AD_BANNER_SEVIO_ZONES'));
 const sevioConfig: SevioConfig = {
