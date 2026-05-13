@@ -30,6 +30,7 @@ export const TOKEN_TRANSFER_ERC_20: TokenTransfer = {
   total: TOKEN_TRANSFER_ERC_20_TOTAL,
   transaction_hash: TX_HASH,
   type: 'token_minting',
+  token_type: 'ERC-20',
 };
 
 export const TOKEN_TRANSFER_ERC_721: TokenTransfer = {

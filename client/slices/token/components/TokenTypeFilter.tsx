@@ -13,8 +13,9 @@ type Props<T extends TokenType | NFTTokenType> = {
   defaultValue?: Array<T>;
   nftOnly: T extends NFTTokenType ? true : false;
   chainConfig?: Array<ClusterChainConfig['app_config']> | ClusterChainConfig['app_config'];
+  title?: React.ReactNode;
 };
-const TokenTypeFilter = <T extends TokenType | NFTTokenType>({ nftOnly, onChange, defaultValue, chainConfig }: Props<T>) => {
+const TokenTypeFilter = <T extends TokenType | NFTTokenType>({ nftOnly, onChange, defaultValue, chainConfig, title }: Props<T>) => {
   const { value, setValue } = useCheckboxGroup({ defaultValue });
 
   const handleReset = React.useCallback(() => {
@@ -37,12 +38,13 @@ const TokenTypeFilter = <T extends TokenType | NFTTokenType>({ nftOnly, onChange
   return (
     <>
       <Flex justifyContent="space-between" textStyle="sm">
-        <Text fontWeight={ 600 } color="text.secondary">Type</Text>
+        <Text fontWeight={ 600 } color="text.secondary">{ title || 'Type' }</Text>
         <Button
           variant="link"
           onClick={ handleReset }
           disabled={ value.length === 0 }
           textStyle="sm"
+          ml={ 3 }
         >
           Reset
         </Button>

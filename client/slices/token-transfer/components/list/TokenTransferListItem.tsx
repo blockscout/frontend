@@ -18,7 +18,7 @@ import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import AssetValue from 'ui/shared/value/AssetValue';
 import ConfidentialValue from 'ui/shared/value/ConfidentialValue';
 
-import { getTokenTransferTypeText } from '../../utils/transfer-type';
+import TokenTransferTypeBadge from '../TokenTransferTypeBadge';
 
 type Props = TokenTransfer & {
   baseAddress?: string;
@@ -37,6 +37,7 @@ const TokenTransferListItem = ({
   baseAddress,
   showTxInfo,
   type,
+  token_type: transferTokenType,
   timestamp,
   enableTimeIncrement,
   isLoading,
@@ -58,7 +59,7 @@ const TokenTransferListItem = ({
               <Badge flexShrink={ 0 } loading={ isLoading }>{ getTokenTypeName(token.type, chainData?.app_config) }</Badge>
             </>
           ) }
-          <Badge colorPalette="orange" loading={ isLoading }>{ getTokenTransferTypeText(type) }</Badge>
+          <TokenTransferTypeBadge methodType={ type } tokenType={ token?.type } transferTokenType={ transferTokenType } loading={ isLoading }/>
         </Flex>
         { showTxInfo && txHash && (
           <TxAdditionalInfo hash={ txHash } isMobile isLoading={ isLoading }/>
