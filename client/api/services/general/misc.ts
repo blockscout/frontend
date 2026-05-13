@@ -2,6 +2,7 @@ import type { ApiResource } from '../../types';
 import type { CsvExportItemResponse, CsvExportConfig } from 'client/features/csv-export/types/api';
 import type { HotContractsFilters, HotContractsResponse, HotContractsSorting } from 'client/features/hot-contracts/types/api';
 import type { Block } from 'client/slices/block/types/api';
+import type { HomeStats } from 'client/slices/home/types/api';
 import type { SearchRedirectResult, SearchResult, SearchResultFilters, SearchResultItem } from 'client/slices/search/types/api';
 import type {
   Transaction,
@@ -21,7 +22,6 @@ import type { NovesAccountHistoryResponse, NovesDescribeTxsResponse, NovesRespon
 import type {
   OptimisticL2DepositsItem,
 } from 'types/api/optimisticL2';
-import type { HomeStats } from 'types/api/stats';
 import type { TxInterpretationResponse } from 'types/api/txInterpretation';
 import type { UserOpsResponse, UserOp, UserOpsFilters, UserOpsAccount } from 'types/api/userOps';
 import type {

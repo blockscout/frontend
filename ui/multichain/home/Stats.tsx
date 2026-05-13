@@ -3,9 +3,10 @@ import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import type { HomeStatsWidgetItem } from 'client/slices/home/utils/stats';
+import { sortHomeStatsItems, isHomeStatsItemEnabled } from 'client/slices/home/utils/stats';
+
 import { HOMEPAGE_STATS } from 'stubs/multichain';
-import type { HomeStatsWidgetItem } from 'ui/home/utils';
-import { sortHomeStatsItems, isHomeStatsItemEnabled } from 'ui/home/utils';
 import StatsWidget from 'ui/shared/stats/StatsWidget';
 
 import ChainIndicators from './ChainIndicators';

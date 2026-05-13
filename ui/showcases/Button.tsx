@@ -1,11 +1,12 @@
 import React from 'react';
 
+import { BACKGROUND_DEFAULT } from 'client/slices/home/pages/index/HeroBanner';
+
 import { Button, ButtonGroupRadio } from 'toolkit/chakra/button';
 import { Checkbox } from 'toolkit/chakra/checkbox';
 import { Link } from 'toolkit/chakra/link';
 import { PopoverContent, PopoverRoot, PopoverTrigger, PopoverBody } from 'toolkit/chakra/popover';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import { BACKGROUND_DEFAULT } from 'ui/home/HeroBanner';
 import IconSvg from 'ui/shared/IconSvg';
 
 import { Section, Container, SectionHeader, SamplesStack, Sample, SectionSubHeader } from './parts';

@@ -6,13 +6,14 @@ import type { HotContractsInterval, HotContractsSorting, HotContractsSortingFiel
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import { HOMEPAGE_STATS } from 'client/slices/home/stubs';
+
 import HotContractsIntervalSelect from 'client/features/hot-contracts/pages/index/HotContractsIntervalSelect';
 import HotContractsListItem from 'client/features/hot-contracts/pages/index/HotContractsListItem';
 import HotContractsTable from 'client/features/hot-contracts/pages/index/HotContractsTable';
 import { HOT_CONTRACTS } from 'client/features/hot-contracts/stubs';
 import { getIntervalValueFromQuery, SORT_OPTIONS } from 'client/features/hot-contracts/utils';
 
-import { HOMEPAGE_STATS } from 'stubs/stats';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';

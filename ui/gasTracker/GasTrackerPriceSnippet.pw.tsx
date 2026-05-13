@@ -1,8 +1,9 @@
 import React from 'react';
 
-import type { GasPriceInfo } from 'types/api/stats';
+import type { GasPriceInfo } from 'client/slices/gas/types/api';
 
-import * as statsMock from 'mocks/stats/index';
+import * as statsMock from 'client/slices/home/mocks/stats';
+
 import { test, expect } from 'playwright/lib';
 import * as pwConfig from 'playwright/utils/config';
 
