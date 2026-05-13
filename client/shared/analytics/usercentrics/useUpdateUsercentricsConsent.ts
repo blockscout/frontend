@@ -29,12 +29,10 @@ export default function useUpdateUsercentricsConsent() {
         console.log('__>__ updateConsent:', consent);
         if (consent) {
           const currentConsent = window.localStorage.getItem(STORAGE_KEY);
-          if (currentConsent) {
-            const parsedConsent = JSON.parse(currentConsent) as UsercentricsConsentResult;
-            if (!isEqual(parsedConsent, consent)) {
-              window.localStorage.setItem(STORAGE_KEY, JSON.stringify(consent));
-              window.location.reload();
-            }
+          const parsedConsent = currentConsent ? JSON.parse(currentConsent) as UsercentricsConsentResult : undefined;
+          if (!isEqual(parsedConsent, consent)) {
+            window.localStorage.setItem(STORAGE_KEY, JSON.stringify(consent));
+            window.location.reload();
           }
         }
       } catch (error) {}
