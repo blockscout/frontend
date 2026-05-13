@@ -1,4 +1,4 @@
-import { Text, Stack } from '@chakra-ui/react';
+import { Text, Stack, HStack } from '@chakra-ui/react';
 import React from 'react';
 
 import type { AddressFromToFilter } from 'client/slices/address/types/api';
@@ -10,6 +10,7 @@ import TokenTypeFilter from 'client/slices/token/components/TokenTypeFilter';
 import useIsInitialLoading from 'client/shared/hooks/useIsInitialLoading';
 
 import { Radio, RadioGroup } from 'toolkit/chakra/radio';
+import { Hint } from 'toolkit/components/Hint/Hint';
 import PopoverFilter from 'ui/shared/filters/PopoverFilter';
 
 interface Props {
@@ -43,8 +44,24 @@ const TokenTransferFilter = ({
     onAddressFilterChange?.(value);
   }, [ onAddressFilterChange ]);
 
+  const tokenFilterTitle = (
+    <HStack gap={ 1 }>
+      <span>Type of transfer</span>
+      <Hint
+        label={ (
+          <Text>
+            Token type and transfer type are detected separately.
+            This filter applies to the transfer event, not the token's standard. <br/><br/>
+            Some tokens implement multiple interfaces. For example, a token classified as
+            ERC-1155 may emit ERC-20 Transfer events, so its transfers will match the ERC-20 filter.
+          </Text>
+        ) }
+      />
+    </HStack>
+  );
+
   return (
-    <PopoverFilter appliedFiltersNum={ appliedFiltersNum } contentProps={{ w: '220px' }} isLoading={ isInitialLoading }>
+    <PopoverFilter appliedFiltersNum={ appliedFiltersNum } contentProps={{ minW: '220px' }} isLoading={ isInitialLoading }>
       { withAddressFilter && (
         <>
           <Text color="text.secondary" fontWeight={ 600 }>Address</Text>
@@ -69,6 +86,7 @@ const TokenTransferFilter = ({
         defaultValue={ defaultTypeFilters }
         nftOnly={ false }
         chainConfig={ chainConfig }
+        title={ tokenFilterTitle }
       />
     </PopoverFilter>
   );

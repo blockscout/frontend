@@ -80,7 +80,6 @@ const TxTokenTransfer = ({ txQuery, tokenTransferFilter, noCrossChain }: Props) 
           tokenTransferFilter={ tokenTransferFilter }
           tokenTransferQuery={ localQuery }
           numActiveFilters={ typeFilter.length }
-          tableTop={ hasCrossChainTab ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
         />
       ),
     },
@@ -115,16 +114,13 @@ const TxTokenTransfer = ({ txQuery, tokenTransferFilter, noCrossChain }: Props) 
   }, [ isLocalTab, tabs.length ]);
 
   const tabsListProps = React.useMemo(() => {
-    if (tabs.length === 1) {
-      return { display: 'none' };
-    }
     return {
       marginBottom: 0,
       pt: 6,
       pb: 3,
       marginTop: -6,
     };
-  }, [ tabs.length ]);
+  }, [ ]);
 
   if (!txQuery.isPending && !txQuery.isPlaceholderData && !txQuery.isError && !txQuery.data.status) {
     return txQuery.socketStatus ? <TxSocketAlert status={ txQuery.socketStatus }/> : <TxPendingAlert/>;
