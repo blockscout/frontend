@@ -8,9 +8,15 @@ You are executing a step of the Blockscout frontend client architecture migratio
 ## Invocation
 The skill can **ONLY** be invoked as: `/arch-migrate <issue-number> ("execute" mode)` or `/arch-migrate fix <pr-number> ("fix review comments" mode)`.
 
-## Prerequisites
+## GitHub tool selection
 
-Follow the **check-github-cli** skill first to ensure `gh` is available and authenticated.
+Use whichever GitHub access method is available in your environment — in order of preference:
+
+1. **`gh` CLI** — if available and authenticated (`gh auth status` succeeds), use it for all GitHub operations.
+2. **GitHub MCP server tools** — if `gh` is unavailable, use the MCP tools provided by the GitHub MCP server.
+3. **REST API via `curl`** — if neither above is available, use the GitHub REST API directly with `curl` and a `GITHUB_TOKEN` env var.
+
+Detect availability once at the start and stick with that method throughout. Do not mix methods.
 
 ## Mode
 
@@ -24,9 +30,7 @@ Follow the **check-github-cli** skill first to ensure `gh` is available and auth
 
 ### 1. Read context
 
-```bash
-gh issue view <issue> --repo blockscout/frontend
-```
+Fetch the issue body from `blockscout/frontend` using the available GitHub tool. The issue number is the argument passed to the skill.
 
 Also read:
 - `client/ARCH_REDESIGN.md` — naming conventions (§2), dependency rules (§8), execution rules (§10)
@@ -68,6 +72,7 @@ If a dependency is not yet migrated, leave its import at the old path and list i
 - Branch from `main`.
 - PR title: `[Migration <task-id>] <task title>`
 - PR targets `main`.
+- Create the PR using the available GitHub tool (see **GitHub tool selection** above).
 - PR body must include:
   - `Closes #<issue-number>` — on the first line, so GitHub auto-closes the issue on merge
   - What moved and where
@@ -82,7 +87,7 @@ If a dependency is not yet migrated, leave its import at the old path and list i
 
 `/arch-migrate fix <pr>` — address unresolved review comments only.
 
-1. Fetch review threads, filtering to unresolved only:
+1. Fetch unresolved review threads for the PR from `blockscout/frontend` using the available GitHub tool. If using `gh`:
 
 ```bash
 gh api graphql -f query='
@@ -103,6 +108,8 @@ gh api graphql -f query='
   }
 }'
 ```
+
+If using the GitHub MCP server, call `list_review_comments_on_pull_request` (for inline comments) and `get_pull_request_reviews` (for review-level comments), then filter to unresolved threads manually. If using the REST API, `GET /repos/blockscout/frontend/pulls/<pr>/comments` returns inline comments; filter by `in_reply_to_id` to group threads.
 
 Keep only threads where `isResolved: false`. Skip everything else — the reviewer marks threads resolved when they are no longer relevant.
 
