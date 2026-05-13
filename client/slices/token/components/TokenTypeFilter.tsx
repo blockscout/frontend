@@ -1,4 +1,4 @@
-import { Text, Flex, useCheckboxGroup, Fieldset } from '@chakra-ui/react';
+import { Box, Flex, useCheckboxGroup, Fieldset } from '@chakra-ui/react';
 import React from 'react';
 
 import type { NFTTokenType, TokenType } from 'client/slices/token/types/api';
@@ -38,7 +38,7 @@ const TokenTypeFilter = <T extends TokenType | NFTTokenType>({ nftOnly, onChange
   return (
     <>
       <Flex justifyContent="space-between" textStyle="sm">
-        <Text fontWeight={ 600 } color="text.secondary">{ title || 'Type' }</Text>
+        <Box fontWeight={ 600 } color="text.secondary">{ title || 'Type' }</Box>
         <Button
           variant="link"
           onClick={ handleReset }

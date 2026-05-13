@@ -30,7 +30,8 @@ const TokenTransferTypeBadge = ({ methodType, tokenType, transferTokenType, ...r
 
   return (
     <Tooltip
-      content={ `Token type and transfer type are detected separately. This token classified as ${ tokenType } but emited ${ transferTokenType } events` }
+      // eslint-disable-next-line max-len
+      content={ `Token type and transfer type are detected separately. This token is classified as ${ tokenType } but emitted ${ transferTokenType } Transfer events` }
       disabled={ !postfix }
     >
       <Badge colorPalette="orange" { ...rest }>{ `${ text }${ postfix }` }</Badge>
