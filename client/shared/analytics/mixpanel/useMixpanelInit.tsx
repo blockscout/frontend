@@ -5,7 +5,6 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import { deviceType } from 'react-device-detect';
 
-import useUsercentricsConsent from 'client/shared/analytics/usercentrics/useUsercentricsConsent';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import * as cookies from 'client/shared/storage/cookies';
 
@@ -19,25 +18,11 @@ const multichainFeature = config.features.multichain;
 export default function useMixpanelInit() {
   const [ isInitialized, setIsInitialized ] = React.useState(false);
   const router = useRouter();
-  const usercentricsConsent = useUsercentricsConsent();
   const debugFlagQuery = React.useRef(getQueryParamString(router.query._mixpanel_debug));
 
   React.useEffect(() => {
-    if (!usercentricsConsent?.mixpanel && isInitialized) {
-      setIsInitialized(false);
-      try {
-        mixpanel.opt_out_tracking();
-      } catch {
-        // opt_out_tracking can throw if called before Mixpanel's internal state is ready
-        mixpanel.disable();
-      }
-    }
-
-  }, [ usercentricsConsent?.mixpanel, isInitialized ]);
-
-  React.useEffect(() => {
     const feature = config.features.mixpanel;
-    if (!feature.isEnabled || !usercentricsConsent?.mixpanel) {
+    if (!feature.isEnabled) {
       return;
     }
 
@@ -77,7 +62,7 @@ export default function useMixpanelInit() {
     if (debugFlagQuery.current && !debugFlagCookie) {
       cookies.set(cookies.NAMES.MIXPANEL_DEBUG, 'true');
     }
-  }, [ usercentricsConsent?.mixpanel ]);
+  }, []);
 
   return isInitialized;
 }

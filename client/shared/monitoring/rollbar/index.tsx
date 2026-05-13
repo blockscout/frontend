@@ -2,7 +2,7 @@ import { Provider as DefaultProvider, useRollbar as useRollbarDefault } from '@r
 import type React from 'react';
 
 import config from 'configs/app';
-export { default as useRollbarConfig } from './useConfig';
+export { clientConfig } from './config';
 
 const feature = config.features.rollbar;
 

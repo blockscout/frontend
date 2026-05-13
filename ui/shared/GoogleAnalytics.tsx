@@ -1,16 +1,12 @@
 import Script from 'next/script';
 import React from 'react';
 
-import useUsercentricsConsent from 'client/shared/analytics/usercentrics/useUsercentricsConsent';
-
 import config from 'configs/app';
 
 const feature = config.features.googleAnalytics;
 
 const GoogleAnalytics = () => {
-  const usercentricsConsent = useUsercentricsConsent();
-
-  if (!feature.isEnabled || !usercentricsConsent?.googleAnalytics) {
+  if (!feature.isEnabled) {
     return null;
   }
 

@@ -1,14 +1,10 @@
-import type { ServiceId, UsercentricsConsent } from './types';
+import type { ConsentDetails } from './lib-types';
+import type { ServiceId, UsercentricsConsentResult } from './types';
 
 import { SERVICES, SERVICES_NAMES } from './services';
 
-export default async function getConsentStatus(): Promise<UsercentricsConsent | undefined> {
-  if (!window.__ucCmp) {
-    return;
-  }
+export default function getConsentStatus(details: ConsentDetails): UsercentricsConsentResult | undefined {
   try {
-    const details = await window.__ucCmp.getConsentDetails();
-
     // eslint-disable-next-line no-console
     console.log('__>__ getConsentStatus:', {
       details,
@@ -29,7 +25,7 @@ export default async function getConsentStatus(): Promise<UsercentricsConsent | 
           result[id] = item.given;
         }
         return result;
-      }, {} as UsercentricsConsent);
+      }, {} as UsercentricsConsentResult);
 
     return result;
   } catch {

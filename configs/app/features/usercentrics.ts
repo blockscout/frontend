@@ -1,5 +1,7 @@
 import type { Feature } from './types';
-import type { UsercentricsConsent } from 'client/shared/analytics/usercentrics/types';
+import type { UsercentricsConsentResult } from 'client/shared/analytics/usercentrics/types';
+
+import { CONSENT_RESULT_ALL_ACCEPTED } from 'client/shared/analytics/usercentrics/services';
 
 import { isBrowser } from 'toolkit/utils/isBrowser';
 
@@ -17,20 +19,20 @@ const title = 'Usercentrics CMP';
 
 const consent = (() => {
   if (!isBrowser()) {
-    return;
+    return CONSENT_RESULT_ALL_ACCEPTED;
   }
   const consent = localStorage.getItem(STORAGE_KEY);
   if (!consent) {
     return;
   }
   try {
-    return JSON.parse(consent) as UsercentricsConsent;
+    return JSON.parse(consent) as UsercentricsConsentResult;
   } catch {
     return;
   }
 })();
 
-const config: Feature<{ settingsId?: string; rulesetId?: string; consent?: UsercentricsConsent }> = (() => {
+const config: Feature<{ settingsId?: string; rulesetId?: string; consent?: UsercentricsConsentResult }> = (() => {
   if (app.isPrivateMode) {
     return Object.freeze({ title, isEnabled: false as const });
   }

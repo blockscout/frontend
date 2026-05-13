@@ -1,5 +1,7 @@
 import React from 'react';
 
+import type { ConsentDetails } from './lib-types';
+
 import config from 'configs/app';
 import { STORAGE_KEY } from 'configs/app/features/usercentrics';
 
@@ -11,9 +13,16 @@ export default function useUpdateUsercentricsConsent() {
       return;
     }
 
-    const updateConsent = async() => {
+    const updateConsent = (event: Event) => {
+
+      const details = 'detail' in event && typeof event.detail === 'object' && event.detail !== null ? event.detail as ConsentDetails : undefined;
+
+      if (!details) {
+        return;
+      }
+
       try {
-        const consent = await getConsentStatus();
+        const consent = getConsentStatus(details);
         // eslint-disable-next-line no-console
         console.log('__>__ updateConsent:', consent);
         if (consent) {
@@ -22,8 +31,6 @@ export default function useUpdateUsercentricsConsent() {
         }
       } catch (error) {}
     };
-
-    updateConsent();
 
     window.addEventListener('UC_CONSENT', updateConsent);
 

@@ -1,3 +1,5 @@
+import type { UsercentricsConsentResult } from './types';
+
 export const SERVICES = {
   mixpanel: {
     name: 'Mixpanel',
@@ -20,3 +22,10 @@ export const SERVICES = {
 // TEXT ADS
 
 export const SERVICES_NAMES = Object.values(SERVICES).map(({ name }) => name);
+
+export const CONSENT_RESULT_ALL_ACCEPTED: UsercentricsConsentResult = {
+  mixpanel: true,
+  googleAnalytics: true,
+  rollbar: true,
+  growthBook: true,
+};

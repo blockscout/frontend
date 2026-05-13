@@ -18,7 +18,7 @@ import { SocketProvider } from 'client/api/socket/context';
 import { CsvExportContextProvider } from 'client/features/csv-export/utils/context';
 
 import useLoadFeatures from 'client/shared/feature-flags/useLoadFeatures';
-import { Provider as RollbarProvider, useRollbarConfig } from 'client/shared/monitoring/rollbar';
+import { Provider as RollbarProvider, clientConfig as rollbarConfig } from 'client/shared/monitoring/rollbar';
 
 import config from 'configs/app';
 import { AppContextProvider } from 'lib/contexts/app';
@@ -66,7 +66,6 @@ const CONSOLE_SCAM_WARNING_DELAY_MS = 500;
 function MyApp({ Component, pageProps, router }: AppPropsWithLayout) {
 
   const queryClient = useQueryClientConfig();
-  const rollbarConfig = useRollbarConfig();
   const growthBook = useLoadFeatures(pageProps);
 
   React.useEffect(() => {
