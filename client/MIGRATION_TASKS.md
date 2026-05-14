@@ -127,7 +127,7 @@ Each slice follows the template established in 2-1.
 ### 3-9 · [~] Slice: `token-transfer` · [#3399](https://github.com/blockscout/frontend/issues/3399)
 **Scope:** TBD
 
-### 3-10 · [ ] Slice: `gas`
+### 3-10 · [~] Slice: `gas` · [#3418](https://github.com/blockscout/frontend/issues/3418)
 **Scope:** Gas-price domain primitives — no tracker page (that belongs to `features/gas-tracker/`).
 - `ui/shared/gas/` → `client/slices/gas/components/` and `client/slices/gas/utils/`
 - `types/client/gasTracker.ts` (`GasUnit`, `GAS_UNITS`) → `client/slices/gas/types/client.ts`
