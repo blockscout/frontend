@@ -51,6 +51,9 @@ importers:
       '@dynamic-labs/ethereum':
         specifier: 4.74.1
         version: 4.74.1(@dynamic-labs-wallet/forward-mpc-client@0.5.4(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6))(@types/react@19.1.7)(bufferutil@4.1.0)(fastestsmallesttextencoderdecoder@1.0.22)(react-dom@19.1.4(react@19.1.4))(react@19.1.4)(typescript@6.0.3)(use-sync-external-store@1.4.0(react@19.1.4))(utf-8-validate@6.0.6)(viem@2.41.2(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)(zod@4.3.6))(zod@4.3.6)
+      '@dynamic-labs/ethereum-aa':
+        specifier: 4.74.1
+        version: 4.74.1(@dynamic-labs-wallet/forward-mpc-client@0.5.4(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6))(@zerodev/webauthn-key@5.5.0(viem@2.41.2(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)(zod@4.3.6)))(bufferutil@4.1.0)(react-dom@19.1.4(react@19.1.4))(react@19.1.4)(typescript@6.0.3)(utf-8-validate@6.0.6)(viem@2.41.2(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)(zod@4.3.6))
       '@dynamic-labs/sdk-react-core':
         specifier: 4.74.1
         version: 4.74.1(@dynamic-labs-wallet/forward-mpc-client@0.5.4(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6))(@types/react@19.1.7)(bufferutil@4.1.0)(react-dom@19.1.4(react@19.1.4))(react-native@0.84.1(@babel/core@7.29.0)(@types/react@19.1.7)(bufferutil@4.1.0)(react@19.1.4)(utf-8-validate@6.0.6))(react@19.1.4)(typescript@6.0.3)(utf-8-validate@6.0.6)
@@ -1860,6 +1863,16 @@ packages:
   '@dynamic-labs/embedded-wallet@4.74.1':
     resolution: {integrity: sha512-fxITdB6aJghwv84pDhJhAlv+xHR9z+tQVjBMCcAj58g3hkIbTsw+xKg6HH8Lo0hry6SXv6apn9r7uiedEALUSQ==}
 
+  '@dynamic-labs/ethereum-aa-core@4.74.1':
+    resolution: {integrity: sha512-TpmqJAQqhw+Q/IJHLl6JFnvK87R1Wosoi4M34Xgllxy3PuQ9d66jZP1jlINDufzI3Z30FHfIm7TQKFNp1AOxgg==}
+    peerDependencies:
+      viem: ^2.45.3
+
+  '@dynamic-labs/ethereum-aa@4.74.1':
+    resolution: {integrity: sha512-QZDd1MyCiTQE1WX9J4ctwJLJ8jmoJ9nhqdprueTO4QOGYU0rLxGd4Aqy5JJ5QlKl9SaRjODp9ipTByE1OFmNig==}
+    peerDependencies:
+      viem: ^2.45.3
+
   '@dynamic-labs/ethereum-core@4.74.1':
     resolution: {integrity: sha512-XgVEbSPEEHC+r5PvQwF41jtu8jn+RW/eSEPch7aXsSJFP6aoH/5wzNOUFPHS1AZtseG6njxnaPX3Us3ekJ2l6Q==}
     peerDependencies:
@@ -1884,6 +1897,9 @@ packages:
 
   '@dynamic-labs/logger@4.74.1':
     resolution: {integrity: sha512-Gg85XkrrQ5WZn0gSR5VNFX+beoicD8LRuMcbJdKtgIZi5EV1C0QRZsv2XgGp5d0mW/vBj049kfNpwFxZ0Ze1og==}
+
+  '@dynamic-labs/logger@4.83.0':
+    resolution: {integrity: sha512-khv6wJ7zMmn/yLSUO3gTLc2xZj3J2p5EFEqC5bQJYr3AlPDEoY9j6HnvmnS1bBzeJMrZVSJ4F5u8aB+LUo8ccQ==}
 
   '@dynamic-labs/message-transport@4.67.2':
     resolution: {integrity: sha512-Do+xr7F0gHqsm/awhXuQIloOC31uCuMqf/hfCUSzd1St6HG+B9IyWbMVo4w2KcX2pDk7sd/caeiPNPsx7MQ0OQ==}
@@ -4815,9 +4831,23 @@ packages:
   '@simplewebauthn/browser@13.1.0':
     resolution: {integrity: sha512-WuHZ/PYvyPJ9nxSzgHtOEjogBhwJfC8xzYkPC+rR/+8chl/ft4ngjiK8kSU5HtRJfczupyOh33b25TjYbvwAcg==}
 
+  '@simplewebauthn/browser@8.3.7':
+    resolution: {integrity: sha512-ZtRf+pUEgOCvjrYsbMsJfiHOdKcrSZt2zrAnIIpfmA06r0FxBovFYq0rJ171soZbe13KmWzAoLKjSxVW7KxCdQ==}
+
+  '@simplewebauthn/browser@9.0.1':
+    resolution: {integrity: sha512-wD2WpbkaEP4170s13/HUxPcAV5y4ZXaKo1TfNklS5zDefPinIgXOpgz1kpEvobAsaLPa2KeH7AKKX/od1mrBJw==}
+
   '@simplewebauthn/types@12.0.0':
     resolution: {integrity: sha512-q6y8MkoV8V8jB4zzp18Uyj2I7oFp2/ONL8c3j8uT06AOWu3cIChc1au71QYHrP2b+xDapkGTiv+9lX7xkTlAsA==}
     deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
+
+  '@simplewebauthn/types@9.0.1':
+    resolution: {integrity: sha512-tGSRP1QvsAvsJmnOlRQyw/mvK9gnPtjEc5fg2+m8n+QUa+D7rvrKkOYyfpy42GTs90X3RDOnqJgfHt+qO67/+w==}
+    deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
+
+  '@simplewebauthn/typescript-types@8.3.4':
+    resolution: {integrity: sha512-38xtca0OqfRVNloKBrFB5LEM6PN5vzFbJG6rAutPVrtGHFYxPdiV3btYWq0eAZAZmP+dqFPYJxJWeJrGfmYHng==}
+    deprecated: This package has been renamed to @simplewebauthn/types. Please install @simplewebauthn/types instead to ensure you receive future updates.
 
   '@sinclair/typebox@0.27.10':
     resolution: {integrity: sha512-MTBk/3jGLNB2tVxv6uLlFh1iu64iYOQ2PbdOSK3NW8JZsmlaOh2q6sdtKowBhfw8QFLmYNzTW4/oK4uATIi6ZA==}
@@ -7023,6 +7053,29 @@ packages:
   '@zag-js/utils@1.35.3':
     resolution: {integrity: sha512-LHcC+9y6TFhDsIz9I3koYxONl2JFfx5yQDzc6ZEQO2cqzXedRcN0R9IPqNGCX7JuhGt14ctDkVCm1JWGP2J6Wg==}
 
+  '@zerodev/ecdsa-validator@5.4.9':
+    resolution: {integrity: sha512-9NVE8/sQIKRo42UOoYKkNdmmHJY8VlT4t+2MHD2ipLg21cpbY9fS17TGZh61+Bl3qlqc8pP23I6f89z9im7kuA==}
+    peerDependencies:
+      '@zerodev/sdk': ^5.4.13
+      viem: ^2.28.0
+
+  '@zerodev/multi-chain-ecdsa-validator@5.4.5':
+    resolution: {integrity: sha512-cmQcsl5WbjnyQuhAS76BUqsHGtUOfWqdkMlm60s75kmRKzF5PiKzRpWIZyeISVmJV0F4P5u1keo1xYONEFiw1w==}
+    peerDependencies:
+      '@zerodev/sdk': ^5.4.0
+      '@zerodev/webauthn-key': ^5.4.0
+      viem: ^2.28.0
+
+  '@zerodev/sdk@5.5.7':
+    resolution: {integrity: sha512-Sf4G13yi131H8ujun64obvXIpk1UWn64GiGJjfvGx8aIKg+OWTRz9AZHgGKK+bE/evAmqIg4nchuSvKPhOau1w==}
+    peerDependencies:
+      viem: ^2.28.0
+
+  '@zerodev/webauthn-key@5.5.0':
+    resolution: {integrity: sha512-AbD2d/qrsX7AWxJMEfwxnLbp1TjiUjc1V4ne3Q40UJxKe+lW64Td+y8OD0qSFMqgN6rQxJZ0aOAXmat8H6xluA==}
+    peerDependencies:
+      viem: ^2.28.0
+
   abitype@1.0.6:
     resolution: {integrity: sha512-MMSqYh4+C/aVqI2RQaWqbvI4Kxo5cQV40WQ4QFtDnNzCkqChm8MuENhElmynZlO0qUy/ObkEUaXtKqYnx1Kp3A==}
     peerDependencies:
@@ -7454,6 +7507,9 @@ packages:
   blockstore-core@5.0.4:
     resolution: {integrity: sha512-v7wtBEpW2J/kKljN7Z2u4Tnwr7qwnOvW1aPVfynIxEdejlVC7gg4z9k6iJt7n5XMGkdNnH4HOmVcjYcaMnu7yg==}
 
+  bn.js@4.11.6:
+    resolution: {integrity: sha512-XWwnNNFCuuSQ0m3r3C4LE3EiORltHd9M05pq6FOlVeiophzRbMo50Sbz1ehl8K3Z+jw9+vmgnXefY1hz8X+2wA==}
+
   bn.js@5.2.3:
     resolution: {integrity: sha512-EAcmnPkxpntVL+DS7bO1zhcZNvCkxqtkd0ZY53h06GNQ3DEkkGZ/gKgmDv6DdZQGj9BgfSPKtJJ7Dp1GPP8f7w==}
 
@@ -7507,6 +7563,9 @@ packages:
 
   buffer-from@1.1.2:
     resolution: {integrity: sha512-E+XQCRwSbaaiChtv6k6Dwgc+bx+Bs6vuKJHHl5kox/BaKbhiXzqQOwK4cO22yElGp2OCmjwVhT3HmxgyPGnJfQ==}
+
+  buffer-reverse@1.0.1:
+    resolution: {integrity: sha512-M87YIUBsZ6N924W57vDwT/aOu8hw7ZgdByz6ijksLjmHJELBASmYTTlNHRgjE+pTsT9oJXGaDSgqqwfdHotDUg==}
 
   buffer@5.7.1:
     resolution: {integrity: sha512-EHcyIPBQ4BSGlvjB16k5KgAJ27CIsHY/2JBmCRReo48y9rQ3MaUzWX3KVlBa4U7MyX02HdVj0K7C3WaB3ju7FQ==}
@@ -8833,8 +8892,15 @@ packages:
   eth-rpc-errors@4.0.3:
     resolution: {integrity: sha512-Z3ymjopaoft7JDoxZcEb3pwdGh7yiYMhOwm2doUt6ASXlMavpNlK6Cre0+IMl2VSGyEU9rkiperQhp5iRxn5Pg==}
 
+  ethereum-bloom-filters@1.2.0:
+    resolution: {integrity: sha512-28hyiE7HVsWubqhpVLVmZXFd4ITeHi+BUu05o9isf0GUpMtzBUi+8/gFrGaGYzvGAJQmJ3JKj77Mk9G98T84rA==}
+
   ethereum-cryptography@2.2.1:
     resolution: {integrity: sha512-r/W8lkHSiTLxUxW8Rf3u4HGB0xQweG2RyETjywylKZSzLWoWAijRz8WCuOtJ6wah+avllXBqZuk29HCCvhEIRg==}
+
+  ethjs-unit@0.1.6:
+    resolution: {integrity: sha512-/Sn9Y0oKl0uqQuvgFk/zQgR7aw1g36qX/jzSQ5lSwlO0GigPymk4eGQfeNTD03w1dPOqfz8V77Cy43jH56pagw==}
+    engines: {node: '>=6.5.0', npm: '>=3'}
 
   event-iterator@2.0.0:
     resolution: {integrity: sha512-KGft0ldl31BZVV//jj+IAIGCxkvvUkkON+ScH6zfoX+l+omX6001ggyRSpI0Io2Hlro0ThXotswCtfzS8UkIiQ==}
@@ -9729,6 +9795,10 @@ packages:
     resolution: {integrity: sha512-xelSayHH36ZgE7ZWhli7pW34hNbNl8Ojv5KVmkJD4hBdD3th8Tfk9vYasLM+mXWOZhFkgZfxhLSnrwRr4elSSg==}
     engines: {node: '>=0.10.0'}
 
+  is-hex-prefixed@1.0.0:
+    resolution: {integrity: sha512-WvtOiug1VFrE9v1Cydwm+FnXd3+w9GaeVUss5W4v/SLy3UW00vP+6iNF2SdnfiBoLy4bTqVdkftNGTUeOFVsbA==}
+    engines: {node: '>=6.5.0', npm: '>=3'}
+
   is-hexadecimal@2.0.1:
     resolution: {integrity: sha512-DgZQp241c8oO6cA1SbTEWiXeoxV42vlcJxgH+B3hi1AiqqKruZR3ZGF8In3fj4+/y/7rHvlOZLZtgJ/4ttYGZg==}
 
@@ -10377,6 +10447,10 @@ packages:
     resolution: {integrity: sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==}
     engines: {node: '>= 8'}
 
+  merkletreejs@0.3.11:
+    resolution: {integrity: sha512-LJKTl4iVNTndhL+3Uz/tfkjD0klIWsHlUzgtuNnNrsf7bAlXR30m+xYB7lHr5Z/l6e/yAIsr26Dabx6Buo4VGQ==}
+    engines: {node: '>= 7.6.0'}
+
   meros@1.3.2:
     resolution: {integrity: sha512-Q3mobPbvEx7XbwhnC1J1r60+5H6EZyNccdzSz0eGexJRwouUtTZxPVRGdqKtxlpD84ScK4+tIGldkqDtCKdI0A==}
     engines: {node: '>=13'}
@@ -10801,6 +10875,10 @@ packages:
 
   nullthrows@1.1.1:
     resolution: {integrity: sha512-2vPPEi+Z7WqML2jZYddDIfy5Dqb0r2fze2zTxNNknZaFpVHU3mFB3R+DWeJWGVx0ecvttSGlJTI+WG+8Z4cDWw==}
+
+  number-to-bn@1.7.0:
+    resolution: {integrity: sha512-wsJ9gfSz1/s4ZsJN01lyonwuxA1tml6X1yBDnfpMglypcBRFZZkus26EdPSlqS5GJfYddVZa22p3VNb3z5m5Ig==}
+    engines: {node: '>=6.5.0', npm: '>=3'}
 
   ob1@0.83.5:
     resolution: {integrity: sha512-vNKPYC8L5ycVANANpF/S+WZHpfnRWKx/F3AYP4QMn6ZJTh+l2HOrId0clNkEmua58NB9vmI9Qh7YOoV/4folYg==}
@@ -12328,6 +12406,10 @@ packages:
     resolution: {integrity: sha512-vavAMRXOgBVNF6nyEEmL3DBK19iRpDcoIwW+swQ+CbGiu7lju6t+JklA1MHweoWtadgt4ISVUsXLyDq34ddcwA==}
     engines: {node: '>=4'}
 
+  strip-hex-prefix@1.0.0:
+    resolution: {integrity: sha512-q8d4ue7JGEiVcypji1bALTos+0pWtyGlivAWyPuTkHzuTCJqrK9sWxYQZUq6Nq3cuyv3bm734IhHvHtGGURU6A==}
+    engines: {node: '>=6.5.0', npm: '>=3'}
+
   strip-json-comments@2.0.1:
     resolution: {integrity: sha512-4gB8na07fecVVkOI6Rs4e7T6NOTki5EmL7TUduTs6bu3EdnSycntVJ4re8kgZA+wx9IueI2Y11bfbgwtzuE0KQ==}
     engines: {node: '>=0.10.0'}
@@ -12616,6 +12698,10 @@ packages:
 
   tree-sitter@0.22.4:
     resolution: {integrity: sha512-usbHZP9/oxNsUY65MQUsduGRqDHQOou1cagUSwjhoSYAmSahjQDAVsh9s+SlZkn8X8+O1FULRGwHu7AFP3kjzg==}
+
+  treeify@1.1.0:
+    resolution: {integrity: sha512-1m4RA7xVAJrSGrrXGs0L3YTwyvBs2S8PbRHaLZAkFw7JR8oIFwYtysxlBZhYIa7xSyiYJKZ3iGrrk55cGA3i9A==}
+    engines: {node: '>=0.6'}
 
   truncate-utf8-bytes@1.0.2:
     resolution: {integrity: sha512-95Pu1QXQvruGEhv62XCMO3Mm90GscOCClvrIUwCM0PYOXK3kaF3l3sIHxx71ThJfcbM2O5Au6SO3AWCSEfW4mQ==}
@@ -13015,6 +13101,9 @@ packages:
   utf8-codec@1.0.0:
     resolution: {integrity: sha512-S/QSLezp3qvG4ld5PUfXiH7mCFxLKjSVZRFkB3DOjgwHuJPFDkInAXc/anf7BAbHt/D38ozDzL+QMZ6/7gsI6w==}
 
+  utf8@3.0.0:
+    resolution: {integrity: sha512-E8VjFIQ/TyQgp+TZfS6l8yp/xWppSAHzidGiRrqe4bK4XP9pTRyKFgGJpO3SN7zdX4DeomTrwaseCHovfpFcqQ==}
+
   util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
 
@@ -13282,6 +13371,10 @@ packages:
 
   web-vitals@5.1.0:
     resolution: {integrity: sha512-ArI3kx5jI0atlTtmV0fWU3fjpLmq/nD3Zr1iFFlJLaqa5wLBkUSzINwBPySCX/8jRyjlmy1Volw1kz1g9XE4Jg==}
+
+  web3-utils@1.10.4:
+    resolution: {integrity: sha512-tsu8FiKJLk2PzhDl9fXbGUWTkkVXYhtTA+SmEFkKft+9BgwLxfCRpU96sWv7ICC8zixBNd3JURVoiR3dUXgP8A==}
+    engines: {node: '>=8.0.0'}
 
   webcrypto-core@1.8.1:
     resolution: {integrity: sha512-P+x1MvlNCXlKbLSOY4cYrdreqPG5hbzkmawbcXLKN/mf6DZW0SdNNkZ+sjwsqVkI4A4Ko2sPZmkZtCKY58w83A==}
@@ -15181,7 +15274,7 @@ snapshots:
   '@dynamic-labs-wallet/browser-wallet-client@0.0.286(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)':
     dependencies:
       '@dynamic-labs-wallet/core': 0.0.286(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)
-      '@dynamic-labs/logger': 4.74.1
+      '@dynamic-labs/logger': 4.83.0
       '@dynamic-labs/message-transport': 4.67.2
       uuid: 11.1.0
     transitivePeerDependencies:
@@ -15193,7 +15286,7 @@ snapshots:
   '@dynamic-labs-wallet/browser-wallet-client@0.0.314(@dynamic-labs-wallet/forward-mpc-client@0.5.4(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6))':
     dependencies:
       '@dynamic-labs-wallet/core': 0.0.314(@dynamic-labs-wallet/forward-mpc-client@0.5.4(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6))
-      '@dynamic-labs/logger': 4.74.1
+      '@dynamic-labs/logger': 4.83.0
       '@dynamic-labs/message-transport': 4.67.2
       uuid: 11.1.0
     transitivePeerDependencies:
@@ -15203,7 +15296,7 @@ snapshots:
   '@dynamic-labs-wallet/browser@0.0.167':
     dependencies:
       '@dynamic-labs-wallet/core': 0.0.167
-      '@dynamic-labs/logger': 4.74.1
+      '@dynamic-labs/logger': 4.83.0
       '@dynamic-labs/sdk-api-core': 0.0.764
       '@noble/hashes': 1.8.0
       argon2id: 1.0.1
@@ -15217,7 +15310,7 @@ snapshots:
   '@dynamic-labs-wallet/browser@0.0.203(bufferutil@4.1.0)(utf-8-validate@6.0.6)':
     dependencies:
       '@dynamic-labs-wallet/core': 0.0.203(bufferutil@4.1.0)(utf-8-validate@6.0.6)
-      '@dynamic-labs/logger': 4.74.1
+      '@dynamic-labs/logger': 4.83.0
       '@dynamic-labs/sdk-api-core': 0.0.818
       '@noble/hashes': 1.8.0
       argon2id: 1.0.1
@@ -15233,7 +15326,7 @@ snapshots:
   '@dynamic-labs-wallet/browser@0.0.259(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)':
     dependencies:
       '@dynamic-labs-wallet/core': 0.0.259(bufferutil@4.1.0)(utf-8-validate@6.0.6)
-      '@dynamic-labs/logger': 4.74.1
+      '@dynamic-labs/logger': 4.83.0
       '@dynamic-labs/sdk-api-core': 0.0.864
       '@noble/hashes': 1.8.0
       argon2id: 1.0.1
@@ -15260,7 +15353,7 @@ snapshots:
   '@dynamic-labs-wallet/core@0.0.203(bufferutil@4.1.0)(utf-8-validate@6.0.6)':
     dependencies:
       '@dynamic-labs-wallet/forward-mpc-client': 0.1.3(bufferutil@4.1.0)(utf-8-validate@6.0.6)
-      '@dynamic-labs/logger': 4.74.1
+      '@dynamic-labs/logger': 4.83.0
       '@dynamic-labs/sdk-api-core': 0.0.818
       axios: 1.12.0(debug@4.4.3)
       http-errors: 2.0.0
@@ -15273,7 +15366,7 @@ snapshots:
   '@dynamic-labs-wallet/core@0.0.259(bufferutil@4.1.0)(utf-8-validate@6.0.6)':
     dependencies:
       '@dynamic-labs-wallet/forward-mpc-client': 0.2.0(bufferutil@4.1.0)(utf-8-validate@6.0.6)
-      '@dynamic-labs/logger': 4.74.1
+      '@dynamic-labs/logger': 4.83.0
       '@dynamic-labs/sdk-api-core': 0.0.864
       axios: 1.12.0(debug@4.4.3)
       http-errors: 2.0.0
@@ -15286,7 +15379,7 @@ snapshots:
   '@dynamic-labs-wallet/core@0.0.286(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)':
     dependencies:
       '@dynamic-labs-wallet/forward-mpc-client': 0.3.0(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)
-      '@dynamic-labs/logger': 4.74.1
+      '@dynamic-labs/logger': 4.83.0
       '@dynamic-labs/sdk-api-core': 0.0.875
       axios: 1.12.0(debug@4.4.3)
       uuid: 11.1.0
@@ -15482,6 +15575,50 @@ snapshots:
       - typescript
       - utf-8-validate
 
+  '@dynamic-labs/ethereum-aa-core@4.74.1(@dynamic-labs-wallet/forward-mpc-client@0.5.4(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6))(bufferutil@4.1.0)(react-dom@19.1.4(react@19.1.4))(react@19.1.4)(typescript@6.0.3)(utf-8-validate@6.0.6)(viem@2.41.2(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)(zod@4.3.6))':
+    dependencies:
+      '@dynamic-labs/assert-package-version': 4.74.1
+      '@dynamic-labs/ethereum-core': 4.74.1(@dynamic-labs-wallet/forward-mpc-client@0.5.4(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6))(bufferutil@4.1.0)(react-dom@19.1.4(react@19.1.4))(react@19.1.4)(typescript@6.0.3)(utf-8-validate@6.0.6)(viem@2.41.2(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)(zod@4.3.6))
+      '@dynamic-labs/sdk-api-core': 0.0.909
+      '@dynamic-labs/types': 4.74.1
+      '@dynamic-labs/utils': 4.74.1
+      '@dynamic-labs/wallet-book': 4.74.1(react-dom@19.1.4(react@19.1.4))(react@19.1.4)
+      '@dynamic-labs/wallet-connector-core': 4.74.1(@dynamic-labs-wallet/forward-mpc-client@0.5.4(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6))(bufferutil@4.1.0)(react-dom@19.1.4(react@19.1.4))(react@19.1.4)(typescript@6.0.3)(utf-8-validate@6.0.6)
+      viem: 2.41.2(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)(zod@4.3.6)
+    transitivePeerDependencies:
+      - '@dynamic-labs-wallet/forward-mpc-client'
+      - bufferutil
+      - debug
+      - react
+      - react-dom
+      - typescript
+      - utf-8-validate
+
+  '@dynamic-labs/ethereum-aa@4.74.1(@dynamic-labs-wallet/forward-mpc-client@0.5.4(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6))(@zerodev/webauthn-key@5.5.0(viem@2.41.2(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)(zod@4.3.6)))(bufferutil@4.1.0)(react-dom@19.1.4(react@19.1.4))(react@19.1.4)(typescript@6.0.3)(utf-8-validate@6.0.6)(viem@2.41.2(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)(zod@4.3.6))':
+    dependencies:
+      '@dynamic-labs/assert-package-version': 4.74.1
+      '@dynamic-labs/ethereum-aa-core': 4.74.1(@dynamic-labs-wallet/forward-mpc-client@0.5.4(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6))(bufferutil@4.1.0)(react-dom@19.1.4(react@19.1.4))(react@19.1.4)(typescript@6.0.3)(utf-8-validate@6.0.6)(viem@2.41.2(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)(zod@4.3.6))
+      '@dynamic-labs/ethereum-core': 4.74.1(@dynamic-labs-wallet/forward-mpc-client@0.5.4(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6))(bufferutil@4.1.0)(react-dom@19.1.4(react@19.1.4))(react@19.1.4)(typescript@6.0.3)(utf-8-validate@6.0.6)(viem@2.41.2(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)(zod@4.3.6))
+      '@dynamic-labs/logger': 4.74.1
+      '@dynamic-labs/sdk-api-core': 0.0.909
+      '@dynamic-labs/types': 4.74.1
+      '@dynamic-labs/utils': 4.74.1
+      '@dynamic-labs/wallet-book': 4.74.1(react-dom@19.1.4(react@19.1.4))(react@19.1.4)
+      '@dynamic-labs/wallet-connector-core': 4.74.1(@dynamic-labs-wallet/forward-mpc-client@0.5.4(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6))(bufferutil@4.1.0)(react-dom@19.1.4(react@19.1.4))(react@19.1.4)(typescript@6.0.3)(utf-8-validate@6.0.6)
+      '@zerodev/ecdsa-validator': 5.4.9(@zerodev/sdk@5.5.7(viem@2.41.2(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)(zod@4.3.6)))(viem@2.41.2(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)(zod@4.3.6))
+      '@zerodev/multi-chain-ecdsa-validator': 5.4.5(@zerodev/sdk@5.5.7(viem@2.41.2(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)(zod@4.3.6)))(@zerodev/webauthn-key@5.5.0(viem@2.41.2(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)(zod@4.3.6)))(viem@2.41.2(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)(zod@4.3.6))
+      '@zerodev/sdk': 5.5.7(viem@2.41.2(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)(zod@4.3.6))
+      viem: 2.41.2(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)(zod@4.3.6)
+    transitivePeerDependencies:
+      - '@dynamic-labs-wallet/forward-mpc-client'
+      - '@zerodev/webauthn-key'
+      - bufferutil
+      - debug
+      - react
+      - react-dom
+      - typescript
+      - utf-8-validate
+
   '@dynamic-labs/ethereum-core@4.74.1(@dynamic-labs-wallet/forward-mpc-client@0.5.4(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6))(bufferutil@4.1.0)(react-dom@19.1.4(react@19.1.4))(react@19.1.4)(typescript@6.0.3)(utf-8-validate@6.0.6)(viem@2.41.2(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)(zod@4.3.6))':
     dependencies:
       '@dynamic-labs/assert-package-version': 4.74.1
@@ -15602,6 +15739,10 @@ snapshots:
       eventemitter3: 5.0.1
 
   '@dynamic-labs/logger@4.74.1':
+    dependencies:
+      eventemitter3: 5.0.1
+
+  '@dynamic-labs/logger@4.83.0':
     dependencies:
       eventemitter3: 5.0.1
 
@@ -20202,7 +20343,19 @@ snapshots:
 
   '@simplewebauthn/browser@13.1.0': {}
 
+  '@simplewebauthn/browser@8.3.7':
+    dependencies:
+      '@simplewebauthn/typescript-types': 8.3.4
+
+  '@simplewebauthn/browser@9.0.1':
+    dependencies:
+      '@simplewebauthn/types': 9.0.1
+
   '@simplewebauthn/types@12.0.0': {}
+
+  '@simplewebauthn/types@9.0.1': {}
+
+  '@simplewebauthn/typescript-types@8.3.4': {}
 
   '@sinclair/typebox@0.27.10': {}
 
@@ -24321,6 +24474,32 @@ snapshots:
 
   '@zag-js/utils@1.35.3': {}
 
+  '@zerodev/ecdsa-validator@5.4.9(@zerodev/sdk@5.5.7(viem@2.41.2(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)(zod@4.3.6)))(viem@2.41.2(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)(zod@4.3.6))':
+    dependencies:
+      '@zerodev/sdk': 5.5.7(viem@2.41.2(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)(zod@4.3.6))
+      viem: 2.41.2(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)(zod@4.3.6)
+
+  '@zerodev/multi-chain-ecdsa-validator@5.4.5(@zerodev/sdk@5.5.7(viem@2.41.2(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)(zod@4.3.6)))(@zerodev/webauthn-key@5.5.0(viem@2.41.2(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)(zod@4.3.6)))(viem@2.41.2(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)(zod@4.3.6))':
+    dependencies:
+      '@simplewebauthn/browser': 9.0.1
+      '@simplewebauthn/typescript-types': 8.3.4
+      '@zerodev/sdk': 5.5.7(viem@2.41.2(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)(zod@4.3.6))
+      '@zerodev/webauthn-key': 5.5.0(viem@2.41.2(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)(zod@4.3.6))
+      merkletreejs: 0.3.11
+      viem: 2.41.2(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)(zod@4.3.6)
+
+  '@zerodev/sdk@5.5.7(viem@2.41.2(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)(zod@4.3.6))':
+    dependencies:
+      semver: 7.7.4
+      viem: 2.41.2(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)(zod@4.3.6)
+
+  '@zerodev/webauthn-key@5.5.0(viem@2.41.2(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)(zod@4.3.6))':
+    dependencies:
+      '@noble/curves': 1.9.7
+      '@simplewebauthn/browser': 8.3.7
+      '@simplewebauthn/types': 12.0.0
+      viem: 2.41.2(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)(zod@4.3.6)
+
   abitype@1.0.6(typescript@6.0.3)(zod@3.25.76):
     optionalDependencies:
       typescript: 6.0.3
@@ -24798,6 +24977,8 @@ snapshots:
       it-merge: 3.0.12
       multiformats: 13.4.2
 
+  bn.js@4.11.6: {}
+
   bn.js@5.2.3: {}
 
   boolbase@1.0.0: {}
@@ -24863,6 +25044,8 @@ snapshots:
       node-int64: 0.4.0
 
   buffer-from@1.1.2: {}
+
+  buffer-reverse@1.0.1: {}
 
   buffer@5.7.1:
     dependencies:
@@ -26482,12 +26665,21 @@ snapshots:
     dependencies:
       fast-safe-stringify: 2.1.1
 
+  ethereum-bloom-filters@1.2.0:
+    dependencies:
+      '@noble/hashes': 1.8.0
+
   ethereum-cryptography@2.2.1:
     dependencies:
       '@noble/curves': 1.4.2
       '@noble/hashes': 1.8.0
       '@scure/bip32': 1.4.0
       '@scure/bip39': 1.3.0
+
+  ethjs-unit@0.1.6:
+    dependencies:
+      bn.js: 4.11.6
+      number-to-bn: 1.7.0
 
   event-iterator@2.0.0: {}
 
@@ -27505,6 +27697,8 @@ snapshots:
     dependencies:
       is-extglob: 2.1.1
 
+  is-hex-prefixed@1.0.0: {}
+
   is-hexadecimal@2.0.1: {}
 
   is-ip@5.0.1:
@@ -28273,6 +28467,14 @@ snapshots:
 
   merge2@1.4.1: {}
 
+  merkletreejs@0.3.11:
+    dependencies:
+      bignumber.js: 9.3.1
+      buffer-reverse: 1.0.1
+      crypto-js: 4.2.0
+      treeify: 1.1.0
+      web3-utils: 1.10.4
+
   meros@1.3.2(@types/node@20.16.7):
     optionalDependencies:
       '@types/node': 20.16.7
@@ -28752,6 +28954,11 @@ snapshots:
       boolbase: 1.0.0
 
   nullthrows@1.1.1: {}
+
+  number-to-bn@1.7.0:
+    dependencies:
+      bn.js: 4.11.6
+      strip-hex-prefix: 1.0.0
 
   ob1@0.83.5:
     dependencies:
@@ -30576,6 +30783,10 @@ snapshots:
 
   strip-bom@3.0.0: {}
 
+  strip-hex-prefix@1.0.0:
+    dependencies:
+      is-hex-prefixed: 1.0.0
+
   strip-json-comments@2.0.1: {}
 
   strip-json-comments@3.1.1: {}
@@ -30908,6 +31119,8 @@ snapshots:
       node-addon-api: 8.6.0
       node-gyp-build: 4.8.4
     optional: true
+
+  treeify@1.1.0: {}
 
   truncate-utf8-bytes@1.0.2:
     dependencies:
@@ -31248,6 +31461,8 @@ snapshots:
   utf8-byte-length@1.0.5: {}
 
   utf8-codec@1.0.0: {}
+
+  utf8@3.0.0: {}
 
   util-deprecate@1.0.2: {}
 
@@ -31619,6 +31834,17 @@ snapshots:
     optional: true
 
   web-vitals@5.1.0: {}
+
+  web3-utils@1.10.4:
+    dependencies:
+      '@ethereumjs/util': 8.1.0
+      bn.js: 5.2.3
+      ethereum-bloom-filters: 1.2.0
+      ethereum-cryptography: 2.2.1
+      ethjs-unit: 0.1.6
+      number-to-bn: 1.7.0
+      randombytes: 2.1.0
+      utf8: 3.0.0
 
   webcrypto-core@1.8.1:
     dependencies:
