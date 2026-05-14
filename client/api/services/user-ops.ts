@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { ApiResource } from '../types';
 
 export const USER_OPS_API_RESOURCES = {

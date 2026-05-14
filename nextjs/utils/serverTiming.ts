@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { ServerResponse } from 'http';
 
 export function appendValue(res: ServerResponse | undefined, name: string, value: number) {

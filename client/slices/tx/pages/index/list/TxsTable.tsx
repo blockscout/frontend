@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import React from 'react';
 
 import type { Transaction, TransactionsSortingField, TransactionsSortingValue } from 'client/slices/tx/types/api';

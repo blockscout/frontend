@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 export default function getValuesArrayFromQuery(val: string | Array<string> | undefined) {
   if (val === undefined) {
     return;

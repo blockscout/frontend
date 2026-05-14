@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import React from 'react';
 
 import capitalizeFirstLetter from 'client/shared/text/capitalize-first-letter';

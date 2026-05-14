@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { TokenInstance } from 'client/slices/token/types/api';
 import type { Metadata } from 'client/slices/token/types/client';
 

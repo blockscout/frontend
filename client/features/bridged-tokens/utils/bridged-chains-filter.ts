@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import getFilterValuesFromQuery from 'client/shared/router/get-filter-values-from-query';
 
 import config from 'configs/app';

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 export default function compileValue(template: string, params: Record<string, string | Array<string> | undefined>) {
   const PLACEHOLDER_REGEX = /%(\w+)%/g;
   return template.replaceAll(PLACEHOLDER_REGEX, (match, p1) => {

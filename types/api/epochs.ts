@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { AddressParam } from 'client/slices/address/types/api';
 import type { Erc20TotalPayload, TokenTransfer } from 'client/slices/token-transfer/types/api';
 import type { TokenInfo } from 'client/slices/token/types/api';

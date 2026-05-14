@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { TextareaProps as ChakraTextareaProps } from '@chakra-ui/react';
 import { Textarea as ChakraTextarea } from '@chakra-ui/react';
 

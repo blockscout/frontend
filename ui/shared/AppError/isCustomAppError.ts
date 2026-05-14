@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { ResourceError } from 'client/api/resources';
 
 // status codes when custom error screen should be shown

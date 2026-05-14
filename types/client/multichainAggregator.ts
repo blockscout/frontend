@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type * as bens from '@blockscout/bens-types';
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 import type { TokenType } from 'client/slices/token/types/api';

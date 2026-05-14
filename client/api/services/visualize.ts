@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { ApiResource } from '../types';
 import type * as visualizer from '@blockscout/visualizer-types';
 

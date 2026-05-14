@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Flex, Text, Spinner, createListCollection } from '@chakra-ui/react';
 import { isEqual } from 'es-toolkit';
 import React from 'react';

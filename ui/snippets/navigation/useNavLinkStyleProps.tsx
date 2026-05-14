@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 type Props = {
   isExpanded?: boolean;
   isCollapsed?: boolean;

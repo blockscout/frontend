@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import apis from './apis';
 import app from './app';
 import chain from './chain';

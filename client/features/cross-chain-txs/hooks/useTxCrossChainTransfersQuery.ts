@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import config from 'configs/app';
 import { INTERCHAIN_TRANSFER } from 'stubs/interchainIndexer';
 import { generateListStub } from 'stubs/utils';

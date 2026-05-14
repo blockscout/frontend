@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 export default function getConfirmationDuration(durations: Array<number>) {
   if (durations.length === 0) {
     return '';

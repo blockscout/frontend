@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import Cookies from 'js-cookie';
 
 import config from 'configs/app';

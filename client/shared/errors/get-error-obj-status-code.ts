@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import getErrorObj from './get-error-obj';
 
 export default function getErrorObjStatusCode(error: unknown) {

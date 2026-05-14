@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { GridItem, Text, Box } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import { capitalize } from 'es-toolkit';

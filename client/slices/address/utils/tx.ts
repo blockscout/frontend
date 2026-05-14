@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 export type TxCourseType = 'in' | 'out' | 'self' | 'unspecified';
 
 export function getTxCourseType(from: string, to: string | undefined, current?: string): TxCourseType {

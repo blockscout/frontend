@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type * as interchainIndexer from '@blockscout/interchain-indexer-types';
 
 export interface CrossChainFilters {

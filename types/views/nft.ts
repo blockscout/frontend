@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 export interface NftMarketplaceItem {
   name: string;
   collection_url?: string;

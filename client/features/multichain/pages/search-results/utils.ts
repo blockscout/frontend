@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { ReturnType } from 'client/api/hooks/useApiInfiniteQuery';
 
 export interface SearchQueries {

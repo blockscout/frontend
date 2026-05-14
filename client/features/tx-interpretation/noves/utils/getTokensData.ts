@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { groupBy, mapValues } from 'es-toolkit';
 
 import type { TokenInfo } from 'client/slices/token/types/api';

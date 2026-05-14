@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 export const ADDRESS_3RD_PARTY_WIDGET_PAGES = [ 'eoa', 'contract', 'token' ] as const;
 
 export type Address3rdPartyWidget = {

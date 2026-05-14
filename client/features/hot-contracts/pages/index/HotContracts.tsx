@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Box, createListCollection, Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';

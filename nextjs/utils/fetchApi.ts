@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import fetch, { AbortError } from 'node-fetch';
 
 import buildUrl from 'nextjs/utils/buildUrl';

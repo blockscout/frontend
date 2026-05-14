@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { upperFirst } from 'es-toolkit';
 
 export function formatName(_name: string) {

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { pickBy, uniqBy } from 'es-toolkit';
 
 import type { ChartDataPayloadSankey, StatsIntervalIds } from 'client/features/chain-stats/types/client';

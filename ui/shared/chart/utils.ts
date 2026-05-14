@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { LineChartItem } from 'toolkit/components/charts/line';
 
 export function formatDate(date: Date) {

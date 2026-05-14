@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Provider as DefaultProvider, useRollbar as useRollbarDefault } from '@rollbar/react';
 import type React from 'react';
 import type { Configuration } from 'rollbar';

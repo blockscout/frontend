@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { JsxStyleProps } from '@chakra-ui/react';
 import { Flex, chakra } from '@chakra-ui/react';
 import { debounce } from 'es-toolkit';

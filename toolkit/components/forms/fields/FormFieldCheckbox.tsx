@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import React from 'react';
 import { useController, useFormContext, type FieldValues, type Path } from 'react-hook-form';
 

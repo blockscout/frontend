@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { SwaggerRequest } from './types';
 
 import config from 'configs/app';

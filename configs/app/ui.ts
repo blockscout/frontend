@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { ContractCodeIde } from 'client/slices/contract/types/config';
 import { type NavItemExternal, type NavigationLayout, type NavigationPromoBannerConfig } from 'types/client/navigation';
 import type { NetworkExplorer } from 'types/networks';

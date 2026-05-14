@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { useQueryClient, type UseQueryResult } from '@tanstack/react-query';
 import { useToggle } from '@uidotdev/usehooks';
 import { useRouter } from 'next/router';

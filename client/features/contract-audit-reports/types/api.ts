@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 export type SmartContractSecurityAudit = {
   audit_company_name: string;
   audit_publish_date: string;

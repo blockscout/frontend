@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { pick, pickBy } from 'es-toolkit';
 import type { NextApiRequest, NextApiResponse } from 'next';
 

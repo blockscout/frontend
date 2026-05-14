@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 export const noWhitespaceValidator = (value: unknown) => {
   if (typeof value !== 'string') {
     return true;

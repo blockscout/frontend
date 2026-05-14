@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { ChartDataPayloadLine, StatsIntervalIds } from '../types/client';
 import { ChartResolution } from 'toolkit/components/charts/types';
 

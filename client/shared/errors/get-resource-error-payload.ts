@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { ResourceError } from 'client/api/resources';
 
 import getErrorCause from './get-error-cause';

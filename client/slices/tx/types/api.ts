@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { TransactionCelo } from 'client/features/chain-variants/celo/types/api';
 import type { TransactionStability } from 'client/features/chain-variants/stability/types/api';
 import type { TransactionSuave } from 'client/features/chain-variants/suave/types/api';

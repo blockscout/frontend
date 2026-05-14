@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Box, Flex, VStack } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 // import { AnimatePresence } from 'framer-motion';

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { BlockCelo } from 'client/features/chain-variants/celo/types/api';
 import type { BlockRootstock } from 'client/features/chain-variants/rootstock/types/api';
 import type { BlockZilliqa } from 'client/features/chain-variants/zilliqa/types/api';

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 export interface TxActionGeneral {
   type: 'mint' | 'burn' | 'collect' | 'swap';
   data: {

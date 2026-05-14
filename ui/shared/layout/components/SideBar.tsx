@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import config from 'configs/app';
 import NavigationDesktop from 'ui/snippets/navigation/vertical/NavigationDesktop';
 

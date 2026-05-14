@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import * as tac from '@blockscout/tac-operation-lifecycle-types';
 
 import { rightLineArrow } from 'toolkit/utils/htmlEntities';

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { useAppKit, useAppKitState } from '@reown/appkit/react';
 import React from 'react';
 import { useAccountEffect, useAccount, useDisconnect } from 'wagmi';

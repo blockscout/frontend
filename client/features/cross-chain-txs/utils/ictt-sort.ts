@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { CrossChainChainsStatsSortingField, CrossChainChainsStatsSortingValue } from '../types/api';
 import { StatsChainsSort } from '@blockscout/interchain-indexer-types';
 

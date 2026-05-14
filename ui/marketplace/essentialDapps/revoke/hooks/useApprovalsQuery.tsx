@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import ERC20Artifact from '@openzeppelin/contracts/build/contracts/ERC20.json';
 import { useQuery } from '@tanstack/react-query';
 import { useCallback, useMemo } from 'react';

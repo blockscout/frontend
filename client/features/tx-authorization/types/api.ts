@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 export interface TransactionAuthorization {
   authorization_list?: Array<TxAuthorization>;
 }

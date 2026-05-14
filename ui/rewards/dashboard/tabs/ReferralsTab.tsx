@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Flex } from '@chakra-ui/react';
 
 import { useRewardsContext } from 'lib/contexts/rewards';

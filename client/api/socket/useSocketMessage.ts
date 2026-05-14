@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { useEffect, useRef } from 'react';
 
 import type { SocketMessageParams } from './types';

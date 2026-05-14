@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 // Arbitrary text that will be truncated if there is not enough space in the container
 
 import React from 'react';

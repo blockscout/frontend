@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 export * from './LineChart';
 export * from './LineChartWidget';
 export * from './LineChartContent';

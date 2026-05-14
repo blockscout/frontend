@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { Chain } from 'viem';
 
 import type { ExternalChain } from 'types/externalChains';

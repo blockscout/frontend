@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { ZetaChainCCTXFilterParams } from 'types/client/zetaChain';
 
 import ZetaChainAddressFilter from './ZetaChainAddressFilter';

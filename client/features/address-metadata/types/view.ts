@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { AddressMetadataTagApi } from './api';
 
 export interface AddressMetadataInfoFormatted {

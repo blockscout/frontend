@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { Chain, GetBlockReturnType } from 'viem';
 
 import type { Block } from 'client/slices/block/types/api';

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import React from 'react';
 
 import type { AddressEpochRewardsItem } from 'client/features/chain-variants/celo/types/api';

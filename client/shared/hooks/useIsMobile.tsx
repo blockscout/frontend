@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { useBreakpointValue } from '@chakra-ui/react';
 
 // The default behavior of useBreakpointValue was changed in the commit - https://github.com/chakra-ui/chakra-ui/commit/7f30a7b7eebae236b55fe639a202bbf354677143

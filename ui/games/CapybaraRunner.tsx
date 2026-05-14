@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 /* eslint-disable @next/next/no-img-element */
 import { Box, Text, Flex } from '@chakra-ui/react';
 import Script from 'next/script';

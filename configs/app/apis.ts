@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { ApiName } from 'client/api/types';
 
 import { stripTrailingSlash } from 'toolkit/utils/url';

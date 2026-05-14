@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { ContractLicense } from '../types/client';
 
 export const CONTRACT_LICENSES: Array<ContractLicense> = [

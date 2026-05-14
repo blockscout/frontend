@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 export interface ChainInfo {
   chain_id: number;
   chain_name: string | null;

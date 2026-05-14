@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 /* eslint-disable max-len */
 import type * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 

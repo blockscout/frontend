@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { NextRouter } from 'next/router';
 
 export default function removeQueryParam(router: NextRouter, param: string) {

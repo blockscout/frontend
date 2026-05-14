@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 import { useSendTransaction, useSwitchChain } from 'wagmi';

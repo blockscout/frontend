@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { CctxListItem } from '@blockscout/zetachain-cctx-types';
 import type { QuickSearchResultItem } from 'client/slices/search/types/client';
 import type { TokenType } from 'client/slices/token/types/api';

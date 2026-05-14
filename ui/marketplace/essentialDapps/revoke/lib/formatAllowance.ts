@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { AllowanceType } from 'types/client/revoke';
 
 export default function formatAllowance(approval: AllowanceType) {

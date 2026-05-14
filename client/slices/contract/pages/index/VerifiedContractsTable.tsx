@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import React from 'react';
 
 import type { VerifiedContract, VerifiedContractsSortingField, VerifiedContractsSortingValue } from 'client/slices/contract/types/api';

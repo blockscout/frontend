@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { ImageData, getNounData, getNounSeedFromBlockHash } from '@nouns/assets';
 import { buildSVG } from '@nouns/sdk';
 import CryptoJS from 'crypto-js';

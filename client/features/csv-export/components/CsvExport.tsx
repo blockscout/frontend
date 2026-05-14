@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { JsxStyleProps } from '@chakra-ui/react';
 import { Box } from '@chakra-ui/react';
 import { delay, mapValues, pickBy } from 'es-toolkit';

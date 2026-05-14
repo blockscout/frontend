@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 export type GasPrices = {
   average: GasPriceInfo | null;
   fast: GasPriceInfo | null;

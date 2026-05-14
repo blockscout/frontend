@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { FieldError } from 'react-hook-form';
 
 export function getFormFieldErrorText(error: FieldError | undefined) {

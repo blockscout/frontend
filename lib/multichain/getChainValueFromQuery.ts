@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { Router } from 'next/router';
 
 import getQueryParamString from 'client/shared/router/get-query-param-string';

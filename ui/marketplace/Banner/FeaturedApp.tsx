@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Flex, Text } from '@chakra-ui/react';
 import type { MouseEvent } from 'react';
 import React, { useCallback } from 'react';

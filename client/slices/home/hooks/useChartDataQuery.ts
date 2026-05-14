@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { ChainIndicatorId } from 'client/slices/home/types/config';
 import type { LineChartData } from 'toolkit/components/charts/line/types';
 

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { Abi } from 'abitype';
 
 import type { MudWorldSchema, MudWorldTable } from 'types/api/mudWorlds';

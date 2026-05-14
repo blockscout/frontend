@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { createListCollection } from '@chakra-ui/react';
 
 import type { CrossChainBridgedTokensSortingField, CrossChainBridgedTokensSortingValue } from '../types/api';

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Flex, type FlexProps } from '@chakra-ui/react';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';

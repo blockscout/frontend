@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { AddressMetadataInfoFormatted, AddressMetadataTagFormatted } from 'client/features/address-metadata/types/view';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';

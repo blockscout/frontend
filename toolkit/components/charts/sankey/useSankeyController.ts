@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { sankey, sankeyLinkHorizontal, sankeyJustify } from 'd3-sankey';
 import React from 'react';
 

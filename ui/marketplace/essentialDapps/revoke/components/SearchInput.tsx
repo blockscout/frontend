@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { chakra, Spinner } from '@chakra-ui/react';
 import type { ChangeEvent, FormEvent } from 'react';
 import { useCallback, useRef, useState } from 'react';

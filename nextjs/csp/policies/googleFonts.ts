@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type CspDev from 'csp-dev';
 
 export function googleFonts(): CspDev.DirectiveDescriptor {

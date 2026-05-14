@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { AccordionItemProps, AccordionRootProps, GridProps } from '@chakra-ui/react';
 import { Box, Spinner, HStack, Grid, GridItem } from '@chakra-ui/react';
 import React from 'react';

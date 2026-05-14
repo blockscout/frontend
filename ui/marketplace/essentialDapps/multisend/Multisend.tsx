@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Box } from '@chakra-ui/react';
 import { MultisenderWidget } from '@multisender.app/multisender-react-widget';
 import React from 'react';

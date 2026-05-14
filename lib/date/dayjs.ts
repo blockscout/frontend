@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 // eslint-disable-next-line no-restricted-imports
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';

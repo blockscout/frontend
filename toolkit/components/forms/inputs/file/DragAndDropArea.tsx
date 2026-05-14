@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { chakra, Center } from '@chakra-ui/react';
 import type { DragEvent } from 'react';
 import React from 'react';

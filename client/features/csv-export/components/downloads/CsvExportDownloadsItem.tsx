@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Text, HStack, VStack, Spinner } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { upperFirst } from 'es-toolkit';

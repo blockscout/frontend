@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 
 export default function getAvailableChainIds(data: multichain.GetAddressResponse | undefined) {

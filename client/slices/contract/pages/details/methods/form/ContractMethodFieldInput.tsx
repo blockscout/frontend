@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Flex, chakra } from '@chakra-ui/react';
 import React from 'react';
 import { useController, useFormContext } from 'react-hook-form';

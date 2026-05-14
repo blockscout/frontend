@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { CctxListItem } from '@blockscout/zetachain-cctx-types';
 
 export interface SearchResultZetaChainCCTX {

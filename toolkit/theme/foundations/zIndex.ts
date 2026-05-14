@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 export const zIndex = {
   hide: { value: -1 },
   auto: { value: 'auto' },

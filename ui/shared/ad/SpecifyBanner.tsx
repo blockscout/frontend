@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Box, chakra } from '@chakra-ui/react';
 import type { SpecifyAd } from '@specify-sh/sdk';
 import Specify, { ImageFormat } from '@specify-sh/sdk';

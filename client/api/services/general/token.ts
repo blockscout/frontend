@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { ApiResource } from '../../types';
 import type { TokenTransferResponse, TokenTransferFilters } from 'client/slices/token-transfer/types/api';
 import type {

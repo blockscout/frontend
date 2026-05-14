@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { HTMLChakraProps } from '@chakra-ui/react';
 import { chakra } from '@chakra-ui/react';
 import { type IconName } from 'public/icons/name';

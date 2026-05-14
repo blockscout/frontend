@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Progress as ChakraProgress } from '@chakra-ui/react';
 import * as React from 'react';
 

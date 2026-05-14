@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { IncomingMessage } from 'http';
 
 type SocialPreviewBot = 'twitter' | 'facebook' | 'telegram' | 'slack';

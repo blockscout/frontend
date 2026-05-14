@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import config from 'configs/app';
 import * as essentialDappsChainsConfig from 'configs/essential-dapps-chains/config.nodejs';
 import * as multichainConfig from 'configs/multichain/config.nodejs';

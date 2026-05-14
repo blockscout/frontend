@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import React, { useCallback, useEffect } from 'react';
 
 import type { Screen } from 'ui/snippets/auth/types';

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import React from 'react';
 
 import { Checkbox, CheckboxGroup } from 'toolkit/chakra/checkbox';

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 // ensure that path always starts with /
 export default function formatFilePath(path: string) {
   if (path[0] === '.' && path[1] === '/') {

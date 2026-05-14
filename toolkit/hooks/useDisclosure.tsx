@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 /* eslint-disable no-restricted-imports */
 import type { UseDisclosureProps } from '@chakra-ui/react';
 import { useDisclosure as useDisclosureChakra } from '@chakra-ui/react';

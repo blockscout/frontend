@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { Transaction } from 'client/slices/tx/types/api';
 
 export interface TransactionDataAvailability {

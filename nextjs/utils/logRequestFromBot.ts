@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { IncomingMessage, ServerResponse } from 'http';
 
 import metrics from 'lib/monitoring/metrics';

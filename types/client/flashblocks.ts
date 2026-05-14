@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 export interface FlashblockItem {
   block_number: number | undefined;
   index: number;

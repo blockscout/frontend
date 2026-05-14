@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { FileTree } from '../types';
 import type { ArrayElement } from 'types/utils';
 

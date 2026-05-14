@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { HTMLChakraProps } from '@chakra-ui/react';
 import { Box } from '@chakra-ui/react';
 import type * as monaco from 'monaco-editor/esm/vs/editor/editor.api';

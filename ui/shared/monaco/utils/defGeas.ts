@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 
 export const configGeas: monaco.languages.LanguageConfiguration = {

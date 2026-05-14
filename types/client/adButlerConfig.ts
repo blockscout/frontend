@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 export type AdButlerDeviceConfig = {
   id: string;
   width: string;

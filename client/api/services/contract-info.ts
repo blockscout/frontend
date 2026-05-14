@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { ApiResource } from '../types';
 import type { TokenVerifiedInfo } from 'client/features/verified-tokens/types/api';
 import type { VerifiedAddressResponse } from 'types/api/account';

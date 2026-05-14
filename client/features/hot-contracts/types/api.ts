@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { AddressParam } from 'client/slices/address/types/api';
 
 export interface HotContract {

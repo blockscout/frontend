@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { ExternalChain } from 'types/externalChains';
 
 export default function getChainTooltipText(chain: Pick<ExternalChain, 'id' | 'name'> | undefined, prefix: string = '') {

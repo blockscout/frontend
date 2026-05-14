@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Box } from '@chakra-ui/react';
 import { debounce } from 'es-toolkit';
 import React, { useRef, useEffect, useState, useCallback } from 'react';

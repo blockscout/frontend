@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 /* eslint-disable react/jsx-no-bind */
 import { Box, Text } from '@chakra-ui/react';
 import React from 'react';

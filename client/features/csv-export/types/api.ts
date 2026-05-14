@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 export type CsvExportItemStatus = 'pending' | 'completed' | 'failed';
 
 export interface CsvExportItemResponse {

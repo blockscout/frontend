@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { TabItem, TabItemMenu } from './types';
 
 import { middot } from '../../utils/htmlEntities';

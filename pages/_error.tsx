@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { NextPageContext } from 'next';
 import NextErrorComponent from 'next/error';
 import React from 'react';

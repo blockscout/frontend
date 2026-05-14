@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 export { ad } from './ad';
 export { app } from './app';
 export { blockchainInteraction } from './blockchainInteraction';

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { capitalize } from 'es-toolkit';
 import type { Config } from 'mixpanel-browser';
 import mixpanel from 'mixpanel-browser';

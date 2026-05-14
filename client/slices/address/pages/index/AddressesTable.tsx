@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type BigNumber from 'bignumber.js';
 import React from 'react';
 

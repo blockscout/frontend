@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { Transaction, TransactionsSortingValue } from 'client/slices/tx/types/api';
 
 import compareBns from 'lib/bigint/compareBns';

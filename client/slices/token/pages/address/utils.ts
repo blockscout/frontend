@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import BigNumber from 'bignumber.js';
 
 import type { AddressTokenBalance } from 'client/slices/address/types/api';

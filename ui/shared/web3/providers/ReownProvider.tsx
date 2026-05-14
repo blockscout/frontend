@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { AppKitNetwork } from '@reown/appkit/networks';
 import { createAppKit, useAppKitTheme } from '@reown/appkit/react';
 import React from 'react';

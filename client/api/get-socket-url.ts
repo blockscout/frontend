@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import appConfig from 'configs/app';
 
 export default function getSocketUrl(config: typeof appConfig = appConfig) {

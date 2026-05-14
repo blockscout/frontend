@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 // https://hexdocs.pm/phoenix/js/
 import type { Channel, SocketConnectOption } from 'phoenix';
 import { Socket } from 'phoenix';

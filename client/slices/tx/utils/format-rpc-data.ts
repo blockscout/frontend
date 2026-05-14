@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { Chain, GetTransactionReturnType, TransactionReceipt } from 'viem';
 
 import type { Transaction } from 'client/slices/tx/types/api';

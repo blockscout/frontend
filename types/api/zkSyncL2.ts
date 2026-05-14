@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { Transaction } from 'client/slices/tx/types/api';
 
 export const ZKSYNC_L2_TX_BATCH_STATUSES = [

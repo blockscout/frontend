@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { castArray } from 'es-toolkit/compat';
 
 import type { AdvancedFilterAge, AdvancedFilterParams } from 'types/api/advancedFilter';

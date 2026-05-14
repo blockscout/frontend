@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import getErrorCause from './get-error-cause';
 
 export default function getErrorCauseStatusCode(error: Error | undefined): number | undefined {

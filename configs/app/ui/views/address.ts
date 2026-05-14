@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { AddressFormat, AddressViewId, IdenticonType } from 'client/slices/address/types/config';
 import { ADDRESS_FORMATS, ADDRESS_VIEWS_IDS, IDENTICON_TYPES } from 'client/slices/address/types/config';
 import type { SmartContractVerificationMethodExtra } from 'client/slices/contract/types/config';

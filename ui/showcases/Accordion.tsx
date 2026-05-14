@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import React from 'react';
 
 import { AccordionItemContent, AccordionItemTrigger, AccordionItem, AccordionRoot } from 'toolkit/chakra/accordion';

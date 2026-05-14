@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { debounce } from 'es-toolkit';
 import type { LegacyRef } from 'react';
 import React from 'react';

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { InfiniteData, QueryKey, UseInfiniteQueryResult, UseInfiniteQueryOptions } from '@tanstack/react-query';
 import { useInfiniteQuery } from '@tanstack/react-query';
 

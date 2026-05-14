@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { ClustersOrderBy } from 'types/api/clusters';
 import type { ClustersLeaderboardObject, ClustersDirectoryObject, ClustersByAddressObject } from 'types/api/clusters';
 

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { Channel } from 'phoenix';
 
 import type * as multichain from '@blockscout/multichain-aggregator-types';

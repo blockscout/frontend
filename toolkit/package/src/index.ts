@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 // Export Chakra components
 export * from '../../chakra/accordion';
 export * from '../../chakra/alert';

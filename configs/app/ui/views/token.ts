@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { getEnvValue } from 'configs/app/utils';
 
 const config = Object.freeze({

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { DynamicConnectButton, useAuthenticateConnectedUser } from '@dynamic-labs/sdk-react-core';
 import React from 'react';
 

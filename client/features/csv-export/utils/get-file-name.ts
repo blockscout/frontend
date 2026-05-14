@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { CsvExportType } from '../types/client';
 
 import type config from 'configs/app';

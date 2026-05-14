@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Box, Flex } from '@chakra-ui/react';
 import { useQueryClient, useIsFetching } from '@tanstack/react-query';
 import { sumBy } from 'es-toolkit';

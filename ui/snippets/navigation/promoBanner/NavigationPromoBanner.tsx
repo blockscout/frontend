@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Flex, Box, useBreakpointValue, chakra } from '@chakra-ui/react';
 import React, { useCallback, useState, useEffect } from 'react';
 import { keccak256, stringToBytes } from 'viem';

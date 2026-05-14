@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { CeloEpochDetails } from 'types/api/epochs';
 import type { ExcludeNull } from 'types/utils';
 

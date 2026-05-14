@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Box } from '@chakra-ui/react';
 import { throttle } from 'es-toolkit';
 import type * as monaco from 'monaco-editor/esm/vs/editor/editor.api';

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { verifiedFetch } from '@helia/verified-fetch';
 import React from 'react';
 

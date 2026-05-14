@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 
 import sortByEndLineNumberAsc from './sortByEndLineNumberAsc';

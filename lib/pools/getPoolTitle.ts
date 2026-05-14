@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { Pool } from 'types/api/pools';
 
 export const getPoolTitle = (pool: Pool) => {

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { ButtonProps } from '@chakra-ui/react';
 import { Icon, useRecipe } from '@chakra-ui/react';
 import * as React from 'react';

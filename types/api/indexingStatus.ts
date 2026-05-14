@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 export type IndexingStatus = {
   finished_indexing: boolean;
   finished_indexing_blocks: boolean;

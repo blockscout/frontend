@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { Chain } from 'viem';
 
 import appConfig from 'configs/app';
