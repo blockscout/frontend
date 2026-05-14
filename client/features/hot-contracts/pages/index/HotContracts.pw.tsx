@@ -1,9 +1,10 @@
 import React from 'react';
 
+import * as statsMock from 'client/slices/home/mocks/stats';
+
 import * as hotContractsMock from 'client/features/hot-contracts/mocks';
 import { getIntervalValueFromQuery } from 'client/features/hot-contracts/utils';
 
-import * as statsMock from 'mocks/stats/index';
 import { test, expect } from 'playwright/lib';
 
 import HotContracts from './HotContracts';

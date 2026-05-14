@@ -1,10 +1,11 @@
 import React from 'react';
 
+import * as statsMock from 'client/slices/home/mocks/stats';
+
 import * as csvExportStorageMock from 'client/features/csv-export/mocks/storage';
 import type { StorageItem } from 'client/features/csv-export/utils/storage';
 import { STORAGE_KEY } from 'client/features/csv-export/utils/storage';
 
-import * as statsMock from 'mocks/stats/index';
 import { test, expect } from 'playwright/lib';
 
 import TopBar from './TopBar';

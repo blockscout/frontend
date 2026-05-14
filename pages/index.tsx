@@ -4,9 +4,10 @@ import type { NextPageWithLayout } from 'nextjs/types';
 
 import PageNextJs from 'nextjs/PageNextJs';
 
+import Home from 'client/slices/home/pages/index/Home';
+
 import config from 'configs/app';
 import MultichainHome from 'ui/multichain/home/MultichainHome';
-import Home from 'ui/pages/Home';
 import LayoutHome from 'ui/shared/layout/LayoutHome';
 
 const Page: NextPageWithLayout = () => {

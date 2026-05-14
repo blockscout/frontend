@@ -33,7 +33,7 @@ Same folder may contain `TxDetails.tsx`, `useTxQuery.ts` — hooks stay **`useCa
 | Path | Role |
 |------|------|
 | **`/client`** | Product explorer: shell, API client layer, slices, features, shared. Replaces **`/ui`** and absorbs most of **`lib`**, **`mocks`**, **`stubs`**, **`types`** (see §6). |
-| **`/configs`** | Env-derived config and feature flags. **Must not import from `/client`.** Consts + types derived from those consts (e.g. supported ad providers) live here. |
+| **`/configs`** | Env-derived config and feature flags. |
 | **`/nextjs`** | Next integration, SSR helpers, server utilities. |
 | **`/pages`** | Next.js **file-based routes** only (thin wrappers — a dynamic import and `getServerSideProps` call; nothing else). **404 vs "empty page"** is defined here — invalid routes do not render the page component. |
 | **`/toolkit`** | Design system and shared code **published to npm** / reused across company projects — **stays outside** `client`. Referenced as a local path alias during this migration; publishing scope is out of scope for this task. |
@@ -210,10 +210,13 @@ client/slices/tx/
 
 ## 5. Config vs client
 
-- **`/configs` never imports `/client`.**
-- Types that describe **config shape** (including types **derived from consts** in config, e.g. supported ad banner providers) live **in config** next to the relevant feature/config module.
+- **`/configs` may import from `/client`**, but only from **import-free `config.ts` files** (see below). All other `/client` files are off-limits to `configs/`.
 - **`/client`** imports **`/configs`** for feature flags and app configuration.
 - **Runtime feature flags** (Growthbook A/B) live in **`client/shared/feature-flags/`** — they require a React context and cannot live in `configs/`.
+
+**`config.ts` role file convention:** When a slice or feature owns constants and types that a `configs/` module needs at runtime (e.g. valid widget IDs for env-var parsing), those are extracted into a **`types/config.ts`** file inside the slice/feature. This file must have **zero imports** — only `const` arrays, derived `type` aliases, and pure interfaces. No React, no utilities, no other modules. This keeps the file as a leaf node in the module graph, avoiding initialization-order issues in the Vite-built envs-validator and SSR contexts.
+
+Example: `client/slices/home/types/config.ts` → imported by `configs/app/ui/homepage.ts`.
 
 ---
 

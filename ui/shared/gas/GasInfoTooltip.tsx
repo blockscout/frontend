@@ -5,7 +5,7 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 
-import type { HomeStats } from 'types/api/stats';
+import type { HomeStats } from 'client/slices/home/types/api';
 import type { ExcludeUndefined } from 'types/utils';
 
 import { route } from 'nextjs-routes';

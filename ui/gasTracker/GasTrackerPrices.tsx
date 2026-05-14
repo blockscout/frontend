@@ -1,7 +1,7 @@
 import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
-import type { GasPrices } from 'types/api/stats';
+import type { GasPrices } from 'client/slices/gas/types/api';
 
 import GasTrackerPriceSnippet from './GasTrackerPriceSnippet';
 

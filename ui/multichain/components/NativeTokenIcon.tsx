@@ -2,7 +2,7 @@ import { chakra } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
-import type { HomeStats } from 'types/api/stats';
+import type { HomeStats } from 'client/slices/home/types/api';
 
 import TokenLogoPlaceholder from 'client/slices/token/components/icon/TokenIconPlaceholder';
 

@@ -1,7 +1,7 @@
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import type { GasPriceInfo } from 'types/api/stats';
+import type { GasPriceInfo } from 'client/slices/gas/types/api';
 import type { GasUnit } from 'types/client/gasTracker';
 
 import config from 'configs/app';

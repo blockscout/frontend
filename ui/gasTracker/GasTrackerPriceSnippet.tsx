@@ -1,7 +1,7 @@
 import { Box, Flex } from '@chakra-ui/react';
 import React from 'react';
 
-import type { GasPriceInfo, GasPrices } from 'types/api/stats';
+import type { GasPriceInfo, GasPrices } from 'client/slices/gas/types/api';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { SECOND } from 'toolkit/utils/consts';

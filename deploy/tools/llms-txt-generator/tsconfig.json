@@ -8,6 +8,7 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "outDir": "./dist",
+    "rootDir": "../../../",
     "paths": {
       "configs/*": ["../../../configs/*"],
       "lib/*": ["../../../lib/*"],

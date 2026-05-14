@@ -2,7 +2,7 @@ import { chakra, Flex, Grid, Box, Text } from '@chakra-ui/react';
 import React from 'react';
 import xss from 'xss';
 
-import type { AddressFormat } from 'client/slices/address/types/view';
+import type { AddressFormat } from 'client/slices/address/types/config';
 import type { SearchResultItem } from 'client/slices/search/types/client';
 
 import { route } from 'nextjs-routes';

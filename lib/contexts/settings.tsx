@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ADDRESS_FORMATS, type AddressFormat } from 'client/slices/address/types/view';
+import { ADDRESS_FORMATS, type AddressFormat } from 'client/slices/address/types/config';
 import type { TimeFormat } from 'types/settings';
 
 import * as cookies from 'client/shared/storage/cookies';

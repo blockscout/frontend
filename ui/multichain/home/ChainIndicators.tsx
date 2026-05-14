@@ -1,16 +1,17 @@
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
-import type { HomeStats } from 'types/api/stats';
-import type { TChainIndicator } from 'ui/home/indicators/types';
+import type { HomeStats } from 'client/slices/home/types/api';
+import type { TChainIndicator } from 'client/slices/home/types/client';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import ChainIndicatorsChart from 'client/slices/home/pages/index/charts/ChainIndicatorsChart';
+import ChainIndicatorsContainer from 'client/slices/home/pages/index/charts/ChainIndicatorsContainer';
+import ChainIndicatorsList from 'client/slices/home/pages/index/charts/ChainIndicatorsList';
+import { isIndicatorEnabled, sortIndicators } from 'client/slices/home/utils/indicators';
+
 import { HOMEPAGE_STATS } from 'stubs/multichain';
-import ChainIndicatorsChart from 'ui/home/indicators/ChainIndicatorsChart';
-import ChainIndicatorsContainer from 'ui/home/indicators/ChainIndicatorsContainer';
-import ChainIndicatorsList from 'ui/home/indicators/ChainIndicatorsList';
-import { isIndicatorEnabled, sortIndicators } from 'ui/home/indicators/utils/indicators';
 import IconSvg from 'ui/shared/IconSvg';
 
 import NativeTokenIcon from '../components/NativeTokenIcon';
