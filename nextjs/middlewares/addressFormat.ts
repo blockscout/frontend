@@ -1,6 +1,6 @@
 import type { NextRequest, NextResponse } from 'next/server';
 
-import type { AddressFormat } from 'client/slices/address/types/view';
+import type { AddressFormat } from 'client/slices/address/types/config';
 
 import * as cookiesLib from 'client/shared/storage/cookies';
 

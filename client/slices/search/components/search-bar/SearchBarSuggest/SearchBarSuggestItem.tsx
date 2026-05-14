@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { AddressFormat } from 'client/slices/address/types/view';
+import type { AddressFormat } from 'client/slices/address/types/config';
 import type { QuickSearchResultItem } from 'client/slices/search/types/client';
 
 import { route } from 'nextjs/routes';

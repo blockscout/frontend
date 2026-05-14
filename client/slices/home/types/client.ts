@@ -1,7 +1,8 @@
 import type React from 'react';
 import type { ReactElement } from 'react';
 
-import type { ChainIndicatorId, HomeStatsWidgetId } from 'configs/app/ui/homepage';
+import type { ChainIndicatorId, HomeStatsWidgetId } from 'client/slices/home/types/config';
+
 import type { Props as StatsWidgetProps } from 'ui/shared/stats/StatsWidget';
 
 export interface HighlightsBannerConfig {

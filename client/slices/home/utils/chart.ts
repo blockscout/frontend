@@ -1,5 +1,6 @@
+import type { ChainIndicatorId } from 'client/slices/home/types/config';
+
 import config from 'configs/app';
-import type { ChainIndicatorId } from 'configs/app/ui/homepage';
 import type { LineChartData, LineChartDataItem, LineChartItemRaw, LineChartItem } from 'toolkit/components/charts/line';
 import { sortByDateAsc } from 'ui/shared/chart/utils';
 

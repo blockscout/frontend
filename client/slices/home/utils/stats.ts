@@ -1,7 +1,8 @@
 import type { ReactElement } from 'react';
 
+import type { HomeStatsWidgetId } from 'client/slices/home/types/config';
+
 import config from 'configs/app';
-import type { HomeStatsWidgetId } from 'configs/app/ui/homepage';
 import type { Props as StatsWidgetProps } from 'ui/shared/stats/StatsWidget';
 
 export type HomeStatsComponentItem = { id: HomeStatsWidgetId; component: ReactElement };

@@ -2,8 +2,8 @@ import { Text, Flex, Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TChainIndicator } from 'client/slices/home/types/client';
+import type { ChainIndicatorId } from 'client/slices/home/types/config';
 
-import type { ChainIndicatorId } from 'configs/app/ui/homepage';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { mdash } from 'toolkit/utils/htmlEntities';
 

@@ -1,4 +1,4 @@
-import type { AddressFormat } from 'client/slices/address/types/view';
+import type { AddressFormat } from 'client/slices/address/types/config';
 import type { ClusterChainConfig } from 'types/multichain';
 
 export interface ItemsProps<Data> {

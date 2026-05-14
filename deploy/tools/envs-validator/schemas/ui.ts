@@ -1,5 +1,5 @@
 import * as yup from 'yup';
-import { CHAIN_INDICATOR_IDS, ChainIndicatorId, HeroBannerConfig, HeroBannerButtonState, HOME_STATS_WIDGET_IDS, HomeStatsWidgetId } from 'configs/app/ui/homepage';
+import { CHAIN_INDICATOR_IDS, type ChainIndicatorId, type HeroBannerConfig, type HeroBannerButtonState, HOME_STATS_WIDGET_IDS, type HomeStatsWidgetId } from 'client/slices/home/types/config';
 import { replaceQuotes } from 'configs/app/utils';
 import { getYupValidationErrorMessage, urlTest } from '../utils';
 import { NavigationLayout, NavigationPromoBannerConfig, NavItemExternal } from 'types/client/navigation';

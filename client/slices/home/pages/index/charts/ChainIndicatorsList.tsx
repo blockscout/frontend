@@ -2,8 +2,7 @@ import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TChainIndicator } from 'client/slices/home/types/client';
-
-import type { ChainIndicatorId } from 'configs/app/ui/homepage';
+import type { ChainIndicatorId } from 'client/slices/home/types/config';
 
 import ChainIndicatorItem from './ChainIndicatorItem';
 
