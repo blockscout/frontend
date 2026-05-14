@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { GasPriceInfo } from 'client/slices/gas/types/api';
-import type { GasUnit } from 'types/client/gasTracker';
+import type { GasUnit } from 'client/slices/gas/types/config';
 
 import { currencyUnits } from 'client/shared/chain/units';
 

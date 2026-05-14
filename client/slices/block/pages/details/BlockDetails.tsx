@@ -11,9 +11,9 @@ import { ZKSYNC_L2_TX_BATCH_STATUSES } from 'types/api/zkSyncL2';
 import { route, routeParams } from 'nextjs/routes';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
-import BlockGasUsed from 'client/slices/block/components/BlockGasUsed';
 import type { BlockQuery } from 'client/slices/block/hooks/useBlockQuery';
 import getBlockReward from 'client/slices/block/utils/get-block-reward';
+import GasUsed from 'client/slices/gas/components/GasUsed';
 
 import BlockDetailsBaseFeeCelo from 'client/features/chain-variants/celo/pages/block/BlockDetailsBaseFeeCelo';
 import BlockDetailsZilliqaQuorumCertificate from 'client/features/chain-variants/zilliqa/pages/block/BlockDetailsZilliqaQuorumCertificate';
@@ -448,7 +448,7 @@ const BlockDetails = ({ query }: Props) => {
         <Skeleton loading={ isPlaceholderData }>
           { BigNumber(data.gas_used || 0).toFormat() }
         </Skeleton>
-        <BlockGasUsed
+        <GasUsed
           gasUsed={ data.gas_used || undefined }
           gasLimit={ data.gas_limit }
           isLoading={ isPlaceholderData }

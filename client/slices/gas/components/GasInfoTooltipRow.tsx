@@ -5,8 +5,9 @@ import React from 'react';
 
 import type { GasPriceInfo } from 'client/slices/gas/types/api';
 
+import GasPrice from 'client/slices/gas/components/GasPrice';
+
 import { space } from 'toolkit/utils/htmlEntities';
-import GasPrice from 'ui/shared/gas/GasPrice';
 
 interface Props {
   name: string;

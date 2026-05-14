@@ -6,9 +6,9 @@ import React from 'react';
 
 import type { Block } from 'client/slices/block/types/api';
 
-import BlockGasUsed from 'client/slices/block/components/BlockGasUsed';
 import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
 import getBlockTotalReward from 'client/slices/block/utils/get-block-total-reward';
+import GasUsed from 'client/slices/gas/components/GasUsed';
 
 import { currencyUnits } from 'client/shared/chain/units';
 
@@ -54,7 +54,7 @@ const AddressBlocksValidatedListItem = (props: Props) => {
         <Skeleton loading={ props.isLoading }>
           <Text color="text.secondary">{ BigNumber(props.gas_used || 0).toFormat() }</Text>
         </Skeleton>
-        <BlockGasUsed
+        <GasUsed
           gasUsed={ props.gas_used || undefined }
           gasLimit={ props.gas_limit }
           isLoading={ props.isLoading }

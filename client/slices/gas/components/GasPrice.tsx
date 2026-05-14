@@ -4,12 +4,12 @@ import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { GasPriceInfo } from 'client/slices/gas/types/api';
-import type { GasUnit } from 'types/client/gasTracker';
+import type { GasUnit } from 'client/slices/gas/types/config';
 
 import config from 'configs/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
 
-import formatGasValue from './formatGasValue';
+import formatGasValue from '../utils/format-gas-value';
 
 const UNITS_TO_API_FIELD_MAP: Record<GasUnit, 'price' | 'fiat_price'> = {
   gwei: 'price',

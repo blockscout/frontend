@@ -6,9 +6,10 @@ import React from 'react';
 
 import config from 'configs/app';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import GasUsedToTargetRatio from 'ui/shared/GasUsedToTargetRatio';
 import TextSeparator from 'ui/shared/TextSeparator';
 import Utilization from 'ui/shared/Utilization/Utilization';
+
+import GasUsedToTargetRatio from './GasUsedToTargetRatio';
 
 const rollupFeature = config.features.rollup;
 
@@ -20,7 +21,7 @@ interface Props {
   isLoading?: boolean;
 }
 
-const BlockGasUsed = ({ className, gasUsed, gasLimit, gasTarget, isLoading }: Props) => {
+const GasUsed = ({ className, gasUsed, gasLimit, gasTarget, isLoading }: Props) => {
   const hasGasUtilization =
     gasUsed && gasUsed !== '0' &&
     (!rollupFeature.isEnabled || rollupFeature.type === 'optimistic' || rollupFeature.type === 'shibarium');
@@ -49,4 +50,4 @@ const BlockGasUsed = ({ className, gasUsed, gasLimit, gasTarget, isLoading }: Pr
   );
 };
 
-export default React.memo(chakra(BlockGasUsed));
+export default React.memo(chakra(GasUsed));
