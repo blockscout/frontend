@@ -7,10 +7,10 @@ import { FeaturedNetwork, NETWORK_GROUPS, NetworkExplorer } from 'types/networks
 import { CustomLink, CustomLinksGroup } from 'types/footerLinks';
 import { COLOR_THEME_IDS } from 'types/settings';
 import { FontFamily } from 'types/ui';
-import type { ContractCodeIde } from 'client/slices/contract/types/client';
-import { SMART_CONTRACT_EXTRA_VERIFICATION_METHODS, type SmartContractVerificationMethodExtra } from 'client/slices/contract/pages/contract-verification/utils';
-import type { AddressFormat, AddressViewId } from 'client/slices/address/types/view';
-import { ADDRESS_FORMATS, ADDRESS_VIEWS_IDS, IDENTICON_TYPES } from 'client/slices/address/types/view';
+import type { ContractCodeIde } from 'client/slices/contract/types/config';
+import { SMART_CONTRACT_EXTRA_VERIFICATION_METHODS, type SmartContractVerificationMethodExtra } from 'client/slices/contract/types/config';
+import type { AddressFormat, AddressViewId } from 'client/slices/address/types/config';
+import { ADDRESS_FORMATS, ADDRESS_VIEWS_IDS, IDENTICON_TYPES } from 'client/slices/address/types/config';
 import { BLOCK_FIELDS_IDS } from 'types/views/block';
 import type { BlockFieldId } from 'types/views/block';
 import type { TxAdditionalFieldsId, TxFieldsId } from 'types/views/tx';
