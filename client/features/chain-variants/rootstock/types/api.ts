@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 export interface BlockRootstock {
   bitcoin_merged_mining_coinbase_transaction?: string | null;
   bitcoin_merged_mining_header?: string | null;

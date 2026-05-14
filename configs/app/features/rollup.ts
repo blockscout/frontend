@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { Feature } from './types';
 import type { ParentChain, RollupType } from 'types/client/rollup';
 import { ROLLUP_TYPES } from 'types/client/rollup';

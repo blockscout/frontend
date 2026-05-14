@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { SystemConfig } from '@chakra-ui/react';
 
 import addressEntity from './globals/address-entity';

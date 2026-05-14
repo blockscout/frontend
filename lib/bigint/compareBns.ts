@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import BigNumber from 'bignumber.js';
 
 export default function compareBns(value1: string | number, value2: string | number) {

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { GetServerSidePropsContext } from 'next';
 
 const GENERIC_BOT_MARKERS = [

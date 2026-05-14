@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { Feature } from './types';
 import { GAS_UNITS } from 'types/client/gasTracker';
 import type { GasUnit } from 'types/client/gasTracker';

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import * as v from 'valibot';
 
 export const STORAGE_KEY = 'csv_export_downloads';

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { TransactionFee } from 'client/slices/tx/types/api';
 import type { ScrollL2BlockStatus } from 'types/api/scrollL2';
 

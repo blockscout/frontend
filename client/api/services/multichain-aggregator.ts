@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { ApiResource } from '../types';
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 import type { AddressTokensFilter, AddressTokensResponse, TokensResponse } from 'types/client/multichainAggregator';

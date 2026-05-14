@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { nftHtmlEmbed } from './policies/nftHtmlEmbed';
 import { makePolicyString } from './utils';
 

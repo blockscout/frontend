@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { EthereumWalletConnectors } from '@dynamic-labs/ethereum';
 import { ZeroDevSmartWalletConnectors } from '@dynamic-labs/ethereum-aa';
 import type { DynamicContextProps, OnAuthSuccess } from '@dynamic-labs/sdk-react-core';

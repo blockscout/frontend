@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { EntityTag } from './types';
 
 import { route } from 'nextjs/routes';

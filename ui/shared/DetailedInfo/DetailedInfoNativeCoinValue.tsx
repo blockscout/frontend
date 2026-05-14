@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import React from 'react';
 
 import type { Props as NativeCoinValueProps } from 'ui/shared/value/NativeCoinValue';

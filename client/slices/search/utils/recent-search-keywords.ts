@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { uniq } from 'es-toolkit';
 
 import config from 'configs/app';

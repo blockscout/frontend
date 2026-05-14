@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import multichainConfig from 'configs/multichain';
 
 export default function getChainIdFromSlugOrId(slugOrId: string) {

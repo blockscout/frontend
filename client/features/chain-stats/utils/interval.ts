@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { NextRouter } from 'next/router';
 
 import { StatsIntervalId, type StatsIntervalIds } from '../types/client';

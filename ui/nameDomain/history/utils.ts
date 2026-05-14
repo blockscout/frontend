@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type * as bens from '@blockscout/bens-types';
 
 import getNextSortValueShared from 'ui/shared/sort/getNextSortValue';

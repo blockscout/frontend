@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { ChartMargin, ChartOffset } from '../types';
 
 export function calculateInnerSize(rect: DOMRect | null, margin?: ChartMargin, offsets?: ChartOffset) {

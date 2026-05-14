@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import React, { useCallback, useState } from 'react';
 
 import type { TransactionTag } from 'types/api/account';

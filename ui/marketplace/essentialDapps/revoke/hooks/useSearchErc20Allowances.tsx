@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import ERC20Artifact from '@openzeppelin/contracts/build/contracts/ERC20.json';
 import { uniq } from 'es-toolkit';
 import { useCallback } from 'react';

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { ResourceError, ResourceName } from 'client/api/resources';
 
 type Params = ({

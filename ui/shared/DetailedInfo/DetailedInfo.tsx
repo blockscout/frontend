@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { GridItemProps, GridProps } from '@chakra-ui/react';
 import { Flex, Grid, GridItem, Text } from '@chakra-ui/react';
 import React from 'react';

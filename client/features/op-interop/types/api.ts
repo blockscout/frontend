@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { ChainInfo, MessageStatus } from 'types/api/interop';
 
 export interface InteropTransactionInfo {

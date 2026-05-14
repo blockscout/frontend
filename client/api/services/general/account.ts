@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { ApiResource } from '../../types';
 import type { AddressTagsResponse, ApiKeys, CustomAbis, TransactionTagsResponse, UserInfo, WatchlistResponse } from 'types/api/account';
 

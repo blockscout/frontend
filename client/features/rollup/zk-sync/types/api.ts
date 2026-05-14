@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { ZkSyncBatchesItem } from 'types/api/zkSyncL2';
 
 export interface TransactionZkSync {

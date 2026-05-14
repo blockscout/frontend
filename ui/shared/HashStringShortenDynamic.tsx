@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 // this component trims hash string like 0x123...4567 (always 4 chars after dots)
 // or shows full hash string, if fits
 

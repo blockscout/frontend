@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 export default function capitalizeFirstLetter(text: string) {
   if (!text || !text.length) {
     return '';

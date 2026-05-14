@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 export * from './ChartWatermark';
 export * from './ChartMenu';
 export * from './ChartWidget';

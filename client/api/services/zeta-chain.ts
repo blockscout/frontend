@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { ApiResource } from '../types';
 import type * as zetaChainCCTXType from '@blockscout/zetachain-cctx-types';
 import type { ZetaChainCCTXFilterParams } from 'types/client/zetaChain';

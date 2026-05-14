@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import React from 'react';
 
 import ContractVerificationForm from 'client/slices/contract/pages/contract-verification/ContractVerificationForm';

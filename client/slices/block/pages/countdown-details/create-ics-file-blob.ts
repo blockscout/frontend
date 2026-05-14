@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { route } from 'nextjs/routes';
 
 import config from 'configs/app';

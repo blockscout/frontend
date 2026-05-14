@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { AlertDescriptionProps } from '@chakra-ui/react';
 import { Alert as ChakraAlert, Icon } from '@chakra-ui/react';
 import * as React from 'react';

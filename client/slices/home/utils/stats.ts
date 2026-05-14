@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { ReactElement } from 'react';
 
 import type { HomeStatsWidgetId } from 'client/slices/home/types/config';

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { useMemo } from 'react';
 
 import type { GetAvailableBadgesResponse } from '@blockscout/points-types';

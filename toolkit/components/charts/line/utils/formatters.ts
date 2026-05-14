@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { LineChartItem } from '../types';
 
 export const getIncompleteDataLineSource = (data: Array<LineChartItem>): Array<LineChartItem> => {

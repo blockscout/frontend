@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type CspDev from 'csp-dev';
 
 import multichainConfig from 'configs/multichain';

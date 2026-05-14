@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { createPublicClient as createPublicClientDefault, http } from 'viem';
 import type { PublicClient } from 'viem';
 

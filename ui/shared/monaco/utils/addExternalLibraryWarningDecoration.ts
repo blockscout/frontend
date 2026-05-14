@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 
 import type { SmartContractExternalLibrary } from 'client/slices/contract/types/api';

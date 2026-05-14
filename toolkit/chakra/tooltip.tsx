@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Tooltip as ChakraTooltip, Portal } from '@chakra-ui/react';
 import { useClickAway } from '@uidotdev/usehooks';
 import * as React from 'react';

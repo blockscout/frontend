@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 export interface SearchResultCluster {
   type: 'cluster';
   name: string | null;

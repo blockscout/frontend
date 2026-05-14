@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { createPublicClient, http } from 'viem';
 
 import { currentChain } from './chains';

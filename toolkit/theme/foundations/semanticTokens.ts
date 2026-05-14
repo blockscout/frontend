@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { ThemingConfig } from '@chakra-ui/react';
 
 import config from 'configs/app';

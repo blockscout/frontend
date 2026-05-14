@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { AdvancedFilterAge } from 'types/api/advancedFilter';
 
 import type { ExternalChain } from '../externalChains';

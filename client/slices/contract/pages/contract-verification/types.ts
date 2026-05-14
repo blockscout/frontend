@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { SmartContractLicenseType } from 'client/slices/contract/types/api';
 
 import type { SmartContractVerificationMethod } from 'client/slices/contract/pages/contract-verification/utils';

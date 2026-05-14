@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { useCopyToClipboard } from '@uidotdev/usehooks';
 import React from 'react';
 

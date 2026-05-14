@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { LineChartInfo, LineChartSection } from '@blockscout/stats-types';
 import type { LineChartItem } from 'toolkit/components/charts/line/types';
 import type { SankeyChartData } from 'toolkit/components/charts/sankey/types';

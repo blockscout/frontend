@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 export interface BackendConfig {
   chain_type: string;
   openapi_spec_folder_name: string;

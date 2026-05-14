@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { ARBITRUM_L2_TX_BATCH_STATUSES, type ArbitrumBatchStatus, type ArbitrumL2TxData } from 'types/api/arbitrumL2';
 
 import config from 'configs/app';

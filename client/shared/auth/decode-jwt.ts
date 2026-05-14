@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 interface JWTHeader {
   alg: string;
   typ?: string;

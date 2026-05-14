@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { ApiResource } from '../../types';
 import type { AddressesMetadataSearchFilters, AddressesMetadataSearchResult } from 'client/features/address-metadata/types/api';
 import type { AddressEpochRewardsResponse } from 'client/features/chain-variants/celo/types/api';

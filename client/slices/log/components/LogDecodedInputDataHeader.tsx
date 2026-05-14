@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { FlexProps } from '@chakra-ui/react';
 import { Separator, Flex, VStack } from '@chakra-ui/react';
 import React from 'react';

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 /* eslint-disable max-len */
 import type { Route } from 'nextjs-routes';
 

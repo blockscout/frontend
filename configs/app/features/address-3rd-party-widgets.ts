@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { Feature } from './types';
 
 import { getEnvValue, getExternalAssetFilePath, parseEnvJson } from '../utils';

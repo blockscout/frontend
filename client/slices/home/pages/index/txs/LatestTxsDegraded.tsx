@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Box, Flex } from '@chakra-ui/react';
 import { clamp } from 'es-toolkit';
 import React from 'react';

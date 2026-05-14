@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import React from 'react';
 
 import useAddChainClick from 'client/shared/web3/useAddChainClick';

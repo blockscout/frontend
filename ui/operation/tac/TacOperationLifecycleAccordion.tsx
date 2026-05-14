@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import React from 'react';
 
 import * as tac from '@blockscout/tac-operation-lifecycle-types';

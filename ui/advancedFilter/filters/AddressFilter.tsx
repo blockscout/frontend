@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { createListCollection, Flex, VStack } from '@chakra-ui/react';
 import { isEqual } from 'es-toolkit';
 import type { ChangeEvent } from 'react';

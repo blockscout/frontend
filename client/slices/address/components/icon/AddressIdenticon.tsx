@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Box } from '@chakra-ui/react';
 import dynamic from 'next/dynamic';
 import React from 'react';

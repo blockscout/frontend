@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Text } from '@chakra-ui/react';
 import { capitalize } from 'es-toolkit';
 import React from 'react';

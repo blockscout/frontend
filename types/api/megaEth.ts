@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 export interface UptimeRealTimeData {
   end_block: number;
   instant_mgas_per_second: number;

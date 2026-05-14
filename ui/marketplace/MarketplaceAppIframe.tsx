@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Center, chakra } from '@chakra-ui/react';
 import { DappscoutIframeProvider, useDappscoutIframe } from 'dappscout-iframe';
 import React, { useCallback, useEffect, useState, useMemo } from 'react';

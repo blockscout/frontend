@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { defaultsDeep } from 'es-toolkit/compat';
 
 import config from 'configs/app';

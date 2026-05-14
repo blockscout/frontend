@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import React from 'react';
 
 import type { TxAuthorization } from 'client/features/tx-authorization/types/api';

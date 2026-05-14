@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { INTERNAL_TX } from 'client/slices/internal-tx/stubs';
 
 import { generateListStub } from 'stubs/utils';

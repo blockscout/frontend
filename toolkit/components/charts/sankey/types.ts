@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { SankeyNode, SankeyLink } from 'd3-sankey';
 
 export interface SankeyNodeDatum {

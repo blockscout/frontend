@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { useRouter } from 'next/router';
 import { useCallback, useMemo } from 'react';
 

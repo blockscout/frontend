@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Flex, HStack, Grid, GridItem } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';

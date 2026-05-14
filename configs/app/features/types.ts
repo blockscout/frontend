@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 type FeatureEnabled<Payload extends Record<string, unknown> = Record<string, never>> = { title: string; isEnabled: true } & Payload;
 type FeatureDisabled = { title: string; isEnabled: false };
 

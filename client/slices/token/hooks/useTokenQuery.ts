@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
 import { TOKEN_INFO_ERC_20 } from 'client/slices/token/stubs';

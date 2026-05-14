@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { ClustersByAddressResponse } from 'types/api/clusters';
 
 export type ClusterData = ClustersByAddressResponse['result']['data'][0];

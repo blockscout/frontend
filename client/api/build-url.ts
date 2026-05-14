@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { compile } from 'path-to-regexp';
 
 import type { ExternalChainExtended } from 'types/externalChains';

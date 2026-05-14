@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { AbiFunction, AbiFallback as AbiFallbackViem, AbiReceive } from 'abitype';
 import type { AbiParameter, AbiStateMutability } from 'viem';
 

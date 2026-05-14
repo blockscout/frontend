@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { chakra, Text } from '@chakra-ui/react';
 
 type Props = {

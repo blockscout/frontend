@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { getFeaturePayload } from 'configs/app/features/types';
 
 import type { Route } from 'nextjs-routes';

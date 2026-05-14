@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { AddressMetadataTagApi } from 'client/features/address-metadata/types/api';
 import type { AddressFilecoinParams } from 'client/features/chain-variants/filecoin/types/api';
 import type { AddressZilliqaParams } from 'client/features/chain-variants/zilliqa/types/api';

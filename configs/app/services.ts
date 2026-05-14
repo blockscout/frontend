@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { getEnvValue } from './utils';
 
 export default Object.freeze({

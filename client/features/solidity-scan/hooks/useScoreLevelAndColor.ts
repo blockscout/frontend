@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 export default function useScoreLevelAndColor(score: number) {
   const greatScoreColor = { _light: 'green.600', _dark: 'green.400' };
   const averageScoreColor = { _light: 'purple.600', _dark: 'purple.400' };

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { BlockQuery } from 'client/slices/block/hooks/useBlockQuery';
 
 import config from 'configs/app';

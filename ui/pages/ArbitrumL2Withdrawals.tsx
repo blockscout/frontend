@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import React from 'react';
 
 import ArbitrumL2Messages from 'ui/messages/ArbitrumL2Messages';

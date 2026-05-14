@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { FieldPath, ErrorOption } from 'react-hook-form';
 
 import type { SmartContractVerificationMethodExtra } from '../../types/config';

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 export default function getPrefixByFilter(filterType?: string, filterValue?: string): string {
   if (filterType === 'address') {
     if (filterValue === 'from') {

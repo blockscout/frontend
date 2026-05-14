@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { useUserUpdateRequest } from '@dynamic-labs/sdk-react-core';
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 /* eslint-disable @typescript-eslint/naming-convention */
 const SwaggerUIReact = dynamic(() => import('swagger-ui-react'), {
   loading: () => <ContentLoader/>,

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Flex, Text } from '@chakra-ui/react';
 
 import type { GetAvailableBadgesResponse } from '@blockscout/points-types';

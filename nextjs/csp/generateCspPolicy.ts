@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import * as descriptors from './policies';
 import { makePolicyString, mergeDescriptors } from './utils';
 

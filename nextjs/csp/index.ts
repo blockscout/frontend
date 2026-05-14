@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { NextRequest } from 'next/server';
 
 import generateCspPolicy from './generateCspPolicy';

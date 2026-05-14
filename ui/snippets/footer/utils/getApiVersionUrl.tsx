@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 export default function getApiVersionUrl(version: string | undefined): string | undefined {
   if (!version) {
     return;

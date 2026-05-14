@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 
 export default function sortByEndLineNumberAsc(a: monaco.editor.FindMatch, b: monaco.editor.FindMatch) {

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 // eslint-disable-next-line no-restricted-imports
 import { Dialog as ChakraDialog } from '@chakra-ui/react';
 import React from 'react';

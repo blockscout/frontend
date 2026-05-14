@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { ButtonProps as ChakraButtonProps, ButtonGroupProps as ChakraButtonGroupProps } from '@chakra-ui/react';
 import {
   Button as ChakraButton,

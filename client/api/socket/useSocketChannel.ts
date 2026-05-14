@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { Channel } from 'phoenix';
 import { useEffect, useRef, useState } from 'react';
 

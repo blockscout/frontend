@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 export default function getFileName(path: string) {
   const chunks = path.split('/');
 

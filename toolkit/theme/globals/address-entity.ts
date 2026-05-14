@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 const styles = {
   '.address-entity': {
     '&.address-entity_highlighted': {

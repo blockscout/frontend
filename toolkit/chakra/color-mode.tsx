@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 'use client';
 
 import { ThemeProvider, useTheme } from 'next-themes';

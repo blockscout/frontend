@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import React from 'react';
 
 import useHomeBlocksData, { type HomeBlocksQueryResult } from 'client/slices/home/hooks/useHomeBlocksData';

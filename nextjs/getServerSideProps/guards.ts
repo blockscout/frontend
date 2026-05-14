@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 
 import type { RollupType } from 'types/client/rollup';

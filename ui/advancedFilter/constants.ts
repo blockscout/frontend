@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { TokenInfo } from 'client/slices/token/types/api';
 import { getTokenTypes } from 'client/slices/token/utils/token-types';
 import type { ClusterChainConfig } from 'types/multichain';

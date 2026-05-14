@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { FheOperationType } from 'types/api/fheOperations';
 
 import type { BadgeProps } from 'toolkit/chakra/badge';

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { pickBy, isEqual } from 'es-toolkit';
 
 import type { FormFieldTag, FormFields, FormSubmitResult, FormSubmitResultGrouped, FormSubmitResultItemGrouped, SubmitRequestBody } from './types';

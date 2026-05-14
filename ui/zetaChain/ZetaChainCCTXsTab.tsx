@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { capitalize, omit } from 'es-toolkit/compat';
 import { useRouter } from 'next/router';
 import React from 'react';

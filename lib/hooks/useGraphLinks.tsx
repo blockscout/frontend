@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { useQuery } from '@tanstack/react-query';
 
 import useFetch from 'client/api/hooks/useFetch';

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { useClickAway } from '@uidotdev/usehooks';
 import { debounce } from 'es-toolkit';
 import { useRouter } from 'next/router';

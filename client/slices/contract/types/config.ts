@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 export const SMART_CONTRACT_EXTRA_VERIFICATION_METHODS = [
   'solidity-hardhat' as const,
   'solidity-foundry' as const,

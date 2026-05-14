@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { useDynamicContext, useUserWallets } from '@dynamic-labs/sdk-react-core';
 import React from 'react';
 import type { UseAccountReturnType } from 'wagmi';

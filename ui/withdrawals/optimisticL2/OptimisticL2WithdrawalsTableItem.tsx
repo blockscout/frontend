@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import React from 'react';
 
 import type { OptimisticL2WithdrawalsItem } from 'types/api/optimisticL2';

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { EnsLookupSorting } from 'types/api/ens';
 
 import type { SelectOption } from 'toolkit/chakra/select';

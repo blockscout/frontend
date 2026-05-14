@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { defineRecipe } from '@chakra-ui/react';
 
 export const recipe = defineRecipe({

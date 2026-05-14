@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { Fields } from './types';
 import type { TokenInfoApplication } from 'types/api/account';
 

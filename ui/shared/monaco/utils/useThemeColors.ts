@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { useColorModeValue } from 'toolkit/chakra/color-mode';
 
 import * as themes from './themes';

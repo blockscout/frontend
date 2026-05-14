@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { ApiResource } from '../types';
 import type * as bens from '@blockscout/bens-types';
 import type { EnsAddressLookupFilters, EnsDomainLookupFilters, EnsLookupSorting } from 'types/api/ens';

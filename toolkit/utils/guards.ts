@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 export function castToString(payload: unknown) {
   return typeof payload === 'string' ? payload : undefined;
 }

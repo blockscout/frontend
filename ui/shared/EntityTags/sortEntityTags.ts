@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { EntityTag } from './types';
 
 export default function sortEntityTags(tagA: EntityTag, tagB: EntityTag): number {

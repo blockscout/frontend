@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import React from 'react';
 
 // Returns true if component is just mounted (on first render) and false otherwise.

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 async function rewrites() {
   return [
     { source: '/node-api/proxy/:slug*', destination: '/api/proxy' },

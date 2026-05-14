@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { useMemo } from 'react';
 
 import useAddressMetadataInfoQuery from 'client/features/address-metadata/hooks/useAddressMetadataInfoQuery';

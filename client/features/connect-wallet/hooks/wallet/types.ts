@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type * as mixpanel from 'client/shared/analytics/mixpanel';
 
 export interface Params {

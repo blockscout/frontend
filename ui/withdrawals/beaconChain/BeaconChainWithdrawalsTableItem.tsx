@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import React from 'react';
 
 import type { AddressWithdrawalsItem } from 'client/slices/address/types/api';

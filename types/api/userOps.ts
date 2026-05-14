@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { AddressParamBasic } from 'client/slices/address/types/api';
 import type { DecodedInput } from 'client/slices/log/types/api';
 

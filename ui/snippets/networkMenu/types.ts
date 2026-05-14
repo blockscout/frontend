@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { FunctionComponent, SVGAttributes } from 'react';
 
 export interface NetworkLink {

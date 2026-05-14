@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { WalletType } from 'types/client/wallets';
 import type { WalletProvider } from 'types/web3';
 

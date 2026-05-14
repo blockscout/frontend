@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 export interface Fields extends SocialLinkFields, TickerUrlFields {
   address: string;
   token_name: string;

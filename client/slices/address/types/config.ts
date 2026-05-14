@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 export const IDENTICON_TYPES = [
   'github',
   'jazzicon',

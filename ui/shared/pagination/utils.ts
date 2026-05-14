@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { PaginationParams } from './types';
 
 export const emptyPagination: PaginationParams = {

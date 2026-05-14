@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 export interface TxBlob {
   hash: string;
   blob_data: string | null;

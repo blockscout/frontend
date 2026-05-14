@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 /* eslint-disable max-len */
 import { Box, Flex, List, chakra } from '@chakra-ui/react';
 import React from 'react';

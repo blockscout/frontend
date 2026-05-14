@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { useEffect } from 'react';
 
 import type { AdBannerProviders } from 'types/client/adProviders';

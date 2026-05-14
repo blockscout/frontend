@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import xss from 'xss';
 
 import escapeRegExp from 'client/shared/text/escape-reg-exp';

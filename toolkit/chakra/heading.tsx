@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { HeadingProps as ChakraHeadingProps } from '@chakra-ui/react';
 import { Heading as ChakraHeading } from '@chakra-ui/react';
 import React from 'react';

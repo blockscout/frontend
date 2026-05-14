@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 export const COLOR_HEX_REGEXP = /^#[a-f\d]{3,6}$/i;
 
 export const colorValidator = (value: unknown) => {

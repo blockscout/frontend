@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Grid, Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { useMemo } from 'react';

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { ChainMetricsSortingField, ChainMetricsSortingValue } from 'types/client/multichainAggregator';
 
 import type { SelectOption } from 'toolkit/chakra/select';

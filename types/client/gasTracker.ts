@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 export const GAS_UNITS = [
   'usd',
   'gwei',

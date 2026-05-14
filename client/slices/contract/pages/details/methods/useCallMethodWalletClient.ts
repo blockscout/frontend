@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import React from 'react';
 import { getAddress, type Abi } from 'viem';
 import { useAccount, useSwitchChain, useWriteContract, useSendTransaction } from 'wagmi';

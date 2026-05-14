@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 export type PoolsResponse = {
   items: Array<Pool>;
   next_page_params: {

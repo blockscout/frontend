@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Grid } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import BigNumber from 'bignumber.js';

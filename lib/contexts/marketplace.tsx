@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { useRouter } from 'next/router';
 import React, { createContext, useContext, useEffect, useState, useMemo } from 'react';
 

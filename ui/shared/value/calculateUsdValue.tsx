@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import BigNumber from 'bignumber.js';
 
 import { ZERO } from 'toolkit/utils/consts';

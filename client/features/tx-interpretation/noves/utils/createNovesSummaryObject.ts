@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { NovesResponseData } from 'types/api/noves';
 import type { TxInterpretationSummary } from 'types/api/txInterpretation';
 

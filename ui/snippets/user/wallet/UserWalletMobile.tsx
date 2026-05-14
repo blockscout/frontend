@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import React from 'react';
 
 import useWeb3AccountWithDomain from 'client/features/connect-wallet/hooks/useAccountWithDomain';

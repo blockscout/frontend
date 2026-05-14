@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { AccordionItemProps } from '@chakra-ui/react';
 import { Box, chakra } from '@chakra-ui/react';
 import React from 'react';

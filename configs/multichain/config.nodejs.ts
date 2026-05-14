@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { MultichainConfig } from 'types/multichain';
 
 let value: MultichainConfig | undefined = undefined;

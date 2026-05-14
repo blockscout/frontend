@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { Feature } from './types';
 import type { EssentialDappsConfig, MarketplaceTitles } from 'types/client/marketplace';
 

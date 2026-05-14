@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { ChainIndicatorId, HeroBannerConfig, HomeStatsWidgetId } from 'client/slices/home/types/config';
 import { HOME_STATS_WIDGET_IDS } from 'client/slices/home/types/config';
 

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { RadioGroup as ChakraRadioGroup } from '@chakra-ui/react';
 import * as React from 'react';
 

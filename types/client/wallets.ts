@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { ArrayElement } from 'types/utils';
 
 import type { IconName } from 'ui/shared/IconSvg';

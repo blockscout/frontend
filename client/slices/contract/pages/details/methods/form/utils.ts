@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { set } from 'es-toolkit/compat';
 
 import type { ContractAbiItemInput } from '../types';

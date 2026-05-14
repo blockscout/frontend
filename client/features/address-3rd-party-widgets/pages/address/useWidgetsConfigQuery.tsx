@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { useQuery } from '@tanstack/react-query';
 
 import type { Address3rdPartyWidget } from 'client/features/address-3rd-party-widgets/types/view';

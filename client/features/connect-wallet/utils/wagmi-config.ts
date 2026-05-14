@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { WagmiAdapter } from '@reown/appkit-adapter-wagmi';
 import type { AppKitNetwork } from '@reown/appkit/networks';
 import type { Chain, Transport } from 'viem';

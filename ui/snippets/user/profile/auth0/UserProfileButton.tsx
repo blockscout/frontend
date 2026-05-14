@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { ButtonProps } from '@chakra-ui/react';
 import { Box, HStack } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';

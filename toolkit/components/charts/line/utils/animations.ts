@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import * as d3 from 'd3';
 
 export type AnimationType = 'left' | 'fadeIn' | 'none';

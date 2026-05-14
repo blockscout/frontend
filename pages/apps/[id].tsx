@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { GetServerSideProps } from 'next';
 import dynamic from 'next/dynamic';
 import fetch from 'node-fetch';

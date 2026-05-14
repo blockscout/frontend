@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { BoxProps } from '@chakra-ui/react';
 import { chakra } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';

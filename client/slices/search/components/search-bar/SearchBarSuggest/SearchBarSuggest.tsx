@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Box, Flex, Text } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { debounce } from 'es-toolkit';

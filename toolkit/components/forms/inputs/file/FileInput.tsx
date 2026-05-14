@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Box, VisuallyHidden } from '@chakra-ui/react';
 import type { ChangeEvent } from 'react';
 import React from 'react';

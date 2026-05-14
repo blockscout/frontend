@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 /* eslint-disable max-len */
 
 import config from 'configs/app';

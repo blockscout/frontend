@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import config from 'configs/app';
 
 const feature = config.features.blockchainInteraction;

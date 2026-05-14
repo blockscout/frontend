@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { Abi } from 'abitype';
 import { toFunctionSelector } from 'viem';
 

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 
 import type { AdBannerProviders } from 'types/client/adProviders';

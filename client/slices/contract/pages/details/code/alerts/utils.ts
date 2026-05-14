@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { SmartContractProxyType } from 'client/slices/contract/types/api';
 
 export const PROXY_TYPES: Partial<Record<NonNullable<SmartContractProxyType>, {

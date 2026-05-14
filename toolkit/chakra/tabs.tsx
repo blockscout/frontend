@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Tabs as ChakraTabs, chakra } from '@chakra-ui/react';
 import * as React from 'react';
 

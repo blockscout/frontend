@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { TChainIndicator } from 'client/slices/home/types/client';
 
 import config from 'configs/app';

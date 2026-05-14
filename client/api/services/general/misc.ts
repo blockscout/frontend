@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { ApiResource } from '../../types';
 import type { CsvExportItemResponse, CsvExportConfig } from 'client/features/csv-export/types/api';
 import type { HotContractsFilters, HotContractsResponse, HotContractsSorting } from 'client/features/hot-contracts/types/api';

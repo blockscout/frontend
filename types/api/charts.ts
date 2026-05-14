@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 export interface ChartTransactionItem {
   date: string;
   transactions_count: number | null;

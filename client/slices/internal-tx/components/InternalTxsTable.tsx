@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import React from 'react';
 
 import type { InternalTransaction } from 'client/slices/internal-tx/types/api';

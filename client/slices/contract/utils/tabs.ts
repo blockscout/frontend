@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 export const CONTRACT_MAIN_TAB_IDS = [
   'contract_code',
   'read_contract',

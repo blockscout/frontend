@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { NFTTokenType, TokenType } from 'client/slices/token/types/api';
 import type { ClusterChainConfig } from 'types/multichain';
 

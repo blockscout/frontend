@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 export function shouldShowClearButton(searchValue: string): boolean {
   return searchValue.length > 0;
 }

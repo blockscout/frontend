@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Stat } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';

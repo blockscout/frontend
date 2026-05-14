@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { NextRouter } from 'next/router';
 
 import { ChartResolution } from 'toolkit/components/charts/types';

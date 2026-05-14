@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { ChainStatsChart, ChainStatsSection } from 'client/features/chain-stats/types/client';
 
 export const CROSS_CHAIN_TXS_CHARTS = [

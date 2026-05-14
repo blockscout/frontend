@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import React from 'react';
 
 import type { HotContract, HotContractsSortingField, HotContractsSortingValue } from 'client/features/hot-contracts/types/api';
