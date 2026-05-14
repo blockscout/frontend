@@ -9,6 +9,7 @@ import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import GasInfoUpdateTimer from 'client/slices/gas/components/GasInfoUpdateTimer';
 import { HOMEPAGE_STATS } from 'client/slices/home/stubs';
 import NativeTokenIcon from 'client/slices/token/components/icon/TokenIconNative';
 
@@ -20,7 +21,6 @@ import GasTrackerChart from 'ui/gasTracker/GasTrackerChart';
 import GasTrackerFaq from 'ui/gasTracker/GasTrackerFaq';
 import GasTrackerNetworkUtilization from 'ui/gasTracker/GasTrackerNetworkUtilization';
 import GasTrackerPrices from 'ui/gasTracker/GasTrackerPrices';
-import GasInfoUpdateTimer from 'ui/shared/gas/GasInfoUpdateTimer';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Time from 'ui/shared/time/Time';
 

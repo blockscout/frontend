@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
+import GasPrice from 'client/slices/gas/components/GasPrice';
 import { useHomeRpcDataContext } from 'client/slices/home/contexts/rpc-data-context';
 import type { HomeStatsWidgetItem } from 'client/slices/home/utils/stats';
 import { homeStatsWidgetCommonStyles, isHomeStatsItemEnabled, sortHomeStatsItems } from 'client/slices/home/utils/stats';
@@ -14,7 +15,6 @@ import { publicClient } from 'client/features/connect-wallet/utils/public-client
 import dayjs from 'lib/date/dayjs';
 import { mdash } from 'toolkit/utils/htmlEntities';
 import FallbackRpcIcon from 'ui/shared/fallbacks/FallbackRpcIcon';
-import GasPrice from 'ui/shared/gas/GasPrice';
 import StatsWidget from 'ui/shared/stats/StatsWidget';
 import { GWEI } from 'ui/shared/value/utils';
 

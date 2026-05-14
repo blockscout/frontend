@@ -6,6 +6,8 @@ import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import GasInfoTooltip from 'client/slices/gas/components/GasInfoTooltip';
+import GasPrice from 'client/slices/gas/components/GasPrice';
 import { useHomeDataContext } from 'client/slices/home/contexts/home-data-context';
 import { HOMEPAGE_STATS } from 'client/slices/home/stubs';
 import type { HomeStatsItem } from 'client/slices/home/utils/stats';
@@ -15,8 +17,6 @@ import { HOMEPAGE_STATS_MICROSERVICE } from 'client/features/chain-stats/stubs/h
 
 import config from 'configs/app';
 import { layerLabels } from 'lib/rollups/utils';
-import GasInfoTooltip from 'ui/shared/gas/GasInfoTooltip';
-import GasPrice from 'ui/shared/gas/GasPrice';
 import IconSvg from 'ui/shared/IconSvg';
 import StatsWidget from 'ui/shared/stats/StatsWidget';
 import { WEI } from 'ui/shared/value/utils';

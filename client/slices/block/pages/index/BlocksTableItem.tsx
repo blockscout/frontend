@@ -10,10 +10,10 @@ import type { ClusterChainConfig } from 'types/multichain';
 import { route } from 'nextjs-routes';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
-import BlockGasUsed from 'client/slices/block/components/BlockGasUsed';
 import BlockPendingUpdateHint from 'client/slices/block/components/BlockPendingUpdateHint';
 import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
 import getBlockTotalReward from 'client/slices/block/utils/get-block-total-reward';
+import GasUsed from 'client/slices/gas/components/GasUsed';
 
 import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
@@ -107,7 +107,7 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement, animation, chai
       <TableCell >
         <Skeleton loading={ isLoading } display="inline-block">{ BigNumber(data.gas_used || 0).toFormat() }</Skeleton>
         <Flex mt={ 2 }>
-          <BlockGasUsed
+          <GasUsed
             gasUsed={ data.gas_used || undefined }
             gasLimit={ data.gas_limit }
             isLoading={ isLoading }
