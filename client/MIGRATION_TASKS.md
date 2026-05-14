@@ -127,6 +127,13 @@ Each slice follows the template established in 2-1.
 ### 3-9 · [~] Slice: `token-transfer` · [#3399](https://github.com/blockscout/frontend/issues/3399)
 **Scope:** TBD
 
+### 3-10 · [ ] Slice: `gas`
+**Scope:** Gas-price domain primitives — no tracker page (that belongs to `features/gas-tracker/`).
+- `ui/shared/gas/` → `client/slices/gas/components/` and `client/slices/gas/utils/`
+- `types/client/gasTracker.ts` (`GasUnit`, `GAS_UNITS`) → `client/slices/gas/types/client.ts`
+- `client/slices/gas/types/api.ts` already exists — verify and complete (`GasPrices`, `GasPriceInfo`)
+- Update all import paths in `slices/home/`, `slices/tx/`, `client/shell/`, and `features/gas-tracker/`
+
 ---
 
 ## Stage 4 — Features: rollups
@@ -192,6 +199,9 @@ migrated to `client/shared/` in 1-2 and do not appear here.
 **Scope:** `lib/stats/` and stats UI → `client/features/stats/`  
 
 ### 6-7 · [ ] Feature: `gas-tracker`
+**Scope:** Config-gated tracker page (`NEXT_PUBLIC_GAS_TRACKER_ENABLED`). Depends on task 3-10 (`slices/gas/`) being merged first.
+- `ui/gasTracker/` + `ui/pages/GasTracker.tsx` → `client/features/gas-tracker/`
+- Imports gas-price primitives from `client/slices/gas/`
 
 ### 6-8 · [ ] Feature: `validators`
 
@@ -247,7 +257,13 @@ migrated to `client/shared/` in 1-2 and do not appear here.
 ### 6-28 · [ ] Feature: `alternative-explorers`
 **Scope:** The "Verify with other explorers" menu shown on tx, block, address, and token pages. Move `ui/shared/NetworkExplorers.tsx` (and its `.pw.tsx` test) → `client/features/alternative-explorers/`. The util `client/features/alternative-explorers/utils/explorers.ts` already exists (landed in 1-2). Config-gated via `NEXT_PUBLIC_NETWORK_EXPLORERS`.  
 
-> Other small features (`externalTxs`, `xStarScore`, `deFiDropdown`, `getGasButton`, `easterEgg*`, `apiDocs`, `verifiedTokens`, `multichainButton`) — enumerate as separate tasks or group with related features when this stage begins.
+### 6-29 · [ ] Feature: `get-gas-button`
+**Scope:** Gas refuel CTA — independently config-gated (`NEXT_PUBLIC_GAS_REFUEL_PROVIDER_CONFIG`), no dependency on `gas-tracker` being enabled.
+- `ui/snippets/topBar/GetGasButton.tsx` → `client/features/get-gas-button/`
+- `types/client/gasRefuelProviderConfig.ts` → `client/features/get-gas-button/types/`
+- See `configs/app/features/get-gas-button.ts`
+
+> Other small features (`externalTxs`, `xStarScore`, `deFiDropdown`, `easterEgg*`, `apiDocs`, `verifiedTokens`, `multichainButton`) — enumerate as separate tasks or group with related features when this stage begins.
 
 ---
 

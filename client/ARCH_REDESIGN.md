@@ -114,10 +114,11 @@ client/api/
 
 **Classification criterion:** *"Can this area exist on a vanilla EVM chain with no feature flag?"* Yes → slice. No (requires a `configs/app/features` flag) → feature.
 
-**Confirmed slices (non-exhaustive):** `tx`, `block`, `search`, `token`, `address`, `contract`, `internal-tx`, `home`, `token`, `token-transfer`, `log` …
+**Confirmed slices (non-exhaustive):** `tx`, `block`, `search`, `token`, `address`, `contract`, `internal-tx`, `home`, `token`, `token-transfer`, `log`, `gas` …
 
 - **`contract` (slice):** **Contract verification** and **SolidityScan** (`lib/solidityScan/`) are **slice** concerns (available on any chain).
 - **`internal-tx` (slice):** Own slice; **`tx`** composes **internal-tx** components (e.g. tab content). Prefer **no imports** from `internal-tx` back into `tx` to avoid cycles; share via **`client/shared`** or a **thin types-only surface** if needed.
+- **`gas` (slice):** Owns the gas-price domain — `GasPrices`/`GasPriceInfo` API types, `GasUnit` client type, display primitives (`GasPrice.tsx`, `GasInfoTooltip.tsx`, `GasInfoUpdateTimer.tsx`), and formatting utils (`formatGasValue.ts`). These are used unconditionally across `slices/home/`, `slices/tx/`, and `client/shell/`. The config-gated tracker **page** belongs to `features/gas-tracker/`, which imports from this slice.
 
 **Rollup sub-types on slice types:** `slices/tx/types/api.ts` imports feature-specific sub-types (e.g. `ArbitrumTransactionData`) from their respective feature via `import type`. Optional fields fan out at the slice type level — this mirrors the real API contract and is intentional (see §11).
 
@@ -151,9 +152,10 @@ client/slices/tx/
 
 - Folders may exist for **readability and maintenance** (e.g. per rollup type) even when not everything is enabled for a given chain; **runtime behavior** still comes from **config/env**, not "folder exists = on."
 
-**Confirmed features (non-exhaustive):** `user-ops`, `data-availability`, `multichain`, `name-domains`, `account`, `stats`, `gas-tracker`, `validators`, `marketplace`, `rewards`, `rollup/*`, `chain-variants/*`, `advanced-filter`, `ad-banner`, `safe-address-tags`, `metasuites`, `csv-export`, …
+**Confirmed features (non-exhaustive):** `user-ops`, `data-availability`, `multichain`, `name-domains`, `account`, `stats`, `gas-tracker`, `get-gas-button`, `validators`, `marketplace`, `rewards`, `rollup/*`, `chain-variants/*`, `advanced-filter`, `ad-banner`, `safe-address-tags`, `metasuites`, `csv-export`, …
 
-- **`stats` and `gas-tracker`** are **features** (not slices) — they are config-gated per chain.
+- **`stats` and `gas-tracker`** are **features** (not slices) — they are config-gated per chain. Gas-price primitives (shared display components, formatting utils, API types) live in **`slices/gas/`**; `features/gas-tracker/` owns the tracker page and imports from that slice.
+- **`get-gas-button`** is its own feature — independently config-gated (`NEXT_PUBLIC_GAS_REFUEL_PROVIDER_CONFIG`), surfaces in the top bar, and has no hard dependency on `gas-tracker` being enabled.
 - **`validators`** is a **feature** — chain-specific, not present on a vanilla EVM chain.
 - **`epochs`** is a sub-concern of the Celo chain variant (`features/chain-variants/celo/`), not a standalone feature.
 - **`data-availability`** was previously referred to as `blobs` — use `data-availability` throughout.
@@ -232,6 +234,11 @@ Example: `client/slices/home/types/config.ts` → imported by `configs/app/ui/ho
 | `ui/snippets/networkLogo/` | `client/shared/` |
 | `ui/snippets/networkMenu/` | `client/features/multichain/` |
 | `ui/snippets/auth/`, `user/` | `client/features/account/` |
+| `ui/shared/gas/` | `client/slices/gas/` (display components + formatting utils) |
+| `ui/gasTracker/`, `ui/pages/GasTracker.tsx` | `client/features/gas-tracker/` |
+| `ui/snippets/topBar/GetGasButton.tsx` | `client/features/get-gas-button/` |
+| `types/client/gasTracker.ts` (`GasUnit`) | `client/slices/gas/types/client.ts` |
+| `types/client/gasRefuelProviderConfig.ts` | `client/features/get-gas-button/types/` |
 
 ### `lib/` → destinations
 
