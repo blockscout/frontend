@@ -1,13 +1,12 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Text, HStack, VStack, Spinner } from '@chakra-ui/react';
+import { HStack, Spinner, Text, VStack } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { upperFirst } from 'es-toolkit';
 import React from 'react';
 import { useInView } from 'react-intersection-observer';
 
 import { getResourceKey } from 'client/api/hooks/useApiQuery';
-import isNeedProxy from 'client/api/is-need-proxy';
 
 import shortenString from 'client/shared/text/shorten-string';
 
@@ -21,8 +20,8 @@ import { SECOND } from 'toolkit/utils/consts';
 import IconSvg from 'ui/shared/IconSvg';
 
 import getPrefixByFilter from '../../utils/get-prefix-by-filter';
-import * as storage from '../../utils/storage';
 import type { StorageItem } from '../../utils/storage';
+import * as storage from '../../utils/storage';
 
 interface Props {
   index: number;
@@ -177,11 +176,13 @@ const CsvExportDownloadsItem = ({ index, data }: Props) => {
       return;
     }
 
-    if (isNeedProxy()) {
-      return `${ (chainData?.app_config || config).apis.general?.endpoint ?? '' }/downloadFile?id=${ data.file_id }`;
+    const api = (chainData?.app_config || config).apis.general;
+
+    if (!api) {
+      return;
     }
 
-    return `/downloadFile?id=${ data.file_id }`;
+    return `${ api.endpoint + (api.basePath ?? '') }/downloadFile?id=${ data.file_id }`;
   })();
 
   return (
