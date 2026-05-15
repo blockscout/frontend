@@ -1,6 +1,7 @@
 import React from 'react';
 
-import * as interopMock from 'mocks/interop/interop';
+import * as interopMock from 'client/features/op-interop/mocks/interop';
+
 import { test, expect } from 'playwright/lib';
 
 import TxEntityInterop from './TxEntityInterop';

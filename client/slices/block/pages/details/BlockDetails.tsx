@@ -21,6 +21,7 @@ import BlockDetailsBlobInfo from 'client/features/data-availability/pages/block/
 import BatchEntityL2 from 'client/features/rollup/common/components/BatchEntityL2';
 import BlockEntityL1 from 'client/features/rollup/common/components/BlockEntityL1';
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
+import OptimisticL2TxnBatchDA from 'client/features/rollup/optimism/components/TxnBatchDA';
 
 import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-title';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
@@ -35,7 +36,6 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { ZERO } from 'toolkit/utils/consts';
 import { space } from 'toolkit/utils/htmlEntities';
-import OptimisticL2TxnBatchDA from 'ui/shared/batch/OptimisticL2TxnBatchDA';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
