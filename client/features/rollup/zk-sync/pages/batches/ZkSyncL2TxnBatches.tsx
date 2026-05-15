@@ -5,16 +5,18 @@ import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import { ZKSYNC_L2_TXN_BATCHES_ITEM } from 'client/features/rollup/zk-sync/stubs';
+
 import { generateListStub } from 'stubs/utils';
-import { ZKSYNC_L2_TXN_BATCHES_ITEM } from 'stubs/zkSyncL2';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import StickyPaginationWithText from 'ui/shared/StickyPaginationWithText';
-import ZkSyncTxnBatchesListItem from 'ui/txnBatches/zkSyncL2/ZkSyncTxnBatchesListItem';
-import ZkSyncTxnBatchesTable from 'ui/txnBatches/zkSyncL2/ZkSyncTxnBatchesTable';
+
+import ZkSyncTxnBatchesListItem from './ZkSyncTxnBatchesListItem';
+import ZkSyncTxnBatchesTable from './ZkSyncTxnBatchesTable';
 
 const ZkSyncL2TxnBatches = () => {
   const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({

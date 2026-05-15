@@ -1,6 +1,7 @@
 import React from 'react';
 
-import * as zkSyncTxnBatchesMock from 'mocks/zkSync/zkSyncTxnBatches';
+import * as zkSyncTxnBatchesMock from 'client/features/rollup/zk-sync/mocks/txn-batches';
+
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';
 

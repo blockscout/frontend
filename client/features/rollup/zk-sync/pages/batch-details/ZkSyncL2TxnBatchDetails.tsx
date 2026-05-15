@@ -5,17 +5,19 @@ import type { UseQueryResult } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import { ZKSYNC_L2_TX_BATCH_STATUSES, type ZkSyncBatch } from 'types/api/zkSyncL2';
+import { ZKSYNC_L2_TX_BATCH_STATUSES, type ZkSyncBatch } from 'client/features/rollup/zk-sync/types/api';
 
-import { route } from 'nextjs-routes';
+import { route } from 'nextjs/routes';
 
 import type { ResourceError } from 'client/api/resources';
+
+import { formatZkSyncL2TxnBatchStatus } from 'client/features/rollup/zk-sync/utils/format-txn-batch-status';
 
 import { currencyUnits } from 'client/shared/chain/units';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 
 import config from 'configs/app';
-import { formatZkSyncL2TxnBatchStatus, layerLabels } from 'lib/rollups/utils';
+import { layerLabels } from 'lib/rollups/utils';
 import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';

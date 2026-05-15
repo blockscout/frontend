@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { ZkSyncBatchesItem } from 'types/api/zkSyncL2';
+import type { ZkSyncBatchesItem } from 'client/features/rollup/zk-sync/types/api';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';

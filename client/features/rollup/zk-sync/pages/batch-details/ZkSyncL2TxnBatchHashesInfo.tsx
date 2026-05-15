@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { ZkSyncBatch } from 'types/api/zkSyncL2';
+import type { ZkSyncBatch } from 'client/features/rollup/zk-sync/types/api';
 
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
 

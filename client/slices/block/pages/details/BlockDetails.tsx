@@ -6,7 +6,7 @@ import { capitalize } from 'es-toolkit';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import { ZKSYNC_L2_TX_BATCH_STATUSES } from 'types/api/zkSyncL2';
+import { ZKSYNC_L2_TX_BATCH_STATUSES } from 'client/features/rollup/zk-sync/types/api';
 
 import { route, routeParams } from 'nextjs/routes';
 
@@ -23,13 +23,15 @@ import BatchEntityL2 from 'client/features/rollup/common/components/BatchEntityL
 import BlockEntityL1 from 'client/features/rollup/common/components/BlockEntityL1';
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
 import OptimisticL2TxnBatchDA from 'client/features/rollup/optimism/components/TxnBatchDA';
+import ZkSyncL2TxnBatchHashesInfo from 'client/features/rollup/zk-sync/pages/batch-details/ZkSyncL2TxnBatchHashesInfo';
+import { formatZkSyncL2TxnBatchStatus } from 'client/features/rollup/zk-sync/utils/format-txn-batch-status';
 
 import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-title';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import config from 'configs/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
-import { formatZkSyncL2TxnBatchStatus, layerLabels } from 'lib/rollups/utils';
+import { layerLabels } from 'lib/rollups/utils';
 import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
@@ -49,7 +51,6 @@ import GasPriceValue from 'ui/shared/value/GasPriceValue';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 import { WEI } from 'ui/shared/value/utils';
 import VerificationSteps from 'ui/shared/verificationSteps/VerificationSteps';
-import ZkSyncL2TxnBatchHashesInfo from 'ui/txnBatches/zkSyncL2/ZkSyncL2TxnBatchHashesInfo';
 
 const zkSyncVerificationSteps = ZKSYNC_L2_TX_BATCH_STATUSES.map(formatZkSyncL2TxnBatchStatus);
 
