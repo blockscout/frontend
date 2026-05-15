@@ -106,28 +106,28 @@ Each slice follows the template established in 2-1.
 ### 3-2 · [x] Slice: `address` · [#3380](https://github.com/blockscout/frontend/issues/3380)
 **Scope:** `lib/address/`, `ui/address/**`, related types/mocks/stubs, `lib/hooks/useAddressProfileApiQuery`, `lib/contexts/addressHighlight.tsx` → `client/slices/address/`  
 
-### 3-3 · [~] Slice: `search` · [#3405](https://github.com/blockscout/frontend/issues/3405)
+### 3-3 · [x] Slice: `search` · [#3405](https://github.com/blockscout/frontend/issues/3405)
 **Scope:** `lib/search/`, `ui/snippets/searchBar/`, `lib/recentSearchKeywords.ts`, related types/mocks/stubs → `client/slices/search/`  
 
-### 3-4 · [~] Slice: `token` · [#3393](https://github.com/blockscout/frontend/issues/3393)
+### 3-4 · [x] Slice: `token` · [#3393](https://github.com/blockscout/frontend/issues/3393)
 **Scope:** `lib/token/`, `ui/token/**`, `ui/tokens/**`, `ui/tokenInstance/**`, related types/mocks/stubs → `client/slices/token/`  
 
-### 3-5 · [~] Slice: `contract` · [#3401](https://github.com/blockscout/frontend/issues/3401)
+### 3-5 · [x] Slice: `contract` · [#3401](https://github.com/blockscout/frontend/issues/3401)
 **Scope:** `lib/contracts/`, `lib/solidityScan/`, `ui/contract/**`, related types/mocks/stubs → `client/slices/contract/`  
 
-### 3-6 · [~] Slice: `internal-tx` · [#3396](https://github.com/blockscout/frontend/issues/3396)
+### 3-6 · [x] Slice: `internal-tx` · [#3396](https://github.com/blockscout/frontend/issues/3396)
 **Scope:** `ui/internalTxs/**` (and any `lib/` counterparts), related types/mocks/stubs → `client/slices/internal-tx/`  
 
-### 3-7 · [~] Slice: `home` · [#3414](https://github.com/blockscout/frontend/issues/3414)
+### 3-7 · [x] Slice: `home` · [#3414](https://github.com/blockscout/frontend/issues/3414)
 **Scope:** `ui/home/**`, related types/mocks/stubs → `client/slices/home/`  
 
-### 3-8 · [~] Slice: `log` · [#3403](https://github.com/blockscout/frontend/issues/3403)
+### 3-8 · [x] Slice: `log` · [#3403](https://github.com/blockscout/frontend/issues/3403)
 **Scope:** `ui/shared/log/**`, related types/mocks/stubs → `client/slices/log/`
 
-### 3-9 · [~] Slice: `token-transfer` · [#3399](https://github.com/blockscout/frontend/issues/3399)
+### 3-9 · [x] Slice: `token-transfer` · [#3399](https://github.com/blockscout/frontend/issues/3399)
 **Scope:** TBD
 
-### 3-10 · [~] Slice: `gas` · [#3418](https://github.com/blockscout/frontend/issues/3418)
+### 3-10 · [x] Slice: `gas` · [#3418](https://github.com/blockscout/frontend/issues/3418)
 **Scope:** Gas-price domain primitives — no tracker page (that belongs to `features/gas-tracker/`).
 - `ui/shared/gas/` → `client/slices/gas/components/` and `client/slices/gas/utils/`
 - `types/client/gasTracker.ts` (`GasUnit`, `GAS_UNITS`) → `client/slices/gas/types/client.ts`
@@ -142,18 +142,22 @@ One PR per rollup type. Each goes under `client/features/rollup/<type>/`.
 
 > Enumerate additional rollup tasks when this stage begins, based on what exists under `lib/rollups/` and `ui/`.
 
-### 4-1 · [~] Feature: `rollup/optimism` · [#3421](https://github.com/blockscout/frontend/issues/3421)
+### 4-1 · [x] Feature: `rollup/optimism` · [#3421](https://github.com/blockscout/frontend/issues/3421)
 **Scope:** All Optimism-specific UI, hooks, utils, types → `client/features/rollup/optimism/`. Includes fault proof system and dispute games.  
 
-### 4-2 · [~] Feature: `rollup/arbitrum` · [#3423](https://github.com/blockscout/frontend/issues/3423)
+### 4-2 · [x] Feature: `rollup/arbitrum` · [#3423](https://github.com/blockscout/frontend/issues/3423)
 **Scope:** All Arbitrum-specific UI, hooks, utils, types → `client/features/rollup/arbitrum/`  
 
-### 4-3 · [~] Feature: `rollup/zk-sync` · [#3426](https://github.com/blockscout/frontend/issues/3426)
+### 4-3 · [x] Feature: `rollup/zk-sync` · [#3426](https://github.com/blockscout/frontend/issues/3426)
 **Scope:** zkSync-specific UI, hooks, utils, types → `client/features/rollup/zk-sync/`. Check for other zk-based rollup types (scroll, etc.) and add tasks if needed.  
 
 ### 4-4 · [ ] Feature: `rollup/common` — shared types and utils
+**Scope:** Migrate cross-rollup primitives shared by all rollup types.
+- `types/client/rollup.ts` (`ROLLUP_TYPES`, `RollupType`, `ParentChain`) → `client/features/rollup/common/types/config.ts`; inline `ArrayElement` to achieve zero imports (required for `configs/` compatibility)
+- `lib/rollups/utils.ts` → split: `layerLabels` → `client/features/rollup/common/utils/layer-labels.ts`; `formatZkSyncL2TxnBatchStatus` → `client/features/rollup/zk-sync/utils/format-txn-batch-status.ts` (coordinate with 4-3)
+- Update all import paths repo-wide. Delete `lib/rollups/utils.ts` and `types/client/rollup.ts`.
 
-### 4-5 · [ ] Feature: `rollup/scroll`
+### 4-5 · [~] Feature: `rollup/scroll` · [#3429](https://github.com/blockscout/frontend/issues/3429)
 **Scope:** Scroll-specific UI, hooks, utils, types → `client/features/rollup/scroll/`. Includes deposits, withdrawals, and txn batches pages.
 - `types/api/scrollL2.ts` → `client/features/rollup/scroll/types/api.ts` (2 files already started there)
 - `stubs/scrollL2.ts` → `client/features/rollup/scroll/stubs.ts`
@@ -166,13 +170,7 @@ One PR per rollup type. Each goes under `client/features/rollup/<type>/`.
 - `ui/pages/ScrollL2TxnBatches.tsx`, `ScrollL2TxnBatch.tsx` → `client/features/rollup/scroll/pages/batches/` and `batch-details/`
 - `ui/pages/ScrollL2Deposits.tsx`, `ScrollL2Withdrawals.tsx` → `client/features/rollup/scroll/pages/deposits/` and `withdrawals/`
 
----
-
-### 4-4 · [ ] Feature: `rollup/common` — shared types and utils
-**Scope:** Migrate cross-rollup primitives shared by all rollup types.
-- `types/client/rollup.ts` (`ROLLUP_TYPES`, `RollupType`, `ParentChain`) → `client/features/rollup/common/types/config.ts`; inline `ArrayElement` to achieve zero imports (required for `configs/` compatibility)
-- `lib/rollups/utils.ts` → split: `layerLabels` → `client/features/rollup/common/utils/layer-labels.ts`; `formatZkSyncL2TxnBatchStatus` → `client/features/rollup/zk-sync/utils/format-txn-batch-status.ts` (coordinate with 4-3)
-- Update all import paths repo-wide. Delete `lib/rollups/utils.ts` and `types/client/rollup.ts`.
+### 4-6 · [ ] Feature: `rollup/shibarium`
 
 ---
 
