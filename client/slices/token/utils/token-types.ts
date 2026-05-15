@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { uniq } from 'es-toolkit';
+import { uniqBy } from 'es-toolkit';
 
 import type { NFTTokenType, TokenType } from 'client/slices/token/types/api';
 import type { ClusterChainConfig } from 'types/multichain';
@@ -42,9 +42,12 @@ export const getAdditionalTokenTypes = (chainConfig?: ChainConfig) => {
     return config.chain.additionalTokenTypes;
   }
   const chainConfigs = Array.isArray(chainConfig) ? chainConfig : [ chainConfig ];
-  return uniq(chainConfigs
-    .map((chainConfig) => chainConfig.chain.additionalTokenTypes)
-    .flat());
+  return uniqBy(
+    chainConfigs
+      .map((chainConfig) => chainConfig.chain.additionalTokenTypes)
+      .flat(),
+    (item) => item.id,
+  );
 };
 
 export const NFT_TOKEN_TYPE_IDS: Array<NFTTokenType> = Object.keys(NFT_TOKEN_TYPES) as Array<NFTTokenType>;
