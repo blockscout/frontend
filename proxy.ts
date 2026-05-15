@@ -7,6 +7,11 @@ import { CSP_NONCE_HEADER } from 'nextjs/constants';
 import * as csp from 'nextjs/csp/index';
 import * as middlewares from 'nextjs/middlewares/index';
 
+import appConfig from 'configs/app';
+
+const adsBannerFeature = appConfig.features.adsBanner;
+const shouldUseCspNonce = adsBannerFeature.isEnabled && adsBannerFeature.provider === 'sevio';
+
 export async function proxy(req: NextRequest) {
   const isPageRequest = req.headers.get('accept')?.includes('text/html');
   const start = Date.now();
@@ -20,15 +25,7 @@ export async function proxy(req: NextRequest) {
     return accountResponse;
   }
 
-  const nonce = crypto.randomUUID().replaceAll('-', '');
-  const requestHeaders = new Headers(req.headers);
-  requestHeaders.set(CSP_NONCE_HEADER, nonce);
-
-  const res = NextResponse.next({
-    request: {
-      headers: requestHeaders,
-    },
-  });
+  const res = NextResponse.next();
 
   middlewares.appProfile(req, res);
   middlewares.colorTheme(req, res);
@@ -38,11 +35,16 @@ export async function proxy(req: NextRequest) {
 
   const end = Date.now();
 
+  const nonce = shouldUseCspNonce ? crypto.randomUUID().replaceAll('-', '') : undefined;
   const cspHeader = await csp.get(req, nonce);
 
   res.headers.append('Content-Security-Policy', cspHeader);
   res.headers.append('Server-Timing', `middleware;dur=${ end - start }`);
   res.headers.append('Docker-ID', process.env.HOSTNAME || '');
+
+  if (nonce) {
+    res.headers.append(CSP_NONCE_HEADER, nonce);
+  }
 
   return res;
 }
