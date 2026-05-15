@@ -6,7 +6,7 @@ import React from 'react';
 
 import PageNextJs from 'nextjs/PageNextJs';
 
-const DisputeGames = dynamic(() => import('ui/pages/OptimisticL2DisputeGames'), { ssr: false });
+const DisputeGames = dynamic(() => import('client/features/rollup/optimism/pages/dispute-games/OptimisticL2DisputeGames'), { ssr: false });
 
 const Page: NextPage = () => {
   return (

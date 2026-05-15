@@ -3,7 +3,7 @@ import type { Transaction } from 'client/slices/tx/types/api';
 import * as addressMock from 'client/slices/address/mocks/address';
 import { base } from 'client/slices/tx/mocks/tx';
 
-import * as interopMock from 'mocks/interop/interop';
+import * as interopMock from 'client/features/op-interop/mocks/interop';
 
 export const withInteropInMessage: Transaction = {
   ...base,

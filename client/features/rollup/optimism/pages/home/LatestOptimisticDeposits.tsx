@@ -12,11 +12,10 @@ import useSocketMessage from 'client/api/socket/useSocketMessage';
 import LatestTxsFallback from 'client/slices/home/pages/index/txs/LatestTxsFallback';
 
 import LatestDeposits from 'client/features/rollup/common/pages/home/LatestDeposits';
+import { L2_DEPOSIT_ITEM } from 'client/features/rollup/optimism/stubs';
 
 import useGradualIncrement from 'client/shared/hooks/useGradualIncrement';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
-
-import { L2_DEPOSIT_ITEM } from 'stubs/L2';
 
 const LatestOptimisticDeposits = () => {
   const isMobile = useIsMobile();

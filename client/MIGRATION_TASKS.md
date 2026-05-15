@@ -145,7 +145,7 @@ One PR per rollup type. Each goes under `client/features/rollup/<type>/`.
 ### 4-1 · [~] Feature: `rollup/optimism` · [#3421](https://github.com/blockscout/frontend/issues/3421)
 **Scope:** All Optimism-specific UI, hooks, utils, types → `client/features/rollup/optimism/`. Includes fault proof system and dispute games.  
 
-### 4-2 · [ ] Feature: `rollup/arbitrum`
+### 4-2 · [~] Feature: `rollup/arbitrum` · [#3423](https://github.com/blockscout/frontend/issues/3423)
 **Scope:** All Arbitrum-specific UI, hooks, utils, types → `client/features/rollup/arbitrum/`  
 
 ### 4-3 · [ ] Feature: `rollup/zk-sync`

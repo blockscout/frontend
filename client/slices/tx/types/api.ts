@@ -9,7 +9,7 @@ import type { TransactionFheOperations } from 'client/features/fhe-operations/ty
 import type { TransactionOpInterop } from 'client/features/op-interop/types/api';
 import type { TransactionArbitrum } from 'client/features/rollup/arbitrum/types/api';
 import type { TransactionRollup } from 'client/features/rollup/common/types/api';
-import type { TransactionOptimistic } from 'client/features/rollup/optimistic/types/api';
+import type { TransactionOptimistic } from 'client/features/rollup/optimism/types/api';
 import type { TransactionScroll } from 'client/features/rollup/scroll/types/api';
 import type { TransactionZkSync } from 'client/features/rollup/zk-sync/types/api';
 import type { TransactionActions } from 'client/features/tx-actions/types/api';

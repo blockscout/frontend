@@ -8,15 +8,15 @@ import type { InteropTransactionInfo } from 'client/features/op-interop/types/ap
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 
 import AddressEntityInterop from 'client/features/op-interop/components/AddressEntityInterop';
+import InteropMessageDestinationTx from 'client/features/op-interop/components/InteropMessageDestinationTx';
+import InteropMessageSourceTx from 'client/features/op-interop/components/InteropMessageSourceTx';
+import InteropMessageStatus from 'client/features/op-interop/components/InteropMessageStatus';
 
 import config from 'configs/app';
 import { layerLabels } from 'lib/rollups/utils';
 import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
-import InteropMessageDestinationTx from 'ui/interopMessages/InteropMessageDestinationTx';
-import InteropMessageSourceTx from 'ui/interopMessages/InteropMessageSourceTx';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import InteropMessageStatus from 'ui/shared/statusTag/InteropMessageStatus';
 
 const rollupFeature = config.features.rollup;
 
