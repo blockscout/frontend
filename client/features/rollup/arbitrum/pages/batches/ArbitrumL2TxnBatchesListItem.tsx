@@ -9,9 +9,9 @@ import { route } from 'nextjs-routes';
 import BatchEntityL2 from 'client/features/rollup/common/components/BatchEntityL2';
 import BlockEntityL1 from 'client/features/rollup/common/components/BlockEntityL1';
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
+import { layerLabels } from 'client/features/rollup/common/utils/layer';
 
 import config from 'configs/app';
-import { layerLabels } from 'lib/rollups/utils';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';

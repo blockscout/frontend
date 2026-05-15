@@ -5,7 +5,8 @@ import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
-import { layerLabels } from 'lib/rollups/utils';
+import { layerLabels } from 'client/features/rollup/common/utils/layer';
+
 import { SHIBARIUM_WITHDRAWAL_ITEM } from 'stubs/shibarium';
 import { generateListStub } from 'stubs/utils';
 import { Skeleton } from 'toolkit/chakra/skeleton';
