@@ -135,7 +135,7 @@ const useGetERC20Allowances = () => {
     }) as AddressTokenBalancesResponse;
 
     balances = Object.fromEntries(
-      response.map((entry) => [ entry.token.address_hash, BigInt(entry.value) ]),
+      response.map((entry) => [ entry.token.address_hash, BigInt(entry.value ?? '0') ]),
     );
 
     await Promise.all(

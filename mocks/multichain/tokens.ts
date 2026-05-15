@@ -1,5 +1,7 @@
 import type { AddressTokenItem } from 'types/client/multichainAggregator';
 
+import { erc7984Token } from 'client/features/fhe-operations/mocks/token';
+
 import { chainA, chainB, chainC } from './chains';
 
 export const tokenAA: AddressTokenItem = {
@@ -80,6 +82,26 @@ export const tokenBA: AddressTokenItem = {
     [chainB.id]: '42042000',
   },
   value: '42042000',
+};
+
+export const tokenBB: AddressTokenItem = {
+  ...tokenAA,
+  token: {
+    ...erc7984Token,
+    chain_infos: {
+      [chainB.id]: {
+        holders_count: '1250',
+        total_supply: '100000000000000002',
+        is_verified: true,
+        contract_name: 'Confidential USDT',
+      },
+    },
+    reputation: null,
+  },
+  chain_values: {
+    [chainB.id]: null,
+  },
+  value: null,
 };
 
 export const tokenCA: AddressTokenItem = {

@@ -3,6 +3,8 @@ import type { TokenInfo } from 'client/slices/token/types/api';
 
 import * as tokenInstanceMock from 'client/slices/token/mocks/instance';
 
+import { erc7984 } from 'client/features/fhe-operations/mocks/token-transfer';
+
 export const erc20: TokenTransfer = {
   from: {
     hash: '0xd789a607CEac2f0E14867de4EB15b15C9FFB5859',
@@ -244,53 +246,6 @@ export const erc404B: TokenTransfer = {
     symbol: 'ipfs://QmUpFUfVKDCWeZQk5pvDFUxnpQP9N6eLSHhNUy49T1JVtY',
   },
   total: { token_id: '4625304364899952', token_instance: null },
-};
-
-export const erc7984: TokenTransfer = {
-  from: {
-    hash: '0xd789a607CEac2f0E14867de4EB15b15C9FFB5859',
-    implementations: null,
-    is_contract: true,
-    is_verified: true,
-    name: 'ArianeeStore',
-    private_tags: [],
-    public_tags: [],
-    watchlist_names: [],
-    ens_domain_name: null,
-  },
-  to: {
-    hash: '0x7d20a8D54F955b4483A66aB335635ab66e151c51',
-    implementations: null,
-    is_contract: true,
-    is_verified: false,
-    name: null,
-    private_tags: [],
-    public_tags: [],
-    watchlist_names: [],
-    ens_domain_name: null,
-  },
-  token: {
-    address_hash: '0x55d536e4d6c1993d8ef2e2a4ef77f02088419420',
-    circulating_market_cap: null,
-    decimals: '18',
-    exchange_rate: null,
-    holders_count: '1200',
-    name: 'Confidential Token',
-    symbol: 'ARIA',
-    type: 'ERC-7984',
-    total_supply: '0',
-    icon_url: null,
-    reputation: 'ok',
-  },
-  total: null,
-  transaction_hash: '0x62d597ebcf3e8d60096dd0363bc2f0f5e2df27ba1dacd696c51aa7c9409f3193',
-  type: 'token_transfer',
-  token_type: 'ERC-20',
-  timestamp: '2022-10-10T14:34:30.000000Z',
-  block_number: '12345',
-  block_hash: '1',
-  log_index: '1',
-  method: 'transfer',
 };
 
 export const mixTokens: TokenTransferResponse = {

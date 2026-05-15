@@ -47,8 +47,11 @@ const TokenTransferTable = ({ data, top, showSocketInfo, showSocketErrorAlert, s
             { (NFT_TOKEN_TYPE_IDS.includes(tokenType)) &&
               <TableColumnHeader width={ hasTokenIds(tokenType) ? '50%' : '100%' }>Token ID</TableColumnHeader>
             }
-            { hasTokenTransferValue(tokenType) && (
-              <TableColumnHeader width={ (isFungibleTokenType(tokenType) || isConfidentialTokenType(tokenType)) ? '100%' : '50%' } isNumeric>
+            { hasTokenTransferValue(tokenType, chainData?.app_config) && (
+              <TableColumnHeader
+                width={ (isFungibleTokenType(tokenType, chainData?.app_config) || isConfidentialTokenType(tokenType)) ? '100%' : '50%' }
+                isNumeric
+              >
                 <TruncatedText text={ `Value ${ token?.symbol || '' }` } w="100%" verticalAlign="middle"/>
               </TableColumnHeader>
             ) }

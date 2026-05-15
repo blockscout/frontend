@@ -5,7 +5,7 @@ import { BigNumber } from 'bignumber.js';
 import React from 'react';
 
 import type { AddressTokensErc20Item } from 'client/slices/token/pages/address/types';
-import { getTokenTypeName } from 'client/slices/token/utils/token-types';
+import { getTokenTypeName, isConfidentialTokenType } from 'client/slices/token/utils/token-types';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
@@ -16,6 +16,7 @@ import { Tag } from 'toolkit/chakra/tag';
 import NativeTokenTag from 'ui/shared/celo/NativeTokenTag';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import calculateUsdValue from 'ui/shared/value/calculateUsdValue';
+import ConfidentialValue from 'ui/shared/value/ConfidentialValue';
 import SimpleValue from 'ui/shared/value/SimpleValue';
 
 interface Props {
@@ -87,22 +88,30 @@ const MultichainAddressTokensListItem = ({ data, isLoading }: Props) => {
         <Skeleton loading={ isLoading } fontWeight="500">
           <span>Quantity</span>
         </Skeleton>
-        <SimpleValue
-          value={ tokenQuantity }
-          loading={ isLoading }
-          color={ isNativeToken ? 'text.secondary' : undefined }
-        />
+        { isConfidentialTokenType(data.token.type) ? (
+          <ConfidentialValue loading={ isLoading }/>
+        ) : (
+          <SimpleValue
+            value={ tokenQuantity }
+            loading={ isLoading }
+            color={ isNativeToken ? 'text.secondary' : undefined }
+          />
+        ) }
         { data.token.exchange_rate && (
           <>
             <Skeleton loading={ isLoading } fontWeight="500">
               <span>Value</span>
             </Skeleton>
-            <SimpleValue
-              value={ tokenValue }
-              prefix="$"
-              loading={ isLoading }
-              color={ isNativeToken ? 'text.secondary' : undefined }
-            />
+            { isConfidentialTokenType(data.token.type) ? (
+              <ConfidentialValue loading={ isLoading }/>
+            ) : (
+              <SimpleValue
+                value={ tokenValue }
+                prefix="$"
+                loading={ isLoading }
+                color={ isNativeToken ? 'text.secondary' : undefined }
+              />
+            ) }
           </>
         ) }
       </Grid>

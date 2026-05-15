@@ -20,10 +20,14 @@ export interface AggregatedTokenInfo extends Pick<multichain.AggregatedTokenInfo
   reputation: null;
 }
 
-export interface AddressTokenItem extends Omit<multichain.ListAddressTokensResponse_AggregatedTokenBalanceInfo, 'token' | 'token_id'> {
+export interface AddressTokenItem extends
+  Omit<multichain.ListAddressTokensResponse_AggregatedTokenBalanceInfo, 'token' | 'token_id' | 'chain_values' | 'value'>
+{
   token: AggregatedTokenInfo;
   token_id: string | null;
   token_instance: null;
+  chain_values: Record<string, string | null>;
+  value: string | null;
 }
 
 export interface AddressTokensResponse extends Omit<multichain.ListAddressTokensResponse, 'items'> {

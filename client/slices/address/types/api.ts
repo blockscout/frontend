@@ -102,7 +102,7 @@ export interface AddressCounters {
 export interface AddressTokenBalance {
   token: TokenInfo;
   token_id: string | null;
-  value: string;
+  value: string | null;
   token_instance: TokenInstance | null;
 }
 export type AddressTokenBalancesResponse = Array<AddressTokenBalance>;
