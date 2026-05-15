@@ -1,6 +1,7 @@
 import React from 'react';
 
-import * as scrollTxnBatchesMock from 'mocks/scroll/txnBatches';
+import * as scrollTxnBatchesMock from 'client/features/rollup/scroll/mocks/txn-batches';
+
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect, devices } from 'playwright/lib';
 

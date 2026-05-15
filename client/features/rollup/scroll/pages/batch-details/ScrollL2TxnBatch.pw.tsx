@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { batchData } from 'mocks/scroll/txnBatches';
+import { batchData } from 'client/features/rollup/scroll/mocks/txn-batches';
+
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect, devices } from 'playwright/lib';
 

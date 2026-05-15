@@ -3,7 +3,7 @@
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import type { ScrollL2MessageItem } from 'types/api/scrollL2';
+import type { ScrollL2MessageItem } from 'client/features/rollup/scroll/types/api';
 
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 

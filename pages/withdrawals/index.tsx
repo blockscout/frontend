@@ -24,7 +24,7 @@ const Withdrawals = dynamic(() => {
   }
 
   if (rollupFeature.isEnabled && rollupFeature.type === 'scroll') {
-    return import('ui/pages/ScrollL2Withdrawals');
+    return import('client/features/rollup/scroll/pages/withdrawals/ScrollL2Withdrawals');
   }
 
   if (beaconChainFeature.isEnabled) {
