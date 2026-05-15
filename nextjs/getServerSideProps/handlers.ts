@@ -32,8 +32,9 @@ export const base = async <Pathname extends Route['pathname'] = never>({ req, re
 Promise<GetServerSidePropsResult<Props<Pathname>>> => {
   const appProfile = req.headers?.['x-app-profile'] || cookies.getFromCookieString(req.headers.cookie || '', cookies.NAMES.APP_PROFILE);
 
-  const cspNonceHeader = req.headers[CSP_NONCE_HEADER];
-  const cspNonce = (Array.isArray(cspNonceHeader) ? cspNonceHeader[0] : cspNonceHeader) || null;
+  const cspNonceHeader = res.getHeader(CSP_NONCE_HEADER);
+  const cspNonceValue = Array.isArray(cspNonceHeader) ? cspNonceHeader[0] : cspNonceHeader;
+  const cspNonce = cspNonceValue ? String(cspNonceValue) : null;
 
   const adBannerProvider = (() => {
     if (adBannerFeature.isEnabled) {
