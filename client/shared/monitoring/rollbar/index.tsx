@@ -59,6 +59,7 @@ export const clientConfig: Configuration | undefined = feature.isEnabled ? {
     const IGNORED_ORIGIN_FILE_NAMES_CHUNKS = [
       '/node_modules/@walletconnect',
       '/node_modules/@reown',
+      'chrome-extension://',
     ];
 
     if (originFileName && IGNORED_ORIGIN_FILE_NAMES_CHUNKS.some((chunk) => originFileName.includes(chunk))) {
