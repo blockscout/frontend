@@ -11,7 +11,7 @@ const rollupFeature = config.features.rollup;
 
 const Withdrawals = dynamic(() => {
   if (rollupFeature.isEnabled && rollupFeature.type === 'arbitrum') {
-    return import('ui/pages/ArbitrumL2TxnWithdrawals');
+    return import('client/features/rollup/arbitrum/pages/txn-withdrawals/ArbitrumL2TxnWithdrawals');
   }
 
   throw new Error('Txn withdrawals feature is not enabled.');

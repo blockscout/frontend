@@ -16,7 +16,7 @@ import LatestDeposits from 'client/features/rollup/common/pages/home/LatestDepos
 import useGradualIncrement from 'client/shared/hooks/useGradualIncrement';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
-import { ARBITRUM_MESSAGES_ITEM } from 'stubs/arbitrumL2';
+import { ARBITRUM_MESSAGES_ITEM } from '../../stubs';
 
 const LatestArbitrumDeposits = () => {
   const isMobile = useIsMobile();
