@@ -170,7 +170,7 @@ One PR per rollup type. Each goes under `client/features/rollup/<type>/`.
 - `ui/pages/ScrollL2TxnBatches.tsx`, `ScrollL2TxnBatch.tsx` → `client/features/rollup/scroll/pages/batches/` and `batch-details/`
 - `ui/pages/ScrollL2Deposits.tsx`, `ScrollL2Withdrawals.tsx` → `client/features/rollup/scroll/pages/deposits/` and `withdrawals/`
 
-### 4-6 · [ ] Feature: `rollup/shibarium`
+### 4-6 · [~] Feature: `rollup/shibarium` · [#3431](https://github.com/blockscout/frontend/issues/3431)
 
 ---
 
