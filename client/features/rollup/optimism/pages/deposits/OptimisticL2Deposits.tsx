@@ -5,11 +5,11 @@ import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import { layerLabels } from 'client/features/rollup/common/utils/layer';
 import OptimisticDepositsListItem from 'client/features/rollup/optimism/pages/deposits/OptimisticDepositsListItem';
 import OptimisticDepositsTable from 'client/features/rollup/optimism/pages/deposits/OptimisticDepositsTable';
 import { L2_DEPOSIT_ITEM } from 'client/features/rollup/optimism/stubs';
 
-import { layerLabels } from 'lib/rollups/utils';
 import { generateListStub } from 'stubs/utils';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { rightLineArrow, nbsp } from 'toolkit/utils/htmlEntities';

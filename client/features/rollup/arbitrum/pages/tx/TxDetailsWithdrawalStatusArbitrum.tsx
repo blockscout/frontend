@@ -9,8 +9,8 @@ import type { Transaction } from 'client/slices/tx/types/api';
 import { route } from 'nextjs-routes';
 
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
+import { layerLabels } from 'client/features/rollup/common/utils/layer';
 
-import { layerLabels } from 'lib/rollups/utils';
 import { Link } from 'toolkit/chakra/link';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import VerificationSteps from 'ui/shared/verificationSteps/VerificationSteps';

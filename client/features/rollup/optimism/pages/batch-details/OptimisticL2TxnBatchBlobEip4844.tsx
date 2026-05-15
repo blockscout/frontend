@@ -6,8 +6,8 @@ import React from 'react';
 import type { OptimisticL2BlobTypeEip4844 } from 'client/features/rollup/optimism/types/api';
 
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
+import { layerLabels } from 'client/features/rollup/common/utils/layer';
 
-import { layerLabels } from 'lib/rollups/utils';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 import BlobEntityL1 from 'ui/shared/entities/blob/BlobEntityL1';
 

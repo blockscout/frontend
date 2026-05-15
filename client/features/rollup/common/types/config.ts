@@ -1,7 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { ArrayElement } from 'types/utils';
-
 export const ROLLUP_TYPES = [
   'optimistic',
   'arbitrum',
@@ -10,7 +8,7 @@ export const ROLLUP_TYPES = [
   'scroll',
 ] as const;
 
-export type RollupType = ArrayElement<typeof ROLLUP_TYPES>;
+export type RollupType = (typeof ROLLUP_TYPES)[number];
 
 export interface ParentChain {
   id?: number;

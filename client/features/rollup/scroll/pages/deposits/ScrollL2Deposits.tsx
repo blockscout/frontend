@@ -5,9 +5,9 @@ import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import { layerLabels } from 'client/features/rollup/common/utils/layer';
 import { SCROLL_L2_MESSAGE_ITEM } from 'client/features/rollup/scroll/stubs';
 
-import { layerLabels } from 'lib/rollups/utils';
 import { generateListStub } from 'stubs/utils';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { rightLineArrow, nbsp } from 'toolkit/utils/htmlEntities';

@@ -154,8 +154,8 @@ One PR per rollup type. Each goes under `client/features/rollup/<type>/`.
 ### 4-4 · [~] Feature: `rollup/common` — shared types and utils · [#3432](https://github.com/blockscout/frontend/issues/3432)
 **Scope:** Migrate cross-rollup primitives shared by all rollup types.
 - `types/client/rollup.ts` (`ROLLUP_TYPES`, `RollupType`, `ParentChain`) → `client/features/rollup/common/types/config.ts`; inline `ArrayElement` to achieve zero imports (required for `configs/` compatibility)
-- `lib/rollups/utils.ts` → split: `layerLabels` → `client/features/rollup/common/utils/layer-labels.ts`; `formatZkSyncL2TxnBatchStatus` → `client/features/rollup/zk-sync/utils/format-txn-batch-status.ts` (coordinate with 4-3)
-- Update all import paths repo-wide. Delete `lib/rollups/utils.ts` and `types/client/rollup.ts`.
+- `client/features/rollup/common/utils/layer.ts` → split: `layerLabels` → `client/features/rollup/common/utils/layer-labels.ts`; `formatZkSyncL2TxnBatchStatus` → `client/features/rollup/zk-sync/utils/format-txn-batch-status.ts` (coordinate with 4-3)
+- Update all import paths repo-wide. Delete `client/features/rollup/common/utils/layer.ts` and `types/client/rollup.ts`.
 
 ### 4-5 · [~] Feature: `rollup/scroll` · [#3429](https://github.com/blockscout/frontend/issues/3429)
 **Scope:** Scroll-specific UI, hooks, utils, types → `client/features/rollup/scroll/`. Includes deposits, withdrawals, and txn batches pages.

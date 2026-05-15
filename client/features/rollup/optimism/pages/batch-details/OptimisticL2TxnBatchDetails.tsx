@@ -10,11 +10,11 @@ import { route } from 'nextjs-routes';
 
 import type { ResourceError } from 'client/api/resources';
 
+import { layerLabels } from 'client/features/rollup/common/utils/layer';
 import TxnBatchDA from 'client/features/rollup/optimism/components/TxnBatchDA';
 
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 
-import { layerLabels } from 'lib/rollups/utils';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';

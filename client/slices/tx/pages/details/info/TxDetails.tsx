@@ -34,6 +34,7 @@ import TxDetailsWithdrawalStatusArbitrum from 'client/features/rollup/arbitrum/p
 import * as arbitrum from 'client/features/rollup/arbitrum/utils/batch-verification';
 import BatchEntityL2 from 'client/features/rollup/common/components/BatchEntityL2';
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
+import { layerLabels } from 'client/features/rollup/common/utils/layer';
 import TxDetailsWithdrawalStatusOptimistic from 'client/features/rollup/optimism/pages/tx/TxDetailsWithdrawalStatusOptimistic';
 import TxInfoScrollFees from 'client/features/rollup/scroll/pages/tx/TxInfoScrollFees';
 import ZkSyncL2TxnBatchHashesInfo from 'client/features/rollup/zk-sync/pages/batch-details/ZkSyncL2TxnBatchHashesInfo';
@@ -44,7 +45,6 @@ import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-titl
 import { currencyUnits } from 'client/shared/chain/units';
 
 import config from 'configs/app';
-import { layerLabels } from 'lib/rollups/utils';
 import { Badge } from 'toolkit/chakra/badge';
 import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
 import { Link } from 'toolkit/chakra/link';

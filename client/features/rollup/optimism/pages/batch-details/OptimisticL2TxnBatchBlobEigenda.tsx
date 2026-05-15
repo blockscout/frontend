@@ -6,8 +6,8 @@ import React from 'react';
 import type { OptimisticL2BlobTypeEigenda } from 'client/features/rollup/optimism/types/api';
 
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
+import { layerLabels } from 'client/features/rollup/common/utils/layer';
 
-import { layerLabels } from 'lib/rollups/utils';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
