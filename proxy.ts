@@ -10,7 +10,10 @@ import * as middlewares from 'nextjs/middlewares/index';
 import appConfig from 'configs/app';
 
 const adsBannerFeature = appConfig.features.adsBanner;
-const shouldUseCspNonce = adsBannerFeature.isEnabled && adsBannerFeature.provider === 'sevio';
+const adsTextFeature = appConfig.features.adsText;
+const shouldUseCspNonce =
+  (adsBannerFeature.isEnabled && adsBannerFeature.provider === 'sevio') ||
+  (adsTextFeature.isEnabled && adsTextFeature.provider === 'sevio');
 
 export async function proxy(req: NextRequest) {
   const isPageRequest = req.headers.get('accept')?.includes('text/html');
