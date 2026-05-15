@@ -148,8 +148,25 @@ One PR per rollup type. Each goes under `client/features/rollup/<type>/`.
 ### 4-2 · [~] Feature: `rollup/arbitrum` · [#3423](https://github.com/blockscout/frontend/issues/3423)
 **Scope:** All Arbitrum-specific UI, hooks, utils, types → `client/features/rollup/arbitrum/`  
 
-### 4-3 · [ ] Feature: `rollup/zk-sync`
+### 4-3 · [~] Feature: `rollup/zk-sync` · [#3426](https://github.com/blockscout/frontend/issues/3426)
 **Scope:** zkSync-specific UI, hooks, utils, types → `client/features/rollup/zk-sync/`. Check for other zk-based rollup types (scroll, etc.) and add tasks if needed.  
+
+### 4-4 · [ ] Feature: `rollup/common` — shared types and utils
+
+### 4-5 · [ ] Feature: `rollup/scroll`
+**Scope:** Scroll-specific UI, hooks, utils, types → `client/features/rollup/scroll/`. Includes deposits, withdrawals, and txn batches pages.
+- `types/api/scrollL2.ts` → `client/features/rollup/scroll/types/api.ts` (2 files already started there)
+- `stubs/scrollL2.ts` → `client/features/rollup/scroll/stubs.ts`
+- `mocks/scroll/` → `client/features/rollup/scroll/mocks/`
+- `ui/shared/statusTag/ScrollL2TxnBatchStatus.tsx` → `client/features/rollup/scroll/components/`
+- `ui/shared/batch/ScrollL2TxnBatchDA.tsx` → `client/features/rollup/scroll/components/`
+- `ui/txnBatches/scrollL2/` → `client/features/rollup/scroll/pages/batches/`
+- `ui/deposits/scrollL2/` → `client/features/rollup/scroll/pages/deposits/`
+- `ui/withdrawals/scrollL2/` → `client/features/rollup/scroll/pages/withdrawals/`
+- `ui/pages/ScrollL2TxnBatches.tsx`, `ScrollL2TxnBatch.tsx` → `client/features/rollup/scroll/pages/batches/` and `batch-details/`
+- `ui/pages/ScrollL2Deposits.tsx`, `ScrollL2Withdrawals.tsx` → `client/features/rollup/scroll/pages/deposits/` and `withdrawals/`
+
+---
 
 ### 4-4 · [ ] Feature: `rollup/common` — shared types and utils
 **Scope:** Migrate cross-rollup primitives shared by all rollup types.
