@@ -5,18 +5,20 @@ import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import { SHIBARIUM_DEPOSIT_ITEM } from 'client/features/rollup/shibarium/stubs';
+
 import { layerLabels } from 'lib/rollups/utils';
-import { SHIBARIUM_DEPOSIT_ITEM } from 'stubs/shibarium';
 import { generateListStub } from 'stubs/utils';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { rightLineArrow, nbsp } from 'toolkit/utils/htmlEntities';
-import DepositsListItem from 'ui/deposits/shibarium/DepositsListItem';
-import DepositsTable from 'ui/deposits/shibarium/DepositsTable';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import StickyPaginationWithText from 'ui/shared/StickyPaginationWithText';
+
+import DepositsListItem from './DepositsListItem';
+import DepositsTable from './DepositsTable';
 
 const ShibariumDeposits = () => {
   const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({

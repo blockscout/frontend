@@ -5,8 +5,9 @@ import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import { SHIBARIUM_WITHDRAWAL_ITEM } from 'client/features/rollup/shibarium/stubs';
+
 import { layerLabels } from 'lib/rollups/utils';
-import { SHIBARIUM_WITHDRAWAL_ITEM } from 'stubs/shibarium';
 import { generateListStub } from 'stubs/utils';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { rightLineArrow, nbsp } from 'toolkit/utils/htmlEntities';
@@ -15,8 +16,9 @@ import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import StickyPaginationWithText from 'ui/shared/StickyPaginationWithText';
-import WithdrawalsListItem from 'ui/withdrawals/shibarium/WithdrawalsListItem';
-import WithdrawalsTable from 'ui/withdrawals/shibarium/WithdrawalsTable';
+
+import WithdrawalsListItem from './WithdrawalsListItem';
+import WithdrawalsTable from './WithdrawalsTable';
 
 const ShibariumWithdrawals = () => {
   const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({

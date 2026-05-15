@@ -20,7 +20,7 @@ const Withdrawals = dynamic(() => {
   }
 
   if (rollupFeature.isEnabled && rollupFeature.type === 'shibarium') {
-    return import('ui/pages/ShibariumWithdrawals');
+    return import('client/features/rollup/shibarium/pages/withdrawals/ShibariumWithdrawals');
   }
 
   if (rollupFeature.isEnabled && rollupFeature.type === 'scroll') {

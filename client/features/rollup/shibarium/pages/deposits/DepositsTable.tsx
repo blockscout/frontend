@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { ShibariumDepositsItem } from 'types/api/shibarium';
+import type { ShibariumDepositsItem } from 'client/features/rollup/shibarium/types/api';
 
 import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
 

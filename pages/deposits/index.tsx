@@ -20,7 +20,7 @@ const Deposits = dynamic(() => {
   }
 
   if (rollupFeature.isEnabled && rollupFeature.type === 'shibarium') {
-    return import('ui/pages/ShibariumDeposits');
+    return import('client/features/rollup/shibarium/pages/deposits/ShibariumDeposits');
   }
 
   if (rollupFeature.isEnabled && rollupFeature.type === 'scroll') {

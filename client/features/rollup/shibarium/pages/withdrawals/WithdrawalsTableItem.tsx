@@ -2,12 +2,12 @@
 
 import React from 'react';
 
-import type { ShibariumDepositsItem } from 'types/api/shibarium';
+import type { ShibariumWithdrawalsItem } from 'client/features/rollup/shibarium/types/api';
 
 import AddressStringOrParam from 'client/slices/address/components/entity/AddressStringOrParam';
+import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 
-import BlockEntityL1 from 'client/features/rollup/common/components/BlockEntityL1';
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
 
 import config from 'configs/app';
@@ -16,10 +16,9 @@ import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 const feature = config.features.rollup;
 
-type Props = { item: ShibariumDepositsItem; isLoading?: boolean };
+type Props = { item: ShibariumWithdrawalsItem; isLoading?: boolean };
 
-const DepositsTableItem = ({ item, isLoading }: Props) => {
-
+const WithdrawalsTableItem = ({ item, isLoading }: Props) => {
   if (!(feature.isEnabled && feature.type === 'shibarium')) {
     return null;
   }
@@ -27,11 +26,19 @@ const DepositsTableItem = ({ item, isLoading }: Props) => {
   return (
     <TableRow>
       <TableCell verticalAlign="middle">
-        <BlockEntityL1
-          number={ item.l1_block_number }
+        <BlockEntity
+          number={ item.l2_block_number }
           isLoading={ isLoading }
           textStyle="sm"
           fontWeight={ 600 }
+        />
+      </TableCell>
+      <TableCell verticalAlign="middle">
+        <TxEntity
+          isLoading={ isLoading }
+          hash={ item.l2_transaction_hash }
+          textStyle="sm"
+          truncation="constant_long"
         />
       </TableCell>
       <TableCell verticalAlign="middle">
@@ -41,14 +48,6 @@ const DepositsTableItem = ({ item, isLoading }: Props) => {
           truncation="constant_long"
           textStyle="sm"
           noCopy
-        />
-      </TableCell>
-      <TableCell verticalAlign="middle">
-        <TxEntity
-          isLoading={ isLoading }
-          hash={ item.l2_transaction_hash }
-          textStyle="sm"
-          truncation="constant_long"
         />
       </TableCell>
       <TableCell verticalAlign="middle">
@@ -63,12 +62,12 @@ const DepositsTableItem = ({ item, isLoading }: Props) => {
         <TimeWithTooltip
           timestamp={ item.timestamp }
           isLoading={ isLoading }
-          color="text.secondary"
           display="inline-block"
+          color="text.secondary"
         />
       </TableCell>
     </TableRow>
   );
 };
 
-export default DepositsTableItem;
+export default WithdrawalsTableItem;
