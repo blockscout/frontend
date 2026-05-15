@@ -142,7 +142,7 @@ One PR per rollup type. Each goes under `client/features/rollup/<type>/`.
 
 > Enumerate additional rollup tasks when this stage begins, based on what exists under `lib/rollups/` and `ui/`.
 
-### 4-1 · [ ] Feature: `rollup/optimism`
+### 4-1 · [~] Feature: `rollup/optimism` · [#3421](https://github.com/blockscout/frontend/issues/3421)
 **Scope:** All Optimism-specific UI, hooks, utils, types → `client/features/rollup/optimism/`. Includes fault proof system and dispute games.  
 
 ### 4-2 · [ ] Feature: `rollup/arbitrum`
@@ -150,6 +150,12 @@ One PR per rollup type. Each goes under `client/features/rollup/<type>/`.
 
 ### 4-3 · [ ] Feature: `rollup/zk-sync`
 **Scope:** zkSync-specific UI, hooks, utils, types → `client/features/rollup/zk-sync/`. Check for other zk-based rollup types (scroll, etc.) and add tasks if needed.  
+
+### 4-4 · [ ] Feature: `rollup/common` — shared types and utils
+**Scope:** Migrate cross-rollup primitives shared by all rollup types.
+- `types/client/rollup.ts` (`ROLLUP_TYPES`, `RollupType`, `ParentChain`) → `client/features/rollup/common/types/config.ts`; inline `ArrayElement` to achieve zero imports (required for `configs/` compatibility)
+- `lib/rollups/utils.ts` → split: `layerLabels` → `client/features/rollup/common/utils/layer-labels.ts`; `formatZkSyncL2TxnBatchStatus` → `client/features/rollup/zk-sync/utils/format-txn-batch-status.ts` (coordinate with 4-3)
+- Update all import paths repo-wide. Delete `lib/rollups/utils.ts` and `types/client/rollup.ts`.
 
 ---
 
