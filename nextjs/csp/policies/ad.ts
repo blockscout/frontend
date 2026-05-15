@@ -37,7 +37,7 @@ export function ad(nonce?: string): CspDev.DirectiveDescriptor {
 
       // sevio
       'cdn.adx.ws',
-      nonce ? `'nonce-${ nonce }'` : '',
+      ...(nonce ? [ `'nonce-${ nonce }'` ] : []),
     ],
     'img-src': [
       // adbutler
