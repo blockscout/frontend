@@ -11,9 +11,9 @@ import {
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
+import { ZKSYNC_L2_TX_BATCH_STATUSES } from 'client/features/rollup/zk-sync/types/api';
 import type { Transaction } from 'client/slices/tx/types/api';
 import { SCROLL_L2_BLOCK_STATUSES } from 'types/api/scrollL2';
-import { ZKSYNC_L2_TX_BATCH_STATUSES } from 'types/api/zkSyncL2';
 
 import { route } from 'nextjs-routes';
 
@@ -36,13 +36,15 @@ import BatchEntityL2 from 'client/features/rollup/common/components/BatchEntityL
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
 import TxDetailsWithdrawalStatusOptimistic from 'client/features/rollup/optimism/pages/tx/TxDetailsWithdrawalStatusOptimistic';
 import TxInfoScrollFees from 'client/features/rollup/scroll/pages/tx/TxInfoScrollFees';
+import ZkSyncL2TxnBatchHashesInfo from 'client/features/rollup/zk-sync/pages/batch-details/ZkSyncL2TxnBatchHashesInfo';
+import { formatZkSyncL2TxnBatchStatus } from 'client/features/rollup/zk-sync/utils/format-txn-batch-status';
 import TxDetailsActions from 'client/features/tx-actions/pages/tx/TxDetailsActions';
 
 import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-title';
 import { currencyUnits } from 'client/shared/chain/units';
 
 import config from 'configs/app';
-import { formatZkSyncL2TxnBatchStatus, layerLabels } from 'lib/rollups/utils';
+import { layerLabels } from 'lib/rollups/utils';
 import { Badge } from 'toolkit/chakra/badge';
 import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
 import { Link } from 'toolkit/chakra/link';
@@ -60,7 +62,6 @@ import Utilization from 'ui/shared/Utilization/Utilization';
 import GasPriceValue from 'ui/shared/value/GasPriceValue';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 import VerificationSteps from 'ui/shared/verificationSteps/VerificationSteps';
-import ZkSyncL2TxnBatchHashesInfo from 'ui/txnBatches/zkSyncL2/ZkSyncL2TxnBatchHashesInfo';
 
 import TxDetailsBurntFees from './parts/TxDetailsBurntFees';
 import TxDetailsFeePerGas from './parts/TxDetailsFeePerGas';

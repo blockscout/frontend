@@ -1,4 +1,4 @@
-import type { ZkSyncBatch, ZkSyncBatchesItem } from 'types/api/zkSyncL2';
+import type { ZkSyncBatch, ZkSyncBatchesItem } from 'client/features/rollup/zk-sync/types/api';
 
 import { TX_HASH } from 'client/slices/tx/stubs/tx';
 

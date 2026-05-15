@@ -2,12 +2,11 @@
 
 import React from 'react';
 
-import type { ZkSyncBatchStatus } from 'types/api/zkSyncL2';
+import type { ZkSyncBatchStatus } from 'client/features/rollup/zk-sync/types/api';
 
 import { layerLabels } from 'lib/rollups/utils';
-
-import type { StatusTagType } from './StatusTag';
-import StatusTag from './StatusTag';
+import type { StatusTagType } from 'ui/shared/statusTag/StatusTag';
+import StatusTag from 'ui/shared/statusTag/StatusTag';
 
 export interface Props {
   status: ZkSyncBatchStatus;

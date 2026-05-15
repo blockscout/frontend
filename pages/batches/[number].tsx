@@ -22,7 +22,7 @@ const Batch = dynamic(() => {
     case 'optimistic':
       return import('client/features/rollup/optimism/pages/batch-details/OptimisticL2TxnBatch');
     case 'zkSync':
-      return import('ui/pages/ZkSyncL2TxnBatch');
+      return import('client/features/rollup/zk-sync/pages/batch-details/ZkSyncL2TxnBatch');
     case 'scroll':
       return import('ui/pages/ScrollL2TxnBatch');
   }

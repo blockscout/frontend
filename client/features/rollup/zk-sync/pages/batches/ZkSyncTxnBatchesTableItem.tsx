@@ -3,17 +3,17 @@
 import { Text } from '@chakra-ui/react';
 import React from 'react';
 
-import type { ZkSyncBatchesItem } from 'types/api/zkSyncL2';
+import type { ZkSyncBatchesItem } from 'client/features/rollup/zk-sync/types/api';
 
 import { route } from 'nextjs-routes';
 
 import BatchEntityL2 from 'client/features/rollup/common/components/BatchEntityL2';
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
+import ZkSyncL2TxnBatchStatus from 'client/features/rollup/zk-sync/components/ZkSyncL2TxnBatchStatus';
 
 import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
-import ZkSyncL2TxnBatchStatus from 'ui/shared/statusTag/ZkSyncL2TxnBatchStatus';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 const rollupFeature = config.features.rollup;

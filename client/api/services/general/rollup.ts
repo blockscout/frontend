@@ -29,6 +29,7 @@ import type {
   OptimismL2BatchTxs,
   OptimismL2BatchBlocks,
 } from 'client/features/rollup/optimism/types/api';
+import type { ZkSyncBatch, ZkSyncBatchesResponse, ZkSyncBatchTxs } from 'client/features/rollup/zk-sync/types/api';
 import type { MudWorldsResponse } from 'types/api/mudWorlds';
 import type {
   ScrollL2BatchesResponse,
@@ -38,7 +39,6 @@ import type {
   ScrollL2MessagesResponse,
 } from 'types/api/scrollL2';
 import type { ShibariumWithdrawalsResponse, ShibariumDepositsResponse } from 'types/api/shibarium';
-import type { ZkSyncBatch, ZkSyncBatchesResponse, ZkSyncBatchTxs } from 'types/api/zkSyncL2';
 
 export const GENERAL_API_ROLLUP_RESOURCES = {
   optimistic_l2_deposits: {
