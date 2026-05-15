@@ -33,7 +33,7 @@ import TxDetailsInterop from 'client/features/op-interop/pages/tx/TxDetailsInter
 import TxDetailsWithdrawalStatusArbitrum from 'client/features/rollup/arbitrum/pages/tx/TxDetailsWithdrawalStatusArbitrum';
 import BatchEntityL2 from 'client/features/rollup/common/components/BatchEntityL2';
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
-import TxDetailsWithdrawalStatusOptimistic from 'client/features/rollup/optimistic/pages/tx/TxDetailsWithdrawalStatusOptimistic';
+import TxDetailsWithdrawalStatusOptimistic from 'client/features/rollup/optimism/pages/tx/TxDetailsWithdrawalStatusOptimistic';
 import TxInfoScrollFees from 'client/features/rollup/scroll/pages/tx/TxInfoScrollFees';
 import TxDetailsActions from 'client/features/tx-actions/pages/tx/TxDetailsActions';
 

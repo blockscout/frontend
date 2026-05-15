@@ -12,7 +12,7 @@ const beaconChainFeature = config.features.beaconChain;
 
 const Deposits = dynamic(() => {
   if (rollupFeature.isEnabled && rollupFeature.type === 'optimistic') {
-    return import('ui/pages/OptimisticL2Deposits');
+    return import('client/features/rollup/optimism/pages/deposits/OptimisticL2Deposits');
   }
 
   if (rollupFeature.isEnabled && rollupFeature.type === 'arbitrum') {

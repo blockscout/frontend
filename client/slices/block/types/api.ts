@@ -5,7 +5,7 @@ import type { BlockRootstock } from 'client/features/chain-variants/rootstock/ty
 import type { BlockZilliqa } from 'client/features/chain-variants/zilliqa/types/api';
 import type { BlockDataAvailability } from 'client/features/data-availability/types/api';
 import type { BlockArbitrum } from 'client/features/rollup/arbitrum/types/api';
-import type { BlockOptimism } from 'client/features/rollup/optimistic/types/api';
+import type { BlockOptimism } from 'client/features/rollup/optimism/types/api';
 import type { BlockZkSync } from 'client/features/rollup/zk-sync/types/api';
 import type { AddressParam } from 'client/slices/address/types/api';
 import type { InternalTransaction } from 'client/slices/internal-tx/types/api';

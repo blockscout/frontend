@@ -9,17 +9,7 @@ import type {
   AddressMudRecordsSorting,
   AddressMudRecord,
   SmartContractMudSystemsResponse, SmartContractMudSystemInfo } from 'client/features/chain-variants/mud/types/api';
-import type {
-  ArbitrumL2MessagesResponse,
-  ArbitrumL2TxnBatch,
-  ArbitrumL2TxnBatchesResponse,
-  ArbitrumL2BatchTxs,
-  ArbitrumL2BatchBlocks,
-  ArbitrumL2TxnWithdrawalsResponse,
-  ArbitrumL2MessageClaimResponse,
-} from 'types/api/arbitrumL2';
-import type { InteropMessageListResponse } from 'types/api/interop';
-import type { MudWorldsResponse } from 'types/api/mudWorlds';
+import type { InteropMessageListResponse } from 'client/features/op-interop/types/api';
 import type {
   OptimisticL2DepositsResponse,
   OptimisticL2OutputRootsResponse,
@@ -29,7 +19,17 @@ import type {
   OptimismL2TxnBatch,
   OptimismL2BatchTxs,
   OptimismL2BatchBlocks,
-} from 'types/api/optimisticL2';
+} from 'client/features/rollup/optimism/types/api';
+import type {
+  ArbitrumL2MessagesResponse,
+  ArbitrumL2TxnBatch,
+  ArbitrumL2TxnBatchesResponse,
+  ArbitrumL2BatchTxs,
+  ArbitrumL2BatchBlocks,
+  ArbitrumL2TxnWithdrawalsResponse,
+  ArbitrumL2MessageClaimResponse,
+} from 'types/api/arbitrumL2';
+import type { MudWorldsResponse } from 'types/api/mudWorlds';
 import type {
   ScrollL2BatchesResponse,
   ScrollL2TxnBatch,

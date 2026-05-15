@@ -12,7 +12,7 @@ const beaconChainFeature = config.features.beaconChain;
 
 const Withdrawals = dynamic(() => {
   if (rollupFeature.isEnabled && rollupFeature.type === 'optimistic') {
-    return import('ui/pages/OptimisticL2Withdrawals');
+    return import('client/features/rollup/optimism/pages/withdrawals/OptimisticL2Withdrawals');
   }
 
   if (rollupFeature.isEnabled && rollupFeature.type === 'arbitrum') {
