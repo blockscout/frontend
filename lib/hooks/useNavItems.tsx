@@ -5,8 +5,9 @@ import React from 'react';
 
 import type { NavItemInternal, NavItem, NavGroupItem } from 'types/client/navigation';
 
+import { layerLabels } from 'client/features/rollup/common/utils/layer';
+
 import config from 'configs/app';
-import { layerLabels } from 'lib/rollups/utils';
 import { rightLineArrow } from 'toolkit/utils/htmlEntities';
 
 const marketplaceFeature = config.features.marketplace;

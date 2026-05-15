@@ -2,7 +2,7 @@
 
 import type { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 
-import type { RollupType } from 'types/client/rollup';
+import type { RollupType } from 'client/features/rollup/common/types/config';
 
 import type { Route } from 'nextjs-routes';
 import type { Props } from 'nextjs/getServerSideProps/handlers';

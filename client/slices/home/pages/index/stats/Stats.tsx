@@ -14,9 +14,9 @@ import type { HomeStatsItem } from 'client/slices/home/utils/stats';
 import { homeStatsWidgetCommonStyles, isHomeStatsItemEnabled, sortHomeStatsItems } from 'client/slices/home/utils/stats';
 
 import { HOMEPAGE_STATS_MICROSERVICE } from 'client/features/chain-stats/stubs/home';
+import { layerLabels } from 'client/features/rollup/common/utils/layer';
 
 import config from 'configs/app';
-import { layerLabels } from 'lib/rollups/utils';
 import IconSvg from 'ui/shared/IconSvg';
 import StatsWidget from 'ui/shared/stats/StatsWidget';
 import { WEI } from 'ui/shared/value/utils';

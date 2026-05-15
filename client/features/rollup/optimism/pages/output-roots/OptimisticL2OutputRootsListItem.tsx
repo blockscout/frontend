@@ -7,9 +7,9 @@ import type { OptimisticL2OutputRootsItem } from 'client/features/rollup/optimis
 
 import BlockEntityL2 from 'client/features/rollup/common/components/BlockEntityL2';
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
+import { layerLabels } from 'client/features/rollup/common/utils/layer';
 
 import config from 'configs/app';
-import { layerLabels } from 'lib/rollups/utils';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import HashStringShorten from 'ui/shared/HashStringShorten';

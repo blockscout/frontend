@@ -4,7 +4,8 @@ import React from 'react';
 
 import type { ZkSyncBatchStatus } from 'client/features/rollup/zk-sync/types/api';
 
-import { layerLabels } from 'lib/rollups/utils';
+import { layerLabels } from 'client/features/rollup/common/utils/layer';
+
 import type { StatusTagType } from 'ui/shared/statusTag/StatusTag';
 import StatusTag from 'ui/shared/statusTag/StatusTag';
 

@@ -4,8 +4,9 @@ import { getFeaturePayload } from 'configs/app/features/types';
 
 import type { Route } from 'nextjs-routes';
 
+import { layerLabels } from 'client/features/rollup/common/utils/layer';
+
 import config from 'configs/app';
-import { layerLabels } from 'lib/rollups/utils';
 
 const dappEntityName = (getFeaturePayload(config.features.marketplace)?.titles.entity_name ?? '').toLowerCase();
 

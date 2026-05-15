@@ -11,9 +11,9 @@ import AddressEntityInterop from 'client/features/op-interop/components/AddressE
 import InteropMessageDestinationTx from 'client/features/op-interop/components/InteropMessageDestinationTx';
 import InteropMessageSourceTx from 'client/features/op-interop/components/InteropMessageSourceTx';
 import InteropMessageStatus from 'client/features/op-interop/components/InteropMessageStatus';
+import { layerLabels } from 'client/features/rollup/common/utils/layer';
 
 import config from 'configs/app';
-import { layerLabels } from 'lib/rollups/utils';
 import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
