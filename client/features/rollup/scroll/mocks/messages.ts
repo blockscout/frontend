@@ -1,4 +1,4 @@
-import type { ScrollL2MessagesResponse } from 'types/api/scrollL2';
+import type { ScrollL2MessagesResponse } from 'client/features/rollup/scroll/types/api';
 
 export const baseResponse: ScrollL2MessagesResponse = {
   items: [

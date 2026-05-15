@@ -1,4 +1,4 @@
-import type { ScrollL2BatchesResponse } from 'types/api/scrollL2';
+import type { ScrollL2BatchesResponse } from 'client/features/rollup/scroll/types/api';
 
 export const batchData = {
   number: 66928,

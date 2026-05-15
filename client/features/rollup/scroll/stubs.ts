@@ -1,4 +1,4 @@
-import type { ScrollL2MessageItem, ScrollL2TxnBatch } from 'types/api/scrollL2';
+import type { ScrollL2MessageItem, ScrollL2TxnBatch } from 'client/features/rollup/scroll/types/api';
 
 import { TX_HASH } from 'client/slices/tx/stubs/tx';
 

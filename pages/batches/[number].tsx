@@ -24,7 +24,7 @@ const Batch = dynamic(() => {
     case 'zkSync':
       return import('client/features/rollup/zk-sync/pages/batch-details/ZkSyncL2TxnBatch');
     case 'scroll':
-      return import('ui/pages/ScrollL2TxnBatch');
+      return import('client/features/rollup/scroll/pages/batch-details/ScrollL2TxnBatch');
   }
   throw new Error('Txn batches feature is not enabled.');
 }, { ssr: false });

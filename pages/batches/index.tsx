@@ -22,7 +22,7 @@ const Batches = dynamic(() => {
     case 'arbitrum':
       return import('client/features/rollup/arbitrum/pages/batches/ArbitrumL2TxnBatches');
     case 'scroll':
-      return import('ui/pages/ScrollL2TxnBatches');
+      return import('client/features/rollup/scroll/pages/batches/ScrollL2TxnBatches');
   }
   throw new Error('Txn batches feature is not enabled.');
 }, { ssr: false });

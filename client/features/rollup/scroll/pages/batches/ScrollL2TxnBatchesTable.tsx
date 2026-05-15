@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { ScrollL2TxnBatch } from 'types/api/scrollL2';
+import type { ScrollL2TxnBatch } from 'client/features/rollup/scroll/types/api';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';

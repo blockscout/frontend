@@ -1,6 +1,7 @@
 import React from 'react';
 
-import * as messagesMock from 'mocks/scroll/messages';
+import * as messagesMock from 'client/features/rollup/scroll/mocks/messages';
+
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect, devices } from 'playwright/lib';
 

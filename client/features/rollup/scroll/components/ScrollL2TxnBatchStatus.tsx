@@ -2,8 +2,8 @@
 
 import React from 'react';
 
-import type { StatusTagType } from './StatusTag';
-import StatusTag from './StatusTag';
+import type { StatusTagType } from 'ui/shared/statusTag/StatusTag';
+import StatusTag from 'ui/shared/statusTag/StatusTag';
 
 export interface Props {
   status: 'Finalized' | 'Committed';

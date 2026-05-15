@@ -3,7 +3,7 @@
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import type { ScrollL2MessageItem } from 'types/api/scrollL2';
+import type { ScrollL2MessageItem } from 'client/features/rollup/scroll/types/api';
 
 import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
@@ -11,9 +11,8 @@ import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
 
 import config from 'configs/app';
-import { layerLabels } from 'lib/rollups/utils';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
+import { TableCell, TableRow } from 'toolkit/chakra/table';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
@@ -21,74 +20,65 @@ const rollupFeature = config.features.rollup;
 
 type Props = { item: ScrollL2MessageItem; isLoading?: boolean };
 
-const ScrollL2WithdrawalsListItem = ({ item, isLoading }: Props) => {
+const ScrollL2WithdrawalsTableItem = ({ item, isLoading }: Props) => {
   if (!rollupFeature.isEnabled || rollupFeature.type !== 'scroll') {
     return null;
   }
 
   return (
-    <ListItemMobileGrid.Container>
-
-      <ListItemMobileGrid.Label isLoading={ isLoading }>{ layerLabels.current } block</ListItemMobileGrid.Label>
-      <ListItemMobileGrid.Value>
+    <TableRow>
+      <TableCell verticalAlign="middle">
         <BlockEntity
           number={ item.origination_transaction_block_number }
           isLoading={ isLoading }
           fontWeight={ 600 }
+          noIcon
         />
-      </ListItemMobileGrid.Value>
-
-      <ListItemMobileGrid.Label isLoading={ isLoading }>Index</ListItemMobileGrid.Label>
-      <ListItemMobileGrid.Value>
-        <Skeleton loading={ isLoading } display="inline-block">
-          { item.id }
+      </TableCell>
+      <TableCell verticalAlign="middle">
+        <Skeleton loading={ isLoading }>
+          <span>{ item.id }</span>
         </Skeleton>
-      </ListItemMobileGrid.Value>
-
-      <ListItemMobileGrid.Label isLoading={ isLoading }>{ layerLabels.current } txn hash</ListItemMobileGrid.Label>
-      <ListItemMobileGrid.Value>
+      </TableCell>
+      <TableCell verticalAlign="middle">
         <TxEntity
           isLoading={ isLoading }
           hash={ item.origination_transaction_hash }
           truncation="constant_long"
+          noIcon
         />
-      </ListItemMobileGrid.Value>
-
-      <ListItemMobileGrid.Label isLoading={ isLoading }>Age</ListItemMobileGrid.Label>
-      <ListItemMobileGrid.Value>
+      </TableCell>
+      <TableCell verticalAlign="middle" pr={ 12 }>
         <TimeWithTooltip
           timestamp={ item.origination_timestamp }
           isLoading={ isLoading }
-          display="inline-block"
+          color="text.secondary"
         />
-      </ListItemMobileGrid.Value>
-
-      <ListItemMobileGrid.Label isLoading={ isLoading }>{ layerLabels.parent } txn hash</ListItemMobileGrid.Label>
-      <ListItemMobileGrid.Value>
+      </TableCell>
+      <TableCell verticalAlign="middle">
         { item.completion_transaction_hash ? (
           <TxEntityL1
             isLoading={ isLoading }
             hash={ item.completion_transaction_hash }
             truncation="constant_long"
+            noIcon
             noCopy
           />
         ) : (
-          <chakra.span>
+          <chakra.span color="text.secondary">
             Pending Claim
           </chakra.span>
         ) }
-      </ListItemMobileGrid.Value>
-
-      <ListItemMobileGrid.Label isLoading={ isLoading }>Value</ListItemMobileGrid.Label>
-      <ListItemMobileGrid.Value>
+      </TableCell>
+      <TableCell verticalAlign="middle" isNumeric>
         <NativeCoinValue
           amount={ item.value }
+          noSymbol
           loading={ isLoading }
         />
-      </ListItemMobileGrid.Value>
-
-    </ListItemMobileGrid.Container>
+      </TableCell>
+    </TableRow>
   );
 };
 
-export default ScrollL2WithdrawalsListItem;
+export default ScrollL2WithdrawalsTableItem;
