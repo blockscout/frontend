@@ -9,6 +9,7 @@ import type { BannerProps } from './types';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
 import config from 'configs/app';
+import { useAppContext } from 'lib/contexts/app';
 import { isBrowser } from 'toolkit/utils/isBrowser';
 
 import {
@@ -23,6 +24,7 @@ const adsBannerFeature = config.features.adsBanner;
 const SevioBanner = ({ className, format = 'responsive' }: BannerProps) => {
   const isInBrowser = isBrowser();
   const isMobileViewport = useIsMobile();
+  const { cspNonce } = useAppContext();
   const isMobile = format === 'mobile' || (format === 'responsive' && isMobileViewport);
 
   const { width, height } = (() => {
@@ -60,7 +62,7 @@ const SevioBanner = ({ className, format = 'responsive' }: BannerProps) => {
       h={ height ? `${ height }px` : { base: `${ MOBILE_BANNER_HEIGHT }px`, lg: `${ DESKTOP_BANNER_HEIGHT }px` } }
       w={ width ? `${ width }px` : undefined }
     >
-      <Script strategy="lazyOnload" src="https://cdn.adx.ws/scripts/loader.js"/>
+      <Script strategy="lazyOnload" nonce={ cspNonce ?? undefined } src="https://cdn.adx.ws/scripts/loader.js"/>
       <div className="sevioads" data-zone={ zone }></div>
     </Flex>
   );
