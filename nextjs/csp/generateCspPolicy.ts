@@ -3,11 +3,11 @@
 import * as descriptors from './policies';
 import { makePolicyString, mergeDescriptors } from './utils';
 
-function generateCspPolicy(isPrivateMode = false) {
+function generateCspPolicy(isPrivateMode = false, nonce?: string) {
   const policyDescriptor = mergeDescriptors(
     descriptors.app(isPrivateMode),
     // Exclude tracking/analytics sources in private mode
-    isPrivateMode ? {} : descriptors.ad(),
+    isPrivateMode ? {} : descriptors.ad(nonce),
     isPrivateMode ? {} : descriptors.blockchainInteraction(),
     descriptors.cloudFlare(),
     descriptors.flashblocks(),

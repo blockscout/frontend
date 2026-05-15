@@ -6,14 +6,14 @@ import type CspDev from 'csp-dev';
 
 import { connectAdbutler, placeAd } from 'ui/shared/ad/adbutlerScript';
 
-export function ad(): CspDev.DirectiveDescriptor {
+export function ad(nonce?: string): CspDev.DirectiveDescriptor {
   return {
     'connect-src': [
       // sevio
       '*.adx.ws',
+      'https://request.adx.ws',
       'https://id5-sync.com',
       'https://lb.eu-1-id5-sync.com/lb/v1',
-      'https://request-global.czilladx.com',
 
       // adbutler
       'servedbyadbutler.com',
@@ -24,10 +24,7 @@ export function ad(): CspDev.DirectiveDescriptor {
       // specify
       'app.specify.sh',
     ],
-    'frame-src': [
-      // sevio
-      'https://request-global.czilladx.com',
-    ],
+    'frame-src': [],
     'script-src': [
       // adbutler
       'servedbyadbutler.com',
@@ -40,6 +37,7 @@ export function ad(): CspDev.DirectiveDescriptor {
 
       // sevio
       'cdn.adx.ws',
+      nonce ? `'nonce-${ nonce }'` : '',
     ],
     'img-src': [
       // adbutler
@@ -47,7 +45,6 @@ export function ad(): CspDev.DirectiveDescriptor {
 
       // sevio
       '*.adx.ws',
-      'https://request-global.czilladx.com',
     ],
     'font-src': [],
   };

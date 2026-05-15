@@ -17,6 +17,7 @@ const AppContext = createContext<PageProps>({
   adBannerProvider: null,
   apiData: null,
   uuid: '',
+  cspNonce: null,
 });
 
 export function AppContextProvider({ children, pageProps }: Props) {
