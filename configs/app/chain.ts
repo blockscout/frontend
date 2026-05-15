@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import type { RollupType } from 'client/features/rollup/common/types/config';
 import type { AdditionalTokenType } from 'client/slices/token/types/client';
-import type { RollupType } from 'types/client/rollup';
 import type { NetworkVerificationType, NetworkVerificationTypeEnvs } from 'types/networks';
 
 import { urlValidator } from 'toolkit/components/forms/validators/url';

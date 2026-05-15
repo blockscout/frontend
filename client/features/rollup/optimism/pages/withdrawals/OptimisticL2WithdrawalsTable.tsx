@@ -6,7 +6,8 @@ import type { OptimisticL2WithdrawalsItem } from 'client/features/rollup/optimis
 
 import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
 
-import { layerLabels } from 'lib/rollups/utils';
+import { layerLabels } from 'client/features/rollup/common/utils/layer';
+
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 

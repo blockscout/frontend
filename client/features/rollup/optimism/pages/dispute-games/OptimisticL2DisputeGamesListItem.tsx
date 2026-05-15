@@ -5,9 +5,9 @@ import React from 'react';
 import type { OptimisticL2DisputeGamesItem } from 'client/features/rollup/optimism/types/api';
 
 import BlockEntityL2 from 'client/features/rollup/common/components/BlockEntityL2';
+import { layerLabels } from 'client/features/rollup/common/utils/layer';
 
 import config from 'configs/app';
-import { layerLabels } from 'lib/rollups/utils';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import HashStringShorten from 'ui/shared/HashStringShorten';

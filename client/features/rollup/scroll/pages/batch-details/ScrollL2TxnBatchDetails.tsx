@@ -12,12 +12,12 @@ import type { ResourceError } from 'client/api/resources';
 
 import BlockEntityL1 from 'client/features/rollup/common/components/BlockEntityL1';
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
+import { layerLabels } from 'client/features/rollup/common/utils/layer';
 import ScrollL2TxnBatchDA from 'client/features/rollup/scroll/components/ScrollL2TxnBatchDA';
 import ScrollL2TxnBatchStatus from 'client/features/rollup/scroll/components/ScrollL2TxnBatchStatus';
 
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 
-import { layerLabels } from 'lib/rollups/utils';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';

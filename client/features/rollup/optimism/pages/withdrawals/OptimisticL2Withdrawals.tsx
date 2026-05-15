@@ -5,11 +5,11 @@ import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import { layerLabels } from 'client/features/rollup/common/utils/layer';
 import OptimisticL2WithdrawalsListItem from 'client/features/rollup/optimism/pages/withdrawals/OptimisticL2WithdrawalsListItem';
 import OptimisticL2WithdrawalsTable from 'client/features/rollup/optimism/pages/withdrawals/OptimisticL2WithdrawalsTable';
 import { L2_WITHDRAWAL_ITEM } from 'client/features/rollup/optimism/stubs';
 
-import { layerLabels } from 'lib/rollups/utils';
 import { generateListStub } from 'stubs/utils';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { rightLineArrow, nbsp } from 'toolkit/utils/htmlEntities';

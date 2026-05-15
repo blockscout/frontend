@@ -11,10 +11,10 @@ import LatestWatchlistTxs from 'client/features/account/pages/home/LatestWatchli
 import LatestZetaChainCCTXs from 'client/features/chain-variants/zeta-chain/pages/home/LatestZetaChainCCTXs';
 import LatestCrossChainTxs from 'client/features/cross-chain-txs/pages/home/LatestCrossChainTxs';
 import LatestArbitrumDeposits from 'client/features/rollup/arbitrum/pages/home/LatestArbitrumDeposits';
+import { layerLabels } from 'client/features/rollup/common/utils/layer';
 import LatestOptimisticDeposits from 'client/features/rollup/optimism/pages/home/LatestOptimisticDeposits';
 
 import config from 'configs/app';
-import { layerLabels } from 'lib/rollups/utils';
 import { Heading } from 'toolkit/chakra/heading';
 import AdaptiveTabs from 'toolkit/components/AdaptiveTabs/AdaptiveTabs';
 import FallbackRpcIcon from 'ui/shared/fallbacks/FallbackRpcIcon';

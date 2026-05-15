@@ -6,9 +6,10 @@ import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import { layerLabels } from 'client/features/rollup/common/utils/layer';
+
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
-import { layerLabels } from 'lib/rollups/utils';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import { FormFieldError } from 'toolkit/components/forms/components/FormFieldError';
 import { TRANSACTION_HASH_REGEXP } from 'toolkit/components/forms/validators/transaction';

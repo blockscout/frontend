@@ -4,7 +4,8 @@ import React from 'react';
 
 import type { OptimisticL2DisputeGamesItem } from 'client/features/rollup/optimism/types/api';
 
-import { layerLabels } from 'lib/rollups/utils';
+import { layerLabels } from 'client/features/rollup/common/utils/layer';
+
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 

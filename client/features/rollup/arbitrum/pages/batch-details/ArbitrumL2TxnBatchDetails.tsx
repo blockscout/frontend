@@ -13,10 +13,10 @@ import type { ResourceError } from 'client/api/resources';
 
 import BlockEntityL1 from 'client/features/rollup/common/components/BlockEntityL1';
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
+import { layerLabels } from 'client/features/rollup/common/utils/layer';
 
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 
-import { layerLabels } from 'lib/rollups/utils';
 import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';

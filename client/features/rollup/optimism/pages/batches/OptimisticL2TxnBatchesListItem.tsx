@@ -7,10 +7,10 @@ import type { OptimisticL2TxnBatchesItem } from 'client/features/rollup/optimism
 import { route } from 'nextjs-routes';
 
 import BatchEntityL2 from 'client/features/rollup/common/components/BatchEntityL2';
+import { layerLabels } from 'client/features/rollup/common/utils/layer';
 import OptimisticL2TxnBatchDA from 'client/features/rollup/optimism/components/TxnBatchDA';
 
 import config from 'configs/app';
-import { layerLabels } from 'lib/rollups/utils';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';

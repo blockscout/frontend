@@ -5,9 +5,9 @@ import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import { layerLabels } from 'client/features/rollup/common/utils/layer';
 import { SHIBARIUM_DEPOSIT_ITEM } from 'client/features/rollup/shibarium/stubs';
 
-import { layerLabels } from 'lib/rollups/utils';
 import { generateListStub } from 'stubs/utils';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { rightLineArrow, nbsp } from 'toolkit/utils/htmlEntities';

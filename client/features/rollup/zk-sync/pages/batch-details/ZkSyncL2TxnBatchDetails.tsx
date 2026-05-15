@@ -11,13 +11,13 @@ import { route } from 'nextjs/routes';
 
 import type { ResourceError } from 'client/api/resources';
 
+import { layerLabels } from 'client/features/rollup/common/utils/layer';
 import { formatZkSyncL2TxnBatchStatus } from 'client/features/rollup/zk-sync/utils/format-txn-batch-status';
 
 import { currencyUnits } from 'client/shared/chain/units';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 
 import config from 'configs/app';
-import { layerLabels } from 'lib/rollups/utils';
 import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
