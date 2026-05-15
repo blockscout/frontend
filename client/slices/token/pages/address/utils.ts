@@ -120,7 +120,7 @@ export const calculateUsdValue = (data: AddressTokenBalance): TokenEnhancedData 
   const decimals = Number(data.token.decimals || '18');
   return {
     ...data,
-    usd: BigNumber(data.value).div(BigNumber(10 ** decimals)).multipliedBy(BigNumber(exchangeRate)),
+    usd: BigNumber(data.value ?? '0').div(BigNumber(10 ** decimals)).multipliedBy(BigNumber(exchangeRate)),
   };
 };
 

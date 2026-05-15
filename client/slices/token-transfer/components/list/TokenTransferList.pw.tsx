@@ -4,6 +4,8 @@ import React from 'react';
 import * as tokenTransferMock from 'client/slices/token-transfer/mocks';
 import * as tokenInstanceMock from 'client/slices/token/mocks/instance';
 
+import { erc7984 } from 'client/features/fhe-operations/mocks/token-transfer';
+
 import { test, expect, devices } from 'playwright/lib';
 
 import TokenTransferList from './TokenTransferList';
@@ -23,7 +25,7 @@ const data = [
   tokenTransferMock.erc1155B,
   tokenTransferMock.erc1155C,
   tokenTransferMock.erc1155D,
-  tokenTransferMock.erc7984,
+  erc7984,
 ];
 
 test('without tx info', async({ render, mockAssetResponse }) => {

@@ -5,7 +5,7 @@ import { BigNumber } from 'bignumber.js';
 import React from 'react';
 
 import type { AddressTokensErc20Item } from 'client/slices/token/pages/address/types';
-import { getTokenTypeName } from 'client/slices/token/utils/token-types';
+import { getTokenTypeName, isConfidentialTokenType } from 'client/slices/token/utils/token-types';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
@@ -15,6 +15,7 @@ import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { Tag } from 'toolkit/chakra/tag';
 import NativeTokenTag from 'ui/shared/celo/NativeTokenTag';
 import calculateUsdValue from 'ui/shared/value/calculateUsdValue';
+import ConfidentialValue from 'ui/shared/value/ConfidentialValue';
 import SimpleValue from 'ui/shared/value/SimpleValue';
 import { DEFAULT_ACCURACY_USD } from 'ui/shared/value/utils';
 
@@ -81,22 +82,29 @@ const MultichainAddressTokensTableItem = ({ data, isLoading }: Props) => {
         ) : null }
       </TableCell>
       <TableCell isNumeric>
-        <SimpleValue
-          value={ tokenQuantity }
-          loading={ isLoading }
-          color={ isNativeToken ? 'text.secondary' : undefined }
-        />
-      </TableCell>
-      <TableCell isNumeric>
-        { data.token.exchange_rate && (
+        { isConfidentialTokenType(data.token.type) ? (
+          <ConfidentialValue loading={ isLoading }/>
+        ) : (
           <SimpleValue
-            value={ tokenValue }
-            prefix="$"
+            value={ tokenQuantity }
             loading={ isLoading }
-            accuracy={ DEFAULT_ACCURACY_USD }
             color={ isNativeToken ? 'text.secondary' : undefined }
           />
         ) }
+      </TableCell>
+      <TableCell isNumeric>
+        { data.token.exchange_rate && (
+          isConfidentialTokenType(data.token.type) ? (
+            <ConfidentialValue loading={ isLoading }/>
+          ) : (
+            <SimpleValue
+              value={ tokenValue }
+              prefix="$"
+              loading={ isLoading }
+              accuracy={ DEFAULT_ACCURACY_USD }
+              color={ isNativeToken ? 'text.secondary' : undefined }
+            />
+          )) }
       </TableCell>
     </TableRow>
   );

@@ -67,7 +67,7 @@ const TokenTransferListItem = ({
         w="100%"
         fontWeight="500"
       />
-      { total && 'value' in total && token && (hasTokenTransferValue(token.type)) && !isConfidentialTokenType(token.type) && (
+      { total && 'value' in total && token && (hasTokenTransferValue(token.type, chainData?.app_config)) && !isConfidentialTokenType(token.type) && (
         <Flex alignItems="center" columnGap={ 2 } maxW="100%" w="full">
           <Skeleton
             display="inline-flex"

@@ -7,7 +7,7 @@ import { ZERO } from 'toolkit/utils/consts';
 import { DEFAULT_ACCURACY, DEFAULT_ACCURACY_USD } from './utils';
 
 export interface Params {
-  amount: string;
+  amount: string | null;
   decimals?: string | number | null;
   exchangeRate?: string | null;
   accuracy?: number;
@@ -15,7 +15,7 @@ export interface Params {
 }
 
 export default function calculateUsdValue({ amount, accuracy = DEFAULT_ACCURACY, accuracyUsd = DEFAULT_ACCURACY_USD, decimals, exchangeRate }: Params) {
-  const valueBn = BigNumber(amount).div(BigNumber(10 ** Number(decimals || '0')));
+  const valueBn = BigNumber(amount ?? '0').div(BigNumber(10 ** Number(decimals || '0')));
 
   const valueStr = (() => {
     if (!accuracy) {
