@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { GridProps, HTMLChakraProps } from '@chakra-ui/react';
-import { Box, Grid, Flex, Text, VStack } from '@chakra-ui/react';
+import { Box, Grid, Flex, Text, VStack, HStack } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
@@ -12,9 +12,11 @@ import useFetch from 'client/api/hooks/useFetch';
 import type { ResourceError } from 'client/api/resources';
 
 import config from 'configs/app';
+import { useAppContext } from 'lib/contexts/app';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { copy } from 'toolkit/utils/htmlEntities';
+import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import IconSvg from 'ui/shared/IconSvg';
 import { CONTENT_MAX_WIDTH } from 'ui/shared/layout/utils';
 import NetworkAddToWallet from 'ui/shared/NetworkAddToWallet';
@@ -96,6 +98,8 @@ const Footer = () => {
     return null;
   })();
 
+  const { onionDomain } = useAppContext();
+
   const fetch = useFetch();
 
   const { isPlaceholderData, data: linksData } = useQuery<unknown, ResourceError<unknown>, Array<CustomLinksGroup>>({
@@ -144,24 +148,32 @@ const Footer = () => {
         <Text mt={ 3 } fontSize="xs">
           Blockscout is a tool for inspecting and analyzing EVM based blockchains. Blockchain explorer for Ethereum Networks.
         </Text>
-        <Box mt={ 6 } alignItems="start" textStyle="xs">
-          { apiVersionUrl && (
-            <Text>
-              Backend: <Link href={ apiVersionUrl } external noIcon>{ backendVersionData?.backend_version }</Link>
-            </Text>
-          ) }
-          { frontendLink && (
-            <Text>
-              Frontend: { frontendLink }
-            </Text>
+        <VStack mt={ 6 } alignItems="start" textStyle="xs" gap={ 1 }>
+          <Flex flexDir={ onionDomain ? 'row' : 'column' } _empty={{ display: 'none' }} columnGap={ 6 } rowGap={ 1 }>
+            { apiVersionUrl && (
+              <Text>
+                Backend: <Link href={ apiVersionUrl } external noIcon>{ backendVersionData?.backend_version }</Link>
+              </Text>
+            ) }
+            { frontendLink && (
+              <Text>
+                Frontend: { frontendLink }
+              </Text>
+            ) }
+          </Flex>
+          { onionDomain && (
+            <HStack _empty={{ display: 'none' }} columnGap={ 0 }>
+              <Text aria-label={ `Also accessible via Tor Browser: ${ onionDomain }` }>Also accessible via Tor Browser</Text>
+              <CopyToClipboard text={ onionDomain } tooltipContent="Copy .onion address to clipboard" ml={ 1 }/>
+            </HStack>
           ) }
           <Text>
             Copyright { copy } Blockscout Limited 2023-{ (new Date()).getFullYear() }
           </Text>
-        </Box>
+        </VStack>
       </Box>
     );
-  }, [ apiVersionUrl, backendVersionData?.backend_version, frontendLink ]);
+  }, [ apiVersionUrl, backendVersionData?.backend_version, frontendLink, onionDomain ]);
 
   const containerProps: HTMLChakraProps<'div'> = {
     as: 'footer',

@@ -16,10 +16,11 @@ export interface Props extends Omit<IconButtonProps, 'type' | 'loading'> {
   // so we disable the copy tooltip manually when the button is inside a tooltip
   noTooltip?: boolean;
   tooltipInteractive?: boolean;
+  tooltipContent?: string;
 }
 
 const CopyToClipboard = (props: Props) => {
-  const { text, type = 'text', isLoading, onClick, boxSize = 5, noTooltip, tooltipInteractive, ...rest } = props;
+  const { text, type = 'text', isLoading, onClick, boxSize = 5, noTooltip, tooltipInteractive, tooltipContent: tooltipContentProp, ...rest } = props;
 
   const { hasCopied, copy, disclosure } = useClipboard(text);
 
@@ -63,6 +64,10 @@ const CopyToClipboard = (props: Props) => {
   const tooltipContent = (() => {
     if (hasCopied) {
       return 'Copied';
+    }
+
+    if (tooltipContentProp) {
+      return tooltipContentProp;
     }
 
     if (type === 'link') {

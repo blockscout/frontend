@@ -17,6 +17,8 @@ const PAGE_PROPS = {
   adBannerProvider: null,
   apiData: null,
   uuid: '123',
+  onionDomain: null,
+  cspNonce: null,
 };
 
 const TestApp = ({ children }: { children: React.ReactNode }) => {

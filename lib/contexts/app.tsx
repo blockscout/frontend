@@ -18,6 +18,7 @@ const AppContext = createContext<PageProps>({
   apiData: null,
   uuid: '',
   cspNonce: null,
+  onionDomain: null,
 });
 
 export function AppContextProvider({ children, pageProps }: Props) {
