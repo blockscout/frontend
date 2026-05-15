@@ -178,7 +178,7 @@ One PR per rollup type. Each goes under `client/features/rollup/<type>/`.
 
 One PR per chain variant. Each goes under `client/features/chain-variants/<name>/`.
 
-### 5-1 · [ ] Feature: `chain-variants/celo`
+### 5-1 · [~] Feature: `chain-variants/celo` · [#3434](https://github.com/blockscout/frontend/issues/3434)
 **Scope:** All Celo-specific UI and logic including epochs → `client/features/chain-variants/celo/`. See `configs/app/features/celo.ts`.  
 
 ### 5-2 · [ ] Feature: `chain-variants/tac`
