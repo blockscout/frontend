@@ -54,8 +54,10 @@ import VerificationSteps from 'ui/shared/verificationSteps/VerificationSteps';
 import TxDetailsActions from 'ui/tx/details/txDetailsActions/TxDetailsActions';
 import TxDetailsBurntFees from 'ui/tx/details/TxDetailsBurntFees';
 import TxDetailsFeePerGas from 'ui/tx/details/TxDetailsFeePerGas';
+import TxDetailsFeeRefund from 'ui/tx/details/TxDetailsFeeRefund';
 import TxDetailsGasPrice from 'ui/tx/details/TxDetailsGasPrice';
 import TxDetailsOther from 'ui/tx/details/TxDetailsOther';
+import TxDetailsPaybackNotice from 'ui/tx/details/TxDetailsPaybackNotice';
 import TxDetailsTokenTransfers from 'ui/tx/details/TxDetailsTokenTransfers';
 import TxDetailsWithdrawalStatusOptimistic from 'ui/tx/details/TxDetailsWithdrawalStatusOptimistic';
 import TxRevertReason from 'ui/tx/details/TxRevertReason';
@@ -620,6 +622,8 @@ const TxInfo = ({ data, tacOperations, isLoading, socketStatus }: Props) => {
       ) }
 
       <TxDetailsTxFee isLoading={ isLoading } data={ data }/>
+      <TxDetailsFeeRefund isLoading={ isLoading } data={ data }/>
+      <TxDetailsPaybackNotice isLoading={ isLoading } data={ data }/>
 
       { rollupFeature.isEnabled && rollupFeature.type === 'optimistic' && data.operator_fee && (
         <>

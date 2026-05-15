@@ -37,6 +37,7 @@ export type Transaction = {
   from: AddressParam;
   value: string;
   fee: Fee;
+  fee_refund?: string | null;
   gas_price: string | null;
   type: number | null;
   gas_used: string | null;
