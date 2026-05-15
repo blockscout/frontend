@@ -18,6 +18,7 @@ import GasUsed from 'client/slices/gas/components/GasUsed';
 import BlockDetailsBaseFeeCelo from 'client/features/chain-variants/celo/pages/block/BlockDetailsBaseFeeCelo';
 import BlockDetailsZilliqaQuorumCertificate from 'client/features/chain-variants/zilliqa/pages/block/BlockDetailsZilliqaQuorumCertificate';
 import BlockDetailsBlobInfo from 'client/features/data-availability/pages/block/BlockDetailsBlobInfo';
+import * as arbitrum from 'client/features/rollup/arbitrum/utils/batch-verification';
 import BatchEntityL2 from 'client/features/rollup/common/components/BatchEntityL2';
 import BlockEntityL1 from 'client/features/rollup/common/components/BlockEntityL1';
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
@@ -28,7 +29,6 @@ import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import config from 'configs/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
-import * as arbitrum from 'lib/rollups/arbitrum';
 import { formatZkSyncL2TxnBatchStatus, layerLabels } from 'lib/rollups/utils';
 import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
 import { Link } from 'toolkit/chakra/link';

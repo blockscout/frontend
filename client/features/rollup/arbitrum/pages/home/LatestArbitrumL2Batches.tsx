@@ -5,8 +5,8 @@ import { useQueryClient } from '@tanstack/react-query';
 // import { AnimatePresence } from 'framer-motion';
 import React from 'react';
 
+import type { ArbitrumL2TxnBatchesItem } from '../../types/api';
 import type { SocketMessage } from 'client/api/socket/types';
-import type { ArbitrumL2TxnBatchesItem } from 'types/api/arbitrumL2';
 
 import { route } from 'nextjs-routes';
 
@@ -19,10 +19,10 @@ import LatestBlocksFallback from 'client/slices/home/pages/index/blocks/LatestBl
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import useInitialList from 'client/shared/lists/useInitialList';
 
-import { ARBITRUM_L2_TXN_BATCHES_ITEM } from 'stubs/arbitrumL2';
 import { Heading } from 'toolkit/chakra/heading';
 import { Link } from 'toolkit/chakra/link';
 
+import { ARBITRUM_L2_TXN_BATCHES_ITEM } from '../../stubs';
 import LatestBatchItem from './LatestBatchItem';
 
 const LatestArbitrumL2Batches = () => {

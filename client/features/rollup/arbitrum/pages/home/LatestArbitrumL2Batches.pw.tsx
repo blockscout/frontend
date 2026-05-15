@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { finalized, unfinalized } from 'mocks/arbitrum/txnBatches';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';
 
+import { finalized, unfinalized } from '../../mocks/txn-batches';
 import LatestArbitrumL2Batches from './LatestArbitrumL2Batches';
 
 test('default view +@mobile +@dark-mode', async({ render, mockEnvs, mockApiResponse }) => {

@@ -16,7 +16,7 @@ const Deposits = dynamic(() => {
   }
 
   if (rollupFeature.isEnabled && rollupFeature.type === 'arbitrum') {
-    return import('ui/pages/ArbitrumL2Deposits');
+    return import('client/features/rollup/arbitrum/pages/deposits/ArbitrumL2Deposits');
   }
 
   if (rollupFeature.isEnabled && rollupFeature.type === 'shibarium') {

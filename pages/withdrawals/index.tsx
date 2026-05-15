@@ -16,7 +16,7 @@ const Withdrawals = dynamic(() => {
   }
 
   if (rollupFeature.isEnabled && rollupFeature.type === 'arbitrum') {
-    return import('ui/pages/ArbitrumL2Withdrawals');
+    return import('client/features/rollup/arbitrum/pages/withdrawals/ArbitrumL2Withdrawals');
   }
 
   if (rollupFeature.isEnabled && rollupFeature.type === 'shibarium') {
