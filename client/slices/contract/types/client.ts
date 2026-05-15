@@ -1,10 +1,6 @@
-import type { SmartContractLicenseType } from './api';
+// SPDX-License-Identifier: LicenseRef-Blockscout
 
-export interface ContractCodeIde {
-  title: string;
-  url: string;
-  icon_url: string;
-}
+import type { SmartContractLicenseType } from './api';
 
 export interface ContractLicense {
   type: SmartContractLicenseType;

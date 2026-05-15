@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 export * from './image/FormFieldImagePreview';
 export * from './image/useImageField';
 export * from './FormFieldAddress';

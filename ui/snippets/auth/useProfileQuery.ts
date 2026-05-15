@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
 import * as cookies from 'client/shared/storage/cookies';

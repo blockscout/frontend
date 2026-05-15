@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 export default function getChainUtilizationParams(value: number) {
   const load = (() => {
     if (value > 80) {

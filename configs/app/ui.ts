@@ -1,31 +1,16 @@
-import type { ContractCodeIde } from 'client/slices/contract/types/client';
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
+import type { ContractCodeIde } from 'client/slices/contract/types/config';
 import { type NavItemExternal, type NavigationLayout, type NavigationPromoBannerConfig } from 'types/client/navigation';
-import { HOME_STATS_WIDGET_IDS, type ChainIndicatorId, type HeroBannerConfig, type HomeStatsWidgetId } from 'types/homepage';
 import type { NetworkExplorer } from 'types/networks';
 import type { ColorThemeId } from 'types/settings';
 import type { FontFamily } from 'types/ui';
 
+import { homepage } from 'configs/app/ui/homepage';
 import { COLOR_THEMES, type ColorTheme } from 'lib/settings/colorTheme';
 
-import * as features from './features';
 import * as views from './ui/views';
 import { getEnvValue, getExternalAssetFilePath, parseEnvJson } from './utils';
-
-const homePageStats: Array<HomeStatsWidgetId> = (() => {
-  const parsedValue = parseEnvJson<Array<HomeStatsWidgetId>>(getEnvValue('NEXT_PUBLIC_HOMEPAGE_STATS'));
-
-  if (!Array.isArray(parsedValue)) {
-    const rollupFeature = features.rollup;
-
-    if (rollupFeature.isEnabled && [ 'zkSync', 'arbitrum' ].includes(rollupFeature.type)) {
-      return [ 'latest_batch', 'average_block_time', 'total_txs', 'wallet_addresses', 'gas_tracker' ];
-    }
-
-    return [ 'total_blocks', 'average_block_time', 'total_txs', 'wallet_addresses', 'gas_tracker' ];
-  }
-
-  return parsedValue.filter((item) => HOME_STATS_WIDGET_IDS.includes(item));
-})();
 
 const highlightedRoutes = (() => {
   const parsedValue = parseEnvJson<Array<string>>(getEnvValue('NEXT_PUBLIC_NAVIGATION_HIGHLIGHTED_ROUTES'));
@@ -84,12 +69,7 @@ const UI = Object.freeze({
     frontendVersion: getEnvValue('NEXT_PUBLIC_GIT_TAG'),
     frontendCommit: getEnvValue('NEXT_PUBLIC_GIT_COMMIT_SHA'),
   },
-  homepage: {
-    charts: parseEnvJson<Array<ChainIndicatorId>>(getEnvValue('NEXT_PUBLIC_HOMEPAGE_CHARTS')) || [],
-    stats: homePageStats,
-    heroBanner: parseEnvJson<HeroBannerConfig>(getEnvValue('NEXT_PUBLIC_HOMEPAGE_HERO_BANNER_CONFIG')),
-    highlights: getExternalAssetFilePath('NEXT_PUBLIC_HOMEPAGE_HIGHLIGHTS_CONFIG'),
-  },
+  homepage,
   views,
   indexingAlert: {
     blocks: {

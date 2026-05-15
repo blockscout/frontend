@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { upperFirst } from 'es-toolkit';
 
 import type { Metadata, MetadataAttributes } from 'client/slices/token/types/client';

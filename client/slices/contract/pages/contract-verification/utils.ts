@@ -1,5 +1,8 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { FieldPath, ErrorOption } from 'react-hook-form';
 
+import type { SmartContractVerificationMethodExtra } from '../../types/config';
 import type {
   ContractLibrary,
   FormFields,
@@ -35,13 +38,6 @@ export const SUPPORTED_VERIFICATION_METHODS: Array<SmartContractVerificationMeth
   'vyper-standard-input',
   'stylus-github-repository',
 ];
-
-export const SMART_CONTRACT_EXTRA_VERIFICATION_METHODS = [
-  'solidity-hardhat' as const,
-  'solidity-foundry' as const,
-];
-
-export type SmartContractVerificationMethodExtra = (typeof SMART_CONTRACT_EXTRA_VERIFICATION_METHODS)[number];
 
 export type SmartContractVerificationMethod = SmartContractVerificationMethodApi | SmartContractVerificationMethodExtra;
 

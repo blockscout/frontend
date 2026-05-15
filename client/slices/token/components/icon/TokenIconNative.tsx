@@ -1,12 +1,14 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import { HOMEPAGE_STATS } from 'client/slices/home/stubs';
 import TokenIconPlaceholder from 'client/slices/token/components/icon/TokenIconPlaceholder';
 
 import config from 'configs/app';
-import { HOMEPAGE_STATS } from 'stubs/stats';
 import { Image } from 'toolkit/chakra/image';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 

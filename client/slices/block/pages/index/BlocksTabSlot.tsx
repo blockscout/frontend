@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Flex, Box, Text } from '@chakra-ui/react';
 import { upperFirst } from 'es-toolkit';
 import React from 'react';
@@ -8,9 +10,10 @@ import { route } from 'nextjs-routes';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import { HOMEPAGE_STATS } from 'client/slices/home/stubs';
+
 import getChainUtilizationParams from 'client/shared/chain/get-chain-utilization-params';
 
-import { HOMEPAGE_STATS } from 'stubs/stats';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';

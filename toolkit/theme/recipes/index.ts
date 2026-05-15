@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { recipe as accordion } from './accordion.recipe';
 import { recipe as alert } from './alert.recipe';
 import { recipe as badge } from './badge.recipe';

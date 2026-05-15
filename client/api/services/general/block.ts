@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { ApiResource } from '../../types';
 import type { TxsWithBlobsFilters } from 'client/features/data-availability/types/api';
 import type {

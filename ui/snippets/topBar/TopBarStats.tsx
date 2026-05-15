@@ -1,17 +1,20 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Flex, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import GasInfoTooltip from 'client/slices/gas/components/GasInfoTooltip';
+import GasPrice from 'client/slices/gas/components/GasPrice';
+import { HOMEPAGE_STATS } from 'client/slices/home/stubs';
+
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
 import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';
-import { HOMEPAGE_STATS } from 'stubs/stats';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import GasInfoTooltip from 'ui/shared/gas/GasInfoTooltip';
-import GasPrice from 'ui/shared/gas/GasPrice';
 import TextSeparator from 'ui/shared/TextSeparator';
 
 import GetGasButton from './GetGasButton';

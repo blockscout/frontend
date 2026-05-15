@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { select } from 'd3-selection';
 import 'd3-transition';
 import React from 'react';

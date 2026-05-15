@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { PublicClient, GetLogsParameters, Log } from 'viem';
 
 export default async function getLogs(

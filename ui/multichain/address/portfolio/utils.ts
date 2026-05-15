@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { hairsp } from 'toolkit/utils/htmlEntities';
 
 export function formatPercentage(percentage: number) {

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 export default function bytesToBase64(bytes: Uint8Array, addPrefix = true) {
   let result = '';
   for (const byte of bytes) {

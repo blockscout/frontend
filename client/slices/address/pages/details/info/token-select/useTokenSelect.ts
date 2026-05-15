@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { mapValues } from 'es-toolkit';
 import React from 'react';
 

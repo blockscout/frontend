@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Switch as ChakraSwitch } from '@chakra-ui/react';
 import * as React from 'react';
 

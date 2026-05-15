@@ -1,4 +1,7 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { EthereumWalletConnectors } from '@dynamic-labs/ethereum';
+import { ZeroDevSmartWalletConnectors } from '@dynamic-labs/ethereum-aa';
 import type { DynamicContextProps, OnAuthSuccess } from '@dynamic-labs/sdk-react-core';
 import { DynamicContextProvider, getAuthToken } from '@dynamic-labs/sdk-react-core';
 import { DynamicWagmiConnector } from '@dynamic-labs/wagmi-connector';
@@ -27,6 +30,7 @@ const feature = config.features.blockchainInteraction;
 
 const walletConnectors = [
   EthereumWalletConnectors,
+  ZeroDevSmartWalletConnectors,
 ];
 
 const overrides: DynamicContextProps['settings']['overrides'] = {

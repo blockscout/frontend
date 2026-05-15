@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Accordion, Icon } from '@chakra-ui/react';
 import * as React from 'react';
 import { scroller } from 'react-scroll';

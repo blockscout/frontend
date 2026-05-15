@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 export type MultichainProviderConfig = {
   name: string;
   dapp_id?: string;

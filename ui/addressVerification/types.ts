@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { VerifiedAddress } from 'types/api/account';
 
 export interface AddressVerificationFormFirstStepFields {

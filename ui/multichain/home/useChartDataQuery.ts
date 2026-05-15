@@ -1,11 +1,14 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { useQuery } from '@tanstack/react-query';
 
 import type { ChartMarketResponse } from 'types/api/charts';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import { getChartData } from 'client/slices/home/utils/chart';
+
 import { HOMEPAGE_STATS } from 'stubs/multichain';
-import { getChartData } from 'ui/home/indicators/utils/chart';
 
 import useFetchParentChainApi from './useFetchParentChainApi';
 

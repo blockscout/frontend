@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { AddressMetadataTagApi } from 'client/features/address-metadata/types/api';
 import type { AddressFilecoinParams } from 'client/features/chain-variants/filecoin/types/api';
 import type { AddressZilliqaParams } from 'client/features/chain-variants/zilliqa/types/api';
@@ -100,7 +102,7 @@ export interface AddressCounters {
 export interface AddressTokenBalance {
   token: TokenInfo;
   token_id: string | null;
-  value: string;
+  value: string | null;
   token_instance: TokenInstance | null;
 }
 export type AddressTokenBalancesResponse = Array<AddressTokenBalance>;

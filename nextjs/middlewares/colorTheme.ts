@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { NextRequest, NextResponse } from 'next/server';
 
 import * as cookiesLib from 'client/shared/storage/cookies';

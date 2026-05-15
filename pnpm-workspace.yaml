@@ -13,3 +13,5 @@ packages:
 onlyBuiltDependencies:
   - '@ipshipyard/node-datachannel'
   - 'sharp'
+
+minimumReleaseAge: 10080 # 1 week

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { range } from 'es-toolkit';
 import React from 'react';
 

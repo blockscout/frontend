@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import NftArtifact from '@openzeppelin/contracts/build/contracts/ERC721.json';
 import { useCallback } from 'react';
 import { getAbiItem, getAddress, slice } from 'viem';

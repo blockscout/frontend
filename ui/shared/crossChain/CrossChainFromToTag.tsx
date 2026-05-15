@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import React from 'react';
 
 import { Badge, type BadgeProps } from 'toolkit/chakra/badge';

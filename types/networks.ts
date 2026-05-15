@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { ArrayElement } from 'types/utils';
 
 export const NETWORK_GROUPS = [ 'Mainnets', 'Testnets', 'Other' ] as const;

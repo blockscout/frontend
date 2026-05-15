@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { Feature } from './types';
 import { VALIDATORS_CHAIN_TYPE } from 'types/client/validators';
 import type { ValidatorsChainType } from 'types/client/validators';

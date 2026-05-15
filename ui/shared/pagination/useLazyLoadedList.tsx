@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { InfiniteData, UseInfiniteQueryResult } from '@tanstack/react-query';
 import React from 'react';
 import { useInView } from 'react-intersection-observer';

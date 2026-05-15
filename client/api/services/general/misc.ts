@@ -1,16 +1,22 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { ApiResource } from '../../types';
 import type { CsvExportItemResponse, CsvExportConfig } from 'client/features/csv-export/types/api';
 import type { HotContractsFilters, HotContractsResponse, HotContractsSorting } from 'client/features/hot-contracts/types/api';
+import type {
+  ArbitrumL2TxnBatchesItem,
+  ArbitrumLatestDepositsResponse,
+} from 'client/features/rollup/arbitrum/types/api';
+import type {
+  OptimisticL2DepositsItem,
+} from 'client/features/rollup/optimism/types/api';
 import type { Block } from 'client/slices/block/types/api';
+import type { HomeStats } from 'client/slices/home/types/api';
 import type { SearchRedirectResult, SearchResult, SearchResultFilters, SearchResultItem } from 'client/slices/search/types/api';
 import type {
   Transaction,
 } from 'client/slices/tx/types/api';
 import type { AdvancedFilterParams, AdvancedFilterResponse, AdvancedFilterMethodsResponse } from 'types/api/advancedFilter';
-import type {
-  ArbitrumL2TxnBatchesItem,
-  ArbitrumLatestDepositsResponse,
-} from 'types/api/arbitrumL2';
 import type { Blob } from 'types/api/blobs';
 import type { ChartMarketResponse, ChartSecondaryCoinPriceResponse, ChartTransactionResponse } from 'types/api/charts';
 import type { BackendConfig, BackendVersionConfig, CeloConfig, ContractLanguagesConfig } from 'types/api/configs';
@@ -18,10 +24,6 @@ import type { DepositsResponse, DepositsCounters } from 'types/api/deposits';
 import type { CeloEpochDetails, CeloEpochElectionRewardDetailsResponse, CeloEpochListResponse } from 'types/api/epochs';
 import type { IndexingStatus } from 'types/api/indexingStatus';
 import type { NovesAccountHistoryResponse, NovesDescribeTxsResponse, NovesResponseData } from 'types/api/noves';
-import type {
-  OptimisticL2DepositsItem,
-} from 'types/api/optimisticL2';
-import type { HomeStats } from 'types/api/stats';
 import type { TxInterpretationResponse } from 'types/api/txInterpretation';
 import type { UserOpsResponse, UserOp, UserOpsFilters, UserOpsAccount } from 'types/api/userOps';
 import type {

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 const scrollbar = {
   'body *::-webkit-scrollbar': {
     width: '20px',

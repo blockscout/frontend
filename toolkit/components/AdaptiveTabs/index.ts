@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 export type { TabItemRegular, TabItemMenu, SubTabItem } from './types';
 export type { Props } from './AdaptiveTabs';
 

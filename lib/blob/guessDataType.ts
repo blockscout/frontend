@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import filetype from 'magic-bytes.js';
 
 import hexToBytes from 'client/shared/transformers/hex-to-bytes';

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { HotContractsSortingValue, HotContractsSortingField, HotContractsInterval } from './types/api';
 
 import getQueryParamString from 'client/shared/router/get-query-param-string';

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import React from 'react';
 
 import * as DetailedInfo from './DetailedInfo';

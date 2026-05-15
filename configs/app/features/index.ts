@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 export { default as advancedFilter } from './advanced-filter';
 export { default as account } from './account';
 export { default as addressVerification } from './address-verification';

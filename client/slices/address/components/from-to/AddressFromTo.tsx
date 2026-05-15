@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { ConditionalValue } from '@chakra-ui/react';
 import { Flex, Grid, chakra, useBreakpointValue } from '@chakra-ui/react';
 import React from 'react';

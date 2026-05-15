@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { CheckboxGroupProps as ChakraCheckboxGroupProps } from '@chakra-ui/react';
 import { Checkbox as ChakraCheckbox, CheckboxGroup as ChakraCheckboxGroup } from '@chakra-ui/react';
 import * as React from 'react';

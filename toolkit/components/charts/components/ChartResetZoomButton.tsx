@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Icon } from '@chakra-ui/react';
 
 import RepeatIcon from 'icons/repeat.svg';

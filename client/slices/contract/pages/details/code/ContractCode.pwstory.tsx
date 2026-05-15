@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { useRouter } from 'next/router';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { ApiResource } from '../../types';
 import type {
   AddressMudTables,
@@ -7,6 +9,7 @@ import type {
   AddressMudRecordsSorting,
   AddressMudRecord,
   SmartContractMudSystemsResponse, SmartContractMudSystemInfo } from 'client/features/chain-variants/mud/types/api';
+import type { InteropMessageListResponse } from 'client/features/op-interop/types/api';
 import type {
   ArbitrumL2MessagesResponse,
   ArbitrumL2TxnBatch,
@@ -15,9 +18,7 @@ import type {
   ArbitrumL2BatchBlocks,
   ArbitrumL2TxnWithdrawalsResponse,
   ArbitrumL2MessageClaimResponse,
-} from 'types/api/arbitrumL2';
-import type { InteropMessageListResponse } from 'types/api/interop';
-import type { MudWorldsResponse } from 'types/api/mudWorlds';
+} from 'client/features/rollup/arbitrum/types/api';
 import type {
   OptimisticL2DepositsResponse,
   OptimisticL2OutputRootsResponse,
@@ -27,16 +28,17 @@ import type {
   OptimismL2TxnBatch,
   OptimismL2BatchTxs,
   OptimismL2BatchBlocks,
-} from 'types/api/optimisticL2';
+} from 'client/features/rollup/optimism/types/api';
 import type {
   ScrollL2BatchesResponse,
   ScrollL2TxnBatch,
   ScrollL2TxnBatchTxs,
   ScrollL2TxnBatchBlocks,
   ScrollL2MessagesResponse,
-} from 'types/api/scrollL2';
+} from 'client/features/rollup/scroll/types/api';
+import type { ZkSyncBatch, ZkSyncBatchesResponse, ZkSyncBatchTxs } from 'client/features/rollup/zk-sync/types/api';
+import type { MudWorldsResponse } from 'types/api/mudWorlds';
 import type { ShibariumWithdrawalsResponse, ShibariumDepositsResponse } from 'types/api/shibarium';
-import type { ZkSyncBatch, ZkSyncBatchesResponse, ZkSyncBatchTxs } from 'types/api/zkSyncL2';
 
 export const GENERAL_API_ROLLUP_RESOURCES = {
   optimistic_l2_deposits: {

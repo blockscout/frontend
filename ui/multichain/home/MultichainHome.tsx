@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Box, HStack, VStack } from '@chakra-ui/react';
 import React from 'react';
 
@@ -5,10 +7,11 @@ import { route } from 'nextjs-routes';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import HeroBanner from 'client/slices/home/pages/index/HeroBanner';
+
 import multichainConfig from 'configs/multichain';
 import { MultichainProvider } from 'lib/contexts/multichain';
 import { Link } from 'toolkit/chakra/link';
-import HeroBanner from 'ui/home/HeroBanner';
 
 import ChainWidget from './ChainWidget';
 import LatestTxs from './LatestTxs';

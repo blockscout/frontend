@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Box, chakra, Flex, Separator } from '@chakra-ui/react';
 import React from 'react';
 

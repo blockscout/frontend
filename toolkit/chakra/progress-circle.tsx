@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { SystemStyleObject } from '@chakra-ui/react';
 import {
   AbsoluteCenter,

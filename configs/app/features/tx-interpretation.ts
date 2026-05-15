@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { Feature } from './types';
 import type { Provider } from 'types/client/txInterpretation';
 import { PROVIDERS } from 'types/client/txInterpretation';

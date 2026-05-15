@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { useCallback, useRef, useEffect } from 'react';
 
 import type { PreSubmitTransactionResponse } from '@blockscout/points-types';

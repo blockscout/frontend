@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Flex, chakra } from '@chakra-ui/react';
 import { SliseAd } from '@slise/embed-react';
 import React from 'react';

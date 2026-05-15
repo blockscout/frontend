@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { BlockFieldId } from 'types/views/block';
 import { BLOCK_FIELDS_IDS } from 'types/views/block';
 

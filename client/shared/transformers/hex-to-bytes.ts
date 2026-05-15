@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 // hex can be with prefix  - `0x{string}` - or without it - `{string}`
 export default function hexToBytes(hex: string) {
   const bytes = [];

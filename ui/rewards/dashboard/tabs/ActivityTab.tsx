@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Flex, Text, chakra } from '@chakra-ui/react';
 import { useCallback, useMemo, useState } from 'react';
 

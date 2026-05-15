@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Drawer as ChakraDrawer, Portal } from '@chakra-ui/react';
 import * as React from 'react';
 

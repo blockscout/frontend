@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 export * from './address';
 export * from './color';
 export * from './email';

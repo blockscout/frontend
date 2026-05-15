@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { createSystem, defaultConfig, defineConfig } from '@chakra-ui/react';
 
 import { keyframes } from './foundations/animations';

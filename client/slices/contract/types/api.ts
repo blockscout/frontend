@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { Abi, AbiType } from 'abitype';
 
 import type { AddressImplementation, AddressParam } from 'client/slices/address/types/api';

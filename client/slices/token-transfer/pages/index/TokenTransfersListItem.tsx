@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import React from 'react';
 
 import type { TokenTransfer } from 'client/slices/token-transfer/types/api';
@@ -82,7 +84,7 @@ const TokenTransfersListItem = ({ item, isLoading, chainData }: Props) => {
         </>
       ) }
 
-      { item.token && item.total && 'value' in item.total && item.total.value !== null && (hasTokenTransferValue(item.token.type)) && (
+      { item.token && item.total && 'value' in item.total && item.total.value !== null && (hasTokenTransferValue(item.token.type, chainData?.app_config)) && (
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>Amount</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>

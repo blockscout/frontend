@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import React from 'react';
@@ -16,9 +18,9 @@ const Batch = dynamic(() => {
 
   switch (rollupFeature.type) {
     case 'arbitrum':
-      return import('ui/pages/ArbitrumL2TxnBatch');
+      return import('client/features/rollup/arbitrum/pages/batch-details/ArbitrumL2TxnBatch');
     case 'optimistic':
-      return import('ui/pages/OptimisticL2TxnBatch');
+      return import('client/features/rollup/optimism/pages/batch-details/OptimisticL2TxnBatch');
   }
   throw new Error('Celestia txn batches feature is not enabled.');
 }, { ssr: false });

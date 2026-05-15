@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { LineChart } from '@blockscout/stats-types';
 import type { TokenInfo } from 'client/slices/token/types/api';
 

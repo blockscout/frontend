@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { NovesNft, NovesResponseData, NovesSentReceived, NovesToken } from 'types/api/noves';
 
 export interface NovesAction {

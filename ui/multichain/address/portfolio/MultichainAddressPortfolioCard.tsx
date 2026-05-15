@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { HStack, VStack } from '@chakra-ui/react';
 import type BigNumber from 'bignumber.js';
 import { clamp } from 'es-toolkit';

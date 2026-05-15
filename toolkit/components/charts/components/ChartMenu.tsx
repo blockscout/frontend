@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Icon } from '@chakra-ui/react';
 import { useCopyToClipboard } from '@uidotdev/usehooks';
 import domToImage from 'dom-to-image';

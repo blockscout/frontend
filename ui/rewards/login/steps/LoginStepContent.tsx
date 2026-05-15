@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Text, Box, Flex, Separator } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import type { ChangeEvent } from 'react';

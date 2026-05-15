@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { AddressMetadataTagApi } from 'client/features/address-metadata/types/api';
 import type { SearchResultTacOperation } from 'client/features/chain-variants/tac/types/api';
 import type { SearchResultBlob } from 'client/features/data-availability/types/api';

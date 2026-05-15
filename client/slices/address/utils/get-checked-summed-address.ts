@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { getAddress } from 'viem';
 
 import config from 'configs/app';

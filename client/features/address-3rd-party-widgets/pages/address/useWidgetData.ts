@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { get } from 'es-toolkit/compat';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';

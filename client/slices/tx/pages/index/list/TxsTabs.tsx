@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Flex } from '@chakra-ui/react';
 import { capitalize } from 'es-toolkit';
 import { useRouter } from 'next/router';

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import getErrorObj from './get-error-obj';
 
 export default function getErrorObjPayload<Payload extends object>(error: unknown): Payload | undefined {

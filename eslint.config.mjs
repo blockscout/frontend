@@ -19,6 +19,32 @@ import { fileURLToPath } from 'node:url';
 
 import tseslint from 'typescript-eslint';
 
+const SPDX_HEADER = '// SPDX-License-Identifier: LicenseRef-Blockscout';
+
+const spdxLicenseRule = {
+  meta: {
+    type: 'layout',
+    fixable: 'code',
+    messages: { missing: `File must start with: ${ SPDX_HEADER }` },
+    schema: [],
+  },
+  create(context) {
+    return {
+      Program() {
+        const src = context.sourceCode.getText();
+        if (src.startsWith(SPDX_HEADER + '\n')) {
+          return;
+        }
+        context.report({
+          loc: { line: 1, column: 0 },
+          messageId: 'missing',
+          fix: (fixer) => fixer.replaceTextRange([ 0, 0 ], SPDX_HEADER + '\n\n'),
+        });
+      },
+    };
+  },
+};
+
 const RESTRICTED_MODULES = {
   paths: [
     { name: 'dayjs', message: 'Please use lib/date/dayjs.ts instead of directly importing dayjs' },
@@ -604,6 +630,31 @@ export default tseslint.config(
     rules: {
       // for toolkit components allow to import @chakra-ui/react directly
       'no-restricted-imports': 'off',
+    },
+  },
+
+  {
+    plugins: { 'spdx-license': { rules: { header: spdxLicenseRule } } },
+    files: [ '**/*.{ts,tsx,js}' ],
+    ignores: [
+      '**/*.d.ts',
+      '**/*.pw.tsx',
+      '**/*.spec.{ts,tsx}',
+      '**/*.config.{ts,js}',
+      '**.config.{ts,js}',
+      'mocks/**',
+      '**/mocks/**',
+      '**/mocks.ts',
+      'playwright/**',
+      'stubs/**',
+      '**/stubs/**',
+      '**/stubs.ts',
+      'vitest/**',
+      'tools/**',
+      '.agents/**',
+    ],
+    rules: {
+      'spdx-license/header': 'error',
     },
   },
 );

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 export interface ChartMargin {
   top?: number;
   right?: number;

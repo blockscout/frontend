@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import React from 'react';
 
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { ColorThemeId } from 'types/settings';
 
 import config from 'configs/app';

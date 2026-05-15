@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Flex, Text } from '@chakra-ui/react';
 import ERC20Artifact from '@openzeppelin/contracts/build/contracts/ERC20.json';
 import NftArtifact from '@openzeppelin/contracts/build/contracts/ERC721.json';

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import React from 'react';
 
 import type { TokenVerifiedInfo } from 'client/features/verified-tokens/types/api';

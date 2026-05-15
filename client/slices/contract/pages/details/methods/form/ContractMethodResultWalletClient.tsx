@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { chakra, Spinner, Box } from '@chakra-ui/react';
 import React from 'react';
 import type { UseWaitForTransactionReceiptReturnType } from 'wagmi';

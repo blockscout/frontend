@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import capitalizeFirstLetter from 'client/shared/text/capitalize-first-letter';
 
 export const SORT_SEQUENCE: Record<'key0' | 'key1', Array<'desc' | 'asc' | undefined>> = {

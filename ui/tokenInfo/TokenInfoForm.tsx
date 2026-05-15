@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Grid, GridItem, Text } from '@chakra-ui/react';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';

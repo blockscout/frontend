@@ -1,4 +1,6 @@
-import type { IdenticonType } from 'client/slices/address/types/view';
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
+import type { IdenticonType } from 'client/slices/address/types/config';
 
 export const IDENTICONS: Array<{ label: string; id: IdenticonType; sampleBg: string }> = [
   {

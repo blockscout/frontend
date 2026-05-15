@@ -1,15 +1,17 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { BoxProps } from '@chakra-ui/react';
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import { HOMEPAGE_STATS } from 'client/slices/home/stubs';
 import { TXS_STATS, TXS_STATS_MICROSERVICE } from 'client/slices/tx/stubs/tx';
 
 import config from 'configs/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import getStatsLabelFromTitle from 'lib/stats/getStatsLabelFromTitle';
-import { HOMEPAGE_STATS } from 'stubs/stats';
 import { thinsp } from 'toolkit/utils/htmlEntities';
 import StatsWidget from 'ui/shared/stats/StatsWidget';
 import calculateUsdValue from 'ui/shared/value/calculateUsdValue';

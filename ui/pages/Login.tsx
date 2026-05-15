@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { VStack, Code, Flex, Box } from '@chakra-ui/react';
 import mixpanel from 'mixpanel-browser';
 import type { ChangeEvent } from 'react';

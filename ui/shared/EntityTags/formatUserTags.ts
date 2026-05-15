@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { EntityTag } from './types';
 import type { UserTags } from 'client/slices/address/types/api';
 

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { GrowthBook } from '@growthbook/growthbook-react';
 
 import * as mixpanel from 'client/shared/analytics/mixpanel';

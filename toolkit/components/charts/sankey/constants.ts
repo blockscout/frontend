@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 /**
  * Sankey node color tokens from Figma (Universal Bridge Indexer).
  * Light theme: Chakra 300 palette. Resolved via useToken in the chart.

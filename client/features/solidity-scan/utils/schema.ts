@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import * as v from 'valibot';
 
 export const SolidityScanIssueSeverityDistributionSchema = v.object({

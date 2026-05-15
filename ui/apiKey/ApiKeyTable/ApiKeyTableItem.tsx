@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import React, { useCallback } from 'react';
 
 import type { ApiKey } from 'types/api/account';

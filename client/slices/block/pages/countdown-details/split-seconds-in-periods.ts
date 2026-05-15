@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { padStart } from 'es-toolkit/compat';
 
 export default function splitSecondsInPeriods(value: number) {

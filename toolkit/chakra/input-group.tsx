@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { BoxProps, InputElementProps } from '@chakra-ui/react';
 import { Group, InputElement } from '@chakra-ui/react';
 import { debounce } from 'es-toolkit';

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import config from 'configs/app';
 
 const maxWidthVerticalNavigation = config.UI.maxContentWidth ? 1_920 : 10_000;

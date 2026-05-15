@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 export interface FlashblockItemApiOptimism {
   payload_id: string;
   index: number;

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { EmptyState as ChakraEmptyState, VStack } from '@chakra-ui/react';
 import { upperFirst } from 'es-toolkit';
 import * as React from 'react';

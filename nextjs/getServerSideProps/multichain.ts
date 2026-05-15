@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import * as guards from './guards';
 import { factoryMultichain } from './utils';
 

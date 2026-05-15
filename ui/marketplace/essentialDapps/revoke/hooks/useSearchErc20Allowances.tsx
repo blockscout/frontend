@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import ERC20Artifact from '@openzeppelin/contracts/build/contracts/ERC20.json';
 import { uniq } from 'es-toolkit';
 import { useCallback } from 'react';
@@ -133,7 +135,7 @@ const useGetERC20Allowances = () => {
     }) as AddressTokenBalancesResponse;
 
     balances = Object.fromEntries(
-      response.map((entry) => [ entry.token.address_hash, BigInt(entry.value) ]),
+      response.map((entry) => [ entry.token.address_hash, BigInt(entry.value ?? '0') ]),
     );
 
     await Promise.all(

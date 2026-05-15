@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function configHandler(req: NextApiRequest, res: NextApiResponse) {

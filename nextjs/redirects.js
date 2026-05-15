@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 const OLD_UI_URLS = [
   // ACCOUNT
   {

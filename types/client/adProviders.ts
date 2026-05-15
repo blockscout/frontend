@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { ArrayElement } from 'types/utils';
 
 export const SUPPORTED_AD_BANNER_PROVIDERS = [

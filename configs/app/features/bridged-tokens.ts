@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { Feature } from './types';
 import type { BridgedTokenChain, TokenBridge } from 'client/features/bridged-tokens/types/client';
 

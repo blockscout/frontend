@@ -11,6 +11,7 @@ const TARGET_FILE = path.resolve(ROOT_DIR, './playwright/affected-tests.txt');
 const NON_EXISTENT_DEPS = [];
 
 const DIRECTORIES_WITH_TESTS = [
+  path.resolve(ROOT_DIR, './client'),
   path.resolve(ROOT_DIR, './ui'),
 ];
 const VISITED = {};
@@ -59,7 +60,7 @@ async function getChangedFiles() {
 }
 
 function checkChangesInChakraTheme(changedFiles) {
-  const themeDir = path.resolve(ROOT_DIR, './theme');
+  const themeDir = path.resolve(ROOT_DIR, './toolkit/theme');
   return changedFiles.some((file) => file.startsWith(themeDir));
 }
 

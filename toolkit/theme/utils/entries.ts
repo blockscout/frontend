@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 // https://github.com/chakra-ui/chakra-ui/blob/main/packages/react/src/utils/entries.ts#L1
 export function mapEntries<A, B, K extends string | number | symbol>(
   obj: { [key in K]: A },

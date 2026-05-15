@@ -1,6 +1,8 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { Feature } from './types';
-import { GAS_UNITS } from 'types/client/gasTracker';
-import type { GasUnit } from 'types/client/gasTracker';
+import { GAS_UNITS } from 'client/slices/gas/types/config';
+import type { GasUnit } from 'client/slices/gas/types/config';
 
 import chainConfig from '../chain';
 import { getEnvValue, parseEnvJson } from '../utils';

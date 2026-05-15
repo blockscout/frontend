@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { PinInput as ChakraPinInput, Group } from '@chakra-ui/react';
 import * as React from 'react';
 

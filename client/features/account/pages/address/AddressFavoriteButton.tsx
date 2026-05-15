@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { chakra } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';

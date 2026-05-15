@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 export type TxExternalTxsConfig = {
   chain_name: string;
   chain_logo_url: string;

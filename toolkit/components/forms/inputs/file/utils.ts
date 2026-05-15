@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { stripLeadingSlash } from '../../../../utils/url';
 
 // Function to get all files in drop directory

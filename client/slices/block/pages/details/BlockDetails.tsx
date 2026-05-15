@@ -1,39 +1,43 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { GridItem, Text, Box } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import { capitalize } from 'es-toolkit';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import { ZKSYNC_L2_TX_BATCH_STATUSES } from 'types/api/zkSyncL2';
+import { ZKSYNC_L2_TX_BATCH_STATUSES } from 'client/features/rollup/zk-sync/types/api';
 
 import { route, routeParams } from 'nextjs/routes';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
-import BlockGasUsed from 'client/slices/block/components/BlockGasUsed';
 import type { BlockQuery } from 'client/slices/block/hooks/useBlockQuery';
 import getBlockReward from 'client/slices/block/utils/get-block-reward';
+import GasUsed from 'client/slices/gas/components/GasUsed';
 
 import BlockDetailsBaseFeeCelo from 'client/features/chain-variants/celo/pages/block/BlockDetailsBaseFeeCelo';
 import BlockDetailsZilliqaQuorumCertificate from 'client/features/chain-variants/zilliqa/pages/block/BlockDetailsZilliqaQuorumCertificate';
 import BlockDetailsBlobInfo from 'client/features/data-availability/pages/block/BlockDetailsBlobInfo';
+import * as arbitrum from 'client/features/rollup/arbitrum/utils/batch-verification';
 import BatchEntityL2 from 'client/features/rollup/common/components/BatchEntityL2';
 import BlockEntityL1 from 'client/features/rollup/common/components/BlockEntityL1';
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
+import OptimisticL2TxnBatchDA from 'client/features/rollup/optimism/components/TxnBatchDA';
+import ZkSyncL2TxnBatchHashesInfo from 'client/features/rollup/zk-sync/pages/batch-details/ZkSyncL2TxnBatchHashesInfo';
+import { formatZkSyncL2TxnBatchStatus } from 'client/features/rollup/zk-sync/utils/format-txn-batch-status';
 
 import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-title';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import config from 'configs/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
-import * as arbitrum from 'lib/rollups/arbitrum';
-import { formatZkSyncL2TxnBatchStatus, layerLabels } from 'lib/rollups/utils';
+import { layerLabels } from 'lib/rollups/utils';
 import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { ZERO } from 'toolkit/utils/consts';
 import { space } from 'toolkit/utils/htmlEntities';
-import OptimisticL2TxnBatchDA from 'ui/shared/batch/OptimisticL2TxnBatchDA';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
@@ -47,7 +51,6 @@ import GasPriceValue from 'ui/shared/value/GasPriceValue';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 import { WEI } from 'ui/shared/value/utils';
 import VerificationSteps from 'ui/shared/verificationSteps/VerificationSteps';
-import ZkSyncL2TxnBatchHashesInfo from 'ui/txnBatches/zkSyncL2/ZkSyncL2TxnBatchHashesInfo';
 
 const zkSyncVerificationSteps = ZKSYNC_L2_TX_BATCH_STATUSES.map(formatZkSyncL2TxnBatchStatus);
 
@@ -446,7 +449,7 @@ const BlockDetails = ({ query }: Props) => {
         <Skeleton loading={ isPlaceholderData }>
           { BigNumber(data.gas_used || 0).toFormat() }
         </Skeleton>
-        <BlockGasUsed
+        <GasUsed
           gasUsed={ data.gas_used || undefined }
           gasLimit={ data.gas_limit }
           isLoading={ isPlaceholderData }

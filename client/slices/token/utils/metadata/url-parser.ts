@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import * as regexp from 'toolkit/utils/regexp';
 
 export default function urlParser(maybeUrl: string): URL | undefined {

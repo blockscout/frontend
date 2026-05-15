@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { NextApiRequest, NextApiResponse } from 'next';
 import nodeFetch from 'node-fetch';
 

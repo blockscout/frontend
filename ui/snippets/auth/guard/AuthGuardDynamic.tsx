@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { useDynamicContext, useDynamicEvents } from '@dynamic-labs/sdk-react-core';
 import React from 'react';
 

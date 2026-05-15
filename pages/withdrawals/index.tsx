@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import React from 'react';
@@ -10,11 +12,11 @@ const beaconChainFeature = config.features.beaconChain;
 
 const Withdrawals = dynamic(() => {
   if (rollupFeature.isEnabled && rollupFeature.type === 'optimistic') {
-    return import('ui/pages/OptimisticL2Withdrawals');
+    return import('client/features/rollup/optimism/pages/withdrawals/OptimisticL2Withdrawals');
   }
 
   if (rollupFeature.isEnabled && rollupFeature.type === 'arbitrum') {
-    return import('ui/pages/ArbitrumL2Withdrawals');
+    return import('client/features/rollup/arbitrum/pages/withdrawals/ArbitrumL2Withdrawals');
   }
 
   if (rollupFeature.isEnabled && rollupFeature.type === 'shibarium') {
@@ -22,7 +24,7 @@ const Withdrawals = dynamic(() => {
   }
 
   if (rollupFeature.isEnabled && rollupFeature.type === 'scroll') {
-    return import('ui/pages/ScrollL2Withdrawals');
+    return import('client/features/rollup/scroll/pages/withdrawals/ScrollL2Withdrawals');
   }
 
   if (beaconChainFeature.isEnabled) {

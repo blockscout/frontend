@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { compile } from 'path-to-regexp';
 
 import getResourceParams from 'client/api/get-resource-params';

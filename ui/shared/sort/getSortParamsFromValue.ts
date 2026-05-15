@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 export default function getSortParamsFromValue<SortValue extends string, SortField extends string, SortOrder extends string>(val?: SortValue) {
   if (!val || val === 'default') {
     return undefined;

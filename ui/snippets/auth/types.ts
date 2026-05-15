@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { UserInfo } from 'types/api/account';
 
 export type ScreenSuccess = {

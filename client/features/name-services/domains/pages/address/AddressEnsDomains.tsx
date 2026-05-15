@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Box, Flex, Grid, chakra } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { clamp } from 'es-toolkit';

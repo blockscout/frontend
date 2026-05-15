@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import Script from 'next/script';
 import React from 'react';
 

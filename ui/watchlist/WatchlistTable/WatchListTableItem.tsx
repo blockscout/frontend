@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { useMutation } from '@tanstack/react-query';
 import React, { useCallback, useState } from 'react';
 

@@ -106,26 +106,33 @@ Each slice follows the template established in 2-1.
 ### 3-2 · [x] Slice: `address` · [#3380](https://github.com/blockscout/frontend/issues/3380)
 **Scope:** `lib/address/`, `ui/address/**`, related types/mocks/stubs, `lib/hooks/useAddressProfileApiQuery`, `lib/contexts/addressHighlight.tsx` → `client/slices/address/`  
 
-### 3-3 · [~] Slice: `search` · [#3405](https://github.com/blockscout/frontend/issues/3405)
+### 3-3 · [x] Slice: `search` · [#3405](https://github.com/blockscout/frontend/issues/3405)
 **Scope:** `lib/search/`, `ui/snippets/searchBar/`, `lib/recentSearchKeywords.ts`, related types/mocks/stubs → `client/slices/search/`  
 
-### 3-4 · [~] Slice: `token` · [#3393](https://github.com/blockscout/frontend/issues/3393)
+### 3-4 · [x] Slice: `token` · [#3393](https://github.com/blockscout/frontend/issues/3393)
 **Scope:** `lib/token/`, `ui/token/**`, `ui/tokens/**`, `ui/tokenInstance/**`, related types/mocks/stubs → `client/slices/token/`  
 
-### 3-5 · [~] Slice: `contract` · [#3401](https://github.com/blockscout/frontend/issues/3401)
+### 3-5 · [x] Slice: `contract` · [#3401](https://github.com/blockscout/frontend/issues/3401)
 **Scope:** `lib/contracts/`, `lib/solidityScan/`, `ui/contract/**`, related types/mocks/stubs → `client/slices/contract/`  
 
-### 3-6 · [~] Slice: `internal-tx` · [#3396](https://github.com/blockscout/frontend/issues/3396)
+### 3-6 · [x] Slice: `internal-tx` · [#3396](https://github.com/blockscout/frontend/issues/3396)
 **Scope:** `ui/internalTxs/**` (and any `lib/` counterparts), related types/mocks/stubs → `client/slices/internal-tx/`  
 
-### 3-7 · [~] Slice: `home` · [#3414](https://github.com/blockscout/frontend/issues/3414)
+### 3-7 · [x] Slice: `home` · [#3414](https://github.com/blockscout/frontend/issues/3414)
 **Scope:** `ui/home/**`, related types/mocks/stubs → `client/slices/home/`  
 
-### 3-8 · [~] Slice: `log` · [#3403](https://github.com/blockscout/frontend/issues/3403)
+### 3-8 · [x] Slice: `log` · [#3403](https://github.com/blockscout/frontend/issues/3403)
 **Scope:** `ui/shared/log/**`, related types/mocks/stubs → `client/slices/log/`
 
-### 3-9 · [~] Slice: `token-transfer` · [#3399](https://github.com/blockscout/frontend/issues/3399)
+### 3-9 · [x] Slice: `token-transfer` · [#3399](https://github.com/blockscout/frontend/issues/3399)
 **Scope:** TBD
+
+### 3-10 · [x] Slice: `gas` · [#3418](https://github.com/blockscout/frontend/issues/3418)
+**Scope:** Gas-price domain primitives — no tracker page (that belongs to `features/gas-tracker/`).
+- `ui/shared/gas/` → `client/slices/gas/components/` and `client/slices/gas/utils/`
+- `types/client/gasTracker.ts` (`GasUnit`, `GAS_UNITS`) → `client/slices/gas/types/client.ts`
+- `client/slices/gas/types/api.ts` already exists — verify and complete (`GasPrices`, `GasPriceInfo`)
+- Update all import paths in `slices/home/`, `slices/tx/`, `client/shell/`, and `features/gas-tracker/`
 
 ---
 
@@ -135,14 +142,35 @@ One PR per rollup type. Each goes under `client/features/rollup/<type>/`.
 
 > Enumerate additional rollup tasks when this stage begins, based on what exists under `lib/rollups/` and `ui/`.
 
-### 4-1 · [ ] Feature: `rollup/optimism`
+### 4-1 · [x] Feature: `rollup/optimism` · [#3421](https://github.com/blockscout/frontend/issues/3421)
 **Scope:** All Optimism-specific UI, hooks, utils, types → `client/features/rollup/optimism/`. Includes fault proof system and dispute games.  
 
-### 4-2 · [ ] Feature: `rollup/arbitrum`
+### 4-2 · [x] Feature: `rollup/arbitrum` · [#3423](https://github.com/blockscout/frontend/issues/3423)
 **Scope:** All Arbitrum-specific UI, hooks, utils, types → `client/features/rollup/arbitrum/`  
 
-### 4-3 · [ ] Feature: `rollup/zk-sync`
+### 4-3 · [x] Feature: `rollup/zk-sync` · [#3426](https://github.com/blockscout/frontend/issues/3426)
 **Scope:** zkSync-specific UI, hooks, utils, types → `client/features/rollup/zk-sync/`. Check for other zk-based rollup types (scroll, etc.) and add tasks if needed.  
+
+### 4-4 · [~] Feature: `rollup/common` — shared types and utils · [#3432](https://github.com/blockscout/frontend/issues/3432)
+**Scope:** Migrate cross-rollup primitives shared by all rollup types.
+- `types/client/rollup.ts` (`ROLLUP_TYPES`, `RollupType`, `ParentChain`) → `client/features/rollup/common/types/config.ts`; inline `ArrayElement` to achieve zero imports (required for `configs/` compatibility)
+- `lib/rollups/utils.ts` → split: `layerLabels` → `client/features/rollup/common/utils/layer-labels.ts`; `formatZkSyncL2TxnBatchStatus` → `client/features/rollup/zk-sync/utils/format-txn-batch-status.ts` (coordinate with 4-3)
+- Update all import paths repo-wide. Delete `lib/rollups/utils.ts` and `types/client/rollup.ts`.
+
+### 4-5 · [~] Feature: `rollup/scroll` · [#3429](https://github.com/blockscout/frontend/issues/3429)
+**Scope:** Scroll-specific UI, hooks, utils, types → `client/features/rollup/scroll/`. Includes deposits, withdrawals, and txn batches pages.
+- `types/api/scrollL2.ts` → `client/features/rollup/scroll/types/api.ts` (2 files already started there)
+- `stubs/scrollL2.ts` → `client/features/rollup/scroll/stubs.ts`
+- `mocks/scroll/` → `client/features/rollup/scroll/mocks/`
+- `ui/shared/statusTag/ScrollL2TxnBatchStatus.tsx` → `client/features/rollup/scroll/components/`
+- `ui/shared/batch/ScrollL2TxnBatchDA.tsx` → `client/features/rollup/scroll/components/`
+- `ui/txnBatches/scrollL2/` → `client/features/rollup/scroll/pages/batches/`
+- `ui/deposits/scrollL2/` → `client/features/rollup/scroll/pages/deposits/`
+- `ui/withdrawals/scrollL2/` → `client/features/rollup/scroll/pages/withdrawals/`
+- `ui/pages/ScrollL2TxnBatches.tsx`, `ScrollL2TxnBatch.tsx` → `client/features/rollup/scroll/pages/batches/` and `batch-details/`
+- `ui/pages/ScrollL2Deposits.tsx`, `ScrollL2Withdrawals.tsx` → `client/features/rollup/scroll/pages/deposits/` and `withdrawals/`
+
+### 4-6 · [~] Feature: `rollup/shibarium` · [#3431](https://github.com/blockscout/frontend/issues/3431)
 
 ---
 
@@ -150,7 +178,7 @@ One PR per rollup type. Each goes under `client/features/rollup/<type>/`.
 
 One PR per chain variant. Each goes under `client/features/chain-variants/<name>/`.
 
-### 5-1 · [ ] Feature: `chain-variants/celo`
+### 5-1 · [~] Feature: `chain-variants/celo` · [#3434](https://github.com/blockscout/frontend/issues/3434)
 **Scope:** All Celo-specific UI and logic including epochs → `client/features/chain-variants/celo/`. See `configs/app/features/celo.ts`.  
 
 ### 5-2 · [ ] Feature: `chain-variants/tac`
@@ -192,6 +220,9 @@ migrated to `client/shared/` in 1-2 and do not appear here.
 **Scope:** `lib/stats/` and stats UI → `client/features/stats/`  
 
 ### 6-7 · [ ] Feature: `gas-tracker`
+**Scope:** Config-gated tracker page (`NEXT_PUBLIC_GAS_TRACKER_ENABLED`). Depends on task 3-10 (`slices/gas/`) being merged first.
+- `ui/gasTracker/` + `ui/pages/GasTracker.tsx` → `client/features/gas-tracker/`
+- Imports gas-price primitives from `client/slices/gas/`
 
 ### 6-8 · [ ] Feature: `validators`
 
@@ -247,7 +278,13 @@ migrated to `client/shared/` in 1-2 and do not appear here.
 ### 6-28 · [ ] Feature: `alternative-explorers`
 **Scope:** The "Verify with other explorers" menu shown on tx, block, address, and token pages. Move `ui/shared/NetworkExplorers.tsx` (and its `.pw.tsx` test) → `client/features/alternative-explorers/`. The util `client/features/alternative-explorers/utils/explorers.ts` already exists (landed in 1-2). Config-gated via `NEXT_PUBLIC_NETWORK_EXPLORERS`.  
 
-> Other small features (`externalTxs`, `xStarScore`, `deFiDropdown`, `getGasButton`, `easterEgg*`, `apiDocs`, `verifiedTokens`, `multichainButton`) — enumerate as separate tasks or group with related features when this stage begins.
+### 6-29 · [ ] Feature: `get-gas-button`
+**Scope:** Gas refuel CTA — independently config-gated (`NEXT_PUBLIC_GAS_REFUEL_PROVIDER_CONFIG`), no dependency on `gas-tracker` being enabled.
+- `ui/snippets/topBar/GetGasButton.tsx` → `client/features/get-gas-button/`
+- `types/client/gasRefuelProviderConfig.ts` → `client/features/get-gas-button/types/`
+- See `configs/app/features/get-gas-button.ts`
+
+> Other small features (`externalTxs`, `xStarScore`, `deFiDropdown`, `easterEgg*`, `apiDocs`, `verifiedTokens`, `multichainButton`) — enumerate as separate tasks or group with related features when this stage begins.
 
 ---
 

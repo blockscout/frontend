@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { useCallback, useEffect } from 'react';
 
 import type { Block } from 'client/slices/block/types/api';

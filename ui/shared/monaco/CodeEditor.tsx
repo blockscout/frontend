@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { SystemStyleObject } from '@chakra-ui/react';
 import { Box, Flex, useToken, Center } from '@chakra-ui/react';
 import type { EditorProps } from '@monaco-editor/react';

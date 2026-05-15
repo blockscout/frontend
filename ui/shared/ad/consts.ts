@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 export const DESKTOP_BANNER_WIDTH = 728;
 export const DESKTOP_BANNER_HEIGHT = 90;
 export const MOBILE_BANNER_WIDTH = 320;

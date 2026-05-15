@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { clamp } from 'es-toolkit';
 import React from 'react';
 import { useInView } from 'react-intersection-observer';

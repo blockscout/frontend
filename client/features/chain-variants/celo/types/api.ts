@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { AddressParam } from 'client/slices/address/types/api';
 import type { TokenInfo } from 'client/slices/token/types/api';
 import type { CeloEpochRewardsType } from 'types/api/epochs';

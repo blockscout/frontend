@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Flex, Text, Box } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import { capitalize } from 'es-toolkit';
@@ -9,9 +11,9 @@ import type { ClusterChainConfig } from 'types/multichain';
 import { route } from 'nextjs-routes';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
-import BlockGasUsed from 'client/slices/block/components/BlockGasUsed';
 import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
 import getBlockTotalReward from 'client/slices/block/utils/get-block-total-reward';
+import GasUsed from 'client/slices/gas/components/GasUsed';
 
 import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-title';
 import { currencyUnits } from 'client/shared/chain/units';
@@ -105,7 +107,7 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement, animation, chain
           <Skeleton loading={ isLoading } display="inline-block" color="text.secondary" mr={ 4 }>
             <span>{ BigNumber(data.gas_used || 0).toFormat() }</span>
           </Skeleton>
-          <BlockGasUsed
+          <GasUsed
             gasUsed={ data.gas_used || undefined }
             gasLimit={ data.gas_limit }
             isLoading={ isLoading }

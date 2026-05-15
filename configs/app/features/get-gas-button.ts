@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { Feature } from './types';
 import type { GasRefuelProviderConfig } from 'types/client/gasRefuelProviderConfig';
 

@@ -1,7 +1,9 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Box, chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import type { ChainInfo } from 'types/api/interop';
+import type { ChainInfo } from 'client/features/op-interop/types/api';
 
 import { route } from 'nextjs-routes';
 

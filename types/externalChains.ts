@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { EssentialDappsChainConfig } from 'types/client/marketplace';
 import type { ClusterChainConfig } from 'types/multichain';
 

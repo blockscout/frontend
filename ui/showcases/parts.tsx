@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { BoxProps, StackProps, TabsContentProps } from '@chakra-ui/react';
 import { Box, Code, Grid, HStack, VStack } from '@chakra-ui/react';
 import React from 'react';

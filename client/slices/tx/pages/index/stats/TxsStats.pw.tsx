@@ -1,8 +1,8 @@
 import React from 'react';
 
+import * as statsMock from 'client/slices/home/mocks/stats';
 import * as txsStatsMock from 'client/slices/tx/mocks/stats';
 
-import * as statsMock from 'mocks/stats';
 import { test, expect } from 'playwright/lib';
 
 import TxsStats from './TxsStats';

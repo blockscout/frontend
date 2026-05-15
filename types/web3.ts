@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 // copied from node_modules/@wagmi/core/src/connectors/injected.ts
 import type { EIP1193Provider } from 'viem';
 

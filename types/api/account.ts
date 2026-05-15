@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { Abi } from 'viem';
 
 import type { AddressParam } from 'client/slices/address/types/api';

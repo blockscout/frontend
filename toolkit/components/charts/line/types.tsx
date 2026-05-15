@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type * as d3 from 'd3';
 
 export interface LineChartItemRaw {

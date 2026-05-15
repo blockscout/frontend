@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Box } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import { groupBy, mapValues } from 'es-toolkit';
@@ -6,6 +8,7 @@ import React from 'react';
 import { isMobile } from 'react-device-detect';
 
 import type * as multichain from '@blockscout/multichain-aggregator-types';
+import { getAdditionalTokenTypes } from 'client/slices/token/utils/token-types';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
@@ -79,11 +82,12 @@ const MultichainAddressPortfolioTokens = ({ addressData, isLoading, onChainChang
   }, [ portfolioQuery.isPlaceholderData, isLoading ]);
 
   const typeFilter = React.useMemo(() => {
-    const additionalTypes = config?.chains
-      .filter((chain) => Object.keys(portfolioData).includes(chain.id))
-      .map((chain) => chain.app_config.chain.additionalTokenTypes.map((item) => item.id))
-      .flat();
-    return [ 'ERC-20', 'NATIVE', ...(additionalTypes ?? []) ].filter(Boolean).join(',');
+    const additionalTypes = getAdditionalTokenTypes(
+      config?.chains
+        .filter((chain) => Object.keys(portfolioData).includes(chain.id))
+        .map((chain) => chain.app_config),
+    );
+    return [ 'ERC-20', 'NATIVE', ...additionalTypes.map(({ id }) => id) ].filter(Boolean).join(',');
   }, [ config?.chains, portfolioData ]);
 
   const tokensQuery = useQueryWithPages({

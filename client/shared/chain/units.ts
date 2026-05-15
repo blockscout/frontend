@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import config from 'configs/app';
 import type { Unit } from 'ui/shared/value/utils';
 

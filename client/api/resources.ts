@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { ApiName, ApiResource, IsPaginated } from './types';
 
 import type { AdminApiResourceName, AdminApiResourcePayload } from './services/admin';

@@ -1,8 +1,11 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Box, chakra } from '@chakra-ui/react';
 import Script from 'next/script';
 import React, { useCallback, useEffect, useRef } from 'react';
 
 import config from 'configs/app';
+import { useAppContext } from 'lib/contexts/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 
 const adTextFeature = config.features.adsText;
@@ -19,6 +22,7 @@ const SevioTextAd = ({ className }: { className?: string }) => {
   const [ status, setStatus ] = React.useState<Status>('loading');
   const adRef = useRef<HTMLDivElement>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const { cspNonce } = useAppContext();
 
   useEffect(() => {
     if (!adTextFeature.isEnabled) {
@@ -113,6 +117,7 @@ const SevioTextAd = ({ className }: { className?: string }) => {
       >
         <Script
           strategy="lazyOnload"
+          nonce={ cspNonce ?? undefined }
           src="https://cdn.adx.ws/scripts/loader.js"
           onLoad={ handleScriptLoad }
           onError={ handleScriptError }

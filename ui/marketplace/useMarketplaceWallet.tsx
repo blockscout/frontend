@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { TypedData } from 'abitype';
 import { useCallback } from 'react';
 import type { Account, SignTypedDataParameters } from 'viem';

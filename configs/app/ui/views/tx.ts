@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { TxAdditionalFieldsId, TxFieldsId } from 'types/views/tx';
 import { TX_ADDITIONAL_FIELDS_IDS, TX_FIELDS_IDS } from 'types/views/tx';
 

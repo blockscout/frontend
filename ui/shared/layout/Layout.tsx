@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 /* eslint-disable consistent-default-export-name/default-export-match-filename */
 import React from 'react';
 

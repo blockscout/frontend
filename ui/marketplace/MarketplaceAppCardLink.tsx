@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 import type { MouseEvent } from 'react';

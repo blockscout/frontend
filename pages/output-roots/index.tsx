@@ -1,10 +1,12 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import React from 'react';
 
 import PageNextJs from 'nextjs/PageNextJs';
 
-const OutputRoots = dynamic(() => import('ui/pages/OptimisticL2OutputRoots'), { ssr: false });
+const OutputRoots = dynamic(() => import('client/features/rollup/optimism/pages/output-roots/OptimisticL2OutputRoots'), { ssr: false });
 
 const Page: NextPage = () => {
   return (

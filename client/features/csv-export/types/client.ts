@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { CsvExportItemStatus } from './api';
 
 export type CsvExportType =

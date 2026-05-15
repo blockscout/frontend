@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { GetServerSideProps, NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import React from 'react';

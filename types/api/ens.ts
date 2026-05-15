@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type * as bens from '@blockscout/bens-types';
 
 export interface EnsAddressLookupFilters extends Pick<bens.LookupAddressRequest, 'address' | 'resolved_to' | 'owned_by' | 'only_active'> {

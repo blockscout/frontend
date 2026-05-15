@@ -79,6 +79,7 @@ export const chainB = {
     chain: {
       ...chainA.app_config?.chain,
       isTestnet: true,
+      additionalTokenTypes: [ { id: 'ERC-7984', name: 'ERC-7984' } ],
     },
     app: {
       baseUrl: 'https://op-testnet.com',

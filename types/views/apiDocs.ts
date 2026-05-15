@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 export const API_DOCS_TABS = [
   'rest_api',
   'eth_rpc_api',

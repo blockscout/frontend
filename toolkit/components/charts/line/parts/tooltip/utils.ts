@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 export const TEXT_LINE_HEIGHT = 12;
 export const PADDING = 16;
 export const LINE_SPACE = 10;

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 export default function getNextSortValue<SortField extends string, Sort extends string>(
   sortSequence: Record<SortField, Array<Sort>>, field: SortField,
 ) {

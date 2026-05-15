@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { useFeatureValue, useGrowthBook } from '@growthbook/growthbook-react';
 
 import type { GrowthBookFeatures } from './init';

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import React from 'react';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';

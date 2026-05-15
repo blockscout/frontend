@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import * as promClient from 'prom-client';
 
 const metrics = (() => {

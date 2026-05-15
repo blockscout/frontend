@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { isBrowser } from 'toolkit/utils/isBrowser';
 import * as regexp from 'toolkit/utils/regexp';
 

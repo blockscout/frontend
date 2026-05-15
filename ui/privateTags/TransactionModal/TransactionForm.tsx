@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Box } from '@chakra-ui/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import React, { useState } from 'react';

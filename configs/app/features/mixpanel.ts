@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { Config } from 'mixpanel-browser';
 
 import type { Feature } from './types';

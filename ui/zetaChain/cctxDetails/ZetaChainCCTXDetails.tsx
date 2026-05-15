@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Box, Flex, Grid, VStack, Text } from '@chakra-ui/react';
 import React from 'react';
 
@@ -5,12 +7,13 @@ import type { CrossChainTx } from '@blockscout/zetachain-cctx-types';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import { HOMEPAGE_STATS } from 'client/slices/home/stubs';
+
 import AddressEntityZetaChain from 'client/features/chain-variants/zeta-chain/components/AddressEntityZetaChain';
 import TxEntityZetaChainCC from 'client/features/chain-variants/zeta-chain/TxEntityZetaChainCC';
 
 import base64ToHex from 'client/shared/transformers/base64-to-hex';
 
-import { HOMEPAGE_STATS } from 'stubs/stats';
 import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { SECOND } from 'toolkit/utils/consts';

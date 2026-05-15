@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 export function urlValidator(value: string | undefined) {
   if (!value) {
     return true;

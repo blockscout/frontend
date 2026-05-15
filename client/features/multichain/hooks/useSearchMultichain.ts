@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type * as bens from '@blockscout/bens-types';
 import type { QuickSearchResultItem } from 'client/slices/search/types/client';
 import type { QuickSearchResultBlock, QuickSearchResultToken } from 'types/client/multichainAggregator';

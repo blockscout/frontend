@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 'use client';
 
 import { AbsoluteCenter, Menu as ChakraMenu, Portal } from '@chakra-ui/react';

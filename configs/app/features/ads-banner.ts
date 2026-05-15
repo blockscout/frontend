@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { Feature } from './types';
 import type { AdButlerConfig, AdButlerDeviceConfig } from 'types/client/adButlerConfig';
 import { SUPPORTED_AD_BANNER_PROVIDERS } from 'types/client/adProviders';

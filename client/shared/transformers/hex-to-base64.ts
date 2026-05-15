@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import bytesToBase64 from './bytes-to-base64';
 import hexToBytes from './hex-to-bytes';
 

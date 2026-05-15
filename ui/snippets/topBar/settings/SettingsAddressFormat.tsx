@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import React from 'react';
 
 import { BECH_32_SEPARATOR } from 'client/slices/address/utils/bech32';

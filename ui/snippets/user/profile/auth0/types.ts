@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { IconName } from 'public/icons/name';
 
 export interface NavLink {

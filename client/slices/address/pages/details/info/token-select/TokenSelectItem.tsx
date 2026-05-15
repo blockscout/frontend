@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { chakra, Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
@@ -47,11 +49,11 @@ const TokenSelectItem = ({ data }: Props) => {
       );
     }
 
-    const isFungibleToken = isFungibleTokenType(data.token.type);
+    const isFungibleToken = isFungibleTokenType(data.token.type, chain?.app_config);
 
     if (isFungibleToken) {
       const tokenDecimals = Number(data.token.decimals ?? 18);
-      const text = `${ BigNumber(data.value).dividedBy(10 ** tokenDecimals).toFormat() } ${ data.token.symbol || '' }`;
+      const text = `${ BigNumber(data.value ?? '0').dividedBy(10 ** tokenDecimals).toFormat() } ${ data.token.symbol || '' }`;
 
       return (
         <>
@@ -63,7 +65,7 @@ const TokenSelectItem = ({ data }: Props) => {
 
     switch (data.token.type) {
       case 'ERC-721': {
-        const text = `${ BigNumber(data.value).toFormat() } ${ data.token.symbol || '' }`;
+        const text = `${ BigNumber(data.value ?? '0').toFormat() } ${ data.token.symbol || '' }`;
         return <TruncatedText text={ text }/>;
       }
       case 'ERC-1155': {
@@ -73,7 +75,7 @@ const TokenSelectItem = ({ data }: Props) => {
               #{ data.token_id || 0 }
             </chakra.span>
             <span>
-              { BigNumber(data.value).toFormat() }
+              { BigNumber(data.value ?? '0').toFormat() }
             </span>
           </>
         );

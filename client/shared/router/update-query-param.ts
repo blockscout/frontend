@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { NextRouter } from 'next/router';
 
 export default function updateQueryParam(router: NextRouter, param: string, newValue: string) {

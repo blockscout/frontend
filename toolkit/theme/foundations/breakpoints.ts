@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 const breakpoints = {
   sm: '415px',
   lg: '1000px',

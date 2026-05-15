@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { ADDRESS_REGEXP } from 'toolkit/utils/regexp';
 
 export type InputType = 'address' | 'cluster_name';

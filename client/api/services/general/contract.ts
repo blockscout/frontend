@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { ApiResource } from '../../types';
 import type { SmartContractSecurityAudits } from 'client/features/contract-audit-reports/types/api';
 import type {

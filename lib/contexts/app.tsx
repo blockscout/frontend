@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import React, { createContext, useContext } from 'react';
 
 import type { Route } from 'nextjs-routes';
@@ -15,6 +17,7 @@ const AppContext = createContext<PageProps>({
   adBannerProvider: null,
   apiData: null,
   uuid: '',
+  cspNonce: null,
 });
 
 export function AppContextProvider({ children, pageProps }: Props) {

@@ -17,8 +17,8 @@ type AddressProfileAPIConfig = {
   tag_text_color?: string;
 };
 import type { GasRefuelProviderConfig } from 'types/client/gasRefuelProviderConfig';
-import { GAS_UNITS } from 'types/client/gasTracker';
-import type { GasUnit } from 'types/client/gasTracker';
+import { GAS_UNITS } from 'client/slices/gas/types/config';
+import type { GasUnit } from 'client/slices/gas/types/config';
 import { PROVIDERS as TX_INTERPRETATION_PROVIDERS } from 'types/client/txInterpretation';
 import { VALIDATORS_CHAIN_TYPE } from 'types/client/validators';
 import type { ValidatorsChainType } from 'types/client/validators';

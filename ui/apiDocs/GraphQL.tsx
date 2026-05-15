@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Box } from '@chakra-ui/react';
 import { createGraphiQLFetcher } from '@graphiql/toolkit';
 import { GraphiQL } from 'graphiql';

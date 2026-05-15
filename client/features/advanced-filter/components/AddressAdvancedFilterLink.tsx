@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { pickBy } from 'es-toolkit';
 import React from 'react';
 

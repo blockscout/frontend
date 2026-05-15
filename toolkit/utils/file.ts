@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { unparse } from 'papaparse';
 
 export function downloadBlob(blob: Blob, filename: string) {

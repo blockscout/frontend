@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { LinkProps as ChakraLinkProps } from '@chakra-ui/react';
 import { Link as ChakraLink, LinkBox as ChakraLinkBox, LinkOverlay as ChakraLinkOverlay, Icon } from '@chakra-ui/react';
 import NextLink from 'next/link';

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { Text, Box, Flex, VStack } from '@chakra-ui/react';
 import React from 'react';
 import type { ControllerRenderProps, FieldPathValue, ValidateResult } from 'react-hook-form';
