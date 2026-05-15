@@ -6,8 +6,8 @@ import React from 'react';
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
 import { layerLabels } from 'client/features/rollup/common/utils/layer';
+import { SCROLL_L2_MESSAGE_ITEM } from 'client/features/rollup/scroll/stubs';
 
-import { SCROLL_L2_MESSAGE_ITEM } from 'stubs/scrollL2';
 import { generateListStub } from 'stubs/utils';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { rightLineArrow, nbsp } from 'toolkit/utils/htmlEntities';
@@ -16,14 +16,15 @@ import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import StickyPaginationWithText from 'ui/shared/StickyPaginationWithText';
-import ScrollL2WithdrawalsListItem from 'ui/withdrawals/scrollL2/ScrollL2WithdrawalsListItem';
-import ScrollL2WithdrawalsTable from 'ui/withdrawals/scrollL2/ScrollL2WithdrawalsTable';
 
-const ScrollL2Withdrawals = () => {
+import ScrollL2DepositsListItem from './ScrollL2DepositsListItem';
+import ScrollL2DepositsTable from './ScrollL2DepositsTable';
+
+const ScrollL2Deposits = () => {
   const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({
-    resourceName: 'general:scroll_l2_withdrawals',
+    resourceName: 'general:scroll_l2_deposits',
     options: {
-      placeholderData: generateListStub<'general:scroll_l2_withdrawals'>(
+      placeholderData: generateListStub<'general:scroll_l2_deposits'>(
         SCROLL_L2_MESSAGE_ITEM,
         50,
         { next_page_params: { items_count: 50, id: 1 } },
@@ -31,7 +32,7 @@ const ScrollL2Withdrawals = () => {
     },
   });
 
-  const countersQuery = useApiQuery('general:scroll_l2_withdrawals_count', {
+  const countersQuery = useApiQuery('general:scroll_l2_deposits_count', {
     queryOptions: {
       placeholderData: 1927029,
     },
@@ -41,7 +42,7 @@ const ScrollL2Withdrawals = () => {
     <>
       <Box hideFrom="lg">
         { data.items.map(((item, index) => (
-          <ScrollL2WithdrawalsListItem
+          <ScrollL2DepositsListItem
             key={ String(item.id) + (isPlaceholderData ? index : '') }
             isLoading={ isPlaceholderData }
             item={ item }
@@ -49,7 +50,7 @@ const ScrollL2Withdrawals = () => {
         ))) }
       </Box>
       <Box hideBelow="lg">
-        <ScrollL2WithdrawalsTable items={ data.items } top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 } isLoading={ isPlaceholderData }/>
+        <ScrollL2DepositsTable items={ data.items } top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 } isLoading={ isPlaceholderData }/>
       </Box>
     </>
   ) : null;
@@ -64,7 +65,7 @@ const ScrollL2Withdrawals = () => {
         loading={ countersQuery.isPlaceholderData }
         display="inline-block"
       >
-        A total of { countersQuery.data?.toLocaleString() } withdrawals found
+        A total of { countersQuery.data?.toLocaleString() } deposits found
       </Skeleton>
     );
   })();
@@ -73,11 +74,11 @@ const ScrollL2Withdrawals = () => {
 
   return (
     <>
-      <PageTitle title={ `Withdrawals (${ layerLabels.current }${ nbsp }${ rightLineArrow }${ nbsp }${ layerLabels.parent })` } withTextAd/>
+      <PageTitle title={ `Deposits (${ layerLabels.parent }${ nbsp }${ rightLineArrow }${ nbsp }${ layerLabels.current })` } withTextAd/>
       <DataListDisplay
         isError={ isError }
         itemsNum={ data?.items?.length }
-        emptyText="There are no withdrawals."
+        emptyText="There are no deposits."
         actionBar={ actionBar }
       >
         { content }
@@ -86,4 +87,4 @@ const ScrollL2Withdrawals = () => {
   );
 };
 
-export default ScrollL2Withdrawals;
+export default ScrollL2Deposits;

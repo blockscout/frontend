@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { ScrollL2MessageItem } from 'types/api/scrollL2';
+import type { ScrollL2MessageItem } from 'client/features/rollup/scroll/types/api';
 
 import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
 

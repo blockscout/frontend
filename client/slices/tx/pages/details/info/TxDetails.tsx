@@ -11,9 +11,9 @@ import {
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
+import { SCROLL_L2_BLOCK_STATUSES } from 'client/features/rollup/scroll/types/api';
 import { ZKSYNC_L2_TX_BATCH_STATUSES } from 'client/features/rollup/zk-sync/types/api';
 import type { Transaction } from 'client/slices/tx/types/api';
-import { SCROLL_L2_BLOCK_STATUSES } from 'types/api/scrollL2';
 
 import { route } from 'nextjs-routes';
 

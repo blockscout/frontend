@@ -24,7 +24,7 @@ const Deposits = dynamic(() => {
   }
 
   if (rollupFeature.isEnabled && rollupFeature.type === 'scroll') {
-    return import('ui/pages/ScrollL2Deposits');
+    return import('client/features/rollup/scroll/pages/deposits/ScrollL2Deposits');
   }
 
   if (beaconChainFeature.isEnabled && !beaconChainFeature.withdrawalsOnly) {

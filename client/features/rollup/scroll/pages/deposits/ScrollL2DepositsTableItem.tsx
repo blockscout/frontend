@@ -3,11 +3,11 @@
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import type { ScrollL2MessageItem } from 'types/api/scrollL2';
+import type { ScrollL2MessageItem } from 'client/features/rollup/scroll/types/api';
 
-import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 
+import BlockEntityL1 from 'client/features/rollup/common/components/BlockEntityL1';
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
 
 import config from 'configs/app';
@@ -20,7 +20,7 @@ const rollupFeature = config.features.rollup;
 
 type Props = { item: ScrollL2MessageItem; isLoading?: boolean };
 
-const ScrollL2WithdrawalsTableItem = ({ item, isLoading }: Props) => {
+const ScrollL2DepositsTableItem = ({ item, isLoading }: Props) => {
   if (!rollupFeature.isEnabled || rollupFeature.type !== 'scroll') {
     return null;
   }
@@ -28,7 +28,7 @@ const ScrollL2WithdrawalsTableItem = ({ item, isLoading }: Props) => {
   return (
     <TableRow>
       <TableCell verticalAlign="middle">
-        <BlockEntity
+        <BlockEntityL1
           number={ item.origination_transaction_block_number }
           isLoading={ isLoading }
           fontWeight={ 600 }
@@ -41,11 +41,12 @@ const ScrollL2WithdrawalsTableItem = ({ item, isLoading }: Props) => {
         </Skeleton>
       </TableCell>
       <TableCell verticalAlign="middle">
-        <TxEntity
+        <TxEntityL1
           isLoading={ isLoading }
           hash={ item.origination_transaction_hash }
           truncation="constant_long"
           noIcon
+          noCopy
         />
       </TableCell>
       <TableCell verticalAlign="middle" pr={ 12 }>
@@ -57,12 +58,11 @@ const ScrollL2WithdrawalsTableItem = ({ item, isLoading }: Props) => {
       </TableCell>
       <TableCell verticalAlign="middle">
         { item.completion_transaction_hash ? (
-          <TxEntityL1
+          <TxEntity
             isLoading={ isLoading }
             hash={ item.completion_transaction_hash }
             truncation="constant_long"
             noIcon
-            noCopy
           />
         ) : (
           <chakra.span color="text.secondary">
@@ -81,4 +81,4 @@ const ScrollL2WithdrawalsTableItem = ({ item, isLoading }: Props) => {
   );
 };
 
-export default ScrollL2WithdrawalsTableItem;
+export default ScrollL2DepositsTableItem;

@@ -29,15 +29,15 @@ import type {
   OptimismL2BatchTxs,
   OptimismL2BatchBlocks,
 } from 'client/features/rollup/optimism/types/api';
-import type { ZkSyncBatch, ZkSyncBatchesResponse, ZkSyncBatchTxs } from 'client/features/rollup/zk-sync/types/api';
-import type { MudWorldsResponse } from 'types/api/mudWorlds';
 import type {
   ScrollL2BatchesResponse,
   ScrollL2TxnBatch,
   ScrollL2TxnBatchTxs,
   ScrollL2TxnBatchBlocks,
   ScrollL2MessagesResponse,
-} from 'types/api/scrollL2';
+} from 'client/features/rollup/scroll/types/api';
+import type { ZkSyncBatch, ZkSyncBatchesResponse, ZkSyncBatchTxs } from 'client/features/rollup/zk-sync/types/api';
+import type { MudWorldsResponse } from 'types/api/mudWorlds';
 import type { ShibariumWithdrawalsResponse, ShibariumDepositsResponse } from 'types/api/shibarium';
 
 export const GENERAL_API_ROLLUP_RESOURCES = {

@@ -3,11 +3,11 @@
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import type { ScrollL2MessageItem } from 'types/api/scrollL2';
+import type { ScrollL2MessageItem } from 'client/features/rollup/scroll/types/api';
 
+import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 
-import BlockEntityL1 from 'client/features/rollup/common/components/BlockEntityL1';
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
 import { layerLabels } from 'client/features/rollup/common/utils/layer';
 
@@ -21,7 +21,7 @@ const rollupFeature = config.features.rollup;
 
 type Props = { item: ScrollL2MessageItem; isLoading?: boolean };
 
-const ScrollL2DepositsListItem = ({ item, isLoading }: Props) => {
+const ScrollL2WithdrawalsListItem = ({ item, isLoading }: Props) => {
   if (!rollupFeature.isEnabled || rollupFeature.type !== 'scroll') {
     return null;
   }
@@ -29,9 +29,9 @@ const ScrollL2DepositsListItem = ({ item, isLoading }: Props) => {
   return (
     <ListItemMobileGrid.Container>
 
-      <ListItemMobileGrid.Label isLoading={ isLoading }>{ layerLabels.parent } block</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Label isLoading={ isLoading }>{ layerLabels.current } block</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <BlockEntityL1
+        <BlockEntity
           number={ item.origination_transaction_block_number }
           isLoading={ isLoading }
           fontWeight={ 600 }
@@ -45,13 +45,12 @@ const ScrollL2DepositsListItem = ({ item, isLoading }: Props) => {
         </Skeleton>
       </ListItemMobileGrid.Value>
 
-      <ListItemMobileGrid.Label isLoading={ isLoading }>{ layerLabels.parent } txn hash</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Label isLoading={ isLoading }>{ layerLabels.current } txn hash</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <TxEntityL1
+        <TxEntity
           isLoading={ isLoading }
           hash={ item.origination_transaction_hash }
           truncation="constant_long"
-          noCopy
         />
       </ListItemMobileGrid.Value>
 
@@ -64,13 +63,14 @@ const ScrollL2DepositsListItem = ({ item, isLoading }: Props) => {
         />
       </ListItemMobileGrid.Value>
 
-      <ListItemMobileGrid.Label isLoading={ isLoading }>{ layerLabels.current } txn hash</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Label isLoading={ isLoading }>{ layerLabels.parent } txn hash</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
         { item.completion_transaction_hash ? (
-          <TxEntity
+          <TxEntityL1
             isLoading={ isLoading }
             hash={ item.completion_transaction_hash }
             truncation="constant_long"
+            noCopy
           />
         ) : (
           <chakra.span>
@@ -91,4 +91,4 @@ const ScrollL2DepositsListItem = ({ item, isLoading }: Props) => {
   );
 };
 
-export default ScrollL2DepositsListItem;
+export default ScrollL2WithdrawalsListItem;

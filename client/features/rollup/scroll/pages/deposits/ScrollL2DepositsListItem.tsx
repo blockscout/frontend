@@ -3,16 +3,17 @@
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import type { ScrollL2MessageItem } from 'types/api/scrollL2';
+import type { ScrollL2MessageItem } from 'client/features/rollup/scroll/types/api';
 
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 
 import BlockEntityL1 from 'client/features/rollup/common/components/BlockEntityL1';
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
+import { layerLabels } from 'client/features/rollup/common/utils/layer';
 
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import { TableCell, TableRow } from 'toolkit/chakra/table';
+import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
@@ -20,65 +21,74 @@ const rollupFeature = config.features.rollup;
 
 type Props = { item: ScrollL2MessageItem; isLoading?: boolean };
 
-const ScrollL2DepositsTableItem = ({ item, isLoading }: Props) => {
+const ScrollL2DepositsListItem = ({ item, isLoading }: Props) => {
   if (!rollupFeature.isEnabled || rollupFeature.type !== 'scroll') {
     return null;
   }
 
   return (
-    <TableRow>
-      <TableCell verticalAlign="middle">
+    <ListItemMobileGrid.Container>
+
+      <ListItemMobileGrid.Label isLoading={ isLoading }>{ layerLabels.parent } block</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Value>
         <BlockEntityL1
           number={ item.origination_transaction_block_number }
           isLoading={ isLoading }
           fontWeight={ 600 }
-          noIcon
         />
-      </TableCell>
-      <TableCell verticalAlign="middle">
-        <Skeleton loading={ isLoading }>
-          <span>{ item.id }</span>
+      </ListItemMobileGrid.Value>
+
+      <ListItemMobileGrid.Label isLoading={ isLoading }>Index</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Value>
+        <Skeleton loading={ isLoading } display="inline-block">
+          { item.id }
         </Skeleton>
-      </TableCell>
-      <TableCell verticalAlign="middle">
+      </ListItemMobileGrid.Value>
+
+      <ListItemMobileGrid.Label isLoading={ isLoading }>{ layerLabels.parent } txn hash</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Value>
         <TxEntityL1
           isLoading={ isLoading }
           hash={ item.origination_transaction_hash }
           truncation="constant_long"
-          noIcon
           noCopy
         />
-      </TableCell>
-      <TableCell verticalAlign="middle" pr={ 12 }>
+      </ListItemMobileGrid.Value>
+
+      <ListItemMobileGrid.Label isLoading={ isLoading }>Age</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Value>
         <TimeWithTooltip
           timestamp={ item.origination_timestamp }
           isLoading={ isLoading }
-          color="text.secondary"
+          display="inline-block"
         />
-      </TableCell>
-      <TableCell verticalAlign="middle">
+      </ListItemMobileGrid.Value>
+
+      <ListItemMobileGrid.Label isLoading={ isLoading }>{ layerLabels.current } txn hash</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Value>
         { item.completion_transaction_hash ? (
           <TxEntity
             isLoading={ isLoading }
             hash={ item.completion_transaction_hash }
             truncation="constant_long"
-            noIcon
           />
         ) : (
-          <chakra.span color="text.secondary">
+          <chakra.span>
             Pending Claim
           </chakra.span>
         ) }
-      </TableCell>
-      <TableCell verticalAlign="middle" isNumeric>
+      </ListItemMobileGrid.Value>
+
+      <ListItemMobileGrid.Label isLoading={ isLoading }>Value</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Value>
         <NativeCoinValue
           amount={ item.value }
-          noSymbol
           loading={ isLoading }
         />
-      </TableCell>
-    </TableRow>
+      </ListItemMobileGrid.Value>
+
+    </ListItemMobileGrid.Container>
   );
 };
 
-export default ScrollL2DepositsTableItem;
+export default ScrollL2DepositsListItem;
