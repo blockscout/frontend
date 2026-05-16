@@ -7,8 +7,11 @@ import { currencyUnits } from 'lib/units';
 import { Alert } from 'toolkit/chakra/alert';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 
-const PAYBACK_V2_CONTRACTS = new Set([
+const KNOWN_BUG_PAYBACK_V2_CONTRACTS = new Set([
   '0xdea4687fdba2528d1b30222e199c90b63af8c850',
+]);
+const CORRECTED_PAYBACK_V2_CONTRACTS = new Set([
+  '0x89d1cbd9deaab4dff6f800a336fbdd9a5c6829e4',
 ]);
 const STAKE_FOR_SELECTOR = '0x4bf69206';
 const PAYBACK_V2_ROLLOUT_MIN_STAKE_WEI = '1000000000000000000000';
@@ -21,26 +24,35 @@ interface Props {
 const TxDetailsPaybackNotice = ({ isLoading, data }: Props) => {
   const toHash = data.to?.hash.toLowerCase();
   const methodCall = data.decoded_input?.method_call.toLowerCase();
-  const isPaybackStakeFor = Boolean(
+  const isStakeForCall = Boolean(
+    data.raw_input.toLowerCase().startsWith(STAKE_FOR_SELECTOR) ||
+    data.method?.toLowerCase() === 'stakefor' ||
+    methodCall?.startsWith('stakefor('),
+  );
+  const isKnownBugStakeFor = Boolean(
     toHash &&
-    PAYBACK_V2_CONTRACTS.has(toHash) &&
-    (
-      data.raw_input.toLowerCase().startsWith(STAKE_FOR_SELECTOR) ||
-      data.method?.toLowerCase() === 'stakefor' ||
-      methodCall?.startsWith('stakefor(')
-    ),
+    KNOWN_BUG_PAYBACK_V2_CONTRACTS.has(toHash) &&
+    isStakeForCall,
+  );
+  const isCorrectedStakeFor = Boolean(
+    toHash &&
+    CORRECTED_PAYBACK_V2_CONTRACTS.has(toHash) &&
+    isStakeForCall,
   );
 
-  if (!isPaybackStakeFor) {
+  if (!isKnownBugStakeFor && !isCorrectedStakeFor) {
     return null;
   }
 
   const isBelowRolloutMinimum = BigNumber(data.value || 0).lt(PAYBACK_V2_ROLLOUT_MIN_STAKE_WEI);
-  const belowMinimumText = `This stakeFor deposit is below the v2.0.18 rollout minimum of 1,000 ${ currencyUnits.ether }. ` +
-    'The receiver owns the stake, and refunds start only after the receiver\'s total V2 Quota stake reaches the contract\'s current minStake(). ' +
-    'Existing receiver stake can count toward that minimum.';
-  const receiverOwnerText = 'The receiver owns this Payback V2 stake. ' +
-    'Refunds apply to transactions signed by the receiver once the receiver meets the contract\'s current minStake().';
+  const knownBugText = 'This stakeFor used the superseded PaybackV2 address. ' +
+    'On that contract, third-party withdrawal ownership is receiver-owned; use the corrected PaybackV2 address for staker-owned withdrawals.';
+  const correctedText = isBelowRolloutMinimum ?
+    `This stakeFor deposit is below the current PaybackV2 minimum of 1,000 ${ currencyUnits.ether }; ` +
+      'the receiver needs at least that much active stake before refund quota is available. ' +
+      'Withdrawal ownership remains with the funding wallet through unstakeFor(address,uint256).' :
+    'This stakeFor used the corrected PaybackV2 contract. The receiver gets Payback refund quota, ' +
+      'while the funding wallet owns and withdraws the stake through unstakeFor(address,uint256).';
 
   return (
     <>
@@ -52,13 +64,13 @@ const TxDetailsPaybackNotice = ({ isLoading, data }: Props) => {
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue multiRow alignItems="flex-start" whiteSpace="normal">
         <Alert
-          status={ isBelowRolloutMinimum ? 'warning' : 'info' }
+          status={ isKnownBugStakeFor ? 'warning' : 'info' }
           loading={ isLoading }
           showIcon
           w="fit-content"
           maxW="760px"
         >
-          { isBelowRolloutMinimum ? belowMinimumText : receiverOwnerText }
+          { isKnownBugStakeFor ? knownBugText : correctedText }
         </Alert>
       </DetailedInfo.ItemValue>
     </>
