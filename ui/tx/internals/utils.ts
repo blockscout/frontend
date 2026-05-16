@@ -15,5 +15,6 @@ export const TX_INTERNALS_ITEMS: Array<TxInternalsTypeItem> = [
   { title: 'Create', id: 'create' },
   { title: 'Create2', id: 'create2' },
   { title: 'Self-destruct', id: 'selfdestruct' },
-  { title: 'Payback', id: 'reward' },
+  { title: 'Payback', id: 'payback' },
+  { title: 'Reward', id: 'reward' },
 ];
