@@ -410,6 +410,7 @@ Settings for meta tags, OG tags and SEO
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED | `boolean` | Set to true if network has account feature | Required | - | `true` | v1.0.x+ |
 | NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY | `boolean` | See [below](#google-recaptcha) | Required | - | `<your-secret>` | v1.0.x+ |
+| NEXT_PUBLIC_ACCOUNT_AUTH_URL | `string` | External account auth endpoint. When set, login and account-linking actions redirect to this URL instead of using the built-in account API modal. | - | - | `/auth/auth0` | v2.4.0+ |
 
 &nbsp;
 
