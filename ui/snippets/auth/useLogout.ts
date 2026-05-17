@@ -11,6 +11,8 @@ import * as cookies from 'lib/cookies';
 import * as mixpanel from 'lib/mixpanel';
 import { toaster } from 'toolkit/chakra/toaster';
 
+import { getAuthProviderUrl } from './redirectToAuthProvider';
+
 const PROTECTED_ROUTES: Array<Route['pathname']> = [
   '/account/api-key',
   '/account/custom-abi',
@@ -28,7 +30,11 @@ export default function useLogout() {
 
   return React.useCallback(async() => {
     try {
-      await apiFetch('general:auth_logout');
+      if (getAuthProviderUrl()) {
+        await fetch('/auth/logout', { credentials: 'same-origin' });
+      } else {
+        await apiFetch('general:auth_logout');
+      }
       cookies.remove(cookies.NAMES.API_TOKEN);
 
       if (config.features.rewards.isEnabled) {

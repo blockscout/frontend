@@ -9,6 +9,7 @@ import useAccount from 'lib/web3/useAccount';
 import { DrawerBody, DrawerContent, DrawerRoot, DrawerTrigger } from 'toolkit/chakra/drawer';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import AuthModal from 'ui/snippets/auth/AuthModal';
+import { redirectToAuthProvider } from 'ui/snippets/auth/redirectToAuthProvider';
 import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
 
 import UserProfileButton from './UserProfileButton';
@@ -39,20 +40,34 @@ const UserProfileMobile = () => {
       setAuthInitialScreen({ type: 'connect_wallet', loginToRewards: true });
     }
 
+    if (redirectToAuthProvider(router.asPath)) {
+      return;
+    }
+
     authModal.onOpen();
-  }, [ profileQuery.data, web3Address, router.pathname, authModal, profileMenu ]);
+  }, [ profileQuery.data, web3Address, router.asPath, router.pathname, authModal, profileMenu ]);
 
   const handleAddEmailClick = React.useCallback(() => {
+    if (redirectToAuthProvider(router.asPath)) {
+      profileMenu.onClose();
+      return;
+    }
+
     setAuthInitialScreen({ type: 'email', isAuth: true });
     authModal.onOpen();
     profileMenu.onClose();
-  }, [ authModal, profileMenu ]);
+  }, [ authModal, profileMenu, router.asPath ]);
 
   const handleAddAddressClick = React.useCallback(() => {
+    if (redirectToAuthProvider(router.asPath)) {
+      profileMenu.onClose();
+      return;
+    }
+
     setAuthInitialScreen({ type: 'connect_wallet', isAuth: true, loginToRewards: true });
     authModal.onOpen();
     profileMenu.onClose();
-  }, [ authModal, profileMenu ]);
+  }, [ authModal, profileMenu, router.asPath ]);
 
   const handleAuthModalClose = React.useCallback(() => {
     setAuthInitialScreen(initialScreen);
@@ -60,9 +75,14 @@ const UserProfileMobile = () => {
   }, [ authModal ]);
 
   const handleLoginClick = React.useCallback(() => {
+    if (redirectToAuthProvider(router.asPath)) {
+      profileMenu.onClose();
+      return;
+    }
+
     authModal.onOpen();
     profileMenu.onClose();
-  }, [ authModal, profileMenu ]);
+  }, [ authModal, profileMenu, router.asPath ]);
 
   const handleProfileMenuOpenChange = React.useCallback(({ open }: { open: boolean }) => {
     !open && profileMenu.onOpenChange({ open });

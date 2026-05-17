@@ -13,6 +13,7 @@ import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';
 import { Hint } from 'toolkit/components/Hint/Hint';
 import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
+import { getAuthProviderUrl } from 'ui/snippets/auth/redirectToAuthProvider';
 import useLogout from 'ui/snippets/auth/useLogout';
 
 import UserWalletAutoConnectAlert from '../UserWalletAutoConnectAlert';
@@ -63,6 +64,8 @@ interface Props {
 const UserProfileContent = ({ data, onClose, onLogin, onAddEmail, onAddAddress }: Props) => {
   const { isAutoConnectDisabled } = useMarketplaceContext();
   const logout = useLogout();
+  const usesExternalAccountAuth = Boolean(getAuthProviderUrl());
+  const showAccountAddressLink = config.features.blockchainInteraction.isEnabled && !usesExternalAccountAuth;
 
   const handleLogoutClick = React.useCallback(() => {
     logout();
@@ -92,7 +95,7 @@ const UserProfileContent = ({ data, onClose, onLogin, onAddEmail, onAddAddress }
         borderRadius="base"
         color="text.secondary"
       >
-        { config.features.blockchainInteraction.isEnabled && (
+        { showAccountAddressLink && (
           <Flex p={ 2 } borderColor="border.divider" borderBottomWidth="1px">
             <Box>Address</Box>
             <Hint

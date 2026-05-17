@@ -1,8 +1,10 @@
+import { useRouter } from 'next/router';
 import React from 'react';
 
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 
 import AuthModal from './AuthModal';
+import { redirectToAuthProvider } from './redirectToAuthProvider';
 import useProfileQuery from './useProfileQuery';
 
 interface InjectedProps {
@@ -18,18 +20,25 @@ interface Props {
 const AuthGuard = ({ children, onAuthSuccess, ensureEmail }: Props) => {
   const authModal = useDisclosure();
   const profileQuery = useProfileQuery();
+  const router = useRouter();
 
   const handleClick = React.useCallback(() => {
     if (profileQuery.data) {
       if (ensureEmail && !profileQuery.data.email) {
+        if (redirectToAuthProvider(router.asPath)) {
+          return;
+        }
         authModal.onOpen();
       } else {
         onAuthSuccess();
       }
     } else {
+      if (redirectToAuthProvider(router.asPath)) {
+        return;
+      }
       authModal.onOpen();
     }
-  }, [ authModal, ensureEmail, profileQuery.data, onAuthSuccess ]);
+  }, [ authModal, ensureEmail, profileQuery.data, onAuthSuccess, router.asPath ]);
 
   const handleModalClose = React.useCallback((isSuccess?: boolean) => {
     if (isSuccess) {

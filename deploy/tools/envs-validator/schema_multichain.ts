@@ -47,6 +47,7 @@ const schema = yup
     NEXT_PUBLIC_GAS_TRACKER_ENABLED: yup.boolean().equals([false]),
     NEXT_PUBLIC_ADVANCED_FILTER_ENABLED: yup.boolean().equals([false]),
     NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED: yup.boolean().equals([false]),
+    NEXT_PUBLIC_ACCOUNT_AUTH_URL: yup.string(),
     NEXT_PUBLIC_API_DOCS_TABS: yup.array().transform(replaceQuotes).json().max(0),
 
     // 6. Multichain configuration

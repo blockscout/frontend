@@ -11,6 +11,7 @@ import useGetCsrfToken from 'lib/hooks/useGetCsrfToken';
 import * as mixpanel from 'lib/mixpanel';
 import { DialogBody, DialogContent, DialogHeader, DialogRoot } from 'toolkit/chakra/dialog';
 
+import { redirectToAuthProvider } from './redirectToAuthProvider';
 import AuthModalScreenConnectWallet from './screens/AuthModalScreenConnectWallet';
 import AuthModalScreenEmail from './screens/AuthModalScreenEmail';
 import AuthModalScreenOtpCode from './screens/AuthModalScreenOtpCode';
@@ -44,6 +45,13 @@ const AuthModal = ({ initialScreen, onClose, mixpanelConfig, closeOnError }: Pro
   const router = useRouter();
   const csrfQuery = useGetCsrfToken();
   const queryClient = useQueryClient();
+  const externalAuthUrl = feature.isEnabled ? feature.authUrl : undefined;
+
+  React.useEffect(() => {
+    if (externalAuthUrl) {
+      redirectToAuthProvider(router.asPath);
+    }
+  }, [ externalAuthUrl, router.asPath ]);
 
   React.useEffect(() => {
     if ('isAuth' in initialScreen && initialScreen.isAuth) {
@@ -173,7 +181,7 @@ const AuthModal = ({ initialScreen, onClose, mixpanelConfig, closeOnError }: Pro
     }
   })();
 
-  if (!feature.isEnabled) {
+  if (!feature.isEnabled || externalAuthUrl) {
     return null;
   }
 
