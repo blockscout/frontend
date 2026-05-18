@@ -207,7 +207,7 @@ migrated to `client/shared/` in 1-2 and do not appear here.
 
 ### 6-1 · [~] Feature: `user-ops` · [#3452](https://github.com/blockscout/frontend/issues/3452)
 
-### 6-2 · [ ] Feature: `data-availability`
+### 6-2 · [~] Feature: `data-availability` · [#3453](https://github.com/blockscout/frontend/issues/3453)
 
 ### 6-3 · [ ] Feature: `multichain`
 **Scope:** Includes `lib/multichain/`, `lib/contexts/multichain.tsx`, `ui/snippets/networkMenu/` → `client/features/multichain/`  
