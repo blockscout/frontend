@@ -4,8 +4,8 @@ import { Box, Flex, Grid, GridItem } from '@chakra-ui/react';
 import * as d3 from 'd3';
 import React from 'react';
 
+import type { UptimeHistoryFull, UptimeHistoryItem } from 'client/features/chain-variants/mega-eth/types/api';
 import type { LineChartAxesConfigFn } from 'toolkit/components/charts/line/types';
-import type { UptimeHistoryFull, UptimeHistoryItem } from 'types/api/megaEth';
 
 import { useSettingsContext } from 'lib/contexts/settings';
 import { Heading } from 'toolkit/chakra/heading';

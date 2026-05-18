@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { FlashblockItem } from 'types/client/flashblocks';
+import type { FlashblockItem } from 'client/features/flashblocks/types/client';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';

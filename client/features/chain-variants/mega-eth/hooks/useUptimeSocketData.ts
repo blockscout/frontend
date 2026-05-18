@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { UptimeHistoryFull, UptimeRealTimeData, UptimeSocketData } from 'types/api/megaEth';
+import type { UptimeHistoryFull, UptimeRealTimeData, UptimeSocketData } from 'client/features/chain-variants/mega-eth/types/api';
 
 import config from 'configs/app';
 import { SECOND } from 'toolkit/utils/consts';

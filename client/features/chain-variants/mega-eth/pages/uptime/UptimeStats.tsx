@@ -3,7 +3,7 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import type { UptimeRealTimeData } from 'types/api/megaEth';
+import type { UptimeRealTimeData } from 'client/features/chain-variants/mega-eth/types/api';
 
 import StatsWidget from 'ui/shared/stats/StatsWidget';
 
