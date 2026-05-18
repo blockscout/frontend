@@ -1,5 +1,5 @@
+import type { DepositsResponse } from 'client/features/chain-variants/beacon-chain/types/api';
 import type { AddressParam } from 'client/slices/address/types/api';
-import type { DepositsResponse } from 'types/api/deposits';
 
 export const data: DepositsResponse = {
   items: [

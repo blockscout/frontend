@@ -1,4 +1,4 @@
-import type { DepositsItem } from 'types/api/deposits';
+import type { DepositsItem } from 'client/features/chain-variants/beacon-chain/types/api';
 
 import { ADDRESS_PARAMS } from 'client/slices/address/stubs/address-params';
 import { TX_HASH } from 'client/slices/tx/stubs/tx';

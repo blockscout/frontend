@@ -10,7 +10,6 @@ import { currencyUnits } from 'client/shared/chain/units';
 
 import config from 'configs/app';
 import { generateListStub } from 'stubs/utils';
-import { WITHDRAWAL } from 'stubs/withdrawals';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
@@ -18,8 +17,10 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import StickyPaginationWithText from 'ui/shared/StickyPaginationWithText';
 import calculateUsdValue from 'ui/shared/value/calculateUsdValue';
-import BeaconChainWithdrawalsListItem from 'ui/withdrawals/beaconChain/BeaconChainWithdrawalsListItem';
-import BeaconChainWithdrawalsTable from 'ui/withdrawals/beaconChain/BeaconChainWithdrawalsTable';
+
+import { WITHDRAWAL } from '../../stubs/withdrawals';
+import BeaconChainWithdrawalsListItem from './BeaconChainWithdrawalsListItem';
+import BeaconChainWithdrawalsTable from './BeaconChainWithdrawalsTable';
 
 const feature = config.features.beaconChain;
 

@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { data as withdrawalsData } from 'mocks/withdrawals/withdrawals';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';
 
+import { data as withdrawalsData } from '../../mocks/withdrawals';
 import BeaconChainWithdrawals from './BeaconChainWithdrawals';
 
 test('base view +@mobile', async({ render, mockEnvs, mockTextAd, mockApiResponse }) => {

@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { data as depositsData } from 'mocks/deposits/deposits';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect, devices } from 'playwright/lib';
 
+import { data as depositsData } from '../../mocks/deposits';
 import BeaconChainDeposits from './BeaconChainDeposits';
 
 test('base view', async({ render, mockEnvs, mockTextAd, mockApiResponse }) => {

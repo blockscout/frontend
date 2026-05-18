@@ -20,11 +20,12 @@ import hexToDecimal from 'client/shared/transformers/hex-to-decimal';
 import config from 'configs/app';
 import { GET_BLOCK } from 'stubs/RPC';
 import { generateListStub } from 'stubs/utils';
-import { WITHDRAWAL } from 'stubs/withdrawals';
 import { SECOND } from 'toolkit/utils/consts';
 import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import { emptyPagination } from 'ui/shared/pagination/utils';
+
+import { WITHDRAWAL } from '../../stubs/withdrawals';
 
 type RpcResponseType = GetBlockReturnType<Chain, false, 'latest'> | null;
 

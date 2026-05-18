@@ -2,9 +2,9 @@
 
 import React from 'react';
 
+import type { WithdrawalsItem } from 'client/features/chain-variants/beacon-chain/types/api';
 import type { AddressWithdrawalsItem } from 'client/slices/address/types/api';
 import type { BlockWithdrawalsItem } from 'client/slices/block/types/api';
-import type { WithdrawalsItem } from 'types/api/withdrawals';
 
 import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
 

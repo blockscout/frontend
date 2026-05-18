@@ -2,6 +2,7 @@
 
 import type { ApiResource } from '../../types';
 import type { AddressesMetadataSearchFilters, AddressesMetadataSearchResult } from 'client/features/address-metadata/types/api';
+import type { DepositsResponse } from 'client/features/chain-variants/beacon-chain/types/api';
 import type { AddressEpochRewardsResponse } from 'client/features/chain-variants/celo/types/api';
 import type {
   AddressCounters,
@@ -26,7 +27,6 @@ import type {
   AddressesResponse } from 'client/slices/address/types/api';
 import type { LogsResponseAddress } from 'client/slices/log/types/api';
 import type { TransactionsSorting } from 'client/slices/tx/types/api';
-import type { DepositsResponse } from 'types/api/deposits';
 
 export const GENERAL_API_ADDRESS_RESOURCES = {
   // ADDRESSES

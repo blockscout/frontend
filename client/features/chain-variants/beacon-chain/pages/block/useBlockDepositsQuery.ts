@@ -3,10 +3,11 @@
 import type { BlockQuery } from 'client/slices/block/hooks/useBlockQuery';
 
 import config from 'configs/app';
-import { DEPOSIT } from 'stubs/deposits';
 import { generateListStub } from 'stubs/utils';
 import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
+
+import { DEPOSIT } from '../../stubs/deposits';
 
 export type BlockDepositsQuery = QueryWithPagesResult<'general:block_deposits'> & {
   isDegradedData: boolean;

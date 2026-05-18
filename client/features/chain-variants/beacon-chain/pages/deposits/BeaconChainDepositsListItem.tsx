@@ -2,19 +2,20 @@
 
 import React from 'react';
 
-import type { DepositsItem } from 'types/api/deposits';
+import type { DepositsItem } from 'client/features/chain-variants/beacon-chain/types/api';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 
 import config from 'configs/app';
-import BeaconChainDepositSignature from 'ui/shared/beacon/BeaconChainDepositSignature';
-import BeaconChainDepositStatusTag from 'ui/shared/beacon/BeaconChainDepositStatusTag';
-import BeaconChainValidatorLink from 'ui/shared/beacon/BeaconChainValidatorLink';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
+
+import BeaconChainDepositSignature from '../../components/BeaconChainDepositSignature';
+import BeaconChainDepositStatusTag from '../../components/BeaconChainDepositStatusTag';
+import BeaconChainValidatorLink from '../../components/BeaconChainValidatorLink';
 
 const feature = config.features.beaconChain;
 

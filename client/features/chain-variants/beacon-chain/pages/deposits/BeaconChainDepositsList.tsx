@@ -3,7 +3,7 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import type { DepositsItem } from 'types/api/deposits';
+import type { DepositsItem } from 'client/features/chain-variants/beacon-chain/types/api';
 
 import useLazyRenderedList from 'client/shared/lists/useLazyRenderedList';
 

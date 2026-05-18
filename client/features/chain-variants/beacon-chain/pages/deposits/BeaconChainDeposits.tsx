@@ -7,16 +7,17 @@ import React from 'react';
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
 import config from 'configs/app';
-import { DEPOSIT } from 'stubs/deposits';
 import { generateListStub } from 'stubs/utils';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import BeaconChainDepositsListItem from 'ui/deposits/beaconChain/BeaconChainDepositsListItem';
-import BeaconChainDepositsTable from 'ui/deposits/beaconChain/BeaconChainDepositsTable';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import StickyPaginationWithText from 'ui/shared/StickyPaginationWithText';
+
+import { DEPOSIT } from '../../stubs/deposits';
+import BeaconChainDepositsListItem from './BeaconChainDepositsListItem';
+import BeaconChainDepositsTable from './BeaconChainDepositsTable';
 
 const feature = config.features.beaconChain;
 
