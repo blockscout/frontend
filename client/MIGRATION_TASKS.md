@@ -193,7 +193,7 @@ One PR per chain variant. Each goes under `client/features/chain-variants/<name>
 ### 5-5 · [ ] Feature: `chain-variants/mega-eth`
 **Scope:** MegaETH Flashblocks UI → `client/features/chain-variants/mega-eth/`. See `configs/app/features/megaEth.ts` and `flashblocks.ts`.  
 
-### 5-6 · [ ] Feature: `chain-variants/beacon-chain`
+### 5-6 · [~] Feature: `chain-variants/beacon-chain` · [#3442](https://github.com/blockscout/frontend/issues/3442)
 **Scope:** Beacon chain deposits/withdrawals UI → `client/features/chain-variants/beacon-chain/`. See `configs/app/features/beaconChain.ts`.  
 
 ---
