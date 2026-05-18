@@ -6,7 +6,7 @@ import React from 'react';
 
 import PageNextJs from 'nextjs/PageNextJs';
 
-const TacOperations = dynamic(() => import('ui/pages/TacOperations'), { ssr: false });
+const TacOperations = dynamic(() => import('client/features/chain-variants/tac/pages/operations/TacOperations'), { ssr: false });
 
 const Page: NextPage = () => {
   return (

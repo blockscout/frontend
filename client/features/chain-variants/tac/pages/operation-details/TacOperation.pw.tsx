@@ -2,10 +2,10 @@ import React from 'react';
 
 import * as tac from '@blockscout/tac-operation-lifecycle-types';
 
-import * as tacOperationMock from 'mocks/operations/tac';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';
 
+import * as tacOperationMock from '../../mocks/operations';
 import TacOperation from './TacOperation';
 
 test('base view +@dark-mode +@mobile', async({ render, mockTextAd, mockApiResponse, mockEnvs }) => {

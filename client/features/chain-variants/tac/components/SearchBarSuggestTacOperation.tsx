@@ -6,13 +6,14 @@ import React from 'react';
 import type { SearchResultTacOperation } from 'client/features/chain-variants/tac/types/api';
 import type { ItemsProps } from 'client/slices/search/components/search-bar/SearchBarSuggest/types';
 
-import * as OperationEntity from 'ui/shared/entities/operation/OperationEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
-import TacOperationStatus from 'ui/shared/statusTag/TacOperationStatus';
 import Time from 'ui/shared/time/Time';
 
+import * as TacOperationEntity from './TacOperationEntity';
+import TacOperationStatus from './TacOperationStatus';
+
 const SearchBarSuggestTacOperation = ({ data, isMobile }: ItemsProps<SearchResultTacOperation>) => {
-  const icon = <OperationEntity.Icon type={ data.tac_operation.type }/>;
+  const icon = <TacOperationEntity.Icon type={ data.tac_operation.type }/>;
   const hash = (
     <chakra.mark overflow="hidden" whiteSpace="nowrap" fontWeight={ 700 } mr={ 2 }>
       <HashStringShortenDynamic hash={ data.tac_operation.operation_id } noTooltip/>

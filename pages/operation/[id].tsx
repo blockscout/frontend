@@ -7,7 +7,7 @@ import React from 'react';
 import type { Props } from 'nextjs/getServerSideProps/handlers';
 import PageNextJs from 'nextjs/PageNextJs';
 
-const TacOperation = dynamic(() => import('ui/pages/TacOperation'), { ssr: false });
+const TacOperation = dynamic(() => import('client/features/chain-variants/tac/pages/operation-details/TacOperation'), { ssr: false });
 
 const Page: NextPage<Props> = (props: Props) => {
   return (

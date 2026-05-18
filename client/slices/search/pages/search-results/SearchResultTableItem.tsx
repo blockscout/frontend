@@ -19,6 +19,9 @@ import { getItemCategory, searchItemTitles } from 'client/slices/search/utils/se
 import * as TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 import * as TxEntity from 'client/slices/tx/components/entity/TxEntity';
 
+import * as TacOperationEntity from 'client/features/chain-variants/tac/components/TacOperationEntity';
+import TacOperationStatus from 'client/features/chain-variants/tac/components/TacOperationStatus';
+
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 import highlightText from 'client/shared/text/highlight-text';
 
@@ -33,11 +36,9 @@ import { SECOND } from 'toolkit/utils/consts';
 import { ADDRESS_REGEXP } from 'toolkit/utils/regexp';
 import * as BlobEntity from 'ui/shared/entities/blob/BlobEntity';
 import * as EnsEntity from 'ui/shared/entities/ens/EnsEntity';
-import * as OperationEntity from 'ui/shared/entities/operation/OperationEntity';
 import * as UserOpEntity from 'ui/shared/entities/userOp/UserOpEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import IconSvg from 'ui/shared/IconSvg';
-import TacOperationStatus from 'ui/shared/statusTag/TacOperationStatus';
 import Time from 'ui/shared/time/Time';
 
 import SearchResultEntityTag from './SearchResultEntityTag';
@@ -365,23 +366,23 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
         return (
           <>
             <TableCell colSpan={ 2 } fontSize="sm">
-              <OperationEntity.Container>
-                <OperationEntity.Icon type={ data.tac_operation.type }/>
-                <OperationEntity.Link
+              <TacOperationEntity.Container>
+                <TacOperationEntity.Icon type={ data.tac_operation.type }/>
+                <TacOperationEntity.Link
                   isLoading={ isLoading }
                   id={ data.tac_operation.operation_id }
                   onClick={ handleLinkClick }
                 >
-                  <OperationEntity.Content
+                  <TacOperationEntity.Content
                     asProp="mark"
                     id={ data.tac_operation.operation_id }
                     textStyle="sm"
                     fontWeight={ 700 }
                     mr={ 2 }
                   />
-                </OperationEntity.Link>
+                </TacOperationEntity.Link>
                 <TacOperationStatus status={ data.tac_operation.type }/>
-              </OperationEntity.Container>
+              </TacOperationEntity.Container>
             </TableCell>
             <TableCell fontSize="sm" verticalAlign="middle" isNumeric>
               <Time timestamp={ data.tac_operation.timestamp } color="text.secondary" format="lll_s"/>

@@ -4,10 +4,10 @@ import React from 'react';
 
 import * as tac from '@blockscout/tac-operation-lifecycle-types';
 
-import { getTacOperationStatus } from 'lib/operations/tac';
 import { Tooltip } from 'toolkit/chakra/tooltip';
+import StatusTag from 'ui/shared/statusTag/StatusTag';
 
-import StatusTag from './StatusTag';
+import { getTacOperationStatus } from '../utils/tac-operation';
 
 interface Props {
   status: tac.OperationType;
