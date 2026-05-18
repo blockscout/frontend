@@ -56,22 +56,23 @@ const PublicTagsSubmitForm = ({ config, userInfo, onSubmitResult }: Props) => {
   }, [ router ]);
 
   const onFormSubmit: SubmitHandler<FormFields> = React.useCallback(async(data) => {
-
-    const token = await recaptcha.executeAsync();
-
-    if (!token) {
-      throw new Error('ReCaptcha is not solved');
-    }
-
     const requestsBody = convertFormDataToRequestsBody(data);
+    const result: FormSubmitResult = [];
 
-    const result = await Promise.all(requestsBody.map(async(body) => {
-      return apiFetch<'admin:public_tag_application', unknown, { message: string }>(
+    for (const body of requestsBody) {
+      const token = await recaptcha.executeAsync();
+
+      if (!token) {
+        throw new Error('ReCaptcha is not solved');
+      }
+
+      const item = await apiFetch<'admin:public_tag_application', unknown, { message: string }>(
         'admin:public_tag_application', {
           pathParams: { chainId: appConfig.chain.id },
           fetchParams: {
             method: 'POST',
-            body: { submission: body },
+            body: { submission: body, recaptcha_response: token },
+            headers: { 'recaptcha-v2-response': token },
           },
         })
         .then(() => ({ error: null, payload: body }))
@@ -82,7 +83,9 @@ const PublicTagsSubmitForm = ({ config, userInfo, onSubmitResult }: Props) => {
           const message = messageFromPayload || messageFromError || 'Something went wrong.';
           return { error: message, payload: body };
         });
-    }));
+
+      result.push(item);
+    }
 
     onSubmitResult(result);
   }, [ apiFetch, onSubmitResult, recaptcha ]);

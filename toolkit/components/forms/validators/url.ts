@@ -4,7 +4,12 @@ export function urlValidator(value: string | undefined) {
   }
 
   try {
-    new URL(value);
+    const url = new URL(value);
+
+    if (url.protocol !== 'http:' && url.protocol !== 'https:') {
+      return 'Only HTTP(S) URLs are allowed';
+    }
+
     return true;
   } catch (error) {
     return 'Incorrect URL';
