@@ -66,7 +66,7 @@ const BlockPageContent = () => {
   const blockWithdrawalsQuery = useBlockWithdrawalsQuery({ heightOrHash, blockQuery, tab });
   const blockDepositsQuery = useBlockDepositsQuery({ heightOrHash, blockQuery, tab });
   const blockBlobTxsQuery = useBlockBlobTxsQuery({ heightOrHash, blockQuery, tab });
-  const blockInternalTxsQuery = useBlockInternalTxsQuery({ heightOrHash, blockQuery, tab });
+  const blockInternalTxsQuery = useBlockInternalTxsQuery({ heightOrHash, blockQuery, tab, chainConfig });
 
   const hasPagination = !isMobile && (
     (tab === 'txs' && blockTxsQuery.pagination.isVisible) ||

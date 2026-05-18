@@ -8,7 +8,7 @@ import { getEnvValue, parseEnvJson } from 'configs/app/utils';
 const hiddenFields = (() => {
   const parsedValue = parseEnvJson<Array<TxFieldsId>>(getEnvValue('NEXT_PUBLIC_VIEWS_TX_HIDDEN_FIELDS')) || [];
 
-  if (!Array.isArray(parsedValue)) {
+  if (!Array.isArray(parsedValue) || parsedValue.length === 0) {
     return undefined;
   }
 
@@ -23,7 +23,7 @@ const hiddenFields = (() => {
 const hiddenViews = (() => {
   const parsedValue = parseEnvJson<Array<TxViewId>>(getEnvValue('NEXT_PUBLIC_VIEWS_TX_HIDDEN_VIEWS')) || [];
 
-  if (parsedValue.length === 0) {
+  if (!Array.isArray(parsedValue) || parsedValue.length === 0) {
     return undefined;
   }
 
@@ -38,7 +38,7 @@ const hiddenViews = (() => {
 const additionalFields = (() => {
   const parsedValue = parseEnvJson<Array<TxAdditionalFieldsId>>(getEnvValue('NEXT_PUBLIC_VIEWS_TX_ADDITIONAL_FIELDS')) || [];
 
-  if (!Array.isArray(parsedValue)) {
+  if (!Array.isArray(parsedValue) || parsedValue.length === 0) {
     return undefined;
   }
 
