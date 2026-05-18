@@ -25,7 +25,8 @@ export interface Props<Pathname extends Route['pathname'] = never> {
   // so we force it to be always present in the props but it can be null
   apiData: metadata.ApiData<Pathname> | null;
   uuid: string;
-  cspNonce?: string | null;
+  cspNonce: string | null;
+  onionDomain: string | null;
 }
 
 export const base = async <Pathname extends Route['pathname'] = never>({ req, res, query }: GetServerSidePropsContext):
@@ -35,6 +36,8 @@ Promise<GetServerSidePropsResult<Props<Pathname>>> => {
   const cspNonceHeader = res.getHeader(CSP_NONCE_HEADER);
   const cspNonceValue = Array.isArray(cspNonceHeader) ? cspNonceHeader[0] : cspNonceHeader;
   const cspNonce = cspNonceValue ? String(cspNonceValue) : null;
+
+  const onionDomain = Array.isArray(req.headers?.['onion-location']) ? req.headers?.['onion-location'][0] : req.headers?.['onion-location'] ?? null;
 
   const adBannerProvider = (() => {
     if (adBannerFeature.isEnabled) {
@@ -91,6 +94,7 @@ Promise<GetServerSidePropsResult<Props<Pathname>>> => {
       apiData: null,
       uuid,
       cspNonce,
+      onionDomain,
     },
   };
 };

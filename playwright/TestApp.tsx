@@ -42,6 +42,8 @@ const defaultAppContext = {
     adBannerProvider: 'slise' as const,
     apiData: null,
     uuid: '123',
+    onionDomain: null,
+    cspNonce: null,
   },
 };
 
