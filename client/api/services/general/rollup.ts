@@ -8,7 +8,7 @@ import type {
   AddressMudRecordsFilter,
   AddressMudRecordsSorting,
   AddressMudRecord,
-  SmartContractMudSystemsResponse, SmartContractMudSystemInfo } from 'client/features/chain-variants/mud/types/api';
+  SmartContractMudSystemsResponse, SmartContractMudSystemInfo, MudWorldsResponse } from 'client/features/chain-variants/mud/types/api';
 import type { InteropMessageListResponse } from 'client/features/op-interop/types/api';
 import type {
   ArbitrumL2MessagesResponse,
@@ -38,7 +38,6 @@ import type {
 } from 'client/features/rollup/scroll/types/api';
 import type { ShibariumWithdrawalsResponse, ShibariumDepositsResponse } from 'client/features/rollup/shibarium/types/api';
 import type { ZkSyncBatch, ZkSyncBatchesResponse, ZkSyncBatchTxs } from 'client/features/rollup/zk-sync/types/api';
-import type { MudWorldsResponse } from 'types/api/mudWorlds';
 
 export const GENERAL_API_ROLLUP_RESOURCES = {
   optimistic_l2_deposits: {

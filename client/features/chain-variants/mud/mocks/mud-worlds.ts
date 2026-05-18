@@ -1,4 +1,4 @@
-import type { MudWorldsResponse } from 'types/api/mudWorlds';
+import type { MudWorldsResponse } from 'client/features/chain-variants/mud/types/api';
 
 import { withName, withoutName } from 'client/slices/address/mocks/address';
 

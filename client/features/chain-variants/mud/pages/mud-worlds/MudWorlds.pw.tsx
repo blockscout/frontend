@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { mudWorlds } from 'mocks/mud/mudWorlds';
+import { mudWorlds } from 'client/features/chain-variants/mud/mocks/mud-worlds';
+
 import { test, expect } from 'playwright/lib';
 
 import MudWorlds from './MudWorlds';
