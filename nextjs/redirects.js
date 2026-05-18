@@ -53,6 +53,18 @@ const OLD_UI_URLS = [
     destination: '/public-tags/submit',
   },
   {
+    source: '/account/public_tags_request',
+    destination: '/public-tags/submit',
+  },
+  {
+    source: '/account/public_tags_request/new',
+    destination: '/public-tags/submit',
+  },
+  {
+    source: '/account/public_tags_request/:id/edit',
+    destination: '/public-tags/submit',
+  },
+  {
     source: '/account/rewards',
     destination: '/account/merits',
   },
