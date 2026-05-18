@@ -184,7 +184,7 @@ One PR per chain variant. Each goes under `client/features/chain-variants/<name>
 ### 5-2 · [~] Feature: `chain-variants/tac` · [#3440](https://github.com/blockscout/frontend/issues/3440)
 **Scope:** TAC operations and bridge UI → `client/features/chain-variants/tac/`. See `configs/app/features/tac.ts`.  
 
-### 5-3 · [ ] Feature: `chain-variants/zeta-chain`
+### 5-3 · [~] Feature: `chain-variants/zeta-chain` · [#3441](https://github.com/blockscout/frontend/issues/3441)
 **Scope:** ZetaChain CCTX UI → `client/features/chain-variants/zeta-chain/`. See `configs/app/features/zetachain.ts`.  
 
 ### 5-4 · [ ] Feature: `chain-variants/suave`
