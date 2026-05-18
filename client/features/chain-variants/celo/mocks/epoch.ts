@@ -1,6 +1,11 @@
 import { padStart } from 'es-toolkit/compat';
 
-import type { CeloEpochDetails, CeloEpochElectionRewardDetails, CeloEpochElectionRewardDetailsResponse, CeloEpochListResponse } from 'types/api/epochs';
+import type {
+  CeloEpochDetails,
+  CeloEpochElectionRewardDetails,
+  CeloEpochElectionRewardDetailsResponse,
+  CeloEpochListResponse,
+} from 'client/features/chain-variants/celo/types/api';
 
 import * as addressMock from 'client/slices/address/mocks/address';
 import * as tokenTransferMock from 'client/slices/token-transfer/mocks';

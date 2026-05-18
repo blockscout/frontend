@@ -3,12 +3,13 @@
 import { Box, Flex } from '@chakra-ui/react';
 import React from 'react';
 
-import type { CeloEpochElectionReward, CeloEpochDetails } from 'types/api/epochs';
+import type { CeloEpochElectionReward, CeloEpochDetails } from 'client/features/chain-variants/celo/types/api';
+
+import EpochRewardTypeTag from 'client/features/chain-variants/celo/components/EpochRewardTypeTag';
 
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
-import EpochRewardTypeTag from 'ui/shared/EpochRewardTypeTag';
 import IconSvg from 'ui/shared/IconSvg';
 import TokenValue from 'ui/shared/value/TokenValue';
 

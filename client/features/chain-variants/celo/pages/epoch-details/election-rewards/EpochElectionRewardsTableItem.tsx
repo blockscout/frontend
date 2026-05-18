@@ -2,13 +2,14 @@
 
 import React from 'react';
 
-import type { CeloEpochDetails, CeloEpochElectionReward } from 'types/api/epochs';
+import type { CeloEpochDetails, CeloEpochElectionReward } from 'client/features/chain-variants/celo/types/api';
+
+import EpochRewardTypeTag from 'client/features/chain-variants/celo/components/EpochRewardTypeTag';
 
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
-import EpochRewardTypeTag from 'ui/shared/EpochRewardTypeTag';
 import IconSvg from 'ui/shared/IconSvg';
 import TokenValue from 'ui/shared/value/TokenValue';
 

@@ -1,4 +1,4 @@
-import type { CeloEpochListItem, CeloEpochDetails, CeloEpochElectionReward } from 'types/api/epochs';
+import type { CeloEpochListItem, CeloEpochDetails, CeloEpochElectionReward } from 'client/features/chain-variants/celo/types/api';
 
 import { BLOCK_HASH } from 'client/slices/block/stubs/block';
 import { TOKEN_TRANSFER_ERC_20, TOKEN_TRANSFER_ERC_20_TOTAL } from 'client/slices/token-transfer/stubs';

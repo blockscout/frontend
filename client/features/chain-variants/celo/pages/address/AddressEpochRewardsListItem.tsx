@@ -6,8 +6,9 @@ import type { AddressEpochRewardsItem } from 'client/features/chain-variants/cel
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 
-import EpochEntity from 'ui/shared/entities/epoch/EpochEntity';
-import EpochRewardTypeTag from 'ui/shared/EpochRewardTypeTag';
+import EpochEntity from 'client/features/chain-variants/celo/components/entity/EpochEntity';
+import EpochRewardTypeTag from 'client/features/chain-variants/celo/components/EpochRewardTypeTag';
+
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import TokenValue from 'ui/shared/value/TokenValue';

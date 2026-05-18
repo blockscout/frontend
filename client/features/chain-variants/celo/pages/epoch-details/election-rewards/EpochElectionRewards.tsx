@@ -3,7 +3,7 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import type { CeloEpochDetails } from 'types/api/epochs';
+import type { CeloEpochDetails } from 'client/features/chain-variants/celo/types/api';
 
 import { Heading } from 'toolkit/chakra/heading';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';

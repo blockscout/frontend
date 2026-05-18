@@ -4,8 +4,8 @@ import { Box, Grid, GridItem, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { CeloEpochDetails } from 'client/features/chain-variants/celo/types/api';
 import type { TokenInfo } from 'client/slices/token/types/api';
-import type { CeloEpochDetails } from 'types/api/epochs';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 

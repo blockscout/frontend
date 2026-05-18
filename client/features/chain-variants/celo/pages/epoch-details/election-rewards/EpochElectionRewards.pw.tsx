@@ -1,6 +1,7 @@
 import React from 'react';
 
-import * as celoEpochMock from 'mocks/epochs/celo';
+import * as celoEpochMock from 'client/features/chain-variants/celo/mocks/epoch';
+
 import { test, expect } from 'playwright/lib';
 
 import EpochElectionRewards from './EpochElectionRewards';

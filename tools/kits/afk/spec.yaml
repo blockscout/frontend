@@ -1,0 +1,17 @@
+schemaVersion: "1"
+kind: mixin
+name: afk
+displayName: Autonomous agent
+
+commands:
+  # install:
+  #   - command: "curl -fsSL https://get.pnpm.io/install.sh | env PNPM_VERSION=10.32.1 ENV=\"$HOME/.bashrc\" SHELL=\"$(which bash)\" sh -"
+  #     user: "0"
+  #     description: Install PNPM
+  #   - command: "pnpm install"
+  #     user: "0"
+  #     description: Install dependencies
+
+  environment:
+    variables:
+      NODE_OPTIONS: "--max-old-space-size=8192"
