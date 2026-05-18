@@ -69,12 +69,12 @@ export default function useNavItems(): ReturnType {
       icon: 'navigation/operation',
       isActive: pathname === '/operations' || pathname === '/operation/[id]',
     } : null;
-    const internalTxs: NavItem | null = {
+    const internalTxs: NavItem | null = config.UI.views.internalTx.isEnabled ? {
       text: 'Internal transactions',
       nextRoute: { pathname: '/internal-txs' as const },
       icon: 'navigation/internal_txns',
       isActive: pathname === '/internal-txs',
-    };
+    } : null;
     const userOps: NavItem | null = config.features.userOps.isEnabled ? {
       text: 'User operations',
       nextRoute: { pathname: '/ops' as const },
@@ -190,7 +190,7 @@ export default function useNavItems(): ReturnType {
           internalTxs,
           rollupDeposits,
           rollupWithdrawals,
-        ],
+        ].filter(Boolean),
         [
           blocks,
           userOps,

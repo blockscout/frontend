@@ -113,7 +113,7 @@ const TxsTabs = ({ parentTab, tabsHeight, ...rest }: Props) => {
           socketType="txs_validated"
           top={ tabsHeight }
         /> },
-    {
+    !chainConfig?.UI.views.tx.hiddenViews?.pending_txs ? {
       id: getTabId('pending', parentTab),
       title: 'Pending',
       component: (
@@ -124,7 +124,7 @@ const TxsTabs = ({ parentTab, tabsHeight, ...rest }: Props) => {
           top={ tabsHeight }
         />
       ),
-    },
+    } : undefined,
     chainConfig?.features.dataAvailability.isEnabled && {
       id: getTabId('blob_txs', parentTab),
       title: 'Blob txns',

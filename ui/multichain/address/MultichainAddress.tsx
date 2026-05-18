@@ -16,6 +16,7 @@ import { CONTRACT_TAB_IDS } from 'client/slices/contract/utils/tabs';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
+import config from 'configs/app';
 import * as contract from 'lib/multichain/contract';
 import { ADDRESS } from 'stubs/multichain';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
@@ -87,7 +88,7 @@ const MultichainAddress = () => {
         component: <MultichainAddressTokenTransfers addressData={ addressQuery.data } isLoading={ isLoading }/>,
         subTabs: ADDRESS_MULTICHAIN_TOKEN_TRANSFERS_TAB_IDS,
       },
-      {
+      config.UI.views.internalTx.isEnabled && {
         id: 'internal_txs',
         title: 'Internal txns',
         component: <MultichainAddressInternalTxs addressData={ addressQuery.data } isLoading={ isLoading }/>,

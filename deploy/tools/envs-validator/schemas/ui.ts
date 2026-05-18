@@ -13,8 +13,8 @@ import type { AddressFormat, AddressViewId } from 'client/slices/address/types/c
 import { ADDRESS_FORMATS, ADDRESS_VIEWS_IDS, IDENTICON_TYPES } from 'client/slices/address/types/config';
 import { BLOCK_FIELDS_IDS } from 'types/views/block';
 import type { BlockFieldId } from 'types/views/block';
-import type { TxAdditionalFieldsId, TxFieldsId } from 'types/views/tx';
-import { TX_ADDITIONAL_FIELDS_IDS, TX_FIELDS_IDS } from 'types/views/tx';
+import type { TxAdditionalFieldsId, TxFieldsId, TxViewId } from 'client/slices/tx/types/config';
+import { TX_ADDITIONAL_FIELDS_IDS, TX_FIELDS_IDS, TX_VIEWS_IDS } from 'client/slices/tx/types/config';
 import * as regexp from 'toolkit/utils/regexp';
 import { NftMarketplaceItem } from 'types/views/nft';
 
@@ -336,6 +336,14 @@ export const viewsSchema = yup.object({
       .json()
       .of(yup.string<TxAdditionalFieldsId>().oneOf(TX_ADDITIONAL_FIELDS_IDS)),
     NEXT_PUBLIC_VIEWS_TX_GROUPED_FEES: yup.boolean(),
+    NEXT_PUBLIC_VIEWS_TX_HIDDEN_VIEWS: yup
+      .array()
+      .transform(replaceQuotes)
+      .json()
+      .of(yup.string<TxViewId>().oneOf(TX_VIEWS_IDS)),
+
+    NEXT_PUBLIC_INTERNAL_TXS_ENABLED: yup.boolean(),
+
     NEXT_PUBLIC_VIEWS_NFT_MARKETPLACES: yup
       .array()
       .transform(replaceQuotes)

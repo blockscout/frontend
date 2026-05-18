@@ -6,6 +6,7 @@ import { factory } from './utils';
 export const base = factory([ ]);
 export const block = factory([ guards.notMultichain ]);
 export const tx = factory([ guards.notMultichain ]);
+export const internalTx = factory([ guards.internalTx ]);
 export const token = factory([ guards.notMultichain ]);
 export const account = factory([ guards.account ]);
 export const accountAuth0 = factory([ guards.accountAuth0 ]);
