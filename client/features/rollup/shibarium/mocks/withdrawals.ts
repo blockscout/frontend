@@ -1,4 +1,4 @@
-import type { ShibariumWithdrawalsResponse } from 'types/api/shibarium';
+import type { ShibariumWithdrawalsResponse } from 'client/features/rollup/shibarium/types/api';
 
 export const data: ShibariumWithdrawalsResponse = {
   items: [

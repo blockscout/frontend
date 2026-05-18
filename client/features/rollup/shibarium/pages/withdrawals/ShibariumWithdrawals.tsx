@@ -6,39 +6,40 @@ import React from 'react';
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
 import { layerLabels } from 'client/features/rollup/common/utils/layer';
+import { SHIBARIUM_WITHDRAWAL_ITEM } from 'client/features/rollup/shibarium/stubs';
 
-import { SHIBARIUM_DEPOSIT_ITEM } from 'stubs/shibarium';
 import { generateListStub } from 'stubs/utils';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { rightLineArrow, nbsp } from 'toolkit/utils/htmlEntities';
-import DepositsListItem from 'ui/deposits/shibarium/DepositsListItem';
-import DepositsTable from 'ui/deposits/shibarium/DepositsTable';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import StickyPaginationWithText from 'ui/shared/StickyPaginationWithText';
 
-const ShibariumDeposits = () => {
+import WithdrawalsListItem from './WithdrawalsListItem';
+import WithdrawalsTable from './WithdrawalsTable';
+
+const ShibariumWithdrawals = () => {
   const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({
-    resourceName: 'general:shibarium_deposits',
+    resourceName: 'general:shibarium_withdrawals',
     options: {
-      placeholderData: generateListStub<'general:shibarium_deposits'>(
-        SHIBARIUM_DEPOSIT_ITEM,
+      placeholderData: generateListStub<'general:shibarium_withdrawals'>(
+        SHIBARIUM_WITHDRAWAL_ITEM,
         50,
         {
           next_page_params: {
             items_count: 50,
-            block_number: 9045200,
+            block_number: 123,
           },
         },
       ),
     },
   });
 
-  const countersQuery = useApiQuery('general:shibarium_deposits_count', {
+  const countersQuery = useApiQuery('general:shibarium_withdrawals_count', {
     queryOptions: {
-      placeholderData: 1927029,
+      placeholderData: 23700,
     },
   });
 
@@ -46,15 +47,15 @@ const ShibariumDeposits = () => {
     <>
       <Box hideFrom="lg">
         { data.items.map(((item, index) => (
-          <DepositsListItem
+          <WithdrawalsListItem
             key={ `${ item.l2_transaction_hash }-${ index }` }
-            isLoading={ isPlaceholderData }
             item={ item }
+            isLoading={ isPlaceholderData }
           />
         ))) }
       </Box>
       <Box hideBelow="lg">
-        <DepositsTable items={ data.items } top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 } isLoading={ isPlaceholderData }/>
+        <WithdrawalsTable items={ data.items } top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 } isLoading={ isPlaceholderData }/>
       </Box>
     </>
   ) : null;
@@ -65,11 +66,8 @@ const ShibariumDeposits = () => {
     }
 
     return (
-      <Skeleton
-        loading={ countersQuery.isPlaceholderData }
-        display="inline-block"
-      >
-        A total of { countersQuery.data?.toLocaleString() } deposits found
+      <Skeleton loading={ countersQuery.isPlaceholderData } display="inline-block">
+        A total of { countersQuery.data?.toLocaleString() } withdrawals found
       </Skeleton>
     );
   })();
@@ -78,11 +76,11 @@ const ShibariumDeposits = () => {
 
   return (
     <>
-      <PageTitle title={ `Deposits (${ layerLabels.parent }${ nbsp }${ rightLineArrow }${ nbsp }${ layerLabels.current })` } withTextAd/>
+      <PageTitle title={ `Withdrawals (${ layerLabels.current }${ nbsp }${ rightLineArrow }${ nbsp }${ layerLabels.parent })` } withTextAd/>
       <DataListDisplay
         isError={ isError }
         itemsNum={ data?.items.length }
-        emptyText="There are no deposits."
+        emptyText="There are no withdrawals."
         actionBar={ actionBar }
       >
         { content }
@@ -91,4 +89,4 @@ const ShibariumDeposits = () => {
   );
 };
 
-export default ShibariumDeposits;
+export default ShibariumWithdrawals;

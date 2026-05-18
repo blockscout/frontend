@@ -2,72 +2,82 @@
 
 import React from 'react';
 
-import type { ShibariumWithdrawalsItem } from 'types/api/shibarium';
+import type { ShibariumWithdrawalsItem } from 'client/features/rollup/shibarium/types/api';
 
 import AddressStringOrParam from 'client/slices/address/components/entity/AddressStringOrParam';
 import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
+import { layerLabels } from 'client/features/rollup/common/utils/layer';
 
 import config from 'configs/app';
-import { TableCell, TableRow } from 'toolkit/chakra/table';
+import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 const feature = config.features.rollup;
 
 type Props = { item: ShibariumWithdrawalsItem; isLoading?: boolean };
 
-const WithdrawalsTableItem = ({ item, isLoading }: Props) => {
+const WithdrawalsListItem = ({ item, isLoading }: Props) => {
   if (!(feature.isEnabled && feature.type === 'shibarium')) {
     return null;
   }
 
   return (
-    <TableRow>
-      <TableCell verticalAlign="middle">
+    <ListItemMobileGrid.Container>
+
+      <ListItemMobileGrid.Label isLoading={ isLoading }>{ layerLabels.current } block No</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Value>
         <BlockEntity
           number={ item.l2_block_number }
           isLoading={ isLoading }
           textStyle="sm"
           fontWeight={ 600 }
         />
-      </TableCell>
-      <TableCell verticalAlign="middle">
+      </ListItemMobileGrid.Value>
+
+      <ListItemMobileGrid.Label isLoading={ isLoading }>{ layerLabels.current } txn hash</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Value>
         <TxEntity
           isLoading={ isLoading }
           hash={ item.l2_transaction_hash }
           textStyle="sm"
           truncation="constant_long"
         />
-      </TableCell>
-      <TableCell verticalAlign="middle">
+      </ListItemMobileGrid.Value>
+
+      <ListItemMobileGrid.Label isLoading={ isLoading }>{ layerLabels.parent } txn hash</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Value>
         <TxEntityL1
           isLoading={ isLoading }
           hash={ item.l1_transaction_hash }
-          truncation="constant_long"
           textStyle="sm"
+          truncation="constant_long"
           noCopy
         />
-      </TableCell>
-      <TableCell verticalAlign="middle">
+      </ListItemMobileGrid.Value>
+
+      <ListItemMobileGrid.Label isLoading={ isLoading }>User</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Value>
         <AddressStringOrParam
           address={ item.user }
           isLoading={ isLoading }
-          truncation="constant"
           noCopy
+          truncation="constant"
         />
-      </TableCell>
-      <TableCell verticalAlign="middle" pr={ 12 }>
+      </ListItemMobileGrid.Value>
+      <ListItemMobileGrid.Label isLoading={ isLoading }>Age</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Value>
         <TimeWithTooltip
           timestamp={ item.timestamp }
           isLoading={ isLoading }
           display="inline-block"
-          color="text.secondary"
         />
-      </TableCell>
-    </TableRow>
+      </ListItemMobileGrid.Value>
+
+    </ListItemMobileGrid.Container>
   );
 };
 
-export default WithdrawalsTableItem;
+export default WithdrawalsListItem;

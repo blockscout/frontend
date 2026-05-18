@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { data as withdrawalsData } from 'mocks/shibarium/withdrawals';
+import { data as withdrawalsData } from 'client/features/rollup/shibarium/mocks/withdrawals';
+
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';
 
