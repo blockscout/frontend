@@ -151,13 +151,13 @@ One PR per rollup type. Each goes under `client/features/rollup/<type>/`.
 ### 4-3 · [x] Feature: `rollup/zk-sync` · [#3426](https://github.com/blockscout/frontend/issues/3426)
 **Scope:** zkSync-specific UI, hooks, utils, types → `client/features/rollup/zk-sync/`. Check for other zk-based rollup types (scroll, etc.) and add tasks if needed.  
 
-### 4-4 · [~] Feature: `rollup/common` — shared types and utils · [#3432](https://github.com/blockscout/frontend/issues/3432)
+### 4-4 · [x] Feature: `rollup/common` — shared types and utils · [#3432](https://github.com/blockscout/frontend/issues/3432)
 **Scope:** Migrate cross-rollup primitives shared by all rollup types.
 - `types/client/rollup.ts` (`ROLLUP_TYPES`, `RollupType`, `ParentChain`) → `client/features/rollup/common/types/config.ts`; inline `ArrayElement` to achieve zero imports (required for `configs/` compatibility)
 - `client/features/rollup/common/utils/layer.ts` → split: `layerLabels` → `client/features/rollup/common/utils/layer-labels.ts`; `formatZkSyncL2TxnBatchStatus` → `client/features/rollup/zk-sync/utils/format-txn-batch-status.ts` (coordinate with 4-3)
 - Update all import paths repo-wide. Delete `client/features/rollup/common/utils/layer.ts` and `types/client/rollup.ts`.
 
-### 4-5 · [~] Feature: `rollup/scroll` · [#3429](https://github.com/blockscout/frontend/issues/3429)
+### 4-5 · [x] Feature: `rollup/scroll` · [#3429](https://github.com/blockscout/frontend/issues/3429)
 **Scope:** Scroll-specific UI, hooks, utils, types → `client/features/rollup/scroll/`. Includes deposits, withdrawals, and txn batches pages.
 - `types/api/scrollL2.ts` → `client/features/rollup/scroll/types/api.ts` (2 files already started there)
 - `stubs/scrollL2.ts` → `client/features/rollup/scroll/stubs.ts`
@@ -170,7 +170,7 @@ One PR per rollup type. Each goes under `client/features/rollup/<type>/`.
 - `ui/pages/ScrollL2TxnBatches.tsx`, `ScrollL2TxnBatch.tsx` → `client/features/rollup/scroll/pages/batches/` and `batch-details/`
 - `ui/pages/ScrollL2Deposits.tsx`, `ScrollL2Withdrawals.tsx` → `client/features/rollup/scroll/pages/deposits/` and `withdrawals/`
 
-### 4-6 · [~] Feature: `rollup/shibarium` · [#3431](https://github.com/blockscout/frontend/issues/3431)
+### 4-6 · [x] Feature: `rollup/shibarium` · [#3431](https://github.com/blockscout/frontend/issues/3431)
 
 ---
 
@@ -178,23 +178,25 @@ One PR per rollup type. Each goes under `client/features/rollup/<type>/`.
 
 One PR per chain variant. Each goes under `client/features/chain-variants/<name>/`.
 
-### 5-1 · [~] Feature: `chain-variants/celo` · [#3434](https://github.com/blockscout/frontend/issues/3434)
+### 5-1 · [x] Feature: `chain-variants/celo` · [#3434](https://github.com/blockscout/frontend/issues/3434)
 **Scope:** All Celo-specific UI and logic including epochs → `client/features/chain-variants/celo/`. See `configs/app/features/celo.ts`.  
 
-### 5-2 · [~] Feature: `chain-variants/tac` · [#3440](https://github.com/blockscout/frontend/issues/3440)
+### 5-2 · [x] Feature: `chain-variants/tac` · [#3440](https://github.com/blockscout/frontend/issues/3440)
 **Scope:** TAC operations and bridge UI → `client/features/chain-variants/tac/`. See `configs/app/features/tac.ts`.  
 
-### 5-3 · [~] Feature: `chain-variants/zeta-chain` · [#3441](https://github.com/blockscout/frontend/issues/3441)
+### 5-3 · [x] Feature: `chain-variants/zeta-chain` · [#3441](https://github.com/blockscout/frontend/issues/3441)
 **Scope:** ZetaChain CCTX UI → `client/features/chain-variants/zeta-chain/`. See `configs/app/features/zetachain.ts`.  
 
-### 5-4 · [~] Feature: `chain-variants/suave` · [#3443](https://github.com/blockscout/frontend/issues/3443)
+### 5-4 · [x] Feature: `chain-variants/suave` · [#3443](https://github.com/blockscout/frontend/issues/3443)
 **Scope:** SUAVE Kettle UI → `client/features/chain-variants/suave/`. See `configs/app/features/suave.ts`.  
 
-### 5-5 · [ ] Feature: `chain-variants/mega-eth`
+### 5-5 · [~] Feature: `chain-variants/mega-eth` · [#3449](https://github.com/blockscout/frontend/issues/3449)
 **Scope:** MegaETH Flashblocks UI → `client/features/chain-variants/mega-eth/`. See `configs/app/features/megaEth.ts` and `flashblocks.ts`.  
 
-### 5-6 · [~] Feature: `chain-variants/beacon-chain` · [#3442](https://github.com/blockscout/frontend/issues/3442)
+### 5-6 · [x] Feature: `chain-variants/beacon-chain` · [#3442](https://github.com/blockscout/frontend/issues/3442)
 **Scope:** Beacon chain deposits/withdrawals UI → `client/features/chain-variants/beacon-chain/`. See `configs/app/features/beaconChain.ts`.  
+
+### 5-7 · [ ] Feature: `chain-variants/mud`
 
 ---
 
