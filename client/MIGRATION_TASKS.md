@@ -187,7 +187,7 @@ One PR per chain variant. Each goes under `client/features/chain-variants/<name>
 ### 5-3 · [~] Feature: `chain-variants/zeta-chain` · [#3441](https://github.com/blockscout/frontend/issues/3441)
 **Scope:** ZetaChain CCTX UI → `client/features/chain-variants/zeta-chain/`. See `configs/app/features/zetachain.ts`.  
 
-### 5-4 · [ ] Feature: `chain-variants/suave`
+### 5-4 · [~] Feature: `chain-variants/suave` · [#3443](https://github.com/blockscout/frontend/issues/3443)
 **Scope:** SUAVE Kettle UI → `client/features/chain-variants/suave/`. See `configs/app/features/suave.ts`.  
 
 ### 5-5 · [ ] Feature: `chain-variants/mega-eth`
