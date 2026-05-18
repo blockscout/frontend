@@ -9,7 +9,7 @@ import { route } from 'nextjs/routes';
 
 import * as TxEntity from 'client/slices/tx/components/entity/TxEntity';
 
-import useZetaChainConfig from 'ui/zetaChain/useZetaChainConfig';
+import useZetaChainConfig from 'client/features/chain-variants/zeta-chain/hooks/useZetaChainConfig';
 
 type Props = {
   chainId: string;

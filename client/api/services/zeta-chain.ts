@@ -2,7 +2,7 @@
 
 import type { ApiResource } from '../types';
 import type * as zetaChainCCTXType from '@blockscout/zetachain-cctx-types';
-import type { ZetaChainCCTXFilterParams } from 'types/client/zetaChain';
+import type { ZetaChainCCTXFilterParams } from 'client/features/chain-variants/zeta-chain/types/client';
 
 export const ZETA_CHAIN_API_RESOURCES = {
   transactions: {

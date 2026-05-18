@@ -17,14 +17,15 @@ import useSocketMessage from 'client/api/socket/useSocketMessage';
 import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
 import LatestTxsFallback from 'client/slices/home/pages/index/txs/LatestTxsFallback';
 
+import ZetaChainCCTXListItem from 'client/features/chain-variants/zeta-chain/pages/cctx-index/ZetaChainCCTXListItem';
+import { ZETA_CHAIN_CCTX_LIST_ITEM } from 'client/features/chain-variants/zeta-chain/stubs';
+
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import useInitialList from 'client/shared/lists/useInitialList';
 
 import { generateListStub } from 'stubs/utils';
-import { ZETA_CHAIN_CCTX_LIST_ITEM } from 'stubs/zetaChainCCTX';
 import { Link } from 'toolkit/chakra/link';
 import SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
-import ZetaChainCCTXListItem from 'ui/zetaChain/cctxs/ZetaChainCCTXListItem';
 
 import LatestZetaChainCCTXItem from './LatestZetaChainCCTXItem';
 

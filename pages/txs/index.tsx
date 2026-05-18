@@ -14,7 +14,7 @@ const Transactions = dynamic(() => {
   }
 
   if (config.features.zetachain.isEnabled) {
-    return import('ui/pages/TransactionsZetaChain');
+    return import('client/features/chain-variants/zeta-chain/pages/cctx-index/TransactionsZetaChain');
   }
 
   if (config.features.crossChainTxs.isEnabled) {

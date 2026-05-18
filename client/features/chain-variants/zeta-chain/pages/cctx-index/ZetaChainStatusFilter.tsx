@@ -3,7 +3,7 @@
 import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
-import type { ZetaChainCCTXFilterParams, StatusReducedFilters } from 'types/client/zetaChain';
+import type { ZetaChainCCTXFilterParams, StatusReducedFilters } from 'client/features/chain-variants/zeta-chain/types/client';
 
 import { Radio, RadioGroup } from 'toolkit/chakra/radio';
 import TableColumnFilter from 'ui/shared/filters/TableColumnFilter';

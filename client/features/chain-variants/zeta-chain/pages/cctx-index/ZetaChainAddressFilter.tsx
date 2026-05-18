@@ -5,7 +5,9 @@ import { isEqual } from 'es-toolkit';
 import type { ChangeEvent } from 'react';
 import React from 'react';
 
-import type { ZetaChainCCTXFilterParams } from 'types/client/zetaChain';
+import type { ZetaChainCCTXFilterParams } from 'client/features/chain-variants/zeta-chain/types/client';
+
+import useZetaChainConfig from 'client/features/chain-variants/zeta-chain/hooks/useZetaChainConfig';
 
 import { Input } from 'toolkit/chakra/input';
 import { InputGroup } from 'toolkit/chakra/input-group';
@@ -14,7 +16,6 @@ import { ClearButton } from 'toolkit/components/buttons/ClearButton';
 import type { Props as ChainSelectBaseProps } from 'ui/shared/externalChains/ChainSelect';
 import ChainSelectBase from 'ui/shared/externalChains/ChainSelect';
 import TableColumnFilter from 'ui/shared/filters/TableColumnFilter';
-import useZetaChainConfig from 'ui/zetaChain/useZetaChainConfig';
 
 type Props = {
   value?: Array<string>;

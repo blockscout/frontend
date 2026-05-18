@@ -11,11 +11,12 @@ import type * as AddressEntityBase from 'client/slices/address/components/entity
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import { unknownAddress } from 'client/slices/address/utils/consts';
 
+import useZetaChainConfig from 'client/features/chain-variants/zeta-chain/hooks/useZetaChainConfig';
+
 import config from 'configs/app';
 import { useColorModeValue } from 'toolkit/chakra/color-mode';
 import getChainTooltipText from 'ui/shared/externalChains/getChainTooltipText';
 import IconSvg from 'ui/shared/IconSvg';
-import useZetaChainConfig from 'ui/zetaChain/useZetaChainConfig';
 
 interface Props extends Omit<AddressEntityBase.EntityProps, 'address'> {
   chainId?: string;

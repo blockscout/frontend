@@ -4,7 +4,7 @@ import { Flex, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { CctxListItem } from '@blockscout/zetachain-cctx-types';
-import type { ZetaChainCCTXFilterParams } from 'types/client/zetaChain';
+import type { ZetaChainCCTXFilterParams } from 'client/features/chain-variants/zeta-chain/types/client';
 
 import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
 
@@ -14,8 +14,8 @@ import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } 
 import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
-import ZetaChainFilterByColumn from '../filters/ZetaChainFilterByColumn';
 import ZetaChainCCTxsTableItem from './ZetaChainCCTxsTableItem';
+import ZetaChainFilterByColumn from './ZetaChainFilterByColumn';
 
 type Props = {
   txs: Array<CctxListItem>;

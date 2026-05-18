@@ -5,8 +5,8 @@ import { isEqual } from 'es-toolkit';
 import React from 'react';
 
 import type { Token } from '@blockscout/zetachain-cctx-types';
+import { ZETA_CHAIN_CCTX_COIN_TYPE_FILTER, type ZetaChainCCTXFilterParams } from 'client/features/chain-variants/zeta-chain/types/client';
 import type { TokenInfo } from 'client/slices/token/types/api';
-import { ZETA_CHAIN_CCTX_COIN_TYPE_FILTER, type ZetaChainCCTXFilterParams } from 'types/client/zetaChain';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 

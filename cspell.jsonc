@@ -10,7 +10,7 @@
         ".git",
         "pnpm-lock.yaml",
         "configs/envs",
-        "mocks/zetaChain/zetaChainCCTX.ts",
+        "client/features/chain-variants/zeta-chain/mocks/cctx.ts",
         "mocks/metadata/address.ts",
         "playwright/mocks/file_mock_with_very_long_name.json",
         "playwright/fixtures/rewards.ts",

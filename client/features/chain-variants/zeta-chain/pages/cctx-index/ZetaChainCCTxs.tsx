@@ -6,7 +6,7 @@ import React from 'react';
 
 import { CctxStatusReduced, type CctxListItem, type ListCctxsResponse } from '@blockscout/zetachain-cctx-types';
 import type { SocketMessage } from 'client/api/socket/types';
-import type { ZetaChainCCTXFilterParams } from 'types/client/zetaChain';
+import type { ZetaChainCCTXFilterParams } from 'client/features/chain-variants/zeta-chain/types/client';
 import type { PaginationParams } from 'ui/shared/pagination/types';
 
 import { getResourceKey } from 'client/api/hooks/useApiQuery';

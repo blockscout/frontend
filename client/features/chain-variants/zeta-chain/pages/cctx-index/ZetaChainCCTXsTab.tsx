@@ -5,10 +5,12 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import { Direction } from '@blockscout/zetachain-cctx-types';
+import { ZETA_CHAIN_CCTX_COIN_TYPE_FILTER, ZETA_CHAIN_CCTX_STATUS_REDUCED_FILTERS } from 'client/features/chain-variants/zeta-chain/types/client';
+import type { CoinTypeFilter, StatusReducedFilters, ZetaChainCCTXFilterParams } from 'client/features/chain-variants/zeta-chain/types/client';
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 import { ADVANCED_FILTER_AGES, type AdvancedFilterAge } from 'types/api/advancedFilter';
-import { ZETA_CHAIN_CCTX_COIN_TYPE_FILTER, ZETA_CHAIN_CCTX_STATUS_REDUCED_FILTERS } from 'types/client/zetaChain';
-import type { CoinTypeFilter, StatusReducedFilters, ZetaChainCCTXFilterParams } from 'types/client/zetaChain';
+
+import { ZETA_CHAIN_CCTX_LIST_ITEM } from 'client/features/chain-variants/zeta-chain/stubs';
 
 import getChainValidationActionText from 'client/shared/chain/get-chain-validation-action-text';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
@@ -17,15 +19,14 @@ import getQueryParamString from 'client/shared/router/get-query-param-string';
 import getValuesArrayFromQuery from 'client/shared/router/get-values-array-from-query';
 
 import dayjs from 'lib/date/dayjs';
-import { ZETA_CHAIN_CCTX_LIST_ITEM } from 'stubs/zetaChainCCTX';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import { getDurationFromAge } from 'ui/advancedFilter/lib';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
-import ZetaChainCCTxs from './cctxs/ZetaChainCCTxs';
-import ZetaChainCCTXsStats from './cctxs/ZetaChainCCTXsStats';
-import ZetaChainFilterTags from './filters/ZetaChainFilterTags';
+import ZetaChainCCTxs from './ZetaChainCCTxs';
+import ZetaChainCCTXsStats from './ZetaChainCCTXsStats';
+import ZetaChainFilterTags from './ZetaChainFilterTags';
 
 const TAB_LIST_PROPS = {
   marginBottom: 0,

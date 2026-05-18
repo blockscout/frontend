@@ -3,7 +3,7 @@
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
-import type { ZetaChainChainsConfigEnv, ZetaChainExternalChainConfig } from 'types/client/zetaChain';
+import type { ZetaChainChainsConfigEnv, ZetaChainExternalChainConfig } from 'client/features/chain-variants/zeta-chain/types/client';
 
 import useFetch from 'client/api/hooks/useFetch';
 import type { ResourceError } from 'client/api/resources';

@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { ZetaChainCCTXFilterParams } from 'types/client/zetaChain';
+import type { ZetaChainCCTXFilterParams } from 'client/features/chain-variants/zeta-chain/types/client';
 
 import ZetaChainAddressFilter from './ZetaChainAddressFilter';
 
-const FILTER_PARAM_RECEIVER = 'receiver_address';
-const FILTER_PARAM_RECEIVER_CHAIN = 'target_chain_id';
+const FILTER_PARAM_SENDER = 'sender_address';
+const FILTER_PARAM_SENDER_CHAIN = 'source_chain_id';
 
 type Props = {
   value?: Array<string>;
@@ -16,16 +16,16 @@ type Props = {
   onClose?: () => void;
 };
 
-const ZetaChainReceiverFilter = (props: Props) => {
+const ZetaChainSenderFilter = (props: Props) => {
   return (
     <ZetaChainAddressFilter
       { ...props }
-      filterParam={ FILTER_PARAM_RECEIVER }
-      chainFilterParam={ FILTER_PARAM_RECEIVER_CHAIN }
-      title="Receiver"
-      placeholder="Receiver address"
+      filterParam={ FILTER_PARAM_SENDER }
+      chainFilterParam={ FILTER_PARAM_SENDER_CHAIN }
+      title="Sender"
+      placeholder="Sender address"
     />
   );
 };
 
-export default ZetaChainReceiverFilter;
+export default ZetaChainSenderFilter;
