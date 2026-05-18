@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { DepositsItem } from 'types/api/deposits';
+import type { DepositsItem } from 'client/features/chain-variants/beacon-chain/types/api';
 
 import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
 

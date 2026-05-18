@@ -4,17 +4,18 @@ import { Box } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import BeaconChainWithdrawalsListItem from 'client/features/chain-variants/beacon-chain/pages/withdrawals/BeaconChainWithdrawalsListItem';
+import BeaconChainWithdrawalsTable from 'client/features/chain-variants/beacon-chain/pages/withdrawals/BeaconChainWithdrawalsTable';
+import { WITHDRAWAL } from 'client/features/chain-variants/beacon-chain/stubs/withdrawals';
+
 import useIsMounted from 'client/shared/hooks/useIsMounted';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import { generateListStub } from 'stubs/utils';
-import { WITHDRAWAL } from 'stubs/withdrawals';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
-import BeaconChainWithdrawalsListItem from 'ui/withdrawals/beaconChain/BeaconChainWithdrawalsListItem';
-import BeaconChainWithdrawalsTable from 'ui/withdrawals/beaconChain/BeaconChainWithdrawalsTable';
 
 type Props = {
   shouldRender?: boolean;

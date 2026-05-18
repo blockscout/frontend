@@ -5,8 +5,9 @@ import React from 'react';
 
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
-import BeaconChainWithdrawalsList from 'ui/withdrawals/beaconChain/BeaconChainWithdrawalsList';
-import BeaconChainWithdrawalsTable from 'ui/withdrawals/beaconChain/BeaconChainWithdrawalsTable';
+
+import BeaconChainWithdrawalsList from '../withdrawals/BeaconChainWithdrawalsList';
+import BeaconChainWithdrawalsTable from '../withdrawals/BeaconChainWithdrawalsTable';
 
 type Props = {
   blockWithdrawalsQuery: QueryWithPagesResult<'general:block_withdrawals'>;

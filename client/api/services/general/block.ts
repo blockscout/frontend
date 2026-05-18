@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { ApiResource } from '../../types';
+import type { DepositsResponse } from 'client/features/chain-variants/beacon-chain/types/api';
 import type { TxsWithBlobsFilters } from 'client/features/data-availability/types/api';
 import type {
   BlocksResponse,
@@ -11,7 +12,6 @@ import type {
   BlockCountdownResponse,
   BlockInternalTransactionsResponse,
 } from 'client/slices/block/types/api';
-import type { DepositsResponse } from 'types/api/deposits';
 
 export const GENERAL_API_BLOCK_RESOURCES = {
   blocks: {

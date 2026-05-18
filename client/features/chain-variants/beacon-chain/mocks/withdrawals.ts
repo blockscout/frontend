@@ -1,5 +1,5 @@
+import type { WithdrawalsResponse } from 'client/features/chain-variants/beacon-chain/types/api';
 import type { AddressParam } from 'client/slices/address/types/api';
-import type { WithdrawalsResponse } from 'types/api/withdrawals';
 
 export const data: WithdrawalsResponse = {
   items: [

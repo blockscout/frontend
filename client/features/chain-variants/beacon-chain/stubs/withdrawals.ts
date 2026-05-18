@@ -1,4 +1,4 @@
-import type { WithdrawalsItem } from 'types/api/withdrawals';
+import type { WithdrawalsItem } from 'client/features/chain-variants/beacon-chain/types/api';
 
 import { ADDRESS_PARAMS } from 'client/slices/address/stubs/address-params';
 

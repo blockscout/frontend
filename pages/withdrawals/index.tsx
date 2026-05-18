@@ -28,7 +28,7 @@ const Withdrawals = dynamic(() => {
   }
 
   if (beaconChainFeature.isEnabled) {
-    return import('ui/pages/BeaconChainWithdrawals');
+    return import('client/features/chain-variants/beacon-chain/pages/withdrawals/BeaconChainWithdrawals');
   }
 
   throw new Error('Withdrawals feature is not enabled.');

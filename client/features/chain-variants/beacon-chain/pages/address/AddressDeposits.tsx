@@ -7,14 +7,15 @@ import React from 'react';
 import useIsMounted from 'client/shared/hooks/useIsMounted';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
-import { DEPOSIT } from 'stubs/deposits';
 import { generateListStub } from 'stubs/utils';
-import BeaconChainDepositsListItem from 'ui/deposits/beaconChain/BeaconChainDepositsListItem';
-import BeaconChainDepositsTable from 'ui/deposits/beaconChain/BeaconChainDepositsTable';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
+
+import { DEPOSIT } from '../../stubs/deposits';
+import BeaconChainDepositsListItem from '../deposits/BeaconChainDepositsListItem';
+import BeaconChainDepositsTable from '../deposits/BeaconChainDepositsTable';
 
 type Props = {
   shouldRender?: boolean;

@@ -28,7 +28,7 @@ const Deposits = dynamic(() => {
   }
 
   if (beaconChainFeature.isEnabled && !beaconChainFeature.withdrawalsOnly) {
-    return import('ui/pages/BeaconChainDeposits');
+    return import('client/features/chain-variants/beacon-chain/pages/deposits/BeaconChainDeposits');
   }
 
   throw new Error('Deposits feature is not enabled.');
