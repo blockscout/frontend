@@ -39,6 +39,9 @@ Promise<GetServerSidePropsResult<Props<Pathname>>> => {
 
   const onionDomain = Array.isArray(req.headers?.['onion-Location']) ? req.headers?.['onion-Location'][0] : req.headers?.['onion-Location'] ?? null;
 
+  // eslint-disable-next-line no-console
+  console.log('__>__', req.headers);
+
   const adBannerProvider = (() => {
     if (adBannerFeature.isEnabled) {
       if ('additionalProvider' in adBannerFeature && adBannerFeature.additionalProvider) {
