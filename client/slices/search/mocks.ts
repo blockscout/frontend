@@ -8,7 +8,7 @@ import type {
 } from 'client/slices/search/types/api';
 
 import { metatag1 } from 'client/features/address-metadata/stubs/search';
-import { tacOperation1 } from 'client/features/chain-variants/tac/stubs/search';
+import { tacOperation1 } from 'client/features/chain-variants/tac/mocks/search';
 import { blob1 } from 'client/features/data-availability/stubs/search';
 import { domain1 } from 'client/features/name-services/domains/stubs/search';
 

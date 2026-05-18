@@ -4,12 +4,12 @@ import React from 'react';
 
 import type * as tac from '@blockscout/tac-operation-lifecycle-types';
 
-import AddressEntityTacTon from 'client/features/chain-variants/tac/components/AddressEntityTacTon';
-
-import OperationEntity from 'ui/shared/entities/operation/OperationEntity';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
-import TacOperationStatus from 'ui/shared/statusTag/TacOperationStatus';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
+
+import AddressEntityTacTon from '../../components/AddressEntityTacTon';
+import TacOperationEntity from '../../components/TacOperationEntity';
+import TacOperationStatus from '../../components/TacOperationStatus';
 
 type Props = { item: tac.OperationBriefDetails; isLoading?: boolean };
 
@@ -19,7 +19,7 @@ const TacOperationsListItem = ({ item, isLoading }: Props) => {
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Operation</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <OperationEntity
+        <TacOperationEntity
           id={ item.operation_id }
           type={ item.type }
           isLoading={ isLoading }

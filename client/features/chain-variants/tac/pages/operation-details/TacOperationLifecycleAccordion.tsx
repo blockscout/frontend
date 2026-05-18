@@ -4,9 +4,9 @@ import React from 'react';
 
 import * as tac from '@blockscout/tac-operation-lifecycle-types';
 
-import { STATUS_LABELS } from 'lib/operations/tac';
 import { Root, Item, Trigger } from 'ui/shared/lifecycle/LifecycleAccordion';
 
+import { STATUS_LABELS } from '../../utils/tac-operation';
 import TacOperationLifecycleAccordionItemContent from './TacOperationLifecycleAccordionItemContent';
 
 interface Props {

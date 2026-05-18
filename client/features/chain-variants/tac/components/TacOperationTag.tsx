@@ -4,9 +4,10 @@ import React from 'react';
 
 import type * as tac from '@blockscout/tac-operation-lifecycle-types';
 
-import { getTacOperationStatus } from 'lib/operations/tac';
 import type { BadgeProps } from 'toolkit/chakra/badge';
 import { Badge } from 'toolkit/chakra/badge';
+
+import { getTacOperationStatus } from '../utils/tac-operation';
 
 interface Props extends BadgeProps {
   type: tac.OperationType;

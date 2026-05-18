@@ -8,12 +8,13 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
-import { TAC_OPERATION_DETAILS } from 'stubs/operations';
-import TacOperationDetails from 'ui/operation/tac/TacOperationDetails';
 import TextAd from 'ui/shared/ad/TextAd';
-import OperationEntity from 'ui/shared/entities/operation/OperationEntity';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import TacOperationTag from 'ui/shared/TacOperationTag';
+
+import TacOperationEntity from '../../components/TacOperationEntity';
+import TacOperationTag from '../../components/TacOperationTag';
+import { TAC_OPERATION_DETAILS } from '../../stubs';
+import TacOperationDetails from './TacOperationDetails';
 
 const TacOperation = () => {
   const router = useRouter();
@@ -33,7 +34,7 @@ const TacOperation = () => {
   ) : null;
 
   const titleSecondRow = (
-    <OperationEntity id={ id } noLink variant="subheading" type={ query.data?.type }/>
+    <TacOperationEntity id={ id } noLink variant="subheading" type={ query.data?.type }/>
   );
 
   return (

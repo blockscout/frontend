@@ -6,12 +6,13 @@ import React from 'react';
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
 import config from 'configs/app';
-import { getTacOperationStage } from 'lib/operations/tac';
-import { TAC_OPERATION_DETAILS } from 'stubs/operations';
 import { Tag } from 'toolkit/chakra/tag';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import OperationEntity from 'ui/shared/entities/operation/OperationEntity';
-import TacOperationStatus from 'ui/shared/statusTag/TacOperationStatus';
+
+import TacOperationEntity from '../../components/TacOperationEntity';
+import TacOperationStatus from '../../components/TacOperationStatus';
+import { TAC_OPERATION_DETAILS } from '../../stubs';
+import { getTacOperationStage } from '../../utils/tac-operation';
 
 interface Props {
   isLoading: boolean;
@@ -59,7 +60,7 @@ const TxDetailsTacOperation = ({ isLoading, txHash }: Props) => {
 
           return (
             <HStack key={ tacOperation.operation_id } rowGap={ 0 } columnGap={ 3 } flexWrap={{ base: 'wrap', lg: 'nowrap' }}>
-              <OperationEntity
+              <TacOperationEntity
                 id={ tacOperation.operation_id }
                 type={ tacOperation.type }
                 isLoading={ isPlaceholderData }

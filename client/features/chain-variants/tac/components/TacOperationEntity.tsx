@@ -8,8 +8,7 @@ import * as tac from '@blockscout/tac-operation-lifecycle-types';
 import { route } from 'nextjs-routes';
 
 import * as EntityBase from 'ui/shared/entities/base/components';
-
-import { distributeEntityProps } from '../base/utils';
+import { distributeEntityProps } from 'ui/shared/entities/base/utils';
 
 type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'id'>;
 
@@ -74,7 +73,7 @@ export interface EntityProps extends EntityBase.EntityBaseProps {
   type: tac.OperationType | undefined;
 }
 
-const OperationEntity = (props: EntityProps) => {
+const TacOperationEntity = (props: EntityProps) => {
   const partsProps = distributeEntityProps(props);
   const content = <Content { ...partsProps.content }/>;
 
@@ -87,7 +86,7 @@ const OperationEntity = (props: EntityProps) => {
   );
 };
 
-export default React.memo(chakra(OperationEntity));
+export default React.memo(chakra(TacOperationEntity));
 
 export {
   Container,

@@ -8,16 +8,17 @@ import useDebounce from 'client/shared/hooks/useDebounce';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
-import { TAC_OPERATION } from 'stubs/operations';
 import { generateListStub } from 'stubs/utils';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
-import TacOperationsListItem from 'ui/operations/tac/TacOperationsListItem';
-import TacOperationsTable from 'ui/operations/tac/TacOperationsTable';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
+
+import { TAC_OPERATION } from '../../stubs';
+import TacOperationsListItem from './TacOperationsListItem';
+import TacOperationsTable from './TacOperationsTable';
 
 const TacOperations = () => {
   const router = useRouter();
