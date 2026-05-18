@@ -29,24 +29,23 @@ export default function useLogout() {
   const apiFetch = useApiFetch();
 
   return React.useCallback(async() => {
-    try {
-      if (getAuthProviderUrl()) {
-        await fetch('/auth/logout', { credentials: 'same-origin' });
-      } else {
-        await apiFetch('general:auth_logout');
+    const logoutRewards = async() => {
+      if (!config.features.rewards.isEnabled) {
+        return;
       }
-      cookies.remove(cookies.NAMES.API_TOKEN);
 
-      if (config.features.rewards.isEnabled) {
-        const rewardsToken = cookies.get(cookies.NAMES.REWARDS_API_TOKEN);
-        if (rewardsToken) {
-          await apiFetch('rewards:logout', { fetchParams: {
-            method: 'POST',
-            headers: { Authorization: `Bearer ${ rewardsToken }` },
-          } });
-          cookies.remove(cookies.NAMES.REWARDS_API_TOKEN);
-        }
+      const rewardsToken = cookies.get(cookies.NAMES.REWARDS_API_TOKEN);
+      if (rewardsToken) {
+        await apiFetch('rewards:logout', { fetchParams: {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${ rewardsToken }` },
+        } });
+        cookies.remove(cookies.NAMES.REWARDS_API_TOKEN);
       }
+    };
+
+    const clearLocalAccountState = () => {
+      cookies.remove(cookies.NAMES.API_TOKEN);
 
       queryClient.resetQueries({
         queryKey: getResourceKey('general:user_info'),
@@ -59,6 +58,20 @@ export default function useLogout() {
 
       mixpanel.logEvent(mixpanel.EventTypes.ACCOUNT_ACCESS, { Action: 'Logged out' }, { send_immediately: true });
       mixpanel.reset();
+    };
+
+    try {
+      if (getAuthProviderUrl()) {
+        await logoutRewards();
+        clearLocalAccountState();
+        window.location.assign('/auth/provider_logout');
+        return;
+      } else {
+        await apiFetch('general:auth_logout');
+      }
+
+      await logoutRewards();
+      clearLocalAccountState();
 
       if (
         PROTECTED_ROUTES.includes(router.pathname) ||

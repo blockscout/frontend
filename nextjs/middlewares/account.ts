@@ -22,6 +22,13 @@ export function account(req: NextRequest) {
     const isProfileRoute = req.nextUrl.pathname.includes('/auth/profile');
 
     if ((isAccountRoute || isProfileRoute)) {
+      if (feature.authUrl) {
+        const authUrl = new URL(feature.authUrl, req.nextUrl.origin);
+        authUrl.searchParams.set('path', `${ req.nextUrl.pathname }${ req.nextUrl.search }`);
+
+        return NextResponse.redirect(authUrl);
+      }
+
       return NextResponse.redirect(config.app.baseUrl);
     }
   }

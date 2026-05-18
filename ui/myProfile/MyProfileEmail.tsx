@@ -1,16 +1,20 @@
 import { chakra } from '@chakra-ui/react';
+import { useQueryClient } from '@tanstack/react-query';
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import type { FormFields } from './types';
-import type { UserInfo } from 'types/api/account';
+import type { UserInfo, UserInfoErrors } from 'types/api/account';
 
 import config from 'configs/app';
+import type { ResourceErrorAccount } from 'lib/api/resources';
+import { resourceKey } from 'lib/api/resources';
 import useApiFetch from 'lib/api/useApiFetch';
 import getErrorMessage from 'lib/errors/getErrorMessage';
 import getErrorObjPayload from 'lib/errors/getErrorObjPayload';
+import getFieldErrorMessage from 'lib/getErrorMessage';
 import * as mixpanel from 'lib/mixpanel';
 import { Button } from 'toolkit/chakra/button';
 import { Heading } from 'toolkit/chakra/heading';
@@ -29,6 +33,13 @@ const MIXPANEL_CONFIG = {
   },
 };
 
+const NAME_MAX_LENGTH = 255;
+
+const getProfileFormValues = (profile: UserInfo | undefined): FormFields => ({
+  email: profile?.email || '',
+  name: profile?.name || profile?.nickname || '',
+});
+
 interface Props {
   profileQuery: UseQueryResult<UserInfo, unknown>;
 }
@@ -36,15 +47,20 @@ interface Props {
 const MyProfileEmail = ({ profileQuery }: Props) => {
   const authModal = useDisclosure();
   const apiFetch = useApiFetch();
+  const queryClient = useQueryClient();
   const recaptcha = useReCaptcha();
+  const profileFormValues = React.useMemo(() => getProfileFormValues(profileQuery.data), [ profileQuery.data ]);
 
   const formApi = useForm<FormFields>({
     mode: 'onBlur',
-    defaultValues: {
-      email: profileQuery.data?.email || '',
-      name: profileQuery.data?.name || profileQuery.data?.nickname || '',
-    },
+    defaultValues: profileFormValues,
   });
+
+  React.useEffect(() => {
+    if (!formApi.formState.isDirty) {
+      formApi.reset(profileFormValues);
+    }
+  }, [ formApi, formApi.formState.isDirty, profileFormValues ]);
 
   const authFetchFactory = React.useCallback((email: string) => (recaptchaToken?: string) => {
     return apiFetch('general:auth_send_otp', {
@@ -58,25 +74,66 @@ const MyProfileEmail = ({ profileQuery }: Props) => {
     });
   }, [ apiFetch ]);
 
+  const profileFetch = React.useCallback((name: string) => {
+    return apiFetch<'general:user_info', UserInfo, { errors: UserInfoErrors }>('general:user_info', {
+      fetchParams: {
+        method: 'PUT',
+        body: { name },
+      },
+    }) as Promise<UserInfo>;
+  }, [ apiFetch ]);
+
   const onFormSubmit: SubmitHandler<FormFields> = React.useCallback(async(formData) => {
+    const shouldUpdateProfile = Boolean(formApi.formState.dirtyFields.name);
+    const shouldSendOtp = config.services.reCaptchaV2.siteKey && !profileQuery.data?.email && Boolean(formApi.formState.dirtyFields.email);
+
     try {
-      await recaptcha.fetchProtectedResource(authFetchFactory(formData.email));
-      mixpanel.logEvent(mixpanel.EventTypes.ACCOUNT_LINK_INFO, {
-        Source: 'Profile',
-        Status: 'OTP sent',
-        Type: 'Email',
-      });
-      authModal.onOpen();
+      let updatedProfile: UserInfo | undefined;
+
+      if (shouldUpdateProfile) {
+        updatedProfile = await profileFetch(formData.name);
+        queryClient.setQueryData([ resourceKey('general:user_info') ], updatedProfile);
+        toaster.success({
+          title: 'Profile updated',
+          description: 'Your name was saved.',
+        });
+      }
+
+      if (shouldSendOtp) {
+        await recaptcha.fetchProtectedResource(authFetchFactory(formData.email));
+        mixpanel.logEvent(mixpanel.EventTypes.ACCOUNT_LINK_INFO, {
+          Source: 'Profile',
+          Status: 'OTP sent',
+          Type: 'Email',
+        });
+        authModal.onOpen();
+      }
+
+      if (updatedProfile && !shouldSendOtp) {
+        formApi.reset(getProfileFormValues(updatedProfile));
+      }
     } catch (error) {
+      const accountApiError = error as ResourceErrorAccount<UserInfoErrors>;
+      const errorMap = accountApiError.payload?.errors;
+
+      if (errorMap?.name) {
+        formApi.setError('name', { type: 'custom', message: getFieldErrorMessage(errorMap, 'name') });
+        return;
+      }
+
       const apiError = getErrorObjPayload<{ message: string }>(error);
       toaster.error({
         title: 'Error',
         description: apiError?.message || getErrorMessage(error) || 'Something went wrong',
       });
     }
-  }, [ authFetchFactory, authModal, recaptcha ]);
+  }, [ authFetchFactory, authModal, formApi, profileFetch, profileQuery.data?.email, queryClient, recaptcha ]);
 
-  const hasDirtyFields = Object.keys(formApi.formState.dirtyFields).length > 0;
+  const canLinkEmail = Boolean(config.services.reCaptchaV2.siteKey && !profileQuery.data?.email);
+  const hasDirtyName = Boolean(formApi.formState.dirtyFields.name);
+  const hasDirtyEmail = Boolean(formApi.formState.dirtyFields.email);
+  const hasSaveableChanges = hasDirtyName || (canLinkEmail && hasDirtyEmail);
+  const shouldShowSaveButton = canLinkEmail || hasSaveableChanges;
 
   return (
     <section>
@@ -86,19 +143,30 @@ const MyProfileEmail = ({ profileQuery }: Props) => {
           noValidate
           onSubmit={ formApi.handleSubmit(onFormSubmit) }
         >
-          <FormFieldText<FormFields> name="name" placeholder="Name" readOnly mb={ 3 }/>
+          <FormFieldText<FormFields>
+            name="name"
+            placeholder="Name"
+            required
+            rules={{
+              maxLength: NAME_MAX_LENGTH,
+            }}
+            inputProps={{
+              maxLength: NAME_MAX_LENGTH,
+            }}
+            mb={ 3 }
+          />
           <MyProfileFieldsEmail
-            isReadOnly={ !config.services.reCaptchaV2.siteKey || Boolean(profileQuery.data?.email) }
+            isReadOnly={ !canLinkEmail }
             defaultValue={ profileQuery.data?.email || undefined }
           />
-          { config.services.reCaptchaV2.siteKey && !profileQuery.data?.email && <ReCaptcha { ...recaptcha }/> }
-          { config.services.reCaptchaV2.siteKey && !profileQuery.data?.email && (
+          { canLinkEmail && <ReCaptcha { ...recaptcha }/> }
+          { shouldShowSaveButton && (
             <Button
               mt={ 6 }
               size="sm"
               variant="outline"
               type="submit"
-              disabled={ formApi.formState.isSubmitting || !hasDirtyFields || recaptcha.isInitError }
+              disabled={ formApi.formState.isSubmitting || !hasSaveableChanges || (canLinkEmail && hasDirtyEmail && recaptcha.isInitError) }
               loading={ formApi.formState.isSubmitting }
               loadingText="Save changes"
             >

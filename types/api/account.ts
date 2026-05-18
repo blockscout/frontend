@@ -77,6 +77,10 @@ export interface UserInfo {
   avatar?: string;
 }
 
+export type UserInfoErrors = {
+  name?: Array<string>;
+};
+
 export interface WatchlistAddress {
   address_hash: string;
   name: string;

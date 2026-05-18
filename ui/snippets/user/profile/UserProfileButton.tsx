@@ -71,7 +71,7 @@ const UserProfileButton = ({ profileQuery, size, variant, onClick, isPending, ..
 
   return (
     <Tooltip
-      content={ <span>Sign in to My Account to add tags,<br/>create watchlists, access API keys and more</span> }
+      content={ <span>Sign in to your account to add tags,<br/>create watchlists, access API keys and more</span> }
       disabled={ isMobile || isLoading || Boolean(data) }
       openDelay={ 500 }
       disableOnMobile

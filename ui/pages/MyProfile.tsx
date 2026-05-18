@@ -12,6 +12,7 @@ import AccountPageDescription from 'ui/shared/AccountPageDescription';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import AuthModal from 'ui/snippets/auth/AuthModal';
+import { getAuthProviderUrl } from 'ui/snippets/auth/redirectToAuthProvider';
 import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
 import useRedirectForInvalidAuthToken from 'ui/snippets/auth/useRedirectForInvalidAuthToken';
 
@@ -29,6 +30,7 @@ const MyProfile = () => {
   const authModal = useDisclosure();
 
   const profileQuery = useProfileQuery();
+  const usesExternalAccountAuth = Boolean(getAuthProviderUrl());
   useRedirectForInvalidAuthToken();
 
   const handleAddWalletClick = React.useCallback(() => {
@@ -49,11 +51,11 @@ const MyProfile = () => {
       <>
         <AccountPageDescription>
           You can add your email to receive watchlist notifications.
-          Additionally, you can manage your wallet address and email, which can be used for logging into your Blockscout account.
+          Additionally, you can manage your name and email for your VinuExplorer account.
         </AccountPageDescription>
         <Flex maxW="480px" mt={ 8 } flexDir="column" rowGap={ 12 }>
           <MyProfileEmail profileQuery={ profileQuery }/>
-          { config.features.blockchainInteraction.isEnabled &&
+          { config.features.blockchainInteraction.isEnabled && !usesExternalAccountAuth &&
             <MyProfileWallet profileQuery={ profileQuery } onAddWallet={ handleAddWalletClick }/> }
         </Flex>
         { authModal.open && authInitialScreen &&
