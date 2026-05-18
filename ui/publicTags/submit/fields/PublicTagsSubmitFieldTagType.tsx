@@ -12,12 +12,19 @@ interface Props {
   tagTypes: Array<PublicTagType> | undefined;
 }
 
+const formatTagTypeLabel = (value: string) => {
+  return value
+    .split('_')
+    .map((part) => capitalize(part))
+    .join(' ');
+};
+
 const PublicTagsSubmitFieldTagType = ({ index, tagTypes }: Props) => {
 
   const collection = React.useMemo(() => {
     const items = tagTypes?.map((type) => ({
       value: type.type,
-      label: capitalize(type.type),
+      label: formatTagTypeLabel(type.type),
     })) ?? [];
 
     return createListCollection<SelectOption>({ items });

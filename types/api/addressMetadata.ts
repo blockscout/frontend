@@ -5,7 +5,16 @@ export interface AddressMetadataInfo {
   }>;
 }
 
-export type AddressMetadataTagType = 'name' | 'generic' | 'classifier' | 'information' | 'note' | 'protocol';
+export type AddressMetadataTagType =
+  'name' |
+  'generic' |
+  'classifier' |
+  'information' |
+  'note' |
+  'protocol' |
+  'meme' |
+  'exchange' |
+  'liquidity_pool';
 
 // Response model from Metadata microservice API
 export interface AddressMetadataTag {

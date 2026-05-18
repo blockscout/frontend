@@ -19,6 +19,9 @@ const DEFAULT_TAG_TYPES: Array<PublicTagType> = [
   { id: 'information', type: 'information', description: 'Informational tag' },
   { id: 'note', type: 'note', description: 'Note' },
   { id: 'protocol', type: 'protocol', description: 'Protocol or dApp tag' },
+  { id: 'meme', type: 'meme', description: 'Meme token or community project tag' },
+  { id: 'exchange', type: 'exchange', description: 'Exchange address tag' },
+  { id: 'liquidity_pool', type: 'liquidity_pool', description: 'Liquidity pool contract tag' },
 ];
 
 const PublicTagsSubmit = () => {

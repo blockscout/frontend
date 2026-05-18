@@ -30,5 +30,20 @@ export const publicTagTypes = {
       type: 'note' as const,
       description: 'Short general-purpose description for the address',
     },
+    {
+      id: 'meme',
+      type: 'meme' as const,
+      description: 'Meme token or community project tag',
+    },
+    {
+      id: 'exchange',
+      type: 'exchange' as const,
+      description: 'Exchange address tag',
+    },
+    {
+      id: 'liquidity_pool',
+      type: 'liquidity_pool' as const,
+      description: 'Liquidity pool contract tag',
+    },
   ],
 };
