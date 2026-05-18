@@ -3,13 +3,14 @@
 import { HStack, Text } from '@chakra-ui/react';
 import React from 'react';
 
-import type { FlashblockItem } from 'types/client/flashblocks';
+import type { FlashblockItem } from 'client/features/flashblocks/types/client';
 
 import { route } from 'nextjs-routes';
 
+import FlashblockEntity from 'client/features/flashblocks/components/FlashblockEntity';
+
 import { Link } from 'toolkit/chakra/link';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
-import FlashblockEntity from 'ui/shared/entities/flashblock/FlashblockEntity';
 import Time from 'ui/shared/time/Time';
 
 interface Props {

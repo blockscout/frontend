@@ -7,8 +7,7 @@ import { route } from 'nextjs/routes';
 
 import { useMultichainContext } from 'lib/contexts/multichain';
 import * as EntityBase from 'ui/shared/entities/base/components';
-
-import { distributeEntityProps } from '../base/utils';
+import { distributeEntityProps } from 'ui/shared/entities/base/utils';
 
 type LinkProps = EntityBase.LinkBaseProps & Partial<Pick<EntityProps, 'number'>>;
 

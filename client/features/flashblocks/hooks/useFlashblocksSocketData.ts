@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { FlashblockItem } from 'types/client/flashblocks';
+import type { FlashblockItem } from 'client/features/flashblocks/types/client';
 
 import { formatFlashblockItemMegaEth, formatFlashblockItemOptimism } from 'client/features/flashblocks/utils/format-flashblock-item';
 import { parseSocketEventDataMegaEth, parseSocketEventDataOptimism } from 'client/features/flashblocks/utils/parse-socket-event-data';

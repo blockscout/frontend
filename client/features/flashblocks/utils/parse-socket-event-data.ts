@@ -2,7 +2,7 @@
 
 import { decompress } from 'brotli-compress/js';
 
-import type { FlashblockItemApiMegaEth, FlashblockItemApiOptimism } from 'types/api/flashblocks';
+import type { FlashblockItemApiMegaEth, FlashblockItemApiOptimism } from 'client/features/flashblocks/types/api';
 
 export async function parseSocketEventDataOptimism(event: MessageEvent) {
   try {

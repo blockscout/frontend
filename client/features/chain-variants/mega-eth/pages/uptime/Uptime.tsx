@@ -4,10 +4,10 @@ import React from 'react';
 
 import PageTitle from 'ui/shared/Page/PageTitle';
 
+import useUptimeSocketData from '../../hooks/useUptimeSocketData';
 import UptimeCharts from './UptimeCharts';
 import UptimeStats from './UptimeStats';
 import UptimeStatus from './UptimeStatus';
-import useUptimeSocketData from './useUptimeSocketData';
 
 const Uptime = () => {
 

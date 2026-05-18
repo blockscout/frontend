@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { FlashblockItemApiMegaEth, FlashblockItemApiOptimism } from 'types/api/flashblocks';
-import type { FlashblockItem } from 'types/client/flashblocks';
+import type { FlashblockItemApiMegaEth, FlashblockItemApiOptimism } from 'client/features/flashblocks/types/api';
+import type { FlashblockItem } from 'client/features/flashblocks/types/client';
 
 export function formatFlashblockItemOptimism(item: FlashblockItemApiOptimism): FlashblockItem {
 

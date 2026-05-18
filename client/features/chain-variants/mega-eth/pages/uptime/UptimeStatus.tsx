@@ -7,7 +7,7 @@ import { Button } from 'toolkit/chakra/button';
 import IconSvg from 'ui/shared/IconSvg';
 import StatusTag from 'ui/shared/statusTag/StatusTag';
 
-import type { Status } from './useUptimeSocketData';
+import type { Status } from '../../hooks/useUptimeSocketData';
 
 interface Props {
   status: Status;
