@@ -37,10 +37,7 @@ Promise<GetServerSidePropsResult<Props<Pathname>>> => {
   const cspNonceValue = Array.isArray(cspNonceHeader) ? cspNonceHeader[0] : cspNonceHeader;
   const cspNonce = cspNonceValue ? String(cspNonceValue) : null;
 
-  const onionDomain = Array.isArray(req.headers?.['onion-Location']) ? req.headers?.['onion-Location'][0] : req.headers?.['onion-Location'] ?? null;
-
-  // eslint-disable-next-line no-console
-  console.log('__>__', req.headers);
+  const onionDomain = Array.isArray(req.headers?.['onion-location']) ? req.headers?.['onion-location'][0] : req.headers?.['onion-location'] ?? null;
 
   const adBannerProvider = (() => {
     if (adBannerFeature.isEnabled) {
