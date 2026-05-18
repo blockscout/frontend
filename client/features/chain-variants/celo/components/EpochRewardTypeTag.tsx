@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { CeloEpochRewardsType } from 'types/api/epochs';
+import type { CeloEpochRewardsType } from 'client/features/chain-variants/celo/types/api';
 
 import type { BadgeProps } from 'toolkit/chakra/badge';
 import { Badge } from 'toolkit/chakra/badge';

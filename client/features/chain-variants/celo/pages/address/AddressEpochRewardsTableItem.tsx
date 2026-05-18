@@ -9,9 +9,10 @@ import { route } from 'nextjs-routes';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 
+import EpochRewardTypeTag from 'client/features/chain-variants/celo/components/EpochRewardTypeTag';
+
 import { Link } from 'toolkit/chakra/link';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
-import EpochRewardTypeTag from 'ui/shared/EpochRewardTypeTag';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import TokenValue from 'ui/shared/value/TokenValue';
 

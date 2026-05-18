@@ -6,8 +6,7 @@ import React from 'react';
 import { route } from 'nextjs-routes';
 
 import * as EntityBase from 'ui/shared/entities/base/components';
-
-import { distributeEntityProps } from '../base/utils';
+import { distributeEntityProps } from 'ui/shared/entities/base/utils';
 
 type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'number'>;
 

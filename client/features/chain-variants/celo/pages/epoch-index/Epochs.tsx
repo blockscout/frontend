@@ -3,16 +3,18 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import { CELO_EPOCH_ITEM } from 'stubs/epoch';
+import { CELO_EPOCH_ITEM } from 'client/features/chain-variants/celo/stubs/epoch';
+
 import { generateListStub } from 'stubs/utils';
-import EpochsListItem from 'ui/epochs/EpochsListItem';
-import EpochsTable from 'ui/epochs/EpochsTable';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
+
+import EpochsListItem from './EpochsListItem';
+import EpochsTable from './EpochsTable';
 
 const EpochsPageContent = () => {
   const epochsQuery = useQueryWithPages({

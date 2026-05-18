@@ -1,6 +1,7 @@
 import React from 'react';
 
-import * as epochMock from 'mocks/epochs/celo';
+import * as epochMock from 'client/features/chain-variants/celo/mocks/epoch';
+
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';
 

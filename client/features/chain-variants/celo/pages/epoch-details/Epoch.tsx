@@ -8,16 +8,18 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 
 import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
 
+import { CELO_EPOCH } from 'client/features/chain-variants/celo/stubs/epoch';
+
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
-import { CELO_EPOCH } from 'stubs/epoch';
 import { Tag } from 'toolkit/chakra/tag';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import EpochDetails from 'ui/epochs/EpochDetails';
 import TextAd from 'ui/shared/ad/TextAd';
 import PageTitle from 'ui/shared/Page/PageTitle';
+
+import EpochDetails from './EpochDetails';
 
 const EpochPageContent = () => {
   const isMobile = useIsMobile();

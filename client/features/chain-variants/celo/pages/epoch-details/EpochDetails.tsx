@@ -3,20 +3,21 @@
 import { Box, chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import type { CeloEpochDetails } from 'types/api/epochs';
+import type { CeloEpochDetails } from 'client/features/chain-variants/celo/types/api';
 
 import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
 import TokenTransferSnippet from 'client/slices/token-transfer/components/snippet/TokenTransferSnippet';
+
+import CeloEpochStatus from 'client/features/chain-variants/celo/components/CeloEpochStatus';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
-import CeloEpochStatus from 'ui/shared/statusTag/CeloEpochStatus';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 import TokenValue from 'ui/shared/value/TokenValue';
 
-import EpochElectionRewards from './electionRewards/EpochElectionRewards';
+import EpochElectionRewards from './election-rewards/EpochElectionRewards';
 
 interface Props {
   data: CeloEpochDetails;

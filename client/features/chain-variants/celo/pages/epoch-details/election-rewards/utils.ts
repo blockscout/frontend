@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { CeloEpochDetails } from 'types/api/epochs';
+import type { CeloEpochDetails } from 'client/features/chain-variants/celo/types/api';
 import type { ExcludeNull } from 'types/utils';
 
 export function getRewardNumText(type: keyof CeloEpochDetails['aggregated_election_rewards'], num: number) {

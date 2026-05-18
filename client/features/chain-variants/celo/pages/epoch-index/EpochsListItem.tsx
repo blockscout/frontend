@@ -3,13 +3,14 @@
 import { HStack } from '@chakra-ui/react';
 import React from 'react';
 
-import type { CeloEpochListItem } from 'types/api/epochs';
+import type { CeloEpochListItem } from 'client/features/chain-variants/celo/types/api';
+
+import CeloEpochStatus from 'client/features/chain-variants/celo/components/CeloEpochStatus';
+import EpochEntity from 'client/features/chain-variants/celo/components/entity/EpochEntity';
 
 import dayjs from 'lib/date/dayjs';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import EpochEntity from 'ui/shared/entities/epoch/EpochEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
-import CeloEpochStatus from 'ui/shared/statusTag/CeloEpochStatus';
 import TextSeparator from 'ui/shared/TextSeparator';
 import Time from 'ui/shared/time/Time';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
