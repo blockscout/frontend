@@ -21,7 +21,7 @@
     "chakra:typegen": "chakra typegen ./toolkit/theme/theme.ts",
     "lint:eslint": "eslint .",
     "lint:eslint:fix": "eslint . --fix",
-    "lint:tsc": "tsc -p ./tsconfig.json",
+    "lint:tsc": "chakra typegen ./toolkit/theme/theme.ts && tsc -p ./tsconfig.json",
     "lint:envs-validator:test": "cd ./deploy/tools/envs-validator && ./test.sh",
     "prepare": "husky install",
     "svg:format": "svgo -r --config svgo.config.format.js ./icons",

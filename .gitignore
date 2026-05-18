@@ -49,6 +49,7 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+/chakra-config.json
 
 .eslintcache
 
