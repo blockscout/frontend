@@ -9,15 +9,15 @@ import { InboundStatus } from '@blockscout/zetachain-cctx-types';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 
 import AddressEntityZetaChain from 'client/features/chain-variants/zeta-chain/components/AddressEntityZetaChain';
-import TxEntityZetaChainCC from 'client/features/chain-variants/zeta-chain/TxEntityZetaChainCC';
-import TxEntityZetaChainExternal from 'client/features/chain-variants/zeta-chain/TxEntityZetaChainExternal';
+import TxEntityZetaChainCC from 'client/features/chain-variants/zeta-chain/components/TxEntityZetaChainCC';
+import TxEntityZetaChainExternal from 'client/features/chain-variants/zeta-chain/components/TxEntityZetaChainExternal';
+import ZetaChainCCTXValue from 'client/features/chain-variants/zeta-chain/components/ZetaChainCCTXValue';
+import useZetaChainConfig from 'client/features/chain-variants/zeta-chain/hooks/useZetaChainConfig';
 
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import IconSvg from 'ui/shared/IconSvg';
 import StatusTag from 'ui/shared/statusTag/StatusTag';
-import ZetaChainCCTXValue from 'ui/shared/zetaChain/ZetaChainCCTXValue';
-import useZetaChainConfig from 'ui/zetaChain/useZetaChainConfig';
 
 type Props = {
   tx: CrossChainTx;

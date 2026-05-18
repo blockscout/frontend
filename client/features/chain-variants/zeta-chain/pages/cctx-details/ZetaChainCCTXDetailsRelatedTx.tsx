@@ -5,13 +5,13 @@ import React from 'react';
 
 import { type RelatedCctx, CctxStatusReduced } from '@blockscout/zetachain-cctx-types';
 
-import TxEntityZetaChainCC from 'client/features/chain-variants/zeta-chain/TxEntityZetaChainCC';
+import TxEntityZetaChainCC from 'client/features/chain-variants/zeta-chain/components/TxEntityZetaChainCC';
+import ZetaChainCCTXReducedStatus from 'client/features/chain-variants/zeta-chain/components/ZetaChainCCTXReducedStatus';
+import useZetaChainConfig from 'client/features/chain-variants/zeta-chain/hooks/useZetaChainConfig';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 import IconSvg from 'ui/shared/IconSvg';
-import ZetaChainCCTXReducedStatus from 'ui/shared/zetaChain/ZetaChainCCTXReducedStatus';
-import useZetaChainConfig from 'ui/zetaChain/useZetaChainConfig';
 
 type Props = {
   tx: RelatedCctx;

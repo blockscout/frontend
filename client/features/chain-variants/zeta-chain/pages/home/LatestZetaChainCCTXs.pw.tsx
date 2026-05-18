@@ -2,8 +2,9 @@ import React from 'react';
 
 import * as zetaChainCCTXType from '@blockscout/zetachain-cctx-types';
 
-import { zetaChainCCTXList } from 'mocks/zetaChain/zetaChainCCTX';
-import { zetaChainCCTXConfig } from 'mocks/zetaChain/zetaChainCCTXConfig';
+import { zetaChainCCTXList } from 'client/features/chain-variants/zeta-chain/mocks/cctx';
+import { zetaChainCCTXConfig } from 'client/features/chain-variants/zeta-chain/mocks/cctx-config';
+
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect, devices } from 'playwright/lib';
 

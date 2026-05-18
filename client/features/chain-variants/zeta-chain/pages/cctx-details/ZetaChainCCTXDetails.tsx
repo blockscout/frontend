@@ -10,7 +10,10 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 import { HOMEPAGE_STATS } from 'client/slices/home/stubs';
 
 import AddressEntityZetaChain from 'client/features/chain-variants/zeta-chain/components/AddressEntityZetaChain';
-import TxEntityZetaChainCC from 'client/features/chain-variants/zeta-chain/TxEntityZetaChainCC';
+import TxEntityZetaChainCC from 'client/features/chain-variants/zeta-chain/components/TxEntityZetaChainCC';
+import ZetaChainCCTXReducedStatus from 'client/features/chain-variants/zeta-chain/components/ZetaChainCCTXReducedStatus';
+import ZetaChainCCTXStatusTag from 'client/features/chain-variants/zeta-chain/components/ZetaChainCCTXStatusTag';
+import ZetaChainCCTXValue from 'client/features/chain-variants/zeta-chain/components/ZetaChainCCTXValue';
 
 import base64ToHex from 'client/shared/transformers/base64-to-hex';
 
@@ -23,9 +26,6 @@ import DetailedInfoNativeCoinValue from 'ui/shared/DetailedInfo/DetailedInfoNati
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 import IconSvg from 'ui/shared/IconSvg';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
-import ZetaChainCCTXReducedStatus from 'ui/shared/zetaChain/ZetaChainCCTXReducedStatus';
-import ZetaChainCCTXStatusTag from 'ui/shared/zetaChain/ZetaChainCCTXStatusTag';
-import ZetaChainCCTXValue from 'ui/shared/zetaChain/ZetaChainCCTXValue';
 
 import ZetaChainCCTXDetailsLifecycleIn from './ZetaChainCCTXDetailsLifecycleIn';
 import ZetaChainCCTXDetailsLifecycleOut from './ZetaChainCCTXDetailsLifecycleOut';

@@ -4,7 +4,9 @@ import { Flex, HStack, Text } from '@chakra-ui/react';
 import { castArray } from 'es-toolkit/compat';
 import React from 'react';
 
-import type { ZetaChainCCTXFilterParams } from 'types/client/zetaChain';
+import type { ZetaChainCCTXFilterParams } from 'client/features/chain-variants/zeta-chain/types/client';
+
+import useZetaChainConfig from 'client/features/chain-variants/zeta-chain/hooks/useZetaChainConfig';
 
 import shortenString from 'client/shared/text/shorten-string';
 
@@ -14,7 +16,6 @@ import { Link } from 'toolkit/chakra/link';
 import { Tag } from 'toolkit/chakra/tag';
 import { SECOND } from 'toolkit/utils/consts';
 import IconSvg from 'ui/shared/IconSvg';
-import useZetaChainConfig from 'ui/zetaChain/useZetaChainConfig';
 
 type Props = {
   filters: ZetaChainCCTXFilterParams;

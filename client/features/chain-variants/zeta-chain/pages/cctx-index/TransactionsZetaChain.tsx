@@ -25,8 +25,9 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import useIsAuth from 'ui/snippets/auth/useIsAuth';
-import ZetaChainCCTXsTab from 'ui/zetaChain/ZetaChainCCTXsTab';
-import ZetaChainEvmTransactions from 'ui/zetaChain/ZetaChainEvmTransactions';
+
+import ZetaChainCCTXsTab from './ZetaChainCCTXsTab';
+import ZetaChainEvmTransactions from './ZetaChainEvmTransactions';
 
 const ZETACHAIN_TABS = [ 'zetachain_validated', 'zetachain_pending' ];
 const CROSS_CHAIN_TABS = [ 'cctx_pending', 'cctx_mined' ];

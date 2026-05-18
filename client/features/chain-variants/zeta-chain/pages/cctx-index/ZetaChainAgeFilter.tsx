@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import type { ZetaChainCCTXFilterParams } from 'client/features/chain-variants/zeta-chain/types/client';
 import type { AdvancedFilterAge } from 'types/api/advancedFilter';
-import type { ZetaChainCCTXFilterParams } from 'types/client/zetaChain';
 
 import dayjs from 'lib/date/dayjs';
 import { SECOND } from 'toolkit/utils/consts';
