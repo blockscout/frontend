@@ -205,7 +205,7 @@ One PR per chain variant. Each goes under `client/features/chain-variants/<name>
 One PR per feature. Features that are pure infrastructure (analytics, monitoring, A/B flags) were
 migrated to `client/shared/` in 1-2 and do not appear here.
 
-### 6-1 · [ ] Feature: `user-ops`
+### 6-1 · [~] Feature: `user-ops` · [#3452](https://github.com/blockscout/frontend/issues/3452)
 
 ### 6-2 · [ ] Feature: `data-availability`
 
