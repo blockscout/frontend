@@ -5,6 +5,7 @@ import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import config from 'configs/app';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import StatsWidget from 'ui/shared/stats/StatsWidget';
 
@@ -13,13 +14,20 @@ import { CHAIN_STATS_COUNTER } from '../../stubs/counters';
 const UNITS_WITHOUT_SPACE = [ 's' ];
 
 const ChainStatsCounters = () => {
-  const { data, isPlaceholderData, isError } = useApiQuery('stats:counters', {
+  const { data, isPlaceholderData, isError, isRefetchError } = useApiQuery('stats:counters', {
     queryOptions: {
       placeholderData: { counters: Array(10).fill(CHAIN_STATS_COUNTER) },
+      refetchInterval: (query) => {
+        if (query.state.status === 'error') {
+          return false;
+        }
+
+        return config.apis.stats?.refetchInterval?.[ 'stats:counters' ];
+      },
     },
   });
 
-  if (isError) {
+  if (isError && !isRefetchError) {
     return <DataFetchAlert/>;
   }
 

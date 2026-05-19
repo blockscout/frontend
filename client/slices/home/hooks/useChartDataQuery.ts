@@ -27,6 +27,13 @@ export default function useChartDataQuery(indicatorId: ChainIndicatorId): UseFet
       refetchOnMount: false,
       enabled: isStatsFeatureEnabled && indicatorId === 'daily_txs',
       select: (data) => data.daily_new_transactions?.chart.map((item) => ({ date: new Date(item.date), value: Number(item.value) })) || [],
+      refetchInterval: (query) => {
+        if (query.state.status === 'error') {
+          return false;
+        }
+
+        return config.apis.stats?.refetchInterval?.[ 'stats:pages_main' ];
+      },
     },
   });
 
@@ -42,6 +49,7 @@ export default function useChartDataQuery(indicatorId: ChainIndicatorId): UseFet
         }
         return [];
       },
+      refetchInterval: config.apis.stats?.refetchInterval?.[ 'stats:pages_main' ],
     },
   });
 
@@ -108,14 +116,14 @@ export default function useChartDataQuery(indicatorId: ChainIndicatorId): UseFet
       const query = isStatsFeatureEnabled ? statsDailyTxsQuery : apiDailyTxsQuery;
       return {
         data: getChartData(indicatorId, query.data || []),
-        isError: query.isError,
+        isError: query.isError && !query.isRefetchError,
         isPending: query.isPending,
       };
     }
     case 'daily_operational_txs': {
       return {
         data: getChartData(indicatorId, statsDailyOperationalTxsQuery.data || []),
-        isError: statsDailyOperationalTxsQuery.isError,
+        isError: statsDailyOperationalTxsQuery.isError && !statsDailyOperationalTxsQuery.isRefetchError,
         isPending: statsDailyOperationalTxsQuery.isPending,
       };
     }

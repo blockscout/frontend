@@ -40,6 +40,13 @@ const Stats = () => {
       refetchOnMount: false,
       placeholderData: isStatsFeatureEnabled ? HOMEPAGE_STATS_MICROSERVICE : undefined,
       enabled: isStatsFeatureEnabled,
+      refetchInterval: (query) => {
+        if (query.state.status === 'error') {
+          return false;
+        }
+
+        return config.apis.stats?.refetchInterval?.[ 'stats:pages_main' ];
+      },
     },
   });
 
@@ -60,7 +67,7 @@ const Stats = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ isPlaceholderData ]);
 
-  const hasStatsError = apiQuery.isError || statsQuery.isError || blocksQuery?.isError || latestBatchQuery?.isError;
+  const hasStatsError = apiQuery.isError || (statsQuery.isError && !statsQuery.isRefetchError) || blocksQuery?.isError || latestBatchQuery?.isError;
 
   if (hasStatsError) {
     return <StatsDegraded/>;

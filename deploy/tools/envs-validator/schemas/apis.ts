@@ -1,5 +1,16 @@
 import * as yup from 'yup';
-import { protocols, urlTest } from '../utils';
+import { getYupValidationErrorMessage, protocols, urlTest } from '../utils';
+import { replaceQuotes } from 'configs/app/utils';
+import { StatsApiResourceNameRefetchInterval } from 'client/features/chain-stats/types/config';
+
+const statsApiRefetchIntervalSchema = yup.object<Record<StatsApiResourceNameRefetchInterval, number>>()
+  .transform(replaceQuotes)
+  .json()
+  .shape({
+    'stats:counters': yup.number().integer().positive(),
+    'stats:pages_main': yup.number().integer().positive(),
+  })
+  .exact();
 
 export default yup.object({
     NEXT_PUBLIC_API_PROTOCOL: yup.string().oneOf(protocols),
@@ -10,6 +21,32 @@ export default yup.object({
 
     NEXT_PUBLIC_STATS_API_HOST: yup.string().test(urlTest),
     NEXT_PUBLIC_STATS_API_BASE_PATH: yup.string(),
+    NEXT_PUBLIC_STATS_API_REFETCH_INTERVAL: yup
+      .mixed()
+      .test(
+        'shape', 
+        (ctx) => {
+          try {
+            statsApiRefetchIntervalSchema.validateSync(ctx.originalValue);
+            throw new Error('Unknown validation error');
+          } catch (error: unknown) {
+            const message = getYupValidationErrorMessage(error);
+            return 'Invalid schema were provided for NEXT_PUBLIC_STATS_API_REFETCH_INTERVAL' + (message ? `: ${ message }` : '');
+          }
+        },
+        (data) => {
+          const isUndefined = data === undefined;
+          return isUndefined || statsApiRefetchIntervalSchema.isValidSync(data);
+        })
+      .when('NEXT_PUBLIC_STATS_API_HOST', {
+        is: (value: string) => Boolean(value),
+        then: (schema) => schema,
+        otherwise: (schema) => schema.test(
+          'not-exist',
+          'NEXT_PUBLIC_STATS_API_REFETCH_INTERVAL can only be used with NEXT_PUBLIC_STATS_API_HOST',
+          value => value === undefined,
+        ),
+      }),
 
     NEXT_PUBLIC_VISUALIZE_API_HOST: yup.string().test(urlTest),
     NEXT_PUBLIC_VISUALIZE_API_BASE_PATH: yup.string(),

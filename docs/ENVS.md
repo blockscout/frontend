@@ -684,6 +684,7 @@ Essential dapps are built-in dapps that are displayed on the Marketplace page in
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_STATS_API_HOST | `string` | Stats API endpoint url | Required | - | `https://stats.services.blockscout.com` | v1.0.x+ |
 | NEXT_PUBLIC_STATS_API_BASE_PATH | `string` | Base path for Stats API endpoint url | - | - | `/poa/core` | v1.29.0+ |
+| NEXT_PUBLIC_STATS_API_REFETCH_INTERVAL | `Record<StatsApiResourceName, number>` | Map that holds information about time in milliseconds that the resources should be continiously refetched; possible values for `StatsApiResourceName` are: `stats:counters`, `stats:pages_main` | - | - | `{'stats:pages_main': 10_000}` | <upcoming> |
 
 &nbsp;
 
