@@ -9,15 +9,16 @@ import type { SmartContract } from 'client/slices/contract/types/api';
 
 import useApiQuery, { getResourceKey } from 'client/api/hooks/useApiQuery';
 
+import AuthGuard from 'client/features/account/components/auth-modal/guard/AuthGuard';
+import useIsAuth from 'client/features/account/hooks/useIsAuth';
+import CustomAbiModal from 'client/features/account/pages/custom-abi/CustomAbiModal/CustomAbiModal';
+
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import { Button } from 'toolkit/chakra/button';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
-import CustomAbiModal from 'ui/customAbi/CustomAbiModal/CustomAbiModal';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
-import AuthGuard from 'ui/snippets/auth/guard/AuthGuard';
-import useIsAuth from 'ui/snippets/auth/useIsAuth';
 
 import ContractAbi from './ContractAbi';
 import ContractMethodsAlerts from './ContractMethodsAlerts';

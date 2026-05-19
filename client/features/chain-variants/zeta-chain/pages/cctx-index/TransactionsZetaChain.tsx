@@ -11,6 +11,7 @@ import TxsWithFrontendSorting from 'client/slices/tx/pages/index/list/TxsWithFro
 import TxsStats from 'client/slices/tx/pages/index/stats/TxsStats';
 import { TX } from 'client/slices/tx/stubs/tx';
 
+import useIsAuth from 'client/features/account/hooks/useIsAuth';
 import TxsWatchlist from 'client/features/account/pages/tx-index-watchlist/TxsWatchlist';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
@@ -24,7 +25,6 @@ import AdvancedFilterLink from 'ui/shared/links/AdvancedFilterLink';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
-import useIsAuth from 'ui/snippets/auth/useIsAuth';
 
 import ZetaChainCCTXsTab from './ZetaChainCCTXsTab';
 import ZetaChainEvmTransactions from './ZetaChainEvmTransactions';

@@ -10,14 +10,15 @@ import type { Transaction } from 'client/slices/tx/types/api';
 
 import { getResourceKey } from 'client/api/hooks/useApiQuery';
 
+import AuthGuard from 'client/features/account/components/auth-modal/guard/AuthGuard';
+import AddressModal from 'client/features/account/pages/private-tags/AddressModal/AddressModal';
+import TransactionModal from 'client/features/account/pages/private-tags/TransactionModal/TransactionModal';
+
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 
 import { MenuItem } from 'toolkit/chakra/menu';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
-import AddressModal from 'ui/privateTags/AddressModal/AddressModal';
-import TransactionModal from 'ui/privateTags/TransactionModal/TransactionModal';
 import IconSvg from 'ui/shared/IconSvg';
-import AuthGuard from 'ui/snippets/auth/guard/AuthGuard';
 
 import ButtonItem from '../parts/ButtonItem';
 

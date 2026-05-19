@@ -7,8 +7,8 @@ import type { SubmitHandler } from 'react-hook-form';
 import { useForm, FormProvider } from 'react-hook-form';
 
 import type { FormFields, FormSubmitResult } from './types';
+import type { UserInfo } from 'client/features/account/types/api';
 import type { PublicTagTypesResponse } from 'client/features/address-metadata/types/api';
-import type { UserInfo } from 'types/api/account';
 
 import useApiFetch from 'client/api/hooks/useApiFetch';
 

@@ -1,0 +1,43 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
+import React from 'react';
+
+import AuthModal from 'client/features/account/components/auth-modal/AuthModal';
+import useLinkEmail from 'client/features/account/hooks/useLinkEmail';
+
+import config from 'configs/app';
+import { Alert } from 'toolkit/chakra/alert';
+import { Button } from 'toolkit/chakra/button';
+import { useDisclosure } from 'toolkit/hooks/useDisclosure';
+
+const feature = config.features.account;
+
+const WatchlistEmailAlert = () => {
+  const authModal = useDisclosure();
+  const linkEmail = useLinkEmail();
+
+  const handleButtonClick = React.useCallback(() => {
+    if (feature.isEnabled && feature.authProvider === 'dynamic') {
+      linkEmail();
+    } else {
+      authModal.onOpen();
+    }
+  }, [ authModal, linkEmail ]);
+
+  return (
+    <>
+      <Alert
+        status="info"
+        descriptionProps={{ alignItems: 'center', gap: 2 }}
+        w="fit-content"
+        mb={ 6 }
+      >
+        To receive notifications you need to add an email to your profile.
+        <Button variant="outline" size="sm" onClick={ handleButtonClick }>Add email</Button>
+      </Alert>
+      { authModal.open && <AuthModal initialScreen={{ type: 'email', isAuth: true }} onClose={ authModal.onClose }/> }
+    </>
+  );
+};
+
+export default React.memo(WatchlistEmailAlert);

@@ -6,7 +6,7 @@ import React from 'react';
 
 import PageNextJs from 'nextjs/PageNextJs';
 
-const CustomAbi = dynamic(() => import('ui/pages/CustomAbi'), { ssr: false });
+const CustomAbi = dynamic(() => import('client/features/account/pages/custom-abi/CustomAbi'), { ssr: false });
 
 const Page: NextPage = () => {
   return (

@@ -3,7 +3,7 @@
 import { pickBy, isEqual } from 'es-toolkit';
 
 import type { FormFieldTag, FormFields, FormSubmitResult, FormSubmitResultGrouped, FormSubmitResultItemGrouped, SubmitRequestBody } from './types';
-import type { UserInfo } from 'types/api/account';
+import type { UserInfo } from 'client/features/account/types/api';
 
 import type { Route } from 'nextjs-routes';
 

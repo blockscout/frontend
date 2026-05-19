@@ -13,6 +13,8 @@ import useApiFetch from 'client/api/hooks/useApiFetch';
 import useFetch from 'client/api/hooks/useFetch';
 import type { ResourceError } from 'client/api/resources';
 
+import useIsAuth from 'client/features/account/hooks/useIsAuth';
+
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import * as metadata from 'client/shared/metadata';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
@@ -20,7 +22,6 @@ import getQueryParamString from 'client/shared/router/get-query-param-string';
 import config from 'configs/app';
 import { useMarketplaceContext } from 'lib/contexts/marketplace';
 import { useColorMode } from 'toolkit/chakra/color-mode';
-import useIsAuth from 'ui/snippets/auth/useIsAuth';
 
 import MarketplaceAppIframe from '../marketplace/MarketplaceAppIframe';
 import MarketplaceAppTopBar from '../marketplace/MarketplaceAppTopBar';

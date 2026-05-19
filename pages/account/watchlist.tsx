@@ -6,7 +6,7 @@ import React from 'react';
 
 import PageNextJs from 'nextjs/PageNextJs';
 
-const WatchList = dynamic(() => import('ui/pages/Watchlist'), { ssr: false });
+const WatchList = dynamic(() => import('client/features/account/pages/watchlist/Watchlist'), { ssr: false });
 
 const Page: NextPage = () => {
   return (

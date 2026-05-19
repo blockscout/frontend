@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { Feature } from './types';
-import type { AuthProvider } from 'types/client/account';
+import type { AuthProvider } from 'client/features/account/types/client';
 
 import app from '../app';
 import services from '../services';

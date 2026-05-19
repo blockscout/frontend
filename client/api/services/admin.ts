@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { ApiResource } from '../types';
-import type { TokenInfoApplicationConfig, TokenInfoApplications } from 'types/api/account';
+import type { TokenInfoApplicationConfig, TokenInfoApplications } from 'client/features/account/types/api';
 import type { MarketplaceApp } from 'types/client/marketplace';
 
 export const ADMIN_API_RESOURCES = {

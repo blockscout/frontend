@@ -8,21 +8,21 @@ import { DynamicWagmiConnector } from '@dynamic-labs/wagmi-connector';
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
-import type { UserInfo } from 'types/api/account';
+import type { UserInfo } from 'client/features/account/types/api';
 
 import useApiFetch from 'client/api/hooks/useApiFetch';
 import { getResourceKey } from 'client/api/hooks/useApiQuery';
 
+import useGetCsrfToken from 'client/features/account/hooks/useGetCsrfToken';
+import useLogout from 'client/features/account/hooks/useLogout';
 import { chains } from 'client/features/connect-wallet/utils/chains';
 
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 import getErrorMessage from 'client/shared/errors/get-error-message';
 
 import config from 'configs/app';
-import useGetCsrfToken from 'lib/hooks/useGetCsrfToken';
 import { toaster } from 'toolkit/chakra/toaster';
 import { castToString } from 'toolkit/utils/guards';
-import useLogout from 'ui/snippets/auth/useLogout';
 
 import WagmiProvider from './WagmiProvider';
 

@@ -7,6 +7,11 @@ import React from 'react';
 
 import { getResourceKey } from 'client/api/hooks/useApiQuery';
 
+import AuthGuard from 'client/features/account/components/auth-modal/guard/AuthGuard';
+import useProfileQuery from 'client/features/account/hooks/useProfileQuery';
+import WatchlistAddModal from 'client/features/account/pages/watchlist/AddressModal/AddressModal';
+import DeleteAddressModal from 'client/features/account/pages/watchlist/DeleteAddressModal';
+
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 import usePreventFocusAfterModalClosing from 'client/shared/hooks/usePreventFocusAfterModalClosing';
 
@@ -15,10 +20,6 @@ import { IconButton } from 'toolkit/chakra/icon-button';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import IconSvg from 'ui/shared/IconSvg';
-import AuthGuard from 'ui/snippets/auth/guard/AuthGuard';
-import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
-import WatchlistAddModal from 'ui/watchlist/AddressModal/AddressModal';
-import DeleteAddressModal from 'ui/watchlist/DeleteAddressModal';
 
 interface Props {
   className?: string;
