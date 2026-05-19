@@ -1,6 +1,6 @@
 import type { ApiName, ApiResource } from './types';
 
-import type { AdminApiResourceName, AdminApiResourcePayload } from './services/admin';
+import type { AdminApiResourceName, AdminApiResourcePayload, AdminApiPaginationFilters } from './services/admin';
 import { ADMIN_API_RESOURCES } from './services/admin';
 import { BENS_API_RESOURCES } from './services/bens';
 import type { BensApiResourceName, BensApiResourcePayload, BensApiPaginationFilters, BensApiPaginationSorting } from './services/bens';
@@ -114,6 +114,7 @@ export type ResourceErrorAccount<T> = ResourceError<{ errors: T }>;
 
 /* eslint-disable @stylistic/indent */
 export type PaginationFilters<R extends ResourceName> =
+R extends AdminApiResourceName ? AdminApiPaginationFilters<R> :
 R extends BensApiResourceName ? BensApiPaginationFilters<R> :
 R extends ClustersApiResourceName ? ClustersApiPaginationFilters :
 R extends GeneralApiResourceName ? GeneralApiPaginationFilters<R> :
