@@ -17,6 +17,7 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import useIsAuth from 'ui/snippets/auth/useIsAuth';
+import TxsRefreshButton from 'ui/txs/TxsRefreshButton';
 import TxsStats from 'ui/txs/TxsStats';
 import TxsWatchlist from 'ui/txs/TxsWatchlist';
 import TxsWithFrontendSorting from 'ui/txs/TxsWithFrontendSorting';
@@ -144,12 +145,9 @@ const Transactions = () => {
 
     const isAdvancedFilterEnabled = config.features.advancedFilter.isEnabled;
 
-    if (!isAdvancedFilterEnabled && !pagination.isVisible) {
-      return null;
-    }
-
     return (
       <Flex alignItems="center" gap={ 6 }>
+        <TxsRefreshButton onClick={ pagination.resetPage } isLoading={ pagination.isLoading }/>
         { isAdvancedFilterEnabled && <AdvancedFilterLink/> }
         { pagination.isVisible && <Pagination my={ 1 } { ...pagination }/> }
       </Flex>
