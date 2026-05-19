@@ -7,7 +7,7 @@ import React from 'react';
 import type { Props } from 'nextjs/getServerSideProps/handlers';
 import PageNextJs from 'nextjs/PageNextJs';
 
-const NameDomain = dynamic(() => import('ui/pages/NameDomain'), { ssr: false });
+const NameDomain = dynamic(() => import('client/features/name-services/domains/pages/details/NameDomain'), { ssr: false });
 
 const Page: NextPage<Props> = (props: Props) => {
   return (

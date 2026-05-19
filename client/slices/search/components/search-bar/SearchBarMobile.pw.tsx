@@ -6,7 +6,7 @@ import * as searchMock from 'client/slices/search/mocks';
 import { metatag1, metatag2, metatag3 } from 'client/features/address-metadata/mocks/search';
 import { tacOperation1 } from 'client/features/chain-variants/tac/mocks/search';
 import { blob1 } from 'client/features/data-availability/mocks/search';
-import { domain1 } from 'client/features/name-services/domains/stubs/search';
+import { domain1 } from 'client/features/name-services/domains/mocks/search';
 import { userOp1 } from 'client/features/user-ops/mocks/search';
 
 import { apps as appsMock } from 'mocks/apps/apps';

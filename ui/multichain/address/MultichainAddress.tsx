@@ -13,6 +13,8 @@ import AddressQrCode from 'client/slices/address/pages/details/info/AddressQrCod
 import getCheckedSummedAddress from 'client/slices/address/utils/get-checked-summed-address';
 import { CONTRACT_TAB_IDS } from 'client/slices/contract/utils/tabs';
 
+import EnsEntity from 'client/features/name-services/domains/components/EnsEntity';
+
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
@@ -22,7 +24,6 @@ import { ADDRESS } from 'stubs/multichain';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import ClusterChainsPopover from 'ui/multichain/components/ClusterChainsPopover';
 import TextAd from 'ui/shared/ad/TextAd';
-import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 import MultichainAddressEnsDomains from './header/MultichainAddressEnsDomains';

@@ -6,7 +6,7 @@ import React from 'react';
 
 import PageNextJs from 'nextjs/PageNextJs';
 
-const NameServices = dynamic(() => import('ui/pages/NameServices'), { ssr: false });
+const NameServices = dynamic(() => import('client/features/name-services/common/pages/NameServices'), { ssr: false });
 
 const Page: NextPage = () => {
   return (

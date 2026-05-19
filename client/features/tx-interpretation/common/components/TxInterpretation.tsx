@@ -18,6 +18,8 @@ import { route } from 'nextjs-routes';
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 
+import EnsEntity from 'client/features/name-services/domains/components/EnsEntity';
+
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 import { currencyUnits } from 'client/shared/chain/units';
 
@@ -30,7 +32,6 @@ import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { SECOND } from 'toolkit/utils/consts';
-import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 import getChainTooltipText from 'ui/shared/externalChains/getChainTooltipText';
 import IconSvg from 'ui/shared/IconSvg';

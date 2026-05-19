@@ -11,6 +11,8 @@ import { route } from 'nextjs-routes';
 
 import type { ResourceError } from 'client/api/resources';
 
+import EnsEntity from 'client/features/name-services/domains/components/EnsEntity';
+
 import dayjs from 'lib/date/dayjs';
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';
@@ -18,7 +20,6 @@ import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolki
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
-import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {

@@ -2,7 +2,7 @@
 
 import type { ApiResource } from '../types';
 import type * as bens from '@blockscout/bens-types';
-import type { EnsAddressLookupFilters, EnsDomainLookupFilters, EnsLookupSorting } from 'types/api/ens';
+import type { EnsAddressLookupFilters, EnsDomainLookupFilters, EnsLookupSorting } from 'client/features/name-services/domains/types/api';
 
 export const BENS_API_RESOURCES = {
   addresses_lookup: {
