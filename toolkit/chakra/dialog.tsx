@@ -6,6 +6,21 @@ import * as React from 'react';
 import { BackToButton } from '../components/buttons/BackToButton';
 import { CloseButton } from './close-button';
 
+export const DialogRoot = (props: ChakraDialog.RootProps) => {
+  const { adaptive, ...rest } = props;
+  if (adaptive) {
+    return (
+      <ChakraDialog.Root
+        adaptive
+        placement={{ base: 'bottom', lg: 'center' }}
+        motionPreset={{ base: 'slide-in-bottom', lg: 'scale' }}
+        { ...rest }
+      />
+    );
+  }
+  return <ChakraDialog.Root { ...rest }/>;
+};
+
 interface DialogContentProps extends ChakraDialog.ContentProps {
   portalled?: boolean;
   portalRef?: React.RefObject<HTMLElement>;
@@ -74,7 +89,6 @@ export const DialogHeader = React.forwardRef<
   );
 });
 
-export const DialogRoot = ChakraDialog.Root;
 export const DialogFooter = ChakraDialog.Footer;
 export const DialogBody = ChakraDialog.Body;
 export const DialogBackdrop = ChakraDialog.Backdrop;

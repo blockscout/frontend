@@ -207,6 +207,16 @@ export const recipe = defineSlotRecipe({
       },
       none: {},
     },
+    adaptive: {
+      'true': {
+        content: {
+          '--dialog-base-margin': { base: '0', lg: 'auto' },
+          '--dialog-margin': { base: '0', lg: 'auto' },
+          borderTopRadius: { base: 'base', lg: 'xl' },
+          borderBottomRadius: { base: '0', lg: 'xl' },
+        },
+      },
+    },
   },
 
   defaultVariants: {
