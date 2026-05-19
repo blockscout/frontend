@@ -63,9 +63,9 @@ const WatchListAddressItem = ({ item, isLoading }: { item: WatchlistAddress; isL
           </Skeleton>
         </HStack>
       ) }
-      { Boolean(item.tokens_fiat_value) && (
+      { Boolean(item.exchange_rate) && (
         <SimpleValue
-          value={ BigNumber(item.tokens_fiat_value).plus(usdNative) }
+          value={ BigNumber(item.tokens_fiat_value || 0).plus(usdNative) }
           prefix="$"
           startElement={ (
             <HStack>
