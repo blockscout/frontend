@@ -5,7 +5,8 @@ import React from 'react';
 
 import { route } from 'nextjs-routes';
 
-import { useRewardsContext } from 'lib/contexts/rewards';
+import { useRewardsContext } from 'client/features/rewards/contexts';
+
 import { Button } from 'toolkit/chakra/button';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import IconSvg from 'ui/shared/IconSvg';

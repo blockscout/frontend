@@ -4,27 +4,28 @@ import { Flex } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 
 import useRedirectForInvalidAuthToken from 'client/features/account/hooks/useRedirectForInvalidAuthToken';
+import { useRewardsContext } from 'client/features/rewards/contexts';
+import useStreakBadges from 'client/features/rewards/hooks/useStreakBadges';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
 import config from 'configs/app';
-import { useRewardsContext } from 'lib/contexts/rewards';
 import { Alert } from 'toolkit/chakra/alert';
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import { apos } from 'toolkit/utils/htmlEntities';
-import DailyRewardClaimButton from 'ui/rewards/dashboard/DailyRewardClaimButton';
-import RewardsDashboardCard from 'ui/rewards/dashboard/RewardsDashboardCard';
-import RewardsDashboardCardValue from 'ui/rewards/dashboard/RewardsDashboardCardValue';
-import RewardsStreakModal from 'ui/rewards/dashboard/streakModal/RewardsStreakModal';
-import ActivityTab from 'ui/rewards/dashboard/tabs/ActivityTab';
-import ReferralsTab from 'ui/rewards/dashboard/tabs/ReferralsTab';
-import ResourcesTab from 'ui/rewards/dashboard/tabs/ResourcesTab';
-import useStreakBadges from 'ui/rewards/hooks/useStreakBadges';
 import AdBanner from 'ui/shared/ad/AdBanner';
 import PageTitle from 'ui/shared/Page/PageTitle';
+
+import DailyRewardClaimButton from './DailyRewardClaimButton';
+import RewardsDashboardCard from './RewardsDashboardCard';
+import RewardsDashboardCardValue from './RewardsDashboardCardValue';
+import RewardsStreakModal from './streakModal/RewardsStreakModal';
+import ActivityTab from './tabs/ActivityTab';
+import ReferralsTab from './tabs/ReferralsTab';
+import ResourcesTab from './tabs/ResourcesTab';
 
 const RewardsDashboard = () => {
   const { balancesQuery, isAuth, referralsQuery, rewardsConfigQuery, dailyRewardQuery, isInitialized } = useRewardsContext();

@@ -2,8 +2,9 @@
 
 import { Flex, Text } from '@chakra-ui/react';
 
+import { useRewardsContext } from 'client/features/rewards/contexts';
+
 import config from 'configs/app';
-import { useRewardsContext } from 'lib/contexts/rewards';
 import { useColorModeValue } from 'toolkit/chakra/color-mode';
 import { Heading } from 'toolkit/chakra/heading';
 import { Image } from 'toolkit/chakra/image';

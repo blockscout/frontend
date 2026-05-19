@@ -5,10 +5,10 @@ import React, { useCallback } from 'react';
 
 import type { Route } from 'nextjs-routes';
 
-import config from 'configs/app';
-import { useRewardsContext } from 'lib/contexts/rewards';
+import { useRewardsContext } from 'client/features/rewards/contexts';
 
-import NavLink from './NavLink';
+import config from 'configs/app';
+import NavLink from 'ui/snippets/navigation/vertical/NavLink';
 
 type Props = {
   isCollapsed?: boolean;

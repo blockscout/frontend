@@ -7,10 +7,10 @@ import React from 'react';
 
 import useProfileQuery from 'client/features/account/hooks/useProfileQuery';
 import useWallet from 'client/features/connect-wallet/hooks/useWallet';
+import { useRewardsContext } from 'client/features/rewards/contexts';
 
 import * as cookies from 'client/shared/storage/cookies';
 
-import { useRewardsContext } from 'lib/contexts/rewards';
 import { Alert } from 'toolkit/chakra/alert';
 import { Button } from 'toolkit/chakra/button';
 import { Field } from 'toolkit/chakra/field';

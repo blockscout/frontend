@@ -7,7 +7,7 @@ import { Heading } from 'toolkit/chakra/heading';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Hint } from 'toolkit/components/Hint/Hint';
 
-import MeritsIcon from '../MeritsIcon';
+import MeritsIcon from '../../components/MeritsIcon';
 
 type Props = {
   label?: string;

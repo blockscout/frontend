@@ -8,10 +8,10 @@ import SearchBarMobile from 'client/slices/search/components/search-bar/SearchBa
 
 import UserProfileAuth0 from 'client/features/account/components/user-profile/auth0/UserProfileMobile';
 import UserWalletMobile from 'client/features/account/components/user-profile/wallet/UserWalletMobile';
+import RewardsButton from 'client/features/rewards/components/RewardsButton';
 
 import config from 'configs/app';
 import { useIsSticky } from 'toolkit/hooks/useIsSticky';
-import RewardsButton from 'ui/rewards/RewardsButton';
 import NetworkIcon from 'ui/snippets/networkLogo/NetworkIcon';
 
 import RollupStageBadge from '../navigation/RollupStageBadge';

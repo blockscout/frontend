@@ -4,6 +4,7 @@ import { Flex, Box, VStack } from '@chakra-ui/react';
 import React from 'react';
 
 import useIsAuth from 'client/features/account/hooks/useIsAuth';
+import NavLinkRewards from 'client/features/rewards/components/NavLinkRewards';
 
 import * as cookies from 'client/shared/storage/cookies';
 
@@ -18,7 +19,6 @@ import RollupStageBadge from '../RollupStageBadge';
 import TestnetBadge from '../TestnetBadge';
 import NavLink from './NavLink';
 import NavLinkGroup from './NavLinkGroup';
-import NavLinkRewards from './NavLinkRewards';
 
 const NavigationDesktop = () => {
   const appProps = useAppContext();
