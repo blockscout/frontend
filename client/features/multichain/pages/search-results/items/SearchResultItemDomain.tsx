@@ -7,7 +7,7 @@ import type * as multichain from '@blockscout/multichain-aggregator-types';
 
 import { route } from 'nextjs/routes';
 
-import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
+import EnsEntity from 'client/features/name-services/domains/components/EnsEntity';
 
 import SearchResultListItem from '../SearchResultListItem';
 

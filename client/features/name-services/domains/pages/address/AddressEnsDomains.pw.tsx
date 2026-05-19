@@ -5,7 +5,8 @@ import type * as bens from '@blockscout/bens-types';
 
 import type { ResourceError } from 'client/api/resources';
 
-import * as ensDomainMock from 'mocks/ens/domain';
+import * as ensDomainMock from 'client/features/name-services/domains/mocks/domain';
+
 import { test, expect } from 'playwright/lib';
 
 import AddressEnsDomains from './AddressEnsDomains';

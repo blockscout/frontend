@@ -12,7 +12,7 @@ import type {
   ClustersDirectoryQueryParams,
   ClusterByIdQueryParams,
   ClusterByIdResponse,
-} from 'types/api/clusters';
+} from 'client/features/name-services/clusters/types/api';
 
 export const CLUSTERS_API_RESOURCES = {
   get_clusters_by_address: {

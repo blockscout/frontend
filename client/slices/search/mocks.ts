@@ -10,7 +10,7 @@ import type {
 import { metatag1 } from 'client/features/address-metadata/mocks/search';
 import { tacOperation1 } from 'client/features/chain-variants/tac/mocks/search';
 import { blob1 } from 'client/features/data-availability/mocks/search';
-import { domain1 } from 'client/features/name-services/domains/stubs/search';
+import { domain1 } from 'client/features/name-services/domains/mocks/search';
 
 export const token1: SearchResultToken = {
   address_hash: '0x377c5F2B300B25a534d4639177873b7fEAA56d4B',

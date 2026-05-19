@@ -41,7 +41,9 @@ import AddressDeposits from 'client/features/chain-variants/beacon-chain/pages/a
 import AddressEpochRewards from 'client/features/chain-variants/celo/pages/address/AddressEpochRewards';
 import AddressMud from 'client/features/chain-variants/mud/pages/address/AddressMud';
 import AddressMultichainInfoButton from 'client/features/multichain-button/pages/address/AddressMultichainInfoButton';
+import { useAddressClusters } from 'client/features/name-services/clusters/hooks/useAddressClusters';
 import AddressClusters from 'client/features/name-services/clusters/pages/address/AddressClusters';
+import EnsEntity from 'client/features/name-services/domains/components/EnsEntity';
 import useCheckDomainNameParam from 'client/features/name-services/domains/hooks/useCheckDomainNameParam';
 import AddressEnsDomains from 'client/features/name-services/domains/pages/address/AddressEnsDomains';
 import SolidityscanReport from 'client/features/solidity-scan/components/SolidityscanReport';
@@ -55,13 +57,11 @@ import getQueryParamString from 'client/shared/router/get-query-param-string';
 import useEtherscanRedirects from 'client/shared/router/useEtherscanRedirects';
 
 import config from 'configs/app';
-import { useAddressClusters } from 'lib/clusters/useAddressClusters';
 import useIsSafeAddress from 'lib/hooks/useIsSafeAddress';
 import useFetchXStarScore from 'lib/xStarScore/useFetchXStarScore';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu';
 import TextAd from 'ui/shared/ad/TextAd';
-import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 import EntityTags from 'ui/shared/EntityTags/EntityTags';
 import formatUserTags from 'ui/shared/EntityTags/formatUserTags';
 import sortEntityTags from 'ui/shared/EntityTags/sortEntityTags';

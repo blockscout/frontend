@@ -4,12 +4,13 @@ import { Grid, chakra } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
-import type { ClustersByAddressResponse } from 'types/api/clusters';
+import type { ClustersByAddressResponse } from 'client/features/name-services/clusters/types/api';
 
 import { route } from 'nextjs-routes';
 
 import type { ResourceError } from 'client/api/resources';
 
+import ClustersEntity from 'client/features/name-services/clusters/components/ClustersEntity';
 import {
   filterOwnedClusters,
   getTotalRecordsDisplay,
@@ -17,14 +18,14 @@ import {
   getClustersToShow,
   getGridRows,
   hasMoreClusters,
-} from 'lib/clusters/clustersUtils';
+} from 'client/features/name-services/clusters/utils/clusters-utils';
+
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';
 import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
-import ClustersEntity from 'ui/shared/entities/clusters/ClustersEntity';
 import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {

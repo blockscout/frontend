@@ -9,10 +9,11 @@ import type * as multichain from 'types/client/multichainAggregator';
 
 import { toBech32Address } from 'client/slices/address/utils/bech32';
 
+import * as EnsEntity from 'client/features/name-services/domains/components/EnsEntity';
+
 import highlightText from 'client/shared/text/highlight-text';
 
 import dayjs from 'lib/date/dayjs';
-import * as EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import IconSvg from 'ui/shared/IconSvg';
 
