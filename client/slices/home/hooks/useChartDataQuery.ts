@@ -49,7 +49,13 @@ export default function useChartDataQuery(indicatorId: ChainIndicatorId): UseFet
         }
         return [];
       },
-      refetchInterval: config.apis.stats?.refetchInterval?.[ 'stats:pages_main' ],
+      refetchInterval: (query) => {
+        if (query.state.status === 'error') {
+          return false;
+        }
+
+        return config.apis.stats?.refetchInterval?.[ 'stats:pages_main' ];
+      },
     },
   });
 

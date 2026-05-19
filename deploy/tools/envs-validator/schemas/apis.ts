@@ -31,7 +31,7 @@ export default yup.object({
             throw new Error('Unknown validation error');
           } catch (error: unknown) {
             const message = getYupValidationErrorMessage(error);
-            return 'Invalid schema were provided for NEXT_PUBLIC_STATS_API_REFETCH_INTERVAL' + (message ? `: ${ message }` : '');
+            return 'Invalid schema was provided for NEXT_PUBLIC_STATS_API_REFETCH_INTERVAL' + (message ? `: ${ message }` : '');
           }
         },
         (data) => {
