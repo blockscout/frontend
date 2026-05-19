@@ -1,4 +1,4 @@
-import type { UserOpsItem, UserOp, UserOpsAccount } from 'types/api/userOps';
+import type { UserOpsItem, UserOp, UserOpsAccount } from 'client/features/user-ops/types/api';
 
 import { ADDRESS_HASH } from 'client/slices/address/stubs/address-params';
 import { BLOCK_HASH } from 'client/slices/block/stubs/block';

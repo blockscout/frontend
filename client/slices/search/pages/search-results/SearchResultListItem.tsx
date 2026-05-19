@@ -21,6 +21,7 @@ import * as TxEntity from 'client/slices/tx/components/entity/TxEntity';
 
 import * as TacOperationEntity from 'client/features/chain-variants/tac/components/TacOperationEntity';
 import TacOperationStatus from 'client/features/chain-variants/tac/components/TacOperationStatus';
+import * as UserOpEntity from 'client/features/user-ops/components/entity/UserOpEntity';
 
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 import highlightText from 'client/shared/text/highlight-text';
@@ -35,7 +36,6 @@ import { SECOND } from 'toolkit/utils/consts';
 import { ADDRESS_REGEXP } from 'toolkit/utils/regexp';
 import * as BlobEntity from 'ui/shared/entities/blob/BlobEntity';
 import * as EnsEntity from 'ui/shared/entities/ens/EnsEntity';
-import * as UserOpEntity from 'ui/shared/entities/userOp/UserOpEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import IconSvg from 'ui/shared/IconSvg';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';

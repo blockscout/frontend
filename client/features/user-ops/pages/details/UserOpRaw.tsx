@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { UserOp } from 'types/api/userOps';
+import type { UserOp } from 'client/features/user-ops/types/api';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';

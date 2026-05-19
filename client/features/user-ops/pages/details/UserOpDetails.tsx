@@ -5,7 +5,7 @@ import type { UseQueryResult } from '@tanstack/react-query';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
-import type { UserOp } from 'types/api/userOps';
+import type { UserOp } from 'client/features/user-ops/types/api';
 
 import type { ResourceError } from 'client/api/resources';
 
@@ -13,6 +13,10 @@ import AddressEntity from 'client/slices/address/components/entity/AddressEntity
 import AddressStringOrParam from 'client/slices/address/components/entity/AddressStringOrParam';
 import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
+
+import UserOpEntity from 'client/features/user-ops/components/entity/UserOpEntity';
+import UserOpSponsorType from 'client/features/user-ops/components/UserOpSponsorType';
+import UserOpStatus from 'client/features/user-ops/components/UserOpStatus';
 
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 
@@ -24,9 +28,6 @@ import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoNativeCoinValue from 'ui/shared/DetailedInfo/DetailedInfoNativeCoinValue';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
-import UserOpEntity from 'ui/shared/entities/userOp/UserOpEntity';
-import UserOpSponsorType from 'ui/shared/userOps/UserOpSponsorType';
-import UserOpStatus from 'ui/shared/userOps/UserOpStatus';
 import Utilization from 'ui/shared/Utilization/Utilization';
 import GasPriceValue from 'ui/shared/value/GasPriceValue';
 

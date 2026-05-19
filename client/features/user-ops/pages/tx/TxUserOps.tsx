@@ -6,11 +6,12 @@ import TxPendingAlert from 'client/slices/tx/components/TxPendingAlert';
 import TxSocketAlert from 'client/slices/tx/components/TxSocketAlert';
 import type { TxQuery } from 'client/slices/tx/hooks/useTxQuery';
 
-import { USER_OPS_ITEM } from 'stubs/userOps';
+import UserOpsContent from 'client/features/user-ops/pages/index/UserOpsContent';
+import { USER_OPS_ITEM } from 'client/features/user-ops/stubs';
+
 import { generateListStub } from 'stubs/utils';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
-import UserOpsContent from 'ui/userOps/UserOpsContent';
 
 interface Props {
   txQuery: TxQuery;

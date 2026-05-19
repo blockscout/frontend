@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import type { UserOp } from 'types/api/userOps';
+import type { UserOp } from 'client/features/user-ops/types/api';
 
 export const userOpData: UserOp = {
   timestamp: '2024-01-19T12:42:12.000000Z',

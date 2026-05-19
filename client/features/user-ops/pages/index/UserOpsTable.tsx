@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { UserOpsItem } from 'types/api/userOps';
+import type { UserOpsItem } from 'client/features/user-ops/types/api';
 
 import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
 

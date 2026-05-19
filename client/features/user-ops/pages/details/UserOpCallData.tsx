@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { UserOp } from 'types/api/userOps';
+import type { UserOp } from 'client/features/user-ops/types/api';
 
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import RawInputData from 'ui/shared/RawInputData';
@@ -39,7 +39,7 @@ const UserOpDecodedCallData = ({ data }: Props) => {
   return (
     <>
       <DetailedInfo.ItemLabel
-        hint="Data that’s passed to the sender for execution"
+        hint="Data that's passed to the sender for execution"
         mb={{ base: 1, lg: 0 }}
       >
         { labelText }

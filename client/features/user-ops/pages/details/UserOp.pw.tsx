@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { userOpData } from 'mocks/userOps/userOp';
+import { userOpData } from 'client/features/user-ops/mocks/user-op';
+
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect, devices } from 'playwright/lib';
 

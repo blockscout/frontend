@@ -1,4 +1,4 @@
-import type { UserOpsResponse } from 'types/api/userOps';
+import type { UserOpsResponse } from 'client/features/user-ops/types/api';
 
 export const userOpsData: UserOpsResponse = {
   items: [
