@@ -215,7 +215,7 @@ migrated to `client/shared/` in 1-2 and do not appear here.
 ### 6-4 · [ ] Feature: `name-domains` (BENS)
 **Scope:** `configs/app/features/nameServices.ts` — use `name-domains` as folder name.  
 
-### 6-5 · [ ] Feature: `account`
+### 6-5 · [~] Feature: `account` · [#3456](https://github.com/blockscout/frontend/issues/3456)
 **Scope:** Includes `lib/hooks/useGetCsrfToken`, `ui/snippets/auth/`, `ui/snippets/user/` → `client/features/account/`  
 
 ### 6-6 · [ ] Feature: `stats`
