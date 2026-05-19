@@ -16,7 +16,7 @@ const mockUseApiQuery = useApiQuery as Mock<typeof useApiQuery>;
 
 type MockQueryResult = ReturnType<typeof useApiQuery>;
 
-vi.mock('lib/clusters/detectInputType', () => ({
+vi.mock('client/features/name-services/clusters/utils/detect-input-type', () => ({
   detectInputType: vi.fn(),
 }));
 
