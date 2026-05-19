@@ -322,7 +322,7 @@ Settings for meta tags, OG tags and SEO
 | NEXT_PUBLIC_VIEWS_TX_HIDDEN_FIELDS | `Array<TxFieldsId>` | Array of the transaction fields ids that should be hidden. See below the list of the possible id values. | - | - | `'["value","tx_fee"]'` | v1.15.0+ |
 | NEXT_PUBLIC_VIEWS_TX_ADDITIONAL_FIELDS | `Array<TxAdditionalFieldsId>` | Array of the additional fields ids that should be added to the transaction details. See below the list of the possible id values. | - | - | `'["fee_per_gas"]'` | v1.15.0+ |
 | NEXT_PUBLIC_VIEWS_TX_GROUPED_FEES | `boolean` | In the detailed view group transaction fees under one collapsible section. | - | - | `true` | v2.3.5+ |
-| NEXT_PUBLIC_VIEWS_TX_HIDDEN_VIEWS | `Array<TxViewId>` | Transaction views that should be hidden. See below the list of the possible id values.  | - | - | `'["pending_txs"]'` | <upcoming> |
+| NEXT_PUBLIC_VIEWS_TX_HIDDEN_VIEWS | `Array<TxViewId>` | Transaction views that should be hidden. See below the list of the possible id values.  | - | - | `'["pending_txs"]'` | v2.8.0+ |
 
 ##### Transaction fields list
 | Id | Description |
@@ -352,7 +352,7 @@ Settings for meta tags, OG tags and SEO
 #### Internal transactions
 | Variable | Type | Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_INTERNAL_TXS_ENABLED | `boolean` | Set to `false` to hide all internal transaction UI in the explorer, including the global list page and tabs on transaction, address, and block detail pages. | - | `true` | `false` | <upcoming> |
+| NEXT_PUBLIC_INTERNAL_TXS_ENABLED | `boolean` | Set to `false` to hide all internal transaction UI in the explorer, including the global list page and tabs on transaction, address, and block detail pages. | - | `true` | `false` | v2.8.0+ |
 
 &nbsp;
 
