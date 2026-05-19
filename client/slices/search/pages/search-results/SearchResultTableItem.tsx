@@ -21,6 +21,7 @@ import * as TxEntity from 'client/slices/tx/components/entity/TxEntity';
 
 import * as TacOperationEntity from 'client/features/chain-variants/tac/components/TacOperationEntity';
 import TacOperationStatus from 'client/features/chain-variants/tac/components/TacOperationStatus';
+import * as BlobEntity from 'client/features/data-availability/components/entity/BlobEntity';
 import * as UserOpEntity from 'client/features/user-ops/components/entity/UserOpEntity';
 
 import * as mixpanel from 'client/shared/analytics/mixpanel';
@@ -35,7 +36,6 @@ import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { Tag } from 'toolkit/chakra/tag';
 import { SECOND } from 'toolkit/utils/consts';
 import { ADDRESS_REGEXP } from 'toolkit/utils/regexp';
-import * as BlobEntity from 'ui/shared/entities/blob/BlobEntity';
 import * as EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import IconSvg from 'ui/shared/IconSvg';

@@ -14,11 +14,12 @@ import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import * as txMock from 'client/slices/tx/mocks/tx';
 
-import * as blobsMock from 'mocks/blobs/blobs';
+import BlobEntity from 'client/features/data-availability/components/entity/BlobEntity';
+import * as blobsMock from 'client/features/data-availability/mocks/blobs';
+
 import * as ensMock from 'mocks/ens/domain';
 import * as poolMock from 'mocks/pools/pool';
 import { Link, LinkBox, LinkOverlay } from 'toolkit/chakra/link';
-import BlobEntity from 'ui/shared/entities/blob/BlobEntity';
 import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import PoolEntity from 'ui/shared/entities/pool/PoolEntity';

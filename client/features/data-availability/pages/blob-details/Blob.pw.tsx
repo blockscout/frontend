@@ -1,6 +1,7 @@
 import React from 'react';
 
-import * as blobsMock from 'mocks/blobs/blobs';
+import * as blobsMock from 'client/features/data-availability/mocks/blobs';
+
 import { test, expect } from 'playwright/lib';
 import * as pwConfig from 'playwright/utils/config';
 

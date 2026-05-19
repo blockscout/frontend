@@ -3,7 +3,7 @@
 import { GridItem } from '@chakra-ui/react';
 import React from 'react';
 
-import type { Blob } from 'types/api/blobs';
+import type { Blob } from 'client/features/data-availability/types/api';
 
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 

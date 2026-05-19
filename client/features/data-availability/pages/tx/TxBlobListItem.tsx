@@ -2,11 +2,12 @@
 
 import React from 'react';
 
-import type { TxBlob } from 'types/api/blobs';
+import type { TxBlob } from 'client/features/data-availability/types/api';
+
+import BlobDataType from 'client/features/data-availability/components/BlobDataType';
+import BlobEntity from 'client/features/data-availability/components/entity/BlobEntity';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import BlobDataType from 'ui/shared/blob/BlobDataType';
-import BlobEntity from 'ui/shared/entities/blob/BlobEntity';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 
 interface Props {

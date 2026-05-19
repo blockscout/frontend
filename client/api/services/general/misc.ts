@@ -4,6 +4,7 @@ import type { ApiResource } from '../../types';
 import type { DepositsResponse, DepositsCounters, WithdrawalsResponse, WithdrawalsCounters } from 'client/features/chain-variants/beacon-chain/types/api';
 import type { CeloEpochDetails, CeloEpochElectionRewardDetailsResponse, CeloEpochListResponse } from 'client/features/chain-variants/celo/types/api';
 import type { CsvExportItemResponse, CsvExportConfig } from 'client/features/csv-export/types/api';
+import type { Blob } from 'client/features/data-availability/types/api';
 import type { HotContractsFilters, HotContractsResponse, HotContractsSorting } from 'client/features/hot-contracts/types/api';
 import type {
   ArbitrumL2TxnBatchesItem,
@@ -20,7 +21,6 @@ import type {
   Transaction,
 } from 'client/slices/tx/types/api';
 import type { AdvancedFilterParams, AdvancedFilterResponse, AdvancedFilterMethodsResponse } from 'types/api/advancedFilter';
-import type { Blob } from 'types/api/blobs';
 import type { ChartMarketResponse, ChartSecondaryCoinPriceResponse, ChartTransactionResponse } from 'types/api/charts';
 import type { BackendConfig, BackendVersionConfig, CeloConfig, ContractLanguagesConfig } from 'types/api/configs';
 import type { IndexingStatus } from 'types/api/indexingStatus';

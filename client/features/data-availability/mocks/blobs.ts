@@ -1,4 +1,4 @@
-import type { Blob, TxBlobs } from 'types/api/blobs';
+import type { Blob, TxBlobs } from 'client/features/data-availability/types/api';
 
 export const base1: Blob = {
   blob_data: '0x004242004242004242004242004242004242',

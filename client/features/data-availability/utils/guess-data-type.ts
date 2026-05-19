@@ -4,7 +4,7 @@ import filetype from 'magic-bytes.js';
 
 import hexToBytes from 'client/shared/transformers/hex-to-bytes';
 
-import removeNonSignificantZeroBytes from './removeNonSignificantZeroBytes';
+import removeNonSignificantZeroBytes from './remove-non-significant-zero-bytes';
 
 export default function guessDataType(data: string) {
   const bytes = hexToBytes(data);
