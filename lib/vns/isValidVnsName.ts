@@ -15,15 +15,15 @@ const MAX_LABEL_LEN = 63;
 // "Unicode bidi / zero-width that homoglyph-spoof the displayed label".
 const FORBIDDEN_CHARS_RE = new RegExp(
   '[' +
-    '\\u0000-\\u001F' +   // C0 controls
-    '\\u007F' +           // DEL
-    '\\u0020' +           // space
-    '/' + '\\\\' +        // path separators
-    '\\?' + '#' +         // URL meta
-    '\\u200B-\\u200D' +   // zero-width
-    '\\u202A-\\u202E' +   // bidi
-    '\\u2066-\\u2069' +   // bidi isolates
-    '\\uFEFF' +           // BOM
+    '\\u0000-\\u001F' + // C0 controls
+    '\\u007F' + // DEL
+    '\\u0020' + // space
+    '/' + '\\\\' + // path separators
+    '?' + '#' + // URL meta
+    '\\u200B-\\u200D' + // zero-width
+    '\\u202A-\\u202E' + // bidi
+    '\\u2066-\\u2069' + // bidi isolates
+    '\\uFEFF' + // BOM
   ']',
 );
 const CLUSTER_FORBIDDEN_CHARS_RE = new RegExp(
@@ -31,8 +31,8 @@ const CLUSTER_FORBIDDEN_CHARS_RE = new RegExp(
     '\\u0000-\\u001F' +
     '\\u007F' +
     '\\u0020' +
-    '\\\\' +              // backslash (forward slash OK for sub-clusters)
-    '\\?' + '#' +
+    '\\\\' + // backslash (forward slash OK for sub-clusters)
+    '?' + '#' +
     '\\u200B-\\u200D' +
     '\\u202A-\\u202E' +
     '\\u2066-\\u2069' +
