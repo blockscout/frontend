@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import type { ChangeEvent } from 'react';
 import React from 'react';
 
+import useProfileQuery from 'client/features/account/hooks/useProfileQuery';
 import useWallet from 'client/features/connect-wallet/hooks/useWallet';
 
 import * as cookies from 'client/shared/storage/cookies';
@@ -19,7 +20,6 @@ import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Switch } from 'toolkit/chakra/switch';
 import { apos } from 'toolkit/utils/htmlEntities';
-import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
 
 type Props = {
   goNext: (isReferral: boolean, reward: string | undefined) => void;

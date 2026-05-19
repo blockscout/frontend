@@ -8,15 +8,16 @@ import type { ItemProps } from '../types';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import AuthGuard from 'client/features/account/components/auth-modal/guard/AuthGuard';
+import useIsAuth from 'client/features/account/hooks/useIsAuth';
+import AddressVerificationModal from 'client/features/account/pages/verified-addresses/address-verification/AddressVerificationModal';
+
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 
 import config from 'configs/app';
 import { MenuItem } from 'toolkit/chakra/menu';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
-import AddressVerificationModal from 'ui/addressVerification/AddressVerificationModal';
 import IconSvg from 'ui/shared/IconSvg';
-import AuthGuard from 'ui/snippets/auth/guard/AuthGuard';
-import useIsAuth from 'ui/snippets/auth/useIsAuth';
 
 import ButtonItem from '../parts/ButtonItem';
 

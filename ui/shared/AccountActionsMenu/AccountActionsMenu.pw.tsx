@@ -1,7 +1,8 @@
 import type { BrowserContext } from '@playwright/test';
 import React from 'react';
 
-import * as profileMock from 'mocks/user/profile';
+import * as profileMock from 'client/features/account/mocks/user-profile';
+
 import { contextWithAuth } from 'playwright/fixtures/auth';
 import { test as base, expect } from 'playwright/lib';
 

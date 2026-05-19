@@ -12,6 +12,7 @@ import useApiFetch from 'client/api/hooks/useApiFetch';
 import useApiQuery, { getResourceKey } from 'client/api/hooks/useApiQuery';
 import type { ResourceError } from 'client/api/resources';
 
+import useProfileQuery from 'client/features/account/hooks/useProfileQuery';
 import useAccount from 'client/features/connect-wallet/hooks/useAccount';
 
 import decodeJWT from 'client/shared/auth/decode-jwt';
@@ -24,7 +25,6 @@ import * as cookies from 'client/shared/storage/cookies';
 import config from 'configs/app';
 import { toaster } from 'toolkit/chakra/toaster';
 import { YEAR } from 'toolkit/utils/consts';
-import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
 
 const feature = config.features.rewards;
 

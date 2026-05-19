@@ -10,9 +10,10 @@ import useApiFetch from 'client/api/hooks/useApiFetch';
 import useFetch from 'client/api/hooks/useFetch';
 import type { ResourceError } from 'client/api/resources';
 
+import useIsAuth from 'client/features/account/hooks/useIsAuth';
+
 import config from 'configs/app';
 import { MARKETPLACE_APP } from 'stubs/marketplace';
-import useIsAuth from 'ui/snippets/auth/useIsAuth';
 
 import type { SortValue } from './utils';
 

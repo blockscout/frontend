@@ -12,10 +12,11 @@ import LatestTxsItem from 'client/slices/home/pages/index/txs/LatestTxsItem';
 import LatestTxsItemMobile from 'client/slices/home/pages/index/txs/LatestTxsItemMobile';
 import { TX } from 'client/slices/tx/stubs/tx';
 
+import useRedirectForInvalidAuthToken from 'client/features/account/hooks/useRedirectForInvalidAuthToken';
+
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
 import { Link } from 'toolkit/chakra/link';
-import useRedirectForInvalidAuthToken from 'ui/snippets/auth/useRedirectForInvalidAuthToken';
 
 const LatestWatchlistTxs = () => {
   useRedirectForInvalidAuthToken();

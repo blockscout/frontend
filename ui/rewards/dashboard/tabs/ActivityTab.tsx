@@ -9,6 +9,8 @@ import { route } from 'nextjs-routes';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import useProfileQuery from 'client/features/account/hooks/useProfileQuery';
+
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
 import config from 'configs/app';
@@ -23,7 +25,6 @@ import { Hint } from 'toolkit/components/Hint/Hint';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import { mdash } from 'toolkit/utils/htmlEntities';
 import IconSvg from 'ui/shared/IconSvg';
-import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
 
 import MeritsIcon from '../../MeritsIcon';
 import RewardsActivityPassCard from '../RewardsActivityPassCard';

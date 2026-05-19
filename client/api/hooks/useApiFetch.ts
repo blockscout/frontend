@@ -4,7 +4,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { omit, pickBy } from 'es-toolkit';
 import React from 'react';
 
-import type { CsrfData } from 'types/client/account';
+import type { CsrfData } from 'client/features/account/types/client';
 import type { ExternalChainExtended } from 'types/externalChains';
 
 import * as cookies from 'client/shared/storage/cookies';

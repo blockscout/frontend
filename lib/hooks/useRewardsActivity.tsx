@@ -7,10 +7,11 @@ import type { PreSubmitTransactionResponse } from '@blockscout/points-types';
 import useApiFetch from 'client/api/hooks/useApiFetch';
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import useProfileQuery from 'client/features/account/hooks/useProfileQuery';
+
 import config from 'configs/app';
 import { useRewardsContext } from 'lib/contexts/rewards';
 import { MINUTE } from 'toolkit/utils/consts';
-import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
 
 const feature = config.features.rewards;
 const LAST_EXPLORE_TIME_KEY = 'rewards_activity_last_explore_time';

@@ -9,6 +9,7 @@ import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
 import { TX } from 'client/slices/tx/stubs/tx';
 
+import useIsAuth from 'client/features/account/hooks/useIsAuth';
 import TxsWatchlist from 'client/features/account/pages/tx-index-watchlist/TxsWatchlist';
 
 import getChainValidationActionText from 'client/shared/chain/get-chain-validation-action-text';
@@ -24,7 +25,6 @@ import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import AdvancedFilterLink from 'ui/shared/links/AdvancedFilterLink';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
-import useIsAuth from 'ui/snippets/auth/useIsAuth';
 
 import TxsWithFrontendSorting from './TxsWithFrontendSorting';
 

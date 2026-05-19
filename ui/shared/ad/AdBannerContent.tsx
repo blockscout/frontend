@@ -6,11 +6,11 @@ import React from 'react';
 import type { BannerFormat } from './types';
 import type { AdBannerProviders } from 'types/client/adProviders';
 
+import useProfileQuery from 'client/features/account/hooks/useProfileQuery';
 import useAccount from 'client/features/connect-wallet/hooks/useAccount';
 
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
 
 import AdbutlerBanner from './AdbutlerBanner';
 import { DESKTOP_BANNER_WIDTH, MOBILE_BANNER_WIDTH } from './consts';

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { TokenInfoApplication } from 'types/api/account';
+import type { TokenInfoApplication } from 'client/features/account/types/api';
 
 export type TokenVerifiedInfo = Omit<TokenInfoApplication, 'id' | 'status'>;

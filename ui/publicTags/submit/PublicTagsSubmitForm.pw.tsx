@@ -1,7 +1,8 @@
 import React from 'react';
 
+import { base as useInfoMock } from 'client/features/account/mocks/user-profile';
+
 import { publicTagTypes as configMock } from 'mocks/metadata/publicTagTypes';
-import { base as useInfoMock } from 'mocks/user/profile';
 import { expect, test } from 'playwright/lib';
 
 import * as mocks from './mocks';

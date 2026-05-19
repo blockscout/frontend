@@ -7,6 +7,7 @@ import { SocketProvider } from 'client/api/socket/context';
 
 import { useHomeRpcDataContext } from 'client/slices/home/contexts/rpc-data-context';
 
+import useAuth from 'client/features/account/hooks/useIsAuth';
 import LatestWatchlistTxs from 'client/features/account/pages/home/LatestWatchlistTxs';
 import LatestZetaChainCCTXs from 'client/features/chain-variants/zeta-chain/pages/home/LatestZetaChainCCTXs';
 import LatestCrossChainTxs from 'client/features/cross-chain-txs/pages/home/LatestCrossChainTxs';
@@ -18,7 +19,6 @@ import config from 'configs/app';
 import { Heading } from 'toolkit/chakra/heading';
 import AdaptiveTabs from 'toolkit/components/AdaptiveTabs/AdaptiveTabs';
 import FallbackRpcIcon from 'ui/shared/fallbacks/FallbackRpcIcon';
-import useAuth from 'ui/snippets/auth/useIsAuth';
 
 import LatestTxs from './LatestTxs';
 

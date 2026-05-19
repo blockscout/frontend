@@ -6,18 +6,19 @@ import React from 'react';
 
 import SearchBarMobile from 'client/slices/search/components/search-bar/SearchBarMobile';
 
+import UserProfileAuth0 from 'client/features/account/components/user-profile/auth0/UserProfileMobile';
+import UserWalletMobile from 'client/features/account/components/user-profile/wallet/UserWalletMobile';
+
 import config from 'configs/app';
 import { useIsSticky } from 'toolkit/hooks/useIsSticky';
 import RewardsButton from 'ui/rewards/RewardsButton';
 import NetworkIcon from 'ui/snippets/networkLogo/NetworkIcon';
-import UserProfileAuth0 from 'ui/snippets/user/profile/auth0/UserProfileMobile';
-import UserWalletMobile from 'ui/snippets/user/wallet/UserWalletMobile';
 
 import RollupStageBadge from '../navigation/RollupStageBadge';
 import TestnetBadge from '../navigation/TestnetBadge';
 import Burger from './Burger';
 
-const UserProfileDynamic = dynamic(() => import('ui/snippets/user/profile/dynamic/UserProfile'), { ssr: false });
+const UserProfileDynamic = dynamic(() => import('client/features/account/components/user-profile/dynamic/UserProfile'), { ssr: false });
 
 type Props = {
   hideSearchButton?: boolean;
