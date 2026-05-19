@@ -10,6 +10,8 @@ import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import { tryDecodeVnsName } from 'lib/vns/encodeVnsName';
+import { isValidVnsName } from 'lib/vns/isValidVnsName';
 import { ENS_DOMAIN } from 'stubs/ENS';
 import { Link } from 'toolkit/chakra/link';
 import { Tooltip } from 'toolkit/chakra/tooltip';
@@ -24,12 +26,18 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 
 const NameDomain = () => {
   const router = useRouter();
-  const domainName = getQueryParamString(router.query.name);
+  const rawDomainName = getQueryParamString(router.query.name);
+  // EnsEntity now URL-encodes the link target; the inverse decode must
+  // tolerate malformed %-sequences from crafted URLs without throwing.
+  const decodedDomain = tryDecodeVnsName(rawDomainName);
+  const isValid = isValidVnsName(decodedDomain);
+  const domainName = isValid ? decodedDomain : '';
 
   const infoQuery = useApiQuery('bens:domain_info', {
     pathParams: { name: domainName, chainId: config.chain.id },
     queryOptions: {
       placeholderData: ENS_DOMAIN,
+      enabled: isValid,
     },
   });
 
