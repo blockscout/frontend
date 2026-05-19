@@ -9,10 +9,6 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 
 import AccountPageDescription from 'client/features/account/components/AccountPageDescription';
 import useRedirectForInvalidAuthToken from 'client/features/account/hooks/useRedirectForInvalidAuthToken';
-import CustomAbiModal from 'client/features/account/pages/custom-abi/CustomAbiModal/CustomAbiModal';
-import CustomAbiListItem from 'client/features/account/pages/custom-abi/CustomAbiTable/CustomAbiListItem';
-import CustomAbiTable from 'client/features/account/pages/custom-abi/CustomAbiTable/CustomAbiTable';
-import DeleteCustomAbiModal from 'client/features/account/pages/custom-abi/DeleteCustomAbiModal';
 import { CUSTOM_ABI } from 'client/features/account/stubs';
 
 import { Button } from 'toolkit/chakra/button';
@@ -20,6 +16,11 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import PageTitle from 'ui/shared/Page/PageTitle';
+
+import CustomAbiModal from './CustomAbiModal/CustomAbiModal';
+import CustomAbiListItem from './CustomAbiTable/CustomAbiListItem';
+import CustomAbiTable from './CustomAbiTable/CustomAbiTable';
+import DeleteCustomAbiModal from './DeleteCustomAbiModal';
 
 const CustomAbiPage: React.FC = () => {
   const customAbiModalProps = useDisclosure();

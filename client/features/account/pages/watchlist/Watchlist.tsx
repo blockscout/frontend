@@ -12,11 +12,6 @@ import { resourceKey } from 'client/api/resources';
 import AccountPageDescription from 'client/features/account/components/AccountPageDescription';
 import useProfileQuery from 'client/features/account/hooks/useProfileQuery';
 import useRedirectForInvalidAuthToken from 'client/features/account/hooks/useRedirectForInvalidAuthToken';
-import AddressModal from 'client/features/account/pages/watchlist/AddressModal/AddressModal';
-import DeleteAddressModal from 'client/features/account/pages/watchlist/DeleteAddressModal';
-import WatchlistEmailAlert from 'client/features/account/pages/watchlist/WatchlistEmailAlert';
-import WatchListItem from 'client/features/account/pages/watchlist/WatchlistTable/WatchListItem';
-import WatchlistTable from 'client/features/account/pages/watchlist/WatchlistTable/WatchlistTable';
 import { WATCH_LIST_ITEM_WITH_TOKEN_INFO } from 'client/features/account/stubs';
 
 import { Button } from 'toolkit/chakra/button';
@@ -27,6 +22,12 @@ import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
+
+import AddressModal from './AddressModal/AddressModal';
+import DeleteAddressModal from './DeleteAddressModal';
+import WatchlistEmailAlert from './WatchlistEmailAlert';
+import WatchListItem from './WatchlistTable/WatchListItem';
+import WatchlistTable from './WatchlistTable/WatchlistTable';
 
 const WatchList: React.FC = () => {
 

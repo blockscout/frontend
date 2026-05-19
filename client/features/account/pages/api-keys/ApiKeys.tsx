@@ -9,10 +9,6 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 
 import AccountPageDescription from 'client/features/account/components/AccountPageDescription';
 import useRedirectForInvalidAuthToken from 'client/features/account/hooks/useRedirectForInvalidAuthToken';
-import ApiKeyModal from 'client/features/account/pages/api-keys/ApiKeyModal/ApiKeyModal';
-import ApiKeyListItem from 'client/features/account/pages/api-keys/ApiKeyTable/ApiKeyListItem';
-import ApiKeyTable from 'client/features/account/pages/api-keys/ApiKeyTable/ApiKeyTable';
-import DeleteApiKeyModal from 'client/features/account/pages/api-keys/DeleteApiKeyModal';
 import { API_KEY } from 'client/features/account/stubs';
 
 import config from 'configs/app';
@@ -24,6 +20,11 @@ import { space } from 'toolkit/utils/htmlEntities';
 import AlertWithExternalHtml from 'ui/shared/alerts/AlertWithExternalHtml';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import PageTitle from 'ui/shared/Page/PageTitle';
+
+import ApiKeyModal from './ApiKeyModal/ApiKeyModal';
+import ApiKeyListItem from './ApiKeyTable/ApiKeyListItem';
+import ApiKeyTable from './ApiKeyTable/ApiKeyTable';
+import DeleteApiKeyModal from './DeleteApiKeyModal';
 
 const DATA_LIMIT = 3;
 
