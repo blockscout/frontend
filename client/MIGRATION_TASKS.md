@@ -244,23 +244,23 @@ migrated to `client/shared/` in 1-2 and do not appear here.
 ### 6-14 · [ ] Feature: `metasuites`
 **Scope:** Includes `lib/hooks/useNotifyOnNavigation` → `client/features/metasuites/`  
 
-### 6-15 · [ ] Feature: `csv-export`
+### 6-15 · [x] Feature: `csv-export`
 
-### 6-16 · [ ] Feature: `pools`
+### 6-16 · [~] Feature: `pools` · [#3463](https://github.com/blockscout/frontend/issues/3463)
 
 ### 6-17 · [ ] Feature: `hot-contracts`
 
 ### 6-18 · [ ] Feature: `interchain-indexer`
 **Scope:** Cross-chain message indexer (not ZetaChain). See `configs/app/features/crossChainTxs.ts`.  
 
-### 6-19 · [ ] Feature: `mud-framework`
+### 6-19 · [x] Feature: `mud-framework`
 
 ### 6-20 · [ ] Feature: `visualize`
 **Scope:** Solidity-to-UML diagrams. See `configs/app/features/sol2uml.ts`.  
 
 ### 6-21 · [ ] Feature: `tx-interpretation`
 
-### 6-22 · [ ] Feature: `public-tags`
+### 6-22 · [ ] Feature: `public-tags` (merge with `address-metadata`)
 **Scope:** Community address labels. See `configs/app/features/publicTagsSubmission.ts`.  
 
 ### 6-23 · [ ] Feature: `address-widgets`
@@ -268,7 +268,7 @@ migrated to `client/shared/` in 1-2 and do not appear here.
 
 ### 6-24 · [ ] Feature: `address-metadata`
 
-### 6-25 · [ ] Feature: `address-verification`
+### 6-25 · [x] Feature: `address-verification`
 **Scope:** Covers `addressProfileAPI.ts` and `addressVerification.ts` configs.  
 
 ### 6-26 · [ ] Feature: `bridged-tokens`
