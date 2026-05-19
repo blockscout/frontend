@@ -2,6 +2,12 @@ import React from 'react';
 
 import * as searchMock from 'client/slices/search/mocks';
 
+import { metatag1, metatag2, metatag3 } from 'client/features/address-metadata/mocks/search';
+import { tacOperation1 } from 'client/features/chain-variants/tac/mocks/search';
+import { blob1 } from 'client/features/data-availability/mocks/search';
+import { domain1 } from 'client/features/name-services/domains/stubs/search';
+import { userOp1 } from 'client/features/user-ops/mocks/search';
+
 import { apps as appsMock } from 'mocks/apps/apps';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';
@@ -79,9 +85,9 @@ test('search by address hash', async({ render, page, mockApiResponse }) => {
 
 test('search by meta tag +@dark-mode', async({ render, page, mockApiResponse }) => {
   const apiUrl = await mockApiResponse('general:quick_search', [
-    searchMock.metatag1,
-    searchMock.metatag2,
-    searchMock.metatag3,
+    metatag1,
+    metatag2,
+    metatag3,
   ], { queryParams: { q: 'utko' } });
   await render(<SearchBarDesktop/>);
   await page.getByPlaceholder(/search/i).fill('utko');
@@ -127,10 +133,10 @@ test('search by tx hash', async({ render, page, mockApiResponse }) => {
 
 test('search by tac operation hash', async({ render, page, mockApiResponse }) => {
   const apiUrl = await mockApiResponse('general:quick_search', [
-    searchMock.tacOperation1,
-  ], { queryParams: { q: searchMock.tacOperation1.tac_operation.operation_id } });
+    tacOperation1,
+  ], { queryParams: { q: tacOperation1.tac_operation.operation_id } });
   await render(<SearchBarDesktop/>);
-  await page.getByPlaceholder(/search/i).fill(searchMock.tacOperation1.tac_operation.operation_id);
+  await page.getByPlaceholder(/search/i).fill(tacOperation1.tac_operation.operation_id);
   await page.waitForResponse(apiUrl);
 
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 300 } });
@@ -139,10 +145,10 @@ test('search by tac operation hash', async({ render, page, mockApiResponse }) =>
 test('search by blob hash', async({ render, page, mockApiResponse, mockEnvs }) => {
   await mockEnvs(ENVS_MAP.dataAvailability);
   const apiUrl = await mockApiResponse('general:quick_search', [
-    searchMock.blob1,
-  ], { queryParams: { q: searchMock.blob1.blob_hash } });
+    blob1,
+  ], { queryParams: { q: blob1.blob_hash } });
   await render(<SearchBarDesktop/>);
-  await page.getByPlaceholder(/search/i).fill(searchMock.blob1.blob_hash);
+  await page.getByPlaceholder(/search/i).fill(blob1.blob_hash);
   await page.waitForResponse(apiUrl);
 
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 300 } });
@@ -151,11 +157,11 @@ test('search by blob hash', async({ render, page, mockApiResponse, mockEnvs }) =
 test('search by domain name', async({ render, page, mockApiResponse, mockEnvs }) => {
   await mockEnvs(ENVS_MAP.nameService);
   const apiUrl = await mockApiResponse('general:quick_search', [
-    searchMock.domain1,
-  ], { queryParams: { q: searchMock.domain1.ens_info.name } });
+    domain1,
+  ], { queryParams: { q: domain1.ens_info.name } });
 
   await render(<SearchBarDesktop/>);
-  await page.getByPlaceholder(/search/i).fill(searchMock.domain1.ens_info.name);
+  await page.getByPlaceholder(/search/i).fill(domain1.ens_info.name);
   await page.waitForResponse(apiUrl);
 
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 300 } });
@@ -164,7 +170,7 @@ test('search by domain name', async({ render, page, mockApiResponse, mockEnvs })
 test('search by user op hash', async({ render, page, mockApiResponse, mockEnvs }) => {
   await mockEnvs(ENVS_MAP.userOps);
   const apiUrl = await mockApiResponse('general:quick_search', [
-    searchMock.userOp1,
+    userOp1,
   ], { queryParams: { q: searchMock.tx1.transaction_hash } });
   await render(<SearchBarDesktop/>);
   await page.getByPlaceholder(/search/i).fill(searchMock.tx1.transaction_hash);

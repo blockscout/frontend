@@ -3,6 +3,12 @@ import React from 'react';
 
 import * as searchMock from 'client/slices/search/mocks';
 
+import { metatag1, metatag2, metatag3 } from 'client/features/address-metadata/mocks/search';
+import { tacOperation1 } from 'client/features/chain-variants/tac/mocks/search';
+import { blob1 } from 'client/features/data-availability/mocks/search';
+import { domain1 } from 'client/features/name-services/domains/stubs/search';
+import { userOp1 } from 'client/features/user-ops/mocks/search';
+
 import { apps as appsMock } from 'mocks/apps/apps';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';
@@ -48,7 +54,7 @@ test.describe('search by name', () => {
         searchMock.token2,
         searchMock.contract1,
         searchMock.address2,
-        searchMock.metatag1,
+        metatag1,
         searchMock.label1,
       ],
       next_page_params: null,
@@ -90,7 +96,7 @@ test('search by meta tag +@mobile', async({ render, mockApiResponse, page }) => 
     },
   };
   const data = {
-    items: [ searchMock.metatag1, searchMock.metatag2, searchMock.metatag3 ],
+    items: [ metatag1, metatag2, metatag3 ],
     next_page_params: null,
   };
   await mockApiResponse('general:search', data, { queryParams: { q: 'utko' } });
@@ -156,14 +162,14 @@ test('search by tac operation hash +@mobile', async({ render, mockApiResponse, m
   await mockEnvs(ENVS_MAP.tac);
   const hooksConfig = {
     router: {
-      query: { q: searchMock.tacOperation1.tac_operation.operation_id },
+      query: { q: tacOperation1.tac_operation.operation_id },
     },
   };
   const data = {
-    items: [ searchMock.tacOperation1 ],
+    items: [ tacOperation1 ],
     next_page_params: null,
   };
-  await mockApiResponse('general:search', data, { queryParams: { q: searchMock.tacOperation1.tac_operation.operation_id } });
+  await mockApiResponse('general:search', data, { queryParams: { q: tacOperation1.tac_operation.operation_id } });
   const component = await render(<SearchResults/>, { hooksConfig });
   await resetScroll(page);
 
@@ -173,15 +179,15 @@ test('search by tac operation hash +@mobile', async({ render, mockApiResponse, m
 test('search by blob hash +@mobile', async({ render, mockApiResponse, mockEnvs, page }) => {
   const hooksConfig = {
     router: {
-      query: { q: searchMock.blob1.blob_hash },
+      query: { q: blob1.blob_hash },
     },
   };
   const data = {
-    items: [ searchMock.blob1 ],
+    items: [ blob1 ],
     next_page_params: null,
   };
   await mockEnvs(ENVS_MAP.dataAvailability);
-  await mockApiResponse('general:search', data, { queryParams: { q: searchMock.blob1.blob_hash } });
+  await mockApiResponse('general:search', data, { queryParams: { q: blob1.blob_hash } });
   const component = await render(<SearchResults/>, { hooksConfig });
   await resetScroll(page);
 
@@ -191,15 +197,15 @@ test('search by blob hash +@mobile', async({ render, mockApiResponse, mockEnvs, 
 test('search by domain name +@mobile', async({ render, mockApiResponse, mockEnvs, page }) => {
   const hooksConfig = {
     router: {
-      query: { q: searchMock.domain1.ens_info.name },
+      query: { q: domain1.ens_info.name },
     },
   };
   const data = {
-    items: [ searchMock.domain1 ],
+    items: [ domain1 ],
     next_page_params: null,
   };
   await mockEnvs(ENVS_MAP.nameService);
-  await mockApiResponse('general:search', data, { queryParams: { q: searchMock.domain1.ens_info.name } });
+  await mockApiResponse('general:search', data, { queryParams: { q: domain1.ens_info.name } });
   const component = await render(<SearchResults/>, { hooksConfig });
   await resetScroll(page);
 
@@ -209,15 +215,15 @@ test('search by domain name +@mobile', async({ render, mockApiResponse, mockEnvs
 test('search by user op hash +@mobile', async({ render, mockApiResponse, mockEnvs, page }) => {
   const hooksConfig = {
     router: {
-      query: { q: searchMock.userOp1.user_operation_hash },
+      query: { q: userOp1.user_operation_hash },
     },
   };
   const data = {
-    items: [ searchMock.userOp1 ],
+    items: [ userOp1 ],
     next_page_params: null,
   };
   await mockEnvs(ENVS_MAP.userOps);
-  await mockApiResponse('general:search', data, { queryParams: { q: searchMock.userOp1.user_operation_hash } });
+  await mockApiResponse('general:search', data, { queryParams: { q: userOp1.user_operation_hash } });
   const component = await render(<SearchResults/>, { hooksConfig });
   await resetScroll(page);
 

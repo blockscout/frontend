@@ -7,14 +7,10 @@ import type {
   SearchResult,
 } from 'client/slices/search/types/api';
 
-import { metatag1 } from 'client/features/address-metadata/stubs/search';
+import { metatag1 } from 'client/features/address-metadata/mocks/search';
 import { tacOperation1 } from 'client/features/chain-variants/tac/mocks/search';
 import { blob1 } from 'client/features/data-availability/mocks/search';
 import { domain1 } from 'client/features/name-services/domains/stubs/search';
-
-export { blob1, domain1, metatag1, tacOperation1 };
-export { metatag2, metatag3 } from 'client/features/address-metadata/stubs/search';
-export { userOp1 } from 'client/features/user-ops/mocks/search';
 
 export const token1: SearchResultToken = {
   address_hash: '0x377c5F2B300B25a534d4639177873b7fEAA56d4B',

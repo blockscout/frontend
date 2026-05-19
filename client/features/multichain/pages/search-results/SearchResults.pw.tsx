@@ -2,7 +2,7 @@ import React from 'react';
 
 import type { GetAddressResponse } from '@blockscout/multichain-aggregator-types';
 
-import * as searchMock from 'client/features/multichain/stubs/search';
+import * as searchMock from 'client/features/multichain/mocks/search';
 
 import * as chainDataMock from 'mocks/multichain/chains';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
