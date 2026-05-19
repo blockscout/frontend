@@ -38,7 +38,7 @@ const bech32Prefix = (() => {
 const hiddenViews = (() => {
   const parsedValue = parseEnvJson<Array<AddressViewId>>(getEnvValue('NEXT_PUBLIC_VIEWS_ADDRESS_HIDDEN_VIEWS')) || [];
 
-  if (!Array.isArray(parsedValue)) {
+  if (!Array.isArray(parsedValue) || parsedValue.length === 0) {
     return undefined;
   }
 

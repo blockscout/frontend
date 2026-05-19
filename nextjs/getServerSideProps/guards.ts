@@ -12,6 +12,14 @@ import config from 'configs/app';
 export type Guard = (chainConfig: typeof config) => <Pathname extends Route['pathname'] = never>(context: GetServerSidePropsContext) =>
 Promise<GetServerSidePropsResult<Props<Pathname>> | undefined>;
 
+export const internalTx: Guard = (chainConfig: typeof config) => async() => {
+  if (!chainConfig.UI.views.internalTx.isEnabled) {
+    return {
+      notFound: true,
+    };
+  }
+};
+
 export const account: Guard = (chainConfig: typeof config) => async() => {
   if (!chainConfig.features.account.isEnabled) {
     return {

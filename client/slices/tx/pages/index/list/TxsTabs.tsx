@@ -41,17 +41,22 @@ const TxsTabs = ({ parentTab, tabsHeight, ...rest }: Props) => {
   const router = useRouter();
   const tab = getQueryParamString(router.query.tab);
   const multichainContext = useMultichainContext();
+  const isAuth = useIsAuth();
 
   const chainConfig = multichainContext?.chain.app_config ?? config;
+
+  const isPendingTab = !chainConfig?.UI.views.tx.hiddenViews?.pending_txs && tab === getTabId('pending', parentTab);
+  const isBlobTxsTab = chainConfig?.features.dataAvailability.isEnabled && tab === getTabId('blob_txs', parentTab);
+  const isWatchlistTab = isAuth && tab === getTabId('watchlist', parentTab);
 
   const txsValidatedQuery = useQueryWithPages({
     resourceName: 'general:txs_validated',
     filters: { filter: 'validated' },
     options: {
       enabled: tab === getTabId('validated', parentTab) ||
-        (parentTab ? tab === parentTab : true) ||
+        (parentTab ? tab === parentTab : false) ||
         !tab ||
-        (!chainConfig?.features.dataAvailability.isEnabled && tab === getTabId('blob_txs', parentTab)),
+        !(isBlobTxsTab || isPendingTab || isWatchlistTab),
       placeholderData: generateListStub<'general:txs_validated'>(TX, 50, { next_page_params: {
         block_number: 9005713,
         index: 5,
@@ -65,7 +70,7 @@ const TxsTabs = ({ parentTab, tabsHeight, ...rest }: Props) => {
     resourceName: 'general:txs_pending',
     filters: { filter: 'pending' },
     options: {
-      enabled: tab === getTabId('pending', parentTab),
+      enabled: isPendingTab,
       placeholderData: generateListStub<'general:txs_pending'>(TX, 50, { next_page_params: {
         inserted_at: '2024-02-05T07:04:47.749818Z',
         hash: '0x00',
@@ -78,7 +83,7 @@ const TxsTabs = ({ parentTab, tabsHeight, ...rest }: Props) => {
     resourceName: 'general:txs_with_blobs',
     filters: { type: 'blob_transaction' },
     options: {
-      enabled: chainConfig?.features.dataAvailability.isEnabled && tab === getTabId('blob_txs', parentTab),
+      enabled: isBlobTxsTab,
       placeholderData: generateListStub<'general:txs_with_blobs'>(TX, 50, { next_page_params: {
         block_number: 10602877,
         index: 8,
@@ -87,12 +92,10 @@ const TxsTabs = ({ parentTab, tabsHeight, ...rest }: Props) => {
     },
   });
 
-  const isAuth = useIsAuth();
-
   const txsWatchlistQuery = useQueryWithPages({
     resourceName: 'general:txs_watchlist',
     options: {
-      enabled: isAuth && tab === getTabId('watchlist', parentTab),
+      enabled: isWatchlistTab,
       placeholderData: generateListStub<'general:txs_watchlist'>(TX, 50, { next_page_params: {
         block_number: 9005713,
         index: 5,
@@ -113,7 +116,7 @@ const TxsTabs = ({ parentTab, tabsHeight, ...rest }: Props) => {
           socketType="txs_validated"
           top={ tabsHeight }
         /> },
-    {
+    !chainConfig?.UI.views.tx.hiddenViews?.pending_txs ? {
       id: getTabId('pending', parentTab),
       title: 'Pending',
       component: (
@@ -124,7 +127,7 @@ const TxsTabs = ({ parentTab, tabsHeight, ...rest }: Props) => {
           top={ tabsHeight }
         />
       ),
-    },
+    } : undefined,
     chainConfig?.features.dataAvailability.isEnabled && {
       id: getTabId('blob_txs', parentTab),
       title: 'Blob txns',

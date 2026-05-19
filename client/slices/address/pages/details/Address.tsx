@@ -271,12 +271,12 @@ const AddressPageContent = () => {
         component: <AddressTokens shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
         subTabs: TOKEN_TABS,
       },
-      {
+      config.UI.views.internalTx.isEnabled ? {
         id: 'internal_txns',
         title: 'Internal txns',
         count: addressTabsCountersQuery.data?.internal_transactions_count,
         component: <AddressInternalTxs shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
-      },
+      } : undefined,
       addressTabsCountersQuery.data?.celo_election_rewards_count ? {
         id: 'epoch_rewards',
         title: 'Epoch rewards',

@@ -51,8 +51,6 @@ const TAB_LIST_PROPS = {
 };
 const TABS_HEIGHT = 88;
 
-const beaconChainFeature = config.features.beaconChain;
-
 const BlockPageContent = () => {
   const router = useRouter();
   const isMobile = useIsMobile();
@@ -60,12 +58,15 @@ const BlockPageContent = () => {
   const tab = getQueryParamString(router.query.tab);
   const multichainContext = useMultichainContext();
 
+  const chainConfig = multichainContext?.chain.app_config ?? config;
+  const beaconChainFeature = chainConfig.features.beaconChain;
+
   const blockQuery = useBlockQuery({ heightOrHash });
   const blockTxsQuery = useBlockTxsQuery({ heightOrHash, blockQuery, tab });
   const blockWithdrawalsQuery = useBlockWithdrawalsQuery({ heightOrHash, blockQuery, tab });
   const blockDepositsQuery = useBlockDepositsQuery({ heightOrHash, blockQuery, tab });
   const blockBlobTxsQuery = useBlockBlobTxsQuery({ heightOrHash, blockQuery, tab });
-  const blockInternalTxsQuery = useBlockInternalTxsQuery({ heightOrHash, blockQuery, tab });
+  const blockInternalTxsQuery = useBlockInternalTxsQuery({ heightOrHash, blockQuery, tab, chainConfig });
 
   const hasPagination = !isMobile && (
     (tab === 'txs' && blockTxsQuery.pagination.isVisible) ||
@@ -98,7 +99,7 @@ const BlockPageContent = () => {
         </>
       ),
     },
-    {
+    chainConfig.UI.views.internalTx.isEnabled ? {
       id: 'internal_txs',
       title: 'Internal txns',
       component: (
@@ -107,8 +108,8 @@ const BlockPageContent = () => {
           <BlockInternalTxs query={ blockInternalTxsQuery } top={ hasPagination ? TABS_HEIGHT : 0 }/>
         </>
       ),
-    },
-    config.features.dataAvailability.isEnabled && blockQuery.data?.blob_transactions_count ?
+    } : null,
+    chainConfig.features.dataAvailability.isEnabled && blockQuery.data?.blob_transactions_count ?
       {
         id: 'blob_txs',
         title: 'Blob txns',
@@ -127,7 +128,7 @@ const BlockPageContent = () => {
           </>
         ),
       } : null,
-    config.features.beaconChain.isEnabled && Boolean(blockQuery.data?.withdrawals_count) ?
+    beaconChainFeature.isEnabled && Boolean(blockQuery.data?.withdrawals_count) ?
       {
         id: 'withdrawals',
         title: 'Withdrawals',
@@ -139,7 +140,18 @@ const BlockPageContent = () => {
           </>
         ),
       } : null,
-  ].filter(Boolean)), [ blockBlobTxsQuery, blockDepositsQuery, blockInternalTxsQuery, blockQuery, blockTxsQuery, blockWithdrawalsQuery, hasPagination ]);
+  ].filter(Boolean)), [
+    beaconChainFeature,
+    blockBlobTxsQuery,
+    blockDepositsQuery,
+    blockInternalTxsQuery,
+    blockQuery,
+    blockTxsQuery,
+    blockWithdrawalsQuery,
+    chainConfig.UI.views.internalTx.isEnabled,
+    chainConfig.features.dataAvailability.isEnabled,
+    hasPagination,
+  ]);
 
   let pagination;
   if (tab === 'txs') {
@@ -183,7 +195,7 @@ const BlockPageContent = () => {
 
   const titleSecondRow = (
     <>
-      { !config.UI.views.block.hiddenFields?.miner && blockQuery.data?.miner && (
+      { !chainConfig.UI.views.block.hiddenFields?.miner && blockQuery.data?.miner && (
         <Skeleton
           loading={ blockQuery.isPlaceholderData }
           fontFamily="heading"
@@ -201,7 +213,7 @@ const BlockPageContent = () => {
       <NetworkExplorers
         type="block"
         pathParam={ heightOrHash }
-        ml={{ base: config.UI.views.block.hiddenFields?.miner ? 0 : 3, lg: 'auto' }}
+        ml={{ base: chainConfig.UI.views.block.hiddenFields?.miner ? 0 : 3, lg: 'auto' }}
       />
     </>
   );
