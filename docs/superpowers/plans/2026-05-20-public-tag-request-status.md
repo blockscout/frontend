@@ -1385,6 +1385,410 @@ EOF
 
 ---
 
+## Addendum (2026-05-20) — promoted from out-of-scope
+
+User authorized expanding the rollout to also include:
+
+A. **Rejection-reason field.** Schema column + view exposure + UI tooltip on a rejected badge.
+B. **Status filter** in the My requests tab (`?status=pending|approved|rejected` on the new GET).
+C. **Email notification to the requester** on status transitions (approved / rejected).
+D. **Edit a still-pending submission from the FE** (new `PUT` route + ownership check + edit modal).
+
+Explicitly skipped: in-app moderator UI, WebSocket live updates. The existing magic-link operator flow at `BlockScoutWeb.API.V1.TagSubmissionActionsController` stays as the moderator path.
+
+### Edits to existing tasks
+
+- **Task 1 migration** also adds `reject_reason :text NULL`:
+  ```elixir
+  alter table(:account_public_tag_submissions) do
+    add(:identity_id, references(:account_identities, on_delete: :nilify_all), null: true)
+    add(:reject_reason, :text)
+  end
+  create(index(:account_public_tag_submissions, [:identity_id]))
+  ```
+- **Task 3 schema** adds `field(:reject_reason, :string)` and `:reject_reason` is added to `@optional_attrs`.
+- **Task 4 tests** also cover: (a) `GET ?status=approved` returns only approved rows; (b) `PUT` rewrites a pending submission; (c) `PUT` on someone else's submission → 403; (d) `PUT` on an already-decided submission → 409; (e) successful approve email + decline email are queued via the `Bamboo.TestAdapter`.
+- **Task 5 view** `serialize/1` includes `reject_reason`.
+- **Task 5 controller** `index/2` accepts an optional `status` query param and applies `where: s.status == ^status` when given a known value.
+- **Task 6 routes** also wires `put("/chains/:chainId/metadata-submissions/tag/:id", TagSubmissionsController, :update)` into the authenticated scope.
+- **Task 9 type** `PublicTagApplicationRow` adds `reject_reason: string | null`.
+- **Task 10 badge** wraps the rejected pill in a `Tooltip` showing `reject_reason` when present.
+- **Task 11 list** wires the filter dropdown above the table; both desktop + mobile views read the `reject_reason` tooltip via the badge.
+- **Task 12 page** still has two tabs; nothing changes there.
+- **Task 14 Playwright** adds two cases: (1) filter dropdown narrows the list; (2) edit modal saves and refetches.
+
+### New tasks
+
+#### Task 5A — PUT update endpoint
+
+**Files:**
+- Modify: `apps/block_scout_web/lib/block_scout_web/controllers/api/v1/tag_submissions_controller.ex`
+
+- [ ] **Step 1: Add `update/2`**
+
+```elixir
+def update(conn, %{"id" => id} = params) do
+  with {:auth, %{id: uid}} <- {:auth, current_user(conn)},
+       {:identity, %Identity{} = identity} <- {:identity, UserFromAuth.find_identity(uid)},
+       %PublicTagSubmission{} = submission <- Repo.account_repo().get(PublicTagSubmission, id) do
+    cond do
+      submission.identity_id != identity.id ->
+        conn |> put_status(:forbidden) |> json(%{message: "Not your submission"})
+
+      submission.status != "pending" ->
+        conn |> put_status(:conflict) |> json(%{message: "Submission already decided"})
+
+      true ->
+        sub_params = params["submission"] || %{}
+
+        attrs = %{
+          tag_name: sub_params["name"] || submission.tag_name,
+          tag_type: sub_params["tagType"] || submission.tag_type,
+          company_name: sub_params["companyName"] || submission.company_name,
+          company_website: sub_params["companyWebsite"] || submission.company_website,
+          description: sub_params["description"] || submission.description
+        }
+
+        case submission |> PublicTagSubmission.changeset(attrs) |> Repo.account_repo().update() do
+          {:ok, updated} ->
+            conn
+            |> put_view(BlockScoutWeb.API.V1.TagSubmissionsView)
+            |> render(:show, submission: updated)
+
+          {:error, changeset} ->
+            conn
+            |> put_status(:unprocessable_entity)
+            |> json(%{message: format_changeset_errors(changeset)})
+        end
+    end
+  else
+    nil ->
+      conn |> put_status(:not_found) |> json(%{message: "Submission not found"})
+
+    _ ->
+      conn |> put_status(:unauthorized) |> json(%{message: "Not authenticated"})
+  end
+end
+```
+
+- [ ] **Step 2: Commit**
+
+```bash
+git add apps/block_scout_web/lib/block_scout_web/controllers/api/v1/tag_submissions_controller.ex
+git commit -m "feat(api/v1): allow editing a still-pending tag submission"
+```
+
+#### Task 5B — Status-change email + reject-reason capture on decline
+
+**Files:**
+- Modify: `apps/explorer/lib/explorer/account/public_tag_submission.ex` (add status-change emitter)
+- Modify: `apps/block_scout_web/lib/block_scout_web/controllers/api/v1/tag_submission_actions_controller.ex` (capture `reject_reason` on decline; trigger requester email)
+- Create: `apps/block_scout_web/lib/block_scout_web/notifications/public_tag_submission_notifier.ex`
+
+- [ ] **Step 1: Notifier module**
+
+```elixir
+defmodule BlockScoutWeb.Notifications.PublicTagSubmissionNotifier do
+  @moduledoc "Sends approved/rejected emails to the requester of a public tag submission."
+
+  import Bamboo.Email
+
+  alias Explorer.Account.PublicTagSubmission
+  alias Explorer.Mailer
+
+  require Logger
+
+  def notify_status_change(%PublicTagSubmission{status: "approved"} = s), do: send(:approved, s)
+  def notify_status_change(%PublicTagSubmission{status: "rejected"} = s), do: send(:rejected, s)
+  def notify_status_change(_), do: :ok
+
+  defp send(kind, %PublicTagSubmission{} = s) do
+    sender =
+      Application.get_env(:explorer, Explorer.Account)[:sendgrid][:sender] || "hello@vinuchain.org"
+
+    email =
+      new_email(
+        to: s.requester_email,
+        from: sender,
+        subject: subject(kind, s),
+        text_body: body(kind, s)
+      )
+
+    Mailer.deliver_now(email)
+  rescue
+    error -> Logger.warning("Public tag submission requester notification failed: #{inspect(error)}")
+  end
+
+  defp subject(:approved, s), do: "Your public tag '#{s.tag_name}' was approved"
+  defp subject(:rejected, s), do: "Your public tag '#{s.tag_name}' was declined"
+
+  defp body(:approved, s) do
+    """
+    Your public tag '#{s.tag_name}' for address #{s.address_hash} has been approved and is
+    now visible on VinuChain Explorer.
+
+    Thanks for contributing!
+    """
+  end
+
+  defp body(:rejected, s) do
+    reason = if s.reject_reason && s.reject_reason != "", do: s.reject_reason, else: "No reason was provided."
+
+    """
+    Your public tag '#{s.tag_name}' for address #{s.address_hash} was declined.
+
+    Reason: #{reason}
+
+    You can submit a revised request from the explorer if you'd like to try again.
+    """
+  end
+end
+```
+
+- [ ] **Step 2: Wire the notifier into the magic-link decline flow**
+
+In `apps/block_scout_web/lib/block_scout_web/controllers/api/v1/tag_submission_actions_controller.ex`:
+
+a) `show/2` and `create/2` accept an optional `reject_reason` query param when `action == :decline`. The confirm-page form (rendered HTML inside `confirm_page/3`) gains a `<textarea name="reject_reason">` for declines.
+
+b) `decline_submission/1` writes `reject_reason` onto the row alongside `status: "rejected"`.
+
+c) Both `approve_submission/1` and `decline_submission/1`, on success, call:
+
+```elixir
+Task.start(fn ->
+  BlockScoutWeb.Notifications.PublicTagSubmissionNotifier.notify_status_change(updated)
+end)
+```
+
+- [ ] **Step 3: Tests**
+
+Add to `apps/block_scout_web/test/block_scout_web/controllers/api/v1/tag_submission_actions_controller_test.exs` (or its equivalent) cases for:
+
+```elixir
+test "decline sets reject_reason and queues an email", %{conn: conn} do
+  # Bamboo.SentEmail.start_link() in conn_case if not already
+  submission = insert(:account_public_tag_submission, status: "pending")
+  token = PublicTagSubmissionToken.sign(%{submission_id: submission.id, action: :decline})
+
+  conn
+  |> post(~p"/api/v1/public-tag-submissions/action?token=#{token}", %{"reject_reason" => "Duplicate of existing tag"})
+  |> response(200)
+
+  reloaded = Repo.account_repo().get!(PublicTagSubmission, submission.id)
+  assert reloaded.status == "rejected"
+  assert reloaded.reject_reason == "Duplicate of existing tag"
+  assert_email_delivered_with(subject: ~r/declined/i, to: [submission.requester_email])
+end
+```
+
+- [ ] **Step 4: Commit**
+
+```bash
+git add apps/block_scout_web/lib/block_scout_web/notifications/ \
+        apps/block_scout_web/lib/block_scout_web/controllers/api/v1/tag_submission_actions_controller.ex \
+        apps/block_scout_web/test/block_scout_web/controllers/api/v1/tag_submission_actions_controller_test.exs
+git commit -m "feat(public-tags): notify requester + capture reject_reason on decision"
+```
+
+#### Task 11A — FE: status filter dropdown
+
+**Files:**
+- Modify: `ui/publicTags/list/PublicTagApplicationsList.tsx`
+- Create: `ui/publicTags/list/PublicTagApplicationsStatusFilter.tsx`
+
+- [ ] **Step 1: Filter component**
+
+```tsx
+import React from 'react';
+
+import type { PublicTagApplicationStatus } from 'types/api/publicTagSubmissions';
+
+import PopoverFilter from 'ui/shared/filters/PopoverFilter';
+import TableColumnFilter from 'ui/shared/filters/TableColumnFilter';
+
+type Value = PublicTagApplicationStatus | undefined;
+
+interface Props {
+  value: Value;
+  onChange: (next: Value) => void;
+}
+
+const OPTIONS: Array<{ value: PublicTagApplicationStatus; label: string }> = [
+  { value: 'pending', label: 'Pending review' },
+  { value: 'approved', label: 'Approved' },
+  { value: 'rejected', label: 'Rejected' },
+];
+
+const PublicTagApplicationsStatusFilter = ({ value, onChange }: Props) => {
+  return (
+    <PopoverFilter contentProps={{ w: '220px' }} appliedFiltersNum={ value ? 1 : 0 }>
+      <TableColumnFilter
+        title="Status"
+        isTouched={ Boolean(value) }
+        onFilter={ () => undefined }
+        onReset={ () => onChange(undefined) }
+      >
+        { OPTIONS.map((opt) => (
+          <label key={ opt.value } style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <input
+              type="radio"
+              name="public-tag-status"
+              checked={ value === opt.value }
+              onChange={ () => onChange(opt.value) }
+            />
+            { opt.label }
+          </label>
+        )) }
+      </TableColumnFilter>
+    </PopoverFilter>
+  );
+};
+
+export default React.memo(PublicTagApplicationsStatusFilter);
+```
+
+(If the project's existing filter primitive has a different surface, copy it from `ui/transactions/TxsFilters.tsx` or the closest equivalent — do NOT invent new ones.)
+
+- [ ] **Step 2: Wire into the list**
+
+Modify `PublicTagApplicationsList` to thread `filters: { status }` into `useQueryWithPages` so the URL gets a `?status=` param, and pass it into the `ActionBar`.
+
+- [ ] **Step 3: Commit**
+
+```bash
+git add ui/publicTags/list/PublicTagApplicationsStatusFilter.tsx ui/publicTags/list/PublicTagApplicationsList.tsx
+git commit -m "feat(public-tags): filter my-requests by status"
+```
+
+#### Task 11B — FE: Edit-pending-submission modal
+
+**Files:**
+- Create: `ui/publicTags/list/PublicTagApplicationEditModal.tsx`
+- Modify: `lib/api/services/admin.ts` — add `public_tag_application_update` PUT resource
+- Modify: `ui/publicTags/list/PublicTagApplicationsTable.tsx` + `…ListItem.tsx` — add an "Edit" button visible only when `status === 'pending'`
+
+- [ ] **Step 1: Add the PUT resource**
+
+In `admin.ts`, add:
+
+```ts
+public_tag_application_update: {
+  path: '/api/v1/chains/:chainId/metadata-submissions/tag/:id',
+  pathParams: [ 'chainId' as const, 'id' as const ],
+},
+```
+
+- [ ] **Step 2: Edit modal**
+
+```tsx
+import React from 'react';
+import { useForm, FormProvider } from 'react-hook-form';
+
+import type { PublicTagApplicationRow } from 'types/api/publicTagSubmissions';
+
+import appConfig from 'configs/app';
+import useApiFetch from 'lib/api/useApiFetch';
+import { Button } from 'toolkit/chakra/button';
+import { DialogBody, DialogContent, DialogFooter, DialogHeader, DialogRoot } from 'toolkit/chakra/dialog';
+import { FormFieldText } from 'toolkit/components/forms/fields/FormFieldText';
+
+interface FormValues {
+  name: string;
+  description: string;
+  companyName: string;
+  companyWebsite: string;
+}
+
+interface Props {
+  open: boolean;
+  onOpenChange: ({ open }: { open: boolean }) => void;
+  row: PublicTagApplicationRow;
+  onSaved: () => void;
+}
+
+const PublicTagApplicationEditModal = ({ open, onOpenChange, row, onSaved }: Props) => {
+  const apiFetch = useApiFetch();
+  const form = useForm<FormValues>({
+    defaultValues: {
+      name: row.tag_name,
+      description: row.description ?? '',
+      companyName: row.company_name ?? '',
+      companyWebsite: '',
+    },
+  });
+
+  const onSubmit = form.handleSubmit(async(values) => {
+    await apiFetch('admin:public_tag_application_update', {
+      pathParams: { chainId: appConfig.chain.id, id: String(row.id) },
+      fetchParams: {
+        method: 'PUT',
+        body: {
+          submission: {
+            name: values.name,
+            tagType: row.tag_type,
+            description: values.description,
+            companyName: values.companyName,
+            companyWebsite: values.companyWebsite,
+          },
+        },
+      },
+    });
+    onSaved();
+    onOpenChange({ open: false });
+  });
+
+  return (
+    <DialogRoot open={ open } onOpenChange={ onOpenChange }>
+      <DialogContent>
+        <DialogHeader>Edit pending request</DialogHeader>
+        <DialogBody>
+          <FormProvider { ...form }>
+            <form onSubmit={ onSubmit } noValidate>
+              <FormFieldText<FormValues> name="name" required placeholder="Tag name"/>
+              <FormFieldText<FormValues> name="description" placeholder="Description" rules={{ maxLength: 500 }} asComponent="Textarea"/>
+              <FormFieldText<FormValues> name="companyName" placeholder="Company name"/>
+              <FormFieldText<FormValues> name="companyWebsite" placeholder="Company website"/>
+            </form>
+          </FormProvider>
+        </DialogBody>
+        <DialogFooter>
+          <Button variant="outline" onClick={ () => onOpenChange({ open: false }) }>Cancel</Button>
+          <Button onClick={ onSubmit } loading={ form.formState.isSubmitting }>Save</Button>
+        </DialogFooter>
+      </DialogContent>
+    </DialogRoot>
+  );
+};
+
+export default React.memo(PublicTagApplicationEditModal);
+```
+
+(Verify Dialog/DialogContent/etc imports against the existing modal in `ui/watchlist/AddressModal/AddressModal.tsx` — copy the exact shape if names differ.)
+
+- [ ] **Step 3: Wire Edit button**
+
+In both table and mobile card components, render a small "Edit" button only when `row.status === 'pending'`. Clicking opens the modal seeded with the row. On save, invalidate the list query.
+
+- [ ] **Step 4: Commit**
+
+```bash
+git add ui/publicTags/list/PublicTagApplicationEditModal.tsx \
+        ui/publicTags/list/PublicTagApplicationsTable.tsx \
+        ui/publicTags/list/PublicTagApplicationsListItem.tsx \
+        ui/publicTags/list/PublicTagApplicationsList.tsx \
+        lib/api/services/admin.ts
+git commit -m "feat(public-tags): edit pending request from my-requests list"
+```
+
+### Updated task ordering (final)
+
+`1 → 2 → 3 → 4 → 5 → 5A → 5B → 6 → 7 → 8 → 9 → 10 → 11 → 11A → 11B → 12 → 13 → 14 → 15`
+
+19 tasks total. Stop point unchanged — pause after Task 7 (backend PR) for user merge + deploy.
+
+---
+
 ## Execution Handoff
 
 Plan complete and saved to `~/vinuexplorer-frontend/docs/superpowers/plans/2026-05-20-public-tag-request-status.md`. Two execution options:
