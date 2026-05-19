@@ -3,7 +3,7 @@
 import { HStack } from '@chakra-ui/react';
 import React from 'react';
 
-import type { MudWorldItem } from 'types/api/mudWorlds';
+import type { MudWorldItem } from 'client/features/chain-variants/mud/types/api';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 

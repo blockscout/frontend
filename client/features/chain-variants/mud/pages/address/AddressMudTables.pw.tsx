@@ -1,7 +1,8 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import { mudTables } from 'mocks/mud/mudTables';
+import { mudTables } from 'client/features/chain-variants/mud/mocks/mud-tables';
+
 import { test, expect } from 'playwright/lib';
 
 import AddressMudTables from './AddressMudTables';

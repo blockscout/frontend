@@ -1,4 +1,4 @@
-import type { MudWorldItem, MudWorldSchema, MudWorldTable } from 'types/api/mudWorlds';
+import type { MudWorldItem, MudWorldSchema, MudWorldTable } from 'client/features/chain-variants/mud/types/api';
 
 import { ADDRESS_PARAMS } from 'client/slices/address/stubs/address-params';
 

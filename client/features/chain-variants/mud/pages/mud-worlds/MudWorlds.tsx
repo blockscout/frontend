@@ -3,15 +3,17 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import { MUD_WORLD } from 'stubs/mud';
+import { MUD_WORLD } from 'client/features/chain-variants/mud/stubs/mud-worlds';
+
 import { generateListStub } from 'stubs/utils';
-import MudWorldsListItem from 'ui/mudWorlds/MudWorldsListItem';
-import MudWorldsTable from 'ui/mudWorlds/MudWorldsTable';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
+
+import MudWorldsListItem from './MudWorldsListItem';
+import MudWorldsTable from './MudWorldsTable';
 
 const MudWorlds = () => {
   const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({

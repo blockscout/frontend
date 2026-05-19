@@ -1,6 +1,5 @@
 /* eslint-disable max-len */
-import type { AddressMudRecord, AddressMudRecords, AddressMudRecordsItem, AddressMudTables } from 'client/features/chain-variants/mud/types/api';
-import type { MudWorldSchema, MudWorldTable } from 'types/api/mudWorlds';
+import type { AddressMudRecord, AddressMudRecords, AddressMudRecordsItem, AddressMudTables, MudWorldSchema, MudWorldTable } from 'client/features/chain-variants/mud/types/api';
 
 export const table1: MudWorldTable = {
   table_full_name: 'tb.store.Tables',
