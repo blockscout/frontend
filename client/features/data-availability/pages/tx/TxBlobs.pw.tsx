@@ -3,7 +3,8 @@ import React from 'react';
 import type { TxQuery } from 'client/slices/tx/hooks/useTxQuery';
 import * as txMock from 'client/slices/tx/mocks/tx';
 
-import * as blobsMock from 'mocks/blobs/blobs';
+import * as blobsMock from 'client/features/data-availability/mocks/blobs';
+
 import { test, expect } from 'playwright/lib';
 
 import TxBlobs from './TxBlobs';

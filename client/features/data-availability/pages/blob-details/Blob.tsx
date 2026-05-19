@@ -5,17 +5,19 @@ import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import BlobEntity from 'client/features/data-availability/components/entity/BlobEntity';
+import { BLOB } from 'client/features/data-availability/stubs';
+
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
-import { BLOB } from 'stubs/blobs';
-import BlobInfo from 'ui/blob/BlobInfo';
 import TextAd from 'ui/shared/ad/TextAd';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import BlobEntity from 'ui/shared/entities/blob/BlobEntity';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
+
+import BlobInfo from './BlobInfo';
 
 const BlobPageContent = () => {
   const router = useRouter();

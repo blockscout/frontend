@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { TxBlob } from 'types/api/blobs';
+import type { TxBlob } from 'client/features/data-availability/types/api';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 

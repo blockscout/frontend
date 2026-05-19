@@ -2,6 +2,25 @@
 
 import type { Transaction } from 'client/slices/tx/types/api';
 
+export interface TxBlob {
+  hash: string;
+  blob_data: string | null;
+  kzg_commitment: string | null;
+  kzg_proof: string | null;
+}
+
+export type TxBlobs = {
+  items: Array<TxBlob>;
+  next_page_params: null;
+};
+
+export interface Blob extends TxBlob {
+  transaction_hashes: Array<{
+    block_consensus: boolean;
+    transaction_hash: string;
+  }>;
+}
+
 export interface TransactionDataAvailability {
   blob_versioned_hashes?: Array<string>;
   blob_gas_used?: string;

@@ -1,4 +1,4 @@
-import type { Blob, TxBlob } from 'types/api/blobs';
+import type { Blob, TxBlob } from 'client/features/data-availability/types/api';
 
 import { TX_HASH } from 'client/slices/tx/stubs/tx';
 

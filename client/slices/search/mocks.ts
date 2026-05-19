@@ -9,7 +9,7 @@ import type {
 
 import { metatag1 } from 'client/features/address-metadata/stubs/search';
 import { tacOperation1 } from 'client/features/chain-variants/tac/mocks/search';
-import { blob1 } from 'client/features/data-availability/stubs/search';
+import { blob1 } from 'client/features/data-availability/mocks/search';
 import { domain1 } from 'client/features/name-services/domains/stubs/search';
 
 export { blob1, domain1, metatag1, tacOperation1 };

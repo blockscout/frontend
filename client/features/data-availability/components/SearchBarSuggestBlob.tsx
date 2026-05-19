@@ -6,7 +6,8 @@ import React from 'react';
 import type { SearchResultBlob } from 'client/features/data-availability/types/api';
 import type { ItemsProps } from 'client/slices/search/components/search-bar/SearchBarSuggest/types';
 
-import * as BlobEntity from 'ui/shared/entities/blob/BlobEntity';
+import * as BlobEntity from 'client/features/data-availability/components/entity/BlobEntity';
+
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 
 const SearchBarSuggestBlob = ({ data }: ItemsProps<SearchResultBlob>) => {

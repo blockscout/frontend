@@ -3,7 +3,8 @@
 import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
-import * as blobUtils from 'lib/blob';
+import guessDataType from 'client/features/data-availability/utils/guess-data-type';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import type { IconName } from 'ui/shared/IconSvg';
 import IconSvg from 'ui/shared/IconSvg';
@@ -23,7 +24,7 @@ const BlobDataType = ({ data, isLoading }: Props) => {
     if (isLoading) {
       return;
     }
-    return blobUtils.guessDataType(data);
+    return guessDataType(data);
   }, [ data, isLoading ]);
 
   const { iconName, label } = (() => {
