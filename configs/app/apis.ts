@@ -1,16 +1,23 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import { pickBy } from 'es-toolkit';
+
 import type { ApiName } from 'client/api/types';
+import { STATS_API_RESOURCES_REFETCH_INTERVAL } from 'client/features/chain-stats/types/config';
+import type { StatsApiResourceNameRefetchInterval } from 'client/features/chain-stats/types/config';
+
+import type { ResourceName } from 'client/api/resources';
 
 import { stripTrailingSlash } from 'toolkit/utils/url';
 
-import { getEnvValue } from './utils';
+import { getEnvValue, parseEnvJson } from './utils';
 
 export interface ApiPropsBase {
   endpoint: string;
   basePath?: string;
   socketEndpoint?: string;
   instanceId?: string;
+  refetchInterval?: Partial<Record<ResourceName, number>>;
 }
 
 export interface ApiPropsFull extends ApiPropsBase {
@@ -158,9 +165,18 @@ const statsApi = (() => {
     return;
   }
 
+  const refetchInterval = (() => {
+    const refetchInterval = parseEnvJson<Record<StatsApiResourceNameRefetchInterval, number>>(getEnvValue('NEXT_PUBLIC_STATS_API_REFETCH_INTERVAL'));
+
+    if (refetchInterval) {
+      return pickBy(refetchInterval, (value, key) => STATS_API_RESOURCES_REFETCH_INTERVAL.includes(key) && typeof value === 'number');
+    }
+  })();
+
   return Object.freeze({
     endpoint: apiHost,
     basePath: stripTrailingSlash(getEnvValue('NEXT_PUBLIC_STATS_API_BASE_PATH') || ''),
+    refetchInterval,
   });
 })();
 

@@ -31,6 +31,13 @@ const ChainIndicators = () => {
       refetchOnMount: false,
       enabled: isStatsFeatureEnabled,
       placeholderData: HOMEPAGE_STATS_MICROSERVICE,
+      refetchInterval: (query) => {
+        if (query.state.status === 'error') {
+          return false;
+        }
+
+        return config.apis.stats?.refetchInterval?.[ 'stats:pages_main' ];
+      },
     },
   });
 
