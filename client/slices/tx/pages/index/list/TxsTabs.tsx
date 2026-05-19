@@ -54,9 +54,9 @@ const TxsTabs = ({ parentTab, tabsHeight, ...rest }: Props) => {
     filters: { filter: 'validated' },
     options: {
       enabled: tab === getTabId('validated', parentTab) ||
-        (parentTab ? tab === parentTab : true) ||
+        (parentTab ? tab === parentTab : false) ||
         !tab ||
-        (!isBlobTxsTab && !isPendingTab && !isWatchlistTab),
+        !(isBlobTxsTab || isPendingTab || isWatchlistTab),
       placeholderData: generateListStub<'general:txs_validated'>(TX, 50, { next_page_params: {
         block_number: 9005713,
         index: 5,
