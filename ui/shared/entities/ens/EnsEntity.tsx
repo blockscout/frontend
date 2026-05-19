@@ -5,6 +5,8 @@ import type * as bens from '@blockscout/bens-types';
 
 import { route } from 'nextjs-routes';
 
+import { safeDisplayName } from 'lib/vns/displayName';
+import { encodeVnsName } from 'lib/vns/encodeVnsName';
 import { Image } from 'toolkit/chakra/image';
 import { Link as LinkToolkit } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
@@ -17,7 +19,7 @@ import { distributeEntityProps, getIconProps } from '../base/utils';
 type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'domain'>;
 
 const Link = chakra((props: LinkProps) => {
-  const defaultHref = route({ pathname: '/name-services/domains/[name]', query: { name: props.domain } });
+  const defaultHref = route({ pathname: '/name-services/domains/[name]', query: { name: encodeVnsName(props.domain) } });
 
   return (
     <EntityBase.Link
@@ -108,10 +110,11 @@ const Icon = (props: IconProps) => {
 type ContentProps = Omit<EntityBase.ContentBaseProps, 'text'> & Pick<EntityProps, 'domain'>;
 
 const Content = chakra((props: ContentProps) => {
+  const { display: safeName } = safeDisplayName(props.domain, 64);
   return (
     <EntityBase.Content
       { ...props }
-      text={ props.domain }
+      text={ safeName }
       truncation="tail"
     />
   );

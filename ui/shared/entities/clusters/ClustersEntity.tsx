@@ -4,6 +4,8 @@ import React from 'react';
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
+import { safeDisplayName, sanitizeAttributeText } from 'lib/vns/displayName';
+import { encodeVnsName } from 'lib/vns/encodeVnsName';
 import { Image } from 'toolkit/chakra/image';
 import { Link as LinkToolkit } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
@@ -19,7 +21,7 @@ const clustersFeature = nameServicesFeature.isEnabled && nameServicesFeature.clu
 type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'clusterName'>;
 
 const Link = chakra((props: LinkProps) => {
-  const defaultHref = route({ pathname: '/name-services/clusters/[name]', query: { name: encodeURIComponent(props.clusterName) } });
+  const defaultHref = route({ pathname: '/name-services/clusters/[name]', query: { name: encodeVnsName(props.clusterName) } });
 
   return (
     <EntityBase.Link
@@ -66,6 +68,7 @@ const Icon = (props: IconProps) => {
     </Box>
   );
 
+  const safeAltName = sanitizeAttributeText(props.clusterName, 64);
   const profileImageElement = (
     <Image
       width={ styles.boxSize }
@@ -73,8 +76,8 @@ const Icon = (props: IconProps) => {
       borderRadius="base"
       mr={ 2 }
       flexShrink={ 0 }
-      src={ `${ clustersFeature?.cdnUrl || '' }/profile-image/${ props.clusterName }` }
-      alt={ `${ props.clusterName } profile` }
+      src={ `${ clustersFeature?.cdnUrl || '' }/profile-image/${ encodeVnsName(props.clusterName) }` }
+      alt={ `${ safeAltName } profile` }
       fallback={ fallbackElement }
     />
   );
@@ -141,7 +144,8 @@ type ContentProps = Omit<EntityBase.ContentBaseProps, 'text'> & Pick<EntityProps
 
 const Content = chakra((props: ContentProps) => {
   const shouldShowTrailingSlash = !props.clusterName.includes('/');
-  const displayName = shouldShowTrailingSlash ? `${ props.clusterName }/` : props.clusterName;
+  const { display: safeName } = safeDisplayName(props.clusterName, 64);
+  const displayName = shouldShowTrailingSlash ? `${ safeName }/` : safeName;
 
   return (
     <EntityBase.Content
