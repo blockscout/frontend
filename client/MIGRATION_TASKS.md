@@ -190,13 +190,13 @@ One PR per chain variant. Each goes under `client/features/chain-variants/<name>
 ### 5-4 · [x] Feature: `chain-variants/suave` · [#3443](https://github.com/blockscout/frontend/issues/3443)
 **Scope:** SUAVE Kettle UI → `client/features/chain-variants/suave/`. See `configs/app/features/suave.ts`.  
 
-### 5-5 · [~] Feature: `chain-variants/mega-eth` · [#3449](https://github.com/blockscout/frontend/issues/3449)
+### 5-5 · [x] Feature: `chain-variants/mega-eth` · [#3449](https://github.com/blockscout/frontend/issues/3449)
 **Scope:** MegaETH Flashblocks UI → `client/features/chain-variants/mega-eth/`. See `configs/app/features/megaEth.ts` and `flashblocks.ts`.  
 
 ### 5-6 · [x] Feature: `chain-variants/beacon-chain` · [#3442](https://github.com/blockscout/frontend/issues/3442)
 **Scope:** Beacon chain deposits/withdrawals UI → `client/features/chain-variants/beacon-chain/`. See `configs/app/features/beaconChain.ts`.  
 
-### 5-7 · [~] Feature: `chain-variants/mud` · [#3450](https://github.com/blockscout/frontend/issues/3450)
+### 5-7 · [x] Feature: `chain-variants/mud` · [#3450](https://github.com/blockscout/frontend/issues/3450)
 
 ---
 
@@ -205,16 +205,16 @@ One PR per chain variant. Each goes under `client/features/chain-variants/<name>
 One PR per feature. Features that are pure infrastructure (analytics, monitoring, A/B flags) were
 migrated to `client/shared/` in 1-2 and do not appear here.
 
-### 6-1 · [~] Feature: `user-ops` · [#3452](https://github.com/blockscout/frontend/issues/3452)
+### 6-1 · [x] Feature: `user-ops` · [#3452](https://github.com/blockscout/frontend/issues/3452)
 
-### 6-2 · [~] Feature: `data-availability` · [#3453](https://github.com/blockscout/frontend/issues/3453)
+### 6-2 · [x] Feature: `data-availability` · [#3453](https://github.com/blockscout/frontend/issues/3453)
 
 ### 6-3 · [ ] Feature: `multichain`
 **Scope:** Includes `lib/multichain/`, `lib/contexts/multichain.tsx`, `ui/snippets/networkMenu/` → `client/features/multichain/`  
 
-### 6-4 · [~] Feature: `name-services` (domains and clusters) · [#3458](https://github.com/blockscout/frontend/issues/3458)
+### 6-4 · [x] Feature: `name-services` (domains and clusters) · [#3458](https://github.com/blockscout/frontend/issues/3458)
 
-### 6-5 · [~] Feature: `account` · [#3456](https://github.com/blockscout/frontend/issues/3456)
+### 6-5 · [x] Feature: `account` · [#3456](https://github.com/blockscout/frontend/issues/3456)
 **Scope:** Includes `lib/hooks/useGetCsrfToken`, `ui/snippets/auth/`, `ui/snippets/user/` → `client/features/account/`  
 
 ### 6-6 · [ ] Feature: `stats`
@@ -230,7 +230,7 @@ migrated to `client/shared/` in 1-2 and do not appear here.
 ### 6-9 · [ ] Feature: `marketplace`
 **Scope:** Includes `lib/contexts/marketplace.tsx`, `lib/hooks/useGraphLinks` → `client/features/marketplace/`  
 
-### 6-10 · [ ] Feature: `rewards`
+### 6-10 · [~] Feature: `rewards` · [#3462](https://github.com/blockscout/frontend/issues/3462)
 **Scope:** Includes `lib/contexts/rewards.tsx`, `lib/hooks/useRewardsActivity` → `client/features/rewards/`  
 
 ### 6-11 · [ ] Feature: `advanced-filter`
