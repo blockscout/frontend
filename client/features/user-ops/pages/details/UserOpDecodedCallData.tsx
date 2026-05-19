@@ -3,7 +3,7 @@
 import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
-import type { UserOp } from 'types/api/userOps';
+import type { UserOp } from 'client/features/user-ops/types/api';
 
 import LogDecodedInputData from 'client/slices/log/components/LogDecodedInputData';
 

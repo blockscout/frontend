@@ -9,7 +9,7 @@ import PageNextJs from 'nextjs/PageNextJs';
 
 import { MultichainProvider } from 'lib/contexts/multichain';
 
-const UserOp = dynamic(() => import('ui/pages/UserOp'), { ssr: false });
+const UserOp = dynamic(() => import('client/features/user-ops/pages/details/UserOp'), { ssr: false });
 
 const Page: NextPage<Props> = (props: Props) => {
   return (

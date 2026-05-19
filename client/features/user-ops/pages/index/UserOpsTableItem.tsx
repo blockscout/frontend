@@ -2,19 +2,20 @@
 
 import React from 'react';
 
-import type { UserOpsItem } from 'types/api/userOps';
+import type { UserOpsItem } from 'client/features/user-ops/types/api';
 import type { ClusterChainConfig } from 'types/multichain';
 
 import AddressStringOrParam from 'client/slices/address/components/entity/AddressStringOrParam';
 import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 
+import UserOpEntity from 'client/features/user-ops/components/entity/UserOpEntity';
+import UserOpStatus from 'client/features/user-ops/components/UserOpStatus';
+
 import config from 'configs/app';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
-import UserOpEntity from 'ui/shared/entities/userOp/UserOpEntity';
 import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
-import UserOpStatus from 'ui/shared/userOps/UserOpStatus';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 type Props = {

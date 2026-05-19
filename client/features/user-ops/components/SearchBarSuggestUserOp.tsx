@@ -6,7 +6,8 @@ import React from 'react';
 import type { SearchResultUserOp } from 'client/features/user-ops/types/api';
 import type { ItemsProps } from 'client/slices/search/components/search-bar/SearchBarSuggest/types';
 
-import * as UserOpEntity from 'ui/shared/entities/userOp/UserOpEntity';
+import * as UserOpEntity from 'client/features/user-ops/components/entity/UserOpEntity';
+
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import Time from 'ui/shared/time/Time';
 

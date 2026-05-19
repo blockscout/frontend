@@ -14,7 +14,7 @@ import { domain1 } from 'client/features/name-services/domains/stubs/search';
 
 export { blob1, domain1, metatag1, tacOperation1 };
 export { metatag2, metatag3 } from 'client/features/address-metadata/stubs/search';
-export { userOp1 } from 'client/features/user-ops/stubs/search';
+export { userOp1 } from 'client/features/user-ops/mocks/search';
 
 export const token1: SearchResultToken = {
   address_hash: '0x377c5F2B300B25a534d4639177873b7fEAA56d4B',

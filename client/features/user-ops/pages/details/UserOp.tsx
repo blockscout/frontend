@@ -14,17 +14,19 @@ import TxTokenTransfer from 'client/slices/token-transfer/pages/tx/TxTokenTransf
 import useTxQuery from 'client/slices/tx/hooks/useTxQuery';
 import TxLogs from 'client/slices/tx/pages/details/logs/TxLogs';
 
+import { USER_OP } from 'client/features/user-ops/stubs';
+
 import throwOnAbsentParamError from 'client/shared/errors/throw-on-absent-param-error';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
-import { USER_OP } from 'stubs/userOps';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import TextAd from 'ui/shared/ad/TextAd';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import UserOpDetails from 'ui/userOp/UserOpDetails';
-import UserOpRaw from 'ui/userOp/UserOpRaw';
-import UserOpSubHeading from 'ui/userOp/UserOpSubHeading';
+
+import UserOpDetails from './UserOpDetails';
+import UserOpRaw from './UserOpRaw';
+import UserOpSubHeading from './UserOpSubHeading';
 
 const UserOp = () => {
   const router = useRouter();

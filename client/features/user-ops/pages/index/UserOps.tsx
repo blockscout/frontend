@@ -2,12 +2,14 @@
 
 import React from 'react';
 
+import { USER_OPS_ITEM } from 'client/features/user-ops/stubs';
+
 import config from 'configs/app';
-import { USER_OPS_ITEM } from 'stubs/userOps';
 import { generateListStub } from 'stubs/utils';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
-import UserOpsContent from 'ui/userOps/UserOpsContent';
+
+import UserOpsContent from './UserOpsContent';
 
 const UserOps = () => {
   const query = useQueryWithPages({

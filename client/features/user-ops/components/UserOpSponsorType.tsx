@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { UserOpSponsorType as TUserOpSponsorType } from 'types/api/userOps';
+import type { UserOpSponsorType as TUserOpSponsorType } from 'client/features/user-ops/types/api';
 
 import { Badge } from 'toolkit/chakra/badge';
 

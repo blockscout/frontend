@@ -47,6 +47,7 @@ import AddressEnsDomains from 'client/features/name-services/domains/pages/addre
 import SolidityscanReport from 'client/features/solidity-scan/components/SolidityscanReport';
 import AddressAccountHistory from 'client/features/tx-interpretation/noves/pages/address/AddressAccountHistory';
 import AddressUserOps from 'client/features/user-ops/pages/address/AddressUserOps';
+import { USER_OPS_ACCOUNT } from 'client/features/user-ops/stubs';
 import TokenAddToWallet from 'client/features/web3-wallet/components/TokenAddToWallet';
 
 import getChainValidationActionText from 'client/shared/chain/get-chain-validation-action-text';
@@ -57,7 +58,6 @@ import config from 'configs/app';
 import { useAddressClusters } from 'lib/clusters/useAddressClusters';
 import useIsSafeAddress from 'lib/hooks/useIsSafeAddress';
 import useFetchXStarScore from 'lib/xStarScore/useFetchXStarScore';
-import { USER_OPS_ACCOUNT } from 'stubs/userOps';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu';
 import TextAd from 'ui/shared/ad/TextAd';

@@ -8,8 +8,9 @@ import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/pagination/Pagination';
 import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
-import UserOpsListItem from 'ui/userOps/UserOpsListItem';
-import UserOpsTable from 'ui/userOps/UserOpsTable';
+
+import UserOpsListItem from './UserOpsListItem';
+import UserOpsTable from './UserOpsTable';
 
 type Props = {
   query: QueryWithPagesResult<'general:user_ops'>;

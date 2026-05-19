@@ -12,6 +12,7 @@ import type {
 import type {
   OptimisticL2DepositsItem,
 } from 'client/features/rollup/optimism/types/api';
+import type { UserOpsResponse, UserOp, UserOpsFilters, UserOpsAccount } from 'client/features/user-ops/types/api';
 import type { Block } from 'client/slices/block/types/api';
 import type { HomeStats } from 'client/slices/home/types/api';
 import type { SearchRedirectResult, SearchResult, SearchResultFilters, SearchResultItem } from 'client/slices/search/types/api';
@@ -25,7 +26,6 @@ import type { BackendConfig, BackendVersionConfig, CeloConfig, ContractLanguages
 import type { IndexingStatus } from 'types/api/indexingStatus';
 import type { NovesAccountHistoryResponse, NovesDescribeTxsResponse, NovesResponseData } from 'types/api/noves';
 import type { TxInterpretationResponse } from 'types/api/txInterpretation';
-import type { UserOpsResponse, UserOp, UserOpsFilters, UserOpsAccount } from 'types/api/userOps';
 import type {
   ValidatorsStabilityCountersResponse,
   ValidatorsStabilityFilters,
