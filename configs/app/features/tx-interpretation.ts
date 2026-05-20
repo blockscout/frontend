@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { Feature } from './types';
-import type { Provider } from 'types/client/txInterpretation';
-import { PROVIDERS } from 'types/client/txInterpretation';
+import type { Provider } from 'client/features/tx-interpretation/common/types/config';
+import { PROVIDERS } from 'client/features/tx-interpretation/common/types/config';
 
 import { getEnvValue } from '../utils';
 

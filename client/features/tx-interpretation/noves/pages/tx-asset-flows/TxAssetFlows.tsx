@@ -10,7 +10,8 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 
-import { NOVES_TRANSLATE } from 'stubs/noves/NovesTranslate';
+import { NOVES_TRANSLATE } from 'client/features/tx-interpretation/noves/stubs';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import ActionBar from 'ui/shared/ActionBar';

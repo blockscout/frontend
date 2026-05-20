@@ -4,16 +4,15 @@ import { Box } from '@chakra-ui/react';
 import type { FC } from 'react';
 import React from 'react';
 
-import type { NovesResponseData } from 'types/api/noves';
+import type { NovesResponseData } from 'client/features/tx-interpretation/noves/types/api';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 
+import { getActionFromTo, getFromTo } from 'client/features/tx-interpretation/noves/utils/from-to';
 import type { NovesFlowViewItem } from 'client/features/tx-interpretation/noves/utils/generateFlowViewData';
 
 import { Badge } from 'toolkit/chakra/badge';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-
-import { getActionFromTo, getFromTo } from './utils';
 
 interface Props {
   isLoaded: boolean;

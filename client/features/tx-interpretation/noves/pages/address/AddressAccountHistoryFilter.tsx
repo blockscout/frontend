@@ -3,7 +3,7 @@
 import { createListCollection } from '@chakra-ui/react';
 import React from 'react';
 
-import type { NovesHistoryFilterValue } from 'types/api/noves';
+import type { NovesHistoryFilterValue } from 'client/features/tx-interpretation/noves/types/api';
 
 import useIsInitialLoading from 'client/shared/hooks/useIsInitialLoading';
 

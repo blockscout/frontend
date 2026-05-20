@@ -19,7 +19,7 @@ type AddressProfileAPIConfig = {
 import type { GasRefuelProviderConfig } from 'types/client/gasRefuelProviderConfig';
 import { GAS_UNITS } from 'client/slices/gas/types/config';
 import type { GasUnit } from 'client/slices/gas/types/config';
-import { PROVIDERS as TX_INTERPRETATION_PROVIDERS } from 'types/client/txInterpretation';
+import { PROVIDERS as TX_INTERPRETATION_PROVIDERS } from 'client/features/tx-interpretation/common/types/config';
 import { VALIDATORS_CHAIN_TYPE } from 'types/client/validators';
 import type { ValidatorsChainType } from 'types/client/validators';
 import type { WalletType } from 'types/client/wallets';

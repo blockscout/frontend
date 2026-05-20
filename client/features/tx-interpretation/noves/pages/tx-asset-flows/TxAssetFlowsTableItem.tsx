@@ -2,8 +2,9 @@
 
 import React from 'react';
 
+import NovesFromTo from 'client/features/tx-interpretation/noves/components/NovesFromTo';
+
 import { TableRow, TableCell } from 'toolkit/chakra/table';
-import NovesFromTo from 'ui/shared/Noves/NovesFromTo';
 
 import NovesActionSnippet from '../../components/NovesActionSnippet';
 import type { NovesFlowViewItem } from '../../utils/generateFlowViewData';

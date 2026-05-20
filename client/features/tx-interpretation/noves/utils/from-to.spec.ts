@@ -1,9 +1,9 @@
+import * as transactionMock from 'client/features/tx-interpretation/noves/mocks';
 import type { NovesFlowViewItem } from 'client/features/tx-interpretation/noves/utils/generateFlowViewData';
 
-import * as transactionMock from 'mocks/noves/transaction';
 import { it, expect } from 'vitest';
 
-import { getActionFromTo, getFromTo, getFromToValue } from './utils';
+import { getActionFromTo, getFromTo, getFromToValue } from './from-to';
 
 it('get data for FromTo component from transaction', async() => {
   const result = getFromTo(transactionMock.transaction, transactionMock.transaction.accountAddress);

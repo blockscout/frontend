@@ -1,4 +1,5 @@
-import * as transactionMock from 'mocks/noves/transaction';
+import * as transactionMock from 'client/features/tx-interpretation/noves/mocks';
+
 import { it, expect } from 'vitest';
 
 import { createNovesSummaryObject } from './createNovesSummaryObject';

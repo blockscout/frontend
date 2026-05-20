@@ -1,4 +1,4 @@
-import type { TxInterpretationResponse } from 'types/api/txInterpretation';
+import type { TxInterpretationResponse } from 'client/features/tx-interpretation/common/types/api';
 
 import { TOKEN_INFO_ERC_20 } from 'client/slices/token/stubs';
 
