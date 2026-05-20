@@ -258,7 +258,7 @@ migrated to `client/shared/` in 1-2 and do not appear here.
 ### 6-20 · [ ] Feature: `visualize`
 **Scope:** Solidity-to-UML diagrams. See `configs/app/features/sol2uml.ts`.  
 
-### 6-21 · [ ] Feature: `tx-interpretation`
+### 6-21 · [~] Feature: `tx-interpretation` · [#3471](https://github.com/blockscout/frontend/issues/3471)
 
 ### 6-22 · [ ] Feature: `public-tags` (merge with `address-metadata`)
 **Scope:** Community address labels. See `configs/app/features/publicTagsSubmission.ts`.  
