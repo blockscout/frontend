@@ -3,9 +3,9 @@
 import { castArray } from 'es-toolkit/compat';
 import React from 'react';
 
+import type { AdvancedFilterAge } from 'client/features/advanced-filter/types/api';
 import { ZETA_CHAIN_CCTX_COIN_TYPE_FILTER, type ZetaChainCCTXFilterParams } from 'client/features/chain-variants/zeta-chain/types/client';
 import type { TokenInfo } from 'client/slices/token/types/api';
-import type { AdvancedFilterAge } from 'types/api/advancedFilter';
 
 import TableColumnFilterWrapper from 'ui/shared/filters/TableColumnFilterWrapper';
 

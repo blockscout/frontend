@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { AdvancedFilterAge, AdvancedFilterParams } from 'types/api/advancedFilter';
+import type { AdvancedFilterAge, AdvancedFilterParams } from '../../types/api';
 
 import BaseAgeFilter, { type DateConverter } from './BaseAgeFilter';
 

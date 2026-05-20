@@ -1,19 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import type { AdvancedFilterParams } from '../types/api';
+import type { TxTableColumn } from '../types/client';
 import type { TokenInfo } from 'client/slices/token/types/api';
-import { getTokenTypes } from 'client/slices/token/utils/token-types';
-import type { ClusterChainConfig } from 'types/multichain';
 
 import config from 'configs/app';
-
-export type ColumnsIds = 'tx_hash' | 'type' | 'method' | 'age' | 'from' | 'or_and' | 'to' | 'amount' | 'asset' | 'fee';
-
-type TxTableColumn = {
-  id: ColumnsIds;
-  name: string;
-  width: string;
-  isNumeric?: boolean;
-};
 
 export const TABLE_COLUMNS: Array<TxTableColumn> = [
   {
@@ -70,32 +61,6 @@ export const TABLE_COLUMNS: Array<TxTableColumn> = [
   },
 ] as const;
 
-export const getAdvancedFilterTypes = (chainConfig?: Array<ClusterChainConfig['app_config']> | ClusterChainConfig['app_config'], withAll = false) => {
-  return [
-    ...(withAll ? [ {
-      id: 'all',
-      name: 'All',
-    } ] : []),
-    {
-      id: 'coin_transfer',
-      name: 'Coin Transfer',
-    },
-    ...Object.entries(getTokenTypes(false, chainConfig))
-      .map(([ id, name ]) => ({
-        id,
-        name: `${ name } Transfer`,
-      })),
-    {
-      id: 'contract_creation',
-      name: 'Contract Creation',
-    },
-    {
-      id: 'contract_interaction',
-      name: 'Contract Interaction',
-    },
-  ];
-};
-
 export const NATIVE_TOKEN = {
   name: config.chain.currency.name || '',
   icon_url: '',
@@ -103,3 +68,24 @@ export const NATIVE_TOKEN = {
   address_hash: 'native',
   type: 'ERC-20' as const,
 } as TokenInfo;
+
+export const FILTER_PARAM_NAMES: Record<keyof AdvancedFilterParams, string> = {
+  // we don't show address_relation as filter tag
+  address_relation: '',
+  age: 'Age',
+  age_from: 'Date from',
+  age_to: 'Date to',
+  amount_from: 'Amount from',
+  amount_to: 'Amount to',
+  from_address_hashes_to_exclude: 'From Exc',
+  from_address_hashes_to_include: 'From',
+  methods: 'Methods',
+  methods_names: '',
+  to_address_hashes_to_exclude: 'To Exc',
+  to_address_hashes_to_include: 'To',
+  token_contract_address_hashes_to_exclude: 'Asset Exc',
+  token_contract_symbols_to_exclude: '',
+  token_contract_address_hashes_to_include: 'Asset',
+  token_contract_symbols_to_include: '',
+  transaction_types: 'Type',
+};

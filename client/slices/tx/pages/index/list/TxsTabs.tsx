@@ -11,6 +11,7 @@ import { TX } from 'client/slices/tx/stubs/tx';
 
 import useIsAuth from 'client/features/account/hooks/useIsAuth';
 import TxsWatchlist from 'client/features/account/pages/tx-index-watchlist/TxsWatchlist';
+import AdvancedFilterLink from 'client/features/advanced-filter/components/AdvancedFilterLink';
 
 import getChainValidationActionText from 'client/shared/chain/get-chain-validation-action-text';
 import useIsInitialLoading from 'client/shared/hooks/useIsInitialLoading';
@@ -22,7 +23,6 @@ import { useMultichainContext } from 'lib/contexts/multichain';
 import { generateListStub } from 'stubs/utils';
 import type { RoutedTabsProps } from 'toolkit/components/RoutedTabs/RoutedTabs';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import AdvancedFilterLink from 'ui/shared/links/AdvancedFilterLink';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 

@@ -1,8 +1,9 @@
 /* eslint-disable react/jsx-no-bind */
 import React from 'react';
 
+import type { ColumnsIds } from '../types/client';
+
 import { test, expect } from 'playwright/lib';
-import type { ColumnsIds } from 'ui/advancedFilter/constants';
 
 import FilterByColumn from './FilterByColumn';
 

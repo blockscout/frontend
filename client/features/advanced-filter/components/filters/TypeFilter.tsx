@@ -4,13 +4,13 @@ import { Flex } from '@chakra-ui/react';
 import { isEqual, without } from 'es-toolkit';
 import React from 'react';
 
-import type { AdvancedFilterParams, AdvancedFilterType } from 'types/api/advancedFilter';
+import type { AdvancedFilterParams, AdvancedFilterType } from '../../types/api';
 
 import { useMultichainContext } from 'lib/contexts/multichain';
 import { Checkbox, CheckboxGroup } from 'toolkit/chakra/checkbox';
 import TableColumnFilter from 'ui/shared/filters/TableColumnFilter';
 
-import { getAdvancedFilterTypes } from '../constants';
+import { getAdvancedFilterTypes } from '../../utils/lib';
 
 const RESET_VALUE = 'all';
 

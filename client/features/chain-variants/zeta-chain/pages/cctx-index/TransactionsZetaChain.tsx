@@ -13,6 +13,7 @@ import { TX } from 'client/slices/tx/stubs/tx';
 
 import useIsAuth from 'client/features/account/hooks/useIsAuth';
 import TxsWatchlist from 'client/features/account/pages/tx-index-watchlist/TxsWatchlist';
+import AdvancedFilterLink from 'client/features/advanced-filter/components/AdvancedFilterLink';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
@@ -21,7 +22,6 @@ import config from 'configs/app';
 import { generateListStub } from 'stubs/utils';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import ActionBar from 'ui/shared/ActionBar';
-import AdvancedFilterLink from 'ui/shared/links/AdvancedFilterLink';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';

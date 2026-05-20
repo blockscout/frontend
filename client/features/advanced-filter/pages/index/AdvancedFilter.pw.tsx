@@ -1,8 +1,8 @@
 import React from 'react';
 
-import * as advancedFilterMock from 'mocks/advancedFilter/advancedFilter';
 import { test, expect } from 'playwright/lib';
 
+import * as advancedFilterMock from '../../mocks';
 import AdvancedFilter from './AdvancedFilter';
 
 test('base view +@dark-mode', async({ render, mockApiResponse, mockTextAd }) => {

@@ -11,6 +11,8 @@ import TxsWithFrontendSorting from 'client/slices/tx/pages/index/list/TxsWithFro
 import TxsStats from 'client/slices/tx/pages/index/stats/TxsStats';
 import { TX } from 'client/slices/tx/stubs/tx';
 
+import AdvancedFilterLink from 'client/features/advanced-filter/components/AdvancedFilterLink';
+
 import getChainValidationActionText from 'client/shared/chain/get-chain-validation-action-text';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
@@ -18,7 +20,6 @@ import getQueryParamString from 'client/shared/router/get-query-param-string';
 import config from 'configs/app';
 import { generateListStub } from 'stubs/utils';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import AdvancedFilterLink from 'ui/shared/links/AdvancedFilterLink';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 

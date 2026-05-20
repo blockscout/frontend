@@ -3,12 +3,14 @@
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
+import type { ColumnsIds } from '../types/client';
+
 import { Button } from 'toolkit/chakra/button';
 import { Checkbox, CheckboxGroup } from 'toolkit/chakra/checkbox';
 import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
-import type { ColumnsIds } from 'ui/advancedFilter/constants';
-import { TABLE_COLUMNS } from 'ui/advancedFilter/constants';
 import IconSvg from 'ui/shared/IconSvg';
+
+import { TABLE_COLUMNS } from '../utils/consts';
 
 interface Props {
   columns: Record<ColumnsIds, boolean>;

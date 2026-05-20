@@ -4,8 +4,8 @@ import { Flex, Text, Spinner, createListCollection } from '@chakra-ui/react';
 import { isEqual } from 'es-toolkit';
 import React from 'react';
 
+import type { AdvancedFilterParams } from '../../types/api';
 import type { TokenInfo } from 'client/slices/token/types/api';
-import type { AdvancedFilterParams } from 'types/api/advancedFilter';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
@@ -21,7 +21,7 @@ import { ClearButton } from 'toolkit/components/buttons/ClearButton';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import TableColumnFilter from 'ui/shared/filters/TableColumnFilter';
 
-import { NATIVE_TOKEN } from '../constants';
+import { NATIVE_TOKEN } from '../../utils/consts';
 
 const FILTER_PARAM_INCLUDE = 'token_contract_address_hashes_to_include';
 const FILTER_PARAM_EXCLUDE = 'token_contract_address_hashes_to_exclude';

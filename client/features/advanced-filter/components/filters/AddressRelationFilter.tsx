@@ -3,7 +3,7 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import { type AdvancedFilterParams } from 'types/api/advancedFilter';
+import { type AdvancedFilterParams } from '../../types/api';
 
 import { Radio, RadioGroup } from 'toolkit/chakra/radio';
 

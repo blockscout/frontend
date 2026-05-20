@@ -5,7 +5,7 @@ import React from 'react';
 
 import PageNextJs from 'nextjs/PageNextJs';
 
-import AdvancedFilter from 'ui/pages/AdvancedFilter';
+import AdvancedFilter from 'client/features/advanced-filter/pages/index/AdvancedFilter';
 
 const Page: NextPage = () => {
   return (

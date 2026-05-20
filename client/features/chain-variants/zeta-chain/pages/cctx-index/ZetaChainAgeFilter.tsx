@@ -1,11 +1,12 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import type { AdvancedFilterAge } from 'client/features/advanced-filter/types/api';
 import type { ZetaChainCCTXFilterParams } from 'client/features/chain-variants/zeta-chain/types/client';
-import type { AdvancedFilterAge } from 'types/api/advancedFilter';
+
+import BaseAgeFilter, { type DateConverter } from 'client/features/advanced-filter/components/filters/BaseAgeFilter';
 
 import dayjs from 'lib/date/dayjs';
 import { SECOND } from 'toolkit/utils/consts';
-import BaseAgeFilter, { type DateConverter } from 'ui/advancedFilter/filters/BaseAgeFilter';
 
 const FILTER_PARAM_FROM = 'start_timestamp';
 const FILTER_PARAM_TO = 'end_timestamp';

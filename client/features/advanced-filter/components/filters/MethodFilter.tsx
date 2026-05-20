@@ -4,7 +4,7 @@ import { Flex, Spinner, chakra } from '@chakra-ui/react';
 import { isEqual, differenceBy } from 'es-toolkit';
 import React from 'react';
 
-import type { AdvancedFilterMethodInfo, AdvancedFilterParams } from 'types/api/advancedFilter';
+import type { AdvancedFilterMethodInfo, AdvancedFilterParams } from '../../types/api';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { CctxListItem } from '@blockscout/zetachain-cctx-types';
-import type { AdvancedFilterAge } from 'types/api/advancedFilter';
+import type { AdvancedFilterAge } from 'client/features/advanced-filter/types/api';
 import type { ExternalChain } from 'types/externalChains';
 
 export interface SearchResultZetaChainCCTX {

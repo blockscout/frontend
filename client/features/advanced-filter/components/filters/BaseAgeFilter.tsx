@@ -5,7 +5,7 @@ import { isEqual } from 'es-toolkit';
 import type { ChangeEvent } from 'react';
 import React from 'react';
 
-import { ADVANCED_FILTER_AGES, type AdvancedFilterAge } from 'types/api/advancedFilter';
+import { ADVANCED_FILTER_AGES, type AdvancedFilterAge } from '../../types/api';
 
 import dayjs from 'lib/date/dayjs';
 import { Input } from 'toolkit/chakra/input';
@@ -14,7 +14,7 @@ import { ndash } from 'toolkit/utils/htmlEntities';
 import TableColumnFilter from 'ui/shared/filters/TableColumnFilter';
 import TagGroupSelect from 'ui/shared/tagGroupSelect/TagGroupSelect';
 
-import { getDurationFromAge } from '../lib';
+import { getDurationFromAge } from '../../utils/lib';
 
 const defaultValue = { age: '', from: '', to: '' } as const;
 type AgeFromToValue = { age: AdvancedFilterAge | ''; from: string; to: string };

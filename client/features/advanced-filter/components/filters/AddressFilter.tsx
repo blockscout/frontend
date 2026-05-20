@@ -5,7 +5,7 @@ import { isEqual } from 'es-toolkit';
 import type { ChangeEvent } from 'react';
 import React from 'react';
 
-import type { AdvancedFilterParams } from 'types/api/advancedFilter';
+import type { AdvancedFilterParams } from '../../types/api';
 
 import { Field } from 'toolkit/chakra/field';
 import { Input } from 'toolkit/chakra/input';
