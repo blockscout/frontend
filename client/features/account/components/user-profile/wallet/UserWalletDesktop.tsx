@@ -5,8 +5,8 @@ import React from 'react';
 
 import useWeb3AccountWithDomain from 'client/features/connect-wallet/hooks/useAccountWithDomain';
 import useWeb3Wallet from 'client/features/connect-wallet/hooks/useWallet';
+import { useMarketplaceContext } from 'client/features/marketplace/context';
 
-import { useMarketplaceContext } from 'lib/contexts/marketplace';
 import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 

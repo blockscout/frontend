@@ -18,6 +18,7 @@ import useQueryClientConfig from 'client/api/hooks/useQueryClientConfig';
 import { SocketProvider } from 'client/api/socket/context';
 
 import { CsvExportContextProvider } from 'client/features/csv-export/utils/context';
+import { MarketplaceContextProvider } from 'client/features/marketplace/context';
 
 import { initGrowthBook } from 'client/shared/feature-flags/init';
 import useLoadFeatures from 'client/shared/feature-flags/useLoadFeatures';
@@ -26,7 +27,6 @@ import { clientConfig as rollbarConfig, Provider as RollbarProvider } from 'clie
 import config from 'configs/app';
 import { AppContextProvider } from 'lib/contexts/app';
 import { FallbackProvider } from 'lib/contexts/fallback';
-import { MarketplaceContextProvider } from 'lib/contexts/marketplace';
 import { SettingsContextProvider } from 'lib/contexts/settings';
 import { Provider as ChakraProvider } from 'toolkit/chakra/provider';
 import { Toaster } from 'toolkit/chakra/toaster';

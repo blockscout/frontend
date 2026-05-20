@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { EssentialDappsChainConfig } from 'types/client/marketplace';
+import type { EssentialDappsChainConfig } from 'client/features/marketplace/types/client';
 
 import config from 'configs/app';
 import { isBrowser } from 'toolkit/utils/isBrowser';

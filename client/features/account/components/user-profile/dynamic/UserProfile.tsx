@@ -5,8 +5,7 @@ import { DynamicConnectButton, DynamicUserProfile, useDynamicContext, useIsLogge
 import React from 'react';
 
 import useWalletDynamic from 'client/features/connect-wallet/hooks/wallet/useWalletDynamic';
-
-import { useMarketplaceContext } from 'lib/contexts/marketplace';
+import { useMarketplaceContext } from 'client/features/marketplace/context';
 
 import UserProfileButton from './UserProfileButton';
 import UserProfilePopover from './UserProfilePopover';

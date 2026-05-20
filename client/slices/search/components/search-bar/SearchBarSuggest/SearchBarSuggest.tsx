@@ -17,6 +17,7 @@ import ExternalSearchItem from 'client/features/chain-variants/zeta-chain/compon
 import SearchBarSuggestZetaChainCCTX from 'client/features/chain-variants/zeta-chain/components/SearchBarSuggestZetaChainCCTX';
 import type { ExternalSearchItem as ExternalSearchItemType } from 'client/features/chain-variants/zeta-chain/utils/external-search';
 import SearchBarSuggestApp from 'client/features/marketplace/components/SearchBarSuggestApp';
+import useMarketplaceApps from 'client/features/marketplace/hooks/useMarketplaceApps';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
@@ -26,7 +27,6 @@ import { useSettingsContext } from 'lib/contexts/settings';
 import AdaptiveTabs from 'toolkit/components/AdaptiveTabs/AdaptiveTabs';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 import * as regexp from 'toolkit/utils/regexp';
-import useMarketplaceApps from 'ui/marketplace/useMarketplaceApps';
 import TextAd from 'ui/shared/ad/TextAd';
 
 import SearchBarSuggestBlockCountdown from './SearchBarSuggestBlockCountdown';

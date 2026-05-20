@@ -1,5 +1,5 @@
 import * as yup from 'yup';
-import type { MarketplaceAppBase, MarketplaceAppSocialInfo, EssentialDappsConfig, MarketplaceTitles } from 'types/client/marketplace';
+import type { MarketplaceAppBase, MarketplaceAppSocialInfo, EssentialDappsConfig, MarketplaceTitles } from 'client/features/marketplace/types/client';
 import { urlTest } from '../../utils';
 import { replaceQuotes } from 'configs/app/utils';
 
