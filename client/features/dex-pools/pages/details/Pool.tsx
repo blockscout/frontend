@@ -9,22 +9,23 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import * as addressStubs from 'client/slices/address/stubs/address';
 
+import * as PoolEntity from 'client/features/dex-pools/components/entity/PoolEntity';
+import PoolInfo from 'client/features/dex-pools/pages/details/PoolInfo';
+import { POOL } from 'client/features/dex-pools/stubs';
+import getPoolLinks from 'client/features/dex-pools/utils/get-pool-links';
+import { getPoolTitle } from 'client/features/dex-pools/utils/get-pool-title';
+
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import config from 'configs/app';
-import getPoolLinks from 'lib/pools/getPoolLinks';
-import { getPoolTitle } from 'lib/pools/getPoolTitle';
-import { POOL } from 'stubs/pools';
 import { Image } from 'toolkit/chakra/image';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tag } from 'toolkit/chakra/tag';
-import PoolInfo from 'ui/pool/PoolInfo';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import * as PoolEntity from 'ui/shared/entities/pool/PoolEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import InfoButton from 'ui/shared/InfoButton';
 import PageTitle from 'ui/shared/Page/PageTitle';

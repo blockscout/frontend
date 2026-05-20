@@ -1,6 +1,7 @@
 import React from 'react';
 
-import * as poolMock from 'mocks/pools/pool';
+import * as poolMock from 'client/features/dex-pools/mocks/pool';
+
 import { test, expect } from 'playwright/lib';
 
 import PoolEntity from './PoolEntity';

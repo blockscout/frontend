@@ -16,13 +16,13 @@ import * as txMock from 'client/slices/tx/mocks/tx';
 
 import BlobEntity from 'client/features/data-availability/components/entity/BlobEntity';
 import * as blobsMock from 'client/features/data-availability/mocks/blobs';
+import PoolEntity from 'client/features/dex-pools/components/entity/PoolEntity';
+import * as poolMock from 'client/features/dex-pools/mocks/pool';
 import EnsEntity from 'client/features/name-services/domains/components/EnsEntity';
 import * as ensMock from 'client/features/name-services/domains/mocks/domain';
 
-import * as poolMock from 'mocks/pools/pool';
 import { Link, LinkBox, LinkOverlay } from 'toolkit/chakra/link';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
-import PoolEntity from 'ui/shared/entities/pool/PoolEntity';
 
 import { Section, Container, SectionHeader, SamplesStack, Sample, SectionSubHeader } from './parts';
 

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { Pool } from 'types/api/pools';
+import type { Pool } from 'client/features/dex-pools/types/api';
 
 type PoolLink = {
   url: string;
