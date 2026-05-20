@@ -233,7 +233,7 @@ migrated to `client/shared/` in 1-2 and do not appear here.
 ### 6-10 · [~] Feature: `rewards` · [#3462](https://github.com/blockscout/frontend/issues/3462)
 **Scope:** Includes `lib/contexts/rewards.tsx`, `lib/hooks/useRewardsActivity` → `client/features/rewards/`  
 
-### 6-11 · [ ] Feature: `advanced-filter`
+### 6-11 · [~] Feature: `advanced-filter` · [#3468](https://github.com/blockscout/frontend/issues/3468)
 
 ### 6-12 · [ ] Feature: `ad-banner`
 **Scope:** Includes `lib/hooks/useAdblockDetect` → `client/features/ad-banner/`. Covers both `adsBanner.ts` and `adsText.ts` configs.  
