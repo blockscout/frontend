@@ -256,7 +256,7 @@ export default function useNavItems(): ReturnType {
         icon: 'navigation/token_transfers',
         isActive: pathname === '/token-transfers',
       },
-      config.features.pools.isEnabled && {
+      config.features.dexPools.isEnabled && {
         text: 'DEX tracker',
         nextRoute: { pathname: '/pools' as const },
         icon: 'navigation/dex_tracker',

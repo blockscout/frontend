@@ -202,7 +202,7 @@ export const publicTagsSubmit: Guard = (chainConfig: typeof config) => async() =
 };
 
 export const pools: Guard = (chainConfig: typeof config) => async() => {
-  if (!chainConfig.features.pools.isEnabled) {
+  if (!chainConfig.features.dexPools.isEnabled) {
     return {
       notFound: true,
     };

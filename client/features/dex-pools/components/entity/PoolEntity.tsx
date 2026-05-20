@@ -3,18 +3,18 @@
 import { Flex, chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import type { Pool } from 'types/api/pools';
+import type { Pool } from 'client/features/dex-pools/types/api';
 
 import { route } from 'nextjs-routes';
 
 import * as TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 
-import { getPoolTitle } from 'lib/pools/getPoolTitle';
+import { getPoolTitle } from 'client/features/dex-pools/utils/get-pool-title';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TruncatedTextTooltip } from 'toolkit/components/truncation/TruncatedTextTooltip';
 import * as EntityBase from 'ui/shared/entities/base/components';
-
-import { distributeEntityProps } from '../base/utils';
+import { distributeEntityProps } from 'ui/shared/entities/base/utils';
 
 type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'pool'>;
 

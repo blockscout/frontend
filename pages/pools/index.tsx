@@ -6,7 +6,7 @@ import React from 'react';
 
 import PageNextJs from 'nextjs/PageNextJs';
 
-const Pools = dynamic(() => import('ui/pages/Pools'), { ssr: false });
+const Pools = dynamic(() => import('client/features/dex-pools/pages/index/Pools'), { ssr: false });
 
 const Page: NextPage = () => {
   return (

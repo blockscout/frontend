@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { Pool } from 'types/api/pools';
+import type { Pool } from 'client/features/dex-pools/types/api';
 
 import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 

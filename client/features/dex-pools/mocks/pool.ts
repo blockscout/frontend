@@ -1,4 +1,4 @@
-import type { Pool } from 'types/api/pools';
+import type { Pool } from 'client/features/dex-pools/types/api';
 
 export const base: Pool = {
   pool_id: '0x06da0fd433c1a5d7a4faa01111c044910a184553',

@@ -4,14 +4,15 @@ import { Box, Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import PoolsListItem from 'client/features/dex-pools/pages/index/PoolsListItem';
+import PoolsTable from 'client/features/dex-pools/pages/index/PoolsTable';
+import { POOL } from 'client/features/dex-pools/stubs';
+
 import useDebounce from 'client/shared/hooks/useDebounce';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import config from 'configs/app';
-import { POOL } from 'stubs/pools';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
-import PoolsListItem from 'ui/pools/PoolsListItem';
-import PoolsTable from 'ui/pools/PoolsTable';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';

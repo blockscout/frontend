@@ -2,8 +2,8 @@
 
 import type { ApiResource } from '../types';
 import type { VerifiedAddressResponse } from 'client/features/account/types/api';
+import type { Pool, PoolsResponse } from 'client/features/dex-pools/types/api';
 import type { TokenVerifiedInfo } from 'client/features/verified-tokens/types/api';
-import type { Pool, PoolsResponse } from 'types/api/pools';
 
 export const CONTRACT_INFO_API_RESOURCES = {
   address_verification: {

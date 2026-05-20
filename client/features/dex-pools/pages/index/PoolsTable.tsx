@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { Pool } from 'types/api/pools';
+import type { Pool } from 'client/features/dex-pools/types/api';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
