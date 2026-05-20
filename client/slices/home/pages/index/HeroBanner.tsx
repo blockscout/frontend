@@ -9,11 +9,11 @@ import SearchBar from 'client/slices/search/components/search-bar/SearchBarDeskt
 import SearchBarMobile from 'client/slices/search/components/search-bar/SearchBarMobile';
 
 import UserProfileDesktop from 'client/features/account/components/user-profile/UserProfileDesktop';
+import RewardsButton from 'client/features/rewards/components/RewardsButton';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
 import config from 'configs/app';
-import RewardsButton from 'ui/rewards/RewardsButton';
 import AdBanner from 'ui/shared/ad/AdBanner';
 
 export const BACKGROUND_DEFAULT =

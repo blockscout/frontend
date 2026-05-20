@@ -2,7 +2,8 @@ import React from 'react';
 
 import type { GetAvailableBadgesResponse } from '@blockscout/points-types';
 
-import * as streakBadgesMock from 'mocks/rewards/streakBadges';
+import * as streakBadgesMock from 'client/features/rewards/mocks/streak-badges';
+
 import type { TestFnArgs } from 'playwright/lib';
 import { test, expect, devices } from 'playwright/lib';
 

@@ -5,10 +5,10 @@ import React from 'react';
 
 import UserProfileDesktop from 'client/features/account/components/user-profile/UserProfileDesktop';
 import useIsAuth from 'client/features/account/hooks/useIsAuth';
+import RewardsButton from 'client/features/rewards/components/RewardsButton';
 
 import config from 'configs/app';
 import useNavItems, { isGroupItem } from 'lib/hooks/useNavItems';
-import RewardsButton from 'ui/rewards/RewardsButton';
 import { CONTENT_MAX_WIDTH } from 'ui/shared/layout/utils';
 import NetworkLogo from 'ui/snippets/networkLogo/NetworkLogo';
 

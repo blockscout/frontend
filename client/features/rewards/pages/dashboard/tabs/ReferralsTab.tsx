@@ -2,10 +2,11 @@
 
 import { Flex } from '@chakra-ui/react';
 
-import { useRewardsContext } from 'lib/contexts/rewards';
+import { useRewardsContext } from 'client/features/rewards/contexts';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
 
-import RewardsReadOnlyInputWithCopy from '../../RewardsReadOnlyInputWithCopy';
+import RewardsReadOnlyInputWithCopy from '../../../components/RewardsReadOnlyInputWithCopy';
 import RewardsDashboardCard from '../RewardsDashboardCard';
 
 export default function ReferralsTab() {

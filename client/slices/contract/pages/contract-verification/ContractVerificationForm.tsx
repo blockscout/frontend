@@ -17,12 +17,13 @@ import useSocketMessage from 'client/api/socket/useSocketMessage';
 
 import type { SmartContractVerificationConfig } from 'client/slices/contract/pages/contract-verification/utils';
 
+import useRewardsActivity from 'client/features/rewards/hooks/useRewardsActivity';
+
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 import getErrorObjStatusCode from 'client/shared/errors/get-error-obj-status-code';
 import capitalizeFirstLetter from 'client/shared/text/capitalize-first-letter';
 import delay from 'client/shared/utils/delay';
 
-import useRewardsActivity from 'lib/hooks/useRewardsActivity';
 import { Button } from 'toolkit/chakra/button';
 import { toaster } from 'toolkit/chakra/toaster';
 import { useUpdateEffect } from 'toolkit/hooks/useUpdateEffect';

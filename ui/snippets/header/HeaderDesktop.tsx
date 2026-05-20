@@ -6,9 +6,9 @@ import React from 'react';
 import SearchBar from 'client/slices/search/components/search-bar/SearchBarDesktop';
 
 import UserProfileDesktop from 'client/features/account/components/user-profile/UserProfileDesktop';
+import RewardsButton from 'client/features/rewards/components/RewardsButton';
 
 import config from 'configs/app';
-import RewardsButton from 'ui/rewards/RewardsButton';
 
 type Props = {
   renderSearchBar?: () => React.ReactNode;

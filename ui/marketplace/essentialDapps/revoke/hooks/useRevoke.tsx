@@ -12,9 +12,10 @@ import type { AllowanceType } from 'types/client/revoke';
 
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 
+import useRewardsActivity from 'client/features/rewards/hooks/useRewardsActivity';
+
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 
-import useRewardsActivity from 'lib/hooks/useRewardsActivity';
 import { toaster } from 'toolkit/chakra/toaster';
 
 import createPublicClient from '../lib/createPublicClient';

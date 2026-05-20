@@ -4,6 +4,7 @@ import { Box, Flex, Text, VStack } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 
 import useIsAuth from 'client/features/account/hooks/useIsAuth';
+import NavLinkRewards from 'client/features/rewards/components/NavLinkRewards';
 
 import useNavItems, { isGroupItem } from 'lib/hooks/useNavItems';
 import { useColorModeValue } from 'toolkit/chakra/color-mode';
@@ -11,7 +12,6 @@ import IconSvg from 'ui/shared/IconSvg';
 
 import NavigationPromoBanner from '../promoBanner/NavigationPromoBanner';
 import NavLink from '../vertical/NavLink';
-import NavLinkRewards from '../vertical/NavLinkRewards';
 import NavLinkGroup from './NavLinkGroup';
 
 const ANIMATION_DURATION = 300;

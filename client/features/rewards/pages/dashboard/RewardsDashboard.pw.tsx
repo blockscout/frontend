@@ -2,12 +2,12 @@ import type { BrowserContext } from '@playwright/test';
 import React from 'react';
 
 import * as profileMock from 'client/features/account/mocks/user-profile';
+import * as activityMock from 'client/features/rewards/mocks/activity';
+import * as rewardsBalanceMock from 'client/features/rewards/mocks/balance';
+import * as dailyRewardMock from 'client/features/rewards/mocks/daily-reward';
+import * as referralsMock from 'client/features/rewards/mocks/referrals';
+import * as rewardsConfigMock from 'client/features/rewards/mocks/rewards-config';
 
-import * as activityMock from 'mocks/rewards/activity';
-import * as rewardsBalanceMock from 'mocks/rewards/balance';
-import * as dailyRewardMock from 'mocks/rewards/dailyReward';
-import * as referralsMock from 'mocks/rewards/referrals';
-import * as rewardsConfigMock from 'mocks/rewards/rewardsConfig';
 import { contextWithAuth } from 'playwright/fixtures/auth';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { contextWithRewards } from 'playwright/fixtures/rewards';

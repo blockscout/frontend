@@ -9,11 +9,11 @@ import type { Screen, ScreenSuccess } from './types';
 import { getResourceKey } from 'client/api/hooks/useApiQuery';
 
 import useGetCsrfToken from 'client/features/account/hooks/useGetCsrfToken';
+import { useRewardsContext } from 'client/features/rewards/contexts';
 
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 
 import config from 'configs/app';
-import { useRewardsContext } from 'lib/contexts/rewards';
 import { DialogBody, DialogContent, DialogHeader, DialogRoot } from 'toolkit/chakra/dialog';
 
 import AuthModalScreenConnectWallet from './screens/AuthModalScreenConnectWallet';

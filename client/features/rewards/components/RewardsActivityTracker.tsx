@@ -3,7 +3,7 @@
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
-import useRewardsActivity from 'lib/hooks/useRewardsActivity';
+import useRewardsActivity from 'client/features/rewards/hooks/useRewardsActivity';
 
 const RewardsActivityTracker = () => {
   const router = useRouter();

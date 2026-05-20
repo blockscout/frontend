@@ -5,10 +5,11 @@ import { useCallback } from 'react';
 import type { Account, SignTypedDataParameters } from 'viem';
 import { useAccount, useSendTransaction, useSwitchChain, useSignMessage, useSignTypedData } from 'wagmi';
 
+import useRewardsActivity from 'client/features/rewards/hooks/useRewardsActivity';
+
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 
 import config from 'configs/app';
-import useRewardsActivity from 'lib/hooks/useRewardsActivity';
 
 type SendTransactionArgs = {
   chainId?: number;

@@ -2,9 +2,9 @@ import type { BrowserContext, Locator } from '@playwright/test';
 import React from 'react';
 
 import * as profileMock from 'client/features/account/mocks/user-profile';
+import * as rewardsBalanceMock from 'client/features/rewards/mocks/balance';
+import * as dailyRewardMock from 'client/features/rewards/mocks/daily-reward';
 
-import * as rewardsBalanceMock from 'mocks/rewards/balance';
-import * as dailyRewardMock from 'mocks/rewards/dailyReward';
 import { contextWithAuth } from 'playwright/fixtures/auth';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { contextWithRewards } from 'playwright/fixtures/rewards';

@@ -8,9 +8,9 @@ import useApiFetch from 'client/api/hooks/useApiFetch';
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
 import useProfileQuery from 'client/features/account/hooks/useProfileQuery';
+import { useRewardsContext } from 'client/features/rewards/contexts';
 
 import config from 'configs/app';
-import { useRewardsContext } from 'lib/contexts/rewards';
 import { MINUTE } from 'toolkit/utils/consts';
 
 const feature = config.features.rewards;

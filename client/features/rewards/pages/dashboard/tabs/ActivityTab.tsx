@@ -10,13 +10,13 @@ import { route } from 'nextjs-routes';
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
 import useProfileQuery from 'client/features/account/hooks/useProfileQuery';
+import { useRewardsContext } from 'client/features/rewards/contexts';
+import { USER_ACTIVITY } from 'client/features/rewards/stubs';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
 import config from 'configs/app';
-import { useRewardsContext } from 'lib/contexts/rewards';
 import dayjs from 'lib/date/dayjs';
-import { USER_ACTIVITY } from 'stubs/rewards';
 import { Button } from 'toolkit/chakra/button';
 import { Heading } from 'toolkit/chakra/heading';
 import { Link } from 'toolkit/chakra/link';
@@ -26,7 +26,7 @@ import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import { mdash } from 'toolkit/utils/htmlEntities';
 import IconSvg from 'ui/shared/IconSvg';
 
-import MeritsIcon from '../../MeritsIcon';
+import MeritsIcon from '../../../components/MeritsIcon';
 import RewardsActivityPassCard from '../RewardsActivityPassCard';
 import RewardsInstancesModal from '../RewardsInstancesModal';
 import RewardsTaskDetailsModal from '../RewardsTaskDetailsModal';
