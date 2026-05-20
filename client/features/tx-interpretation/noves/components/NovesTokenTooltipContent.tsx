@@ -4,7 +4,7 @@ import { Box, Text } from '@chakra-ui/react';
 import type { FC } from 'react';
 import React from 'react';
 
-import type { NovesNft, NovesToken } from 'types/api/noves';
+import type { NovesNft, NovesToken } from 'client/features/tx-interpretation/noves/types/api';
 
 import shortenString from 'client/shared/text/shorten-string';
 

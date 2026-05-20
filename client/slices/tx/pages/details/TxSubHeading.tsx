@@ -10,13 +10,13 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import type { TxQuery } from 'client/slices/tx/hooks/useTxQuery';
 
+import { TX_INTERPRETATION } from 'client/features/tx-interpretation/blockscout/stubs';
 import TxInterpretation from 'client/features/tx-interpretation/common/components/TxInterpretation';
+import { NOVES_TRANSLATE } from 'client/features/tx-interpretation/noves/stubs';
 import { createNovesSummaryObject } from 'client/features/tx-interpretation/noves/utils/createNovesSummaryObject';
 
 import config from 'configs/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
-import { NOVES_TRANSLATE } from 'stubs/noves/NovesTranslate';
-import { TX_INTERPRETATION } from 'stubs/txInterpretation';
 import { Link } from 'toolkit/chakra/link';
 import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu';
 import AppActionButton from 'ui/shared/AppActionButton/AppActionButton';

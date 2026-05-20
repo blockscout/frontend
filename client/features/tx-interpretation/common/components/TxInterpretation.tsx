@@ -5,12 +5,12 @@ import { Box, chakra } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
-import type { AddressParam } from 'client/slices/address/types/api';
 import type {
   TxInterpretationSummary,
   TxInterpretationVariable,
   TxInterpretationVariableString,
-} from 'types/api/txInterpretation';
+} from 'client/features/tx-interpretation/common/types/api';
+import type { AddressParam } from 'client/slices/address/types/api';
 import type { ClusterChainConfig } from 'types/multichain';
 
 import { route } from 'nextjs-routes';

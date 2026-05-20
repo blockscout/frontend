@@ -1,4 +1,4 @@
-import type { NovesResponseData } from 'types/api/noves';
+import type { NovesResponseData } from 'client/features/tx-interpretation/noves/types/api';
 
 import type { TokensData } from 'client/features/tx-interpretation/noves/utils/getTokensData';
 

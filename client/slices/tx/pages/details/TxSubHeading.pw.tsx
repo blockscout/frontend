@@ -6,10 +6,11 @@ import * as addressMock from 'client/slices/address/mocks/address';
 import type { TxQuery } from 'client/slices/tx/hooks/useTxQuery';
 import * as txMock from 'client/slices/tx/mocks/tx';
 
+import { txInterpretation } from 'client/features/tx-interpretation/blockscout/mocks';
+import { transaction as novesTransaction } from 'client/features/tx-interpretation/noves/mocks';
+
 import config from 'configs/app';
 import { protocolTagWithMeta } from 'mocks/metadata/address';
-import { transaction as novesTransaction } from 'mocks/noves/transaction';
-import { txInterpretation } from 'mocks/txs/txInterpretation';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';
 

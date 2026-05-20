@@ -14,6 +14,8 @@ import type {
 import type {
   OptimisticL2DepositsItem,
 } from 'client/features/rollup/optimism/types/api';
+import type { TxInterpretationResponse } from 'client/features/tx-interpretation/common/types/api';
+import type { NovesAccountHistoryResponse, NovesDescribeTxsResponse, NovesResponseData } from 'client/features/tx-interpretation/noves/types/api';
 import type { UserOpsResponse, UserOp, UserOpsFilters, UserOpsAccount } from 'client/features/user-ops/types/api';
 import type { Block } from 'client/slices/block/types/api';
 import type { HomeStats } from 'client/slices/home/types/api';
@@ -24,8 +26,6 @@ import type {
 import type { ChartMarketResponse, ChartSecondaryCoinPriceResponse, ChartTransactionResponse } from 'types/api/charts';
 import type { BackendConfig, BackendVersionConfig, CeloConfig, ContractLanguagesConfig } from 'types/api/configs';
 import type { IndexingStatus } from 'types/api/indexingStatus';
-import type { NovesAccountHistoryResponse, NovesDescribeTxsResponse, NovesResponseData } from 'types/api/noves';
-import type { TxInterpretationResponse } from 'types/api/txInterpretation';
 import type {
   ValidatorsStabilityCountersResponse,
   ValidatorsStabilityFilters,

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { NovesNft, NovesResponseData, NovesSentReceived, NovesToken } from 'types/api/noves';
+import type { NovesNft, NovesResponseData, NovesSentReceived, NovesToken } from 'client/features/tx-interpretation/noves/types/api';
 
 export interface NovesAction {
   label: string;

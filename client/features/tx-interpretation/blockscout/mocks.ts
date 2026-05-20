@@ -1,4 +1,4 @@
-import type { TxInterpretationResponse } from 'types/api/txInterpretation';
+import type { TxInterpretationResponse } from 'client/features/tx-interpretation/common/types/api';
 
 import { hash } from 'client/slices/address/mocks/address';
 

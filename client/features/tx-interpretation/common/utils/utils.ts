@@ -2,7 +2,7 @@
 
 // we use that regex as a separator when splitting template and don't want to capture variables
 
-import type { TxInterpretationVariable } from 'types/api/txInterpretation';
+import type { TxInterpretationVariable } from 'client/features/tx-interpretation/common/types/api';
 
 // eslint-disable-next-line regexp/no-useless-non-capturing-group
 export const VAR_REGEXP = /\{(?:[^}]+)\}/g;

@@ -3,14 +3,15 @@
 import { Box } from '@chakra-ui/react';
 import React, { useMemo } from 'react';
 
-import type { NovesResponseData } from 'types/api/noves';
+import type { NovesResponseData } from 'client/features/tx-interpretation/noves/types/api';
+
+import NovesFromTo from 'client/features/tx-interpretation/noves/components/NovesFromTo';
 
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { SECOND } from 'toolkit/utils/consts';
 import IconSvg from 'ui/shared/IconSvg';
-import NovesFromTo from 'ui/shared/Noves/NovesFromTo';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 type Props = {

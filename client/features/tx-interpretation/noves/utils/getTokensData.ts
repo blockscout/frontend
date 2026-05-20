@@ -2,8 +2,8 @@
 
 import { groupBy, mapValues } from 'es-toolkit';
 
+import type { NovesResponseData } from 'client/features/tx-interpretation/noves/types/api';
 import type { TokenInfo } from 'client/slices/token/types/api';
-import type { NovesResponseData } from 'types/api/noves';
 
 import { HEX_REGEXP } from 'toolkit/utils/regexp';
 
