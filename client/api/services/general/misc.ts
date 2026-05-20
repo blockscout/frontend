@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { ApiResource } from '../../types';
+import type { AdvancedFilterParams, AdvancedFilterResponse, AdvancedFilterMethodsResponse } from 'client/features/advanced-filter/types/api';
 import type { DepositsResponse, DepositsCounters, WithdrawalsResponse, WithdrawalsCounters } from 'client/features/chain-variants/beacon-chain/types/api';
 import type { CeloEpochDetails, CeloEpochElectionRewardDetailsResponse, CeloEpochListResponse } from 'client/features/chain-variants/celo/types/api';
 import type { CsvExportItemResponse, CsvExportConfig } from 'client/features/csv-export/types/api';
@@ -20,7 +21,6 @@ import type { SearchRedirectResult, SearchResult, SearchResultFilters, SearchRes
 import type {
   Transaction,
 } from 'client/slices/tx/types/api';
-import type { AdvancedFilterParams, AdvancedFilterResponse, AdvancedFilterMethodsResponse } from 'types/api/advancedFilter';
 import type { ChartMarketResponse, ChartSecondaryCoinPriceResponse, ChartTransactionResponse } from 'types/api/charts';
 import type { BackendConfig, BackendVersionConfig, CeloConfig, ContractLanguagesConfig } from 'types/api/configs';
 import type { IndexingStatus } from 'types/api/indexingStatus';

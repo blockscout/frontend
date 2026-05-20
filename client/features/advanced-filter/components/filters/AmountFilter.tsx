@@ -5,7 +5,7 @@ import { isEqual } from 'es-toolkit';
 import type { ChangeEvent } from 'react';
 import React from 'react';
 
-import type { AdvancedFilterParams } from 'types/api/advancedFilter';
+import type { AdvancedFilterParams } from '../../types/api';
 
 import { Input } from 'toolkit/chakra/input';
 import { PopoverCloseTriggerWrapper } from 'toolkit/chakra/popover';

@@ -1,4 +1,4 @@
-import type { AdvancedFilterResponse } from 'types/api/advancedFilter';
+import type { AdvancedFilterResponse } from './types/api';
 
 export const baseResponse: AdvancedFilterResponse = {
   items: [

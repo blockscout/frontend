@@ -2,12 +2,12 @@
 
 import React from 'react';
 
-import type { AdvancedFilterParams, AdvancedFiltersSearchParams } from 'types/api/advancedFilter';
+import type { AdvancedFilterParams, AdvancedFiltersSearchParams } from '../types/api';
+import type { ColumnsIds } from '../types/client';
 
-import type { ColumnsIds } from 'ui/advancedFilter/constants';
 import TableColumnFilterWrapper from 'ui/shared/filters/TableColumnFilterWrapper';
 
-import { NATIVE_TOKEN } from './constants';
+import { NATIVE_TOKEN } from '../utils/consts';
 import type { AddressFilterMode } from './filters/AddressFilter';
 import AddressFilter from './filters/AddressFilter';
 import AddressRelationFilter from './filters/AddressRelationFilter';

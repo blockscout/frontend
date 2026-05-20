@@ -9,7 +9,8 @@ import useIsInitialLoading from 'client/shared/hooks/useIsInitialLoading';
 import config from 'configs/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
 import type { LinkProps } from 'toolkit/chakra/link';
-import AdvancedFilterLink from 'ui/shared/links/AdvancedFilterLink';
+
+import AdvancedFilterLink from '../../components/AdvancedFilterLink';
 
 interface Props extends LinkProps {
   isLoading?: boolean;

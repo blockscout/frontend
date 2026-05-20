@@ -11,8 +11,9 @@ import { omit } from 'es-toolkit';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { AdvancedFilterParams } from 'types/api/advancedFilter';
-import { ADVANCED_FILTER_AGES, ADVANCED_FILTER_ADDRESS_RELATION } from 'types/api/advancedFilter';
+import type { AdvancedFilterParams } from '../../types/api';
+import { ADVANCED_FILTER_AGES, ADVANCED_FILTER_ADDRESS_RELATION } from '../../types/api';
+import type { ColumnsIds } from '../../types/client';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
@@ -27,17 +28,10 @@ import getValuesArrayFromQuery from 'client/shared/router/get-values-array-from-
 
 import { useMultichainContext } from 'lib/contexts/multichain';
 import dayjs from 'lib/date/dayjs';
-import { ADVANCED_FILTER_ITEM } from 'stubs/advancedFilter';
 import { generateListStub } from 'stubs/utils';
 import { Link } from 'toolkit/chakra/link';
 import { TableBody, TableCell, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import { Tag } from 'toolkit/chakra/tag';
-import ColumnsButton from 'ui/advancedFilter/ColumnsButton';
-import type { ColumnsIds } from 'ui/advancedFilter/constants';
-import { getAdvancedFilterTypes, TABLE_COLUMNS } from 'ui/advancedFilter/constants';
-import FilterByColumn from 'ui/advancedFilter/FilterByColumn';
-import ItemByColumn from 'ui/advancedFilter/ItemByColumn';
-import { getDurationFromAge, getFilterTags } from 'ui/advancedFilter/lib';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import ChainIcon from 'ui/shared/externalChains/ChainIcon';
@@ -46,6 +40,13 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
+
+import ColumnsButton from '../../components/ColumnsButton';
+import FilterByColumn from '../../components/FilterByColumn';
+import ItemByColumn from '../../components/ItemByColumn';
+import { ADVANCED_FILTER_ITEM } from '../../stubs';
+import { TABLE_COLUMNS } from '../../utils/consts';
+import { getAdvancedFilterTypes, getDurationFromAge, getFilterTags } from '../../utils/lib';
 
 const COLUMNS_CHECKED = {} as Record<ColumnsIds, boolean>;
 TABLE_COLUMNS.forEach(c => COLUMNS_CHECKED[c.id] = true);

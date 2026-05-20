@@ -2,13 +2,40 @@
 
 import { castArray } from 'es-toolkit/compat';
 
-import type { AdvancedFilterAge, AdvancedFilterParams } from 'types/api/advancedFilter';
+import type { AdvancedFilterAge, AdvancedFilterParams } from '../types/api';
+import { getTokenTypes } from 'client/slices/token/utils/token-types';
 import type { ClusterChainConfig } from 'types/multichain';
 
 import dayjs from 'lib/date/dayjs';
 import { HOUR, DAY, MONTH } from 'toolkit/utils/consts';
 
-import { getAdvancedFilterTypes } from './constants';
+import { FILTER_PARAM_NAMES } from './consts';
+
+export const getAdvancedFilterTypes = (chainConfig?: Array<ClusterChainConfig['app_config']> | ClusterChainConfig['app_config'], withAll = false) => {
+  return [
+    ...(withAll ? [ {
+      id: 'all',
+      name: 'All',
+    } ] : []),
+    {
+      id: 'coin_transfer',
+      name: 'Coin Transfer',
+    },
+    ...Object.entries(getTokenTypes(false, chainConfig))
+      .map(([ id, name ]) => ({
+        id,
+        name: `${ name } Transfer`,
+      })),
+    {
+      id: 'contract_creation',
+      name: 'Contract Creation',
+    },
+    {
+      id: 'contract_interaction',
+      name: 'Contract Interaction',
+    },
+  ];
+};
 
 export function getDurationFromAge(age: AdvancedFilterAge) {
   switch (age) {
@@ -37,27 +64,6 @@ function getFilterValueWithNames(values?: Array<string>, names?: Array<string>) 
   }
 }
 
-const filterParamNames: Record<keyof AdvancedFilterParams, string> = {
-  // we don't show address_relation as filter tag
-  address_relation: '',
-  age: 'Age',
-  age_from: 'Date from',
-  age_to: 'Date to',
-  amount_from: 'Amount from',
-  amount_to: 'Amount to',
-  from_address_hashes_to_exclude: 'From Exc',
-  from_address_hashes_to_include: 'From',
-  methods: 'Methods',
-  methods_names: '',
-  to_address_hashes_to_exclude: 'To Exc',
-  to_address_hashes_to_include: 'To',
-  token_contract_address_hashes_to_exclude: 'Asset Exc',
-  token_contract_symbols_to_exclude: '',
-  token_contract_address_hashes_to_include: 'Asset',
-  token_contract_symbols_to_include: '',
-  transaction_types: 'Type',
-};
-
 export function getFilterTags(filters: AdvancedFilterParams, chainConfig?: ClusterChainConfig['app_config']) {
   const filtersToShow = { ...filters };
   if (filtersToShow.age) {
@@ -69,7 +75,7 @@ export function getFilterTags(filters: AdvancedFilterParams, chainConfig?: Clust
     if (!value) {
       return;
     }
-    const name = filterParamNames[key as keyof AdvancedFilterParams];
+    const name = FILTER_PARAM_NAMES[key as keyof AdvancedFilterParams];
     if (!name) {
       return;
     }

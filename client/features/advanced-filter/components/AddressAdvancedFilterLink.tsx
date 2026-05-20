@@ -11,8 +11,9 @@ import useIsInitialLoading from 'client/shared/hooks/useIsInitialLoading';
 
 import config from 'configs/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
-import { getAdvancedFilterTypes } from 'ui/advancedFilter/constants';
-import AdvancedFilterLink from 'ui/shared/links/AdvancedFilterLink';
+
+import { getAdvancedFilterTypes } from '../utils/lib';
+import AdvancedFilterLink from './AdvancedFilterLink';
 
 interface Props {
   isLoading?: boolean;

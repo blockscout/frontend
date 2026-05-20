@@ -3,8 +3,9 @@
 import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
+import type { AdvancedFilterResponseItem } from '../types/api';
+import type { ColumnsIds } from '../types/client';
 import { isConfidentialTokenType } from 'client/slices/token/utils/token-types';
-import type { AdvancedFilterResponseItem } from 'types/api/advancedFilter';
 import type { ClusterChainConfig } from 'types/multichain';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
@@ -15,13 +16,12 @@ import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import config from 'configs/app';
 import { Badge } from 'toolkit/chakra/badge';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import type { ColumnsIds } from 'ui/advancedFilter/constants';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import AssetValue from 'ui/shared/value/AssetValue';
 import ConfidentialValue from 'ui/shared/value/ConfidentialValue';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
-import { getAdvancedFilterTypes } from './constants';
+import { getAdvancedFilterTypes } from '../utils/lib';
 
 type Props = {
   item: AdvancedFilterResponseItem;
