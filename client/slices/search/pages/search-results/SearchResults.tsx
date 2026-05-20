@@ -13,6 +13,7 @@ import useSearchQuery from 'client/slices/search/hooks/useSearchQuery';
 import type { SearchResultAppItem } from 'client/slices/search/utils/search-categories';
 
 import ExternalSearchItem from 'client/features/chain-variants/zeta-chain/components/ExternalSearchItem';
+import useMarketplaceApps from 'client/features/marketplace/hooks/useMarketplaceApps';
 
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import removeQueryParam from 'client/shared/router/remove-query-param';
@@ -23,7 +24,6 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 import * as regexp from 'toolkit/utils/regexp';
-import useMarketplaceApps from 'ui/marketplace/useMarketplaceApps';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import AppErrorBoundary from 'ui/shared/AppError/AppErrorBoundary';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';

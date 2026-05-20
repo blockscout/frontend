@@ -2,7 +2,7 @@
 
 import type { ApiResource } from '../types';
 import type { TokenInfoApplicationConfig, TokenInfoApplications } from 'client/features/account/types/api';
-import type { MarketplaceApp } from 'types/client/marketplace';
+import type { MarketplaceApp } from 'client/features/marketplace/types/client';
 
 export const ADMIN_API_RESOURCES = {
   public_tag_application: {

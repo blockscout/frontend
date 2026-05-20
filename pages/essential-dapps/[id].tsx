@@ -7,7 +7,7 @@ import React from 'react';
 import type { Props } from 'nextjs/getServerSideProps/handlers';
 import PageNextJs from 'nextjs/PageNextJs';
 
-const MarketplaceEssentialDapp = dynamic(() => import('ui/pages/MarketplaceEssentialDapp'), { ssr: false });
+const MarketplaceEssentialDapp = dynamic(() => import('client/features/marketplace/pages/essential-dapp/MarketplaceEssentialDapp'), { ssr: false });
 
 const Page: NextPage<Props> = (props: Props) => (
   <PageNextJs pathname="/essential-dapps/[id]" query={ props.query }>

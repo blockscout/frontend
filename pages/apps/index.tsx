@@ -6,7 +6,7 @@ import React from 'react';
 
 import PageNextJs from 'nextjs/PageNextJs';
 
-const Marketplace = dynamic(() => import('ui/pages/Marketplace'), { ssr: false });
+const Marketplace = dynamic(() => import('client/features/marketplace/pages/index/Marketplace'), { ssr: false });
 
 const Page: NextPage = () => (
   <PageNextJs pathname="/apps">

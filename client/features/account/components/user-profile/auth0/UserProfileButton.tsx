@@ -9,11 +9,11 @@ import type { UserInfo } from 'client/features/account/types/api';
 
 import { getUserHandle } from 'client/features/account/utils/user-handle';
 import useWeb3AccountWithDomain from 'client/features/connect-wallet/hooks/useAccountWithDomain';
+import { useMarketplaceContext } from 'client/features/marketplace/context';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import shortenString from 'client/shared/text/shorten-string';
 
-import { useMarketplaceContext } from 'lib/contexts/marketplace';
 import { Button } from 'toolkit/chakra/button';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import IconSvg from 'ui/shared/IconSvg';

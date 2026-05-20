@@ -9,11 +9,11 @@ import type { UserInfo } from 'client/features/account/types/api';
 import { route } from 'nextjs-routes';
 
 import useLogout from 'client/features/account/hooks/useLogout';
+import { useMarketplaceContext } from 'client/features/marketplace/context';
 
 import shortenString from 'client/shared/text/shorten-string';
 
 import config from 'configs/app';
-import { useMarketplaceContext } from 'lib/contexts/marketplace';
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';
 import { Hint } from 'toolkit/components/Hint/Hint';

@@ -5,10 +5,10 @@ import React from 'react';
 
 import { getUserHandle } from 'client/features/account/utils/user-handle';
 import useAccountWithDomain from 'client/features/connect-wallet/hooks/useAccountWithDomain';
+import { useMarketplaceContext } from 'client/features/marketplace/context';
 
 import shortenString from 'client/shared/text/shorten-string';
 
-import { useMarketplaceContext } from 'lib/contexts/marketplace';
 import { Button, type ButtonProps } from 'toolkit/chakra/button';
 import IconSvg from 'ui/shared/IconSvg';
 

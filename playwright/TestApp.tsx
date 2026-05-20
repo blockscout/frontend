@@ -11,11 +11,11 @@ import { SocketProvider } from 'client/api/socket/context';
 
 import { currentChain } from 'client/features/connect-wallet/utils/chains';
 import { CsvExportContextProvider } from 'client/features/csv-export/utils/context';
+import { MarketplaceContext } from 'client/features/marketplace/context';
 import { RewardsContextProvider } from 'client/features/rewards/context';
 
 import config from 'configs/app';
 import { AppContextProvider } from 'lib/contexts/app';
-import { MarketplaceContext } from 'lib/contexts/marketplace';
 import { SettingsContextProvider } from 'lib/contexts/settings';
 import { Provider as ChakraProvider } from 'toolkit/chakra/provider';
 

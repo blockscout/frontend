@@ -4,7 +4,7 @@ import { Flex, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { MarketplaceApp } from 'types/client/marketplace';
+import type { MarketplaceApp } from 'client/features/marketplace/types/client';
 
 import { route } from 'nextjs-routes';
 
