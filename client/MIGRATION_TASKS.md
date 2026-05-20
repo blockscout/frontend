@@ -227,7 +227,7 @@ migrated to `client/shared/` in 1-2 and do not appear here.
 
 ### 6-8 · [ ] Feature: `validators`
 
-### 6-9 · [ ] Feature: `marketplace`
+### 6-9 · [~] Feature: `marketplace` · [#3466](https://github.com/blockscout/frontend/issues/3466)
 **Scope:** Includes `lib/contexts/marketplace.tsx`, `lib/hooks/useGraphLinks` → `client/features/marketplace/`  
 
 ### 6-10 · [~] Feature: `rewards` · [#3462](https://github.com/blockscout/frontend/issues/3462)
