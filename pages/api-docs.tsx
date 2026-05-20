@@ -6,7 +6,7 @@ import React from 'react';
 
 import PageNextJs from 'nextjs/PageNextJs';
 
-const ApiDocs = dynamic(() => import('ui/pages/ApiDocs'), { ssr: false });
+const ApiDocs = dynamic(() => import('client/features/api-docs/pages/index/ApiDocs'), { ssr: false });
 
 const Page: NextPage = () => {
   return (

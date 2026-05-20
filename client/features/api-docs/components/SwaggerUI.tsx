@@ -11,7 +11,7 @@ import { Box, useToken } from '@chakra-ui/react';
 import dynamic from 'next/dynamic';
 import React from 'react';
 
-import type { SwaggerRequest } from './types';
+import type { SwaggerRequest } from '../types/client';
 
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 

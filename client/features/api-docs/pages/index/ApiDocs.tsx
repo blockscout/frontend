@@ -7,18 +7,21 @@ import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
 import config from 'configs/app';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import EthRpcApi from 'ui/apiDocs/EthRpcApi';
-import GraphQL from 'ui/apiDocs/GraphQL';
-import RestApi from 'ui/apiDocs/RestApi';
-import RpcApi from 'ui/apiDocs/RpcApi';
 import AlertWithExternalHtml from 'ui/shared/alerts/AlertWithExternalHtml';
 import PageTitle from 'ui/shared/Page/PageTitle';
+
+import EthRpcApi from './EthRpcApi';
+import GraphQL from './GraphQL';
+import ProApi from './ProApi';
+import RestApi from './RestApi';
+import RpcApi from './RpcApi';
 
 const feature = config.features.apiDocs;
 
 const ApiDocs = () => {
 
   const tabs: Array<TabItemRegular> = [
+    { id: 'pro_api', title: 'Pro API', component: <ProApi/> },
     { id: 'rest_api', title: 'REST API', component: <RestApi/> },
     { id: 'eth_rpc_api', title: 'ETH RPC API', component: <EthRpcApi/> },
     { id: 'rpc_api', title: 'RPC API endpoints', component: <RpcApi/> },
