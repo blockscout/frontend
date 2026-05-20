@@ -5,7 +5,7 @@ import React from 'react';
 
 import { route } from 'nextjs-routes';
 
-import { useRewardsContext } from 'client/features/rewards/contexts';
+import { useRewardsContext } from 'client/features/rewards/context';
 
 import { Button } from 'toolkit/chakra/button';
 import { Skeleton } from 'toolkit/chakra/skeleton';

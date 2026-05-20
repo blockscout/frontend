@@ -6,7 +6,7 @@ import type { GetAvailableBadgesResponse } from '@blockscout/points-types';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
-import { useRewardsContext } from 'client/features/rewards/contexts';
+import { useRewardsContext } from 'client/features/rewards/context';
 
 import config from 'configs/app';
 

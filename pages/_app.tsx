@@ -36,7 +36,7 @@ import GoogleAnalytics from 'ui/shared/GoogleAnalytics';
 import Layout from 'ui/shared/layout/Layout';
 import Web3Provider from 'ui/shared/web3/Web3Provider';
 
-const RewardsContextProvider = dynamic(() => import('client/features/rewards/contexts').then(module => module.RewardsContextProvider), { ssr: false });
+const RewardsContextProvider = dynamic(() => import('client/features/rewards/context').then(module => module.RewardsContextProvider), { ssr: false });
 const RewardsLoginModal = dynamic(() => import('client/features/rewards/components/login/RewardsLoginModal'), { ssr: false });
 const RewardsActivityTracker = dynamic(() => import('client/features/rewards/components/RewardsActivityTracker'), { ssr: false });
 

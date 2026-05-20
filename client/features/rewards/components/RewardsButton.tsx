@@ -5,7 +5,7 @@ import React, { useCallback } from 'react';
 
 import { route } from 'nextjs-routes';
 
-import { useRewardsContext } from 'client/features/rewards/contexts';
+import { useRewardsContext } from 'client/features/rewards/context';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 

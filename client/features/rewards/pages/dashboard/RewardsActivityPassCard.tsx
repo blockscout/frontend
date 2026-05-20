@@ -2,7 +2,7 @@
 
 import { Flex, Text } from '@chakra-ui/react';
 
-import { useRewardsContext } from 'client/features/rewards/contexts';
+import { useRewardsContext } from 'client/features/rewards/context';
 
 import config from 'configs/app';
 import { useColorModeValue } from 'toolkit/chakra/color-mode';

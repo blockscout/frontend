@@ -4,7 +4,7 @@ import { Flex } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 
 import useRedirectForInvalidAuthToken from 'client/features/account/hooks/useRedirectForInvalidAuthToken';
-import { useRewardsContext } from 'client/features/rewards/contexts';
+import { useRewardsContext } from 'client/features/rewards/context';
 import useStreakBadges from 'client/features/rewards/hooks/useStreakBadges';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';

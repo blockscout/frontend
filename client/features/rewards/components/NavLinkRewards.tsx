@@ -5,7 +5,7 @@ import React, { useCallback } from 'react';
 
 import type { Route } from 'nextjs-routes';
 
-import { useRewardsContext } from 'client/features/rewards/contexts';
+import { useRewardsContext } from 'client/features/rewards/context';
 
 import config from 'configs/app';
 import NavLink from 'ui/snippets/navigation/vertical/NavLink';

@@ -6,7 +6,7 @@ import type { Screen } from 'client/features/account/components/auth-modal/types
 
 import AuthModal from 'client/features/account/components/auth-modal/AuthModal';
 import useWallet from 'client/features/connect-wallet/hooks/useWallet';
-import { useRewardsContext } from 'client/features/rewards/contexts';
+import { useRewardsContext } from 'client/features/rewards/context';
 
 import { DialogBody, DialogContent, DialogRoot, DialogHeader } from 'toolkit/chakra/dialog';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';

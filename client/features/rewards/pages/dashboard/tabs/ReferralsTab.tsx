@@ -2,7 +2,7 @@
 
 import { Flex } from '@chakra-ui/react';
 
-import { useRewardsContext } from 'client/features/rewards/contexts';
+import { useRewardsContext } from 'client/features/rewards/context';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
 

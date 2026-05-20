@@ -7,7 +7,7 @@ import React from 'react';
 
 import useProfileQuery from 'client/features/account/hooks/useProfileQuery';
 import useWallet from 'client/features/connect-wallet/hooks/useWallet';
-import { useRewardsContext } from 'client/features/rewards/contexts';
+import { useRewardsContext } from 'client/features/rewards/context';
 
 import * as cookies from 'client/shared/storage/cookies';
 

@@ -9,7 +9,7 @@ import type { Screen, ScreenSuccess } from './types';
 import { getResourceKey } from 'client/api/hooks/useApiQuery';
 
 import useGetCsrfToken from 'client/features/account/hooks/useGetCsrfToken';
-import { useRewardsContext } from 'client/features/rewards/contexts';
+import { useRewardsContext } from 'client/features/rewards/context';
 
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 

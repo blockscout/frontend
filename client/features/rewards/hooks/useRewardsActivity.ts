@@ -8,7 +8,7 @@ import useApiFetch from 'client/api/hooks/useApiFetch';
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
 import useProfileQuery from 'client/features/account/hooks/useProfileQuery';
-import { useRewardsContext } from 'client/features/rewards/contexts';
+import { useRewardsContext } from 'client/features/rewards/context';
 
 import config from 'configs/app';
 import { MINUTE } from 'toolkit/utils/consts';

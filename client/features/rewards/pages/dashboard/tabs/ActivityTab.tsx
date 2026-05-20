@@ -10,7 +10,7 @@ import { route } from 'nextjs-routes';
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
 import useProfileQuery from 'client/features/account/hooks/useProfileQuery';
-import { useRewardsContext } from 'client/features/rewards/contexts';
+import { useRewardsContext } from 'client/features/rewards/context';
 import { USER_ACTIVITY } from 'client/features/rewards/stubs';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
