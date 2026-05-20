@@ -119,6 +119,8 @@ COPY --chmod=755 ./deploy/scripts/make_envs_script.sh .
 COPY --chmod=755 ./deploy/scripts/download_assets.sh .
 ## OG image generator
 COPY ./deploy/scripts/og_image_generator.js .
+## Pro API support flag
+COPY --chmod=755 ./deploy/scripts/export_pro_api_flag.sh .
 ## Favicon generator
 COPY --chmod=755 ./deploy/scripts/favicon_generator.sh .
 COPY --from=builder /app/favicon-generator-bundle ./deploy/tools/favicon-generator

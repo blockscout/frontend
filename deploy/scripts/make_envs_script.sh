@@ -37,3 +37,4 @@ done
 echo "}" >> $output_file;
 
 echo "✅ Done."
+echo ""

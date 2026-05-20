@@ -7,7 +7,9 @@ import { API_DOCS_TABS } from 'client/features/api-docs/types/config';
 import { getEnvValue, parseEnvJson } from '../utils';
 
 const tabs = (() => {
-  const DEFAULT_TABS = API_DOCS_TABS.filter((tab) => tab !== 'pro_api');
+  const DEFAULT_TABS = getEnvValue('NEXT_PUBLIC_PRO_API_SUPPORTED') === 'true' ?
+    API_DOCS_TABS :
+    API_DOCS_TABS.filter((tab) => tab !== 'pro_api');
   const value = (
     parseEnvJson<Array<ApiDocsTabId>>(getEnvValue('NEXT_PUBLIC_API_DOCS_TABS')) || DEFAULT_TABS
   )
