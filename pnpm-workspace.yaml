@@ -15,3 +15,12 @@ onlyBuiltDependencies:
   - 'sharp'
 
 minimumReleaseAge: 10080 # 1 week
+minimumReleaseAgeExclude:
+  - '@blockscout/bens-types'
+  - '@blockscout/interchain-indexer-types'
+  - '@blockscout/multichain-aggregator-types'
+  - '@blockscout/points-types'
+  - '@blockscout/stats-types'
+  - '@blockscout/tac-operation-lifecycle-types'
+  - '@blockscout/visualizer-types'
+  - '@blockscout/zetachain-cctx-types'
