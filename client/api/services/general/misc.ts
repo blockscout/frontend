@@ -3,7 +3,22 @@
 import type { ApiResource } from '../../types';
 import type { AdvancedFilterParams, AdvancedFilterResponse, AdvancedFilterMethodsResponse } from 'client/features/advanced-filter/types/api';
 import type { DepositsResponse, DepositsCounters, WithdrawalsResponse, WithdrawalsCounters } from 'client/features/chain-variants/beacon-chain/types/api';
+import type {
+  ValidatorsBlackfortCountersResponse,
+  ValidatorsBlackfortResponse,
+  ValidatorsBlackfortSorting,
+} from 'client/features/chain-variants/blackfort/types/api';
 import type { CeloEpochDetails, CeloEpochElectionRewardDetailsResponse, CeloEpochListResponse } from 'client/features/chain-variants/celo/types/api';
+import type {
+  ValidatorsStabilityCountersResponse,
+  ValidatorsStabilityFilters,
+  ValidatorsStabilityResponse,
+  ValidatorsStabilitySorting,
+} from 'client/features/chain-variants/stability/types/api';
+import type {
+  ValidatorsZilliqaResponse,
+  ValidatorZilliqa,
+} from 'client/features/chain-variants/zilliqa/types/api';
 import type { CsvExportItemResponse, CsvExportConfig } from 'client/features/csv-export/types/api';
 import type { Blob } from 'client/features/data-availability/types/api';
 import type { HotContractsFilters, HotContractsResponse, HotContractsSorting } from 'client/features/hot-contracts/types/api';
@@ -26,17 +41,6 @@ import type {
 import type { ChartMarketResponse, ChartSecondaryCoinPriceResponse, ChartTransactionResponse } from 'types/api/charts';
 import type { BackendConfig, BackendVersionConfig, CeloConfig, ContractLanguagesConfig } from 'types/api/configs';
 import type { IndexingStatus } from 'types/api/indexingStatus';
-import type {
-  ValidatorsStabilityCountersResponse,
-  ValidatorsStabilityFilters,
-  ValidatorsStabilityResponse,
-  ValidatorsStabilitySorting,
-  ValidatorsBlackfortCountersResponse,
-  ValidatorsBlackfortResponse,
-  ValidatorsBlackfortSorting,
-  ValidatorsZilliqaResponse,
-  ValidatorZilliqa,
-} from 'types/api/validators';
 
 export const GENERAL_API_MISC_RESOURCES = {
   // WITHDRAWALS

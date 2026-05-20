@@ -13,7 +13,7 @@ const validatorsFeature = config.features.validators;
 
 const ValidatorDetails = dynamic(() => {
   if (validatorsFeature.isEnabled && validatorsFeature.chainType === 'zilliqa') {
-    return import('ui/pages/ValidatorZilliqa');
+    return import('client/features/chain-variants/zilliqa/pages/validator-details/ValidatorZilliqa');
   }
 
   throw new Error('Validators feature is not enabled.');

@@ -12,15 +12,15 @@ const validatorsFeature = config.features.validators;
 
 const Validators = dynamic(() => {
   if (validatorsFeature.isEnabled && validatorsFeature.chainType === 'stability') {
-    return import('ui/pages/ValidatorsStability');
+    return import('client/features/chain-variants/stability/pages/validator-index/ValidatorsStability');
   }
 
   if (validatorsFeature.isEnabled && validatorsFeature.chainType === 'blackfort') {
-    return import('ui/pages/ValidatorsBlackfort');
+    return import('client/features/chain-variants/blackfort/pages/validator-index/ValidatorsBlackfort');
   }
 
   if (validatorsFeature.isEnabled && validatorsFeature.chainType === 'zilliqa') {
-    return import('ui/pages/ValidatorsZilliqa');
+    return import('client/features/chain-variants/zilliqa/pages/validator-index/ValidatorsZilliqa');
   }
 
   throw new Error('Validators feature is not enabled.');
