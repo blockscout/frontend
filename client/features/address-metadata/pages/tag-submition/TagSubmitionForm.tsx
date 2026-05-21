@@ -26,8 +26,8 @@ import { Hint } from 'toolkit/components/Hint/Hint';
 import ReCaptcha from 'ui/shared/reCaptcha/ReCaptcha';
 import useReCaptcha from 'ui/shared/reCaptcha/useReCaptcha';
 
-import PublicTagsSubmitFieldAddresses from './fields/PublicTagsSubmitFieldAddresses';
-import PublicTagsSubmitFieldTags from './fields/PublicTagsSubmitFieldTags';
+import TagSubmitionFieldAddresses from './fields/TagSubmitionFieldAddresses';
+import TagSubmitionFieldTags from './fields/TagSubmitionFieldTags';
 import { convertFormDataToRequestsBody, getFormDefaultValues } from './utils';
 
 interface Props {
@@ -36,7 +36,7 @@ interface Props {
   onSubmitResult: (result: FormSubmitResult) => void;
 }
 
-const PublicTagsSubmitForm = ({ config, userInfo, onSubmitResult }: Props) => {
+const TagSubmitionForm = ({ config, userInfo, onSubmitResult }: Props) => {
   const isMobile = useIsMobile();
   const router = useRouter();
   const apiFetch = useApiFetch();
@@ -128,8 +128,8 @@ const PublicTagsSubmitForm = ({ config, userInfo, onSubmitResult }: Props) => {
               <Hint label="Submit a public tag proposal for our moderation team to review"/>
             </Heading>
           </GridItem>
-          <PublicTagsSubmitFieldAddresses/>
-          <PublicTagsSubmitFieldTags tagTypes={ config?.tagTypes }/>
+          <TagSubmitionFieldAddresses/>
+          <TagSubmitionFieldTags tagTypes={ config?.tagTypes }/>
           <GridItem colSpan={{ base: 1, lg: 2 }}>
             <FormFieldText<FormFields>
               name="description"
@@ -168,4 +168,4 @@ const PublicTagsSubmitForm = ({ config, userInfo, onSubmitResult }: Props) => {
   );
 };
 
-export default React.memo(PublicTagsSubmitForm);
+export default React.memo(TagSubmitionForm);

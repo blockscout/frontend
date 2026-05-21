@@ -14,7 +14,7 @@ interface Props {
   tagTypes: Array<PublicTagType> | undefined;
 }
 
-const PublicTagsSubmitFieldTagType = ({ index, tagTypes }: Props) => {
+const TagSubmitionFieldTagType = ({ index, tagTypes }: Props) => {
 
   const collection = React.useMemo(() => {
     const items = tagTypes?.map((type) => ({
@@ -35,4 +35,4 @@ const PublicTagsSubmitFieldTagType = ({ index, tagTypes }: Props) => {
   );
 };
 
-export default React.memo(PublicTagsSubmitFieldTagType);
+export default React.memo(TagSubmitionFieldTagType);

@@ -35,7 +35,6 @@ export { default as multichain } from './multichain';
 export { default as multichainButton } from './multichain-button';
 export { default as nameServices } from './name-services';
 export { default as dexPools } from './dex-pools';
-export { default as publicTagsSubmission } from './public-tags-submission';
 export { default as rewards } from './rewards';
 export { default as rollbar } from './rollbar';
 export { default as rollup } from './rollup';

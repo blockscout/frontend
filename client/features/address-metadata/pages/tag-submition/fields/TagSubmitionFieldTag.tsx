@@ -17,8 +17,8 @@ import { FormFieldUrl } from 'toolkit/components/forms/fields/FormFieldUrl';
 import { colorValidator } from 'toolkit/components/forms/validators/color';
 import EntityTag from 'ui/shared/EntityTags/EntityTag';
 
-import PublicTagsSubmitFieldTagIcon from './PublicTagsSubmitFieldTagIcon';
-import PublicTagsSubmitFieldTagType from './PublicTagsSubmitFieldTagType';
+import TagSubmitionFieldTagIcon from './TagSubmitionFieldTagIcon';
+import TagSubmitionFieldTagType from './TagSubmitionFieldTagType';
 
 const CIRCLE_BG_COLOR_DEFAULT = {
   bgColor: { _light: 'gray.100', _dark: 'gray.700' },
@@ -35,7 +35,7 @@ interface Props {
   onRemoveClick?: (index: number) => void;
 }
 
-const PublicTagsSubmitFieldTag = ({ index, isDisabled, errors, onAddClick, onRemoveClick, tagTypes, field }: Props) => {
+const TagSubmitionFieldTag = ({ index, isDisabled, errors, onAddClick, onRemoveClick, tagTypes, field }: Props) => {
   const isMobile = useIsMobile();
   const bgColorDefault = { _light: 'blackAlpha.50', _dark: 'whiteAlpha.100' };
   const bgColorError = { _light: 'red.50', _dark: 'red.900' };
@@ -65,7 +65,7 @@ const PublicTagsSubmitFieldTag = ({ index, isDisabled, errors, onAddClick, onRem
             />
           </GridItem>
           <GridItem colSpan={{ base: 1, lg: 2 }}>
-            <PublicTagsSubmitFieldTagType index={ index } tagTypes={ tagTypes }/>
+            <TagSubmitionFieldTagType index={ index } tagTypes={ tagTypes }/>
           </GridItem>
           <GridItem colSpan={{ base: 1, lg: 2 }}>
             <FormFieldUrl<FormFields>
@@ -84,7 +84,7 @@ const PublicTagsSubmitFieldTag = ({ index, isDisabled, errors, onAddClick, onRem
             sampleDefaultBgColor={ CIRCLE_BG_COLOR_DEFAULT.textColor }
           />
           <GridItem colSpan={{ base: 1, lg: 4 }}>
-            <PublicTagsSubmitFieldTagIcon index={ index }/>
+            <TagSubmitionFieldTagIcon index={ index }/>
           </GridItem>
           <GridItem colSpan={{ base: 1, lg: 4 }}>
             <FormFieldText<FormFields>
@@ -147,4 +147,4 @@ const PublicTagsSubmitFieldTag = ({ index, isDisabled, errors, onAddClick, onRem
   );
 };
 
-export default PublicTagsSubmitFieldTag;
+export default TagSubmitionFieldTag;

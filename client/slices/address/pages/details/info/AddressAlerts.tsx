@@ -3,7 +3,7 @@
 import { Flex, chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import type { AddressMetadataTagFormatted } from 'client/features/address-metadata/types/view';
+import type { AddressMetadataTagFormatted } from 'client/features/address-metadata/types/client';
 
 import type { AlertProps } from 'toolkit/chakra/alert';
 import { Alert } from 'toolkit/chakra/alert';

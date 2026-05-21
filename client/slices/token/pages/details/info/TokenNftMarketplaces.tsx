@@ -3,7 +3,7 @@
 import { HStack } from '@chakra-ui/react';
 import React from 'react';
 
-import type { AddressMetadataTagFormatted } from 'client/features/address-metadata/types/view';
+import type { AddressMetadataTagFormatted } from 'client/features/address-metadata/types/client';
 
 import config from 'configs/app';
 import { Image } from 'toolkit/chakra/image';

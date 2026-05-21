@@ -14,15 +14,15 @@ import { Heading } from 'toolkit/chakra/heading';
 import { Link } from 'toolkit/chakra/link';
 import { makePrettyLink } from 'toolkit/utils/url';
 
-import PublicTagsSubmitResultSuccess from './result/PublicTagsSubmitResultSuccess';
-import PublicTagsSubmitResultWithErrors from './result/PublicTagsSubmitResultWithErrors';
+import TagSubmitionResultSuccess from './result/TagSubmitionResultSuccess';
+import TagSubmitionResultWithErrors from './result/TagSubmitionResultWithErrors';
 import { groupSubmitResult } from './utils';
 
 interface Props {
   data: FormSubmitResult | undefined;
 }
 
-const PublicTagsSubmitResult = ({ data }: Props) => {
+const TagSubmitionResult = ({ data }: Props) => {
   const groupedData = React.useMemo(() => groupSubmitResult(data), [ data ]);
 
   if (!groupedData) {
@@ -69,7 +69,7 @@ const PublicTagsSubmitResult = ({ data }: Props) => {
       </Grid>
 
       <Heading level="2" mt={ 8 } mb={ 5 }>Public tags/labels</Heading>
-      { hasErrors ? <PublicTagsSubmitResultWithErrors data={ groupedData }/> : <PublicTagsSubmitResultSuccess data={ groupedData }/> }
+      { hasErrors ? <TagSubmitionResultWithErrors data={ groupedData }/> : <TagSubmitionResultSuccess data={ groupedData }/> }
 
       <Flex flexDir={{ base: 'column', lg: 'row' }} columnGap={ 6 } mt={ 8 } rowGap={ 3 }>
         { hasErrors && (
@@ -87,4 +87,4 @@ const PublicTagsSubmitResult = ({ data }: Props) => {
   );
 };
 
-export default React.memo(PublicTagsSubmitResult);
+export default React.memo(TagSubmitionResult);

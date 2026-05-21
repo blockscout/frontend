@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { AddressMetadataTagType } from 'client/features/address-metadata/types/api';
-import type { AddressMetadataTagFormatted } from 'client/features/address-metadata/types/view';
+import type { AddressMetadataTagFormatted } from 'client/features/address-metadata/types/client';
 
 export type EntityTagType = AddressMetadataTagType | 'custom' | 'watchlist' | 'private_tag';
 

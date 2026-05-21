@@ -25,7 +25,7 @@ export default function useAddressMetadataInitUpdate({ address, counters, isEnab
   React.useEffect(() => {
     if (
       feature.isEnabled &&
-        feature.isAddressTagsUpdateEnabled &&
+        feature.isTagsUpdateEnabled &&
         address &&
         isEnabled &&
         counters?.transactions_count && Number(counters.transactions_count) > TXS_THRESHOLD

@@ -3,6 +3,7 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import { getFeaturePayload } from 'configs/app/features/types';
 import type { NavItemInternal, NavItem, NavGroupItem } from 'types/client/navigation';
 
 import { layerLabels } from 'client/features/rollup/common/utils/layer';
@@ -335,7 +336,7 @@ export default function useNavItems(): ReturnType {
         nextRoute: { pathname: '/contract-verification' as const },
         isActive: pathname.startsWith('/contract-verification'),
       },
-      config.features.publicTagsSubmission.isEnabled && {
+      getFeaturePayload(config.features.addressMetadata)?.isTagSubmitionEnabled && {
         text: 'Submit public tag',
         nextRoute: { pathname: '/public-tags/submit' as const },
         isActive: pathname.startsWith('/public-tags/submit'),

@@ -5,12 +5,12 @@ import React from 'react';
 
 import PageNextJs from 'nextjs/PageNextJs';
 
-import PublicTagsSubmit from 'ui/pages/PublicTagsSubmit';
+import TagSubmition from 'client/features/address-metadata/pages/tag-submition/TagSubmition';
 
 const Page: NextPage = () => {
   return (
     <PageNextJs pathname="/public-tags/submit">
-      <PublicTagsSubmit/>
+      <TagSubmition/>
     </PageNextJs>
   );
 };

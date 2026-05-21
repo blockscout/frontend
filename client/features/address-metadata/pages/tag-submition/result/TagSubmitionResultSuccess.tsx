@@ -13,7 +13,7 @@ interface Props {
   data: FormSubmitResultGrouped;
 }
 
-const PublicTagsSubmitResultSuccess = ({ data }: Props) => {
+const TagSubmitionResultSuccess = ({ data }: Props) => {
   return (
     <Grid gridTemplateColumns={{ base: '1fr', lg: '1fr 1fr' }} rowGap={ 3 } columnGap={ 3 }>
       <GridItem overflow="hidden">
@@ -55,4 +55,4 @@ const PublicTagsSubmitResultSuccess = ({ data }: Props) => {
   );
 };
 
-export default React.memo(PublicTagsSubmitResultSuccess);
+export default React.memo(TagSubmitionResultSuccess);

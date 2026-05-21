@@ -3,6 +3,7 @@
 import type { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 
 import type { RollupType } from 'client/features/rollup/common/types/config';
+import { getFeaturePayload } from 'configs/app/features/types';
 
 import type { Route } from 'nextjs-routes';
 import type { Props } from 'nextjs/getServerSideProps/handlers';
@@ -194,7 +195,7 @@ export const dev: Guard = (chainConfig: typeof config) => async() => {
 };
 
 export const publicTagsSubmit: Guard = (chainConfig: typeof config) => async() => {
-  if (!chainConfig.features.publicTagsSubmission.isEnabled) {
+  if (!getFeaturePayload(chainConfig.features.addressMetadata)?.isTagSubmitionEnabled) {
     return {
       notFound: true,
     };

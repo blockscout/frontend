@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { ItemProps } from './types';
+import { getFeaturePayload } from 'configs/app/features/types';
 
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
@@ -53,7 +54,7 @@ const AccountActionsMenu = ({ isLoading, className, showUpdateMetadataItem }: Pr
     },
     {
       render: (props: ItemProps) => <PublicTagMenuItem { ...props }/>,
-      enabled: config.features.account.isEnabled && !isTxPage && config.features.publicTagsSubmission.isEnabled,
+      enabled: config.features.account.isEnabled && !isTxPage && Boolean(getFeaturePayload(config.features.addressMetadata)?.isTagSubmitionEnabled),
     },
   ].filter(({ enabled }) => enabled);
 

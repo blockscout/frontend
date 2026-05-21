@@ -18,7 +18,7 @@ type Props = {
   isLoading?: boolean;
 };
 
-const AddressesLabelSearchListItem = ({
+const TagSearchListItem = ({
   item,
   isLoading,
 }: Props) => {
@@ -51,4 +51,4 @@ const AddressesLabelSearchListItem = ({
   );
 };
 
-export default React.memo(AddressesLabelSearchListItem);
+export default React.memo(TagSearchListItem);

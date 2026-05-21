@@ -8,7 +8,7 @@ import PageNextJs from 'nextjs/PageNextJs';
 
 import { MultichainProvider } from 'lib/contexts/multichain';
 
-const AccountsLabelSearch = dynamic(() => import('ui/pages/AccountsLabelSearch'), { ssr: false });
+const AccountsLabelSearch = dynamic(() => import('client/features/address-metadata/pages/tag-search/TagSearch'), { ssr: false });
 
 const Page: NextPage = () => {
   return (
