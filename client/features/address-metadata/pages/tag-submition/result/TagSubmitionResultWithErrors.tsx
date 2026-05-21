@@ -19,7 +19,7 @@ interface Props {
   data: FormSubmitResultGrouped;
 }
 
-const PublicTagsSubmitResultWithErrors = ({ data }: Props) => {
+const TagSubmitionResultWithErrors = ({ data }: Props) => {
   const isMobile = useIsMobile();
   const bgColorSuccess = { _light: 'green.50', _dark: 'green.800' };
   const bgColorError = { _light: 'red.50', _dark: 'red.800' };
@@ -98,4 +98,4 @@ const PublicTagsSubmitResultWithErrors = ({ data }: Props) => {
   );
 };
 
-export default React.memo(PublicTagsSubmitResultWithErrors);
+export default React.memo(TagSubmitionResultWithErrors);

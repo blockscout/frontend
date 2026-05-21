@@ -6,7 +6,7 @@ import { useFieldArray, useFormContext } from 'react-hook-form';
 import type { FormFields } from '../types';
 import type { PublicTagType } from 'client/features/address-metadata/types/api';
 
-import PublicTagsSubmitFieldTag from './PublicTagsSubmitFieldTag';
+import TagSubmitionFieldTag from './TagSubmitionFieldTag';
 
 const LIMIT = 5;
 
@@ -14,7 +14,7 @@ interface Props {
   tagTypes: Array<PublicTagType> | undefined;
 }
 
-const PublicTagsSubmitFieldTags = ({ tagTypes }: Props) => {
+const TagSubmitionFieldTags = ({ tagTypes }: Props) => {
   const { control, formState, watch } = useFormContext<FormFields>();
   const { fields, insert, remove } = useFieldArray<FormFields, 'tags'>({
     name: 'tags',
@@ -45,7 +45,7 @@ const PublicTagsSubmitFieldTags = ({ tagTypes }: Props) => {
         const errors = formState.errors?.tags?.[ index ];
 
         return (
-          <PublicTagsSubmitFieldTag
+          <TagSubmitionFieldTag
             key={ field.id }
             field={ watch(`tags.${ index }`) }
             index={ index }
@@ -61,4 +61,4 @@ const PublicTagsSubmitFieldTags = ({ tagTypes }: Props) => {
   );
 };
 
-export default React.memo(PublicTagsSubmitFieldTags);
+export default React.memo(TagSubmitionFieldTags);

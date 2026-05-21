@@ -2,21 +2,22 @@
 
 import React from 'react';
 
-import type { FormSubmitResult } from 'ui/publicTags/submit/types';
+import type { FormSubmitResult } from './types';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
 import useProfileQuery from 'client/features/account/hooks/useProfileQuery';
 
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
-import PublicTagsSubmitForm from 'ui/publicTags/submit/PublicTagsSubmitForm';
-import PublicTagsSubmitResult from 'ui/publicTags/submit/PublicTagsSubmitResult';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
+import TagSubmitionForm from './TagSubmitionForm';
+import TagSubmitionResult from './TagSubmitionResult';
+
 type Screen = 'form' | 'result' | 'initializing' | 'error';
 
-const PublicTagsSubmit = () => {
+const TagSubmition = () => {
 
   const [ screen, setScreen ] = React.useState<Screen>('initializing');
   const [ submitResult, setSubmitResult ] = React.useState<FormSubmitResult>();
@@ -42,9 +43,9 @@ const PublicTagsSubmit = () => {
       case 'error':
         return <DataFetchAlert/>;
       case 'form':
-        return <PublicTagsSubmitForm config={ configQuery.data } onSubmitResult={ handleFormSubmitResult } userInfo={ profileQuery.data }/>;
+        return <TagSubmitionForm config={ configQuery.data } onSubmitResult={ handleFormSubmitResult } userInfo={ profileQuery.data }/>;
       case 'result':
-        return <PublicTagsSubmitResult data={ submitResult }/>;
+        return <TagSubmitionResult data={ submitResult }/>;
       default:
         return null;
     }
@@ -58,4 +59,4 @@ const PublicTagsSubmit = () => {
   );
 };
 
-export default PublicTagsSubmit;
+export default TagSubmition;

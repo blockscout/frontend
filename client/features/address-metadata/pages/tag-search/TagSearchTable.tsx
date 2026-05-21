@@ -8,7 +8,7 @@ import { currencyUnits } from 'client/shared/chain/units';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 
-import AddressesLabelSearchTableItem from './AddressesLabelSearchTableItem';
+import TagSearchTableItem from './TagSearchTableItem';
 
 interface Props {
   items: Array<AddressesItem>;
@@ -16,7 +16,7 @@ interface Props {
   isLoading?: boolean;
 }
 
-const AddressesLabelSearchTable = ({ items, top, isLoading }: Props) => {
+const TagSearchTable = ({ items, top, isLoading }: Props) => {
   return (
     <TableRoot>
       <TableHeaderSticky top={ top }>
@@ -28,7 +28,7 @@ const AddressesLabelSearchTable = ({ items, top, isLoading }: Props) => {
       </TableHeaderSticky>
       <TableBody>
         { items.map((item, index) => (
-          <AddressesLabelSearchTableItem
+          <TagSearchTableItem
             key={ item.hash + (isLoading ? index : '') }
             item={ item }
             isLoading={ isLoading }
@@ -39,4 +39,4 @@ const AddressesLabelSearchTable = ({ items, top, isLoading }: Props) => {
   );
 };
 
-export default AddressesLabelSearchTable;
+export default TagSearchTable;

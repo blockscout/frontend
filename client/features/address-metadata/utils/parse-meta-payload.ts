@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { AddressMetadataTag } from 'client/features/address-metadata/types/api';
-import type { AddressMetadataTagFormatted } from 'client/features/address-metadata/types/view';
+import type { AddressMetadataTagFormatted } from 'client/features/address-metadata/types/client';
 
 type MetaParsed = NonNullable<AddressMetadataTagFormatted['meta']>;
 

@@ -6,13 +6,13 @@ import { publicTagTypes as configMock } from 'mocks/metadata/publicTagTypes';
 import { expect, test } from 'playwright/lib';
 
 import * as mocks from './mocks';
-import PublicTagsSubmitForm from './PublicTagsSubmitForm';
+import TagSubmitionForm from './TagSubmitionForm';
 
 const onSubmitResult = () => {};
 
 test('base view +@mobile', async({ render }) => {
   const component = await render(
-    <PublicTagsSubmitForm config={ configMock } onSubmitResult={ onSubmitResult } userInfo={ useInfoMock }/>,
+    <TagSubmitionForm config={ configMock } onSubmitResult={ onSubmitResult } userInfo={ useInfoMock }/>,
   );
 
   await component.getByLabel(/Smart contract \/ Address/i).fill(mocks.address1);

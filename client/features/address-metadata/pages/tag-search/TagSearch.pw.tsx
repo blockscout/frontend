@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import React from 'react';
 
 import type { AddressesMetadataSearchResult } from 'client/features/address-metadata/types/api';
@@ -6,7 +8,7 @@ import * as addressMocks from 'client/slices/address/mocks/address';
 
 import { test, expect } from 'playwright/lib';
 
-import AccountsLabelSearch from './AccountsLabelSearch';
+import TagSearch from './TagSearch';
 
 const addresses: AddressesMetadataSearchResult = {
   items: [
@@ -57,6 +59,6 @@ test('base view +@mobile', async({ render, mockTextAd, mockApiResponse }) => {
       },
     },
   );
-  const component = await render(<AccountsLabelSearch/>, { hooksConfig });
+  const component = await render(<TagSearch/>, { hooksConfig });
   await expect(component).toHaveScreenshot();
 });

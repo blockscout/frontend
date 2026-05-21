@@ -6,7 +6,7 @@ import React from 'react';
 
 import PageNextJs from 'nextjs/PageNextJs';
 
-const AccountsLabelSearch = dynamic(() => import('ui/pages/AccountsLabelSearch'), { ssr: false });
+const AccountsLabelSearch = dynamic(() => import('client/features/address-metadata/pages/tag-search/TagSearch'), { ssr: false });
 
 const Page: NextPage = () => {
   return (

@@ -12,8 +12,6 @@ import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import { generateListStub } from 'stubs/utils';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import AddressesLabelSearchListItem from 'ui/addressesLabelSearch/AddressesLabelSearchListItem';
-import AddressesLabelSearchTable from 'ui/addressesLabelSearch/AddressesLabelSearchTable';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import EntityTag from 'ui/shared/EntityTags/EntityTag';
@@ -21,7 +19,10 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import StickyPaginationWithText from 'ui/shared/StickyPaginationWithText';
 
-const AccountsLabelSearch = () => {
+import TagSearchListItem from './TagSearchListItem';
+import TagSearchTable from './TagSearchTable';
+
+const TagSearch = () => {
 
   const router = useRouter();
   const slug = getQueryParamString(router.query.slug);
@@ -48,7 +49,7 @@ const AccountsLabelSearch = () => {
   const content = data?.items ? (
     <>
       <Box hideBelow="lg">
-        <AddressesLabelSearchTable
+        <TagSearchTable
           top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
           items={ data.items }
           isLoading={ isPlaceholderData }
@@ -57,7 +58,7 @@ const AccountsLabelSearch = () => {
       <Box hideFrom="lg">
         { data.items.map((item, index) => {
           return (
-            <AddressesLabelSearchListItem
+            <TagSearchListItem
               key={ item.hash + (isPlaceholderData ? index : '') }
               item={ item }
               isLoading={ isPlaceholderData }
@@ -113,4 +114,4 @@ const AccountsLabelSearch = () => {
   );
 };
 
-export default AccountsLabelSearch;
+export default TagSearch;

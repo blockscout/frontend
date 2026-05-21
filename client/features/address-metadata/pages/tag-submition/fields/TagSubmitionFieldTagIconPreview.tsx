@@ -9,7 +9,7 @@ interface Props {
   children: React.ReactElement;
 }
 
-const PublicTagsSubmitFieldTagIconPreview = ({ url, isInvalid, children }: Props) => {
+const TagSubmitionFieldTagIconPreview = ({ url, isInvalid, children }: Props) => {
   const borderColorActive = isInvalid ? 'error' : 'input.border.filled';
 
   return (
@@ -26,4 +26,4 @@ const PublicTagsSubmitFieldTagIconPreview = ({ url, isInvalid, children }: Props
   );
 };
 
-export default React.memo(PublicTagsSubmitFieldTagIconPreview);
+export default React.memo(TagSubmitionFieldTagIconPreview);

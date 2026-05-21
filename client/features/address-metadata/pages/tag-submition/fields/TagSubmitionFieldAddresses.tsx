@@ -12,7 +12,7 @@ import { FormFieldAddress } from 'toolkit/components/forms/fields/FormFieldAddre
 
 const LIMIT = 20;
 
-const PublicTagsSubmitFieldAddresses = () => {
+const TagSubmitionFieldAddresses = () => {
   const { control, formState } = useFormContext<FormFields>();
   const { fields, insert, remove } = useFieldArray<FormFields, 'addresses'>({
     name: 'addresses',
@@ -70,4 +70,4 @@ const PublicTagsSubmitFieldAddresses = () => {
   );
 };
 
-export default React.memo(PublicTagsSubmitFieldAddresses);
+export default React.memo(TagSubmitionFieldAddresses);

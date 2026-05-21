@@ -10,13 +10,13 @@ import { FormFieldImagePreview } from 'toolkit/components/forms/fields/image/For
 import { useImageField } from 'toolkit/components/forms/fields/image/useImageField';
 import IconSvg from 'ui/shared/IconSvg';
 
-import PublicTagsSubmitFieldTagIconPreview from './PublicTagsSubmitFieldTagIconPreview';
+import TagSubmitionFieldTagIconPreview from './TagSubmitionFieldTagIconPreview';
 
 interface Props {
   index: number;
 }
 
-const PublicTagsSubmitFieldTagIcon = ({ index }: Props) => {
+const TagSubmitionFieldTagIcon = ({ index }: Props) => {
 
   const imageField = useImageField({ name: `tags.${ index }.iconUrl`, isRequired: false });
 
@@ -27,15 +27,15 @@ const PublicTagsSubmitFieldTagIcon = ({ index }: Props) => {
         placeholder="Label icon URL"
         { ...imageField.input }
       />
-      <PublicTagsSubmitFieldTagIconPreview url={ imageField.preview.src } isInvalid={ imageField.preview.isInvalid }>
+      <TagSubmitionFieldTagIconPreview url={ imageField.preview.src } isInvalid={ imageField.preview.isInvalid }>
         <FormFieldImagePreview
           { ...imageField.preview }
           fallback={ <IconSvg name="blobs/image" color="icon.primary" boxSize="30px"/> }
           boxSize="30px"
         />
-      </PublicTagsSubmitFieldTagIconPreview>
+      </TagSubmitionFieldTagIconPreview>
     </Flex>
   );
 };
 
-export default React.memo(PublicTagsSubmitFieldTagIcon);
+export default React.memo(TagSubmitionFieldTagIcon);

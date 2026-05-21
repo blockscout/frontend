@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { AddressMetadataInfoFormatted, AddressMetadataTagFormatted } from 'client/features/address-metadata/types/view';
+import type { AddressMetadataInfoFormatted, AddressMetadataTagFormatted } from 'client/features/address-metadata/types/client';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
 import config from 'configs/app';
 import { useMultichainContext } from 'lib/contexts/multichain';
 
-import parseMetaPayload from '../utils/parseMetaPayload';
+import parseMetaPayload from '../utils/parse-meta-payload';
 
 export default function useAddressMetadataInfoQuery(addresses: Array<string>, isEnabled = true) {
 
