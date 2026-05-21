@@ -26,7 +26,7 @@ import { castToString } from 'toolkit/utils/guards';
 
 import WagmiProvider from './WagmiProvider';
 
-const feature = config.features.blockchainInteraction;
+const feature = config.features.connectWallet;
 
 const walletConnectors = [
   EthereumWalletConnectors,

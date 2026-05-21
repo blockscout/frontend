@@ -47,7 +47,7 @@ const AuthModalScreenSuccessEmail = ({ email, onConnectWallet, onClose, isAuth, 
         <chakra.span fontWeight="700">{ email }</chakra.span>{ ' ' }
         email has been successfully used to log in to your Blockscout account.
       </Text>
-      { !profile?.address_hash && config.features.blockchainInteraction.isEnabled ? (
+      { !profile?.address_hash && config.features.connectWallet.isEnabled ? (
         <>
           <Text mt={ 6 }>Add your web3 wallet to safely interact with smart contracts and dapps inside Blockscout.</Text>
           <Button mt={ 6 } onClick={ handleConnectWalletClick }>Connect wallet</Button>

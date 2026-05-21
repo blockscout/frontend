@@ -82,4 +82,4 @@ const ConnectWalletAlert = ({ isLoading }: Props) => {
 
 const Fallback = () => null;
 
-export default config.features.blockchainInteraction.isEnabled ? ConnectWalletAlert : Fallback;
+export default config.features.connectWallet.isEnabled ? ConnectWalletAlert : Fallback;

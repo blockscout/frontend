@@ -52,6 +52,6 @@ function useFormSubmitFallback({ addressHash }: Params): FormSubmitHandler {
   }, [ callMethodPublicClient, addressHash ]);
 }
 
-const hook = config.features.blockchainInteraction.isEnabled ? useFormSubmit : useFormSubmitFallback;
+const hook = config.features.connectWallet.isEnabled ? useFormSubmit : useFormSubmitFallback;
 
 export default hook;

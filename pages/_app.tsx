@@ -17,6 +17,7 @@ import getSocketUrl from 'client/api/get-socket-url';
 import useQueryClientConfig from 'client/api/hooks/useQueryClientConfig';
 import { SocketProvider } from 'client/api/socket/context';
 
+import Web3Provider from 'client/features/connect-wallet/components/Web3Provider';
 import { CsvExportContextProvider } from 'client/features/csv-export/utils/context';
 import { MarketplaceContextProvider } from 'client/features/marketplace/context';
 
@@ -34,7 +35,6 @@ import AppErrorBoundary from 'ui/shared/AppError/AppErrorBoundary';
 import AppErrorGlobalContainer from 'ui/shared/AppError/AppErrorGlobalContainer';
 import GoogleAnalytics from 'ui/shared/GoogleAnalytics';
 import Layout from 'ui/shared/layout/Layout';
-import Web3Provider from 'ui/shared/web3/Web3Provider';
 
 const RewardsContextProvider = dynamic(() => import('client/features/rewards/context').then(module => module.RewardsContextProvider), { ssr: false });
 const RewardsLoginModal = dynamic(() => import('client/features/rewards/components/login/RewardsLoginModal'), { ssr: false });

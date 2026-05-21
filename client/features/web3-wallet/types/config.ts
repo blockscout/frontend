@@ -1,8 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { ArrayElement } from 'types/utils';
-
-import type { IconName } from 'ui/shared/IconSvg';
+type ArrayElement<ArrType> = ArrType extends ReadonlyArray<infer ElementType> ? ElementType : never;
 
 export const SUPPORTED_WALLETS = [
   'metamask',
@@ -14,9 +12,3 @@ export const SUPPORTED_WALLETS = [
 ] as const;
 
 export type WalletType = ArrayElement<typeof SUPPORTED_WALLETS>;
-
-export interface WalletInfo {
-  name: string;
-  icon: IconName;
-  color: string;
-}

@@ -5,11 +5,12 @@ import React from 'react';
 
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 import type { ClusterChainConfig } from 'client/features/multichain/types/client';
+import { WALLETS_INFO } from 'client/features/web3-wallet/types/wallets';
+
+import useAddChainClick from 'client/features/web3-wallet/hooks/useAddChainClick';
+import useProvider from 'client/features/web3-wallet/hooks/useProvider';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
-import useAddChainClick from 'client/shared/web3/useAddChainClick';
-import useProvider from 'client/shared/web3/useProvider';
-import { WALLETS_INFO } from 'client/shared/web3/wallets';
 
 import { Heading } from 'toolkit/chakra/heading';
 import { IconButton } from 'toolkit/chakra/icon-button';

@@ -17,7 +17,7 @@ const rollupFeature = config.features.rollup;
 
 export const canClaimDirectlyGuard = (data: OptimisticL2WithdrawalClaimInfo) => {
   return (
-    config.features.blockchainInteraction.isEnabled &&
+    config.features.connectWallet.isEnabled &&
     Boolean(parentChain) &&
     data.portal_contract_address_hash !== null &&
     data.msg_sender_address_hash !== null &&

@@ -2,7 +2,7 @@
 
 import config from 'configs/app';
 
-const feature = config.features.blockchainInteraction;
+const feature = config.features.connectWallet;
 
 // eslint-disable-next-line no-nested-ternary
 const useWallet = (feature.isEnabled && feature.connectorType === 'dynamic') ?

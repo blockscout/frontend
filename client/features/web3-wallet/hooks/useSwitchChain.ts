@@ -6,8 +6,8 @@ import { useMultichainContext } from 'client/features/multichain/context';
 
 import config from 'configs/app';
 
+import { getHexadecimalChainId } from '../utils/get-hexadecimal-chain-id';
 import useProvider from './useProvider';
-import { getHexadecimalChainId } from './utils';
 
 function getParams(chainConfig: typeof config): { chainId: string } {
   if (!chainConfig.chain.id) {

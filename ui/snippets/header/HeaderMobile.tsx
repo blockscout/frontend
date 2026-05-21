@@ -41,7 +41,7 @@ const HeaderMobile = ({ hideSearchButton, onGoToSearchResults }: Props) => {
           return null;
       }
     }
-    if (config.features.blockchainInteraction.isEnabled) {
+    if (config.features.connectWallet.isEnabled) {
       return <UserWalletMobile/>;
     }
   })();

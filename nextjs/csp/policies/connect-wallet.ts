@@ -6,9 +6,9 @@ import config from 'configs/app';
 
 import { KEY_WORDS } from '../utils';
 
-const feature = config.features.blockchainInteraction;
+const feature = config.features.connectWallet;
 
-export function blockchainInteraction(): CspDev.DirectiveDescriptor {
+export function connectWallet(): CspDev.DirectiveDescriptor {
   if (!feature.isEnabled) {
     return {};
   }

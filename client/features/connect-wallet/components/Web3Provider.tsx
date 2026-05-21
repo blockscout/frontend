@@ -8,7 +8,7 @@ const ReownProvider = dynamic(() => import('./providers/ReownProvider'), { ssr: 
 const DynamicProvider = dynamic(() => import('./providers/DynamicProvider'), { ssr: false });
 const WagmiProvider = dynamic(() => import('./providers/WagmiProvider'), { ssr: false });
 
-const feature = config.features.blockchainInteraction;
+const feature = config.features.connectWallet;
 
 const Web3Provider = (() => {
   if (feature.isEnabled && feature.connectorType === 'reown') {

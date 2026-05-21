@@ -9,8 +9,8 @@ import useRewardsActivity from 'client/features/rewards/hooks/useRewardsActivity
 import config from 'configs/app';
 import { SECOND } from 'toolkit/utils/consts';
 
+import { getHexadecimalChainId } from '../utils/get-hexadecimal-chain-id';
 import useProvider from './useProvider';
-import { getHexadecimalChainId } from './utils';
 
 function getParams(chainConfig: typeof config): AddEthereumChainParameter {
   if (!chainConfig.chain.id) {

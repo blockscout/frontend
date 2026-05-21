@@ -8,7 +8,7 @@ function generateCspPolicy(isPrivateMode = false, nonce?: string) {
     descriptors.app(isPrivateMode),
     // Exclude tracking/analytics sources in private mode
     isPrivateMode ? {} : descriptors.ad(nonce),
-    isPrivateMode ? {} : descriptors.blockchainInteraction(),
+    isPrivateMode ? {} : descriptors.connectWallet(),
     descriptors.cloudFlare(),
     descriptors.flashblocks(),
     isPrivateMode ? {} : descriptors.googleAnalytics(),

@@ -2,13 +2,14 @@
 
 import React from 'react';
 
-import useAddChainClick from 'client/shared/web3/useAddChainClick';
-import useProvider from 'client/shared/web3/useProvider';
-import { WALLETS_INFO } from 'client/shared/web3/wallets';
+import { WALLETS_INFO } from '../types/wallets';
 
 import config from 'configs/app';
 import { Button } from 'toolkit/chakra/button';
 import IconSvg from 'ui/shared/IconSvg';
+
+import useAddChainClick from '../hooks/useAddChainClick';
+import useProvider from '../hooks/useProvider';
 
 interface Props {
   source: 'Footer' | 'Top bar';

@@ -15,7 +15,7 @@ import zIndex from 'toolkit/theme/foundations/zIndex';
 
 import WagmiProvider from './WagmiProvider';
 
-const feature = config.features.blockchainInteraction;
+const feature = config.features.connectWallet;
 
 const initReown = () => {
   try {
