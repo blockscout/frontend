@@ -7,7 +7,7 @@ import apis from '../apis';
 import app from '../app';
 import chain from '../chain';
 import { getEnvValue, getExternalAssetFilePath, parseEnvJson } from '../utils';
-import blockchainInteraction from './blockchain-interaction';
+import connectWallet from './connect-wallet';
 
 const defaultTitles: MarketplaceTitles = {
   entity_name: 'Dapp',
@@ -63,7 +63,7 @@ const config: Feature<(
         linkUrl: bannerLinkUrl,
       } : undefined,
       graphLinksUrl,
-      essentialDapps: blockchainInteraction.isEnabled ? (essentialDappsConfig || undefined) : undefined,
+      essentialDapps: connectWallet.isEnabled ? (essentialDappsConfig || undefined) : undefined,
       essentialDappsAdEnabled,
       titles: { ...defaultTitles, ...customTitles },
     };

@@ -11,6 +11,8 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 import useFetch from 'client/api/hooks/useFetch';
 import type { ResourceError } from 'client/api/resources';
 
+import NetworkAddToWallet from 'client/features/web3-wallet/components/NetworkAddToWallet';
+
 import config from 'configs/app';
 import { useAppContext } from 'lib/contexts/app';
 import { Link } from 'toolkit/chakra/link';
@@ -19,7 +21,6 @@ import { copy } from 'toolkit/utils/htmlEntities';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import IconSvg from 'ui/shared/IconSvg';
 import { CONTENT_MAX_WIDTH } from 'ui/shared/layout/utils';
-import NetworkAddToWallet from 'ui/shared/NetworkAddToWallet';
 
 import FooterLinkItem from './FooterLinkItem';
 import IntTxsIndexingStatus from './IntTxsIndexingStatus';

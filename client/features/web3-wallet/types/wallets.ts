@@ -1,8 +1,16 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { WalletType, WalletInfo } from 'types/client/wallets';
+import type { IconName } from 'ui/shared/IconSvg';
 
-export const WALLETS_INFO: Record<Exclude<WalletType, 'none'>, WalletInfo> = {
+import type { WalletType } from './config';
+
+export interface WalletInfo {
+  name: string;
+  icon: IconName;
+  color: string;
+}
+
+export const WALLETS_INFO: Record<WalletType, WalletInfo> = {
   metamask: {
     name: 'MetaMask',
     icon: 'wallets/metamask',

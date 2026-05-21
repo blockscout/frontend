@@ -3,12 +3,11 @@
 import { Box, chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import type { SearchResult } from './types';
-import type { ArrayElement } from 'types/utils';
+import type { SearchResultMatch } from './types';
 
 import useThemeColors from './utils/useThemeColors';
 
-interface Props extends ArrayElement<SearchResult['matches']> {
+interface Props extends SearchResultMatch {
   filePath: string;
   onClick: (event: React.MouseEvent) => void;
 }

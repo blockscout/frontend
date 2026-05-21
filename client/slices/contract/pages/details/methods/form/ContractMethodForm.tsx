@@ -150,7 +150,7 @@ const ContractMethodForm = ({ data, attempt, onSubmit, onReset, isOpen }: Props)
   }, [ data ]);
 
   const primaryButton = (() => {
-    const isDisabled = !config.features.blockchainInteraction.isEnabled && methodType === 'write';
+    const isDisabled = !config.features.connectWallet.isEnabled && methodType === 'write';
     const text = methodType === 'write' ? 'Write' : 'Read';
     const buttonCallStrategy = methodType === 'write' ? 'write' : 'read';
 

@@ -3,7 +3,7 @@
 // copied from node_modules/@wagmi/core/src/connectors/injected.ts
 import type { EIP1193Provider } from 'viem';
 
-import type { Evaluate } from './utils';
+import type { Evaluate } from 'types/utils';
 
 type WalletProviderFlags =
   'isApexWallet' |

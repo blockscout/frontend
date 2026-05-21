@@ -2,7 +2,7 @@
 
 export { ad } from './ad';
 export { app } from './app';
-export { blockchainInteraction } from './blockchainInteraction';
+export { connectWallet } from './connect-wallet';
 export { cloudFlare } from './cloudFlare';
 export { flashblocks } from './flashblocks';
 export { googleAnalytics } from './googleAnalytics';

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { WalletType } from 'types/client/wallets';
-import type { WalletProvider } from 'types/web3';
+import type { WalletType } from '../types/config';
+import type { WalletProvider } from '../types/wallet-provider';
 
 const isWalletProvider = (wallet: WalletType) => (provider: WalletProvider): boolean | undefined => {
   switch (wallet) {

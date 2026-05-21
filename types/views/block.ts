@@ -1,7 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { ArrayElement } from 'types/utils';
-
 export const BLOCK_FIELDS_IDS = [
   'base_fee',
   'burnt_fees',
@@ -12,4 +10,4 @@ export const BLOCK_FIELDS_IDS = [
   'batch',
 ] as const;
 
-export type BlockFieldId = ArrayElement<typeof BLOCK_FIELDS_IDS>;
+export type BlockFieldId = (typeof BLOCK_FIELDS_IDS)[number];

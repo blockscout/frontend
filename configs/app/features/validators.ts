@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { Feature } from './types';
-import type { ArrayElement } from 'types/utils';
 
 import { getEnvValue } from '../utils';
 
@@ -11,7 +10,7 @@ export const VALIDATORS_CHAIN_TYPE = [
   'zilliqa',
 ] as const;
 
-export type ValidatorsChainType = ArrayElement<typeof VALIDATORS_CHAIN_TYPE>;
+export type ValidatorsChainType = (typeof VALIDATORS_CHAIN_TYPE)[number];
 
 const chainType = ((): ValidatorsChainType | undefined => {
   const envValue = getEnvValue('NEXT_PUBLIC_VALIDATORS_CHAIN_TYPE') as ValidatorsChainType | undefined;

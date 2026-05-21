@@ -19,7 +19,7 @@ import UserProfileButton from './UserProfileButton';
 import UserProfileContent from './UserProfileContent';
 
 const initialScreen = {
-  type: config.features.blockchainInteraction.isEnabled ? 'select_method' as const : 'email' as const,
+  type: config.features.connectWallet.isEnabled ? 'select_method' as const : 'email' as const,
 };
 
 const UserProfileMobile = () => {
@@ -39,7 +39,7 @@ const UserProfileMobile = () => {
       return;
     }
 
-    if (router.pathname === '/apps/[id]' && config.features.blockchainInteraction.isEnabled) {
+    if (router.pathname === '/apps/[id]' && config.features.connectWallet.isEnabled) {
       setAuthInitialScreen({ type: 'connect_wallet', loginToRewards: true });
     }
 

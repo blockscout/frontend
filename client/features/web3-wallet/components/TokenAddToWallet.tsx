@@ -4,15 +4,15 @@ import { Box, chakra } from '@chakra-ui/react';
 import React from 'react';
 import type { WatchAssetParams } from 'viem';
 
+import { WALLETS_INFO } from 'client/features/web3-wallet/types/wallets';
 import type { TokenInfo } from 'client/slices/token/types/api';
 
 import useRewardsActivity from 'client/features/rewards/hooks/useRewardsActivity';
+import useProvider from 'client/features/web3-wallet/hooks/useProvider';
+import useSwitchOrAddChain from 'client/features/web3-wallet/hooks/useSwitchOrAddChain';
 
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
-import useProvider from 'client/shared/web3/useProvider';
-import useSwitchOrAddChain from 'client/shared/web3/useSwitchOrAddChain';
-import { WALLETS_INFO } from 'client/shared/web3/wallets';
 
 import config from 'configs/app';
 import { IconButton } from 'toolkit/chakra/icon-button';

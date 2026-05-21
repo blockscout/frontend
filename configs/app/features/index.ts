@@ -10,7 +10,7 @@ export { default as adsText } from './ads-text';
 export { default as apiDocs } from './api-docs';
 export { default as beaconChain } from './beacon-chain';
 export { default as bridgedTokens } from './bridged-tokens';
-export { default as blockchainInteraction } from './blockchain-interaction';
+export { default as connectWallet } from './connect-wallet';
 export { default as celo } from './celo';
 export { default as crossChainTxs } from './cross-chain-txs';
 export { default as csvExport } from './csv-export';

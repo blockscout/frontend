@@ -4,15 +4,15 @@ import { Flex, Box, HStack } from '@chakra-ui/react';
 import React from 'react';
 
 import CsvExportDownloads from 'client/features/csv-export/components/downloads/CsvExportDownloads';
+import NetworkAddToWallet from 'client/features/web3-wallet/components/NetworkAddToWallet';
+import useProvider from 'client/features/web3-wallet/hooks/useProvider';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import * as cookies from 'client/shared/storage/cookies';
-import useProvider from 'client/shared/web3/useProvider';
 
 import config from 'configs/app';
 import { useAppContext } from 'lib/contexts/app';
 import { CONTENT_MAX_WIDTH } from 'ui/shared/layout/utils';
-import NetworkAddToWallet from 'ui/shared/NetworkAddToWallet';
 
 import DeFiDropdown from './DeFiDropdown';
 import NetworkMenu from './NetworkMenu';

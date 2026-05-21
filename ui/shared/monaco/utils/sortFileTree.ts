@@ -1,9 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { FileTree } from '../types';
-import type { ArrayElement } from 'types/utils';
 
-export default function sortFileTree(a: ArrayElement<FileTree>, b: ArrayElement<FileTree>) {
+export default function sortFileTree(a: FileTree[number], b: FileTree[number]) {
   if ('children' in a && !('children' in b)) {
     return -1;
   }

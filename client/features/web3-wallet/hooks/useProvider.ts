@@ -8,7 +8,7 @@ import { useMultichainContext } from 'client/features/multichain/context';
 
 import config from 'configs/app';
 
-import detectWallet from './detect-wallet';
+import detectWallet from '../utils/detect-wallet';
 import useDetectWalletEip6963 from './useDetectWalletEip6963';
 
 export default function useProvider() {

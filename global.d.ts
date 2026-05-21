@@ -1,6 +1,6 @@
 import type { EssentialDappsChainConfig } from 'client/features/marketplace/types/client';
 import type { MultichainConfig } from 'client/features/multichain/types/client';
-import type { WalletProvider } from 'types/web3';
+import type { WalletProvider } from 'client/features/web3-wallet/types/wallet-provider';
 import 'vitest-fetch-mock';
 
 declare global {

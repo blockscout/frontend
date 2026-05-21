@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { WalletType } from 'types/client/wallets';
+import type { WalletType } from 'client/features/web3-wallet/types/config';
 import type { ColorThemeId } from 'types/settings';
 
 export enum EventTypes {
