@@ -209,7 +209,7 @@ migrated to `client/shared/` in 1-2 and do not appear here.
 
 ### 6-2 · [x] Feature: `data-availability` · [#3453](https://github.com/blockscout/frontend/issues/3453)
 
-### 6-3 · [ ] Feature: `multichain`
+### 6-3 · [~] Features: `multichain` and `multichain-button` · [#3479](https://github.com/blockscout/frontend/issues/3479)
 **Scope:** Includes `lib/multichain/`, `lib/contexts/multichain.tsx`, `ui/snippets/networkMenu/` → `client/features/multichain/`  
 
 ### 6-4 · [x] Feature: `name-services` (domains and clusters) · [#3458](https://github.com/blockscout/frontend/issues/3458)
