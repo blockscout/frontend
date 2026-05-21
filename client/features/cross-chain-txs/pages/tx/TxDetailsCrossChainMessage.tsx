@@ -8,14 +8,14 @@ import type { InterchainMessage } from '@blockscout/interchain-indexer-types';
 import AddressEntityInterchain from 'client/slices/address/components/entity/AddressEntityInterchain';
 import TxEntityInterchain from 'client/slices/tx/components/entity/TxEntityInterchain';
 
-import CrossChainMessageEntity from 'client/features/cross-chain-txs/components/CrossChainMessageEntity';
-import CrossChainTxsStatusTag from 'client/features/cross-chain-txs/components/CrossChainTxsStatusTag';
-
 import config from 'configs/app';
 import { mdash } from 'toolkit/utils/htmlEntities';
 import * as DetailedInfoItemBreakdown from 'ui/shared/DetailedInfo/DetailedInfoItemBreakdown';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 import ChainLabel from 'ui/shared/externalChains/ChainLabel';
+
+import CrossChainMessageEntity from '../../components/CrossChainMessageEntity';
+import CrossChainTxsStatusTag from '../../components/CrossChainTxsStatusTag';
 
 interface Props {
   data: InterchainMessage;

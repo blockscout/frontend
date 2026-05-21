@@ -7,9 +7,6 @@ import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
-import CrossChainMessageEntity from 'client/features/cross-chain-txs/components/CrossChainMessageEntity';
-import { INTERCHAIN_MESSAGE } from 'client/features/cross-chain-txs/stubs/messages';
-
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
@@ -17,6 +14,8 @@ import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import TextAd from 'ui/shared/ad/TextAd';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
+import CrossChainMessageEntity from '../../components/CrossChainMessageEntity';
+import { INTERCHAIN_MESSAGE } from '../../stubs/messages';
 import TxCrossChainDetails from './TxCrossChainDetails';
 import TxCrossChainTransfers from './TxCrossChainTransfers';
 

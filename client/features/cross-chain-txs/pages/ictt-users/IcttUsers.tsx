@@ -6,8 +6,6 @@ import React from 'react';
 
 import type { CrossChainChainsStatsSorting, CrossChainChainsStatsSortingField, CrossChainChainsStatsSortingValue } from '../../types/api';
 
-import { INTERCHAIN_STATS_CHAINS_ITEM } from 'client/features/cross-chain-txs/stubs/messages';
-
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
 import { generateListStub } from 'stubs/utils';
@@ -20,6 +18,7 @@ import getSortParamsFromValue from 'ui/shared/sort/getSortParamsFromValue';
 import getSortValueFromQuery from 'ui/shared/sort/getSortValueFromQuery';
 import Sort from 'ui/shared/sort/Sort';
 
+import { INTERCHAIN_STATS_CHAINS_ITEM } from '../../stubs/messages';
 import { ICTT_USERS_SORT_OPTIONS } from '../../utils/ictt-sort';
 import IcttUsersListItem from './IcttUsersListItem';
 import IcttUsersTable from './IcttUsersTable';

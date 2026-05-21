@@ -4,14 +4,13 @@ import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
-import TransactionsCrossChainContent from 'client/features/cross-chain-txs/components/txs/TransactionsCrossChainContent';
-import { INTERCHAIN_MESSAGE, INTERCHAIN_STATS_COMMON } from 'client/features/cross-chain-txs/stubs/messages';
-
 import { generateListStub } from 'stubs/utils';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import StickyPaginationWithText from 'ui/shared/StickyPaginationWithText';
 
+import TransactionsCrossChainContent from '../../components/txs/TransactionsCrossChainContent';
+import { INTERCHAIN_MESSAGE, INTERCHAIN_STATS_COMMON } from '../../stubs/messages';
 import TransactionsCrossChainStats from './TransactionsCrossChainStats';
 
 const TransactionsCrossChain = () => {

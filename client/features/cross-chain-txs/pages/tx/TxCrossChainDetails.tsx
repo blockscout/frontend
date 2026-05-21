@@ -6,14 +6,13 @@ import type { InterchainMessage } from '@blockscout/interchain-indexer-types';
 
 import AddressEntityInterchain from 'client/slices/address/components/entity/AddressEntityInterchain';
 
-import CrossChainTxsStatusTag from 'client/features/cross-chain-txs/components/CrossChainTxsStatusTag';
-
-import CrossChainBridgeLink from 'ui/shared/crossChain/CrossChainBridgeLink';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 import RawInputData from 'ui/shared/RawInputData';
 
+import CrossChainBridgeLink from '../../components/CrossChainBridgeLink';
+import CrossChainTxsStatusTag from '../../components/CrossChainTxsStatusTag';
 import TxCrossChainDetailsLifecycle from './TxCrossChainDetailsLifecycle';
 import TxCrossChainDetailsTransfers from './TxCrossChainDetailsTransfers';
 

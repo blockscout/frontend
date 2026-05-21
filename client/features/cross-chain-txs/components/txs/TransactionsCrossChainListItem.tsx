@@ -11,20 +11,20 @@ import { route } from 'nextjs-routes';
 import AddressEntityInterchain from 'client/slices/address/components/entity/AddressEntityInterchain';
 import TxEntityInterchain from 'client/slices/tx/components/entity/TxEntityInterchain';
 
-import CrossChainMessageEntity from 'client/features/cross-chain-txs/components/CrossChainMessageEntity';
-import CrossChainTxsStatusTag from 'client/features/cross-chain-txs/components/CrossChainTxsStatusTag';
-
 import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { mdash } from 'toolkit/utils/htmlEntities';
-import CrossChainBridgeLink from 'ui/shared/crossChain/CrossChainBridgeLink';
-import CrossChainFromToTag from 'ui/shared/crossChain/CrossChainFromToTag';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TextSeparator from 'ui/shared/TextSeparator';
 import Time from 'ui/shared/time/Time';
 import TokenValueInterchain from 'ui/shared/value/TokenValueInterchain';
+
+import CrossChainBridgeLink from '../CrossChainBridgeLink';
+import CrossChainFromToTag from '../CrossChainFromToTag';
+import CrossChainMessageEntity from '../CrossChainMessageEntity';
+import CrossChainTxsStatusTag from '../CrossChainTxsStatusTag';
 
 interface Props extends JsxStyleProps {
   data: InterchainMessage;

@@ -4,13 +4,13 @@ import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
-import TokenTransfersCrossChainContent from 'client/features/cross-chain-txs/components/token-transfers/TokenTransfersCrossChainContent';
-import { INTERCHAIN_STATS_COMMON, INTERCHAIN_TRANSFER } from 'client/features/cross-chain-txs/stubs/messages';
-
 import { generateListStub } from 'stubs/utils';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import StickyPaginationWithText from 'ui/shared/StickyPaginationWithText';
+
+import TokenTransfersCrossChainContent from '../../components/token-transfers/TokenTransfersCrossChainContent';
+import { INTERCHAIN_STATS_COMMON, INTERCHAIN_TRANSFER } from '../../stubs/messages';
 
 const TokenTransfersCrossChain = () => {
   const { data, isPlaceholderData, isError, pagination } = useQueryWithPages({
