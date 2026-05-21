@@ -10,7 +10,7 @@ import { getChartData } from 'client/slices/home/utils/chart';
 
 import { HOMEPAGE_STATS } from 'client/features/multichain/stubs';
 
-import useFetchParentChainApi from './useFetchParentChainApi';
+import useFetchParentChainApi from '../../hooks/useFetchParentChainApi';
 
 interface Props {
   indicatorId: string;

@@ -8,7 +8,7 @@ import { route } from 'nextjs/routes';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
-import { useMultichainContext } from 'client/features/multichain/contexts/multichain';
+import { useMultichainContext } from 'client/features/multichain/context';
 
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import getQueryParamString from 'client/shared/router/get-query-param-string';

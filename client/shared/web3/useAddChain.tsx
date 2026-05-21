@@ -3,7 +3,7 @@
 import React from 'react';
 import type { AddEthereumChainParameter } from 'viem';
 
-import { useMultichainContext } from 'client/features/multichain/contexts/multichain';
+import { useMultichainContext } from 'client/features/multichain/context';
 import useRewardsActivity from 'client/features/rewards/hooks/useRewardsActivity';
 
 import config from 'configs/app';

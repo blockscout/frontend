@@ -9,7 +9,7 @@ import type { LineChartItem } from 'toolkit/components/charts/line/types';
 import { CHART_RESOLUTION_LABELS, type ChartResolution } from 'toolkit/components/charts/types';
 
 import ChainSelect from 'client/features/multichain/components/ChainSelect';
-import { useMultichainContext } from 'client/features/multichain/contexts/multichain';
+import { useMultichainContext } from 'client/features/multichain/context';
 import useRoutedChainSelect from 'client/features/multichain/hooks/useRoutedChainSelect';
 
 import * as mixpanel from 'client/shared/analytics/mixpanel';

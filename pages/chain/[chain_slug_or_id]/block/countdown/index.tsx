@@ -7,7 +7,7 @@ import React from 'react';
 import type { Props } from 'nextjs/getServerSideProps/handlers';
 import PageNextJs from 'nextjs/PageNextJs';
 
-import { MultichainProvider } from 'client/features/multichain/contexts/multichain';
+import { MultichainProvider } from 'client/features/multichain/context';
 
 const BlockCountdownIndex = dynamic(() => import('client/slices/block/pages/countdown-index/BlockCountdownIndex'), { ssr: false });
 

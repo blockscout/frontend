@@ -16,7 +16,7 @@ import useSocketMessage from 'client/api/socket/useSocketMessage';
 import BlocksList from 'client/slices/block/pages/index/BlocksList';
 import BlocksTable from 'client/slices/block/pages/index/BlocksTable';
 
-import { useMultichainContext } from 'client/features/multichain/contexts/multichain';
+import { useMultichainContext } from 'client/features/multichain/context';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 

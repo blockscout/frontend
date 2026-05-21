@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import { useMultichainContext } from 'client/features/multichain/contexts/multichain';
+import { useMultichainContext } from 'client/features/multichain/context';
 
 import config from 'configs/app';
 

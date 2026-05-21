@@ -12,7 +12,7 @@ import { TX } from 'client/slices/tx/stubs/tx';
 import useIsAuth from 'client/features/account/hooks/useIsAuth';
 import TxsWatchlist from 'client/features/account/pages/tx-index-watchlist/TxsWatchlist';
 import AdvancedFilterLink from 'client/features/advanced-filter/components/AdvancedFilterLink';
-import { useMultichainContext } from 'client/features/multichain/contexts/multichain';
+import { useMultichainContext } from 'client/features/multichain/context';
 
 import getChainValidationActionText from 'client/shared/chain/get-chain-validation-action-text';
 import useIsInitialLoading from 'client/shared/hooks/useIsInitialLoading';

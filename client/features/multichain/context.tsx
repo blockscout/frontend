@@ -9,7 +9,7 @@ import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import multichainConfig from 'configs/multichain';
 
-import getChainIdFromSlugOrId from '../utils/get-chain-id-from-slug-or-id';
+import getChainIdFromSlugOrId from './utils/get-chain-id-from-slug-or-id';
 
 interface MultichainProviderProps {
   children: React.ReactNode;

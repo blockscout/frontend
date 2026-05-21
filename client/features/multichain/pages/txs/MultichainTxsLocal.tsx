@@ -9,7 +9,7 @@ import { SocketProvider } from 'client/api/socket/context';
 import TxsTabs, { getTabId } from 'client/slices/tx/pages/index/list/TxsTabs';
 import TxsStats from 'client/slices/tx/pages/index/stats/TxsStats';
 
-import { useMultichainContext } from 'client/features/multichain/contexts/multichain';
+import { useMultichainContext } from 'client/features/multichain/context';
 
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 

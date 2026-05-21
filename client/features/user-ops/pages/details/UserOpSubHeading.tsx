@@ -8,7 +8,7 @@ import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
-import { useMultichainContext } from 'client/features/multichain/contexts/multichain';
+import { useMultichainContext } from 'client/features/multichain/context';
 import { TX_INTERPRETATION } from 'client/features/tx-interpretation/blockscout/stubs';
 import TxInterpretation from 'client/features/tx-interpretation/common/components/TxInterpretation';
 import UserOpEntity from 'client/features/user-ops/components/entity/UserOpEntity';

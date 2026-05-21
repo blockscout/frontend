@@ -12,14 +12,14 @@ import { ADDRESS_INFO } from 'client/slices/address/stubs/address';
 import Contract from 'client/slices/contract/pages/details/Contract';
 
 import ChainSelect from 'client/features/multichain/components/ChainSelect';
-import { MultichainProvider } from 'client/features/multichain/contexts/multichain';
+import { MultichainProvider } from 'client/features/multichain/context';
 import useRoutedChainSelect from 'client/features/multichain/hooks/useRoutedChainSelect';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
 import multichainConfig from 'configs/multichain';
 
-import getAvailableChainIds from './getAvailableChainIds';
+import getAvailableChainIds from './get-available-chain-ids';
 
 const LEFT_SLOT_PROPS = {
   mr: 6,

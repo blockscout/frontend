@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import ChainSelect from 'client/features/multichain/components/ChainSelect';
-import { MultichainProvider } from 'client/features/multichain/contexts/multichain';
+import { MultichainProvider } from 'client/features/multichain/context';
 import useRoutedChainSelect from 'client/features/multichain/hooks/useRoutedChainSelect';
 
 import getQueryParamString from 'client/shared/router/get-query-param-string';

@@ -18,7 +18,7 @@ import AddressQrCode from 'client/slices/address/pages/details/info/AddressQrCod
 import * as TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 
 import useAddressMetadataInfoQuery from 'client/features/address-metadata/hooks/useAddressMetadataInfoQuery';
-import { useMultichainContext } from 'client/features/multichain/contexts/multichain';
+import { useMultichainContext } from 'client/features/multichain/context';
 import TokenVerifiedInfo from 'client/features/verified-tokens/pages/token/TokenVerifiedInfo';
 import TokenAddToWallet from 'client/features/web3-wallet/components/TokenAddToWallet';
 

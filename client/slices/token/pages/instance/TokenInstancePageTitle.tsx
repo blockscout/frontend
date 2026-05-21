@@ -9,7 +9,7 @@ import { getTokenTypeName } from 'client/slices/token/utils/token-types';
 import AddressQrCode from 'client/slices/address/pages/details/info/AddressQrCode';
 import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 
-import { useMultichainContext } from 'client/features/multichain/contexts/multichain';
+import { useMultichainContext } from 'client/features/multichain/context';
 import TokenAddToWallet from 'client/features/web3-wallet/components/TokenAddToWallet';
 
 import { Link } from 'toolkit/chakra/link';

@@ -11,7 +11,7 @@ import PageNextJs from 'nextjs/PageNextJs';
 import detectBotRequest from 'nextjs/utils/detectBotRequest';
 import fetchApi from 'nextjs/utils/fetchApi';
 
-import { MultichainProvider } from 'client/features/multichain/contexts/multichain';
+import { MultichainProvider } from 'client/features/multichain/context';
 
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 

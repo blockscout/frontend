@@ -7,7 +7,7 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 
 import { VERIFIED_CONTRACTS_COUNTERS, VERIFIED_CONTRACTS_COUNTERS_MICROSERVICE } from 'client/slices/contract/stubs';
 
-import { useMultichainContext } from 'client/features/multichain/contexts/multichain';
+import { useMultichainContext } from 'client/features/multichain/context';
 
 import config from 'configs/app';
 import StatsWidget from 'ui/shared/stats/StatsWidget';

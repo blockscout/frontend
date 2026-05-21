@@ -7,7 +7,7 @@ import type { TokenInstance } from 'client/slices/token/types/api';
 
 import { route } from 'nextjs/routes';
 
-import { useMultichainContext } from 'client/features/multichain/contexts/multichain';
+import { useMultichainContext } from 'client/features/multichain/context';
 
 import * as EntityBase from 'ui/shared/entities/base/components';
 import NftMedia from 'ui/shared/nft/NftMedia';

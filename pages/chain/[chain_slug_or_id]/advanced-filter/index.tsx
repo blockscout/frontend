@@ -6,7 +6,7 @@ import React from 'react';
 import PageNextJs from 'nextjs/PageNextJs';
 
 import AdvancedFilter from 'client/features/advanced-filter/pages/index/AdvancedFilter';
-import { MultichainProvider } from 'client/features/multichain/contexts/multichain';
+import { MultichainProvider } from 'client/features/multichain/context';
 
 const Page: NextPage = () => {
   return (

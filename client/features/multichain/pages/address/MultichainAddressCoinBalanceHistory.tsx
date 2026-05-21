@@ -10,12 +10,12 @@ import { SocketProvider } from 'client/api/socket/context';
 import AddressCoinBalance from 'client/slices/address/pages/details/coin-balance/AddressCoinBalance';
 
 import ChainSelect from 'client/features/multichain/components/ChainSelect';
-import { MultichainProvider } from 'client/features/multichain/contexts/multichain';
+import { MultichainProvider } from 'client/features/multichain/context';
 import useRoutedChainSelect from 'client/features/multichain/hooks/useRoutedChainSelect';
 
 import multichainConfig from 'configs/multichain';
 
-import getAvailableChainIds from './getAvailableChainIds';
+import getAvailableChainIds from './get-available-chain-ids';
 
 const QUERY_PRESERVED_PARAMS = [ 'tab', 'hash' ];
 

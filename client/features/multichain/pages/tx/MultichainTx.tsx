@@ -5,7 +5,7 @@ import React from 'react';
 
 import Transaction from 'client/slices/tx/pages/details/Transaction';
 
-import { MultichainProvider } from 'client/features/multichain/contexts/multichain';
+import { MultichainProvider } from 'client/features/multichain/context';
 
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 

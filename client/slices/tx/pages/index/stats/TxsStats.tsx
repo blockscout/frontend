@@ -9,7 +9,7 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 import { HOMEPAGE_STATS } from 'client/slices/home/stubs';
 import { TXS_STATS, TXS_STATS_MICROSERVICE } from 'client/slices/tx/stubs/tx';
 
-import { useMultichainContext } from 'client/features/multichain/contexts/multichain';
+import { useMultichainContext } from 'client/features/multichain/context';
 
 import config from 'configs/app';
 import getStatsLabelFromTitle from 'lib/stats/getStatsLabelFromTitle';

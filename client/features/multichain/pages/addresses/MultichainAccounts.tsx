@@ -9,7 +9,7 @@ import AddressesTable from 'client/slices/address/pages/index/AddressesTable';
 import { TOP_ADDRESS } from 'client/slices/address/stubs/address';
 
 import ChainSelect from 'client/features/multichain/components/ChainSelect';
-import { MultichainProvider } from 'client/features/multichain/contexts/multichain';
+import { MultichainProvider } from 'client/features/multichain/context';
 
 import getItemIndex from 'client/shared/lists/get-item-index';
 

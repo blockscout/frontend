@@ -6,7 +6,7 @@ import React from 'react';
 
 import { routeParams } from 'nextjs/routes';
 
-import { useMultichainContext } from 'client/features/multichain/contexts/multichain';
+import { useMultichainContext } from 'client/features/multichain/context';
 
 import { Heading } from 'toolkit/chakra/heading';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';

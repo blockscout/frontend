@@ -4,7 +4,7 @@ import type { AddressMetadataInfoFormatted, AddressMetadataTagFormatted } from '
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
-import { useMultichainContext } from 'client/features/multichain/contexts/multichain';
+import { useMultichainContext } from 'client/features/multichain/context';
 
 import config from 'configs/app';
 

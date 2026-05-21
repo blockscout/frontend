@@ -5,7 +5,7 @@ import React from 'react';
 
 import type { NFTTokenType } from 'client/slices/token/types/api';
 
-import { useMultichainContext } from 'client/features/multichain/contexts/multichain';
+import { useMultichainContext } from 'client/features/multichain/context';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 

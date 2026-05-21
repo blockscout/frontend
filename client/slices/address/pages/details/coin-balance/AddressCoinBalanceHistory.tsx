@@ -9,7 +9,7 @@ import type { PaginationParams } from 'ui/shared/pagination/types';
 
 import type { ResourceError } from 'client/api/resources';
 
-import { useMultichainContext } from 'client/features/multichain/contexts/multichain';
+import { useMultichainContext } from 'client/features/multichain/context';
 
 import { currencyUnits } from 'client/shared/chain/units';
 

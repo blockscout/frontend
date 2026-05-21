@@ -14,7 +14,7 @@ import { SocketProvider } from 'client/api/socket/context';
 import TxsContent from 'client/slices/tx/pages/index/list/TxsContent';
 import { TX } from 'client/slices/tx/stubs/tx';
 
-import { useMultichainContext } from 'client/features/multichain/contexts/multichain';
+import { useMultichainContext } from 'client/features/multichain/context';
 
 import { Link } from 'toolkit/chakra/link';
 

@@ -9,7 +9,7 @@ import { route } from 'nextjs/routes';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 
-import { useMultichainContext } from 'client/features/multichain/contexts/multichain';
+import { useMultichainContext } from 'client/features/multichain/context';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 

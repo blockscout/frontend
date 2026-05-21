@@ -23,7 +23,7 @@ export function multichain(): CspDev.DirectiveDescriptor {
     'connect-src': [
       ...apiEndpoints,
       ...rpcEndpoints,
-      // please see comment in the useFetchParentChainApi.tsx file
+      // please see comment in the useFetchParentChainApi.ts file
       'https://eth.blockscout.com',
     ],
   };

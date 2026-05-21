@@ -10,7 +10,7 @@ import { LOG } from 'client/slices/log/stubs/log';
 
 import CsvExport from 'client/features/csv-export/components/CsvExport';
 import ChainSelect from 'client/features/multichain/components/ChainSelect';
-import { MultichainProvider } from 'client/features/multichain/contexts/multichain';
+import { MultichainProvider } from 'client/features/multichain/context';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
@@ -22,7 +22,7 @@ import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
-import getAvailableChainIds from './getAvailableChainIds';
+import getAvailableChainIds from './get-available-chain-ids';
 
 interface Props {
   addressData: multichain.GetAddressResponse | undefined;

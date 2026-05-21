@@ -10,7 +10,7 @@ import { route } from 'nextjs/routes';
 
 import TokenIconPlaceholder from 'client/slices/token/components/icon/TokenIconPlaceholder';
 
-import { useMultichainContext } from 'client/features/multichain/contexts/multichain';
+import { useMultichainContext } from 'client/features/multichain/context';
 
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';

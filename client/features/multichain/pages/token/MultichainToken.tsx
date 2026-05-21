@@ -8,7 +8,7 @@ import { SocketProvider } from 'client/api/socket/context';
 
 import Token from 'client/slices/token/pages/details/Token';
 
-import { MultichainProvider } from 'client/features/multichain/contexts/multichain';
+import { MultichainProvider } from 'client/features/multichain/context';
 
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 

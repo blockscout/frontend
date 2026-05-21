@@ -5,7 +5,7 @@ import React from 'react';
 
 import type { InternalTransaction } from 'client/slices/internal-tx/types/api';
 
-import { useMultichainContext } from 'client/features/multichain/contexts/multichain';
+import { useMultichainContext } from 'client/features/multichain/context';
 
 import InternalTxsListItem from './InternalTxsListItem';
 

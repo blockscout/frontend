@@ -20,7 +20,7 @@ import AddressAdvancedFilterLink from 'client/features/advanced-filter/component
 import CsvExport from 'client/features/csv-export/components/CsvExport';
 import ChainSelect from 'client/features/multichain/components/ChainSelect';
 import ListCounterText from 'client/features/multichain/components/ListCounterText';
-import { MultichainProvider } from 'client/features/multichain/contexts/multichain';
+import { MultichainProvider } from 'client/features/multichain/context';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
@@ -30,7 +30,7 @@ import { EmptyState } from 'toolkit/chakra/empty-state';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import Pagination from 'ui/shared/pagination/Pagination';
 
-import getAvailableChainIds from './getAvailableChainIds';
+import getAvailableChainIds from './get-available-chain-ids';
 
 export const ADDRESS_MULTICHAIN_TOKEN_TRANSFERS_TAB_IDS = [ 'token_transfers_cross_chain' as const, 'token_transfers_local' as const ];
 const TABS_RIGHT_SLOT_PROPS = {

@@ -8,7 +8,7 @@ import ChainStatsCounters from 'client/features/chain-stats/pages/index/ChainSta
 import ChainStatsFilters from 'client/features/chain-stats/pages/index/ChainStatsFilters';
 import ChainStatsSections from 'client/features/chain-stats/pages/index/ChainStatsSections';
 import ChainSelect from 'client/features/multichain/components/ChainSelect';
-import { MultichainProvider } from 'client/features/multichain/contexts/multichain';
+import { MultichainProvider } from 'client/features/multichain/context';
 import useRoutedChainSelect from 'client/features/multichain/hooks/useRoutedChainSelect';
 
 import useEtherscanRedirects from 'client/shared/router/useEtherscanRedirects';

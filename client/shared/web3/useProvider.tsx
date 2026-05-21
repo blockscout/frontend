@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import { getFeaturePayload } from 'configs/app/features/types';
 
-import { useMultichainContext } from 'client/features/multichain/contexts/multichain';
+import { useMultichainContext } from 'client/features/multichain/context';
 
 import config from 'configs/app';
 

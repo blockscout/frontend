@@ -8,7 +8,7 @@ import InternalTxsTable from 'client/slices/internal-tx/components/InternalTxsTa
 import useInternalTxsQuery from 'client/slices/internal-tx/hooks/useInternalTxsQuery';
 
 import ChainSelect from 'client/features/multichain/components/ChainSelect';
-import { MultichainProvider } from 'client/features/multichain/contexts/multichain';
+import { MultichainProvider } from 'client/features/multichain/context';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 

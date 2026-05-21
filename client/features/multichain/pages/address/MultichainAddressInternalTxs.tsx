@@ -12,14 +12,14 @@ import InternalTxsTable from 'client/slices/internal-tx/components/InternalTxsTa
 
 import CsvExport from 'client/features/csv-export/components/CsvExport';
 import ChainSelect from 'client/features/multichain/components/ChainSelect';
-import { MultichainProvider } from 'client/features/multichain/contexts/multichain';
+import { MultichainProvider } from 'client/features/multichain/context';
 
 import multichainConfig from 'configs/multichain';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/pagination/Pagination';
 
-import getAvailableChainIds from './getAvailableChainIds';
+import getAvailableChainIds from './get-available-chain-ids';
 
 interface Props {
   addressData: multichain.GetAddressResponse | undefined;

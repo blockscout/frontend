@@ -15,7 +15,7 @@ import type { TxQuery } from 'client/slices/tx/hooks/useTxQuery';
 
 import useTxCrossChainTransfersQuery from 'client/features/cross-chain-txs/hooks/useTxCrossChainTransfersQuery';
 import TxTokenTransferCrossChain from 'client/features/cross-chain-txs/pages/tx/TxTokenTransferCrossChain';
-import { useMultichainContext } from 'client/features/multichain/contexts/multichain';
+import { useMultichainContext } from 'client/features/multichain/context';
 
 import useIsInitialLoading from 'client/shared/hooks/useIsInitialLoading';
 import useIsMobile from 'client/shared/hooks/useIsMobile';

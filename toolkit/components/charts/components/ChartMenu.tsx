@@ -5,7 +5,7 @@ import { useCopyToClipboard } from '@uidotdev/usehooks';
 import domToImage from 'dom-to-image';
 import React from 'react';
 
-import { useMultichainContext } from 'client/features/multichain/contexts/multichain';
+import { useMultichainContext } from 'client/features/multichain/context';
 
 import CopyIcon from 'icons/copy.svg';
 import DotsIcon from 'icons/dots.svg';

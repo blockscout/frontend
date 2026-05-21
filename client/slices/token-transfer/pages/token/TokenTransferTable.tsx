@@ -9,7 +9,7 @@ import { hasTokenIds, hasTokenTransferValue, isConfidentialTokenType, isFungible
 import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
 import TokenTransferTableItem from 'client/slices/token-transfer/pages/token/TokenTransferTableItem';
 
-import { useMultichainContext } from 'client/features/multichain/contexts/multichain';
+import { useMultichainContext } from 'client/features/multichain/context';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';

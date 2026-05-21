@@ -18,7 +18,7 @@ import TxsWithApiSorting from 'client/slices/tx/pages/index/list/TxsWithApiSorti
 import CsvExport from 'client/features/csv-export/components/CsvExport';
 import ChainSelect from 'client/features/multichain/components/ChainSelect';
 import ListCounterText from 'client/features/multichain/components/ListCounterText';
-import { MultichainProvider } from 'client/features/multichain/contexts/multichain';
+import { MultichainProvider } from 'client/features/multichain/context';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
@@ -29,7 +29,7 @@ import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import Pagination from 'ui/shared/pagination/Pagination';
 
-import getAvailableChainIds from './getAvailableChainIds';
+import getAvailableChainIds from './get-available-chain-ids';
 
 export const ADDRESS_MULTICHAIN_TXS_TAB_IDS = [ 'txs_cross_chain' as const, 'txs_local' as const ];
 const TAB_LIST_PROPS = {

@@ -10,7 +10,7 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import type { TxQuery } from 'client/slices/tx/hooks/useTxQuery';
 
-import { useMultichainContext } from 'client/features/multichain/contexts/multichain';
+import { useMultichainContext } from 'client/features/multichain/context';
 import { TX_INTERPRETATION } from 'client/features/tx-interpretation/blockscout/stubs';
 import TxInterpretation from 'client/features/tx-interpretation/common/components/TxInterpretation';
 import { NOVES_TRANSLATE } from 'client/features/tx-interpretation/noves/stubs';

@@ -6,7 +6,7 @@ import type { VerifiedContract, VerifiedContractsSortingField, VerifiedContracts
 
 import { SORT_SEQUENCE } from 'client/slices/contract/pages/index/sort';
 
-import { useMultichainContext } from 'client/features/multichain/contexts/multichain';
+import { useMultichainContext } from 'client/features/multichain/context';
 
 import { currencyUnits } from 'client/shared/chain/units';
 

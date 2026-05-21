@@ -14,7 +14,7 @@ import type { ResourceError } from 'client/api/resources';
 
 import * as stubs from 'client/slices/contract/stubs';
 
-import { useMultichainContext } from 'client/features/multichain/contexts/multichain';
+import { useMultichainContext } from 'client/features/multichain/context';
 
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 

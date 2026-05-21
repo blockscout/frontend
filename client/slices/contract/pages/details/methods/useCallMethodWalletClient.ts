@@ -7,7 +7,7 @@ import { useAccount, useSwitchChain, useWriteContract, useSendTransaction } from
 import type { FormSubmitResult, SmartContractMethod } from './types';
 
 import useWallet from 'client/features/connect-wallet/hooks/useWallet';
-import { useMultichainContext } from 'client/features/multichain/contexts/multichain';
+import { useMultichainContext } from 'client/features/multichain/context';
 import useRewardsActivity from 'client/features/rewards/hooks/useRewardsActivity';
 
 import config from 'configs/app';

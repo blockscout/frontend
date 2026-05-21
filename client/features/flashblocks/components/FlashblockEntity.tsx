@@ -5,7 +5,7 @@ import React from 'react';
 
 import { route } from 'nextjs/routes';
 
-import { useMultichainContext } from 'client/features/multichain/contexts/multichain';
+import { useMultichainContext } from 'client/features/multichain/context';
 
 import * as EntityBase from 'ui/shared/entities/base/components';
 import { distributeEntityProps } from 'ui/shared/entities/base/utils';

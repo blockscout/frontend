@@ -6,7 +6,7 @@ import React from 'react';
 
 import PageNextJs from 'nextjs/PageNextJs';
 
-import { MultichainProvider } from 'client/features/multichain/contexts/multichain';
+import { MultichainProvider } from 'client/features/multichain/context';
 
 const AccountsLabelSearch = dynamic(() => import('client/features/address-metadata/pages/tag-search/TagSearch'), { ssr: false });
 

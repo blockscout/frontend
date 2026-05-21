@@ -5,7 +5,7 @@ import React from 'react';
 
 import type { EntityTag as TEntityTag } from './types';
 
-import { useMultichainContext } from 'client/features/multichain/contexts/multichain';
+import { useMultichainContext } from 'client/features/multichain/context';
 
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 

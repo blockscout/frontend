@@ -6,7 +6,7 @@ import React from 'react';
 import type { Transaction } from 'client/slices/tx/types/api';
 import type { TxsSocketType } from 'client/slices/tx/types/socket';
 
-import { useMultichainContext } from 'client/features/multichain/contexts/multichain';
+import { useMultichainContext } from 'client/features/multichain/context';
 import type { TxsTranslationQuery } from 'client/features/tx-interpretation/noves/hooks/useDescribeTxs';
 
 import useInitialList from 'client/shared/lists/useInitialList';

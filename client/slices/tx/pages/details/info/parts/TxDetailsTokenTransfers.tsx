@@ -9,7 +9,7 @@ import { route } from 'nextjs/routes';
 
 import TokenTransferSnippet from 'client/slices/token-transfer/components/snippet/TokenTransferSnippet';
 
-import { useMultichainContext } from 'client/features/multichain/contexts/multichain';
+import { useMultichainContext } from 'client/features/multichain/context';
 
 import { Link } from 'toolkit/chakra/link';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';

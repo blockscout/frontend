@@ -4,7 +4,7 @@ import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import ChainSelect from 'client/features/multichain/components/ChainSelect';
-import { MultichainProvider } from 'client/features/multichain/contexts/multichain';
+import { MultichainProvider } from 'client/features/multichain/context';
 import UserOpsListItem from 'client/features/user-ops/pages/index/UserOpsListItem';
 import UserOpsTable from 'client/features/user-ops/pages/index/UserOpsTable';
 import { USER_OPS_ITEM } from 'client/features/user-ops/stubs';

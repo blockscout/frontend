@@ -3,7 +3,7 @@
 import React from 'react';
 import ReCaptcha from 'react-google-recaptcha';
 
-import { useMultichainContext } from 'client/features/multichain/contexts/multichain';
+import { useMultichainContext } from 'client/features/multichain/context';
 
 import config from 'configs/app';
 import { Alert } from 'toolkit/chakra/alert';

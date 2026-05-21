@@ -9,7 +9,7 @@ import { route } from 'nextjs/routes';
 
 import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 
-import { useMultichainContext } from 'client/features/multichain/contexts/multichain';
+import { useMultichainContext } from 'client/features/multichain/context';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 

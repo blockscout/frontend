@@ -11,7 +11,7 @@ import TokenLogoPlaceholder from 'client/slices/token/components/icon/TokenIconP
 import { Image } from 'toolkit/chakra/image';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 
-import useFetchParentChainApi from '../pages/home/useFetchParentChainApi';
+import useFetchParentChainApi from '../hooks/useFetchParentChainApi';
 
 interface Props {
   isLoading?: boolean;

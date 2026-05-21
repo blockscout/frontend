@@ -11,7 +11,7 @@ import TokenTypeFilter from 'client/slices/token/components/TokenTypeFilter';
 import { getTokenFilterValue } from 'client/slices/token/utils/list-utils';
 
 import ChainSelect from 'client/features/multichain/components/ChainSelect';
-import { MultichainProvider } from 'client/features/multichain/contexts/multichain';
+import { MultichainProvider } from 'client/features/multichain/context';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import getQueryParamString from 'client/shared/router/get-query-param-string';

@@ -17,7 +17,7 @@ import AddressEntity from 'client/slices/address/components/entity/AddressEntity
 import type { TokenTabs } from 'client/slices/token/pages/details/Token';
 import { TOKEN_COUNTERS } from 'client/slices/token/stubs';
 
-import { useMultichainContext } from 'client/features/multichain/contexts/multichain';
+import { useMultichainContext } from 'client/features/multichain/context';
 
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import useIsMounted from 'client/shared/hooks/useIsMounted';

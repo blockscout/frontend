@@ -11,7 +11,7 @@ import VerifiedContractsList from 'client/slices/contract/pages/index/VerifiedCo
 import VerifiedContractsTable from 'client/slices/contract/pages/index/VerifiedContractsTable';
 
 import ChainSelect from 'client/features/multichain/components/ChainSelect';
-import { MultichainProvider } from 'client/features/multichain/contexts/multichain';
+import { MultichainProvider } from 'client/features/multichain/context';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 

@@ -9,7 +9,7 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 
 import HeroBanner from 'client/slices/home/pages/index/HeroBanner';
 
-import { MultichainProvider } from 'client/features/multichain/contexts/multichain';
+import { MultichainProvider } from 'client/features/multichain/context';
 
 import multichainConfig from 'configs/multichain';
 import { Link } from 'toolkit/chakra/link';

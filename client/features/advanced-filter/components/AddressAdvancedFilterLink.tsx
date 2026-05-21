@@ -7,7 +7,7 @@ import type { ClusterChainConfig } from 'client/features/multichain/types/client
 import type { AddressFromToFilter } from 'client/slices/address/types/api';
 import type { TokenType } from 'client/slices/token/types/api';
 
-import { useMultichainContext } from 'client/features/multichain/contexts/multichain';
+import { useMultichainContext } from 'client/features/multichain/context';
 
 import useIsInitialLoading from 'client/shared/hooks/useIsInitialLoading';
 

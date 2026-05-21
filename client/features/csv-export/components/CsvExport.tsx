@@ -17,7 +17,7 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 import isNeedProxy from 'client/api/is-need-proxy';
 import type { ResourceName, ResourcePathParams } from 'client/api/resources';
 
-import { useMultichainContext } from 'client/features/multichain/contexts/multichain';
+import { useMultichainContext } from 'client/features/multichain/context';
 
 import getErrorMessage from 'client/shared/errors/get-error-message';
 import getErrorObjStatusCode from 'client/shared/errors/get-error-obj-status-code';

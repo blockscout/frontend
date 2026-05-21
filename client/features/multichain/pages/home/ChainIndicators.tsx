@@ -18,8 +18,8 @@ import { HOMEPAGE_STATS } from 'client/features/multichain/stubs';
 
 import IconSvg from 'ui/shared/IconSvg';
 
+import useFetchParentChainApi from '../../hooks/useFetchParentChainApi';
 import useChartDataQuery from './useChartDataQuery';
-import useFetchParentChainApi from './useFetchParentChainApi';
 
 const ChainIndicators = () => {
   const statsQuery = useApiQuery('multichainStats:pages_main', {
