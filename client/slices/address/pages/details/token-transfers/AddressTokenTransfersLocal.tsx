@@ -11,10 +11,10 @@ import TokenTransferFilter from 'client/slices/token-transfer/components/TokenTr
 
 import AddressAdvancedFilterLink from 'client/features/advanced-filter/components/AddressAdvancedFilterLink';
 import CsvExport from 'client/features/csv-export/components/CsvExport';
+import { useMultichainContext } from 'client/features/multichain/contexts/multichain';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
-import { useMultichainContext } from 'lib/contexts/multichain';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/pagination/Pagination';

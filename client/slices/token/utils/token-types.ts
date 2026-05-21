@@ -2,8 +2,8 @@
 
 import { uniqBy } from 'es-toolkit';
 
+import type { ClusterChainConfig } from 'client/features/multichain/types/client';
 import type { NFTTokenType, TokenType } from 'client/slices/token/types/api';
-import type { ClusterChainConfig } from 'types/multichain';
 
 import config from 'configs/app';
 

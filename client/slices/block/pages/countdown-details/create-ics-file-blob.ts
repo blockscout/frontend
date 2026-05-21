@@ -2,8 +2,9 @@
 
 import { route } from 'nextjs/routes';
 
+import type { TMultichainContext } from 'client/features/multichain/contexts/multichain';
+
 import config from 'configs/app';
-import type { TMultichainContext } from 'lib/contexts/multichain';
 import type dayjs from 'lib/date/dayjs';
 
 interface Params {

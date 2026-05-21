@@ -14,11 +14,12 @@ import { getResourceKey } from 'client/api/hooks/useApiQuery';
 
 import useFetchTokens from 'client/slices/token/pages/address/useFetchTokens';
 
+import { useMultichainContext } from 'client/features/multichain/contexts/multichain';
+
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
-import { useMultichainContext } from 'lib/contexts/multichain';
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';

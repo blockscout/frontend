@@ -3,9 +3,9 @@
 import { Grid, Text, Flex } from '@chakra-ui/react';
 import React from 'react';
 
+import type * as multichain from 'client/features/multichain/types/client';
 import type { SearchResultDomain } from 'client/features/name-services/domains/types/api';
 import type { ItemsProps } from 'client/slices/search/components/search-bar/SearchBarSuggest/types';
-import type * as multichain from 'types/client/multichainAggregator';
 
 import { toBech32Address } from 'client/slices/address/utils/bech32';
 

@@ -3,8 +3,8 @@
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
 
+import type { ClusterChainConfig } from 'client/features/multichain/types/client';
 import type { AddressCounters } from 'client/slices/address/types/api';
-import type { ClusterChainConfig } from 'types/multichain';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 import type { ResourceError } from 'client/api/resources';

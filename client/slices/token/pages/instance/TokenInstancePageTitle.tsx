@@ -9,9 +9,9 @@ import { getTokenTypeName } from 'client/slices/token/utils/token-types';
 import AddressQrCode from 'client/slices/address/pages/details/info/AddressQrCode';
 import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 
+import { useMultichainContext } from 'client/features/multichain/contexts/multichain';
 import TokenAddToWallet from 'client/features/web3-wallet/components/TokenAddToWallet';
 
-import { useMultichainContext } from 'lib/contexts/multichain';
 import { Link } from 'toolkit/chakra/link';
 import { Tag } from 'toolkit/chakra/tag';
 import * as regexp from 'toolkit/utils/regexp';

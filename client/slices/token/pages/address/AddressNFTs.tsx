@@ -5,9 +5,10 @@ import React from 'react';
 
 import type { NFTTokenType } from 'client/slices/token/types/api';
 
+import { useMultichainContext } from 'client/features/multichain/contexts/multichain';
+
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
-import { useMultichainContext } from 'lib/contexts/multichain';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/pagination/Pagination';

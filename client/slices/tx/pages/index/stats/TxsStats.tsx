@@ -9,8 +9,9 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 import { HOMEPAGE_STATS } from 'client/slices/home/stubs';
 import { TXS_STATS, TXS_STATS_MICROSERVICE } from 'client/slices/tx/stubs/tx';
 
+import { useMultichainContext } from 'client/features/multichain/contexts/multichain';
+
 import config from 'configs/app';
-import { useMultichainContext } from 'lib/contexts/multichain';
 import getStatsLabelFromTitle from 'lib/stats/getStatsLabelFromTitle';
 import { thinsp } from 'toolkit/utils/htmlEntities';
 import StatsWidget from 'ui/shared/stats/StatsWidget';

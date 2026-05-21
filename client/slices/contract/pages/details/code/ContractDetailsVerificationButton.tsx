@@ -4,8 +4,9 @@ import React from 'react';
 
 import { route } from 'nextjs-routes';
 
+import { useMultichainContext } from 'client/features/multichain/contexts/multichain';
+
 import config from 'configs/app';
-import { useMultichainContext } from 'lib/contexts/multichain';
 import { Button } from 'toolkit/chakra/button';
 import type { LinkProps } from 'toolkit/chakra/link';
 import { Link } from 'toolkit/chakra/link';

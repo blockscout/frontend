@@ -9,7 +9,7 @@ import { route } from 'nextjs/routes';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 
-import * as contract from 'lib/multichain/contract';
+import * as contract from 'client/features/multichain/utils/contract';
 
 import SearchResultListItem from '../SearchResultListItem';
 

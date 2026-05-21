@@ -9,7 +9,8 @@ import { route } from 'nextjs/routes';
 
 import { formatLanguageName } from 'client/slices/contract/utils/language';
 
-import { useMultichainContext } from 'lib/contexts/multichain';
+import { useMultichainContext } from 'client/features/multichain/contexts/multichain';
+
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';

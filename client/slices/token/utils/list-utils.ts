@@ -2,9 +2,9 @@
 
 import { createListCollection } from '@chakra-ui/react';
 
+import type { ClusterChainConfig } from 'client/features/multichain/types/client';
 import type { TokensSortingValue } from 'client/slices/token/types/api';
 import { getTokenTypes } from 'client/slices/token/utils/token-types';
-import type { ClusterChainConfig } from 'types/multichain';
 
 import getFilterValuesFromQuery from 'client/shared/router/get-filter-values-from-query';
 

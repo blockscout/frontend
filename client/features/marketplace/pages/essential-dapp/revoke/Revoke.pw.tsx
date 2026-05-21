@@ -1,6 +1,7 @@
 import React from 'react';
 
-import * as chainDataMock from 'mocks/multichain/chains';
+import * as chainDataMock from 'client/features/multichain/mocks/chains';
+
 import { test, expect } from 'playwright/lib';
 
 import Revoke from './Revoke';

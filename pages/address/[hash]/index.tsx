@@ -12,10 +12,11 @@ import fetchApi from 'nextjs/utils/fetchApi';
 
 import Address from 'client/slices/address/pages/details/Address';
 
+import MultichainAddress from 'client/features/multichain/pages/address/MultichainAddress';
+
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import config from 'configs/app';
-import MultichainAddress from 'ui/multichain/address/MultichainAddress';
 
 const pathname: Route['pathname'] = '/address/[hash]';
 

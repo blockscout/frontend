@@ -1,6 +1,6 @@
 import type { GetMessagePathsResponse } from '@blockscout/interchain-indexer-types';
 
-import { chainA, chainB, chainC, chainD } from 'mocks/multichain/chains';
+import { chainA, chainB, chainC, chainD } from 'client/features/multichain/mocks/chains';
 
 export const incomingMessagesPaths: GetMessagePathsResponse = {
   items: [

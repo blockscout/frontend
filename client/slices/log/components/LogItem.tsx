@@ -3,8 +3,8 @@
 import { Grid, GridItem } from '@chakra-ui/react';
 import React from 'react';
 
+import type { ClusterChainConfig } from 'client/features/multichain/types/client';
 import type { TransactionLog } from 'client/slices/log/types/api';
-import type { ClusterChainConfig } from 'types/multichain';
 
 import { route } from 'nextjs-routes';
 

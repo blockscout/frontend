@@ -9,9 +9,10 @@ import { route } from 'nextjs/routes';
 
 import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 
+import { useMultichainContext } from 'client/features/multichain/contexts/multichain';
+
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
-import { useMultichainContext } from 'lib/contexts/multichain';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import ActionBar from 'ui/shared/ActionBar';

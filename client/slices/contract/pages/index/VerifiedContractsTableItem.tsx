@@ -3,8 +3,8 @@
 import { Flex, chakra } from '@chakra-ui/react';
 import React from 'react';
 
+import type { ClusterChainConfig } from 'client/features/multichain/types/client';
 import type { VerifiedContract } from 'client/slices/contract/types/api';
-import type { ClusterChainConfig } from 'types/multichain';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import ContractCertifiedLabel from 'client/slices/contract/components/ContractCertifiedLabel';

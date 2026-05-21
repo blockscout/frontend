@@ -6,8 +6,9 @@ import React from 'react';
 import type { GasPriceInfo } from 'client/slices/gas/types/api';
 import type { GasUnit } from 'client/slices/gas/types/config';
 
+import { useMultichainContext } from 'client/features/multichain/contexts/multichain';
+
 import config from 'configs/app';
-import { useMultichainContext } from 'lib/contexts/multichain';
 
 import formatGasValue from '../utils/format-gas-value';
 

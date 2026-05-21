@@ -5,7 +5,7 @@ import React from 'react';
 
 import type { TokenTransfer } from 'client/slices/token-transfer/types/api';
 
-import { useMultichainContext } from 'lib/contexts/multichain';
+import { useMultichainContext } from 'client/features/multichain/contexts/multichain';
 
 import TokenTransferListItem from './TokenTransferListItem';
 

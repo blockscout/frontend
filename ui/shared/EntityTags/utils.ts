@@ -4,7 +4,7 @@ import type { EntityTag } from './types';
 
 import { route } from 'nextjs/routes';
 
-import type { TMultichainContext } from 'lib/contexts/multichain';
+import type { TMultichainContext } from 'client/features/multichain/contexts/multichain';
 
 export function getTagLinkParams(data: EntityTag, multichainContext?: TMultichainContext | null): { type: 'external' | 'internal'; href: string } | undefined {
   if (data.meta?.warpcastHandle) {

@@ -12,11 +12,11 @@ import TxFee from 'client/slices/tx/components/TxFee';
 import TxStatus from 'client/slices/tx/components/TxStatus';
 
 import BlobEntity from 'client/features/data-availability/components/entity/BlobEntity';
+import { useMultichainContext } from 'client/features/multichain/contexts/multichain';
 
 import { currencyUnits } from 'client/shared/chain/units';
 
 import config from 'configs/app';
-import { useMultichainContext } from 'lib/contexts/multichain';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import TextSeparator from 'ui/shared/TextSeparator';

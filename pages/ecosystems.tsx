@@ -6,7 +6,7 @@ import React from 'react';
 
 import PageNextJs from 'nextjs/PageNextJs';
 
-const MultichainEcosystems = dynamic(() => import('ui/multichain/ecosystems/MultichainEcosystems'), { ssr: false });
+const MultichainEcosystems = dynamic(() => import('client/features/multichain/pages/ecosystems/MultichainEcosystems'), { ssr: false });
 
 const Page: NextPage = () => {
   return (

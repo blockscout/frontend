@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { TMultichainContext } from 'lib/contexts/multichain';
+import type { TMultichainContext } from 'client/features/multichain/contexts/multichain';
 
 import type { IconBaseProps, EntityBaseProps } from './components';
 

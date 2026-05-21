@@ -6,7 +6,8 @@ import React from 'react';
 
 import type { AdvancedFilterParams, AdvancedFilterType } from '../../types/api';
 
-import { useMultichainContext } from 'lib/contexts/multichain';
+import { useMultichainContext } from 'client/features/multichain/contexts/multichain';
+
 import { Checkbox, CheckboxGroup } from 'toolkit/chakra/checkbox';
 import TableColumnFilter from 'ui/shared/filters/TableColumnFilter';
 

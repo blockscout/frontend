@@ -6,7 +6,8 @@ import React from 'react';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 
-import { useMultichainContext } from 'lib/contexts/multichain';
+import { useMultichainContext } from 'client/features/multichain/contexts/multichain';
+
 import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Sol2UmlDiagram from 'ui/sol2uml/Sol2UmlDiagram';

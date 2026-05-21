@@ -2,8 +2,8 @@
 
 import React from 'react';
 
+import type { ClusterChainConfig } from 'client/features/multichain/types/client';
 import type { TokenTransfer } from 'client/slices/token-transfer/types/api';
-import type { ClusterChainConfig } from 'types/multichain';
 
 import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
 

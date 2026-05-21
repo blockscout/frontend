@@ -3,9 +3,9 @@
 import { Flex, VStack } from '@chakra-ui/react';
 import React from 'react';
 
+import type { ClusterChainConfig } from 'client/features/multichain/types/client';
 import type { NovesDescribeTxsResponse } from 'client/features/tx-interpretation/noves/types/api';
 import type { Transaction } from 'client/slices/tx/types/api';
-import type { ClusterChainConfig } from 'types/multichain';
 
 import AddressFromTo from 'client/slices/address/components/from-to/AddressFromTo';
 import BlockPendingUpdateHint from 'client/slices/block/components/BlockPendingUpdateHint';

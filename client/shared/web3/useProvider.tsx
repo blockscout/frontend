@@ -4,8 +4,9 @@ import { useQuery } from '@tanstack/react-query';
 
 import { getFeaturePayload } from 'configs/app/features/types';
 
+import { useMultichainContext } from 'client/features/multichain/contexts/multichain';
+
 import config from 'configs/app';
-import { useMultichainContext } from 'lib/contexts/multichain';
 
 import detectWallet from './detect-wallet';
 import useDetectWalletEip6963 from './useDetectWalletEip6963';

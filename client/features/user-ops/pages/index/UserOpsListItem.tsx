@@ -2,18 +2,18 @@
 
 import React from 'react';
 
+import type { ClusterChainConfig } from 'client/features/multichain/types/client';
 import type { UserOpsItem } from 'client/features/user-ops/types/api';
-import type { ClusterChainConfig } from 'types/multichain';
 
 import AddressStringOrParam from 'client/slices/address/components/entity/AddressStringOrParam';
 import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 
+import { useMultichainContext } from 'client/features/multichain/contexts/multichain';
 import UserOpEntity from 'client/features/user-ops/components/entity/UserOpEntity';
 import UserOpStatus from 'client/features/user-ops/components/UserOpStatus';
 
 import config from 'configs/app';
-import { useMultichainContext } from 'lib/contexts/multichain';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';

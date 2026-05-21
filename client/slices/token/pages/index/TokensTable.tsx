@@ -2,8 +2,8 @@
 
 import React from 'react';
 
+import type { AggregatedTokenInfo } from 'client/features/multichain/types/client';
 import type { TokenInfo, TokensSortingField, TokensSortingValue } from 'client/slices/token/types/api';
-import type { AggregatedTokenInfo } from 'types/client/multichainAggregator';
 
 import type { OnValueChangeHandler } from 'toolkit/chakra/select';
 import { TableBody, TableColumnHeader, TableColumnHeaderSortable, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';

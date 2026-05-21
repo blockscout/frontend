@@ -5,7 +5,8 @@ import React from 'react';
 
 import PageNextJs from 'nextjs/PageNextJs';
 
-import { MultichainProvider } from 'lib/contexts/multichain';
+import { MultichainProvider } from 'client/features/multichain/contexts/multichain';
+
 import Sol2Uml from 'ui/pages/Sol2Uml';
 
 const Page: NextPage = () => {

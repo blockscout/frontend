@@ -5,9 +5,10 @@ import React from 'react';
 
 import type { EntityTag as TEntityTag } from './types';
 
+import { useMultichainContext } from 'client/features/multichain/contexts/multichain';
+
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 
-import { useMultichainContext } from 'lib/contexts/multichain';
 import { Link, LinkExternalIcon } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tag } from 'toolkit/chakra/tag';

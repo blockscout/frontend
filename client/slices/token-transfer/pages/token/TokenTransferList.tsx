@@ -8,7 +8,7 @@ import type { TokenInstance } from 'client/slices/token/types/api';
 
 import TokenTransferListItem from 'client/slices/token-transfer/pages/token/TokenTransferListItem';
 
-import { useMultichainContext } from 'lib/contexts/multichain';
+import { useMultichainContext } from 'client/features/multichain/contexts/multichain';
 
 interface Props {
   data: Array<TokenTransfer>;

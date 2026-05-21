@@ -3,8 +3,8 @@ import React from 'react';
 import { hash as addressHash } from 'client/slices/address/mocks/address';
 
 import * as revokeMock from 'client/features/marketplace/mocks/revoke-dapp';
+import * as chainDataMock from 'client/features/multichain/mocks/chains';
 
-import * as chainDataMock from 'mocks/multichain/chains';
 import type { TestFnArgs } from 'playwright/lib';
 import { test, expect } from 'playwright/lib';
 

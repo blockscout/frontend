@@ -2,9 +2,9 @@ import React from 'react';
 
 import type { GetAddressResponse } from '@blockscout/multichain-aggregator-types';
 
+import * as chainDataMock from 'client/features/multichain/mocks/chains';
 import * as searchMock from 'client/features/multichain/mocks/search';
 
-import * as chainDataMock from 'mocks/multichain/chains';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';
 import * as pwConfig from 'playwright/utils/config';

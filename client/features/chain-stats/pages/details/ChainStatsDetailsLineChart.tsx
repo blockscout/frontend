@@ -8,10 +8,12 @@ import type { LineChartInfo } from '@blockscout/stats-types';
 import type { LineChartItem } from 'toolkit/components/charts/line/types';
 import { CHART_RESOLUTION_LABELS, type ChartResolution } from 'toolkit/components/charts/types';
 
+import ChainSelect from 'client/features/multichain/components/ChainSelect';
+import { useMultichainContext } from 'client/features/multichain/contexts/multichain';
+import useRoutedChainSelect from 'client/features/multichain/hooks/useRoutedChainSelect';
+
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 
-import { useMultichainContext } from 'lib/contexts/multichain';
-import useRoutedChainSelect from 'lib/multichain/useRoutedChainSelect';
 import type { OnValueChangeHandler, SelectOption } from 'toolkit/chakra/select';
 import { Select } from 'toolkit/chakra/select';
 import { Skeleton } from 'toolkit/chakra/skeleton';
@@ -19,7 +21,6 @@ import { ChartResetZoomButton } from 'toolkit/components/charts/components/Chart
 import { LineChartContent } from 'toolkit/components/charts/line/LineChartContent';
 import LineChartMenu from 'toolkit/components/charts/line/parts/LineChartMenu';
 import { useLineChartZoom } from 'toolkit/components/charts/line/utils/useLineChartZoom';
-import ChainSelect from 'ui/multichain/components/ChainSelect';
 import { useChartsConfig } from 'ui/shared/chart/config';
 
 import ChartIntervalSelect from '../../components/ChartIntervalSelect';

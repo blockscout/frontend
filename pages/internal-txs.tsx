@@ -10,7 +10,7 @@ import config from 'configs/app';
 
 const InternalTxs = dynamic(() => {
   if (config.features.multichain.isEnabled) {
-    return import('ui/multichain/internalTxs/MultichainInternalTxs');
+    return import('client/features/multichain/pages/internal-txs/MultichainInternalTxs');
   }
 
   return import('client/slices/internal-tx/pages/index/InternalTxs');

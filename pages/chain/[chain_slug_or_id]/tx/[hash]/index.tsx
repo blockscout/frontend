@@ -7,7 +7,7 @@ import React from 'react';
 import type { Props } from 'nextjs/getServerSideProps/handlers';
 import PageNextJs from 'nextjs/PageNextJs';
 
-const MultichainTx = dynamic(() => import('ui/multichain/tx/MultichainTx'), { ssr: false });
+const MultichainTx = dynamic(() => import('client/features/multichain/pages/tx/MultichainTx'), { ssr: false });
 
 const Page: NextPage<Props> = (props: Props) => {
   return (

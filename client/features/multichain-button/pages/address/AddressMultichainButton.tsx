@@ -3,7 +3,7 @@
 import { upperFirst } from 'es-toolkit';
 import React from 'react';
 
-import type { MultichainProviderConfigParsed } from 'types/client/multichainProviderConfig';
+import type { MultichainProviderConfigParsed } from 'client/features/multichain-button/types/client';
 
 import { route } from 'nextjs-routes';
 

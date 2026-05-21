@@ -4,8 +4,8 @@ import { Text, Flex, Grid, Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ItemsProps } from './types';
+import type * as multichain from 'client/features/multichain/types/client';
 import type { SearchResultBlock } from 'client/slices/search/types/client';
-import type * as multichain from 'types/client/multichainAggregator';
 
 import * as BlockEntity from 'client/slices/block/components/entity/BlockEntity';
 

@@ -3,14 +3,15 @@
 import { pickBy } from 'es-toolkit';
 import React from 'react';
 
+import type { ClusterChainConfig } from 'client/features/multichain/types/client';
 import type { AddressFromToFilter } from 'client/slices/address/types/api';
 import type { TokenType } from 'client/slices/token/types/api';
-import type { ClusterChainConfig } from 'types/multichain';
+
+import { useMultichainContext } from 'client/features/multichain/contexts/multichain';
 
 import useIsInitialLoading from 'client/shared/hooks/useIsInitialLoading';
 
 import config from 'configs/app';
-import { useMultichainContext } from 'lib/contexts/multichain';
 
 import { getAdvancedFilterTypes } from '../utils/lib';
 import AdvancedFilterLink from './AdvancedFilterLink';

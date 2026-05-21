@@ -5,16 +5,17 @@ import { mapValues } from 'es-toolkit';
 import React from 'react';
 
 import type { ItemsProps } from './types';
+import type * as multichain from 'client/features/multichain/types/client';
 import type { SearchResultToken } from 'client/slices/search/types/api';
-import type * as multichain from 'types/client/multichainAggregator';
 
 import { toBech32Address } from 'client/slices/address/utils/bech32';
 import ContractCertifiedLabel from 'client/slices/contract/components/ContractCertifiedLabel';
 import * as TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 
+import * as contract from 'client/features/multichain/utils/contract';
+
 import highlightText from 'client/shared/text/highlight-text';
 
-import * as contract from 'lib/multichain/contract';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import IconSvg from 'ui/shared/IconSvg';
 

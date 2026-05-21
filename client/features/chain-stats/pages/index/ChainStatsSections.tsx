@@ -11,9 +11,9 @@ import GasInfoTooltip from 'client/slices/gas/components/GasInfoTooltip';
 
 import ChartWidgetContainerCrossChain from 'client/features/cross-chain-txs/components/ChartWidgetContainerCrossChain';
 import { CROSS_CHAIN_TXS_CHARTS } from 'client/features/cross-chain-txs/utils/chain-stats';
+import { useMultichainContext } from 'client/features/multichain/contexts/multichain';
 
 import config from 'configs/app';
-import { useMultichainContext } from 'lib/contexts/multichain';
 import { EmptyState } from 'toolkit/chakra/empty-state';
 import { Heading } from 'toolkit/chakra/heading';
 import { Skeleton } from 'toolkit/chakra/skeleton';

@@ -4,18 +4,19 @@ import { chakra, Box, Text, Flex, Grid } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ItemsProps } from './types';
+import type * as multichain from 'client/features/multichain/types/client';
 import type { SearchResultAddressOrContract, SearchResultMetadataTag } from 'client/slices/search/types/api';
-import type * as multichain from 'types/client/multichainAggregator';
 
 import * as AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import { toBech32Address } from 'client/slices/address/utils/bech32';
 import ContractCertifiedLabel from 'client/slices/contract/components/ContractCertifiedLabel';
 import SearchResultEntityTag from 'client/slices/search/pages/search-results/SearchResultEntityTag';
 
+import * as contract from 'client/features/multichain/utils/contract';
+
 import highlightText from 'client/shared/text/highlight-text';
 
 import dayjs from 'lib/date/dayjs';
-import * as contract from 'lib/multichain/contract';
 import { ADDRESS_REGEXP } from 'toolkit/utils/regexp';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 

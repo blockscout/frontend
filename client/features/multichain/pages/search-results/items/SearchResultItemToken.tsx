@@ -5,16 +5,17 @@ import { mapValues } from 'es-toolkit';
 import React from 'react';
 
 import type * as multichain from '@blockscout/multichain-aggregator-types';
+import type { ClusterChainConfig } from 'client/features/multichain/types/client';
 import type { TokenType } from 'client/slices/token/types/api';
-import type { ClusterChainConfig } from 'types/multichain';
 
 import { route } from 'nextjs/routes';
 
 import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 
+import * as contract from 'client/features/multichain/utils/contract';
+
 import shortenString from 'client/shared/text/shorten-string';
 
-import * as contract from 'lib/multichain/contract';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import IconSvg from 'ui/shared/IconSvg';
 

@@ -3,7 +3,7 @@
 import React from 'react';
 
 import type * as multichain from '@blockscout/multichain-aggregator-types';
-import type { ClusterChainConfig } from 'types/multichain';
+import type { ClusterChainConfig } from 'client/features/multichain/types/client';
 
 import { route } from 'nextjs/routes';
 
