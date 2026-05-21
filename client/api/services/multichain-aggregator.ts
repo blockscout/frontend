@@ -2,7 +2,7 @@
 
 import type { ApiResource } from '../types';
 import type * as multichain from '@blockscout/multichain-aggregator-types';
-import type { AddressTokensFilter, AddressTokensResponse, TokensResponse } from 'types/client/multichainAggregator';
+import type { AddressTokensFilter, AddressTokensResponse, TokensResponse } from 'client/features/multichain/types/client';
 
 export const MULTICHAIN_AGGREGATOR_API_RESOURCES = {
   address: {

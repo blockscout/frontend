@@ -3,8 +3,8 @@
 import { capitalize } from 'es-toolkit';
 import React from 'react';
 
+import type { ClusterChainConfig } from 'client/features/multichain/types/client';
 import type { Block } from 'client/slices/block/types/api';
-import type { ClusterChainConfig } from 'types/multichain';
 
 import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
 import BlocksTableItem from 'client/slices/block/pages/index/BlocksTableItem';

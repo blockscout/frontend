@@ -8,8 +8,9 @@ import PageNextJs from 'nextjs/PageNextJs';
 
 import Home from 'client/slices/home/pages/index/Home';
 
+import MultichainHome from 'client/features/multichain/pages/home/MultichainHome';
+
 import config from 'configs/app';
-import MultichainHome from 'ui/multichain/home/MultichainHome';
 import LayoutHome from 'ui/shared/layout/LayoutHome';
 
 const Page: NextPageWithLayout = () => {

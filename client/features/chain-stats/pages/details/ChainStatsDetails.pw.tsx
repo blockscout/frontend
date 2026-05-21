@@ -3,8 +3,8 @@ import React from 'react';
 import { ChartResolution } from 'toolkit/components/charts/types';
 
 import { CROSS_CHAIN_TXS_CHARTS } from 'client/features/cross-chain-txs/utils/chain-stats';
+import * as chainsMock from 'client/features/multichain/mocks/chains';
 
-import * as chainsMock from 'mocks/multichain/chains';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';
 

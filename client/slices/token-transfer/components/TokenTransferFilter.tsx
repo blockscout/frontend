@@ -3,9 +3,9 @@
 import { Text, Stack, HStack } from '@chakra-ui/react';
 import React from 'react';
 
+import type { ClusterChainConfig } from 'client/features/multichain/types/client';
 import type { AddressFromToFilter } from 'client/slices/address/types/api';
 import type { TokenType } from 'client/slices/token/types/api';
-import type { ClusterChainConfig } from 'types/multichain';
 
 import TokenTypeFilter from 'client/slices/token/components/TokenTypeFilter';
 

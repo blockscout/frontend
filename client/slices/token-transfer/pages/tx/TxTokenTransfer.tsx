@@ -15,13 +15,13 @@ import type { TxQuery } from 'client/slices/tx/hooks/useTxQuery';
 
 import useTxCrossChainTransfersQuery from 'client/features/cross-chain-txs/hooks/useTxCrossChainTransfersQuery';
 import TxTokenTransferCrossChain from 'client/features/cross-chain-txs/pages/tx/TxTokenTransferCrossChain';
+import { useMultichainContext } from 'client/features/multichain/context';
 
 import useIsInitialLoading from 'client/shared/hooks/useIsInitialLoading';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import config from 'configs/app';
-import { useMultichainContext } from 'lib/contexts/multichain';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import Pagination from 'ui/shared/pagination/Pagination';

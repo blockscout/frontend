@@ -4,10 +4,11 @@ import React from 'react';
 
 import type { TokenInfo } from 'client/slices/token/types/api';
 
+import { useMultichainContext } from 'client/features/multichain/context';
+
 import useIsInitialLoading from 'client/shared/hooks/useIsInitialLoading';
 
 import config from 'configs/app';
-import { useMultichainContext } from 'lib/contexts/multichain';
 import type { LinkProps } from 'toolkit/chakra/link';
 
 import AdvancedFilterLink from '../../components/AdvancedFilterLink';

@@ -3,9 +3,9 @@
 import { Flex, Text } from '@chakra-ui/react';
 import React from 'react';
 
+import type { ClusterChainConfig } from 'client/features/multichain/types/client';
 import type { AddressNFT } from 'client/slices/address/types/api';
 import { getTokenTypeName } from 'client/slices/token/utils/token-types';
-import type { ClusterChainConfig } from 'types/multichain';
 
 import { route } from 'nextjs/routes';
 

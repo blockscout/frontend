@@ -3,8 +3,8 @@
 import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
+import type { ClusterChainConfig } from 'client/features/multichain/types/client';
 import type { InternalTransaction } from 'client/slices/internal-tx/types/api';
-import type { ClusterChainConfig } from 'types/multichain';
 
 import AddressFromTo from 'client/slices/address/components/from-to/AddressFromTo';
 import BlockEntity from 'client/slices/block/components/entity/BlockEntity';

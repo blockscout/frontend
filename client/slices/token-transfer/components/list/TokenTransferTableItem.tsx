@@ -3,9 +3,9 @@
 import { Flex, Box } from '@chakra-ui/react';
 import React from 'react';
 
+import type { ClusterChainConfig } from 'client/features/multichain/types/client';
 import type { TokenTransfer } from 'client/slices/token-transfer/types/api';
 import { getTokenTypeName, isConfidentialTokenType } from 'client/slices/token/utils/token-types';
-import type { ClusterChainConfig } from 'types/multichain';
 
 import AddressFromTo from 'client/slices/address/components/from-to/AddressFromTo';
 import TokenEntity from 'client/slices/token/components/entity/TokenEntity';

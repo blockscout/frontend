@@ -8,7 +8,8 @@ import { route } from 'nextjs/routes';
 
 import useNewTxsSocketTypeAll from 'client/slices/tx/hooks/useTxsSocketTypeAll';
 
-import { useMultichainContext } from 'lib/contexts/multichain';
+import { useMultichainContext } from 'client/features/multichain/context';
+
 import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 
 interface Props {

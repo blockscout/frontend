@@ -10,7 +10,7 @@ import config from 'configs/app';
 
 const UserOps = dynamic(() => {
   if (config.features.multichain.isEnabled) {
-    return import('ui/multichain/userOps/MultichainUserOps');
+    return import('client/features/multichain/pages/user-ops/MultichainUserOps');
   }
 
   return import('client/features/user-ops/pages/index/UserOps');

@@ -9,9 +9,10 @@ import type { PaginationParams } from 'ui/shared/pagination/types';
 
 import type { ResourceError } from 'client/api/resources';
 
+import { useMultichainContext } from 'client/features/multichain/context';
+
 import { currencyUnits } from 'client/shared/chain/units';
 
-import { useMultichainContext } from 'lib/contexts/multichain';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';

@@ -11,9 +11,9 @@ import { getGitHubOwnerAndRepo } from 'client/slices/contract/pages/contract-ver
 import { CONTRACT_LICENSES } from 'client/slices/contract/utils/licenses';
 
 import ContractSecurityAudits from 'client/features/contract-audit-reports/components/ContractSecurityAudits';
+import { useMultichainContext } from 'client/features/multichain/context';
 
 import config from 'configs/app';
-import { useMultichainContext } from 'lib/contexts/multichain';
 import { Link } from 'toolkit/chakra/link';
 import Time from 'ui/shared/time/Time';
 

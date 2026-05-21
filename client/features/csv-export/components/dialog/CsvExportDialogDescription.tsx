@@ -4,7 +4,7 @@ import { chakra, Flex, Text } from '@chakra-ui/react';
 import React from 'react';
 
 import type { CsvExportType } from '../../types/client';
-import type { ClusterChainConfig } from 'types/multichain';
+import type { ClusterChainConfig } from 'client/features/multichain/types/client';
 
 import shortenString from 'client/shared/text/shorten-string';
 

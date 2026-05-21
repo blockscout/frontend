@@ -11,11 +11,12 @@ import { getResourceKey } from 'client/api/hooks/useApiQuery';
 import useSocketChannel from 'client/api/socket/useSocketChannel';
 import useSocketMessage from 'client/api/socket/useSocketMessage';
 
+import { useMultichainContext } from 'client/features/multichain/context';
+
 import * as cookies from 'client/shared/storage/cookies';
 
 import config from 'configs/app';
 import { useAppContext } from 'lib/contexts/app';
-import { useMultichainContext } from 'lib/contexts/multichain';
 
 import type { Filters } from './useAddressTokenTransfersQuery';
 

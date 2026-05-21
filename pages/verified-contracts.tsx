@@ -10,7 +10,7 @@ import config from 'configs/app';
 
 const VerifiedContracts = dynamic(() => {
   if (config.features.multichain.isEnabled) {
-    return import('ui/multichain/verifiedContracts/MultichainVerifiedContracts');
+    return import('client/features/multichain/pages/contracts/MultichainVerifiedContracts');
   }
 
   return import('client/slices/contract/pages/index/VerifiedContracts');

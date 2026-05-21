@@ -5,8 +5,8 @@ import React from 'react';
 
 import type { AdvancedFilterResponseItem } from '../types/api';
 import type { ColumnsIds } from '../types/client';
+import type { ClusterChainConfig } from 'client/features/multichain/types/client';
 import { isConfidentialTokenType } from 'client/slices/token/utils/token-types';
-import type { ClusterChainConfig } from 'types/multichain';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import AddressFromToIcon from 'client/slices/address/components/from-to/AddressFromToIcon';

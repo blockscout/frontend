@@ -10,7 +10,7 @@ import config from 'configs/app';
 
 const Transactions = dynamic(() => {
   if (config.features.multichain.isEnabled) {
-    return import('ui/multichain/txs/MultichainTxs');
+    return import('client/features/multichain/pages/txs/MultichainTxs');
   }
 
   if (config.features.zetachain.isEnabled) {

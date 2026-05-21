@@ -5,13 +5,14 @@ import React from 'react';
 
 import SearchResultsInput from 'client/slices/search/pages/search-results/SearchResultsInput';
 
+import ChainSelect from 'client/features/multichain/components/ChainSelect';
+import useRoutedChainSelect from 'client/features/multichain/hooks/useRoutedChainSelect';
+
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
-import useRoutedChainSelect from 'lib/multichain/useRoutedChainSelect';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import ChainSelect from 'ui/multichain/components/ChainSelect';
 import AppErrorBoundary from 'ui/shared/AppError/AppErrorBoundary';
 import * as Layout from 'ui/shared/layout/components';
 import PageTitle from 'ui/shared/Page/PageTitle';

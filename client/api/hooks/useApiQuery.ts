@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import type { ExternalChainExtended } from 'types/externalChains';
 
-import { useMultichainContext } from 'lib/contexts/multichain';
+import { useMultichainContext } from 'client/features/multichain/context';
 
 import type { ResourceError, ResourceName, ResourcePathParams, ResourcePayload } from '../resources';
 import useApiFetch from './useApiFetch';

@@ -3,9 +3,9 @@
 import { Box, Flex, useCheckboxGroup, Fieldset } from '@chakra-ui/react';
 import React from 'react';
 
+import type { ClusterChainConfig } from 'client/features/multichain/types/client';
 import type { NFTTokenType, TokenType } from 'client/slices/token/types/api';
 import { getTokenTypes } from 'client/slices/token/utils/token-types';
-import type { ClusterChainConfig } from 'types/multichain';
 
 import { Button } from 'toolkit/chakra/button';
 import { Checkbox, CheckboxGroup } from 'toolkit/chakra/checkbox';

@@ -8,8 +8,8 @@ import React from 'react';
 import type { CsvExportDownloadResponse } from '../types/api';
 import type { CsvExportType } from '../types/client';
 import type { FormFields } from './dialog/types';
+import type { ClusterChainConfig } from 'client/features/multichain/types/client';
 import type { NextJsQueryParam } from 'client/shared/router/types';
-import type { ClusterChainConfig } from 'types/multichain';
 
 import buildUrl from 'client/api/build-url';
 import useApiFetch from 'client/api/hooks/useApiFetch';
@@ -17,13 +17,14 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 import isNeedProxy from 'client/api/is-need-proxy';
 import type { ResourceName, ResourcePathParams } from 'client/api/resources';
 
+import { useMultichainContext } from 'client/features/multichain/context';
+
 import getErrorMessage from 'client/shared/errors/get-error-message';
 import getErrorObjStatusCode from 'client/shared/errors/get-error-obj-status-code';
 import useIsInitialLoading from 'client/shared/hooks/useIsInitialLoading';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import config from 'configs/app';
-import { useMultichainContext } from 'lib/contexts/multichain';
 import dayjs from 'lib/date/dayjs';
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { toaster } from 'toolkit/chakra/toaster';

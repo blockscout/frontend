@@ -4,7 +4,8 @@ import React from 'react';
 import TokenEntity, { Icon } from 'client/slices/token/components/entity/TokenEntity';
 import * as tokenMock from 'client/slices/token/mocks/info';
 
-import * as chainDataMock from 'mocks/multichain/chains';
+import * as chainDataMock from 'client/features/multichain/mocks/chains';
+
 import { stableHover } from 'playwright/helpers/stableHover';
 import { test, expect } from 'playwright/lib';
 

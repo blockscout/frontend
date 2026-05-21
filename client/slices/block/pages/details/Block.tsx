@@ -26,6 +26,7 @@ import useBlockDepositsQuery from 'client/features/chain-variants/beacon-chain/p
 import useBlockWithdrawalsQuery from 'client/features/chain-variants/beacon-chain/pages/block/useBlockWithdrawalsQuery';
 import BlockCeloEpochTag from 'client/features/chain-variants/celo/pages/block/BlockCeloEpochTag';
 import useBlockBlobTxsQuery from 'client/features/data-availability/hooks/useBlockBlobTxsQuery';
+import { useMultichainContext } from 'client/features/multichain/context';
 
 import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-title';
 import throwOnAbsentParamError from 'client/shared/errors/throw-on-absent-param-error';
@@ -34,7 +35,6 @@ import useIsMobile from 'client/shared/hooks/useIsMobile';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import config from 'configs/app';
-import { useMultichainContext } from 'lib/contexts/multichain';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import TextAd from 'ui/shared/ad/TextAd';

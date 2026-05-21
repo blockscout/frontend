@@ -3,8 +3,8 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
+import type { ClusterChainConfig } from 'client/features/multichain/types/client';
 import type { Block } from 'client/slices/block/types/api';
-import type { ClusterChainConfig } from 'types/multichain';
 
 import BlocksListItem from 'client/slices/block/pages/index/BlocksListItem';
 

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { Feature } from './types';
-import type { MultichainProviderConfig, MultichainProviderConfigParsed } from 'types/client/multichainProviderConfig';
+import type { MultichainProviderConfig, MultichainProviderConfigParsed } from 'client/features/multichain-button/types/client';
 
 import { getEnvValue, parseEnvJson } from '../utils';
 import marketplace from './marketplace';

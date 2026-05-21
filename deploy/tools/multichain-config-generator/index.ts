@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 import { Worker } from 'node:worker_threads';
 import { delay } from 'es-toolkit';
 
-import { ClusterChainConfig } from 'types/multichain';
+import { ClusterChainConfig } from 'client/features/multichain/types/client';
 import appConfig from 'configs/app';
 
 const currentFilePath = fileURLToPath(import.meta.url);

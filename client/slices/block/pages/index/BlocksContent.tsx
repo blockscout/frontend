@@ -16,9 +16,10 @@ import useSocketMessage from 'client/api/socket/useSocketMessage';
 import BlocksList from 'client/slices/block/pages/index/BlocksList';
 import BlocksTable from 'client/slices/block/pages/index/BlocksTable';
 
+import { useMultichainContext } from 'client/features/multichain/context';
+
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
-import { useMultichainContext } from 'lib/contexts/multichain';
 import { Link } from 'toolkit/chakra/link';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';

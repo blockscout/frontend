@@ -4,8 +4,8 @@ import { Stat, Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
+import type { ClusterChainConfig } from 'client/features/multichain/types/client';
 import type { AddressCoinBalanceHistoryItem } from 'client/slices/address/types/api';
-import type { ClusterChainConfig } from 'types/multichain';
 
 import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';

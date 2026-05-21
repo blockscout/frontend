@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { SearchResultZetaChainCCTX } from 'client/features/chain-variants/zeta-chain/types/client';
+import type * as multichain from 'client/features/multichain/types/client';
 import type * as api from 'client/slices/search/types/api';
-import type * as multichain from 'types/client/multichainAggregator';
 
 export interface SearchResultFutureBlock {
   type: 'block';

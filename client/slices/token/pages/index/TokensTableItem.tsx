@@ -4,9 +4,9 @@ import { Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
+import type { AggregatedTokenInfo } from 'client/features/multichain/types/client';
 import type { TokenInfo } from 'client/slices/token/types/api';
 import { getTokenTypeName } from 'client/slices/token/utils/token-types';
-import type { AggregatedTokenInfo } from 'types/client/multichainAggregator';
 
 import type { EntityProps as AddressEntityProps } from 'client/slices/address/components/entity/AddressEntity';
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';

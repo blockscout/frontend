@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { ChainStatsChart, ChainStatsPayload, ChainStatsSection, StatsIntervalIds } from '../types/client';
-import type { ClusterChainConfig } from 'types/multichain';
+import type { ClusterChainConfig } from 'client/features/multichain/types/client';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 

@@ -7,7 +7,7 @@ import React from 'react';
 import type { Props } from 'nextjs/getServerSideProps/handlers';
 import PageNextJs from 'nextjs/PageNextJs';
 
-import { MultichainProvider } from 'lib/contexts/multichain';
+import { MultichainProvider } from 'client/features/multichain/context';
 
 const UserOp = dynamic(() => import('client/features/user-ops/pages/details/UserOp'), { ssr: false });
 

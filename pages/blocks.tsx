@@ -10,7 +10,7 @@ import config from 'configs/app';
 
 const Blocks = dynamic(() => {
   if (config.features.multichain.isEnabled) {
-    return import('ui/multichain/blocks/MultichainBlocks');
+    return import('client/features/multichain/pages/blocks/MultichainBlocks');
   }
 
   return import('client/slices/block/pages/index/Blocks');

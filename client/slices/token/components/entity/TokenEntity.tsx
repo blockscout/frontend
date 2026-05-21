@@ -10,8 +10,9 @@ import { route } from 'nextjs/routes';
 
 import TokenIconPlaceholder from 'client/slices/token/components/icon/TokenIconPlaceholder';
 
+import { useMultichainContext } from 'client/features/multichain/context';
+
 import config from 'configs/app';
-import { useMultichainContext } from 'lib/contexts/multichain';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { TruncatedTextTooltip } from 'toolkit/components/truncation/TruncatedTextTooltip';

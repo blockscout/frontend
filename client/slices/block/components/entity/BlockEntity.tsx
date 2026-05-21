@@ -5,8 +5,9 @@ import React from 'react';
 
 import { route } from 'nextjs/routes';
 
+import { useMultichainContext } from 'client/features/multichain/context';
+
 import config from 'configs/app';
-import { useMultichainContext } from 'lib/contexts/multichain';
 import * as EntityBase from 'ui/shared/entities/base/components';
 import { distributeEntityProps } from 'ui/shared/entities/base/utils';
 import getChainTooltipText from 'ui/shared/externalChains/getChainTooltipText';

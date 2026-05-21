@@ -17,11 +17,12 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 import type { PaginatedResourceName, PaginationFilters, PaginationSorting, ResourceError, ResourcePayload } from 'client/api/resources';
 import { SORTING_FIELDS } from 'client/api/resources';
 
+import { useMultichainContext } from 'client/features/multichain/context';
+import getChainValueFromQuery from 'client/features/multichain/utils/get-chain-value-from-query';
+
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import multichainConfig from 'configs/multichain';
-import { useMultichainContext } from 'lib/contexts/multichain';
-import getChainValueFromQuery from 'lib/multichain/getChainValueFromQuery';
 
 type NextPageParams = Record<string, unknown>;
 

@@ -2,8 +2,8 @@
 
 import React from 'react';
 
+import type { ClusterChainConfig } from 'client/features/multichain/types/client';
 import type { UserOpsItem } from 'client/features/user-ops/types/api';
-import type { ClusterChainConfig } from 'types/multichain';
 
 import AddressStringOrParam from 'client/slices/address/components/entity/AddressStringOrParam';
 import BlockEntity from 'client/slices/block/components/entity/BlockEntity';

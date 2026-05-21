@@ -10,7 +10,7 @@ import config from 'configs/app';
 
 const Tokens = dynamic(() => {
   if (config.features.multichain.isEnabled) {
-    return import('ui/multichain/tokens/MultichainTokens');
+    return import('client/features/multichain/pages/tokens/MultichainTokens');
   }
 
   return import('client/slices/token/pages/index/Tokens');

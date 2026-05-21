@@ -3,8 +3,8 @@
 import type { Channel } from 'phoenix';
 import React from 'react';
 
+import type { ClusterChainConfig } from 'client/features/multichain/types/client';
 import type { Address } from 'client/slices/address/types/api';
-import type { ClusterChainConfig } from 'types/multichain';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 

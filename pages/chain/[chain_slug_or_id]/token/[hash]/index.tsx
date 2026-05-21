@@ -8,7 +8,7 @@ import type { Route } from 'nextjs-routes';
 import type { Props } from 'nextjs/getServerSideProps/handlers';
 import PageNextJs from 'nextjs/PageNextJs';
 
-const MultichainToken = dynamic(() => import('ui/multichain/token/MultichainToken'), { ssr: false });
+const MultichainToken = dynamic(() => import('client/features/multichain/pages/token/MultichainToken'), { ssr: false });
 
 const pathname: Route['pathname'] = '/token/[hash]';
 

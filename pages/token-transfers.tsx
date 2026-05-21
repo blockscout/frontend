@@ -10,7 +10,7 @@ import config from 'configs/app';
 
 const TokenTransfers = dynamic(() => {
   if (config.features.multichain.isEnabled) {
-    return import('ui/multichain/tokenTransfers/MultichainTokenTransfers');
+    return import('client/features/multichain/pages/token-transfers/MultichainTokenTransfers');
   }
 
   return import('client/slices/token-transfer/pages/index/TokenTransfers');

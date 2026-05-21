@@ -4,8 +4,8 @@ import { chakra, Text, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ItemsProps } from './types';
+import type * as multichain from 'client/features/multichain/types/client';
 import type { SearchResultTx } from 'client/slices/search/types/api';
-import type * as multichain from 'types/client/multichainAggregator';
 
 import * as TxEntity from 'client/slices/tx/components/entity/TxEntity';
 

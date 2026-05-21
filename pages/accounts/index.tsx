@@ -10,7 +10,7 @@ import config from 'configs/app';
 
 const Accounts = dynamic(() => {
   if (config.features.multichain.isEnabled) {
-    return import('ui/multichain/accounts/MultichainAccounts');
+    return import('client/features/multichain/pages/addresses/MultichainAccounts');
   }
 
   return import('client/slices/address/pages/index/Accounts');

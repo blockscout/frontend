@@ -3,8 +3,8 @@
 import { castArray } from 'es-toolkit/compat';
 
 import type { AdvancedFilterAge, AdvancedFilterParams } from '../types/api';
+import type { ClusterChainConfig } from 'client/features/multichain/types/client';
 import { getTokenTypes } from 'client/slices/token/utils/token-types';
-import type { ClusterChainConfig } from 'types/multichain';
 
 import dayjs from 'lib/date/dayjs';
 import { HOUR, DAY, MONTH } from 'toolkit/utils/consts';

@@ -1,6 +1,6 @@
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 
-import { chainA } from 'mocks/multichain/chains';
+import { chainA } from 'client/features/multichain/mocks/chains';
 
 export const searchAddressesA: multichain.GetAddressResponse = {
   hash: '0x0000000002C5fE54822a1eD058AE2F937Fd42769',

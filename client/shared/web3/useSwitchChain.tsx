@@ -2,8 +2,9 @@
 
 import React from 'react';
 
+import { useMultichainContext } from 'client/features/multichain/context';
+
 import config from 'configs/app';
-import { useMultichainContext } from 'lib/contexts/multichain';
 
 import useProvider from './useProvider';
 import { getHexadecimalChainId } from './utils';
