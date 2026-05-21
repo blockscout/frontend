@@ -9,8 +9,8 @@ import ActionBar from 'ui/shared/ActionBar';
 import Pagination from 'ui/shared/pagination/Pagination';
 import TableViewToggleButton from 'ui/shared/TableViewToggleButton';
 
-import type { Props } from '../txs/TransactionsCrossChainContent';
-import TransactionsCrossChainContent from '../txs/TransactionsCrossChainContent';
+import TransactionsCrossChainContent from '../../components/txs/TransactionsCrossChainContent';
+import type { Props } from '../../components/txs/TransactionsCrossChainContent';
 
 const AddressCrossChainTxs = ({ pagination, isLoading: isLoadingProp, ...rest }: Props) => {
   const isMobile = useIsMobile();

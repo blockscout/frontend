@@ -4,11 +4,11 @@ import React from 'react';
 
 import { route } from 'nextjs-routes';
 
-import useTxCrossChainTransfersQuery from 'client/features/cross-chain-txs/hooks/useTxCrossChainTransfersQuery';
-
 import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
+
+import useTxCrossChainTransfersQuery from '../../hooks/useTxCrossChainTransfersQuery';
 
 interface Props {
   hash: string;

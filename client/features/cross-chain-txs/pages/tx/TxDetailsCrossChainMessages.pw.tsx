@@ -1,6 +1,7 @@
-import * as crossChainConfigMock from 'mocks/crossChain/config';
-import * as crossChainTransfersMock from 'mocks/crossChain/transfers';
-import * as crossChainTxMock from 'mocks/crossChain/txs';
+import * as crossChainConfigMock from 'client/features/cross-chain-txs/mocks/config';
+import * as crossChainTransfersMock from 'client/features/cross-chain-txs/mocks/transfers';
+import * as crossChainTxMock from 'client/features/cross-chain-txs/mocks/txs';
+
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';
 import { Container } from 'ui/shared/DetailedInfo/DetailedInfo';

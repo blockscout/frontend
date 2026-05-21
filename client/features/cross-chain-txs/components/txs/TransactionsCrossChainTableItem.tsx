@@ -16,13 +16,14 @@ import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { mdash } from 'toolkit/utils/htmlEntities';
-import CrossChainBridgeLink from 'ui/shared/crossChain/CrossChainBridgeLink';
-import CrossChainFromToTag from 'ui/shared/crossChain/CrossChainFromToTag';
-import CrossChainMessageEntity from 'ui/shared/entities/crossChainMessage/CrossChainMessageEntity';
 import ChainLabel from 'ui/shared/externalChains/ChainLabel';
-import CrossChainTxsStatusTag from 'ui/shared/statusTag/CrossChainTxsStatusTag';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import TokenValueInterchain from 'ui/shared/value/TokenValueInterchain';
+
+import CrossChainBridgeLink from '../CrossChainBridgeLink';
+import CrossChainFromToTag from '../CrossChainFromToTag';
+import CrossChainMessageEntity from '../CrossChainMessageEntity';
+import CrossChainTxsStatusTag from '../CrossChainTxsStatusTag';
 
 interface Props {
   data: InterchainMessage;

@@ -12,9 +12,10 @@ import config from 'configs/app';
 import { mdash } from 'toolkit/utils/htmlEntities';
 import * as DetailedInfoItemBreakdown from 'ui/shared/DetailedInfo/DetailedInfoItemBreakdown';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
-import CrossChainMessageEntity from 'ui/shared/entities/crossChainMessage/CrossChainMessageEntity';
 import ChainLabel from 'ui/shared/externalChains/ChainLabel';
-import CrossChainTxsStatusTag from 'ui/shared/statusTag/CrossChainTxsStatusTag';
+
+import CrossChainMessageEntity from '../../components/CrossChainMessageEntity';
+import CrossChainTxsStatusTag from '../../components/CrossChainTxsStatusTag';
 
 interface Props {
   data: InterchainMessage;
