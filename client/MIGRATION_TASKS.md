@@ -273,7 +273,7 @@ migrated to `client/shared/` in 1-2 and do not appear here.
 
 ### 6-26 · [ ] Feature: `bridged-tokens`
 
-### 6-27 · [ ] Feature: `web3-wallet`
+### 6-27 · [~] Features: `web3-wallet` and `connect-wallet` · [#3480](https://github.com/blockscout/frontend/issues/3480)
 **Scope:** Includes `blockchainInteraction.ts` config.  
 
 ### 6-28 · [ ] Feature: `alternative-explorers`
