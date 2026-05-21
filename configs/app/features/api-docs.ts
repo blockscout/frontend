@@ -1,13 +1,18 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { Feature } from './types';
-import type { ApiDocsTabId } from 'types/views/apiDocs';
-import { API_DOCS_TABS } from 'types/views/apiDocs';
+import type { ApiDocsTabId } from 'client/features/api-docs/types/config';
+import { API_DOCS_TABS } from 'client/features/api-docs/types/config';
 
 import { getEnvValue, parseEnvJson } from '../utils';
 
 const tabs = (() => {
-  const value = (parseEnvJson<Array<ApiDocsTabId>>(getEnvValue('NEXT_PUBLIC_API_DOCS_TABS')) || API_DOCS_TABS)
+  const DEFAULT_TABS = getEnvValue('NEXT_PUBLIC_PRO_API_SUPPORTED') === 'true' ?
+    API_DOCS_TABS :
+    API_DOCS_TABS.filter((tab) => tab !== 'pro_api');
+  const value = (
+    parseEnvJson<Array<ApiDocsTabId>>(getEnvValue('NEXT_PUBLIC_API_DOCS_TABS')) || DEFAULT_TABS
+  )
     .filter((tab) => API_DOCS_TABS.includes(tab));
 
   return value.length > 0 ? value : undefined;

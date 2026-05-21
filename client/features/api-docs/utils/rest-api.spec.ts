@@ -1,7 +1,7 @@
 import type { ApiPropsFull } from 'configs/app/apis';
 import { describe, test, expect } from 'vitest';
 
-import { coreApiRequestInterceptorFactory } from './utils';
+import { coreApiRequestInterceptorFactory } from './rest-api';
 
 const api: ApiPropsFull = {
   endpoint: 'https://example.com',

@@ -1,8 +1,6 @@
 import { urlTest } from "../../utils";
 import * as yup from 'yup';
 import { replaceQuotes } from 'configs/app/utils';
-import type { ApiDocsTabId } from 'types/views/apiDocs';
-import { API_DOCS_TABS } from 'types/views/apiDocs';
 
 export const nameServicesSchema = yup
   .object()

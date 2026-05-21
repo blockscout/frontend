@@ -11,8 +11,8 @@ import { AccordionItem, AccordionItemContent, AccordionItemTrigger, AccordionRoo
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 
-import SwaggerUI from './SwaggerUI';
-import { REST_API_SECTIONS } from './utils';
+import SwaggerUI from '../../components/SwaggerUI';
+import { REST_API_SECTIONS } from '../../utils/rest-api';
 
 const RestApi = () => {
 
