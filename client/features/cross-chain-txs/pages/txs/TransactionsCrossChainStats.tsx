@@ -5,7 +5,8 @@ import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
-import { INTERCHAIN_STATS_DAILY } from 'stubs/interchainIndexer';
+import { INTERCHAIN_STATS_DAILY } from 'client/features/cross-chain-txs/stubs/messages';
+
 import StatsWidget from 'ui/shared/stats/StatsWidget';
 
 interface Props {}

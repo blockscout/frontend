@@ -5,11 +5,11 @@ import React from 'react';
 
 import type { InterchainTransfer } from '@blockscout/interchain-indexer-types';
 
-import DataListDisplay from 'ui/shared/DataListDisplay';
+import TokenTransfersCrossChainListItem from 'client/features/cross-chain-txs/components/token-transfers/TokenTransfersCrossChainListItem';
+import TokenTransfersCrossChainTable from 'client/features/cross-chain-txs/components/token-transfers/TokenTransfersCrossChainTable';
+import { getItemKey } from 'client/features/cross-chain-txs/components/token-transfers/utils';
 
-import TokenTransfersCrossChainListItem from '../transfers/TokenTransfersCrossChainListItem';
-import TokenTransfersCrossChainTable from '../transfers/TokenTransfersCrossChainTable';
-import { getItemKey } from '../transfers/utils';
+import DataListDisplay from 'ui/shared/DataListDisplay';
 
 interface Props {
   data: Array<InterchainTransfer> | undefined;

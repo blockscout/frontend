@@ -11,6 +11,9 @@ import AddressEntityInterchain from 'client/slices/address/components/entity/Add
 import AddressFromToIcon from 'client/slices/address/components/from-to/AddressFromToIcon';
 import TxEntityInterchain from 'client/slices/tx/components/entity/TxEntityInterchain';
 
+import CrossChainMessageEntity from 'client/features/cross-chain-txs/components/CrossChainMessageEntity';
+import CrossChainTxsStatusTag from 'client/features/cross-chain-txs/components/CrossChainTxsStatusTag';
+
 import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
@@ -18,9 +21,7 @@ import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { mdash } from 'toolkit/utils/htmlEntities';
 import CrossChainBridgeLink from 'ui/shared/crossChain/CrossChainBridgeLink';
 import CrossChainFromToTag from 'ui/shared/crossChain/CrossChainFromToTag';
-import CrossChainMessageEntity from 'ui/shared/entities/crossChainMessage/CrossChainMessageEntity';
 import ChainLabel from 'ui/shared/externalChains/ChainLabel';
-import CrossChainTxsStatusTag from 'ui/shared/statusTag/CrossChainTxsStatusTag';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import TokenValueInterchain from 'ui/shared/value/TokenValueInterchain';
 

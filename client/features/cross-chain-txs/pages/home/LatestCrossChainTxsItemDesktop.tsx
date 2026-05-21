@@ -7,12 +7,13 @@ import type { InterchainMessage } from '@blockscout/interchain-indexer-types';
 
 import TxEntityInterchain from 'client/slices/tx/components/entity/TxEntityInterchain';
 
+import CrossChainMessageEntity from 'client/features/cross-chain-txs/components/CrossChainMessageEntity';
+import CrossChainTxsStatusTag from 'client/features/cross-chain-txs/components/CrossChainTxsStatusTag';
+
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { mdash } from 'toolkit/utils/htmlEntities';
 import CrossChainBridgeLink from 'ui/shared/crossChain/CrossChainBridgeLink';
-import CrossChainMessageEntity from 'ui/shared/entities/crossChainMessage/CrossChainMessageEntity';
 import ChainLabel from 'ui/shared/externalChains/ChainLabel';
-import CrossChainTxsStatusTag from 'ui/shared/statusTag/CrossChainTxsStatusTag';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 interface Props {

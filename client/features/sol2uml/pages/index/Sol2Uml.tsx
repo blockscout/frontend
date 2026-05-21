@@ -7,10 +7,10 @@ import React from 'react';
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 
 import { useMultichainContext } from 'client/features/multichain/context';
+import Sol2UmlDiagram from 'client/features/sol2uml/components/Sol2UmlDiagram';
 
 import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import Sol2UmlDiagram from 'ui/sol2uml/Sol2UmlDiagram';
 
 const Sol2Uml = () => {
   const router = useRouter();
