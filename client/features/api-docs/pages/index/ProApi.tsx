@@ -22,7 +22,7 @@ const ProApi = () => {
         Get rich decoded data, scalability and speed at a fraction of the price.
       </Text>
       <Button mt={ 6 }>
-        <Link variant="plain" href="https://dev.blockscout.com" external>
+        <Link variant="plain" href="https://dev.blockscout.com?utm_source=blockscout&utm_medium=api-docs" external iconColor="inherit">
           Discover PRO API
         </Link>
       </Button>
