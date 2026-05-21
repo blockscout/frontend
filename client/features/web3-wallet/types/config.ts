@@ -1,7 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-type ArrayElement<ArrType> = ArrType extends ReadonlyArray<infer ElementType> ? ElementType : never;
-
 export const SUPPORTED_WALLETS = [
   'metamask',
   'coinbase',
@@ -11,4 +9,4 @@ export const SUPPORTED_WALLETS = [
   'trust',
 ] as const;
 
-export type WalletType = ArrayElement<typeof SUPPORTED_WALLETS>;
+export type WalletType = (typeof SUPPORTED_WALLETS)[number];
