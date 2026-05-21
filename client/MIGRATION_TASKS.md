@@ -238,8 +238,7 @@ migrated to `client/shared/` in 1-2 and do not appear here.
 ### 6-12 · [ ] Feature: `ad-banner`
 **Scope:** Includes `lib/hooks/useAdblockDetect` → `client/features/ad-banner/`. Covers both `adsBanner.ts` and `adsText.ts` configs.  
 
-### 6-13 · [ ] Feature: `safe-address-tags`
-**Scope:** Includes `lib/hooks/useIsSafeAddress` → `client/features/safe-address-tags/`. See `configs/app/features/safe.ts`.  
+### 6-13 · [~] Features: `cross-chain-txs`, `gas-tracker`, `sol2uml` · [#3483](https://github.com/blockscout/frontend/issues/3483)
 
 ### 6-14 · [ ] Feature: `metasuites`
 **Scope:** Includes `lib/hooks/useNotifyOnNavigation` → `client/features/metasuites/`  
@@ -248,14 +247,14 @@ migrated to `client/shared/` in 1-2 and do not appear here.
 
 ### 6-16 · [~] Feature: `pools` · [#3463](https://github.com/blockscout/frontend/issues/3463)
 
-### 6-17 · [ ] Feature: `hot-contracts`
+### 6-17 · [x] Feature: `hot-contracts`
 
-### 6-18 · [ ] Feature: `interchain-indexer`
+### 6-18 · [x] Feature: `interchain-indexer`
 **Scope:** Cross-chain message indexer (not ZetaChain). See `configs/app/features/crossChainTxs.ts`.  
 
 ### 6-19 · [x] Feature: `mud-framework`
 
-### 6-20 · [ ] Feature: `visualize`
+### 6-20 · [x] Feature: `visualize`
 **Scope:** Solidity-to-UML diagrams. See `configs/app/features/sol2uml.ts`.  
 
 ### 6-21 · [~] Feature: `tx-interpretation` · [#3471](https://github.com/blockscout/frontend/issues/3471)
@@ -266,12 +265,12 @@ migrated to `client/shared/` in 1-2 and do not appear here.
 ### 6-23 · [ ] Feature: `address-widgets`
 **Scope:** Third-party widgets on address pages. See `configs/app/features/address3rdPartyWidgets.ts`.  
 
-### 6-24 · [ ] Feature: `address-metadata`
+### 6-24 · [x] Feature: `address-metadata`
 
 ### 6-25 · [x] Feature: `address-verification`
 **Scope:** Covers `addressProfileAPI.ts` and `addressVerification.ts` configs.  
 
-### 6-26 · [ ] Feature: `bridged-tokens`
+### 6-26 · [x] Feature: `bridged-tokens`
 
 ### 6-27 · [~] Features: `web3-wallet` and `connect-wallet` · [#3480](https://github.com/blockscout/frontend/issues/3480)
 **Scope:** Includes `blockchainInteraction.ts` config.  
