@@ -139,6 +139,7 @@ const schema = yup
     NEXT_PUBLIC_HOT_CONTRACTS_ENABLED: yup.boolean(),
 
     // Misc
+    NEXT_PUBLIC_PRO_API_SUPPORTED: yup.boolean(),
     NEXT_PUBLIC_USE_NEXT_JS_PROXY: yup.boolean(),
     NEXT_PUBLIC_API_KEYS_ALERT_MESSAGE: yup.string(),
     NEXT_PUBLIC_API_DOCS_ALERT_MESSAGE: yup.string(),

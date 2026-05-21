@@ -34,7 +34,7 @@ check_pro_api_supported() {
     return 0
   fi
 
-  echo "ℹ️ Chain ${network_id} is not supported by Blockscout PRO API." >&2
+  echo "ℹ️  Chain ${network_id} is not supported by Blockscout PRO API." >&2
   return 1
 }
 
@@ -43,7 +43,9 @@ if [ "${BASH_SOURCE[0]}" = "${0}" ]; then
   exit 1
 fi
 
-if check_pro_api_supported; then
+if [ -n "${NEXT_PUBLIC_PRO_API_SUPPORTED}" ]; then
+  echo "ℹ️  NEXT_PUBLIC_PRO_API_SUPPORTED is already set to '${NEXT_PUBLIC_PRO_API_SUPPORTED}'. Skipping auto-detection." >&2
+elif check_pro_api_supported; then
   export NEXT_PUBLIC_PRO_API_SUPPORTED=true
 fi
 
