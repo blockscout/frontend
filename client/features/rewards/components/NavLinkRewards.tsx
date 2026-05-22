@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import NavLink from 'client/shell/navigation/components/vertical/NavLink';
+import NavLink from 'client/shell/navigation/vertical/NavLink';
 import { useRouter } from 'next/router';
 import React, { useCallback } from 'react';
 

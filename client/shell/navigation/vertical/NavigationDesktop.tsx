@@ -16,8 +16,8 @@ import * as cookies from 'client/shared/storage/cookies';
 import { useAppContext } from 'lib/contexts/app';
 import IconSvg from 'ui/shared/IconSvg';
 
-import useNavItems, { isGroupItem } from '../../useNavItems';
 import NavigationPromoBanner from '../promo-banner/NavigationPromoBanner';
+import useNavItems, { isGroupItem } from '../useNavItems';
 import NavLink from './NavLink';
 import NavLinkGroup from './NavLinkGroup';
 

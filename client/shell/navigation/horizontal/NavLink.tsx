@@ -3,16 +3,16 @@
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import type { NavItem } from '../../types';
+import type { NavItem } from '../types';
 
 import { route } from 'nextjs-routes';
 
 import { Link } from 'toolkit/chakra/link';
 
-import { isInternalItem } from '../../useNavItems';
-import { checkRouteHighlight } from '../../utils';
 import LightningLabel from '../LightningLabel';
 import NavLinkIcon from '../NavLinkIcon';
+import { isInternalItem } from '../useNavItems';
+import { checkRouteHighlight } from '../utils';
 
 interface Props {
   className?: string;

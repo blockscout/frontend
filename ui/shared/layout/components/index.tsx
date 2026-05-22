@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import Footer from 'client/shell/footer/components/Footer';
-import TopRow from 'client/shell/top-bar/components/TopBar';
+import Footer from 'client/shell/footer/Footer';
+import TopRow from 'client/shell/top-bar/TopBar';
 
 import Container from './Container';
 import Content from './Content';

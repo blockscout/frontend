@@ -5,7 +5,7 @@ import { Box, Grid, Flex, Text, VStack, HStack } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
-import type { CustomLinksGroup } from '../types';
+import type { CustomLinksGroup } from './types';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 import useFetch from 'client/api/hooks/useFetch';
@@ -24,8 +24,8 @@ import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import IconSvg from 'ui/shared/IconSvg';
 import { CONTENT_MAX_WIDTH } from 'ui/shared/layout/utils';
 
-import { getApiVersionUrl } from '../utils/get-api-version-url';
 import FooterLinkItem from './FooterLinkItem';
+import { getApiVersionUrl } from './get-api-version-url';
 
 const MAX_LINKS_COLUMNS = 4;
 

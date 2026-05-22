@@ -5,7 +5,7 @@ import { HStack, Text, Box } from '@chakra-ui/react';
 import config from 'configs/app';
 import { Image } from 'toolkit/chakra/image';
 
-import useNavLinkStyleProps from '../../useNavLinkStyleProps';
+import useNavLinkStyleProps from '../useNavLinkStyleProps';
 
 const promoBanner = config.UI.navigation.promoBanner;
 

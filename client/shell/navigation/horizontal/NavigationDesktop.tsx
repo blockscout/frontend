@@ -14,8 +14,8 @@ import RollupStageBadge from 'client/features/rollup/common/components/RollupSta
 import config from 'configs/app';
 import { CONTENT_MAX_WIDTH } from 'ui/shared/layout/utils';
 
-import useNavItems, { isGroupItem } from '../../useNavItems';
 import NavigationPromoBanner from '../promo-banner/NavigationPromoBanner';
+import useNavItems, { isGroupItem } from '../useNavItems';
 import NavLink from './NavLink';
 import NavLinkGroup from './NavLinkGroup';
 

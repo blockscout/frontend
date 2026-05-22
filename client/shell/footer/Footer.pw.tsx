@@ -3,8 +3,8 @@ import React from 'react';
 import { test, expect } from 'playwright/lib';
 import * as pwConfig from 'playwright/utils/config';
 
-import { FOOTER_LINKS } from '../mocks';
 import Footer from './Footer';
+import { FOOTER_LINKS } from './mocks';
 
 const FOOTER_LINKS_URL = 'https://localhost:3000/footer-links.json';
 

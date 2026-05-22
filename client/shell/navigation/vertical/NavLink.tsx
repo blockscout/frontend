@@ -3,7 +3,7 @@
 import { HStack, Box, useBreakpointValue, chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import type { NavItem } from '../../types';
+import type { NavItem } from '../types';
 
 import { route } from 'nextjs-routes';
 
@@ -12,11 +12,11 @@ import useIsMobile from 'client/shared/hooks/useIsMobile';
 import { Link } from 'toolkit/chakra/link';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 
-import { isInternalItem } from '../../useNavItems';
-import useNavLinkStyleProps from '../../useNavLinkStyleProps';
-import { checkRouteHighlight } from '../../utils';
 import LightningLabel, { LIGHTNING_LABEL_CLASS_NAME } from '../LightningLabel';
 import NavLinkIcon from '../NavLinkIcon';
+import { isInternalItem } from '../useNavItems';
+import useNavLinkStyleProps from '../useNavLinkStyleProps';
+import { checkRouteHighlight } from '../utils';
 
 type Props = {
   item: NavItem;

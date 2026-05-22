@@ -8,14 +8,14 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 
-import type { NavGroupItem } from '../../types';
+import type { NavGroupItem } from '../types';
 
 import IconSvg from 'ui/shared/IconSvg';
 
-import useNavLinkStyleProps from '../../useNavLinkStyleProps';
-import { checkRouteHighlight } from '../../utils';
 import LightningLabel from '../LightningLabel';
 import NavLinkIcon from '../NavLinkIcon';
+import useNavLinkStyleProps from '../useNavLinkStyleProps';
+import { checkRouteHighlight } from '../utils';
 
 type Props = {
   item: NavGroupItem;

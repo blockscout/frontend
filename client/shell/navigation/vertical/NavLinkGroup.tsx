@@ -3,15 +3,15 @@
 import { Text, HStack, Box, VStack } from '@chakra-ui/react';
 import React from 'react';
 
-import type { NavGroupItem } from '../../types';
+import type { NavGroupItem } from '../types';
 
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import IconSvg from 'ui/shared/IconSvg';
 
-import useNavLinkStyleProps from '../../useNavLinkStyleProps';
-import { checkRouteHighlight } from '../../utils';
 import LightningLabel from '../LightningLabel';
 import NavLinkIcon from '../NavLinkIcon';
+import useNavLinkStyleProps from '../useNavLinkStyleProps';
+import { checkRouteHighlight } from '../utils';
 import NavLink from './NavLink';
 
 type Props = {

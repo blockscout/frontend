@@ -3,15 +3,15 @@
 import { HStack, chakra, Separator } from '@chakra-ui/react';
 import React from 'react';
 
-import type { NavGroupItem } from '../../types';
+import type { NavGroupItem } from '../types';
 
 import { Link } from 'toolkit/chakra/link';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import IconSvg from 'ui/shared/IconSvg';
 
-import { checkRouteHighlight } from '../../utils';
 import LightningLabel from '../LightningLabel';
+import { checkRouteHighlight } from '../utils';
 import NavLink from './NavLink';
 interface Props {
   item: NavGroupItem;

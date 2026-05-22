@@ -15,8 +15,8 @@ import config from 'configs/app';
 import { useAppContext } from 'lib/contexts/app';
 import { CONTENT_MAX_WIDTH } from 'ui/shared/layout/utils';
 
-import Settings from '../settings/Settings';
 import NetworkMenu from './chain-menu/ChainMenu';
+import Settings from './settings/Settings';
 import TopBarStats from './TopBarStats';
 
 const TopBar = () => {

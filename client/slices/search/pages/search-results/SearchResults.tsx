@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box, chakra } from '@chakra-ui/react';
-import HeaderAlert from 'client/shell/header/components/HeaderAlert';
-import HeaderDesktop from 'client/shell/header/components/HeaderDesktop';
-import HeaderMobile from 'client/shell/header/components/HeaderMobile';
+import HeaderAlert from 'client/shell/header/HeaderAlert';
+import HeaderDesktop from 'client/shell/header/HeaderDesktop';
+import HeaderMobile from 'client/shell/header/HeaderMobile';
 import { useSettingsContext } from 'client/shell/top-bar/settings/context';
 import { useRouter } from 'next/router';
 import type { FormEvent } from 'react';

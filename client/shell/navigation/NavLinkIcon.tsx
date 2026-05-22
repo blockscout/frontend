@@ -3,7 +3,7 @@
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import type { NavItem, NavGroupItem } from '../types';
+import type { NavItem, NavGroupItem } from './types';
 
 import IconSvg from 'ui/shared/IconSvg';
 

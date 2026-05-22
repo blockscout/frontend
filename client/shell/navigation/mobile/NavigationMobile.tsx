@@ -9,8 +9,8 @@ import NavLinkRewards from 'client/features/rewards/components/NavLinkRewards';
 import { useColorModeValue } from 'toolkit/chakra/color-mode';
 import IconSvg from 'ui/shared/IconSvg';
 
-import useNavItems, { isGroupItem } from '../../useNavItems';
 import NavigationPromoBanner from '../promo-banner/NavigationPromoBanner';
+import useNavItems, { isGroupItem } from '../useNavItems';
 import NavLink from '../vertical/NavLink';
 import NavLinkGroup from './NavLinkGroup';
 
