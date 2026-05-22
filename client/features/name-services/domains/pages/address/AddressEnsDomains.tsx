@@ -13,7 +13,8 @@ import type { ResourceError } from 'client/api/resources';
 
 import EnsEntity from 'client/features/name-services/domains/components/EnsEntity';
 
-import dayjs from 'lib/date/dayjs';
+import dayjs from 'client/shared/date-and-time/dayjs';
+
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';
 import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';

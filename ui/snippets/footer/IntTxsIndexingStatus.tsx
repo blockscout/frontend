@@ -5,7 +5,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
 import type { SocketMessage } from 'client/api/socket/types';
-import type { IndexingStatus } from 'types/api/indexingStatus';
+import type { IndexingStatus } from 'client/slices/home/types/api';
 
 import useApiQuery, { getResourceKey } from 'client/api/hooks/useApiQuery';
 import useSocketChannel from 'client/api/socket/useSocketChannel';

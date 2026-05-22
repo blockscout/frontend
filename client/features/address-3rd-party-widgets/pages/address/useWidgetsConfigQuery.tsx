@@ -8,7 +8,8 @@ import useApiFetch from 'client/api/hooks/useFetch';
 import type { ResourceError } from 'client/api/resources';
 
 import config from 'configs/app';
-import { WIDGET_CONFIG } from 'stubs/address3rdPartyWidgets';
+
+import { WIDGET_CONFIG } from '../../stubs';
 
 const feature = config.features.address3rdPartyWidgets;
 const configUrl = (feature.isEnabled && feature.configUrl) || '';

@@ -8,7 +8,8 @@ import AddressEntity from 'client/slices/address/components/entity/AddressEntity
 
 import EnsEntity from 'client/features/name-services/domains/components/EnsEntity';
 
-import dayjs from 'lib/date/dayjs';
+import dayjs from 'client/shared/date-and-time/dayjs';
+
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 

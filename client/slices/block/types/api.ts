@@ -10,9 +10,13 @@ import type { BlockZkSync } from 'client/features/rollup/zk-sync/types/api';
 import type { AddressParam } from 'client/slices/address/types/api';
 import type { InternalTransaction } from 'client/slices/internal-tx/types/api';
 import type { Transaction } from 'client/slices/tx/types/api';
-import type { Reward } from 'types/api/reward';
 
 export type BlockType = 'block' | 'reorg' | 'uncle';
+
+export interface BlockReward {
+  reward: string;
+  type: 'Miner Reward' | 'Validator Reward' | 'Emission Reward' | 'Chore Reward' | 'Uncle Reward' | 'POA Mania Reward';
+}
 
 export interface Block extends BlockArbitrum, BlockOptimism, BlockZkSync, BlockCelo, BlockZilliqa, BlockRootstock, BlockDataAvailability {
   height: number;
@@ -33,7 +37,7 @@ export interface Block extends BlockArbitrum, BlockOptimism, BlockZkSync, BlockC
   priority_fee: string | null;
   extra_data: string | null;
   state_root: string | null;
-  rewards?: Array<Reward>;
+  rewards?: Array<BlockReward>;
   gas_target_percentage: number | null;
   gas_used_percentage: number | null;
   burnt_fees_percentage: number | null;

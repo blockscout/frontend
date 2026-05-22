@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { BlockFieldId } from 'types/views/block';
-import { BLOCK_FIELDS_IDS } from 'types/views/block';
+import type { BlockFieldId } from 'client/slices/block/types/config';
+import { BLOCK_FIELDS_IDS } from 'client/slices/block/types/config';
 
 import { getEnvValue, parseEnvJson } from 'configs/app/utils';
 

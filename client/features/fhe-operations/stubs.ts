@@ -1,4 +1,4 @@
-import type { FheOperation, FheOperationsResponse } from 'types/api/fheOperations';
+import type { FheOperation, FheOperationsResponse } from './types/api';
 
 import { ADDRESS_PARAMS } from 'client/slices/address/stubs/address-params';
 

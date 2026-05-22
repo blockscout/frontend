@@ -14,9 +14,9 @@ import SearchResultEntityTag from 'client/slices/search/pages/search-results/Sea
 
 import * as contract from 'client/features/multichain/utils/contract';
 
+import dayjs from 'client/shared/date-and-time/dayjs';
 import highlightText from 'client/shared/text/highlight-text';
 
-import dayjs from 'lib/date/dayjs';
 import { ADDRESS_REGEXP } from 'toolkit/utils/regexp';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 

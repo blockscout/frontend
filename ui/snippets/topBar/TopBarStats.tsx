@@ -9,15 +9,15 @@ import GasInfoTooltip from 'client/slices/gas/components/GasInfoTooltip';
 import GasPrice from 'client/slices/gas/components/GasPrice';
 import { HOMEPAGE_STATS } from 'client/slices/home/stubs';
 
+import GetGasButton from 'client/features/get-gas-button/components/GetGasButton';
+
+import dayjs from 'client/shared/date-and-time/dayjs';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
 import config from 'configs/app';
-import dayjs from 'lib/date/dayjs';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import TextSeparator from 'ui/shared/TextSeparator';
-
-import GetGasButton from './GetGasButton';
 
 const TopBarStats = () => {
   const isMobile = useIsMobile();

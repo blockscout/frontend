@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { indexingStatus } from 'mocks/stats/index';
+import { indexingStatus } from 'client/slices/home/mocks/indexing-status';
+
 import { test, expect } from 'playwright/lib';
 import * as pwConfig from 'playwright/utils/config';
 

@@ -10,7 +10,8 @@ import type { SmartContractSecurityAuditSubmission } from 'client/features/contr
 import useApiFetch from 'client/api/hooks/useApiFetch';
 import type { ResourceError } from 'client/api/resources';
 
-import dayjs from 'lib/date/dayjs';
+import dayjs from 'client/shared/date-and-time/dayjs';
+
 import { Button } from 'toolkit/chakra/button';
 import { toaster } from 'toolkit/chakra/toaster';
 import { FormFieldCheckbox } from 'toolkit/components/forms/fields/FormFieldCheckbox';

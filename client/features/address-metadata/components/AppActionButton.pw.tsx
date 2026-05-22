@@ -1,11 +1,11 @@
 import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
-import type { AddressMetadataTagFormatted } from 'client/features/address-metadata/types/client';
+import type { AddressMetadataTagFormatted } from '../types/client';
 
-import * as actionButtonMetadataMock from 'mocks/metadata/appActionButton';
 import { test, expect } from 'playwright/lib';
 
+import * as actionButtonMetadataMock from '../mocks/app-action-button';
 import AppActionButton from './AppActionButton';
 
 test.beforeEach(async({ mockAssetResponse }) => {

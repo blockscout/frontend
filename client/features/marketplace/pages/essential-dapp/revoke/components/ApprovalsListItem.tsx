@@ -3,13 +3,14 @@
 import { Text } from '@chakra-ui/react';
 import { useCallback, useState } from 'react';
 
+import type { AllowanceType } from '../types';
 import type { EssentialDappsChainConfig } from 'client/features/marketplace/types/client';
-import type { AllowanceType } from 'types/client/revoke';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 
-import dayjs from 'lib/date/dayjs';
+import dayjs from 'client/shared/date-and-time/dayjs';
+
 import { Button } from 'toolkit/chakra/button';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';

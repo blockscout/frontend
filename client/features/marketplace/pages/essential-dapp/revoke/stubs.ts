@@ -1,4 +1,4 @@
-import type { AllowanceType } from 'types/client/revoke';
+import type { AllowanceType } from './types';
 
 import { ZERO_ADDRESS } from 'toolkit/utils/consts';
 

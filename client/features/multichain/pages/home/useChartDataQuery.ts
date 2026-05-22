@@ -2,7 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 
-import type { ChartMarketResponse } from 'types/api/charts';
+import type { ChartMarketResponse } from 'client/slices/home/types/api';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 

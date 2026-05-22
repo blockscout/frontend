@@ -3,6 +3,7 @@
 import type { ApiResource } from '../../types';
 import type { TransactionsResponseWatchlist } from 'client/features/account/types/api';
 import type { TransactionsResponseWithBlobs, TxsWithBlobsFilters, TxBlobs } from 'client/features/data-availability/types/api';
+import type { FheOperationsResponse } from 'client/features/fhe-operations/types/api';
 import type { TxInterpretationResponse } from 'client/features/tx-interpretation/common/types/api';
 import type { InternalTransactionFilters, InternalTransactionsResponse } from 'client/slices/internal-tx/types/api';
 import type { LogsResponseTx } from 'client/slices/log/types/api';
@@ -16,7 +17,6 @@ import type {
   TxStateChanges,
   TxRawTracesResponse,
 } from 'client/slices/tx/types/api';
-import type { FheOperationsResponse } from 'types/api/fheOperations';
 
 export const GENERAL_API_TX_RESOURCES = {
   txs_stats: {

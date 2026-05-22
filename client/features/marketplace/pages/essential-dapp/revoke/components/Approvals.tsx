@@ -2,8 +2,8 @@
 
 import { Box, Flex } from '@chakra-ui/react';
 
+import type { AllowanceType } from '../types';
 import type { EssentialDappsChainConfig } from 'client/features/marketplace/types/client';
-import type { AllowanceType } from 'types/client/revoke';
 
 import DataListDisplay from 'ui/shared/DataListDisplay';
 

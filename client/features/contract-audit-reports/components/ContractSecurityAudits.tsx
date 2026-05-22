@@ -7,7 +7,8 @@ import type { SmartContractSecurityAuditSubmission } from 'client/features/contr
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
-import dayjs from 'lib/date/dayjs';
+import dayjs from 'client/shared/date-and-time/dayjs';
+
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';

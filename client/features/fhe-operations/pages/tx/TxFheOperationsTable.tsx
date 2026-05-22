@@ -3,7 +3,7 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import type { FheOperation } from 'types/api/fheOperations';
+import type { FheOperation } from '../../types/api';
 
 import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
 

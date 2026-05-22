@@ -7,7 +7,8 @@ import React from 'react';
 
 import { ADVANCED_FILTER_AGES, type AdvancedFilterAge } from '../../types/api';
 
-import dayjs from 'lib/date/dayjs';
+import dayjs from 'client/shared/date-and-time/dayjs';
+
 import { Input } from 'toolkit/chakra/input';
 import { PopoverCloseTriggerWrapper } from 'toolkit/chakra/popover';
 import { ndash } from 'toolkit/utils/htmlEntities';

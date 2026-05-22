@@ -3,12 +3,12 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import nodeFetch from 'node-fetch';
 
+import metrics from 'nextjs/monitoring/metrics';
 import fetchApi from 'nextjs/utils/fetchApi';
 import { httpLogger } from 'nextjs/utils/logger';
 
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
-import metrics from 'lib/monitoring/metrics';
 import { SECOND } from 'toolkit/utils/consts';
 
 export default async function tokenInstanceMediaTypeHandler(req: NextApiRequest, res: NextApiResponse) {

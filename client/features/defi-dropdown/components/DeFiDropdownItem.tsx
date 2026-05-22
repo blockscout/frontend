@@ -3,7 +3,7 @@
 import { Text } from '@chakra-ui/react';
 import React from 'react';
 
-import type { DeFiDropdownItem as TDeFiDropdownItem } from 'types/client/deFiDropdown';
+import type { DeFiDropdownItem as TDeFiDropdownItem } from '../types/client';
 
 import { route } from 'nextjs-routes';
 

@@ -6,7 +6,8 @@ import type { AdvancedFilterAge, AdvancedFilterParams } from '../types/api';
 import type { ClusterChainConfig } from 'client/features/multichain/types/client';
 import { getTokenTypes } from 'client/slices/token/utils/token-types';
 
-import dayjs from 'lib/date/dayjs';
+import dayjs from 'client/shared/date-and-time/dayjs';
+
 import { HOUR, DAY, MONTH } from 'toolkit/utils/consts';
 
 import { FILTER_PARAM_NAMES } from './consts';

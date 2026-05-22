@@ -8,12 +8,13 @@ import type { TokenInfo, TokenInstance } from 'client/slices/token/types/api';
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import TokenNftMarketplaces from 'client/slices/token/pages/details/info/TokenNftMarketplaces';
 
+import AppActionButton from 'client/features/address-metadata/components/AppActionButton';
+import useAppActionData from 'client/features/address-metadata/hooks/useAppActionData';
+
 import useIsMounted from 'client/shared/hooks/useIsMounted';
 
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import AppActionButton from 'ui/shared/AppActionButton/AppActionButton';
-import useAppActionData from 'ui/shared/AppActionButton/useAppActionData';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoSponsoredItem from 'ui/shared/DetailedInfo/DetailedInfoSponsoredItem';

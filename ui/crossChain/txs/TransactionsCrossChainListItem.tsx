@@ -11,8 +11,9 @@ import { route } from 'nextjs-routes';
 import AddressEntityInterchain from 'client/slices/address/components/entity/AddressEntityInterchain';
 import TxEntityInterchain from 'client/slices/tx/components/entity/TxEntityInterchain';
 
+import dayjs from 'client/shared/date-and-time/dayjs';
+
 import config from 'configs/app';
-import dayjs from 'lib/date/dayjs';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { mdash } from 'toolkit/utils/htmlEntities';

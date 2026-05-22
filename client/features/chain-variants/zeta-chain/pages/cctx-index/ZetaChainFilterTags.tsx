@@ -8,10 +8,10 @@ import type { ZetaChainCCTXFilterParams } from 'client/features/chain-variants/z
 
 import useZetaChainConfig from 'client/features/chain-variants/zeta-chain/hooks/useZetaChainConfig';
 
+import dayjs from 'client/shared/date-and-time/dayjs';
 import shortenString from 'client/shared/text/shorten-string';
 
 import config from 'configs/app';
-import dayjs from 'lib/date/dayjs';
 import { Link } from 'toolkit/chakra/link';
 import { Tag } from 'toolkit/chakra/tag';
 import { SECOND } from 'toolkit/utils/consts';

@@ -46,19 +46,19 @@ import AddressClusters from 'client/features/name-services/clusters/pages/addres
 import EnsEntity from 'client/features/name-services/domains/components/EnsEntity';
 import useCheckDomainNameParam from 'client/features/name-services/domains/hooks/useCheckDomainNameParam';
 import AddressEnsDomains from 'client/features/name-services/domains/pages/address/AddressEnsDomains';
+import useIsSafeAddress from 'client/features/safe/hooks/useIsSafeAddress';
 import SolidityscanReport from 'client/features/solidity-scan/components/SolidityscanReport';
 import AddressAccountHistory from 'client/features/tx-interpretation/noves/pages/address/AddressAccountHistory';
 import AddressUserOps from 'client/features/user-ops/pages/address/AddressUserOps';
 import { USER_OPS_ACCOUNT } from 'client/features/user-ops/stubs';
 import TokenAddToWallet from 'client/features/web3-wallet/components/TokenAddToWallet';
+import useFetchXStarScore from 'client/features/x-star-score/hooks/useFetchXStarScore';
 
 import getChainValidationActionText from 'client/shared/chain/get-chain-validation-action-text';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import useEtherscanRedirects from 'client/shared/router/useEtherscanRedirects';
 
 import config from 'configs/app';
-import useIsSafeAddress from 'lib/hooks/useIsSafeAddress';
-import useFetchXStarScore from 'lib/xStarScore/useFetchXStarScore';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu';
 import TextAd from 'ui/shared/ad/TextAd';

@@ -19,13 +19,13 @@ import type { ResourceName, ResourcePathParams } from 'client/api/resources';
 
 import { useMultichainContext } from 'client/features/multichain/context';
 
+import dayjs from 'client/shared/date-and-time/dayjs';
 import getErrorMessage from 'client/shared/errors/get-error-message';
 import getErrorObjStatusCode from 'client/shared/errors/get-error-obj-status-code';
 import useIsInitialLoading from 'client/shared/hooks/useIsInitialLoading';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import config from 'configs/app';
-import dayjs from 'lib/date/dayjs';
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { toaster } from 'toolkit/chakra/toaster';
 import { Tooltip } from 'toolkit/chakra/tooltip';

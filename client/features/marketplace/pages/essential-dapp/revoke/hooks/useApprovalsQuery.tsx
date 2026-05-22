@@ -8,10 +8,9 @@ import { isAddress, getAbiItem } from 'viem';
 
 import type { EssentialDappsChainConfig } from 'client/features/marketplace/types/client';
 
-import { ALLOWANCES } from 'stubs/essentialDapps/revoke';
-
 import createPublicClient from '../lib/createPublicClient';
 import getLogs from '../lib/getLogs';
+import { ALLOWANCES } from '../stubs';
 import useSearchErc20Allowances from './useSearchErc20Allowances';
 import useSearchNftAllowances from './useSearchNftAllowances';
 

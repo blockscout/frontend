@@ -2,7 +2,7 @@
 
 import type { GasPrices } from 'client/slices/gas/types/api';
 
-export type HomeStats = {
+export interface HomeStats {
   total_blocks: string;
   total_addresses: string;
   total_transactions: string;
@@ -28,3 +28,36 @@ export type HomeStats = {
     epoch_number: number;
   };
 };
+
+export interface IndexingStatus {
+  finished_indexing: boolean;
+  finished_indexing_blocks: boolean;
+  indexed_blocks_ratio: string;
+  indexed_internal_transactions_ratio: string;
+};
+
+export interface ChartTransactionItem {
+  date: string;
+  transactions_count: number | null;
+}
+
+export interface ChartMarketItem {
+  date: string;
+  closing_price: string | null;
+  market_cap?: string | null;
+  tvl?: string | null;
+}
+
+export interface ChartTransactionResponse {
+  chart_data: Array<ChartTransactionItem>;
+}
+
+export interface ChartMarketResponse {
+  available_supply: string;
+  chart_data: Array<ChartMarketItem>;
+}
+
+export interface ChartSecondaryCoinPriceResponse {
+  available_supply: string;
+  chart_data: Array<ChartMarketItem>;
+}

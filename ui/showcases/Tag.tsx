@@ -2,7 +2,8 @@
 
 import React from 'react';
 
-import * as addressMetadataMock from 'mocks/metadata/address';
+import * as addressMetadataMock from 'client/features/address-metadata/mocks/tags';
+
 import { Tag } from 'toolkit/chakra/tag';
 import EntityTag from 'ui/shared/EntityTags/EntityTag';
 

@@ -22,12 +22,12 @@ import { AddressHighlightProvider } from 'client/slices/address/contexts/address
 import CsvExport from 'client/features/csv-export/components/CsvExport';
 import { useMultichainContext } from 'client/features/multichain/context';
 
+import dayjs from 'client/shared/date-and-time/dayjs';
 import getFilterValueFromQuery from 'client/shared/router/get-filter-value-from-query';
 import getFilterValuesFromQuery from 'client/shared/router/get-filter-values-from-query';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import getValuesArrayFromQuery from 'client/shared/router/get-values-array-from-query';
 
-import dayjs from 'lib/date/dayjs';
 import { generateListStub } from 'stubs/utils';
 import { Link } from 'toolkit/chakra/link';
 import { TableBody, TableCell, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';

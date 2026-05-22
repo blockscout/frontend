@@ -4,7 +4,7 @@ import { Flex, chakra } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
-import type { TxAction, TxActionGeneral } from 'types/api/txAction';
+import type { TxAction, TxActionGeneral } from '../../types/api';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import TokenEntity from 'client/slices/token/components/entity/TokenEntity';

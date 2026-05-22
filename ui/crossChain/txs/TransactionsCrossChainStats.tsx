@@ -5,8 +5,9 @@ import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import StatsWidget from 'client/shared/stats/StatsWidget';
+
 import { INTERCHAIN_STATS_DAILY } from 'stubs/interchainIndexer';
-import StatsWidget from 'ui/shared/stats/StatsWidget';
 
 interface Props {}
 

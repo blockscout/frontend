@@ -5,7 +5,8 @@ import type { ZetaChainCCTXFilterParams } from 'client/features/chain-variants/z
 
 import BaseAgeFilter, { type DateConverter } from 'client/features/advanced-filter/components/filters/BaseAgeFilter';
 
-import dayjs from 'lib/date/dayjs';
+import dayjs from 'client/shared/date-and-time/dayjs';
+
 import { SECOND } from 'toolkit/utils/consts';
 
 const FILTER_PARAM_FROM = 'start_timestamp';

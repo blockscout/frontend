@@ -3,7 +3,7 @@
 import * as promClient from 'prom-client';
 
 const metrics = (() => {
-  // eslint-disable-next-line no-restricted-properties
+
   if (process.env.PROMETHEUS_METRICS_ENABLED !== 'true') {
     return;
   }

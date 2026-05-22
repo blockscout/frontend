@@ -2,7 +2,8 @@
 
 import React from 'react';
 
-import dayjs from 'lib/date/dayjs';
+import dayjs from 'client/shared/date-and-time/dayjs';
+
 import type { ProgressCircleRootProps } from 'toolkit/chakra/progress-circle';
 import { ProgressCircleRing, ProgressCircleRoot } from 'toolkit/chakra/progress-circle';
 

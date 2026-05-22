@@ -14,12 +14,12 @@ import { getDurationFromAge } from 'client/features/advanced-filter/utils/lib';
 import { ZETA_CHAIN_CCTX_LIST_ITEM } from 'client/features/chain-variants/zeta-chain/stubs';
 
 import getChainValidationActionText from 'client/shared/chain/get-chain-validation-action-text';
+import dayjs from 'client/shared/date-and-time/dayjs';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import getFilterValueFromQuery from 'client/shared/router/get-filter-value-from-query';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import getValuesArrayFromQuery from 'client/shared/router/get-values-array-from-query';
 
-import dayjs from 'lib/date/dayjs';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
