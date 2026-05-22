@@ -1,10 +1,10 @@
-import * as crossChainConfigMock from 'mocks/crossChain/config';
-import * as crossChainTransfersMock from 'mocks/crossChain/transfers';
-import * as crossChainTxMock from 'mocks/crossChain/txs';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';
 import * as pwConfig from 'playwright/utils/config';
 
+import * as crossChainConfigMock from '../../mocks/config';
+import * as crossChainTransfersMock from '../../mocks/transfers';
+import * as crossChainTxMock from '../../mocks/txs';
 import TransactionsCrossChain from './TransactionsCrossChain';
 
 test.describe('txs', () => {

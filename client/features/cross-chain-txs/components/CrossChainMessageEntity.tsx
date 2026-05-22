@@ -6,9 +6,8 @@ import React from 'react';
 import { route } from 'nextjs/routes';
 
 import * as EntityBase from 'ui/shared/entities/base/components';
+import { distributeEntityProps } from 'ui/shared/entities/base/utils';
 import getChainTooltipText from 'ui/shared/externalChains/getChainTooltipText';
-
-import { distributeEntityProps } from '../base/utils';
 
 type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'id'>;
 

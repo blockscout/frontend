@@ -5,11 +5,12 @@ import React from 'react';
 
 import type { TxQuery } from 'client/slices/tx/hooks/useTxQuery';
 
-import TokenTransfersCrossChainListItem from 'ui/crossChain/transfers/TokenTransfersCrossChainListItem';
-import TokenTransfersCrossChainTable from 'ui/crossChain/transfers/TokenTransfersCrossChainTable';
-import { getItemKey } from 'ui/crossChain/transfers/utils';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
+
+import TokenTransfersCrossChainListItem from '../../components/token-transfers/TokenTransfersCrossChainListItem';
+import TokenTransfersCrossChainTable from '../../components/token-transfers/TokenTransfersCrossChainTable';
+import { getItemKey } from '../../components/token-transfers/utils';
 
 interface Props {
   txQuery: TxQuery;

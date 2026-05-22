@@ -5,8 +5,7 @@ import React from 'react';
 import { MessageStatus } from '@blockscout/interchain-indexer-types';
 
 import type { BadgeProps } from 'toolkit/chakra/badge';
-
-import StatusTag, { type Props as StatusTagProps } from './StatusTag';
+import StatusTag, { type Props as StatusTagProps } from 'ui/shared/statusTag/StatusTag';
 
 interface Props extends BadgeProps {
   status: MessageStatus;

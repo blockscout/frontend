@@ -7,9 +7,9 @@ import type { InterchainTransfer } from '@blockscout/interchain-indexer-types';
 
 import DataListDisplay from 'ui/shared/DataListDisplay';
 
-import TokenTransfersCrossChainListItem from '../transfers/TokenTransfersCrossChainListItem';
-import TokenTransfersCrossChainTable from '../transfers/TokenTransfersCrossChainTable';
-import { getItemKey } from '../transfers/utils';
+import TokenTransfersCrossChainListItem from '../../components/token-transfers/TokenTransfersCrossChainListItem';
+import TokenTransfersCrossChainTable from '../../components/token-transfers/TokenTransfersCrossChainTable';
+import { getItemKey } from '../../components/token-transfers/utils';
 
 interface Props {
   data: Array<InterchainTransfer> | undefined;

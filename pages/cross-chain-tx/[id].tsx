@@ -7,7 +7,7 @@ import React from 'react';
 import type { Props } from 'nextjs/getServerSideProps/handlers';
 import PageNextJs from 'nextjs/PageNextJs';
 
-const TxCrossChain = dynamic(() => import('ui/crossChain/tx/TxCrossChain'), { ssr: false });
+const TxCrossChain = dynamic(() => import('client/features/cross-chain-txs/pages/tx/TxCrossChain'), { ssr: false });
 
 const Page: NextPage<Props> = (props: Props) => {
   return (

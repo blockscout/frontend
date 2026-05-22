@@ -13,14 +13,15 @@ import dayjs from 'client/shared/date-and-time/dayjs';
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { mdash } from 'toolkit/utils/htmlEntities';
-import CrossChainBridgeLink from 'ui/shared/crossChain/CrossChainBridgeLink';
-import CrossChainFromToTag from 'ui/shared/crossChain/CrossChainFromToTag';
-import CrossChainMessageEntity from 'ui/shared/entities/crossChainMessage/CrossChainMessageEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
-import CrossChainTxsStatusTag from 'ui/shared/statusTag/CrossChainTxsStatusTag';
 import TextSeparator from 'ui/shared/TextSeparator';
 import Time from 'ui/shared/time/Time';
 import TokenValueInterchain from 'ui/shared/value/TokenValueInterchain';
+
+import CrossChainBridgeLink from '../CrossChainBridgeLink';
+import CrossChainFromToTag from '../CrossChainFromToTag';
+import CrossChainMessageEntity from '../CrossChainMessageEntity';
+import CrossChainTxsStatusTag from '../CrossChainTxsStatusTag';
 
 interface Props extends JsxStyleProps {
   data: InterchainTransfer;
