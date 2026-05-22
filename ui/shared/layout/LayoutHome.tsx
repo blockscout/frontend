@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import HeaderAlert from 'client/shell/header/components/HeaderAlert';
+import HeaderMobile from 'client/shell/header/components/HeaderMobile';
 import React from 'react';
 
 import type { Props } from './types';
 
 import AppErrorBoundary from 'ui/shared/AppError/AppErrorBoundary';
-import HeaderAlert from 'ui/snippets/header/HeaderAlert';
-import HeaderMobile from 'ui/snippets/header/HeaderMobile';
 
 import * as Layout from './components';
 

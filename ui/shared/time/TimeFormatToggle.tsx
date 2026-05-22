@@ -2,11 +2,11 @@
 
 import type { StackProps } from '@chakra-ui/react';
 import { chakra, HStack } from '@chakra-ui/react';
+import { useSettingsContext } from 'client/shell/top-bar/settings/context';
 import React from 'react';
 
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 
-import { useSettingsContext } from 'lib/contexts/settings';
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import IconSvg from 'ui/shared/IconSvg';

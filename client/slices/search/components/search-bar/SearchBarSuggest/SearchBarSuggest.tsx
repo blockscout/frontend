@@ -2,6 +2,7 @@
 
 import { Box, Flex, Text } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
+import { useSettingsContext } from 'client/shell/top-bar/settings/context';
 import { debounce } from 'es-toolkit';
 import React from 'react';
 
@@ -24,7 +25,6 @@ import useIsMobile from 'client/shared/hooks/useIsMobile';
 
 import config from 'configs/app';
 import multichainConfig from 'configs/multichain';
-import { useSettingsContext } from 'lib/contexts/settings';
 import AdaptiveTabs from 'toolkit/components/AdaptiveTabs/AdaptiveTabs';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 import * as regexp from 'toolkit/utils/regexp';

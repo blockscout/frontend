@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { chakra } from '@chakra-ui/react';
+import HeaderAlert from 'client/shell/header/components/HeaderAlert';
+import HeaderDesktop from 'client/shell/header/components/HeaderDesktop';
+import HeaderMobile from 'client/shell/header/components/HeaderMobile';
 import React from 'react';
 
 import SearchResultsInput from 'client/slices/search/pages/search-results/SearchResultsInput';
@@ -16,9 +19,6 @@ import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import AppErrorBoundary from 'ui/shared/AppError/AppErrorBoundary';
 import * as Layout from 'ui/shared/layout/components';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import HeaderAlert from 'ui/snippets/header/HeaderAlert';
-import HeaderDesktop from 'ui/snippets/header/HeaderDesktop';
-import HeaderMobile from 'ui/snippets/header/HeaderMobile';
 
 import SearchResultTabContent from './SearchResultTabContent';
 import useSearchQuery from './useSearchQuery';
