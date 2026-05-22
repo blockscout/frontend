@@ -42,7 +42,7 @@ const RestApi = () => {
   }, [ isLoading ]);
 
   const coreApiSwaggerUrl = React.useMemo(() => {
-    if (isLoading || !config.features.apiDocs.isEnabled) {
+    if (isLoading || config.features.apiDocs.isEnabled) {
       return;
     }
 
