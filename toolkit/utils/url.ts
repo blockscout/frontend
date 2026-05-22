@@ -4,6 +4,8 @@ export const stripTrailingSlash = (str: string) => str[str.length - 1] === '/' ?
 
 export const stripLeadingSlash = (str: string) => str[0] === '/' ? str.slice(1) : str;
 
+export const addLeadingSlash = (str: string) => str[0] === '/' ? str : '/' + str;
+
 export function makePrettyLink(url: string | undefined): { href: string; domain: string } | undefined {
   try {
     const urlObj = new URL(url ?? '');

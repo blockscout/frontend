@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-export interface NetworkExplorer {
+export interface AlternativeExplorer {
   logo?: string;
   title: string;
   baseUrl: string;

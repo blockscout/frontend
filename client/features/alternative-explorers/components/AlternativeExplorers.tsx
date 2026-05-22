@@ -3,7 +3,7 @@
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import type { NetworkExplorer as TNetworkExplorer } from '../types/client';
+import type { AlternativeExplorer as TAlternativeExplorer } from '../types/client';
 
 import config from 'configs/app';
 import { Image } from 'toolkit/chakra/image';
@@ -14,7 +14,7 @@ import VerifyWith from 'ui/shared/VerifyWith';
 
 interface Props {
   className?: string;
-  type: keyof TNetworkExplorer['paths'];
+  type: keyof TAlternativeExplorer['paths'];
   pathParam: string;
 }
 
