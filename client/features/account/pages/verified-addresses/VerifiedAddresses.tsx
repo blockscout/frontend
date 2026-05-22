@@ -29,7 +29,8 @@ import { BackToButton } from 'toolkit/components/buttons/BackToButton';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import AdminSupportText from 'ui/shared/texts/AdminSupportText';
+
+import AdminSupportText from './AdminSupportText';
 
 const VerifiedAddresses = () => {
   useRedirectForInvalidAuthToken();

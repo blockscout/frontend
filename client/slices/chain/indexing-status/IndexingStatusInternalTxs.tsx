@@ -4,8 +4,8 @@ import { Flex, Text } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
+import type { IndexingStatus } from './types';
 import type { SocketMessage } from 'client/api/socket/types';
-import type { IndexingStatus } from 'client/slices/home/types/api';
 
 import useApiQuery, { getResourceKey } from 'client/api/hooks/useApiQuery';
 import useSocketChannel from 'client/api/socket/useSocketChannel';
@@ -16,7 +16,7 @@ import { Tooltip } from 'toolkit/chakra/tooltip';
 import { apos, nbsp, ndash } from 'toolkit/utils/htmlEntities';
 import IconSvg from 'ui/shared/IconSvg';
 
-const IntTxsIndexingStatus = () => {
+const IndexingStatusInternalTxs = () => {
 
   const { data, isError, isPending } = useApiQuery('general:homepage_indexing_status', {
     queryOptions: {
@@ -90,4 +90,4 @@ const IntTxsIndexingStatus = () => {
   );
 };
 
-export default IntTxsIndexingStatus;
+export default IndexingStatusInternalTxs;

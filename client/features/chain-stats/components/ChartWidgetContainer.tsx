@@ -7,9 +7,10 @@ import type { StatsIntervalIds } from '../types/client';
 
 import { route, type Route } from 'nextjs-routes';
 
+import { useChartsConfig } from 'client/shared/stats/line-chart-config';
+
 import { ChartResolution } from 'toolkit/components/charts';
 import { LineChartWidget } from 'toolkit/components/charts/line/LineChartWidget';
-import { useChartsConfig } from 'ui/shared/chart/config';
 
 import useChartQuery from '../hooks/useChartQuery';
 import { getChartUrl } from '../utils/chart';

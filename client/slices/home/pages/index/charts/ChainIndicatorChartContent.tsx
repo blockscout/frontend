@@ -4,8 +4,9 @@ import React from 'react';
 
 import type { LineChartData } from 'toolkit/components/charts/line/types';
 
+import { useDefaultGradient, useDefaultLineColor } from 'client/shared/stats/line-chart-config';
+
 import { LineChartArea, LineChartLine, LineChartOverlay, LineChartTooltip, useLineChartController } from 'toolkit/components/charts/line';
-import { useDefaultGradient, useDefaultLineColor } from 'ui/shared/chart/config';
 
 interface Props {
   data: LineChartData;

@@ -7,6 +7,7 @@ import type * as multichain from '@blockscout/multichain-aggregator-types';
 import type { ClusterChainConfig } from 'client/features/multichain/types/client';
 import { WALLETS_INFO } from 'client/features/web3-wallet/types/wallets';
 
+import RollupStageBadge from 'client/features/rollup/common/components/RollupStageBadge';
 import useAddChainClick from 'client/features/web3-wallet/hooks/useAddChainClick';
 import useProvider from 'client/features/web3-wallet/hooks/useProvider';
 
@@ -20,7 +21,6 @@ import { Tooltip } from 'toolkit/chakra/tooltip';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 import IconSvg from 'ui/shared/IconSvg';
-import RollupStageBadge from 'ui/snippets/navigation/RollupStageBadge';
 
 interface Props {
   data: ClusterChainConfig;

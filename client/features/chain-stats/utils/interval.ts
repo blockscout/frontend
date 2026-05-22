@@ -6,8 +6,7 @@ import { StatsIntervalId, type StatsIntervalIds } from '../types/client';
 import { ChartResolution } from 'toolkit/components/charts/types';
 
 import getQueryParamString from 'client/shared/router/get-query-param-string';
-
-import { formatDate } from 'ui/shared/chart/utils';
+import { formatDate } from 'client/shared/stats/line-chart-utils';
 
 export const STATS_INTERVALS: { [key in StatsIntervalIds]: { title: string; shortTitle: string; start?: Date } } = {
   all: {

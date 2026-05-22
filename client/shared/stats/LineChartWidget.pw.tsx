@@ -3,7 +3,7 @@ import React from 'react';
 import { test, expect } from 'playwright/lib';
 import type { LineChartWidgetProps } from 'toolkit/components/charts/line';
 
-import ChartWidget from './ChartWidget.pwstory';
+import LineChartWidget from './LineChartWidget.pwstory';
 
 test.use({ viewport: { width: 400, height: 300 } });
 
@@ -37,7 +37,7 @@ const props: LineChartWidgetProps = {
 };
 
 test('base view +@dark-mode', async({ render, page }) => {
-  const component = await render(<ChartWidget { ...props } href="/stats/test"/>);
+  const component = await render(<LineChartWidget { ...props } href="/stats/test"/>);
 
   await page.waitForFunction(() => {
     return document.querySelector('path[data-name="native-coin-circulating-supply-small"]')?.getAttribute('opacity') === '1';
@@ -60,12 +60,12 @@ test('base view +@dark-mode', async({ render, page }) => {
 });
 
 test('loading', async({ render }) => {
-  const component = await render(<ChartWidget { ...props } isLoading minH="250px"/>);
+  const component = await render(<LineChartWidget { ...props } isLoading minH="250px"/>);
   await expect(component).toHaveScreenshot();
 });
 
 test('error', async({ render }) => {
-  const component = await render(<ChartWidget { ...props } isError/>);
+  const component = await render(<LineChartWidget { ...props } isError/>);
   await expect(component).toHaveScreenshot();
 });
 
@@ -92,7 +92,7 @@ test('small values', async({ render, page }) => {
     ],
   };
 
-  const component = await render(<ChartWidget { ...modifiedProps }/>);
+  const component = await render(<LineChartWidget { ...modifiedProps }/>);
   await page.waitForFunction(() => {
     return document.querySelector('path[data-name="native-coin-circulating-supply-small"]')?.getAttribute('opacity') === '1';
   });
@@ -122,7 +122,7 @@ test('small variations in big values', async({ render, page }) => {
     ],
   };
 
-  const component = await render(<ChartWidget { ...modifiedProps }/>);
+  const component = await render(<LineChartWidget { ...modifiedProps }/>);
   await page.waitForFunction(() => {
     return document.querySelector('path[data-name="native-coin-circulating-supply-small"]')?.getAttribute('opacity') === '1';
   });
@@ -143,7 +143,7 @@ test('incomplete day', async({ render, page }) => {
     ],
   };
 
-  const component = await render(<ChartWidget { ...modifiedProps }/>);
+  const component = await render(<LineChartWidget { ...modifiedProps }/>);
   await page.waitForFunction(() => {
     return document.querySelector('path[data-name="native-coin-circulating-supply-small"]')?.getAttribute('opacity') === '1';
   });
@@ -192,7 +192,7 @@ test('multiple charts', async({ render, page }) => {
     ],
   };
 
-  const component = await render(<ChartWidget { ...modifiedProps }/>);
+  const component = await render(<LineChartWidget { ...modifiedProps }/>);
   await page.waitForFunction(() => {
     return document.querySelector('path[data-name="native-coin-circulating-supply-small"]')?.getAttribute('opacity') === '1';
   });

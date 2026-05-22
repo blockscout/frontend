@@ -23,6 +23,8 @@ import dayjs from 'client/shared/date-and-time/dayjs';
 import getErrorMessage from 'client/shared/errors/get-error-message';
 import getErrorObjStatusCode from 'client/shared/errors/get-error-obj-status-code';
 import useIsInitialLoading from 'client/shared/hooks/useIsInitialLoading';
+import ReCaptcha from 'client/shared/re-captcha/ReCaptcha';
+import useReCaptcha from 'client/shared/re-captcha/useReCaptcha';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import config from 'configs/app';
@@ -32,8 +34,6 @@ import { Tooltip } from 'toolkit/chakra/tooltip';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import { downloadBlob } from 'toolkit/utils/file';
 import IconSvg from 'ui/shared/IconSvg';
-import ReCaptcha from 'ui/shared/reCaptcha/ReCaptcha';
-import useReCaptcha from 'ui/shared/reCaptcha/useReCaptcha';
 
 import { useCsvExportContext } from '../utils/context';
 import getFileName from '../utils/get-file-name';

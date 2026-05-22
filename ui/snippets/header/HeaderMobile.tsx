@@ -4,18 +4,18 @@ import { Box, Flex } from '@chakra-ui/react';
 import dynamic from 'next/dynamic';
 import React from 'react';
 
+import NetworkIcon from 'client/slices/chain/logo/NetworkIcon';
+import TestnetBadge from 'client/slices/chain/TestnetBadge';
 import SearchBarMobile from 'client/slices/search/components/search-bar/SearchBarMobile';
 
 import UserProfileAuth0 from 'client/features/account/components/user-profile/auth0/UserProfileMobile';
 import UserWalletMobile from 'client/features/account/components/user-profile/wallet/UserWalletMobile';
 import RewardsButton from 'client/features/rewards/components/RewardsButton';
+import RollupStageBadge from 'client/features/rollup/common/components/RollupStageBadge';
 
 import config from 'configs/app';
 import { useIsSticky } from 'toolkit/hooks/useIsSticky';
-import NetworkIcon from 'ui/snippets/networkLogo/NetworkIcon';
 
-import RollupStageBadge from '../navigation/RollupStageBadge';
-import TestnetBadge from '../navigation/TestnetBadge';
 import Burger from './Burger';
 
 const UserProfileDynamic = dynamic(() => import('client/features/account/components/user-profile/dynamic/UserProfile'), { ssr: false });

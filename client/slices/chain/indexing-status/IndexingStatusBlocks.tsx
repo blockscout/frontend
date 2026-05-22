@@ -3,8 +3,8 @@
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
+import type { IndexingStatus } from './types';
 import type { SocketMessage } from 'client/api/socket/types';
-import type { IndexingStatus } from 'client/slices/home/types/api';
 
 import useApiQuery, { getResourceKey } from 'client/api/hooks/useApiQuery';
 import useSocketChannel from 'client/api/socket/useSocketChannel';
@@ -18,7 +18,7 @@ import { Alert } from 'toolkit/chakra/alert';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { nbsp, ndash } from 'toolkit/utils/htmlEntities';
 
-const IndexingBlocksAlert = () => {
+const IndexingStatusBlocks = () => {
   const appProps = useAppContext();
   const cookiesString = appProps.cookies;
   const [ hasAlertCookie ] = React.useState(cookies.get(cookies.NAMES.INDEXING_ALERT, cookiesString) === 'true');
@@ -83,4 +83,4 @@ const IndexingBlocksAlert = () => {
   );
 };
 
-export default React.memo(IndexingBlocksAlert);
+export default React.memo(IndexingStatusBlocks);

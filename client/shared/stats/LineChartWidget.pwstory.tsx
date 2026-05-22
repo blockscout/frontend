@@ -5,9 +5,9 @@ import React from 'react';
 import type { LineChartWidgetProps } from 'toolkit/components/charts/line';
 import { LineChartWidget } from 'toolkit/components/charts/line';
 
-import { useChartsConfig } from './config';
+import { useChartsConfig } from './line-chart-config';
 
-const ChartWidgetPwStory = ({ charts, ...props }: LineChartWidgetProps) => {
+const LineChartWidgetPwStory = ({ charts, ...props }: LineChartWidgetProps) => {
   const chartsConfig = useChartsConfig();
 
   const modifiedCharts = React.useMemo(() => {
@@ -25,4 +25,4 @@ const ChartWidgetPwStory = ({ charts, ...props }: LineChartWidgetProps) => {
   return <LineChartWidget { ...props } charts={ modifiedCharts }/>;
 };
 
-export default React.memo(ChartWidgetPwStory);
+export default React.memo(LineChartWidgetPwStory);

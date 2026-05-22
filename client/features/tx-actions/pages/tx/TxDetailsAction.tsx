@@ -7,10 +7,10 @@ import React from 'react';
 import type { TxAction, TxActionGeneral } from '../../types/api';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+import NftEntity from 'client/slices/token/components/entity/NftEntity';
 import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 
 import config from 'configs/app';
-import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {

@@ -16,6 +16,8 @@ import AuthModal from 'client/features/account/components/auth-modal/AuthModal';
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 import getErrorMessage from 'client/shared/errors/get-error-message';
 import getErrorObjPayload from 'client/shared/errors/get-error-obj-payload';
+import ReCaptcha from 'client/shared/re-captcha/ReCaptcha';
+import useReCaptcha from 'client/shared/re-captcha/useReCaptcha';
 
 import config from 'configs/app';
 import { Button } from 'toolkit/chakra/button';
@@ -23,8 +25,6 @@ import { Heading } from 'toolkit/chakra/heading';
 import { toaster } from 'toolkit/chakra/toaster';
 import { FormFieldText } from 'toolkit/components/forms/fields/FormFieldText';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
-import ReCaptcha from 'ui/shared/reCaptcha/ReCaptcha';
-import useReCaptcha from 'ui/shared/reCaptcha/useReCaptcha';
 
 import MyProfileFieldsEmail from './fields/MyProfileFieldsEmail';
 

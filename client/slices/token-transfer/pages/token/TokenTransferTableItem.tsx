@@ -9,12 +9,12 @@ import type { TokenInstance } from 'client/slices/token/types/api';
 import { hasTokenTransferValue, isConfidentialTokenType, NFT_TOKEN_TYPE_IDS } from 'client/slices/token/utils/token-types';
 
 import AddressFromTo from 'client/slices/address/components/from-to/AddressFromTo';
+import NftEntity from 'client/slices/token/components/entity/NftEntity';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 
 import { Badge } from 'toolkit/chakra/badge';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
-import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import AssetValue from 'ui/shared/value/AssetValue';

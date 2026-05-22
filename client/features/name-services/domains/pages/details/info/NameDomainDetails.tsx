@@ -11,6 +11,7 @@ import { route } from 'nextjs-routes';
 import type { ResourceError } from 'client/api/resources';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+import NftEntity from 'client/slices/token/components/entity/NftEntity';
 
 import NameDomainExpiryStatus from 'client/features/name-services/domains/components/NameDomainExpiryStatus';
 
@@ -21,7 +22,6 @@ import { Tooltip } from 'toolkit/chakra/tooltip';
 import { stripTrailingSlash } from 'toolkit/utils/url';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
-import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import IconSvg from 'ui/shared/IconSvg';
 import TextSeparator from 'ui/shared/TextSeparator';
 

@@ -7,6 +7,8 @@ import type { MarketplaceApp } from 'client/features/marketplace/types/client';
 
 import { route } from 'nextjs-routes';
 
+import NetworkIcon from 'client/slices/chain/logo/NetworkIcon';
+
 import UserProfileDesktop from 'client/features/account/components/user-profile/UserProfileDesktop';
 import RewardsButton from 'client/features/rewards/components/RewardsButton';
 
@@ -18,7 +20,6 @@ import { useAppContext } from 'lib/contexts/app';
 import { Link } from 'toolkit/chakra/link';
 import { BackToButton } from 'toolkit/components/buttons/BackToButton';
 import { makePrettyLink } from 'toolkit/utils/url';
-import NetworkIcon from 'ui/snippets/networkLogo/NetworkIcon';
 
 import Rating from '../../components/rating/MarketplaceRating';
 import MarketplaceAppInfo from './info/MarketplaceAppInfo';

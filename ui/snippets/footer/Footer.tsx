@@ -11,6 +11,8 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 import useFetch from 'client/api/hooks/useFetch';
 import type { ResourceError } from 'client/api/resources';
 
+import IndexingStatusInternalTxs from 'client/slices/chain/indexing-status/IndexingStatusInternalTxs';
+
 import NetworkAddToWallet from 'client/features/web3-wallet/components/NetworkAddToWallet';
 
 import config from 'configs/app';
@@ -23,7 +25,6 @@ import IconSvg from 'ui/shared/IconSvg';
 import { CONTENT_MAX_WIDTH } from 'ui/shared/layout/utils';
 
 import FooterLinkItem from './FooterLinkItem';
-import IntTxsIndexingStatus from './IntTxsIndexingStatus';
 import getApiVersionUrl from './utils/getApiVersionUrl';
 
 const MAX_LINKS_COLUMNS = 4;
@@ -125,7 +126,7 @@ const Footer = () => {
         mb={{ base: 5, lg: 10 }}
         _empty={{ display: 'none' }}
       >
-        { !config.UI.indexingAlert.intTxs.isHidden && <IntTxsIndexingStatus/> }
+        { !config.UI.indexingAlert.intTxs.isHidden && <IndexingStatusInternalTxs/> }
         { !config.features.multichain.isEnabled && <NetworkAddToWallet source="Footer"/> }
       </Flex>
     );

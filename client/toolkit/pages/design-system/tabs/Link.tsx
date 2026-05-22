@@ -10,6 +10,7 @@ import * as addressMock from 'client/slices/address/mocks/address';
 import * as implementationsMock from 'client/slices/address/mocks/implementations';
 import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
 import * as blockMock from 'client/slices/block/mocks/block';
+import NftEntity from 'client/slices/token/components/entity/NftEntity';
 import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import * as txMock from 'client/slices/tx/mocks/tx';
@@ -22,7 +23,6 @@ import EnsEntity from 'client/features/name-services/domains/components/EnsEntit
 import * as ensMock from 'client/features/name-services/domains/mocks/domain';
 
 import { Link, LinkBox, LinkOverlay } from 'toolkit/chakra/link';
-import NftEntity from 'ui/shared/entities/nft/NftEntity';
 
 import { Section, Container, SectionHeader, SamplesStack, Sample, SectionSubHeader } from '../parts';
 

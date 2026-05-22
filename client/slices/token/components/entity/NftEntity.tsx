@@ -10,9 +10,9 @@ import { route } from 'nextjs/routes';
 import { useMultichainContext } from 'client/features/multichain/context';
 
 import * as EntityBase from 'ui/shared/entities/base/components';
-import NftMedia from 'ui/shared/nft/NftMedia';
+import { distributeEntityProps, getIconProps } from 'ui/shared/entities/base/utils';
 
-import { distributeEntityProps, getIconProps } from '../base/utils';
+import NftMedia from '../nft-media/NftMedia';
 
 const Container = EntityBase.Container;
 
