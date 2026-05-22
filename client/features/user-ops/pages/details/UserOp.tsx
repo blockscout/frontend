@@ -14,6 +14,7 @@ import TxTokenTransfer from 'client/slices/token-transfer/pages/tx/TxTokenTransf
 import useTxQuery from 'client/slices/tx/hooks/useTxQuery';
 import TxLogs from 'client/slices/tx/pages/details/logs/TxLogs';
 
+import TextAd from 'client/features/ads/text/components/TextAd';
 import { USER_OP } from 'client/features/user-ops/stubs';
 
 import throwOnAbsentParamError from 'client/shared/errors/throw-on-absent-param-error';
@@ -21,7 +22,6 @@ import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-loa
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import TextAd from 'ui/shared/ad/TextAd';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 import UserOpDetails from './UserOpDetails';

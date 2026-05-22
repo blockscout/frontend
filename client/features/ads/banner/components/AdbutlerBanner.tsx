@@ -5,20 +5,20 @@ import { useRouter } from 'next/navigation';
 import Script from 'next/script';
 import React from 'react';
 
-import type { BannerProps } from './types';
+import type { BannerProps } from '../types/client';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
 import config from 'configs/app';
 import { isBrowser } from 'toolkit/utils/isBrowser';
-import { connectAdbutler, placeAd, ADBUTLER_ACCOUNT } from 'ui/shared/ad/adbutlerScript';
 
+import { connectAdbutler, placeAd, ADBUTLER_ACCOUNT } from '../utils/adbutler-script';
 import {
   DESKTOP_BANNER_WIDTH,
   DESKTOP_BANNER_HEIGHT,
   MOBILE_BANNER_WIDTH,
   MOBILE_BANNER_HEIGHT,
-} from './consts';
+} from '../utils/consts';
 
 const feature = config.features.adsBanner;
 

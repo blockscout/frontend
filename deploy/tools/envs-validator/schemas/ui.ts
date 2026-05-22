@@ -3,7 +3,8 @@ import { CHAIN_INDICATOR_IDS, type ChainIndicatorId, type HeroBannerConfig, type
 import { replaceQuotes } from 'configs/app/utils';
 import { getYupValidationErrorMessage, urlTest } from '../utils';
 import { NavigationLayout, NavigationPromoBannerConfig, NavItemExternal } from 'types/client/navigation';
-import { FeaturedNetwork, NETWORK_GROUPS, NetworkExplorer } from 'types/networks';
+import { FeaturedNetwork, NETWORK_GROUPS } from 'types/networks';
+import { NetworkExplorer } from 'client/features/alternative-explorers/types/client';
 import { CustomLink, CustomLinksGroup } from 'types/footerLinks';
 import { COLOR_THEME_IDS } from 'types/settings';
 import { FontFamily } from 'types/ui';

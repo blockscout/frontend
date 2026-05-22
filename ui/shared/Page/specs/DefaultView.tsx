@@ -8,9 +8,10 @@ import AddressEntity from 'client/slices/address/components/entity/AddressEntity
 import * as addressMock from 'client/slices/address/mocks/address';
 import * as TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 
+import AlternativeExplorers from 'client/features/alternative-explorers/components/AlternativeExplorers';
+
 import EntityTags from 'ui/shared/EntityTags/EntityTags';
 import IconSvg from 'ui/shared/IconSvg';
-import NetworkExplorers from 'ui/shared/NetworkExplorers';
 
 import PageTitle from '../PageTitle';
 
@@ -47,7 +48,7 @@ const DefaultView = () => {
         address={{ ...addressMock.token, name: '' }}
         variant="subheading"
       />
-      <NetworkExplorers type="token" pathParam={ addressMock.hash } ml="auto"/>
+      <AlternativeExplorers type="token" pathParam={ addressMock.hash } ml="auto"/>
     </>
   );
 

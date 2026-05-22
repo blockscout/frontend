@@ -3,7 +3,7 @@
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import type { NetworkExplorer as TNetworkExplorer } from 'types/networks';
+import type { NetworkExplorer as TNetworkExplorer } from '../types/client';
 
 import config from 'configs/app';
 import { Image } from 'toolkit/chakra/image';
@@ -18,7 +18,7 @@ interface Props {
   pathParam: string;
 }
 
-const NetworkExplorers = ({ className, type, pathParam }: Props) => {
+const AlternativeExplorers = ({ className, type, pathParam }: Props) => {
   const explorersLinks = React.useMemo(() => {
     return config.UI.explorers.items
       .filter((explorer) => typeof explorer.paths[type] === 'string')
@@ -60,4 +60,4 @@ const NetworkExplorers = ({ className, type, pathParam }: Props) => {
   );
 };
 
-export default React.memo(chakra(NetworkExplorers));
+export default React.memo(chakra(AlternativeExplorers));

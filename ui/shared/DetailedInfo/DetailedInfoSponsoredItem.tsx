@@ -2,10 +2,11 @@
 
 import React from 'react';
 
+import AdBanner from 'client/features/ads/banner/components/AdBanner';
+
 import * as cookies from 'client/shared/storage/cookies';
 
 import config from 'configs/app';
-import AdBanner from 'ui/shared/ad/AdBanner';
 
 import * as DetailedInfo from './DetailedInfo';
 

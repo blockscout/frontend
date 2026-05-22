@@ -11,6 +11,7 @@ import TxInternals from 'client/slices/internal-tx/pages/tx/TxInternals';
 import TxTokenTransfer from 'client/slices/token-transfer/pages/tx/TxTokenTransfer';
 import useTxQuery from 'client/slices/tx/hooks/useTxQuery';
 
+import TextAd from 'client/features/ads/text/components/TextAd';
 import TxDetailsWrapped from 'client/features/chain-variants/suave/pages/tx/TxDetailsWrapped';
 import { publicClient } from 'client/features/connect-wallet/utils/public-client';
 import TxBlobs from 'client/features/data-availability/pages/tx/TxBlobs';
@@ -25,7 +26,6 @@ import useEtherscanRedirects from 'client/shared/router/useEtherscanRedirects';
 
 import config from 'configs/app';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import TextAd from 'ui/shared/ad/TextAd';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
 import EntityTags from 'ui/shared/EntityTags/EntityTags';
 import PageTitle from 'ui/shared/Page/PageTitle';

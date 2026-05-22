@@ -30,6 +30,7 @@ import { getTokenHoldersStub } from 'client/slices/token/stubs';
 
 import Address3rdPartyWidgets from 'client/features/address-3rd-party-widgets/pages/address/Address3rdPartyWidgets';
 import useAddress3rdPartyWidgets from 'client/features/address-3rd-party-widgets/pages/address/useAddress3rdPartyWidgets';
+import TextAd from 'client/features/ads/text/components/TextAd';
 import TokenAdvancedFilterLink from 'client/features/advanced-filter/pages/token/TokenAdvancedFilterLink';
 import CsvExport from 'client/features/csv-export/components/CsvExport';
 
@@ -41,7 +42,6 @@ import useEtherscanRedirects from 'client/shared/router/useEtherscanRedirects';
 import config from 'configs/app';
 import { generateListStub } from 'stubs/utils';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import TextAd from 'ui/shared/ad/TextAd';
 import IconSvg from 'ui/shared/IconSvg';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';

@@ -3,8 +3,8 @@
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import type { BannerFormat } from './types';
-import type { AdBannerProviders } from 'types/client/adProviders';
+import type { BannerFormat } from '../types/client';
+import type { AdBannerProviders } from '../types/config';
 
 import useProfileQuery from 'client/features/account/hooks/useProfileQuery';
 import useAccount from 'client/features/connect-wallet/hooks/useAccount';
@@ -12,8 +12,8 @@ import useAccount from 'client/features/connect-wallet/hooks/useAccount';
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 
+import { DESKTOP_BANNER_WIDTH, MOBILE_BANNER_WIDTH } from '../utils/consts';
 import AdbutlerBanner from './AdbutlerBanner';
-import { DESKTOP_BANNER_WIDTH, MOBILE_BANNER_WIDTH } from './consts';
 import SevioBanner from './SevioBanner';
 import SliseBanner from './SliseBanner';
 import SpecifyBanner from './SpecifyBanner';

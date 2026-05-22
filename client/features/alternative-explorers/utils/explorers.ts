@@ -2,7 +2,7 @@
 
 import { mapValues } from 'es-toolkit';
 
-import type { NetworkExplorer } from 'types/networks';
+import type { NetworkExplorer } from '../types/client';
 
 import config from 'configs/app';
 

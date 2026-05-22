@@ -20,6 +20,8 @@ import BlockDetails from 'client/slices/block/pages/details/BlockDetails';
 import BlockInternalTxs from 'client/slices/block/pages/details/BlockInternalTxs';
 import TxsWithFrontendSorting from 'client/slices/tx/pages/index/list/TxsWithFrontendSorting';
 
+import TextAd from 'client/features/ads/text/components/TextAd';
+import AlternativeExplorers from 'client/features/alternative-explorers/components/AlternativeExplorers';
 import BlockDeposits from 'client/features/chain-variants/beacon-chain/pages/block/BlockDeposits';
 import BlockWithdrawals from 'client/features/chain-variants/beacon-chain/pages/block/BlockWithdrawals';
 import useBlockDepositsQuery from 'client/features/chain-variants/beacon-chain/pages/block/useBlockDepositsQuery';
@@ -37,9 +39,7 @@ import getQueryParamString from 'client/shared/router/get-query-param-string';
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import TextAd from 'ui/shared/ad/TextAd';
 import ServiceDegradationWarning from 'ui/shared/alerts/ServiceDegradationWarning';
-import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 
@@ -210,7 +210,7 @@ const BlockPageContent = () => {
           <AddressEntity address={ blockQuery.data.miner }/>
         </Skeleton>
       ) }
-      <NetworkExplorers
+      <AlternativeExplorers
         type="block"
         pathParam={ heightOrHash }
         ml={{ base: chainConfig.UI.views.block.hiddenFields?.miner ? 0 : 3, lg: 'auto' }}

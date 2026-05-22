@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 
-import type { AdBannerProviders } from 'types/client/adProviders';
+import type { AdBannerProviders } from 'client/features/ads/banner/types/config';
 
 import * as cookies from 'client/shared/storage/cookies';
 

@@ -23,13 +23,14 @@ import {
   getTokenInstanceHoldersStub,
 } from 'client/slices/token/stubs';
 
+import TextAd from 'client/features/ads/text/components/TextAd';
+
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import * as metadata from 'client/shared/metadata';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import TextAd from 'ui/shared/ad/TextAd';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 

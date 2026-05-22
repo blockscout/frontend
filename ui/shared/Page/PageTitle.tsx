@@ -5,13 +5,14 @@ import { Flex, chakra } from '@chakra-ui/react';
 import { debounce } from 'es-toolkit';
 import React from 'react';
 
+import TextAd from 'client/features/ads/text/components/TextAd';
+
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
 import { Heading } from 'toolkit/chakra/heading';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
-import TextAd from 'ui/shared/ad/TextAd';
 
 type Props = {
   title: string;

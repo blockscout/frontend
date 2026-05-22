@@ -18,6 +18,7 @@ import AddressQrCode from 'client/slices/address/pages/details/info/AddressQrCod
 import * as TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 
 import useAddressMetadataInfoQuery from 'client/features/address-metadata/hooks/useAddressMetadataInfoQuery';
+import AlternativeExplorers from 'client/features/alternative-explorers/components/AlternativeExplorers';
 import { useMultichainContext } from 'client/features/multichain/context';
 import TokenVerifiedInfo from 'client/features/verified-tokens/pages/token/TokenVerifiedInfo';
 import TokenAddToWallet from 'client/features/web3-wallet/components/TokenAddToWallet';
@@ -29,7 +30,6 @@ import EntityTags from 'ui/shared/EntityTags/EntityTags';
 import formatUserTags from 'ui/shared/EntityTags/formatUserTags';
 import sortEntityTags from 'ui/shared/EntityTags/sortEntityTags';
 import IconSvg from 'ui/shared/IconSvg';
-import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 const PREDEFINED_TAG_PRIORITY = 100;
@@ -125,7 +125,7 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, verifiedInfoQuery, hash }: P
       <AccountActionsMenu isLoading={ isLoading }/>
       <Flex ml={{ base: 0, lg: 'auto' }} columnGap={ 2 } flexGrow={{ base: 1, lg: 0 }}>
         <TokenVerifiedInfo verifiedInfoQuery={ verifiedInfoQuery }/>
-        <NetworkExplorers type="token" pathParam={ addressHash } ml={{ base: 'auto', lg: 0 }}/>
+        <AlternativeExplorers type="token" pathParam={ addressHash } ml={{ base: 'auto', lg: 0 }}/>
       </Flex>
     </Flex>
   );

@@ -5,16 +5,16 @@ import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import TextAd from 'client/features/ads/text/components/TextAd';
+import AlternativeExplorers from 'client/features/alternative-explorers/components/AlternativeExplorers';
 import BlobEntity from 'client/features/data-availability/components/entity/BlobEntity';
 import { BLOB } from 'client/features/data-availability/stubs';
 
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
-import TextAd from 'ui/shared/ad/TextAd';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 import BlobInfo from './BlobInfo';
@@ -50,7 +50,7 @@ const BlobPageContent = () => {
   const titleSecondRow = (
     <>
       <BlobEntity hash={ hash } noLink variant="subheading"/>
-      <NetworkExplorers
+      <AlternativeExplorers
         type="blob"
         pathParam={ hash }
         ml={{ base: 3, lg: 'auto' }}

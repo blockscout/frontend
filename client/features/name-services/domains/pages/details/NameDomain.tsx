@@ -12,6 +12,7 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 
+import TextAd from 'client/features/ads/text/components/TextAd';
 import EnsEntity from 'client/features/name-services/domains/components/EnsEntity';
 import NameDomainHistory from 'client/features/name-services/domains/pages/details/history/NameDomainHistory';
 import NameDomainDetails from 'client/features/name-services/domains/pages/details/info/NameDomainDetails';
@@ -24,7 +25,6 @@ import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import TextAd from 'ui/shared/ad/TextAd';
 import IconSvg from 'ui/shared/IconSvg';
 import PageTitle from 'ui/shared/Page/PageTitle';
 

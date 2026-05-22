@@ -1,9 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { Feature } from './types';
-import type { AdButlerConfig, AdButlerDeviceConfig } from 'types/client/adButlerConfig';
-import { SUPPORTED_AD_BANNER_PROVIDERS } from 'types/client/adProviders';
-import type { AdBannerProviders, AdBannerAdditionalProviders } from 'types/client/adProviders';
+import type { AdButlerConfig, AdButlerDeviceConfig, AdBannerProviders, AdBannerAdditionalProviders } from 'client/features/ads/banner/types/config';
+import { SUPPORTED_AD_BANNER_PROVIDERS } from 'client/features/ads/banner/types/config';
 
 import app from '../app';
 import { getEnvValue, parseEnvJson } from '../utils';

@@ -3,7 +3,7 @@
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import type { BannerFormat } from './types';
+import type { BannerFormat } from '../types/client';
 
 import * as cookies from 'client/shared/storage/cookies';
 
