@@ -2,11 +2,12 @@
 
 import React from 'react';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { Field } from 'toolkit/chakra/field';
 import { Input } from 'toolkit/chakra/input';
 import { InputGroup } from 'toolkit/chakra/input-group';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
-import IconSvg from 'ui/shared/IconSvg';
 
 import { Section, Container, SectionHeader, SamplesStack, Sample, SectionSubHeader } from '../parts';
 
@@ -54,7 +55,7 @@ const InputShowcase = () => {
               w="300px"
               flexShrink={ 0 }
             >
-              <InputGroup endElement={ <IconSvg name="copy" boxSize={ 5 }/> } endElementProps={{ px: 3 }}>
+              <InputGroup endElement={ <SpriteIcon name="copy" boxSize={ 5 }/> } endElementProps={{ px: 3 }}>
                 <Input/>
               </InputGroup>
             </Field>
@@ -66,7 +67,7 @@ const InputShowcase = () => {
               w="300px"
               flexShrink={ 0 }
             >
-              <InputGroup endElement={ <IconSvg name="copy" boxSize={ 5 }/> } endElementProps={{ px: 3 }}>
+              <InputGroup endElement={ <SpriteIcon name="copy" boxSize={ 5 }/> } endElementProps={{ px: 3 }}>
                 <Input value="REF420_REF420_REF420_REF420_REF420_REF420"/>
               </InputGroup>
             </Field>
@@ -82,7 +83,7 @@ const InputShowcase = () => {
               w="300px"
               flexShrink={ 0 }
             >
-              <InputGroup startElement={ <IconSvg name="collection" boxSize={ 5 }/> } startElementProps={{ px: 2 }}>
+              <InputGroup startElement={ <SpriteIcon name="collection" boxSize={ 5 }/> } startElementProps={{ px: 2 }}>
                 <Input/>
               </InputGroup>
             </Field>

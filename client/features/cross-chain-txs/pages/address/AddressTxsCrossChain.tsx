@@ -4,9 +4,9 @@ import React from 'react';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import useTableViewValue from 'client/shared/lists/useTableViewValue';
+import Pagination from 'client/shared/pagination/Pagination';
 
 import ActionBar from 'ui/shared/ActionBar';
-import Pagination from 'ui/shared/pagination/Pagination';
 import TableViewToggleButton from 'ui/shared/TableViewToggleButton';
 
 import TransactionsCrossChainContent from '../../components/txs/TransactionsCrossChainContent';

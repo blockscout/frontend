@@ -15,6 +15,7 @@ import { USER_ACTIVITY } from 'client/features/rewards/stubs';
 
 import dayjs from 'client/shared/date-and-time/dayjs';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import config from 'configs/app';
 import { Button } from 'toolkit/chakra/button';
@@ -24,7 +25,6 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Hint } from 'toolkit/components/Hint/Hint';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import { mdash } from 'toolkit/utils/htmlEntities';
-import IconSvg from 'ui/shared/IconSvg';
 
 import MeritsIcon from '../../../components/MeritsIcon';
 import RewardsActivityPassCard from '../RewardsActivityPassCard';
@@ -252,7 +252,7 @@ export default function ActivityTab() {
             order={{ base: 3, md: 'auto' }}
             px={{ base: 1.5, md: 0 }}
           >
-            <IconSvg name="status/warning" boxSize={ 6 } color="icon.primary"/>
+            <SpriteIcon name="status/warning" boxSize={ 6 } color="icon.primary"/>
             <Text textStyle="sm">
               <chakra.span fontWeight="600">Your current Merit count is not final!</chakra.span><br/>
               Merits are calculated based on the activity of all users and may increase or decrease by the end of the weekly period.

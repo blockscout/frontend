@@ -13,11 +13,11 @@ import useIsAuth from 'client/features/account/hooks/useIsAuth';
 import AddressVerificationModal from 'client/features/account/pages/verified-addresses/address-verification/AddressVerificationModal';
 
 import * as mixpanel from 'client/shared/analytics/mixpanel';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import config from 'configs/app';
 import { MenuItem } from 'toolkit/chakra/menu';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
-import IconSvg from 'ui/shared/IconSvg';
 
 import ButtonItem from '../parts/ButtonItem';
 
@@ -74,7 +74,7 @@ const TokenInfoMenuItem = ({ hash, type }: ItemProps) => {
 
     switch (type) {
       case 'button': {
-        const icon = <IconSvg name="edit" boxSize={ 6 } p={ 0.5 }/>;
+        const icon = <SpriteIcon name="edit" boxSize={ 6 } p={ 0.5 }/>;
 
         return (
           <AuthGuard onAuthSuccess={ onAuthSuccess } ensureEmail>
@@ -85,7 +85,7 @@ const TokenInfoMenuItem = ({ hash, type }: ItemProps) => {
         );
       }
       case 'menu_item': {
-        const icon = <IconSvg name="edit" boxSize={ 6 } p={ 1 }/>;
+        const icon = <SpriteIcon name="edit" boxSize={ 6 } p={ 1 }/>;
 
         return (
           <AuthGuard onAuthSuccess={ onAuthSuccess } ensureEmail>

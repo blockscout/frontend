@@ -11,6 +11,8 @@ import { NOVES_TRANSLATE } from 'client/features/tx-interpretation/noves/stubs';
 import { getFromToValue } from 'client/features/tx-interpretation/noves/utils/from-to';
 
 import useIsMounted from 'client/shared/hooks/useIsMounted';
+import Pagination from 'client/shared/pagination/Pagination';
+import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
 import getFilterValueFromQuery from 'client/shared/router/get-filter-value-from-query';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
@@ -18,8 +20,6 @@ import getQueryParamString from 'client/shared/router/get-query-param-string';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import Pagination from 'ui/shared/pagination/Pagination';
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
 import AccountHistoryFilter from './AddressAccountHistoryFilter';
 import AddressAccountHistoryListItem from './AddressAccountHistoryListItem';

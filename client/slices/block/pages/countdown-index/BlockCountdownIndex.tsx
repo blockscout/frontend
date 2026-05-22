@@ -8,10 +8,11 @@ import { routeParams } from 'nextjs/routes';
 
 import { useMultichainContext } from 'client/features/multichain/context';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { Heading } from 'toolkit/chakra/heading';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import ChainIcon from 'ui/shared/externalChains/ChainIcon';
-import IconSvg from 'ui/shared/IconSvg';
 
 const BlockCountdownIndex = () => {
   const router = useRouter();
@@ -31,7 +32,7 @@ const BlockCountdownIndex = () => {
   return (
     <Center h="100%" justifyContent={{ base: 'flex-start', lg: 'center' }} flexDir="column" textAlign="center" pt={{ base: 8, lg: 0 }}>
       <Box position="relative">
-        <IconSvg
+        <SpriteIcon
           name="block_countdown"
           color={{ _light: 'gray.300', _dark: 'gray.600' }}
           w={{ base: '160px', lg: '240px' }}

@@ -15,10 +15,10 @@ import AddressModal from 'client/features/account/pages/private-tags/AddressModa
 import TransactionModal from 'client/features/account/pages/private-tags/TransactionModal/TransactionModal';
 
 import * as mixpanel from 'client/shared/analytics/mixpanel';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { MenuItem } from 'toolkit/chakra/menu';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
-import IconSvg from 'ui/shared/IconSvg';
 
 import ButtonItem from '../parts/ButtonItem';
 
@@ -75,7 +75,7 @@ const PrivateTagMenuItem = ({ hash, entityType = 'address', type }: Props) => {
             { ({ onClick }) => (
               <MenuItem onClick={ onClick } value="add-private-tag">
                 { /* FIXME use non-navigation icon */ }
-                <IconSvg name="navigation/private_tags" boxSize={ 6 }/>
+                <SpriteIcon name="navigation/private_tags" boxSize={ 6 }/>
                 <span>Add private tag</span>
               </MenuItem>
             ) }

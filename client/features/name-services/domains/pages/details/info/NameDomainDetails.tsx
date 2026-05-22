@@ -15,6 +15,8 @@ import NftEntity from 'client/slices/token/components/entity/NftEntity';
 
 import NameDomainExpiryStatus from 'client/features/name-services/domains/components/NameDomainExpiryStatus';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
@@ -22,7 +24,6 @@ import { Tooltip } from 'toolkit/chakra/tooltip';
 import { stripTrailingSlash } from 'toolkit/utils/url';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
-import IconSvg from 'ui/shared/IconSvg';
 import TextSeparator from 'ui/shared/TextSeparator';
 
 import NameDomainDetailsAlert from './NameDomainDetailsAlert';
@@ -116,7 +117,7 @@ const NameDomainDetails = ({ query }: Props) => {
                     query: { tab: 'domains', owned_by: 'true', resolved_to: 'true', address: query.data.registrant.hash },
                   }) }
                 >
-                  <IconSvg name="search" boxSize={ 5 } isLoading={ isLoading }/>
+                  <SpriteIcon name="search" boxSize={ 5 } isLoading={ isLoading }/>
                 </Link>
               </Tooltip>
             </DetailedInfo.ItemValue>
@@ -148,7 +149,7 @@ const NameDomainDetails = ({ query }: Props) => {
                     query: { tab: 'domains', owned_by: 'true', resolved_to: 'true', address: query.data.owner.hash },
                   }) }
                 >
-                  <IconSvg name="search" boxSize={ 5 } isLoading={ isLoading }/>
+                  <SpriteIcon name="search" boxSize={ 5 } isLoading={ isLoading }/>
                 </Link>
               </Tooltip>
             </DetailedInfo.ItemValue>
@@ -180,7 +181,7 @@ const NameDomainDetails = ({ query }: Props) => {
                     query: { tab: 'domains', owned_by: 'true', resolved_to: 'true', address: query.data.wrapped_owner.hash },
                   }) }
                 >
-                  <IconSvg name="search" boxSize={ 5 } isLoading={ isLoading }/>
+                  <SpriteIcon name="search" boxSize={ 5 } isLoading={ isLoading }/>
                 </Link>
               </Tooltip>
             </DetailedInfo.ItemValue>

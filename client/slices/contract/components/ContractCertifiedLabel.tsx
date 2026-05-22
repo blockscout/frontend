@@ -3,8 +3,9 @@
 import { Flex, chakra } from '@chakra-ui/react';
 import React from 'react';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import IconSvg from 'ui/shared/IconSvg';
 
 type Props = {
   iconSize: number;
@@ -15,7 +16,7 @@ const ContractCertifiedLabel = ({ iconSize, className }: Props) => {
   return (
     <Tooltip content="This contract has been certified by the chain developers">
       <Flex className={ className }>
-        <IconSvg name="certified" color="green.500" boxSize={ iconSize } cursor="pointer"/>
+        <SpriteIcon name="certified" color="green.500" boxSize={ iconSize } cursor="pointer"/>
       </Flex>
     </Tooltip>
   );

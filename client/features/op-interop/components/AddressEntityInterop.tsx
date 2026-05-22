@@ -9,10 +9,11 @@ import { route } from 'nextjs-routes';
 
 import * as AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { Image } from 'toolkit/chakra/image';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { distributeEntityProps } from 'ui/shared/entities/base/utils';
-import IconSvg from 'ui/shared/IconSvg';
 
 interface Props extends Omit<AddressEntity.EntityProps, 'chain'> {
   chain: ChainInfo | null;
@@ -33,7 +34,7 @@ const IconStub = () => {
       border="1px solid"
       borderColor="bg.primary"
     >
-      <IconSvg
+      <SpriteIcon
         name="networks/icon-placeholder"
         width="10px"
         height="10px"

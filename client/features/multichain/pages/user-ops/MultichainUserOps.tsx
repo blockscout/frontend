@@ -9,14 +9,14 @@ import UserOpsListItem from 'client/features/user-ops/pages/index/UserOpsListIte
 import UserOpsTable from 'client/features/user-ops/pages/index/UserOpsTable';
 import { USER_OPS_ITEM } from 'client/features/user-ops/stubs';
 
+import Pagination from 'client/shared/pagination/Pagination';
+import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
 
 import multichainConfig from 'configs/multichain';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import Pagination from 'ui/shared/pagination/Pagination';
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
 const MultichainUserOps = () => {
 

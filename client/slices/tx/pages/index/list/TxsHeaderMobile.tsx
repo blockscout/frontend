@@ -3,15 +3,16 @@
 import { HStack, chakra, createListCollection } from '@chakra-ui/react';
 import React from 'react';
 
+import type { PaginationParams } from 'client/shared/pagination/types';
 import type { TransactionsSortingValue } from 'client/slices/tx/types/api';
-import type { PaginationParams } from 'ui/shared/pagination/types';
 
 // import { FilterInput } from 'toolkit/components/filters/FilterInput';
 
 import { SORT_OPTIONS } from 'client/slices/tx/hooks/useTxsSort';
 
+import Pagination from 'client/shared/pagination/Pagination';
+
 import ActionBar from 'ui/shared/ActionBar';
-import Pagination from 'ui/shared/pagination/Pagination';
 import Sort from 'ui/shared/sort/Sort';
 
 type Props = {

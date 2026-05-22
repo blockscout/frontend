@@ -5,11 +5,12 @@ import React from 'react';
 
 import type { AlternativeExplorer as TAlternativeExplorer } from '../types/client';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import config from 'configs/app';
 import { Image } from 'toolkit/chakra/image';
 import { Link } from 'toolkit/chakra/link';
 import { stripTrailingSlash } from 'toolkit/utils/url';
-import IconSvg from 'ui/shared/IconSvg';
 import VerifyWith from 'ui/shared/VerifyWith';
 
 interface Props {
@@ -37,7 +38,7 @@ const AlternativeExplorers = ({ className, type, pathParam }: Props) => {
           <Link external h="34px" key={ explorer.baseUrl } href={ url.toString() } alignItems="center" display="inline-flex" minW="120px">
             { explorer.logo ?
               <Image boxSize={ 5 } mr={ 2 } src={ explorer.logo } alt={ `${ explorer.title } icon` }/> :
-              <IconSvg name="explorer" boxSize={ 5 } color="icon.primary" mr={ 2 }/>
+              <SpriteIcon name="explorer" boxSize={ 5 } color="icon.primary" mr={ 2 }/>
             }
             { explorer.title }
           </Link>

@@ -10,10 +10,11 @@ import type { TokenInfo } from 'client/slices/token/types/api';
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import AddressFromTo from 'client/slices/address/components/from-to/AddressFromTo';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { Link } from 'toolkit/chakra/link';
 import { ZERO_ADDRESS } from 'toolkit/utils/consts';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import IconSvg from 'ui/shared/IconSvg';
 import TokenValue from 'ui/shared/value/TokenValue';
 
 type ItemProps = BlockBaseFeeCelo['breakdown'][number] & {
@@ -34,7 +35,7 @@ const BreakDownItem = ({ amount, percentage, address, addressFrom, token }: Item
       { isBurning ? (
         <>
           <AddressEntity address={ addressFrom } truncation="constant"/>
-          <IconSvg name="flame" boxSize={ 5 } color="icon.primary"/>
+          <SpriteIcon name="flame" boxSize={ 5 } color="icon.primary"/>
           <Box color="text.secondary">burnt</Box>
         </>
       ) : <AddressFromTo from={ addressFrom } to={ address }/> }

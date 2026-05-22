@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import Pagination from 'ui/shared/pagination/Pagination';
+import Pagination from 'client/shared/pagination/Pagination';
 
 import { Section, Container, SectionHeader, SamplesStack, Sample, SectionSubHeader } from '../parts';
 

@@ -8,14 +8,14 @@ import { ADDRESS_MUD_TABLE_ITEM } from 'client/features/chain-variants/mud/stubs
 
 import useDebounce from 'client/shared/hooks/useDebounce';
 import useIsInitialLoading from 'client/shared/hooks/useIsInitialLoading';
+import Pagination from 'client/shared/pagination/Pagination';
+import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import Pagination from 'ui/shared/pagination/Pagination';
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
 import AddressMudTablesListItem from './AddressMudTablesListItem';
 import AddressMudTablesTable from './AddressMudTablesTable';

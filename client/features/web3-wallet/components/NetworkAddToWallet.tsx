@@ -4,9 +4,10 @@ import React from 'react';
 
 import { WALLETS_INFO } from '../types/wallets';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import config from 'configs/app';
 import { Button } from 'toolkit/chakra/button';
-import IconSvg from 'ui/shared/IconSvg';
 
 import useAddChainClick from '../hooks/useAddChainClick';
 import useProvider from '../hooks/useProvider';
@@ -41,7 +42,7 @@ const NetworkAddToWallet = ({ source, onAddSuccess }: Props) => {
         borderColor: 'link.primary.hover',
       }}
     >
-      <IconSvg name={ walletInfo.icon } boxSize={ 3 }/>
+      <SpriteIcon name={ walletInfo.icon } boxSize={ 3 }/>
       Add { config.chain.name }
     </Button>
   );

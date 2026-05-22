@@ -9,6 +9,8 @@ import PoolsTable from 'client/features/dex-pools/pages/index/PoolsTable';
 import { POOL } from 'client/features/dex-pools/stubs';
 
 import useDebounce from 'client/shared/hooks/useDebounce';
+import Pagination from 'client/shared/pagination/Pagination';
+import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import config from 'configs/app';
@@ -16,8 +18,6 @@ import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import Pagination from 'ui/shared/pagination/Pagination';
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
 const Pools = () => {
   const router = useRouter();

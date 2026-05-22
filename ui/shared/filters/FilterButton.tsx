@@ -3,10 +3,11 @@
 import { Box, Circle } from '@chakra-ui/react';
 import React from 'react';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import type { ButtonProps } from 'toolkit/chakra/button';
 import { Button } from 'toolkit/chakra/button';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import IconSvg from 'ui/shared/IconSvg';
 
 interface Props extends ButtonProps {
   isLoading?: boolean;
@@ -48,7 +49,7 @@ const FilterButton = ({ isLoading, appliedFiltersNum, ...rest }: Props, ref: Rea
       px={{ base: 1, lg: 3 }}
       { ...rest }
     >
-      <IconSvg name="filter" boxSize={ 5 }/>
+      <SpriteIcon name="filter" boxSize={ 5 }/>
       <Box display={{ base: 'none', lg: 'block' }}>Filter</Box>
       { numElement }
     </Button>

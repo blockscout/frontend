@@ -13,13 +13,13 @@ import { BLOCK } from 'client/slices/block/stubs/block';
 import Flashblocks from 'client/features/flashblocks/pages/index/Flashblocks';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import config from 'configs/app';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
 const flashblocksFeature = config.features.flashblocks;
 

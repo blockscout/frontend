@@ -3,8 +3,9 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
+import type { QueryWithPagesResult } from 'client/shared/pagination/useQueryWithPages';
+
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
 
 import BeaconChainDepositsList from '../deposits/BeaconChainDepositsList';
 import BeaconChainDepositsTable from '../deposits/BeaconChainDepositsTable';

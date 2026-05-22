@@ -2,10 +2,11 @@
 
 import React from 'react';
 
+import type { IconName } from 'client/sprite/SpriteIcon';
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import type { IconName } from 'ui/shared/IconSvg';
-import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   className?: string;
@@ -26,7 +27,7 @@ const ButtonItem = ({ className, label, onClick, icon, isDisabled }: Props) => {
         variant="icon_background"
         boxSize={ 8 }
       >
-        { typeof icon === 'string' ? <IconSvg name={ icon } boxSize={ 6 }/> : icon }
+        { typeof icon === 'string' ? <SpriteIcon name={ icon } boxSize={ 6 }/> : icon }
       </IconButton>
     </Tooltip>
   );

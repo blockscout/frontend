@@ -8,6 +8,8 @@ import type { EntityTag as TEntityTag, EntityTagType } from 'ui/shared/EntityTag
 
 import { TOP_ADDRESS } from 'client/slices/address/stubs/address';
 
+import StickyPaginationWithText from 'client/shared/pagination/StickyPaginationWithText';
+import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
@@ -16,8 +18,6 @@ import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import EntityTag from 'ui/shared/EntityTags/EntityTag';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
-import StickyPaginationWithText from 'ui/shared/StickyPaginationWithText';
 
 import TagSearchListItem from './TagSearchListItem';
 import TagSearchTable from './TagSearchTable';

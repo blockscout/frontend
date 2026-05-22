@@ -7,6 +7,9 @@ import type { MarketplaceApp } from 'client/features/marketplace/types/client';
 
 import { route } from 'nextjs-routes';
 
+import type { IconName } from 'client/sprite/SpriteIcon';
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import config from 'configs/app';
 import { Badge } from 'toolkit/chakra/badge';
 import { Button } from 'toolkit/chakra/button';
@@ -20,8 +23,6 @@ import { nbsp } from 'toolkit/utils/htmlEntities';
 import { isBrowser } from 'toolkit/utils/isBrowser';
 import { makePrettyLink } from 'toolkit/utils/url';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
-import type { IconName } from 'ui/shared/IconSvg';
-import IconSvg from 'ui/shared/IconSvg';
 
 import Rating from '../../components/rating/MarketplaceRating';
 import FavoriteIcon from './FavoriteIcon';
@@ -238,7 +239,7 @@ const MarketplaceAppModal = ({
                 alignItems="center"
                 textStyle="sm"
               >
-                <IconSvg
+                <SpriteIcon
                   name="link"
                   display="inline"
                   verticalAlign="baseline"
@@ -270,7 +271,7 @@ const MarketplaceAppModal = ({
                 noIcon
                 flexShrink={ 0 }
               >
-                <IconSvg
+                <SpriteIcon
                   name={ icon }
                   color="icon.secondary"
                   boxSize={ 5 }

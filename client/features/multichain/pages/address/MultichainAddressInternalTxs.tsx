@@ -14,10 +14,11 @@ import CsvExport from 'client/features/csv-export/components/CsvExport';
 import ChainSelect from 'client/features/multichain/components/ChainSelect';
 import { MultichainProvider } from 'client/features/multichain/context';
 
+import Pagination from 'client/shared/pagination/Pagination';
+
 import multichainConfig from 'configs/multichain';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import Pagination from 'ui/shared/pagination/Pagination';
 
 import getAvailableChainIds from './get-available-chain-ids';
 

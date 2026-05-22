@@ -19,12 +19,12 @@ import { useMultichainContext } from 'client/features/multichain/context';
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import IconSvg from 'ui/shared/IconSvg';
 
 import TokenSelectDesktop from './TokenSelectDesktop';
 import TokenSelectMobile from './TokenSelectMobile';
@@ -85,7 +85,7 @@ const TokenSelect = () => {
             size="md"
             onClick={ handleIconButtonClick }
           >
-            <IconSvg name="wallet"/>
+            <SpriteIcon name="wallet"/>
           </IconButton>
         </Link>
       </Tooltip>

@@ -10,8 +10,9 @@ import AddressEntity from 'client/slices/address/components/entity/AddressEntity
 import NftEntity from 'client/slices/token/components/entity/NftEntity';
 import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import config from 'configs/app';
-import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   action: TxAction;
@@ -93,7 +94,7 @@ const TxDetailsAction = ({ action }: Props) => {
           <chakra.span color="text.secondary">{ text1 }</chakra.span>
 
           <Flex columnGap={ 2 }>
-            <IconSvg name="uniswap" boxSize={ 5 } color="white" bgColor="#ff007a" borderRadius="full" p="2px"/>
+            <SpriteIcon name="uniswap" boxSize={ 5 } color="white" bgColor="#ff007a" borderRadius="full" p="2px"/>
             <chakra.span>Uniswap V3</chakra.span>
           </Flex>
         </Flex>

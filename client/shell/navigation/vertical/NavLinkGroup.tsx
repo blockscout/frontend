@@ -5,8 +5,9 @@ import React from 'react';
 
 import type { NavGroupItem } from '../types';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import IconSvg from 'ui/shared/IconSvg';
 
 import LightningLabel from '../LightningLabel';
 import NavLinkIcon from '../NavLinkIcon';
@@ -95,7 +96,7 @@ const NavLinkGroup = ({ item, isCollapsed }: Props) => {
                 isCollapsed={ isCollapsed }
               />
             ) }
-            <IconSvg
+            <SpriteIcon
               name="arrows/east-mini"
               position="absolute"
               right="7px"

@@ -8,12 +8,12 @@ import InternalTxsTable from 'client/slices/internal-tx/components/InternalTxsTa
 import useInternalTxsQuery from 'client/slices/internal-tx/hooks/useInternalTxsQuery';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import Pagination from 'client/shared/pagination/Pagination';
 
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import Pagination from 'ui/shared/pagination/Pagination';
 
 const InternalTxs = () => {
 

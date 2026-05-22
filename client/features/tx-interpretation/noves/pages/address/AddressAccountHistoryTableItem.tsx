@@ -7,11 +7,12 @@ import type { NovesResponseData } from 'client/features/tx-interpretation/noves/
 
 import NovesFromTo from 'client/features/tx-interpretation/noves/components/NovesFromTo';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { SECOND } from 'toolkit/utils/consts';
-import IconSvg from 'ui/shared/IconSvg';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 type Props = {
@@ -42,7 +43,7 @@ const AddressAccountHistoryTableItem = (props: Props) => {
       <TableCell px={ 3 } py="18px" fontSize="sm" >
         <Skeleton borderRadius="sm" loading={ props.isPlaceholderData }>
           <Box display="flex">
-            <IconSvg
+            <SpriteIcon
               name="lightning"
               height="5"
               width="5"

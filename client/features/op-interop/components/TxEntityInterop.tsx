@@ -9,12 +9,13 @@ import { route } from 'nextjs-routes';
 
 import * as TxEntity from 'client/slices/tx/components/entity/TxEntity';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { Image } from 'toolkit/chakra/image';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { stripTrailingSlash } from 'toolkit/utils/url';
 import { distributeEntityProps } from 'ui/shared/entities/base/utils';
-import IconSvg from 'ui/shared/IconSvg';
 
 type Props = {
   chain?: ChainInfo | null;
@@ -34,7 +35,7 @@ const IconStub = ({ isLoading }: { isLoading?: boolean }) => {
       justifyContent="center"
       mr={ 2 }
     >
-      <IconSvg
+      <SpriteIcon
         name="networks/icon-placeholder"
         width="16px"
         height="16px"

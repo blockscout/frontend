@@ -9,13 +9,13 @@ import { encodeFunctionData, type AbiFunction } from 'viem';
 import type { FormSubmitHandler, FormSubmitResult, MethodCallStrategy, SmartContractMethod } from '../types';
 
 import * as mixpanel from 'client/shared/analytics/mixpanel';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import config from 'configs/app';
 import { Button } from 'toolkit/chakra/button';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import { SECOND } from 'toolkit/utils/consts';
-import IconSvg from 'ui/shared/IconSvg';
 
 import { isReadMethod, isWriteMethod } from '../utils';
 import ContractMethodFieldAccordion from './ContractMethodFieldAccordion';
@@ -304,7 +304,7 @@ const ContractMethodForm = ({ data, attempt, onSubmit, onReset, isOpen }: Props)
                 onClick={ onReset }
                 gap={ 1 }
               >
-                <IconSvg name="repeat" boxSize={ 5 }/>
+                <SpriteIcon name="repeat" boxSize={ 5 }/>
                 Reset
               </Button>
             ) }

@@ -4,11 +4,11 @@ import React from 'react';
 
 import { USER_OPS_ITEM } from 'client/features/user-ops/stubs';
 
+import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
 
 import config from 'configs/app';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
 import UserOpsContent from './UserOpsContent';
 

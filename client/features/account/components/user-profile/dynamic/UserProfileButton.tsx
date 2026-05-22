@@ -8,9 +8,9 @@ import useAccountWithDomain from 'client/features/connect-wallet/hooks/useAccoun
 import { useMarketplaceContext } from 'client/features/marketplace/context';
 
 import shortenString from 'client/shared/text/shorten-string';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { Button, type ButtonProps } from 'toolkit/chakra/button';
-import IconSvg from 'ui/shared/IconSvg';
 
 import UserIdenticon from '../UserIdenticon';
 
@@ -35,7 +35,7 @@ const UserProfileButton = ({ selected, email, ...rest }: Props) => {
         </HStack>
       ) : (
         <HStack gap={ 2 }>
-          <IconSvg name="profile" boxSize={ 5 }/>
+          <SpriteIcon name="profile" boxSize={ 5 }/>
           <Box display={{ base: 'none', md: 'block' }}>{ email ? getUserHandle(email) : 'My profile' }</Box>
         </HStack>
       );

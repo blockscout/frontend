@@ -7,10 +7,11 @@ import type { TokenType } from 'client/slices/token/types/api';
 
 import TokenTypeFilter from 'client/slices/token/components/TokenTypeFilter';
 
+import Pagination from 'client/shared/pagination/Pagination';
+
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PopoverFilter from 'ui/shared/filters/PopoverFilter';
-import Pagination from 'ui/shared/pagination/Pagination';
 
 import useTokenTransfersQuery from '../../hooks/useTokenTransfersQuery';
 import TokenTransfersListItem from './TokenTransfersListItem';

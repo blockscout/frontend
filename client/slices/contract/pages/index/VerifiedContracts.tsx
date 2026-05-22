@@ -10,13 +10,13 @@ import VerifiedContractsList from 'client/slices/contract/pages/index/VerifiedCo
 import VerifiedContractsTable from 'client/slices/contract/pages/index/VerifiedContractsTable';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import Pagination from 'client/shared/pagination/Pagination';
 
 import config from 'configs/app';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import Pagination from 'ui/shared/pagination/Pagination';
 import Sort from 'ui/shared/sort/Sort';
 
 import { SORT_OPTIONS } from './sort';

@@ -10,12 +10,12 @@ import useZetaChainConfig from 'client/features/chain-variants/zeta-chain/hooks/
 
 import dayjs from 'client/shared/date-and-time/dayjs';
 import shortenString from 'client/shared/text/shorten-string';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
 import { Tag } from 'toolkit/chakra/tag';
 import { SECOND } from 'toolkit/utils/consts';
-import IconSvg from 'ui/shared/IconSvg';
 
 type Props = {
   filters: ZetaChainCCTXFilterParams;
@@ -148,7 +148,7 @@ const ZetaChainFilterTags = ({ filters, onClearFilter, onClearAll }: Props) => {
       </Flex>
       { filterTags.length !== 0 && (
         <Link onClick={ onClearAll } display="flex" alignItems="center" justifyContent="end" gap={ 2 } fontSize="sm" w="150px">
-          <IconSvg name="repeat" boxSize={ 5 }/>
+          <SpriteIcon name="repeat" boxSize={ 5 }/>
           Reset filters
         </Link>
       ) }

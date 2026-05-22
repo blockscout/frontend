@@ -2,9 +2,10 @@
 
 import React from 'react';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { Button } from 'toolkit/chakra/button';
 import { PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
-import IconSvg from 'ui/shared/IconSvg';
 
 import ChainMenuContent from './ChainMenuContent';
 import useChainMenu from './useChainMenu';
@@ -31,9 +32,9 @@ const ChainMenu = () => {
           size="2xs"
           fontWeight={ 500 }
         >
-          <IconSvg name="networks" boxSize="14px"/>
+          <SpriteIcon name="networks" boxSize="14px"/>
           <span>Chains</span>
-          <IconSvg name="arrows/east-mini" boxSize={ 4 } transform="rotate(-90deg)"/>
+          <SpriteIcon name="arrows/east-mini" boxSize={ 4 } transform="rotate(-90deg)"/>
         </Button>
       </PopoverTrigger>
       <ChainMenuContent items={ menu.data } tabs={ menu.availableTabs }/>

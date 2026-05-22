@@ -3,12 +3,12 @@
 import React from 'react';
 
 import capitalizeFirstLetter from 'client/shared/text/capitalize-first-letter';
+import type { IconName } from 'client/sprite/SpriteIcon';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import type { BadgeProps } from 'toolkit/chakra/badge';
 import { Badge } from 'toolkit/chakra/badge';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import type { IconName } from 'ui/shared/IconSvg';
-import IconSvg from 'ui/shared/IconSvg';
 
 export type StatusTagType = 'ok' | 'error' | 'pending';
 
@@ -38,7 +38,7 @@ const StatusTag = ({ type, text, errorText, mode = 'full', ...rest }: Props) => 
       break;
   }
 
-  const iconElement = <IconSvg name={ icon } boxSize={ 2.5 } display={ text ? 'inline-block' : 'block' }/>;
+  const iconElement = <SpriteIcon name={ icon } boxSize={ 2.5 } display={ text ? 'inline-block' : 'block' }/>;
   const capitalizedText = text ? capitalizeFirstLetter(text) : undefined;
 
   if (mode === 'compact') {

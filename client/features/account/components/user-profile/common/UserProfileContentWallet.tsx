@@ -9,11 +9,11 @@ import useWeb3AccountWithDomain from 'client/features/connect-wallet/hooks/useAc
 import useWeb3Wallet from 'client/features/connect-wallet/hooks/useWallet';
 
 import delay from 'client/shared/utils/delay';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { Button } from 'toolkit/chakra/button';
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { Hint } from 'toolkit/components/Hint/Hint';
-import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   onClose?: () => void;
@@ -70,7 +70,7 @@ const UserProfileContentWallet = ({ onClose, className }: Props) => {
               onClick={ handleOpenWalletClick }
               loading={ web3Wallet.isOpen }
             >
-              <IconSvg name="gear"/>
+              <SpriteIcon name="gear"/>
             </IconButton>
           ) }
         </Flex>

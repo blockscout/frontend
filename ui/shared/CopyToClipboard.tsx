@@ -2,11 +2,12 @@
 
 import React from 'react';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import type { IconButtonProps } from 'toolkit/chakra/icon-button';
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { useClipboard } from 'toolkit/hooks/useClipboard';
-import IconSvg from 'ui/shared/IconSvg';
 
 export interface Props extends Omit<IconButtonProps, 'type' | 'loading'> {
   text: string;
@@ -53,7 +54,7 @@ const CopyToClipboard = (props: Props) => {
       size="2xs"
       { ...rest }
     >
-      <IconSvg name={ iconName }/>
+      <SpriteIcon name={ iconName }/>
     </IconButton>
   );
 

@@ -9,9 +9,10 @@ import TokenTransferList from 'client/slices/token-transfer/components/list/Toke
 import TokenTransferTable from 'client/slices/token-transfer/components/list/TokenTransferTable';
 import type { TxQuery } from 'client/slices/tx/hooks/useTxQuery';
 
+import type { QueryWithPagesResult } from 'client/shared/pagination/useQueryWithPages';
+
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
 
 interface Props {
   txQuery: TxQuery;

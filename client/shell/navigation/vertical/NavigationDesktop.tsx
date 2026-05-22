@@ -14,8 +14,7 @@ import NavLinkRewards from 'client/features/rewards/components/NavLinkRewards';
 import RollupStageBadge from 'client/features/rollup/common/components/RollupStageBadge';
 
 import * as cookies from 'client/shared/storage/cookies';
-
-import IconSvg from 'ui/shared/IconSvg';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import NavigationPromoBanner from '../promo-banner/NavigationPromoBanner';
 import useNavItems, { isGroupItem } from '../useNavItems';
@@ -115,7 +114,7 @@ const NavigationDesktop = () => {
         </Box>
       ) }
       <NavigationPromoBanner isCollapsed={ isCollapsed }/>
-      <IconSvg
+      <SpriteIcon
         name="arrows/east-mini"
         width={ 6 }
         height={ 6 }

@@ -5,8 +5,9 @@ import React from 'react';
 
 import type { EntityTag } from './types';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { Image } from 'toolkit/chakra/image';
-import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   data: EntityTag;
@@ -22,7 +23,7 @@ const EntityTagIcon = ({ data, noColors }: Props) => {
   }
 
   if (data.tagType === 'name') {
-    return <IconSvg name="publictags" boxSize={ 3 } color={ iconColor }/>;
+    return <SpriteIcon name="publictags" boxSize={ 3 } color={ iconColor }/>;
   }
 
   if (data.tagType === 'protocol' || data.tagType === 'generic') {

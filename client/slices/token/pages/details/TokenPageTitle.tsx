@@ -23,13 +23,14 @@ import { useMultichainContext } from 'client/features/multichain/context';
 import TokenVerifiedInfo from 'client/features/verified-tokens/pages/token/TokenVerifiedInfo';
 import TokenAddToWallet from 'client/features/web3-wallet/components/TokenAddToWallet';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import config from 'configs/app';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu';
 import EntityTags from 'ui/shared/EntityTags/EntityTags';
 import formatUserTags from 'ui/shared/EntityTags/formatUserTags';
 import sortEntityTags from 'ui/shared/EntityTags/sortEntityTags';
-import IconSvg from 'ui/shared/IconSvg';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 const PREDEFINED_TAG_PRIORITY = 100;
@@ -96,7 +97,7 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, verifiedInfoQuery, hash }: P
       { tokenQuery.data && <TokenEntity.Reputation value={ tokenQuery.data.reputation } ml={ 0 }/> }
       { verifiedInfoQuery.data?.tokenAddress && (
         <Tooltip content={ `Information on this token has been verified by ${ config.chain.name }` }>
-          <IconSvg name="certified" color="green.500" boxSize={ 6 } cursor="pointer"/>
+          <SpriteIcon name="certified" color="green.500" boxSize={ 6 } cursor="pointer"/>
         </Tooltip>
       ) }
       <EntityTags

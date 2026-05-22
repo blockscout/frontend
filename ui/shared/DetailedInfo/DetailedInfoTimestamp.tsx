@@ -7,13 +7,13 @@ import React from 'react';
 import { useSettingsContext } from 'client/shell/top-bar/settings/context';
 
 import dayjs from 'client/shared/date-and-time/dayjs';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { IconButton } from 'toolkit/chakra/icon-button';
 import type { SelectOption } from 'toolkit/chakra/select';
 import { SelectContent, SelectItem, SelectRoot, SelectControl } from 'toolkit/chakra/select';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
-import IconSvg from 'ui/shared/IconSvg';
 import TextSeparator from 'ui/shared/TextSeparator';
 
 const FORMAT_OPTIONS = [
@@ -88,7 +88,7 @@ const DetailedInfoTimestamp = ({ timestamp, isLoading, noRelativeTime, ...rest }
               selected={ !isLoading }
               loadingSkeleton={ isLoading }
             >
-              <IconSvg name="clock-light" boxSize="14px"/>
+              <SpriteIcon name="clock-light" boxSize="14px"/>
             </IconButton>
           </SelectControl>
           <SelectContent>

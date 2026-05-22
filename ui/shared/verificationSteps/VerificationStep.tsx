@@ -6,7 +6,7 @@ import React from 'react';
 
 import type { Step } from './types';
 
-import IconSvg from 'ui/shared/IconSvg';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 interface Props extends StackProps {
   step: Step;
@@ -26,9 +26,9 @@ const VerificationStep = ({ step, isLast, isPassed, isPending, noIcon, ...rest }
 
   return (
     <HStack gap={ 2 } color={ stepColor } minH={{ base: '30px', lg: '32px' }} { ...rest }>
-      { !noIcon && <IconSvg name={ isPassed ? 'verification-steps/finalized' : 'verification-steps/unfinalized' } boxSize={ 5 }/> }
+      { !noIcon && <SpriteIcon name={ isPassed ? 'verification-steps/finalized' : 'verification-steps/unfinalized' } boxSize={ 5 }/> }
       <Box color={ stepColor }>{ typeof step === 'string' ? step : step.content }</Box>
-      { !isLast && <IconSvg name="arrows/east" boxSize={ 5 }/> }
+      { !isLast && <SpriteIcon name="arrows/east" boxSize={ 5 }/> }
     </HStack>
   );
 };

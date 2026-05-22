@@ -6,6 +6,7 @@ import React from 'react';
 import HeaderAlert from 'client/shell/header/HeaderAlert';
 import HeaderDesktop from 'client/shell/header/HeaderDesktop';
 import HeaderMobile from 'client/shell/header/HeaderMobile';
+import * as Layout from 'client/shell/layout/components';
 
 import SearchResultsInput from 'client/slices/search/pages/search-results/SearchResultsInput';
 
@@ -18,7 +19,6 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import AppErrorBoundary from 'ui/shared/AppError/AppErrorBoundary';
-import * as Layout from 'ui/shared/layout/components';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 import SearchResultTabContent from './SearchResultTabContent';

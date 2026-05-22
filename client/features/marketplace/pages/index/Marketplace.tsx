@@ -11,6 +11,8 @@ import useGraphLinks from 'client/features/marketplace/hooks/useGraphLinks';
 
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import SpriteIcon from 'client/sprite/SpriteIcon';
+import type { IconName } from 'client/sprite/SpriteIcon';
 
 import config from 'configs/app';
 import { Heading } from 'toolkit/chakra/heading';
@@ -20,8 +22,6 @@ import { MenuContent, MenuItem, MenuRoot, MenuTrigger } from 'toolkit/chakra/men
 import AdaptiveTabs from 'toolkit/components/AdaptiveTabs/AdaptiveTabs';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import ActionBar from 'ui/shared/ActionBar';
-import IconSvg from 'ui/shared/IconSvg';
-import type { IconName } from 'ui/shared/IconSvg';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Sort from 'ui/shared/sort/Sort';
 
@@ -102,7 +102,7 @@ const Marketplace = () => {
 
     tabs.unshift({
       id: MarketplaceCategory.FAVORITES,
-      title: () => <IconSvg name="heart_filled" boxSize={ 5 }/>,
+      title: () => <SpriteIcon name="heart_filled" boxSize={ 5 }/>,
       count: favoriteApps.length,
       component: null,
     });
@@ -156,14 +156,14 @@ const Marketplace = () => {
                 size="md"
                 ml="auto"
               >
-                <IconSvg name="dots"/>
+                <SpriteIcon name="dots"/>
               </IconButton>
             </MenuTrigger>
             <MenuContent zIndex="banner">
               { links.map(({ label, href, icon }) => (
                 <MenuItem key={ label } value={ label } asChild>
                   <Link external href={ href } variant="menu" gap={ 0 }>
-                    <IconSvg name={ icon } boxSize={ 4 } mr={ 2 }/>
+                    <SpriteIcon name={ icon } boxSize={ 4 } mr={ 2 }/>
                     { label }
                   </Link>
                 </MenuItem>

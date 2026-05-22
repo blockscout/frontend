@@ -3,8 +3,9 @@
 import { Box, Flex, VStack } from '@chakra-ui/react';
 import React from 'react';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import FallbackBox from 'ui/shared/fallbacks/FallbackBox';
-import IconSvg from 'ui/shared/IconSvg';
 
 const LatestBlocksFallback = () => {
   return (
@@ -14,7 +15,7 @@ const LatestBlocksFallback = () => {
         { Array.from({ length: 2 }).map((_, index) => (
           <Box key={ index } width="100%" p={ 3 } borderRadius="md" border="1px solid" borderColor="border.divider">
             <Flex alignItems="center" w="100%">
-              <IconSvg name="block" boxSize={ 5 } color={{ _light: 'gray.300', _dark: 'whiteAlpha.300' }}/>
+              <SpriteIcon name="block" boxSize={ 5 } color={{ _light: 'gray.300', _dark: 'whiteAlpha.300' }}/>
               <FallbackBox w="100px" bgColor={{ _light: 'blue.50', _dark: 'blue.800' }} ml={ 2 }/>
               <FallbackBox w="50px" ml="auto"/>
             </Flex>

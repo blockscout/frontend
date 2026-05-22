@@ -5,10 +5,10 @@ import React, { useCallback, useState, useEffect } from 'react';
 import { keccak256, stringToBytes } from 'viem';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import config from 'configs/app';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import IconSvg from 'ui/shared/IconSvg';
 
 import NavigationPromoBannerContent from './NavigationPromoBannerContent';
 
@@ -95,7 +95,7 @@ const NavigationPromoBanner = ({ isCollapsed }: Props) => {
               isCollapsed={ isCollapsed }
               isHorizontalNavigation={ isHorizontalNavigation }
             />
-            <IconSvg
+            <SpriteIcon
               onClick={ handleClose }
               name="close"
               boxSize={ 3 }

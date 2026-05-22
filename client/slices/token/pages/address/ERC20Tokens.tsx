@@ -3,15 +3,15 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
+import type { PaginationParams } from 'client/shared/pagination/types';
 import type { AddressTokenBalance } from 'client/slices/address/types/api';
-import type { PaginationParams } from 'ui/shared/pagination/types';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import Pagination from 'client/shared/pagination/Pagination';
 
 import config from 'configs/app';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import Pagination from 'ui/shared/pagination/Pagination';
 
 import ERC20TokensListItem from './ERC20TokensListItem';
 import ERC20TokensTable from './ERC20TokensTable';

@@ -2,11 +2,11 @@
 
 import type { BlockQuery } from 'client/slices/block/hooks/useBlockQuery';
 
+import type { QueryWithPagesResult } from 'client/shared/pagination/useQueryWithPages';
+import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
 
 import config from 'configs/app';
-import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
 import { DEPOSIT } from '../../stubs/deposits';
 

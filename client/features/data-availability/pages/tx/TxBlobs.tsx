@@ -9,12 +9,12 @@ import type { TxQuery } from 'client/slices/tx/hooks/useTxQuery';
 
 import { TX_BLOB } from 'client/features/data-availability/stubs';
 
+import Pagination from 'client/shared/pagination/Pagination';
+import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
 
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import Pagination from 'ui/shared/pagination/Pagination';
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
 import TxBlobsList from './TxBlobsList';
 import TxBlobsTable from './TxBlobsTable';

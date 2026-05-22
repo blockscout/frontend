@@ -6,10 +6,11 @@ import React from 'react';
 
 import type { StepStatus } from './types';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import type { AccordionItemContentProps } from 'toolkit/chakra/accordion';
 import { AccordionItem, AccordionItemContent, AccordionItemTrigger, AccordionRoot } from 'toolkit/chakra/accordion';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import IconSvg from 'ui/shared/IconSvg';
 
 export const Root = (props: AccordionRootProps) => {
   return (
@@ -55,7 +56,7 @@ export const Trigger = ({ status, text, isFirst, isLast, isLoading, isDisabled }
         })();
         return (
           <HStack gap={ 2 } color={ color }>
-            <IconSvg name={ icon } boxSize={ 5 } isLoading={ isLoading }/>
+            <SpriteIcon name={ icon } boxSize={ 5 } isLoading={ isLoading }/>
             <Skeleton loading={ isLoading }>
               { text }
             </Skeleton>

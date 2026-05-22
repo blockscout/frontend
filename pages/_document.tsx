@@ -7,8 +7,9 @@ import React from 'react';
 import logRequestFromBot from 'nextjs/utils/logRequestFromBot';
 import * as serverTiming from 'nextjs/utils/serverTiming';
 
+import * as svgSprite from 'client/sprite/SpriteIcon';
+
 import config from 'configs/app';
-import * as svgSprite from 'ui/shared/IconSvg';
 
 const marketplaceFeature = config.features.marketplace;
 

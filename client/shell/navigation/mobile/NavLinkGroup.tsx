@@ -10,7 +10,7 @@ import React from 'react';
 
 import type { NavGroupItem } from '../types';
 
-import IconSvg from 'ui/shared/IconSvg';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import LightningLabel from '../LightningLabel';
 import NavLinkIcon from '../NavLinkIcon';
@@ -49,7 +49,7 @@ const NavLinkGroup = ({ item, onClick, isExpanded }: Props) => {
             </Text>
             { isHighlighted && (<LightningLabel iconColor={ item.isActive ? 'link.navigation.bg.selected' : 'link.navigation.bg' }/>) }
           </HStack>
-          <IconSvg name="arrows/east-mini" transform="rotate(180deg)" boxSize={ 6 }/>
+          <SpriteIcon name="arrows/east-mini" transform="rotate(180deg)" boxSize={ 6 }/>
         </Flex>
       </Box>
     </Box>

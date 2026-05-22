@@ -17,9 +17,9 @@ import { HOMEPAGE_STATS_MICROSERVICE } from 'client/features/chain-stats/stubs/h
 import { layerLabels } from 'client/features/rollup/common/utils/layer';
 
 import StatsWidget from 'client/shared/stats/StatsWidget';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import config from 'configs/app';
-import IconSvg from 'ui/shared/IconSvg';
 import { WEI } from 'ui/shared/value/utils';
 
 import LatestBatchStatsWidget from './LatestBatchStatsWidget';
@@ -86,7 +86,7 @@ const Stats = () => {
 
     const gasInfoTooltip = hasGasTracker && apiData?.gas_prices && apiData.gas_prices.average ? (
       <GasInfoTooltip data={ apiData } dataUpdatedAt={ apiQuery.dataUpdatedAt }>
-        <IconSvg
+        <SpriteIcon
           isLoading={ isLoading }
           name="info"
           boxSize={ 5 }

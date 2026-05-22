@@ -6,10 +6,11 @@ import React from 'react';
 
 import type { PaginationParams } from './types';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { Button } from 'toolkit/chakra/button';
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import IconSvg from 'ui/shared/IconSvg';
 
 interface Props extends PaginationParams, Omit<HTMLChakraProps<'div'>, 'page' | 'direction'> {}
 
@@ -46,7 +47,7 @@ const Pagination = (props: Props) => {
         disabled={ !canGoBackwards || isLoading || page === 1 }
         loadingSkeleton={ showSkeleton }
       >
-        <IconSvg name="arrows/east-mini" boxSize={ 5 }/>
+        <SpriteIcon name="arrows/east-mini" boxSize={ 5 }/>
       </IconButton>
       <Button
         variant="pagination"
@@ -68,7 +69,7 @@ const Pagination = (props: Props) => {
         disabled={ !hasNextPage || isLoading }
         loadingSkeleton={ showSkeleton }
       >
-        <IconSvg name="arrows/east-mini" boxSize={ 5 } transform="rotate(180deg)"/>
+        <SpriteIcon name="arrows/east-mini" boxSize={ 5 } transform="rotate(180deg)"/>
       </IconButton>
     </Flex>
 

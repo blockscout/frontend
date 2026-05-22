@@ -9,13 +9,13 @@ import BeaconChainWithdrawalsTable from 'client/features/chain-variants/beacon-c
 import { WITHDRAWAL } from 'client/features/chain-variants/beacon-chain/stubs/withdrawals';
 
 import useIsMounted from 'client/shared/hooks/useIsMounted';
+import Pagination from 'client/shared/pagination/Pagination';
+import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import Pagination from 'ui/shared/pagination/Pagination';
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
 type Props = {
   shouldRender?: boolean;

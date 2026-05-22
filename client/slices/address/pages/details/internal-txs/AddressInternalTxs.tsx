@@ -9,10 +9,10 @@ import InternalTxsTable from 'client/slices/internal-tx/components/InternalTxsTa
 import CsvExport from 'client/features/csv-export/components/CsvExport';
 
 import useIsMounted from 'client/shared/hooks/useIsMounted';
+import Pagination from 'client/shared/pagination/Pagination';
 
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import Pagination from 'ui/shared/pagination/Pagination';
 
 import AddressTxsFilter from '../txs/AddressTxsFilter';
 import useAddressInternalTxsQuery from './useAddressInternalTxsQuery';

@@ -5,11 +5,11 @@ import React from 'react';
 
 import useIsInitialLoading from 'client/shared/hooks/useIsInitialLoading';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { IconButton } from 'toolkit/chakra/icon-button';
 import type { SelectRootProps } from 'toolkit/chakra/select';
 import { SelectContent, SelectItem, SelectRoot, SelectControl, SelectValueText } from 'toolkit/chakra/select';
-import IconSvg from 'ui/shared/IconSvg';
 
 export interface Props extends SelectRootProps {
   isLoading?: boolean;
@@ -31,7 +31,7 @@ const Sort = (props: Props) => {
             variant="dropdown"
             disabled={ isLoading }
           >
-            <IconSvg name="arrows/up-down"/>
+            <SpriteIcon name="arrows/up-down"/>
           </IconButton>
         </SelectControl>
       );

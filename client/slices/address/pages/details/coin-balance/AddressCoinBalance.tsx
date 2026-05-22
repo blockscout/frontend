@@ -14,10 +14,10 @@ import useSocketMessage from 'client/api/socket/useSocketMessage';
 import { ADDRESS_COIN_BALANCE } from 'client/slices/address/stubs/address';
 
 import useIsMounted from 'client/shared/hooks/useIsMounted';
+import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import SocketAlert from 'ui/shared/SocketAlert';
 
 import AddressCoinBalanceChart from './AddressCoinBalanceChart';

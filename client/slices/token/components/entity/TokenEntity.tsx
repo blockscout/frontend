@@ -12,6 +12,8 @@ import TokenIconPlaceholder from 'client/slices/token/components/icon/TokenIconP
 
 import { useMultichainContext } from 'client/features/multichain/context';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
@@ -19,7 +21,6 @@ import { TruncatedTextTooltip } from 'toolkit/components/truncation/TruncatedTex
 import * as EntityBase from 'ui/shared/entities/base/components';
 import { distributeEntityProps, getIconProps } from 'ui/shared/entities/base/utils';
 import getChainTooltipText from 'ui/shared/externalChains/getChainTooltipText';
-import IconSvg from 'ui/shared/IconSvg';
 
 type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'token'>;
 
@@ -149,7 +150,7 @@ const Reputation = ({ value, ...rest }: ReputationProps) => {
   if (config.UI.views.token.hideScamTokensEnabled && value === 'scam') {
     return (
       <Tooltip content="This token has been flagged as a potential scam. You enabled the display of flagged tokens in the explorer — proceed with caution.">
-        <IconSvg name="scam" boxSize={ 5 } ml={ 2 } { ...rest }/>
+        <SpriteIcon name="scam" boxSize={ 5 } ml={ 2 } { ...rest }/>
       </Tooltip>
     );
   }

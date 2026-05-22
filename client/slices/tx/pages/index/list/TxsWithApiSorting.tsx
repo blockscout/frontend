@@ -6,7 +6,8 @@ import type { AddressFromToFilter } from 'client/slices/address/types/api';
 import type { TransactionsSortingValue } from 'client/slices/tx/types/api';
 import type { TxsSocketType } from 'client/slices/tx/types/socket';
 
-import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
+import type { QueryWithPagesResult } from 'client/shared/pagination/useQueryWithPages';
+
 import getSortParamsFromValue from 'ui/shared/sort/getSortParamsFromValue';
 
 import TxsContent from './TxsContent';

@@ -12,6 +12,7 @@ import useAddChainClick from 'client/features/web3-wallet/hooks/useAddChainClick
 import useProvider from 'client/features/web3-wallet/hooks/useProvider';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { Heading } from 'toolkit/chakra/heading';
 import { IconButton } from 'toolkit/chakra/icon-button';
@@ -20,7 +21,6 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import ChainIcon from 'ui/shared/externalChains/ChainIcon';
-import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   data: ClusterChainConfig;
@@ -121,7 +121,7 @@ const ChainWidget = ({ data, isLoading, metrics }: Props) => {
               bgColor={{ _light: 'blackAlpha.50', _dark: 'whiteAlpha.50' }}
               loadingSkeleton={ isLoading }
             >
-              <IconSvg name={ walletIcon } boxSize={ 5 }/>
+              <SpriteIcon name={ walletIcon } boxSize={ 5 }/>
             </IconButton>
           </Tooltip>
         ) }

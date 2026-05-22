@@ -2,8 +2,9 @@
 
 import React from 'react';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { IconButton } from 'toolkit/chakra/icon-button';
-import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   value: boolean;
@@ -20,7 +21,7 @@ const TableViewToggleButton = ({ value, onClick, loading }: Props) => {
       selected={ !value }
       loadingSkeleton={ loading }
     >
-      <IconSvg name="list_view"/>
+      <SpriteIcon name="list_view"/>
     </IconButton>
   );
 };

@@ -9,6 +9,7 @@ import AddressEntity from 'client/slices/address/components/entity/AddressEntity
 
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 import { useRollbar } from 'client/shared/monitoring/rollbar';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { Alert } from 'toolkit/chakra/alert';
 import { DialogBody, DialogContent, DialogHeader, DialogRoot } from 'toolkit/chakra/dialog';
@@ -16,7 +17,6 @@ import { IconButton } from 'toolkit/chakra/icon-button';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
-import IconSvg from 'ui/shared/IconSvg';
 
 const SVG_OPTIONS = {
   margin: 0,
@@ -69,7 +69,7 @@ const AddressQrCode = ({ hash, className, isLoading }: Props) => {
           size="md"
           onClick={ onOpen }
         >
-          <IconSvg name="qr_code"/>
+          <SpriteIcon name="qr_code"/>
         </IconButton>
       </Tooltip>
 

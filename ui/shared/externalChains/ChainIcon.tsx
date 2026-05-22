@@ -4,11 +4,12 @@ import React from 'react';
 
 import type { ExternalChain } from 'client/shared/external-chains/types';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import type { ImageProps } from 'toolkit/chakra/image';
 import { Image } from 'toolkit/chakra/image';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import IconSvg from 'ui/shared/IconSvg';
 
 import getChainTooltipText from './getChainTooltipText';
 
@@ -23,7 +24,7 @@ const ChainIcon = ({ data, boxSize = 5, borderRadius = 'none', isLoading, noTool
     return <Skeleton boxSize={ boxSize } borderRadius={ borderRadius === 'none' ? 'full' : borderRadius } { ...rest } loading/>;
   }
 
-  const placeholder = <IconSvg name="networks/icon-placeholder" boxSize={ boxSize } color="icon.primary"/>;
+  const placeholder = <SpriteIcon name="networks/icon-placeholder" boxSize={ boxSize } color="icon.primary"/>;
   const content = (
     <Image
       src={ data?.logo }

@@ -8,6 +8,7 @@ import type { SmartContractExternalLibrary } from 'client/slices/contract/types/
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { Alert } from 'toolkit/chakra/alert';
 import { Button } from 'toolkit/chakra/button';
@@ -17,7 +18,6 @@ import { PopoverRoot, PopoverBody, PopoverContent, PopoverTrigger } from 'toolki
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import { apos } from 'toolkit/utils/htmlEntities';
-import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   className?: string;
@@ -65,8 +65,8 @@ const ContractExternalLibraries = ({ className, data, isLoading }: Props) => {
       aria-label="View external libraries"
     >
       <span>{ data.length } { data.length > 1 ? 'Libraries' : 'Library' } </span>
-      <IconSvg name="status/warning" boxSize={ 5 } color="orange.400" ml="2px"/>
-      <IconSvg name="arrows/east-mini" transform={ open ? 'rotate(90deg)' : 'rotate(-90deg)' } transitionDuration="faster" boxSize={ 5 } ml={ 2 }/>
+      <SpriteIcon name="status/warning" boxSize={ 5 } color="orange.400" ml="2px"/>
+      <SpriteIcon name="arrows/east-mini" transform={ open ? 'rotate(90deg)' : 'rotate(-90deg)' } transitionDuration="faster" boxSize={ 5 } ml={ 2 }/>
     </Button>
   );
 

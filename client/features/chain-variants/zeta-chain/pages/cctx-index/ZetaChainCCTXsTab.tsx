@@ -17,13 +17,13 @@ import { ZETA_CHAIN_CCTX_LIST_ITEM } from 'client/features/chain-variants/zeta-c
 
 import dayjs from 'client/shared/date-and-time/dayjs';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import Pagination from 'client/shared/pagination/Pagination';
+import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import getFilterValueFromQuery from 'client/shared/router/get-filter-value-from-query';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import getValuesArrayFromQuery from 'client/shared/router/get-values-array-from-query';
 
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import Pagination from 'ui/shared/pagination/Pagination';
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
 import ZetaChainCCTxs from './ZetaChainCCTxs';
 import ZetaChainCCTXsStats from './ZetaChainCCTXsStats';

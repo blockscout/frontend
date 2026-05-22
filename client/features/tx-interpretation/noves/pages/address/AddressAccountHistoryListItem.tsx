@@ -7,10 +7,11 @@ import type { NovesResponseData } from 'client/features/tx-interpretation/noves/
 
 import NovesFromTo from 'client/features/tx-interpretation/noves/components/NovesFromTo';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { SECOND } from 'toolkit/utils/consts';
-import IconSvg from 'ui/shared/IconSvg';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
@@ -33,7 +34,7 @@ const AddressAccountHistoryListItem = (props: Props) => {
       <Skeleton borderRadius="sm" loading={ props.isPlaceholderData } w="full">
         <Flex justifyContent="space-between" w="full">
           <Flex columnGap={ 2 }>
-            <IconSvg
+            <SpriteIcon
               name="lightning"
               height="5"
               width="5"

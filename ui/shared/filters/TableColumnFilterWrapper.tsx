@@ -3,9 +3,10 @@
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { Button } from 'toolkit/chakra/button';
 import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
-import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   columnName: string;
@@ -35,7 +36,7 @@ const TableColumnFilterWrapper = ({ columnName, className, children, isLoading, 
           fontWeight={ 500 }
           padding={ 0 }
         >
-          <IconSvg name="filter" w="19px" h="19px"/>
+          <SpriteIcon name="filter" w="19px" h="19px"/>
           { Boolean(value) && <chakra.span>{ value }</chakra.span> }
         </Button>
       </PopoverTrigger>

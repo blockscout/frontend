@@ -5,10 +5,11 @@ import React from 'react';
 
 import type { TokensSortingValue } from 'client/slices/token/types/api';
 
+import type { QueryWithPagesResult } from 'client/shared/pagination/useQueryWithPages';
+
 import type { OnValueChangeHandler } from 'toolkit/chakra/select';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
 
 import TokensListItem from './TokensListItem';
 import TokensTable from './TokensTable';

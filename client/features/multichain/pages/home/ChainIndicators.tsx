@@ -16,7 +16,7 @@ import { isIndicatorEnabled, sortIndicators } from 'client/slices/home/utils/ind
 import NativeTokenIcon from 'client/features/multichain/components/NativeTokenIcon';
 import { HOMEPAGE_STATS } from 'client/features/multichain/stubs';
 
-import IconSvg from 'ui/shared/IconSvg';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import useFetchParentChainApi from '../../hooks/useFetchParentChainApi';
 import useChartDataQuery from './useChartDataQuery';
@@ -58,7 +58,7 @@ const ChainIndicators = () => {
         return undefined;
       })(),
       // FIXME use non-navigation icon
-      icon: <IconSvg name="navigation/transactions" boxSize={ 6 } bgColor="#56ACD1" borderRadius="base" color="white"/>,
+      icon: <SpriteIcon name="navigation/transactions" boxSize={ 6 } bgColor="#56ACD1" borderRadius="base" color="white"/>,
       hint: (() => {
         if (statsQuery.data.new_txns_multichain_window?.info) {
           return statsQuery.data.new_txns_multichain_window.info.description;
@@ -88,7 +88,7 @@ const ChainIndicators = () => {
         }
         return '$N/A';
       })(),
-      icon: <IconSvg name="globe" boxSize={ 6 } bgColor="#6A5DCC" borderRadius="base" color="white"/>,
+      icon: <SpriteIcon name="globe" boxSize={ 6 } bgColor="#6A5DCC" borderRadius="base" color="white"/>,
       // eslint-disable-next-line max-len
       hint: 'The total market value of a cryptocurrency\'s circulating supply. It is analogous to the free-float capitalization in the stock market. Market Cap = Current Price x Circulating Supply.',
     },

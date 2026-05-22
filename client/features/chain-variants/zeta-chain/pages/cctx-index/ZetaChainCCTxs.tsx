@@ -7,7 +7,7 @@ import React from 'react';
 import { CctxStatusReduced, type CctxListItem, type ListCctxsResponse } from '@blockscout/zetachain-cctx-types';
 import type { SocketMessage } from 'client/api/socket/types';
 import type { ZetaChainCCTXFilterParams } from 'client/features/chain-variants/zeta-chain/types/client';
-import type { PaginationParams } from 'ui/shared/pagination/types';
+import type { PaginationParams } from 'client/shared/pagination/types';
 
 import { getResourceKey } from 'client/api/hooks/useApiQuery';
 import useSocketChannel from 'client/api/socket/useSocketChannel';
@@ -15,10 +15,10 @@ import useSocketMessage from 'client/api/socket/useSocketMessage';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import useInitialList from 'client/shared/lists/useInitialList';
+import Pagination from 'client/shared/pagination/Pagination';
 
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import Pagination from 'ui/shared/pagination/Pagination';
 import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 
 import ZetaChainCCTxsListItem from './ZetaChainCCTXListItem';

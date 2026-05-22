@@ -10,11 +10,10 @@ import { useAppContext } from 'client/shell/app/context';
 
 import { ADDRESS_COLLECTION, ADDRESS_NFT_1155 } from 'client/slices/address/stubs/address';
 
+import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
 import getFilterValuesFromQuery from 'client/shared/router/get-filter-values-from-query';
 import * as cookies from 'client/shared/storage/cookies';
-
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
 const getTokenFilterValue: (type: string | Array<string> | undefined) => Array<NFTTokenType> | undefined =
 (getFilterValuesFromQuery<NFTTokenType>).bind(null, NFT_TOKEN_TYPE_IDS);

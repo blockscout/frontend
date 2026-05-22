@@ -17,13 +17,12 @@ import { TX } from 'client/slices/tx/stubs/tx';
 import { publicClient } from 'client/features/connect-wallet/utils/public-client';
 
 import dayjs from 'client/shared/date-and-time/dayjs';
-import { generateListStub } from 'client/shared/pagination/utils';
+import type { QueryWithPagesResult } from 'client/shared/pagination/useQueryWithPages';
+import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
+import { generateListStub, emptyPagination } from 'client/shared/pagination/utils';
 import hexToDecimal from 'client/shared/transformers/hex-to-decimal';
 
 import { SECOND } from 'toolkit/utils/consts';
-import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
-import { emptyPagination } from 'ui/shared/pagination/utils';
 
 import type { BlockQuery } from './useBlockQuery';
 

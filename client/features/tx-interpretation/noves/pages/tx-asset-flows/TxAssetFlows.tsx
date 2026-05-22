@@ -4,7 +4,7 @@ import { Box, Text } from '@chakra-ui/react';
 import { chunk } from 'es-toolkit';
 import React, { useMemo, useState } from 'react';
 
-import type { PaginationParams } from 'ui/shared/pagination/types';
+import type { PaginationParams } from 'client/shared/pagination/types';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
@@ -12,11 +12,12 @@ import AddressEntity from 'client/slices/address/components/entity/AddressEntity
 
 import { NOVES_TRANSLATE } from 'client/features/tx-interpretation/noves/stubs';
 
+import Pagination from 'client/shared/pagination/Pagination';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import Pagination from 'ui/shared/pagination/Pagination';
 
 import { generateFlowViewData } from '../../utils/generateFlowViewData';
 import TxAssetFlowsListItem from './TxAssetFlowsListItem';

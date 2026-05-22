@@ -13,9 +13,10 @@ import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 import { useClipboard } from 'toolkit/hooks/useClipboard';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import type { IconName } from 'ui/shared/IconSvg';
-import IconSvg from 'ui/shared/IconSvg';
 import PageTitle from 'ui/shared/Page/PageTitle';
+
+import type { IconName } from '../SpriteIcon';
+import SpriteIcon from '../SpriteIcon';
 
 const formatFileSize = (fileSizeInBytes: number) => `${ (fileSizeInBytes / 1_024).toFixed(2) } Kb`;
 
@@ -47,7 +48,7 @@ const Item = ({ name, file_size: fileSize, bgColor }: IconInfo & HTMLChakraProps
       onClick={ copy }
       cursor="pointer"
     >
-      <IconSvg name={ name.replace('.svg', '') as IconName } boxSize="100px" bgColor={ bgColor } borderRadius="base"/>
+      <SpriteIcon name={ name.replace('.svg', '') as IconName } boxSize="100px" bgColor={ bgColor } borderRadius="base"/>
       <Tooltip content={ copied ? 'Copied' : 'Copy to clipboard' } open={ copied }>
         <Box fontWeight={ 500 } mt={ 2 }>{ name }</Box>
       </Tooltip>

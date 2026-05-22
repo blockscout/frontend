@@ -5,8 +5,9 @@ import React from 'react';
 
 import type { ItemProps } from '../types';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { MenuItem } from 'toolkit/chakra/menu';
-import IconSvg from 'ui/shared/IconSvg';
 
 import ButtonItem from '../parts/ButtonItem';
 
@@ -26,7 +27,7 @@ const PublicTagMenuItem = ({ hash, type }: ItemProps) => {
       return (
         <MenuItem onClick={ handleClick } value="add-public-tag">
           { /* FIXME use non-navigation icon */ }
-          <IconSvg name="navigation/public_tags" boxSize={ 6 }/>
+          <SpriteIcon name="navigation/public_tags" boxSize={ 6 }/>
           <span>Add public tag</span>
         </MenuItem>
       );

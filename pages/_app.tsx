@@ -18,6 +18,7 @@ import useQueryClientConfig from 'client/api/hooks/useQueryClientConfig';
 import { SocketProvider } from 'client/api/socket/context';
 
 import { AppContextProvider } from 'client/shell/app/context';
+import Layout from 'client/shell/layout/Layout';
 import { SettingsContextProvider } from 'client/shell/top-bar/settings/context';
 
 import Web3Provider from 'client/features/connect-wallet/components/Web3Provider';
@@ -35,7 +36,6 @@ import { Provider as ChakraProvider } from 'toolkit/chakra/provider';
 import { Toaster } from 'toolkit/chakra/toaster';
 import AppErrorBoundary from 'ui/shared/AppError/AppErrorBoundary';
 import AppErrorGlobalContainer from 'ui/shared/AppError/AppErrorGlobalContainer';
-import Layout from 'ui/shared/layout/Layout';
 
 const RewardsContextProvider = dynamic(() => import('client/features/rewards/context').then(module => module.RewardsContextProvider), { ssr: false });
 const RewardsLoginModal = dynamic(() => import('client/features/rewards/components/login/RewardsLoginModal'), { ssr: false });

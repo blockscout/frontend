@@ -3,11 +3,11 @@
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { Link } from 'toolkit/chakra/link';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-
-import IconSvg from '../IconSvg';
 
 interface Props {
   className?: string;
@@ -28,7 +28,7 @@ const LinkNewTab = ({ className, label, href }: Props) => {
         borderRadius={ 0 }
       >
         <Link href={ href } external noIcon>
-          <IconSvg name="open-link"/>
+          <SpriteIcon name="open-link"/>
         </Link>
       </IconButton>
     </Tooltip>

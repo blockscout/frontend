@@ -19,6 +19,7 @@ import BridgedTokensIndex from 'client/features/cross-chain-txs/pages/bridged-to
 import { BRIDGED_TOKENS_SORT_COLLECTION } from 'client/features/cross-chain-txs/utils/bridged-tokens-sort';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import Pagination from 'client/shared/pagination/Pagination';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import config from 'configs/app';
@@ -28,7 +29,6 @@ import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import ActionBar from 'ui/shared/ActionBar';
 import PopoverFilter from 'ui/shared/filters/PopoverFilter';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import Pagination from 'ui/shared/pagination/Pagination';
 import Sort from 'ui/shared/sort/Sort';
 
 const TAB_LIST_PROPS = {

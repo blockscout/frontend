@@ -7,15 +7,15 @@ import type { ExternalChain } from 'client/shared/external-chains/types';
 
 import useIsInitialLoading from 'client/shared/hooks/useIsInitialLoading';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import type { OnValueChangeHandler, SelectOption, SelectProps, ViewMode } from 'toolkit/chakra/select';
 import { Select } from 'toolkit/chakra/select';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
-import IconSvg from 'ui/shared/IconSvg';
 
 import ChainIcon from './ChainIcon';
 
-const CHAIN_ICON = <IconSvg name="pie_chart" boxSize={ 5 }/>;
+const CHAIN_ICON = <SpriteIcon name="pie_chart" boxSize={ 5 }/>;
 
 const MULTIPLE_CONFIG = {
   term: 'chains',

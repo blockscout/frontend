@@ -6,8 +6,9 @@ import React from 'react';
 
 import type { FileTree } from './types';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { AccordionItem, AccordionItemContent, AccordionItemTrigger, AccordionRoot } from 'toolkit/chakra/accordion';
-import IconSvg from 'ui/shared/IconSvg';
 
 import CodeEditorFileIcon from './CodeEditorFileIcon';
 import CodeEditorMainFileIndicator from './CodeEditorMainFileIndicator';
@@ -69,7 +70,7 @@ const CodeEditorFileTree = ({ tree, level = 0, onItemClick, isCollapsed, selecte
                     boxSize="16px"
                     mr="2px"
                   />
-                  <IconSvg
+                  <SpriteIcon
                     name={ isExpanded ? 'monaco/folder-open' : 'monaco/folder' }
                     boxSize="16px"
                     mr="4px"

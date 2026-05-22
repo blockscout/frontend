@@ -28,6 +28,7 @@ import * as UserOpEntity from 'client/features/user-ops/components/entity/UserOp
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 import dayjs from 'client/shared/date-and-time/dayjs';
 import highlightText from 'client/shared/text/highlight-text';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { useColorMode } from 'toolkit/chakra/color-mode';
 import { Image } from 'toolkit/chakra/image';
@@ -37,7 +38,6 @@ import { Tag } from 'toolkit/chakra/tag';
 import { SECOND } from 'toolkit/utils/consts';
 import { ADDRESS_REGEXP } from 'toolkit/utils/regexp';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
-import IconSvg from 'ui/shared/IconSvg';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import Time from 'ui/shared/time/Time';
 
@@ -88,7 +88,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading, addressFormat }: Pr
               />
             </Link>
             { data.certified && <ContractCertifiedLabel iconSize={ 4 } boxSize={ 4 } ml={ 1 }/> }
-            { data.is_verified_via_admin_panel && !data.certified && <IconSvg name="certified" boxSize={ 4 } ml={ 1 } color="green.500"/> }
+            { data.is_verified_via_admin_panel && !data.certified && <SpriteIcon name="certified" boxSize={ 4 } ml={ 1 } color="green.500"/> }
             { data.reputation && <TokenEntity.Reputation value={ data.reputation }/> }
           </Flex>
         );
@@ -134,7 +134,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading, addressFormat }: Pr
       case 'label': {
         return (
           <Flex alignItems="center">
-            <IconSvg name="publictags" boxSize={ 6 } mr={ 2 } color="icon.primary"/>
+            <SpriteIcon name="publictags" boxSize={ 6 } mr={ 2 } color="icon.primary"/>
             <Link
               href={ route({ pathname: '/address/[hash]', query: { hash: data.address_hash } }) }
               fontWeight={ 700 }
@@ -227,7 +227,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading, addressFormat }: Pr
       case 'zetaChainCCTX': {
         return (
           <TxEntity.Container>
-            <IconSvg name="interop" boxSize={ 5 } marginRight={ 1 } color="text.secondary"/>
+            <SpriteIcon name="interop" boxSize={ 5 } marginRight={ 1 } color="text.secondary"/>
             <TxEntity.Link
               isLoading={ isLoading }
               hash={ data.cctx.index }
@@ -348,7 +348,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading, addressFormat }: Pr
               <Text whiteSpace="nowrap" overflow="hidden">
                 <HashStringShortenDynamic hash={ hash } noTooltip/>
               </Text>
-              { data.is_smart_contract_verified && <IconSvg name="status/success" boxSize="14px" color="green.500" ml={ 1 } flexShrink={ 0 }/> }
+              { data.is_smart_contract_verified && <SpriteIcon name="status/success" boxSize="14px" color="green.500" ml={ 1 } flexShrink={ 0 }/> }
             </Skeleton>
             <Skeleton loading={ isLoading } overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis" fontWeight={ 700 }>
               { data.token_type === 'ERC-20' && data.exchange_rate && `$${ Number(data.exchange_rate).toLocaleString() }` }
@@ -405,7 +405,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading, addressFormat }: Pr
             <Box overflow="hidden">
               <HashStringShortenDynamic hash={ hash }/>
             </Box>
-            { data.is_smart_contract_verified && <IconSvg name="status/success" boxSize="14px" color="green.500" ml={ 1 } flexShrink={ 0 }/> }
+            { data.is_smart_contract_verified && <SpriteIcon name="status/success" boxSize="14px" color="green.500" ml={ 1 } flexShrink={ 0 }/> }
           </Flex>
         );
       }

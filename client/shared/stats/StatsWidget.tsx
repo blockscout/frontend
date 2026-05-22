@@ -6,11 +6,13 @@ import React from 'react';
 import type { Route } from 'nextjs-routes';
 import { route } from 'nextjs-routes';
 
+import type { IconName } from 'client/sprite/SpriteIcon';
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Hint } from 'toolkit/components/Hint/Hint';
 import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
-import IconSvg, { type IconName } from 'ui/shared/IconSvg';
 
 export type Props = {
   className?: string;
@@ -72,7 +74,7 @@ const StatsWidget = ({
         h="100%"
       >
         { icon && (
-          <IconSvg
+          <SpriteIcon
             name={ icon }
             p={ 2 }
             boxSize="40px"

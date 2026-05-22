@@ -6,8 +6,9 @@ import React from 'react';
 import InternalTxsList from 'client/slices/internal-tx/components/InternalTxsList';
 import InternalTxsTable from 'client/slices/internal-tx/components/InternalTxsTable';
 
+import type { QueryWithPagesResult } from 'client/shared/pagination/useQueryWithPages';
+
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
 
 interface Props {
   query: QueryWithPagesResult<'general:block_internal_txs'>;

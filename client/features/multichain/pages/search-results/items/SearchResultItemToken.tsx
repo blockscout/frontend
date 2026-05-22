@@ -15,9 +15,9 @@ import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 import * as contract from 'client/features/multichain/utils/contract';
 
 import shortenString from 'client/shared/text/shorten-string';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
-import IconSvg from 'ui/shared/IconSvg';
 
 import SearchResultListItem from '../SearchResultListItem';
 
@@ -65,7 +65,7 @@ const SearchResultItemToken = ({ data, chain, isMobile }: Props) => {
             <HashStringShortenDynamic hash={ data.address_hash }/>
           ) }
         </Box>
-        { isVerified && <IconSvg name="status/success" boxSize="14px" color="green.500" ml={ 1 } flexShrink={ 0 }/> }
+        { isVerified && <SpriteIcon name="status/success" boxSize="14px" color="green.500" ml={ 1 } flexShrink={ 0 }/> }
         <Text
           overflow="hidden"
           whiteSpace="nowrap"

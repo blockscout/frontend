@@ -5,10 +5,11 @@ import React from 'react';
 
 import type { GetInstancesResponse } from '@blockscout/points-types';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { DialogBody, DialogContent, DialogRoot, DialogHeader } from 'toolkit/chakra/dialog';
 import { Image } from 'toolkit/chakra/image';
 import { Link } from 'toolkit/chakra/link';
-import IconSvg from 'ui/shared/IconSvg';
 
 type Props = {
   isOpen: boolean;
@@ -59,7 +60,7 @@ const RewardsInstancesModal = ({ isOpen, onClose, items }: Props) => {
                     boxSize={ 5 }
                     flexShrink={ 0 }
                     fallback={ (
-                      <IconSvg
+                      <SpriteIcon
                         name="networks/icon-placeholder"
                         color="icon.primary"
                       />

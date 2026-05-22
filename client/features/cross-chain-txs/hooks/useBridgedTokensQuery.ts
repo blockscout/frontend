@@ -8,12 +8,12 @@ import type { CrossChainBridgedTokensSorting, CrossChainBridgedTokensSortingFiel
 import { INTERCHAIN_BRIDGED_TOKEN_ITEM } from 'client/features/cross-chain-txs/stubs/messages';
 
 import useDebounce from 'client/shared/hooks/useDebounce';
+import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import config from 'configs/app';
 import type { OnValueChangeHandler } from 'toolkit/chakra/select';
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import getSortParamsFromValue from 'ui/shared/sort/getSortParamsFromValue';
 import getSortValueFromQuery from 'ui/shared/sort/getSortValueFromQuery';
 

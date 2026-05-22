@@ -10,10 +10,11 @@ import { getTokenTypeName } from 'client/slices/token/utils/token-types';
 import type { Sort } from 'client/slices/token/pages/address/utils';
 import { getSortingFn, sortTokenGroups } from 'client/slices/token/pages/address/utils';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { Link } from 'toolkit/chakra/link';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import { thinsp } from 'toolkit/utils/htmlEntities';
-import IconSvg from 'ui/shared/IconSvg';
 
 import TokenSelectItem from './TokenSelectItem';
 
@@ -61,7 +62,7 @@ const TokenSelectMenu = ({ getSort, filteredData, onInputChange, onSortClick, se
                 </Text>
                 { hasSort && (
                   <Link data-type={ type } onClick={ onSortClick } aria-label={ `Sort ${ getTokenTypeName(type) } tokens` }>
-                    <IconSvg name="arrows/east" boxSize={ 5 } transform={ arrowTransform } transitionDuration="faster"/>
+                    <SpriteIcon name="arrows/east" boxSize={ 5 } transform={ arrowTransform } transitionDuration="faster"/>
                   </Link>
                 ) }
               </Flex>

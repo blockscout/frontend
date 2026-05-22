@@ -3,10 +3,11 @@
 import { Box, chakra, Flex } from '@chakra-ui/react';
 import React from 'react';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   className?: string;
@@ -47,7 +48,7 @@ const PrevNext = ({ className, onClick, prevLabel, nextLabel, isPrevDisabled, is
           onClick={ handelPrevClick }
           disabled={ isPrevDisabled }
         >
-          <IconSvg name="arrows/east-mini"/>
+          <SpriteIcon name="arrows/east-mini"/>
         </IconButton>
       </Tooltip>
       <Tooltip content={ nextLabel }>
@@ -60,7 +61,7 @@ const PrevNext = ({ className, onClick, prevLabel, nextLabel, isPrevDisabled, is
           onClick={ handelNextClick }
           disabled={ isNextDisabled }
         >
-          <IconSvg name="arrows/east-mini" transform="rotate(180deg)"/>
+          <SpriteIcon name="arrows/east-mini" transform="rotate(180deg)"/>
         </IconButton>
       </Tooltip>
     </Box>

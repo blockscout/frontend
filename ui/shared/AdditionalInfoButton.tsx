@@ -3,8 +3,9 @@
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { IconButton } from 'toolkit/chakra/icon-button';
-import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   loading?: boolean;
@@ -28,7 +29,7 @@ const AdditionalInfoButton = (props: Props, ref: React.ForwardedRef<HTMLButtonEl
       loadingSkeleton={ loading }
       { ...rest }
     >
-      <IconSvg name="info" boxSize={ 5 }/>
+      <SpriteIcon name="info" boxSize={ 5 }/>
     </IconButton>
   );
 };

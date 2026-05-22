@@ -9,9 +9,10 @@ import { route } from 'nextjs/routes';
 
 import SearchBarSuggestItemLink from 'client/slices/search/components/search-bar/SearchBarSuggest/SearchBarSuggestItemLink';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { SECOND } from 'toolkit/utils/consts';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
-import IconSvg from 'ui/shared/IconSvg';
 import Time from 'ui/shared/time/Time';
 
 interface Props {
@@ -22,7 +23,7 @@ interface Props {
 }
 
 const SearchBarSuggestZetaChainCCTX = ({ data, isMobile, searchTerm, onClick }: Props) => {
-  const icon = <IconSvg name="interop" boxSize={ 5 } marginRight={ 1 } color="text.secondary"/>;
+  const icon = <SpriteIcon name="interop" boxSize={ 5 } marginRight={ 1 } color="text.secondary"/>;
 
   // search term can be either cctx hash or observed hash (hash from another chain)
   const hash = (

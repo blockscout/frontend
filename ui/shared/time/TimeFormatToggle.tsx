@@ -7,10 +7,10 @@ import React from 'react';
 import { useSettingsContext } from 'client/shell/top-bar/settings/context';
 
 import * as mixpanel from 'client/shared/analytics/mixpanel';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import IconSvg from 'ui/shared/IconSvg';
 
 interface Props extends StackProps {}
 
@@ -43,7 +43,7 @@ const TimeFormatToggle = (props: Props) => {
           borderRadius="sm"
           verticalAlign="bottom"
         >
-          <IconSvg name="clock-light" boxSize="14px"/>
+          <SpriteIcon name="clock-light" boxSize="14px"/>
         </IconButton>
       </Tooltip>
       { text }

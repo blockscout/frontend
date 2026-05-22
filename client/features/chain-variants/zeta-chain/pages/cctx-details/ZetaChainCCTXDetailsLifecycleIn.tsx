@@ -14,9 +14,10 @@ import TxEntityZetaChainExternal from 'client/features/chain-variants/zeta-chain
 import ZetaChainCCTXValue from 'client/features/chain-variants/zeta-chain/components/ZetaChainCCTXValue';
 import useZetaChainConfig from 'client/features/chain-variants/zeta-chain/hooks/useZetaChainConfig';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import IconSvg from 'ui/shared/IconSvg';
 import StatusTag from 'ui/shared/statusTag/StatusTag';
 
 type Props = {
@@ -38,7 +39,7 @@ const ZetaChainCCTXDetailsLifecycleIn = ({ tx, isLoading }: Props) => {
 
   return (
     <>
-      <IconSvg
+      <SpriteIcon
         name="verification-steps/finalized"
         boxSize={ 5 }
         bg="bg.primary"

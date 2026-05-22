@@ -4,6 +4,7 @@ import { Flex, Box, HStack } from '@chakra-ui/react';
 import React from 'react';
 
 import { useAppContext } from 'client/shell/app/context';
+import { CONTENT_MAX_WIDTH } from 'client/shell/layout/utils';
 
 import CsvExportDownloads from 'client/features/csv-export/components/downloads/CsvExportDownloads';
 import DeFiDropdown from 'client/features/defi-dropdown/components/DeFiDropdown';
@@ -14,7 +15,6 @@ import useIsMobile from 'client/shared/hooks/useIsMobile';
 import * as cookies from 'client/shared/storage/cookies';
 
 import config from 'configs/app';
-import { CONTENT_MAX_WIDTH } from 'ui/shared/layout/utils';
 
 import NetworkMenu from './chain-menu/ChainMenu';
 import Settings from './settings/Settings';

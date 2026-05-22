@@ -5,8 +5,9 @@ import React from 'react';
 
 import type { TxCourseType } from 'client/slices/address/utils/tx';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   isLoading?: boolean;
@@ -40,7 +41,7 @@ const AddressFromToIcon = ({ isLoading, type, className }: Props) => {
   };
 
   const icon = (
-    <IconSvg
+    <SpriteIcon
       name="arrows/east"
       { ...(styles[type]) }
       className={ className }

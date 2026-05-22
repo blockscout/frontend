@@ -5,10 +5,11 @@ import React from 'react';
 
 import type { CrossChainBridgedTokensSortingValue } from '../../types/api';
 
+import type { QueryWithPagesResult } from 'client/shared/pagination/useQueryWithPages';
+
 import config from 'configs/app';
 import type { OnValueChangeHandler } from 'toolkit/chakra/select';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
 
 import BridgedTokensListItem from './BridgedTokensListItem';
 import BridgedTokensTable from './BridgedTokensTable';

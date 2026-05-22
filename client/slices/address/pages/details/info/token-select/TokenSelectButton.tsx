@@ -8,10 +8,10 @@ import type { FormattedData } from './types';
 import { getTokensTotalInfo } from 'client/slices/token/pages/address/utils';
 
 import * as mixpanel from 'client/shared/analytics/mixpanel';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { Button } from 'toolkit/chakra/button';
 import { space, thinsp } from 'toolkit/utils/htmlEntities';
-import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   isOpen: boolean;
@@ -44,7 +44,7 @@ const TokenSelectButton = ({ isOpen, isLoading, data, ...rest }: Props, ref: Rea
         loadingSkeleton={ isLoading && !isOpen }
         { ...rest }
       >
-        <IconSvg name="tokens" boxSize={ 4 } mr={ 2 }/>
+        <SpriteIcon name="tokens" boxSize={ 4 } mr={ 2 }/>
         <chakra.span fontWeight={ 600 }>{ prefix }{ num }</chakra.span>
         <chakra.span
           whiteSpace="pre"
@@ -57,7 +57,7 @@ const TokenSelectButton = ({ isOpen, isLoading, data, ...rest }: Props, ref: Rea
         >
           { space }({ prefix }${ usd.toFormat(2) })
         </chakra.span>
-        <IconSvg name="arrows/east-mini" transform={ isOpen ? 'rotate(90deg)' : 'rotate(-90deg)' } transitionDuration="faster" boxSize={ 5 } ml={ 3 }/>
+        <SpriteIcon name="arrows/east-mini" transform={ isOpen ? 'rotate(90deg)' : 'rotate(-90deg)' } transitionDuration="faster" boxSize={ 5 } ml={ 3 }/>
       </Button>
     </Box>
   );

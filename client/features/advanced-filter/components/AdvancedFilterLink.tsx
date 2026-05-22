@@ -6,9 +6,10 @@ import React from 'react';
 import type { RouteParams } from 'nextjs/routes';
 import { route } from 'nextjs/routes';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import type { LinkProps } from 'toolkit/chakra/link';
 import { Link } from 'toolkit/chakra/link';
-import IconSvg from 'ui/shared/IconSvg';
 
 interface Props extends LinkProps {
   query?: Record<string, string | Array<string> | undefined>;
@@ -26,7 +27,7 @@ const AdvancedFilterLink = ({ query, routeParams, adaptive = true, ...rest }: Pr
       textStyle="sm"
       { ...rest }
     >
-      <IconSvg name="advanced-filter" boxSize={ 5 }/>
+      <SpriteIcon name="advanced-filter" boxSize={ 5 }/>
       <chakra.span hideBelow={ adaptive ? 'lg' : undefined }>Advanced</chakra.span>
     </Link>
   );

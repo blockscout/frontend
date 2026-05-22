@@ -9,14 +9,14 @@ import OptimisticL2TxnBatchesListItem from 'client/features/rollup/optimism/page
 import OptimisticL2TxnBatchesTable from 'client/features/rollup/optimism/pages/batches/OptimisticL2TxnBatchesTable';
 import { L2_TXN_BATCHES_ITEM } from 'client/features/rollup/optimism/stubs';
 
+import StickyPaginationWithText from 'client/shared/pagination/StickyPaginationWithText';
+import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
-import StickyPaginationWithText from 'ui/shared/StickyPaginationWithText';
 
 const OptimisticL2TxnBatches = () => {
   const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({

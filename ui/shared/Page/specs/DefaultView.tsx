@@ -10,8 +10,9 @@ import * as TokenEntity from 'client/slices/token/components/entity/TokenEntity'
 
 import AlternativeExplorers from 'client/features/alternative-explorers/components/AlternativeExplorers';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import EntityTags from 'ui/shared/EntityTags/EntityTags';
-import IconSvg from 'ui/shared/IconSvg';
 
 import PageTitle from '../PageTitle';
 
@@ -32,7 +33,7 @@ const DefaultView = () => {
 
   const contentAfter = (
     <>
-      <IconSvg name="certified" color="green.500" boxSize={ 6 } cursor="pointer"/>
+      <SpriteIcon name="certified" color="green.500" boxSize={ 6 } cursor="pointer"/>
       <EntityTags
         tags={ [
           { slug: 'example', name: 'Example label', tagType: 'custom', ordinal: 0 },

@@ -6,10 +6,9 @@ import React from 'react';
 import { INTERNAL_TX } from 'client/slices/internal-tx/stubs';
 
 import useDebounce from 'client/shared/hooks/useDebounce';
+import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
-
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
 interface Props {
   isMultichain?: boolean;

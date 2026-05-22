@@ -17,6 +17,8 @@ import { calculateUsdValue } from 'client/slices/token/pages/address/utils';
 import { ADDRESS_PORTFOLIO, TOKEN } from 'client/features/multichain/stubs';
 
 import useDebounce from 'client/shared/hooks/useDebounce';
+import Pagination from 'client/shared/pagination/Pagination';
+import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import * as cookies from 'client/shared/storage/cookies';
@@ -26,8 +28,6 @@ import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import { ZERO } from 'toolkit/utils/consts';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import Pagination from 'ui/shared/pagination/Pagination';
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
 import MultichainAddressPortfolioCards from './MultichainAddressPortfolioCards';
 import MultichainAddressPortfolioNetWorth from './MultichainAddressPortfolioNetWorth';

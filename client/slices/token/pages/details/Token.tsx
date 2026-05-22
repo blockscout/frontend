@@ -6,10 +6,10 @@ import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
 import type { SocketMessage } from 'client/api/socket/types';
+import type { PaginationParams } from 'client/shared/pagination/types';
 import type { TokenInfo } from 'client/slices/token/types/api';
 import { NFT_TOKEN_TYPE_IDS } from 'client/slices/token/utils/token-types';
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
-import type { PaginationParams } from 'ui/shared/pagination/types';
 
 import useApiQuery, { getResourceKey } from 'client/api/hooks/useApiQuery';
 import useSocketChannel from 'client/api/socket/useSocketChannel';
@@ -36,15 +36,15 @@ import CsvExport from 'client/features/csv-export/components/CsvExport';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import * as metadata from 'client/shared/metadata';
+import Pagination from 'client/shared/pagination/Pagination';
+import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import useEtherscanRedirects from 'client/shared/router/useEtherscanRedirects';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import config from 'configs/app';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import IconSvg from 'ui/shared/IconSvg';
-import Pagination from 'ui/shared/pagination/Pagination';
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
 export type TokenTabs = 'token_transfers' | 'holders' | 'inventory';
 
@@ -212,7 +212,7 @@ const TokenPageContent = () => {
           return (
             <>
               <span>Contract</span>
-              <IconSvg name="status/success" boxSize="14px" color="green.500"/>
+              <SpriteIcon name="status/success" boxSize="14px" color="green.500"/>
             </>
           );
         }

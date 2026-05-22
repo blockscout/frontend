@@ -7,11 +7,12 @@ import type { Transaction } from 'client/slices/tx/types/api';
 
 import { currencyUnits } from 'client/slices/chain/units';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import config from 'configs/app';
 import { ZERO } from 'toolkit/utils/consts';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoNativeCoinValue from 'ui/shared/DetailedInfo/DetailedInfoNativeCoinValue';
-import IconSvg from 'ui/shared/IconSvg';
 
 const rollupFeature = config.features.rollup;
 
@@ -48,7 +49,7 @@ const TxDetailsBurntFees = ({ data, isLoading }: Props) => {
         exchangeRate={ data.exchange_rate }
         historicalExchangeRate={ data.historic_exchange_rate }
         hasExchangeRateToggle
-        startElement={ <IconSvg name="flame" boxSize={ 5 } color="icon.primary" isLoading={ isLoading } mr={{ base: 0, lg: 1 }}/> }
+        startElement={ <SpriteIcon name="flame" boxSize={ 5 } color="icon.primary" isLoading={ isLoading } mr={{ base: 0, lg: 1 }}/> }
         loading={ isLoading }
       />
     </>

@@ -13,7 +13,7 @@ export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
     const { size, variant = 'plain', children, ...rest } = props;
 
     // FIXME: I have to clone the children instead of using _icon props because of style overrides
-    // in some pw tests for some reason the _icon style will be applied before the style of child (IconSvg component)
+    // in some pw tests for some reason the _icon style will be applied before the style of child (SpriteIcon component)
     const child = React.Children.only<React.ReactElement>(children as React.ReactElement);
     const clonedChildren = size ? React.cloneElement(child, { boxSize: size === '2xs_alt' ? 3 : 5 } as React.HTMLAttributes<HTMLElement>) : child;
 

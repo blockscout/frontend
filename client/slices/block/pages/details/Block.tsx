@@ -5,8 +5,8 @@ import { capitalize } from 'es-toolkit';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { PaginationParams } from 'client/shared/pagination/types';
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
-import type { PaginationParams } from 'ui/shared/pagination/types';
 
 import { routeParams } from 'nextjs/routes';
 
@@ -34,6 +34,7 @@ import { useMultichainContext } from 'client/features/multichain/context';
 import throwOnAbsentParamError from 'client/shared/errors/throw-on-absent-param-error';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import Pagination from 'client/shared/pagination/Pagination';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import config from 'configs/app';
@@ -41,7 +42,6 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import ServiceDegradationWarning from 'ui/shared/alerts/ServiceDegradationWarning';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import Pagination from 'ui/shared/pagination/Pagination';
 
 const TAB_LIST_PROPS = {
   marginBottom: 0,

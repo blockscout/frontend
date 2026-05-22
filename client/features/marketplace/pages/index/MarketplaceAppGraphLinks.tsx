@@ -9,10 +9,10 @@ import {
 import React from 'react';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { Link } from 'toolkit/chakra/link';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   className?: string;
@@ -47,7 +47,7 @@ const MarketplaceAppGraphLinks = ({ className, links }: Props) => {
         positioning={{ placement: isMobile ? 'bottom-end' : 'bottom' }}
         interactive
       >
-        <IconSvg name="brands/graph" boxSize={ 5 } onClick={ handleButtonClick }/>
+        <SpriteIcon name="brands/graph" boxSize={ 5 } onClick={ handleButtonClick }/>
       </Tooltip>
     </Box>
   );

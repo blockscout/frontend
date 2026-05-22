@@ -3,10 +3,11 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import type { PaginationParams } from './pagination/types';
+import type { PaginationParams } from './types';
 
-import ActionBar from './ActionBar';
-import Pagination from './pagination/Pagination';
+import ActionBar from 'ui/shared/ActionBar';
+
+import Pagination from './Pagination';
 
 type Props = {
   pagination: PaginationParams;

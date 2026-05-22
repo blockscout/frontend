@@ -3,11 +3,12 @@
 import { Box, chakra, Grid } from '@chakra-ui/react';
 import React from 'react';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { Button } from 'toolkit/chakra/button';
 import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
-import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   className?: string;
@@ -34,7 +35,7 @@ const VerifyWith = ({ className, links, label, longText, shortText }: Props) => 
               flexShrink={ 0 }
               columnGap={ 1 }
             >
-              <IconSvg name="explorer" boxSize={ 5 }/>
+              <SpriteIcon name="explorer" boxSize={ 5 }/>
               <chakra.span hideBelow="xl">{ longText }</chakra.span>
               { shortText && <chakra.span hideFrom="xl">{ shortText }</chakra.span> }
             </Button>

@@ -19,13 +19,13 @@ import BlocksTable from 'client/slices/block/pages/index/BlocksTable';
 import { useMultichainContext } from 'client/features/multichain/context';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import Pagination from 'client/shared/pagination/Pagination';
+import type { QueryWithPagesResult } from 'client/shared/pagination/useQueryWithPages';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { Link } from 'toolkit/chakra/link';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import IconSvg from 'ui/shared/IconSvg';
-import Pagination from 'ui/shared/pagination/Pagination';
-import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
 import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 
 const OVERLOAD_COUNT = 75;
@@ -130,7 +130,7 @@ const BlocksContent = ({ type, query, enableSocket = true, top }: Props) => {
   const actionBar = isMobile ? (
     <ActionBar mt={ -6 }>
       <Link href={ route({ pathname: '/block/countdown' }, multichainContext) }>
-        <IconSvg name="hourglass" boxSize={ 5 } mr={ 2 }/>
+        <SpriteIcon name="hourglass" boxSize={ 5 } mr={ 2 }/>
         <span>Block countdown</span>
       </Link>
       <Pagination ml="auto" { ...query.pagination }/>

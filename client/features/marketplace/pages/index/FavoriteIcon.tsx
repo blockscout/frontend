@@ -3,7 +3,7 @@
 import type { HTMLChakraProps } from '@chakra-ui/react';
 import React from 'react';
 
-import IconSvg from 'ui/shared/IconSvg';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 interface Props extends HTMLChakraProps<'div'> {
   isFavorite: boolean;
@@ -11,7 +11,7 @@ interface Props extends HTMLChakraProps<'div'> {
 
 const FavoriteIcon = ({ isFavorite, ...rest }: Props) => {
   return (
-    <IconSvg
+    <SpriteIcon
       name={ isFavorite ? 'heart_filled' : 'heart_outline' }
       { ...rest }
     />

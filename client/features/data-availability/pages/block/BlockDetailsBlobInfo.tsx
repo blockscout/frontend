@@ -8,10 +8,11 @@ import type { Block } from 'client/slices/block/types/api';
 
 import { currencyUnits } from 'client/slices/chain/units';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { ZERO } from 'toolkit/utils/consts';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import IconSvg from 'ui/shared/IconSvg';
 import Utilization from 'ui/shared/Utilization/Utilization';
 import GasPriceValue from 'ui/shared/value/GasPriceValue';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
@@ -72,7 +73,7 @@ const BlockDetailsBlobInfo = ({ data }: Props) => {
             <NativeCoinValue
               amount={ burntBlobFees.toString() }
               accuracy={ 0 }
-              startElement={ <IconSvg name="flame" boxSize={ 5 } color="icon.primary" mr={{ base: 1, lg: 2 }}/> }
+              startElement={ <SpriteIcon name="flame" boxSize={ 5 } color="icon.primary" mr={{ base: 1, lg: 2 }}/> }
               mr={ 4 }
             />
             { !blobFees.isEqualTo(ZERO) && (

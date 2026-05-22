@@ -9,12 +9,12 @@ import type { SearchResultLabel } from 'client/slices/search/types/api';
 import { toBech32Address } from 'client/slices/address/utils/bech32';
 
 import highlightText from 'client/shared/text/highlight-text';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
-import IconSvg from 'ui/shared/IconSvg';
 
 const SearchBarSuggestLabel = ({ data, isMobile, searchTerm, addressFormat }: ItemsProps<SearchResultLabel>) => {
-  const icon = <IconSvg name="publictags" boxSize={ 5 } color="icon.primary"/>;
+  const icon = <SpriteIcon name="publictags" boxSize={ 5 } color="icon.primary"/>;
   const hash = data.filecoin_robust_address || (addressFormat === 'bech32' ? toBech32Address(data.address_hash) : data.address_hash);
 
   const name = (
@@ -38,7 +38,7 @@ const SearchBarSuggestLabel = ({ data, isMobile, searchTerm, addressFormat }: It
     </Text>
   );
 
-  const isContractVerified = data.is_smart_contract_verified && <IconSvg name="status/success" boxSize="14px" color="green.500" flexShrink={ 0 }/>;
+  const isContractVerified = data.is_smart_contract_verified && <SpriteIcon name="status/success" boxSize="14px" color="green.500" flexShrink={ 0 }/>;
 
   if (isMobile) {
     return (

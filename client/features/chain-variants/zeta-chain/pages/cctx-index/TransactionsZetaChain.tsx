@@ -16,6 +16,8 @@ import TxsWatchlist from 'client/features/account/pages/tx-index-watchlist/TxsWa
 import AdvancedFilterLink from 'client/features/advanced-filter/components/AdvancedFilterLink';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import Pagination from 'client/shared/pagination/Pagination';
+import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
@@ -23,8 +25,6 @@ import config from 'configs/app';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import ActionBar from 'ui/shared/ActionBar';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import Pagination from 'ui/shared/pagination/Pagination';
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
 import ZetaChainCCTXsTab from './ZetaChainCCTXsTab';
 import ZetaChainEvmTransactions from './ZetaChainEvmTransactions';

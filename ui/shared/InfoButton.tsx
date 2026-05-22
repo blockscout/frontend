@@ -3,11 +3,11 @@
 import React from 'react';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { Button } from 'toolkit/chakra/button';
 import { DialogRoot, DialogContent, DialogTrigger, DialogHeader } from 'toolkit/chakra/dialog';
 import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
-import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   children: React.ReactNode;
@@ -28,7 +28,7 @@ const InfoButton = ({ children, isLoading }: Props) => {
       pr={ isMobile ? 1 : 2 }
       loadingSkeleton={ isLoading }
     >
-      <IconSvg name="info" boxSize={ 6 } mr={ isMobile ? 0 : 1 }/>
+      <SpriteIcon name="info" boxSize={ 6 } mr={ isMobile ? 0 : 1 }/>
       { !isMobile && <span>Info</span> }
     </Button>
   );

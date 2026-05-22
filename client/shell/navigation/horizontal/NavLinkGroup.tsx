@@ -5,10 +5,11 @@ import React from 'react';
 
 import type { NavGroupItem } from '../types';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { Link } from 'toolkit/chakra/link';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
-import IconSvg from 'ui/shared/IconSvg';
 
 import LightningLabel from '../LightningLabel';
 import { checkRouteHighlight } from '../utils';
@@ -82,7 +83,7 @@ const NavLinkGroup = ({ item }: Props) => {
             ml={{ lg: '2px' }}
           />
         ) }
-        <IconSvg name="arrows/east-mini" boxSize={ 5 } transform="rotate(-90deg)" ml={ 1 }/>
+        <SpriteIcon name="arrows/east-mini" boxSize={ 5 } transform="rotate(-90deg)" ml={ 1 }/>
       </Link>
     </Tooltip>
   );

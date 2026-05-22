@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { IconName } from 'ui/shared/IconSvg';
+import type { IconName } from 'client/sprite/SpriteIcon';
 
 export type DeFiDropdownItem = {
   text: string;

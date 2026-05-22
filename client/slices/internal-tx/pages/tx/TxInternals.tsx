@@ -11,14 +11,12 @@ import TxSocketAlert from 'client/slices/tx/components/TxSocketAlert';
 import type { TxQuery } from 'client/slices/tx/hooks/useTxQuery';
 
 import compareBns from 'client/shared/numbers/compareBns';
+import Pagination from 'client/shared/pagination/Pagination';
+import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
-// import { apos } from 'toolkit/utils/htmlEntities';
 
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-// import { FilterInput } from 'toolkit/components/filters/FilterInput';
-import Pagination from 'ui/shared/pagination/Pagination';
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import { default as getNextSortValueShared } from 'ui/shared/sort/getNextSortValue';
 
 import type { Sort, SortField } from '../../utils/utils';

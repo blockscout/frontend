@@ -9,12 +9,12 @@ import { getFeaturePayload } from 'configs/app/features/types';
 
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import config from 'configs/app';
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { MenuContent, MenuRoot, MenuTrigger } from 'toolkit/chakra/menu';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import IconSvg from 'ui/shared/IconSvg';
 
 import MetadataUpdateMenuItem from './items/MetadataUpdateMenuItem';
 import PrivateTagMenuItem from './items/PrivateTagMenuItem';
@@ -78,7 +78,7 @@ const AccountActionsMenu = ({ isLoading, className, showUpdateMetadataItem }: Pr
     <MenuRoot unmountOnExit={ false }>
       <MenuTrigger asChild>
         <IconButton variant="icon_background" size="md" className={ className } onClick={ handleButtonClick } aria-label="Show address menu">
-          <IconSvg name="dots"/>
+          <SpriteIcon name="dots"/>
         </IconButton>
       </MenuTrigger>
       <MenuContent>

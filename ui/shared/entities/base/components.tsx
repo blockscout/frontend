@@ -6,6 +6,9 @@ import React from 'react';
 
 import type { ExternalChain } from 'client/shared/external-chains/types';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+import type { Props as SpriteIconProps } from 'client/sprite/SpriteIcon';
+
 import type { ImageProps } from 'toolkit/chakra/image';
 import { Image } from 'toolkit/chakra/image';
 import type { LinkProps } from 'toolkit/chakra/link';
@@ -17,8 +20,6 @@ import type { Props as CopyToClipboardProps } from 'ui/shared/CopyToClipboard';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
-import type { Props as IconSvgProps } from 'ui/shared/IconSvg';
-import IconSvg from 'ui/shared/IconSvg';
 
 import { getContentProps, getIconProps } from './utils';
 
@@ -97,7 +98,7 @@ const Link = chakra(({ isLoading, children, external, onClick, href, noLink, var
   );
 });
 
-type EntityIconProps = (ImageProps | IconSvgProps) & Pick<IconProps, 'color' | 'borderRadius' | 'marginRight' | 'boxSize'> & {
+type EntityIconProps = (ImageProps | SpriteIconProps) & Pick<IconProps, 'color' | 'borderRadius' | 'marginRight' | 'boxSize'> & {
   shield?: IconShieldProps | false;
   hint?: string;
   hintPostfix?: string;
@@ -133,10 +134,10 @@ const Icon = (props: IconBaseProps) => {
       return <Image { ...commonProps } { ...rest }/>;
     }
 
-    const svgProps = rest as IconSvgProps;
+    const svgProps = rest as SpriteIconProps;
 
     return (
-      <IconSvg
+      <SpriteIcon
         display="block"
         color={ color ?? 'icon.primary' }
         { ...commonProps }
@@ -167,7 +168,7 @@ const Icon = (props: IconBaseProps) => {
   );
 };
 
-type IconShieldProps = (ImageProps | IconSvgProps) & { isLoading?: boolean; variant?: Variant };
+type IconShieldProps = (ImageProps | SpriteIconProps) & { isLoading?: boolean; variant?: Variant };
 
 const IconShield = (props: IconShieldProps) => {
   const { variant, ...rest } = props;
@@ -191,9 +192,9 @@ const IconShield = (props: IconShieldProps) => {
     return rest.isLoading ? <Skeleton loading { ...styles }/> : <Image { ...styles } { ...rest }/>;
   }
 
-  const svgProps = rest as IconSvgProps;
+  const svgProps = rest as SpriteIconProps;
 
-  return <IconSvg { ...styles } { ...svgProps }/>;
+  return <SpriteIcon { ...styles } { ...svgProps }/>;
 };
 
 export interface ContentBaseProps extends Pick<

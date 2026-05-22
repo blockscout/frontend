@@ -9,9 +9,10 @@ import * as TokenEntity from 'client/slices/token/components/entity/TokenEntity'
 
 import { publicTag, privateTag, watchlistName } from 'client/features/account/mocks/address-tags';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import EntityTags from 'ui/shared/EntityTags/EntityTags';
 import formatUserTags from 'ui/shared/EntityTags/formatUserTags';
-import IconSvg from 'ui/shared/IconSvg';
 
 import PageTitle from '../PageTitle';
 
@@ -32,7 +33,7 @@ const LongNameAndManyTags = () => {
 
   const contentAfter = (
     <>
-      <IconSvg name="certified" color="green.500" boxSize={ 6 } cursor="pointer" flexShrink={ 0 }/>
+      <SpriteIcon name="certified" color="green.500" boxSize={ 6 } cursor="pointer" flexShrink={ 0 }/>
       <EntityTags
         tags={ [
           { slug: 'example', name: 'Example with long name', tagType: 'custom', ordinal: 0 },

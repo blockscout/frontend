@@ -5,8 +5,9 @@ import React from 'react';
 
 import NovesFromTo from 'client/features/tx-interpretation/noves/components/NovesFromTo';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import IconSvg from 'ui/shared/IconSvg';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 
 import NovesActionSnippet from '../../components/NovesActionSnippet';
@@ -24,7 +25,7 @@ const TxAssetFlowsListItem = (props: Props) => {
       <Skeleton borderRadius="sm" loading={ props.isPlaceholderData } w="full">
 
         <Box display="flex" >
-          <IconSvg
+          <SpriteIcon
             name="lightning"
             height="5"
             width="5"

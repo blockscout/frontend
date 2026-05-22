@@ -3,8 +3,9 @@
 import { Flex, Text } from '@chakra-ui/react';
 import { clamp } from 'es-toolkit';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { Progress } from 'toolkit/chakra/progress';
-import IconSvg from 'ui/shared/IconSvg';
 
 type Props = {
   value: number;
@@ -50,9 +51,9 @@ export default function ProgressSegment({ value, target, prevTarget, isFirst }: 
             zIndex={ 1 }
           >
             { isDone ? (
-              <IconSvg name="check" boxSize={ 5 } color="white"/>
+              <SpriteIcon name="check" boxSize={ 5 } color="white"/>
             ) : (
-              <IconSvg name="hexagon" boxSize={ 4 } color="icon.secondary"/>
+              <SpriteIcon name="hexagon" boxSize={ 4 } color="icon.secondary"/>
             ) }
           </Flex>
         </Flex>

@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import type { PaginationParams } from './types';
+
 import type { PaginatedResourceName, PaginatedResourceResponse, PaginatedResourceResponseItems } from 'client/api/resources';
 
 export function generateListStub<Resource extends PaginatedResourceName>(
@@ -12,3 +14,15 @@ export function generateListStub<Resource extends PaginatedResourceName>(
     ...rest,
   };
 }
+
+export const emptyPagination: PaginationParams = {
+  page: 1,
+  onNextPageClick: () => {},
+  onPrevPageClick: () => {},
+  resetPage: () => {},
+  hasPages: false,
+  hasNextPage: false,
+  canGoBackwards: false,
+  isLoading: false,
+  isVisible: false,
+};

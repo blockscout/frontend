@@ -3,8 +3,9 @@
 import { chakra, HStack } from '@chakra-ui/react';
 import React from 'react';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { Button } from 'toolkit/chakra/button';
-import IconSvg from 'ui/shared/IconSvg';
 import StatusTag from 'ui/shared/statusTag/StatusTag';
 
 import type { Status } from '../../hooks/useUptimeSocketData';
@@ -34,7 +35,7 @@ const UptimeStatus = ({ status, onReconnect }: Props) => {
     <HStack ml="auto" columnGap={ 3 }>
       { statusTag }
       <Button variant="link" gap={ 1 } onClick={ onReconnect } disabled={ status === 'connected' }>
-        <IconSvg name="refresh" boxSize={ 5 }/>
+        <SpriteIcon name="refresh" boxSize={ 5 }/>
         <chakra.span hideBelow="lg" fontSize="sm">Refresh</chakra.span>
       </Button>
     </HStack>

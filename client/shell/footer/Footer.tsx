@@ -12,18 +12,19 @@ import useFetch from 'client/api/hooks/useFetch';
 import type { ResourceError } from 'client/api/resources';
 
 import { useAppContext } from 'client/shell/app/context';
+import { CONTENT_MAX_WIDTH } from 'client/shell/layout/utils';
 
 import IndexingStatusInternalTxs from 'client/slices/chain/indexing-status/IndexingStatusInternalTxs';
 
 import NetworkAddToWallet from 'client/features/web3-wallet/components/NetworkAddToWallet';
+
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { copy } from 'toolkit/utils/htmlEntities';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
-import IconSvg from 'ui/shared/IconSvg';
-import { CONTENT_MAX_WIDTH } from 'ui/shared/layout/utils';
 
 import FooterLinkItem from './FooterLinkItem';
 import { getApiVersionUrl } from './get-api-version-url';
@@ -141,7 +142,7 @@ const Footer = () => {
         <Flex columnGap={ 2 } textStyle="xs" alignItems="center">
           <span>Made with</span>
           <Link href="https://www.blockscout.com" external noIcon display="inline-flex" color={ logoColor } _hover={{ color: logoColor }}>
-            <IconSvg
+            <SpriteIcon
               name="networks/logo-placeholder"
               width="80px"
               height={ 4 }

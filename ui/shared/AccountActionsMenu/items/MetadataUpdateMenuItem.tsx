@@ -6,8 +6,9 @@ import type { ItemProps } from '../types';
 
 import { useMetadataUpdateContext } from 'client/slices/token/pages/instance/metadata-update-context';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { MenuItem } from 'toolkit/chakra/menu';
-import IconSvg from 'ui/shared/IconSvg';
 
 import ButtonItem from '../parts/ButtonItem';
 
@@ -34,7 +35,7 @@ const MetadataUpdateMenuItem = ({ type }: ItemProps) => {
       case 'menu_item': {
         return (
           <MenuItem onClick={ handleClick } disabled={ status === 'WAITING_FOR_RESPONSE' } value="refresh-metadata">
-            <IconSvg name="refresh" boxSize={ 5 }/>
+            <SpriteIcon name="refresh" boxSize={ 5 }/>
             <span>Refresh metadata</span>
           </MenuItem>
         );

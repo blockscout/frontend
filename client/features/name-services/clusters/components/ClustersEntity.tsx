@@ -5,6 +5,8 @@ import React from 'react';
 
 import { route } from 'nextjs-routes';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import config from 'configs/app';
 import { Image } from 'toolkit/chakra/image';
 import { Link as LinkToolkit } from 'toolkit/chakra/link';
@@ -12,7 +14,6 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import * as EntityBase from 'ui/shared/entities/base/components';
 import { distributeEntityProps, getIconProps } from 'ui/shared/entities/base/utils';
-import IconSvg from 'ui/shared/IconSvg';
 
 const nameServicesFeature = config.features.nameServices;
 const clustersFeature = nameServicesFeature.isEnabled && nameServicesFeature.clusters.isEnabled ? nameServicesFeature.clusters : undefined;
@@ -57,7 +58,7 @@ const Icon = (props: IconProps) => {
       mr={ 2 }
       flexShrink={ 0 }
     >
-      <IconSvg
+      <SpriteIcon
         name="clusters"
         width="100%"
         height="100%"
@@ -92,7 +93,7 @@ const Icon = (props: IconProps) => {
           borderRadius="sm"
           mr={ 2 }
         >
-          <IconSvg name="clusters" boxSize={ 4 } color="white" style={{ filter: 'brightness(0) invert(1)' }}/>
+          <SpriteIcon name="clusters" boxSize={ 4 } color="white" style={{ filter: 'brightness(0) invert(1)' }}/>
         </Box>
         <div>
           <span>Clusters</span>
@@ -109,7 +110,7 @@ const Icon = (props: IconProps) => {
         alignItems="center"
         external
       >
-        <IconSvg name="link" boxSize={ 5 } color="text.secondary" mr={ 2 }/>
+        <SpriteIcon name="link" boxSize={ 5 } color="text.secondary" mr={ 2 }/>
         <span>Learn more about Clusters</span>
       </LinkToolkit>
     </>

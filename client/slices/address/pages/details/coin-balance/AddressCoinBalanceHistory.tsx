@@ -4,8 +4,8 @@ import { Box } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
+import type { PaginationParams } from 'client/shared/pagination/types';
 import type { AddressCoinBalanceHistoryResponse } from 'client/slices/address/types/api';
-import type { PaginationParams } from 'ui/shared/pagination/types';
 
 import type { ResourceError } from 'client/api/resources';
 
@@ -13,10 +13,11 @@ import { currencyUnits } from 'client/slices/chain/units';
 
 import { useMultichainContext } from 'client/features/multichain/context';
 
+import Pagination from 'client/shared/pagination/Pagination';
+
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import Pagination from 'ui/shared/pagination/Pagination';
 import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
 import AddressCoinBalanceListItem from './AddressCoinBalanceListItem';

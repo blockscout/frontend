@@ -7,14 +7,14 @@ import React from 'react';
 import type { AddressMudRecordsFilter, AddressMudRecordsSorting } from 'client/features/chain-variants/mud/types/api';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import Pagination from 'client/shared/pagination/Pagination';
+import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import { Tag } from 'toolkit/chakra/tag';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import Pagination from 'ui/shared/pagination/Pagination';
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import { getNextOrderValue } from 'ui/shared/sort/getNextSortValue';
 import getSortParamsFromQuery from 'ui/shared/sort/getSortParamsFromQuery';
 

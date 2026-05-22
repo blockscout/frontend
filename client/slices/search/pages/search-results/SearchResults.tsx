@@ -11,6 +11,7 @@ import type { SearchResultItem } from 'client/slices/search/types/client';
 import HeaderAlert from 'client/shell/header/HeaderAlert';
 import HeaderDesktop from 'client/shell/header/HeaderDesktop';
 import HeaderMobile from 'client/shell/header/HeaderMobile';
+import * as Layout from 'client/shell/layout/components';
 import { useSettingsContext } from 'client/shell/top-bar/settings/context';
 
 import SearchBarSuggestBlockCountdown from 'client/slices/search/components/search-bar/SearchBarSuggest/SearchBarSuggestBlockCountdown';
@@ -20,6 +21,7 @@ import type { SearchResultAppItem } from 'client/slices/search/utils/search-cate
 import ExternalSearchItem from 'client/features/chain-variants/zeta-chain/components/ExternalSearchItem';
 import useMarketplaceApps from 'client/features/marketplace/hooks/useMarketplaceApps';
 
+import Pagination from 'client/shared/pagination/Pagination';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import removeQueryParam from 'client/shared/router/remove-query-param';
 
@@ -31,9 +33,7 @@ import * as regexp from 'toolkit/utils/regexp';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import AppErrorBoundary from 'ui/shared/AppError/AppErrorBoundary';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import * as Layout from 'ui/shared/layout/components';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import Pagination from 'ui/shared/pagination/Pagination';
 
 import SearchResultListItem from './SearchResultListItem';
 import SearchResultsInput from './SearchResultsInput';

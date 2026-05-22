@@ -5,9 +5,11 @@ import React from 'react';
 
 import type * as bens from '@blockscout/bens-types';
 import type { EnsDomainLookupFiltersOptions } from 'client/features/name-services/domains/types/api';
-import type { PaginationParams } from 'ui/shared/pagination/types';
+import type { PaginationParams } from 'client/shared/pagination/types';
 
 import useIsInitialLoading from 'client/shared/hooks/useIsInitialLoading';
+import Pagination from 'client/shared/pagination/Pagination';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { Button } from 'toolkit/chakra/button';
 import { Checkbox, CheckboxGroup } from 'toolkit/chakra/checkbox';
@@ -15,8 +17,6 @@ import { Image } from 'toolkit/chakra/image';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import ActionBar from 'ui/shared/ActionBar';
 import PopoverFilter from 'ui/shared/filters/PopoverFilter';
-import IconSvg from 'ui/shared/IconSvg';
-import Pagination from 'ui/shared/pagination/Pagination';
 import Sort from 'ui/shared/sort/Sort';
 
 import type { Sort as TSort } from './utils';
@@ -111,7 +111,7 @@ const NameDomainsActionBar = ({
                         borderRadius="sm"
                         mr={ 2 }
                         alt={ `${ protocol.title } protocol icon` }
-                        fallback={ <IconSvg name="ENS"/> }
+                        fallback={ <SpriteIcon name="ENS"/> }
                       />
                       <span>{ protocol.short_name }</span>
                       <chakra.span color="text.secondary" whiteSpace="pre"> { topLevelDomains }</chakra.span>

@@ -2,8 +2,8 @@
 
 import React from 'react';
 
-import type { IconName } from 'ui/shared/IconSvg';
-import IconSvg from 'ui/shared/IconSvg';
+import type { IconName } from 'client/sprite/SpriteIcon';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 const ICONS: Record<string, IconName> = {
   '403': 'error-pages/403',
@@ -18,7 +18,7 @@ interface Props {
 }
 
 const AppErrorIcon = ({ statusCode }: Props) => {
-  return <IconSvg name={ ICONS[String(statusCode)] || ICONS['500'] } width="200px" height="100px" color="text.primary"/>;
+  return <SpriteIcon name={ ICONS[String(statusCode)] || ICONS['500'] } width="200px" height="100px" color="text.primary"/>;
 };
 
 export default AppErrorIcon;

@@ -23,6 +23,7 @@ import EnsEntity from 'client/features/name-services/domains/components/EnsEntit
 
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 import dayjs from 'client/shared/date-and-time/dayjs';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import config from 'configs/app';
 import { Badge } from 'toolkit/chakra/badge';
@@ -34,7 +35,6 @@ import { Tooltip } from 'toolkit/chakra/tooltip';
 import { SECOND } from 'toolkit/utils/consts';
 import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 import getChainTooltipText from 'ui/shared/externalChains/getChainTooltipText';
-import IconSvg from 'ui/shared/IconSvg';
 
 import {
   extractVariables,
@@ -216,7 +216,7 @@ const TxInterpretation = ({ summary, isLoading, addressDataMap, className, chain
     <Skeleton loading={ isLoading } className={ className } fontWeight={ 500 } whiteSpace="pre-wrap" { ...rest }>
       <Tooltip content={ tooltipContent } contentProps={{ whiteSpace: 'pre-wrap' }}>
         <Box display="inline-flex" position="relative" mr={ chainData ? '14px' : 1 } verticalAlign="text-top">
-          <IconSvg name="lightning" boxSize={ 5 } color="icon.primary"/>
+          <SpriteIcon name="lightning" boxSize={ 5 } color="icon.primary"/>
           { chainData && (
             <ChainIcon
               data={ chainData }

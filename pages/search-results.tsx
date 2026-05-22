@@ -8,8 +8,9 @@ import type { NextPageWithLayout } from 'nextjs/types';
 import type { Props } from 'nextjs/getServerSideProps/handlers';
 import PageNextJs from 'nextjs/PageNextJs';
 
+import LayoutSearchResults from 'client/shell/layout/LayoutSearchResults';
+
 import config from 'configs/app';
-import LayoutSearchResults from 'ui/shared/layout/LayoutSearchResults';
 
 const SearchResults = dynamic(() => {
   if (config.features.multichain.isEnabled) {

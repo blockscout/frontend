@@ -13,11 +13,12 @@ import ChartWidgetContainerCrossChain from 'client/features/cross-chain-txs/comp
 import { CROSS_CHAIN_TXS_CHARTS } from 'client/features/cross-chain-txs/utils/chain-stats';
 import { useMultichainContext } from 'client/features/multichain/context';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import config from 'configs/app';
 import { EmptyState } from 'toolkit/chakra/empty-state';
 import { Heading } from 'toolkit/chakra/heading';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import IconSvg from 'ui/shared/IconSvg';
 
 import ChartWidgetContainer from '../../components/ChartWidgetContainer';
 import ChainStatsErrorAlert from './ChainStatsErrorAlert';
@@ -97,7 +98,7 @@ const ChainStatsSections = ({ isError, isLoading, displayedSections, interval, i
                 </Heading>
                 { isGasTrackerEnabled && section.id === 'gas' && homeStatsQuery.data && homeStatsQuery.data.gas_prices && (
                   <GasInfoTooltip data={ homeStatsQuery.data } dataUpdatedAt={ homeStatsQuery.dataUpdatedAt }>
-                    <IconSvg name="info" boxSize={ 5 } display="block" cursor="pointer" color="icon.secondary" _hover={{ color: 'hover' }}/>
+                    <SpriteIcon name="info" boxSize={ 5 } display="block" cursor="pointer" color="icon.secondary" _hover={{ color: 'hover' }}/>
                   </GasInfoTooltip>
                 ) }
               </Skeleton>

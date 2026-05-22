@@ -13,10 +13,10 @@ import { useMarketplaceContext } from 'client/features/marketplace/context';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import shortenString from 'client/shared/text/shorten-string';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { Button } from 'toolkit/chakra/button';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import IconSvg from 'ui/shared/IconSvg';
 
 import UserIdenticon from '../UserIdenticon';
 
@@ -67,7 +67,7 @@ const UserProfileButton = ({ profileQuery, size, variant, onClick, isPending, ..
 
     return (
       <HStack gap={ 2 }>
-        <IconSvg name="profile" boxSize={ 5 }/>
+        <SpriteIcon name="profile" boxSize={ 5 }/>
         <Box display={{ base: 'none', md: 'block' }}>{ data.email ? getUserHandle(data.email) : 'My profile' }</Box>
       </HStack>
     );

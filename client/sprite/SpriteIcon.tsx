@@ -17,8 +17,8 @@ export interface Props extends HTMLChakraProps<'div'> {
   isLoading?: boolean;
 }
 
-const IconSvg = React.forwardRef(
-  function IconSvg({ name, isLoading = false, ...props }: Props, ref: React.ForwardedRef<HTMLDivElement>) {
+const SpriteIcon = React.forwardRef(
+  function SpriteIcon({ name, isLoading = false, ...props }: Props, ref: React.ForwardedRef<HTMLDivElement>) {
     return (
       <Skeleton loading={ isLoading } display="inline-block" flexShrink={ 0 } asChild { ...props } ref={ ref }>
         <chakra.svg w="100%" h="100%">
@@ -29,6 +29,6 @@ const IconSvg = React.forwardRef(
   },
 );
 
-IconSvg.displayName = 'IconSvg';
+SpriteIcon.displayName = 'SpriteIcon';
 
-export default IconSvg;
+export default SpriteIcon;

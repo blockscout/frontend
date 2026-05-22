@@ -3,10 +3,10 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
+import type { PaginationParams } from 'client/shared/pagination/types';
 import type { AddressFromToFilter } from 'client/slices/address/types/api';
 import type { Transaction, TransactionsSortingField, TransactionsSortingValue } from 'client/slices/tx/types/api';
 import type { TxsSocketType } from 'client/slices/tx/types/socket';
-import type { PaginationParams } from 'ui/shared/pagination/types';
 
 import CsvExport from 'client/features/csv-export/components/CsvExport';
 import useDescribeTxs from 'client/features/tx-interpretation/noves/hooks/useDescribeTxs';

@@ -11,8 +11,9 @@ import ContractCertifiedLabel from 'client/slices/contract/components/ContractCe
 import { formatLanguageName } from 'client/slices/contract/utils/language';
 import { CONTRACT_LICENSES } from 'client/slices/contract/utils/licenses';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import IconSvg from 'ui/shared/IconSvg';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
@@ -88,19 +89,19 @@ const VerifiedContractsListItem = ({ data, isLoading }: Props) => {
       <Flex columnGap={ 3 }>
         <Skeleton loading={ isLoading } fontWeight={ 500 }>Optimization</Skeleton>
         { data.optimization_enabled ?
-          <IconSvg name="check" boxSize={ 6 } color="green.500" cursor="pointer" isLoading={ isLoading }/> :
-          <IconSvg name="cross" boxSize={ 6 } color="red.600" cursor="pointer" isLoading={ isLoading }/> }
+          <SpriteIcon name="check" boxSize={ 6 } color="green.500" cursor="pointer" isLoading={ isLoading }/> :
+          <SpriteIcon name="cross" boxSize={ 6 } color="red.600" cursor="pointer" isLoading={ isLoading }/> }
       </Flex>
       <Flex columnGap={ 3 }>
         <Skeleton loading={ isLoading } fontWeight={ 500 }>Constructor args</Skeleton>
         { data.has_constructor_args ?
-          <IconSvg name="check" boxSize={ 6 } color="green.500" cursor="pointer" isLoading={ isLoading }/> :
-          <IconSvg name="cross" boxSize={ 6 } color="red.600" cursor="pointer" isLoading={ isLoading }/> }
+          <SpriteIcon name="check" boxSize={ 6 } color="green.500" cursor="pointer" isLoading={ isLoading }/> :
+          <SpriteIcon name="cross" boxSize={ 6 } color="red.600" cursor="pointer" isLoading={ isLoading }/> }
       </Flex>
       <Flex columnGap={ 3 }>
         <Skeleton loading={ isLoading } fontWeight={ 500 }>Verified</Skeleton>
         <Flex alignItems="center" columnGap={ 2 }>
-          <IconSvg name="status/success" boxSize={ 4 } color="green.500" isLoading={ isLoading }/>
+          <SpriteIcon name="status/success" boxSize={ 4 } color="green.500" isLoading={ isLoading }/>
           <TimeWithTooltip
             timestamp={ data.verified_at }
             isLoading={ isLoading }

@@ -4,9 +4,10 @@ import type { BoxProps } from '@chakra-ui/react';
 import { Box, chakra } from '@chakra-ui/react';
 import React from 'react';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { Tag } from 'toolkit/chakra/tag';
 import { thinsp } from 'toolkit/utils/htmlEntities';
-import IconSvg from 'ui/shared/IconSvg';
 
 import type { Params as CalculateUsdValueParams } from './calculateUsdValue';
 import calculateUsdValue from './calculateUsdValue';
@@ -95,7 +96,7 @@ const AssetValue = ({
   );
 
   const clockIcon = showHistorical ? (
-    <IconSvg name="clock-light" boxSize="14px" color="icon.secondary"/>
+    <SpriteIcon name="clock-light" boxSize="14px" color="icon.secondary"/>
   ) : undefined;
 
   const tooltipContentBefore = (() => {
