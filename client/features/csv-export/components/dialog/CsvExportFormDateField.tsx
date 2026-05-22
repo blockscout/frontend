@@ -6,7 +6,8 @@ import type { UseFormReturn } from 'react-hook-form';
 
 import type { FormFields } from './types';
 
-import dayjs from 'lib/date/dayjs';
+import dayjs from 'client/shared/date-and-time/dayjs';
+
 import { FormFieldText } from 'toolkit/components/forms/fields/FormFieldText';
 
 interface Props {

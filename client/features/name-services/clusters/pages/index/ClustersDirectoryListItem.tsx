@@ -9,7 +9,8 @@ import { isEvmAddress } from 'client/slices/address/utils/is-evm-address';
 
 import ClustersEntity from 'client/features/name-services/clusters/components/ClustersEntity';
 
-import dayjs from 'lib/date/dayjs';
+import dayjs from 'client/shared/date-and-time/dayjs';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 import Time from 'ui/shared/time/Time';

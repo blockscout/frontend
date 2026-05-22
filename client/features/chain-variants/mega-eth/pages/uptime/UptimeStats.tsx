@@ -5,7 +5,7 @@ import React from 'react';
 
 import type { UptimeRealTimeData } from 'client/features/chain-variants/mega-eth/types/api';
 
-import StatsWidget from 'ui/shared/stats/StatsWidget';
+import StatsWidget from 'client/shared/stats/StatsWidget';
 
 interface Props {
   realtimeData: UptimeRealTimeData | null;

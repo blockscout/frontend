@@ -4,8 +4,9 @@ import { route } from 'nextjs/routes';
 
 import type { TMultichainContext } from 'client/features/multichain/context';
 
+import type dayjs from 'client/shared/date-and-time/dayjs';
+
 import config from 'configs/app';
-import type dayjs from 'lib/date/dayjs';
 
 interface Params {
   date: dayjs.Dayjs;

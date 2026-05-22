@@ -21,6 +21,7 @@ import Web3Provider from 'client/features/connect-wallet/components/Web3Provider
 import { CsvExportContextProvider } from 'client/features/csv-export/utils/context';
 import { MarketplaceContextProvider } from 'client/features/marketplace/context';
 
+import GoogleAnalytics from 'client/shared/analytics/google/GoogleAnalytics';
 import { initGrowthBook } from 'client/shared/feature-flags/init';
 import useLoadFeatures from 'client/shared/feature-flags/useLoadFeatures';
 import { clientConfig as rollbarConfig, Provider as RollbarProvider } from 'client/shared/monitoring/rollbar';
@@ -33,7 +34,6 @@ import { Provider as ChakraProvider } from 'toolkit/chakra/provider';
 import { Toaster } from 'toolkit/chakra/toaster';
 import AppErrorBoundary from 'ui/shared/AppError/AppErrorBoundary';
 import AppErrorGlobalContainer from 'ui/shared/AppError/AppErrorGlobalContainer';
-import GoogleAnalytics from 'ui/shared/GoogleAnalytics';
 import Layout from 'ui/shared/layout/Layout';
 
 const RewardsContextProvider = dynamic(() => import('client/features/rewards/context').then(module => module.RewardsContextProvider), { ssr: false });

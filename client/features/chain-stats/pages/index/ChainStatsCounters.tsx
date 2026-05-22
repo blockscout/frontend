@@ -5,9 +5,10 @@ import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import StatsWidget from 'client/shared/stats/StatsWidget';
+
 import config from 'configs/app';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import StatsWidget from 'ui/shared/stats/StatsWidget';
 
 import { CHAIN_STATS_COUNTER } from '../../stubs/counters';
 

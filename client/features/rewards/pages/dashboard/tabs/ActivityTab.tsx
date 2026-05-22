@@ -13,10 +13,10 @@ import useProfileQuery from 'client/features/account/hooks/useProfileQuery';
 import { useRewardsContext } from 'client/features/rewards/context';
 import { USER_ACTIVITY } from 'client/features/rewards/stubs';
 
+import dayjs from 'client/shared/date-and-time/dayjs';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
 import config from 'configs/app';
-import dayjs from 'lib/date/dayjs';
 import { Button } from 'toolkit/chakra/button';
 import { Heading } from 'toolkit/chakra/heading';
 import { Link } from 'toolkit/chakra/link';

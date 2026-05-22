@@ -5,6 +5,8 @@ import React from 'react';
 
 import buildUrl from 'client/api/build-url';
 
+import ReCaptcha from 'client/shared/re-captcha/ReCaptcha';
+import useReCaptcha from 'client/shared/re-captcha/useReCaptcha';
 import * as cookies from 'client/shared/storage/cookies';
 
 import config from 'configs/app';
@@ -12,8 +14,6 @@ import { Button } from 'toolkit/chakra/button';
 import { toaster } from 'toolkit/chakra/toaster';
 import { DAY, SECOND } from 'toolkit/utils/consts';
 import { apos } from 'toolkit/utils/htmlEntities';
-import ReCaptcha from 'ui/shared/reCaptcha/ReCaptcha';
-import useReCaptcha from 'ui/shared/reCaptcha/useReCaptcha';
 
 import AppErrorIcon from '../AppErrorIcon';
 import AppErrorTitle from '../AppErrorTitle';

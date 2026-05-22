@@ -26,9 +26,9 @@ import * as EnsEntity from 'client/features/name-services/domains/components/Ens
 import * as UserOpEntity from 'client/features/user-ops/components/entity/UserOpEntity';
 
 import * as mixpanel from 'client/shared/analytics/mixpanel';
+import dayjs from 'client/shared/date-and-time/dayjs';
 import highlightText from 'client/shared/text/highlight-text';
 
-import dayjs from 'lib/date/dayjs';
 import { useColorMode } from 'toolkit/chakra/color-mode';
 import { Image } from 'toolkit/chakra/image';
 import { Link } from 'toolkit/chakra/link';

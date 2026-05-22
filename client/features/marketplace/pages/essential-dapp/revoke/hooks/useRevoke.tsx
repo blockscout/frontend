@@ -7,8 +7,8 @@ import { useCallback } from 'react';
 import { waitForTransactionReceipt } from 'viem/actions';
 import { useAccount, useWriteContract, useSwitchChain } from 'wagmi';
 
+import type { AllowanceType } from '../types';
 import type { EssentialDappsChainConfig } from 'client/features/marketplace/types/client';
-import type { AllowanceType } from 'types/client/revoke';
 
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 

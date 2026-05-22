@@ -6,9 +6,10 @@ import React from 'react';
 
 import { route } from 'nextjs-routes';
 
+import Puzzle15 from 'client/features/easter-eggs/components/puzzle-15/Puzzle15';
+
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';
-import Puzzle15 from 'ui/games/Puzzle15';
 import IconSvg from 'ui/shared/IconSvg';
 
 import AppErrorTitle from '../AppErrorTitle';

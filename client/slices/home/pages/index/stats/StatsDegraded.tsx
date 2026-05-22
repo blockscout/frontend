@@ -12,10 +12,11 @@ import { homeStatsWidgetCommonStyles, isHomeStatsItemEnabled, sortHomeStatsItems
 
 import { publicClient } from 'client/features/connect-wallet/utils/public-client';
 
-import dayjs from 'lib/date/dayjs';
+import dayjs from 'client/shared/date-and-time/dayjs';
+import StatsWidget from 'client/shared/stats/StatsWidget';
+
 import { mdash } from 'toolkit/utils/htmlEntities';
 import FallbackRpcIcon from 'ui/shared/fallbacks/FallbackRpcIcon';
-import StatsWidget from 'ui/shared/stats/StatsWidget';
 import { GWEI } from 'ui/shared/value/utils';
 
 const StatsDegraded = () => {

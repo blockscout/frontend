@@ -5,7 +5,7 @@ import React from 'react';
 
 import { useHomeDataContext } from 'client/slices/home/contexts/home-data-context';
 
-import StatsWidget from 'ui/shared/stats/StatsWidget';
+import StatsWidget from 'client/shared/stats/StatsWidget';
 
 type Props = {
   className?: string;

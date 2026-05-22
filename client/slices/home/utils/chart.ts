@@ -2,9 +2,10 @@
 
 import type { ChainIndicatorId } from 'client/slices/home/types/config';
 
+import { sortByDateAsc } from 'client/shared/stats/line-chart-utils';
+
 import config from 'configs/app';
 import type { LineChartData, LineChartDataItem, LineChartItemRaw, LineChartItem } from 'toolkit/components/charts/line';
-import { sortByDateAsc } from 'ui/shared/chart/utils';
 
 const CHART_ITEMS: Record<ChainIndicatorId, Pick<LineChartDataItem, 'name' | 'valueFormatter'>> = {
   daily_txs: {

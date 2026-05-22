@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { TxAction } from 'types/api/txAction';
+import type { TxAction } from '../../types/api';
 
 import config from 'configs/app';
 

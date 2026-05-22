@@ -10,7 +10,8 @@ import TxPendingAlert from 'client/slices/tx/components/TxPendingAlert';
 import TxSocketAlert from 'client/slices/tx/components/TxSocketAlert';
 import type { TxQuery } from 'client/slices/tx/hooks/useTxQuery';
 
-import compareBns from 'lib/bigint/compareBns';
+import compareBns from 'client/shared/numbers/compareBns';
+
 // import { apos } from 'toolkit/utils/htmlEntities';
 import { generateListStub } from 'stubs/utils';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';

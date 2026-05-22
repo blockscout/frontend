@@ -5,7 +5,7 @@ import type { ReactElement } from 'react';
 
 import type { ChainIndicatorId, HomeStatsWidgetId } from 'client/slices/home/types/config';
 
-import type { Props as StatsWidgetProps } from 'ui/shared/stats/StatsWidget';
+import type { Props as StatsWidgetProps } from 'client/shared/stats/StatsWidget';
 
 export interface HighlightsBannerConfig {
   title: string;

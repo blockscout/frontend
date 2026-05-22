@@ -13,14 +13,14 @@ import useSocketChannel from 'client/api/socket/useSocketChannel';
 import useSocketMessage from 'client/api/socket/useSocketMessage';
 
 import getErrorMessage from 'client/shared/errors/get-error-message';
+import ReCaptcha from 'client/shared/re-captcha/ReCaptcha';
+import useReCaptcha from 'client/shared/re-captcha/useReCaptcha';
 
 import config from 'configs/app';
 import { Alert } from 'toolkit/chakra/alert';
 import { DialogBody, DialogContent, DialogHeader, DialogRoot } from 'toolkit/chakra/dialog';
 import { toaster } from 'toolkit/chakra/toaster';
 import { MINUTE, SECOND } from 'toolkit/utils/consts';
-import ReCaptcha from 'ui/shared/reCaptcha/ReCaptcha';
-import useReCaptcha from 'ui/shared/reCaptcha/useReCaptcha';
 
 import { useMetadataUpdateContext } from './metadata-update-context';
 

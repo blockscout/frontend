@@ -5,8 +5,9 @@ import BigNumber from 'bignumber.js';
 import type { AddressTokenBalance } from 'client/slices/address/types/api';
 import { isFungibleTokenType } from 'client/slices/token/utils/token-types';
 
+import sumBnReducer from 'client/shared/numbers/sumBnReducer';
+
 import config from 'configs/app';
-import sumBnReducer from 'lib/bigint/sumBnReducer';
 import { ZERO } from 'toolkit/utils/consts';
 
 const isNativeToken = (token: TokenEnhancedData) =>

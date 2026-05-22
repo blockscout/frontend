@@ -10,6 +10,8 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import type { TxQuery } from 'client/slices/tx/hooks/useTxQuery';
 
+import AppActionButton from 'client/features/address-metadata/components/AppActionButton';
+import useAppActionData from 'client/features/address-metadata/hooks/useAppActionData';
 import { useMultichainContext } from 'client/features/multichain/context';
 import { TX_INTERPRETATION } from 'client/features/tx-interpretation/blockscout/stubs';
 import TxInterpretation from 'client/features/tx-interpretation/common/components/TxInterpretation';
@@ -19,8 +21,6 @@ import { createNovesSummaryObject } from 'client/features/tx-interpretation/nove
 import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
 import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu';
-import AppActionButton from 'ui/shared/AppActionButton/AppActionButton';
-import useAppActionData from 'ui/shared/AppActionButton/useAppActionData';
 import { TX_ACTIONS_BLOCK_ID } from 'ui/shared/DetailedInfo/DetailedInfoActionsWrapper';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
 

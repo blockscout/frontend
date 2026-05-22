@@ -6,9 +6,8 @@ import type { Transaction } from 'client/slices/tx/types/api';
 
 import { unknownAddress } from 'client/slices/address/utils/consts';
 
+import dayjs from 'client/shared/date-and-time/dayjs';
 import hexToDecimal from 'client/shared/transformers/hex-to-decimal';
-
-import dayjs from 'lib/date/dayjs';
 
 export default function formatRpcData(
   tx: GetTransactionReturnType<Chain, 'latest'>,

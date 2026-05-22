@@ -9,8 +9,7 @@ import * as decodedInputDataMock from 'client/slices/log/mocks/decoded-input';
 import * as tokenTransferMock from 'client/slices/token-transfer/mocks';
 
 import { publicTag, privateTag, watchlistName } from 'client/features/account/mocks/address-tags';
-
-import { protocolTag } from 'mocks/metadata/address';
+import { protocolTag } from 'client/features/address-metadata/mocks/tags';
 
 export const base: Transaction = {
   base_fee_per_gas: '10000000000',

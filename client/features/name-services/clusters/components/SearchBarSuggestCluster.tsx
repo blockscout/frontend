@@ -11,8 +11,9 @@ import { isEvmAddress } from 'client/slices/address/utils/is-evm-address';
 
 import highlightText from 'client/shared/text/highlight-text';
 
-import ClusterIcon from 'ui/shared/ClusterIcon';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
+
+import ClusterIcon from './ClusterIcon';
 
 const SearchBarSuggestCluster = ({ data, searchTerm, addressFormat }: ItemsProps<SearchResultCluster>) => {
   const hash = data.filecoin_robust_address || (addressFormat === 'bech32' ? toBech32Address(data.address_hash) : data.address_hash);

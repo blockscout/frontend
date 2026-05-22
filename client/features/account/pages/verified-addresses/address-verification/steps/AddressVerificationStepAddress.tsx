@@ -23,7 +23,8 @@ import { Alert } from 'toolkit/chakra/alert';
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';
 import { FormFieldAddress } from 'toolkit/components/forms/fields/FormFieldAddress';
-import AdminSupportText from 'ui/shared/texts/AdminSupportText';
+
+import AdminSupportText from '../../AdminSupportText';
 
 type Fields = RootFields & AddressVerificationFormFirstStepFields;
 

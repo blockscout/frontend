@@ -22,9 +22,9 @@ import EnsEntity from 'client/features/name-services/domains/components/EnsEntit
 
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 import { currencyUnits } from 'client/shared/chain/units';
+import dayjs from 'client/shared/date-and-time/dayjs';
 
 import config from 'configs/app';
-import dayjs from 'lib/date/dayjs';
 import { Badge } from 'toolkit/chakra/badge';
 import { useColorModeValue } from 'toolkit/chakra/color-mode';
 import { Image } from 'toolkit/chakra/image';

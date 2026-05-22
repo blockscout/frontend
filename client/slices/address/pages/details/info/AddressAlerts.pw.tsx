@@ -1,6 +1,7 @@
 import React from 'react';
 
-import * as metadataMock from 'mocks/metadata/address';
+import * as metadataMock from 'client/features/address-metadata/mocks/tags';
+
 import { test, expect } from 'playwright/lib';
 
 import AddressAlerts from './AddressAlerts';

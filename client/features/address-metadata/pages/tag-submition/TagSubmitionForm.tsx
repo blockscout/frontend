@@ -15,6 +15,8 @@ import useApiFetch from 'client/api/hooks/useApiFetch';
 import getErrorObj from 'client/shared/errors/get-error-obj';
 import getErrorObjPayload from 'client/shared/errors/get-error-obj-payload';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import ReCaptcha from 'client/shared/re-captcha/ReCaptcha';
+import useReCaptcha from 'client/shared/re-captcha/useReCaptcha';
 
 import appConfig from 'configs/app';
 import { Button } from 'toolkit/chakra/button';
@@ -23,8 +25,6 @@ import { FormFieldEmail } from 'toolkit/components/forms/fields/FormFieldEmail';
 import { FormFieldText } from 'toolkit/components/forms/fields/FormFieldText';
 import { FormFieldUrl } from 'toolkit/components/forms/fields/FormFieldUrl';
 import { Hint } from 'toolkit/components/Hint/Hint';
-import ReCaptcha from 'ui/shared/reCaptcha/ReCaptcha';
-import useReCaptcha from 'ui/shared/reCaptcha/useReCaptcha';
 
 import TagSubmitionFieldAddresses from './fields/TagSubmitionFieldAddresses';
 import TagSubmitionFieldTags from './fields/TagSubmitionFieldTags';

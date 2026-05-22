@@ -209,7 +209,7 @@ migrated to `client/shared/` in 1-2 and do not appear here.
 
 ### 6-2 · [x] Feature: `data-availability` · [#3453](https://github.com/blockscout/frontend/issues/3453)
 
-### 6-3 · [~] Features: `multichain` and `multichain-button` · [#3479](https://github.com/blockscout/frontend/issues/3479)
+### 6-3 · [x] Features: `multichain` and `multichain-button` · [#3479](https://github.com/blockscout/frontend/issues/3479)
 **Scope:** Includes `lib/multichain/`, `lib/contexts/multichain.tsx`, `ui/snippets/networkMenu/` → `client/features/multichain/`  
 
 ### 6-4 · [x] Feature: `name-services` (domains and clusters) · [#3458](https://github.com/blockscout/frontend/issues/3458)
@@ -217,35 +217,35 @@ migrated to `client/shared/` in 1-2 and do not appear here.
 ### 6-5 · [x] Feature: `account` · [#3456](https://github.com/blockscout/frontend/issues/3456)
 **Scope:** Includes `lib/hooks/useGetCsrfToken`, `ui/snippets/auth/`, `ui/snippets/user/` → `client/features/account/`  
 
-### 6-6 · [ ] Feature: `stats`
+### 6-6 · [x] Feature: `stats`
 **Scope:** `lib/stats/` and stats UI → `client/features/stats/`  
 
-### 6-7 · [ ] Feature: `gas-tracker`
+### 6-7 · [x] Feature: `gas-tracker`
 **Scope:** Config-gated tracker page (`NEXT_PUBLIC_GAS_TRACKER_ENABLED`). Depends on task 3-10 (`slices/gas/`) being merged first.
 - `ui/gasTracker/` + `ui/pages/GasTracker.tsx` → `client/features/gas-tracker/`
 - Imports gas-price primitives from `client/slices/gas/`
 
-### 6-8 · [~] Feature: `validators` · [#3474](https://github.com/blockscout/frontend/issues/3474)
+### 6-8 · [x] Feature: `validators` · [#3474](https://github.com/blockscout/frontend/issues/3474)
 
-### 6-9 · [~] Feature: `marketplace` · [#3466](https://github.com/blockscout/frontend/issues/3466)
+### 6-9 · [x] Feature: `marketplace` · [#3466](https://github.com/blockscout/frontend/issues/3466)
 **Scope:** Includes `lib/contexts/marketplace.tsx`, `lib/hooks/useGraphLinks` → `client/features/marketplace/`  
 
-### 6-10 · [~] Feature: `rewards` · [#3462](https://github.com/blockscout/frontend/issues/3462)
+### 6-10 · [x] Feature: `rewards` · [#3462](https://github.com/blockscout/frontend/issues/3462)
 **Scope:** Includes `lib/contexts/rewards.tsx`, `lib/hooks/useRewardsActivity` → `client/features/rewards/`  
 
-### 6-11 · [~] Feature: `advanced-filter` · [#3468](https://github.com/blockscout/frontend/issues/3468)
+### 6-11 · [x] Feature: `advanced-filter` · [#3468](https://github.com/blockscout/frontend/issues/3468)
 
 ### 6-12 · [ ] Feature: `ad-banner`
 **Scope:** Includes `lib/hooks/useAdblockDetect` → `client/features/ad-banner/`. Covers both `adsBanner.ts` and `adsText.ts` configs.  
 
-### 6-13 · [~] Features: `cross-chain-txs`, `gas-tracker`, `sol2uml` · [#3483](https://github.com/blockscout/frontend/issues/3483)
+### 6-13 · [x] Features: `cross-chain-txs`, `gas-tracker`, `sol2uml` · [#3483](https://github.com/blockscout/frontend/issues/3483)
 
-### 6-14 · [ ] Feature: `metasuites`
+### 6-14 · [x] Feature: `metasuites`
 **Scope:** Includes `lib/hooks/useNotifyOnNavigation` → `client/features/metasuites/`  
 
 ### 6-15 · [x] Feature: `csv-export`
 
-### 6-16 · [~] Feature: `pools` · [#3463](https://github.com/blockscout/frontend/issues/3463)
+### 6-16 · [x] Feature: `pools` · [#3463](https://github.com/blockscout/frontend/issues/3463)
 
 ### 6-17 · [x] Feature: `hot-contracts`
 
@@ -257,12 +257,12 @@ migrated to `client/shared/` in 1-2 and do not appear here.
 ### 6-20 · [x] Feature: `visualize`
 **Scope:** Solidity-to-UML diagrams. See `configs/app/features/sol2uml.ts`.  
 
-### 6-21 · [~] Feature: `tx-interpretation` · [#3471](https://github.com/blockscout/frontend/issues/3471)
+### 6-21 · [x] Feature: `tx-interpretation` · [#3471](https://github.com/blockscout/frontend/issues/3471)
 
-### 6-22 · [~] Feature: `public-tags` (merge with `address-metadata`) · [#3477](https://github.com/blockscout/frontend/issues/3477)
+### 6-22 · [x] Feature: `public-tags` (merge with `address-metadata`) · [#3477](https://github.com/blockscout/frontend/issues/3477)
 **Scope:** Community address labels. See `configs/app/features/publicTagsSubmission.ts`.  
 
-### 6-23 · [ ] Feature: `address-widgets`
+### 6-23 · [x] Feature: `address-widgets`
 **Scope:** Third-party widgets on address pages. See `configs/app/features/address3rdPartyWidgets.ts`.  
 
 ### 6-24 · [x] Feature: `address-metadata`
@@ -272,13 +272,13 @@ migrated to `client/shared/` in 1-2 and do not appear here.
 
 ### 6-26 · [x] Feature: `bridged-tokens`
 
-### 6-27 · [~] Features: `web3-wallet` and `connect-wallet` · [#3480](https://github.com/blockscout/frontend/issues/3480)
+### 6-27 · [x] Features: `web3-wallet` and `connect-wallet` · [#3480](https://github.com/blockscout/frontend/issues/3480)
 **Scope:** Includes `blockchainInteraction.ts` config.  
 
 ### 6-28 · [ ] Feature: `alternative-explorers`
 **Scope:** The "Verify with other explorers" menu shown on tx, block, address, and token pages. Move `ui/shared/NetworkExplorers.tsx` (and its `.pw.tsx` test) → `client/features/alternative-explorers/`. The util `client/features/alternative-explorers/utils/explorers.ts` already exists (landed in 1-2). Config-gated via `NEXT_PUBLIC_NETWORK_EXPLORERS`.  
 
-### 6-29 · [ ] Feature: `get-gas-button`
+### 6-29 · [x] Feature: `get-gas-button`
 **Scope:** Gas refuel CTA — independently config-gated (`NEXT_PUBLIC_GAS_REFUEL_PROVIDER_CONFIG`), no dependency on `gas-tracker` being enabled.
 - `ui/snippets/topBar/GetGasButton.tsx` → `client/features/get-gas-button/`
 - `types/client/gasRefuelProviderConfig.ts` → `client/features/get-gas-button/types/`

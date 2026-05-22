@@ -16,7 +16,7 @@ type AddressProfileAPIConfig = {
   tag_bg_color?: string;
   tag_text_color?: string;
 };
-import type { GasRefuelProviderConfig } from 'types/client/gasRefuelProviderConfig';
+import type { GasRefuelProviderConfig } from 'client/features/get-gas-button/types/client';
 import { GAS_UNITS } from 'client/slices/gas/types/config';
 import type { GasUnit } from 'client/slices/gas/types/config';
 import { PROVIDERS as TX_INTERPRETATION_PROVIDERS } from 'client/features/tx-interpretation/common/types/config';
@@ -24,7 +24,7 @@ import { VALIDATORS_CHAIN_TYPE } from 'configs/app/features/validators';
 import type { ValidatorsChainType } from 'configs/app/features/validators';
 import type { WalletType } from 'client/features/web3-wallet/types/config';
 import { SUPPORTED_WALLETS } from 'client/features/web3-wallet/types/config';
-import type { TxExternalTxsConfig } from 'types/client/externalTxsConfig';
+import type { TxExternalTxsConfig } from 'client/features/external-txs/types/client';
 
 import { replaceQuotes } from 'configs/app/utils';
 import { urlTest, protocols } from './utils';

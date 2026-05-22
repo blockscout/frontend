@@ -11,12 +11,12 @@ import type { ContractCodeIde } from 'client/slices/contract/types/config';
 import { SMART_CONTRACT_EXTRA_VERIFICATION_METHODS, type SmartContractVerificationMethodExtra } from 'client/slices/contract/types/config';
 import type { AddressFormat, AddressViewId } from 'client/slices/address/types/config';
 import { ADDRESS_FORMATS, ADDRESS_VIEWS_IDS, IDENTICON_TYPES } from 'client/slices/address/types/config';
-import { BLOCK_FIELDS_IDS } from 'types/views/block';
-import type { BlockFieldId } from 'types/views/block';
+import { BLOCK_FIELDS_IDS } from 'client/slices/block/types/config';
+import type { BlockFieldId } from 'client/slices/block/types/config';
 import type { TxAdditionalFieldsId, TxFieldsId, TxViewId } from 'client/slices/tx/types/config';
 import { TX_ADDITIONAL_FIELDS_IDS, TX_FIELDS_IDS, TX_VIEWS_IDS } from 'client/slices/tx/types/config';
 import * as regexp from 'toolkit/utils/regexp';
-import { NftMarketplaceItem } from 'types/views/nft';
+import { NftMarketplaceItem } from 'client/slices/token/types/client';
 
 const heroBannerButtonStateSchema: yup.ObjectSchema<HeroBannerButtonState> = yup.object({
     background: yup.array().max(2).of(yup.string()),

@@ -6,10 +6,10 @@ import { useCallback } from 'react';
 import { getAddress, formatUnits, slice } from 'viem';
 import type { PublicClient, Log } from 'viem';
 
+import type { AllowanceType, ContractAllowanceType } from '../types';
 import type { EssentialDappsChainConfig } from 'client/features/marketplace/types/client';
 import type { AddressTokenBalancesResponse } from 'client/slices/address/types/api';
 import type { TokenInfo } from 'client/slices/token/types/api';
-import type { AllowanceType, ContractAllowanceType } from 'types/client/revoke';
 
 import useApiFetch from 'client/api/hooks/useApiFetch';
 

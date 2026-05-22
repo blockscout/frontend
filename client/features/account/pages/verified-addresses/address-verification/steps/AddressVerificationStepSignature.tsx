@@ -30,7 +30,8 @@ import { Radio, RadioGroup } from 'toolkit/chakra/radio';
 import { FormFieldText } from 'toolkit/components/forms/fields/FormFieldText';
 import { SIGNATURE_REGEXP } from 'toolkit/components/forms/validators/signature';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
-import AdminSupportText from 'ui/shared/texts/AdminSupportText';
+
+import AdminSupportText from '../../AdminSupportText';
 
 type Fields = RootFields & AddressVerificationFormSecondStepFields;
 

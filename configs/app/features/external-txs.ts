@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { Feature } from './types';
-import type { TxExternalTxsConfig } from 'types/client/externalTxsConfig';
+import type { TxExternalTxsConfig } from 'client/features/external-txs/types/client';
 
 import { getEnvValue, parseEnvJson } from '../utils';
 

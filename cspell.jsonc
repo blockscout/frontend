@@ -11,11 +11,11 @@
         "pnpm-lock.yaml",
         "configs/envs",
         "client/features/chain-variants/zeta-chain/mocks/cctx.ts",
-        "mocks/metadata/address.ts",
+        "client/features/address-metadata/mocks/tags.ts",
         "playwright/mocks/file_mock_with_very_long_name.json",
         "playwright/fixtures/rewards.ts",
         "public/static/capybara/index.js",
-        "ui/showcases/utils.ts",
+        "client/toolkit/pages/design-system/utils.ts",
         "client/features/external-txs/components/TxExternalTxs.pw.tsx"
     ],
     "enableGlobDot": true,
