@@ -79,6 +79,11 @@ const SwaggerUI = ({ url, requestInterceptor }: Props) => {
       color: { _light: 'red.500', _dark: 'red.400' },
     },
 
+    // SECTIONS
+    '& .swagger-ui section h3': {
+      color: mainColor,
+    },
+
     // MODELS
     '& .swagger-ui section.models': {
       borderColor: borderColor,
@@ -107,9 +112,13 @@ const SwaggerUI = ({ url, requestInterceptor }: Props) => {
       color: useToken('colors', 'text_.secondary'),
       wordBreak: 'break-all',
     },
+
+    // FILTER
     '& .swagger-ui .filter .operation-filter-input': {
       bgColor: 'transparent',
       maxW: 'none',
+      color: mainColor,
+      borderColor,
     },
   };
 
