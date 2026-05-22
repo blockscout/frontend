@@ -8,6 +8,7 @@ import { route } from 'nextjs/routes';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import CapybaraRunner from 'client/features/easter-eggs/components/runner/CapybaraRunner';
 import { useMultichainContext } from 'client/features/multichain/context';
 
 import dayjs from 'client/shared/date-and-time/dayjs';
@@ -22,7 +23,6 @@ import { Link } from 'toolkit/chakra/link';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
 import { downloadBlob } from 'toolkit/utils/file';
-import CapybaraRunner from 'ui/games/CapybaraRunner';
 import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 import IconSvg from 'ui/shared/IconSvg';
 import Time from 'ui/shared/time/Time';

@@ -9,7 +9,7 @@ import { Link } from 'toolkit/chakra/link';
 
 import Confetti from './Confetti';
 
-const easterEggPuzzleBadgeFeature = config.features.easterEggPuzzleBadge;
+const easterEggsFeature = config.features.easterEggs;
 
 const getPossibleMoves = (emptyIndex: number): Array<number> => {
 
@@ -198,13 +198,14 @@ const Puzzle15 = () => {
           <Text mb={ 1 }>Click on a square to move it</Text>
         </>
       ) }
-      { isWon && easterEggPuzzleBadgeFeature.isEnabled && (
+      { isWon && easterEggsFeature.isEnabled && easterEggsFeature.puzzle && (
         <Flex flexDirection="column" alignItems="center" justifyContent="center" gap={ 4 } mt={ 10 }>
           <Text fontSize="2xl" fontWeight="bold">You unlocked a hidden badge!</Text>
           <Text fontSize="lg" textAlign="center">Congratulations! You're eligible to claim an epic hidden badge!</Text>
           <Link
-            href={ easterEggPuzzleBadgeFeature.badgeClaimLink }
-            external noIcon
+            href={ easterEggsFeature.puzzle.claimLink }
+            external
+            noIcon
           >
             <Button>Claim</Button>
           </Link>

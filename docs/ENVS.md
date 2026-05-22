@@ -1102,19 +1102,12 @@ This feature enables cross-chain transaction tracking and visualization, allowin
 
 &nbsp;
 
-### Badge claim link
+### Easter eggs
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_GAME_BADGE_CLAIM_LINK | `string` | Provide to enable the easter egg badge feature | - | - | `https://example.com` | v1.37.0+ |
-
-&nbsp;
-
-### Puzzle game badge claim link
-
-| Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
-| --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_PUZZLE_GAME_BADGE_CLAIM_LINK | `string` | Provide to enable the easter egg puzzle badge feature | - | - | `https://example.com` | v2.2.0+ |
+| NEXT_PUBLIC_GAME_BADGE_CLAIM_LINK | `string` | Provide to enable the easter egg runner game feature | - | - | `https://example.com` | v1.37.0+ |
+| NEXT_PUBLIC_PUZZLE_GAME_BADGE_CLAIM_LINK | `string` | Provide to enable the easter egg puzzle game feature | - | - | `https://example.com` | v2.2.0+ |
 
 &nbsp;
 
