@@ -10,8 +10,9 @@ import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
 import { layerLabels } from 'client/features/rollup/common/utils/layer';
 
+import dayjs from 'client/shared/date-and-time/dayjs';
+
 import config from 'configs/app';
-import dayjs from 'lib/date/dayjs';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';

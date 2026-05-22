@@ -16,3 +16,10 @@ export interface AdditionalTokenType {
   id: string;
   name: string;
 }
+
+export interface NftMarketplaceItem {
+  name: string;
+  collection_url?: string;
+  instance_url?: string;
+  logo_url: string;
+}

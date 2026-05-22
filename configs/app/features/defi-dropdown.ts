@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { Feature } from './types';
-import type { DeFiDropdownItem } from 'types/client/deFiDropdown';
+import type { DeFiDropdownItem } from 'client/features/defi-dropdown/types/client';
 
 import app from '../app';
 import { getEnvValue, parseEnvJson } from '../utils';

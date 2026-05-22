@@ -8,11 +8,11 @@ import { useInView } from 'react-intersection-observer';
 
 import { getResourceKey } from 'client/api/hooks/useApiQuery';
 
+import dayjs from 'client/shared/date-and-time/dayjs';
 import shortenString from 'client/shared/text/shorten-string';
 
 import config from 'configs/app';
 import multichainConfig from 'configs/multichain';
-import dayjs from 'lib/date/dayjs';
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';
 import { Status } from 'toolkit/chakra/status';

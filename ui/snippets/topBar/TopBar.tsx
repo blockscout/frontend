@@ -4,6 +4,7 @@ import { Flex, Box, HStack } from '@chakra-ui/react';
 import React from 'react';
 
 import CsvExportDownloads from 'client/features/csv-export/components/downloads/CsvExportDownloads';
+import DeFiDropdown from 'client/features/defi-dropdown/components/DeFiDropdown';
 import NetworkAddToWallet from 'client/features/web3-wallet/components/NetworkAddToWallet';
 import useProvider from 'client/features/web3-wallet/hooks/useProvider';
 
@@ -14,7 +15,6 @@ import config from 'configs/app';
 import { useAppContext } from 'lib/contexts/app';
 import { CONTENT_MAX_WIDTH } from 'ui/shared/layout/utils';
 
-import DeFiDropdown from './DeFiDropdown';
 import NetworkMenu from './NetworkMenu';
 import Settings from './settings/Settings';
 import TopBarStats from './TopBarStats';

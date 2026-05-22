@@ -9,8 +9,9 @@ import { VERIFIED_CONTRACTS_COUNTERS, VERIFIED_CONTRACTS_COUNTERS_MICROSERVICE }
 
 import { useMultichainContext } from 'client/features/multichain/context';
 
+import StatsWidget from 'client/shared/stats/StatsWidget';
+
 import config from 'configs/app';
-import StatsWidget from 'ui/shared/stats/StatsWidget';
 
 const VerifiedContractsCounters = () => {
   const multichainContext = useMultichainContext();

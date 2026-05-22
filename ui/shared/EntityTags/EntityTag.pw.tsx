@@ -1,7 +1,8 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import * as addressMetadataMock from 'mocks/metadata/address';
+import * as addressMetadataMock from 'client/features/address-metadata/mocks/tags';
+
 import { test, expect } from 'playwright/lib';
 
 import EntityTag from './EntityTag';

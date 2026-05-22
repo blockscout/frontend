@@ -5,7 +5,7 @@ import React from 'react';
 
 import PageNextJs from 'nextjs/PageNextJs';
 
-import Login from 'ui/pages/Login';
+import Login from 'client/features/account/pages/login/Login';
 
 const Page: NextPage = () => {
   return (

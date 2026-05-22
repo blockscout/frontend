@@ -11,10 +11,11 @@ import { TXS_STATS, TXS_STATS_MICROSERVICE } from 'client/slices/tx/stubs/tx';
 
 import { useMultichainContext } from 'client/features/multichain/context';
 
+import getStatsLabelFromTitle from 'client/shared/stats/get-stats-label-from-title';
+import StatsWidget from 'client/shared/stats/StatsWidget';
+
 import config from 'configs/app';
-import getStatsLabelFromTitle from 'lib/stats/getStatsLabelFromTitle';
 import { thinsp } from 'toolkit/utils/htmlEntities';
-import StatsWidget from 'ui/shared/stats/StatsWidget';
 import calculateUsdValue from 'ui/shared/value/calculateUsdValue';
 
 interface Props extends BoxProps {}

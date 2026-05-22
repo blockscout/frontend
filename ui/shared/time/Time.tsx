@@ -4,8 +4,9 @@ import type { BoxProps } from '@chakra-ui/react';
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
+import dayjs, { FORMATS } from 'client/shared/date-and-time/dayjs';
+
 import { useSettingsContext } from 'lib/contexts/settings';
-import dayjs, { FORMATS } from 'lib/date/dayjs';
 
 interface Props extends BoxProps {
   timestamp: string | number;

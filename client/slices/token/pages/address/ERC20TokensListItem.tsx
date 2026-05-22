@@ -9,6 +9,7 @@ import { getTokenTypeName, isConfidentialTokenType } from 'client/slices/token/u
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
+import NativeTokenTag from 'client/slices/token/components/NativeTokenTag';
 
 import TokenAddToWallet from 'client/features/web3-wallet/components/TokenAddToWallet';
 
@@ -16,7 +17,6 @@ import config from 'configs/app';
 import multichainConfig from 'configs/multichain';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tag } from 'toolkit/chakra/tag';
-import NativeTokenTag from 'ui/shared/celo/NativeTokenTag';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import calculateUsdValue from 'ui/shared/value/calculateUsdValue';
 import ConfidentialValue from 'ui/shared/value/ConfidentialValue';

@@ -3,20 +3,21 @@
 import { Flex, Box, VStack } from '@chakra-ui/react';
 import React from 'react';
 
+import NetworkIcon from 'client/slices/chain/logo/NetworkIcon';
+import NetworkLogo from 'client/slices/chain/logo/NetworkLogo';
+import TestnetBadge from 'client/slices/chain/TestnetBadge';
+
 import useIsAuth from 'client/features/account/hooks/useIsAuth';
 import NavLinkRewards from 'client/features/rewards/components/NavLinkRewards';
+import RollupStageBadge from 'client/features/rollup/common/components/RollupStageBadge';
 
 import * as cookies from 'client/shared/storage/cookies';
 
 import { useAppContext } from 'lib/contexts/app';
 import useNavItems, { isGroupItem } from 'lib/hooks/useNavItems';
 import IconSvg from 'ui/shared/IconSvg';
-import NetworkIcon from 'ui/snippets/networkLogo/NetworkIcon';
-import NetworkLogo from 'ui/snippets/networkLogo/NetworkLogo';
 
 import NavigationPromoBanner from '../promoBanner/NavigationPromoBanner';
-import RollupStageBadge from '../RollupStageBadge';
-import TestnetBadge from '../TestnetBadge';
 import NavLink from './NavLink';
 import NavLinkGroup from './NavLinkGroup';
 

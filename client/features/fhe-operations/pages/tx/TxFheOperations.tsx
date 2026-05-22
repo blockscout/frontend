@@ -9,10 +9,10 @@ import TxPendingAlert from 'client/slices/tx/components/TxPendingAlert';
 import TxSocketAlert from 'client/slices/tx/components/TxSocketAlert';
 import type { TxQuery } from 'client/slices/tx/hooks/useTxQuery';
 
-import { FHE_OPERATIONS_RESPONSE } from 'stubs/fheOperations';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 
+import { FHE_OPERATIONS_RESPONSE } from '../../stubs';
 import TxFHEOperationsList from './TxFheOperationsList';
 import TxFHEOperationsStats from './TxFheOperationsStats';
 import TxFHEOperationsTable from './TxFheOperationsTable';

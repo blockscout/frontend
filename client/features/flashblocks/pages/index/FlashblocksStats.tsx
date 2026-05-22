@@ -4,9 +4,10 @@ import { Box } from '@chakra-ui/react';
 import { upperFirst } from 'es-toolkit';
 import React from 'react';
 
+import StatsWidget from 'client/shared/stats/StatsWidget';
+
 import config from 'configs/app';
 import { SECOND } from 'toolkit/utils/consts';
-import StatsWidget from 'ui/shared/stats/StatsWidget';
 
 const flashblocksFeature = config.features.flashblocks;
 

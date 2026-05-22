@@ -10,7 +10,7 @@ import { sortHomeStatsItems, isHomeStatsItemEnabled } from 'client/slices/home/u
 
 import { HOMEPAGE_STATS } from 'client/features/multichain/stubs';
 
-import StatsWidget from 'ui/shared/stats/StatsWidget';
+import StatsWidget from 'client/shared/stats/StatsWidget';
 
 import ChainIndicators from './ChainIndicators';
 

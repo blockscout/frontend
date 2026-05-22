@@ -6,7 +6,8 @@ import { FormProvider, useForm } from 'react-hook-form';
 
 import type { FormFields } from './types';
 
-import dayjs from 'lib/date/dayjs';
+import dayjs from 'client/shared/date-and-time/dayjs';
+
 import { Button } from 'toolkit/chakra/button';
 import { DialogBody, DialogContent, DialogHeader, DialogRoot } from 'toolkit/chakra/dialog';
 import type { OnOpenChangeHandler } from 'toolkit/hooks/useDisclosure';

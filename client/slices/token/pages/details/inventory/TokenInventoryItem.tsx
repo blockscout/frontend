@@ -8,6 +8,7 @@ import type { TokenInfo, TokenInstance } from 'client/slices/token/types/api';
 import { route } from 'nextjs/routes';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+import NftMedia from 'client/slices/token/components/nft-media/NftMedia';
 
 import { useMultichainContext } from 'client/features/multichain/context';
 
@@ -16,7 +17,6 @@ import useIsMobile from 'client/shared/hooks/useIsMobile';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TruncatedTextTooltip } from 'toolkit/components/truncation/TruncatedTextTooltip';
-import NftMedia from 'ui/shared/nft/NftMedia';
 
 type Props = { item: TokenInstance; token: TokenInfo; isLoading: boolean };
 

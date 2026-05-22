@@ -8,7 +8,8 @@ import type { CeloEpochListItem } from 'client/features/chain-variants/celo/type
 import CeloEpochStatus from 'client/features/chain-variants/celo/components/CeloEpochStatus';
 import EpochEntity from 'client/features/chain-variants/celo/components/entity/EpochEntity';
 
-import dayjs from 'lib/date/dayjs';
+import dayjs from 'client/shared/date-and-time/dayjs';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TextSeparator from 'ui/shared/TextSeparator';

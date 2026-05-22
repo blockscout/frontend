@@ -4,8 +4,9 @@ import type { ReactElement } from 'react';
 
 import type { HomeStatsWidgetId } from 'client/slices/home/types/config';
 
+import type { Props as StatsWidgetProps } from 'client/shared/stats/StatsWidget';
+
 import config from 'configs/app';
-import type { Props as StatsWidgetProps } from 'ui/shared/stats/StatsWidget';
 
 export type HomeStatsComponentItem = { id: HomeStatsWidgetId; component: ReactElement };
 export type HomeStatsWidgetItem = StatsWidgetProps & { id: HomeStatsWidgetId; component?: undefined };

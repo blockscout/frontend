@@ -8,10 +8,10 @@ import { hasTokenTransferValue, isConfidentialTokenType, NFT_TOKEN_TYPE_IDS } fr
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
+import NftEntity from 'client/slices/token/components/entity/NftEntity';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 
 import { Badge } from 'toolkit/chakra/badge';
-import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import ConfidentialTokenValue from 'ui/shared/value/ConfidentialTokenValue';

@@ -11,9 +11,9 @@ import { toBech32Address } from 'client/slices/address/utils/bech32';
 
 import * as EnsEntity from 'client/features/name-services/domains/components/EnsEntity';
 
+import dayjs from 'client/shared/date-and-time/dayjs';
 import highlightText from 'client/shared/text/highlight-text';
 
-import dayjs from 'lib/date/dayjs';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import IconSvg from 'ui/shared/IconSvg';
 

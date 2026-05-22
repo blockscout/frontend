@@ -3,18 +3,19 @@
 import { Box, chakra, Flex, Separator } from '@chakra-ui/react';
 import React from 'react';
 
+import NetworkLogo from 'client/slices/chain/logo/NetworkLogo';
+import TestnetBadge from 'client/slices/chain/TestnetBadge';
+
 import UserProfileDesktop from 'client/features/account/components/user-profile/UserProfileDesktop';
 import useIsAuth from 'client/features/account/hooks/useIsAuth';
 import RewardsButton from 'client/features/rewards/components/RewardsButton';
+import RollupStageBadge from 'client/features/rollup/common/components/RollupStageBadge';
 
 import config from 'configs/app';
 import useNavItems, { isGroupItem } from 'lib/hooks/useNavItems';
 import { CONTENT_MAX_WIDTH } from 'ui/shared/layout/utils';
-import NetworkLogo from 'ui/snippets/networkLogo/NetworkLogo';
 
 import NavigationPromoBanner from '../promoBanner/NavigationPromoBanner';
-import RollupStageBadge from '../RollupStageBadge';
-import TestnetBadge from '../TestnetBadge';
 import NavLink from './NavLink';
 import NavLinkGroup from './NavLinkGroup';
 

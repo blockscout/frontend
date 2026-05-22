@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import Sprite from 'client/sprite/pages/Sprite';
 import type { NextPage } from 'next';
 import React from 'react';
 
 import PageNextJs from 'nextjs/PageNextJs';
-
-import Sprite from 'ui/pages/Sprite';
 
 const Page: NextPage = () => {
   return (

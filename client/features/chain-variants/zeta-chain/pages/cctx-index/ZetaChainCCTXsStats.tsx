@@ -8,9 +8,10 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 
 import { TXS_STATS_MICROSERVICE } from 'client/slices/tx/stubs/tx';
 
+import getStatsLabelFromTitle from 'client/shared/stats/get-stats-label-from-title';
+import StatsWidget from 'client/shared/stats/StatsWidget';
+
 import config from 'configs/app';
-import getStatsLabelFromTitle from 'lib/stats/getStatsLabelFromTitle';
-import StatsWidget from 'ui/shared/stats/StatsWidget';
 
 interface Props extends BoxProps {}
 

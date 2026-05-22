@@ -15,9 +15,9 @@ import { TX } from 'client/slices/tx/stubs/tx';
 
 import { publicClient } from 'client/features/connect-wallet/utils/public-client';
 
+import dayjs from 'client/shared/date-and-time/dayjs';
 import hexToDecimal from 'client/shared/transformers/hex-to-decimal';
 
-import dayjs from 'lib/date/dayjs';
 import { GET_BLOCK_WITH_TRANSACTIONS } from 'stubs/RPC';
 import { generateListStub } from 'stubs/utils';
 import { SECOND } from 'toolkit/utils/consts';

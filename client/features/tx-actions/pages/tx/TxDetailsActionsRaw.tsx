@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { TxAction } from 'types/api/txAction';
+import type { TxAction } from '../../types/api';
 
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoActionsWrapper from 'ui/shared/DetailedInfo/DetailedInfoActionsWrapper';

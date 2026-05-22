@@ -2,7 +2,8 @@
 
 import React from 'react';
 
-import dayjs from 'lib/date/dayjs';
+import dayjs from 'client/shared/date-and-time/dayjs';
+
 import { DAY, HOUR, MINUTE, SECOND } from 'toolkit/utils/consts';
 
 function getUnits(diff: number) {

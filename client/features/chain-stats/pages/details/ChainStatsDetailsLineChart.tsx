@@ -13,6 +13,7 @@ import { useMultichainContext } from 'client/features/multichain/context';
 import useRoutedChainSelect from 'client/features/multichain/hooks/useRoutedChainSelect';
 
 import * as mixpanel from 'client/shared/analytics/mixpanel';
+import { useChartsConfig } from 'client/shared/stats/line-chart-config';
 
 import type { OnValueChangeHandler, SelectOption } from 'toolkit/chakra/select';
 import { Select } from 'toolkit/chakra/select';
@@ -21,7 +22,6 @@ import { ChartResetZoomButton } from 'toolkit/components/charts/components/Chart
 import { LineChartContent } from 'toolkit/components/charts/line/LineChartContent';
 import LineChartMenu from 'toolkit/components/charts/line/parts/LineChartMenu';
 import { useLineChartZoom } from 'toolkit/components/charts/line/utils/useLineChartZoom';
-import { useChartsConfig } from 'ui/shared/chart/config';
 
 import ChartIntervalSelect from '../../components/ChartIntervalSelect';
 import { DEFAULT_RESOLUTION } from '../../utils/resolution';

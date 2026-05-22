@@ -2,8 +2,7 @@
 
 import type { IncomingMessage, ServerResponse } from 'http';
 
-import metrics from 'lib/monitoring/metrics';
-
+import metrics from '../monitoring/metrics';
 import detectBotRequest from './detectBotRequest';
 
 export default async function logRequestFromBot(req: IncomingMessage | undefined, res: ServerResponse<IncomingMessage> | undefined, pathname: string) {

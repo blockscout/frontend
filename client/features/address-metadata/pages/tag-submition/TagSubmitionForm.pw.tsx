@@ -1,8 +1,9 @@
 import React from 'react';
 
+import { publicTagTypes as configMock } from 'client/features/address-metadata/mocks/tag-types';
+
 import { base as useInfoMock } from 'client/features/account/mocks/user-profile';
 
-import { publicTagTypes as configMock } from 'mocks/metadata/publicTagTypes';
 import { expect, test } from 'playwright/lib';
 
 import * as mocks from './mocks';

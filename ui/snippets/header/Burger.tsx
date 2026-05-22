@@ -2,14 +2,16 @@
 
 import React from 'react';
 
+import NetworkLogo from 'client/slices/chain/logo/NetworkLogo';
+import TestnetBadge from 'client/slices/chain/TestnetBadge';
+
+import RollupStageBadge from 'client/features/rollup/common/components/RollupStageBadge';
+
 import { DrawerBody, DrawerContent, DrawerRoot, DrawerTrigger } from 'toolkit/chakra/drawer';
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import IconSvg from 'ui/shared/IconSvg';
 import NavigationMobile from 'ui/snippets/navigation/mobile/NavigationMobile';
-import RollupStageBadge from 'ui/snippets/navigation/RollupStageBadge';
-import TestnetBadge from 'ui/snippets/navigation/TestnetBadge';
-import NetworkLogo from 'ui/snippets/networkLogo/NetworkLogo';
 
 interface Props {
   isMarketplaceAppPage?: boolean;

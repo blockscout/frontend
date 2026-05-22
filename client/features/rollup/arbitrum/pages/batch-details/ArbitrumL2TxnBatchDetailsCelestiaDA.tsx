@@ -5,8 +5,9 @@ import React from 'react';
 
 import type { ArbitrumL2TxnBatchDACelestia } from '../../types/api';
 
+import CeleniumLink from 'client/features/rollup/common/components/CeleniumLink';
+
 import config from 'configs/app';
-import CeleniumLink from 'ui/shared/batch/CeleniumLink';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';

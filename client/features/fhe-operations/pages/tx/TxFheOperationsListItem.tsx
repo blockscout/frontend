@@ -4,7 +4,7 @@ import { Box, Flex, Grid, Text } from '@chakra-ui/react';
 import { capitalize } from 'es-toolkit';
 import React from 'react';
 
-import type { FheOperation } from 'types/api/fheOperations';
+import type { FheOperation } from '../../types/api';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 

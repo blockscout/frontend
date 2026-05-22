@@ -5,7 +5,8 @@ import React from 'react';
 
 import type { ArbitrumL2TxnBatchDAAnytrust } from '../../types/api';
 
-import dayjs from 'lib/date/dayjs';
+import dayjs from 'client/shared/date-and-time/dayjs';
+
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailsTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';

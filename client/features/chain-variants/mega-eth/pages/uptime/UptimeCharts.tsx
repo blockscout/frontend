@@ -7,11 +7,12 @@ import React from 'react';
 import type { UptimeHistoryFull, UptimeHistoryItem } from 'client/features/chain-variants/mega-eth/types/api';
 import type { LineChartAxesConfigFn } from 'toolkit/components/charts/line/types';
 
+import { useChartsConfig } from 'client/shared/stats/line-chart-config';
+
 import { useSettingsContext } from 'lib/contexts/settings';
 import { Heading } from 'toolkit/chakra/heading';
 import { LineChartWidget } from 'toolkit/components/charts/line';
 import { DAY, HOUR, SECOND } from 'toolkit/utils/consts';
-import { useChartsConfig } from 'ui/shared/chart/config';
 import TagGroupSelect from 'ui/shared/tagGroupSelect/TagGroupSelect';
 
 const INTERVALS = [

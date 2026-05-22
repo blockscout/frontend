@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { NftMarketplaceItem } from 'types/views/nft';
+import type { NftMarketplaceItem } from 'client/slices/token/types/client';
 
 import { getEnvValue, parseEnvJson } from 'configs/app/utils';
 
