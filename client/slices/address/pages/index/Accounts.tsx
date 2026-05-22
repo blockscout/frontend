@@ -7,8 +7,8 @@ import React from 'react';
 import { TOP_ADDRESS } from 'client/slices/address/stubs/address';
 
 import getItemIndex from 'client/shared/lists/get-item-index';
+import { generateListStub } from 'client/shared/pagination/utils';
 
-import { generateListStub } from 'stubs/utils';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';

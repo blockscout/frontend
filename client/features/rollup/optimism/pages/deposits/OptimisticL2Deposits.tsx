@@ -10,7 +10,8 @@ import OptimisticDepositsListItem from 'client/features/rollup/optimism/pages/de
 import OptimisticDepositsTable from 'client/features/rollup/optimism/pages/deposits/OptimisticDepositsTable';
 import { L2_DEPOSIT_ITEM } from 'client/features/rollup/optimism/stubs';
 
-import { generateListStub } from 'stubs/utils';
+import { generateListStub } from 'client/shared/pagination/utils';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { rightLineArrow, nbsp } from 'toolkit/utils/htmlEntities';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';

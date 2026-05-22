@@ -2,8 +2,9 @@
 
 import type { StackProps } from '@chakra-ui/react';
 import { createListCollection, HStack } from '@chakra-ui/react';
-import { useSettingsContext } from 'client/shell/top-bar/settings/context';
 import React from 'react';
+
+import { useSettingsContext } from 'client/shell/top-bar/settings/context';
 
 import dayjs from 'client/shared/date-and-time/dayjs';
 

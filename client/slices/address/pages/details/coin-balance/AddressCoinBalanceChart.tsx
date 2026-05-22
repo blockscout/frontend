@@ -5,7 +5,8 @@ import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
-import { currencyUnits } from 'client/shared/chain/units';
+import { currencyUnits } from 'client/slices/chain/units';
+
 import { useChartsConfig } from 'client/shared/stats/line-chart-config';
 
 import config from 'configs/app';

@@ -15,10 +15,10 @@ import type {
 import { VALIDATOR_STABILITY } from 'client/features/chain-variants/stability/stubs/validators';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import { generateListStub } from 'client/shared/pagination/utils';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import config from 'configs/app';
-import { generateListStub } from 'stubs/utils';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 // import { FilterInput } from 'toolkit/components/filters/FilterInput';

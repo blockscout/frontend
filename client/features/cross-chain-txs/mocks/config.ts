@@ -1,4 +1,4 @@
-import type { ExternalChain } from 'types/externalChains';
+import type { ExternalChain } from 'client/shared/external-chains/types';
 
 export const config: Array<ExternalChain> = [
   {

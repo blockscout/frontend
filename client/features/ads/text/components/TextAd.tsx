@@ -3,10 +3,11 @@
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
+import { useAppContext } from 'client/shell/app/context';
+
 import * as cookies from 'client/shared/storage/cookies';
 
 import config from 'configs/app';
-import { useAppContext } from 'lib/contexts/app';
 
 import SevioTextAd from './SevioTextAd';
 

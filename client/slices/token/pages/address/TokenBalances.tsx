@@ -6,9 +6,8 @@ import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import { currencyUnits } from 'client/slices/chain/units';
 import NativeTokenIcon from 'client/slices/token/components/icon/TokenIconNative';
-
-import { currencyUnits } from 'client/shared/chain/units';
 
 import config from 'configs/app';
 import { ZERO } from 'toolkit/utils/consts';

@@ -13,10 +13,10 @@ import { BLOCK } from 'client/slices/block/stubs/block';
 import ChainSelect from 'client/features/multichain/components/ChainSelect';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import { generateListStub } from 'client/shared/pagination/utils';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import multichainConfig from 'configs/multichain';
-import { generateListStub } from 'stubs/utils';
 import { Link } from 'toolkit/chakra/link';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import IconSvg from 'ui/shared/IconSvg';

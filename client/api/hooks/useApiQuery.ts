@@ -3,7 +3,7 @@
 import type { UseQueryOptions } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
 
-import type { ExternalChainExtended } from 'types/externalChains';
+import type { ExternalChainExtended } from 'client/shared/external-chains/types';
 
 import { useMultichainContext } from 'client/features/multichain/context';
 

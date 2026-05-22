@@ -14,9 +14,9 @@ import { SORT_OPTIONS } from 'client/slices/contract/pages/index/sort';
 import { VERIFIED_CONTRACT_INFO } from 'client/slices/contract/stubs';
 
 import useDebounce from 'client/shared/hooks/useDebounce';
+import { generateListStub } from 'client/shared/pagination/utils';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
-import { generateListStub } from 'stubs/utils';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import getSortParamsFromValue from 'ui/shared/sort/getSortParamsFromValue';
 import getSortValueFromQuery from 'ui/shared/sort/getSortValueFromQuery';

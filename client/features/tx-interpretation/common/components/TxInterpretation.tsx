@@ -16,12 +16,12 @@ import type { AddressParam } from 'client/slices/address/types/api';
 import { route } from 'nextjs-routes';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+import { currencyUnits } from 'client/slices/chain/units';
 import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 
 import EnsEntity from 'client/features/name-services/domains/components/EnsEntity';
 
 import * as mixpanel from 'client/shared/analytics/mixpanel';
-import { currencyUnits } from 'client/shared/chain/units';
 import dayjs from 'client/shared/date-and-time/dayjs';
 
 import config from 'configs/app';

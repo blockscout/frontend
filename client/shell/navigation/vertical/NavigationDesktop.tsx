@@ -3,6 +3,8 @@
 import { Flex, Box, VStack } from '@chakra-ui/react';
 import React from 'react';
 
+import { useAppContext } from 'client/shell/app/context';
+
 import NetworkIcon from 'client/slices/chain/logo/NetworkIcon';
 import NetworkLogo from 'client/slices/chain/logo/NetworkLogo';
 import TestnetBadge from 'client/slices/chain/TestnetBadge';
@@ -13,7 +15,6 @@ import RollupStageBadge from 'client/features/rollup/common/components/RollupSta
 
 import * as cookies from 'client/shared/storage/cookies';
 
-import { useAppContext } from 'lib/contexts/app';
 import IconSvg from 'ui/shared/IconSvg';
 
 import NavigationPromoBanner from '../promo-banner/NavigationPromoBanner';

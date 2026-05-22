@@ -2,8 +2,9 @@
 
 import { INTERNAL_TX } from 'client/slices/internal-tx/stubs';
 
+import { generateListStub } from 'client/shared/pagination/utils';
+
 import type config from 'configs/app';
-import { generateListStub } from 'stubs/utils';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
 import type { BlockQuery } from './useBlockQuery';

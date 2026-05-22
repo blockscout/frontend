@@ -6,13 +6,14 @@ import React from 'react';
 import type { NFTTokenType } from 'client/slices/token/types/api';
 import { NFT_TOKEN_TYPE_IDS } from 'client/slices/token/utils/token-types';
 
+import { useAppContext } from 'client/shell/app/context';
+
 import { ADDRESS_COLLECTION, ADDRESS_NFT_1155 } from 'client/slices/address/stubs/address';
 
+import { generateListStub } from 'client/shared/pagination/utils';
 import getFilterValuesFromQuery from 'client/shared/router/get-filter-values-from-query';
 import * as cookies from 'client/shared/storage/cookies';
 
-import { useAppContext } from 'lib/contexts/app';
-import { generateListStub } from 'stubs/utils';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
 const getTokenFilterValue: (type: string | Array<string> | undefined) => Array<NFTTokenType> | undefined =

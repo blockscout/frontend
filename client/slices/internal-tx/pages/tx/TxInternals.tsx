@@ -11,9 +11,9 @@ import TxSocketAlert from 'client/slices/tx/components/TxSocketAlert';
 import type { TxQuery } from 'client/slices/tx/hooks/useTxQuery';
 
 import compareBns from 'client/shared/numbers/compareBns';
-
+import { generateListStub } from 'client/shared/pagination/utils';
 // import { apos } from 'toolkit/utils/htmlEntities';
-import { generateListStub } from 'stubs/utils';
+
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 // import { FilterInput } from 'toolkit/components/filters/FilterInput';

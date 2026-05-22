@@ -8,9 +8,9 @@ import type { EntityTag as TEntityTag, EntityTagType } from 'ui/shared/EntityTag
 
 import { TOP_ADDRESS } from 'client/slices/address/stubs/address';
 
+import { generateListStub } from 'client/shared/pagination/utils';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
-import { generateListStub } from 'stubs/utils';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';

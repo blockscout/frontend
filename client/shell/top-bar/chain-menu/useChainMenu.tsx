@@ -3,8 +3,8 @@
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
-import type { FeaturedNetwork } from 'types/networks';
-import { NETWORK_GROUPS } from 'types/networks';
+import type { FeaturedNetwork } from './types';
+import { NETWORK_GROUPS } from './types';
 
 import useFetch from 'client/api/hooks/useFetch';
 import type { ResourceError } from 'client/api/resources';

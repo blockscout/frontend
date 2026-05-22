@@ -6,9 +6,9 @@ import React from 'react';
 
 import useDebounce from 'client/shared/hooks/useDebounce';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import { generateListStub } from 'client/shared/pagination/utils';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
-import { generateListStub } from 'stubs/utils';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';

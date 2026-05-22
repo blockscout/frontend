@@ -9,7 +9,8 @@ import type { TxQuery } from 'client/slices/tx/hooks/useTxQuery';
 import UserOpsContent from 'client/features/user-ops/pages/index/UserOpsContent';
 import { USER_OPS_ITEM } from 'client/features/user-ops/stubs';
 
-import { generateListStub } from 'stubs/utils';
+import { generateListStub } from 'client/shared/pagination/utils';
+
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 

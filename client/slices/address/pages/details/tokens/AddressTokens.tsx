@@ -17,10 +17,10 @@ import useAddressNftQuery from 'client/slices/token/pages/address/useAddressNftQ
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import useIsMounted from 'client/shared/hooks/useIsMounted';
+import { generateListStub } from 'client/shared/pagination/utils';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import config from 'configs/app';
-import { generateListStub } from 'stubs/utils';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';

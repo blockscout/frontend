@@ -6,9 +6,8 @@ import React from 'react';
 import type { InternalTransaction } from 'client/slices/internal-tx/types/api';
 
 import AddressFromTo from 'client/slices/address/components/from-to/AddressFromTo';
+import { currencyUnits } from 'client/slices/chain/units';
 import TxStatus from 'client/slices/tx/components/TxStatus';
-
-import { currencyUnits } from 'client/shared/chain/units';
 
 import { Badge } from 'toolkit/chakra/badge';
 import { Skeleton } from 'toolkit/chakra/skeleton';

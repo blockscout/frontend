@@ -13,6 +13,7 @@ import { route, routeParams } from 'nextjs/routes';
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import type { BlockQuery } from 'client/slices/block/hooks/useBlockQuery';
 import getBlockReward from 'client/slices/block/utils/get-block-reward';
+import getChainValidatorTitle from 'client/slices/chain/verification-type/utils/get-chain-validator-title';
 import GasUsed from 'client/slices/gas/components/GasUsed';
 
 import BlockDetailsBaseFeeCelo from 'client/features/chain-variants/celo/pages/block/BlockDetailsBaseFeeCelo';
@@ -28,7 +29,6 @@ import OptimisticL2TxnBatchDA from 'client/features/rollup/optimism/components/T
 import ZkSyncL2TxnBatchHashesInfo from 'client/features/rollup/zk-sync/pages/batch-details/ZkSyncL2TxnBatchHashesInfo';
 import { formatZkSyncL2TxnBatchStatus } from 'client/features/rollup/zk-sync/utils/format-txn-batch-status';
 
-import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-title';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import config from 'configs/app';

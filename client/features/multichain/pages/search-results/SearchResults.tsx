@@ -1,10 +1,11 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { chakra } from '@chakra-ui/react';
+import React from 'react';
+
 import HeaderAlert from 'client/shell/header/HeaderAlert';
 import HeaderDesktop from 'client/shell/header/HeaderDesktop';
 import HeaderMobile from 'client/shell/header/HeaderMobile';
-import React from 'react';
 
 import SearchResultsInput from 'client/slices/search/pages/search-results/SearchResultsInput';
 

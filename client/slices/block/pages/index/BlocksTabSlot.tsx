@@ -10,9 +10,8 @@ import { route } from 'nextjs-routes';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import getChainUtilizationParams from 'client/slices/chain/get-chain-utilization-params';
 import { HOMEPAGE_STATS } from 'client/slices/home/stubs';
-
-import getChainUtilizationParams from 'client/shared/chain/get-chain-utilization-params';
 
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';

@@ -11,12 +11,13 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 import useFetch from 'client/api/hooks/useFetch';
 import type { ResourceError } from 'client/api/resources';
 
+import { useAppContext } from 'client/shell/app/context';
+
 import IndexingStatusInternalTxs from 'client/slices/chain/indexing-status/IndexingStatusInternalTxs';
 
 import NetworkAddToWallet from 'client/features/web3-wallet/components/NetworkAddToWallet';
 
 import config from 'configs/app';
-import { useAppContext } from 'lib/contexts/app';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { copy } from 'toolkit/utils/htmlEntities';

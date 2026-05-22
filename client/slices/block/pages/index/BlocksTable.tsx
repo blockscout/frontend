@@ -8,9 +8,9 @@ import type { Block } from 'client/slices/block/types/api';
 
 import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
 import BlocksTableItem from 'client/slices/block/pages/index/BlocksTableItem';
+import { currencyUnits } from 'client/slices/chain/units';
+import getChainValidatorTitle from 'client/slices/chain/verification-type/utils/get-chain-validator-title';
 
-import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-title';
-import { currencyUnits } from 'client/shared/chain/units';
 import useInitialList from 'client/shared/lists/useInitialList';
 
 import config from 'configs/app';

@@ -4,11 +4,10 @@ import React from 'react';
 
 import type { VerifiedContract, VerifiedContractsSortingField, VerifiedContractsSortingValue } from 'client/slices/contract/types/api';
 
+import { currencyUnits } from 'client/slices/chain/units';
 import { SORT_SEQUENCE } from 'client/slices/contract/pages/index/sort';
 
 import { useMultichainContext } from 'client/features/multichain/context';
-
-import { currencyUnits } from 'client/shared/chain/units';
 
 import { TableBody, TableColumnHeader, TableColumnHeaderSortable, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';

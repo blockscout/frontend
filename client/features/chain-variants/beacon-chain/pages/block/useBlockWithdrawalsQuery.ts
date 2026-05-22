@@ -12,14 +12,14 @@ import type { ResourceError } from 'client/api/resources';
 
 import { unknownAddress } from 'client/slices/address/utils/consts';
 import type { BlockQuery } from 'client/slices/block/hooks/useBlockQuery';
+import { GET_BLOCK } from 'client/slices/block/stubs/rpc';
 
 import { publicClient } from 'client/features/connect-wallet/utils/public-client';
 
+import { generateListStub } from 'client/shared/pagination/utils';
 import hexToDecimal from 'client/shared/transformers/hex-to-decimal';
 
 import config from 'configs/app';
-import { GET_BLOCK } from 'stubs/RPC';
-import { generateListStub } from 'stubs/utils';
 import { SECOND } from 'toolkit/utils/consts';
 import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';

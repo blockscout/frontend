@@ -7,9 +7,8 @@ import React from 'react';
 import type { WatchlistAddress } from 'client/features/account/types/api';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+import { currencyUnits } from 'client/slices/chain/units';
 import * as TokenEntity from 'client/slices/token/components/entity/TokenEntity';
-
-import { currencyUnits } from 'client/shared/chain/units';
 
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';

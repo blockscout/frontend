@@ -4,8 +4,8 @@ import { Flex, Grid } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
+import type { ExcludeUndefined } from 'client/shared/types/utils';
 import type { Transaction } from 'client/slices/tx/types/api';
-import type { ExcludeUndefined } from 'types/utils';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import LogDecodedInputData from 'client/slices/log/components/LogDecodedInputData';

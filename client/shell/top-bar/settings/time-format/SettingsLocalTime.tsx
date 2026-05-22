@@ -4,7 +4,7 @@ import React from 'react';
 
 import { Switch } from 'toolkit/chakra/switch';
 
-import { useSettingsContext } from './context';
+import { useSettingsContext } from '../context';
 
 const SettingsLocalTime = () => {
   const settingsContext = useSettingsContext();

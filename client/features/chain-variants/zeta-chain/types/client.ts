@@ -2,7 +2,7 @@
 
 import type { CctxListItem } from '@blockscout/zetachain-cctx-types';
 import type { AdvancedFilterAge } from 'client/features/advanced-filter/types/api';
-import type { ExternalChain } from 'types/externalChains';
+import type { ExternalChain } from 'client/shared/external-chains/types';
 
 export interface SearchResultZetaChainCCTX {
   type: 'zetaChainCCTX';

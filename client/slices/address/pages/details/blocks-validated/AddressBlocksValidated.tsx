@@ -13,12 +13,12 @@ import useSocketChannel from 'client/api/socket/useSocketChannel';
 import useSocketMessage from 'client/api/socket/useSocketMessage';
 
 import { BLOCK } from 'client/slices/block/stubs/block';
+import { currencyUnits } from 'client/slices/chain/units';
 
-import { currencyUnits } from 'client/shared/chain/units';
 import useIsMounted from 'client/shared/hooks/useIsMounted';
+import { generateListStub } from 'client/shared/pagination/utils';
 
 import config from 'configs/app';
-import { generateListStub } from 'stubs/utils';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';

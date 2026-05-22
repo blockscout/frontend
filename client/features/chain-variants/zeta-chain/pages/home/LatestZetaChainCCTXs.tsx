@@ -22,8 +22,8 @@ import { ZETA_CHAIN_CCTX_LIST_ITEM } from 'client/features/chain-variants/zeta-c
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import useInitialList from 'client/shared/lists/useInitialList';
+import { generateListStub } from 'client/shared/pagination/utils';
 
-import { generateListStub } from 'stubs/utils';
 import { Link } from 'toolkit/chakra/link';
 import SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 

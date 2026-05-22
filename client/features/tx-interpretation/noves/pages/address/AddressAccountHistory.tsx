@@ -11,10 +11,10 @@ import { NOVES_TRANSLATE } from 'client/features/tx-interpretation/noves/stubs';
 import { getFromToValue } from 'client/features/tx-interpretation/noves/utils/from-to';
 
 import useIsMounted from 'client/shared/hooks/useIsMounted';
+import { generateListStub } from 'client/shared/pagination/utils';
 import getFilterValueFromQuery from 'client/shared/router/get-filter-value-from-query';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
-import { generateListStub } from 'stubs/utils';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';

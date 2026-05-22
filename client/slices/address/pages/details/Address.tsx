@@ -28,6 +28,7 @@ import AddressTxs, { ADDRESS_TXS_TAB_IDS } from 'client/slices/address/pages/det
 import AddressWithdrawals from 'client/slices/address/pages/details/withdrawals/AddressWithdrawals';
 import { ADDRESS_TABS_COUNTERS } from 'client/slices/address/stubs/address';
 import getCheckedSummedAddress from 'client/slices/address/utils/get-checked-summed-address';
+import getChainValidationActionText from 'client/slices/chain/verification-type/utils/get-chain-validation-action-text';
 import Contract from 'client/slices/contract/pages/details/Contract';
 import { CONTRACT_TAB_IDS } from 'client/slices/contract/utils/tabs';
 
@@ -56,7 +57,6 @@ import { USER_OPS_ACCOUNT } from 'client/features/user-ops/stubs';
 import TokenAddToWallet from 'client/features/web3-wallet/components/TokenAddToWallet';
 import useFetchXStarScore from 'client/features/x-star-score/hooks/useFetchXStarScore';
 
-import getChainValidationActionText from 'client/shared/chain/get-chain-validation-action-text';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import useEtherscanRedirects from 'client/shared/router/useEtherscanRedirects';
 

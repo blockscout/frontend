@@ -10,7 +10,8 @@ import OptimisticL2WithdrawalsListItem from 'client/features/rollup/optimism/pag
 import OptimisticL2WithdrawalsTable from 'client/features/rollup/optimism/pages/withdrawals/OptimisticL2WithdrawalsTable';
 import { L2_WITHDRAWAL_ITEM } from 'client/features/rollup/optimism/stubs';
 
-import { generateListStub } from 'stubs/utils';
+import { generateListStub } from 'client/shared/pagination/utils';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { rightLineArrow, nbsp } from 'toolkit/utils/htmlEntities';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';

@@ -3,7 +3,7 @@
 import { Box, Text, chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import type { FeaturedNetwork } from 'types/networks';
+import type { FeaturedNetwork } from './types';
 
 import { useColorModeValue } from 'toolkit/chakra/color-mode';
 import { Image } from 'toolkit/chakra/image';

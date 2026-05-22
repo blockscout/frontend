@@ -4,7 +4,7 @@ import type { StackProps } from '@chakra-ui/react';
 import { HStack } from '@chakra-ui/react';
 import React from 'react';
 
-import type { ExternalChain } from 'types/externalChains';
+import type { ExternalChain } from 'client/shared/external-chains/types';
 
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';

@@ -7,8 +7,8 @@ import React from 'react';
 import type { CrossChainChainsStatsSorting, CrossChainChainsStatsSortingField, CrossChainChainsStatsSortingValue } from '../../types/api';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import { generateListStub } from 'client/shared/pagination/utils';
 
-import { generateListStub } from 'stubs/utils';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';

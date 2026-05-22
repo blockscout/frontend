@@ -4,10 +4,11 @@ import { useEffect } from 'react';
 
 import type { AdBannerProviders } from 'client/features/ads/banner/types/config';
 
+import { useAppContext } from 'client/shell/app/context';
+
 import * as cookies from 'client/shared/storage/cookies';
 
 import config from 'configs/app';
-import { useAppContext } from 'lib/contexts/app';
 import { isBrowser } from 'toolkit/utils/isBrowser';
 
 const DEFAULT_URL = 'https://v1.slise.xyz/serve';

@@ -4,7 +4,8 @@ import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
-import { generateListStub } from 'stubs/utils';
+import { generateListStub } from 'client/shared/pagination/utils';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import StickyPaginationWithText from 'ui/shared/StickyPaginationWithText';

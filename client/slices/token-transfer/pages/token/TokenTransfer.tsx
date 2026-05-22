@@ -17,9 +17,9 @@ import TokenTransferTable from 'client/slices/token-transfer/pages/token/TokenTr
 
 import TokenAdvancedFilterLink from 'client/features/advanced-filter/pages/token/TokenAdvancedFilterLink';
 
-import useGradualIncrement from 'client/shared/hooks/useGradualIncrement';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import useIsMounted from 'client/shared/hooks/useIsMounted';
+import useGradualIncrement from 'client/shared/numbers/useGradualIncrement';
 
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';

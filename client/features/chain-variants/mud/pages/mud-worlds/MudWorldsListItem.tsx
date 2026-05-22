@@ -6,8 +6,7 @@ import React from 'react';
 import type { MudWorldItem } from 'client/features/chain-variants/mud/types/api';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
-
-import { currencyUnits } from 'client/shared/chain/units';
+import { currencyUnits } from 'client/slices/chain/units';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';

@@ -18,6 +18,7 @@ import useBlockQuery from 'client/slices/block/hooks/useBlockQuery';
 import useBlockTxsQuery from 'client/slices/block/hooks/useBlockTxsQuery';
 import BlockDetails from 'client/slices/block/pages/details/BlockDetails';
 import BlockInternalTxs from 'client/slices/block/pages/details/BlockInternalTxs';
+import getChainValidatorTitle from 'client/slices/chain/verification-type/utils/get-chain-validator-title';
 import TxsWithFrontendSorting from 'client/slices/tx/pages/index/list/TxsWithFrontendSorting';
 
 import TextAd from 'client/features/ads/text/components/TextAd';
@@ -30,7 +31,6 @@ import BlockCeloEpochTag from 'client/features/chain-variants/celo/pages/block/B
 import useBlockBlobTxsQuery from 'client/features/data-availability/hooks/useBlockBlobTxsQuery';
 import { useMultichainContext } from 'client/features/multichain/context';
 
-import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-title';
 import throwOnAbsentParamError from 'client/shared/errors/throw-on-absent-param-error';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import useIsMobile from 'client/shared/hooks/useIsMobile';

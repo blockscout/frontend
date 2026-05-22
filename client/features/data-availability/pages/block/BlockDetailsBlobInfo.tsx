@@ -6,7 +6,7 @@ import React from 'react';
 
 import type { Block } from 'client/slices/block/types/api';
 
-import { currencyUnits } from 'client/shared/chain/units';
+import { currencyUnits } from 'client/slices/chain/units';
 
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { ZERO } from 'toolkit/utils/consts';

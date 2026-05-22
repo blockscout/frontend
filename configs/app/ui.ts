@@ -3,14 +3,18 @@
 import type { AlternativeExplorer } from 'client/features/alternative-explorers/types/client';
 import { type NavItemExternal, type NavigationLayout, type NavigationPromoBannerConfig } from 'client/shell/navigation/types';
 import type { ContractCodeIde } from 'client/slices/contract/types/config';
-import type { ColorThemeId } from 'types/settings';
-import type { FontFamily } from 'types/ui';
+
+import { COLOR_THEMES, type ColorTheme, type ColorThemeId } from 'client/shell/top-bar/settings/color-theme/config';
 
 import { homepage } from 'configs/app/ui/homepage';
-import { COLOR_THEMES, type ColorTheme } from 'lib/settings/colorTheme';
 
 import * as views from './ui/views';
 import { getEnvValue, getExternalAssetFilePath, parseEnvJson } from './utils';
+
+export interface FontFamily {
+  name: string;
+  url: string;
+}
 
 const highlightedRoutes = (() => {
   const parsedValue = parseEnvJson<Array<string>>(getEnvValue('NEXT_PUBLIC_NAVIGATION_HIGHLIGHTED_ROUTES'));

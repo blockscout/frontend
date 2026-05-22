@@ -5,7 +5,7 @@ import React from 'react';
 
 import type { Transaction } from 'client/slices/tx/types/api';
 
-import { currencyUnits } from 'client/shared/chain/units';
+import { currencyUnits } from 'client/slices/chain/units';
 
 import config from 'configs/app';
 import { ZERO } from 'toolkit/utils/consts';

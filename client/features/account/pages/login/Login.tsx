@@ -6,8 +6,8 @@ import type { ChangeEvent } from 'react';
 import React from 'react';
 
 import useFeatureValue from 'client/shared/feature-flags/useFeatureValue';
-import useGradualIncrement from 'client/shared/hooks/useGradualIncrement';
 import { useRollbar } from 'client/shared/monitoring/rollbar';
+import useGradualIncrement from 'client/shared/numbers/useGradualIncrement';
 import * as cookies from 'client/shared/storage/cookies';
 
 import config from 'configs/app';

@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { FEATURED_NETWORKS } from 'mocks/config/network';
 import { test, expect } from 'playwright/lib';
 
 import ChainMenu from './ChainMenu';
+import { FEATURED_NETWORKS } from './mocks';
 
 test('tabs +@dark-mode', async({ render, mockEnvs, mockConfigResponse, mockAssetResponse, page }) => {
   const FEATURED_NETWORKS_URL = 'https://localhost:3000/featured-networks.json';

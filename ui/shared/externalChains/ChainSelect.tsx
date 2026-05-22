@@ -3,7 +3,7 @@
 import { Box, createListCollection, Separator } from '@chakra-ui/react';
 import React from 'react';
 
-import type { ExternalChain } from 'types/externalChains';
+import type { ExternalChain } from 'client/shared/external-chains/types';
 
 import useIsInitialLoading from 'client/shared/hooks/useIsInitialLoading';
 import useIsMobile from 'client/shared/hooks/useIsMobile';

@@ -5,7 +5,7 @@ import { omit, pickBy } from 'es-toolkit';
 import React from 'react';
 
 import type { CsrfData } from 'client/features/account/types/client';
-import type { ExternalChainExtended } from 'types/externalChains';
+import type { ExternalChainExtended } from 'client/shared/external-chains/types';
 
 import * as cookies from 'client/shared/storage/cookies';
 

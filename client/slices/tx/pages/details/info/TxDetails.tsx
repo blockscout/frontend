@@ -19,6 +19,8 @@ import { route } from 'nextjs-routes';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
+import { currencyUnits } from 'client/slices/chain/units';
+import getChainValidatorTitle from 'client/slices/chain/verification-type/utils/get-chain-validator-title';
 import LogDecodedInputData from 'client/slices/log/components/LogDecodedInputData';
 import TxSocketAlert from 'client/slices/tx/components/TxSocketAlert';
 import TxStatus from 'client/slices/tx/components/TxStatus';
@@ -40,9 +42,6 @@ import TxInfoScrollFees from 'client/features/rollup/scroll/pages/tx/TxInfoScrol
 import ZkSyncL2TxnBatchHashesInfo from 'client/features/rollup/zk-sync/pages/batch-details/ZkSyncL2TxnBatchHashesInfo';
 import { formatZkSyncL2TxnBatchStatus } from 'client/features/rollup/zk-sync/utils/format-txn-batch-status';
 import TxDetailsActions from 'client/features/tx-actions/pages/tx/TxDetailsActions';
-
-import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-title';
-import { currencyUnits } from 'client/shared/chain/units';
 
 import config from 'configs/app';
 import { Badge } from 'toolkit/chakra/badge';

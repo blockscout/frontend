@@ -12,11 +12,11 @@ import { retry } from 'client/api/hooks/useQueryClientConfig';
 import type { ResourceError } from 'client/api/resources';
 
 import { BLOCK } from 'client/slices/block/stubs/block';
+import { GET_BLOCK } from 'client/slices/block/stubs/rpc';
 import formatRpcData from 'client/slices/block/utils/format-rpc-data';
 
 import { publicClient } from 'client/features/connect-wallet/utils/public-client';
 
-import { GET_BLOCK } from 'stubs/RPC';
 import { SECOND } from 'toolkit/utils/consts';
 
 type RpcResponseType = GetBlockReturnType<Chain, false, 'latest'> | null;

@@ -1,4 +1,4 @@
-import type { FeaturedNetwork } from 'types/networks';
+import type { FeaturedNetwork } from './types';
 
 export const FEATURED_NETWORKS: Array<FeaturedNetwork> = [
   { title: 'Gnosis Chain', url: 'https://blockscout.com/xdai/mainnet', group: 'Mainnets', isActive: true },

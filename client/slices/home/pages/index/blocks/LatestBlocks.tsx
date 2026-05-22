@@ -10,11 +10,11 @@ import { route } from 'nextjs-routes';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import getChainUtilizationParams from 'client/slices/chain/get-chain-utilization-params';
 import { useHomeDataContext } from 'client/slices/home/contexts/home-data-context';
 import { useHomeRpcDataContext } from 'client/slices/home/contexts/rpc-data-context';
 import { HOMEPAGE_STATS } from 'client/slices/home/stubs';
 
-import getChainUtilizationParams from 'client/shared/chain/get-chain-utilization-params';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import useInitialList from 'client/shared/lists/useInitialList';
 

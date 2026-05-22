@@ -3,7 +3,7 @@
 import React from 'react';
 
 import type { OptimisticL2TxnBatchesItem } from 'client/features/rollup/optimism/types/api';
-import type { ExcludeUndefined } from 'types/utils';
+import type { ExcludeUndefined } from 'client/shared/types/utils';
 
 import type { BadgeProps } from 'toolkit/chakra/badge';
 import { Badge } from 'toolkit/chakra/badge';

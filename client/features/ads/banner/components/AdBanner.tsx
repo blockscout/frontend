@@ -5,10 +5,11 @@ import React from 'react';
 
 import type { BannerFormat } from '../types/client';
 
+import { useAppContext } from 'client/shell/app/context';
+
 import * as cookies from 'client/shared/storage/cookies';
 
 import config from 'configs/app';
-import { useAppContext } from 'lib/contexts/app';
 
 import AdBannerContent from './AdBannerContent';
 

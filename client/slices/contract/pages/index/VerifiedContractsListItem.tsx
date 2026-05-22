@@ -6,11 +6,10 @@ import React from 'react';
 import type { VerifiedContract } from 'client/slices/contract/types/api';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+import { currencyUnits } from 'client/slices/chain/units';
 import ContractCertifiedLabel from 'client/slices/contract/components/ContractCertifiedLabel';
 import { formatLanguageName } from 'client/slices/contract/utils/language';
 import { CONTRACT_LICENSES } from 'client/slices/contract/utils/licenses';
-
-import { currencyUnits } from 'client/shared/chain/units';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import IconSvg from 'ui/shared/IconSvg';

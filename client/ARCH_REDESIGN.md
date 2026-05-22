@@ -268,7 +268,7 @@ Example: `client/slices/home/types/config.ts` → imported by `configs/app/ui/ho
 | `lib/hooks/useIsSafeAddress` | `client/features/safe-address-tags/` |
 | `lib/hooks/useNotifyOnNavigation` | `client/features/metasuites/` |
 | `lib/hooks/` (remaining) | `client/shared/hooks/` |
-| `lib/contexts/app.tsx`, `fallback.tsx` | `client/shell/` |
+| `client/shell/app/context.tsx`, `fallback.tsx` | `client/shell/` |
 | `lib/contexts/settings.tsx` | `client/shell/top-bar/` |
 | `lib/contexts/multichain.tsx` | `client/features/multichain/` |
 | `lib/contexts/rewards.tsx` | `client/features/rewards/` |

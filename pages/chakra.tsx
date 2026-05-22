@@ -1,10 +1,11 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import DesignSystem from 'client/toolkit/pages/design-system/DesignSystem';
 import type { NextPage } from 'next';
 import React from 'react';
 
 import PageNextJs from 'nextjs/PageNextJs';
+
+import DesignSystem from 'client/toolkit/pages/design-system/DesignSystem';
 
 const Page: NextPage = () => {
   return (

@@ -3,7 +3,7 @@
 import React from 'react';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
-import useTableViewValue from 'client/shared/hooks/useTableViewValue';
+import useTableViewValue from 'client/shared/lists/useTableViewValue';
 
 import ActionBar from 'ui/shared/ActionBar';
 import Pagination from 'ui/shared/pagination/Pagination';

@@ -11,15 +11,15 @@ import { retry } from 'client/api/hooks/useQueryClientConfig';
 import type { ResourceError } from 'client/api/resources';
 
 import { unknownAddress } from 'client/slices/address/utils/consts';
+import { GET_BLOCK_WITH_TRANSACTIONS } from 'client/slices/block/stubs/rpc';
 import { TX } from 'client/slices/tx/stubs/tx';
 
 import { publicClient } from 'client/features/connect-wallet/utils/public-client';
 
 import dayjs from 'client/shared/date-and-time/dayjs';
+import { generateListStub } from 'client/shared/pagination/utils';
 import hexToDecimal from 'client/shared/transformers/hex-to-decimal';
 
-import { GET_BLOCK_WITH_TRANSACTIONS } from 'stubs/RPC';
-import { generateListStub } from 'stubs/utils';
 import { SECOND } from 'toolkit/utils/consts';
 import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';

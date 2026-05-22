@@ -10,9 +10,9 @@ import { LOG } from 'client/slices/log/stubs/log';
 import CsvExport from 'client/features/csv-export/components/CsvExport';
 
 import useIsMounted from 'client/shared/hooks/useIsMounted';
+import { generateListStub } from 'client/shared/pagination/utils';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
-import { generateListStub } from 'stubs/utils';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/pagination/Pagination';

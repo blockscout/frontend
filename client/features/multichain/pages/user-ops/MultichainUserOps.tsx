@@ -9,8 +9,9 @@ import UserOpsListItem from 'client/features/user-ops/pages/index/UserOpsListIte
 import UserOpsTable from 'client/features/user-ops/pages/index/UserOpsTable';
 import { USER_OPS_ITEM } from 'client/features/user-ops/stubs';
 
+import { generateListStub } from 'client/shared/pagination/utils';
+
 import multichainConfig from 'configs/multichain';
-import { generateListStub } from 'stubs/utils';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';

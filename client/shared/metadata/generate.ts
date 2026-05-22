@@ -5,14 +5,14 @@ import type { RouteParams } from 'nextjs/types';
 
 import type { Route } from 'nextjs-routes';
 
-import getChainTitle from 'client/shared/chain/get-chain-title';
-import { currencyUnits } from 'client/shared/chain/units';
+import { currencyUnits } from 'client/slices/chain/units';
 
 import config from 'configs/app';
 
 import compileValue from './compile-value';
 import generateProductSchema from './generate-product-schema';
 import getCanonicalUrl from './get-canonical-url';
+import getChainTitle from './get-chain-title';
 import getPageOgType from './get-page-og-type';
 import * as templates from './templates';
 

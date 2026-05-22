@@ -11,10 +11,10 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 import { ENS_DOMAIN } from 'client/features/name-services/domains/stubs';
 
 import useDebounce from 'client/shared/hooks/useDebounce';
+import { generateListStub } from 'client/shared/pagination/utils';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import config from 'configs/app';
-import { generateListStub } from 'stubs/utils';
 import { ADDRESS_REGEXP } from 'toolkit/utils/regexp';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';

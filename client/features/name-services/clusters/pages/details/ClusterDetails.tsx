@@ -6,10 +6,9 @@ import type { ClusterByNameResponse } from 'client/features/name-services/cluste
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import { isEvmAddress } from 'client/slices/address/utils/is-evm-address';
+import { currencyUnits } from 'client/slices/chain/units';
 
 import ClustersEntity from 'client/features/name-services/clusters/components/ClustersEntity';
-
-import { currencyUnits } from 'client/shared/chain/units';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';

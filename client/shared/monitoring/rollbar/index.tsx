@@ -1,19 +1,17 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Provider as DefaultProvider, useRollbar as useRollbarDefault } from '@rollbar/react';
-import type React from 'react';
 import type { Configuration } from 'rollbar';
 
 import { ABSENT_PARAM_ERROR_MESSAGE } from 'client/shared/errors/throw-on-absent-param-error';
 import { RESOURCE_LOAD_ERROR_MESSAGE } from 'client/shared/errors/throw-on-resource-load-error';
+import { FallbackProvider } from 'client/shared/utils/fallback-provider';
 
 import config from 'configs/app';
 
 import { isBot, isHeadlessBrowser, isNextJsChunkError, getRequestInfo, getExceptionClass, getExceptionOriginFileName } from './utils';
 
 const feature = config.features.rollbar;
-
-const FallbackProvider = ({ children }: { children: React.ReactNode }) => children;
 
 const useRollbarFallback = (): undefined => {};
 

@@ -3,12 +3,11 @@
 import { upperFirst } from 'es-toolkit';
 import React from 'react';
 
+import type { ExcludeNull, ExcludeUndefined } from 'client/shared/types/utils';
 import type { Address } from 'client/slices/address/types/api';
-import type { ExcludeNull, ExcludeUndefined } from 'types/utils';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
-
-import { currencyUnits } from 'client/shared/chain/units';
+import { currencyUnits } from 'client/slices/chain/units';
 
 import { Link } from 'toolkit/chakra/link';
 import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';

@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import NavigationMobile from 'client/shell/navigation/mobile/NavigationMobile';
 import React from 'react';
+
+import NavigationMobile from 'client/shell/navigation/mobile/NavigationMobile';
 
 import NetworkLogo from 'client/slices/chain/logo/NetworkLogo';
 import TestnetBadge from 'client/slices/chain/TestnetBadge';

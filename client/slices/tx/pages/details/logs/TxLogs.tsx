@@ -11,7 +11,8 @@ import TxPendingAlert from 'client/slices/tx/components/TxPendingAlert';
 import TxSocketAlert from 'client/slices/tx/components/TxSocketAlert';
 import type { TxQuery } from 'client/slices/tx/hooks/useTxQuery';
 
-import { generateListStub } from 'stubs/utils';
+import { generateListStub } from 'client/shared/pagination/utils';
+
 import ActionBar from 'ui/shared/ActionBar';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import Pagination from 'ui/shared/pagination/Pagination';

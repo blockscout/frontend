@@ -13,10 +13,9 @@ import { route } from 'nextjs-routes';
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
 import getBlockTotalReward from 'client/slices/block/utils/get-block-total-reward';
+import { currencyUnits } from 'client/slices/chain/units';
+import getChainValidatorTitle from 'client/slices/chain/verification-type/utils/get-chain-validator-title';
 import GasUsed from 'client/slices/gas/components/GasUsed';
-
-import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-title';
-import { currencyUnits } from 'client/shared/chain/units';
 
 import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';

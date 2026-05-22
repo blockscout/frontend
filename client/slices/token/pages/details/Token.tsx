@@ -36,11 +36,11 @@ import CsvExport from 'client/features/csv-export/components/CsvExport';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import * as metadata from 'client/shared/metadata';
+import { generateListStub } from 'client/shared/pagination/utils';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import useEtherscanRedirects from 'client/shared/router/useEtherscanRedirects';
 
 import config from 'configs/app';
-import { generateListStub } from 'stubs/utils';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import IconSvg from 'ui/shared/IconSvg';
 import Pagination from 'ui/shared/pagination/Pagination';

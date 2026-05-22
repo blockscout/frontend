@@ -8,7 +8,7 @@ import type { TxsSocketType } from '../types/socket';
 import useSocketChannel from 'client/api/socket/useSocketChannel';
 import useSocketMessage from 'client/api/socket/useSocketMessage';
 
-import useGradualIncrement from 'client/shared/hooks/useGradualIncrement';
+import useGradualIncrement from 'client/shared/numbers/useGradualIncrement';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 function getSocketParams(type: TxsSocketType, page: string) {

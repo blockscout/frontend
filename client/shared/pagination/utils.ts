@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { PaginatedResourceName, PaginatedResourceResponse, PaginatedResourceResponseItems } from 'client/api/resources';
 
 export function generateListStub<Resource extends PaginatedResourceName>(

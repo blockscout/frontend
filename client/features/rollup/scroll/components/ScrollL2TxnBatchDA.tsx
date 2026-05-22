@@ -3,7 +3,7 @@
 import React from 'react';
 
 import type { ScrollL2TxnBatch } from 'client/features/rollup/scroll/types/api';
-import type { ExcludeUndefined } from 'types/utils';
+import type { ExcludeUndefined } from 'client/shared/types/utils';
 
 import { Badge } from 'toolkit/chakra/badge';
 

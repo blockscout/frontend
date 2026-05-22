@@ -2,7 +2,6 @@
 
 import { Box, Flex, Text } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
-import { useSettingsContext } from 'client/shell/top-bar/settings/context';
 import { debounce } from 'es-toolkit';
 import React from 'react';
 
@@ -10,6 +9,8 @@ import type { ListCctxsResponse } from '@blockscout/zetachain-cctx-types';
 import type { QuickSearchResultItem } from 'client/slices/search/types/client';
 
 import type { ResourceError } from 'client/api/resources';
+
+import { useSettingsContext } from 'client/shell/top-bar/settings/context';
 
 import type { ApiCategory, Category, ItemsCategoriesMap } from 'client/slices/search/utils/search-categories';
 import { getItemCategory, searchCategories } from 'client/slices/search/utils/search-categories';

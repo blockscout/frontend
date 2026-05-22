@@ -5,7 +5,8 @@ import React from 'react';
 
 import { CELO_EPOCH_ITEM } from 'client/features/chain-variants/celo/stubs/epoch';
 
-import { generateListStub } from 'stubs/utils';
+import { generateListStub } from 'client/shared/pagination/utils';
+
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DataListDisplay from 'ui/shared/DataListDisplay';

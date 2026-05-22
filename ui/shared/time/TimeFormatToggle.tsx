@@ -2,8 +2,9 @@
 
 import type { StackProps } from '@chakra-ui/react';
 import { chakra, HStack } from '@chakra-ui/react';
-import { useSettingsContext } from 'client/shell/top-bar/settings/context';
 import React from 'react';
+
+import { useSettingsContext } from 'client/shell/top-bar/settings/context';
 
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 

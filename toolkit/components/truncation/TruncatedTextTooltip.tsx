@@ -4,7 +4,7 @@ import { debounce } from 'es-toolkit';
 import React from 'react';
 import useFontFaceObserver from 'use-font-face-observer';
 
-import type { ExcludeUndefined } from 'types/utils';
+import type { ExcludeUndefined } from 'client/shared/types/utils';
 
 import type { TooltipProps } from '../../chakra/tooltip';
 import { Tooltip } from '../../chakra/tooltip';

@@ -6,11 +6,10 @@ import React from 'react';
 
 import type { TxStateChange } from 'client/slices/tx/types/api';
 
+import { currencyUnits } from 'client/slices/chain/units';
+import getChainValidatorTitle from 'client/slices/chain/verification-type/utils/get-chain-validator-title';
 import NftEntity from 'client/slices/token/components/entity/NftEntity';
 import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
-
-import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-title';
-import { currencyUnits } from 'client/shared/chain/units';
 
 import config from 'configs/app';
 import { Badge } from 'toolkit/chakra/badge';

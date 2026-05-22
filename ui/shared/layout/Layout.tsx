@@ -1,12 +1,13 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 /* eslint-disable consistent-default-export-name/default-export-match-filename */
-import HeaderAlert from 'client/shell/header/HeaderAlert';
-import HeaderDesktop from 'client/shell/header/HeaderDesktop';
-import HeaderMobile from 'client/shell/header/HeaderMobile';
 import React from 'react';
 
 import type { Props } from './types';
+
+import HeaderAlert from 'client/shell/header/HeaderAlert';
+import HeaderDesktop from 'client/shell/header/HeaderDesktop';
+import HeaderMobile from 'client/shell/header/HeaderMobile';
 
 import AppErrorBoundary from 'ui/shared/AppError/AppErrorBoundary';
 

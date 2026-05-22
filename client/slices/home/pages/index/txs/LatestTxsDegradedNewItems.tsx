@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import useGradualIncrement from 'client/shared/hooks/useGradualIncrement';
+import useGradualIncrement from 'client/shared/numbers/useGradualIncrement';
 
 import SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 

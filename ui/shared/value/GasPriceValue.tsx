@@ -5,7 +5,7 @@ import { chakra } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
-import { currencyUnits } from 'client/shared/chain/units';
+import { currencyUnits } from 'client/slices/chain/units';
 
 import { thinsp } from 'toolkit/utils/htmlEntities';
 

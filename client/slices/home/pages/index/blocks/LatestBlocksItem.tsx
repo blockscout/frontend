@@ -9,9 +9,8 @@ import type { Block } from 'client/slices/block/types/api';
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
 import getBlockTotalReward from 'client/slices/block/utils/get-block-total-reward';
-
-import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-title';
-import { currencyUnits } from 'client/shared/chain/units';
+import { currencyUnits } from 'client/slices/chain/units';
+import getChainValidatorTitle from 'client/slices/chain/verification-type/utils/get-chain-validator-title';
 
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';

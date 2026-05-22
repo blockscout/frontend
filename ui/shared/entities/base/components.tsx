@@ -4,7 +4,7 @@ import { Box, chakra, Flex } from '@chakra-ui/react';
 import type { IconProps } from '@chakra-ui/react';
 import React from 'react';
 
-import type { ExternalChain } from 'types/externalChains';
+import type { ExternalChain } from 'client/shared/external-chains/types';
 
 import type { ImageProps } from 'toolkit/chakra/image';
 import { Image } from 'toolkit/chakra/image';

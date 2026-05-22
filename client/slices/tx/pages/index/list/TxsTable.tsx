@@ -6,11 +6,11 @@ import type { Transaction, TransactionsSortingField, TransactionsSortingValue } 
 import type { TxsSocketType } from 'client/slices/tx/types/socket';
 
 import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
+import { currencyUnits } from 'client/slices/chain/units';
 
 import { useMultichainContext } from 'client/features/multichain/context';
 import type { TxsTranslationQuery } from 'client/features/tx-interpretation/noves/hooks/useDescribeTxs';
 
-import { currencyUnits } from 'client/shared/chain/units';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import useInitialList from 'client/shared/lists/useInitialList';
 import useLazyRenderedList from 'client/shared/lists/useLazyRenderedList';

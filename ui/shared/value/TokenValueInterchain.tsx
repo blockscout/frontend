@@ -4,7 +4,7 @@ import type { BoxProps } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenInfo } from '@blockscout/interchain-indexer-types';
-import type { ExternalChain } from 'types/externalChains';
+import type { ExternalChain } from 'client/shared/external-chains/types';
 
 import type { EntityProps as TokenEntityProps } from 'client/slices/token/components/entity/TokenEntity';
 import TokenEntityInterchain from 'client/slices/token/components/entity/TokenEntityInterchain';

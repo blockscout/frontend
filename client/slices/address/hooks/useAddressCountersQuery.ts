@@ -10,10 +10,9 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 import type { ResourceError } from 'client/api/resources';
 
 import { ADDRESS_COUNTERS } from 'client/slices/address/stubs/address';
+import { GET_TRANSACTIONS_COUNT } from 'client/slices/address/stubs/rpc';
 
 import { publicClient } from 'client/features/connect-wallet/utils/public-client';
-
-import { GET_TRANSACTIONS_COUNT } from 'stubs/RPC';
 
 type RpcResponseType = [
   number | null,

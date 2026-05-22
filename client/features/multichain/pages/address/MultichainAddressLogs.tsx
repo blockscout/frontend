@@ -13,10 +13,10 @@ import ChainSelect from 'client/features/multichain/components/ChainSelect';
 import { MultichainProvider } from 'client/features/multichain/context';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import { generateListStub } from 'client/shared/pagination/utils';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import multichainConfig from 'configs/multichain';
-import { generateListStub } from 'stubs/utils';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/pagination/Pagination';

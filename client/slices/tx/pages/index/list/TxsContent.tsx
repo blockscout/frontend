@@ -12,7 +12,7 @@ import CsvExport from 'client/features/csv-export/components/CsvExport';
 import useDescribeTxs from 'client/features/tx-interpretation/noves/hooks/useDescribeTxs';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
-import useTableViewValue from 'client/shared/hooks/useTableViewValue';
+import useTableViewValue from 'client/shared/lists/useTableViewValue';
 
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';

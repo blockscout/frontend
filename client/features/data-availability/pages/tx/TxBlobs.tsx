@@ -9,7 +9,8 @@ import type { TxQuery } from 'client/slices/tx/hooks/useTxQuery';
 
 import { TX_BLOB } from 'client/features/data-availability/stubs';
 
-import { generateListStub } from 'stubs/utils';
+import { generateListStub } from 'client/shared/pagination/utils';
+
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/pagination/Pagination';

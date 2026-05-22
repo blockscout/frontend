@@ -8,9 +8,8 @@ import type { Block } from 'client/slices/block/types/api';
 
 import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
 import getBlockTotalReward from 'client/slices/block/utils/get-block-total-reward';
+import { currencyUnits } from 'client/slices/chain/units';
 import GasUsed from 'client/slices/gas/components/GasUsed';
-
-import { currencyUnits } from 'client/shared/chain/units';
 
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';

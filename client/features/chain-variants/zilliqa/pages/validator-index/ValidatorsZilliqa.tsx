@@ -5,8 +5,9 @@ import React from 'react';
 
 import { VALIDATORS_ZILLIQA_ITEM } from 'client/features/chain-variants/zilliqa/stubs/validators';
 
+import { generateListStub } from 'client/shared/pagination/utils';
+
 import config from 'configs/app';
-import { generateListStub } from 'stubs/utils';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';

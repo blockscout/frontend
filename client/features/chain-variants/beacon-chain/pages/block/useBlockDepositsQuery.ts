@@ -2,8 +2,9 @@
 
 import type { BlockQuery } from 'client/slices/block/hooks/useBlockQuery';
 
+import { generateListStub } from 'client/shared/pagination/utils';
+
 import config from 'configs/app';
-import { generateListStub } from 'stubs/utils';
 import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 

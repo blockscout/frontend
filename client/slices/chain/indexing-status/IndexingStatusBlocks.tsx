@@ -10,10 +10,11 @@ import useApiQuery, { getResourceKey } from 'client/api/hooks/useApiQuery';
 import useSocketChannel from 'client/api/socket/useSocketChannel';
 import useSocketMessage from 'client/api/socket/useSocketMessage';
 
+import { useAppContext } from 'client/shell/app/context';
+
 import * as cookies from 'client/shared/storage/cookies';
 
 import config from 'configs/app';
-import { useAppContext } from 'lib/contexts/app';
 import { Alert } from 'toolkit/chakra/alert';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { nbsp, ndash } from 'toolkit/utils/htmlEntities';

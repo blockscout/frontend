@@ -16,10 +16,10 @@ import TxsWatchlist from 'client/features/account/pages/tx-index-watchlist/TxsWa
 import AdvancedFilterLink from 'client/features/advanced-filter/components/AdvancedFilterLink';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import { generateListStub } from 'client/shared/pagination/utils';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import config from 'configs/app';
-import { generateListStub } from 'stubs/utils';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import ActionBar from 'ui/shared/ActionBar';
 import PageTitle from 'ui/shared/Page/PageTitle';

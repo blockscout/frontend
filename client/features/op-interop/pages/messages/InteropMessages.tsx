@@ -7,7 +7,8 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 
 import { INTEROP_MESSAGE } from 'client/features/op-interop/stubs';
 
-import { generateListStub } from 'stubs/utils';
+import { generateListStub } from 'client/shared/pagination/utils';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';

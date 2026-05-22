@@ -3,6 +3,8 @@
 import { Flex, Box, HStack } from '@chakra-ui/react';
 import React from 'react';
 
+import { useAppContext } from 'client/shell/app/context';
+
 import CsvExportDownloads from 'client/features/csv-export/components/downloads/CsvExportDownloads';
 import DeFiDropdown from 'client/features/defi-dropdown/components/DeFiDropdown';
 import NetworkAddToWallet from 'client/features/web3-wallet/components/NetworkAddToWallet';
@@ -12,7 +14,6 @@ import useIsMobile from 'client/shared/hooks/useIsMobile';
 import * as cookies from 'client/shared/storage/cookies';
 
 import config from 'configs/app';
-import { useAppContext } from 'lib/contexts/app';
 import { CONTENT_MAX_WIDTH } from 'ui/shared/layout/utils';
 
 import NetworkMenu from './chain-menu/ChainMenu';

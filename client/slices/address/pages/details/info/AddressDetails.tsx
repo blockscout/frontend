@@ -8,6 +8,8 @@ import AddressEntity from 'client/slices/address/components/entity/AddressEntity
 import type { AddressCountersQuery } from 'client/slices/address/hooks/useAddressCountersQuery';
 import type { AddressQuery } from 'client/slices/address/hooks/useAddressQuery';
 import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
+import getChainValidationActionText from 'client/slices/chain/verification-type/utils/get-chain-validation-action-text';
+import getChainValidatorTitle from 'client/slices/chain/verification-type/utils/get-chain-validator-title';
 import ContractCreationStatus from 'client/slices/contract/components/ContractCreationStatus';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 
@@ -16,8 +18,6 @@ import useAddress3rdPartyWidgets from 'client/features/address-3rd-party-widgets
 import AddressCeloAccount from 'client/features/chain-variants/celo/pages/address/AddressCeloAccount';
 import FilecoinActorTag from 'client/features/chain-variants/filecoin/pages/address/FilecoinActorTag';
 
-import getChainValidationActionText from 'client/shared/chain/get-chain-validation-action-text';
-import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-title';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 

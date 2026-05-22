@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { chakra } from '@chakra-ui/react';
-import { useSettingsContext } from 'client/shell/top-bar/settings/context';
 import React from 'react';
 
-import type { TimeFormat } from 'types/settings';
+import { useSettingsContext } from 'client/shell/top-bar/settings/context';
+import type { TimeFormat } from 'client/shell/top-bar/settings/time-format/utils';
 
 import dayjs from 'client/shared/date-and-time/dayjs';
 import useTimeAgoIncrement from 'client/shared/date-and-time/useTimeAgoIncrement';
