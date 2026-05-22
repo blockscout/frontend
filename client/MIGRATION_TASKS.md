@@ -290,7 +290,7 @@ migrated to `client/shared/` in 1-2 and do not appear here.
 
 ## Stage 7 — Shell
 
-### 7-1 · [ ] Migrate `client/shell`
+### 7-1 · [~] Migrate `client/shell` · [#3489](https://github.com/blockscout/frontend/issues/3489)
 
 **Scope:** Migrate after all slices and features it depends on are in place.
 - `ui/snippets/header/`, `footer/`, `navigation/`, `topBar/` → `client/shell/`
