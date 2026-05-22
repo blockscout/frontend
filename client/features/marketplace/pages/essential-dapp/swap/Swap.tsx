@@ -5,13 +5,14 @@ import React, { useMemo } from 'react';
 
 import { getFeaturePayload } from 'configs/app/features/types';
 
+import AdBanner from 'client/features/ads/banner/components/AdBanner';
+
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
 import config from 'configs/app';
 import essentialDappsChainsConfig from 'configs/essential-dapps-chains';
 import { useColorMode } from 'toolkit/chakra/color-mode';
 import { BODY_TYPEFACE } from 'toolkit/theme/foundations/typography';
-import AdBanner from 'ui/shared/ad/AdBanner';
 
 import MarketplaceAppIframe from '../../../components/MarketplaceAppIframe';
 

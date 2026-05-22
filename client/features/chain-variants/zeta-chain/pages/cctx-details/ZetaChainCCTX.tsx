@@ -5,13 +5,13 @@ import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import TextAd from 'client/features/ads/text/components/TextAd';
 import TxEntityZetaChainCC from 'client/features/chain-variants/zeta-chain/components/TxEntityZetaChainCC';
 import { ZETA_CHAIN_CCTX } from 'client/features/chain-variants/zeta-chain/stubs';
 
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
-import TextAd from 'ui/shared/ad/TextAd';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 import ZetaChainCCTXDetails from './ZetaChainCCTXDetails';

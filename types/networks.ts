@@ -12,19 +12,6 @@ export interface FeaturedNetwork {
   invertIconInDarkMode?: boolean;
 }
 
-export interface NetworkExplorer {
-  logo?: string;
-  title: string;
-  baseUrl: string;
-  paths: {
-    tx?: string;
-    address?: string;
-    token?: string;
-    block?: string;
-    blob?: string;
-  };
-}
-
 export type NetworkVerificationTypeEnvs = 'mining' | 'validation' | 'fee reception';
 export type NetworkVerificationTypeComputed = 'posting';
 export type NetworkVerificationType = NetworkVerificationTypeEnvs | NetworkVerificationTypeComputed;

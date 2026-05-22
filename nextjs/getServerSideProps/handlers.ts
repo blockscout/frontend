@@ -2,7 +2,7 @@
 
 import type { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 
-import type { AdBannerProviders } from 'types/client/adProviders';
+import type { AdBannerProviders } from 'client/features/ads/banner/types/config';
 
 import type { Route } from 'nextjs-routes';
 import { CSP_NONCE_HEADER } from 'nextjs/constants';

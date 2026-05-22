@@ -5,7 +5,7 @@ import type { SpecifyAd } from '@specify-sh/sdk';
 import Specify, { ImageFormat } from '@specify-sh/sdk';
 import React from 'react';
 
-import type { BannerProps } from './types';
+import type { BannerProps } from '../types/client';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
@@ -16,7 +16,7 @@ import {
   DESKTOP_BANNER_WIDTH,
   MOBILE_BANNER_WIDTH,
   MOBILE_BANNER_HEIGHT,
-} from './consts';
+} from '../utils/consts';
 
 const PUBLISHER_KEY = 'spk_uq51124ciii28vt00f8za4m5hibpuh';
 

@@ -5,11 +5,12 @@ import React from 'react';
 
 import { clearRecentSearchKeywords, getRecentSearchKeywords, removeRecentSearchKeyword } from 'client/slices/search/utils/recent-search-keywords';
 
+import TextAd from 'client/features/ads/text/components/TextAd';
+
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
 import { Link } from 'toolkit/chakra/link';
 import { ClearButton } from 'toolkit/components/buttons/ClearButton';
-import TextAd from 'ui/shared/ad/TextAd';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 
 type Props = {

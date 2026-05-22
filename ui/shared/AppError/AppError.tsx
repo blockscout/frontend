@@ -5,6 +5,8 @@ import React from 'react';
 
 import { route } from 'nextjs-routes';
 
+import AdBanner from 'client/features/ads/banner/components/AdBanner';
+
 import getErrorCause from 'client/shared/errors/get-error-cause';
 import getErrorCauseStatusCode from 'client/shared/errors/get-error-cause-status-code';
 import getErrorObjStatusCode from 'client/shared/errors/get-error-obj-status-code';
@@ -14,7 +16,6 @@ import getResourceErrorPayload from 'client/shared/errors/get-resource-error-pay
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';
 
-import AdBanner from '../ad/AdBanner';
 import AppErrorIcon from './AppErrorIcon';
 import AppErrorTitle from './AppErrorTitle';
 import AppErrorBlockConsensus from './custom/AppErrorBlockConsensus';

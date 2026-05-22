@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { Feature } from './types';
-import { SUPPORTED_AD_TEXT_PROVIDERS } from 'types/client/adProviders';
-import type { AdTextProviders } from 'types/client/adProviders';
+import { SUPPORTED_AD_TEXT_PROVIDERS } from 'client/features/ads/text/types/config';
+import type { AdTextProviders } from 'client/features/ads/text/types/config';
 
 import app from '../app';
 import { getEnvValue } from '../utils';

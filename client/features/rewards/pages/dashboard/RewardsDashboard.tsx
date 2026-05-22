@@ -4,6 +4,7 @@ import { Flex } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 
 import useRedirectForInvalidAuthToken from 'client/features/account/hooks/useRedirectForInvalidAuthToken';
+import AdBanner from 'client/features/ads/banner/components/AdBanner';
 import { useRewardsContext } from 'client/features/rewards/context';
 import useStreakBadges from 'client/features/rewards/hooks/useStreakBadges';
 
@@ -16,7 +17,6 @@ import { Link } from 'toolkit/chakra/link';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import { apos } from 'toolkit/utils/htmlEntities';
-import AdBanner from 'ui/shared/ad/AdBanner';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 import DailyRewardClaimButton from './DailyRewardClaimButton';

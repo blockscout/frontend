@@ -37,6 +37,8 @@ import useAddress3rdPartyWidgets from 'client/features/address-3rd-party-widgets
 import useAddressMetadataInfoQuery from 'client/features/address-metadata/hooks/useAddressMetadataInfoQuery';
 import useAddressMetadataInitUpdate from 'client/features/address-metadata/hooks/useAddressMetadataInitUpdate';
 import useAddressProfileApiQuery from 'client/features/address-profile-api/hooks/useAddressProfileApiQuery';
+import TextAd from 'client/features/ads/text/components/TextAd';
+import AlternativeExplorers from 'client/features/alternative-explorers/components/AlternativeExplorers';
 import AddressDeposits from 'client/features/chain-variants/beacon-chain/pages/address/AddressDeposits';
 import AddressEpochRewards from 'client/features/chain-variants/celo/pages/address/AddressEpochRewards';
 import AddressMud from 'client/features/chain-variants/mud/pages/address/AddressMud';
@@ -61,12 +63,10 @@ import useEtherscanRedirects from 'client/shared/router/useEtherscanRedirects';
 import config from 'configs/app';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu';
-import TextAd from 'ui/shared/ad/TextAd';
 import EntityTags from 'ui/shared/EntityTags/EntityTags';
 import formatUserTags from 'ui/shared/EntityTags/formatUserTags';
 import sortEntityTags from 'ui/shared/EntityTags/sortEntityTags';
 import IconSvg from 'ui/shared/IconSvg';
-import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 const TOKEN_TABS = [ 'tokens_erc20', 'tokens_nfts', 'tokens_nfts_collection', 'tokens_nfts_list' ];
@@ -479,7 +479,7 @@ const AddressPageContent = () => {
         <AddressEnsDomains query={ addressEnsDomainsQuery } addressHash={ hash } mainDomainName={ addressQuery.data?.ens_domain_name }/> }
       { !isLoading && nameServicesFeature.isEnabled && nameServicesFeature.clusters.isEnabled &&
         <AddressClusters query={ addressClustersQuery } addressHash={ hash }/> }
-      <NetworkExplorers type="address" pathParam={ hash }/>
+      <AlternativeExplorers type="address" pathParam={ hash }/>
     </Flex>
   );
 

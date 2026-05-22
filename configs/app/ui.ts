@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import type { AlternativeExplorer } from 'client/features/alternative-explorers/types/client';
 import type { ContractCodeIde } from 'client/slices/contract/types/config';
 import { type NavItemExternal, type NavigationLayout, type NavigationPromoBannerConfig } from 'types/client/navigation';
-import type { NetworkExplorer } from 'types/networks';
 import type { ColorThemeId } from 'types/settings';
 import type { FontFamily } from 'types/ui';
 
@@ -86,7 +86,7 @@ const UI = Object.freeze({
     message: getEnvValue('NEXT_PUBLIC_API_KEYS_ALERT_MESSAGE'),
   },
   explorers: {
-    items: parseEnvJson<Array<NetworkExplorer>>(getEnvValue('NEXT_PUBLIC_NETWORK_EXPLORERS')) || [],
+    items: parseEnvJson<Array<AlternativeExplorer>>(getEnvValue('NEXT_PUBLIC_NETWORK_EXPLORERS')) || [],
   },
   ides: {
     items: parseEnvJson<Array<ContractCodeIde>>(getEnvValue('NEXT_PUBLIC_CONTRACT_CODE_IDES')) || [],

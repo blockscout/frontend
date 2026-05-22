@@ -12,6 +12,7 @@ import { BLOCK } from 'client/slices/block/stubs/block';
 import TxsWithFrontendSorting from 'client/slices/tx/pages/index/list/TxsWithFrontendSorting';
 import { TX } from 'client/slices/tx/stubs/tx';
 
+import TextAd from 'client/features/ads/text/components/TextAd';
 import { SCROLL_L2_TXN_BATCH } from 'client/features/rollup/scroll/stubs';
 
 import throwOnAbsentParamError from 'client/shared/errors/throw-on-absent-param-error';
@@ -21,7 +22,6 @@ import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import { generateListStub } from 'stubs/utils';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import TextAd from 'ui/shared/ad/TextAd';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
