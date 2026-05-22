@@ -1,6 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box, chakra } from '@chakra-ui/react';
+import HeaderAlert from 'client/shell/header/HeaderAlert';
+import HeaderDesktop from 'client/shell/header/HeaderDesktop';
+import HeaderMobile from 'client/shell/header/HeaderMobile';
+import { useSettingsContext } from 'client/shell/top-bar/settings/context';
 import { useRouter } from 'next/router';
 import type { FormEvent } from 'react';
 import React from 'react';
@@ -19,7 +23,6 @@ import getQueryParamString from 'client/shared/router/get-query-param-string';
 import removeQueryParam from 'client/shared/router/remove-query-param';
 
 import config from 'configs/app';
-import { useSettingsContext } from 'lib/contexts/settings';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
@@ -30,9 +33,6 @@ import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import * as Layout from 'ui/shared/layout/components';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
-import HeaderAlert from 'ui/snippets/header/HeaderAlert';
-import HeaderDesktop from 'ui/snippets/header/HeaderDesktop';
-import HeaderMobile from 'ui/snippets/header/HeaderMobile';
 
 import SearchResultListItem from './SearchResultListItem';
 import SearchResultsInput from './SearchResultsInput';

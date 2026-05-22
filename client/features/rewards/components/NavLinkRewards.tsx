@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import NavLink from 'client/shell/navigation/vertical/NavLink';
 import { useRouter } from 'next/router';
 import React, { useCallback } from 'react';
 
@@ -8,7 +9,6 @@ import type { Route } from 'nextjs-routes';
 import { useRewardsContext } from 'client/features/rewards/context';
 
 import config from 'configs/app';
-import NavLink from 'ui/snippets/navigation/vertical/NavLink';
 
 type Props = {
   isCollapsed?: boolean;

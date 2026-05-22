@@ -2,11 +2,11 @@
 
 import type { StackProps } from '@chakra-ui/react';
 import { createListCollection, HStack } from '@chakra-ui/react';
+import { useSettingsContext } from 'client/shell/top-bar/settings/context';
 import React from 'react';
 
 import dayjs from 'client/shared/date-and-time/dayjs';
 
-import { useSettingsContext } from 'lib/contexts/settings';
 import { IconButton } from 'toolkit/chakra/icon-button';
 import type { SelectOption } from 'toolkit/chakra/select';
 import { SelectContent, SelectItem, SelectRoot, SelectControl } from 'toolkit/chakra/select';

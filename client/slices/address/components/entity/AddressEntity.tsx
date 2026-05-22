@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box, Flex, chakra, VStack } from '@chakra-ui/react';
+import { useSettingsContext } from 'client/shell/top-bar/settings/context';
 import React from 'react';
 
 import type { AddressParam } from 'client/slices/address/types/api';
@@ -10,7 +11,6 @@ import { route } from 'nextjs/routes';
 import { useAddressHighlightContext } from 'client/slices/address/contexts/address-highlight';
 import { toBech32Address } from 'client/slices/address/utils/bech32';
 
-import { useSettingsContext } from 'lib/contexts/settings';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import * as EntityBase from 'ui/shared/entities/base/components';

@@ -4,6 +4,7 @@ import type { HTMLChakraProps } from '@chakra-ui/react';
 import { GrowthBookProvider } from '@growthbook/growthbook-react';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { SettingsContextProvider } from 'client/shell/top-bar/settings/context';
 import type { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
 import React from 'react';
@@ -29,7 +30,6 @@ import { clientConfig as rollbarConfig, Provider as RollbarProvider } from 'clie
 import config from 'configs/app';
 import { AppContextProvider } from 'lib/contexts/app';
 import { FallbackProvider } from 'lib/contexts/fallback';
-import { SettingsContextProvider } from 'lib/contexts/settings';
 import { Provider as ChakraProvider } from 'toolkit/chakra/provider';
 import { Toaster } from 'toolkit/chakra/toaster';
 import AppErrorBoundary from 'ui/shared/AppError/AppErrorBoundary';
