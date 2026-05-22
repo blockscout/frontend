@@ -235,7 +235,7 @@ migrated to `client/shared/` in 1-2 and do not appear here.
 
 ### 6-11 · [x] Feature: `advanced-filter` · [#3468](https://github.com/blockscout/frontend/issues/3468)
 
-### 6-12 · [ ] Feature: `ad-banner`
+### 6-12 · [x] Feature: `ad-banner`
 **Scope:** Includes `lib/hooks/useAdblockDetect` → `client/features/ad-banner/`. Covers both `adsBanner.ts` and `adsText.ts` configs.  
 
 ### 6-13 · [x] Features: `cross-chain-txs`, `gas-tracker`, `sol2uml` · [#3483](https://github.com/blockscout/frontend/issues/3483)
@@ -275,7 +275,7 @@ migrated to `client/shared/` in 1-2 and do not appear here.
 ### 6-27 · [x] Features: `web3-wallet` and `connect-wallet` · [#3480](https://github.com/blockscout/frontend/issues/3480)
 **Scope:** Includes `blockchainInteraction.ts` config.  
 
-### 6-28 · [ ] Feature: `alternative-explorers`
+### 6-28 · [~] Features: `alternative-explorers` and `ads` · [#3487](https://github.com/blockscout/frontend/issues/3487)
 **Scope:** The "Verify with other explorers" menu shown on tx, block, address, and token pages. Move `ui/shared/NetworkExplorers.tsx` (and its `.pw.tsx` test) → `client/features/alternative-explorers/`. The util `client/features/alternative-explorers/utils/explorers.ts` already exists (landed in 1-2). Config-gated via `NEXT_PUBLIC_NETWORK_EXPLORERS`.  
 
 ### 6-29 · [x] Feature: `get-gas-button`
