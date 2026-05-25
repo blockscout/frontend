@@ -13,21 +13,21 @@ import { route } from 'nextjs-routes';
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
 import getBlockTotalReward from 'client/slices/block/utils/get-block-total-reward';
+import { currencyUnits } from 'client/slices/chain/units';
+import getChainValidatorTitle from 'client/slices/chain/verification-type/utils/get-chain-validator-title';
 import GasUsed from 'client/slices/gas/components/GasUsed';
 
-import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-title';
-import { currencyUnits } from 'client/shared/chain/units';
+import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
+import ListItemMobile from 'client/shared/lists/ListItemMobile';
+import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
+import SimpleValue from 'client/shared/values/entity/SimpleValue';
+import Utilization from 'client/shared/values/utilization/Utilization';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import IconSvg from 'ui/shared/IconSvg';
-import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
-import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
-import Utilization from 'ui/shared/Utilization/Utilization';
-import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
-import SimpleValue from 'ui/shared/value/SimpleValue';
 
 interface Props {
   data: Block;
@@ -58,7 +58,7 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement, animation, chain
           />
           { data.celo?.l1_era_finalized_epoch_number && (
             <Tooltip content={ `Finalized epoch #${ data.celo.l1_era_finalized_epoch_number }` } disabled={ isLoading }>
-              <IconSvg name="checkered_flag" boxSize={ 5 } p="1px" isLoading={ isLoading } flexShrink={ 0 }/>
+              <SpriteIcon name="checkered_flag" boxSize={ 5 } p="1px" isLoading={ isLoading } flexShrink={ 0 }/>
             </Tooltip>
           ) }
         </Flex>
@@ -128,7 +128,7 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement, animation, chain
             <NativeCoinValue
               amount={ data.burnt_fees }
               noSymbol
-              startElement={ <IconSvg name="flame" mr={ 2 } boxSize={ 5 } color={{ _light: 'gray.500', _dark: 'inherit' }} isLoading={ isLoading }/> }
+              startElement={ <SpriteIcon name="flame" mr={ 2 } boxSize={ 5 } color={{ _light: 'gray.500', _dark: 'inherit' }} isLoading={ isLoading }/> }
               loading={ isLoading }
               display="flex"
               color="text.secondary"

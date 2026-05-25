@@ -3,8 +3,9 @@
 import { Box, HStack, Spinner } from '@chakra-ui/react';
 import React from 'react';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import IconSvg from 'ui/shared/IconSvg';
 
 const STATUS_MAP = {
   pending: {
@@ -13,11 +14,11 @@ const STATUS_MAP = {
   },
   success: {
     text: 'Contract successfully verified',
-    leftElement: <IconSvg name="verified" boxSize={ 5 } color="green.500"/>,
+    leftElement: <SpriteIcon name="verified" boxSize={ 5 } color="green.500"/>,
   },
   failed: {
     text: 'Contract not verified automatically. Please verify manually.',
-    leftElement: <IconSvg name="status/warning" boxSize={ 5 } color="orange.400"/>,
+    leftElement: <SpriteIcon name="status/warning" boxSize={ 5 } color="orange.400"/>,
   },
 };
 

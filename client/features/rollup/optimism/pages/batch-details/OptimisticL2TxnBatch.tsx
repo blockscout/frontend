@@ -5,22 +5,24 @@ import React from 'react';
 
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import BlocksContent from 'client/slices/block/pages/index/BlocksContent';
 import { BLOCK } from 'client/slices/block/stubs/block';
 import TxsWithFrontendSorting from 'client/slices/tx/pages/index/list/TxsWithFrontendSorting';
 import { TX } from 'client/slices/tx/stubs/tx';
 
+import TextAd from 'client/features/ads/text/components/TextAd';
+
 import throwOnAbsentParamError from 'client/shared/errors/throw-on-absent-param-error';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import Pagination from 'client/shared/pagination/Pagination';
+import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
+import { generateListStub } from 'client/shared/pagination/utils';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
-import { generateListStub } from 'stubs/utils';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import TextAd from 'ui/shared/ad/TextAd';
-import PageTitle from 'ui/shared/Page/PageTitle';
-import Pagination from 'ui/shared/pagination/Pagination';
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
 import OptimisticL2TxnBatchDetails from './OptimisticL2TxnBatchDetails';
 import useBatchQuery from './useBatchQuery';

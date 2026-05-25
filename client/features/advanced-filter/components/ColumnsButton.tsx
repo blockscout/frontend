@@ -5,10 +5,11 @@ import React from 'react';
 
 import type { ColumnsIds } from '../types/client';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { Button } from 'toolkit/chakra/button';
 import { Checkbox, CheckboxGroup } from 'toolkit/chakra/checkbox';
 import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
-import IconSvg from 'ui/shared/IconSvg';
 
 import { TABLE_COLUMNS } from '../utils/consts';
 
@@ -34,7 +35,7 @@ const ColumnsButton = ({ columns, onChange }: Props) => {
           size="sm"
           px={{ base: 1, lg: 3 }}
         >
-          <IconSvg name="columns" boxSize={ 5 } color="inherit"/>
+          <SpriteIcon name="columns" boxSize={ 5 } color="inherit"/>
           <chakra.span hideBelow="lg">Columns</chakra.span>
         </Button>
       </PopoverTrigger>

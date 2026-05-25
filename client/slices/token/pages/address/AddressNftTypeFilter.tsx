@@ -6,7 +6,7 @@ import type { NFTTokenType } from 'client/slices/token/types/api';
 
 import TokenTypeFilter from 'client/slices/token/components/TokenTypeFilter';
 
-import PopoverFilter from 'ui/shared/filters/PopoverFilter';
+import PopoverFilter from 'client/shared/filters/PopoverFilter';
 
 interface Props {
   value: Array<NFTTokenType> | undefined;

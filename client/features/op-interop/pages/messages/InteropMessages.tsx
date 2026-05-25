@@ -5,15 +5,17 @@ import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import { ACTION_BAR_HEIGHT_DESKTOP } from 'client/shell/page/action-bar/ActionBar';
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import { INTEROP_MESSAGE } from 'client/features/op-interop/stubs';
 
-import { generateListStub } from 'stubs/utils';
+import DataList from 'client/shared/lists/DataList';
+import StickyPaginationWithText from 'client/shared/pagination/StickyPaginationWithText';
+import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
+import { generateListStub } from 'client/shared/pagination/utils';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
-import PageTitle from 'ui/shared/Page/PageTitle';
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
-import StickyPaginationWithText from 'ui/shared/StickyPaginationWithText';
 
 import InteropMessagesListItem from './InteropMessagesListItem';
 import InteropMessagesTable from './InteropMessagesTable';
@@ -77,14 +79,14 @@ const InteropMessages = () => {
         title="Interop messages"
         withTextAd
       />
-      <DataListDisplay
+      <DataList
         isError={ interopMessagesQuery.isError }
         itemsNum={ interopMessagesQuery.data?.items.length }
         emptyText="There are no interop messages."
         actionBar={ actionBar }
       >
         { content }
-      </DataListDisplay>
+      </DataList>
     </>
   );
 };

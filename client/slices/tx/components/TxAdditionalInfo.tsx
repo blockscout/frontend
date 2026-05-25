@@ -5,10 +5,11 @@ import React from 'react';
 
 import type { Transaction } from 'client/slices/tx/types/api';
 
+import AdditionalInfoButton from 'client/shared/buttons/AdditionalInfoButton';
+
 import { DialogContent, DialogHeader, DialogRoot, DialogTrigger, DialogBody } from 'toolkit/chakra/dialog';
 import { Heading } from 'toolkit/chakra/heading';
 import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
-import AdditionalInfoButton from 'ui/shared/AdditionalInfoButton';
 
 import TxAdditionalInfoContainer from './TxAdditionalInfoContainer';
 import TxAdditionalInfoContent from './TxAdditionalInfoContent';

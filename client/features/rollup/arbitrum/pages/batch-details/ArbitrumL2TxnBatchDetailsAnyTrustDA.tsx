@@ -5,13 +5,13 @@ import React from 'react';
 
 import type { ArbitrumL2TxnBatchDAAnytrust } from '../../types/api';
 
-import dayjs from 'lib/date/dayjs';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
-import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import DetailsTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
-import HashStringShorten from 'ui/shared/HashStringShorten';
-import IconSvg from 'ui/shared/IconSvg';
-import TextSeparator from 'ui/shared/TextSeparator';
+import dayjs from 'client/shared/date-and-time/dayjs';
+import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
+import DetailsTimestamp from 'client/shared/detailed-info/DetailedInfoTimestamp';
+import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
+import HashStringShorten from 'client/shared/texts/HashStringShorten';
+import TextSeparator from 'client/shared/texts/TextSeparator';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 type Props = {
   data: ArbitrumL2TxnBatchDAAnytrust;
@@ -75,7 +75,7 @@ const ArbitrumL2TxnBatchDetailsAnyTrustDA = ({ data }: Props) => {
                 <CopyToClipboard text={ signer.key } ml={ 2 }/>
               </Flex>
               <Box justifySelf="center">
-                { signer.trusted ? <IconSvg name="check" boxSize={ 6 }/> : <IconSvg name="cross" boxSize={ 6 }/> }
+                { signer.trusted ? <SpriteIcon name="check" boxSize={ 6 }/> : <SpriteIcon name="cross" boxSize={ 6 }/> }
               </Box>
               { signer.proof ? (
                 <Flex>
@@ -98,7 +98,7 @@ const ArbitrumL2TxnBatchDetailsAnyTrustDA = ({ data }: Props) => {
               <Flex w="100%" alignItems="center">
                 <Flex alignItems="center" w="50%">
                   <Text fontWeight={ 600 } mr={ 2 }>Trusted</Text>
-                  { signer.trusted ? <IconSvg name="check" boxSize={ 6 }/> : <IconSvg name="cross" boxSize={ 6 }/> }
+                  { signer.trusted ? <SpriteIcon name="check" boxSize={ 6 }/> : <SpriteIcon name="cross" boxSize={ 6 }/> }
                 </Flex>
                 <Flex alignItems="center" w="50%">
                   <Text fontWeight={ 600 } mr={ 2 }>Proof</Text>

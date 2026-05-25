@@ -9,9 +9,8 @@ import type { UserInfo } from 'client/features/account/types/api';
 import useSignInWithWallet from 'client/features/account/hooks/useSignInWithWallet';
 
 import type * as mixpanel from 'client/shared/analytics/mixpanel';
-
-import ReCaptcha from 'ui/shared/reCaptcha/ReCaptcha';
-import useReCaptcha from 'ui/shared/reCaptcha/useReCaptcha';
+import ReCaptcha from 'client/shared/re-captcha/ReCaptcha';
+import useReCaptcha from 'client/shared/re-captcha/useReCaptcha';
 
 interface Props {
   onSuccess: (screen: ScreenSuccess) => void;

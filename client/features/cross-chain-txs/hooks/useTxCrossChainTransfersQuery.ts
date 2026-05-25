@@ -1,9 +1,11 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import { INTERCHAIN_TRANSFER } from 'client/features/cross-chain-txs/stubs/messages';
+
+import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
+import { generateListStub } from 'client/shared/pagination/utils';
+
 import config from 'configs/app';
-import { INTERCHAIN_TRANSFER } from 'stubs/interchainIndexer';
-import { generateListStub } from 'stubs/utils';
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
 interface Props {
   hash: string;

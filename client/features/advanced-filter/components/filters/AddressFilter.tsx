@@ -7,6 +7,8 @@ import React from 'react';
 
 import type { AdvancedFilterParams } from '../../types/api';
 
+import TableColumnFilter from 'client/shared/filters/TableColumnFilter';
+
 import { Field } from 'toolkit/chakra/field';
 import { Input } from 'toolkit/chakra/input';
 import { InputGroup } from 'toolkit/chakra/input-group';
@@ -14,7 +16,6 @@ import { Select } from 'toolkit/chakra/select';
 import AddButton from 'toolkit/components/buttons/AddButton';
 import { ClearButton } from 'toolkit/components/buttons/ClearButton';
 import { ADDRESS_REGEXP } from 'toolkit/utils/regexp';
-import TableColumnFilter from 'ui/shared/filters/TableColumnFilter';
 
 const FILTER_PARAM_TO_INCLUDE = 'to_address_hashes_to_include';
 const FILTER_PARAM_FROM_INCLUDE = 'from_address_hashes_to_include';

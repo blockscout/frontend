@@ -8,8 +8,9 @@ import AddressEntity from 'client/slices/address/components/entity/AddressEntity
 
 import ValidatorStatus from 'client/features/chain-variants/stability/components/ValidatorStabilityStatus';
 
+import ListItemMobileGrid from 'client/shared/lists/ListItemMobileGrid';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 
 interface Props {
   data: ValidatorStability;

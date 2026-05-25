@@ -5,11 +5,12 @@ import React from 'react';
 
 import type { ZilliqaNestedQuorumCertificate, ZilliqaQuorumCertificate } from 'client/features/chain-variants/zilliqa/types/api';
 
+import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
+import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
+
 import { AccordionRoot, AccordionItem, AccordionItemTrigger, AccordionItemContent } from 'toolkit/chakra/accordion';
 import { Hint } from 'toolkit/components/Hint/Hint';
 import { apos, ndash } from 'toolkit/utils/htmlEntities';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
-import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 
 function formatSigners(signers: Array<number>) {
   return `[${ signers.join(', ') }]`;

@@ -132,7 +132,7 @@ Remove commented-out code blocks. The git history preserves anything that might 
 
 ### Date and time
 
-- Import `dayjs` only via `lib/date/dayjs.ts` — never directly from the `dayjs` package.
+- Import `dayjs` only via `client/shared/date-and-time/dayjs.ts` — never directly from the `dayjs` package.
 - Render all dates and times through the shared `Time` or `TimeWithTooltip` components. Do not format timestamps inline.
 
 ### Strict comparison

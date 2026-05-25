@@ -3,18 +3,18 @@
 import { upperFirst } from 'es-toolkit';
 import React from 'react';
 
+import type { ExcludeNull, ExcludeUndefined } from 'client/shared/types/utils';
 import type { Address } from 'client/slices/address/types/api';
-import type { ExcludeNull, ExcludeUndefined } from 'types/utils';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+import { currencyUnits } from 'client/slices/chain/units';
 
-import { currencyUnits } from 'client/shared/chain/units';
+import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
+import * as DetailedInfoItemBreakdown from 'client/shared/detailed-info/DetailedInfoItemBreakdown';
+import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
 
 import { Link } from 'toolkit/chakra/link';
 import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
-import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import * as DetailedInfoItemBreakdown from 'ui/shared/DetailedInfo/DetailedInfoItemBreakdown';
-import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 interface Props {
   isLoading?: boolean;

@@ -5,14 +5,16 @@ import React from 'react';
 
 import type { AddressMetadataTagFormatted } from 'client/features/address-metadata/types/client';
 
+import AppActionButton from 'client/features/address-metadata/components/AppActionButton';
+
+import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
+import TextSeparator from 'client/shared/texts/TextSeparator';
+
 import config from 'configs/app';
 import { Image } from 'toolkit/chakra/image';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import AppActionButton from 'ui/shared/AppActionButton/AppActionButton';
-import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import TextSeparator from 'ui/shared/TextSeparator';
 
 interface Props {
   hash: string | undefined;

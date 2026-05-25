@@ -11,9 +11,10 @@ import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
 import { layerLabels } from 'client/features/rollup/common/utils/layer';
 
+import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
+import ListItemMobileGrid from 'client/shared/lists/ListItemMobileGrid';
+
 import config from 'configs/app';
-import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
-import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 const feature = config.features.rollup;
 

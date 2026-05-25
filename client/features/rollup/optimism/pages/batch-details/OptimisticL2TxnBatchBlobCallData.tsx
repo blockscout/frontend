@@ -6,7 +6,7 @@ import React from 'react';
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
 import { layerLabels } from 'client/features/rollup/common/utils/layer';
 
-import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
+import DetailedInfoTimestamp from 'client/shared/detailed-info/DetailedInfoTimestamp';
 
 import OptimisticL2TxnBatchBlobWrapper from './OptimisticL2TxnBatchBlobWrapper';
 

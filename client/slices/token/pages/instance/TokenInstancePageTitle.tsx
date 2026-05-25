@@ -6,6 +6,9 @@ import React from 'react';
 import type { TokenInfo, TokenInstance } from 'client/slices/token/types/api';
 import { getTokenTypeName } from 'client/slices/token/utils/token-types';
 
+import ActionsMenu from 'client/shell/page/actions-menu/ActionsMenu';
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import AddressQrCode from 'client/slices/address/pages/details/info/AddressQrCode';
 import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 
@@ -15,8 +18,6 @@ import TokenAddToWallet from 'client/features/web3-wallet/components/TokenAddToW
 import { Link } from 'toolkit/chakra/link';
 import { Tag } from 'toolkit/chakra/tag';
 import * as regexp from 'toolkit/utils/regexp';
-import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu';
-import PageTitle from 'ui/shared/Page/PageTitle';
 
 interface Props {
   isLoading: boolean;
@@ -95,7 +96,7 @@ const TokenInstancePageTitle = ({ isLoading, token, instance, hash }: Props) => 
       ) }
       { !isLoading && token && <TokenAddToWallet token={ token } tokenId={ instance?.id } variant="button"/> }
       <AddressQrCode hash={ address.hash } isLoading={ isLoading }/>
-      <AccountActionsMenu isLoading={ isLoading } showUpdateMetadataItem/>
+      <ActionsMenu isLoading={ isLoading } showUpdateMetadataItem/>
       { appLink }
     </Flex>
   );

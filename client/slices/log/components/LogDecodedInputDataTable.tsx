@@ -3,14 +3,14 @@
 import { Flex, Grid } from '@chakra-ui/react';
 import React from 'react';
 
-import type { DecodedInput } from 'client/slices/log/types/api';
-import type { ArrayElement } from 'types/utils';
+import type { DecodedInput, DecodedInputParams } from 'client/slices/log/types/api';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 
+import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
 
 interface Props {
   data: DecodedInput['parameters'];
@@ -32,7 +32,7 @@ const HeaderItem = ({ children, isLoading }: { children: React.ReactNode; isLoad
   );
 };
 
-const Row = ({ name, type, indexed, value, isLoading }: ArrayElement<DecodedInput['parameters']> & { isLoading?: boolean }) => {
+const Row = ({ name, type, indexed, value, isLoading }: DecodedInputParams & { isLoading?: boolean }) => {
   const content = (() => {
     if (type === 'address' && typeof value === 'string') {
       return (

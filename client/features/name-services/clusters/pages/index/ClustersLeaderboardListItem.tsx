@@ -6,8 +6,9 @@ import type { ClustersLeaderboardObject } from 'client/features/name-services/cl
 
 import ClustersEntity from 'client/features/name-services/clusters/components/ClustersEntity';
 
+import ListItemMobileGrid from 'client/shared/lists/ListItemMobileGrid';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 
 interface Props {
   item: ClustersLeaderboardObject;

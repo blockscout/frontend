@@ -9,9 +9,10 @@ import TxEntityZetaChainCC from 'client/features/chain-variants/zeta-chain/compo
 import ZetaChainCCTXReducedStatus from 'client/features/chain-variants/zeta-chain/components/ZetaChainCCTXReducedStatus';
 import useZetaChainConfig from 'client/features/chain-variants/zeta-chain/hooks/useZetaChainConfig';
 
+import ChainIcon from 'client/shared/external-chains/ChainIcon';
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import ChainIcon from 'ui/shared/externalChains/ChainIcon';
-import IconSvg from 'ui/shared/IconSvg';
 
 type Props = {
   tx: RelatedCctx;
@@ -44,7 +45,7 @@ const ZetaChainCCTXDetailsRelatedTx = ({ tx, isLoading }: Props) => {
       maxH="20px"
     >
       <ChainIcon data={ chainFrom }/>
-      <IconSvg name="arrows/east" boxSize={ 5 } color="text.secondary"/>
+      <SpriteIcon name="arrows/east" boxSize={ 5 } color="text.secondary"/>
       { chainsTo.map((chain, index) => <ChainIcon key={ index } data={ chain }/>) }
       <Box>CCTX</Box>
       <TxEntityZetaChainCC hash={ tx.index } isLoading={ isLoading } noIcon truncation="constant"/>

@@ -2,8 +2,9 @@
 
 import type { EnsLookupSorting } from 'client/features/name-services/domains/types/api';
 
+import getNextSortValueShared from 'client/shared/sort/get-next-sort-value';
+
 import type { SelectOption } from 'toolkit/chakra/select';
-import getNextSortValueShared from 'ui/shared/sort/getNextSortValue';
 
 export type SortField = EnsLookupSorting['sort'];
 export type Sort = `${ EnsLookupSorting['sort'] }-${ EnsLookupSorting['order'] }` | 'default';

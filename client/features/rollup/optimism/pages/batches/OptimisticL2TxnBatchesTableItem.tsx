@@ -9,11 +9,12 @@ import { route } from 'nextjs-routes';
 import BatchEntityL2 from 'client/features/rollup/common/components/BatchEntityL2';
 import OptimisticL2TxnBatchDA from 'client/features/rollup/optimism/components/TxnBatchDA';
 
+import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
+
 import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
-import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 const rollupFeature = config.features.rollup;
 

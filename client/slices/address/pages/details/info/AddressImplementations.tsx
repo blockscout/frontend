@@ -7,7 +7,7 @@ import type { SmartContractProxyType } from 'client/slices/contract/types/api';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 
-import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
+import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
 
 interface Props {
   data: Array<AddressImplementation>;

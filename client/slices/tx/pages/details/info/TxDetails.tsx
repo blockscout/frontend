@@ -19,6 +19,8 @@ import { route } from 'nextjs-routes';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
+import { currencyUnits } from 'client/slices/chain/units';
+import getChainValidatorTitle from 'client/slices/chain/verification-type/utils/get-chain-validator-title';
 import LogDecodedInputData from 'client/slices/log/components/LogDecodedInputData';
 import TxSocketAlert from 'client/slices/tx/components/TxSocketAlert';
 import TxStatus from 'client/slices/tx/components/TxStatus';
@@ -41,8 +43,18 @@ import ZkSyncL2TxnBatchHashesInfo from 'client/features/rollup/zk-sync/pages/bat
 import { formatZkSyncL2TxnBatchStatus } from 'client/features/rollup/zk-sync/utils/format-txn-batch-status';
 import TxDetailsActions from 'client/features/tx-actions/pages/tx/TxDetailsActions';
 
-import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-title';
-import { currencyUnits } from 'client/shared/chain/units';
+import RawInputData from 'client/shared/data/RawInputData';
+import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
+import DetailedInfoNativeCoinValue from 'client/shared/detailed-info/DetailedInfoNativeCoinValue';
+import DetailedInfoSponsoredItem from 'client/shared/detailed-info/DetailedInfoSponsoredItem';
+import DetailedInfoTimestamp from 'client/shared/detailed-info/DetailedInfoTimestamp';
+import VerificationSteps from 'client/shared/lifecycle/steps/VerificationSteps';
+import StatusTag from 'client/shared/tags/status-tag/StatusTag';
+import TextSeparator from 'client/shared/texts/TextSeparator';
+import GasPriceValue from 'client/shared/values/entity/GasPriceValue';
+import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
+import Utilization from 'client/shared/values/utilization/Utilization';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import config from 'configs/app';
 import { Badge } from 'toolkit/chakra/badge';
@@ -50,18 +62,6 @@ import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import DetailedInfoNativeCoinValue from 'ui/shared/DetailedInfo/DetailedInfoNativeCoinValue';
-import DetailedInfoSponsoredItem from 'ui/shared/DetailedInfo/DetailedInfoSponsoredItem';
-import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
-import IconSvg from 'ui/shared/IconSvg';
-import RawInputData from 'ui/shared/RawInputData';
-import StatusTag from 'ui/shared/statusTag/StatusTag';
-import TextSeparator from 'ui/shared/TextSeparator';
-import Utilization from 'ui/shared/Utilization/Utilization';
-import GasPriceValue from 'ui/shared/value/GasPriceValue';
-import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
-import VerificationSteps from 'ui/shared/verificationSteps/VerificationSteps';
 
 import TxDetailsBurntFees from './parts/TxDetailsBurntFees';
 import TxDetailsFeePerGas from './parts/TxDetailsFeePerGas';
@@ -115,7 +115,7 @@ const TxDetails = ({ data, isLoading, socketStatus, noTxActions }: Props) => {
   const executionSuccessBadge = toAddress?.is_contract && data.result === 'success' ? (
     <Tooltip content="Contract execution completed">
       <chakra.span display="inline-flex" ml={ 2 } mr={ 1 }>
-        <IconSvg name="status/success" boxSize={ 4 } color={{ _light: 'blackAlpha.800', _dark: 'whiteAlpha.800' }} cursor="pointer"/>
+        <SpriteIcon name="status/success" boxSize={ 4 } color={{ _light: 'blackAlpha.800', _dark: 'whiteAlpha.800' }} cursor="pointer"/>
       </chakra.span>
     </Tooltip>
   ) : null;
@@ -123,7 +123,7 @@ const TxDetails = ({ data, isLoading, socketStatus, noTxActions }: Props) => {
   const executionFailedBadge = toAddress?.is_contract && Boolean(data.status) && data.result !== 'success' ? (
     <Tooltip content="Error occurred during contract execution">
       <chakra.span display="inline-flex" ml={ 2 } mr={ 1 }>
-        <IconSvg name="status/error" boxSize={ 4 } color="text.error" cursor="pointer"/>
+        <SpriteIcon name="status/error" boxSize={ 4 } color="text.error" cursor="pointer"/>
       </chakra.span>
     </Tooltip>
   ) : null;

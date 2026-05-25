@@ -6,10 +6,10 @@ import React from 'react';
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 
 import delay from 'client/shared/utils/delay';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { Button } from 'toolkit/chakra/button';
 import { IconButton } from 'toolkit/chakra/icon-button';
-import IconSvg from 'ui/shared/IconSvg';
 
 import UserWalletAutoConnectAlert from '../UserWalletAutoConnectAlert';
 
@@ -50,7 +50,7 @@ const UserWalletMenuContent = ({ isAutoConnectDisabled, address, domain, isRecon
             size="2xs"
             onClick={ handleOpenWalletClick }
           >
-            <IconSvg name="gear"/>
+            <SpriteIcon name="gear"/>
           </IconButton>
         ) }
       </Flex>

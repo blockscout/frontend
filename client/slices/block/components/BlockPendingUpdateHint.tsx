@@ -3,9 +3,10 @@
 import type { BoxProps } from '@chakra-ui/react';
 import React from 'react';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import config from 'configs/app';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import IconSvg from 'ui/shared/IconSvg';
 
 interface Props extends BoxProps {
   view?: 'block' | 'tx';
@@ -22,7 +23,7 @@ const BlockPendingUpdateHint = ({ view = 'block', ...props }: Props) => {
 
   return (
     <Tooltip content={ tooltipContent }>
-      <IconSvg boxSize={ 5 } color="icon.secondary" name="status/warning" { ...props }/>
+      <SpriteIcon boxSize={ 5 } color="icon.secondary" name="status/warning" { ...props }/>
     </Tooltip>
   );
 };

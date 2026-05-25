@@ -268,7 +268,7 @@ Example: `client/slices/home/types/config.ts` → imported by `configs/app/ui/ho
 | `lib/hooks/useIsSafeAddress` | `client/features/safe-address-tags/` |
 | `lib/hooks/useNotifyOnNavigation` | `client/features/metasuites/` |
 | `lib/hooks/` (remaining) | `client/shared/hooks/` |
-| `lib/contexts/app.tsx`, `fallback.tsx` | `client/shell/` |
+| `client/shell/app/context.tsx`, `fallback.tsx` | `client/shell/` |
 | `lib/contexts/settings.tsx` | `client/shell/top-bar/` |
 | `lib/contexts/multichain.tsx` | `client/features/multichain/` |
 | `lib/contexts/rewards.tsx` | `client/features/rewards/` |
@@ -287,8 +287,8 @@ Example: `client/slices/home/types/config.ts` → imported by `configs/app/ui/ho
 | `lib/solidityScan/` | `client/slices/contract/` |
 | `lib/stats/` | `client/features/stats/` |
 | `lib/utils/stripUtmParams.ts` | `client/shared/links/utils/` |
-| `lib/capitalizeFirstLetter.ts`, `shortenString.ts`, `escapeRegExp.ts`, `highlightText.ts` | `client/shared/text/` |
-| `lib/base64ToHex.ts`, `bytesToBase64.ts`, `bytesToHex.ts`, `hexToBase64.ts`, `hexToBytes.ts`, `hexToAddress.ts`, `hexToDecimal.ts`, `hexToUtf8.ts` | `client/shared/transformers/` |
+| `lib/capitalizeFirstLetter.ts`, `shortenString.ts`, `escapeRegExp.ts`, `highlightText.ts` | `client/shared/texts/` |
+| `lib/base64ToHex.ts`, `bytesToBase64.ts`, `bytesToHex.ts`, `hexToBase64.ts`, `hexToBytes.ts`, `hexToAddress.ts`, `hexToDecimal.ts`, `hexToUtf8.ts` | `client/shared/data/transformers/` |
 | `lib/cookies.ts` | `client/shared/storage/` |
 | `lib/decodeJWT.ts` | `client/shared/auth/` |
 | `lib/setLocale.ts` | `client/shared/i18n/` |

@@ -8,10 +8,11 @@ import type { CeloEpochListItem } from 'client/features/chain-variants/celo/type
 import CeloEpochStatus from 'client/features/chain-variants/celo/components/CeloEpochStatus';
 import EpochEntity from 'client/features/chain-variants/celo/components/entity/EpochEntity';
 
+import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
+import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
-import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
-import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 interface Props {
   item: CeloEpochListItem;

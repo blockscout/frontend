@@ -12,11 +12,12 @@ import { homeStatsWidgetCommonStyles, isHomeStatsItemEnabled, sortHomeStatsItems
 
 import { publicClient } from 'client/features/connect-wallet/utils/public-client';
 
-import dayjs from 'lib/date/dayjs';
+import ApiDegradationRpcIcon from 'client/shared/api-degradation/ApiDegradationRpcIcon';
+import dayjs from 'client/shared/date-and-time/dayjs';
+import StatsWidget from 'client/shared/stats/StatsWidget';
+import { GWEI } from 'client/shared/values/entity/utils';
+
 import { mdash } from 'toolkit/utils/htmlEntities';
-import FallbackRpcIcon from 'ui/shared/fallbacks/FallbackRpcIcon';
-import StatsWidget from 'ui/shared/stats/StatsWidget';
-import { GWEI } from 'ui/shared/value/utils';
 
 const StatsDegraded = () => {
 
@@ -90,7 +91,7 @@ const StatsDegraded = () => {
         label: 'Latest block',
         value: blocks[0] ? blocks[0].height.toLocaleString() : mdash,
         isFallback: blocks[0] === undefined,
-        hint: blocks[0] && !isLoading ? <FallbackRpcIcon/> : undefined,
+        hint: blocks[0] && !isLoading ? <ApiDegradationRpcIcon/> : undefined,
       },
       {
         id: 'average_block_time' as const,
@@ -98,7 +99,7 @@ const StatsDegraded = () => {
         label: 'Average block time',
         value: averageBlockTime ? `${ averageBlockTime.toFixed(1) }s` : mdash,
         isFallback: averageBlockTime === undefined,
-        hint: averageBlockTime && !isLoading ? <FallbackRpcIcon/> : undefined,
+        hint: averageBlockTime && !isLoading ? <ApiDegradationRpcIcon/> : undefined,
       },
       {
         id: 'total_txs' as const,
@@ -135,7 +136,7 @@ const StatsDegraded = () => {
         value: gasPriceQuery.data ? <GasPrice data={ gasPriceQuery.data }/> : mdash,
         isFallback: !gasPriceQuery.data,
         isLoading: gasPriceQuery.isLoading,
-        hint: gasPriceQuery.data && !isLoading && !gasPriceQuery.isLoading ? <FallbackRpcIcon/> : undefined,
+        hint: gasPriceQuery.data && !isLoading && !gasPriceQuery.isLoading ? <ApiDegradationRpcIcon/> : undefined,
       },
       {
         id: 'btc_locked' as const,

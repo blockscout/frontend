@@ -7,12 +7,13 @@ import type { OptimisticL2DisputeGamesItem } from 'client/features/rollup/optimi
 
 import BlockEntityL2 from 'client/features/rollup/common/components/BlockEntityL2';
 
+import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
+import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
+import HashStringShorten from 'client/shared/texts/HashStringShorten';
+
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
-import HashStringShorten from 'ui/shared/HashStringShorten';
-import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 const faultProofSystemFeature = config.features.faultProofSystem;
 

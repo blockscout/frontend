@@ -2,8 +2,8 @@
 
 import { bech32 } from '@scure/base';
 
-import bytesToHex from 'client/shared/transformers/bytes-to-hex';
-import hexToBytes from 'client/shared/transformers/hex-to-bytes';
+import bytesToHex from 'client/shared/data/transformers/bytes-to-hex';
+import hexToBytes from 'client/shared/data/transformers/hex-to-bytes';
 
 import config from 'configs/app';
 

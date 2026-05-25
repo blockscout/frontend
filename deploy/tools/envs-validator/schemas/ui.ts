@@ -2,21 +2,23 @@ import * as yup from 'yup';
 import { CHAIN_INDICATOR_IDS, type ChainIndicatorId, type HeroBannerConfig, type HeroBannerButtonState, HOME_STATS_WIDGET_IDS, type HomeStatsWidgetId } from 'client/slices/home/types/config';
 import { replaceQuotes } from 'configs/app/utils';
 import { getYupValidationErrorMessage, urlTest } from '../utils';
-import { NavigationLayout, NavigationPromoBannerConfig, NavItemExternal } from 'types/client/navigation';
-import { FeaturedNetwork, NETWORK_GROUPS, NetworkExplorer } from 'types/networks';
-import { CustomLink, CustomLinksGroup } from 'types/footerLinks';
-import { COLOR_THEME_IDS } from 'types/settings';
-import { FontFamily } from 'types/ui';
+import { NavigationLayout, NavigationPromoBannerConfig, NavItemExternal } from 'client/shell/navigation/types';
+import type { FeaturedNetwork } from 'client/shell/top-bar/chain-menu/types';
+import { NETWORK_GROUPS } from 'client/shell/top-bar/chain-menu/types';
+import { AlternativeExplorer } from 'client/features/alternative-explorers/types/client';
+import { CustomLink, CustomLinksGroup } from 'client/shell/footer/types';
+import { COLOR_THEME_IDS } from 'client/shell/top-bar/settings/color-theme/config';
+import type { FontFamily } from 'configs/app/ui';
 import type { ContractCodeIde } from 'client/slices/contract/types/config';
 import { SMART_CONTRACT_EXTRA_VERIFICATION_METHODS, type SmartContractVerificationMethodExtra } from 'client/slices/contract/types/config';
 import type { AddressFormat, AddressViewId } from 'client/slices/address/types/config';
 import { ADDRESS_FORMATS, ADDRESS_VIEWS_IDS, IDENTICON_TYPES } from 'client/slices/address/types/config';
-import { BLOCK_FIELDS_IDS } from 'types/views/block';
-import type { BlockFieldId } from 'types/views/block';
+import { BLOCK_FIELDS_IDS } from 'client/slices/block/types/config';
+import type { BlockFieldId } from 'client/slices/block/types/config';
 import type { TxAdditionalFieldsId, TxFieldsId, TxViewId } from 'client/slices/tx/types/config';
 import { TX_ADDITIONAL_FIELDS_IDS, TX_FIELDS_IDS, TX_VIEWS_IDS } from 'client/slices/tx/types/config';
 import * as regexp from 'toolkit/utils/regexp';
-import { NftMarketplaceItem } from 'types/views/nft';
+import { NftMarketplaceItem } from 'client/slices/token/types/client';
 
 const heroBannerButtonStateSchema: yup.ObjectSchema<HeroBannerButtonState> = yup.object({
     background: yup.array().max(2).of(yup.string()),
@@ -244,7 +246,7 @@ export const miscSchema = yup.object({
     NEXT_PUBLIC_MAX_CONTENT_WIDTH_ENABLED: yup.boolean(),
 });
 
-const networkExplorerSchema: yup.ObjectSchema<NetworkExplorer> = yup
+const networkExplorerSchema: yup.ObjectSchema<AlternativeExplorer> = yup
   .object({
     title: yup.string().required(),
     logo: yup.string().test(urlTest),

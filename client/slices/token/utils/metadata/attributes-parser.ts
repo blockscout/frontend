@@ -4,7 +4,8 @@ import { upperFirst } from 'es-toolkit';
 
 import type { Metadata, MetadataAttributes } from 'client/slices/token/types/client';
 
-import dayjs from 'lib/date/dayjs';
+import dayjs from 'client/shared/date-and-time/dayjs';
+
 import { SECOND } from 'toolkit/utils/consts';
 
 function formatValue(value: string | number, display: string | undefined, trait: string | undefined): Pick<MetadataAttributes, 'value' | 'value_type'> {

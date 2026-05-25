@@ -3,12 +3,13 @@
 import { chakra, List, Input, ListItem } from '@chakra-ui/react';
 import React from 'react';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { Button } from 'toolkit/chakra/button';
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import { times } from 'toolkit/utils/htmlEntities';
-import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   onClick: (power: number) => void;
@@ -79,7 +80,7 @@ const ContractMethodMultiplyButton = ({ onClick, isDisabled, initialValue, onCha
             borderLeftWidth="1px"
             borderLeftColor="border.divider"
           >
-            <IconSvg
+            <SpriteIcon
               name="arrows/east-mini"
               transitionDuration="fast"
               transitionProperty="transform"
@@ -104,7 +105,7 @@ const ContractMethodMultiplyButton = ({ onClick, isDisabled, initialValue, onCha
                   cursor="pointer"
                 >
                   <span>10*{ id }</span>
-                  { selectedOption === id && <IconSvg name="check" boxSize={ 6 }/> }
+                  { selectedOption === id && <SpriteIcon name="check" boxSize={ 6 }/> }
                 </List.Item>
               )) }
               <ListItem

@@ -6,10 +6,11 @@ import { AddressHighlightProvider } from 'client/slices/address/contexts/address
 import * as addressMock from 'client/slices/address/mocks/address';
 import * as implementationsMock from 'client/slices/address/mocks/implementations';
 
+import * as metadataMock from 'client/features/address-metadata/mocks/tags';
+
 import * as cookies from 'client/shared/storage/cookies';
 
 import config from 'configs/app';
-import * as metadataMock from 'mocks/metadata/address';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';
 

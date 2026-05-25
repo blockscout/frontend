@@ -6,17 +6,18 @@ import React from 'react';
 import type { ClusterChainConfig } from 'client/features/multichain/types/client';
 import type { Block } from 'client/slices/block/types/api';
 
+import * as SocketNewItemsNotice from 'client/api/socket/SocketNewItemsNotice';
+
 import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
 import BlocksTableItem from 'client/slices/block/pages/index/BlocksTableItem';
+import { currencyUnits } from 'client/slices/chain/units';
+import getChainValidatorTitle from 'client/slices/chain/verification-type/utils/get-chain-validator-title';
 
-import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-title';
-import { currencyUnits } from 'client/shared/chain/units';
+import TimeFormatToggle from 'client/shared/date-and-time/TimeFormatToggle';
 import useInitialList from 'client/shared/lists/useInitialList';
 
 import config from 'configs/app';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
-import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
-import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
 interface Props {
   data: Array<Block>;

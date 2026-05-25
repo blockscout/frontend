@@ -14,14 +14,13 @@ import * as TokenEntity from 'client/slices/token/components/entity/TokenEntity'
 
 import * as contract from 'client/features/multichain/utils/contract';
 
-import highlightText from 'client/shared/text/highlight-text';
-
-import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
-import IconSvg from 'ui/shared/IconSvg';
+import HashStringShortenDynamic from 'client/shared/texts/HashStringShortenDynamic';
+import highlightText from 'client/shared/texts/highlight-text';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 const SearchBarSuggestToken = ({ data, isMobile, searchTerm, addressFormat, chainInfo }: ItemsProps<SearchResultToken | multichain.QuickSearchResultToken>) => {
   const icon = <TokenEntity.Icon token={{ ...data, type: data.token_type }} chain={ chainInfo }/>;
-  const verifiedIcon = <IconSvg name="certified" boxSize={ 4 } color="green.500" ml={ 1 } flexShrink={ 0 }/>;
+  const verifiedIcon = <SpriteIcon name="certified" boxSize={ 4 } color="green.500" ml={ 1 } flexShrink={ 0 }/>;
   const certifiedIcon = <ContractCertifiedLabel iconSize={ 4 } boxSize={ 4 } ml={ 1 } flexShrink={ 0 }/>;
   const hash = (() => {
     if ('filecoin_robust_address' in data && data.filecoin_robust_address) {
@@ -54,7 +53,7 @@ const SearchBarSuggestToken = ({ data, isMobile, searchTerm, addressFormat, chai
     </Text>
   );
 
-  const contractVerifiedIcon = isVerified && <IconSvg name="status/success" boxSize="14px" color="green.500" ml={ 1 } flexShrink={ 0 }/>;
+  const contractVerifiedIcon = isVerified && <SpriteIcon name="status/success" boxSize="14px" color="green.500" ml={ 1 } flexShrink={ 0 }/>;
   const additionalInfo = (
     <Text overflow="hidden" whiteSpace="nowrap" fontWeight={ 700 }>
       { data.token_type === 'ERC-20' && 'exchange_rate' in data && data.exchange_rate && `$${ Number(data.exchange_rate).toLocaleString() }` }

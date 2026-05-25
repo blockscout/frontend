@@ -17,19 +17,19 @@ import AddressEntity from 'client/slices/address/components/entity/AddressEntity
 import type { TokenTabs } from 'client/slices/token/pages/details/Token';
 import { TOKEN_COUNTERS } from 'client/slices/token/stubs';
 
+import AppActionButton from 'client/features/address-metadata/components/AppActionButton';
+import useAppActionData from 'client/features/address-metadata/hooks/useAppActionData';
 import { useMultichainContext } from 'client/features/multichain/context';
 
+import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
+import DetailedInfoSponsoredItem from 'client/shared/detailed-info/DetailedInfoSponsoredItem';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import useIsMounted from 'client/shared/hooks/useIsMounted';
+import AssetValue from 'client/shared/values/entity/AssetValue';
 
 import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import AppActionButton from 'ui/shared/AppActionButton/AppActionButton';
-import useAppActionData from 'ui/shared/AppActionButton/useAppActionData';
-import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import DetailedInfoSponsoredItem from 'ui/shared/DetailedInfo/DetailedInfoSponsoredItem';
-import AssetValue from 'ui/shared/value/AssetValue';
 
 import TokenNftMarketplaces from './TokenNftMarketplaces';
 

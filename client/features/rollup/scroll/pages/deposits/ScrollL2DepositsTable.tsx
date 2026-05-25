@@ -8,9 +8,10 @@ import { AddressHighlightProvider } from 'client/slices/address/contexts/address
 
 import { layerLabels } from 'client/features/rollup/common/utils/layer';
 
+import TimeFormatToggle from 'client/shared/date-and-time/TimeFormatToggle';
+
 import config from 'configs/app';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
-import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
 import ScrollL2DepositsTableItem from './ScrollL2DepositsTableItem';
 

@@ -5,17 +5,19 @@ import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import { ACTION_BAR_HEIGHT_DESKTOP } from 'client/shell/page/action-bar/ActionBar';
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import { layerLabels } from 'client/features/rollup/common/utils/layer';
 import { SCROLL_L2_MESSAGE_ITEM } from 'client/features/rollup/scroll/stubs';
 
-import { generateListStub } from 'stubs/utils';
+import DataList from 'client/shared/lists/DataList';
+import StickyPaginationWithText from 'client/shared/pagination/StickyPaginationWithText';
+import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
+import { generateListStub } from 'client/shared/pagination/utils';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { rightLineArrow, nbsp } from 'toolkit/utils/htmlEntities';
-import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
-import PageTitle from 'ui/shared/Page/PageTitle';
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
-import StickyPaginationWithText from 'ui/shared/StickyPaginationWithText';
 
 import ScrollL2DepositsListItem from './ScrollL2DepositsListItem';
 import ScrollL2DepositsTable from './ScrollL2DepositsTable';
@@ -75,14 +77,14 @@ const ScrollL2Deposits = () => {
   return (
     <>
       <PageTitle title={ `Deposits (${ layerLabels.parent }${ nbsp }${ rightLineArrow }${ nbsp }${ layerLabels.current })` } withTextAd/>
-      <DataListDisplay
+      <DataList
         isError={ isError }
         itemsNum={ data?.items?.length }
         emptyText="There are no deposits."
         actionBar={ actionBar }
       >
         { content }
-      </DataListDisplay>
+      </DataList>
     </>
   );
 };

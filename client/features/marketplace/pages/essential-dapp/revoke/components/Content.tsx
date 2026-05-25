@@ -3,8 +3,8 @@
 import { Flex, Text, Separator } from '@chakra-ui/react';
 import React, { useState, useCallback, useMemo } from 'react';
 
+import type { AllowanceType } from '../types';
 import type { EssentialDappsChainConfig } from 'client/features/marketplace/types/client';
-import type { AllowanceType } from 'types/client/revoke';
 
 import { route } from 'nextjs/routes';
 

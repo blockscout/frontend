@@ -8,11 +8,14 @@ import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import AddressQrCode from 'client/slices/address/pages/details/info/AddressQrCode';
 import getCheckedSummedAddress from 'client/slices/address/utils/get-checked-summed-address';
 import { CONTRACT_TAB_IDS } from 'client/slices/contract/utils/tabs';
 
+import TextAd from 'client/features/ads/text/components/TextAd';
 import ClusterChainsPopover from 'client/features/multichain/components/ClusterChainsPopover';
 import { ADDRESS } from 'client/features/multichain/stubs';
 import * as contract from 'client/features/multichain/utils/contract';
@@ -23,8 +26,6 @@ import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import config from 'configs/app';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import TextAd from 'ui/shared/ad/TextAd';
-import PageTitle from 'ui/shared/Page/PageTitle';
 
 import MultichainAddressEnsDomains from './header/MultichainAddressEnsDomains';
 import MultichainAddressCoinBalanceHistory from './MultichainAddressCoinBalanceHistory';

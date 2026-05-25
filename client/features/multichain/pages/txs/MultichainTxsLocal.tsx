@@ -6,12 +6,12 @@ import React from 'react';
 import getSocketUrl from 'client/api/get-socket-url';
 import { SocketProvider } from 'client/api/socket/context';
 
+import { ACTION_BAR_HEIGHT_DESKTOP } from 'client/shell/page/action-bar/ActionBar';
+
 import TxsTabs, { getTabId } from 'client/slices/tx/pages/index/list/TxsTabs';
 import TxsStats from 'client/slices/tx/pages/index/stats/TxsStats';
 
 import { useMultichainContext } from 'client/features/multichain/context';
-
-import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 
 const PARENT_TAB = 'txs_local';
 export const MULTICHAIN_TXS_LOCAL_TAB_IDS = [ getTabId('validated', PARENT_TAB), getTabId('pending', PARENT_TAB), getTabId('blob_txs', PARENT_TAB) ];

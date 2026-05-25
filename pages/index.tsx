@@ -6,12 +6,13 @@ import type { NextPageWithLayout } from 'nextjs/types';
 
 import PageNextJs from 'nextjs/PageNextJs';
 
+import LayoutHome from 'client/shell/layout/LayoutHome';
+
 import Home from 'client/slices/home/pages/index/Home';
 
 import MultichainHome from 'client/features/multichain/pages/home/MultichainHome';
 
 import config from 'configs/app';
-import LayoutHome from 'ui/shared/layout/LayoutHome';
 
 const Page: NextPageWithLayout = () => {
   return (

@@ -5,21 +5,22 @@ import React from 'react';
 
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 import type { ClusterChainConfig } from 'client/features/multichain/types/client';
+import { WALLETS_INFO } from 'client/features/web3-wallet/types/wallets';
 
+import RollupStageBadge from 'client/features/rollup/common/components/RollupStageBadge';
+import useAddChainClick from 'client/features/web3-wallet/hooks/useAddChainClick';
+import useProvider from 'client/features/web3-wallet/hooks/useProvider';
+
+import ChainIcon from 'client/shared/external-chains/ChainIcon';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
-import useAddChainClick from 'client/shared/web3/useAddChainClick';
-import useProvider from 'client/shared/web3/useProvider';
-import { WALLETS_INFO } from 'client/shared/web3/wallets';
+import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { Heading } from 'toolkit/chakra/heading';
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { LinkBox, LinkOverlay } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
-import ChainIcon from 'ui/shared/externalChains/ChainIcon';
-import IconSvg from 'ui/shared/IconSvg';
-import RollupStageBadge from 'ui/snippets/navigation/RollupStageBadge';
 
 interface Props {
   data: ClusterChainConfig;
@@ -120,7 +121,7 @@ const ChainWidget = ({ data, isLoading, metrics }: Props) => {
               bgColor={{ _light: 'blackAlpha.50', _dark: 'whiteAlpha.50' }}
               loadingSkeleton={ isLoading }
             >
-              <IconSvg name={ walletIcon } boxSize={ 5 }/>
+              <SpriteIcon name={ walletIcon } boxSize={ 5 }/>
             </IconButton>
           </Tooltip>
         ) }

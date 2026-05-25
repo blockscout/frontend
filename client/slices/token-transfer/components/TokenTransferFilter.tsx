@@ -9,11 +9,11 @@ import type { TokenType } from 'client/slices/token/types/api';
 
 import TokenTypeFilter from 'client/slices/token/components/TokenTypeFilter';
 
+import PopoverFilter from 'client/shared/filters/PopoverFilter';
 import useIsInitialLoading from 'client/shared/hooks/useIsInitialLoading';
 
 import { Radio, RadioGroup } from 'toolkit/chakra/radio';
 import { Hint } from 'toolkit/components/Hint/Hint';
-import PopoverFilter from 'ui/shared/filters/PopoverFilter';
 
 interface Props {
   appliedFiltersNum?: number;

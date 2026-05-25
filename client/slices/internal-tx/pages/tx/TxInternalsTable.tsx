@@ -5,8 +5,7 @@ import React from 'react';
 import type { InternalTransaction } from 'client/slices/internal-tx/types/api';
 
 import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
-
-import { currencyUnits } from 'client/shared/chain/units';
+import { currencyUnits } from 'client/slices/chain/units';
 
 import { TableBody, TableColumnHeader, TableColumnHeaderSortable, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 

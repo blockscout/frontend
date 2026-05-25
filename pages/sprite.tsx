@@ -5,7 +5,7 @@ import React from 'react';
 
 import PageNextJs from 'nextjs/PageNextJs';
 
-import Sprite from 'ui/pages/Sprite';
+import Sprite from 'client/sprite/pages/Sprite';
 
 const Page: NextPage = () => {
   return (

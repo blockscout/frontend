@@ -15,10 +15,11 @@ import PageNextJs from 'nextjs/PageNextJs';
 import detectBotRequest from 'nextjs/utils/detectBotRequest';
 import fetchApi from 'nextjs/utils/fetchApi';
 
+import LayoutApp from 'client/shell/layout/LayoutApp';
+
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import config from 'configs/app';
-import LayoutApp from 'ui/shared/layout/LayoutApp';
 
 const MarketplaceAppPage = dynamic(() => import('client/features/marketplace/pages/dapp/MarketplaceApp'), { ssr: false });
 

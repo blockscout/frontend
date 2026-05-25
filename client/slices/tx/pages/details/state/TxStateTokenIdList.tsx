@@ -3,8 +3,9 @@
 import { Text } from '@chakra-ui/react';
 import React from 'react';
 
+import NftEntity from 'client/slices/token/components/entity/NftEntity';
+
 import { CollapsibleList } from 'toolkit/chakra/collapsible';
-import NftEntity from 'ui/shared/entities/nft/NftEntity';
 
 interface Props {
   items: Array<{ total: { token_id: string | null } }>;

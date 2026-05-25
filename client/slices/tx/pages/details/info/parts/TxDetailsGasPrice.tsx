@@ -4,10 +4,11 @@ import React from 'react';
 
 import type { TokenInfo } from 'client/slices/token/types/api';
 
+import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
+import GasPriceValue from 'client/shared/values/entity/GasPriceValue';
+import TokenValue from 'client/shared/values/entity/TokenValue';
+
 import config from 'configs/app';
-import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import GasPriceValue from 'ui/shared/value/GasPriceValue';
-import TokenValue from 'ui/shared/value/TokenValue';
 
 interface Props {
   gasToken?: TokenInfo | null;

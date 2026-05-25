@@ -7,7 +7,7 @@ import type { ApiKey } from 'client/features/account/types/api';
 import TableItemActionButtons from 'client/features/account/components/TableItemActionButtons';
 import ApiKeySnippet from 'client/features/account/pages/api-keys/ApiKeySnippet';
 
-import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
+import ListItemMobile from 'client/shared/lists/ListItemMobile';
 
 interface Props {
   item: ApiKey;

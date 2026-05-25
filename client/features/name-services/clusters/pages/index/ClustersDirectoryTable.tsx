@@ -6,8 +6,9 @@ import type { ClustersDirectoryObject } from 'client/features/name-services/clus
 
 import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
 
+import TimeFormatToggle from 'client/shared/date-and-time/TimeFormatToggle';
+
 import { TableBody, TableHeaderSticky, TableRow, TableColumnHeader, TableRoot } from 'toolkit/chakra/table';
-import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
 import ClustersDirectoryTableItem from './ClustersDirectoryTableItem';
 

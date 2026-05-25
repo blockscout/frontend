@@ -4,17 +4,18 @@ import { Box } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import ActionBar from 'client/shell/page/action-bar/ActionBar';
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import useDebounce from 'client/shared/hooks/useDebounce';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import DataList from 'client/shared/lists/DataList';
+import Pagination from 'client/shared/pagination/Pagination';
+import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
+import { generateListStub } from 'client/shared/pagination/utils';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
-import { generateListStub } from 'stubs/utils';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
-import ActionBar from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
-import PageTitle from 'ui/shared/Page/PageTitle';
-import Pagination from 'ui/shared/pagination/Pagination';
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
 import { TAC_OPERATION } from '../../stubs';
 import TacOperationsListItem from './TacOperationsListItem';
@@ -94,7 +95,7 @@ const TacOperations = () => {
   return (
     <>
       <PageTitle title="Operations" withTextAd/>
-      <DataListDisplay
+      <DataList
         isError={ isError }
         itemsNum={ data?.items?.length }
         emptyText="There are no operations."
@@ -105,7 +106,7 @@ const TacOperations = () => {
         actionBar={ actionBar }
       >
         { content }
-      </DataListDisplay>
+      </DataList>
     </>
   );
 };

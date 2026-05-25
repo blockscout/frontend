@@ -12,11 +12,12 @@ import { TX_INTERNALS_ITEMS } from 'client/slices/internal-tx/utils/utils';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import TxStatus from 'client/slices/tx/components/TxStatus';
 
+import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
+import ChainIcon from 'client/shared/external-chains/ChainIcon';
+import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
+
 import { Badge } from 'toolkit/chakra/badge';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
-import ChainIcon from 'ui/shared/externalChains/ChainIcon';
-import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
-import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 type Props = InternalTransaction & { currentAddress?: string; isLoading?: boolean; showBlockInfo?: boolean; chainData?: ClusterChainConfig };
 

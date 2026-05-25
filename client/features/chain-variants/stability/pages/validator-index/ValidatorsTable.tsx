@@ -8,9 +8,11 @@ import type {
   ValidatorsStabilitySortingValue,
 } from 'client/features/chain-variants/stability/types/api';
 
+import { ACTION_BAR_HEIGHT_DESKTOP } from 'client/shell/page/action-bar/ActionBar';
+
+import getNextSortValue from 'client/shared/sort/get-next-sort-value';
+
 import { TableBody, TableColumnHeader, TableColumnHeaderSortable, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
-import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import getNextSortValue from 'ui/shared/sort/getNextSortValue';
 
 import { VALIDATORS_STABILITY_SORT_SEQUENCE } from './utils';
 import ValidatorsTableItem from './ValidatorsTableItem';

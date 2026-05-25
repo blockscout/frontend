@@ -2,12 +2,14 @@
 
 import React from 'react';
 
+import { useSettingsContext } from 'client/shell/top-bar/settings/context';
+
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import { BECH_32_SEPARATOR, toBech32Address } from 'client/slices/address/utils/bech32';
 
+import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
+
 import config from 'configs/app';
-import { useSettingsContext } from 'lib/contexts/settings';
-import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 
 interface Props {
   isLoading?: boolean;

@@ -13,10 +13,11 @@ import { useMultichainContext } from 'client/features/multichain/context';
 import UserOpEntity from 'client/features/user-ops/components/entity/UserOpEntity';
 import UserOpStatus from 'client/features/user-ops/components/UserOpStatus';
 
+import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
+import ListItemMobileGrid from 'client/shared/lists/ListItemMobileGrid';
+import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
+
 import config from 'configs/app';
-import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
-import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
-import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 type Props = {
   item: UserOpsItem;

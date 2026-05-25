@@ -4,22 +4,23 @@ import { HStack } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import { ACTION_BAR_HEIGHT_DESKTOP } from 'client/shell/page/action-bar/ActionBar';
+
 import TxsWithApiSorting from 'client/slices/tx/pages/index/list/TxsWithApiSorting';
 
+import AddressTxsCrossChain from 'client/features/cross-chain-txs/pages/address/AddressTxsCrossChain';
+import { INTERCHAIN_MESSAGE } from 'client/features/cross-chain-txs/stubs/messages';
 import CsvExport from 'client/features/csv-export/components/CsvExport';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import useIsMounted from 'client/shared/hooks/useIsMounted';
+import Pagination from 'client/shared/pagination/Pagination';
+import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
+import { generateListStub } from 'client/shared/pagination/utils';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import config from 'configs/app';
-import { INTERCHAIN_MESSAGE } from 'stubs/interchainIndexer';
-import { generateListStub } from 'stubs/utils';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import AddressTxsCrossChain from 'ui/crossChain/address/AddressTxsCrossChain';
-import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import Pagination from 'ui/shared/pagination/Pagination';
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
 import AddressTxsFilter from './AddressTxsFilter';
 import useAddressTxsQuery from './useAddressTxsQuery';

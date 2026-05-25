@@ -8,13 +8,13 @@ import AddressEntity from 'client/slices/address/components/entity/AddressEntity
 import useWeb3Wallet from 'client/features/connect-wallet/hooks/useWallet';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import config from 'configs/app';
 import { Alert } from 'toolkit/chakra/alert';
 import { Button } from 'toolkit/chakra/button';
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   isLoading?: boolean;
@@ -64,7 +64,7 @@ const ConnectWalletAlert = ({ isLoading }: Props) => {
             onClick={ handleOpenWalletClick }
             loading={ web3Wallet.isOpen }
           >
-            <IconSvg name="gear"/>
+            <SpriteIcon name="gear"/>
           </IconButton>
         ) }
       </Flex>
@@ -82,4 +82,4 @@ const ConnectWalletAlert = ({ isLoading }: Props) => {
 
 const Fallback = () => null;
 
-export default config.features.blockchainInteraction.isEnabled ? ConnectWalletAlert : Fallback;
+export default config.features.connectWallet.isEnabled ? ConnectWalletAlert : Fallback;

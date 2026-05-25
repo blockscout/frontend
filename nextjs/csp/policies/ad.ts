@@ -4,7 +4,7 @@ import Base64 from 'crypto-js/enc-base64';
 import sha256 from 'crypto-js/sha256';
 import type CspDev from 'csp-dev';
 
-import { connectAdbutler, placeAd } from 'ui/shared/ad/adbutlerScript';
+import { connectAdbutler, placeAd } from 'client/features/ads/banner/utils/adbutler-script';
 
 export function ad(nonce?: string): CspDev.DirectiveDescriptor {
   return {

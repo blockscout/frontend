@@ -6,12 +6,11 @@ import type { Route } from 'nextjs-routes';
 import type { Props as PageProps } from 'nextjs/getServerSideProps/handlers';
 
 import useGetCsrfToken from 'client/features/account/hooks/useGetCsrfToken';
+import useAdblockDetect from 'client/features/ads/common/hooks/useAdblockDetect';
+import useNotifyOnNavigation from 'client/features/metasuites/hooks/useNotifyOnNavigation';
 
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 import useIsMounted from 'client/shared/hooks/useIsMounted';
-
-import useAdblockDetect from 'lib/hooks/useAdblockDetect';
-import useNotifyOnNavigation from 'lib/hooks/useNotifyOnNavigation';
 
 interface Props<Pathname extends Route['pathname']> {
   pathname: Pathname;

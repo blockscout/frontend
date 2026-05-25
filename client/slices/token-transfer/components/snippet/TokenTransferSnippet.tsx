@@ -14,8 +14,9 @@ import { isConfidentialTokenType } from 'client/slices/token/utils/token-types';
 
 import AddressFromTo from 'client/slices/address/components/from-to/AddressFromTo';
 
+import ConfidentialTokenValue from 'client/shared/values/entity/ConfidentialTokenValue';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import ConfidentialTokenValue from 'ui/shared/value/ConfidentialTokenValue';
 
 import TokenTransferSnippetFiat from './TokenTransferSnippetFiat';
 import TokenTransferSnippetNft from './TokenTransferSnippetNft';

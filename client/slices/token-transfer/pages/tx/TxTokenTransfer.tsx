@@ -6,6 +6,8 @@ import React from 'react';
 import type { TokenTransfer } from 'client/slices/token-transfer/types/api';
 import type { TokenType } from 'client/slices/token/types/api';
 
+import { ACTION_BAR_HEIGHT_DESKTOP } from 'client/shell/page/action-bar/ActionBar';
+
 import TokenTransferFilter from 'client/slices/token-transfer/components/TokenTransferFilter';
 import { getTokenTransfersStub } from 'client/slices/token-transfer/stubs';
 import { getTokenFilterValue } from 'client/slices/token/utils/list-utils';
@@ -19,13 +21,12 @@ import { useMultichainContext } from 'client/features/multichain/context';
 
 import useIsInitialLoading from 'client/shared/hooks/useIsInitialLoading';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import Pagination from 'client/shared/pagination/Pagination';
+import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import config from 'configs/app';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import Pagination from 'ui/shared/pagination/Pagination';
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
 import TxTokenTransferLocal from './TxTokenTransferLocal';
 

@@ -10,13 +10,14 @@ import type { AddressCoinBalanceHistoryItem } from 'client/slices/address/types/
 import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 
+import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
+import ListItemMobile from 'client/shared/lists/ListItemMobile';
+import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
+import SimpleValue from 'client/shared/values/entity/SimpleValue';
+import { WEI } from 'client/shared/values/entity/utils';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { ZERO } from 'toolkit/utils/consts';
-import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
-import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
-import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
-import SimpleValue from 'ui/shared/value/SimpleValue';
-import { WEI } from 'ui/shared/value/utils';
 
 type Props = AddressCoinBalanceHistoryItem & {
   page: number;

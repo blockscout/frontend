@@ -10,19 +10,20 @@ import { ZETA_CHAIN_CCTX_COIN_TYPE_FILTER, ZETA_CHAIN_CCTX_STATUS_REDUCED_FILTER
 import type { CoinTypeFilter, StatusReducedFilters, ZetaChainCCTXFilterParams } from 'client/features/chain-variants/zeta-chain/types/client';
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
+import getChainValidationActionText from 'client/slices/chain/verification-type/utils/get-chain-validation-action-text';
+
 import { getDurationFromAge } from 'client/features/advanced-filter/utils/lib';
 import { ZETA_CHAIN_CCTX_LIST_ITEM } from 'client/features/chain-variants/zeta-chain/stubs';
 
-import getChainValidationActionText from 'client/shared/chain/get-chain-validation-action-text';
+import dayjs from 'client/shared/date-and-time/dayjs';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import Pagination from 'client/shared/pagination/Pagination';
+import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import getFilterValueFromQuery from 'client/shared/router/get-filter-value-from-query';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import getValuesArrayFromQuery from 'client/shared/router/get-values-array-from-query';
 
-import dayjs from 'lib/date/dayjs';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import Pagination from 'ui/shared/pagination/Pagination';
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
 import ZetaChainCCTxs from './ZetaChainCCTxs';
 import ZetaChainCCTXsStats from './ZetaChainCCTXsStats';

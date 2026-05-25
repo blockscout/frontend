@@ -4,13 +4,14 @@ import { Box, Flex, Grid, Text } from '@chakra-ui/react';
 import { capitalize } from 'es-toolkit';
 import React from 'react';
 
-import type { FheOperation } from 'types/api/fheOperations';
+import type { FheOperation } from '../../types/api';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 
+import ListItemMobile from 'client/shared/lists/ListItemMobile';
+
 import { Badge } from 'toolkit/chakra/badge';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 
 import { getTypeColor } from '../../utils/utils';
 

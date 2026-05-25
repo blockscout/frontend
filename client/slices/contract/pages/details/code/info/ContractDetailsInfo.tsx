@@ -13,9 +13,10 @@ import { CONTRACT_LICENSES } from 'client/slices/contract/utils/licenses';
 import ContractSecurityAudits from 'client/features/contract-audit-reports/components/ContractSecurityAudits';
 import { useMultichainContext } from 'client/features/multichain/context';
 
+import Time from 'client/shared/date-and-time/Time';
+
 import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
-import Time from 'ui/shared/time/Time';
 
 import ContractDetailsInfoCreator from './ContractDetailsInfoCreator';
 import ContractDetailsInfoImplementations from './ContractDetailsInfoImplementations';

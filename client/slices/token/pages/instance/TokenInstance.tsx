@@ -4,8 +4,8 @@ import { Box } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { PaginationParams } from 'client/shared/pagination/types';
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
-import type { PaginationParams } from 'ui/shared/pagination/types';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
@@ -23,15 +23,16 @@ import {
   getTokenInstanceHoldersStub,
 } from 'client/slices/token/stubs';
 
+import TextAd from 'client/features/ads/text/components/TextAd';
+
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import * as metadata from 'client/shared/metadata';
+import Pagination from 'client/shared/pagination/Pagination';
+import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import TextAd from 'ui/shared/ad/TextAd';
-import Pagination from 'ui/shared/pagination/Pagination';
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
 export type TokenTabs = 'token_transfers' | 'holders';
 

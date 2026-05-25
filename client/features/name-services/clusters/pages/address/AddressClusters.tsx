@@ -20,13 +20,14 @@ import {
   hasMoreClusters,
 } from 'client/features/name-services/clusters/utils/clusters-utils';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';
 import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
-import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   query: UseQueryResult<ClustersByAddressResponse, ResourceError<unknown>>;
@@ -91,7 +92,7 @@ const AddressClusters = ({ query, addressHash }: Props) => {
               columnGap={ 1 }
               role="group"
             >
-              <IconSvg name="clusters" boxSize={ 5 } fill="currentColor"/>
+              <SpriteIcon name="clusters" boxSize={ 5 } fill="currentColor"/>
               <chakra.span hideBelow="xl">{ totalRecords } { clusterLabel }</chakra.span>
               <chakra.span hideFrom="xl">{ totalRecords }</chakra.span>
             </Button>

@@ -4,9 +4,10 @@ import React from 'react';
 
 import type { MarketplaceAppSocialInfo } from 'client/features/marketplace/types/client';
 
+import type { IconName } from 'client/sprite/SpriteIcon';
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { Link } from 'toolkit/chakra/link';
-import type { IconName } from 'ui/shared/IconSvg';
-import IconSvg from 'ui/shared/IconSvg';
 
 export interface Props {
   field: keyof MarketplaceAppSocialInfo;
@@ -25,7 +26,7 @@ const SocialLink = ({ href, icon, title }: Props) => {
       display="inline-flex"
       alignItems="center"
     >
-      <IconSvg name={ icon } boxSize={ 5 } mr={ 2 } color="icon.primary"/>
+      <SpriteIcon name={ icon } boxSize={ 5 } mr={ 2 } color="icon.primary"/>
       <span>{ title }</span>
     </Link>
   );

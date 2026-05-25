@@ -7,9 +7,10 @@ import React from 'react';
 import type { WrappedTransactionFields } from 'client/features/chain-variants/suave/types/api';
 import type { Transaction } from 'client/slices/tx/types/api';
 
+import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
+import TokenValue from 'client/shared/values/entity/TokenValue';
+
 import config from 'configs/app';
-import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
-import TokenValue from 'ui/shared/value/TokenValue';
 
 interface Props extends BoxProps {
   loading?: boolean;

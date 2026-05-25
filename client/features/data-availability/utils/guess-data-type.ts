@@ -2,7 +2,7 @@
 
 import filetype from 'magic-bytes.js';
 
-import hexToBytes from 'client/shared/transformers/hex-to-bytes';
+import hexToBytes from 'client/shared/data/transformers/hex-to-bytes';
 
 import removeNonSignificantZeroBytes from './remove-non-significant-zero-bytes';
 

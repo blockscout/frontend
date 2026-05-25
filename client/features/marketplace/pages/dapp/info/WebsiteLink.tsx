@@ -2,9 +2,10 @@
 
 import React from 'react';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { Link } from 'toolkit/chakra/link';
 import { makePrettyLink } from 'toolkit/utils/url';
-import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   url?: string | undefined;
@@ -25,7 +26,7 @@ const WebsiteLink = ({ url }: Props) => {
       columnGap={ 1 }
       mt={ 3 }
     >
-      <IconSvg name="link" boxSize={ 5 } color="icon.primary"/>
+      <SpriteIcon name="link" boxSize={ 5 } color="icon.primary"/>
       <span>{ makePrettyLink(url)?.domain }</span>
     </Link>
   );

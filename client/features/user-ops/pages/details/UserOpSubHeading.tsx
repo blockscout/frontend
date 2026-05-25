@@ -13,10 +13,11 @@ import { TX_INTERPRETATION } from 'client/features/tx-interpretation/blockscout/
 import TxInterpretation from 'client/features/tx-interpretation/common/components/TxInterpretation';
 import UserOpEntity from 'client/features/user-ops/components/entity/UserOpEntity';
 
+import { TX_ACTIONS_BLOCK_ID } from 'client/shared/detailed-info/DetailedInfoActionsWrapper';
+
 import config from 'configs/app';
 // import type { ResourceError } from 'client/api/resources';
 import { Link } from 'toolkit/chakra/link';
-import { TX_ACTIONS_BLOCK_ID } from 'ui/shared/DetailedInfo/DetailedInfoActionsWrapper';
 
 type Props = {
   hash: string;

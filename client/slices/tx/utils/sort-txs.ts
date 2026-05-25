@@ -2,7 +2,7 @@
 
 import type { Transaction, TransactionsSortingValue } from 'client/slices/tx/types/api';
 
-import compareBns from 'lib/bigint/compareBns';
+import compareBns from 'client/shared/numbers/compareBns';
 
 export default function sortTxs(sorting: TransactionsSortingValue | undefined) {
   return function sortingFn(tx1: Transaction, tx2: Transaction) {

@@ -10,11 +10,12 @@ import TxEntityZetaChainCC from 'client/features/chain-variants/zeta-chain/compo
 import ZetaChainCCTXReducedStatus from 'client/features/chain-variants/zeta-chain/components/ZetaChainCCTXReducedStatus';
 import ZetaChainCCTXValue from 'client/features/chain-variants/zeta-chain/components/ZetaChainCCTXValue';
 
-import dayjs from 'lib/date/dayjs';
+import dayjs from 'client/shared/date-and-time/dayjs';
+import Time from 'client/shared/date-and-time/Time';
+import TextSeparator from 'client/shared/texts/TextSeparator';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { SECOND } from 'toolkit/utils/consts';
-import TextSeparator from 'ui/shared/TextSeparator';
-import Time from 'ui/shared/time/Time';
 
 type Props = {
   tx: CctxListItem;

@@ -7,14 +7,15 @@ import type * as bens from '@blockscout/bens-types';
 
 import { route } from 'nextjs-routes';
 
+import * as EntityBase from 'client/shared/entities/components';
+import { distributeEntityProps, getIconProps } from 'client/shared/entities/utils';
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { Image } from 'toolkit/chakra/image';
 import { Link as LinkToolkit } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { makePrettyLink } from 'toolkit/utils/url';
-import * as EntityBase from 'ui/shared/entities/base/components';
-import { distributeEntityProps, getIconProps } from 'ui/shared/entities/base/utils';
-import IconSvg from 'ui/shared/IconSvg';
 
 type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'domain' | 'protocol'>;
 
@@ -75,7 +76,7 @@ const Icon = (props: IconProps) => {
                 flexBasis="calc((100% - 12px) / 2)"
                 flexGrow={ 1 }
               >
-                <IconSvg name="docs" boxSize={ 5 } color="icon.primary" mr={ 2 }/>
+                <SpriteIcon name="docs" boxSize={ 5 } color="icon.primary" mr={ 2 }/>
                 <span>Documentation</span>
               </LinkToolkit>
             ) }

@@ -9,10 +9,10 @@ import type * as multichain from '@blockscout/multichain-aggregator-types';
 import type { ClusterChainConfig } from 'client/features/multichain/types/client';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import multichainConfig from 'configs/multichain';
 import { CollapsibleList } from 'toolkit/chakra/collapsible';
-import IconSvg from 'ui/shared/IconSvg';
 
 import MultichainAddressPortfolioCard from './MultichainAddressPortfolioCard';
 
@@ -93,11 +93,11 @@ const MultichainAddressPortfolioCards = ({ isLoading, selectedChainId, onChange,
 
   const text: [React.ReactNode, React.ReactNode] = [
     <>
-      <IconSvg name="plus" boxSize={{ base: '8px', lg: '10px' }} mr={ 0.5 }/>
+      <SpriteIcon name="plus" boxSize={{ base: '8px', lg: '10px' }} mr={ 0.5 }/>
       <span>show more</span>
     </>,
     <>
-      <IconSvg name="minus" boxSize={{ base: '8px', lg: '10px' }} mr={ 0.5 }/>
+      <SpriteIcon name="minus" boxSize={{ base: '8px', lg: '10px' }} mr={ 0.5 }/>
       <span>show less</span>
     </>,
   ];

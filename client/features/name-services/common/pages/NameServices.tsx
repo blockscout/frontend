@@ -4,12 +4,13 @@ import React from 'react';
 
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import Clusters from 'client/features/name-services/clusters/pages/index/Clusters';
 import NameDomains from 'client/features/name-services/domains/pages/index/NameDomains';
 
 import config from 'configs/app';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import PageTitle from 'ui/shared/Page/PageTitle';
 
 const feature = config.features.nameServices;
 

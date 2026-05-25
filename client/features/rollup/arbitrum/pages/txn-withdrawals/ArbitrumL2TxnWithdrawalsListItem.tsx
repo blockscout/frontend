@@ -6,9 +6,10 @@ import type { ArbitrumL2TxnWithdrawalsItem } from '../../types/api';
 
 import AddressEntityL1 from 'client/features/rollup/common/components/AddressEntityL1';
 
+import ListItemMobileGrid from 'client/shared/lists/ListItemMobileGrid';
+
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 
 import ArbitrumL2MessageStatus from '../../components/ArbitrumL2MessageStatus';
 import ArbitrumL2TxnWithdrawalsClaimButton from './ArbitrumL2TxnWithdrawalsClaimButton';

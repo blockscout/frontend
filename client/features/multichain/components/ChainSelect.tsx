@@ -2,9 +2,10 @@
 
 import React from 'react';
 
+import type { Props } from 'client/shared/external-chains/ChainSelect';
+import ChainSelect from 'client/shared/external-chains/ChainSelect';
+
 import multichainConfig from 'configs/multichain';
-import type { Props } from 'ui/shared/externalChains/ChainSelect';
-import ChainSelect from 'ui/shared/externalChains/ChainSelect';
 
 const ChainSelectMultichain = (props: Omit<Props, 'chainsConfig'>) => {
   const chainsConfig = React.useMemo(() => {

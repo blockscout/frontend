@@ -3,7 +3,7 @@
 import type { JsxStyleProps } from '@chakra-ui/react';
 import React from 'react';
 
-import type { ExternalChain } from 'types/externalChains';
+import type { ExternalChain } from 'client/shared/external-chains/types';
 
 import type { EntityProps } from 'client/slices/token/components/entity/TokenEntity';
 import TokenEntity from 'client/slices/token/components/entity/TokenEntity';

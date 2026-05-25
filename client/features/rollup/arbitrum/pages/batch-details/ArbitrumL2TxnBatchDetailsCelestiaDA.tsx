@@ -5,11 +5,13 @@ import React from 'react';
 
 import type { ArbitrumL2TxnBatchDACelestia } from '../../types/api';
 
+import CeleniumLink from 'client/features/rollup/common/components/CeleniumLink';
+
+import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
+import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
+import HashStringShortenDynamic from 'client/shared/texts/HashStringShortenDynamic';
+
 import config from 'configs/app';
-import CeleniumLink from 'ui/shared/batch/CeleniumLink';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
-import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 
 const feature = config.features.rollup;
 

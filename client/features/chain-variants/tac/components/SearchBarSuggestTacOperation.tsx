@@ -6,8 +6,8 @@ import React from 'react';
 import type { SearchResultTacOperation } from 'client/features/chain-variants/tac/types/api';
 import type { ItemsProps } from 'client/slices/search/components/search-bar/SearchBarSuggest/types';
 
-import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
-import Time from 'ui/shared/time/Time';
+import Time from 'client/shared/date-and-time/Time';
+import HashStringShortenDynamic from 'client/shared/texts/HashStringShortenDynamic';
 
 import * as TacOperationEntity from './TacOperationEntity';
 import TacOperationStatus from './TacOperationStatus';

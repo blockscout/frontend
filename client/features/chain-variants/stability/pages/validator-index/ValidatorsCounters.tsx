@@ -7,8 +7,9 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 
 import { VALIDATORS_STABILITY_COUNTERS } from 'client/features/chain-variants/stability/stubs/validators';
 
+import StatsWidget from 'client/shared/stats/StatsWidget';
+
 import config from 'configs/app';
-import StatsWidget from 'ui/shared/stats/StatsWidget';
 
 const ValidatorsCounters = () => {
   const countersQuery = useApiQuery('general:validators_stability_counters', {

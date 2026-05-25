@@ -4,9 +4,10 @@ import React from 'react';
 
 import type { TokenVerifiedInfo } from 'client/features/verified-tokens/types/api';
 
+import type { IconName } from 'client/sprite/SpriteIcon';
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { Link } from 'toolkit/chakra/link';
-import type { IconName } from 'ui/shared/IconSvg';
-import IconSvg from 'ui/shared/IconSvg';
 
 export interface Props {
   field: keyof TokenVerifiedInfo;
@@ -26,7 +27,7 @@ const ServiceLink = ({ href, title, icon }: Props) => {
       display="inline-flex"
       alignItems="center"
     >
-      <IconSvg name={ icon } boxSize={ 5 } mr={ 2 } color="icon.primary"/>
+      <SpriteIcon name={ icon } boxSize={ 5 } mr={ 2 } color="icon.primary"/>
       <span>{ title }</span>
     </Link>
   );

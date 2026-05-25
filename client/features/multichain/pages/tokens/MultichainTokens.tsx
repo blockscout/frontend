@@ -6,6 +6,9 @@ import React from 'react';
 
 import type { TokenType } from 'client/slices/token/types/api';
 
+import ActionBar from 'client/shell/page/action-bar/ActionBar';
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import TokenTypeFilter from 'client/slices/token/components/TokenTypeFilter';
 import Tokens from 'client/slices/token/pages/index/TokensList';
 import { getTokenFilterValue } from 'client/slices/token/utils/list-utils';
@@ -13,18 +16,16 @@ import { getTokenFilterValue } from 'client/slices/token/utils/list-utils';
 import ChainSelect from 'client/features/multichain/components/ChainSelect';
 import { TOKEN } from 'client/features/multichain/stubs';
 
+import PopoverFilter from 'client/shared/filters/PopoverFilter';
 import useDebounce from 'client/shared/hooks/useDebounce';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import Pagination from 'client/shared/pagination/Pagination';
+import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
+import { generateListStub } from 'client/shared/pagination/utils';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import multichainConfig from 'configs/multichain';
-import { generateListStub } from 'stubs/utils';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
-import ActionBar from 'ui/shared/ActionBar';
-import PopoverFilter from 'ui/shared/filters/PopoverFilter';
-import PageTitle from 'ui/shared/Page/PageTitle';
-import Pagination from 'ui/shared/pagination/Pagination';
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
 const getChainIdFilterValue = (chainIds: Array<string>) => {
   return chainIds.includes('all') ? undefined : chainIds.filter(Boolean);

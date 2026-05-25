@@ -9,9 +9,9 @@ import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 
 import TxEntityTon from 'client/features/chain-variants/tac/components/TxEntityTon';
 
-import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
-import { ItemContent, ItemBody, ItemRow } from 'ui/shared/lifecycle/LifecycleAccordion';
-import StatusTag from 'ui/shared/statusTag/StatusTag';
+import DetailedInfoTimestamp from 'client/shared/detailed-info/DetailedInfoTimestamp';
+import { ItemContent, ItemBody, ItemRow } from 'client/shared/lifecycle/accordion/LifecycleAccordion';
+import StatusTag from 'client/shared/tags/status-tag/StatusTag';
 
 interface Props {
   isLast: boolean;

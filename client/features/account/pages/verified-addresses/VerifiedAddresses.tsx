@@ -9,6 +9,8 @@ import type { VerifiedAddress, TokenInfoApplication, TokenInfoApplications, Veri
 
 import useApiQuery, { getResourceKey } from 'client/api/hooks/useApiQuery';
 
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import AccountPageDescription from 'client/features/account/components/AccountPageDescription';
 import useProfileQuery from 'client/features/account/hooks/useProfileQuery';
 import useRedirectForInvalidAuthToken from 'client/features/account/hooks/useRedirectForInvalidAuthToken';
@@ -20,6 +22,7 @@ import TokenInfoForm from 'client/features/account/pages/verified-addresses/toke
 import { TOKEN_INFO_APPLICATION, VERIFIED_ADDRESS } from 'client/features/account/stubs';
 
 import * as mixpanel from 'client/shared/analytics/mixpanel';
+import DataList from 'client/shared/lists/DataList';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import config from 'configs/app';
@@ -27,9 +30,8 @@ import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';
 import { BackToButton } from 'toolkit/components/buttons/BackToButton';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
-import DataListDisplay from 'ui/shared/DataListDisplay';
-import PageTitle from 'ui/shared/Page/PageTitle';
-import AdminSupportText from 'ui/shared/texts/AdminSupportText';
+
+import AdminSupportText from './AdminSupportText';
 
 const VerifiedAddresses = () => {
   useRedirectForInvalidAuthToken();
@@ -216,13 +218,13 @@ const VerifiedAddresses = () => {
         </chakra.div>
         <AdminSupportText mt={ 5 }/>
       </AccountPageDescription>
-      <DataListDisplay
+      <DataList
         isError={ profileQuery.isError || addressesQuery.isError || applicationsQuery.isError }
         itemsNum={ addressesQuery.data?.verifiedAddresses.length }
         emptyText=""
       >
         { content }
-      </DataListDisplay>
+      </DataList>
       { addButton }
       <AddressVerificationModal
         pageType={ mixpanel.getPageType('/account/verified-addresses') }

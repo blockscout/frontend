@@ -6,9 +6,10 @@ import { route } from 'nextjs-routes';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
+
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 
 interface Props {
   hash: string;

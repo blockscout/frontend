@@ -12,11 +12,12 @@ import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
 import ScrollL2TxnBatchDA from 'client/features/rollup/scroll/components/ScrollL2TxnBatchDA';
 import ScrollL2TxnBatchStatus from 'client/features/rollup/scroll/components/ScrollL2TxnBatchStatus';
 
+import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
+
 import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
-import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 const rollupFeature = config.features.rollup;
 

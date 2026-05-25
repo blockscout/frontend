@@ -7,22 +7,24 @@ import type { AddressParam } from 'client/slices/address/types/api';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import ActionsMenu from 'client/shell/page/actions-menu/ActionsMenu';
+
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import type { TxQuery } from 'client/slices/tx/hooks/useTxQuery';
 
+import AppActionButton from 'client/features/address-metadata/components/AppActionButton';
+import useAppActionData from 'client/features/address-metadata/hooks/useAppActionData';
+import AlternativeExplorers from 'client/features/alternative-explorers/components/AlternativeExplorers';
 import { useMultichainContext } from 'client/features/multichain/context';
 import { TX_INTERPRETATION } from 'client/features/tx-interpretation/blockscout/stubs';
 import TxInterpretation from 'client/features/tx-interpretation/common/components/TxInterpretation';
 import { NOVES_TRANSLATE } from 'client/features/tx-interpretation/noves/stubs';
 import { createNovesSummaryObject } from 'client/features/tx-interpretation/noves/utils/createNovesSummaryObject';
 
+import { TX_ACTIONS_BLOCK_ID } from 'client/shared/detailed-info/DetailedInfoActionsWrapper';
+
 import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
-import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu';
-import AppActionButton from 'ui/shared/AppActionButton/AppActionButton';
-import useAppActionData from 'ui/shared/AppActionButton/useAppActionData';
-import { TX_ACTIONS_BLOCK_ID } from 'ui/shared/DetailedInfo/DetailedInfoActionsWrapper';
-import NetworkExplorers from 'ui/shared/NetworkExplorers';
 
 type Props = {
   hash: string;
@@ -145,11 +147,11 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
         gap={ 3 }
         mt={{ base: 3, lg: 0 }}
       >
-        { !hasTag && <AccountActionsMenu isLoading={ isLoading }/> }
+        { !hasTag && <ActionsMenu isLoading={ isLoading }/> }
         { appActionData && (
           <AppActionButton data={ appActionData } txHash={ hash } source="Txn"/>
         ) }
-        <NetworkExplorers type="tx" pathParam={ hash } ml="auto"/>
+        <AlternativeExplorers type="tx" pathParam={ hash } ml="auto"/>
       </Flex>
     </Box>
   );

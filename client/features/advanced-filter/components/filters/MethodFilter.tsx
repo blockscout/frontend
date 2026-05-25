@@ -8,12 +8,12 @@ import type { AdvancedFilterMethodInfo, AdvancedFilterParams } from '../../types
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import TableColumnFilter from 'client/shared/filters/TableColumnFilter';
 import useDebounce from 'client/shared/hooks/useDebounce';
 
 import { Badge } from 'toolkit/chakra/badge';
 import { Checkbox, CheckboxGroup } from 'toolkit/chakra/checkbox';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
-import TableColumnFilter from 'ui/shared/filters/TableColumnFilter';
 
 const RESET_VALUE = 'all';
 

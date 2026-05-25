@@ -3,7 +3,7 @@
 import type { GasPriceInfo } from 'client/slices/gas/types/api';
 import type { GasUnit } from 'client/slices/gas/types/config';
 
-import { currencyUnits } from 'client/shared/chain/units';
+import { currencyUnits } from 'client/slices/chain/units';
 
 export default function formatGasValue(data: GasPriceInfo, unit: GasUnit) {
   switch (unit) {

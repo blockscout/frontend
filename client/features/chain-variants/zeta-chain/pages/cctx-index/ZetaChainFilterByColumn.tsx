@@ -7,7 +7,7 @@ import type { AdvancedFilterAge } from 'client/features/advanced-filter/types/ap
 import { ZETA_CHAIN_CCTX_COIN_TYPE_FILTER, type ZetaChainCCTXFilterParams } from 'client/features/chain-variants/zeta-chain/types/client';
 import type { TokenInfo } from 'client/slices/token/types/api';
 
-import TableColumnFilterWrapper from 'ui/shared/filters/TableColumnFilterWrapper';
+import TableColumnFilterWrapper from 'client/shared/filters/TableColumnFilterWrapper';
 
 import ZetaChainAgeFilter from './ZetaChainAgeFilter';
 import ZetaChainAssetFilter, { ZETA_NATIVE_TOKEN } from './ZetaChainAssetFilter';

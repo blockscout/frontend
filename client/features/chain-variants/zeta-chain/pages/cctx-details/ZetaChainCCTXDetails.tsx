@@ -15,17 +15,17 @@ import ZetaChainCCTXReducedStatus from 'client/features/chain-variants/zeta-chai
 import ZetaChainCCTXStatusTag from 'client/features/chain-variants/zeta-chain/components/ZetaChainCCTXStatusTag';
 import ZetaChainCCTXValue from 'client/features/chain-variants/zeta-chain/components/ZetaChainCCTXValue';
 
-import base64ToHex from 'client/shared/transformers/base64-to-hex';
+import RawDataSnippet from 'client/shared/data/RawDataSnippet';
+import base64ToHex from 'client/shared/data/transformers/base64-to-hex';
+import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
+import DetailedInfoNativeCoinValue from 'client/shared/detailed-info/DetailedInfoNativeCoinValue';
+import DetailedInfoTimestamp from 'client/shared/detailed-info/DetailedInfoTimestamp';
+import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { SECOND } from 'toolkit/utils/consts';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
-import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import DetailedInfoNativeCoinValue from 'ui/shared/DetailedInfo/DetailedInfoNativeCoinValue';
-import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
-import IconSvg from 'ui/shared/IconSvg';
-import RawDataSnippet from 'ui/shared/RawDataSnippet';
 
 import ZetaChainCCTXDetailsLifecycleIn from './ZetaChainCCTXDetailsLifecycleIn';
 import ZetaChainCCTXDetailsLifecycleOut from './ZetaChainCCTXDetailsLifecycleOut';
@@ -221,7 +221,7 @@ const ZetaChainCCTXDetails = ({ data, isLoading }: Props) => {
         <Grid templateColumns="20px 1fr" rowGap={ 6 } columnGap={ 2 } w="100%">
           { transactionsBefore.length > 0 && (
             <>
-              <IconSvg name="verification-steps/finalized" boxSize={ 5 } bg="bg.primary" zIndex={ 1 } color="text.secondary"/>
+              <SpriteIcon name="verification-steps/finalized" boxSize={ 5 } bg="bg.primary" zIndex={ 1 } color="text.secondary"/>
               <VStack gap={ 2 } alignItems="flex-start">
                 { transactionsBefore.map((tx) => (
                   <ZetaChainCCTXDetailsRelatedTx
@@ -259,7 +259,7 @@ const ZetaChainCCTXDetails = ({ data, isLoading }: Props) => {
                 bg="bg.primary"
                 zIndex={ 1 }
               >
-                <IconSvg name="interop" boxSize={ 5 } bg="bg.primary" zIndex={ 1 } color="text.secondary"/>
+                <SpriteIcon name="interop" boxSize={ 5 } bg="bg.primary" zIndex={ 1 } color="text.secondary"/>
               </Flex>
               <VStack gap={ 2 } alignItems="flex-start">
                 { transactionsAfter.map((tx) => (

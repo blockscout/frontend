@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { ApiName, ApiResource } from './types';
-import type { ExternalChainExtended } from 'types/externalChains';
+import type { ExternalChainExtended } from 'client/shared/external-chains/types';
 
 import config from 'configs/app';
 

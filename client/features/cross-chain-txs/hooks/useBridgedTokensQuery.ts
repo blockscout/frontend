@@ -5,16 +5,17 @@ import React from 'react';
 
 import type { CrossChainBridgedTokensSorting, CrossChainBridgedTokensSortingField, CrossChainBridgedTokensSortingValue } from '../types/api';
 
+import { INTERCHAIN_BRIDGED_TOKEN_ITEM } from 'client/features/cross-chain-txs/stubs/messages';
+
 import useDebounce from 'client/shared/hooks/useDebounce';
+import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
+import { generateListStub } from 'client/shared/pagination/utils';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
+import getSortParamsFromValue from 'client/shared/sort/get-sort-params-from-value';
+import getSortValueFromQuery from 'client/shared/sort/get-sort-value-from-query';
 
 import config from 'configs/app';
-import { INTERCHAIN_BRIDGED_TOKEN_ITEM } from 'stubs/interchainIndexer';
-import { generateListStub } from 'stubs/utils';
 import type { OnValueChangeHandler } from 'toolkit/chakra/select';
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
-import getSortParamsFromValue from 'ui/shared/sort/getSortParamsFromValue';
-import getSortValueFromQuery from 'ui/shared/sort/getSortValueFromQuery';
 
 import { BRIDGED_TOKENS_SORT_OPTIONS } from '../utils/bridged-tokens-sort';
 

@@ -8,9 +8,10 @@ import { AddressHighlightProvider } from 'client/slices/address/contexts/address
 
 import { useMultichainContext } from 'client/features/multichain/context';
 
+import TimeFormatToggle from 'client/shared/date-and-time/TimeFormatToggle';
+
 import config from 'configs/app';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
-import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
 import UserOpsTableItem from './UserOpsTableItem';
 

@@ -4,9 +4,10 @@ import type { BoxProps } from '@chakra-ui/react';
 import { Box, HStack, VStack } from '@chakra-ui/react';
 import React from 'react';
 
+import FallbackBox from 'client/shared/api-degradation/FallbackBox';
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { TableBody, TableCell, TableRoot, TableRow } from 'toolkit/chakra/table';
-import FallbackBox from 'ui/shared/fallbacks/FallbackBox';
-import IconSvg from 'ui/shared/IconSvg';
 
 const LatestTxsFallback = (props: BoxProps) => {
   return (
@@ -19,7 +20,7 @@ const LatestTxsFallback = (props: BoxProps) => {
               <TableCell pl={ 0 } pr={{ base: 3, lg: 4 }} w={{ base: '220px', lg: '33%' }}>
                 <VStack alignItems="stretch">
                   <HStack>
-                    <IconSvg name="transactions" boxSize={ 5 } color={{ _light: 'gray.300', _dark: 'whiteAlpha.300' }}/>
+                    <SpriteIcon name="transactions" boxSize={ 5 } color={{ _light: 'gray.300', _dark: 'whiteAlpha.300' }}/>
                     <FallbackBox w="90px" bgColor={{ _light: 'blue.50', _dark: 'blue.800' }}/>
                     <FallbackBox w="90px" bgColor={{ _light: 'purple.50', _dark: 'purple.800' }}/>
                   </HStack>

@@ -4,8 +4,9 @@ import React from 'react';
 
 import type { FormFields } from '../types';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { FormFieldEmail } from 'toolkit/components/forms/fields/FormFieldEmail';
-import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   isReadOnly?: boolean;
@@ -24,7 +25,7 @@ const MyProfileFieldsEmail = ({ isReadOnly, defaultValue }: Props) => {
       group={{
         endElement: ({ field }) => {
           const isVerified = defaultValue && field.value === defaultValue;
-          return isVerified ? <IconSvg name="certified" boxSize={ 5 } color="green.500" mx={ 5 }/> : null;
+          return isVerified ? <SpriteIcon name="certified" boxSize={ 5 } color="green.500" mx={ 5 }/> : null;
         },
       }}
     />

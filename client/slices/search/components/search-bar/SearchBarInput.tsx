@@ -6,13 +6,13 @@ import React from 'react';
 import type { ChangeEvent, FormEvent, FocusEvent } from 'react';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import config from 'configs/app';
 import { useColorModeValue } from 'toolkit/chakra/color-mode';
 import { Input } from 'toolkit/chakra/input';
 import { InputGroup } from 'toolkit/chakra/input-group';
 import { ClearButton } from 'toolkit/components/buttons/ClearButton';
-import IconSvg from 'ui/shared/IconSvg';
 
 const nameServicesFeature = config.features.nameServices;
 
@@ -88,7 +88,7 @@ const SearchBarInput = (
   };
 
   const startElement = (
-    <IconSvg
+    <SpriteIcon
       name="search"
       boxSize={ 5 }
       mx={ 2 }

@@ -5,11 +5,12 @@ import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
-import { currencyUnits } from 'client/shared/chain/units';
+import { currencyUnits } from 'client/slices/chain/units';
+
+import { useChartsConfig } from 'client/shared/stats/line-chart-config';
 
 import config from 'configs/app';
 import { LineChartWidget } from 'toolkit/components/charts/line/LineChartWidget';
-import { useChartsConfig } from 'ui/shared/chart/config';
 
 interface Props {
   addressHash: string;

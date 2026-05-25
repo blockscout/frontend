@@ -7,6 +7,10 @@ import type { MarketplaceApp } from 'client/features/marketplace/types/client';
 
 import { route } from 'nextjs-routes';
 
+import { useAppContext } from 'client/shell/app/context';
+
+import NetworkIcon from 'client/slices/chain/logo/NetworkIcon';
+
 import UserProfileDesktop from 'client/features/account/components/user-profile/UserProfileDesktop';
 import RewardsButton from 'client/features/rewards/components/RewardsButton';
 
@@ -14,11 +18,9 @@ import * as mixpanel from 'client/shared/analytics/mixpanel';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
 import config from 'configs/app';
-import { useAppContext } from 'lib/contexts/app';
 import { Link } from 'toolkit/chakra/link';
 import { BackToButton } from 'toolkit/components/buttons/BackToButton';
 import { makePrettyLink } from 'toolkit/utils/url';
-import NetworkIcon from 'ui/snippets/networkLogo/NetworkIcon';
 
 import Rating from '../../components/rating/MarketplaceRating';
 import MarketplaceAppInfo from './info/MarketplaceAppInfo';

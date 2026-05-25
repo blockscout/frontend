@@ -9,10 +9,11 @@ import AddressEntity from 'client/slices/address/components/entity/AddressEntity
 import EnsEntity from 'client/features/name-services/domains/components/EnsEntity';
 import NameDomainExpiryStatus from 'client/features/name-services/domains/components/NameDomainExpiryStatus';
 
-import dayjs from 'lib/date/dayjs';
+import dayjs from 'client/shared/date-and-time/dayjs';
+import Time from 'client/shared/date-and-time/Time';
+import ListItemMobileGrid from 'client/shared/lists/ListItemMobileGrid';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
-import Time from 'ui/shared/time/Time';
 
 interface Props extends bens.Domain {
   isLoading: boolean;

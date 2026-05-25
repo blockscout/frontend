@@ -11,7 +11,7 @@ import { route } from 'nextjs-routes';
 import useLogout from 'client/features/account/hooks/useLogout';
 import { useMarketplaceContext } from 'client/features/marketplace/context';
 
-import shortenString from 'client/shared/text/shorten-string';
+import shortenString from 'client/shared/texts/shorten-string';
 
 import config from 'configs/app';
 import { Button } from 'toolkit/chakra/button';
@@ -77,7 +77,7 @@ const UserProfileContent = ({ data, onClose, onLogin, onAddEmail, onAddAddress }
     return (
       <Box>
         { isAutoConnectDisabled && <UserWalletAutoConnectAlert/> }
-        { config.features.blockchainInteraction.isEnabled && <UserProfileContentWallet onClose={ onClose }/> }
+        { config.features.connectWallet.isEnabled && <UserProfileContentWallet onClose={ onClose }/> }
         <Button mt={ 3 } onClick={ onLogin } size="sm" w="100%">Log in</Button>
       </Box>
     );
@@ -96,7 +96,7 @@ const UserProfileContent = ({ data, onClose, onLogin, onAddEmail, onAddAddress }
         borderRadius="base"
         color="text.secondary"
       >
-        { config.features.blockchainInteraction.isEnabled && (
+        { config.features.connectWallet.isEnabled && (
           <Flex p={ 2 } borderColor="border.divider" borderBottomWidth="1px">
             <Box>Address</Box>
             <Hint
@@ -115,7 +115,7 @@ const UserProfileContent = ({ data, onClose, onLogin, onAddEmail, onAddAddress }
         </Flex>
       </Box>
 
-      { config.features.blockchainInteraction.isEnabled && <UserProfileContentWallet onClose={ onClose } mt={ 3 }/> }
+      { config.features.connectWallet.isEnabled && <UserProfileContentWallet onClose={ onClose } mt={ 3 }/> }
 
       <VStack as="ul" gap="0" alignItems="flex-start" overflow="hidden" mt={ 4 }>
         { navLinks.map((item) => (

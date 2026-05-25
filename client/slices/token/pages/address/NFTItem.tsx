@@ -9,14 +9,15 @@ import { getTokenTypeName } from 'client/slices/token/utils/token-types';
 
 import { route } from 'nextjs/routes';
 
+import NftEntity from 'client/slices/token/components/entity/NftEntity';
 import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
+import NftMedia from 'client/slices/token/components/nft-media/NftMedia';
+
+import calculateUsdValue from 'client/shared/values/entity/calculateUsdValue';
 
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tag } from 'toolkit/chakra/tag';
-import NftEntity from 'ui/shared/entities/nft/NftEntity';
-import NftMedia from 'ui/shared/nft/NftMedia';
-import calculateUsdValue from 'ui/shared/value/calculateUsdValue';
 
 import NFTItemContainer from './NFTItemContainer';
 

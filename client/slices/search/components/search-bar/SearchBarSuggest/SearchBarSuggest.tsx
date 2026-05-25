@@ -10,9 +10,12 @@ import type { QuickSearchResultItem } from 'client/slices/search/types/client';
 
 import type { ResourceError } from 'client/api/resources';
 
+import { useSettingsContext } from 'client/shell/top-bar/settings/context';
+
 import type { ApiCategory, Category, ItemsCategoriesMap } from 'client/slices/search/utils/search-categories';
 import { getItemCategory, searchCategories } from 'client/slices/search/utils/search-categories';
 
+import TextAd from 'client/features/ads/text/components/TextAd';
 import ExternalSearchItem from 'client/features/chain-variants/zeta-chain/components/ExternalSearchItem';
 import SearchBarSuggestZetaChainCCTX from 'client/features/chain-variants/zeta-chain/components/SearchBarSuggestZetaChainCCTX';
 import type { ExternalSearchItem as ExternalSearchItemType } from 'client/features/chain-variants/zeta-chain/utils/external-search';
@@ -23,11 +26,9 @@ import useIsMobile from 'client/shared/hooks/useIsMobile';
 
 import config from 'configs/app';
 import multichainConfig from 'configs/multichain';
-import { useSettingsContext } from 'lib/contexts/settings';
 import AdaptiveTabs from 'toolkit/components/AdaptiveTabs/AdaptiveTabs';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 import * as regexp from 'toolkit/utils/regexp';
-import TextAd from 'ui/shared/ad/TextAd';
 
 import SearchBarSuggestBlockCountdown from './SearchBarSuggestBlockCountdown';
 import SearchBarSuggestItem from './SearchBarSuggestItem';

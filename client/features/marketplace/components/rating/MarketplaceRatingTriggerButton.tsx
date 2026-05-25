@@ -7,13 +7,13 @@ import { getFeaturePayload } from 'configs/app/features/types';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import usePreventFocusAfterModalClosing from 'client/shared/hooks/usePreventFocusAfterModalClosing';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import config from 'configs/app';
 import type { ButtonProps } from 'toolkit/chakra/button';
 import { Button } from 'toolkit/chakra/button';
 import { PopoverTrigger } from 'toolkit/chakra/popover';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import IconSvg from 'ui/shared/IconSvg';
 
 interface Props extends ButtonProps {
   rating?: number;
@@ -58,7 +58,7 @@ const TriggerButton = (
             { ...rest }
           >
             { !fullView && (
-              <IconSvg
+              <SpriteIcon
                 name={ rating ? 'star_filled' : 'star_outline' }
                 color={ rating ? 'yellow.400' : 'icon.secondary' }
                 boxSize={ 5 }

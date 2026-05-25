@@ -4,20 +4,22 @@ import { Box } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
+import type { PaginationParams } from 'client/shared/pagination/types';
 import type { AddressCoinBalanceHistoryResponse } from 'client/slices/address/types/api';
-import type { PaginationParams } from 'ui/shared/pagination/types';
 
 import type { ResourceError } from 'client/api/resources';
 
+import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'client/shell/page/action-bar/ActionBar';
+
+import { currencyUnits } from 'client/slices/chain/units';
+
 import { useMultichainContext } from 'client/features/multichain/context';
 
-import { currencyUnits } from 'client/shared/chain/units';
+import TimeFormatToggle from 'client/shared/date-and-time/TimeFormatToggle';
+import DataList from 'client/shared/lists/DataList';
+import Pagination from 'client/shared/pagination/Pagination';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
-import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
-import Pagination from 'ui/shared/pagination/Pagination';
-import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
 import AddressCoinBalanceListItem from './AddressCoinBalanceListItem';
 import AddressCoinBalanceTableItem from './AddressCoinBalanceTableItem';
@@ -83,7 +85,7 @@ const AddressCoinBalanceHistory = ({ query }: Props) => {
   ) : null;
 
   return (
-    <DataListDisplay
+    <DataList
       mt={ 8 }
       isError={ query.isError }
       itemsNum={ query.data?.items.length }
@@ -91,7 +93,7 @@ const AddressCoinBalanceHistory = ({ query }: Props) => {
       actionBar={ actionBar }
     >
       { content }
-    </DataListDisplay>
+    </DataList>
   );
 };
 

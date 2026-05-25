@@ -6,7 +6,7 @@ import type { Block } from 'client/slices/block/types/api';
 
 import { unknownAddress } from 'client/slices/address/utils/consts';
 
-import dayjs from 'lib/date/dayjs';
+import dayjs from 'client/shared/date-and-time/dayjs';
 
 export default function formatRpcData(block: GetBlockReturnType<Chain, false, 'latest'> | null): Block | null {
   if (!block) {

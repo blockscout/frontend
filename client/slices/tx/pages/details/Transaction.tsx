@@ -3,14 +3,18 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { MetadataTag as TMetadataTag } from 'client/features/address-metadata/components/tag/types';
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
-import type { EntityTag as TEntityTag } from 'ui/shared/EntityTags/types';
+
+import PageTitle from 'client/shell/page/title/PageTitle';
 
 import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
 import TxInternals from 'client/slices/internal-tx/pages/tx/TxInternals';
 import TxTokenTransfer from 'client/slices/token-transfer/pages/tx/TxTokenTransfer';
 import useTxQuery from 'client/slices/tx/hooks/useTxQuery';
 
+import MetadataTags from 'client/features/address-metadata/components/tag/MetadataTags';
+import TextAd from 'client/features/ads/text/components/TextAd';
 import TxDetailsWrapped from 'client/features/chain-variants/suave/pages/tx/TxDetailsWrapped';
 import { publicClient } from 'client/features/connect-wallet/utils/public-client';
 import TxBlobs from 'client/features/data-availability/pages/tx/TxBlobs';
@@ -19,16 +23,13 @@ import TxAuthorizations from 'client/features/tx-authorization/pages/tx/TxAuthor
 import TxAssetFlows from 'client/features/tx-interpretation/noves/pages/tx-asset-flows/TxAssetFlows';
 import TxUserOps from 'client/features/user-ops/pages/tx/TxUserOps';
 
+import isCustomAppError from 'client/shared/errors/is-custom-app-error';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import useEtherscanRedirects from 'client/shared/router/useEtherscanRedirects';
 
 import config from 'configs/app';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import TextAd from 'ui/shared/ad/TextAd';
-import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
-import EntityTags from 'ui/shared/EntityTags/EntityTags';
-import PageTitle from 'ui/shared/Page/PageTitle';
 
 import TxDetailsApi from './info/TxDetailsApi';
 import TxDetailsRpc from './info/TxDetailsRpc';
@@ -95,7 +96,7 @@ const TransactionPageContent = () => {
     ].filter(Boolean);
   })();
 
-  const txTags: Array<TEntityTag> = data?.transaction_tag ?
+  const txTags: Array<TMetadataTag> = data?.transaction_tag ?
     [ { slug: data.transaction_tag, name: data.transaction_tag, tagType: 'private_tag' as const, ordinal: 1 } ] : [];
 
   if (rollupFeature.isEnabled && rollupFeature.interopEnabled && data?.op_interop_messages && data.op_interop_messages.length > 0) {
@@ -113,7 +114,7 @@ const TransactionPageContent = () => {
   }
 
   const tags = (
-    <EntityTags
+    <MetadataTags
       isLoading={ !txQuery.isFetchedAfterMount }
       tags={ txTags }
     />

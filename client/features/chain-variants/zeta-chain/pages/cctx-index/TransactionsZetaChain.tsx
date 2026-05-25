@@ -7,6 +7,9 @@ import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
 import { SocketProvider } from 'client/api/socket/context';
 
+import ActionBar from 'client/shell/page/action-bar/ActionBar';
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import TxsWithFrontendSorting from 'client/slices/tx/pages/index/list/TxsWithFrontendSorting';
 import TxsStats from 'client/slices/tx/pages/index/stats/TxsStats';
 import { TX } from 'client/slices/tx/stubs/tx';
@@ -16,15 +19,13 @@ import TxsWatchlist from 'client/features/account/pages/tx-index-watchlist/TxsWa
 import AdvancedFilterLink from 'client/features/advanced-filter/components/AdvancedFilterLink';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import Pagination from 'client/shared/pagination/Pagination';
+import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
+import { generateListStub } from 'client/shared/pagination/utils';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import config from 'configs/app';
-import { generateListStub } from 'stubs/utils';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import ActionBar from 'ui/shared/ActionBar';
-import PageTitle from 'ui/shared/Page/PageTitle';
-import Pagination from 'ui/shared/pagination/Pagination';
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
 import ZetaChainCCTXsTab from './ZetaChainCCTXsTab';
 import ZetaChainEvmTransactions from './ZetaChainEvmTransactions';

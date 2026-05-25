@@ -2,8 +2,9 @@
 
 import React from 'react';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { Link } from 'toolkit/chakra/link';
-import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   href: string;
@@ -19,7 +20,7 @@ const DocsLink = ({ href }: Props) => {
       alignItems="center"
       columnGap={ 1 }
     >
-      <IconSvg name="docs" boxSize={ 5 } color="icon.primary"/>
+      <SpriteIcon name="docs" boxSize={ 5 } color="icon.primary"/>
       <span>Documentation</span>
     </Link>
   );

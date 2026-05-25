@@ -18,7 +18,7 @@ const Transactions = dynamic(() => {
   }
 
   if (config.features.crossChainTxs.isEnabled) {
-    return import('ui/crossChain/txs/Transactions');
+    return import('client/features/cross-chain-txs/pages/txs/Transactions');
   }
 
   return import('client/slices/tx/pages/index/TxIndex');

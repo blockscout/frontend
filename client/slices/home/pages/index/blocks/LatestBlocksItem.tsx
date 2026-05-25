@@ -9,17 +9,17 @@ import type { Block } from 'client/slices/block/types/api';
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
 import getBlockTotalReward from 'client/slices/block/utils/get-block-total-reward';
+import { currencyUnits } from 'client/slices/chain/units';
+import getChainValidatorTitle from 'client/slices/chain/verification-type/utils/get-chain-validator-title';
 
-import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-title';
-import { currencyUnits } from 'client/shared/chain/units';
+import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
+import SimpleValue from 'client/shared/values/entity/SimpleValue';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { thinsp } from 'toolkit/utils/htmlEntities';
-import IconSvg from 'ui/shared/IconSvg';
-import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
-import SimpleValue from 'ui/shared/value/SimpleValue';
 
 type Props = {
   block: Block;
@@ -48,7 +48,7 @@ const LatestBlocksItem = ({ block, isLoading, animation }: Props) => {
         />
         { block.celo?.l1_era_finalized_epoch_number && (
           <Tooltip content={ `Finalized epoch #${ block.celo.l1_era_finalized_epoch_number }` }>
-            <IconSvg name="checkered_flag" boxSize={ 5 } p="1px" ml={ 2 } isLoading={ isLoading } flexShrink={ 0 }/>
+            <SpriteIcon name="checkered_flag" boxSize={ 5 } p="1px" ml={ 2 } isLoading={ isLoading } flexShrink={ 0 }/>
           </Tooltip>
         ) }
         <TimeWithTooltip

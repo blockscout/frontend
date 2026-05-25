@@ -7,11 +7,10 @@ import { AddressFromToFilterValues, type AddressFromToFilter } from 'client/slic
 
 import { INTERNAL_TX } from 'client/slices/internal-tx/stubs';
 
+import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
+import { generateListStub } from 'client/shared/pagination/utils';
 import getFilterValueFromQuery from 'client/shared/router/get-filter-value-from-query';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
-
-import { generateListStub } from 'stubs/utils';
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
 const getFilterValue = (getFilterValueFromQuery<AddressFromToFilter>).bind(null, AddressFromToFilterValues);
 

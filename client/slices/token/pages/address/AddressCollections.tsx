@@ -7,19 +7,20 @@ import type { NFTTokenType } from 'client/slices/token/types/api';
 
 import { route } from 'nextjs/routes';
 
+import ActionBar from 'client/shell/page/action-bar/ActionBar';
+
 import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
+import NftFallback from 'client/slices/token/components/nft-media/NftFallback';
 
 import { useMultichainContext } from 'client/features/multichain/context';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import DataList from 'client/shared/lists/DataList';
+import Pagination from 'client/shared/pagination/Pagination';
+import type { QueryWithPagesResult } from 'client/shared/pagination/useQueryWithPages';
 
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import ActionBar from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
-import NftFallback from 'ui/shared/nft/NftFallback';
-import Pagination from 'ui/shared/pagination/Pagination';
-import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
 
 import AddressNftTypeFilter from './AddressNftTypeFilter';
 import NFTItem from './NFTItem';
@@ -115,7 +116,7 @@ const AddressCollections = ({ collectionsQuery, address, tokenTypes, onTokenType
   }) : null;
 
   return (
-    <DataListDisplay
+    <DataList
       isError={ isError }
       itemsNum={ data?.items?.length }
       emptyText="There are no tokens of selected type."
@@ -126,7 +127,7 @@ const AddressCollections = ({ collectionsQuery, address, tokenTypes, onTokenType
       }}
     >
       { content }
-    </DataListDisplay>
+    </DataList>
   );
 };
 

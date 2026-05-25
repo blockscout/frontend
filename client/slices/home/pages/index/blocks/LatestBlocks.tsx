@@ -10,11 +10,12 @@ import { route } from 'nextjs-routes';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import getChainUtilizationParams from 'client/slices/chain/get-chain-utilization-params';
 import { useHomeDataContext } from 'client/slices/home/contexts/home-data-context';
 import { useHomeRpcDataContext } from 'client/slices/home/contexts/rpc-data-context';
 import { HOMEPAGE_STATS } from 'client/slices/home/stubs';
 
-import getChainUtilizationParams from 'client/shared/chain/get-chain-utilization-params';
+import ApiDegradationRpcIcon from 'client/shared/api-degradation/ApiDegradationRpcIcon';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import useInitialList from 'client/shared/lists/useInitialList';
 
@@ -24,7 +25,6 @@ import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { nbsp } from 'toolkit/utils/htmlEntities';
-import FallbackRpcIcon from 'ui/shared/fallbacks/FallbackRpcIcon';
 
 import LatestBlocksDegraded from './LatestBlocksDegraded';
 import LatestBlocksItem from './LatestBlocksItem';
@@ -89,7 +89,7 @@ const LatestBlocks = () => {
     <Box width={{ base: '100%', lg: '280px' }} flexShrink={ 0 }>
       <HStack alignItems="center">
         <Heading level="3">Latest blocks</Heading>
-        { isRpcData && <FallbackRpcIcon/> }
+        { isRpcData && <ApiDegradationRpcIcon/> }
       </HStack>
       { statsQueryResult.data?.network_utilization_percentage !== undefined && (
         <Skeleton loading={ statsQueryResult.isPlaceholderData } mt={ 2 } display="inline-block" textStyle="sm">

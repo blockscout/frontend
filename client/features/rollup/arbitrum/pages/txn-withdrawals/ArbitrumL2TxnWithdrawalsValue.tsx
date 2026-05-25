@@ -5,9 +5,10 @@ import React from 'react';
 import type { ArbitrumL2TxnWithdrawalsItem } from '../../types/api';
 import type { TokenInfo } from 'client/slices/token/types/api';
 
+import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
+import TokenValue from 'client/shared/values/entity/TokenValue';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
-import TokenValue from 'ui/shared/value/TokenValue';
 
 interface Props {
   data: ArbitrumL2TxnWithdrawalsItem;

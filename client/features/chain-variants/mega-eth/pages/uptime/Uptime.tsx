@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import PageTitle from 'ui/shared/Page/PageTitle';
+import PageTitle from 'client/shell/page/title/PageTitle';
 
 import useUptimeSocketData from '../../hooks/useUptimeSocketData';
 import UptimeCharts from './UptimeCharts';

@@ -176,4 +176,4 @@ function useSignInWithWalletFallback() {
   return React.useMemo(() => ({ start: () => {}, isPending: false }), [ ]);
 }
 
-export default config.features.blockchainInteraction.isEnabled ? useSignInWithWallet : useSignInWithWalletFallback;
+export default config.features.connectWallet.isEnabled ? useSignInWithWallet : useSignInWithWalletFallback;

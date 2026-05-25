@@ -8,15 +8,17 @@ import type { ChainMetricsSorting, ChainMetricsSortingField, ChainMetricsSorting
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import ActionBar from 'client/shell/page/action-bar/ActionBar';
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import { CHAIN_METRICS } from 'client/features/multichain/stubs';
 
+import DataList from 'client/shared/lists/DataList';
+import getSortParamsFromValue from 'client/shared/sort/get-sort-params-from-value';
+import getSortValueFromQuery from 'client/shared/sort/get-sort-value-from-query';
+import Sort from 'client/shared/sort/Sort';
+
 import multichainConfig from 'configs/multichain';
-import ActionBar from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
-import PageTitle from 'ui/shared/Page/PageTitle';
-import getSortParamsFromValue from 'ui/shared/sort/getSortParamsFromValue';
-import getSortValueFromQuery from 'ui/shared/sort/getSortValueFromQuery';
-import Sort from 'ui/shared/sort/Sort';
 
 import MultichainEcosystemsListItem from './MultichainEcosystemsListItem';
 import MultichainEcosystemsTable from './MultichainEcosystemsTable';
@@ -83,13 +85,13 @@ const MultichainEcosystems = () => {
         title="Ecosystems"
         withTextAd
       />
-      <DataListDisplay
+      <DataList
         isError={ isError }
         itemsNum={ data?.items.length }
         emptyText="There are no chains in the cluster."
       >
         { content }
-      </DataListDisplay>
+      </DataList>
     </>
   );
 };

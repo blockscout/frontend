@@ -14,7 +14,7 @@ import config from 'configs/app';
 
 import { getNativeCoinValue } from './utils';
 
-const feature = config.features.blockchainInteraction;
+const feature = config.features.connectWallet;
 
 interface Params {
   item: SmartContractMethod;

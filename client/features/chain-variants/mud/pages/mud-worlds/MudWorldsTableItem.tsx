@@ -6,9 +6,10 @@ import type { MudWorldItem } from 'client/features/chain-variants/mud/types/api'
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 
+import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
-import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 type Props = { item: MudWorldItem; isLoading?: boolean };
 

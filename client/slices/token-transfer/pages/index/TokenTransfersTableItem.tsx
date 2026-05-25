@@ -8,16 +8,17 @@ import { isConfidentialTokenType, NFT_TOKEN_TYPE_IDS } from 'client/slices/token
 
 import AddressFromTo from 'client/slices/address/components/from-to/AddressFromTo';
 import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
+import NftEntity from 'client/slices/token/components/entity/NftEntity';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
+
+import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
+import ChainIcon from 'client/shared/external-chains/ChainIcon';
+import ConfidentialTokenValue from 'client/shared/values/entity/ConfidentialTokenValue';
+import TokenValue from 'client/shared/values/entity/TokenValue';
 
 import { Badge } from 'toolkit/chakra/badge';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
-import NftEntity from 'ui/shared/entities/nft/NftEntity';
-import ChainIcon from 'ui/shared/externalChains/ChainIcon';
-import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
-import ConfidentialTokenValue from 'ui/shared/value/ConfidentialTokenValue';
-import TokenValue from 'ui/shared/value/TokenValue';
 
 type Props = {
   item: TokenTransfer;

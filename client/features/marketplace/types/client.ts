@@ -2,7 +2,7 @@
 
 import type { Chain } from 'viem';
 
-import type { ExternalChain } from 'types/externalChains';
+import type { ExternalChain } from 'client/shared/external-chains/types';
 
 import type config from 'configs/app';
 

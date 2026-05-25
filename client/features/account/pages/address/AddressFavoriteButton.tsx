@@ -14,12 +14,12 @@ import DeleteAddressModal from 'client/features/account/pages/watchlist/DeleteAd
 
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 import usePreventFocusAfterModalClosing from 'client/shared/hooks/usePreventFocusAfterModalClosing';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import config from 'configs/app';
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
-import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   className?: string;
@@ -75,7 +75,7 @@ const AddressFavoriteButton = ({ className, hash, watchListId }: Props) => {
               onClick={ onClick }
               onFocusCapture={ onFocusCapture }
             >
-              <IconSvg name={ watchListId ? 'star_filled' : 'star_outline' }/>
+              <SpriteIcon name={ watchListId ? 'star_filled' : 'star_outline' }/>
             </IconButton>
           </Tooltip>
         ) }

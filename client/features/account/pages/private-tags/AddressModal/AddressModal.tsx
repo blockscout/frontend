@@ -5,8 +5,7 @@ import React, { useCallback, useState } from 'react';
 import type { AddressTag } from 'client/features/account/types/api';
 
 import * as mixpanel from 'client/shared/analytics/mixpanel';
-
-import FormModal from 'ui/shared/FormModal';
+import FormModal from 'client/shared/forms/FormModal';
 
 import AddressForm from './AddressForm';
 

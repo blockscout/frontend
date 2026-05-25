@@ -5,9 +5,10 @@ import React from 'react';
 
 import guessDataType from 'client/features/data-availability/utils/guess-data-type';
 
+import type { IconName } from 'client/sprite/SpriteIcon';
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import type { IconName } from 'ui/shared/IconSvg';
-import IconSvg from 'ui/shared/IconSvg';
 interface Props {
   data: string;
   isLoading?: boolean;
@@ -48,7 +49,7 @@ const BlobDataType = ({ data, isLoading }: Props) => {
 
   return (
     <Flex alignItems="center" columnGap={ 2 }>
-      <IconSvg name={ iconName } boxSize={ 5 } color="icon.primary" isLoading={ isLoading }/>
+      <SpriteIcon name={ iconName } boxSize={ 5 } color="icon.primary" isLoading={ isLoading }/>
       <Skeleton loading={ isLoading }>{ label }</Skeleton>
     </Flex>
   );

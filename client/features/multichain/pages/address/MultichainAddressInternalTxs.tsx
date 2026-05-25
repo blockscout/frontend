@@ -5,6 +5,8 @@ import React from 'react';
 
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 
+import ActionBar from 'client/shell/page/action-bar/ActionBar';
+
 import useAddressInternalTxsQuery from 'client/slices/address/pages/details/internal-txs/useAddressInternalTxsQuery';
 import AddressTxsFilter from 'client/slices/address/pages/details/txs/AddressTxsFilter';
 import InternalTxsList from 'client/slices/internal-tx/components/InternalTxsList';
@@ -14,10 +16,10 @@ import CsvExport from 'client/features/csv-export/components/CsvExport';
 import ChainSelect from 'client/features/multichain/components/ChainSelect';
 import { MultichainProvider } from 'client/features/multichain/context';
 
+import DataList from 'client/shared/lists/DataList';
+import Pagination from 'client/shared/pagination/Pagination';
+
 import multichainConfig from 'configs/multichain';
-import ActionBar from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
-import Pagination from 'ui/shared/pagination/Pagination';
 
 import getAvailableChainIds from './get-available-chain-ids';
 
@@ -88,7 +90,7 @@ const MultichainAddressInternalTxs = ({ addressData, isLoading }: Props) => {
   );
 
   return (
-    <DataListDisplay
+    <DataList
       isError={ isError }
       itemsNum={ data?.items.length }
       hasActiveFilters={ Boolean(filterValue) }
@@ -101,7 +103,7 @@ const MultichainAddressInternalTxs = ({ addressData, isLoading }: Props) => {
       actionBar={ actionBar }
     >
       { content }
-    </DataListDisplay>
+    </DataList>
   );
 };
 

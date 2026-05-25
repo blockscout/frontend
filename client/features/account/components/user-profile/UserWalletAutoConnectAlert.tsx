@@ -3,7 +3,7 @@
 import { Text, Flex } from '@chakra-ui/react';
 import React from 'react';
 
-import IconSvg from 'ui/shared/IconSvg';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 const UserWalletAutoConnectAlert = () => {
   return (
@@ -14,7 +14,7 @@ const UserWalletAutoConnectAlert = () => {
       alignItems="center"
       bgColor={{ _light: 'orange.100', _dark: 'orange.900' }}
     >
-      <IconSvg
+      <SpriteIcon
         name="integration/partial"
         color="text.primary"
         boxSize={ 5 }

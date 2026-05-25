@@ -13,10 +13,10 @@ import BlockEntityL1 from 'client/features/rollup/common/components/BlockEntityL
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
 import { layerLabels } from 'client/features/rollup/common/utils/layer';
 
+import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 type Props = {
   l1BlockNumber: number;

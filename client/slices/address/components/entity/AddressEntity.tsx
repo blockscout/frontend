@@ -7,17 +7,20 @@ import type { AddressParam } from 'client/slices/address/types/api';
 
 import { route } from 'nextjs/routes';
 
+import { useSettingsContext } from 'client/shell/top-bar/settings/context';
+
 import { useAddressHighlightContext } from 'client/slices/address/contexts/address-highlight';
 import { toBech32Address } from 'client/slices/address/utils/bech32';
 
-import { useSettingsContext } from 'lib/contexts/settings';
+import { getTagName } from 'client/features/address-metadata/components/tag/utils';
+
+import * as EntityBase from 'client/shared/entities/components';
+import { distributeEntityProps, getContentProps, getIconProps } from 'client/shared/entities/utils';
+import getChainTooltipText from 'client/shared/external-chains/get-chain-tooltip-text';
+import type { IconName } from 'client/sprite/SpriteIcon';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import * as EntityBase from 'ui/shared/entities/base/components';
-import { distributeEntityProps, getContentProps, getIconProps } from 'ui/shared/entities/base/utils';
-import { getTagName } from 'ui/shared/EntityTags/utils';
-import getChainTooltipText from 'ui/shared/externalChains/getChainTooltipText';
-import type { IconName } from 'ui/shared/IconSvg';
 
 import AddressIconDelegated from '../icon/AddressIconDelegated';
 import AddressIdenticon from '../icon/AddressIdenticon';

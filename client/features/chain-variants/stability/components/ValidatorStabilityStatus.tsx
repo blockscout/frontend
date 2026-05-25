@@ -4,7 +4,7 @@ import React from 'react';
 
 import type { ValidatorStability } from 'client/features/chain-variants/stability/types/api';
 
-import StatusTag from 'ui/shared/statusTag/StatusTag';
+import StatusTag from 'client/shared/tags/status-tag/StatusTag';
 
 interface Props {
   state: ValidatorStability['state'];

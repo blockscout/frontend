@@ -10,18 +10,19 @@ import React from 'react';
 
 import { route } from 'nextjs-routes';
 
+import SocketNewItemsNotice from 'client/api/socket/SocketNewItemsNotice';
+
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 
 import BlockEntityL1 from 'client/features/rollup/common/components/BlockEntityL1';
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
 import { layerLabels } from 'client/features/rollup/common/utils/layer';
 
+import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
-import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 type DepositsItem = {
   l1BlockNumber: number | null;

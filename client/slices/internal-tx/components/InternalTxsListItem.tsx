@@ -8,17 +8,17 @@ import type { InternalTransaction } from 'client/slices/internal-tx/types/api';
 
 import AddressFromTo from 'client/slices/address/components/from-to/AddressFromTo';
 import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
+import { currencyUnits } from 'client/slices/chain/units';
 import { TX_INTERNALS_ITEMS } from 'client/slices/internal-tx/utils/utils';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import TxStatus from 'client/slices/tx/components/TxStatus';
 
-import { currencyUnits } from 'client/shared/chain/units';
+import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
+import ListItemMobile from 'client/shared/lists/ListItemMobile';
+import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
 
 import { Badge } from 'toolkit/chakra/badge';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
-import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
-import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 type Props = InternalTransaction & { currentAddress?: string; isLoading?: boolean; showBlockInfo?: boolean; chainData?: ClusterChainConfig };
 

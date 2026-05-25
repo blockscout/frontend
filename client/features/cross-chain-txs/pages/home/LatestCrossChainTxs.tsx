@@ -7,13 +7,14 @@ import { route } from 'nextjs-routes';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
-import useIsMobile from 'client/shared/hooks/useIsMobile';
+import TransactionsCrossChainListItem from 'client/features/cross-chain-txs/components/txs/TransactionsCrossChainListItem';
+import { INTERCHAIN_MESSAGE } from 'client/features/cross-chain-txs/stubs/messages';
 
-import { INTERCHAIN_MESSAGE } from 'stubs/interchainIndexer';
-import { generateListStub } from 'stubs/utils';
+import useIsMobile from 'client/shared/hooks/useIsMobile';
+import { generateListStub } from 'client/shared/pagination/utils';
+
 import { Link } from 'toolkit/chakra/link';
 import { TableBody, TableRoot } from 'toolkit/chakra/table';
-import TransactionsCrossChainListItem from 'ui/crossChain/txs/TransactionsCrossChainListItem';
 
 import LatestCrossChainTxsItemDesktop from './LatestCrossChainTxsItemDesktop';
 

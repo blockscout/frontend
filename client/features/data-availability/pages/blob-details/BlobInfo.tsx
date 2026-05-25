@@ -7,11 +7,12 @@ import type { Blob } from 'client/features/data-availability/types/api';
 
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 
+import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
+import DetailedInfoSponsoredItem from 'client/shared/detailed-info/DetailedInfoSponsoredItem';
+import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
+
 import { Alert } from 'toolkit/chakra/alert';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
-import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import DetailedInfoSponsoredItem from 'ui/shared/DetailedInfo/DetailedInfoSponsoredItem';
 
 import BlobData from './BlobData';
 

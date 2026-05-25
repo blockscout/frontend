@@ -2,13 +2,13 @@ import React from 'react';
 
 import { hash as addressHash } from 'client/slices/address/mocks/address';
 
-import * as revokeMock from 'client/features/marketplace/mocks/revoke-dapp';
 import * as chainDataMock from 'client/features/multichain/mocks/chains';
 
 import type { TestFnArgs } from 'playwright/lib';
 import { test, expect } from 'playwright/lib';
 
 import type useApprovalsQuery from '../hooks/useApprovalsQuery';
+import * as revokeMock from '../mocks';
 import Content from './Content';
 
 test('base view +@dark-mode +@mobile', async({ render, mockAssetResponse }: TestFnArgs) => {

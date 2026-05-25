@@ -13,14 +13,15 @@ import type { ResourceError } from 'client/api/resources';
 
 import EnsEntity from 'client/features/name-services/domains/components/EnsEntity';
 
-import dayjs from 'lib/date/dayjs';
+import dayjs from 'client/shared/date-and-time/dayjs';
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';
 import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
-import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   query: UseQueryResult<bens.LookupAddressResponse, ResourceError<unknown>>;
@@ -111,7 +112,7 @@ const AddressEnsDomains = ({ query, addressHash, mainDomainName }: Props) => {
               flexShrink={ 0 }
               columnGap={ 1 }
             >
-              <IconSvg name="ENS" boxSize={ 5 }/>
+              <SpriteIcon name="ENS" boxSize={ 5 }/>
               <chakra.span hideBelow="xl">{ totalRecords } Domain{ data.items.length > 1 ? 's' : '' }</chakra.span>
               <chakra.span hideFrom="xl">{ totalRecords }</chakra.span>
             </Button>

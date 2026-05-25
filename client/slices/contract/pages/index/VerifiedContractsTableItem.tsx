@@ -11,13 +11,14 @@ import ContractCertifiedLabel from 'client/slices/contract/components/ContractCe
 import { formatLanguageName } from 'client/slices/contract/utils/language';
 import { CONTRACT_LICENSES } from 'client/slices/contract/utils/licenses';
 
+import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
+import ChainIcon from 'client/shared/external-chains/ChainIcon';
+import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import ChainIcon from 'ui/shared/externalChains/ChainIcon';
-import IconSvg from 'ui/shared/IconSvg';
-import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
-import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 interface Props {
   data: VerifiedContract;
@@ -101,21 +102,21 @@ const VerifiedContractsTableItem = ({ data, isLoading, chainData }: Props) => {
         <Tooltip content="Optimization" disabled={ isLoading }>
           <chakra.span display="inline-block">
             { data.optimization_enabled ?
-              <IconSvg name="check" boxSize={ 6 } color="green.500" cursor="pointer" isLoading={ isLoading }/> :
-              <IconSvg name="cross" boxSize={ 6 } color="red.600" cursor="pointer" isLoading={ isLoading }/> }
+              <SpriteIcon name="check" boxSize={ 6 } color="green.500" cursor="pointer" isLoading={ isLoading }/> :
+              <SpriteIcon name="cross" boxSize={ 6 } color="red.600" cursor="pointer" isLoading={ isLoading }/> }
           </chakra.span>
         </Tooltip>
         <Tooltip content="Constructor args" disabled={ isLoading }>
           <chakra.span display="inline-block" ml={ 2 }>
             { data.has_constructor_args ?
-              <IconSvg name="check" boxSize={ 6 } color="green.500" cursor="pointer" isLoading={ isLoading }/> :
-              <IconSvg name="cross" boxSize={ 6 } color="red.600" cursor="pointer" isLoading={ isLoading }/> }
+              <SpriteIcon name="check" boxSize={ 6 } color="green.500" cursor="pointer" isLoading={ isLoading }/> :
+              <SpriteIcon name="cross" boxSize={ 6 } color="red.600" cursor="pointer" isLoading={ isLoading }/> }
           </chakra.span>
         </Tooltip>
       </TableCell>
       <TableCell>
         <Flex alignItems="center" columnGap={ 2 } my={ 1 }>
-          <IconSvg name="status/success" boxSize={ 4 } color="green.500" isLoading={ isLoading }/>
+          <SpriteIcon name="status/success" boxSize={ 4 } color="green.500" isLoading={ isLoading }/>
           <TimeWithTooltip
             timestamp={ data.verified_at }
             isLoading={ isLoading }

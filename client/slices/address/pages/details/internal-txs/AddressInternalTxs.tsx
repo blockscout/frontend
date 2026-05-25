@@ -3,16 +3,16 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
+import ActionBar from 'client/shell/page/action-bar/ActionBar';
+
 import InternalTxsList from 'client/slices/internal-tx/components/InternalTxsList';
 import InternalTxsTable from 'client/slices/internal-tx/components/InternalTxsTable';
 
 import CsvExport from 'client/features/csv-export/components/CsvExport';
 
 import useIsMounted from 'client/shared/hooks/useIsMounted';
-
-import ActionBar from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
-import Pagination from 'ui/shared/pagination/Pagination';
+import DataList from 'client/shared/lists/DataList';
+import Pagination from 'client/shared/pagination/Pagination';
 
 import AddressTxsFilter from '../txs/AddressTxsFilter';
 import useAddressInternalTxsQuery from './useAddressInternalTxsQuery';
@@ -66,7 +66,7 @@ const AddressInternalTxs = ({ shouldRender = true, isQueryEnabled = true }: Prop
   );
 
   return (
-    <DataListDisplay
+    <DataList
       isError={ isError }
       itemsNum={ data?.items.length }
       hasActiveFilters={ Boolean(filterValue) }
@@ -77,7 +77,7 @@ const AddressInternalTxs = ({ shouldRender = true, isQueryEnabled = true }: Prop
       actionBar={ actionBar }
     >
       { content }
-    </DataListDisplay>
+    </DataList>
   );
 };
 

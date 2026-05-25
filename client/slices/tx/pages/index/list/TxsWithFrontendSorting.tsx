@@ -7,7 +7,7 @@ import type { TxsSocketType } from 'client/slices/tx/types/socket';
 
 import useTxsSort from 'client/slices/tx/hooks/useTxsSort';
 
-import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
+import type { QueryWithPagesResult } from 'client/shared/pagination/useQueryWithPages';
 
 import TxsContent from './TxsContent';
 

@@ -4,22 +4,22 @@ import { Box, chakra } from '@chakra-ui/react';
 import React from 'react';
 import type { WatchAssetParams } from 'viem';
 
+import { WALLETS_INFO } from 'client/features/web3-wallet/types/wallets';
 import type { TokenInfo } from 'client/slices/token/types/api';
 
 import useRewardsActivity from 'client/features/rewards/hooks/useRewardsActivity';
+import useProvider from 'client/features/web3-wallet/hooks/useProvider';
+import useSwitchOrAddChain from 'client/features/web3-wallet/hooks/useSwitchOrAddChain';
 
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
-import useProvider from 'client/shared/web3/useProvider';
-import useSwitchOrAddChain from 'client/shared/web3/useSwitchOrAddChain';
-import { WALLETS_INFO } from 'client/shared/web3/wallets';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import config from 'configs/app';
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { toaster } from 'toolkit/chakra/toaster';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import IconSvg from 'ui/shared/IconSvg';
 
 function getRequestParams(token: TokenInfo, tokenId?: string): WatchAssetParams | undefined {
   switch (token.type) {
@@ -143,7 +143,7 @@ const TokenAddToWallet = ({ className, token, tokenId, isLoading, variant = 'ico
           size="md"
           onClick={ handleClick }
         >
-          <IconSvg name={ WALLETS_INFO[wallet].icon }/>
+          <SpriteIcon name={ WALLETS_INFO[wallet].icon }/>
         </IconButton>
       </Tooltip>
     );
@@ -152,7 +152,7 @@ const TokenAddToWallet = ({ className, token, tokenId, isLoading, variant = 'ico
   return (
     <Tooltip content={ `Add token to ${ WALLETS_INFO[wallet].name }` }>
       <Box className={ className } display="inline-flex" cursor="pointer" onClick={ handleClick } flexShrink={ 0 } aria-label="Add token to wallet">
-        <IconSvg name={ WALLETS_INFO[wallet].icon } boxSize={ iconSize }/>
+        <SpriteIcon name={ WALLETS_INFO[wallet].icon } boxSize={ iconSize }/>
       </Box>
     </Tooltip>
   );

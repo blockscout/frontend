@@ -5,17 +5,18 @@ import React from 'react';
 
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 import type { ClusterChainConfig } from 'client/features/multichain/types/client';
+import { WALLETS_INFO } from 'client/features/web3-wallet/types/wallets';
 
-import useAddChainClick from 'client/shared/web3/useAddChainClick';
-import useProvider from 'client/shared/web3/useProvider';
-import { WALLETS_INFO } from 'client/shared/web3/wallets';
+import useAddChainClick from 'client/features/web3-wallet/hooks/useAddChainClick';
+import useProvider from 'client/features/web3-wallet/hooks/useProvider';
+
+import ChainSnippetList from 'client/shared/external-chains/ChainSnippetList';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import ChainSnippetList from 'ui/shared/externalChains/ChainSnippetList';
-import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   data: multichain.ChainMetrics;
@@ -115,7 +116,7 @@ const MultichainEcosystemsTableItem = ({ data, isLoading, chainInfo }: Props) =>
                 bgColor={{ _light: 'blackAlpha.50', _dark: 'whiteAlpha.50' }}
                 loadingSkeleton={ isLoading }
               >
-                <IconSvg name={ walletIcon } boxSize={ 5 }/>
+                <SpriteIcon name={ walletIcon } boxSize={ 5 }/>
               </IconButton>
             </Tooltip>
           ) : <Box boxSize={ 8 }/> }

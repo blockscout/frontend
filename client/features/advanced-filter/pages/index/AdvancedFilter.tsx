@@ -17,29 +17,30 @@ import type { ColumnsIds } from '../../types/client';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import ActionBar from 'client/shell/page/action-bar/ActionBar';
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
 
 import CsvExport from 'client/features/csv-export/components/CsvExport';
 import { useMultichainContext } from 'client/features/multichain/context';
 
+import dayjs from 'client/shared/date-and-time/dayjs';
+import TimeFormatToggle from 'client/shared/date-and-time/TimeFormatToggle';
+import ChainIcon from 'client/shared/external-chains/ChainIcon';
+import DataList from 'client/shared/lists/DataList';
+import Pagination from 'client/shared/pagination/Pagination';
+import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
+import { generateListStub } from 'client/shared/pagination/utils';
 import getFilterValueFromQuery from 'client/shared/router/get-filter-value-from-query';
 import getFilterValuesFromQuery from 'client/shared/router/get-filter-values-from-query';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import getValuesArrayFromQuery from 'client/shared/router/get-values-array-from-query';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
-import dayjs from 'lib/date/dayjs';
-import { generateListStub } from 'stubs/utils';
 import { Link } from 'toolkit/chakra/link';
 import { TableBody, TableCell, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import { Tag } from 'toolkit/chakra/tag';
-import ActionBar from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
-import ChainIcon from 'ui/shared/externalChains/ChainIcon';
-import IconSvg from 'ui/shared/IconSvg';
-import PageTitle from 'ui/shared/Page/PageTitle';
-import Pagination from 'ui/shared/pagination/Pagination';
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
-import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
 import ColumnsButton from '../../components/ColumnsButton';
 import FilterByColumn from '../../components/FilterByColumn';
@@ -262,7 +263,7 @@ const AdvancedFilter = () => {
         <Text fontSize="lg" mr={ 3 } lineHeight="24px" w="100px">Filtered by:</Text>
         { filterTags.length !== 0 && (
           <Link onClick={ clearAllFilters } display="flex" alignItems="center" justifyContent="end" gap={ 2 } fontSize="sm" w="150px">
-            <IconSvg name="repeat" boxSize={ 5 }/>
+            <SpriteIcon name="repeat" boxSize={ 5 }/>
             Reset filters
           </Link>
         ) }
@@ -289,7 +290,7 @@ const AdvancedFilter = () => {
           </>
         ) }
       </HStack>
-      <DataListDisplay
+      <DataList
         isError={ isError }
         itemsNum={ data?.items.length }
         emptyText="There are no transactions."
@@ -300,7 +301,7 @@ const AdvancedFilter = () => {
         }}
       >
         { content }
-      </DataListDisplay>
+      </DataList>
     </>
   );
 };

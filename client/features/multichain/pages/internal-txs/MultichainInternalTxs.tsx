@@ -3,6 +3,9 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
+import ActionBar from 'client/shell/page/action-bar/ActionBar';
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import InternalTxsList from 'client/slices/internal-tx/components/InternalTxsList';
 import InternalTxsTable from 'client/slices/internal-tx/components/InternalTxsTable';
 import useInternalTxsQuery from 'client/slices/internal-tx/hooks/useInternalTxsQuery';
@@ -11,12 +14,10 @@ import ChainSelect from 'client/features/multichain/components/ChainSelect';
 import { MultichainProvider } from 'client/features/multichain/context';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import DataList from 'client/shared/lists/DataList';
+import Pagination from 'client/shared/pagination/Pagination';
 
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
-import ActionBar from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
-import PageTitle from 'ui/shared/Page/PageTitle';
-import Pagination from 'ui/shared/pagination/Pagination';
 
 const MultichainInternalTxs = () => {
   const isMobile = useIsMobile();
@@ -74,7 +75,7 @@ const MultichainInternalTxs = () => {
         title="Internal transactions"
         withTextAd
       />
-      <DataListDisplay
+      <DataList
         isError={ isError }
         itemsNum={ data?.items.length }
         emptyText="There are no internal transactions."
@@ -87,7 +88,7 @@ const MultichainInternalTxs = () => {
         showActionBarIfEmpty
       >
         { content }
-      </DataListDisplay>
+      </DataList>
     </>
   );
 };

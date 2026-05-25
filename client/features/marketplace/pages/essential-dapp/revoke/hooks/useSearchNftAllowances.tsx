@@ -5,9 +5,9 @@ import { useCallback } from 'react';
 import { getAbiItem, getAddress, slice } from 'viem';
 import type { PublicClient, GetLogsParameters, Log } from 'viem';
 
+import type { AllowanceType, ContractAllowanceType } from '../types';
 import type { EssentialDappsChainConfig } from 'client/features/marketplace/types/client';
 import type { TokenInfo } from 'client/slices/token/types/api';
-import type { AllowanceType, ContractAllowanceType } from 'types/client/revoke';
 
 import useApiFetch from 'client/api/hooks/useApiFetch';
 

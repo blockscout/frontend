@@ -3,11 +3,12 @@
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
+import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
+
 import { Field } from 'toolkit/chakra/field';
 import { Input } from 'toolkit/chakra/input';
 import { InputGroup } from 'toolkit/chakra/input-group';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
 
 type Props = {
   label: string;

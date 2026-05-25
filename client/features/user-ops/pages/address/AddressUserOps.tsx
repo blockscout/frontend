@@ -7,10 +7,9 @@ import UserOpsContent from 'client/features/user-ops/pages/index/UserOpsContent'
 import { USER_OPS_ITEM } from 'client/features/user-ops/stubs';
 
 import useIsMounted from 'client/shared/hooks/useIsMounted';
+import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
+import { generateListStub } from 'client/shared/pagination/utils';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
-
-import { generateListStub } from 'stubs/utils';
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
 type Props = {
   scrollRef?: React.RefObject<HTMLDivElement>;

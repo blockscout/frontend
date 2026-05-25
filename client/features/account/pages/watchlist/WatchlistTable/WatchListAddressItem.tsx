@@ -7,18 +7,18 @@ import React from 'react';
 import type { WatchlistAddress } from 'client/features/account/types/api';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+import { currencyUnits } from 'client/slices/chain/units';
 import * as TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 
-import { currencyUnits } from 'client/shared/chain/units';
+import calculateUsdValue from 'client/shared/values/entity/calculateUsdValue';
+import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
+import SimpleValue from 'client/shared/values/entity/SimpleValue';
+import { DEFAULT_ACCURACY_USD } from 'client/shared/values/entity/utils';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { nbsp } from 'toolkit/utils/htmlEntities';
-import IconSvg from 'ui/shared/IconSvg';
-import calculateUsdValue from 'ui/shared/value/calculateUsdValue';
-import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
-import SimpleValue from 'ui/shared/value/SimpleValue';
-import { DEFAULT_ACCURACY_USD } from 'ui/shared/value/utils';
 
 const WatchListAddressItem = ({ item, isLoading }: { item: WatchlistAddress; isLoading?: boolean }) => {
   const nativeTokenData = React.useMemo(() => ({
@@ -62,7 +62,7 @@ const WatchListAddressItem = ({ item, isLoading }: { item: WatchlistAddress; isL
       </Flex>
       { Boolean(item.tokens_count) && (
         <HStack gap={ 2 } fontSize="sm" pl={ 7 }>
-          <IconSvg name="tokens" boxSize={ 5 } isLoading={ isLoading } borderRadius="sm"/>
+          <SpriteIcon name="tokens" boxSize={ 5 } isLoading={ isLoading } borderRadius="sm"/>
           <Skeleton loading={ isLoading } display="inline-flex">
             <span>{ `Tokens:${ nbsp }` + item.tokens_count + (item.tokens_overflow ? '+' : '') }</span>
             <Text color="text.secondary">{ `${ nbsp }($${ BigNumber(item.tokens_fiat_value).toFormat(2) })` }</Text>
@@ -75,7 +75,7 @@ const WatchListAddressItem = ({ item, isLoading }: { item: WatchlistAddress; isL
           prefix="$"
           startElement={ (
             <HStack>
-              <IconSvg boxSize={ 5 } name="wallet" isLoading={ isLoading }/>
+              <SpriteIcon boxSize={ 5 } name="wallet" isLoading={ isLoading }/>
               <span>Net worth:{ nbsp }</span>
             </HStack>
           ) }

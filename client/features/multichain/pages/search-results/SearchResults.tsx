@@ -3,22 +3,23 @@
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
+import HeaderAlert from 'client/shell/header/HeaderAlert';
+import HeaderDesktop from 'client/shell/header/HeaderDesktop';
+import HeaderMobile from 'client/shell/header/HeaderMobile';
+import * as Layout from 'client/shell/layout/components';
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import SearchResultsInput from 'client/slices/search/pages/search-results/SearchResultsInput';
 
 import ChainSelect from 'client/features/multichain/components/ChainSelect';
 import useRoutedChainSelect from 'client/features/multichain/hooks/useRoutedChainSelect';
 
+import AppErrorBoundary from 'client/shared/errors/AppErrorBoundary';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import AppErrorBoundary from 'ui/shared/AppError/AppErrorBoundary';
-import * as Layout from 'ui/shared/layout/components';
-import PageTitle from 'ui/shared/Page/PageTitle';
-import HeaderAlert from 'ui/snippets/header/HeaderAlert';
-import HeaderDesktop from 'ui/snippets/header/HeaderDesktop';
-import HeaderMobile from 'ui/snippets/header/HeaderMobile';
 
 import SearchResultTabContent from './SearchResultTabContent';
 import useSearchQuery from './useSearchQuery';

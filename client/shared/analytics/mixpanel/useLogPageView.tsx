@@ -4,13 +4,13 @@ import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { ColorThemeId } from 'types/settings';
+import type { ColorThemeId } from 'client/shell/top-bar/settings/color-theme/config';
+import { getDefaultColorTheme } from 'client/shell/top-bar/settings/color-theme/utils';
 
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import * as cookies from 'client/shared/storage/cookies';
 
 import config from 'configs/app';
-import { getDefaultColorTheme } from 'lib/settings/colorTheme';
 import { useColorMode } from 'toolkit/chakra/color-mode';
 
 import getPageType from './get-page-type';

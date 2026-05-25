@@ -2,11 +2,12 @@
 
 import React from 'react';
 
+import type { AllowanceType } from '../types';
 import type { EssentialDappsChainConfig } from 'client/features/marketplace/types/client';
-import type { AllowanceType } from 'types/client/revoke';
+
+import TimeFormatToggle from 'client/shared/date-and-time/TimeFormatToggle';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
-import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
 import ApprovalsTableItem from './ApprovalsTableItem';
 

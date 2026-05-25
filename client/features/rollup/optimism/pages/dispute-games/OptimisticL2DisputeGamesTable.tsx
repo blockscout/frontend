@@ -6,8 +6,9 @@ import type { OptimisticL2DisputeGamesItem } from 'client/features/rollup/optimi
 
 import { layerLabels } from 'client/features/rollup/common/utils/layer';
 
+import TimeFormatToggle from 'client/shared/date-and-time/TimeFormatToggle';
+
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
-import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
 import OptimisticL2DisputeGamesTableItem from './OptimisticL2DisputeGamesTableItem';
 

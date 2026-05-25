@@ -6,12 +6,12 @@ import React from 'react';
 
 import type { MarketplaceApp } from 'client/features/marketplace/types/client';
 
+import AdBanner from 'client/features/ads/banner/components/AdBanner';
 import { apps as appsMock } from 'client/features/marketplace/mocks/dapps';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
 import config from 'configs/app';
-import AdBanner from 'ui/shared/ad/AdBanner';
 
 import FeaturedApp from './FeaturedApp';
 import IframeBanner from './IframeBanner';

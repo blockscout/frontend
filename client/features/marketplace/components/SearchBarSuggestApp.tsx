@@ -10,11 +10,11 @@ import { route } from 'nextjs-routes';
 
 import SearchBarSuggestItemLink from 'client/slices/search/components/search-bar/SearchBarSuggest/SearchBarSuggestItemLink';
 
-import highlightText from 'client/shared/text/highlight-text';
+import highlightText from 'client/shared/texts/highlight-text';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { useColorModeValue } from 'toolkit/chakra/color-mode';
 import { Image } from 'toolkit/chakra/image';
-import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   data: MarketplaceApp;
@@ -49,7 +49,7 @@ const SearchBarSuggestApp = ({ data, isMobile, searchTerm, onClick }: Props) => 
             >
               <span dangerouslySetInnerHTML={{ __html: highlightText(data.title, searchTerm) }}/>
             </Text>
-            { data.external && <IconSvg name="link_external" color="icon.secondary" boxSize={ 3 } verticalAlign="middle" flexShrink={ 0 }/> }
+            { data.external && <SpriteIcon name="link_external" color="icon.secondary" boxSize={ 3 } verticalAlign="middle" flexShrink={ 0 }/> }
           </Flex>
           <Text
             color="text.secondary"
@@ -83,7 +83,7 @@ const SearchBarSuggestApp = ({ data, isMobile, searchTerm, onClick }: Props) => 
           { data.description }
         </Text>
         { data.external && (
-          <IconSvg
+          <SpriteIcon
             name="link_external"
             color="icon.secondary"
             boxSize={ 3 }

@@ -4,8 +4,9 @@ import React from 'react';
 
 import type { FlashblockItem } from 'client/features/flashblocks/types/client';
 
+import * as SocketNewItemsNotice from 'client/api/socket/SocketNewItemsNotice';
+
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
-import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 
 import FlashblocksTableItem from './FlashblocksTableItem';
 

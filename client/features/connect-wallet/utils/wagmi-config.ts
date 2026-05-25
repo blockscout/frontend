@@ -12,7 +12,7 @@ import appConfig from 'configs/app';
 import essentialDappsChainsConfig from 'configs/essential-dapps-chains';
 import multichainConfig from 'configs/multichain';
 
-const feature = appConfig.features.blockchainInteraction;
+const feature = appConfig.features.connectWallet;
 
 const getChainTransportFromConfig = (config: Partial<typeof appConfig> | undefined, readOnly?: boolean): Record<string, Transport> => {
   if (!config?.chain?.id) {

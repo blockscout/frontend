@@ -7,17 +7,18 @@ import type { SmartContractVerificationMethodApi } from 'client/slices/contract/
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import ContractVerificationForm from 'client/slices/contract/pages/contract-verification/ContractVerificationForm';
 import useFormConfigQuery from 'client/slices/contract/pages/contract-verification/useFormConfigQuery';
 import type { SmartContractVerificationMethod } from 'client/slices/contract/pages/contract-verification/utils';
 
+import ApiFetchAlert from 'client/shared/alerts/ApiFetchAlert';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
-import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import PageTitle from 'ui/shared/Page/PageTitle';
 
 const ContractVerificationForAddress = () => {
   const router = useRouter();
@@ -54,7 +55,7 @@ const ContractVerificationForAddress = () => {
 
   const content = (() => {
     if (configQuery.isError || !hash || contractQuery.isError) {
-      return <DataFetchAlert/>;
+      return <ApiFetchAlert/>;
     }
 
     if (configQuery.isPending || contractQuery.isPending || isVerifiedContract) {

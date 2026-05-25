@@ -5,9 +5,8 @@ import React from 'react';
 
 import type { TokenInfo, TokenInstance } from 'client/slices/token/types/api';
 
+import NftEntity from 'client/slices/token/components/entity/NftEntity';
 import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
-
-import NftEntity from 'ui/shared/entities/nft/NftEntity';
 
 interface Props {
   token: TokenInfo;

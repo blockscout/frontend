@@ -8,17 +8,17 @@ import type { TokenInfo } from 'client/slices/token/types/api';
 
 import type { ResourceError } from 'client/api/resources';
 
+import ActionBar from 'client/shell/page/action-bar/ActionBar';
+
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
 
+import ResetFilterButton from 'client/shared/filters/ResetFilterButton';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import useIsMounted from 'client/shared/hooks/useIsMounted';
-
-import ActionBar from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
-import Pagination from 'ui/shared/pagination/Pagination';
-import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
-import ResetIconButton from 'ui/shared/ResetIconButton';
+import DataList from 'client/shared/lists/DataList';
+import Pagination from 'client/shared/pagination/Pagination';
+import type { QueryWithPagesResult } from 'client/shared/pagination/useQueryWithPages';
 
 import TokenInventoryItem from './TokenInventoryItem';
 
@@ -53,7 +53,7 @@ const TokenInventory = ({ inventoryQuery, tokenQuery, ownerFilter, shouldRender 
       <Text whiteSpace="nowrap" mr={ 2 } py={ 1 }>Filtered by owner</Text>
       <Flex alignItems="center" py={ 1 }>
         <AddressEntity address={{ hash: ownerFilter }} truncation={ isMobile ? 'constant' : 'none' }/>
-        <ResetIconButton onClick={ resetOwnerFilter }/>
+        <ResetFilterButton onClick={ resetOwnerFilter }/>
       </Flex>
     </Flex>
   );
@@ -91,7 +91,7 @@ const TokenInventory = ({ inventoryQuery, tokenQuery, ownerFilter, shouldRender 
   ) : null;
 
   return (
-    <DataListDisplay
+    <DataList
       isError={ inventoryQuery.isError }
       itemsNum={ items?.length }
       emptyText="There are no tokens."
@@ -102,7 +102,7 @@ const TokenInventory = ({ inventoryQuery, tokenQuery, ownerFilter, shouldRender 
       actionBar={ actionBar }
     >
       { content }
-    </DataListDisplay>
+    </DataList>
   );
 };
 

@@ -2,9 +2,9 @@
 
 import React from 'react';
 
-import useGradualIncrement from 'client/shared/hooks/useGradualIncrement';
+import SocketNewItemsNotice from 'client/api/socket/SocketNewItemsNotice';
 
-import SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
+import useGradualIncrement from 'client/shared/numbers/useGradualIncrement';
 
 interface Props {
   overflow: number;

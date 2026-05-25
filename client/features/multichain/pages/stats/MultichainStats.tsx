@@ -3,6 +3,8 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import useChainStats from 'client/features/chain-stats/hooks/useChainStats';
 import ChainStatsCounters from 'client/features/chain-stats/pages/index/ChainStatsCounters';
 import ChainStatsFilters from 'client/features/chain-stats/pages/index/ChainStatsFilters';
@@ -14,7 +16,6 @@ import useRoutedChainSelect from 'client/features/multichain/hooks/useRoutedChai
 import useEtherscanRedirects from 'client/shared/router/useEtherscanRedirects';
 
 import multichainConfig from 'configs/multichain';
-import PageTitle from 'ui/shared/Page/PageTitle';
 
 const MultichainStats = () => {
   useEtherscanRedirects();

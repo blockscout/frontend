@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-/* eslint-disable @typescript-eslint/naming-convention */
 const SwaggerUIReact = dynamic(() => import('swagger-ui-react'), {
   loading: () => <ContentLoader/>,
   ssr: false,
@@ -16,16 +15,11 @@ import type { SwaggerRequest } from '../types/client';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 
 import 'swagger-ui-react/swagger-ui.css';
+import { ExtendedOpsFilterPlugin } from './plugins/ExtendedOpsFilterPlugin';
+import { KeepFirstTagOnlyPlugin } from './plugins/KeepFirstTagOnlyPlugin';
+import { NeverShowInfoPlugin } from './plugins/NeverShowInfoPlugin';
 
-const NeverShowInfoPlugin = () => {
-  return {
-    components: {
-      SchemesContainer: () => null,
-      ServersContainer: () => null,
-      InfoContainer: () => null,
-    },
-  };
-};
+const PLUGINS = [ NeverShowInfoPlugin, KeepFirstTagOnlyPlugin, ExtendedOpsFilterPlugin ];
 
 interface Props {
   url: string;
@@ -41,14 +35,14 @@ const SwaggerUI = ({ url, requestInterceptor }: Props) => {
     '& .swagger-ui .scheme-container, & .opblock-tag': {
       display: 'none',
     },
-    '& .swagger-ui': {
+    '& .swagger-ui, & .swagger-ui .opblock-tag': {
       color: mainColor,
     },
     '& .swagger-ui .opblock-summary-control:focus': {
       outline: 'none',
     },
     // eslint-disable-next-line max-len
-    '& .swagger-ui .opblock .opblock-summary-path, & .swagger-ui .opblock .opblock-summary-description, & .swagger-ui div, & .swagger-ui p, & .swagger-ui h5, & .swagger-ui .response-col_links, & .swagger-ui h4, & .swagger-ui table thead tr th, & .swagger-ui table thead tr td, & .swagger-ui .parameter__name, & .swagger-ui .parameter__type, & .swagger-ui .response-col_status, & .swagger-ui .tab li, & .swagger-ui .opblock .opblock-section-header h4': {
+    '& .swagger-ui .opblock .opblock-summary-path, & .swagger-ui .opblock .opblock-summary-description, & .swagger-ui .opblock-description-wrapper p, & .swagger-ui div, & .swagger-ui p, & .swagger-ui h5, & .swagger-ui .response-col_links, & .swagger-ui h4, & .swagger-ui table thead tr th, & .swagger-ui table thead tr td, & .swagger-ui .parameter__name, & .swagger-ui .parameter__type, & .swagger-ui .response-col_status, & .swagger-ui .tab li, & .swagger-ui .opblock .opblock-section-header h4': {
       color: 'unset',
     },
     '& .swagger-ui input': {
@@ -85,6 +79,11 @@ const SwaggerUI = ({ url, requestInterceptor }: Props) => {
       color: { _light: 'red.500', _dark: 'red.400' },
     },
 
+    // SECTIONS
+    '& .swagger-ui section h3': {
+      color: mainColor,
+    },
+
     // MODELS
     '& .swagger-ui section.models': {
       borderColor: borderColor,
@@ -113,14 +112,23 @@ const SwaggerUI = ({ url, requestInterceptor }: Props) => {
       color: useToken('colors', 'text_.secondary'),
       wordBreak: 'break-all',
     },
+
+    // FILTER
+    '& .swagger-ui .filter .operation-filter-input': {
+      bgColor: 'transparent',
+      maxW: 'none',
+      color: mainColor,
+      borderColor,
+    },
   };
 
   return (
     <Box css={ swaggerStyle }>
       <SwaggerUIReact
         url={ url }
-        plugins={ [ NeverShowInfoPlugin ] }
+        plugins={ PLUGINS }
         requestInterceptor={ requestInterceptor }
+        filter
       />
     </Box>
   );

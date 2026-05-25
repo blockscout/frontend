@@ -11,11 +11,10 @@ import { toBech32Address } from 'client/slices/address/utils/bech32';
 
 import * as EnsEntity from 'client/features/name-services/domains/components/EnsEntity';
 
-import highlightText from 'client/shared/text/highlight-text';
-
-import dayjs from 'lib/date/dayjs';
-import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
-import IconSvg from 'ui/shared/IconSvg';
+import dayjs from 'client/shared/date-and-time/dayjs';
+import HashStringShortenDynamic from 'client/shared/texts/HashStringShortenDynamic';
+import highlightText from 'client/shared/texts/highlight-text';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 const SearchBarSuggestDomain = ({ data, isMobile, searchTerm, addressFormat }: ItemsProps<SearchResultDomain | multichain.QuickSearchResultDomain>) => {
 
@@ -56,7 +55,7 @@ const SearchBarSuggestDomain = ({ data, isMobile, searchTerm, addressFormat }: I
   ) : null;
 
   const isContractVerified = 'is_smart_contract_verified' in data && data.is_smart_contract_verified &&
-    <IconSvg name="status/success" boxSize="14px" color="green.500" flexShrink={ 0 }/>;
+    <SpriteIcon name="status/success" boxSize="14px" color="green.500" flexShrink={ 0 }/>;
 
   const namesCount = 'names_count' in data.ens_info ? data.ens_info.names_count : 0;
 

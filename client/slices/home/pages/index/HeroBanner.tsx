@@ -9,12 +9,12 @@ import SearchBar from 'client/slices/search/components/search-bar/SearchBarDeskt
 import SearchBarMobile from 'client/slices/search/components/search-bar/SearchBarMobile';
 
 import UserProfileDesktop from 'client/features/account/components/user-profile/UserProfileDesktop';
+import AdBanner from 'client/features/ads/banner/components/AdBanner';
 import RewardsButton from 'client/features/rewards/components/RewardsButton';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
 import config from 'configs/app';
-import AdBanner from 'ui/shared/ad/AdBanner';
 
 export const BACKGROUND_DEFAULT =
   'radial-gradient(103.03% 103.03% at 0% 0%, rgba(183, 148, 244, 0.8) 0%, rgba(0, 163, 196, 0.8) 100%), var(--chakra-colors-blue-400)';

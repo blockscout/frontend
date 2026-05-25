@@ -8,6 +8,14 @@ import React from 'react';
 import { SEARCH_RESULT_TYPES } from 'client/slices/search/types/api';
 import type { SearchResultItem } from 'client/slices/search/types/client';
 
+import HeaderAlert from 'client/shell/header/HeaderAlert';
+import HeaderDesktop from 'client/shell/header/HeaderDesktop';
+import HeaderMobile from 'client/shell/header/HeaderMobile';
+import * as Layout from 'client/shell/layout/components';
+import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'client/shell/page/action-bar/ActionBar';
+import PageTitle from 'client/shell/page/title/PageTitle';
+import { useSettingsContext } from 'client/shell/top-bar/settings/context';
+
 import SearchBarSuggestBlockCountdown from 'client/slices/search/components/search-bar/SearchBarSuggest/SearchBarSuggestBlockCountdown';
 import useSearchQuery from 'client/slices/search/hooks/useSearchQuery';
 import type { SearchResultAppItem } from 'client/slices/search/utils/search-categories';
@@ -15,24 +23,17 @@ import type { SearchResultAppItem } from 'client/slices/search/utils/search-cate
 import ExternalSearchItem from 'client/features/chain-variants/zeta-chain/components/ExternalSearchItem';
 import useMarketplaceApps from 'client/features/marketplace/hooks/useMarketplaceApps';
 
+import ApiFetchAlert from 'client/shared/alerts/ApiFetchAlert';
+import AppErrorBoundary from 'client/shared/errors/AppErrorBoundary';
+import Pagination from 'client/shared/pagination/Pagination';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import removeQueryParam from 'client/shared/router/remove-query-param';
 
 import config from 'configs/app';
-import { useSettingsContext } from 'lib/contexts/settings';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 import * as regexp from 'toolkit/utils/regexp';
-import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import AppErrorBoundary from 'ui/shared/AppError/AppErrorBoundary';
-import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import * as Layout from 'ui/shared/layout/components';
-import PageTitle from 'ui/shared/Page/PageTitle';
-import Pagination from 'ui/shared/pagination/Pagination';
-import HeaderAlert from 'ui/snippets/header/HeaderAlert';
-import HeaderDesktop from 'ui/snippets/header/HeaderDesktop';
-import HeaderMobile from 'ui/snippets/header/HeaderMobile';
 
 import SearchResultListItem from './SearchResultListItem';
 import SearchResultsInput from './SearchResultsInput';
@@ -181,7 +182,7 @@ const SearchResultsPageContent = () => {
 
   const content = (() => {
     if (isError) {
-      return <DataFetchAlert/>;
+      return <ApiFetchAlert/>;
     }
 
     if (!displayedItems.length) {

@@ -7,12 +7,13 @@ import type { SmartContractSecurityAuditSubmission } from 'client/features/contr
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
-import dayjs from 'lib/date/dayjs';
+import ContainerWithScrollY from 'client/shared/containers/ContainerWithScrollY';
+import dayjs from 'client/shared/date-and-time/dayjs';
+import FormModal from 'client/shared/forms/FormModal';
+
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
-import ContainerWithScrollY from 'ui/shared/ContainerWithScrollY';
-import FormModal from 'ui/shared/FormModal';
 
 import ContractSubmitAuditForm from './ContractSubmitAuditForm';
 

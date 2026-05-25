@@ -12,13 +12,14 @@ import { route } from 'nextjs-routes';
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 
+import type { DataType } from 'client/shared/data/RawInputData';
+import RawInputData from 'client/shared/data/RawInputData';
+import DetailedInfoTimestamp from 'client/shared/detailed-info/DetailedInfoTimestamp';
+
 import { Alert } from 'toolkit/chakra/alert';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { space } from 'toolkit/utils/htmlEntities';
-import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
-import type { DataType } from 'ui/shared/RawInputData';
-import RawInputData from 'ui/shared/RawInputData';
 
 import LogDecodedInputData from './LogDecodedInputData';
 import LogIndex from './LogIndex';

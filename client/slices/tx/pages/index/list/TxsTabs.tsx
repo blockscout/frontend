@@ -7,6 +7,7 @@ import React from 'react';
 
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
+import getChainValidationActionText from 'client/slices/chain/verification-type/utils/get-chain-validation-action-text';
 import { TX } from 'client/slices/tx/stubs/tx';
 
 import useIsAuth from 'client/features/account/hooks/useIsAuth';
@@ -14,17 +15,16 @@ import TxsWatchlist from 'client/features/account/pages/tx-index-watchlist/TxsWa
 import AdvancedFilterLink from 'client/features/advanced-filter/components/AdvancedFilterLink';
 import { useMultichainContext } from 'client/features/multichain/context';
 
-import getChainValidationActionText from 'client/shared/chain/get-chain-validation-action-text';
 import useIsInitialLoading from 'client/shared/hooks/useIsInitialLoading';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import Pagination from 'client/shared/pagination/Pagination';
+import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
+import { generateListStub } from 'client/shared/pagination/utils';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import config from 'configs/app';
-import { generateListStub } from 'stubs/utils';
 import type { RoutedTabsProps } from 'toolkit/components/RoutedTabs/RoutedTabs';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import Pagination from 'ui/shared/pagination/Pagination';
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
 import TxsWithFrontendSorting from './TxsWithFrontendSorting';
 

@@ -8,11 +8,11 @@ import { route } from 'nextjs-routes';
 import { useRewardsContext } from 'client/features/rewards/context';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import type { ButtonProps } from 'toolkit/chakra/button';
 import { Button } from 'toolkit/chakra/button';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import IconSvg from 'ui/shared/IconSvg';
 
 type Props = {
   size?: ButtonProps['size'];
@@ -49,7 +49,7 @@ const RewardsButton = ({ variant = 'header', size }: Props) => {
           textDecoration: 'none',
         }}
       >
-        <IconSvg
+        <SpriteIcon
           name={ dailyRewardQuery.data?.available ? 'merits_with_dot' : 'merits' }
           boxSize={ variant === 'hero' ? 6 : 5 }
           flexShrink={ 0 }

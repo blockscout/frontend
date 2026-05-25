@@ -2,10 +2,11 @@
 
 import React from 'react';
 
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
 import config from 'configs/app';
-import PageTitle from 'ui/shared/Page/PageTitle';
 
 import TxsTabs from './list/TxsTabs';
 import TxsStats from './stats/TxsStats';

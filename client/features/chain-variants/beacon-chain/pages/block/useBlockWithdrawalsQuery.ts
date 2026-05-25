@@ -12,18 +12,17 @@ import type { ResourceError } from 'client/api/resources';
 
 import { unknownAddress } from 'client/slices/address/utils/consts';
 import type { BlockQuery } from 'client/slices/block/hooks/useBlockQuery';
+import { GET_BLOCK } from 'client/slices/block/stubs/rpc';
 
 import { publicClient } from 'client/features/connect-wallet/utils/public-client';
 
-import hexToDecimal from 'client/shared/transformers/hex-to-decimal';
+import hexToDecimal from 'client/shared/data/transformers/hex-to-decimal';
+import type { QueryWithPagesResult } from 'client/shared/pagination/useQueryWithPages';
+import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
+import { generateListStub, emptyPagination } from 'client/shared/pagination/utils';
 
 import config from 'configs/app';
-import { GET_BLOCK } from 'stubs/RPC';
-import { generateListStub } from 'stubs/utils';
 import { SECOND } from 'toolkit/utils/consts';
-import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
-import { emptyPagination } from 'ui/shared/pagination/utils';
 
 import { WITHDRAWAL } from '../../stubs/withdrawals';
 

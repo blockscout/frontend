@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { Feature } from './types';
-import type { GasRefuelProviderConfig } from 'types/client/gasRefuelProviderConfig';
+import type { GasRefuelProviderConfig } from 'client/features/get-gas-button/types/client';
 
 import chain from '../chain';
 import { getEnvValue, parseEnvJson } from '../utils';

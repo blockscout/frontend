@@ -6,9 +6,10 @@ import type { Pool } from 'client/features/dex-pools/types/api';
 
 import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 
+import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
+import DetailedInfoSponsoredItem from 'client/shared/detailed-info/DetailedInfoSponsoredItem';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import DetailedInfoSponsoredItem from 'ui/shared/DetailedInfo/DetailedInfoSponsoredItem';
 
 type Props = {
   data: Pool;

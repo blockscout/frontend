@@ -5,10 +5,11 @@ import React from 'react';
 
 import type { FormFields } from '../types';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { FormFieldUrl } from 'toolkit/components/forms/fields/FormFieldUrl';
 import { FormFieldImagePreview } from 'toolkit/components/forms/fields/image/FormFieldImagePreview';
 import { useImageField } from 'toolkit/components/forms/fields/image/useImageField';
-import IconSvg from 'ui/shared/IconSvg';
 
 import TagSubmitionFieldTagIconPreview from './TagSubmitionFieldTagIconPreview';
 
@@ -30,7 +31,7 @@ const TagSubmitionFieldTagIcon = ({ index }: Props) => {
       <TagSubmitionFieldTagIconPreview url={ imageField.preview.src } isInvalid={ imageField.preview.isInvalid }>
         <FormFieldImagePreview
           { ...imageField.preview }
-          fallback={ <IconSvg name="blobs/image" color="icon.primary" boxSize="30px"/> }
+          fallback={ <SpriteIcon name="blobs/image" color="icon.primary" boxSize="30px"/> }
           boxSize="30px"
         />
       </TagSubmitionFieldTagIconPreview>
