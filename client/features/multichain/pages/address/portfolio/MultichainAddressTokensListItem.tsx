@@ -11,13 +11,14 @@ import AddressEntity from 'client/slices/address/components/entity/AddressEntity
 import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 import NativeTokenTag from 'client/slices/token/components/NativeTokenTag';
 
+import ListItemMobile from 'client/shared/lists/ListItemMobile';
+import calculateUsdValue from 'client/shared/values/entity/calculateUsdValue';
+import ConfidentialValue from 'client/shared/values/entity/ConfidentialValue';
+import SimpleValue from 'client/shared/values/entity/SimpleValue';
+
 import multichainConfig from 'configs/multichain';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tag } from 'toolkit/chakra/tag';
-import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
-import calculateUsdValue from 'ui/shared/value/calculateUsdValue';
-import ConfidentialValue from 'ui/shared/value/ConfidentialValue';
-import SimpleValue from 'ui/shared/value/SimpleValue';
 
 interface Props {
   data: AddressTokensErc20Item;

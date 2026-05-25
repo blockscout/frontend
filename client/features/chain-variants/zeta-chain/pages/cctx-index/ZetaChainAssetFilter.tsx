@@ -13,6 +13,7 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 import * as TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 import NativeTokenIcon from 'client/slices/token/components/icon/TokenIconNative';
 
+import TableColumnFilter from 'client/shared/filters/TableColumnFilter';
 import useDebounce from 'client/shared/hooks/useDebounce';
 
 import config from 'configs/app';
@@ -20,7 +21,6 @@ import { PopoverCloseTriggerWrapper } from 'toolkit/chakra/popover';
 import { Tag } from 'toolkit/chakra/tag';
 import { ClearButton } from 'toolkit/components/buttons/ClearButton';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
-import TableColumnFilter from 'ui/shared/filters/TableColumnFilter';
 
 const FILTER_PARAM_SYMBOL = 'token_symbol';
 const FILTER_PARAM_COIN_TYPE = 'coin_type';

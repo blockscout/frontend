@@ -10,11 +10,12 @@ import { route } from 'nextjs-routes';
 import AddressEntityInterchain from 'client/slices/address/components/entity/AddressEntityInterchain';
 import AddressFromToIcon from 'client/slices/address/components/from-to/AddressFromToIcon';
 
+import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
+import TokenValueInterchain from 'client/shared/values/entity/TokenValueInterchain';
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import IconSvg from 'ui/shared/IconSvg';
-import TokenValueInterchain from 'ui/shared/value/TokenValueInterchain';
 
 const MAX_NUM = 5;
 
@@ -99,7 +100,7 @@ const TxCrossChainDetailsTransfers = ({ data, id, isLoading }: Props) => {
           <GridItem hideBelow="lg"/>
           <GridItem fontSize="sm" alignItems="center" display="inline-flex" pl={{ base: '28px', lg: 0 }}>
             { /* FIXME use non-navigation icon */ }
-            <IconSvg name="navigation/tokens" boxSize={ 6 }/>
+            <SpriteIcon name="navigation/tokens" boxSize={ 6 }/>
             <Link
               href={ route({ pathname: '/cross-chain-tx/[id]', query: { id, tab: 'transfers' } }) }
             >

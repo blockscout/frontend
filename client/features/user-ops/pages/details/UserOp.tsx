@@ -10,6 +10,8 @@ import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import TxTokenTransfer from 'client/slices/token-transfer/pages/tx/TxTokenTransfer';
 import useTxQuery from 'client/slices/tx/hooks/useTxQuery';
 import TxLogs from 'client/slices/tx/pages/details/logs/TxLogs';
@@ -22,7 +24,6 @@ import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-loa
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import PageTitle from 'ui/shared/Page/PageTitle';
 
 import UserOpDetails from './UserOpDetails';
 import UserOpRaw from './UserOpRaw';

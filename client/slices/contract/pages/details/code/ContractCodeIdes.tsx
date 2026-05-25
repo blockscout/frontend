@@ -3,6 +3,8 @@
 import { Flex, chakra } from '@chakra-ui/react';
 import React from 'react';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import config from 'configs/app';
 import { Button } from 'toolkit/chakra/button';
 import { Image } from 'toolkit/chakra/image';
@@ -10,7 +12,6 @@ import { Link } from 'toolkit/chakra/link';
 import { PopoverRoot, PopoverTrigger, PopoverContent, PopoverBody } from 'toolkit/chakra/popover';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
-import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   className?: string;
@@ -27,7 +28,7 @@ const ContractCodeIde = ({ className, hash, isLoading }: Props) => {
         const url = decodeURIComponent(ide.url.replace('{hash}', hash).replace('{domain}', config.app.host || ''));
         const icon = 'icon_url' in ide ?
           <Image boxSize={ 5 } mr={ 2 } src={ ide.icon_url } alt={ `${ ide.title } icon` }/> :
-          <IconSvg name="ABI" boxSize={ 5 } color="icon.primary" mr={ 2 }/>;
+          <SpriteIcon name="ABI" boxSize={ 5 } color="icon.primary" mr={ 2 }/>;
 
         return (
           <Link external key={ ide.title } href={ url } display="inline-flex" alignItems="center">
@@ -60,7 +61,7 @@ const ContractCodeIde = ({ className, hash, isLoading }: Props) => {
           flexShrink={ 0 }
         >
           <span>Open in</span>
-          <IconSvg name="arrows/east-mini" transform={ open ? 'rotate(90deg)' : 'rotate(-90deg)' } transitionDuration="faster" boxSize={ 5 }/>
+          <SpriteIcon name="arrows/east-mini" transform={ open ? 'rotate(90deg)' : 'rotate(-90deg)' } transitionDuration="faster" boxSize={ 5 }/>
         </Button>
       </PopoverTrigger>
       <PopoverContent w="240px">

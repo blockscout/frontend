@@ -6,6 +6,7 @@ import { useCallback } from 'react';
 import type { Address3rdPartyWidget } from 'client/features/address-3rd-party-widgets/types/view';
 
 import * as mixpanel from 'client/shared/analytics/mixpanel';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import config from 'configs/app';
 import { Image } from 'toolkit/chakra/image';
@@ -13,7 +14,6 @@ import { LinkBox, LinkOverlay } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Hint } from 'toolkit/components/Hint/Hint';
 import { ndash } from 'toolkit/utils/htmlEntities';
-import IconSvg from 'ui/shared/IconSvg';
 
 import useWidgetData from './useWidgetData';
 
@@ -117,7 +117,7 @@ const Address3rdPartyWidgetCard = ({ name, config, address, isLoading }: Props) 
           >
             { config.name }
           </Text>
-          <IconSvg
+          <SpriteIcon
             name="link_external"
             boxSize={ 3 }
             color="hover"

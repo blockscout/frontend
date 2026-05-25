@@ -8,11 +8,11 @@ import { route } from 'nextjs-routes';
 import useAddressQuery from 'client/slices/address/hooks/useAddressQuery';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { Link } from 'toolkit/chakra/link';
 import { isBrowser } from 'toolkit/utils/isBrowser';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
-import IconSvg from 'ui/shared/IconSvg';
 
 type TableViewProps = {
   className?: string;
@@ -67,7 +67,7 @@ const BreadcrumbItem = ({ text, href, isLast }: BreadcrumbItemProps) => {
       >
         { text }
       </Link>
-      { !isLast && <IconSvg name="arrows/east" boxSize={ 6 } color={{ _light: 'gray.300', _dark: 'gray.600' }}/> }
+      { !isLast && <SpriteIcon name="arrows/east" boxSize={ 6 } color={{ _light: 'gray.300', _dark: 'gray.600' }}/> }
     </Grid>
   );
 };
@@ -89,7 +89,7 @@ const AddressMudBreadcrumbs = (props: TableViewProps | RecordViewProps) => {
       width="fit-content"
       fontSize="sm"
     >
-      <IconSvg name="MUD" boxSize={ 5 } color={ addressQuery.data?.is_verified ? 'green.500' : 'icon.primary' }/>
+      <SpriteIcon name="MUD" boxSize={ 5 } color={ addressQuery.data?.is_verified ? 'green.500' : 'icon.primary' }/>
       <BreadcrumbItem
         text="MUD World"
         href={ route({ pathname: '/address/[hash]', query: queryParams }) }

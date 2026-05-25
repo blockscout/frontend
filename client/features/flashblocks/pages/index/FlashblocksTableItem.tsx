@@ -9,9 +9,10 @@ import { route } from 'nextjs-routes';
 
 import FlashblockEntity from 'client/features/flashblocks/components/FlashblockEntity';
 
+import Time from 'client/shared/date-and-time/Time';
+
 import { Link } from 'toolkit/chakra/link';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
-import Time from 'ui/shared/time/Time';
 
 interface Props {
   data: FlashblockItem;

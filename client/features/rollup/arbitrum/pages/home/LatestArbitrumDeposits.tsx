@@ -13,8 +13,8 @@ import LatestTxsFallback from 'client/slices/home/pages/index/txs/LatestTxsFallb
 
 import LatestDeposits from 'client/features/rollup/common/pages/home/LatestDeposits';
 
-import useGradualIncrement from 'client/shared/hooks/useGradualIncrement';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import useGradualIncrement from 'client/shared/numbers/useGradualIncrement';
 
 import { ARBITRUM_MESSAGES_ITEM } from '../../stubs';
 

@@ -4,7 +4,7 @@ import React from 'react';
 
 import type { AddressesItem } from 'client/slices/address/types/api';
 
-import { currencyUnits } from 'client/shared/chain/units';
+import { currencyUnits } from 'client/slices/chain/units';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 

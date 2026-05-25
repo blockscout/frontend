@@ -2,7 +2,7 @@
 
 import mixpanel from 'mixpanel-browser';
 
-import type { PickByType } from 'types/utils';
+import type { PickByType } from 'client/shared/types/utils';
 
 interface UserProfileProperties {
   'With Account': boolean;

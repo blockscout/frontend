@@ -5,19 +5,21 @@ import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import { ACTION_BAR_HEIGHT_DESKTOP } from 'client/shell/page/action-bar/ActionBar';
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import { layerLabels } from 'client/features/rollup/common/utils/layer';
 import OptimisticL2WithdrawalsListItem from 'client/features/rollup/optimism/pages/withdrawals/OptimisticL2WithdrawalsListItem';
 import OptimisticL2WithdrawalsTable from 'client/features/rollup/optimism/pages/withdrawals/OptimisticL2WithdrawalsTable';
 import { L2_WITHDRAWAL_ITEM } from 'client/features/rollup/optimism/stubs';
 
-import { generateListStub } from 'stubs/utils';
+import DataList from 'client/shared/lists/DataList';
+import StickyPaginationWithText from 'client/shared/pagination/StickyPaginationWithText';
+import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
+import { generateListStub } from 'client/shared/pagination/utils';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { rightLineArrow, nbsp } from 'toolkit/utils/htmlEntities';
-import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
-import PageTitle from 'ui/shared/Page/PageTitle';
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
-import StickyPaginationWithText from 'ui/shared/StickyPaginationWithText';
 
 const OptimisticL2Withdrawals = () => {
   const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({
@@ -79,14 +81,14 @@ const OptimisticL2Withdrawals = () => {
   return (
     <>
       <PageTitle title={ `Withdrawals (${ layerLabels.current }${ nbsp }${ rightLineArrow }${ nbsp }${ layerLabels.parent })` } withTextAd/>
-      <DataListDisplay
+      <DataList
         isError={ isError }
         itemsNum={ data?.items?.length }
         emptyText="There are no withdrawals."
         actionBar={ actionBar }
       >
         { content }
-      </DataListDisplay>
+      </DataList>
     </>
   );
 };

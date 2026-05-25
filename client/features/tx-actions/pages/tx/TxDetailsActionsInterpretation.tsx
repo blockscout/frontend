@@ -7,8 +7,8 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 import { TX_INTERPRETATION } from 'client/features/tx-interpretation/blockscout/stubs';
 import TxInterpretation from 'client/features/tx-interpretation/common/components/TxInterpretation';
 
-import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import DetailedInfoActionsWrapper from 'ui/shared/DetailedInfo/DetailedInfoActionsWrapper';
+import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
+import DetailedInfoActionsWrapper from 'client/shared/detailed-info/DetailedInfoActionsWrapper';
 
 interface Props {
   hash?: string;

@@ -9,11 +9,12 @@ import type { EssentialDappsChainConfig } from 'client/features/marketplace/type
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 
+import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
+import NumberEntity from 'client/shared/numbers/NumberEntity';
+
 import { Button } from 'toolkit/chakra/button';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableRow, TableCell } from 'toolkit/chakra/table';
-import NumberEntity from 'ui/shared/NumberEntity';
-import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 import useRevoke from '../hooks/useRevoke';
 import formatAllowance from '../lib/formatAllowance';

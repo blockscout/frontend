@@ -12,22 +12,22 @@ import type {
 } from 'client/features/chain-variants/stability/types/api';
 
 // import useDebounce from 'client/shared/hooks/useDebounce';
+import ActionBar from 'client/shell/page/action-bar/ActionBar';
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import { VALIDATOR_STABILITY } from 'client/features/chain-variants/stability/stubs/validators';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import DataList from 'client/shared/lists/DataList';
+import Pagination from 'client/shared/pagination/Pagination';
+import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
+import { generateListStub } from 'client/shared/pagination/utils';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
+import getSortParamsFromValue from 'client/shared/sort/get-sort-params-from-value';
+import getSortValueFromQuery from 'client/shared/sort/get-sort-value-from-query';
+import Sort from 'client/shared/sort/Sort';
 
 import config from 'configs/app';
-import { generateListStub } from 'stubs/utils';
-import ActionBar from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
-// import { FilterInput } from 'toolkit/components/filters/FilterInput';
-import PageTitle from 'ui/shared/Page/PageTitle';
-import Pagination from 'ui/shared/pagination/Pagination';
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
-import getSortParamsFromValue from 'ui/shared/sort/getSortParamsFromValue';
-import getSortValueFromQuery from 'ui/shared/sort/getSortValueFromQuery';
-import Sort from 'ui/shared/sort/Sort';
 
 import { VALIDATORS_STABILITY_SORT_OPTIONS } from './utils';
 import ValidatorsCounters from './ValidatorsCounters';
@@ -153,7 +153,7 @@ const ValidatorsStability = () => {
     <Box>
       <PageTitle title="Validators" withTextAd/>
       <ValidatorsCounters/>
-      <DataListDisplay
+      <DataList
         isError={ isError }
         itemsNum={ data?.items.length }
         emptyText="There are no validators."
@@ -167,7 +167,7 @@ const ValidatorsStability = () => {
         actionBar={ actionBar }
       >
         { content }
-      </DataListDisplay>
+      </DataList>
     </Box>
   );
 };

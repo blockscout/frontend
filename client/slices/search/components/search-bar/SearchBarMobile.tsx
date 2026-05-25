@@ -12,6 +12,7 @@ import useQuickSearchQuery from 'client/slices/search/hooks/useQuickSearchQuery'
 import { getRecentSearchKeywords, saveToRecentKeywords } from 'client/slices/search/utils/recent-search-keywords';
 
 import * as mixpanel from 'client/shared/analytics/mixpanel';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { Button } from 'toolkit/chakra/button';
 import {
@@ -26,7 +27,6 @@ import {
 } from 'toolkit/chakra/drawer';
 import { Link } from 'toolkit/chakra/link';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
-import IconSvg from 'ui/shared/IconSvg';
 
 import SearchBarInput from './SearchBarInput';
 import SearchBarRecentKeywords from './SearchBarRecentKeywords';
@@ -125,7 +125,7 @@ const SearchBarMobile = ({ isHeroBanner, onGoToSearchResults }: Props) => {
         flexShrink={ 0 }
         p={ 0 }
       >
-        <IconSvg
+        <SpriteIcon
           name="search"
           boxSize={ 6 }
           flexShrink={ 0 }

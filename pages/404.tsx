@@ -6,8 +6,9 @@ import type { NextPageWithLayout } from 'nextjs/types';
 
 import PageNextJs from 'nextjs/PageNextJs';
 
-import AppError from 'ui/shared/AppError/AppError';
-import LayoutError from 'ui/shared/layout/LayoutError';
+import LayoutError from 'client/shell/layout/LayoutError';
+
+import AppError from 'client/shared/errors/AppError';
 
 const error = new Error('Not found', { cause: { status: 404 } });
 

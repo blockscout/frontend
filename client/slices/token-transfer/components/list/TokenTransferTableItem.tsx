@@ -13,13 +13,14 @@ import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import TxAdditionalInfo from 'client/slices/tx/components/TxAdditionalInfo';
 
+import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
+import ChainIcon from 'client/shared/external-chains/ChainIcon';
+import AssetValue from 'client/shared/values/entity/AssetValue';
+import ConfidentialValue from 'client/shared/values/entity/ConfidentialValue';
+
 import { Badge } from 'toolkit/chakra/badge';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
-import ChainIcon from 'ui/shared/externalChains/ChainIcon';
-import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
-import AssetValue from 'ui/shared/value/AssetValue';
-import ConfidentialValue from 'ui/shared/value/ConfidentialValue';
 
 import TokenTransferTypeBadge from '../TokenTransferTypeBadge';
 

@@ -2,8 +2,8 @@
 
 import React from 'react';
 
-import type { Props as StatusTagProps } from 'ui/shared/statusTag/StatusTag';
-import StatusTag from 'ui/shared/statusTag/StatusTag';
+import type { Props as StatusTagProps } from 'client/shared/tags/status-tag/StatusTag';
+import StatusTag from 'client/shared/tags/status-tag/StatusTag';
 
 export interface Props extends Omit<StatusTagProps, 'type' | 'text'> {
   isFinalized: boolean;

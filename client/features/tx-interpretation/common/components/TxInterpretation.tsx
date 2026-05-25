@@ -16,13 +16,16 @@ import type { AddressParam } from 'client/slices/address/types/api';
 import { route } from 'nextjs-routes';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+import { currencyUnits } from 'client/slices/chain/units';
 import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 
 import EnsEntity from 'client/features/name-services/domains/components/EnsEntity';
 
 import * as mixpanel from 'client/shared/analytics/mixpanel';
-import { currencyUnits } from 'client/shared/chain/units';
 import dayjs from 'client/shared/date-and-time/dayjs';
+import ChainIcon from 'client/shared/external-chains/ChainIcon';
+import getChainTooltipText from 'client/shared/external-chains/get-chain-tooltip-text';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import config from 'configs/app';
 import { Badge } from 'toolkit/chakra/badge';
@@ -32,9 +35,6 @@ import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { SECOND } from 'toolkit/utils/consts';
-import ChainIcon from 'ui/shared/externalChains/ChainIcon';
-import getChainTooltipText from 'ui/shared/externalChains/getChainTooltipText';
-import IconSvg from 'ui/shared/IconSvg';
 
 import {
   extractVariables,
@@ -216,7 +216,7 @@ const TxInterpretation = ({ summary, isLoading, addressDataMap, className, chain
     <Skeleton loading={ isLoading } className={ className } fontWeight={ 500 } whiteSpace="pre-wrap" { ...rest }>
       <Tooltip content={ tooltipContent } contentProps={{ whiteSpace: 'pre-wrap' }}>
         <Box display="inline-flex" position="relative" mr={ chainData ? '14px' : 1 } verticalAlign="text-top">
-          <IconSvg name="lightning" boxSize={ 5 } color="icon.primary"/>
+          <SpriteIcon name="lightning" boxSize={ 5 } color="icon.primary"/>
           { chainData && (
             <ChainIcon
               data={ chainData }

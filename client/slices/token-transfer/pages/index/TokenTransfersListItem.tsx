@@ -11,11 +11,12 @@ import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
 import NftEntity from 'client/slices/token/components/entity/NftEntity';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 
+import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
+import ListItemMobileGrid from 'client/shared/lists/ListItemMobileGrid';
+import ConfidentialTokenValue from 'client/shared/values/entity/ConfidentialTokenValue';
+import TokenValue from 'client/shared/values/entity/TokenValue';
+
 import { Badge } from 'toolkit/chakra/badge';
-import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
-import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
-import ConfidentialTokenValue from 'ui/shared/value/ConfidentialTokenValue';
-import TokenValue from 'ui/shared/value/TokenValue';
 
 type Props = {
   item: TokenTransfer;

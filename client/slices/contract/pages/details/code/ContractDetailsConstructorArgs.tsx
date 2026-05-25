@@ -7,8 +7,8 @@ import type { SmartContract } from 'client/slices/contract/types/api';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 
-import type { Truncation } from 'ui/shared/entities/base/components';
-import RawDataSnippet from 'ui/shared/RawDataSnippet';
+import RawDataSnippet from 'client/shared/data/RawDataSnippet';
+import type { Truncation } from 'client/shared/entities/components';
 
 import { matchArray } from '../methods/form/utils';
 

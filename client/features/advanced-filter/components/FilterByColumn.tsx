@@ -5,7 +5,7 @@ import React from 'react';
 import type { AdvancedFilterParams, AdvancedFiltersSearchParams } from '../types/api';
 import type { ColumnsIds } from '../types/client';
 
-import TableColumnFilterWrapper from 'ui/shared/filters/TableColumnFilterWrapper';
+import TableColumnFilterWrapper from 'client/shared/filters/TableColumnFilterWrapper';
 
 import { NATIVE_TOKEN } from '../utils/consts';
 import type { AddressFilterMode } from './filters/AddressFilter';

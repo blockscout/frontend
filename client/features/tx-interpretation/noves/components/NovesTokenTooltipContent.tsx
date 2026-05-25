@@ -6,10 +6,10 @@ import React from 'react';
 
 import type { NovesNft, NovesToken } from 'client/features/tx-interpretation/noves/types/api';
 
-import shortenString from 'client/shared/text/shorten-string';
+import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
+import shortenString from 'client/shared/texts/shorten-string';
 
 import { HEX_REGEXP } from 'toolkit/utils/regexp';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
 
 interface Props {
   amount?: string;

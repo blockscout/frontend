@@ -5,13 +5,14 @@ import React from 'react';
 
 import type { TokenTransfer } from 'client/slices/token-transfer/types/api';
 
+import { ACTION_BAR_HEIGHT_DESKTOP } from 'client/shell/page/action-bar/ActionBar';
+
 import TokenTransferList from 'client/slices/token-transfer/components/list/TokenTransferList';
 import TokenTransferTable from 'client/slices/token-transfer/components/list/TokenTransferTable';
 import type { TxQuery } from 'client/slices/tx/hooks/useTxQuery';
 
-import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
-import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
+import DataList from 'client/shared/lists/DataList';
+import type { QueryWithPagesResult } from 'client/shared/pagination/useQueryWithPages';
 
 interface Props {
   txQuery: TxQuery;
@@ -45,7 +46,7 @@ const TxTokenTransferLocal = ({ txQuery, tokenTransferQuery, tokenTransferFilter
   ) : null;
 
   return (
-    <DataListDisplay
+    <DataList
       isError={ txQuery.isError || tokenTransferQuery.isError }
       itemsNum={ items.length }
       emptyText="There are no token transfers."
@@ -55,7 +56,7 @@ const TxTokenTransferLocal = ({ txQuery, tokenTransferQuery, tokenTransferFilter
       }}
     >
       { content }
-    </DataListDisplay>
+    </DataList>
   );
 };
 

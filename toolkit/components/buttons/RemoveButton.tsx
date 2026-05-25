@@ -2,9 +2,10 @@
 
 import React from 'react';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import type { IconButtonProps } from 'toolkit/chakra/icon-button';
 import { IconButton } from 'toolkit/chakra/icon-button';
-import IconSvg from 'ui/shared/IconSvg';
 
 interface Props extends IconButtonProps {}
 
@@ -16,7 +17,7 @@ const RemoveButton = (props: Props) => {
       size="md"
       { ...props }
     >
-      <IconSvg name="minus"/>
+      <SpriteIcon name="minus"/>
     </IconButton>
   );
 };

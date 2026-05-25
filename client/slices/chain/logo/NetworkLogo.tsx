@@ -5,16 +5,17 @@ import React from 'react';
 
 import { route } from 'nextjs-routes';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import config from 'configs/app';
 import { useColorModeValue } from 'toolkit/chakra/color-mode';
 import { Image } from 'toolkit/chakra/image';
-import IconSvg from 'ui/shared/IconSvg';
 
 import { INVERT_FILTER } from './consts';
 
 const LogoFallback = () => {
   return (
-    <IconSvg
+    <SpriteIcon
       name="networks/logo-placeholder"
       width="120px"
       height="24px"

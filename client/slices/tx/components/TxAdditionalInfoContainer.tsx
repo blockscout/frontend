@@ -6,7 +6,7 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 
 import { TX } from 'client/slices/tx/stubs/tx';
 
-import DataFetchAlert from 'ui/shared/DataFetchAlert';
+import ApiFetchAlert from 'client/shared/alerts/ApiFetchAlert';
 
 import TxAdditionalInfoContent from './TxAdditionalInfoContent';
 
@@ -28,7 +28,7 @@ const TxAdditionalInfoContainer = ({ hash }: Props) => {
   }
 
   if (isError) {
-    return <DataFetchAlert/>;
+    return <ApiFetchAlert/>;
   }
 
   return <TxAdditionalInfoContent tx={ data } isLoading={ isPlaceholderData }/>;

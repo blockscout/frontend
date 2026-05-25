@@ -8,10 +8,10 @@ import type { TokenType } from 'client/slices/token/types/api';
 import { getTokenTransfersStub } from 'client/slices/token-transfer/stubs';
 import { getTokenFilterValue } from 'client/slices/token/utils/list-utils';
 
+import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import multichainConfig from 'configs/multichain';
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
 const getFilters = (query: Record<string, string | Array<string> | undefined>) => {
   const chainIdParam = getQueryParamString(query.chain_id);

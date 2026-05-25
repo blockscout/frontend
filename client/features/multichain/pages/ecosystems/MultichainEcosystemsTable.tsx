@@ -8,9 +8,10 @@ import type { ChainMetricsSortingField, ChainMetricsSortingValue } from 'client/
 
 import { MultichainProvider } from 'client/features/multichain/context';
 
+import getNextSortValue from 'client/shared/sort/get-next-sort-value';
+
 import multichainConfig from 'configs/multichain';
 import { TableBody, TableColumnHeader, TableColumnHeaderSortable, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
-import getNextSortValue from 'ui/shared/sort/getNextSortValue';
 
 import MultichainEcosystemsTableItem from './MultichainEcosystemsTableItem';
 import { SORT_SEQUENCE } from './utils';

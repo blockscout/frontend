@@ -6,13 +6,14 @@ import React, { useCallback } from 'react';
 
 import type { MarketplaceApp } from 'client/features/marketplace/types/client';
 
+import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
+
 import { useColorModeValue } from 'toolkit/chakra/color-mode';
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { Image } from 'toolkit/chakra/image';
 import { Link, LinkBox } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { isBrowser } from 'toolkit/utils/isBrowser';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
 
 import Rating from '../../components/rating/MarketplaceRating';
 import FavoriteIcon from './FavoriteIcon';

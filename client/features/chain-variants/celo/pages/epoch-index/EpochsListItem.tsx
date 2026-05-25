@@ -9,12 +9,12 @@ import CeloEpochStatus from 'client/features/chain-variants/celo/components/Celo
 import EpochEntity from 'client/features/chain-variants/celo/components/entity/EpochEntity';
 
 import dayjs from 'client/shared/date-and-time/dayjs';
+import Time from 'client/shared/date-and-time/Time';
+import ListItemMobile from 'client/shared/lists/ListItemMobile';
+import TextSeparator from 'client/shared/texts/TextSeparator';
+import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
-import TextSeparator from 'ui/shared/TextSeparator';
-import Time from 'ui/shared/time/Time';
-import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 interface Props {
   item: CeloEpochListItem;

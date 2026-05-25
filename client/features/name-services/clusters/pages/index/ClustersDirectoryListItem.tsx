@@ -10,10 +10,10 @@ import { isEvmAddress } from 'client/slices/address/utils/is-evm-address';
 import ClustersEntity from 'client/features/name-services/clusters/components/ClustersEntity';
 
 import dayjs from 'client/shared/date-and-time/dayjs';
+import Time from 'client/shared/date-and-time/Time';
+import ListItemMobileGrid from 'client/shared/lists/ListItemMobileGrid';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
-import Time from 'ui/shared/time/Time';
 
 interface Props {
   item: ClustersDirectoryObject;

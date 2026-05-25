@@ -7,7 +7,7 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import { ADDRESS_INFO } from 'client/slices/address/stubs/address';
 
-import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
+import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
 
 interface Props {
   hash: string;

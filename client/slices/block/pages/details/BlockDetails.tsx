@@ -13,6 +13,7 @@ import { route, routeParams } from 'nextjs/routes';
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import type { BlockQuery } from 'client/slices/block/hooks/useBlockQuery';
 import getBlockReward from 'client/slices/block/utils/get-block-reward';
+import getChainValidatorTitle from 'client/slices/chain/verification-type/utils/get-chain-validator-title';
 import GasUsed from 'client/slices/gas/components/GasUsed';
 
 import BlockDetailsBaseFeeCelo from 'client/features/chain-variants/celo/pages/block/BlockDetailsBaseFeeCelo';
@@ -28,8 +29,20 @@ import OptimisticL2TxnBatchDA from 'client/features/rollup/optimism/components/T
 import ZkSyncL2TxnBatchHashesInfo from 'client/features/rollup/zk-sync/pages/batch-details/ZkSyncL2TxnBatchHashesInfo';
 import { formatZkSyncL2TxnBatchStatus } from 'client/features/rollup/zk-sync/utils/format-txn-batch-status';
 
-import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-title';
+import PrevNext from 'client/shared/buttons/PrevNext';
+import RawDataSnippet from 'client/shared/data/RawDataSnippet';
+import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
+import DetailedInfoTimestamp from 'client/shared/detailed-info/DetailedInfoTimestamp';
+import VerificationSteps from 'client/shared/lifecycle/steps/VerificationSteps';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
+import StatusTag from 'client/shared/tags/status-tag/StatusTag';
+import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
+import HashStringShortenDynamic from 'client/shared/texts/HashStringShortenDynamic';
+import GasPriceValue from 'client/shared/values/entity/GasPriceValue';
+import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
+import { WEI } from 'client/shared/values/entity/utils';
+import Utilization from 'client/shared/values/utilization/Utilization';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import config from 'configs/app';
 import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
@@ -38,19 +51,6 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { ZERO } from 'toolkit/utils/consts';
 import { space } from 'toolkit/utils/htmlEntities';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
-import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
-import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
-import IconSvg from 'ui/shared/IconSvg';
-import PrevNext from 'ui/shared/PrevNext';
-import RawDataSnippet from 'ui/shared/RawDataSnippet';
-import StatusTag from 'ui/shared/statusTag/StatusTag';
-import Utilization from 'ui/shared/Utilization/Utilization';
-import GasPriceValue from 'ui/shared/value/GasPriceValue';
-import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
-import { WEI } from 'ui/shared/value/utils';
-import VerificationSteps from 'ui/shared/verificationSteps/VerificationSteps';
 
 const zkSyncVerificationSteps = ZKSYNC_L2_TX_BATCH_STATUSES.map(formatZkSyncL2TxnBatchStatus);
 
@@ -517,7 +517,7 @@ const BlockDetails = ({ query }: Props) => {
               amount={ burntFees.toString() }
               accuracy={ 0 }
               loading={ isPlaceholderData }
-              startElement={ <IconSvg name="flame" boxSize={ 5 } mr={{ base: 1, lg: 2 }} color="icon.primary" isLoading={ isPlaceholderData }/> }
+              startElement={ <SpriteIcon name="flame" boxSize={ 5 } mr={{ base: 1, lg: 2 }} color="icon.primary" isLoading={ isPlaceholderData }/> }
               mr={ 4 }
             />
             { !txFees.isEqualTo(ZERO) && (

@@ -15,10 +15,11 @@ import LatestArbitrumDeposits from 'client/features/rollup/arbitrum/pages/home/L
 import { layerLabels } from 'client/features/rollup/common/utils/layer';
 import LatestOptimisticDeposits from 'client/features/rollup/optimism/pages/home/LatestOptimisticDeposits';
 
+import ApiDegradationRpcIcon from 'client/shared/api-degradation/ApiDegradationRpcIcon';
+
 import config from 'configs/app';
 import { Heading } from 'toolkit/chakra/heading';
 import AdaptiveTabs from 'toolkit/components/AdaptiveTabs/AdaptiveTabs';
-import FallbackRpcIcon from 'ui/shared/fallbacks/FallbackRpcIcon';
 
 import LatestTxs from './LatestTxs';
 
@@ -54,7 +55,7 @@ const Transactions = () => {
       <>
         <HStack mb={ 3 }>
           <Heading level="3" >Transactions</Heading>
-          { isRpcData && <FallbackRpcIcon/> }
+          { isRpcData && <ApiDegradationRpcIcon/> }
         </HStack>
         <AdaptiveTabs tabs={ tabs } unmountOnExit={ false } listProps={{ mb: 3 }}/>
       </>
@@ -71,7 +72,7 @@ const Transactions = () => {
       <>
         <HStack mb={ 3 }>
           <Heading level="3" >Latest transactions</Heading>
-          { isRpcData && <FallbackRpcIcon/> }
+          { isRpcData && <ApiDegradationRpcIcon/> }
         </HStack>
         <AdaptiveTabs tabs={ tabs } unmountOnExit={ false } listProps={{ mb: 3 }}/>
       </>
@@ -82,7 +83,7 @@ const Transactions = () => {
     <>
       <HStack mb={ 3 }>
         <Heading level="3" >Latest transactions</Heading>
-        { isRpcData && <FallbackRpcIcon/> }
+        { isRpcData && <ApiDegradationRpcIcon/> }
       </HStack>
       <LatestTxs/>
     </>

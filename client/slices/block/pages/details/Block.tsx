@@ -5,10 +5,12 @@ import { capitalize } from 'es-toolkit';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { PaginationParams } from 'client/shared/pagination/types';
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
-import type { PaginationParams } from 'ui/shared/pagination/types';
 
 import { routeParams } from 'nextjs/routes';
+
+import PageTitle from 'client/shell/page/title/PageTitle';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import BlockPendingUpdateAlert from 'client/slices/block/components/BlockPendingUpdateAlert';
@@ -18,6 +20,7 @@ import useBlockQuery from 'client/slices/block/hooks/useBlockQuery';
 import useBlockTxsQuery from 'client/slices/block/hooks/useBlockTxsQuery';
 import BlockDetails from 'client/slices/block/pages/details/BlockDetails';
 import BlockInternalTxs from 'client/slices/block/pages/details/BlockInternalTxs';
+import getChainValidatorTitle from 'client/slices/chain/verification-type/utils/get-chain-validator-title';
 import TxsWithFrontendSorting from 'client/slices/tx/pages/index/list/TxsWithFrontendSorting';
 
 import TextAd from 'client/features/ads/text/components/TextAd';
@@ -30,18 +33,16 @@ import BlockCeloEpochTag from 'client/features/chain-variants/celo/pages/block/B
 import useBlockBlobTxsQuery from 'client/features/data-availability/hooks/useBlockBlobTxsQuery';
 import { useMultichainContext } from 'client/features/multichain/context';
 
-import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-title';
+import ApiDegradationAlert from 'client/shared/api-degradation/ApiDegradationAlert';
 import throwOnAbsentParamError from 'client/shared/errors/throw-on-absent-param-error';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import Pagination from 'client/shared/pagination/Pagination';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import ServiceDegradationWarning from 'ui/shared/alerts/ServiceDegradationWarning';
-import PageTitle from 'ui/shared/Page/PageTitle';
-import Pagination from 'ui/shared/pagination/Pagination';
 
 const TAB_LIST_PROPS = {
   marginBottom: 0,
@@ -82,7 +83,7 @@ const BlockPageContent = () => {
       component: (
         <>
           <Flex rowGap={{ base: 1, lg: 2 }} mb={{ base: 3, lg: 6 }} flexDir="column">
-            { blockQuery.isDegradedData && <ServiceDegradationWarning isLoading={ blockQuery.isPlaceholderData }/> }
+            { blockQuery.isDegradedData && <ApiDegradationAlert isLoading={ blockQuery.isPlaceholderData }/> }
             { blockQuery.data?.is_pending_update && <BlockPendingUpdateAlert/> }
           </Flex>
           <BlockDetails query={ blockQuery }/>
@@ -94,7 +95,7 @@ const BlockPageContent = () => {
       title: 'Transactions',
       component: (
         <>
-          { blockTxsQuery.isDegradedData && <ServiceDegradationWarning isLoading={ blockTxsQuery.isPlaceholderData } mb={{ base: 3, lg: 6 }}/> }
+          { blockTxsQuery.isDegradedData && <ApiDegradationAlert isLoading={ blockTxsQuery.isPlaceholderData } mb={{ base: 3, lg: 6 }}/> }
           <TxsWithFrontendSorting query={ blockTxsQuery } showBlockInfo={ false } top={ hasPagination ? TABS_HEIGHT : 0 }/>
         </>
       ),
@@ -104,7 +105,7 @@ const BlockPageContent = () => {
       title: 'Internal txns',
       component: (
         <>
-          { blockTxsQuery.isDegradedData && <ServiceDegradationWarning isLoading={ blockTxsQuery.isPlaceholderData } mb={{ base: 3, lg: 6 }}/> }
+          { blockTxsQuery.isDegradedData && <ApiDegradationAlert isLoading={ blockTxsQuery.isPlaceholderData } mb={{ base: 3, lg: 6 }}/> }
           <BlockInternalTxs query={ blockInternalTxsQuery } top={ hasPagination ? TABS_HEIGHT : 0 }/>
         </>
       ),
@@ -123,7 +124,7 @@ const BlockPageContent = () => {
         title: 'Deposits',
         component: (
           <>
-            { blockDepositsQuery.isDegradedData && <ServiceDegradationWarning isLoading={ blockDepositsQuery.isPlaceholderData } mb={{ base: 3, lg: 6 }}/> }
+            { blockDepositsQuery.isDegradedData && <ApiDegradationAlert isLoading={ blockDepositsQuery.isPlaceholderData } mb={{ base: 3, lg: 6 }}/> }
             <BlockDeposits blockDepositsQuery={ blockDepositsQuery }/>
           </>
         ),
@@ -135,7 +136,7 @@ const BlockPageContent = () => {
         component: (
           <>
             { blockWithdrawalsQuery.isDegradedData &&
-              <ServiceDegradationWarning isLoading={ blockWithdrawalsQuery.isPlaceholderData } mb={{ base: 3, lg: 6 }}/> }
+              <ApiDegradationAlert isLoading={ blockWithdrawalsQuery.isPlaceholderData } mb={{ base: 3, lg: 6 }}/> }
             <BlockWithdrawals blockWithdrawalsQuery={ blockWithdrawalsQuery }/>
           </>
         ),

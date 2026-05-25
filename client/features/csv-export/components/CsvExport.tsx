@@ -26,6 +26,7 @@ import useIsInitialLoading from 'client/shared/hooks/useIsInitialLoading';
 import ReCaptcha from 'client/shared/re-captcha/ReCaptcha';
 import useReCaptcha from 'client/shared/re-captcha/useReCaptcha';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import config from 'configs/app';
 import { IconButton } from 'toolkit/chakra/icon-button';
@@ -33,7 +34,6 @@ import { toaster } from 'toolkit/chakra/toaster';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import { downloadBlob } from 'toolkit/utils/file';
-import IconSvg from 'ui/shared/IconSvg';
 
 import { useCsvExportContext } from '../utils/context';
 import getFileName from '../utils/get-file-name';
@@ -260,7 +260,7 @@ const CsvExport = <R extends ResourceName>({
           onClick={ handleButtonClick }
           disabled={ recaptcha.isInitError }
         >
-          <IconSvg name="files/csv"/>
+          <SpriteIcon name="files/csv"/>
         </IconButton>
       </Tooltip>
       <CsvExportDialog

@@ -12,6 +12,7 @@ import useApiFetch from 'client/api/hooks/useApiFetch';
 import useApiQuery from 'client/api/hooks/useApiQuery';
 import type { ResourceError } from 'client/api/resources';
 
+import ApiFetchAlert from 'client/shared/alerts/ApiFetchAlert';
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 
 import config from 'configs/app';
@@ -24,7 +25,6 @@ import { FormFieldUrl } from 'toolkit/components/forms/fields/FormFieldUrl';
 import { noWhitespaceValidator } from 'toolkit/components/forms/validators/text';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 import { useUpdateEffect } from 'toolkit/hooks/useUpdateEffect';
-import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
 import TokenInfoFieldIconUrl from './fields/TokenInfoFieldIconUrl';
 import TokenInfoFieldProjectSector from './fields/TokenInfoFieldProjectSector';
@@ -111,7 +111,7 @@ const TokenInfoForm = ({ address, tokenName, application, onSubmit }: Props) => 
   }, []);
 
   if (configQuery.isError) {
-    return <DataFetchAlert/>;
+    return <ApiFetchAlert/>;
   }
 
   if (configQuery.isPending) {

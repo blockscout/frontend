@@ -5,10 +5,10 @@ import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import ApiFetchAlert from 'client/shared/alerts/ApiFetchAlert';
 import StatsWidget from 'client/shared/stats/StatsWidget';
 
 import config from 'configs/app';
-import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
 import { CHAIN_STATS_COUNTER } from '../../stubs/counters';
 
@@ -29,7 +29,7 @@ const ChainStatsCounters = () => {
   });
 
   if (isError && !isRefetchError) {
-    return <DataFetchAlert/>;
+    return <ApiFetchAlert/>;
   }
 
   return (

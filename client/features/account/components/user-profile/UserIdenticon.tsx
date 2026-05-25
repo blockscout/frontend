@@ -5,7 +5,7 @@ import React from 'react';
 
 import AddressIdenticon from 'client/slices/address/components/icon/AddressIdenticon';
 
-import IconSvg from 'ui/shared/IconSvg';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 type Props = {
   address: string;
@@ -27,7 +27,7 @@ const UserIdenticon = ({ address, isAutoConnectDisabled }: Props) => {
           border="1px solid"
           borderColor={{ _light: 'orange.100', _dark: 'orange.900' }}
         >
-          <IconSvg
+          <SpriteIcon
             name="integration/partial"
             color="white"
             boxSize={ 2 }

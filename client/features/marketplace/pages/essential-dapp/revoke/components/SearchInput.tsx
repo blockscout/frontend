@@ -4,10 +4,11 @@ import { chakra, Spinner } from '@chakra-ui/react';
 import type { ChangeEvent, FormEvent } from 'react';
 import { useCallback, useRef, useState } from 'react';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { Input } from 'toolkit/chakra/input';
 import { InputGroup } from 'toolkit/chakra/input-group';
 import { ClearButton } from 'toolkit/components/buttons/ClearButton';
-import IconSvg from 'ui/shared/IconSvg';
 
 type Props = {
   value: string;
@@ -37,7 +38,7 @@ export default function SearchInput({ value, onChange, onSubmit }: Props) {
     inputRef?.current?.focus();
   }, [ onChange ]);
 
-  const startElement = isLoading ? <Spinner size="sm"/> : <IconSvg boxSize={ 5 } name="search"/>;
+  const startElement = isLoading ? <Spinner size="sm"/> : <SpriteIcon boxSize={ 5 } name="search"/>;
   const endElement = <ClearButton onClick={ handleFilterQueryClear } visible={ value.length > 0 }/>;
 
   return (

@@ -3,10 +3,11 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import config from 'configs/app';
 import { Image } from 'toolkit/chakra/image';
 import type { ImageProps } from 'toolkit/chakra/image';
-import IconSvg from 'ui/shared/IconSvg';
 
 interface ClusterIconProps extends Omit<ImageProps, 'src' | 'alt'> {
   clusterName: string;
@@ -35,7 +36,7 @@ const ClusterIcon = ({
       mr={ mr }
       flexShrink={ flexShrink }
     >
-      <IconSvg
+      <SpriteIcon
         name="clusters"
         boxSize={ 3 }
         color="white"

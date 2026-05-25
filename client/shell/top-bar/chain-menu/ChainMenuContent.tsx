@@ -3,7 +3,7 @@
 import { VStack, Flex, Box, Text } from '@chakra-ui/react';
 import React from 'react';
 
-import type { FeaturedNetwork, NetworkGroup } from 'types/networks';
+import type { FeaturedNetwork, NetworkGroup } from './types';
 
 import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';

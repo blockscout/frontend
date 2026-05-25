@@ -5,8 +5,9 @@ import React from 'react';
 
 import type { TxAuthorization } from 'client/features/tx-authorization/types/api';
 
+import StatusTag from 'client/shared/tags/status-tag/StatusTag';
+
 import type { BadgeProps } from 'toolkit/chakra/badge';
-import StatusTag from 'ui/shared/statusTag/StatusTag';
 
 export interface Props extends BadgeProps {
   status: TxAuthorization['status'];

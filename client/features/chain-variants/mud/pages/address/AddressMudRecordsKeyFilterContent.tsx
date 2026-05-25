@@ -2,8 +2,9 @@
 
 import React from 'react';
 
+import TableColumnFilter from 'client/shared/filters/TableColumnFilter';
+
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
-import TableColumnFilter from 'ui/shared/filters/TableColumnFilter';
 
 type Props = {
   value?: string;

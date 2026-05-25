@@ -8,13 +8,13 @@ import AddressEntity from 'client/slices/address/components/entity/AddressEntity
 import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 
 import dayjs from 'client/shared/date-and-time/dayjs';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import IconSvg from 'ui/shared/IconSvg';
 
 import VerifiedAddressesStatus from './VerifiedAddressesStatus';
 
@@ -96,7 +96,7 @@ const VerifiedAddressesTableItem = ({ item, application, onAdd, onEdit, isLoadin
               borderRadius="none"
               onClick={ handleEditClick }
             >
-              <IconSvg name="edit"/>
+              <SpriteIcon name="edit"/>
             </IconButton>
           </Tooltip>
         ) : null }

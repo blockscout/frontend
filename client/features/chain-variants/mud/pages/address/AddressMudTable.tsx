@@ -6,17 +6,18 @@ import React from 'react';
 
 import type { AddressMudRecordsFilter, AddressMudRecordsSorting } from 'client/features/chain-variants/mud/types/api';
 
+import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'client/shell/page/action-bar/ActionBar';
+
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import DataList from 'client/shared/lists/DataList';
+import Pagination from 'client/shared/pagination/Pagination';
+import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
+import { getNextOrderValue } from 'client/shared/sort/get-next-sort-value';
+import getSortParamsFromQuery from 'client/shared/sort/get-sort-params-from-query';
 
 import { Tag } from 'toolkit/chakra/tag';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
-import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
-import Pagination from 'ui/shared/pagination/Pagination';
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
-import { getNextOrderValue } from 'ui/shared/sort/getNextSortValue';
-import getSortParamsFromQuery from 'ui/shared/sort/getSortParamsFromQuery';
 
 import AddressMudBreadcrumbs from './AddressMudBreadcrumbs';
 import AddressMudRecordsTable from './AddressMudRecordsTable';
@@ -147,7 +148,7 @@ const AddressMudTable = ({ tableId, isQueryEnabled = true }: Props) => {
       { isMobile && (
         <Box mb={ 6 }>{ breadcrumbs }</Box>
       ) }
-      <DataListDisplay
+      <DataList
         isError={ isError }
         itemsNum={ data?.items.length }
         emptyText={ emptyText }
@@ -160,7 +161,7 @@ const AddressMudTable = ({ tableId, isQueryEnabled = true }: Props) => {
         mt={ data?.items.length ? 0 : 2 }
       >
         { content }
-      </DataListDisplay>
+      </DataList>
     </>
   );
 };

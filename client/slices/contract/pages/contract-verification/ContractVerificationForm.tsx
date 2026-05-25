@@ -21,7 +21,7 @@ import useRewardsActivity from 'client/features/rewards/hooks/useRewardsActivity
 
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 import getErrorObjStatusCode from 'client/shared/errors/get-error-obj-status-code';
-import capitalizeFirstLetter from 'client/shared/text/capitalize-first-letter';
+import capitalizeFirstLetter from 'client/shared/texts/capitalize-first-letter';
 import delay from 'client/shared/utils/delay';
 
 import { Button } from 'toolkit/chakra/button';

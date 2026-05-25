@@ -8,8 +8,9 @@ import type { AdvancedFilterParams, AdvancedFilterType } from '../../types/api';
 
 import { useMultichainContext } from 'client/features/multichain/context';
 
+import TableColumnFilter from 'client/shared/filters/TableColumnFilter';
+
 import { Checkbox, CheckboxGroup } from 'toolkit/chakra/checkbox';
-import TableColumnFilter from 'ui/shared/filters/TableColumnFilter';
 
 import { getAdvancedFilterTypes } from '../../utils/lib';
 

@@ -3,17 +3,18 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
+import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'client/shell/page/action-bar/ActionBar';
+
 import TxPendingAlert from 'client/slices/tx/components/TxPendingAlert';
 import TxSocketAlert from 'client/slices/tx/components/TxSocketAlert';
 import type { TxQuery } from 'client/slices/tx/hooks/useTxQuery';
 
 import { TX_BLOB } from 'client/features/data-availability/stubs';
 
-import { generateListStub } from 'stubs/utils';
-import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
-import Pagination from 'ui/shared/pagination/Pagination';
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
+import DataList from 'client/shared/lists/DataList';
+import Pagination from 'client/shared/pagination/Pagination';
+import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
+import { generateListStub } from 'client/shared/pagination/utils';
 
 import TxBlobsList from './TxBlobsList';
 import TxBlobsTable from './TxBlobsTable';
@@ -54,14 +55,14 @@ const TxBlobs = ({ txQuery }: Props) => {
   ) : null;
 
   return (
-    <DataListDisplay
+    <DataList
       isError={ isError || txQuery.isError }
       itemsNum={ data?.items.length }
       emptyText="There are no blobs for this transaction."
       actionBar={ actionBar }
     >
       { content }
-    </DataListDisplay>
+    </DataList>
   );
 };
 

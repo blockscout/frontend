@@ -6,12 +6,13 @@ import type { CeloEpochDetails, CeloEpochElectionReward } from 'client/features/
 
 import EpochRewardTypeTag from 'client/features/chain-variants/celo/components/EpochRewardTypeTag';
 
+import TokenValue from 'client/shared/values/entity/TokenValue';
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
-import IconSvg from 'ui/shared/IconSvg';
-import TokenValue from 'ui/shared/value/TokenValue';
 
 import EpochElectionRewardDetailsDesktop from './EpochElectionRewardDetailsDesktop';
 import { getRewardNumText } from './utils';
@@ -40,7 +41,7 @@ const EpochElectionRewardsTableItem = ({ isLoading, data, type }: Props) => {
                 aria-label={ section.open ? 'Collapse section' : 'Expand section' }
                 variant="link"
               >
-                <IconSvg
+                <SpriteIcon
                   name="arrows/east-mini"
                   boxSize={ 6 }
                   transform={ section.open ? 'rotate(270deg)' : 'rotate(180deg)' }

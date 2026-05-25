@@ -12,11 +12,12 @@ import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 import NativeTokenTag from 'client/slices/token/components/NativeTokenTag';
 import type { TokenEnhancedData } from 'client/slices/token/pages/address/utils';
 
+import calculateUsdValue from 'client/shared/values/entity/calculateUsdValue';
+
 import config from 'configs/app';
 import multichainConfig from 'configs/multichain';
 import { Link } from 'toolkit/chakra/link';
 import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
-import calculateUsdValue from 'ui/shared/value/calculateUsdValue';
 
 interface Props {
   data: TokenEnhancedData;

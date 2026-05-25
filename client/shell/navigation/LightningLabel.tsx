@@ -3,7 +3,7 @@
 import { useBreakpointValue, chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import IconSvg from 'ui/shared/IconSvg';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 export const LIGHTNING_LABEL_CLASS_NAME = 'lightning-label';
 
@@ -26,7 +26,7 @@ const LightningLabel = ({ className, iconColor, isCollapsed }: Props) => {
   }, [ iconColor, isCollapsed, isExpanded, isLgScreen ]);
 
   return (
-    <IconSvg
+    <SpriteIcon
       className={ LIGHTNING_LABEL_CLASS_NAME + (className ? ` ${ className }` : '') }
       name="lightning_navbar"
       boxSize={ 4 }

@@ -5,8 +5,9 @@ import React from 'react';
 
 import type { NavLink } from '../types';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { Link } from 'toolkit/chakra/link';
-import IconSvg from 'ui/shared/IconSvg';
 
 const UserProfileContentNavLink = ({ href, icon, text, onClick }: NavLink) => {
   return (
@@ -19,7 +20,7 @@ const UserProfileContentNavLink = ({ href, icon, text, onClick }: NavLink) => {
       onClick={ onClick }
       variant="menu"
     >
-      <IconSvg name={ icon } boxSize={ 5 } flexShrink={ 0 }/>
+      <SpriteIcon name={ icon } boxSize={ 5 } flexShrink={ 0 }/>
       <Box textStyle="sm" fontWeight="500">{ text }</Box>
     </Link>
   );

@@ -4,12 +4,12 @@ import { Spinner, Box } from '@chakra-ui/react';
 import React from 'react';
 
 import usePreventFocusAfterModalClosing from 'client/shared/hooks/usePreventFocusAfterModalClosing';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import type { ButtonProps } from 'toolkit/chakra/button';
 import { Button } from 'toolkit/chakra/button';
 import { PopoverTrigger } from 'toolkit/chakra/popover';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import IconSvg from 'ui/shared/IconSvg';
 
 import useScoreLevelAndColor from '../hooks/useScoreLevelAndColor';
 
@@ -47,7 +47,7 @@ const SolidityscanReportButton = ({ score, isLoading, tooltipDisabled, ...rest }
             onFocusCapture={ onFocusCapture }
             { ...rest }
           >
-            <IconSvg name={ score < 80 ? 'score/score-not-ok' : 'score/score-ok' } boxSize={ 5 }/>
+            <SpriteIcon name={ score < 80 ? 'score/score-not-ok' : 'score/score-ok' } boxSize={ 5 }/>
             { isLoading && <Spinner size="sm"/> }
             { !isLoading && score }
           </Button>

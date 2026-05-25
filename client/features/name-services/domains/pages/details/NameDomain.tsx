@@ -10,6 +10,8 @@ import { route } from 'nextjs-routes';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 
 import TextAd from 'client/features/ads/text/components/TextAd';
@@ -20,13 +22,12 @@ import { ENS_DOMAIN } from 'client/features/name-services/domains/stubs';
 
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import IconSvg from 'ui/shared/IconSvg';
-import PageTitle from 'ui/shared/Page/PageTitle';
 
 const feature = config.features.nameServices;
 const availableProtocols = feature.isEnabled && feature.ens.isEnabled ? feature.ens.protocols : [];
@@ -87,7 +88,7 @@ const NameDomain = () => {
                 query: { tab: 'domains', owned_by: 'true', resolved_to: 'true', address: infoQuery.data?.resolved_address?.hash },
               }) }
             >
-              <IconSvg name="search" boxSize={ 5 } isLoading={ isLoading }/>
+              <SpriteIcon name="search" boxSize={ 5 } isLoading={ isLoading }/>
             </Link>
           </Tooltip>
         </Flex>

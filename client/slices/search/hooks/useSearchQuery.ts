@@ -12,11 +12,11 @@ import { getExternalSearchItem } from 'client/features/chain-variants/zeta-chain
 
 import useDebounce from 'client/shared/hooks/useDebounce';
 import useUpdateValueEffect from 'client/shared/hooks/useUpdateValueEffect';
+import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
+import { generateListStub } from 'client/shared/pagination/utils';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import config from 'configs/app';
-import { generateListStub } from 'stubs/utils';
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
 export default function useSearchQuery(withRedirectCheck?: boolean) {
   const router = useRouter();

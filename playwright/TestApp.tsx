@@ -1,6 +1,5 @@
 import { GrowthBookProvider } from '@growthbook/growthbook-react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { SettingsContextProvider } from 'client/shell/top-bar/settings/context';
 import React from 'react';
 import { http } from 'viem';
 import { WagmiProvider, createConfig, mock } from 'wagmi';
@@ -10,13 +9,15 @@ import type { Props as PageProps } from 'nextjs/getServerSideProps/handlers';
 
 import { SocketProvider } from 'client/api/socket/context';
 
+import { AppContextProvider } from 'client/shell/app/context';
+import { SettingsContextProvider } from 'client/shell/top-bar/settings/context';
+
 import { currentChain } from 'client/features/connect-wallet/utils/chains';
 import { CsvExportContextProvider } from 'client/features/csv-export/utils/context';
 import { MarketplaceContext } from 'client/features/marketplace/context';
 import { RewardsContextProvider } from 'client/features/rewards/context';
 
 import config from 'configs/app';
-import { AppContextProvider } from 'lib/contexts/app';
 import { Provider as ChakraProvider } from 'toolkit/chakra/provider';
 
 import { port as socketPort } from './utils/socket';

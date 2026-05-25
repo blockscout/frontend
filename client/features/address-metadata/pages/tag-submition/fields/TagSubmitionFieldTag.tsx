@@ -15,8 +15,8 @@ import { FormFieldColor } from 'toolkit/components/forms/fields/FormFieldColor';
 import { FormFieldText } from 'toolkit/components/forms/fields/FormFieldText';
 import { FormFieldUrl } from 'toolkit/components/forms/fields/FormFieldUrl';
 import { colorValidator } from 'toolkit/components/forms/validators/color';
-import EntityTag from 'ui/shared/EntityTags/EntityTag';
 
+import MetadataTag from '../../../components/tag/MetadataTag';
 import TagSubmitionFieldTagIcon from './TagSubmitionFieldTagIcon';
 import TagSubmitionFieldTagType from './TagSubmitionFieldTagType';
 
@@ -121,7 +121,7 @@ const TagSubmitionFieldTag = ({ index, isDisabled, errors, onAddClick, onRemoveC
         </Flex>
         { !isMobile && (
           <Flex flexDir="column" alignItems="flex-start" mt={ 4 } rowGap={ 2 }>
-            <EntityTag
+            <MetadataTag
               data={{
                 name: field.name || 'Tag name',
                 tagType: field.type[0],

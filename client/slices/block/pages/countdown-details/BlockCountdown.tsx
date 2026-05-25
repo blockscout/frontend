@@ -12,9 +12,12 @@ import CapybaraRunner from 'client/features/easter-eggs/components/runner/Capyba
 import { useMultichainContext } from 'client/features/multichain/context';
 
 import dayjs from 'client/shared/date-and-time/dayjs';
+import Time from 'client/shared/date-and-time/Time';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
+import ChainIcon from 'client/shared/external-chains/ChainIcon';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import StatsWidget from 'client/shared/stats/StatsWidget';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { Button } from 'toolkit/chakra/button';
 import { Heading } from 'toolkit/chakra/heading';
@@ -23,9 +26,6 @@ import { Link } from 'toolkit/chakra/link';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
 import { downloadBlob } from 'toolkit/utils/file';
-import ChainIcon from 'ui/shared/externalChains/ChainIcon';
-import IconSvg from 'ui/shared/IconSvg';
-import Time from 'ui/shared/time/Time';
 
 import BlockCountdownTimer from './BlockCountdownTimer';
 import createGoogleCalendarLink from './create-google-calendar-link';
@@ -117,7 +117,7 @@ const BlockCountdown = ({ hideCapybaraRunner }: Props) => {
             </Flex>
           </Box>
           <Box position="relative">
-            <IconSvg
+            <SpriteIcon
               name="block"
               w={{ base: '65px', lg: '125px' }}
               h={{ base: '75px', lg: '140px' }}

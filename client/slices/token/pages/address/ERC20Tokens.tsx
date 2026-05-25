@@ -3,15 +3,16 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
+import type { PaginationParams } from 'client/shared/pagination/types';
 import type { AddressTokenBalance } from 'client/slices/address/types/api';
-import type { PaginationParams } from 'ui/shared/pagination/types';
+
+import ActionBar from 'client/shell/page/action-bar/ActionBar';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import DataList from 'client/shared/lists/DataList';
+import Pagination from 'client/shared/pagination/Pagination';
 
 import config from 'configs/app';
-import ActionBar from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
-import Pagination from 'ui/shared/pagination/Pagination';
 
 import ERC20TokensListItem from './ERC20TokensListItem';
 import ERC20TokensTable from './ERC20TokensTable';
@@ -57,14 +58,14 @@ const ERC20Tokens = ({ items, isLoading, pagination, isError, top }: Props) => {
   ) : null;
 
   return (
-    <DataListDisplay
+    <DataList
       isError={ isError }
       itemsNum={ items?.length }
       emptyText="There are no tokens of selected type."
       actionBar={ actionBar }
     >
       { content }
-    </DataListDisplay>
+    </DataList>
   );
 
 };

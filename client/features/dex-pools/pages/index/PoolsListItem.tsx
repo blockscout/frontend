@@ -9,12 +9,13 @@ import AddressEntity from 'client/slices/address/components/entity/AddressEntity
 import PoolEntity from 'client/features/dex-pools/components/entity/PoolEntity';
 import getPoolLinks from 'client/features/dex-pools/utils/get-pool-links';
 
+import ListItemMobileGrid from 'client/shared/lists/ListItemMobileGrid';
+import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
+import HashStringShorten from 'client/shared/texts/HashStringShorten';
+
 import { Image } from 'toolkit/chakra/image';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
-import HashStringShorten from 'ui/shared/HashStringShorten';
-import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 
 type Props = {
   item: Pool;

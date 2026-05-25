@@ -7,6 +7,9 @@ import React from 'react';
 import type { TokenType } from 'client/slices/token/types/api';
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
+import ActionBar from 'client/shell/page/action-bar/ActionBar';
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import TokenTypeFilter from 'client/slices/token/components/TokenTypeFilter';
 import useTokensQuery from 'client/slices/token/hooks/useTokensQuery';
 import TokensList from 'client/slices/token/pages/index/TokensList';
@@ -18,18 +21,16 @@ import useBridgedTokensQueryCrossChain from 'client/features/cross-chain-txs/hoo
 import BridgedTokensIndex from 'client/features/cross-chain-txs/pages/bridged-tokens/BridgedTokensIndex';
 import { BRIDGED_TOKENS_SORT_COLLECTION } from 'client/features/cross-chain-txs/utils/bridged-tokens-sort';
 
+import PopoverFilter from 'client/shared/filters/PopoverFilter';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import Pagination from 'client/shared/pagination/Pagination';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
+import Sort from 'client/shared/sort/Sort';
 
 import config from 'configs/app';
 import type { SlotProps } from 'toolkit/components/AdaptiveTabs/AdaptiveTabsList';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import ActionBar from 'ui/shared/ActionBar';
-import PopoverFilter from 'ui/shared/filters/PopoverFilter';
-import PageTitle from 'ui/shared/Page/PageTitle';
-import Pagination from 'ui/shared/pagination/Pagination';
-import Sort from 'ui/shared/sort/Sort';
 
 const TAB_LIST_PROPS = {
   marginBottom: 0,

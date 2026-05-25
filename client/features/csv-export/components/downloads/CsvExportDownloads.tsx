@@ -3,10 +3,11 @@
 import { Flex, Separator, VStack } from '@chakra-ui/react';
 import React from 'react';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
 import { Status } from 'toolkit/chakra/status';
-import IconSvg from 'ui/shared/IconSvg';
 
 import { useCsvExportContext } from '../../utils/context';
 import CsvExportDownloadsItem from './CsvExportDownloadsItem';
@@ -29,7 +30,7 @@ const CsvExportDownloads = () => {
               size="2xs"
               borderRadius="none"
             >
-              <IconSvg name="download"/>
+              <SpriteIcon name="download"/>
             </IconButton>
             { items.some((item) => item.is_highlighted) && (
               <Status

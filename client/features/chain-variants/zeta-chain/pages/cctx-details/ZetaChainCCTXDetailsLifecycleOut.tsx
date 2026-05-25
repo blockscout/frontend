@@ -14,10 +14,11 @@ import TxEntityZetaChainExternal from 'client/features/chain-variants/zeta-chain
 import ZetaChainCCTXValue from 'client/features/chain-variants/zeta-chain/components/ZetaChainCCTXValue';
 import useZetaChainConfig from 'client/features/chain-variants/zeta-chain/hooks/useZetaChainConfig';
 
+import StatusTag from 'client/shared/tags/status-tag/StatusTag';
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import IconSvg from 'ui/shared/IconSvg';
-import StatusTag from 'ui/shared/statusTag/StatusTag';
 
 type Props = {
   outboundParam: OutboundParams;
@@ -225,7 +226,7 @@ const ZetaChainCCTXDetailsLifecycleOut = ({ outboundParam, tx, isLoading, isLast
         bg={ (isLast && !hasTxAfter) ? 'bg.primary' : 'transparent' }
         zIndex={ 1 }
       >
-        <IconSvg name="verification-steps/finalized" boxSize={ 5 } bg="bg.primary" zIndex={ 1 } color={ color }/>
+        <SpriteIcon name="verification-steps/finalized" boxSize={ 5 } bg="bg.primary" zIndex={ 1 } color={ color }/>
       </Flex>
       <Skeleton loading={ isLoading } w="100%" overflow="hidden">
         <Flex color={ color } maxH="20px" alignItems="center" mb={ 2.5 }>

@@ -4,8 +4,9 @@ import React from 'react';
 
 import type { InteropMessage } from 'client/features/op-interop/types/api';
 
+import TimeFormatToggle from 'client/shared/date-and-time/TimeFormatToggle';
+
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
-import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
 import InteropMessagesTableItem from './InteropMessagesTableItem';
 

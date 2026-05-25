@@ -5,9 +5,10 @@ import React from 'react';
 
 import type { Transaction } from 'client/slices/tx/types/api';
 
+import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
+import DetailedInfoNativeCoinValue from 'client/shared/detailed-info/DetailedInfoNativeCoinValue';
+
 import config from 'configs/app';
-import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import DetailedInfoNativeCoinValue from 'ui/shared/DetailedInfo/DetailedInfoNativeCoinValue';
 
 import TxDetailsGasUsage from './TxDetailsGasUsage';
 

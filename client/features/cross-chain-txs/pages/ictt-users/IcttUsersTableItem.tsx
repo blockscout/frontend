@@ -4,9 +4,10 @@ import React from 'react';
 
 import type { StatsChainRow } from '@blockscout/interchain-indexer-types';
 
+import ChainSnippetList from 'client/shared/external-chains/ChainSnippetList';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
-import ChainSnippetList from 'ui/shared/externalChains/ChainSnippetList';
 
 interface Props {
   data: StatsChainRow;

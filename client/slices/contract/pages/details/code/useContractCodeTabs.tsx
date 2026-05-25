@@ -6,7 +6,7 @@ import React from 'react';
 import type { Address } from 'client/slices/address/types/api';
 import type { SmartContract } from 'client/slices/contract/types/api';
 
-import CodeViewSnippet from 'ui/shared/CodeViewSnippet';
+import CodeEditorSnippet from 'client/shared/code-editor/CodeEditorSnippet';
 
 import type { CONTRACT_DETAILS_TAB_IDS } from '../../../utils/tabs';
 import ContractDetailsByteCode from './ContractDetailsByteCode';
@@ -56,7 +56,7 @@ export default function useContractCodeTabs({ data, isLoading, addressData, sour
         id: 'contract_compiler' as const,
         title: 'Compiler',
         component: (
-          <CodeViewSnippet
+          <CodeEditorSnippet
             data={ JSON.stringify(data.compiler_settings, undefined, 2) }
             language="json"
             title="Compiler Settings"
@@ -70,7 +70,7 @@ export default function useContractCodeTabs({ data, isLoading, addressData, sour
         id: 'contract_abi' as const,
         title: 'ABI',
         component: (
-          <CodeViewSnippet
+          <CodeEditorSnippet
             data={ JSON.stringify(data.abi, undefined, 2) }
             language="json"
             title="Contract ABI"

@@ -8,6 +8,8 @@ import AddressEntity from 'client/slices/address/components/entity/AddressEntity
 import type { AddressCountersQuery } from 'client/slices/address/hooks/useAddressCountersQuery';
 import type { AddressQuery } from 'client/slices/address/hooks/useAddressQuery';
 import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
+import getChainValidationActionText from 'client/slices/chain/verification-type/utils/get-chain-validation-action-text';
+import getChainValidatorTitle from 'client/slices/chain/verification-type/utils/get-chain-validator-title';
 import ContractCreationStatus from 'client/slices/contract/components/ContractCreationStatus';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 
@@ -16,18 +18,16 @@ import useAddress3rdPartyWidgets from 'client/features/address-3rd-party-widgets
 import AddressCeloAccount from 'client/features/chain-variants/celo/pages/address/AddressCeloAccount';
 import FilecoinActorTag from 'client/features/chain-variants/filecoin/pages/address/FilecoinActorTag';
 
-import getChainValidationActionText from 'client/shared/chain/get-chain-validation-action-text';
-import getChainValidatorTitle from 'client/shared/chain/get-chain-validator-title';
+import ApiFetchAlert from 'client/shared/alerts/ApiFetchAlert';
+import ApiDegradationAlert from 'client/shared/api-degradation/ApiDegradationAlert';
+import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
+import DetailedInfoSponsoredItem from 'client/shared/detailed-info/DetailedInfoSponsoredItem';
+import isCustomAppError from 'client/shared/errors/is-custom-app-error';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
+import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
 
 import config from 'configs/app';
-import ServiceDegradationWarning from 'ui/shared/alerts/ServiceDegradationWarning';
-import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
-import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import DetailedInfoSponsoredItem from 'ui/shared/DetailedInfo/DetailedInfoSponsoredItem';
 
 import AddressAlternativeFormat from './AddressAlternativeFormat';
 import AddressBalance from './AddressBalance';
@@ -80,7 +80,7 @@ const AddressDetails = ({ addressQuery, countersQuery, isLoading }: Props) => {
         throwOnResourceLoadError(addressQuery);
       }
     } else {
-      return <DataFetchAlert/>;
+      return <ApiFetchAlert/>;
     }
   }
 
@@ -94,7 +94,7 @@ const AddressDetails = ({ addressQuery, countersQuery, isLoading }: Props) => {
 
   return (
     <>
-      { addressQuery.isDegradedData && <ServiceDegradationWarning isLoading={ isLoading } mb={ 6 }/> }
+      { addressQuery.isDegradedData && <ApiDegradationAlert isLoading={ isLoading } mb={ 6 }/> }
       <DetailedInfo.Container>
 
         { data.celo?.account && (

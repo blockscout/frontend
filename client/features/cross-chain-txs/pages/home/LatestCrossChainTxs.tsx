@@ -11,8 +11,8 @@ import TransactionsCrossChainListItem from 'client/features/cross-chain-txs/comp
 import { INTERCHAIN_MESSAGE } from 'client/features/cross-chain-txs/stubs/messages';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import { generateListStub } from 'client/shared/pagination/utils';
 
-import { generateListStub } from 'stubs/utils';
 import { Link } from 'toolkit/chakra/link';
 import { TableBody, TableRoot } from 'toolkit/chakra/table';
 

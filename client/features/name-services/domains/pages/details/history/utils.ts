@@ -2,7 +2,7 @@
 
 import type * as bens from '@blockscout/bens-types';
 
-import getNextSortValueShared from 'ui/shared/sort/getNextSortValue';
+import getNextSortValueShared from 'client/shared/sort/get-next-sort-value';
 
 export type SortField = 'timestamp';
 export type Sort = `${ SortField }-asc` | `${ SortField }-desc` | 'default';

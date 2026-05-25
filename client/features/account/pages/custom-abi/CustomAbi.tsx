@@ -7,15 +7,17 @@ import type { CustomAbi } from 'client/features/account/types/api';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import AccountPageDescription from 'client/features/account/components/AccountPageDescription';
 import useRedirectForInvalidAuthToken from 'client/features/account/hooks/useRedirectForInvalidAuthToken';
 import { CUSTOM_ABI } from 'client/features/account/stubs';
 
+import ApiFetchAlert from 'client/shared/alerts/ApiFetchAlert';
+
 import { Button } from 'toolkit/chakra/button';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
-import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import PageTitle from 'ui/shared/Page/PageTitle';
 
 import CustomAbiModal from './CustomAbiModal/CustomAbiModal';
 import CustomAbiListItem from './CustomAbiTable/CustomAbiListItem';
@@ -64,7 +66,7 @@ const CustomAbiPage: React.FC = () => {
 
   const content = (() => {
     if (isError) {
-      return <DataFetchAlert/>;
+      return <ApiFetchAlert/>;
     }
 
     const list = (

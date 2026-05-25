@@ -6,9 +6,10 @@ import type { ValidatorsZilliqaItem } from 'client/features/chain-variants/zilli
 
 import ValidatorEntity from 'client/features/chain-variants/zilliqa/components/ValidatorEntity';
 
+import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
-import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 interface Props {
   data: ValidatorsZilliqaItem;

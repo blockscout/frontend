@@ -12,13 +12,14 @@ import AddressFromTo from 'client/slices/address/components/from-to/AddressFromT
 import NftEntity from 'client/slices/token/components/entity/NftEntity';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 
+import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
+import ListItemMobile from 'client/shared/lists/ListItemMobile';
+import AssetValue from 'client/shared/values/entity/AssetValue';
+import ConfidentialValue from 'client/shared/values/entity/ConfidentialValue';
+
 import { Badge } from 'toolkit/chakra/badge';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
-import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
-import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
-import AssetValue from 'ui/shared/value/AssetValue';
-import ConfidentialValue from 'ui/shared/value/ConfidentialValue';
 
 type Props = TokenTransfer & { tokenId?: string; isLoading?: boolean; instance?: TokenInstance; chainData?: ClusterChainConfig };
 

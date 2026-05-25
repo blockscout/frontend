@@ -6,8 +6,9 @@ import React, { useCallback } from 'react';
 import useIsAuth from 'client/features/account/hooks/useIsAuth';
 import NavLinkRewards from 'client/features/rewards/components/NavLinkRewards';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { useColorModeValue } from 'toolkit/chakra/color-mode';
-import IconSvg from 'ui/shared/IconSvg';
 
 import NavigationPromoBanner from '../promo-banner/NavigationPromoBanner';
 import useNavItems, { isGroupItem } from '../useNavItems';
@@ -114,7 +115,7 @@ const NavigationMobile = ({ onNavLinkClick, isMarketplaceAppPage }: Props) => {
         transition={ `left ${ ANIMATION_DURATION }ms ease-in-out` }
       >
         <Flex alignItems="center" px={ 2 } py={ 2.5 } w="100%" h="50px" onClick={ onGroupItemClose } mb={ 1 }>
-          <IconSvg name="arrows/east-mini" boxSize={ 6 } mr={ 2 } color={ iconColor }/>
+          <SpriteIcon name="arrows/east-mini" boxSize={ 6 } mr={ 2 } color={ iconColor }/>
           <Text color="text.secondary" fontSize="sm">{ mainNavItems[openedGroupIndex]?.text }</Text>
         </Flex>
         <Box

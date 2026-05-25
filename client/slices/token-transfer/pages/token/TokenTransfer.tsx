@@ -9,23 +9,23 @@ import type { SocketMessage } from 'client/api/socket/types';
 import type { TokenInfo, TokenInstance } from 'client/slices/token/types/api';
 
 import type { ResourceError } from 'client/api/resources';
+import * as SocketNewItemsNotice from 'client/api/socket/SocketNewItemsNotice';
 import useSocketChannel from 'client/api/socket/useSocketChannel';
 import useSocketMessage from 'client/api/socket/useSocketMessage';
+
+import ActionBar from 'client/shell/page/action-bar/ActionBar';
 
 import TokenTransferList from 'client/slices/token-transfer/pages/token/TokenTransferList';
 import TokenTransferTable from 'client/slices/token-transfer/pages/token/TokenTransferTable';
 
 import TokenAdvancedFilterLink from 'client/features/advanced-filter/pages/token/TokenAdvancedFilterLink';
 
-import useGradualIncrement from 'client/shared/hooks/useGradualIncrement';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import useIsMounted from 'client/shared/hooks/useIsMounted';
-
-import ActionBar from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
-import Pagination from 'ui/shared/pagination/Pagination';
-import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
-import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
+import DataList from 'client/shared/lists/DataList';
+import useGradualIncrement from 'client/shared/numbers/useGradualIncrement';
+import Pagination from 'client/shared/pagination/Pagination';
+import type { QueryWithPagesResult } from 'client/shared/pagination/useQueryWithPages';
 
 const TABS_HEIGHT = 88;
 
@@ -115,14 +115,14 @@ const TokenTransfer = ({ transfersQuery, tokenId, tokenQuery, tabsHeight = TABS_
   ) : null;
 
   return (
-    <DataListDisplay
+    <DataList
       isError={ isError || isTokenError }
       itemsNum={ data?.items.length }
       emptyText="There are no token transfers."
       actionBar={ actionBar }
     >
       { content }
-    </DataListDisplay>
+    </DataList>
   );
 };
 

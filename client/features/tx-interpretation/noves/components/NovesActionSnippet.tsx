@@ -6,10 +6,11 @@ import React from 'react';
 
 import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { HEX_REGEXP } from 'toolkit/utils/regexp';
-import IconSvg from 'ui/shared/IconSvg';
 
 import type { NovesFlowViewItem } from '../utils/generateFlowViewData';
 import NovesTokenTooltipContent from './NovesTokenTooltipContent';
@@ -75,7 +76,7 @@ const NovesActionSnippet: FC<Props> = ({ item, isLoaded }) => {
         interactive
       >
         <Box hideBelow="lg" display="flex" gap={ 2 } cursor="pointer" w="fit-content" maxW="100%" alignItems="center">
-          <IconSvg
+          <SpriteIcon
             name="lightning"
             height="5"
             width="5"

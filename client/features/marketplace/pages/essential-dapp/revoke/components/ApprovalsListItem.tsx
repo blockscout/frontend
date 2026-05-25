@@ -10,12 +10,12 @@ import AddressEntity from 'client/slices/address/components/entity/AddressEntity
 import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 
 import dayjs from 'client/shared/date-and-time/dayjs';
+import Time from 'client/shared/date-and-time/Time';
+import ListItemMobileGrid from 'client/shared/lists/ListItemMobileGrid';
+import NumberEntity from 'client/shared/numbers/NumberEntity';
 
 import { Button } from 'toolkit/chakra/button';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
-import NumberEntity from 'ui/shared/NumberEntity';
-import Time from 'ui/shared/time/Time';
 
 import useRevoke from '../hooks/useRevoke';
 import formatAllowance from '../lib/formatAllowance';

@@ -11,10 +11,11 @@ import * as TokenEntity from 'client/slices/token/components/entity/TokenEntity'
 
 import { getPoolTitle } from 'client/features/dex-pools/utils/get-pool-title';
 
+import * as EntityBase from 'client/shared/entities/components';
+import { distributeEntityProps } from 'client/shared/entities/utils';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TruncatedTextTooltip } from 'toolkit/components/truncation/TruncatedTextTooltip';
-import * as EntityBase from 'ui/shared/entities/base/components';
-import { distributeEntityProps } from 'ui/shared/entities/base/utils';
 
 type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'pool'>;
 

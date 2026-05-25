@@ -3,12 +3,13 @@
 import { Center } from '@chakra-ui/react';
 import React from 'react';
 
+import type { IconName } from 'client/sprite/SpriteIcon';
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { useColorModeValue } from 'toolkit/chakra/color-mode';
 import { Image } from 'toolkit/chakra/image';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import type { IconName } from 'ui/shared/IconSvg';
-import IconSvg from 'ui/shared/IconSvg';
 
 type Props = {
   icon?: IconName;
@@ -51,7 +52,7 @@ const FooterLinkItem = ({ icon, iconSize, iconUrl, text, url, isLoading }: Props
     if (icon) {
       return (
         <Center minW={ 6 }>
-          <IconSvg boxSize={ iconSize || 5 } name={ icon }/>
+          <SpriteIcon boxSize={ iconSize || 5 } name={ icon }/>
         </Center>
       );
     }

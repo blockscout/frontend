@@ -3,7 +3,9 @@
 import { Flex, VStack, Box } from '@chakra-ui/react';
 import React from 'react';
 
-import type { PaginationParams } from 'ui/shared/pagination/types';
+import type { PaginationParams } from 'client/shared/pagination/types';
+
+import ActionBar from 'client/shell/page/action-bar/ActionBar';
 
 import {
   getSearchPlaceholder,
@@ -11,11 +13,10 @@ import {
 } from 'client/features/name-services/clusters/utils/action-bar-utils';
 
 import useIsInitialLoading from 'client/shared/hooks/useIsInitialLoading';
+import Pagination from 'client/shared/pagination/Pagination';
 
 import { Button, ButtonGroupRadio } from 'toolkit/chakra/button';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
-import ActionBar from 'ui/shared/ActionBar';
-import Pagination from 'ui/shared/pagination/Pagination';
 
 type ViewMode = 'leaderboard' | 'directory';
 

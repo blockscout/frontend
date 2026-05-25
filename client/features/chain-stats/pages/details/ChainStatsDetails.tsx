@@ -6,12 +6,16 @@ import React from 'react';
 import type { StatsIntervalIds } from '../../types/client';
 import type { ChartResolution } from 'toolkit/components/charts/types';
 
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import useChartQuery from 'client/features/chain-stats/hooks/useChartQuery';
 import ChainStatsDetailsCrossChainTxs from 'client/features/cross-chain-txs/components/ChainStatsDetailsCrossChainTxs';
 import useCrossChainChartQuery from 'client/features/cross-chain-txs/hooks/useCrossChainChartQuery';
 import { CROSS_CHAIN_TXS_CHARTS } from 'client/features/cross-chain-txs/utils/chain-stats';
 
+import isCustomAppError from 'client/shared/errors/is-custom-app-error';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
+import { ALL_OPTION, isAllOption } from 'client/shared/external-chains/ChainSelect';
 import useIsInitialLoading from 'client/shared/hooks/useIsInitialLoading';
 import * as metadata from 'client/shared/metadata';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
@@ -19,9 +23,6 @@ import { useQueryParams } from 'client/shared/router/useQueryParams';
 
 import config from 'configs/app';
 import type { OnValueChangeHandler } from 'toolkit/chakra/select';
-import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
-import { ALL_OPTION, isAllOption } from 'ui/shared/externalChains/ChainSelect';
-import PageTitle from 'ui/shared/Page/PageTitle';
 
 import { getIntervalByResolution, getIntervalFromQuery } from '../../utils/interval';
 import { DEFAULT_RESOLUTION, getResolutionFromQuery } from '../../utils/resolution';

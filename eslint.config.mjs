@@ -447,9 +447,10 @@ export default tseslint.config(
             '/types/',
             [ '/^nextjs/' ],
             [ '/^client/api/' ],
+            [ '/^client/shell/' ],
             [ '/^client/slices/' ],
             [ '/^client/features/' ],
-            [ '/^client/shared/' ],
+            [ '/^client/shared/', '/^client/sprite/', '/^client/toolkit//' ],
             [
               '/^configs/',
               '/^data/',

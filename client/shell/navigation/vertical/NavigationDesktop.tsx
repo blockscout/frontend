@@ -3,6 +3,8 @@
 import { Flex, Box, VStack } from '@chakra-ui/react';
 import React from 'react';
 
+import { useAppContext } from 'client/shell/app/context';
+
 import NetworkIcon from 'client/slices/chain/logo/NetworkIcon';
 import NetworkLogo from 'client/slices/chain/logo/NetworkLogo';
 import TestnetBadge from 'client/slices/chain/TestnetBadge';
@@ -12,9 +14,7 @@ import NavLinkRewards from 'client/features/rewards/components/NavLinkRewards';
 import RollupStageBadge from 'client/features/rollup/common/components/RollupStageBadge';
 
 import * as cookies from 'client/shared/storage/cookies';
-
-import { useAppContext } from 'lib/contexts/app';
-import IconSvg from 'ui/shared/IconSvg';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import NavigationPromoBanner from '../promo-banner/NavigationPromoBanner';
 import useNavItems, { isGroupItem } from '../useNavItems';
@@ -114,7 +114,7 @@ const NavigationDesktop = () => {
         </Box>
       ) }
       <NavigationPromoBanner isCollapsed={ isCollapsed }/>
-      <IconSvg
+      <SpriteIcon
         name="arrows/east-mini"
         width={ 6 }
         height={ 6 }

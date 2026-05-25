@@ -6,8 +6,9 @@ import type { AddressEpochRewardsItem } from 'client/features/chain-variants/cel
 
 import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
 
+import TimeFormatToggle from 'client/shared/date-and-time/TimeFormatToggle';
+
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
-import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
 import AddressEpochRewardsTableItem from './AddressEpochRewardsTableItem';
 

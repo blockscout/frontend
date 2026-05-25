@@ -4,8 +4,9 @@ import React from 'react';
 
 import * as tac from '@blockscout/tac-operation-lifecycle-types';
 
+import StatusTag from 'client/shared/tags/status-tag/StatusTag';
+
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import StatusTag from 'ui/shared/statusTag/StatusTag';
 
 import { getTacOperationStatus } from '../utils/tac-operation';
 

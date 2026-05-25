@@ -4,8 +4,8 @@ import React from 'react';
 
 import type * as tac from '@blockscout/tac-operation-lifecycle-types';
 
-import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
-import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
+import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
+import ListItemMobileGrid from 'client/shared/lists/ListItemMobileGrid';
 
 import AddressEntityTacTon from '../../components/AddressEntityTacTon';
 import TacOperationEntity from '../../components/TacOperationEntity';

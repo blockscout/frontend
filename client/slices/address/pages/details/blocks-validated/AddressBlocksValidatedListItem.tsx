@@ -8,15 +8,15 @@ import type { Block } from 'client/slices/block/types/api';
 
 import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
 import getBlockTotalReward from 'client/slices/block/utils/get-block-total-reward';
+import { currencyUnits } from 'client/slices/chain/units';
 import GasUsed from 'client/slices/gas/components/GasUsed';
 
-import { currencyUnits } from 'client/shared/chain/units';
+import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
+import ListItemMobile from 'client/shared/lists/ListItemMobile';
+import SimpleValue from 'client/shared/values/entity/SimpleValue';
 
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
-import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
-import SimpleValue from 'ui/shared/value/SimpleValue';
 
 type Props = Block & {
   page: number;

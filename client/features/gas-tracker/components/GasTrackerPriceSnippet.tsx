@@ -7,11 +7,12 @@ import type { GasPriceInfo, GasPrices } from 'client/slices/gas/types/api';
 
 import GasPrice from 'client/slices/gas/components/GasPrice';
 
+import type { IconName } from 'client/sprite/SpriteIcon';
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { SECOND } from 'toolkit/utils/consts';
 import { asymp } from 'toolkit/utils/htmlEntities';
-import type { IconName } from 'ui/shared/IconSvg';
-import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   type: keyof GasPrices;
@@ -54,7 +55,7 @@ const GasTrackerPriceSnippet = ({ data, type, isLoading }: Props) => {
     >
       <Skeleton loading={ isLoading } textStyle="heading.lg" w="fit-content">{ TITLES[type] }</Skeleton>
       <Flex columnGap={ 3 } alignItems="center" mt={ 3 }>
-        <IconSvg name={ ICONS[type] } boxSize={{ base: '30px', xl: 10 }} isLoading={ isLoading } flexShrink={ 0 }/>
+        <SpriteIcon name={ ICONS[type] } boxSize={{ base: '30px', xl: 10 }} isLoading={ isLoading } flexShrink={ 0 }/>
         <Skeleton loading={ isLoading }>
           <GasPrice data={ data } fontSize={{ base: '36px', xl: '48px' }} lineHeight="48px" fontWeight={ 600 } letterSpacing="-1px" fontFamily="heading"/>
         </Skeleton>

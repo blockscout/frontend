@@ -4,16 +4,17 @@ import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type { InterchainMessage } from '@blockscout/interchain-indexer-types';
-import type { PaginationParams } from 'ui/shared/pagination/types';
+import type { PaginationParams } from 'client/shared/pagination/types';
 
-import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import type { Props as DataListDisplayProps } from 'ui/shared/DataListDisplay';
-import DataListDisplay from 'ui/shared/DataListDisplay';
+import { ACTION_BAR_HEIGHT_DESKTOP } from 'client/shell/page/action-bar/ActionBar';
+
+import DataList from 'client/shared/lists/DataList';
+import type { Props as DataListProps } from 'client/shared/lists/DataList';
 
 import TransactionsCrossChainListItem from './TransactionsCrossChainListItem';
 import TransactionsCrossChainTable from './TransactionsCrossChainTable';
 
-export interface Props extends Omit<DataListDisplayProps, 'children'> {
+export interface Props extends Omit<DataListProps, 'children'> {
   items?: Array<InterchainMessage>;
   isLoading?: boolean;
   pagination?: PaginationParams;
@@ -53,7 +54,7 @@ const TransactionsCrossChainContent = ({ items, isLoading, pagination, isTableVi
   ) : null;
 
   return (
-    <DataListDisplay
+    <DataList
       itemsNum={ items?.length }
       emptyText="There are no cross-chain transactions."
       emptyStateProps={{
@@ -62,7 +63,7 @@ const TransactionsCrossChainContent = ({ items, isLoading, pagination, isTableVi
       { ...rest }
     >
       { content }
-    </DataListDisplay>
+    </DataList>
   );
 };
 

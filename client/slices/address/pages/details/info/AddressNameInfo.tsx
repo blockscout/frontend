@@ -6,8 +6,9 @@ import type { Address } from 'client/slices/address/types/api';
 
 import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 
+import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 
 interface Props {
   data: Pick<Address, 'name' | 'token' | 'is_contract'>;

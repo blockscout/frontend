@@ -4,12 +4,15 @@ import { Box, Flex, HStack } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { MetadataTag } from 'client/features/address-metadata/components/tag/types';
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
-import type { EntityTag } from 'ui/shared/EntityTags/types';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 import useSocketChannel from 'client/api/socket/useSocketChannel';
 import useSocketMessage from 'client/api/socket/useSocketMessage';
+
+import ActionsMenu from 'client/shell/page/actions-menu/ActionsMenu';
+import PageTitle from 'client/shell/page/title/PageTitle';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import useAddressCountersQuery from 'client/slices/address/hooks/useAddressCountersQuery';
@@ -28,12 +31,16 @@ import AddressTxs, { ADDRESS_TXS_TAB_IDS } from 'client/slices/address/pages/det
 import AddressWithdrawals from 'client/slices/address/pages/details/withdrawals/AddressWithdrawals';
 import { ADDRESS_TABS_COUNTERS } from 'client/slices/address/stubs/address';
 import getCheckedSummedAddress from 'client/slices/address/utils/get-checked-summed-address';
+import getChainValidationActionText from 'client/slices/chain/verification-type/utils/get-chain-validation-action-text';
 import Contract from 'client/slices/contract/pages/details/Contract';
 import { CONTRACT_TAB_IDS } from 'client/slices/contract/utils/tabs';
 
 import AddressFavoriteButton from 'client/features/account/pages/address/AddressFavoriteButton';
 import Address3rdPartyWidgets from 'client/features/address-3rd-party-widgets/pages/address/Address3rdPartyWidgets';
 import useAddress3rdPartyWidgets from 'client/features/address-3rd-party-widgets/pages/address/useAddress3rdPartyWidgets';
+import formatAccountTags from 'client/features/address-metadata/components/tag/format-account-tags';
+import MetadataTags from 'client/features/address-metadata/components/tag/MetadataTags';
+import sortMetadataTags from 'client/features/address-metadata/components/tag/sort';
 import useAddressMetadataInfoQuery from 'client/features/address-metadata/hooks/useAddressMetadataInfoQuery';
 import useAddressMetadataInitUpdate from 'client/features/address-metadata/hooks/useAddressMetadataInitUpdate';
 import useAddressProfileApiQuery from 'client/features/address-profile-api/hooks/useAddressProfileApiQuery';
@@ -56,18 +63,12 @@ import { USER_OPS_ACCOUNT } from 'client/features/user-ops/stubs';
 import TokenAddToWallet from 'client/features/web3-wallet/components/TokenAddToWallet';
 import useFetchXStarScore from 'client/features/x-star-score/hooks/useFetchXStarScore';
 
-import getChainValidationActionText from 'client/shared/chain/get-chain-validation-action-text';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import useEtherscanRedirects from 'client/shared/router/useEtherscanRedirects';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import config from 'configs/app';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu';
-import EntityTags from 'ui/shared/EntityTags/EntityTags';
-import formatUserTags from 'ui/shared/EntityTags/formatUserTags';
-import sortEntityTags from 'ui/shared/EntityTags/sortEntityTags';
-import IconSvg from 'ui/shared/IconSvg';
-import PageTitle from 'ui/shared/Page/PageTitle';
 
 const TOKEN_TABS = [ 'tokens_erc20', 'tokens_nfts', 'tokens_nfts_collection', 'tokens_nfts_list' ];
 const PREDEFINED_TAG_PRIORITY = 100;
@@ -197,7 +198,7 @@ const AddressPageContent = () => {
             return (
               <>
                 <span>{ tabName }</span>
-                <IconSvg name="status/success" boxSize="14px" color="green.500"/>
+                <SpriteIcon name="status/success" boxSize="14px" color="green.500"/>
               </>
             );
           }
@@ -333,7 +334,7 @@ const AddressPageContent = () => {
 
   const usernameApiTag = userPropfileApiQuery.data?.user_profile?.username;
 
-  const tags: Array<EntityTag> = React.useMemo(() => {
+  const tags: Array<MetadataTag> = React.useMemo(() => {
     return [
       ...(addressQuery.data?.public_tags?.map((tag) => {
         const isFhe = tag.label.toLowerCase() === 'fhe' || tag.display_name.toLowerCase() === 'fhe';
@@ -387,7 +388,7 @@ const AddressPageContent = () => {
       config.features.mudFramework.isEnabled && mudTablesCountQuery.data ?
         { slug: 'mud', name: 'MUD World', tagType: 'custom' as const, ordinal: PREDEFINED_TAG_PRIORITY } :
         undefined,
-      ...formatUserTags(addressQuery.data),
+      ...formatAccountTags(addressQuery.data),
       ...(addressMetadataQuery.data?.addresses?.[hash.toLowerCase()]?.tags.filter(tag => tag.tagType !== 'note') || []),
       !addressQuery.data?.is_contract && xScoreFeature.isEnabled && xStarQuery.data?.data.level ?
         {
@@ -403,7 +404,7 @@ const AddressPageContent = () => {
           },
         } :
         undefined,
-    ].filter(Boolean).sort(sortEntityTags);
+    ].filter(Boolean).sort(sortMetadataTags);
   }, [
     addressMetadataQuery.data,
     addressQuery.data,
@@ -416,7 +417,7 @@ const AddressPageContent = () => {
   ]);
 
   const titleContentAfter = (
-    <EntityTags
+    <MetadataTags
       tags={ tags }
       addressHash={ addressQuery.data?.hash }
       isLoading={
@@ -470,7 +471,7 @@ const AddressPageContent = () => {
         <AddressFavoriteButton hash={ hash } watchListId={ addressQuery.data?.watchlist_address_id }/>
       ) }
       <AddressQrCode hash={ addressQuery.data?.filecoin?.robust ?? checkSummedHash } isLoading={ isLoading }/>
-      <AccountActionsMenu isLoading={ isLoading }/>
+      <ActionsMenu isLoading={ isLoading }/>
       <HStack ml="auto" gap={ 2 }/>
       <AddressMultichainInfoButton loading={ isLoading } addressData={ addressQuery.data }/>
       { !isLoading && addressQuery.data?.is_contract && addressQuery.data?.is_verified && config.UI.views.address.solidityscanEnabled &&

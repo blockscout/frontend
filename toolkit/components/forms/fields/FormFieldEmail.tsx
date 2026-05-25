@@ -4,7 +4,7 @@ import React from 'react';
 import type { FieldValues } from 'react-hook-form';
 
 import type { FormFieldPropsBase } from './types';
-import type { PartialBy } from 'types/utils';
+import type { PartialBy } from 'client/shared/types/utils';
 
 import { EMAIL_REGEXP } from '../validators/email';
 import { FormFieldText } from './FormFieldText';

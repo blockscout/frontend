@@ -2,9 +2,9 @@
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
-import { TOKEN_INFO_ERC_20 } from 'client/slices/token/stubs';
+import { useAppContext } from 'client/shell/app/context';
 
-import { useAppContext } from 'lib/contexts/app';
+import { TOKEN_INFO_ERC_20 } from 'client/slices/token/stubs';
 
 export default function useTokenQuery(hash: string) {
   const { apiData } = useAppContext<'/token/[hash]'>();

@@ -6,15 +6,17 @@ import type { TokenTransfer } from 'client/slices/token-transfer/types/api';
 import type { TokenInfo, TokenInstance } from 'client/slices/token/types/api';
 import { hasTokenIds, hasTokenTransferValue, isConfidentialTokenType, isFungibleTokenType, NFT_TOKEN_TYPE_IDS } from 'client/slices/token/utils/token-types';
 
+import * as SocketNewItemsNotice from 'client/api/socket/SocketNewItemsNotice';
+
 import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
 import TokenTransferTableItem from 'client/slices/token-transfer/pages/token/TokenTransferTableItem';
 
 import { useMultichainContext } from 'client/features/multichain/context';
 
+import TimeFormatToggle from 'client/shared/date-and-time/TimeFormatToggle';
+
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
-import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
-import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
 interface Props {
   data: Array<TokenTransfer>;

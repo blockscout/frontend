@@ -6,10 +6,10 @@ import React from 'react';
 import type { HotContractsInterval } from 'client/features/hot-contracts/types/api';
 
 import useIsInitialLoading from 'client/shared/hooks/useIsInitialLoading';
+import TagGroupSelect from 'client/shared/tags/select/TagGroupSelect';
 
 import type { SelectOption } from 'toolkit/chakra/select';
 import { Select } from 'toolkit/chakra/select';
-import TagGroupSelect from 'ui/shared/tagGroupSelect/TagGroupSelect';
 
 import { INTERVAL_ITEMS } from '../../utils';
 

@@ -7,10 +7,11 @@ import type { Transaction } from 'client/slices/tx/types/api';
 
 import TxFee from 'client/slices/tx/components/TxFee';
 
+import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
+import * as DetailedInfoItemBreakdown from 'client/shared/detailed-info/DetailedInfoItemBreakdown';
+import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
+
 import config from 'configs/app';
-import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import * as DetailedInfoItemBreakdown from 'ui/shared/DetailedInfo/DetailedInfoItemBreakdown';
-import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 interface Props {
   isLoading: boolean;

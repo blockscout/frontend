@@ -6,7 +6,7 @@ import type { TxStateChange } from 'client/slices/tx/types/api';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 
-import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
+import ListItemMobileGrid from 'client/shared/lists/ListItemMobileGrid';
 
 import { getStateElements } from './utils';
 

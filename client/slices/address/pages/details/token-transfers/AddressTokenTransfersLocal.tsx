@@ -5,6 +5,10 @@ import React from 'react';
 
 import type { TokenType } from 'client/slices/token/types/api';
 
+import * as SocketNewItemsNotice from 'client/api/socket/SocketNewItemsNotice';
+
+import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'client/shell/page/action-bar/ActionBar';
+
 import TokenTransferList from 'client/slices/token-transfer/components/list/TokenTransferList';
 import TokenTransferTable from 'client/slices/token-transfer/components/list/TokenTransferTable';
 import TokenTransferFilter from 'client/slices/token-transfer/components/TokenTransferFilter';
@@ -14,12 +18,9 @@ import CsvExport from 'client/features/csv-export/components/CsvExport';
 import { useMultichainContext } from 'client/features/multichain/context';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
-
-import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
-import Pagination from 'ui/shared/pagination/Pagination';
-import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
-import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
+import DataList from 'client/shared/lists/DataList';
+import Pagination from 'client/shared/pagination/Pagination';
+import type { QueryWithPagesResult } from 'client/shared/pagination/useQueryWithPages';
 
 import type { Filters } from './useAddressTokenTransfersQuery';
 import useAddressTokenTransfersSocket from './useAddressTokenTransfersSocket';
@@ -119,7 +120,7 @@ const TokenTransfersLocal = ({ query, filters, addressHash, onTypeFilterChange, 
   ) : null;
 
   return (
-    <DataListDisplay
+    <DataList
       isError={ isError }
       itemsNum={ data?.items?.length }
       emptyText="There are no token transfers."
@@ -130,7 +131,7 @@ const TokenTransfersLocal = ({ query, filters, addressHash, onTypeFilterChange, 
       actionBar={ actionBar }
     >
       { content }
-    </DataListDisplay>
+    </DataList>
   );
 };
 

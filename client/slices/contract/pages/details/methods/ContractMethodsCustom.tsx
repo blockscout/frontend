@@ -13,12 +13,12 @@ import AuthGuard from 'client/features/account/components/auth-modal/guard/AuthG
 import useIsAuth from 'client/features/account/hooks/useIsAuth';
 import CustomAbiModal from 'client/features/account/pages/custom-abi/CustomAbiModal/CustomAbiModal';
 
+import RawDataSnippet from 'client/shared/data/RawDataSnippet';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import { Button } from 'toolkit/chakra/button';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
-import RawDataSnippet from 'ui/shared/RawDataSnippet';
 
 import ContractAbi from './ContractAbi';
 import ContractMethodsAlerts from './ContractMethodsAlerts';

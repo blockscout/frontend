@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import capitalizeFirstLetter from 'client/shared/text/capitalize-first-letter';
+import capitalizeFirstLetter from 'client/shared/texts/capitalize-first-letter';
 
 export function camelCaseToSentence(camelCaseString: string | undefined) {
   if (!camelCaseString) {

@@ -5,10 +5,11 @@ import React from 'react';
 
 import type { CrossChainBridgedTokensSortingValue } from '../../types/api';
 
+import DataList from 'client/shared/lists/DataList';
+import type { QueryWithPagesResult } from 'client/shared/pagination/useQueryWithPages';
+
 import config from 'configs/app';
 import type { OnValueChangeHandler } from 'toolkit/chakra/select';
-import DataListDisplay from 'ui/shared/DataListDisplay';
-import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
 
 import BridgedTokensListItem from './BridgedTokensListItem';
 import BridgedTokensTable from './BridgedTokensTable';
@@ -24,7 +25,7 @@ interface Props {
 
 const BridgedTokensIndex = ({ query, onSortChange, sort, actionBar, hasActiveFilters, tableTop }: Props) => {
   return (
-    <DataListDisplay
+    <DataList
       isError={ query.isError }
       itemsNum={ query.data?.items.length }
       emptyText="There are no bridged tokens."
@@ -64,7 +65,7 @@ const BridgedTokensIndex = ({ query, onSortChange, sort, actionBar, hasActiveFil
           </Box>
         </>
       ) : null }
-    </DataListDisplay>
+    </DataList>
   );
 };
 

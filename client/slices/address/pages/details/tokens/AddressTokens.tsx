@@ -4,7 +4,7 @@ import { Box, HStack } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { PaginationParams } from 'ui/shared/pagination/types';
+import type { PaginationParams } from 'client/shared/pagination/types';
 
 import { ADDRESS_TOKEN_BALANCE_ERC_20 } from 'client/slices/address/stubs/address';
 import AddressCollections from 'client/slices/token/pages/address/AddressCollections';
@@ -17,13 +17,13 @@ import useAddressNftQuery from 'client/slices/token/pages/address/useAddressNftQ
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import useIsMounted from 'client/shared/hooks/useIsMounted';
+import Pagination from 'client/shared/pagination/Pagination';
+import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
+import { generateListStub } from 'client/shared/pagination/utils';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import config from 'configs/app';
-import { generateListStub } from 'stubs/utils';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import Pagination from 'ui/shared/pagination/Pagination';
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
 const TAB_LIST_PROPS = {
   mt: 1,

@@ -4,7 +4,7 @@
 
 import React from 'react';
 
-import type { ExcludeUndefined } from 'types/utils';
+import type { ExcludeUndefined } from 'client/shared/types/utils';
 
 import type { SkeletonTextProps } from '../../chakra/skeleton';
 import { Skeleton } from '../../chakra/skeleton';

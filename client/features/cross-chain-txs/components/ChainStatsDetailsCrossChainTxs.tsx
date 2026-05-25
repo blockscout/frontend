@@ -11,13 +11,13 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 import ChartIntervalSelect from 'client/features/chain-stats/components/ChartIntervalSelect';
 
 import * as mixpanel from 'client/shared/analytics/mixpanel';
+import ChainSelect, { isAllOption } from 'client/shared/external-chains/ChainSelect';
 
 import config from 'configs/app';
 import type { OnValueChangeHandler } from 'toolkit/chakra/select';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { SankeyChartMenu } from 'toolkit/components/charts/sankey/parts/SankeyChartMenu';
 import { SankeyChartContent } from 'toolkit/components/charts/sankey/SankeyChartContent';
-import ChainSelect, { isAllOption } from 'ui/shared/externalChains/ChainSelect';
 
 interface Props {
   chart: ChainStatsChart;

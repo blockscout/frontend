@@ -2,9 +2,10 @@
 
 import React from 'react';
 
+import type { IconName } from 'client/sprite/SpriteIcon';
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import type { IconName } from 'ui/shared/IconSvg';
-import IconSvg from 'ui/shared/IconSvg';
 
 type Props = {
   internalWallet: boolean | undefined;
@@ -38,7 +39,7 @@ const MarketplaceAppIntegrationIcon = ({ external, internalWallet }: Props) => {
       openDelay={ 300 }
       contentProps={{ maxW: { base: 'calc(100vw - 8px)', lg: '400px' } }}
     >
-      <IconSvg
+      <SpriteIcon
         name={ icon }
         boxSize={ boxSize }
         color={ iconColor }

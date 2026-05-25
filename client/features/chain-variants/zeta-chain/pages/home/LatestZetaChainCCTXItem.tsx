@@ -11,8 +11,9 @@ import TxEntityZetaChainCC from 'client/features/chain-variants/zeta-chain/compo
 import ZetaChainCCTXReducedStatus from 'client/features/chain-variants/zeta-chain/components/ZetaChainCCTXReducedStatus';
 import ZetaChainCCTXValue from 'client/features/chain-variants/zeta-chain/components/ZetaChainCCTXValue';
 
+import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
+
 import { SECOND } from 'toolkit/utils/consts';
-import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 type Props = {
   tx: CctxListItem;

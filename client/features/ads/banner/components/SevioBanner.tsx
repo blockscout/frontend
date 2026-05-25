@@ -6,10 +6,11 @@ import React from 'react';
 
 import type { BannerProps } from '../types/client';
 
+import { useAppContext } from 'client/shell/app/context';
+
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
 import config from 'configs/app';
-import { useAppContext } from 'lib/contexts/app';
 import { isBrowser } from 'toolkit/utils/isBrowser';
 
 import {

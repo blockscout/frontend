@@ -8,9 +8,10 @@ import type { InternalTransaction } from 'client/slices/internal-tx/types/api';
 import AddressFromTo from 'client/slices/address/components/from-to/AddressFromTo';
 import TxStatus from 'client/slices/tx/components/TxStatus';
 
+import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
+
 import { Badge } from 'toolkit/chakra/badge';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
-import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 import { TX_INTERNALS_ITEMS } from '../../utils/utils';
 

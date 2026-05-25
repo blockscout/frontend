@@ -5,19 +5,19 @@ import React from 'react';
 
 import type { TokenType } from 'client/slices/token/types/api';
 
+import ActionBar from 'client/shell/page/action-bar/ActionBar';
+
 import TokenTransfersListItem from 'client/slices/token-transfer/pages/index/TokenTransfersListItem';
 import TokenTransfersTable from 'client/slices/token-transfer/pages/index/TokenTransfersTable';
 import TokenTypeFilter from 'client/slices/token/components/TokenTypeFilter';
 
 import { useMultichainContext } from 'client/features/multichain/context';
 
+import PopoverFilter from 'client/shared/filters/PopoverFilter';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
-
-import ActionBar from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
-import PopoverFilter from 'ui/shared/filters/PopoverFilter';
-import Pagination from 'ui/shared/pagination/Pagination';
-import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
+import DataList from 'client/shared/lists/DataList';
+import Pagination from 'client/shared/pagination/Pagination';
+import type { QueryWithPagesResult } from 'client/shared/pagination/useQueryWithPages';
 
 const ACTION_BAR_HEIGHT = 24 * 2 + 40;
 
@@ -48,7 +48,7 @@ const MultichainTokenTransfersLocal = ({ query, typeFilter, onTokenTypesChange }
   );
 
   return (
-    <DataListDisplay
+    <DataList
       isError={ query.isError }
       itemsNum={ query.data?.items.length }
       emptyText="There are no token transfers."
@@ -72,7 +72,7 @@ const MultichainTokenTransfersLocal = ({ query, typeFilter, onTokenTypesChange }
           chainData={ chainData }
         />
       </Box>
-    </DataListDisplay>
+    </DataList>
   );
 };
 

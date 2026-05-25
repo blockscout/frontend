@@ -8,21 +8,22 @@ import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
 import { route } from 'nextjs/routes';
 
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import { BLOCK } from 'client/slices/block/stubs/block';
 
 import ChainSelect from 'client/features/multichain/components/ChainSelect';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import Pagination from 'client/shared/pagination/Pagination';
+import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
+import { generateListStub } from 'client/shared/pagination/utils';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import multichainConfig from 'configs/multichain';
-import { generateListStub } from 'stubs/utils';
 import { Link } from 'toolkit/chakra/link';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import IconSvg from 'ui/shared/IconSvg';
-import PageTitle from 'ui/shared/Page/PageTitle';
-import Pagination from 'ui/shared/pagination/Pagination';
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
 import MultichainBlocksContent from './MultichainBlocksContent';
 
@@ -107,7 +108,7 @@ const MultichainBlocks = () => {
   const rightSlot = (
     <HStack gap={ 8 } hideBelow="lg">
       <Link href={ route({ pathname: '/block/countdown' }, { chain: currentChainInfo }) }>
-        <IconSvg name="hourglass" boxSize={ 5 } mr={ 2 }/>
+        <SpriteIcon name="hourglass" boxSize={ 5 } mr={ 2 }/>
         <span>Block countdown</span>
       </Link>
       <Pagination { ...currentQuery.pagination }/>

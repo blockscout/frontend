@@ -8,20 +8,20 @@ import type { Transaction } from 'client/slices/tx/types/api';
 
 import { route } from 'nextjs/routes';
 
+import { currencyUnits } from 'client/slices/chain/units';
 import TxFee from 'client/slices/tx/components/TxFee';
 import TxStatus from 'client/slices/tx/components/TxStatus';
 
 import BlobEntity from 'client/features/data-availability/components/entity/BlobEntity';
 import { useMultichainContext } from 'client/features/multichain/context';
 
-import { currencyUnits } from 'client/shared/chain/units';
+import TextSeparator from 'client/shared/texts/TextSeparator';
+import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
+import Utilization from 'client/shared/values/utilization/Utilization';
 
 import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import TextSeparator from 'ui/shared/TextSeparator';
-import Utilization from 'ui/shared/Utilization/Utilization';
-import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 const TxAdditionalInfoContent = ({ tx, isLoading }: { tx: Transaction; isLoading?: boolean }) => {
   const multichainContext = useMultichainContext();

@@ -2,7 +2,7 @@
 
 import { compile } from 'path-to-regexp';
 
-import type { ExternalChainExtended } from 'types/externalChains';
+import type { ExternalChainExtended } from 'client/shared/external-chains/types';
 
 import config from 'configs/app';
 

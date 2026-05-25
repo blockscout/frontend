@@ -3,6 +3,8 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import ActionBar from 'client/shell/page/action-bar/ActionBar';
+
 import useAddressQuery from 'client/slices/address/hooks/useAddressQuery';
 import LogItem from 'client/slices/log/components/LogItem';
 import { LOG } from 'client/slices/log/stubs/log';
@@ -10,13 +12,11 @@ import { LOG } from 'client/slices/log/stubs/log';
 import CsvExport from 'client/features/csv-export/components/CsvExport';
 
 import useIsMounted from 'client/shared/hooks/useIsMounted';
+import DataList from 'client/shared/lists/DataList';
+import Pagination from 'client/shared/pagination/Pagination';
+import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
+import { generateListStub } from 'client/shared/pagination/utils';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
-
-import { generateListStub } from 'stubs/utils';
-import ActionBar from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
-import Pagination from 'ui/shared/pagination/Pagination';
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
 type Props = {
   shouldRender?: boolean;
@@ -71,14 +71,14 @@ const AddressLogs = ({ shouldRender = true, isQueryEnabled = true }: Props) => {
   )) : null;
 
   return (
-    <DataListDisplay
+    <DataList
       isError={ isError }
       itemsNum={ data?.items?.length }
       emptyText="There are no logs for this address."
       actionBar={ actionBar }
     >
       { content }
-    </DataListDisplay>
+    </DataList>
   );
 };
 

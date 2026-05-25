@@ -9,7 +9,8 @@ import { useInView } from 'react-intersection-observer';
 import { getResourceKey } from 'client/api/hooks/useApiQuery';
 
 import dayjs from 'client/shared/date-and-time/dayjs';
-import shortenString from 'client/shared/text/shorten-string';
+import shortenString from 'client/shared/texts/shorten-string';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import config from 'configs/app';
 import multichainConfig from 'configs/multichain';
@@ -17,7 +18,6 @@ import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';
 import { Status } from 'toolkit/chakra/status';
 import { SECOND } from 'toolkit/utils/consts';
-import IconSvg from 'ui/shared/IconSvg';
 
 import getPrefixByFilter from '../../utils/get-prefix-by-filter';
 import type { StorageItem } from '../../utils/storage';
@@ -187,7 +187,7 @@ const CsvExportDownloadsItem = ({ index, data }: Props) => {
 
   return (
     <HStack alignItems="flex-start" ref={ ref }>
-      { data.status === 'pending' ? <Spinner flexShrink={ 0 }/> : <IconSvg name="files/csv" boxSize={ 5 } color={ color }/> }
+      { data.status === 'pending' ? <Spinner flexShrink={ 0 }/> : <SpriteIcon name="files/csv" boxSize={ 5 } color={ color }/> }
       <VStack alignItems="flex-start">
         <HStack justifyContent="space-between" w="full">
           <Text fontWeight={ 600 } color={ color }>

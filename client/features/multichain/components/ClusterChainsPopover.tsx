@@ -7,12 +7,13 @@ import type * as multichain from '@blockscout/multichain-aggregator-types';
 
 import { route } from 'nextjs/routes';
 
+import ChainIcon from 'client/shared/external-chains/ChainIcon';
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import multichainConfig from 'configs/multichain';
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';
 import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
-import ChainIcon from 'ui/shared/externalChains/ChainIcon';
-import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   addressHash: string;
@@ -48,7 +49,7 @@ const ClusterChainsPopover = ({ addressHash, data, isLoading }: Props) => {
             columnGap={ 1 }
             loadingSkeleton={ isLoading }
           >
-            <IconSvg name="pie_chart" boxSize={ 5 }/>
+            <SpriteIcon name="pie_chart" boxSize={ 5 }/>
             { activeChains.length } Chain{ activeChains.length > 1 ? 's' : '' }
           </Button>
         </PopoverTrigger>

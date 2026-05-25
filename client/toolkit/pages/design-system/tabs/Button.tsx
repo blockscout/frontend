@@ -4,12 +4,13 @@ import React from 'react';
 
 import { BACKGROUND_DEFAULT } from 'client/slices/home/pages/index/HeroBanner';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { Button, ButtonGroupRadio } from 'toolkit/chakra/button';
 import { Checkbox } from 'toolkit/chakra/checkbox';
 import { Link } from 'toolkit/chakra/link';
 import { PopoverContent, PopoverRoot, PopoverTrigger, PopoverBody } from 'toolkit/chakra/popover';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import IconSvg from 'ui/shared/IconSvg';
 
 import { Section, Container, SectionHeader, SamplesStack, Sample, SectionSubHeader } from '../parts';
 
@@ -128,7 +129,7 @@ const ButtonShowcase = () => {
                 <div>
                   <PopoverTrigger>
                     <Button variant="dropdown" size="md" px={ 2 }>
-                      <IconSvg name="explorer" boxSize={ 5 }/>
+                      <SpriteIcon name="explorer" boxSize={ 5 }/>
                       With tooltip
                     </Button>
                   </PopoverTrigger>

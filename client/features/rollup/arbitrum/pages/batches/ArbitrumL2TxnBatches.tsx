@@ -5,13 +5,15 @@ import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
-import { generateListStub } from 'stubs/utils';
+import { ACTION_BAR_HEIGHT_DESKTOP } from 'client/shell/page/action-bar/ActionBar';
+import PageTitle from 'client/shell/page/title/PageTitle';
+
+import DataList from 'client/shared/lists/DataList';
+import StickyPaginationWithText from 'client/shared/pagination/StickyPaginationWithText';
+import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
+import { generateListStub } from 'client/shared/pagination/utils';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
-import PageTitle from 'ui/shared/Page/PageTitle';
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
-import StickyPaginationWithText from 'ui/shared/StickyPaginationWithText';
 
 import { ARBITRUM_L2_TXN_BATCHES_ITEM } from '../../stubs';
 import ArbitrumL2TxnBatchesListItem from './ArbitrumL2TxnBatchesListItem';
@@ -77,14 +79,14 @@ const ArbitrumL2TxnBatches = () => {
   return (
     <>
       <PageTitle title="Txn batches" withTextAd/>
-      <DataListDisplay
+      <DataList
         isError={ isError }
         itemsNum={ data?.items.length }
         emptyText="There are no txn batches."
         actionBar={ actionBar }
       >
         { content }
-      </DataListDisplay>
+      </DataList>
     </>
   );
 };

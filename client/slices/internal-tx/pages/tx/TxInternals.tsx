@@ -5,21 +5,19 @@ import React from 'react';
 
 import type { InternalTransaction } from 'client/slices/internal-tx/types/api';
 
+import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'client/shell/page/action-bar/ActionBar';
+
 import { INTERNAL_TX } from 'client/slices/internal-tx/stubs';
 import TxPendingAlert from 'client/slices/tx/components/TxPendingAlert';
 import TxSocketAlert from 'client/slices/tx/components/TxSocketAlert';
 import type { TxQuery } from 'client/slices/tx/hooks/useTxQuery';
 
+import DataList from 'client/shared/lists/DataList';
 import compareBns from 'client/shared/numbers/compareBns';
-
-// import { apos } from 'toolkit/utils/htmlEntities';
-import { generateListStub } from 'stubs/utils';
-import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
-// import { FilterInput } from 'toolkit/components/filters/FilterInput';
-import Pagination from 'ui/shared/pagination/Pagination';
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
-import { default as getNextSortValueShared } from 'ui/shared/sort/getNextSortValue';
+import Pagination from 'client/shared/pagination/Pagination';
+import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
+import { generateListStub } from 'client/shared/pagination/utils';
+import { default as getNextSortValueShared } from 'client/shared/sort/get-next-sort-value';
 
 import type { Sort, SortField } from '../../utils/utils';
 import TxInternalsList from './TxInternalsList';
@@ -126,7 +124,7 @@ const TxInternals = ({ txQuery }: Props) => {
   ) : null;
 
   return (
-    <DataListDisplay
+    <DataList
       isError={ isError || txQuery.isError }
       itemsNum={ data?.items.length }
       emptyText="There are no internal transactions for this transaction."
@@ -137,7 +135,7 @@ const TxInternals = ({ txQuery }: Props) => {
       actionBar={ actionBar }
     >
       { content }
-    </DataListDisplay>
+    </DataList>
   );
 };
 

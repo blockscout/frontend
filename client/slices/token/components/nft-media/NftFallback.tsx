@@ -3,11 +3,11 @@
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import IconSvg from 'ui/shared/IconSvg';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 const NftFallback = ({ className }: { className?: string }) => {
   return (
-    <IconSvg
+    <SpriteIcon
       className={ className }
       name="nft_shield"
       p="50px"

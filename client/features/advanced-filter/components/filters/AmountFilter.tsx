@@ -7,11 +7,12 @@ import React from 'react';
 
 import type { AdvancedFilterParams } from '../../types/api';
 
+import TableColumnFilter from 'client/shared/filters/TableColumnFilter';
+import TagGroupSelect from 'client/shared/tags/select/TagGroupSelect';
+
 import { Input } from 'toolkit/chakra/input';
 import { PopoverCloseTriggerWrapper } from 'toolkit/chakra/popover';
 import { ndash } from 'toolkit/utils/htmlEntities';
-import TableColumnFilter from 'ui/shared/filters/TableColumnFilter';
-import TagGroupSelect from 'ui/shared/tagGroupSelect/TagGroupSelect';
 
 const FILTER_PARAM_FROM = 'amount_from';
 const FILTER_PARAM_TO = 'amount_to';

@@ -5,11 +5,12 @@ import React from 'react';
 
 import type { UseFetchChartDataResult } from 'client/slices/home/hooks/useChartDataQuery';
 
+import ApiDegradationChart from 'client/shared/api-degradation/ApiDegradationChart';
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Hint } from 'toolkit/components/Hint/Hint';
 import { mdash } from 'toolkit/utils/htmlEntities';
-import FallbackChart from 'ui/shared/fallbacks/FallbackChart';
-import IconSvg from 'ui/shared/IconSvg';
 
 import ChainIndicatorChartContainer from './ChainIndicatorChartContainer';
 
@@ -50,14 +51,14 @@ const ChainIndicatorsChart = ({ isLoading: isLoadingProp, value, valueDiff, char
 
     return (
       <Skeleton loading={ isLoading } display="flex" alignItems="center" color={ diffColor } ml={ 2 }>
-        <IconSvg name="arrows/up-head" boxSize={ 5 } mr={ 1 } transform={ valueDiff < 0 ? 'rotate(180deg)' : 'rotate(0)' }/>
+        <SpriteIcon name="arrows/up-head" boxSize={ 5 } mr={ 1 } transform={ valueDiff < 0 ? 'rotate(180deg)' : 'rotate(0)' }/>
         <Text color={ diffColor } fontWeight={ 600 }>{ valueDiff }%</Text>
       </Skeleton>
     );
   })();
 
   if (chartQuery.isError) {
-    return <FallbackChart term={ title } h={{ base: '144px', lg: '184px' }}/>;
+    return <ApiDegradationChart term={ title } h={{ base: '144px', lg: '184px' }}/>;
   }
 
   return (

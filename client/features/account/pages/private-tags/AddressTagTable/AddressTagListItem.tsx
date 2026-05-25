@@ -9,9 +9,10 @@ import AddressEntity from 'client/slices/address/components/entity/AddressEntity
 
 import TableItemActionButtons from 'client/features/account/components/TableItemActionButtons';
 
+import ListItemMobile from 'client/shared/lists/ListItemMobile';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tag } from 'toolkit/chakra/tag';
-import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 
 interface Props {
   item: AddressTag;

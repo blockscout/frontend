@@ -6,14 +6,14 @@ import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import TextAd from 'client/features/ads/text/components/TextAd';
 import ValidatorEntity from 'client/features/chain-variants/zilliqa/components/ValidatorEntity';
 import { VALIDATOR_ZILLIQA } from 'client/features/chain-variants/zilliqa/stubs/validators';
 
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
-
-import PageTitle from 'ui/shared/Page/PageTitle';
 
 import ValidatorDetails from './ValidatorDetails';
 

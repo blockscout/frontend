@@ -8,13 +8,14 @@ import type * as multichain from '@blockscout/multichain-aggregator-types';
 
 import EnsEntity from 'client/features/name-services/domains/components/EnsEntity';
 
+import useLazyLoadedList from 'client/shared/pagination/useLazyLoadedList';
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { Button } from 'toolkit/chakra/button';
 import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
-import IconSvg from 'ui/shared/IconSvg';
-import useLazyLoadedList from 'ui/shared/pagination/useLazyLoadedList';
 
 const DomainsGrid = ({ data }: { data: Array<multichain.Domain> }) => {
   return (
@@ -73,7 +74,7 @@ const MultichainAddressEnsDomains = ({ mainDomain, isLoading, hash }: Props) => 
               columnGap={ 1 }
               loadingSkeleton={ isLoading }
             >
-              <IconSvg name="ENS" boxSize={ 5 }/>
+              <SpriteIcon name="ENS" boxSize={ 5 }/>
               <chakra.span hideBelow="xl">{ totalRecords }{ totalRecordsPostfix } Domain{ totalRecords > 1 ? 's' : '' }</chakra.span>
               <chakra.span hideFrom="xl">{ totalRecords }{ totalRecordsPostfix }</chakra.span>
             </Button>

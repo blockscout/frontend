@@ -6,9 +6,11 @@ import type { CrossChainChainsStatsSortingField, CrossChainChainsStatsSortingVal
 import { StatsChainsSort } from '@blockscout/interchain-indexer-types';
 import type { StatsChainRow } from '@blockscout/interchain-indexer-types';
 
+import { ACTION_BAR_HEIGHT_DESKTOP } from 'client/shell/page/action-bar/ActionBar';
+
+import getNextSortValue from 'client/shared/sort/get-next-sort-value';
+
 import { TableBody, TableColumnHeader, TableColumnHeaderSortable, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
-import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import getNextSortValue from 'ui/shared/sort/getNextSortValue';
 
 import { ICTT_USERS_SORT_SEQUENCE } from '../../utils/ictt-sort';
 import IcttUsersTableItem from './IcttUsersTableItem';

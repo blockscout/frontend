@@ -7,10 +7,11 @@ import { route } from 'nextjs/routes';
 
 import { useMultichainContext } from 'client/features/multichain/context';
 
+import * as EntityBase from 'client/shared/entities/components';
+import { distributeEntityProps } from 'client/shared/entities/utils';
+import getChainTooltipText from 'client/shared/external-chains/get-chain-tooltip-text';
+
 import config from 'configs/app';
-import * as EntityBase from 'ui/shared/entities/base/components';
-import { distributeEntityProps } from 'ui/shared/entities/base/utils';
-import getChainTooltipText from 'ui/shared/externalChains/getChainTooltipText';
 
 type LinkProps = EntityBase.LinkBaseProps & Partial<Pick<EntityProps, 'hash' | 'number'>>;
 

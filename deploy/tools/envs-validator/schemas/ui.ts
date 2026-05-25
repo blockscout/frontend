@@ -3,11 +3,12 @@ import { CHAIN_INDICATOR_IDS, type ChainIndicatorId, type HeroBannerConfig, type
 import { replaceQuotes } from 'configs/app/utils';
 import { getYupValidationErrorMessage, urlTest } from '../utils';
 import { NavigationLayout, NavigationPromoBannerConfig, NavItemExternal } from 'client/shell/navigation/types';
-import { FeaturedNetwork, NETWORK_GROUPS } from 'types/networks';
+import type { FeaturedNetwork } from 'client/shell/top-bar/chain-menu/types';
+import { NETWORK_GROUPS } from 'client/shell/top-bar/chain-menu/types';
 import { AlternativeExplorer } from 'client/features/alternative-explorers/types/client';
 import { CustomLink, CustomLinksGroup } from 'client/shell/footer/types';
-import { COLOR_THEME_IDS } from 'types/settings';
-import { FontFamily } from 'types/ui';
+import { COLOR_THEME_IDS } from 'client/shell/top-bar/settings/color-theme/config';
+import type { FontFamily } from 'configs/app/ui';
 import type { ContractCodeIde } from 'client/slices/contract/types/config';
 import { SMART_CONTRACT_EXTRA_VERIFICATION_METHODS, type SmartContractVerificationMethodExtra } from 'client/slices/contract/types/config';
 import type { AddressFormat, AddressViewId } from 'client/slices/address/types/config';

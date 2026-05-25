@@ -7,16 +7,17 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 
+import type { ExcludeUndefined } from 'client/shared/types/utils';
 import type { HomeStats } from 'client/slices/home/types/api';
-import type { ExcludeUndefined } from 'types/utils';
 
 import { route } from 'nextjs-routes';
+
+import Time from 'client/shared/date-and-time/Time';
 
 import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
 import type { TooltipProps } from 'toolkit/chakra/tooltip';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import Time from 'ui/shared/time/Time';
 
 import GasInfoTooltipRow from './GasInfoTooltipRow';
 import GasInfoUpdateTimer from './GasInfoUpdateTimer';

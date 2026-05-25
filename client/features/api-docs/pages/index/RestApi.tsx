@@ -6,10 +6,11 @@ import { route } from 'nextjs-routes';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
+
 import config from 'configs/app';
 import { AccordionItem, AccordionItemContent, AccordionItemTrigger, AccordionRoot, useAccordion } from 'toolkit/chakra/accordion';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
 
 import SwaggerUI from '../../components/SwaggerUI';
 import { REST_API_SECTIONS } from '../../utils/rest-api';

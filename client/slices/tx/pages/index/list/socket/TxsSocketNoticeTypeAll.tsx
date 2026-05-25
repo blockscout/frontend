@@ -6,11 +6,11 @@ import type { TxsSocketNoticePlace, TxsSocketType } from 'client/slices/tx/types
 
 import { route } from 'nextjs/routes';
 
+import * as SocketNewItemsNotice from 'client/api/socket/SocketNewItemsNotice';
+
 import useNewTxsSocketTypeAll from 'client/slices/tx/hooks/useTxsSocketTypeAll';
 
 import { useMultichainContext } from 'client/features/multichain/context';
-
-import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 
 interface Props {
   type: TxsSocketType;

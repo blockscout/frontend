@@ -7,7 +7,7 @@ import type { SmartContractProxyType } from 'client/slices/contract/types/api';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 
-import ContainerWithScrollY from 'ui/shared/ContainerWithScrollY';
+import ContainerWithScrollY from 'client/shared/containers/ContainerWithScrollY';
 
 import ContractDetailsInfoItem from './ContractDetailsInfoItem';
 

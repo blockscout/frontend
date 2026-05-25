@@ -8,11 +8,11 @@ import useApiFetch from 'client/api/hooks/useApiFetch';
 
 import type { EventTypes, EventPayload } from 'client/shared/analytics/mixpanel';
 import * as mixpanel from 'client/shared/analytics/mixpanel';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import config from 'configs/app';
 import { Rating } from 'toolkit/chakra/rating';
 import { toaster } from 'toolkit/chakra/toaster';
-import IconSvg from 'ui/shared/IconSvg';
 
 const ratingDescriptions = [ 'Very bad', 'Bad', 'Average', 'Good', 'Excellent' ];
 
@@ -76,7 +76,7 @@ const MarketplaceRatingPopoverContent = ({ appId, userRating, source }: Props) =
       <Flex alignItems="center" h="30px">
         { ratingValue && (
           // FIXME use non-navigation icon
-          <IconSvg name="navigation/verified_contracts" color="green.400" boxSize="30px" mr={ 1 } ml="-5px"/>
+          <SpriteIcon name="navigation/verified_contracts" color="green.400" boxSize="30px" mr={ 1 } ml="-5px"/>
         ) }
         <Text fontWeight="500" textStyle="xs" color="text.secondary">
           { ratingValue ? 'App is already rated by you' : 'How was your experience?' }

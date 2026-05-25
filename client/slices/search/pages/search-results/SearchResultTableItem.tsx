@@ -27,7 +27,10 @@ import * as UserOpEntity from 'client/features/user-ops/components/entity/UserOp
 
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 import dayjs from 'client/shared/date-and-time/dayjs';
-import highlightText from 'client/shared/text/highlight-text';
+import Time from 'client/shared/date-and-time/Time';
+import HashStringShortenDynamic from 'client/shared/texts/HashStringShortenDynamic';
+import highlightText from 'client/shared/texts/highlight-text';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { useColorMode } from 'toolkit/chakra/color-mode';
 import { Image } from 'toolkit/chakra/image';
@@ -37,11 +40,8 @@ import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { Tag } from 'toolkit/chakra/tag';
 import { SECOND } from 'toolkit/utils/consts';
 import { ADDRESS_REGEXP } from 'toolkit/utils/regexp';
-import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
-import IconSvg from 'ui/shared/IconSvg';
-import Time from 'ui/shared/time/Time';
 
-import SearchResultEntityTag from './SearchResultEntityTag';
+import SearchResultMetadataTag from './SearchResultMetadataTag';
 
 interface Props {
   data: SearchResultItem | SearchResultAppItem;
@@ -91,7 +91,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
                   />
                 </Link>
                 { data.certified && <ContractCertifiedLabel iconSize={ 4 } boxSize={ 4 } ml={ 1 }/> }
-                { data.is_verified_via_admin_panel && !data.certified && <IconSvg name="certified" boxSize={ 4 } ml={ 1 } color="green.500"/> }
+                { data.is_verified_via_admin_panel && !data.certified && <SpriteIcon name="certified" boxSize={ 4 } ml={ 1 } color="green.500"/> }
                 { data.reputation && <TokenEntity.Reputation value={ data.reputation }/> }
               </Flex>
             </TableCell>
@@ -100,7 +100,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
                 <Box overflow="hidden" whiteSpace="nowrap" w={ data.is_smart_contract_verified ? 'calc(100%-28px)' : 'unset' }>
                   <HashStringShortenDynamic hash={ hash }/>
                 </Box>
-                { data.is_smart_contract_verified && <IconSvg name="status/success" boxSize="14px" color="green.500" ml={ 1 } flexShrink={ 0 }/> }
+                { data.is_smart_contract_verified && <SpriteIcon name="status/success" boxSize="14px" color="green.500" ml={ 1 } flexShrink={ 0 }/> }
               </Skeleton>
             </TableCell>
             <TableCell verticalAlign="middle" isNumeric>
@@ -177,7 +177,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
             ) }
             { data.type === 'metadata_tag' && (
               <TableCell colSpan={ addressName ? 1 : 2 } verticalAlign="middle" textAlign="right">
-                <SearchResultEntityTag metadata={ data.metadata } addressHash={ hash } searchTerm={ searchTerm }/>
+                <SearchResultMetadataTag metadata={ data.metadata } addressHash={ hash } searchTerm={ searchTerm }/>
               </TableCell>
             ) }
           </>
@@ -191,7 +191,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
           <>
             <TableCell>
               <Flex alignItems="center">
-                <IconSvg name="publictags" boxSize={ 6 } mr={ 2 } color="icon.primary"/>
+                <SpriteIcon name="publictags" boxSize={ 6 } mr={ 2 } color="icon.primary"/>
                 <Link
                   href={ route({ pathname: '/address/[hash]', query: { hash: data.address_hash } }) }
                   fontWeight={ 700 }
@@ -208,7 +208,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
                 <Box overflow="hidden" whiteSpace="nowrap" w={ data.is_smart_contract_verified ? 'calc(100%-28px)' : 'unset' }>
                   <HashStringShortenDynamic hash={ hash }/>
                 </Box>
-                { data.is_smart_contract_verified && <IconSvg name="status/success" boxSize="14px" color="green.500" ml={ 1 } flexShrink={ 0 }/> }
+                { data.is_smart_contract_verified && <SpriteIcon name="status/success" boxSize="14px" color="green.500" ml={ 1 } flexShrink={ 0 }/> }
               </Flex>
             </TableCell>
             <TableCell/>
@@ -339,7 +339,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
           <>
             <TableCell colSpan={ 2 } fontSize="sm">
               <TxEntity.Container>
-                <IconSvg name="interop" boxSize={ 5 } marginRight={ 1 } color="text.secondary"/>
+                <SpriteIcon name="interop" boxSize={ 5 } marginRight={ 1 } color="text.secondary"/>
                 <TxEntity.Link
                   isLoading={ isLoading }
                   hash={ data.cctx.index }
@@ -477,7 +477,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
                     <HashStringShortenDynamic hash={ hash }/>
                   </Box>
                 ) }
-                { data.is_smart_contract_verified && <IconSvg name="status/success" boxSize="14px" color="green.500" ml={ 1 } flexShrink={ 0 }/> }
+                { data.is_smart_contract_verified && <SpriteIcon name="status/success" boxSize="14px" color="green.500" ml={ 1 } flexShrink={ 0 }/> }
               </Flex>
             </TableCell>
             <TableCell>

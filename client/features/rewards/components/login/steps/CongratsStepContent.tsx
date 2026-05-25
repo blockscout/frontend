@@ -7,9 +7,10 @@ import { route } from 'nextjs-routes';
 
 import { useRewardsContext } from 'client/features/rewards/context';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { Button } from 'toolkit/chakra/button';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import IconSvg from 'ui/shared/IconSvg';
 
 import MeritsIcon from '../../MeritsIcon';
 import RewardsReadOnlyInputWithCopy from '../../RewardsReadOnlyInputWithCopy';
@@ -88,7 +89,7 @@ const CongratsStepContent = ({ isReferral, customReferralReward }: Props) => {
             color={{ _light: 'blue.500', _dark: 'blue.100' }}
             bgColor={{ _light: 'blue.50', _dark: 'blue.800' }}
           >
-            <IconSvg name="profile" boxSize={ 5 }/>
+            <SpriteIcon name="profile" boxSize={ 5 }/>
           </Center>
           <Text fontSize="lg" fontWeight="500">
             Referral program
@@ -114,7 +115,7 @@ const CongratsStepContent = ({ isReferral, customReferralReward }: Props) => {
         <Skeleton loading={ referralsQuery.isLoading } mt={ 6 }>
           <Button asChild>
             <a href={ `https://x.com/intent/tweet?text=${ encodeURIComponent(shareText) }` } target="_blank" rel="noopener noreferrer">
-              Share on <IconSvg name="social/twitter" boxSize={ 6 } ml={ 1 }/>
+              Share on <SpriteIcon name="social/twitter" boxSize={ 6 } ml={ 1 }/>
             </a>
           </Button>
         </Skeleton>
@@ -128,7 +129,7 @@ const CongratsStepContent = ({ isReferral, customReferralReward }: Props) => {
             bgColor={{ _light: 'blue.50', _dark: 'blue.800' }}
           >
             { /* FIXME use non-navigation icon */ }
-            <IconSvg name="navigation/stats" boxSize={ 6 }/>
+            <SpriteIcon name="navigation/stats" boxSize={ 6 }/>
           </Center>
           <Text fontSize="lg" fontWeight="500">
             Dashboard

@@ -3,7 +3,7 @@
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import type { ExternalChain } from 'types/externalChains';
+import type { ExternalChain } from 'client/shared/external-chains/types';
 
 import { route } from 'nextjs/routes';
 
@@ -13,10 +13,11 @@ import { unknownAddress } from 'client/slices/address/utils/consts';
 
 import useZetaChainConfig from 'client/features/chain-variants/zeta-chain/hooks/useZetaChainConfig';
 
+import getChainTooltipText from 'client/shared/external-chains/get-chain-tooltip-text';
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import config from 'configs/app';
 import { useColorModeValue } from 'toolkit/chakra/color-mode';
-import getChainTooltipText from 'ui/shared/externalChains/getChainTooltipText';
-import IconSvg from 'ui/shared/IconSvg';
 
 interface Props extends Omit<AddressEntityBase.EntityProps, 'address'> {
   chainId?: string;
@@ -47,7 +48,7 @@ const AddressEntityZetaChain = ({ chainId, address, ...props }: Props) => {
   const chainLogo = isCurrentChain ? zetaChainIcon : chain?.logo;
   const chainName = isCurrentChain ? config.chain.name : chain?.name;
   const iconStub = (
-    <IconSvg
+    <SpriteIcon
       name="networks/icon-placeholder"
       color="icon.primary"
       display="inline-block"

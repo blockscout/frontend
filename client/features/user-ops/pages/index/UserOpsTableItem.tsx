@@ -12,11 +12,12 @@ import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import UserOpEntity from 'client/features/user-ops/components/entity/UserOpEntity';
 import UserOpStatus from 'client/features/user-ops/components/UserOpStatus';
 
+import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
+import ChainIcon from 'client/shared/external-chains/ChainIcon';
+import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
+
 import config from 'configs/app';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
-import ChainIcon from 'ui/shared/externalChains/ChainIcon';
-import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
-import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 type Props = {
   item: UserOpsItem;

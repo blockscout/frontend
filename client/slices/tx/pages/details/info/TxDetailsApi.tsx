@@ -4,10 +4,10 @@ import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import BlockPendingUpdateAlert from 'client/slices/block/components/BlockPendingUpdateAlert';
+import TestnetWarning from 'client/slices/chain/TestnetWarning';
 import type { TxQuery } from 'client/slices/tx/hooks/useTxQuery';
 
-import TestnetWarning from 'ui/shared/alerts/TestnetWarning';
-import DataFetchAlert from 'ui/shared/DataFetchAlert';
+import ApiFetchAlert from 'client/shared/alerts/ApiFetchAlert';
 
 import TxDetails from './TxDetails';
 
@@ -17,7 +17,7 @@ interface Props {
 
 const TxDetailsApi = ({ txQuery }: Props) => {
   if (txQuery.isError) {
-    return <DataFetchAlert/>;
+    return <ApiFetchAlert/>;
   }
 
   return (

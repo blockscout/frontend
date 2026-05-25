@@ -70,8 +70,8 @@ Key moves (see `ARCH_REDESIGN.md §6` for full list):
 | `lib/cookies.ts` | `client/shared/storage/` |
 | `lib/decodeJWT.ts` | `client/shared/auth/` |
 | `lib/setLocale.ts` | `client/shared/i18n/` |
-| `lib/capitalizeFirstLetter.ts`, `shortenString.ts`, `escapeRegExp.ts`, `highlightText.ts` | `client/shared/text/` |
-| `lib/base64ToHex.ts` and other hex/bytes helpers | `client/shared/transformers/` |
+| `lib/capitalizeFirstLetter.ts`, `shortenString.ts`, `escapeRegExp.ts`, `highlightText.ts` | `client/shared/texts/` |
+| `lib/base64ToHex.ts` and other hex/bytes helpers | `client/shared/data/transformers/` |
 | `lib/utils/stripUtmParams.ts` | `client/shared/links/utils/` |
 | `lib/delay.ts`, `lib/isMetaKey.tsx` | `client/shared/utils/` |
 | Remaining generic hooks from `lib/hooks/` | `client/shared/hooks/` |
@@ -294,7 +294,7 @@ migrated to `client/shared/` in 1-2 and do not appear here.
 
 **Scope:** Migrate after all slices and features it depends on are in place.
 - `ui/snippets/header/`, `footer/`, `navigation/`, `topBar/` → `client/shell/`
-- `lib/contexts/app.tsx`, `fallback.tsx` → `client/shell/`
+- `client/shell/app/context.tsx`, `fallback.tsx` → `client/shell/`
 - `lib/contexts/settings.tsx` → `client/shell/top-bar/`
 - `lib/hooks/useNavItems` → `client/shell/`  
 

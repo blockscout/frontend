@@ -4,10 +4,10 @@ import { HStack } from '@chakra-ui/react';
 import React from 'react';
 
 import usePreventFocusAfterModalClosing from 'client/shared/hooks/usePreventFocusAfterModalClosing';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import IconSvg from 'ui/shared/IconSvg';
 
 type Props = {
   onEditClick: () => void;
@@ -30,7 +30,7 @@ const TableItemActionButtons = ({ onEditClick, onDeleteClick, isLoading }: Props
           loadingSkeleton={ isLoading }
           borderRadius="none"
         >
-          <IconSvg name="edit"/>
+          <SpriteIcon name="edit"/>
         </IconButton>
       </Tooltip>
       <Tooltip content="Delete" disableOnMobile>
@@ -43,7 +43,7 @@ const TableItemActionButtons = ({ onEditClick, onDeleteClick, isLoading }: Props
           loadingSkeleton={ isLoading }
           borderRadius="none"
         >
-          <IconSvg name="delete"/>
+          <SpriteIcon name="delete"/>
         </IconButton>
       </Tooltip>
     </HStack>

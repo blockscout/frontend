@@ -4,33 +4,35 @@ import { Flex, useToken } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
+import type { MetadataTag } from 'client/features/address-metadata/components/tag/types';
 import type { TokenVerifiedInfo as TTokenVerifiedInfo } from 'client/features/verified-tokens/types/api';
 import type { Address } from 'client/slices/address/types/api';
 import type { TokenInfo } from 'client/slices/token/types/api';
 import { getTokenTypeName } from 'client/slices/token/utils/token-types';
-import type { EntityTag } from 'ui/shared/EntityTags/types';
 
 import type { ResourceError } from 'client/api/resources';
+
+import ActionsMenu from 'client/shell/page/actions-menu/ActionsMenu';
+import PageTitle from 'client/shell/page/title/PageTitle';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import AddressAlerts from 'client/slices/address/pages/details/info/AddressAlerts';
 import AddressQrCode from 'client/slices/address/pages/details/info/AddressQrCode';
 import * as TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 
+import formatAccountTags from 'client/features/address-metadata/components/tag/format-account-tags';
+import MetadataTags from 'client/features/address-metadata/components/tag/MetadataTags';
+import sortMetadataTags from 'client/features/address-metadata/components/tag/sort';
 import useAddressMetadataInfoQuery from 'client/features/address-metadata/hooks/useAddressMetadataInfoQuery';
 import AlternativeExplorers from 'client/features/alternative-explorers/components/AlternativeExplorers';
 import { useMultichainContext } from 'client/features/multichain/context';
 import TokenVerifiedInfo from 'client/features/verified-tokens/pages/token/TokenVerifiedInfo';
 import TokenAddToWallet from 'client/features/web3-wallet/components/TokenAddToWallet';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import config from 'configs/app';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu';
-import EntityTags from 'ui/shared/EntityTags/EntityTags';
-import formatUserTags from 'ui/shared/EntityTags/formatUserTags';
-import sortEntityTags from 'ui/shared/EntityTags/sortEntityTags';
-import IconSvg from 'ui/shared/IconSvg';
-import PageTitle from 'ui/shared/Page/PageTitle';
 
 const PREDEFINED_TAG_PRIORITY = 100;
 
@@ -57,7 +59,7 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, verifiedInfoQuery, hash }: P
   const [ bridgedTokenTagBgColor ] = useToken('colors', 'blue.500');
   const [ bridgedTokenTagTextColor ] = useToken('colors', 'white');
 
-  const tags: Array<EntityTag> = React.useMemo(() => {
+  const tags: Array<MetadataTag> = React.useMemo(() => {
     return [
       tokenQuery.data ? {
         slug: tokenQuery.data?.type,
@@ -74,12 +76,12 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, verifiedInfoQuery, hash }: P
           meta: { bgColor: bridgedTokenTagBgColor, textColor: bridgedTokenTagTextColor },
         } :
         undefined,
-      ...formatUserTags(addressQuery.data),
+      ...formatAccountTags(addressQuery.data),
       verifiedInfoQuery.data?.projectSector ?
         { slug: verifiedInfoQuery.data.projectSector, name: verifiedInfoQuery.data.projectSector, tagType: 'custom' as const, ordinal: -30 } :
         undefined,
       ...(addressMetadataQuery.data?.addresses?.[hash.toLowerCase()]?.tags.filter(tag => tag.tagType !== 'note') || []),
-    ].filter(Boolean).sort(sortEntityTags);
+    ].filter(Boolean).sort(sortMetadataTags);
   }, [
     addressMetadataQuery.data?.addresses,
     addressQuery.data,
@@ -96,10 +98,10 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, verifiedInfoQuery, hash }: P
       { tokenQuery.data && <TokenEntity.Reputation value={ tokenQuery.data.reputation } ml={ 0 }/> }
       { verifiedInfoQuery.data?.tokenAddress && (
         <Tooltip content={ `Information on this token has been verified by ${ config.chain.name }` }>
-          <IconSvg name="certified" color="green.500" boxSize={ 6 } cursor="pointer"/>
+          <SpriteIcon name="certified" color="green.500" boxSize={ 6 } cursor="pointer"/>
         </Tooltip>
       ) }
-      <EntityTags
+      <MetadataTags
         isLoading={ isLoading || (config.features.addressMetadata.isEnabled && addressMetadataQuery.isPending) }
         tags={ tags }
         addressHash={ addressQuery.data?.hash }
@@ -122,7 +124,7 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, verifiedInfoQuery, hash }: P
       ) }
       { !isLoading && tokenQuery.data && <TokenAddToWallet token={ tokenQuery.data } variant="button"/> }
       { addressQuery.data && <AddressQrCode hash={ addressQuery.data.hash } isLoading={ isLoading }/> }
-      <AccountActionsMenu isLoading={ isLoading }/>
+      <ActionsMenu isLoading={ isLoading }/>
       <Flex ml={{ base: 0, lg: 'auto' }} columnGap={ 2 } flexGrow={{ base: 1, lg: 0 }}>
         <TokenVerifiedInfo verifiedInfoQuery={ verifiedInfoQuery }/>
         <AlternativeExplorers type="token" pathParam={ addressHash } ml={{ base: 'auto', lg: 0 }}/>

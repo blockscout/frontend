@@ -15,7 +15,7 @@ import useWallet from 'client/features/connect-wallet/hooks/useWallet';
 import getErrorMessage from 'client/shared/errors/get-error-message';
 import getErrorObjPayload from 'client/shared/errors/get-error-obj-payload';
 import getErrorProp from 'client/shared/errors/get-error-prop';
-import capitalizeFirstLetter from 'client/shared/text/capitalize-first-letter';
+import capitalizeFirstLetter from 'client/shared/texts/capitalize-first-letter';
 
 import config from 'configs/app';
 import { Button } from 'toolkit/chakra/button';

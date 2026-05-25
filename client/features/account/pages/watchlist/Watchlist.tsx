@@ -9,19 +9,21 @@ import type { WatchlistAddress, WatchlistResponse } from 'client/features/accoun
 import { getResourceKey } from 'client/api/hooks/useApiQuery';
 import { resourceKey } from 'client/api/resources';
 
+import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'client/shell/page/action-bar/ActionBar';
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import AccountPageDescription from 'client/features/account/components/AccountPageDescription';
 import useProfileQuery from 'client/features/account/hooks/useProfileQuery';
 import useRedirectForInvalidAuthToken from 'client/features/account/hooks/useRedirectForInvalidAuthToken';
 import { WATCH_LIST_ITEM_WITH_TOKEN_INFO } from 'client/features/account/stubs';
 
+import DataList from 'client/shared/lists/DataList';
+import Pagination from 'client/shared/pagination/Pagination';
+import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
+
 import { Button } from 'toolkit/chakra/button';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
-import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
-import PageTitle from 'ui/shared/Page/PageTitle';
-import Pagination from 'ui/shared/pagination/Pagination';
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
 import AddressModal from './AddressModal/AddressModal';
 import DeleteAddressModal from './DeleteAddressModal';
@@ -96,7 +98,7 @@ const WatchList: React.FC = () => {
         <AccountPageDescription>
           An email notification can be sent to you when an address on your watch list sends or receives any transactions.
         </AccountPageDescription>
-        <DataListDisplay
+        <DataList
           isError={ isError }
           itemsNum={ data?.items.length }
           emptyText=""
@@ -124,7 +126,7 @@ const WatchList: React.FC = () => {
               hasEmail={ hasEmail }
             />
           </Box>
-        </DataListDisplay>
+        </DataList>
         <Skeleton mt={ 8 } loading={ isPlaceholderData } display="inline-block">
           <Button
             onClick={ addressModalProps.onOpen }

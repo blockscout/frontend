@@ -9,13 +9,13 @@ import { TOKEN_INFO_ERC_20 } from 'client/slices/token/stubs';
 import { getTokenFilterValue, SORT_OPTIONS } from 'client/slices/token/utils/list-utils';
 
 import useDebounce from 'client/shared/hooks/useDebounce';
+import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
+import { generateListStub } from 'client/shared/pagination/utils';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
+import getSortParamsFromValue from 'client/shared/sort/get-sort-params-from-value';
+import getSortValueFromQuery from 'client/shared/sort/get-sort-value-from-query';
 
-import { generateListStub } from 'stubs/utils';
 import type { OnValueChangeHandler } from 'toolkit/chakra/select';
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
-import getSortParamsFromValue from 'ui/shared/sort/getSortParamsFromValue';
-import getSortValueFromQuery from 'ui/shared/sort/getSortValueFromQuery';
 
 interface Props {
   enabled?: boolean;

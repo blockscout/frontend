@@ -11,7 +11,7 @@ import {
 } from 'client/slices/token/stubs';
 import { TX_HASH } from 'client/slices/tx/stubs/tx';
 
-import { generateListStub } from 'stubs/utils';
+import { generateListStub } from 'client/shared/pagination/utils';
 
 export const TOKEN_TRANSFER_ERC_20_TOTAL: Erc20TotalPayload = {
   decimals: '18',

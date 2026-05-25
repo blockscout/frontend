@@ -4,22 +4,22 @@ import { Flex, Box, Text } from '@chakra-ui/react';
 import { upperFirst } from 'es-toolkit';
 import React from 'react';
 
-import type { PaginationParams } from 'ui/shared/pagination/types';
+import type { PaginationParams } from 'client/shared/pagination/types';
 
 import { route } from 'nextjs-routes';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import getChainUtilizationParams from 'client/slices/chain/get-chain-utilization-params';
 import { HOMEPAGE_STATS } from 'client/slices/home/stubs';
 
-import getChainUtilizationParams from 'client/shared/chain/get-chain-utilization-params';
+import Pagination from 'client/shared/pagination/Pagination';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { nbsp } from 'toolkit/utils/htmlEntities';
-import IconSvg from 'ui/shared/IconSvg';
-import Pagination from 'ui/shared/pagination/Pagination';
 
 interface Props {
   pagination: PaginationParams | null;
@@ -49,7 +49,7 @@ const BlocksTabSlot = ({ pagination }: Props) => {
         </Box>
       ) }
       <Link href={ route({ pathname: '/block/countdown' }) }>
-        <IconSvg name="hourglass" boxSize={ 5 } mr={ 2 }/>
+        <SpriteIcon name="hourglass" boxSize={ 5 } mr={ 2 }/>
         <span>Block countdown</span>
       </Link>
       { pagination && <Pagination my={ 1 } { ...pagination }/> }

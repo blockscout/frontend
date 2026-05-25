@@ -9,12 +9,12 @@ import AddressMultichainButton from 'client/features/multichain-button/pages/add
 
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import SimpleValue from 'client/shared/values/entity/SimpleValue';
+import { DEFAULT_ACCURACY_USD } from 'client/shared/values/entity/utils';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import IconSvg from 'ui/shared/IconSvg';
-import SimpleValue from 'ui/shared/value/SimpleValue';
-import { DEFAULT_ACCURACY_USD } from 'ui/shared/value/utils';
 
 import { formatPercentage } from './utils';
 
@@ -108,7 +108,7 @@ const MultichainAddressPortfolioNetWorth = ({ addressHash, netWorth, isLoading, 
           textStyle="sm"
         >
           <Flex alignItems="center">
-            <IconSvg name="wallet" boxSize={ 5 } flexShrink={ 0 } color="icon.primary"/>
+            <SpriteIcon name="wallet" boxSize={ 5 } flexShrink={ 0 } color="icon.primary"/>
             <Text ml={ 2 } fontWeight={ 500 }>Total net worth</Text>
             <Text color="text.secondary"> (without NFT)</Text>
           </Flex>

@@ -3,8 +3,9 @@
 import { Box, Flex } from '@chakra-ui/react';
 import React from 'react';
 
+import * as EntityBase from 'client/shared/entities/components';
+
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import * as EntityBase from 'ui/shared/entities/base/components';
 
 import type { ContentProps } from './AddressEntity';
 import AddressEntity from './AddressEntity';

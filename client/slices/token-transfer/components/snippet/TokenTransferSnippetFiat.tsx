@@ -5,7 +5,7 @@ import React from 'react';
 
 import type { TokenInfo } from 'client/slices/token/types/api';
 
-import TokenValue from 'ui/shared/value/TokenValue';
+import TokenValue from 'client/shared/values/entity/TokenValue';
 
 interface Props {
   token: TokenInfo;

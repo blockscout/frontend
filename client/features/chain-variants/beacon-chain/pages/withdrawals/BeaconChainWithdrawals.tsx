@@ -6,17 +6,19 @@ import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
-import { currencyUnits } from 'client/shared/chain/units';
+import { ACTION_BAR_HEIGHT_DESKTOP } from 'client/shell/page/action-bar/ActionBar';
+import PageTitle from 'client/shell/page/title/PageTitle';
+
+import { currencyUnits } from 'client/slices/chain/units';
+
+import DataList from 'client/shared/lists/DataList';
+import StickyPaginationWithText from 'client/shared/pagination/StickyPaginationWithText';
+import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
+import { generateListStub } from 'client/shared/pagination/utils';
+import calculateUsdValue from 'client/shared/values/entity/calculateUsdValue';
 
 import config from 'configs/app';
-import { generateListStub } from 'stubs/utils';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
-import PageTitle from 'ui/shared/Page/PageTitle';
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
-import StickyPaginationWithText from 'ui/shared/StickyPaginationWithText';
-import calculateUsdValue from 'ui/shared/value/calculateUsdValue';
 
 import { WITHDRAWAL } from '../../stubs/withdrawals';
 import BeaconChainWithdrawalsListItem from './BeaconChainWithdrawalsListItem';
@@ -92,14 +94,14 @@ const BeaconChainWithdrawals = () => {
         title={ config.meta.seo.enhancedDataEnabled ? `${ config.chain.name } withdrawals` : 'Withdrawals' }
         withTextAd
       />
-      <DataListDisplay
+      <DataList
         isError={ isError }
         itemsNum={ data?.items.length }
         emptyText="There are no withdrawals."
         actionBar={ actionBar }
       >
         { content }
-      </DataListDisplay>
+      </DataList>
     </>
   );
 };

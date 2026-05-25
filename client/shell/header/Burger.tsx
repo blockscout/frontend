@@ -1,17 +1,19 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import NavigationMobile from 'client/shell/navigation/mobile/NavigationMobile';
 import React from 'react';
+
+import NavigationMobile from 'client/shell/navigation/mobile/NavigationMobile';
 
 import NetworkLogo from 'client/slices/chain/logo/NetworkLogo';
 import TestnetBadge from 'client/slices/chain/TestnetBadge';
 
 import RollupStageBadge from 'client/features/rollup/common/components/RollupStageBadge';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { DrawerBody, DrawerContent, DrawerRoot, DrawerTrigger } from 'toolkit/chakra/drawer';
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
-import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   isMarketplaceAppPage?: boolean;
@@ -29,7 +31,7 @@ const Burger = ({ isMarketplaceAppPage }: Props) => {
     >
       <DrawerTrigger>
         <IconButton onClick={ onOpen } p={ 2 } aria-label="Menu button">
-          <IconSvg
+          <SpriteIcon
             name="burger"
             boxSize={ 6 }
             display="block"

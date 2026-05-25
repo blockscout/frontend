@@ -6,6 +6,8 @@ import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import * as addressStubs from 'client/slices/address/stubs/address';
 
@@ -15,21 +17,20 @@ import { POOL } from 'client/features/dex-pools/stubs';
 import getPoolLinks from 'client/features/dex-pools/utils/get-pool-links';
 import { getPoolTitle } from 'client/features/dex-pools/utils/get-pool-title';
 
+import ApiFetchAlert from 'client/shared/alerts/ApiFetchAlert';
+import InfoPopoverButton from 'client/shared/buttons/InfoPopoverButton';
+import isCustomAppError from 'client/shared/errors/is-custom-app-error';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
+import VerifyWith from 'client/shared/links/VerifyWith';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
+import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
+import HashStringShortenDynamic from 'client/shared/texts/HashStringShortenDynamic';
 
 import config from 'configs/app';
 import { Image } from 'toolkit/chakra/image';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tag } from 'toolkit/chakra/tag';
-import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
-import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
-import InfoButton from 'ui/shared/InfoButton';
-import PageTitle from 'ui/shared/Page/PageTitle';
-import VerifyWith from 'ui/shared/VerifyWith';
 
 const Pool = () => {
   const router = useRouter();
@@ -57,7 +58,7 @@ const Pool = () => {
         throwOnResourceLoadError({ resource: 'contractInfo:pool', error, isError: true });
       }
 
-      return <DataFetchAlert/>;
+      return <ApiFetchAlert/>;
     }
 
     if (!data) {
@@ -108,9 +109,9 @@ const Pool = () => {
     <Flex alignItems="center" justifyContent="space-between" w="100%">
       { poolIdOrContract }
       <Flex gap={ 2 } ml={ 2 }>
-        <InfoButton>
+        <InfoPopoverButton>
           { `This Liquidity Provider (LP) token represents ${ data?.base_token_symbol }/${ data?.quote_token_symbol } pairing.` }
-        </InfoButton>
+        </InfoPopoverButton>
         { hasLinks && (
           <VerifyWith
             links={ externalLinksComponents }

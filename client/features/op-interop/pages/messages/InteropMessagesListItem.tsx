@@ -13,8 +13,8 @@ import InteropMessageDestinationTx from 'client/features/op-interop/components/I
 import InteropMessageSourceTx from 'client/features/op-interop/components/InteropMessageSourceTx';
 import InteropMessageStatus from 'client/features/op-interop/components/InteropMessageStatus';
 
-import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
-import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
+import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
+import ListItemMobile from 'client/shared/lists/ListItemMobile';
 
 import InteropMessageAdditionalInfo from './InteropMessageAdditionalInfo';
 

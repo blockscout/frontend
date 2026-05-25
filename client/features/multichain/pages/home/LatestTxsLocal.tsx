@@ -3,7 +3,7 @@
 import { Separator } from '@chakra-ui/react';
 import React from 'react';
 
-import type { PaginationParams } from 'ui/shared/pagination/types';
+import type { PaginationParams } from 'client/shared/pagination/types';
 
 import { route } from 'nextjs/routes';
 

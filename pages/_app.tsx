@@ -4,7 +4,6 @@ import type { HTMLChakraProps } from '@chakra-ui/react';
 import { GrowthBookProvider } from '@growthbook/growthbook-react';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { SettingsContextProvider } from 'client/shell/top-bar/settings/context';
 import type { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
 import React from 'react';
@@ -18,23 +17,25 @@ import getSocketUrl from 'client/api/get-socket-url';
 import useQueryClientConfig from 'client/api/hooks/useQueryClientConfig';
 import { SocketProvider } from 'client/api/socket/context';
 
+import { AppContextProvider } from 'client/shell/app/context';
+import Layout from 'client/shell/layout/Layout';
+import { SettingsContextProvider } from 'client/shell/top-bar/settings/context';
+
 import Web3Provider from 'client/features/connect-wallet/components/Web3Provider';
 import { CsvExportContextProvider } from 'client/features/csv-export/utils/context';
 import { MarketplaceContextProvider } from 'client/features/marketplace/context';
 
 import GoogleAnalytics from 'client/shared/analytics/google/GoogleAnalytics';
+import AppErrorBoundary from 'client/shared/errors/AppErrorBoundary';
+import AppErrorGlobalContainer from 'client/shared/errors/AppErrorGlobalContainer';
 import { initGrowthBook } from 'client/shared/feature-flags/init';
 import useLoadFeatures from 'client/shared/feature-flags/useLoadFeatures';
 import { clientConfig as rollbarConfig, Provider as RollbarProvider } from 'client/shared/monitoring/rollbar';
+import { FallbackProvider } from 'client/shared/utils/fallback-provider';
 
 import config from 'configs/app';
-import { AppContextProvider } from 'lib/contexts/app';
-import { FallbackProvider } from 'lib/contexts/fallback';
 import { Provider as ChakraProvider } from 'toolkit/chakra/provider';
 import { Toaster } from 'toolkit/chakra/toaster';
-import AppErrorBoundary from 'ui/shared/AppError/AppErrorBoundary';
-import AppErrorGlobalContainer from 'ui/shared/AppError/AppErrorGlobalContainer';
-import Layout from 'ui/shared/layout/Layout';
 
 const RewardsContextProvider = dynamic(() => import('client/features/rewards/context').then(module => module.RewardsContextProvider), { ssr: false });
 const RewardsLoginModal = dynamic(() => import('client/features/rewards/components/login/RewardsLoginModal'), { ssr: false });

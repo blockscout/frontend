@@ -8,9 +8,10 @@ import type { FheOperation } from '../../types/api';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 
+import ListItemMobile from 'client/shared/lists/ListItemMobile';
+
 import { Badge } from 'toolkit/chakra/badge';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 
 import { getTypeColor } from '../../utils/utils';
 

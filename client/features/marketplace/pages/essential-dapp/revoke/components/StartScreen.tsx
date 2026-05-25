@@ -2,9 +2,10 @@
 
 import { Flex, Text } from '@chakra-ui/react';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+import type { IconName } from 'client/sprite/SpriteIcon';
+
 import { Heading } from 'toolkit/chakra/heading';
-import IconSvg from 'ui/shared/IconSvg';
-import type { IconName } from 'ui/shared/IconSvg';
 
 const STEPS = [
   {
@@ -39,7 +40,7 @@ export default function StartScreen() {
             flex={ 1 }
             gap={ 6 }
           >
-            <IconSvg name={ step.icon } boxSize={ 6 }/>
+            <SpriteIcon name={ step.icon } boxSize={ 6 }/>
             <Text textStyle="sm">
               { step.text }
             </Text>

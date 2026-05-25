@@ -2,7 +2,7 @@
 
 import type { ThemingConfig } from '@chakra-ui/react';
 
-import type { ExcludeUndefined } from 'types/utils';
+import type { ExcludeUndefined } from 'client/shared/types/utils';
 
 const shadows: ExcludeUndefined<ThemingConfig['tokens']>['shadows'] = {
   action_bar: { value: '0 4px 4px -4px rgb(0 0 0 / 10%), 0 2px 4px -4px rgb(0 0 0 / 6%)' },

@@ -3,18 +3,19 @@
 import { Flex, Separator, VStack } from '@chakra-ui/react';
 import React from 'react';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
-import IconSvg from 'ui/shared/IconSvg';
 
+import SettingsColorTheme from './color-theme/SettingsColorTheme';
+import SettingsIdentIcon from './ident-icon/SettingsIdentIcon';
 import SettingsAddressFormat from './SettingsAddressFormat';
-import SettingsColorTheme from './SettingsColorTheme';
-import SettingsIdentIcon from './SettingsIdentIcon';
-import SettingsLocalTime from './SettingsLocalTime';
 import SettingsPoorReputationTokens from './SettingsPoorReputationTokens';
 import SettingsScamTokens from './SettingsScamTokens';
+import SettingsLocalTime from './time-format/SettingsLocalTime';
 
 const Settings = () => {
   const popover = useDisclosure();
@@ -48,7 +49,7 @@ const Settings = () => {
               borderRadius="sm"
               aria-label="User settings"
             >
-              <IconSvg name="gear"/>
+              <SpriteIcon name="gear"/>
             </IconButton>
           </PopoverTrigger>
         </Flex>

@@ -7,14 +7,14 @@ import React from 'react';
 import type { AddressesItem } from 'client/slices/address/types/api';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
+import { currencyUnits } from 'client/slices/chain/units';
 
-import { currencyUnits } from 'client/shared/chain/units';
+import ListItemMobile from 'client/shared/lists/ListItemMobile';
 
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tag } from 'toolkit/chakra/tag';
 import { ZERO } from 'toolkit/utils/consts';
-import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 
 type Props = {
   item: AddressesItem;

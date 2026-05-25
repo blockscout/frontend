@@ -4,7 +4,7 @@ import type React from 'react';
 
 import type { Route } from 'nextjs-routes';
 
-import type { IconName } from 'ui/shared/IconSvg';
+import type { IconName } from 'client/sprite/SpriteIcon';
 
 type NavIconOrComponent = {
   icon?: IconName;

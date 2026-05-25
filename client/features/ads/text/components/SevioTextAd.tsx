@@ -4,8 +4,9 @@ import { Box, chakra } from '@chakra-ui/react';
 import Script from 'next/script';
 import React, { useCallback, useEffect, useRef } from 'react';
 
+import { useAppContext } from 'client/shell/app/context';
+
 import config from 'configs/app';
-import { useAppContext } from 'lib/contexts/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 
 const adTextFeature = config.features.adsText;

@@ -4,8 +4,8 @@ import React from 'react';
 
 import type { InteropMessage } from 'client/features/op-interop/types/api';
 
-import type { StatusTagType } from 'ui/shared/statusTag/StatusTag';
-import StatusTag from 'ui/shared/statusTag/StatusTag';
+import type { StatusTagType } from 'client/shared/tags/status-tag/StatusTag';
+import StatusTag from 'client/shared/tags/status-tag/StatusTag';
 
 export interface Props {
   status: InteropMessage['status'];

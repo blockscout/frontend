@@ -7,9 +7,9 @@ import { MessageStatus } from '@blockscout/interchain-indexer-types';
 
 import TxEntityInterchain from 'client/slices/tx/components/entity/TxEntityInterchain';
 
-import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
-import ChainLabel from 'ui/shared/externalChains/ChainLabel';
-import { Root, Item, Trigger, ItemContent, ItemBody, ItemRow } from 'ui/shared/lifecycle/LifecycleAccordion';
+import DetailedInfoTimestamp from 'client/shared/detailed-info/DetailedInfoTimestamp';
+import ChainLabel from 'client/shared/external-chains/ChainLabel';
+import { Root, Item, Trigger, ItemContent, ItemBody, ItemRow } from 'client/shared/lifecycle/accordion/LifecycleAccordion';
 
 interface Props {
   data: InterchainMessage;

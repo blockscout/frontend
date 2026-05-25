@@ -7,9 +7,10 @@ import { route } from 'nextjs-routes';
 
 import BatchEntityL2 from 'client/features/rollup/common/components/BatchEntityL2';
 
+import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
+
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 type Props = {
   number: number;

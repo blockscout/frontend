@@ -9,8 +9,8 @@ import type { SearchResultTx } from 'client/slices/search/types/api';
 
 import * as TxEntity from 'client/slices/tx/components/entity/TxEntity';
 
-import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
-import Time from 'ui/shared/time/Time';
+import Time from 'client/shared/date-and-time/Time';
+import HashStringShortenDynamic from 'client/shared/texts/HashStringShortenDynamic';
 
 const SearchBarSuggestTx = ({ data, isMobile, chainInfo }: ItemsProps<SearchResultTx | multichain.QuickSearchResultTransaction>) => {
   const icon = <TxEntity.Icon chain={ chainInfo }/>;

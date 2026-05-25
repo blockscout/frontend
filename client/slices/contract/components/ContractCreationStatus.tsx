@@ -4,10 +4,11 @@ import React from 'react';
 
 import type { SmartContractCreationStatus } from 'client/slices/contract/types/api';
 
+import StatusTag from 'client/shared/tags/status-tag/StatusTag';
+
 import type { BadgeProps } from 'toolkit/chakra/badge';
 import { Badge } from 'toolkit/chakra/badge';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import StatusTag from 'ui/shared/statusTag/StatusTag';
 
 interface Props extends BadgeProps {
   status: SmartContractCreationStatus;

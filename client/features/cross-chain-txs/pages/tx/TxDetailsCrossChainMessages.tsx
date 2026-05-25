@@ -6,9 +6,10 @@ import type { InterchainMessage } from '@blockscout/interchain-indexer-types';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
-import { generateListStub } from 'stubs/utils';
+import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
+import { generateListStub } from 'client/shared/pagination/utils';
+
 import { CollapsibleList } from 'toolkit/chakra/collapsible';
-import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 
 import { INTERCHAIN_MESSAGE } from '../../stubs/messages';
 import TxDetailsCrossChainMessage from './TxDetailsCrossChainMessage';

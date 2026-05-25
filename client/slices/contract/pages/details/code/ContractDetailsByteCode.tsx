@@ -6,8 +6,9 @@ import React from 'react';
 import type { Address } from 'client/slices/address/types/api';
 import type { SmartContract } from 'client/slices/contract/types/api';
 
+import RawDataSnippet from 'client/shared/data/RawDataSnippet';
+
 import { Alert } from 'toolkit/chakra/alert';
-import RawDataSnippet from 'ui/shared/RawDataSnippet';
 
 import ContractDetailsDeployedByteCode from './ContractDetailsDeployedByteCode';
 import ContractDetailsVerificationButton from './ContractDetailsVerificationButton';

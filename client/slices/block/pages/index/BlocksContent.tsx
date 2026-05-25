@@ -10,8 +10,11 @@ import type { BlockType, BlocksResponse } from 'client/slices/block/types/api';
 import { route } from 'nextjs/routes';
 
 import { getResourceKey } from 'client/api/hooks/useApiQuery';
+import * as SocketNewItemsNotice from 'client/api/socket/SocketNewItemsNotice';
 import useSocketChannel from 'client/api/socket/useSocketChannel';
 import useSocketMessage from 'client/api/socket/useSocketMessage';
+
+import ActionBar from 'client/shell/page/action-bar/ActionBar';
 
 import BlocksList from 'client/slices/block/pages/index/BlocksList';
 import BlocksTable from 'client/slices/block/pages/index/BlocksTable';
@@ -19,14 +22,12 @@ import BlocksTable from 'client/slices/block/pages/index/BlocksTable';
 import { useMultichainContext } from 'client/features/multichain/context';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import DataList from 'client/shared/lists/DataList';
+import Pagination from 'client/shared/pagination/Pagination';
+import type { QueryWithPagesResult } from 'client/shared/pagination/useQueryWithPages';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { Link } from 'toolkit/chakra/link';
-import ActionBar from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
-import IconSvg from 'ui/shared/IconSvg';
-import Pagination from 'ui/shared/pagination/Pagination';
-import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
-import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 
 const OVERLOAD_COUNT = 75;
 const TABS_HEIGHT = 88;
@@ -130,7 +131,7 @@ const BlocksContent = ({ type, query, enableSocket = true, top }: Props) => {
   const actionBar = isMobile ? (
     <ActionBar mt={ -6 }>
       <Link href={ route({ pathname: '/block/countdown' }, multichainContext) }>
-        <IconSvg name="hourglass" boxSize={ 5 } mr={ 2 }/>
+        <SpriteIcon name="hourglass" boxSize={ 5 } mr={ 2 }/>
         <span>Block countdown</span>
       </Link>
       <Pagination ml="auto" { ...query.pagination }/>
@@ -138,14 +139,14 @@ const BlocksContent = ({ type, query, enableSocket = true, top }: Props) => {
   ) : null;
 
   return (
-    <DataListDisplay
+    <DataList
       isError={ query.isError }
       itemsNum={ query.data?.items?.length }
       emptyText="There are no blocks."
       actionBar={ actionBar }
     >
       { content }
-    </DataListDisplay>
+    </DataList>
   );
 };
 

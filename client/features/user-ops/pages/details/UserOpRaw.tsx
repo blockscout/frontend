@@ -4,8 +4,9 @@ import React from 'react';
 
 import type { UserOp } from 'client/features/user-ops/types/api';
 
+import RawDataSnippet from 'client/shared/data/RawDataSnippet';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import RawDataSnippet from 'ui/shared/RawDataSnippet';
 
 // order is taken from the ERC-4337 standard
 // eslint-disable-next-line max-len

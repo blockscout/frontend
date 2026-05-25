@@ -5,10 +5,11 @@ import React from 'react';
 
 import type { Transaction } from 'client/slices/tx/types/api';
 
+import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
+import TextSeparator from 'client/shared/texts/TextSeparator';
+import Utilization from 'client/shared/values/utilization/Utilization';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import TextSeparator from 'ui/shared/TextSeparator';
-import Utilization from 'ui/shared/Utilization/Utilization';
 
 interface Props {
   isLoading?: boolean;

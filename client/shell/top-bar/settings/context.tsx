@@ -3,11 +3,12 @@
 import React from 'react';
 
 import { ADDRESS_FORMATS, type AddressFormat } from 'client/slices/address/types/config';
-import type { TimeFormat } from 'types/settings';
+
+import { useAppContext } from 'client/shell/app/context';
 
 import * as cookies from 'client/shared/storage/cookies';
 
-import { useAppContext } from 'lib/contexts/app';
+import type { TimeFormat } from './time-format/utils';
 
 interface SettingsProviderProps {
   children: React.ReactNode;

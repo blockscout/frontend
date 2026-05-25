@@ -7,8 +7,9 @@ import type { DeFiDropdownItem as TDeFiDropdownItem } from '../types/client';
 
 import { route } from 'nextjs-routes';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { Link } from 'toolkit/chakra/link';
-import IconSvg from 'ui/shared/IconSvg';
 
 type Props = {
   item: TDeFiDropdownItem & { onClick: () => void };
@@ -30,7 +31,7 @@ const DeFiDropdownItem = ({ item }: Props) => {
       variant="menu"
       onClick={ item.onClick }
     >
-      { item.icon && <IconSvg name={ item.icon } boxSize={ 5 } mr={ 2 }/> }
+      { item.icon && <SpriteIcon name={ item.icon } boxSize={ 5 } mr={ 2 }/> }
       <Text as="span" fontSize="sm">{ item.text }</Text>
     </Link>
   );

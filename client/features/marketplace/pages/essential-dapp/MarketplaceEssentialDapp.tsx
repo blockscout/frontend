@@ -6,10 +6,11 @@ import React from 'react';
 
 import type { EssentialDappsConfig } from 'client/features/marketplace/types/client';
 
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import config from 'configs/app';
-import PageTitle from 'ui/shared/Page/PageTitle';
 
 import useAutoConnectWallet from '../../hooks/useAutoConnectWallet';
 import Multisend from './multisend/Multisend';

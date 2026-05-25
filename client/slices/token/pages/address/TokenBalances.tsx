@@ -6,16 +6,16 @@ import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import { currencyUnits } from 'client/slices/chain/units';
 import NativeTokenIcon from 'client/slices/token/components/icon/TokenIconNative';
 
-import { currencyUnits } from 'client/shared/chain/units';
+import ApiFetchAlert from 'client/shared/alerts/ApiFetchAlert';
+import calculateUsdValue from 'client/shared/values/entity/calculateUsdValue';
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import config from 'configs/app';
 import { ZERO } from 'toolkit/utils/consts';
 import { thinsp } from 'toolkit/utils/htmlEntities';
-import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import IconSvg from 'ui/shared/IconSvg';
-import calculateUsdValue from 'ui/shared/value/calculateUsdValue';
 
 import TokenBalancesItem from './TokenBalancesItem';
 import useFetchTokens from './useFetchTokens';
@@ -34,7 +34,7 @@ const TokenBalances = () => {
   const tokenQuery = useFetchTokens({ hash });
 
   if (addressQuery.isError || tokenQuery.isError) {
-    return <DataFetchAlert/>;
+    return <ApiFetchAlert/>;
   }
 
   const addressData = addressQuery.data;
@@ -57,7 +57,7 @@ const TokenBalances = () => {
         name="Net Worth"
         value={ addressData?.exchange_rate ? `${ prefix }$${ totalUsd.toFormat(2) }` : 'N/A' }
         isLoading={ addressQuery.isPending || tokenQuery.isPending }
-        icon={ <IconSvg name="wallet" boxSize="20px" flexShrink={ 0 } color="icon.primary"/> }
+        icon={ <SpriteIcon name="wallet" boxSize="20px" flexShrink={ 0 } color="icon.primary"/> }
       />
       <TokenBalancesItem
         name={ `${ currencyUnits.ether } Balance` }
@@ -71,7 +71,7 @@ const TokenBalances = () => {
         value={ tokensNumText }
         valueSecondary={ `${ prefix }$${ tokensInfo.usd.toFormat(2) }` }
         isLoading={ addressQuery.isPending || tokenQuery.isPending }
-        icon={ <IconSvg name="tokens" boxSize="20px" flexShrink={ 0 } color="icon.primary"/> }
+        icon={ <SpriteIcon name="tokens" boxSize="20px" flexShrink={ 0 } color="icon.primary"/> }
       />
     </Flex>
   );

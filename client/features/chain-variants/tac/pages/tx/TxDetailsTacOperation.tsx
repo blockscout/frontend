@@ -5,9 +5,10 @@ import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
+
 import config from 'configs/app';
 import { Tag } from 'toolkit/chakra/tag';
-import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 
 import TacOperationEntity from '../../components/TacOperationEntity';
 import TacOperationStatus from '../../components/TacOperationStatus';

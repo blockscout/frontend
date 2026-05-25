@@ -3,6 +3,8 @@
 import { Box, chakra, Flex, Separator } from '@chakra-ui/react';
 import React from 'react';
 
+import { CONTENT_MAX_WIDTH } from 'client/shell/layout/utils';
+
 import NetworkLogo from 'client/slices/chain/logo/NetworkLogo';
 import TestnetBadge from 'client/slices/chain/TestnetBadge';
 
@@ -12,7 +14,6 @@ import RewardsButton from 'client/features/rewards/components/RewardsButton';
 import RollupStageBadge from 'client/features/rollup/common/components/RollupStageBadge';
 
 import config from 'configs/app';
-import { CONTENT_MAX_WIDTH } from 'ui/shared/layout/utils';
 
 import NavigationPromoBanner from '../promo-banner/NavigationPromoBanner';
 import useNavItems, { isGroupItem } from '../useNavItems';

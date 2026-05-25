@@ -9,23 +9,24 @@ import type { SocketMessage } from 'client/api/socket/types';
 import type { AddressBlocksValidatedResponse } from 'client/slices/address/types/api';
 
 import { getResourceKey } from 'client/api/hooks/useApiQuery';
+import * as SocketNewItemsNotice from 'client/api/socket/SocketNewItemsNotice';
 import useSocketChannel from 'client/api/socket/useSocketChannel';
 import useSocketMessage from 'client/api/socket/useSocketMessage';
 
-import { BLOCK } from 'client/slices/block/stubs/block';
+import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'client/shell/page/action-bar/ActionBar';
 
-import { currencyUnits } from 'client/shared/chain/units';
+import { BLOCK } from 'client/slices/block/stubs/block';
+import { currencyUnits } from 'client/slices/chain/units';
+
+import TimeFormatToggle from 'client/shared/date-and-time/TimeFormatToggle';
 import useIsMounted from 'client/shared/hooks/useIsMounted';
+import DataList from 'client/shared/lists/DataList';
+import Pagination from 'client/shared/pagination/Pagination';
+import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
+import { generateListStub } from 'client/shared/pagination/utils';
 
 import config from 'configs/app';
-import { generateListStub } from 'stubs/utils';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
-import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
-import Pagination from 'ui/shared/pagination/Pagination';
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
-import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
-import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
 import AddressBlocksValidatedListItem from './AddressBlocksValidatedListItem';
 import AddressBlocksValidatedTableItem from './AddressBlocksValidatedTableItem';
@@ -169,14 +170,14 @@ const AddressBlocksValidated = ({ shouldRender = true, isQueryEnabled = true }: 
   ) : null;
 
   return (
-    <DataListDisplay
+    <DataList
       isError={ query.isError }
       itemsNum={ query.data?.items.length }
       emptyText="There are no validated blocks for this address."
       actionBar={ actionBar }
     >
       { content }
-    </DataListDisplay>
+    </DataList>
   );
 };
 

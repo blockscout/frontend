@@ -5,16 +5,18 @@ import React from 'react';
 
 import type { Screen } from 'client/features/account/components/auth-modal/types';
 
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import AccountPageDescription from 'client/features/account/components/AccountPageDescription';
 import AuthModal from 'client/features/account/components/auth-modal/AuthModal';
 import useProfileQuery from 'client/features/account/hooks/useProfileQuery';
 import useRedirectForInvalidAuthToken from 'client/features/account/hooks/useRedirectForInvalidAuthToken';
 
+import ApiFetchAlert from 'client/shared/alerts/ApiFetchAlert';
+
 import config from 'configs/app';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
-import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import PageTitle from 'ui/shared/Page/PageTitle';
 
 import MyProfileEmail from './MyProfileEmail';
 import MyProfileWallet from './MyProfileWallet';
@@ -46,7 +48,7 @@ const MyProfile = () => {
     }
 
     if (profileQuery.isError) {
-      return <DataFetchAlert/>;
+      return <ApiFetchAlert/>;
     }
 
     return (

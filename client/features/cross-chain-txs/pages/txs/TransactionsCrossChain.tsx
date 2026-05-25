@@ -4,10 +4,11 @@ import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
-import { generateListStub } from 'stubs/utils';
+import StickyPaginationWithText from 'client/shared/pagination/StickyPaginationWithText';
+import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
+import { generateListStub } from 'client/shared/pagination/utils';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
-import StickyPaginationWithText from 'ui/shared/StickyPaginationWithText';
 
 import TransactionsCrossChainContent from '../../components/txs/TransactionsCrossChainContent';
 import { INTERCHAIN_MESSAGE, INTERCHAIN_STATS_COMMON } from '../../stubs/messages';

@@ -5,8 +5,9 @@ import React from 'react';
 
 import type { LineChartData } from 'toolkit/components/charts/line/types';
 
+import ApiFetchAlert from 'client/shared/alerts/ApiFetchAlert';
+
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
-import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
 import ChainIndicatorChartContent from './ChainIndicatorChartContent';
 
@@ -23,7 +24,7 @@ const ChainIndicatorChartContainer = ({ data, isError, isPending }: Props) => {
   }
 
   if (isError) {
-    return <DataFetchAlert fontSize="xs"/>;
+    return <ApiFetchAlert fontSize="xs"/>;
   }
 
   if (data[0].items.length === 0) {

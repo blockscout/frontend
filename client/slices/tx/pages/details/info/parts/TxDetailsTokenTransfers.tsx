@@ -11,9 +11,10 @@ import TokenTransferSnippet from 'client/slices/token-transfer/components/snippe
 
 import { useMultichainContext } from 'client/features/multichain/context';
 
+import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { Link } from 'toolkit/chakra/link';
-import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   data: Array<TokenTransfer>;
@@ -66,7 +67,7 @@ const TxDetailsTokenTransfers = ({ data, txHash, isOverflow }: Props) => {
               { isOverflow && (
                 <>
                   { /* FIXME use non-navigation icon */ }
-                  <IconSvg name="navigation/tokens" boxSize={ 6 }/>
+                  <SpriteIcon name="navigation/tokens" boxSize={ 6 }/>
                   <Link href={ viewAllUrl }>
                     View all
                   </Link>

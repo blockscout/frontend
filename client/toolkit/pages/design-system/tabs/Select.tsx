@@ -7,18 +7,19 @@ import React from 'react';
 import TokenTransferFilter from 'client/slices/token-transfer/components/TokenTransferFilter';
 import { SORT_OPTIONS } from 'client/slices/tx/hooks/useTxsSort';
 
+import PopoverFilterRadio from 'client/shared/filters/PopoverFilterRadio';
+import Sort from 'client/shared/sort/Sort';
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import { Checkbox } from 'toolkit/chakra/checkbox';
 import type { SelectOption } from 'toolkit/chakra/select';
 import { Select, SelectAsync } from 'toolkit/chakra/select';
-import PopoverFilterRadio from 'ui/shared/filters/PopoverFilterRadio';
-import IconSvg from 'ui/shared/IconSvg';
-import Sort from 'ui/shared/sort/Sort';
 
 import { Section, Container, SectionHeader, SamplesStack, Sample, SectionSubHeader } from '../parts';
 
 const frameworks = createListCollection<SelectOption>({
   items: [
-    { label: 'React.js is the most popular framework', value: 'react', icon: <IconSvg name="navigation/api_keys" boxSize={ 5 } flexShrink={ 0 }/> },
+    { label: 'React.js is the most popular framework', value: 'react', icon: <SpriteIcon name="navigation/api_keys" boxSize={ 5 } flexShrink={ 0 }/> },
     { label: 'Vue.js is the second most popular framework', value: 'vue' },
     { value: 'angular', label: 'Angular', renderLabel: () => <div>Angular is <Box as="span" color="red" fontWeight="700">not awesome</Box></div> },
     { label: 'Svelte', value: 'svelte' },

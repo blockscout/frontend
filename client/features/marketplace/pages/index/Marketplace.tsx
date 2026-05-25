@@ -7,10 +7,16 @@ import type { MouseEvent } from 'react';
 import { MarketplaceCategory } from 'client/features/marketplace/types/client';
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
+import ActionBar from 'client/shell/page/action-bar/ActionBar';
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import useGraphLinks from 'client/features/marketplace/hooks/useGraphLinks';
 
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import Sort from 'client/shared/sort/Sort';
+import SpriteIcon from 'client/sprite/SpriteIcon';
+import type { IconName } from 'client/sprite/SpriteIcon';
 
 import config from 'configs/app';
 import { Heading } from 'toolkit/chakra/heading';
@@ -19,11 +25,6 @@ import { Link } from 'toolkit/chakra/link';
 import { MenuContent, MenuItem, MenuRoot, MenuTrigger } from 'toolkit/chakra/menu';
 import AdaptiveTabs from 'toolkit/components/AdaptiveTabs/AdaptiveTabs';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
-import ActionBar from 'ui/shared/ActionBar';
-import IconSvg from 'ui/shared/IconSvg';
-import type { IconName } from 'ui/shared/IconSvg';
-import PageTitle from 'ui/shared/Page/PageTitle';
-import Sort from 'ui/shared/sort/Sort';
 
 import useMarketplace from '../../hooks/useMarketplace';
 import type { SortValue } from '../../utils/sort';
@@ -102,7 +103,7 @@ const Marketplace = () => {
 
     tabs.unshift({
       id: MarketplaceCategory.FAVORITES,
-      title: () => <IconSvg name="heart_filled" boxSize={ 5 }/>,
+      title: () => <SpriteIcon name="heart_filled" boxSize={ 5 }/>,
       count: favoriteApps.length,
       component: null,
     });
@@ -156,14 +157,14 @@ const Marketplace = () => {
                 size="md"
                 ml="auto"
               >
-                <IconSvg name="dots"/>
+                <SpriteIcon name="dots"/>
               </IconButton>
             </MenuTrigger>
             <MenuContent zIndex="banner">
               { links.map(({ label, href, icon }) => (
                 <MenuItem key={ label } value={ label } asChild>
                   <Link external href={ href } variant="menu" gap={ 0 }>
-                    <IconSvg name={ icon } boxSize={ 4 } mr={ 2 }/>
+                    <SpriteIcon name={ icon } boxSize={ 4 } mr={ 2 }/>
                     { label }
                   </Link>
                 </MenuItem>

@@ -3,11 +3,12 @@
 import { Box, Text, chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import type { FeaturedNetwork } from 'types/networks';
+import type { FeaturedNetwork } from './types';
+
+import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { useColorModeValue } from 'toolkit/chakra/color-mode';
 import { Image } from 'toolkit/chakra/image';
-import IconSvg from 'ui/shared/IconSvg';
 
 interface Props extends FeaturedNetwork {
   isActive?: boolean;
@@ -21,7 +22,7 @@ const ChainMenuLink = ({ title, icon, isActive: isActiveProp, isMobile, url, inv
   const iconEl = icon ? (
     <Image w="20px" h="20px" src={ icon } alt={ `${ title } network icon` } style={ style }/>
   ) : (
-    <IconSvg
+    <SpriteIcon
       name="networks/icon-placeholder"
       boxSize="20px"
       color={{ base: 'blackAlpha.100', _dark: 'whiteAlpha.300' }}
@@ -69,7 +70,7 @@ const ChainMenuLink = ({ title, icon, isActive: isActiveProp, isMobile, url, inv
           { title }
         </Text>
         { isActive && (
-          <IconSvg
+          <SpriteIcon
             name="check"
             boxSize="20px"
             marginLeft="auto"

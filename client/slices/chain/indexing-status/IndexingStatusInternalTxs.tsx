@@ -11,10 +11,11 @@ import useApiQuery, { getResourceKey } from 'client/api/hooks/useApiQuery';
 import useSocketChannel from 'client/api/socket/useSocketChannel';
 import useSocketMessage from 'client/api/socket/useSocketMessage';
 
+import SpriteIcon from 'client/sprite/SpriteIcon';
+
 import config from 'configs/app';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { apos, nbsp, ndash } from 'toolkit/utils/htmlEntities';
-import IconSvg from 'ui/shared/IconSvg';
 
 const IndexingStatusInternalTxs = () => {
 
@@ -74,7 +75,7 @@ const IndexingStatusInternalTxs = () => {
       color="green.400"
       _hover={{ color: 'hover' }}
     >
-      <IconSvg name="info" boxSize={ 5 }/>
+      <SpriteIcon name="info" boxSize={ 5 }/>
       { data.indexed_internal_transactions_ratio && (
         <Text fontWeight={ 600 } textStyle="xs" color="inherit">
           { Math.floor(Number(data.indexed_internal_transactions_ratio) * 100) + '%' }

@@ -1,19 +1,20 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box, Flex, Grid, GridItem } from '@chakra-ui/react';
-import { useSettingsContext } from 'client/shell/top-bar/settings/context';
 import * as d3 from 'd3';
 import React from 'react';
 
 import type { UptimeHistoryFull, UptimeHistoryItem } from 'client/features/chain-variants/mega-eth/types/api';
 import type { LineChartAxesConfigFn } from 'toolkit/components/charts/line/types';
 
+import { useSettingsContext } from 'client/shell/top-bar/settings/context';
+
 import { useChartsConfig } from 'client/shared/stats/line-chart-config';
+import TagGroupSelect from 'client/shared/tags/select/TagGroupSelect';
 
 import { Heading } from 'toolkit/chakra/heading';
 import { LineChartWidget } from 'toolkit/components/charts/line';
 import { DAY, HOUR, SECOND } from 'toolkit/utils/consts';
-import TagGroupSelect from 'ui/shared/tagGroupSelect/TagGroupSelect';
 
 const INTERVALS = [
   { id: '3h', title: '3h' } as const,

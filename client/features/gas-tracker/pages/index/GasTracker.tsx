@@ -9,6 +9,8 @@ import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import GasInfoUpdateTimer from 'client/slices/gas/components/GasInfoUpdateTimer';
 import { HOMEPAGE_STATS } from 'client/slices/home/stubs';
 import NativeTokenIcon from 'client/slices/token/components/icon/TokenIconNative';
@@ -18,12 +20,12 @@ import GasTrackerFaq from 'client/features/gas-tracker/components/GasTrackerFaq'
 import GasTrackerNetworkUtilization from 'client/features/gas-tracker/components/GasTrackerNetworkUtilization';
 import GasTrackerPrices from 'client/features/gas-tracker/components/GasTrackerPrices';
 
+import Time from 'client/shared/date-and-time/Time';
+
 import config from 'configs/app';
 import { Alert } from 'toolkit/chakra/alert';
 import { Heading } from 'toolkit/chakra/heading';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import PageTitle from 'ui/shared/Page/PageTitle';
-import Time from 'ui/shared/time/Time';
 
 const GasTracker = () => {
   const { data, isPlaceholderData, isError, error, dataUpdatedAt } = useApiQuery('general:stats', {

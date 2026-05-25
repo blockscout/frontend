@@ -11,11 +11,12 @@ import BatchEntityL2 from 'client/features/rollup/common/components/BatchEntityL
 import BlockEntityL1 from 'client/features/rollup/common/components/BlockEntityL1';
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
 
+import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
+
 import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
-import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 import ArbitrumL2TxnBatchDA from '../../components/ArbitrumL2TxnBatchDA';
 import ArbitrumL2TxnBatchStatus from '../../components/ArbitrumL2TxnBatchStatus';
