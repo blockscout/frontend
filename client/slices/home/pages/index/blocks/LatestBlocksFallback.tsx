@@ -3,9 +3,8 @@
 import { Box, Flex, VStack } from '@chakra-ui/react';
 import React from 'react';
 
+import FallbackBox from 'client/shared/api-degradation/FallbackBox';
 import SpriteIcon from 'client/sprite/SpriteIcon';
-
-import FallbackBox from 'ui/shared/fallbacks/FallbackBox';
 
 const LatestBlocksFallback = () => {
   return (

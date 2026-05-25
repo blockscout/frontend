@@ -3,7 +3,7 @@
 import { Box, Flex, chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import type { EntityTag as TEntityTag } from './types';
+import type { MetadataTag as TMetadataTag } from './types';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
@@ -11,17 +11,17 @@ import config from 'configs/app';
 import { Badge } from 'toolkit/chakra/badge';
 import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
 
-import EntityTag from './EntityTag';
+import MetadataTag from './MetadataTag';
 
 interface Props {
   className?: string;
-  tags: Array<TEntityTag>;
+  tags: Array<TMetadataTag>;
   addressHash?: string;
   isLoading?: boolean;
   noColors?: boolean;
 }
 
-const EntityTags = ({ tags, addressHash, className, isLoading, noColors }: Props) => {
+const MetadataTags = ({ tags, addressHash, className, isLoading, noColors }: Props) => {
   const isMobile = useIsMobile();
   const visibleNum = isMobile ? 2 : 3;
 
@@ -49,7 +49,7 @@ const EntityTags = ({ tags, addressHash, className, isLoading, noColors }: Props
       return (
         <>
           { tags.slice(0, visibleNum).map((tag) => (
-            <EntityTag
+            <MetadataTag
               key={ tag.slug }
               data={ tag }
               addressHash={ addressHash }
@@ -68,7 +68,7 @@ const EntityTags = ({ tags, addressHash, className, isLoading, noColors }: Props
             <PopoverContent maxW="300px" w="fit-content">
               <PopoverBody>
                 <Flex columnGap={ 2 } rowGap={ 2 } flexWrap="wrap">
-                  { tags.slice(visibleNum).map((tag) => <EntityTag key={ tag.slug } data={ tag } addressHash={ addressHash } noColors={ noColors }/>) }
+                  { tags.slice(visibleNum).map((tag) => <MetadataTag key={ tag.slug } data={ tag } addressHash={ addressHash } noColors={ noColors }/>) }
                 </Flex>
               </PopoverBody>
             </PopoverContent>
@@ -80,7 +80,7 @@ const EntityTags = ({ tags, addressHash, className, isLoading, noColors }: Props
     return (
       <>
         { tags.map((tag) => (
-          <EntityTag
+          <MetadataTag
             key={ tag.slug }
             data={ tag }
             addressHash={ addressHash }
@@ -101,4 +101,4 @@ const EntityTags = ({ tags, addressHash, className, isLoading, noColors }: Props
   );
 };
 
-export default React.memo(chakra(EntityTags));
+export default React.memo(chakra(MetadataTags));

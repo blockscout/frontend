@@ -4,7 +4,7 @@ import * as addressMetadataMock from 'client/features/address-metadata/mocks/tag
 
 import { test, expect } from 'playwright/lib';
 
-import EntityTags from './EntityTags';
+import MetadataTags from './MetadataTags';
 
 test('mixed name length +@mobile', async({ render }) => {
   const data = [
@@ -13,7 +13,7 @@ test('mixed name length +@mobile', async({ render }) => {
     addressMetadataMock.genericTag,
     addressMetadataMock.tagWithTooltip,
   ];
-  const component = await render(<EntityTags tags={ data }/>);
+  const component = await render(<MetadataTags tags={ data }/>);
   await expect(component).toHaveScreenshot();
 });
 
@@ -21,6 +21,6 @@ test('one tag with long name +@mobile -@default', async({ render }) => {
   const data = [
     addressMetadataMock.infoTagWithLink,
   ];
-  const component = await render(<EntityTags tags={ data }/>);
+  const component = await render(<MetadataTags tags={ data }/>);
   await expect(component).toHaveScreenshot();
 });

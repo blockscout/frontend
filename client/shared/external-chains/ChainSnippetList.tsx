@@ -9,8 +9,8 @@ import type { ExternalChain } from 'client/shared/external-chains/types';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
+import CopyToClipboard from 'ui/shared/CopyToClipboard';
 
-import CopyToClipboard from '../CopyToClipboard';
 import ChainIcon from './ChainIcon';
 
 interface Props extends StackProps {

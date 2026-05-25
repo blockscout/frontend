@@ -12,6 +12,8 @@ import type {
 } from 'client/features/chain-variants/stability/types/api';
 
 // import useDebounce from 'client/shared/hooks/useDebounce';
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import { VALIDATOR_STABILITY } from 'client/features/chain-variants/stability/stubs/validators';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
@@ -24,7 +26,6 @@ import config from 'configs/app';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 // import { FilterInput } from 'toolkit/components/filters/FilterInput';
-import PageTitle from 'ui/shared/Page/PageTitle';
 import getSortParamsFromValue from 'ui/shared/sort/getSortParamsFromValue';
 import getSortValueFromQuery from 'ui/shared/sort/getSortValueFromQuery';
 import Sort from 'ui/shared/sort/Sort';

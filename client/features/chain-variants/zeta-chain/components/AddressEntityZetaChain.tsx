@@ -13,11 +13,11 @@ import { unknownAddress } from 'client/slices/address/utils/consts';
 
 import useZetaChainConfig from 'client/features/chain-variants/zeta-chain/hooks/useZetaChainConfig';
 
+import getChainTooltipText from 'client/shared/external-chains/get-chain-tooltip-text';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import config from 'configs/app';
 import { useColorModeValue } from 'toolkit/chakra/color-mode';
-import getChainTooltipText from 'ui/shared/externalChains/getChainTooltipText';
 
 interface Props extends Omit<AddressEntityBase.EntityProps, 'address'> {
   chainId?: string;

@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { EntityTag } from './types';
+import type { MetadataTag } from './types';
 
-export default function sortEntityTags(tagA: EntityTag, tagB: EntityTag): number {
+export default function sortTags(tagA: MetadataTag, tagB: MetadataTag): number {
   if (tagA.ordinal < tagB.ordinal) {
     return 1;
   }

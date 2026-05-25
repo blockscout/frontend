@@ -6,6 +6,8 @@ import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import * as addressStubs from 'client/slices/address/stubs/address';
 
@@ -15,6 +17,7 @@ import { POOL } from 'client/features/dex-pools/stubs';
 import getPoolLinks from 'client/features/dex-pools/utils/get-pool-links';
 import { getPoolTitle } from 'client/features/dex-pools/utils/get-pool-title';
 
+import isCustomAppError from 'client/shared/errors/is-custom-app-error';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
@@ -23,12 +26,10 @@ import { Image } from 'toolkit/chakra/image';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tag } from 'toolkit/chakra/tag';
-import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import InfoButton from 'ui/shared/InfoButton';
-import PageTitle from 'ui/shared/Page/PageTitle';
 import VerifyWith from 'ui/shared/VerifyWith';
 
 const Pool = () => {

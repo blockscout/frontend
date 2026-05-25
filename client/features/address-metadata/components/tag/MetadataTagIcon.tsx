@@ -3,14 +3,14 @@
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import type { EntityTag } from './types';
+import type { MetadataTag } from './types';
 
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { Image } from 'toolkit/chakra/image';
 
 interface Props {
-  data: EntityTag;
+  data: MetadataTag;
   noColors?: boolean;
 }
 

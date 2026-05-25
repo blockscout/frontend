@@ -10,6 +10,8 @@ import { route } from 'nextjs-routes';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 
 import TextAd from 'client/features/ads/text/components/TextAd';
@@ -26,7 +28,6 @@ import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import PageTitle from 'ui/shared/Page/PageTitle';
 
 const feature = config.features.nameServices;
 const availableProtocols = feature.isEnabled && feature.ens.isEnabled ? feature.ens.protocols : [];

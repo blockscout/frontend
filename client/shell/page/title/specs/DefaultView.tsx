@@ -8,11 +8,10 @@ import AddressEntity from 'client/slices/address/components/entity/AddressEntity
 import * as addressMock from 'client/slices/address/mocks/address';
 import * as TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 
+import MetadataTags from 'client/features/address-metadata/components/tag/MetadataTags';
 import AlternativeExplorers from 'client/features/alternative-explorers/components/AlternativeExplorers';
 
 import SpriteIcon from 'client/sprite/SpriteIcon';
-
-import EntityTags from 'ui/shared/EntityTags/EntityTags';
 
 import PageTitle from '../PageTitle';
 
@@ -34,7 +33,7 @@ const DefaultView = () => {
   const contentAfter = (
     <>
       <SpriteIcon name="certified" color="green.500" boxSize={ 6 } cursor="pointer"/>
-      <EntityTags
+      <MetadataTags
         tags={ [
           { slug: 'example', name: 'Example label', tagType: 'custom', ordinal: 0 },
         ] }

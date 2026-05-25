@@ -8,11 +8,10 @@ import type { TokenInfo } from 'client/slices/token/types/api';
 import * as TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 
 import { publicTag, privateTag, watchlistName } from 'client/features/account/mocks/address-tags';
+import formatAccountTags from 'client/features/address-metadata/components/tag/format-account-tags';
+import MetadataTags from 'client/features/address-metadata/components/tag/MetadataTags';
 
 import SpriteIcon from 'client/sprite/SpriteIcon';
-
-import EntityTags from 'ui/shared/EntityTags/EntityTags';
-import formatUserTags from 'ui/shared/EntityTags/formatUserTags';
 
 import PageTitle from '../PageTitle';
 
@@ -34,10 +33,10 @@ const LongNameAndManyTags = () => {
   const contentAfter = (
     <>
       <SpriteIcon name="certified" color="green.500" boxSize={ 6 } cursor="pointer" flexShrink={ 0 }/>
-      <EntityTags
+      <MetadataTags
         tags={ [
           { slug: 'example', name: 'Example with long name', tagType: 'custom', ordinal: 0 },
-          ...formatUserTags({
+          ...formatAccountTags({
             private_tags: [ privateTag ],
             public_tags: [ publicTag ],
             watchlist_names: [ watchlistName ],

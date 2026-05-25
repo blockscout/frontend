@@ -10,7 +10,7 @@ interface Props {
   className?: string;
 }
 
-const ServiceDegradationWarning = ({ isLoading, className }: Props) => {
+const ApiDegradationAlert = ({ isLoading, className }: Props) => {
   return (
     <Alert
       loading={ isLoading }
@@ -23,4 +23,4 @@ const ServiceDegradationWarning = ({ isLoading, className }: Props) => {
   );
 };
 
-export default React.memo(chakra(ServiceDegradationWarning));
+export default React.memo(chakra(ApiDegradationAlert));

@@ -26,6 +26,8 @@ import { CsvExportContextProvider } from 'client/features/csv-export/utils/conte
 import { MarketplaceContextProvider } from 'client/features/marketplace/context';
 
 import GoogleAnalytics from 'client/shared/analytics/google/GoogleAnalytics';
+import AppErrorBoundary from 'client/shared/errors/AppErrorBoundary';
+import AppErrorGlobalContainer from 'client/shared/errors/AppErrorGlobalContainer';
 import { initGrowthBook } from 'client/shared/feature-flags/init';
 import useLoadFeatures from 'client/shared/feature-flags/useLoadFeatures';
 import { clientConfig as rollbarConfig, Provider as RollbarProvider } from 'client/shared/monitoring/rollbar';
@@ -34,8 +36,6 @@ import { FallbackProvider } from 'client/shared/utils/fallback-provider';
 import config from 'configs/app';
 import { Provider as ChakraProvider } from 'toolkit/chakra/provider';
 import { Toaster } from 'toolkit/chakra/toaster';
-import AppErrorBoundary from 'ui/shared/AppError/AppErrorBoundary';
-import AppErrorGlobalContainer from 'ui/shared/AppError/AppErrorGlobalContainer';
 
 const RewardsContextProvider = dynamic(() => import('client/features/rewards/context').then(module => module.RewardsContextProvider), { ssr: false });
 const RewardsLoginModal = dynamic(() => import('client/features/rewards/components/login/RewardsLoginModal'), { ssr: false });

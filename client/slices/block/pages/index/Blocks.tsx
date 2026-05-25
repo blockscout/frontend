@@ -6,6 +6,8 @@ import React from 'react';
 
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import BlocksContent from 'client/slices/block/pages/index/BlocksContent';
 import BlocksTabSlot from 'client/slices/block/pages/index/BlocksTabSlot';
 import { BLOCK } from 'client/slices/block/stubs/block';
@@ -19,7 +21,6 @@ import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import config from 'configs/app';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import PageTitle from 'ui/shared/Page/PageTitle';
 
 const flashblocksFeature = config.features.flashblocks;
 

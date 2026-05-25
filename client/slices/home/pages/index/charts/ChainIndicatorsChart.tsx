@@ -5,12 +5,12 @@ import React from 'react';
 
 import type { UseFetchChartDataResult } from 'client/slices/home/hooks/useChartDataQuery';
 
+import ApiDegradationChart from 'client/shared/api-degradation/ApiDegradationChart';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Hint } from 'toolkit/components/Hint/Hint';
 import { mdash } from 'toolkit/utils/htmlEntities';
-import FallbackChart from 'ui/shared/fallbacks/FallbackChart';
 
 import ChainIndicatorChartContainer from './ChainIndicatorChartContainer';
 
@@ -58,7 +58,7 @@ const ChainIndicatorsChart = ({ isLoading: isLoadingProp, value, valueDiff, char
   })();
 
   if (chartQuery.isError) {
-    return <FallbackChart term={ title } h={{ base: '144px', lg: '184px' }}/>;
+    return <ApiDegradationChart term={ title } h={{ base: '144px', lg: '184px' }}/>;
   }
 
   return (

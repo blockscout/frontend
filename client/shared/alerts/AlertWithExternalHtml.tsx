@@ -6,7 +6,7 @@ import React from 'react';
 import type { AlertProps } from 'toolkit/chakra/alert';
 import { Alert } from 'toolkit/chakra/alert';
 
-type Props = {
+interface Props {
   html: string;
   status: AlertProps['status'];
   showIcon?: boolean;

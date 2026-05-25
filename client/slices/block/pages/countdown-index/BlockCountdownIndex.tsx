@@ -8,11 +8,11 @@ import { routeParams } from 'nextjs/routes';
 
 import { useMultichainContext } from 'client/features/multichain/context';
 
+import ChainIcon from 'client/shared/external-chains/ChainIcon';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { Heading } from 'toolkit/chakra/heading';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
-import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 
 const BlockCountdownIndex = () => {
   const router = useRouter();

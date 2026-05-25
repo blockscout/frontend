@@ -3,9 +3,9 @@
 import type { AddressMetadataTagType } from 'client/features/address-metadata/types/api';
 import type { AddressMetadataTagFormatted } from 'client/features/address-metadata/types/client';
 
-export type EntityTagType = AddressMetadataTagType | 'custom' | 'watchlist' | 'private_tag';
+export type MetadataTagType = AddressMetadataTagType | 'custom' | 'watchlist' | 'private_tag';
 
-export interface EntityTag extends Pick<AddressMetadataTagFormatted, 'slug' | 'name' | 'ordinal'> {
-  tagType: EntityTagType;
+export interface MetadataTag extends Pick<AddressMetadataTagFormatted, 'slug' | 'name' | 'ordinal'> {
+  tagType: MetadataTagType;
   meta?: AddressMetadataTagFormatted['meta'];
 }

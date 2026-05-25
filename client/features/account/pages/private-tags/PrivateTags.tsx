@@ -4,10 +4,11 @@ import React from 'react';
 
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import useRedirectForInvalidAuthToken from 'client/features/account/hooks/useRedirectForInvalidAuthToken';
 
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import PageTitle from 'ui/shared/Page/PageTitle';
 
 import PrivateAddressTags from './PrivateAddressTags';
 import PrivateTransactionTags from './PrivateTransactionTags';

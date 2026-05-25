@@ -7,9 +7,10 @@ import React from 'react';
 
 import type { ClusterChainConfig } from 'client/features/multichain/types/client';
 
+import ChainIcon from 'client/shared/external-chains/ChainIcon';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
-import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 import SimpleValue from 'ui/shared/value/SimpleValue';
 import { DEFAULT_ACCURACY_USD } from 'ui/shared/value/utils';
 

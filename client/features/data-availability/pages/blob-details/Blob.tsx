@@ -5,17 +5,18 @@ import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import TextAd from 'client/features/ads/text/components/TextAd';
 import AlternativeExplorers from 'client/features/alternative-explorers/components/AlternativeExplorers';
 import BlobEntity from 'client/features/data-availability/components/entity/BlobEntity';
 import { BLOB } from 'client/features/data-availability/stubs';
 
+import isCustomAppError from 'client/shared/errors/is-custom-app-error';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
-import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import PageTitle from 'ui/shared/Page/PageTitle';
 
 import BlobInfo from './BlobInfo';
 

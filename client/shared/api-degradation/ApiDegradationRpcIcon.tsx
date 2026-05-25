@@ -11,7 +11,7 @@ interface Props extends Omit<SpriteIconProps, 'name'> {
   name?: IconName;
 }
 
-const FallbackRpcIcon = (props: Props) => {
+const ApiDegradationRpcIcon = (props: Props) => {
   return (
     <Tooltip content="Our indexer is experiencing problems, you see the data directly from RPC">
       <SpriteIcon name="RPC" color="orange.400" boxSize={ 5 } { ...props }/>
@@ -19,4 +19,4 @@ const FallbackRpcIcon = (props: Props) => {
   );
 };
 
-export default React.memo(FallbackRpcIcon);
+export default React.memo(ApiDegradationRpcIcon);

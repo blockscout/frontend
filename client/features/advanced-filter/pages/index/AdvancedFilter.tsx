@@ -17,12 +17,15 @@ import type { ColumnsIds } from '../../types/client';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
 
 import CsvExport from 'client/features/csv-export/components/CsvExport';
 import { useMultichainContext } from 'client/features/multichain/context';
 
 import dayjs from 'client/shared/date-and-time/dayjs';
+import ChainIcon from 'client/shared/external-chains/ChainIcon';
 import Pagination from 'client/shared/pagination/Pagination';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
@@ -37,8 +40,6 @@ import { TableBody, TableCell, TableColumnHeader, TableHeaderSticky, TableRoot, 
 import { Tag } from 'toolkit/chakra/tag';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import ChainIcon from 'ui/shared/externalChains/ChainIcon';
-import PageTitle from 'ui/shared/Page/PageTitle';
 import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
 import ColumnsButton from '../../components/ColumnsButton';

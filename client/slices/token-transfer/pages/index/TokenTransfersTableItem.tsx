@@ -11,10 +11,11 @@ import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
 import NftEntity from 'client/slices/token/components/entity/NftEntity';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 
+import ChainIcon from 'client/shared/external-chains/ChainIcon';
+
 import { Badge } from 'toolkit/chakra/badge';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
-import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import ConfidentialTokenValue from 'ui/shared/value/ConfidentialTokenValue';
 import TokenValue from 'ui/shared/value/TokenValue';

@@ -8,6 +8,8 @@ import type { HotContractsInterval, HotContractsSorting, HotContractsSortingFiel
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import { HOMEPAGE_STATS } from 'client/slices/home/stubs';
 
 import HotContractsIntervalSelect from 'client/features/hot-contracts/pages/index/HotContractsIntervalSelect';
@@ -22,7 +24,6 @@ import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import PageTitle from 'ui/shared/Page/PageTitle';
 import getSortParamsFromValue from 'ui/shared/sort/getSortParamsFromValue';
 import getSortValueFromQuery from 'ui/shared/sort/getSortValueFromQuery';
 import Sort from 'ui/shared/sort/Sort';

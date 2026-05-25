@@ -3,6 +3,8 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import { CELO_EPOCH_ITEM } from 'client/features/chain-variants/celo/stubs/epoch';
 
 import Pagination from 'client/shared/pagination/Pagination';
@@ -12,7 +14,6 @@ import { generateListStub } from 'client/shared/pagination/utils';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import PageTitle from 'ui/shared/Page/PageTitle';
 
 import EpochsListItem from './EpochsListItem';
 import EpochsTable from './EpochsTable';

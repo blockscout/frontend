@@ -8,7 +8,7 @@ interface Props extends BoxProps {
   term?: string;
 }
 
-const FallbackChart = ({ term, ...props }: Props) => {
+const ApiDegradationChart = ({ term, ...props }: Props) => {
   return (
     <Center { ...props } w="100%">
       <VStack rowGap={ 3 }>
@@ -27,4 +27,4 @@ const FallbackChart = ({ term, ...props }: Props) => {
   );
 };
 
-export default React.memo(FallbackChart);
+export default React.memo(ApiDegradationChart);

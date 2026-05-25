@@ -41,7 +41,7 @@ import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import Time from 'ui/shared/time/Time';
 
-import SearchResultEntityTag from './SearchResultEntityTag';
+import SearchResultMetadataTag from './SearchResultMetadataTag';
 
 interface Props {
   data: SearchResultItem | SearchResultAppItem;
@@ -443,7 +443,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading, addressFormat }: Pr
               </Flex>
             ) }
             { data.type === 'metadata_tag' && (
-              <SearchResultEntityTag metadata={ data.metadata } addressHash={ data.address_hash } searchTerm={ searchTerm }/>
+              <SearchResultMetadataTag metadata={ data.metadata } addressHash={ data.address_hash } searchTerm={ searchTerm }/>
             ) }
           </Flex>
         ) :

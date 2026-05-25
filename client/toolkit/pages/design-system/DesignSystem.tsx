@@ -2,12 +2,13 @@
 
 import React from 'react';
 
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
 import { useColorMode } from 'toolkit/chakra/color-mode';
 import { Switch } from 'toolkit/chakra/switch';
 import { TabsList, TabsRoot, TabsTrigger } from 'toolkit/chakra/tabs';
-import PageTitle from 'ui/shared/Page/PageTitle';
 
 import AccordionsShowcase from './tabs/Accordion';
 import AlertShowcase from './tabs/Alert';

@@ -5,6 +5,8 @@ import React from 'react';
 
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import ChainSelect from 'client/features/multichain/components/ChainSelect';
 import { MultichainProvider } from 'client/features/multichain/context';
 import useRoutedChainSelect from 'client/features/multichain/hooks/useRoutedChainSelect';
@@ -13,7 +15,6 @@ import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import { EmptyState } from 'toolkit/chakra/empty-state';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import PageTitle from 'ui/shared/Page/PageTitle';
 
 import MultichainTxsLocal, { MULTICHAIN_TXS_LOCAL_TAB_IDS } from './MultichainTxsLocal';
 

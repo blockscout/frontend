@@ -6,6 +6,8 @@ import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import { layerLabels } from 'client/features/rollup/common/utils/layer';
 
 import getQueryParamString from 'client/shared/router/get-query-param-string';
@@ -14,7 +16,6 @@ import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import { FormFieldError } from 'toolkit/components/forms/components/FormFieldError';
 import { TRANSACTION_HASH_REGEXP } from 'toolkit/components/forms/validators/transaction';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import PageTitle from 'ui/shared/Page/PageTitle';
 
 import { ARBITRUM_L2_TXN_WITHDRAWALS_ITEM } from '../../stubs';
 import ArbitrumL2TxnWithdrawalsList from './ArbitrumL2TxnWithdrawalsList';

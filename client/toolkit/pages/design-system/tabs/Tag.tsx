@@ -2,10 +2,10 @@
 
 import React from 'react';
 
+import MetadataTag from 'client/features/address-metadata/components/tag/MetadataTag';
 import * as addressMetadataMock from 'client/features/address-metadata/mocks/tags';
 
 import { Tag } from 'toolkit/chakra/tag';
-import EntityTag from 'ui/shared/EntityTags/EntityTag';
 
 import { Section, Container, SectionHeader, SamplesStack, Sample, SectionSubHeader } from '../parts';
 
@@ -84,14 +84,14 @@ const TagShowcase = () => {
         <SectionSubHeader>Public tags</SectionSubHeader>
         <SamplesStack>
           <Sample>
-            <EntityTag data={ addressMetadataMock.nameTag }/>
-            <EntityTag data={ addressMetadataMock.customNameTag }/>
-            <EntityTag data={ addressMetadataMock.warpcastTag }/>
-            <EntityTag data={ addressMetadataMock.genericTag }/>
-            <EntityTag data={ addressMetadataMock.protocolTag }/>
-            <EntityTag data={ addressMetadataMock.infoTagWithLink } maxW="150px"/>
-            <EntityTag data={ addressMetadataMock.tagWithTooltip }/>
-            <EntityTag data={ addressMetadataMock.nameTag } isLoading/>
+            <MetadataTag data={ addressMetadataMock.nameTag }/>
+            <MetadataTag data={ addressMetadataMock.customNameTag }/>
+            <MetadataTag data={ addressMetadataMock.warpcastTag }/>
+            <MetadataTag data={ addressMetadataMock.genericTag }/>
+            <MetadataTag data={ addressMetadataMock.protocolTag }/>
+            <MetadataTag data={ addressMetadataMock.infoTagWithLink } maxW="150px"/>
+            <MetadataTag data={ addressMetadataMock.tagWithTooltip }/>
+            <MetadataTag data={ addressMetadataMock.nameTag } isLoading/>
           </Sample>
         </SamplesStack>
 

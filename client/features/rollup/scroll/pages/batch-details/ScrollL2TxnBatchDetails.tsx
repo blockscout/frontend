@@ -16,11 +16,11 @@ import { layerLabels } from 'client/features/rollup/common/utils/layer';
 import ScrollL2TxnBatchDA from 'client/features/rollup/scroll/components/ScrollL2TxnBatchDA';
 import ScrollL2TxnBatchStatus from 'client/features/rollup/scroll/components/ScrollL2TxnBatchStatus';
 
+import isCustomAppError from 'client/shared/errors/is-custom-app-error';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';

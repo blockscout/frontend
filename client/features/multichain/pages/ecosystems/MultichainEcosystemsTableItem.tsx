@@ -10,13 +10,13 @@ import { WALLETS_INFO } from 'client/features/web3-wallet/types/wallets';
 import useAddChainClick from 'client/features/web3-wallet/hooks/useAddChainClick';
 import useProvider from 'client/features/web3-wallet/hooks/useProvider';
 
+import ChainSnippetList from 'client/shared/external-chains/ChainSnippetList';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import ChainSnippetList from 'ui/shared/externalChains/ChainSnippetList';
 
 interface Props {
   data: multichain.ChainMetrics;

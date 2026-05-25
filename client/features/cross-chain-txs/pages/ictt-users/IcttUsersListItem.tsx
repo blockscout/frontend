@@ -5,8 +5,9 @@ import React from 'react';
 
 import type { StatsChainRow } from '@blockscout/interchain-indexer-types';
 
+import ChainSnippetList from 'client/shared/external-chains/ChainSnippetList';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import ChainSnippetList from 'ui/shared/externalChains/ChainSnippetList';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 
 interface Props {

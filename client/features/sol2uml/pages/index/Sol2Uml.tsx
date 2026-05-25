@@ -4,13 +4,14 @@ import { Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 
 import { useMultichainContext } from 'client/features/multichain/context';
 import Sol2UmlDiagram from 'client/features/sol2uml/components/Sol2UmlDiagram';
 
-import ChainIcon from 'ui/shared/externalChains/ChainIcon';
-import PageTitle from 'ui/shared/Page/PageTitle';
+import ChainIcon from 'client/shared/external-chains/ChainIcon';
 
 const Sol2Uml = () => {
   const router = useRouter();

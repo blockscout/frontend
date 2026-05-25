@@ -14,7 +14,8 @@ import useIsMobile from 'client/shared/hooks/useIsMobile';
 
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';
-import EntityTag from 'ui/shared/EntityTags/EntityTag';
+
+import MetadataTag from '../../../components/tag/MetadataTag';
 interface Props {
   data: FormSubmitResultGrouped;
 }
@@ -61,7 +62,7 @@ const TagSubmitionResultWithErrors = ({ data }: Props) => {
                   <Box fontSize="sm" color="text.secondary" fontWeight={ 500 }>Tag</Box>
                   <Flex rowGap={ 2 } columnGap={ 2 } mt={ 2 } justifyContent="flex-start" flexWrap="wrap">
                     { item.tags.map((tag) => (
-                      <EntityTag
+                      <MetadataTag
                         key={ tag.name }
                         maxW={{ base: '100%', lg: '300px' }}
                         data={{ ...tag, slug: '', ordinal: 0 }}

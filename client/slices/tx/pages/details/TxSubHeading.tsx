@@ -7,6 +7,8 @@ import type { AddressParam } from 'client/slices/address/types/api';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import ActionsMenu from 'client/shell/page/actions-menu/ActionsMenu';
+
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import type { TxQuery } from 'client/slices/tx/hooks/useTxQuery';
 
@@ -21,7 +23,6 @@ import { createNovesSummaryObject } from 'client/features/tx-interpretation/nove
 
 import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
-import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu';
 import { TX_ACTIONS_BLOCK_ID } from 'ui/shared/DetailedInfo/DetailedInfoActionsWrapper';
 
 type Props = {
@@ -145,7 +146,7 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
         gap={ 3 }
         mt={{ base: 3, lg: 0 }}
       >
-        { !hasTag && <AccountActionsMenu isLoading={ isLoading }/> }
+        { !hasTag && <ActionsMenu isLoading={ isLoading }/> }
         { appActionData && (
           <AppActionButton data={ appActionData } txHash={ hash } source="Txn"/>
         ) }

@@ -23,6 +23,8 @@ import EnsEntity from 'client/features/name-services/domains/components/EnsEntit
 
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 import dayjs from 'client/shared/date-and-time/dayjs';
+import ChainIcon from 'client/shared/external-chains/ChainIcon';
+import getChainTooltipText from 'client/shared/external-chains/get-chain-tooltip-text';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import config from 'configs/app';
@@ -33,8 +35,6 @@ import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { SECOND } from 'toolkit/utils/consts';
-import ChainIcon from 'ui/shared/externalChains/ChainIcon';
-import getChainTooltipText from 'ui/shared/externalChains/getChainTooltipText';
 
 import {
   extractVariables,

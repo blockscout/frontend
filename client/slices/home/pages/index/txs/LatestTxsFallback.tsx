@@ -4,10 +4,10 @@ import type { BoxProps } from '@chakra-ui/react';
 import { Box, HStack, VStack } from '@chakra-ui/react';
 import React from 'react';
 
+import FallbackBox from 'client/shared/api-degradation/FallbackBox';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { TableBody, TableCell, TableRoot, TableRow } from 'toolkit/chakra/table';
-import FallbackBox from 'ui/shared/fallbacks/FallbackBox';
 
 const LatestTxsFallback = (props: BoxProps) => {
   return (

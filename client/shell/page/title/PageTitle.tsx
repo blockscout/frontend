@@ -14,7 +14,7 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 
-type Props = {
+interface Props {
   title: string;
   className?: string;
   beforeTitle?: React.ReactNode;

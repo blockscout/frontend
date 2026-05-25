@@ -10,6 +10,8 @@ import type {
   ValidatorsBlackfortSortingValue,
 } from 'client/features/chain-variants/blackfort/types/api';
 
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import { VALIDATOR_BLACKFORT } from 'client/features/chain-variants/blackfort/stubs/validators';
 
 import Pagination from 'client/shared/pagination/Pagination';
@@ -19,7 +21,6 @@ import { generateListStub } from 'client/shared/pagination/utils';
 import config from 'configs/app';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import PageTitle from 'ui/shared/Page/PageTitle';
 import getSortParamsFromValue from 'ui/shared/sort/getSortParamsFromValue';
 import getSortValueFromQuery from 'ui/shared/sort/getSortValueFromQuery';
 import Sort from 'ui/shared/sort/Sort';

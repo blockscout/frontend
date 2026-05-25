@@ -9,6 +9,8 @@ import type { VerifiedAddress, TokenInfoApplication, TokenInfoApplications, Veri
 
 import useApiQuery, { getResourceKey } from 'client/api/hooks/useApiQuery';
 
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import AccountPageDescription from 'client/features/account/components/AccountPageDescription';
 import useProfileQuery from 'client/features/account/hooks/useProfileQuery';
 import useRedirectForInvalidAuthToken from 'client/features/account/hooks/useRedirectForInvalidAuthToken';
@@ -28,7 +30,6 @@ import { Link } from 'toolkit/chakra/link';
 import { BackToButton } from 'toolkit/components/buttons/BackToButton';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import PageTitle from 'ui/shared/Page/PageTitle';
 
 import AdminSupportText from './AdminSupportText';
 

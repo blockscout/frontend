@@ -9,7 +9,7 @@ import HeaderAlert from 'client/shell/header/HeaderAlert';
 import HeaderDesktop from 'client/shell/header/HeaderDesktop';
 import HeaderMobile from 'client/shell/header/HeaderMobile';
 
-import AppErrorBoundary from 'ui/shared/AppError/AppErrorBoundary';
+import AppErrorBoundary from 'client/shared/errors/AppErrorBoundary';
 
 import * as Layout from './components';
 

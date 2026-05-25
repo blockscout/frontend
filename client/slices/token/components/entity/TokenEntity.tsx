@@ -12,6 +12,7 @@ import TokenIconPlaceholder from 'client/slices/token/components/icon/TokenIconP
 
 import { useMultichainContext } from 'client/features/multichain/context';
 
+import getChainTooltipText from 'client/shared/external-chains/get-chain-tooltip-text';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import config from 'configs/app';
@@ -20,7 +21,6 @@ import { Tooltip } from 'toolkit/chakra/tooltip';
 import { TruncatedTextTooltip } from 'toolkit/components/truncation/TruncatedTextTooltip';
 import * as EntityBase from 'ui/shared/entities/base/components';
 import { distributeEntityProps, getIconProps } from 'ui/shared/entities/base/utils';
-import getChainTooltipText from 'ui/shared/externalChains/getChainTooltipText';
 
 type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'token'>;
 

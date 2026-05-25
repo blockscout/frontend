@@ -8,7 +8,7 @@ import PageNextJs from 'nextjs/PageNextJs';
 
 import LayoutError from 'client/shell/layout/LayoutError';
 
-import AppError from 'ui/shared/AppError/AppError';
+import AppError from 'client/shared/errors/AppError';
 
 const error = new Error('Not found', { cause: { status: 404 } });
 

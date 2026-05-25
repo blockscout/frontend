@@ -8,6 +8,8 @@ import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
 import { route } from 'nextjs/routes';
 
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import { BLOCK } from 'client/slices/block/stubs/block';
 
 import ChainSelect from 'client/features/multichain/components/ChainSelect';
@@ -22,7 +24,6 @@ import SpriteIcon from 'client/sprite/SpriteIcon';
 import multichainConfig from 'configs/multichain';
 import { Link } from 'toolkit/chakra/link';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import PageTitle from 'ui/shared/Page/PageTitle';
 
 import MultichainBlocksContent from './MultichainBlocksContent';
 

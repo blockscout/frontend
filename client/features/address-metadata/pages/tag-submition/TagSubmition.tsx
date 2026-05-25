@@ -6,11 +6,12 @@ import type { FormSubmitResult } from './types';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import useProfileQuery from 'client/features/account/hooks/useProfileQuery';
 
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import PageTitle from 'ui/shared/Page/PageTitle';
 
 import TagSubmitionForm from './TagSubmitionForm';
 import TagSubmitionResult from './TagSubmitionResult';

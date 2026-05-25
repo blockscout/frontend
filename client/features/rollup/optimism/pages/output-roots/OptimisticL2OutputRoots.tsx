@@ -5,6 +5,8 @@ import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import { layerLabels } from 'client/features/rollup/common/utils/layer';
 import { L2_OUTPUT_ROOTS_ITEM } from 'client/features/rollup/optimism/stubs';
 
@@ -15,7 +17,6 @@ import { generateListStub } from 'client/shared/pagination/utils';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import PageTitle from 'ui/shared/Page/PageTitle';
 
 import OptimisticL2OutputRootsListItem from './OptimisticL2OutputRootsListItem';
 import OptimisticL2OutputRootsTable from './OptimisticL2OutputRootsTable';

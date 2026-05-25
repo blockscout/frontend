@@ -11,6 +11,7 @@ import RollupStageBadge from 'client/features/rollup/common/components/RollupSta
 import useAddChainClick from 'client/features/web3-wallet/hooks/useAddChainClick';
 import useProvider from 'client/features/web3-wallet/hooks/useProvider';
 
+import ChainIcon from 'client/shared/external-chains/ChainIcon';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
@@ -20,7 +21,6 @@ import { LinkBox, LinkOverlay } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
-import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 
 interface Props {
   data: ClusterChainConfig;

@@ -5,6 +5,8 @@ import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import { L2_DISPUTE_GAMES_ITEM } from 'client/features/rollup/optimism/stubs';
 
 import StickyPaginationWithText from 'client/shared/pagination/StickyPaginationWithText';
@@ -14,7 +16,6 @@ import { generateListStub } from 'client/shared/pagination/utils';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import PageTitle from 'ui/shared/Page/PageTitle';
 
 import OptimisticL2DisputeGamesListItem from './OptimisticL2DisputeGamesListItem';
 import OptimisticL2DisputeGamesTable from './OptimisticL2DisputeGamesTable';

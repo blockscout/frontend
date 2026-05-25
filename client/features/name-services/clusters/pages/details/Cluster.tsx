@@ -5,12 +5,12 @@ import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import TextAd from 'client/features/ads/text/components/TextAd';
 import ClusterDetails from 'client/features/name-services/clusters/pages/details/ClusterDetails';
 
 import getQueryParamString from 'client/shared/router/get-query-param-string';
-
-import PageTitle from 'ui/shared/Page/PageTitle';
 
 const Cluster = () => {
   const router = useRouter();

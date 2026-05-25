@@ -5,12 +5,12 @@ import React from 'react';
 
 import type { ItemsProps } from './types';
 import type * as multichain from 'client/features/multichain/types/client';
-import type { SearchResultAddressOrContract, SearchResultMetadataTag } from 'client/slices/search/types/api';
+import type { SearchResultAddressOrContract, SearchResultMetadataTag as TSearchResultMetadataTag } from 'client/slices/search/types/api';
 
 import * as AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import { toBech32Address } from 'client/slices/address/utils/bech32';
 import ContractCertifiedLabel from 'client/slices/contract/components/ContractCertifiedLabel';
-import SearchResultEntityTag from 'client/slices/search/pages/search-results/SearchResultEntityTag';
+import SearchResultMetadataTag from 'client/slices/search/pages/search-results/SearchResultMetadataTag';
 
 import * as contract from 'client/features/multichain/utils/contract';
 
@@ -20,7 +20,7 @@ import highlightText from 'client/shared/text/highlight-text';
 import { ADDRESS_REGEXP } from 'toolkit/utils/regexp';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 
-type Props = ItemsProps<SearchResultAddressOrContract | SearchResultMetadataTag | multichain.QuickSearchResultAddress>;
+type Props = ItemsProps<SearchResultAddressOrContract | TSearchResultMetadataTag | multichain.QuickSearchResultAddress>;
 
 const SearchBarSuggestAddress = ({ data, isMobile, searchTerm, addressFormat }: Props) => {
   const shouldHighlightHash = ADDRESS_REGEXP.test(searchTerm);
@@ -80,7 +80,7 @@ const SearchBarSuggestAddress = ({ data, isMobile, searchTerm, addressFormat }: 
     </Flex>
   );
   const tagEl = data.type === 'metadata_tag' ? (
-    <SearchResultEntityTag metadata={ data.metadata } addressHash={ hash } searchTerm={ searchTerm } ml={{ base: 0, lg: 'auto' }}/>
+    <SearchResultMetadataTag metadata={ data.metadata } addressHash={ hash } searchTerm={ searchTerm } ml={{ base: 0, lg: 'auto' }}/>
   ) : null;
   const addressEl = <HashStringShortenDynamic hash={ hash } noTooltip/>;
 

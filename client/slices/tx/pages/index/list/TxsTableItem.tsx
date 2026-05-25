@@ -17,13 +17,14 @@ import TxStatus from 'client/slices/tx/components/TxStatus';
 import TxType from 'client/slices/tx/components/TxType';
 
 import TxWatchListTags from 'client/features/account/components/TxWatchListTags';
+import MetadataTag from 'client/features/address-metadata/components/tag/MetadataTag';
 import TxTranslationType from 'client/features/tx-interpretation/noves/components/TxTranslationType';
+
+import ChainIcon from 'client/shared/external-chains/ChainIcon';
 
 import config from 'configs/app';
 import { Badge } from 'toolkit/chakra/badge';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
-import EntityTag from 'ui/shared/EntityTags/EntityTag';
-import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
@@ -106,7 +107,7 @@ const TxsTableItem = ({
               <span>{ tx.method }</span>
             </Badge>
           ) }
-          { protocolTag && <EntityTag data={ protocolTag } isLoading={ isLoading } maxW="100%" noColors/> }
+          { protocolTag && <MetadataTag data={ protocolTag } isLoading={ isLoading } maxW="100%" noColors/> }
         </VStack>
       </TableCell>
       { showBlockInfo && (

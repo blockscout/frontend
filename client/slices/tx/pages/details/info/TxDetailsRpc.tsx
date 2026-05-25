@@ -8,18 +8,18 @@ import type { Chain, GetBlockReturnType, GetTransactionReturnType, TransactionRe
 import type { Transaction } from 'client/slices/tx/types/api';
 
 import { GET_BLOCK } from 'client/slices/block/stubs/rpc';
+import TestnetWarning from 'client/slices/chain/TestnetWarning';
 import type { TxQuery } from 'client/slices/tx/hooks/useTxQuery';
 import { GET_TRANSACTION, GET_TRANSACTION_RECEIPT, GET_TRANSACTION_CONFIRMATIONS } from 'client/slices/tx/stubs/rpc';
 import formatRpcData from 'client/slices/tx/utils/format-rpc-data';
 
 import { publicClient } from 'client/features/connect-wallet/utils/public-client';
 
+import ApiDegradationAlert from 'client/shared/api-degradation/ApiDegradationAlert';
+import isCustomAppError from 'client/shared/errors/is-custom-app-error';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 
 import { SECOND } from 'toolkit/utils/consts';
-import ServiceDegradationWarning from 'ui/shared/alerts/ServiceDegradationWarning';
-import TestnetWarning from 'ui/shared/alerts/TestnetWarning';
-import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
 import TxDetails from './TxDetails';
@@ -108,7 +108,7 @@ const TxDetailsRpc = ({ hash, txQuery }: Props) => {
     <>
       <Flex rowGap={{ base: 1, lg: 2 }} mb={{ base: 3, lg: 6 }} flexDir="column">
         <TestnetWarning isLoading={ query.isPlaceholderData }/>
-        { originalError?.status !== 404 && <ServiceDegradationWarning isLoading={ query.isPlaceholderData }/> }
+        { originalError?.status !== 404 && <ApiDegradationAlert isLoading={ query.isPlaceholderData }/> }
       </Flex>
       <TxDetails data={ query.data } isLoading={ query.isPlaceholderData } noTxActions/>
     </>

@@ -6,8 +6,9 @@ import React from 'react';
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 import type { ClusterChainConfig } from 'client/features/multichain/types/client';
 
+import ChainSnippetList from 'client/shared/external-chains/ChainSnippetList';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import ChainSnippetList from 'ui/shared/externalChains/ChainSnippetList';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 
 interface Props {

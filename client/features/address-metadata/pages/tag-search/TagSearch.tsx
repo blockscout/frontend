@@ -4,7 +4,9 @@ import { Box, chakra, Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { EntityTag as TEntityTag, EntityTagType } from 'ui/shared/EntityTags/types';
+import type { MetadataTag as TMetadataTag, MetadataTagType } from '../../components/tag/types';
+
+import PageTitle from 'client/shell/page/title/PageTitle';
 
 import { TOP_ADDRESS } from 'client/slices/address/stubs/address';
 
@@ -16,9 +18,8 @@ import getQueryParamString from 'client/shared/router/get-query-param-string';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import EntityTag from 'ui/shared/EntityTags/EntityTag';
-import PageTitle from 'ui/shared/Page/PageTitle';
 
+import MetadataTag from '../../components/tag/MetadataTag';
 import TagSearchListItem from './TagSearchListItem';
 import TagSearchTable from './TagSearchTable';
 
@@ -76,8 +77,8 @@ const TagSearch = () => {
 
     const num = data?.items.length || 0;
 
-    const tagData: TEntityTag = {
-      tagType: tagType as EntityTagType,
+    const tagData: TMetadataTag = {
+      tagType: tagType as MetadataTagType,
       slug,
       name: tagName || slug,
       ordinal: 0,
@@ -92,7 +93,7 @@ const TagSearch = () => {
           </chakra.span>{ ' ' }
           matching result{ num > 1 ? 's' : '' } for
         </Skeleton>
-        <EntityTag data={ tagData } isLoading={ isPlaceholderData } noLink/>
+        <MetadataTag data={ tagData } isLoading={ isPlaceholderData } noLink/>
       </Flex>
     );
   })();

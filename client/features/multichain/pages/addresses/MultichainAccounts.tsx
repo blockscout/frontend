@@ -4,6 +4,8 @@ import { Box } from '@chakra-ui/react';
 import { BigNumber } from 'bignumber.js';
 import React from 'react';
 
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import AddressesListItem from 'client/slices/address/pages/index/AddressesListItem';
 import AddressesTable from 'client/slices/address/pages/index/AddressesTable';
 import { TOP_ADDRESS } from 'client/slices/address/stubs/address';
@@ -18,7 +20,6 @@ import { generateListStub } from 'client/shared/pagination/utils';
 
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import PageTitle from 'ui/shared/Page/PageTitle';
 
 const MultichainAccounts = () => {
   const { isError, isPlaceholderData, data, pagination, chainValue, onChainValueChange } = useQueryWithPages({

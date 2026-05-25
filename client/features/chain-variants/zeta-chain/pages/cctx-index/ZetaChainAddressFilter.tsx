@@ -9,12 +9,13 @@ import type { ZetaChainCCTXFilterParams } from 'client/features/chain-variants/z
 
 import useZetaChainConfig from 'client/features/chain-variants/zeta-chain/hooks/useZetaChainConfig';
 
+import type { Props as ChainSelectBaseProps } from 'client/shared/external-chains/ChainSelect';
+import ChainSelectBase from 'client/shared/external-chains/ChainSelect';
+
 import { Input } from 'toolkit/chakra/input';
 import { InputGroup } from 'toolkit/chakra/input-group';
 import AddButton from 'toolkit/components/buttons/AddButton';
 import { ClearButton } from 'toolkit/components/buttons/ClearButton';
-import type { Props as ChainSelectBaseProps } from 'ui/shared/externalChains/ChainSelect';
-import ChainSelectBase from 'ui/shared/externalChains/ChainSelect';
 import TableColumnFilter from 'ui/shared/filters/TableColumnFilter';
 
 type Props = {

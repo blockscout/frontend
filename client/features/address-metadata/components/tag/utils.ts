@@ -1,12 +1,15 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { EntityTag } from './types';
+import type { MetadataTag } from './types';
 
 import { route } from 'nextjs/routes';
 
 import type { TMultichainContext } from 'client/features/multichain/context';
 
-export function getTagLinkParams(data: EntityTag, multichainContext?: TMultichainContext | null): { type: 'external' | 'internal'; href: string } | undefined {
+export function getTagLinkParams(
+  data: MetadataTag,
+  multichainContext?: TMultichainContext | null,
+): { type: 'external' | 'internal'; href: string } | undefined {
   if (data.meta?.warpcastHandle) {
     return {
       type: 'external',
@@ -29,7 +32,7 @@ export function getTagLinkParams(data: EntityTag, multichainContext?: TMultichai
   }
 }
 
-export function getTagName(data: EntityTag, addressHash?: string) {
+export function getTagName(data: MetadataTag, addressHash?: string) {
   if (data.tagType === 'name' && data.meta?.cexDeposit === 'true' && addressHash) {
     return `${ data.name } (${ addressHash.slice(0, 2 + 5) })`;
   }

@@ -7,6 +7,8 @@ import type { SmartContractVerificationMethodApi } from 'client/slices/contract/
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import ContractVerificationForm from 'client/slices/contract/pages/contract-verification/ContractVerificationForm';
 import useFormConfigQuery from 'client/slices/contract/pages/contract-verification/useFormConfigQuery';
@@ -17,7 +19,6 @@ import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import PageTitle from 'ui/shared/Page/PageTitle';
 
 const ContractVerificationForAddress = () => {
   const router = useRouter();

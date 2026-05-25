@@ -7,6 +7,8 @@ import type { MouseEvent } from 'react';
 import { MarketplaceCategory } from 'client/features/marketplace/types/client';
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import useGraphLinks from 'client/features/marketplace/hooks/useGraphLinks';
 
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
@@ -22,7 +24,6 @@ import { MenuContent, MenuItem, MenuRoot, MenuTrigger } from 'toolkit/chakra/men
 import AdaptiveTabs from 'toolkit/components/AdaptiveTabs/AdaptiveTabs';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import ActionBar from 'ui/shared/ActionBar';
-import PageTitle from 'ui/shared/Page/PageTitle';
 import Sort from 'ui/shared/sort/Sort';
 
 import useMarketplace from '../../hooks/useMarketplace';

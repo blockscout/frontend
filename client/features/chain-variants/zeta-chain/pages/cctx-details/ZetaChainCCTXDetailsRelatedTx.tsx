@@ -9,10 +9,10 @@ import TxEntityZetaChainCC from 'client/features/chain-variants/zeta-chain/compo
 import ZetaChainCCTXReducedStatus from 'client/features/chain-variants/zeta-chain/components/ZetaChainCCTXReducedStatus';
 import useZetaChainConfig from 'client/features/chain-variants/zeta-chain/hooks/useZetaChainConfig';
 
+import ChainIcon from 'client/shared/external-chains/ChainIcon';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 
 type Props = {
   tx: RelatedCctx;

@@ -7,6 +7,8 @@ import React from 'react';
 import type { TokenType } from 'client/slices/token/types/api';
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import TokenTypeFilter from 'client/slices/token/components/TokenTypeFilter';
 import useTokensQuery from 'client/slices/token/hooks/useTokensQuery';
 import TokensList from 'client/slices/token/pages/index/TokensList';
@@ -28,7 +30,6 @@ import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import ActionBar from 'ui/shared/ActionBar';
 import PopoverFilter from 'ui/shared/filters/PopoverFilter';
-import PageTitle from 'ui/shared/Page/PageTitle';
 import Sort from 'ui/shared/sort/Sort';
 
 const TAB_LIST_PROPS = {

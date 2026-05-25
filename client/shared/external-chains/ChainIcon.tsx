@@ -11,7 +11,7 @@ import { Image } from 'toolkit/chakra/image';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 
-import getChainTooltipText from './getChainTooltipText';
+import getChainTooltipText from './get-chain-tooltip-text';
 
 interface Props extends ImageProps {
   data: Omit<ExternalChain, 'explorer_url'> | undefined;

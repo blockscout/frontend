@@ -10,6 +10,8 @@ import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
 import { routeParams } from 'nextjs/routes';
 
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import BlockPendingUpdateAlert from 'client/slices/block/components/BlockPendingUpdateAlert';
 import * as BlockEntity from 'client/slices/block/components/entity/BlockEntity';
@@ -31,6 +33,7 @@ import BlockCeloEpochTag from 'client/features/chain-variants/celo/pages/block/B
 import useBlockBlobTxsQuery from 'client/features/data-availability/hooks/useBlockBlobTxsQuery';
 import { useMultichainContext } from 'client/features/multichain/context';
 
+import ApiDegradationAlert from 'client/shared/api-degradation/ApiDegradationAlert';
 import throwOnAbsentParamError from 'client/shared/errors/throw-on-absent-param-error';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
@@ -40,8 +43,6 @@ import getQueryParamString from 'client/shared/router/get-query-param-string';
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import ServiceDegradationWarning from 'ui/shared/alerts/ServiceDegradationWarning';
-import PageTitle from 'ui/shared/Page/PageTitle';
 
 const TAB_LIST_PROPS = {
   marginBottom: 0,
@@ -82,7 +83,7 @@ const BlockPageContent = () => {
       component: (
         <>
           <Flex rowGap={{ base: 1, lg: 2 }} mb={{ base: 3, lg: 6 }} flexDir="column">
-            { blockQuery.isDegradedData && <ServiceDegradationWarning isLoading={ blockQuery.isPlaceholderData }/> }
+            { blockQuery.isDegradedData && <ApiDegradationAlert isLoading={ blockQuery.isPlaceholderData }/> }
             { blockQuery.data?.is_pending_update && <BlockPendingUpdateAlert/> }
           </Flex>
           <BlockDetails query={ blockQuery }/>
@@ -94,7 +95,7 @@ const BlockPageContent = () => {
       title: 'Transactions',
       component: (
         <>
-          { blockTxsQuery.isDegradedData && <ServiceDegradationWarning isLoading={ blockTxsQuery.isPlaceholderData } mb={{ base: 3, lg: 6 }}/> }
+          { blockTxsQuery.isDegradedData && <ApiDegradationAlert isLoading={ blockTxsQuery.isPlaceholderData } mb={{ base: 3, lg: 6 }}/> }
           <TxsWithFrontendSorting query={ blockTxsQuery } showBlockInfo={ false } top={ hasPagination ? TABS_HEIGHT : 0 }/>
         </>
       ),
@@ -104,7 +105,7 @@ const BlockPageContent = () => {
       title: 'Internal txns',
       component: (
         <>
-          { blockTxsQuery.isDegradedData && <ServiceDegradationWarning isLoading={ blockTxsQuery.isPlaceholderData } mb={{ base: 3, lg: 6 }}/> }
+          { blockTxsQuery.isDegradedData && <ApiDegradationAlert isLoading={ blockTxsQuery.isPlaceholderData } mb={{ base: 3, lg: 6 }}/> }
           <BlockInternalTxs query={ blockInternalTxsQuery } top={ hasPagination ? TABS_HEIGHT : 0 }/>
         </>
       ),
@@ -123,7 +124,7 @@ const BlockPageContent = () => {
         title: 'Deposits',
         component: (
           <>
-            { blockDepositsQuery.isDegradedData && <ServiceDegradationWarning isLoading={ blockDepositsQuery.isPlaceholderData } mb={{ base: 3, lg: 6 }}/> }
+            { blockDepositsQuery.isDegradedData && <ApiDegradationAlert isLoading={ blockDepositsQuery.isPlaceholderData } mb={{ base: 3, lg: 6 }}/> }
             <BlockDeposits blockDepositsQuery={ blockDepositsQuery }/>
           </>
         ),
@@ -135,7 +136,7 @@ const BlockPageContent = () => {
         component: (
           <>
             { blockWithdrawalsQuery.isDegradedData &&
-              <ServiceDegradationWarning isLoading={ blockWithdrawalsQuery.isPlaceholderData } mb={{ base: 3, lg: 6 }}/> }
+              <ApiDegradationAlert isLoading={ blockWithdrawalsQuery.isPlaceholderData } mb={{ base: 3, lg: 6 }}/> }
             <BlockWithdrawals blockWithdrawalsQuery={ blockWithdrawalsQuery }/>
           </>
         ),

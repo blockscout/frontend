@@ -6,6 +6,8 @@ import React from 'react';
 
 import type { TokenType } from 'client/slices/token/types/api';
 
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import TokenTypeFilter from 'client/slices/token/components/TokenTypeFilter';
 import Tokens from 'client/slices/token/pages/index/TokensList';
 import { getTokenFilterValue } from 'client/slices/token/utils/list-utils';
@@ -24,7 +26,6 @@ import multichainConfig from 'configs/multichain';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import ActionBar from 'ui/shared/ActionBar';
 import PopoverFilter from 'ui/shared/filters/PopoverFilter';
-import PageTitle from 'ui/shared/Page/PageTitle';
 
 const getChainIdFilterValue = (chainIds: Array<string>) => {
   return chainIds.includes('all') ? undefined : chainIds.filter(Boolean);

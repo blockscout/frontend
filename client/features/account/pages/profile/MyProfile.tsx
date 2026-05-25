@@ -5,6 +5,8 @@ import React from 'react';
 
 import type { Screen } from 'client/features/account/components/auth-modal/types';
 
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import AccountPageDescription from 'client/features/account/components/AccountPageDescription';
 import AuthModal from 'client/features/account/components/auth-modal/AuthModal';
 import useProfileQuery from 'client/features/account/hooks/useProfileQuery';
@@ -14,7 +16,6 @@ import config from 'configs/app';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import PageTitle from 'ui/shared/Page/PageTitle';
 
 import MyProfileEmail from './MyProfileEmail';
 import MyProfileWallet from './MyProfileWallet';

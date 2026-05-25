@@ -3,6 +3,8 @@
 import { Box, createListCollection, HStack } from '@chakra-ui/react';
 import React from 'react';
 
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import useVerifiedContractsQuery from 'client/slices/contract/hooks/useVerifiedContractsQuery';
 import { SORT_OPTIONS } from 'client/slices/contract/pages/index/sort';
 import VerifiedContractsCounters from 'client/slices/contract/pages/index/VerifiedContractsCounters';
@@ -19,7 +21,6 @@ import Pagination from 'client/shared/pagination/Pagination';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import PageTitle from 'ui/shared/Page/PageTitle';
 import Sort from 'ui/shared/sort/Sort';
 
 const sortCollection = createListCollection({

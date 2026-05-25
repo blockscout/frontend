@@ -11,12 +11,12 @@ import ContractCertifiedLabel from 'client/slices/contract/components/ContractCe
 import { formatLanguageName } from 'client/slices/contract/utils/language';
 import { CONTRACT_LICENSES } from 'client/slices/contract/utils/licenses';
 
+import ChainIcon from 'client/shared/external-chains/ChainIcon';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import ChainIcon from 'ui/shared/externalChains/ChainIcon';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 

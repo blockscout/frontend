@@ -3,6 +3,8 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import ChainSelect from 'client/features/multichain/components/ChainSelect';
 import { MultichainProvider } from 'client/features/multichain/context';
 import UserOpsListItem from 'client/features/user-ops/pages/index/UserOpsListItem';
@@ -16,7 +18,6 @@ import { generateListStub } from 'client/shared/pagination/utils';
 import multichainConfig from 'configs/multichain';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import PageTitle from 'ui/shared/Page/PageTitle';
 
 const MultichainUserOps = () => {
 

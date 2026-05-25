@@ -18,12 +18,12 @@ import useAddress3rdPartyWidgets from 'client/features/address-3rd-party-widgets
 import AddressCeloAccount from 'client/features/chain-variants/celo/pages/address/AddressCeloAccount';
 import FilecoinActorTag from 'client/features/chain-variants/filecoin/pages/address/FilecoinActorTag';
 
+import ApiDegradationAlert from 'client/shared/api-degradation/ApiDegradationAlert';
+import isCustomAppError from 'client/shared/errors/is-custom-app-error';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import config from 'configs/app';
-import ServiceDegradationWarning from 'ui/shared/alerts/ServiceDegradationWarning';
-import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
@@ -94,7 +94,7 @@ const AddressDetails = ({ addressQuery, countersQuery, isLoading }: Props) => {
 
   return (
     <>
-      { addressQuery.isDegradedData && <ServiceDegradationWarning isLoading={ isLoading } mb={ 6 }/> }
+      { addressQuery.isDegradedData && <ApiDegradationAlert isLoading={ isLoading } mb={ 6 }/> }
       <DetailedInfo.Container>
 
         { data.celo?.account && (

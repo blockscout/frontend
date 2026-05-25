@@ -9,8 +9,9 @@ import type { HotContract } from 'client/features/hot-contracts/types/api';
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import { Reputation } from 'client/slices/token/components/entity/TokenEntity';
 
+import MetadataTags from 'client/features/address-metadata/components/tag/MetadataTags';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import EntityTags from 'ui/shared/EntityTags/EntityTags';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
@@ -33,7 +34,7 @@ const HotContractsListItem = ({ data, isLoading, exchangeRate }: Props) => {
         <Reputation value={ data.contract_address.reputation ?? null }/>
       </HStack>
       { protocolTags && protocolTags.length > 0 && (
-        <EntityTags
+        <MetadataTags
           isLoading={ isLoading }
           tags={ protocolTags }
           noColors

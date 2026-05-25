@@ -19,10 +19,10 @@ import TxStatus from 'client/slices/tx/components/TxStatus';
 import TxType from 'client/slices/tx/components/TxType';
 
 import TxWatchListTags from 'client/features/account/components/TxWatchListTags';
+import MetadataTag from 'client/features/address-metadata/components/tag/MetadataTag';
 
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import EntityTag from 'ui/shared/EntityTags/EntityTag';
 import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
@@ -49,7 +49,7 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
           <TxType types={ tx.transaction_types } isLoading={ isLoading }/>
           { tx.status !== 'ok' && <TxStatus status={ tx.status } errorText={ tx.status === 'error' ? tx.result : undefined } isLoading={ isLoading }/> }
           <TxWatchListTags tx={ tx } isLoading={ isLoading }/>
-          { protocolTag && <EntityTag data={ protocolTag } isLoading={ isLoading } minW="0" noColors/> }
+          { protocolTag && <MetadataTag data={ protocolTag } isLoading={ isLoading } minW="0" noColors/> }
         </HStack>
         <TxAdditionalInfo tx={ tx } isMobile isLoading={ isLoading }/>
       </Flex>

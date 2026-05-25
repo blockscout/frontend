@@ -6,6 +6,8 @@ import React from 'react';
 import type { TokenType } from 'client/slices/token/types/api';
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import useTokenTransfersQuery from 'client/slices/token-transfer/hooks/useTokenTransfersQuery';
 import TokenTypeFilter from 'client/slices/token/components/TokenTypeFilter';
 import { getTokenFilterValue } from 'client/slices/token/utils/list-utils';
@@ -21,7 +23,6 @@ import multichainConfig from 'configs/multichain';
 import { EmptyState } from 'toolkit/chakra/empty-state';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import PopoverFilter from 'ui/shared/filters/PopoverFilter';
-import PageTitle from 'ui/shared/Page/PageTitle';
 
 import MultichainTokenTransfersLocal from './MultichainTokenTransfersLocal';
 

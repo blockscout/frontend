@@ -41,7 +41,7 @@ import { ADDRESS_REGEXP } from 'toolkit/utils/regexp';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import Time from 'ui/shared/time/Time';
 
-import SearchResultEntityTag from './SearchResultEntityTag';
+import SearchResultMetadataTag from './SearchResultMetadataTag';
 
 interface Props {
   data: SearchResultItem | SearchResultAppItem;
@@ -177,7 +177,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
             ) }
             { data.type === 'metadata_tag' && (
               <TableCell colSpan={ addressName ? 1 : 2 } verticalAlign="middle" textAlign="right">
-                <SearchResultEntityTag metadata={ data.metadata } addressHash={ hash } searchTerm={ searchTerm }/>
+                <SearchResultMetadataTag metadata={ data.metadata } addressHash={ hash } searchTerm={ searchTerm }/>
               </TableCell>
             ) }
           </>

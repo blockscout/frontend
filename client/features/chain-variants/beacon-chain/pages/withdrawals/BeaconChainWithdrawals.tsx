@@ -6,6 +6,8 @@ import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import { currencyUnits } from 'client/slices/chain/units';
 
 import StickyPaginationWithText from 'client/shared/pagination/StickyPaginationWithText';
@@ -16,7 +18,6 @@ import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import PageTitle from 'ui/shared/Page/PageTitle';
 import calculateUsdValue from 'ui/shared/value/calculateUsdValue';
 
 import { WITHDRAWAL } from '../../stubs/withdrawals';

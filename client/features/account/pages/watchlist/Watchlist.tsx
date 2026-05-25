@@ -9,6 +9,8 @@ import type { WatchlistAddress, WatchlistResponse } from 'client/features/accoun
 import { getResourceKey } from 'client/api/hooks/useApiQuery';
 import { resourceKey } from 'client/api/resources';
 
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import AccountPageDescription from 'client/features/account/components/AccountPageDescription';
 import useProfileQuery from 'client/features/account/hooks/useProfileQuery';
 import useRedirectForInvalidAuthToken from 'client/features/account/hooks/useRedirectForInvalidAuthToken';
@@ -22,7 +24,6 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import PageTitle from 'ui/shared/Page/PageTitle';
 
 import AddressModal from './AddressModal/AddressModal';
 import DeleteAddressModal from './DeleteAddressModal';

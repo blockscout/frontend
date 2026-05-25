@@ -3,7 +3,7 @@
 import type { HTMLChakraProps } from '@chakra-ui/react';
 import React from 'react';
 
-import type { EntityTag as TEntityTag } from './types';
+import type { MetadataTag as TMetadataTag } from './types';
 
 import { useMultichainContext } from 'client/features/multichain/context';
 
@@ -13,19 +13,19 @@ import { Link, LinkExternalIcon } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tag } from 'toolkit/chakra/tag';
 
-import EntityTagIcon from './EntityTagIcon';
-import EntityTagTooltip from './EntityTagTooltip';
+import MetadataTagIcon from './MetadataTagIcon';
+import MetadataTagTooltip from './MetadataTagTooltip';
 import { getTagName, getTagLinkParams } from './utils';
 
 interface Props extends HTMLChakraProps<'span'> {
-  data: TEntityTag;
+  data: TMetadataTag;
   addressHash?: string;
   isLoading?: boolean;
   noLink?: boolean;
   noColors?: boolean;
 }
 
-const EntityTag = ({ data, addressHash, isLoading, noLink, noColors, ...rest }: Props) => {
+const MetadataTag = ({ data, addressHash, isLoading, noLink, noColors, ...rest }: Props) => {
   const multichainContext = useMultichainContext();
 
   const linkParams = !noLink ? getTagLinkParams(data, multichainContext) : undefined;
@@ -57,7 +57,7 @@ const EntityTag = ({ data, addressHash, isLoading, noLink, noColors, ...rest }: 
   })();
 
   return (
-    <EntityTagTooltip data={ data }>
+    <MetadataTagTooltip data={ data }>
       <Link
         external={ linkParams?.type === 'external' }
         href={ linkParams?.href }
@@ -69,7 +69,7 @@ const EntityTag = ({ data, addressHash, isLoading, noLink, noColors, ...rest }: 
         <Tag
           bg={ !noColors ? data.meta?.bgColor : undefined }
           color={ !noColors ? data.meta?.textColor : undefined }
-          startElement={ <EntityTagIcon data={ data } noColors={ noColors }/> }
+          startElement={ <MetadataTagIcon data={ data } noColors={ noColors }/> }
           truncated
           endElement={ linkParams?.type === 'external' ? <LinkExternalIcon color={ iconColor }/> : null }
           endElementProps={ linkParams?.type === 'external' ? { ml: -1 } : undefined }
@@ -79,8 +79,8 @@ const EntityTag = ({ data, addressHash, isLoading, noLink, noColors, ...rest }: 
           { text }
         </Tag>
       </Link>
-    </EntityTagTooltip>
+    </MetadataTagTooltip>
   );
 };
 
-export default React.memo(EntityTag);
+export default React.memo(MetadataTag);

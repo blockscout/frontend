@@ -4,12 +4,13 @@ import React from 'react';
 
 import type { AddressMetadataTagApi } from 'client/features/address-metadata/types/api';
 
+import MetadataTagIcon from 'client/features/address-metadata/components/tag/MetadataTagIcon';
+import { getTagName } from 'client/features/address-metadata/components/tag/utils';
+
 import highlightText from 'client/shared/text/highlight-text';
 
 import type { TagProps } from 'toolkit/chakra/tag';
 import { Tag } from 'toolkit/chakra/tag';
-import EntityTagIcon from 'ui/shared/EntityTags/EntityTagIcon';
-import { getTagName } from 'ui/shared/EntityTags/utils';
 
 interface Props extends TagProps {
   metadata: AddressMetadataTagApi;
@@ -17,17 +18,17 @@ interface Props extends TagProps {
   addressHash?: string;
 }
 
-const SearchResultEntityTag = ({ metadata, searchTerm, addressHash, ...rest }: Props) => {
+const SearchResultMetadataTag = ({ metadata, searchTerm, addressHash, ...rest }: Props) => {
   const name = getTagName(metadata, addressHash);
 
   return (
     <Tag
       { ...rest }
-      startElement={ <EntityTagIcon data={ metadata } noColors/> }
+      startElement={ <MetadataTagIcon data={ metadata } noColors/> }
     >
       <span dangerouslySetInnerHTML={{ __html: highlightText(name, searchTerm) }}/>
     </Tag>
   );
 };
 
-export default React.memo(SearchResultEntityTag);
+export default React.memo(SearchResultMetadataTag);

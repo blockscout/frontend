@@ -3,7 +3,7 @@
 import { Box, chakra, Flex, Separator } from '@chakra-ui/react';
 import React from 'react';
 
-import type { EntityTag } from './types';
+import type { MetadataTag } from './types';
 
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 
@@ -13,7 +13,7 @@ import { Tooltip } from 'toolkit/chakra/tooltip';
 import { makePrettyLink } from 'toolkit/utils/url';
 
 interface Props {
-  data: EntityTag;
+  data: MetadataTag;
   children: React.ReactNode;
 }
 

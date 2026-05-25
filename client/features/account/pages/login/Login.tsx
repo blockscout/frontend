@@ -5,6 +5,8 @@ import mixpanel from 'mixpanel-browser';
 import type { ChangeEvent } from 'react';
 import React from 'react';
 
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import useFeatureValue from 'client/shared/feature-flags/useFeatureValue';
 import { useRollbar } from 'client/shared/monitoring/rollbar';
 import useGradualIncrement from 'client/shared/numbers/useGradualIncrement';
@@ -15,7 +17,6 @@ import { Alert } from 'toolkit/chakra/alert';
 import { Button } from 'toolkit/chakra/button';
 import { Textarea } from 'toolkit/chakra/textarea';
 import { toaster } from 'toolkit/chakra/toaster';
-import PageTitle from 'ui/shared/Page/PageTitle';
 
 const Login = () => {
   const rollbar = useRollbar();

@@ -3,6 +3,8 @@
 import { Flex } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import useRedirectForInvalidAuthToken from 'client/features/account/hooks/useRedirectForInvalidAuthToken';
 import AdBanner from 'client/features/ads/banner/components/AdBanner';
 import { useRewardsContext } from 'client/features/rewards/context';
@@ -17,7 +19,6 @@ import { Link } from 'toolkit/chakra/link';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import { apos } from 'toolkit/utils/htmlEntities';
-import PageTitle from 'ui/shared/Page/PageTitle';
 
 import DailyRewardClaimButton from './DailyRewardClaimButton';
 import RewardsDashboardCard from './RewardsDashboardCard';

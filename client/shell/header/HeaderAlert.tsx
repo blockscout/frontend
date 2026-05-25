@@ -6,8 +6,9 @@ import React from 'react';
 
 import IndexingStatusBlocks from 'client/slices/chain/indexing-status/IndexingStatusBlocks';
 
+import AlertWithExternalHtml from 'client/shared/alerts/AlertWithExternalHtml';
+
 import config from 'configs/app';
-import AlertWithExternalHtml from 'ui/shared/alerts/AlertWithExternalHtml';
 
 const maintenanceAlertHtml = config.UI.maintenanceAlert.message || '';
 

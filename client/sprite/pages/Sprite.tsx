@@ -7,13 +7,14 @@ import React from 'react';
 
 import useFetch from 'client/api/hooks/useFetch';
 
+import PageTitle from 'client/shell/page/title/PageTitle';
+
 import { EmptyState } from 'toolkit/chakra/empty-state';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 import { useClipboard } from 'toolkit/hooks/useClipboard';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import PageTitle from 'ui/shared/Page/PageTitle';
 
 import type { IconName } from '../SpriteIcon';
 import SpriteIcon from '../SpriteIcon';

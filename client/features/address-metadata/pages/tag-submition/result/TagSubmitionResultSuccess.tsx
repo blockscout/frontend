@@ -7,7 +7,7 @@ import type { FormSubmitResultGrouped } from '../types';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 
-import EntityTag from 'ui/shared/EntityTags/EntityTag';
+import MetadataTag from '../../../components/tag/MetadataTag';
 
 interface Props {
   data: FormSubmitResultGrouped;
@@ -38,7 +38,7 @@ const TagSubmitionResultSuccess = ({ data }: Props) => {
             .map(({ tags }) => tags)
             .flat()
             .map((tag) => (
-              <EntityTag
+              <MetadataTag
                 key={ tag.name }
                 maxW={{ base: '100%', lg: '300px' }}
                 data={{
