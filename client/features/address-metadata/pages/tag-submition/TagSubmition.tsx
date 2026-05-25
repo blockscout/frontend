@@ -10,8 +10,9 @@ import PageTitle from 'client/shell/page/title/PageTitle';
 
 import useProfileQuery from 'client/features/account/hooks/useProfileQuery';
 
+import ApiFetchAlert from 'client/shared/alerts/ApiFetchAlert';
+
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
-import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
 import TagSubmitionForm from './TagSubmitionForm';
 import TagSubmitionResult from './TagSubmitionResult';
@@ -42,7 +43,7 @@ const TagSubmition = () => {
       case 'initializing':
         return <ContentLoader/>;
       case 'error':
-        return <DataFetchAlert/>;
+        return <ApiFetchAlert/>;
       case 'form':
         return <TagSubmitionForm config={ configQuery.data } onSubmitResult={ handleFormSubmitResult } userInfo={ profileQuery.data }/>;
       case 'result':

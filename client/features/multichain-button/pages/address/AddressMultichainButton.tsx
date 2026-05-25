@@ -7,7 +7,7 @@ import type { MultichainProviderConfigParsed } from 'client/features/multichain-
 
 import { route } from 'nextjs-routes';
 
-import TextSeparator from 'client/shared/text/TextSeparator';
+import TextSeparator from 'client/shared/texts/TextSeparator';
 
 import { Image } from 'toolkit/chakra/image';
 import { Link } from 'toolkit/chakra/link';

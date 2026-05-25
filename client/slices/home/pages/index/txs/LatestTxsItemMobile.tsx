@@ -22,10 +22,10 @@ import TxWatchListTags from 'client/features/account/components/TxWatchListTags'
 import MetadataTag from 'client/features/address-metadata/components/tag/MetadataTag';
 
 import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
+import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
 
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 type Props = {
   tx: Transaction;

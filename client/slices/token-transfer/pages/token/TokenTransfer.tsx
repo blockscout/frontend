@@ -13,6 +13,8 @@ import * as SocketNewItemsNotice from 'client/api/socket/SocketNewItemsNotice';
 import useSocketChannel from 'client/api/socket/useSocketChannel';
 import useSocketMessage from 'client/api/socket/useSocketMessage';
 
+import ActionBar from 'client/shell/page/action-bar/ActionBar';
+
 import TokenTransferList from 'client/slices/token-transfer/pages/token/TokenTransferList';
 import TokenTransferTable from 'client/slices/token-transfer/pages/token/TokenTransferTable';
 
@@ -24,8 +26,6 @@ import DataList from 'client/shared/lists/DataList';
 import useGradualIncrement from 'client/shared/numbers/useGradualIncrement';
 import Pagination from 'client/shared/pagination/Pagination';
 import type { QueryWithPagesResult } from 'client/shared/pagination/useQueryWithPages';
-
-import ActionBar from 'ui/shared/ActionBar';
 
 const TABS_HEIGHT = 88;
 

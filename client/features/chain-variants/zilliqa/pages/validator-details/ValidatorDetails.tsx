@@ -9,13 +9,13 @@ import AddressEntity from 'client/slices/address/components/entity/AddressEntity
 import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
 import NativeTokenIcon from 'client/slices/token/components/icon/TokenIconNative';
 
-import CopyToClipboard from 'client/shared/text/CopyToClipboard';
-import HashStringShortenDynamic from 'client/shared/text/HashStringShortenDynamic';
+import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
+import DetailedInfoSponsoredItem from 'client/shared/detailed-info/DetailedInfoSponsoredItem';
+import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
+import HashStringShortenDynamic from 'client/shared/texts/HashStringShortenDynamic';
+import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import DetailedInfoSponsoredItem from 'ui/shared/DetailedInfo/DetailedInfoSponsoredItem';
-import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 interface Props {
   data: ValidatorZilliqa;

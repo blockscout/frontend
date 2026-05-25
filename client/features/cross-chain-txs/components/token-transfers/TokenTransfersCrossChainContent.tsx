@@ -6,9 +6,9 @@ import React from 'react';
 import type { InterchainTransfer } from '@blockscout/interchain-indexer-types';
 import type { PaginationParams } from 'client/shared/pagination/types';
 
-import DataList, { type Props as DataListProps } from 'client/shared/lists/DataList';
+import { ACTION_BAR_HEIGHT_DESKTOP } from 'client/shell/page/action-bar/ActionBar';
 
-import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
+import DataList, { type Props as DataListProps } from 'client/shared/lists/DataList';
 
 import TokenTransfersCrossChainListItem from './TokenTransfersCrossChainListItem';
 import TokenTransfersCrossChainTable from './TokenTransfersCrossChainTable';

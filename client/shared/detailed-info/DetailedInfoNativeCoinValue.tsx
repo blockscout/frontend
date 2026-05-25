@@ -2,8 +2,8 @@
 
 import React from 'react';
 
-import type { Props as NativeCoinValueProps } from 'ui/shared/value/NativeCoinValue';
-import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
+import type { Props as NativeCoinValueProps } from 'client/shared/values/entity/NativeCoinValue';
+import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
 
 import { ItemValue } from './DetailedInfo';
 

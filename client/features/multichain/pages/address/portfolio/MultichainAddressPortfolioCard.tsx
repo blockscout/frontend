@@ -8,11 +8,11 @@ import React from 'react';
 import type { ClusterChainConfig } from 'client/features/multichain/types/client';
 
 import ChainIcon from 'client/shared/external-chains/ChainIcon';
+import SimpleValue from 'client/shared/values/entity/SimpleValue';
+import { DEFAULT_ACCURACY_USD } from 'client/shared/values/entity/utils';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
-import SimpleValue from 'ui/shared/value/SimpleValue';
-import { DEFAULT_ACCURACY_USD } from 'ui/shared/value/utils';
 
 import { formatPercentage } from './utils';
 

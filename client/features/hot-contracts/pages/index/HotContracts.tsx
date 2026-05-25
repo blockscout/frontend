@@ -8,6 +8,7 @@ import type { HotContractsInterval, HotContractsSorting, HotContractsSortingFiel
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import ActionBar from 'client/shell/page/action-bar/ActionBar';
 import PageTitle from 'client/shell/page/title/PageTitle';
 
 import { HOMEPAGE_STATS } from 'client/slices/home/stubs';
@@ -26,7 +27,6 @@ import getSortValueFromQuery from 'client/shared/sort/get-sort-value-from-query'
 import Sort from 'client/shared/sort/Sort';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import ActionBar from 'ui/shared/ActionBar';
 
 const sortCollection = createListCollection({
   items: SORT_OPTIONS,

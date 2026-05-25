@@ -3,7 +3,7 @@
 import { Box, HStack, Flex } from '@chakra-ui/react';
 import React from 'react';
 
-import CopyToClipboard from 'client/shared/text/CopyToClipboard';
+import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';

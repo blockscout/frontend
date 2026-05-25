@@ -4,7 +4,7 @@ import type { BoxProps, HTMLChakraProps } from '@chakra-ui/react';
 import { Box, Flex, chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import CopyToClipboard from 'client/shared/text/CopyToClipboard';
+import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
 

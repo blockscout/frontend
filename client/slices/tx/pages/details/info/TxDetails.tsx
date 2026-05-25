@@ -43,9 +43,17 @@ import ZkSyncL2TxnBatchHashesInfo from 'client/features/rollup/zk-sync/pages/bat
 import { formatZkSyncL2TxnBatchStatus } from 'client/features/rollup/zk-sync/utils/format-txn-batch-status';
 import TxDetailsActions from 'client/features/tx-actions/pages/tx/TxDetailsActions';
 
+import RawInputData from 'client/shared/data/RawInputData';
+import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
+import DetailedInfoNativeCoinValue from 'client/shared/detailed-info/DetailedInfoNativeCoinValue';
+import DetailedInfoSponsoredItem from 'client/shared/detailed-info/DetailedInfoSponsoredItem';
+import DetailedInfoTimestamp from 'client/shared/detailed-info/DetailedInfoTimestamp';
 import VerificationSteps from 'client/shared/lifecycle/steps/VerificationSteps';
 import StatusTag from 'client/shared/tags/status-tag/StatusTag';
-import TextSeparator from 'client/shared/text/TextSeparator';
+import TextSeparator from 'client/shared/texts/TextSeparator';
+import GasPriceValue from 'client/shared/values/entity/GasPriceValue';
+import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
+import Utilization from 'client/shared/values/utilization/Utilization';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import config from 'configs/app';
@@ -54,14 +62,6 @@ import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import DetailedInfoNativeCoinValue from 'ui/shared/DetailedInfo/DetailedInfoNativeCoinValue';
-import DetailedInfoSponsoredItem from 'ui/shared/DetailedInfo/DetailedInfoSponsoredItem';
-import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
-import RawInputData from 'ui/shared/RawInputData';
-import Utilization from 'ui/shared/Utilization/Utilization';
-import GasPriceValue from 'ui/shared/value/GasPriceValue';
-import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 import TxDetailsBurntFees from './parts/TxDetailsBurntFees';
 import TxDetailsFeePerGas from './parts/TxDetailsFeePerGas';

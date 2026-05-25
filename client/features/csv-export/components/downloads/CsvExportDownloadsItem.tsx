@@ -9,7 +9,7 @@ import { useInView } from 'react-intersection-observer';
 import { getResourceKey } from 'client/api/hooks/useApiQuery';
 
 import dayjs from 'client/shared/date-and-time/dayjs';
-import shortenString from 'client/shared/text/shorten-string';
+import shortenString from 'client/shared/texts/shorten-string';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import config from 'configs/app';

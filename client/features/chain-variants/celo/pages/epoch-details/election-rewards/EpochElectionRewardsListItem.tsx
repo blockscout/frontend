@@ -7,12 +7,12 @@ import type { CeloEpochElectionReward, CeloEpochDetails } from 'client/features/
 
 import EpochRewardTypeTag from 'client/features/chain-variants/celo/components/EpochRewardTypeTag';
 
+import TokenValue from 'client/shared/values/entity/TokenValue';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
-import TokenValue from 'ui/shared/value/TokenValue';
 
 import EpochElectionRewardDetailsMobile from './EpochElectionRewardDetailsMobile';
 import { getRewardNumText } from './utils';

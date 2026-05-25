@@ -7,11 +7,11 @@ import type { ArbitrumL2TxnBatchDACelestia } from '../../types/api';
 
 import CeleniumLink from 'client/features/rollup/common/components/CeleniumLink';
 
-import CopyToClipboard from 'client/shared/text/CopyToClipboard';
-import HashStringShortenDynamic from 'client/shared/text/HashStringShortenDynamic';
+import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
+import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
+import HashStringShortenDynamic from 'client/shared/texts/HashStringShortenDynamic';
 
 import config from 'configs/app';
-import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 
 const feature = config.features.rollup;
 

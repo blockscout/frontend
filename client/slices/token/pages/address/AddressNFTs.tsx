@@ -5,14 +5,14 @@ import React from 'react';
 
 import type { NFTTokenType } from 'client/slices/token/types/api';
 
+import ActionBar from 'client/shell/page/action-bar/ActionBar';
+
 import { useMultichainContext } from 'client/features/multichain/context';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import DataList from 'client/shared/lists/DataList';
 import Pagination from 'client/shared/pagination/Pagination';
 import type { QueryWithPagesResult } from 'client/shared/pagination/useQueryWithPages';
-
-import ActionBar from 'ui/shared/ActionBar';
 
 import AddressNftTypeFilter from './AddressNftTypeFilter';
 import NFTItem from './NFTItem';

@@ -8,7 +8,7 @@ import { route } from 'nextjs-routes';
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 
 import LinkNewTab from 'client/shared/links/LinkNewTab';
-import CopyToClipboard from 'client/shared/text/CopyToClipboard';
+import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
 
 import { Select } from 'toolkit/chakra/select';
 import { Skeleton } from 'toolkit/chakra/skeleton';

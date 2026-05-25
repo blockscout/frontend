@@ -8,6 +8,8 @@ import type { TokenInfo } from 'client/slices/token/types/api';
 
 import type { ResourceError } from 'client/api/resources';
 
+import ActionBar from 'client/shell/page/action-bar/ActionBar';
+
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
 
@@ -17,8 +19,6 @@ import useIsMounted from 'client/shared/hooks/useIsMounted';
 import DataList from 'client/shared/lists/DataList';
 import Pagination from 'client/shared/pagination/Pagination';
 import type { QueryWithPagesResult } from 'client/shared/pagination/useQueryWithPages';
-
-import ActionBar from 'ui/shared/ActionBar';
 
 import TokenInventoryItem from './TokenInventoryItem';
 

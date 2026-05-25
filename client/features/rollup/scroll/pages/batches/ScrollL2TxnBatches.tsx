@@ -5,6 +5,7 @@ import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import { ACTION_BAR_HEIGHT_DESKTOP } from 'client/shell/page/action-bar/ActionBar';
 import PageTitle from 'client/shell/page/title/PageTitle';
 
 import { SCROLL_L2_TXN_BATCH } from 'client/features/rollup/scroll/stubs';
@@ -15,7 +16,6 @@ import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 
 import ScrollL2TxnBatchesListItem from './ScrollL2TxnBatchesListItem';
 import ScrollL2TxnBatchesTable from './ScrollL2TxnBatchesTable';

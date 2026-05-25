@@ -3,7 +3,7 @@
 import { Text } from '@chakra-ui/react';
 import React from 'react';
 
-import CopyToClipboard from 'client/shared/text/CopyToClipboard';
+import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
 
 import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';

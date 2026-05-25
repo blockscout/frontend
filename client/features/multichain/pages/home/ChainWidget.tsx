@@ -13,7 +13,7 @@ import useProvider from 'client/features/web3-wallet/hooks/useProvider';
 
 import ChainIcon from 'client/shared/external-chains/ChainIcon';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
-import CopyToClipboard from 'client/shared/text/CopyToClipboard';
+import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { Heading } from 'toolkit/chakra/heading';

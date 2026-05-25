@@ -7,6 +7,8 @@ import type { NFTTokenType } from 'client/slices/token/types/api';
 
 import { route } from 'nextjs/routes';
 
+import ActionBar from 'client/shell/page/action-bar/ActionBar';
+
 import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 import NftFallback from 'client/slices/token/components/nft-media/NftFallback';
 
@@ -19,7 +21,6 @@ import type { QueryWithPagesResult } from 'client/shared/pagination/useQueryWith
 
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import ActionBar from 'ui/shared/ActionBar';
 
 import AddressNftTypeFilter from './AddressNftTypeFilter';
 import NFTItem from './NFTItem';

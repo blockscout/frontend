@@ -6,6 +6,7 @@ import React from 'react';
 
 import type { MetadataTag as TMetadataTag, MetadataTagType } from '../../components/tag/types';
 
+import { ACTION_BAR_HEIGHT_DESKTOP } from 'client/shell/page/action-bar/ActionBar';
 import PageTitle from 'client/shell/page/title/PageTitle';
 
 import { TOP_ADDRESS } from 'client/slices/address/stubs/address';
@@ -17,7 +18,6 @@ import { generateListStub } from 'client/shared/pagination/utils';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 
 import MetadataTag from '../../components/tag/MetadataTag';
 import TagSearchListItem from './TagSearchListItem';

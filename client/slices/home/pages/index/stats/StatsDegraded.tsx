@@ -15,9 +15,9 @@ import { publicClient } from 'client/features/connect-wallet/utils/public-client
 import ApiDegradationRpcIcon from 'client/shared/api-degradation/ApiDegradationRpcIcon';
 import dayjs from 'client/shared/date-and-time/dayjs';
 import StatsWidget from 'client/shared/stats/StatsWidget';
+import { GWEI } from 'client/shared/values/entity/utils';
 
 import { mdash } from 'toolkit/utils/htmlEntities';
-import { GWEI } from 'ui/shared/value/utils';
 
 const StatsDegraded = () => {
 

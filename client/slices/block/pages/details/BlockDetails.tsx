@@ -30,11 +30,18 @@ import ZkSyncL2TxnBatchHashesInfo from 'client/features/rollup/zk-sync/pages/bat
 import { formatZkSyncL2TxnBatchStatus } from 'client/features/rollup/zk-sync/utils/format-txn-batch-status';
 
 import PrevNext from 'client/shared/buttons/PrevNext';
+import RawDataSnippet from 'client/shared/data/RawDataSnippet';
+import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
+import DetailedInfoTimestamp from 'client/shared/detailed-info/DetailedInfoTimestamp';
 import VerificationSteps from 'client/shared/lifecycle/steps/VerificationSteps';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import StatusTag from 'client/shared/tags/status-tag/StatusTag';
-import CopyToClipboard from 'client/shared/text/CopyToClipboard';
-import HashStringShortenDynamic from 'client/shared/text/HashStringShortenDynamic';
+import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
+import HashStringShortenDynamic from 'client/shared/texts/HashStringShortenDynamic';
+import GasPriceValue from 'client/shared/values/entity/GasPriceValue';
+import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
+import { WEI } from 'client/shared/values/entity/utils';
+import Utilization from 'client/shared/values/utilization/Utilization';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import config from 'configs/app';
@@ -44,13 +51,6 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { ZERO } from 'toolkit/utils/consts';
 import { space } from 'toolkit/utils/htmlEntities';
-import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
-import RawDataSnippet from 'ui/shared/RawDataSnippet';
-import Utilization from 'ui/shared/Utilization/Utilization';
-import GasPriceValue from 'ui/shared/value/GasPriceValue';
-import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
-import { WEI } from 'ui/shared/value/utils';
 
 const zkSyncVerificationSteps = ZKSYNC_L2_TX_BATCH_STATUSES.map(formatZkSyncL2TxnBatchStatus);
 

@@ -13,12 +13,12 @@ import { CONTRACT_LICENSES } from 'client/slices/contract/utils/licenses';
 
 import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
 import ChainIcon from 'client/shared/external-chains/ChainIcon';
+import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 interface Props {
   data: VerifiedContract;

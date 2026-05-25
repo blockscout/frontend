@@ -6,7 +6,7 @@ import React from 'react';
 
 import type { ExternalChain } from 'client/shared/external-chains/types';
 
-import CopyToClipboard from 'client/shared/text/CopyToClipboard';
+import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';

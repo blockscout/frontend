@@ -9,11 +9,11 @@ import { route } from 'nextjs-routes';
 
 import * as AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 
+import { distributeEntityProps } from 'client/shared/entities/utils';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { Image } from 'toolkit/chakra/image';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import { distributeEntityProps } from 'ui/shared/entities/base/utils';
 
 interface Props extends Omit<AddressEntity.EntityProps, 'chain'> {
   chain: ChainInfo | null;

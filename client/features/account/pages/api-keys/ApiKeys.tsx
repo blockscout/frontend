@@ -14,6 +14,7 @@ import useRedirectForInvalidAuthToken from 'client/features/account/hooks/useRed
 import { API_KEY } from 'client/features/account/stubs';
 
 import AlertWithExternalHtml from 'client/shared/alerts/AlertWithExternalHtml';
+import ApiFetchAlert from 'client/shared/alerts/ApiFetchAlert';
 
 import config from 'configs/app';
 import { Button } from 'toolkit/chakra/button';
@@ -21,7 +22,6 @@ import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import { space } from 'toolkit/utils/htmlEntities';
-import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
 import ApiKeyModal from './ApiKeyModal/ApiKeyModal';
 import ApiKeyListItem from './ApiKeyTable/ApiKeyListItem';
@@ -81,7 +81,7 @@ const ApiKeysPage: React.FC = () => {
 
   const content = (() => {
     if (isError) {
-      return <DataFetchAlert/>;
+      return <ApiFetchAlert/>;
     }
 
     const list = (

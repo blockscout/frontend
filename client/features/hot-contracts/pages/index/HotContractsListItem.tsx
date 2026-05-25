@@ -12,9 +12,9 @@ import { Reputation } from 'client/slices/token/components/entity/TokenEntity';
 import MetadataTags from 'client/features/address-metadata/components/tag/MetadataTags';
 
 import ListItemMobile from 'client/shared/lists/ListItemMobile';
+import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 interface Props {
   data: HotContract;

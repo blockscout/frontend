@@ -12,7 +12,7 @@ import useWeb3AccountWithDomain from 'client/features/connect-wallet/hooks/useAc
 import { useMarketplaceContext } from 'client/features/marketplace/context';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
-import shortenString from 'client/shared/text/shorten-string';
+import shortenString from 'client/shared/texts/shorten-string';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { Button } from 'toolkit/chakra/button';

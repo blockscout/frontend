@@ -5,6 +5,7 @@ import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import { ACTION_BAR_HEIGHT_DESKTOP } from 'client/shell/page/action-bar/ActionBar';
 import PageTitle from 'client/shell/page/title/PageTitle';
 
 import { layerLabels } from 'client/features/rollup/common/utils/layer';
@@ -17,7 +18,6 @@ import { generateListStub } from 'client/shared/pagination/utils';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { rightLineArrow, nbsp } from 'toolkit/utils/htmlEntities';
-import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 
 import ScrollL2DepositsListItem from './ScrollL2DepositsListItem';
 import ScrollL2DepositsTable from './ScrollL2DepositsTable';

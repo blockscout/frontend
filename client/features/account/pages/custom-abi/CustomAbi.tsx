@@ -13,10 +13,11 @@ import AccountPageDescription from 'client/features/account/components/AccountPa
 import useRedirectForInvalidAuthToken from 'client/features/account/hooks/useRedirectForInvalidAuthToken';
 import { CUSTOM_ABI } from 'client/features/account/stubs';
 
+import ApiFetchAlert from 'client/shared/alerts/ApiFetchAlert';
+
 import { Button } from 'toolkit/chakra/button';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
-import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
 import CustomAbiModal from './CustomAbiModal/CustomAbiModal';
 import CustomAbiListItem from './CustomAbiTable/CustomAbiListItem';
@@ -65,7 +66,7 @@ const CustomAbiPage: React.FC = () => {
 
   const content = (() => {
     if (isError) {
-      return <DataFetchAlert/>;
+      return <ApiFetchAlert/>;
     }
 
     const list = (

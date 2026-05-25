@@ -9,6 +9,7 @@ import type { WatchlistAddress, WatchlistResponse } from 'client/features/accoun
 import { getResourceKey } from 'client/api/hooks/useApiQuery';
 import { resourceKey } from 'client/api/resources';
 
+import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'client/shell/page/action-bar/ActionBar';
 import PageTitle from 'client/shell/page/title/PageTitle';
 
 import AccountPageDescription from 'client/features/account/components/AccountPageDescription';
@@ -23,7 +24,6 @@ import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { Button } from 'toolkit/chakra/button';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
-import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 
 import AddressModal from './AddressModal/AddressModal';
 import DeleteAddressModal from './DeleteAddressModal';

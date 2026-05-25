@@ -11,8 +11,8 @@ import PoolEntity from 'client/features/dex-pools/components/entity/PoolEntity';
 import getPoolLinks from 'client/features/dex-pools/utils/get-pool-links';
 
 import getItemIndex from 'client/shared/lists/get-item-index';
-import CopyToClipboard from 'client/shared/text/CopyToClipboard';
-import HashStringShorten from 'client/shared/text/HashStringShorten';
+import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
+import HashStringShorten from 'client/shared/texts/HashStringShorten';
 
 import { Image } from 'toolkit/chakra/image';
 import { Link } from 'toolkit/chakra/link';

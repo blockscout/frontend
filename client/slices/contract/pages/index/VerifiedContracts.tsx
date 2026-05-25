@@ -3,6 +3,7 @@
 import { Box, createListCollection, HStack } from '@chakra-ui/react';
 import React from 'react';
 
+import ActionBar from 'client/shell/page/action-bar/ActionBar';
 import PageTitle from 'client/shell/page/title/PageTitle';
 
 import useVerifiedContractsQuery from 'client/slices/contract/hooks/useVerifiedContractsQuery';
@@ -18,7 +19,6 @@ import Sort from 'client/shared/sort/Sort';
 
 import config from 'configs/app';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
-import ActionBar from 'ui/shared/ActionBar';
 
 import { SORT_OPTIONS } from './sort';
 

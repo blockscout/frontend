@@ -8,7 +8,7 @@ import { clearRecentSearchKeywords, getRecentSearchKeywords, removeRecentSearchK
 import TextAd from 'client/features/ads/text/components/TextAd';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
-import HashStringShortenDynamic from 'client/shared/text/HashStringShortenDynamic';
+import HashStringShortenDynamic from 'client/shared/texts/HashStringShortenDynamic';
 
 import { Link } from 'toolkit/chakra/link';
 import { ClearButton } from 'toolkit/components/buttons/ClearButton';

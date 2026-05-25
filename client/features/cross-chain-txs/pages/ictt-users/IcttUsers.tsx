@@ -6,6 +6,7 @@ import React from 'react';
 
 import type { CrossChainChainsStatsSorting, CrossChainChainsStatsSortingField, CrossChainChainsStatsSortingValue } from '../../types/api';
 
+import ActionBar from 'client/shell/page/action-bar/ActionBar';
 import PageTitle from 'client/shell/page/title/PageTitle';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
@@ -16,8 +17,6 @@ import { generateListStub } from 'client/shared/pagination/utils';
 import getSortParamsFromValue from 'client/shared/sort/get-sort-params-from-value';
 import getSortValueFromQuery from 'client/shared/sort/get-sort-value-from-query';
 import Sort from 'client/shared/sort/Sort';
-
-import ActionBar from 'ui/shared/ActionBar';
 
 import { INTERCHAIN_STATS_CHAINS_ITEM } from '../../stubs/messages';
 import { ICTT_USERS_SORT_OPTIONS } from '../../utils/ictt-sort';

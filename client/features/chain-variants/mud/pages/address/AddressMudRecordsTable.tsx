@@ -10,8 +10,8 @@ import { route } from 'nextjs-routes';
 
 import Time from 'client/shared/date-and-time/Time';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
-import capitalizeFirstLetter from 'client/shared/text/capitalize-first-letter';
-import CopyToClipboard from 'client/shared/text/CopyToClipboard';
+import capitalizeFirstLetter from 'client/shared/texts/capitalize-first-letter';
+import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { Link } from 'toolkit/chakra/link';

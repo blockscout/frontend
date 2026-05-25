@@ -10,12 +10,12 @@ import { route } from 'nextjs-routes';
 import AddressEntityInterchain from 'client/slices/address/components/entity/AddressEntityInterchain';
 import AddressFromToIcon from 'client/slices/address/components/from-to/AddressFromToIcon';
 
+import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
+import TokenValueInterchain from 'client/shared/values/entity/TokenValueInterchain';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import TokenValueInterchain from 'ui/shared/value/TokenValueInterchain';
 
 const MAX_NUM = 5;
 

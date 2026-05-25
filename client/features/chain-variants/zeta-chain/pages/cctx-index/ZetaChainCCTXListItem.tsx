@@ -12,7 +12,7 @@ import ZetaChainCCTXValue from 'client/features/chain-variants/zeta-chain/compon
 
 import dayjs from 'client/shared/date-and-time/dayjs';
 import Time from 'client/shared/date-and-time/Time';
-import TextSeparator from 'client/shared/text/TextSeparator';
+import TextSeparator from 'client/shared/texts/TextSeparator';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { SECOND } from 'toolkit/utils/consts';

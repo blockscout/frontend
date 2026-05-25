@@ -6,6 +6,7 @@ import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import { ACTION_BAR_HEIGHT_DESKTOP } from 'client/shell/page/action-bar/ActionBar';
 import PageTitle from 'client/shell/page/title/PageTitle';
 
 import { currencyUnits } from 'client/slices/chain/units';
@@ -14,11 +15,10 @@ import DataList from 'client/shared/lists/DataList';
 import StickyPaginationWithText from 'client/shared/pagination/StickyPaginationWithText';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
+import calculateUsdValue from 'client/shared/values/entity/calculateUsdValue';
 
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import calculateUsdValue from 'ui/shared/value/calculateUsdValue';
 
 import { WITHDRAWAL } from '../../stubs/withdrawals';
 import BeaconChainWithdrawalsListItem from './BeaconChainWithdrawalsListItem';

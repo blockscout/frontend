@@ -4,8 +4,8 @@ import React from 'react';
 
 import type * as tac from '@blockscout/tac-operation-lifecycle-types';
 
-import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
+import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
+import DetailedInfoTimestamp from 'client/shared/detailed-info/DetailedInfoTimestamp';
 
 import AddressEntityTacTon from '../../components/AddressEntityTacTon';
 import TacOperationStatus from '../../components/TacOperationStatus';

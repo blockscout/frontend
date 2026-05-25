@@ -5,7 +5,7 @@ import { Box, chakra } from '@chakra-ui/react';
 import type BigNumber from 'bignumber.js';
 import React from 'react';
 
-import CopyToClipboard from 'client/shared/text/CopyToClipboard';
+import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';

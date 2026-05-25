@@ -11,10 +11,10 @@ import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
 
 import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
 import ListItemMobileGrid from 'client/shared/lists/ListItemMobileGrid';
+import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
 
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 const feature = config.features.beaconChain;
 

@@ -2,12 +2,12 @@
 
 import React from 'react';
 
+import ActionBar from 'client/shell/page/action-bar/ActionBar';
+
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import TableViewToggleButton from 'client/shared/lists/TableViewToggleButton';
 import useTableViewValue from 'client/shared/lists/useTableViewValue';
 import Pagination from 'client/shared/pagination/Pagination';
-
-import ActionBar from 'ui/shared/ActionBar';
 
 import TransactionsCrossChainContent from '../../components/txs/TransactionsCrossChainContent';
 import type { Props } from '../../components/txs/TransactionsCrossChainContent';

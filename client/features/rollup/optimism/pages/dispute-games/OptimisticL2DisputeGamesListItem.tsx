@@ -9,8 +9,8 @@ import { layerLabels } from 'client/features/rollup/common/utils/layer';
 
 import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
 import ListItemMobileGrid from 'client/shared/lists/ListItemMobileGrid';
-import CopyToClipboard from 'client/shared/text/CopyToClipboard';
-import HashStringShorten from 'client/shared/text/HashStringShorten';
+import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
+import HashStringShorten from 'client/shared/texts/HashStringShorten';
 
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';

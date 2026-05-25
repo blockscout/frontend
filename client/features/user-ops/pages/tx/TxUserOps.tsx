@@ -9,10 +9,9 @@ import type { TxQuery } from 'client/slices/tx/hooks/useTxQuery';
 import UserOpsContent from 'client/features/user-ops/pages/index/UserOpsContent';
 import { USER_OPS_ITEM } from 'client/features/user-ops/stubs';
 
+import ApiFetchAlert from 'client/shared/alerts/ApiFetchAlert';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
-
-import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
 interface Props {
   txQuery: TxQuery;
@@ -34,7 +33,7 @@ const TxUserOps = ({ txQuery }: Props) => {
   }
 
   if (txQuery.isError) {
-    return <DataFetchAlert/>;
+    return <ApiFetchAlert/>;
   }
 
   return <UserOpsContent query={ userOpsQuery } showTx={ false }/>;

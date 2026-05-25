@@ -6,13 +6,13 @@ import type { CeloEpochDetails, CeloEpochElectionReward } from 'client/features/
 
 import EpochRewardTypeTag from 'client/features/chain-variants/celo/components/EpochRewardTypeTag';
 
+import TokenValue from 'client/shared/values/entity/TokenValue';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
-import TokenValue from 'ui/shared/value/TokenValue';
 
 import EpochElectionRewardDetailsDesktop from './EpochElectionRewardDetailsDesktop';
 import { getRewardNumText } from './utils';

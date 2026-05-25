@@ -6,6 +6,8 @@ import React from 'react';
 
 import type { AddressMudRecordsFilter, AddressMudRecordsSorting } from 'client/features/chain-variants/mud/types/api';
 
+import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'client/shell/page/action-bar/ActionBar';
+
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import DataList from 'client/shared/lists/DataList';
 import Pagination from 'client/shared/pagination/Pagination';
@@ -16,7 +18,6 @@ import getSortParamsFromQuery from 'client/shared/sort/get-sort-params-from-quer
 
 import { Tag } from 'toolkit/chakra/tag';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
-import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 
 import AddressMudBreadcrumbs from './AddressMudBreadcrumbs';
 import AddressMudRecordsTable from './AddressMudRecordsTable';

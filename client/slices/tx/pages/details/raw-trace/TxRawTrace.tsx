@@ -15,10 +15,9 @@ import TxSocketAlert from 'client/slices/tx/components/TxSocketAlert';
 import type { TxQuery } from 'client/slices/tx/hooks/useTxQuery';
 import { TX_RAW_TRACE } from 'client/slices/tx/stubs/tx';
 
+import ApiFetchAlert from 'client/shared/alerts/ApiFetchAlert';
+import RawDataSnippet from 'client/shared/data/RawDataSnippet';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
-
-import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import RawDataSnippet from 'ui/shared/RawDataSnippet';
 
 interface Props {
   txQuery: TxQuery;
@@ -61,7 +60,7 @@ const TxRawTrace = ({ txQuery }: Props) => {
   }
 
   if (isError || txQuery.isError) {
-    return <DataFetchAlert/>;
+    return <ApiFetchAlert/>;
   }
 
   const dataToDisplay = rawTraces ? rawTraces : data;

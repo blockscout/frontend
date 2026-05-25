@@ -14,11 +14,11 @@ import ContractVerificationForm from 'client/slices/contract/pages/contract-veri
 import useFormConfigQuery from 'client/slices/contract/pages/contract-verification/useFormConfigQuery';
 import type { SmartContractVerificationMethod } from 'client/slices/contract/pages/contract-verification/utils';
 
+import ApiFetchAlert from 'client/shared/alerts/ApiFetchAlert';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
-import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
 const ContractVerificationForAddress = () => {
   const router = useRouter();
@@ -55,7 +55,7 @@ const ContractVerificationForAddress = () => {
 
   const content = (() => {
     if (configQuery.isError || !hash || contractQuery.isError) {
-      return <DataFetchAlert/>;
+      return <ApiFetchAlert/>;
     }
 
     if (configQuery.isPending || contractQuery.isPending || isVerifiedContract) {

@@ -10,12 +10,12 @@ import type { TokenInfo } from 'client/slices/token/types/api';
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import AddressFromTo from 'client/slices/address/components/from-to/AddressFromTo';
 
+import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
+import TokenValue from 'client/shared/values/entity/TokenValue';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { Link } from 'toolkit/chakra/link';
 import { ZERO_ADDRESS } from 'toolkit/utils/consts';
-import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import TokenValue from 'ui/shared/value/TokenValue';
 
 type ItemProps = BlockBaseFeeCelo['breakdown'][number] & {
   addressFrom: AddressParam;

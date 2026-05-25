@@ -9,14 +9,14 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 
 import TxExternalTxs from 'client/features/external-txs/components/TxExternalTxs';
 
+import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
-import CopyToClipboard from 'client/shared/text/CopyToClipboard';
-import HashStringShortenDynamic from 'client/shared/text/HashStringShortenDynamic';
-import TextSeparator from 'client/shared/text/TextSeparator';
+import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
+import HashStringShortenDynamic from 'client/shared/texts/HashStringShortenDynamic';
+import TextSeparator from 'client/shared/texts/TextSeparator';
 
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 
 const externalTxFeature = config.features.externalTxs;
 

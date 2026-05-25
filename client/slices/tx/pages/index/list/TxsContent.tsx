@@ -8,6 +8,8 @@ import type { AddressFromToFilter } from 'client/slices/address/types/api';
 import type { Transaction, TransactionsSortingField, TransactionsSortingValue } from 'client/slices/tx/types/api';
 import type { TxsSocketType } from 'client/slices/tx/types/socket';
 
+import { ACTION_BAR_HEIGHT_DESKTOP } from 'client/shell/page/action-bar/ActionBar';
+
 import CsvExport from 'client/features/csv-export/components/CsvExport';
 import useDescribeTxs from 'client/features/tx-interpretation/noves/hooks/useDescribeTxs';
 
@@ -16,8 +18,6 @@ import DataList from 'client/shared/lists/DataList';
 import TableViewToggleButton from 'client/shared/lists/TableViewToggleButton';
 import useTableViewValue from 'client/shared/lists/useTableViewValue';
 import getNextSortValue from 'client/shared/sort/get-next-sort-value';
-
-import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 
 import TxsHeaderMobile from './TxsHeaderMobile';
 import TxsList from './TxsList';

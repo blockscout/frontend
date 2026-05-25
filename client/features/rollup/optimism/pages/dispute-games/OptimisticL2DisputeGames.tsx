@@ -5,6 +5,7 @@ import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import { ACTION_BAR_HEIGHT_DESKTOP } from 'client/shell/page/action-bar/ActionBar';
 import PageTitle from 'client/shell/page/title/PageTitle';
 
 import { L2_DISPUTE_GAMES_ITEM } from 'client/features/rollup/optimism/stubs';
@@ -15,7 +16,6 @@ import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 
 import OptimisticL2DisputeGamesListItem from './OptimisticL2DisputeGamesListItem';
 import OptimisticL2DisputeGamesTable from './OptimisticL2DisputeGamesTable';

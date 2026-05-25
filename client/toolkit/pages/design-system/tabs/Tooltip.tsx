@@ -2,8 +2,9 @@
 
 import React from 'react';
 
+import Utilization from 'client/shared/values/utilization/Utilization';
+
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import Utilization from 'ui/shared/Utilization/Utilization';
 
 import { Section, Container, SectionHeader, SamplesStack, Sample } from '../parts';
 

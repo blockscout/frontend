@@ -17,10 +17,10 @@ import { HOMEPAGE_STATS_MICROSERVICE } from 'client/features/chain-stats/stubs/h
 import { layerLabels } from 'client/features/rollup/common/utils/layer';
 
 import StatsWidget from 'client/shared/stats/StatsWidget';
+import { WEI } from 'client/shared/values/entity/utils';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import config from 'configs/app';
-import { WEI } from 'ui/shared/value/utils';
 
 import LatestBatchStatsWidget from './LatestBatchStatsWidget';
 import LatestBlockStatsWidget from './LatestBlockStatsWidget';

@@ -7,7 +7,7 @@ import React from 'react';
 import { useSettingsContext } from 'client/shell/top-bar/settings/context';
 
 import dayjs from 'client/shared/date-and-time/dayjs';
-import TextSeparator from 'client/shared/text/TextSeparator';
+import TextSeparator from 'client/shared/texts/TextSeparator';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { IconButton } from 'toolkit/chakra/icon-button';

@@ -24,10 +24,10 @@ import TxTranslationType from 'client/features/tx-interpretation/noves/component
 
 import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
 import ListItemMobile from 'client/shared/lists/ListItemMobile';
+import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
 
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 interface Props {
   tx: Transaction;

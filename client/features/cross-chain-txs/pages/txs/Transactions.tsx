@@ -4,13 +4,13 @@ import React from 'react';
 
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
+import { ACTION_BAR_HEIGHT_DESKTOP } from 'client/shell/page/action-bar/ActionBar';
 import PageTitle from 'client/shell/page/title/PageTitle';
 
 import TxsTabs, { getTabId } from 'client/slices/tx/pages/index/list/TxsTabs';
 import TxsStats from 'client/slices/tx/pages/index/stats/TxsStats';
 
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 
 import TransactionsCrossChain from './TransactionsCrossChain';
 

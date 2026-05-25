@@ -14,13 +14,13 @@ import TxEntityInterchain from 'client/slices/tx/components/entity/TxEntityInter
 import dayjs from 'client/shared/date-and-time/dayjs';
 import Time from 'client/shared/date-and-time/Time';
 import ListItemMobile from 'client/shared/lists/ListItemMobile';
-import TextSeparator from 'client/shared/text/TextSeparator';
+import TextSeparator from 'client/shared/texts/TextSeparator';
+import TokenValueInterchain from 'client/shared/values/entity/TokenValueInterchain';
 
 import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { mdash } from 'toolkit/utils/htmlEntities';
-import TokenValueInterchain from 'ui/shared/value/TokenValueInterchain';
 
 import CrossChainBridgeLink from '../CrossChainBridgeLink';
 import CrossChainFromToTag from '../CrossChainFromToTag';

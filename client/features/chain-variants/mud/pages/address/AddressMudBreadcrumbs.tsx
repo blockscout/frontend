@@ -8,7 +8,7 @@ import { route } from 'nextjs-routes';
 import useAddressQuery from 'client/slices/address/hooks/useAddressQuery';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
-import CopyToClipboard from 'client/shared/text/CopyToClipboard';
+import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { Link } from 'toolkit/chakra/link';

@@ -4,12 +4,13 @@ import React from 'react';
 
 import type * as bens from '@blockscout/bens-types';
 
+import { ACTION_BAR_HEIGHT_DESKTOP } from 'client/shell/page/action-bar/ActionBar';
+
 import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
 
 import TimeFormatToggle from 'client/shared/date-and-time/TimeFormatToggle';
 
 import { TableBody, TableColumnHeader, TableColumnHeaderSortable, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
-import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 
 import NameDomainsTableItem from './NameDomainsTableItem';
 import type { SortField, Sort } from './utils';

@@ -14,13 +14,13 @@ import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 
 import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
+import AssetValue from 'client/shared/values/entity/AssetValue';
+import ConfidentialValue from 'client/shared/values/entity/ConfidentialValue';
+import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
 
 import config from 'configs/app';
 import { Badge } from 'toolkit/chakra/badge';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import AssetValue from 'ui/shared/value/AssetValue';
-import ConfidentialValue from 'ui/shared/value/ConfidentialValue';
-import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 import { getAdvancedFilterTypes } from '../utils/lib';
 

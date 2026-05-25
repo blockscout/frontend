@@ -14,8 +14,8 @@ import * as TokenEntity from 'client/slices/token/components/entity/TokenEntity'
 
 import * as contract from 'client/features/multichain/utils/contract';
 
-import HashStringShortenDynamic from 'client/shared/text/HashStringShortenDynamic';
-import highlightText from 'client/shared/text/highlight-text';
+import HashStringShortenDynamic from 'client/shared/texts/HashStringShortenDynamic';
+import highlightText from 'client/shared/texts/highlight-text';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 const SearchBarSuggestToken = ({ data, isMobile, searchTerm, addressFormat, chainInfo }: ItemsProps<SearchResultToken | multichain.QuickSearchResultToken>) => {

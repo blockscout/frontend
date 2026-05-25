@@ -7,14 +7,14 @@ import type { AddressMetadataTagFormatted } from 'client/features/address-metada
 
 import AppActionButton from 'client/features/address-metadata/components/AppActionButton';
 
-import TextSeparator from 'client/shared/text/TextSeparator';
+import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
+import TextSeparator from 'client/shared/texts/TextSeparator';
 
 import config from 'configs/app';
 import { Image } from 'toolkit/chakra/image';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 
 interface Props {
   hash: string | undefined;

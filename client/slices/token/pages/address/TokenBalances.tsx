@@ -9,13 +9,13 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 import { currencyUnits } from 'client/slices/chain/units';
 import NativeTokenIcon from 'client/slices/token/components/icon/TokenIconNative';
 
+import ApiFetchAlert from 'client/shared/alerts/ApiFetchAlert';
+import calculateUsdValue from 'client/shared/values/entity/calculateUsdValue';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import config from 'configs/app';
 import { ZERO } from 'toolkit/utils/consts';
 import { thinsp } from 'toolkit/utils/htmlEntities';
-import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import calculateUsdValue from 'ui/shared/value/calculateUsdValue';
 
 import TokenBalancesItem from './TokenBalancesItem';
 import useFetchTokens from './useFetchTokens';
@@ -34,7 +34,7 @@ const TokenBalances = () => {
   const tokenQuery = useFetchTokens({ hash });
 
   if (addressQuery.isError || tokenQuery.isError) {
-    return <DataFetchAlert/>;
+    return <ApiFetchAlert/>;
   }
 
   const addressData = addressQuery.data;

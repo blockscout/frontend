@@ -7,12 +7,12 @@ import type { Transaction } from 'client/slices/tx/types/api';
 
 import { currencyUnits } from 'client/slices/chain/units';
 
+import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
+import DetailedInfoNativeCoinValue from 'client/shared/detailed-info/DetailedInfoNativeCoinValue';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import config from 'configs/app';
 import { ZERO } from 'toolkit/utils/consts';
-import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import DetailedInfoNativeCoinValue from 'ui/shared/DetailedInfo/DetailedInfoNativeCoinValue';
 
 const rollupFeature = config.features.rollup;
 

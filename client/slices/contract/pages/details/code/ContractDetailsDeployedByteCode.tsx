@@ -5,14 +5,14 @@ import React from 'react';
 
 import type { Address } from 'client/slices/address/types/api';
 
-import CopyToClipboard from 'client/shared/text/CopyToClipboard';
-import hexToUtf8 from 'client/shared/transformers/hex-to-utf8';
+import RawDataSnippet from 'client/shared/data/RawDataSnippet';
+import hexToUtf8 from 'client/shared/data/transformers/hex-to-utf8';
+import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
 
 import config from 'configs/app';
 import type { SelectOption } from 'toolkit/chakra/select';
 import { Select } from 'toolkit/chakra/select';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import RawDataSnippet from 'ui/shared/RawDataSnippet';
 
 import ContractDetailsVerificationButton from './ContractDetailsVerificationButton';
 

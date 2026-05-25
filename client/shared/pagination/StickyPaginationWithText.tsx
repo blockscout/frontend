@@ -5,7 +5,7 @@ import React from 'react';
 
 import type { PaginationParams } from './types';
 
-import ActionBar from 'ui/shared/ActionBar';
+import ActionBar from 'client/shell/page/action-bar/ActionBar';
 
 import Pagination from './Pagination';
 

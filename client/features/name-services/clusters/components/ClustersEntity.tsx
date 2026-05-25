@@ -5,6 +5,8 @@ import React from 'react';
 
 import { route } from 'nextjs-routes';
 
+import * as EntityBase from 'client/shared/entities/components';
+import { distributeEntityProps, getIconProps } from 'client/shared/entities/utils';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import config from 'configs/app';
@@ -12,8 +14,6 @@ import { Image } from 'toolkit/chakra/image';
 import { Link as LinkToolkit } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import * as EntityBase from 'ui/shared/entities/base/components';
-import { distributeEntityProps, getIconProps } from 'ui/shared/entities/base/utils';
 
 const nameServicesFeature = config.features.nameServices;
 const clustersFeature = nameServicesFeature.isEnabled && nameServicesFeature.clusters.isEnabled ? nameServicesFeature.clusters : undefined;

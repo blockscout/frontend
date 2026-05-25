@@ -4,6 +4,8 @@ import { Box, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React, { useCallback } from 'react';
 
+import { ACTION_BAR_HEIGHT_DESKTOP } from 'client/shell/page/action-bar/ActionBar';
+
 import { useClusterPagination } from 'client/features/name-services/clusters/hooks/useClusterPagination';
 import { useClustersData } from 'client/features/name-services/clusters/hooks/useClustersData';
 import { useClusterSearch } from 'client/features/name-services/clusters/hooks/useClusterSearch';
@@ -23,7 +25,6 @@ import getQueryParamString from 'client/shared/router/get-query-param-string';
 import { useQueryParams } from 'client/shared/router/useQueryParams';
 
 import { Link } from 'toolkit/chakra/link';
-import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 
 import ClustersActionBar from './ClustersActionBar';
 import ClustersDirectoryListItem from './ClustersDirectoryListItem';

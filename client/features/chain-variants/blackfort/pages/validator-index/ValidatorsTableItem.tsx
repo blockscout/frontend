@@ -7,10 +7,11 @@ import type { ValidatorBlackfort } from 'client/features/chain-variants/blackfor
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 
+import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
-import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 interface Props {
   data: ValidatorBlackfort;

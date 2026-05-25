@@ -5,6 +5,8 @@ import React from 'react';
 
 import type { InternalTransaction } from 'client/slices/internal-tx/types/api';
 
+import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'client/shell/page/action-bar/ActionBar';
+
 import { INTERNAL_TX } from 'client/slices/internal-tx/stubs';
 import TxPendingAlert from 'client/slices/tx/components/TxPendingAlert';
 import TxSocketAlert from 'client/slices/tx/components/TxSocketAlert';
@@ -16,8 +18,6 @@ import Pagination from 'client/shared/pagination/Pagination';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
 import { default as getNextSortValueShared } from 'client/shared/sort/get-next-sort-value';
-
-import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 
 import type { Sort, SortField } from '../../utils/utils';
 import TxInternalsList from './TxInternalsList';

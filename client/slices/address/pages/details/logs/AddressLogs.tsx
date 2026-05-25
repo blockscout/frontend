@@ -3,6 +3,8 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import ActionBar from 'client/shell/page/action-bar/ActionBar';
+
 import useAddressQuery from 'client/slices/address/hooks/useAddressQuery';
 import LogItem from 'client/slices/log/components/LogItem';
 import { LOG } from 'client/slices/log/stubs/log';
@@ -15,8 +17,6 @@ import Pagination from 'client/shared/pagination/Pagination';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
-
-import ActionBar from 'ui/shared/ActionBar';
 
 type Props = {
   shouldRender?: boolean;

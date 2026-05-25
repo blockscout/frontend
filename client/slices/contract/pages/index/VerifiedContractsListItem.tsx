@@ -13,10 +13,10 @@ import { CONTRACT_LICENSES } from 'client/slices/contract/utils/licenses';
 
 import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
 import ListItemMobile from 'client/shared/lists/ListItemMobile';
+import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 interface Props {
   data: VerifiedContract;

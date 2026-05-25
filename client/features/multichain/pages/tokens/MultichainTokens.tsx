@@ -6,6 +6,7 @@ import React from 'react';
 
 import type { TokenType } from 'client/slices/token/types/api';
 
+import ActionBar from 'client/shell/page/action-bar/ActionBar';
 import PageTitle from 'client/shell/page/title/PageTitle';
 
 import TokenTypeFilter from 'client/slices/token/components/TokenTypeFilter';
@@ -25,7 +26,6 @@ import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import multichainConfig from 'configs/multichain';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
-import ActionBar from 'ui/shared/ActionBar';
 
 const getChainIdFilterValue = (chainIds: Array<string>) => {
   return chainIds.includes('all') ? undefined : chainIds.filter(Boolean);

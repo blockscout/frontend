@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import capitalizeFirstLetter from 'client/shared/text/capitalize-first-letter';
+import capitalizeFirstLetter from 'client/shared/texts/capitalize-first-letter';
 import type { IconName } from 'client/sprite/SpriteIcon';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 

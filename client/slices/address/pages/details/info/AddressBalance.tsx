@@ -13,8 +13,8 @@ import useSocketMessage from 'client/api/socket/useSocketMessage';
 import { currencyUnits } from 'client/slices/chain/units';
 import NativeTokenIcon from 'client/slices/token/components/icon/TokenIconNative';
 
-import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
+import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
+import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
 
 interface Props {
   data: Pick<Address, 'block_number_balance_updated_at' | 'coin_balance' | 'hash' | 'exchange_rate'>;

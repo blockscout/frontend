@@ -15,11 +15,11 @@ import TxAdditionalInfo from 'client/slices/tx/components/TxAdditionalInfo';
 
 import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
 import ListItemMobile from 'client/shared/lists/ListItemMobile';
+import AssetValue from 'client/shared/values/entity/AssetValue';
+import ConfidentialValue from 'client/shared/values/entity/ConfidentialValue';
 
 import { Badge } from 'toolkit/chakra/badge';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import AssetValue from 'ui/shared/value/AssetValue';
-import ConfidentialValue from 'ui/shared/value/ConfidentialValue';
 
 import TokenTransferTypeBadge from '../TokenTransferTypeBadge';
 

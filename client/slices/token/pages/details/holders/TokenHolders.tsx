@@ -5,16 +5,16 @@ import React from 'react';
 
 import type { TokenInfo } from 'client/slices/token/types/api';
 
+import ActionBar from 'client/shell/page/action-bar/ActionBar';
+
 import CsvExport from 'client/features/csv-export/components/CsvExport';
 
+import ApiFetchAlert from 'client/shared/alerts/ApiFetchAlert';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import useIsMounted from 'client/shared/hooks/useIsMounted';
 import DataList from 'client/shared/lists/DataList';
 import Pagination from 'client/shared/pagination/Pagination';
 import type { QueryWithPagesResult } from 'client/shared/pagination/useQueryWithPages';
-
-import ActionBar from 'ui/shared/ActionBar';
-import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
 import TokenHoldersList from './TokenHoldersList';
 import TokenHoldersTable from './TokenHoldersTable';
@@ -37,7 +37,7 @@ const TokenHolders = ({ holdersQuery, token, shouldRender = true, tabsHeight = T
   }
 
   if (holdersQuery.isError) {
-    return <DataFetchAlert/>;
+    return <ApiFetchAlert/>;
   }
 
   const actionBar = isMobile && (

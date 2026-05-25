@@ -11,9 +11,9 @@ import AddressEntity from 'client/slices/address/components/entity/AddressEntity
 
 import useLazyLoadedList from 'client/shared/pagination/useLazyLoadedList';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
+import TokenValue from 'client/shared/values/entity/TokenValue';
 
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
-import TokenValue from 'ui/shared/value/TokenValue';
 
 import { formatRewardType } from './utils';
 

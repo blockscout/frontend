@@ -15,13 +15,13 @@ import TokenAddToWallet from 'client/features/web3-wallet/components/TokenAddToW
 
 import getItemIndex from 'client/shared/lists/get-item-index';
 import ListItemMobile from 'client/shared/lists/ListItemMobile';
+import SimpleValue from 'client/shared/values/entity/SimpleValue';
+import { DEFAULT_ACCURACY_USD } from 'client/shared/values/entity/utils';
 
 import config from 'configs/app';
 import multichainConfig from 'configs/multichain';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tag } from 'toolkit/chakra/tag';
-import SimpleValue from 'ui/shared/value/SimpleValue';
-import { DEFAULT_ACCURACY_USD } from 'ui/shared/value/utils';
 
 type Props = {
   token: TokenInfo | AggregatedTokenInfo;

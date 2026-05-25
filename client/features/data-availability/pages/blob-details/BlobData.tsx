@@ -6,19 +6,19 @@ import React from 'react';
 import guessDataType from 'client/features/data-availability/utils/guess-data-type';
 import removeNonSignificantZeroBytes from 'client/features/data-availability/utils/remove-non-significant-zero-bytes';
 
-import CopyToClipboard from 'client/shared/text/CopyToClipboard';
-import bytesToBase64 from 'client/shared/transformers/bytes-to-base64';
-import hexToBase64 from 'client/shared/transformers/hex-to-base64';
-import hexToBytes from 'client/shared/transformers/hex-to-bytes';
-import hexToUtf8 from 'client/shared/transformers/hex-to-utf8';
+import RawDataSnippet from 'client/shared/data/RawDataSnippet';
+import bytesToBase64 from 'client/shared/data/transformers/bytes-to-base64';
+import hexToBase64 from 'client/shared/data/transformers/hex-to-base64';
+import hexToBytes from 'client/shared/data/transformers/hex-to-bytes';
+import hexToUtf8 from 'client/shared/data/transformers/hex-to-utf8';
+import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
+import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
 
 import { Button } from 'toolkit/chakra/button';
 import type { SelectOption } from 'toolkit/chakra/select';
 import { Select } from 'toolkit/chakra/select';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { downloadBlob } from 'toolkit/utils/file';
-import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import RawDataSnippet from 'ui/shared/RawDataSnippet';
 
 import BlobDataImage from './BlobDataImage';
 

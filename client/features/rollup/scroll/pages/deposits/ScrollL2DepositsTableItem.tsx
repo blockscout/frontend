@@ -11,11 +11,11 @@ import BlockEntityL1 from 'client/features/rollup/common/components/BlockEntityL
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
 
 import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
+import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
 
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
-import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 const rollupFeature = config.features.rollup;
 

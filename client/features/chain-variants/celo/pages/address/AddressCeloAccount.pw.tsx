@@ -2,8 +2,9 @@ import React from 'react';
 
 import * as addressMock from 'client/slices/address/mocks/address';
 
+import { Container } from 'client/shared/detailed-info/DetailedInfo';
+
 import { test, expect } from 'playwright/lib';
-import { Container } from 'ui/shared/DetailedInfo/DetailedInfo';
 
 import AddressCeloAccount from './AddressCeloAccount';
 

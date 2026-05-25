@@ -13,10 +13,10 @@ import GasUsed from 'client/slices/gas/components/GasUsed';
 
 import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
 import ListItemMobile from 'client/shared/lists/ListItemMobile';
+import SimpleValue from 'client/shared/values/entity/SimpleValue';
 
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import SimpleValue from 'ui/shared/value/SimpleValue';
 
 type Props = Block & {
   page: number;

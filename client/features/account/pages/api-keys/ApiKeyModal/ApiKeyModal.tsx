@@ -4,7 +4,7 @@ import React, { useCallback, useState } from 'react';
 
 import type { ApiKey } from 'client/features/account/types/api';
 
-import FormModal from 'ui/shared/FormModal';
+import FormModal from 'client/shared/forms/FormModal';
 
 import ApiKeyForm from './ApiKeyForm';
 

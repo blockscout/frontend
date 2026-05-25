@@ -19,15 +19,15 @@ import GasUsed from 'client/slices/gas/components/GasUsed';
 
 import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
 import ListItemMobile from 'client/shared/lists/ListItemMobile';
+import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
+import SimpleValue from 'client/shared/values/entity/SimpleValue';
+import Utilization from 'client/shared/values/utilization/Utilization';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import Utilization from 'ui/shared/Utilization/Utilization';
-import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
-import SimpleValue from 'ui/shared/value/SimpleValue';
 
 interface Props {
   data: Block;

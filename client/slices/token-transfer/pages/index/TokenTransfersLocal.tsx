@@ -5,13 +5,13 @@ import React from 'react';
 
 import type { TokenType } from 'client/slices/token/types/api';
 
+import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'client/shell/page/action-bar/ActionBar';
+
 import TokenTypeFilter from 'client/slices/token/components/TokenTypeFilter';
 
 import PopoverFilter from 'client/shared/filters/PopoverFilter';
 import DataList from 'client/shared/lists/DataList';
 import Pagination from 'client/shared/pagination/Pagination';
-
-import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 
 import useTokenTransfersQuery from '../../hooks/useTokenTransfersQuery';
 import TokenTransfersListItem from './TokenTransfersListItem';

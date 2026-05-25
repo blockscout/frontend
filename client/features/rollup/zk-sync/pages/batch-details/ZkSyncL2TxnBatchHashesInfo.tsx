@@ -7,9 +7,10 @@ import type { ZkSyncBatch } from 'client/features/rollup/zk-sync/types/api';
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
 import { layerLabels } from 'client/features/rollup/common/utils/layer';
 
+import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
+import DetailedInfoTimestamp from 'client/shared/detailed-info/DetailedInfoTimestamp';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 
 interface Props {
   isLoading: boolean;

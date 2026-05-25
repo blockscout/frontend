@@ -4,6 +4,7 @@ import { Box } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import ActionBar from 'client/shell/page/action-bar/ActionBar';
 import PageTitle from 'client/shell/page/title/PageTitle';
 
 import useDebounce from 'client/shared/hooks/useDebounce';
@@ -15,7 +16,6 @@ import { generateListStub } from 'client/shared/pagination/utils';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
-import ActionBar from 'ui/shared/ActionBar';
 
 import { TAC_OPERATION } from '../../stubs';
 import TacOperationsListItem from './TacOperationsListItem';

@@ -14,8 +14,8 @@ import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 
 import * as contract from 'client/features/multichain/utils/contract';
 
-import HashStringShortenDynamic from 'client/shared/text/HashStringShortenDynamic';
-import shortenString from 'client/shared/text/shorten-string';
+import HashStringShortenDynamic from 'client/shared/texts/HashStringShortenDynamic';
+import shortenString from 'client/shared/texts/shorten-string';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import SearchResultListItem from '../SearchResultListItem';

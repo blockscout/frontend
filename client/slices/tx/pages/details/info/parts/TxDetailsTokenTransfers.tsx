@@ -11,10 +11,10 @@ import TokenTransferSnippet from 'client/slices/token-transfer/components/snippe
 
 import { useMultichainContext } from 'client/features/multichain/context';
 
+import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { Link } from 'toolkit/chakra/link';
-import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 
 interface Props {
   data: Array<TokenTransfer>;

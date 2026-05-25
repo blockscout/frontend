@@ -13,7 +13,7 @@ import { useMultichainContext } from 'client/features/multichain/context';
 
 import CodeEditor from 'client/shared/code-editor/CodeEditor';
 import formatFilePath from 'client/shared/code-editor/utils/formatFilePath';
-import CopyToClipboard from 'client/shared/text/CopyToClipboard';
+import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
 
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';

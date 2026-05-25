@@ -12,14 +12,14 @@ import TokenNftMarketplaces from 'client/slices/token/pages/details/info/TokenNf
 import AppActionButton from 'client/features/address-metadata/components/AppActionButton';
 import useAppActionData from 'client/features/address-metadata/hooks/useAppActionData';
 
+import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
+import DetailedInfoSponsoredItem from 'client/shared/detailed-info/DetailedInfoSponsoredItem';
 import useIsMounted from 'client/shared/hooks/useIsMounted';
-import CopyToClipboard from 'client/shared/text/CopyToClipboard';
-import HashStringShortenDynamic from 'client/shared/text/HashStringShortenDynamic';
+import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
+import HashStringShortenDynamic from 'client/shared/texts/HashStringShortenDynamic';
 
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import DetailedInfoSponsoredItem from 'ui/shared/DetailedInfo/DetailedInfoSponsoredItem';
 
 import TokenInstanceCreatorAddress from './TokenInstanceCreatorAddress';
 import TokenInstanceMetadataInfo from './TokenInstanceMetadataInfo';

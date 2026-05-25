@@ -15,7 +15,9 @@ import NftEntity from 'client/slices/token/components/entity/NftEntity';
 
 import NameDomainExpiryStatus from 'client/features/name-services/domains/components/NameDomainExpiryStatus';
 
-import TextSeparator from 'client/shared/text/TextSeparator';
+import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
+import DetailedInfoTimestamp from 'client/shared/detailed-info/DetailedInfoTimestamp';
+import TextSeparator from 'client/shared/texts/TextSeparator';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import config from 'configs/app';
@@ -23,8 +25,6 @@ import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { stripTrailingSlash } from 'toolkit/utils/url';
-import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 
 import NameDomainDetailsAlert from './NameDomainDetailsAlert';
 

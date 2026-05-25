@@ -5,6 +5,7 @@ import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import { ACTION_BAR_HEIGHT_DESKTOP } from 'client/shell/page/action-bar/ActionBar';
 import PageTitle from 'client/shell/page/title/PageTitle';
 
 import DataList from 'client/shared/lists/DataList';
@@ -13,7 +14,6 @@ import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 
 import { ARBITRUM_L2_TXN_BATCHES_ITEM } from '../../stubs';
 import ArbitrumL2TxnBatchesListItem from './ArbitrumL2TxnBatchesListItem';

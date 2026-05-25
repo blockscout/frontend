@@ -9,8 +9,8 @@ import { route } from 'nextjs/routes';
 
 import { useMultichainContext } from 'client/features/multichain/context';
 
-import * as EntityBase from 'ui/shared/entities/base/components';
-import { distributeEntityProps, getIconProps } from 'ui/shared/entities/base/utils';
+import * as EntityBase from 'client/shared/entities/components';
+import { distributeEntityProps, getIconProps } from 'client/shared/entities/utils';
 
 import NftMedia from '../nft-media/NftMedia';
 

@@ -3,6 +3,7 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
+import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'client/shell/page/action-bar/ActionBar';
 import PageTitle from 'client/shell/page/title/PageTitle';
 
 import ChainSelect from 'client/features/multichain/components/ChainSelect';
@@ -17,7 +18,6 @@ import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
 
 import multichainConfig from 'configs/multichain';
-import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 
 const MultichainUserOps = () => {
 

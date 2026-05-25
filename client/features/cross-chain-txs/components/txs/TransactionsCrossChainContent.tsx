@@ -6,10 +6,10 @@ import React from 'react';
 import type { InterchainMessage } from '@blockscout/interchain-indexer-types';
 import type { PaginationParams } from 'client/shared/pagination/types';
 
+import { ACTION_BAR_HEIGHT_DESKTOP } from 'client/shell/page/action-bar/ActionBar';
+
 import DataList from 'client/shared/lists/DataList';
 import type { Props as DataListProps } from 'client/shared/lists/DataList';
-
-import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 
 import TransactionsCrossChainListItem from './TransactionsCrossChainListItem';
 import TransactionsCrossChainTable from './TransactionsCrossChainTable';

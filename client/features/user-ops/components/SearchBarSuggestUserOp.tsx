@@ -9,7 +9,7 @@ import type { ItemsProps } from 'client/slices/search/components/search-bar/Sear
 import * as UserOpEntity from 'client/features/user-ops/components/entity/UserOpEntity';
 
 import Time from 'client/shared/date-and-time/Time';
-import HashStringShortenDynamic from 'client/shared/text/HashStringShortenDynamic';
+import HashStringShortenDynamic from 'client/shared/texts/HashStringShortenDynamic';
 
 const SearchBarSuggestUserOp = ({ data, isMobile }: ItemsProps<SearchResultUserOp>) => {
   const icon = <UserOpEntity.Icon/>;

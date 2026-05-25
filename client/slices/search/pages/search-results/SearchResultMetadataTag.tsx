@@ -7,7 +7,7 @@ import type { AddressMetadataTagApi } from 'client/features/address-metadata/typ
 import MetadataTagIcon from 'client/features/address-metadata/components/tag/MetadataTagIcon';
 import { getTagName } from 'client/features/address-metadata/components/tag/utils';
 
-import highlightText from 'client/shared/text/highlight-text';
+import highlightText from 'client/shared/texts/highlight-text';
 
 import type { TagProps } from 'toolkit/chakra/tag';
 import { Tag } from 'toolkit/chakra/tag';

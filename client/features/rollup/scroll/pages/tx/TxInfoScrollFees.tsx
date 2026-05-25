@@ -7,12 +7,12 @@ import type { Transaction } from 'client/slices/tx/types/api';
 
 import { layerLabels } from 'client/features/rollup/common/utils/layer';
 
-import TextSeparator from 'client/shared/text/TextSeparator';
+import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
+import DetailedInfoNativeCoinValue from 'client/shared/detailed-info/DetailedInfoNativeCoinValue';
+import TextSeparator from 'client/shared/texts/TextSeparator';
+import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import DetailedInfoNativeCoinValue from 'ui/shared/DetailedInfo/DetailedInfoNativeCoinValue';
-import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 type Props = {
   data: Transaction;

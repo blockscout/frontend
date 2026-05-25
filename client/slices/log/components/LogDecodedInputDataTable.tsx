@@ -7,7 +7,7 @@ import type { DecodedInput, DecodedInputParams } from 'client/slices/log/types/a
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 
-import CopyToClipboard from 'client/shared/text/CopyToClipboard';
+import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';

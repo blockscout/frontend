@@ -6,7 +6,7 @@ import React, { useCallback } from 'react';
 
 import type { MarketplaceApp } from 'client/features/marketplace/types/client';
 
-import CopyToClipboard from 'client/shared/text/CopyToClipboard';
+import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
 
 import { useColorModeValue } from 'toolkit/chakra/color-mode';
 import { IconButton } from 'toolkit/chakra/icon-button';

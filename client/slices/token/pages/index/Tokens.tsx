@@ -7,6 +7,7 @@ import React from 'react';
 import type { TokenType } from 'client/slices/token/types/api';
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
+import ActionBar from 'client/shell/page/action-bar/ActionBar';
 import PageTitle from 'client/shell/page/title/PageTitle';
 
 import TokenTypeFilter from 'client/slices/token/components/TokenTypeFilter';
@@ -30,7 +31,6 @@ import config from 'configs/app';
 import type { SlotProps } from 'toolkit/components/AdaptiveTabs/AdaptiveTabsList';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import ActionBar from 'ui/shared/ActionBar';
 
 const TAB_LIST_PROPS = {
   marginBottom: 0,

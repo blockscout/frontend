@@ -8,7 +8,7 @@ import type { FormSubmitHandler, SmartContractMethod } from './types';
 
 import { route } from 'nextjs-routes';
 
-import CopyToClipboard from 'client/shared/text/CopyToClipboard';
+import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
 
 import config from 'configs/app';
 import { AccordionItem, AccordionItemContent, AccordionItemTrigger } from 'toolkit/chakra/accordion';

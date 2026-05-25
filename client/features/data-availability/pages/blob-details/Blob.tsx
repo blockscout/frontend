@@ -12,11 +12,10 @@ import AlternativeExplorers from 'client/features/alternative-explorers/componen
 import BlobEntity from 'client/features/data-availability/components/entity/BlobEntity';
 import { BLOB } from 'client/features/data-availability/stubs';
 
+import ApiFetchAlert from 'client/shared/alerts/ApiFetchAlert';
 import isCustomAppError from 'client/shared/errors/is-custom-app-error';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
-
-import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
 import BlobInfo from './BlobInfo';
 
@@ -38,7 +37,7 @@ const BlobPageContent = () => {
         throwOnResourceLoadError({ resource: 'general:blob', error, isError: true });
       }
 
-      return <DataFetchAlert/>;
+      return <ApiFetchAlert/>;
     }
 
     if (!data) {

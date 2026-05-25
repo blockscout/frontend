@@ -18,7 +18,7 @@ import IndexingStatusInternalTxs from 'client/slices/chain/indexing-status/Index
 
 import NetworkAddToWallet from 'client/features/web3-wallet/components/NetworkAddToWallet';
 
-import CopyToClipboard from 'client/shared/text/CopyToClipboard';
+import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import config from 'configs/app';

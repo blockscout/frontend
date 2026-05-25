@@ -11,8 +11,7 @@ import EpochRewardTypeTag from 'client/features/chain-variants/celo/components/E
 
 import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
 import ListItemMobileGrid from 'client/shared/lists/ListItemMobileGrid';
-
-import TokenValue from 'ui/shared/value/TokenValue';
+import TokenValue from 'client/shared/values/entity/TokenValue';
 
 type Props = {
   item: AddressEpochRewardsItem;

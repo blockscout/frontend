@@ -3,6 +3,7 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
+import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'client/shell/page/action-bar/ActionBar';
 import PageTitle from 'client/shell/page/title/PageTitle';
 
 import { VALIDATORS_ZILLIQA_ITEM } from 'client/features/chain-variants/zilliqa/stubs/validators';
@@ -13,7 +14,6 @@ import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
 
 import config from 'configs/app';
-import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 
 import ValidatorsList from './ValidatorsList';
 import ValidatorsTable from './ValidatorsTable';

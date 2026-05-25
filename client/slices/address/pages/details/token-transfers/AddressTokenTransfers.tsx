@@ -4,6 +4,8 @@ import { HStack } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'client/shell/page/action-bar/ActionBar';
+
 import TokenTransferFilter from 'client/slices/token-transfer/components/TokenTransferFilter';
 
 import AddressAdvancedFilterLink from 'client/features/advanced-filter/components/AddressAdvancedFilterLink';
@@ -20,7 +22,6 @@ import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import config from 'configs/app';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 
 import AddressTokenTransfersLocal from './AddressTokenTransfersLocal';
 import useAddressTokenTransfersQuery from './useAddressTokenTransfersQuery';

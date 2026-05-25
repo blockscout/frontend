@@ -9,7 +9,7 @@ import type { AddressMudTableItem } from 'client/features/chain-variants/mud/typ
 import { route } from 'nextjs-routes';
 
 import ListItemMobile from 'client/shared/lists/ListItemMobile';
-import HashStringShorten from 'client/shared/text/HashStringShorten';
+import HashStringShorten from 'client/shared/texts/HashStringShorten';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { Badge } from 'toolkit/chakra/badge';

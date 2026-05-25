@@ -7,7 +7,7 @@ import type { SearchResultTacOperation } from 'client/features/chain-variants/ta
 import type { ItemsProps } from 'client/slices/search/components/search-bar/SearchBarSuggest/types';
 
 import Time from 'client/shared/date-and-time/Time';
-import HashStringShortenDynamic from 'client/shared/text/HashStringShortenDynamic';
+import HashStringShortenDynamic from 'client/shared/texts/HashStringShortenDynamic';
 
 import * as TacOperationEntity from './TacOperationEntity';
 import TacOperationStatus from './TacOperationStatus';

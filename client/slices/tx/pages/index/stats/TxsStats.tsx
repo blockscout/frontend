@@ -13,10 +13,10 @@ import { useMultichainContext } from 'client/features/multichain/context';
 
 import getStatsLabelFromTitle from 'client/shared/stats/get-stats-label-from-title';
 import StatsWidget from 'client/shared/stats/StatsWidget';
+import calculateUsdValue from 'client/shared/values/entity/calculateUsdValue';
 
 import config from 'configs/app';
 import { thinsp } from 'toolkit/utils/htmlEntities';
-import calculateUsdValue from 'ui/shared/value/calculateUsdValue';
 
 interface Props extends BoxProps {}
 

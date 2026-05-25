@@ -4,6 +4,7 @@ import { Box, Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'client/shell/page/action-bar/ActionBar';
 import PageTitle from 'client/shell/page/title/PageTitle';
 
 import PoolsListItem from 'client/features/dex-pools/pages/index/PoolsListItem';
@@ -18,7 +19,6 @@ import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import config from 'configs/app';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
-import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 
 const Pools = () => {
   const router = useRouter();

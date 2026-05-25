@@ -7,7 +7,7 @@ import type { TransactionRevertReason } from 'client/slices/tx/types/api';
 
 import LogDecodedInputData from 'client/slices/log/components/LogDecodedInputData';
 
-import hexToUtf8 from 'client/shared/transformers/hex-to-utf8';
+import hexToUtf8 from 'client/shared/data/transformers/hex-to-utf8';
 
 import { HEX_REGEXP } from 'toolkit/utils/regexp';
 

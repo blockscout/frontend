@@ -7,6 +7,8 @@ import type { TokenType } from 'client/slices/token/types/api';
 
 import * as SocketNewItemsNotice from 'client/api/socket/SocketNewItemsNotice';
 
+import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'client/shell/page/action-bar/ActionBar';
+
 import TokenTransferList from 'client/slices/token-transfer/components/list/TokenTransferList';
 import TokenTransferTable from 'client/slices/token-transfer/components/list/TokenTransferTable';
 import TokenTransferFilter from 'client/slices/token-transfer/components/TokenTransferFilter';
@@ -19,8 +21,6 @@ import useIsMobile from 'client/shared/hooks/useIsMobile';
 import DataList from 'client/shared/lists/DataList';
 import Pagination from 'client/shared/pagination/Pagination';
 import type { QueryWithPagesResult } from 'client/shared/pagination/useQueryWithPages';
-
-import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 
 import type { Filters } from './useAddressTokenTransfersQuery';
 import useAddressTokenTransfersSocket from './useAddressTokenTransfersSocket';

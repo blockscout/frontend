@@ -5,9 +5,10 @@ import React from 'react';
 
 import { CoinType } from '@blockscout/zetachain-cctx-types';
 
+import calculateUsdValue from 'client/shared/values/entity/calculateUsdValue';
+
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import calculateUsdValue from 'ui/shared/value/calculateUsdValue';
 
 type Props = {
   coinType: CoinType;

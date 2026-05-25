@@ -9,13 +9,13 @@ import { route } from 'nextjs-routes';
 
 import * as TxEntity from 'client/slices/tx/components/entity/TxEntity';
 
+import { distributeEntityProps } from 'client/shared/entities/utils';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { Image } from 'toolkit/chakra/image';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { stripTrailingSlash } from 'toolkit/utils/url';
-import { distributeEntityProps } from 'ui/shared/entities/base/utils';
 
 type Props = {
   chain?: ChainInfo | null;

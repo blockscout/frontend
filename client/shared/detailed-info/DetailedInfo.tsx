@@ -4,9 +4,10 @@ import type { GridItemProps, GridProps } from '@chakra-ui/react';
 import { Flex, Grid, GridItem, Text } from '@chakra-ui/react';
 import React from 'react';
 
+import * as ContainerWithScrollY from 'client/shared/containers/ContainerWithScrollY';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Hint } from 'toolkit/components/Hint/Hint';
-import * as ContainerWithScrollY from 'ui/shared/ContainerWithScrollY';
 
 export const ITEM_VALUE_LINE_HEIGHT = { base: '30px', lg: '32px' };
 

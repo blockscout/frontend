@@ -4,6 +4,8 @@ import { HStack } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import { ACTION_BAR_HEIGHT_DESKTOP } from 'client/shell/page/action-bar/ActionBar';
+
 import TxsWithApiSorting from 'client/slices/tx/pages/index/list/TxsWithApiSorting';
 
 import AddressTxsCrossChain from 'client/features/cross-chain-txs/pages/address/AddressTxsCrossChain';
@@ -19,7 +21,6 @@ import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import config from 'configs/app';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 
 import AddressTxsFilter from './AddressTxsFilter';
 import useAddressTxsQuery from './useAddressTxsQuery';

@@ -10,10 +10,11 @@ import { currencyUnits } from 'client/slices/chain/units';
 
 import ClustersEntity from 'client/features/name-services/clusters/components/ClustersEntity';
 
+import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
+import DetailedInfoTimestamp from 'client/shared/detailed-info/DetailedInfoTimestamp';
+import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
-import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 interface Props {
   clusterData?: ClusterByNameResponse['result']['data'];

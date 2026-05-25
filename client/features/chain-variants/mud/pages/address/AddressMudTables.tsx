@@ -4,6 +4,8 @@ import { Box } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'client/shell/page/action-bar/ActionBar';
+
 import { ADDRESS_MUD_TABLE_ITEM } from 'client/features/chain-variants/mud/stubs/address';
 
 import useDebounce from 'client/shared/hooks/useDebounce';
@@ -15,7 +17,6 @@ import { generateListStub } from 'client/shared/pagination/utils';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
-import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 
 import AddressMudTablesListItem from './AddressMudTablesListItem';
 import AddressMudTablesTable from './AddressMudTablesTable';

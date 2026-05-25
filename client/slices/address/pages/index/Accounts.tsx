@@ -4,6 +4,7 @@ import { Box } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
+import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'client/shell/page/action-bar/ActionBar';
 import PageTitle from 'client/shell/page/title/PageTitle';
 
 import { TOP_ADDRESS } from 'client/slices/address/stubs/address';
@@ -13,8 +14,6 @@ import getItemIndex from 'client/shared/lists/get-item-index';
 import Pagination from 'client/shared/pagination/Pagination';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
-
-import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 
 import AddressesListItem from './AddressesListItem';
 import AddressesTable from './AddressesTable';

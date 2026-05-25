@@ -5,6 +5,8 @@ import React from 'react';
 
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 
+import ActionBar from 'client/shell/page/action-bar/ActionBar';
+
 import useAddressInternalTxsQuery from 'client/slices/address/pages/details/internal-txs/useAddressInternalTxsQuery';
 import AddressTxsFilter from 'client/slices/address/pages/details/txs/AddressTxsFilter';
 import InternalTxsList from 'client/slices/internal-tx/components/InternalTxsList';
@@ -18,7 +20,6 @@ import DataList from 'client/shared/lists/DataList';
 import Pagination from 'client/shared/pagination/Pagination';
 
 import multichainConfig from 'configs/multichain';
-import ActionBar from 'ui/shared/ActionBar';
 
 import getAvailableChainIds from './get-available-chain-ids';
 

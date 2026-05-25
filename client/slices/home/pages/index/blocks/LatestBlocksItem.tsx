@@ -13,13 +13,13 @@ import { currencyUnits } from 'client/slices/chain/units';
 import getChainValidatorTitle from 'client/slices/chain/verification-type/utils/get-chain-validator-title';
 
 import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
+import SimpleValue from 'client/shared/values/entity/SimpleValue';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { thinsp } from 'toolkit/utils/htmlEntities';
-import SimpleValue from 'ui/shared/value/SimpleValue';
 
 type Props = {
   block: Block;

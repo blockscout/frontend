@@ -14,15 +14,15 @@ import NativeTokenTag from 'client/slices/token/components/NativeTokenTag';
 import TokenAddToWallet from 'client/features/web3-wallet/components/TokenAddToWallet';
 
 import ListItemMobile from 'client/shared/lists/ListItemMobile';
+import calculateUsdValue from 'client/shared/values/entity/calculateUsdValue';
+import ConfidentialValue from 'client/shared/values/entity/ConfidentialValue';
+import SimpleValue from 'client/shared/values/entity/SimpleValue';
+import { DEFAULT_ACCURACY_USD } from 'client/shared/values/entity/utils';
 
 import config from 'configs/app';
 import multichainConfig from 'configs/multichain';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tag } from 'toolkit/chakra/tag';
-import calculateUsdValue from 'ui/shared/value/calculateUsdValue';
-import ConfidentialValue from 'ui/shared/value/ConfidentialValue';
-import SimpleValue from 'ui/shared/value/SimpleValue';
-import { DEFAULT_ACCURACY_USD } from 'ui/shared/value/utils';
 
 type Props = AddressTokensErc20Item & { isLoading: boolean; hasAdditionalTokenTypes?: boolean };
 

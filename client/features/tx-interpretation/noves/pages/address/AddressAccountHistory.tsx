@@ -7,6 +7,8 @@ import React from 'react';
 import type { NovesHistoryFilterValue } from 'client/features/tx-interpretation/noves/types/api';
 import { NovesHistoryFilterValues } from 'client/features/tx-interpretation/noves/types/api';
 
+import ActionBar from 'client/shell/page/action-bar/ActionBar';
+
 import { NOVES_TRANSLATE } from 'client/features/tx-interpretation/noves/stubs';
 import { getFromToValue } from 'client/features/tx-interpretation/noves/utils/from-to';
 
@@ -19,7 +21,6 @@ import getFilterValueFromQuery from 'client/shared/router/get-filter-value-from-
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
-import ActionBar from 'ui/shared/ActionBar';
 
 import AccountHistoryFilter from './AddressAccountHistoryFilter';
 import AddressAccountHistoryListItem from './AddressAccountHistoryListItem';

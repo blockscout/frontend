@@ -13,12 +13,12 @@ import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 
 import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
 import ChainIcon from 'client/shared/external-chains/ChainIcon';
+import ConfidentialTokenValue from 'client/shared/values/entity/ConfidentialTokenValue';
+import TokenValue from 'client/shared/values/entity/TokenValue';
 
 import { Badge } from 'toolkit/chakra/badge';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
-import ConfidentialTokenValue from 'ui/shared/value/ConfidentialTokenValue';
-import TokenValue from 'ui/shared/value/TokenValue';
 
 type Props = {
   item: TokenTransfer;

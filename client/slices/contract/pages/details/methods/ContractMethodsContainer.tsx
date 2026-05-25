@@ -4,8 +4,9 @@ import React from 'react';
 
 import type { MethodType } from './types';
 
+import ApiFetchAlert from 'client/shared/alerts/ApiFetchAlert';
+
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
-import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
 interface Props {
   isLoading?: boolean;
@@ -22,7 +23,7 @@ const ContractMethodsContainer = ({ isLoading, isError, isEmpty, type, children 
   }
 
   if (isError) {
-    return <DataFetchAlert/>;
+    return <ApiFetchAlert/>;
   }
 
   if (isEmpty) {

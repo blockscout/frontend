@@ -10,6 +10,7 @@ import type {
   ValidatorsBlackfortSortingValue,
 } from 'client/features/chain-variants/blackfort/types/api';
 
+import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'client/shell/page/action-bar/ActionBar';
 import PageTitle from 'client/shell/page/title/PageTitle';
 
 import { VALIDATOR_BLACKFORT } from 'client/features/chain-variants/blackfort/stubs/validators';
@@ -23,7 +24,6 @@ import getSortValueFromQuery from 'client/shared/sort/get-sort-value-from-query'
 import Sort from 'client/shared/sort/Sort';
 
 import config from 'configs/app';
-import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 
 import { VALIDATORS_BLACKFORT_SORT_OPTIONS } from './utils';
 import ValidatorsCounters from './ValidatorsCounters';

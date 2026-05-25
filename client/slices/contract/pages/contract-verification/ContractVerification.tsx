@@ -7,15 +7,16 @@ import PageTitle from 'client/shell/page/title/PageTitle';
 import ContractVerificationForm from 'client/slices/contract/pages/contract-verification/ContractVerificationForm';
 import useFormConfigQuery from 'client/slices/contract/pages/contract-verification/useFormConfigQuery';
 
+import ApiFetchAlert from 'client/shared/alerts/ApiFetchAlert';
+
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
-import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
 const ContractVerification = () => {
   const configQuery = useFormConfigQuery(true);
 
   const content = (() => {
     if (configQuery.isError) {
-      return <DataFetchAlert/>;
+      return <ApiFetchAlert/>;
     }
 
     if (configQuery.isPending) {

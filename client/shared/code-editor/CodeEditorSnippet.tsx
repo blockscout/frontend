@@ -3,7 +3,7 @@
 import { Box, chakra, Flex } from '@chakra-ui/react';
 import React from 'react';
 
-import CopyToClipboard from 'client/shared/text/CopyToClipboard';
+import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
 

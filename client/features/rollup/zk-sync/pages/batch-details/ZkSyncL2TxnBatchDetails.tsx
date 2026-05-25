@@ -16,21 +16,21 @@ import { currencyUnits } from 'client/slices/chain/units';
 import { layerLabels } from 'client/features/rollup/common/utils/layer';
 import { formatZkSyncL2TxnBatchStatus } from 'client/features/rollup/zk-sync/utils/format-txn-batch-status';
 
+import ApiFetchAlert from 'client/shared/alerts/ApiFetchAlert';
 import PrevNext from 'client/shared/buttons/PrevNext';
+import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
+import DetailedInfoTimestamp from 'client/shared/detailed-info/DetailedInfoTimestamp';
 import isCustomAppError from 'client/shared/errors/is-custom-app-error';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import VerificationSteps from 'client/shared/lifecycle/steps/VerificationSteps';
-import CopyToClipboard from 'client/shared/text/CopyToClipboard';
+import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
+import GasPriceValue from 'client/shared/values/entity/GasPriceValue';
 
 import config from 'configs/app';
 import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
-import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
-import GasPriceValue from 'ui/shared/value/GasPriceValue';
 
 import ZkSyncL2TxnBatchHashesInfo from './ZkSyncL2TxnBatchHashesInfo';
 
@@ -61,7 +61,7 @@ const ZkSyncL2TxnBatchDetails = ({ query }: Props) => {
       throwOnResourceLoadError({ isError, error });
     }
 
-    return <DataFetchAlert/>;
+    return <ApiFetchAlert/>;
   }
 
   if (!data) {

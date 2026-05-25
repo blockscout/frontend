@@ -16,10 +16,10 @@ import * as stubs from 'client/slices/contract/stubs';
 
 import { useMultichainContext } from 'client/features/multichain/context';
 
+import ApiFetchAlert from 'client/shared/alerts/ApiFetchAlert';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
 import ContractDetailsAlerts from './alerts/ContractDetailsAlerts';
 import ContractSourceAddressSelector from './ContractSourceAddressSelector';
@@ -76,7 +76,7 @@ const ContractDetails = ({ addressData, channel, mainContractQuery }: Props) => 
   const tabs = useContractCodeTabs({ data, isLoading: isPlaceholderData, addressData, sourceAddress: selectedItem?.address_hash });
 
   if (isError) {
-    return <DataFetchAlert/>;
+    return <ApiFetchAlert/>;
   }
 
   const addressSelector = sourceItems.length > 1 && selectedItem ? (

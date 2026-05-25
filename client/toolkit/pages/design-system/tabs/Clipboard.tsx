@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import CopyToClipboard from 'client/shared/text/CopyToClipboard';
+import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
 
 import { Section, Container, SectionHeader, SamplesStack, Sample } from '../parts';
 

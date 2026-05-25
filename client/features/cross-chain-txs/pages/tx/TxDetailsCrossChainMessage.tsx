@@ -8,12 +8,12 @@ import type { InterchainMessage } from '@blockscout/interchain-indexer-types';
 import AddressEntityInterchain from 'client/slices/address/components/entity/AddressEntityInterchain';
 import TxEntityInterchain from 'client/slices/tx/components/entity/TxEntityInterchain';
 
+import * as DetailedInfoItemBreakdown from 'client/shared/detailed-info/DetailedInfoItemBreakdown';
+import DetailedInfoTimestamp from 'client/shared/detailed-info/DetailedInfoTimestamp';
 import ChainLabel from 'client/shared/external-chains/ChainLabel';
 
 import config from 'configs/app';
 import { mdash } from 'toolkit/utils/htmlEntities';
-import * as DetailedInfoItemBreakdown from 'ui/shared/DetailedInfo/DetailedInfoItemBreakdown';
-import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 
 import CrossChainMessageEntity from '../../components/CrossChainMessageEntity';
 import CrossChainTxsStatusTag from '../../components/CrossChainTxsStatusTag';

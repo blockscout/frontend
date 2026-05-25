@@ -11,11 +11,11 @@ import getBlockTotalReward from 'client/slices/block/utils/get-block-total-rewar
 import GasUsed from 'client/slices/gas/components/GasUsed';
 
 import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
+import SimpleValue from 'client/shared/values/entity/SimpleValue';
 
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
-import SimpleValue from 'ui/shared/value/SimpleValue';
 
 type Props = Block & {
   page: number;

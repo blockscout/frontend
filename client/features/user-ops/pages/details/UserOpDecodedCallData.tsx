@@ -7,9 +7,8 @@ import type { UserOp } from 'client/features/user-ops/types/api';
 
 import LogDecodedInputData from 'client/slices/log/components/LogDecodedInputData';
 
+import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
-
-import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 
 import UserOpCallDataSwitch from './UserOpCallDataSwitch';
 

@@ -15,18 +15,18 @@ import BlockEntityL1 from 'client/features/rollup/common/components/BlockEntityL
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
 import { layerLabels } from 'client/features/rollup/common/utils/layer';
 
+import ApiFetchAlert from 'client/shared/alerts/ApiFetchAlert';
 import PrevNext from 'client/shared/buttons/PrevNext';
+import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
+import DetailedInfoTimestamp from 'client/shared/detailed-info/DetailedInfoTimestamp';
 import isCustomAppError from 'client/shared/errors/is-custom-app-error';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
-import CopyToClipboard from 'client/shared/text/CopyToClipboard';
-import HashStringShortenDynamic from 'client/shared/text/HashStringShortenDynamic';
+import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
+import HashStringShortenDynamic from 'client/shared/texts/HashStringShortenDynamic';
 
 import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 
 import ArbitrumL2TxnBatchDA from '../../components/ArbitrumL2TxnBatchDA';
 import ArbitrumL2TxnBatchDetailsAnyTrustDA from './ArbitrumL2TxnBatchDetailsAnyTrustDA';
@@ -57,7 +57,7 @@ const ArbitrumL2TxnBatchDetails = ({ query }: Props) => {
       throwOnResourceLoadError({ isError, error });
     }
 
-    return <DataFetchAlert/>;
+    return <ApiFetchAlert/>;
   }
 
   if (!data) {

@@ -17,20 +17,20 @@ import { POOL } from 'client/features/dex-pools/stubs';
 import getPoolLinks from 'client/features/dex-pools/utils/get-pool-links';
 import { getPoolTitle } from 'client/features/dex-pools/utils/get-pool-title';
 
+import ApiFetchAlert from 'client/shared/alerts/ApiFetchAlert';
 import InfoPopoverButton from 'client/shared/buttons/InfoPopoverButton';
 import isCustomAppError from 'client/shared/errors/is-custom-app-error';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
+import VerifyWith from 'client/shared/links/VerifyWith';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
-import CopyToClipboard from 'client/shared/text/CopyToClipboard';
-import HashStringShortenDynamic from 'client/shared/text/HashStringShortenDynamic';
+import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
+import HashStringShortenDynamic from 'client/shared/texts/HashStringShortenDynamic';
 
 import config from 'configs/app';
 import { Image } from 'toolkit/chakra/image';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tag } from 'toolkit/chakra/tag';
-import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import VerifyWith from 'ui/shared/VerifyWith';
 
 const Pool = () => {
   const router = useRouter();
@@ -58,7 +58,7 @@ const Pool = () => {
         throwOnResourceLoadError({ resource: 'contractInfo:pool', error, isError: true });
       }
 
-      return <DataFetchAlert/>;
+      return <ApiFetchAlert/>;
     }
 
     if (!data) {

@@ -3,11 +3,11 @@
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
-import AssetValue from 'ui/shared/value/AssetValue';
-import GasPriceValue from 'ui/shared/value/GasPriceValue';
-import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
-import SimpleValue from 'ui/shared/value/SimpleValue';
-import TokenValue from 'ui/shared/value/TokenValue';
+import AssetValue from 'client/shared/values/entity/AssetValue';
+import GasPriceValue from 'client/shared/values/entity/GasPriceValue';
+import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
+import SimpleValue from 'client/shared/values/entity/SimpleValue';
+import TokenValue from 'client/shared/values/entity/TokenValue';
 
 import { Section, Container, SectionHeader, SamplesStack, Sample, SectionSubHeader } from '../parts';
 import { TOKEN } from './Link';

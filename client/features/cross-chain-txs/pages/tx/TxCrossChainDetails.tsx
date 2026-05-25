@@ -6,10 +6,10 @@ import type { InterchainMessage } from '@blockscout/interchain-indexer-types';
 
 import AddressEntityInterchain from 'client/slices/address/components/entity/AddressEntityInterchain';
 
-import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
-import RawInputData from 'ui/shared/RawInputData';
+import ApiFetchAlert from 'client/shared/alerts/ApiFetchAlert';
+import RawInputData from 'client/shared/data/RawInputData';
+import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
+import DetailedInfoTimestamp from 'client/shared/detailed-info/DetailedInfoTimestamp';
 
 import CrossChainBridgeLink from '../../components/CrossChainBridgeLink';
 import CrossChainTxsStatusTag from '../../components/CrossChainTxsStatusTag';
@@ -24,7 +24,7 @@ interface Props {
 const TxCrossChainDetails = ({ data, isLoading }: Props) => {
 
   if (!data) {
-    return <DataFetchAlert/>;
+    return <ApiFetchAlert/>;
   }
 
   return (

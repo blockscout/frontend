@@ -9,7 +9,7 @@ import type { TokenInfo } from 'client/slices/token/types/api';
 import type { EntityProps as TokenEntityProps } from 'client/slices/token/components/entity/TokenEntity';
 import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 
-import ConfidentialValue from 'ui/shared/value/ConfidentialValue';
+import ConfidentialValue from 'client/shared/values/entity/ConfidentialValue';
 
 interface Props extends Omit<FlexProps, 'children'> {
   token: TokenInfo;

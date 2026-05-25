@@ -5,6 +5,8 @@ import React, { useCallback, useState } from 'react';
 
 import type { AddressTag } from 'client/features/account/types/api';
 
+import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'client/shell/page/action-bar/ActionBar';
+
 import AccountPageDescription from 'client/features/account/components/AccountPageDescription';
 import { PRIVATE_TAG_ADDRESS } from 'client/features/account/stubs';
 
@@ -16,7 +18,6 @@ import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { Button } from 'toolkit/chakra/button';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
-import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 
 import AddressModal from './AddressModal/AddressModal';
 import AddressTagListItem from './AddressTagTable/AddressTagListItem';

@@ -9,8 +9,8 @@ import BlockEntityL2 from 'client/features/rollup/common/components/BlockEntityL
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
 
 import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
-import CopyToClipboard from 'client/shared/text/CopyToClipboard';
-import HashStringShorten from 'client/shared/text/HashStringShorten';
+import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
+import HashStringShorten from 'client/shared/texts/HashStringShorten';
 
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';

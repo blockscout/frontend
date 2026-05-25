@@ -3,12 +3,12 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
+import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'client/shell/page/action-bar/ActionBar';
+
+import ApiFetchAlert from 'client/shared/alerts/ApiFetchAlert';
 import DataList from 'client/shared/lists/DataList';
 import Pagination from 'client/shared/pagination/Pagination';
 import type { QueryWithPagesResult } from 'client/shared/pagination/useQueryWithPages';
-
-import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
 import UserOpsListItem from './UserOpsListItem';
 import UserOpsTable from './UserOpsTable';
@@ -22,7 +22,7 @@ type Props = {
 const UserOpsContent = ({ query, showTx = true, showSender = true }: Props) => {
 
   if (query.isError) {
-    return <DataFetchAlert/>;
+    return <ApiFetchAlert/>;
   }
 
   const content = query.data?.items ? (

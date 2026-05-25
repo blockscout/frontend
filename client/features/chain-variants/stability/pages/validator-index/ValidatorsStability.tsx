@@ -12,6 +12,7 @@ import type {
 } from 'client/features/chain-variants/stability/types/api';
 
 // import useDebounce from 'client/shared/hooks/useDebounce';
+import ActionBar from 'client/shell/page/action-bar/ActionBar';
 import PageTitle from 'client/shell/page/title/PageTitle';
 
 import { VALIDATOR_STABILITY } from 'client/features/chain-variants/stability/stubs/validators';
@@ -27,7 +28,6 @@ import getSortValueFromQuery from 'client/shared/sort/get-sort-value-from-query'
 import Sort from 'client/shared/sort/Sort';
 
 import config from 'configs/app';
-import ActionBar from 'ui/shared/ActionBar';
 
 import { VALIDATORS_STABILITY_SORT_OPTIONS } from './utils';
 import ValidatorsCounters from './ValidatorsCounters';

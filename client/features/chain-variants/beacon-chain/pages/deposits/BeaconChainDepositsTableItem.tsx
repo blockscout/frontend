@@ -9,9 +9,9 @@ import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 
 import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
+import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
 
 import { TableCell, TableRow } from 'toolkit/chakra/table';
-import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 import BeaconChainDepositSignature from '../../components/BeaconChainDepositSignature';
 import BeaconChainDepositStatusTag from '../../components/BeaconChainDepositStatusTag';

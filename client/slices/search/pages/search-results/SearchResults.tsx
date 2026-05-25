@@ -12,6 +12,7 @@ import HeaderAlert from 'client/shell/header/HeaderAlert';
 import HeaderDesktop from 'client/shell/header/HeaderDesktop';
 import HeaderMobile from 'client/shell/header/HeaderMobile';
 import * as Layout from 'client/shell/layout/components';
+import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'client/shell/page/action-bar/ActionBar';
 import PageTitle from 'client/shell/page/title/PageTitle';
 import { useSettingsContext } from 'client/shell/top-bar/settings/context';
 
@@ -22,6 +23,7 @@ import type { SearchResultAppItem } from 'client/slices/search/utils/search-cate
 import ExternalSearchItem from 'client/features/chain-variants/zeta-chain/components/ExternalSearchItem';
 import useMarketplaceApps from 'client/features/marketplace/hooks/useMarketplaceApps';
 
+import ApiFetchAlert from 'client/shared/alerts/ApiFetchAlert';
 import AppErrorBoundary from 'client/shared/errors/AppErrorBoundary';
 import Pagination from 'client/shared/pagination/Pagination';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
@@ -32,8 +34,6 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 import * as regexp from 'toolkit/utils/regexp';
-import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
 import SearchResultListItem from './SearchResultListItem';
 import SearchResultsInput from './SearchResultsInput';
@@ -182,7 +182,7 @@ const SearchResultsPageContent = () => {
 
   const content = (() => {
     if (isError) {
-      return <DataFetchAlert/>;
+      return <ApiFetchAlert/>;
     }
 
     if (!displayedItems.length) {

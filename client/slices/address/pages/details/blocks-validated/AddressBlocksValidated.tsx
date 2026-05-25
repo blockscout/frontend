@@ -13,6 +13,8 @@ import * as SocketNewItemsNotice from 'client/api/socket/SocketNewItemsNotice';
 import useSocketChannel from 'client/api/socket/useSocketChannel';
 import useSocketMessage from 'client/api/socket/useSocketMessage';
 
+import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'client/shell/page/action-bar/ActionBar';
+
 import { BLOCK } from 'client/slices/block/stubs/block';
 import { currencyUnits } from 'client/slices/chain/units';
 
@@ -25,7 +27,6 @@ import { generateListStub } from 'client/shared/pagination/utils';
 
 import config from 'configs/app';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
-import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 
 import AddressBlocksValidatedListItem from './AddressBlocksValidatedListItem';
 import AddressBlocksValidatedTableItem from './AddressBlocksValidatedTableItem';

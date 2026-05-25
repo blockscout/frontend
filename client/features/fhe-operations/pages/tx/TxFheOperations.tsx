@@ -9,9 +9,8 @@ import TxPendingAlert from 'client/slices/tx/components/TxPendingAlert';
 import TxSocketAlert from 'client/slices/tx/components/TxSocketAlert';
 import type { TxQuery } from 'client/slices/tx/hooks/useTxQuery';
 
+import ApiFetchAlert from 'client/shared/alerts/ApiFetchAlert';
 import DataList from 'client/shared/lists/DataList';
-
-import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
 import { FHE_OPERATIONS_RESPONSE } from '../../stubs';
 import TxFHEOperationsList from './TxFheOperationsList';
@@ -40,7 +39,7 @@ const TxFHEOperations = ({ txQuery }: Props) => {
   }
 
   if (txQuery.isError || isError) {
-    return <DataFetchAlert/>;
+    return <ApiFetchAlert/>;
   }
 
   const content = data ? (

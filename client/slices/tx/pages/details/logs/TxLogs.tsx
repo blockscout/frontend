@@ -5,18 +5,18 @@ import React from 'react';
 
 import type { TransactionLog } from 'client/slices/log/types/api';
 
+import ActionBar from 'client/shell/page/action-bar/ActionBar';
+
 import LogItem from 'client/slices/log/components/LogItem';
 import { LOG } from 'client/slices/log/stubs/log';
 import TxPendingAlert from 'client/slices/tx/components/TxPendingAlert';
 import TxSocketAlert from 'client/slices/tx/components/TxSocketAlert';
 import type { TxQuery } from 'client/slices/tx/hooks/useTxQuery';
 
+import ApiFetchAlert from 'client/shared/alerts/ApiFetchAlert';
 import Pagination from 'client/shared/pagination/Pagination';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
-
-import ActionBar from 'ui/shared/ActionBar';
-import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
 interface Props {
   txQuery: TxQuery;
@@ -38,7 +38,7 @@ const TxLogs = ({ txQuery, logsFilter }: Props) => {
   }
 
   if (isError || txQuery.isError) {
-    return <DataFetchAlert/>;
+    return <ApiFetchAlert/>;
   }
 
   let items: Array<TransactionLog> = [];

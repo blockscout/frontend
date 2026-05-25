@@ -3,6 +3,7 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
+import ActionBar from 'client/shell/page/action-bar/ActionBar';
 import PageTitle from 'client/shell/page/title/PageTitle';
 
 import InternalTxsList from 'client/slices/internal-tx/components/InternalTxsList';
@@ -17,7 +18,6 @@ import DataList from 'client/shared/lists/DataList';
 import Pagination from 'client/shared/pagination/Pagination';
 
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
-import ActionBar from 'ui/shared/ActionBar';
 
 const MultichainInternalTxs = () => {
   const isMobile = useIsMobile();

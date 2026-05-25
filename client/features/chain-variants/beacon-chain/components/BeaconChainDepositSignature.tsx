@@ -3,7 +3,7 @@
 import { chakra, Text } from '@chakra-ui/react';
 import React from 'react';
 
-import CopyToClipboard from 'client/shared/text/CopyToClipboard';
+import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TruncatedTextTooltip } from 'toolkit/components/truncation/TruncatedTextTooltip';

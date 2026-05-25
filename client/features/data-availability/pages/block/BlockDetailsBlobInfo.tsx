@@ -8,14 +8,14 @@ import type { Block } from 'client/slices/block/types/api';
 
 import { currencyUnits } from 'client/slices/chain/units';
 
+import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
+import GasPriceValue from 'client/shared/values/entity/GasPriceValue';
+import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
+import Utilization from 'client/shared/values/utilization/Utilization';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { ZERO } from 'toolkit/utils/consts';
-import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import Utilization from 'ui/shared/Utilization/Utilization';
-import GasPriceValue from 'ui/shared/value/GasPriceValue';
-import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 interface Props {
   data: Block;

@@ -10,7 +10,7 @@ import { route } from 'nextjs-routes';
 
 import SearchBarSuggestItemLink from 'client/slices/search/components/search-bar/SearchBarSuggest/SearchBarSuggestItemLink';
 
-import highlightText from 'client/shared/text/highlight-text';
+import highlightText from 'client/shared/texts/highlight-text';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { useColorModeValue } from 'toolkit/chakra/color-mode';

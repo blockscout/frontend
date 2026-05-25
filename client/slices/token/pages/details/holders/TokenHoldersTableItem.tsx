@@ -8,11 +8,12 @@ import { hasTokenIds, isConfidentialTokenType } from 'client/slices/token/utils/
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 
+import AssetValue from 'client/shared/values/entity/AssetValue';
+import ConfidentialValue from 'client/shared/values/entity/ConfidentialValue';
+import Utilization from 'client/shared/values/utilization/Utilization';
+
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
-import Utilization from 'ui/shared/Utilization/Utilization';
-import AssetValue from 'ui/shared/value/AssetValue';
-import ConfidentialValue from 'ui/shared/value/ConfidentialValue';
 
 type Props = {
   holder: TokenHolder;

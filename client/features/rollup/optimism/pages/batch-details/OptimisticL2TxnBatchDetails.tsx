@@ -13,15 +13,15 @@ import type { ResourceError } from 'client/api/resources';
 import { layerLabels } from 'client/features/rollup/common/utils/layer';
 import TxnBatchDA from 'client/features/rollup/optimism/components/TxnBatchDA';
 
+import ApiFetchAlert from 'client/shared/alerts/ApiFetchAlert';
 import PrevNext from 'client/shared/buttons/PrevNext';
+import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
+import DetailedInfoTimestamp from 'client/shared/detailed-info/DetailedInfoTimestamp';
 import isCustomAppError from 'client/shared/errors/is-custom-app-error';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 
 import OptimisticL2TxnBatchBlobCallData from './OptimisticL2TxnBatchBlobCallData';
 import OptimisticL2TxnBatchBlobCelestia from './OptimisticL2TxnBatchBlobCelestia';
@@ -53,7 +53,7 @@ const OptimisticL2TxnBatchDetails = ({ query }: Props) => {
       throwOnResourceLoadError({ isError, error });
     }
 
-    return <DataFetchAlert/>;
+    return <ApiFetchAlert/>;
   }
 
   if (!data) {

@@ -5,7 +5,7 @@ import React from 'react';
 
 import { Alert } from 'toolkit/chakra/alert';
 
-const DataFetchAlert = ({ className }: { className?: string }) => {
+const ApiFetchAlert = ({ className }: { className?: string }) => {
   return (
     <Alert status="warning" width="fit-content" className={ className }>
       Something went wrong. Try refreshing the page or come back later.
@@ -13,4 +13,4 @@ const DataFetchAlert = ({ className }: { className?: string }) => {
   );
 };
 
-export default chakra(DataFetchAlert);
+export default chakra(ApiFetchAlert);

@@ -18,18 +18,18 @@ import UserOpEntity from 'client/features/user-ops/components/entity/UserOpEntit
 import UserOpSponsorType from 'client/features/user-ops/components/UserOpSponsorType';
 import UserOpStatus from 'client/features/user-ops/components/UserOpStatus';
 
+import ApiFetchAlert from 'client/shared/alerts/ApiFetchAlert';
+import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
+import DetailedInfoNativeCoinValue from 'client/shared/detailed-info/DetailedInfoNativeCoinValue';
+import DetailedInfoTimestamp from 'client/shared/detailed-info/DetailedInfoTimestamp';
 import isCustomAppError from 'client/shared/errors/is-custom-app-error';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
+import GasPriceValue from 'client/shared/values/entity/GasPriceValue';
+import Utilization from 'client/shared/values/utilization/Utilization';
 
 import config from 'configs/app';
 import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import DetailedInfoNativeCoinValue from 'ui/shared/DetailedInfo/DetailedInfoNativeCoinValue';
-import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
-import Utilization from 'ui/shared/Utilization/Utilization';
-import GasPriceValue from 'ui/shared/value/GasPriceValue';
 
 import UserOpCallData from './UserOpCallData';
 import UserOpDecodedCallData from './UserOpDecodedCallData';
@@ -47,7 +47,7 @@ const UserOpDetails = ({ query }: Props) => {
       throwOnResourceLoadError({ isError, error });
     }
 
-    return <DataFetchAlert/>;
+    return <ApiFetchAlert/>;
   }
 
   if (!data) {

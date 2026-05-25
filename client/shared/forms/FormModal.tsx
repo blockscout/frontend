@@ -5,7 +5,8 @@ import { Box, Text } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 
 import { DialogBody, DialogContent, DialogHeader, DialogRoot } from 'toolkit/chakra/dialog';
-import FormSubmitAlert from 'ui/shared/FormSubmitAlert';
+
+import FormSubmitAlert from './FormSubmitAlert';
 
 interface Props<TData> extends Omit<DialogRootProps, 'children'> {
   data?: TData;

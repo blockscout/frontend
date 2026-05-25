@@ -15,12 +15,12 @@ import formatRpcData from 'client/slices/tx/utils/format-rpc-data';
 
 import { publicClient } from 'client/features/connect-wallet/utils/public-client';
 
+import ApiFetchAlert from 'client/shared/alerts/ApiFetchAlert';
 import ApiDegradationAlert from 'client/shared/api-degradation/ApiDegradationAlert';
 import isCustomAppError from 'client/shared/errors/is-custom-app-error';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 
 import { SECOND } from 'toolkit/utils/consts';
-import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
 import TxDetails from './TxDetails';
 
@@ -101,7 +101,7 @@ const TxDetailsRpc = ({ hash, txQuery }: Props) => {
       throwOnResourceLoadError({ resource: 'general:tx', error: originalError, isError: true });
     }
 
-    return <DataFetchAlert/>;
+    return <ApiFetchAlert/>;
   }
 
   return (

@@ -10,8 +10,8 @@ import type { SearchResultBlock } from 'client/slices/search/types/client';
 import * as BlockEntity from 'client/slices/block/components/entity/BlockEntity';
 
 import Time from 'client/shared/date-and-time/Time';
-import HashStringShortenDynamic from 'client/shared/text/HashStringShortenDynamic';
-import highlightText from 'client/shared/text/highlight-text';
+import HashStringShortenDynamic from 'client/shared/texts/HashStringShortenDynamic';
+import highlightText from 'client/shared/texts/highlight-text';
 
 import { Tag } from 'toolkit/chakra/tag';
 

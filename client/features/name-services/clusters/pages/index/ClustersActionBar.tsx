@@ -5,6 +5,8 @@ import React from 'react';
 
 import type { PaginationParams } from 'client/shared/pagination/types';
 
+import ActionBar from 'client/shell/page/action-bar/ActionBar';
+
 import {
   getSearchPlaceholder,
   shouldShowActionBar,
@@ -15,7 +17,6 @@ import Pagination from 'client/shared/pagination/Pagination';
 
 import { Button, ButtonGroupRadio } from 'toolkit/chakra/button';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
-import ActionBar from 'ui/shared/ActionBar';
 
 type ViewMode = 'leaderboard' | 'directory';
 

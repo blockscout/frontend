@@ -10,7 +10,7 @@ import { route } from 'nextjs/routes';
 import SearchBarSuggestItemLink from 'client/slices/search/components/search-bar/SearchBarSuggest/SearchBarSuggestItemLink';
 
 import Time from 'client/shared/date-and-time/Time';
-import HashStringShortenDynamic from 'client/shared/text/HashStringShortenDynamic';
+import HashStringShortenDynamic from 'client/shared/texts/HashStringShortenDynamic';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { SECOND } from 'toolkit/utils/consts';

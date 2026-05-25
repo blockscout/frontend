@@ -15,17 +15,17 @@ import ZetaChainCCTXReducedStatus from 'client/features/chain-variants/zeta-chai
 import ZetaChainCCTXStatusTag from 'client/features/chain-variants/zeta-chain/components/ZetaChainCCTXStatusTag';
 import ZetaChainCCTXValue from 'client/features/chain-variants/zeta-chain/components/ZetaChainCCTXValue';
 
-import CopyToClipboard from 'client/shared/text/CopyToClipboard';
-import base64ToHex from 'client/shared/transformers/base64-to-hex';
+import RawDataSnippet from 'client/shared/data/RawDataSnippet';
+import base64ToHex from 'client/shared/data/transformers/base64-to-hex';
+import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
+import DetailedInfoNativeCoinValue from 'client/shared/detailed-info/DetailedInfoNativeCoinValue';
+import DetailedInfoTimestamp from 'client/shared/detailed-info/DetailedInfoTimestamp';
+import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { SECOND } from 'toolkit/utils/consts';
-import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import DetailedInfoNativeCoinValue from 'ui/shared/DetailedInfo/DetailedInfoNativeCoinValue';
-import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
-import RawDataSnippet from 'ui/shared/RawDataSnippet';
 
 import ZetaChainCCTXDetailsLifecycleIn from './ZetaChainCCTXDetailsLifecycleIn';
 import ZetaChainCCTXDetailsLifecycleOut from './ZetaChainCCTXDetailsLifecycleOut';

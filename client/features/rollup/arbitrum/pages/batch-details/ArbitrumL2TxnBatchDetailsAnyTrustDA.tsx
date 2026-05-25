@@ -6,13 +6,12 @@ import React from 'react';
 import type { ArbitrumL2TxnBatchDAAnytrust } from '../../types/api';
 
 import dayjs from 'client/shared/date-and-time/dayjs';
-import CopyToClipboard from 'client/shared/text/CopyToClipboard';
-import HashStringShorten from 'client/shared/text/HashStringShorten';
-import TextSeparator from 'client/shared/text/TextSeparator';
+import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
+import DetailsTimestamp from 'client/shared/detailed-info/DetailedInfoTimestamp';
+import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
+import HashStringShorten from 'client/shared/texts/HashStringShorten';
+import TextSeparator from 'client/shared/texts/TextSeparator';
 import SpriteIcon from 'client/sprite/SpriteIcon';
-
-import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import DetailsTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 
 type Props = {
   data: ArbitrumL2TxnBatchDAAnytrust;

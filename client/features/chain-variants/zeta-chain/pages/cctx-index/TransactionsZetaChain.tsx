@@ -7,6 +7,7 @@ import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
 import { SocketProvider } from 'client/api/socket/context';
 
+import ActionBar from 'client/shell/page/action-bar/ActionBar';
 import PageTitle from 'client/shell/page/title/PageTitle';
 
 import TxsWithFrontendSorting from 'client/slices/tx/pages/index/list/TxsWithFrontendSorting';
@@ -25,7 +26,6 @@ import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import config from 'configs/app';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import ActionBar from 'ui/shared/ActionBar';
 
 import ZetaChainCCTXsTab from './ZetaChainCCTXsTab';
 import ZetaChainEvmTransactions from './ZetaChainEvmTransactions';

@@ -10,12 +10,11 @@ import TokenTransferSnippet from 'client/slices/token-transfer/components/snippe
 
 import CeloEpochStatus from 'client/features/chain-variants/celo/components/CeloEpochStatus';
 
+import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
+import DetailedInfoTimestamp from 'client/shared/detailed-info/DetailedInfoTimestamp';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
-
-import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
-import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
-import TokenValue from 'ui/shared/value/TokenValue';
+import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
+import TokenValue from 'client/shared/values/entity/TokenValue';
 
 import EpochElectionRewards from './election-rewards/EpochElectionRewards';
 

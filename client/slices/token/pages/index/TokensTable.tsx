@@ -5,11 +5,12 @@ import React from 'react';
 import type { AggregatedTokenInfo } from 'client/features/multichain/types/client';
 import type { TokenInfo, TokensSortingField, TokensSortingValue } from 'client/slices/token/types/api';
 
+import { ACTION_BAR_HEIGHT_DESKTOP } from 'client/shell/page/action-bar/ActionBar';
+
 import { default as getNextSortValueShared } from 'client/shared/sort/get-next-sort-value';
 
 import type { OnValueChangeHandler } from 'toolkit/chakra/select';
 import { TableBody, TableColumnHeader, TableColumnHeaderSortable, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
-import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 
 import TokensTableItem from './TokensTableItem';
 

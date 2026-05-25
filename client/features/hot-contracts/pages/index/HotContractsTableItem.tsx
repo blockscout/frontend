@@ -11,9 +11,10 @@ import { Reputation } from 'client/slices/token/components/entity/TokenEntity';
 
 import MetadataTags from 'client/features/address-metadata/components/tag/MetadataTags';
 
+import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
+
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
-import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 interface Props {
   isLoading?: boolean;

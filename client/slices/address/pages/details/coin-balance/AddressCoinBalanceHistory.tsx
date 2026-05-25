@@ -9,6 +9,8 @@ import type { AddressCoinBalanceHistoryResponse } from 'client/slices/address/ty
 
 import type { ResourceError } from 'client/api/resources';
 
+import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'client/shell/page/action-bar/ActionBar';
+
 import { currencyUnits } from 'client/slices/chain/units';
 
 import { useMultichainContext } from 'client/features/multichain/context';
@@ -18,7 +20,6 @@ import DataList from 'client/shared/lists/DataList';
 import Pagination from 'client/shared/pagination/Pagination';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
-import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 
 import AddressCoinBalanceListItem from './AddressCoinBalanceListItem';
 import AddressCoinBalanceTableItem from './AddressCoinBalanceTableItem';

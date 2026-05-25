@@ -6,12 +6,13 @@ import React from 'react';
 import type { PaginationParams } from 'client/shared/pagination/types';
 import type { AddressTokenBalance } from 'client/slices/address/types/api';
 
+import ActionBar from 'client/shell/page/action-bar/ActionBar';
+
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import DataList from 'client/shared/lists/DataList';
 import Pagination from 'client/shared/pagination/Pagination';
 
 import config from 'configs/app';
-import ActionBar from 'ui/shared/ActionBar';
 
 import ERC20TokensListItem from './ERC20TokensListItem';
 import ERC20TokensTable from './ERC20TokensTable';

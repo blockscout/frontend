@@ -6,10 +6,10 @@ import React from 'react';
 
 import type { ExternalChain } from 'client/shared/external-chains/types';
 
-import type { Props as CopyToClipboardProps } from 'client/shared/text/CopyToClipboard';
-import CopyToClipboard from 'client/shared/text/CopyToClipboard';
-import HashStringShorten from 'client/shared/text/HashStringShorten';
-import HashStringShortenDynamic from 'client/shared/text/HashStringShortenDynamic';
+import type { Props as CopyToClipboardProps } from 'client/shared/texts/CopyToClipboard';
+import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
+import HashStringShorten from 'client/shared/texts/HashStringShorten';
+import HashStringShortenDynamic from 'client/shared/texts/HashStringShortenDynamic';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 import type { Props as SpriteIconProps } from 'client/sprite/SpriteIcon';
 

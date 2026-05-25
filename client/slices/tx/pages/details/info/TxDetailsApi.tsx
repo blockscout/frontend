@@ -7,7 +7,7 @@ import BlockPendingUpdateAlert from 'client/slices/block/components/BlockPending
 import TestnetWarning from 'client/slices/chain/TestnetWarning';
 import type { TxQuery } from 'client/slices/tx/hooks/useTxQuery';
 
-import DataFetchAlert from 'ui/shared/DataFetchAlert';
+import ApiFetchAlert from 'client/shared/alerts/ApiFetchAlert';
 
 import TxDetails from './TxDetails';
 
@@ -17,7 +17,7 @@ interface Props {
 
 const TxDetailsApi = ({ txQuery }: Props) => {
   if (txQuery.isError) {
-    return <DataFetchAlert/>;
+    return <ApiFetchAlert/>;
   }
 
   return (

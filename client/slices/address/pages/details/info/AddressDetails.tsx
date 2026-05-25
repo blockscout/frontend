@@ -18,16 +18,16 @@ import useAddress3rdPartyWidgets from 'client/features/address-3rd-party-widgets
 import AddressCeloAccount from 'client/features/chain-variants/celo/pages/address/AddressCeloAccount';
 import FilecoinActorTag from 'client/features/chain-variants/filecoin/pages/address/FilecoinActorTag';
 
+import ApiFetchAlert from 'client/shared/alerts/ApiFetchAlert';
 import ApiDegradationAlert from 'client/shared/api-degradation/ApiDegradationAlert';
+import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
+import DetailedInfoSponsoredItem from 'client/shared/detailed-info/DetailedInfoSponsoredItem';
 import isCustomAppError from 'client/shared/errors/is-custom-app-error';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
-import CopyToClipboard from 'client/shared/text/CopyToClipboard';
+import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
 
 import config from 'configs/app';
-import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import DetailedInfoSponsoredItem from 'ui/shared/DetailedInfo/DetailedInfoSponsoredItem';
 
 import AddressAlternativeFormat from './AddressAlternativeFormat';
 import AddressBalance from './AddressBalance';
@@ -80,7 +80,7 @@ const AddressDetails = ({ addressQuery, countersQuery, isLoading }: Props) => {
         throwOnResourceLoadError(addressQuery);
       }
     } else {
-      return <DataFetchAlert/>;
+      return <ApiFetchAlert/>;
     }
   }
 

@@ -11,7 +11,7 @@ import { route } from 'nextjs-routes';
 import useLogout from 'client/features/account/hooks/useLogout';
 import { useMarketplaceContext } from 'client/features/marketplace/context';
 
-import shortenString from 'client/shared/text/shorten-string';
+import shortenString from 'client/shared/texts/shorten-string';
 
 import config from 'configs/app';
 import { Button } from 'toolkit/chakra/button';

@@ -5,13 +5,13 @@ import React from 'react';
 
 import type { AlternativeExplorer as TAlternativeExplorer } from '../types/client';
 
+import VerifyWith from 'client/shared/links/VerifyWith';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import config from 'configs/app';
 import { Image } from 'toolkit/chakra/image';
 import { Link } from 'toolkit/chakra/link';
 import { stripTrailingSlash } from 'toolkit/utils/url';
-import VerifyWith from 'ui/shared/VerifyWith';
 
 interface Props {
   className?: string;

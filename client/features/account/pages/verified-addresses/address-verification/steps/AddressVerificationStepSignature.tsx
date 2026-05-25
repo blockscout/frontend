@@ -20,8 +20,8 @@ import useApiFetch from 'client/api/hooks/useApiFetch';
 
 import useWallet from 'client/features/connect-wallet/hooks/useWallet';
 
-import CopyToClipboard from 'client/shared/text/CopyToClipboard';
-import shortenString from 'client/shared/text/shorten-string';
+import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
+import shortenString from 'client/shared/texts/shorten-string';
 
 import config from 'configs/app';
 import { Alert } from 'toolkit/chakra/alert';

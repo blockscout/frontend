@@ -6,7 +6,7 @@ import type { AbiParameter } from 'viem';
 
 import { route } from 'nextjs-routes';
 
-import CopyToClipboard from 'client/shared/text/CopyToClipboard';
+import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
 
 import { Link } from 'toolkit/chakra/link';
 

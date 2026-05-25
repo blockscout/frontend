@@ -8,12 +8,12 @@ import type { TransactionsSortingValue } from 'client/slices/tx/types/api';
 
 // import { FilterInput } from 'toolkit/components/filters/FilterInput';
 
+import ActionBar from 'client/shell/page/action-bar/ActionBar';
+
 import { SORT_OPTIONS } from 'client/slices/tx/hooks/useTxsSort';
 
 import Pagination from 'client/shared/pagination/Pagination';
 import Sort from 'client/shared/sort/Sort';
-
-import ActionBar from 'ui/shared/ActionBar';
 
 type Props = {
   sorting: TransactionsSortingValue;

@@ -11,11 +11,11 @@ import TxEntityInterchain from 'client/slices/tx/components/entity/TxEntityInter
 
 import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
 import ChainLabel from 'client/shared/external-chains/ChainLabel';
+import TokenValueInterchain from 'client/shared/values/entity/TokenValueInterchain';
 
 import config from 'configs/app';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { mdash } from 'toolkit/utils/htmlEntities';
-import TokenValueInterchain from 'ui/shared/value/TokenValueInterchain';
 
 import CrossChainBridgeLink from '../CrossChainBridgeLink';
 import CrossChainFromToTag from '../CrossChainFromToTag';

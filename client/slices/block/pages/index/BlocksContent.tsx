@@ -14,6 +14,8 @@ import * as SocketNewItemsNotice from 'client/api/socket/SocketNewItemsNotice';
 import useSocketChannel from 'client/api/socket/useSocketChannel';
 import useSocketMessage from 'client/api/socket/useSocketMessage';
 
+import ActionBar from 'client/shell/page/action-bar/ActionBar';
+
 import BlocksList from 'client/slices/block/pages/index/BlocksList';
 import BlocksTable from 'client/slices/block/pages/index/BlocksTable';
 
@@ -26,7 +28,6 @@ import type { QueryWithPagesResult } from 'client/shared/pagination/useQueryWith
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { Link } from 'toolkit/chakra/link';
-import ActionBar from 'ui/shared/ActionBar';
 
 const OVERLOAD_COUNT = 75;
 const TABS_HEIGHT = 88;

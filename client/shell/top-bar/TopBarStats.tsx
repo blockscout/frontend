@@ -13,7 +13,7 @@ import GetGasButton from 'client/features/get-gas-button/components/GetGasButton
 
 import dayjs from 'client/shared/date-and-time/dayjs';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
-import TextSeparator from 'client/shared/text/TextSeparator';
+import TextSeparator from 'client/shared/texts/TextSeparator';
 
 import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';

@@ -3,9 +3,10 @@
 import { Box, Text, chakra } from '@chakra-ui/react';
 import React from 'react';
 
+import ApiFetchAlert from 'client/shared/alerts/ApiFetchAlert';
+
 import type { EmptyStateProps } from 'toolkit/chakra/empty-state';
 import { EmptyState } from 'toolkit/chakra/empty-state';
-import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
 export type Props = {
   isError: boolean;
@@ -26,12 +27,12 @@ const DataList = (props: Props) => {
       return (
         <Box className={ props.className }>
           { props.actionBar }
-          <DataFetchAlert/>
+          <ApiFetchAlert/>
         </Box>
       );
     }
 
-    return <DataFetchAlert className={ props.className }/>;
+    return <ApiFetchAlert className={ props.className }/>;
   }
 
   if (props.hasActiveFilters && !props.itemsNum) {

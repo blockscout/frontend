@@ -12,6 +12,8 @@ import { getAdditionalTokenTypes } from 'client/slices/token/utils/token-types';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'client/shell/page/action-bar/ActionBar';
+
 import { calculateUsdValue } from 'client/slices/token/pages/address/utils';
 
 import { ADDRESS_PORTFOLIO, TOKEN } from 'client/features/multichain/stubs';
@@ -27,7 +29,6 @@ import * as cookies from 'client/shared/storage/cookies';
 import multichainConfig from 'configs/multichain';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import { ZERO } from 'toolkit/utils/consts';
-import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 
 import MultichainAddressPortfolioCards from './MultichainAddressPortfolioCards';
 import MultichainAddressPortfolioNetWorth from './MultichainAddressPortfolioNetWorth';

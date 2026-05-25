@@ -10,6 +10,8 @@ import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 import getSocketUrl from 'client/api/get-socket-url';
 import { SocketProvider } from 'client/api/socket/context';
 
+import { ACTION_BAR_HEIGHT_DESKTOP } from 'client/shell/page/action-bar/ActionBar';
+
 import useAddressCountersQuery from 'client/slices/address/hooks/useAddressCountersQuery';
 import AddressTxsFilter from 'client/slices/address/pages/details/txs/AddressTxsFilter';
 import useAddressTxsQuery from 'client/slices/address/pages/details/txs/useAddressTxsQuery';
@@ -27,7 +29,6 @@ import getQueryParamString from 'client/shared/router/get-query-param-string';
 import multichainConfig from 'configs/multichain';
 import { EmptyState } from 'toolkit/chakra/empty-state';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 
 import getAvailableChainIds from './get-available-chain-ids';
 

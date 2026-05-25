@@ -5,6 +5,8 @@ import React from 'react';
 
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 
+import ActionBar from 'client/shell/page/action-bar/ActionBar';
+
 import LogItem from 'client/slices/log/components/LogItem';
 import { LOG } from 'client/slices/log/stubs/log';
 
@@ -20,7 +22,6 @@ import { generateListStub } from 'client/shared/pagination/utils';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import multichainConfig from 'configs/multichain';
-import ActionBar from 'ui/shared/ActionBar';
 
 import getAvailableChainIds from './get-available-chain-ids';
 

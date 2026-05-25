@@ -16,15 +16,15 @@ import { layerLabels } from 'client/features/rollup/common/utils/layer';
 import ScrollL2TxnBatchDA from 'client/features/rollup/scroll/components/ScrollL2TxnBatchDA';
 import ScrollL2TxnBatchStatus from 'client/features/rollup/scroll/components/ScrollL2TxnBatchStatus';
 
+import ApiFetchAlert from 'client/shared/alerts/ApiFetchAlert';
 import PrevNext from 'client/shared/buttons/PrevNext';
+import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
+import DetailedInfoTimestamp from 'client/shared/detailed-info/DetailedInfoTimestamp';
 import isCustomAppError from 'client/shared/errors/is-custom-app-error';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 interface Props {
   query: UseQueryResult<ScrollL2TxnBatch, ResourceError>;
 }
@@ -50,7 +50,7 @@ const ScrollL2TxnBatchDetails = ({ query }: Props) => {
       throwOnResourceLoadError({ isError, error });
     }
 
-    return <DataFetchAlert/>;
+    return <ApiFetchAlert/>;
   }
 
   if (!data) {

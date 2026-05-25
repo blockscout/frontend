@@ -9,10 +9,10 @@ import CeloEpochStatus from 'client/features/chain-variants/celo/components/Celo
 import EpochEntity from 'client/features/chain-variants/celo/components/entity/EpochEntity';
 
 import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
+import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
-import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 interface Props {
   item: CeloEpochListItem;

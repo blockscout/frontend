@@ -17,6 +17,7 @@ import type { ColumnsIds } from '../../types/client';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import ActionBar from 'client/shell/page/action-bar/ActionBar';
 import PageTitle from 'client/shell/page/title/PageTitle';
 
 import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
@@ -40,7 +41,6 @@ import SpriteIcon from 'client/sprite/SpriteIcon';
 import { Link } from 'toolkit/chakra/link';
 import { TableBody, TableCell, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import { Tag } from 'toolkit/chakra/tag';
-import ActionBar from 'ui/shared/ActionBar';
 
 import ColumnsButton from '../../components/ColumnsButton';
 import FilterByColumn from '../../components/FilterByColumn';

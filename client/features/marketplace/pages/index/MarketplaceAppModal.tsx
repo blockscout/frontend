@@ -7,7 +7,7 @@ import type { MarketplaceApp } from 'client/features/marketplace/types/client';
 
 import { route } from 'nextjs-routes';
 
-import CopyToClipboard from 'client/shared/text/CopyToClipboard';
+import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
 import type { IconName } from 'client/sprite/SpriteIcon';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
