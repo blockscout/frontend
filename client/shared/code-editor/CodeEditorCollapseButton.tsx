@@ -12,7 +12,7 @@ interface Props {
   isCollapsed?: boolean;
 }
 
-const CoderEditorCollapseButton = ({ onClick, label, isDisabled, isCollapsed }: Props) => {
+const CodeEditorCollapseButton = ({ onClick, label, isDisabled, isCollapsed }: Props) => {
   const themeColors = useThemeColors();
 
   return (
@@ -38,4 +38,4 @@ const CoderEditorCollapseButton = ({ onClick, label, isDisabled, isCollapsed }: 
   );
 };
 
-export default React.memo(CoderEditorCollapseButton);
+export default React.memo(CodeEditorCollapseButton);

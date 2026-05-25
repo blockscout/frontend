@@ -14,12 +14,12 @@ import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 import TokenAddToWallet from 'client/features/web3-wallet/components/TokenAddToWallet';
 
 import getItemIndex from 'client/shared/lists/get-item-index';
+import ListItemMobile from 'client/shared/lists/ListItemMobile';
 
 import config from 'configs/app';
 import multichainConfig from 'configs/multichain';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tag } from 'toolkit/chakra/tag';
-import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import SimpleValue from 'ui/shared/value/SimpleValue';
 import { DEFAULT_ACCURACY_USD } from 'ui/shared/value/utils';
 

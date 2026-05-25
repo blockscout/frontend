@@ -8,6 +8,7 @@ import type { TransactionTag } from 'client/features/account/types/api';
 import AccountPageDescription from 'client/features/account/components/AccountPageDescription';
 import { PRIVATE_TAG_TX } from 'client/features/account/stubs';
 
+import DataList from 'client/shared/lists/DataList';
 import Pagination from 'client/shared/pagination/Pagination';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 
@@ -15,7 +16,6 @@ import { Button } from 'toolkit/chakra/button';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
 
 import DeletePrivateTagModal from './DeletePrivateTagModal';
 import TransactionModal from './TransactionModal/TransactionModal';
@@ -73,7 +73,7 @@ const PrivateTransactionTags = () => {
   return (
     <>
       { description }
-      <DataListDisplay
+      <DataList
         isError={ isError }
         itemsNum={ transactionTagsData?.items.length }
         emptyText=""
@@ -99,7 +99,7 @@ const PrivateTransactionTags = () => {
             top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
           />
         </Box>
-      </DataListDisplay>
+      </DataList>
       <Skeleton mt={ 8 } loading={ isPlaceholderData } display="inline-block">
         <Button
           onClick={ transactionModalProps.onOpen }

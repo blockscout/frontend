@@ -12,9 +12,10 @@ import InteropMessageDestinationTx from 'client/features/op-interop/components/I
 import InteropMessageSourceTx from 'client/features/op-interop/components/InteropMessageSourceTx';
 import InteropMessageStatus from 'client/features/op-interop/components/InteropMessageStatus';
 
+import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
-import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 import InteropMessageAdditionalInfo from './InteropMessageAdditionalInfo';
 

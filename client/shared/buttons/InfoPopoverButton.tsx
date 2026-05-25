@@ -14,7 +14,7 @@ interface Props {
   isLoading?: boolean;
 }
 
-const InfoButton = ({ children, isLoading }: Props) => {
+const InfoPopoverButton = ({ children, isLoading }: Props) => {
   const isMobile = useIsMobile();
 
   const triggerButton = (
@@ -61,4 +61,4 @@ const InfoButton = ({ children, isLoading }: Props) => {
   );
 };
 
-export default React.memo(InfoButton);
+export default React.memo(InfoPopoverButton);

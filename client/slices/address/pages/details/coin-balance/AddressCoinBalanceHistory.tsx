@@ -13,12 +13,12 @@ import { currencyUnits } from 'client/slices/chain/units';
 
 import { useMultichainContext } from 'client/features/multichain/context';
 
+import TimeFormatToggle from 'client/shared/date-and-time/TimeFormatToggle';
+import DataList from 'client/shared/lists/DataList';
 import Pagination from 'client/shared/pagination/Pagination';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
-import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
 import AddressCoinBalanceListItem from './AddressCoinBalanceListItem';
 import AddressCoinBalanceTableItem from './AddressCoinBalanceTableItem';
@@ -84,7 +84,7 @@ const AddressCoinBalanceHistory = ({ query }: Props) => {
   ) : null;
 
   return (
-    <DataListDisplay
+    <DataList
       mt={ 8 }
       isError={ query.isError }
       itemsNum={ query.data?.items.length }
@@ -92,7 +92,7 @@ const AddressCoinBalanceHistory = ({ query }: Props) => {
       actionBar={ actionBar }
     >
       { content }
-    </DataListDisplay>
+    </DataList>
   );
 };
 

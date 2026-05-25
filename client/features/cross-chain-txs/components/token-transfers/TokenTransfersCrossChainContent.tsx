@@ -6,14 +6,15 @@ import React from 'react';
 import type { InterchainTransfer } from '@blockscout/interchain-indexer-types';
 import type { PaginationParams } from 'client/shared/pagination/types';
 
+import DataList, { type Props as DataListProps } from 'client/shared/lists/DataList';
+
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import DataListDisplay, { type Props as DataListDisplayProps } from 'ui/shared/DataListDisplay';
 
 import TokenTransfersCrossChainListItem from './TokenTransfersCrossChainListItem';
 import TokenTransfersCrossChainTable from './TokenTransfersCrossChainTable';
 import { getItemKey } from './utils';
 
-interface Props extends Omit<DataListDisplayProps, 'children'> {
+interface Props extends Omit<DataListProps, 'children'> {
   items?: Array<InterchainTransfer>;
   isLoading?: boolean;
   pagination?: PaginationParams;
@@ -50,7 +51,7 @@ const TokenTransfersCrossChainContent = ({ items, isLoading, pagination, current
   ) : null;
 
   return (
-    <DataListDisplay
+    <DataList
       itemsNum={ items?.length }
       emptyText="There are no cross-chain token transfers."
       emptyStateProps={{
@@ -59,7 +60,7 @@ const TokenTransfersCrossChainContent = ({ items, isLoading, pagination, current
       { ...rest }
     >
       { content }
-    </DataListDisplay>
+    </DataList>
   );
 };
 

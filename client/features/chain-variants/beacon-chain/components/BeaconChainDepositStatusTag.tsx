@@ -5,7 +5,7 @@ import React from 'react';
 
 import type { DepositsItem } from 'client/features/chain-variants/beacon-chain/types/api';
 
-import StatusTag from 'ui/shared/statusTag/StatusTag';
+import StatusTag from 'client/shared/tags/status-tag/StatusTag';
 
 const BeaconChainDepositStatusTag = ({ status, isLoading }: { status: DepositsItem['status']; isLoading: boolean }) => {
   const statusValue = (() => {

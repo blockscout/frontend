@@ -11,13 +11,13 @@ import UserOpsListItem from 'client/features/user-ops/pages/index/UserOpsListIte
 import UserOpsTable from 'client/features/user-ops/pages/index/UserOpsTable';
 import { USER_OPS_ITEM } from 'client/features/user-ops/stubs';
 
+import DataList from 'client/shared/lists/DataList';
 import Pagination from 'client/shared/pagination/Pagination';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
 
 import multichainConfig from 'configs/multichain';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
 
 const MultichainUserOps = () => {
 
@@ -81,7 +81,7 @@ const MultichainUserOps = () => {
         title="User operations"
         withTextAd
       />
-      <DataListDisplay
+      <DataList
         isError={ query.isError }
         itemsNum={ query.data?.items?.length }
         emptyText="There are no user operations."
@@ -90,7 +90,7 @@ const MultichainUserOps = () => {
         showActionBarIfEmpty
       >
         { content }
-      </DataListDisplay>
+      </DataList>
     </>
   );
 };

@@ -7,13 +7,13 @@ import PageTitle from 'client/shell/page/title/PageTitle';
 
 import { VALIDATORS_ZILLIQA_ITEM } from 'client/features/chain-variants/zilliqa/stubs/validators';
 
+import DataList from 'client/shared/lists/DataList';
 import Pagination from 'client/shared/pagination/Pagination';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
 
 import config from 'configs/app';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
 
 import ValidatorsList from './ValidatorsList';
 import ValidatorsTable from './ValidatorsTable';
@@ -51,14 +51,14 @@ const ValidatorsZilliqa = () => {
   return (
     <Box>
       <PageTitle title="Validators" withTextAd/>
-      <DataListDisplay
+      <DataList
         isError={ isError }
         itemsNum={ data?.items.length }
         emptyText="There are no validators."
         actionBar={ actionBar }
       >
         { content }
-      </DataListDisplay>
+      </DataList>
     </Box>
   );
 };

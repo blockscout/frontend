@@ -16,21 +16,21 @@ import { currencyUnits } from 'client/slices/chain/units';
 import { layerLabels } from 'client/features/rollup/common/utils/layer';
 import { formatZkSyncL2TxnBatchStatus } from 'client/features/rollup/zk-sync/utils/format-txn-batch-status';
 
+import PrevNext from 'client/shared/buttons/PrevNext';
 import isCustomAppError from 'client/shared/errors/is-custom-app-error';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
+import VerificationSteps from 'client/shared/lifecycle/steps/VerificationSteps';
+import CopyToClipboard from 'client/shared/text/CopyToClipboard';
 
 import config from 'configs/app';
 import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
-import PrevNext from 'ui/shared/PrevNext';
 import GasPriceValue from 'ui/shared/value/GasPriceValue';
-import VerificationSteps from 'ui/shared/verificationSteps/VerificationSteps';
 
 import ZkSyncL2TxnBatchHashesInfo from './ZkSyncL2TxnBatchHashesInfo';
 

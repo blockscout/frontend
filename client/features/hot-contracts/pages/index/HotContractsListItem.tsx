@@ -11,8 +11,9 @@ import { Reputation } from 'client/slices/token/components/entity/TokenEntity';
 
 import MetadataTags from 'client/features/address-metadata/components/tag/MetadataTags';
 
+import ListItemMobile from 'client/shared/lists/ListItemMobile';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 interface Props {

@@ -9,15 +9,15 @@ import type { CrossChainChainsStatsSorting, CrossChainChainsStatsSortingField, C
 import PageTitle from 'client/shell/page/title/PageTitle';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import DataList from 'client/shared/lists/DataList';
 import Pagination from 'client/shared/pagination/Pagination';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
+import getSortParamsFromValue from 'client/shared/sort/get-sort-params-from-value';
+import getSortValueFromQuery from 'client/shared/sort/get-sort-value-from-query';
+import Sort from 'client/shared/sort/Sort';
 
 import ActionBar from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
-import getSortParamsFromValue from 'ui/shared/sort/getSortParamsFromValue';
-import getSortValueFromQuery from 'ui/shared/sort/getSortValueFromQuery';
-import Sort from 'ui/shared/sort/Sort';
 
 import { INTERCHAIN_STATS_CHAINS_ITEM } from '../../stubs/messages';
 import { ICTT_USERS_SORT_OPTIONS } from '../../utils/ictt-sort';
@@ -71,7 +71,7 @@ const IcttUsers = () => {
         secondRow="Number of unique users per chain who sent and received cross-chain token transfers"
         secondRowProps={{ minH: 'auto' }}
       />
-      <DataListDisplay
+      <DataList
         isError={ isError }
         itemsNum={ data?.items.length }
         emptyText="There are no ICTT users."
@@ -92,7 +92,7 @@ const IcttUsers = () => {
             </Box>
           </>
         ) : null }
-      </DataListDisplay>
+      </DataList>
     </>
   );
 };

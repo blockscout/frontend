@@ -6,8 +6,8 @@ import type { ZkSyncBatchStatus } from 'client/features/rollup/zk-sync/types/api
 
 import { layerLabels } from 'client/features/rollup/common/utils/layer';
 
-import type { StatusTagType } from 'ui/shared/statusTag/StatusTag';
-import StatusTag from 'ui/shared/statusTag/StatusTag';
+import type { StatusTagType } from 'client/shared/tags/status-tag/StatusTag';
+import StatusTag from 'client/shared/tags/status-tag/StatusTag';
 
 export interface Props {
   status: ZkSyncBatchStatus;

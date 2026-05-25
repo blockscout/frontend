@@ -14,11 +14,11 @@ import TxEntityZetaChainExternal from 'client/features/chain-variants/zeta-chain
 import ZetaChainCCTXValue from 'client/features/chain-variants/zeta-chain/components/ZetaChainCCTXValue';
 import useZetaChainConfig from 'client/features/chain-variants/zeta-chain/hooks/useZetaChainConfig';
 
+import StatusTag from 'client/shared/tags/status-tag/StatusTag';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import StatusTag from 'ui/shared/statusTag/StatusTag';
 
 type Props = {
   tx: CrossChainTx;

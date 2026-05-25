@@ -15,10 +15,10 @@ import SearchResultMetadataTag from 'client/slices/search/pages/search-results/S
 import * as contract from 'client/features/multichain/utils/contract';
 
 import dayjs from 'client/shared/date-and-time/dayjs';
+import HashStringShortenDynamic from 'client/shared/text/HashStringShortenDynamic';
 import highlightText from 'client/shared/text/highlight-text';
 
 import { ADDRESS_REGEXP } from 'toolkit/utils/regexp';
-import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 
 type Props = ItemsProps<SearchResultAddressOrContract | TSearchResultMetadataTag | multichain.QuickSearchResultAddress>;
 

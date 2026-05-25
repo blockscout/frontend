@@ -7,8 +7,10 @@ import type * as bens from '@blockscout/bens-types';
 import type { EnsDomainLookupFiltersOptions } from 'client/features/name-services/domains/types/api';
 import type { PaginationParams } from 'client/shared/pagination/types';
 
+import PopoverFilter from 'client/shared/filters/PopoverFilter';
 import useIsInitialLoading from 'client/shared/hooks/useIsInitialLoading';
 import Pagination from 'client/shared/pagination/Pagination';
+import Sort from 'client/shared/sort/Sort';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { Button } from 'toolkit/chakra/button';
@@ -16,8 +18,6 @@ import { Checkbox, CheckboxGroup } from 'toolkit/chakra/checkbox';
 import { Image } from 'toolkit/chakra/image';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import ActionBar from 'ui/shared/ActionBar';
-import PopoverFilter from 'ui/shared/filters/PopoverFilter';
-import Sort from 'ui/shared/sort/Sort';
 
 import type { Sort as TSort } from './utils';
 import { SORT_OPTIONS } from './utils';

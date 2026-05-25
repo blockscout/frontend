@@ -9,8 +9,9 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 
 import { formatLanguageName } from 'client/slices/contract/utils/language';
 
+import PopoverFilterRadio from 'client/shared/filters/PopoverFilterRadio';
+
 import type { SelectOption } from 'toolkit/chakra/select';
-import PopoverFilterRadio from 'ui/shared/filters/PopoverFilterRadio';
 
 interface Props {
   hasActiveFilter: boolean;

@@ -13,13 +13,13 @@ import { TOP_ADDRESS } from 'client/slices/address/stubs/address';
 import ChainSelect from 'client/features/multichain/components/ChainSelect';
 import { MultichainProvider } from 'client/features/multichain/context';
 
+import DataList from 'client/shared/lists/DataList';
 import getItemIndex from 'client/shared/lists/get-item-index';
 import Pagination from 'client/shared/pagination/Pagination';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
 
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
 
 const MultichainAccounts = () => {
   const { isError, isPlaceholderData, data, pagination, chainValue, onChainValueChange } = useQueryWithPages({
@@ -83,7 +83,7 @@ const MultichainAccounts = () => {
         title="Top accounts"
         withTextAd
       />
-      <DataListDisplay
+      <DataList
         isError={ isError }
         itemsNum={ data?.items?.length }
         emptyText="There are no accounts."
@@ -92,7 +92,7 @@ const MultichainAccounts = () => {
         showActionBarIfEmpty
       >
         { content }
-      </DataListDisplay>
+      </DataList>
     </>
   );
 };

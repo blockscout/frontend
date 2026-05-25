@@ -29,7 +29,12 @@ import OptimisticL2TxnBatchDA from 'client/features/rollup/optimism/components/T
 import ZkSyncL2TxnBatchHashesInfo from 'client/features/rollup/zk-sync/pages/batch-details/ZkSyncL2TxnBatchHashesInfo';
 import { formatZkSyncL2TxnBatchStatus } from 'client/features/rollup/zk-sync/utils/format-txn-batch-status';
 
+import PrevNext from 'client/shared/buttons/PrevNext';
+import VerificationSteps from 'client/shared/lifecycle/steps/VerificationSteps';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
+import StatusTag from 'client/shared/tags/status-tag/StatusTag';
+import CopyToClipboard from 'client/shared/text/CopyToClipboard';
+import HashStringShortenDynamic from 'client/shared/text/HashStringShortenDynamic';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import config from 'configs/app';
@@ -39,18 +44,13 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { ZERO } from 'toolkit/utils/consts';
 import { space } from 'toolkit/utils/htmlEntities';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
-import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
-import PrevNext from 'ui/shared/PrevNext';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
-import StatusTag from 'ui/shared/statusTag/StatusTag';
 import Utilization from 'ui/shared/Utilization/Utilization';
 import GasPriceValue from 'ui/shared/value/GasPriceValue';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 import { WEI } from 'ui/shared/value/utils';
-import VerificationSteps from 'ui/shared/verificationSteps/VerificationSteps';
 
 const zkSyncVerificationSteps = ZKSYNC_L2_TX_BATCH_STATUSES.map(formatZkSyncL2TxnBatchStatus);
 

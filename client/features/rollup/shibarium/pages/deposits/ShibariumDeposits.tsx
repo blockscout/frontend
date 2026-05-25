@@ -10,6 +10,7 @@ import PageTitle from 'client/shell/page/title/PageTitle';
 import { layerLabels } from 'client/features/rollup/common/utils/layer';
 import { SHIBARIUM_DEPOSIT_ITEM } from 'client/features/rollup/shibarium/stubs';
 
+import DataList from 'client/shared/lists/DataList';
 import StickyPaginationWithText from 'client/shared/pagination/StickyPaginationWithText';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
@@ -17,7 +18,6 @@ import { generateListStub } from 'client/shared/pagination/utils';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { rightLineArrow, nbsp } from 'toolkit/utils/htmlEntities';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
 
 import DepositsListItem from './DepositsListItem';
 import DepositsTable from './DepositsTable';
@@ -82,14 +82,14 @@ const ShibariumDeposits = () => {
   return (
     <>
       <PageTitle title={ `Deposits (${ layerLabels.parent }${ nbsp }${ rightLineArrow }${ nbsp }${ layerLabels.current })` } withTextAd/>
-      <DataListDisplay
+      <DataList
         isError={ isError }
         itemsNum={ data?.items.length }
         emptyText="There are no deposits."
         actionBar={ actionBar }
       >
         { content }
-      </DataListDisplay>
+      </DataList>
     </>
   );
 };

@@ -13,10 +13,11 @@ import AddressFromToIcon from 'client/slices/address/components/from-to/AddressF
 import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 
+import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
+
 import config from 'configs/app';
 import { Badge } from 'toolkit/chakra/badge';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import AssetValue from 'ui/shared/value/AssetValue';
 import ConfidentialValue from 'ui/shared/value/ConfidentialValue';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';

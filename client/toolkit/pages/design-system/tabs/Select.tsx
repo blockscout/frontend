@@ -7,13 +7,13 @@ import React from 'react';
 import TokenTransferFilter from 'client/slices/token-transfer/components/TokenTransferFilter';
 import { SORT_OPTIONS } from 'client/slices/tx/hooks/useTxsSort';
 
+import PopoverFilterRadio from 'client/shared/filters/PopoverFilterRadio';
+import Sort from 'client/shared/sort/Sort';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { Checkbox } from 'toolkit/chakra/checkbox';
 import type { SelectOption } from 'toolkit/chakra/select';
 import { Select, SelectAsync } from 'toolkit/chakra/select';
-import PopoverFilterRadio from 'ui/shared/filters/PopoverFilterRadio';
-import Sort from 'ui/shared/sort/Sort';
 
 import { Section, Container, SectionHeader, SamplesStack, Sample, SectionSubHeader } from '../parts';
 

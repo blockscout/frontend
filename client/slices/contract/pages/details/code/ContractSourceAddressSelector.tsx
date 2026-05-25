@@ -7,10 +7,11 @@ import { route } from 'nextjs-routes';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 
+import LinkNewTab from 'client/shared/links/LinkNewTab';
+import CopyToClipboard from 'client/shared/text/CopyToClipboard';
+
 import { Select } from 'toolkit/chakra/select';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
-import LinkNewTab from 'ui/shared/links/LinkNewTab';
 
 export interface Item {
   address_hash: string;

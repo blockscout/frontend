@@ -9,9 +9,10 @@ import AddressEntity from 'client/slices/address/components/entity/AddressEntity
 
 import TxAuthorizationStatus from 'client/features/tx-authorization/components/TxAuthorizationStatus';
 
+import ListItemMobile from 'client/shared/lists/ListItemMobile';
+
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 
 interface Props extends TxAuthorization {
   isLoading?: boolean;

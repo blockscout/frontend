@@ -10,12 +10,12 @@ import React from 'react';
 import type { File, Monaco } from './types';
 import type { SmartContractExternalLibrary } from 'client/slices/contract/types/api';
 
+import ErrorBoundary from 'client/shared/errors/ErrorBoundary';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import isMetaKey from 'client/shared/utils/is-meta-key';
 
 import { useColorMode } from 'toolkit/chakra/color-mode';
 import { useClientRect } from 'toolkit/hooks/useClientRect';
-import ErrorBoundary from 'ui/shared/ErrorBoundary';
 
 import CodeEditorBreadcrumbs from './CodeEditorBreadcrumbs';
 import CodeEditorLoading from './CodeEditorLoading';

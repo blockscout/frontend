@@ -5,10 +5,10 @@ import React from 'react';
 
 import NovesFromTo from 'client/features/tx-interpretation/noves/components/NovesFromTo';
 
+import ListItemMobile from 'client/shared/lists/ListItemMobile';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 
 import NovesActionSnippet from '../../components/NovesActionSnippet';
 import type { NovesFlowViewItem } from '../../utils/generateFlowViewData';

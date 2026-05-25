@@ -8,13 +8,13 @@ import { EPOCH_REWARD_ITEM } from 'client/features/chain-variants/celo/stubs/add
 import CsvExport from 'client/features/csv-export/components/CsvExport';
 
 import useIsMounted from 'client/shared/hooks/useIsMounted';
+import DataList from 'client/shared/lists/DataList';
 import Pagination from 'client/shared/pagination/Pagination';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
 
 import AddressEpochRewardsListItem from './AddressEpochRewardsListItem';
 import AddressEpochRewardsTable from './AddressEpochRewardsTable';
@@ -90,14 +90,14 @@ const AddressEpochRewards = ({ shouldRender = true, isQueryEnabled = true }: Pro
   );
 
   return (
-    <DataListDisplay
+    <DataList
       isError={ rewardsQuery.isError }
       itemsNum={ rewardsQuery.data?.items?.length }
       emptyText="There are no epoch rewards for this address."
       actionBar={ actionBar }
     >
       { content }
-    </DataListDisplay>
+    </DataList>
   );
 };
 

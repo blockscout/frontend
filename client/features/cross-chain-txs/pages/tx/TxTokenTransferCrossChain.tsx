@@ -5,9 +5,8 @@ import React from 'react';
 
 import type { TxQuery } from 'client/slices/tx/hooks/useTxQuery';
 
+import DataList from 'client/shared/lists/DataList';
 import type { QueryWithPagesResult } from 'client/shared/pagination/useQueryWithPages';
-
-import DataListDisplay from 'ui/shared/DataListDisplay';
 
 import TokenTransfersCrossChainListItem from '../../components/token-transfers/TokenTransfersCrossChainListItem';
 import TokenTransfersCrossChainTable from '../../components/token-transfers/TokenTransfersCrossChainTable';
@@ -43,7 +42,7 @@ const TxTokenTransferCrossChain = ({ txQuery, crossChainQuery, isLoading, tableT
   ) : null;
 
   return (
-    <DataListDisplay
+    <DataList
       isError={ txQuery.isError || crossChainQuery.isError }
       itemsNum={ crossChainQuery.data?.items.length }
       emptyText="There are no cross-chain token transfers."
@@ -52,7 +51,7 @@ const TxTokenTransferCrossChain = ({ txQuery, crossChainQuery, isLoading, tableT
       }}
     >
       { content }
-    </DataListDisplay>
+    </DataList>
   );
 };
 

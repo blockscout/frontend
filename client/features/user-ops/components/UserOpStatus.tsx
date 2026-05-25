@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import StatusTag from 'ui/shared/statusTag/StatusTag';
+import StatusTag from 'client/shared/tags/status-tag/StatusTag';
 
 type Props = {
   status?: boolean;

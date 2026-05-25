@@ -12,8 +12,9 @@ import { getResourceKey } from 'client/api/hooks/useApiQuery';
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
 import OptimisticL2ClaimButton, { canClaimDirectlyGuard } from 'client/features/rollup/optimism/components/OptimisticL2ClaimButton';
 
+import VerificationSteps from 'client/shared/lifecycle/steps/VerificationSteps';
+
 import config from 'configs/app';
-import VerificationSteps from 'ui/shared/verificationSteps/VerificationSteps';
 
 interface Props {
   data: OpWithdrawal;

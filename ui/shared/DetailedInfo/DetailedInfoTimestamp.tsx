@@ -7,6 +7,7 @@ import React from 'react';
 import { useSettingsContext } from 'client/shell/top-bar/settings/context';
 
 import dayjs from 'client/shared/date-and-time/dayjs';
+import TextSeparator from 'client/shared/text/TextSeparator';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { IconButton } from 'toolkit/chakra/icon-button';
@@ -14,7 +15,6 @@ import type { SelectOption } from 'toolkit/chakra/select';
 import { SelectContent, SelectItem, SelectRoot, SelectControl } from 'toolkit/chakra/select';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
-import TextSeparator from 'ui/shared/TextSeparator';
 
 const FORMAT_OPTIONS = [
   { label: 'Local', value: 'local' as const },

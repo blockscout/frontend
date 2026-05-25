@@ -10,6 +10,7 @@ import PageTitle from 'client/shell/page/title/PageTitle';
 
 import { currencyUnits } from 'client/slices/chain/units';
 
+import DataList from 'client/shared/lists/DataList';
 import StickyPaginationWithText from 'client/shared/pagination/StickyPaginationWithText';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
@@ -17,7 +18,6 @@ import { generateListStub } from 'client/shared/pagination/utils';
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
 import calculateUsdValue from 'ui/shared/value/calculateUsdValue';
 
 import { WITHDRAWAL } from '../../stubs/withdrawals';
@@ -94,14 +94,14 @@ const BeaconChainWithdrawals = () => {
         title={ config.meta.seo.enhancedDataEnabled ? `${ config.chain.name } withdrawals` : 'Withdrawals' }
         withTextAd
       />
-      <DataListDisplay
+      <DataList
         isError={ isError }
         itemsNum={ data?.items.length }
         emptyText="There are no withdrawals."
         actionBar={ actionBar }
       >
         { content }
-      </DataListDisplay>
+      </DataList>
     </>
   );
 };

@@ -4,9 +4,9 @@ import type { BoxProps, HTMLChakraProps } from '@chakra-ui/react';
 import { Box, Flex, chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import { Skeleton } from 'toolkit/chakra/skeleton';
+import CopyToClipboard from 'client/shared/text/CopyToClipboard';
 
-import CopyToClipboard from './CopyToClipboard';
+import { Skeleton } from 'toolkit/chakra/skeleton';
 
 interface Props {
   data: React.ReactNode;

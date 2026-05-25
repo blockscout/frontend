@@ -4,7 +4,7 @@ import React from 'react';
 
 import { CctxStatusReduced } from '@blockscout/zetachain-cctx-types';
 
-import StatusTag, { type StatusTagType } from 'ui/shared/statusTag/StatusTag';
+import StatusTag, { type StatusTagType } from 'client/shared/tags/status-tag/StatusTag';
 
 type Props = {
   status: CctxStatusReduced;

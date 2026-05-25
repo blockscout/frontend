@@ -5,13 +5,13 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import useIsMounted from 'client/shared/hooks/useIsMounted';
+import DataList from 'client/shared/lists/DataList';
 import Pagination from 'client/shared/pagination/Pagination';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
 
 import { DEPOSIT } from '../../stubs/deposits';
 import BeaconChainDepositsListItem from '../deposits/BeaconChainDepositsListItem';
@@ -73,14 +73,14 @@ const AddressDeposits = ({ shouldRender = true, isQueryEnabled = true }: Props) 
   ) : null;
 
   return (
-    <DataListDisplay
+    <DataList
       isError={ isError }
       itemsNum={ data?.items?.length }
       emptyText="There are no deposits for this address."
       actionBar={ actionBar }
     >
       { content }
-    </DataListDisplay>
+    </DataList>
   );
 };
 

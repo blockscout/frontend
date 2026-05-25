@@ -3,9 +3,8 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
+import DataList from 'client/shared/lists/DataList';
 import type { QueryWithPagesResult } from 'client/shared/pagination/useQueryWithPages';
-
-import DataListDisplay from 'ui/shared/DataListDisplay';
 
 import BeaconChainWithdrawalsList from '../withdrawals/BeaconChainWithdrawalsList';
 import BeaconChainWithdrawalsTable from '../withdrawals/BeaconChainWithdrawalsTable';
@@ -37,13 +36,13 @@ const BlockWithdrawals = ({ blockWithdrawalsQuery }: Props) => {
   ) : null ;
 
   return (
-    <DataListDisplay
+    <DataList
       isError={ blockWithdrawalsQuery.isError }
       itemsNum={ blockWithdrawalsQuery.data?.items?.length }
       emptyText="There are no withdrawals for this block."
     >
       { content }
-    </DataListDisplay>
+    </DataList>
   );
 };
 

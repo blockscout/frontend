@@ -14,11 +14,11 @@ import CsvExport from 'client/features/csv-export/components/CsvExport';
 import ChainSelect from 'client/features/multichain/components/ChainSelect';
 import { MultichainProvider } from 'client/features/multichain/context';
 
+import DataList from 'client/shared/lists/DataList';
 import Pagination from 'client/shared/pagination/Pagination';
 
 import multichainConfig from 'configs/multichain';
 import ActionBar from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
 
 import getAvailableChainIds from './get-available-chain-ids';
 
@@ -89,7 +89,7 @@ const MultichainAddressInternalTxs = ({ addressData, isLoading }: Props) => {
   );
 
   return (
-    <DataListDisplay
+    <DataList
       isError={ isError }
       itemsNum={ data?.items.length }
       hasActiveFilters={ Boolean(filterValue) }
@@ -102,7 +102,7 @@ const MultichainAddressInternalTxs = ({ addressData, isLoading }: Props) => {
       actionBar={ actionBar }
     >
       { content }
-    </DataListDisplay>
+    </DataList>
   );
 };
 

@@ -7,9 +7,10 @@ import type { DecodedInput, DecodedInputParams } from 'client/slices/log/types/a
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 
+import CopyToClipboard from 'client/shared/text/CopyToClipboard';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
 
 interface Props {
   data: DecodedInput['parameters'];

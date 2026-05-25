@@ -12,13 +12,13 @@ import getBlockTotalReward from 'client/slices/block/utils/get-block-total-rewar
 import { currencyUnits } from 'client/slices/chain/units';
 import getChainValidatorTitle from 'client/slices/chain/verification-type/utils/get-chain-validator-title';
 
+import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { thinsp } from 'toolkit/utils/htmlEntities';
-import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import SimpleValue from 'ui/shared/value/SimpleValue';
 
 type Props = {

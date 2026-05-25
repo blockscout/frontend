@@ -13,9 +13,10 @@ import InteropMessageSourceTx from 'client/features/op-interop/components/Intero
 import InteropMessageStatus from 'client/features/op-interop/components/InteropMessageStatus';
 import { layerLabels } from 'client/features/rollup/common/utils/layer';
 
+import CopyToClipboard from 'client/shared/text/CopyToClipboard';
+
 import config from 'configs/app';
 import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 
 const rollupFeature = config.features.rollup;

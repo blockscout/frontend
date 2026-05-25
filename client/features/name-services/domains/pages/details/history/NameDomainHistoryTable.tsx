@@ -4,8 +4,9 @@ import React from 'react';
 
 import type * as bens from '@blockscout/bens-types';
 
+import TimeFormatToggle from 'client/shared/date-and-time/TimeFormatToggle';
+
 import { TableBody, TableColumnHeader, TableColumnHeaderSortable, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
-import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
 import NameDomainHistoryTableItem from './NameDomainHistoryTableItem';
 import type { SortField, Sort } from './utils';

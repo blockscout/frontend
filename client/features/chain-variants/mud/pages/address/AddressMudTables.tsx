@@ -8,6 +8,7 @@ import { ADDRESS_MUD_TABLE_ITEM } from 'client/features/chain-variants/mud/stubs
 
 import useDebounce from 'client/shared/hooks/useDebounce';
 import useIsInitialLoading from 'client/shared/hooks/useIsInitialLoading';
+import DataList from 'client/shared/lists/DataList';
 import Pagination from 'client/shared/pagination/Pagination';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
@@ -15,7 +16,6 @@ import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
 
 import AddressMudTablesListItem from './AddressMudTablesListItem';
 import AddressMudTablesTable from './AddressMudTablesTable';
@@ -90,7 +90,7 @@ const AddressMudTables = ({ isQueryEnabled = true }: Props) => {
   ) : null;
 
   return (
-    <DataListDisplay
+    <DataList
       isError={ isError }
       itemsNum={ data?.items?.length }
       emptyText="There are no tables for this address."
@@ -101,7 +101,7 @@ const AddressMudTables = ({ isQueryEnabled = true }: Props) => {
       actionBar={ actionBar }
     >
       { content }
-    </DataListDisplay>
+    </DataList>
   );
 };
 

@@ -16,12 +16,12 @@ import ChainSelect from 'client/features/multichain/components/ChainSelect';
 import { MultichainProvider } from 'client/features/multichain/context';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import DataList from 'client/shared/lists/DataList';
 import Pagination from 'client/shared/pagination/Pagination';
+import Sort from 'client/shared/sort/Sort';
 
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import ActionBar from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
-import Sort from 'ui/shared/sort/Sort';
 
 const sortCollection = createListCollection({
   items: SORT_OPTIONS,
@@ -105,7 +105,7 @@ const MultichainVerifiedContracts = () => {
       />
       <MultichainProvider chainId={ chainValue?.[0] }>
         <VerifiedContractsCounters/>
-        <DataListDisplay
+        <DataList
           isError={ isError }
           itemsNum={ data?.items.length }
           emptyText="There are no verified contracts."
@@ -116,7 +116,7 @@ const MultichainVerifiedContracts = () => {
           actionBar={ actionBar }
         >
           { content }
-        </DataListDisplay>
+        </DataList>
       </MultichainProvider>
     </Box>
   );

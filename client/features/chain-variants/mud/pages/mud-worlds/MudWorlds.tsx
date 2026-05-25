@@ -7,12 +7,12 @@ import PageTitle from 'client/shell/page/title/PageTitle';
 
 import { MUD_WORLD } from 'client/features/chain-variants/mud/stubs/mud-worlds';
 
+import DataList from 'client/shared/lists/DataList';
 import Pagination from 'client/shared/pagination/Pagination';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
 
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
 
 import MudWorldsListItem from './MudWorldsListItem';
 import MudWorldsTable from './MudWorldsTable';
@@ -60,14 +60,14 @@ const MudWorlds = () => {
   return (
     <>
       <PageTitle title="MUD worlds" withTextAd/>
-      <DataListDisplay
+      <DataList
         isError={ isError }
         itemsNum={ data?.items.length }
         emptyText="There are no MUD worlds."
         actionBar={ actionBar }
       >
         { content }
-      </DataListDisplay>
+      </DataList>
     </>
   );
 };

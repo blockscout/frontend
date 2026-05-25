@@ -12,6 +12,7 @@ import OptimisticDepositsListItem from 'client/features/rollup/optimism/pages/de
 import OptimisticDepositsTable from 'client/features/rollup/optimism/pages/deposits/OptimisticDepositsTable';
 import { L2_DEPOSIT_ITEM } from 'client/features/rollup/optimism/stubs';
 
+import DataList from 'client/shared/lists/DataList';
 import StickyPaginationWithText from 'client/shared/pagination/StickyPaginationWithText';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
@@ -19,7 +20,6 @@ import { generateListStub } from 'client/shared/pagination/utils';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { rightLineArrow, nbsp } from 'toolkit/utils/htmlEntities';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
 
 const OptimisticL2Deposits = () => {
   const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({
@@ -79,14 +79,14 @@ const OptimisticL2Deposits = () => {
   return (
     <>
       <PageTitle title={ `Deposits (${ layerLabels.parent }${ nbsp }${ rightLineArrow }${ nbsp }${ layerLabels.current })` } withTextAd/>
-      <DataListDisplay
+      <DataList
         isError={ isError }
         itemsNum={ data?.items?.length }
         emptyText="There are no deposits."
         actionBar={ actionBar }
       >
         { content }
-      </DataListDisplay>
+      </DataList>
     </>
   );
 };

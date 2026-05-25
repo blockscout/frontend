@@ -7,13 +7,13 @@ import type { NovesResponseData } from 'client/features/tx-interpretation/noves/
 
 import NovesFromTo from 'client/features/tx-interpretation/noves/components/NovesFromTo';
 
+import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
+import ListItemMobile from 'client/shared/lists/ListItemMobile';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { SECOND } from 'toolkit/utils/consts';
-import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
-import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 type Props = {
   isPlaceholderData: boolean;

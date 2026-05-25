@@ -9,9 +9,10 @@ import AddressFromTo from 'client/slices/address/components/from-to/AddressFromT
 import { currencyUnits } from 'client/slices/chain/units';
 import TxStatus from 'client/slices/tx/components/TxStatus';
 
+import ListItemMobile from 'client/shared/lists/ListItemMobile';
+
 import { Badge } from 'toolkit/chakra/badge';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 import { TX_INTERNALS_ITEMS } from '../../utils/utils';

@@ -12,12 +12,12 @@ import AddressEntity from 'client/slices/address/components/entity/AddressEntity
 
 import { NOVES_TRANSLATE } from 'client/features/tx-interpretation/noves/stubs';
 
+import DataList from 'client/shared/lists/DataList';
 import Pagination from 'client/shared/pagination/Pagination';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import ActionBar from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
 
 import { generateFlowViewData } from '../../utils/generateFlowViewData';
 import TxAssetFlowsListItem from './TxAssetFlowsListItem';
@@ -115,13 +115,13 @@ export default function TxAssetFlows(props: FlowViewProps) {
   );
 
   return (
-    <DataListDisplay
+    <DataList
       isError={ isError }
       itemsNum={ data?.length }
       emptyText="There are no transfers."
       actionBar={ actionBar }
     >
       { content }
-    </DataListDisplay>
+    </DataList>
   );
 }

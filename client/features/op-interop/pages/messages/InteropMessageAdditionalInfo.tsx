@@ -5,9 +5,10 @@ import React from 'react';
 
 import type { InteropMessage } from 'client/features/op-interop/types/api';
 
+import AdditionalInfoButton from 'client/shared/buttons/AdditionalInfoButton';
+import CopyToClipboard from 'client/shared/text/CopyToClipboard';
+
 import { PopoverBody, PopoverCloseTriggerWrapper, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
-import AdditionalInfoButton from 'ui/shared/AdditionalInfoButton';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
 
 type Props = {
   payload: InteropMessage['payload'];

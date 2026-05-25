@@ -5,7 +5,7 @@ import React from 'react';
 
 import type { InterchainTransfer } from '@blockscout/interchain-indexer-types';
 
-import DataListDisplay from 'ui/shared/DataListDisplay';
+import DataList from 'client/shared/lists/DataList';
 
 import TokenTransfersCrossChainListItem from '../../components/token-transfers/TokenTransfersCrossChainListItem';
 import TokenTransfersCrossChainTable from '../../components/token-transfers/TokenTransfersCrossChainTable';
@@ -43,7 +43,7 @@ const TxCrossChainTransfers = ({ data, isLoading, isError }: Props) => {
   ) : null;
 
   return (
-    <DataListDisplay
+    <DataList
       isError={ isError }
       itemsNum={ data?.length }
       emptyText="There are no cross-chain token transfers."
@@ -52,7 +52,7 @@ const TxCrossChainTransfers = ({ data, isLoading, isError }: Props) => {
       }}
     >
       { content }
-    </DataListDisplay>
+    </DataList>
   );
 };
 

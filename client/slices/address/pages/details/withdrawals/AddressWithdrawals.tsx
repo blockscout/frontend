@@ -9,13 +9,13 @@ import BeaconChainWithdrawalsTable from 'client/features/chain-variants/beacon-c
 import { WITHDRAWAL } from 'client/features/chain-variants/beacon-chain/stubs/withdrawals';
 
 import useIsMounted from 'client/shared/hooks/useIsMounted';
+import DataList from 'client/shared/lists/DataList';
 import Pagination from 'client/shared/pagination/Pagination';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
 
 type Props = {
   shouldRender?: boolean;
@@ -73,14 +73,14 @@ const AddressWithdrawals = ({ shouldRender = true, isQueryEnabled = true }: Prop
   ) : null;
 
   return (
-    <DataListDisplay
+    <DataList
       isError={ isError }
       itemsNum={ data?.items?.length }
       emptyText="There are no withdrawals for this address."
       actionBar={ actionBar }
     >
       { content }
-    </DataListDisplay>
+    </DataList>
   );
 };
 

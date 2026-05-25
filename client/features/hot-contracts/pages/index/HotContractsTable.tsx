@@ -6,9 +6,10 @@ import type { HotContract, HotContractsSortingField, HotContractsSortingValue } 
 
 import { currencyUnits } from 'client/slices/chain/units';
 
+import getNextSortValue from 'client/shared/sort/get-next-sort-value';
+
 import { TableBody, TableColumnHeader, TableColumnHeaderSortable, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import getNextSortValue from 'ui/shared/sort/getNextSortValue';
 
 import { SORT_SEQUENCE } from '../../utils';
 import HotContractsTableItem from './HotContractsTableItem';

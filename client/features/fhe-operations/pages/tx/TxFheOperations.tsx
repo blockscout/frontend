@@ -9,8 +9,9 @@ import TxPendingAlert from 'client/slices/tx/components/TxPendingAlert';
 import TxSocketAlert from 'client/slices/tx/components/TxSocketAlert';
 import type { TxQuery } from 'client/slices/tx/hooks/useTxQuery';
 
+import DataList from 'client/shared/lists/DataList';
+
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import DataListDisplay from 'ui/shared/DataListDisplay';
 
 import { FHE_OPERATIONS_RESPONSE } from '../../stubs';
 import TxFHEOperationsList from './TxFheOperationsList';
@@ -58,13 +59,13 @@ const TxFHEOperations = ({ txQuery }: Props) => {
   ) : null;
 
   return (
-    <DataListDisplay
+    <DataList
       isError={ isError }
       itemsNum={ data?.items?.length ?? 0 }
       emptyText="There are no FHE operations for this transaction."
     >
       { content }
-    </DataListDisplay>
+    </DataList>
   );
 };
 

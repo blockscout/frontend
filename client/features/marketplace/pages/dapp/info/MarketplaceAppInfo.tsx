@@ -4,7 +4,7 @@ import React from 'react';
 
 import type { MarketplaceApp } from 'client/features/marketplace/types/client';
 
-import InfoButton from 'ui/shared/InfoButton';
+import InfoPopoverButton from 'client/shared/buttons/InfoPopoverButton';
 
 import Content from './Content';
 
@@ -15,9 +15,9 @@ interface Props {
 
 const MarketplaceAppInfo = ({ data, isLoading }: Props) => {
   return (
-    <InfoButton isLoading={ isLoading }>
+    <InfoPopoverButton isLoading={ isLoading }>
       <Content data={ data }/>
-    </InfoButton>
+    </InfoPopoverButton>
   );
 };
 

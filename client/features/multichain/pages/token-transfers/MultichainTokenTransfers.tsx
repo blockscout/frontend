@@ -15,6 +15,7 @@ import { getTokenFilterValue } from 'client/slices/token/utils/list-utils';
 import ChainSelect from 'client/features/multichain/components/ChainSelect';
 import { MultichainProvider } from 'client/features/multichain/context';
 
+import PopoverFilter from 'client/shared/filters/PopoverFilter';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import Pagination from 'client/shared/pagination/Pagination';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
@@ -22,7 +23,6 @@ import getQueryParamString from 'client/shared/router/get-query-param-string';
 import multichainConfig from 'configs/multichain';
 import { EmptyState } from 'toolkit/chakra/empty-state';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
-import PopoverFilter from 'ui/shared/filters/PopoverFilter';
 
 import MultichainTokenTransfersLocal from './MultichainTokenTransfersLocal';
 

@@ -6,6 +6,10 @@ import React from 'react';
 
 import type { ExternalChain } from 'client/shared/external-chains/types';
 
+import type { Props as CopyToClipboardProps } from 'client/shared/text/CopyToClipboard';
+import CopyToClipboard from 'client/shared/text/CopyToClipboard';
+import HashStringShorten from 'client/shared/text/HashStringShorten';
+import HashStringShortenDynamic from 'client/shared/text/HashStringShortenDynamic';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 import type { Props as SpriteIconProps } from 'client/sprite/SpriteIcon';
 
@@ -16,10 +20,6 @@ import { Link as LinkToolkit } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
-import type { Props as CopyToClipboardProps } from 'ui/shared/CopyToClipboard';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
-import HashStringShorten from 'ui/shared/HashStringShorten';
-import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 
 import { getContentProps, getIconProps } from './utils';
 

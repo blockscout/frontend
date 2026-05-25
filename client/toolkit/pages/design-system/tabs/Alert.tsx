@@ -3,12 +3,13 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
+import * as SocketNewItemsNotice from 'client/api/socket/SocketNewItemsNotice';
+
 import TxPendingAlert from 'client/slices/tx/components/TxPendingAlert';
 
 import { Alert } from 'toolkit/chakra/alert';
 import { Link } from 'toolkit/chakra/link';
 import { TableBody, TableColumnHeader, TableHeader, TableRoot, TableRow } from 'toolkit/chakra/table';
-import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 
 import { Section, Container, SectionHeader, SamplesStack, Sample, SectionSubHeader } from '../parts';
 

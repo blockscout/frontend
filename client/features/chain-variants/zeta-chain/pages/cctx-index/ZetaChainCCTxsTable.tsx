@@ -6,13 +6,14 @@ import React from 'react';
 import type { CctxListItem } from '@blockscout/zetachain-cctx-types';
 import type { ZetaChainCCTXFilterParams } from 'client/features/chain-variants/zeta-chain/types/client';
 
+import * as SocketNewItemsNotice from 'client/api/socket/SocketNewItemsNotice';
+
 import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
 
+import TimeFormatToggle from 'client/shared/date-and-time/TimeFormatToggle';
 import useInitialList from 'client/shared/lists/useInitialList';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
-import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
-import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
 import ZetaChainCCTxsTableItem from './ZetaChainCCTxsTableItem';
 import ZetaChainFilterByColumn from './ZetaChainFilterByColumn';

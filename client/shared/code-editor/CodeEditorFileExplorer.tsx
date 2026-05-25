@@ -5,8 +5,8 @@ import React from 'react';
 
 import type { File } from './types';
 
+import CodeEditorCollapseButton from './CodeEditorCollapseButton';
 import CodeEditorFileTree from './CodeEditorFileTree';
-import CoderEditorCollapseButton from './CoderEditorCollapseButton';
 import composeFileTree from './utils/composeFileTree';
 
 interface Props {
@@ -30,7 +30,7 @@ const CodeEditorFileExplorer = ({ data, onFileSelect, selectedFile, mainFile, is
 
   const renderActionBar = React.useCallback(() => {
     return (
-      <CoderEditorCollapseButton onClick={ handleCollapseButtonClick } label="Collapse folders"/>
+      <CodeEditorCollapseButton onClick={ handleCollapseButtonClick } label="Collapse folders"/>
     );
   }, [ handleCollapseButtonClick ]);
 

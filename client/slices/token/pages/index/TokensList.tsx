@@ -5,11 +5,11 @@ import React from 'react';
 
 import type { TokensSortingValue } from 'client/slices/token/types/api';
 
+import DataList from 'client/shared/lists/DataList';
 import type { QueryWithPagesResult } from 'client/shared/pagination/useQueryWithPages';
 
 import type { OnValueChangeHandler } from 'toolkit/chakra/select';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import DataListDisplay from 'ui/shared/DataListDisplay';
 
 import TokensListItem from './TokensListItem';
 import TokensTable from './TokensTable';
@@ -65,7 +65,7 @@ const Tokens = ({ query, onSortChange, sort, actionBar, description, hasActiveFi
   ) : null;
 
   return (
-    <DataListDisplay
+    <DataList
       isError={ isError }
       itemsNum={ data?.items.length }
       emptyText="There are no tokens."
@@ -76,7 +76,7 @@ const Tokens = ({ query, onSortChange, sort, actionBar, description, hasActiveFi
       actionBar={ actionBar }
     >
       { content }
-    </DataListDisplay>
+    </DataList>
   );
 };
 

@@ -5,8 +5,7 @@ import React from 'react';
 
 import type { EmptyStateProps } from 'toolkit/chakra/empty-state';
 import { EmptyState } from 'toolkit/chakra/empty-state';
-
-import DataFetchAlert from './DataFetchAlert';
+import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
 export type Props = {
   isError: boolean;
@@ -21,7 +20,7 @@ export type Props = {
   emptyStateProps?: EmptyStateProps;
 };
 
-const DataListDisplay = (props: Props) => {
+const DataList = (props: Props) => {
   if (props.isError) {
     if (props.showActionBarIfError) {
       return (
@@ -61,4 +60,4 @@ const DataListDisplay = (props: Props) => {
   );
 };
 
-export default chakra(DataListDisplay);
+export default chakra(DataList);

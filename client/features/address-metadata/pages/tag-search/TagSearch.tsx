@@ -10,6 +10,7 @@ import PageTitle from 'client/shell/page/title/PageTitle';
 
 import { TOP_ADDRESS } from 'client/slices/address/stubs/address';
 
+import DataList from 'client/shared/lists/DataList';
 import StickyPaginationWithText from 'client/shared/pagination/StickyPaginationWithText';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
@@ -17,7 +18,6 @@ import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
 
 import MetadataTag from '../../components/tag/MetadataTag';
 import TagSearchListItem from './TagSearchListItem';
@@ -103,14 +103,14 @@ const TagSearch = () => {
   return (
     <>
       <PageTitle title="Search result" withTextAd/>
-      <DataListDisplay
+      <DataList
         isError={ isError }
         itemsNum={ data?.items.length }
         emptyText={ text }
         actionBar={ actionBar }
       >
         { content }
-      </DataListDisplay>
+      </DataList>
     </>
   );
 };

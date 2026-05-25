@@ -5,7 +5,7 @@ import React from 'react';
 
 import type { FlashblockItem } from 'client/features/flashblocks/types/client';
 
-import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
+import * as SocketNewItemsNotice from 'client/api/socket/SocketNewItemsNotice';
 
 import FlashblocksListItem from './FlashblocksListItem';
 

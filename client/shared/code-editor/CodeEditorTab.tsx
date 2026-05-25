@@ -4,11 +4,11 @@ import { Flex, chakra, Box } from '@chakra-ui/react';
 import React from 'react';
 
 import { alt } from 'toolkit/utils/htmlEntities';
-import useThemeColors from 'ui/shared/monaco/utils/useThemeColors';
 
 import CodeEditorFileIcon from './CodeEditorFileIcon';
 import CodeEditorMainFileIndicator from './CodeEditorMainFileIndicator';
 import getFilePathParts from './utils/getFilePathParts';
+import useThemeColors from './utils/useThemeColors';
 
 interface Props {
   isActive?: boolean;

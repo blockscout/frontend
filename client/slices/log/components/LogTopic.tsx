@@ -6,13 +6,13 @@ import React from 'react';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 
+import CopyToClipboard from 'client/shared/text/CopyToClipboard';
+import HashStringShortenDynamic from 'client/shared/text/HashStringShortenDynamic';
 import hexToAddress from 'client/shared/transformers/hex-to-address';
 import hexToUtf8 from 'client/shared/transformers/hex-to-utf8';
 
 import { SelectContent, SelectControl, SelectItem, SelectRoot, SelectValueText } from 'toolkit/chakra/select';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
-import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 
 import LogIndex from './LogIndex';
 

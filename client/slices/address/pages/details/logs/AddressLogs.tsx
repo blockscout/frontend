@@ -10,13 +10,13 @@ import { LOG } from 'client/slices/log/stubs/log';
 import CsvExport from 'client/features/csv-export/components/CsvExport';
 
 import useIsMounted from 'client/shared/hooks/useIsMounted';
+import DataList from 'client/shared/lists/DataList';
 import Pagination from 'client/shared/pagination/Pagination';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import ActionBar from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
 
 type Props = {
   shouldRender?: boolean;
@@ -71,14 +71,14 @@ const AddressLogs = ({ shouldRender = true, isQueryEnabled = true }: Props) => {
   )) : null;
 
   return (
-    <DataListDisplay
+    <DataList
       isError={ isError }
       itemsNum={ data?.items?.length }
       emptyText="There are no logs for this address."
       actionBar={ actionBar }
     >
       { content }
-    </DataListDisplay>
+    </DataList>
   );
 };
 

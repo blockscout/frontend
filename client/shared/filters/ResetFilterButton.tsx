@@ -9,7 +9,7 @@ type Props = {
   onClick: () => void;
 };
 
-const ResetIconButton = ({ onClick }: Props) => {
+const ResetFilterButton = ({ onClick }: Props) => {
   return (
     <Tooltip content="Reset filter">
       <CloseButton onClick={ onClick } ml={ 1 }/>
@@ -17,4 +17,4 @@ const ResetIconButton = ({ onClick }: Props) => {
   );
 };
 
-export default ResetIconButton;
+export default ResetFilterButton;

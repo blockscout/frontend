@@ -8,10 +8,9 @@ import type { SearchResultLabel } from 'client/slices/search/types/api';
 
 import { toBech32Address } from 'client/slices/address/utils/bech32';
 
+import HashStringShortenDynamic from 'client/shared/text/HashStringShortenDynamic';
 import highlightText from 'client/shared/text/highlight-text';
 import SpriteIcon from 'client/sprite/SpriteIcon';
-
-import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 
 const SearchBarSuggestLabel = ({ data, isMobile, searchTerm, addressFormat }: ItemsProps<SearchResultLabel>) => {
   const icon = <SpriteIcon name="publictags" boxSize={ 5 } color="icon.primary"/>;

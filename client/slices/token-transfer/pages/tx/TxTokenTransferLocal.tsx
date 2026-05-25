@@ -9,10 +9,10 @@ import TokenTransferList from 'client/slices/token-transfer/components/list/Toke
 import TokenTransferTable from 'client/slices/token-transfer/components/list/TokenTransferTable';
 import type { TxQuery } from 'client/slices/tx/hooks/useTxQuery';
 
+import DataList from 'client/shared/lists/DataList';
 import type { QueryWithPagesResult } from 'client/shared/pagination/useQueryWithPages';
 
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
 
 interface Props {
   txQuery: TxQuery;
@@ -46,7 +46,7 @@ const TxTokenTransferLocal = ({ txQuery, tokenTransferQuery, tokenTransferFilter
   ) : null;
 
   return (
-    <DataListDisplay
+    <DataList
       isError={ txQuery.isError || tokenTransferQuery.isError }
       itemsNum={ items.length }
       emptyText="There are no token transfers."
@@ -56,7 +56,7 @@ const TxTokenTransferLocal = ({ txQuery, tokenTransferQuery, tokenTransferFilter
       }}
     >
       { content }
-    </DataListDisplay>
+    </DataList>
   );
 };
 

@@ -9,12 +9,12 @@ import CsvExport from 'client/features/csv-export/components/CsvExport';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import useIsMounted from 'client/shared/hooks/useIsMounted';
+import DataList from 'client/shared/lists/DataList';
 import Pagination from 'client/shared/pagination/Pagination';
 import type { QueryWithPagesResult } from 'client/shared/pagination/useQueryWithPages';
 
 import ActionBar from 'ui/shared/ActionBar';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import DataListDisplay from 'ui/shared/DataListDisplay';
 
 import TokenHoldersList from './TokenHoldersList';
 import TokenHoldersTable from './TokenHoldersTable';
@@ -79,14 +79,14 @@ const TokenHolders = ({ holdersQuery, token, shouldRender = true, tabsHeight = T
   ) : null;
 
   return (
-    <DataListDisplay
+    <DataList
       isError={ holdersQuery.isError }
       itemsNum={ holdersQuery.data?.items.length }
       emptyText="There are no holders for this token."
       actionBar={ actionBar }
     >
       { content }
-    </DataListDisplay>
+    </DataList>
   );
 };
 

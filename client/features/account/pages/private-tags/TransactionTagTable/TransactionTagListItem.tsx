@@ -9,8 +9,9 @@ import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 
 import TableItemActionButtons from 'client/features/account/components/TableItemActionButtons';
 
+import ListItemMobile from 'client/shared/lists/ListItemMobile';
+
 import { Tag } from 'toolkit/chakra/tag';
-import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 
 interface Props {
   item: TransactionTag;

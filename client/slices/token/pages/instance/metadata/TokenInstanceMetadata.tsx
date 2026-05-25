@@ -5,11 +5,12 @@ import React from 'react';
 
 import type { TokenInstance } from 'client/slices/token/types/api';
 
+import CopyToClipboard from 'client/shared/text/CopyToClipboard';
+
 import { Alert } from 'toolkit/chakra/alert';
 import type { SelectOption } from 'toolkit/chakra/select';
 import { Select } from 'toolkit/chakra/select';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
 
 import { useMetadataUpdateContext } from '../metadata-update-context';

@@ -10,8 +10,9 @@ import type {
 
 import { currencyUnits } from 'client/slices/chain/units';
 
+import getNextSortValue from 'client/shared/sort/get-next-sort-value';
+
 import { TableBody, TableColumnHeader, TableColumnHeaderSortable, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
-import getNextSortValue from 'ui/shared/sort/getNextSortValue';
 
 import { VALIDATORS_BLACKFORT_SORT_SEQUENCE } from './utils';
 import ValidatorsTableItem from './ValidatorsTableItem';

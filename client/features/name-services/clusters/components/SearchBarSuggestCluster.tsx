@@ -9,9 +9,8 @@ import type { ItemsProps } from 'client/slices/search/components/search-bar/Sear
 import { toBech32Address } from 'client/slices/address/utils/bech32';
 import { isEvmAddress } from 'client/slices/address/utils/is-evm-address';
 
+import HashStringShortenDynamic from 'client/shared/text/HashStringShortenDynamic';
 import highlightText from 'client/shared/text/highlight-text';
-
-import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 
 import ClusterIcon from './ClusterIcon';
 

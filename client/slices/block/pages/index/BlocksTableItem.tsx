@@ -15,6 +15,7 @@ import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
 import getBlockTotalReward from 'client/slices/block/utils/get-block-total-reward';
 import GasUsed from 'client/slices/gas/components/GasUsed';
 
+import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
 import ChainIcon from 'client/shared/external-chains/ChainIcon';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
@@ -23,7 +24,6 @@ import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import Utilization from 'ui/shared/Utilization/Utilization';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 import SimpleValue from 'ui/shared/value/SimpleValue';

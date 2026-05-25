@@ -11,9 +11,10 @@ import AddressEntity from 'client/slices/address/components/entity/AddressEntity
 
 import EpochRewardTypeTag from 'client/features/chain-variants/celo/components/EpochRewardTypeTag';
 
+import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
+
 import { Link } from 'toolkit/chakra/link';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
-import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import TokenValue from 'ui/shared/value/TokenValue';
 
 type Props = {

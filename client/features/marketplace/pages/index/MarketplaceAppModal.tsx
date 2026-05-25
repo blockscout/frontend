@@ -7,6 +7,7 @@ import type { MarketplaceApp } from 'client/features/marketplace/types/client';
 
 import { route } from 'nextjs-routes';
 
+import CopyToClipboard from 'client/shared/text/CopyToClipboard';
 import type { IconName } from 'client/sprite/SpriteIcon';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
@@ -22,7 +23,6 @@ import { Link } from 'toolkit/chakra/link';
 import { nbsp } from 'toolkit/utils/htmlEntities';
 import { isBrowser } from 'toolkit/utils/isBrowser';
 import { makePrettyLink } from 'toolkit/utils/url';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
 
 import Rating from '../../components/rating/MarketplaceRating';
 import FavoriteIcon from './FavoriteIcon';

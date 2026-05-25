@@ -15,10 +15,11 @@ import TxStatus from 'client/slices/tx/components/TxStatus';
 import BlobEntity from 'client/features/data-availability/components/entity/BlobEntity';
 import { useMultichainContext } from 'client/features/multichain/context';
 
+import TextSeparator from 'client/shared/text/TextSeparator';
+
 import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import TextSeparator from 'ui/shared/TextSeparator';
 import Utilization from 'ui/shared/Utilization/Utilization';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 

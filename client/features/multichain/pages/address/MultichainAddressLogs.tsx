@@ -13,6 +13,7 @@ import ChainSelect from 'client/features/multichain/components/ChainSelect';
 import { MultichainProvider } from 'client/features/multichain/context';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import DataList from 'client/shared/lists/DataList';
 import Pagination from 'client/shared/pagination/Pagination';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
@@ -20,7 +21,6 @@ import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import multichainConfig from 'configs/multichain';
 import ActionBar from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
 
 import getAvailableChainIds from './get-available-chain-ids';
 
@@ -90,7 +90,7 @@ const MultichainAddressLogs = ({ addressData, isLoading }: Props) => {
   )) : null;
 
   return (
-    <DataListDisplay
+    <DataList
       isError={ isError }
       itemsNum={ data?.items?.length }
       emptyText="There are no logs for this address."
@@ -101,7 +101,7 @@ const MultichainAddressLogs = ({ addressData, isLoading }: Props) => {
       <MultichainProvider chainId={ chainValue?.[0] }>
         { content }
       </MultichainProvider>
-    </DataListDisplay>
+    </DataList>
   );
 };
 

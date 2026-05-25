@@ -43,6 +43,9 @@ import ZkSyncL2TxnBatchHashesInfo from 'client/features/rollup/zk-sync/pages/bat
 import { formatZkSyncL2TxnBatchStatus } from 'client/features/rollup/zk-sync/utils/format-txn-batch-status';
 import TxDetailsActions from 'client/features/tx-actions/pages/tx/TxDetailsActions';
 
+import VerificationSteps from 'client/shared/lifecycle/steps/VerificationSteps';
+import StatusTag from 'client/shared/tags/status-tag/StatusTag';
+import TextSeparator from 'client/shared/text/TextSeparator';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import config from 'configs/app';
@@ -56,12 +59,9 @@ import DetailedInfoNativeCoinValue from 'ui/shared/DetailedInfo/DetailedInfoNati
 import DetailedInfoSponsoredItem from 'ui/shared/DetailedInfo/DetailedInfoSponsoredItem';
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
 import RawInputData from 'ui/shared/RawInputData';
-import StatusTag from 'ui/shared/statusTag/StatusTag';
-import TextSeparator from 'ui/shared/TextSeparator';
 import Utilization from 'ui/shared/Utilization/Utilization';
 import GasPriceValue from 'ui/shared/value/GasPriceValue';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
-import VerificationSteps from 'ui/shared/verificationSteps/VerificationSteps';
 
 import TxDetailsBurntFees from './parts/TxDetailsBurntFees';
 import TxDetailsFeePerGas from './parts/TxDetailsFeePerGas';

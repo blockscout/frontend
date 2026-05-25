@@ -13,8 +13,8 @@ import { AccordionRoot } from 'toolkit/chakra/accordion';
 import { Input } from 'toolkit/chakra/input';
 import { InputGroup } from 'toolkit/chakra/input-group';
 
+import CodeEditorCollapseButton from './CodeEditorCollapseButton';
 import CodeEditorSearchSection from './CodeEditorSearchSection';
-import CoderEditorCollapseButton from './CoderEditorCollapseButton';
 import useThemeColors from './utils/useThemeColors';
 
 interface Props {
@@ -119,7 +119,7 @@ const CodeEditorSearch = ({ monaco, data, onFileSelect, isInputStuck, isActive, 
 
   const renderActionBar = React.useCallback(() => {
     return (
-      <CoderEditorCollapseButton
+      <CodeEditorCollapseButton
         onClick={ handleToggleCollapseClick }
         label={ expandedSections.length === 0 ? 'Expand all' : 'Collapse all' }
         isDisabled={ searchResults.length === 0 }

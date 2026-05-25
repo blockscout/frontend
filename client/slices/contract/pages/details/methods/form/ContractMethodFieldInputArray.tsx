@@ -6,7 +6,7 @@ import { useFormContext } from 'react-hook-form';
 
 import type { ContractAbiItemInput } from '../types';
 
-import ArrayButton from 'ui/shared/forms/ArrayButton';
+import ArrayButton from 'toolkit/components/buttons/ArrayButton';
 
 import type { Props as AccordionProps } from './ContractMethodFieldAccordion';
 import ContractMethodFieldAccordion from './ContractMethodFieldAccordion';

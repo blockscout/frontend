@@ -9,13 +9,13 @@ import PageTitle from 'client/shell/page/title/PageTitle';
 
 import { INTEROP_MESSAGE } from 'client/features/op-interop/stubs';
 
+import DataList from 'client/shared/lists/DataList';
 import StickyPaginationWithText from 'client/shared/pagination/StickyPaginationWithText';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
 
 import InteropMessagesListItem from './InteropMessagesListItem';
 import InteropMessagesTable from './InteropMessagesTable';
@@ -79,14 +79,14 @@ const InteropMessages = () => {
         title="Interop messages"
         withTextAd
       />
-      <DataListDisplay
+      <DataList
         isError={ interopMessagesQuery.isError }
         itemsNum={ interopMessagesQuery.data?.items.length }
         emptyText="There are no interop messages."
         actionBar={ actionBar }
       >
         { content }
-      </DataListDisplay>
+      </DataList>
     </>
   );
 };

@@ -6,6 +6,7 @@ import React from 'react';
 import guessDataType from 'client/features/data-availability/utils/guess-data-type';
 import removeNonSignificantZeroBytes from 'client/features/data-availability/utils/remove-non-significant-zero-bytes';
 
+import CopyToClipboard from 'client/shared/text/CopyToClipboard';
 import bytesToBase64 from 'client/shared/transformers/bytes-to-base64';
 import hexToBase64 from 'client/shared/transformers/hex-to-base64';
 import hexToBytes from 'client/shared/transformers/hex-to-bytes';
@@ -16,7 +17,6 @@ import type { SelectOption } from 'toolkit/chakra/select';
 import { Select } from 'toolkit/chakra/select';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { downloadBlob } from 'toolkit/utils/file';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
 

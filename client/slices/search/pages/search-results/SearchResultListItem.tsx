@@ -27,6 +27,9 @@ import * as UserOpEntity from 'client/features/user-ops/components/entity/UserOp
 
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 import dayjs from 'client/shared/date-and-time/dayjs';
+import Time from 'client/shared/date-and-time/Time';
+import ListItemMobile from 'client/shared/lists/ListItemMobile';
+import HashStringShortenDynamic from 'client/shared/text/HashStringShortenDynamic';
 import highlightText from 'client/shared/text/highlight-text';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
@@ -37,9 +40,6 @@ import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tag } from 'toolkit/chakra/tag';
 import { SECOND } from 'toolkit/utils/consts';
 import { ADDRESS_REGEXP } from 'toolkit/utils/regexp';
-import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
-import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
-import Time from 'ui/shared/time/Time';
 
 import SearchResultMetadataTag from './SearchResultMetadataTag';
 

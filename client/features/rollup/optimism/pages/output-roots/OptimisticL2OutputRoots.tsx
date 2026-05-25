@@ -10,13 +10,13 @@ import PageTitle from 'client/shell/page/title/PageTitle';
 import { layerLabels } from 'client/features/rollup/common/utils/layer';
 import { L2_OUTPUT_ROOTS_ITEM } from 'client/features/rollup/optimism/stubs';
 
+import DataList from 'client/shared/lists/DataList';
 import StickyPaginationWithText from 'client/shared/pagination/StickyPaginationWithText';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
 
 import OptimisticL2OutputRootsListItem from './OptimisticL2OutputRootsListItem';
 import OptimisticL2OutputRootsTable from './OptimisticL2OutputRootsTable';
@@ -81,14 +81,14 @@ const OptimisticL2OutputRoots = () => {
   return (
     <>
       <PageTitle title="Output roots" withTextAd/>
-      <DataListDisplay
+      <DataList
         isError={ isError }
         itemsNum={ data?.items.length }
         emptyText="There are no output roots."
         actionBar={ actionBar }
       >
         { content }
-      </DataListDisplay>
+      </DataList>
     </>
   );
 };

@@ -17,6 +17,7 @@ import { calculateUsdValue } from 'client/slices/token/pages/address/utils';
 import { ADDRESS_PORTFOLIO, TOKEN } from 'client/features/multichain/stubs';
 
 import useDebounce from 'client/shared/hooks/useDebounce';
+import DataList from 'client/shared/lists/DataList';
 import Pagination from 'client/shared/pagination/Pagination';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
@@ -27,7 +28,6 @@ import multichainConfig from 'configs/multichain';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import { ZERO } from 'toolkit/utils/consts';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
 
 import MultichainAddressPortfolioCards from './MultichainAddressPortfolioCards';
 import MultichainAddressPortfolioNetWorth from './MultichainAddressPortfolioNetWorth';
@@ -247,7 +247,7 @@ const MultichainAddressPortfolioTokens = ({ addressData, isLoading, onChainChang
         onChange={ handleSelectedChainChange }
         isLoading={ portfolioQuery.isPlaceholderData || isLoading }
       />
-      <DataListDisplay
+      <DataList
         isError={ tokensQuery.isError }
         itemsNum={ tokensQuery.data?.items?.length }
         actionBar={ actionBar }
@@ -257,7 +257,7 @@ const MultichainAddressPortfolioTokens = ({ addressData, isLoading, onChainChang
         }}
       >
         { tokensContent }
-      </DataListDisplay>
+      </DataList>
     </Box>
   );
 };

@@ -25,7 +25,9 @@ import CsvExport from 'client/features/csv-export/components/CsvExport';
 import { useMultichainContext } from 'client/features/multichain/context';
 
 import dayjs from 'client/shared/date-and-time/dayjs';
+import TimeFormatToggle from 'client/shared/date-and-time/TimeFormatToggle';
 import ChainIcon from 'client/shared/external-chains/ChainIcon';
+import DataList from 'client/shared/lists/DataList';
 import Pagination from 'client/shared/pagination/Pagination';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
@@ -39,8 +41,6 @@ import { Link } from 'toolkit/chakra/link';
 import { TableBody, TableCell, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import { Tag } from 'toolkit/chakra/tag';
 import ActionBar from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
-import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
 import ColumnsButton from '../../components/ColumnsButton';
 import FilterByColumn from '../../components/FilterByColumn';
@@ -290,7 +290,7 @@ const AdvancedFilter = () => {
           </>
         ) }
       </HStack>
-      <DataListDisplay
+      <DataList
         isError={ isError }
         itemsNum={ data?.items.length }
         emptyText="There are no transactions."
@@ -301,7 +301,7 @@ const AdvancedFilter = () => {
         }}
       >
         { content }
-      </DataListDisplay>
+      </DataList>
     </>
   );
 };

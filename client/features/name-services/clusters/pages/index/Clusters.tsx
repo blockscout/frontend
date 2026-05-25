@@ -18,12 +18,12 @@ import {
 } from 'client/features/name-services/clusters/utils/page-utils';
 import type { ViewMode } from 'client/features/name-services/clusters/utils/page-utils';
 
+import DataList from 'client/shared/lists/DataList';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import { useQueryParams } from 'client/shared/router/useQueryParams';
 
 import { Link } from 'toolkit/chakra/link';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
 
 import ClustersActionBar from './ClustersActionBar';
 import ClustersDirectoryListItem from './ClustersDirectoryListItem';
@@ -145,7 +145,7 @@ const Clusters = () => {
         <Link href="https://clusters.xyz/?utm_source=blockscout" external noIcon>Clusters</Link>{ ' ' }
         is a cross-chain name service for managing addresses on multiple blockchains using a universal naming directory.
       </Text>
-      <DataListDisplay
+      <DataList
         isError={ isError }
         itemsNum={ currentDataLength }
         hasActiveFilters={ hasActiveFilters }
@@ -155,7 +155,7 @@ const Clusters = () => {
         actionBar={ actionBar }
       >
         { content }
-      </DataListDisplay>
+      </DataList>
     </>
   );
 };

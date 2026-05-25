@@ -8,11 +8,11 @@ import TxSocketAlert from 'client/slices/tx/components/TxSocketAlert';
 import type { TxQuery } from 'client/slices/tx/hooks/useTxQuery';
 import { TX_STATE_CHANGES } from 'client/slices/tx/stubs/state-changes';
 
+import DataList from 'client/shared/lists/DataList';
 import Pagination from 'client/shared/pagination/Pagination';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
 
 import TxStateList from './TxStateList';
 import TxStateTable from './TxStateTable';
@@ -66,14 +66,14 @@ const TxState = ({ txQuery }: Props) => {
           The below is a summary of those changes.
         </Text>
       ) }
-      <DataListDisplay
+      <DataList
         isError={ isError || txQuery.isError }
         itemsNum={ data?.items.length }
         emptyText="There are no state changes for this transaction."
         actionBar={ actionBar }
       >
         { content }
-      </DataListDisplay>
+      </DataList>
     </>
   );
 };

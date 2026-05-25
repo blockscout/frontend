@@ -5,9 +5,10 @@ import React from 'react';
 
 import type { Transaction } from 'client/slices/tx/types/api';
 
+import TextSeparator from 'client/shared/text/TextSeparator';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import TextSeparator from 'ui/shared/TextSeparator';
 import Utilization from 'ui/shared/Utilization/Utilization';
 
 interface Props {

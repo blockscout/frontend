@@ -13,11 +13,11 @@ import ChainSelect from 'client/features/multichain/components/ChainSelect';
 import { MultichainProvider } from 'client/features/multichain/context';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import DataList from 'client/shared/lists/DataList';
 import Pagination from 'client/shared/pagination/Pagination';
 
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import ActionBar from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
 
 const MultichainInternalTxs = () => {
   const isMobile = useIsMobile();
@@ -75,7 +75,7 @@ const MultichainInternalTxs = () => {
         title="Internal transactions"
         withTextAd
       />
-      <DataListDisplay
+      <DataList
         isError={ isError }
         itemsNum={ data?.items.length }
         emptyText="There are no internal transactions."
@@ -88,7 +88,7 @@ const MultichainInternalTxs = () => {
         showActionBarIfEmpty
       >
         { content }
-      </DataListDisplay>
+      </DataList>
     </>
   );
 };

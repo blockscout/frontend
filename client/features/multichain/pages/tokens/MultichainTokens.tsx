@@ -15,6 +15,7 @@ import { getTokenFilterValue } from 'client/slices/token/utils/list-utils';
 import ChainSelect from 'client/features/multichain/components/ChainSelect';
 import { TOKEN } from 'client/features/multichain/stubs';
 
+import PopoverFilter from 'client/shared/filters/PopoverFilter';
 import useDebounce from 'client/shared/hooks/useDebounce';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import Pagination from 'client/shared/pagination/Pagination';
@@ -25,7 +26,6 @@ import getQueryParamString from 'client/shared/router/get-query-param-string';
 import multichainConfig from 'configs/multichain';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import ActionBar from 'ui/shared/ActionBar';
-import PopoverFilter from 'ui/shared/filters/PopoverFilter';
 
 const getChainIdFilterValue = (chainIds: Array<string>) => {
   return chainIds.includes('all') ? undefined : chainIds.filter(Boolean);

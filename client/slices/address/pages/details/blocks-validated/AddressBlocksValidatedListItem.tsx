@@ -11,10 +11,11 @@ import getBlockTotalReward from 'client/slices/block/utils/get-block-total-rewar
 import { currencyUnits } from 'client/slices/chain/units';
 import GasUsed from 'client/slices/gas/components/GasUsed';
 
+import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
+import ListItemMobile from 'client/shared/lists/ListItemMobile';
+
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
-import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import SimpleValue from 'ui/shared/value/SimpleValue';
 
 type Props = Block & {

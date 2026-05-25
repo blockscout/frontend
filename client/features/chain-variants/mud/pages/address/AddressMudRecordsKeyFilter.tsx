@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import TableColumnFilterWrapper from 'ui/shared/filters/TableColumnFilterWrapper';
+import TableColumnFilterWrapper from 'client/shared/filters/TableColumnFilterWrapper';
 
 import AddressMudRecordsKeyFilterContent from './AddressMudRecordsKeyFilterContent';
 

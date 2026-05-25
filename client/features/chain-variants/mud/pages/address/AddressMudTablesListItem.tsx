@@ -8,13 +8,13 @@ import type { AddressMudTableItem } from 'client/features/chain-variants/mud/typ
 
 import { route } from 'nextjs-routes';
 
+import ListItemMobile from 'client/shared/lists/ListItemMobile';
+import HashStringShorten from 'client/shared/text/HashStringShorten';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { Badge } from 'toolkit/chakra/badge';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import HashStringShorten from 'ui/shared/HashStringShorten';
-import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 
 type Props = {
   item: AddressMudTableItem;

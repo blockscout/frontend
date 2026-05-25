@@ -11,13 +11,13 @@ import { currencyUnits } from 'client/slices/chain/units';
 import { useMultichainContext } from 'client/features/multichain/context';
 import type { TxsTranslationQuery } from 'client/features/tx-interpretation/noves/hooks/useDescribeTxs';
 
+import TimeFormatToggle from 'client/shared/date-and-time/TimeFormatToggle';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import useInitialList from 'client/shared/lists/useInitialList';
 import useLazyRenderedList from 'client/shared/lists/useLazyRenderedList';
 
 import config from 'configs/app';
 import { TableBody, TableColumnHeader, TableColumnHeaderSortable, TableHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
-import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
 import TxsSocketNotice from './socket/TxsSocketNotice';
 import TxsTableItem from './TxsTableItem';

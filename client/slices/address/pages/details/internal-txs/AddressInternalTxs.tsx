@@ -9,10 +9,10 @@ import InternalTxsTable from 'client/slices/internal-tx/components/InternalTxsTa
 import CsvExport from 'client/features/csv-export/components/CsvExport';
 
 import useIsMounted from 'client/shared/hooks/useIsMounted';
+import DataList from 'client/shared/lists/DataList';
 import Pagination from 'client/shared/pagination/Pagination';
 
 import ActionBar from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
 
 import AddressTxsFilter from '../txs/AddressTxsFilter';
 import useAddressInternalTxsQuery from './useAddressInternalTxsQuery';
@@ -66,7 +66,7 @@ const AddressInternalTxs = ({ shouldRender = true, isQueryEnabled = true }: Prop
   );
 
   return (
-    <DataListDisplay
+    <DataList
       isError={ isError }
       itemsNum={ data?.items.length }
       hasActiveFilters={ Boolean(filterValue) }
@@ -77,7 +77,7 @@ const AddressInternalTxs = ({ shouldRender = true, isQueryEnabled = true }: Prop
       actionBar={ actionBar }
     >
       { content }
-    </DataListDisplay>
+    </DataList>
   );
 };
 

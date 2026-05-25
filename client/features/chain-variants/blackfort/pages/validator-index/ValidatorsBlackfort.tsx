@@ -14,16 +14,16 @@ import PageTitle from 'client/shell/page/title/PageTitle';
 
 import { VALIDATOR_BLACKFORT } from 'client/features/chain-variants/blackfort/stubs/validators';
 
+import DataList from 'client/shared/lists/DataList';
 import Pagination from 'client/shared/pagination/Pagination';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
+import getSortParamsFromValue from 'client/shared/sort/get-sort-params-from-value';
+import getSortValueFromQuery from 'client/shared/sort/get-sort-value-from-query';
+import Sort from 'client/shared/sort/Sort';
 
 import config from 'configs/app';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
-import getSortParamsFromValue from 'ui/shared/sort/getSortParamsFromValue';
-import getSortValueFromQuery from 'ui/shared/sort/getSortValueFromQuery';
-import Sort from 'ui/shared/sort/Sort';
 
 import { VALIDATORS_BLACKFORT_SORT_OPTIONS } from './utils';
 import ValidatorsCounters from './ValidatorsCounters';
@@ -103,14 +103,14 @@ const ValidatorsBlackfort = () => {
     <Box>
       <PageTitle title="Validators" withTextAd/>
       <ValidatorsCounters/>
-      <DataListDisplay
+      <DataList
         isError={ isError }
         itemsNum={ data?.items.length }
         emptyText="There are no validators."
         actionBar={ actionBar }
       >
         { content }
-      </DataListDisplay>
+      </DataList>
     </Box>
   );
 };

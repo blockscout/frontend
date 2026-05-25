@@ -11,10 +11,10 @@ import { getTokensTotalInfo } from 'client/slices/token/pages/address/utils';
 import AddressMultichainButton from 'client/features/multichain-button/pages/address/AddressMultichainButton';
 
 import * as mixpanel from 'client/shared/analytics/mixpanel';
+import TextSeparator from 'client/shared/text/TextSeparator';
 
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import TextSeparator from 'ui/shared/TextSeparator';
 import calculateUsdValue from 'ui/shared/value/calculateUsdValue';
 import SimpleValue from 'ui/shared/value/SimpleValue';
 import { DEFAULT_ACCURACY_USD } from 'ui/shared/value/utils';

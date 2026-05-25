@@ -13,6 +13,7 @@ import useGraphLinks from 'client/features/marketplace/hooks/useGraphLinks';
 
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import Sort from 'client/shared/sort/Sort';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 import type { IconName } from 'client/sprite/SpriteIcon';
 
@@ -24,7 +25,6 @@ import { MenuContent, MenuItem, MenuRoot, MenuTrigger } from 'toolkit/chakra/men
 import AdaptiveTabs from 'toolkit/components/AdaptiveTabs/AdaptiveTabs';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import ActionBar from 'ui/shared/ActionBar';
-import Sort from 'ui/shared/sort/Sort';
 
 import useMarketplace from '../../hooks/useMarketplace';
 import type { SortValue } from '../../utils/sort';

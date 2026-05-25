@@ -21,9 +21,10 @@ import TxType from 'client/slices/tx/components/TxType';
 import TxWatchListTags from 'client/features/account/components/TxWatchListTags';
 import MetadataTag from 'client/features/address-metadata/components/tag/MetadataTag';
 
+import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
+
 import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 type Props = {

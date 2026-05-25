@@ -11,6 +11,7 @@ import type { SocketMessage } from 'client/api/socket/types';
 import { route } from 'nextjs-routes';
 
 import useApiQuery, { getResourceKey } from 'client/api/hooks/useApiQuery';
+import SocketNewItemsNotice from 'client/api/socket/SocketNewItemsNotice';
 import useSocketChannel from 'client/api/socket/useSocketChannel';
 import useSocketMessage from 'client/api/socket/useSocketMessage';
 
@@ -25,7 +26,6 @@ import useInitialList from 'client/shared/lists/useInitialList';
 import { generateListStub } from 'client/shared/pagination/utils';
 
 import { Link } from 'toolkit/chakra/link';
-import SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 
 import LatestZetaChainCCTXItem from './LatestZetaChainCCTXItem';
 

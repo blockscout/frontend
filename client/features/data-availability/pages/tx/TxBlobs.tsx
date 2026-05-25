@@ -9,12 +9,12 @@ import type { TxQuery } from 'client/slices/tx/hooks/useTxQuery';
 
 import { TX_BLOB } from 'client/features/data-availability/stubs';
 
+import DataList from 'client/shared/lists/DataList';
 import Pagination from 'client/shared/pagination/Pagination';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
 
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
 
 import TxBlobsList from './TxBlobsList';
 import TxBlobsTable from './TxBlobsTable';
@@ -55,14 +55,14 @@ const TxBlobs = ({ txQuery }: Props) => {
   ) : null;
 
   return (
-    <DataListDisplay
+    <DataList
       isError={ isError || txQuery.isError }
       itemsNum={ data?.items.length }
       emptyText="There are no blobs for this transaction."
       actionBar={ actionBar }
     >
       { content }
-    </DataListDisplay>
+    </DataList>
   );
 };
 

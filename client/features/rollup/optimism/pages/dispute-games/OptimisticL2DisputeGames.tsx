@@ -9,13 +9,13 @@ import PageTitle from 'client/shell/page/title/PageTitle';
 
 import { L2_DISPUTE_GAMES_ITEM } from 'client/features/rollup/optimism/stubs';
 
+import DataList from 'client/shared/lists/DataList';
 import StickyPaginationWithText from 'client/shared/pagination/StickyPaginationWithText';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
 
 import OptimisticL2DisputeGamesListItem from './OptimisticL2DisputeGamesListItem';
 import OptimisticL2DisputeGamesTable from './OptimisticL2DisputeGamesTable';
@@ -80,14 +80,14 @@ const OptimisticL2DisputeGames = () => {
   return (
     <>
       <PageTitle title="Dispute games" withTextAd/>
-      <DataListDisplay
+      <DataList
         isError={ isError }
         itemsNum={ data?.items.length }
         emptyText="There are no dispute games."
         actionBar={ actionBar }
       >
         { content }
-      </DataListDisplay>
+      </DataList>
     </>
   );
 };

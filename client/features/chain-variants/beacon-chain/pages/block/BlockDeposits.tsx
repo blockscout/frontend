@@ -3,9 +3,8 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
+import DataList from 'client/shared/lists/DataList';
 import type { QueryWithPagesResult } from 'client/shared/pagination/useQueryWithPages';
-
-import DataListDisplay from 'ui/shared/DataListDisplay';
 
 import BeaconChainDepositsList from '../deposits/BeaconChainDepositsList';
 import BeaconChainDepositsTable from '../deposits/BeaconChainDepositsTable';
@@ -37,13 +36,13 @@ const BlockDeposits = ({ blockDepositsQuery }: Props) => {
   ) : null ;
 
   return (
-    <DataListDisplay
+    <DataList
       isError={ blockDepositsQuery.isError }
       itemsNum={ blockDepositsQuery.data?.items?.length }
       emptyText="There are no deposits for this block."
     >
       { content }
-    </DataListDisplay>
+    </DataList>
   );
 };
 

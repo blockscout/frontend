@@ -8,7 +8,7 @@ import type { ItemsProps } from 'client/slices/search/components/search-bar/Sear
 
 import * as BlobEntity from 'client/features/data-availability/components/entity/BlobEntity';
 
-import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
+import HashStringShortenDynamic from 'client/shared/text/HashStringShortenDynamic';
 
 const SearchBarSuggestBlob = ({ data }: ItemsProps<SearchResultBlob>) => {
   return (

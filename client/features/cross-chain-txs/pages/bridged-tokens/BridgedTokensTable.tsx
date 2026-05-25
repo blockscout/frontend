@@ -6,9 +6,10 @@ import type { CrossChainBridgedTokensSortingValue, CrossChainBridgedTokensSortin
 import type { StatsBridgedTokenRow } from '@blockscout/interchain-indexer-types';
 import { BridgedTokensSort } from '@blockscout/interchain-indexer-types';
 
+import getNextSortValue from 'client/shared/sort/get-next-sort-value';
+
 import config from 'configs/app';
 import { TableBody, TableColumnHeader, TableColumnHeaderSortable, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
-import getNextSortValue from 'ui/shared/sort/getNextSortValue';
 
 import { BRIDGED_TOKENS_SORT_SEQUENCE } from '../../utils/bridged-tokens-sort';
 import BridgedTokensTableItem from './BridgedTokensTableItem';

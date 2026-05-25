@@ -10,6 +10,7 @@ import PageTitle from 'client/shell/page/title/PageTitle';
 import { layerLabels } from 'client/features/rollup/common/utils/layer';
 import { SCROLL_L2_MESSAGE_ITEM } from 'client/features/rollup/scroll/stubs';
 
+import DataList from 'client/shared/lists/DataList';
 import StickyPaginationWithText from 'client/shared/pagination/StickyPaginationWithText';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
@@ -17,7 +18,6 @@ import { generateListStub } from 'client/shared/pagination/utils';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { rightLineArrow, nbsp } from 'toolkit/utils/htmlEntities';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
 
 import ScrollL2WithdrawalsListItem from './ScrollL2WithdrawalsListItem';
 import ScrollL2WithdrawalsTable from './ScrollL2WithdrawalsTable';
@@ -77,14 +77,14 @@ const ScrollL2Withdrawals = () => {
   return (
     <>
       <PageTitle title={ `Withdrawals (${ layerLabels.current }${ nbsp }${ rightLineArrow }${ nbsp }${ layerLabels.parent })` } withTextAd/>
-      <DataListDisplay
+      <DataList
         isError={ isError }
         itemsNum={ data?.items?.length }
         emptyText="There are no withdrawals."
         actionBar={ actionBar }
       >
         { content }
-      </DataListDisplay>
+      </DataList>
     </>
   );
 };

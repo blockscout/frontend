@@ -3,8 +3,9 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
+import getNextSortValue from 'client/shared/sort/get-next-sort-value';
+
 import { TableColumnHeader, TableHeaderSticky, TableRoot, TableRow, TableCell, TableBody, TableColumnHeaderSortable } from 'toolkit/chakra/table';
-import getNextSortValue from 'ui/shared/sort/getNextSortValue';
 
 import { Section, Container, SectionHeader, SamplesStack, Sample } from '../parts';
 

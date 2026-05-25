@@ -11,12 +11,12 @@ import useZetaChainConfig from 'client/features/chain-variants/zeta-chain/hooks/
 
 import type { Props as ChainSelectBaseProps } from 'client/shared/external-chains/ChainSelect';
 import ChainSelectBase from 'client/shared/external-chains/ChainSelect';
+import TableColumnFilter from 'client/shared/filters/TableColumnFilter';
 
 import { Input } from 'toolkit/chakra/input';
 import { InputGroup } from 'toolkit/chakra/input-group';
 import AddButton from 'toolkit/components/buttons/AddButton';
 import { ClearButton } from 'toolkit/components/buttons/ClearButton';
-import TableColumnFilter from 'ui/shared/filters/TableColumnFilter';
 
 type Props = {
   value?: Array<string>;

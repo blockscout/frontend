@@ -8,8 +8,10 @@ import type { AddressMudRecords, AddressMudRecordsFilter, AddressMudRecordsSorti
 
 import { route } from 'nextjs-routes';
 
+import Time from 'client/shared/date-and-time/Time';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import capitalizeFirstLetter from 'client/shared/text/capitalize-first-letter';
+import CopyToClipboard from 'client/shared/text/CopyToClipboard';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { Link } from 'toolkit/chakra/link';
@@ -17,8 +19,6 @@ import { TableBody, TableCell, TableColumnHeader, TableHeaderSticky, TableRoot, 
 import type { TableColumnHeaderProps } from 'toolkit/chakra/table';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { middot } from 'toolkit/utils/htmlEntities';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
-import Time from 'ui/shared/time/Time';
 
 import AddressMudRecordsKeyFilter from './AddressMudRecordsKeyFilter';
 import { getNameTypeText, getValueString } from './utils';

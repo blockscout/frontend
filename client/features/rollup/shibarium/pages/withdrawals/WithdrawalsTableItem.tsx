@@ -10,9 +10,10 @@ import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
 
+import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
+
 import config from 'configs/app';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
-import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 
 const feature = config.features.rollup;
 

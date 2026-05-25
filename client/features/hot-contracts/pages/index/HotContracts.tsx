@@ -18,15 +18,15 @@ import HotContractsTable from 'client/features/hot-contracts/pages/index/HotCont
 import { HOT_CONTRACTS } from 'client/features/hot-contracts/stubs';
 import { getIntervalValueFromQuery, SORT_OPTIONS } from 'client/features/hot-contracts/utils';
 
+import DataList from 'client/shared/lists/DataList';
 import Pagination from 'client/shared/pagination/Pagination';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
+import getSortParamsFromValue from 'client/shared/sort/get-sort-params-from-value';
+import getSortValueFromQuery from 'client/shared/sort/get-sort-value-from-query';
+import Sort from 'client/shared/sort/Sort';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import ActionBar from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
-import getSortParamsFromValue from 'ui/shared/sort/getSortParamsFromValue';
-import getSortValueFromQuery from 'ui/shared/sort/getSortValueFromQuery';
-import Sort from 'ui/shared/sort/Sort';
 
 const sortCollection = createListCollection({
   items: SORT_OPTIONS,
@@ -124,7 +124,7 @@ const HotContracts = () => {
         title="Hot contracts"
         withTextAd
       />
-      <DataListDisplay
+      <DataList
         isError={ isError }
         itemsNum={ data?.items.length }
         emptyText="There are no hot contracts."
@@ -135,7 +135,7 @@ const HotContracts = () => {
         }}
       >
         { content }
-      </DataListDisplay>
+      </DataList>
     </>
   );
 };

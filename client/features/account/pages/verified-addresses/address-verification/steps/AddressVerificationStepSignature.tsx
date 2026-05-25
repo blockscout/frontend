@@ -20,6 +20,7 @@ import useApiFetch from 'client/api/hooks/useApiFetch';
 
 import useWallet from 'client/features/connect-wallet/hooks/useWallet';
 
+import CopyToClipboard from 'client/shared/text/CopyToClipboard';
 import shortenString from 'client/shared/text/shorten-string';
 
 import config from 'configs/app';
@@ -29,7 +30,6 @@ import { Link } from 'toolkit/chakra/link';
 import { Radio, RadioGroup } from 'toolkit/chakra/radio';
 import { FormFieldText } from 'toolkit/components/forms/fields/FormFieldText';
 import { SIGNATURE_REGEXP } from 'toolkit/components/forms/validators/signature';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
 
 import AdminSupportText from '../../AdminSupportText';
 

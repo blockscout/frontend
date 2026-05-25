@@ -11,11 +11,11 @@ import ContractCertifiedLabel from 'client/slices/contract/components/ContractCe
 import { formatLanguageName } from 'client/slices/contract/utils/language';
 import { CONTRACT_LICENSES } from 'client/slices/contract/utils/licenses';
 
+import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
+import ListItemMobile from 'client/shared/lists/ListItemMobile';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
-import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 interface Props {

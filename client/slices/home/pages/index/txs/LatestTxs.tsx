@@ -6,6 +6,7 @@ import React from 'react';
 import { route } from 'nextjs-routes';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
+import SocketNewItemsNotice from 'client/api/socket/SocketNewItemsNotice';
 
 import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
 import useNewTxsSocket from 'client/slices/tx/hooks/useTxsSocketTypeAll';
@@ -15,7 +16,6 @@ import useIsMobile from 'client/shared/hooks/useIsMobile';
 
 import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
-import SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 
 import LatestTxsDegraded from './LatestTxsDegraded';
 import LatestTxsItem from './LatestTxsItem';

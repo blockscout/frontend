@@ -5,7 +5,7 @@ import { Box, Flex } from '@chakra-ui/react';
 import type { AllowanceType } from '../types';
 import type { EssentialDappsChainConfig } from 'client/features/marketplace/types/client';
 
-import DataListDisplay from 'ui/shared/DataListDisplay';
+import DataList from 'client/shared/lists/DataList';
 
 import ApprovalsListItem from './ApprovalsListItem';
 import ApprovalsTable from './ApprovalsTable';
@@ -52,7 +52,7 @@ export default function Approvals({
   );
 
   return (
-    <DataListDisplay
+    <DataList
       itemsNum={ approvals.length }
       isError={ false }
       hasActiveFilters
@@ -61,6 +61,6 @@ export default function Approvals({
       }}
     >
       { content }
-    </DataListDisplay>
+    </DataList>
   );
 }

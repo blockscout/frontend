@@ -8,8 +8,9 @@ import type { MudWorldItem } from 'client/features/chain-variants/mud/types/api'
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import { currencyUnits } from 'client/slices/chain/units';
 
+import ListItemMobile from 'client/shared/lists/ListItemMobile';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 type Props = {

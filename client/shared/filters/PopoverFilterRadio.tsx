@@ -3,9 +3,10 @@
 import type { ListCollection } from '@chakra-ui/react';
 import React from 'react';
 
+import FilterButton from 'client/shared/filters/FilterButton';
+
 import type { SelectOption } from 'toolkit/chakra/select';
 import { SelectContent, SelectItem, SelectRoot, SelectControl } from 'toolkit/chakra/select';
-import FilterButton from 'ui/shared/filters/FilterButton';
 
 interface Props {
   name: string;

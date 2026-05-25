@@ -12,12 +12,12 @@ import CsvExport from 'client/features/csv-export/components/CsvExport';
 import useDescribeTxs from 'client/features/tx-interpretation/noves/hooks/useDescribeTxs';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import DataList from 'client/shared/lists/DataList';
+import TableViewToggleButton from 'client/shared/lists/TableViewToggleButton';
 import useTableViewValue from 'client/shared/lists/useTableViewValue';
+import getNextSortValue from 'client/shared/sort/get-next-sort-value';
 
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
-import getNextSortValue from 'ui/shared/sort/getNextSortValue';
-import TableViewToggleButton from 'ui/shared/TableViewToggleButton';
 
 import TxsHeaderMobile from './TxsHeaderMobile';
 import TxsList from './TxsList';
@@ -147,7 +147,7 @@ const TxsContent = ({
   ) : null;
 
   return (
-    <DataListDisplay
+    <DataList
       isError={ isError }
       itemsNum={ items?.length }
       emptyText="There are no transactions."
@@ -158,7 +158,7 @@ const TxsContent = ({
       }}
     >
       { content }
-    </DataListDisplay>
+    </DataList>
   );
 };
 

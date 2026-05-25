@@ -5,9 +5,8 @@ import React from 'react';
 
 import type { NovesHistoryFilterValue } from 'client/features/tx-interpretation/noves/types/api';
 
+import PopoverFilterRadio from 'client/shared/filters/PopoverFilterRadio';
 import useIsInitialLoading from 'client/shared/hooks/useIsInitialLoading';
-
-import PopoverFilterRadio from 'ui/shared/filters/PopoverFilterRadio';
 
 const OPTIONS = [
   { value: 'all', label: 'All' },

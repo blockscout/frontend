@@ -20,12 +20,12 @@ import TxWatchListTags from 'client/features/account/components/TxWatchListTags'
 import MetadataTag from 'client/features/address-metadata/components/tag/MetadataTag';
 import TxTranslationType from 'client/features/tx-interpretation/noves/components/TxTranslationType';
 
+import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
 import ChainIcon from 'client/shared/external-chains/ChainIcon';
 
 import config from 'configs/app';
 import { Badge } from 'toolkit/chakra/badge';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
-import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import NativeCoinValue from 'ui/shared/value/NativeCoinValue';
 
 interface Props {

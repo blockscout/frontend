@@ -3,9 +3,11 @@
 import { Box, chakra, Flex } from '@chakra-ui/react';
 import React from 'react';
 
+import CopyToClipboard from 'client/shared/text/CopyToClipboard';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
-import CodeEditor from 'ui/shared/monaco/CodeEditor';
+
+import CodeEditor from './CodeEditor';
 
 interface Props {
   data: string;
@@ -17,7 +19,7 @@ interface Props {
   isLoading?: boolean;
 }
 
-const CodeViewSnippet = ({ data, copyData, language, title, className, rightSlot, isLoading }: Props) => {
+const CodeEditorSnippet = ({ data, copyData, language, title, className, rightSlot, isLoading }: Props) => {
 
   const editorData = React.useMemo(() => {
     return [ { file_path: 'index', source_code: data } ];
@@ -37,4 +39,4 @@ const CodeViewSnippet = ({ data, copyData, language, title, className, rightSlot
   );
 };
 
-export default React.memo(chakra(CodeViewSnippet));
+export default React.memo(chakra(CodeEditorSnippet));

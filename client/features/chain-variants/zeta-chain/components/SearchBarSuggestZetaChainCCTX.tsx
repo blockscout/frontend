@@ -9,11 +9,11 @@ import { route } from 'nextjs/routes';
 
 import SearchBarSuggestItemLink from 'client/slices/search/components/search-bar/SearchBarSuggest/SearchBarSuggestItemLink';
 
+import Time from 'client/shared/date-and-time/Time';
+import HashStringShortenDynamic from 'client/shared/text/HashStringShortenDynamic';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { SECOND } from 'toolkit/utils/consts';
-import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
-import Time from 'ui/shared/time/Time';
 
 interface Props {
   data: CctxListItem;

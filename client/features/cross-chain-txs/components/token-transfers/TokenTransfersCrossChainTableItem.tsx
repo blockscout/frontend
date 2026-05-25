@@ -9,12 +9,12 @@ import AddressEntityInterchain from 'client/slices/address/components/entity/Add
 import AddressFromToIcon from 'client/slices/address/components/from-to/AddressFromToIcon';
 import TxEntityInterchain from 'client/slices/tx/components/entity/TxEntityInterchain';
 
+import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
 import ChainLabel from 'client/shared/external-chains/ChainLabel';
 
 import config from 'configs/app';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { mdash } from 'toolkit/utils/htmlEntities';
-import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import TokenValueInterchain from 'ui/shared/value/TokenValueInterchain';
 
 import CrossChainBridgeLink from '../CrossChainBridgeLink';

@@ -3,8 +3,9 @@
 import React from 'react';
 
 import type { IconButtonProps } from 'toolkit/chakra/icon-button';
-import AddButton from 'toolkit/components/buttons/AddButton';
-import RemoveButton from 'toolkit/components/buttons/RemoveButton';
+
+import AddButton from './AddButton';
+import RemoveButton from './RemoveButton';
 
 interface Props extends Omit<IconButtonProps, 'type'> {
   index: number;

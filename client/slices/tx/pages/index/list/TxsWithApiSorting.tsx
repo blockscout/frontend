@@ -7,8 +7,7 @@ import type { TransactionsSortingValue } from 'client/slices/tx/types/api';
 import type { TxsSocketType } from 'client/slices/tx/types/socket';
 
 import type { QueryWithPagesResult } from 'client/shared/pagination/useQueryWithPages';
-
-import getSortParamsFromValue from 'ui/shared/sort/getSortParamsFromValue';
+import getSortParamsFromValue from 'client/shared/sort/get-sort-params-from-value';
 
 import TxsContent from './TxsContent';
 

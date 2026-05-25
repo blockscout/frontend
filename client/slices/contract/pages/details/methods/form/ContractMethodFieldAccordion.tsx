@@ -4,7 +4,7 @@ import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import { AccordionItem, AccordionItemContent, AccordionItemTrigger, AccordionRoot } from 'toolkit/chakra/accordion';
-import ArrayButton from 'ui/shared/forms/ArrayButton';
+import ArrayButton from 'toolkit/components/buttons/ArrayButton';
 
 export interface Props {
   label: string;

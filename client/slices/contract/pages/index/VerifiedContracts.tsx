@@ -12,13 +12,13 @@ import VerifiedContractsList from 'client/slices/contract/pages/index/VerifiedCo
 import VerifiedContractsTable from 'client/slices/contract/pages/index/VerifiedContractsTable';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import DataList from 'client/shared/lists/DataList';
 import Pagination from 'client/shared/pagination/Pagination';
+import Sort from 'client/shared/sort/Sort';
 
 import config from 'configs/app';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import ActionBar from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
-import Sort from 'ui/shared/sort/Sort';
 
 import { SORT_OPTIONS } from './sort';
 
@@ -97,7 +97,7 @@ const VerifiedContracts = () => {
         withTextAd
       />
       <VerifiedContractsCounters/>
-      <DataListDisplay
+      <DataList
         isError={ isError }
         itemsNum={ data?.items.length }
         emptyText="There are no verified contracts."
@@ -108,7 +108,7 @@ const VerifiedContracts = () => {
         actionBar={ actionBar }
       >
         { content }
-      </DataListDisplay>
+      </DataList>
     </Box>
   );
 };

@@ -3,12 +3,12 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
+import DataList from 'client/shared/lists/DataList';
 import Pagination from 'client/shared/pagination/Pagination';
 import type { QueryWithPagesResult } from 'client/shared/pagination/useQueryWithPages';
 
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import DataListDisplay from 'ui/shared/DataListDisplay';
 
 import UserOpsListItem from './UserOpsListItem';
 import UserOpsTable from './UserOpsTable';
@@ -57,14 +57,14 @@ const UserOpsContent = ({ query, showTx = true, showSender = true }: Props) => {
   ) : null;
 
   return (
-    <DataListDisplay
+    <DataList
       isError={ query.isError }
       itemsNum={ query.data?.items?.length }
       emptyText="There are no user operations."
       actionBar={ actionBar }
     >
       { content }
-    </DataListDisplay>
+    </DataList>
   );
 };
 

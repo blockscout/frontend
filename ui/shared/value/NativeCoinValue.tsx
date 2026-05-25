@@ -4,8 +4,9 @@ import { Box } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
+import CopyToClipboard from 'client/shared/text/CopyToClipboard';
+
 import { thinsp } from 'toolkit/utils/htmlEntities';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
 
 import type { Props as AssetValueProps } from './AssetValue';
 import AssetValue from './AssetValue';

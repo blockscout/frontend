@@ -13,6 +13,7 @@ import useProvider from 'client/features/web3-wallet/hooks/useProvider';
 
 import ChainIcon from 'client/shared/external-chains/ChainIcon';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import CopyToClipboard from 'client/shared/text/CopyToClipboard';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { Heading } from 'toolkit/chakra/heading';
@@ -20,7 +21,6 @@ import { IconButton } from 'toolkit/chakra/icon-button';
 import { LinkBox, LinkOverlay } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
 
 interface Props {
   data: ClusterChainConfig;

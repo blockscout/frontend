@@ -17,19 +17,19 @@ import { POOL } from 'client/features/dex-pools/stubs';
 import getPoolLinks from 'client/features/dex-pools/utils/get-pool-links';
 import { getPoolTitle } from 'client/features/dex-pools/utils/get-pool-title';
 
+import InfoPopoverButton from 'client/shared/buttons/InfoPopoverButton';
 import isCustomAppError from 'client/shared/errors/is-custom-app-error';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
+import CopyToClipboard from 'client/shared/text/CopyToClipboard';
+import HashStringShortenDynamic from 'client/shared/text/HashStringShortenDynamic';
 
 import config from 'configs/app';
 import { Image } from 'toolkit/chakra/image';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tag } from 'toolkit/chakra/tag';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
-import InfoButton from 'ui/shared/InfoButton';
 import VerifyWith from 'ui/shared/VerifyWith';
 
 const Pool = () => {
@@ -109,9 +109,9 @@ const Pool = () => {
     <Flex alignItems="center" justifyContent="space-between" w="100%">
       { poolIdOrContract }
       <Flex gap={ 2 } ml={ 2 }>
-        <InfoButton>
+        <InfoPopoverButton>
           { `This Liquidity Provider (LP) token represents ${ data?.base_token_symbol }/${ data?.quote_token_symbol } pairing.` }
-        </InfoButton>
+        </InfoPopoverButton>
         { hasLinks && (
           <VerifyWith
             links={ externalLinksComponents }

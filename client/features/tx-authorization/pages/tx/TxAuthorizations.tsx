@@ -7,7 +7,7 @@ import TxPendingAlert from 'client/slices/tx/components/TxPendingAlert';
 import TxSocketAlert from 'client/slices/tx/components/TxSocketAlert';
 import type { TxQuery } from 'client/slices/tx/hooks/useTxQuery';
 
-import DataListDisplay from 'ui/shared/DataListDisplay';
+import DataList from 'client/shared/lists/DataList';
 
 import TxAuthorizationsList from './TxAuthorizationsList';
 import TxAuthorizationsTable from './TxAuthorizationsTable';
@@ -34,13 +34,13 @@ const TxAuthorizations = ({ txQuery }: Props) => {
   );
 
   return (
-    <DataListDisplay
+    <DataList
       isError={ txQuery.isError }
       itemsNum={ txQuery.data?.authorization_list?.length }
       emptyText="There are no authorizations for this transaction."
     >
       { content }
-    </DataListDisplay>
+    </DataList>
   );
 };
 

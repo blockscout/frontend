@@ -5,8 +5,9 @@ import React from 'react';
 
 import type { Transaction } from 'client/slices/tx/types/api';
 
+import TextSeparator from 'client/shared/text/TextSeparator';
+
 import * as DetailedInfo from 'ui/shared/DetailedInfo/DetailedInfo';
-import TextSeparator from 'ui/shared/TextSeparator';
 
 type Props = Pick<Transaction, 'nonce' | 'type' | 'position'> & { queueIndex?: number };
 

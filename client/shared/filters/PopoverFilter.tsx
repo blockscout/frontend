@@ -2,9 +2,10 @@
 
 import React from 'react';
 
+import FilterButton from 'client/shared/filters/FilterButton';
+
 import type { PopoverContentProps } from 'toolkit/chakra/popover';
 import { PopoverBody, PopoverContent, PopoverTrigger, PopoverRoot } from 'toolkit/chakra/popover';
-import FilterButton from 'ui/shared/filters/FilterButton';
 
 interface Props {
   appliedFiltersNum?: number;

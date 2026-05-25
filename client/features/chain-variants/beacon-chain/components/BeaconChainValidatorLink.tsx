@@ -3,11 +3,12 @@
 import { Text } from '@chakra-ui/react';
 import React from 'react';
 
+import CopyToClipboard from 'client/shared/text/CopyToClipboard';
+
 import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TruncatedTextTooltip } from 'toolkit/components/truncation/TruncatedTextTooltip';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
 
 const feature = config.features.beaconChain;
 

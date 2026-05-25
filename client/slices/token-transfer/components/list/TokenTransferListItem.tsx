@@ -13,10 +13,11 @@ import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import TxAdditionalInfo from 'client/slices/tx/components/TxAdditionalInfo';
 
+import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
+import ListItemMobile from 'client/shared/lists/ListItemMobile';
+
 import { Badge } from 'toolkit/chakra/badge';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
-import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
 import AssetValue from 'ui/shared/value/AssetValue';
 import ConfidentialValue from 'ui/shared/value/ConfidentialValue';
 

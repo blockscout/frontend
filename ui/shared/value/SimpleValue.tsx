@@ -5,9 +5,10 @@ import { Box, chakra } from '@chakra-ui/react';
 import type BigNumber from 'bignumber.js';
 import React from 'react';
 
+import CopyToClipboard from 'client/shared/text/CopyToClipboard';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
 
 import { DEFAULT_ACCURACY, formatBnValue } from './utils';
 

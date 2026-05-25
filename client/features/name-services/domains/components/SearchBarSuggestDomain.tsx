@@ -12,10 +12,9 @@ import { toBech32Address } from 'client/slices/address/utils/bech32';
 import * as EnsEntity from 'client/features/name-services/domains/components/EnsEntity';
 
 import dayjs from 'client/shared/date-and-time/dayjs';
+import HashStringShortenDynamic from 'client/shared/text/HashStringShortenDynamic';
 import highlightText from 'client/shared/text/highlight-text';
 import SpriteIcon from 'client/sprite/SpriteIcon';
-
-import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 
 const SearchBarSuggestDomain = ({ data, isMobile, searchTerm, addressFormat }: ItemsProps<SearchResultDomain | multichain.QuickSearchResultDomain>) => {
   const icon = <EnsEntity.Icon protocol={ data.ens_info.protocol }/>;

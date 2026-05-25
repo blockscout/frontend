@@ -10,9 +10,9 @@ import AddressEntity from 'client/slices/address/components/entity/AddressEntity
 import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 
 import getItemIndex from 'client/shared/lists/get-item-index';
+import ListItemMobile from 'client/shared/lists/ListItemMobile';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 
 interface Props {
   data: StatsBridgedTokenRow;

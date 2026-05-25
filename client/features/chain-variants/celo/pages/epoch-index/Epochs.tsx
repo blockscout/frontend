@@ -7,13 +7,13 @@ import PageTitle from 'client/shell/page/title/PageTitle';
 
 import { CELO_EPOCH_ITEM } from 'client/features/chain-variants/celo/stubs/epoch';
 
+import DataList from 'client/shared/lists/DataList';
 import Pagination from 'client/shared/pagination/Pagination';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
 
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import DataListDisplay from 'ui/shared/DataListDisplay';
 
 import EpochsListItem from './EpochsListItem';
 import EpochsTable from './EpochsTable';
@@ -67,14 +67,14 @@ const EpochsPageContent = () => {
   return (
     <>
       <PageTitle title="Epochs" withTextAd/>
-      <DataListDisplay
+      <DataList
         isError={ epochsQuery.isError }
         itemsNum={ epochsQuery.data?.items?.length }
         emptyText="There are no epochs."
         actionBar={ actionBar }
       >
         { content }
-      </DataListDisplay>
+      </DataList>
     </>
   );
 };

@@ -10,10 +10,10 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 
 import { ENS_DOMAIN_EVENT } from 'client/features/name-services/domains/stubs';
 
+import DataList from 'client/shared/lists/DataList';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import config from 'configs/app';
-import DataListDisplay from 'ui/shared/DataListDisplay';
 
 import NameDomainHistoryListItem from './NameDomainHistoryListItem';
 import NameDomainHistoryTable from './NameDomainHistoryTable';
@@ -78,13 +78,13 @@ const NameDomainHistory = ({ domain }: Props) => {
   );
 
   return (
-    <DataListDisplay
+    <DataList
       isError={ isError }
       itemsNum={ data?.items.length }
       emptyText="There are no events for this domain."
     >
       { content }
-    </DataListDisplay>
+    </DataList>
   );
 };
 

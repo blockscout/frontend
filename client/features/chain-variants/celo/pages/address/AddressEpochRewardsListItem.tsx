@@ -9,8 +9,9 @@ import AddressEntity from 'client/slices/address/components/entity/AddressEntity
 import EpochEntity from 'client/features/chain-variants/celo/components/entity/EpochEntity';
 import EpochRewardTypeTag from 'client/features/chain-variants/celo/components/EpochRewardTypeTag';
 
-import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
-import TimeWithTooltip from 'ui/shared/time/TimeWithTooltip';
+import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
+import ListItemMobileGrid from 'client/shared/lists/ListItemMobileGrid';
+
 import TokenValue from 'ui/shared/value/TokenValue';
 
 type Props = {

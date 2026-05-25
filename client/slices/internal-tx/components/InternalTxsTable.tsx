@@ -9,8 +9,9 @@ import { currencyUnits } from 'client/slices/chain/units';
 
 import { useMultichainContext } from 'client/features/multichain/context';
 
+import TimeFormatToggle from 'client/shared/date-and-time/TimeFormatToggle';
+
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
-import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
 import InternalTxsTableItem from './InternalTxsTableItem';
 

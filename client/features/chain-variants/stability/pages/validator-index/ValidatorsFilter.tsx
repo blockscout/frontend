@@ -5,7 +5,7 @@ import React from 'react';
 
 import type { ValidatorsStabilityFilters } from 'client/features/chain-variants/stability/types/api';
 
-import PopoverFilterRadio from 'ui/shared/filters/PopoverFilterRadio';
+import PopoverFilterRadio from 'client/shared/filters/PopoverFilterRadio';
 
 const OPTIONS = [
   { value: 'all', label: 'All' },

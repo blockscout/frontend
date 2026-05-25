@@ -9,10 +9,11 @@ import { SORT_SEQUENCE } from 'client/slices/contract/pages/index/sort';
 
 import { useMultichainContext } from 'client/features/multichain/context';
 
+import TimeFormatToggle from 'client/shared/date-and-time/TimeFormatToggle';
+import getNextSortValue from 'client/shared/sort/get-next-sort-value';
+
 import { TableBody, TableColumnHeader, TableColumnHeaderSortable, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import getNextSortValue from 'ui/shared/sort/getNextSortValue';
-import TimeFormatToggle from 'ui/shared/time/TimeFormatToggle';
 
 import VerifiedContractsTableItem from './VerifiedContractsTableItem';
 

@@ -6,8 +6,9 @@ import type { AbiParameter } from 'viem';
 
 import { route } from 'nextjs-routes';
 
+import CopyToClipboard from 'client/shared/text/CopyToClipboard';
+
 import { Link } from 'toolkit/chakra/link';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
 
 import ItemLabel from './ItemLabel';
 import { printRowOffset } from './utils';

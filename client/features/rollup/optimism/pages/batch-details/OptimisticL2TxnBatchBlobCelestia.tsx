@@ -9,9 +9,10 @@ import CeleniumLink from 'client/features/rollup/common/components/CeleniumLink'
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
 import { layerLabels } from 'client/features/rollup/common/utils/layer';
 
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
+import CopyToClipboard from 'client/shared/text/CopyToClipboard';
+import HashStringShortenDynamic from 'client/shared/text/HashStringShortenDynamic';
+
 import DetailedInfoTimestamp from 'ui/shared/DetailedInfo/DetailedInfoTimestamp';
-import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 
 import OptimisticL2TxnBatchBlobWrapper from './OptimisticL2TxnBatchBlobWrapper';
 

@@ -3,10 +3,10 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
+import StatusTag from 'client/shared/tags/status-tag/StatusTag';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { Badge } from 'toolkit/chakra/badge';
-import StatusTag from 'ui/shared/statusTag/StatusTag';
 
 import { Section, Container, SectionHeader, SamplesStack, Sample, SectionSubHeader } from '../parts';
 

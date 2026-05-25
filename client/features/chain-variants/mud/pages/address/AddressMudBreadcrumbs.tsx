@@ -8,11 +8,11 @@ import { route } from 'nextjs-routes';
 import useAddressQuery from 'client/slices/address/hooks/useAddressQuery';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
+import CopyToClipboard from 'client/shared/text/CopyToClipboard';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { Link } from 'toolkit/chakra/link';
 import { isBrowser } from 'toolkit/utils/isBrowser';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
 
 type TableViewProps = {
   className?: string;

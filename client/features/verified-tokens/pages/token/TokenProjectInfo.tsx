@@ -4,7 +4,7 @@ import React from 'react';
 
 import type { TokenVerifiedInfo } from 'client/features/verified-tokens/types/api';
 
-import InfoButton from 'ui/shared/InfoButton';
+import InfoPopoverButton from 'client/shared/buttons/InfoPopoverButton';
 
 import Content, { hasContent } from './project-info/Content';
 
@@ -18,9 +18,9 @@ const TokenProjectInfo = ({ data }: Props) => {
   }
 
   return (
-    <InfoButton>
+    <InfoPopoverButton>
       <Content data={ data }/>
-    </InfoButton>
+    </InfoPopoverButton>
   );
 };
 

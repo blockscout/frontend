@@ -11,12 +11,13 @@ import { formatLanguageName } from 'client/slices/contract/utils/language';
 
 import { useMultichainContext } from 'client/features/multichain/context';
 
+import CodeEditor from 'client/shared/code-editor/CodeEditor';
+import formatFilePath from 'client/shared/code-editor/utils/formatFilePath';
+import CopyToClipboard from 'client/shared/text/CopyToClipboard';
+
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
-import CodeEditor from 'ui/shared/monaco/CodeEditor';
-import formatFilePath from 'ui/shared/monaco/utils/formatFilePath';
 
 import ContractCodeIdes from './ContractCodeIdes';
 import ContractExternalLibraries from './ContractExternalLibraries';

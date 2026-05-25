@@ -10,11 +10,12 @@ import useApiFetch from 'client/api/hooks/useApiFetch';
 
 import TableItemActionButtons from 'client/features/account/components/TableItemActionButtons';
 
+import ListItemMobile from 'client/shared/lists/ListItemMobile';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Switch } from 'toolkit/chakra/switch';
 import { Tag } from 'toolkit/chakra/tag';
 import { toaster } from 'toolkit/chakra/toaster';
-import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 
 import WatchListAddressItem from './WatchListAddressItem';
 

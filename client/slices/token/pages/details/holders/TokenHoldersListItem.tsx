@@ -8,8 +8,9 @@ import { hasTokenIds, isConfidentialTokenType } from 'client/slices/token/utils/
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 
+import ListItemMobileGrid from 'client/shared/lists/ListItemMobileGrid';
+
 import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
-import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 import Utilization from 'ui/shared/Utilization/Utilization';
 import AssetValue from 'ui/shared/value/AssetValue';
 import ConfidentialValue from 'ui/shared/value/ConfidentialValue';

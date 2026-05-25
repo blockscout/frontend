@@ -9,13 +9,13 @@ import PageTitle from 'client/shell/page/title/PageTitle';
 
 import { ZKSYNC_L2_TXN_BATCHES_ITEM } from 'client/features/rollup/zk-sync/stubs';
 
+import DataList from 'client/shared/lists/DataList';
 import StickyPaginationWithText from 'client/shared/pagination/StickyPaginationWithText';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
 
 import ZkSyncTxnBatchesListItem from './ZkSyncTxnBatchesListItem';
 import ZkSyncTxnBatchesTable from './ZkSyncTxnBatchesTable';
@@ -80,14 +80,14 @@ const ZkSyncL2TxnBatches = () => {
   return (
     <>
       <PageTitle title="Txn batches" withTextAd/>
-      <DataListDisplay
+      <DataList
         isError={ isError }
         itemsNum={ data?.items.length }
         emptyText="There are no txn batches."
         actionBar={ actionBar }
       >
         { content }
-      </DataListDisplay>
+      </DataList>
     </>
   );
 };

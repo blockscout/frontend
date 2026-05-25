@@ -5,13 +5,13 @@ import React from 'react';
 
 import type { Address } from 'client/slices/address/types/api';
 
+import CopyToClipboard from 'client/shared/text/CopyToClipboard';
 import hexToUtf8 from 'client/shared/transformers/hex-to-utf8';
 
 import config from 'configs/app';
 import type { SelectOption } from 'toolkit/chakra/select';
 import { Select } from 'toolkit/chakra/select';
 import { Skeleton } from 'toolkit/chakra/skeleton';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
 
 import ContractDetailsVerificationButton from './ContractDetailsVerificationButton';

@@ -3,10 +3,10 @@
 import { chakra, HStack } from '@chakra-ui/react';
 import React from 'react';
 
+import StatusTag from 'client/shared/tags/status-tag/StatusTag';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { Button } from 'toolkit/chakra/button';
-import StatusTag from 'ui/shared/statusTag/StatusTag';
 
 import type { Status } from '../../hooks/useUptimeSocketData';
 
