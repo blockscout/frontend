@@ -23,6 +23,10 @@ const SearchResultItemDomain = ({ data }: Props) => {
       <EnsEntity
         domain={ data.name }
         protocol={ data.protocol as bens.ProtocolInfo }
+        protocolDapp={{
+          url: data.protocol_dapp_url,
+          logo: data.protocol_dapp_logo,
+        }}
         noLink
         noCopy
         fontWeight={{ base: '600', lg: '700' }}

@@ -36,7 +36,18 @@ const DomainsGrid = ({ data }: { data: Array<bens.Domain> }) => {
       rowGap={ 4 }
       mt={ 2 }
     >
-      { data.slice(0, 9).map((domain) => <EnsEntity key={ domain.id } domain={ domain.name } protocol={ domain.protocol } noCopy/>) }
+      { data.slice(0, 9).map((domain) => (
+        <EnsEntity
+          key={ domain.id }
+          domain={ domain.name }
+          protocol={ domain.protocol }
+          protocolDapp={{
+            url: domain.protocol_dapp_url,
+            logo: domain.protocol_dapp_logo,
+          }}
+          noCopy
+        />
+      )) }
     </Grid>
   );
 };
@@ -113,7 +124,16 @@ const AddressEnsDomains = ({ query, addressHash, mainDomainName }: Props) => {
             <Box w="100%">
               <chakra.span color="text.secondary" textStyle="xs">Primary*</chakra.span>
               <Flex alignItems="center" textStyle="md" mt={ 2 }>
-                <EnsEntity domain={ mainDomain.name } protocol={ mainDomain.protocol } fontWeight={ 600 } noCopy/>
+                <EnsEntity
+                  domain={ mainDomain.name }
+                  protocol={ mainDomain.protocol }
+                  protocolDapp={{
+                    url: mainDomain.protocol_dapp_url,
+                    logo: mainDomain.protocol_dapp_logo,
+                  }}
+                  fontWeight={ 600 }
+                  noCopy
+                />
                 { mainDomain.expiry_date &&
                     <chakra.span color="text.secondary" whiteSpace="pre"> (expires { dayjs(mainDomain.expiry_date).fromNow() })</chakra.span> }
               </Flex>

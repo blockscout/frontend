@@ -66,6 +66,10 @@ const NameDomain = () => {
       <EnsEntity
         domain={ domainName }
         protocol={ infoQuery.data?.protocol }
+        protocolDapp={{
+          url: infoQuery.data?.protocol_dapp_url,
+          logo: infoQuery.data?.protocol_dapp_logo,
+        }}
         isLoading={ isLoading }
         noLink
         maxW={{ lg: infoQuery.data?.resolved_address ? '300px' : 'max-content' }}

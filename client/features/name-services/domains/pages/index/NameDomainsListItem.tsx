@@ -25,12 +25,22 @@ const NameDomainsListItem = ({
   registration_date: registrationDate,
   expiry_date: expiryDate,
   protocol,
+  protocol_dapp_url: protocolDappUrl,
+  protocol_dapp_logo: protocolDappLogo,
 }: Props) => {
+
+  const protocolDapp = React.useMemo(() => {
+    return {
+      url: protocolDappUrl,
+      logo: protocolDappLogo,
+    };
+  }, [ protocolDappUrl, protocolDappLogo ]);
+
   return (
     <ListItemMobileGrid.Container>
       <ListItemMobileGrid.Label isLoading={ isLoading }>Domain</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <EnsEntity domain={ name } protocol={ protocol } isLoading={ isLoading } fontWeight={ 500 }/>
+        <EnsEntity domain={ name } protocol={ protocol } protocolDapp={ protocolDapp } isLoading={ isLoading } fontWeight={ 500 }/>
       </ListItemMobileGrid.Value>
 
       { resolvedAddress && (

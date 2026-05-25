@@ -64,15 +64,20 @@ test('customization', async({ render }) => {
 });
 
 test.describe('tooltip test', () => {
-  test.use({ viewport: { width: 300, height: 400 } });
+  test.use({ viewport: { width: 600, height: 400 } });
 
   test('with protocol info', async({ render, page, mockAssetResponse }) => {
     await mockAssetResponse(domainMock.ensDomainA.protocol?.icon_url as string, './playwright/mocks/image_s.jpg');
+    await mockAssetResponse(domainMock.ensDomainA.protocol_dapp_logo as string, './playwright/mocks/duck.png');
 
     const component = await render(
       <EnsEntity
         domain={ name }
         protocol={ domainMock.protocolA }
+        protocolDapp={{
+          url: domainMock.ensDomainA.protocol_dapp_url,
+          logo: domainMock.ensDomainA.protocol_dapp_logo,
+        }}
       />,
     );
 

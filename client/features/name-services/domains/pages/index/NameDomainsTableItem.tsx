@@ -23,12 +23,21 @@ const NameDomainsTableItem = ({
   registration_date: registrationDate,
   expiry_date: expiryDate,
   protocol,
+  protocol_dapp_url: protocolDappUrl,
+  protocol_dapp_logo: protocolDappLogo,
 }: Props) => {
+
+  const protocolDapp = React.useMemo(() => {
+    return {
+      url: protocolDappUrl,
+      logo: protocolDappLogo,
+    };
+  }, [ protocolDappUrl, protocolDappLogo ]);
 
   return (
     <TableRow>
       <TableCell verticalAlign="middle">
-        <EnsEntity domain={ name } protocol={ protocol } isLoading={ isLoading } fontWeight={ 600 }/>
+        <EnsEntity domain={ name } protocol={ protocol } protocolDapp={ protocolDapp } isLoading={ isLoading } fontWeight={ 600 }/>
       </TableCell>
       <TableCell verticalAlign="middle">
         { resolvedAddress && <AddressEntity address={ resolvedAddress } isLoading={ isLoading } fontWeight={ 500 }/> }
