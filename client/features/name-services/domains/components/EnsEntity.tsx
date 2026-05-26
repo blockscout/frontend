@@ -42,7 +42,7 @@ const Icon = (props: IconProps) => {
 
   if (props.protocol) {
     const styles = getIconProps(props);
-    const dappLink = makePrettyLink(props.protocolDapp?.url ?? undefined);
+    const dappLink = makePrettyLink(props.protocolDapp?.url);
 
     if (props.isLoading) {
       return <Skeleton loading boxSize={ styles.boxSize } borderRadius="sm" mr={ 2 }/>;
@@ -89,7 +89,8 @@ const Icon = (props: IconProps) => {
                 flexBasis="calc((100% - 12px) / 2)"
                 flexGrow={ 1 }
               >
-                { props.protocolDapp?.logo && <Image src={ props.protocolDapp.logo } boxSize={ 5 } mr={ 2 } borderRadius="sm"/> }
+                { props.protocolDapp?.logo &&
+                  <Image src={ props.protocolDapp.logo } boxSize={ 5 } mr={ 2 } borderRadius="sm" alt={ `${ props.protocol.title } protocol dapp logo` }/> }
                 <span>{ dappLink.domain }</span>
               </LinkToolkit>
             ) }
