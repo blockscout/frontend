@@ -17,6 +17,8 @@ export interface SearchResultDomain {
     name: string;
     names_count: number;
     protocol?: bens.ProtocolInfo;
+    protocol_dapp_logo?: string;
+    protocol_dapp_url?: string;
   };
 }
 export interface EnsAddressLookupFilters extends Pick<bens.LookupAddressRequest, 'address' | 'resolved_to' | 'owned_by' | 'only_active'> {

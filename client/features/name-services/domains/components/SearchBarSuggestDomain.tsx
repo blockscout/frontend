@@ -17,7 +17,15 @@ import highlightText from 'client/shared/texts/highlight-text';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 const SearchBarSuggestDomain = ({ data, isMobile, searchTerm, addressFormat }: ItemsProps<SearchResultDomain | multichain.QuickSearchResultDomain>) => {
-  const icon = <EnsEntity.Icon protocol={ data.ens_info.protocol }/>;
+
+  const protocolDapp = React.useMemo(() => {
+    return {
+      url: data.ens_info.protocol_dapp_url,
+      logo: data.ens_info.protocol_dapp_logo,
+    };
+  }, [ data.ens_info.protocol_dapp_url, data.ens_info.protocol_dapp_logo ]);
+
+  const icon = <EnsEntity.Icon protocol={ data.ens_info.protocol } protocolDapp={ protocolDapp }/>;
   const hash = (() => {
     if ('filecoin_robust_address' in data && data.filecoin_robust_address) {
       return data.filecoin_robust_address;

@@ -114,6 +114,10 @@ const MultichainAddress = () => {
         <EnsEntity
           domain={ addressQuery.data?.domains[0].name }
           protocol={ addressQuery.data?.domains[0].protocol }
+          protocolDapp={{
+            url: addressQuery.data?.domains[0].protocol_dapp_url,
+            logo: addressQuery.data?.domains[0].protocol_dapp_logo,
+          }}
           isLoading={ isLoading }
           variant="subheading"
           noLink

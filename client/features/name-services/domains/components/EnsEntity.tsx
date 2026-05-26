@@ -15,6 +15,7 @@ import { Image } from 'toolkit/chakra/image';
 import { Link as LinkToolkit } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
+import { makePrettyLink } from 'toolkit/utils/url';
 
 type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'domain' | 'protocol'>;
 
@@ -34,13 +35,14 @@ const Link = chakra((props: LinkProps) => {
   );
 });
 
-type IconProps = Pick<EntityProps, 'protocol'> & EntityBase.IconBaseProps;
+type IconProps = Pick<EntityProps, 'protocol' | 'protocolDapp'> & EntityBase.IconBaseProps;
 
 const Icon = (props: IconProps) => {
   const icon = <EntityBase.Icon { ...props } name={ 'name' in props ? props.name : 'ENS' }/>;
 
   if (props.protocol) {
     const styles = getIconProps(props);
+    const dappLink = makePrettyLink(props.protocolDapp?.url);
 
     if (props.isLoading) {
       return <Skeleton loading boxSize={ styles.boxSize } borderRadius="sm" mr={ 2 }/>;
@@ -63,16 +65,36 @@ const Icon = (props: IconProps) => {
           </div>
         </Flex>
         <Text>{ props.protocol.description }</Text>
-        { props.protocol.docs_url && (
-          <LinkToolkit
-            href={ props.protocol.docs_url }
-            display="inline-flex"
-            alignItems="center"
-            external
-          >
-            <SpriteIcon name="docs" boxSize={ 5 } color="icon.primary" mr={ 2 }/>
-            <span>Documentation</span>
-          </LinkToolkit>
+        { (props.protocol.docs_url || dappLink) && (
+          <Flex columnGap={ 3 } alignItems="center" flexWrap="wrap" w="100%">
+            { props.protocol.docs_url && (
+              <LinkToolkit
+                href={ props.protocol.docs_url }
+                display="inline-flex"
+                alignItems="center"
+                external
+                flexBasis="calc((100% - 12px) / 2)"
+                flexGrow={ 1 }
+              >
+                <SpriteIcon name="docs" boxSize={ 5 } color="icon.primary" mr={ 2 }/>
+                <span>Documentation</span>
+              </LinkToolkit>
+            ) }
+            { dappLink && (
+              <LinkToolkit
+                href={ dappLink.href }
+                display="inline-flex"
+                alignItems="center"
+                external
+                flexBasis="calc((100% - 12px) / 2)"
+                flexGrow={ 1 }
+              >
+                { props.protocolDapp?.logo &&
+                  <Image src={ props.protocolDapp.logo } boxSize={ 5 } mr={ 2 } borderRadius="sm" alt={ `${ props.protocol.title } protocol dapp logo` }/> }
+                <span>{ dappLink.domain }</span>
+              </LinkToolkit>
+            ) }
+          </Flex>
         ) }
       </>
     );
@@ -138,6 +160,10 @@ const Container = EntityBase.Container;
 export interface EntityProps extends EntityBase.EntityBaseProps {
   domain: string;
   protocol?: bens.ProtocolInfo | null;
+  protocolDapp?: {
+    url?: string;
+    logo?: string;
+  };
 }
 
 const EnsEntity = (props: EntityProps) => {

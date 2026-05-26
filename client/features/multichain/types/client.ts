@@ -105,6 +105,8 @@ export interface QuickSearchResultDomain {
     expiry_date?: string;
     name: string;
     protocol?: bens.ProtocolInfo;
+    protocol_dapp_logo?: string;
+    protocol_dapp_url?: string;
   };
   address_hash: string;
 }

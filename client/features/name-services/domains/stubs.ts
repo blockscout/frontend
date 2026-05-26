@@ -13,9 +13,9 @@ export const ENS_DOMAIN: bens.DetailedDomain = {
       type: bens.TokenType.NATIVE_DOMAIN_TOKEN,
     },
   ],
-  owner: ADDRESS_PARAMS,
-  resolved_address: ADDRESS_PARAMS,
-  registrant: ADDRESS_PARAMS,
+  owner: ADDRESS_PARAMS as bens.Address,
+  resolved_address: ADDRESS_PARAMS as bens.Address,
+  registrant: ADDRESS_PARAMS as bens.Address,
   registration_date: '2023-12-20T01:29:12.000Z',
   expiry_date: '2099-01-02T01:29:12.000Z',
   other_addresses: {
@@ -29,6 +29,6 @@ export const ENS_DOMAIN: bens.DetailedDomain = {
 export const ENS_DOMAIN_EVENT: bens.DomainEvent = {
   transaction_hash: TX_HASH,
   timestamp: '2022-06-06T08:43:15.000000Z',
-  from_address: ADDRESS_PARAMS,
+  from_address: ADDRESS_PARAMS as bens.Address,
   action: '0xf7a16963',
 };

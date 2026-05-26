@@ -88,6 +88,8 @@ export default function useSearchMultichain({ searchTerm, enabled }: Props) {
                 expiry_date: item.expiry_date,
                 name: item.name,
                 protocol: item.protocol as bens.ProtocolInfo,
+                protocol_dapp_logo: item.protocol_dapp_logo,
+                protocol_dapp_url: item.protocol_dapp_url,
               },
               address_hash: item.address,
             } : undefined))

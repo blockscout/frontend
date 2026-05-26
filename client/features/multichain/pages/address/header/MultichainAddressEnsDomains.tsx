@@ -25,7 +25,18 @@ const DomainsGrid = ({ data }: { data: Array<multichain.Domain> }) => {
       rowGap="14px"
       mt={ 2 }
     >
-      { data.map((domain) => <EnsEntity key={ domain.name } domain={ domain.name } protocol={ domain.protocol } noLink/>) }
+      { data.map((domain) => (
+        <EnsEntity
+          key={ domain.name }
+          domain={ domain.name }
+          protocol={ domain.protocol }
+          protocolDapp={{
+            url: domain.protocol_dapp_url,
+            logo: domain.protocol_dapp_logo,
+          }}
+          noLink
+        />
+      )) }
     </Grid>
   );
 };

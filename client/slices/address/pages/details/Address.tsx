@@ -440,12 +440,20 @@ const AddressPageContent = () => {
     return addressQuery.data?.hash ?? getCheckedSummedAddress(hash);
   }, [ hash, addressQuery.data?.hash, isLoading ]);
 
+  const protocolDapp = React.useMemo(() => {
+    return {
+      url: addressMainDomain?.protocol_dapp_url,
+      logo: addressMainDomain?.protocol_dapp_logo,
+    };
+  }, [ addressMainDomain?.protocol_dapp_url, addressMainDomain?.protocol_dapp_logo ]);
+
   const titleSecondRow = (
     <Flex alignItems="center" w="100%" columnGap={ 2 } rowGap={ 2 } flexWrap={{ base: 'wrap', lg: 'nowrap' }}>
       { addressQuery.data?.ens_domain_name && (
         <EnsEntity
           domain={ addressQuery.data?.ens_domain_name }
           protocol={ !addressEnsDomainsQuery.isPending ? addressMainDomain?.protocol : null }
+          protocolDapp={ !addressEnsDomainsQuery.isPending ? protocolDapp : undefined }
           variant="subheading"
           mr={ 1 }
           maxW="300px"

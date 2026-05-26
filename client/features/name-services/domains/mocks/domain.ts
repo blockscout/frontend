@@ -63,6 +63,8 @@ export const ensDomainA: bens.DetailedDomain = {
     NEAR: 'a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.factory.bridge.near',
   },
   protocol: protocolA,
+  protocol_dapp_url: 'https://app.ens.domains/cc.imfx.eth',
+  protocol_dapp_logo: 'https://localhost:3000/duck.jpg',
   resolver_address: {
     hash: '0xD578780f1dA7404d9CC0eEbC9D684c140CC4b638',
   },

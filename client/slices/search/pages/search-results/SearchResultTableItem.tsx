@@ -448,7 +448,12 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
           <>
             <TableCell fontSize="sm">
               <EnsEntity.Container>
-                <EnsEntity.Icon protocol={ data.ens_info.protocol }/>
+                <EnsEntity.Icon
+                  protocol={ data.ens_info.protocol }
+                  protocolDapp={{
+                    url: data.ens_info.protocol_dapp_url,
+                    logo: data.ens_info.protocol_dapp_logo,
+                  }}/>
                 <Link
                   href={ data.address_hash ?
                     route({ pathname: '/address/[hash]', query: { hash: data.address_hash } }) :
