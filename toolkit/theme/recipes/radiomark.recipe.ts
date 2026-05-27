@@ -14,9 +14,7 @@ export const recipe = defineRecipe({
     borderColor: 'transparent',
     borderRadius: 'full',
     _focusVisible: {
-      outline: '2px solid',
-      outlineColor: 'colorPalette.focusRing',
-      outlineOffset: '2px',
+      outline: 'none',
     },
     _disabled: {
       cursor: 'disabled',
