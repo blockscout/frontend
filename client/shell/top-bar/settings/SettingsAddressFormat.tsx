@@ -12,7 +12,7 @@ import { useSettingsContext } from './context';
 const SettingsAddressFormat = () => {
   const settingsContext = useSettingsContext();
 
-  if (!settingsContext || config.UI.views.address.hashFormat.availableFormats.length < 2) {
+  if (!settingsContext || config.slices.address.hashFormat.availableFormats.length < 2) {
     return null;
   }
 
@@ -28,7 +28,7 @@ const SettingsAddressFormat = () => {
       justifyContent="space-between"
       w="100%"
     >
-      Show { config.UI.views.address.hashFormat.bech32Prefix }{ BECH_32_SEPARATOR } format
+      Show { config.slices.address.hashFormat.bech32Prefix }{ BECH_32_SEPARATOR } format
     </Switch>
   );
 };

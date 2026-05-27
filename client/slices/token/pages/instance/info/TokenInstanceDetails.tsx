@@ -98,7 +98,7 @@ const TokenInstanceDetails = ({ data, token, scrollRef, isLoading }: Props) => {
             source="NFT item"
           />
 
-          { (config.UI.views.token.nft.marketplaces.length === 0 && appActionData) && (
+          { (config.slices.token.nft.marketplaces.length === 0 && appActionData) && (
             <>
               <DetailedInfo.ItemLabel
                 hint="Link to the dapp"

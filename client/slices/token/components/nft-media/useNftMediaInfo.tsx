@@ -159,7 +159,7 @@ function getCdnData(data: TokenInstance, size: Size, mediaType: MediaType): Medi
 }
 
 function getIpfsData(url: unknown, mediaType: MediaType): MediaInfo | undefined {
-  if (!config.UI.views.token.nft.verifiedFetch.isEnabled) {
+  if (!config.slices.token.nft.verifiedFetch.isEnabled) {
     return;
   }
 

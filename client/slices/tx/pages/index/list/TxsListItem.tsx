@@ -126,7 +126,7 @@ const TxsListItem = ({
         mt={ 6 }
         fontWeight="500"
       />
-      { !config.UI.views.tx.hiddenFields?.value && (
+      { !config.slices.tx.hiddenFields?.value && (
         <Flex mt={ 2 } columnGap={ 2 }>
           <Skeleton loading={ isLoading } display="inline-block" whiteSpace="pre">Value</Skeleton>
           <NativeCoinValue
@@ -138,7 +138,7 @@ const TxsListItem = ({
           />
         </Flex>
       ) }
-      { !config.UI.views.tx.hiddenFields?.tx_fee && (
+      { !config.slices.tx.hiddenFields?.tx_fee && (
         <Flex mt={ 2 } mb={ 3 } columnGap={ 2 }>
           { (tx.stability_fee !== undefined || tx.fee.value !== null) && (
             <>

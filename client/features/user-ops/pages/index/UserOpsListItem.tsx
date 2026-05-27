@@ -90,7 +90,7 @@ const UserOpsListItem = ({ item, isLoading, showTx, showSender, chainData }: Pro
         />
       </ListItemMobileGrid.Value>
 
-      { !chainConfig.UI.views.tx.hiddenFields?.tx_fee && (
+      { !chainConfig.slices.tx.hiddenFields?.tx_fee && (
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>Fee</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>

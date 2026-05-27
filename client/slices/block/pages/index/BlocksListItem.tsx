@@ -79,7 +79,7 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement, animation, chain
           </Skeleton>
         </Flex>
       ) }
-      { !config.UI.views.block.hiddenFields?.miner && (
+      { !config.slices.block.hiddenFields?.miner && (
         <Flex columnGap={ 2 } w="100%">
           <Text fontWeight={ 500 }>{ capitalize(getChainValidatorTitle()) }</Text>
           <AddressEntity
@@ -115,13 +115,13 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement, animation, chain
           />
         </Flex>
       </Box>
-      { !isRollup && !config.UI.views.block.hiddenFields?.total_reward && (
+      { !isRollup && !config.slices.block.hiddenFields?.total_reward && (
         <Flex columnGap={ 2 }>
           <Text fontWeight={ 500 }>Reward { currencyUnits.ether }</Text>
           <SimpleValue value={ totalReward } loading={ isLoading } color="text.secondary"/>
         </Flex>
       ) }
-      { !isRollup && !config.UI.views.block.hiddenFields?.burnt_fees && (
+      { !isRollup && !config.slices.block.hiddenFields?.burnt_fees && (
         <Box>
           <Text fontWeight={ 500 }>Burnt fees</Text>
           <Flex columnGap={ 4 } mt={ 2 }>
@@ -137,7 +137,7 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement, animation, chain
           </Flex>
         </Box>
       ) }
-      { !isRollup && !config.UI.views.block.hiddenFields?.base_fee && data.base_fee_per_gas && (
+      { !isRollup && !config.slices.block.hiddenFields?.base_fee && data.base_fee_per_gas && (
         <Flex columnGap={ 2 }>
           <Text fontWeight={ 500 }>Base fee</Text>
           <NativeCoinValue

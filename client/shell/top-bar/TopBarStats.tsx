@@ -54,13 +54,13 @@ const TopBarStats = () => {
     return <div/>;
   }
 
-  const hasNativeCoinPrice = data?.coin_price && !config.UI.nativeCoinPrice.isHidden;
+  const hasNativeCoinPrice = data?.coin_price && !config.chain.currency.isPriceHidden;
   const hasSecondaryCoinPrice = data?.secondary_coin_price && config.chain.secondaryCoin.symbol && (hasNativeCoinPrice ? !isMobile : true);
   const hasGasInfo = data?.gas_prices && data.gas_prices.average !== null && config.features.gasTracker.isEnabled && !isMobile;
 
   return (
     <>
-      { Boolean(config.UI.featuredNetworks.items) && <TextSeparator/> }
+      { Boolean(config.shell.topBar.chainMenu.items) && <TextSeparator/> }
       <Flex
         alignItems="center"
         fontWeight={ 500 }
@@ -71,7 +71,7 @@ const TopBarStats = () => {
               <chakra.span color="text.secondary">{ config.chain.currency.symbol } </chakra.span>
               <span>${ Number(data.coin_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 }) }</span>
             </Skeleton>
-            { data.coin_price_change_percentage && !(isMobile && Boolean(config.UI.featuredNetworks.items)) && (
+            { data.coin_price_change_percentage && !(isMobile && Boolean(config.shell.topBar.chainMenu.items)) && (
               <Skeleton loading={ isPlaceholderData }>
                 <chakra.span color={ Number(data.coin_price_change_percentage) >= 0 ? 'green.500' : 'red.500' }>
                   { Number(data.coin_price_change_percentage).toFixed(2) }%

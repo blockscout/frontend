@@ -84,7 +84,7 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement, animation, chai
           { data.size?.toLocaleString() || 'N/A' }
         </Skeleton>
       </TableCell>
-      { !config.UI.views.block.hiddenFields?.miner && (
+      { !config.slices.block.hiddenFields?.miner && (
         <TableCell >
           <AddressEntity
             address={ data.miner }
@@ -116,12 +116,12 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement, animation, chai
           />
         </Flex>
       </TableCell>
-      { !isRollup && !config.UI.views.block.hiddenFields?.total_reward && (
+      { !isRollup && !config.slices.block.hiddenFields?.total_reward && (
         <TableCell >
           <SimpleValue value={ totalReward } loading={ isLoading }/>
         </TableCell>
       ) }
-      { !isRollup && !config.UI.views.block.hiddenFields?.burnt_fees && (
+      { !isRollup && !config.slices.block.hiddenFields?.burnt_fees && (
         <TableCell >
           <NativeCoinValue
             amount={ data.burnt_fees }
@@ -135,7 +135,7 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement, animation, chai
           </Tooltip>
         </TableCell>
       ) }
-      { !isRollup && !config.UI.views.block.hiddenFields?.base_fee && data.base_fee_per_gas && (
+      { !isRollup && !config.slices.block.hiddenFields?.base_fee && data.base_fee_per_gas && (
         <TableCell isNumeric>
           <NativeCoinValue
             amount={ data.base_fee_per_gas }

@@ -13,7 +13,7 @@ export type Guard = (chainConfig: typeof config) => <Pathname extends Route['pat
 Promise<GetServerSidePropsResult<Props<Pathname>> | undefined>;
 
 export const internalTx: Guard = (chainConfig: typeof config) => async() => {
-  if (!chainConfig.UI.views.internalTx.isEnabled) {
+  if (!chainConfig.slices.internalTx.isEnabled) {
     return {
       notFound: true,
     };
@@ -38,7 +38,7 @@ export const accountAuth0: Guard = (chainConfig: typeof config) => async() => {
 };
 
 export const verifiedAddresses: Guard = (chainConfig: typeof config) => async() => {
-  if (!chainConfig.features.account.isEnabled && chainConfig.features.account.addressVerificationEnabled) {
+  if (!getFeaturePayload(chainConfig.features.account)?.addressVerificationEnabled) {
     return {
       notFound: true,
     };
@@ -113,7 +113,7 @@ export const nameServiceClusters: Guard = (chainConfig: typeof config) => async(
 };
 
 export const accounts: Guard = (chainConfig: typeof config) => async() => {
-  if (chainConfig.UI.views.address.hiddenViews?.top_accounts) {
+  if (chainConfig.slices.address.hiddenViews?.top_accounts) {
     return {
       notFound: true,
     };
@@ -290,7 +290,7 @@ export const outputRoots: Guard = (chainConfig: typeof config) => async() => {
 };
 
 export const disputeGames: Guard = (chainConfig: typeof config) => async() => {
-  if (!chainConfig.features.rollup.isEnabled && chainConfig.features.rollup.faultProofSystemEnabled) {
+  if (!getFeaturePayload(chainConfig.features.rollup)?.faultProofSystemEnabled) {
     return {
       notFound: true,
     };

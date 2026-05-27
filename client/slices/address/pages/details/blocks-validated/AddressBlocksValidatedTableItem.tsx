@@ -62,7 +62,7 @@ const AddressBlocksValidatedTableItem = (props: Props) => {
           />
         </Flex>
       </TableCell>
-      { !config.UI.views.block.hiddenFields?.total_reward && !config.features.rollup.isEnabled && (
+      { !config.slices.block.hiddenFields?.total_reward && !config.features.rollup.isEnabled && (
         <TableCell isNumeric>
           <SimpleValue
             value={ totalReward }

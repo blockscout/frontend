@@ -90,7 +90,7 @@ const MultichainAddress = () => {
         component: <MultichainAddressTokenTransfers addressData={ addressQuery.data } isLoading={ isLoading }/>,
         subTabs: ADDRESS_MULTICHAIN_TOKEN_TRANSFERS_TAB_IDS,
       },
-      config.UI.views.internalTx.isEnabled && {
+      config.slices.internalTx.isEnabled && {
         id: 'internal_txs',
         title: 'Internal txns',
         component: <MultichainAddressInternalTxs addressData={ addressQuery.data } isLoading={ isLoading }/>,

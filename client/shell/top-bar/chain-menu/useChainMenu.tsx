@@ -25,8 +25,8 @@ export default function useChainMenu() {
     queryFn: async() => {
       const configData: Array<FeaturedNetwork> = await (async() => {
         try {
-          if (config.UI.featuredNetworks.items) {
-            const data = await fetch<Array<FeaturedNetwork>, unknown>(config.UI.featuredNetworks.items, undefined, { resource: 'featured-network' });
+          if (config.shell.topBar.chainMenu.items) {
+            const data = await fetch<Array<FeaturedNetwork>, unknown>(config.shell.topBar.chainMenu.items, undefined, { resource: 'featured-network' });
             if (Array.isArray(data)) {
               return data;
             }
@@ -53,7 +53,7 @@ export default function useChainMenu() {
 
       return [ ...configData, ...multichainData ];
     },
-    enabled: Boolean(config.UI.featuredNetworks.items || config.features.multichain.isEnabled) && open,
+    enabled: Boolean(config.shell.topBar.chainMenu.items || config.features.multichain.isEnabled) && open,
     staleTime: Infinity,
   });
 

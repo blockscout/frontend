@@ -5,17 +5,21 @@ import chain from '../slices/chain/config';
 import apis from './apis';
 import app from './app';
 import * as features from './features';
+import misc from './misc';
 import services from './services';
-import UI from './ui';
+import * as shell from './shell';
+import * as slices from './slices';
 
 const config = Object.freeze({
   app,
   chain,
   apis,
-  UI,
+  shell,
+  slices,
   features,
   services,
   meta,
+  misc,
 });
 
 export default config;

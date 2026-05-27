@@ -184,7 +184,7 @@ const ContractDetailsInfo = ({ data, isLoading, addressData }: Props) => {
           { sourceCodeLink }
         </ContractDetailsInfoItem>
       ) }
-      { config.UI.hasContractAuditReports && (
+      { config.slices.contract.auditReports && (
         <ContractDetailsInfoItem
           label="Security audit"
           isLoading={ isLoading }

@@ -100,7 +100,7 @@ const BlockPageContent = () => {
         </>
       ),
     },
-    chainConfig.UI.views.internalTx.isEnabled ? {
+    chainConfig.slices.internalTx.isEnabled ? {
       id: 'internal_txs',
       title: 'Internal txns',
       component: (
@@ -149,7 +149,7 @@ const BlockPageContent = () => {
     blockQuery,
     blockTxsQuery,
     blockWithdrawalsQuery,
-    chainConfig.UI.views.internalTx.isEnabled,
+    chainConfig.slices.internalTx.isEnabled,
     chainConfig.features.dataAvailability.isEnabled,
     hasPagination,
   ]);
@@ -196,7 +196,7 @@ const BlockPageContent = () => {
 
   const titleSecondRow = (
     <>
-      { !chainConfig.UI.views.block.hiddenFields?.miner && blockQuery.data?.miner && (
+      { !chainConfig.slices.block.hiddenFields?.miner && blockQuery.data?.miner && (
         <Skeleton
           loading={ blockQuery.isPlaceholderData }
           fontFamily="heading"
@@ -214,7 +214,7 @@ const BlockPageContent = () => {
       <AlternativeExplorers
         type="block"
         pathParam={ heightOrHash }
-        ml={{ base: chainConfig.UI.views.block.hiddenFields?.miner ? 0 : 3, lg: 'auto' }}
+        ml={{ base: chainConfig.slices.block.hiddenFields?.miner ? 0 : 3, lg: 'auto' }}
       />
     </>
   );

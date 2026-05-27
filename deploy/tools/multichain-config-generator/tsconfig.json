@@ -10,10 +10,8 @@
     "outDir": "./dist",
     "rootDir": "../../../",
     "paths": {
-      "configs/*": ["../../../configs/*"],
-      "lib/*": ["../../../lib/*"],
+      "client/*": ["../../../client/*"],
       "toolkit/*": ["../../../toolkit/*"],
-      "types/*": ["../../../types/*"]
     },
     "types": ["node"],
     "allowImportingTsExtensions": true,

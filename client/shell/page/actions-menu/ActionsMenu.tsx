@@ -46,7 +46,7 @@ const AccountActionsMenu = ({ isLoading, className, showUpdateMetadataItem }: Pr
     },
     {
       render: (props: ItemProps) => <TokenInfoMenuItem { ...props }/>,
-      enabled: config.features.account.isEnabled && isTokenPage && config.features.account.isEnabled && config.features.account.addressVerificationEnabled,
+      enabled: config.features.account.isEnabled && isTokenPage && getFeaturePayload(config.features.account)?.addressVerificationEnabled,
     },
     {
       render: (props: ItemProps) => <PrivateTagMenuItem { ...props } entityType={ isTxPage ? 'tx' : 'address' }/>,

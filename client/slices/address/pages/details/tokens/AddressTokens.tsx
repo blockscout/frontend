@@ -54,7 +54,9 @@ const AddressTokens = ({ shouldRender = true, isQueryEnabled = true }: Props) =>
   // react query can behave unexpectedly, when it already has data for ERC-20 (string type)
   // and we fetch it again with the array type
   // so if it's just one token type, we heed to keep it a string for queries compatibility
-  const tokenTypesFilter = config.chain.additionalTokenTypes.length > 0 ? [ 'ERC-20', ...config.chain.additionalTokenTypes.map(item => item.id) ] : 'ERC-20';
+  const tokenTypesFilter = config.slices.token.additionalTypes.length > 0 ?
+    [ 'ERC-20', ...config.slices.token.additionalTypes.map(item => item.id) ] :
+    'ERC-20';
 
   const erc20Query = useQueryWithPages({
     resourceName: 'general:address_tokens',
@@ -84,8 +86,8 @@ const AddressTokens = ({ shouldRender = true, isQueryEnabled = true }: Props) =>
     {
       id: 'tokens_erc20',
       title: [
-        `${ config.chain.tokenStandard }-20`,
-        ...config.chain.additionalTokenTypes.map((item) => item.name),
+        `${ config.slices.token.standard }-20`,
+        ...config.slices.token.additionalTypes.map((item) => item.name),
       ].join(' & '),
       component: (
         <ERC20Tokens

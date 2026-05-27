@@ -21,7 +21,7 @@ const IndexingStatusInternalTxs = () => {
 
   const { data, isError, isPending } = useApiQuery('general:homepage_indexing_status', {
     queryOptions: {
-      enabled: !config.UI.indexingAlert.intTxs.isHidden,
+      enabled: !config.chain.indexingStatus.intTxs.isHidden,
     },
   });
 

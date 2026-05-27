@@ -272,7 +272,7 @@ const AddressPageContent = () => {
         component: <AddressTokens shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
         subTabs: TOKEN_TABS,
       },
-      config.UI.views.internalTx.isEnabled ? {
+      config.slices.internalTx.isEnabled ? {
         id: 'internal_txns',
         title: 'Internal txns',
         count: addressTabsCountersQuery.data?.internal_transactions_count,
@@ -482,7 +482,7 @@ const AddressPageContent = () => {
       <ActionsMenu isLoading={ isLoading }/>
       <HStack ml="auto" gap={ 2 }/>
       <AddressMultichainInfoButton loading={ isLoading } addressData={ addressQuery.data }/>
-      { !isLoading && addressQuery.data?.is_contract && addressQuery.data?.is_verified && config.UI.views.contract.solidityscanEnabled &&
+      { !isLoading && addressQuery.data?.is_contract && addressQuery.data?.is_verified && config.slices.contract.solidityscanEnabled &&
         <SolidityscanReport hash={ hash }/> }
       { !isLoading && nameServicesFeature.isEnabled && nameServicesFeature.ens.isEnabled &&
         <AddressEnsDomains query={ addressEnsDomainsQuery } addressHash={ hash } mainDomainName={ addressQuery.data?.ens_domain_name }/> }

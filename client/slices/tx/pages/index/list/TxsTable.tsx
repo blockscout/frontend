@@ -59,7 +59,7 @@ const TxsTable = ({
   const chainData = multichainContext?.chain;
   const isMobile = useIsMobile();
 
-  const feeCurrency = config.UI.views.tx.hiddenFields?.fee_currency || config.chain.hasMultipleGasCurrencies ?
+  const feeCurrency = config.slices.tx.hiddenFields?.fee_currency || config.chain.hasMultipleGasCurrencies ?
     '' :
     ' ' + currencyUnits.ether;
 
@@ -68,8 +68,8 @@ const TxsTable = ({
   const columnNum = [
     showBlockInfo,
     true,
-    !config.UI.views.tx.hiddenFields?.value,
-    !config.UI.views.tx.hiddenFields?.tx_fee,
+    !config.slices.tx.hiddenFields?.value,
+    !config.slices.tx.hiddenFields?.tx_fee,
   ].filter(Boolean).length;
   const baseWidth = `${ 100 / columnNum }%`;
 
@@ -101,7 +101,7 @@ const TxsTable = ({
               )
             ) }
             <TableColumnHeader width={ columnNum <= 2 ? baseWidth : '224px' }>From/To</TableColumnHeader>
-            { !config.UI.views.tx.hiddenFields?.value && (
+            { !config.slices.tx.hiddenFields?.value && (
               onSortToggle ? (
                 <TableColumnHeaderSortable
                   width={ baseWidth }
@@ -116,7 +116,7 @@ const TxsTable = ({
                 <TableColumnHeader width={ baseWidth } isNumeric>Value</TableColumnHeader>
               )
             ) }
-            { !config.UI.views.tx.hiddenFields?.tx_fee && (
+            { !config.slices.tx.hiddenFields?.tx_fee && (
               onSortToggle ? (
                 <TableColumnHeaderSortable
                   width={ baseWidth }

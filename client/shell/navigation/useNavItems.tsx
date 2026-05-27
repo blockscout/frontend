@@ -36,7 +36,7 @@ export default function useNavItems(): ReturnType {
   return React.useMemo(() => {
     let blockchainNavItems: Array<NavItem> | Array<Array<NavItem>> = [];
 
-    const topAccounts: NavItem | null = !config.UI.views.address.hiddenViews?.top_accounts ? {
+    const topAccounts: NavItem | null = !config.slices.address.hiddenViews?.top_accounts ? {
       text: 'Top accounts',
       nextRoute: { pathname: '/accounts' as const },
       icon: 'navigation/top_accounts',
@@ -70,7 +70,7 @@ export default function useNavItems(): ReturnType {
       icon: 'navigation/operation',
       isActive: pathname === '/operations' || pathname === '/operation/[id]',
     } : null;
-    const internalTxs: NavItem | null = config.UI.views.internalTx.isEnabled ? {
+    const internalTxs: NavItem | null = config.slices.internalTx.isEnabled ? {
       text: 'Internal transactions',
       nextRoute: { pathname: '/internal-txs' as const },
       icon: 'navigation/internal_txns',
@@ -126,7 +126,7 @@ export default function useNavItems(): ReturnType {
       icon: 'navigation/output_roots',
       isActive: pathname === '/output-roots',
     };
-    const rollupDisputeGames = config.features.rollup.isEnabled && config.features.rollup.faultProofSystemEnabled ? {
+    const rollupDisputeGames = getFeaturePayload(config.features.rollup)?.faultProofSystemEnabled ? {
       text: 'Dispute games',
       nextRoute: { pathname: '/dispute-games' as const },
       icon: 'navigation/games',
@@ -346,7 +346,7 @@ export default function useNavItems(): ReturnType {
         nextRoute: { pathname: '/txn-withdrawals' as const },
         isActive: pathname.startsWith('/txn-withdrawals'),
       },
-      ...config.UI.navigation.otherLinks,
+      ...config.shell.navigation.otherLinks,
     ].filter(Boolean);
 
     const mainNavItems: ReturnType['mainNavItems'] = [
@@ -403,7 +403,7 @@ export default function useNavItems(): ReturnType {
         icon: 'navigation/custom_abi',
         isActive: pathname === '/account/custom-abi',
       },
-      config.features.account.isEnabled && config.features.account.addressVerificationEnabled && {
+      getFeaturePayload(config.features.account)?.addressVerificationEnabled && {
         text: 'Verified addrs',
         nextRoute: { pathname: '/account/verified-addresses' as const },
         icon: 'navigation/verified_contracts',

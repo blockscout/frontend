@@ -39,8 +39,8 @@ const SearchBarInput = (
   const isMobile = useIsMobile();
 
   const borderWidthHeroBanner = useColorModeValue(
-    config.UI.homepage.heroBanner?.search?.border_width?.[0] ?? '0px',
-    config.UI.homepage.heroBanner?.search?.border_width?.[1] ?? '0px',
+    config.slices.home.heroBanner?.search?.border_width?.[0] ?? '0px',
+    config.slices.home.heroBanner?.search?.border_width?.[1] ?? '0px',
   );
 
   const handleChange = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {

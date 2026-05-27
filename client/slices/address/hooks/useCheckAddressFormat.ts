@@ -8,7 +8,7 @@ import { fromBech32Address, isBech32Address } from 'client/slices/address/utils/
 
 export default function useCheckAddressFormat(hash: string) {
   const router = useRouter();
-  const hasBech32Format = config.UI.views.address.hashFormat.availableFormats.includes('bech32') && isBech32Address(hash);
+  const hasBech32Format = config.slices.address.hashFormat.availableFormats.includes('bech32') && isBech32Address(hash);
   const [ isLoading, setIsLoading ] = React.useState(hasBech32Format);
 
   React.useEffect(() => {

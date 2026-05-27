@@ -67,7 +67,7 @@ const LatestBlocksItem = ({ block, isLoading, animation }: Props) => {
         <Skeleton loading={ isLoading }>Txn</Skeleton>
         <Skeleton loading={ isLoading } color="text.secondary"><span>{ block.transactions_count }</span></Skeleton>
 
-        { !config.features.rollup.isEnabled && !config.UI.views.block.hiddenFields?.total_reward && (
+        { !config.features.rollup.isEnabled && !config.slices.block.hiddenFields?.total_reward && (
           <>
             <Skeleton loading={ isLoading }>Reward</Skeleton>
             <SimpleValue
@@ -79,7 +79,7 @@ const LatestBlocksItem = ({ block, isLoading, animation }: Props) => {
           </>
         ) }
 
-        { !config.features.rollup.isEnabled && !config.UI.views.block.hiddenFields?.miner && (
+        { !config.features.rollup.isEnabled && !config.slices.block.hiddenFields?.miner && (
           <>
             <Skeleton loading={ isLoading }>{ capitalize(getChainValidatorTitle()) }</Skeleton>
             <AddressEntity

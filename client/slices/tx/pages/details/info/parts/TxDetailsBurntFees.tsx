@@ -23,7 +23,7 @@ interface Props {
 
 const TxDetailsBurntFees = ({ data, isLoading }: Props) => {
 
-  if (config.UI.views.tx.hiddenFields?.burnt_fees || (rollupFeature.isEnabled && rollupFeature.type === 'optimistic')) {
+  if (config.slices.tx.hiddenFields?.burnt_fees || (rollupFeature.isEnabled && rollupFeature.type === 'optimistic')) {
     return null;
   }
 

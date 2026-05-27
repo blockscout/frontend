@@ -25,7 +25,7 @@ const SettingsScamTokens = () => {
     window.location.reload();
   }, []);
 
-  if (!config.UI.views.token.hideScamTokensEnabled) {
+  if (!config.slices.token.hideScamTokensEnabled) {
     return null;
   }
 

@@ -14,7 +14,7 @@ export default function useFormConfigQuery(enabled: boolean) {
           ...data,
           verification_options: [
             ...data.verification_options,
-            ...config.UI.views.contract.extraVerificationMethods,
+            ...config.slices.contract.extraVerificationMethods,
           ].filter(isValidVerificationMethod).sort(sortVerificationMethods),
         };
       },

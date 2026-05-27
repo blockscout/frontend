@@ -6,4 +6,4 @@ import NavigationDesktop from 'client/shell/navigation/vertical/NavigationDeskto
 
 const EmptyComponent = () => null;
 
-export default config.UI.navigation.layout === 'horizontal' ? EmptyComponent : NavigationDesktop;
+export default config.shell.navigation.layout === 'horizontal' ? EmptyComponent : NavigationDesktop;

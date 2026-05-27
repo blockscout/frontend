@@ -51,7 +51,7 @@ const TxFee = ({ tx, accuracy, accuracyUsd, loading, noSymbol: noSymbolProp, noU
     );
   }
 
-  const noSymbol = noSymbolProp || config.UI.views.tx.hiddenFields?.fee_currency;
+  const noSymbol = noSymbolProp || config.slices.tx.hiddenFields?.fee_currency;
   const exchangeRate = 'exchange_rate' in tx ? tx.exchange_rate : null;
   const historicalExchangeRate = 'historic_exchange_rate' in tx ? tx.historic_exchange_rate : null;
 

@@ -25,11 +25,11 @@ interface Props {
 }
 
 const TokenNftMarketplaces = ({ hash, id, isLoading, appActionData, source }: Props) => {
-  if (!hash || config.UI.views.token.nft.marketplaces.length === 0) {
+  if (!hash || config.slices.token.nft.marketplaces.length === 0) {
     return null;
   }
 
-  const items = config.UI.views.token.nft.marketplaces
+  const items = config.slices.token.nft.marketplaces
     .map((item) => {
       const hrefTemplate = id ? item.instance_url : item.collection_url;
       if (!hrefTemplate) {

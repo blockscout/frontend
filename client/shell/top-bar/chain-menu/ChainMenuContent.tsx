@@ -57,9 +57,9 @@ const ChainMenuContent = ({ items, tabs }: Props) => {
       );
     }
 
-    const viewAllLink = config.UI.featuredNetworks.allLink && (
+    const viewAllLink = config.shell.topBar.chainMenu.allLink && (
       <Link
-        href={ config.UI.featuredNetworks.allLink }
+        href={ config.shell.topBar.chainMenu.allLink }
         external
         noIcon
         variant="secondary"
@@ -87,7 +87,7 @@ const ChainMenuContent = ({ items, tabs }: Props) => {
       );
     }
 
-    if (config.UI.featuredNetworks.mode === 'list') {
+    if (config.shell.topBar.chainMenu.mode === 'list') {
       return (
         <VStack overflowY="scroll" maxH="516px" alignItems="stretch" gap={ 3 }>
           { tabs.map((tab, index) => {

@@ -29,7 +29,10 @@ const config: Feature<{
   dynamic?: {
     environmentId: string;
   };
-  apiKeysButton: boolean | string;
+  apiKeys: {
+    alertMessage: string | undefined;
+    button: boolean | string;
+  };
   addressVerificationEnabled: boolean;
 }> = (() => {
 
@@ -49,7 +52,10 @@ const config: Feature<{
         dynamic: {
           environmentId: dynamicEnvironmentId,
         },
-        apiKeysButton,
+        apiKeys: {
+          alertMessage: getEnvValue('NEXT_PUBLIC_API_KEYS_ALERT_MESSAGE'),
+          button: apiKeysButton,
+        },
         addressVerificationEnabled,
       });
     }
@@ -59,7 +65,10 @@ const config: Feature<{
         title,
         isEnabled: true,
         authProvider: 'auth0',
-        apiKeysButton,
+        apiKeys: {
+          alertMessage: getEnvValue('NEXT_PUBLIC_API_KEYS_ALERT_MESSAGE'),
+          button: apiKeysButton,
+        },
         addressVerificationEnabled,
       });
     }

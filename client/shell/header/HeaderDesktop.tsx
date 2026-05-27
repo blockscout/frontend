@@ -29,7 +29,7 @@ const HeaderDesktop = ({ renderSearchBar }: Props) => {
       <Box width="100%">
         { searchBar }
       </Box>
-      { config.UI.navigation.layout === 'vertical' && (
+      { config.shell.navigation.layout === 'vertical' && (
         <Box display="flex" gap={ 2 } flexShrink={ 0 }>
           { config.features.rewards.isEnabled && <RewardsButton/> }
           <UserProfileDesktop buttonVariant="header"/>

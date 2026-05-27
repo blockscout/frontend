@@ -24,7 +24,7 @@ const isHomepageBlocksDataEnabled = (() => {
     !rollupFeature.homepage.showLatestBlocks &&
     [ 'arbitrum' ].includes(rollupFeature.type);
 
-  return !isLatestBlocksReplacedByBatches || config.UI.homepage.stats.includes('total_blocks');
+  return !isLatestBlocksReplacedByBatches || config.slices.home.stats.includes('total_blocks');
 })();
 
 export type HomeBlocksQueryResult = UseQueryResult<

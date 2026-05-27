@@ -37,7 +37,7 @@ const getChainInfo = (
     testnet: config.chain.isTestnet,
     contracts,
     custom: {
-      logoUrl: logoUrl ?? config.UI?.navigation.icon.default,
+      logoUrl: logoUrl ?? config.chain.icon.default,
     },
   };
 };

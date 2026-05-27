@@ -13,7 +13,7 @@ const SettingsIdentIcon = () => {
   const [ activeId, setActiveId ] = React.useState<string>();
 
   React.useEffect(() => {
-    const initialId = cookies.get(cookies.NAMES.ADDRESS_IDENTICON_TYPE) || config.UI.views.address.identiconType;
+    const initialId = cookies.get(cookies.NAMES.ADDRESS_IDENTICON_TYPE) || config.slices.address.identiconType;
     setActiveId(initialId);
   }, []);
 

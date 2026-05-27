@@ -13,7 +13,7 @@ interface Props extends BoxProps {
 }
 
 const BlockPendingUpdateHint = ({ view = 'block', ...props }: Props) => {
-  if (!config.UI.views.block.pendingUpdateAlertEnabled) {
+  if (!config.slices.block.pendingUpdateAlertEnabled) {
     return null;
   }
 

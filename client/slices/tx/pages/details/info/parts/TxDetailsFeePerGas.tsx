@@ -14,7 +14,7 @@ interface Props {
 }
 
 const TxDetailsFeePerGas = ({ txFee, gasUsed, isLoading }: Props) => {
-  if (!config.UI.views.tx.additionalFields?.fee_per_gas || !gasUsed || txFee === null) {
+  if (!config.slices.tx.additionalFields?.fee_per_gas || !gasUsed || txFee === null) {
     return null;
   }
 
@@ -28,7 +28,7 @@ const TxDetailsFeePerGas = ({ txFee, gasUsed, isLoading }: Props) => {
       </DetailedInfo.ItemLabel>
       <DetailedInfoNativeCoinValue
         amount={ BigNumber(txFee).dividedBy(gasUsed).toFixed() }
-        noSymbol={ config.UI.views.tx.hiddenFields?.fee_currency }
+        noSymbol={ config.slices.tx.hiddenFields?.fee_currency }
         loading={ isLoading }
       />
     </>

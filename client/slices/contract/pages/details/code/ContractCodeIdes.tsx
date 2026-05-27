@@ -23,7 +23,7 @@ const ContractCodeIde = ({ className, hash, isLoading }: Props) => {
   const { open, onOpenChange } = useDisclosure();
 
   const ideLinks = React.useMemo(() => {
-    return config.UI.ides.items
+    return config.slices.contract.ides
       .map((ide) => {
         const url = decodeURIComponent(ide.url.replace('{hash}', hash).replace('{domain}', config.app.host || ''));
         const icon = 'icon_url' in ide ?

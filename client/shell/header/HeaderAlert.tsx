@@ -9,7 +9,7 @@ import IndexingStatusBlocks from 'client/slices/chain/indexing-status/IndexingSt
 
 import AlertWithExternalHtml from 'client/shared/alerts/AlertWithExternalHtml';
 
-const maintenanceAlertHtml = config.UI.maintenanceAlert.message || '';
+const maintenanceAlertHtml = config.shell.header.maintenanceAlert.message || '';
 
 const HeaderAlert = (props: FlexProps) => {
   return (

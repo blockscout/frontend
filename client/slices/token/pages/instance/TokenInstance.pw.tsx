@@ -23,7 +23,7 @@ test.beforeEach(async({ mockApiResponse, mockAssetResponse, mockTextAd }) => {
   await mockApiResponse('general:token_instance_transfers', { items: [], next_page_params: null }, { pathParams: { hash, id } });
   await mockApiResponse('general:token_instance_transfers_count', { transfers_count: 420 }, { pathParams: { hash, id } });
   await mockTextAd();
-  for (const marketplace of config.UI.views.token.nft.marketplaces) {
+  for (const marketplace of config.slices.token.nft.marketplaces) {
     await mockAssetResponse(marketplace.logo_url, './playwright/mocks/image_svg.svg');
   }
   await mockAssetResponse(tokenInstanceMock.base.image_url as string, './playwright/mocks/image_md.jpg');

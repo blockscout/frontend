@@ -136,7 +136,7 @@ const TxsTableItem = ({
           mode="compact"
         />
       </TableCell>
-      { !config.UI.views.tx.hiddenFields?.value && (
+      { !config.slices.tx.hiddenFields?.value && (
         <TableCell isNumeric>
           <NativeCoinValue
             amount={ tx.value }
@@ -149,7 +149,7 @@ const TxsTableItem = ({
           />
         </TableCell>
       ) }
-      { !config.UI.views.tx.hiddenFields?.tx_fee && (
+      { !config.slices.tx.hiddenFields?.tx_fee && (
         <TableCell isNumeric maxW="220px">
           <TxFee
             tx={ tx }

@@ -6,7 +6,7 @@ import type { NextRequest, NextResponse } from 'next/server';
 import * as cookiesLib from 'client/shared/storage/cookies';
 
 export default function scamTokensMiddleware(req: NextRequest, res: NextResponse) {
-  if (config.UI.views.token.hideScamTokensEnabled) {
+  if (config.slices.token.hideScamTokensEnabled) {
     const showScamTokensCookie = req.cookies.get(cookiesLib.NAMES.SHOW_SCAM_TOKENS);
 
     if (!showScamTokensCookie) {

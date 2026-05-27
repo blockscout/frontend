@@ -13,8 +13,8 @@ import { Tooltip } from 'toolkit/chakra/tooltip';
 import NavigationPromoBannerContent from './NavigationPromoBannerContent';
 
 const PROMO_BANNER_CLOSED_HASH_KEY = 'nav-promo-banner-closed-hash';
-const promoBanner = config.UI.navigation.promoBanner;
-const isHorizontal = config.UI.navigation.layout === 'horizontal';
+const promoBanner = config.shell.navigation.promoBanner;
+const isHorizontal = config.shell.navigation.layout === 'horizontal';
 
 type Props = {
   isCollapsed?: boolean;

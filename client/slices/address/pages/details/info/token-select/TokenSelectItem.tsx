@@ -26,8 +26,8 @@ interface Props {
 
 const TokenSelectItem = ({ data }: Props) => {
 
-  const isNativeToken = config.UI.views.address.nativeTokenAddress &&
-    data.token.address_hash.toLowerCase() === config.UI.views.address.nativeTokenAddress.toLowerCase();
+  const isNativeToken = config.slices.address.nativeTokenAddress &&
+    data.token.address_hash.toLowerCase() === config.slices.address.nativeTokenAddress.toLowerCase();
 
   const chain = React.useMemo(() => {
     if (!data.chain_values) {

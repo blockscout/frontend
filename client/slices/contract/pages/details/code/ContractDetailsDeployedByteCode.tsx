@@ -41,7 +41,7 @@ const ContractDetailsDeployedByteCode = ({ bytecode, isLoading: isLoadingProp, a
 
   React.useEffect(() => {
     if (!isLoadingProp) {
-      if (config.UI.views.contract.decodedBytecodeEnabled && !addressData.is_verified) {
+      if (config.slices.contract.decodedBytecodeEnabled && !addressData.is_verified) {
         // we don't want to decode the whole bytecode here
         // the "scilla_version" should appear somewhere in the beginning of the bytecode
         // but there could be some comments of arbitrary length before it

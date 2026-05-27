@@ -18,11 +18,11 @@ interface Props {
 const AddressAlternativeFormat = ({ isLoading, addressHash }: Props) => {
   const settingsContext = useSettingsContext();
 
-  if (!settingsContext || config.UI.views.address.hashFormat.availableFormats.length < 2) {
+  if (!settingsContext || config.slices.address.hashFormat.availableFormats.length < 2) {
     return null;
   }
 
-  const label = settingsContext.addressFormat === 'bech32' ? '0x hash' : `${ config.UI.views.address.hashFormat.bech32Prefix }${ BECH_32_SEPARATOR } hash`;
+  const label = settingsContext.addressFormat === 'bech32' ? '0x hash' : `${ config.slices.address.hashFormat.bech32Prefix }${ BECH_32_SEPARATOR } hash`;
   const hint = settingsContext.addressFormat === 'bech32' ? 'Address hash encoded in base16 format' : 'Address hash encoded in bech32 format';
   const altHash = settingsContext.addressFormat === 'bech32' ? addressHash : toBech32Address(addressHash);
 

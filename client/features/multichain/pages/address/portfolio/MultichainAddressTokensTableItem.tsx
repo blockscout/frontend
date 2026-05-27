@@ -43,8 +43,8 @@ const MultichainAddressTokensTableItem = ({ data, isLoading }: Props) => {
     return chain;
   }, [ data.chain_values ]);
 
-  const isNativeToken = chainInfo?.app_config.UI.views.address.nativeTokenAddress &&
-    data.token.address_hash.toLowerCase() === chainInfo?.app_config.UI.views.address.nativeTokenAddress.toLowerCase();
+  const isNativeToken = chainInfo?.app_config.slices.address.nativeTokenAddress &&
+    data.token.address_hash.toLowerCase() === chainInfo?.app_config.slices.address.nativeTokenAddress.toLowerCase();
 
   return (
     <TableRow>

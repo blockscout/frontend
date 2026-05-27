@@ -43,7 +43,7 @@ const UserOpsTable = ({ items, isLoading, top, showTx, showSender }: Props) => {
             { showSender && <TableColumnHeader w="160px">Sender</TableColumnHeader> }
             { showTx && <TableColumnHeader w="160px">Tx hash</TableColumnHeader> }
             <TableColumnHeader w="40%">Block</TableColumnHeader>
-            { !chainConfig.UI.views.tx.hiddenFields?.tx_fee &&
+            { !chainConfig.slices.tx.hiddenFields?.tx_fee &&
           <TableColumnHeader w="120px" isNumeric>{ `Fee ${ chainConfig.chain.currency.symbol }` }</TableColumnHeader> }
           </TableRow>
         </TableHeaderSticky>

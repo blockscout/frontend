@@ -18,7 +18,7 @@ type LatestBatchSocketEventMessage = SocketMessage.NewArbitrumL2Batch;
 type LatestBatchPayload = Parameters<LatestBatchSocketEventMessage['handler']>[0];
 type LatestBatchSocketMessage = LatestBatchSocketEventMessage | SocketMessage.Unknown;
 
-const shouldShowLatestBatchStat = config.UI.homepage.stats.includes('latest_batch');
+const shouldShowLatestBatchStat = config.slices.home.stats.includes('latest_batch');
 
 export default function useHomeLatestBatchData(): HomeLatestBatchQueryResult | undefined {
   const queryClient = useQueryClient();

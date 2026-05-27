@@ -30,7 +30,7 @@ export function getThemeHexWithOverrides(colorThemeId: ColorThemeId) {
     return;
   }
 
-  const overrides = config.UI.colorTheme.overrides;
+  const overrides = config.shell.topBar.colorTheme.overrides;
   if (colorThemeId === 'light') {
     const value = getNestedValue(overrides, 'bg.primary._light.value');
     return typeof value === 'string' ? value : defaultHex;

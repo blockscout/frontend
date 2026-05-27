@@ -34,7 +34,7 @@ interface Props {
 
 const LatestTxsItem = ({ tx, isLoading }: Props) => {
   const dataTo = tx.to ? tx.to : tx.created_contract;
-  const columnNum = config.UI.views.tx.hiddenFields?.value && config.UI.views.tx.hiddenFields?.tx_fee ? 2 : 3;
+  const columnNum = config.slices.tx.hiddenFields?.value && config.slices.tx.hiddenFields?.tx_fee ? 2 : 3;
 
   const protocolTag = tx.to?.metadata?.tags?.find(tag => tag.tagType === 'protocol');
 
@@ -97,9 +97,9 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
         isLoading={ isLoading }
         mode="compact"
       />
-      { !(config.UI.views.tx.hiddenFields?.value && config.UI.views.tx.hiddenFields?.tx_fee) ? (
+      { !(config.slices.tx.hiddenFields?.value && config.slices.tx.hiddenFields?.tx_fee) ? (
         <Flex flexDir="column" rowGap={ 3 }>
-          { !config.UI.views.tx.hiddenFields?.value && (
+          { !config.slices.tx.hiddenFields?.value && (
             <Skeleton loading={ isLoading }>
               <Text as="span" whiteSpace="pre">Value </Text>
               <NativeCoinValue
@@ -110,7 +110,7 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
               />
             </Skeleton>
           ) }
-          { !config.UI.views.tx.hiddenFields?.tx_fee && (
+          { !config.slices.tx.hiddenFields?.tx_fee && (
             <Skeleton loading={ isLoading } display="flex" whiteSpace="pre">
               <Text as="span">Fee </Text>
               <TxFee tx={ tx } accuracy={ 5 } color="text.secondary" noUsd/>

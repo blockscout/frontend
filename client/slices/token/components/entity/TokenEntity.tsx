@@ -147,7 +147,7 @@ interface ReputationProps extends BoxProps {
 }
 
 const Reputation = ({ value, ...rest }: ReputationProps) => {
-  if (config.UI.views.token.hideScamTokensEnabled && value === 'scam') {
+  if (config.slices.token.hideScamTokensEnabled && value === 'scam') {
     return (
       <Tooltip content="This token has been flagged as a potential scam. You enabled the display of flagged tokens in the explorer — proceed with caution.">
         <SpriteIcon name="scam" boxSize={ 5 } ml={ 2 } { ...rest }/>

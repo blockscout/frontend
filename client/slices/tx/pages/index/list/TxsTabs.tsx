@@ -45,7 +45,7 @@ const TxsTabs = ({ parentTab, tabsHeight, ...rest }: Props) => {
 
   const chainConfig = multichainContext?.chain.app_config ?? config;
 
-  const isPendingTab = !chainConfig?.UI.views.tx.hiddenViews?.pending_txs && tab === getTabId('pending', parentTab);
+  const isPendingTab = !chainConfig?.slices.tx.hiddenViews?.pending_txs && tab === getTabId('pending', parentTab);
   const isBlobTxsTab = chainConfig?.features.dataAvailability.isEnabled && tab === getTabId('blob_txs', parentTab);
   const isWatchlistTab = isAuth && tab === getTabId('watchlist', parentTab);
 
@@ -116,7 +116,7 @@ const TxsTabs = ({ parentTab, tabsHeight, ...rest }: Props) => {
           socketType="txs_validated"
           top={ tabsHeight }
         /> },
-    !chainConfig?.UI.views.tx.hiddenViews?.pending_txs ? {
+    !chainConfig?.slices.tx.hiddenViews?.pending_txs ? {
       id: getTabId('pending', parentTab),
       title: 'Pending',
       component: (

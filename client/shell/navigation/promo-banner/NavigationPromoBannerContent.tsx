@@ -7,7 +7,7 @@ import { Image } from 'toolkit/chakra/image';
 
 import useNavLinkStyleProps from '../useNavLinkStyleProps';
 
-const promoBanner = config.UI.navigation.promoBanner;
+const promoBanner = config.shell.navigation.promoBanner;
 
 type Props = {
   isCollapsed?: boolean;

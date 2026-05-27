@@ -18,7 +18,7 @@ interface IconProps {
 
 const Icon = dynamic(
   async() => {
-    const type = cookies.get(cookies.NAMES.ADDRESS_IDENTICON_TYPE) || config.UI.views.address.identiconType;
+    const type = cookies.get(cookies.NAMES.ADDRESS_IDENTICON_TYPE) || config.slices.address.identiconType;
     switch (type) {
       case 'github': {
 

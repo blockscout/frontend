@@ -31,7 +31,7 @@ type Props = {
 
 const NetworkLogo = ({ className }: Props) => {
 
-  const logoSrc = useColorModeValue(config.UI.navigation.logo.default, config.UI.navigation.logo.dark || config.UI.navigation.logo.default);
+  const logoSrc = useColorModeValue(config.chain.logo.default, config.chain.logo.dark || config.chain.logo.default);
 
   return (
     <chakra.a
@@ -45,7 +45,7 @@ const NetworkLogo = ({ className }: Props) => {
         src={ logoSrc }
         alt={ `${ config.chain.name } network logo` }
         fallback={ <LogoFallback/> }
-        filter={{ _dark: !config.UI.navigation.logo.dark ? INVERT_FILTER : undefined }}
+        filter={{ _dark: !config.chain.logo.dark ? INVERT_FILTER : undefined }}
         objectFit="contain"
         objectPosition="left"
       />

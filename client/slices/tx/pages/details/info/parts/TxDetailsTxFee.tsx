@@ -19,12 +19,12 @@ interface Props {
 
 const TxDetailsTxFee = ({ isLoading, data }: Props) => {
 
-  if (config.UI.views.tx.hiddenFields?.tx_fee) {
+  if (config.slices.tx.hiddenFields?.tx_fee) {
     return null;
   }
 
   const content = (() => {
-    if (!config.UI.views.tx.groupedFees) {
+    if (!config.slices.tx.groupedFees) {
       return (
         <TxFee
           tx={ data }

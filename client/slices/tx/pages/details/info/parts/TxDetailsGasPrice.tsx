@@ -16,7 +16,7 @@ interface Props {
 }
 
 const TxDetailsGasPrice = ({ gasPrice, gasToken, isLoading }: Props) => {
-  if (config.UI.views.tx.hiddenFields?.gas_price || !gasPrice) {
+  if (config.slices.tx.hiddenFields?.gas_price || !gasPrice) {
     return null;
   }
 

@@ -9,7 +9,7 @@ import { FormFieldCheckbox } from 'toolkit/components/forms/fields/FormFieldChec
 
 import type { Inputs as FormFields } from './AddressForm';
 
-const tokenStandardName = config.chain.tokenStandard;
+const tokenStandardName = config.slices.token.standard;
 
 interface NotificationOption {
   readonly id: string;
@@ -19,7 +19,7 @@ interface NotificationOption {
 export const NOTIFICATION_OPTIONS: ReadonlyArray<NotificationOption> = [
   { id: 'native', label: config.chain.currency.symbol || '' },
   { id: 'ERC-20', label: `${ tokenStandardName }-20` },
-  ...config.chain.additionalTokenTypes.map((item) => ({ id: item.id, label: item.name })),
+  ...config.slices.token.additionalTypes.map((item) => ({ id: item.id, label: item.name })),
   { id: 'ERC-721', label: `${ tokenStandardName }-721, ${ tokenStandardName }-1155 (NFT)` },
   { id: 'ERC-404', label: `${ tokenStandardName }-404` },
 ];

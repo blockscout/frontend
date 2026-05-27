@@ -193,7 +193,7 @@ const BlockDetails = ({ query }: Props) => {
         </>
       ) }
 
-      { rollupFeature.isEnabled && rollupFeature.type === 'arbitrum' && data.arbitrum && !config.UI.views.block.hiddenFields?.batch && (
+      { rollupFeature.isEnabled && rollupFeature.type === 'arbitrum' && data.arbitrum && !config.slices.block.hiddenFields?.batch && (
         <>
           <DetailedInfo.ItemLabel
             hint="Batch number"
@@ -209,7 +209,7 @@ const BlockDetails = ({ query }: Props) => {
         </>
       ) }
 
-      { rollupFeature.isEnabled && rollupFeature.type === 'optimistic' && data.optimism && !config.UI.views.block.hiddenFields?.batch && (
+      { rollupFeature.isEnabled && rollupFeature.type === 'optimistic' && data.optimism && !config.slices.block.hiddenFields?.batch && (
         <>
           <DetailedInfo.ItemLabel
             hint="Batch number"
@@ -287,7 +287,7 @@ const BlockDetails = ({ query }: Props) => {
         </>
       ) }
 
-      { rollupFeature.isEnabled && rollupFeature.type === 'zkSync' && data.zksync && !config.UI.views.block.hiddenFields?.batch && (
+      { rollupFeature.isEnabled && rollupFeature.type === 'zkSync' && data.zksync && !config.slices.block.hiddenFields?.batch && (
         <>
           <DetailedInfo.ItemLabel
             hint="Batch number"
@@ -302,7 +302,7 @@ const BlockDetails = ({ query }: Props) => {
           </DetailedInfo.ItemValue>
         </>
       ) }
-      { !config.UI.views.block.hiddenFields?.L1_status && rollupFeature.isEnabled &&
+      { !config.slices.block.hiddenFields?.L1_status && rollupFeature.isEnabled &&
         ((rollupFeature.type === 'zkSync' && data.zksync) || (rollupFeature.type === 'arbitrum' && data.arbitrum)) &&
       (
         <>
@@ -332,7 +332,7 @@ const BlockDetails = ({ query }: Props) => {
         </>
       ) }
 
-      { !config.UI.views.block.hiddenFields?.miner && (
+      { !config.slices.block.hiddenFields?.miner && (
         <>
           <DetailedInfo.ItemLabel
             hint="A block producer who successfully included the block onto the blockchain"
@@ -385,7 +385,7 @@ const BlockDetails = ({ query }: Props) => {
         </>
       ) }
 
-      { !rollupFeature.isEnabled && !totalReward.isEqualTo(ZERO) && !config.UI.views.block.hiddenFields?.total_reward && (
+      { !rollupFeature.isEnabled && !totalReward.isEqualTo(ZERO) && !config.slices.block.hiddenFields?.total_reward && (
         <>
           <DetailedInfo.ItemLabel
             hint={
@@ -501,7 +501,7 @@ const BlockDetails = ({ query }: Props) => {
         </>
       ) }
 
-      { !config.UI.views.block.hiddenFields?.burnt_fees && !burntFees.isEqualTo(ZERO) && (
+      { !config.slices.block.hiddenFields?.burnt_fees && !burntFees.isEqualTo(ZERO) && (
         <>
           <DetailedInfo.ItemLabel
             hint={
@@ -728,7 +728,7 @@ const BlockDetails = ({ query }: Props) => {
           </>
         ) }
 
-        { !config.UI.views.block.hiddenFields?.nonce && (
+        { !config.slices.block.hiddenFields?.nonce && (
           <>
             <DetailedInfo.ItemLabel
               hint="Block nonce is a value used during mining to demonstrate proof of work for a block"

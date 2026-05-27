@@ -31,7 +31,7 @@ type Props = {
 
 const NetworkIcon = ({ className }: Props) => {
 
-  const iconSrc = useColorModeValue(config.UI.navigation.icon.default, config.UI.navigation.icon.dark || config.UI.navigation.icon.default);
+  const iconSrc = useColorModeValue(config.chain.icon['default'], config.chain.icon.dark || config.chain.icon['default']);
 
   return (
     <chakra.a
@@ -45,7 +45,7 @@ const NetworkIcon = ({ className }: Props) => {
         src={ iconSrc }
         alt={ `${ config.chain.name } network icon` }
         fallback={ <IconFallback/> }
-        filter={{ _dark: !config.UI.navigation.icon.dark ? INVERT_FILTER : undefined }}
+        filter={{ _dark: !config.chain.icon.dark ? INVERT_FILTER : undefined }}
         objectFit="contain"
         objectPosition="left"
       />

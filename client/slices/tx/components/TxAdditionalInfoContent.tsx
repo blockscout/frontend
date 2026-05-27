@@ -85,7 +85,7 @@ const TxAdditionalInfoContent = ({ tx, isLoading }: { tx: Transaction; isLoading
           />
         </VStack>
 
-        { !config.UI.views.tx.hiddenFields?.tx_fee && (tx.stability_fee !== undefined || tx.fee.value !== null) && (
+        { !config.slices.tx.hiddenFields?.tx_fee && (tx.stability_fee !== undefined || tx.fee.value !== null) && (
           <VStack alignItems="stretch" gap={ 1 }>
             <Skeleton loading={ isLoading } { ...sectionTitleProps }>
               <span>Transaction fee</span>
@@ -108,7 +108,7 @@ const TxAdditionalInfoContent = ({ tx, isLoading }: { tx: Transaction; isLoading
           </VStack>
         ) }
 
-        { !config.UI.views.tx.hiddenFields?.gas_fees &&
+        { !config.slices.tx.hiddenFields?.gas_fees &&
           (tx.base_fee_per_gas !== null || tx.max_fee_per_gas !== null || tx.max_priority_fee_per_gas !== null) && (
           <VStack alignItems="stretch" gap={ 1 }>
             <Skeleton loading={ isLoading } { ...sectionTitleProps }>

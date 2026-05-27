@@ -120,7 +120,7 @@ const AddressBlocksValidated = ({ shouldRender = true, isQueryEnabled = true }: 
               </TableColumnHeader>
               <TableColumnHeader>Txn</TableColumnHeader>
               <TableColumnHeader>Gas used</TableColumnHeader>
-              { !config.UI.views.block.hiddenFields?.total_reward && !config.features.rollup.isEnabled &&
+              { !config.slices.block.hiddenFields?.total_reward && !config.features.rollup.isEnabled &&
                 <TableColumnHeader isNumeric>Reward { currencyUnits.ether }</TableColumnHeader> }
             </TableRow>
           </TableHeaderSticky>

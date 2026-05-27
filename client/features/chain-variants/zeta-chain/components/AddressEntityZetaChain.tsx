@@ -44,7 +44,7 @@ const AddressEntityZetaChain = ({ chainId, address, ...props }: Props) => {
     }, { chain: isCurrentChain ? undefined : chain as ExternalChain, external: Boolean(chain) });
   })();
 
-  const zetaChainIcon = useColorModeValue(config.UI.navigation.icon.default, config.UI.navigation.icon.dark || config.UI.navigation.icon.default);
+  const zetaChainIcon = useColorModeValue(config.chain.icon['default'], config.chain.icon.dark || config.chain.icon['default']);
   const chainLogo = isCurrentChain ? zetaChainIcon : chain?.logo;
   const chainName = isCurrentChain ? config.chain.name : chain?.name;
   const iconStub = (

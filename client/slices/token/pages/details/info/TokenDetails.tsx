@@ -225,7 +225,7 @@ const TokenDetails = ({ tokenQuery }: Props) => {
         />
       ) }
 
-      { (type !== 'ERC-20' && config.UI.views.token.nft.marketplaces.length === 0 && appActionData) && (
+      { (type !== 'ERC-20' && config.slices.token.nft.marketplaces.length === 0 && appActionData) && (
         <>
           <DetailedInfo.ItemLabel
             hint="Link to the dapp"

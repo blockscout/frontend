@@ -76,7 +76,7 @@ const UserOpsTableItem = ({ item, isLoading, showTx, showSender, chainData }: Pr
           noIcon
         />
       </TableCell>
-      { !config.UI.views.tx.hiddenFields?.tx_fee && (
+      { !config.slices.tx.hiddenFields?.tx_fee && (
         <TableCell verticalAlign="middle" isNumeric>
           <NativeCoinValue amount={ item.fee } loading={ isLoading } noSymbol/>
         </TableCell>

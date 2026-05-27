@@ -16,7 +16,7 @@ interface Props {
 }
 
 const TxDetailsSetMaxGasLimit = ({ data }: Props) => {
-  if (!config.UI.views.tx.additionalFields?.set_max_gas_limit) {
+  if (!config.slices.tx.additionalFields?.set_max_gas_limit) {
     return null;
   }
 

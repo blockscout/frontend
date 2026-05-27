@@ -11,7 +11,7 @@ interface Props extends AlertProps {
 }
 
 const BlockPendingUpdateAlert = ({ view = 'block', ...props }: Props) => {
-  if (!config.UI.views.block.pendingUpdateAlertEnabled) {
+  if (!config.slices.block.pendingUpdateAlertEnabled) {
     return null;
   }
 

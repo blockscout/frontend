@@ -38,8 +38,8 @@ const ERC20TokensTableItem = ({
     usdBn: tokenValue,
   } = calculateUsdValue({ amount: value, exchangeRate: token.exchange_rate, decimals: token.decimals });
 
-  const isNativeToken = config.UI.views.address.nativeTokenAddress &&
-    token.address_hash.toLowerCase() === config.UI.views.address.nativeTokenAddress.toLowerCase();
+  const isNativeToken = config.slices.address.nativeTokenAddress &&
+    token.address_hash.toLowerCase() === config.slices.address.nativeTokenAddress.toLowerCase();
 
   const chainInfo = React.useMemo(() => {
     if (!chainValues) {

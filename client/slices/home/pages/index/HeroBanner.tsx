@@ -26,36 +26,36 @@ const HeroBanner = () => {
 
   const background = {
     _light:
-      config.UI.homepage.heroBanner?.background?.[0] ||
+      config.slices.home.heroBanner?.background?.[0] ||
       BACKGROUND_DEFAULT,
     _dark:
-      config.UI.homepage.heroBanner?.background?.[1] ||
-      config.UI.homepage.heroBanner?.background?.[0] ||
+      config.slices.home.heroBanner?.background?.[1] ||
+      config.slices.home.heroBanner?.background?.[0] ||
       BACKGROUND_DEFAULT,
   };
 
   const textColor = {
     _light:
       // light mode
-      config.UI.homepage.heroBanner?.text_color?.[0] ||
+      config.slices.home.heroBanner?.text_color?.[0] ||
       TEXT_COLOR_DEFAULT,
     // dark mode
     _dark:
-      config.UI.homepage.heroBanner?.text_color?.[1] ||
-      config.UI.homepage.heroBanner?.text_color?.[0] ||
+      config.slices.home.heroBanner?.text_color?.[1] ||
+      config.slices.home.heroBanner?.text_color?.[0] ||
       TEXT_COLOR_DEFAULT,
   };
 
   const border = {
     _light:
-      config.UI.homepage.heroBanner?.border?.[0] || BORDER_DEFAULT,
+      config.slices.home.heroBanner?.border?.[0] || BORDER_DEFAULT,
     _dark:
-      config.UI.homepage.heroBanner?.border?.[1] || config.UI.homepage.heroBanner?.border?.[0] || BORDER_DEFAULT,
+      config.slices.home.heroBanner?.border?.[1] || config.slices.home.heroBanner?.border?.[0] || BORDER_DEFAULT,
   };
 
   const text = (() => {
-    if (config.UI.homepage.heroBanner?.text) {
-      return config.UI.homepage.heroBanner.text;
+    if (config.slices.home.heroBanner?.text) {
+      return config.slices.home.heroBanner.text;
     }
 
     return config.meta.seo.enhancedDataEnabled ?
@@ -84,7 +84,7 @@ const HeroBanner = () => {
           >
             { text }
           </Heading>
-          { config.UI.navigation.layout === 'vertical' && (
+          { config.shell.navigation.layout === 'vertical' && (
             <Box display={{ base: 'none', lg: 'flex' }} gap={ 2 }>
               { config.features.rewards.isEnabled && <RewardsButton variant="hero"/> }
               <UserProfileDesktop buttonVariant="hero"/>

@@ -137,7 +137,7 @@ const UserOpDetails = ({ query }: Props) => {
         </>
 
       ) }
-      { !config.UI.views.tx.hiddenFields?.tx_fee && (
+      { !config.slices.tx.hiddenFields?.tx_fee && (
         <>
           <DetailedInfo.ItemLabel
             hint="Total User operation fee"
@@ -245,7 +245,7 @@ const UserOpDetails = ({ query }: Props) => {
           { BigNumber(data.pre_verification_gas).toFormat() }
         </DetailedInfo.ItemValue>
 
-        { !config.UI.views.tx.hiddenFields?.gas_fees && (
+        { !config.slices.tx.hiddenFields?.gas_fees && (
           <>
             <DetailedInfo.ItemLabel
               hint="Maximum fee per gas "

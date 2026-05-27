@@ -6,6 +6,7 @@ export { default as addressMetadata } from 'client/features/address-metadata/con
 export { default as address3rdPartyWidgets } from 'client/features/address-3rd-party-widgets/config';
 export { default as adsBanner } from 'client/features/ads/banner/config';
 export { default as adsText } from 'client/features/ads/text/config';
+export { default as alternativeExplorers } from 'client/features/alternative-explorers/config';
 export { default as apiDocs } from 'client/features/api-docs/config';
 export { default as beaconChain } from 'client/features/chain-variants/beacon-chain/config';
 export { default as bridgedTokens } from 'client/features/bridged-tokens/config';

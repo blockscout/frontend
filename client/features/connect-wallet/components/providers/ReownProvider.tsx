@@ -30,7 +30,7 @@ const initReown = () => {
         name: `${ config.chain.name } explorer`,
         description: `${ config.chain.name } explorer`,
         url: config.app.baseUrl,
-        icons: [ config.UI.navigation.icon.default ].filter(Boolean),
+        icons: [ config.chain.icon['default'] ].filter(Boolean),
       },
       projectId: feature.reown.projectId,
       features: {

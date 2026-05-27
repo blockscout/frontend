@@ -33,7 +33,7 @@ const Link = chakra((props: LinkProps) => {
 type IconProps = EntityBase.IconBaseProps & Pick<EntityProps, 'isPendingUpdate'>;
 
 const Icon = (props: IconProps) => {
-  const isPendingUpdate = props.isPendingUpdate && config.UI.views.block.pendingUpdateAlertEnabled;
+  const isPendingUpdate = props.isPendingUpdate && config.slices.block.pendingUpdateAlertEnabled;
 
   const name = (() => {
     if ('name' in props) {

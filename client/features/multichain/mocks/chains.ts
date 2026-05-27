@@ -19,7 +19,7 @@ export const chainA = {
       rpcUrls: [
         'https://rpc.op-mainnet.com',
       ],
-      additionalTokenTypes: [ ],
+      additionalTypes: [ ],
     },
     apis: {
       general: {
@@ -79,10 +79,14 @@ export const chainB = {
     chain: {
       ...chainA.app_config?.chain,
       isTestnet: true,
-      additionalTokenTypes: [ { id: 'ERC-7984', name: 'ERC-7984' } ],
     },
     app: {
       baseUrl: 'https://op-testnet.com',
+    },
+    slices: {
+      token: {
+        additionalTypes: [ { id: 'ERC-7984', name: 'ERC-7984' } ],
+      },
     },
     apis: {
       general: {

@@ -21,7 +21,7 @@ interface Props {
 
 const AlternativeExplorers = ({ className, type, pathParam }: Props) => {
   const explorersLinks = React.useMemo(() => {
-    return config.UI.explorers.items
+    return config.features.alternativeExplorers.items
       .filter((explorer) => typeof explorer.paths[type] === 'string')
       .map((explorer) => {
         const path = explorer.paths[type] || '';

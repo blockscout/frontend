@@ -1,10 +1,9 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { getEnvValue, parseEnvJson } from 'client/config/utils/envs';
+import { getEnvValue, getExternalAssetFilePath, parseEnvJson } from 'client/config/utils/envs';
 
 import type { RollupType } from 'client/features/rollup/common/types/config';
 import type { NetworkVerificationType, NetworkVerificationTypeEnvs } from 'client/slices/chain/verification-type/types/config';
-import type { AdditionalTokenType } from 'client/slices/token/types/client';
 
 import { urlValidator } from 'toolkit/components/forms/validators/url';
 
@@ -42,16 +41,31 @@ const chain = Object.freeze({
     gweiName: getEnvValue('NEXT_PUBLIC_NETWORK_CURRENCY_GWEI_NAME'),
     symbol: getEnvValue('NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL'),
     decimals: Number(getEnvValue('NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS')) || DEFAULT_CURRENCY_DECIMALS,
+    isPriceHidden: getEnvValue('NEXT_PUBLIC_HIDE_NATIVE_COIN_PRICE') === 'true' ? true : false,
   },
   secondaryCoin: {
     symbol: getEnvValue('NEXT_PUBLIC_NETWORK_SECONDARY_COIN_SYMBOL'),
   },
-  hasMultipleGasCurrencies: getEnvValue('NEXT_PUBLIC_NETWORK_MULTIPLE_GAS_CURRENCIES') === 'true',
-  tokenStandard: getEnvValue('NEXT_PUBLIC_NETWORK_TOKEN_STANDARD_NAME') || 'ERC',
-  additionalTokenTypes: parseEnvJson<Array<AdditionalTokenType>>(getEnvValue('NEXT_PUBLIC_NETWORK_ADDITIONAL_TOKEN_TYPES')) || [],
+  logo: {
+    'default': getExternalAssetFilePath('NEXT_PUBLIC_NETWORK_LOGO'),
+    dark: getExternalAssetFilePath('NEXT_PUBLIC_NETWORK_LOGO_DARK'),
+  },
+  icon: {
+    'default': getExternalAssetFilePath('NEXT_PUBLIC_NETWORK_ICON'),
+    dark: getExternalAssetFilePath('NEXT_PUBLIC_NETWORK_ICON_DARK'),
+  },
   rpcUrls,
   isTestnet: getEnvValue('NEXT_PUBLIC_IS_TESTNET') === 'true',
   verificationType,
+  indexingStatus: {
+    blocks: {
+      isHidden: getEnvValue('NEXT_PUBLIC_HIDE_INDEXING_ALERT_BLOCKS') === 'true' ? true : false,
+    },
+    intTxs: {
+      isHidden: getEnvValue('NEXT_PUBLIC_HIDE_INDEXING_ALERT_INT_TXS') === 'true' ? true : false,
+    },
+  },
+  hasMultipleGasCurrencies: getEnvValue('NEXT_PUBLIC_NETWORK_MULTIPLE_GAS_CURRENCIES') === 'true',
 });
 
 export default chain;

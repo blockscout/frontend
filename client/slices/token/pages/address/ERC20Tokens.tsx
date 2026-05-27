@@ -27,7 +27,7 @@ type Props = {
 const ERC20Tokens = ({ items, isLoading, pagination, isError, top }: Props) => {
   const isMobile = useIsMobile();
 
-  const hasAdditionalTokenTypes = config.chain.additionalTokenTypes.length > 0;
+  const hasAdditionalTokenTypes = config.slices.token.additionalTypes.length > 0;
 
   const actionBar = isMobile && pagination.isVisible && (
     <ActionBar mt={ -6 }>

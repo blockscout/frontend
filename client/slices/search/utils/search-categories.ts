@@ -38,13 +38,13 @@ export type SearchResultAppItem = {
   app: MarketplaceApp;
 };
 
-const hasConfidentialTokenType = config.chain.additionalTokenTypes.some((item) => isConfidentialTokenType(item.id as TokenType));
+const hasConfidentialTokenType = config.slices.token.additionalTypes.some((item) => isConfidentialTokenType(item.id as TokenType));
 
 export const searchCategories: Array<{ id: Category; title: string; tabTitle: string }> = [
-  { id: 'token', title: `Tokens (${ config.chain.tokenStandard }-20)`, tabTitle: 'Tokens' },
-  { id: 'nft', title: `NFTs (${ config.chain.tokenStandard }-721 & 1155)`, tabTitle: 'NFTs' },
+  { id: 'token', title: `Tokens (${ config.slices.token.standard }-20)`, tabTitle: 'Tokens' },
+  { id: 'nft', title: `NFTs (${ config.slices.token.standard }-721 & 1155)`, tabTitle: 'NFTs' },
   ...(hasConfidentialTokenType ? [
-    { id: 'confidential_token' as const, title: `Confidential Tokens (${ config.chain.tokenStandard }-7984)`, tabTitle: 'Confidential Tokens' },
+    { id: 'confidential_token' as const, title: `Confidential Tokens (${ config.slices.token.standard }-7984)`, tabTitle: 'Confidential Tokens' },
   ] : []),
   { id: 'address', title: 'Addresses', tabTitle: 'Addresses' },
   { id: 'public_tag', title: 'Public tags', tabTitle: 'Public tags' },
