@@ -311,7 +311,7 @@ Delete them. Fix any remaining lint warnings that referenced legacy paths.
 
 ## Stage 9 — Config co-location
 
-### 9-1 · [ ] Co-locate configs under `client/config/`
+### 9-1 · [~] Co-locate configs under `client/config/` · [#3495](https://github.com/blockscout/frontend/issues/3495)
 
 **Scope:** Move all of `configs/app/` into `client/` and co-locate feature/slice configs with their domain. See `ARCH_REDESIGN.md §4.6` for the target structure.
 
