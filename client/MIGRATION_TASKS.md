@@ -275,7 +275,7 @@ migrated to `client/shared/` in 1-2 and do not appear here.
 ### 6-27 · [x] Features: `web3-wallet` and `connect-wallet` · [#3480](https://github.com/blockscout/frontend/issues/3480)
 **Scope:** Includes `blockchainInteraction.ts` config.  
 
-### 6-28 · [~] Features: `alternative-explorers` and `ads` · [#3487](https://github.com/blockscout/frontend/issues/3487)
+### 6-28 · [x] Features: `alternative-explorers` and `ads` · [#3487](https://github.com/blockscout/frontend/issues/3487)
 **Scope:** The "Verify with other explorers" menu shown on tx, block, address, and token pages. Move `ui/shared/NetworkExplorers.tsx` (and its `.pw.tsx` test) → `client/features/alternative-explorers/`. The util `client/features/alternative-explorers/utils/explorers.ts` already exists (landed in 1-2). Config-gated via `NEXT_PUBLIC_NETWORK_EXPLORERS`.  
 
 ### 6-29 · [x] Feature: `get-gas-button`
@@ -290,7 +290,7 @@ migrated to `client/shared/` in 1-2 and do not appear here.
 
 ## Stage 7 — Shell
 
-### 7-1 · [~] Migrate `client/shell` · [#3489](https://github.com/blockscout/frontend/issues/3489)
+### 7-1 · [x] Migrate `client/shell` · [#3489](https://github.com/blockscout/frontend/issues/3489)
 
 **Scope:** Migrate after all slices and features it depends on are in place.
 - `ui/snippets/header/`, `footer/`, `navigation/`, `topBar/` → `client/shell/`
@@ -302,7 +302,52 @@ migrated to `client/shared/` in 1-2 and do not appear here.
 
 ## Stage 8 — Cleanup
 
-### 8-1 · [ ] Remove legacy root directories
+### 8-1 · [x] Remove legacy root directories
 
 **Scope:** Confirm `lib/`, `ui/`, `mocks/`, `stubs/`, `types/` are empty (no remaining unconverted files).
 Delete them. Fix any remaining lint warnings that referenced legacy paths.  
+
+---
+
+## Stage 9 — Config co-location
+
+### 9-1 · [ ] Co-locate configs under `client/config/`
+
+**Scope:** Move all of `configs/app/` into `client/` and co-locate feature/slice configs with their domain. See `ARCH_REDESIGN.md §4.6` for the target structure.
+
+- Create `client/config/index.ts` aggregator that assembles and exports the full config object
+- Move cross-cutting configs from `configs/app/` to `client/config/`:
+  - `configs/app/app.ts` → `client/shell/app/config.ts`
+  - `configs/app/chain.ts` → `client/slice/chain/config.ts`
+  - `configs/app/meta.ts` → `client/shell/metadata/config.ts`
+  - `configs/app/apis.ts` → `client/api/config.ts`
+  - `configs/app/services.ts` → `client/config/services.ts`
+  - `configs/app/ui.ts` → `client/config/ui.ts`
+  - `configs/app/ui/` → split between slice `client/slices/`
+- Move each `configs/app/features/<name>.ts` → `client/features/<name>/config.ts` (and ui-view configs into their slice's `config.ts`). Wire each into the aggregator.
+- Update `deploy/tools/envs-validator` to import from `client/config/index.ts`
+- Update all application imports of `configs/app` to `client/config`
+- Move `configs/multichain/**` to `client/features/multichain/chains-config/**` and update related imports
+- Move `configs/essential-dapps-chains/**` to `client/features/marketplace/chains-config/essential-dapps/**`
+- Delete now-empty `configs/app/`. `configs/envs/` remains unchanged.
+
+---
+
+## Stage 10 — Move everything into `src/`
+
+### 10-1 · [ ] Structural rename: consolidate all application source under `src/`
+
+**Scope:** Move all remaining application directories into `src/` and rename `client/` → `src/`. Simplify ESLint boundary rules in the same PR. See `ARCH_REDESIGN.md §7`.
+
+Directory moves and import codemods:
+- `pages/` → `src/pages/` (no import changes needed — Next.js resolves natively)
+- `nextjs/` → `src/server/`; codemod `from 'nextjs/...` → `from 'src/server/...` (~137 files)
+- `icons/` → `src/sprite/icons/`; update `tsconfig.json` alias `icons/*`
+- `toolkit/` → `src/toolkit/`; update `pnpm-workspace.yaml` (`toolkit/package` → `src/toolkit/package`) and `tsconfig.json` alias `toolkit/*`
+- Rename `client/config/` (from stage 9) → `src/config/` — update imports if stage 9 used `client/config` as interim path, otherwise already at `src/config/`
+- Rename `client/` → `src/`; codemod `from 'client/...` → `from 'src/...` (~1760 files)
+
+Tooling updates in the same PR:
+- `tsconfig.json`: update path aliases and any `baseUrl`-relative references
+- `next.config.js`: update any path references
+- ESLint `ARCH_BOUNDARY_ELEMENTS`: update all patterns (`client/**` → `src/**`, `nextjs/**` → `src/server/**`, `toolkit/**` → `src/toolkit/**`); remove broad slice/feature/shared layer rules; keep only the two critical rules from `ARCH_REDESIGN.md §6`

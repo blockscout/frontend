@@ -1,133 +1,109 @@
-# Client architecture blueprint
+# Application architecture
 
 ---
 
 ## 1. Purpose
 
-- **Co-locate** everything that belongs to a **slice** (core explorer domain) or **feature** (optional / config-driven) in one place: UI, hooks, utils, **API response types** for that area, mocks, stubs, etc.
-- **Retire** top-level `lib/`, `mocks/`, `stubs/`, `types/` (and `ui/`) as *unscoped* buckets — their contents move under **`/client`** or other agreed homes (see §6).
-- Keep **clear boundaries** so the graph stays maintainable (see §8).
+- **Co-locate** everything belonging to a **slice** (core explorer domain) or **feature** (optional / config-driven): UI, hooks, utils, API response types, runtime config, mocks, stubs.
+- House all application source under **`/src`** — one directory for everything the bundler processes.
+- Keep **clear boundaries** at the two critical points in the dependency graph (see §7).
 
 ---
 
-## 2. Naming conventions (agreed)
+## 2. Naming conventions
 
-Aligned with **Next.js-style** paths: **kebab-case for directories** and for **non-component TS modules** (helpers, parsers, constants files).
+Aligned with **Next.js-style** paths: **kebab-case for directories** and for **non-component TS modules**.
 
 | Artifact | Convention | Examples |
 |----------|------------|----------|
 | **Directories** | `kebab-case` | `slices/tx/`, `features/user-ops/`, `pages/tx-details/` |
 | **React components** | `PascalCase.tsx` | `TxDetails.tsx`, `TxIndexTable.tsx` |
-| **Hooks** | `use` + `camelCase` in the filename (ecosystem norm) | `useTxQuery.ts`, `useIsMobile.ts` |
-| **Helper / util modules** (non-hook) | `kebab-case.ts` | `format-tx-hash.ts`, `get-tab-list.ts` |
-| **Role files** | lowercase | `types.ts`, `mocks.ts`, `stubs.ts` |
+| **Hooks** | `use` + `camelCase` | `useTxQuery.ts`, `useIsMobile.ts` |
+| **Helper / util modules** | `kebab-case.ts` | `format-tx-hash.ts`, `get-tab-list.ts` |
+| **Role files** | lowercase | `types.ts`, `mocks.ts`, `stubs.ts`, `config.ts` |
 
-Same folder may contain `TxDetails.tsx`, `useTxQuery.ts` — hooks stay **`useCamelCase.ts`**; everything else non-component prefers **kebab-case**.
-
-**No re-export-only barrel files inside `/client`.** Deep imports are preferred; dumb barrels (files that only `export * from ...`) slow TypeScript server performance and break tree-shaking at scale. Aggregation files that define or curate their own public surface (e.g. `client/api/services/general/index.ts` acting as a facade for the General API) are acceptable where they provide genuine value.
+**No re-export-only barrel files inside `/src`.** Deep imports are preferred; dumb barrels slow TypeScript server performance and break tree-shaking. Aggregation files that define or curate their own public surface (e.g. `src/api/services/general/index.ts` as a General API facade, or `src/config/index.ts` as the config aggregator) are acceptable where they provide genuine value.
 
 ---
 
-## 3. Top-level repo layout (conceptual)
+## 3. Top-level repo layout
 
 | Path | Role |
 |------|------|
-| **`/client`** | Product explorer: shell, API client layer, slices, features, shared. Replaces **`/ui`** and absorbs most of **`lib`**, **`mocks`**, **`stubs`**, **`types`** (see §6). |
-| **`/configs`** | Env-derived config and feature flags. |
-| **`/nextjs`** | Next integration, SSR helpers, server utilities. |
-| **`/pages`** | Next.js **file-based routes** only (thin wrappers — a dynamic import and `getServerSideProps` call; nothing else). **404 vs "empty page"** is defined here — invalid routes do not render the page component. |
-| **`/toolkit`** | Design system and shared code **published to npm** / reused across company projects — **stays outside** `client`. Referenced as a local path alias during this migration; publishing scope is out of scope for this task. |
-| **Root `lib/`** | **Removed** after migration except pieces explicitly moved elsewhere (e.g. monitoring → `nextjs`). |
+| **`/src`** | All application source — product UI, server plumbing, routing, config, design system, and assets directly imported by code |
+| **`/configs/envs/`** | Env variable declarations — not yet absorbed into `src/`; dedicated refactor tracked separately |
+| **`/deploy/`** | CI/CD scripts, Docker, env validator, build tools — operates on the app, not part of it |
+| **`/public/`** | Static assets served as-is by the web server (sprite output, etc.) — never processed by the bundler |
+| **`/docs/`** | ENVS.md, GLOSSARY.md, CONTRIBUTING.md |
+| Root config files | `next.config.js`, `tsconfig.json`, `eslint.config.mjs`, `package.json` — tool configuration, not application code |
 
 ---
 
-## 4. Inside `/client`
-
-### 4.1 `client/shell`
-
-Application **chrome**: layout, error UI, header, footer, page title, top-bar, and other frame-level concerns.
-
-**`ui/snippets/` split (complete):**
-
-| Source | Destination |
-|--------|-------------|
-| `header/`, `footer/`, `navigation/`, `topBar/` | `client/shell/` |
-| `searchBar/` | `client/slices/search/` |
-| `networkLogo/` | `client/shared/` |
-| `networkMenu/` | `client/features/multichain/` |
-| `auth/`, `user/` | `client/features/account/` |
-
-**Context split from `lib/contexts/`:**
-
-| Source | Destination |
-|--------|-------------|
-| `app.tsx`, `fallback.tsx` | `client/shell/` |
-| `settings.tsx` | `client/shell/top-bar/` (alongside `TopBar` component) |
-| `multichain.tsx` | `client/features/multichain/` |
-| `rewards.tsx` | `client/features/rewards/` |
-| `marketplace.tsx` | `client/features/marketplace/` |
-| `addressHighlight.tsx` | `client/slices/address/` |
-
-**Hooks from `lib/hooks/`:**
-
-- `useNavItems` → `client/shell/`
-- Everything else generic → `client/shared/hooks/` (see §4.5)
-
-### 4.2 `client/api`
-
-- **Full migration** of today's **`lib/api`** (transport: fetch, resources, URL building, query client wiring, etc.).
-- **`client/api` must not import runtime logic** from `client/slices/*` or `client/features/*` (avoids cycles). **`import type`** from slices is permitted when an API service file maps a resource to its response type — the type lives with the slice that owns it, and `client/api` references it for the payload mapping only.
-- **Per-resource response types** and view-specific types are **not** centralized under `client/api`; they live in the **slice or feature** that owns the domain (co-location with hooks/components).
-- **WebSocket transport** (`lib/socket/`) → `client/api/socket/` — same reasoning as fetch: it is a transport mechanism, not a UI concern.
-
-**`client/api/services/` structure:**
-
-Keep the current organization largely intact. Do not flatten everything into a 1:1 mapping with slices — feature services often have only one or two resources and do not warrant separate files.
-
-`general/` maps to the **Blockscout General API namespace** — it is not restricted to vanilla-EVM resources. Files inside it follow the API grouping, not the slice/feature taxonomy.
+## 4. Inside `/src`
 
 ```text
-client/api/
-  hooks/              ← React hooks for data fetching (useApiFetch, useApiQuery, useFetch, …)
+src/
+  api/          Transport, fetch utilities, query client, WebSocket, data-fetching hooks
+  shell/        App chrome: layout, header, footer, navigation, top-bar, root contexts
+  slices/       Core explorer entities — always present on any EVM chain
+  features/     Optional / config-gated product areas
+  shared/       Cross-cutting utilities with no single domain owner
+  config/       Runtime app configuration (aggregator + cross-cutting parts)
+  pages/        Next.js file-based routes — thin wrappers only
+  server/       Next.js server plumbing: SSR helpers, middleware, CSP, headers, rewrites
+  sprite/       SVG sprite runtime component + icon source files
+  toolkit/      Design system (pnpm workspace package — developed in lockstep, publishable)
+```
+
+### 4.1 `src/shell`
+
+Application **chrome**: layout, error UI, header, footer, page title, top-bar, and frame-level concerns. Includes root context providers (`app.tsx`, `fallback.tsx`), settings context, and `useNavItems`.
+
+### 4.2 `src/api`
+
+Transport layer — fetch, resources, URL building, query client wiring, WebSocket.
+
+**Rule:** `src/api` must not have runtime imports from `src/slices/*` or `src/features/*`. `import type` is permitted for response-shape typing.
+
+```text
+src/api/
+  hooks/              ← useApiFetch, useApiQuery, useApiInfiniteQuery, useFetch, …
   services/
-    general/          ← Blockscout General API namespace; only split files inside where genuinely needed
+    general/          ← Blockscout General API namespace
       tx.ts
       block.ts
-      misc.ts         ← resources with no clear single-domain home stay here
-      rollup.ts       ← rollup resources are part of the General API
-      v1.ts           ← previous API version; one active resource
+      misc.ts
+      rollup.ts
+      v1.ts
       ...
     rewards.ts        ← feature-specific APIs stay flat alongside general/
     stats.ts
     user-ops.ts
     bens.ts
     ...
-  types.ts            ← shared API types incl. IsPaginated (absorbs services/utils.ts)
-  socket/             ← migrated from lib/socket/
+  types.ts            ← shared API types incl. IsPaginated
+  socket/
 ```
 
-> **Decision note — `hooks/` subfolder:** React hooks that wire transport/query-client logic (`useApiFetch`, `useApiQuery`, `useApiInfiniteQuery`, `useApiQueries`, `useQueryClientConfig`, `useFetch`) live under `client/api/hooks/` rather than at the `client/api/` root. This keeps the root flat (utilities + config) and the hooks discoverable as a group, without introducing an extra barrel file.
+### 4.3 `src/slices`
 
-### 4.3 `client/slices`
+**Core explorer entities** — always part of the product surface on any vanilla EVM chain.
 
-**Core explorer entities** — always part of the product surface (not optional "features" in the `configs/app/features` sense).
+**Classification criterion:** *"Can this area exist on a vanilla EVM chain with no feature flag?"* Yes → slice. No → feature.
 
-**Classification criterion:** *"Can this area exist on a vanilla EVM chain with no feature flag?"* Yes → slice. No (requires a `configs/app/features` flag) → feature.
+**Confirmed slices:** `tx`, `block`, `address`, `token`, `contract`, `internal-tx`, `search`, `home`, `token-transfer`, `log`, `gas`.
 
-**Confirmed slices (non-exhaustive):** `tx`, `block`, `search`, `token`, `address`, `contract`, `internal-tx`, `home`, `token`, `token-transfer`, `log`, `gas` …
-
-- **`contract` (slice):** **Contract verification** and **SolidityScan** (`lib/solidityScan/`) are **slice** concerns (available on any chain).
-- **`internal-tx` (slice):** Own slice; **`tx`** composes **internal-tx** components (e.g. tab content). Prefer **no imports** from `internal-tx` back into `tx` to avoid cycles; share via **`client/shared`** or a **thin types-only surface** if needed.
-- **`gas` (slice):** Owns the gas-price domain — `GasPrices`/`GasPriceInfo` API types, `GasUnit` client type, display primitives (`GasPrice.tsx`, `GasInfoTooltip.tsx`, `GasInfoUpdateTimer.tsx`), and formatting utils (`formatGasValue.ts`). These are used unconditionally across `slices/home/`, `slices/tx/`, and `client/shell/`. The config-gated tracker **page** belongs to `features/gas-tracker/`, which imports from this slice.
-
-**Rollup sub-types on slice types:** `slices/tx/types/api.ts` imports feature-specific sub-types (e.g. `ArbitrumTransactionData`) from their respective feature via `import type`. Optional fields fan out at the slice type level — this mirrors the real API contract and is intentional (see §11).
+Notes:
+- **`gas`** owns gas-price domain primitives — API types, `GasUnit`, display components, formatting utils. Used unconditionally across `shell/`, `slices/home/`, `slices/tx/`. The config-gated tracker page lives in `features/gas-tracker/`.
+- **`internal-tx`** is its own slice; `tx` composes `internal-tx` components. Avoid back-imports (`internal-tx` → `tx`) to prevent cycles.
+- **`contract`** includes contract verification and SolidityScan — available on any chain.
 
 **Typical slice shape:**
 
 ```text
-client/slices/tx/
+src/slices/tx/
   pages/
-    index/           # kebab-case folder = one "screen" / route target
+    index/
       TxIndex.tsx
       TxIndexTable.tsx
       ...
@@ -135,272 +111,197 @@ client/slices/tx/
       TxDetails.tsx
       ...
   components/
-  hooks/                 # e.g. useTxQuery.ts
-  utils/                 # kebab-case .ts files
+  hooks/
+  utils/
   types/
-    api.ts               # response / DTO types owned by this slice
-    client.ts            # frontend-only types (client types or types derived from API responses)
+    api.ts        ← response / DTO types (stable external surface for cross-domain imports)
+    client.ts     ← frontend-only types
+    config.ts     ← zero-import constants needed by src/config/ (no imports — only const/type/interface)
+  config.ts       ← slice-level env-derived config; imported by src/config/index.ts
   mocks.ts
   stubs.ts
 ```
 
-**Routing rule:** **One Next route ≈ one folder under** `pages/` inside the slice (or feature). The **file** under root `pages/` stays a thin dynamic import into `client/...`.
+**Routing rule:** one Next.js route ≈ one folder under `pages/` inside the slice or feature. The file under `src/pages/` stays a thin dynamic import.
 
-### 4.4 `client/features`
+**Public type surface:** external consumers (other slices, features, `src/api/services/`) must import types only from `<slice|feature>/types/api.ts`, never from deeper internal paths.
 
-**Optional** product areas — **roughly mirrors `configs/app/features`**, but:
+**Rollup sub-types:** `slices/tx/types/api.ts` imports feature-specific sub-types (e.g. `ArbitrumTransactionData`) from their respective feature via `import type` — mirrors the real API contract. This is intentional (see §8 example).
 
-- Folders may exist for **readability and maintenance** (e.g. per rollup type) even when not everything is enabled for a given chain; **runtime behavior** still comes from **config/env**, not "folder exists = on."
+### 4.4 `src/features`
 
-**Confirmed features (non-exhaustive):** `user-ops`, `data-availability`, `multichain`, `name-domains`, `account`, `stats`, `gas-tracker`, `get-gas-button`, `validators`, `marketplace`, `rewards`, `rollup/*`, `chain-variants/*`, `advanced-filter`, `ad-banner`, `safe-address-tags`, `metasuites`, `csv-export`, …
-
-- **`stats` and `gas-tracker`** are **features** (not slices) — they are config-gated per chain. Gas-price primitives (shared display components, formatting utils, API types) live in **`slices/gas/`**; `features/gas-tracker/` owns the tracker page and imports from that slice.
-- **`get-gas-button`** is its own feature — independently config-gated (`NEXT_PUBLIC_GAS_REFUEL_PROVIDER_CONFIG`), surfaces in the top bar, and has no hard dependency on `gas-tracker` being enabled.
-- **`validators`** is a **feature** — chain-specific, not present on a vanilla EVM chain.
-- **`epochs`** is a sub-concern of the Celo chain variant (`features/chain-variants/celo/`), not a standalone feature.
-- **`data-availability`** was previously referred to as `blobs` — use `data-availability` throughout.
+**Optional** product areas — config-gated or chain-specific.
 
 **Classification rules:**
 1. *"Can this area exist on a vanilla EVM chain with no feature flag?"* Yes → slice. No → feature.
-2. **Config-gated infrastructure with no user-facing UI** (analytics providers, error monitoring, A/B flag providers) lives in **`client/shared/`**, not `features/` — the presence of a config flag alone is not sufficient to qualify for a feature folder.
-3. Every config-gated feature with user-facing UI gets its own folder under `features/`, regardless of size — consistency and discoverability outweigh folder count.
+2. Config-gated infrastructure with no user-facing UI (analytics, monitoring, A/B flags) → `src/shared/`, not `features/`.
+3. Every config-gated feature with user-facing UI gets its own folder under `features/`, regardless of size.
 
-**Chain-specific non-rollup features** — chain variants that are not rollups (ZetaChain, TAC, SUAVE, Celo, MegaETH, Beacon chain, etc.) are grouped under **`features/chain-variants/<name>/`**, parallel to `features/rollup/<type>/`. Example: `features/chain-variants/celo/`, `features/chain-variants/tac/`, `features/chain-variants/zeta-chain/`.
+**Rollups:** `features/rollup/<type>/` organized by rollup type (e.g. `optimism`, `arbitrum`, `scroll`, `zk-sync`, `shibarium`). Deposits, batches, and withdrawals are subfolders within each rollup type.
 
-**Variant / chain-specific transaction lists** (e.g. kettle, zeta-specific list UIs) live under **`features/<name>/pages/...`**, **not** as variants inside `slices/tx`.
+**Chain variants (non-rollup):** `features/chain-variants/<name>/` (e.g. `celo`, `tac`, `zeta-chain`, `mega-eth`, `suave`, `beacon-chain`).
 
-**Rollups:** `features/rollup/<rollup-type>/` (e.g. `optimism`, `arbitrum`, …) — **organized by rollup type**, because **views and helpers differ by rollup**. Sub-areas (deposits, batches, withdrawals) are **subfolders** under that rollup, not separate top-level rollup taxonomies.
+**Typical feature shape:** same as slices — `pages/`, `components/`, `hooks/`, `utils/`, `types/`, `config.ts`, `mocks.ts`, `stubs.ts`.
 
-**Chain variants (non-rollup):** `features/chain-variants/<name>/` (e.g. `celo`, `tac`, `zeta-chain`, `mega-eth`, `suave`, `beacon-chain`) — same sub-folder structure as rollups.
+### 4.5 `src/shared`
 
-**Typical feature shape:** same idea as slices — `pages/`, `components/`, `hooks/`, `utils/`, `types/`, `mocks.ts`, `stubs.ts`.
+Cross-cutting utilities with no single domain owner.
 
-### 4.5 `client/shared`
+- No files directly in `src/shared/` — only subfolders grouped by purpose.
+- No barrel `index.ts` files.
 
-**Cross-cutting UI and helpers** with **no single domain owner**.
+| Subfolder | Contents |
+|-----------|----------|
+| `analytics/` | Mixpanel |
+| `auth/` | JWT decode |
+| `chain/` | Network utilities, units |
+| `date-and-time/` | Time formatting hooks and utils |
+| `errors/` | Error types + getErrorMessage |
+| `feature-flags/` | Growthbook runtime A/B flags (distinct from build-time config) |
+| `hooks/` | Generic hooks with no domain owner |
+| `i18n/` | Locale utilities |
+| `links/utils/` | URL helpers |
+| `lists/` | Lazy/initial list hooks, getItemIndex |
+| `metadata/` | Centralized route title/description map (see note below) |
+| `monitoring/rollbar/` | Client-side error reporting |
+| `router/` | Router utilities + query-param filter helpers |
+| `storage/` | Cookies |
+| `text/` | String utilities |
+| `transformers/` | Hex / bytes / base64 conversion |
+| `utils/` | Tiny misc utilities |
+| `web3/` | Wagmi/Viem utilities |
+| `entities/`, `pagination/`, `charts/` | Keep as-is |
 
-- **No files directly in `client/shared/`** — only **subfolders** grouped by purpose.
-- **No `index.ts` barrel files** (same rule as the rest of `/client`).
+**`src/shared/metadata/` note:** The route title/description map is a `Record<Route['pathname'], string>` with TypeScript exhaustiveness enforced across all routes. It stays centralized here to preserve that guarantee. It uses `import type` from relevant slices — a `shared → slice` type-only import is acceptable.
 
-**Confirmed subfolders (round 2 decisions):**
+### 4.6 `src/config`
 
-| Subfolder | Contents / origin |
-|-----------|-------------------|
-| `analytics/` | `lib/mixpanel/` |
-| `auth/` | `lib/decodeJWT.ts` |
-| `chain/` | `lib/networks/` (all `network` → `chain` renamed) + `lib/units.ts` |
-| `date-and-time/` | `lib/hooks/useTimeAgoIncrement` and similar date utils |
-| `errors/` | `lib/errors/` |
-| `feature-flags/` | `lib/growthbook/` (runtime A/B flags — distinct from build-time `configs/`) |
-| `hooks/` | Generic hooks from `lib/hooks/` with no single domain owner |
-| `i18n/` | `lib/setLocale.ts` |
-| `links/utils/` | `lib/utils/stripUtmParams.ts` and URL-related helpers |
-| `lists/` | `lib/hooks/useLazyRenderedList`, `lib/hooks/useInitialList`, `lib/getItemIndex.ts` |
-| `metadata/` | `lib/metadata/` (centralized — see note below) |
-| `monitoring/rollbar/` | `lib/rollbar/` (client-side observability infrastructure) |
-| `router/` | `lib/router/` + query-param filter helpers (`getFilterValueFromQuery`, etc.) |
-| `storage/` | `lib/cookies.ts` |
-| `text/` | `lib/capitalizeFirstLetter.ts`, `shortenString.ts`, `escapeRegExp.ts`, `highlightText.ts` |
-| `transformers/` | Hex / bytes / base64 conversion utils (`hexToBytes`, `base64ToHex`, etc.) |
-| `utils/` | Tiny misc utilities with no better home (`delay.ts`, `isMetaKey.tsx`) |
-| `web3/` | `lib/web3/` |
-| *(existing)* | `pagination/`, `charts/`, `entities/`, etc. — keep as-is |
+Runtime app configuration.
 
-**`client/shared/metadata/` note:** The title/description template map is a routing manifest (`Record<Route['pathname'], string>`) with TypeScript exhaustiveness enforced across all routes. Splitting it into slices/features loses that guarantee. It stays **centralized** in `client/shared/metadata/`. The `ApiData<Pathname>` type within it uses `import type` from the relevant slices (e.g. `TokenInfo` from `slices/token/types/api.ts`) — a shared → slice `import type` is acceptable here (no cycle, no runtime import).
-
----
-
-## 5. Config vs client
-
-- **`/configs` may import from `/client`**, but only from **import-free `config.ts` files** (see below). All other `/client` files are off-limits to `configs/`.
-- **`/client`** imports **`/configs`** for feature flags and app configuration.
-- **Runtime feature flags** (Growthbook A/B) live in **`client/shared/feature-flags/`** — they require a React context and cannot live in `configs/`.
-
-**`config.ts` role file convention:** When a slice or feature owns constants and types that a `configs/` module needs at runtime (e.g. valid widget IDs for env-var parsing), those are extracted into a **`types/config.ts`** file inside the slice/feature. This file must have **zero imports** — only `const` arrays, derived `type` aliases, and pure interfaces. No React, no utilities, no other modules. This keeps the file as a leaf node in the module graph, avoiding initialization-order issues in the Vite-built envs-validator and SSR contexts.
-
-Example: `client/slices/home/types/config.ts` → imported by `configs/app/ui/homepage.ts`.
-
----
-
-## 6. Migration map (sources → destinations)
-
-### `ui/` → `client/`
-
-| Current | Destination |
-|---------|-------------|
-| `ui/**` | `client/**` (restructured into shell / slices / features / shared) |
-| `ui/snippets/header/`, `footer/`, `navigation/`, `topBar/` | `client/shell/` |
-| `ui/snippets/searchBar/` | `client/slices/search/` |
-| `ui/snippets/networkLogo/` | `client/shared/` |
-| `ui/snippets/networkMenu/` | `client/features/multichain/` |
-| `ui/snippets/auth/`, `user/` | `client/features/account/` |
-| `ui/shared/gas/` | `client/slices/gas/` (display components + formatting utils) |
-| `ui/gasTracker/`, `ui/pages/GasTracker.tsx` | `client/features/gas-tracker/` |
-| `ui/snippets/topBar/GetGasButton.tsx` | `client/features/get-gas-button/` |
-| `types/client/gasTracker.ts` (`GasUnit`) | `client/slices/gas/types/client.ts` |
-| `types/client/gasRefuelProviderConfig.ts` | `client/features/get-gas-button/types/` |
-
-### `lib/` → destinations
-
-| Current | Destination |
-|---------|-------------|
-| `lib/api/**` | `client/api/**` (services structure preserved; `services/utils.ts` → `client/api/types.ts`) |
-| `lib/socket/` | `client/api/socket/` |
-| `lib/monitoring/` | `nextjs/` |
-| `lib/rollbar/` | `client/shared/monitoring/rollbar/` |
-| `lib/metadata/` | `client/shared/metadata/` |
-| `lib/router/` | `client/shared/router/` |
-| `lib/web3/` | `client/shared/web3/` |
-| `lib/errors/` | `client/shared/errors/` |
-| `lib/mixpanel/` | `client/shared/analytics/mixpanel` |
-| `lib/growthbook/` | `client/shared/feature-flags/` |
-| `lib/networks/` + `lib/units.ts` | `client/shared/chain/` (rename `network` → `chain` throughout) |
-| `lib/hooks/useNavItems` | `client/shell/` |
-| `lib/hooks/useTimeAgoIncrement` | `client/shared/date-and-time/` |
-| `lib/hooks/useLazyRenderedList` | `client/shared/lists/` |
-| `lib/hooks/useInitialList` | `client/shared/lists/` |
-| `lib/hooks/useRewardsActivity` | `client/features/rewards/` |
-| `lib/hooks/useAddressProfileApiQuery` | `client/features/address-profile-api/hooks/useAddressProfileApiQuery.tsx` |
-| `lib/hooks/useFetch` | `client/api/hooks/` |
-| `lib/hooks/useGetCsrfToken` | `client/features/account/` |
-| `lib/hooks/useGraphLinks` | `client/features/marketplace/` |
-| `lib/hooks/useAdblockDetect` | `client/features/ad-banner/` |
-| `lib/hooks/useIsSafeAddress` | `client/features/safe-address-tags/` |
-| `lib/hooks/useNotifyOnNavigation` | `client/features/metasuites/` |
-| `lib/hooks/` (remaining) | `client/shared/hooks/` |
-| `client/shell/app/context.tsx`, `fallback.tsx` | `client/shell/` |
-| `lib/contexts/settings.tsx` | `client/shell/top-bar/` |
-| `lib/contexts/multichain.tsx` | `client/features/multichain/` |
-| `lib/contexts/rewards.tsx` | `client/features/rewards/` |
-| `lib/contexts/marketplace.tsx` | `client/features/marketplace/` |
-| `lib/contexts/addressHighlight.tsx` | `client/slices/address/contexts/address-highlight.tsx` |
-| `lib/tx/` | `client/slices/tx/utils/` |
-| `lib/token/` | `client/slices/token/` |
-| `lib/address/parseMetaPayload.ts` | `client/features/address-metadata/utils/parseMetaPayload.ts` |
-| `lib/address/useAddressMetadataInfoQuery.ts` | `client/features/address-metadata/hooks/useAddressMetadataInfoQuery.ts` |
-| `lib/address/useAddressMetadataInitUpdate.ts` | `client/features/address-metadata/hooks/useAddressMetadataInitUpdate.ts` |
-| `lib/address/` (remaining) | `client/slices/address/` |
-| `lib/rollups/` | `client/features/rollup/` |
-| `lib/multichain/` | `client/features/multichain/` |
-| `lib/search/` | `client/slices/search/` |
-| `lib/contracts/` | `client/slices/contract/` |
-| `lib/solidityScan/` | `client/slices/contract/` |
-| `lib/stats/` | `client/features/stats/` |
-| `lib/utils/stripUtmParams.ts` | `client/shared/links/utils/` |
-| `lib/capitalizeFirstLetter.ts`, `shortenString.ts`, `escapeRegExp.ts`, `highlightText.ts` | `client/shared/texts/` |
-| `lib/base64ToHex.ts`, `bytesToBase64.ts`, `bytesToHex.ts`, `hexToBase64.ts`, `hexToBytes.ts`, `hexToAddress.ts`, `hexToDecimal.ts`, `hexToUtf8.ts` | `client/shared/data/transformers/` |
-| `lib/cookies.ts` | `client/shared/storage/` |
-| `lib/decodeJWT.ts` | `client/shared/auth/` |
-| `lib/setLocale.ts` | `client/shared/i18n/` |
-| `lib/delay.ts`, `lib/isMetaKey.tsx` | `client/shared/utils/` |
-| `lib/recentSearchKeywords.ts` | `client/slices/search/` |
-| `lib/getFilterValueFromQuery.ts`, `getFilterValuesFromQuery.ts`, `getValuesArrayFromQuery.ts` | `client/shared/router/` |
-| `lib/getItemIndex.ts` | `client/shared/lists/` |
-| `lib/getErrorMessage.ts` | `client/shared/errors/` |
-
-### Other sources
-
-| Current | Destination |
-|---------|-------------|
-| `mocks/**`, `stubs/**` | Co-located **`mocks.ts` / `stubs.ts`** under the relevant **slice/feature**; shared test data → `client/shared/...` if truly cross-domain |
-| `types/api/*`, `types/client/*`, etc. | **Slice/feature `types/`** (and config-owned types → `configs`) — **not** a single global `types/` tree at repo root after migration |
-
-**Migration process:** **incremental PRs/tasks** — update all imports in the **same PR** as the move. **No long-lived re-export shims.** Import path updates for test files can be scripted with a codemod.
-
----
-
-## 7. Testing
-
-- **Playwright / visual tests:** stay **next to** the implementation (e.g. `*.pw.tsx` alongside components), same as today.
-
----
-
-## 8. Dependency rules (high level)
-
-- **ESLint rules (`import/no-cycle` + explicit `boundaries` rules for `client/api`, `configs`, `toolkit`) must be enabled _before_ the migration starts.** Running them against the existing code surfaces real problem areas cheaply, before they become migration blockers.
-- **Enforcement strategy: warn on legacy, error on new.** Configure boundary rules to emit **errors** only within `client/`; legacy `lib/` and `ui/` paths receive **warnings** only. This avoids a costly upfront clean-up of the entire codebase while ensuring every migrated file is immediately held to the new standard.
-- **Guidelines:**
-  - **`client/api`** allows **`import type`** from slices/features for response-shape typing; **no runtime imports** (no logic, hooks, or components — types only).
-  - **Slice → feature type imports** are intentional: the backend includes feature-specific fields (e.g. `arbitrum?`, `scroll?`) in API responses unconditionally when the rollup is enabled — the frontend type must mirror the full API contract. UI component imports follow the same direction (e.g. `TxDetails` imports `TxDetailsArbitrum`).
-  - **`client/shared` → slice `import type`** is acceptable where shared infrastructure genuinely needs a slice-owned type (e.g. `client/shared/metadata/` referencing `TokenInfo` from `slices/token/types/api.ts`). No runtime imports from shared → slice.
-  - **Avoid circular graphs** between slices/features; use **composition at a shallow level** (page or a single container component) when optional UI plugs into a core screen.
-  - **`internal-tx` → `tx`:** avoid **`tx` → `internal-tx` → `tx`** cycles; lift shared bits to **`shared`** or **types-only** exports.
-
----
-
-## 9. Config ↔ feature folder naming
-
-- **Feature directories** under `client/features/`: **`kebab-case`** (`user-ops`, `name-domains`).
-- **Config files** under `configs/app/features/`: **migrate to `kebab-case`** in a **single dedicated pre-migration PR** (before feature folder migration starts), so config file names and feature folder names share one mental model.
-
----
-
-## 10. Migration execution plan
-
-### Order of operations
-
-1. **Pre-migration PR:** rename `configs/app/features/` files to kebab-case.
-2. **Pre-migration PR:** enable ESLint `import/no-cycle` + `boundaries` rules; fix existing violations.
-3. **Bottom-up migration:** start with `client/api` and `client/shared` (lowest in the dependency graph, most imported). Establishes the foundation without touching any UI.
-4. **Pilot slice — `tx`:** migrate `lib/tx/`, the `tx` API service, `ui/tx/**`, hooks, types, mocks end-to-end. Use the result as the canonical template for all subsequent slices.
-5. **Remaining slices** in parallel (one PR per slice).
-6. **Features** in parallel (one PR per feature or logical group).
-7. **`client/shell`** — migrate after slices/features it depends on are in place.
-8. **Remove root `lib/`** — confirm empty, delete.
-
-### Rules during migration
-
-- Update **all imports in the same PR** as the file move — no shims. For high-fanout files use an automated codemod as a dedicated commit within the branch.
-- **Rename to kebab-case at move time** — file moves and naming convention changes happen in one pass, never two separate PRs.
-- Each PR leaves ESLint green within `client/`; do not merge with new cycle/boundary violations inside `client/`.
-- **`types/api.ts` is the stable external type surface** for each slice/feature. External consumers (other slices, features, `client/api/services/`) must import types only from `<slice|feature>/types/api.ts`, never from deeper internal paths. Enforced via ESLint `boundaries`.
-- `pages/` thin wrappers: **no UI component or business logic** — a dynamic import and, if needed, a `getServerSideProps` inline (per-page logic may stay inline; only shared/reusable SSR helpers move to `nextjs/`). SEO metadata lives in the slice/feature page folder.
-- **Tx pilot PR strategy:** migrate the tx slice end-to-end (UI, hooks, utils, types, mocks) while leaving cross-slice dependencies (address, rollup types, etc.) at their old `lib/` paths. Every remaining old-path import in `client/slices/tx/` after the pilot becomes an explicit migration task for the relevant slice/feature PR.
-
----
-
-## 11. Open topics (round 4)
-
-- [x] ~~**Path aliases**~~ — `baseUrl: "."` in `tsconfig.json` makes `client/**` absolute imports work without explicit `paths` entries. No action needed.
-- [x] ~~**Public type surfaces**~~ — `types/api.ts` is the stable external surface per slice/feature; documented in §10. Cross-slice `types/client.ts` imports left as an open question to resolve with real examples during implementation.
-- [x] ~~**Storybook / toolkit**~~ — project does not use Storybook. Topic closed.
-- [x] ~~**`lib/hooks/` full audit**~~ — all hooks explicitly placed; see §6 migration map.
-- [x] ~~**`lib/api/services/general/` audit**~~ — all files stay under `general/` (General API namespace). No splits needed beyond existing file boundaries.
-- [x] ~~**Project glossary**~~ — a `GLOSSARY.md` (or section in CONTRIBUTING) mapping internal codenames to their product/feature meaning (e.g. `tac` → Ton Application Chain, `blobs`/`data-availability`, `cctx` → cross-chain transactions, `epochs` → Celo epoch pages). Aids both engineers and agents navigating the codebase.
-
----
-
-## 12. Example: rollup-specific field on tx page
-
-- **Core** tx UI stays in **`slices/tx`**.
-- **Arbitrum-only** (or other rollup) presentation lives in **`features/rollup/arbitrum/`**.
-- **Compose** at a **high level** (`tx-details` page or `TxDetails` section) so rollup-specific imports are localized and **cycles** remain unlikely.
-- **Types:** the `Transaction` type in `slices/tx/types/api.ts` imports feature-specific sub-types (e.g. `ArbitrumTransactionData` from `features/rollup/arbitrum/types/api.ts`) because the backend includes these fields in the response unconditionally when the rollup is enabled — the frontend type must reflect the full API contract. `client/api` then references `Transaction` via `import type` from the slice. UI component imports follow the same direction: `TxDetails` imports `TxDetailsArbitrum`.
-
-### File layout for this example
+- **`src/config/index.ts`** — the single aggregator; the only config entry point for the rest of the application and the env validator. Assembles the full config object from cross-cutting parts and from each slice/feature's own `config.ts`.
+- Cross-cutting configs with no feature owner live directly under `src/config/`:
 
 ```text
-client/
+src/config/
+  index.ts        ← aggregator; exports the full config object
+  app.ts          ← app identity (name, logo, home URL, …)
+  chain.ts        ← chain info (ID, name, currency, …)
+  meta.ts         ← SEO meta defaults
+  apis.ts         ← external API endpoint config
+  services.ts     ← third-party service config
+  ui.ts           ← global UI settings
+  ui/             ← per-view UI config (block fields, tx views, address formats, …)
+```
+
+Feature and slice configs co-locate with their domain and are imported by the aggregator:
+
+```text
+src/features/account/
+  config.ts       ← imported by src/config/index.ts
+
+src/slices/tx/
+  config.ts       ← imported by src/config/index.ts
+  types/
+    config.ts     ← zero-import constants (if also needed by configs/envs/ validator directly)
+```
+
+**`config.ts` rule:** A `config.ts` inside a slice/feature handles env-derived parsing for that domain. It may import from `configs/envs/` and from its own slice/feature's `types/config.ts` constants. It must **not** import React, browser APIs, or code from other slices/features — it is imported by the Node.js env validator.
+
+**`types/config.ts` rule:** A `types/config.ts` inside a slice/feature has **zero imports** — only `const` arrays, derived `type` aliases, and pure interfaces. Used when the same constants must be shared between the `config.ts` parser and browser UI code without pulling in any dependencies.
+
+### 4.7 `src/pages`
+
+Next.js file-based routes. **Thin wrappers only** — a dynamic import and optionally an inline `getServerSideProps`. No UI components, business logic, or SEO metadata inline. SEO metadata lives in the slice/feature page folder.
+
+**404 vs empty page:** invalid routes are handled here — they do not render the page component.
+
+### 4.8 `src/server`
+
+Next.js server plumbing: `getServerSideProps` factories, middleware, CSP configuration, HTTP headers, rewrites, redirects, route type generation, and server-side monitoring setup.
+
+### 4.9 `src/sprite`
+
+SVG sprite system.
+
+```text
+src/sprite/
+  SpriteIcon.tsx    ← runtime component; reads sprite hash from config
+  icons/            ← SVG source files; processed by svg:build-sprite; some imported directly as components
+    brands/
+    arrows/
+    ...
+  pages/            ← dev sprite preview page
+```
+
+The `svg:build-sprite` script reads `src/sprite/icons/` and outputs the generated sprite to `public/icons/`.
+
+### 4.10 `src/toolkit`
+
+Design system — Chakra UI wrappers, theme tokens, shared hooks and components. Published as `@blockscout/ui-toolkit` (pnpm workspace entry: `src/toolkit/package`). Internal structure is unchanged from the original `toolkit/` location.
+
+---
+
+## 5. Testing
+
+Playwright visual tests (`*.pw.tsx`) stay co-located next to the implementation.
+
+---
+
+## 6. Dependency rules
+
+Two hard boundaries, enforced as ESLint **errors**:
+
+**1. `src/api` must not have runtime imports from `src/slices/*` or `src/features/*`.**
+`import type` is permitted for response-shape typing. Rationale: keeps the transport layer free of UI logic and avoids circular instantiation.
+
+**2. `config.ts` files and `types/config.ts` files must not import React, browser APIs, or code from other slices/features.**
+They are executed by the Node.js env validator. Violations cause build-time failures in the validator.
+
+All other cross-layer imports (slice → feature, feature → slice, feature → feature, shared → slice `import type`) are permitted. Use judgment to avoid cycles; prefer composition at the page level when optional UI plugs into a core screen.
+
+---
+
+## 7. Migration status
+
+Stages 0–8 are complete. The remaining work is structural.
+
+### Stage 9 — Config co-location
+
+**9-1:** Create `src/config/index.ts` aggregator. Move cross-cutting configs from `configs/app/` to `src/config/`. Move each `configs/app/features/<name>.ts` → `client/features/<name>/config.ts` (interim path until stage 10). Wire into the aggregator. Update the env validator. Delete `configs/app/`.
+
+### Stage 10 — Move everything into `src/`
+
+**10-1:** Move `pages/` → `src/pages/`, `nextjs/` → `src/server/`, `icons/` → `src/sprite/icons/`, `toolkit/` → `src/toolkit/`. Rename `client/` → `src/`. Codemod all import paths. Update `pnpm-workspace.yaml`, `tsconfig.json`, `next.config.js`, and ESLint boundary patterns. Simplify boundary rules to the two critical rules from §6 in the same PR.
+
+---
+
+## 8. Example: rollup-specific field on tx page
+
+Core tx UI stays in `slices/tx`. Arbitrum-specific presentation lives in `features/rollup/arbitrum/`. Compose at the `TxDetails` level so rollup imports are localized and cycles remain unlikely.
+
+Types: `Transaction` in `slices/tx/types/api.ts` imports `ArbitrumTransactionData` via `import type` from the feature because the backend includes these fields unconditionally when the rollup is enabled — the frontend type must mirror the full API contract.
+
+```text
+src/
   api/
     services/
       general/
         tx.ts
-          └─ import type { Transaction } from 'client/slices/tx/types/api'
+          └─ import type { Transaction } from 'src/slices/tx/types/api'
   slices/
     tx/
       pages/
-        tx-details/
+        details/
           TxDetails.tsx
-            └─ import TxDetailsArbitrum from 'client/features/rollup/arbitrum/components/TxDetailsArbitrum'
+            └─ import TxDetailsArbitrum from 'src/features/rollup/arbitrum/components/TxDetailsArbitrum'
       types/
-        api.ts                         # owns the Transaction interface
-          └─ import type { ArbitrumTransactionData } from 'client/features/rollup/arbitrum/types/api'
+        api.ts
+          └─ import type { ArbitrumTransactionData } from 'src/features/rollup/arbitrum/types/api'
           export interface Transaction {
             // ... base tx fields ...
             arbitrum?: ArbitrumTransactionData
             optimism?: OptimismTransactionData
             scroll?: ScrollTransactionData
-            // ... other rollup optional fields ...
           }
   features/
     rollup/
@@ -410,5 +311,3 @@ client/
         components/
           TxDetailsArbitrum.tsx
 ```
-
----
