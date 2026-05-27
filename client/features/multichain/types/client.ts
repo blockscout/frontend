@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import type config from 'client/config';
+
 import type * as bens from '@blockscout/bens-types';
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 import type { ExternalChain } from 'client/shared/external-chains/types';
 import type { TokenType } from 'client/slices/token/types/api';
-
-import type config from 'configs/app';
 
 export interface ClusterChainConfig extends ExternalChain {
   slug: string;

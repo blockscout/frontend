@@ -1,10 +1,9 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import config from 'client/config';
 import { compile } from 'path-to-regexp';
 
 import type { ExternalChainExtended } from 'client/shared/external-chains/types';
-
-import config from 'configs/app';
 
 import getResourceParams from './get-resource-params';
 import isNeedProxy from './is-need-proxy';

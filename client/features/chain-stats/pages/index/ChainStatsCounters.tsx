@@ -1,14 +1,13 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Grid } from '@chakra-ui/react';
+import config from 'client/config';
 import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
 import ApiFetchAlert from 'client/shared/alerts/ApiFetchAlert';
 import StatsWidget from 'client/shared/stats/StatsWidget';
-
-import config from 'configs/app';
 
 import { CHAIN_STATS_COUNTER } from '../../stubs/counters';
 

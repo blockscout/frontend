@@ -1,8 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import config from 'client/config';
 import dynamic from 'next/dynamic';
-
-import config from 'configs/app';
 
 const AuthGuardAuth0 = dynamic(() => import('./AuthGuardAuth0'), { ssr: false });
 const AuthGuardDynamic = dynamic(() => import('./AuthGuardDynamic'), { ssr: false });

@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import config from 'client/config';
 import React from 'react';
 
 import type { OptimisticL2TxnBatchesItem } from 'client/features/rollup/optimism/types/api';
@@ -11,7 +12,6 @@ import OptimisticL2TxnBatchDA from 'client/features/rollup/optimism/components/T
 
 import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
 
-import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';

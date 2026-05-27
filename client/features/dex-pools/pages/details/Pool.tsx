@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Flex } from '@chakra-ui/react';
+import config from 'client/config';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -26,7 +27,6 @@ import getQueryParamString from 'client/shared/router/get-query-param-string';
 import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
 import HashStringShortenDynamic from 'client/shared/texts/HashStringShortenDynamic';
 
-import config from 'configs/app';
 import { Image } from 'toolkit/chakra/image';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';

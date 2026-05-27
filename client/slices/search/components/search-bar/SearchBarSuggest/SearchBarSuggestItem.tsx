@@ -11,11 +11,10 @@ import { isEvmAddress } from 'client/slices/address/utils/is-evm-address';
 
 import SearchBarSuggestTacOperation from 'client/features/chain-variants/tac/components/SearchBarSuggestTacOperation';
 import SearchBarSuggestBlob from 'client/features/data-availability/components/SearchBarSuggestBlob';
+import multichainConfig from 'client/features/multichain/chains-config';
 import SearchBarSuggestCluster from 'client/features/name-services/clusters/components/SearchBarSuggestCluster';
 import SearchBarSuggestDomain from 'client/features/name-services/domains/components/SearchBarSuggestDomain';
 import SearchBarSuggestUserOp from 'client/features/user-ops/components/SearchBarSuggestUserOp';
-
-import multichainConfig from 'configs/multichain';
 
 import SearchBarSuggestAddress from './SearchBarSuggestAddress';
 import SearchBarSuggestBlock from './SearchBarSuggestBlock';

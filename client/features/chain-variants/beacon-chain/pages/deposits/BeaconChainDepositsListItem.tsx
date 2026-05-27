@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import config from 'client/config';
 import React from 'react';
 
 import type { DepositsItem } from 'client/features/chain-variants/beacon-chain/types/api';
@@ -11,8 +12,6 @@ import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
 import ListItemMobileGrid from 'client/shared/lists/ListItemMobileGrid';
 import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
-
-import config from 'configs/app';
 
 import BeaconChainDepositSignature from '../../components/BeaconChainDepositSignature';
 import BeaconChainDepositStatusTag from '../../components/BeaconChainDepositStatusTag';

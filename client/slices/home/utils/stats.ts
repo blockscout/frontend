@@ -1,12 +1,11 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import config from 'client/config';
 import type { ReactElement } from 'react';
 
 import type { HomeStatsWidgetId } from 'client/slices/home/types/config';
 
 import type { Props as StatsWidgetProps } from 'client/shared/stats/StatsWidget';
-
-import config from 'configs/app';
 
 export type HomeStatsComponentItem = { id: HomeStatsWidgetId; component: ReactElement };
 export type HomeStatsWidgetItem = StatsWidgetProps & { id: HomeStatsWidgetId; component?: undefined };

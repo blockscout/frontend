@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import config from 'client/config';
+
 import type { BlockQuery } from 'client/slices/block/hooks/useBlockQuery';
 
 import type { QueryWithPagesResult } from 'client/shared/pagination/useQueryWithPages';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
-
-import config from 'configs/app';
 
 import { DEPOSIT } from '../../stubs/deposits';
 

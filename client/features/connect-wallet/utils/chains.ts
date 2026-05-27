@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import appConfig from 'client/config';
 import type { Chain } from 'viem';
 
-import appConfig from 'configs/app';
-import essentialDappsChainsConfig from 'configs/essential-dapps-chains';
-import multichainConfig from 'configs/multichain';
+import essentialDappsChainsConfig from 'client/features/marketplace/chains-config/essential-dapps';
+import multichainConfig from 'client/features/multichain/chains-config';
 
 const getChainInfo = (
   config: Partial<typeof appConfig> = appConfig,

@@ -2,6 +2,7 @@
 
 import { Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
+import config from 'client/config';
 import React from 'react';
 
 import type { AggregatedTokenInfo } from 'client/features/multichain/types/client';
@@ -12,14 +13,13 @@ import type { EntityProps as AddressEntityProps } from 'client/slices/address/co
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 
+import multichainConfig from 'client/features/multichain/chains-config';
 import TokenAddToWallet from 'client/features/web3-wallet/components/TokenAddToWallet';
 
 import getItemIndex from 'client/shared/lists/get-item-index';
 import SimpleValue from 'client/shared/values/entity/SimpleValue';
 import { DEFAULT_ACCURACY_USD } from 'client/shared/values/entity/utils';
 
-import config from 'configs/app';
-import multichainConfig from 'configs/multichain';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { Tag } from 'toolkit/chakra/tag';

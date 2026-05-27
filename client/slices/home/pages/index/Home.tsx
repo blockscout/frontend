@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box, Flex } from '@chakra-ui/react';
+import config from 'client/config';
 import React from 'react';
 
 import { HomeDataContextProvider } from 'client/slices/home/contexts/home-data-context';
@@ -10,8 +11,6 @@ import AdBanner from 'client/features/ads/banner/components/AdBanner';
 import LatestArbitrumL2Batches from 'client/features/rollup/arbitrum/pages/home/LatestArbitrumL2Batches';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
-
-import config from 'configs/app';
 
 import LatestBlocks from './blocks/LatestBlocks';
 import ChainIndicators from './charts/ChainIndicators';

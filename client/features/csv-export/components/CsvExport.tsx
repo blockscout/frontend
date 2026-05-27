@@ -2,6 +2,7 @@
 
 import type { JsxStyleProps } from '@chakra-ui/react';
 import { Box } from '@chakra-ui/react';
+import config from 'client/config';
 import { delay, mapValues, pickBy } from 'es-toolkit';
 import React from 'react';
 
@@ -28,7 +29,6 @@ import useReCaptcha from 'client/shared/re-captcha/useReCaptcha';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
-import config from 'configs/app';
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { toaster } from 'toolkit/chakra/toaster';
 import { Tooltip } from 'toolkit/chakra/tooltip';

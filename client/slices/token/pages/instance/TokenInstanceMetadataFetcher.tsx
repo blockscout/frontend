@@ -2,6 +2,7 @@
 
 import { Spinner, Center } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
+import config from 'client/config';
 import React from 'react';
 
 import type { SocketMessage } from 'client/api/socket/types';
@@ -16,7 +17,6 @@ import getErrorMessage from 'client/shared/errors/get-error-message';
 import ReCaptcha from 'client/shared/re-captcha/ReCaptcha';
 import useReCaptcha from 'client/shared/re-captcha/useReCaptcha';
 
-import config from 'configs/app';
 import { Alert } from 'toolkit/chakra/alert';
 import { DialogBody, DialogContent, DialogHeader, DialogRoot } from 'toolkit/chakra/dialog';
 import { toaster } from 'toolkit/chakra/toaster';

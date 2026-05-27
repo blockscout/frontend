@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Grid, GridItem, Text } from '@chakra-ui/react';
+import config from 'client/config';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -15,7 +16,6 @@ import type { ResourceError } from 'client/api/resources';
 import ApiFetchAlert from 'client/shared/alerts/ApiFetchAlert';
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 
-import config from 'configs/app';
 import { Button } from 'toolkit/chakra/button';
 import { toaster } from 'toolkit/chakra/toaster';
 import { FormFieldAddress } from 'toolkit/components/forms/fields/FormFieldAddress';

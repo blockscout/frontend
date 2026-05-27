@@ -2,6 +2,7 @@
 
 import { Box, Text } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
+import config from 'client/config';
 import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
@@ -14,7 +15,6 @@ import StickyPaginationWithText from 'client/shared/pagination/StickyPaginationW
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
 
-import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 
 import { DEPOSIT } from '../../stubs/deposits';

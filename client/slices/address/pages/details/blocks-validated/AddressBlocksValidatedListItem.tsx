@@ -2,6 +2,7 @@
 
 import { Text, Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
+import config from 'client/config';
 import React from 'react';
 
 import type { Block } from 'client/slices/block/types/api';
@@ -15,7 +16,6 @@ import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
 import ListItemMobile from 'client/shared/lists/ListItemMobile';
 import SimpleValue from 'client/shared/values/entity/SimpleValue';
 
-import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 
 type Props = Block & {

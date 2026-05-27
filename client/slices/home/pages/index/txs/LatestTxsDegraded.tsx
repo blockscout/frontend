@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box, Flex } from '@chakra-ui/react';
+import config from 'client/config';
 import { clamp } from 'es-toolkit';
 import React from 'react';
 
@@ -12,7 +13,6 @@ import { TX } from 'client/slices/tx/stubs/tx';
 
 import { publicClient } from 'client/features/connect-wallet/utils/public-client';
 
-import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
 
 import LatestTxsDegradedNewItems from './LatestTxsDegradedNewItems';

@@ -1,13 +1,12 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { chakra } from '@chakra-ui/react';
+import config from 'client/config';
 import React from 'react';
 
 import { route } from 'nextjs-routes';
 
 import * as TokenEntity from 'client/slices/token/components/entity/TokenEntity';
-
-import config from 'configs/app';
 
 interface Props extends TokenEntity.EntityProps {
   addressHash: string;

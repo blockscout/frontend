@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { chakra } from '@chakra-ui/react';
+import config from 'client/config';
 import React from 'react';
 
 import type { AlternativeExplorer as TAlternativeExplorer } from '../types/client';
@@ -8,7 +9,6 @@ import type { AlternativeExplorer as TAlternativeExplorer } from '../types/clien
 import VerifyWith from 'client/shared/links/VerifyWith';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
-import config from 'configs/app';
 import { Image } from 'toolkit/chakra/image';
 import { Link } from 'toolkit/chakra/link';
 import { stripTrailingSlash } from 'toolkit/utils/url';

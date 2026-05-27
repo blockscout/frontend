@@ -1,8 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import config from 'client/config';
 import type CspDev from 'csp-dev';
-
-import config from 'configs/app';
 
 export function googleAnalytics(): CspDev.DirectiveDescriptor {
   if (!config.features.googleAnalytics.isEnabled) {

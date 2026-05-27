@@ -2,6 +2,7 @@
 
 import { Flex } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
+import config from 'client/config';
 import { useRouter } from 'next/router';
 import React, { useEffect, useMemo } from 'react';
 
@@ -20,7 +21,6 @@ import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-loa
 import * as metadata from 'client/shared/metadata';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
-import config from 'configs/app';
 import { useColorMode } from 'toolkit/chakra/color-mode';
 
 import MarketplaceAppIframe from '../../components/MarketplaceAppIframe';

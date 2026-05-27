@@ -2,6 +2,7 @@
 
 import type { BoxProps } from '@chakra-ui/react';
 import { Box } from '@chakra-ui/react';
+import config from 'client/config';
 import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
@@ -15,7 +16,6 @@ import getStatsLabelFromTitle from 'client/shared/stats/get-stats-label-from-tit
 import StatsWidget from 'client/shared/stats/StatsWidget';
 import calculateUsdValue from 'client/shared/values/entity/calculateUsdValue';
 
-import config from 'configs/app';
 import { thinsp } from 'toolkit/utils/htmlEntities';
 
 interface Props extends BoxProps {}

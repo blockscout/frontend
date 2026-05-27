@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import config from 'client/config';
 import React from 'react';
 import { useSignMessage, useSwitchChain } from 'wagmi';
 
@@ -16,7 +17,6 @@ import getErrorObj from 'client/shared/errors/get-error-obj';
 import getErrorObjPayload from 'client/shared/errors/get-error-obj-payload';
 import * as cookies from 'client/shared/storage/cookies';
 
-import config from 'configs/app';
 import { toaster } from 'toolkit/chakra/toaster';
 import { YEAR } from 'toolkit/utils/consts';
 

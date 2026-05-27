@@ -1,9 +1,9 @@
+import config from 'client/config';
 import React from 'react';
 import { numberToHex } from 'viem';
 
 import * as blockMock from 'client/slices/block/mocks/block';
 
-import config from 'configs/app';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';
 

@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { JsxStyleProps } from '@chakra-ui/react';
+import config from 'client/config';
 import React from 'react';
 
 import type { ExternalChain } from 'client/shared/external-chains/types';
-
-import config from 'configs/app';
 
 import type { EntityProps as TxEntityProps } from './TxEntity';
 import TxEntity from './TxEntity';

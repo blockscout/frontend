@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box, Flex, Grid } from '@chakra-ui/react';
+import config from 'client/config';
 import { capitalize } from 'es-toolkit';
 import React from 'react';
 
@@ -16,7 +17,6 @@ import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
 import SimpleValue from 'client/shared/values/entity/SimpleValue';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
-import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { thinsp } from 'toolkit/utils/htmlEntities';

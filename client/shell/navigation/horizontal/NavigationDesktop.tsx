@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box, chakra, Flex, Separator } from '@chakra-ui/react';
+import config from 'client/config';
 import React from 'react';
 
 import { CONTENT_MAX_WIDTH } from 'client/shell/layout/utils';
@@ -12,8 +13,6 @@ import UserProfileDesktop from 'client/features/account/components/user-profile/
 import useIsAuth from 'client/features/account/hooks/useIsAuth';
 import RewardsButton from 'client/features/rewards/components/RewardsButton';
 import RollupStageBadge from 'client/features/rollup/common/components/RollupStageBadge';
-
-import config from 'configs/app';
 
 import NavigationPromoBanner from '../promo-banner/NavigationPromoBanner';
 import useNavItems, { isGroupItem } from '../useNavItems';

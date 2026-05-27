@@ -2,13 +2,12 @@
 
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
+import config from 'client/config';
 
 import type { TokenInstance } from 'client/slices/token/types/api';
 
 import type { DynamicRoute } from 'nextjs-routes';
 import { route } from 'nextjs-routes';
-
-import config from 'configs/app';
 
 import type { MediaType, Size, TransportType } from './utils';
 import { getPreliminaryMediaType } from './utils';
@@ -160,7 +159,7 @@ function getCdnData(data: TokenInstance, size: Size, mediaType: MediaType): Medi
 }
 
 function getIpfsData(url: unknown, mediaType: MediaType): MediaInfo | undefined {
-  if (!config.UI.views.nft.verifiedFetch.isEnabled) {
+  if (!config.UI.views.token.nft.verifiedFetch.isEnabled) {
     return;
   }
 

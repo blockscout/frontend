@@ -1,11 +1,10 @@
 import type { PlaywrightTestConfig } from '@playwright/experimental-ct-react';
 import { devices, defineConfig } from '@playwright/experimental-ct-react';
 import react from '@vitejs/plugin-react';
+import appConfig from 'client/config';
 import type { Plugin } from 'esbuild';
 import svgr from 'vite-plugin-svgr';
 import tsconfigPaths from 'vite-tsconfig-paths';
-
-import appConfig from 'configs/app';
 
 /**
  * See https://playwright.dev/docs/test-configuration.

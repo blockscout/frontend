@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Text, HStack } from '@chakra-ui/react';
+import config from 'client/config';
 import React from 'react';
 
 import type { Address } from 'client/slices/address/types/api';
@@ -16,7 +17,6 @@ import calculateUsdValue from 'client/shared/values/entity/calculateUsdValue';
 import SimpleValue from 'client/shared/values/entity/SimpleValue';
 import { DEFAULT_ACCURACY_USD } from 'client/shared/values/entity/utils';
 
-import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 
 const multichainFeature = config.features.multichainButton;

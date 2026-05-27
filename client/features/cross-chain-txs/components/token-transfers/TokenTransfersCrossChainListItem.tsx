@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { chakra, Grid, HStack, type JsxStyleProps } from '@chakra-ui/react';
+import config from 'client/config';
 import React from 'react';
 
 import type { InterchainTransfer } from '@blockscout/interchain-indexer-types';
@@ -14,7 +15,6 @@ import ListItemMobile from 'client/shared/lists/ListItemMobile';
 import TextSeparator from 'client/shared/texts/TextSeparator';
 import TokenValueInterchain from 'client/shared/values/entity/TokenValueInterchain';
 
-import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { mdash } from 'toolkit/utils/htmlEntities';
 

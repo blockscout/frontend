@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import config from 'client/config';
 import { useCallback, useRef, useEffect } from 'react';
 
 import type { PreSubmitTransactionResponse } from '@blockscout/points-types';
@@ -10,7 +11,6 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 import useProfileQuery from 'client/features/account/hooks/useProfileQuery';
 import { useRewardsContext } from 'client/features/rewards/context';
 
-import config from 'configs/app';
 import { MINUTE } from 'toolkit/utils/consts';
 
 const feature = config.features.rewards;

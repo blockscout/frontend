@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Text } from '@chakra-ui/react';
+import config from 'client/config';
 import React from 'react';
 
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
@@ -9,7 +10,6 @@ import PageTitle from 'client/shell/page/title/PageTitle';
 
 import AlertWithExternalHtml from 'client/shared/alerts/AlertWithExternalHtml';
 
-import config from 'configs/app';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 
 import EthRpcApi from './EthRpcApi';

@@ -2,6 +2,7 @@
 
 import { Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
+import config from 'client/config';
 import React from 'react';
 
 import type { Block } from 'client/slices/block/types/api';
@@ -13,7 +14,6 @@ import GasUsed from 'client/slices/gas/components/GasUsed';
 import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
 import SimpleValue from 'client/shared/values/entity/SimpleValue';
 
-import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 

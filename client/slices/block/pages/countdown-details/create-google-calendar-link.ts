@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import config from 'client/config';
+
 import { route } from 'nextjs/routes';
 
 import type { TMultichainContext } from 'client/features/multichain/context';
 
 import dayjs from 'client/shared/date-and-time/dayjs';
-
-import config from 'configs/app';
 
 interface Params {
   timeFromNow: number;

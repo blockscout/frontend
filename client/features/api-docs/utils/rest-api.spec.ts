@@ -1,4 +1,5 @@
-import type { ApiPropsFull } from 'configs/app/apis';
+import type { ApiPropsFull } from 'client/config/apis';
+
 import { describe, test, expect } from 'vitest';
 
 import { coreApiRequestInterceptorFactory } from './rest-api';

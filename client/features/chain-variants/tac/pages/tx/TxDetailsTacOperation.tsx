@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { HStack } from '@chakra-ui/react';
+import config from 'client/config';
 import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
 import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
 
-import config from 'configs/app';
 import { Tag } from 'toolkit/chakra/tag';
 
 import TacOperationEntity from '../../components/TacOperationEntity';

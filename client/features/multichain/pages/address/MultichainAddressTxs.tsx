@@ -18,6 +18,7 @@ import useAddressTxsQuery from 'client/slices/address/pages/details/txs/useAddre
 import TxsWithApiSorting from 'client/slices/tx/pages/index/list/TxsWithApiSorting';
 
 import CsvExport from 'client/features/csv-export/components/CsvExport';
+import multichainConfig from 'client/features/multichain/chains-config';
 import ChainSelect from 'client/features/multichain/components/ChainSelect';
 import ListCounterText from 'client/features/multichain/components/ListCounterText';
 import { MultichainProvider } from 'client/features/multichain/context';
@@ -26,7 +27,6 @@ import useIsMobile from 'client/shared/hooks/useIsMobile';
 import Pagination from 'client/shared/pagination/Pagination';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
-import multichainConfig from 'configs/multichain';
 import { EmptyState } from 'toolkit/chakra/empty-state';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 

@@ -2,10 +2,10 @@
 
 import React from 'react';
 
+import essentialDappsChainsConfig from 'client/features/marketplace/chains-config/essential-dapps';
+
 import type { Props } from 'client/shared/external-chains/ChainSelect';
 import ChainSelect from 'client/shared/external-chains/ChainSelect';
-
-import essentialDappsChainsConfig from 'configs/essential-dapps-chains';
 
 const ChainSelectEssentialDapps = (props: Omit<Props, 'chainsConfig'>) => {
   const chainsConfig = React.useMemo(() => {

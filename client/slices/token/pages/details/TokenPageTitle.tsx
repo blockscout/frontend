@@ -2,6 +2,7 @@
 
 import { Flex, useToken } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
+import config from 'client/config';
 import React from 'react';
 
 import type { MetadataTag } from 'client/features/address-metadata/components/tag/types';
@@ -31,7 +32,6 @@ import TokenAddToWallet from 'client/features/web3-wallet/components/TokenAddToW
 
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
-import config from 'configs/app';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 
 const PREDEFINED_TAG_PRIORITY = 100;

@@ -2,11 +2,10 @@
 
 import { Flex, chakra } from '@chakra-ui/react';
 import { SliseAd } from '@slise/embed-react';
+import config from 'client/config';
 import React from 'react';
 
 import type { BannerProps } from '../types/client';
-
-import config from 'configs/app';
 
 import {
   DESKTOP_BANNER_HEIGHT,

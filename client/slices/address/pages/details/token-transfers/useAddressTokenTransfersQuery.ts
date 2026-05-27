@@ -10,12 +10,12 @@ import { getTokenTypes } from 'client/slices/token/utils/token-types';
 
 import { getTokenTransfersStub } from 'client/slices/token-transfer/stubs';
 
+import multichainConfig from 'client/features/multichain/chains-config';
+
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import getFilterValueFromQuery from 'client/shared/router/get-filter-value-from-query';
 import getFilterValuesFromQuery from 'client/shared/router/get-filter-values-from-query';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
-
-import multichainConfig from 'configs/multichain';
 
 export type Filters = {
   type: Array<TokenType>;

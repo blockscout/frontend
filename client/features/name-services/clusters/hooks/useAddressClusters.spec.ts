@@ -13,7 +13,7 @@ vi.mock('client/api/hooks/useApiQuery', () => ({
   'default': mockUseApiQuery,
 }));
 
-vi.mock('configs/app', async() => {
+vi.mock('client/config', async() => {
   return {
     'default': {
       UI: {

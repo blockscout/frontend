@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import config from 'client/config';
 import dynamic from 'next/dynamic';
 import React from 'react';
 
@@ -9,7 +10,6 @@ import type { VerifiedAddress } from 'client/features/account/types/api';
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 import { FallbackProvider } from 'client/shared/utils/fallback-provider';
 
-import config from 'configs/app';
 import { DialogBody, DialogContent, DialogHeader, DialogRoot } from 'toolkit/chakra/dialog';
 
 const Web3ProviderBase = dynamic(() => import('client/features/connect-wallet/components/Web3Provider'), { ssr: false });

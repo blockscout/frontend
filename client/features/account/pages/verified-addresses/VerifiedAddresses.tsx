@@ -2,6 +2,7 @@
 
 import { List, chakra, Box } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
+import config from 'client/config';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -25,7 +26,6 @@ import * as mixpanel from 'client/shared/analytics/mixpanel';
 import DataList from 'client/shared/lists/DataList';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
-import config from 'configs/app';
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';
 import { BackToButton } from 'toolkit/components/buttons/BackToButton';

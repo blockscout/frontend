@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { chakra } from '@chakra-ui/react';
+import config from 'client/config';
 import React from 'react';
 
 import { route } from 'nextjs-routes';
-
-import config from 'configs/app';
 
 import * as BlobEntity from './BlobEntity';
 

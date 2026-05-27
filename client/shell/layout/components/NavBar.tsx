@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import NavigationDesktop from 'client/shell/navigation/horizontal/NavigationDesktop';
+import config from 'client/config';
 
-import config from 'configs/app';
+import NavigationDesktop from 'client/shell/navigation/horizontal/NavigationDesktop';
 
 const EmptyComponent = () => null;
 

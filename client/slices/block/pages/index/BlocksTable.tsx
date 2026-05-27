@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import config from 'client/config';
 import { capitalize } from 'es-toolkit';
 import React from 'react';
 
@@ -16,7 +17,6 @@ import getChainValidatorTitle from 'client/slices/chain/verification-type/utils/
 import TimeFormatToggle from 'client/shared/date-and-time/TimeFormatToggle';
 import useInitialList from 'client/shared/lists/useInitialList';
 
-import config from 'configs/app';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 
 interface Props {

@@ -2,6 +2,7 @@
 
 import { Box, Text } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
+import config from 'client/config';
 import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
@@ -17,7 +18,6 @@ import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
 import calculateUsdValue from 'client/shared/values/entity/calculateUsdValue';
 
-import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 
 import { WITHDRAWAL } from '../../stubs/withdrawals';

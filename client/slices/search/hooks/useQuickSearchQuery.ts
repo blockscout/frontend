@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import config from 'client/config';
 import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
@@ -7,12 +8,10 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 import { isBech32Address, fromBech32Address } from 'client/slices/address/utils/bech32';
 
 import { getExternalSearchItem } from 'client/features/chain-variants/zeta-chain/utils/external-search';
+import multichainConfig from 'client/features/multichain/chains-config';
 import useSearchMultichain from 'client/features/multichain/hooks/useSearchMultichain';
 
 import useDebounce from 'client/shared/hooks/useDebounce';
-
-import config from 'configs/app';
-import multichainConfig from 'configs/multichain';
 
 export default function useQuickSearchQuery() {
   const [ searchTerm, setSearchTerm ] = React.useState('');

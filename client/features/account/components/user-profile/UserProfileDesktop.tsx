@@ -1,12 +1,11 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { type ButtonProps } from '@chakra-ui/react';
+import config from 'client/config';
 import dynamic from 'next/dynamic';
 
 import UserProfileAuth0 from 'client/features/account/components/user-profile/auth0/UserProfileDesktop';
 import UserWalletDesktop from 'client/features/account/components/user-profile/wallet/UserWalletDesktop';
-
-import config from 'configs/app';
 
 const UserProfileDynamic = dynamic(() => import('client/features/account/components/user-profile/dynamic/UserProfile'), { ssr: false });
 

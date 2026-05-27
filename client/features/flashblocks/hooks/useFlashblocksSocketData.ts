@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import config from 'client/config';
 import React from 'react';
 
 import type { FlashblockItem } from 'client/features/flashblocks/types/client';
@@ -7,7 +8,6 @@ import type { FlashblockItem } from 'client/features/flashblocks/types/client';
 import { formatFlashblockItemMegaEth, formatFlashblockItemOptimism } from 'client/features/flashblocks/utils/format-flashblock-item';
 import { parseSocketEventDataMegaEth, parseSocketEventDataOptimism } from 'client/features/flashblocks/utils/parse-socket-event-data';
 
-import config from 'configs/app';
 import { SECOND } from 'toolkit/utils/consts';
 
 const flashblocksFeature = config.features.flashblocks;

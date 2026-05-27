@@ -16,6 +16,7 @@ import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'client/shell/page/action-b
 
 import { calculateUsdValue } from 'client/slices/token/pages/address/utils';
 
+import multichainConfig from 'client/features/multichain/chains-config';
 import { ADDRESS_PORTFOLIO, TOKEN } from 'client/features/multichain/stubs';
 
 import useDebounce from 'client/shared/hooks/useDebounce';
@@ -26,7 +27,6 @@ import { generateListStub } from 'client/shared/pagination/utils';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import * as cookies from 'client/shared/storage/cookies';
 
-import multichainConfig from 'configs/multichain';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import { ZERO } from 'toolkit/utils/consts';
 

@@ -1,6 +1,6 @@
 import * as yup from 'yup';
 import { urlTest } from '../utils';
-import { replaceQuotes } from 'configs/app/utils';
+import { replaceQuotes } from 'client/config/utils/envs';
 import type { NetworkVerificationTypeEnvs } from 'types/networks';
 
 // Blockchain parameters schema

@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import config from 'client/config';
 import React from 'react';
 
 import { MarketplaceCategory } from 'client/features/marketplace/types/client';
 
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
-import config from 'configs/app';
 import { EmptyState } from 'toolkit/chakra/empty-state';
 import { Link } from 'toolkit/chakra/link';
 import { apos, space } from 'toolkit/utils/htmlEntities';

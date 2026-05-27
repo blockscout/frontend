@@ -11,6 +11,7 @@ import LogItem from 'client/slices/log/components/LogItem';
 import { LOG } from 'client/slices/log/stubs/log';
 
 import CsvExport from 'client/features/csv-export/components/CsvExport';
+import multichainConfig from 'client/features/multichain/chains-config';
 import ChainSelect from 'client/features/multichain/components/ChainSelect';
 import { MultichainProvider } from 'client/features/multichain/context';
 
@@ -20,8 +21,6 @@ import Pagination from 'client/shared/pagination/Pagination';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
-
-import multichainConfig from 'configs/multichain';
 
 import getAvailableChainIds from './get-available-chain-ids';
 

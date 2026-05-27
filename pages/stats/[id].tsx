@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import config from 'client/config';
 import type { GetServerSideProps, NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import React from 'react';
@@ -15,8 +16,6 @@ import { MultichainProvider } from 'client/features/multichain/context';
 
 import dayjs from 'client/shared/date-and-time/dayjs';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
-
-import config from 'configs/app';
 
 const ChainStatsDetails = dynamic(() => import('client/features/chain-stats/pages/details/ChainStatsDetails'), { ssr: false });
 

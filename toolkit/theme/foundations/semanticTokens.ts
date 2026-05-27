@@ -1,8 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { ThemingConfig } from '@chakra-ui/react';
-
-import config from 'configs/app';
+import config from 'client/config';
 
 const heroBannerButton = config.UI.homepage.heroBanner?.button;
 

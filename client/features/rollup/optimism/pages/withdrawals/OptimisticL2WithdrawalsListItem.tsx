@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import config from 'client/config';
 import React from 'react';
 
 import type { OptimisticL2WithdrawalsItem } from 'client/features/rollup/optimism/types/api';
@@ -14,7 +15,6 @@ import dayjs from 'client/shared/date-and-time/dayjs';
 import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
 import ListItemMobileGrid from 'client/shared/lists/ListItemMobileGrid';
 
-import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 
 import OptimisticL2WithdrawalsItemStatus from './OptimisticL2WithdrawalsItemStatus';

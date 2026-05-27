@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Grid, GridItem } from '@chakra-ui/react';
+import config from 'client/config';
 import React from 'react';
 import type { Path } from 'react-hook-form';
 
-import config from 'configs/app';
 import { FormFieldCheckbox } from 'toolkit/components/forms/fields/FormFieldCheckbox';
 
 import type { Inputs as FormFields } from './AddressForm';

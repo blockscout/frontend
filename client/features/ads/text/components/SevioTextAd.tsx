@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box, chakra } from '@chakra-ui/react';
+import config from 'client/config';
 import Script from 'next/script';
 import React, { useCallback, useEffect, useRef } from 'react';
 
 import { useAppContext } from 'client/shell/app/context';
 
-import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 
 const adTextFeature = config.features.adsText;

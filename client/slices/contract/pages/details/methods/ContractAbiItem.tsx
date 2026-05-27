@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box } from '@chakra-ui/react';
+import config from 'client/config';
 import React from 'react';
 import { Element } from 'react-scroll';
 
@@ -10,7 +11,6 @@ import { route } from 'nextjs-routes';
 
 import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
 
-import config from 'configs/app';
 import { AccordionItem, AccordionItemContent, AccordionItemTrigger } from 'toolkit/chakra/accordion';
 import { Alert } from 'toolkit/chakra/alert';
 import { Badge } from 'toolkit/chakra/badge';

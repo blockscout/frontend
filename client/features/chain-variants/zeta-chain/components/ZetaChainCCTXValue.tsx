@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Text, chakra } from '@chakra-ui/react';
+import config from 'client/config';
 import React from 'react';
 
 import { CoinType } from '@blockscout/zetachain-cctx-types';
 
 import calculateUsdValue from 'client/shared/values/entity/calculateUsdValue';
 
-import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 
 type Props = {

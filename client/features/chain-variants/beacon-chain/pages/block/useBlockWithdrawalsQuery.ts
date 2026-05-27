@@ -2,6 +2,7 @@
 
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
+import config from 'client/config';
 import React from 'react';
 import type { Chain, GetBlockReturnType } from 'viem';
 
@@ -21,7 +22,6 @@ import type { QueryWithPagesResult } from 'client/shared/pagination/useQueryWith
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub, emptyPagination } from 'client/shared/pagination/utils';
 
-import config from 'configs/app';
 import { SECOND } from 'toolkit/utils/consts';
 
 import { WITHDRAWAL } from '../../stubs/withdrawals';

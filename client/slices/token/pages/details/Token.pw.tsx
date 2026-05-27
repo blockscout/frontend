@@ -1,3 +1,4 @@
+import config from 'client/config';
 import React from 'react';
 
 import { token as contract } from 'client/slices/address/mocks/address';
@@ -5,7 +6,6 @@ import { tokenInfo, tokenCounters, bridgedTokenA } from 'client/slices/token/moc
 
 import * as verifiedAddressesMocks from 'client/features/account/mocks/verified-addresses';
 
-import config from 'configs/app';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import * as socketServer from 'playwright/fixtures/socketServer';
 import { test, expect, devices } from 'playwright/lib';

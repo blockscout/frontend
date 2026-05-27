@@ -2,6 +2,7 @@
 
 import { useQueryClient, type UseQueryResult } from '@tanstack/react-query';
 import { useToggle } from '@uidotdev/usehooks';
+import config from 'client/config';
 import { useRouter } from 'next/router';
 import React, { createContext, useContext, useEffect, useMemo, useCallback, useState } from 'react';
 import { useSignMessage, useSwitchChain } from 'wagmi';
@@ -22,7 +23,6 @@ import getQueryParamString from 'client/shared/router/get-query-param-string';
 import removeQueryParam from 'client/shared/router/remove-query-param';
 import * as cookies from 'client/shared/storage/cookies';
 
-import config from 'configs/app';
 import { toaster } from 'toolkit/chakra/toaster';
 import { YEAR } from 'toolkit/utils/consts';
 

@@ -3,6 +3,7 @@
 import type { StackProps } from '@chakra-ui/react';
 import { HStack } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
+import config from 'client/config';
 import { shuffle } from 'es-toolkit';
 import React from 'react';
 
@@ -11,8 +12,6 @@ import type { HighlightsBannerConfig } from 'client/slices/home/types/client';
 import useFetch from 'client/api/hooks/useFetch';
 
 import { HOMEPAGE_HIGHLIGHTS_BANNER } from 'client/slices/home/stubs';
-
-import config from 'configs/app';
 
 import HighlightsItem from './HighlightsItem';
 

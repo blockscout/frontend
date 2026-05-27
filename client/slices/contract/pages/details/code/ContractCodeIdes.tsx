@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Flex, chakra } from '@chakra-ui/react';
+import config from 'client/config';
 import React from 'react';
 
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
-import config from 'configs/app';
 import { Button } from 'toolkit/chakra/button';
 import { Image } from 'toolkit/chakra/image';
 import { Link } from 'toolkit/chakra/link';

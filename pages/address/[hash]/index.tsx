@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import config from 'client/config';
 import type { GetServerSideProps, NextPage } from 'next';
 import React from 'react';
 
@@ -15,8 +16,6 @@ import Address from 'client/slices/address/pages/details/Address';
 import MultichainAddress from 'client/features/multichain/pages/address/MultichainAddress';
 
 import getQueryParamString from 'client/shared/router/get-query-param-string';
-
-import config from 'configs/app';
 
 const pathname: Route['pathname'] = '/address/[hash]';
 

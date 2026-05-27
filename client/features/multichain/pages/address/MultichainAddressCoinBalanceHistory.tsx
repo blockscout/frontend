@@ -9,11 +9,10 @@ import { SocketProvider } from 'client/api/socket/context';
 
 import AddressCoinBalance from 'client/slices/address/pages/details/coin-balance/AddressCoinBalance';
 
+import multichainConfig from 'client/features/multichain/chains-config';
 import ChainSelect from 'client/features/multichain/components/ChainSelect';
 import { MultichainProvider } from 'client/features/multichain/context';
 import useRoutedChainSelect from 'client/features/multichain/hooks/useRoutedChainSelect';
-
-import multichainConfig from 'configs/multichain';
 
 import getAvailableChainIds from './get-available-chain-ids';
 

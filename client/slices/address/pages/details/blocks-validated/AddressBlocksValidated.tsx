@@ -2,6 +2,7 @@
 
 import { Box } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
+import config from 'client/config';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -25,7 +26,6 @@ import Pagination from 'client/shared/pagination/Pagination';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
 
-import config from 'configs/app';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 
 import AddressBlocksValidatedListItem from './AddressBlocksValidatedListItem';

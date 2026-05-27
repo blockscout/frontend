@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import config from 'client/config';
 import React from 'react';
 
 import type { TokenInfo } from 'client/slices/token/types/api';
@@ -7,8 +8,6 @@ import type { TokenInfo } from 'client/slices/token/types/api';
 import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
 import GasPriceValue from 'client/shared/values/entity/GasPriceValue';
 import TokenValue from 'client/shared/values/entity/TokenValue';
-
-import config from 'configs/app';
 
 interface Props {
   gasToken?: TokenInfo | null;

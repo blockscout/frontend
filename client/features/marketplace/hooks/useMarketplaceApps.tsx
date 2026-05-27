@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { useQuery } from '@tanstack/react-query';
+import config from 'client/config';
 import React from 'react';
 
 import type { MarketplaceApp } from 'client/features/marketplace/types/client';
@@ -12,8 +13,6 @@ import type { ResourceError } from 'client/api/resources';
 
 import useIsAuth from 'client/features/account/hooks/useIsAuth';
 import { MARKETPLACE_APP } from 'client/features/marketplace/stubs';
-
-import config from 'configs/app';
 
 import type { SortValue } from '../utils/sort';
 

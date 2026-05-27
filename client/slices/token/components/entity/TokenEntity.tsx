@@ -2,6 +2,7 @@
 
 import type { BoxProps } from '@chakra-ui/react';
 import { chakra } from '@chakra-ui/react';
+import config from 'client/config';
 import React from 'react';
 
 import type { TokenInfo } from 'client/slices/token/types/api';
@@ -17,7 +18,6 @@ import { distributeEntityProps, getIconProps } from 'client/shared/entities/util
 import getChainTooltipText from 'client/shared/external-chains/get-chain-tooltip-text';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
-import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { TruncatedTextTooltip } from 'toolkit/components/truncation/TruncatedTextTooltip';

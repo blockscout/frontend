@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box } from '@chakra-ui/react';
+import config from 'client/config';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -12,8 +13,6 @@ import { ENS_DOMAIN_EVENT } from 'client/features/name-services/domains/stubs';
 
 import DataList from 'client/shared/lists/DataList';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
-
-import config from 'configs/app';
 
 import NameDomainHistoryListItem from './NameDomainHistoryListItem';
 import NameDomainHistoryTable from './NameDomainHistoryTable';

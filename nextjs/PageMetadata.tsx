@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import config from 'client/config';
 import Head from 'next/head';
 import React from 'react';
 
@@ -7,8 +8,6 @@ import type { Route } from 'nextjs-routes';
 import type { Props as PageProps } from 'nextjs/getServerSideProps/handlers';
 
 import * as metadata from 'client/shared/metadata';
-
-import config from 'configs/app';
 
 interface Props<Pathname extends Route['pathname']> {
   pathname: Pathname;

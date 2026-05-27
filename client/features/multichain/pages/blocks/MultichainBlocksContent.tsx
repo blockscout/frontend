@@ -10,9 +10,8 @@ import { ACTION_BAR_HEIGHT_DESKTOP } from 'client/shell/page/action-bar/ActionBa
 import type { Props as BlocksContentProps } from 'client/slices/block/pages/index/BlocksContent';
 import BlocksContent from 'client/slices/block/pages/index/BlocksContent';
 
+import multichainConfig from 'client/features/multichain/chains-config';
 import { MultichainProvider } from 'client/features/multichain/context';
-
-import multichainConfig from 'configs/multichain';
 
 interface Props extends BlocksContentProps {
   chainId: string | undefined;

@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box, createListCollection, HStack } from '@chakra-ui/react';
+import config from 'client/config';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -26,8 +27,6 @@ import getQueryParamString from 'client/shared/router/get-query-param-string';
 import getSortParamsFromValue from 'client/shared/sort/get-sort-params-from-value';
 import getSortValueFromQuery from 'client/shared/sort/get-sort-value-from-query';
 import Sort from 'client/shared/sort/Sort';
-
-import config from 'configs/app';
 
 import { VALIDATORS_STABILITY_SORT_OPTIONS } from './utils';
 import ValidatorsCounters from './ValidatorsCounters';

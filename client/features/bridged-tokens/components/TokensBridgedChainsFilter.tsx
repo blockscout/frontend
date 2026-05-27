@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Text, Flex, useCheckboxGroup, chakra } from '@chakra-ui/react';
+import config from 'client/config';
 import React from 'react';
 
-import config from 'configs/app';
 import { Button } from 'toolkit/chakra/button';
 import { Checkbox, CheckboxGroup } from 'toolkit/chakra/checkbox';
 

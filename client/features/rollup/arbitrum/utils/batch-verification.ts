@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { ARBITRUM_L2_TX_BATCH_STATUSES, type ArbitrumBatchStatus, type ArbitrumL2TxData } from '../types/api';
+import config from 'client/config';
 
-import config from 'configs/app';
+import { ARBITRUM_L2_TX_BATCH_STATUSES, type ArbitrumBatchStatus, type ArbitrumL2TxData } from '../types/api';
 
 const rollupFeature = config.features.rollup;
 

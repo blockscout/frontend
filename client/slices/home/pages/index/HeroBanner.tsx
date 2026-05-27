@@ -3,6 +3,7 @@
 // we use custom heading size for hero banner
 // eslint-disable-next-line no-restricted-imports
 import { Box, Flex, Heading } from '@chakra-ui/react';
+import config from 'client/config';
 import React from 'react';
 
 import SearchBar from 'client/slices/search/components/search-bar/SearchBarDesktop';
@@ -13,8 +14,6 @@ import AdBanner from 'client/features/ads/banner/components/AdBanner';
 import RewardsButton from 'client/features/rewards/components/RewardsButton';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
-
-import config from 'configs/app';
 
 export const BACKGROUND_DEFAULT =
   'radial-gradient(103.03% 103.03% at 0% 0%, rgba(183, 148, 244, 0.8) 0%, rgba(0, 163, 196, 0.8) 100%), var(--chakra-colors-blue-400)';

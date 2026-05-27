@@ -2,6 +2,7 @@
 
 import { Flex, Text, Box } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
+import config from 'client/config';
 import { capitalize } from 'es-toolkit';
 import React from 'react';
 
@@ -24,7 +25,6 @@ import SimpleValue from 'client/shared/values/entity/SimpleValue';
 import Utilization from 'client/shared/values/utilization/Utilization';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
-import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';

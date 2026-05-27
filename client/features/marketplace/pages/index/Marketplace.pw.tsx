@@ -1,9 +1,9 @@
 import { Box } from '@chakra-ui/react';
+import config from 'client/config';
 import React from 'react';
 
 import { apps as appsMock } from 'client/features/marketplace/mocks/dapps';
 
-import config from 'configs/app';
 import { test, expect, devices } from 'playwright/lib';
 import * as pwConfig from 'playwright/utils/config';
 

@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { NavItem } from './types';
+import config from 'client/config';
 
-import config from 'configs/app';
+import type { NavItem } from './types';
 
 import { isInternalItem } from './useNavItems';
 

@@ -1,10 +1,9 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import config from 'client/config';
 import React from 'react';
 
 import type { FormSubmitHandler } from './types';
-
-import config from 'configs/app';
 
 import useCallMethodPublicClient from './useCallMethodPublicClient';
 import useCallMethodWalletClient from './useCallMethodWalletClient';

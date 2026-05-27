@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { chakra, Grid, GridItem } from '@chakra-ui/react';
+import appConfig from 'client/config';
 import { useRouter } from 'next/router';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
@@ -18,7 +19,6 @@ import useIsMobile from 'client/shared/hooks/useIsMobile';
 import ReCaptcha from 'client/shared/re-captcha/ReCaptcha';
 import useReCaptcha from 'client/shared/re-captcha/useReCaptcha';
 
-import appConfig from 'configs/app';
 import { Button } from 'toolkit/chakra/button';
 import { Heading } from 'toolkit/chakra/heading';
 import { FormFieldEmail } from 'toolkit/components/forms/fields/FormFieldEmail';

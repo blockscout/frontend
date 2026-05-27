@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import config from 'client/config';
 import dynamic from 'next/dynamic';
 import React from 'react';
 
@@ -9,8 +10,6 @@ import type { Props } from 'nextjs/getServerSideProps/handlers';
 import PageNextJs from 'nextjs/PageNextJs';
 
 import LayoutSearchResults from 'client/shell/layout/LayoutSearchResults';
-
-import config from 'configs/app';
 
 const SearchResults = dynamic(() => {
   if (config.features.multichain.isEnabled) {

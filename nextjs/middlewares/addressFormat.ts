@@ -1,12 +1,11 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import config from 'client/config';
 import type { NextRequest, NextResponse } from 'next/server';
 
 import type { AddressFormat } from 'client/slices/address/types/config';
 
 import * as cookiesLib from 'client/shared/storage/cookies';
-
-import config from 'configs/app';
 
 export default function addressFormatMiddleware(req: NextRequest, res: NextResponse) {
   const addressFormatCookie = req.cookies.get(cookiesLib.NAMES.ADDRESS_FORMAT);

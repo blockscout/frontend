@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { UseQueryResult } from '@tanstack/react-query';
+import config from 'client/config';
 import React from 'react';
 
 import type { TokenVerifiedInfo as TTokenVerifiedInfo } from 'client/features/verified-tokens/types/api';
 
 import type { ResourceError } from 'client/api/resources';
 
-import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 

@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import config from 'client/config';
+import { getFeaturePayload } from 'client/config/utils/features';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { NavItemInternal, NavItem, NavGroupItem } from './types';
-import { getFeaturePayload } from 'configs/app/features/types';
 
 import { layerLabels } from 'client/features/rollup/common/utils/layer';
 
-import config from 'configs/app';
 import { rightLineArrow } from 'toolkit/utils/htmlEntities';
 
 const marketplaceFeature = config.features.marketplace;
@@ -126,7 +126,7 @@ export default function useNavItems(): ReturnType {
       icon: 'navigation/output_roots',
       isActive: pathname === '/output-roots',
     };
-    const rollupDisputeGames = config.features.faultProofSystem.isEnabled ? {
+    const rollupDisputeGames = config.features.rollup.isEnabled && config.features.rollup.faultProofSystemEnabled ? {
       text: 'Dispute games',
       nextRoute: { pathname: '/dispute-games' as const },
       icon: 'navigation/games',
@@ -403,7 +403,7 @@ export default function useNavItems(): ReturnType {
         icon: 'navigation/custom_abi',
         isActive: pathname === '/account/custom-abi',
       },
-      config.features.addressVerification.isEnabled && {
+      config.features.account.isEnabled && config.features.account.addressVerificationEnabled && {
         text: 'Verified addrs',
         nextRoute: { pathname: '/account/verified-addresses' as const },
         icon: 'navigation/verified_contracts',

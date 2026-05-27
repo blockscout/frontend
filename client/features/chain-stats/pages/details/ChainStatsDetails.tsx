@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import config from 'client/config';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -21,7 +22,6 @@ import * as metadata from 'client/shared/metadata';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import { useQueryParams } from 'client/shared/router/useQueryParams';
 
-import config from 'configs/app';
 import type { OnValueChangeHandler } from 'toolkit/chakra/select';
 
 import { getIntervalByResolution, getIntervalFromQuery } from '../../utils/interval';

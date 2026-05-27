@@ -2,6 +2,7 @@
 
 import { Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
+import config from 'client/config';
 import React from 'react';
 
 import type { AddressesItem } from 'client/slices/address/types/api';
@@ -10,7 +11,6 @@ import AddressEntity from 'client/slices/address/components/entity/AddressEntity
 
 import SimpleValue from 'client/shared/values/entity/SimpleValue';
 
-import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { Tag } from 'toolkit/chakra/tag';

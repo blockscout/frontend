@@ -1,12 +1,11 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import config from 'client/config';
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import React from 'react';
 
 import PageNextJs from 'nextjs/PageNextJs';
-
-import config from 'configs/app';
 
 const VerifiedContracts = dynamic(() => {
   if (config.features.multichain.isEnabled) {

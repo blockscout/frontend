@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { Route } from 'nextjs-routes';
+import config from 'client/config';
 
-import config from 'configs/app';
+import type { Route } from 'nextjs-routes';
 
 const CANONICAL_ROUTES: Array<Route['pathname']> = [
   '/',

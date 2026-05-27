@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import config from 'client/config';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -28,7 +29,6 @@ import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-loa
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import useEtherscanRedirects from 'client/shared/router/useEtherscanRedirects';
 
-import config from 'configs/app';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 
 import TxDetailsApi from './info/TxDetailsApi';

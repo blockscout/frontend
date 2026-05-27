@@ -2,6 +2,7 @@
 
 import { Flex, Grid, Text } from '@chakra-ui/react';
 import { BigNumber } from 'bignumber.js';
+import config from 'client/config';
 import React from 'react';
 
 import { type OutboundParams, type CrossChainTx, CctxStatus } from '@blockscout/zetachain-cctx-types';
@@ -17,7 +18,6 @@ import useZetaChainConfig from 'client/features/chain-variants/zeta-chain/hooks/
 import StatusTag from 'client/shared/tags/status-tag/StatusTag';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
-import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 
 type Props = {

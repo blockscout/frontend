@@ -3,6 +3,7 @@
 import { chakra } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import BigNumber from 'bignumber.js';
+import config from 'client/config';
 import { useRouter } from 'next/router';
 import React, { useCallback } from 'react';
 import { scroller } from 'react-scroll';
@@ -27,7 +28,6 @@ import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-loa
 import useIsMounted from 'client/shared/hooks/useIsMounted';
 import AssetValue from 'client/shared/values/entity/AssetValue';
 
-import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 
@@ -225,7 +225,7 @@ const TokenDetails = ({ tokenQuery }: Props) => {
         />
       ) }
 
-      { (type !== 'ERC-20' && config.UI.views.nft.marketplaces.length === 0 && appActionData) && (
+      { (type !== 'ERC-20' && config.UI.views.token.nft.marketplaces.length === 0 && appActionData) && (
         <>
           <DetailedInfo.ItemLabel
             hint="Link to the dapp"

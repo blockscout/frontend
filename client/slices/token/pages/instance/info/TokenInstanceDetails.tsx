@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Flex } from '@chakra-ui/react';
+import config from 'client/config';
 import React from 'react';
 
 import type { TokenInfo, TokenInstance } from 'client/slices/token/types/api';
@@ -18,7 +19,6 @@ import useIsMounted from 'client/shared/hooks/useIsMounted';
 import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
 import HashStringShortenDynamic from 'client/shared/texts/HashStringShortenDynamic';
 
-import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 
 import TokenInstanceCreatorAddress from './TokenInstanceCreatorAddress';
@@ -98,7 +98,7 @@ const TokenInstanceDetails = ({ data, token, scrollRef, isLoading }: Props) => {
             source="NFT item"
           />
 
-          { (config.UI.views.nft.marketplaces.length === 0 && appActionData) && (
+          { (config.UI.views.token.nft.marketplaces.length === 0 && appActionData) && (
             <>
               <DetailedInfo.ItemLabel
                 hint="Link to the dapp"

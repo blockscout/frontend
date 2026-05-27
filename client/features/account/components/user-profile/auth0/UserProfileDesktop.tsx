@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { type ButtonProps } from '@chakra-ui/react';
+import config from 'client/config';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -12,7 +13,6 @@ import useAccount from 'client/features/connect-wallet/hooks/useAccount';
 
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 
-import config from 'configs/app';
 import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 

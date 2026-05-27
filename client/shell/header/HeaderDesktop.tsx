@@ -1,14 +1,13 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { HStack, Box } from '@chakra-ui/react';
+import config from 'client/config';
 import React from 'react';
 
 import SearchBar from 'client/slices/search/components/search-bar/SearchBarDesktop';
 
 import UserProfileDesktop from 'client/features/account/components/user-profile/UserProfileDesktop';
 import RewardsButton from 'client/features/rewards/components/RewardsButton';
-
-import config from 'configs/app';
 
 type Props = {
   renderSearchBar?: () => React.ReactNode;

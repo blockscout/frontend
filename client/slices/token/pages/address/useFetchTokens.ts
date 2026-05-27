@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { useQueries, useQueryClient } from '@tanstack/react-query';
+import config from 'client/config';
 import React from 'react';
 
 import type { SocketMessage } from 'client/api/socket/types';
@@ -13,8 +14,6 @@ import useSocketChannel from 'client/api/socket/useSocketChannel';
 import useSocketMessage from 'client/api/socket/useSocketMessage';
 
 import { useMultichainContext } from 'client/features/multichain/context';
-
-import config from 'configs/app';
 
 import type { TokenEnhancedData } from './utils';
 import { calculateUsdValue } from './utils';

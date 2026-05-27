@@ -3,6 +3,7 @@
 import { GridItem } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import BigNumber from 'bignumber.js';
+import config from 'client/config';
 import React from 'react';
 
 import type { UserOp } from 'client/features/user-ops/types/api';
@@ -27,7 +28,6 @@ import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-loa
 import GasPriceValue from 'client/shared/values/entity/GasPriceValue';
 import Utilization from 'client/shared/values/utilization/Utilization';
 
-import config from 'configs/app';
 import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 

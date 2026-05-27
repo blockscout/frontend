@@ -11,12 +11,13 @@ import AddressEntity from 'client/slices/address/components/entity/AddressEntity
 import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 import NativeTokenTag from 'client/slices/token/components/NativeTokenTag';
 
+import multichainConfig from 'client/features/multichain/chains-config';
+
 import calculateUsdValue from 'client/shared/values/entity/calculateUsdValue';
 import ConfidentialValue from 'client/shared/values/entity/ConfidentialValue';
 import SimpleValue from 'client/shared/values/entity/SimpleValue';
 import { DEFAULT_ACCURACY_USD } from 'client/shared/values/entity/utils';
 
-import multichainConfig from 'configs/multichain';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { Tag } from 'toolkit/chakra/tag';
 

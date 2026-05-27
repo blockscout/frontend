@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import config from 'client/config';
 import React from 'react';
 
 import type { OptimisticL2DisputeGamesItem } from 'client/features/rollup/optimism/types/api';
@@ -12,7 +13,6 @@ import ListItemMobileGrid from 'client/shared/lists/ListItemMobileGrid';
 import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
 import HashStringShorten from 'client/shared/texts/HashStringShorten';
 
-import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 
 const rollupFeature = config.features.rollup;

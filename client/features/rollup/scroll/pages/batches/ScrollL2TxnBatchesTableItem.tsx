@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import config from 'client/config';
 import React from 'react';
 
 import type { ScrollL2TxnBatch } from 'client/features/rollup/scroll/types/api';
@@ -14,7 +15,6 @@ import ScrollL2TxnBatchStatus from 'client/features/rollup/scroll/components/Scr
 
 import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
 
-import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';

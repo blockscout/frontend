@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box } from '@chakra-ui/react';
+import config from 'client/config';
 import React from 'react';
 
 import { currencyUnits } from 'client/slices/chain/units';
 
-import config from 'configs/app';
 import { AccordionRoot } from 'toolkit/chakra/accordion';
 import { Heading } from 'toolkit/chakra/heading';
 

@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import BigNumber from 'bignumber.js';
+import config from 'client/config';
 import React from 'react';
 
 import type { Transaction } from 'client/slices/tx/types/api';
@@ -10,8 +11,6 @@ import TxFee from 'client/slices/tx/components/TxFee';
 import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
 import * as DetailedInfoItemBreakdown from 'client/shared/detailed-info/DetailedInfoItemBreakdown';
 import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
-
-import config from 'configs/app';
 
 interface Props {
   isLoading: boolean;

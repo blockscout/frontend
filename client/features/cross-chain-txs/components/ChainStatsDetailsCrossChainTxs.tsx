@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Flex, HStack, VStack, chakra } from '@chakra-ui/react';
+import config from 'client/config';
 import React from 'react';
 
 import type { ChainStatsChart, StatsIntervalIds } from 'client/features/chain-stats/types/client';
@@ -13,7 +14,6 @@ import ChartIntervalSelect from 'client/features/chain-stats/components/ChartInt
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 import ChainSelect, { isAllOption } from 'client/shared/external-chains/ChainSelect';
 
-import config from 'configs/app';
 import type { OnValueChangeHandler } from 'toolkit/chakra/select';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { SankeyChartMenu } from 'toolkit/components/charts/sankey/parts/SankeyChartMenu';

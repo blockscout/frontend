@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box } from '@chakra-ui/react';
+import config from 'client/config';
 import React from 'react';
 
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
-import config from 'configs/app';
 import { Image } from 'toolkit/chakra/image';
 import type { ImageProps } from 'toolkit/chakra/image';
 

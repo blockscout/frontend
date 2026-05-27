@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { useQueryClient } from '@tanstack/react-query';
+import config from 'client/config';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -16,8 +17,6 @@ import { useMultichainContext } from 'client/features/multichain/context';
 
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import getSortValueFromQuery from 'client/shared/sort/get-sort-value-from-query';
-
-import config from 'configs/app';
 
 import { sortTxsFromSocket } from '../utils/sort-txs';
 import { SORT_OPTIONS } from './useTxsSort';

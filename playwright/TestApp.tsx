@@ -1,5 +1,6 @@
 import { GrowthBookProvider } from '@growthbook/growthbook-react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import config from 'client/config';
 import React from 'react';
 import { http } from 'viem';
 import { WagmiProvider, createConfig, mock } from 'wagmi';
@@ -17,7 +18,6 @@ import { CsvExportContextProvider } from 'client/features/csv-export/utils/conte
 import { MarketplaceContext } from 'client/features/marketplace/context';
 import { RewardsContextProvider } from 'client/features/rewards/context';
 
-import config from 'configs/app';
 import { Provider as ChakraProvider } from 'toolkit/chakra/provider';
 
 import { port as socketPort } from './utils/socket';

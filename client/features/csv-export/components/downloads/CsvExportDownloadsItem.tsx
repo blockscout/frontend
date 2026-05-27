@@ -2,18 +2,19 @@
 
 import { HStack, Spinner, Text, VStack } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
+import config from 'client/config';
 import { upperFirst } from 'es-toolkit';
 import React from 'react';
 import { useInView } from 'react-intersection-observer';
 
 import { getResourceKey } from 'client/api/hooks/useApiQuery';
 
+import multichainConfig from 'client/features/multichain/chains-config';
+
 import dayjs from 'client/shared/date-and-time/dayjs';
 import shortenString from 'client/shared/texts/shorten-string';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
-import config from 'configs/app';
-import multichainConfig from 'configs/multichain';
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';
 import { Status } from 'toolkit/chakra/status';

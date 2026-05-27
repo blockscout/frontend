@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'configs/app';
+import config from 'client/config';
 
 const feature = config.features.rollup;
 

@@ -1,5 +1,6 @@
 import { Box } from '@chakra-ui/react';
 import type { BrowserContext } from '@playwright/test';
+import config from 'client/config';
 import React from 'react';
 
 import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
@@ -10,7 +11,6 @@ import * as metadataMock from 'client/features/address-metadata/mocks/tags';
 
 import * as cookies from 'client/shared/storage/cookies';
 
-import config from 'configs/app';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';
 

@@ -1,14 +1,13 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { useQuery } from '@tanstack/react-query';
+import config from 'client/config';
 import React from 'react';
 
 import type { ZetaChainChainsConfigEnv, ZetaChainExternalChainConfig } from 'client/features/chain-variants/zeta-chain/types/client';
 
 import useFetch from 'client/api/hooks/useFetch';
 import type { ResourceError } from 'client/api/resources';
-
-import config from 'configs/app';
 
 const zetachainFeature = config.features.zetachain;
 

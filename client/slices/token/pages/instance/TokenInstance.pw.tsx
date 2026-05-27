@@ -1,10 +1,10 @@
+import config from 'client/config';
 import React from 'react';
 
 import * as addressMock from 'client/slices/address/mocks/address';
 import * as tokenMock from 'client/slices/token/mocks/info';
 import * as tokenInstanceMock from 'client/slices/token/mocks/instance';
 
-import config from 'configs/app';
 import * as socketServer from 'playwright/fixtures/socketServer';
 import { test, expect } from 'playwright/lib';
 import * as pwConfig from 'playwright/utils/config';
@@ -23,7 +23,7 @@ test.beforeEach(async({ mockApiResponse, mockAssetResponse, mockTextAd }) => {
   await mockApiResponse('general:token_instance_transfers', { items: [], next_page_params: null }, { pathParams: { hash, id } });
   await mockApiResponse('general:token_instance_transfers_count', { transfers_count: 420 }, { pathParams: { hash, id } });
   await mockTextAd();
-  for (const marketplace of config.UI.views.nft.marketplaces) {
+  for (const marketplace of config.UI.views.token.nft.marketplaces) {
     await mockAssetResponse(marketplace.logo_url, './playwright/mocks/image_svg.svg');
   }
   await mockAssetResponse(tokenInstanceMock.base.image_url as string, './playwright/mocks/image_md.jpg');

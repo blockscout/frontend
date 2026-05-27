@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import config from 'client/config';
+
 import type { AdvancedFilterParams } from '../types/api';
 import type { TxTableColumn } from '../types/client';
 import type { TokenInfo } from 'client/slices/token/types/api';
-
-import config from 'configs/app';
 
 export const TABLE_COLUMNS: Array<TxTableColumn> = [
   {

@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box, createListCollection, HStack } from '@chakra-ui/react';
+import config from 'client/config';
 import React from 'react';
 
 import ActionBar from 'client/shell/page/action-bar/ActionBar';
@@ -17,7 +18,6 @@ import DataList from 'client/shared/lists/DataList';
 import Pagination from 'client/shared/pagination/Pagination';
 import Sort from 'client/shared/sort/Sort';
 
-import config from 'configs/app';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
 
 import { SORT_OPTIONS } from './sort';

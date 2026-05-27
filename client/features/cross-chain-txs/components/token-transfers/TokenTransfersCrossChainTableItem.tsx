@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { chakra, VStack } from '@chakra-ui/react';
+import config from 'client/config';
 import React from 'react';
 
 import type { InterchainTransfer } from '@blockscout/interchain-indexer-types';
@@ -13,7 +14,6 @@ import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
 import ChainLabel from 'client/shared/external-chains/ChainLabel';
 import TokenValueInterchain from 'client/shared/values/entity/TokenValueInterchain';
 
-import config from 'configs/app';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { mdash } from 'toolkit/utils/htmlEntities';
 

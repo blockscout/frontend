@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import config from 'client/config';
 import { uniq } from 'es-toolkit';
 
-import config from 'configs/app';
 import { isBrowser } from 'toolkit/utils/isBrowser';
 
 const RECENT_KEYWORDS_LS_KEY = 'recent_search_keywords';

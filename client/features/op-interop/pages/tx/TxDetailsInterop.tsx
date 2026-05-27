@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Grid, Text, Flex, Box } from '@chakra-ui/react';
+import config from 'client/config';
 import React from 'react';
 
 import type { InteropTransactionInfo } from 'client/features/op-interop/types/api';
@@ -16,7 +17,6 @@ import { layerLabels } from 'client/features/rollup/common/utils/layer';
 import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
 import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
 
-import config from 'configs/app';
 import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
 
 const rollupFeature = config.features.rollup;

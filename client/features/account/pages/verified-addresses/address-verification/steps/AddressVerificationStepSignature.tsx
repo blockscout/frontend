@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box, chakra, Flex } from '@chakra-ui/react';
+import config from 'client/config';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -23,7 +24,6 @@ import useWallet from 'client/features/connect-wallet/hooks/useWallet';
 import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
 import shortenString from 'client/shared/texts/shorten-string';
 
-import config from 'configs/app';
 import { Alert } from 'toolkit/chakra/alert';
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';

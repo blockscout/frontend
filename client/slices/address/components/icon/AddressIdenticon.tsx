@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box } from '@chakra-ui/react';
+import config from 'client/config';
 import dynamic from 'next/dynamic';
 import React from 'react';
 
 import * as cookies from 'client/shared/storage/cookies';
 
-import config from 'configs/app';
 import { Image } from 'toolkit/chakra/image';
 
 import AddressIdenticonGithub from './AddressIdenticonGithub';

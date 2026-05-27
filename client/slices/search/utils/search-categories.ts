@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import config from 'client/config';
+import { getFeaturePayload } from 'client/config/utils/features';
+
 import type { CctxListItem } from '@blockscout/zetachain-cctx-types';
 import type { MarketplaceApp } from 'client/features/marketplace/types/client';
 import type { QuickSearchResultItem } from 'client/slices/search/types/client';
 import type { TokenType } from 'client/slices/token/types/api';
 import { isConfidentialTokenType } from 'client/slices/token/utils/token-types';
-import { getFeaturePayload } from 'configs/app/features/types';
-
-import config from 'configs/app';
 
 const nameServicesFeature = config.features.nameServices;
 

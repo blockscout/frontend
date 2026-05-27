@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { chakra } from '@chakra-ui/react';
+import config from 'client/config';
 import React from 'react';
 
 import type { ExternalChain } from 'client/shared/external-chains/types';
@@ -16,7 +17,6 @@ import useZetaChainConfig from 'client/features/chain-variants/zeta-chain/hooks/
 import getChainTooltipText from 'client/shared/external-chains/get-chain-tooltip-text';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
-import config from 'configs/app';
 import { useColorModeValue } from 'toolkit/chakra/color-mode';
 
 interface Props extends Omit<AddressEntityBase.EntityProps, 'address'> {

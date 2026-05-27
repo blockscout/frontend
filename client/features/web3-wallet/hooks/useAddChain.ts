@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import config from 'client/config';
 import React from 'react';
 import type { AddEthereumChainParameter } from 'viem';
 
 import { useMultichainContext } from 'client/features/multichain/context';
 import useRewardsActivity from 'client/features/rewards/hooks/useRewardsActivity';
 
-import config from 'configs/app';
 import { SECOND } from 'toolkit/utils/consts';
 
 import { getHexadecimalChainId } from '../utils/get-hexadecimal-chain-id';

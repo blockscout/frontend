@@ -2,6 +2,7 @@
 
 import { Text, Flex, HStack, VStack, Separator, Box, chakra } from '@chakra-ui/react';
 import { BigNumber } from 'bignumber.js';
+import config from 'client/config';
 import React from 'react';
 
 import AdBanner from 'client/features/ads/banner/components/AdBanner';
@@ -13,7 +14,6 @@ import SimpleValue from 'client/shared/values/entity/SimpleValue';
 import { DEFAULT_ACCURACY_USD } from 'client/shared/values/entity/utils';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
-import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 
 import { formatPercentage } from './utils';

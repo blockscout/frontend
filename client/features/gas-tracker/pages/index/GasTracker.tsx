@@ -5,6 +5,7 @@ import {
   Flex,
   chakra,
 } from '@chakra-ui/react';
+import config from 'client/config';
 import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
@@ -22,7 +23,6 @@ import GasTrackerPrices from 'client/features/gas-tracker/components/GasTrackerP
 
 import Time from 'client/shared/date-and-time/Time';
 
-import config from 'configs/app';
 import { Alert } from 'toolkit/chakra/alert';
 import { Heading } from 'toolkit/chakra/heading';
 import { Skeleton } from 'toolkit/chakra/skeleton';

@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Flex, HStack, Text } from '@chakra-ui/react';
+import config from 'client/config';
 import { castArray } from 'es-toolkit/compat';
 import React from 'react';
 
@@ -12,7 +13,6 @@ import dayjs from 'client/shared/date-and-time/dayjs';
 import shortenString from 'client/shared/texts/shorten-string';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
-import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
 import { Tag } from 'toolkit/chakra/tag';
 import { SECOND } from 'toolkit/utils/consts';

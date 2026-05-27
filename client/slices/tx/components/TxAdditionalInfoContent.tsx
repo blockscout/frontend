@@ -2,6 +2,7 @@
 
 import { Box, Flex, VStack, Separator, HStack, chakra } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
+import config from 'client/config';
 import React from 'react';
 
 import type { Transaction } from 'client/slices/tx/types/api';
@@ -19,7 +20,6 @@ import TextSeparator from 'client/shared/texts/TextSeparator';
 import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
 import Utilization from 'client/shared/values/utilization/Utilization';
 
-import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 

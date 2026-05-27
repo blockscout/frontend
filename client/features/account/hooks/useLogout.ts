@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { useQueryClient } from '@tanstack/react-query';
+import config from 'client/config';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -14,7 +15,6 @@ import { useRewardsContext } from 'client/features/rewards/context';
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 import * as cookies from 'client/shared/storage/cookies';
 
-import config from 'configs/app';
 import { toaster } from 'toolkit/chakra/toaster';
 
 const PROTECTED_ROUTES: Array<Route['pathname']> = [

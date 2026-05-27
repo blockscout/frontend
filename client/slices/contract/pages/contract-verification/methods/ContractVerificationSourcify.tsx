@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import config from 'client/config';
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import type { FormFields } from '../types';
-
-import config from 'configs/app';
 
 import ContractVerificationMethod from '../ContractVerificationMethod';
 

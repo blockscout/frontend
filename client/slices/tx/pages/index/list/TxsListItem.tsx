@@ -4,6 +4,7 @@ import {
   HStack,
   Flex,
 } from '@chakra-ui/react';
+import config from 'client/config';
 import React from 'react';
 
 import type { ClusterChainConfig } from 'client/features/multichain/types/client';
@@ -26,7 +27,6 @@ import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
 import ListItemMobile from 'client/shared/lists/ListItemMobile';
 import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
 
-import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 
 interface Props {

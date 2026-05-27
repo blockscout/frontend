@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { chakra } from '@chakra-ui/react';
+import config from 'client/config';
 import React from 'react';
 
 import * as TxEntity from 'client/slices/tx/components/entity/TxEntity';
 
-import config from 'configs/app';
 import { stripTrailingSlash } from 'toolkit/utils/url';
 
 const tacFeature = config.features.tac;

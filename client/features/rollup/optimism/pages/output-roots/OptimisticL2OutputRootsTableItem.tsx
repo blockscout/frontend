@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Flex } from '@chakra-ui/react';
+import config from 'client/config';
 import React from 'react';
 
 import type { OptimisticL2OutputRootsItem } from 'client/features/rollup/optimism/types/api';
@@ -12,7 +13,6 @@ import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
 import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
 import HashStringShorten from 'client/shared/texts/HashStringShorten';
 
-import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 

@@ -1,8 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import config from 'client/config';
 import mixpanel from 'mixpanel-browser';
-
-import config from 'configs/app';
 
 import type { EventTypes, EventPayload } from './utils';
 

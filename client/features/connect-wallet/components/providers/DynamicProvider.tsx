@@ -6,6 +6,7 @@ import type { DynamicContextProps, OnAuthSuccess } from '@dynamic-labs/sdk-react
 import { DynamicContextProvider, getAuthToken } from '@dynamic-labs/sdk-react-core';
 import { DynamicWagmiConnector } from '@dynamic-labs/wagmi-connector';
 import { useQueryClient } from '@tanstack/react-query';
+import config from 'client/config';
 import React from 'react';
 
 import type { UserInfo } from 'client/features/account/types/api';
@@ -20,7 +21,6 @@ import { chains } from 'client/features/connect-wallet/utils/chains';
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 import getErrorMessage from 'client/shared/errors/get-error-message';
 
-import config from 'configs/app';
 import { toaster } from 'toolkit/chakra/toaster';
 import { castToString } from 'toolkit/utils/guards';
 

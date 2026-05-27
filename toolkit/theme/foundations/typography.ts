@@ -1,10 +1,9 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { ThemingConfig } from '@chakra-ui/react';
+import config from 'client/config';
 
 import type { ExcludeUndefined } from 'client/shared/types/utils';
-
-import config from 'configs/app';
 
 export const BODY_TYPEFACE = config.UI.fonts.body?.name ?? 'Inter, InterFallback';
 export const HEADING_TYPEFACE = config.UI.fonts.heading?.name ?? 'Poppins';

@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import config from 'client/config';
 import type { GetServerSideProps } from 'next';
 import dynamic from 'next/dynamic';
 import fetch from 'node-fetch';
@@ -18,8 +19,6 @@ import fetchApi from 'nextjs/utils/fetchApi';
 import LayoutApp from 'client/shell/layout/LayoutApp';
 
 import getQueryParamString from 'client/shared/router/get-query-param-string';
-
-import config from 'configs/app';
 
 const MarketplaceAppPage = dynamic(() => import('client/features/marketplace/pages/dapp/MarketplaceApp'), { ssr: false });
 

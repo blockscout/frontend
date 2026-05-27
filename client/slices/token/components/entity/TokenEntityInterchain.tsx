@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { JsxStyleProps } from '@chakra-ui/react';
+import config from 'client/config';
 import React from 'react';
 
 import type { ExternalChain } from 'client/shared/external-chains/types';
@@ -8,8 +9,6 @@ import type { ExternalChain } from 'client/shared/external-chains/types';
 import type { EntityProps } from 'client/slices/token/components/entity/TokenEntity';
 import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 import TokenEntityExternal from 'client/slices/token/components/entity/TokenEntityExternal';
-
-import config from 'configs/app';
 
 interface Props extends EntityProps, JsxStyleProps {
   chain: ExternalChain | undefined;

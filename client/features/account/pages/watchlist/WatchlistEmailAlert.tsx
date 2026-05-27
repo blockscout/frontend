@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import config from 'client/config';
 import React from 'react';
 
 import AuthModal from 'client/features/account/components/auth-modal/AuthModal';
 import useLinkEmail from 'client/features/account/hooks/useLinkEmail';
 
-import config from 'configs/app';
 import { Alert } from 'toolkit/chakra/alert';
 import { Button } from 'toolkit/chakra/button';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';

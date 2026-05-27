@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import config from 'client/config';
 import { useMemo } from 'react';
 
 import type { GetAvailableBadgesResponse } from '@blockscout/points-types';
@@ -7,8 +8,6 @@ import type { GetAvailableBadgesResponse } from '@blockscout/points-types';
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
 import { useRewardsContext } from 'client/features/rewards/context';
-
-import config from 'configs/app';
 
 const feature = config.features.rewards;
 

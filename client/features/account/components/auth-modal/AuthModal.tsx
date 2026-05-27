@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { useQueryClient } from '@tanstack/react-query';
+import config from 'client/config';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -13,7 +14,6 @@ import { useRewardsContext } from 'client/features/rewards/context';
 
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 
-import config from 'configs/app';
 import { DialogBody, DialogContent, DialogHeader, DialogRoot } from 'toolkit/chakra/dialog';
 
 import AuthModalScreenConnectWallet from './screens/AuthModalScreenConnectWallet';

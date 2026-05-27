@@ -2,6 +2,7 @@
 
 import { Box, Flex, Text } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
+import config from 'client/config';
 import { debounce } from 'es-toolkit';
 import React from 'react';
 
@@ -21,11 +22,10 @@ import SearchBarSuggestZetaChainCCTX from 'client/features/chain-variants/zeta-c
 import type { ExternalSearchItem as ExternalSearchItemType } from 'client/features/chain-variants/zeta-chain/utils/external-search';
 import SearchBarSuggestApp from 'client/features/marketplace/components/SearchBarSuggestApp';
 import useMarketplaceApps from 'client/features/marketplace/hooks/useMarketplaceApps';
+import multichainConfig from 'client/features/multichain/chains-config';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
-import config from 'configs/app';
-import multichainConfig from 'configs/multichain';
 import AdaptiveTabs from 'toolkit/components/AdaptiveTabs/AdaptiveTabs';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 import * as regexp from 'toolkit/utils/regexp';

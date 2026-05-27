@@ -2,6 +2,7 @@
 
 import { chakra } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
+import config from 'client/config';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -19,7 +20,6 @@ import getErrorObjPayload from 'client/shared/errors/get-error-obj-payload';
 import ReCaptcha from 'client/shared/re-captcha/ReCaptcha';
 import useReCaptcha from 'client/shared/re-captcha/useReCaptcha';
 
-import config from 'configs/app';
 import { Button } from 'toolkit/chakra/button';
 import { Heading } from 'toolkit/chakra/heading';
 import { toaster } from 'toolkit/chakra/toaster';

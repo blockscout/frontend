@@ -13,6 +13,7 @@ import TokenTypeFilter from 'client/slices/token/components/TokenTypeFilter';
 import Tokens from 'client/slices/token/pages/index/TokensList';
 import { getTokenFilterValue } from 'client/slices/token/utils/list-utils';
 
+import multichainConfig from 'client/features/multichain/chains-config';
 import ChainSelect from 'client/features/multichain/components/ChainSelect';
 import { TOKEN } from 'client/features/multichain/stubs';
 
@@ -24,7 +25,6 @@ import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
-import multichainConfig from 'configs/multichain';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
 
 const getChainIdFilterValue = (chainIds: Array<string>) => {

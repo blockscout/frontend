@@ -13,13 +13,12 @@ import InternalTxsList from 'client/slices/internal-tx/components/InternalTxsLis
 import InternalTxsTable from 'client/slices/internal-tx/components/InternalTxsTable';
 
 import CsvExport from 'client/features/csv-export/components/CsvExport';
+import multichainConfig from 'client/features/multichain/chains-config';
 import ChainSelect from 'client/features/multichain/components/ChainSelect';
 import { MultichainProvider } from 'client/features/multichain/context';
 
 import DataList from 'client/shared/lists/DataList';
 import Pagination from 'client/shared/pagination/Pagination';
-
-import multichainConfig from 'configs/multichain';
 
 import getAvailableChainIds from './get-available-chain-ids';
 

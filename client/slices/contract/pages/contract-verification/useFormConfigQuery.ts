@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import useApiQuery from 'client/api/hooks/useApiQuery';
+import config from 'client/config';
 
-import config from 'configs/app';
+import useApiQuery from 'client/api/hooks/useApiQuery';
 
 import { isValidVerificationMethod, sortVerificationMethods } from './utils';
 
@@ -14,7 +14,7 @@ export default function useFormConfigQuery(enabled: boolean) {
           ...data,
           verification_options: [
             ...data.verification_options,
-            ...config.UI.views.address.extraVerificationMethods,
+            ...config.UI.views.contract.extraVerificationMethods,
           ].filter(isValidVerificationMethod).sort(sortVerificationMethods),
         };
       },

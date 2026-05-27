@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { chakra, Box, Text, Flex } from '@chakra-ui/react';
+import config from 'client/config';
 import React from 'react';
 
 import type { Screen } from '../types';
@@ -8,7 +9,6 @@ import type { UserInfo } from 'client/features/account/types/api';
 
 import shortenString from 'client/shared/texts/shorten-string';
 
-import config from 'configs/app';
 import { Button } from 'toolkit/chakra/button';
 import { apos } from 'toolkit/utils/htmlEntities';
 

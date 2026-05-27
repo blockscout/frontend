@@ -1,10 +1,9 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Flex } from '@chakra-ui/react';
+import config from 'client/config';
 
 import type { EssentialDappsConfig } from 'client/features/marketplace/types/client';
-
-import config from 'configs/app';
 
 import EssentialDappCard from './EssentialDappCard';
 

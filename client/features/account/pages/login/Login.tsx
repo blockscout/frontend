@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { VStack, Code, Flex, Box } from '@chakra-ui/react';
+import config from 'client/config';
 import mixpanel from 'mixpanel-browser';
 import type { ChangeEvent } from 'react';
 import React from 'react';
@@ -12,7 +13,6 @@ import { useRollbar } from 'client/shared/monitoring/rollbar';
 import useGradualIncrement from 'client/shared/numbers/useGradualIncrement';
 import * as cookies from 'client/shared/storage/cookies';
 
-import config from 'configs/app';
 import { Alert } from 'toolkit/chakra/alert';
 import { Button } from 'toolkit/chakra/button';
 import { Textarea } from 'toolkit/chakra/textarea';

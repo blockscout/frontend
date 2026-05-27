@@ -1,8 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import config from 'client/config';
 import { defaultsDeep } from 'es-toolkit/compat';
-
-import config from 'configs/app';
 
 const DEFAULT_THEME_COLORS = {
   bg: {

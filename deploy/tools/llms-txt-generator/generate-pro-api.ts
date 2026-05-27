@@ -1,4 +1,4 @@
-import config from 'configs/app';
+import config from 'client/config';
 import dedent from 'dedent';
 import { layerLabels } from 'client/features/rollup/common/utils/layer';
 

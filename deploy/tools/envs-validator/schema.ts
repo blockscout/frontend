@@ -20,13 +20,13 @@ import type { GasRefuelProviderConfig } from 'client/features/get-gas-button/typ
 import { GAS_UNITS } from 'client/slices/gas/types/config';
 import type { GasUnit } from 'client/slices/gas/types/config';
 import { PROVIDERS as TX_INTERPRETATION_PROVIDERS } from 'client/features/tx-interpretation/common/types/config';
-import { VALIDATORS_CHAIN_TYPE } from 'configs/app/features/validators';
-import type { ValidatorsChainType } from 'configs/app/features/validators';
+import { VALIDATORS_CHAIN_TYPE } from 'client/features/validators/types/config';
+import type { ValidatorsChainType } from 'client/features/validators/types/config';
 import type { WalletType } from 'client/features/web3-wallet/types/config';
 import { SUPPORTED_WALLETS } from 'client/features/web3-wallet/types/config';
 import type { TxExternalTxsConfig } from 'client/features/external-txs/types/client';
 
-import { replaceQuotes } from 'configs/app/utils';
+import { replaceQuotes } from 'client/config/utils/envs';
 import { urlTest, protocols } from './utils';
 import apisSchema from './schemas/apis';
 import chainSchema from './schemas/chain';

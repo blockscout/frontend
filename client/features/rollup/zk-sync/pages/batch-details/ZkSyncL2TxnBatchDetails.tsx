@@ -2,6 +2,7 @@
 
 import { GridItem } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
+import config from 'client/config';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -26,7 +27,6 @@ import VerificationSteps from 'client/shared/lifecycle/steps/VerificationSteps';
 import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
 import GasPriceValue from 'client/shared/values/entity/GasPriceValue';
 
-import config from 'configs/app';
 import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';

@@ -1,8 +1,7 @@
 import type { TestFixture, Page } from '@playwright/test';
+import { getEnvValue } from 'client/config/utils/envs';
 import { isEqual } from 'es-toolkit';
 import { encodeFunctionData, encodeFunctionResult, type AbiFunction } from 'viem';
-
-import { getEnvValue } from 'configs/app/utils';
 
 interface Params {
   abiItem: AbiFunction;

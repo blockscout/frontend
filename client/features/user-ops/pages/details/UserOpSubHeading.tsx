@@ -2,6 +2,7 @@
 
 import { Flex } from '@chakra-ui/react';
 // import type { UseQueryResult } from '@tanstack/react-query';
+import config from 'client/config';
 import React from 'react';
 
 // import type { UserOp } from 'client/features/user-ops/types/api';
@@ -15,7 +16,6 @@ import UserOpEntity from 'client/features/user-ops/components/entity/UserOpEntit
 
 import { TX_ACTIONS_BLOCK_ID } from 'client/shared/detailed-info/DetailedInfoActionsWrapper';
 
-import config from 'configs/app';
 // import type { ResourceError } from 'client/api/resources';
 import { Link } from 'toolkit/chakra/link';
 

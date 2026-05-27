@@ -1,6 +1,6 @@
 import * as yup from 'yup';
 import { urlTest, getYupValidationErrorMessage } from '../../utils';
-import { replaceQuotes } from 'configs/app/utils';
+import { replaceQuotes } from 'client/config/utils/envs';
 import * as regexp from 'toolkit/utils/regexp';
 import { ROLLUP_TYPES } from 'client/features/rollup/common/types/config';
 

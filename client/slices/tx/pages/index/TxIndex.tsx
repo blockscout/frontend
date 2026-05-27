@@ -1,12 +1,11 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import config from 'client/config';
 import React from 'react';
 
 import PageTitle from 'client/shell/page/title/PageTitle';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
-
-import config from 'configs/app';
 
 import TxsTabs from './list/TxsTabs';
 import TxsStats from './stats/TxsStats';

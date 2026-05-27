@@ -9,6 +9,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
+import config from 'client/config';
 import React from 'react';
 
 import { SCROLL_L2_BLOCK_STATUSES } from 'client/features/rollup/scroll/types/api';
@@ -56,7 +57,6 @@ import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
 import Utilization from 'client/shared/values/utilization/Utilization';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
-import config from 'configs/app';
 import { Badge } from 'toolkit/chakra/badge';
 import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
 import { Link } from 'toolkit/chakra/link';

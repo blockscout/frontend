@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import config from 'client/config';
 import { capitalize } from 'es-toolkit';
 import type { Config } from 'mixpanel-browser';
 import mixpanel from 'mixpanel-browser';
@@ -10,8 +11,6 @@ import { deviceType } from 'react-device-detect';
 import dayjs from 'client/shared/date-and-time/dayjs';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import * as cookies from 'client/shared/storage/cookies';
-
-import config from 'configs/app';
 
 import * as userProfile from './user-profile';
 

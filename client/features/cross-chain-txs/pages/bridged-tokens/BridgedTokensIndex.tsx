@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box } from '@chakra-ui/react';
+import config from 'client/config';
 import React from 'react';
 
 import type { CrossChainBridgedTokensSortingValue } from '../../types/api';
@@ -8,7 +9,6 @@ import type { CrossChainBridgedTokensSortingValue } from '../../types/api';
 import DataList from 'client/shared/lists/DataList';
 import type { QueryWithPagesResult } from 'client/shared/pagination/useQueryWithPages';
 
-import config from 'configs/app';
 import type { OnValueChangeHandler } from 'toolkit/chakra/select';
 
 import BridgedTokensListItem from './BridgedTokensListItem';

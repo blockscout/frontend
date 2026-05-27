@@ -9,10 +9,11 @@ import type { CsvExportItemResponse } from '../types/api';
 import useApiFetch from 'client/api/hooks/useApiFetch';
 import { getResourceKey } from 'client/api/hooks/useApiQuery';
 
+import multichainConfig from 'client/features/multichain/chains-config';
+
 import dayjs from 'client/shared/date-and-time/dayjs';
 import getErrorObjStatusCode from 'client/shared/errors/get-error-obj-status-code';
 
-import multichainConfig from 'configs/multichain';
 import type { OnOpenChangeHandler } from 'toolkit/hooks/useDisclosure';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 import { SECOND } from 'toolkit/utils/consts';

@@ -2,7 +2,7 @@
 
 /* eslint-disable max-len */
 
-import config from 'configs/app';
+import config from 'client/config';
 
 export const ADBUTLER_ACCOUNT = 182226;
 

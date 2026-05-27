@@ -11,14 +11,13 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 import ActionBar from 'client/shell/page/action-bar/ActionBar';
 import PageTitle from 'client/shell/page/title/PageTitle';
 
+import multichainConfig from 'client/features/multichain/chains-config';
 import { CHAIN_METRICS } from 'client/features/multichain/stubs';
 
 import DataList from 'client/shared/lists/DataList';
 import getSortParamsFromValue from 'client/shared/sort/get-sort-params-from-value';
 import getSortValueFromQuery from 'client/shared/sort/get-sort-value-from-query';
 import Sort from 'client/shared/sort/Sort';
-
-import multichainConfig from 'configs/multichain';
 
 import MultichainEcosystemsListItem from './MultichainEcosystemsListItem';
 import MultichainEcosystemsTable from './MultichainEcosystemsTable';

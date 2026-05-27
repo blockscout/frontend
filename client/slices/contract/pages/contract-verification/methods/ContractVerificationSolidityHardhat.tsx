@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box, Flex } from '@chakra-ui/react';
+import config from 'client/config';
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
 
@@ -8,7 +9,6 @@ import type { FormFields } from '../types';
 
 import type { SmartContractVerificationConfig } from 'client/slices/contract/pages/contract-verification/utils';
 
-import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
 
 import ContractVerificationFormCodeSnippet from '../ContractVerificationFormCodeSnippet';

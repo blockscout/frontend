@@ -1,13 +1,12 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box } from '@chakra-ui/react';
+import config from 'client/config';
 import React from 'react';
 
 import PageTitle from 'client/shell/page/title/PageTitle';
 
 import useEtherscanRedirects from 'client/shared/router/useEtherscanRedirects';
-
-import config from 'configs/app';
 
 import useChainStats from '../../hooks/useChainStats';
 import ChainStatsCounters from './ChainStatsCounters';

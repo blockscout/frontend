@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import BigNumber from 'bignumber.js';
+import config from 'client/config';
 import React from 'react';
 
 import type { OptimisticL2DepositsItem } from 'client/features/rollup/optimism/types/api';
@@ -15,7 +16,6 @@ import { layerLabels } from 'client/features/rollup/common/utils/layer';
 import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
 import ListItemMobileGrid from 'client/shared/lists/ListItemMobileGrid';
 
-import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 
 const rollupFeature = config.features.rollup;

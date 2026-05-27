@@ -1,10 +1,9 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import type config from 'client/config';
 import type { Chain } from 'viem';
 
 import type { ExternalChain } from 'client/shared/external-chains/types';
-
-import type config from 'configs/app';
 
 export type MarketplaceAppBase = {
   id: string;

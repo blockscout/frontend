@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box, Flex, Spinner } from '@chakra-ui/react';
+import config from 'client/config';
 import React from 'react';
 
 import type { Transaction } from 'client/slices/tx/types/api';
@@ -15,7 +16,6 @@ import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
 import HashStringShortenDynamic from 'client/shared/texts/HashStringShortenDynamic';
 import TextSeparator from 'client/shared/texts/TextSeparator';
 
-import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 
 const externalTxFeature = config.features.externalTxs;

@@ -1,8 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import config from 'client/config';
 import { getAddress } from 'viem';
-
-import config from 'configs/app';
 
 const ERC1191_CHAIN_IDS = [
   '30', // RSK Mainnet

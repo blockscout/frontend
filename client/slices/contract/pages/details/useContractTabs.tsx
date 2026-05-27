@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import config from 'client/config';
 import type { Channel } from 'phoenix';
 import React from 'react';
 
@@ -17,7 +18,6 @@ import * as stubs from 'client/slices/contract/stubs';
 import ContractMethodsMudSystem from 'client/features/chain-variants/mud/pages/contract/ContractMethodsMudSystem';
 import { MUD_SYSTEMS } from 'client/features/chain-variants/mud/stubs/contract';
 
-import config from 'configs/app';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 
 import type { CONTRACT_MAIN_TAB_IDS } from '../../utils/tabs';

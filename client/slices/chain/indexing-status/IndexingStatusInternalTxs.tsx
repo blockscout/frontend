@@ -2,6 +2,7 @@
 
 import { Flex, Text } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
+import config from 'client/config';
 import React from 'react';
 
 import type { IndexingStatus } from './types';
@@ -13,7 +14,6 @@ import useSocketMessage from 'client/api/socket/useSocketMessage';
 
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
-import config from 'configs/app';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { apos, nbsp, ndash } from 'toolkit/utils/htmlEntities';
 

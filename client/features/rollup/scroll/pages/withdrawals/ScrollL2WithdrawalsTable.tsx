@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import config from 'client/config';
 import React from 'react';
 
 import type { ScrollL2MessageItem } from 'client/features/rollup/scroll/types/api';
@@ -10,7 +11,6 @@ import { layerLabels } from 'client/features/rollup/common/utils/layer';
 
 import TimeFormatToggle from 'client/shared/date-and-time/TimeFormatToggle';
 
-import config from 'configs/app';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 
 import ScrollL2WithdrawalsTableItem from './ScrollL2WithdrawalsTableItem';

@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import config from 'client/config';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
 import * as cookies from 'client/shared/storage/cookies';
-
-import config from 'configs/app';
 
 export function account(req: NextRequest) {
   const feature = config.features.account;

@@ -1,4 +1,4 @@
-import { replaceQuotes } from "configs/app/utils";
+import { replaceQuotes } from "client/config/utils/envs";
 import { Address3rdPartyWidget, ADDRESS_3RD_PARTY_WIDGET_PAGES } from "client/features/address-3rd-party-widgets/types/view";
 import * as yup from 'yup';
 

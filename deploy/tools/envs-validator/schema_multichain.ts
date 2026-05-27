@@ -11,7 +11,7 @@ import { urlTest, protocols } from './utils';
 import * as uiSchemas from './schemas/ui';
 import * as featuresSchemas from './schemas/features';
 import servicesSchemas from './schemas/services';
-import { replaceQuotes } from 'configs/app/utils';
+import { replaceQuotes } from 'client/config/utils/envs';
 import { IDENTICON_TYPES } from 'client/slices/address/types/config';
 
 const schema = yup

@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Flex } from '@chakra-ui/react';
+import config from 'client/config';
 import React from 'react';
 
 import type { AdvancedFilterResponseItem } from '../types/api';
@@ -18,7 +19,6 @@ import AssetValue from 'client/shared/values/entity/AssetValue';
 import ConfidentialValue from 'client/shared/values/entity/ConfidentialValue';
 import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
 
-import config from 'configs/app';
 import { Badge } from 'toolkit/chakra/badge';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 

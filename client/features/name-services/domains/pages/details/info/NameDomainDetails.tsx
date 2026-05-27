@@ -2,6 +2,7 @@
 
 import { Flex } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
+import config from 'client/config';
 import React from 'react';
 
 import * as bens from '@blockscout/bens-types';
@@ -20,7 +21,6 @@ import DetailedInfoTimestamp from 'client/shared/detailed-info/DetailedInfoTimes
 import TextSeparator from 'client/shared/texts/TextSeparator';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
-import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';

@@ -7,6 +7,7 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
+import config from 'client/config';
 import React from 'react';
 
 import type { Transaction } from 'client/slices/tx/types/api';
@@ -24,7 +25,6 @@ import MetadataTag from 'client/features/address-metadata/components/tag/Metadat
 import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
 import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
 
-import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 
 type Props = {

@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'configs/app';
+import config from 'client/config';
+
 import type { ColorMode } from 'toolkit/chakra/color-mode';
 
 import type { ColorThemeId } from './config';

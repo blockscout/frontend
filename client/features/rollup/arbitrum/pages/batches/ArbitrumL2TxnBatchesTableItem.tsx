@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { HStack } from '@chakra-ui/react';
+import config from 'client/config';
 import React from 'react';
 
 import type { ArbitrumL2TxnBatchesItem } from '../../types/api';
@@ -13,7 +14,6 @@ import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
 
 import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
 
-import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';

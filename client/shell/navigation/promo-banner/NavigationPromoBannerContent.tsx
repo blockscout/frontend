@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { HStack, Text, Box } from '@chakra-ui/react';
+import config from 'client/config';
 
-import config from 'configs/app';
 import { Image } from 'toolkit/chakra/image';
 
 import useNavLinkStyleProps from '../useNavLinkStyleProps';

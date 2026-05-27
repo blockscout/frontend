@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'configs/app';
+import config from 'client/config';
+
 import type { SelectOption } from 'toolkit/chakra/select';
 
 const feature = config.features.marketplace;

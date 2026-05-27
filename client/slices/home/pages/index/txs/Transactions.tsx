@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { HStack } from '@chakra-ui/react';
+import config from 'client/config';
 import React from 'react';
 
 import { SocketProvider } from 'client/api/socket/context';
@@ -17,7 +18,6 @@ import LatestOptimisticDeposits from 'client/features/rollup/optimism/pages/home
 
 import ApiDegradationRpcIcon from 'client/shared/api-degradation/ApiDegradationRpcIcon';
 
-import config from 'configs/app';
 import { Heading } from 'toolkit/chakra/heading';
 import AdaptiveTabs from 'toolkit/components/AdaptiveTabs/AdaptiveTabs';
 

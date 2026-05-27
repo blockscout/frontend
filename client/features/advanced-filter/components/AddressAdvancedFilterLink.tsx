@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import config from 'client/config';
 import { pickBy } from 'es-toolkit';
 import React from 'react';
 
@@ -10,8 +11,6 @@ import type { TokenType } from 'client/slices/token/types/api';
 import { useMultichainContext } from 'client/features/multichain/context';
 
 import useIsInitialLoading from 'client/shared/hooks/useIsInitialLoading';
-
-import config from 'configs/app';
 
 import { getAdvancedFilterTypes } from '../utils/lib';
 import AdvancedFilterLink from './AdvancedFilterLink';

@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { useQueryClient } from '@tanstack/react-query';
+import config from 'client/config';
 import React from 'react';
 import { useSendTransaction, useSwitchChain } from 'wagmi';
 
@@ -17,7 +18,6 @@ import getErrorObjPayload from 'client/shared/errors/get-error-obj-payload';
 import getErrorProp from 'client/shared/errors/get-error-prop';
 import capitalizeFirstLetter from 'client/shared/texts/capitalize-first-letter';
 
-import config from 'configs/app';
 import { Button } from 'toolkit/chakra/button';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { toaster } from 'toolkit/chakra/toaster';
