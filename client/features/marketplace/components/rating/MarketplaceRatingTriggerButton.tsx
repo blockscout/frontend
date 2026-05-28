@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { chakra, Text } from '@chakra-ui/react';
-import config from 'client/config';
-import { getFeaturePayload } from 'client/config/utils/features';
 import React from 'react';
 
+import config from 'client/config';
+import { getFeaturePayload } from 'client/config/utils/features';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import usePreventFocusAfterModalClosing from 'client/shared/hooks/usePreventFocusAfterModalClosing';
 import SpriteIcon from 'client/sprite/SpriteIcon';

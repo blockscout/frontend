@@ -2,9 +2,9 @@
 
 import { Tooltip as ChakraTooltip, Portal } from '@chakra-ui/react';
 import { useClickAway } from '@uidotdev/usehooks';
-import config from 'client/config';
 import * as React from 'react';
 
+import config from 'client/config';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
 export interface TooltipProps extends ChakraTooltip.RootProps {

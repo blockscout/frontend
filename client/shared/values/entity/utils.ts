@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import BigNumber from 'bignumber.js';
-import config from 'client/config';
 
 import { currencyUnits } from 'client/slices/chain/units';
+
+import config from 'client/config';
 
 import { ZERO } from 'toolkit/utils/consts';
 import { thinsp } from 'toolkit/utils/htmlEntities';

@@ -1,13 +1,14 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { chakra } from '@chakra-ui/react';
-import config from 'client/config';
 import React from 'react';
 
 import type { GasPriceInfo } from 'client/slices/gas/types/api';
 import type { GasUnit } from 'client/slices/gas/types/config';
 
 import { useMultichainContext } from 'client/features/multichain/context';
+
+import config from 'client/config';
 
 import formatGasValue from '../utils/format-gas-value';
 

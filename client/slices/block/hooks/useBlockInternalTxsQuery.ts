@@ -1,9 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type config from 'client/config';
-
 import { INTERNAL_TX } from 'client/slices/internal-tx/stubs';
 
+import type config from 'client/config';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
 

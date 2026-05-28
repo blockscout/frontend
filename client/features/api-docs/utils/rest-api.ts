@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import type { SwaggerRequest } from '../types/client';
+
 import config from 'client/config';
 import type { ApiPropsBase, ApiPropsFull } from 'client/config/apis';
-
-import type { SwaggerRequest } from '../types/client';
 
 const DEFAULT_SERVER = 'blockscout.com/poa/core';
 const DEFAULT_SERVER_NEW = 'http://localhost/api';

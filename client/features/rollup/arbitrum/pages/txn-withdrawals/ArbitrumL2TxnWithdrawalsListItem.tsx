@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'client/config';
 import React from 'react';
 
 import type { ArbitrumL2TxnWithdrawalsItem } from '../../types/api';
 
 import AddressEntityL1 from 'client/features/rollup/common/components/AddressEntityL1';
 
+import config from 'client/config';
 import ListItemMobileGrid from 'client/shared/lists/ListItemMobileGrid';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';

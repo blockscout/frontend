@@ -2,7 +2,6 @@
 
 import { Box, Text } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
-import config from 'client/config';
 import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
@@ -12,6 +11,7 @@ import PageTitle from 'client/shell/page/title/PageTitle';
 
 import { currencyUnits } from 'client/slices/chain/units';
 
+import config from 'client/config';
 import DataList from 'client/shared/lists/DataList';
 import StickyPaginationWithText from 'client/shared/pagination/StickyPaginationWithText';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
@@ -91,7 +91,7 @@ const BeaconChainWithdrawals = () => {
   return (
     <>
       <PageTitle
-        title={ config.meta.seo.enhancedDataEnabled ? `${ config.chain.name } withdrawals` : 'Withdrawals' }
+        title={ config.metadata.seo.enhancedDataEnabled ? `${ config.chain.name } withdrawals` : 'Withdrawals' }
         withTextAd
       />
       <DataList

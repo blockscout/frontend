@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { getEnvValue, getExternalAssetFilePath, parseEnvJson } from 'client/config/utils/envs';
-
 import type { ChainIndicatorId, HeroBannerConfig, HomeStatsWidgetId } from 'client/slices/home/types/config';
 import { HOME_STATS_WIDGET_IDS } from 'client/slices/home/types/config';
 
 import rollup from 'client/features/rollup/common/config';
+
+import { getEnvValue, getExternalAssetFilePath, parseEnvJson } from 'client/config/utils/envs';
 
 const homePageStats: Array<HomeStatsWidgetId> = (() => {
   const parsedValue = parseEnvJson<Array<HomeStatsWidgetId>>(getEnvValue('NEXT_PUBLIC_HOMEPAGE_STATS'));

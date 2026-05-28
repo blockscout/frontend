@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Flex, chakra } from '@chakra-ui/react';
-import config from 'client/config';
 import { useRouter } from 'next/navigation';
 import Script from 'next/script';
 import React from 'react';
 
 import type { BannerProps } from '../types/client';
 
+import config from 'client/config';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
 import { isBrowser } from 'toolkit/utils/isBrowser';

@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { chakra } from '@chakra-ui/react';
-import config from 'client/config';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -12,6 +11,7 @@ import type { OptimisticL2WithdrawalClaimInfo } from 'client/features/rollup/opt
 
 import useWeb3Wallet from 'client/features/connect-wallet/hooks/useWallet';
 
+import config from 'client/config';
 import getErrorMessage from 'client/shared/errors/get-error-message';
 import getErrorObjPayload from 'client/shared/errors/get-error-obj-payload';
 import getErrorProp from 'client/shared/errors/get-error-prop';

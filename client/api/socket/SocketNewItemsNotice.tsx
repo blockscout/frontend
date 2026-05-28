@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Text, chakra } from '@chakra-ui/react';
-import config from 'client/config';
 import React from 'react';
+
+import config from 'client/config';
 
 import { Alert } from 'toolkit/chakra/alert';
 import { Link } from 'toolkit/chakra/link';

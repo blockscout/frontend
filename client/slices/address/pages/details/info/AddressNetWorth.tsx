@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Text, HStack } from '@chakra-ui/react';
-import config from 'client/config';
 import React from 'react';
 
 import type { Address } from 'client/slices/address/types/api';
@@ -11,6 +10,7 @@ import { getTokensTotalInfo } from 'client/slices/token/pages/address/utils';
 
 import AddressMultichainButton from 'client/features/multichain-button/pages/address/AddressMultichainButton';
 
+import config from 'client/config';
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 import TextSeparator from 'client/shared/texts/TextSeparator';
 import calculateUsdValue from 'client/shared/values/entity/calculateUsdValue';

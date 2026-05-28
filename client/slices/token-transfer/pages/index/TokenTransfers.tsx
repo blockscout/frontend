@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'client/config';
 import React from 'react';
 
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
@@ -8,6 +7,8 @@ import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 import PageTitle from 'client/shell/page/title/PageTitle';
 
 import TokenTransfersCrossChain from 'client/features/cross-chain-txs/pages/token-transfers/TokenTransfersCrossChain';
+
+import config from 'client/config';
 
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 

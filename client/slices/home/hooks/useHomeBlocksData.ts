@@ -2,7 +2,6 @@
 
 import { useQueryClient } from '@tanstack/react-query';
 import type { UseQueryResult } from '@tanstack/react-query';
-import config from 'client/config';
 import React from 'react';
 
 import type { SocketMessage } from 'client/api/socket/types';
@@ -14,6 +13,8 @@ import useSocketChannel from 'client/api/socket/useSocketChannel';
 import useSocketMessage from 'client/api/socket/useSocketMessage';
 
 import { BLOCK } from 'client/slices/block/stubs/block';
+
+import config from 'client/config';
 
 /** Max blocks kept in React Query cache for `general:homepage_blocks` (fetch + socket). */
 const HOME_BLOCKS_QUERY_LIMIT = 5;

@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { useQuery } from '@tanstack/react-query';
-import config from 'client/config';
 import React from 'react';
 
 import type { SearchResultCluster } from 'client/features/name-services/clusters/types/api';
@@ -11,6 +10,8 @@ import { getResourceKey } from 'client/api/hooks/useApiQuery';
 import type { ResourcePayload, ResourceError } from 'client/api/resources';
 
 import useQuickSearchQuery from 'client/slices/search/hooks/useQuickSearchQuery';
+
+import config from 'client/config';
 
 const nameServicesFeature = config.features.nameServices;
 const isClustersEnabled = nameServicesFeature.isEnabled && nameServicesFeature.clusters.isEnabled;

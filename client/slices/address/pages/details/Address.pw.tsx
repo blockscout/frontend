@@ -1,10 +1,11 @@
-import config from 'client/config';
 import React from 'react';
 import { numberToHex } from 'viem';
 
 import * as addressMock from 'client/slices/address/mocks/address';
 import * as addressCountersMock from 'client/slices/address/mocks/counters';
 import * as addressTabCountersMock from 'client/slices/address/mocks/tab-counters';
+
+import config from 'client/config';
 
 import * as socketServer from 'playwright/fixtures/socketServer';
 import { test, expect } from 'playwright/lib';

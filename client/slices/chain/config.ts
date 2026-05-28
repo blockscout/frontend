@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { getEnvValue, getExternalAssetFilePath, parseEnvJson } from 'client/config/utils/envs';
-
 import type { RollupType } from 'client/features/rollup/common/types/config';
 import type { NetworkVerificationType, NetworkVerificationTypeEnvs } from 'client/slices/chain/verification-type/types/config';
+
+import { getEnvValue, getExternalAssetFilePath, parseEnvJson } from 'client/config/utils/envs';
 
 import { urlValidator } from 'toolkit/components/forms/validators/url';
 

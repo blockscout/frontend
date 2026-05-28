@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { getEnvValue, parseEnvJson } from 'client/config/utils/envs';
-import type { Feature } from 'client/config/utils/features';
-
 import type { MultichainProviderConfig, MultichainProviderConfigParsed } from 'client/features/multichain-button/types/client';
 
 import marketplace from 'client/features/marketplace/config';
+
+import { getEnvValue, parseEnvJson } from 'client/config/utils/envs';
+import type { Feature } from 'client/config/utils/features';
 
 const value = parseEnvJson<Array<MultichainProviderConfig>>(getEnvValue('NEXT_PUBLIC_MULTICHAIN_BALANCE_PROVIDER_CONFIG'));
 

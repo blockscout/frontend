@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Flex, Icon } from '@chakra-ui/react';
-import config from 'client/config';
 import React from 'react';
 
+import config from 'client/config';
 import hexToBase64 from 'client/shared/data/transformers/hex-to-base64';
 
 // eslint-disable-next-line no-restricted-imports

@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'client/config';
 import React from 'react';
 import { useSignMessage, useSwitchChain } from 'wagmi';
 
@@ -11,6 +10,7 @@ import useApiFetch from 'client/api/hooks/useApiFetch';
 
 import useWalletReown from 'client/features/connect-wallet/hooks/wallet/useWalletReown';
 
+import config from 'client/config';
 import type * as mixpanel from 'client/shared/analytics/mixpanel';
 import getErrorMessage from 'client/shared/errors/get-error-message';
 import getErrorObj from 'client/shared/errors/get-error-obj';

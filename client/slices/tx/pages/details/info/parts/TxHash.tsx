@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box, Flex, Spinner } from '@chakra-ui/react';
-import config from 'client/config';
 import React from 'react';
 
 import type { Transaction } from 'client/slices/tx/types/api';
@@ -10,6 +9,7 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 
 import TxExternalTxs from 'client/features/external-txs/components/TxExternalTxs';
 
+import config from 'client/config';
 import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import CopyToClipboard from 'client/shared/texts/CopyToClipboard';

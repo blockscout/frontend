@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'client/config';
 import React from 'react';
 
 import { useSettingsContext } from 'client/shell/top-bar/settings/context';
@@ -8,6 +7,7 @@ import { useSettingsContext } from 'client/shell/top-bar/settings/context';
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import { BECH_32_SEPARATOR, toBech32Address } from 'client/slices/address/utils/bech32';
 
+import config from 'client/config';
 import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
 
 interface Props {

@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Flex } from '@chakra-ui/react';
-import config from 'client/config';
 import React from 'react';
 
 import type { TokenInfo, TokenInstance } from 'client/slices/token/types/api';
@@ -13,6 +12,7 @@ import TokenNftMarketplaces from 'client/slices/token/pages/details/info/TokenNf
 import AppActionButton from 'client/features/address-metadata/components/AppActionButton';
 import useAppActionData from 'client/features/address-metadata/hooks/useAppActionData';
 
+import config from 'client/config';
 import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
 import DetailedInfoSponsoredItem from 'client/shared/detailed-info/DetailedInfoSponsoredItem';
 import useIsMounted from 'client/shared/hooks/useIsMounted';

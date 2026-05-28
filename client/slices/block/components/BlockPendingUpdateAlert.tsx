@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'client/config';
 import React from 'react';
+
+import config from 'client/config';
 
 import type { AlertProps } from 'toolkit/chakra/alert';
 import { Alert } from 'toolkit/chakra/alert';

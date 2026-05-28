@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'client/config';
 import type { NextRequest, NextResponse } from 'next/server';
 
+import config from 'client/config';
 import * as cookiesLib from 'client/shared/storage/cookies';
 
 export default function poorReputationTokensMiddleware(req: NextRequest, res: NextResponse) {

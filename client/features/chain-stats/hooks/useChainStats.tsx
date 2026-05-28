@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'client/config';
 import { uniqBy } from 'es-toolkit';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -12,6 +11,7 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 
 import { CROSS_CHAIN_TXS_SECTIONS } from 'client/features/cross-chain-txs/utils/chain-stats';
 
+import config from 'client/config';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import { CHAIN_STATS_CHARTS } from '../stubs/charts';

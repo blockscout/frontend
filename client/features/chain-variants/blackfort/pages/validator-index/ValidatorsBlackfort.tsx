@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box, createListCollection, HStack } from '@chakra-ui/react';
-import config from 'client/config';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -16,6 +15,7 @@ import PageTitle from 'client/shell/page/title/PageTitle';
 
 import { VALIDATOR_BLACKFORT } from 'client/features/chain-variants/blackfort/stubs/validators';
 
+import config from 'client/config';
 import DataList from 'client/shared/lists/DataList';
 import Pagination from 'client/shared/pagination/Pagination';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';

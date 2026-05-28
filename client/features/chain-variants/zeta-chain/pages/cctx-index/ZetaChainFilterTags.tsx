@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Flex, HStack, Text } from '@chakra-ui/react';
-import config from 'client/config';
 import { castArray } from 'es-toolkit/compat';
 import React from 'react';
 
@@ -9,6 +8,7 @@ import type { ZetaChainCCTXFilterParams } from 'client/features/chain-variants/z
 
 import useZetaChainConfig from 'client/features/chain-variants/zeta-chain/hooks/useZetaChainConfig';
 
+import config from 'client/config';
 import dayjs from 'client/shared/date-and-time/dayjs';
 import shortenString from 'client/shared/texts/shorten-string';
 import SpriteIcon from 'client/sprite/SpriteIcon';

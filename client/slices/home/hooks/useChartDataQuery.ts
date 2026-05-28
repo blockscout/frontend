@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'client/config';
-
 import type { ChainIndicatorId } from 'client/slices/home/types/config';
 import type { LineChartData } from 'toolkit/components/charts/line/types';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
 import { getChartData } from 'client/slices/home/utils/chart';
+
+import config from 'client/config';
 
 const rollupFeature = config.features.rollup;
 const isOptimisticRollup = rollupFeature.isEnabled && rollupFeature.type === 'optimistic';

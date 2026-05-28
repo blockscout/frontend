@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { HStack } from '@chakra-ui/react';
-import config from 'client/config';
 import React from 'react';
 
 import type { AddressMetadataTagFormatted } from 'client/features/address-metadata/types/client';
 
 import AppActionButton from 'client/features/address-metadata/components/AppActionButton';
 
+import config from 'client/config';
 import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
 import TextSeparator from 'client/shared/texts/TextSeparator';
 

@@ -2,7 +2,6 @@
 
 import type { BoxProps } from '@chakra-ui/react';
 import { chakra } from '@chakra-ui/react';
-import config from 'client/config';
 import React from 'react';
 
 import type { TokenInfo } from 'client/slices/token/types/api';
@@ -13,6 +12,7 @@ import TokenIconPlaceholder from 'client/slices/token/components/icon/TokenIconP
 
 import { useMultichainContext } from 'client/features/multichain/context';
 
+import config from 'client/config';
 import * as EntityBase from 'client/shared/entities/components';
 import { distributeEntityProps, getIconProps } from 'client/shared/entities/utils';
 import getChainTooltipText from 'client/shared/external-chains/get-chain-tooltip-text';

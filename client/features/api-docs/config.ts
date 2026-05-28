@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { getEnvValue, parseEnvJson } from 'client/config/utils/envs';
-import type { Feature } from 'client/config/utils/features';
-
 import type { ApiDocsTabId } from 'client/features/api-docs/types/config';
 import { API_DOCS_TABS } from 'client/features/api-docs/types/config';
+
+import { getEnvValue, parseEnvJson } from 'client/config/utils/envs';
+import type { Feature } from 'client/config/utils/features';
 
 const tabs = (() => {
   const DEFAULT_TABS = getEnvValue('NEXT_PUBLIC_PRO_API_SUPPORTED') === 'true' ?

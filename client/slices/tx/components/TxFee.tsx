@@ -2,12 +2,12 @@
 
 import type { BoxProps } from '@chakra-ui/react';
 import { chakra } from '@chakra-ui/react';
-import config from 'client/config';
 import React from 'react';
 
 import type { WrappedTransactionFields } from 'client/features/chain-variants/suave/types/api';
 import type { Transaction } from 'client/slices/tx/types/api';
 
+import config from 'client/config';
 import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
 import TokenValue from 'client/shared/values/entity/TokenValue';
 

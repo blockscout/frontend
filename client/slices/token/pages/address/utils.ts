@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import BigNumber from 'bignumber.js';
-import config from 'client/config';
 
 import type { AddressTokenBalance } from 'client/slices/address/types/api';
 import { isFungibleTokenType } from 'client/slices/token/utils/token-types';
 
+import config from 'client/config';
 import sumBnReducer from 'client/shared/numbers/sumBnReducer';
 
 import { ZERO } from 'toolkit/utils/consts';

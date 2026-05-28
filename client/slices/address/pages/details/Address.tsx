@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box, Flex, HStack } from '@chakra-ui/react';
-import config from 'client/config';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -64,6 +63,7 @@ import { USER_OPS_ACCOUNT } from 'client/features/user-ops/stubs';
 import TokenAddToWallet from 'client/features/web3-wallet/components/TokenAddToWallet';
 import useFetchXStarScore from 'client/features/x-star-score/hooks/useFetchXStarScore';
 
+import config from 'client/config';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import useEtherscanRedirects from 'client/shared/router/useEtherscanRedirects';
 import SpriteIcon from 'client/sprite/SpriteIcon';

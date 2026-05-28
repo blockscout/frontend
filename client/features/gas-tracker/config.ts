@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { getEnvValue, parseEnvJson } from 'client/config/utils/envs';
-import type { Feature } from 'client/config/utils/features';
-
 import { GAS_UNITS } from 'client/slices/gas/types/config';
 import type { GasUnit } from 'client/slices/gas/types/config';
 
 import chainConfig from 'client/slices/chain/config';
+
+import { getEnvValue, parseEnvJson } from 'client/config/utils/envs';
+import type { Feature } from 'client/config/utils/features';
 
 const isDisabled = getEnvValue('NEXT_PUBLIC_GAS_TRACKER_ENABLED') === 'false';
 

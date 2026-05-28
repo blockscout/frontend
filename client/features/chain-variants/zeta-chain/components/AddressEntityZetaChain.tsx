@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { chakra } from '@chakra-ui/react';
-import config from 'client/config';
 import React from 'react';
 
 import type { ExternalChain } from 'client/shared/external-chains/types';
@@ -14,6 +13,7 @@ import { unknownAddress } from 'client/slices/address/utils/consts';
 
 import useZetaChainConfig from 'client/features/chain-variants/zeta-chain/hooks/useZetaChainConfig';
 
+import config from 'client/config';
 import getChainTooltipText from 'client/shared/external-chains/get-chain-tooltip-text';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 

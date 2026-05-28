@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { getEnvValue, parseEnvJson } from 'client/config/utils/envs';
-import type { Feature } from 'client/config/utils/features';
-
 import type { ParentChain, RollupType } from 'client/features/rollup/common/types/config';
 import { ROLLUP_TYPES } from 'client/features/rollup/common/types/config';
+
+import { getEnvValue, parseEnvJson } from 'client/config/utils/envs';
+import type { Feature } from 'client/config/utils/features';
 
 import { stripTrailingSlash } from 'toolkit/utils/url';
 

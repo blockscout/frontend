@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'client/config';
 import React from 'react';
 
 import type { TChainIndicator } from 'client/slices/home/types/client';
@@ -14,6 +13,7 @@ import NativeTokenIcon from 'client/slices/token/components/icon/TokenIconNative
 
 import { HOMEPAGE_STATS_MICROSERVICE } from 'client/features/chain-stats/stubs/home';
 
+import config from 'client/config';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import ChainIndicatorsChart from './ChainIndicatorsChart';

@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'client/config';
 import dynamic from 'next/dynamic';
+
+import config from 'client/config';
 
 const ReownProvider = dynamic(() => import('./providers/ReownProvider'), { ssr: false });
 const DynamicProvider = dynamic(() => import('./providers/DynamicProvider'), { ssr: false });

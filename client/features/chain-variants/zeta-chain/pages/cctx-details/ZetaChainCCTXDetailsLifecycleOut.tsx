@@ -2,7 +2,6 @@
 
 import { Flex, Grid, Text } from '@chakra-ui/react';
 import { BigNumber } from 'bignumber.js';
-import config from 'client/config';
 import React from 'react';
 
 import { type OutboundParams, type CrossChainTx, CctxStatus } from '@blockscout/zetachain-cctx-types';
@@ -15,6 +14,7 @@ import TxEntityZetaChainExternal from 'client/features/chain-variants/zeta-chain
 import ZetaChainCCTXValue from 'client/features/chain-variants/zeta-chain/components/ZetaChainCCTXValue';
 import useZetaChainConfig from 'client/features/chain-variants/zeta-chain/hooks/useZetaChainConfig';
 
+import config from 'client/config';
 import StatusTag from 'client/shared/tags/status-tag/StatusTag';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 

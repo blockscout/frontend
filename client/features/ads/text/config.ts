@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import { SUPPORTED_AD_TEXT_PROVIDERS } from 'client/features/ads/text/types/config';
+import type { AdTextProviders } from 'client/features/ads/text/types/config';
+
 import app from 'client/config/app';
 import { getEnvValue } from 'client/config/utils/envs';
 import type { Feature } from 'client/config/utils/features';
-
-import { SUPPORTED_AD_TEXT_PROVIDERS } from 'client/features/ads/text/types/config';
-import type { AdTextProviders } from 'client/features/ads/text/types/config';
 
 const SEVIO_ZONE = '179b0a0e-19b0-4b2a-ad15-7446870bf189';
 const SEVIO_INVENTORY_ID = '65597ae2-67b8-404b-ac28-43d5029389da';

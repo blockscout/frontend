@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'client/config';
 import React from 'react';
 
 import type { CrossChainBridgedTokensSortingValue, CrossChainBridgedTokensSortingField } from '../../types/api';
 import type { StatsBridgedTokenRow } from '@blockscout/interchain-indexer-types';
 import { BridgedTokensSort } from '@blockscout/interchain-indexer-types';
 
+import config from 'client/config';
 import getNextSortValue from 'client/shared/sort/get-next-sort-value';
 
 import { TableBody, TableColumnHeader, TableColumnHeaderSortable, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';

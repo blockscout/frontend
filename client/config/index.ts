@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import meta from '../shared/metadata/config';
+// TODO: services
+// TODO: try refactor imports **/types/config.ts from features configs
+
+import metadata from '../shell/metadata/config';
 import chain from '../slices/chain/config';
 import apis from './apis';
 import app from './app';
@@ -18,7 +21,7 @@ const config = Object.freeze({
   slices,
   features,
   services,
-  meta,
+  metadata,
   misc,
 });
 

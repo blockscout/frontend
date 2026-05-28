@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'client/config';
 import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import config from 'client/config';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 export default function useNotifyOnNavigation() {

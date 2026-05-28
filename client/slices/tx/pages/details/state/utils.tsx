@@ -2,7 +2,6 @@
 
 import { Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
-import config from 'client/config';
 import React from 'react';
 
 import type { TxStateChange } from 'client/slices/tx/types/api';
@@ -11,6 +10,8 @@ import { currencyUnits } from 'client/slices/chain/units';
 import getChainValidatorTitle from 'client/slices/chain/verification-type/utils/get-chain-validator-title';
 import NftEntity from 'client/slices/token/components/entity/NftEntity';
 import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
+
+import config from 'client/config';
 
 import { Badge } from 'toolkit/chakra/badge';
 import { Skeleton } from 'toolkit/chakra/skeleton';

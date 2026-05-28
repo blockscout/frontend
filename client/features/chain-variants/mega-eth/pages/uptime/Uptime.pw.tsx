@@ -1,5 +1,6 @@
-import config from 'client/config';
 import React from 'react';
+
+import config from 'client/config';
 
 import { test, expect } from 'playwright/lib';
 import { port as socketPort } from 'playwright/utils/socket';

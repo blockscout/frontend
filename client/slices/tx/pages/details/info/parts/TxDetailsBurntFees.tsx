@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import BigNumber from 'bignumber.js';
-import config from 'client/config';
 import React from 'react';
 
 import type { Transaction } from 'client/slices/tx/types/api';
 
 import { currencyUnits } from 'client/slices/chain/units';
 
+import config from 'client/config';
 import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
 import DetailedInfoNativeCoinValue from 'client/shared/detailed-info/DetailedInfoNativeCoinValue';
 import SpriteIcon from 'client/sprite/SpriteIcon';

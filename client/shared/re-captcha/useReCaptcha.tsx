@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'client/config';
 import React from 'react';
 import type ReCAPTCHA from 'react-google-recaptcha';
 
+import config from 'client/config';
 import getErrorCauseStatusCode from 'client/shared/errors/get-error-cause-status-code';
 import getErrorObjStatusCode from 'client/shared/errors/get-error-obj-status-code';
 

@@ -2,10 +2,10 @@
 
 /* eslint-disable @next/next/no-img-element */
 import { Box, Text, Flex } from '@chakra-ui/react';
-import config from 'client/config';
 import Script from 'next/script';
 import React from 'react';
 
+import config from 'client/config';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
 import { Button } from 'toolkit/chakra/button';

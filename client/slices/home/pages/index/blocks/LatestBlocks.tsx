@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { chakra, Box, Flex, Text, VStack, HStack } from '@chakra-ui/react';
-import config from 'client/config';
 import { upperFirst } from 'es-toolkit';
 import React from 'react';
 
@@ -16,6 +15,7 @@ import { useHomeDataContext } from 'client/slices/home/contexts/home-data-contex
 import { useHomeRpcDataContext } from 'client/slices/home/contexts/rpc-data-context';
 import { HOMEPAGE_STATS } from 'client/slices/home/stubs';
 
+import config from 'client/config';
 import ApiDegradationRpcIcon from 'client/shared/api-degradation/ApiDegradationRpcIcon';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import useInitialList from 'client/shared/lists/useInitialList';

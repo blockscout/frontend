@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Flex } from '@chakra-ui/react';
-import config from 'client/config';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -18,6 +17,7 @@ import { POOL } from 'client/features/dex-pools/stubs';
 import getPoolLinks from 'client/features/dex-pools/utils/get-pool-links';
 import { getPoolTitle } from 'client/features/dex-pools/utils/get-pool-title';
 
+import config from 'client/config';
 import ApiFetchAlert from 'client/shared/alerts/ApiFetchAlert';
 import InfoPopoverButton from 'client/shared/buttons/InfoPopoverButton';
 import isCustomAppError from 'client/shared/errors/is-custom-app-error';

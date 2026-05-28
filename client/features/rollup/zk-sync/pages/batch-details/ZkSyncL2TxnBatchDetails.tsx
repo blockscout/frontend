@@ -2,7 +2,6 @@
 
 import { GridItem } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
-import config from 'client/config';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -17,6 +16,7 @@ import { currencyUnits } from 'client/slices/chain/units';
 import { layerLabels } from 'client/features/rollup/common/utils/layer';
 import { formatZkSyncL2TxnBatchStatus } from 'client/features/rollup/zk-sync/utils/format-txn-batch-status';
 
+import config from 'client/config';
 import ApiFetchAlert from 'client/shared/alerts/ApiFetchAlert';
 import PrevNext from 'client/shared/buttons/PrevNext';
 import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';

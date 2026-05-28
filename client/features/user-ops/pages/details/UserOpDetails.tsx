@@ -3,7 +3,6 @@
 import { GridItem } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import BigNumber from 'bignumber.js';
-import config from 'client/config';
 import React from 'react';
 
 import type { UserOp } from 'client/features/user-ops/types/api';
@@ -19,6 +18,7 @@ import UserOpEntity from 'client/features/user-ops/components/entity/UserOpEntit
 import UserOpSponsorType from 'client/features/user-ops/components/UserOpSponsorType';
 import UserOpStatus from 'client/features/user-ops/components/UserOpStatus';
 
+import config from 'client/config';
 import ApiFetchAlert from 'client/shared/alerts/ApiFetchAlert';
 import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
 import DetailedInfoNativeCoinValue from 'client/shared/detailed-info/DetailedInfoNativeCoinValue';

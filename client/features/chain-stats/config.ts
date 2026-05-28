@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import multichain from 'client/features/multichain/config';
+
 import apis from 'client/config/apis';
 import type { Feature } from 'client/config/utils/features';
-
-import multichain from 'client/features/multichain/config';
 
 const title = 'Blockchain statistics';
 

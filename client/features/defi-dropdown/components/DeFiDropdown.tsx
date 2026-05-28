@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box, Flex, chakra } from '@chakra-ui/react';
-import config from 'client/config';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import { route } from 'nextjs-routes';
 
+import config from 'client/config';
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 

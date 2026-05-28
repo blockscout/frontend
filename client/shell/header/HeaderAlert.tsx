@@ -2,11 +2,11 @@
 
 import type { FlexProps } from '@chakra-ui/react';
 import { Flex } from '@chakra-ui/react';
-import config from 'client/config';
 import React from 'react';
 
 import IndexingStatusBlocks from 'client/slices/chain/indexing-status/IndexingStatusBlocks';
 
+import config from 'client/config';
 import AlertWithExternalHtml from 'client/shared/alerts/AlertWithExternalHtml';
 
 const maintenanceAlertHtml = config.shell.header.maintenanceAlert.message || '';

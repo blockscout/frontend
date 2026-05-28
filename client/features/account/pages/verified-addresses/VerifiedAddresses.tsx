@@ -2,7 +2,6 @@
 
 import { List, chakra, Box } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
-import config from 'client/config';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -22,6 +21,7 @@ import VerifiedAddressesTable from 'client/features/account/pages/verified-addre
 import TokenInfoForm from 'client/features/account/pages/verified-addresses/token-info/TokenInfoForm';
 import { TOKEN_INFO_APPLICATION, VERIFIED_ADDRESS } from 'client/features/account/stubs';
 
+import config from 'client/config';
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 import DataList from 'client/shared/lists/DataList';
 import getQueryParamString from 'client/shared/router/get-query-param-string';

@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { getEnvValue, parseEnvJson } from 'client/config/utils/envs';
-
 import type { AddressFormat, AddressViewId, IdenticonType } from 'client/slices/address/types/config';
 import { ADDRESS_FORMATS, ADDRESS_VIEWS_IDS, IDENTICON_TYPES } from 'client/slices/address/types/config';
+
+import { getEnvValue, parseEnvJson } from 'client/config/utils/envs';
 
 const identiconType: IdenticonType = (() => {
   const value = getEnvValue('NEXT_PUBLIC_VIEWS_ADDRESS_IDENTICON_TYPE');

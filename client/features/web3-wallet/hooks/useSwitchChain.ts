@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'client/config';
 import React from 'react';
 
 import { useMultichainContext } from 'client/features/multichain/context';
+
+import config from 'client/config';
 
 import { getHexadecimalChainId } from '../utils/get-hexadecimal-chain-id';
 import useProvider from './useProvider';

@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'client/config';
 import React from 'react';
 import { encodeFunctionData, getAddress } from 'viem';
 import { usePublicClient } from 'wagmi';
@@ -9,6 +8,8 @@ import type { FormSubmitResult, MethodCallStrategy, SmartContractMethod } from '
 
 import useAccount from 'client/features/connect-wallet/hooks/useAccount';
 import { useMultichainContext } from 'client/features/multichain/context';
+
+import config from 'client/config';
 
 import { getNativeCoinValue } from './utils';
 

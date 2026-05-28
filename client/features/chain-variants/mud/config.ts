@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import rollup from 'client/features/rollup/common/config';
+
 import { getEnvValue } from 'client/config/utils/envs';
 import type { Feature } from 'client/config/utils/features';
-
-import rollup from 'client/features/rollup/common/config';
 
 const title = 'MUD framework';
 

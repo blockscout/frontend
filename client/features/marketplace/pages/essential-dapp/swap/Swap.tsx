@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Flex, useToken } from '@chakra-ui/react';
-import config from 'client/config';
-import { getFeaturePayload } from 'client/config/utils/features';
 import React, { useMemo } from 'react';
 
 import AdBanner from 'client/features/ads/banner/components/AdBanner';
 import essentialDappsChainsConfig from 'client/features/marketplace/chains-config/essential-dapps';
 
+import config from 'client/config';
+import { getFeaturePayload } from 'client/config/utils/features';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
 import { useColorMode } from 'toolkit/chakra/color-mode';

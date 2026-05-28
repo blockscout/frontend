@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box, Flex, Grid } from '@chakra-ui/react';
-import config from 'client/config';
 import { capitalize } from 'es-toolkit';
 import React from 'react';
 
@@ -13,6 +12,7 @@ import getBlockTotalReward from 'client/slices/block/utils/get-block-total-rewar
 import { currencyUnits } from 'client/slices/chain/units';
 import getChainValidatorTitle from 'client/slices/chain/verification-type/utils/get-chain-validator-title';
 
+import config from 'client/config';
 import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
 import SimpleValue from 'client/shared/values/entity/SimpleValue';
 import SpriteIcon from 'client/sprite/SpriteIcon';

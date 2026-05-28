@@ -2,7 +2,6 @@
 
 import type { JsxStyleProps } from '@chakra-ui/react';
 import { Box } from '@chakra-ui/react';
-import config from 'client/config';
 import { delay, mapValues, pickBy } from 'es-toolkit';
 import React from 'react';
 
@@ -20,6 +19,7 @@ import type { ResourceName, ResourcePathParams } from 'client/api/resources';
 
 import { useMultichainContext } from 'client/features/multichain/context';
 
+import config from 'client/config';
 import dayjs from 'client/shared/date-and-time/dayjs';
 import getErrorMessage from 'client/shared/errors/get-error-message';
 import getErrorObjStatusCode from 'client/shared/errors/get-error-obj-status-code';

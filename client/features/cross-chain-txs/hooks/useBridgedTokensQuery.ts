@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'client/config';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -8,6 +7,7 @@ import type { CrossChainBridgedTokensSorting, CrossChainBridgedTokensSortingFiel
 
 import { INTERCHAIN_BRIDGED_TOKEN_ITEM } from 'client/features/cross-chain-txs/stubs/messages';
 
+import config from 'client/config';
 import useDebounce from 'client/shared/hooks/useDebounce';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';

@@ -2,7 +2,6 @@
 
 import { Box, Text } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
-import config from 'client/config';
 import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
@@ -10,6 +9,7 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'client/shell/page/action-bar/ActionBar';
 import PageTitle from 'client/shell/page/title/PageTitle';
 
+import config from 'client/config';
 import DataList from 'client/shared/lists/DataList';
 import StickyPaginationWithText from 'client/shared/pagination/StickyPaginationWithText';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
@@ -86,7 +86,7 @@ const BeaconChainDeposits = () => {
   return (
     <>
       <PageTitle
-        title={ config.meta.seo.enhancedDataEnabled ? `${ config.chain.name } deposits` : 'Deposits' }
+        title={ config.metadata.seo.enhancedDataEnabled ? `${ config.chain.name } deposits` : 'Deposits' }
         withTextAd
       />
       <DataList

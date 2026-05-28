@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Flex } from '@chakra-ui/react';
-import config from 'client/config';
 import React, { useEffect, useState } from 'react';
 
 import PageTitle from 'client/shell/page/title/PageTitle';
@@ -11,6 +10,7 @@ import AdBanner from 'client/features/ads/banner/components/AdBanner';
 import { useRewardsContext } from 'client/features/rewards/context';
 import useStreakBadges from 'client/features/rewards/hooks/useStreakBadges';
 
+import config from 'client/config';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
 import { Alert } from 'toolkit/chakra/alert';

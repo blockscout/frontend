@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Flex, Grid } from '@chakra-ui/react';
-import config from 'client/config';
 import React from 'react';
 
 import type { Address } from 'client/slices/address/types/api';
@@ -14,6 +13,7 @@ import { CONTRACT_LICENSES } from 'client/slices/contract/utils/licenses';
 import ContractSecurityAudits from 'client/features/contract-audit-reports/components/ContractSecurityAudits';
 import { useMultichainContext } from 'client/features/multichain/context';
 
+import config from 'client/config';
 import Time from 'client/shared/date-and-time/Time';
 
 import { Link } from 'toolkit/chakra/link';

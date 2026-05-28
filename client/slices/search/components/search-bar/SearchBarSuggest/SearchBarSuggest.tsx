@@ -2,7 +2,6 @@
 
 import { Box, Flex, Text } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
-import config from 'client/config';
 import { debounce } from 'es-toolkit';
 import React from 'react';
 
@@ -24,6 +23,7 @@ import SearchBarSuggestApp from 'client/features/marketplace/components/SearchBa
 import useMarketplaceApps from 'client/features/marketplace/hooks/useMarketplaceApps';
 import multichainConfig from 'client/features/multichain/chains-config';
 
+import config from 'client/config';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
 import AdaptiveTabs from 'toolkit/components/AdaptiveTabs/AdaptiveTabs';

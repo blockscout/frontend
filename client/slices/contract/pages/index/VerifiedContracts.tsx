@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box, createListCollection, HStack } from '@chakra-ui/react';
-import config from 'client/config';
 import React from 'react';
 
 import ActionBar from 'client/shell/page/action-bar/ActionBar';
@@ -13,6 +12,7 @@ import VerifiedContractsFilter from 'client/slices/contract/pages/index/Verified
 import VerifiedContractsList from 'client/slices/contract/pages/index/VerifiedContractsList';
 import VerifiedContractsTable from 'client/slices/contract/pages/index/VerifiedContractsTable';
 
+import config from 'client/config';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import DataList from 'client/shared/lists/DataList';
 import Pagination from 'client/shared/pagination/Pagination';
@@ -93,7 +93,7 @@ const VerifiedContracts = () => {
   return (
     <Box>
       <PageTitle
-        title={ config.meta.seo.enhancedDataEnabled ? `Verified ${ config.chain.name } contracts` : 'Verified contracts' }
+        title={ config.metadata.seo.enhancedDataEnabled ? `Verified ${ config.chain.name } contracts` : 'Verified contracts' }
         withTextAd
       />
       <VerifiedContractsCounters/>

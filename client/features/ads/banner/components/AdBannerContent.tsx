@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { chakra } from '@chakra-ui/react';
-import config from 'client/config';
 import React from 'react';
 
 import type { BannerFormat } from '../types/client';
@@ -9,6 +8,8 @@ import type { AdBannerProviders } from '../types/config';
 
 import useProfileQuery from 'client/features/account/hooks/useProfileQuery';
 import useAccount from 'client/features/connect-wallet/hooks/useAccount';
+
+import config from 'client/config';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
 

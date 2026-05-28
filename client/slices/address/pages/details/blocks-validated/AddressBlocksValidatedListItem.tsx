@@ -2,7 +2,6 @@
 
 import { Text, Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
-import config from 'client/config';
 import React from 'react';
 
 import type { Block } from 'client/slices/block/types/api';
@@ -12,6 +11,7 @@ import getBlockTotalReward from 'client/slices/block/utils/get-block-total-rewar
 import { currencyUnits } from 'client/slices/chain/units';
 import GasUsed from 'client/slices/gas/components/GasUsed';
 
+import config from 'client/config';
 import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
 import ListItemMobile from 'client/shared/lists/ListItemMobile';
 import SimpleValue from 'client/shared/values/entity/SimpleValue';

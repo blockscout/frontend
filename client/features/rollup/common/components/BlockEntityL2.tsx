@@ -1,10 +1,11 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { chakra } from '@chakra-ui/react';
-import config from 'client/config';
 import React from 'react';
 
 import * as BlockEntity from 'client/slices/block/components/entity/BlockEntity';
+
+import config from 'client/config';
 
 const rollupFeature = config.features.rollup;
 

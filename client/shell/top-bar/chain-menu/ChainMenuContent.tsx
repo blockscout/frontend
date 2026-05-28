@@ -1,10 +1,11 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { VStack, Flex, Box, Text } from '@chakra-ui/react';
-import config from 'client/config';
 import React from 'react';
 
 import type { FeaturedNetwork, NetworkGroup } from './types';
+
+import config from 'client/config';
 
 import { Link } from 'toolkit/chakra/link';
 import { PopoverBody, PopoverContent } from 'toolkit/chakra/popover';

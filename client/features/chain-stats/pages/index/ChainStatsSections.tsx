@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box, Grid } from '@chakra-ui/react';
-import config from 'client/config';
 import React from 'react';
 
 import type { ChainStatsSection, StatsIntervalIds } from '../../types/client';
@@ -14,6 +13,7 @@ import ChartWidgetContainerCrossChain from 'client/features/cross-chain-txs/comp
 import { CROSS_CHAIN_TXS_CHARTS } from 'client/features/cross-chain-txs/utils/chain-stats';
 import { useMultichainContext } from 'client/features/multichain/context';
 
+import config from 'client/config';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { EmptyState } from 'toolkit/chakra/empty-state';

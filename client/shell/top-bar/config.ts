@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { getExternalAssetFilePath, getEnvValue, parseEnvJson } from 'client/config/utils/envs';
-
 import { COLOR_THEMES, type ColorTheme, type ColorThemeId } from 'client/shell/top-bar/settings/color-theme/config';
+
+import { getExternalAssetFilePath, getEnvValue, parseEnvJson } from 'client/config/utils/envs';
 
 const defaultColorTheme = (() => {
   const envValue = getEnvValue('NEXT_PUBLIC_COLOR_THEME_DEFAULT') as ColorThemeId | undefined;

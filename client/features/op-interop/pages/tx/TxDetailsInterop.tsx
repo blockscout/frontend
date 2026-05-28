@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Grid, Text, Flex, Box } from '@chakra-ui/react';
-import config from 'client/config';
 import React from 'react';
 
 import type { InteropTransactionInfo } from 'client/features/op-interop/types/api';
@@ -14,6 +13,7 @@ import InteropMessageSourceTx from 'client/features/op-interop/components/Intero
 import InteropMessageStatus from 'client/features/op-interop/components/InteropMessageStatus';
 import { layerLabels } from 'client/features/rollup/common/utils/layer';
 
+import config from 'client/config';
 import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
 import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
 

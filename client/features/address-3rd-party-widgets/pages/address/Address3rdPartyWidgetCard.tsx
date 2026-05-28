@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Flex, Text, chakra, Separator } from '@chakra-ui/react';
-import config from 'client/config';
 import { useCallback } from 'react';
 
 import type { Address3rdPartyWidget } from 'client/features/address-3rd-party-widgets/types/view';
 
+import config from 'client/config';
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 

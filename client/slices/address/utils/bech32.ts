@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { bech32 } from '@scure/base';
-import config from 'client/config';
 
+import config from 'client/config';
 import bytesToHex from 'client/shared/data/transformers/bytes-to-hex';
 import hexToBytes from 'client/shared/data/transformers/hex-to-bytes';
 

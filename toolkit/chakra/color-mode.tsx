@@ -2,10 +2,11 @@
 
 'use client';
 
-import config from 'client/config';
 import { ThemeProvider, useTheme } from 'next-themes';
 import type { ThemeProviderProps } from 'next-themes';
 import * as React from 'react';
+
+import config from 'client/config';
 
 export interface ColorModeProviderProps extends ThemeProviderProps {}
 

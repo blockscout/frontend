@@ -1,4 +1,3 @@
-import config from 'client/config';
 import React from 'react';
 
 import type { AddressMetadataInfo, AddressMetadataTagApi } from 'client/features/address-metadata/types/api';
@@ -10,6 +9,8 @@ import * as txMock from 'client/slices/tx/mocks/tx';
 import { protocolTagWithMeta } from 'client/features/address-metadata/mocks/tags';
 import { txInterpretation } from 'client/features/tx-interpretation/blockscout/mocks';
 import { transaction as novesTransaction } from 'client/features/tx-interpretation/noves/mocks';
+
+import config from 'client/config';
 
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';

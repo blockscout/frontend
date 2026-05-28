@@ -1,7 +1,8 @@
 import type { TestFixture, Page } from '@playwright/test';
-import { getEnvValue } from 'client/config/utils/envs';
 import { isEqual } from 'es-toolkit';
 import type { PublicRpcSchema } from 'viem';
+
+import { getEnvValue } from 'client/config/utils/envs';
 
 type Params = Array<PublicRpcSchema[number] & { status?: number }>;
 

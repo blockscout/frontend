@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'client/config';
 import { capitalize } from 'es-toolkit';
 import React from 'react';
 
@@ -14,6 +13,7 @@ import BlocksTableItem from 'client/slices/block/pages/index/BlocksTableItem';
 import { currencyUnits } from 'client/slices/chain/units';
 import getChainValidatorTitle from 'client/slices/chain/verification-type/utils/get-chain-validator-title';
 
+import config from 'client/config';
 import TimeFormatToggle from 'client/shared/date-and-time/TimeFormatToggle';
 import useInitialList from 'client/shared/lists/useInitialList';
 

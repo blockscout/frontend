@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'client/config';
 import { uniq, chunk } from 'es-toolkit';
 import React from 'react';
 
@@ -8,6 +7,8 @@ import type { Transaction } from 'client/slices/tx/types/api';
 
 import type { ReturnType } from 'client/api/hooks/useApiQueries';
 import useApiQueries from 'client/api/hooks/useApiQueries';
+
+import config from 'client/config';
 
 const feature = config.features.txInterpretation;
 

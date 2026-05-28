@@ -1,4 +1,3 @@
-import config from 'client/config';
 import React from 'react';
 
 import type { AddressMetadataInfo, AddressMetadataTagApi } from 'client/features/address-metadata/types/api';
@@ -9,6 +8,8 @@ import * as tokenInstanceMock from 'client/slices/token/mocks/instance';
 import { MetadataUpdateProvider } from 'client/slices/token/pages/instance/metadata-update-context';
 
 import { protocolTagWithMeta } from 'client/features/address-metadata/mocks/tags';
+
+import config from 'client/config';
 
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect, devices } from 'playwright/lib';

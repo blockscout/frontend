@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { VStack, Code, Flex, Box } from '@chakra-ui/react';
-import config from 'client/config';
 import mixpanel from 'mixpanel-browser';
 import type { ChangeEvent } from 'react';
 import React from 'react';
 
 import PageTitle from 'client/shell/page/title/PageTitle';
 
+import config from 'client/config';
 import useFeatureValue from 'client/shared/feature-flags/useFeatureValue';
 import { useRollbar } from 'client/shared/monitoring/rollbar';
 import useGradualIncrement from 'client/shared/numbers/useGradualIncrement';

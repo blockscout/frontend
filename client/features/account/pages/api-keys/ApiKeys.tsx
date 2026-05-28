@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box, Text } from '@chakra-ui/react';
-import config from 'client/config';
 import React, { useCallback, useState } from 'react';
 
 import type { ApiKey } from 'client/features/account/types/api';
@@ -14,6 +13,7 @@ import AccountPageDescription from 'client/features/account/components/AccountPa
 import useRedirectForInvalidAuthToken from 'client/features/account/hooks/useRedirectForInvalidAuthToken';
 import { API_KEY } from 'client/features/account/stubs';
 
+import config from 'client/config';
 import AlertWithExternalHtml from 'client/shared/alerts/AlertWithExternalHtml';
 import ApiFetchAlert from 'client/shared/alerts/ApiFetchAlert';
 

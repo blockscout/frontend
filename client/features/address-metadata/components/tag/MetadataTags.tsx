@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box, Flex, chakra } from '@chakra-ui/react';
-import config from 'client/config';
 import React from 'react';
 
 import type { MetadataTag as TMetadataTag } from './types';
 
+import config from 'client/config';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
 import { Badge } from 'toolkit/chakra/badge';

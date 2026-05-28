@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Flex } from '@chakra-ui/react';
-import config from 'client/config';
 import { capitalize } from 'es-toolkit/compat';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -15,6 +14,7 @@ import { TX } from 'client/slices/tx/stubs/tx';
 
 import AdvancedFilterLink from 'client/features/advanced-filter/components/AdvancedFilterLink';
 
+import config from 'client/config';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import Pagination from 'client/shared/pagination/Pagination';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';

@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box } from '@chakra-ui/react';
-import config from 'client/config';
 import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
 import { VALIDATORS_BLACKFORT_COUNTERS } from 'client/features/chain-variants/blackfort/stubs/validators';
 
+import config from 'client/config';
 import StatsWidget from 'client/shared/stats/StatsWidget';
 
 const ValidatorsCounters = () => {

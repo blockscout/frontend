@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import account from 'client/features/account/config';
+import connectWallet from 'client/features/connect-wallet/config';
+
 import apis from 'client/config/apis';
 import app from 'client/config/app';
 import type { Feature } from 'client/config/utils/features';
-
-import account from 'client/features/account/config';
-import connectWallet from 'client/features/connect-wallet/config';
 
 const title = 'Rewards service integration';
 

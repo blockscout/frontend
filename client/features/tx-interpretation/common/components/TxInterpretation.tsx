@@ -3,7 +3,6 @@
 import type { BoxProps } from '@chakra-ui/react';
 import { Box, chakra } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
-import config from 'client/config';
 import React from 'react';
 
 import type { ClusterChainConfig } from 'client/features/multichain/types/client';
@@ -22,6 +21,7 @@ import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 
 import EnsEntity from 'client/features/name-services/domains/components/EnsEntity';
 
+import config from 'client/config';
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 import dayjs from 'client/shared/date-and-time/dayjs';
 import ChainIcon from 'client/shared/external-chains/ChainIcon';

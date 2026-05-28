@@ -5,7 +5,6 @@ import {
   Flex,
   chakra,
 } from '@chakra-ui/react';
-import config from 'client/config';
 import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
@@ -21,6 +20,7 @@ import GasTrackerFaq from 'client/features/gas-tracker/components/GasTrackerFaq'
 import GasTrackerNetworkUtilization from 'client/features/gas-tracker/components/GasTrackerNetworkUtilization';
 import GasTrackerPrices from 'client/features/gas-tracker/components/GasTrackerPrices';
 
+import config from 'client/config';
 import Time from 'client/shared/date-and-time/Time';
 
 import { Alert } from 'toolkit/chakra/alert';
@@ -86,12 +86,12 @@ const GasTracker = () => {
     return data?.gas_prices ? <GasTrackerPrices prices={ data.gas_prices } isLoading={ isLoading }/> : null;
   })();
 
-  const faq = config.meta.seo.enhancedDataEnabled ? <GasTrackerFaq/> : null;
+  const faq = config.metadata.seo.enhancedDataEnabled ? <GasTrackerFaq/> : null;
 
   return (
     <>
       <PageTitle
-        title={ config.meta.seo.enhancedDataEnabled ? `${ config.chain.name } gas tracker` : 'Gas tracker' }
+        title={ config.metadata.seo.enhancedDataEnabled ? `${ config.chain.name } gas tracker` : 'Gas tracker' }
         secondRow={ titleSecondRow }
         withTextAd
       />

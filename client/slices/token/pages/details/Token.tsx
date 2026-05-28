@@ -2,7 +2,6 @@
 
 import { Box } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
-import config from 'client/config';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
@@ -15,6 +14,8 @@ import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 import useApiQuery, { getResourceKey } from 'client/api/hooks/useApiQuery';
 import useSocketChannel from 'client/api/socket/useSocketChannel';
 import useSocketMessage from 'client/api/socket/useSocketMessage';
+
+import * as metadata from 'client/shell/metadata';
 
 import * as addressStubs from 'client/slices/address/stubs/address';
 import Contract from 'client/slices/contract/pages/details/Contract';
@@ -35,8 +36,8 @@ import TextAd from 'client/features/ads/text/components/TextAd';
 import TokenAdvancedFilterLink from 'client/features/advanced-filter/pages/token/TokenAdvancedFilterLink';
 import CsvExport from 'client/features/csv-export/components/CsvExport';
 
+import config from 'client/config';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
-import * as metadata from 'client/shared/metadata';
 import Pagination from 'client/shared/pagination/Pagination';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
@@ -120,7 +121,7 @@ const TokenPageContent = () => {
   });
 
   useEffect(() => {
-    // even if config.meta.seo.enhancedDataEnabled is enabled, we don't fetch contract info for the project description
+    // even if config.metadata.seo.enhancedDataEnabled is enabled, we don't fetch contract info for the project description
     // so we need to update the metadata anyway.
     if (tokenQuery.data && !tokenQuery.isPlaceholderData && !verifiedInfoQuery.isPlaceholderData) {
       const apiData = {

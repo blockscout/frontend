@@ -2,7 +2,6 @@
 
 import { Box, Flex, VStack, Separator, HStack, chakra } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
-import config from 'client/config';
 import React from 'react';
 
 import type { Transaction } from 'client/slices/tx/types/api';
@@ -16,6 +15,7 @@ import TxStatus from 'client/slices/tx/components/TxStatus';
 import BlobEntity from 'client/features/data-availability/components/entity/BlobEntity';
 import { useMultichainContext } from 'client/features/multichain/context';
 
+import config from 'client/config';
 import TextSeparator from 'client/shared/texts/TextSeparator';
 import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
 import Utilization from 'client/shared/values/utilization/Utilization';

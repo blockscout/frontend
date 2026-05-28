@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'client/config';
 import Script from 'next/script';
 import React from 'react';
+
+import config from 'client/config';
 
 const feature = config.features.googleAnalytics;
 

@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { getEnvValue, parseEnvJson } from 'client/config/utils/envs';
-
 import type { AdditionalTokenType, NftMarketplaceItem } from 'client/slices/token/types/client';
+
+import { getEnvValue, parseEnvJson } from 'client/config/utils/envs';
 
 const nftMarketplaces = (() => {
   const marketplaces = parseEnvJson<Array<NftMarketplaceItem>>(getEnvValue('NEXT_PUBLIC_VIEWS_NFT_MARKETPLACES')) || [];

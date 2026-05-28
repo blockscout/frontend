@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Flex, VStack } from '@chakra-ui/react';
-import config from 'client/config';
 import React from 'react';
 
 import type { ClusterChainConfig } from 'client/features/multichain/types/client';
@@ -21,6 +20,7 @@ import TxWatchListTags from 'client/features/account/components/TxWatchListTags'
 import MetadataTag from 'client/features/address-metadata/components/tag/MetadataTag';
 import TxTranslationType from 'client/features/tx-interpretation/noves/components/TxTranslationType';
 
+import config from 'client/config';
 import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
 import ChainIcon from 'client/shared/external-chains/ChainIcon';
 import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';

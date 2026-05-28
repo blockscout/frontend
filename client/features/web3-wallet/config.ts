@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import { SUPPORTED_WALLETS } from 'client/features/web3-wallet/types/config';
+import type { WalletType } from 'client/features/web3-wallet/types/config';
+
 import app from 'client/config/app';
 import { getEnvValue, parseEnvJson } from 'client/config/utils/envs';
 import type { Feature } from 'client/config/utils/features';
-
-import { SUPPORTED_WALLETS } from 'client/features/web3-wallet/types/config';
-import type { WalletType } from 'client/features/web3-wallet/types/config';
 
 const wallets = ((): Array<WalletType> | undefined => {
   const envValue = getEnvValue('NEXT_PUBLIC_WEB3_WALLETS');

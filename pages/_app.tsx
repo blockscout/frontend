@@ -4,7 +4,6 @@ import type { HTMLChakraProps } from '@chakra-ui/react';
 import { GrowthBookProvider } from '@growthbook/growthbook-react';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import config from 'client/config';
 import type { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
 import React from 'react';
@@ -26,6 +25,7 @@ import Web3Provider from 'client/features/connect-wallet/components/Web3Provider
 import { CsvExportContextProvider } from 'client/features/csv-export/utils/context';
 import { MarketplaceContextProvider } from 'client/features/marketplace/context';
 
+import config from 'client/config';
 import GoogleAnalytics from 'client/shared/analytics/google/GoogleAnalytics';
 import AppErrorBoundary from 'client/shared/errors/AppErrorBoundary';
 import AppErrorGlobalContainer from 'client/shared/errors/AppErrorGlobalContainer';

@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { getEnvValue, parseEnvJson } from 'client/config/utils/envs';
-
 import type { BlockFieldId } from 'client/slices/block/types/config';
 import { BLOCK_FIELDS_IDS } from 'client/slices/block/types/config';
+
+import { getEnvValue, parseEnvJson } from 'client/config/utils/envs';
 
 const blockHiddenFields = (() => {
   const parsedValue = parseEnvJson<Array<BlockFieldId>>(getEnvValue('NEXT_PUBLIC_VIEWS_BLOCK_HIDDEN_FIELDS')) || [];

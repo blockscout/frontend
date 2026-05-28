@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'client/config';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -20,6 +19,7 @@ import useTxCrossChainTransfersQuery from 'client/features/cross-chain-txs/hooks
 import TxTokenTransferCrossChain from 'client/features/cross-chain-txs/pages/tx/TxTokenTransferCrossChain';
 import { useMultichainContext } from 'client/features/multichain/context';
 
+import config from 'client/config';
 import useIsInitialLoading from 'client/shared/hooks/useIsInitialLoading';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import Pagination from 'client/shared/pagination/Pagination';

@@ -1,11 +1,12 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'client/config';
 import React from 'react';
 
 import type { AddressCounters } from 'client/slices/address/types/api';
 
 import useApiFetch from 'client/api/hooks/useApiFetch';
+
+import config from 'client/config';
 
 const feature = config.features.addressMetadata;
 

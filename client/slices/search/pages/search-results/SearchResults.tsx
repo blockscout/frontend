@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box, chakra } from '@chakra-ui/react';
-import config from 'client/config';
 import { useRouter } from 'next/router';
 import type { FormEvent } from 'react';
 import React from 'react';
@@ -24,6 +23,7 @@ import type { SearchResultAppItem } from 'client/slices/search/utils/search-cate
 import ExternalSearchItem from 'client/features/chain-variants/zeta-chain/components/ExternalSearchItem';
 import useMarketplaceApps from 'client/features/marketplace/hooks/useMarketplaceApps';
 
+import config from 'client/config';
 import ApiFetchAlert from 'client/shared/alerts/ApiFetchAlert';
 import AppErrorBoundary from 'client/shared/errors/AppErrorBoundary';
 import Pagination from 'client/shared/pagination/Pagination';

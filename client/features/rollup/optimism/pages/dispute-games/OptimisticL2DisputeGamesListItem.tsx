@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'client/config';
 import React from 'react';
 
 import type { OptimisticL2DisputeGamesItem } from 'client/features/rollup/optimism/types/api';
@@ -8,6 +7,7 @@ import type { OptimisticL2DisputeGamesItem } from 'client/features/rollup/optimi
 import BlockEntityL2 from 'client/features/rollup/common/components/BlockEntityL2';
 import { layerLabels } from 'client/features/rollup/common/utils/layer';
 
+import config from 'client/config';
 import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
 import ListItemMobileGrid from 'client/shared/lists/ListItemMobileGrid';
 import CopyToClipboard from 'client/shared/texts/CopyToClipboard';

@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import type { TxExternalTxsConfig } from 'client/features/external-txs/types/client';
+
 import { getEnvValue, parseEnvJson } from 'client/config/utils/envs';
 import type { Feature } from 'client/config/utils/features';
-
-import type { TxExternalTxsConfig } from 'client/features/external-txs/types/client';
 
 const externalTransactionsConfig = parseEnvJson<TxExternalTxsConfig>(getEnvValue('NEXT_PUBLIC_TX_EXTERNAL_TRANSACTIONS_CONFIG'));
 

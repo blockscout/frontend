@@ -2,7 +2,6 @@
 
 import { WagmiAdapter } from '@reown/appkit-adapter-wagmi';
 import type { AppKitNetwork } from '@reown/appkit/networks';
-import appConfig from 'client/config';
 import type { Chain, Transport } from 'viem';
 import { fallback, http } from 'viem';
 import { createConfig } from 'wagmi';
@@ -10,6 +9,8 @@ import { createConfig } from 'wagmi';
 import { chains, parentChain } from 'client/features/connect-wallet/utils/chains';
 import essentialDappsChainsConfig from 'client/features/marketplace/chains-config/essential-dapps';
 import multichainConfig from 'client/features/multichain/chains-config';
+
+import appConfig from 'client/config';
 
 const feature = appConfig.features.connectWallet;
 

@@ -1,5 +1,4 @@
 import type { Locator } from '@playwright/test';
-import config from 'client/config';
 import React from 'react';
 import type { PublicRpcSchema, RpcTransaction } from 'viem';
 
@@ -9,6 +8,8 @@ import * as statsMock from 'client/slices/home/mocks/stats';
 import * as txMock from 'client/slices/tx/mocks/tx';
 
 import * as statsMainMock from 'client/features/chain-stats/mocks/home';
+
+import config from 'client/config';
 
 import { test, expect, devices } from 'playwright/lib';
 import * as pwConfig from 'playwright/utils/config';

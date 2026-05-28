@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'client/config';
 import React from 'react';
 
 import type { UserOpsItem } from 'client/features/user-ops/types/api';
@@ -9,6 +8,7 @@ import { AddressHighlightProvider } from 'client/slices/address/contexts/address
 
 import { useMultichainContext } from 'client/features/multichain/context';
 
+import config from 'client/config';
 import TimeFormatToggle from 'client/shared/date-and-time/TimeFormatToggle';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';

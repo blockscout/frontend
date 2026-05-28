@@ -2,7 +2,6 @@
 
 import { Flex, Text, Box } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
-import config from 'client/config';
 import { capitalize } from 'es-toolkit';
 import React from 'react';
 
@@ -18,6 +17,7 @@ import { currencyUnits } from 'client/slices/chain/units';
 import getChainValidatorTitle from 'client/slices/chain/verification-type/utils/get-chain-validator-title';
 import GasUsed from 'client/slices/gas/components/GasUsed';
 
+import config from 'client/config';
 import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
 import ListItemMobile from 'client/shared/lists/ListItemMobile';
 import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';

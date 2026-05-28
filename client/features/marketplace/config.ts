@@ -1,15 +1,15 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import apis from 'client/config/apis';
-import app from 'client/config/app';
-import { getEnvValue, getExternalAssetFilePath, parseEnvJson } from 'client/config/utils/envs';
-import type { Feature } from 'client/config/utils/features';
-
 import type { EssentialDappsConfig, MarketplaceTitles } from 'client/features/marketplace/types/client';
 
 import chain from 'client/slices/chain/config';
 
 import connectWallet from 'client/features/connect-wallet/config';
+
+import apis from 'client/config/apis';
+import app from 'client/config/app';
+import { getEnvValue, getExternalAssetFilePath, parseEnvJson } from 'client/config/utils/envs';
+import type { Feature } from 'client/config/utils/features';
 
 const defaultTitles: MarketplaceTitles = {
   entity_name: 'Dapp',

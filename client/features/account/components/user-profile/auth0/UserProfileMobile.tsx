@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'client/config';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -10,6 +9,7 @@ import AuthModal from 'client/features/account/components/auth-modal/AuthModal';
 import useProfileQuery from 'client/features/account/hooks/useProfileQuery';
 import useAccount from 'client/features/connect-wallet/hooks/useAccount';
 
+import config from 'client/config';
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 
 import { DrawerBody, DrawerContent, DrawerRoot, DrawerTrigger } from 'toolkit/chakra/drawer';

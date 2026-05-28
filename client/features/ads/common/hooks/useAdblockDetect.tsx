@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'client/config';
 import { useEffect } from 'react';
 
 import type { AdBannerProviders } from 'client/features/ads/banner/types/config';
 
 import { useAppContext } from 'client/shell/app/context';
 
+import config from 'client/config';
 import * as cookies from 'client/shared/storage/cookies';
 
 import { isBrowser } from 'toolkit/utils/isBrowser';

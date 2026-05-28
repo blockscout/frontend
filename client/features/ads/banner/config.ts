@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import type { AdButlerConfig, AdButlerDeviceConfig, AdBannerProviders, AdBannerAdditionalProviders } from 'client/features/ads/banner/types/config';
+import { SUPPORTED_AD_BANNER_PROVIDERS } from 'client/features/ads/banner/types/config';
+
 import app from 'client/config/app';
 import { getEnvValue, parseEnvJson } from 'client/config/utils/envs';
 import type { Feature } from 'client/config/utils/features';
-
-import type { AdButlerConfig, AdButlerDeviceConfig, AdBannerProviders, AdBannerAdditionalProviders } from 'client/features/ads/banner/types/config';
-import { SUPPORTED_AD_BANNER_PROVIDERS } from 'client/features/ads/banner/types/config';
 
 const SEVIO_ZONE_MOBILE = '52909312-7ebb-4bd5-9006-5e4f7041ed63';
 const SEVIO_ZONE_DESKTOP = '07cabd45-77f1-4203-8081-868bae776981';

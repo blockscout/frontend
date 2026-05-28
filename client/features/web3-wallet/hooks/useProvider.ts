@@ -1,10 +1,11 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { useQuery } from '@tanstack/react-query';
-import config from 'client/config';
-import { getFeaturePayload } from 'client/config/utils/features';
 
 import { useMultichainContext } from 'client/features/multichain/context';
+
+import config from 'client/config';
+import { getFeaturePayload } from 'client/config/utils/features';
 
 import detectWallet from '../utils/detect-wallet';
 import useDetectWalletEip6963 from './useDetectWalletEip6963';

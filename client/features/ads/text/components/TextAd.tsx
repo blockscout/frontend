@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { chakra } from '@chakra-ui/react';
-import config from 'client/config';
 import React from 'react';
 
 import { useAppContext } from 'client/shell/app/context';
 
+import config from 'client/config';
 import * as cookies from 'client/shared/storage/cookies';
 
 import SevioTextAd from './SevioTextAd';

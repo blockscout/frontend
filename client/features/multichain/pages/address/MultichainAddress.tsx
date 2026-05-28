@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box, Flex } from '@chakra-ui/react';
-import config from 'client/config';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -22,6 +21,7 @@ import { ADDRESS } from 'client/features/multichain/stubs';
 import * as contract from 'client/features/multichain/utils/contract';
 import EnsEntity from 'client/features/name-services/domains/components/EnsEntity';
 
+import config from 'client/config';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 

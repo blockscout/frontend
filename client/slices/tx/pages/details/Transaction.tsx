@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'client/config';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -24,6 +23,7 @@ import TxAuthorizations from 'client/features/tx-authorization/pages/tx/TxAuthor
 import TxAssetFlows from 'client/features/tx-interpretation/noves/pages/tx-asset-flows/TxAssetFlows';
 import TxUserOps from 'client/features/user-ops/pages/tx/TxUserOps';
 
+import config from 'client/config';
 import isCustomAppError from 'client/shared/errors/is-custom-app-error';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import getQueryParamString from 'client/shared/router/get-query-param-string';

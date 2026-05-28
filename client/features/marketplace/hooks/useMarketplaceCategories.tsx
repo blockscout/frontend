@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { useQuery } from '@tanstack/react-query';
-import config from 'client/config';
 import React from 'react';
 
 import type { MarketplaceApp } from 'client/features/marketplace/types/client';
@@ -10,6 +9,8 @@ import useApiFetch from 'client/api/hooks/useFetch';
 import type { ResourceError } from 'client/api/resources';
 
 import { CATEGORIES } from 'client/features/marketplace/stubs';
+
+import config from 'client/config';
 
 const feature = config.features.marketplace;
 const categoriesUrl = (feature.isEnabled && feature.categoriesUrl) || '';

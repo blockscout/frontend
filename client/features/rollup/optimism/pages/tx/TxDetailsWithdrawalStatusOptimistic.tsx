@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { useQueryClient } from '@tanstack/react-query';
-import config from 'client/config';
 import React from 'react';
 
 import type { OpWithdrawal, OptimisticL2WithdrawalStatus } from 'client/features/rollup/optimism/types/api';
@@ -13,6 +12,7 @@ import { getResourceKey } from 'client/api/hooks/useApiQuery';
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
 import OptimisticL2ClaimButton, { canClaimDirectlyGuard } from 'client/features/rollup/optimism/components/OptimisticL2ClaimButton';
 
+import config from 'client/config';
 import VerificationSteps from 'client/shared/lifecycle/steps/VerificationSteps';
 
 interface Props {

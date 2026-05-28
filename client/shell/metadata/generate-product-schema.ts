@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'client/config';
-
 import type { ProductSchema, ApiData } from './types';
 import type { RouteParams } from 'nextjs/types';
 
 import type { Route } from 'nextjs-routes';
+
+import config from 'client/config';
 
 /**
  * Generates Product schema (JSON-LD) for token pages

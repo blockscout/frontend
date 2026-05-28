@@ -2,7 +2,6 @@
 
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
-import config from 'client/config';
 import React from 'react';
 import type { Chain, GetBlockReturnType } from 'viem';
 
@@ -17,6 +16,7 @@ import { GET_BLOCK } from 'client/slices/block/stubs/rpc';
 
 import { publicClient } from 'client/features/connect-wallet/utils/public-client';
 
+import config from 'client/config';
 import hexToDecimal from 'client/shared/data/transformers/hex-to-decimal';
 import type { QueryWithPagesResult } from 'client/shared/pagination/useQueryWithPages';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';

@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'client/config';
 import React from 'react';
 import { getAddress, type Abi } from 'viem';
 import { useAccount, useSwitchChain, useWriteContract, useSendTransaction } from 'wagmi';
@@ -10,6 +9,8 @@ import type { FormSubmitResult, SmartContractMethod } from './types';
 import useWallet from 'client/features/connect-wallet/hooks/useWallet';
 import { useMultichainContext } from 'client/features/multichain/context';
 import useRewardsActivity from 'client/features/rewards/hooks/useRewardsActivity';
+
+import config from 'client/config';
 
 import { getNativeCoinValue } from './utils';
 

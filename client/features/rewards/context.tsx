@@ -2,7 +2,6 @@
 
 import { useQueryClient, type UseQueryResult } from '@tanstack/react-query';
 import { useToggle } from '@uidotdev/usehooks';
-import config from 'client/config';
 import { useRouter } from 'next/router';
 import React, { createContext, useContext, useEffect, useMemo, useCallback, useState } from 'react';
 import { useSignMessage, useSwitchChain } from 'wagmi';
@@ -16,6 +15,7 @@ import type { ResourceError } from 'client/api/resources';
 import useProfileQuery from 'client/features/account/hooks/useProfileQuery';
 import useAccount from 'client/features/connect-wallet/hooks/useAccount';
 
+import config from 'client/config';
 import decodeJWT from 'client/shared/auth/decode-jwt';
 import getErrorMessage from 'client/shared/errors/get-error-message';
 import getErrorObjPayload from 'client/shared/errors/get-error-obj-payload';

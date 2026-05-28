@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Provider as DefaultProvider, useRollbar as useRollbarDefault } from '@rollbar/react';
-import config from 'client/config';
 import type { Configuration } from 'rollbar';
 
+import config from 'client/config';
 import { ABSENT_PARAM_ERROR_MESSAGE } from 'client/shared/errors/throw-on-absent-param-error';
 import { RESOURCE_LOAD_ERROR_MESSAGE } from 'client/shared/errors/throw-on-resource-load-error';
 import { FallbackProvider } from 'client/shared/utils/fallback-provider';

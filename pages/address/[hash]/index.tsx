@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'client/config';
 import type { GetServerSideProps, NextPage } from 'next';
 import React from 'react';
 
@@ -15,6 +14,7 @@ import Address from 'client/slices/address/pages/details/Address';
 
 import MultichainAddress from 'client/features/multichain/pages/address/MultichainAddress';
 
+import config from 'client/config';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 const pathname: Route['pathname'] = '/address/[hash]';
@@ -32,7 +32,7 @@ export default Page;
 export const getServerSideProps: GetServerSideProps<Props<typeof pathname>> = async(ctx) => {
   const baseResponse = await gSSP.base<typeof pathname>(ctx);
 
-  if (config.meta.og.enhancedDataEnabled && 'props' in baseResponse && !config.features.multichain.isEnabled) {
+  if (config.metadata.og.enhancedDataEnabled && 'props' in baseResponse && !config.features.multichain.isEnabled) {
     const botInfo = detectBotRequest(ctx.req);
 
     if (botInfo?.type === 'social_preview') {

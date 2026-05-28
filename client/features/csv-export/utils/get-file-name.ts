@@ -1,9 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type config from 'client/config';
-
 import type { CsvExportType } from '../types/client';
 
+import type config from 'client/config';
 import dayjs from 'client/shared/date-and-time/dayjs';
 
 import getPrefixByFilter from './get-prefix-by-filter';

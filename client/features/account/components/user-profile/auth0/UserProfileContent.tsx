@@ -1,8 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box, Separator, Flex, VStack } from '@chakra-ui/react';
-import config from 'client/config';
-import { getFeaturePayload } from 'client/config/utils/features';
 import React from 'react';
 
 import type { NavLink } from '../types';
@@ -13,6 +11,8 @@ import { route } from 'nextjs-routes';
 import useLogout from 'client/features/account/hooks/useLogout';
 import { useMarketplaceContext } from 'client/features/marketplace/context';
 
+import config from 'client/config';
+import { getFeaturePayload } from 'client/config/utils/features';
 import shortenString from 'client/shared/texts/shorten-string';
 
 import { Button } from 'toolkit/chakra/button';

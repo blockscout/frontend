@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Flex, Box, HStack } from '@chakra-ui/react';
-import config from 'client/config';
 import React from 'react';
 
 import { useAppContext } from 'client/shell/app/context';
@@ -12,6 +11,7 @@ import DeFiDropdown from 'client/features/defi-dropdown/components/DeFiDropdown'
 import NetworkAddToWallet from 'client/features/web3-wallet/components/NetworkAddToWallet';
 import useProvider from 'client/features/web3-wallet/hooks/useProvider';
 
+import config from 'client/config';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import * as cookies from 'client/shared/storage/cookies';
 

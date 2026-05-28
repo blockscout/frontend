@@ -2,7 +2,6 @@
 
 import { chakra } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
-import config from 'client/config';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -14,6 +13,7 @@ import useApiFetch from 'client/api/hooks/useApiFetch';
 
 import AuthModal from 'client/features/account/components/auth-modal/AuthModal';
 
+import config from 'client/config';
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 import getErrorMessage from 'client/shared/errors/get-error-message';
 import getErrorObjPayload from 'client/shared/errors/get-error-obj-payload';

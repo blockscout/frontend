@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'client/config';
 import type { NextPageContext } from 'next';
 import NextErrorComponent from 'next/error';
 import React from 'react';
@@ -8,6 +7,7 @@ import Rollbar from 'rollbar';
 
 import type { Props as ServerSidePropsCommon } from 'nextjs/getServerSideProps/handlers';
 
+import config from 'client/config';
 import * as cookies from 'client/shared/storage/cookies';
 
 const rollbarFeature = config.features.rollbar;

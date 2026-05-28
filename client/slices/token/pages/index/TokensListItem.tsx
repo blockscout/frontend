@@ -2,7 +2,6 @@
 
 import { Flex, HStack, Grid, GridItem } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
-import config from 'client/config';
 import React from 'react';
 
 import type { AggregatedTokenInfo } from 'client/features/multichain/types/client';
@@ -15,6 +14,7 @@ import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 import multichainConfig from 'client/features/multichain/chains-config';
 import TokenAddToWallet from 'client/features/web3-wallet/components/TokenAddToWallet';
 
+import config from 'client/config';
 import getItemIndex from 'client/shared/lists/get-item-index';
 import ListItemMobile from 'client/shared/lists/ListItemMobile';
 import SimpleValue from 'client/shared/values/entity/SimpleValue';

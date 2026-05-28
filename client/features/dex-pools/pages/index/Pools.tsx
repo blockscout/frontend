@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box, Flex } from '@chakra-ui/react';
-import config from 'client/config';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -12,6 +11,7 @@ import PoolsListItem from 'client/features/dex-pools/pages/index/PoolsListItem';
 import PoolsTable from 'client/features/dex-pools/pages/index/PoolsTable';
 import { POOL } from 'client/features/dex-pools/stubs';
 
+import config from 'client/config';
 import useDebounce from 'client/shared/hooks/useDebounce';
 import DataList from 'client/shared/lists/DataList';
 import Pagination from 'client/shared/pagination/Pagination';

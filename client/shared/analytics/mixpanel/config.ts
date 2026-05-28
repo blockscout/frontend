@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import type { Config } from 'mixpanel-browser';
+
 import app from 'client/config/app';
 import { getEnvValue, parseEnvJson } from 'client/config/utils/envs';
 import type { Feature } from 'client/config/utils/features';
-import type { Config } from 'mixpanel-browser';
 
 const projectToken = getEnvValue('NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN');
 const configOverrides = (() => {

@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Flex, createListCollection } from '@chakra-ui/react';
-import config from 'client/config';
 import React from 'react';
 
 import type { Address } from 'client/slices/address/types/api';
 
+import config from 'client/config';
 import RawDataSnippet from 'client/shared/data/RawDataSnippet';
 import hexToUtf8 from 'client/shared/data/transformers/hex-to-utf8';
 import CopyToClipboard from 'client/shared/texts/CopyToClipboard';

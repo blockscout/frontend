@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'client/config';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -11,6 +10,7 @@ import { SEARCH_RESULT_ITEM, SEARCH_RESULT_NEXT_PAGE_PARAMS } from 'client/slice
 
 import { getExternalSearchItem } from 'client/features/chain-variants/zeta-chain/utils/external-search';
 
+import config from 'client/config';
 import useDebounce from 'client/shared/hooks/useDebounce';
 import useUpdateValueEffect from 'client/shared/hooks/useUpdateValueEffect';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';

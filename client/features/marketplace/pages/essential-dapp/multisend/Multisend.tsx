@@ -2,13 +2,13 @@
 
 import { Box } from '@chakra-ui/react';
 import { MultisenderWidget } from '@multisender.app/multisender-react-widget';
-import config from 'client/config';
-import { getFeaturePayload } from 'client/config/utils/features';
 import React from 'react';
 
 import AdBanner from 'client/features/ads/banner/components/AdBanner';
 import essentialDappsChainsConfig from 'client/features/marketplace/chains-config/essential-dapps';
 
+import config from 'client/config';
+import { getFeaturePayload } from 'client/config/utils/features';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
 const feature = getFeaturePayload(config.features.marketplace);

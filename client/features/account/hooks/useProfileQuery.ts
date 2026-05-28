@@ -1,9 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'client/config';
-
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import config from 'client/config';
 import * as cookies from 'client/shared/storage/cookies';
 
 export default function useProfileQuery() {

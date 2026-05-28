@@ -2,7 +2,6 @@
 
 import { Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
-import config from 'client/config';
 import React from 'react';
 
 import type { ClusterChainConfig } from 'client/features/multichain/types/client';
@@ -16,6 +15,7 @@ import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
 import getBlockTotalReward from 'client/slices/block/utils/get-block-total-reward';
 import GasUsed from 'client/slices/gas/components/GasUsed';
 
+import config from 'client/config';
 import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
 import ChainIcon from 'client/shared/external-chains/ChainIcon';
 import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';

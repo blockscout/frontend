@@ -1,12 +1,13 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import appConfig from 'client/config';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
 import { CSP_NONCE_HEADER } from 'nextjs/constants';
 import * as csp from 'nextjs/csp/index';
 import * as middlewares from 'nextjs/middlewares/index';
+
+import appConfig from 'client/config';
 
 const adsBannerFeature = appConfig.features.adsBanner;
 const adsTextFeature = appConfig.features.adsText;

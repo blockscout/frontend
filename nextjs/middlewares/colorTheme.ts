@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import appConfig from 'client/config';
 import type { NextRequest, NextResponse } from 'next/server';
 
+import appConfig from 'client/config';
 import * as cookiesLib from 'client/shared/storage/cookies';
 
 export default function colorThemeMiddleware(req: NextRequest, res: NextResponse) {

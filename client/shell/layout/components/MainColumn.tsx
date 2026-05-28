@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Flex, chakra } from '@chakra-ui/react';
-import config from 'client/config';
 import React from 'react';
+
+import config from 'client/config';
 
 interface Props {
   className?: string;

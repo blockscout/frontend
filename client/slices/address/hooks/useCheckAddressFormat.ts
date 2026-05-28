@@ -1,10 +1,11 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'client/config';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import { fromBech32Address, isBech32Address } from 'client/slices/address/utils/bech32';
+
+import config from 'client/config';
 
 export default function useCheckAddressFormat(hash: string) {
   const router = useRouter();

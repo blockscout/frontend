@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'client/config';
 import React from 'react';
 
 import type { ShibariumWithdrawalsItem } from 'client/features/rollup/shibarium/types/api';
@@ -11,6 +10,7 @@ import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
 
+import config from 'client/config';
 import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
 
 import { TableCell, TableRow } from 'toolkit/chakra/table';

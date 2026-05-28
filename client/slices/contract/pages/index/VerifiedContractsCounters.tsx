@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box } from '@chakra-ui/react';
-import config from 'client/config';
 import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
@@ -10,6 +9,7 @@ import { VERIFIED_CONTRACTS_COUNTERS, VERIFIED_CONTRACTS_COUNTERS_MICROSERVICE }
 
 import { useMultichainContext } from 'client/features/multichain/context';
 
+import config from 'client/config';
 import StatsWidget from 'client/shared/stats/StatsWidget';
 
 const VerifiedContractsCounters = () => {

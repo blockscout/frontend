@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { createListCollection, Flex } from '@chakra-ui/react';
-import config from 'client/config';
 import React from 'react';
 import type { MouseEvent } from 'react';
 
@@ -13,6 +12,7 @@ import PageTitle from 'client/shell/page/title/PageTitle';
 
 import useGraphLinks from 'client/features/marketplace/hooks/useGraphLinks';
 
+import config from 'client/config';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import Sort from 'client/shared/sort/Sort';

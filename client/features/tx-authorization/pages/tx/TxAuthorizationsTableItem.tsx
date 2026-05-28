@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Flex } from '@chakra-ui/react';
-import config from 'client/config';
 import React from 'react';
 
 import type { TxAuthorization } from 'client/features/tx-authorization/types/api';
@@ -9,6 +8,8 @@ import type { TxAuthorization } from 'client/features/tx-authorization/types/api
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 
 import TxAuthorizationStatus from 'client/features/tx-authorization/components/TxAuthorizationStatus';
+
+import config from 'client/config';
 
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableRow, TableCell } from 'toolkit/chakra/table';

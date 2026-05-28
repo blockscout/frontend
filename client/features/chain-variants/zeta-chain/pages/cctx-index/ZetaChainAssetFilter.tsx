@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Flex, Text, Spinner } from '@chakra-ui/react';
-import config from 'client/config';
 import { isEqual } from 'es-toolkit';
 import React from 'react';
 
@@ -14,6 +13,7 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 import * as TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 import NativeTokenIcon from 'client/slices/token/components/icon/TokenIconNative';
 
+import config from 'client/config';
 import TableColumnFilter from 'client/shared/filters/TableColumnFilter';
 import useDebounce from 'client/shared/hooks/useDebounce';
 

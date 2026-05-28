@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'client/config';
 import { upperFirst } from 'es-toolkit';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -15,6 +14,7 @@ import { BLOCK } from 'client/slices/block/stubs/block';
 
 import Flashblocks from 'client/features/flashblocks/pages/index/Flashblocks';
 
+import config from 'client/config';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';

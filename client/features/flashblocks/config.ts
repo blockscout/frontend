@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import megaEthFeature from 'client/features/chain-variants/mega-eth/config';
+
 import { getEnvValue } from 'client/config/utils/envs';
 import type { Feature } from 'client/config/utils/features';
-
-import megaEthFeature from 'client/features/chain-variants/mega-eth/config';
 
 const title = 'Flashblocks';
 

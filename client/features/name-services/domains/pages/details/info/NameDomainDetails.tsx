@@ -2,7 +2,6 @@
 
 import { Flex } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
-import config from 'client/config';
 import React from 'react';
 
 import * as bens from '@blockscout/bens-types';
@@ -16,6 +15,7 @@ import NftEntity from 'client/slices/token/components/entity/NftEntity';
 
 import NameDomainExpiryStatus from 'client/features/name-services/domains/components/NameDomainExpiryStatus';
 
+import config from 'client/config';
 import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
 import DetailedInfoTimestamp from 'client/shared/detailed-info/DetailedInfoTimestamp';
 import TextSeparator from 'client/shared/texts/TextSeparator';

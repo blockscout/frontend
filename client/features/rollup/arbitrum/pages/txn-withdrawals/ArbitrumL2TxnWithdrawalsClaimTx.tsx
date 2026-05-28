@@ -1,11 +1,12 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { HStack, Spinner } from '@chakra-ui/react';
-import config from 'client/config';
 import React from 'react';
 import { useWaitForTransactionReceipt } from 'wagmi';
 
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
+
+import config from 'client/config';
 
 const rollupFeature = config.features.rollup;
 

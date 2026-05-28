@@ -3,7 +3,6 @@
 import { chakra } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import BigNumber from 'bignumber.js';
-import config from 'client/config';
 import { useRouter } from 'next/router';
 import React, { useCallback } from 'react';
 import { scroller } from 'react-scroll';
@@ -22,6 +21,7 @@ import AppActionButton from 'client/features/address-metadata/components/AppActi
 import useAppActionData from 'client/features/address-metadata/hooks/useAppActionData';
 import { useMultichainContext } from 'client/features/multichain/context';
 
+import config from 'client/config';
 import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
 import DetailedInfoSponsoredItem from 'client/shared/detailed-info/DetailedInfoSponsoredItem';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';

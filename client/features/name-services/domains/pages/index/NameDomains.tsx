@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box } from '@chakra-ui/react';
-import config from 'client/config';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -11,6 +10,7 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 
 import { ENS_DOMAIN } from 'client/features/name-services/domains/stubs';
 
+import config from 'client/config';
 import useDebounce from 'client/shared/hooks/useDebounce';
 import DataList from 'client/shared/lists/DataList';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';

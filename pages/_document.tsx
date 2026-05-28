@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'client/config';
 import type { DocumentContext } from 'next/document';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 import React from 'react';
@@ -8,6 +7,7 @@ import React from 'react';
 import logRequestFromBot from 'nextjs/utils/logRequestFromBot';
 import * as serverTiming from 'nextjs/utils/serverTiming';
 
+import config from 'client/config';
 import * as svgSprite from 'client/sprite/SpriteIcon';
 
 const marketplaceFeature = config.features.marketplace;

@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'client/config';
 import { pickBy, uniqBy } from 'es-toolkit';
 
 import type { ChartDataPayloadSankey, StatsIntervalIds } from 'client/features/chain-stats/types/client';
@@ -9,6 +8,7 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 
 import { getDatesFromInterval } from 'client/features/chain-stats/utils/interval';
 
+import config from 'client/config';
 import { isAllOption } from 'client/shared/external-chains/ChainSelect';
 
 import { CROSS_CHAIN_TXS_CHART } from '../stubs/chain-stats';

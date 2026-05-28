@@ -1,4 +1,5 @@
 import type { TestFixture, Page } from '@playwright/test';
+
 import config from 'client/config';
 import { buildExternalAssetFilePath } from 'client/config/utils/envs';
 

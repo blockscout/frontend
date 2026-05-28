@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box, HStack } from '@chakra-ui/react';
-import config from 'client/config';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -16,6 +15,7 @@ import ERC20Tokens from 'client/slices/token/pages/address/ERC20Tokens';
 import TokenBalances from 'client/slices/token/pages/address/TokenBalances';
 import useAddressNftQuery from 'client/slices/token/pages/address/useAddressNftQuery';
 
+import config from 'client/config';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import useIsMounted from 'client/shared/hooks/useIsMounted';
 import Pagination from 'client/shared/pagination/Pagination';

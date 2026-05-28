@@ -450,7 +450,7 @@ export default tseslint.config(
             [ '/^client/shell/' ],
             [ '/^client/slices/' ],
             [ '/^client/features/' ],
-            [ '/^client/shared/', '/^client/sprite/', '/^client/toolkit//' ],
+            [ '/^client/config/', '/^client/shared/', '/^client/sprite/', '/^client/toolkit/' ],
             [
               '/^configs/',
               '/^data/',

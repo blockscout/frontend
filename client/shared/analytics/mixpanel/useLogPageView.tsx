@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'client/config';
 import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -8,6 +7,7 @@ import React from 'react';
 import type { ColorThemeId } from 'client/shell/top-bar/settings/color-theme/config';
 import { getDefaultColorTheme } from 'client/shell/top-bar/settings/color-theme/utils';
 
+import config from 'client/config';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import * as cookies from 'client/shared/storage/cookies';
 

@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'client/config';
 import { useMemo } from 'react';
 
 import type { Address3rdPartyWidget } from 'client/features/address-3rd-party-widgets/types/view';
+
+import config from 'client/config';
 
 import useWidgetsConfigQuery from './useWidgetsConfigQuery';
 

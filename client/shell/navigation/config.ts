@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { parseEnvJson, getEnvValue } from 'client/config/utils/envs';
-
 import type { NavigationLayout, NavigationPromoBannerConfig, NavItemExternal } from './types';
+
+import { parseEnvJson, getEnvValue } from 'client/config/utils/envs';
 
 const highlightedRoutes = (() => {
   const parsedValue = parseEnvJson<Array<string>>(getEnvValue('NEXT_PUBLIC_NAVIGATION_HIGHLIGHTED_ROUTES'));

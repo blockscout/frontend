@@ -1,7 +1,8 @@
-import config from 'client/config';
 import React from 'react';
 
 import * as poolMock from 'client/features/dex-pools/mocks/pool';
+
+import config from 'client/config';
 
 import { test, expect, devices } from 'playwright/lib';
 

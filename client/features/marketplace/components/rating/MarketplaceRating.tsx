@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Text } from '@chakra-ui/react';
-import config from 'client/config';
 import React from 'react';
 
 import useIsAuth from 'client/features/account/hooks/useIsAuth';
 
+import config from 'client/config';
 import type { EventTypes, EventPayload } from 'client/shared/analytics/mixpanel';
 
 import type { PopoverContentProps } from 'toolkit/chakra/popover';

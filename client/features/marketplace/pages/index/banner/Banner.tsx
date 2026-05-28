@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Flex } from '@chakra-ui/react';
-import config from 'client/config';
 import type { MouseEvent } from 'react';
 import React from 'react';
 
@@ -10,6 +9,7 @@ import type { MarketplaceApp } from 'client/features/marketplace/types/client';
 import AdBanner from 'client/features/ads/banner/components/AdBanner';
 import { apps as appsMock } from 'client/features/marketplace/mocks/dapps';
 
+import config from 'client/config';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
 import FeaturedApp from './FeaturedApp';

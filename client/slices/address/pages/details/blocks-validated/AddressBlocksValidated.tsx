@@ -2,7 +2,6 @@
 
 import { Box } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
-import config from 'client/config';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -19,6 +18,7 @@ import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'client/shell/page/action-b
 import { BLOCK } from 'client/slices/block/stubs/block';
 import { currencyUnits } from 'client/slices/chain/units';
 
+import config from 'client/config';
 import TimeFormatToggle from 'client/shared/date-and-time/TimeFormatToggle';
 import useIsMounted from 'client/shared/hooks/useIsMounted';
 import DataList from 'client/shared/lists/DataList';

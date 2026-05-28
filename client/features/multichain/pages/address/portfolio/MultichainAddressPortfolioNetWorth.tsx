@@ -2,12 +2,12 @@
 
 import { Text, Flex, HStack, VStack, Separator, Box, chakra } from '@chakra-ui/react';
 import { BigNumber } from 'bignumber.js';
-import config from 'client/config';
 import React from 'react';
 
 import AdBanner from 'client/features/ads/banner/components/AdBanner';
 import AddressMultichainButton from 'client/features/multichain-button/pages/address/AddressMultichainButton';
 
+import config from 'client/config';
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import SimpleValue from 'client/shared/values/entity/SimpleValue';

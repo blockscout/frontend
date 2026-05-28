@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Flex, Text } from '@chakra-ui/react';
-import config from 'client/config';
 import { useRouter } from 'next/router';
 import React, { useMemo, useCallback, useEffect, useState } from 'react';
 import { isAddress } from 'viem';
@@ -12,6 +11,7 @@ import { useAccount } from 'wagmi';
 import useWeb3Wallet from 'client/features/connect-wallet/hooks/useWallet';
 import essentialDappsChainsConfig from 'client/features/marketplace/chains-config/essential-dapps';
 
+import config from 'client/config';
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import getQueryParamString from 'client/shared/router/get-query-param-string';

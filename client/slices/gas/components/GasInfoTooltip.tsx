@@ -5,7 +5,6 @@ import {
   Flex,
   Grid,
 } from '@chakra-ui/react';
-import config from 'client/config';
 import React from 'react';
 
 import type { ExcludeUndefined } from 'client/shared/types/utils';
@@ -13,6 +12,7 @@ import type { HomeStats } from 'client/slices/home/types/api';
 
 import { route } from 'nextjs-routes';
 
+import config from 'client/config';
 import Time from 'client/shared/date-and-time/Time';
 
 import { Link } from 'toolkit/chakra/link';

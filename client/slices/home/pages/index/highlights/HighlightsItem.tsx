@@ -2,10 +2,11 @@
 
 import type { JsxStyleProps } from '@chakra-ui/react';
 import { Text, VStack, HStack } from '@chakra-ui/react';
-import config from 'client/config';
 import React from 'react';
 
 import type { HighlightsBannerConfig } from 'client/slices/home/types/client';
+
+import config from 'client/config';
 
 import { useColorModeValue } from 'toolkit/chakra/color-mode';
 import { Heading } from 'toolkit/chakra/heading';

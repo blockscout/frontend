@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { getEnvValue } from 'client/config/utils/envs';
-import type { Feature } from 'client/config/utils/features';
-
 import type { Provider } from 'client/features/tx-interpretation/common/types/config';
 import { PROVIDERS } from 'client/features/tx-interpretation/common/types/config';
+
+import { getEnvValue } from 'client/config/utils/envs';
+import type { Feature } from 'client/config/utils/features';
 
 const title = 'Transaction interpretation';
 

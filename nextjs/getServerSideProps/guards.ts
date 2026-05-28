@@ -1,13 +1,14 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'client/config';
-import { getFeaturePayload } from 'client/config/utils/features';
 import type { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 
 import type { RollupType } from 'client/features/rollup/common/types/config';
 
 import type { Route } from 'nextjs-routes';
 import type { Props } from 'nextjs/getServerSideProps/handlers';
+
+import config from 'client/config';
+import { getFeaturePayload } from 'client/config/utils/features';
 
 export type Guard = (chainConfig: typeof config) => <Pathname extends Route['pathname'] = never>(context: GetServerSidePropsContext) =>
 Promise<GetServerSidePropsResult<Props<Pathname>> | undefined>;

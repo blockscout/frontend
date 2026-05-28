@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box, chakra, Flex, Text } from '@chakra-ui/react';
-import config from 'client/config';
 import React from 'react';
 
 import { route } from 'nextjs-routes';
 
+import config from 'client/config';
 import * as EntityBase from 'client/shared/entities/components';
 import { distributeEntityProps, getIconProps } from 'client/shared/entities/utils';
 import SpriteIcon from 'client/sprite/SpriteIcon';

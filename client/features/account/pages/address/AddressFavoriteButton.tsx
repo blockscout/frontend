@@ -2,7 +2,6 @@
 
 import { chakra } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
-import config from 'client/config';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -13,6 +12,7 @@ import useProfileQuery from 'client/features/account/hooks/useProfileQuery';
 import WatchlistAddModal from 'client/features/account/pages/watchlist/AddressModal/AddressModal';
 import DeleteAddressModal from 'client/features/account/pages/watchlist/DeleteAddressModal';
 
+import config from 'client/config';
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 import usePreventFocusAfterModalClosing from 'client/shared/hooks/usePreventFocusAfterModalClosing';
 import SpriteIcon from 'client/sprite/SpriteIcon';

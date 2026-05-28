@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'client/config';
 import React from 'react';
 
 import type { TxAction } from '../../types/api';
+
+import config from 'client/config';
 
 import TxDetailsActionsInterpretation from './TxDetailsActionsInterpretation';
 import TxDetailsActionsRaw from './TxDetailsActionsRaw';

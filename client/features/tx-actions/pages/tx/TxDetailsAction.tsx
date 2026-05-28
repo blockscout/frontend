@@ -2,7 +2,6 @@
 
 import { Flex, chakra } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
-import config from 'client/config';
 import React from 'react';
 
 import type { TxAction, TxActionGeneral } from '../../types/api';
@@ -11,6 +10,7 @@ import AddressEntity from 'client/slices/address/components/entity/AddressEntity
 import NftEntity from 'client/slices/token/components/entity/NftEntity';
 import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 
+import config from 'client/config';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 interface Props {

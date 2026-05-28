@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box, Flex } from '@chakra-ui/react';
-import config from 'client/config';
 import dynamic from 'next/dynamic';
 import React from 'react';
 
@@ -13,6 +12,8 @@ import UserProfileAuth0 from 'client/features/account/components/user-profile/au
 import UserWalletMobile from 'client/features/account/components/user-profile/wallet/UserWalletMobile';
 import RewardsButton from 'client/features/rewards/components/RewardsButton';
 import RollupStageBadge from 'client/features/rollup/common/components/RollupStageBadge';
+
+import config from 'client/config';
 
 import { useIsSticky } from 'toolkit/hooks/useIsSticky';
 

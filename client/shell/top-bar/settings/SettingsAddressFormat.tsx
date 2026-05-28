@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'client/config';
 import React from 'react';
 
 import { BECH_32_SEPARATOR } from 'client/slices/address/utils/bech32';
+
+import config from 'client/config';
 
 import { Switch } from 'toolkit/chakra/switch';
 

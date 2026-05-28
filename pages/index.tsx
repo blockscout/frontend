@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'client/config';
 import React from 'react';
 
 import type { NextPageWithLayout } from 'nextjs/types';
@@ -12,6 +11,8 @@ import LayoutHome from 'client/shell/layout/LayoutHome';
 import Home from 'client/slices/home/pages/index/Home';
 
 import MultichainHome from 'client/features/multichain/pages/home/MultichainHome';
+
+import config from 'client/config';
 
 const Page: NextPageWithLayout = () => {
   return (

@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'client/config';
 import React from 'react';
 
 import type { UptimeHistoryFull, UptimeRealTimeData, UptimeSocketData } from 'client/features/chain-variants/mega-eth/types/api';
+
+import config from 'client/config';
 
 import { SECOND } from 'toolkit/utils/consts';
 

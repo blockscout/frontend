@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box } from '@chakra-ui/react';
-import config from 'client/config';
 import React from 'react';
 import { Element } from 'react-scroll';
 
@@ -9,6 +8,7 @@ import type { FormSubmitHandler, SmartContractMethod } from './types';
 
 import { route } from 'nextjs-routes';
 
+import config from 'client/config';
 import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
 
 import { AccordionItem, AccordionItemContent, AccordionItemTrigger } from 'toolkit/chakra/accordion';

@@ -2,7 +2,6 @@
 
 import { chakra, Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
-import config from 'client/config';
 import React from 'react';
 
 import { isConfidentialTokenType, isFungibleTokenType } from 'client/slices/token/utils/token-types';
@@ -15,6 +14,7 @@ import type { TokenEnhancedData } from 'client/slices/token/pages/address/utils'
 
 import multichainConfig from 'client/features/multichain/chains-config';
 
+import config from 'client/config';
 import calculateUsdValue from 'client/shared/values/entity/calculateUsdValue';
 
 import { Link } from 'toolkit/chakra/link';

@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box } from '@chakra-ui/react';
-import config from 'client/config';
 import React from 'react';
 
 import type { PaginationParams } from 'client/shared/pagination/types';
@@ -9,6 +8,7 @@ import type { AddressTokenBalance } from 'client/slices/address/types/api';
 
 import ActionBar from 'client/shell/page/action-bar/ActionBar';
 
+import config from 'client/config';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import DataList from 'client/shared/lists/DataList';
 import Pagination from 'client/shared/pagination/Pagination';

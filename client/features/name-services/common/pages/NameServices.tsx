@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'client/config';
 import React from 'react';
 
 import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
@@ -9,6 +8,8 @@ import PageTitle from 'client/shell/page/title/PageTitle';
 
 import Clusters from 'client/features/name-services/clusters/pages/index/Clusters';
 import NameDomains from 'client/features/name-services/domains/pages/index/NameDomains';
+
+import config from 'client/config';
 
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 
@@ -23,7 +24,7 @@ const NameServices = () => {
   return (
     <>
       <PageTitle
-        title={ config.meta.seo.enhancedDataEnabled ? `${ config.chain.name } name services` : 'Name services lookup' }
+        title={ config.metadata.seo.enhancedDataEnabled ? `${ config.chain.name } name services` : 'Name services lookup' }
         withTextAd
       />
       <RoutedTabs tabs={ tabs }/>

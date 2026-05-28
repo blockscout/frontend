@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box, Flex } from '@chakra-ui/react';
-import config from 'client/config';
 import React from 'react';
 
 import type { AddressParam } from 'client/slices/address/types/api';
@@ -22,6 +21,7 @@ import TxInterpretation from 'client/features/tx-interpretation/common/component
 import { NOVES_TRANSLATE } from 'client/features/tx-interpretation/noves/stubs';
 import { createNovesSummaryObject } from 'client/features/tx-interpretation/noves/utils/createNovesSummaryObject';
 
+import config from 'client/config';
 import { TX_ACTIONS_BLOCK_ID } from 'client/shared/detailed-info/DetailedInfoActionsWrapper';
 
 import { Link } from 'toolkit/chakra/link';

@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { getEnvValue, parseEnvJson } from 'client/config/utils/envs';
-
 import type { TxAdditionalFieldsId, TxFieldsId, TxViewId } from 'client/slices/tx/types/config';
 import { TX_ADDITIONAL_FIELDS_IDS, TX_FIELDS_IDS, TX_VIEWS_IDS } from 'client/slices/tx/types/config';
+
+import { getEnvValue, parseEnvJson } from 'client/config/utils/envs';
 
 const hiddenFields = (() => {
   const parsedValue = parseEnvJson<Array<TxFieldsId>>(getEnvValue('NEXT_PUBLIC_VIEWS_TX_HIDDEN_FIELDS')) || [];

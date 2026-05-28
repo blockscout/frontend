@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'client/config';
-
 import type { TChainIndicator } from 'client/slices/home/types/client';
+
+import config from 'client/config';
 
 export const isIndicatorEnabled = ({ id }: TChainIndicator) => config.slices.home.charts.includes(id);
 

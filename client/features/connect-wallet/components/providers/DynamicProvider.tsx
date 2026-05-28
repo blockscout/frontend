@@ -6,7 +6,6 @@ import type { DynamicContextProps, OnAuthSuccess } from '@dynamic-labs/sdk-react
 import { DynamicContextProvider, getAuthToken } from '@dynamic-labs/sdk-react-core';
 import { DynamicWagmiConnector } from '@dynamic-labs/wagmi-connector';
 import { useQueryClient } from '@tanstack/react-query';
-import config from 'client/config';
 import React from 'react';
 
 import type { UserInfo } from 'client/features/account/types/api';
@@ -18,6 +17,7 @@ import useGetCsrfToken from 'client/features/account/hooks/useGetCsrfToken';
 import useLogout from 'client/features/account/hooks/useLogout';
 import { chains } from 'client/features/connect-wallet/utils/chains';
 
+import config from 'client/config';
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 import getErrorMessage from 'client/shared/errors/get-error-message';
 

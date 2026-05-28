@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'client/config';
 import { uniq } from 'es-toolkit';
+
+import config from 'client/config';
 
 import { isBrowser } from 'toolkit/utils/isBrowser';
 

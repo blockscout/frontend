@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { chakra, Flex } from '@chakra-ui/react';
-import config from 'client/config';
 import { capitalize } from 'es-toolkit';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -34,6 +33,7 @@ import BlockCeloEpochTag from 'client/features/chain-variants/celo/pages/block/B
 import useBlockBlobTxsQuery from 'client/features/data-availability/hooks/useBlockBlobTxsQuery';
 import { useMultichainContext } from 'client/features/multichain/context';
 
+import config from 'client/config';
 import ApiDegradationAlert from 'client/shared/api-degradation/ApiDegradationAlert';
 import throwOnAbsentParamError from 'client/shared/errors/throw-on-absent-param-error';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';

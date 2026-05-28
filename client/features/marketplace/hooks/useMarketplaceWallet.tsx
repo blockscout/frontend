@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { TypedData } from 'abitype';
-import config from 'client/config';
 import { useCallback } from 'react';
 import type { Account, SignTypedDataParameters } from 'viem';
 import { useAccount, useSendTransaction, useSwitchChain, useSignMessage, useSignTypedData } from 'wagmi';
 
 import useRewardsActivity from 'client/features/rewards/hooks/useRewardsActivity';
 
+import config from 'client/config';
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 
 type SendTransactionArgs = {

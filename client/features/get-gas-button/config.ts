@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { getEnvValue, parseEnvJson } from 'client/config/utils/envs';
-import type { Feature } from 'client/config/utils/features';
-
 import type { GasRefuelProviderConfig } from 'client/features/get-gas-button/types/client';
 
 import chain from 'client/slices/chain/config';
 
 import marketplace from 'client/features/marketplace/config';
+
+import { getEnvValue, parseEnvJson } from 'client/config/utils/envs';
+import type { Feature } from 'client/config/utils/features';
 
 const value = parseEnvJson<GasRefuelProviderConfig>(getEnvValue('NEXT_PUBLIC_GAS_REFUEL_PROVIDER_CONFIG'));
 

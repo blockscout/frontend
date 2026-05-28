@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'client/config';
 import React from 'react';
 
 import PageTitle from 'client/shell/page/title/PageTitle';
 
 import { USER_OPS_ITEM } from 'client/features/user-ops/stubs';
 
+import config from 'client/config';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
 
@@ -26,7 +26,7 @@ const UserOps = () => {
   return (
     <>
       <PageTitle
-        title={ config.meta.seo.enhancedDataEnabled ? `${ config.chain.name } user operations` : 'User operations' }
+        title={ config.metadata.seo.enhancedDataEnabled ? `${ config.chain.name } user operations` : 'User operations' }
         withTextAd
       />
       <UserOpsContent query={ query }/>

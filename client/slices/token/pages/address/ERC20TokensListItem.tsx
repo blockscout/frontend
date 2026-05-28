@@ -2,7 +2,6 @@
 
 import { Flex, HStack } from '@chakra-ui/react';
 import { BigNumber } from 'bignumber.js';
-import config from 'client/config';
 import React from 'react';
 
 import type { AddressTokensErc20Item } from './types';
@@ -15,6 +14,7 @@ import NativeTokenTag from 'client/slices/token/components/NativeTokenTag';
 import multichainConfig from 'client/features/multichain/chains-config';
 import TokenAddToWallet from 'client/features/web3-wallet/components/TokenAddToWallet';
 
+import config from 'client/config';
 import ListItemMobile from 'client/shared/lists/ListItemMobile';
 import calculateUsdValue from 'client/shared/values/entity/calculateUsdValue';
 import ConfidentialValue from 'client/shared/values/entity/ConfidentialValue';

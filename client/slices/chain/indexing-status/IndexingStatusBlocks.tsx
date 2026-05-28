@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { useQueryClient } from '@tanstack/react-query';
-import config from 'client/config';
 import React from 'react';
 
 import type { IndexingStatus } from './types';
@@ -13,6 +12,7 @@ import useSocketMessage from 'client/api/socket/useSocketMessage';
 
 import { useAppContext } from 'client/shell/app/context';
 
+import config from 'client/config';
 import * as cookies from 'client/shared/storage/cookies';
 
 import { Alert } from 'toolkit/chakra/alert';

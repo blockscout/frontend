@@ -19,7 +19,7 @@ export const chainA = {
       rpcUrls: [
         'https://rpc.op-mainnet.com',
       ],
-      additionalTypes: [ ],
+      icon: {},
     },
     apis: {
       general: {
@@ -30,12 +30,11 @@ export const chainA = {
         socketEndpoint: 'ws://localhost:3200',
       },
     },
-    UI: {
-      views: {
-        address: {},
-      },
-      navigation: {
-        icon: {},
+    slices: {
+      address: {},
+      token: {
+        standard: 'ERC',
+        additionalTypes: [ ],
       },
     },
     features: {
@@ -84,7 +83,9 @@ export const chainB = {
       baseUrl: 'https://op-testnet.com',
     },
     slices: {
+      ...chainA.app_config?.slices,
       token: {
+        ...chainA.app_config?.slices?.token,
         additionalTypes: [ { id: 'ERC-7984', name: 'ERC-7984' } ],
       },
     },

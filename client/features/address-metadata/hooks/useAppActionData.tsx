@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'client/config';
 import { useMemo } from 'react';
+
+import config from 'client/config';
 
 import useAddressMetadataInfoQuery from './useAddressMetadataInfoQuery';
 

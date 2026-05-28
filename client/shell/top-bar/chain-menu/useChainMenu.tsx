@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { useQuery } from '@tanstack/react-query';
-import config from 'client/config';
 import React from 'react';
 
 import type { FeaturedNetwork } from './types';
@@ -12,6 +11,7 @@ import type { ResourceError } from 'client/api/resources';
 
 import multichainConfig from 'client/features/multichain/chains-config';
 
+import config from 'client/config';
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';

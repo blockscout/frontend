@@ -1,9 +1,10 @@
 import { Flex } from '@chakra-ui/react';
-import config from 'client/config';
 import React from 'react';
 import { numberToHex } from 'viem';
 
 import { apps as appsMock } from 'client/features/marketplace/mocks/dapps';
+
+import config from 'client/config';
 
 import type { TestFnArgs } from 'playwright/lib';
 import { test, expect, devices } from 'playwright/lib';

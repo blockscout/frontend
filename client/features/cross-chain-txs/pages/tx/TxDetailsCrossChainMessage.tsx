@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { chakra, HStack } from '@chakra-ui/react';
-import config from 'client/config';
 import React from 'react';
 
 import type { InterchainMessage } from '@blockscout/interchain-indexer-types';
@@ -9,6 +8,7 @@ import type { InterchainMessage } from '@blockscout/interchain-indexer-types';
 import AddressEntityInterchain from 'client/slices/address/components/entity/AddressEntityInterchain';
 import TxEntityInterchain from 'client/slices/tx/components/entity/TxEntityInterchain';
 
+import config from 'client/config';
 import * as DetailedInfoItemBreakdown from 'client/shared/detailed-info/DetailedInfoItemBreakdown';
 import DetailedInfoTimestamp from 'client/shared/detailed-info/DetailedInfoTimestamp';
 import ChainLabel from 'client/shared/external-chains/ChainLabel';

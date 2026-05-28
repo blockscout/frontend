@@ -1,10 +1,11 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'client/config';
 import { uniqBy } from 'es-toolkit';
 
 import type { ClusterChainConfig } from 'client/features/multichain/types/client';
 import type { NFTTokenType, TokenType } from 'client/slices/token/types/api';
+
+import config from 'client/config';
 
 const tokenStandardName = config.slices.token.standard;
 

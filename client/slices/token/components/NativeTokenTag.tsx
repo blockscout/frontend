@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'client/config';
 import React from 'react';
+
+import config from 'client/config';
 
 import { Tag, type TagProps } from 'toolkit/chakra/tag';
 import { Tooltip } from 'toolkit/chakra/tooltip';

@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { getEnvValue } from 'client/config/utils/envs';
-import type { Feature } from 'client/config/utils/features';
-
 import type { ValidatorsChainType } from './types/config';
 import { VALIDATORS_CHAIN_TYPE } from './types/config';
+
+import { getEnvValue } from 'client/config/utils/envs';
+import type { Feature } from 'client/config/utils/features';
 
 const chainType = ((): ValidatorsChainType | undefined => {
   const envValue = getEnvValue('NEXT_PUBLIC_VALIDATORS_CHAIN_TYPE') as ValidatorsChainType | undefined;

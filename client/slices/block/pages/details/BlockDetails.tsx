@@ -2,7 +2,6 @@
 
 import { GridItem, Text, Box } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
-import config from 'client/config';
 import { capitalize } from 'es-toolkit';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -30,6 +29,7 @@ import OptimisticL2TxnBatchDA from 'client/features/rollup/optimism/components/T
 import ZkSyncL2TxnBatchHashesInfo from 'client/features/rollup/zk-sync/pages/batch-details/ZkSyncL2TxnBatchHashesInfo';
 import { formatZkSyncL2TxnBatchStatus } from 'client/features/rollup/zk-sync/utils/format-txn-batch-status';
 
+import config from 'client/config';
 import PrevNext from 'client/shared/buttons/PrevNext';
 import RawDataSnippet from 'client/shared/data/RawDataSnippet';
 import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';

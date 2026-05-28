@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'client/config';
 import React from 'react';
 
 import type { OptimisticL2WithdrawalClaimInfo } from 'client/features/rollup/optimism/types/api';
@@ -8,6 +7,8 @@ import type { AddressParam } from 'client/slices/address/types/api';
 
 import { parentChain } from 'client/features/connect-wallet/utils/chains';
 import OptimisticL2ClaimModal from 'client/features/rollup/optimism/components/OptimisticL2ClaimModal';
+
+import config from 'client/config';
 
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';

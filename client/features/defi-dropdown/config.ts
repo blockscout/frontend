@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import type { DeFiDropdownItem } from 'client/features/defi-dropdown/types/client';
+
 import app from 'client/config/app';
 import { getEnvValue, parseEnvJson } from 'client/config/utils/envs';
 import type { Feature } from 'client/config/utils/features';
-
-import type { DeFiDropdownItem } from 'client/features/defi-dropdown/types/client';
 
 const items = parseEnvJson<Array<DeFiDropdownItem>>(getEnvValue('NEXT_PUBLIC_DEFI_DROPDOWN_ITEMS')) || [];
 

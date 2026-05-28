@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { getEnvValue, parseEnvJson } from 'client/config/utils/envs';
-
 import type { ContractCodeIde, SmartContractVerificationMethodExtra } from 'client/slices/contract/types/config';
 import { SMART_CONTRACT_EXTRA_VERIFICATION_METHODS } from 'client/slices/contract/types/config';
+
+import { getEnvValue, parseEnvJson } from 'client/config/utils/envs';
 
 const extraVerificationMethods: Array<SmartContractVerificationMethodExtra> = (() => {
   const envValue = getEnvValue('NEXT_PUBLIC_VIEWS_CONTRACT_EXTRA_VERIFICATION_METHODS');

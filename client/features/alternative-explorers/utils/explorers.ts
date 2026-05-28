@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'client/config';
 import { mapValues } from 'es-toolkit';
 
 import type { AlternativeExplorer } from '../types/client';
+
+import config from 'client/config';
 
 import { stripTrailingSlash, addLeadingSlash } from 'toolkit/utils/url';
 

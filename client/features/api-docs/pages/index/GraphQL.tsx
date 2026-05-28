@@ -2,13 +2,14 @@
 
 import { Box } from '@chakra-ui/react';
 import { createGraphiQLFetcher } from '@graphiql/toolkit';
-import config from 'client/config';
 import { GraphiQL } from 'graphiql';
 import React from 'react';
 
 import buildUrl from 'client/api/build-url';
 import 'graphiql/graphiql.css';
 import useApiQuery from 'client/api/hooks/useApiQuery';
+
+import config from 'client/config';
 
 import { useColorMode } from 'toolkit/chakra/color-mode';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';

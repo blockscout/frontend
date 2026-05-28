@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'client/config';
-
 import type { MultichainConfig } from 'client/features/multichain/types/client';
+
+import config from 'client/config';
 
 import { isBrowser } from 'toolkit/utils/isBrowser';
 

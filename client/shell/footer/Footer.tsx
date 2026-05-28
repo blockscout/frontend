@@ -3,7 +3,6 @@
 import type { GridProps, HTMLChakraProps } from '@chakra-ui/react';
 import { Box, Grid, Flex, Text, VStack, HStack } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
-import config from 'client/config';
 import React from 'react';
 
 import type { CustomLinksGroup } from './types';
@@ -19,6 +18,7 @@ import IndexingStatusInternalTxs from 'client/slices/chain/indexing-status/Index
 
 import NetworkAddToWallet from 'client/features/web3-wallet/components/NetworkAddToWallet';
 
+import config from 'client/config';
 import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 

@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box } from '@chakra-ui/react';
-import config from 'client/config';
 import React from 'react';
 
 import PageTitle from 'client/shell/page/title/PageTitle';
 
+import config from 'client/config';
 import useEtherscanRedirects from 'client/shared/router/useEtherscanRedirects';
 
 import useChainStats from '../../hooks/useChainStats';
@@ -32,7 +32,7 @@ const ChainStatsIndex = () => {
   return (
     <>
       <PageTitle
-        title={ config.meta.seo.enhancedDataEnabled ? `${ config.chain.name } statistic & data` : `${ config.chain.name } stats` }
+        title={ config.metadata.seo.enhancedDataEnabled ? `${ config.chain.name } statistic & data` : `${ config.chain.name } stats` }
       />
 
       <Box mb={{ base: 6, lg: 8 }}>

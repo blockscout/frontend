@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { chakra, Flex } from '@chakra-ui/react';
-import config from 'client/config';
 import React from 'react';
 
 import type { MarketplaceApp } from 'client/features/marketplace/types/client';
@@ -15,6 +14,7 @@ import NetworkIcon from 'client/slices/chain/logo/NetworkIcon';
 import UserProfileDesktop from 'client/features/account/components/user-profile/UserProfileDesktop';
 import RewardsButton from 'client/features/rewards/components/RewardsButton';
 
+import config from 'client/config';
 import * as mixpanel from 'client/shared/analytics/mixpanel';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 

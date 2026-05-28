@@ -1,12 +1,13 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Center, chakra } from '@chakra-ui/react';
-import config from 'client/config';
 import { DappscoutIframeProvider, useDappscoutIframe } from 'dappscout-iframe';
 import React, { useCallback, useEffect, useState, useMemo } from 'react';
 
 import useWeb3Wallet from 'client/features/connect-wallet/hooks/useWallet';
 import essentialDappsChainsConfig from 'client/features/marketplace/chains-config/essential-dapps';
+
+import config from 'client/config';
 
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 

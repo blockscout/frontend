@@ -2,7 +2,6 @@
 
 import { HStack, VStack, Flex, Text } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
-import config from 'client/config';
 import React from 'react';
 
 import type { WatchlistAddress } from 'client/features/account/types/api';
@@ -11,6 +10,7 @@ import AddressEntity from 'client/slices/address/components/entity/AddressEntity
 import { currencyUnits } from 'client/slices/chain/units';
 import * as TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 
+import config from 'client/config';
 import calculateUsdValue from 'client/shared/values/entity/calculateUsdValue';
 import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
 import SimpleValue from 'client/shared/values/entity/SimpleValue';

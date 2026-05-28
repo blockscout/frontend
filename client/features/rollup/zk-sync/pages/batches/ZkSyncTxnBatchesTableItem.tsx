@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Text } from '@chakra-ui/react';
-import config from 'client/config';
 import React from 'react';
 
 import type { ZkSyncBatchesItem } from 'client/features/rollup/zk-sync/types/api';
@@ -12,6 +11,7 @@ import BatchEntityL2 from 'client/features/rollup/common/components/BatchEntityL
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
 import ZkSyncL2TxnBatchStatus from 'client/features/rollup/zk-sync/components/ZkSyncL2TxnBatchStatus';
 
+import config from 'client/config';
 import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
 
 import { Link } from 'toolkit/chakra/link';

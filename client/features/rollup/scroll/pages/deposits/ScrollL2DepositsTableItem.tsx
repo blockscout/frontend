@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { chakra } from '@chakra-ui/react';
-import config from 'client/config';
 import React from 'react';
 
 import type { ScrollL2MessageItem } from 'client/features/rollup/scroll/types/api';
@@ -11,6 +10,7 @@ import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import BlockEntityL1 from 'client/features/rollup/common/components/BlockEntityL1';
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
 
+import config from 'client/config';
 import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
 import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
 

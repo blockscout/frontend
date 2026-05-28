@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'client/config';
 import type { NextPage } from 'next';
 import React from 'react';
 
@@ -8,6 +7,8 @@ import PageNextJs from 'nextjs/PageNextJs';
 
 import ChainStatsIndex from 'client/features/chain-stats/pages/index/ChainStatsIndex';
 import MultichainStats from 'client/features/multichain/pages/stats/MultichainStats';
+
+import config from 'client/config';
 
 const Page: NextPage = () => {
   return (

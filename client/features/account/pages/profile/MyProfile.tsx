@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Flex } from '@chakra-ui/react';
-import config from 'client/config';
 import React from 'react';
 
 import type { Screen } from 'client/features/account/components/auth-modal/types';
@@ -13,6 +12,7 @@ import AuthModal from 'client/features/account/components/auth-modal/AuthModal';
 import useProfileQuery from 'client/features/account/hooks/useProfileQuery';
 import useRedirectForInvalidAuthToken from 'client/features/account/hooks/useRedirectForInvalidAuthToken';
 
+import config from 'client/config';
 import ApiFetchAlert from 'client/shared/alerts/ApiFetchAlert';
 
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';

@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import type { BridgedTokenChain, TokenBridge } from 'client/features/bridged-tokens/types/client';
+
 import { getEnvValue, parseEnvJson } from 'client/config/utils/envs';
 import type { Feature } from 'client/config/utils/features';
-
-import type { BridgedTokenChain, TokenBridge } from 'client/features/bridged-tokens/types/client';
 
 const title = 'Bridged tokens';
 

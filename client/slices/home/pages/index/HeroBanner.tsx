@@ -3,7 +3,6 @@
 // we use custom heading size for hero banner
 // eslint-disable-next-line no-restricted-imports
 import { Box, Flex, Heading } from '@chakra-ui/react';
-import config from 'client/config';
 import React from 'react';
 
 import SearchBar from 'client/slices/search/components/search-bar/SearchBarDesktop';
@@ -13,6 +12,7 @@ import UserProfileDesktop from 'client/features/account/components/user-profile/
 import AdBanner from 'client/features/ads/banner/components/AdBanner';
 import RewardsButton from 'client/features/rewards/components/RewardsButton';
 
+import config from 'client/config';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
 export const BACKGROUND_DEFAULT =
@@ -58,7 +58,7 @@ const HeroBanner = () => {
       return config.slices.home.heroBanner.text;
     }
 
-    return config.meta.seo.enhancedDataEnabled ?
+    return config.metadata.seo.enhancedDataEnabled ?
       `${ config.chain.name } blockchain explorer` :
       `${ config.chain.name } explorer`;
   })();

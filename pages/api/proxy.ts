@@ -1,12 +1,13 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import appConfig from 'client/config';
 import { pick, pickBy } from 'es-toolkit';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 import fetchFactory from 'nextjs/utils/fetchProxy';
 
 import isNeedProxy from 'client/api/is-need-proxy';
+
+import appConfig from 'client/config';
 
 const handler = async(nextReq: NextApiRequest, nextRes: NextApiResponse) => {
 

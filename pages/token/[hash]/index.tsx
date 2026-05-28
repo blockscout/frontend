@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'client/config';
 import type { GetServerSideProps, NextPage } from 'next';
 import React from 'react';
 
@@ -13,6 +12,7 @@ import fetchApi from 'nextjs/utils/fetchApi';
 
 import Token from 'client/slices/token/pages/details/Token';
 
+import config from 'client/config';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 const pathname: Route['pathname'] = '/token/[hash]';
@@ -32,8 +32,8 @@ export const getServerSideProps: GetServerSideProps<Props<typeof pathname>> = as
 
   if ('props' in baseResponse && !config.features.multichain.isEnabled) {
     if (
-      config.meta.seo.enhancedDataEnabled ||
-      (config.meta.og.enhancedDataEnabled && detectBotRequest(ctx.req)?.type === 'social_preview')
+      config.metadata.seo.enhancedDataEnabled ||
+      (config.metadata.og.enhancedDataEnabled && detectBotRequest(ctx.req)?.type === 'social_preview')
     ) {
       const tokenData = await fetchApi({
         resource: 'general:token',

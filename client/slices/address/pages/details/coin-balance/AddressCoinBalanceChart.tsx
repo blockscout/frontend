@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import BigNumber from 'bignumber.js';
-import config from 'client/config';
 import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
 import { currencyUnits } from 'client/slices/chain/units';
 
+import config from 'client/config';
 import { useChartsConfig } from 'client/shared/stats/line-chart-config';
 
 import { LineChartWidget } from 'toolkit/components/charts/line/LineChartWidget';

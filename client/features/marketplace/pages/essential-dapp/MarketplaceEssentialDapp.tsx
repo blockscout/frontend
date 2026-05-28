@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Flex } from '@chakra-ui/react';
-import config from 'client/config';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -9,6 +8,7 @@ import type { EssentialDappsConfig } from 'client/features/marketplace/types/cli
 
 import PageTitle from 'client/shell/page/title/PageTitle';
 
+import config from 'client/config';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
 import useAutoConnectWallet from '../../hooks/useAutoConnectWallet';

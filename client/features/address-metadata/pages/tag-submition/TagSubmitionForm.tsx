@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { chakra, Grid, GridItem } from '@chakra-ui/react';
-import appConfig from 'client/config';
 import { useRouter } from 'next/router';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
@@ -13,6 +12,7 @@ import type { PublicTagTypesResponse } from 'client/features/address-metadata/ty
 
 import useApiFetch from 'client/api/hooks/useApiFetch';
 
+import appConfig from 'client/config';
 import getErrorObj from 'client/shared/errors/get-error-obj';
 import getErrorObjPayload from 'client/shared/errors/get-error-obj-payload';
 import useIsMobile from 'client/shared/hooks/useIsMobile';

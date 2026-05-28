@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Flex } from '@chakra-ui/react';
-import config from 'client/config';
-import { getFeaturePayload } from 'client/config/utils/features';
 import React from 'react';
 
 import type { OptimisticL2DisputeGamesItem } from 'client/features/rollup/optimism/types/api';
 
 import BlockEntityL2 from 'client/features/rollup/common/components/BlockEntityL2';
 
+import config from 'client/config';
+import { getFeaturePayload } from 'client/config/utils/features';
 import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
 import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
 import HashStringShorten from 'client/shared/texts/HashStringShorten';

@@ -1,6 +1,6 @@
 import type { BrowserContext, TestFixture } from '@playwright/test';
-import config from 'client/config';
 
+import config from 'client/config';
 import * as cookies from 'client/shared/storage/cookies';
 
 // This JWT token contains 0xd789a607CEac2f0E14867de4EB15b15C9FFB5859 address

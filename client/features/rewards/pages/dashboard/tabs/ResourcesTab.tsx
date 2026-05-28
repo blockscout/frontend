@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Grid } from '@chakra-ui/react';
+
 import config from 'client/config';
 
 import { apos } from 'toolkit/utils/htmlEntities';

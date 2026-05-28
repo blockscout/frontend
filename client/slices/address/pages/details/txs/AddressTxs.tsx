@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { HStack } from '@chakra-ui/react';
-import config from 'client/config';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -13,6 +12,7 @@ import AddressTxsCrossChain from 'client/features/cross-chain-txs/pages/address/
 import { INTERCHAIN_MESSAGE } from 'client/features/cross-chain-txs/stubs/messages';
 import CsvExport from 'client/features/csv-export/components/CsvExport';
 
+import config from 'client/config';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import useIsMounted from 'client/shared/hooks/useIsMounted';
 import Pagination from 'client/shared/pagination/Pagination';
