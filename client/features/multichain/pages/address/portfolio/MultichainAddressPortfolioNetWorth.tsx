@@ -7,13 +7,13 @@ import React from 'react';
 import AdBanner from 'client/features/ads/banner/components/AdBanner';
 import AddressMultichainButton from 'client/features/multichain-button/pages/address/AddressMultichainButton';
 
-import * as mixpanel from 'client/shared/analytics/mixpanel';
+import config from 'client/config';
+import * as mixpanel from 'client/services/mixpanel';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import SimpleValue from 'client/shared/values/entity/SimpleValue';
 import { DEFAULT_ACCURACY_USD } from 'client/shared/values/entity/utils';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
-import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 
 import { formatPercentage } from './utils';

@@ -3,9 +3,9 @@
 import { Text } from '@chakra-ui/react';
 import React from 'react';
 
+import config from 'client/config';
 import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
 
-import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TruncatedTextTooltip } from 'toolkit/components/truncation/TruncatedTextTooltip';

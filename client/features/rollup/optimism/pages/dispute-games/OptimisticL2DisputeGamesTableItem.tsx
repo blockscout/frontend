@@ -7,20 +7,19 @@ import type { OptimisticL2DisputeGamesItem } from 'client/features/rollup/optimi
 
 import BlockEntityL2 from 'client/features/rollup/common/components/BlockEntityL2';
 
+import config from 'client/config';
+import { getFeaturePayload } from 'client/config/utils/features';
 import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
 import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
 import HashStringShorten from 'client/shared/texts/HashStringShorten';
 
-import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
-
-const faultProofSystemFeature = config.features.faultProofSystem;
 
 type Props = { item: OptimisticL2DisputeGamesItem; isLoading?: boolean };
 
 const OptimisticL2DisputeGamesTableItem = ({ item, isLoading }: Props) => {
-  if (!faultProofSystemFeature.isEnabled) {
+  if (!getFeaturePayload(config.features.rollup)?.faultProofSystemEnabled) {
     return null;
   }
 

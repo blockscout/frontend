@@ -5,9 +5,9 @@ import { uniqBy } from 'es-toolkit';
 import type { ClusterChainConfig } from 'client/features/multichain/types/client';
 import type { NFTTokenType, TokenType } from 'client/slices/token/types/api';
 
-import config from 'configs/app';
+import config from 'client/config';
 
-const tokenStandardName = config.chain.tokenStandard;
+const tokenStandardName = config.slices.token.standard;
 
 type ChainConfig = Array<ClusterChainConfig['app_config']> | ClusterChainConfig['app_config'];
 
@@ -27,7 +27,7 @@ export const getTokenTypes = (nftOnly: boolean, chainConfig: ChainConfig = confi
   return {
     'ERC-20': `${ tokenStandardName }-20`,
     ...chainConfigs
-      .map((chainConfig) => chainConfig.chain.additionalTokenTypes)
+      .map((chainConfig) => chainConfig.slices.token.additionalTypes)
       .flat()
       .reduce((result, item) => {
         result[item.id] = item.name;
@@ -39,12 +39,12 @@ export const getTokenTypes = (nftOnly: boolean, chainConfig: ChainConfig = confi
 
 export const getAdditionalTokenTypes = (chainConfig?: ChainConfig) => {
   if (!chainConfig) {
-    return config.chain.additionalTokenTypes;
+    return config.slices.token.additionalTypes;
   }
   const chainConfigs = Array.isArray(chainConfig) ? chainConfig : [ chainConfig ];
   return uniqBy(
     chainConfigs
-      .map((chainConfig) => chainConfig.chain.additionalTokenTypes)
+      .map((chainConfig) => chainConfig.slices.token.additionalTypes)
       .flat(),
     (item) => item.id,
   );

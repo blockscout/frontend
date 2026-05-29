@@ -15,11 +15,11 @@ import { useHomeDataContext } from 'client/slices/home/contexts/home-data-contex
 import { useHomeRpcDataContext } from 'client/slices/home/contexts/rpc-data-context';
 import { HOMEPAGE_STATS } from 'client/slices/home/stubs';
 
+import config from 'client/config';
 import ApiDegradationRpcIcon from 'client/shared/api-degradation/ApiDegradationRpcIcon';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import useInitialList from 'client/shared/lists/useInitialList';
 
-import config from 'configs/app';
 import { Heading } from 'toolkit/chakra/heading';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
@@ -33,7 +33,7 @@ const LatestBlocks = () => {
   const isMobile = useIsMobile();
   // const blocksMaxCount = isMobile ? 2 : 3;
   let blocksMaxCount: number;
-  if (config.features.rollup.isEnabled || config.UI.views.block.hiddenFields?.total_reward) {
+  if (config.features.rollup.isEnabled || config.slices.block.hiddenFields?.total_reward) {
     blocksMaxCount = isMobile ? 4 : 5;
   } else {
     blocksMaxCount = isMobile ? 2 : 3;

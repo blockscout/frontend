@@ -9,7 +9,8 @@ import { MetadataUpdateProvider } from 'client/slices/token/pages/instance/metad
 
 import { protocolTagWithMeta } from 'client/features/address-metadata/mocks/tags';
 
-import config from 'configs/app';
+import config from 'client/config';
+
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect, devices } from 'playwright/lib';
 import * as pwConfig from 'playwright/utils/config';

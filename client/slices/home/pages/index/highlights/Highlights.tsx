@@ -12,7 +12,7 @@ import useFetch from 'client/api/hooks/useFetch';
 
 import { HOMEPAGE_HIGHLIGHTS_BANNER } from 'client/slices/home/stubs';
 
-import config from 'configs/app';
+import config from 'client/config';
 
 import HighlightsItem from './HighlightsItem';
 
@@ -23,7 +23,7 @@ const Highlights = (props: StackProps) => {
 
   const { isPlaceholderData, data } = useQuery({
     queryKey: [ 'homepage-highlights' ],
-    queryFn: async() => fetch(config.UI.homepage.highlights || '', undefined, { resource: 'homepage-highlights' }) as Promise<Array<HighlightsBannerConfig>>,
+    queryFn: async() => fetch(config.slices.home.highlights || '', undefined, { resource: 'homepage-highlights' }) as Promise<Array<HighlightsBannerConfig>>,
     select: (data) => {
       const pinnedBanners = data.filter((banner) => banner.is_pinned);
       const otherBanners = data.filter((banner) => !banner.is_pinned);
@@ -33,7 +33,7 @@ const Highlights = (props: StackProps) => {
         ...shuffle(otherBanners),
       ].slice(0, HIGHLIGHTS_BANNER_COUNT);
     },
-    enabled: Boolean(config.UI.homepage.highlights),
+    enabled: Boolean(config.slices.home.highlights),
     staleTime: Infinity,
     placeholderData: Array(HIGHLIGHTS_BANNER_COUNT).fill(HOMEPAGE_HIGHLIGHTS_BANNER),
   });

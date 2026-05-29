@@ -5,10 +5,10 @@ import React from 'react';
 
 import type { AlternativeExplorer as TAlternativeExplorer } from '../types/client';
 
+import config from 'client/config';
 import VerifyWith from 'client/shared/links/VerifyWith';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
-import config from 'configs/app';
 import { Image } from 'toolkit/chakra/image';
 import { Link } from 'toolkit/chakra/link';
 import { stripTrailingSlash } from 'toolkit/utils/url';
@@ -21,7 +21,7 @@ interface Props {
 
 const AlternativeExplorers = ({ className, type, pathParam }: Props) => {
   const explorersLinks = React.useMemo(() => {
-    return config.UI.explorers.items
+    return config.features.alternativeExplorers.items
       .filter((explorer) => typeof explorer.paths[type] === 'string')
       .map((explorer) => {
         const path = explorer.paths[type] || '';

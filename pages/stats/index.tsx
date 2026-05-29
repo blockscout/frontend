@@ -8,7 +8,7 @@ import PageNextJs from 'nextjs/PageNextJs';
 import ChainStatsIndex from 'client/features/chain-stats/pages/index/ChainStatsIndex';
 import MultichainStats from 'client/features/multichain/pages/stats/MultichainStats';
 
-import config from 'configs/app';
+import config from 'client/config';
 
 const Page: NextPage = () => {
   return (

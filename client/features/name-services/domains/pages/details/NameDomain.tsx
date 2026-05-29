@@ -20,11 +20,11 @@ import NameDomainHistory from 'client/features/name-services/domains/pages/detai
 import NameDomainDetails from 'client/features/name-services/domains/pages/details/info/NameDomainDetails';
 import { ENS_DOMAIN } from 'client/features/name-services/domains/stubs';
 
+import config from 'client/config';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
-import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';

@@ -4,9 +4,8 @@ import type { ReactElement } from 'react';
 
 import type { HomeStatsWidgetId } from 'client/slices/home/types/config';
 
+import config from 'client/config';
 import type { Props as StatsWidgetProps } from 'client/shared/stats/StatsWidget';
-
-import config from 'configs/app';
 
 export type HomeStatsComponentItem = { id: HomeStatsWidgetId; component: ReactElement };
 export type HomeStatsWidgetItem = StatsWidgetProps & { id: HomeStatsWidgetId; component?: undefined };
@@ -21,11 +20,11 @@ export const homeStatsWidgetCommonStyles = {
   },
 } as const;
 
-export const isHomeStatsItemEnabled = (item: { id: HomeStatsWidgetId }) => config.UI.homepage.stats.includes(item.id);
+export const isHomeStatsItemEnabled = (item: { id: HomeStatsWidgetId }) => config.slices.home.stats.includes(item.id);
 
 export const sortHomeStatsItems = (a: { id: HomeStatsWidgetId }, b: { id: HomeStatsWidgetId }) => {
-  const indexA = config.UI.homepage.stats.indexOf(a.id);
-  const indexB = config.UI.homepage.stats.indexOf(b.id);
+  const indexA = config.slices.home.stats.indexOf(a.id);
+  const indexB = config.slices.home.stats.indexOf(b.id);
   if (indexA > indexB) {
     return 1;
   }

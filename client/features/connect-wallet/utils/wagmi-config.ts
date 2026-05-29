@@ -7,10 +7,10 @@ import { fallback, http } from 'viem';
 import { createConfig } from 'wagmi';
 
 import { chains, parentChain } from 'client/features/connect-wallet/utils/chains';
+import essentialDappsChainsConfig from 'client/features/marketplace/chains-config/essential-dapps';
+import multichainConfig from 'client/features/multichain/chains-config';
 
-import appConfig from 'configs/app';
-import essentialDappsChainsConfig from 'configs/essential-dapps-chains';
-import multichainConfig from 'configs/multichain';
+import appConfig from 'client/config';
 
 const feature = appConfig.features.connectWallet;
 

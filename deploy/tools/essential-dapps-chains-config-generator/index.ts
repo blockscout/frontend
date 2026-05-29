@@ -7,9 +7,9 @@ import * as viemChains from 'viem/chains';
 import { pick, uniq, delay } from 'es-toolkit';
 
 import { EssentialDappsConfig } from 'client/features/marketplace/types/client';
-import { getEnvValue, parseEnvJson } from 'configs/app/utils';
-import currentChainConfig from 'configs/app';
-import appConfig from 'configs/app';
+import { getEnvValue, parseEnvJson } from 'client/config/utils/envs';
+import currentChainConfig from 'client/config';
+import appConfig from 'client/config';
 import { EssentialDappsChainConfig } from 'client/features/marketplace/types/client';
 
 const currentFilePath = fileURLToPath(import.meta.url);

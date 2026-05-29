@@ -9,7 +9,7 @@ import NavLink from 'client/shell/navigation/vertical/NavLink';
 
 import { useRewardsContext } from 'client/features/rewards/context';
 
-import config from 'configs/app';
+import config from 'client/config';
 
 type Props = {
   isCollapsed?: boolean;

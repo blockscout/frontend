@@ -12,9 +12,9 @@ import useSocketMessage from 'client/api/socket/useSocketMessage';
 
 import { useAppContext } from 'client/shell/app/context';
 
+import config from 'client/config';
 import * as cookies from 'client/shared/storage/cookies';
 
-import config from 'configs/app';
 import { Alert } from 'toolkit/chakra/alert';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { nbsp, ndash } from 'toolkit/utils/htmlEntities';
@@ -26,7 +26,7 @@ const IndexingStatusBlocks = () => {
 
   const { data, isError, isPending } = useApiQuery('general:homepage_indexing_status', {
     queryOptions: {
-      enabled: !config.UI.indexingAlert.blocks.isHidden,
+      enabled: !config.chain.indexingStatus.blocks.isHidden,
     },
   });
 
@@ -51,7 +51,7 @@ const IndexingStatusBlocks = () => {
 
   const blockIndexingChannel = useSocketChannel({
     topic: 'blocks:indexing',
-    isDisabled: !data || data.finished_indexing_blocks || config.UI.indexingAlert.blocks.isHidden,
+    isDisabled: !data || data.finished_indexing_blocks || config.chain.indexingStatus.blocks.isHidden,
   });
 
   useSocketMessage({
@@ -60,7 +60,7 @@ const IndexingStatusBlocks = () => {
     handler: handleBlocksIndexStatus,
   });
 
-  if (config.UI.indexingAlert.blocks.isHidden) {
+  if (config.chain.indexingStatus.blocks.isHidden) {
     return null;
   }
 

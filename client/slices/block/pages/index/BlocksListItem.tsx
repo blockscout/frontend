@@ -17,6 +17,7 @@ import { currencyUnits } from 'client/slices/chain/units';
 import getChainValidatorTitle from 'client/slices/chain/verification-type/utils/get-chain-validator-title';
 import GasUsed from 'client/slices/gas/components/GasUsed';
 
+import config from 'client/config';
 import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
 import ListItemMobile from 'client/shared/lists/ListItemMobile';
 import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
@@ -24,7 +25,6 @@ import SimpleValue from 'client/shared/values/entity/SimpleValue';
 import Utilization from 'client/shared/values/utilization/Utilization';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
-import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
@@ -79,7 +79,7 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement, animation, chain
           </Skeleton>
         </Flex>
       ) }
-      { !config.UI.views.block.hiddenFields?.miner && (
+      { !config.slices.block.hiddenFields?.miner && (
         <Flex columnGap={ 2 } w="100%">
           <Text fontWeight={ 500 }>{ capitalize(getChainValidatorTitle()) }</Text>
           <AddressEntity
@@ -115,13 +115,13 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement, animation, chain
           />
         </Flex>
       </Box>
-      { !isRollup && !config.UI.views.block.hiddenFields?.total_reward && (
+      { !isRollup && !config.slices.block.hiddenFields?.total_reward && (
         <Flex columnGap={ 2 }>
           <Text fontWeight={ 500 }>Reward { currencyUnits.ether }</Text>
           <SimpleValue value={ totalReward } loading={ isLoading } color="text.secondary"/>
         </Flex>
       ) }
-      { !isRollup && !config.UI.views.block.hiddenFields?.burnt_fees && (
+      { !isRollup && !config.slices.block.hiddenFields?.burnt_fees && (
         <Box>
           <Text fontWeight={ 500 }>Burnt fees</Text>
           <Flex columnGap={ 4 } mt={ 2 }>
@@ -137,7 +137,7 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement, animation, chain
           </Flex>
         </Box>
       ) }
-      { !isRollup && !config.UI.views.block.hiddenFields?.base_fee && data.base_fee_per_gas && (
+      { !isRollup && !config.slices.block.hiddenFields?.base_fee && data.base_fee_per_gas && (
         <Flex columnGap={ 2 }>
           <Text fontWeight={ 500 }>Base fee</Text>
           <NativeCoinValue

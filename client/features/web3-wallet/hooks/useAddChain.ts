@@ -6,7 +6,8 @@ import type { AddEthereumChainParameter } from 'viem';
 import { useMultichainContext } from 'client/features/multichain/context';
 import useRewardsActivity from 'client/features/rewards/hooks/useRewardsActivity';
 
-import config from 'configs/app';
+import config from 'client/config';
+
 import { SECOND } from 'toolkit/utils/consts';
 
 import { getHexadecimalChainId } from '../utils/get-hexadecimal-chain-id';

@@ -6,10 +6,10 @@ import React from 'react';
 
 import { route } from 'nextjs-routes';
 
-import * as mixpanel from 'client/shared/analytics/mixpanel';
+import config from 'client/config';
+import * as mixpanel from 'client/services/mixpanel';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
-import config from 'configs/app';
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';
 import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';

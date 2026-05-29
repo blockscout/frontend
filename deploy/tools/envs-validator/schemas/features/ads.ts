@@ -1,5 +1,5 @@
 import * as yup from 'yup';
-import { replaceQuotes } from 'configs/app/utils';
+import { replaceQuotes } from 'client/config/utils/envs';
 import type { AdBannerProviders, AdBannerAdditionalProviders, AdButlerDeviceConfig } from 'client/features/ads/banner/types/config';
 import { SUPPORTED_AD_BANNER_PROVIDERS, SUPPORTED_AD_BANNER_ADDITIONAL_PROVIDERS } from 'client/features/ads/banner/types/config';
 import { AdTextProviders, SUPPORTED_AD_TEXT_PROVIDERS } from 'client/features/ads/text/types/config';

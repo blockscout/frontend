@@ -3,9 +3,8 @@
 import { Box, Flex } from '@chakra-ui/react';
 import React from 'react';
 
+import config from 'client/config';
 import * as cookies from 'client/shared/storage/cookies';
-
-import config from 'configs/app';
 
 import SettingsSample from '../SettingsSample';
 import { IDENTICONS } from './utils';
@@ -14,7 +13,7 @@ const SettingsIdentIcon = () => {
   const [ activeId, setActiveId ] = React.useState<string>();
 
   React.useEffect(() => {
-    const initialId = cookies.get(cookies.NAMES.ADDRESS_IDENTICON_TYPE) || config.UI.views.address.identiconType;
+    const initialId = cookies.get(cookies.NAMES.ADDRESS_IDENTICON_TYPE) || config.slices.address.identiconType;
     setActiveId(initialId);
   }, []);
 

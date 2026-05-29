@@ -5,9 +5,9 @@ import React from 'react';
 
 import type { MetadataTag as TMetadataTag } from './types';
 
+import config from 'client/config';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
-import config from 'configs/app';
 import { Badge } from 'toolkit/chakra/badge';
 import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
 

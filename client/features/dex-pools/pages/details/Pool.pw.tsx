@@ -4,7 +4,8 @@ import * as addressMock from 'client/slices/address/mocks/address';
 
 import * as poolMock from 'client/features/dex-pools/mocks/pool';
 
-import config from 'configs/app';
+import config from 'client/config';
+
 import { test, expect } from 'playwright/lib';
 import * as pwConfig from 'playwright/utils/config';
 

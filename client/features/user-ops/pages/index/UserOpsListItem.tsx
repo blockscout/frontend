@@ -13,11 +13,10 @@ import { useMultichainContext } from 'client/features/multichain/context';
 import UserOpEntity from 'client/features/user-ops/components/entity/UserOpEntity';
 import UserOpStatus from 'client/features/user-ops/components/UserOpStatus';
 
+import config from 'client/config';
 import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
 import ListItemMobileGrid from 'client/shared/lists/ListItemMobileGrid';
 import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
-
-import config from 'configs/app';
 
 type Props = {
   item: UserOpsItem;
@@ -91,7 +90,7 @@ const UserOpsListItem = ({ item, isLoading, showTx, showSender, chainData }: Pro
         />
       </ListItemMobileGrid.Value>
 
-      { !chainConfig.UI.views.tx.hiddenFields?.tx_fee && (
+      { !chainConfig.slices.tx.hiddenFields?.tx_fee && (
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>Fee</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>

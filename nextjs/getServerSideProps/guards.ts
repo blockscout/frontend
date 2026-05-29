@@ -3,18 +3,18 @@
 import type { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 
 import type { RollupType } from 'client/features/rollup/common/types/config';
-import { getFeaturePayload } from 'configs/app/features/types';
 
 import type { Route } from 'nextjs-routes';
 import type { Props } from 'nextjs/getServerSideProps/handlers';
 
-import config from 'configs/app';
+import config from 'client/config';
+import { getFeaturePayload } from 'client/config/utils/features';
 
 export type Guard = (chainConfig: typeof config) => <Pathname extends Route['pathname'] = never>(context: GetServerSidePropsContext) =>
 Promise<GetServerSidePropsResult<Props<Pathname>> | undefined>;
 
 export const internalTx: Guard = (chainConfig: typeof config) => async() => {
-  if (!chainConfig.UI.views.internalTx.isEnabled) {
+  if (!chainConfig.slices.internalTx.isEnabled) {
     return {
       notFound: true,
     };
@@ -39,7 +39,7 @@ export const accountAuth0: Guard = (chainConfig: typeof config) => async() => {
 };
 
 export const verifiedAddresses: Guard = (chainConfig: typeof config) => async() => {
-  if (!chainConfig.features.addressVerification.isEnabled) {
+  if (!getFeaturePayload(chainConfig.features.account)?.addressVerificationEnabled) {
     return {
       notFound: true,
     };
@@ -114,7 +114,7 @@ export const nameServiceClusters: Guard = (chainConfig: typeof config) => async(
 };
 
 export const accounts: Guard = (chainConfig: typeof config) => async() => {
-  if (chainConfig.UI.views.address.hiddenViews?.top_accounts) {
+  if (chainConfig.slices.address.hiddenViews?.top_accounts) {
     return {
       notFound: true,
     };
@@ -291,7 +291,7 @@ export const outputRoots: Guard = (chainConfig: typeof config) => async() => {
 };
 
 export const disputeGames: Guard = (chainConfig: typeof config) => async() => {
-  if (!chainConfig.features.faultProofSystem.isEnabled) {
+  if (!getFeaturePayload(chainConfig.features.rollup)?.faultProofSystemEnabled) {
     return {
       notFound: true,
     };

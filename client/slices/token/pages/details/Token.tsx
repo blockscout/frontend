@@ -15,6 +15,8 @@ import useApiQuery, { getResourceKey } from 'client/api/hooks/useApiQuery';
 import useSocketChannel from 'client/api/socket/useSocketChannel';
 import useSocketMessage from 'client/api/socket/useSocketMessage';
 
+import * as metadata from 'client/shell/metadata';
+
 import * as addressStubs from 'client/slices/address/stubs/address';
 import Contract from 'client/slices/contract/pages/details/Contract';
 import { CONTRACT_TAB_IDS } from 'client/slices/contract/utils/tabs';
@@ -34,8 +36,8 @@ import TextAd from 'client/features/ads/text/components/TextAd';
 import TokenAdvancedFilterLink from 'client/features/advanced-filter/pages/token/TokenAdvancedFilterLink';
 import CsvExport from 'client/features/csv-export/components/CsvExport';
 
+import config from 'client/config';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
-import * as metadata from 'client/shared/metadata';
 import Pagination from 'client/shared/pagination/Pagination';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
@@ -43,7 +45,6 @@ import getQueryParamString from 'client/shared/router/get-query-param-string';
 import useEtherscanRedirects from 'client/shared/router/useEtherscanRedirects';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
-import config from 'configs/app';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 
 export type TokenTabs = 'token_transfers' | 'holders' | 'inventory';
@@ -120,7 +121,7 @@ const TokenPageContent = () => {
   });
 
   useEffect(() => {
-    // even if config.meta.seo.enhancedDataEnabled is enabled, we don't fetch contract info for the project description
+    // even if config.metadata.seo.enhancedDataEnabled is enabled, we don't fetch contract info for the project description
     // so we need to update the metadata anyway.
     if (tokenQuery.data && !tokenQuery.isPlaceholderData && !verifiedInfoQuery.isPlaceholderData) {
       const apiData = {

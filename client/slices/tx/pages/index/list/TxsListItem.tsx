@@ -22,11 +22,11 @@ import TxWatchListTags from 'client/features/account/components/TxWatchListTags'
 import MetadataTag from 'client/features/address-metadata/components/tag/MetadataTag';
 import TxTranslationType from 'client/features/tx-interpretation/noves/components/TxTranslationType';
 
+import config from 'client/config';
 import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
 import ListItemMobile from 'client/shared/lists/ListItemMobile';
 import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
 
-import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 
 interface Props {
@@ -126,7 +126,7 @@ const TxsListItem = ({
         mt={ 6 }
         fontWeight="500"
       />
-      { !config.UI.views.tx.hiddenFields?.value && (
+      { !config.slices.tx.hiddenFields?.value && (
         <Flex mt={ 2 } columnGap={ 2 }>
           <Skeleton loading={ isLoading } display="inline-block" whiteSpace="pre">Value</Skeleton>
           <NativeCoinValue
@@ -138,7 +138,7 @@ const TxsListItem = ({
           />
         </Flex>
       ) }
-      { !config.UI.views.tx.hiddenFields?.tx_fee && (
+      { !config.slices.tx.hiddenFields?.tx_fee && (
         <Flex mt={ 2 } mb={ 3 } columnGap={ 2 }>
           { (tx.stability_fee !== undefined || tx.fee.value !== null) && (
             <>

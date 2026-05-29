@@ -7,10 +7,10 @@ import type { AddressMetadataTagFormatted } from 'client/features/address-metada
 
 import AppActionButton from 'client/features/address-metadata/components/AppActionButton';
 
+import config from 'client/config';
 import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
 import TextSeparator from 'client/shared/texts/TextSeparator';
 
-import config from 'configs/app';
 import { Image } from 'toolkit/chakra/image';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
@@ -25,11 +25,11 @@ interface Props {
 }
 
 const TokenNftMarketplaces = ({ hash, id, isLoading, appActionData, source }: Props) => {
-  if (!hash || config.UI.views.nft.marketplaces.length === 0) {
+  if (!hash || config.slices.token.nft.marketplaces.length === 0) {
     return null;
   }
 
-  const items = config.UI.views.nft.marketplaces
+  const items = config.slices.token.nft.marketplaces
     .map((item) => {
       const hrefTemplate = id ? item.instance_url : item.collection_url;
       if (!hrefTemplate) {

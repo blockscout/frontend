@@ -5,9 +5,9 @@ import type { MarketplaceApp } from 'client/features/marketplace/types/client';
 import type { QuickSearchResultItem } from 'client/slices/search/types/client';
 import type { TokenType } from 'client/slices/token/types/api';
 import { isConfidentialTokenType } from 'client/slices/token/utils/token-types';
-import { getFeaturePayload } from 'configs/app/features/types';
 
-import config from 'configs/app';
+import config from 'client/config';
+import { getFeaturePayload } from 'client/config/utils/features';
 
 const nameServicesFeature = config.features.nameServices;
 
@@ -38,13 +38,13 @@ export type SearchResultAppItem = {
   app: MarketplaceApp;
 };
 
-const hasConfidentialTokenType = config.chain.additionalTokenTypes.some((item) => isConfidentialTokenType(item.id as TokenType));
+const hasConfidentialTokenType = config.slices.token.additionalTypes.some((item) => isConfidentialTokenType(item.id as TokenType));
 
 export const searchCategories: Array<{ id: Category; title: string; tabTitle: string }> = [
-  { id: 'token', title: `Tokens (${ config.chain.tokenStandard }-20)`, tabTitle: 'Tokens' },
-  { id: 'nft', title: `NFTs (${ config.chain.tokenStandard }-721 & 1155)`, tabTitle: 'NFTs' },
+  { id: 'token', title: `Tokens (${ config.slices.token.standard }-20)`, tabTitle: 'Tokens' },
+  { id: 'nft', title: `NFTs (${ config.slices.token.standard }-721 & 1155)`, tabTitle: 'NFTs' },
   ...(hasConfidentialTokenType ? [
-    { id: 'confidential_token' as const, title: `Confidential Tokens (${ config.chain.tokenStandard }-7984)`, tabTitle: 'Confidential Tokens' },
+    { id: 'confidential_token' as const, title: `Confidential Tokens (${ config.slices.token.standard }-7984)`, tabTitle: 'Confidential Tokens' },
   ] : []),
   { id: 'address', title: 'Addresses', tabTitle: 'Addresses' },
   { id: 'public_tag', title: 'Public tags', tabTitle: 'Public tags' },

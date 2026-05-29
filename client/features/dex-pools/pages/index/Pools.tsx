@@ -11,13 +11,13 @@ import PoolsListItem from 'client/features/dex-pools/pages/index/PoolsListItem';
 import PoolsTable from 'client/features/dex-pools/pages/index/PoolsTable';
 import { POOL } from 'client/features/dex-pools/stubs';
 
+import config from 'client/config';
 import useDebounce from 'client/shared/hooks/useDebounce';
 import DataList from 'client/shared/lists/DataList';
 import Pagination from 'client/shared/pagination/Pagination';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
-import config from 'configs/app';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
 
 const Pools = () => {

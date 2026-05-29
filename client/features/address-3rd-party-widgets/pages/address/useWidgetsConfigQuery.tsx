@@ -7,7 +7,7 @@ import type { Address3rdPartyWidget } from 'client/features/address-3rd-party-wi
 import useApiFetch from 'client/api/hooks/useFetch';
 import type { ResourceError } from 'client/api/resources';
 
-import config from 'configs/app';
+import config from 'client/config';
 
 import { WIDGET_CONFIG } from '../../stubs';
 

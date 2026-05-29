@@ -8,9 +8,9 @@ import * as implementationsMock from 'client/slices/address/mocks/implementation
 
 import * as metadataMock from 'client/features/address-metadata/mocks/tags';
 
+import config from 'client/config';
 import * as cookies from 'client/shared/storage/cookies';
 
-import config from 'configs/app';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';
 

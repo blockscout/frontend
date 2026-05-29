@@ -7,7 +7,7 @@ import { CSP_NONCE_HEADER } from 'nextjs/constants';
 import * as csp from 'nextjs/csp/index';
 import * as middlewares from 'nextjs/middlewares/index';
 
-import appConfig from 'configs/app';
+import appConfig from 'client/config';
 
 const adsBannerFeature = appConfig.features.adsBanner;
 const adsTextFeature = appConfig.features.adsText;

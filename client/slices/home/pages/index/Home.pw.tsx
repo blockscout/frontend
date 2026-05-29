@@ -9,7 +9,8 @@ import * as txMock from 'client/slices/tx/mocks/tx';
 
 import * as statsMainMock from 'client/features/chain-stats/mocks/home';
 
-import config from 'configs/app';
+import config from 'client/config';
+
 import { test, expect, devices } from 'playwright/lib';
 import * as pwConfig from 'playwright/utils/config';
 

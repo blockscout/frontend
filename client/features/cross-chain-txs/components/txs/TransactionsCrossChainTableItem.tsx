@@ -11,11 +11,11 @@ import AddressEntityInterchain from 'client/slices/address/components/entity/Add
 import AddressFromToIcon from 'client/slices/address/components/from-to/AddressFromToIcon';
 import TxEntityInterchain from 'client/slices/tx/components/entity/TxEntityInterchain';
 
+import config from 'client/config';
 import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
 import ChainLabel from 'client/shared/external-chains/ChainLabel';
 import TokenValueInterchain from 'client/shared/values/entity/TokenValueInterchain';
 
-import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';

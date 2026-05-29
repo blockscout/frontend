@@ -7,11 +7,10 @@ import { route } from 'nextjs/routes';
 
 import { useMultichainContext } from 'client/features/multichain/context';
 
+import config from 'client/config';
 import * as EntityBase from 'client/shared/entities/components';
 import { distributeEntityProps } from 'client/shared/entities/utils';
 import getChainTooltipText from 'client/shared/external-chains/get-chain-tooltip-text';
-
-import config from 'configs/app';
 
 type LinkProps = EntityBase.LinkBaseProps & Partial<Pick<EntityProps, 'hash' | 'number'>>;
 
@@ -36,7 +35,7 @@ type IconProps = EntityBase.IconBaseProps & Pick<EntityProps, 'isPendingUpdate'>
 
 const Icon = (props: IconProps) => {
 
-  const isPendingUpdate = props.isPendingUpdate && config.UI.views.block.pendingUpdateAlertEnabled;
+  const isPendingUpdate = props.isPendingUpdate && config.slices.block.pendingUpdateAlertEnabled;
 
   const name = (() => {
     if ('name' in props) {

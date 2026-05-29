@@ -2,12 +2,12 @@
 
 import type CspDev from 'csp-dev';
 
-import config from 'configs/app';
+import config from 'client/config';
 
 import { KEY_WORDS } from '../utils';
 
 export function helia(): CspDev.DirectiveDescriptor {
-  if (!config.UI.views.nft.verifiedFetch.isEnabled) {
+  if (!config.slices.token.nft.verifiedFetch.isEnabled) {
     return {};
   }
 

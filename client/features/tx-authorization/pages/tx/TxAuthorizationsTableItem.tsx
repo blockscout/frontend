@@ -9,7 +9,8 @@ import AddressEntity from 'client/slices/address/components/entity/AddressEntity
 
 import TxAuthorizationStatus from 'client/features/tx-authorization/components/TxAuthorizationStatus';
 
-import config from 'configs/app';
+import config from 'client/config';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableRow, TableCell } from 'toolkit/chakra/table';
 

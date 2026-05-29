@@ -63,11 +63,11 @@ import { USER_OPS_ACCOUNT } from 'client/features/user-ops/stubs';
 import TokenAddToWallet from 'client/features/web3-wallet/components/TokenAddToWallet';
 import useFetchXStarScore from 'client/features/x-star-score/hooks/useFetchXStarScore';
 
+import config from 'client/config';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import useEtherscanRedirects from 'client/shared/router/useEtherscanRedirects';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
-import config from 'configs/app';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 
 const TOKEN_TABS = [ 'tokens_erc20', 'tokens_nfts', 'tokens_nfts_collection', 'tokens_nfts_list' ];
@@ -272,7 +272,7 @@ const AddressPageContent = () => {
         component: <AddressTokens shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
         subTabs: TOKEN_TABS,
       },
-      config.UI.views.internalTx.isEnabled ? {
+      config.slices.internalTx.isEnabled ? {
         id: 'internal_txns',
         title: 'Internal txns',
         count: addressTabsCountersQuery.data?.internal_transactions_count,
@@ -482,7 +482,7 @@ const AddressPageContent = () => {
       <ActionsMenu isLoading={ isLoading }/>
       <HStack ml="auto" gap={ 2 }/>
       <AddressMultichainInfoButton loading={ isLoading } addressData={ addressQuery.data }/>
-      { !isLoading && addressQuery.data?.is_contract && addressQuery.data?.is_verified && config.UI.views.address.solidityscanEnabled &&
+      { !isLoading && addressQuery.data?.is_contract && addressQuery.data?.is_verified && config.slices.contract.solidityscanEnabled &&
         <SolidityscanReport hash={ hash }/> }
       { !isLoading && nameServicesFeature.isEnabled && nameServicesFeature.ens.isEnabled &&
         <AddressEnsDomains query={ addressEnsDomainsQuery } addressHash={ hash } mainDomainName={ addressQuery.data?.ens_domain_name }/> }

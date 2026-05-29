@@ -12,9 +12,9 @@ import type { HomeStats } from 'client/slices/home/types/api';
 
 import { route } from 'nextjs-routes';
 
+import config from 'client/config';
 import Time from 'client/shared/date-and-time/Time';
 
-import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
 import type { TooltipProps } from 'toolkit/chakra/tooltip';
 import { Tooltip } from 'toolkit/chakra/tooltip';

@@ -9,13 +9,12 @@ import useChainStats from 'client/features/chain-stats/hooks/useChainStats';
 import ChainStatsCounters from 'client/features/chain-stats/pages/index/ChainStatsCounters';
 import ChainStatsFilters from 'client/features/chain-stats/pages/index/ChainStatsFilters';
 import ChainStatsSections from 'client/features/chain-stats/pages/index/ChainStatsSections';
+import multichainConfig from 'client/features/multichain/chains-config';
 import ChainSelect from 'client/features/multichain/components/ChainSelect';
 import { MultichainProvider } from 'client/features/multichain/context';
 import useRoutedChainSelect from 'client/features/multichain/hooks/useRoutedChainSelect';
 
 import useEtherscanRedirects from 'client/shared/router/useEtherscanRedirects';
-
-import multichainConfig from 'configs/multichain';
 
 const MultichainStats = () => {
   useEtherscanRedirects();

@@ -3,10 +3,9 @@
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
+import config from 'client/config';
 import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
 import DetailedInfoNativeCoinValue from 'client/shared/detailed-info/DetailedInfoNativeCoinValue';
-
-import config from 'configs/app';
 
 interface Props {
   txFee: string | null;
@@ -15,7 +14,7 @@ interface Props {
 }
 
 const TxDetailsFeePerGas = ({ txFee, gasUsed, isLoading }: Props) => {
-  if (!config.UI.views.tx.additionalFields?.fee_per_gas || !gasUsed || txFee === null) {
+  if (!config.slices.tx.additionalFields?.fee_per_gas || !gasUsed || txFee === null) {
     return null;
   }
 
@@ -29,7 +28,7 @@ const TxDetailsFeePerGas = ({ txFee, gasUsed, isLoading }: Props) => {
       </DetailedInfo.ItemLabel>
       <DetailedInfoNativeCoinValue
         amount={ BigNumber(txFee).dividedBy(gasUsed).toFixed() }
-        noSymbol={ config.UI.views.tx.hiddenFields?.fee_currency }
+        noSymbol={ config.slices.tx.hiddenFields?.fee_currency }
         loading={ isLoading }
       />
     </>

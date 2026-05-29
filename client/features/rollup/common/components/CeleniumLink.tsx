@@ -3,9 +3,9 @@
 import { Flex, Icon } from '@chakra-ui/react';
 import React from 'react';
 
+import config from 'client/config';
 import hexToBase64 from 'client/shared/data/transformers/hex-to-base64';
 
-import config from 'configs/app';
 // eslint-disable-next-line no-restricted-imports
 import celeniumIcon from 'icons/brands/celenium.svg';
 import { Link } from 'toolkit/chakra/link';

@@ -6,11 +6,10 @@ import React from 'react';
 
 import IndexingStatusBlocks from 'client/slices/chain/indexing-status/IndexingStatusBlocks';
 
+import config from 'client/config';
 import AlertWithExternalHtml from 'client/shared/alerts/AlertWithExternalHtml';
 
-import config from 'configs/app';
-
-const maintenanceAlertHtml = config.UI.maintenanceAlert.message || '';
+const maintenanceAlertHtml = config.shell.header.maintenanceAlert.message || '';
 
 const HeaderAlert = (props: FlexProps) => {
   return (

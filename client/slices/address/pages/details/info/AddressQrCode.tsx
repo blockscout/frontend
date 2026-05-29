@@ -7,8 +7,8 @@ import React from 'react';
 
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 
-import * as mixpanel from 'client/shared/analytics/mixpanel';
-import { useRollbar } from 'client/shared/monitoring/rollbar';
+import * as mixpanel from 'client/services/mixpanel';
+import { useRollbar } from 'client/services/rollbar';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { Alert } from 'toolkit/chakra/alert';

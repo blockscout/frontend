@@ -7,12 +7,12 @@ import type { OptimisticL2DisputeGamesItem } from 'client/features/rollup/optimi
 import BlockEntityL2 from 'client/features/rollup/common/components/BlockEntityL2';
 import { layerLabels } from 'client/features/rollup/common/utils/layer';
 
+import config from 'client/config';
 import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
 import ListItemMobileGrid from 'client/shared/lists/ListItemMobileGrid';
 import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
 import HashStringShorten from 'client/shared/texts/HashStringShorten';
 
-import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 
 const rollupFeature = config.features.rollup;

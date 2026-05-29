@@ -29,9 +29,9 @@ import { useMultichainContext } from 'client/features/multichain/context';
 import TokenVerifiedInfo from 'client/features/verified-tokens/pages/token/TokenVerifiedInfo';
 import TokenAddToWallet from 'client/features/web3-wallet/components/TokenAddToWallet';
 
+import config from 'client/config';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
-import config from 'configs/app';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 
 const PREDEFINED_TAG_PRIORITY = 100;

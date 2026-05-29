@@ -13,10 +13,10 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 import * as TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 import NativeTokenIcon from 'client/slices/token/components/icon/TokenIconNative';
 
+import config from 'client/config';
 import TableColumnFilter from 'client/shared/filters/TableColumnFilter';
 import useDebounce from 'client/shared/hooks/useDebounce';
 
-import config from 'configs/app';
 import { PopoverCloseTriggerWrapper } from 'toolkit/chakra/popover';
 import { Tag } from 'toolkit/chakra/tag';
 import { ClearButton } from 'toolkit/components/buttons/ClearButton';

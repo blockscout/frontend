@@ -12,13 +12,13 @@ import PageTitle from 'client/shell/page/title/PageTitle';
 
 import useGraphLinks from 'client/features/marketplace/hooks/useGraphLinks';
 
+import config from 'client/config';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import Sort from 'client/shared/sort/Sort';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 import type { IconName } from 'client/sprite/SpriteIcon';
 
-import config from 'configs/app';
 import { Heading } from 'toolkit/chakra/heading';
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { Link } from 'toolkit/chakra/link';

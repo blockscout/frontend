@@ -21,10 +21,10 @@ import { ADDRESS } from 'client/features/multichain/stubs';
 import * as contract from 'client/features/multichain/utils/contract';
 import EnsEntity from 'client/features/name-services/domains/components/EnsEntity';
 
+import config from 'client/config';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
-import config from 'configs/app';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 
 import MultichainAddressEnsDomains from './header/MultichainAddressEnsDomains';
@@ -90,7 +90,7 @@ const MultichainAddress = () => {
         component: <MultichainAddressTokenTransfers addressData={ addressQuery.data } isLoading={ isLoading }/>,
         subTabs: ADDRESS_MULTICHAIN_TOKEN_TRANSFERS_TAB_IDS,
       },
-      config.UI.views.internalTx.isEnabled && {
+      config.slices.internalTx.isEnabled && {
         id: 'internal_txs',
         title: 'Internal txns',
         component: <MultichainAddressInternalTxs addressData={ addressQuery.data } isLoading={ isLoading }/>,

@@ -14,7 +14,7 @@ import useSocketMessage from 'client/api/socket/useSocketMessage';
 
 import { useMultichainContext } from 'client/features/multichain/context';
 
-import config from 'configs/app';
+import config from 'client/config';
 
 import type { TokenEnhancedData } from './utils';
 import { calculateUsdValue } from './utils';
@@ -35,7 +35,7 @@ const socketEventForTokenType = (tokenTypeId: string): string => {
   return `updated_token_balances_${ normalizedTypeId }`;
 };
 
-const additionalTokenTypes = config.chain.additionalTokenTypes;
+const additionalTypes = config.slices.token.additionalTypes;
 
 export default function useFetchTokens({ hash, enabled }: Props) {
   const erc20query = useApiQuery('general:address_tokens', {
@@ -63,7 +63,7 @@ export default function useFetchTokens({ hash, enabled }: Props) {
   const chain = multichainContext?.chain;
 
   const additionalTokenQueries = useQueries({
-    queries: additionalTokenTypes.map((item) => ({
+    queries: additionalTypes.map((item) => ({
       queryKey: getResourceKey('general:address_tokens', { pathParams: { hash }, queryParams: { type: item.id as unknown as TokenType }, chainId: chain?.id }),
       queryFn: async({ signal }) => {
         return apiFetch('general:address_tokens', {
@@ -108,7 +108,7 @@ export default function useFetchTokens({ hash, enabled }: Props) {
   }, [ hash, queryClient ]);
 
   const additionalTokenTypesIds = React.useMemo(() => {
-    return additionalTokenTypes.map((item) => item.id);
+    return additionalTypes.map((item) => item.id);
   }, []);
 
   const handleTokenBalancesErc20Message: SocketMessage.AddressTokenBalancesErc20['handler'] = React.useCallback((payload) => {
@@ -160,11 +160,11 @@ export default function useFetchTokens({ hash, enabled }: Props) {
     handler: handleTokenBalancesErc404Message,
   });
   React.useEffect(() => {
-    if (!channel || additionalTokenTypes.length === 0) {
+    if (!channel || additionalTypes.length === 0) {
       return;
     }
 
-    const refs = additionalTokenTypes.map((item) => {
+    const refs = additionalTypes.map((item) => {
       const event = socketEventForTokenType(item.id);
 
       return channel.on(event, (payload: AddressTokensBalancesSocketMessage) => {
@@ -177,13 +177,13 @@ export default function useFetchTokens({ hash, enabled }: Props) {
 
     return () => {
       refs.forEach((ref, index) => {
-        channel.off(socketEventForTokenType(additionalTokenTypes[index]?.id || ''), ref);
+        channel.off(socketEventForTokenType(additionalTypes[index]?.id || ''), ref);
       });
     };
   }, [ channel, additionalTokenTypesIds, updateTokensData ]);
 
   const data = React.useMemo(() => {
-    const additionalGroups = additionalTokenTypes.reduce((result, item, index) => {
+    const additionalGroups = additionalTypes.reduce((result, item, index) => {
       const query = additionalTokenQueries[index];
       result[item.id] = {
         items: query?.data?.items.map(calculateUsdValue) || [],

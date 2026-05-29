@@ -4,7 +4,8 @@ import { numberToHex } from 'viem';
 
 import { apps as appsMock } from 'client/features/marketplace/mocks/dapps';
 
-import config from 'configs/app';
+import config from 'client/config';
+
 import type { TestFnArgs } from 'playwright/lib';
 import { test, expect, devices } from 'playwright/lib';
 

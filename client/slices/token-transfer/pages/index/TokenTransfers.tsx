@@ -8,7 +8,8 @@ import PageTitle from 'client/shell/page/title/PageTitle';
 
 import TokenTransfersCrossChain from 'client/features/cross-chain-txs/pages/token-transfers/TokenTransfersCrossChain';
 
-import config from 'configs/app';
+import config from 'client/config';
+
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 
 import TokenTransfersLocal from './TokenTransfersLocal';

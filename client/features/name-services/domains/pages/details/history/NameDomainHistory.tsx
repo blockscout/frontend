@@ -10,10 +10,9 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 
 import { ENS_DOMAIN_EVENT } from 'client/features/name-services/domains/stubs';
 
+import config from 'client/config';
 import DataList from 'client/shared/lists/DataList';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
-
-import config from 'configs/app';
 
 import NameDomainHistoryListItem from './NameDomainHistoryListItem';
 import NameDomainHistoryTable from './NameDomainHistoryTable';

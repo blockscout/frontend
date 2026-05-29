@@ -11,13 +11,12 @@ import { SocketProvider } from 'client/api/socket/context';
 import { ADDRESS_INFO } from 'client/slices/address/stubs/address';
 import Contract from 'client/slices/contract/pages/details/Contract';
 
+import multichainConfig from 'client/features/multichain/chains-config';
 import ChainSelect from 'client/features/multichain/components/ChainSelect';
 import { MultichainProvider } from 'client/features/multichain/context';
 import useRoutedChainSelect from 'client/features/multichain/hooks/useRoutedChainSelect';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
-
-import multichainConfig from 'configs/multichain';
 
 import getAvailableChainIds from './get-available-chain-ids';
 

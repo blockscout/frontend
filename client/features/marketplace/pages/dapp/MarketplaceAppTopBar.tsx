@@ -14,10 +14,10 @@ import NetworkIcon from 'client/slices/chain/logo/NetworkIcon';
 import UserProfileDesktop from 'client/features/account/components/user-profile/UserProfileDesktop';
 import RewardsButton from 'client/features/rewards/components/RewardsButton';
 
-import * as mixpanel from 'client/shared/analytics/mixpanel';
+import config from 'client/config';
+import * as mixpanel from 'client/services/mixpanel';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
-import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
 import { BackToButton } from 'toolkit/components/buttons/BackToButton';
 import { makePrettyLink } from 'toolkit/utils/url';

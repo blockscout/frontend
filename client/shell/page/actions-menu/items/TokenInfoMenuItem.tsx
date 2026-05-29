@@ -12,10 +12,10 @@ import AuthGuard from 'client/features/account/components/auth-modal/guard/AuthG
 import useIsAuth from 'client/features/account/hooks/useIsAuth';
 import AddressVerificationModal from 'client/features/account/pages/verified-addresses/address-verification/AddressVerificationModal';
 
-import * as mixpanel from 'client/shared/analytics/mixpanel';
+import config from 'client/config';
+import * as mixpanel from 'client/services/mixpanel';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
-import config from 'configs/app';
 import { MenuItem } from 'toolkit/chakra/menu';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 

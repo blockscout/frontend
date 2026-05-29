@@ -4,9 +4,9 @@ import React from 'react';
 
 import type { CeloEpochListItem } from 'client/features/chain-variants/celo/types/api';
 
+import config from 'client/config';
 import TimeFormatToggle from 'client/shared/date-and-time/TimeFormatToggle';
 
-import config from 'configs/app';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 
 import EpochsTableItem from './EpochsTableItem';

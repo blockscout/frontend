@@ -9,7 +9,8 @@ import PageTitle from 'client/shell/page/title/PageTitle';
 import Clusters from 'client/features/name-services/clusters/pages/index/Clusters';
 import NameDomains from 'client/features/name-services/domains/pages/index/NameDomains';
 
-import config from 'configs/app';
+import config from 'client/config';
+
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 
 const feature = config.features.nameServices;
@@ -23,7 +24,7 @@ const NameServices = () => {
   return (
     <>
       <PageTitle
-        title={ config.meta.seo.enhancedDataEnabled ? `${ config.chain.name } name services` : 'Name services lookup' }
+        title={ config.metadata.seo.enhancedDataEnabled ? `${ config.chain.name } name services` : 'Name services lookup' }
         withTextAd
       />
       <RoutedTabs tabs={ tabs }/>

@@ -13,14 +13,15 @@ import useApiFetch from 'client/api/hooks/useApiFetch';
 import useFetch from 'client/api/hooks/useFetch';
 import type { ResourceError } from 'client/api/resources';
 
+import * as metadata from 'client/shell/metadata';
+
 import useIsAuth from 'client/features/account/hooks/useIsAuth';
 import { useMarketplaceContext } from 'client/features/marketplace/context';
 
+import config from 'client/config';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
-import * as metadata from 'client/shared/metadata';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
-import config from 'configs/app';
 import { useColorMode } from 'toolkit/chakra/color-mode';
 
 import MarketplaceAppIframe from '../../components/MarketplaceAppIframe';

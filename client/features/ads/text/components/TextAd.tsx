@@ -5,9 +5,8 @@ import React from 'react';
 
 import { useAppContext } from 'client/shell/app/context';
 
+import config from 'client/config';
 import * as cookies from 'client/shared/storage/cookies';
-
-import config from 'configs/app';
 
 import SevioTextAd from './SevioTextAd';
 

@@ -2,7 +2,8 @@
 
 import Cookies from 'js-cookie';
 
-import config from 'configs/app';
+import config from 'client/config';
+
 import { isBrowser } from 'toolkit/utils/isBrowser';
 
 /**

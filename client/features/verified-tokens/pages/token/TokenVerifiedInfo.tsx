@@ -7,7 +7,8 @@ import type { TokenVerifiedInfo as TTokenVerifiedInfo } from 'client/features/ve
 
 import type { ResourceError } from 'client/api/resources';
 
-import config from 'configs/app';
+import config from 'client/config';
+
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 

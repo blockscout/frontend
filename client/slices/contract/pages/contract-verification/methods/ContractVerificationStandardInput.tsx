@@ -4,7 +4,7 @@ import React from 'react';
 
 import type { SmartContractVerificationConfig } from 'client/slices/contract/pages/contract-verification/utils';
 
-import config from 'configs/app';
+import config from 'client/config';
 
 import ContractVerificationMethod from '../ContractVerificationMethod';
 import ContractVerificationFieldAutodetectArgs from '../fields/ContractVerificationFieldAutodetectArgs';

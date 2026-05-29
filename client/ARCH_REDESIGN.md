@@ -57,7 +57,7 @@ src/
 
 ### 4.1 `src/shell`
 
-Application **chrome**: layout, error UI, header, footer, page title, top-bar, and frame-level concerns. Includes root context providers (`app.tsx`, `fallback.tsx`), settings context, and `useNavItems`.
+Application **chrome**: layout, error UI, header, footer, page title, top-bar, metadata and frame-level concerns. Includes root context providers (`app.tsx`, `fallback.tsx`), settings context, and `useNavItems`.
 
 ### 4.2 `src/api`
 
@@ -152,18 +152,14 @@ Cross-cutting utilities with no single domain owner.
 
 | Subfolder | Contents |
 |-----------|----------|
-| `analytics/` | Mixpanel |
 | `auth/` | JWT decode |
 | `chain/` | Network utilities, units |
 | `date-and-time/` | Time formatting hooks and utils |
 | `errors/` | Error types + getErrorMessage |
-| `feature-flags/` | Growthbook runtime A/B flags (distinct from build-time config) |
 | `hooks/` | Generic hooks with no domain owner |
 | `i18n/` | Locale utilities |
 | `links/utils/` | URL helpers |
 | `lists/` | Lazy/initial list hooks, getItemIndex |
-| `metadata/` | Centralized route title/description map (see note below) |
-| `monitoring/rollbar/` | Client-side error reporting |
 | `router/` | Router utilities + query-param filter helpers |
 | `storage/` | Cookies |
 | `text/` | String utilities |
@@ -238,6 +234,14 @@ The `svg:build-sprite` script reads `src/sprite/icons/` and outputs the generate
 ### 4.10 `src/toolkit`
 
 Design system — Chakra UI wrappers, theme tokens, shared hooks and components. Published as `@blockscout/ui-toolkit` (pnpm workspace entry: `src/toolkit/package`). Internal structure is unchanged from the original `toolkit/` location.
+
+### 4.11 `src/services`
+| Subfolder | Contents |
+| `growthbook/` | Growthbook runtime A/B flags (distinct from build-time config) |
+| `mixpanel/` | Mixpanel analytics |
+| `google-analytics/` | Google analytics |
+| `re-captcha/` | Google Re-Captcha |
+| `rollbar/` | Rollbar (client-side error reporting) |
 
 ---
 

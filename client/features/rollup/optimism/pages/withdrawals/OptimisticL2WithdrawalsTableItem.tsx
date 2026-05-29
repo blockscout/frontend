@@ -9,10 +9,10 @@ import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
 
+import config from 'client/config';
 import dayjs from 'client/shared/date-and-time/dayjs';
 import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
 
-import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 

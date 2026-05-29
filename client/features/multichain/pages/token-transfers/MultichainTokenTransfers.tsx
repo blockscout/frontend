@@ -12,6 +12,7 @@ import useTokenTransfersQuery from 'client/slices/token-transfer/hooks/useTokenT
 import TokenTypeFilter from 'client/slices/token/components/TokenTypeFilter';
 import { getTokenFilterValue } from 'client/slices/token/utils/list-utils';
 
+import multichainConfig from 'client/features/multichain/chains-config';
 import ChainSelect from 'client/features/multichain/components/ChainSelect';
 import { MultichainProvider } from 'client/features/multichain/context';
 
@@ -20,7 +21,6 @@ import useIsMobile from 'client/shared/hooks/useIsMobile';
 import Pagination from 'client/shared/pagination/Pagination';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
-import multichainConfig from 'configs/multichain';
 import { EmptyState } from 'toolkit/chakra/empty-state';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 

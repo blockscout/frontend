@@ -12,11 +12,11 @@ import getBlockTotalReward from 'client/slices/block/utils/get-block-total-rewar
 import { currencyUnits } from 'client/slices/chain/units';
 import getChainValidatorTitle from 'client/slices/chain/verification-type/utils/get-chain-validator-title';
 
+import config from 'client/config';
 import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
 import SimpleValue from 'client/shared/values/entity/SimpleValue';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
-import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { thinsp } from 'toolkit/utils/htmlEntities';
@@ -67,7 +67,7 @@ const LatestBlocksItem = ({ block, isLoading, animation }: Props) => {
         <Skeleton loading={ isLoading }>Txn</Skeleton>
         <Skeleton loading={ isLoading } color="text.secondary"><span>{ block.transactions_count }</span></Skeleton>
 
-        { !config.features.rollup.isEnabled && !config.UI.views.block.hiddenFields?.total_reward && (
+        { !config.features.rollup.isEnabled && !config.slices.block.hiddenFields?.total_reward && (
           <>
             <Skeleton loading={ isLoading }>Reward</Skeleton>
             <SimpleValue
@@ -79,7 +79,7 @@ const LatestBlocksItem = ({ block, isLoading, animation }: Props) => {
           </>
         ) }
 
-        { !config.features.rollup.isEnabled && !config.UI.views.block.hiddenFields?.miner && (
+        { !config.features.rollup.isEnabled && !config.slices.block.hiddenFields?.miner && (
           <>
             <Skeleton loading={ isLoading }>{ capitalize(getChainValidatorTitle()) }</Skeleton>
             <AddressEntity

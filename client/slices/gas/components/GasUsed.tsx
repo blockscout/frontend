@@ -4,10 +4,10 @@ import { chakra } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
+import config from 'client/config';
 import TextSeparator from 'client/shared/texts/TextSeparator';
 import Utilization from 'client/shared/values/utilization/Utilization';
 
-import config from 'configs/app';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 
 import GasUsedToTargetRatio from './GasUsedToTargetRatio';

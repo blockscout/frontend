@@ -10,13 +10,13 @@ import { getTokensTotalInfo } from 'client/slices/token/pages/address/utils';
 
 import AddressMultichainButton from 'client/features/multichain-button/pages/address/AddressMultichainButton';
 
-import * as mixpanel from 'client/shared/analytics/mixpanel';
+import config from 'client/config';
+import * as mixpanel from 'client/services/mixpanel';
 import TextSeparator from 'client/shared/texts/TextSeparator';
 import calculateUsdValue from 'client/shared/values/entity/calculateUsdValue';
 import SimpleValue from 'client/shared/values/entity/SimpleValue';
 import { DEFAULT_ACCURACY_USD } from 'client/shared/values/entity/utils';
 
-import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 
 const multichainFeature = config.features.multichainButton;

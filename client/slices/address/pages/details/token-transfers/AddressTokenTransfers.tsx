@@ -13,6 +13,7 @@ import TokenTransfersCrossChainContent from 'client/features/cross-chain-txs/com
 import { INTERCHAIN_TRANSFER } from 'client/features/cross-chain-txs/stubs/messages';
 import CsvExport from 'client/features/csv-export/components/CsvExport';
 
+import config from 'client/config';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import useIsMounted from 'client/shared/hooks/useIsMounted';
 import Pagination from 'client/shared/pagination/Pagination';
@@ -20,7 +21,6 @@ import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
-import config from 'configs/app';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 
 import AddressTokenTransfersLocal from './AddressTokenTransfersLocal';

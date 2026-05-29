@@ -10,13 +10,12 @@ import { SEARCH_RESULT_ITEM, SEARCH_RESULT_NEXT_PAGE_PARAMS } from 'client/slice
 
 import { getExternalSearchItem } from 'client/features/chain-variants/zeta-chain/utils/external-search';
 
+import config from 'client/config';
 import useDebounce from 'client/shared/hooks/useDebounce';
 import useUpdateValueEffect from 'client/shared/hooks/useUpdateValueEffect';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
-
-import config from 'configs/app';
 
 export default function useSearchQuery(withRedirectCheck?: boolean) {
   const router = useRouter();

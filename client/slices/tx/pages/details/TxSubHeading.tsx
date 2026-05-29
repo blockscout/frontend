@@ -21,9 +21,9 @@ import TxInterpretation from 'client/features/tx-interpretation/common/component
 import { NOVES_TRANSLATE } from 'client/features/tx-interpretation/noves/stubs';
 import { createNovesSummaryObject } from 'client/features/tx-interpretation/noves/utils/createNovesSummaryObject';
 
+import config from 'client/config';
 import { TX_ACTIONS_BLOCK_ID } from 'client/shared/detailed-info/DetailedInfoActionsWrapper';
 
-import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
 
 type Props = {

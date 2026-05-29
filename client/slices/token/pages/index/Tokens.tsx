@@ -21,13 +21,13 @@ import useBridgedTokensQueryCrossChain from 'client/features/cross-chain-txs/hoo
 import BridgedTokensIndex from 'client/features/cross-chain-txs/pages/bridged-tokens/BridgedTokensIndex';
 import { BRIDGED_TOKENS_SORT_COLLECTION } from 'client/features/cross-chain-txs/utils/bridged-tokens-sort';
 
+import config from 'client/config';
 import PopoverFilter from 'client/shared/filters/PopoverFilter';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import Pagination from 'client/shared/pagination/Pagination';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import Sort from 'client/shared/sort/Sort';
 
-import config from 'configs/app';
 import type { SlotProps } from 'toolkit/components/AdaptiveTabs/AdaptiveTabsList';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
@@ -288,7 +288,7 @@ const Tokens = () => {
   return (
     <>
       <PageTitle
-        title={ config.meta.seo.enhancedDataEnabled ? `Tokens on ${ config.chain.name }` : 'Tokens' }
+        title={ config.metadata.seo.enhancedDataEnabled ? `Tokens on ${ config.chain.name }` : 'Tokens' }
         withTextAd
       />
       <RoutedTabs

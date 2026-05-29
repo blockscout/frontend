@@ -9,7 +9,7 @@ import type { EntityProps } from 'client/slices/token/components/entity/TokenEnt
 import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 import TokenEntityExternal from 'client/slices/token/components/entity/TokenEntityExternal';
 
-import config from 'configs/app';
+import config from 'client/config';
 
 interface Props extends EntityProps, JsxStyleProps {
   chain: ExternalChain | undefined;

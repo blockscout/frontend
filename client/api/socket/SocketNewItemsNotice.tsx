@@ -3,7 +3,8 @@
 import { Text, chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import config from 'configs/app';
+import config from 'client/config';
+
 import { Alert } from 'toolkit/chakra/alert';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';

@@ -12,7 +12,7 @@ import Home from 'client/slices/home/pages/index/Home';
 
 import MultichainHome from 'client/features/multichain/pages/home/MultichainHome';
 
-import config from 'configs/app';
+import config from 'client/config';
 
 const Page: NextPageWithLayout = () => {
   return (

@@ -8,7 +8,8 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 import { HOMEPAGE_STATS } from 'client/slices/home/stubs';
 import TokenIconPlaceholder from 'client/slices/token/components/icon/TokenIconPlaceholder';
 
-import config from 'configs/app';
+import config from 'client/config';
+
 import { Image } from 'toolkit/chakra/image';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 

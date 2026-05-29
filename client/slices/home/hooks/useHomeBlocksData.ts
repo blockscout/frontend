@@ -14,7 +14,7 @@ import useSocketMessage from 'client/api/socket/useSocketMessage';
 
 import { BLOCK } from 'client/slices/block/stubs/block';
 
-import config from 'configs/app';
+import config from 'client/config';
 
 /** Max blocks kept in React Query cache for `general:homepage_blocks` (fetch + socket). */
 const HOME_BLOCKS_QUERY_LIMIT = 5;
@@ -25,7 +25,7 @@ const isHomepageBlocksDataEnabled = (() => {
     !rollupFeature.homepage.showLatestBlocks &&
     [ 'arbitrum' ].includes(rollupFeature.type);
 
-  return !isLatestBlocksReplacedByBatches || config.UI.homepage.stats.includes('total_blocks');
+  return !isLatestBlocksReplacedByBatches || config.slices.home.stats.includes('total_blocks');
 })();
 
 export type HomeBlocksQueryResult = UseQueryResult<

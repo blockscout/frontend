@@ -9,9 +9,9 @@ import type { AddressesItem } from 'client/slices/address/types/api';
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import { currencyUnits } from 'client/slices/chain/units';
 
+import config from 'client/config';
 import ListItemMobile from 'client/shared/lists/ListItemMobile';
 
-import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tag } from 'toolkit/chakra/tag';
 import { ZERO } from 'toolkit/utils/consts';

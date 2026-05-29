@@ -5,13 +5,13 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { ItemProps } from './types';
-import { getFeaturePayload } from 'configs/app/features/types';
 
-import * as mixpanel from 'client/shared/analytics/mixpanel';
+import config from 'client/config';
+import { getFeaturePayload } from 'client/config/utils/features';
+import * as mixpanel from 'client/services/mixpanel';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
-import config from 'configs/app';
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { MenuContent, MenuRoot, MenuTrigger } from 'toolkit/chakra/menu';
 import { Skeleton } from 'toolkit/chakra/skeleton';
@@ -46,7 +46,7 @@ const AccountActionsMenu = ({ isLoading, className, showUpdateMetadataItem }: Pr
     },
     {
       render: (props: ItemProps) => <TokenInfoMenuItem { ...props }/>,
-      enabled: config.features.account.isEnabled && isTokenPage && config.features.addressVerification.isEnabled,
+      enabled: config.features.account.isEnabled && isTokenPage && getFeaturePayload(config.features.account)?.addressVerificationEnabled,
     },
     {
       render: (props: ItemProps) => <PrivateTagMenuItem { ...props } entityType={ isTxPage ? 'tx' : 'address' }/>,

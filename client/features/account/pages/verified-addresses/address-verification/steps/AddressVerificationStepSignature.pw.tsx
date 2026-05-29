@@ -4,7 +4,8 @@ import buildUrl from 'client/api/build-url';
 
 import * as mocks from 'client/features/account/mocks/verified-addresses';
 
-import config from 'configs/app';
+import config from 'client/config';
+
 import { test, expect } from 'playwright/lib';
 
 import AddressVerificationStepSignature from './AddressVerificationStepSignature';

@@ -7,10 +7,10 @@ import AddressEntity from 'client/slices/address/components/entity/AddressEntity
 
 import useWeb3Wallet from 'client/features/connect-wallet/hooks/useWallet';
 
+import config from 'client/config';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
-import config from 'configs/app';
 import { Alert } from 'toolkit/chakra/alert';
 import { Button } from 'toolkit/chakra/button';
 import { IconButton } from 'toolkit/chakra/icon-button';

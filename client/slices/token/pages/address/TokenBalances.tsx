@@ -9,11 +9,11 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 import { currencyUnits } from 'client/slices/chain/units';
 import NativeTokenIcon from 'client/slices/token/components/icon/TokenIconNative';
 
+import config from 'client/config';
 import ApiFetchAlert from 'client/shared/alerts/ApiFetchAlert';
 import calculateUsdValue from 'client/shared/values/entity/calculateUsdValue';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
-import config from 'configs/app';
 import { ZERO } from 'toolkit/utils/consts';
 import { thinsp } from 'toolkit/utils/htmlEntities';
 

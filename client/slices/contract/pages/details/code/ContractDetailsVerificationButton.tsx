@@ -6,7 +6,8 @@ import { route } from 'nextjs-routes';
 
 import { useMultichainContext } from 'client/features/multichain/context';
 
-import config from 'configs/app';
+import config from 'client/config';
+
 import { Button } from 'toolkit/chakra/button';
 import type { LinkProps } from 'toolkit/chakra/link';
 import { Link } from 'toolkit/chakra/link';

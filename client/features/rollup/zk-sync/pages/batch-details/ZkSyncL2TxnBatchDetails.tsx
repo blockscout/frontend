@@ -16,6 +16,7 @@ import { currencyUnits } from 'client/slices/chain/units';
 import { layerLabels } from 'client/features/rollup/common/utils/layer';
 import { formatZkSyncL2TxnBatchStatus } from 'client/features/rollup/zk-sync/utils/format-txn-batch-status';
 
+import config from 'client/config';
 import ApiFetchAlert from 'client/shared/alerts/ApiFetchAlert';
 import PrevNext from 'client/shared/buttons/PrevNext';
 import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
@@ -26,7 +27,6 @@ import VerificationSteps from 'client/shared/lifecycle/steps/VerificationSteps';
 import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
 import GasPriceValue from 'client/shared/values/entity/GasPriceValue';
 
-import config from 'configs/app';
 import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';

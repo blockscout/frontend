@@ -4,7 +4,8 @@ import { Flex, Text } from '@chakra-ui/react';
 
 import { useRewardsContext } from 'client/features/rewards/context';
 
-import config from 'configs/app';
+import config from 'client/config';
+
 import { useColorModeValue } from 'toolkit/chakra/color-mode';
 import { Heading } from 'toolkit/chakra/heading';
 import { Image } from 'toolkit/chakra/image';

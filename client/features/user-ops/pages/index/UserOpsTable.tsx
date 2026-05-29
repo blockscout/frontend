@@ -8,9 +8,9 @@ import { AddressHighlightProvider } from 'client/slices/address/contexts/address
 
 import { useMultichainContext } from 'client/features/multichain/context';
 
+import config from 'client/config';
 import TimeFormatToggle from 'client/shared/date-and-time/TimeFormatToggle';
 
-import config from 'configs/app';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 
 import UserOpsTableItem from './UserOpsTableItem';
@@ -43,7 +43,7 @@ const UserOpsTable = ({ items, isLoading, top, showTx, showSender }: Props) => {
             { showSender && <TableColumnHeader w="160px">Sender</TableColumnHeader> }
             { showTx && <TableColumnHeader w="160px">Tx hash</TableColumnHeader> }
             <TableColumnHeader w="40%">Block</TableColumnHeader>
-            { !chainConfig.UI.views.tx.hiddenFields?.tx_fee &&
+            { !chainConfig.slices.tx.hiddenFields?.tx_fee &&
           <TableColumnHeader w="120px" isNumeric>{ `Fee ${ chainConfig.chain.currency.symbol }` }</TableColumnHeader> }
           </TableRow>
         </TableHeaderSticky>

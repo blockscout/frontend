@@ -5,11 +5,10 @@ import React from 'react';
 
 import Transaction from 'client/slices/tx/pages/details/Transaction';
 
+import multichainConfig from 'client/features/multichain/chains-config';
 import { MultichainProvider } from 'client/features/multichain/context';
 
 import getQueryParamString from 'client/shared/router/get-query-param-string';
-
-import multichainConfig from 'configs/multichain';
 
 const MultichainTx = () => {
   const router = useRouter();

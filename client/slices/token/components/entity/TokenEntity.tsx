@@ -12,12 +12,12 @@ import TokenIconPlaceholder from 'client/slices/token/components/icon/TokenIconP
 
 import { useMultichainContext } from 'client/features/multichain/context';
 
+import config from 'client/config';
 import * as EntityBase from 'client/shared/entities/components';
 import { distributeEntityProps, getIconProps } from 'client/shared/entities/utils';
 import getChainTooltipText from 'client/shared/external-chains/get-chain-tooltip-text';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
-import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { TruncatedTextTooltip } from 'toolkit/components/truncation/TruncatedTextTooltip';
@@ -147,7 +147,7 @@ interface ReputationProps extends BoxProps {
 }
 
 const Reputation = ({ value, ...rest }: ReputationProps) => {
-  if (config.UI.views.token.hideScamTokensEnabled && value === 'scam') {
+  if (config.slices.token.hideScamTokensEnabled && value === 'scam') {
     return (
       <Tooltip content="This token has been flagged as a potential scam. You enabled the display of flagged tokens in the explorer — proceed with caution.">
         <SpriteIcon name="scam" boxSize={ 5 } ml={ 2 } { ...rest }/>

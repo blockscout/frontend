@@ -1,8 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import config from 'client/config';
 import type { Unit } from 'client/shared/values/entity/utils';
-
-import config from 'configs/app';
 
 const weiName = config.chain.currency.weiName || 'wei';
 const gweiName = config.chain.currency.gweiName || `G${ weiName }`;

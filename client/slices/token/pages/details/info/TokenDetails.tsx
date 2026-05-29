@@ -21,13 +21,13 @@ import AppActionButton from 'client/features/address-metadata/components/AppActi
 import useAppActionData from 'client/features/address-metadata/hooks/useAppActionData';
 import { useMultichainContext } from 'client/features/multichain/context';
 
+import config from 'client/config';
 import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
 import DetailedInfoSponsoredItem from 'client/shared/detailed-info/DetailedInfoSponsoredItem';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import useIsMounted from 'client/shared/hooks/useIsMounted';
 import AssetValue from 'client/shared/values/entity/AssetValue';
 
-import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 
@@ -225,7 +225,7 @@ const TokenDetails = ({ tokenQuery }: Props) => {
         />
       ) }
 
-      { (type !== 'ERC-20' && config.UI.views.nft.marketplaces.length === 0 && appActionData) && (
+      { (type !== 'ERC-20' && config.slices.token.nft.marketplaces.length === 0 && appActionData) && (
         <>
           <DetailedInfo.ItemLabel
             hint="Link to the dapp"

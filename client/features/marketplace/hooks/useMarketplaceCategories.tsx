@@ -10,7 +10,7 @@ import type { ResourceError } from 'client/api/resources';
 
 import { CATEGORIES } from 'client/features/marketplace/stubs';
 
-import config from 'configs/app';
+import config from 'client/config';
 
 const feature = config.features.marketplace;
 const categoriesUrl = (feature.isEnabled && feature.categoriesUrl) || '';

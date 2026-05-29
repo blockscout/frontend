@@ -3,7 +3,8 @@
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import config from 'configs/app';
+import config from 'client/config';
+
 import { Alert } from 'toolkit/chakra/alert';
 
 interface Props {

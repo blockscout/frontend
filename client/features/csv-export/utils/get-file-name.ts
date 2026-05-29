@@ -2,9 +2,8 @@
 
 import type { CsvExportType } from '../types/client';
 
+import type config from 'client/config';
 import dayjs from 'client/shared/date-and-time/dayjs';
-
-import type config from 'configs/app';
 
 import getPrefixByFilter from './get-prefix-by-filter';
 

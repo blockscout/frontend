@@ -6,9 +6,9 @@ import React from 'react';
 import type { Route } from 'nextjs-routes';
 import type { Props as PageProps } from 'nextjs/getServerSideProps/handlers';
 
-import * as metadata from 'client/shared/metadata';
+import * as metadata from 'client/shell/metadata';
 
-import config from 'configs/app';
+import config from 'client/config';
 
 interface Props<Pathname extends Route['pathname']> {
   pathname: Pathname;

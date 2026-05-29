@@ -7,9 +7,8 @@ import React from 'react';
 import logRequestFromBot from 'nextjs/utils/logRequestFromBot';
 import * as serverTiming from 'nextjs/utils/serverTiming';
 
+import config from 'client/config';
 import * as svgSprite from 'client/sprite/SpriteIcon';
-
-import config from 'configs/app';
 
 const marketplaceFeature = config.features.marketplace;
 
@@ -39,13 +38,14 @@ class MyDocument extends Document {
         <Head>
           { /* FONTS */ }
           { /* Instruct browsers to preconnect to fonts.gstatic.com for speeding up font loading */ }
-          { !(config.UI.fonts.heading?.url && config.UI.fonts.body?.url) && <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous"/> }
+          { !(config.misc.fonts.heading?.url && config.misc.fonts.body?.url) &&
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous"/> }
           <link
-            href={ config.UI.fonts.heading?.url ?? 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap' }
+            href={ config.misc.fonts.heading?.url ?? 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap' }
             rel="stylesheet"
           />
           <link
-            href={ config.UI.fonts.body?.url ?? 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap' }
+            href={ config.misc.fonts.body?.url ?? 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap' }
             rel="stylesheet"
           />
 

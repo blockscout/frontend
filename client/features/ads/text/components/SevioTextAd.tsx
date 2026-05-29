@@ -6,7 +6,8 @@ import React, { useCallback, useEffect, useRef } from 'react';
 
 import { useAppContext } from 'client/shell/app/context';
 
-import config from 'configs/app';
+import config from 'client/config';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
 
 const adTextFeature = config.features.adsText;

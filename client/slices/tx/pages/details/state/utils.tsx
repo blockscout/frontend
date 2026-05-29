@@ -11,7 +11,8 @@ import getChainValidatorTitle from 'client/slices/chain/verification-type/utils/
 import NftEntity from 'client/slices/token/components/entity/NftEntity';
 import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 
-import config from 'configs/app';
+import config from 'client/config';
+
 import { Badge } from 'toolkit/chakra/badge';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';

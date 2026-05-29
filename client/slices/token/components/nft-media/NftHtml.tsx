@@ -3,7 +3,7 @@
 import { Box, chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import config from 'configs/app';
+import config from 'client/config';
 
 import type { MediaElementProps } from './utils';
 

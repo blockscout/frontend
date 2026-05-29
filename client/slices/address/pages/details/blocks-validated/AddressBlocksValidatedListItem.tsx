@@ -11,11 +11,11 @@ import getBlockTotalReward from 'client/slices/block/utils/get-block-total-rewar
 import { currencyUnits } from 'client/slices/chain/units';
 import GasUsed from 'client/slices/gas/components/GasUsed';
 
+import config from 'client/config';
 import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
 import ListItemMobile from 'client/shared/lists/ListItemMobile';
 import SimpleValue from 'client/shared/values/entity/SimpleValue';
 
-import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 
 type Props = Block & {
@@ -60,7 +60,7 @@ const AddressBlocksValidatedListItem = (props: Props) => {
           isLoading={ props.isLoading }
         />
       </Flex>
-      { !config.UI.views.block.hiddenFields?.total_reward && !config.features.rollup.isEnabled && (
+      { !config.slices.block.hiddenFields?.total_reward && !config.features.rollup.isEnabled && (
         <Flex columnGap={ 2 } w="100%">
           <Skeleton loading={ props.isLoading } fontWeight={ 500 } flexShrink={ 0 }>Reward { currencyUnits.ether }</Skeleton>
           <SimpleValue

@@ -19,7 +19,7 @@ export const chainA = {
       rpcUrls: [
         'https://rpc.op-mainnet.com',
       ],
-      additionalTokenTypes: [ ],
+      icon: {},
     },
     apis: {
       general: {
@@ -30,12 +30,11 @@ export const chainA = {
         socketEndpoint: 'ws://localhost:3200',
       },
     },
-    UI: {
-      views: {
-        address: {},
-      },
-      navigation: {
-        icon: {},
+    slices: {
+      address: {},
+      token: {
+        standard: 'ERC',
+        additionalTypes: [ ],
       },
     },
     features: {
@@ -60,7 +59,7 @@ export const chainA = {
       },
     },
     services: {
-      reCaptchaV2: {
+      reCaptcha: {
         siteKey: 'xxx',
       },
     },
@@ -79,10 +78,16 @@ export const chainB = {
     chain: {
       ...chainA.app_config?.chain,
       isTestnet: true,
-      additionalTokenTypes: [ { id: 'ERC-7984', name: 'ERC-7984' } ],
     },
     app: {
       baseUrl: 'https://op-testnet.com',
+    },
+    slices: {
+      ...chainA.app_config?.slices,
+      token: {
+        ...chainA.app_config?.slices?.token,
+        additionalTypes: [ { id: 'ERC-7984', name: 'ERC-7984' } ],
+      },
     },
     apis: {
       general: {

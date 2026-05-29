@@ -4,17 +4,17 @@ import { Flex, Box, useBreakpointValue, chakra } from '@chakra-ui/react';
 import React, { useCallback, useState, useEffect } from 'react';
 import { keccak256, stringToBytes } from 'viem';
 
+import config from 'client/config';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
-import config from 'configs/app';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 
 import NavigationPromoBannerContent from './NavigationPromoBannerContent';
 
 const PROMO_BANNER_CLOSED_HASH_KEY = 'nav-promo-banner-closed-hash';
-const promoBanner = config.UI.navigation.promoBanner;
-const isHorizontal = config.UI.navigation.layout === 'horizontal';
+const promoBanner = config.shell.navigation.promoBanner;
+const isHorizontal = config.shell.navigation.layout === 'horizontal';
 
 type Props = {
   isCollapsed?: boolean;

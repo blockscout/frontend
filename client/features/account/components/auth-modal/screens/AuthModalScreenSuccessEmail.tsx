@@ -6,7 +6,8 @@ import React from 'react';
 import type { Screen } from '../types';
 import type { UserInfo } from 'client/features/account/types/api';
 
-import config from 'configs/app';
+import config from 'client/config';
+
 import { Button } from 'toolkit/chakra/button';
 
 interface Props {

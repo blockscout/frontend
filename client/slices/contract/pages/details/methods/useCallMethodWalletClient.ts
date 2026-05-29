@@ -10,7 +10,7 @@ import useWallet from 'client/features/connect-wallet/hooks/useWallet';
 import { useMultichainContext } from 'client/features/multichain/context';
 import useRewardsActivity from 'client/features/rewards/hooks/useRewardsActivity';
 
-import config from 'configs/app';
+import config from 'client/config';
 
 import { getNativeCoinValue } from './utils';
 

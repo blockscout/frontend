@@ -33,6 +33,7 @@ import BlockCeloEpochTag from 'client/features/chain-variants/celo/pages/block/B
 import useBlockBlobTxsQuery from 'client/features/data-availability/hooks/useBlockBlobTxsQuery';
 import { useMultichainContext } from 'client/features/multichain/context';
 
+import config from 'client/config';
 import ApiDegradationAlert from 'client/shared/api-degradation/ApiDegradationAlert';
 import throwOnAbsentParamError from 'client/shared/errors/throw-on-absent-param-error';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
@@ -40,7 +41,6 @@ import useIsMobile from 'client/shared/hooks/useIsMobile';
 import Pagination from 'client/shared/pagination/Pagination';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
-import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 
@@ -100,7 +100,7 @@ const BlockPageContent = () => {
         </>
       ),
     },
-    chainConfig.UI.views.internalTx.isEnabled ? {
+    chainConfig.slices.internalTx.isEnabled ? {
       id: 'internal_txs',
       title: 'Internal txns',
       component: (
@@ -149,7 +149,7 @@ const BlockPageContent = () => {
     blockQuery,
     blockTxsQuery,
     blockWithdrawalsQuery,
-    chainConfig.UI.views.internalTx.isEnabled,
+    chainConfig.slices.internalTx.isEnabled,
     chainConfig.features.dataAvailability.isEnabled,
     hasPagination,
   ]);
@@ -196,7 +196,7 @@ const BlockPageContent = () => {
 
   const titleSecondRow = (
     <>
-      { !chainConfig.UI.views.block.hiddenFields?.miner && blockQuery.data?.miner && (
+      { !chainConfig.slices.block.hiddenFields?.miner && blockQuery.data?.miner && (
         <Skeleton
           loading={ blockQuery.isPlaceholderData }
           fontFamily="heading"
@@ -214,7 +214,7 @@ const BlockPageContent = () => {
       <AlternativeExplorers
         type="block"
         pathParam={ heightOrHash }
-        ml={{ base: chainConfig.UI.views.block.hiddenFields?.miner ? 0 : 3, lg: 'auto' }}
+        ml={{ base: chainConfig.slices.block.hiddenFields?.miner ? 0 : 3, lg: 'auto' }}
       />
     </>
   );

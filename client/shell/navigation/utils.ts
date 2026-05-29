@@ -2,7 +2,7 @@
 
 import type { NavItem } from './types';
 
-import config from 'configs/app';
+import config from 'client/config';
 
 import { isInternalItem } from './useNavItems';
 
@@ -10,5 +10,5 @@ export function checkRouteHighlight(item: NavItem | Array<NavItem> | Array<Array
   if (Array.isArray(item)) {
     return item.some((subItem) => checkRouteHighlight(subItem));
   }
-  return isInternalItem(item) && (config.UI.navigation.highlightedRoutes.includes(item.nextRoute.pathname));
+  return isInternalItem(item) && (config.shell.navigation.highlightedRoutes.includes(item.nextRoute.pathname));
 }

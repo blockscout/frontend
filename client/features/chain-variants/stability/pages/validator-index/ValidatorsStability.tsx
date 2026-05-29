@@ -17,6 +17,7 @@ import PageTitle from 'client/shell/page/title/PageTitle';
 
 import { VALIDATOR_STABILITY } from 'client/features/chain-variants/stability/stubs/validators';
 
+import config from 'client/config';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import DataList from 'client/shared/lists/DataList';
 import Pagination from 'client/shared/pagination/Pagination';
@@ -26,8 +27,6 @@ import getQueryParamString from 'client/shared/router/get-query-param-string';
 import getSortParamsFromValue from 'client/shared/sort/get-sort-params-from-value';
 import getSortValueFromQuery from 'client/shared/sort/get-sort-value-from-query';
 import Sort from 'client/shared/sort/Sort';
-
-import config from 'configs/app';
 
 import { VALIDATORS_STABILITY_SORT_OPTIONS } from './utils';
 import ValidatorsCounters from './ValidatorsCounters';

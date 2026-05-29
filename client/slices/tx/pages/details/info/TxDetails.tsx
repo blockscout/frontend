@@ -43,6 +43,7 @@ import ZkSyncL2TxnBatchHashesInfo from 'client/features/rollup/zk-sync/pages/bat
 import { formatZkSyncL2TxnBatchStatus } from 'client/features/rollup/zk-sync/utils/format-txn-batch-status';
 import TxDetailsActions from 'client/features/tx-actions/pages/tx/TxDetailsActions';
 
+import config from 'client/config';
 import RawInputData from 'client/shared/data/RawInputData';
 import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
 import DetailedInfoNativeCoinValue from 'client/shared/detailed-info/DetailedInfoNativeCoinValue';
@@ -56,7 +57,6 @@ import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
 import Utilization from 'client/shared/values/utilization/Utilization';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
-import config from 'configs/app';
 import { Badge } from 'toolkit/chakra/badge';
 import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
 import { Link } from 'toolkit/chakra/link';
@@ -185,7 +185,7 @@ const TxDetails = ({ data, isLoading, socketStatus, noTxActions }: Props) => {
       </DetailedInfo.ItemValue>
 
       { rollupFeature.isEnabled && rollupFeature.type === 'optimistic' && data.op_withdrawals && data.op_withdrawals.length > 0 &&
-      !config.UI.views.tx.hiddenFields?.L1_status && (
+      !config.slices.tx.hiddenFields?.L1_status && (
         <>
           <DetailedInfo.ItemLabel
             hint="Detailed status progress of the transaction"
@@ -208,7 +208,7 @@ const TxDetails = ({ data, isLoading, socketStatus, noTxActions }: Props) => {
         </>
       ) }
 
-      { data.arbitrum?.status && !config.UI.views.tx.hiddenFields?.L1_status && (
+      { data.arbitrum?.status && !config.slices.tx.hiddenFields?.L1_status && (
         <>
           <DetailedInfo.ItemLabel
             hint={ `Status of the transaction confirmation path to ${ layerLabels.parent }` }
@@ -240,7 +240,7 @@ const TxDetails = ({ data, isLoading, socketStatus, noTxActions }: Props) => {
         </>
       ) }
 
-      { data.zksync && !config.UI.views.tx.hiddenFields?.L1_status && (
+      { data.zksync && !config.slices.tx.hiddenFields?.L1_status && (
         <>
           <DetailedInfo.ItemLabel
             hint="Status is the short interpretation of the batch lifecycle"
@@ -289,7 +289,7 @@ const TxDetails = ({ data, isLoading, socketStatus, noTxActions }: Props) => {
         ) }
       </DetailedInfo.ItemValue>
 
-      { data.zksync && !config.UI.views.tx.hiddenFields?.batch && (
+      { data.zksync && !config.slices.tx.hiddenFields?.batch && (
         <>
           <DetailedInfo.ItemLabel
             hint="Batch number"
@@ -308,7 +308,7 @@ const TxDetails = ({ data, isLoading, socketStatus, noTxActions }: Props) => {
         </>
       ) }
 
-      { data.arbitrum && !config.UI.views.tx.hiddenFields?.batch && (
+      { data.arbitrum && !config.slices.tx.hiddenFields?.batch && (
         <>
           <DetailedInfo.ItemLabel
             hint="Index of the batch containing this transaction"
@@ -508,7 +508,7 @@ const TxDetails = ({ data, isLoading, socketStatus, noTxActions }: Props) => {
         </>
       ) }
 
-      { !config.UI.views.tx.hiddenFields?.value && (
+      { !config.slices.tx.hiddenFields?.value && (
         <>
           <DetailedInfo.ItemLabel
             hint="Value sent in the native token (and USD) if applicable"
@@ -581,7 +581,7 @@ const TxDetails = ({ data, isLoading, socketStatus, noTxActions }: Props) => {
 
       <TxDetailsFeePerGas txFee={ data.fee.value } gasUsed={ data.gas_used } isLoading={ isLoading }/>
 
-      { !config.UI.views.tx.additionalFields?.set_max_gas_limit && <TxDetailsGasUsage isLoading={ isLoading } data={ data }/> }
+      { !config.slices.tx.additionalFields?.set_max_gas_limit && <TxDetailsGasUsage isLoading={ isLoading } data={ data }/> }
 
       { rollupFeature.isEnabled && rollupFeature.type === 'arbitrum' && data.arbitrum && data.gas_used && (
         <>
@@ -633,7 +633,7 @@ const TxDetails = ({ data, isLoading, socketStatus, noTxActions }: Props) => {
         </>
       ) }
 
-      { !config.UI.views.tx.hiddenFields?.gas_fees &&
+      { !config.slices.tx.hiddenFields?.gas_fees &&
             (data.base_fee_per_gas || data.max_fee_per_gas || data.max_priority_fee_per_gas) && (
         <>
           <DetailedInfo.ItemLabel
@@ -773,7 +773,7 @@ const TxDetails = ({ data, isLoading, socketStatus, noTxActions }: Props) => {
                 </DetailedInfo.ItemLabel>
                 <DetailedInfoNativeCoinValue
                   amount={ BigNumber(data.blob_gas_used).multipliedBy(data.blob_gas_price).toString() }
-                  noSymbol={ config.UI.views.tx.hiddenFields?.fee_currency }
+                  noSymbol={ config.slices.tx.hiddenFields?.fee_currency }
                   exchangeRate={ data.exchange_rate }
                   historicalExchangeRate={ data.historic_exchange_rate }
                   hasExchangeRateToggle

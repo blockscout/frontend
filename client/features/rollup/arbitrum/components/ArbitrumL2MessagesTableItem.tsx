@@ -13,9 +13,9 @@ import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import BlockEntityL1 from 'client/features/rollup/common/components/BlockEntityL1';
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
 
+import config from 'client/config';
 import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
 
-import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';

@@ -18,6 +18,7 @@ import useAddress3rdPartyWidgets from 'client/features/address-3rd-party-widgets
 import AddressCeloAccount from 'client/features/chain-variants/celo/pages/address/AddressCeloAccount';
 import FilecoinActorTag from 'client/features/chain-variants/filecoin/pages/address/FilecoinActorTag';
 
+import config from 'client/config';
 import ApiFetchAlert from 'client/shared/alerts/ApiFetchAlert';
 import ApiDegradationAlert from 'client/shared/api-degradation/ApiDegradationAlert';
 import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
@@ -26,8 +27,6 @@ import isCustomAppError from 'client/shared/errors/is-custom-app-error';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
-
-import config from 'configs/app';
 
 import AddressAlternativeFormat from './AddressAlternativeFormat';
 import AddressBalance from './AddressBalance';

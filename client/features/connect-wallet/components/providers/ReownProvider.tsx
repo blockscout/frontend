@@ -7,7 +7,8 @@ import React from 'react';
 import { chains } from 'client/features/connect-wallet/utils/chains';
 import wagmiConfig from 'client/features/connect-wallet/utils/wagmi-config';
 
-import config from 'configs/app';
+import config from 'client/config';
+
 import { useColorMode } from 'toolkit/chakra/color-mode';
 import colors from 'toolkit/theme/foundations/colors';
 import { BODY_TYPEFACE } from 'toolkit/theme/foundations/typography';
@@ -30,7 +31,7 @@ const initReown = () => {
         name: `${ config.chain.name } explorer`,
         description: `${ config.chain.name } explorer`,
         url: config.app.baseUrl,
-        icons: [ config.UI.navigation.icon.default ].filter(Boolean),
+        icons: [ config.chain.icon['default'] ].filter(Boolean),
       },
       projectId: feature.reown.projectId,
       features: {

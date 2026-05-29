@@ -13,10 +13,10 @@ import BlocksTableItem from 'client/slices/block/pages/index/BlocksTableItem';
 import { currencyUnits } from 'client/slices/chain/units';
 import getChainValidatorTitle from 'client/slices/chain/verification-type/utils/get-chain-validator-title';
 
+import config from 'client/config';
 import TimeFormatToggle from 'client/shared/date-and-time/TimeFormatToggle';
 import useInitialList from 'client/shared/lists/useInitialList';
 
-import config from 'configs/app';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 
 interface Props {
@@ -45,10 +45,10 @@ const BlocksTable = ({ data, isLoading, top, page, showSocketInfo, socketInfoNum
   });
 
   const widthBase =
-    (!config.UI.views.block.hiddenFields?.miner ? VALIDATOR_COL_WEIGHT : 0) +
+    (!config.slices.block.hiddenFields?.miner ? VALIDATOR_COL_WEIGHT : 0) +
     GAS_COL_WEIGHT +
-    (!isRollup && !config.UI.views.block.hiddenFields?.total_reward ? REWARD_COL_WEIGHT : 0) +
-    (!isRollup && !config.UI.views.block.hiddenFields?.burnt_fees ? FEES_COL_WEIGHT : 0);
+    (!isRollup && !config.slices.block.hiddenFields?.total_reward ? REWARD_COL_WEIGHT : 0) +
+    (!isRollup && !config.slices.block.hiddenFields?.burnt_fees ? FEES_COL_WEIGHT : 0);
 
   return (
     <AddressHighlightProvider>
@@ -61,18 +61,18 @@ const BlocksTable = ({ data, isLoading, top, page, showSocketInfo, socketInfoNum
               <TimeFormatToggle/>
             </TableColumnHeader>
             <TableColumnHeader width="120px">Size, bytes</TableColumnHeader>
-            { !config.UI.views.block.hiddenFields?.miner && (
+            { !config.slices.block.hiddenFields?.miner && (
               <TableColumnHeader width={ `${ VALIDATOR_COL_WEIGHT / widthBase * 100 }%` } minW="160px">
                 { capitalize(getChainValidatorTitle()) }
               </TableColumnHeader>
             ) }
             <TableColumnHeader width="64px" isNumeric>Txn</TableColumnHeader>
             <TableColumnHeader width={ `${ GAS_COL_WEIGHT / widthBase * 100 }%` }>Gas used</TableColumnHeader>
-            { !isRollup && !config.UI.views.block.hiddenFields?.total_reward &&
+            { !isRollup && !config.slices.block.hiddenFields?.total_reward &&
               <TableColumnHeader width={ `${ REWARD_COL_WEIGHT / widthBase * 100 }%` }>Reward { currencyUnits.ether }</TableColumnHeader> }
-            { !isRollup && !config.UI.views.block.hiddenFields?.burnt_fees &&
+            { !isRollup && !config.slices.block.hiddenFields?.burnt_fees &&
               <TableColumnHeader width={ `${ FEES_COL_WEIGHT / widthBase * 100 }%` }>Burnt fees { currencyUnits.ether }</TableColumnHeader> }
-            { !isRollup && !config.UI.views.block.hiddenFields?.base_fee &&
+            { !isRollup && !config.slices.block.hiddenFields?.base_fee &&
               <TableColumnHeader width="150px" isNumeric>Base fee</TableColumnHeader> }
           </TableRow>
         </TableHeaderSticky>

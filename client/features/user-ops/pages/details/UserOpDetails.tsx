@@ -18,6 +18,7 @@ import UserOpEntity from 'client/features/user-ops/components/entity/UserOpEntit
 import UserOpSponsorType from 'client/features/user-ops/components/UserOpSponsorType';
 import UserOpStatus from 'client/features/user-ops/components/UserOpStatus';
 
+import config from 'client/config';
 import ApiFetchAlert from 'client/shared/alerts/ApiFetchAlert';
 import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
 import DetailedInfoNativeCoinValue from 'client/shared/detailed-info/DetailedInfoNativeCoinValue';
@@ -27,7 +28,6 @@ import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-loa
 import GasPriceValue from 'client/shared/values/entity/GasPriceValue';
 import Utilization from 'client/shared/values/utilization/Utilization';
 
-import config from 'configs/app';
 import { CollapsibleDetails } from 'toolkit/chakra/collapsible';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 
@@ -137,7 +137,7 @@ const UserOpDetails = ({ query }: Props) => {
         </>
 
       ) }
-      { !config.UI.views.tx.hiddenFields?.tx_fee && (
+      { !config.slices.tx.hiddenFields?.tx_fee && (
         <>
           <DetailedInfo.ItemLabel
             hint="Total User operation fee"
@@ -245,7 +245,7 @@ const UserOpDetails = ({ query }: Props) => {
           { BigNumber(data.pre_verification_gas).toFormat() }
         </DetailedInfo.ItemValue>
 
-        { !config.UI.views.tx.hiddenFields?.gas_fees && (
+        { !config.slices.tx.hiddenFields?.gas_fees && (
           <>
             <DetailedInfo.ItemLabel
               hint="Maximum fee per gas "

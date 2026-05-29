@@ -3,7 +3,7 @@
 import type { ApiName, ApiResource } from './types';
 import type { ExternalChainExtended } from 'client/shared/external-chains/types';
 
-import config from 'configs/app';
+import config from 'client/config';
 
 import type { ResourceName } from './resources';
 import { RESOURCES } from './resources';

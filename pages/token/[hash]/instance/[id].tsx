@@ -12,9 +12,8 @@ import fetchApi from 'nextjs/utils/fetchApi';
 
 import TokenInstance from 'client/slices/token/pages/instance/TokenInstance';
 
+import config from 'client/config';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
-
-import config from 'configs/app';
 
 const pathname: Route['pathname'] = '/token/[hash]/instance/[id]';
 
@@ -31,7 +30,7 @@ export default Page;
 export const getServerSideProps: GetServerSideProps<Props<typeof pathname>> = async(ctx) => {
   const baseResponse = await gSSP.token<typeof pathname>(ctx);
 
-  if (config.meta.og.enhancedDataEnabled && 'props' in baseResponse) {
+  if (config.metadata.og.enhancedDataEnabled && 'props' in baseResponse) {
     const botInfo = detectBotRequest(ctx.req);
 
     if (botInfo?.type === 'social_preview') {

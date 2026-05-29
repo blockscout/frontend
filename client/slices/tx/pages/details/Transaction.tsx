@@ -23,12 +23,12 @@ import TxAuthorizations from 'client/features/tx-authorization/pages/tx/TxAuthor
 import TxAssetFlows from 'client/features/tx-interpretation/noves/pages/tx-asset-flows/TxAssetFlows';
 import TxUserOps from 'client/features/user-ops/pages/tx/TxUserOps';
 
+import config from 'client/config';
 import isCustomAppError from 'client/shared/errors/is-custom-app-error';
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import useEtherscanRedirects from 'client/shared/router/useEtherscanRedirects';
 
-import config from 'configs/app';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 
 import TxDetailsApi from './info/TxDetailsApi';
@@ -80,7 +80,7 @@ const TransactionPageContent = () => {
       config.features.userOps.isEnabled ?
         { id: 'user_ops', title: 'User operations', component: <TxUserOps txQuery={ txQuery }/> } :
         undefined,
-      config.UI.views.internalTx.isEnabled ? { id: 'internal', title: 'Internal txns', component: <TxInternals txQuery={ txQuery }/> } : undefined,
+      config.slices.internalTx.isEnabled ? { id: 'internal', title: 'Internal txns', component: <TxInternals txQuery={ txQuery }/> } : undefined,
       config.features.dataAvailability.isEnabled && txQuery.data?.blob_versioned_hashes?.length ?
         { id: 'blobs', title: 'Blobs', component: <TxBlobs txQuery={ txQuery }/> } :
         undefined,

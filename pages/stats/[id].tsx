@@ -13,10 +13,9 @@ import fetchApi from 'nextjs/utils/fetchApi';
 
 import { MultichainProvider } from 'client/features/multichain/context';
 
+import config from 'client/config';
 import dayjs from 'client/shared/date-and-time/dayjs';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
-
-import config from 'configs/app';
 
 const ChainStatsDetails = dynamic(() => import('client/features/chain-stats/pages/details/ChainStatsDetails'), { ssr: false });
 
@@ -43,8 +42,8 @@ export const getServerSideProps: GetServerSideProps<Props<typeof pathname>> = as
 
   if ('props' in baseResponse) {
     if (
-      config.meta.seo.enhancedDataEnabled ||
-      (config.meta.og.enhancedDataEnabled && detectBotRequest(ctx.req)?.type === 'social_preview')
+      config.metadata.seo.enhancedDataEnabled ||
+      (config.metadata.og.enhancedDataEnabled && detectBotRequest(ctx.req)?.type === 'social_preview')
     ) {
       const chartData = await fetchApi({
         resource: 'stats:line',

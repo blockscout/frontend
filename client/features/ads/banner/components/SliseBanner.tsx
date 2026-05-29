@@ -6,7 +6,7 @@ import React from 'react';
 
 import type { BannerProps } from '../types/client';
 
-import config from 'configs/app';
+import config from 'client/config';
 
 import {
   DESKTOP_BANNER_HEIGHT,

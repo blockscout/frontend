@@ -6,11 +6,11 @@ import React from 'react';
 
 import useApiFetch from 'client/api/hooks/useApiFetch';
 
-import type { EventTypes, EventPayload } from 'client/shared/analytics/mixpanel';
-import * as mixpanel from 'client/shared/analytics/mixpanel';
+import config from 'client/config';
+import type { EventTypes, EventPayload } from 'client/services/mixpanel';
+import * as mixpanel from 'client/services/mixpanel';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
-import config from 'configs/app';
 import { Rating } from 'toolkit/chakra/rating';
 import { toaster } from 'toolkit/chakra/toaster';
 

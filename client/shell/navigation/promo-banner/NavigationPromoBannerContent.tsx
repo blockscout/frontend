@@ -2,12 +2,13 @@
 
 import { HStack, Text, Box } from '@chakra-ui/react';
 
-import config from 'configs/app';
+import config from 'client/config';
+
 import { Image } from 'toolkit/chakra/image';
 
 import useNavLinkStyleProps from '../useNavLinkStyleProps';
 
-const promoBanner = config.UI.navigation.promoBanner;
+const promoBanner = config.shell.navigation.promoBanner;
 
 type Props = {
   isCollapsed?: boolean;

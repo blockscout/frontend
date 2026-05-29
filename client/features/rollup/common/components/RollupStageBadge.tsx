@@ -2,7 +2,8 @@
 
 import React from 'react';
 
-import config from 'configs/app';
+import config from 'client/config';
+
 import type { ImageProps } from 'toolkit/chakra/image';
 import { Image } from 'toolkit/chakra/image';
 import { Link } from 'toolkit/chakra/link';

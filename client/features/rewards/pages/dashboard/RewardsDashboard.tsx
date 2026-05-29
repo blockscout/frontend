@@ -10,9 +10,9 @@ import AdBanner from 'client/features/ads/banner/components/AdBanner';
 import { useRewardsContext } from 'client/features/rewards/context';
 import useStreakBadges from 'client/features/rewards/hooks/useStreakBadges';
 
+import config from 'client/config';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
-import config from 'configs/app';
 import { Alert } from 'toolkit/chakra/alert';
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';

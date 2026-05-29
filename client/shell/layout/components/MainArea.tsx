@@ -3,7 +3,7 @@
 import { Flex, chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import config from 'configs/app';
+import config from 'client/config';
 
 import { CONTENT_MAX_WIDTH } from '../utils';
 
@@ -13,7 +13,7 @@ interface Props {
 }
 
 const TOP_BAR_HEIGHT = 36;
-const HORIZONTAL_NAV_BAR_HEIGHT = config.UI.navigation.layout === 'horizontal' ? 49 : 0;
+const HORIZONTAL_NAV_BAR_HEIGHT = config.shell.navigation.layout === 'horizontal' ? 49 : 0;
 
 const MainArea = ({ children, className }: Props) => {
   return (

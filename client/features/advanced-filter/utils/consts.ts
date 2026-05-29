@@ -4,7 +4,7 @@ import type { AdvancedFilterParams } from '../types/api';
 import type { TxTableColumn } from '../types/client';
 import type { TokenInfo } from 'client/slices/token/types/api';
 
-import config from 'configs/app';
+import config from 'client/config';
 
 export const TABLE_COLUMNS: Array<TxTableColumn> = [
   {

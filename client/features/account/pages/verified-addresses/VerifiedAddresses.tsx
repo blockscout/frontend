@@ -21,11 +21,11 @@ import VerifiedAddressesTable from 'client/features/account/pages/verified-addre
 import TokenInfoForm from 'client/features/account/pages/verified-addresses/token-info/TokenInfoForm';
 import { TOKEN_INFO_APPLICATION, VERIFIED_ADDRESS } from 'client/features/account/stubs';
 
-import * as mixpanel from 'client/shared/analytics/mixpanel';
+import config from 'client/config';
+import * as mixpanel from 'client/services/mixpanel';
 import DataList from 'client/shared/lists/DataList';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
-import config from 'configs/app';
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';
 import { BackToButton } from 'toolkit/components/buttons/BackToButton';

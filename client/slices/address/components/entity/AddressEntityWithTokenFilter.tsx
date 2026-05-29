@@ -5,7 +5,7 @@ import React from 'react';
 
 import { route } from 'nextjs-routes';
 
-import config from 'configs/app';
+import config from 'client/config';
 
 import * as AddressEntity from './AddressEntity';
 

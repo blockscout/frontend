@@ -15,6 +15,7 @@ import PageTitle from 'client/shell/page/title/PageTitle';
 
 import { VALIDATOR_BLACKFORT } from 'client/features/chain-variants/blackfort/stubs/validators';
 
+import config from 'client/config';
 import DataList from 'client/shared/lists/DataList';
 import Pagination from 'client/shared/pagination/Pagination';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
@@ -22,8 +23,6 @@ import { generateListStub } from 'client/shared/pagination/utils';
 import getSortParamsFromValue from 'client/shared/sort/get-sort-params-from-value';
 import getSortValueFromQuery from 'client/shared/sort/get-sort-value-from-query';
 import Sort from 'client/shared/sort/Sort';
-
-import config from 'configs/app';
 
 import { VALIDATORS_BLACKFORT_SORT_OPTIONS } from './utils';
 import ValidatorsCounters from './ValidatorsCounters';

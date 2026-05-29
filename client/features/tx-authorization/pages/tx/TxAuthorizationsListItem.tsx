@@ -9,9 +9,9 @@ import AddressEntity from 'client/slices/address/components/entity/AddressEntity
 
 import TxAuthorizationStatus from 'client/features/tx-authorization/components/TxAuthorizationStatus';
 
+import config from 'client/config';
 import ListItemMobile from 'client/shared/lists/ListItemMobile';
 
-import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 
 interface Props extends TxAuthorization {

@@ -5,7 +5,8 @@ import React from 'react';
 
 import type { ExternalSearchItem as ExternalSearchItemType } from 'client/features/chain-variants/zeta-chain/utils/external-search';
 
-import config from 'configs/app';
+import config from 'client/config';
+
 import { Link } from 'toolkit/chakra/link';
 
 const zetaChainFeature = config.features.zetachain;

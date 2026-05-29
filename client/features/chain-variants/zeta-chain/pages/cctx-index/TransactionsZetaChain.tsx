@@ -18,13 +18,13 @@ import useIsAuth from 'client/features/account/hooks/useIsAuth';
 import TxsWatchlist from 'client/features/account/pages/tx-index-watchlist/TxsWatchlist';
 import AdvancedFilterLink from 'client/features/advanced-filter/components/AdvancedFilterLink';
 
+import config from 'client/config';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import Pagination from 'client/shared/pagination/Pagination';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
-import config from 'configs/app';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 
 import ZetaChainCCTXsTab from './ZetaChainCCTXsTab';
@@ -146,7 +146,7 @@ const TransactionsZetaChain = () => {
   return (
     <>
       <PageTitle
-        title={ config.meta.seo.enhancedDataEnabled ? `${ config.chain.name } transactions` : 'Transactions' }
+        title={ config.metadata.seo.enhancedDataEnabled ? `${ config.chain.name } transactions` : 'Transactions' }
         withTextAd
       />
       <RoutedTabs tabs={ tabs } defaultTabId="zetachain"/>

@@ -12,10 +12,11 @@ import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 import NativeTokenTag from 'client/slices/token/components/NativeTokenTag';
 import type { TokenEnhancedData } from 'client/slices/token/pages/address/utils';
 
+import multichainConfig from 'client/features/multichain/chains-config';
+
+import config from 'client/config';
 import calculateUsdValue from 'client/shared/values/entity/calculateUsdValue';
 
-import config from 'configs/app';
-import multichainConfig from 'configs/multichain';
 import { Link } from 'toolkit/chakra/link';
 import { TruncatedText } from 'toolkit/components/truncation/TruncatedText';
 
@@ -25,8 +26,8 @@ interface Props {
 
 const TokenSelectItem = ({ data }: Props) => {
 
-  const isNativeToken = config.UI.views.address.nativeTokenAddress &&
-    data.token.address_hash.toLowerCase() === config.UI.views.address.nativeTokenAddress.toLowerCase();
+  const isNativeToken = config.slices.address.nativeTokenAddress &&
+    data.token.address_hash.toLowerCase() === config.slices.address.nativeTokenAddress.toLowerCase();
 
   const chain = React.useMemo(() => {
     if (!data.chain_values) {

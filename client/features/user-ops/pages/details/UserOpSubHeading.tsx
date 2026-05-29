@@ -1,10 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Flex } from '@chakra-ui/react';
-// import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
-
-// import type { UserOp } from 'client/features/user-ops/types/api';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
@@ -13,15 +10,13 @@ import { TX_INTERPRETATION } from 'client/features/tx-interpretation/blockscout/
 import TxInterpretation from 'client/features/tx-interpretation/common/components/TxInterpretation';
 import UserOpEntity from 'client/features/user-ops/components/entity/UserOpEntity';
 
+import config from 'client/config';
 import { TX_ACTIONS_BLOCK_ID } from 'client/shared/detailed-info/DetailedInfoActionsWrapper';
 
-import config from 'configs/app';
-// import type { ResourceError } from 'client/api/resources';
 import { Link } from 'toolkit/chakra/link';
 
 type Props = {
   hash: string;
-  // userOpQuery: UseQueryResult<UserOp, ResourceError<unknown>>;
 };
 
 const UserOpSubHeading = ({ hash }: Props) => {

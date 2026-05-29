@@ -17,10 +17,10 @@ import useGetCsrfToken from 'client/features/account/hooks/useGetCsrfToken';
 import useLogout from 'client/features/account/hooks/useLogout';
 import { chains } from 'client/features/connect-wallet/utils/chains';
 
-import * as mixpanel from 'client/shared/analytics/mixpanel';
+import config from 'client/config';
+import * as mixpanel from 'client/services/mixpanel';
 import getErrorMessage from 'client/shared/errors/get-error-message';
 
-import config from 'configs/app';
 import { toaster } from 'toolkit/chakra/toaster';
 import { castToString } from 'toolkit/utils/guards';
 

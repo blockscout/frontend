@@ -7,6 +7,7 @@ import type { CrossChainBridgedTokensSorting, CrossChainBridgedTokensSortingFiel
 
 import { INTERCHAIN_BRIDGED_TOKEN_ITEM } from 'client/features/cross-chain-txs/stubs/messages';
 
+import config from 'client/config';
 import useDebounce from 'client/shared/hooks/useDebounce';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
@@ -14,7 +15,6 @@ import getQueryParamString from 'client/shared/router/get-query-param-string';
 import getSortParamsFromValue from 'client/shared/sort/get-sort-params-from-value';
 import getSortValueFromQuery from 'client/shared/sort/get-sort-value-from-query';
 
-import config from 'configs/app';
 import type { OnValueChangeHandler } from 'toolkit/chakra/select';
 
 import { BRIDGED_TOKENS_SORT_OPTIONS } from '../utils/bridged-tokens-sort';

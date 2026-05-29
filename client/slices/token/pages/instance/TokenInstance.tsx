@@ -9,6 +9,8 @@ import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import * as metadata from 'client/shell/metadata';
+
 import TokenTransfer from 'client/slices/token-transfer/pages/token/TokenTransfer';
 import { getTokenInstanceTransfersStub } from 'client/slices/token-transfer/stubs';
 import TokenHolders from 'client/slices/token/pages/details/holders/TokenHolders';
@@ -27,7 +29,6 @@ import TextAd from 'client/features/ads/text/components/TextAd';
 
 import throwOnResourceLoadError from 'client/shared/errors/throw-on-resource-load-error';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
-import * as metadata from 'client/shared/metadata';
 import Pagination from 'client/shared/pagination/Pagination';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import getQueryParamString from 'client/shared/router/get-query-param-string';

@@ -13,10 +13,10 @@ import { unknownAddress } from 'client/slices/address/utils/consts';
 
 import useZetaChainConfig from 'client/features/chain-variants/zeta-chain/hooks/useZetaChainConfig';
 
+import config from 'client/config';
 import getChainTooltipText from 'client/shared/external-chains/get-chain-tooltip-text';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
-import config from 'configs/app';
 import { useColorModeValue } from 'toolkit/chakra/color-mode';
 
 interface Props extends Omit<AddressEntityBase.EntityProps, 'address'> {
@@ -44,7 +44,7 @@ const AddressEntityZetaChain = ({ chainId, address, ...props }: Props) => {
     }, { chain: isCurrentChain ? undefined : chain as ExternalChain, external: Boolean(chain) });
   })();
 
-  const zetaChainIcon = useColorModeValue(config.UI.navigation.icon.default, config.UI.navigation.icon.dark || config.UI.navigation.icon.default);
+  const zetaChainIcon = useColorModeValue(config.chain.icon['default'], config.chain.icon.dark || config.chain.icon['default']);
   const chainLogo = isCurrentChain ? zetaChainIcon : chain?.logo;
   const chainName = isCurrentChain ? config.chain.name : chain?.name;
   const iconStub = (

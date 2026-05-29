@@ -8,10 +8,11 @@ import React from 'react';
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 import type { ClusterChainConfig } from 'client/features/multichain/types/client';
 
+import multichainConfig from 'client/features/multichain/chains-config';
+
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
-import multichainConfig from 'configs/multichain';
 import { CollapsibleList } from 'toolkit/chakra/collapsible';
 
 import MultichainAddressPortfolioCard from './MultichainAddressPortfolioCard';

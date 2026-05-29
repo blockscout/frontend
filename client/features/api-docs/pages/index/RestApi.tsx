@@ -6,9 +6,9 @@ import { route } from 'nextjs-routes';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
+import config from 'client/config';
 import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
 
-import config from 'configs/app';
 import { AccordionItem, AccordionItemContent, AccordionItemTrigger, AccordionRoot, useAccordion } from 'toolkit/chakra/accordion';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 

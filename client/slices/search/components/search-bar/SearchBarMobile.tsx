@@ -11,7 +11,7 @@ import { route } from 'nextjs-routes';
 import useQuickSearchQuery from 'client/slices/search/hooks/useQuickSearchQuery';
 import { getRecentSearchKeywords, saveToRecentKeywords } from 'client/slices/search/utils/recent-search-keywords';
 
-import * as mixpanel from 'client/shared/analytics/mixpanel';
+import * as mixpanel from 'client/services/mixpanel';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { Button } from 'toolkit/chakra/button';

@@ -11,11 +11,11 @@ import useRewardsActivity from 'client/features/rewards/hooks/useRewardsActivity
 import useProvider from 'client/features/web3-wallet/hooks/useProvider';
 import useSwitchOrAddChain from 'client/features/web3-wallet/hooks/useSwitchOrAddChain';
 
-import * as mixpanel from 'client/shared/analytics/mixpanel';
+import config from 'client/config';
+import * as mixpanel from 'client/services/mixpanel';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
-import config from 'configs/app';
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { toaster } from 'toolkit/chakra/toaster';

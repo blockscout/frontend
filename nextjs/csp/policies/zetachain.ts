@@ -2,7 +2,7 @@
 
 import type CspDev from 'csp-dev';
 
-import config from 'configs/app';
+import config from 'client/config';
 
 const zetachainFeature = config.features.zetachain;
 

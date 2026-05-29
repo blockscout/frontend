@@ -6,7 +6,8 @@ import { useFormContext } from 'react-hook-form';
 
 import type { FormFields } from '../types';
 
-import config from 'configs/app';
+import config from 'client/config';
+
 import { Link } from 'toolkit/chakra/link';
 
 import ContractVerificationFormCodeSnippet from '../ContractVerificationFormCodeSnippet';

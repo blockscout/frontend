@@ -13,9 +13,8 @@ import NativeTokenIcon from 'client/slices/token/components/icon/TokenIconNative
 
 import { HOMEPAGE_STATS_MICROSERVICE } from 'client/features/chain-stats/stubs/home';
 
+import config from 'client/config';
 import SpriteIcon from 'client/sprite/SpriteIcon';
-
-import config from 'configs/app';
 
 import ChainIndicatorsChart from './ChainIndicatorsChart';
 import ChainIndicatorsContainer from './ChainIndicatorsContainer';

@@ -10,13 +10,13 @@ import AddressEntity from 'client/slices/address/components/entity/AddressEntity
 import { currencyUnits } from 'client/slices/chain/units';
 import * as TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 
+import config from 'client/config';
 import calculateUsdValue from 'client/shared/values/entity/calculateUsdValue';
 import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
 import SimpleValue from 'client/shared/values/entity/SimpleValue';
 import { DEFAULT_ACCURACY_USD } from 'client/shared/values/entity/utils';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
-import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { nbsp } from 'toolkit/utils/htmlEntities';
 

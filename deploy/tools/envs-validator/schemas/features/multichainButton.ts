@@ -1,4 +1,4 @@
-import { replaceQuotes } from 'configs/app/utils';
+import { replaceQuotes } from 'client/config/utils/envs';
 import { MultichainProviderConfig } from 'client/features/multichain-button/types/client';
 import * as yup from 'yup';
 

@@ -12,7 +12,8 @@ import { TX } from 'client/slices/tx/stubs/tx';
 
 import { publicClient } from 'client/features/connect-wallet/utils/public-client';
 
-import config from 'configs/app';
+import config from 'client/config';
+
 import { Link } from 'toolkit/chakra/link';
 
 import LatestTxsDegradedNewItems from './LatestTxsDegradedNewItems';

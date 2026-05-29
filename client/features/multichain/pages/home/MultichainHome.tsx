@@ -9,9 +9,9 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 
 import HeroBanner from 'client/slices/home/pages/index/HeroBanner';
 
+import multichainConfig from 'client/features/multichain/chains-config';
 import { MultichainProvider } from 'client/features/multichain/context';
 
-import multichainConfig from 'configs/multichain';
 import { Link } from 'toolkit/chakra/link';
 
 import ChainWidget from './ChainWidget';

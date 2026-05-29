@@ -5,9 +5,9 @@ import React from 'react';
 
 import useIsAuth from 'client/features/account/hooks/useIsAuth';
 
-import type { EventTypes, EventPayload } from 'client/shared/analytics/mixpanel';
+import config from 'client/config';
+import type { EventTypes, EventPayload } from 'client/services/mixpanel';
 
-import config from 'configs/app';
 import type { PopoverContentProps } from 'toolkit/chakra/popover';
 import { PopoverBody, PopoverContent, PopoverRoot } from 'toolkit/chakra/popover';
 import { Rating as RatingComponent } from 'toolkit/chakra/rating';

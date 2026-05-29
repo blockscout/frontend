@@ -11,12 +11,12 @@ import type { OptimisticL2WithdrawalClaimInfo } from 'client/features/rollup/opt
 
 import useWeb3Wallet from 'client/features/connect-wallet/hooks/useWallet';
 
+import config from 'client/config';
 import getErrorMessage from 'client/shared/errors/get-error-message';
 import getErrorObjPayload from 'client/shared/errors/get-error-obj-payload';
 import getErrorProp from 'client/shared/errors/get-error-prop';
 import capitalizeFirstLetter from 'client/shared/texts/capitalize-first-letter';
 
-import config from 'configs/app';
 import { Button } from 'toolkit/chakra/button';
 import { DialogBody, DialogContent, DialogHeader, DialogRoot } from 'toolkit/chakra/dialog';
 import { toaster } from 'toolkit/chakra/toaster';

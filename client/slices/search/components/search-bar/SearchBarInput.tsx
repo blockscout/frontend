@@ -5,10 +5,10 @@ import { chakra, Center } from '@chakra-ui/react';
 import React from 'react';
 import type { ChangeEvent, FormEvent, FocusEvent } from 'react';
 
+import config from 'client/config';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
-import config from 'configs/app';
 import { useColorModeValue } from 'toolkit/chakra/color-mode';
 import { Input } from 'toolkit/chakra/input';
 import { InputGroup } from 'toolkit/chakra/input-group';
@@ -39,8 +39,8 @@ const SearchBarInput = (
   const isMobile = useIsMobile();
 
   const borderWidthHeroBanner = useColorModeValue(
-    config.UI.homepage.heroBanner?.search?.border_width?.[0] ?? '0px',
-    config.UI.homepage.heroBanner?.search?.border_width?.[1] ?? '0px',
+    config.slices.home.heroBanner?.search?.border_width?.[0] ?? '0px',
+    config.slices.home.heroBanner?.search?.border_width?.[1] ?? '0px',
   );
 
   const handleChange = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {

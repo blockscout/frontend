@@ -13,9 +13,9 @@ import ChartWidgetContainerCrossChain from 'client/features/cross-chain-txs/comp
 import { CROSS_CHAIN_TXS_CHARTS } from 'client/features/cross-chain-txs/utils/chain-stats';
 import { useMultichainContext } from 'client/features/multichain/context';
 
+import config from 'client/config';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
-import config from 'configs/app';
 import { EmptyState } from 'toolkit/chakra/empty-state';
 import { Heading } from 'toolkit/chakra/heading';
 import { Skeleton } from 'toolkit/chakra/skeleton';

@@ -10,10 +10,10 @@ import BlockEntity from 'client/slices/block/components/entity/BlockEntity';
 import getBlockTotalReward from 'client/slices/block/utils/get-block-total-reward';
 import GasUsed from 'client/slices/gas/components/GasUsed';
 
+import config from 'client/config';
 import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
 import SimpleValue from 'client/shared/values/entity/SimpleValue';
 
-import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 
@@ -62,7 +62,7 @@ const AddressBlocksValidatedTableItem = (props: Props) => {
           />
         </Flex>
       </TableCell>
-      { !config.UI.views.block.hiddenFields?.total_reward && !config.features.rollup.isEnabled && (
+      { !config.slices.block.hiddenFields?.total_reward && !config.features.rollup.isEnabled && (
         <TableCell isNumeric>
           <SimpleValue
             value={ totalReward }

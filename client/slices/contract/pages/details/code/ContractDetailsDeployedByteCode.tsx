@@ -5,11 +5,11 @@ import React from 'react';
 
 import type { Address } from 'client/slices/address/types/api';
 
+import config from 'client/config';
 import RawDataSnippet from 'client/shared/data/RawDataSnippet';
 import hexToUtf8 from 'client/shared/data/transformers/hex-to-utf8';
 import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
 
-import config from 'configs/app';
 import type { SelectOption } from 'toolkit/chakra/select';
 import { Select } from 'toolkit/chakra/select';
 import { Skeleton } from 'toolkit/chakra/skeleton';
@@ -41,7 +41,7 @@ const ContractDetailsDeployedByteCode = ({ bytecode, isLoading: isLoadingProp, a
 
   React.useEffect(() => {
     if (!isLoadingProp) {
-      if (config.UI.views.address.decodedBytecodeEnabled && !addressData.is_verified) {
+      if (config.slices.contract.decodedBytecodeEnabled && !addressData.is_verified) {
         // we don't want to decode the whole bytecode here
         // the "scilla_version" should appear somewhere in the beginning of the bytecode
         // but there could be some comments of arbitrary length before it

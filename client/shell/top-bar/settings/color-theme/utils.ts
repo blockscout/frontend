@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import config from 'configs/app';
+import config from 'client/config';
+
 import type { ColorMode } from 'toolkit/chakra/color-mode';
 
 import type { ColorThemeId } from './config';
@@ -29,7 +30,7 @@ export function getThemeHexWithOverrides(colorThemeId: ColorThemeId) {
     return;
   }
 
-  const overrides = config.UI.colorTheme.overrides;
+  const overrides = config.shell.topBar.colorTheme.overrides;
   if (colorThemeId === 'light') {
     const value = getNestedValue(overrides, 'bg.primary._light.value');
     return typeof value === 'string' ? value : defaultHex;

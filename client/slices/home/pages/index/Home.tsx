@@ -9,9 +9,8 @@ import { HomeRpcDataContextProvider } from 'client/slices/home/contexts/rpc-data
 import AdBanner from 'client/features/ads/banner/components/AdBanner';
 import LatestArbitrumL2Batches from 'client/features/rollup/arbitrum/pages/home/LatestArbitrumL2Batches';
 
+import config from 'client/config';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
-
-import config from 'configs/app';
 
 import LatestBlocks from './blocks/LatestBlocks';
 import ChainIndicators from './charts/ChainIndicators';
@@ -45,7 +44,7 @@ const Home = () => {
             <Stats/>
             <ChainIndicators/>
           </Flex>
-          { !isMobile && config.UI.homepage.highlights && <Highlights mt={ 3 }/> }
+          { !isMobile && config.slices.home.highlights && <Highlights mt={ 3 }/> }
           { isMobile && <AdBanner mt={ 6 } mx="auto" justifyContent="center" format="mobile"/> }
           <Flex mt={ 8 } direction={{ base: 'column', lg: 'row' }} columnGap={ 12 } rowGap={ 6 }>
             { leftWidget }

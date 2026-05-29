@@ -5,9 +5,8 @@ import React from 'react';
 
 import PageTitle from 'client/shell/page/title/PageTitle';
 
+import config from 'client/config';
 import useEtherscanRedirects from 'client/shared/router/useEtherscanRedirects';
-
-import config from 'configs/app';
 
 import useChainStats from '../../hooks/useChainStats';
 import ChainStatsCounters from './ChainStatsCounters';
@@ -33,7 +32,7 @@ const ChainStatsIndex = () => {
   return (
     <>
       <PageTitle
-        title={ config.meta.seo.enhancedDataEnabled ? `${ config.chain.name } statistic & data` : `${ config.chain.name } stats` }
+        title={ config.metadata.seo.enhancedDataEnabled ? `${ config.chain.name } statistic & data` : `${ config.chain.name } stats` }
       />
 
       <Box mb={{ base: 6, lg: 8 }}>

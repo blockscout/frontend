@@ -7,9 +7,9 @@ import type { TabItemRegular } from 'toolkit/components/AdaptiveTabs/types';
 
 import PageTitle from 'client/shell/page/title/PageTitle';
 
+import config from 'client/config';
 import AlertWithExternalHtml from 'client/shared/alerts/AlertWithExternalHtml';
 
-import config from 'configs/app';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 
 import EthRpcApi from './EthRpcApi';
@@ -33,7 +33,7 @@ const ApiDocs = () => {
   return (
     <>
       <PageTitle
-        title={ config.meta.seo.enhancedDataEnabled ? `${ config.chain.name } API documentation` : 'API documentation' }
+        title={ config.metadata.seo.enhancedDataEnabled ? `${ config.chain.name } API documentation` : 'API documentation' }
       />
       { feature.isEnabled && feature.alertMessage ? <AlertWithExternalHtml html={ feature.alertMessage } status="info" showIcon mb={ 6 }/> : null }
       { tabs.length > 0 ? <RoutedTabs tabs={ tabs }/> : <Text>No API documentation available</Text> }

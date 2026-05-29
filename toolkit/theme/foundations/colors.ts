@@ -2,7 +2,7 @@
 
 import { defaultsDeep } from 'es-toolkit/compat';
 
-import config from 'configs/app';
+import config from 'client/config';
 
 const DEFAULT_THEME_COLORS = {
   bg: {
@@ -288,7 +288,7 @@ const colors = {
   clusters: { value: '#DE6061' },
 
   // THEME COLORS
-  theme: defaultsDeep(config.UI.colorTheme.overrides, DEFAULT_THEME_COLORS),
+  theme: defaultsDeep(config.shell.topBar.colorTheme.overrides, DEFAULT_THEME_COLORS),
 };
 
 export default colors;

@@ -10,7 +10,7 @@ import PageNextJs from 'nextjs/PageNextJs';
 
 import LayoutSearchResults from 'client/shell/layout/LayoutSearchResults';
 
-import config from 'configs/app';
+import config from 'client/config';
 
 const SearchResults = dynamic(() => {
   if (config.features.multichain.isEnabled) {

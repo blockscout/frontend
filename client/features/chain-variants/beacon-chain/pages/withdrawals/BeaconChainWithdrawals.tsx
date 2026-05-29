@@ -11,13 +11,13 @@ import PageTitle from 'client/shell/page/title/PageTitle';
 
 import { currencyUnits } from 'client/slices/chain/units';
 
+import config from 'client/config';
 import DataList from 'client/shared/lists/DataList';
 import StickyPaginationWithText from 'client/shared/pagination/StickyPaginationWithText';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
 import calculateUsdValue from 'client/shared/values/entity/calculateUsdValue';
 
-import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 
 import { WITHDRAWAL } from '../../stubs/withdrawals';
@@ -91,7 +91,7 @@ const BeaconChainWithdrawals = () => {
   return (
     <>
       <PageTitle
-        title={ config.meta.seo.enhancedDataEnabled ? `${ config.chain.name } withdrawals` : 'Withdrawals' }
+        title={ config.metadata.seo.enhancedDataEnabled ? `${ config.chain.name } withdrawals` : 'Withdrawals' }
         withTextAd
       />
       <DataList

@@ -3,7 +3,8 @@ import React from 'react';
 
 import { apps as appsMock } from 'client/features/marketplace/mocks/dapps';
 
-import config from 'configs/app';
+import config from 'client/config';
+
 import { test, expect, devices } from 'playwright/lib';
 import * as pwConfig from 'playwright/utils/config';
 

@@ -12,13 +12,13 @@ import type { PublicTagTypesResponse } from 'client/features/address-metadata/ty
 
 import useApiFetch from 'client/api/hooks/useApiFetch';
 
+import appConfig from 'client/config';
+import ReCaptcha from 'client/services/re-captcha/ReCaptcha';
+import useReCaptcha from 'client/services/re-captcha/useReCaptcha';
 import getErrorObj from 'client/shared/errors/get-error-obj';
 import getErrorObjPayload from 'client/shared/errors/get-error-obj-payload';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
-import ReCaptcha from 'client/shared/re-captcha/ReCaptcha';
-import useReCaptcha from 'client/shared/re-captcha/useReCaptcha';
 
-import appConfig from 'configs/app';
 import { Button } from 'toolkit/chakra/button';
 import { Heading } from 'toolkit/chakra/heading';
 import { FormFieldEmail } from 'toolkit/components/forms/fields/FormFieldEmail';
@@ -94,7 +94,7 @@ const TagSubmitionForm = ({ config, userInfo, onSubmitResult }: Props) => {
     onSubmitResult(result);
   }, [ apiFetch, onSubmitResult, recaptcha ]);
 
-  if (!appConfig.services.reCaptchaV2.siteKey) {
+  if (!appConfig.services.reCaptcha.siteKey) {
     return null;
   }
 

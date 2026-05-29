@@ -11,10 +11,10 @@ import BatchEntityL2 from 'client/features/rollup/common/components/BatchEntityL
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
 import ZkSyncL2TxnBatchStatus from 'client/features/rollup/zk-sync/components/ZkSyncL2TxnBatchStatus';
 
+import config from 'client/config';
 import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
 import ListItemMobileGrid from 'client/shared/lists/ListItemMobileGrid';
 
-import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
 
 const rollupFeature = config.features.rollup;

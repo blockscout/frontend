@@ -12,10 +12,10 @@ import useApiFetch from 'client/api/hooks/useApiFetch';
 import useApiQuery from 'client/api/hooks/useApiQuery';
 import type { ResourceError } from 'client/api/resources';
 
+import config from 'client/config';
+import * as mixpanel from 'client/services/mixpanel';
 import ApiFetchAlert from 'client/shared/alerts/ApiFetchAlert';
-import * as mixpanel from 'client/shared/analytics/mixpanel';
 
-import config from 'configs/app';
 import { Button } from 'toolkit/chakra/button';
 import { toaster } from 'toolkit/chakra/toaster';
 import { FormFieldAddress } from 'toolkit/components/forms/fields/FormFieldAddress';

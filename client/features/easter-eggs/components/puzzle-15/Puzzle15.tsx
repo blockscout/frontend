@@ -3,7 +3,8 @@
 import { Grid, Box, Flex, Text } from '@chakra-ui/react';
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 
-import config from 'configs/app';
+import config from 'client/config';
+
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';
 

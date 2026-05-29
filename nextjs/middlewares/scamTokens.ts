@@ -2,12 +2,11 @@
 
 import type { NextRequest, NextResponse } from 'next/server';
 
+import config from 'client/config';
 import * as cookiesLib from 'client/shared/storage/cookies';
 
-import config from 'configs/app';
-
 export default function scamTokensMiddleware(req: NextRequest, res: NextResponse) {
-  if (config.UI.views.token.hideScamTokensEnabled) {
+  if (config.slices.token.hideScamTokensEnabled) {
     const showScamTokensCookie = req.cookies.get(cookiesLib.NAMES.SHOW_SCAM_TOKENS);
 
     if (!showScamTokensCookie) {

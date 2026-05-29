@@ -8,7 +8,8 @@ import type { FormFields } from '../types';
 
 import type { SmartContractVerificationConfig } from 'client/slices/contract/pages/contract-verification/utils';
 
-import config from 'configs/app';
+import config from 'client/config';
+
 import { Link } from 'toolkit/chakra/link';
 
 import ContractVerificationFormCodeSnippet from '../ContractVerificationFormCodeSnippet';

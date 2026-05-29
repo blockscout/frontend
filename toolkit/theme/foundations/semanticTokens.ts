@@ -2,9 +2,9 @@
 
 import type { ThemingConfig } from '@chakra-ui/react';
 
-import config from 'configs/app';
+import config from 'client/config';
 
-const heroBannerButton = config.UI.homepage.heroBanner?.button;
+const heroBannerButton = config.slices.home.heroBanner?.button;
 
 const semanticTokens: ThemingConfig['semanticTokens'] = {
   colors: {

@@ -2,10 +2,9 @@
 
 import { INTERCHAIN_TRANSFER } from 'client/features/cross-chain-txs/stubs/messages';
 
+import config from 'client/config';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
-
-import config from 'configs/app';
 
 interface Props {
   hash: string;

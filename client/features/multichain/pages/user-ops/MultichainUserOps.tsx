@@ -6,6 +6,7 @@ import React from 'react';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'client/shell/page/action-bar/ActionBar';
 import PageTitle from 'client/shell/page/title/PageTitle';
 
+import multichainConfig from 'client/features/multichain/chains-config';
 import ChainSelect from 'client/features/multichain/components/ChainSelect';
 import { MultichainProvider } from 'client/features/multichain/context';
 import UserOpsListItem from 'client/features/user-ops/pages/index/UserOpsListItem';
@@ -16,8 +17,6 @@ import DataList from 'client/shared/lists/DataList';
 import Pagination from 'client/shared/pagination/Pagination';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
-
-import multichainConfig from 'configs/multichain';
 
 const MultichainUserOps = () => {
 

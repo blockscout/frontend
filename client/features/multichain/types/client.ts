@@ -5,7 +5,7 @@ import type * as multichain from '@blockscout/multichain-aggregator-types';
 import type { ExternalChain } from 'client/shared/external-chains/types';
 import type { TokenType } from 'client/slices/token/types/api';
 
-import type config from 'configs/app';
+import type config from 'client/config';
 
 export interface ClusterChainConfig extends ExternalChain {
   slug: string;

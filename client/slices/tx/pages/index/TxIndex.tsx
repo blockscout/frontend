@@ -4,9 +4,8 @@ import React from 'react';
 
 import PageTitle from 'client/shell/page/title/PageTitle';
 
+import config from 'client/config';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
-
-import config from 'configs/app';
 
 import TxsTabs from './list/TxsTabs';
 import TxsStats from './stats/TxsStats';
@@ -25,7 +24,7 @@ const Transactions = () => {
   return (
     <>
       <PageTitle
-        title={ config.meta.seo.enhancedDataEnabled ? `${ config.chain.name } transactions` : 'Transactions' }
+        title={ config.metadata.seo.enhancedDataEnabled ? `${ config.chain.name } transactions` : 'Transactions' }
         withTextAd
       />
       <TxsStats/>

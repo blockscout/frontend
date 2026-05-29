@@ -6,7 +6,7 @@ import React from 'react';
 
 import PageNextJs from 'nextjs/PageNextJs';
 
-import config from 'configs/app';
+import config from 'client/config';
 
 const validatorsFeature = config.features.validators;
 

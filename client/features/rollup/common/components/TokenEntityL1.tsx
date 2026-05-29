@@ -7,7 +7,7 @@ import { route } from 'nextjs-routes';
 
 import * as TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 
-import config from 'configs/app';
+import config from 'client/config';
 
 const rollupFeature = config.features.rollup;
 

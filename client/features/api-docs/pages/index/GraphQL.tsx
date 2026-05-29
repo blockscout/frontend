@@ -9,7 +9,8 @@ import buildUrl from 'client/api/build-url';
 import 'graphiql/graphiql.css';
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
-import config from 'configs/app';
+import config from 'client/config';
+
 import { useColorMode } from 'toolkit/chakra/color-mode';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 import { ZERO_ADDRESS } from 'toolkit/utils/consts';

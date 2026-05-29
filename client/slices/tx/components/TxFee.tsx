@@ -7,10 +7,9 @@ import React from 'react';
 import type { WrappedTransactionFields } from 'client/features/chain-variants/suave/types/api';
 import type { Transaction } from 'client/slices/tx/types/api';
 
+import config from 'client/config';
 import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
 import TokenValue from 'client/shared/values/entity/TokenValue';
-
-import config from 'configs/app';
 
 interface Props extends BoxProps {
   loading?: boolean;
@@ -52,7 +51,7 @@ const TxFee = ({ tx, accuracy, accuracyUsd, loading, noSymbol: noSymbolProp, noU
     );
   }
 
-  const noSymbol = noSymbolProp || config.UI.views.tx.hiddenFields?.fee_currency;
+  const noSymbol = noSymbolProp || config.slices.tx.hiddenFields?.fee_currency;
   const exchangeRate = 'exchange_rate' in tx ? tx.exchange_rate : null;
   const historicalExchangeRate = 'historic_exchange_rate' in tx ? tx.historic_exchange_rate : null;
 

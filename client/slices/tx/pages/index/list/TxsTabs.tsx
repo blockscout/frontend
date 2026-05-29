@@ -15,6 +15,7 @@ import TxsWatchlist from 'client/features/account/pages/tx-index-watchlist/TxsWa
 import AdvancedFilterLink from 'client/features/advanced-filter/components/AdvancedFilterLink';
 import { useMultichainContext } from 'client/features/multichain/context';
 
+import config from 'client/config';
 import useIsInitialLoading from 'client/shared/hooks/useIsInitialLoading';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import Pagination from 'client/shared/pagination/Pagination';
@@ -22,7 +23,6 @@ import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
-import config from 'configs/app';
 import type { RoutedTabsProps } from 'toolkit/components/RoutedTabs/RoutedTabs';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 
@@ -45,7 +45,7 @@ const TxsTabs = ({ parentTab, tabsHeight, ...rest }: Props) => {
 
   const chainConfig = multichainContext?.chain.app_config ?? config;
 
-  const isPendingTab = !chainConfig?.UI.views.tx.hiddenViews?.pending_txs && tab === getTabId('pending', parentTab);
+  const isPendingTab = !chainConfig?.slices.tx.hiddenViews?.pending_txs && tab === getTabId('pending', parentTab);
   const isBlobTxsTab = chainConfig?.features.dataAvailability.isEnabled && tab === getTabId('blob_txs', parentTab);
   const isWatchlistTab = isAuth && tab === getTabId('watchlist', parentTab);
 
@@ -116,7 +116,7 @@ const TxsTabs = ({ parentTab, tabsHeight, ...rest }: Props) => {
           socketType="txs_validated"
           top={ tabsHeight }
         /> },
-    !chainConfig?.UI.views.tx.hiddenViews?.pending_txs ? {
+    !chainConfig?.slices.tx.hiddenViews?.pending_txs ? {
       id: getTabId('pending', parentTab),
       title: 'Pending',
       component: (

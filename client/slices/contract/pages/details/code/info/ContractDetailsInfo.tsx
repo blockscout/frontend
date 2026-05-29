@@ -13,9 +13,9 @@ import { CONTRACT_LICENSES } from 'client/slices/contract/utils/licenses';
 import ContractSecurityAudits from 'client/features/contract-audit-reports/components/ContractSecurityAudits';
 import { useMultichainContext } from 'client/features/multichain/context';
 
+import config from 'client/config';
 import Time from 'client/shared/date-and-time/Time';
 
-import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
 
 import ContractDetailsInfoCreator from './ContractDetailsInfoCreator';
@@ -184,7 +184,7 @@ const ContractDetailsInfo = ({ data, isLoading, addressData }: Props) => {
           { sourceCodeLink }
         </ContractDetailsInfoItem>
       ) }
-      { config.UI.hasContractAuditReports && (
+      { config.slices.contract.auditReports && (
         <ContractDetailsInfoItem
           label="Security audit"
           isLoading={ isLoading }

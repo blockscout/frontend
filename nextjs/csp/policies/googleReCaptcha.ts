@@ -2,10 +2,10 @@
 
 import type CspDev from 'csp-dev';
 
-import config from 'configs/app';
+import config from 'client/config';
 
 export function googleReCaptcha(): CspDev.DirectiveDescriptor {
-  if (!config.services.reCaptchaV2.siteKey) {
+  if (!config.services.reCaptcha.siteKey) {
     return {};
   }
 

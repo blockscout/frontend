@@ -19,13 +19,13 @@ import useTxCrossChainTransfersQuery from 'client/features/cross-chain-txs/hooks
 import TxTokenTransferCrossChain from 'client/features/cross-chain-txs/pages/tx/TxTokenTransferCrossChain';
 import { useMultichainContext } from 'client/features/multichain/context';
 
+import config from 'client/config';
 import useIsInitialLoading from 'client/shared/hooks/useIsInitialLoading';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import Pagination from 'client/shared/pagination/Pagination';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 
-import config from 'configs/app';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 
 import TxTokenTransferLocal from './TxTokenTransferLocal';

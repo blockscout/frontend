@@ -16,11 +16,10 @@ import { homeStatsWidgetCommonStyles, isHomeStatsItemEnabled, sortHomeStatsItems
 import { HOMEPAGE_STATS_MICROSERVICE } from 'client/features/chain-stats/stubs/home';
 import { layerLabels } from 'client/features/rollup/common/utils/layer';
 
+import config from 'client/config';
 import StatsWidget from 'client/shared/stats/StatsWidget';
 import { WEI } from 'client/shared/values/entity/utils';
 import SpriteIcon from 'client/sprite/SpriteIcon';
-
-import config from 'configs/app';
 
 import LatestBatchStatsWidget from './LatestBatchStatsWidget';
 import LatestBlockStatsWidget from './LatestBlockStatsWidget';

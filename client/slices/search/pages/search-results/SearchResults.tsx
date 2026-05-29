@@ -23,13 +23,13 @@ import type { SearchResultAppItem } from 'client/slices/search/utils/search-cate
 import ExternalSearchItem from 'client/features/chain-variants/zeta-chain/components/ExternalSearchItem';
 import useMarketplaceApps from 'client/features/marketplace/hooks/useMarketplaceApps';
 
+import config from 'client/config';
 import ApiFetchAlert from 'client/shared/alerts/ApiFetchAlert';
 import AppErrorBoundary from 'client/shared/errors/AppErrorBoundary';
 import Pagination from 'client/shared/pagination/Pagination';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import removeQueryParam from 'client/shared/router/remove-query-param';
 
-import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';

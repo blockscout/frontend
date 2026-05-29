@@ -5,7 +5,8 @@ import React from 'react';
 
 import type { FeaturedNetwork, NetworkGroup } from './types';
 
-import config from 'configs/app';
+import config from 'client/config';
+
 import { Link } from 'toolkit/chakra/link';
 import { PopoverBody, PopoverContent } from 'toolkit/chakra/popover';
 import { Skeleton } from 'toolkit/chakra/skeleton';
@@ -57,9 +58,9 @@ const ChainMenuContent = ({ items, tabs }: Props) => {
       );
     }
 
-    const viewAllLink = config.UI.featuredNetworks.allLink && (
+    const viewAllLink = config.shell.topBar.chainMenu.allLink && (
       <Link
-        href={ config.UI.featuredNetworks.allLink }
+        href={ config.shell.topBar.chainMenu.allLink }
         external
         noIcon
         variant="secondary"
@@ -87,7 +88,7 @@ const ChainMenuContent = ({ items, tabs }: Props) => {
       );
     }
 
-    if (config.UI.featuredNetworks.mode === 'list') {
+    if (config.shell.topBar.chainMenu.mode === 'list') {
       return (
         <VStack overflowY="scroll" maxH="516px" alignItems="stretch" gap={ 3 }>
           { tabs.map((tab, index) => {

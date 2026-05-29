@@ -15,11 +15,11 @@ import TxStatus from 'client/slices/tx/components/TxStatus';
 import BlobEntity from 'client/features/data-availability/components/entity/BlobEntity';
 import { useMultichainContext } from 'client/features/multichain/context';
 
+import config from 'client/config';
 import TextSeparator from 'client/shared/texts/TextSeparator';
 import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
 import Utilization from 'client/shared/values/utilization/Utilization';
 
-import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 
@@ -85,7 +85,7 @@ const TxAdditionalInfoContent = ({ tx, isLoading }: { tx: Transaction; isLoading
           />
         </VStack>
 
-        { !config.UI.views.tx.hiddenFields?.tx_fee && (tx.stability_fee !== undefined || tx.fee.value !== null) && (
+        { !config.slices.tx.hiddenFields?.tx_fee && (tx.stability_fee !== undefined || tx.fee.value !== null) && (
           <VStack alignItems="stretch" gap={ 1 }>
             <Skeleton loading={ isLoading } { ...sectionTitleProps }>
               <span>Transaction fee</span>
@@ -108,7 +108,7 @@ const TxAdditionalInfoContent = ({ tx, isLoading }: { tx: Transaction; isLoading
           </VStack>
         ) }
 
-        { !config.UI.views.tx.hiddenFields?.gas_fees &&
+        { !config.slices.tx.hiddenFields?.gas_fees &&
           (tx.base_fee_per_gas !== null || tx.max_fee_per_gas !== null || tx.max_priority_fee_per_gas !== null) && (
           <VStack alignItems="stretch" gap={ 1 }>
             <Skeleton loading={ isLoading } { ...sectionTitleProps }>

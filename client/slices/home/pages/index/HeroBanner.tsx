@@ -12,9 +12,8 @@ import UserProfileDesktop from 'client/features/account/components/user-profile/
 import AdBanner from 'client/features/ads/banner/components/AdBanner';
 import RewardsButton from 'client/features/rewards/components/RewardsButton';
 
+import config from 'client/config';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
-
-import config from 'configs/app';
 
 export const BACKGROUND_DEFAULT =
   'radial-gradient(103.03% 103.03% at 0% 0%, rgba(183, 148, 244, 0.8) 0%, rgba(0, 163, 196, 0.8) 100%), var(--chakra-colors-blue-400)';
@@ -27,39 +26,39 @@ const HeroBanner = () => {
 
   const background = {
     _light:
-      config.UI.homepage.heroBanner?.background?.[0] ||
+      config.slices.home.heroBanner?.background?.[0] ||
       BACKGROUND_DEFAULT,
     _dark:
-      config.UI.homepage.heroBanner?.background?.[1] ||
-      config.UI.homepage.heroBanner?.background?.[0] ||
+      config.slices.home.heroBanner?.background?.[1] ||
+      config.slices.home.heroBanner?.background?.[0] ||
       BACKGROUND_DEFAULT,
   };
 
   const textColor = {
     _light:
       // light mode
-      config.UI.homepage.heroBanner?.text_color?.[0] ||
+      config.slices.home.heroBanner?.text_color?.[0] ||
       TEXT_COLOR_DEFAULT,
     // dark mode
     _dark:
-      config.UI.homepage.heroBanner?.text_color?.[1] ||
-      config.UI.homepage.heroBanner?.text_color?.[0] ||
+      config.slices.home.heroBanner?.text_color?.[1] ||
+      config.slices.home.heroBanner?.text_color?.[0] ||
       TEXT_COLOR_DEFAULT,
   };
 
   const border = {
     _light:
-      config.UI.homepage.heroBanner?.border?.[0] || BORDER_DEFAULT,
+      config.slices.home.heroBanner?.border?.[0] || BORDER_DEFAULT,
     _dark:
-      config.UI.homepage.heroBanner?.border?.[1] || config.UI.homepage.heroBanner?.border?.[0] || BORDER_DEFAULT,
+      config.slices.home.heroBanner?.border?.[1] || config.slices.home.heroBanner?.border?.[0] || BORDER_DEFAULT,
   };
 
   const text = (() => {
-    if (config.UI.homepage.heroBanner?.text) {
-      return config.UI.homepage.heroBanner.text;
+    if (config.slices.home.heroBanner?.text) {
+      return config.slices.home.heroBanner.text;
     }
 
-    return config.meta.seo.enhancedDataEnabled ?
+    return config.metadata.seo.enhancedDataEnabled ?
       `${ config.chain.name } blockchain explorer` :
       `${ config.chain.name } explorer`;
   })();
@@ -85,7 +84,7 @@ const HeroBanner = () => {
           >
             { text }
           </Heading>
-          { config.UI.navigation.layout === 'vertical' && (
+          { config.shell.navigation.layout === 'vertical' && (
             <Box display={{ base: 'none', lg: 'flex' }} gap={ 2 }>
               { config.features.rewards.isEnabled && <RewardsButton variant="hero"/> }
               <UserProfileDesktop buttonVariant="hero"/>

@@ -4,7 +4,7 @@ import React from 'react';
 
 import type { FormSubmitHandler } from './types';
 
-import config from 'configs/app';
+import config from 'client/config';
 
 import useCallMethodPublicClient from './useCallMethodPublicClient';
 import useCallMethodWalletClient from './useCallMethodWalletClient';

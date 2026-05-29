@@ -15,9 +15,8 @@ import { useAppContext } from 'client/shell/app/context';
 
 import { useMultichainContext } from 'client/features/multichain/context';
 
+import config from 'client/config';
 import * as cookies from 'client/shared/storage/cookies';
-
-import config from 'configs/app';
 
 import type { Filters } from './useAddressTokenTransfersQuery';
 
@@ -58,7 +57,7 @@ export default function useAddressTokenTransfersSocket({ filters, addressHash, d
   const [ showSocketAlert, setShowSocketAlert ] = React.useState(false);
   const [ newItemsCount, setNewItemsCount ] = React.useState(0);
 
-  const shouldHideScamTokens = config.UI.views.token.hideScamTokensEnabled && !(cookies.get(cookies.NAMES.SHOW_SCAM_TOKENS, appCookies) === 'true');
+  const shouldHideScamTokens = config.slices.token.hideScamTokensEnabled && !(cookies.get(cookies.NAMES.SHOW_SCAM_TOKENS, appCookies) === 'true');
 
   const multichainContext = useMultichainContext();
   const queryClient = useQueryClient();

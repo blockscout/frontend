@@ -11,9 +11,10 @@ import { route } from 'nextjs-routes';
 import useLogout from 'client/features/account/hooks/useLogout';
 import { useMarketplaceContext } from 'client/features/marketplace/context';
 
+import config from 'client/config';
+import { getFeaturePayload } from 'client/config/utils/features';
 import shortenString from 'client/shared/texts/shorten-string';
 
-import config from 'configs/app';
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';
 import { Hint } from 'toolkit/components/Hint/Hint';
@@ -49,7 +50,7 @@ const navLinks: Array<NavLink> = [
     href: route({ pathname: '/account/custom-abi' }),
     icon: 'ABI' as const,
   },
-  config.features.addressVerification.isEnabled && {
+  getFeaturePayload(config.features.account)?.addressVerificationEnabled && {
     text: 'Verified addrs',
     href: route({ pathname: '/account/verified-addresses' }),
     icon: 'verified' as const,

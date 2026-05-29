@@ -10,13 +10,13 @@ import useApiFetch from 'client/api/hooks/useApiFetch';
 
 import useWalletReown from 'client/features/connect-wallet/hooks/wallet/useWalletReown';
 
-import type * as mixpanel from 'client/shared/analytics/mixpanel';
+import config from 'client/config';
+import type * as mixpanel from 'client/services/mixpanel';
 import getErrorMessage from 'client/shared/errors/get-error-message';
 import getErrorObj from 'client/shared/errors/get-error-obj';
 import getErrorObjPayload from 'client/shared/errors/get-error-obj-payload';
 import * as cookies from 'client/shared/storage/cookies';
 
-import config from 'configs/app';
 import { toaster } from 'toolkit/chakra/toaster';
 import { YEAR } from 'toolkit/utils/consts';
 

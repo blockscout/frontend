@@ -8,10 +8,10 @@ import type { BlockWithdrawalsItem } from 'client/slices/block/types/api';
 
 import { AddressHighlightProvider } from 'client/slices/address/contexts/address-highlight';
 
+import config from 'client/config';
 import TimeFormatToggle from 'client/shared/date-and-time/TimeFormatToggle';
 import useLazyRenderedList from 'client/shared/lists/useLazyRenderedList';
 
-import config from 'configs/app';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 
 import BeaconChainWithdrawalsTableItem from './BeaconChainWithdrawalsTableItem';

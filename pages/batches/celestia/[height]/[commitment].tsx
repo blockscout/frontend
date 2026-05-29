@@ -7,7 +7,7 @@ import React from 'react';
 import type { Props } from 'nextjs/getServerSideProps/handlers';
 import PageNextJs from 'nextjs/PageNextJs';
 
-import config from 'configs/app';
+import config from 'client/config';
 
 const rollupFeature = config.features.rollup;
 

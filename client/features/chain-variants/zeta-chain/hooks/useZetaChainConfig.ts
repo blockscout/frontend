@@ -8,7 +8,7 @@ import type { ZetaChainChainsConfigEnv, ZetaChainExternalChainConfig } from 'cli
 import useFetch from 'client/api/hooks/useFetch';
 import type { ResourceError } from 'client/api/resources';
 
-import config from 'configs/app';
+import config from 'client/config';
 
 const zetachainFeature = config.features.zetachain;
 

@@ -6,7 +6,7 @@ import type { AddressCounters } from 'client/slices/address/types/api';
 
 import useApiFetch from 'client/api/hooks/useApiFetch';
 
-import config from 'configs/app';
+import config from 'client/config';
 
 const feature = config.features.addressMetadata;
 

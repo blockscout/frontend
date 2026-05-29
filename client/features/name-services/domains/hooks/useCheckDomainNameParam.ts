@@ -5,7 +5,7 @@ import React from 'react';
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
-import config from 'configs/app';
+import config from 'client/config';
 
 const DOMAIN_NAME_REGEXP = /.\../;
 

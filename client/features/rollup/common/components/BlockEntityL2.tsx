@@ -5,7 +5,7 @@ import React from 'react';
 
 import * as BlockEntity from 'client/slices/block/components/entity/BlockEntity';
 
-import config from 'configs/app';
+import config from 'client/config';
 
 const rollupFeature = config.features.rollup;
 

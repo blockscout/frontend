@@ -11,10 +11,10 @@ import { getResourceKey } from 'client/api/hooks/useApiQuery';
 
 import { useRewardsContext } from 'client/features/rewards/context';
 
-import * as mixpanel from 'client/shared/analytics/mixpanel';
+import config from 'client/config';
+import * as mixpanel from 'client/services/mixpanel';
 import * as cookies from 'client/shared/storage/cookies';
 
-import config from 'configs/app';
 import { toaster } from 'toolkit/chakra/toaster';
 
 const PROTECTED_ROUTES: Array<Route['pathname']> = [

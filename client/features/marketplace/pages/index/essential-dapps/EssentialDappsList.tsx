@@ -4,7 +4,7 @@ import { Flex } from '@chakra-ui/react';
 
 import type { EssentialDappsConfig } from 'client/features/marketplace/types/client';
 
-import config from 'configs/app';
+import config from 'client/config';
 
 import EssentialDappCard from './EssentialDappCard';
 

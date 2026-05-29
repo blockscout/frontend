@@ -10,10 +10,10 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 
 import ChartIntervalSelect from 'client/features/chain-stats/components/ChartIntervalSelect';
 
-import * as mixpanel from 'client/shared/analytics/mixpanel';
+import config from 'client/config';
+import * as mixpanel from 'client/services/mixpanel';
 import ChainSelect, { isAllOption } from 'client/shared/external-chains/ChainSelect';
 
-import config from 'configs/app';
 import type { OnValueChangeHandler } from 'toolkit/chakra/select';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { SankeyChartMenu } from 'toolkit/components/charts/sankey/parts/SankeyChartMenu';

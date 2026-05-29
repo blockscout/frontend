@@ -11,10 +11,9 @@ import DeFiDropdown from 'client/features/defi-dropdown/components/DeFiDropdown'
 import NetworkAddToWallet from 'client/features/web3-wallet/components/NetworkAddToWallet';
 import useProvider from 'client/features/web3-wallet/hooks/useProvider';
 
+import config from 'client/config';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import * as cookies from 'client/shared/storage/cookies';
-
-import config from 'configs/app';
 
 import NetworkMenu from './chain-menu/ChainMenu';
 import Settings from './settings/Settings';
@@ -55,7 +54,7 @@ const TopBar = () => {
         maxW={ `${ CONTENT_MAX_WIDTH }px` }
       >
         <HStack gap={ 0 } fontSize="xs">
-          { Boolean(config.UI.featuredNetworks.items || config.features.multichain.isEnabled) && <NetworkMenu/> }
+          { Boolean(config.shell.topBar.chainMenu.items || config.features.multichain.isEnabled) && <NetworkMenu/> }
           { !config.features.multichain.isEnabled ? <TopBarStats/> : <div/> }
         </HStack>
         <HStack

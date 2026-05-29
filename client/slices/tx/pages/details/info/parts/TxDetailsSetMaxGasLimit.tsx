@@ -5,10 +5,9 @@ import React from 'react';
 
 import type { Transaction } from 'client/slices/tx/types/api';
 
+import config from 'client/config';
 import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
 import DetailedInfoNativeCoinValue from 'client/shared/detailed-info/DetailedInfoNativeCoinValue';
-
-import config from 'configs/app';
 
 import TxDetailsGasUsage from './TxDetailsGasUsage';
 
@@ -17,7 +16,7 @@ interface Props {
 }
 
 const TxDetailsSetMaxGasLimit = ({ data }: Props) => {
-  if (!config.UI.views.tx.additionalFields?.set_max_gas_limit) {
+  if (!config.slices.tx.additionalFields?.set_max_gas_limit) {
     return null;
   }
 

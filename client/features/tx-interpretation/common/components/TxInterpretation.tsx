@@ -21,13 +21,13 @@ import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 
 import EnsEntity from 'client/features/name-services/domains/components/EnsEntity';
 
-import * as mixpanel from 'client/shared/analytics/mixpanel';
+import config from 'client/config';
+import * as mixpanel from 'client/services/mixpanel';
 import dayjs from 'client/shared/date-and-time/dayjs';
 import ChainIcon from 'client/shared/external-chains/ChainIcon';
 import getChainTooltipText from 'client/shared/external-chains/get-chain-tooltip-text';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
-import config from 'configs/app';
 import { Badge } from 'toolkit/chakra/badge';
 import { useColorModeValue } from 'toolkit/chakra/color-mode';
 import { Image } from 'toolkit/chakra/image';

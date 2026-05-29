@@ -2,7 +2,8 @@
 
 import React from 'react';
 
-import config from 'configs/app';
+import config from 'client/config';
+
 import type { AlertProps } from 'toolkit/chakra/alert';
 import { Alert } from 'toolkit/chakra/alert';
 
@@ -11,7 +12,7 @@ interface Props extends AlertProps {
 }
 
 const BlockPendingUpdateAlert = ({ view = 'block', ...props }: Props) => {
-  if (!config.UI.views.block.pendingUpdateAlertEnabled) {
+  if (!config.slices.block.pendingUpdateAlertEnabled) {
     return null;
   }
 

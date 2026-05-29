@@ -15,12 +15,12 @@ import NftEntity from 'client/slices/token/components/entity/NftEntity';
 
 import NameDomainExpiryStatus from 'client/features/name-services/domains/components/NameDomainExpiryStatus';
 
+import config from 'client/config';
 import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
 import DetailedInfoTimestamp from 'client/shared/detailed-info/DetailedInfoTimestamp';
 import TextSeparator from 'client/shared/texts/TextSeparator';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
-import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { Tooltip } from 'toolkit/chakra/tooltip';

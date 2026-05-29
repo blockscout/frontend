@@ -60,7 +60,7 @@ const defaultUseQueryResult: Partial<UseQueryResult> = {
   isPaused: false,
 };
 
-vi.mock('configs/app', () => {
+vi.mock('client/config', () => {
   return {
     'default': {
       UI: {

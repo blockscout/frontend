@@ -2,7 +2,7 @@
 
 import { getAddress } from 'viem';
 
-import config from 'configs/app';
+import config from 'client/config';
 
 const ERC1191_CHAIN_IDS = [
   '30', // RSK Mainnet

@@ -4,7 +4,8 @@ import BigNumber from 'bignumber.js';
 
 import { currencyUnits } from 'client/slices/chain/units';
 
-import config from 'configs/app';
+import config from 'client/config';
+
 import { ZERO } from 'toolkit/utils/consts';
 import { thinsp } from 'toolkit/utils/htmlEntities';
 

@@ -18,6 +18,7 @@ import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'client/shell/page/action-b
 import { BLOCK } from 'client/slices/block/stubs/block';
 import { currencyUnits } from 'client/slices/chain/units';
 
+import config from 'client/config';
 import TimeFormatToggle from 'client/shared/date-and-time/TimeFormatToggle';
 import useIsMounted from 'client/shared/hooks/useIsMounted';
 import DataList from 'client/shared/lists/DataList';
@@ -25,7 +26,6 @@ import Pagination from 'client/shared/pagination/Pagination';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'client/shared/pagination/utils';
 
-import config from 'configs/app';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 
 import AddressBlocksValidatedListItem from './AddressBlocksValidatedListItem';
@@ -120,7 +120,7 @@ const AddressBlocksValidated = ({ shouldRender = true, isQueryEnabled = true }: 
               </TableColumnHeader>
               <TableColumnHeader>Txn</TableColumnHeader>
               <TableColumnHeader>Gas used</TableColumnHeader>
-              { !config.UI.views.block.hiddenFields?.total_reward && !config.features.rollup.isEnabled &&
+              { !config.slices.block.hiddenFields?.total_reward && !config.features.rollup.isEnabled &&
                 <TableColumnHeader isNumeric>Reward { currencyUnits.ether }</TableColumnHeader> }
             </TableRow>
           </TableHeaderSticky>

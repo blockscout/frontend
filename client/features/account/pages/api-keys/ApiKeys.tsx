@@ -13,10 +13,10 @@ import AccountPageDescription from 'client/features/account/components/AccountPa
 import useRedirectForInvalidAuthToken from 'client/features/account/hooks/useRedirectForInvalidAuthToken';
 import { API_KEY } from 'client/features/account/stubs';
 
+import config from 'client/config';
 import AlertWithExternalHtml from 'client/shared/alerts/AlertWithExternalHtml';
 import ApiFetchAlert from 'client/shared/alerts/ApiFetchAlert';
 
-import config from 'configs/app';
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
@@ -30,7 +30,6 @@ import DeleteApiKeyModal from './DeleteApiKeyModal';
 
 const DATA_LIMIT = 3;
 
-const apiKeysAlertHtml = config.UI.apiKeysAlert.message;
 const feature = config.features.account;
 
 const ApiKeysPage: React.FC = () => {
@@ -67,7 +66,7 @@ const ApiKeysPage: React.FC = () => {
     deleteModalProps.onOpenChange({ open });
   }, [ deleteModalProps ]);
 
-  const description = feature.isEnabled && feature.apiKeysButton === false ? (
+  const description = feature.isEnabled && feature.apiKeys.button === false ? (
     <AccountPageDescription>
       Blockscout APIs require a key. Create a <Link href="https://dev.blockscout.com" external noIcon>
         free PRO API key</Link> to access all multichain endpoints.
@@ -111,16 +110,18 @@ const ApiKeysPage: React.FC = () => {
 
     const canAdd = !isPlaceholderData ? (data?.length || 0) < DATA_LIMIT : true;
 
-    const alert = apiKeysAlertHtml ? <AlertWithExternalHtml html={ apiKeysAlertHtml } status="warning" mb={ 6 }/> : null;
+    const alert = feature.isEnabled && feature.apiKeys.alertMessage ?
+      <AlertWithExternalHtml html={ feature.apiKeys.alertMessage } status="warning" mb={ 6 }/> :
+      null;
 
     const button = (() => {
-      if (!feature.isEnabled || feature.apiKeysButton === false) {
+      if (!feature.isEnabled || feature.apiKeys.button === false) {
         return null;
       }
 
-      if (typeof feature.apiKeysButton === 'string') {
+      if (typeof feature.apiKeys.button === 'string') {
         return (
-          <Link href={ feature.apiKeysButton } external noIcon>
+          <Link href={ feature.apiKeys.button } external noIcon>
             <Button>Add API key</Button>
           </Link>
         );

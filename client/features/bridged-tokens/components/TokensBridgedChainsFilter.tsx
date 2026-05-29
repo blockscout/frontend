@@ -3,7 +3,8 @@
 import { Text, Flex, useCheckboxGroup, chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import config from 'configs/app';
+import config from 'client/config';
+
 import { Button } from 'toolkit/chakra/button';
 import { Checkbox, CheckboxGroup } from 'toolkit/chakra/checkbox';
 

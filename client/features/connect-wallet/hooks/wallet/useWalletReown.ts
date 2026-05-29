@@ -6,7 +6,7 @@ import { useAccountEffect, useAccount, useDisconnect } from 'wagmi';
 
 import type { Params, Result } from './types';
 
-import * as mixpanel from 'client/shared/analytics/mixpanel';
+import * as mixpanel from 'client/services/mixpanel';
 
 export default function useWalletReown({ source, onConnect }: Params): Result {
   const { open: openModal } = useAppKit();

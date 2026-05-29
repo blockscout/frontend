@@ -2,7 +2,7 @@
 
 import dynamic from 'next/dynamic';
 
-import config from 'configs/app';
+import config from 'client/config';
 
 const ReownProvider = dynamic(() => import('./providers/ReownProvider'), { ssr: false });
 const DynamicProvider = dynamic(() => import('./providers/DynamicProvider'), { ssr: false });

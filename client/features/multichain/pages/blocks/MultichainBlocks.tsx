@@ -12,6 +12,7 @@ import PageTitle from 'client/shell/page/title/PageTitle';
 
 import { BLOCK } from 'client/slices/block/stubs/block';
 
+import multichainConfig from 'client/features/multichain/chains-config';
 import ChainSelect from 'client/features/multichain/components/ChainSelect';
 
 import useIsMobile from 'client/shared/hooks/useIsMobile';
@@ -21,7 +22,6 @@ import { generateListStub } from 'client/shared/pagination/utils';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
-import multichainConfig from 'configs/multichain';
 import { Link } from 'toolkit/chakra/link';
 import RoutedTabs from 'toolkit/components/RoutedTabs/RoutedTabs';
 

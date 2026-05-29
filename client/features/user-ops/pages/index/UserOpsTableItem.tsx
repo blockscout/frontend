@@ -12,11 +12,11 @@ import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import UserOpEntity from 'client/features/user-ops/components/entity/UserOpEntity';
 import UserOpStatus from 'client/features/user-ops/components/UserOpStatus';
 
+import config from 'client/config';
 import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
 import ChainIcon from 'client/shared/external-chains/ChainIcon';
 import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
 
-import config from 'configs/app';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 
 type Props = {
@@ -76,7 +76,7 @@ const UserOpsTableItem = ({ item, isLoading, showTx, showSender, chainData }: Pr
           noIcon
         />
       </TableCell>
-      { !config.UI.views.tx.hiddenFields?.tx_fee && (
+      { !config.slices.tx.hiddenFields?.tx_fee && (
         <TableCell verticalAlign="middle" isNumeric>
           <NativeCoinValue amount={ item.fee } loading={ isLoading } noSymbol/>
         </TableCell>

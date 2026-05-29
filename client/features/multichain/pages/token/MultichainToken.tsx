@@ -8,11 +8,10 @@ import { SocketProvider } from 'client/api/socket/context';
 
 import Token from 'client/slices/token/pages/details/Token';
 
+import multichainConfig from 'client/features/multichain/chains-config';
 import { MultichainProvider } from 'client/features/multichain/context';
 
 import getQueryParamString from 'client/shared/router/get-query-param-string';
-
-import multichainConfig from 'configs/multichain';
 
 const MultichainToken = () => {
   const router = useRouter();

@@ -3,9 +3,9 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
+import config from 'client/config';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
-import config from 'configs/app';
 import { Image } from 'toolkit/chakra/image';
 import type { ImageProps } from 'toolkit/chakra/image';
 

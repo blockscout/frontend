@@ -13,7 +13,8 @@ import UserWalletMobile from 'client/features/account/components/user-profile/wa
 import RewardsButton from 'client/features/rewards/components/RewardsButton';
 import RollupStageBadge from 'client/features/rollup/common/components/RollupStageBadge';
 
-import config from 'configs/app';
+import config from 'client/config';
+
 import { useIsSticky } from 'toolkit/hooks/useIsSticky';
 
 import Burger from './Burger';

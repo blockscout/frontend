@@ -10,7 +10,7 @@ import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'client/shell/page/action-b
 import AccountPageDescription from 'client/features/account/components/AccountPageDescription';
 import { PRIVATE_TAG_ADDRESS } from 'client/features/account/stubs';
 
-import * as mixpanel from 'client/shared/analytics/mixpanel';
+import * as mixpanel from 'client/services/mixpanel';
 import DataList from 'client/shared/lists/DataList';
 import Pagination from 'client/shared/pagination/Pagination';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';

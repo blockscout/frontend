@@ -2,8 +2,9 @@
 
 import type CspDev from 'csp-dev';
 
-import config from 'configs/app';
-import essentialDappsChains from 'configs/essential-dapps-chains';
+import essentialDappsChains from 'client/features/marketplace/chains-config/essential-dapps';
+
+import config from 'client/config';
 
 const feature = config.features.marketplace;
 

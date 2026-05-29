@@ -12,9 +12,9 @@ import AuthModal from 'client/features/account/components/auth-modal/AuthModal';
 import useProfileQuery from 'client/features/account/hooks/useProfileQuery';
 import useRedirectForInvalidAuthToken from 'client/features/account/hooks/useRedirectForInvalidAuthToken';
 
+import config from 'client/config';
 import ApiFetchAlert from 'client/shared/alerts/ApiFetchAlert';
 
-import config from 'configs/app';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';
 

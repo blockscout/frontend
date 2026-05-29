@@ -5,11 +5,11 @@ import React from 'react';
 
 import buildUrl from 'client/api/build-url';
 
-import ReCaptcha from 'client/shared/re-captcha/ReCaptcha';
-import useReCaptcha from 'client/shared/re-captcha/useReCaptcha';
+import config from 'client/config';
+import ReCaptcha from 'client/services/re-captcha/ReCaptcha';
+import useReCaptcha from 'client/services/re-captcha/useReCaptcha';
 import * as cookies from 'client/shared/storage/cookies';
 
-import config from 'configs/app';
 import { Button } from 'toolkit/chakra/button';
 import { toaster } from 'toolkit/chakra/toaster';
 import { DAY, SECOND } from 'toolkit/utils/consts';
@@ -104,7 +104,7 @@ const AppErrorTooManyRequests = ({ bypassOptions, reset }: Props) => {
     };
   }, [ reset ]);
 
-  if (!config.services.reCaptchaV2.siteKey) {
+  if (!config.services.reCaptcha.siteKey) {
     throw new Error('reCAPTCHA V2 site key is not set');
   }
 

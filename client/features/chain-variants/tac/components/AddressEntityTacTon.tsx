@@ -9,7 +9,7 @@ import { route } from 'nextjs-routes';
 
 import * as AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 
-import config from 'configs/app';
+import config from 'client/config';
 
 const tacFeature = config.features.tac;
 

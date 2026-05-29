@@ -9,10 +9,10 @@ import { route } from 'nextjs-routes';
 import AddressEntity from 'client/slices/address/components/entity/AddressEntity';
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 
+import config from 'client/config';
 import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
 import ListItemMobileGrid from 'client/shared/lists/ListItemMobileGrid';
 
-import config from 'configs/app';
 import { Badge } from 'toolkit/chakra/badge';
 import { stripTrailingSlash } from 'toolkit/utils/url';
 

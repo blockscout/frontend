@@ -13,7 +13,7 @@ import type { ResourceError } from 'client/api/resources';
 import useIsAuth from 'client/features/account/hooks/useIsAuth';
 import { MARKETPLACE_APP } from 'client/features/marketplace/stubs';
 
-import config from 'configs/app';
+import config from 'client/config';
 
 import type { SortValue } from '../utils/sort';
 

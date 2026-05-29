@@ -12,11 +12,11 @@ import useProfileQuery from 'client/features/account/hooks/useProfileQuery';
 import WatchlistAddModal from 'client/features/account/pages/watchlist/AddressModal/AddressModal';
 import DeleteAddressModal from 'client/features/account/pages/watchlist/DeleteAddressModal';
 
-import * as mixpanel from 'client/shared/analytics/mixpanel';
+import config from 'client/config';
+import * as mixpanel from 'client/services/mixpanel';
 import usePreventFocusAfterModalClosing from 'client/shared/hooks/usePreventFocusAfterModalClosing';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
-import config from 'configs/app';
 import { IconButton } from 'toolkit/chakra/icon-button';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';

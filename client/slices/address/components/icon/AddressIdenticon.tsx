@@ -4,9 +4,9 @@ import { Box } from '@chakra-ui/react';
 import dynamic from 'next/dynamic';
 import React from 'react';
 
+import config from 'client/config';
 import * as cookies from 'client/shared/storage/cookies';
 
-import config from 'configs/app';
 import { Image } from 'toolkit/chakra/image';
 
 import AddressIdenticonGithub from './AddressIdenticonGithub';
@@ -18,7 +18,7 @@ interface IconProps {
 
 const Icon = dynamic(
   async() => {
-    const type = cookies.get(cookies.NAMES.ADDRESS_IDENTICON_TYPE) || config.UI.views.address.identiconType;
+    const type = cookies.get(cookies.NAMES.ADDRESS_IDENTICON_TYPE) || config.slices.address.identiconType;
     switch (type) {
       case 'github': {
 

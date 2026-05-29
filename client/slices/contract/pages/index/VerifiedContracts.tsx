@@ -12,12 +12,12 @@ import VerifiedContractsFilter from 'client/slices/contract/pages/index/Verified
 import VerifiedContractsList from 'client/slices/contract/pages/index/VerifiedContractsList';
 import VerifiedContractsTable from 'client/slices/contract/pages/index/VerifiedContractsTable';
 
+import config from 'client/config';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import DataList from 'client/shared/lists/DataList';
 import Pagination from 'client/shared/pagination/Pagination';
 import Sort from 'client/shared/sort/Sort';
 
-import config from 'configs/app';
 import { FilterInput } from 'toolkit/components/filters/FilterInput';
 
 import { SORT_OPTIONS } from './sort';
@@ -93,7 +93,7 @@ const VerifiedContracts = () => {
   return (
     <Box>
       <PageTitle
-        title={ config.meta.seo.enhancedDataEnabled ? `Verified ${ config.chain.name } contracts` : 'Verified contracts' }
+        title={ config.metadata.seo.enhancedDataEnabled ? `Verified ${ config.chain.name } contracts` : 'Verified contracts' }
         withTextAd
       />
       <VerifiedContractsCounters/>

@@ -7,10 +7,11 @@ import type * as multichain from '@blockscout/multichain-aggregator-types';
 
 import { route } from 'nextjs/routes';
 
+import multichainConfig from 'client/features/multichain/chains-config';
+
 import ChainIcon from 'client/shared/external-chains/ChainIcon';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
-import multichainConfig from 'configs/multichain';
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';
 import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';

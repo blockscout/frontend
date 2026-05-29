@@ -3,9 +3,8 @@
 import { get } from 'es-toolkit/compat';
 import React from 'react';
 
+import type config from 'client/config';
 import getErrorObj from 'client/shared/errors/get-error-obj';
-
-import type config from 'configs/app';
 
 import useAddChain from './useAddChain';
 import useProvider from './useProvider';

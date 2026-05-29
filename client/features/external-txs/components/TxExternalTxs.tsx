@@ -5,7 +5,8 @@ import React from 'react';
 
 import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 
-import config from 'configs/app';
+import config from 'client/config';
+
 import { Image } from 'toolkit/chakra/image';
 import { Link } from 'toolkit/chakra/link';
 import { Tooltip } from 'toolkit/chakra/tooltip';

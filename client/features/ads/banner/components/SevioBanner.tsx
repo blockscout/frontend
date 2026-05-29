@@ -8,9 +8,9 @@ import type { BannerProps } from '../types/client';
 
 import { useAppContext } from 'client/shell/app/context';
 
+import config from 'client/config';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
-import config from 'configs/app';
 import { isBrowser } from 'toolkit/utils/isBrowser';
 
 import {

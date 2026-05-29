@@ -2,7 +2,7 @@
 
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
-import config from 'configs/app';
+import config from 'client/config';
 
 import { isValidVerificationMethod, sortVerificationMethods } from './utils';
 
@@ -14,7 +14,7 @@ export default function useFormConfigQuery(enabled: boolean) {
           ...data,
           verification_options: [
             ...data.verification_options,
-            ...config.UI.views.address.extraVerificationMethods,
+            ...config.slices.contract.extraVerificationMethods,
           ].filter(isValidVerificationMethod).sort(sortVerificationMethods),
         };
       },

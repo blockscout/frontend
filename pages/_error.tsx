@@ -7,17 +7,15 @@ import Rollbar from 'rollbar';
 
 import type { Props as ServerSidePropsCommon } from 'nextjs/getServerSideProps/handlers';
 
+import config from 'client/config';
 import * as cookies from 'client/shared/storage/cookies';
 
-import config from 'configs/app';
-
-const rollbarFeature = config.features.rollbar;
-const rollbar = rollbarFeature.isEnabled ? new Rollbar({
-  accessToken: rollbarFeature.clientToken,
-  environment: rollbarFeature.environment,
+const rollbar = config.services.rollbar.clientToken ? new Rollbar({
+  accessToken: config.services.rollbar.clientToken,
+  environment: config.services.rollbar.environment,
   payload: {
-    code_version: rollbarFeature.codeVersion,
-    app_instance: rollbarFeature.instance,
+    code_version: config.services.rollbar.codeVersion,
+    app_instance: config.services.rollbar.instance,
   },
   maxItems: 10,
   captureUncaught: true,

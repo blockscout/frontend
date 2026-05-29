@@ -7,11 +7,10 @@ import type { Transaction } from 'client/slices/tx/types/api';
 
 import TxFee from 'client/slices/tx/components/TxFee';
 
+import config from 'client/config';
 import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
 import * as DetailedInfoItemBreakdown from 'client/shared/detailed-info/DetailedInfoItemBreakdown';
 import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
-
-import config from 'configs/app';
 
 interface Props {
   isLoading: boolean;
@@ -20,12 +19,12 @@ interface Props {
 
 const TxDetailsTxFee = ({ isLoading, data }: Props) => {
 
-  if (config.UI.views.tx.hiddenFields?.tx_fee) {
+  if (config.slices.tx.hiddenFields?.tx_fee) {
     return null;
   }
 
   const content = (() => {
-    if (!config.UI.views.tx.groupedFees) {
+    if (!config.slices.tx.groupedFees) {
       return (
         <TxFee
           tx={ data }

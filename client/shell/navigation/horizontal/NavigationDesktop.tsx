@@ -13,7 +13,7 @@ import useIsAuth from 'client/features/account/hooks/useIsAuth';
 import RewardsButton from 'client/features/rewards/components/RewardsButton';
 import RollupStageBadge from 'client/features/rollup/common/components/RollupStageBadge';
 
-import config from 'configs/app';
+import config from 'client/config';
 
 import NavigationPromoBanner from '../promo-banner/NavigationPromoBanner';
 import useNavItems, { isGroupItem } from '../useNavItems';

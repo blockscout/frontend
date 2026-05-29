@@ -11,12 +11,12 @@ import { currencyUnits } from 'client/slices/chain/units';
 import { useMultichainContext } from 'client/features/multichain/context';
 import type { TxsTranslationQuery } from 'client/features/tx-interpretation/noves/hooks/useDescribeTxs';
 
+import config from 'client/config';
 import TimeFormatToggle from 'client/shared/date-and-time/TimeFormatToggle';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import useInitialList from 'client/shared/lists/useInitialList';
 import useLazyRenderedList from 'client/shared/lists/useLazyRenderedList';
 
-import config from 'configs/app';
 import { TableBody, TableColumnHeader, TableColumnHeaderSortable, TableHeader, TableHeaderSticky, TableRoot, TableRow } from 'toolkit/chakra/table';
 
 import TxsSocketNotice from './socket/TxsSocketNotice';
@@ -59,7 +59,7 @@ const TxsTable = ({
   const chainData = multichainContext?.chain;
   const isMobile = useIsMobile();
 
-  const feeCurrency = config.UI.views.tx.hiddenFields?.fee_currency || config.chain.hasMultipleGasCurrencies ?
+  const feeCurrency = config.slices.tx.hiddenFields?.fee_currency || config.chain.hasMultipleGasCurrencies ?
     '' :
     ' ' + currencyUnits.ether;
 
@@ -68,8 +68,8 @@ const TxsTable = ({
   const columnNum = [
     showBlockInfo,
     true,
-    !config.UI.views.tx.hiddenFields?.value,
-    !config.UI.views.tx.hiddenFields?.tx_fee,
+    !config.slices.tx.hiddenFields?.value,
+    !config.slices.tx.hiddenFields?.tx_fee,
   ].filter(Boolean).length;
   const baseWidth = `${ 100 / columnNum }%`;
 
@@ -101,7 +101,7 @@ const TxsTable = ({
               )
             ) }
             <TableColumnHeader width={ columnNum <= 2 ? baseWidth : '224px' }>From/To</TableColumnHeader>
-            { !config.UI.views.tx.hiddenFields?.value && (
+            { !config.slices.tx.hiddenFields?.value && (
               onSortToggle ? (
                 <TableColumnHeaderSortable
                   width={ baseWidth }
@@ -116,7 +116,7 @@ const TxsTable = ({
                 <TableColumnHeader width={ baseWidth } isNumeric>Value</TableColumnHeader>
               )
             ) }
-            { !config.UI.views.tx.hiddenFields?.tx_fee && (
+            { !config.slices.tx.hiddenFields?.tx_fee && (
               onSortToggle ? (
                 <TableColumnHeaderSortable
                   width={ baseWidth }

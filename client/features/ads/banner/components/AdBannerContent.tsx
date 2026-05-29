@@ -9,7 +9,8 @@ import type { AdBannerProviders } from '../types/config';
 import useProfileQuery from 'client/features/account/hooks/useProfileQuery';
 import useAccount from 'client/features/connect-wallet/hooks/useAccount';
 
-import config from 'configs/app';
+import config from 'client/config';
+
 import { Skeleton } from 'toolkit/chakra/skeleton';
 
 import { DESKTOP_BANNER_WIDTH, MOBILE_BANNER_WIDTH } from '../utils/consts';

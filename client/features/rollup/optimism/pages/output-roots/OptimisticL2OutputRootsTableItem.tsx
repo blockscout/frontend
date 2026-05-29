@@ -8,11 +8,11 @@ import type { OptimisticL2OutputRootsItem } from 'client/features/rollup/optimis
 import BlockEntityL2 from 'client/features/rollup/common/components/BlockEntityL2';
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
 
+import config from 'client/config';
 import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
 import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
 import HashStringShorten from 'client/shared/texts/HashStringShorten';
 
-import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 

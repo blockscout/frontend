@@ -4,7 +4,8 @@ import React from 'react';
 
 import type { Address } from 'client/slices/address/types/api';
 
-import config from 'configs/app';
+import config from 'client/config';
+
 import type { LinkProps } from 'toolkit/chakra/link';
 import { Link } from 'toolkit/chakra/link';
 

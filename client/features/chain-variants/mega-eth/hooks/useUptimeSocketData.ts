@@ -4,7 +4,8 @@ import React from 'react';
 
 import type { UptimeHistoryFull, UptimeRealTimeData, UptimeSocketData } from 'client/features/chain-variants/mega-eth/types/api';
 
-import config from 'configs/app';
+import config from 'client/config';
+
 import { SECOND } from 'toolkit/utils/consts';
 
 const megaEthFeature = config.features.megaEth;

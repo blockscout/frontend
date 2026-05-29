@@ -7,7 +7,7 @@ import type { FormattedData } from './types';
 
 import { getTokensTotalInfo } from 'client/slices/token/pages/address/utils';
 
-import * as mixpanel from 'client/shared/analytics/mixpanel';
+import * as mixpanel from 'client/services/mixpanel';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { Button } from 'toolkit/chakra/button';

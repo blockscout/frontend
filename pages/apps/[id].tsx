@@ -17,9 +17,8 @@ import fetchApi from 'nextjs/utils/fetchApi';
 
 import LayoutApp from 'client/shell/layout/LayoutApp';
 
+import config from 'client/config';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
-
-import config from 'configs/app';
 
 const MarketplaceAppPage = dynamic(() => import('client/features/marketplace/pages/dapp/MarketplaceApp'), { ssr: false });
 
@@ -47,7 +46,7 @@ export default Page;
 export const getServerSideProps: GetServerSideProps<Props<typeof pathname>> = async(ctx) => {
   const baseResponse = await gSSP.marketplace<typeof pathname>(ctx);
 
-  if (config.meta.og.enhancedDataEnabled && 'props' in baseResponse && feature.isEnabled) {
+  if (config.metadata.og.enhancedDataEnabled && 'props' in baseResponse && feature.isEnabled) {
     const botInfo = detectBotRequest(ctx.req);
 
     if (botInfo?.type === 'social_preview') {

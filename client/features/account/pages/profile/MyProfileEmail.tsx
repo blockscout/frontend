@@ -13,13 +13,13 @@ import useApiFetch from 'client/api/hooks/useApiFetch';
 
 import AuthModal from 'client/features/account/components/auth-modal/AuthModal';
 
-import * as mixpanel from 'client/shared/analytics/mixpanel';
+import config from 'client/config';
+import * as mixpanel from 'client/services/mixpanel';
+import ReCaptcha from 'client/services/re-captcha/ReCaptcha';
+import useReCaptcha from 'client/services/re-captcha/useReCaptcha';
 import getErrorMessage from 'client/shared/errors/get-error-message';
 import getErrorObjPayload from 'client/shared/errors/get-error-obj-payload';
-import ReCaptcha from 'client/shared/re-captcha/ReCaptcha';
-import useReCaptcha from 'client/shared/re-captcha/useReCaptcha';
 
-import config from 'configs/app';
 import { Button } from 'toolkit/chakra/button';
 import { Heading } from 'toolkit/chakra/heading';
 import { toaster } from 'toolkit/chakra/toaster';
@@ -93,11 +93,11 @@ const MyProfileEmail = ({ profileQuery }: Props) => {
         >
           <FormFieldText<FormFields> name="name" placeholder="Name" readOnly mb={ 3 }/>
           <MyProfileFieldsEmail
-            isReadOnly={ !config.services.reCaptchaV2.siteKey || Boolean(profileQuery.data?.email) }
+            isReadOnly={ !config.services.reCaptcha.siteKey || Boolean(profileQuery.data?.email) }
             defaultValue={ profileQuery.data?.email || undefined }
           />
-          { config.services.reCaptchaV2.siteKey && !profileQuery.data?.email && <ReCaptcha { ...recaptcha }/> }
-          { config.services.reCaptchaV2.siteKey && !profileQuery.data?.email && (
+          { config.services.reCaptcha.siteKey && !profileQuery.data?.email && <ReCaptcha { ...recaptcha }/> }
+          { config.services.reCaptcha.siteKey && !profileQuery.data?.email && (
             <Button
               mt={ 6 }
               size="sm"

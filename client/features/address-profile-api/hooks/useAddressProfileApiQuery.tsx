@@ -6,7 +6,7 @@ import * as v from 'valibot';
 import useFetch from 'client/api/hooks/useFetch';
 import type { ResourceError } from 'client/api/resources';
 
-import config from 'configs/app';
+import config from 'client/config';
 
 const feature = config.features.addressProfileAPI;
 

@@ -7,11 +7,11 @@ import type { MarketplaceApp } from 'client/features/marketplace/types/client';
 
 import { route } from 'nextjs-routes';
 
+import config from 'client/config';
 import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
 import type { IconName } from 'client/sprite/SpriteIcon';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
-import config from 'configs/app';
 import { Badge } from 'toolkit/chakra/badge';
 import { Button } from 'toolkit/chakra/button';
 import { useColorModeValue } from 'toolkit/chakra/color-mode';

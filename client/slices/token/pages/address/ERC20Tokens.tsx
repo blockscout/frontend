@@ -8,11 +8,10 @@ import type { AddressTokenBalance } from 'client/slices/address/types/api';
 
 import ActionBar from 'client/shell/page/action-bar/ActionBar';
 
+import config from 'client/config';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import DataList from 'client/shared/lists/DataList';
 import Pagination from 'client/shared/pagination/Pagination';
-
-import config from 'configs/app';
 
 import ERC20TokensListItem from './ERC20TokensListItem';
 import ERC20TokensTable from './ERC20TokensTable';
@@ -28,7 +27,7 @@ type Props = {
 const ERC20Tokens = ({ items, isLoading, pagination, isError, top }: Props) => {
   const isMobile = useIsMobile();
 
-  const hasAdditionalTokenTypes = config.chain.additionalTokenTypes.length > 0;
+  const hasAdditionalTokenTypes = config.slices.token.additionalTypes.length > 0;
 
   const actionBar = isMobile && pagination.isVisible && (
     <ActionBar mt={ -6 }>

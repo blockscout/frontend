@@ -4,8 +4,9 @@ import type { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 
 import type { Route } from 'nextjs-routes';
 
-import config from 'configs/app';
-import multichainConfig from 'configs/multichain';
+import multichainConfig from 'client/features/multichain/chains-config';
+
+import config from 'client/config';
 
 import type { Guard } from './guards';
 import * as handlers from './handlers';

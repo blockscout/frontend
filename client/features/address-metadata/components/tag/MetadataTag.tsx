@@ -7,7 +7,7 @@ import type { MetadataTag as TMetadataTag } from './types';
 
 import { useMultichainContext } from 'client/features/multichain/context';
 
-import * as mixpanel from 'client/shared/analytics/mixpanel';
+import * as mixpanel from 'client/services/mixpanel';
 
 import { Link, LinkExternalIcon } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';

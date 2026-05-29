@@ -4,11 +4,10 @@ import React from 'react';
 
 import type { TokenInfo } from 'client/slices/token/types/api';
 
+import config from 'client/config';
 import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
 import GasPriceValue from 'client/shared/values/entity/GasPriceValue';
 import TokenValue from 'client/shared/values/entity/TokenValue';
-
-import config from 'configs/app';
 
 interface Props {
   gasToken?: TokenInfo | null;
@@ -17,7 +16,7 @@ interface Props {
 }
 
 const TxDetailsGasPrice = ({ gasPrice, gasToken, isLoading }: Props) => {
-  if (config.UI.views.tx.hiddenFields?.gas_price || !gasPrice) {
+  if (config.slices.tx.hiddenFields?.gas_price || !gasPrice) {
     return null;
   }
 

@@ -11,7 +11,7 @@ import type { ResourcePayload, ResourceError } from 'client/api/resources';
 
 import useQuickSearchQuery from 'client/slices/search/hooks/useQuickSearchQuery';
 
-import config from 'configs/app';
+import config from 'client/config';
 
 const nameServicesFeature = config.features.nameServices;
 const isClustersEnabled = nameServicesFeature.isEnabled && nameServicesFeature.clusters.isEnabled;

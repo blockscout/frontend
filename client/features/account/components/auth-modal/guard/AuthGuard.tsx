@@ -2,7 +2,7 @@
 
 import dynamic from 'next/dynamic';
 
-import config from 'configs/app';
+import config from 'client/config';
 
 const AuthGuardAuth0 = dynamic(() => import('./AuthGuardAuth0'), { ssr: false });
 const AuthGuardDynamic = dynamic(() => import('./AuthGuardDynamic'), { ssr: false });

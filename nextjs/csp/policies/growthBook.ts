@@ -2,10 +2,10 @@
 
 import type CspDev from 'csp-dev';
 
-import config from 'configs/app';
+import config from 'client/config';
 
 export function growthBook(): CspDev.DirectiveDescriptor {
-  if (!config.features.growthBook.isEnabled) {
+  if (!config.services.growthBook.clientKey) {
     return {};
   }
 

@@ -11,11 +11,11 @@ import TxEntity from 'client/slices/tx/components/entity/TxEntity';
 import TxEntityL1 from 'client/features/rollup/common/components/TxEntityL1';
 import { layerLabels } from 'client/features/rollup/common/utils/layer';
 
+import config from 'client/config';
 import TimeWithTooltip from 'client/shared/date-and-time/TimeWithTooltip';
 import ListItemMobileGrid from 'client/shared/lists/ListItemMobileGrid';
 import NativeCoinValue from 'client/shared/values/entity/NativeCoinValue';
 
-import config from 'configs/app';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 
 const rollupFeature = config.features.rollup;

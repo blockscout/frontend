@@ -11,13 +11,13 @@ import { route } from 'nextjs-routes';
 import AddressEntityInterchain from 'client/slices/address/components/entity/AddressEntityInterchain';
 import TxEntityInterchain from 'client/slices/tx/components/entity/TxEntityInterchain';
 
+import config from 'client/config';
 import dayjs from 'client/shared/date-and-time/dayjs';
 import Time from 'client/shared/date-and-time/Time';
 import ListItemMobile from 'client/shared/lists/ListItemMobile';
 import TextSeparator from 'client/shared/texts/TextSeparator';
 import TokenValueInterchain from 'client/shared/values/entity/TokenValueInterchain';
 
-import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { mdash } from 'toolkit/utils/htmlEntities';

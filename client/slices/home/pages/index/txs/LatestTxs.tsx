@@ -12,9 +12,9 @@ import { AddressHighlightProvider } from 'client/slices/address/contexts/address
 import useNewTxsSocket from 'client/slices/tx/hooks/useTxsSocketTypeAll';
 import { TX } from 'client/slices/tx/stubs/tx';
 
+import config from 'client/config';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
-import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
 
 import LatestTxsDegraded from './LatestTxsDegraded';

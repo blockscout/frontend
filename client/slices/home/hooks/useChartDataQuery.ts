@@ -7,7 +7,7 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 
 import { getChartData } from 'client/slices/home/utils/chart';
 
-import config from 'configs/app';
+import config from 'client/config';
 
 const rollupFeature = config.features.rollup;
 const isOptimisticRollup = rollupFeature.isEnabled && rollupFeature.type === 'optimistic';

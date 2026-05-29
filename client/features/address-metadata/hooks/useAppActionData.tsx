@@ -2,7 +2,7 @@
 
 import { useMemo } from 'react';
 
-import config from 'configs/app';
+import config from 'client/config';
 
 import useAddressMetadataInfoQuery from './useAddressMetadataInfoQuery';
 

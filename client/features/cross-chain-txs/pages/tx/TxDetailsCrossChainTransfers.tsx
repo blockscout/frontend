@@ -4,9 +4,9 @@ import React from 'react';
 
 import { route } from 'nextjs-routes';
 
+import config from 'client/config';
 import * as DetailedInfo from 'client/shared/detailed-info/DetailedInfo';
 
-import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
 
 import useTxCrossChainTransfersQuery from '../../hooks/useTxCrossChainTransfersQuery';

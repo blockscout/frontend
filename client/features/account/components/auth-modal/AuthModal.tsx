@@ -11,9 +11,9 @@ import { getResourceKey } from 'client/api/hooks/useApiQuery';
 import useGetCsrfToken from 'client/features/account/hooks/useGetCsrfToken';
 import { useRewardsContext } from 'client/features/rewards/context';
 
-import * as mixpanel from 'client/shared/analytics/mixpanel';
+import config from 'client/config';
+import * as mixpanel from 'client/services/mixpanel';
 
-import config from 'configs/app';
 import { DialogBody, DialogContent, DialogHeader, DialogRoot } from 'toolkit/chakra/dialog';
 
 import AuthModalScreenConnectWallet from './screens/AuthModalScreenConnectWallet';

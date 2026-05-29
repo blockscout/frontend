@@ -6,7 +6,7 @@ import * as v from 'valibot';
 import buildUrl from 'client/api/build-url';
 import useApiQuery from 'client/api/hooks/useApiQuery';
 
-import config from 'configs/app';
+import config from 'client/config';
 
 interface Params {
   hash: string;

@@ -18,7 +18,8 @@ import { route } from 'nextjs-routes';
 import useApiFetch from 'client/api/hooks/useApiFetch';
 import type { ResourceError } from 'client/api/resources';
 
-import config from 'configs/app';
+import config from 'client/config';
+
 import { Alert } from 'toolkit/chakra/alert';
 import { Button } from 'toolkit/chakra/button';
 import { Link } from 'toolkit/chakra/link';

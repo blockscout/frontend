@@ -4,7 +4,7 @@ import React from 'react';
 
 import type { TxAction } from '../../types/api';
 
-import config from 'configs/app';
+import config from 'client/config';
 
 import TxDetailsActionsInterpretation from './TxDetailsActionsInterpretation';
 import TxDetailsActionsRaw from './TxDetailsActionsRaw';

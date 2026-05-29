@@ -5,14 +5,14 @@ import BigNumber from 'bignumber.js';
 import type { AddressTokenBalance } from 'client/slices/address/types/api';
 import { isFungibleTokenType } from 'client/slices/token/utils/token-types';
 
+import config from 'client/config';
 import sumBnReducer from 'client/shared/numbers/sumBnReducer';
 
-import config from 'configs/app';
 import { ZERO } from 'toolkit/utils/consts';
 
 const isNativeToken = (token: TokenEnhancedData) =>
-  config.UI.views.address.nativeTokenAddress &&
-  token.token.address_hash.toLowerCase() === config.UI.views.address.nativeTokenAddress.toLowerCase();
+  config.slices.address.nativeTokenAddress &&
+  token.token.address_hash.toLowerCase() === config.slices.address.nativeTokenAddress.toLowerCase();
 
 export type TokenEnhancedData = AddressTokenBalance & {
   usd?: BigNumber ;
@@ -33,7 +33,7 @@ type TokenGroup = [string, TokenSelectDataItem];
 const NFT_TOKEN_GROUPS_ORDER = [ 'ERC-721', 'ERC-1155', 'ERC-404' ] as const;
 
 export const sortTokenGroups = (groupA: TokenGroup, groupB: TokenGroup) => {
-  const additionalTypeIds = config.chain.additionalTokenTypes.map((item) => item.id);
+  const additionalTypeIds = config.slices.token.additionalTypes.map((item) => item.id);
 
   const tokenGroupsOrder = [
     'ERC-20',

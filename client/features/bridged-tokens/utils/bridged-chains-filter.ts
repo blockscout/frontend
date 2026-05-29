@@ -1,8 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import config from 'client/config';
 import getFilterValuesFromQuery from 'client/shared/router/get-filter-values-from-query';
-
-import config from 'configs/app';
 
 const bridgedTokensChainIds = (() => {
   const feature = config.features.bridgedTokens;

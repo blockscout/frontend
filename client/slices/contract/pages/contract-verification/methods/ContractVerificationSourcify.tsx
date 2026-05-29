@@ -5,7 +5,7 @@ import { useFormContext } from 'react-hook-form';
 
 import type { FormFields } from '../types';
 
-import config from 'configs/app';
+import config from 'client/config';
 
 import ContractVerificationMethod from '../ContractVerificationMethod';
 

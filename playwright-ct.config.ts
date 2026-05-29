@@ -5,7 +5,7 @@ import type { Plugin } from 'esbuild';
 import svgr from 'vite-plugin-svgr';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
-import appConfig from 'configs/app';
+import appConfig from 'client/config';
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -95,10 +95,10 @@ const config: PlaywrightTestConfig = defineConfig({
           { find: '@metamask/providers', replacement: './playwright/mocks/modules/@metamask/providers.js' },
 
           // Mock for growthbook to test feature flags
-          { find: 'client/shared/feature-flags/useFeatureValue', replacement: './playwright/mocks/client/shared/feature-flags/useFeatureValue.js' },
+          { find: 'client/services/growthbook/useFeatureValue', replacement: './playwright/mocks/client/services/growthbook/useFeatureValue.js' },
 
           // Mock for reCaptcha hook
-          { find: 'client/shared/re-captcha/useReCaptcha', replacement: './playwright/mocks/client/shared/re-captcha/useReCaptcha.js' },
+          { find: 'client/services/re-captcha/useReCaptcha', replacement: './playwright/mocks/client/services/re-captcha/useReCaptcha.js' },
 
           // The createWeb3Modal() function from web3modal/wagmi/react somehow pollutes the global styles which causes the tests to fail
           // We don't call this function in TestApp and since we use useWeb3Modal() and useWeb3ModalState() hooks in the code, we have to mock the module

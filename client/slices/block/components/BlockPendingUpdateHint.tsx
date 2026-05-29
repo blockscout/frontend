@@ -3,9 +3,9 @@
 import type { BoxProps } from '@chakra-ui/react';
 import React from 'react';
 
+import config from 'client/config';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
-import config from 'configs/app';
 import { Tooltip } from 'toolkit/chakra/tooltip';
 
 interface Props extends BoxProps {
@@ -13,7 +13,7 @@ interface Props extends BoxProps {
 }
 
 const BlockPendingUpdateHint = ({ view = 'block', ...props }: Props) => {
-  if (!config.UI.views.block.pendingUpdateAlertEnabled) {
+  if (!config.slices.block.pendingUpdateAlertEnabled) {
     return null;
   }
 

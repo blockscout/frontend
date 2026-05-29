@@ -11,15 +11,15 @@ import AddressEntity from 'client/slices/address/components/entity/AddressEntity
 import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 import NativeTokenTag from 'client/slices/token/components/NativeTokenTag';
 
+import multichainConfig from 'client/features/multichain/chains-config';
 import TokenAddToWallet from 'client/features/web3-wallet/components/TokenAddToWallet';
 
+import config from 'client/config';
 import calculateUsdValue from 'client/shared/values/entity/calculateUsdValue';
 import ConfidentialValue from 'client/shared/values/entity/ConfidentialValue';
 import SimpleValue from 'client/shared/values/entity/SimpleValue';
 import { DEFAULT_ACCURACY_USD } from 'client/shared/values/entity/utils';
 
-import config from 'configs/app';
-import multichainConfig from 'configs/multichain';
 import { TableCell, TableRow } from 'toolkit/chakra/table';
 import { Tag } from 'toolkit/chakra/tag';
 
@@ -38,8 +38,8 @@ const ERC20TokensTableItem = ({
     usdBn: tokenValue,
   } = calculateUsdValue({ amount: value, exchangeRate: token.exchange_rate, decimals: token.decimals });
 
-  const isNativeToken = config.UI.views.address.nativeTokenAddress &&
-    token.address_hash.toLowerCase() === config.UI.views.address.nativeTokenAddress.toLowerCase();
+  const isNativeToken = config.slices.address.nativeTokenAddress &&
+    token.address_hash.toLowerCase() === config.slices.address.nativeTokenAddress.toLowerCase();
 
   const chainInfo = React.useMemo(() => {
     if (!chainValues) {

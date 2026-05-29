@@ -18,10 +18,10 @@ import IndexingStatusInternalTxs from 'client/slices/chain/indexing-status/Index
 
 import NetworkAddToWallet from 'client/features/web3-wallet/components/NetworkAddToWallet';
 
+import config from 'client/config';
 import CopyToClipboard from 'client/shared/texts/CopyToClipboard';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
-import config from 'configs/app';
 import { Link } from 'toolkit/chakra/link';
 import { Skeleton } from 'toolkit/chakra/skeleton';
 import { copy } from 'toolkit/utils/htmlEntities';
@@ -31,8 +31,8 @@ import { getApiVersionUrl } from './get-api-version-url';
 
 const MAX_LINKS_COLUMNS = 4;
 
-const FRONT_VERSION_URL = `https://github.com/blockscout/frontend/tree/${ config.UI.footer.frontendVersion }`;
-const FRONT_COMMIT_URL = `https://github.com/blockscout/frontend/commit/${ config.UI.footer.frontendCommit }`;
+const FRONT_VERSION_URL = `https://github.com/blockscout/frontend/tree/${ config.shell.footer.frontendVersion }`;
+const FRONT_COMMIT_URL = `https://github.com/blockscout/frontend/commit/${ config.shell.footer.frontendCommit }`;
 
 const Footer = () => {
 
@@ -91,12 +91,12 @@ const Footer = () => {
   ].filter(Boolean);
 
   const frontendLink = (() => {
-    if (config.UI.footer.frontendVersion) {
-      return <Link href={ FRONT_VERSION_URL } external noIcon>{ config.UI.footer.frontendVersion }</Link>;
+    if (config.shell.footer.frontendVersion) {
+      return <Link href={ FRONT_VERSION_URL } external noIcon>{ config.shell.footer.frontendVersion }</Link>;
     }
 
-    if (config.UI.footer.frontendCommit) {
-      return <Link href={ FRONT_COMMIT_URL } external noIcon>{ config.UI.footer.frontendCommit }</Link>;
+    if (config.shell.footer.frontendCommit) {
+      return <Link href={ FRONT_COMMIT_URL } external noIcon>{ config.shell.footer.frontendCommit }</Link>;
     }
 
     return null;
@@ -108,8 +108,8 @@ const Footer = () => {
 
   const { isPlaceholderData, data: linksData } = useQuery<unknown, ResourceError<unknown>, Array<CustomLinksGroup>>({
     queryKey: [ 'footer-links' ],
-    queryFn: async() => fetch(config.UI.footer.links || '', undefined, { resource: 'footer-links' }),
-    enabled: Boolean(config.UI.footer.links),
+    queryFn: async() => fetch(config.shell.footer.links || '', undefined, { resource: 'footer-links' }),
+    enabled: Boolean(config.shell.footer.links),
     staleTime: Infinity,
     placeholderData: [],
   });
@@ -128,7 +128,7 @@ const Footer = () => {
         mb={{ base: 5, lg: 10 }}
         _empty={{ display: 'none' }}
       >
-        { !config.UI.indexingAlert.intTxs.isHidden && <IndexingStatusInternalTxs/> }
+        { !config.chain.indexingStatus.intTxs.isHidden && <IndexingStatusInternalTxs/> }
         { !config.features.multichain.isEnabled && <NetworkAddToWallet source="Footer"/> }
       </Flex>
     );
@@ -186,7 +186,7 @@ const Footer = () => {
   };
 
   const contentProps: GridProps = {
-    px: { base: 4, lg: config.UI.navigation.layout === 'horizontal' ? 6 : 12, '2xl': 6 },
+    px: { base: 4, lg: config.shell.navigation.layout === 'horizontal' ? 6 : 12, '2xl': 6 },
     py: { base: 4, lg: 8 },
     gridTemplateColumns: { base: '1fr', lg: 'minmax(auto, 470px) 1fr' },
     columnGap: { lg: '32px', xl: '100px' },
@@ -195,7 +195,7 @@ const Footer = () => {
   };
 
   const renderRecaptcha = (gridArea?: GridProps['gridArea']) => {
-    if (!config.services.reCaptchaV2.siteKey) {
+    if (!config.services.reCaptcha.siteKey) {
       return <Box gridArea={ gridArea }/>;
     }
 
@@ -210,7 +210,7 @@ const Footer = () => {
     );
   };
 
-  if (config.UI.footer.links) {
+  if (config.shell.footer.links) {
     return (
       <Box { ...containerProps }>
         <Grid { ...contentProps }>

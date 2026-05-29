@@ -1,6 +1,6 @@
 import * as yup from 'yup';
 import { CHAIN_INDICATOR_IDS, type ChainIndicatorId, type HeroBannerConfig, type HeroBannerButtonState, HOME_STATS_WIDGET_IDS, type HomeStatsWidgetId } from 'client/slices/home/types/config';
-import { replaceQuotes } from 'configs/app/utils';
+import { replaceQuotes } from 'client/config/utils/envs';
 import { getYupValidationErrorMessage, urlTest } from '../utils';
 import { NavigationLayout, NavigationPromoBannerConfig, NavItemExternal } from 'client/shell/navigation/types';
 import type { FeaturedNetwork } from 'client/shell/top-bar/chain-menu/types';
@@ -8,7 +8,7 @@ import { NETWORK_GROUPS } from 'client/shell/top-bar/chain-menu/types';
 import { AlternativeExplorer } from 'client/features/alternative-explorers/types/client';
 import { CustomLink, CustomLinksGroup } from 'client/shell/footer/types';
 import { COLOR_THEME_IDS } from 'client/shell/top-bar/settings/color-theme/config';
-import type { FontFamily } from 'configs/app/ui';
+import type { FontFamily } from 'client/config/ui';
 import type { ContractCodeIde } from 'client/slices/contract/types/config';
 import { SMART_CONTRACT_EXTRA_VERIFICATION_METHODS, type SmartContractVerificationMethodExtra } from 'client/slices/contract/types/config';
 import type { AddressFormat, AddressViewId } from 'client/slices/address/types/config';

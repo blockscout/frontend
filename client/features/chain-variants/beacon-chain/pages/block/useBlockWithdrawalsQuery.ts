@@ -16,12 +16,12 @@ import { GET_BLOCK } from 'client/slices/block/stubs/rpc';
 
 import { publicClient } from 'client/features/connect-wallet/utils/public-client';
 
+import config from 'client/config';
 import hexToDecimal from 'client/shared/data/transformers/hex-to-decimal';
 import type { QueryWithPagesResult } from 'client/shared/pagination/useQueryWithPages';
 import useQueryWithPages from 'client/shared/pagination/useQueryWithPages';
 import { generateListStub, emptyPagination } from 'client/shared/pagination/utils';
 
-import config from 'configs/app';
 import { SECOND } from 'toolkit/utils/consts';
 
 import { WITHDRAWAL } from '../../stubs/withdrawals';
