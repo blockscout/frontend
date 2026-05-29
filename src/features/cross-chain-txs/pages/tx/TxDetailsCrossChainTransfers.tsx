@@ -1,8 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import React from 'react';
-
 import { route } from 'nextjs-routes';
+import React from 'react';
 
 import config from 'src/config';
 import * as DetailedInfo from 'src/shared/detailed-info/DetailedInfo';

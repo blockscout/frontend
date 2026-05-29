@@ -5,12 +5,11 @@ import {
   Flex,
   Grid,
 } from '@chakra-ui/react';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { ExcludeUndefined } from 'src/shared/types/utils';
 import type { HomeStats } from 'src/slices/home/types/api';
-
-import { route } from 'nextjs-routes';
 
 import config from 'src/config';
 import Time from 'src/shared/date-and-time/Time';

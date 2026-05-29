@@ -1,12 +1,11 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box, Separator, Flex, VStack } from '@chakra-ui/react';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { NavLink } from '../types';
 import type { UserInfo } from 'src/features/account/types/api';
-
-import { route } from 'nextjs-routes';
 
 import useLogout from 'src/features/account/hooks/useLogout';
 import { useMarketplaceContext } from 'src/features/marketplace/context';

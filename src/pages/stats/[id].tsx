@@ -2,9 +2,9 @@
 
 import type { GetServerSideProps, NextPage } from 'next';
 import dynamic from 'next/dynamic';
+import type { Route } from 'nextjs-routes';
 import React from 'react';
 
-import type { Route } from 'nextjs-routes';
 import type { Props } from 'src/server/getServerSideProps/handlers';
 import * as gSSP from 'src/server/getServerSideProps/main';
 import PageNextJs from 'src/server/PageNextJs';

@@ -1,13 +1,12 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { chakra, Flex, Grid, Box, Text } from '@chakra-ui/react';
+import { route } from 'nextjs-routes';
 import React from 'react';
 import xss from 'xss';
 
 import type { AddressFormat } from 'src/slices/address/types/config';
 import type { SearchResultItem } from 'src/slices/search/types/client';
-
-import { route } from 'nextjs-routes';
 
 import * as AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import { toBech32Address } from 'src/slices/address/utils/bech32';

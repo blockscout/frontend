@@ -48,7 +48,10 @@ const spdxLicenseRule = {
 const RESTRICTED_MODULES = {
   paths: [
     { name: 'dayjs', message: 'Please use src/shared/date-and-time/dayjs.ts instead of directly importing dayjs' },
-    { name: '@chakra-ui/icons', message: 'Using @chakra-ui/icons is prohibited. Please use regular svg-icon instead (see examples in "src/sprite/icons/" folder)' },
+    {
+      name: '@chakra-ui/icons',
+      message: 'Using @chakra-ui/icons is prohibited. Please use regular svg-icon instead (see examples in "src/sprite/icons/" folder)',
+    },
     { name: '@metamask/providers', message: 'Please lazy-load @metamask/providers or use useProvider hook instead' },
     { name: '@metamask/post-message-stream', message: 'Please lazy-load @metamask/post-message-stream or use useProvider hook instead' },
     { name: 'playwright/TestApp', message: 'Please use render() fixture from test() function of playwright/lib module' },

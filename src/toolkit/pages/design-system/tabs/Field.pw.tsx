@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { test, expect } from 'playwright/lib';
 import { TabsRoot } from 'src/toolkit/chakra/tabs';
+
+import { test, expect } from 'playwright/lib';
 
 import Field from './Field';
 

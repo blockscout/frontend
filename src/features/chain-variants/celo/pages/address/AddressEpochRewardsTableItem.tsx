@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Flex } from '@chakra-ui/react';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { AddressEpochRewardsItem } from 'src/features/chain-variants/celo/types/api';
-
-import { route } from 'nextjs-routes';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 

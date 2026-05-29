@@ -9,13 +9,12 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import { SCROLL_L2_BLOCK_STATUSES } from 'src/features/rollup/scroll/types/api';
 import { ZKSYNC_L2_TX_BATCH_STATUSES } from 'src/features/rollup/zk-sync/types/api';
 import type { Transaction } from 'src/slices/tx/types/api';
-
-import { route } from 'nextjs-routes';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import BlockEntity from 'src/slices/block/components/entity/BlockEntity';

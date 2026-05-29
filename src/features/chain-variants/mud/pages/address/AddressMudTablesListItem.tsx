@@ -2,11 +2,10 @@
 
 import { Text, Flex, VStack, chakra, Box, Grid, GridItem, Separator } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { AddressMudTableItem } from 'src/features/chain-variants/mud/types/api';
-
-import { route } from 'nextjs-routes';
 
 import ListItemMobile from 'src/shared/lists/ListItemMobile';
 import HashStringShorten from 'src/shared/texts/HashStringShorten';

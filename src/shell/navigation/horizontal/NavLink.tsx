@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { chakra } from '@chakra-ui/react';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { NavItem } from '../types';
-
-import { route } from 'nextjs-routes';
 
 import { Link } from 'src/toolkit/chakra/link';
 

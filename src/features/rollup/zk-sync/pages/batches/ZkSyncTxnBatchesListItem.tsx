@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Text } from '@chakra-ui/react';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { ZkSyncBatchesItem } from 'src/features/rollup/zk-sync/types/api';
-
-import { route } from 'nextjs-routes';
 
 import BatchEntityL2 from 'src/features/rollup/common/components/BatchEntityL2';
 import TxEntityL1 from 'src/features/rollup/common/components/TxEntityL1';

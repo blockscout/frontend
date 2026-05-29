@@ -1,9 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { HStack } from '@chakra-ui/react';
-import React from 'react';
-
 import { route } from 'nextjs-routes';
+import React from 'react';
 
 import type { BlockQuery } from 'src/slices/block/hooks/useBlockQuery';
 

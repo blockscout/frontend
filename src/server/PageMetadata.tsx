@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import Head from 'next/head';
+import type { Route } from 'nextjs-routes';
 import React from 'react';
 
-import type { Route } from 'nextjs-routes';
 import type { Props as PageProps } from 'src/server/getServerSideProps/handlers';
 
 import * as metadata from 'src/shell/metadata';

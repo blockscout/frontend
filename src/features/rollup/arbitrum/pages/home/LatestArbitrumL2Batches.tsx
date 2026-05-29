@@ -3,12 +3,11 @@
 import { Box, Flex, VStack } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 // import { AnimatePresence } from 'framer-motion';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { ArbitrumL2TxnBatchesItem } from '../../types/api';
 import type { SocketMessage } from 'src/api/socket/types';
-
-import { route } from 'nextjs-routes';
 
 import useApiQuery, { getResourceKey } from 'src/api/hooks/useApiQuery';
 import useSocketChannel from 'src/api/socket/useSocketChannel';

@@ -3,11 +3,10 @@
 import { Flex } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
+import { route } from 'nextjs-routes';
 import React, { useEffect, useMemo } from 'react';
 
 import type { MarketplaceApp } from 'src/features/marketplace/types/client';
-
-import { route } from 'nextjs-routes';
 
 import useApiFetch from 'src/api/hooks/useApiFetch';
 import useFetch from 'src/api/hooks/useFetch';

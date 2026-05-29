@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Flex, chakra } from '@chakra-ui/react';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { Pool } from 'src/features/dex-pools/types/api';
-
-import { route } from 'nextjs-routes';
 
 import * as TokenEntity from 'src/slices/token/components/entity/TokenEntity';
 

@@ -6,11 +6,11 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import type { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
+import type { Route } from 'nextjs-routes';
 import React from 'react';
 
 import type { NextPageWithLayout } from 'src/server/types';
 
-import type { Route } from 'nextjs-routes';
 import PageMetadata from 'src/server/PageMetadata';
 
 import getSocketUrl from 'src/api/get-socket-url';

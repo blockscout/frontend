@@ -13,6 +13,7 @@ import useFetchReport from 'src/features/solidity-scan/hooks/useFetchReport';
 
 // eslint-disable-next-line no-restricted-imports
 import solidityScanIcon from 'src/sprite/icons/brands/solidity_scan.svg';
+
 import { Link } from 'src/toolkit/chakra/link';
 import { PopoverBody, PopoverContent, PopoverRoot } from 'src/toolkit/chakra/popover';
 import { useDisclosure } from 'src/toolkit/hooks/useDisclosure';

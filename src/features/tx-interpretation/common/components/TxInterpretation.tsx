@@ -3,6 +3,7 @@
 import type { BoxProps } from '@chakra-ui/react';
 import { Box, chakra } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { ClusterChainConfig } from 'src/features/multichain/types/client';
@@ -12,8 +13,6 @@ import type {
   TxInterpretationVariableString,
 } from 'src/features/tx-interpretation/common/types/api';
 import type { AddressParam } from 'src/slices/address/types/api';
-
-import { route } from 'nextjs-routes';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import { currencyUnits } from 'src/slices/chain/units';

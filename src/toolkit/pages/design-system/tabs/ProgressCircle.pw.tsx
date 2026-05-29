@@ -1,8 +1,9 @@
 import React from 'react';
 
+import { TabsRoot } from 'src/toolkit/chakra/tabs';
+
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';
-import { TabsRoot } from 'src/toolkit/chakra/tabs';
 
 import ProgressCircle from './ProgressCircle';
 

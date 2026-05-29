@@ -2,9 +2,8 @@
 
 import { Box, Flex } from '@chakra-ui/react';
 import { clamp } from 'es-toolkit';
-import React from 'react';
-
 import { route } from 'nextjs-routes';
+import React from 'react';
 
 import { AddressHighlightProvider } from 'src/slices/address/contexts/address-highlight';
 import { useHomeRpcDataContext } from 'src/slices/home/contexts/rpc-data-context';

@@ -2,11 +2,10 @@
 
 import type { JsxStyleProps } from '@chakra-ui/react';
 import { chakra, Grid, HStack } from '@chakra-ui/react';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { InterchainMessage } from '@blockscout/interchain-indexer-types';
-
-import { route } from 'nextjs-routes';
 
 import AddressEntityInterchain from 'src/slices/address/components/entity/AddressEntityInterchain';
 import TxEntityInterchain from 'src/slices/tx/components/entity/TxEntityInterchain';

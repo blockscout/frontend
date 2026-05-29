@@ -5,9 +5,9 @@ import React from 'react';
 
 import config from 'src/config';
 import hexToBase64 from 'src/shared/data/transformers/hex-to-base64';
-
 // eslint-disable-next-line no-restricted-imports
 import celeniumIcon from 'src/sprite/icons/brands/celenium.svg';
+
 import { Link } from 'src/toolkit/chakra/link';
 
 const feature = config.features.rollup;

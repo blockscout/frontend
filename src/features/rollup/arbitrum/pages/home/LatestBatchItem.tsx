@@ -1,9 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box, Flex } from '@chakra-ui/react';
-import React from 'react';
-
 import { route } from 'nextjs-routes';
+import React from 'react';
 
 import BatchEntityL2 from 'src/features/rollup/common/components/BatchEntityL2';
 

@@ -3,11 +3,10 @@
 import { useClickAway } from '@uidotdev/usehooks';
 import { debounce } from 'es-toolkit';
 import { useRouter } from 'next/router';
-import type { FormEvent } from 'react';
-import React from 'react';
-
 import type { Route } from 'nextjs-routes';
 import { route } from 'nextjs-routes';
+import type { FormEvent } from 'react';
+import React from 'react';
 
 import { getRecentSearchKeywords, saveToRecentKeywords } from 'src/slices/search/utils/recent-search-keywords';
 

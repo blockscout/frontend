@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { chakra, Flex } from '@chakra-ui/react';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { MarketplaceApp } from 'src/features/marketplace/types/client';
-
-import { route } from 'nextjs-routes';
 
 import { useAppContext } from 'src/shell/app/context';
 

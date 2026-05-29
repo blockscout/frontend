@@ -2,9 +2,8 @@
 
 /* eslint-disable max-len */
 import { Box, Flex, List, chakra } from '@chakra-ui/react';
-import React from 'react';
-
 import { route } from 'nextjs-routes';
+import React from 'react';
 
 import Puzzle15 from 'src/features/easter-eggs/components/puzzle-15/Puzzle15';
 

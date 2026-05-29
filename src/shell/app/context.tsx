@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import type { Route } from 'nextjs-routes';
 import React, { createContext, useContext } from 'react';
 
-import type { Route } from 'nextjs-routes';
 import type { Props as PageProps } from 'src/server/getServerSideProps/handlers';
 
 type Props = {

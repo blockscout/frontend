@@ -2,11 +2,10 @@
 
 import { chakra, Box, Flex, Text, VStack, HStack } from '@chakra-ui/react';
 import { upperFirst } from 'es-toolkit';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { Block } from 'src/slices/block/types/api';
-
-import { route } from 'nextjs-routes';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
 

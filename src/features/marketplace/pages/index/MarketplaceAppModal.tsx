@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box, Flex, Text } from '@chakra-ui/react';
+import { route } from 'nextjs-routes';
 import React, { useCallback } from 'react';
 
 import type { MarketplaceApp } from 'src/features/marketplace/types/client';
-
-import { route } from 'nextjs-routes';
 
 import config from 'src/config';
 import CopyToClipboard from 'src/shared/texts/CopyToClipboard';

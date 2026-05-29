@@ -2,11 +2,10 @@
 
 import { Flex, Box, Text } from '@chakra-ui/react';
 import { upperFirst } from 'es-toolkit';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { PaginationParams } from 'src/shared/pagination/types';
-
-import { route } from 'nextjs-routes';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
 

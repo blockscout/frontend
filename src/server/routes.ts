@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { ExternalChain } from 'src/shared/external-chains/types';
-
 import type { Route } from 'nextjs-routes';
 import { route as nextjsRoute } from 'nextjs-routes';
+
+import type { ExternalChain } from 'src/shared/external-chains/types';
 
 import { stripTrailingSlash } from 'src/toolkit/utils/url';
 

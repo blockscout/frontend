@@ -1,9 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { chakra } from '@chakra-ui/react';
-import React, { useCallback } from 'react';
-
 import { route } from 'nextjs-routes';
+import React, { useCallback } from 'react';
 
 import { useRewardsContext } from 'src/features/rewards/context';
 

@@ -2,9 +2,8 @@
 
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
-import React from 'react';
-
 import type { Route } from 'nextjs-routes';
+import React from 'react';
 
 import useApiFetch from 'src/api/hooks/useApiFetch';
 import { getResourceKey } from 'src/api/hooks/useApiQuery';

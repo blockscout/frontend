@@ -1,10 +1,9 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type * as bens from '@blockscout/bens-types';
-
-import { route } from 'nextjs-routes';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import TxEntity from 'src/slices/tx/components/entity/TxEntity';

@@ -2,11 +2,10 @@
 
 import { Flex, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { MarketplaceApp } from 'src/features/marketplace/types/client';
-
-import { route } from 'nextjs-routes';
 
 import SearchBarSuggestItemLink from 'src/slices/search/components/search-bar/SearchBarSuggest/SearchBarSuggestItemLink';
 

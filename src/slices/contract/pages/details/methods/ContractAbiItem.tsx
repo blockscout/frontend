@@ -1,12 +1,11 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box } from '@chakra-ui/react';
+import { route } from 'nextjs-routes';
 import React from 'react';
 import { Element } from 'react-scroll';
 
 import type { FormSubmitHandler, SmartContractMethod } from './types';
-
-import { route } from 'nextjs-routes';
 
 import config from 'src/config';
 import CopyToClipboard from 'src/shared/texts/CopyToClipboard';

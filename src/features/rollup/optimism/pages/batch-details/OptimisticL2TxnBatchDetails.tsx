@@ -2,11 +2,10 @@
 
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { OptimismL2TxnBatch } from 'src/features/rollup/optimism/types/api';
-
-import { route } from 'nextjs-routes';
 
 import type { ResourceError } from 'src/api/resources';
 

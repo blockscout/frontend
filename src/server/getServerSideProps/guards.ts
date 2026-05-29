@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
+import type { Route } from 'nextjs-routes';
 
 import type { RollupType } from 'src/features/rollup/common/types/config';
 
-import type { Route } from 'nextjs-routes';
 import type { Props } from 'src/server/getServerSideProps/handlers';
 
 import config from 'src/config';

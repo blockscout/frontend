@@ -6,9 +6,8 @@ import {
   Grid,
   GridItem,
 } from '@chakra-ui/react';
-import React from 'react';
-
 import { route } from 'nextjs-routes';
+import React from 'react';
 
 import SocketNewItemsNotice from 'src/api/socket/SocketNewItemsNotice';
 

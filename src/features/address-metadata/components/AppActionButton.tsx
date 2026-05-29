@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Text, chakra } from '@chakra-ui/react';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { AddressMetadataTagFormatted } from 'src/features/address-metadata/types/client';
-
-import { route } from 'nextjs-routes';
 
 import config from 'src/config';
 import * as mixpanel from 'src/services/mixpanel';

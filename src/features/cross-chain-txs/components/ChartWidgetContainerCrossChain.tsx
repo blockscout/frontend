@@ -1,9 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { chakra } from '@chakra-ui/react';
-import React from 'react';
-
 import { route } from 'nextjs-routes';
+import React from 'react';
 
 import type { Props as ChartWidgetContainerProps } from 'src/features/chain-stats/components/ChartWidgetContainer';
 import { getChartUrl } from 'src/features/chain-stats/utils/chart';

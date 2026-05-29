@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { test, expect } from 'playwright/lib';
 import type { LineChartWidgetProps } from 'src/toolkit/components/charts/line';
+
+import { test, expect } from 'playwright/lib';
 
 import LineChartWidget from './LineChartWidget.pwstory';
 

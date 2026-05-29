@@ -2,11 +2,10 @@
 
 import { Flex } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import * as bens from '@blockscout/bens-types';
-
-import { route } from 'nextjs-routes';
 
 import type { ResourceError } from 'src/api/resources';
 

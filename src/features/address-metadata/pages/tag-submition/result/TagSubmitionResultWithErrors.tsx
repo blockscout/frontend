@@ -2,11 +2,10 @@
 
 import { Box, Flex, Grid, GridItem } from '@chakra-ui/react';
 import { pickBy } from 'es-toolkit';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { FormSubmitResultGrouped } from '../types';
-
-import { route } from 'nextjs-routes';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 

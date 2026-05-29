@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box, Flex, VStack } from '@chakra-ui/react';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { Block } from 'src/slices/block/types/api';
-
-import { route } from 'nextjs-routes';
 
 import { BLOCK } from 'src/slices/block/stubs/block';
 import { useHomeRpcDataContext } from 'src/slices/home/contexts/rpc-data-context';

@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { chakra, VStack } from '@chakra-ui/react';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { InterchainMessage } from '@blockscout/interchain-indexer-types';
-
-import { route } from 'nextjs-routes';
 
 import AddressEntityInterchain from 'src/slices/address/components/entity/AddressEntityInterchain';
 import AddressFromToIcon from 'src/slices/address/components/from-to/AddressFromToIcon';

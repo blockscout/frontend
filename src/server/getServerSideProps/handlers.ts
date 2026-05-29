@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
+import type { Route } from 'nextjs-routes';
 
 import type { AdBannerProviders } from 'src/features/ads/banner/types/config';
 
-import type { Route } from 'nextjs-routes';
 import { CSP_NONCE_HEADER } from 'src/server/constants';
 
 import type * as metadata from 'src/shell/metadata';

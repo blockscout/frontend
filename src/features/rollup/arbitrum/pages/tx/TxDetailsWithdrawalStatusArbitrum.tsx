@@ -1,12 +1,11 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Text } from '@chakra-ui/react';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { ArbitrumTransactionMessageStatus } from 'src/features/rollup/arbitrum/types/api';
 import type { Transaction } from 'src/slices/tx/types/api';
-
-import { route } from 'nextjs-routes';
 
 import TxEntityL1 from 'src/features/rollup/common/components/TxEntityL1';
 import { layerLabels } from 'src/features/rollup/common/utils/layer';

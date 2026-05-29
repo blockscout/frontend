@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Flex, Text } from '@chakra-ui/react';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { FlashblockItem } from 'src/features/flashblocks/types/client';
-
-import { route } from 'nextjs-routes';
 
 import FlashblockEntity from 'src/features/flashblocks/components/FlashblockEntity';
 

@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { upperFirst } from 'es-toolkit';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { MultichainProviderConfigParsed } from 'src/features/multichain-button/types/client';
-
-import { route } from 'nextjs-routes';
 
 import TextSeparator from 'src/shared/texts/TextSeparator';
 

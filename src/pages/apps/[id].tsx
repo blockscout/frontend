@@ -2,13 +2,13 @@
 
 import type { GetServerSideProps } from 'next';
 import dynamic from 'next/dynamic';
+import type { Route } from 'nextjs-routes';
 import fetch from 'node-fetch';
 import React from 'react';
 
 import type { MarketplaceApp } from 'src/features/marketplace/types/client';
 import type { NextPageWithLayout } from 'src/server/types';
 
-import type { Route } from 'nextjs-routes';
 import type { Props } from 'src/server/getServerSideProps/handlers';
 import * as gSSP from 'src/server/getServerSideProps/main';
 import PageNextJs from 'src/server/PageNextJs';

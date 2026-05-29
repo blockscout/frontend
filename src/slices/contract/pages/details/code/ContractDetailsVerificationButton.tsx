@@ -1,8 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import React from 'react';
-
 import { route } from 'nextjs-routes';
+import React from 'react';
 
 import { useMultichainContext } from 'src/features/multichain/context';
 

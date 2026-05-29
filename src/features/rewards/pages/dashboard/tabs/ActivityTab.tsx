@@ -1,9 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Flex, Text, chakra } from '@chakra-ui/react';
-import { useCallback, useMemo, useState } from 'react';
-
 import { route } from 'nextjs-routes';
+import { useCallback, useMemo, useState } from 'react';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
 

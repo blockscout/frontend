@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import type { Route } from 'nextjs-routes';
+
 import type { LineChart } from '@blockscout/stats-types';
 import type { TokenInfo } from 'src/slices/token/types/api';
-
-import type { Route } from 'nextjs-routes';
 
 /* eslint-disable @stylistic/indent */
 export type ApiData<Pathname extends Route['pathname']> =

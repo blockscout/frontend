@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
-
 import type { Route } from 'nextjs-routes';
 
 import multichainConfig from 'src/features/multichain/chains-config';

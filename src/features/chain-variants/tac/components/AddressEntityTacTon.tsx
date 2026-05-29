@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { chakra } from '@chakra-ui/react';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import * as tac from '@blockscout/tac-operation-lifecycle-types';
-
-import { route } from 'nextjs-routes';
 
 import * as AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 

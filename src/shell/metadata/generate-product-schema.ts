@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import type { Route } from 'nextjs-routes';
+
 import type { ProductSchema, ApiData } from './types';
 import type { RouteParams } from 'src/server/types';
-
-import type { Route } from 'nextjs-routes';
 
 import config from 'src/config';
 

@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Text } from '@chakra-ui/react';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { DeFiDropdownItem as TDeFiDropdownItem } from '../types/client';
-
-import { route } from 'nextjs-routes';
 
 import SpriteIcon from 'src/sprite/SpriteIcon';
 

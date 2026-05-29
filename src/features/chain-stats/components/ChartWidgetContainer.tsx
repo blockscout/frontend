@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { chakra } from '@chakra-ui/react';
+import { route, type Route } from 'nextjs-routes';
 import React from 'react';
 
 import type { StatsIntervalIds } from '../types/client';
-
-import { route, type Route } from 'nextjs-routes';
 
 import { useChartsConfig } from 'src/shared/stats/line-chart-config';
 

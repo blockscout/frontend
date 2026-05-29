@@ -2,11 +2,10 @@
 
 import { Grid, chakra } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { ClustersByAddressResponse } from 'src/features/name-services/clusters/types/api';
-
-import { route } from 'nextjs-routes';
 
 import type { ResourceError } from 'src/api/resources';
 

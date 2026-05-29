@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Grid, Text, chakra } from '@chakra-ui/react';
+import { route } from 'nextjs-routes';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm, FormProvider } from 'react-hook-form';
@@ -8,8 +9,6 @@ import { useForm, FormProvider } from 'react-hook-form';
 import type { FormFields } from './types';
 import type { SocketMessage } from 'src/api/socket/types';
 import type { SmartContract, SmartContractVerificationMethodApi } from 'src/slices/contract/types/api';
-
-import { route } from 'nextjs-routes';
 
 import useApiFetch from 'src/api/hooks/useApiFetch';
 import useSocketChannel from 'src/api/socket/useSocketChannel';

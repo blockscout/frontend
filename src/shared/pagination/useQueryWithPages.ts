@@ -4,12 +4,11 @@ import type { UseQueryResult } from '@tanstack/react-query';
 import { useQueryClient } from '@tanstack/react-query';
 import { clamp, omit } from 'es-toolkit';
 import { useRouter } from 'next/router';
+import type { Route } from 'nextjs-routes';
 import React, { useCallback } from 'react';
 import { animateScroll } from 'react-scroll';
 
 import type { PaginationParams } from './types';
-
-import type { Route } from 'nextjs-routes';
 
 import getResourceParams from 'src/api/get-resource-params';
 import type { Params as UseApiQueryParams } from 'src/api/hooks/useApiQuery';

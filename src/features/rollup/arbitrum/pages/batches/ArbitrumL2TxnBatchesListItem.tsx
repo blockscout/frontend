@@ -1,10 +1,9 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { ArbitrumL2TxnBatchesItem } from '../../types/api';
-
-import { route } from 'nextjs-routes';
 
 import BatchEntityL2 from 'src/features/rollup/common/components/BatchEntityL2';
 import BlockEntityL1 from 'src/features/rollup/common/components/BlockEntityL1';

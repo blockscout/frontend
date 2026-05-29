@@ -1,10 +1,9 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box, Flex, Text, chakra } from '@chakra-ui/react';
-import React from 'react';
-
 import type { Route } from 'nextjs-routes';
 import { route } from 'nextjs-routes';
+import React from 'react';
 
 import type { IconName } from 'src/sprite/SpriteIcon';
 import SpriteIcon from 'src/sprite/SpriteIcon';

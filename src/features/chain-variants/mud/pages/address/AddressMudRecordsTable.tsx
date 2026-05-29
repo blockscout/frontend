@@ -2,11 +2,10 @@
 
 import { Box, Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { AddressMudRecords, AddressMudRecordsFilter, AddressMudRecordsSorting } from 'src/features/chain-variants/mud/types/api';
-
-import { route } from 'nextjs-routes';
 
 import Time from 'src/shared/date-and-time/Time';
 import useIsMobile from 'src/shared/hooks/useIsMobile';

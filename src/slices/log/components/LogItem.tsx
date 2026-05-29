@@ -1,12 +1,11 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Grid, GridItem } from '@chakra-ui/react';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { ClusterChainConfig } from 'src/features/multichain/types/client';
 import type { TransactionLog } from 'src/slices/log/types/api';
-
-import { route } from 'nextjs-routes';
 
 // import searchIcon from 'src/sprite/icons/search.svg';
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';

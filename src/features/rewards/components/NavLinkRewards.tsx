@@ -1,9 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { useRouter } from 'next/router';
-import React, { useCallback } from 'react';
-
 import type { Route } from 'nextjs-routes';
+import React, { useCallback } from 'react';
 
 import NavLink from 'src/shell/navigation/vertical/NavLink';
 

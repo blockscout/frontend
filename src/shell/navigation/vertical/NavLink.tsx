@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { HStack, Box, useBreakpointValue, chakra } from '@chakra-ui/react';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { NavItem } from '../types';
-
-import { route } from 'nextjs-routes';
 
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 

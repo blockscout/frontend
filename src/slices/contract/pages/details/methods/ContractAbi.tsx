@@ -2,11 +2,10 @@
 
 import { Box, Flex } from '@chakra-ui/react';
 import { range } from 'es-toolkit';
+import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { SmartContractMethod } from './types';
-
-import { route } from 'nextjs-routes';
 
 import { AccordionRoot } from 'src/toolkit/chakra/accordion';
 import { Link } from 'src/toolkit/chakra/link';

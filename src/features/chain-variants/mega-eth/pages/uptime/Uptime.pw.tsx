@@ -2,9 +2,10 @@ import React from 'react';
 
 import config from 'src/config';
 
+import { MINUTE, SECOND } from 'src/toolkit/utils/consts';
+
 import { test, expect } from 'playwright/lib';
 import { port as socketPort } from 'playwright/utils/socket';
-import { MINUTE, SECOND } from 'src/toolkit/utils/consts';
 
 import Uptime from './Uptime';
 
