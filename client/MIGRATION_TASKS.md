@@ -335,7 +335,7 @@ Delete them. Fix any remaining lint warnings that referenced legacy paths.
 
 ## Stage 10 — Move everything into `src/`
 
-### 10-1 · [ ] Structural rename: consolidate all application source under `src/`
+### 10-1 · [~] Structural rename: consolidate all application source under `src/` · [#3499](https://github.com/blockscout/frontend/issues/3499)
 
 **Scope:** Move all remaining application directories into `src/` and rename `client/` → `src/`. Simplify ESLint boundary rules in the same PR. See `ARCH_REDESIGN.md §7`.
 
