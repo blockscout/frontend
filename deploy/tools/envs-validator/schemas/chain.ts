@@ -1,7 +1,7 @@
 import * as yup from 'yup';
 import { urlTest } from '../utils';
-import { replaceQuotes } from 'client/config/utils/envs';
-import type { NetworkVerificationTypeEnvs } from 'types/networks';
+import { replaceQuotes } from 'src/config/utils/envs';
+import type { NetworkVerificationTypeEnvs } from 'src/slices/chain/verification-type/types/config';
 
 // Blockchain parameters schema
 export default yup.object({

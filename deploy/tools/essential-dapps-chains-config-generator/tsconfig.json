@@ -10,8 +10,7 @@
     "outDir": "./dist",
     "rootDir": "../../../",
     "paths": {
-      "client/*": ["../../../client/*"],
-      "toolkit/*": ["../../../toolkit/*"],
+      "src/*": ["../../../src/*"],
     },
     "types": ["node"],
     "allowImportingTsExtensions": true,

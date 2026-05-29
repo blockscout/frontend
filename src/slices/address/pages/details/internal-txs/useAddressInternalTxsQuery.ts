@@ -1,0 +1,63 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
+import { useRouter } from 'next/router';
+import React from 'react';
+
+import { AddressFromToFilterValues, type AddressFromToFilter } from 'src/slices/address/types/api';
+
+import { INTERNAL_TX } from 'src/slices/internal-tx/stubs';
+
+import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import { generateListStub } from 'src/shared/pagination/utils';
+import getFilterValueFromQuery from 'src/shared/router/get-filter-value-from-query';
+import getQueryParamString from 'src/shared/router/get-query-param-string';
+
+const getFilterValue = (getFilterValueFromQuery<AddressFromToFilter>).bind(null, AddressFromToFilterValues);
+
+interface Props {
+  enabled: boolean;
+  isMultichain?: boolean;
+  chainIds?: Array<string>;
+}
+
+export default function useAddressInternalTxsQuery({ enabled, isMultichain, chainIds }: Props) {
+  const router = useRouter();
+  const hash = getQueryParamString(router.query.hash);
+  const [ filterValue, setFilterValue ] = React.useState<AddressFromToFilter>(getFilterValue(router.query.filter));
+
+  const query = useQueryWithPages({
+    resourceName: 'core:address_internal_txs',
+    pathParams: { hash },
+    filters: { filter: filterValue },
+    options: {
+      enabled,
+      placeholderData: generateListStub<'core:address_internal_txs'>(
+        INTERNAL_TX,
+        50,
+        {
+          next_page_params: {
+            block_number: 8987561,
+            index: 2,
+            items_count: 50,
+            transaction_index: 67,
+          },
+        },
+      ),
+    },
+    isMultichain,
+    chainIds,
+  });
+
+  const onFilterChange = React.useCallback((val: string | Array<string>) => {
+    const newVal = getFilterValue(val);
+    setFilterValue(newVal);
+    query.onFilterChange({ filter: newVal });
+  }, [ query ]);
+
+  return React.useMemo(() => ({
+    hash,
+    query,
+    filterValue,
+    onFilterChange,
+  }), [ query, filterValue, onFilterChange, hash ]);
+}

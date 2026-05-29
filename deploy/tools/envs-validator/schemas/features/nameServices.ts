@@ -1,6 +1,6 @@
 import { urlTest } from "../../utils";
 import * as yup from 'yup';
-import { replaceQuotes } from 'client/config/utils/envs';
+import { replaceQuotes } from 'src/config/utils/envs';
 
 export const nameServicesSchema = yup
   .object()

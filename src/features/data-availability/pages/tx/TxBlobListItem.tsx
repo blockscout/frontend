@@ -1,0 +1,44 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
+import React from 'react';
+
+import type { TxBlob } from 'src/features/data-availability/types/api';
+
+import BlobDataType from 'src/features/data-availability/components/BlobDataType';
+import BlobEntity from 'src/features/data-availability/components/entity/BlobEntity';
+
+import ListItemMobileGrid from 'src/shared/lists/ListItemMobileGrid';
+
+import { Skeleton } from 'src/toolkit/chakra/skeleton';
+
+interface Props {
+  data: TxBlob;
+  isLoading?: boolean;
+}
+
+const TxBlobListItem = ({ data, isLoading }: Props) => {
+  const size = data.blob_data ? data.blob_data.replace('0x', '').length / 2 : '-';
+
+  return (
+    <ListItemMobileGrid.Container>
+      <ListItemMobileGrid.Label isLoading={ isLoading }>Blob hash</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Value>
+        <BlobEntity hash={ data.hash } isLoading={ isLoading }/>
+      </ListItemMobileGrid.Value>
+
+      <ListItemMobileGrid.Label isLoading={ isLoading }>Data type</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Value>
+        { data.blob_data ? <BlobDataType isLoading={ isLoading } data={ data.blob_data }/> : '-' }
+      </ListItemMobileGrid.Value>
+
+      <ListItemMobileGrid.Label isLoading={ isLoading }>Size, bytes</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Value>
+        <Skeleton loading={ isLoading }>
+          { size.toLocaleString() }
+        </Skeleton>
+      </ListItemMobileGrid.Value>
+    </ListItemMobileGrid.Container>
+  );
+};
+
+export default React.memo(TxBlobListItem);

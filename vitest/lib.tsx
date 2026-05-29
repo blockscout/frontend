@@ -4,11 +4,11 @@ import type { RenderOptions } from '@testing-library/react';
 import { render } from '@testing-library/react';
 import React from 'react';
 
-import { SocketProvider } from 'client/api/socket/context';
+import { SocketProvider } from 'src/api/socket/context';
 
-import { AppContextProvider } from 'client/shell/app/context';
+import { AppContextProvider } from 'src/shell/app/context';
 
-import 'client/shared/i18n/set-locale';
+import 'src/shared/i18n/set-locale';
 
 const PAGE_PROPS = {
   cookies: '',

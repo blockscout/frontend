@@ -1,5 +1,5 @@
 packages:
-  - 'toolkit/package'
+  - 'src/toolkit/package'
   - 'deploy/tools/envs-validator'
   - 'deploy/tools/feature-reporter'
   - 'deploy/tools/favicon-generator'

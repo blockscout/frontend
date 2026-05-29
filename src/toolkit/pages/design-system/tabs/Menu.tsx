@@ -1,0 +1,54 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
+import React from 'react';
+
+import SpriteIcon from 'src/sprite/SpriteIcon';
+
+import { IconButton } from 'src/toolkit/chakra/icon-button';
+import { MenuContent, MenuItem, MenuRoot, MenuTrigger } from 'src/toolkit/chakra/menu';
+
+import { Section, Container, SectionHeader, SamplesStack, Sample } from '../parts';
+
+const MenuShowcase = () => {
+
+  return (
+    <Container value="menu">
+      <Section>
+        <SectionHeader>Variant</SectionHeader>
+        <SamplesStack>
+          <Sample label="variant: subtle">
+            <MenuRoot>
+              <MenuTrigger asChild>
+                <IconButton variant="icon_background" size="md">
+                  <SpriteIcon name="dots"/>
+                </IconButton>
+              </MenuTrigger>
+              <MenuContent>
+                <MenuItem value="refresh-metadata">Refresh metadata</MenuItem>
+                <MenuItem value="add-token-info">Add token info</MenuItem>
+                <MenuItem value="add-private-tag">Add private tag</MenuItem>
+                <MenuItem value="add-public-tag">Add public tag</MenuItem>
+              </MenuContent>
+            </MenuRoot>
+
+            <MenuRoot>
+              <MenuTrigger asChild>
+                <IconButton variant="icon_background" size="md" loadingSkeleton>
+                  <SpriteIcon name="dots"/>
+                </IconButton>
+              </MenuTrigger>
+              <MenuContent>
+                <MenuItem value="refresh-metadata">Refresh metadata</MenuItem>
+                <MenuItem value="add-token-info">Add token info</MenuItem>
+                <MenuItem value="add-private-tag">Add private tag</MenuItem>
+                <MenuItem value="add-public-tag">Add public tag</MenuItem>
+              </MenuContent>
+            </MenuRoot>
+          </Sample>
+        </SamplesStack>
+      </Section>
+    </Container>
+  );
+};
+
+export default React.memo(MenuShowcase);

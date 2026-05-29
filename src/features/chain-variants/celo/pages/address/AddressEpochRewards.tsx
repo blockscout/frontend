@@ -1,0 +1,104 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
+import { Box } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
+import React from 'react';
+
+import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
+
+import { EPOCH_REWARD_ITEM } from 'src/features/chain-variants/celo/stubs/address';
+import CsvExport from 'src/features/csv-export/components/CsvExport';
+
+import useIsMounted from 'src/shared/hooks/useIsMounted';
+import DataList from 'src/shared/lists/DataList';
+import Pagination from 'src/shared/pagination/Pagination';
+import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import { generateListStub } from 'src/shared/pagination/utils';
+import getQueryParamString from 'src/shared/router/get-query-param-string';
+
+import AddressEpochRewardsListItem from './AddressEpochRewardsListItem';
+import AddressEpochRewardsTable from './AddressEpochRewardsTable';
+
+type Props = {
+  shouldRender?: boolean;
+  isQueryEnabled?: boolean;
+};
+
+const AddressEpochRewards = ({ shouldRender = true, isQueryEnabled = true }: Props) => {
+  const router = useRouter();
+  const isMounted = useIsMounted();
+
+  const hash = getQueryParamString(router.query.hash);
+
+  const rewardsQuery = useQueryWithPages({
+    resourceName: 'core:address_epoch_rewards',
+    pathParams: {
+      hash,
+    },
+    options: {
+      enabled: isQueryEnabled && Boolean(hash),
+      placeholderData: generateListStub<'core:address_epoch_rewards'>(EPOCH_REWARD_ITEM, 50, { next_page_params: {
+        amount: '1',
+        items_count: 50,
+        type: 'voter',
+        associated_account_address_hash: '1',
+        epoch_number: 10355938,
+      } }),
+    },
+  });
+
+  if (!isMounted || !shouldRender) {
+    return null;
+  }
+
+  const content = rewardsQuery.data?.items ? (
+    <>
+      <Box hideBelow="lg">
+        <AddressEpochRewardsTable
+          items={ rewardsQuery.data.items }
+          top={ rewardsQuery.pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
+          isLoading={ rewardsQuery.isPlaceholderData }
+        />
+      </Box>
+      <Box hideFrom="lg">
+        { rewardsQuery.data.items.map((item, index) => (
+          <AddressEpochRewardsListItem
+            key={ item.epoch_number + item.type + item.account.hash + item.associated_account.hash + (rewardsQuery.isPlaceholderData ? String(index) : '') }
+            item={ item }
+            isLoading={ rewardsQuery.isPlaceholderData }
+          />
+        )) }
+      </Box>
+    </>
+  ) : null;
+
+  const actionBar = (
+    <ActionBar mt={ -6 }>
+      <CsvExport
+        type="address_epoch_rewards"
+        resourceName="core:address_csv_export_celo_election_rewards"
+        pathParams={{ hash }}
+        loadingInitial={ rewardsQuery.pagination.isLoading }
+      />
+      { rewardsQuery.pagination.isVisible && (
+        <Pagination
+          ml="auto"
+          { ...rewardsQuery.pagination }
+        />
+      ) }
+    </ActionBar>
+  );
+
+  return (
+    <DataList
+      isError={ rewardsQuery.isError }
+      itemsNum={ rewardsQuery.data?.items?.length }
+      emptyText="There are no epoch rewards for this address."
+      actionBar={ actionBar }
+    >
+      { content }
+    </DataList>
+  );
+};
+
+export default AddressEpochRewards;

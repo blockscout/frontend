@@ -1,0 +1,29 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
+import type { TxExternalTxsConfig } from 'src/features/external-txs/types/client';
+
+import { getEnvValue, parseEnvJson } from 'src/config/utils/envs';
+import type { Feature } from 'src/config/utils/features';
+
+const externalTransactionsConfig = parseEnvJson<TxExternalTxsConfig>(getEnvValue('NEXT_PUBLIC_TX_EXTERNAL_TRANSACTIONS_CONFIG'));
+
+const title = 'External transactions';
+
+const config: Feature<{ chainName: string; chainLogoUrl: string; explorerUrlTemplate: string }> = (() => {
+  if (externalTransactionsConfig) {
+    return Object.freeze({
+      title,
+      isEnabled: true,
+      chainName: externalTransactionsConfig.chain_name,
+      chainLogoUrl: externalTransactionsConfig.chain_logo_url,
+      explorerUrlTemplate: externalTransactionsConfig.explorer_url_template,
+    });
+  }
+
+  return Object.freeze({
+    title,
+    isEnabled: false,
+  });
+})();
+
+export default config;

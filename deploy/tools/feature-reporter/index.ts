@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import config from 'client/config';
+import config from 'src/config';
 
 run();
 

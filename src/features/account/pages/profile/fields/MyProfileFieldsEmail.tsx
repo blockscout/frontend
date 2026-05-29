@@ -1,0 +1,35 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
+import React from 'react';
+
+import type { FormFields } from '../types';
+
+import SpriteIcon from 'src/sprite/SpriteIcon';
+
+import { FormFieldEmail } from 'src/toolkit/components/forms/fields/FormFieldEmail';
+
+interface Props {
+  isReadOnly?: boolean;
+  defaultValue: string | undefined;
+}
+
+const MyProfileFieldsEmail = ({ isReadOnly, defaultValue }: Props) => {
+
+  return (
+    <FormFieldEmail<FormFields>
+      name="email"
+      placeholder="Email"
+      required
+      readOnly={ isReadOnly }
+      helperText="Email for watch list notifications and private tags"
+      group={{
+        endElement: ({ field }) => {
+          const isVerified = defaultValue && field.value === defaultValue;
+          return isVerified ? <SpriteIcon name="certified" boxSize={ 5 } color="green.500" mx={ 5 }/> : null;
+        },
+      }}
+    />
+  );
+};
+
+export default React.memo(MyProfileFieldsEmail);

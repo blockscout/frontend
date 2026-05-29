@@ -11,8 +11,7 @@ const TARGET_FILE = path.resolve(ROOT_DIR, './playwright/affected-tests.txt');
 const NON_EXISTENT_DEPS = [];
 
 const DIRECTORIES_WITH_TESTS = [
-  path.resolve(ROOT_DIR, './client'),
-  path.resolve(ROOT_DIR, './ui'),
+  path.resolve(ROOT_DIR, './src'),
 ];
 const VISITED = {};
 
@@ -60,12 +59,12 @@ async function getChangedFiles() {
 }
 
 function checkChangesInChakraTheme(changedFiles) {
-  const themeDir = path.resolve(ROOT_DIR, './toolkit/theme');
+  const themeDir = path.resolve(ROOT_DIR, './src/toolkit/theme');
   return changedFiles.some((file) => file.startsWith(themeDir));
 }
 
 function checkChangesInSvgSprite(changedFiles) {
-  const iconDir = path.resolve(ROOT_DIR, './icons');
+  const iconDir = path.resolve(ROOT_DIR, './src/icons');
   const areIconsChanged = changedFiles.some((file) => file.startsWith(iconDir));
 
   if (!areIconsChanged) {

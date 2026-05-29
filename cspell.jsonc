@@ -10,13 +10,13 @@
         ".git",
         "pnpm-lock.yaml",
         "configs/envs",
-        "client/features/chain-variants/zeta-chain/mocks/cctx.ts",
-        "client/features/address-metadata/mocks/tags.ts",
+        "src/features/chain-variants/zeta-chain/mocks/cctx.ts",
+        "src/features/address-metadata/mocks/tags.ts",
         "playwright/mocks/file_mock_with_very_long_name.json",
         "playwright/fixtures/rewards.ts",
         "public/static/capybara/index.js",
-        "client/toolkit/pages/design-system/utils.ts",
-        "client/features/external-txs/components/TxExternalTxs.pw.tsx"
+        "src/toolkit/pages/design-system/utils.ts",
+        "src/features/external-txs/components/TxExternalTxs.pw.tsx"
     ],
     "enableGlobDot": true,
     "ignoreRandomStrings": true,

@@ -94,7 +94,7 @@ jobs:
 
       - name: Verify build output
         run: |
-          cd ./toolkit/package
+          cd ./src/toolkit/package
           if [ ! -d "dist" ]; then
             echo "Build failed: dist directory not found"
             exit 1

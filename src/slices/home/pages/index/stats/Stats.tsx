@@ -1,0 +1,223 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
+import { Grid } from '@chakra-ui/react';
+import BigNumber from 'bignumber.js';
+import React from 'react';
+
+import useApiQuery from 'src/api/hooks/useApiQuery';
+
+import GasInfoTooltip from 'src/slices/gas/components/GasInfoTooltip';
+import GasPrice from 'src/slices/gas/components/GasPrice';
+import { useHomeDataContext } from 'src/slices/home/contexts/home-data-context';
+import { HOMEPAGE_STATS } from 'src/slices/home/stubs';
+import type { HomeStatsItem } from 'src/slices/home/utils/stats';
+import { homeStatsWidgetCommonStyles, isHomeStatsItemEnabled, sortHomeStatsItems } from 'src/slices/home/utils/stats';
+
+import { HOMEPAGE_STATS_MICROSERVICE } from 'src/features/chain-stats/stubs/home';
+import { layerLabels } from 'src/features/rollup/common/utils/layer';
+
+import config from 'src/config';
+import StatsWidget from 'src/shared/stats/StatsWidget';
+import { WEI } from 'src/shared/values/entity/utils';
+import SpriteIcon from 'src/sprite/SpriteIcon';
+
+import LatestBatchStatsWidget from './LatestBatchStatsWidget';
+import LatestBlockStatsWidget from './LatestBlockStatsWidget';
+import StatsDegraded from './StatsDegraded';
+
+const rollupFeature = config.features.rollup;
+const isOptimisticRollup = rollupFeature.isEnabled && rollupFeature.type === 'optimistic';
+const isArbitrumRollup = rollupFeature.isEnabled && rollupFeature.type === 'arbitrum';
+const isStatsFeatureEnabled = config.features.stats.isEnabled;
+
+const Stats = () => {
+  const [ hasGasTracker, setHasGasTracker ] = React.useState(config.features.gasTracker.isEnabled);
+  const { blocksQuery, latestBatchQuery } = useHomeDataContext();
+
+  // data from stats microservice is prioritized over data from stats api
+  const statsQuery = useApiQuery('stats:pages_main', {
+    queryOptions: {
+      refetchOnMount: false,
+      placeholderData: isStatsFeatureEnabled ? HOMEPAGE_STATS_MICROSERVICE : undefined,
+      enabled: isStatsFeatureEnabled,
+      refetchInterval: (query) => {
+        if (query.state.status === 'error') {
+          return false;
+        }
+
+        return config.apis.stats?.refetchInterval?.[ 'stats:pages_main' ];
+      },
+    },
+  });
+
+  const apiQuery = useApiQuery('core:stats', {
+    queryOptions: {
+      refetchOnMount: false,
+      placeholderData: HOMEPAGE_STATS,
+    },
+  });
+
+  const isPlaceholderData = statsQuery.isPlaceholderData || apiQuery.isPlaceholderData || blocksQuery?.isPlaceholderData;
+
+  React.useEffect(() => {
+    if (!isPlaceholderData && !apiQuery.data?.gas_prices?.average) {
+      setHasGasTracker(false);
+    }
+  // should run only after initial fetch
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ isPlaceholderData ]);
+
+  const hasStatsError = apiQuery.isError || (statsQuery.isError && !statsQuery.isRefetchError) || blocksQuery?.isError || latestBatchQuery?.isError;
+
+  if (hasStatsError) {
+    return <StatsDegraded/>;
+  }
+
+  const isLoading = isPlaceholderData || latestBatchQuery?.isPlaceholderData;
+
+  const apiData = apiQuery.data;
+  const statsData = statsQuery.data;
+
+  const items: Array<HomeStatsItem> = (() => {
+    if (!statsData && !apiData) {
+      return [];
+    }
+
+    const gasInfoTooltip = hasGasTracker && apiData?.gas_prices && apiData.gas_prices.average ? (
+      <GasInfoTooltip data={ apiData } dataUpdatedAt={ apiQuery.dataUpdatedAt }>
+        <SpriteIcon
+          isLoading={ isLoading }
+          name="info"
+          boxSize={ 5 }
+          flexShrink={ 0 }
+          cursor="pointer"
+          color="icon.secondary"
+          _hover={{ color: 'hover' }}
+        />
+      </GasInfoTooltip>
+    ) : null;
+
+    return [
+      latestBatchQuery?.data !== undefined && {
+        id: 'latest_batch' as const,
+        component: <LatestBatchStatsWidget isLoading={ Boolean(isLoading) } { ...homeStatsWidgetCommonStyles }/>,
+      },
+      (blocksQuery?.data?.[0]?.height ?? statsData?.total_blocks?.value ?? apiData?.total_blocks) && {
+        id: 'total_blocks' as const,
+        component: (
+          <LatestBlockStatsWidget
+            isLoading={ Boolean(isLoading) }
+            fallbackValue={ statsData?.total_blocks?.value ?? apiData?.total_blocks }
+            { ...homeStatsWidgetCommonStyles }
+          />
+        ),
+      },
+      (statsData?.average_block_time?.value || apiData?.average_block_time) && {
+        id: 'average_block_time' as const,
+        icon: 'clock-light' as const,
+        label: statsData?.average_block_time?.title || 'Average block time',
+        value: `${
+          statsData?.average_block_time?.value ?
+            Number(statsData.average_block_time.value).toFixed(1) :
+            (apiData!.average_block_time / 1000).toFixed(1)
+        }s`,
+        isLoading,
+      },
+      (statsData?.total_transactions?.value || apiData?.total_transactions) && {
+        id: 'total_txs' as const,
+        icon: 'transactions' as const,
+        label: statsData?.total_transactions?.title || 'Total transactions',
+        value: Number(statsData?.total_transactions?.value || apiData?.total_transactions).toLocaleString(),
+        href: { pathname: '/txs' as const },
+        isLoading,
+      },
+      (isArbitrumRollup && statsData?.total_operational_transactions?.value) && {
+        id: 'total_operational_txs' as const,
+        icon: 'transactions' as const,
+        label: statsData?.total_operational_transactions?.title || 'Total operational transactions',
+        value: Number(statsData?.total_operational_transactions?.value).toLocaleString(),
+        href: { pathname: '/txs' as const },
+        isLoading,
+      },
+      (isOptimisticRollup && statsData?.op_stack_total_operational_transactions?.value) && {
+        id: 'total_operational_txs' as const,
+        icon: 'transactions' as const,
+        label: statsData?.op_stack_total_operational_transactions?.title || 'Total operational transactions',
+        value: Number(statsData?.op_stack_total_operational_transactions?.value).toLocaleString(),
+        href: { pathname: '/txs' as const },
+        isLoading,
+      },
+      apiData?.last_output_root_size && {
+        id: 'latest_l1_state_batch' as const,
+        icon: 'txn_batches' as const,
+        label: `Latest ${ layerLabels.parent } state batch`,
+        value: apiData?.last_output_root_size,
+        href: { pathname: '/batches' as const },
+        isLoading,
+      },
+      (statsData?.total_addresses?.value || apiData?.total_addresses) && {
+        id: 'wallet_addresses' as const,
+        icon: 'wallet' as const,
+        label: statsData?.total_addresses?.title || 'Wallet addresses',
+        value: Number(statsData?.total_addresses?.value || apiData?.total_addresses).toLocaleString(),
+        isLoading,
+      },
+      hasGasTracker && apiData?.gas_prices && {
+        id: 'gas_tracker' as const,
+        icon: 'gas' as const,
+        label: 'Gas tracker',
+        value: apiData.gas_prices.average ? <GasPrice data={ apiData.gas_prices.average }/> : 'N/A',
+        hint: gasInfoTooltip,
+        isLoading,
+      },
+      apiData?.rootstock_locked_btc && {
+        id: 'btc_locked' as const,
+        icon: 'coins/bitcoin' as const,
+        label: 'BTC Locked in 2WP',
+        value: `${ BigNumber(apiData.rootstock_locked_btc).div(WEI).dp(0).toFormat() } RBTC`,
+        isLoading,
+      },
+      apiData?.celo && {
+        id: 'current_epoch' as const,
+        icon: 'hourglass' as const,
+        label: 'Current epoch',
+        value: `#${ apiData.celo.epoch_number }`,
+        href: { pathname: '/epochs/[number]' as const, query: { number: String(apiData.celo.epoch_number) } },
+        isLoading,
+      },
+    ]
+      .filter(Boolean)
+      .filter(isHomeStatsItemEnabled)
+      .sort(sortHomeStatsItems);
+  })();
+
+  if (items.length === 0) {
+    return null;
+  }
+
+  return (
+    <Grid
+      gridTemplateColumns="1fr 1fr"
+      gridGap={{ base: 1, lg: 2 }}
+      flexBasis="50%"
+      flexGrow={ 1 }
+    >
+      { items.map((item) => {
+        if ('component' in item) {
+          return <React.Fragment key={ item.id }>{ item.component }</React.Fragment>;
+        }
+
+        return (
+          <StatsWidget
+            key={ item.id }
+            { ...item }
+            { ...homeStatsWidgetCommonStyles }
+            isLoading={ isLoading }
+          />
+        );
+      }) }
+    </Grid>
+  );
+};
+
+export default Stats;

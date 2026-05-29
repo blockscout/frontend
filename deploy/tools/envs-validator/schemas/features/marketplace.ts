@@ -1,7 +1,7 @@
 import * as yup from 'yup';
-import type { MarketplaceAppBase, MarketplaceAppSocialInfo, EssentialDappsConfig, MarketplaceTitles } from 'client/features/marketplace/types/client';
+import type { MarketplaceAppBase, MarketplaceAppSocialInfo, EssentialDappsConfig, MarketplaceTitles } from 'src/features/marketplace/types/client';
 import { urlTest } from '../../utils';
-import { replaceQuotes } from 'client/config/utils/envs';
+import { replaceQuotes } from 'src/config/utils/envs';
 
 const marketplaceAppSchema: yup.ObjectSchema<MarketplaceAppBase & MarketplaceAppSocialInfo> = yup
   .object({

@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import * as essentialDappsChainsConfig from 'client/features/marketplace/chains-config/essential-dapps/config.nodejs';
-import * as multichainConfig from 'client/features/multichain/chains-config/config.nodejs';
+import * as essentialDappsChainsConfig from 'src/features/marketplace/chains-config/essential-dapps/config.nodejs';
+import * as multichainConfig from 'src/features/multichain/chains-config/config.nodejs';
 
-import config from 'client/config';
+import config from 'src/config';
 
 const marketplaceFeature = config.features.marketplace;
 

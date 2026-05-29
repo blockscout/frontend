@@ -1,0 +1,97 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
+import React from 'react';
+
+import type { ZkSyncBatch } from 'src/features/rollup/zk-sync/types/api';
+
+import TxEntityL1 from 'src/features/rollup/common/components/TxEntityL1';
+import { layerLabels } from 'src/features/rollup/common/utils/layer';
+
+import * as DetailedInfo from 'src/shared/detailed-info/DetailedInfo';
+import DetailedInfoTimestamp from 'src/shared/detailed-info/DetailedInfoTimestamp';
+
+import { Skeleton } from 'src/toolkit/chakra/skeleton';
+
+interface Props {
+  isLoading: boolean;
+  data: Pick<
+    ZkSyncBatch,
+  'commit_transaction_hash' |
+  'commit_transaction_timestamp' |
+  'prove_transaction_hash' |
+  'prove_transaction_timestamp' |
+  'execute_transaction_hash' |
+  'execute_transaction_timestamp'
+  >;
+}
+
+const ZkSyncL2TxnBatchHashesInfo = ({ isLoading, data }: Props) => {
+  return (
+    <>
+      <DetailedInfo.ItemLabel
+        hint={ `Hash of ${ layerLabels.parent } tx on which the batch was committed` }
+        isLoading={ isLoading }
+      >
+        Commit tx hash
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue multiRow >
+        { data.commit_transaction_hash ? (
+          <>
+            <TxEntityL1
+              isLoading={ isLoading }
+              hash={ data.commit_transaction_hash }
+              maxW="100%"
+            />
+            { data.commit_transaction_timestamp && (
+              <DetailedInfoTimestamp timestamp={ data.commit_transaction_timestamp } isLoading={ isLoading }/>
+            ) }
+          </>
+        ) : <Skeleton loading={ isLoading }>Pending</Skeleton> }
+      </DetailedInfo.ItemValue>
+
+      <DetailedInfo.ItemLabel
+        hint={ `Hash of ${ layerLabels.parent } tx on which the batch was proven` }
+        isLoading={ isLoading }
+      >
+        Prove tx hash
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue multiRow>
+        { data.prove_transaction_hash ? (
+          <>
+            <TxEntityL1
+              isLoading={ isLoading }
+              hash={ data.prove_transaction_hash }
+              maxW="100%"
+            />
+            { data.prove_transaction_timestamp && (
+              <DetailedInfoTimestamp timestamp={ data.prove_transaction_timestamp } isLoading={ isLoading }/>
+            ) }
+          </>
+        ) : <Skeleton loading={ isLoading }>Pending</Skeleton> }
+      </DetailedInfo.ItemValue>
+
+      <DetailedInfo.ItemLabel
+        hint={ `Hash of ${ layerLabels.parent } tx on which the batch was executed and finalized` }
+        isLoading={ isLoading }
+      >
+        Execute tx hash
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue multiRow>
+        { data.execute_transaction_hash ? (
+          <>
+            <TxEntityL1
+              isLoading={ isLoading }
+              hash={ data.execute_transaction_hash }
+              maxW="100%"
+            />
+            { data.execute_transaction_timestamp && (
+              <DetailedInfoTimestamp timestamp={ data.execute_transaction_timestamp } isLoading={ isLoading }/>
+            ) }
+          </>
+        ) : <Skeleton loading={ isLoading }>Pending</Skeleton> }
+      </DetailedInfo.ItemValue>
+    </>
+  );
+};
+
+export default React.memo(ZkSyncL2TxnBatchHashesInfo);

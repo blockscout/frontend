@@ -16,17 +16,17 @@ type AddressProfileAPIConfig = {
   tag_bg_color?: string;
   tag_text_color?: string;
 };
-import type { GasRefuelProviderConfig } from 'client/features/get-gas-button/types/client';
-import { GAS_UNITS } from 'client/slices/gas/types/config';
-import type { GasUnit } from 'client/slices/gas/types/config';
-import { PROVIDERS as TX_INTERPRETATION_PROVIDERS } from 'client/features/tx-interpretation/common/types/config';
-import { VALIDATORS_CHAIN_TYPE } from 'client/features/validators/types/config';
-import type { ValidatorsChainType } from 'client/features/validators/types/config';
-import type { WalletType } from 'client/features/web3-wallet/types/config';
-import { SUPPORTED_WALLETS } from 'client/features/web3-wallet/types/config';
-import type { TxExternalTxsConfig } from 'client/features/external-txs/types/client';
+import type { GasRefuelProviderConfig } from 'src/features/get-gas-button/types/client';
+import { GAS_UNITS } from 'src/slices/gas/types/config';
+import type { GasUnit } from 'src/slices/gas/types/config';
+import { PROVIDERS as TX_INTERPRETATION_PROVIDERS } from 'src/features/tx-interpretation/common/types/config';
+import { VALIDATORS_CHAIN_TYPE } from 'src/features/validators/types/config';
+import type { ValidatorsChainType } from 'src/features/validators/types/config';
+import type { WalletType } from 'src/features/web3-wallet/types/config';
+import { SUPPORTED_WALLETS } from 'src/features/web3-wallet/types/config';
+import type { TxExternalTxsConfig } from 'src/features/external-txs/types/client';
 
-import { replaceQuotes } from 'client/config/utils/envs';
+import { replaceQuotes } from 'src/config/utils/envs';
 import { urlTest, protocols } from './utils';
 import apisSchema from './schemas/apis';
 import chainSchema from './schemas/chain';

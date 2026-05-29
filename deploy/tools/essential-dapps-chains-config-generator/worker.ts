@@ -44,7 +44,7 @@ async function computeConfig() {
     });
 
     // 3. Import and compute app config
-    const { 'default': appConfig } = await import('client/config/index');
+    const { 'default': appConfig } = await import('src/config/index');
 
     console.log('   ✅ Config computed for:', url);
 
