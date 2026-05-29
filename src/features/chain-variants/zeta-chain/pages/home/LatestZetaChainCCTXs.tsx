@@ -1,0 +1,165 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
+import { Box, Flex, Text } from '@chakra-ui/react';
+import { useQueryClient } from '@tanstack/react-query';
+import React from 'react';
+
+import { Direction } from '@blockscout/zetachain-cctx-types';
+import type { ListCctxsResponse } from '@blockscout/zetachain-cctx-types';
+import type { SocketMessage } from 'src/api/socket/types';
+
+import { route } from 'nextjs-routes';
+
+import useApiQuery, { getResourceKey } from 'src/api/hooks/useApiQuery';
+import SocketNewItemsNotice from 'src/api/socket/SocketNewItemsNotice';
+import useSocketChannel from 'src/api/socket/useSocketChannel';
+import useSocketMessage from 'src/api/socket/useSocketMessage';
+
+import { AddressHighlightProvider } from 'src/slices/address/contexts/address-highlight';
+import LatestTxsFallback from 'src/slices/home/pages/index/txs/LatestTxsFallback';
+
+import ZetaChainCCTXListItem from 'src/features/chain-variants/zeta-chain/pages/cctx-index/ZetaChainCCTXListItem';
+import { ZETA_CHAIN_CCTX_LIST_ITEM } from 'src/features/chain-variants/zeta-chain/stubs';
+
+import useIsMobile from 'src/shared/hooks/useIsMobile';
+import useInitialList from 'src/shared/lists/useInitialList';
+import { generateListStub } from 'src/shared/pagination/utils';
+
+import { Link } from 'src/toolkit/chakra/link';
+
+import LatestZetaChainCCTXItem from './LatestZetaChainCCTXItem';
+
+const LatestZetaChainCCTXs = () => {
+  const isMobile = useIsMobile();
+  const txsCount = isMobile ? 3 : 8;
+  const { data, isPlaceholderData, isError } = useApiQuery('zetachain:transactions', {
+    queryOptions: {
+      placeholderData: generateListStub<'zetachain:transactions'>(
+        ZETA_CHAIN_CCTX_LIST_ITEM,
+        50,
+        { next_page_params: { page_key: 0, limit: 0, direction: Direction.DESC } },
+      ),
+    },
+    queryParams: {
+      limit: txsCount,
+      offset: 0,
+      direction: 'DESC',
+    },
+  });
+
+  const initialList = useInitialList({
+    data: data?.items ?? [],
+    idFn: (tx) => tx.index,
+    enabled: !isPlaceholderData,
+  });
+
+  const queryClient = useQueryClient();
+
+  const [ showSocketErrorAlert, setShowSocketErrorAlert ] = React.useState(false);
+
+  const handleSocketClose = React.useCallback(() => {
+    setShowSocketErrorAlert(true);
+  }, []);
+
+  const handleSocketError = React.useCallback(() => {
+    setShowSocketErrorAlert(true);
+  }, []);
+
+  const handleNewCCTXMessage: SocketMessage.NewZetaChainCCTXs['handler'] = React.useCallback((payload) => {
+    queryClient.setQueryData(
+      getResourceKey('zetachain:transactions', {
+        queryParams: {
+          limit: txsCount,
+          offset: 0,
+          direction: 'DESC',
+        },
+      }),
+      (prevData: ListCctxsResponse | undefined) => {
+        if (!prevData) {
+          return {
+            items: payload,
+            next_page_params: null,
+          };
+        }
+
+        const existingItemsMap = new Map(
+          prevData.items.map(item => [ item.index, item ]),
+        );
+
+        payload.forEach(newItem => {
+          existingItemsMap.set(newItem.index, newItem);
+        });
+
+        const mergedItems = Array.from(existingItemsMap.values())
+          .sort((a, b) => Number(b.last_update_timestamp) - Number(a.last_update_timestamp))
+          .slice(0, txsCount);
+
+        return {
+          ...prevData,
+          items: mergedItems,
+        };
+      },
+    );
+  }, [ queryClient, txsCount ]);
+
+  const channel = useSocketChannel({
+    topic: 'cctxs:new_cctxs',
+    isDisabled: Boolean(isPlaceholderData),
+    socketName: 'zetachain',
+    onSocketClose: handleSocketClose,
+    onSocketError: handleSocketError,
+  });
+
+  useSocketMessage({
+    channel,
+    event: 'new_cctxs',
+    handler: handleNewCCTXMessage,
+  });
+
+  if (isError) {
+    return <LatestTxsFallback/>;
+  }
+
+  if (data) {
+    const cctxsUrl = route({ pathname: '/txs', query: { tab: 'cctx' } });
+    return (
+      <>
+        <SocketNewItemsNotice
+          type="cross_chain_transaction"
+          isLoading={ isPlaceholderData }
+          showErrorAlert={ showSocketErrorAlert }
+          borderBottomRadius={ 0 }
+        />
+        <Box mb={ 3 } display={{ base: 'block', lg: 'none' }}>
+          { data.items.slice(0, txsCount).map(((tx, index) => (
+            <ZetaChainCCTXListItem
+              key={ tx.index + (isPlaceholderData ? index : '') }
+              tx={ tx }
+              isLoading={ isPlaceholderData }
+              animation={ initialList.getAnimationProp(tx) }
+            />
+          ))) }
+        </Box>
+        <AddressHighlightProvider>
+          <Box mb={ 3 } display={{ base: 'none', lg: 'block' }}>
+            { data.items.slice(0, txsCount).map(((tx, index) => (
+              <LatestZetaChainCCTXItem
+                key={ tx.index + (isPlaceholderData ? index : '') }
+                tx={ tx }
+                isLoading={ isPlaceholderData }
+                animation={ initialList.getAnimationProp(tx) }
+              />
+            ))) }
+          </Box>
+        </AddressHighlightProvider>
+        <Flex justifyContent="center">
+          <Link textStyle="sm" href={ cctxsUrl }>View all cross chain transactions</Link>
+        </Flex>
+      </>
+    );
+  }
+
+  return <Text>No latest cross chain transactions found.</Text>;
+};
+
+export default LatestZetaChainCCTXs;

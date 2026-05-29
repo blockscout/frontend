@@ -1,0 +1,50 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
+import type { StackProps } from '@chakra-ui/react';
+import { HStack } from '@chakra-ui/react';
+import { useQuery } from '@tanstack/react-query';
+import { shuffle } from 'es-toolkit';
+import React from 'react';
+
+import type { HighlightsBannerConfig } from 'src/slices/home/types/client';
+
+import useFetch from 'src/api/hooks/useFetch';
+
+import { HOMEPAGE_HIGHLIGHTS_BANNER } from 'src/slices/home/stubs';
+
+import config from 'src/config';
+
+import HighlightsItem from './HighlightsItem';
+
+const HIGHLIGHTS_BANNER_COUNT = 3;
+
+const Highlights = (props: StackProps) => {
+  const fetch = useFetch();
+
+  const { isPlaceholderData, data } = useQuery({
+    queryKey: [ 'homepage-highlights' ],
+    queryFn: async() => fetch(config.slices.home.highlights || '', undefined, { resource: 'homepage-highlights' }) as Promise<Array<HighlightsBannerConfig>>,
+    select: (data) => {
+      const pinnedBanners = data.filter((banner) => banner.is_pinned);
+      const otherBanners = data.filter((banner) => !banner.is_pinned);
+
+      return [
+        ...pinnedBanners,
+        ...shuffle(otherBanners),
+      ].slice(0, HIGHLIGHTS_BANNER_COUNT);
+    },
+    enabled: Boolean(config.slices.home.highlights),
+    staleTime: Infinity,
+    placeholderData: Array(HIGHLIGHTS_BANNER_COUNT).fill(HOMEPAGE_HIGHLIGHTS_BANNER),
+  });
+
+  return (
+    <HStack gap={ 3 } { ...props }>
+      { data?.map((banner, index) => (
+        <HighlightsItem key={ index } data={ banner } isLoading={ isPlaceholderData } totalNum={ data.length }/>
+      )) }
+    </HStack>
+  );
+};
+
+export default React.memo(Highlights);

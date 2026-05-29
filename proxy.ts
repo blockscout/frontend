@@ -3,11 +3,11 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
-import { CSP_NONCE_HEADER } from 'nextjs/constants';
-import * as csp from 'nextjs/csp/index';
-import * as middlewares from 'nextjs/middlewares/index';
+import { CSP_NONCE_HEADER } from 'src/server/constants';
+import * as csp from 'src/server/csp/index';
+import * as middlewares from 'src/server/middlewares/index';
 
-import appConfig from 'client/config';
+import appConfig from 'src/config';
 
 const adsBannerFeature = appConfig.features.adsBanner;
 const adsTextFeature = appConfig.features.adsText;

@@ -1,0 +1,70 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
+import { Box, Text, Icon } from '@chakra-ui/react';
+import React from 'react';
+
+// This icon doesn't work properly when it is in the sprite
+// Probably because of the gradient
+
+import SolidityscanReportButton from 'src/features/solidity-scan/components/SolidityscanReportButton';
+import SolidityscanReportDetails from 'src/features/solidity-scan/components/SolidityscanReportDetails';
+import SolidityscanReportScore from 'src/features/solidity-scan/components/SolidityscanReportScore';
+import useFetchReport from 'src/features/solidity-scan/hooks/useFetchReport';
+
+// eslint-disable-next-line no-restricted-imports
+import solidityScanIcon from 'src/sprite/icons/brands/solidity_scan.svg';
+import { Link } from 'src/toolkit/chakra/link';
+import { PopoverBody, PopoverContent, PopoverRoot } from 'src/toolkit/chakra/popover';
+import { useDisclosure } from 'src/toolkit/hooks/useDisclosure';
+
+interface Props {
+  hash: string;
+}
+
+const SolidityscanReport = ({ hash }: Props) => {
+  const popover = useDisclosure();
+  const { data, isPlaceholderData, isError } = useFetchReport({ hash });
+
+  if (isError || !data) {
+    return null;
+  }
+
+  const score = Number(data.scan_report.scan_summary.score_v2);
+
+  if (!score) {
+    return null;
+  }
+
+  const vulnerabilities = data.scan_report.scan_summary.issue_severity_distribution;
+  const vulnerabilitiesCounts = vulnerabilities ? Object.values(vulnerabilities) : [];
+  const vulnerabilitiesCount = vulnerabilitiesCounts.reduce((acc, val) => acc + val, 0);
+
+  return (
+    <PopoverRoot open={ popover.open } onOpenChange={ popover.onOpenChange }>
+      <SolidityscanReportButton
+        score={ score }
+        isLoading={ isPlaceholderData }
+        tooltipDisabled={ popover.open }
+      />
+      <PopoverContent w={{ base: '100vw', lg: '328px' }}>
+        <PopoverBody textStyle="sm">
+          <Box mb={ 5 } lineHeight="25px">
+            Contract analyzed for 240+ vulnerability patterns by
+            <Icon as={ solidityScanIcon } mr={ 1 } ml="6px" w="23px" h="20px" display="inline-block" verticalAlign="middle"/>
+            <Text fontWeight={ 600 } display="inline-block">SolidityScan</Text>
+          </Box>
+          <SolidityscanReportScore score={ score } mb={ 5 }/>
+          { vulnerabilities && vulnerabilitiesCount > 0 && (
+            <Box mb={ 5 }>
+              <Text py="7px" color="text.secondary" textStyle="xs" fontWeight={ 500 }>Vulnerabilities distribution</Text>
+              <SolidityscanReportDetails vulnerabilities={ vulnerabilities } vulnerabilitiesCount={ vulnerabilitiesCount }/>
+            </Box>
+          ) }
+          <Link href={ data.scan_report.scanner_reference_url } external>View full report</Link>
+        </PopoverBody>
+      </PopoverContent>
+    </PopoverRoot>
+  );
+};
+
+export default React.memo(SolidityscanReport);

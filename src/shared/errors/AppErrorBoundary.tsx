@@ -1,0 +1,57 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
+import { chakra } from '@chakra-ui/react';
+import React from 'react';
+
+import { useRollbar } from 'src/services/rollbar';
+import getErrorCause from 'src/shared/errors/get-error-cause';
+import getErrorCauseStatusCode from 'src/shared/errors/get-error-cause-status-code';
+import getErrorMessage from 'src/shared/errors/get-error-message';
+import getErrorObjStatusCode from 'src/shared/errors/get-error-obj-status-code';
+import getErrorStack from 'src/shared/errors/get-error-stack';
+
+import AppError from './AppError';
+import ErrorBoundary from './ErrorBoundary';
+
+interface Props {
+  className?: string;
+  children: React.ReactNode;
+  Container?: React.FC<{ children: React.ReactNode }>;
+}
+
+const AppErrorBoundary = ({ className, children, Container }: Props) => {
+
+  const rollbar = useRollbar();
+
+  const renderErrorScreen = React.useCallback((error?: Error) => {
+    const content = <AppError error={ error } className={ className }/>;
+    if (Container) {
+      return <Container>{ content }</Container>;
+    }
+    return content;
+  }, [ className, Container ]);
+
+  const handleError = React.useCallback((error: Error) => {
+    const statusCode = getErrorCauseStatusCode(error) || getErrorObjStatusCode(error);
+    if (statusCode || !rollbar) {
+      // For now, we are not interested in logging errors from the API.
+      // If an error from a resource should be logged, please consider passing "logError: true" to the useApiQuery or useApiFetch hook.
+      return;
+    }
+
+    // To this point, there can only be errors that lead to a page crash.
+    // Therefore, we set the error level to "critical."
+    rollbar.critical(getErrorMessage(error) ?? 'Application error', {
+      cause: getErrorCause(error),
+      stack: getErrorStack(error),
+    });
+  }, [ rollbar ]);
+
+  return (
+    <ErrorBoundary renderErrorScreen={ renderErrorScreen } onError={ handleError }>
+      { children }
+    </ErrorBoundary>
+  );
+};
+
+export default React.memo(chakra(AppErrorBoundary));

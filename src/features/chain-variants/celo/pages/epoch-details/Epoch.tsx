@@ -1,0 +1,102 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
+import { Box, HStack } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
+import React from 'react';
+
+import useApiQuery from 'src/api/hooks/useApiQuery';
+
+import PageTitle from 'src/shell/page/title/PageTitle';
+
+import BlockEntity from 'src/slices/block/components/entity/BlockEntity';
+
+import TextAd from 'src/features/ads/text/components/TextAd';
+import { CELO_EPOCH } from 'src/features/chain-variants/celo/stubs/epoch';
+
+import throwOnResourceLoadError from 'src/shared/errors/throw-on-resource-load-error';
+import useIsMobile from 'src/shared/hooks/useIsMobile';
+import getQueryParamString from 'src/shared/router/get-query-param-string';
+
+import { Tag } from 'src/toolkit/chakra/tag';
+import { Tooltip } from 'src/toolkit/chakra/tooltip';
+
+import EpochDetails from './EpochDetails';
+
+const EpochPageContent = () => {
+  const isMobile = useIsMobile();
+  const router = useRouter();
+  const number = getQueryParamString(router.query.number);
+
+  const epochQuery = useApiQuery('general:epoch_celo', {
+    pathParams: {
+      number: number,
+    },
+    queryOptions: {
+      placeholderData: CELO_EPOCH,
+    },
+  });
+
+  throwOnResourceLoadError(epochQuery);
+
+  const isLoading = epochQuery.isPlaceholderData;
+
+  const titleContentAfter = (() => {
+    switch (epochQuery.data?.type) {
+      case 'L1':
+        return (
+          <Tooltip content="Epoch finalized while Celo was still an L1 network">
+            <Tag loading={ isLoading }>{ epochQuery.data.type }</Tag>
+          </Tooltip>
+        );
+      case 'L2':
+        return (
+          <Tooltip content="Epoch finalized after Celo migrated to the OP‐stack, when it became an L2 rollup">
+            <Tag loading={ isLoading }>{ epochQuery.data.type }</Tag>
+          </Tooltip>
+        );
+    }
+
+    return null;
+  })();
+
+  const titleSecondRow = (() => {
+    if (!epochQuery.data || epochQuery.data?.start_block_number === null) {
+      return null;
+    }
+
+    const isTruncated = isMobile && Boolean(epochQuery.data.end_block_number);
+    const truncationProps = isTruncated ? { truncation: 'constant' as const, truncationMaxSymbols: 6 } : undefined;
+
+    return (
+      <HStack textStyle={{ base: 'heading.sm', lg: 'heading.md' }} flexWrap="wrap">
+        <Box color="text.secondary">Ranging from</Box>
+        <BlockEntity
+          number={ epochQuery.data.start_block_number }
+          variant="subheading"
+          { ...truncationProps }
+        />
+        { epochQuery.data.end_block_number && (
+          <>
+            <Box color="text.secondary">to</Box>
+            <BlockEntity number={ epochQuery.data.end_block_number } variant="subheading" { ...truncationProps }/>
+          </>
+        ) }
+      </HStack>
+    );
+  })();
+
+  return (
+    <>
+      <TextAd mb={ 6 }/>
+      <PageTitle
+        title={ `Epoch #${ number }` }
+        contentAfter={ titleContentAfter }
+        secondRow={ titleSecondRow }
+        isLoading={ isLoading }
+      />
+      { epochQuery.data && <EpochDetails data={ epochQuery.data } isLoading={ isLoading }/> }
+    </>
+  );
+};
+
+export default EpochPageContent;

@@ -1,0 +1,80 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
+import { Flex } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
+import React from 'react';
+
+import useApiQuery from 'src/api/hooks/useApiQuery';
+
+import { currencyUnits } from 'src/slices/chain/units';
+import NativeTokenIcon from 'src/slices/token/components/icon/TokenIconNative';
+
+import config from 'src/config';
+import ApiFetchAlert from 'src/shared/alerts/ApiFetchAlert';
+import calculateUsdValue from 'src/shared/values/entity/calculateUsdValue';
+import SpriteIcon from 'src/sprite/SpriteIcon';
+
+import { ZERO } from 'src/toolkit/utils/consts';
+import { thinsp } from 'src/toolkit/utils/htmlEntities';
+
+import TokenBalancesItem from './TokenBalancesItem';
+import useFetchTokens from './useFetchTokens';
+import { getTokensTotalInfo } from './utils';
+
+const TokenBalances = () => {
+  const router = useRouter();
+
+  const hash = router.query.hash?.toString();
+
+  const addressQuery = useApiQuery('general:address', {
+    pathParams: { hash },
+    queryOptions: { enabled: Boolean(hash), refetchOnMount: false },
+  });
+
+  const tokenQuery = useFetchTokens({ hash });
+
+  if (addressQuery.isError || tokenQuery.isError) {
+    return <ApiFetchAlert/>;
+  }
+
+  const addressData = addressQuery.data;
+  const { valueStr: nativeValue, usdBn: nativeUsd } = calculateUsdValue({
+    amount: addressData?.coin_balance || '0',
+    exchangeRate: addressData?.exchange_rate,
+    decimals: String(config.chain.currency.decimals),
+  });
+
+  const tokensInfo = getTokensTotalInfo(tokenQuery.data);
+  const prefix = tokensInfo.isOverflow ? `>${ thinsp }` : '';
+  const totalUsd = nativeUsd.plus(tokensInfo.usd);
+  const tokensNumText = tokensInfo.num > 0 ?
+    `${ prefix }${ tokensInfo.num } ${ tokensInfo.num > 1 ? 'tokens' : 'token' }` :
+    '0';
+
+  return (
+    <Flex columnGap={ 3 } rowGap={ 3 } mt={{ base: '6px', lg: 0 }} flexDirection={{ base: 'column', lg: 'row' }}>
+      <TokenBalancesItem
+        name="Net Worth"
+        value={ addressData?.exchange_rate ? `${ prefix }$${ totalUsd.toFormat(2) }` : 'N/A' }
+        isLoading={ addressQuery.isPending || tokenQuery.isPending }
+        icon={ <SpriteIcon name="wallet" boxSize="20px" flexShrink={ 0 } color="icon.primary"/> }
+      />
+      <TokenBalancesItem
+        name={ `${ currencyUnits.ether } Balance` }
+        value={ `${ nativeValue } ${ currencyUnits.ether }` }
+        valueSecondary={ !nativeUsd.eq(ZERO) ? `$${ nativeUsd.toFormat(2) }` : '' }
+        isLoading={ addressQuery.isPending || tokenQuery.isPending }
+        icon={ <NativeTokenIcon boxSize="20px"/> }
+      />
+      <TokenBalancesItem
+        name="Tokens"
+        value={ tokensNumText }
+        valueSecondary={ `${ prefix }$${ tokensInfo.usd.toFormat(2) }` }
+        isLoading={ addressQuery.isPending || tokenQuery.isPending }
+        icon={ <SpriteIcon name="tokens" boxSize="20px" flexShrink={ 0 } color="icon.primary"/> }
+      />
+    </Flex>
+  );
+};
+
+export default TokenBalances;

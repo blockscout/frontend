@@ -1,8 +1,8 @@
 import * as yup from 'yup';
-import { replaceQuotes } from 'client/config/utils/envs';
-import type { AdBannerProviders, AdBannerAdditionalProviders, AdButlerDeviceConfig } from 'client/features/ads/banner/types/config';
-import { SUPPORTED_AD_BANNER_PROVIDERS, SUPPORTED_AD_BANNER_ADDITIONAL_PROVIDERS } from 'client/features/ads/banner/types/config';
-import { AdTextProviders, SUPPORTED_AD_TEXT_PROVIDERS } from 'client/features/ads/text/types/config';
+import { replaceQuotes } from 'src/config/utils/envs';
+import type { AdBannerProviders, AdBannerAdditionalProviders, AdButlerDeviceConfig } from 'src/features/ads/banner/types/config';
+import { SUPPORTED_AD_BANNER_PROVIDERS, SUPPORTED_AD_BANNER_ADDITIONAL_PROVIDERS } from 'src/features/ads/banner/types/config';
+import { AdTextProviders, SUPPORTED_AD_TEXT_PROVIDERS } from 'src/features/ads/text/types/config';
 
 const adButlerConfigSchema = yup
   .object<AdButlerDeviceConfig>()

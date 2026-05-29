@@ -1,0 +1,198 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
+import { Flex } from '@chakra-ui/react';
+import { capitalize } from 'es-toolkit';
+import { useRouter } from 'next/router';
+import React from 'react';
+
+import type { TabItemRegular } from 'src/toolkit/components/AdaptiveTabs/types';
+
+import getChainValidationActionText from 'src/slices/chain/verification-type/utils/get-chain-validation-action-text';
+import { TX } from 'src/slices/tx/stubs/tx';
+
+import useIsAuth from 'src/features/account/hooks/useIsAuth';
+import TxsWatchlist from 'src/features/account/pages/tx-index-watchlist/TxsWatchlist';
+import AdvancedFilterLink from 'src/features/advanced-filter/components/AdvancedFilterLink';
+import { useMultichainContext } from 'src/features/multichain/context';
+
+import config from 'src/config';
+import useIsInitialLoading from 'src/shared/hooks/useIsInitialLoading';
+import useIsMobile from 'src/shared/hooks/useIsMobile';
+import Pagination from 'src/shared/pagination/Pagination';
+import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import { generateListStub } from 'src/shared/pagination/utils';
+import getQueryParamString from 'src/shared/router/get-query-param-string';
+
+import type { RoutedTabsProps } from 'src/toolkit/components/RoutedTabs/RoutedTabs';
+import RoutedTabs from 'src/toolkit/components/RoutedTabs/RoutedTabs';
+
+import TxsWithFrontendSorting from './TxsWithFrontendSorting';
+
+type TabId = 'validated' | 'pending' | 'blob_txs' | 'watchlist';
+export const getTabId = (id: TabId, prefix?: string) => prefix ? `${ prefix }_${ id }` : id;
+
+interface Props extends Omit<RoutedTabsProps, 'tabs'> {
+  parentTab?: string;
+  tabsHeight?: number;
+}
+
+const TxsTabs = ({ parentTab, tabsHeight, ...rest }: Props) => {
+  const isMobile = useIsMobile();
+  const router = useRouter();
+  const tab = getQueryParamString(router.query.tab);
+  const multichainContext = useMultichainContext();
+  const isAuth = useIsAuth();
+
+  const chainConfig = multichainContext?.chain.app_config ?? config;
+
+  const isPendingTab = !chainConfig?.slices.tx.hiddenViews?.pending_txs && tab === getTabId('pending', parentTab);
+  const isBlobTxsTab = chainConfig?.features.dataAvailability.isEnabled && tab === getTabId('blob_txs', parentTab);
+  const isWatchlistTab = isAuth && tab === getTabId('watchlist', parentTab);
+
+  const txsValidatedQuery = useQueryWithPages({
+    resourceName: 'general:txs_validated',
+    filters: { filter: 'validated' },
+    options: {
+      enabled: tab === getTabId('validated', parentTab) ||
+        (parentTab ? tab === parentTab : false) ||
+        !tab ||
+        !(isBlobTxsTab || isPendingTab || isWatchlistTab),
+      placeholderData: generateListStub<'general:txs_validated'>(TX, 50, { next_page_params: {
+        block_number: 9005713,
+        index: 5,
+        items_count: 50,
+        filter: 'validated',
+      } }),
+    },
+  });
+
+  const txsPendingQuery = useQueryWithPages({
+    resourceName: 'general:txs_pending',
+    filters: { filter: 'pending' },
+    options: {
+      enabled: isPendingTab,
+      placeholderData: generateListStub<'general:txs_pending'>(TX, 50, { next_page_params: {
+        inserted_at: '2024-02-05T07:04:47.749818Z',
+        hash: '0x00',
+        filter: 'pending',
+      } }),
+    },
+  });
+
+  const txsWithBlobsQuery = useQueryWithPages({
+    resourceName: 'general:txs_with_blobs',
+    filters: { type: 'blob_transaction' },
+    options: {
+      enabled: isBlobTxsTab,
+      placeholderData: generateListStub<'general:txs_with_blobs'>(TX, 50, { next_page_params: {
+        block_number: 10602877,
+        index: 8,
+        items_count: 50,
+      } }),
+    },
+  });
+
+  const txsWatchlistQuery = useQueryWithPages({
+    resourceName: 'general:txs_watchlist',
+    options: {
+      enabled: isWatchlistTab,
+      placeholderData: generateListStub<'general:txs_watchlist'>(TX, 50, { next_page_params: {
+        block_number: 9005713,
+        index: 5,
+        items_count: 50,
+      } }),
+    },
+  });
+
+  const verifiedTitle = capitalize(getChainValidationActionText(chainConfig));
+
+  const tabs: Array<TabItemRegular> = [
+    {
+      id: getTabId('validated', parentTab),
+      title: verifiedTitle,
+      component:
+        <TxsWithFrontendSorting
+          query={ txsValidatedQuery }
+          socketType="txs_validated"
+          top={ tabsHeight }
+        /> },
+    !chainConfig?.slices.tx.hiddenViews?.pending_txs ? {
+      id: getTabId('pending', parentTab),
+      title: 'Pending',
+      component: (
+        <TxsWithFrontendSorting
+          query={ txsPendingQuery }
+          showBlockInfo={ false }
+          socketType="txs_pending"
+          top={ tabsHeight }
+        />
+      ),
+    } : undefined,
+    chainConfig?.features.dataAvailability.isEnabled && {
+      id: getTabId('blob_txs', parentTab),
+      title: 'Blob txns',
+      component: (
+        <TxsWithFrontendSorting
+          query={ txsWithBlobsQuery }
+          top={ tabsHeight }
+        />
+      ),
+    },
+    isAuth && {
+      id: getTabId('watchlist', parentTab),
+      title: 'Watch list',
+      component: <TxsWatchlist query={ txsWatchlistQuery } top={ tabsHeight }/>,
+    },
+  ].filter(Boolean);
+
+  const currentQuery = (() => {
+    switch (tab) {
+      case getTabId('pending', parentTab): {
+        return txsPendingQuery;
+      };
+      case getTabId('watchlist', parentTab): {
+        return txsWatchlistQuery;
+      };
+      case getTabId('blob_txs', parentTab): {
+        if (chainConfig?.features.dataAvailability.isEnabled) {
+          return txsWithBlobsQuery;
+        }
+        return txsValidatedQuery;
+      };
+      default: return txsValidatedQuery;
+    }
+  })();
+
+  const isTabsLoading = useIsInitialLoading(currentQuery.isPlaceholderData);
+
+  const rightSlot = (() => {
+    if (isMobile) {
+      return null;
+    }
+
+    const isAdvancedFilterEnabled = chainConfig?.features.advancedFilter.isEnabled;
+
+    if (!isAdvancedFilterEnabled && !currentQuery.pagination.isVisible) {
+      return null;
+    }
+
+    return (
+      <Flex alignItems="center" gap={ 6 }>
+        { isAdvancedFilterEnabled && <AdvancedFilterLink routeParams={{ chain: multichainContext?.chain }}/> }
+        { currentQuery.pagination.isVisible && <Pagination { ...currentQuery.pagination }/> }
+      </Flex>
+    );
+  })();
+
+  return (
+    <RoutedTabs
+      tabs={ tabs }
+      isLoading={ isTabsLoading }
+      stickyEnabled={ !isMobile }
+      rightSlot={ rightSlot }
+      { ...rest }
+    />
+  );
+};
+
+export default React.memo(TxsTabs);

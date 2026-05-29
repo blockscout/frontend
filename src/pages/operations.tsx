@@ -1,0 +1,21 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
+import type { NextPage } from 'next';
+import dynamic from 'next/dynamic';
+import React from 'react';
+
+import PageNextJs from 'src/server/PageNextJs';
+
+const TacOperations = dynamic(() => import('src/features/chain-variants/tac/pages/operations/TacOperations'), { ssr: false });
+
+const Page: NextPage = () => {
+  return (
+    <PageNextJs pathname="/operations">
+      <TacOperations/>
+    </PageNextJs>
+  );
+};
+
+export default Page;
+
+export { tac as getServerSideProps } from 'src/server/getServerSideProps/main';

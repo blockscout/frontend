@@ -1,0 +1,316 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
+import { Box } from '@chakra-ui/react';
+import { useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/router';
+import React, { useEffect } from 'react';
+
+import type { SocketMessage } from 'src/api/socket/types';
+import type { PaginationParams } from 'src/shared/pagination/types';
+import type { TokenInfo } from 'src/slices/token/types/api';
+import { NFT_TOKEN_TYPE_IDS } from 'src/slices/token/utils/token-types';
+import type { TabItemRegular } from 'src/toolkit/components/AdaptiveTabs/types';
+
+import useApiQuery, { getResourceKey } from 'src/api/hooks/useApiQuery';
+import useSocketChannel from 'src/api/socket/useSocketChannel';
+import useSocketMessage from 'src/api/socket/useSocketMessage';
+
+import * as metadata from 'src/shell/metadata';
+
+import * as addressStubs from 'src/slices/address/stubs/address';
+import Contract from 'src/slices/contract/pages/details/Contract';
+import { CONTRACT_TAB_IDS } from 'src/slices/contract/utils/tabs';
+import TokenTransfer from 'src/slices/token-transfer/pages/token/TokenTransfer';
+import { getTokenTransfersStub } from 'src/slices/token-transfer/stubs';
+import useTokenQuery from 'src/slices/token/hooks/useTokenQuery';
+import TokenHolders from 'src/slices/token/pages/details/holders/TokenHolders';
+import TokenDetails from 'src/slices/token/pages/details/info/TokenDetails';
+import TokenInventory from 'src/slices/token/pages/details/inventory/TokenInventory';
+import TokenPageTitle from 'src/slices/token/pages/details/TokenPageTitle';
+import * as tokenStubs from 'src/slices/token/stubs';
+import { getTokenHoldersStub } from 'src/slices/token/stubs';
+
+import Address3rdPartyWidgets from 'src/features/address-3rd-party-widgets/pages/address/Address3rdPartyWidgets';
+import useAddress3rdPartyWidgets from 'src/features/address-3rd-party-widgets/pages/address/useAddress3rdPartyWidgets';
+import TextAd from 'src/features/ads/text/components/TextAd';
+import TokenAdvancedFilterLink from 'src/features/advanced-filter/pages/token/TokenAdvancedFilterLink';
+import CsvExport from 'src/features/csv-export/components/CsvExport';
+
+import config from 'src/config';
+import useIsMobile from 'src/shared/hooks/useIsMobile';
+import Pagination from 'src/shared/pagination/Pagination';
+import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import { generateListStub } from 'src/shared/pagination/utils';
+import getQueryParamString from 'src/shared/router/get-query-param-string';
+import useEtherscanRedirects from 'src/shared/router/useEtherscanRedirects';
+import SpriteIcon from 'src/sprite/SpriteIcon';
+
+import RoutedTabs from 'src/toolkit/components/RoutedTabs/RoutedTabs';
+
+export type TokenTabs = 'token_transfers' | 'holders' | 'inventory';
+
+const TABS_RIGHT_SLOT_PROPS = {
+  display: 'flex',
+  alignItems: 'center',
+};
+
+const TokenPageContent = () => {
+  const [ isQueryEnabled, setIsQueryEnabled ] = React.useState(false);
+  const [ totalSupplySocket, setTotalSupplySocket ] = React.useState<number>();
+  const router = useRouter();
+  const isMobile = useIsMobile();
+
+  const scrollRef = React.useRef<HTMLDivElement>(null);
+
+  const hashString = getQueryParamString(router.query.hash);
+  const tab = getQueryParamString(router.query.tab);
+  const ownerFilter = getQueryParamString(router.query.holder_address_hash) || undefined;
+
+  useEtherscanRedirects();
+  const queryClient = useQueryClient();
+
+  const tokenQuery = useTokenQuery(hashString);
+
+  const addressQuery = useApiQuery('general:address', {
+    pathParams: { hash: hashString },
+    queryOptions: {
+      enabled: isQueryEnabled && Boolean(router.query.hash),
+      placeholderData: addressStubs.ADDRESS_INFO,
+    },
+  });
+
+  React.useEffect(() => {
+    if (tokenQuery.data && totalSupplySocket) {
+      queryClient.setQueryData(getResourceKey('general:token', { pathParams: { hash: hashString } }), (prevData: TokenInfo | undefined) => {
+        if (prevData) {
+          return { ...prevData, total_supply: totalSupplySocket.toString() };
+        }
+      });
+    }
+  }, [ tokenQuery.data, totalSupplySocket, hashString, queryClient ]);
+
+  const handleTotalSupplyMessage: SocketMessage.TokenTotalSupply['handler'] = React.useCallback((payload) => {
+    const prevData = queryClient.getQueryData(getResourceKey('general:token', { pathParams: { hash: hashString } }));
+    if (!prevData) {
+      setTotalSupplySocket(payload.total_supply);
+    }
+    queryClient.setQueryData(getResourceKey('general:token', { pathParams: { hash: hashString } }), (prevData: TokenInfo | undefined) => {
+      if (prevData) {
+        return { ...prevData, total_supply: payload.total_supply.toString() };
+      }
+    });
+  }, [ queryClient, hashString ]);
+
+  const enableQuery = React.useCallback(() => setIsQueryEnabled(true), []);
+
+  const channel = useSocketChannel({
+    topic: `tokens:${ hashString?.toLowerCase() }`,
+    isDisabled: !hashString,
+    onJoin: enableQuery,
+    onSocketError: enableQuery,
+  });
+  useSocketMessage({
+    channel,
+    event: 'total_supply',
+    handler: handleTotalSupplyMessage,
+  });
+
+  const verifiedInfoQuery = useApiQuery('contractInfo:token_verified_info', {
+    pathParams: { hash: tokenQuery.data?.address_hash, instanceId: config.apis.contractInfo?.instanceId },
+    queryOptions: { enabled: Boolean(tokenQuery.data) && !tokenQuery.isPlaceholderData && config.features.verifiedTokens.isEnabled },
+  });
+
+  useEffect(() => {
+    // even if config.metadata.seo.enhancedDataEnabled is enabled, we don't fetch contract info for the project description
+    // so we need to update the metadata anyway.
+    if (tokenQuery.data && !tokenQuery.isPlaceholderData && !verifiedInfoQuery.isPlaceholderData) {
+      const apiData = {
+        ...tokenQuery.data,
+        symbol_or_name: tokenQuery.data.symbol ?? tokenQuery.data.name ?? '',
+        description: verifiedInfoQuery.data?.projectDescription,
+        projectName: verifiedInfoQuery.data?.projectName,
+      };
+      metadata.update({ pathname: '/token/[hash]', query: { hash: tokenQuery.data.address_hash } }, apiData);
+    }
+  }, [ tokenQuery.data, tokenQuery.isPlaceholderData, verifiedInfoQuery.isPlaceholderData, verifiedInfoQuery.data ]);
+
+  const hasData = (tokenQuery.data && !tokenQuery.isPlaceholderData) && (addressQuery.data && !addressQuery.isPlaceholderData);
+  const hasInventoryTab = tokenQuery.data?.type && NFT_TOKEN_TYPE_IDS.includes(tokenQuery.data.type);
+  const isFirstTabTokenTransfer = !hasInventoryTab && !tab;
+
+  const transfersQuery = useQueryWithPages({
+    resourceName: 'general:token_transfers',
+    pathParams: { hash: hashString },
+    scrollRef,
+    options: {
+      enabled: Boolean(
+        hasData &&
+        hashString &&
+        (
+          (!hasInventoryTab && !tab) ||
+          tab === 'token_transfers'
+        ),
+      ),
+      placeholderData: getTokenTransfersStub(tokenQuery.data?.type),
+    },
+  });
+
+  const inventoryQuery = useQueryWithPages({
+    resourceName: 'general:token_inventory',
+    pathParams: { hash: hashString },
+    filters: ownerFilter ? { holder_address_hash: ownerFilter } : {},
+    scrollRef,
+    options: {
+      enabled: Boolean(
+        hasData &&
+        hashString &&
+        (
+          (hasInventoryTab && !tab) ||
+          tab === 'inventory'
+        ),
+      ),
+      placeholderData: generateListStub<'general:token_inventory'>(tokenStubs.TOKEN_INSTANCE, 50, { next_page_params: { unique_token: 1 } }),
+    },
+  });
+
+  const holdersQuery = useQueryWithPages({
+    resourceName: 'general:token_holders',
+    pathParams: { hash: hashString },
+    scrollRef,
+    options: {
+      enabled: Boolean(hashString && tab === 'holders' && hasData),
+      placeholderData: getTokenHoldersStub(tokenQuery.data?.type, null),
+    },
+  });
+
+  const address3rdPartyWidgets = useAddress3rdPartyWidgets('token', false, isQueryEnabled);
+
+  const isLoading =
+    tokenQuery.isPlaceholderData ||
+    addressQuery.isPlaceholderData ||
+    (address3rdPartyWidgets.isEnabled && address3rdPartyWidgets.configQuery.isPlaceholderData);
+
+  const tabs: Array<TabItemRegular> = [
+    hasInventoryTab ? {
+      id: 'inventory',
+      title: 'Inventory',
+      component: <TokenInventory inventoryQuery={ inventoryQuery } tokenQuery={ tokenQuery } ownerFilter={ ownerFilter } shouldRender={ !isLoading }/>,
+    } : undefined,
+    {
+      id: 'token_transfers',
+      title: 'Token transfers',
+      component: <TokenTransfer transfersQuery={ transfersQuery } tokenQuery={ tokenQuery } shouldRender={ !isLoading }/>,
+    },
+    {
+      id: 'holders',
+      title: 'Holders',
+      component: <TokenHolders token={ tokenQuery.data } holdersQuery={ holdersQuery } shouldRender={ !isLoading }/>,
+    },
+    addressQuery.data?.is_contract ? {
+      id: 'contract',
+      title: () => {
+        if (addressQuery.data?.is_verified) {
+          return (
+            <>
+              <span>Contract</span>
+              <SpriteIcon name="status/success" boxSize="14px" color="green.500"/>
+            </>
+          );
+        }
+
+        return 'Contract';
+      },
+      component: <Contract addressData={ addressQuery.data } isLoading={ isLoading }/>,
+      subTabs: CONTRACT_TAB_IDS,
+    } : undefined,
+    (address3rdPartyWidgets.isEnabled && address3rdPartyWidgets.items.length > 0) ? {
+      id: 'widgets',
+      title: 'Widgets',
+      count: address3rdPartyWidgets.items.length,
+      component: <Address3rdPartyWidgets shouldRender={ !isLoading } addressType="token" showAll/>,
+    } : undefined,
+  ].filter(Boolean);
+
+  let pagination: PaginationParams | undefined;
+
+  if (isFirstTabTokenTransfer || tab === 'token_transfers') {
+    pagination = transfersQuery.pagination;
+  }
+
+  if (router.query.tab === 'holders') {
+    pagination = holdersQuery.pagination;
+  }
+
+  // default tab for nfts is token inventory
+  if ((hasInventoryTab && !tab) || tab === 'inventory') {
+    pagination = inventoryQuery.pagination;
+  }
+
+  const tabListProps = React.useCallback(() => {
+    if (isMobile) {
+      return { mt: 8 };
+    }
+
+    return {
+      pt: 6,
+      pb: 6,
+      marginBottom: 0,
+    };
+  }, [ isMobile ]);
+
+  const tabsRightSlot = React.useMemo(() => {
+    if (isMobile) {
+      return null;
+    }
+
+    return (
+      <>
+        { (tab === 'token_transfers' || tab === '') && (
+          <TokenAdvancedFilterLink token={ tokenQuery.data } ml={ 6 }/>
+        ) }
+        { tab === 'holders' && (
+          <CsvExport
+            type="token_holders"
+            resourceName="general:token_csv_export_holders"
+            pathParams={{ hash: hashString }}
+            queryParams={{ from_period: null, to_period: null }}
+            extraParams={{ token_name: tokenQuery.data?.name || 'Unknown token' }}
+            periodFilter={ false }
+            loadingInitial={ pagination?.isLoading }
+            ml={ 6 }
+          />
+        ) }
+        { pagination?.isVisible && <Pagination ml={ 6 } { ...pagination }/> }
+      </>
+    );
+  }, [ hashString, isMobile, pagination, tab, tokenQuery.data ]);
+
+  return (
+    <>
+      <TextAd mb={ 6 }/>
+
+      <TokenPageTitle
+        tokenQuery={ tokenQuery }
+        addressQuery={ addressQuery }
+        verifiedInfoQuery={ verifiedInfoQuery }
+        hash={ hashString }
+      />
+
+      <TokenDetails tokenQuery={ tokenQuery }/>
+
+      { /* should stay before tabs to scroll up with pagination */ }
+      <Box ref={ scrollRef }></Box>
+
+      <RoutedTabs
+        tabs={ tabs }
+        listProps={ tabListProps }
+        rightSlot={ tabsRightSlot }
+        rightSlotProps={ TABS_RIGHT_SLOT_PROPS }
+        stickyEnabled={ !isMobile }
+        isLoading={ isLoading }
+      />
+    </>
+  );
+};
+
+export default TokenPageContent;

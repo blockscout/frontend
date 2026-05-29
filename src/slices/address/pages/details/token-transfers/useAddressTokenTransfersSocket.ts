@@ -1,0 +1,138 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
+import { useQueryClient } from '@tanstack/react-query';
+import React from 'react';
+
+import type { SocketMessage } from 'src/api/socket/types';
+import type { AddressTokenTransferResponse } from 'src/slices/address/types/api';
+import type { TokenTransfer } from 'src/slices/token-transfer/types/api';
+
+import { getResourceKey } from 'src/api/hooks/useApiQuery';
+import useSocketChannel from 'src/api/socket/useSocketChannel';
+import useSocketMessage from 'src/api/socket/useSocketMessage';
+
+import { useAppContext } from 'src/shell/app/context';
+
+import { useMultichainContext } from 'src/features/multichain/context';
+
+import config from 'src/config';
+import * as cookies from 'src/shared/storage/cookies';
+
+import type { Filters } from './useAddressTokenTransfersQuery';
+
+const matchFilters = (filters: Filters, tokenTransfer: TokenTransfer, address?: string, shouldHideScamTokens?: boolean) => {
+  if (shouldHideScamTokens && tokenTransfer.token?.reputation === 'scam') {
+    return false;
+  }
+
+  if (filters.filter) {
+    if (filters.filter === 'from' && tokenTransfer.from.hash !== address) {
+      return false;
+    }
+    if (filters.filter === 'to' && tokenTransfer.to.hash !== address) {
+      return false;
+    }
+  }
+  if (filters.type && filters.type.length) {
+    if (!tokenTransfer.token || !filters.type.includes(tokenTransfer.token.type)) {
+      return false;
+    }
+  }
+
+  return true;
+};
+
+const OVERLOAD_COUNT = 75;
+
+interface Props {
+  filters: Filters;
+  addressHash: string;
+  data: AddressTokenTransferResponse | undefined;
+  overloadCount?: number;
+  enabled: boolean;
+}
+
+export default function useAddressTokenTransfersSocket({ filters, addressHash, data, overloadCount = OVERLOAD_COUNT, enabled }: Props) {
+  const { cookies: appCookies } = useAppContext();
+  const [ showSocketAlert, setShowSocketAlert ] = React.useState(false);
+  const [ newItemsCount, setNewItemsCount ] = React.useState(0);
+
+  const shouldHideScamTokens = config.slices.token.hideScamTokensEnabled && !(cookies.get(cookies.NAMES.SHOW_SCAM_TOKENS, appCookies) === 'true');
+
+  const multichainContext = useMultichainContext();
+  const queryClient = useQueryClient();
+
+  const handleNewSocketMessage: SocketMessage.AddressTokenTransfer['handler'] = React.useCallback((payload) => {
+    setShowSocketAlert(false);
+
+    const newItems: Array<TokenTransfer> = [];
+    let newCount = 0;
+
+    payload.token_transfers.forEach(transfer => {
+      if (data?.items && data.items.length + newItems.length >= overloadCount && enabled) {
+        if (matchFilters(filters, transfer, addressHash, shouldHideScamTokens)) {
+          newCount++;
+        }
+      } else {
+        if (matchFilters(filters, transfer, addressHash, shouldHideScamTokens)) {
+          newItems.push(transfer);
+        }
+      }
+    });
+
+    if (newCount > 0) {
+      setNewItemsCount(prev => prev + newCount);
+    }
+
+    if (newItems.length > 0) {
+      const queryKey = getResourceKey('general:address_token_transfers', {
+        pathParams: { hash: addressHash },
+        queryParams: { ...filters },
+        chainId: multichainContext?.chain?.id,
+      });
+      queryClient.setQueryData(
+        queryKey,
+        (prevData: AddressTokenTransferResponse | undefined) => {
+          if (!prevData) {
+            return;
+          }
+
+          return {
+            ...prevData,
+            items: [
+              ...newItems,
+              ...prevData.items,
+            ],
+          };
+        },
+      );
+    }
+
+  }, [ data?.items, overloadCount, enabled, filters, addressHash, multichainContext?.chain?.id, queryClient, shouldHideScamTokens ]);
+
+  const handleSocketClose = React.useCallback(() => {
+    setShowSocketAlert(true);
+  }, []);
+
+  const handleSocketError = React.useCallback(() => {
+    setShowSocketAlert(true);
+  }, []);
+
+  const channel = useSocketChannel({
+    topic: `addresses:${ addressHash.toLowerCase() }`,
+    onSocketClose: handleSocketClose,
+    onSocketError: handleSocketError,
+    isDisabled: !enabled,
+  });
+
+  useSocketMessage({
+    channel,
+    event: 'token_transfer',
+    handler: handleNewSocketMessage,
+  });
+
+  return React.useMemo(() => ({
+    showSocketAlert,
+    newItemsCount,
+  }), [ showSocketAlert, newItemsCount ]);
+}

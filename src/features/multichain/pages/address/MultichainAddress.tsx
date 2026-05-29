@@ -1,0 +1,169 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
+import { Box, Flex } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
+import React from 'react';
+
+import type { TabItemRegular } from 'src/toolkit/components/AdaptiveTabs/types';
+
+import useApiQuery from 'src/api/hooks/useApiQuery';
+
+import PageTitle from 'src/shell/page/title/PageTitle';
+
+import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
+import AddressQrCode from 'src/slices/address/pages/details/info/AddressQrCode';
+import getCheckedSummedAddress from 'src/slices/address/utils/get-checked-summed-address';
+import { CONTRACT_TAB_IDS } from 'src/slices/contract/utils/tabs';
+
+import TextAd from 'src/features/ads/text/components/TextAd';
+import ClusterChainsPopover from 'src/features/multichain/components/ClusterChainsPopover';
+import { ADDRESS } from 'src/features/multichain/stubs';
+import * as contract from 'src/features/multichain/utils/contract';
+import EnsEntity from 'src/features/name-services/domains/components/EnsEntity';
+
+import config from 'src/config';
+import throwOnResourceLoadError from 'src/shared/errors/throw-on-resource-load-error';
+import getQueryParamString from 'src/shared/router/get-query-param-string';
+
+import RoutedTabs from 'src/toolkit/components/RoutedTabs/RoutedTabs';
+
+import MultichainAddressEnsDomains from './header/MultichainAddressEnsDomains';
+import MultichainAddressCoinBalanceHistory from './MultichainAddressCoinBalanceHistory';
+import MultichainAddressContract from './MultichainAddressContract';
+import MultichainAddressInternalTxs from './MultichainAddressInternalTxs';
+import MultichainAddressLogs from './MultichainAddressLogs';
+import MultichainAddressPortfolio from './MultichainAddressPortfolio';
+import MultichainAddressTokenTransfers, { ADDRESS_MULTICHAIN_TOKEN_TRANSFERS_TAB_IDS } from './MultichainAddressTokenTransfers';
+import MultichainAddressTxs, { ADDRESS_MULTICHAIN_TXS_TAB_IDS } from './MultichainAddressTxs';
+
+const TABS_PRESERVED_PARAMS = [ 'chain_id' ];
+
+const MultichainAddress = () => {
+  const router = useRouter();
+
+  const hash = getQueryParamString(router.query.hash);
+
+  const addressQuery = useApiQuery('multichainAggregator:address', {
+    pathParams: { hash },
+    queryOptions: {
+      placeholderData: ADDRESS,
+    },
+  });
+
+  throwOnResourceLoadError(addressQuery);
+
+  const isLoading = addressQuery.isPlaceholderData;
+  const chainData = Object.values(addressQuery.data?.chain_infos ?? {});
+  const isContractSomewhere = chainData.some((chainInfo) => chainInfo.is_contract);
+  const isContract = contract.isContract(addressQuery.data);
+  const isVerified = contract.isVerified(addressQuery.data);
+
+  const checkSummedHash = React.useMemo(() => {
+    if (isLoading) {
+      return getCheckedSummedAddress(hash);
+    }
+    return addressQuery.data?.hash ?? getCheckedSummedAddress(hash);
+  }, [ hash, addressQuery.data?.hash, isLoading ]);
+
+  const tabs: Array<TabItemRegular> = React.useMemo(() => {
+    return [
+      {
+        id: 'portfolio',
+        title: 'Portfolio',
+        component: <MultichainAddressPortfolio addressData={ addressQuery.data } isLoading={ isLoading }/>,
+      },
+      isContractSomewhere && {
+        id: 'contract',
+        title: 'Contract',
+        component: <MultichainAddressContract addressHash={ checkSummedHash } data={ addressQuery.data } isLoading={ isLoading }/>,
+        subTabs: CONTRACT_TAB_IDS,
+      },
+      {
+        id: 'txs',
+        title: 'Transactions',
+        component: <MultichainAddressTxs addressData={ addressQuery.data } isLoading={ isLoading }/>,
+        subTabs: ADDRESS_MULTICHAIN_TXS_TAB_IDS,
+      },
+      {
+        id: 'token_transfers',
+        title: 'Token transfers',
+        component: <MultichainAddressTokenTransfers addressData={ addressQuery.data } isLoading={ isLoading }/>,
+        subTabs: ADDRESS_MULTICHAIN_TOKEN_TRANSFERS_TAB_IDS,
+      },
+      config.slices.internalTx.isEnabled && {
+        id: 'internal_txs',
+        title: 'Internal txns',
+        component: <MultichainAddressInternalTxs addressData={ addressQuery.data } isLoading={ isLoading }/>,
+      },
+      {
+        id: 'coin_balance_history',
+        title: 'Coin balance history',
+        component: <MultichainAddressCoinBalanceHistory addressData={ addressQuery.data } isLoading={ isLoading }/>,
+      },
+      isContractSomewhere && {
+        id: 'logs',
+        title: 'Logs',
+        component: <MultichainAddressLogs addressData={ addressQuery.data } isLoading={ isLoading }/>,
+      },
+    ].filter(Boolean);
+  }, [ addressQuery.data, isLoading, isContractSomewhere, checkSummedHash ]);
+
+  const titleSecondRow = (
+    <Flex alignItems="center" w="100%" columnGap={ 2 } rowGap={ 2 } flexWrap={{ base: 'wrap', lg: 'nowrap' }}>
+      { addressQuery.data?.domains?.[0] && (
+        <EnsEntity
+          domain={ addressQuery.data?.domains[0].name }
+          protocol={ addressQuery.data?.domains[0].protocol }
+          protocolDapp={{
+            url: addressQuery.data?.domains[0].protocol_dapp_url,
+            logo: addressQuery.data?.domains[0].protocol_dapp_logo,
+          }}
+          isLoading={ isLoading }
+          variant="subheading"
+          noLink
+          mr={ 1 }
+          maxW="300px"
+        />
+      ) }
+      <AddressEntity
+        address={{
+          ...addressQuery.data,
+          hash: checkSummedHash,
+          name: '',
+          ens_domain_name: '',
+          implementations: null,
+          is_contract: isContract,
+          is_verified: isVerified,
+        }}
+        isLoading={ isLoading }
+        variant="subheading"
+        noLink
+        icon={{
+          shield: { name: 'pie_chart', isLoading },
+        }}
+      />
+      <AddressQrCode hash={ checkSummedHash } isLoading={ isLoading }/>
+      <Box ml="auto"/>
+      <MultichainAddressEnsDomains
+        mainDomain={ addressQuery.data?.domains?.[0] }
+        isLoading={ isLoading }
+        hash={ checkSummedHash }
+      />
+      <ClusterChainsPopover addressHash={ checkSummedHash } data={ addressQuery.data } isLoading={ isLoading }/>
+    </Flex>
+  );
+
+  return (
+    <>
+      <TextAd mb={ 6 }/>
+      <PageTitle
+        title={ `${ isContract ? 'Contract' : 'Address' } details` }
+        isLoading={ isLoading }
+        secondRow={ titleSecondRow }
+      />
+      <RoutedTabs tabs={ tabs } isLoading={ isLoading } preservedParams={ TABS_PRESERVED_PARAMS }/>
+    </>
+  );
+};
+
+export default React.memo(MultichainAddress);

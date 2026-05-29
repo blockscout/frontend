@@ -1,6 +1,6 @@
-import config from 'client/config';
+import config from 'src/config';
 import dedent from 'dedent';
-import { layerLabels } from 'client/features/rollup/common/utils/layer';
+import { layerLabels } from 'src/features/rollup/common/utils/layer';
 
 const MCP_SERVER_URL = 'https://mcp.blockscout.com';
 

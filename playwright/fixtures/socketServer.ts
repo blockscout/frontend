@@ -2,12 +2,12 @@ import type { TestFixture, Page } from '@playwright/test';
 import type { WebSocket } from 'ws';
 import { WebSocketServer } from 'ws';
 
-import type { AddressCoinBalanceHistoryItem, AddressTokensBalancesSocketMessage } from 'client/slices/address/types/api';
-import type { NewBlockSocketResponse } from 'client/slices/block/types/api';
-import type { SmartContractVerificationResponse } from 'client/slices/contract/types/api';
-import type { TokenTransfer } from 'client/slices/token-transfer/types/api';
-import type { TokenInstanceMetadataSocketMessage } from 'client/slices/token/types/api';
-import type { Transaction } from 'client/slices/tx/types/api';
+import type { AddressCoinBalanceHistoryItem, AddressTokensBalancesSocketMessage } from 'src/slices/address/types/api';
+import type { NewBlockSocketResponse } from 'src/slices/block/types/api';
+import type { SmartContractVerificationResponse } from 'src/slices/contract/types/api';
+import type { TokenTransfer } from 'src/slices/token-transfer/types/api';
+import type { TokenInstanceMetadataSocketMessage } from 'src/slices/token/types/api';
+import type { Transaction } from 'src/slices/tx/types/api';
 
 import { port as socketPort } from '../utils/socket';
 

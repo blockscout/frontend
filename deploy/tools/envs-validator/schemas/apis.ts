@@ -1,7 +1,7 @@
 import * as yup from 'yup';
 import { getYupValidationErrorMessage, protocols, urlTest } from '../utils';
-import { replaceQuotes } from 'client/config/utils/envs';
-import { StatsApiResourceNameRefetchInterval } from 'client/features/chain-stats/types/config';
+import { replaceQuotes } from 'src/config/utils/envs';
+import { StatsApiResourceNameRefetchInterval } from 'src/features/chain-stats/types/config';
 
 const statsApiRefetchIntervalSchema = yup.object<Record<StatsApiResourceNameRefetchInterval, number>>()
   .transform(replaceQuotes)

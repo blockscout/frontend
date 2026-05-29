@@ -1,6 +1,6 @@
 import type { TestFixture, Page } from '@playwright/test';
 
-import type { WalletProvider } from 'client/features/web3-wallet/types/wallet-provider';
+import type { WalletProvider } from 'src/features/web3-wallet/types/wallet-provider';
 
 export type InjectMetaMaskProvider = () => Promise<void>;
 

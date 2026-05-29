@@ -6,11 +6,11 @@ import { Worker } from 'node:worker_threads';
 import * as viemChains from 'viem/chains';
 import { pick, uniq, delay } from 'es-toolkit';
 
-import { EssentialDappsConfig } from 'client/features/marketplace/types/client';
-import { getEnvValue, parseEnvJson } from 'client/config/utils/envs';
-import currentChainConfig from 'client/config';
-import appConfig from 'client/config';
-import { EssentialDappsChainConfig } from 'client/features/marketplace/types/client';
+import { EssentialDappsConfig } from 'src/features/marketplace/types/client';
+import { getEnvValue, parseEnvJson } from 'src/config/utils/envs';
+import currentChainConfig from 'src/config';
+import appConfig from 'src/config';
+import { EssentialDappsChainConfig } from 'src/features/marketplace/types/client';
 
 const currentFilePath = fileURLToPath(import.meta.url);
 const currentDir = dirname(currentFilePath);

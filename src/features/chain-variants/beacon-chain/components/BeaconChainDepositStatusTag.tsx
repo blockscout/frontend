@@ -1,0 +1,27 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
+import { capitalize } from 'es-toolkit';
+import React from 'react';
+
+import type { DepositsItem } from 'src/features/chain-variants/beacon-chain/types/api';
+
+import StatusTag from 'src/shared/tags/status-tag/StatusTag';
+
+const BeaconChainDepositStatusTag = ({ status, isLoading }: { status: DepositsItem['status']; isLoading: boolean }) => {
+  const statusValue = (() => {
+    switch (status) {
+      case 'pending':
+        return 'pending';
+      case 'completed':
+        return 'ok';
+      case 'invalid':
+        return 'error';
+      default:
+        return 'pending';
+    }
+  })();
+
+  return <StatusTag type={ statusValue } text={ capitalize(status) } loading={ isLoading }/>;
+};
+
+export default BeaconChainDepositStatusTag;

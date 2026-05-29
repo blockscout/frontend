@@ -1,4 +1,4 @@
-import config from 'client/config';
+import config from 'src/config';
 import { writeFileSync } from 'node:fs';
 import { dirname, resolve as resolvePath } from 'node:path';
 import { fileURLToPath } from 'node:url';

@@ -1,0 +1,243 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
+import { chakra, Flex } from '@chakra-ui/react';
+import { capitalize } from 'es-toolkit';
+import { useRouter } from 'next/router';
+import React from 'react';
+
+import type { PaginationParams } from 'src/shared/pagination/types';
+import type { TabItemRegular } from 'src/toolkit/components/AdaptiveTabs/types';
+
+import { routeParams } from 'src/server/routes';
+
+import PageTitle from 'src/shell/page/title/PageTitle';
+
+import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
+import BlockPendingUpdateAlert from 'src/slices/block/components/BlockPendingUpdateAlert';
+import * as BlockEntity from 'src/slices/block/components/entity/BlockEntity';
+import useBlockInternalTxsQuery from 'src/slices/block/hooks/useBlockInternalTxsQuery';
+import useBlockQuery from 'src/slices/block/hooks/useBlockQuery';
+import useBlockTxsQuery from 'src/slices/block/hooks/useBlockTxsQuery';
+import BlockDetails from 'src/slices/block/pages/details/BlockDetails';
+import BlockInternalTxs from 'src/slices/block/pages/details/BlockInternalTxs';
+import getChainValidatorTitle from 'src/slices/chain/verification-type/utils/get-chain-validator-title';
+import TxsWithFrontendSorting from 'src/slices/tx/pages/index/list/TxsWithFrontendSorting';
+
+import TextAd from 'src/features/ads/text/components/TextAd';
+import AlternativeExplorers from 'src/features/alternative-explorers/components/AlternativeExplorers';
+import BlockDeposits from 'src/features/chain-variants/beacon-chain/pages/block/BlockDeposits';
+import BlockWithdrawals from 'src/features/chain-variants/beacon-chain/pages/block/BlockWithdrawals';
+import useBlockDepositsQuery from 'src/features/chain-variants/beacon-chain/pages/block/useBlockDepositsQuery';
+import useBlockWithdrawalsQuery from 'src/features/chain-variants/beacon-chain/pages/block/useBlockWithdrawalsQuery';
+import BlockCeloEpochTag from 'src/features/chain-variants/celo/pages/block/BlockCeloEpochTag';
+import useBlockBlobTxsQuery from 'src/features/data-availability/hooks/useBlockBlobTxsQuery';
+import { useMultichainContext } from 'src/features/multichain/context';
+
+import config from 'src/config';
+import ApiDegradationAlert from 'src/shared/api-degradation/ApiDegradationAlert';
+import throwOnAbsentParamError from 'src/shared/errors/throw-on-absent-param-error';
+import throwOnResourceLoadError from 'src/shared/errors/throw-on-resource-load-error';
+import useIsMobile from 'src/shared/hooks/useIsMobile';
+import Pagination from 'src/shared/pagination/Pagination';
+import getQueryParamString from 'src/shared/router/get-query-param-string';
+
+import { Skeleton } from 'src/toolkit/chakra/skeleton';
+import RoutedTabs from 'src/toolkit/components/RoutedTabs/RoutedTabs';
+
+const TAB_LIST_PROPS = {
+  marginBottom: 0,
+  pt: 6,
+  pb: 6,
+  marginTop: -5,
+};
+const TABS_HEIGHT = 88;
+
+const BlockPageContent = () => {
+  const router = useRouter();
+  const isMobile = useIsMobile();
+  const heightOrHash = getQueryParamString(router.query.height_or_hash);
+  const tab = getQueryParamString(router.query.tab);
+  const multichainContext = useMultichainContext();
+
+  const chainConfig = multichainContext?.chain.app_config ?? config;
+  const beaconChainFeature = chainConfig.features.beaconChain;
+
+  const blockQuery = useBlockQuery({ heightOrHash });
+  const blockTxsQuery = useBlockTxsQuery({ heightOrHash, blockQuery, tab });
+  const blockWithdrawalsQuery = useBlockWithdrawalsQuery({ heightOrHash, blockQuery, tab });
+  const blockDepositsQuery = useBlockDepositsQuery({ heightOrHash, blockQuery, tab });
+  const blockBlobTxsQuery = useBlockBlobTxsQuery({ heightOrHash, blockQuery, tab });
+  const blockInternalTxsQuery = useBlockInternalTxsQuery({ heightOrHash, blockQuery, tab, chainConfig });
+
+  const hasPagination = !isMobile && (
+    (tab === 'txs' && blockTxsQuery.pagination.isVisible) ||
+    (tab === 'withdrawals' && blockWithdrawalsQuery.pagination.isVisible) ||
+    (tab === 'deposits' && blockDepositsQuery.pagination.isVisible) ||
+    (tab === 'internal_txs' && blockInternalTxsQuery.pagination.isVisible)
+  );
+
+  const tabs: Array<TabItemRegular> = React.useMemo(() => ([
+    {
+      id: 'index',
+      title: 'Details',
+      component: (
+        <>
+          <Flex rowGap={{ base: 1, lg: 2 }} mb={{ base: 3, lg: 6 }} flexDir="column">
+            { blockQuery.isDegradedData && <ApiDegradationAlert isLoading={ blockQuery.isPlaceholderData }/> }
+            { blockQuery.data?.is_pending_update && <BlockPendingUpdateAlert/> }
+          </Flex>
+          <BlockDetails query={ blockQuery }/>
+        </>
+      ),
+    },
+    {
+      id: 'txs',
+      title: 'Transactions',
+      component: (
+        <>
+          { blockTxsQuery.isDegradedData && <ApiDegradationAlert isLoading={ blockTxsQuery.isPlaceholderData } mb={{ base: 3, lg: 6 }}/> }
+          <TxsWithFrontendSorting query={ blockTxsQuery } showBlockInfo={ false } top={ hasPagination ? TABS_HEIGHT : 0 }/>
+        </>
+      ),
+    },
+    chainConfig.slices.internalTx.isEnabled ? {
+      id: 'internal_txs',
+      title: 'Internal txns',
+      component: (
+        <>
+          { blockTxsQuery.isDegradedData && <ApiDegradationAlert isLoading={ blockTxsQuery.isPlaceholderData } mb={{ base: 3, lg: 6 }}/> }
+          <BlockInternalTxs query={ blockInternalTxsQuery } top={ hasPagination ? TABS_HEIGHT : 0 }/>
+        </>
+      ),
+    } : null,
+    chainConfig.features.dataAvailability.isEnabled && blockQuery.data?.blob_transactions_count ?
+      {
+        id: 'blob_txs',
+        title: 'Blob txns',
+        component: (
+          <TxsWithFrontendSorting query={ blockBlobTxsQuery } showBlockInfo={ false }/>
+        ),
+      } : null,
+    beaconChainFeature.isEnabled && !beaconChainFeature.withdrawalsOnly && Boolean(blockQuery.data?.beacon_deposits_count) ?
+      {
+        id: 'deposits',
+        title: 'Deposits',
+        component: (
+          <>
+            { blockDepositsQuery.isDegradedData && <ApiDegradationAlert isLoading={ blockDepositsQuery.isPlaceholderData } mb={{ base: 3, lg: 6 }}/> }
+            <BlockDeposits blockDepositsQuery={ blockDepositsQuery }/>
+          </>
+        ),
+      } : null,
+    beaconChainFeature.isEnabled && Boolean(blockQuery.data?.withdrawals_count) ?
+      {
+        id: 'withdrawals',
+        title: 'Withdrawals',
+        component: (
+          <>
+            { blockWithdrawalsQuery.isDegradedData &&
+              <ApiDegradationAlert isLoading={ blockWithdrawalsQuery.isPlaceholderData } mb={{ base: 3, lg: 6 }}/> }
+            <BlockWithdrawals blockWithdrawalsQuery={ blockWithdrawalsQuery }/>
+          </>
+        ),
+      } : null,
+  ].filter(Boolean)), [
+    beaconChainFeature,
+    blockBlobTxsQuery,
+    blockDepositsQuery,
+    blockInternalTxsQuery,
+    blockQuery,
+    blockTxsQuery,
+    blockWithdrawalsQuery,
+    chainConfig.slices.internalTx.isEnabled,
+    chainConfig.features.dataAvailability.isEnabled,
+    hasPagination,
+  ]);
+
+  let pagination;
+  if (tab === 'txs') {
+    pagination = blockTxsQuery.pagination;
+  } else if (tab === 'withdrawals') {
+    pagination = blockWithdrawalsQuery.pagination;
+  } else if (tab === 'deposits') {
+    pagination = blockDepositsQuery.pagination;
+  } else if (tab === 'internal_txs') {
+    pagination = blockInternalTxsQuery.pagination;
+  }
+
+  throwOnAbsentParamError(heightOrHash);
+
+  if (blockQuery.isError) {
+    if (!blockQuery.isDegradedData && blockQuery.error.status === 404 && !heightOrHash.startsWith('0x') && blockQuery.isFutureBlock) {
+      const url = routeParams({ pathname: '/block/countdown/[height]', query: { height: heightOrHash } }, multichainContext);
+      router.push(url, undefined, { shallow: true });
+      return null;
+    } else {
+      throwOnResourceLoadError(blockQuery);
+    }
+  }
+
+  const title = (() => {
+    switch (blockQuery.data?.type) {
+      case 'reorg':
+        return `Reorged block #${ blockQuery.data?.height }`;
+
+      case 'uncle':
+        return `Uncle block #${ blockQuery.data?.height }`;
+
+      default:
+        return `Block #${ blockQuery.data?.height }`;
+    }
+  })();
+
+  const beforeTitleElement = multichainContext?.chain ? (
+    <BlockEntity.Icon variant="heading" chain={ multichainContext.chain } isLoading={ blockQuery.isPlaceholderData }/>
+  ) : null;
+
+  const titleSecondRow = (
+    <>
+      { !chainConfig.slices.block.hiddenFields?.miner && blockQuery.data?.miner && (
+        <Skeleton
+          loading={ blockQuery.isPlaceholderData }
+          fontFamily="heading"
+          display="flex"
+          minW={ 0 }
+          columnGap={ 2 }
+          fontWeight={ 500 }
+        >
+          <chakra.span flexShrink={ 0 }>
+            { capitalize(getChainValidatorTitle()) }
+          </chakra.span>
+          <AddressEntity address={ blockQuery.data.miner }/>
+        </Skeleton>
+      ) }
+      <AlternativeExplorers
+        type="block"
+        pathParam={ heightOrHash }
+        ml={{ base: chainConfig.slices.block.hiddenFields?.miner ? 0 : 3, lg: 'auto' }}
+      />
+    </>
+  );
+
+  return (
+    <>
+      <TextAd mb={ 6 }/>
+      <PageTitle
+        title={ title }
+        beforeTitle={ beforeTitleElement }
+        contentAfter={ <BlockCeloEpochTag blockQuery={ blockQuery }/> }
+        secondRow={ titleSecondRow }
+        isLoading={ blockQuery.isPlaceholderData }
+      />
+      <RoutedTabs
+        tabs={ tabs }
+        isLoading={ blockQuery.isPlaceholderData }
+        listProps={ isMobile ? undefined : TAB_LIST_PROPS }
+        rightSlot={ hasPagination ? <Pagination { ...(pagination as PaginationParams) }/> : null }
+        stickyEnabled={ hasPagination }
+      />
+    </>
+  );
+};
+
+export default BlockPageContent;

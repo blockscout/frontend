@@ -1,0 +1,75 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
+import { Box, Flex, Grid, Text } from '@chakra-ui/react';
+import { capitalize } from 'es-toolkit';
+import React from 'react';
+
+import type { FheOperation } from '../../types/api';
+
+import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
+
+import ListItemMobile from 'src/shared/lists/ListItemMobile';
+
+import { Badge } from 'src/toolkit/chakra/badge';
+import { Skeleton } from 'src/toolkit/chakra/skeleton';
+
+import { getTypeColor } from '../../utils/utils';
+
+type Props = FheOperation & { isLoading?: boolean };
+
+const TxFHEOperationsListItem = (props: Props) => {
+  const { log_index: logIndex, operation, type, fhe_type: fheType, is_scalar: isScalar, hcu_cost: hcuCost, hcu_depth: hcuDepth, caller, isLoading } = props;
+
+  return (
+    <ListItemMobile>
+      <Flex gap={ 2 } flexWrap="wrap" alignItems="center">
+        <Badge colorPalette={ getTypeColor(type) } loading={ isLoading }>
+          { capitalize(type) }
+        </Badge>
+        <Badge colorPalette="gray" loading={ isLoading }>
+          { fheType }
+        </Badge>
+        <Badge colorPalette="gray" loading={ isLoading }>
+          { isScalar ? 'Scalar' : 'Non-scalar' }
+        </Badge>
+      </Flex>
+
+      <Grid templateColumns="110px 1fr" rowGap={ 2 } columnGap={ 2 }>
+        <Text fontWeight="medium">Index</Text>
+        <Skeleton loading={ isLoading } color="text.secondary">
+          { logIndex }
+        </Skeleton>
+
+        <Text fontWeight="medium">Operation</Text>
+        <Skeleton loading={ isLoading } color="text.secondary">
+          { operation }
+        </Skeleton>
+
+        <Text fontWeight="medium">HCU cost</Text>
+        <Skeleton loading={ isLoading } color="text.secondary">
+          { hcuCost.toLocaleString() }
+        </Skeleton>
+
+        <Text fontWeight="medium">HCU depth</Text>
+        <Skeleton loading={ isLoading } color="text.secondary">
+          { hcuDepth.toLocaleString() }
+        </Skeleton>
+
+        <Text fontWeight="medium">Caller</Text>
+        <Box minW={ 0 }>
+          { caller && caller.hash ? (
+            <AddressEntity
+              address={ caller }
+              truncation="constant"
+              isLoading={ isLoading }
+            />
+          ) : (
+            <Text color="text.secondary">—</Text>
+          ) }
+        </Box>
+      </Grid>
+    </ListItemMobile>
+  );
+};
+
+export default React.memo(TxFHEOperationsListItem);

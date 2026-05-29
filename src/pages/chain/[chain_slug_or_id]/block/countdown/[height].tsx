@@ -1,0 +1,26 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
+import type { NextPage } from 'next';
+import dynamic from 'next/dynamic';
+import React from 'react';
+
+import type { Props } from 'src/server/getServerSideProps/handlers';
+import PageNextJs from 'src/server/PageNextJs';
+
+import { MultichainProvider } from 'src/features/multichain/context';
+
+const BlockCountdown = dynamic(() => import('src/slices/block/pages/countdown-details/BlockCountdown'), { ssr: false });
+
+const Page: NextPage<Props> = (props: Props) => {
+  return (
+    <PageNextJs pathname="/chain/[chain_slug_or_id]/block/countdown/[height]" query={ props.query }>
+      <MultichainProvider>
+        <BlockCountdown/>
+      </MultichainProvider>
+    </PageNextJs>
+  );
+};
+
+export default Page;
+
+export { base as getServerSideProps } from 'src/server/getServerSideProps/multichain';

@@ -1,8 +1,8 @@
 import * as yup from 'yup';
 import { urlTest, getYupValidationErrorMessage } from '../../utils';
-import { replaceQuotes } from 'client/config/utils/envs';
-import * as regexp from 'toolkit/utils/regexp';
-import { ROLLUP_TYPES } from 'client/features/rollup/common/types/config';
+import { replaceQuotes } from 'src/config/utils/envs';
+import * as regexp from 'src/toolkit/utils/regexp';
+import { ROLLUP_TYPES } from 'src/features/rollup/common/types/config';
 
 const parentChainCurrencySchema = yup
   .object()

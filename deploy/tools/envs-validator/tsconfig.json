@@ -10,11 +10,7 @@
 	  "outDir": "./dist",
 	  "rootDir": "../../../",
 	  "paths": {
-		"client/*": ["../../../client/*"],
-		"configs/*": ["../../../configs/*"],
-		"lib/*": ["../../../lib/*"],
-		"toolkit/*": ["../../../toolkit/*"],
-		"types/*": ["../../../types/*"],
+		"src/*": ["../../../src/*"],
 		"public/*": ["../../../public/*"]
 	  },
 	  "types": ["node"],

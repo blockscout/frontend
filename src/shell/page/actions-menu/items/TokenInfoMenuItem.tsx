@@ -1,0 +1,120 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
+import { chakra } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
+import React from 'react';
+
+import type { ItemProps } from '../types';
+
+import useApiQuery from 'src/api/hooks/useApiQuery';
+
+import AuthGuard from 'src/features/account/components/auth-modal/guard/AuthGuard';
+import useIsAuth from 'src/features/account/hooks/useIsAuth';
+import AddressVerificationModal from 'src/features/account/pages/verified-addresses/address-verification/AddressVerificationModal';
+
+import config from 'src/config';
+import * as mixpanel from 'src/services/mixpanel';
+import SpriteIcon from 'src/sprite/SpriteIcon';
+
+import { MenuItem } from 'src/toolkit/chakra/menu';
+import { useDisclosure } from 'src/toolkit/hooks/useDisclosure';
+
+import ButtonItem from '../parts/ButtonItem';
+
+const TokenInfoMenuItem = ({ hash, type }: ItemProps) => {
+  const router = useRouter();
+  const modal = useDisclosure();
+  const isAuth = useIsAuth();
+
+  const verifiedAddressesQuery = useApiQuery('contractInfo:verified_addresses', {
+    pathParams: { instanceId: config.apis.contractInfo?.instanceId },
+    queryOptions: {
+      enabled: isAuth,
+    },
+  });
+  const applicationsQuery = useApiQuery('admin:token_info_applications', {
+    pathParams: { instanceId: config.apis.admin?.instanceId, id: undefined },
+    queryOptions: {
+      enabled: isAuth,
+    },
+  });
+  const tokenInfoQuery = useApiQuery('contractInfo:token_verified_info', {
+    pathParams: { hash, instanceId: config.apis.contractInfo?.instanceId },
+    queryOptions: {
+      refetchOnMount: false,
+    },
+  });
+
+  const handleAddApplicationClick = React.useCallback(async() => {
+    router.push({ pathname: '/account/verified-addresses', query: { address: hash } });
+  }, [ hash, router ]);
+
+  const handleVerifiedAddressSubmit = React.useCallback(async() => {
+    await verifiedAddressesQuery.refetch();
+  }, [ verifiedAddressesQuery ]);
+
+  const handleShowMyAddressesClick = React.useCallback(async() => {
+    router.push({ pathname: '/account/verified-addresses' });
+  }, [ router ]);
+
+  const element = (() => {
+    const isVerifiedAddress = verifiedAddressesQuery.data?.verifiedAddresses
+      .find(({ contractAddress }) => contractAddress.toLowerCase() === hash.toLowerCase());
+    const hasApplication = applicationsQuery.data?.submissions.some(({ tokenAddress }) => tokenAddress.toLowerCase() === hash.toLowerCase());
+
+    const label = (() => {
+      if (!isVerifiedAddress) {
+        return tokenInfoQuery.data?.tokenAddress ? 'Update token info' : 'Add token info';
+      }
+
+      return hasApplication || tokenInfoQuery.data?.tokenAddress ? 'Update token info' : 'Add token info';
+    })();
+
+    const onAuthSuccess = isVerifiedAddress ? handleAddApplicationClick : modal.onOpen;
+
+    switch (type) {
+      case 'button': {
+        const icon = <SpriteIcon name="edit" boxSize={ 6 } p={ 0.5 }/>;
+
+        return (
+          <AuthGuard onAuthSuccess={ onAuthSuccess } ensureEmail>
+            { ({ onClick }) => (
+              <ButtonItem label={ label } icon={ icon } onClick={ onClick }/>
+            ) }
+          </AuthGuard>
+        );
+      }
+      case 'menu_item': {
+        const icon = <SpriteIcon name="edit" boxSize={ 6 } p={ 1 }/>;
+
+        return (
+          <AuthGuard onAuthSuccess={ onAuthSuccess } ensureEmail>
+            { ({ onClick }) => (
+              <MenuItem onClick={ onClick } value="add-token-info">
+                { icon }
+                <chakra.span>{ label }</chakra.span>
+              </MenuItem>
+            ) }
+          </AuthGuard>
+        );
+      }
+    }
+  })();
+
+  return (
+    <>
+      { element }
+      <AddressVerificationModal
+        defaultAddress={ hash }
+        pageType={ mixpanel.getPageType('/token/[hash]') }
+        open={ modal.open }
+        onOpenChange={ modal.onOpenChange }
+        onSubmit={ handleVerifiedAddressSubmit }
+        onAddTokenInfoClick={ handleAddApplicationClick }
+        onShowListClick={ handleShowMyAddressesClick }
+      />
+    </>
+  );
+};
+
+export default React.memo(TokenInfoMenuItem);
