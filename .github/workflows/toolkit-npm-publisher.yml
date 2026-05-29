@@ -45,7 +45,7 @@ jobs:
 
       - name: Update package version
         run: |
-          cd ./toolkit/package
+          cd ./src/toolkit/package
           npm version ${{ inputs.version }}
 
       - name: Install dependencies and build the package
@@ -55,7 +55,7 @@ jobs:
     
       - name: Publish to NPM registry
         run: |
-          cd ./toolkit/package
+          cd ./src/toolkit/package
           # Determine npm tag based on version
           if [[ "${{ inputs.version }}" =~ ^v?[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
             # Stable release (e.g., 1.7.2 or v1.7.2)
